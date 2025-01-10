@@ -1,0 +1,1580 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><script type="text/javascript" src="https://cdn.jsdelivr.net/gh/opencobra/cobratoolbox@ffa0229fc0c01c9236bb7e961f65712443277719/latest/_static/js/iframeResizer.contentWindow.min.js"></script><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge,IE=9,chrome=1"><meta name="generator" content="MATLAB 2021a"><title>OptForce</title><style type="text/css">.rtcContent { padding: 30px; } .S0 { margin: 3px 10px 5px 4px; padding: 0px; line-height: 28.8px; min-height: 0px; white-space: normal; color: rgb(213, 80, 0); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 24px; font-weight: normal; text-align: left;  }
+.S1 { margin: 20px 10px 5px 4px; padding: 0px; line-height: 20px; min-height: 0px; white-space: normal; color: rgb(60, 60, 60); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 20px; font-weight: bold; text-align: left;  }
+.S2 { margin: 3px 10px 5px 4px; padding: 0px; line-height: 20px; min-height: 0px; white-space: normal; color: rgb(60, 60, 60); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 20px; font-weight: bold; text-align: left;  }
+.S3 { margin: 2px 10px 9px 4px; padding: 0px; line-height: 21px; min-height: 0px; white-space: normal; color: rgb(0, 0, 0); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 14px; font-weight: normal; text-align: left;  }
+.S4 { margin: 10px 0px 20px; padding-left: 0px; font-family: Helvetica, Arial, sans-serif; font-size: 14px;  }
+.S5 { margin-left: 56px; line-height: 21px; min-height: 0px; text-align: left; white-space: normal;  }
+.S6 { margin: 2px 10px 9px 4px; padding: 0px; line-height: 21px; min-height: 0px; white-space: normal; color: rgb(0, 0, 0); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 14px; font-weight: normal; text-align: center;  }
+.CodeBlock { background-color: #F7F7F7; margin: 10px 0 10px 0;}
+.S7 { border-left: 1px solid rgb(233, 233, 233); border-right: 1px solid rgb(233, 233, 233); border-top: 1px solid rgb(233, 233, 233); border-bottom: 1px solid rgb(233, 233, 233); border-radius: 4px 4px 0px 0px; padding: 6px 45px 4px 13px; line-height: 17.234px; min-height: 18px; white-space: nowrap; color: rgb(0, 0, 0); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S8 { color: rgb(64, 64, 64); padding: 10px 0px 6px 17px; background: rgb(255, 255, 255) none repeat scroll 0% 0% / auto padding-box border-box; font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px; overflow-x: hidden; line-height: 17.234px;  }
+/* Styling that is common to warnings and errors is in diagnosticOutput.css */.embeddedOutputsErrorElement {    min-height: 18px;    max-height: 250px;    overflow: auto;}
+.embeddedOutputsErrorElement.inlineElement {}
+.embeddedOutputsErrorElement.rightPaneElement {}
+/* Styling that is common to warnings and errors is in diagnosticOutput.css */.embeddedOutputsWarningElement{    min-height: 18px;    max-height: 250px;    overflow: auto;}
+.embeddedOutputsWarningElement.inlineElement {}
+.embeddedOutputsWarningElement.rightPaneElement {}
+/* Copyright 2015-2019 The MathWorks, Inc. *//* In this file, styles are not scoped to rtcContainer since they could be in the Dojo Tooltip */.diagnosticMessage-wrapper {    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;    font-size: 12px;}
+.diagnosticMessage-wrapper.diagnosticMessage-warningType {    color: rgb(255,100,0);}
+.diagnosticMessage-wrapper.diagnosticMessage-warningType a {    color: rgb(255,100,0);    text-decoration: underline;}
+.diagnosticMessage-wrapper.diagnosticMessage-errorType {    color: rgb(230,0,0);}
+.diagnosticMessage-wrapper.diagnosticMessage-errorType a {    color: rgb(230,0,0);    text-decoration: underline;}
+.diagnosticMessage-wrapper .diagnosticMessage-messagePart,.diagnosticMessage-wrapper .diagnosticMessage-causePart {    white-space: normal;}
+.diagnosticMessage-wrapper .diagnosticMessage-stackPart {    white-space: normal;}
+.embeddedOutputsTextElement,.embeddedOutputsVariableStringElement {    white-space: normal;    word-wrap:  initial;    min-height: 18px;    max-height: 250px;    overflow: auto;}
+.textElement,.rtcDataTipElement .textElement {    padding-top: 3px;}
+.embeddedOutputsTextElement.inlineElement,.embeddedOutputsVariableStringElement.inlineElement {}
+.inlineElement .textElement {}
+.embeddedOutputsTextElement.rightPaneElement,.embeddedOutputsVariableStringElement.rightPaneElement {    min-height: 16px;}
+.rightPaneElement .textElement {    padding-top: 2px;    padding-left: 9px;}
+.S9 { border-left: 1px solid rgb(233, 233, 233); border-right: 1px solid rgb(233, 233, 233); border-top: 1px solid rgb(233, 233, 233); border-bottom: 0px none rgb(0, 0, 0); border-radius: 0px; padding: 6px 45px 0px 13px; line-height: 17.234px; min-height: 18px; white-space: nowrap; color: rgb(0, 0, 0); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S10 { border-left: 1px solid rgb(233, 233, 233); border-right: 1px solid rgb(233, 233, 233); border-top: 0px none rgb(0, 0, 0); border-bottom: 0px none rgb(0, 0, 0); border-radius: 0px; padding: 0px 45px 0px 13px; line-height: 17.234px; min-height: 18px; white-space: nowrap; color: rgb(0, 0, 0); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S11 { border-left: 1px solid rgb(233, 233, 233); border-right: 1px solid rgb(233, 233, 233); border-top: 0px none rgb(0, 0, 0); border-bottom: 1px solid rgb(233, 233, 233); border-radius: 0px 0px 4px 4px; padding: 0px 45px 4px 13px; line-height: 17.234px; min-height: 18px; white-space: nowrap; color: rgb(0, 0, 0); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S12 { margin: 10px 10px 9px 4px; padding: 0px; line-height: 21px; min-height: 0px; white-space: normal; color: rgb(0, 0, 0); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 14px; font-weight: normal; text-align: left;  }
+.S13 { border-left: 1px solid rgb(233, 233, 233); border-right: 1px solid rgb(233, 233, 233); border-top: 1px solid rgb(233, 233, 233); border-bottom: 0px none rgb(0, 0, 0); border-radius: 4px 4px 0px 0px; padding: 6px 45px 0px 13px; line-height: 17.234px; min-height: 18px; white-space: nowrap; color: rgb(0, 0, 0); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S14 { border-left: 1px solid rgb(233, 233, 233); border-right: 1px solid rgb(233, 233, 233); border-top: 0px none rgb(0, 0, 0); border-bottom: 1px solid rgb(233, 233, 233); border-radius: 0px; padding: 0px 45px 4px 13px; line-height: 17.234px; min-height: 18px; white-space: nowrap; color: rgb(0, 0, 0); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S15 { border-left: 1px solid rgb(233, 233, 233); border-right: 1px solid rgb(233, 233, 233); border-top: 1px solid rgb(233, 233, 233); border-bottom: 1px solid rgb(233, 233, 233); border-radius: 0px; padding: 6px 45px 4px 13px; line-height: 17.234px; min-height: 18px; white-space: nowrap; color: rgb(0, 0, 0); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S16 { border-left: 1px solid rgb(233, 233, 233); border-right: 1px solid rgb(233, 233, 233); border-top: 1px solid rgb(233, 233, 233); border-bottom: 1px solid rgb(233, 233, 233); border-radius: 4px; padding: 6px 45px 4px 13px; line-height: 17.234px; min-height: 18px; white-space: nowrap; color: rgb(0, 0, 0); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S17 { border-left: 1px solid rgb(233, 233, 233); border-right: 1px solid rgb(233, 233, 233); border-top: 1px solid rgb(233, 233, 233); border-bottom: 1px solid rgb(233, 233, 233); border-radius: 0px 0px 4px 4px; padding: 6px 45px 4px 13px; line-height: 17.234px; min-height: 18px; white-space: nowrap; color: rgb(0, 0, 0); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }</style></head><body><div class = rtcContent><h1  class = 'S0'><span>OptForce</span></h1><h2  class = 'S1'><span>Author: Sebastián N. Mendoza,  Center for Mathematical Modeling, University of Chile. snmendoz@uc.cl</span></h2><h2  class = 'S1'><span style=' font-weight: bold;'>Reviewers(s): Chiam Yu Ng (Costas D. Maranas group), </span><span>Lin Wang </span><span style=' font-weight: bold;'>(Costas D. Maranas group), John Sauls</span></h2><h2  class = 'S2'><span style=' font-weight: bold;'>INTRODUCTION:</span></h2><div  class = 'S3'><span>In this tutorial we will run optForce. For a detailed description of the procedure, please see [1]. Briefly, the problem is to find a set of interventions of size "K" such that when these interventions are applied to a wild-type strain, the mutant created will produce a particular target of interest in a higher rate than the wild-type strain. The interventions could be knockouts (lead to zero the flux for a particular reaction), upregulations (increase the flux for a particular reaction) and downregulations (decrease the flux for a particular reaction). </span></div><div  class = 'S3'><span>For example, imagine that we would like to increase the production of succinate in Escherichia coli. Which are the interventions needed to increase the production of succinate? We will approach this problem in this tutorial and we will see how each of the steps of OptForce are solved. </span></div><h2  class = 'S2'><span>MATERIALS</span></h2><h2  class = 'S1'><span>EQUIPMENT</span></h2><ol  class = 'S4'><li  class = 'S5'><span>MATLAB</span></li><li  class = 'S5'><span>A solver for Mixed Integer Linear Programming (MILP) problems. For example, Gurobi.</span></li></ol><h2  class = 'S1'><span style=' font-weight: bold;'>EQUIPMENT SETUP</span></h2><div  class = 'S3'><span>Use </span><span style=' font-family: monospace;'>changeCobraSolver</span><span> to choose the solver for MILP problems. </span></div><h2  class = 'S2'><span>PROCEDURE</span></h2><div  class = 'S3'><span>The proceduce consists on the following steps</span></div><div  class = 'S3'><span>1) Maximize specific growth rate and product formation.</span></div><div  class = 'S3'><span>2) Define constraints for both wild-type and mutant strain: </span></div><div  class = 'S3'><span>3) Perform flux variability analysis for both wild-type and mutant strain.</span></div><div  class = 'S3'><span>4) Find must sets,  i.e, reactions that MUST increase or decrease their flux in order to achieve the phenotype in the mutant strain. </span></div><h2  class = 'S1'><span>Figure 1.</span></h2><div  class = 'S6'><img class = "imageNode" src = "data:image/png;base64,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" width = "404.1" alt = "" style = "vertical-align: baseline"></img></div><div  class = 'S3'><span>5) Find the interventions needed that will ensure a increased production of the target of interest</span></div><div  class = 'S3'><span>Now, we will approach each step in detail.</span></div><h2  class = 'S2'><span>STEP 1: Maximize specific growth rate and product formation</span></h2><div  class = 'S3'><span>First, we load the model. This model comprises only 90 reactions, which describe the central metabolism of E. coli [2].</span></div><div  class = 'S3'><span>Then, we change the objective function to maximize biomass ("R75"). We also change the lower bounds, so E. coli will be able to consume glucose, oxygen, sulfate, ammomium, citrate and glycerol.</span></div><div class="CodeBlock"><div class="inlineWrapper outputs"><div  class = 'S7'><span style="white-space: normal"><span >changeCobraSolver(</span><span style="color: rgb(170, 4, 249);">'gurobi'</span><span >, </span><span style="color: rgb(170, 4, 249);">'ALL'</span><span >);</span></span></div><div  class = 'S8'><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement scrollableOutput" uid="B4C65F9C" data-testid="output_0" data-width="428" data-height="227" data-hashorizontaloverflow="true" style="width: 458px; max-height: 261px; white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"> &gt; Gurobi interface added to MATLAB path.
+ &gt; gurobi (version 751) is compatible and fully tested with MATLAB R2016b on your operating system.
+ &gt; Solver for LP problems has been set to gurobi.
+
+ &gt; Gurobi interface added to MATLAB path.
+ &gt; gurobi (version 751) is compatible and fully tested with MATLAB R2016b on your operating system.
+ &gt; Solver for MILP problems has been set to gurobi.
+
+ &gt; Gurobi interface added to MATLAB path.
+ &gt; gurobi (version 751) is compatible and fully tested with MATLAB R2016b on your operating system.
+ &gt; Solver for QP problems has been set to gurobi.
+
+ &gt; Gurobi interface added to MATLAB path.
+ &gt; gurobi (version 751) is compatible and fully tested with MATLAB R2016b on your operating system.
+ &gt; Solver for MIQP problems has been set to gurobi.
+ &gt; Solver gurobi not supported for problems of type NLP. Currently used: matlab </div></div></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: normal"><span >modelFileName = </span><span style="color: rgb(170, 4, 249);">'AntCore.mat'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: normal"><span >modelDirectory = getDistributedModelFolder(modelFileName); </span><span style="color: rgb(2, 128, 9);">%Look up the folder for the distributed Models.</span></span></div></div><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: normal"><span >modelFileName= [modelDirectory filesep modelFileName]; </span><span style="color: rgb(2, 128, 9);">% Get the full path. Necessary to be sure, that the right model is loaded</span></span></div></div><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: normal"><span >model = readCbModel(modelFileName);</span></span></div></div><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: normal"><span >model.c(strcmp(model.rxns, </span><span style="color: rgb(170, 4, 249);">'R75'</span><span >)) = 1;</span></span></div></div><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: normal"><span >model = changeRxnBounds(model, </span><span style="color: rgb(170, 4, 249);">'EX_gluc'</span><span >, -100, </span><span style="color: rgb(170, 4, 249);">'l'</span><span >); </span></span></div></div><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: normal"><span >model = changeRxnBounds(model, </span><span style="color: rgb(170, 4, 249);">'EX_o2'</span><span >, -100, </span><span style="color: rgb(170, 4, 249);">'l'</span><span >); </span></span></div></div><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: normal"><span >model = changeRxnBounds(model, </span><span style="color: rgb(170, 4, 249);">'EX_so4'</span><span >, -100, </span><span style="color: rgb(170, 4, 249);">'l'</span><span >); </span></span></div></div><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: normal"><span >model = changeRxnBounds(model, </span><span style="color: rgb(170, 4, 249);">'EX_nh3'</span><span >, -100, </span><span style="color: rgb(170, 4, 249);">'l'</span><span >); </span></span></div></div><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: normal"><span >model = changeRxnBounds(model, </span><span style="color: rgb(170, 4, 249);">'EX_cit'</span><span >, -100, </span><span style="color: rgb(170, 4, 249);">'l'</span><span >); </span></span></div></div><div class="inlineWrapper"><div  class = 'S11'><span style="white-space: normal"><span >model = changeRxnBounds(model, </span><span style="color: rgb(170, 4, 249);">'EX_glyc'</span><span >, -100, </span><span style="color: rgb(170, 4, 249);">'l'</span><span >); </span></span></div></div></div><div  class = 'S12'><span>Then, we calculate the maximum specific growth rate and the maximum production rate for succinate.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S13'><span style="white-space: normal"><span >growthRate = optimizeCbModel(model); </span></span></div></div><div class="inlineWrapper outputs"><div  class = 'S14'><span style="white-space: normal"><span >fprintf(</span><span style="color: rgb(170, 4, 249);">'The maximum growth rate is %1.2f'</span><span >, growthRate.f);</span></span></div><div  class = 'S8'><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement" uid="364001C2" data-testid="output_1" data-width="428" data-height="18" data-hashorizontaloverflow="false" style="width: 458px; max-height: 261px; white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">The maximum growth rate is 14.36</div></div></div></div><div class="inlineWrapper"><div  class = 'S9'></div></div><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: normal"><span >model = changeObjective(model, </span><span style="color: rgb(170, 4, 249);">'EX_suc'</span><span >);</span></span></div></div><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: normal"><span >maxSucc = optimizeCbModel(model);</span></span></div></div><div class="inlineWrapper outputs"><div  class = 'S14'><span style="white-space: normal"><span >fprintf(</span><span style="color: rgb(170, 4, 249);">'The maximum production rate of succinate is %1.2f'</span><span >, maxSucc.f);</span></span></div><div  class = 'S8'><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement" uid="71FBB995" data-testid="output_2" data-width="428" data-height="18" data-hashorizontaloverflow="false" style="width: 458px; max-height: 261px; white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">The maximum production rate of succinate is 155.56</div></div></div></div></div><div  class = 'S12'><span style=' font-weight: bold;'>TIP: </span><span>The biomass reaction is usually set to 1%-10% of maximum theoretical biomass yield when running the following steps, to prevent solutions without biomass formation.</span></div><ol  class = 'S4'><li  class = 'S5'><span>Maximizing product formation</span></li><li  class = 'S5'><span>Finding MUST sets of second order</span></li><li  class = 'S5'><span>Finding FORCE sets</span></li></ol><h2  class = 'S2'><span>STEP 2: Define constraints for both wild-type and mutant strain</span></h2><div  class = 'S3'><span style=' font-weight: bold;'>TIMING</span><span>: This step should take a few days or weeks, depending on the information available for your species. </span></div><div  class = 'S3'><span style=' font-weight: bold;'>CRITICAL STEP</span><span>: This is a manual task, so you should search for information in articles or even perform your own experiments. You can also make assumptions for describing the phenotypes of both strains which will make this task a little faster but make sure to have two strains different enough, because you should be able to find differences in reactions ranges. </span></div><div  class = 'S3'><span>We define constraints for each strain as follows: </span></div><ol  class = 'S4'><li  class = 'S5'><span>The WT strain's biomass function ("R75") is constrained to near the maximum growth rate. </span></li><li  class = 'S5'><span>The mutant strain's biomass function is set to zero. Succinate export ('EX_suc') is forced to be the maximum as calculated previously.</span></li></ol><div class="CodeBlock"><div class="inlineWrapper outputs"><div  class = 'S7'><span style="white-space: normal"><span >constrWT = struct(</span><span style="color: rgb(170, 4, 249);">'rxnList'</span><span >, {{</span><span style="color: rgb(170, 4, 249);">'R75'</span><span >}}, </span><span style="color: rgb(170, 4, 249);">'rxnValues'</span><span >, 14, </span><span style="color: rgb(170, 4, 249);">'rxnBoundType'</span><span >, </span><span style="color: rgb(170, 4, 249);">'b'</span><span >)</span></span></div><div  class = 'S8'><div class="inlineElement eoOutputWrapper embeddedOutputsVariableStringElement" uid="D6421A87" data-testid="output_3" data-width="428" data-height="62" data-hashorizontaloverflow="false" style="width: 458px; max-height: 261px; white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><span class="variableNameElement" style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">constrWT = </span></div><div style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">         rxnList: {'R75'}
+       rxnValues: 14
+    rxnBoundType: 'b'
+</div></div></div></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: normal"><span >constrMT = struct(</span><span style="color: rgb(170, 4, 249);">'rxnList'</span><span >, {{</span><span style="color: rgb(170, 4, 249);">'R75'</span><span >, </span><span style="color: rgb(170, 4, 249);">'EX_suc'</span><span >}}, </span><span style="color: rgb(170, 4, 249);">'rxnValues'</span><span >, [0, 155.55], </span><span style="color: rgb(14, 0, 255);">...</span></span></div></div><div class="inlineWrapper outputs"><div  class = 'S14'><span style="white-space: normal"><span >                  </span><span style="color: rgb(170, 4, 249);">'rxnBoundType'</span><span >, </span><span style="color: rgb(170, 4, 249);">'bb'</span><span >)</span></span></div><div  class = 'S8'><div class="inlineElement eoOutputWrapper embeddedOutputsVariableStringElement" uid="E1CA20DE" data-testid="output_4" data-width="428" data-height="62" data-hashorizontaloverflow="false" style="width: 458px; max-height: 261px; white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><span class="variableNameElement" style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">constrMT = </span></div><div style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">         rxnList: {'R75'  'EX_suc'}
+       rxnValues: [0 155.5500]
+    rxnBoundType: 'bb'
+</div></div></div></div></div></div><h2  class = 'S2'><span>Step 3: Flux Variability Analysis</span></h2><div  class = 'S3'><span style=' font-weight: bold;'>TIMING</span><span>: This task should take from a few seconds to a few hours depending on the size of your reconstruction</span></div><div  class = 'S3'><span>We  run the FVA analysis for both strains</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S13'><span style="white-space: normal"><span >[minFluxesW, maxFluxesW, minFluxesM, maxFluxesM, ~, ~] = FVAOptForce(model, </span><span style="color: rgb(14, 0, 255);">...</span></span></div></div><div class="inlineWrapper outputs"><div  class = 'S14'><span style="white-space: normal"><span >                                                                     constrWT, constrMT);</span></span></div><div  class = 'S8'><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement scrollableOutput" uid="55071CA1" data-testid="output_5" data-width="428" data-height="18" data-hashorizontaloverflow="true" style="width: 458px; max-height: 261px; white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">Starting parallel pool (parpool) using the 'local' profile ... connected to 4 workers.</div></div></div></div><div class="inlineWrapper outputs"><div  class = 'S15'><span style="white-space: normal"><span >disp([minFluxesW, maxFluxesW, minFluxesM, maxFluxesM]);</span></span></div><div  class = 'S8'><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement scrollableOutput" uid="CC7B69E2" data-testid="output_6" data-width="428" data-height="1263" data-hashorizontaloverflow="false" style="width: 458px; max-height: 261px; white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">  -90.1251   97.1300   44.4313  100.0000
+         0   86.0700   44.4375  100.0000
+         0   86.0700   44.4375  100.0000
+  -56.1567   86.0700  -44.4500   11.1143
+   21.3033  163.5300   55.5500  111.1143
+   -3.0777  154.8640   55.5500  111.1143
+         0  151.5086         0   55.5625
+         0  187.2551         0   55.5687
+         0  169.5163         0    0.0187
+  -10.0660  102.9449         0    0.0125
+   10.0660   66.5714         0    0.0063
+  -10.0660  102.9449         0    0.0125
+  -48.9454    7.5600   -0.0063         0
+  -53.9994    2.5060   -0.0063         0
+  -53.9994    2.5060   -0.0063         0
+   -2.5060   53.9994         0    0.0063
+         0   86.0700         0   55.5625
+         0   86.0700         0   55.5625
+    9.7020  114.6466   55.5500   55.5625
+         0   56.5564   55.5500   55.5571
+   16.0264  145.2048  155.5500  155.5563
+   16.0264  145.2048  155.5500  155.5563
+    0.9344  130.1128  155.5500  155.5562
+   -5.6736  123.5048  155.5500  155.5563
+         0  118.0576         0    0.0062
+    5.1940  123.2516         0    0.0062
+  -98.1150  123.2516  -55.5625    0.0062
+         0  151.5086         0   55.5625
+         0  151.5086         0   55.5625
+         0  254.5400   55.5500  777.7875
+         0  253.2493         0  722.2375
+   -7.1960   94.6056         0    0.0125
+         0   84.8467   88.8750   88.9000
+         0   84.8467   88.8750   88.9000
+         0  175.1064  188.8500  188.9000
+         0  175.1064  188.8500  188.9000
+   91.4130  107.1280         0         0
+    9.4500    9.4500         0         0
+    2.9400    2.9400         0         0
+    3.9340    3.9340         0         0
+   25.4520   56.8820         0         0
+    3.2060    3.2060         0         0
+    6.8320    6.8320         0         0
+         0   15.7150         0         0
+   -6.8880    8.8270         0         0
+    0.6790   16.3940         0         0
+         0   31.4300         0         0
+    3.2620    3.2620         0         0
+    4.5640    4.5640         0         0
+    4.5640    4.5640         0         0
+    7.2380   38.6680         0         0
+    2.0440    2.0440         0         0
+    5.6280    5.6280         0         0
+    5.9920    5.9920         0         0
+    3.8640    3.8640         0         0
+    2.4640    2.4640         0         0
+    1.8340    1.8340         0         0
+    0.7560    0.7560         0         0
+    1.2600    1.2600         0         0
+    2.0440    2.0440         0         0
+    1.2600    1.2600         0         0
+   79.7324  200.0000  199.9500  200.0000
+         0  118.0576         0    0.0062
+  -39.5563  353.9124  -22.2500   33.3500
+         0  253.2493         0  722.2375
+   40.6268  100.0000   99.9875  100.0000
+   15.0890  100.0000   99.9929  100.0000
+ -100.0000   84.8467 -100.0000  -99.9500
+         0  175.1064  188.8500  188.9000
+         0  101.8016         0    0.0125
+  134.9718  407.3274  311.1000  311.1187
+   62.1267  100.0000   99.9750  100.0000
+   97.4820   97.4820         0         0
+    3.2620    3.2620         0         0
+   14.0000   14.0000         0         0
+         0  175.1064  188.8500  188.9000
+  134.9718  407.3274  311.1000  311.1187
+         0  101.8016         0    0.0125
+         0  253.2493         0  722.2375
+ -100.0000  -40.6268 -100.0000  -99.9875
+ -100.0000  -15.0890 -100.0000  -99.9929
+ -100.0000   84.8467 -100.0000  -99.9500
+  -97.4820  -97.4820         0         0
+ -100.0000  -62.1267 -100.0000  -99.9750
+   -3.2620   -3.2620         0         0
+         0  105.4230  155.5500  155.5500
+         0  105.4230  155.5500  155.5500
+   11.6200   11.6200         0         0
+    5.0540    5.0540         0         0
+    5.9920    5.9920         0         0</div></div></div></div></div><div  class = 'S12'><span>Now, the run the next step of OptForce.</span></div><h2  class = 'S2'><span>Step 4: Find Must Sets</span></h2><div  class = 'S3'><span style=' font-weight: bold;'>TIMING: </span><span>This task should take from a few seconds to a few hours depending on the size of your reconstruction</span></div><div  class = 'S3'><span>First, we define an ID for this run. Each time you run the functions associated to the optForce procedure, some folders can be generated to store inputs used in that run. Outputs are stored as well. These folders will be located inside the folder defined by your run ID. Thus, if your runID is ''TestOptForce", the structure of the folders will be the following:</span></div><div  class = 'S3'><span style=' font-family: monospace;'>├── CurrentFolder</span></div><div  class = 'S3'><span style=' font-family: monospace;'>|   ├── TestOptForce</span></div><div  class = 'S3'><span style=' font-family: monospace;'>|   |   ├── Inputs</span></div><div  class = 'S3'><span style=' font-family: monospace;'>|   |   └── Outputs</span></div><div  class = 'S3'><span>To avoid the generation of inputs and outputs folders, set </span><span style=' font-family: monospace;'>keepInputs = 0</span><span>, </span><span style=' font-family: monospace;'>printExcel = 0</span><span> and </span><span style=' font-family: monospace;'>printText = 0</span><span>.</span></div><div  class = 'S3'><span>Also, a report of the run is generated each time you run the functions associated to the optForce procedure. So, the idea is to give a different </span><span style=' font-family: monospace;'>runID</span><span> each time you run the functions, so you will be able to see the report (inputs used, outputs generated, errors in the run) for each run.</span></div><div  class = 'S3'><span>We define then our </span><span style=' font-family: monospace;'>runID</span><span>.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S16'><span style="white-space: normal"><span >runID = </span><span style="color: rgb(170, 4, 249);">'TestOptForceM'</span><span >;</span></span></div></div></div><div  class = 'S12'><span>Fow now, only functions to find first and second order must sets are supported in this third step. As depicted in </span><span style=' font-weight: bold;'>Figure 1</span><span>, the first order must sets are MUSTU and MUSTL; and second order must sets are MUSTUU, MUSTLL and MUSTUL.</span></div><div  class = 'S3'><span style=' font-weight: bold;'>A) Finding first order must sets</span></div><div  class = 'S3'><span>We define constraints.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S16'><span style="white-space: normal"><span >constrOpt = struct(</span><span style="color: rgb(170, 4, 249);">'rxnList'</span><span >, {{</span><span style="color: rgb(170, 4, 249);">'EX_gluc'</span><span >, </span><span style="color: rgb(170, 4, 249);">'R75'</span><span >, </span><span style="color: rgb(170, 4, 249);">'EX_suc'</span><span >}}, </span><span style="color: rgb(170, 4, 249);">'values'</span><span >, [-100, 0, 155.5]');</span></span></div></div></div><div  class = 'S12'><span>We then run the functions </span><span style=' font-family: monospace;'>findMustL</span><span> and </span><span style=' font-family: monospace;'>findMustU</span><span> that will allow us to find </span><span style=' font-family: monospace;'>mustU</span><span> and </span><span style=' font-family: monospace;'>mustL</span><span> sets, respectively.</span></div><div  class = 'S3'><span style=' font-weight: bold;'>i) MustL Set: </span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S13'><span style="white-space: normal"><span >[mustLSet, pos_mustL] = findMustL(model, minFluxesW, maxFluxesW, </span><span style="color: rgb(170, 4, 249);">'constrOpt'</span><span >, constrOpt, </span><span style="color: rgb(14, 0, 255);">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: normal"><span >                                  </span><span style="color: rgb(170, 4, 249);">'runID'</span><span >, runID, </span><span style="color: rgb(170, 4, 249);">'outputFolder'</span><span >, </span><span style="color: rgb(170, 4, 249);">'OutputsFindMustL'</span><span >, </span><span style="color: rgb(14, 0, 255);">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: normal"><span >                                  </span><span style="color: rgb(170, 4, 249);">'outputFileName'</span><span >, </span><span style="color: rgb(170, 4, 249);">'MustL' </span><span >, </span><span style="color: rgb(170, 4, 249);">'printExcel'</span><span >, 1, </span><span style="color: rgb(170, 4, 249);">'printText'</span><span >, 1, </span><span style="color: rgb(14, 0, 255);">...</span></span></div></div><div class="inlineWrapper outputs"><div  class = 'S14'><span style="white-space: normal"><span >                                  </span><span style="color: rgb(170, 4, 249);">'printReport'</span><span >, 1, </span><span style="color: rgb(170, 4, 249);">'keepInputs'</span><span >, 1, </span><span style="color: rgb(170, 4, 249);">'verbose'</span><span >, 0);</span></span></div><div  class = 'S8'><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement scrollableOutput" uid="451D4E7F" data-testid="output_7" data-width="428" data-height="3601" data-hashorizontaloverflow="true" style="width: 458px; max-height: 261px; white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">Academic license - for non-commercial use only
+Optimize a model with 710 rows, 798 columns and 2715 nonzeros
+Variable types: 708 continuous, 90 integer (90 binary)
+Coefficient statistics:
+  Matrix range     [5e-02, 1e+03]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+03]
+  RHS range        [5e-01, 1e+03]
+Presolve removed 564 rows and 482 columns
+Presolve time: 0.01s
+Presolved: 146 rows, 316 columns, 957 nonzeros
+Variable types: 273 continuous, 43 integer (43 binary)
+
+Root relaxation: objective 9.748200e+01, 169 iterations, 0.00 seconds
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+*    0     0               0      97.4820000   97.48200  0.00%     -    0s
+
+Explored 0 nodes (169 simplex iterations) in 0.02 seconds
+Thread count was 8 (of 8 available processors)
+
+Solution count 1: 97.482 
+
+Optimal solution found (tolerance 1.00e-12)
+Best objective 9.748200000000e+01, best bound 9.748200000000e+01, gap 0.0000%
+Academic license - for non-commercial use only
+Optimize a model with 710 rows, 798 columns and 2710 nonzeros
+Variable types: 708 continuous, 90 integer (90 binary)
+Coefficient statistics:
+  Matrix range     [5e-02, 1e+03]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+03]
+  RHS range        [5e-01, 1e+03]
+Presolve removed 564 rows and 483 columns
+Presolve time: 0.01s
+Presolved: 146 rows, 315 columns, 954 nonzeros
+Variable types: 273 continuous, 42 integer (42 binary)
+
+Root relaxation: objective 9.141300e+01, 174 iterations, 0.00 seconds
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+*    0     0               0      91.4130000   91.41300  0.00%     -    0s
+
+Explored 0 nodes (174 simplex iterations) in 0.02 seconds
+Thread count was 8 (of 8 available processors)
+
+Solution count 1: 91.413 
+
+Optimal solution found (tolerance 1.00e-12)
+Best objective 9.141300000000e+01, best bound 9.141300000000e+01, gap 0.0000%
+Academic license - for non-commercial use only
+Optimize a model with 710 rows, 798 columns and 2705 nonzeros
+Variable types: 708 continuous, 90 integer (90 binary)
+Coefficient statistics:
+  Matrix range     [5e-02, 1e+03]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+03]
+  RHS range        [5e-01, 1e+03]
+Presolve removed 564 rows and 484 columns
+Presolve time: 0.01s
+Presolved: 146 rows, 314 columns, 951 nonzeros
+Variable types: 273 continuous, 41 integer (41 binary)
+
+Root relaxation: objective 2.545200e+01, 149 iterations, 0.00 seconds
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+*    0     0               0      25.4520000   25.45200  0.00%     -    0s
+
+Explored 0 nodes (149 simplex iterations) in 0.03 seconds
+Thread count was 8 (of 8 available processors)
+
+Solution count 1: 25.452 
+
+Optimal solution found (tolerance 1.00e-12)
+Best objective 2.545200000000e+01, best bound 2.545200000000e+01, gap 0.0000%
+Academic license - for non-commercial use only
+Optimize a model with 710 rows, 798 columns and 2700 nonzeros
+Variable types: 708 continuous, 90 integer (90 binary)
+Coefficient statistics:
+  Matrix range     [5e-02, 1e+03]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+03]
+  RHS range        [5e-01, 1e+03]
+Presolve removed 564 rows and 485 columns
+Presolve time: 0.01s
+Presolved: 146 rows, 313 columns, 948 nonzeros
+Variable types: 273 continuous, 40 integer (40 binary)
+
+Root relaxation: objective 1.162000e+01, 182 iterations, 0.00 seconds
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+*    0     0               0      11.6200000   11.62000  0.00%     -    0s
+
+Explored 0 nodes (182 simplex iterations) in 0.03 seconds
+Thread count was 8 (of 8 available processors)
+
+Solution count 1: 11.62 
+
+Optimal solution found (tolerance 1.00e-12)
+Best objective 1.162000000000e+01, best bound 1.162000000000e+01, gap 0.0000%
+Academic license - for non-commercial use only
+Optimize a model with 710 rows, 798 columns and 2695 nonzeros
+Variable types: 708 continuous, 90 integer (90 binary)
+Coefficient statistics:
+  Matrix range     [5e-02, 1e+03]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+03]
+  RHS range        [5e-01, 1e+03]
+Presolve removed 564 rows and 486 columns
+Presolve time: 0.01s
+Presolved: 146 rows, 312 columns, 945 nonzeros
+Variable types: 273 continuous, 39 integer (39 binary)
+
+Root relaxation: objective 1.000350e+01, 202 iterations, 0.00 seconds
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+*    0     0               0      10.0035000   10.00350  0.00%     -    0s
+
+Explored 0 nodes (202 simplex iterations) in 0.02 seconds
+Thread count was 8 (of 8 available processors)
+
+Solution count 1: 10.0035 
+
+Optimal solution found (tolerance 1.00e-12)
+Best objective 1.000350000000e+01, best bound 1.000350000000e+01, gap 0.0000%
+Academic license - for non-commercial use only
+Optimize a model with 710 rows, 798 columns and 2690 nonzeros
+Variable types: 708 continuous, 90 integer (90 binary)
+Coefficient statistics:
+  Matrix range     [5e-02, 1e+03]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+03]
+  RHS range        [5e-01, 1e+03]
+Presolve removed 567 rows and 488 columns
+Presolve time: 0.01s
+Presolved: 143 rows, 310 columns, 933 nonzeros
+Variable types: 272 continuous, 38 integer (38 binary)
+
+Root relaxation: objective 9.450000e+00, 174 iterations, 0.00 seconds
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+*    0     0               0       9.4500000    9.45000  0.00%     -    0s
+
+Explored 0 nodes (174 simplex iterations) in 0.02 seconds
+Thread count was 8 (of 8 available processors)
+
+Solution count 1: 9.45 
+
+Optimal solution found (tolerance 1.00e-12)
+Best objective 9.450000000000e+00, best bound 9.450000000000e+00, gap 0.0000%
+Academic license - for non-commercial use only
+Optimize a model with 710 rows, 798 columns and 2685 nonzeros
+Variable types: 708 continuous, 90 integer (90 binary)
+Coefficient statistics:
+  Matrix range     [5e-02, 1e+03]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+03]
+  RHS range        [5e-01, 1e+03]
+Presolve removed 567 rows and 489 columns
+Presolve time: 0.01s
+Presolved: 143 rows, 309 columns, 930 nonzeros
+Variable types: 272 continuous, 37 integer (37 binary)
+
+Root relaxation: objective 7.238000e+00, 167 iterations, 0.00 seconds
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+*    0     0               0       7.2380000    7.23800  0.00%     -    0s
+
+Explored 0 nodes (167 simplex iterations) in 0.02 seconds
+Thread count was 8 (of 8 available processors)
+
+Solution count 1: 7.238 
+
+Optimal solution found (tolerance 1.00e-12)
+Best objective 7.238000000001e+00, best bound 7.238000000001e+00, gap 0.0000%
+Academic license - for non-commercial use only
+Optimize a model with 710 rows, 798 columns and 2680 nonzeros
+Variable types: 708 continuous, 90 integer (90 binary)
+Coefficient statistics:
+  Matrix range     [5e-02, 1e+03]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+03]
+  RHS range        [5e-01, 1e+03]
+Presolve removed 567 rows and 490 columns
+Presolve time: 0.01s
+Presolved: 143 rows, 308 columns, 927 nonzeros
+Variable types: 272 continuous, 36 integer (36 binary)
+
+Root relaxation: objective 6.832000e+00, 175 iterations, 0.00 seconds
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+*    0     0               0       6.8320000    6.83200  0.00%     -    0s
+
+Explored 0 nodes (175 simplex iterations) in 0.02 seconds
+Thread count was 8 (of 8 available processors)
+
+Solution count 1: 6.832 
+
+Optimal solution found (tolerance 1.00e-12)
+Best objective 6.832000000001e+00, best bound 6.832000000001e+00, gap 0.0000%
+Academic license - for non-commercial use only
+Optimize a model with 710 rows, 798 columns and 2675 nonzeros
+Variable types: 708 continuous, 90 integer (90 binary)
+Coefficient statistics:
+  Matrix range     [5e-02, 1e+03]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+03]
+  RHS range        [5e-01, 1e+03]
+Presolve removed 567 rows and 491 columns
+Presolve time: 0.01s
+Presolved: 143 rows, 307 columns, 924 nonzeros
+Variable types: 272 continuous, 35 integer (35 binary)
+
+Root relaxation: objective 5.992000e+00, 186 iterations, 0.00 seconds
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+*    0     0               0       5.9920000    5.99200  0.00%     -    0s
+
+Explored 0 nodes (186 simplex iterations) in 0.03 seconds
+Thread count was 8 (of 8 available processors)
+
+Solution count 1: 5.992 
+
+Optimal solution found (tolerance 1.00e-12)
+Best objective 5.992000000001e+00, best bound 5.992000000001e+00, gap 0.0000%
+Academic license - for non-commercial use only
+Optimize a model with 710 rows, 798 columns and 2670 nonzeros
+Variable types: 708 continuous, 90 integer (90 binary)
+Coefficient statistics:
+  Matrix range     [5e-02, 1e+03]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+03]
+  RHS range        [5e-01, 1e+03]
+Presolve removed 567 rows and 492 columns
+Presolve time: 0.01s
+Presolved: 143 rows, 306 columns, 921 nonzeros
+Variable types: 272 continuous, 34 integer (34 binary)
+
+Root relaxation: objective 5.992000e+00, 146 iterations, 0.00 seconds</div></div></div></div></div><div  class = 'S12'><span>Note that the folder "TestOptForceM" was created. Inside this folder, two additional folders were created: "InputsMustL" and "OutputsMustL". In the inputs folder you will find all the inputs required to run the the function </span><span style=' font-family: monospace;'>findMustL</span><span>. Additionally, in the outputs folder you will find the </span><span style=' font-family: monospace;'>mustL</span><span> set found, which were saved in two files (.xls and .txt). Furthermore, a report which summarize all the inputs and outputs used during your running was generated. The name of the report will be in this format "report-Day-Month-Year-Hour-Minutes". So, you can mantain a chronological order of your experiments. </span></div><div  class = 'S3'><span>We display the reactions that belongs to the </span><span style=' font-family: monospace;'>mustL</span><span> set.</span></div><div class="CodeBlock"><div class="inlineWrapper outputs"><div  class = 'S7'><span style="white-space: normal"><span >disp(mustLSet)</span></span></div><div  class = 'S8'><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement" uid="5D4C960D" data-testid="output_8" data-width="428" data-height="409" data-hashorizontaloverflow="false" style="width: 458px; max-height: 420px; white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">    'R11'
+    'R26'
+    'R37'
+    'R38'
+    'R39'
+    'R40'
+    'R41'
+    'R42'
+    'R43'
+    'R46'
+    'R48'
+    'R49'
+    'R50'
+    'R51'
+    'R52'
+    'R53'
+    'R54'
+    'R55'
+    'R56'
+    'R57'
+    'R58'
+    'R59'
+    'R60'
+    'R61'
+    'R73'
+    'R74'
+    'PSEUDOpyr_1'
+    'PSEUDOpep_1'
+    'PSEUDOco2_1'</div></div></div></div></div><div  class = 'S3'><span style=' font-weight: bold;'>ii) MustU set: </span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S13'><span style="white-space: normal"><span >[mustUSet, pos_mustU] = findMustU(model, minFluxesW, maxFluxesW, </span><span style="color: rgb(170, 4, 249);">'constrOpt'</span><span >, constrOpt, </span><span style="color: rgb(14, 0, 255);">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: normal"><span >                                  </span><span style="color: rgb(170, 4, 249);">'runID'</span><span >, runID, </span><span style="color: rgb(170, 4, 249);">'outputFolder'</span><span >, </span><span style="color: rgb(170, 4, 249);">'OutputsFindMustU'</span><span >, </span><span style="color: rgb(14, 0, 255);">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: normal"><span >                                  </span><span style="color: rgb(170, 4, 249);">'outputFileName'</span><span >, </span><span style="color: rgb(170, 4, 249);">'MustU' </span><span >, </span><span style="color: rgb(170, 4, 249);">'printExcel'</span><span >, 1, </span><span style="color: rgb(170, 4, 249);">'printText'</span><span >, 1, </span><span style="color: rgb(14, 0, 255);">...</span></span></div></div><div class="inlineWrapper outputs"><div  class = 'S14'><span style="white-space: normal"><span >                                  </span><span style="color: rgb(170, 4, 249);">'printReport'</span><span >, 1, </span><span style="color: rgb(170, 4, 249);">'keepInputs'</span><span >, 1, </span><span style="color: rgb(170, 4, 249);">'verbose'</span><span >, 0);</span></span></div><div  class = 'S8'><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement scrollableOutput" uid="03168D63" data-testid="output_9" data-width="428" data-height="3797" data-hashorizontaloverflow="true" style="width: 458px; max-height: 261px; white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">Academic license - for non-commercial use only
+Optimize a model with 710 rows, 798 columns and 2769 nonzeros
+Variable types: 708 continuous, 90 integer (90 binary)
+Coefficient statistics:
+  Matrix range     [5e-02, 1e+03]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+03]
+  RHS range        [5e-01, 1e+03]
+Presolve removed 472 rows and 450 columns
+Presolve time: 0.01s
+Presolved: 238 rows, 348 columns, 1244 nonzeros
+Variable types: 300 continuous, 48 integer (48 binary)
+
+Root relaxation: objective 1.063553e+02, 221 iterations, 0.00 seconds
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0  106.35533    0    2          -  106.35533      -     -    0s
+*    0     0               0      97.4820000   97.48200  0.00%     -    0s
+
+Cutting planes:
+  Gomory: 1
+  Implied bound: 1
+
+Explored 1 nodes (236 simplex iterations) in 0.06 seconds
+Thread count was 8 (of 8 available processors)
+
+Solution count 1: 97.482 
+
+Optimal solution found (tolerance 1.00e-12)
+Best objective 9.748200000000e+01, best bound 9.748200000000e+01, gap 0.0000%
+Academic license - for non-commercial use only
+Optimize a model with 710 rows, 798 columns and 2764 nonzeros
+Variable types: 708 continuous, 90 integer (90 binary)
+Coefficient statistics:
+  Matrix range     [5e-02, 1e+03]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+03]
+  RHS range        [5e-01, 1e+03]
+Presolve removed 472 rows and 451 columns
+Presolve time: 0.01s
+Presolved: 238 rows, 347 columns, 1241 nonzeros
+Variable types: 300 continuous, 47 integer (47 binary)
+
+Root relaxation: objective 1.063553e+02, 244 iterations, 0.00 seconds
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0  106.35533    0    2          -  106.35533      -     -    0s
+*    0     0               0      50.0770000   50.07700  0.00%     -    0s
+
+Cutting planes:
+  Gomory: 1
+  Implied bound: 2
+
+Explored 1 nodes (288 simplex iterations) in 0.04 seconds
+Thread count was 8 (of 8 available processors)
+
+Solution count 1: 50.077 
+
+Optimal solution found (tolerance 1.00e-12)
+Best objective 5.007699999999e+01, best bound 5.007699999999e+01, gap 0.0000%
+Academic license - for non-commercial use only
+Optimize a model with 710 rows, 798 columns and 2759 nonzeros
+Variable types: 708 continuous, 90 integer (90 binary)
+Coefficient statistics:
+  Matrix range     [5e-02, 1e+03]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+03]
+  RHS range        [5e-01, 1e+03]
+Presolve removed 472 rows and 452 columns
+Presolve time: 0.01s
+Presolved: 238 rows, 346 columns, 1237 nonzeros
+Variable types: 300 continuous, 46 integer (46 binary)
+
+Root relaxation: objective 1.063553e+02, 229 iterations, 0.00 seconds
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0  106.35533    0    2          -  106.35533      -     -    0s
+*    0     0               0      31.9951818   31.99518  0.00%     -    0s
+
+Cutting planes:
+  Gomory: 1
+  Implied bound: 1
+
+Explored 1 nodes (245 simplex iterations) in 0.05 seconds
+Thread count was 8 (of 8 available processors)
+
+Solution count 1: 31.9952 
+
+Optimal solution found (tolerance 1.00e-12)
+Best objective 3.199518181818e+01, best bound 3.199518181818e+01, gap 0.0000%
+Academic license - for non-commercial use only
+Optimize a model with 710 rows, 798 columns and 2754 nonzeros
+Variable types: 708 continuous, 90 integer (90 binary)
+Coefficient statistics:
+  Matrix range     [5e-02, 1e+03]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+03]
+  RHS range        [5e-01, 1e+03]
+Presolve removed 476 rows and 454 columns
+Presolve time: 0.01s
+Presolved: 234 rows, 344 columns, 1222 nonzeros
+Variable types: 299 continuous, 45 integer (45 binary)
+
+Root relaxation: objective 1.063553e+02, 256 iterations, 0.00 seconds
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0  106.35533    0    2          -  106.35533      -     -    0s
+*    0     0               0      25.3871818   25.38718  0.00%     -    0s
+
+Cutting planes:
+  Gomory: 1
+  Implied bound: 1
+
+Explored 1 nodes (265 simplex iterations) in 0.04 seconds
+Thread count was 8 (of 8 available processors)
+
+Solution count 1: 25.3872 
+
+Optimal solution found (tolerance 1.00e-12)
+Best objective 2.538718181817e+01, best bound 2.538718181817e+01, gap 0.0000%
+Academic license - for non-commercial use only
+Optimize a model with 710 rows, 798 columns and 2749 nonzeros
+Variable types: 708 continuous, 90 integer (90 binary)
+Coefficient statistics:
+  Matrix range     [5e-02, 1e+03]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+03]
+  RHS range        [5e-01, 1e+03]
+Presolve removed 480 rows and 456 columns
+Presolve time: 0.01s
+Presolved: 230 rows, 342 columns, 1207 nonzeros
+Variable types: 298 continuous, 44 integer (44 binary)
+
+Root relaxation: objective 1.063553e+02, 250 iterations, 0.00 seconds
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0  106.35533    0    2          -  106.35533      -     -    0s
+     0     0   13.39362    0    2          -   13.39362      -     -    0s
+H    0     0                      13.3936250   13.39362  0.00%     -    0s
+
+Cutting planes:
+  Gomory: 1
+  Implied bound: 1
+
+Explored 1 nodes (266 simplex iterations) in 0.03 seconds
+Thread count was 8 (of 8 available processors)
+
+Solution count 1: 13.3936 
+
+Optimal solution found (tolerance 1.00e-12)
+Best objective 1.339362500000e+01, best bound 1.339362500000e+01, gap 0.0000%
+Academic license - for non-commercial use only
+Optimize a model with 710 rows, 798 columns and 2744 nonzeros
+Variable types: 708 continuous, 90 integer (90 binary)
+Coefficient statistics:
+  Matrix range     [5e-02, 1e+03]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+03]
+  RHS range        [5e-01, 1e+03]
+Presolve removed 483 rows and 458 columns
+Presolve time: 0.01s
+Presolved: 227 rows, 340 columns, 1195 nonzeros
+Variable types: 297 continuous, 43 integer (43 binary)
+
+Root relaxation: objective 1.063553e+02, 225 iterations, 0.00 seconds
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0  106.35533    0    2          -  106.35533      -     -    0s
+     0     0   53.36022    0    3          -   53.36022      -     -    0s
+H    0     0                      13.3936250   53.36022   298%     -    0s
+
+Cutting planes:
+  Gomory: 1
+  Implied bound: 1
+  MIR: 3
+  StrongCG: 1
+
+Explored 1 nodes (313 simplex iterations) in 0.04 seconds
+Thread count was 8 (of 8 available processors)
+
+Solution count 1: 13.3936 
+
+Optimal solution found (tolerance 1.00e-12)
+Best objective 1.339362500000e+01, best bound 1.339362500000e+01, gap 0.0000%
+Academic license - for non-commercial use only
+Optimize a model with 710 rows, 798 columns and 2739 nonzeros
+Variable types: 708 continuous, 90 integer (90 binary)
+Coefficient statistics:
+  Matrix range     [5e-02, 1e+03]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+03]
+  RHS range        [5e-01, 1e+03]
+Presolve removed 486 rows and 460 columns
+Presolve time: 0.01s
+Presolved: 224 rows, 338 columns, 1183 nonzeros
+Variable types: 296 continuous, 42 integer (42 binary)
+
+Root relaxation: objective 1.063553e+02, 231 iterations, 0.00 seconds
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0  106.35533    0    2          -  106.35533      -     -    0s
+     0     0   13.39362    0    2          -   13.39362      -     -    0s
+H    0     0                      13.3936250   13.39362  0.00%     -    0s
+
+Cutting planes:
+  Gomory: 1
+  Implied bound: 2
+
+Explored 1 nodes (317 simplex iterations) in 0.03 seconds
+Thread count was 8 (of 8 available processors)
+
+Solution count 1: 13.3936 
+
+Optimal solution found (tolerance 1.00e-12)
+Best objective 1.339362500000e+01, best bound 1.339362500000e+01, gap 0.0000%
+Academic license - for non-commercial use only
+Optimize a model with 710 rows, 798 columns and 2734 nonzeros
+Variable types: 708 continuous, 90 integer (90 binary)
+Coefficient statistics:
+  Matrix range     [5e-02, 1e+03]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+03]
+  RHS range        [5e-01, 1e+03]
+Presolve removed 490 rows and 463 columns
+Presolve time: 0.01s
+Presolved: 220 rows, 335 columns, 1171 nonzeros
+Variable types: 294 continuous, 41 integer (41 binary)
+
+Root relaxation: objective 1.063553e+02, 211 iterations, 0.00 seconds
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0  106.35533    0    2          -  106.35533      -     -    0s
+*    0     0               0      13.3936250   13.39362  0.00%     -    0s
+
+Cutting planes:
+  Gomory: 1
+  Implied bound: 2
+
+Explored 1 nodes (300 simplex iterations) in 0.03 seconds
+Thread count was 8 (of 8 available processors)
+
+Solution count 1: 13.3936 
+
+Optimal solution found (tolerance 1.00e-12)
+Best objective 1.339362500000e+01, best bound 1.339362500000e+01, gap 0.0000%
+Academic license - for non-commercial use only
+Optimize a model with 710 rows, 798 columns and 2729 nonzeros
+Variable types: 708 continuous, 90 integer (90 binary)
+Coefficient statistics:
+  Matrix range     [5e-02, 1e+03]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+03]
+  RHS range        [5e-01, 1e+03]
+Presolve removed 492 rows and 464 columns
+Presolve time: 0.01s</div></div></div></div></div><div  class = 'S12'><span>Note that the folders "InputsMustU" and "OutputsFindMustU" were created. These folders contain the inputs and outputs of </span><span style=' font-family: monospace;'>findMustU</span><span>, respectively. </span></div><div  class = 'S3'><span>We display the reactions that belongs to the </span><span style=' font-family: monospace;'>mustU</span><span> set.</span></div><div class="CodeBlock"><div class="inlineWrapper outputs"><div  class = 'S7'><span style="white-space: normal"><span >disp(mustUSet)</span></span></div><div  class = 'S8'><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement" uid="DEC40C2A" data-testid="output_10" data-width="428" data-height="185" data-hashorizontaloverflow="false" style="width: 458px; max-height: 261px; white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">    'R21'
+    'R22'
+    'R23'
+    'R24'
+    'R33'
+    'R34'
+    'R35'
+    'R36'
+    'R69'
+    'EX_pdo'
+    'EX_nh3'
+    'EX_so4'
+    'SUCt'</div></div></div></div></div><div  class = 'S12'><span style=' font-weight: bold;'>B) Finding second order must sets </span></div><div  class = 'S3'><span>First, we define the reactions that will be excluded from the analysis. It is suggested to include in this list the reactions found in the previous step as well as exchange reactions.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S13'><span style="white-space: normal"><span >constrOpt = struct(</span><span style="color: rgb(170, 4, 249);">'rxnList'</span><span >, {{</span><span style="color: rgb(170, 4, 249);">'EX_gluc'</span><span >, </span><span style="color: rgb(170, 4, 249);">'R75'</span><span >, </span><span style="color: rgb(170, 4, 249);">'EX_suc'</span><span >}}, </span><span style="color: rgb(170, 4, 249);">'values'</span><span >, [-100, 0, 155.5]');</span></span></div></div><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: normal"><span >exchangeRxns = model.rxns(cellfun(@isempty, strfind(model.rxns, </span><span style="color: rgb(170, 4, 249);">'EX_'</span><span >)) == 0);</span></span></div></div><div class="inlineWrapper"><div  class = 'S11'><span style="white-space: normal"><span >excludedRxns = unique([mustUSet; mustLSet; exchangeRxns]);</span></span></div></div></div><div  class = 'S12'><span>Now, we run the functions for finding second order must sets.</span></div><div  class = 'S3'><span style=' font-weight: bold;'>i) MustUU: </span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S13'><span style="white-space: normal"><span >[mustUU, pos_mustUU, mustUU_linear, pos_mustUU_linear] = </span><span style="color: rgb(14, 0, 255);">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: normal"><span >    findMustUU(model, minFluxesW, maxFluxesW, </span><span style="color: rgb(170, 4, 249);">'constrOpt'</span><span >, constrOpt, </span><span style="color: rgb(14, 0, 255);">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: normal"><span >               </span><span style="color: rgb(170, 4, 249);">'excludedRxns'</span><span >, excludedRxns,</span><span style="color: rgb(170, 4, 249);">'runID'</span><span >, runID, </span><span style="color: rgb(14, 0, 255);">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: normal"><span >               </span><span style="color: rgb(170, 4, 249);">'outputFolder'</span><span >, </span><span style="color: rgb(170, 4, 249);">'OutputsFindMustUU'</span><span >, </span><span style="color: rgb(170, 4, 249);">'outputFileName'</span><span >, </span><span style="color: rgb(170, 4, 249);">'MustUU'</span><span >, </span><span style="color: rgb(14, 0, 255);">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: normal"><span >               </span><span style="color: rgb(170, 4, 249);">'printExcel'</span><span >, 1, </span><span style="color: rgb(170, 4, 249);">'printText'</span><span >, 1, </span><span style="color: rgb(170, 4, 249);">'printReport'</span><span >, 1, </span><span style="color: rgb(170, 4, 249);">'keepInputs'</span><span >, 1, </span><span style="color: rgb(14, 0, 255);">...</span></span></div></div><div class="inlineWrapper outputs"><div  class = 'S14'><span style="white-space: normal"><span >               </span><span style="color: rgb(170, 4, 249);">'verbose'</span><span >, 1);</span></span></div><div  class = 'S8'><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement scrollableOutput" uid="D0E95CBC" data-testid="output_11" data-width="428" data-height="1249" data-hashorizontaloverflow="true" style="width: 458px; max-height: 261px; white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">Academic license - for non-commercial use only
+Optimize a model with 1165 rows, 980 columns and 4128 nonzeros
+Variable types: 800 continuous, 180 integer (180 binary)
+Coefficient statistics:
+  Matrix range     [5e-02, 2e+03]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+03]
+  RHS range        [1e-01, 2e+03]
+Presolve removed 799 rows and 578 columns
+Presolve time: 0.01s
+Presolved: 366 rows, 402 columns, 1596 nonzeros
+Variable types: 324 continuous, 78 integer (78 binary)
+
+Root relaxation: objective 2.127107e+02, 266 iterations, 0.00 seconds
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+*    0     0               0     212.7106667  212.71067  0.00%     -    0s
+
+Explored 0 nodes (361 simplex iterations) in 0.03 seconds
+Thread count was 8 (of 8 available processors)
+
+Solution count 1: 212.711 
+
+Optimal solution found (tolerance 1.00e-12)
+Best objective 2.127106666667e+02, best bound 2.127106666667e+02, gap 0.0000%
+Academic license - for non-commercial use only
+Optimize a model with 1167 rows, 980 columns and 4132 nonzeros
+Variable types: 800 continuous, 180 integer (180 binary)
+Coefficient statistics:
+  Matrix range     [5e-02, 2e+03]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+03]
+  RHS range        [1e-01, 2e+03]
+Presolve removed 802 rows and 578 columns
+Presolve time: 0.01s
+Presolved: 365 rows, 402 columns, 1596 nonzeros
+Variable types: 324 continuous, 78 integer (78 binary)
+
+Root relaxation: objective 1.585013e+02, 269 iterations, 0.00 seconds
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+*    0     0               0     158.5013333  158.50133  0.00%     -    0s
+
+Explored 0 nodes (269 simplex iterations) in 0.03 seconds
+Thread count was 8 (of 8 available processors)
+
+Solution count 1: 158.501 
+
+Optimal solution found (tolerance 1.00e-12)
+Best objective 1.585013333333e+02, best bound 1.585013333333e+02, gap 0.0000%
+Academic license - for non-commercial use only
+Optimize a model with 1169 rows, 980 columns and 4136 nonzeros
+Variable types: 800 continuous, 180 integer (180 binary)
+Coefficient statistics:
+  Matrix range     [5e-02, 2e+03]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+03]
+  RHS range        [1e-01, 2e+03]
+Presolve removed 803 rows and 578 columns
+Presolve time: 0.01s
+Presolved: 366 rows, 402 columns, 1602 nonzeros
+Variable types: 324 continuous, 78 integer (78 binary)
+
+Root relaxation: objective 1.237373e+02, 274 iterations, 0.00 seconds
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0  123.73733    0    4          -  123.73733      -     -    0s
+     0     0 infeasible    0               - infeasible      -     -    0s
+
+Cutting planes:
+  Gomory: 1
+  Flow cover: 1
+
+Explored 1 nodes (282 simplex iterations) in 0.05 seconds
+Thread count was 8 (of 8 available processors)
+
+Solution count 0
+
+Model is infeasible
+Best objective -, best bound -, gap -
+a MustUU set was found
+MustUU set was printed in MustUU.txt  
+MustUU set was also printed in MustUU_Info.txt  </div></div></div></div></div><div  class = 'S12'><span>Note that the folders "InputsMustUU" and "OutputsFindMustUU" were created. These folders contain the inputs and outputs of </span><span style=' font-family: monospace;'>findMustUU</span><span>, respectively. </span></div><div  class = 'S3'><span>We display the reactions that belongs to the</span><span style=' font-family: monospace;'> mustUU</span><span> set</span></div><div class="CodeBlock"><div class="inlineWrapper outputs"><div  class = 'S7'><span style="white-space: normal"><span >disp(mustUU);</span></span></div><div  class = 'S8'><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement" uid="1917AFF6" data-testid="output_12" data-width="428" data-height="31" data-hashorizontaloverflow="false" style="width: 458px; max-height: 261px; white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">    'R30'    'R65'
+    'R31'    'R65'</div></div></div></div><div class="inlineWrapper"><div  class = 'S17'></div></div></div><div  class = 'S12'><span style=' font-weight: bold;'>ii) MustLL: </span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S13'><span style="white-space: normal"><span >[mustLL, pos_mustLL, mustLL_linear, pos_mustLL_linear] = </span><span style="color: rgb(14, 0, 255);">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: normal"><span >    findMustLL(model, minFluxesW, maxFluxesW, </span><span style="color: rgb(170, 4, 249);">'constrOpt'</span><span >, constrOpt, </span><span style="color: rgb(14, 0, 255);">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: normal"><span >               </span><span style="color: rgb(170, 4, 249);">'excludedRxns'</span><span >, excludedRxns,</span><span style="color: rgb(170, 4, 249);">'runID'</span><span >, runID, </span><span style="color: rgb(14, 0, 255);">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: normal"><span >               </span><span style="color: rgb(170, 4, 249);">'outputFolder'</span><span >, </span><span style="color: rgb(170, 4, 249);">'OutputsFindMustLL'</span><span >, </span><span style="color: rgb(170, 4, 249);">'outputFileName'</span><span >, </span><span style="color: rgb(170, 4, 249);">'MustLL'</span><span >, </span><span style="color: rgb(14, 0, 255);">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: normal"><span >               </span><span style="color: rgb(170, 4, 249);">'printExcel'</span><span >, 1, </span><span style="color: rgb(170, 4, 249);">'printText'</span><span >, 1, </span><span style="color: rgb(170, 4, 249);">'printReport'</span><span >, 1, </span><span style="color: rgb(170, 4, 249);">'keepInputs'</span><span >, 1, </span><span style="color: rgb(14, 0, 255);">...</span></span></div></div><div class="inlineWrapper outputs"><div  class = 'S14'><span style="white-space: normal"><span >               </span><span style="color: rgb(170, 4, 249);">'verbose'</span><span >, 1);</span></span></div><div  class = 'S8'><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement scrollableOutput" uid="1C8E41DB" data-testid="output_13" data-width="428" data-height="409" data-hashorizontaloverflow="true" style="width: 458px; max-height: 420px; white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">Academic license - for non-commercial use only
+Optimize a model with 1165 rows, 980 columns and 4074 nonzeros
+Variable types: 800 continuous, 180 integer (180 binary)
+Coefficient statistics:
+  Matrix range     [5e-02, 2e+03]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+03]
+  RHS range        [1e-01, 2e+03]
+Presolve removed 799 rows and 578 columns
+Presolve time: 0.01s
+Presolved: 366 rows, 402 columns, 1633 nonzeros
+Variable types: 324 continuous, 78 integer (78 binary)
+
+Root relaxation: infeasible, 273 iterations, 0.00 seconds
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0 infeasible    0               - infeasible      -     -    0s
+
+Explored 0 nodes (273 simplex iterations) in 0.02 seconds
+Thread count was 8 (of 8 available processors)
+
+Solution count 0
+
+Model is infeasible
+Best objective -, best bound -, gap -
+a MustLL set was not found
+No mustLL set was not found. Therefore, no plain text file was generated</div></div></div></div></div><div  class = 'S12'><span>Note that the folders "InputsMustLL" and "OutputsFindMustLL" were created. These folders contain the inputs and outputs of </span><span style=' font-family: monospace;'>findMustLL</span><span>, respectively. </span></div><div  class = 'S3'><span>We display the reactions that belongs to the </span><span style=' font-family: monospace;'>mustLL</span><span> set. In this case, </span><span style=' font-family: monospace;'>mustLL</span><span> is an empty array because no reaction was found in the </span><span style=' font-family: monospace;'>mustLL</span><span> set.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S16'><span style="white-space: normal"><span >disp(mustLL);</span></span></div></div></div><div  class = 'S12'><span style=' font-weight: bold;'>iii) MustUL: </span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S13'><span style="white-space: normal"><span >[mustUL, pos_mustUL, mustUL_linear, pos_mustUL_linear] = </span><span style="color: rgb(14, 0, 255);">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: normal"><span >    findMustUL(model, minFluxesW, maxFluxesW, </span><span style="color: rgb(170, 4, 249);">'constrOpt'</span><span >, constrOpt, </span><span style="color: rgb(14, 0, 255);">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: normal"><span >               </span><span style="color: rgb(170, 4, 249);">'excludedRxns'</span><span >, excludedRxns,</span><span style="color: rgb(170, 4, 249);">'runID'</span><span >, runID, </span><span style="color: rgb(14, 0, 255);">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: normal"><span >               </span><span style="color: rgb(170, 4, 249);">'outputFolder'</span><span >, </span><span style="color: rgb(170, 4, 249);">'OutputsFindMustUL'</span><span >, </span><span style="color: rgb(170, 4, 249);">'outputFileName'</span><span >, </span><span style="color: rgb(170, 4, 249);">'MustUL'</span><span >, </span><span style="color: rgb(14, 0, 255);">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: normal"><span >               </span><span style="color: rgb(170, 4, 249);">'printExcel'</span><span >, 1, </span><span style="color: rgb(170, 4, 249);">'printText'</span><span >, 1, </span><span style="color: rgb(170, 4, 249);">'printReport'</span><span >, 1, </span><span style="color: rgb(170, 4, 249);">'keepInputs'</span><span >, 1, </span><span style="color: rgb(14, 0, 255);">...</span></span></div></div><div class="inlineWrapper outputs"><div  class = 'S14'><span style="white-space: normal"><span >               </span><span style="color: rgb(170, 4, 249);">'verbose'</span><span >, 1);</span></span></div><div  class = 'S8'><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement scrollableOutput" uid="9CBC4951" data-testid="output_14" data-width="428" data-height="479" data-hashorizontaloverflow="true" style="width: 458px; max-height: 490px; white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">Academic license - for non-commercial use only
+Optimize a model with 1165 rows, 980 columns and 4101 nonzeros
+Variable types: 800 continuous, 180 integer (180 binary)
+Coefficient statistics:
+  Matrix range     [5e-02, 2e+03]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+03]
+  RHS range        [1e-01, 2e+03]
+Presolve removed 799 rows and 578 columns
+Presolve time: 0.01s
+Presolved: 366 rows, 402 columns, 1649 nonzeros
+Variable types: 324 continuous, 78 integer (78 binary)
+
+Root relaxation: objective 1.063553e+02, 297 iterations, 0.00 seconds
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0  106.35533    0    2          -  106.35533      -     -    0s
+     0     0 infeasible    0               - infeasible      -     -    0s
+
+Cutting planes:
+  Gomory: 1
+  Flow cover: 2
+
+Explored 1 nodes (301 simplex iterations) in 0.05 seconds
+Thread count was 8 (of 8 available processors)
+
+Solution count 0
+
+Model is infeasible
+Best objective -, best bound -, gap -
+a MustUL set was not found
+No mustUL set was not found. Therefore, no plain text file was generated</div></div></div></div></div><div  class = 'S12'><span>Note that the folders "InputsMustUL" and "OutputsFindMustUL" were created. These folders contain the inputs and outputs of </span><span style=' font-family: monospace;'>findMustUL</span><span>, respectively. </span></div><div  class = 'S3'><span>We display the reactions that belongs to the </span><span style=' font-family: monospace;'>mustUL</span><span> set. In this case, </span><span style=' font-family: monospace;'>mustUL</span><span> is an empty array because no reaction was found in the </span><span style=' font-family: monospace;'>mustUL</span><span> set.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S16'><span style="white-space: normal"><span >disp(mustUL);</span></span></div></div></div><div  class = 'S12'><span style=' font-weight: bold;'>TROUBLESHOOTING 1: </span><span> "I didn't find any reaction in my must sets"</span></div><div  class = 'S3'><span style=' font-weight: bold;'>TROUBLESHOOTING 2: </span><span> "I got an error when running the </span><span style=' font-family: monospace;'>findMustX</span><span> functions (X = L or U or LL or UL or UU depending on the case)"</span></div><h2  class = 'S2'><span>Step 5: OptForce</span></h2><div  class = 'S3'><span style=' font-weight: bold;'>TIMING: </span><span>This task should take from a few seconds to a few hours depending on the size of your reconstruction</span></div><div  class = 'S3'><span>We define constraints and we define </span><span style=' font-family: monospace;'>K</span><span> the number of interventions allowed, </span><span style=' font-family: monospace;'>nSets</span><span> the maximum number of sets to find, and </span><span style=' font-family: monospace;'>targetRxn</span><span> the reaction producing the metabolite of interest (in this case, succinate). </span></div><div  class = 'S3'><span>Additionally, we define the </span><span style=' font-family: monospace;'>mustU</span><span> set as the union of the reactions that must be upregulated in both first and second order must sets; and </span><span style=' font-family: monospace;'>mustL</span><span> set as the union of the reactions that must be downregulated in both first and second order must sets .</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S13'><span style="white-space: normal"><span >mustU = unique(union(mustUSet, mustUU));</span></span></div></div><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: normal"><span >mustL = unique(union(mustLSet, mustLL));</span></span></div></div><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: normal"><span >targetRxn = </span><span style="color: rgb(170, 4, 249);">'EX_suc'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: normal"><span >biomassRxn = </span><span style="color: rgb(170, 4, 249);">'R75'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: normal"><span >k = 1;</span></span></div></div><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: normal"><span >nSets = 1;</span></span></div></div><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: normal"><span >constrOpt = struct(</span><span style="color: rgb(170, 4, 249);">'rxnList'</span><span >, {{</span><span style="color: rgb(170, 4, 249);">'EX_gluc'</span><span >,</span><span style="color: rgb(170, 4, 249);">'R75'</span><span >}}, </span><span style="color: rgb(170, 4, 249);">'values'</span><span >, [-100, 0]);</span></span></div></div><div class="inlineWrapper"><div  class = 'S10'></div></div><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: normal"><span >[optForceSets, posOptForceSets, typeRegOptForceSets, flux_optForceSets] = </span><span style="color: rgb(14, 0, 255);">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: normal"><span >    optForce(model, targetRxn, biomassRxn, mustU, mustL, </span><span style="color: rgb(14, 0, 255);">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: normal"><span >             minFluxesW, maxFluxesW, minFluxesM, maxFluxesM, </span><span style="color: rgb(14, 0, 255);">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: normal"><span >             </span><span style="color: rgb(170, 4, 249);">'k'</span><span >, k, </span><span style="color: rgb(170, 4, 249);">'nSets'</span><span >, nSets, </span><span style="color: rgb(170, 4, 249);">'constrOpt'</span><span >, constrOpt, </span><span style="color: rgb(14, 0, 255);">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: normal"><span >             </span><span style="color: rgb(170, 4, 249);">'runID'</span><span >, runID, </span><span style="color: rgb(170, 4, 249);">'outputFolder'</span><span >, </span><span style="color: rgb(170, 4, 249);">'OutputsOptForce'</span><span >, </span><span style="color: rgb(14, 0, 255);">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: normal"><span >             </span><span style="color: rgb(170, 4, 249);">'outputFileName'</span><span >, </span><span style="color: rgb(170, 4, 249);">'OptForce'</span><span >, </span><span style="color: rgb(170, 4, 249);">'printExcel'</span><span >, 1, </span><span style="color: rgb(170, 4, 249);">'printText'</span><span >, 1, </span><span style="color: rgb(14, 0, 255);">...</span></span></div></div><div class="inlineWrapper outputs"><div  class = 'S14'><span style="white-space: normal"><span >             </span><span style="color: rgb(170, 4, 249);">'printReport'</span><span >, 1, </span><span style="color: rgb(170, 4, 249);">'keepInputs'</span><span >, 1, </span><span style="color: rgb(170, 4, 249);">'verbose'</span><span >, 1);</span></span></div><div  class = 'S8'><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement scrollableOutput" uid="8AB5C840" data-testid="output_15" data-width="428" data-height="493" data-hashorizontaloverflow="true" style="width: 458px; max-height: 504px; white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">Academic license - for non-commercial use only
+Optimize a model with 2062 rows, 1248 columns and 6306 nonzeros
+Variable types: 978 continuous, 270 integer (270 binary)
+Coefficient statistics:
+  Matrix range     [5e-02, 1e+03]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+03]
+  RHS range        [1e+00, 1e+03]
+Presolve removed 1216 rows and 437 columns
+Presolve time: 0.02s
+Presolved: 846 rows, 811 columns, 3005 nonzeros
+Variable types: 678 continuous, 133 integer (133 binary)
+
+Root relaxation: objective 1.555556e+02, 328 iterations, 0.01 seconds
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0  155.55556    0    3          -  155.55556      -     -    0s
+H    0     0                      -0.0000000  155.55556      -     -    0s
+     0     0  155.55556    0    2   -0.00000  155.55556      -     -    0s
+     0     2  155.55556    0    2   -0.00000  155.55556      -     -    0s
+*   83     1              43     155.5500000  155.55000  0.00%  14.5    0s
+
+Explored 86 nodes (2908 simplex iterations) in 0.15 seconds
+Thread count was 8 (of 8 available processors)
+
+Solution count 2: 155.55 -0 
+
+Optimal solution found (tolerance 1.00e-12)
+Best objective 1.555500000000e+02, best bound 1.555500000000e+02, gap 0.0000%
+set n 1 was found
+
+optForce found 1 sets 
+Sets found by optForce were printed in OptForce.txt  </div></div></div></div></div><div  class = 'S12'><span>Note that the folders "InputsOptForce" and "OutputsOptForce" were created. These folders contain the inputs and outputs of </span><span style=' font-family: monospace;'>optForce</span><span>, respectively.</span></div><div  class = 'S3'><span>We display the reactions found by </span><span style=' font-family: monospace;'>optForce</span></div><div class="CodeBlock"><div class="inlineWrapper outputs"><div  class = 'S7'><span style="white-space: normal"><span >disp(optForceSets)</span></span></div><div  class = 'S8'><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement" uid="9742684E" data-testid="output_16" data-width="428" data-height="18" data-hashorizontaloverflow="false" style="width: 458px; max-height: 261px; white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">    'SUCt'</div></div></div></div></div><div  class = 'S12'><span>The reaction found was "SUCt", i.e. a transporter for succinate (a very intuitive solution).</span></div><div  class = 'S3'><span>Next, we will increase </span><span style=' font-family: monospace;'>k</span><span> and we will exclude "SUCt" from upregulations to find non-intuitive solutions. </span></div><div  class = 'S3'><span style=' font-weight: bold;'>TIP: </span><span>Sometimes the product is at the end of a long linear pathway. In that case, the recomendation is to also exclude most reactions on the linear pathway. Essential reactions and reactions not associated with any gene (i.e. spontaneous reacitons) should also be excluded. </span></div><div  class = 'S3'><span>We will only search for the 20 best solutions, but you can try with a higher number.</span></div><div  class = 'S3'><span>We will change the runID to save this second result (K = 2) in a diffetent folder than the previous result (K = 1) </span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S13'><span style="white-space: normal"><span >k = 2;</span></span></div></div><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: normal"><span >nSets = 20;</span></span></div></div><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: normal"><span >runID = </span><span style="color: rgb(170, 4, 249);">'TestOptForceM2'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: normal"><span >excludedRxns = struct(</span><span style="color: rgb(170, 4, 249);">'rxnList'</span><span >, {{</span><span style="color: rgb(170, 4, 249);">'SUCt'</span><span >}}, </span><span style="color: rgb(170, 4, 249);">'typeReg'</span><span >,</span><span style="color: rgb(170, 4, 249);">'U'</span><span >);</span></span></div></div><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: normal"><span >[optForceSets, posOptForceSets, typeRegOptForceSets, flux_optForceSets] = </span><span style="color: rgb(14, 0, 255);">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: normal"><span >    optForce(model, targetRxn, biomassRxn, mustU, mustL, </span><span style="color: rgb(14, 0, 255);">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: normal"><span >             minFluxesW, maxFluxesW, minFluxesM, maxFluxesM, </span><span style="color: rgb(14, 0, 255);">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: normal"><span >             </span><span style="color: rgb(170, 4, 249);">'k'</span><span >, k, </span><span style="color: rgb(170, 4, 249);">'nSets'</span><span >, nSets, </span><span style="color: rgb(170, 4, 249);">'constrOpt'</span><span >, constrOpt, </span><span style="color: rgb(14, 0, 255);">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: normal"><span >             </span><span style="color: rgb(170, 4, 249);">'excludedRxns'</span><span >, excludedRxns, </span><span style="color: rgb(14, 0, 255);">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: normal"><span >             </span><span style="color: rgb(170, 4, 249);">'runID'</span><span >, runID, </span><span style="color: rgb(170, 4, 249);">'outputFolder'</span><span >, </span><span style="color: rgb(170, 4, 249);">'OutputsOptForce'</span><span >, </span><span style="color: rgb(14, 0, 255);">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: normal"><span >             </span><span style="color: rgb(170, 4, 249);">'outputFileName'</span><span >, </span><span style="color: rgb(170, 4, 249);">'OptForce'</span><span >, </span><span style="color: rgb(170, 4, 249);">'printExcel'</span><span >, 1, </span><span style="color: rgb(170, 4, 249);">'printText'</span><span >, 1, </span><span style="color: rgb(14, 0, 255);">...</span></span></div></div><div class="inlineWrapper outputs"><div  class = 'S14'><span style="white-space: normal"><span >             </span><span style="color: rgb(170, 4, 249);">'printReport'</span><span >, 1, </span><span style="color: rgb(170, 4, 249);">'keepInputs'</span><span >, 1, </span><span style="color: rgb(170, 4, 249);">'verbose'</span><span >, 1);</span></span></div><div  class = 'S8'><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement scrollableOutput" uid="8FB198EC" data-testid="output_17" data-width="428" data-height="3363" data-hashorizontaloverflow="true" style="width: 458px; max-height: 261px; white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">Academic license - for non-commercial use only
+Optimize a model with 2062 rows, 1248 columns and 6306 nonzeros
+Variable types: 978 continuous, 270 integer (270 binary)
+Coefficient statistics:
+  Matrix range     [5e-02, 1e+03]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+03]
+  RHS range        [1e+00, 1e+03]
+Presolve removed 1176 rows and 439 columns
+Presolve time: 0.01s
+Presolved: 886 rows, 809 columns, 3082 nonzeros
+Variable types: 677 continuous, 132 integer (132 binary)
+
+Root relaxation: objective 1.555556e+02, 372 iterations, 0.01 seconds
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0  155.55556    0    2          -  155.55556      -     -    0s
+H    0     0                       0.0000000  155.55556      -     -    0s
+     0     0  155.55556    0    2    0.00000  155.55556      -     -    0s
+     0     2  155.55556    0    2    0.00000  155.55556      -     -    0s
+*   61    20              20     155.5500000  155.55556  0.00%  10.3    0s
+
+Cutting planes:
+  Cover: 3
+
+Explored 388 nodes (4394 simplex iterations) in 0.15 seconds
+Thread count was 8 (of 8 available processors)
+
+Solution count 2: 155.55 3.03118e-10 
+
+Optimal solution found (tolerance 1.00e-12)
+Best objective 1.555500000008e+02, best bound 1.555500000008e+02, gap 0.0000%
+set n 1 was found
+Academic license - for non-commercial use only
+Optimize a model with 2063 rows, 1248 columns and 6308 nonzeros
+Variable types: 978 continuous, 270 integer (270 binary)
+Coefficient statistics:
+  Matrix range     [5e-02, 1e+03]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+03]
+  RHS range        [1e+00, 1e+03]
+Presolve removed 1176 rows and 439 columns
+Presolve time: 0.01s
+Presolved: 887 rows, 809 columns, 3084 nonzeros
+Variable types: 677 continuous, 132 integer (132 binary)
+
+Root relaxation: objective 1.555556e+02, 372 iterations, 0.01 seconds
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0  155.55556    0    2          -  155.55556      -     -    0s
+H    0     0                      -0.0000000  155.55556      -     -    0s
+     0     0  155.55556    0    2   -0.00000  155.55556      -     -    0s
+     0     2  155.55556    0    2   -0.00000  155.55556      -     -    0s
+*   61    35              14       0.0000000  155.55556      -  13.6    0s
+*   73    36              16     155.5500000  155.55556  0.00%  15.7    0s
+
+Cutting planes:
+  Cover: 1
+  Inf proof: 2
+
+Explored 359 nodes (5346 simplex iterations) in 0.16 seconds
+Thread count was 8 (of 8 available processors)
+
+Solution count 3: 155.55 1.7684e-10 -0 
+
+Optimal solution found (tolerance 1.00e-12)
+Best objective 1.555500000001e+02, best bound 1.555500000001e+02, gap 0.0000%
+set n 2 was found
+Academic license - for non-commercial use only
+Optimize a model with 2064 rows, 1248 columns and 6310 nonzeros
+Variable types: 978 continuous, 270 integer (270 binary)
+Coefficient statistics:
+  Matrix range     [5e-02, 1e+03]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+03]
+  RHS range        [1e+00, 1e+03]
+Presolve removed 1176 rows and 439 columns
+Presolve time: 0.01s
+Presolved: 888 rows, 809 columns, 3086 nonzeros
+Variable types: 677 continuous, 132 integer (132 binary)
+
+Root relaxation: objective 1.555556e+02, 372 iterations, 0.01 seconds
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0  155.55556    0    2          -  155.55556      -     -    0s
+H    0     0                       0.0000000  155.55556      -     -    0s
+     0     0  155.55556    0    2    0.00000  155.55556      -     -    0s
+     0     2  155.55556    0    2    0.00000  155.55556      -     -    0s
+*   92    27              25     155.5500000  155.55556  0.00%  18.9    0s
+
+Cutting planes:
+  Inf proof: 3
+
+Explored 367 nodes (6601 simplex iterations) in 0.16 seconds
+Thread count was 8 (of 8 available processors)
+
+Solution count 2: 155.55 6.82121e-10 
+
+Optimal solution found (tolerance 1.00e-12)
+Best objective 1.555500000000e+02, best bound 1.555500000000e+02, gap 0.0000%
+set n 3 was found
+Academic license - for non-commercial use only
+Optimize a model with 2065 rows, 1248 columns and 6312 nonzeros
+Variable types: 978 continuous, 270 integer (270 binary)
+Coefficient statistics:
+  Matrix range     [5e-02, 1e+03]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+03]
+  RHS range        [1e+00, 1e+03]
+Presolve removed 1176 rows and 439 columns
+Presolve time: 0.01s
+Presolved: 889 rows, 809 columns, 3088 nonzeros
+Variable types: 677 continuous, 132 integer (132 binary)
+
+Root relaxation: objective 1.555556e+02, 372 iterations, 0.01 seconds
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0  155.55556    0    2          -  155.55556      -     -    0s
+H    0     0                      -0.0000000  155.55556      -     -    0s
+     0     2  155.55556    0    2   -0.00000  155.55556      -     -    0s
+*  111    33              29     155.5437500  155.55556  0.01%  11.7    0s
+*  289    27              17     155.5500000  155.55556  0.00%  10.5    0s
+
+Cutting planes:
+  Cover: 6
+  Inf proof: 3
+
+Explored 450 nodes (4943 simplex iterations) in 0.17 seconds
+Thread count was 8 (of 8 available processors)
+
+Solution count 3: 155.55 155.544 -0 
+
+Optimal solution found (tolerance 1.00e-12)
+Best objective 1.555500000000e+02, best bound 1.555500000000e+02, gap 0.0000%
+set n 4 was found
+Academic license - for non-commercial use only
+Optimize a model with 2066 rows, 1248 columns and 6314 nonzeros
+Variable types: 978 continuous, 270 integer (270 binary)
+Coefficient statistics:
+  Matrix range     [5e-02, 1e+03]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+03]
+  RHS range        [1e+00, 1e+03]
+Presolve removed 1176 rows and 439 columns
+Presolve time: 0.01s
+Presolved: 890 rows, 809 columns, 3090 nonzeros
+Variable types: 677 continuous, 132 integer (132 binary)
+
+Root relaxation: objective 1.555556e+02, 372 iterations, 0.01 seconds
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0  155.55556    0    2          -  155.55556      -     -    0s
+H    0     0                      -0.0000000  155.55556      -     -    0s
+     0     0  155.55556    0    2   -0.00000  155.55556      -     -    0s
+     0     2  155.55556    0    2   -0.00000  155.55556      -     -    0s
+*  111    44              32      81.4666667  155.55556  90.9%  11.7    0s
+*  121    32              40     139.9900000  155.55556  11.1%  10.8    0s
+*  279    39              18     155.5437500  155.55556  0.01%  11.9    0s
+H  478    17                     155.5500000  155.55556  0.00%  10.6    0s
+
+Cutting planes:
+  Cover: 1
+
+Explored 591 nodes (6701 simplex iterations) in 0.19 seconds
+Thread count was 8 (of 8 available processors)
+
+Solution count 5: 155.55 155.544 139.99 ... -0
+
+Optimal solution found (tolerance 1.00e-12)
+Best objective 1.555500000000e+02, best bound 1.555500000000e+02, gap 0.0000%
+set n 5 was found
+Academic license - for non-commercial use only
+Optimize a model with 2067 rows, 1248 columns and 6316 nonzeros
+Variable types: 978 continuous, 270 integer (270 binary)
+Coefficient statistics:
+  Matrix range     [5e-02, 1e+03]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+03]
+  RHS range        [1e+00, 1e+03]
+Presolve removed 1176 rows and 439 columns
+Presolve time: 0.01s
+Presolved: 891 rows, 809 columns, 3092 nonzeros
+Variable types: 677 continuous, 132 integer (132 binary)
+
+Root relaxation: objective 1.555556e+02, 372 iterations, 0.01 seconds
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0  155.55556    0    2          -  155.55556      -     -    0s
+H    0     0                      -0.0000000  155.55556      -     -    0s
+     0     0  155.55556    0    2   -0.00000  155.55556      -     -    0s
+     0     2  155.55556    0    2   -0.00000  155.55556      -     -    0s
+*  106    39              28      81.4666667  155.55556  90.9%  14.6    0s
+*  121    33              42     139.9900000  155.55556  11.1%  13.1    0s
+*  234    22              21     155.5437500  155.55556  0.01%  13.3    0s
+*  307    21              23     155.5500000  155.55556  0.00%  13.7    0s
+
+Cutting planes:
+  Cover: 4
+
+Explored 466 nodes (6595 simplex iterations) in 0.20 seconds
+Thread count was 8 (of 8 available processors)
+
+Solution count 5: 155.55 155.544 139.99 ... -0
+
+Optimal solution found (tolerance 1.00e-12)
+Best objective 1.555500000000e+02, best bound 1.555500000000e+02, gap 0.0000%
+set n 6 was found
+Academic license - for non-commercial use only
+Optimize a model with 2068 rows, 1248 columns and 6318 nonzeros
+Variable types: 978 continuous, 270 integer (270 binary)
+Coefficient statistics:
+  Matrix range     [5e-02, 1e+03]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+03]
+  RHS range        [1e+00, 1e+03]
+Presolve removed 1176 rows and 439 columns
+Presolve time: 0.01s
+Presolved: 892 rows, 809 columns, 3094 nonzeros
+Variable types: 677 continuous, 132 integer (132 binary)
+
+Root relaxation: objective 1.555556e+02, 372 iterations, 0.01 seconds
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0  155.55556    0    2          -  155.55556      -     -    0s
+H    0     0                      -0.0000000  155.55556      -     -    0s
+     0     0  155.55556    0    2   -0.00000  155.55556      -     -    0s</div></div></div></div><div class="inlineWrapper"><div  class = 'S17'></div></div></div><div  class = 'S12'><span>Note that the folders "InputsOptForce" and "OutputsOptForce" were created inside TestOptForce2. These folders contain the inputs and outputs of </span><span style=' font-family: monospace;'>optForce</span><span>, respectively.</span></div><div  class = 'S3'><span>We display the reactions found by </span><span style=' font-family: monospace;'>optForce</span><span> </span></div><div class="CodeBlock"><div class="inlineWrapper outputs"><div  class = 'S7'><span style="white-space: normal"><span >disp(optForceSets)</span></span></div><div  class = 'S8'><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement" uid="F16D241B" data-testid="output_18" data-width="428" data-height="283" data-hashorizontaloverflow="false" style="width: 458px; max-height: 294px; white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">    'R23'    'R26'
+    'R23'    'R25'
+    'R21'    'R26'
+    'R23'    'R63'
+    'R21'    'R25'
+    'R24'    'R25'
+    'R22'    'R63'
+    'R21'    'R63'
+    'R22'    'R25'
+    'R24'    'R26'
+    'R22'    'R26'
+    'R24'    'R63'
+    'R23'    'R26'
+    'R21'    'R26'
+    'R24'    'R26'
+    'R22'    'R26'
+    'R23'    'R4' 
+    'R21'    'R4' 
+    'R22'    'R4' 
+    'R24'    'R4' </div></div></div></div></div><h2  class = 'S2'><span>TIMING</span></h2><ol  class = 'S4'><li  class = 'S5'><span>STEP 1 ~ 1-2 seconds</span></li><li  class = 'S5'><span>STEP 2:  ~ 2-5 seconds</span></li><li  class = 'S5'><span>STEP 3: ~ 10-20 seconds</span></li><li  class = 'S5'><span>STEP 4: ~ 10-20 seconds</span></li></ol><h2  class = 'S2'><span>TROUBLESHOOTING</span></h2><div  class = 'S3'><span>1) Problem: "I didn't find any reaction in my must sets"</span></div><div  class = 'S3'><span>Possible reason: the wild-type or mutant strain is not constrained enough. </span></div><div  class = 'S3'><span>Solution: add more constraints to your strains until you find differences in your reaction ranges. If you don't find any differences, it is better to change the approach and use another algorithm. </span></div><div  class = 'S3'><span></span></div><div  class = 'S3'><span>2) Problem: "I got an error when running the </span><span style=' font-family: monospace;'>findMust</span><span> functions"</span></div><div  class = 'S3'><span>Possible reason: inputs are not defined well or solver is not defined.</span></div><div  class = 'S3'><span>Solution: verify your inputs, use </span><span style=' font-family: monospace;'>changeCobraSolver</span><span>, verify that the global variable </span><span style=' font-family: monospace;'>CBT_MILP_SOLVER</span><span> is not empty. It should containg the identifier for a MILP solver.</span></div><h2  class = 'S2'><span>ANTICIPATED RESULTS</span></h2><div  class = 'S3'><span>In this tutorial some folders will be created inside the folder called "runID" to store inputs and outputs of the optForce functions (findMustU.m, findMustL.m, findMustUU.m, findMustLL.m, findMustUL.m, optForce.m)</span></div><div  class = 'S3'><span>In this case runID = 'TestOptForce', so inside this folder the following folders will be created:</span></div><div  class = 'S3'><span style=' font-family: monospace;'>├── CurrentFolder</span></div><div  class = 'S3'><span style=' font-family: monospace;'>|   ├── TestOptForceM</span></div><div  class = 'S3'><span style=' font-family: monospace;'>|   |   ├── InputsFindMustL</span></div><div  class = 'S3'><span style=' font-family: monospace;'>|   |   ├── OutputsFindMustL</span></div><div  class = 'S3'><span style=' font-family: monospace;'>|   |   ├── InputsFindMustU</span></div><div  class = 'S3'><span style=' font-family: monospace;'>|   |   ├── OutputsFindMustU</span></div><div  class = 'S3'><span style=' font-family: monospace;'>|   |   ├── InputsFindMustLL</span></div><div  class = 'S3'><span style=' font-family: monospace;'>|   |   ├── OutputsFindMustLL</span></div><div  class = 'S3'><span style=' font-family: monospace;'>|   |   ├── InputsFindMustUU</span></div><div  class = 'S3'><span style=' font-family: monospace;'>|   |   ├── OutputsFindMustUU</span></div><div  class = 'S3'><span style=' font-family: monospace;'>|   |   ├── InputsFindMustUL</span></div><div  class = 'S3'><span style=' font-family: monospace;'>|   |   ├── OutputsFindMustUL</span></div><div  class = 'S3'><span style=' font-family: monospace;'>|   |   ├── InputsOptForce</span></div><div  class = 'S3'><span style=' font-family: monospace;'>|   |   └── OutputsOptForce</span></div><div  class = 'S3'><span>The input folders contain inputs (.mat files) for running the functions to solve each one of the bilevel problems. Output folders contain results of the algorithms (.xls and .txt files) as well as a report (.txt) summarizing the outcomes of the steps performed during the execution of the optForce functions.</span></div><div  class = 'S3'><span>The optForce algorithm will find sets of reactions that should increase the production of your target. The first sets found should be the best ones because the production rate will be the highest. The last ones should be the worse because the production rete will be lower. Be aware that some sets could not guarante a minimum production rate for your target, so you always have to check the minimum production rate. You can do this using the function testOptForceSol.m. Some sets could allow a higher growth rate than others, so keep in mind this too when deciding which set is better.</span></div><h2  class = 'S2'><span>Acknowledgments</span></h2><div  class = 'S3'><span>I would to thanks to the research group of Costas D. Maranas who provided the GAMS functions to solve this example. In particular I would like to thank to Chiam Yu Ng who kindly provides examples for using GAMS.</span></div><h2  class = 'S2'><span>References</span></h2><div  class = 'S3'><span>[1] Ranganathan S, Suthers PF, Maranas CD (2010) OptForce: An Optimization Procedure for Identifying All Genetic Manipulations Leading to Targeted Overproductions. PLOS Computational Biology 6(4): e1000744. https://doi.org/10.1371/journal.pcbi.1000744.</span></div><div  class = 'S3'><span>[2] Maciek R. Antoniewicz, David F. Kraynie, Lisa A. Laffend, Joanna González-Lergier, Joanne K. Kelleher, Gregory Stephanopoulos, Metabolic flux analysis in a nonstationary system: Fed-batch fermentation of a high yielding strain of E. coli producing 1,3-propanediol, Metabolic Engineering, Volume 9, Issue 3, May 2007, Pages 277-292, ISSN 1096-7176, https://doi.org/10.1016/j.ymben.2007.01.003.</span></div>
+<br>
+<!-- 
+##### SOURCE BEGIN #####
+%% OptForce
+%% Author: Sebastián N. Mendoza,  Center for Mathematical Modeling, University of Chile. snmendoz@uc.cl
+%% *Reviewers(s): Chiam Yu Ng (Costas D. Maranas group),* Lin Wang *(Costas D. Maranas group), John Sauls*
+%% *INTRODUCTION:*
+% In this tutorial we will run optForce. For a detailed description of the procedure, 
+% please see [1]. Briefly, the problem is to find a set of interventions of size 
+% "K" such that when these interventions are applied to a wild-type strain, the 
+% mutant created will produce a particular target of interest in a higher rate 
+% than the wild-type strain. The interventions could be knockouts (lead to zero 
+% the flux for a particular reaction), upregulations (increase the flux for a 
+% particular reaction) and downregulations (decrease the flux for a particular 
+% reaction). 
+% 
+% For example, imagine that we would like to increase the production of succinate 
+% in Escherichia coli. Which are the interventions needed to increase the production 
+% of succinate? We will approach this problem in this tutorial and we will see 
+% how each of the steps of OptForce are solved. 
+%% MATERIALS
+%% EQUIPMENT
+%% 
+% # MATLAB
+% # A solver for Mixed Integer Linear Programming (MILP) problems. For example, 
+% Gurobi.
+%% *EQUIPMENT SETUP*
+% Use |changeCobraSolver| to choose the solver for MILP problems. 
+%% PROCEDURE
+% The proceduce consists on the following steps
+% 
+% 1) Maximize specific growth rate and product formation.
+% 
+% 2) Define constraints for both wild-type and mutant strain: 
+% 
+% 3) Perform flux variability analysis for both wild-type and mutant strain.
+% 
+% 4) Find must sets,  i.e, reactions that MUST increase or decrease their flux 
+% in order to achieve the phenotype in the mutant strain. 
+%% Figure 1.
+% 
+% 
+% 5) Find the interventions needed that will ensure a increased production of 
+% the target of interest
+% 
+% Now, we will approach each step in detail.
+%% STEP 1: Maximize specific growth rate and product formation
+% First, we load the model. This model comprises only 90 reactions, which describe 
+% the central metabolism of E. coli [2].
+% 
+% Then, we change the objective function to maximize biomass ("R75"). We also 
+% change the lower bounds, so E. coli will be able to consume glucose, oxygen, 
+% sulfate, ammomium, citrate and glycerol.
+
+changeCobraSolver('gurobi', 'ALL');
+modelFileName = 'AntCore.mat';
+modelDirectory = getDistributedModelFolder(modelFileName); %Look up the folder for the distributed Models.
+modelFileName= [modelDirectory filesep modelFileName]; % Get the full path. Necessary to be sure, that the right model is loaded
+model = readCbModel(modelFileName);
+model.c(strcmp(model.rxns, 'R75')) = 1;
+model = changeRxnBounds(model, 'EX_gluc', -100, 'l'); 
+model = changeRxnBounds(model, 'EX_o2', -100, 'l'); 
+model = changeRxnBounds(model, 'EX_so4', -100, 'l'); 
+model = changeRxnBounds(model, 'EX_nh3', -100, 'l'); 
+model = changeRxnBounds(model, 'EX_cit', -100, 'l'); 
+model = changeRxnBounds(model, 'EX_glyc', -100, 'l'); 
+%% 
+% Then, we calculate the maximum specific growth rate and the maximum production 
+% rate for succinate.
+
+growthRate = optimizeCbModel(model); 
+fprintf('The maximum growth rate is %1.2f', growthRate.f);
+
+model = changeObjective(model, 'EX_suc');
+maxSucc = optimizeCbModel(model);
+fprintf('The maximum production rate of succinate is %1.2f', maxSucc.f);
+%% 
+% *TIP:* The biomass reaction is usually set to 1%-10% of maximum theoretical 
+% biomass yield when running the following steps, to prevent solutions without 
+% biomass formation.
+%% 
+% # Maximizing product formation
+% # Finding MUST sets of second order
+% # Finding FORCE sets
+%% STEP 2: Define constraints for both wild-type and mutant strain
+% *TIMING*: This step should take a few days or weeks, depending on the information 
+% available for your species. 
+% 
+% *CRITICAL STEP*: This is a manual task, so you should search for information 
+% in articles or even perform your own experiments. You can also make assumptions 
+% for describing the phenotypes of both strains which will make this task a little 
+% faster but make sure to have two strains different enough, because you should 
+% be able to find differences in reactions ranges. 
+% 
+% We define constraints for each strain as follows: 
+%% 
+% # The WT strain's biomass function ("R75") is constrained to near the maximum 
+% growth rate. 
+% # The mutant strain's biomass function is set to zero. Succinate export ('EX_suc') 
+% is forced to be the maximum as calculated previously.
+
+constrWT = struct('rxnList', {{'R75'}}, 'rxnValues', 14, 'rxnBoundType', 'b')
+constrMT = struct('rxnList', {{'R75', 'EX_suc'}}, 'rxnValues', [0, 155.55], ...
+                  'rxnBoundType', 'bb')
+%% Step 3: Flux Variability Analysis
+% *TIMING*: This task should take from a few seconds to a few hours depending 
+% on the size of your reconstruction
+% 
+% We  run the FVA analysis for both strains
+
+[minFluxesW, maxFluxesW, minFluxesM, maxFluxesM, ~, ~] = FVAOptForce(model, ...
+                                                                     constrWT, constrMT);
+disp([minFluxesW, maxFluxesW, minFluxesM, maxFluxesM]);
+%% 
+% Now, the run the next step of OptForce.
+%% Step 4: Find Must Sets
+% *TIMING:* This task should take from a few seconds to a few hours depending 
+% on the size of your reconstruction
+% 
+% First, we define an ID for this run. Each time you run the functions associated 
+% to the optForce procedure, some folders can be generated to store inputs used 
+% in that run. Outputs are stored as well. These folders will be located inside 
+% the folder defined by your run ID. Thus, if your runID is ''TestOptForce", the 
+% structure of the folders will be the following:
+% 
+% |├── CurrentFolder|
+% 
+% ||   ├── TestOptForce|
+% 
+% ||   |   ├── Inputs|
+% 
+% ||   |   └── Outputs|
+% 
+% To avoid the generation of inputs and outputs folders, set |keepInputs = 0|, 
+% |printExcel = 0| and |printText = 0|.
+% 
+% Also, a report of the run is generated each time you run the functions associated 
+% to the optForce procedure. So, the idea is to give a different |runID| each 
+% time you run the functions, so you will be able to see the report (inputs used, 
+% outputs generated, errors in the run) for each run.
+% 
+% We define then our |runID|.
+
+runID = 'TestOptForceM';
+%% 
+% Fow now, only functions to find first and second order must sets are supported 
+% in this third step. As depicted in *Figure 1*, the first order must sets are 
+% MUSTU and MUSTL; and second order must sets are MUSTUU, MUSTLL and MUSTUL.
+% 
+% *A) Finding first order must sets*
+% 
+% We define constraints.
+
+constrOpt = struct('rxnList', {{'EX_gluc', 'R75', 'EX_suc'}}, 'values', [-100, 0, 155.5]');
+%% 
+% We then run the functions |findMustL| and |findMustU| that will allow us to 
+% find |mustU| and |mustL| sets, respectively.
+% 
+% *i) MustL Set:* 
+
+[mustLSet, pos_mustL] = findMustL(model, minFluxesW, maxFluxesW, 'constrOpt', constrOpt, ...
+                                  'runID', runID, 'outputFolder', 'OutputsFindMustL', ...
+                                  'outputFileName', 'MustL' , 'printExcel', 1, 'printText', 1, ...
+                                  'printReport', 1, 'keepInputs', 1, 'verbose', 0);
+%% 
+% Note that the folder "TestOptForceM" was created. Inside this folder, two 
+% additional folders were created: "InputsMustL" and "OutputsMustL". In the inputs 
+% folder you will find all the inputs required to run the the function |findMustL|. 
+% Additionally, in the outputs folder you will find the |mustL| set found, which 
+% were saved in two files (.xls and .txt). Furthermore, a report which summarize 
+% all the inputs and outputs used during your running was generated. The name 
+% of the report will be in this format "report-Day-Month-Year-Hour-Minutes". So, 
+% you can mantain a chronological order of your experiments. 
+% 
+% We display the reactions that belongs to the |mustL| set.
+
+disp(mustLSet)
+%% 
+% *ii) MustU set:* 
+
+[mustUSet, pos_mustU] = findMustU(model, minFluxesW, maxFluxesW, 'constrOpt', constrOpt, ...
+                                  'runID', runID, 'outputFolder', 'OutputsFindMustU', ...
+                                  'outputFileName', 'MustU' , 'printExcel', 1, 'printText', 1, ...
+                                  'printReport', 1, 'keepInputs', 1, 'verbose', 0);
+%% 
+% Note that the folders "InputsMustU" and "OutputsFindMustU" were created. These 
+% folders contain the inputs and outputs of |findMustU|, respectively. 
+% 
+% We display the reactions that belongs to the |mustU| set.
+
+disp(mustUSet)
+%% 
+% *B) Finding second order must sets* 
+% 
+% First, we define the reactions that will be excluded from the analysis. It 
+% is suggested to include in this list the reactions found in the previous step 
+% as well as exchange reactions.
+
+constrOpt = struct('rxnList', {{'EX_gluc', 'R75', 'EX_suc'}}, 'values', [-100, 0, 155.5]');
+exchangeRxns = model.rxns(cellfun(@isempty, strfind(model.rxns, 'EX_')) == 0);
+excludedRxns = unique([mustUSet; mustLSet; exchangeRxns]);
+%% 
+% Now, we run the functions for finding second order must sets.
+% 
+% *i) MustUU:* 
+
+[mustUU, pos_mustUU, mustUU_linear, pos_mustUU_linear] = ...
+    findMustUU(model, minFluxesW, maxFluxesW, 'constrOpt', constrOpt, ...
+               'excludedRxns', excludedRxns,'runID', runID, ...
+               'outputFolder', 'OutputsFindMustUU', 'outputFileName', 'MustUU', ...
+               'printExcel', 1, 'printText', 1, 'printReport', 1, 'keepInputs', 1, ...
+               'verbose', 1);
+%% 
+% Note that the folders "InputsMustUU" and "OutputsFindMustUU" were created. 
+% These folders contain the inputs and outputs of |findMustUU|, respectively. 
+% 
+% We display the reactions that belongs to the |mustUU| set
+
+disp(mustUU);
+
+%% 
+% *ii) MustLL:* 
+
+[mustLL, pos_mustLL, mustLL_linear, pos_mustLL_linear] = ...
+    findMustLL(model, minFluxesW, maxFluxesW, 'constrOpt', constrOpt, ...
+               'excludedRxns', excludedRxns,'runID', runID, ...
+               'outputFolder', 'OutputsFindMustLL', 'outputFileName', 'MustLL', ...
+               'printExcel', 1, 'printText', 1, 'printReport', 1, 'keepInputs', 1, ...
+               'verbose', 1);
+%% 
+% Note that the folders "InputsMustLL" and "OutputsFindMustLL" were created. 
+% These folders contain the inputs and outputs of |findMustLL|, respectively. 
+% 
+% We display the reactions that belongs to the |mustLL| set. In this case, |mustLL| 
+% is an empty array because no reaction was found in the |mustLL| set.
+
+disp(mustLL);
+%% 
+% *iii) MustUL:* 
+
+[mustUL, pos_mustUL, mustUL_linear, pos_mustUL_linear] = ...
+    findMustUL(model, minFluxesW, maxFluxesW, 'constrOpt', constrOpt, ...
+               'excludedRxns', excludedRxns,'runID', runID, ...
+               'outputFolder', 'OutputsFindMustUL', 'outputFileName', 'MustUL', ...
+               'printExcel', 1, 'printText', 1, 'printReport', 1, 'keepInputs', 1, ...
+               'verbose', 1);
+%% 
+% Note that the folders "InputsMustUL" and "OutputsFindMustUL" were created. 
+% These folders contain the inputs and outputs of |findMustUL|, respectively. 
+% 
+% We display the reactions that belongs to the |mustUL| set. In this case, |mustUL| 
+% is an empty array because no reaction was found in the |mustUL| set.
+
+disp(mustUL);
+%% 
+% *TROUBLESHOOTING 1:*  "I didn't find any reaction in my must sets"
+% 
+% *TROUBLESHOOTING 2:*  "I got an error when running the |findMustX| functions 
+% (X = L or U or LL or UL or UU depending on the case)"
+%% Step 5: OptForce
+% *TIMING:* This task should take from a few seconds to a few hours depending 
+% on the size of your reconstruction
+% 
+% We define constraints and we define |K| the number of interventions allowed, 
+% |nSets| the maximum number of sets to find, and |targetRxn| the reaction producing 
+% the metabolite of interest (in this case, succinate). 
+% 
+% Additionally, we define the |mustU| set as the union of the reactions that 
+% must be upregulated in both first and second order must sets; and |mustL| set 
+% as the union of the reactions that must be downregulated in both first and second 
+% order must sets .
+
+mustU = unique(union(mustUSet, mustUU));
+mustL = unique(union(mustLSet, mustLL));
+targetRxn = 'EX_suc';
+biomassRxn = 'R75';
+k = 1;
+nSets = 1;
+constrOpt = struct('rxnList', {{'EX_gluc','R75'}}, 'values', [-100, 0]);
+
+[optForceSets, posOptForceSets, typeRegOptForceSets, flux_optForceSets] = ...
+    optForce(model, targetRxn, biomassRxn, mustU, mustL, ...
+             minFluxesW, maxFluxesW, minFluxesM, maxFluxesM, ...
+             'k', k, 'nSets', nSets, 'constrOpt', constrOpt, ...
+             'runID', runID, 'outputFolder', 'OutputsOptForce', ...
+             'outputFileName', 'OptForce', 'printExcel', 1, 'printText', 1, ...
+             'printReport', 1, 'keepInputs', 1, 'verbose', 1);
+%% 
+% Note that the folders "InputsOptForce" and "OutputsOptForce" were created. 
+% These folders contain the inputs and outputs of |optForce|, respectively.
+% 
+% We display the reactions found by |optForce|
+
+disp(optForceSets)
+%% 
+% The reaction found was "SUCt", i.e. a transporter for succinate (a very intuitive 
+% solution).
+% 
+% Next, we will increase |k| and we will exclude "SUCt" from upregulations to 
+% find non-intuitive solutions. 
+% 
+% *TIP:* Sometimes the product is at the end of a long linear pathway. In that 
+% case, the recomendation is to also exclude most reactions on the linear pathway. 
+% Essential reactions and reactions not associated with any gene (i.e. spontaneous 
+% reacitons) should also be excluded. 
+% 
+% We will only search for the 20 best solutions, but you can try with a higher 
+% number.
+% 
+% We will change the runID to save this second result (K = 2) in a diffetent 
+% folder than the previous result (K = 1) 
+
+k = 2;
+nSets = 20;
+runID = 'TestOptForceM2';
+excludedRxns = struct('rxnList', {{'SUCt'}}, 'typeReg','U');
+[optForceSets, posOptForceSets, typeRegOptForceSets, flux_optForceSets] = ...
+    optForce(model, targetRxn, biomassRxn, mustU, mustL, ...
+             minFluxesW, maxFluxesW, minFluxesM, maxFluxesM, ...
+             'k', k, 'nSets', nSets, 'constrOpt', constrOpt, ...
+             'excludedRxns', excludedRxns, ...
+             'runID', runID, 'outputFolder', 'OutputsOptForce', ...
+             'outputFileName', 'OptForce', 'printExcel', 1, 'printText', 1, ...
+             'printReport', 1, 'keepInputs', 1, 'verbose', 1);
+
+%% 
+% Note that the folders "InputsOptForce" and "OutputsOptForce" were created 
+% inside TestOptForce2. These folders contain the inputs and outputs of |optForce|, 
+% respectively.
+% 
+% We display the reactions found by |optForce| 
+
+disp(optForceSets)
+%% TIMING
+%% 
+% # STEP 1 ~ 1-2 seconds
+% # STEP 2:  ~ 2-5 seconds
+% # STEP 3: ~ 10-20 seconds
+% # STEP 4: ~ 10-20 seconds
+%% TROUBLESHOOTING
+% 1) Problem: "I didn't find any reaction in my must sets"
+% 
+% Possible reason: the wild-type or mutant strain is not constrained enough. 
+% 
+% Solution: add more constraints to your strains until you find differences 
+% in your reaction ranges. If you don't find any differences, it is better to 
+% change the approach and use another algorithm. 
+% 
+% 
+% 
+% 2) Problem: "I got an error when running the |findMust| functions"
+% 
+% Possible reason: inputs are not defined well or solver is not defined.
+% 
+% Solution: verify your inputs, use |changeCobraSolver|, verify that the global 
+% variable |CBT_MILP_SOLVER| is not empty. It should containg the identifier for 
+% a MILP solver.
+%% ANTICIPATED RESULTS
+% In this tutorial some folders will be created inside the folder called "runID" 
+% to store inputs and outputs of the optForce functions (findMustU.m, findMustL.m, 
+% findMustUU.m, findMustLL.m, findMustUL.m, optForce.m)
+% 
+% In this case runID = 'TestOptForce', so inside this folder the following folders 
+% will be created:
+% 
+% |├── CurrentFolder|
+% 
+% ||   ├── TestOptForceM|
+% 
+% ||   |   ├── InputsFindMustL|
+% 
+% ||   |   ├── OutputsFindMustL|
+% 
+% ||   |   ├── InputsFindMustU|
+% 
+% ||   |   ├── OutputsFindMustU|
+% 
+% ||   |   ├── InputsFindMustLL|
+% 
+% ||   |   ├── OutputsFindMustLL|
+% 
+% ||   |   ├── InputsFindMustUU|
+% 
+% ||   |   ├── OutputsFindMustUU|
+% 
+% ||   |   ├── InputsFindMustUL|
+% 
+% ||   |   ├── OutputsFindMustUL|
+% 
+% ||   |   ├── InputsOptForce|
+% 
+% ||   |   └── OutputsOptForce|
+% 
+% The input folders contain inputs (.mat files) for running the functions to 
+% solve each one of the bilevel problems. Output folders contain results of the 
+% algorithms (.xls and .txt files) as well as a report (.txt) summarizing the 
+% outcomes of the steps performed during the execution of the optForce functions.
+% 
+% The optForce algorithm will find sets of reactions that should increase the 
+% production of your target. The first sets found should be the best ones because 
+% the production rate will be the highest. The last ones should be the worse because 
+% the production rete will be lower. Be aware that some sets could not guarante 
+% a minimum production rate for your target, so you always have to check the minimum 
+% production rate. You can do this using the function testOptForceSol.m. Some 
+% sets could allow a higher growth rate than others, so keep in mind this too 
+% when deciding which set is better.
+%% Acknowledgments
+% I would to thanks to the research group of Costas D. Maranas who provided 
+% the GAMS functions to solve this example. In particular I would like to thank 
+% to Chiam Yu Ng who kindly provides examples for using GAMS.
+%% References
+% [1] Ranganathan S, Suthers PF, Maranas CD (2010) OptForce: An Optimization 
+% Procedure for Identifying All Genetic Manipulations Leading to Targeted Overproductions. 
+% PLOS Computational Biology 6(4): e1000744. https://doi.org/10.1371/journal.pcbi.1000744.
+% 
+% [2] Maciek R. Antoniewicz, David F. Kraynie, Lisa A. Laffend, Joanna González-Lergier, 
+% Joanne K. Kelleher, Gregory Stephanopoulos, Metabolic flux analysis in a nonstationary 
+% system: Fed-batch fermentation of a high yielding strain of E. coli producing 
+% 1,3-propanediol, Metabolic Engineering, Volume 9, Issue 3, May 2007, Pages 277-292, 
+% ISSN 1096-7176, https://doi.org/10.1016/j.ymben.2007.01.003.
+##### SOURCE END #####
+-->
+</div></body></html>

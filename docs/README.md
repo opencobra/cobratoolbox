@@ -1,4 +1,109 @@
-# Building COBRA Toolbox documentation
+# Cobratoolbox Website Documentation
+
+This website is hosted on the GitHub servers using gh-pages. Here at the gh-pages branch is the source code of the website. If changes are made here, changes are made to the website. If you are interested to learn more about how gh-pages works check out the documentation for more information: https://docs.github.com/en/pages
+
+
+## Continuous Integration of Tutorials:
+Part 1 of the CI occurs when a contributor pushes their tutorial .mlx file to the Tutorials Repository. In this part the .mlx file is also converted into a .html and .pdf file. Detailed Documentation for the first part is ‘[here](https://github.com/opencobra/COBRA.tutorials/tree/master/.github/workflows)’
+### Part 2: The html files then get pushed to the gh-pages branch
+A workflow is then set up to be trigged when a .html file is to the gh-pages branch. The .yml file is called ‘[main.yml](https://github.com/opencobra/cobratoolbox/blob/gh-pages/.github/workflows/main.yml)’.
+
+The main.yml can be explained as follows:
+
+```
+on:
+  push:
+    branches: [ gh-pages ]
+    paths:
+    - '**.html'
+```
+
+
+This specifies that the .yml file will run if a .html file is pushed to the gh-pages branch.
+
+```
+jobs:
+  extract-info:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+```
+
+Here the second step is to checkout the repository and find any changes that were made. Also note that we are now running on ‘ubuntu-latest’ and not ‘self-hosted’ as there is no need to use King for this part.
+
+```
+- name: Check Commit Message
+  id: check_msg
+  run: |
+    commit_msg=$(git log --format=%B -n 1)
+    if [[ "$commit_msg" == "Sync files from source repo" ]]; then
+      echo "::set-output name=run_job::true"
+    else
+      echo "::set-output name=run_job::false"
+    fi
+```
+
+
+In the tutorials repo we push to the gh-pages branch with the particular comment: ‘Sync files from source repo’. This helps distinguish between slight edits made to pages on the website and tutorial pushes from the tutorials repo. Here this piece of code checks this.
+
+```
+- name: Set up Python
+  uses: actions/setup-python@v2
+  if: steps.check_msg.outputs.run_job == 'true'
+  with:
+    python-version: '3.x'
+
+- name: Install Dependencies
+  if: steps.check_msg.outputs.run_job == 'true'
+  run: |
+    python -m pip install --upgrade pip
+    pip install beautifulsoup4
+
+- name: Get Changed HTML Files
+  id: getfile
+  if: steps.check_msg.outputs.run_job == 'true'
+  run: |
+    changed_files=$(git diff --name-only HEAD~1 HEAD | grep '\.html')
+    echo "::set-output name=file::$changed_files"
+```
+
+Here are some basic steps such as 1. Set up python got github actions 2. Install Python dependencies needed 3. Get the html files that were pushed to the repository.
+
+```
+- name: Extract Info from HTML Files
+  if: steps.check_msg.outputs.run_job == 'true'
+  run: |
+    for file in ${{ steps.getfile.outputs.file }}
+    do
+      python extract_info.py $file
+    done
+```
+
+
+Now we run the python file to configure the website to adjust to the added tutorial.
+
+```
+- name: Commit and Push New File
+  if: steps.check_msg.outputs.run_job == 'true'
+  run: |
+    git config user.name "GitHub Action"
+    git config user.email "action@github.com"
+    git add .
+    git commit -m "Sync files from source repo" || echo "No changes to commit"
+    git push -f origin gh-pages
+```
+
+After changing and adding the folders/files around in the repo we push the changes to the repository
+
+**What is extract_info.py?**
+This Python script processes the HTML file to extract its heading and then uses this information to update the website's [tutorial homepage](https://opencobra.github.io/cobratoolbox/stable/tutorials/index.html). Initially, it reads the specified HTML file to find the main heading (inside an h1 tag). Then, it modifies a template HTML file (HOLDER_TEMPLATE.html) by replacing a placeholder with the path of the processed file, and saves this modified content as a new tutorial file within a predefined directory structure (stable/tutorials). Additionally, the script updates the index.html file located within the same stable/tutorials directory, adding a link to the new tutorial under a specific section, which is determined by part of the original file's path.
+
+
+## Continuous Integration of Functions
 Each accepted pull request triggers two workflows (W1 and W2) to generate documentation for functions, 
 contributors and citations.
 
@@ -32,108 +137,15 @@ This workflow does the following:
        	3) '/docs/source/Contributions/contributors/contributors.html'
 4) Deploying to gh-pages (/latest/contributors.html)
 
-## Building documentation using Docker (Has not been tested for new version)
+## Running Matlab Tests on Pull Requests
+The testing workflow is defined in the main.yml file. This workflow is triggered on every push to the repository and runs the MATLAB tests using the GitHub Actions runner.
 
-Installing unwanted versions of Python and modules can be avoided by 
-building with Docker: 
+### Workflow Steps:
+Setup: Install the MATLAB environment on the GitHub Actions runner.
 
-Build the docker image:
+Run Tests: Execute the runTestsAndGenerateReport.m script to run the tests and generate a report.
 
-```
-docker build -t opencobra/cobratoolbox-docs .
-```
+(Optional) Publish Results: You may choose to publish test results or reports to external platforms or as GitHub Pages.
 
-
-To build the docs:
-
-
-```
-docker run --rm -v /var/tmp:/output opencobra/cobratoolbox-docs
-```
-
-The above command will deposit the built HTML documentation  
-in /var/tmp/cobratoolbox_doc_timestamp.tar.gz 
-You can specify an alternative directory by changing the location of
-the /output mountpoint in the docker run command.
-
-## Building COBRA.tutorials (Has not been tested for new version)
-
-Check that wkhtmltopdf is installed
-which wkhtmltopdf
-If not, install with:
-sudo apt-get update
-sudo apt-get install xvfb libfontconfig wkhtmltopdf
-
-Check that imagemagick is installed
-which convert
-If not, install with:
-sudo apt-get update
-sudo apt install imagemagick
-
-Clone the cobratoolbox and COBRA.tutorials repository in an empty directory. Then cd to 
-./cobratoolbox/docs directory and create and run the following script:
-
-```
-MATLAB_ROOT=/usr/local/MATLAB
-MATLAB_VERSION=R2020b
-OUTPUT=/var/tmp/COBRA.tutorials_output
-./prepareTutorials.sh  \
-	-p=${OUTPUT} \
-	-t=../../COBRA.tutorials \
-	-c=../../cobratoolbox \
-	-e=${MATLAB_ROOT}/${MATLAB_VERSION}/bin/matlab \
-	-m=html
-
-```
-
-Replace MATLAB_ROOT with the location of the matlab if different to 
-/usr/local, and OUTPUT with the location to which the tutorial HTML files
-are to be written.
-
-Remark: This procedure has been tested with head of cobratoolbox develop branch
-(e8c40f3e74de9f2d671b58dd918305697ffd64b9) and
-head of COBRA.tutorials master branch (0761e66374b0eff81db0f9adde87e118a12e967e)
-on 2021-06-16 running on Ubuntu 18.04 with MATLAB R2020b
-
-Remark: the dependency on matlab for this step makes it difficult to dockerize
-due to the need for matlab licence files.
-
-
-## Adding Google Analytics tracking code to the template
-
-Tracking code can be added to the template by editing layout.html or footer.html
-in https://github.com/opencobra/sphinx_cobra_theme/tree/develop/sphinx_cobra_theme/
-
-The tracking code is located near the end of the page.
-
-```
- <!-- Global site tag (gtag.js) - Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TRCMZL1FKK"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-TRCMZL1FKK');
-  </script>
-```
-
-## Remarks about sphinx_cobra_theme
-
-The project logo (top-left) is hardcoded in layout.html at approx line 127. A comment in the code indicates this was done
-to expedite configuration issues earlier in the project. Ideally the template should be reuseable (without modification)
-for all the opencobra sub-projects: so need to find a way to externally configure the project logo.
-
-## Checking for broken links
-
-Install 'linkchecker' utility:
-
-```
-sudo apt install linkchecker
-```
-
-Execute link check scan with the following command:
-
-```
-linkchecker https://opencobra.github.io/cobratoolbox/stable/
-```
-
+### MATLAB Test Function: runTestsAndGenerateReport.m
+The test function runTestsAndGenerateReport.m is responsible for executing the tests and generating a report of the results. This script is executed as part of the GitHub Actions workflow. The tests are designed to be automatically run using GitHub Actions whenever code is pushed to the repository. This ensures that any new changes do not introduce unexpected behavior or break existing functionality.

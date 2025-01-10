@@ -1,0 +1,15 @@
+Metabolites which force 1 qualitatively  forward -> quantiatively reversible (DrG0t span the zero line; Between 0.7 and 0.3probability of being forward.
+1275:	1	nad[c]Nicotinamide adenine dinucleotide
+1279:	1	nadh[c]Nicotinamide adenine dinucleotide - reduced
+1281:	1	nadp[c]Nicotinamide adenine dinucleotide phosphate
+1282:	1	nadph[c]Nicotinamide adenine dinucleotide phosphate - reduced
+
+
+2222	NAD transhydrogenase	NADTRHD	-41.41	 41.97
+substrates:
+1275	      -1	 1619.83	-29.69	-10.09	              nad[c]	Nicotinamide adenine dinucleotide
+1282	      -1	  789.35	-29.69	-10.09	            nadph[c]	Nicotinamide adenine dinucleotide phosphate - reduced
+products:
+1279	       1	 1681.88	-29.69	-10.09	             nadh[c]	Nicotinamide adenine dinucleotide - reduced
+1281	       1	  727.57	-29.69	-10.09	             nadp[c]	Nicotinamide adenine dinucleotide phosphate
+

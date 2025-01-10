@@ -1,0 +1,2218 @@
+ACGAM1PPpp	acgam1p[p] + h2o[p]  -> acgam[p] + pi[p] 	-278040.7	276331.0	-278090.0	276340.5
+3OAR181	3ocvac11eACP[c] + h[c] + nadph[c]  -> 3hcvac11eACP[c] + nadp[c] 	-277200.2	277171.5	-277239.4	277210.7
+3OAS100	h[c] + malACP[c] + ocACP[c]  -> 3odecACP[c] + ACP[c] + co2[c] 	-392382.6	391617.4	-392451.4	391646.6
+3OAS120	dcaACP[c] + h[c] + malACP[c]  -> 3oddecACP[c] + ACP[c] + co2[c] 	-392382.6	391617.4	-392451.4	391646.6
+3OAS121	cdec3eACP[c] + h[c] + malACP[c]  -> 3ocddec5eACP[c] + ACP[c] + co2[c] 	-392382.6	391617.4	-392451.4	391646.6
+3OAS140	ddcaACP[c] + h[c] + malACP[c]  -> 3omrsACP[c] + ACP[c] + co2[c] 	-392382.6	391617.4	-392451.4	391646.6
+3OAS141	cddec5eACP[c] + h[c] + malACP[c]  -> 3ocmrs7eACP[c] + ACP[c] + co2[c] 	-392382.6	391617.4	-392451.4	391646.6
+3OAS160	h[c] + malACP[c] + myrsACP[c]  -> 3opalmACP[c] + ACP[c] + co2[c] 	-392382.6	391617.4	-392451.4	391646.6
+3OAS161	h[c] + malACP[c] + tdeACP[c]  -> 3ocpalm9eACP[c] + ACP[c] + co2[c] 	-392382.6	391617.4	-392451.4	391646.6
+3OAS180	h[c] + malACP[c] + palmACP[c]  -> 3ooctdACP[c] + ACP[c] + co2[c] 	-392382.6	391617.4	-392451.4	391646.6
+3OAS181	h[c] + hdeACP[c] + malACP[c]  -> 3ocvac11eACP[c] + ACP[c] + co2[c] 	-392382.6	391617.4	-392451.4	391646.6
+3OAS60	butACP[c] + h[c] + malACP[c]  -> 3ohexACP[c] + ACP[c] + co2[c] 	-392382.6	391617.4	-392451.4	391646.6
+3OAS80	h[c] + hexACP[c] + malACP[c]  -> 3ooctACP[c] + ACP[c] + co2[c] 	-392382.6	391617.4	-392451.4	391646.6
+3PEPTabcpp	LalaDgluMdap[p] + atp[c] + h2o[c]  -> LalaDgluMdap[c] + adp[c] + h[c] + pi[c] 	-278030.3	276341.4	-278099.2	276370.5
+42A12BOOXpp	dopa[p] + h2o[p] + o2[p]  -> 34dhpac[p] + h2o2[p] + nh4[p] 	-277178.2	277193.5	-277247.1	277222.7
+4HTHRS	h2o[c] + phthr[c]  -> 4hthr[c] + pi[c] 	-278040.7	276331.0	-278090.0	276340.5
+4PCP	LalaDgluMdapDala[c] + h2o[c]  -> LalaDgluMdap[c] + ala__D[c] 	-339244.4	339719.5	-339293.7	339729.0
+4PCPpp	LalaDgluMdapDala[p] + h2o[p]  -> LalaDgluMdap[p] + ala__D[p] 	-339244.4	339719.5	-339293.7	339729.0
+14GLUCANabcpp	14glucan[p] + atp[c] + h2o[c]  -> 14glucan[c] + adp[c] + h[c] + pi[c] 	-278039.0	276332.7	-278107.9	276361.9
+23PDE2pp	23cump[p] + h2o[p]  -> 3ump[p] + h[p] 	-276951.8	277419.9	-276971.4	277439.5
+23PDE4pp	23ccmp[p] + h2o[p]  -> 3cmp[p] + h[p] 	-276951.8	277419.9	-276971.4	277439.5
+4PEPTabcpp	LalaDgluMdapDala[p] + atp[c] + h2o[c]  -> LalaDgluMdapDala[c] + adp[c] + h[c] + pi[c] 	-278030.3	276341.4	-278099.2	276370.5
+5DOAN	dad_5[c] + h2o[c]  -> 5drib[c] + ade[c] 	-339244.4	339719.5	-339293.7	339729.0
+AACPS1	ACP[c] + atp[c] + ttdca[c]  -> amp[c] + myrsACP[c] + ppi[c] 	-440236.9	436301.7	-440295.8	436360.5
+AACPS2	ACP[c] + atp[c] + ttdcea[c]  -> amp[c] + ppi[c] + tdeACP[c] 	-440236.9	436301.7	-440295.8	436360.5
+23PDE7pp	23camp[p] + h2o[p]  -> 3amp[p] + h[p] 	-276951.8	277419.9	-276971.4	277439.5
+23PDE9pp	23cgmp[p] + h2o[p]  -> 3gmp[p] + h[p] 	-276951.8	277419.9	-276971.4	277439.5
+AACPS3	ACP[c] + atp[c] + hdca[c]  -> amp[c] + palmACP[c] + ppi[c] 	-440236.9	436301.7	-440295.8	436360.5
+AACPS4	ACP[c] + atp[c] + hdcea[c]  -> amp[c] + hdeACP[c] + ppi[c] 	-440236.9	436301.7	-440295.8	436360.5
+AACPS5	ACP[c] + atp[c] + ocdcea[c]  -> amp[c] + octeACP[c] + ppi[c] 	-440236.9	436301.7	-440295.8	436360.5
+AACPS6	ACP[c] + atp[c] + ocdca[c]  -> amp[c] + ocdcaACP[c] + ppi[c] 	-440236.9	436301.7	-440295.8	436360.5
+ACGAMK	acgam[c] + atp[c]  -> acgam6p[c] + adp[c] + h[c] 	-391998.3	392001.7	-392037.5	392040.9
+AACPS7	ACP[c] + atp[c] + ddca[c]  -> amp[c] + ddcaACP[c] + ppi[c] 	-440236.9	436301.7	-440295.8	436360.5
+AACPS8	ACP[c] + atp[c] + dca[c]  -> amp[c] + dcaACP[c] + ppi[c] 	-440236.9	436301.7	-440295.8	436360.5
+AACPS9	ACP[c] + atp[c] + octa[c]  -> amp[c] + ocACP[c] + ppi[c] 	-440236.9	436301.7	-440295.8	436360.5
+ACGAMT	uacgam[c] + udcpp[c]  -> ump[c] + unaga[c] 	-392000.0	392000.0	-392039.2	392039.2
+ACGAptspp	acgam[p] + pep[c]  -> acgam6p[c] + pyr[c] 	-391996.6	392003.4	-392035.8	392042.6
+AACTOOR	aact[c] + h2o[c] + o2[c]  -> h2o2[c] + mthgxl[c] + nh4[c] 	-277178.2	277193.5	-277247.1	277222.7
+ACGK	acglu[c] + atp[c]  -> acg5p[c] + adp[c] 	-391998.3	392001.7	-392037.5	392040.9
+ACGS	accoa[c] + glu__L[c]  -> acglu[c] + coa[c] + h[c] 	-392003.4	391996.6	-392042.6	392035.8
+AADDGT	dtdp4aaddg[c] + unagamu[c]  -> dtdp[c] + h[c] + unagamuf[c] 	-392005.2	391994.8	-392044.4	392034.0
+AAMYL	14glucan[c]  -> malthx[c] 	-277185.9	277185.9	-277205.5	277205.5
+ACHBS	2obut[c] + h[c] + pyr[c]  -> 2ahbut[c] + co2[c] 	-339866.2	339097.7	-339905.4	339136.9
+ACLS	h[c] + 2 pyr[c]  -> alac__S[c] + co2[c] 	-438653.6	437885.0	-438692.8	437924.2
+ACM6PH	acmum6p[c] + h2o[c]  -> acgam6p[c] + lac__D[c] 	-339241.0	339722.9	-339290.3	339732.4
+AAMYLpp	14glucan[p]  -> malthx[p] 	-277185.9	277185.9	-277205.5	277205.5
+AB6PGH	arbt6p[c] + h2o[c]  -> g6p[c] + hqn[c] 	-339244.4	339719.5	-339293.7	339729.0
+ABTA	4abut[c] + akg[c]  -> glu__L[c] + sucsal[c] 	-391998.3	392001.7	-392037.5	392040.9
+ABUTD	4abutn[c] + h2o[c] + nad[c]  -> 4abut[c] + 2 h[c] + nadh[c] 	-276933.7	277438.0	-276972.9	277477.2
+ACMAMUT	uacmamu[c] + unaga[c]  -> h[c] + udp[c] + unagamu[c] 	-392005.2	391994.8	-392044.4	392034.0
+ACMANAptspp	acmana[p] + pep[c]  -> acmanap[c] + pyr[c] 	-391996.6	392003.4	-392035.8	392042.6
+ACACCT	acac[c] + accoa[c]  -> aacoa[c] + ac[c] 	-392000.0	392000.0	-392039.2	392039.2
+ACMUMptspp	acmum[p] + pep[c]  -> acmum6p[c] + pyr[c] 	-391991.3	392008.7	-392030.5	392047.9
+ACNML	acnam[c]  -> acmana[c] + pyr[c] 	-339482.0	339482.0	-339531.2	339491.5
+ACANTHAT	accoa[c] + anth[c]  -> acanth[c] + coa[c] 	-392000.0	392000.0	-392039.2	392039.2
+ACBIPGT	adocbip[c] + h[c] + gtp[c]  -> agdpcbi[c] + ppi[c] 	-341446.1	337517.8	-341485.3	337557.0
+ACCOAC	accoa[c] + atp[c] + hco3[c]  -> adp[c] + h[c] + malcoa[c] + pi[c] 	-392510.7	391489.3	-392569.5	391548.1
+2AGPEAT120	2agpe120[c] + atp[c] + ddca[c]  -> amp[c] + pe120[c] + ppi[c] 	-440236.9	436301.7	-440295.8	436360.5
+ACCOAL	coa[c] + atp[c] + ppa[c]  -> adp[c] + pi[c] + ppcoa[c] 	-439358.2	437180.4	-439417.0	437239.2
+ACGAL1PPpp	acgal1p[p] + h2o[p]  -> acgal[p] + pi[p] 	-278040.7	276331.0	-278090.0	276340.5
+ADPT	ade[c] + prpp[c]  -> amp[c] + ppi[c] 	-341442.7	337521.2	-341481.9	337560.4
+2AGPEAT140	2agpe140[c] + atp[c] + ttdca[c]  -> amp[c] + pe140[c] + ppi[c] 	-440236.9	436301.7	-440295.8	436360.5
+ACODA	acorn[c] + h2o[c]  -> ac[c] + orn[c] 	-339246.1	339717.8	-339295.4	339727.3
+ADSK	aps[c] + atp[c]  -> adp[c] + h[c] + paps[c] 	-392005.2	391994.8	-392044.4	392034.0
+2AGPEAT141	2agpe141[c] + atp[c] + ttdcea[c]  -> amp[c] + pe141[c] + ppi[c] 	-440236.9	436301.7	-440295.8	436360.5
+ADSS	asp__L[c] + imp[c] + gtp[c]  -> dcamp[c] + gdp[c] + 2 h[c] + pi[c] 	-439370.3	437168.4	-439429.1	437227.2
+2AGPEAT160	2agpe160[c] + atp[c] + hdca[c]  -> amp[c] + pe160[c] + ppi[c] 	-440236.9	436301.7	-440295.8	436360.5
+AGDC	acgam6p[c] + h2o[c]  -> ac[c] + gam6p[c] 	-339242.7	339721.2	-339292.0	339730.7
+2AGPEAT161	2agpe161[c] + atp[c] + hdcea[c]  -> amp[c] + pe161[c] + ppi[c] 	-440236.9	436301.7	-440295.8	436360.5
+AGM3PA	anhgm3p[c] + h2o[c]  -> LalaDgluMdap[c] + anhgm[c] 	-339242.7	339721.2	-339292.0	339730.7
+AGM3PApp	anhgm3p[p] + h2o[p]  -> LalaDgluMdap[p] + anhgm[p] 	-339242.7	339721.2	-339292.0	339730.7
+2AGPEAT180	2agpe180[c] + atp[c] + ocdca[c]  -> amp[c] + pe180[c] + ppi[c] 	-440236.9	436301.7	-440295.8	436360.5
+2AGPEAT181	2agpe181[c] + atp[c] + ocdcea[c]  -> amp[c] + pe181[c] + ppi[c] 	-440236.9	436301.7	-440295.8	436360.5
+AGM3PH	anhgm3p[c] + h2o[c]  -> acgam[c] + anhm3p[c] 	-339244.4	339719.5	-339293.7	339729.0
+AGM4PA	anhgm4p[c] + h2o[c]  -> LalaDgluMdapDala[c] + anhgm[c] 	-339242.7	339721.2	-339292.0	339730.7
+ACONMT	amet[c] + acon_T[c]  -> aconm[c] + ahcys[c] 	-391994.8	392005.2	-392034.0	392044.4
+AGM4PApp	anhgm4p[p] + h2o[p]  -> LalaDgluMdapDala[p] + anhgm[p] 	-339242.7	339721.2	-339292.0	339730.7
+AGM4PCP	anhgm4p[c] + h2o[c]  -> anhgm3p[c] + ala__D[c] 	-339244.4	339719.5	-339293.7	339729.0
+AGM4PCPpp	anhgm4p[p] + h2o[p]  -> anhgm3p[p] + ala__D[p] 	-339244.4	339719.5	-339293.7	339729.0
+AGM4PH	anhgm4p[c] + h2o[c]  -> acgam[c] + anhm4p[c] 	-339244.4	339719.5	-339293.7	339729.0
+AGMH	anhgm[c] + h2o[c]  -> acgam[c] + anhm[c] 	-339244.4	339719.5	-339293.7	339729.0
+AGMHE	adphep_DD[c]  -> adphep_LD[c] 	-277185.9	277185.9	-277205.5	277205.5
+ACPS1	apoACP[c] + coa[c]  -> ACP[c] + h[c] + pap[c] 	-392001.7	391998.3	-392040.9	392037.5
+ACS	ac[c] + coa[c] + atp[c]  -> accoa[c] + amp[c] + ppi[c] 	-440236.9	436301.7	-440295.8	436360.5
+AGMT	agm[c] + h2o[c]  -> ptrc[c] + urea[c] 	-277151.2	277220.5	-277200.5	277230.0
+AGPAT120	1ddecg3p[c] + ddcaACP[c]  -> ACP[c] + pa120[c] 	-392000.0	392000.0	-392039.2	392039.2
+AGPAT140	1tdecg3p[c] + myrsACP[c]  -> ACP[c] + pa140[c] 	-392000.0	392000.0	-392039.2	392039.2
+ADA	adn[c] + h2o[c] + h[c]  -> ins[c] + nh4[c] 	-277027.7	277344.0	-277077.0	277353.5
+AGPAT141	1tdec7eg3p[c] + tdeACP[c]  -> ACP[c] + pa141[c] 	-392000.0	392000.0	-392039.2	392039.2
+AGPAT160	1hdecg3p[c] + palmACP[c]  -> ACP[c] + pa160[c] 	-392000.0	392000.0	-392039.2	392039.2
+ADCL	4adcho[c]  -> 4abz[c] + h[c] + pyr[c] 	-339483.7	339480.2	-339533.0	339489.8
+ADCS	chor[c] + gln__L[c]  -> 4adcho[c] + glu__L[c] 	-391998.3	392001.7	-392037.5	392040.9
+ADD	ade[c] + h2o[c] + h[c]  -> hxan[c] + nh4[c] 	-277027.7	277344.0	-277077.0	277353.5
+AGPAT161	1hdec9eg3p[c] + hdeACP[c]  -> ACP[c] + pa161[c] 	-392000.0	392000.0	-392039.2	392039.2
+AGPAT180	1odecg3p[c] + ocdcaACP[c]  -> ACP[c] + pa180[c] 	-392000.0	392000.0	-392039.2	392039.2
+AGPAT181	1odec11eg3p[c] + octeACP[c]  -> ACP[c] + pa181[c] 	-392000.0	392000.0	-392039.2	392039.2
+AHCYSNS	ahcys[c] + h2o[c]  -> ade[c] + rhcys[c] 	-339244.4	339719.5	-339293.7	339729.0
+ADMDC	amet[c] + h[c]  -> ametam[c] + co2[c] 	-277573.6	276798.1	-277622.9	276807.7
+ADNCYC	atp[c]  -> camp[c] + ppi[c] 	-279151.8	275220.0	-279201.1	275229.5
+ADNK1	adn[c] + atp[c]  -> amp[c] + adp[c] + h[c] 	-391998.3	392001.7	-392037.5	392040.9
+AIRC2	atp[c] + air[c] + hco3[c]  -> 5caiz[c] + adp[c] + h[c] + pi[c] 	-392507.3	391492.7	-392566.1	391551.5
+AKGDH	coa[c] + akg[c] + nad[c]  -> co2[c] + nadh[c] + succoa[c] 	-339856.8	339107.1	-339915.6	339165.9
+ADNUC	adn[c] + h2o[c]  -> ade[c] + rib__D[c] 	-339244.4	339719.5	-339293.7	339729.0
+ALAALAD	alaala[c] + h2o[c]  -> 2 ala__D[c] 	-438031.8	438506.9	-438081.1	438516.4
+ALAALAabcpp	atp[c] + alaala[p] + h2o[c]  -> adp[c] + alaala[c] + h[c] + pi[c] 	-278039.0	276332.7	-278107.9	276361.9
+ADOCBIK	adocbi[c] + atp[c]  -> adocbip[c] + adp[c] + h[c] 	-391994.8	392005.2	-392034.0	392044.4
+ADOCBLS	agdpcbi[c] + rdmbzi[c]  -> adocbl[c] + h[c] + gmp[c] 	-392003.4	391996.6	-392042.6	392035.8
+ADOCBLabcpp	adocbl[p] + atp[c] + h2o[c]  -> adocbl[c] + adp[c] + h[c] + pi[c] 	-278039.0	276332.7	-278107.9	276361.9
+ALATA_D2	ala__D[c] + pydx5p[c]  -> pyam5p[c] + pyr[c] 	-391998.3	392001.7	-392037.5	392040.9
+ALATA_L2	ala__L[c] + pydx5p[c]  -> pyam5p[c] + pyr[c] 	-391998.3	392001.7	-392037.5	392040.9
+ADPRDP	adprib[c] + h2o[c]  -> amp[c] + 2 h[c] + r5p[c] 	-339249.6	339714.3	-339298.9	339723.8
+ALPATE160pp	alpp[p] + pe160[p]  -> 2agpe160[p] + lpp[p] 	-392000.0	392000.0	-392039.2	392039.2
+ALPATG160pp	alpp[p] + pg160[p]  -> 2agpg160[p] + lpp[p] 	-392000.0	392000.0	-392039.2	392039.2
+ALR2	h[c] + mthgxl[c] + nadph[c]  -> acetol[c] + nadp[c] 	-277200.2	277171.5	-277239.4	277210.7
+ALATRS	atp[c] + ala__L[c] + trnaala[c]  -> alatrna[c] + amp[c] + ppi[c] 	-440238.7	436300.0	-440297.5	436358.8
+ALAabcpp	atp[c] + ala__L[p] + h2o[c]  -> adp[c] + ala__L[c] + h[c] + pi[c] 	-278039.0	276332.7	-278107.9	276361.9
+ALR4x	acetol[c] + h[c] + nadh[c]  -> 12ppd__R[c] + nad[c] 	-277200.5	277171.2	-277239.7	277210.4
+ALTRH	altrn[c]  -> 2ddglcn[c] + h2o[c] 	-277423.4	276948.3	-277443.0	276967.9
+AM3PA	anhm3p[c] + h2o[c]  -> LalaDgluMdap[c] + anhm[c] 	-339242.7	339721.2	-339292.0	339730.7
+AM4PA	anhm4p[c] + h2o[c]  -> LalaDgluMdapDala[c] + anhm[c] 	-339242.7	339721.2	-339292.0	339730.7
+AM4PCP	anhm4p[c] + h2o[c]  -> anhm3p[c] + ala__D[c] 	-339244.4	339719.5	-339293.7	339729.0
+2AGPGAT120	2agpg120[c] + atp[c] + ddca[c]  -> amp[c] + ppi[c] + pg120[c] 	-440236.9	436301.7	-440295.8	436360.5
+AMALT1	malt[c] + malttr[c]  -> glc__D[c] + maltttr[c] 	-392000.0	392000.0	-392039.2	392039.2
+AMALT2	malt[c] + maltttr[c]  -> glc__D[c] + maltpt[c] 	-392000.0	392000.0	-392039.2	392039.2
+ALDD19xr	h2o[c] + pacald[c] + nad[c]  -> 2 h[c] + pac[c] + nadh[c] 	-276935.4	277436.3	-276974.6	277475.5
+ALDD2x	acald[c] + h2o[c] + nad[c]  -> ac[c] + 2 h[c] + nadh[c] 	-276935.4	277436.3	-276974.6	277475.5
+AMALT3	malt[c] + maltpt[c]  -> glc__D[c] + malthx[c] 	-392000.0	392000.0	-392039.2	392039.2
+ALDD2y	acald[c] + h2o[c] + nadp[c]  -> ac[c] + 2 h[c] + nadph[c] 	-276935.7	277436.0	-276974.9	277475.2
+AMALT4	malt[c] + malthx[c]  -> glc__D[c] + malthp[c] 	-392000.0	392000.0	-392039.2	392039.2
+2AGPGAT140	2agpg140[c] + atp[c] + ttdca[c]  -> amp[c] + ppi[c] + pg140[c] 	-440236.9	436301.7	-440295.8	436360.5
+AMANK	acmana[c] + atp[c]  -> acmanap[c] + adp[c] + h[c] 	-391998.3	392001.7	-392037.5	392040.9
+AMMQLT8	2dmmql8[c] + amet[c]  -> ahcys[c] + h[c] + mql8[c] 	-392000.0	392000.0	-392039.2	392039.2
+AMPMS2	air[c] + h2o[c] + nad[c]  -> 4ampm[c] + 2 for[c] + 3 h[c] + nadh[c] 	-277633.7	276738.0	-277732.3	276757.0
+AMPN	amp[c] + h2o[c]  -> ade[c] + r5p[c] 	-339244.4	339719.5	-339293.7	339729.0
+ALDD3y	h2o[c] + ppal[c] + nadp[c]  -> 2 h[c] + ppa[c] + nadph[c] 	-276935.7	277436.0	-276974.9	277475.2
+ALDD4	btal[c] + h2o[c] + nad[c]  -> but[c] + 2 h[c] + nadh[c] 	-276935.4	277436.3	-276974.6	277475.5
+ALLK	all__D[c] + atp[c]  -> all6p[c] + adp[c] + h[c] 	-391998.3	392001.7	-392037.5	392040.9
+ALLTAMH	alltt[c] + 2 h2o[c] + 2 h[c]  -> co2[c] + 2 nh4[c] + urdglyc[c] 	-277255.6	277116.1	-277364.3	277105.4
+ALLTN	alltn[c] + h2o[c]  -> alltt[c] + h[c] 	-276950.1	277421.7	-276969.7	277441.3
+AMPTASECG	cgly[c] + h2o[c]  -> cys__L[c] + gly[c] 	-339244.4	339719.5	-339293.7	339729.0
+AMPTASEPG	h2o[c] + progly[c]  -> gly[c] + pro__L[c] 	-339244.4	339719.5	-339293.7	339729.0
+2AGPGAT141	2agpg141[c] + atp[c] + ttdcea[c]  -> amp[c] + ppi[c] + pg141[c] 	-440236.9	436301.7	-440295.8	436360.5
+ANHMK	anhm[c] + atp[c] + h2o[c]  -> acmum6p[c] + adp[c] + h[c] 	-391764.2	392235.8	-391803.4	392275.0
+ALLabcpp	all__D[p] + atp[c] + h2o[c]  -> all__D[c] + adp[c] + h[c] + pi[c] 	-278039.0	276332.7	-278107.9	276361.9
+2AGPGAT160	2agpg160[c] + atp[c] + hdca[c]  -> amp[c] + ppi[c] + pg160[c] 	-440236.9	436301.7	-440295.8	436360.5
+ANPRT	anth[c] + prpp[c]  -> ppi[c] + pran[c] 	-341446.1	337517.8	-341485.3	337557.0
+ANS	chor[c] + gln__L[c]  -> anth[c] + h[c] + glu__L[c] + pyr[c] 	-438269.3	438269.3	-438338.2	438298.4
+2AGPGAT161	2agpg161[c] + atp[c] + hdcea[c]  -> amp[c] + ppi[c] + pg161[c] 	-440236.9	436301.7	-440295.8	436360.5
+AOBUTDs	2aobut[c] + h[c]  -> aact[c] + co2[c] 	-277571.9	276799.9	-277621.1	276809.4
+AP4AH	ap4a[c] + h2o[c]  -> 2 adp[c] + 2 h[c] 	-438035.2	438503.4	-438084.5	438512.9
+ASO3t8pp	aso3[c] + atp[c] + h2o[c]  -> adp[c] + aso3[p] + h[c] + pi[c] 	-278065.0	276306.7	-278133.9	276335.8
+2AGPGAT180	2agpg180[c] + atp[c] + ocdca[c]  -> amp[c] + ppi[c] + pg180[c] 	-440236.9	436301.7	-440295.8	436360.5
+ASP1DC	asp__L[c] + h[c]  -> co2[c] + ala_B[c] 	-277570.1	276801.6	-277619.4	276811.1
+AP5AH	ap5a[c] + h2o[c]  -> adp[c] + atp[c] + 2 h[c] 	-339246.2	339717.8	-339295.4	339727.3
+APRAUR	5apru[c] + h[c] + nadph[c]  -> 5aprbu[c] + nadp[c] 	-277200.2	277171.5	-277239.4	277210.7
+ARBTNR1	2 arbtn_fe3[c] + fadh2[c]  -> 2 arbtn[c] + fad[c] + 2 fe2[c] + 2 h[c] 	-678948.8	678979.1	-679067.0	679017.7
+ARBTNR2	2 arbtn_fe3[c] + fmnh2[c]  -> 2 arbtn[c] + fmn[c] + 2 fe2[c] + 2 h[c] 	-678948.0	678979.8	-679066.2	679018.4
+ARBTNR3	2 arbtn_fe3[c] + rbflvrd[c]  -> 2 arbtn[c] + 2 fe2[c] + 2 h[c] + ribflv[c] 	-733388.9	733340.8	-733507.1	733379.4
+ASPCT	cbp[c] + asp__L[c]  -> cbasp[c] + h[c] + pi[c] 	-340577.8	338386.2	-340617.0	338425.4
+ASPO3	asp__L[c] + q8[c]  -> h[c] + iasp[c] + q8h2[c] 	-392003.4	391996.6	-392042.6	392035.8
+ASPO4	asp__L[c] + mqn8[c]  -> h[c] + iasp[c] + mql8[c] 	-392003.4	391996.6	-392042.6	392035.8
+ASPO5	asp__L[c] + fum[c]  -> h[c] + iasp[c] + succ[c] 	-392003.4	391996.6	-392042.6	392035.8
+ASPO6	asp__L[c] + o2[c]  -> h2o2[c] + h[c] + iasp[c] 	-277339.7	277032.0	-277378.9	277071.2
+ARBTNabcpp	arbtn_fe3[p] + atp[c] + h2o[c]  -> arbtn_fe3[c] + adp[c] + h[c] + pi[c] 	-278039.0	276332.7	-278107.9	276361.9
+ARBTNexs	arbtn[e] + fe3[e]  -> arbtn_fe3[e] 	-339466.5	339497.4	-339476.0	339546.7
+2AGPGAT181	2agpg181[c] + atp[c] + ocdcea[c]  -> amp[c] + ppi[c] + pg181[c] 	-440236.9	436301.7	-440295.8	436360.5
+ARBabcpp	arab__L[p] + atp[c] + h2o[c]  -> arab__L[c] + adp[c] + h[c] + pi[c] 	-278039.0	276332.7	-278107.9	276361.9
+ASPT	asp__L[c]  -> fum[c] + nh4[c] 	-277268.7	277103.0	-277318.0	277112.5
+ASPTRS	asp__L[c] + atp[c] + trnaasp[c]  -> amp[c] + asptrna[c] + ppi[c] 	-440236.9	436301.7	-440295.8	436360.5
+ASPabcpp	asp__L[p] + atp[c] + h2o[c]  -> adp[c] + asp__L[c] + h[c] + pi[c] 	-278030.3	276341.4	-278099.2	276370.5
+2DGLCNRx	2dhglcn[c] + h[c] + nadh[c]  -> glcn[c] + nad[c] 	-277200.5	277171.2	-277239.7	277210.4
+ARGDC	arg__L[c] + h[c]  -> co2[c] + agm[c] 	-277573.6	276798.1	-277622.9	276807.7
+2DGLCNRy	2dhglcn[c] + h[c] + nadph[c]  -> glcn[c] + nadp[c] 	-277200.2	277171.5	-277239.4	277210.7
+ARGDCpp	arg__L[p] + h[p]  -> co2[p] + agm[p] 	-277573.6	276798.1	-277622.9	276807.7
+ARGSS	citr__L[c] + asp__L[c] + atp[c]  -> amp[c] + argsuc[c] + h[c] + ppi[c] 	-440238.7	436300.0	-440297.5	436358.8
+ARGTRS	arg__L[c] + atp[c] + trnaarg[c]  -> amp[c] + argtrna[c] + ppi[c] 	-440240.4	436298.3	-440299.2	436357.1
+ARGabcpp	arg__L[p] + atp[c] + h2o[c]  -> arg__L[c] + adp[c] + h[c] + pi[c] 	-278047.7	276324.1	-278116.5	276353.2
+ASR	aso4[c] + 2 gthrd[c]  -> aso3[c] + h2o[c] + gthox[c] 	-518806.5	518328.0	-518835.6	518396.9
+AST	arg__L[c] + succoa[c]  -> coa[c] + h[c] + sucarg[c] 	-391993.1	392006.9	-392032.3	392046.1
+ATPHs	atp[c] + h2o[c] + h[c]  -> itp[c] + nh4[c] 	-277027.7	277344.0	-277077.0	277353.5
+ATPM	atp[c] + h2o[c]  -> adp[c] + h[c] + pi[c] 	-278039.0	276332.7	-278088.3	276342.3
+ATPPRT	atp[c] + prpp[c]  -> ppi[c] + prbatp[c] 	-341456.5	337507.5	-341495.7	337546.7
+ASCBPL	ascb6p[c] + h2o[c]  -> 3dhgulnp[c] + h[c] 	-276953.5	277418.2	-276973.1	277437.8
+2DGULRx	2dhguln[c] + h[c] + nadh[c]  -> idon__L[c] + nad[c] 	-277200.5	277171.2	-277239.7	277210.4
+ASCBptspp	ascb__L[p] + pep[c]  -> ascb6p[c] + pyr[c] 	-391996.6	392003.4	-392035.8	392042.6
+ASNN	asn__L[c] + h2o[c]  -> asp__L[c] + nh4[c] 	-277029.5	277342.2	-277078.8	277351.8
+BETALDHx	betald[c] + h2o[c] + nad[c]  -> 2 h[c] + glyb[c] + nadh[c] 	-276933.7	277438.0	-276972.9	277477.2
+BETALDHy	betald[c] + h2o[c] + nadp[c]  -> 2 h[c] + glyb[c] + nadph[c] 	-276934.0	277437.7	-276973.2	277476.9
+BPNT	h2o[c] + pap[c]  -> amp[c] + pi[c] 	-278033.8	276337.9	-278083.1	276347.4
+BSORx	btnso[c] + h[c] + nadh[c]  -> btn[c] + h2o[c] + nad[c] 	-277438.0	276933.7	-277477.2	276972.9
+BSORy	btnso[c] + h[c] + nadph[c]  -> btn[c] + h2o[c] + nadp[c] 	-277437.7	276934.0	-277476.9	276973.2
+ASNNpp	asn__L[p] + h2o[p]  -> asp__L[p] + nh4[p] 	-277029.5	277342.2	-277078.8	277351.8
+ASNS1	asp__L[c] + atp[c] + h2o[c] + gln__L[c]  -> amp[c] + asn__L[c] + h[c] + glu__L[c] + ppi[c] 	-481831.8	478368.2	-481920.3	478416.9
+2DGULRy	2dhguln[c] + h[c] + nadph[c]  -> lipa[c] + idon__L[c] + nadp[c] 	-339358.6	339605.3	-339427.5	339634.4
+ASNS2	asp__L[c] + atp[c] + nh4[c]  -> amp[c] + asn__L[c] + h[c] + ppi[c] 	-393888.2	390111.8	-393947.0	390170.6
+ASNTRS	asn__L[c] + atp[c] + trnaasn[c]  -> amp[c] + asntrna[c] + ppi[c] 	-440237.8	436300.8	-440296.6	436359.6
+BTS4	amet[c] + dtbt[c] + s[c]  -> btn[c] + dad_5[c] + h[c] + met__L[c] 	-480100.0	480100.0	-480158.8	480158.8
+BUTCT	accoa[c] + but[c]  -> ac[c] + btcoa[c] 	-392000.0	392000.0	-392039.2	392039.2
+BUTSO3abcpp	atp[c] + butso3[p] + h2o[c]  -> adp[c] + butso3[c] + h[c] + pi[c] 	-278030.3	276341.4	-278099.2	276370.5
+ASNabcpp	asn__L[p] + atp[c] + h2o[c]  -> adp[c] + asn__L[c] + h[c] + pi[c] 	-278039.0	276332.7	-278107.9	276361.9
+2MAHMP	2mahmp[c] + h2o[c]  -> 4ampm[c] + h[c] + pi[c] 	-278040.7	276331.0	-278090.0	276340.5
+CDAPPA161	cdpdhdec9eg[c] + h2o[c]  -> cmp[c] + 2 h[c] + pa161[c] 	-339249.6	339714.3	-339298.9	339723.8
+CDAPPA180	cdpdodecg[c] + h2o[c]  -> cmp[c] + 2 h[c] + pa180[c] 	-339249.6	339714.3	-339298.9	339723.8
+CDAPPA181	cdpdodec11eg[c] + h2o[c]  -> cmp[c] + 2 h[c] + pa181[c] 	-339249.6	339714.3	-339298.9	339723.8
+CDPMEK	4c2me[c] + atp[c]  -> 2p4c2me[c] + adp[c] + h[c] 	-392005.2	391994.8	-392044.4	392034.0
+CFAS160E	2 amet[c] + pe161[c]  -> 2 ahcys[c] + cpe160[c] + 2 h[c] 	-619806.4	619806.4	-619865.2	619865.2
+CFAS160G	2 amet[c] + pg161[c]  -> 2 ahcys[c] + cpg160[c] + 2 h[c] 	-619806.4	619806.4	-619865.2	619865.2
+CFAS180E	2 amet[c] + pe181[c]  -> 2 ahcys[c] + cpe180[c] + 2 h[c] 	-619806.4	619806.4	-619865.2	619865.2
+CFAS180G	2 amet[c] + pg181[c]  -> 2 ahcys[c] + cpg180[c] + 2 h[c] 	-619806.4	619806.4	-619865.2	619865.2
+CGLYabcpp	cgly[p] + atp[c] + h2o[c]  -> cgly[c] + adp[c] + h[c] + pi[c] 	-278039.0	276332.7	-278107.9	276361.9
+CBIuabcpp	cbi[p] + atp[c] + h2o[c]  -> cbi[c] + adp[c] + h[c] + pi[c] 	-278039.0	276332.7	-278107.9	276361.9
+CBL1abcpp	cbl1[p] + atp[c] + h2o[c]  -> cbl1[c] + adp[c] + h[c] + pi[c] 	-278030.3	276341.4	-278099.2	276370.5
+CHLabcpp	chol[p] + atp[c] + h2o[c]  -> chol[c] + adp[c] + h[c] + pi[c] 	-278047.7	276324.1	-278116.5	276353.2
+CHORM	chor[c]  -> pphn[c] 	-277185.9	277185.9	-277205.5	277205.5
+CHORS	3psme[c]  -> chor[c] + pi[c] 	-278271.3	276100.4	-278320.6	276109.9
+CBPS	2 atp[c] + h2o[c] + hco3[c] + gln__L[c]  -> cbp[c] + 2 adp[c] + 2 h[c] + glu__L[c] + pi[c] 	-650323.0	649793.9	-650431.1	649862.2
+CD2abcpp	cd2[c] + atp[c] + h2o[c]  -> cd2[p] + adp[c] + h[c] + pi[c] 	-278021.6	276350.1	-278090.5	276379.2
+CHRPL	chor[c]  -> 4hbz[c] + pyr[c] 	-339480.2	339483.7	-339529.5	339493.2
+CINNDO	cinnm[c] + h[c] + nadh[c] + o2[c]  -> cenchddd[c] + nad[c] 	-277216.9	277154.8	-277246.0	277223.7
+CITL	cit[c]  -> ac[c] + oaa[c] 	-339478.5	339485.4	-339527.8	339494.9
+3HAD100	3hdecACP[c]  -> h2o[c] + tdec2eACP[c] 	-277423.4	276948.3	-277443.0	276967.9
+CDAPPA120	cdpdddecg[c] + h2o[c]  -> cmp[c] + 2 h[c] + pa120[c] 	-339249.6	339714.3	-339298.9	339723.8
+CDAPPA140	cdpdtdecg[c] + h2o[c]  -> cmp[c] + 2 h[c] + pa140[c] 	-339249.6	339714.3	-339298.9	339723.8
+CDAPPA141	cdpdtdec7eg[c] + h2o[c]  -> cmp[c] + 2 h[c] + pa141[c] 	-339249.6	339714.3	-339298.9	339723.8
+CLPNH120pp	clpn120[p] + h2o[p]  -> h[p] + pa120[p] + pg120[p] 	-339246.2	339717.8	-339295.4	339727.3
+CLPNH140pp	clpn140[p] + h2o[p]  -> h[p] + pa140[p] + pg140[p] 	-339246.2	339717.8	-339295.4	339727.3
+CLPNH141pp	clpn141[p] + h2o[p]  -> h[p] + pa141[p] + pg141[p] 	-339246.2	339717.8	-339295.4	339727.3
+CDAPPA160	cdpdhdecg[c] + h2o[c]  -> cmp[c] + 2 h[c] + pa160[c] 	-339249.6	339714.3	-339298.9	339723.8
+CLPNH160pp	clpn160[p] + h2o[p]  -> h[p] + pa160[p] + pg160[p] 	-339246.2	339717.8	-339295.4	339727.3
+3HAD120	3hddecACP[c]  -> h2o[c] + tddec2eACP[c] 	-277423.4	276948.3	-277443.0	276967.9
+CLPNH161pp	clpn161[p] + h2o[p]  -> h[p] + pa161[p] + pg161[p] 	-339246.2	339717.8	-339295.4	339727.3
+3HAD121	3hcddec5eACP[c]  -> h2o[c] + t3c5ddeceACP[c] 	-277423.4	276948.3	-277443.0	276967.9
+CLPNH180pp	clpn180[p] + h2o[p]  -> h[p] + pa180[p] + pg180[p] 	-339246.2	339717.8	-339295.4	339727.3
+CLPNH181pp	clpn181[p] + h2o[p]  -> h[p] + pa181[p] + pg181[p] 	-339246.2	339717.8	-339295.4	339727.3
+CRNDCAL2	coa[c] + atp[c] + crn__D[c]  -> adp[c] + crnDcoa[c] + pi[c] 	-439353.1	437185.6	-439411.9	437244.4
+CRNDabcpp	atp[c] + crn__D[p] + h2o[c]  -> adp[c] + crn__D[c] + h[c] + pi[c] 	-278039.0	276332.7	-278107.9	276361.9
+CRNabcpp	atp[c] + crn[p] + h2o[c]  -> adp[c] + crn[c] + h[c] + pi[c] 	-278039.0	276332.7	-278107.9	276361.9
+3HAD140	3hmrsACP[c]  -> h2o[c] + tmrs2eACP[c] 	-277423.4	276948.3	-277443.0	276967.9
+CS	accoa[c] + h2o[c] + oaa[c]  -> cit[c] + coa[c] + h[c] 	-391767.6	392232.4	-391806.8	392271.6
+CSND	csn[c] + h2o[c] + h[c]  -> nh4[c] + ura[c] 	-277027.7	277344.0	-277077.0	277353.5
+CMPN	cmp[c] + h2o[c]  -> csn[c] + r5p[c] 	-339244.4	339719.5	-339293.7	339729.0
+CTBTCAL2	coa[c] + atp[c] + ctbt[c]  -> adp[c] + ctbtcoa[c] + pi[c] 	-439353.1	437185.6	-439411.9	437244.4
+3HAD141	3hcmrs7eACP[c]  -> h2o[c] + t3c7mrseACP[c] 	-277423.4	276948.3	-277443.0	276967.9
+CTBTabcpp	atp[c] + ctbt[p] + h2o[c]  -> adp[c] + ctbt[c] + h[c] + pi[c] 	-278039.0	276332.7	-278107.9	276361.9
+COBALT2abcpp	cobalt2[c] + atp[c] + h2o[c]  -> adp[c] + cobalt2[p] + h[c] + pi[c] 	-278021.6	276350.1	-278090.5	276379.2
+CTPS2	atp[c] + h2o[c] + gln__L[c] + utp[c]  -> adp[c] + ctp[c] + 2 h[c] + glu__L[c] + pi[c] 	-480954.8	479245.2	-481043.3	479293.9
+CU1Opp	4 cu[p] + 4 h[p] + o2[p]  -> 4 cu2[p] + 2 h2o[p] 	-1109241.8	1108245.1	-1109310.1	1108353.2
+CU1abcpp	atp[c] + cu[c] + h2o[c]  -> adp[c] + cu[p] + h[c] + pi[c] 	-278030.3	276341.4	-278099.2	276370.5
+COLIPAabcpp	colipa[c] + atp[c] + h2o[c]  -> adp[c] + colipa[p] + h[c] + pi[c] 	-278134.5	276237.2	-278203.4	276266.3
+CU2abcpp	atp[c] + cu2[c] + h2o[c]  -> adp[c] + cu2[p] + h[c] + pi[c] 	-278021.6	276350.1	-278090.5	276379.2
+3HAD160	3hpalmACP[c]  -> h2o[c] + tpalm2eACP[c] 	-277423.4	276948.3	-277443.0	276967.9
+CPGNR1	2 cpgn[c] + fadh2[c]  -> 2 cpgn_un[c] + fad[c] + 2 fe2[c] + 2 h[c] 	-678959.1	678968.7	-679077.3	679007.4
+CPGNR2	2 cpgn[c] + fmnh2[c]  -> 2 cpgn_un[c] + fmn[c] + 2 fe2[c] + 2 h[c] 	-678958.3	678969.5	-679076.5	679008.1
+CPGNR3	2 cpgn[c] + rbflvrd[c]  -> 2 cpgn_un[c] + 2 fe2[c] + 2 h[c] + ribflv[c] 	-733399.3	733330.4	-733517.4	733369.1
+CYANST	cyan[c] + tsul[c]  -> h[c] + so3[c] + tcynt[c] 	-196556.5	195443.5	-196595.7	195482.7
+CYANSTpp	cyan[p] + tsul[p]  -> h[p] + tcynt[p] + so3[p] 	-196556.5	195443.5	-196595.7	195482.7
+3HAD161	3hcpalm9eACP[c]  -> h2o[c] + t3c9palmeACP[c] 	-277423.4	276948.3	-277443.0	276967.9
+CPGNabcpp	atp[c] + cpgn[p] + h2o[c]  -> adp[c] + cpgn[c] + h[c] + pi[c] 	-278030.3	276341.4	-278099.2	276370.5
+CPGNexs	cpgn_un[e] + fe3[e]  -> cpgn[e] 	-339461.3	339502.6	-339470.8	339551.9
+CPPPGO	cpppg3[c] + 2 h[c] + o2[c]  -> 2 co2[c] + 2 h2o[c] + pppg9[c] 	-278437.3	275934.4	-278506.2	275963.6
+3HAD180	3hoctaACP[c]  -> h2o[c] + toctd2eACP[c] 	-277423.4	276948.3	-277443.0	276967.9
+CYSDDS	cys__D[c] + h2o[c]  -> h2s[c] + nh4[c] + pyr[c] 	-277017.9	277353.8	-277096.9	277353.2
+CPPPGO2	2 amet[c] + cpppg3[c]  -> 2 co2[c] + 2 dad_5[c] + 2 met__L[c] + pppg9[c] 	-734124.8	732604.9	-734302.4	732623.3
+CRNCAL2	coa[c] + atp[c] + crn[c]  -> adp[c] + crncoa[c] + pi[c] 	-439353.1	437185.6	-439411.9	437244.4
+CYSDS	cys__L[c] + h2o[c]  -> h2s[c] + nh4[c] + pyr[c] 	-277017.9	277353.8	-277096.9	277353.2
+CYSDabcpp	atp[c] + cys__D[p] + h2o[c]  -> adp[c] + cys__D[c] + h[c] + pi[c] 	-278039.0	276332.7	-278107.9	276361.9
+CYSS	acser[c] + h2s[c]  -> ac[c] + cys__L[c] + h[c] 	-339495.2	339468.7	-339534.4	339507.9
+CYSSADS	3sala[c] + 2 h[c]  -> ala__L[c] + so2[c] 	-277481.4	276890.3	-277530.7	276899.8
+CYSTL	cyst__L[c] + h2o[c]  -> hcys__L[c] + nh4[c] + pyr[c] 	-339325.6	339638.3	-339404.5	339637.8
+CYSTRS	atp[c] + cys__L[c] + trnacys[c]  -> amp[c] + cystrna[c] + ppi[c] 	-440238.7	436300.0	-440297.5	436358.8
+3HAD181	3hcvac11eACP[c]  -> h2o[c] + t3c11vaceACP[c] 	-277423.4	276948.3	-277443.0	276967.9
+CYSabc2pp	atp[c] + cys__L[c] + h2o[c]  -> adp[c] + cys__L[p] + h[c] + pi[c] 	-278039.0	276332.7	-278107.9	276361.9
+CYSabcpp	atp[c] + cys__L[p] + h2o[c]  -> adp[c] + cys__L[c] + h[c] + pi[c] 	-278039.0	276332.7	-278107.9	276361.9
+3HAD40	3haACP[c]  -> but2eACP[c] + h2o[c] 	-277423.4	276948.3	-277443.0	276967.9
+CYTBD2pp	2 h[c] + mql8[c] + 0.5 o2[c]  -> h2o[c] + 2 h[p] + mqn8[c] 	-277414.2	276957.5	-277428.8	276991.9
+DAPAL	23dappa[c] + h2o[c]  -> 2 nh4[c] + pyr[c] 	-277108.9	277262.8	-277187.9	277262.3
+DAPDC	26dap__M[c] + h[c]  -> co2[c] + lys__L[c] 	-277571.9	276799.9	-277621.1	276809.4
+CYTBDpp	2 h[c] + 0.5 o2[c] + q8h2[c]  -> h2o[c] + 2 h[p] + q8[c] 	-277414.2	276957.5	-277428.8	276991.9
+DAPabcpp	26dap__M[p] + atp[c] + h2o[c]  -> 26dap__M[c] + adp[c] + h[c] + pi[c] 	-278039.0	276332.7	-278107.9	276361.9
+CYTBO3_4pp	4 h[c] + 0.5 o2[c] + q8h2[c]  -> h2o[c] + 4 h[p] + q8[c] 	-277396.9	276974.9	-277411.4	277009.3
+3HAD60	3hhexACP[c]  -> h2o[c] + thex2eACP[c] 	-277423.4	276948.3	-277443.0	276967.9
+CYTD	cytd[c] + h2o[c] + h[c]  -> nh4[c] + uri[c] 	-277027.7	277344.0	-277077.0	277353.5
+CYTDH	cytd[c] + h2o[c]  -> csn[c] + rib__D[c] 	-339244.4	339719.5	-339293.7	339729.0
+DASYN120	ctp[c] + h[c] + pa120[c]  -> cdpdddecg[c] + ppi[c] 	-341446.1	337517.8	-341485.3	337557.0
+DASYN140	ctp[c] + h[c] + pa140[c]  -> cdpdtdecg[c] + ppi[c] 	-341446.1	337517.8	-341485.3	337557.0
+DASYN141	ctp[c] + h[c] + pa141[c]  -> cdpdtdec7eg[c] + ppi[c] 	-341446.1	337517.8	-341485.3	337557.0
+DASYN160	ctp[c] + h[c] + pa160[c]  -> cdpdhdecg[c] + ppi[c] 	-341446.1	337517.8	-341485.3	337557.0
+DASYN161	ctp[c] + h[c] + pa161[c]  -> cdpdhdec9eg[c] + ppi[c] 	-341446.1	337517.8	-341485.3	337557.0
+DASYN180	ctp[c] + h[c] + pa180[c]  -> cdpdodecg[c] + ppi[c] 	-341446.1	337517.8	-341485.3	337557.0
+DASYN181	ctp[c] + h[c] + pa181[c]  -> cdpdodec11eg[c] + ppi[c] 	-341446.1	337517.8	-341485.3	337557.0
+CYTDK2	cytd[c] + gtp[c]  -> cmp[c] + gdp[c] + h[c] 	-391998.3	392001.7	-392037.5	392040.9
+DAAD	ala__D[c] + fad[c] + h2o[c]  -> fadh2[c] + nh4[c] + pyr[c] 	-277068.7	277303.0	-277137.6	277332.1
+DADA	dad_2[c] + h2o[c] + h[c]  -> din[c] + nh4[c] 	-277027.7	277344.0	-277077.0	277353.5
+DATPHs	datp[c] + h2o[c] + h[c]  -> ditp[c] + nh4[c] 	-277027.7	277344.0	-277077.0	277353.5
+DB4PS	ru5p__D[c]  -> for[c] + db4p[c] + h[c] 	-277535.9	276835.9	-277585.1	276845.4
+DBTS	co2[c] + atp[c] + dann[c]  -> adp[c] + dtbt[c] + 3 h[c] + pi[c] 	-392706.4	391293.6	-392765.2	391352.4
+3HAD80	3hoctACP[c]  -> h2o[c] + toct2eACP[c] 	-277423.4	276948.3	-277443.0	276967.9
+DAGK120	12dgr120[c] + atp[c]  -> adp[c] + h[c] + pa120[c] 	-391998.3	392001.7	-392037.5	392040.9
+DAGK140	12dgr140[c] + atp[c]  -> adp[c] + h[c] + pa140[c] 	-391998.3	392001.7	-392037.5	392040.9
+DCTPD	dctp[c] + h2o[c] + h[c]  -> dutp[c] + nh4[c] 	-277027.7	277344.0	-277077.0	277353.5
+DAGK141	12dgr141[c] + atp[c]  -> adp[c] + h[c] + pa141[c] 	-391998.3	392001.7	-392037.5	392040.9
+DCYTD	dcyt[c] + h2o[c] + h[c]  -> duri[c] + nh4[c] 	-277027.7	277344.0	-277077.0	277353.5
+3HCINNMH	3hcinnm[c] + h[c] + nadh[c] + o2[c]  -> dhcinnm[c] + h2o[c] + nad[c] 	-277454.4	276917.3	-277483.5	276986.2
+DAGK160	12dgr160[c] + atp[c]  -> adp[c] + h[c] + pa160[c] 	-391998.3	392001.7	-392037.5	392040.9
+DAGK161	12dgr161[c] + atp[c]  -> adp[c] + h[c] + pa161[c] 	-391998.3	392001.7	-392037.5	392040.9
+DAGK180	12dgr180[c] + atp[c]  -> adp[c] + h[c] + pa180[c] 	-391998.3	392001.7	-392037.5	392040.9
+3HPPPNH	3hpppn[c] + h[c] + nadh[c] + o2[c]  -> dhpppn[c] + h2o[c] + nad[c] 	-277454.4	276917.3	-277483.5	276986.2
+DDGALK	2dh3dgal[c] + atp[c]  -> 2dh3dgal6p[c] + adp[c] + h[c] 	-392001.7	391998.3	-392040.9	392037.5
+DAGK181	12dgr181[c] + atp[c]  -> adp[c] + h[c] + pa181[c] 	-391998.3	392001.7	-392037.5	392040.9
+3KGK	3dhguln[c] + atp[c]  -> 3dhgulnp[c] + adp[c] + h[c] 	-392001.7	391998.3	-392040.9	392037.5
+DDGLK	2ddglcn[c] + atp[c]  -> 2ddg6p[c] + adp[c] + h[c] 	-392001.7	391998.3	-392040.9	392037.5
+DDPA	e4p[c] + h2o[c] + pep[c]  -> 2dda7p[c] + pi[c] 	-340336.8	338627.1	-340376.0	338666.3
+DKGLCNR1	25dkglcn[c] + h[c] + nadph[c]  -> 2dhguln[c] + nadp[c] 	-277200.2	277171.5	-277239.4	277210.7
+DKGLCNR2x	25dkglcn[c] + h[c] + nadh[c]  -> 5dglcn[c] + nad[c] 	-277200.5	277171.2	-277239.7	277210.4
+DKGLCNR2y	25dkglcn[c] + h[c] + nadph[c]  -> 5dglcn[c] + nadp[c] 	-277200.2	277171.5	-277239.4	277210.7
+DKMPPD	dkmpp[c] + h2o[c] + o2[c]  -> 2kmb[c] + for[c] + 2 h[c] + pi[c] 	-278408.8	275962.9	-278477.7	275992.0
+3NTD2pp	3ump[p] + h2o[p]  -> pi[p] + uri[p] 	-278040.7	276331.0	-278090.0	276340.5
+DKMPPD3	dkmpp[c] + 3 h2o[c] + 2 nad[c]  -> 2kmb[c] + for[c] + 4 h[c] + pi[c] + 2 nadh[c] 	-277888.1	276483.6	-278006.3	276522.2
+DMATT	dmpp[c] + ipdp[c]  -> grdp[c] + ppi[c] 	-341453.0	337510.9	-341492.2	337550.1
+3NTD4pp	3cmp[p] + h2o[p]  -> cytd[p] + pi[p] 	-278040.7	276331.0	-278090.0	276340.5
+DMPPS	h2mb4p[c] + h[c] + nadh[c]  -> dmpp[c] + h2o[c] + nad[c] 	-277438.0	276933.7	-277477.2	276972.9
+DMQMT	2omhmbl[c] + amet[c]  -> ahcys[c] + h[c] + q8h2[c] 	-392000.0	392000.0	-392039.2	392039.2
+DMSOR1	dmso[c] + mql8[c]  -> dms[c] + h2o[c] + mqn8[c] 	-277454.3	276917.5	-277493.5	276956.7
+DHAD1	23dhmb[c]  -> 3mob[c] + h2o[c] 	-277423.4	276948.3	-277443.0	276967.9
+DHAD2	23dhmp[c]  -> 3mop[c] + h2o[c] 	-277423.4	276948.3	-277443.0	276967.9
+3NTD7pp	3amp[p] + h2o[p]  -> adn[p] + pi[p] 	-278040.7	276331.0	-278090.0	276340.5
+DHAPT	dha[c] + pep[c]  -> dhap[c] + pyr[c] 	-391996.6	392003.4	-392035.8	392042.6
+DMSOR1pp	dmso[p] + mql8[c]  -> dms[p] + h2o[p] + mqn8[c] 	-277454.3	276917.5	-277493.5	276956.7
+DMSOR2	2dmmql8[c] + dmso[c]  -> 2dmmq8[c] + dms[c] + h2o[c] 	-277454.3	276917.5	-277493.5	276956.7
+DMSOR2pp	2dmmql8[c] + dmso[p]  -> 2dmmq8[c] + dms[p] + h2o[p] 	-277454.3	276917.5	-277493.5	276956.7
+DHBS	23dhb[c] + atp[c] + h[c]  -> 23dhba[c] + ppi[c] 	-341446.1	337517.8	-341485.3	337557.0
+DHBSH	23dhbzs[c] + h2o[c]  -> 23dhb[c] + ser__L[c] 	-339244.4	339719.5	-339293.7	339729.0
+DHCIND	cenchddd[c] + nad[c]  -> dhcinnm[c] + h[c] + nadh[c] 	-277171.2	277200.5	-277210.4	277239.7
+DHCINDO	dhcinnm[c] + o2[c]  -> h[c] + hkntd[c] 	-277205.7	277166.0	-277215.2	277215.3
+DHDPRy	23dhdp[c] + h[c] + nadph[c]  -> nadp[c] + thdp[c] 	-277200.2	277171.5	-277239.4	277210.7
+3NTD9pp	3gmp[p] + h2o[p]  -> gsn[p] + pi[p] 	-278040.7	276331.0	-278090.0	276340.5
+DNMPPA	dhpmp[c] + h2o[c]  -> dhnpt[c] + pi[c] 	-278040.7	276331.0	-278090.0	276340.5
+DHDPS	aspsa[c] + pyr[c]  -> 23dhdp[c] + 2 h2o[c] + h[c] 	-339960.5	339003.5	-339970.0	339052.7
+DHFS	atp[c] + dhpt[c] + glu__L[c]  -> adp[c] + dhf[c] + h[c] + pi[c] 	-439361.7	437177.0	-439420.5	437235.8
+DHNAOT4	dhna[c] + h[c] + octdp[c]  -> 2dmmql8[c] + co2[c] + ppi[c] 	-341837.3	337126.6	-341906.2	337155.7
+DHNPA2r	dhnpt[c]  -> 6hmhpt[c] + gcald[c] 	-339482.0	339482.0	-339531.2	339491.5
+DHORD2	dhor__S[c] + q8[c]  -> orot[c] + q8h2[c] 	-392000.0	392000.0	-392039.2	392039.2
+DNTPPA	ahdt[c] + h2o[c]  -> dhpmp[c] + h[c] + ppi[c] 	-278917.7	275454.0	-278967.0	275463.6
+DOGULNR	23doguln[c] + h[c] + nadh[c]  -> 3dhguln[c] + nad[c] 	-277200.5	277171.2	-277239.7	277210.4
+DHORD5	dhor__S[c] + mqn8[c]  -> mql8[c] + orot[c] 	-392000.0	392000.0	-392039.2	392039.2
+DHPPD	cechddd[c] + nad[c]  -> dhpppn[c] + h[c] + nadh[c] 	-277171.2	277200.5	-277210.4	277239.7
+DHPPDA2	25drapp[c] + h2o[c] + h[c]  -> 5apru[c] + nh4[c] 	-277027.7	277344.0	-277077.0	277353.5
+DHPS2	4abz[c] + 6hmhptpp[c]  -> dhpt[c] + ppi[c] 	-341453.0	337510.9	-341492.2	337550.1
+DPCOAK	atp[c] + dpcoa[c]  -> adp[c] + coa[c] + h[c] 	-392005.2	391994.8	-392044.4	392034.0
+DPR	2dhp[c] + h[c] + nadph[c]  -> pant__R[c] + nadp[c] 	-277200.2	277171.5	-277239.4	277210.7
+DRPA	2dr5p[c]  -> acald[c] + g3p[c] 	-339482.0	339482.0	-339531.2	339491.5
+DSBAO1	dsbard[p] + q8[c]  -> dsbaox[p] + q8h2[c] 	-392000.0	392000.0	-392039.2	392039.2
+DSBAO2	dsbard[p] + mqn8[c]  -> dsbaox[p] + mql8[c] 	-392000.0	392000.0	-392039.2	392039.2
+DSBCGT	dsbcox[p] + 2 gthrd[p]  -> dsbcrd[p] + gthox[p] 	-518569.0	518565.5	-518598.1	518634.4
+DSBDR	dsbdox[c] + trdrd[c]  -> dsbdrd[c] + trdox[c] 	-277243.0	277128.7	-277282.2	277167.9
+DSBGGT	dsbgox[p] + 2 gthrd[p]  -> dsbgrd[p] + gthox[p] 	-518569.0	518565.5	-518598.1	518634.4
+DHPTDCs	dhptd[c]  -> h2o[c] + hmfurn[c] 	-277423.4	276948.3	-277443.0	276967.9
+DHQS	2dda7p[c]  -> 3dhq[c] + pi[c] 	-278274.8	276096.9	-278324.1	276106.4
+DHQTi	3dhq[c]  -> 3dhsk[c] + h2o[c] 	-277423.4	276948.3	-277443.0	276967.9
+DURIK1	atp[c] + duri[c]  -> adp[c] + dump[c] + h[c] 	-391998.3	392001.7	-392037.5	392040.9
+EAR40x	but2eACP[c] + h[c] + nadh[c]  -> butACP[c] + nad[c] 	-277200.5	277171.2	-277239.7	277210.4
+3OAR121	3ocddec5eACP[c] + h[c] + nadph[c]  -> 3hcddec5eACP[c] + nadp[c] 	-277200.2	277171.5	-277239.4	277210.7
+EAR40y	but2eACP[c] + h[c] + nadph[c]  -> butACP[c] + nadp[c] 	-277200.2	277171.5	-277239.4	277210.7
+DUTPDP	dutp[c] + h2o[c]  -> dump[c] + h[c] + ppi[c] 	-278917.7	275454.0	-278967.0	275463.6
+EAR60x	h[c] + nadh[c] + thex2eACP[c]  -> hexACP[c] + nad[c] 	-277200.5	277171.2	-277239.7	277210.4
+DXPRIi	dxyl5p[c] + h[c] + nadph[c]  -> 2me4p[c] + nadp[c] 	-277200.2	277171.5	-277239.4	277210.7
+DXPS	g3p[c] + h[c] + pyr[c]  -> co2[c] + dxyl5p[c] 	-339866.2	339097.7	-339905.4	339136.9
+EAR60y	h[c] + nadph[c] + thex2eACP[c]  -> hexACP[c] + nadp[c] 	-277200.2	277171.5	-277239.4	277210.7
+EAR80x	h[c] + nadh[c] + toct2eACP[c]  -> ocACP[c] + nad[c] 	-277200.5	277171.2	-277239.7	277210.4
+EAR80y	h[c] + nadph[c] + toct2eACP[c]  -> ocACP[c] + nadp[c] 	-277200.2	277171.5	-277239.4	277210.7
+DXYLK	atp[c] + dxyl[c]  -> adp[c] + dxyl5p[c] + h[c] 	-391998.3	392001.7	-392037.5	392040.9
+ECA4OALpp	colipa[p] + eca4und[p]  -> eca4colipa[p] + h[p] + udcpdp[p] 	-392067.1	391932.9	-392106.3	391972.1
+ECAP1pp	2 unagamuf[p]  -> eca2und[p] + h[p] + udcpdp[p] 	-480106.9	480093.1	-480146.1	480132.3
+EAR100x	h[c] + nadh[c] + tdec2eACP[c]  -> dcaACP[c] + nad[c] 	-277200.5	277171.2	-277239.7	277210.4
+3OAR141	3ocmrs7eACP[c] + h[c] + nadph[c]  -> 3hcmrs7eACP[c] + nadp[c] 	-277200.2	277171.5	-277239.4	277210.7
+EAR100y	h[c] + nadph[c] + tdec2eACP[c]  -> dcaACP[c] + nadp[c] 	-277200.2	277171.5	-277239.4	277210.7
+EAR120x	h[c] + nadh[c] + tddec2eACP[c]  -> ddcaACP[c] + nad[c] 	-277200.5	277171.2	-277239.7	277210.4
+EAR120y	h[c] + nadph[c] + tddec2eACP[c]  -> ddcaACP[c] + nadp[c] 	-277200.2	277171.5	-277239.4	277210.7
+ECAP2pp	eca2und[p] + unagamuf[p]  -> eca3und[p] + h[p] + udcpdp[p] 	-392008.6	391991.4	-392047.8	392030.6
+ECAP3pp	eca3und[p] + unagamuf[p]  -> eca4und[p] + h[p] + udcpdp[p] 	-392010.3	391989.7	-392049.5	392028.9
+EAR121x	h[c] + nadh[c] + t3c5ddeceACP[c]  -> cddec5eACP[c] + nad[c] 	-277200.5	277171.2	-277239.7	277210.4
+EAR121y	h[c] + nadph[c] + t3c5ddeceACP[c]  -> cddec5eACP[c] + nadp[c] 	-277200.2	277171.5	-277239.4	277210.7
+EAR140x	h[c] + nadh[c] + tmrs2eACP[c]  -> myrsACP[c] + nad[c] 	-277200.5	277171.2	-277239.7	277210.4
+EAR140y	h[c] + nadph[c] + tmrs2eACP[c]  -> myrsACP[c] + nadp[c] 	-277200.2	277171.5	-277239.4	277210.7
+EAR141x	h[c] + nadh[c] + t3c7mrseACP[c]  -> nad[c] + tdeACP[c] 	-277200.5	277171.2	-277239.7	277210.4
+EAR141y	h[c] + nadph[c] + t3c7mrseACP[c]  -> nadp[c] + tdeACP[c] 	-277200.2	277171.5	-277239.4	277210.7
+EAR160x	h[c] + nadh[c] + tpalm2eACP[c]  -> palmACP[c] + nad[c] 	-277200.5	277171.2	-277239.7	277210.4
+EAR160y	h[c] + nadph[c] + tpalm2eACP[c]  -> palmACP[c] + nadp[c] 	-277200.2	277171.5	-277239.4	277210.7
+EAR161x	h[c] + nadh[c] + t3c9palmeACP[c]  -> hdeACP[c] + nad[c] 	-277200.5	277171.2	-277239.7	277210.4
+EAR161y	h[c] + nadph[c] + t3c9palmeACP[c]  -> hdeACP[c] + nadp[c] 	-277200.2	277171.5	-277239.4	277210.7
+EDA	2ddg6p[c]  -> g3p[c] + pyr[c] 	-339478.5	339485.4	-339527.8	339494.9
+EDD	6pgc[c]  -> 2ddg6p[c] + h2o[c] 	-277423.4	276948.3	-277443.0	276967.9
+EDTXS1	ddcaACP[c] + kdo2lipid4[c]  -> ACP[c] + kdo2lipid4L[c] 	-392000.0	392000.0	-392039.2	392039.2
+EDTXS2	kdo2lipid4L[c] + myrsACP[c]  -> ACP[c] + lipa[c] 	-392000.0	392000.0	-392039.2	392039.2
+EDTXS3	kdo2lipid4[c] + hdeACP[c]  -> ACP[c] + kdo2lipid4p[c] 	-392000.0	392000.0	-392039.2	392039.2
+EAR180x	h[c] + nadh[c] + toctd2eACP[c]  -> ocdcaACP[c] + nad[c] 	-277200.5	277171.2	-277239.7	277210.4
+EAR180y	h[c] + nadph[c] + toctd2eACP[c]  -> ocdcaACP[c] + nadp[c] 	-277200.2	277171.5	-277239.4	277210.7
+3OAR161	3ocpalm9eACP[c] + h[c] + nadph[c]  -> 3hcpalm9eACP[c] + nadp[c] 	-277200.2	277171.5	-277239.4	277210.7
+EAR181x	h[c] + nadh[c] + t3c11vaceACP[c]  -> octeACP[c] + nad[c] 	-277200.5	277171.2	-277239.7	277210.4
+EAR181y	h[c] + nadph[c] + t3c11vaceACP[c]  -> octeACP[c] + nadp[c] 	-277200.2	277171.5	-277239.4	277210.7
+EDTXS4	kdo2lipid4p[c] + myrsACP[c]  -> ACP[c] + lipa_old_[c] 	-392000.0	392000.0	-392039.2	392039.2
+ENTCS	3 23dhba[c] + 3 seramp[c]  -> 6 amp[c] + enter[c] + 9 h[c] 	-1453600.7	1453549.1	-1453748.0	1453656.6
+ENTERES	enter[c] + 3 h2o[c]  -> 3 23dhbzs[c] + 3 h[c] 	-619099.0	620513.8	-619178.0	620513.3
+ENTERES2	feenter[c] + 3 h2o[c]  -> 3 23dhbzs[c] + fe3[c] + 3 h[c] 	-649351.0	650765.9	-649459.7	650755.2
+ETHAAL	etha[c]  -> acald[c] + nh4[c] 	-277265.3	277106.4	-277314.6	277116.0
+ETHSO3abcpp	atp[c] + ethso3[p] + h2o[c]  -> adp[c] + ethso3[c] + h[c] + pi[c] 	-278030.3	276341.4	-278099.2	276370.5
+F6PP	f6p[c] + h2o[c]  -> fru[c] + pi[c] 	-278040.7	276331.0	-278090.0	276340.5
+FA100ACPHi	dcaACP[c] + h2o[c]  -> ACP[c] + dca[c] + h[c] 	-339246.2	339717.8	-339295.4	339727.3
+FA120ACPHi	ddcaACP[c] + h2o[c]  -> ACP[c] + ddca[c] + h[c] 	-339246.2	339717.8	-339295.4	339727.3
+FA140ACPHi	h2o[c] + myrsACP[c]  -> ACP[c] + h[c] + ttdca[c] 	-339246.2	339717.8	-339295.4	339727.3
+FA141ACPHi	h2o[c] + tdeACP[c]  -> ACP[c] + h[c] + ttdcea[c] 	-339246.2	339717.8	-339295.4	339727.3
+FA160ACPHi	h2o[c] + palmACP[c]  -> ACP[c] + h[c] + hdca[c] 	-339246.2	339717.8	-339295.4	339727.3
+FA161ACPHi	h2o[c] + hdeACP[c]  -> ACP[c] + h[c] + hdcea[c] 	-339246.2	339717.8	-339295.4	339727.3
+FA80ACPHi	h2o[c] + ocACP[c]  -> ACP[c] + h[c] + octa[c] 	-339246.2	339717.8	-339295.4	339727.3
+FACOAE100	dcacoa[c] + h2o[c]  -> coa[c] + dca[c] + h[c] 	-339246.2	339717.8	-339295.4	339727.3
+FACOAE120	ddcacoa[c] + h2o[c]  -> coa[c] + ddca[c] + h[c] 	-339246.2	339717.8	-339295.4	339727.3
+FACOAE140	h2o[c] + tdcoa[c]  -> coa[c] + h[c] + ttdca[c] 	-339246.2	339717.8	-339295.4	339727.3
+FACOAE141	h2o[c] + tdecoa[c]  -> coa[c] + h[c] + ttdcea[c] 	-339246.2	339717.8	-339295.4	339727.3
+FACOAE160	h2o[c] + pmtcoa[c]  -> coa[c] + h[c] + hdca[c] 	-339246.2	339717.8	-339295.4	339727.3
+FACOAE161	h2o[c] + hdcoa[c]  -> coa[c] + h[c] + hdcea[c] 	-339246.2	339717.8	-339295.4	339727.3
+FACOAE180	h2o[c] + stcoa[c]  -> coa[c] + h[c] + ocdca[c] 	-339246.2	339717.8	-339295.4	339727.3
+FACOAE181	h2o[c] + odecoa[c]  -> coa[c] + h[c] + ocdcea[c] 	-339246.2	339717.8	-339295.4	339727.3
+FACOAE60	h2o[c] + hxcoa[c]  -> coa[c] + h[c] + hxa[c] 	-339246.2	339717.8	-339295.4	339727.3
+FACOAE80	h2o[c] + occoa[c]  -> coa[c] + h[c] + octa[c] 	-339246.2	339717.8	-339295.4	339727.3
+FACOAL100t2pp	coa[c] + atp[c] + dca[p] + h[p]  -> amp[c] + dcacoa[c] + h[c] + ppi[c] 	-440236.9	436301.7	-440295.8	436360.5
+FACOAL120t2pp	coa[c] + atp[c] + ddca[p] + h[p]  -> amp[c] + ddcacoa[c] + h[c] + ppi[c] 	-440236.9	436301.7	-440295.8	436360.5
+FACOAL140t2pp	coa[c] + atp[c] + h[p] + ttdca[p]  -> amp[c] + h[c] + ppi[c] + tdcoa[c] 	-440236.9	436301.7	-440295.8	436360.5
+FACOAL141t2pp	coa[c] + atp[c] + h[p] + ttdcea[p]  -> amp[c] + h[c] + ppi[c] + tdecoa[c] 	-440236.9	436301.7	-440295.8	436360.5
+FACOAL160t2pp	coa[c] + atp[c] + h[p] + hdca[p]  -> amp[c] + h[c] + pmtcoa[c] + ppi[c] 	-440236.9	436301.7	-440295.8	436360.5
+FACOAL161t2pp	coa[c] + atp[c] + h[p] + hdcea[p]  -> amp[c] + h[c] + hdcoa[c] + ppi[c] 	-440236.9	436301.7	-440295.8	436360.5
+FACOAL180t2pp	coa[c] + atp[c] + h[p] + ocdca[p]  -> amp[c] + h[c] + ppi[c] + stcoa[c] 	-440236.9	436301.7	-440295.8	436360.5
+FDMO4	butso3[c] + fmnh2[c] + o2[c]  -> btal[c] + fmn[c] + h2o[c] + h[c] + so3[c] 	-277931.1	276440.6	-277989.9	276499.4
+FDMO6	fmnh2[c] + o2[c] + sulfac[c]  -> fmn[c] + h2o[c] + h[c] + glx[c] + so3[c] 	-277929.4	276442.3	-277988.2	276501.1
+FE2abcpp	atp[c] + fe2[p] + h2o[c]  -> adp[c] + fe2[c] + h[c] + pi[c] 	-278056.3	276315.4	-278125.2	276344.5
+FACOAL181t2pp	coa[c] + atp[c] + h[p] + ocdcea[p]  -> amp[c] + h[c] + odecoa[c] + ppi[c] 	-440236.9	436301.7	-440295.8	436360.5
+FACOAL60t2pp	coa[c] + atp[c] + h[p] + hxa[p]  -> amp[c] + h[c] + hxcoa[c] + ppi[c] 	-440236.9	436301.7	-440295.8	436360.5
+FACOAL80t2pp	coa[c] + atp[c] + h[p] + octa[p]  -> amp[c] + h[c] + occoa[c] + ppi[c] 	-440236.9	436301.7	-440295.8	436360.5
+FE3DCITabcpp	atp[c] + fe3dcit[p] + h2o[c]  -> 2 cit[c] + adp[c] + fe3[c] + h[c] + pi[c] 	-555214.3	553529.2	-555342.5	553538.1
+FE3DHBZR	fe3dhbzs[c]  -> 23dhbzs[c] + fe3[c] 	-339487.1	339476.8	-339536.4	339486.3
+FE3DHBZSabcpp	atp[c] + fe3dhbzs[p] + h2o[c]  -> adp[c] + fe3dhbzs[c] + h[c] + pi[c] 	-278056.3	276315.4	-278125.2	276344.5
+FE3HOXR1	fadh2[c] + 2 fe3hox[c]  -> fad[c] + 2 fe2[c] + 2 fe3hox_un[c] + 2 h[c] 	-678948.8	678979.1	-679067.0	679017.7
+FE3HOXR2	fmnh2[c] + 2 fe3hox[c]  -> fmn[c] + 2 fe2[c] + 2 fe3hox_un[c] + 2 h[c] 	-678948.0	678979.8	-679066.2	679018.4
+FBP	fdp[c] + h2o[c]  -> f6p[c] + pi[c] 	-278033.8	276337.9	-278083.1	276347.4
+FCLK	atp[c] + fcl__L[c]  -> adp[c] + fc1p[c] + h[c] 	-391998.3	392001.7	-392037.5	392040.9
+FCLT	fe2[c] + ppp9[c]  -> 2 h[c] + pheme[c] 	-339480.2	339483.7	-339489.8	339533.0
+FE3HOXR3	2 fe3hox[c] + rbflvrd[c]  -> 2 fe2[c] + 2 fe3hox_un[c] + 2 h[c] + ribflv[c] 	-733388.9	733340.8	-733507.1	733379.4
+FE3HOXabcpp	atp[c] + fe3hox[p] + h2o[c]  -> adp[c] + fe3hox[c] + h[c] + pi[c] 	-278039.0	276332.7	-278107.9	276361.9
+FE3HOXexs	fe3[e] + fe3hox_un[e]  -> fe3hox[e] 	-339466.5	339497.4	-339476.0	339546.7
+FE3Ri	fadh2[c] + 2 fe3[c]  -> fad[c] + 2 fe2[c] + 2 h[c] 	-554325.6	554417.8	-554384.4	554476.6
+FE3abcpp	atp[c] + fe3[p] + h2o[c]  -> adp[c] + fe3[c] + h[c] + pi[c] 	-278065.0	276306.7	-278133.9	276335.8
+FDH4pp_1	for[p] + 2 h[c] + q8[c]  -> co2[c] + h[p] + q8h2[c] 	-277204.5	277167.2	-277243.7	277206.4
+FDH5pp_1	for[p] + 2 h[c] + mqn8[c]  -> co2[c] + h[p] + mql8[c] 	-277204.5	277167.2	-277243.7	277206.4
+FDMO	fmnh2[c] + isetac[c] + o2[c]  -> fmn[c] + gcald[c] + h2o[c] + h[c] + so3[c] 	-277931.1	276440.6	-277989.9	276499.4
+FDMO2	fmnh2[c] + mso3[c] + o2[c]  -> fmn[c] + fald[c] + h2o[c] + h[c] + so3[c] 	-196869.2	195130.8	-196928.0	195189.6
+FECRMR1	fadh2[c] + 2 fecrm[c]  -> fad[c] + 2 fe2[c] + 2 fecrm_un[c] + 2 h[c] 	-678948.8	678979.1	-679067.0	679017.7
+FECRMR2	fmnh2[c] + 2 fecrm[c]  -> fmn[c] + 2 fe2[c] + 2 fecrm_un[c] + 2 h[c] 	-678948.0	678979.8	-679066.2	679018.4
+FECRMR3	2 fecrm[c] + rbflvrd[c]  -> 2 fe2[c] + 2 fecrm_un[c] + 2 h[c] + ribflv[c] 	-733388.9	733340.8	-733507.1	733379.4
+FDMO3	fmnh2[c] + ethso3[c] + o2[c]  -> acald[c] + fmn[c] + h2o[c] + h[c] + so3[c] 	-277931.1	276440.6	-277989.9	276499.4
+FECRMabcpp	atp[c] + fecrm[p] + h2o[c]  -> adp[c] + fecrm[c] + h[c] + pi[c] 	-278039.0	276332.7	-278107.9	276361.9
+FECRMexs	fe3[e] + fecrm_un[e]  -> fecrm[e] 	-339466.5	339497.4	-339476.0	339546.7
+FRD2	fum[c] + mql8[c]  -> mqn8[c] + succ[c] 	-392000.0	392000.0	-392039.2	392039.2
+FRD3	2dmmql8[c] + fum[c]  -> 2dmmq8[c] + succ[c] 	-392000.0	392000.0	-392039.2	392039.2
+FRUK	atp[c] + f1p[c]  -> adp[c] + fdp[c] + h[c] 	-392005.2	391994.8	-392044.4	392034.0
+FRULYSK	atp[c] + frulys[c]  -> adp[c] + frulysp[c] + h[c] 	-391994.8	392005.2	-392034.0	392044.4
+FEENTERR1	fadh2[c] + 2 feenter[c]  -> 2 enter[c] + fad[c] + 2 fe2[c] + 2 h[c] 	-678917.8	679010.0	-679036.0	679048.6
+FEENTERR2	fmnh2[c] + 2 feenter[c]  -> fmn[c] + 2 enter[c] + 2 fe2[c] + 2 h[c] 	-678917.1	679010.8	-679035.2	679049.4
+FEENTERR3	2 feenter[c] + rbflvrd[c]  -> 2 enter[c] + 2 fe2[c] + 2 h[c] + ribflv[c] 	-733358.0	733371.7	-733476.1	733410.4
+FEENTERabcpp	atp[c] + feenter[p] + h2o[c]  -> adp[c] + feenter[c] + h[c] + pi[c] 	-278065.0	276306.7	-278133.9	276335.8
+FEENTERexs	enter[e] + fe3[e]  -> feenter[e] 	-339482.0	339482.0	-339491.5	339531.2
+FRUpts2pp	fru[p] + pep[c]  -> f6p[c] + pyr[c] 	-391996.6	392003.4	-392035.8	392042.6
+FRUptspp	fru[p] + pep[c]  -> f1p[c] + pyr[c] 	-391996.6	392003.4	-392035.8	392042.6
+FEOXAMR1	2 feoxam[c] + fadh2[c]  -> fad[c] + 2 fe2[c] + 2 feoxam_un[c] + 2 h[c] 	-678938.5	678989.4	-679056.6	679028.0
+FEOXAMR2	2 feoxam[c] + fmnh2[c]  -> fmn[c] + 2 fe2[c] + 2 feoxam_un[c] + 2 h[c] 	-678937.7	678990.1	-679055.9	679028.8
+FEOXAMR3	2 feoxam[c] + rbflvrd[c]  -> 2 fe2[c] + 2 feoxam_un[c] + 2 h[c] + ribflv[c] 	-733378.6	733351.1	-733496.8	733389.7
+FTHFD	10fthf[c] + h2o[c]  -> for[c] + h[c] + thf[c] 	-277298.3	277073.4	-277347.6	277082.9
+FEOXAMabcpp	atp[c] + feoxam[p] + h2o[c]  -> adp[c] + feoxam[c] + h[c] + pi[c] 	-278047.7	276324.1	-278116.5	276353.2
+FEOXAMexs	feoxam_un[e] + fe3[e]  -> feoxam[e] 	-339471.6	339492.3	-339481.1	339541.6
+FEROpp	4 fe2[p] + 4 h[p] + o2[p]  -> 4 fe3[p] + 2 h2o[p] 	-1109248.7	1108238.2	-1109317.0	1108346.3
+FFSD	h2o[c] + suc6p[c]  -> fru[c] + g6p[c] 	-339244.4	339719.5	-339293.7	339729.0
+FLDR	fldox[c] + h[c] + nadph[c]  -> fldrd[c] + nadp[c] 	-277200.2	277171.5	-277239.4	277210.7
+G1PACT	accoa[c] + gam1p[c]  -> acgam1p[c] + coa[c] + h[c] 	-392003.4	391996.6	-392042.6	392035.8
+FLVR	h[c] + nadph[c] + ribflv[c]  -> nadp[c] + rbflvrd[c] 	-277200.2	277171.5	-277239.4	277210.7
+FLVRx	h[c] + nadh[c] + ribflv[c]  -> nad[c] + rbflvrd[c] 	-277200.5	277171.2	-277239.7	277210.4
+FMETTRS	10fthf[c] + mettrna[c]  -> fmettrna[c] + h[c] + thf[c] 	-392000.0	392000.0	-392039.2	392039.2
+G1PPpp	g1p[p] + h2o[p]  -> glc__D[p] + pi[p] 	-278040.7	276331.0	-278090.0	276340.5
+G1PTT	dttp[c] + g1p[c] + h[c]  -> dtdpglu[c] + ppi[c] 	-341446.1	337517.8	-341485.3	337557.0
+G2PPpp	h2o[p] + glyc2p[p]  -> glyc[p] + pi[p] 	-278040.7	276331.0	-278090.0	276340.5
+FMNAT	atp[c] + fmn[c] + h[c]  -> fad[c] + ppi[c] 	-279150.4	275221.3	-279189.6	275260.5
+G3PAT120	ddcaACP[c] + glyc3p[c]  -> 1ddecg3p[c] + ACP[c] 	-392000.0	392000.0	-392039.2	392039.2
+G3PAT140	glyc3p[c] + myrsACP[c]  -> 1tdecg3p[c] + ACP[c] 	-392000.0	392000.0	-392039.2	392039.2
+G3PAT141	glyc3p[c] + tdeACP[c]  -> 1tdec7eg3p[c] + ACP[c] 	-392000.0	392000.0	-392039.2	392039.2
+G3PAT160	glyc3p[c] + palmACP[c]  -> 1hdecg3p[c] + ACP[c] 	-392000.0	392000.0	-392039.2	392039.2
+G3PAT161	hdeACP[c] + glyc3p[c]  -> 1hdec9eg3p[c] + ACP[c] 	-392000.0	392000.0	-392039.2	392039.2
+G3PAT180	glyc3p[c] + ocdcaACP[c]  -> 1odecg3p[c] + ACP[c] 	-392000.0	392000.0	-392039.2	392039.2
+G3PAT181	glyc3p[c] + octeACP[c]  -> 1odec11eg3p[c] + ACP[c] 	-392000.0	392000.0	-392039.2	392039.2
+G3PCabcpp	atp[c] + g3pc[p] + h2o[c]  -> adp[c] + g3pc[c] + h[c] + pi[c] 	-278039.0	276332.7	-278107.9	276361.9
+GALCTD	galct__D[c]  -> 5dh4dglc[c] + h2o[c] 	-277423.4	276948.3	-277443.0	276967.9
+GALCTLO	galctn__L[c] + nad[c]  -> h[c] + nadh[c] + tagur[c] 	-277171.2	277200.5	-277210.4	277239.7
+GALCTND	galctn__D[c]  -> 2dh3dgal[c] + h2o[c] 	-277423.4	276948.3	-277443.0	276967.9
+G3PD5	glyc3p[c] + q8[c]  -> dhap[c] + q8h2[c] 	-392000.0	392000.0	-392039.2	392039.2
+G3PD6	glyc3p[c] + mqn8[c]  -> dhap[c] + mql8[c] 	-392000.0	392000.0	-392039.2	392039.2
+G3PD7	2dmmq8[c] + glyc3p[c]  -> 2dmmql8[c] + dhap[c] 	-392000.0	392000.0	-392039.2	392039.2
+G3PEabcpp	atp[c] + g3pe[p] + h2o[c]  -> adp[c] + g3pe[c] + h[c] + pi[c] 	-278039.0	276332.7	-278107.9	276361.9
+G3PGabcpp	atp[c] + g3pg[p] + h2o[c]  -> adp[c] + g3pg[c] + h[c] + pi[c] 	-278030.3	276341.4	-278099.2	276370.5
+GALM2pp	gal_bD[p]  -> gal[p] 	-277185.9	277185.9	-277205.5	277205.5
+GALS3	h2o[c] + melib[c]  -> gal[c] + glc__D[c] 	-339244.4	339719.5	-339293.7	339729.0
+G3PIabcpp	atp[c] + g3pi[p] + h2o[c]  -> adp[c] + g3pi[c] + h[c] + pi[c] 	-278030.3	276341.4	-278099.2	276370.5
+GALT1	gicolipa[c] + udpg[c]  -> gagicolipa[c] + h[c] + udp[c] 	-392005.2	391994.8	-392044.4	392034.0
+GALTptspp	galt[p] + pep[c]  -> galt1p[c] + pyr[c] 	-391996.6	392003.4	-392035.8	392042.6
+G3PSabcpp	atp[c] + g3ps[p] + h2o[c]  -> adp[c] + g3ps[c] + h[c] + pi[c] 	-278030.3	276341.4	-278099.2	276370.5
+G3PT	h2o[c] + glyc3p[c]  -> glyc[c] + pi[c] 	-278040.7	276331.0	-278090.0	276340.5
+G5SADs	glu5sa[c]  -> 1pyr5c[c] + h2o[c] + h[c] 	-277425.1	276946.6	-277444.7	276966.2
+G5SD	h[c] + glu5p[c] + nadph[c]  -> glu5sa[c] + pi[c] + nadp[c] 	-278292.6	276079.2	-278361.5	276108.3
+G6PDA	gam6p[c] + h2o[c]  -> f6p[c] + nh4[c] 	-277031.2	277340.5	-277080.5	277350.0
+GALUi	g1p[c] + h[c] + utp[c]  -> ppi[c] + udpg[c] 	-341446.1	337517.8	-341485.3	337557.0
+GALabcpp	atp[c] + gal[p] + h2o[c]  -> adp[c] + gal[c] + h[c] + pi[c] 	-278039.0	276332.7	-278107.9	276361.9
+G6PP	g6p[c] + h2o[c]  -> glc__D[c] + pi[c] 	-278040.7	276331.0	-278090.0	276340.5
+GAMptspp	gam[p] + pep[c]  -> gam6p[c] + pyr[c] 	-392001.8	391998.2	-392041.0	392037.4
+GAL1PPpp	gal1p[p] + h2o[p]  -> gal[p] + pi[p] 	-278040.7	276331.0	-278090.0	276340.5
+GART	atp[c] + for[c] + gar[c]  -> adp[c] + fgam[c] + h[c] + pi[c] 	-392744.1	391255.9	-392802.9	391314.7
+GLCabcpp	atp[c] + h2o[c] + glc__D[p]  -> adp[c] + glc__D[c] + h[c] + pi[c] 	-278039.0	276332.7	-278107.9	276361.9
+GCALDD	gcald[c] + h2o[c] + nad[c]  -> 2 h[c] + glyclt[c] + nadh[c] 	-276935.4	277436.3	-276974.6	277475.5
+GDMANE	gdpddman[c]  -> gdpofuc[c] 	-277185.9	277185.9	-277205.5	277205.5
+GDPDPK	atp[c] + gdp[c]  -> amp[c] + h[c] + ppgpp[c] 	-392013.8	391986.2	-392053.0	392025.4
+GDPMNH	gdpmann[c] + h2o[c]  -> gdp[c] + h[c] + man[c] 	-339249.6	339714.3	-339298.9	339723.8
+GLCptspp	glc__D[p] + pep[c]  -> g6p[c] + pyr[c] 	-391996.6	392003.4	-392035.8	392042.6
+GLDBRAN2	bglycogen[c]  -> glycogen[c] 	-277185.9	277185.9	-277205.5	277205.5
+GDPMNP	gdpmann[c] + h2o[c]  -> 2 h[c] + gmp[c] + man1p[c] 	-339249.6	339714.3	-339298.9	339723.8
+GLGC	atp[c] + g1p[c] + h[c]  -> adpglc[c] + ppi[c] 	-341446.1	337517.8	-341485.3	337557.0
+GLNS	atp[c] + glu__L[c] + nh4[c]  -> adp[c] + h[c] + gln__L[c] + pi[c] 	-393009.5	390990.5	-393068.3	391049.3
+GLNTRS	atp[c] + gln__L[c] + trnagln[c]  -> amp[c] + glntrna[c] + ppi[c] 	-440238.7	436300.0	-440297.5	436358.8
+GLNabcpp	atp[c] + h2o[c] + gln__L[p]  -> adp[c] + h[c] + gln__L[c] + pi[c] 	-278039.0	276332.7	-278107.9	276361.9
+GF6PTA	f6p[c] + gln__L[c]  -> gam6p[c] + glu__L[c] 	-391998.3	392001.7	-392037.5	392040.9
+GGGABAH	gg4abut[c] + h2o[c]  -> 4abut[c] + glu__L[c] 	-339244.4	339719.5	-339293.7	339729.0
+GGPTRCO	h2o[c] + ggptrc[c] + o2[c]  -> h2o2[c] + ggbutal[c] + nh4[c] 	-277178.2	277193.5	-277247.1	277222.7
+GGPTRCS	atp[c] + glu__L[c] + ptrc[c]  -> adp[c] + ggptrc[c] + h[c] + pi[c] 	-439356.5	437182.1	-439415.3	437240.9
+GLU5K	atp[c] + glu__L[c]  -> adp[c] + glu5p[c] 	-391996.6	392003.4	-392035.8	392042.6
+GLUCYS	atp[c] + cys__L[c] + glu__L[c]  -> adp[c] + h[c] + glucys[c] + pi[c] 	-439360.0	437178.7	-439418.8	437237.5
+GLUDC	h[c] + glu__L[c]  -> 4abut[c] + co2[c] 	-277570.1	276801.6	-277619.4	276811.1
+GLBRAN2	glycogen[c]  -> bglycogen[c] 	-277185.9	277185.9	-277205.5	277205.5
+GLCDpp	h2o[p] + glc__D[p] + q8[c]  -> h[p] + glcn[p] + q8h2[c] 	-391764.2	392235.8	-391803.4	392275.0
+GLCP	glycogen[c] + pi[c]  -> g1p[c] 	-276093.5	278278.2	-276103.0	278327.5
+GLUN	h2o[c] + gln__L[c]  -> glu__L[c] + nh4[c] 	-277029.5	277342.2	-277078.8	277351.8
+GLUNpp	h2o[p] + gln__L[p]  -> glu__L[p] + nh4[p] 	-277029.5	277342.2	-277078.8	277351.8
+GLUPRT	h2o[c] + gln__L[c] + prpp[c]  -> glu__L[c] + ppi[c] + pram[c] 	-393721.5	390278.5	-393790.4	390307.6
+GLUSy	akg[c] + h[c] + gln__L[c] + nadph[c]  -> 2 glu__L[c] + nadp[c] 	-480112.6	480087.4	-480171.4	480146.2
+GLUTRR	h[c] + glutrna[c] + nadph[c]  -> glu1sa[c] + nadp[c] + trnaglu[c] 	-339496.3	339467.6	-339565.2	339496.7
+GLCP2	bglycogen[c] + pi[c]  -> g1p[c] 	-276093.5	278278.2	-276103.0	278327.5
+GLCRAL	5dh4dglc[c]  -> 2h3oppan[c] + pyr[c] 	-339480.2	339483.7	-339529.5	339493.2
+GLCRD	glcr[c]  -> 5dh4dglc[c] + h2o[c] 	-277423.4	276948.3	-277443.0	276967.9
+GLUTRS	atp[c] + glu__L[c] + trnaglu[c]  -> amp[c] + glutrna[c] + ppi[c] 	-440236.9	436301.7	-440295.8	436360.5
+GLUabcpp	atp[c] + h2o[c] + glu__L[p]  -> adp[c] + h[c] + glu__L[c] + pi[c] 	-278030.3	276341.4	-278099.2	276370.5
+GLCS1	adpglc[c]  -> adp[c] + h[c] + glycogen[c] 	-339487.1	339476.8	-339536.4	339486.3
+GLCTR1	icolipa[c] + udpg[c]  -> gicolipa[c] + h[c] + udp[c] 	-392005.2	391994.8	-392044.4	392034.0
+GLCTR2	gagicolipa[c] + udpg[c]  -> ggagicolipa[c] + h[c] + udp[c] 	-392005.2	391994.8	-392044.4	392034.0
+GLCTR3	ggagicolipa[c] + udpg[c]  -> gggagicolipa[c] + h[c] + udp[c] 	-392005.2	391994.8	-392044.4	392034.0
+GLXCL	h[c] + 2 glx[c]  -> 2h3oppan[c] + co2[c] 	-438653.6	437885.0	-438692.8	437924.2
+GMAND	gdpmann[c]  -> gdpddman[c] + h2o[c] 	-277423.4	276948.3	-277443.0	276967.9
+GLYBabcpp	atp[c] + h2o[c] + glyb[p]  -> adp[c] + h[c] + glyb[c] + pi[c] 	-278039.0	276332.7	-278107.9	276361.9
+GLYC3Pabcpp	atp[c] + h2o[c] + glyc3p[p]  -> adp[c] + h[c] + glyc3p[c] + pi[c] 	-278021.6	276350.1	-278090.5	276379.2
+GMHEPAT	atp[c] + h[c] + gmhep1p[c]  -> adphep_DD[c] + ppi[c] 	-341446.1	337517.8	-341485.3	337557.0
+GMHEPK	atp[c] + gmhep7p[c]  -> adp[c] + h[c] + gmhep17bp[c] 	-392005.2	391994.8	-392044.4	392034.0
+GMHEPPA	h2o[c] + gmhep17bp[c]  -> gmhep1p[c] + pi[c] 	-278033.8	276337.9	-278083.1	276347.4
+GMPR	2 h[c] + gmp[c] + nadph[c]  -> imp[c] + nadp[c] + nh4[c] 	-277279.6	277092.1	-277348.5	277121.2
+GMPS2	atp[c] + h2o[c] + gln__L[c] + xmp[c]  -> amp[c] + 2 h[c] + glu__L[c] + gmp[c] + ppi[c] 	-481833.5	478366.5	-481922.0	478415.2
+GLYCDx	glyc[c] + nad[c]  -> dha[c] + h[c] + nadh[c] 	-277171.2	277200.5	-277210.4	277239.7
+GLYCK	atp[c] + glyc__R[c]  -> 3pg[c] + adp[c] + h[c] 	-392001.7	391998.3	-392040.9	392037.5
+GND	6pgc[c] + nadp[c]  -> co2[c] + nadph[c] + ru5p__D[c] 	-277552.4	276819.4	-277621.2	276848.5
+GNK	atp[c] + glcn[c]  -> 6pgc[c] + adp[c] + h[c] 	-392001.7	391998.3	-392040.9	392037.5
+GOFUCR	gdpofuc[c] + h[c] + nadph[c]  -> gdpfuc[c] + nadp[c] 	-277200.2	277171.5	-277239.4	277210.7
+GP4GH	h2o[c] + gp4g[c]  -> 2 gdp[c] + 2 h[c] 	-438035.2	438503.4	-438084.5	438512.9
+GLYCK2	atp[c] + glyc__R[c]  -> 2pg[c] + adp[c] + h[c] 	-392001.7	391998.3	-392040.9	392037.5
+GLYCL	gly[c] + nad[c] + thf[c]  -> co2[c] + mlthf[c] + nadh[c] + nh4[c] 	-339932.8	339031.2	-340021.3	339079.9
+GPDDA1	g3pc[c] + h2o[c]  -> chol[c] + h[c] + glyc3p[c] 	-339249.6	339714.3	-339298.9	339723.8
+GLYCLTDx	h[c] + glx[c] + nadh[c]  -> glyclt[c] + nad[c] 	-277200.5	277171.2	-277239.7	277210.4
+GLYCLTDy	h[c] + glx[c] + nadph[c]  -> glyclt[c] + nadp[c] 	-277200.2	277171.5	-277239.4	277210.7
+GPDDA1pp	g3pc[p] + h2o[p]  -> chol[p] + h[p] + glyc3p[p] 	-339249.6	339714.3	-339298.9	339723.8
+GPDDA2	g3pe[c] + h2o[c]  -> etha[c] + h[c] + glyc3p[c] 	-339249.6	339714.3	-339298.9	339723.8
+GPDDA2pp	g3pe[p] + h2o[p]  -> etha[p] + h[p] + glyc3p[p] 	-339249.6	339714.3	-339298.9	339723.8
+GPDDA3	g3ps[c] + h2o[c]  -> h[c] + glyc3p[c] + ser__L[c] 	-339247.9	339716.0	-339297.2	339725.6
+GPDDA3pp	g3ps[p] + h2o[p]  -> h[p] + glyc3p[p] + ser__L[p] 	-339247.9	339716.0	-339297.2	339725.6
+GPDDA4	g3pg[c] + h2o[c]  -> h[c] + glyc3p[c] + glyc[c] 	-339247.9	339716.0	-339297.2	339725.6
+GPDDA4pp	g3pg[p] + h2o[p]  -> h[p] + glyc3p[p] + glyc[p] 	-339247.9	339716.0	-339297.2	339725.6
+GLYCTO2	glyclt[c] + q8[c]  -> glx[c] + q8h2[c] 	-392000.0	392000.0	-392039.2	392039.2
+GLYCTO3	glyclt[c] + mqn8[c]  -> glx[c] + mql8[c] 	-392000.0	392000.0	-392039.2	392039.2
+GLYCTO4	2dmmq8[c] + glyclt[c]  -> 2dmmql8[c] + glx[c] 	-392000.0	392000.0	-392039.2	392039.2
+GPDDA5	g3pi[c] + h2o[c]  -> h[c] + glyc3p[c] + inost[c] 	-339247.9	339716.0	-339297.2	339725.6
+GPDDA5pp	g3pi[p] + h2o[p]  -> h[p] + glyc3p[p] + inost[p] 	-339247.9	339716.0	-339297.2	339725.6
+GLYK	atp[c] + glyc[c]  -> adp[c] + h[c] + glyc3p[c] 	-391998.3	392001.7	-392037.5	392040.9
+GRTT	grdp[c] + ipdp[c]  -> frdp[c] + ppi[c] 	-341453.0	337510.9	-341492.2	337550.1
+GRXR	grxox[c] + 2 gthrd[c]  -> grxrd[c] + gthox[c] 	-518569.0	518565.5	-518598.1	518634.4
+GSNK	atp[c] + gsn[c]  -> adp[c] + h[c] + gmp[c] 	-391998.3	392001.7	-392037.5	392040.9
+GLYOX	h2o[c] + lgt__S[c]  -> h[c] + lac__D[c] + gthrd[c] 	-339246.2	339717.8	-339295.4	339727.3
+GLYOX3	h2o[c] + mthgxl[c]  -> h[c] + lac__D[c] 	-276950.1	277421.7	-276969.7	277441.3
+GLYTRS	atp[c] + gly[c] + trnagly[c]  -> amp[c] + glytrna[c] + ppi[c] 	-440238.7	436300.0	-440297.5	436358.8
+GSPMDA	h2o[c] + gtspmd[c]  -> gthrd[c] + spmd[c] 	-339249.6	339714.3	-339298.9	339723.8
+GSPMDS	atp[c] + gthrd[c] + spmd[c]  -> adp[c] + h[c] + gtspmd[c] + pi[c] 	-439354.8	437183.8	-439413.6	437242.6
+GTHRDHpp	h2o[p] + gthrd[p]  -> cgly[p] + glu__L[p] 	-339244.4	339719.5	-339293.7	339729.0
+HACD5i	3hddcoa[c] + nad[c]  -> 3oddcoa[c] + h[c] + nadh[c] 	-277171.2	277200.5	-277210.4	277239.7
+HACD6i	3htdcoa[c] + nad[c]  -> 3otdcoa[c] + h[c] + nadh[c] 	-277171.2	277200.5	-277210.4	277239.7
+HACD7i	3hhdcoa[c] + nad[c]  -> 3ohdcoa[c] + h[c] + nadh[c] 	-277171.2	277200.5	-277210.4	277239.7
+GTHRDabc2pp	atp[c] + h2o[c] + gthrd[c]  -> adp[c] + h[c] + gthrd[p] + pi[c] 	-278047.7	276324.1	-278116.5	276353.2
+GTHRDabcpp	atp[c] + h2o[c] + gthrd[p]  -> adp[c] + h[c] + gthrd[c] + pi[c] 	-278030.3	276341.4	-278099.2	276370.5
+GTHS	atp[c] + glucys[c] + gly[c]  -> adp[c] + h[c] + gthrd[c] + pi[c] 	-439360.0	437178.7	-439418.8	437237.5
+HACD8i	3hodcoa[c] + nad[c]  -> 3ohodcoa[c] + h[c] + nadh[c] 	-277171.2	277200.5	-277210.4	277239.7
+GTPCI	h2o[c] + gtp[c]  -> ahdt[c] + for[c] + h[c] 	-277298.3	277073.4	-277347.6	277082.9
+GTPCII2	3 h2o[c] + gtp[c]  -> 25drapp[c] + for[c] + 2 h[c] + ppi[c] 	-278792.6	275579.1	-278871.6	275578.5
+GTPDPDP	gdptp[c] + h2o[c]  -> h[c] + pi[c] + ppgpp[c] 	-278033.8	276337.9	-278083.1	276347.4
+GTPDPK	atp[c] + gtp[c]  -> amp[c] + gdptp[c] + h[c] 	-392018.9	391981.1	-392058.1	392020.3
+HBZOPT	4hbz[c] + octdp[c]  -> 3ophb[c] + ppi[c] 	-341453.0	337510.9	-341492.2	337550.1
+GTPHs	h2o[c] + h[c] + gtp[c]  -> nh4[c] + xtp[c] 	-277027.7	277344.0	-277077.0	277353.5
+GUAD	h2o[c] + h[c] + gua[c]  -> nh4[c] + xan[c] 	-277027.7	277344.0	-277077.0	277353.5
+GUAPRT	gua[c] + prpp[c]  -> gmp[c] + ppi[c] 	-341442.7	337521.2	-341481.9	337560.4
+HCYSMT	amet[c] + hcys__L[c]  -> ahcys[c] + h[c] + met__L[c] 	-392000.0	392000.0	-392039.2	392039.2
+HCYSMT2	hcys__L[c] + mmet[c]  -> h[c] + 2 met__L[c] 	-480100.0	480100.0	-480139.2	480139.2
+CTECOAI7	hdcoa[c]  -> hdd2coa[c] 	-277185.9	277185.9	-277205.5	277205.5
+HEMEOS	frdp[c] + h2o[c] + pheme[c]  -> hemeO[c] + ppi[c] 	-341215.5	337748.4	-341254.7	337787.6
+HEPK1	atp[c] + hhlipa[c]  -> adp[c] + h[c] + phhlipa[c] 	-392018.9	391981.1	-392058.1	392020.3
+GUR1PPpp	h2o[p] + glcur1p[p]  -> glcur[p] + pi[p] 	-278037.3	276334.5	-278086.5	276344.0
+HEPK2	atp[c] + hphhlipa[c]  -> adp[c] + h[c] + phphhlipa[c] 	-392025.8	391974.2	-392065.0	392013.4
+HEPT1	adphep_LD[c] + lipa[c]  -> adp[c] + h[c] + hlipa[c] 	-392005.2	391994.8	-392044.4	392034.0
+HEPT2	adphep_LD[c] + hlipa[c]  -> adp[c] + h[c] + hhlipa[c] 	-392005.2	391994.8	-392044.4	392034.0
+HEPT3	adphep_LD[c] + phhlipa[c]  -> adp[c] + h[c] + hphhlipa[c] 	-392005.2	391994.8	-392044.4	392034.0
+HEPT4	adphep_LD[c] + gggagicolipa[c]  -> adp[c] + colipa[c] + h[c] 	-392005.2	391994.8	-392044.4	392034.0
+HETZK	4mhetz[c] + atp[c]  -> 4mpetz[c] + adp[c] + h[c] 	-391998.3	392001.7	-392037.5	392040.9
+HEX1	atp[c] + glc__D[c]  -> adp[c] + g6p[c] + h[c] 	-391998.3	392001.7	-392037.5	392040.9
+HEX4	atp[c] + man[c]  -> adp[c] + h[c] + man6p[c] 	-391998.3	392001.7	-392037.5	392040.9
+HEX7	atp[c] + fru[c]  -> adp[c] + f6p[c] + h[c] 	-391998.3	392001.7	-392037.5	392040.9
+HACD1i	3hbcoa[c] + nad[c]  -> aacoa[c] + h[c] + nadh[c] 	-277171.2	277200.5	-277210.4	277239.7
+HACD2i	3hhcoa[c] + nad[c]  -> 3ohcoa[c] + h[c] + nadh[c] 	-277171.2	277200.5	-277210.4	277239.7
+HACD3i	3hocoa[c] + nad[c]  -> 3oocoa[c] + h[c] + nadh[c] 	-277171.2	277200.5	-277210.4	277239.7
+HACD4i	3hdcoa[c] + nad[c]  -> 3odcoa[c] + h[c] + nadh[c] 	-277171.2	277200.5	-277210.4	277239.7
+HG2abcpp	atp[c] + h2o[c] + hg2[c]  -> adp[c] + h[c] + hg2[p] + pi[c] 	-278021.6	276350.1	-278090.5	276379.2
+HISTD	h2o[c] + histd[c] + 2 nad[c]  -> 3 h[c] + his__L[c] + 2 nadh[c] 	-276919.1	277452.6	-276977.9	277511.4
+HISTP	h2o[c] + hisp[c]  -> histd[c] + pi[c] 	-278044.1	276327.6	-278093.4	276337.1
+HISTRS	atp[c] + his__L[c] + trnahis[c]  -> amp[c] + histrna[c] + ppi[c] 	-440238.7	436300.0	-440297.5	436358.8
+HISabcpp	atp[c] + h2o[c] + his__L[p]  -> adp[c] + h[c] + his__L[c] + pi[c] 	-278039.0	276332.7	-278107.9	276361.9
+ICHORS_copy2	chor[c]  -> ichor[c] 	-277185.9	277185.9	-277205.5	277205.5
+HKNDDH	h2o[c] + hkndd[c]  -> h[c] + op4en[c] + succ[c] 	-339246.2	339717.8	-339295.4	339727.3
+ICHORT	h2o[c] + ichor[c]  -> 23ddhb[c] + pyr[c] 	-339242.7	339721.2	-339292.0	339730.7
+ICL	icit[c]  -> glx[c] + succ[c] 	-339478.5	339485.4	-339527.8	339494.9
+HKNTDH	h2o[c] + hkntd[c]  -> fum[c] + h[c] + op4en[c] 	-339246.2	339717.8	-339295.4	339727.3
+HMBS	h2o[c] + 4 ppbng[c]  -> hmbil[c] + 4 nh4[c] 	-808263.9	807993.5	-808372.0	808061.8
+HMPK1	4ahmmp[c] + atp[c]  -> 4ampm[c] + adp[c] + h[c] 	-391998.3	392001.7	-392037.5	392040.9
+IDOND2	5dglcn[c] + h[c] + nadph[c]  -> idon__L[c] + nadp[c] 	-277200.2	277171.5	-277239.4	277210.7
+IG3PS	gln__L[c] + prlp[c]  -> aicar[c] + eig3p[c] + h[c] + glu__L[c] 	-438264.2	438274.5	-438333.1	438303.6
+IGPDH	eig3p[c]  -> h2o[c] + imacp[c] 	-277423.4	276948.3	-277443.0	276967.9
+HOPNTAL	4h2opntn[c]  -> acald[c] + pyr[c] 	-339482.0	339482.0	-339531.2	339491.5
+HPPK2	6hmhpt[c] + atp[c]  -> 6hmhptpp[c] + amp[c] + h[c] 	-391998.3	392001.7	-392037.5	392040.9
+IGPS	2cpr5p[c] + h[c]  -> 3ig3p[c] + co2[c] + h2o[c] 	-277804.2	276567.5	-277853.5	276577.0
+HPPPNDO	dhpppn[c] + o2[c]  -> h[c] + hkndd[c] 	-277205.7	277166.0	-277215.2	277215.3
+ILETRS	atp[c] + ile__L[c] + trnaile[c]  -> amp[c] + iletrna[c] + ppi[c] 	-440238.7	436300.0	-440297.5	436358.8
+HPYRRx	h[c] + hpyr[c] + nadh[c]  -> glyc__R[c] + nad[c] 	-277200.5	277171.2	-277239.7	277210.4
+HPYRRy	h[c] + hpyr[c] + nadph[c]  -> glyc__R[c] + nadp[c] 	-277200.2	277171.5	-277239.4	277210.7
+HSK	atp[c] + hom__L[c]  -> adp[c] + h[c] + phom[c] 	-391998.3	392001.7	-392037.5	392040.9
+ILEabcpp	atp[c] + h2o[c] + ile__L[p]  -> adp[c] + h[c] + ile__L[c] + pi[c] 	-278039.0	276332.7	-278107.9	276361.9
+IMPD	h2o[c] + imp[c] + nad[c]  -> h[c] + nadh[c] + xmp[c] 	-276933.7	277438.0	-276972.9	277477.2
+HSST	hom__L[c] + succoa[c]  -> coa[c] + suchms[c] 	-391993.1	392006.9	-392032.3	392046.1
+HSTPT	glu__L[c] + imacp[c]  -> akg[c] + hisp[c] 	-392000.0	392000.0	-392039.2	392039.2
+HXAND	h2o[c] + hxan[c] + nad[c]  -> h[c] + nadh[c] + xan[c] 	-276933.7	277438.0	-276972.9	277477.2
+HXCT	accoa[c] + hxa[c]  -> ac[c] + hxcoa[c] 	-392000.0	392000.0	-392039.2	392039.2
+INSH	h2o[c] + ins[c]  -> hxan[c] + rib__D[c] 	-339244.4	339719.5	-339293.7	339729.0
+INSK	atp[c] + ins[c]  -> adp[c] + h[c] + imp[c] 	-391998.3	392001.7	-392037.5	392040.9
+HXPRT	hxan[c] + prpp[c]  -> imp[c] + ppi[c] 	-341442.7	337521.2	-341481.9	337560.4
+HYD1pp	h2[c] + 2 h[c] + q8[c]  -> 2 h[p] + q8h2[c] 	-277186.1	277185.7	-277195.6	277234.9
+HYD2pp	h2[c] + 2 h[c] + mqn8[c]  -> 2 h[p] + mql8[c] 	-277186.1	277185.7	-277195.6	277234.9
+HYD3pp	2dmmq8[c] + h2[c] + 2 h[c]  -> 2dmmql8[c] + 2 h[p] 	-277186.1	277185.7	-277195.6	277234.9
+HYPOE	h2o[c] + pyam5p[c]  -> pi[c] + pydam[c] 	-278044.1	276327.6	-278093.4	276337.1
+IPDPS	h2mb4p[c] + h[c] + nadh[c]  -> h2o[c] + ipdp[c] + nad[c] 	-277438.0	276933.7	-277477.2	276972.9
+IPMD	3c2hmp[c] + nad[c]  -> 3c4mop[c] + h[c] + nadh[c] 	-277171.2	277200.5	-277210.4	277239.7
+LA4NTpp	colipa[p] + uLa4n[p]  -> acolipa[p] + udcpp[p] 	-391969.0	392031.0	-392008.2	392070.2
+LACZ	h2o[c] + lcts[c]  -> gal[c] + glc__D[c] 	-339244.4	339719.5	-339293.7	339729.0
+IPPS	3mob[c] + accoa[c] + h2o[c]  -> 3c3hmp[c] + coa[c] + h[c] 	-391765.9	392234.1	-391805.1	392273.3
+ISETACabcpp	atp[c] + h2o[c] + isetac[p]  -> adp[c] + h[c] + isetac[c] + pi[c] 	-278030.3	276341.4	-278099.2	276370.5
+LACZpp	h2o[p] + lcts[p]  -> gal[p] + glc__D[p] 	-339244.4	339719.5	-339293.7	339729.0
+LADGMDH	LalaDgluMdap[c] + h2o[c]  -> 26dap__M[c] + LalaDglu[c] 	-339244.4	339719.5	-339293.7	339729.0
+K2L4Aabcpp	atp[c] + h2o[c] + kdo2lipid4[c]  -> adp[c] + kdo2lipid4[p] + h[c] + pi[c] 	-278091.1	276280.6	-278160.0	276309.8
+LALDO2x	h[c] + mthgxl[c] + nadh[c]  -> lald__D[c] + nad[c] 	-277200.5	277171.2	-277239.7	277210.4
+LALGP	LalaLglu[c] + h2o[c]  -> ala__L[c] + glu__L[c] 	-339244.4	339719.5	-339293.7	339729.0
+LCADi	h2o[c] + lald__L[c] + nad[c]  -> 2 h[c] + lac__L[c] + nadh[c] 	-276935.4	277436.3	-276974.6	277475.5
+KAS14	acACP[c] + h[c] + malACP[c]  -> ACP[c] + actACP[c] + co2[c] 	-392382.6	391617.4	-392451.4	391646.6
+KAS15	accoa[c] + h[c] + malACP[c]  -> actACP[c] + co2[c] + coa[c] 	-392382.6	391617.4	-392451.4	391646.6
+KAT1	aacoa[c] + coa[c]  -> 2 accoa[c] 	-480100.0	480100.0	-480139.2	480139.2
+ACACT11	3ohcoa[c] + coa[c]  -> accoa[c] + btcoa[c] 	-392000.0	392000.0	-392039.2	392039.2
+ACACT8	3oocoa[c] + coa[c]  -> accoa[c] + hxcoa[c] 	-392000.0	392000.0	-392039.2	392039.2
+ACACT13	3odcoa[c] + coa[c]  -> accoa[c] + occoa[c] 	-392000.0	392000.0	-392039.2	392039.2
+LDH_D2	lac__D[c] + q8[c]  -> pyr[c] + q8h2[c] 	-392000.0	392000.0	-392039.2	392039.2
+LEUTAi	4mop[c] + glu__L[c]  -> akg[c] + leu__L[c] 	-392001.7	391998.3	-392040.9	392037.5
+LEUTRS	atp[c] + leu__L[c] + trnaleu[c]  -> amp[c] + leutrna[c] + ppi[c] 	-440238.7	436300.0	-440297.5	436358.8
+ACACT10	3oddcoa[c] + coa[c]  -> accoa[c] + dcacoa[c] 	-392000.0	392000.0	-392039.2	392039.2
+ACACT9	3otdcoa[c] + coa[c]  -> accoa[c] + ddcacoa[c] 	-392000.0	392000.0	-392039.2	392039.2
+ACACT12	3ohdcoa[c] + coa[c]  -> accoa[c] + tdcoa[c] 	-392000.0	392000.0	-392039.2	392039.2
+ACACT8r	3ohodcoa[c] + coa[c]  -> accoa[c] + pmtcoa[c] 	-392000.0	392000.0	-392039.2	392039.2
+KDOCT2	ctp[c] + kdo[c]  -> ckdo[c] + ppi[c] 	-341449.6	337514.3	-341488.8	337553.5
+LEUabcpp	atp[c] + h2o[c] + leu__L[p]  -> adp[c] + h[c] + leu__L[c] + pi[c] 	-278039.0	276332.7	-278107.9	276361.9
+LGTHL	gthrd[c] + mthgxl[c]  -> lgt__S[c] 	-339482.0	339482.0	-339491.5	339531.2
+LIPACabcpp	atp[c] + h2o[c] + lipa_old_[c]  -> adp[c] + h[c] + lipa_old_[p] + pi[c] 	-278091.1	276280.6	-278160.0	276309.8
+LIPAHT2ex	colipa[e] + h[e] + hdca[e]  -> h2o[e] + hacolipa[e] 	-339717.8	339246.2	-339727.3	339295.4
+LIPAHTex	h[e] + hdca[e] + lipa[e]  -> h2o[e] + halipa[e] 	-339717.8	339246.2	-339727.3	339295.4
+KDOPP	h2o[c] + kdo8p[c]  -> kdo[c] + pi[c] 	-278037.3	276334.5	-278086.5	276344.0
+KDOPS	ara5p[c] + h2o[c] + pep[c]  -> kdo8p[c] + pi[c] 	-340336.8	338627.1	-340376.0	338666.3
+KG6PDC	3dhgulnp[c] + h[c]  -> co2[c] + xu5p__L[c] 	-277566.7	276805.0	-277616.0	276814.5
+LIPAabcpp	atp[c] + h2o[c] + lipa[c]  -> adp[c] + h[c] + lipa[p] + pi[c] 	-278091.1	276280.6	-278160.0	276309.8
+Kabcpp	atp[c] + k[p] + h2o[c]  -> adp[c] + h[c] + k[c] + pi[c] 	-278047.7	276324.1	-278116.5	276353.2
+LPADSS	lipidX[c] + u23ga[c]  -> h[c] + lipidAds[c] + udp[c] 	-392005.2	391994.8	-392044.4	392034.0
+LPLIPAL1A120pp	1ddecg3p[p] + h2o[p]  -> ddca[p] + h[p] + glyc3p[p] 	-339246.2	339717.8	-339295.4	339727.3
+LPLIPAL1A140pp	1tdecg3p[p] + h2o[p]  -> h[p] + glyc3p[p] + ttdca[p] 	-339246.2	339717.8	-339295.4	339727.3
+LPLIPAL1A141pp	1tdec7eg3p[p] + h2o[p]  -> h[p] + glyc3p[p] + ttdcea[p] 	-339246.2	339717.8	-339295.4	339727.3
+LPLIPAL1A160pp	1hdecg3p[p] + h2o[p]  -> h[p] + hdca[p] + glyc3p[p] 	-339246.2	339717.8	-339295.4	339727.3
+LPLIPAL2E120	2agpe120[c] + h2o[c]  -> ddca[c] + g3pe[c] + h[c] 	-339246.2	339717.8	-339295.4	339727.3
+LPLIPAL1A161pp	1hdec9eg3p[p] + h2o[p]  -> h[p] + hdcea[p] + glyc3p[p] 	-339246.2	339717.8	-339295.4	339727.3
+LPLIPAL2E140	2agpe140[c] + h2o[c]  -> g3pe[c] + h[c] + ttdca[c] 	-339246.2	339717.8	-339295.4	339727.3
+LPLIPAL2E141	2agpe141[c] + h2o[c]  -> g3pe[c] + h[c] + ttdcea[c] 	-339246.2	339717.8	-339295.4	339727.3
+LPLIPAL1A180pp	1odecg3p[p] + h2o[p]  -> h[p] + glyc3p[p] + ocdca[p] 	-339246.2	339717.8	-339295.4	339727.3
+LPLIPAL1A181pp	1odec11eg3p[p] + h2o[p]  -> h[p] + glyc3p[p] + ocdcea[p] 	-339246.2	339717.8	-339295.4	339727.3
+LPLIPAL2E160	2agpe160[c] + h2o[c]  -> g3pe[c] + h[c] + hdca[c] 	-339246.2	339717.8	-339295.4	339727.3
+LPLIPAL1E120pp	1agpe120[p] + h2o[p]  -> ddca[p] + g3pe[p] + h[p] 	-339246.2	339717.8	-339295.4	339727.3
+LPLIPAL1E140pp	1agpe140[p] + h2o[p]  -> g3pe[p] + h[p] + ttdca[p] 	-339246.2	339717.8	-339295.4	339727.3
+LPLIPAL1E141pp	1agpe141[p] + h2o[p]  -> g3pe[p] + h[p] + ttdcea[p] 	-339246.2	339717.8	-339295.4	339727.3
+LPLIPAL2E161	2agpe161[c] + h2o[c]  -> g3pe[c] + h[c] + hdcea[c] 	-339246.2	339717.8	-339295.4	339727.3
+LPLIPAL2E180	2agpe180[c] + h2o[c]  -> g3pe[c] + h[c] + ocdca[c] 	-339246.2	339717.8	-339295.4	339727.3
+LPLIPAL2E181	2agpe181[c] + h2o[c]  -> g3pe[c] + h[c] + ocdcea[c] 	-339246.2	339717.8	-339295.4	339727.3
+LPLIPAL2G120	2agpg120[c] + h2o[c]  -> ddca[c] + g3pg[c] + h[c] 	-339246.2	339717.8	-339295.4	339727.3
+LPLIPAL1E160pp	1agpe160[p] + h2o[p]  -> g3pe[p] + h[p] + hdca[p] 	-339246.2	339717.8	-339295.4	339727.3
+LPLIPAL1E161pp	1agpe161[p] + h2o[p]  -> g3pe[p] + h[p] + hdcea[p] 	-339246.2	339717.8	-339295.4	339727.3
+LPLIPAL2G140	2agpg140[c] + h2o[c]  -> g3pg[c] + h[c] + ttdca[c] 	-339246.2	339717.8	-339295.4	339727.3
+LPLIPAL1E180pp	1agpe180[p] + h2o[p]  -> g3pe[p] + h[p] + ocdca[p] 	-339246.2	339717.8	-339295.4	339727.3
+LPLIPAL2G141	2agpg141[c] + h2o[c]  -> g3pg[c] + h[c] + ttdcea[c] 	-339246.2	339717.8	-339295.4	339727.3
+LPLIPAL1E181pp	1agpe181[p] + h2o[p]  -> g3pe[p] + h[p] + ocdcea[p] 	-339246.2	339717.8	-339295.4	339727.3
+LPLIPAL1G120pp	1agpg120[p] + h2o[p]  -> ddca[p] + g3pg[p] + h[p] 	-339246.2	339717.8	-339295.4	339727.3
+LPLIPAL2G160	2agpg160[c] + h2o[c]  -> g3pg[c] + h[c] + hdca[c] 	-339246.2	339717.8	-339295.4	339727.3
+LPLIPAL2G161	2agpg161[c] + h2o[c]  -> g3pg[c] + h[c] + hdcea[c] 	-339246.2	339717.8	-339295.4	339727.3
+LPLIPAL2G180	2agpg180[c] + h2o[c]  -> g3pg[c] + h[c] + ocdca[c] 	-339246.2	339717.8	-339295.4	339727.3
+LPLIPAL2G181	2agpg181[c] + h2o[c]  -> g3pg[c] + h[c] + ocdcea[c] 	-339246.2	339717.8	-339295.4	339727.3
+LYSDC	h[c] + lys__L[c]  -> 15dap[c] + co2[c] 	-277573.6	276798.1	-277622.9	276807.7
+LPLIPAL1G140pp	1agpg140[p] + h2o[p]  -> g3pg[p] + h[p] + ttdca[p] 	-339246.2	339717.8	-339295.4	339727.3
+LPLIPAL1G141pp	1agpg141[p] + h2o[p]  -> g3pg[p] + h[p] + ttdcea[p] 	-339246.2	339717.8	-339295.4	339727.3
+LPLIPAL1G160pp	1agpg160[p] + h2o[p]  -> g3pg[p] + h[p] + hdca[p] 	-339246.2	339717.8	-339295.4	339727.3
+LPLIPAL1G161pp	1agpg161[p] + h2o[p]  -> g3pg[p] + h[p] + hdcea[p] 	-339246.2	339717.8	-339295.4	339727.3
+LPLIPAL1G180pp	1agpg180[p] + h2o[p]  -> g3pg[p] + h[p] + ocdca[p] 	-339246.2	339717.8	-339295.4	339727.3
+LPLIPAL1G181pp	1agpg181[p] + h2o[p]  -> g3pg[p] + h[p] + ocdcea[p] 	-339246.2	339717.8	-339295.4	339727.3
+LYSTRS	atp[c] + lys__L[c] + trnalys[c]  -> amp[c] + lystrna[c] + ppi[c] 	-440240.4	436298.3	-440299.2	436357.1
+LYSabcpp	atp[c] + h2o[c] + lys__L[p]  -> adp[c] + h[c] + lys__L[c] + pi[c] 	-278047.7	276324.1	-278116.5	276353.2
+LPLIPAL2A120	2ddecg3p[c] + h2o[c]  -> ddca[c] + 2 h[c] + glyc3p[c] 	-339249.6	339714.3	-339298.9	339723.8
+LPLIPAL2A140	2tdecg3p[c] + h2o[c]  -> 2 h[c] + glyc3p[c] + ttdca[c] 	-339249.6	339714.3	-339298.9	339723.8
+LPLIPAL2A141	2tdec7eg3p[c] + h2o[c]  -> 2 h[c] + glyc3p[c] + ttdcea[c] 	-339249.6	339714.3	-339298.9	339723.8
+LPLIPAL2A160	2hdecg3p[c] + h2o[c]  -> 2 h[c] + hdca[c] + glyc3p[c] 	-339249.6	339714.3	-339298.9	339723.8
+LYXI	lyx__L[c]  -> xylu__L[c] 	-277185.9	277185.9	-277205.5	277205.5
+L_LACD2	lac__L[c] + q8[c]  -> pyr[c] + q8h2[c] 	-392000.0	392000.0	-392039.2	392039.2
+LPLIPAL2A161	2hdec9eg3p[c] + h2o[c]  -> 2 h[c] + hdcea[c] + glyc3p[c] 	-339249.6	339714.3	-339298.9	339723.8
+LPLIPAL2A180	2odecg3p[c] + h2o[c]  -> 2 h[c] + glyc3p[c] + ocdca[c] 	-339249.6	339714.3	-339298.9	339723.8
+LPLIPAL2A181	2odec11eg3p[c] + h2o[c]  -> 2 h[c] + glyc3p[c] + ocdcea[c] 	-339249.6	339714.3	-339298.9	339723.8
+L_LACD3	lac__L[c] + mqn8[c]  -> mql8[c] + pyr[c] 	-392000.0	392000.0	-392039.2	392039.2
+LPLIPAL2ATE120	2agpe120[c] + pg120[c]  -> apg120[c] + g3pe[c] 	-392000.0	392000.0	-392039.2	392039.2
+LPLIPAL2ATE140	2agpe140[c] + pg140[c]  -> apg140[c] + g3pe[c] 	-392000.0	392000.0	-392039.2	392039.2
+LPLIPAL2ATE141	2agpe141[c] + pg141[c]  -> apg141[c] + g3pe[c] 	-392000.0	392000.0	-392039.2	392039.2
+LPLIPAL2ATE160	2agpe160[c] + pg160[c]  -> apg160[c] + g3pe[c] 	-392000.0	392000.0	-392039.2	392039.2
+LPLIPAL2ATE161	2agpe161[c] + pg161[c]  -> apg161[c] + g3pe[c] 	-392000.0	392000.0	-392039.2	392039.2
+LPLIPAL2ATE180	2agpe180[c] + pg180[c]  -> apg180[c] + g3pe[c] 	-392000.0	392000.0	-392039.2	392039.2
+MACPD	h[c] + malACP[c]  -> acACP[c] + co2[c] 	-277568.4	276803.3	-277617.7	276812.8
+MALDDH	mal__D[c] + nad[c]  -> co2[c] + nadh[c] + pyr[c] 	-277553.8	276817.9	-277622.7	276847.0
+MALS	accoa[c] + h2o[c] + glx[c]  -> coa[c] + h[c] + mal__L[c] 	-391765.9	392234.1	-391805.1	392273.3
+LPLIPAL2ATE181	2agpe181[c] + pg181[c]  -> apg181[c] + g3pe[c] 	-392000.0	392000.0	-392039.2	392039.2
+LPLIPAL2ATG120	2agpg120[c] + pg120[c]  -> apg120[c] + g3pg[c] 	-392000.0	392000.0	-392039.2	392039.2
+LPLIPAL2ATG140	2agpg140[c] + pg140[c]  -> apg140[c] + g3pg[c] 	-392000.0	392000.0	-392039.2	392039.2
+MALTHXabcpp	atp[c] + h2o[c] + malthx[p]  -> adp[c] + h[c] + malthx[c] + pi[c] 	-278039.0	276332.7	-278107.9	276361.9
+LPLIPAL2ATG141	2agpg141[c] + pg141[c]  -> apg141[c] + g3pg[c] 	-392000.0	392000.0	-392039.2	392039.2
+LPLIPAL2ATG160	2agpg160[c] + pg160[c]  -> apg160[c] + g3pg[c] 	-392000.0	392000.0	-392039.2	392039.2
+LPLIPAL2ATG161	2agpg161[c] + pg161[c]  -> apg161[c] + g3pg[c] 	-392000.0	392000.0	-392039.2	392039.2
+LPLIPAL2ATG180	2agpg180[c] + pg180[c]  -> apg180[c] + g3pg[c] 	-392000.0	392000.0	-392039.2	392039.2
+MALTPTabcpp	atp[c] + h2o[c] + maltpt[p]  -> adp[c] + h[c] + maltpt[c] + pi[c] 	-278039.0	276332.7	-278107.9	276361.9
+MALTTRabcpp	atp[c] + h2o[c] + malttr[p]  -> adp[c] + h[c] + malttr[c] + pi[c] 	-278039.0	276332.7	-278107.9	276361.9
+LPLIPAL2ATG181	2agpg181[c] + pg181[c]  -> apg181[c] + g3pg[c] 	-392000.0	392000.0	-392039.2	392039.2
+MALTTTRabcpp	atp[c] + h2o[c] + maltttr[p]  -> adp[c] + h[c] + maltttr[c] + pi[c] 	-278039.0	276332.7	-278107.9	276361.9
+MALTabcpp	atp[c] + h2o[c] + malt[p]  -> adp[c] + h[c] + malt[c] + pi[c] 	-278039.0	276332.7	-278107.9	276361.9
+MALTptspp	malt[p] + pep[c]  -> malt6p[c] + pyr[c] 	-391996.6	392003.4	-392035.8	392042.6
+MCPST	cyan[c] + mercppyr[c]  -> h[c] + pyr[c] + tcynt[c] 	-277214.5	277157.2	-277253.7	277196.4
+MCTP1App	murein5p5p[p]  -> ala__D[p] + murein5px4p[p] 	-339482.0	339482.0	-339531.2	339491.5
+MCTP1Bpp	murein5p5p[p]  -> alaala[p] + murein5px3p[p] 	-339482.0	339482.0	-339531.2	339491.5
+MCTP2App	murein5p5p5p[p]  -> 2 ala__D[p] + murein5px4px4p[p] 	-480100.0	480100.0	-480179.0	480099.4
+MDDCP1pp	h2o[p] + murein5px4p[p]  -> ala__D[p] + murein4px4p[p] 	-339244.4	339719.5	-339293.7	339729.0
+MDDCP2pp	h2o[p] + murein5px4px4p[p]  -> ala__D[p] + murein4px4px4p[p] 	-339244.4	339719.5	-339293.7	339729.0
+MDDCP3pp	h2o[p] + murein5p5p[p]  -> ala__D[p] + murein5p4p[p] 	-339244.4	339719.5	-339293.7	339729.0
+MDDCP4pp	h2o[p] + murein5p4p[p]  -> ala__D[p] + murein4p4p[p] 	-339244.4	339719.5	-339293.7	339729.0
+MDDCP5pp	h2o[p] + murein5p3p[p]  -> ala__D[p] + murein4p3p[p] 	-339244.4	339719.5	-339293.7	339729.0
+MDDEP1pp	h2o[p] + murein4px4p[p]  -> murein4p4p[p] 	-276948.3	277423.4	-276967.9	277443.0
+MAN1PT2	gdp[c] + h[c] + man1p[c]  -> gdpmann[c] + pi[c] 	-340569.2	338394.8	-340608.4	338434.0
+MDDEP2pp	h2o[p] + murein3px4p[p]  -> murein4p3p[p] 	-276948.3	277423.4	-276967.9	277443.0
+MDDEP3pp	h2o[p] + murein5px4p[p]  -> murein5p4p[p] 	-276948.3	277423.4	-276967.9	277443.0
+MDDEP4pp	h2o[p] + murein4px4px4p[p]  -> murein4px4p4p[p] 	-276948.3	277423.4	-276967.9	277443.0
+MDH2	mal__L[c] + q8[c]  -> oaa[c] + q8h2[c] 	-392000.0	392000.0	-392039.2	392039.2
+MDH3	mal__L[c] + mqn8[c]  -> oaa[c] + mql8[c] 	-392000.0	392000.0	-392039.2	392039.2
+MANGLYCptspp	manglyc[p] + pep[c]  -> man6pglyc[c] + pyr[c] 	-391991.3	392008.7	-392030.5	392047.9
+MANPGH	h2o[c] + man6pglyc[c]  -> glyc__R[c] + man6p[c] 	-339241.0	339722.9	-339290.3	339732.4
+MANptspp	man[p] + pep[c]  -> man6p[c] + pyr[c] 	-391996.6	392003.4	-392035.8	392042.6
+MCITD	2mcit[c]  -> 2mcacn[c] + h2o[c] 	-277423.4	276948.3	-277443.0	276967.9
+MDRPD	5mdru1p[c]  -> dkmpp[c] + h2o[c] 	-277423.4	276948.3	-277443.0	276967.9
+ME1	mal__L[c] + nad[c]  -> co2[c] + nadh[c] + pyr[c] 	-277553.8	276817.9	-277622.7	276847.0
+ME2	mal__L[c] + nadp[c]  -> co2[c] + nadph[c] + pyr[c] 	-277554.1	276817.6	-277623.0	276846.8
+MECDPDH2	2mecdp[c] + nadh[c]  -> h2mb4p[c] + h2o[c] + nad[c] 	-277443.2	276928.6	-277482.4	276967.8
+MECDPS	2p4c2me[c]  -> 2mecdp[c] + cmp[c] 	-339475.1	339488.8	-339524.4	339498.4
+MCITS	h2o[c] + oaa[c] + ppcoa[c]  -> 2mcit[c] + coa[c] + h[c] 	-391767.6	392232.4	-391806.8	392271.6
+MEPCT	2me4p[c] + ctp[c] + h[c]  -> 4c2me[c] + ppi[c] 	-341446.1	337517.8	-341485.3	337557.0
+METAT	atp[c] + h2o[c] + met__L[c]  -> amet[c] + pi[c] + ppi[c] 	-342306.1	336657.8	-342375.0	336686.9
+METDabcpp	atp[c] + h2o[c] + met__D[p]  -> adp[c] + h[c] + met__D[c] + pi[c] 	-278039.0	276332.7	-278107.9	276361.9
+MMCD	h[c] + mmcoa__S[c]  -> co2[c] + ppcoa[c] 	-277563.3	276808.5	-277612.5	276818.0
+METOX1s	h2o2[c] + met__L[c]  -> h2o[c] + metsox_S__L[c] 	-277289.4	277082.4	-277298.9	277131.7
+METOX2s	h2o2[c] + met__L[c]  -> h2o[c] + metsox_R__L[c] 	-277289.4	277082.4	-277298.9	277131.7
+METS	5mthf[c] + hcys__L[c]  -> h[c] + met__L[c] + thf[c] 	-392003.4	391996.6	-392042.6	392035.8
+METSOX1abcpp	atp[c] + h2o[c] + metsox_S__L[p]  -> adp[c] + h[c] + metsox_S__L[c] + pi[c] 	-278039.0	276332.7	-278107.9	276361.9
+METSOX2abcpp	atp[c] + h2o[c] + metsox_R__L[p]  -> adp[c] + h[c] + metsox_R__L[c] + pi[c] 	-278039.0	276332.7	-278107.9	276361.9
+METSOXR1	metsox_S__L[c] + trdrd[c]  -> h2o[c] + met__L[c] + trdox[c] 	-277480.5	276891.2	-277519.7	276930.4
+METSOXR2	metsox_R__L[c] + trdrd[c]  -> h2o[c] + met__L[c] + trdox[c] 	-277480.5	276891.2	-277519.7	276930.4
+METTRS	atp[c] + met__L[c] + trnamet[c]  -> amp[c] + mettrna[c] + ppi[c] 	-440238.7	436300.0	-440297.5	436358.8
+METabcpp	atp[c] + h2o[c] + met__L[p]  -> adp[c] + h[c] + met__L[c] + pi[c] 	-278039.0	276332.7	-278107.9	276361.9
+NHFRBO	h[c] + nadh[c] + 2 no[c]  -> h2o[c] + n2o[c] + nad[c] 	-392147.9	391852.1	-392177.1	391920.9
+NI2abcpp	atp[c] + h2o[c] + ni2[c]  -> adp[c] + h[c] + pi[c] + ni2[p] 	-278021.6	276350.1	-278090.5	276379.2
+NI2uabcpp	atp[c] + h2o[c] + ni2[p]  -> adp[c] + h[c] + pi[c] + ni2[c] 	-278056.3	276315.4	-278125.2	276344.5
+MG2uabcpp	atp[c] + h2o[c] + mg2[p]  -> adp[c] + h[c] + mg2[c] + pi[c] 	-278056.3	276315.4	-278125.2	276344.5
+MGSA	dhap[c]  -> mthgxl[c] + pi[c] 	-278278.2	276093.5	-278327.5	276103.0
+MI1PP	h2o[c] + mi1p__D[c]  -> inost[c] + pi[c] 	-278040.7	276331.0	-278090.0	276340.5
+NMNAT	atp[c] + h[c] + nmn[c]  -> nad[c] + ppi[c] 	-295554.6	292445.4	-295593.8	292484.6
+NMNDA	h2o[c] + nmn[c]  -> nh4[c] + nicrnt[c] 	-277031.2	277340.5	-277080.5	277350.0
+NMNN	h2o[c] + nmn[c]  -> h[c] + ncam[c] + r5p[c] 	-339247.9	339716.0	-339297.2	339725.6
+NMNt7pp	h2o[c] + nmn[p]  -> h[c] + ncam[c] + r5p[c] 	-339239.2	339724.7	-339288.5	339734.2
+MICITDr	2mcacn[c] + h2o[c]  -> micit[c] 	-276948.3	277423.4	-276967.9	277443.0
+MLDCP1App	h2o[p] + murein5px4p[p]  -> alaala[p] + murein3px4p[p] 	-339244.4	339719.5	-339293.7	339729.0
+MLDCP1Bpp	h2o[p] + murein4p4p[p]  -> ala__D[p] + murein4p3p[p] 	-339244.4	339719.5	-339293.7	339729.0
+MLDCP2App	h2o[p] + murein5p5p[p]  -> alaala[p] + murein5p3p[p] 	-339244.4	339719.5	-339293.7	339729.0
+NNAM	h2o[c] + ncam[c]  -> nac[c] + nh4[c] 	-277029.5	277342.2	-277078.8	277351.8
+NNDMBRT	dmbzid[c] + nicrnt[c]  -> 5prdmbz[c] + h[c] + nac[c] 	-392001.7	391998.3	-392040.9	392037.5
+MLDCP2Bpp	h2o[p] + murein4p3p[p]  -> ala__D[p] + murein3p3p[p] 	-339244.4	339719.5	-339293.7	339729.0
+MLDCP3App	h2o[p] + murein5px3p[p]  -> alaala[p] + murein3px3p[p] 	-339244.4	339719.5	-339293.7	339729.0
+MLDEP1pp	h2o[p] + murein3px3p[p]  -> murein3p3p[p] 	-276948.3	277423.4	-276967.9	277443.0
+NNDPR	2 h[c] + prpp[c] + quln[c]  -> co2[c] + nicrnt[c] + ppi[c] 	-341823.5	337140.4	-341892.4	337169.5
+MMM2	succoa[c]  -> mmcoa__R[c] 	-277185.9	277185.9	-277205.5	277205.5
+MLDEP2pp	h2o[p] + murein5px3p[p]  -> murein5p3p[p] 	-276948.3	277423.4	-276967.9	277443.0
+MLTG1	h2o[c] + malttr[c]  -> glc__D[c] + malt[c] 	-339244.4	339719.5	-339293.7	339729.0
+MLTG2	h2o[c] + maltttr[c]  -> glc__D[c] + malttr[c] 	-339244.4	339719.5	-339293.7	339729.0
+MLTG3	h2o[c] + maltpt[c]  -> glc__D[c] + maltttr[c] 	-339244.4	339719.5	-339293.7	339729.0
+NO3R1bpp	no3[p] + q8h2[c]  -> h2o[p] + no2[p] + q8[c] 	-277346.9	277024.8	-277386.1	277064.0
+NO3R1pp	2 h[c] + no3[c] + q8h2[c]  -> h2o[c] + 2 h[p] + no2[c] + q8[c] 	-277329.5	277042.2	-277368.7	277081.4
+NO3R2bpp	mql8[c] + no3[p]  -> h2o[p] + mqn8[c] + no2[p] 	-277346.9	277024.8	-277386.1	277064.0
+NO3R2pp	2 h[c] + mql8[c] + no3[c]  -> h2o[c] + 2 h[p] + mqn8[c] + no2[c] 	-277329.5	277042.2	-277368.7	277081.4
+MLTG4	h2o[c] + malthx[c]  -> glc__D[c] + maltpt[c] 	-339244.4	339719.5	-339293.7	339729.0
+MLTG5	h2o[c] + malthp[c]  -> glc__D[c] + malthx[c] 	-339244.4	339719.5	-339293.7	339729.0
+MLTGY1pp	murein4p4p[p]  -> 2 anhgm4p[p] 	-438262.4	438276.2	-438311.7	438285.7
+MLTGY2pp	murein4p3p[p]  -> anhgm3p[p] + anhgm4p[p] 	-339475.1	339488.8	-339524.4	339498.4
+NODOx	nadh[c] + 2 no[c] + 2 o2[c]  -> h[c] + nad[c] + 2 no3[c] 	-392268.2	391731.8	-392306.9	391849.9
+NODOy	nadph[c] + 2 no[c] + 2 o2[c]  -> h[c] + nadp[c] + 2 no3[c] 	-392268.0	391732.0	-392306.6	391850.2
+MLTGY3pp	murein3p3p[p]  -> 2 anhgm3p[p] 	-438262.4	438276.2	-438311.7	438285.7
+MLTGY4pp	murein4px4p4p[p]  -> anhgm4p[p] + murein4px4p[p] 	-339468.2	339495.7	-339517.5	339505.2
+NPHS	sbzcoa[c]  -> coa[c] + dhna[c] 	-339475.1	339488.8	-339524.4	339498.4
+NTD1	dump[c] + h2o[c]  -> duri[c] + pi[c] 	-278040.7	276331.0	-278090.0	276340.5
+NTD10	h2o[c] + xmp[c]  -> pi[c] + xtsn[c] 	-278040.7	276331.0	-278090.0	276340.5
+NTD7pp	amp[p] + h2o[p]  -> adn[p] + pi[p] 	-278040.7	276331.0	-278090.0	276340.5
+NTD10pp	h2o[p] + xmp[p]  -> pi[p] + xtsn[p] 	-278040.7	276331.0	-278090.0	276340.5
+MN6PP	h2o[c] + man6p[c]  -> man[c] + pi[c] 	-278040.7	276331.0	-278090.0	276340.5
+NTD11	h2o[c] + imp[c]  -> ins[c] + pi[c] 	-278040.7	276331.0	-278090.0	276340.5
+NTD11pp	h2o[p] + imp[p]  -> ins[p] + pi[p] 	-278040.7	276331.0	-278090.0	276340.5
+NTD12	dimp[c] + h2o[c]  -> din[c] + pi[c] 	-278040.7	276331.0	-278090.0	276340.5
+NTD8	dgmp[c] + h2o[c]  -> dgsn[c] + pi[c] 	-278040.7	276331.0	-278090.0	276340.5
+NTD8pp	dgmp[p] + h2o[p]  -> dgsn[p] + pi[p] 	-278040.7	276331.0	-278090.0	276340.5
+NTD9	h2o[c] + gmp[c]  -> gsn[c] + pi[c] 	-278040.7	276331.0	-278090.0	276340.5
+NTD12pp	dimp[p] + h2o[p]  -> din[p] + pi[p] 	-278040.7	276331.0	-278090.0	276340.5
+NTD9pp	h2o[p] + gmp[p]  -> gsn[p] + pi[p] 	-278040.7	276331.0	-278090.0	276340.5
+NTD1pp	dump[p] + h2o[p]  -> duri[p] + pi[p] 	-278040.7	276331.0	-278090.0	276340.5
+MNLptspp	mnl[p] + pep[c]  -> mnl1p[c] + pyr[c] 	-391996.6	392003.4	-392035.8	392042.6
+NTD2	h2o[c] + ump[c]  -> pi[c] + uri[c] 	-278040.7	276331.0	-278090.0	276340.5
+NTP1	atp[c] + h2o[c]  -> adp[c] + h[c] + pi[c] 	-278039.0	276332.7	-278088.3	276342.3
+NTP10	h2o[c] + itp[c]  -> h[c] + idp[c] + pi[c] 	-278039.0	276332.7	-278088.3	276342.3
+NTP11	ditp[c] + h2o[c]  -> didp[c] + h[c] + pi[c] 	-278039.0	276332.7	-278088.3	276342.3
+NTD2pp	h2o[p] + ump[p]  -> pi[p] + uri[p] 	-278040.7	276331.0	-278090.0	276340.5
+NTD3	dcmp[c] + h2o[c]  -> dcyt[c] + pi[c] 	-278040.7	276331.0	-278090.0	276340.5
+NTD3pp	dcmp[p] + h2o[p]  -> dcyt[p] + pi[p] 	-278040.7	276331.0	-278090.0	276340.5
+NTP12	h2o[c] + xtp[c]  -> h[c] + pi[c] + xdp[c] 	-278039.0	276332.7	-278088.3	276342.3
+NTP3	h2o[c] + gtp[c]  -> gdp[c] + h[c] + pi[c] 	-278039.0	276332.7	-278088.3	276342.3
+NTP3pp	h2o[p] + gtp[p]  -> gdp[p] + h[p] + pi[p] 	-278039.0	276332.7	-278088.3	276342.3
+NTP5	ctp[c] + h2o[c]  -> cdp[c] + h[c] + pi[c] 	-278039.0	276332.7	-278088.3	276342.3
+NTD4	cmp[c] + h2o[c]  -> cytd[c] + pi[c] 	-278040.7	276331.0	-278090.0	276340.5
+NTD4pp	cmp[p] + h2o[p]  -> cytd[p] + pi[p] 	-278040.7	276331.0	-278090.0	276340.5
+NTD5	dtmp[c] + h2o[c]  -> pi[c] + thymd[c] 	-278040.7	276331.0	-278090.0	276340.5
+NTD5pp	dtmp[p] + h2o[p]  -> pi[p] + thymd[p] 	-278040.7	276331.0	-278090.0	276340.5
+NTPP1	dgtp[c] + h2o[c]  -> dgmp[c] + h[c] + ppi[c] 	-278917.7	275454.0	-278967.0	275463.6
+NTPP10	ditp[c] + h2o[c]  -> dimp[c] + h[c] + ppi[c] 	-278917.7	275454.0	-278967.0	275463.6
+NTPP11	h2o[c] + xtp[c]  -> h[c] + ppi[c] + xmp[c] 	-278917.7	275454.0	-278967.0	275463.6
+NTD6	damp[c] + h2o[c]  -> dad_2[c] + pi[c] 	-278040.7	276331.0	-278090.0	276340.5
+MNNH	mana[c]  -> 2ddglcn[c] + h2o[c] 	-277423.4	276948.3	-277443.0	276967.9
+NTD6pp	damp[p] + h2o[p]  -> dad_2[p] + pi[p] 	-278040.7	276331.0	-278090.0	276340.5
+NTPP2	h2o[c] + gtp[c]  -> h[c] + gmp[c] + ppi[c] 	-278917.7	275454.0	-278967.0	275463.6
+NTPP3	dctp[c] + h2o[c]  -> dcmp[c] + h[c] + ppi[c] 	-278917.7	275454.0	-278967.0	275463.6
+NTPP4	ctp[c] + h2o[c]  -> cmp[c] + h[c] + ppi[c] 	-278917.7	275454.0	-278967.0	275463.6
+NTPP5	datp[c] + h2o[c]  -> damp[c] + h[c] + ppi[c] 	-278917.7	275454.0	-278967.0	275463.6
+NTPP6	atp[c] + h2o[c]  -> amp[c] + h[c] + ppi[c] 	-278917.7	275454.0	-278967.0	275463.6
+ORNabcpp	atp[c] + h2o[c] + orn[p]  -> adp[c] + h[c] + orn[c] + pi[c] 	-278047.7	276324.1	-278116.5	276353.2
+NTPP7	dttp[c] + h2o[c]  -> dtmp[c] + h[c] + ppi[c] 	-278917.7	275454.0	-278967.0	275463.6
+NTPP8	h2o[c] + utp[c]  -> h[c] + ppi[c] + ump[c] 	-278917.7	275454.0	-278967.0	275463.6
+NTPP9	h2o[c] + itp[c]  -> h[c] + imp[c] + ppi[c] 	-278917.7	275454.0	-278967.0	275463.6
+NTPTP1	dgtp[c] + h2o[c]  -> dgsn[c] + pppi[c] 	-339244.4	339719.5	-339293.7	339729.0
+NTPTP2	h2o[c] + gtp[c]  -> gsn[c] + pppi[c] 	-339244.4	339719.5	-339293.7	339729.0
+OXAMTC	oxur[c] + pi[c]  -> cbp[c] + oxam[c] 	-338389.6	340574.3	-338428.8	340613.5
+OXGDC2	akg[c] + h[c] + thmpp[c]  -> co2[c] + ssaltpp[c] 	-339868.0	339096.0	-339907.2	339135.2
+NTRIR2x	5 h[c] + 3 nadh[c] + no2[c]  -> 2 h2o[c] + 3 nad[c] + nh4[c] 	-616.9	-512.0	-695.3	-433.6
+MOAT	ckdo[c] + lipidA[c]  -> cmp[c] + h[c] + kdolipid4[c] 	-392008.6	391991.4	-392047.8	392030.6
+NTRIR3pp	2 h[p] + no2[p] + 3 q8h2[c]  -> 2 h2o[p] + nh4[p] + 3 q8[c] 	-832078.1	831037.0	-832156.5	831115.4
+NTRIR4pp	2 h[p] + 3 mql8[c] + no2[p]  -> 2 h2o[p] + 3 mqn8[c] + nh4[p] 	-832078.1	831037.0	-832156.5	831115.4
+P5CD	1pyr5c[c] + 2 h2o[c] + nad[c]  -> h[c] + glu__L[c] + nadh[c] 	-276696.2	277675.5	-276735.4	277714.7
+P5CR	1pyr5c[c] + 2 h[c] + nadph[c]  -> nadp[c] + pro__L[c] 	-277198.5	277173.2	-277237.7	277212.4
+PA120abcpp	atp[c] + h2o[c] + pa120[c]  -> adp[c] + h[c] + pa120[p] + pi[c] 	-278056.3	276315.4	-278125.2	276344.5
+PA140abcpp	atp[c] + h2o[c] + pa140[c]  -> adp[c] + h[c] + pa140[p] + pi[c] 	-278056.3	276315.4	-278125.2	276344.5
+PA141abcpp	atp[c] + h2o[c] + pa141[c]  -> adp[c] + h[c] + pa141[p] + pi[c] 	-278056.3	276315.4	-278125.2	276344.5
+PA160abcpp	atp[c] + h2o[c] + pa160[c]  -> adp[c] + h[c] + pa160[p] + pi[c] 	-278056.3	276315.4	-278125.2	276344.5
+O16A4Lpp	colipa[p] + o16a4und[p]  -> h[p] + o16a4colipa[p] + udcpdp[p] 	-392005.2	391994.8	-392044.4	392034.0
+O16AP1pp	2 o16aund[p]  -> h[p] + o16a2und[p] + udcpdp[p] 	-480105.2	480094.8	-480144.4	480134.0
+O16AP2pp	o16a2und[p] + o16aund[p]  -> h[p] + o16a3und[p] + udcpdp[p] 	-392005.2	391994.8	-392044.4	392034.0
+PA161abcpp	atp[c] + h2o[c] + pa161[c]  -> adp[c] + h[c] + pa161[p] + pi[c] 	-278056.3	276315.4	-278125.2	276344.5
+MOAT2	ckdo[c] + kdolipid4[c]  -> cmp[c] + kdo2lipid4[c] + h[c] 	-392010.3	391989.7	-392049.5	392028.9
+PA180abcpp	atp[c] + h2o[c] + pa180[c]  -> adp[c] + h[c] + pa180[p] + pi[c] 	-278056.3	276315.4	-278125.2	276344.5
+PA181abcpp	atp[c] + h2o[c] + pa181[c]  -> adp[c] + h[c] + pa181[p] + pi[c] 	-278056.3	276315.4	-278125.2	276344.5
+O16AP3pp	o16a3und[p] + o16aund[p]  -> h[p] + o16a4und[p] + udcpdp[p] 	-392005.2	391994.8	-392044.4	392034.0
+O16AT	accoa[c] + ragund[c]  -> aragund[c] + coa[c] 	-392000.0	392000.0	-392039.2	392039.2
+O16GALFT	garagund[c] + udpgalfur[c]  -> gfgaragund[c] + h[c] + udp[c] 	-392005.2	391994.8	-392044.4	392034.0
+O16GLCT1	aragund[c] + udpg[c]  -> garagund[c] + h[c] + udp[c] 	-392005.2	391994.8	-392044.4	392034.0
+PACCOAL	coa[c] + atp[c] + pac[c]  -> amp[c] + phaccoa[c] + ppi[c] 	-440236.9	436301.7	-440295.8	436360.5
+O16GLCT2	gfgaragund[c] + udpg[c]  -> h[c] + o16aund[c] + udp[c] 	-392005.2	391994.8	-392044.4	392034.0
+PANTS	atp[c] + ala_B[c] + pant__R[c]  -> amp[c] + h[c] + pnto__R[c] + ppi[c] 	-440238.7	436300.0	-440297.5	436358.8
+MOAT3C	ckdo[c] + phphhlipa[c]  -> cmp[c] + h[c] + kphphhlipa[c] 	-392018.9	391981.1	-392058.1	392020.3
+PAPA120	h2o[c] + pa120[c]  -> 12dgr120[c] + pi[c] 	-278040.7	276331.0	-278090.0	276340.5
+PAPA120pp	h2o[p] + pa120[p]  -> 12dgr120[p] + pi[p] 	-278040.7	276331.0	-278090.0	276340.5
+PAPA140	h2o[c] + pa140[c]  -> 12dgr140[c] + pi[c] 	-278040.7	276331.0	-278090.0	276340.5
+MOBDabcpp	atp[c] + h2o[c] + mobd[p]  -> adp[c] + h[c] + mobd[c] + pi[c] 	-278021.6	276350.1	-278090.5	276379.2
+PAPA140pp	h2o[p] + pa140[p]  -> 12dgr140[p] + pi[p] 	-278040.7	276331.0	-278090.0	276340.5
+PAPA141	h2o[c] + pa141[c]  -> 12dgr141[c] + pi[c] 	-278040.7	276331.0	-278090.0	276340.5
+PAPA141pp	h2o[p] + pa141[p]  -> 12dgr141[p] + pi[p] 	-278040.7	276331.0	-278090.0	276340.5
+PAPA160	h2o[c] + pa160[c]  -> 12dgr160[c] + pi[c] 	-278040.7	276331.0	-278090.0	276340.5
+PAPA160pp	h2o[p] + pa160[p]  -> 12dgr160[p] + pi[p] 	-278040.7	276331.0	-278090.0	276340.5
+OAADC	h[c] + oaa[c]  -> co2[c] + pyr[c] 	-277568.4	276803.3	-277617.7	276812.8
+OBTFL	2obut[c] + coa[c]  -> for[c] + ppcoa[c] 	-339830.2	339133.7	-339869.4	339172.9
+OCTDPS	frdp[c] + 5 ipdp[c]  -> octdp[c] + 5 ppi[c] 	-1028301.2	1008590.5	-1028418.8	1008708.1
+PAPA161	h2o[c] + pa161[c]  -> 12dgr161[c] + pi[c] 	-278040.7	276331.0	-278090.0	276340.5
+PAPA161pp	h2o[p] + pa161[p]  -> 12dgr161[p] + pi[p] 	-278040.7	276331.0	-278090.0	276340.5
+PAPA180	h2o[c] + pa180[c]  -> 12dgr180[c] + pi[c] 	-278040.7	276331.0	-278090.0	276340.5
+CTECOAI8	odecoa[c]  -> od2coa[c] 	-277185.9	277185.9	-277205.5	277205.5
+OHPHM	2ohph[c] + amet[c]  -> 2omph[c] + ahcys[c] + h[c] 	-392000.0	392000.0	-392039.2	392039.2
+OMBZLM	2ombzl[c] + amet[c]  -> 2ommbl[c] + ahcys[c] + h[c] 	-392000.0	392000.0	-392039.2	392039.2
+OMCDC	3c4mop[c] + h[c]  -> 4mop[c] + co2[c] 	-277568.4	276803.3	-277617.7	276812.8
+PAPA180pp	h2o[p] + pa180[p]  -> 12dgr180[p] + pi[p] 	-278040.7	276331.0	-278090.0	276340.5
+PAPA181	h2o[c] + pa181[c]  -> 12dgr181[c] + pi[c] 	-278040.7	276331.0	-278090.0	276340.5
+PAPA181pp	h2o[p] + pa181[p]  -> 12dgr181[p] + pi[p] 	-278040.7	276331.0	-278090.0	276340.5
+PAPPT3	udcpp[c] + ugmda[c]  -> uagmda[c] + ump[c] 	-392000.0	392000.0	-392039.2	392039.2
+OMMBLHX	2ommbl[c] + 0.5 o2[c]  -> 2omhmbl[c] 	-277194.1	277177.7	-277208.6	277212.1
+OMMBLHX3	2ommbl[c] + 2 atp[c] + 3 h2o[c] + nad[c]  -> 2omhmbl[c] + 2 adp[c] + 3 h[c] + 2 pi[c] + nadh[c] 	-621260.5	618352.3	-621398.3	618410.6
+PAPSR	paps[c] + trdrd[c]  -> 2 h[c] + pap[c] + trdox[c] + so3[c] 	-277776.0	276595.7	-277844.9	276624.8
+MOHMT	3mob[c] + h2o[c] + mlthf[c]  -> 2dhp[c] + thf[c] 	-391762.5	392237.5	-391801.7	392276.7
+PAPSR2	grxrd[c] + paps[c]  -> 2 h[c] + grxox[c] + pap[c] + so3[c] 	-392533.0	391467.0	-392601.9	391496.1
+PDE1	camp[c] + h2o[c]  -> amp[c] + h[c] 	-276951.8	277419.9	-276971.4	277439.5
+PDH	coa[c] + nad[c] + pyr[c]  -> accoa[c] + co2[c] + nadh[c] 	-339851.6	339112.3	-339910.4	339171.1
+PDX5PO2	pdx5p[c] + nad[c]  -> h[c] + nadh[c] + pydx5p[c] 	-277171.2	277200.5	-277210.4	277239.7
+PDX5POi	pdx5p[c] + o2[c]  -> h2o2[c] + pydx5p[c] 	-277336.3	277035.4	-277375.5	277074.6
+PDX5PS	dxyl5p[c] + phthr[c] + nad[c]  -> co2[c] + 2 h2o[c] + h[c] + pi[c] + pdx5p[c] + nadh[c] 	-341420.8	337543.2	-341509.3	337591.9
+OMPDC	h[c] + orot5p[c]  -> co2[c] + ump[c] 	-277566.7	276805.0	-277616.0	276814.5
+OMPHHX	2omph[c] + 0.5 o2[c]  -> 2ombzl[c] 	-277194.1	277177.7	-277208.6	277212.1
+OMPHHX3	2omph[c] + 2 atp[c] + 3 h2o[c] + nad[c]  -> 2ombzl[c] + 2 adp[c] + 3 h[c] + 2 pi[c] + nadh[c] 	-621260.5	618352.3	-621398.3	618410.6
+OP4ENH	h2o[c] + op4en[c]  -> 4h2opntn[c] 	-276948.3	277423.4	-276967.9	277443.0
+OPHBDC	3ophb[c] + h[c]  -> 2oph[c] + co2[c] 	-277570.1	276801.6	-277619.4	276811.1
+OPHHX	2oph[c] + 0.5 o2[c]  -> 2ohph[c] 	-277194.1	277177.7	-277208.6	277212.1
+OPHHX3	2oph[c] + 2 atp[c] + 3 h2o[c] + nad[c]  -> 2ohph[c] + 2 adp[c] + 3 h[c] + 2 pi[c] + nadh[c] 	-621260.5	618352.3	-621398.3	618410.6
+ORNDC	h[c] + orn[c]  -> co2[c] + ptrc[c] 	-277573.6	276798.1	-277622.9	276807.7
+PDXPP	h2o[c] + pdx5p[c]  -> pi[c] + pydxn[c] 	-278040.7	276331.0	-278090.0	276340.5
+PE120abcpp	atp[c] + h2o[c] + pe120[c]  -> adp[c] + h[c] + pi[c] + pe120[p] 	-278039.0	276332.7	-278107.9	276361.9
+PE140abcpp	atp[c] + h2o[c] + pe140[c]  -> adp[c] + h[c] + pi[c] + pe140[p] 	-278039.0	276332.7	-278107.9	276361.9
+PE141abcpp	atp[c] + h2o[c] + pe141[c]  -> adp[c] + h[c] + pi[c] + pe141[p] 	-278039.0	276332.7	-278107.9	276361.9
+MPTG	2 uaagmda[c]  -> 2 h[c] + murein5p5p[p] + 2 udcpdp[c] 	-588038.2	587961.8	-588107.1	587990.9
+PE160abcpp	atp[c] + h2o[c] + pe160[c]  -> adp[c] + h[c] + pi[c] + pe160[p] 	-278039.0	276332.7	-278107.9	276361.9
+PE161abcpp	atp[c] + h2o[c] + pe161[c]  -> adp[c] + h[c] + pi[c] + pe161[p] 	-278039.0	276332.7	-278107.9	276361.9
+PE180abcpp	atp[c] + h2o[c] + pe180[c]  -> adp[c] + h[c] + pi[c] + pe180[p] 	-278039.0	276332.7	-278107.9	276361.9
+PGCD	3pg[c] + nad[c]  -> 3php[c] + h[c] + nadh[c] 	-277171.2	277200.5	-277210.4	277239.7
+PGL	6pgl[c] + h2o[c]  -> 6pgc[c] + h[c] 	-276953.5	277418.2	-276973.1	277437.8
+PE181abcpp	atp[c] + h2o[c] + pe181[c]  -> adp[c] + h[c] + pi[c] + pe181[p] 	-278039.0	276332.7	-278107.9	276361.9
+PEAMNOpp	h2o[p] + o2[p] + peamn[p]  -> h2o2[p] + pacald[p] + nh4[p] 	-277178.2	277193.5	-277247.1	277222.7
+PGLYCP	2pglyc[c] + h2o[c]  -> glyclt[c] + pi[c] 	-278037.3	276334.5	-278086.5	276344.0
+MPTG2	murein5p5p[p] + uaagmda[c]  -> h[c] + murein5p5p5p[p] + udcpdp[c] 	-392029.4	391970.6	-392068.6	392009.8
+PETNT161pp	lipa[p] + pe161[p]  -> 12dgr161[p] + enlipa[p] 	-392000.0	392000.0	-392039.2	392039.2
+PGP120abcpp	atp[c] + h2o[c] + pgp120[c]  -> adp[c] + h[c] + pi[c] + pgp120[p] 	-278065.0	276306.7	-278133.9	276335.8
+PETNT181pp	lipa[p] + pe181[p]  -> 12dgr181[p] + enlipa[p] 	-392000.0	392000.0	-392039.2	392039.2
+PFK	atp[c] + f6p[c]  -> adp[c] + fdp[c] + h[c] 	-392005.2	391994.8	-392044.4	392034.0
+PGP140abcpp	atp[c] + h2o[c] + pgp140[c]  -> adp[c] + h[c] + pi[c] + pgp140[p] 	-278065.0	276306.7	-278133.9	276335.8
+PGP141abcpp	atp[c] + h2o[c] + pgp141[c]  -> adp[c] + h[c] + pgp141[p] + pi[c] 	-278065.0	276306.7	-278133.9	276335.8
+PGP160abcpp	atp[c] + h2o[c] + pgp160[c]  -> adp[c] + h[c] + pgp160[p] + pi[c] 	-278065.0	276306.7	-278133.9	276335.8
+PGP161abcpp	atp[c] + h2o[c] + pgp161[c]  -> adp[c] + h[c] + pgp161[p] + pi[c] 	-278065.0	276306.7	-278133.9	276335.8
+PFK_2	atp[c] + tag6p__D[c]  -> adp[c] + h[c] + tagdp__D[c] 	-392005.2	391994.8	-392044.4	392034.0
+PFL	coa[c] + pyr[c]  -> accoa[c] + for[c] 	-339830.2	339133.7	-339869.4	339172.9
+PG120abcpp	atp[c] + h2o[c] + pg120[c]  -> adp[c] + h[c] + pi[c] + pg120[p] 	-278047.7	276324.1	-278116.5	276353.2
+PGP180abcpp	atp[c] + h2o[c] + pgp180[c]  -> adp[c] + h[c] + pgp180[p] + pi[c] 	-278065.0	276306.7	-278133.9	276335.8
+MSO3abcpp	atp[c] + h2o[c] + mso3[p]  -> adp[c] + h[c] + mso3[c] + pi[c] 	-278030.3	276341.4	-278099.2	276370.5
+PGP181abcpp	atp[c] + h2o[c] + pgp181[c]  -> adp[c] + h[c] + pgp181[p] + pi[c] 	-278065.0	276306.7	-278133.9	276335.8
+PGPP120	h2o[c] + pgp120[c]  -> pi[c] + pg120[c] 	-278037.3	276334.5	-278086.5	276344.0
+PG140abcpp	atp[c] + h2o[c] + pg140[c]  -> adp[c] + h[c] + pi[c] + pg140[p] 	-278047.7	276324.1	-278116.5	276353.2
+PG141abcpp	atp[c] + h2o[c] + pg141[c]  -> adp[c] + h[c] + pi[c] + pg141[p] 	-278047.7	276324.1	-278116.5	276353.2
+PG160abcpp	atp[c] + h2o[c] + pg160[c]  -> adp[c] + h[c] + pi[c] + pg160[p] 	-278047.7	276324.1	-278116.5	276353.2
+PG161abcpp	atp[c] + h2o[c] + pg161[c]  -> adp[c] + h[c] + pi[c] + pg161[p] 	-278047.7	276324.1	-278116.5	276353.2
+PGPP120pp	h2o[p] + pgp120[p]  -> pi[p] + pg120[p] 	-278037.3	276334.5	-278086.5	276344.0
+PGPP140	h2o[c] + pgp140[c]  -> pi[c] + pg140[c] 	-278037.3	276334.5	-278086.5	276344.0
+PG180abcpp	atp[c] + h2o[c] + pg180[c]  -> adp[c] + h[c] + pi[c] + pg180[p] 	-278047.7	276324.1	-278116.5	276353.2
+PGPP140pp	h2o[p] + pgp140[p]  -> pi[p] + pg140[p] 	-278037.3	276334.5	-278086.5	276344.0
+PGPP141	h2o[c] + pgp141[c]  -> pi[c] + pg141[c] 	-278037.3	276334.5	-278086.5	276344.0
+PG181abcpp	atp[c] + h2o[c] + pg181[c]  -> adp[c] + h[c] + pi[c] + pg181[p] 	-278047.7	276324.1	-278116.5	276353.2
+PGPP141pp	h2o[p] + pgp141[p]  -> pi[p] + pg141[p] 	-278037.3	276334.5	-278086.5	276344.0
+MTAN	5mta[c] + h2o[c]  -> 5mtr[c] + ade[c] 	-339244.4	339719.5	-339293.7	339729.0
+PGPP160	h2o[c] + pgp160[c]  -> pi[c] + pg160[c] 	-278037.3	276334.5	-278086.5	276344.0
+PGPP160pp	h2o[p] + pgp160[p]  -> pi[p] + pg160[p] 	-278037.3	276334.5	-278086.5	276344.0
+PGPP161	h2o[c] + pgp161[c]  -> pi[c] + pg161[c] 	-278037.3	276334.5	-278086.5	276344.0
+PGPP161pp	h2o[p] + pgp161[p]  -> pi[p] + pg161[p] 	-278037.3	276334.5	-278086.5	276344.0
+PGPP180	h2o[c] + pgp180[c]  -> pi[c] + pg180[c] 	-278037.3	276334.5	-278086.5	276344.0
+PGPP180pp	h2o[p] + pgp180[p]  -> pi[p] + pg180[p] 	-278037.3	276334.5	-278086.5	276344.0
+PGPP181	h2o[c] + pgp181[c]  -> pi[c] + pg181[c] 	-278037.3	276334.5	-278086.5	276344.0
+PGPP181pp	h2o[p] + pgp181[p]  -> pi[p] + pg181[p] 	-278037.3	276334.5	-278086.5	276344.0
+PLIPA2A120pp	h2o[p] + pa120[p]  -> 1ddecg3p[p] + ddca[p] + h[p] 	-339246.2	339717.8	-339295.4	339727.3
+PLIPA2A140pp	h2o[p] + pa140[p]  -> 1tdecg3p[p] + h[p] + ttdca[p] 	-339246.2	339717.8	-339295.4	339727.3
+PLIPA2A141pp	h2o[p] + pa141[p]  -> 1tdec7eg3p[p] + h[p] + ttdcea[p] 	-339246.2	339717.8	-339295.4	339727.3
+PLIPA2A160pp	h2o[p] + pa160[p]  -> 1hdecg3p[p] + h[p] + hdca[p] 	-339246.2	339717.8	-339295.4	339727.3
+PLIPA2A161pp	h2o[p] + pa161[p]  -> 1hdec9eg3p[p] + h[p] + hdcea[p] 	-339246.2	339717.8	-339295.4	339727.3
+PLIPA2A180pp	h2o[p] + pa180[p]  -> 1odecg3p[p] + h[p] + ocdca[p] 	-339246.2	339717.8	-339295.4	339727.3
+PGSA120	cdpdddecg[c] + glyc3p[c]  -> cmp[c] + h[c] + pgp120[c] 	-392005.2	391994.8	-392044.4	392034.0
+PGSA140	cdpdtdecg[c] + glyc3p[c]  -> cmp[c] + h[c] + pgp140[c] 	-392005.2	391994.8	-392044.4	392034.0
+PLIPA2A181pp	h2o[p] + pa181[p]  -> 1odec11eg3p[p] + h[p] + ocdcea[p] 	-339246.2	339717.8	-339295.4	339727.3
+PGSA141	cdpdtdec7eg[c] + glyc3p[c]  -> cmp[c] + h[c] + pgp141[c] 	-392005.2	391994.8	-392044.4	392034.0
+PGSA160	cdpdhdecg[c] + glyc3p[c]  -> cmp[c] + h[c] + pgp160[c] 	-392005.2	391994.8	-392044.4	392034.0
+PGSA161	cdpdhdec9eg[c] + glyc3p[c]  -> cmp[c] + h[c] + pgp161[c] 	-392005.2	391994.8	-392044.4	392034.0
+PLIPA2E120pp	h2o[p] + pe120[p]  -> 1agpe120[p] + ddca[p] + h[p] 	-339246.2	339717.8	-339295.4	339727.3
+PLIPA2E140pp	h2o[p] + pe140[p]  -> 1agpe140[p] + h[p] + ttdca[p] 	-339246.2	339717.8	-339295.4	339727.3
+PLIPA2E141pp	h2o[p] + pe141[p]  -> 1agpe141[p] + h[p] + ttdcea[p] 	-339246.2	339717.8	-339295.4	339727.3
+PLIPA2E160pp	h2o[p] + pe160[p]  -> 1agpe160[p] + h[p] + hdca[p] 	-339246.2	339717.8	-339295.4	339727.3
+PGSA180	cdpdodecg[c] + glyc3p[c]  -> cmp[c] + h[c] + pgp180[c] 	-392005.2	391994.8	-392044.4	392034.0
+PGSA181	cdpdodec11eg[c] + glyc3p[c]  -> cmp[c] + h[c] + pgp181[c] 	-392005.2	391994.8	-392044.4	392034.0
+PLIPA2E161pp	h2o[p] + pe161[p]  -> 1agpe161[p] + h[p] + hdcea[p] 	-339246.2	339717.8	-339295.4	339727.3
+MTHFR2	2 h[c] + mlthf[c] + nadh[c]  -> 5mthf[c] + nad[c] 	-277197.0	277174.7	-277236.2	277213.9
+PLIPA2E180pp	h2o[p] + pe180[p]  -> 1agpe180[p] + h[p] + ocdca[p] 	-339246.2	339717.8	-339295.4	339727.3
+PLIPA2E181pp	h2o[p] + pe181[p]  -> 1agpe181[p] + h[p] + ocdcea[p] 	-339246.2	339717.8	-339295.4	339727.3
+PLIPA2G120pp	h2o[p] + pg120[p]  -> 1agpg120[p] + ddca[p] + h[p] 	-339246.2	339717.8	-339295.4	339727.3
+PHEMEabcpp	atp[c] + h2o[c] + pheme[c]  -> adp[c] + h[c] + pheme[p] + pi[c] 	-278056.3	276315.4	-278125.2	276344.5
+PHETRS	atp[c] + phe__L[c] + trnaphe[c]  -> amp[c] + phetrna[c] + ppi[c] 	-440238.7	436300.0	-440297.5	436358.8
+PLIPA2G140pp	h2o[p] + pg140[p]  -> 1agpg140[p] + h[p] + ttdca[p] 	-339246.2	339717.8	-339295.4	339727.3
+PLIPA2G141pp	h2o[p] + pg141[p]  -> 1agpg141[p] + h[p] + ttdcea[p] 	-339246.2	339717.8	-339295.4	339727.3
+PLIPA2G160pp	h2o[p] + pg160[p]  -> 1agpg160[p] + h[p] + hdca[p] 	-339246.2	339717.8	-339295.4	339727.3
+PLIPA2G161pp	h2o[p] + pg161[p]  -> 1agpg161[p] + h[p] + hdcea[p] 	-339246.2	339717.8	-339295.4	339727.3
+PLIPA2G180pp	h2o[p] + pg180[p]  -> 1agpg180[p] + h[p] + ocdca[p] 	-339246.2	339717.8	-339295.4	339727.3
+PHYTSpp	6 h2o[p] + minohp[p]  -> inost[p] + 6 pi[p] 	-282211.6	272160.1	-282409.4	272119.1
+PIuabcpp	atp[c] + h2o[c] + pi[p]  -> adp[c] + h[c] + 2 pi[c] 	-278021.6	276350.1	-278090.5	276379.2
+PLIPA2G181pp	h2o[p] + pg181[p]  -> 1agpg181[p] + h[p] + ocdcea[p] 	-339246.2	339717.8	-339295.4	339727.3
+PMDPHT	5aprbu[c] + h2o[c]  -> 4r5au[c] + pi[c] 	-278040.7	276331.0	-278090.0	276340.5
+PLIPA1A120pp	h2o[p] + pa120[p]  -> 2ddecg3p[p] + ddca[p] 	-339242.7	339721.2	-339292.0	339730.7
+PLIPA1A140pp	h2o[p] + pa140[p]  -> 2tdecg3p[p] + ttdca[p] 	-339242.7	339721.2	-339292.0	339730.7
+PLIPA1A141pp	h2o[p] + pa141[p]  -> 2tdec7eg3p[p] + ttdcea[p] 	-339242.7	339721.2	-339292.0	339730.7
+PMPK	4ampm[c] + atp[c]  -> 2mahmp[c] + adp[c] 	-391998.3	392001.7	-392037.5	392040.9
+PNTK	atp[c] + pnto__R[c]  -> 4ppan[c] + adp[c] + h[c] 	-392001.7	391998.3	-392040.9	392037.5
+PLIPA1A160pp	h2o[p] + pa160[p]  -> 2hdecg3p[p] + hdca[p] 	-339242.7	339721.2	-339292.0	339730.7
+PLIPA1A161pp	h2o[p] + pa161[p]  -> 2hdec9eg3p[p] + hdcea[p] 	-339242.7	339721.2	-339292.0	339730.7
+POX	h2o[c] + pyr[c] + q8[c]  -> ac[c] + co2[c] + q8h2[c] 	-392148.5	391851.5	-392217.4	391880.6
+MTRK	5mtr[c] + atp[c]  -> 5mdr1p[c] + adp[c] + h[c] 	-391998.3	392001.7	-392037.5	392040.9
+PLIPA1A180pp	h2o[p] + pa180[p]  -> 2odecg3p[p] + ocdca[p] 	-339242.7	339721.2	-339292.0	339730.7
+PLIPA1A181pp	h2o[p] + pa181[p]  -> 2odec11eg3p[p] + ocdcea[p] 	-339242.7	339721.2	-339292.0	339730.7
+PPA2	h2o[c] + pppi[c]  -> h[c] + pi[c] + ppi[c] 	-198824.2	193175.8	-198873.5	193185.3
+PLIPA1E120pp	h2o[p] + pe120[p]  -> 2agpe120[p] + ddca[p] + h[p] 	-339246.2	339717.8	-339295.4	339727.3
+MTRPOX	Nmtrp[c] + h2o[c] + o2[c]  -> fald[c] + h2o2[c] + trp__L[c] 	-277222.7	277149.0	-277291.6	277178.1
+PLIPA1E140pp	h2o[p] + pe140[p]  -> 2agpe140[p] + h[p] + ttdca[p] 	-339246.2	339717.8	-339295.4	339727.3
+PLIPA1E141pp	h2o[p] + pe141[p]  -> 2agpe141[p] + h[p] + ttdcea[p] 	-339246.2	339717.8	-339295.4	339727.3
+PLIPA1E160pp	h2o[p] + pe160[p]  -> 2agpe160[p] + h[p] + hdca[p] 	-339246.2	339717.8	-339295.4	339727.3
+PLIPA1E161pp	h2o[p] + pe161[p]  -> 2agpe161[p] + h[p] + hdcea[p] 	-339246.2	339717.8	-339295.4	339727.3
+PLIPA1E180pp	h2o[p] + pe180[p]  -> 2agpe180[p] + h[p] + ocdca[p] 	-339246.2	339717.8	-339295.4	339727.3
+PLIPA1E181pp	h2o[p] + pe181[p]  -> 2agpe181[p] + h[p] + ocdcea[p] 	-339246.2	339717.8	-339295.4	339727.3
+PLIPA1G120pp	h2o[p] + pg120[p]  -> 2agpg120[p] + ddca[p] + h[p] 	-339246.2	339717.8	-339295.4	339727.3
+PLIPA1G140pp	h2o[p] + pg140[p]  -> 2agpg140[p] + h[p] + ttdca[p] 	-339246.2	339717.8	-339295.4	339727.3
+PLIPA1G141pp	h2o[p] + pg141[p]  -> 2agpg141[p] + h[p] + ttdcea[p] 	-339246.2	339717.8	-339295.4	339727.3
+PPBNGS	2 5aop[c]  -> 2 h2o[c] + h[c] + ppbng[c] 	-438746.1	437792.5	-438755.6	437841.8
+PPC	co2[c] + h2o[c] + pep[c]  -> h[c] + oaa[c] + pi[c] 	-277654.7	276717.0	-277693.9	276756.2
+PPCDC	4ppcys[c] + h[c]  -> co2[c] + pan4p[c] 	-277566.7	276805.0	-277616.0	276814.5
+PPCK	atp[c] + oaa[c]  -> adp[c] + co2[c] + pep[c] 	-392384.3	391615.7	-392453.2	391644.8
+PPCSCT	ppcoa[c] + succ[c]  -> ppa[c] + succoa[c] 	-392005.2	391994.8	-392044.4	392034.0
+PLIPA1G160pp	h2o[p] + pg160[p]  -> 2agpg160[p] + h[p] + hdca[p] 	-339246.2	339717.8	-339295.4	339727.3
+PLIPA1G161pp	h2o[p] + pg161[p]  -> 2agpg161[p] + h[p] + hdcea[p] 	-339246.2	339717.8	-339295.4	339727.3
+PLIPA1G180pp	h2o[p] + pg180[p]  -> 2agpg180[p] + h[p] + ocdca[p] 	-339246.2	339717.8	-339295.4	339727.3
+PLIPA1G181pp	h2o[p] + pg181[p]  -> 2agpg181[p] + h[p] + ocdcea[p] 	-339246.2	339717.8	-339295.4	339727.3
+PPGPPDP	h2o[c] + ppgpp[c]  -> gdp[c] + ppi[c] 	-278903.9	275467.8	-278953.2	275477.3
+NACODA	acg5sa[c] + h2o[c]  -> ac[c] + glu5sa[c] 	-339244.4	339719.5	-339293.7	339729.0
+PPNCL2	4ppan[c] + ctp[c] + cys__L[c]  -> 4ppcys[c] + cmp[c] + h[c] + ppi[c] 	-440238.7	436300.0	-440297.5	436358.8
+PPND	nad[c] + pphn[c]  -> 34hpp[c] + co2[c] + nadh[c] 	-277553.8	276817.9	-277622.7	276847.0
+PPNDH	h[c] + pphn[c]  -> co2[c] + h2o[c] + phpyr[c] 	-277805.9	276565.8	-277855.2	276575.3
+PROTRS	atp[c] + pro__L[c] + trnapro[c]  -> amp[c] + ppi[c] + protrna[c] 	-440238.7	436300.0	-440297.5	436358.8
+PROabcpp	atp[c] + h2o[c] + pro__L[p]  -> adp[c] + h[c] + pi[c] + pro__L[c] 	-278039.0	276332.7	-278107.9	276361.9
+PPPGO	pppg9[c] + 1.5 o2[c]  -> 3 h2o[c] + ppp9[c] 	-277923.0	276448.7	-277927.5	276512.8
+PPPGO3	3 fum[c] + pppg9[c]  -> ppp9[c] + 3 succ[c] 	-876538.6	876538.6	-876617.0	876617.0
+PPPNDO	h[c] + nadh[c] + pppn[c] + o2[c]  -> cechddd[c] + nad[c] 	-277216.9	277154.8	-277246.0	277223.7
+PPS	atp[c] + h2o[c] + pyr[c]  -> amp[c] + 2 h[c] + pi[c] + pep[c] 	-392856.6	391143.4	-392925.4	391172.6
+PPTHpp	h2o[p] + ppt[p]  -> h2[p] + pi[p] 	-196837.3	195162.7	-196886.6	195172.2
+PSD120	h[c] + ps120[c]  -> co2[c] + pe120[c] 	-277570.1	276801.6	-277619.4	276811.1
+PSD140	h[c] + ps140[c]  -> co2[c] + pe140[c] 	-277570.1	276801.6	-277619.4	276811.1
+PSD141	h[c] + ps141[c]  -> co2[c] + pe141[c] 	-277570.1	276801.6	-277619.4	276811.1
+PRAIS	atp[c] + fpram[c]  -> adp[c] + air[c] + 2 h[c] + pi[c] 	-393094.1	390905.9	-393163.0	390935.0
+PRAIi	pran[c]  -> 2cpr5p[c] 	-277185.9	277185.9	-277205.5	277205.5
+PRAMPC	h2o[c] + prbamp[c]  -> prfp[c] 	-276948.3	277423.4	-276967.9	277443.0
+PRASCSi	5aizc[c] + asp__L[c] + atp[c]  -> 25aics[c] + adp[c] + h[c] + pi[c] 	-439365.1	437173.5	-439423.9	437232.3
+PRATPP	h2o[c] + prbatp[c]  -> h[c] + ppi[c] + prbamp[c] 	-278910.8	275460.9	-278960.1	275470.4
+PSD160	h[c] + ps160[c]  -> co2[c] + pe160[c] 	-277570.1	276801.6	-277619.4	276811.1
+PSD161	h[c] + ps161[c]  -> co2[c] + pe161[c] 	-277570.1	276801.6	-277619.4	276811.1
+PSD180	h[c] + ps180[c]  -> co2[c] + pe180[c] 	-277570.1	276801.6	-277619.4	276811.1
+PRFGS	atp[c] + fgam[c] + h2o[c] + gln__L[c]  -> adp[c] + fpram[c] + h[c] + glu__L[c] + pi[c] 	-480951.4	479248.6	-481039.9	479297.3
+PROD2	fad[c] + pro__L[c]  -> 1pyr5c[c] + fadh2[c] + h[c] 	-277226.8	277144.9	-277266.0	277184.1
+PROGLYabcpp	atp[c] + h2o[c] + progly[p]  -> adp[c] + h[c] + pi[c] + progly[c] 	-278039.0	276332.7	-278107.9	276361.9
+PSD181	h[c] + ps181[c]  -> co2[c] + pe181[c] 	-277570.1	276801.6	-277619.4	276811.1
+PSERT	3php[c] + glu__L[c]  -> akg[c] + pser__L[c] 	-391998.3	392001.7	-392037.5	392040.9
+PSP_L	h2o[c] + pser__L[c]  -> pi[c] + ser__L[c] 	-278040.7	276331.0	-278090.0	276340.5
+PSP_Lpp	h2o[p] + pser__L[p]  -> pi[p] + ser__L[p] 	-278040.7	276331.0	-278090.0	276340.5
+NADDP	h2o[c] + nad[c]  -> amp[c] + 2 h[c] + nmn[c] 	-294177.2	293822.8	-294226.5	293832.3
+PSSA120	cdpdddecg[c] + ser__L[c]  -> cmp[c] + h[c] + ps120[c] 	-392001.7	391998.3	-392040.9	392037.5
+PSSA140	cdpdtdecg[c] + ser__L[c]  -> cmp[c] + h[c] + ps140[c] 	-392001.7	391998.3	-392040.9	392037.5
+RBK	atp[c] + rib__D[c]  -> adp[c] + h[c] + r5p[c] 	-391998.3	392001.7	-392037.5	392040.9
+NADH10	h[c] + mqn8[c] + nadh[c]  -> mql8[c] + nad[c] 	-277200.5	277171.2	-277239.7	277210.4
+RBK_L1	atp[c] + rbl__L[c]  -> adp[c] + h[c] + ru5p__L[c] 	-391998.3	392001.7	-392037.5	392040.9
+PSSA141	cdpdtdec7eg[c] + ser__L[c]  -> cmp[c] + h[c] + ps141[c] 	-392001.7	391998.3	-392040.9	392037.5
+PSSA160	cdpdhdecg[c] + ser__L[c]  -> cmp[c] + h[c] + ps160[c] 	-392001.7	391998.3	-392040.9	392037.5
+RHAT1	dtdprmn[c] + kphphhlipa[c]  -> dtdp[c] + h[c] + icolipa[c] 	-392005.2	391994.8	-392044.4	392034.0
+PSSA161	cdpdhdec9eg[c] + ser__L[c]  -> cmp[c] + h[c] + ps161[c] 	-392001.7	391998.3	-392040.9	392037.5
+NADH16pp	4 h[c] + nadh[c] + q8[c]  -> 3 h[p] + nad[c] + q8h2[c] 	-277174.4	277197.3	-277213.6	277236.5
+PSSA180	cdpdodecg[c] + ser__L[c]  -> cmp[c] + h[c] + ps180[c] 	-392001.7	391998.3	-392040.9	392037.5
+RHCCE	rhcys[c]  -> dhptd[c] + hcys__L[c] 	-339482.0	339482.0	-339531.2	339491.5
+RIBabcpp	atp[c] + h2o[c] + rib__D[p]  -> adp[c] + h[c] + pi[c] + rib__D[c] 	-278039.0	276332.7	-278107.9	276361.9
+PSSA181	cdpdodec11eg[c] + ser__L[c]  -> cmp[c] + h[c] + ps181[c] 	-392001.7	391998.3	-392040.9	392037.5
+NADH17pp	4 h[c] + mqn8[c] + nadh[c]  -> 3 h[p] + mql8[c] + nad[c] 	-277174.4	277197.3	-277213.6	277236.5
+RMK	atp[c] + rml[c]  -> adp[c] + h[c] + rml1p[c] 	-391998.3	392001.7	-392037.5	392040.9
+PTA2	pi[c] + ppcoa[c]  -> coa[c] + ppap[c] 	-338389.6	340574.3	-338428.8	340613.5
+PTHRpp	h2o[p] + thrp[p]  -> pi[p] + thr__L[p] 	-278040.7	276331.0	-278090.0	276340.5
+PTPATi	atp[c] + h[c] + pan4p[c]  -> dpcoa[c] + ppi[c] 	-341446.1	337517.8	-341485.3	337557.0
+PTRCTA	akg[c] + ptrc[c]  -> 4abutn[c] + glu__L[c] 	-391994.8	392005.2	-392034.0	392044.4
+PTRCabcpp	atp[c] + h2o[c] + ptrc[p]  -> adp[c] + h[c] + pi[c] + ptrc[c] 	-278056.3	276315.4	-278125.2	276344.5
+RNDR1	adp[c] + trdrd[c]  -> dadp[c] + h2o[c] + trdox[c] 	-277480.5	276891.2	-277519.7	276930.4
+RNDR1b	adp[c] + grxrd[c]  -> dadp[c] + h2o[c] + grxox[c] 	-392237.5	391762.5	-392276.7	391801.7
+RNDR2	gdp[c] + trdrd[c]  -> dgdp[c] + h2o[c] + trdox[c] 	-277480.5	276891.2	-277519.7	276930.4
+RNDR2b	gdp[c] + grxrd[c]  -> dgdp[c] + h2o[c] + grxox[c] 	-392237.5	391762.5	-392276.7	391801.7
+NADH18pp	2dmmq8[c] + 4 h[c] + nadh[c]  -> 2dmmql8[c] + 3 h[p] + nad[c] 	-277174.4	277197.3	-277213.6	277236.5
+RNDR3	cdp[c] + trdrd[c]  -> dcdp[c] + h2o[c] + trdox[c] 	-277480.5	276891.2	-277519.7	276930.4
+RNDR3b	cdp[c] + grxrd[c]  -> dcdp[c] + h2o[c] + grxox[c] 	-392237.5	391762.5	-392276.7	391801.7
+RNDR4	trdrd[c] + udp[c]  -> dudp[c] + h2o[c] + trdox[c] 	-277480.5	276891.2	-277519.7	276930.4
+RNDR4b	grxrd[c] + udp[c]  -> dudp[c] + h2o[c] + grxox[c] 	-392237.5	391762.5	-392276.7	391801.7
+RNTR1c	atp[c] + fldrd[c]  -> fldox[c] + datp[c] + h2o[c] 	-392237.5	391762.5	-392276.7	391801.7
+RNTR2c	fldrd[c] + gtp[c]  -> fldox[c] + dgtp[c] + h2o[c] 	-392237.5	391762.5	-392276.7	391801.7
+PYAM5PO	h2o[c] + o2[c] + pyam5p[c]  -> h2o2[c] + nh4[c] + pydx5p[c] 	-277181.6	277190.1	-277250.5	277219.2
+PYDAMK	atp[c] + pydam[c]  -> adp[c] + h[c] + pyam5p[c] 	-391994.8	392005.2	-392034.0	392044.4
+RNTR3c	ctp[c] + fldrd[c]  -> fldox[c] + dctp[c] + h2o[c] 	-392237.5	391762.5	-392276.7	391801.7
+RNTR4c	fldrd[c] + utp[c]  -> fldox[c] + dutp[c] + h2o[c] 	-392237.5	391762.5	-392276.7	391801.7
+RZ5PP	5prdmbz[c] + h2o[c]  -> pi[c] + rdmbzi[c] 	-278040.7	276331.0	-278090.0	276340.5
+PYDXK	atp[c] + pydx[c]  -> adp[c] + h[c] + pydx5p[c] 	-391998.3	392001.7	-392037.5	392040.9
+PYDXNK	atp[c] + pydxn[c]  -> adp[c] + h[c] + pdx5p[c] 	-391998.3	392001.7	-392037.5	392040.9
+S7PI	s7p[c]  -> gmhep7p[c] 	-277185.9	277185.9	-277205.5	277205.5
+NADH5	h[c] + nadh[c] + q8[c]  -> nad[c] + q8h2[c] 	-277200.5	277171.2	-277239.7	277210.4
+SADH	2 h2o[c] + 2 h[c] + sucarg[c]  -> co2[c] + 2 nh4[c] + sucorn[c] 	-277255.6	277116.1	-277364.3	277105.4
+SADT2	atp[c] + h2o[c] + gtp[c] + so4[c]  -> aps[c] + gdp[c] + pi[c] + ppi[c] 	-394072.8	389927.2	-394161.2	389976.0
+SARCOX	h2o[c] + o2[c] + sarcs[c]  -> fald[c] + h2o2[c] + gly[c] 	-277222.7	277149.0	-277291.6	277178.1
+PYDXPP	h2o[c] + pydx5p[c]  -> pi[c] + pydx[c] 	-278040.7	276331.0	-278090.0	276340.5
+PYK	adp[c] + h[c] + pep[c]  -> atp[c] + pyr[c] 	-391998.3	392001.7	-392037.5	392040.9
+SBTptspp	pep[c] + sbt__D[p]  -> sbt6p[c] + pyr[c] 	-391996.6	392003.4	-392035.8	392042.6
+QMO2	2 o2[c] + q8h2[c]  -> 2 h[c] + 2 o2s[c] + q8[c] 	-480136.2	480063.7	-480195.0	480122.6
+SDPDS	h2o[c] + sl26da[c]  -> 26dap_LL[c] + succ[c] 	-339244.4	339719.5	-339293.7	339729.0
+QMO3	mql8[c] + 2 o2[c]  -> 2 h[c] + 2 o2s[c] + mqn8[c] 	-480136.2	480063.7	-480195.0	480122.6
+NADH9	2dmmq8[c] + h[c] + nadh[c]  -> 2dmmql8[c] + nad[c] 	-277200.5	277171.2	-277239.7	277210.4
+QULNS	dhap[c] + iasp[c]  -> 2 h2o[c] + pi[c] + quln[c] 	-341049.4	337914.5	-341088.6	337953.7
+R15BPK	atp[c] + r15bp[c]  -> adp[c] + prpp[c] 	-392001.7	391998.3	-392040.9	392037.5
+SELCYSS	selnp[c] + sertrna_sec[c]  -> h[c] + pi[c] + sectrna[c] 	-340577.8	338386.2	-340617.0	338425.4
+SELNPS	atp[c] + h2o[c] + seln[c]  -> amp[c] + pi[c] + selnp[c] 	-392848.0	391152.0	-392916.8	391181.2
+SERD_D	ser__D[c]  -> nh4[c] + pyr[c] 	-277267.0	277104.7	-277316.3	277114.2
+SERD_L	ser__L[c]  -> nh4[c] + pyr[c] 	-277267.0	277104.7	-277316.3	277114.2
+R1PK	atp[c] + r1p[c]  -> adp[c] + h[c] + r15bp[c] 	-392005.2	391994.8	-392044.4	392034.0
+R5PP	h2o[c] + r5p[c]  -> pi[c] + rib__D[c] 	-278040.7	276331.0	-278090.0	276340.5
+R5PPpp	h2o[p] + r5p[p]  -> pi[p] + rib__D[p] 	-278040.7	276331.0	-278090.0	276340.5
+RBFK	atp[c] + ribflv[c]  -> adp[c] + fmn[c] + h[c] 	-366660.7	366704.1	-366699.9	366743.3
+RBFSa	4r5au[c] + db4p[c]  -> dmlz[c] + 2 h2o[c] + pi[c] 	-341049.4	337914.5	-341088.6	337953.7
+RBFSb	2 dmlz[c]  -> 4r5au[c] + ribflv[c] 	-480100.0	480100.0	-480139.2	480139.2
+SERTRS	atp[c] + ser__L[c] + trnaser[c]  -> amp[c] + ppi[c] + sertrna[c] 	-440238.7	436300.0	-440297.5	436358.8
+SERTRS2	atp[c] + ser__L[c] + trnasecys[c]  -> amp[c] + ppi[c] + sertrna_sec[c] 	-440238.7	436300.0	-440297.5	436358.8
+NADK	atp[c] + nad[c]  -> adp[c] + h[c] + nadp[c] 	-278026.4	276345.3	-278065.6	276384.5
+SFGTHi	Sfglutth[c] + h2o[c]  -> for[c] + h[c] + gthrd[c] 	-277298.3	277073.4	-277347.6	277082.9
+NADN	h2o[c] + nad[c]  -> adprib[c] + h[c] + ncam[c] 	-294175.5	293824.5	-294224.8	293834.0
+SGDS	h2o[c] + sucglu[c]  -> glu__L[c] + succ[c] 	-339241.0	339722.9	-339290.3	339732.4
+SGSAD	h2o[c] + nad[c] + sucgsa[c]  -> 2 h[c] + nadh[c] + sucglu[c] 	-276938.9	277432.8	-276978.1	277472.0
+TDSK	atp[c] + lipidAds[c]  -> adp[c] + h[c] + lipidA[c] 	-392005.2	391994.8	-392044.4	392034.0
+TDSR1	dsbcox[p] + dsbdrd[c]  -> dsbcrd[p] + dsbdox[c] 	-392000.0	392000.0	-392039.2	392039.2
+NADPHQR2	h[c] + nadph[c] + q8[c]  -> nadp[c] + q8h2[c] 	-277200.2	277171.5	-277239.4	277210.7
+TDSR2	dsbdrd[c] + dsbgox[p]  -> dsbdox[c] + dsbgrd[p] 	-392000.0	392000.0	-392039.2	392039.2
+SHCHCS2	ichor[c] + ssaltpp[c]  -> 2shchc[c] + thmpp[c] + pyr[c] 	-438265.9	438272.8	-438334.8	438301.9
+SHCHD2	dscl[c] + nad[c]  -> h[c] + nadh[c] + scl[c] 	-277171.2	277200.5	-277210.4	277239.7
+SHCHF	fe2[c] + scl[c]  -> 3 h[c] + sheme[c] 	-339494.0	339469.9	-339503.5	339519.2
+THDPS	h2o[c] + thdp[c] + succoa[c]  -> coa[c] + sl2a6o[c] 	-391759.0	392241.0	-391798.2	392280.2
+NADPHQR3	h[c] + mqn8[c] + nadph[c]  -> mql8[c] + nadp[c] 	-277200.2	277171.5	-277239.4	277210.7
+SHKK	atp[c] + skm[c]  -> adp[c] + h[c] + skm5p[c] 	-392001.7	391998.3	-392040.9	392037.5
+SHSL1	cys__L[c] + suchms[c]  -> cyst__L[c] + h[c] + succ[c] 	-392003.4	391996.6	-392042.6	392035.8
+THMabcpp	atp[c] + h2o[c] + thm[p]  -> adp[c] + h[c] + pi[c] + thm[c] 	-278047.7	276324.1	-278116.5	276353.2
+THRA2	athr__L[c]  -> acald[c] + gly[c] 	-339482.0	339482.0	-339531.2	339491.5
+THRA	thr__L[c]  -> acald[c] + gly[c] 	-339482.0	339482.0	-339531.2	339491.5
+NADPHQR4	2dmmq8[c] + h[c] + nadph[c]  -> 2dmmql8[c] + nadp[c] 	-277200.2	277171.5	-277239.4	277210.7
+SOTA	akg[c] + sucorn[c]  -> glu__L[c] + sucgsa[c] 	-392000.0	392000.0	-392039.2	392039.2
+SPMDAT1	accoa[c] + spmd[c]  -> N1aspmd[c] + coa[c] + h[c] 	-391996.6	392003.4	-392035.8	392042.6
+THRD	nad[c] + thr__L[c]  -> 2aobut[c] + h[c] + nadh[c] 	-277171.2	277200.5	-277210.4	277239.7
+THRD_L	thr__L[c]  -> 2obut[c] + nh4[c] 	-277267.0	277104.7	-277316.3	277114.2
+THRS	h2o[c] + phom[c]  -> pi[c] + thr__L[c] 	-278040.7	276331.0	-278090.0	276340.5
+SPMDAT2	accoa[c] + spmd[c]  -> coa[c] + h[c] + n8aspmd[c] 	-391996.6	392003.4	-392035.8	392042.6
+SPMDabcpp	atp[c] + h2o[c] + spmd[p]  -> adp[c] + h[c] + pi[c] + spmd[c] 	-278065.0	276306.7	-278133.9	276335.8
+THRTRS	atp[c] + thr__L[c] + trnathr[c]  -> amp[c] + ppi[c] + thrtrna[c] 	-440238.7	436300.0	-440297.5	436358.8
+SPMS	ametam[c] + ptrc[c]  -> 5mta[c] + h[c] + spmd[c] 	-392001.7	391998.3	-392040.9	392037.5
+THRabcpp	atp[c] + h2o[c] + thr__L[p]  -> adp[c] + h[c] + pi[c] + thr__L[c] 	-278039.0	276332.7	-278107.9	276361.9
+SSALx	h2o[c] + nad[c] + sucsal[c]  -> 2 h[c] + nadh[c] + succ[c] 	-276937.2	277434.6	-276976.4	277473.8
+SSALy	h2o[c] + nadp[c] + sucsal[c]  -> 2 h[c] + nadph[c] + succ[c] 	-276937.4	277434.3	-276976.6	277473.5
+THZPSN	atp[c] + cys__L[c] + dxyl5p[c] + tyr__L[c]  -> 4hba[c] + 4mpetz[c] + amp[c] + co2[c] + ala__L[c] + h2o[c] + h[c] + ppi[c] 	-556964.6	551778.8	-557102.4	551837.1
+SUCBZL	coa[c] + atp[c] + sucbz[c]  -> amp[c] + ppi[c] + sbzcoa[c] 	-440242.1	436296.5	-440300.9	436355.3
+SUCBZS	2shchc[c]  -> h2o[c] + sucbz[c] 	-277423.4	276948.3	-277443.0	276967.9
+NADS1	atp[c] + dnad[c] + nh4[c]  -> amp[c] + h[c] + nad[c] + ppi[c] 	-354820.9	351867.1	-354879.7	351925.9
+SUCDi	q8[c] + succ[c]  -> fum[c] + q8h2[c] 	-392000.0	392000.0	-392039.2	392039.2
+TMAOR1	h[c] + mql8[c] + tmao[c]  -> h2o[c] + mqn8[c] + tma[c] 	-277488.4	276883.3	-277527.6	276922.5
+TMAOR1pp	h[p] + mql8[c] + tmao[p]  -> h2o[p] + mqn8[c] + tma[p] 	-277488.4	276883.3	-277527.6	276922.5
+TMAOR2	2dmmql8[c] + h[c] + tmao[c]  -> 2dmmq8[c] + h2o[c] + tma[c] 	-277488.4	276883.3	-277527.6	276922.5
+TMAOR2pp	2dmmql8[c] + h[p] + tmao[p]  -> 2dmmq8[c] + h2o[p] + tma[p] 	-277488.4	276883.3	-277527.6	276922.5
+SUCptspp	pep[c] + sucr[p]  -> pyr[c] + suc6p[c] 	-391996.6	392003.4	-392035.8	392042.6
+SULFACabcpp	atp[c] + h2o[c] + sulfac[p]  -> adp[c] + h[c] + pi[c] + sulfac[c] 	-278021.6	276350.1	-278090.5	276379.2
+TMDK1	atp[c] + thymd[c]  -> adp[c] + dtmp[c] + h[c] 	-391998.3	392001.7	-392037.5	392040.9
+TMDS	dump[c] + mlthf[c]  -> dtmp[c] + dhf[c] 	-392000.0	392000.0	-392039.2	392039.2
+TMK	atp[c] + thm[c]  -> adp[c] + h[c] + thmmp[c] 	-391994.8	392005.2	-392034.0	392044.4
+TMPK	atp[c] + thmmp[c]  -> adp[c] + thmpp[c] 	-391996.6	392003.4	-392035.8	392042.6
+TMPPP	2mahmp[c] + 4mpetz[c] + h[c]  -> ppi[c] + thmmp[c] 	-341449.6	337514.3	-341488.8	337553.5
+TPRDCOAS	atp[c] + dpcoa[c]  -> 2tpr3dpcoa[c] + ade[c] 	-392013.8	391986.2	-392053.0	392025.4
+SULR	5 h[c] + 3 nadph[c] + so3[c]  -> 3 h2o[c] + h2s[c] + 3 nadp[c] 	-263.8	-158.3	-342.2	-79.9
+SULabcpp	atp[c] + h2o[c] + so4[p]  -> adp[c] + h[c] + pi[c] + so4[c] 	-278021.6	276350.1	-278090.5	276379.2
+TARTD	tartr__L[c]  -> h2o[c] + oaa[c] 	-277423.4	276948.3	-277443.0	276967.9
+TRE6PH	h2o[c] + tre6p[c]  -> g6p[c] + glc__D[c] 	-339244.4	339719.5	-339293.7	339729.0
+TRE6PP	h2o[c] + tre6p[c]  -> pi[c] + tre[c] 	-278040.7	276331.0	-278090.0	276340.5
+TRE6PS	g6p[c] + udpg[c]  -> h[c] + tre6p[c] + udp[c] 	-392005.2	391994.8	-392044.4	392034.0
+TREH	h2o[c] + tre[c]  -> 2 glc__D[c] 	-438031.8	438506.9	-438081.1	438516.4
+TAUDO	akg[c] + o2[c] + taur[c]  -> aacald[c] + co2[c] + h[c] + so3[c] + succ[c] 	-392935.4	391064.6	-393023.9	391113.3
+TAURabcpp	atp[c] + h2o[c] + taur[p]  -> adp[c] + h[c] + pi[c] + taur[c] 	-278039.0	276332.7	-278107.9	276361.9
+TREHpp	h2o[p] + tre[p]  -> 2 glc__D[p] 	-438031.8	438506.9	-438081.1	438516.4
+NAMNPP	atp[c] + h2o[c] + nac[c] + prpp[c]  -> adp[c] + pi[c] + nicrnt[c] + ppi[c] 	-441081.5	435457.2	-441170.0	435505.9
+TREptspp	pep[c] + tre[p]  -> pyr[c] + tre6p[c] 	-391996.6	392003.4	-392035.8	392042.6
+TRPS1	3ig3p[c] + ser__L[c]  -> g3p[c] + h2o[c] + trp__L[c] 	-392237.5	391762.5	-392276.7	391801.7
+CTECOAI6	tdecoa[c]  -> td2coa[c] 	-277185.9	277185.9	-277205.5	277205.5
+TDP	h2o[c] + thmpp[c]  -> h[c] + pi[c] + thmmp[c] 	-278042.4	276329.3	-278091.7	276338.8
+TDPADGAT	accoa[c] + dtdp4addg[c]  -> coa[c] + dtdp4aaddg[c] + h[c] 	-392003.4	391996.6	-392042.6	392035.8
+TDPAGTA	dtdp4d6dg[c] + glu__L[c]  -> akg[c] + dtdp4addg[c] 	-392000.0	392000.0	-392039.2	392039.2
+TDPDRE	dtdp4d6dg[c]  -> dtdp4d6dm[c] 	-277185.9	277185.9	-277205.5	277205.5
+TDPDRR	dtdp4d6dm[c] + h[c] + nadph[c]  -> dtdprmn[c] + nadp[c] 	-277200.2	277171.5	-277239.4	277210.7
+TRPS2	indole[c] + ser__L[c]  -> h2o[c] + trp__L[c] 	-339719.5	339244.4	-339729.0	339293.7
+TRPS3	3ig3p[c]  -> g3p[c] + indole[c] 	-339482.0	339482.0	-339531.2	339491.5
+TRPTRS	atp[c] + trnatrp[c] + trp__L[c]  -> amp[c] + ppi[c] + trptrna[c] 	-440238.7	436300.0	-440297.5	436358.8
+UPPDC1	4 h[c] + uppg3[c]  -> 4 co2[c] + cpppg3[c] 	-278685.1	275686.6	-278823.5	275665.8
+TDPGDH	dtdpglu[c]  -> dtdp4d6dg[c] + h2o[c] 	-277423.4	276948.3	-277443.0	276967.9
+TSULabcpp	atp[c] + h2o[c] + tsul[p]  -> adp[c] + h[c] + pi[c] + tsul[c] 	-278021.6	276350.1	-278090.5	276379.2
+UPPRT	prpp[c] + ura[c]  -> ppi[c] + ump[c] 	-341442.7	337521.2	-341481.9	337560.4
+URDGLYCD	nad[c] + urdglyc[c]  -> h[c] + oxur[c] + nadh[c] 	-277171.2	277200.5	-277210.4	277239.7
+TUNGSabcpp	atp[c] + h2o[c] + tungs[p]  -> adp[c] + h[c] + pi[c] + tungs[c] 	-278021.6	276350.1	-278090.5	276379.2
+URIC	2 h2o[c] + o2[c] + urate[c]  -> alltn[c] + co2[c] + h2o2[c] 	-195704.4	196295.6	-195773.3	196324.7
+TYROXDApp	h2o[p] + o2[p] + tym[p]  -> 4hoxpacd[p] + h2o2[p] + nh4[p] 	-277178.2	277193.5	-277247.1	277222.7
+TYRPpp	h2o[p] + tyrp[p]  -> pi[p] + tyr__L[p] 	-278040.7	276331.0	-278090.0	276340.5
+TYRTRS	atp[c] + trnatyr[c] + tyr__L[c]  -> amp[c] + ppi[c] + tyrtrna[c] 	-440238.7	436300.0	-440297.5	436358.8
+URIH	h2o[c] + uri[c]  -> rib__D[c] + ura[c] 	-339244.4	339719.5	-339293.7	339729.0
+URIK2	gtp[c] + uri[c]  -> gdp[c] + h[c] + ump[c] 	-391998.3	392001.7	-392037.5	392040.9
+USHD	h2o[c] + u23ga[c]  -> 2 h[c] + lipidX[c] + ump[c] 	-339249.6	339714.3	-339298.9	339723.8
+U23GAAT	3hmrsACP[c] + u3hga[c]  -> ACP[c] + h[c] + u23ga[c] 	-392003.4	391996.6	-392042.6	392035.8
+UAAGDS	26dap__M[c] + atp[c] + uamag[c]  -> adp[c] + h[c] + pi[c] + ugmd[c] 	-439360.0	437178.7	-439418.8	437237.5
+UACGALPpp	h2o[p] + udpacgal[p]  -> acgal1p[p] + 2 h[p] + ump[p] 	-339249.6	339714.3	-339298.9	339723.8
+VALTRS	atp[c] + trnaval[c] + val__L[c]  -> amp[c] + ppi[c] + valtrna[c] 	-440238.7	436300.0	-440297.5	436358.8
+VALabcpp	atp[c] + h2o[c] + val__L[p]  -> adp[c] + h[c] + pi[c] + val__L[c] 	-278039.0	276332.7	-278107.9	276361.9
+UACGAMPpp	h2o[p] + uacgam[p]  -> acgam1p[p] + 2 h[p] + ump[p] 	-339249.6	339714.3	-339298.9	339723.8
+NTD7	amp[c] + h2o[c]  -> adn[c] + pi[c] 	-278040.7	276331.0	-278090.0	276340.5
+UACMAMO	h2o[c] + 2 nad[c] + uacmam[c]  -> 3 h[c] + 2 nadh[c] + uacmamu[c] 	-276924.3	277447.5	-276983.1	277506.3
+VPAMTr	3mob[c] + ala__L[c]  -> pyr[c] + val__L[c] 	-392000.0	392000.0	-392039.2	392039.2
+X5PL3E	xu5p__L[c]  -> ru5p__L[c] 	-277185.9	277185.9	-277205.5	277205.5
+UAGCVT	pep[c] + uacgam[c]  -> pi[c] + uaccg[c] 	-340574.3	338389.6	-340613.5	338428.8
+XAND	h2o[c] + nad[c] + xan[c]  -> h[c] + nadh[c] + urate[c] 	-196104.8	195895.2	-196144.0	195934.4
+XPPT	prpp[c] + xan[c]  -> ppi[c] + xmp[c] 	-341442.7	337521.2	-341481.9	337560.4
+XTSNH	h2o[c] + xtsn[c]  -> rib__D[c] + xan[c] 	-339244.4	339719.5	-339293.7	339729.0
+XYLK	atp[c] + xylu__D[c]  -> adp[c] + h[c] + xu5p__D[c] 	-391998.3	392001.7	-392037.5	392040.9
+XYLK2	atp[c] + xylu__L[c]  -> adp[c] + h[c] + xu5p__L[c] 	-391998.3	392001.7	-392037.5	392040.9
+XYLabcpp	atp[c] + h2o[c] + xyl__D[p]  -> adp[c] + h[c] + pi[c] + xyl__D[c] 	-278039.0	276332.7	-278107.9	276361.9
+ZN2abcpp	atp[c] + h2o[c] + zn2[c]  -> adp[c] + h[c] + pi[c] + zn2[p] 	-278021.6	276350.1	-278090.5	276379.2
+ZNabcpp	atp[c] + h2o[c] + zn2[p]  -> adp[c] + h[c] + pi[c] + zn2[c] 	-278056.3	276315.4	-278125.2	276344.5
+UAGDP	acgam1p[c] + h[c] + utp[c]  -> ppi[c] + uacgam[c] 	-341446.1	337517.8	-341485.3	337557.0
+UAGPT3	uacgam[c] + uagmda[c]  -> h[c] + uaagmda[c] + udp[c] 	-392005.2	391994.8	-392044.4	392034.0
+UAMAGS	atp[c] + glu__D[c] + uama[c]  -> adp[c] + h[c] + pi[c] + uamag[c] 	-439365.1	437173.5	-439423.9	437232.3
+UAMAS	atp[c] + ala__L[c] + uamr[c]  -> adp[c] + h[c] + pi[c] + uama[c] 	-439360.0	437178.7	-439418.8	437237.5
+UAPGR	h[c] + nadph[c] + uaccg[c]  -> nadp[c] + uamr[c] 	-277200.2	277171.5	-277239.4	277210.7
+UDCPDP	h2o[c] + udcpdp[c]  -> h[c] + pi[c] + udcpp[c] 	-278040.7	276331.0	-278090.0	276340.5
+UDCPDPS	frdp[c] + 8 ipdp[c]  -> 8 ppi[c] + udcpdp[c] 	-1608080.1	1576543.0	-1608256.5	1576719.4
+UDCPDPpp	h2o[p] + udcpdp[p]  -> h[p] + pi[p] + udcpp[p] 	-278040.7	276331.0	-278090.0	276340.5
+UDPGALM	udpgal[c]  -> udpgalfur[c] 	-277185.9	277185.9	-277205.5	277205.5
+UDPGALPpp	h2o[p] + udpgal[p]  -> gal1p[p] + 2 h[p] + ump[p] 	-339249.6	339714.3	-339298.9	339723.8
+UDPGD	h2o[c] + 2 nad[c] + udpg[c]  -> 3 h[c] + 2 nadh[c] + udpglcur[c] 	-276924.3	277447.5	-276983.1	277506.3
+UDPGDC	nad[c] + udpglcur[c]  -> co2[c] + nadh[c] + udpLa4o[c] 	-277552.1	276819.6	-277621.0	276848.8
+UDPGPpp	h2o[p] + udpg[p]  -> g1p[p] + 2 h[p] + ump[p] 	-339249.6	339714.3	-339298.9	339723.8
+UGLCURPpp	h2o[p] + udpglcur[p]  -> 2 h[p] + glcur1p[p] + ump[p] 	-339249.6	339714.3	-339298.9	339723.8
+UGLYCH	h2o[c] + 2 h[c] + urdglyc[c]  -> co2[c] + glx[c] + 2 nh4[c] 	-277493.2	276878.6	-277601.8	276867.9
+UGMDDS	atp[c] + alaala[c] + ugmd[c]  -> adp[c] + h[c] + pi[c] + ugmda[c] 	-439360.0	437178.7	-439418.8	437237.5
+UHGADA	h2o[c] + u3aga[c]  -> ac[c] + u3hga[c] 	-339242.7	339721.2	-339292.0	339730.7
+ULA4NFT	10fthf[c] + udpLa4n[c]  -> h[c] + thf[c] + udpLa4fn[c] 	-392003.4	391996.6	-392042.6	392035.8
+UM3PL	LalaDgluMdap[c] + atp[c] + uamr[c]  -> adp[c] + h[c] + pi[c] + ugmd[c] 	-439365.1	437173.5	-439423.9	437232.3
+UM4PCP	h2o[c] + um4p[c]  -> ala__D[c] + ugmd[c] 	-339244.4	339719.5	-339293.7	339729.0
+UM4PL	LalaDgluMdapDala[c] + atp[c] + uamr[c]  -> adp[c] + h[c] + pi[c] + um4p[c] 	-439365.1	437173.5	-439423.9	437232.3
+UNK3	2kmb[c] + glu__L[c]  -> akg[c] + met__L[c] 	-392001.7	391998.3	-392040.9	392037.5
+UPLA4FNF	h2o[c] + uLa4fn[c]  -> for[c] + uLa4n[c] 	-277296.6	277075.1	-277345.9	277084.6
+UPLA4FNT	udcpp[c] + udpLa4fn[c]  -> udp[c] + uLa4fn[c] 	-392001.7	391998.3	-392040.9	392037.5
+UPP3MT	2 amet[c] + uppg3[c]  -> 2 ahcys[c] + dscl[c] + h[c] 	-619792.7	619820.2	-619851.5	619879.0
+UPP3S	hmbil[c]  -> h2o[c] + uppg3[c] 	-277423.4	276948.3	-277443.0	276967.9
+
+Cytoplasmic metabolites only:
+3	2agpg161	2agpg161[c]	1955.5	100000.0	
+3	2agpg180	2agpg180[c]	2235.0	100000.0	
+3	2agpg181	2agpg181[c]	2141.9	100000.0	
+1	2ahbut	2ahbut[c]	418.4	100000.0	
+2	2aobut	2aobut[c]	326.1	100000.0	
+2	2cpr5p	2cpr5p[c]	597.8	100000.0	
+2	2dda7p	2dda7p[c]	458.1	100000.0	
+1	2ddecg3p	2ddecg3p[c]	1396.6	100000.0	
+3	2ddg6p	2ddg6p[c]	364.9	100000.0	
+3	2ddglcn	2ddglcn[c]	418.4	100000.0	
+1	2dh3dgal6p	2dh3dgal6p[c]	364.9	100000.0	
+2	2dh3dgal	2dh3dgal[c]	418.4	100000.0	
+2	2dhglcn	2dhglcn[c]	418.4	100000.0	
+2	12dgr181	12dgr181[c]	3353.8	100000.0	
+3	10fthf	10fthf[c]	974.8	100000.0	
+3	2dhguln	2dhguln[c]	418.4	100000.0	
+2	12dgr120	12dgr120[c]	2422.2	100000.0	
+2	2dhp	2dhp[c]	418.4	100000.0	
+11	2dmmq8	2dmmq8[c]	3260.7	100000.0	
+1	12ppd__R	12ppd__R[c]	372.6	100000.0	
+13	2dmmql8	2dmmql8[c]	3353.8	100000.0	
+2	12dgr140	12dgr140[c]	2794.9	100000.0	
+1	2dr5p	2dr5p[c]	415.8	100000.0	
+2	12dgr141	12dgr141[c]	2608.5	100000.0	
+2	2h3oppan	2h3oppan[c]	138.9	100000.0	
+1	2hdec9eg3p	2hdec9eg3p[c]	1676.1	100000.0	
+2	12dgr160	12dgr160[c]	3167.5	100000.0	
+1	2hdecg3p	2hdecg3p[c]	1769.2	100000.0	
+2	12dgr161	12dgr161[c]	2981.2	100000.0	
+2	14glucan	14glucan[c]	2888.0	100000.0	
+2	12dgr180	12dgr180[c]	3540.2	100000.0	
+3	2kmb	2kmb[c]	325.2	100000.0	
+3	2mahmp	2mahmp[c]	364.9	100000.0	
+1	15dap	15dap[c]	741.9	100000.0	
+2	2mcacn	2mcacn[c]	225.2	100000.0	
+2	2mcit	2mcit[c]	318.3	100000.0	
+2	2me4p	2me4p[c]	509.0	100000.0	
+2	2mecdp	2mecdp[c]	462.4	100000.0	
+3	2obut	2obut[c]	232.0	100000.0	
+1	2odec11eg3p	2odec11eg3p[c]	1862.4	100000.0	
+1	3hoctaACP	3hoctaACP[c]	2561.1	100000.0	
+1	2odecg3p	2odecg3p[c]	1955.5	100000.0	
+1	3hodcoa	3hodcoa[c]	3060.6	100000.0	
+1	3hpalmACP	3hpalmACP[c]	2374.8	100000.0	
+3	2ohph	2ohph[c]	3260.7	100000.0	
+1	3hpppn	3hpppn[c]	418.4	100000.0	
+3	2ombzl	2ombzl[c]	3353.8	100000.0	
+1	3htdcoa	3htdcoa[c]	2687.9	100000.0	
+3	2omhmbl	2omhmbl[c]	3447.0	100000.0	
+2	1ddecg3p	1ddecg3p[c]	1347.4	100000.0	
+3	3ig3p	3ig3p[c]	555.5	100000.0	
+4	3mob	3mob[c]	325.2	100000.0	
+3	2ommbl	2ommbl[c]	3447.0	100000.0	
+1	3mop	3mop[c]	418.4	100000.0	
+3	2omph	2omph[c]	3353.8	100000.0	
+2	1hdec9eg3p	1hdec9eg3p[c]	1626.9	100000.0	
+2	3ocddec5eACP	3ocddec5eACP[c]	1815.8	100000.0	
+3	2oph	2oph[c]	3260.7	100000.0	
+2	1hdecg3p	1hdecg3p[c]	1720.1	100000.0	
+2	2p4c2me	2p4c2me[c]	1011.0	100000.0	
+2	1odec11eg3p	1odec11eg3p[c]	1813.2	100000.0	
+1	2pg	2pg[c]	178.6	100000.0	
+2	1odecg3p	1odecg3p[c]	1906.4	100000.0	
+2	3ocmrs7eACP	3ocmrs7eACP[c]	2002.1	100000.0	
+2	3ocpalm9eACP	3ocpalm9eACP[c]	2188.4	100000.0	
+4	1pyr5c	1pyr5c[c]	278.6	100000.0	
+1	2pglyc	2pglyc[c]	85.4	100000.0	
+2	1tdec7eg3p	1tdec7eg3p[c]	1440.6	100000.0	
+2	3ocvac11eACP	3ocvac11eACP[c]	2374.8	100000.0	
+2	3odcoa	3odcoa[c]	2222.1	100000.0	
+2	2shchc	2shchc[c]	462.4	100000.0	
+2	3oddcoa	3oddcoa[c]	2408.5	100000.0	
+1	2tdec7eg3p	2tdec7eg3p[c]	1489.7	100000.0	
+2	1tdecg3p	1tdecg3p[c]	1533.7	100000.0	
+1	3oddecACP	3oddecACP[c]	1909.0	100000.0	
+1	3odecACP	3odecACP[c]	1722.6	100000.0	
+1	2tdecg3p	2tdecg3p[c]	1582.9	100000.0	
+2	3ohcoa	3ohcoa[c]	1849.5	100000.0	
+2	3ohdcoa	3ohdcoa[c]	2781.1	100000.0	
+1	3ohexACP	3ohexACP[c]	1350.0	100000.0	
+1	2tpr3dpcoa	2tpr3dpcoa[c]	1832.3	100000.0	
+1	3omrsACP	3omrsACP[c]	2095.3	100000.0	
+2	3oocoa	3oocoa[c]	2035.8	100000.0	
+1	3ooctACP	3ooctACP[c]	1536.3	100000.0	
+1	3ooctdACP	3ooctdACP[c]	2467.9	100000.0	
+1	34hpp	34hpp[c]	325.2	100000.0	
+2	3ohodcoa	3ohodcoa[c]	2967.4	100000.0	
+1	3opalmACP	3opalmACP[c]	2281.6	100000.0	
+2	3ophb	3ophb[c]	3213.2	100000.0	
+2	3otdcoa	3otdcoa[c]	2594.8	100000.0	
+1	3c2hmp	3c2hmp[c]	462.4	100000.0	
+1	23dappa	23dappa[c]	418.4	100000.0	
+2	3pg	3pg[c]	178.6	100000.0	
+1	3c3hmp	3c3hmp[c]	462.4	100000.0	
+2	3php	3php[c]	85.4	100000.0	
+1	3psme	3psme[c]	405.5	100000.0	
+2	3c4mop	3c4mop[c]	369.2	100000.0	
+1	23ddhb	23ddhb[c]	325.2	100000.0	
+1	3sala	3sala[c]	229.5	100000.0	
+2	23dhb	23dhb[c]	232.0	100000.0	
+4	23dhba	23dhba[c]	791.0	100000.0	
+4	4abut	4abut[c]	419.2	100000.0	
+8	23dhbzs	23dhbzs[c]	465.0	100000.0	
+2	23dhdp	23dhdp[c]	229.5	100000.0	
+1	23dhmb	23dhmb[c]	418.4	100000.0	
+2	3dhguln	3dhguln[c]	418.4	100000.0	
+1	23dhmp	23dhmp[c]	511.5	100000.0	
+2	4abutn	4abutn[c]	465.0	100000.0	
+3	3dhgulnp	3dhgulnp[c]	364.9	100000.0	
+2	4abz	4abz[c]	278.6	100000.0	
+2	3dhq	3dhq[c]	418.4	100000.0	
+2	4adcho	4adcho[c]	465.0	100000.0	
+1	23doguln	23doguln[c]	325.2	100000.0	
+1	3dhsk	3dhsk[c]	325.2	100000.0	
+1	25aics	25aics[c]	685.0	100000.0	
+1	4ahmmp	4ahmmp[c]	419.2	100000.0	
+4	4ampm	4ampm[c]	369.2	100000.0	
+2	4c2me	4c2me[c]	1067.9	100000.0	
+2	4h2opntn	4h2opntn[c]	325.2	100000.0	
+3	25dkglcn	25dkglcn[c]	325.2	100000.0	
+2	25drapp	25drapp[c]	648.7	100000.0	
+1	3haACP	3haACP[c]	1256.8	100000.0	
+1	26dap_LL	26dap_LL[c]	652.1	100000.0	
+1	3hbcoa	3hbcoa[c]	1756.3	100000.0	
+4	26dap__M	26dap__M[c]	652.1	100000.0	
+2	3hcddec5eACP	3hcddec5eACP[c]	1909.0	100000.0	
+1	4hba	4hba[c]	372.6	100000.0	
+1	3hcinnm	3hcinnm[c]	325.2	100000.0	
+2	4hbz	4hbz[c]	232.0	100000.0	
+3	2agpe120	2agpe120[c]	1676.9	100000.0	
+1	4hthr	4hthr[c]	419.2	100000.0	
+2	3hcmrs7eACP	3hcmrs7eACP[c]	2095.3	100000.0	
+1	4mhetz	4mhetz[c]	419.2	100000.0	
+3	2agpe140	2agpe140[c]	1863.2	100000.0	
+2	3hcpalm9eACP	3hcpalm9eACP[c]	2281.6	100000.0	
+2	4mop	4mop[c]	418.4	100000.0	
+2	3hcvac11eACP	3hcvac11eACP[c]	2467.9	100000.0	
+3	4mpetz	4mpetz[c]	369.2	100000.0	
+3	2agpe141	2agpe141[c]	1770.1	100000.0	
+1	3hdcoa	3hdcoa[c]	2315.3	100000.0	
+3	2agpe160	2agpe160[c]	2049.6	100000.0	
+1	3hddcoa	3hddcoa[c]	2501.6	100000.0	
+2	4ppan	4ppan[c]	691.0	100000.0	
+1	3hddecACP	3hddecACP[c]	2002.1	100000.0	
+3	2agpe161	2agpe161[c]	1956.4	100000.0	
+2	4ppcys	4ppcys[c]	923.9	100000.0	
+1	3hdecACP	3hdecACP[c]	1815.8	100000.0	
+3	4r5au	4r5au[c]	745.3	100000.0	
+3	2agpe180	2agpe180[c]	2235.9	100000.0	
+1	3hhcoa	3hhcoa[c]	1942.6	100000.0	
+1	5aizc	5aizc[c]	504.7	100000.0	
+1	3hhdcoa	3hhdcoa[c]	2874.3	100000.0	
+2	5aop	5aop[c]	419.2	100000.0	
+2	5aprbu	5aprbu[c]	695.3	100000.0	
+3	2agpe181	2agpe181[c]	2142.7	100000.0	
+1	3hhexACP	3hhexACP[c]	1443.2	100000.0	
+2	5apru	5apru[c]	602.1	100000.0	
+2	3hmrsACP	3hmrsACP[c]	2188.4	100000.0	
+3	2agpg120	2agpg120[c]	1676.1	100000.0	
+1	3hocoa	3hocoa[c]	2129.0	100000.0	
+1	5caiz	5caiz[c]	504.7	100000.0	
+1	3hoctACP	3hoctACP[c]	1629.5	100000.0	
+3	5dglcn	5dglcn[c]	418.4	100000.0	
+3	2agpg140	2agpg140[c]	1862.4	100000.0	
+3	aacoa	aacoa[c]	1663.2	100000.0	
+3	5dh4dglc	5dh4dglc[c]	276.0	100000.0	
+1	5drib	5drib[c]	465.8	100000.0	
+3	2agpg141	2agpg141[c]	1769.2	100000.0	
+3	2agpg160	2agpg160[c]	2048.7	100000.0	
+2	aact	aact[c]	371.8	100000.0	
+1	5mdr1p	5mdr1p[c]	509.0	100000.0	
+1	5mdru1p	5mdru1p[c]	509.0	100000.0	
+2	acACP	acACP[c]	1070.5	100000.0	
+2	5mta	5mta[c]	698.7	100000.0	
+13	ac	ac[c]	138.9	100000.0	
+2	5mthf	5mthf[c]	1117.1	100000.0	
+2	5mtr	5mtr[c]	559.0	100000.0	
+2	5prdmbz	5prdmbz[c]	788.4	100000.0	
+2	6hmhpt	6hmhpt[c]	419.2	100000.0	
+1	acac	acac[c]	232.0	100000.0	
+2	6hmhptpp	6hmhptpp[c]	364.9	100000.0	
+1	alac__S	alac__S[c]	325.2	100000.0	
+1	alatrna	alatrna[c]	278.6	100000.0	
+4	6pgc	6pgc[c]	458.1	100000.0	
+1	6pgl	6pgl[c]	415.8	100000.0	
+1	all6p	all6p[c]	509.0	100000.0	
+8	acald	acald[c]	186.3	100000.0	
+2	all__D	all__D[c]	559.0	100000.0	
+48	ACP	ACP[c]	977.3	100000.0	
+5	LalaDgluMdapDala	LalaDgluMdapDala[c]	1396.6	100000.0	
+1	acanth	acanth[c]	371.8	100000.0	
+2	alltn	alltn[c]	279.5	100000.0	
+27	accoa	accoa[c]	1570.0	100000.0	
+2	acetol	acetol[c]	279.5	100000.0	
+6	LalaDgluMdap	LalaDgluMdap[c]	1163.7	100000.0	
+1	acg5p	acg5p[c]	411.5	100000.0	
+2	alltt	alltt[c]	325.2	100000.0	
+1	acg5sa	acg5sa[c]	465.0	100000.0	
+1	LalaDglu	LalaDglu[c]	604.7	100000.0	
+1	LalaLglu	LalaLglu[c]	604.7	100000.0	
+1	N1aspmd	N1aspmd[c]	1067.9	100000.0	
+1	altrn	altrn[c]	511.5	100000.0	
+21	amet	amet[c]	1070.5	100000.0	
+1	Nmtrp	Nmtrp[c]	652.1	100000.0	
+1	Sfglutth	Sfglutth[c]	744.4	100000.0	
+2	ametam	ametam[c]	1114.5	100000.0	
+1	aacald	aacald[c]	278.6	100000.0	
+84	amp	amp[c]	555.5	100000.0	
+2	acgam1p	acgam1p[c]	648.7	100000.0	
+3	anhgm3p	anhgm3p[c]	2418.8	100000.0	
+4	acgam6p	acgam6p[c]	648.7	100000.0	
+4	acgam	acgam[c]	698.7	100000.0	
+3	anhgm4p	anhgm4p[c]	2651.7	100000.0	
+2	camp	camp[c]	511.5	100000.0	
+3	anhgm	anhgm[c]	1350.0	100000.0	
+1	cbasp	cbasp[c]	276.0	100000.0	
+1	cbi	cbi[c]	3353.8	100000.0	
+2	acglu	acglu[c]	415.8	100000.0	
+1	cbl1	cbl1[c]	4098.3	100000.0	
+3	anhm3p	anhm3p[c]	1813.2	100000.0	
+3	anhm4p	anhm4p[c]	2046.1	100000.0	
+2	acmana	acmana[c]	698.7	100000.0	
+4	anhm	anhm[c]	744.4	100000.0	
+3	cbp	cbp[c]	89.7	100000.0	
+3	anth	anth[c]	278.6	100000.0	
+1	cd2	cd2[c]	-3.4	100000.0	
+1	ap4a	ap4a[c]	1104.2	100000.0	
+2	acmanap	acmanap[c]	648.7	100000.0	
+3	cddec5eACP	cddec5eACP[c]	1909.0	100000.0	
+3	acmum6p	acmum6p[c]	784.1	100000.0	
+1	cdec3eACP	cdec3eACP[c]	1722.6	100000.0	
+1	ap5a	ap5a[c]	1096.4	100000.0	
+2	apg120	apg120[c]	3725.6	100000.0	
+3	cdp	cdp[c]	551.2	100000.0	
+4	cdpdddecg	cdpdddecg[c]	2931.2	100000.0	
+4	cdpdhdec9eg	cdpdhdec9eg[c]	3490.1	100000.0	
+2	apg140	apg140[c]	4284.6	100000.0	
+1	acnam	acnam[c]	837.6	100000.0	
+2	apg141	apg141[c]	4005.1	100000.0	
+4	cdpdhdecg	cdpdhdecg[c]	3676.5	100000.0	
+4	cdpdodec11eg	cdpdodec11eg[c]	3862.8	100000.0	
+2	apg160	apg160[c]	4843.6	100000.0	
+2	apg161	apg161[c]	4564.1	100000.0	
+4	cdpdodecg	cdpdodecg[c]	4049.1	100000.0	
+4	cdpdtdec7eg	cdpdtdec7eg[c]	3117.5	100000.0	
+2	apg180	apg180[c]	5402.5	100000.0	
+2	apg181	apg181[c]	5123.1	100000.0	
+4	cdpdtdecg	cdpdtdecg[c]	3303.8	100000.0	
+2	cechddd	cechddd[c]	511.5	100000.0	
+1	apoACP	apoACP[c]	46.6	100000.0	
+1	acon_T	acon_T[c]	132.0	100000.0	
+2	aps	aps[c]	555.5	100000.0	
+2	cenchddd	cenchddd[c]	418.4	100000.0	
+1	aconm	aconm[c]	276.0	100000.0	
+2	cgly	cgly[c]	465.8	100000.0	
+1	ara5p	ara5p[c]	415.8	100000.0	
+1	acorn	acorn[c]	652.1	100000.0	
+1	arab__L	arab__L[c]	465.8	100000.0	
+1	acser	acser[c]	419.2	100000.0	
+2	chol	chol[c]	651.3	100000.0	
+2	aragund	aragund[c]	5353.4	100000.0	
+2	actACP	actACP[c]	1163.7	100000.0	
+1	arbt6p	arbt6p[c]	695.3	100000.0	
+6	chor	chor[c]	369.2	100000.0	
+1	cinnm	cinnm[c]	325.2	100000.0	
+7	arbtn_fe3	arbtn_fe3[c]	1537.2	100000.0	
+8	ade	ade[c]	232.9	100000.0	
+4	cit	cit[c]	225.2	100000.0	
+6	arbtn	arbtn[c]	1529.4	100000.0	
+4	adn	adn[c]	605.6	100000.0	
+1	citr__L	citr__L[c]	605.6	100000.0	
+4	arg__L	arg__L[c]	697.9	100000.0	
+4	ckdo	ckdo[c]	1114.5	100000.0	
+1	adocbi	adocbi[c]	3911.9	100000.0	
+2	adocbip	adocbip[c]	3865.4	100000.0	
+1	argsuc	argsuc[c]	791.0	100000.0	
+2	adocbl	adocbl[c]	4658.1	100000.0	
+1	argtrna	argtrna[c]	648.7	100000.0	
+2	ascb6p	ascb6p[c]	322.6	100000.0	
+234	adp	adp[c]	551.2	100000.0	
+5	asn__L	asn__L[c]	372.6	100000.0	
+2	adpglc	adpglc[c]	1067.9	100000.0	
+30	cmp	cmp[c]	555.5	100000.0	
+1	asntrna	asntrna[c]	1117.9	100000.0	
+2	adphep_DD	adphep_DD[c]	1161.1	100000.0	
+2	aso3	aso3[c]	-7.7	100000.0	
+5	adphep_LD	adphep_LD[c]	1161.1	100000.0	
+75	co2	co2[c]	-386.0	4.8	
+2	adprib	adprib[c]	974.8	100000.0	
+1	aso4	aso4[c]	-7.7	100000.0	
+58	coa	coa[c]	1476.8	100000.0	
+15	asp__L	asp__L[c]	278.6	100000.0	
+2	agdpcbi	agdpcbi[c]	4424.3	100000.0	
+1	cobalt2	cobalt2[c]	-3.4	100000.0	
+2	agm	agm[c]	741.9	100000.0	
+1	aspsa	aspsa[c]	326.1	100000.0	
+1	asptrna	asptrna[c]	232.9	100000.0	
+2	colipa	colipa[c]	14010.0	100000.0	
+1	athr__L	athr__L[c]	419.2	100000.0	
+17	ahcys	ahcys[c]	931.6	100000.0	
+308	atp	atp[c]	545.2	100000.0	
+2	ahdt	ahdt[c]	545.2	100000.0	
+1	cpe160	cpe160[c]	3447.0	100000.0	
+1	aicar	aicar[c]	602.1	100000.0	
+1	cpe180	cpe180[c]	3819.6	100000.0	
+1	cpg160	cpg160[c]	3446.1	100000.0	
+3	air	air[c]	555.5	100000.0	
+1	cpg180	cpg180[c]	3818.8	100000.0	
+2	betald	betald[c]	558.1	100000.0	
+12	akg	akg[c]	182.9	100000.0	
+3	bglycogen	bglycogen[c]	465.8	100000.0	
+6	cpgn_un	cpgn_un[c]	2408.5	100000.0	
+2	btal	btal[c]	372.6	100000.0	
+2	btcoa	btcoa[c]	1756.3	100000.0	
+2	ala_B	ala_B[c]	326.1	100000.0	
+7	cpgn	cpgn[c]	2421.4	100000.0	
+3	btn	btn[c]	697.9	100000.0	
+2	btnso	btnso[c]	697.9	100000.0	
+3	but2eACP	but2eACP[c]	1163.7	100000.0	
+8	ala__D	ala__D[c]	326.1	100000.0	
+3	butACP	butACP[c]	1256.8	100000.0	
+3	cpppg3	cpppg3[c]	1849.5	100000.0	
+2	but	but[c]	325.2	100000.0	
+1	crnDcoa	crnDcoa[c]	2135.0	100000.0	
+2	crn__D	crn__D[c]	698.7	100000.0	
+8	ala__L	ala__L[c]	326.1	100000.0	
+2	butso3	butso3[c]	418.4	100000.0	
+2	crn	crn[c]	698.7	100000.0	
+3	alaala	alaala[c]	559.0	100000.0	
+1	crncoa	crncoa[c]	2135.0	100000.0	
+3	csn	csn[c]	232.9	100000.0	
+2	ctbt	ctbt[c]	605.6	100000.0	
+3	dpcoa	dpcoa[c]	1533.7	100000.0	
+1	ctbtcoa	ctbtcoa[c]	2041.8	100000.0	
+2	cyan	cyan[c]	166.1	4.8	
+14	ctp	ctp[c]	545.2	100000.0	
+1	cu2	cu2[c]	-3.4	100000.0	
+3	dsbdox	dsbdox[c]	0.0	100000.0	
+1	cu	cu[c]	-0.9	100000.0	
+2	cys__D	cys__D[c]	326.1	100000.0	
+3	dsbdrd	dsbdrd[c]	93.2	100000.0	
+10	cys__L	cys__L[c]	326.1	100000.0	
+2	dscl	dscl[c]	1867.7	100000.0	
+2	dtbt	dtbt[c]	791.0	100000.0	
+2	dtdp4aaddg	dtdp4aaddg[c]	1254.2	100000.0	
+2	cyst__L	cyst__L[c]	652.1	100000.0	
+2	dtdp4addg	dtdp4addg[c]	1210.2	100000.0	
+7	feoxam	feoxam[c]	2141.9	100000.0	
+1	cystrna	cystrna[c]	278.6	100000.0	
+4	cytd	cytd[c]	605.6	100000.0	
+3	dtdp4d6dg	dtdp4d6dg[c]	1021.3	100000.0	
+2	dtdp4d6dm	dtdp4d6dm[c]	1021.3	100000.0	
+2	fgam	fgam[c]	602.1	100000.0	
+2	dtdp	dtdp[c]	597.8	100000.0	
+2	dad_2	dad_2[c]	605.6	100000.0	
+5	fldox	fldox[c]	0.0	100000.0	
+2	dtdpglu	dtdpglu[c]	1114.5	100000.0	
+5	fldrd	fldrd[c]	93.2	100000.0	
+2	dtdprmn	dtdprmn[c]	1114.5	100000.0	
+4	dad_5	dad_5[c]	605.6	100000.0	
+1	fmettrna	fmettrna[c]	419.2	100000.0	
+4	dtmp	dtmp[c]	602.1	100000.0	
+13	fmn	fmn[c]	901.6	70710.7	
+2	dadp	dadp[c]	551.2	100000.0	
+2	damp	damp[c]	555.5	100000.0	
+11	fmnh2	fmnh2[c]	954.8	70710.7	
+13	for	for[c]	-302.6	3.3	
+2	dttp	dttp[c]	591.8	100000.0	
+2	dudp	dudp[c]	504.7	100000.0	
+2	fpram	fpram[c]	697.9	100000.0	
+1	dann	dann[c]	977.3	100000.0	
+4	dump	dump[c]	509.0	100000.0	
+3	datp	datp[c]	545.2	100000.0	
+4	frdp	frdp[c]	1156.8	100000.0	
+2	db4p	db4p[c]	322.6	100000.0	
+3	fru	fru[c]	559.0	100000.0	
+3	duri	duri[c]	559.0	100000.0	
+5	dcaACP	dcaACP[c]	1815.8	100000.0	
+3	dca	dca[c]	884.2	100000.0	
+1	frulys	frulys[c]	1163.7	100000.0	
+3	dutp	dutp[c]	498.6	100000.0	
+5	dxyl5p	dxyl5p[c]	415.8	100000.0	
+1	frulysp	frulysp[c]	1117.1	100000.0	
+3	dcacoa	dcacoa[c]	2315.3	100000.0	
+1	dxyl	dxyl[c]	465.8	100000.0	
+1	dcamp	dcamp[c]	638.4	100000.0	
+1	e4p	e4p[c]	322.6	100000.0	
+2	dcdp	dcdp[c]	551.2	100000.0	
+2	dcmp	dcmp[c]	555.5	100000.0	
+3	dctp	dctp[c]	545.2	100000.0	
+2	dcyt	dcyt[c]	605.6	100000.0	
+9	fum	fum[c]	89.7	100000.0	
+2	eig3p	eig3p[c]	415.8	100000.0	
+5	g1p	g1p[c]	509.0	100000.0	
+8	ddcaACP	ddcaACP[c]	2002.1	100000.0	
+8	ddca	ddca[c]	1070.5	100000.0	
+5	g3p	g3p[c]	229.5	100000.0	
+8	enter	enter[c]	1257.7	100000.0	
+2	g3pc	g3pc[c]	931.6	100000.0	
+3	ddcacoa	ddcacoa[c]	2501.6	100000.0	
+2	dgdp	dgdp[c]	551.2	100000.0	
+2	etha	etha[c]	371.8	100000.0	
+16	g3pe	g3pe[c]	652.1	100000.0	
+2	dgmp	dgmp[c]	555.5	100000.0	
+16	g3pg	g3pg[c]	651.3	100000.0	
+2	ethso3	ethso3[c]	232.0	100000.0	
+2	dgsn	dgsn[c]	605.6	100000.0	
+3	dgtp	dgtp[c]	545.2	100000.0	
+2	g3pi	g3pi[c]	837.6	100000.0	
+2	dha	dha[c]	279.5	100000.0	
+2	g3ps	g3ps[c]	604.7	100000.0	
+2	f1p	f1p[c]	509.0	100000.0	
+6	dhap	dhap[c]	229.5	100000.0	
+7	f6p	f6p[c]	509.0	100000.0	
+7	g6p	g6p[c]	509.0	100000.0	
+3	dhcinnm	dhcinnm[c]	325.2	100000.0	
+2	dhf	dhf[c]	881.6	100000.0	
+10	fad	fad[c]	1460.2	70710.7	
+2	dhna	dhna[c]	325.2	100000.0	
+2	gagicolipa	gagicolipa[c]	12519.4	100000.0	
+9	fadh2	fadh2[c]	1514.1	70710.7	
+2	dhnpt	dhnpt[c]	605.6	100000.0	
+3	fald	fald[c]	-30.8	2.9	
+2	dhor__S	dhor__S[c]	232.0	100000.0	
+2	dhpmp	dhpmp[c]	555.5	100000.0	
+3	dhpppn	dhpppn[c]	418.4	100000.0	
+2	dhpt	dhpt[c]	604.7	100000.0	
+1	fc1p	fc1p[c]	509.0	100000.0	
+2	dhptd	dhptd[c]	372.6	100000.0	
+3	gal	gal[c]	559.0	100000.0	
+1	fcl__L	fcl__L[c]	559.0	100000.0	
+1	didp	didp[c]	504.7	100000.0	
+3	fdp	fdp[c]	452.0	100000.0	
+2	dimp	dimp[c]	509.0	100000.0	
+1	galct__D	galct__D[c]	369.2	100000.0	
+41	fe2	fe2[c]	-3.4	100000.0	
+1	galctn__D	galctn__D[c]	511.5	100000.0	
+2	din	din[c]	559.0	100000.0	
+6	fe3	fe3[c]	-7.7	100000.0	
+1	galctn__L	galctn__L[c]	511.5	100000.0	
+3	ditp	ditp[c]	498.6	100000.0	
+1	galt1p	galt1p[c]	602.1	100000.0	
+3	dkmpp	dkmpp[c]	415.8	100000.0	
+1	dmbzid	dmbzid[c]	465.8	100000.0	
+2	fe3dhbzs	fe3dhbzs[c]	462.4	100000.0	
+3	dmlz	dmlz[c]	838.5	100000.0	
+2	dmpp	dmpp[c]	411.5	100000.0	
+2	dms	dms[c]	264.1	70710.7	
+1	gam1p	gam1p[c]	604.7	100000.0	
+6	fe3hox_un	fe3hox_un[c]	830.7	100000.0	
+4	gam6p	gam6p[c]	604.7	100000.0	
+2	dmso	dmso[c]	294.9	70710.7	
+7	fe3hox	fe3hox[c]	838.5	100000.0	
+1	gar	gar[c]	651.3	100000.0	
+1	dnad	dnad[c]	1114.5	100000.0	
+2	garagund	garagund[c]	5819.2	100000.0	
+6	fecrm_un	fecrm_un[c]	1948.7	100000.0	
+3	gcald	gcald[c]	186.3	100000.0	
+7	fecrm	fecrm[c]	1956.4	100000.0	
+13	gdp	gdp[c]	551.2	100000.0	
+2	gdpddman	gdpddman[c]	974.8	100000.0	
+8	feenter	feenter[c]	1249.9	100000.0	
+1	gdpfuc	gdpfuc[c]	1067.9	100000.0	
+4	gdpmann	gdpmann[c]	1067.9	100000.0	
+2	gdpofuc	gdpofuc[c]	974.8	100000.0	
+3	h2	h2[c]	110.7	4.8	
+2	gdptp	gdptp[c]	470.2	100000.0	
+6	feoxam_un	feoxam_un[c]	2139.3	100000.0	
+2	gfgaragund	gfgaragund[c]	6285.0	100000.0	
+3	h2mb4p	h2mb4p[c]	411.5	100000.0	
+10	h2o2	h2o2[c]	-40.9	4.8	
+1	gg4abut	gg4abut[c]	697.9	100000.0	
+2	ggagicolipa	ggagicolipa[c]	12985.2	100000.0	
+1	ggbutal	ggbutal[c]	745.3	100000.0	
+2	gggagicolipa	gggagicolipa[c]	13451.0	100000.0	
+524	h2o	h2o[c]	-144.4	1.5	
+2	kdo2lipid4L	kdo2lipid4L[c]	7887.8	100000.0	
+2	ggptrc	ggptrc[c]	930.8	100000.0	
+4	kdo2lipid4	kdo2lipid4[c]	6863.0	100000.0	
+2	gicolipa	gicolipa[c]	12053.6	100000.0	
+4	h2s	h2s[c]	104.7	4.8	
+17	glc__D	glc__D[c]	559.0	100000.0	
+2	kdo2lipid4p	kdo2lipid4p[c]	8167.3	100000.0	
+817	h	h[c]	45.7	0.0	
+2	kdo8p	kdo8p[c]	551.2	100000.0	
+3	glcn	glcn[c]	511.5	100000.0	
+2	kdo	kdo[c]	604.7	100000.0	
+2	kdolipid4	kdolipid4[c]	6360.1	100000.0	
+1	glcr	glcr[c]	369.2	100000.0	
+2	kphphhlipa	kphphhlipa[c]	11122.0	100000.0	
+3	hco3	hco3[c]	-541.1	4.8	
+4	lac__D	lac__D[c]	232.0	100000.0	
+5	hcys__L	hcys__L[c]	419.2	100000.0	
+8	hdca	hdca[c]	1443.2	100000.0	
+3	lac__L	lac__L[c]	232.0	100000.0	
+8	hdcea	hdcea[c]	1350.0	100000.0	
+15	gln__L	gln__L[c]	465.8	100000.0	
+1	lald__D	lald__D[c]	279.5	100000.0	
+1	glntrna	glntrna[c]	418.4	100000.0	
+3	hdcoa	hdcoa[c]	2781.1	100000.0	
+1	lald__L	lald__L[c]	279.5	100000.0	
+1	hdd2coa	hdd2coa[c]	2781.1	100000.0	
+1	glu1sa	glu1sa[c]	419.2	100000.0	
+1	lcts	lcts[c]	1024.8	100000.0	
+2	glu5p	glu5p[c]	369.2	100000.0	
+8	hdeACP	hdeACP[c]	2281.6	100000.0	
+1	hemeO	hemeO[c]	2605.1	100000.0	
+3	glu5sa	glu5sa[c]	419.2	100000.0	
+1	glu__D	glu__D[c]	371.8	100000.0	
+34	glu__L	glu__L[c]	371.8	100000.0	
+3	hexACP	hexACP[c]	1443.2	100000.0	
+1	hg2	hg2[c]	-3.4	100000.0	
+3	leu__L	leu__L[c]	605.6	100000.0	
+2	hhlipa	hhlipa[c]	10216.9	100000.0	
+2	glucys	glucys[c]	604.7	100000.0	
+1	leutrna	leutrna[c]	558.1	100000.0	
+2	glutrna	glutrna[c]	326.1	100000.0	
+3	his__L	his__L[c]	419.2	100000.0	
+2	lgt__S	lgt__S[c]	930.8	100000.0	
+11	glx	glx[c]	45.7	100000.0	
+4	lipa	lipa[c]	9098.9	100000.0	
+8	gly	gly[c]	232.9	100000.0	
+2	lipa_old_	lipa_old_[c]	9378.4	100000.0	
+2	hisp	hisp[c]	511.5	100000.0	
+2	histd	histd[c]	558.1	100000.0	
+1	histrna	histrna[c]	371.8	100000.0	
+2	hkndd	hkndd[c]	369.2	100000.0	
+2	hkntd	hkntd[c]	276.0	100000.0	
+2	hlipa	hlipa[c]	9657.9	100000.0	
+3	glyb	glyb[c]	512.4	100000.0	
+2	lipidA	lipidA[c]	5855.5	100000.0	
+2	hmbil	hmbil[c]	1715.0	100000.0	
+2	lipidAds	lipidAds[c]	5912.4	100000.0	
+1	hmfurn	hmfurn[c]	279.5	100000.0	
+2	lipidX	lipidX[c]	2977.7	100000.0	
+2	hom__L	hom__L[c]	419.2	100000.0	
+4	lys__L	lys__L[c]	697.9	100000.0	
+32	glyc3p	glyc3p[c]	322.6	100000.0	
+2	hphhlipa	hphhlipa[c]	10705.2	100000.0	
+2	hpyr	hpyr[c]	138.9	100000.0	
+5	glyc__R	glyc__R[c]	232.0	100000.0	
+1	lystrna	lystrna[c]	648.7	100000.0	
+1	hqn	hqn[c]	279.5	100000.0	
+1	lyx__L	lyx__L[c]	465.8	100000.0	
+2	hxa	hxa[c]	511.5	100000.0	
+4	glyc	glyc[c]	372.6	100000.0	
+14	malACP	malACP[c]	1021.3	100000.0	
+7	glyclt	glyclt[c]	138.9	100000.0	
+4	hxan	hxan[c]	186.3	100000.0	
+1	mal__D	mal__D[c]	182.9	100000.0	
+4	glycogen	glycogen[c]	465.8	100000.0	
+4	hxcoa	hxcoa[c]	1942.6	100000.0	
+5	iasp	iasp[c]	136.3	100000.0	
+3	ichor	ichor[c]	369.2	100000.0	
+1	glytrna	glytrna[c]	185.5	100000.0	
+2	gmhep17bp	gmhep17bp[c]	545.2	100000.0	
+2	gmhep1p	gmhep1p[c]	602.1	100000.0	
+1	icit	icit[c]	225.2	100000.0	
+5	mal__L	mal__L[c]	182.9	100000.0	
+2	icolipa	icolipa[c]	11587.8	100000.0	
+2	gmhep7p	gmhep7p[c]	602.1	100000.0	
+8	gmp	gmp[c]	555.5	100000.0	
+3	idon__L	idon__L[c]	511.5	100000.0	
+1	malcoa	malcoa[c]	1515.7	100000.0	
+1	malt6p	malt6p[c]	974.8	100000.0	
+1	idp	idp[c]	504.7	100000.0	
+1	gp4g	gp4g[c]	1104.2	100000.0	
+2	ile__L	ile__L[c]	605.6	100000.0	
+2	grdp	grdp[c]	784.1	100000.0	
+6	malt	malt[c]	1024.8	100000.0	
+6	grxox	grxox[c]	0.0	100000.0	
+6	grxrd	grxrd[c]	93.2	100000.0	
+3	gsn	gsn[c]	605.6	100000.0	
+1	iletrna	iletrna[c]	558.1	100000.0	
+2	malthp	malthp[c]	3353.8	100000.0	
+2	imacp	imacp[c]	322.6	100000.0	
+7	imp	imp[c]	509.0	100000.0	
+6	malthx	malthx[c]	2888.0	100000.0	
+2	gthox	gthox[c]	1394.0	100000.0	
+2	indole	indole[c]	326.1	100000.0	
+5	maltpt	maltpt[c]	2422.2	100000.0	
+12	gthrd	gthrd[c]	744.4	100000.0	
+2	inost	inost[c]	559.0	100000.0	
+4	malttr	malttr[c]	1490.6	100000.0	
+13	gtp	gtp[c]	545.2	100000.0	
+4	ins	ins[c]	559.0	100000.0	
+5	maltttr	maltttr[c]	1956.4	100000.0	
+2	gtspmd	gtspmd[c]	1673.5	100000.0	
+16	ipdp	ipdp[c]	411.5	100000.0	
+2	isetac	isetac[c]	232.0	100000.0	
+2	gua	gua[c]	232.9	100000.0	
+2	man1p	man1p[c]	509.0	100000.0	
+4	man6p	man6p[c]	509.0	100000.0	
+3	itp	itp[c]	498.6	100000.0	
+1	k	k[c]	-0.9	100000.0	
+2	man6pglyc	man6pglyc[c]	644.4	100000.0	
+3	man	man[c]	559.0	100000.0	
+3	metsox_S__L	metsox_S__L[c]	512.4	100000.0	
+1	mana	mana[c]	511.5	100000.0	
+4	o2s	o2s[c]	-0.9	100000.0	
+2	mettrna	mettrna[c]	465.0	100000.0	
+1	mg2	mg2[c]	-458.7	4.8	
+1	melib	melib[c]	1024.8	100000.0	
+9	oaa	oaa[c]	89.7	100000.0	
+1	mi1p__D	mi1p__D[c]	509.0	100000.0	
+1	micit	micit[c]	318.3	100000.0	
+5	ocACP	ocACP[c]	1629.5	100000.0	
+3	occoa	occoa[c]	2129.0	100000.0	
+5	ocdcaACP	ocdcaACP[c]	2561.1	100000.0	
+1	mercppyr	mercppyr[c]	138.9	100000.0	
+7	ocdca	ocdca[c]	1629.5	100000.0	
+1	met__D	met__D[c]	465.8	100000.0	
+4	mlthf	mlthf[c]	974.8	100000.0	
+7	ocdcea	ocdcea[c]	1536.3	100000.0	
+1	mmcoa__R	mmcoa__R[c]	1608.8	100000.0	
+1	mmcoa__S	mmcoa__S[c]	1608.8	100000.0	
+1	mmet	mmet[c]	651.3	100000.0	
+15	met__L	met__L[c]	512.4	100000.0	
+3	octa	octa[c]	697.9	100000.0	
+3	octdp	octdp[c]	3020.0	100000.0	
+3	metsox_R__L	metsox_R__L[c]	512.4	100000.0	
+5	octeACP	octeACP[c]	2467.9	100000.0	
+1	od2coa	od2coa[c]	2967.4	100000.0	
+1	mnl1p	mnl1p[c]	602.1	100000.0	
+1	mobd	mobd[c]	-3.4	100000.0	
+3	odecoa	odecoa[c]	2967.4	100000.0	
+3	op4en	op4en[c]	232.0	100000.0	
+3	pgp160	pgp160[c]	3392.7	100000.0	
+3	orn	orn[c]	604.7	100000.0	
+3	pgp161	pgp161[c]	3206.4	100000.0	
+25	mql8	mql8[c]	3447.0	100000.0	
+24	mqn8	mqn8[c]	3353.8	100000.0	
+1	orot5p	orot5p[c]	458.1	100000.0	
+3	pgp180	pgp180[c]	3765.3	100000.0	
+2	orot	orot[c]	138.9	100000.0	
+2	mso3	mso3[c]	138.9	100000.0	
+3	pgp181	pgp181[c]	3579.0	100000.0	
+1	oxam	oxam[c]	92.3	100000.0	
+6	mthgxl	mthgxl[c]	186.3	100000.0	
+2	oxur	oxur[c]	138.9	100000.0	
+1	phaccoa	phaccoa[c]	1756.3	100000.0	
+6	pa120	pa120[c]	2372.2	100000.0	
+1	phe__L	phe__L[c]	512.4	100000.0	
+6	pa140	pa140[c]	2744.8	100000.0	
+6	pa141	pa141[c]	2558.5	100000.0	
+3	pheme	pheme[c]	1394.0	100000.0	
+6	pa160	pa160[c]	3117.5	100000.0	
+6	pa161	pa161[c]	2931.2	100000.0	
+1	phetrna	phetrna[c]	465.0	100000.0	
+6	pa180	pa180[c]	3490.1	100000.0	
+2	phhlipa	phhlipa[c]	10146.2	100000.0	
+6	pa181	pa181[c]	3303.8	100000.0	
+2	phom	phom[c]	369.2	100000.0	
+2	phphhlipa	phphhlipa[c]	10627.6	100000.0	
+2	pac	pac[c]	325.2	100000.0	
+1	phpyr	phpyr[c]	325.2	100000.0	
+1	pacald	pacald[c]	372.6	100000.0	
+2	phthr	phthr[c]	369.2	100000.0	
+9	myrsACP	myrsACP[c]	2188.4	100000.0	
+1	n2o	n2o[c]	104.2	4.8	
+242	pi	pi[c]	-1049.2	1.4	
+7	palmACP	palmACP[c]	2374.8	100000.0	
+2	pan4p	pan4p[c]	974.8	100000.0	
+2	pant__R	pant__R[c]	511.5	100000.0	
+1	n8aspmd	n8aspmd[c]	1067.9	100000.0	
+4	pap	pap[c]	498.6	100000.0	
+3	pmtcoa	pmtcoa[c]	2874.3	100000.0	
+3	paps	paps[c]	498.6	100000.0	
+2	pnto__R	pnto__R[c]	744.4	100000.0	
+5	pdx5p	pdx5p[c]	462.4	100000.0	
+3	pe120	pe120[c]	2701.7	100000.0	
+3	nac	nac[c]	185.5	100000.0	
+3	ppa	ppa[c]	232.0	100000.0	
+3	pe140	pe140[c]	3074.3	100000.0	
+97	nad	nad[c]	1619.8	50000.0	
+3	pe141	pe141[c]	2888.0	100000.0	
+92	nadh	nadh[c]	1681.9	50000.0	
+1	ppal	ppal[c]	279.5	100000.0	
+53	nadp	nadp[c]	727.6	50000.0	
+52	nadph	nadph[c]	789.3	50000.0	
+3	pe160	pe160[c]	3447.0	100000.0	
+4	ncam	ncam[c]	279.5	100000.0	
+47	nh4	nh4[c]	106.0	4.8	
+1	ppap	ppap[c]	229.5	100000.0	
+4	pe161	pe161[c]	3260.7	100000.0	
+5	ppbng	ppbng[c]	604.7	100000.0	
+3	pe180	pe180[c]	3819.6	100000.0	
+6	ppcoa	ppcoa[c]	1663.2	100000.0	
+2	ni2	ni2[c]	-3.4	100000.0	
+3	ppgpp	ppgpp[c]	481.4	100000.0	
+4	pe181	pe181[c]	3633.3	100000.0	
+3	pphn	pphn[c]	369.2	100000.0	
+4	nicrnt	nicrnt[c]	555.5	100000.0	
+134	ppi	ppi[c]	-1932.2	2.0	
+3	ppp9	ppp9[c]	1487.2	100000.0	
+4	nmn	nmn[c]	651.3	100000.0	
+24	pep	pep[c]	85.4	100000.0	
+5	pg120	pg120[c]	2700.8	100000.0	
+4	pppg9	pppg9[c]	1766.6	100000.0	
+3	no2	no2[c]	-33.1	4.8	
+3	pppi	pppi[c]	32.8	100000.0	
+5	pg140	pg140[c]	3073.5	100000.0	
+1	pppn	pppn[c]	418.4	100000.0	
+5	pg141	pg141[c]	2887.2	100000.0	
+6	no3	no3[c]	-109.6	4.8	
+5	pg160	pg160[c]	3446.1	100000.0	
+6	pg161	pg161[c]	3259.8	100000.0	
+6	no	no[c]	0.0	100000.0	
+1	pram	pram[c]	511.5	100000.0	
+2	pran	pran[c]	597.8	100000.0	
+5	pg180	pg180[c]	3818.8	100000.0	
+2	prbamp	prbamp[c]	871.3	100000.0	
+2	prbatp	prbatp[c]	854.1	100000.0	
+6	pg181	pg181[c]	3632.5	100000.0	
+1	prfp	prfp[c]	964.4	100000.0	
+3	pgp120	pgp120[c]	2647.4	100000.0	
+1	prlp	prlp[c]	964.4	100000.0	
+5	pro__L	pro__L[c]	419.2	100000.0	
+3	pgp140	pgp140[c]	3020.0	100000.0	
+1	o16aund	o16aund[c]	6750.8	100000.0	
+3	pgp141	pgp141[c]	2833.7	100000.0	
+2	progly	progly[c]	559.0	100000.0	
+3.450000e+01	o2	o2[c]	16.4	4.8	
+1	r1p	r1p[c]	415.8	100000.0	
+7	r5p	r5p[c]	415.8	100000.0	
+1	protrna	protrna[c]	371.8	100000.0	
+11	prpp	prpp[c]	351.1	100000.0	
+2	ps120	ps120[c]	2654.3	100000.0	
+1	ragund	ragund[c]	5260.2	100000.0	
+2	ps140	ps140[c]	3026.9	100000.0	
+1	td2coa	td2coa[c]	2594.8	100000.0	
+8	rbflvrd	rbflvrd[c]	1024.8	100000.0	
+1	rbl__L	rbl__L[c]	465.8	100000.0	
+2	ps141	ps141[c]	2840.6	100000.0	
+2	rdmbzi	rdmbzi[c]	838.5	100000.0	
+3	tdcoa	tdcoa[c]	2687.9	100000.0	
+2	ps160	ps160[c]	3399.6	100000.0	
+3	tddec2eACP	tddec2eACP[c]	1909.0	100000.0	
+2	rhcys	rhcys[c]	791.9	100000.0	
+2	ps161	ps161[c]	3213.2	100000.0	
+8	rib__D	rib__D[c]	465.8	100000.0	
+7	tdeACP	tdeACP[c]	2095.3	100000.0	
+2	ps180	ps180[c]	3772.2	100000.0	
+3	tdec2eACP	tdec2eACP[c]	1722.6	100000.0	
+2	ps181	ps181[c]	3585.9	100000.0	
+3	tdecoa	tdecoa[c]	2594.8	100000.0	
+2	thdp	thdp[c]	322.6	100000.0	
+10	ribflv	ribflv[c]	931.6	100000.0	
+1	rml1p	rml1p[c]	509.0	100000.0	
+3	thex2eACP	thex2eACP[c]	1350.0	100000.0	
+6	thf	thf[c]	974.8	100000.0	
+2	thm	thm[c]	791.0	100000.0	
+1	rml	rml[c]	559.0	100000.0	
+2	pser__L	pser__L[c]	276.0	100000.0	
+2	ru5p__D	ru5p__D[c]	415.8	100000.0	
+2	ru5p__L	ru5p__L[c]	415.8	100000.0	
+4	thmmp	thmmp[c]	744.4	100000.0	
+4	thmpp	thmpp[c]	741.9	100000.0	
+1	s7p	s7p[c]	602.1	100000.0	
+6	ptrc	ptrc[c]	648.7	100000.0	
+1	s	s[c]	0.0	100000.0	
+1	sarcs	sarcs[c]	326.1	100000.0	
+6	thr__L	thr__L[c]	419.2	100000.0	
+1	sbt6p	sbt6p[c]	602.1	100000.0	
+5	pyam5p	pyam5p[c]	558.1	100000.0	
+2	pydam	pydam[c]	604.7	100000.0	
+7	pydx5p	pydx5p[c]	369.2	100000.0	
+2	sbzcoa	sbzcoa[c]	1795.2	100000.0	
+2	pydx	pydx[c]	419.2	100000.0	
+1	thrtrna	thrtrna[c]	371.8	100000.0	
+2	scl	scl[c]	1774.5	100000.0	
+2	pydxn	pydxn[c]	512.4	100000.0	
+1	sectrna	sectrna[c]	278.6	100000.0	
+1	seln	seln[c]	45.7	100000.0	
+54	pyr	pyr[c]	138.9	100000.0	
+2	selnp	selnp[c]	92.3	100000.0	
+1	ser__D	ser__D[c]	326.1	100000.0	
+2	thymd	thymd[c]	652.1	100000.0	
+24	q8	q8[c]	3447.0	100000.0	
+25	q8h2	q8h2[c]	3540.2	100000.0	
+15	ser__L	ser__L[c]	326.1	100000.0	
+2	quln	quln[c]	136.3	100000.0	
+2	tma	tma[c]	501.9	4.8	
+2	r15bp	r15bp[c]	358.9	100000.0	
+3	seramp	seramp[c]	885.0	100000.0	
+1	uLa4n	uLa4n[c]	4658.1	100000.0	
+2	tmao	tmao[c]	521.2	6.8	
+2	sertrna_sec	sertrna_sec[c]	278.6	100000.0	
+1	sertrna	sertrna[c]	278.6	100000.0	
+1	sheme	sheme[c]	1621.9	100000.0	
+1	skm5p	skm5p[c]	364.9	100000.0	
+4	uaagmda	uaagmda[c]	7066.6	100000.0	
+3	tmrs2eACP	tmrs2eACP[c]	2095.3	100000.0	
+1	skm	skm[c]	418.4	100000.0	
+3	toct2eACP	toct2eACP[c]	1536.3	100000.0	
+2	uaccg	uaccg[c]	1203.4	100000.0	
+3	toctd2eACP	toctd2eACP[c]	2467.9	100000.0	
+4	uacgam	uacgam[c]	1161.1	100000.0	
+1	sl26da	sl26da[c]	741.9	100000.0	
+3	tpalm2eACP	tpalm2eACP[c]	2281.6	100000.0	
+8	trdox	trdox[c]	-28.6	70710.7	
+1	sl2a6o	sl2a6o[c]	551.2	100000.0	
+1	so2	so2[c]	-300.7	4.8	
+8	trdrd	trdrd[c]	121.7	70710.7	
+1	uacmam	uacmam[c]	1161.1	100000.0	
+4	tre6p	tre6p[c]	974.8	100000.0	
+2	uacmamu	uacmamu[c]	1017.0	100000.0	
+2	tre	tre[c]	1024.8	100000.0	
+2	uagmda	uagmda[c]	6461.0	100000.0	
+10	so3	so3[c]	-531.3	4.8	
+2	uama	uama[c]	1529.4	100000.0	
+2	uamag	uamag[c]	1802.9	100000.0	
+1	trnaala	trnaala[c]	0.0	100000.0	
+2	so4	so4[c]	-748.0	3.7	
+4	uamr	uamr[c]	1296.5	100000.0	
+1	trnaarg	trnaarg[c]	0.0	100000.0	
+5	udcpdp	udcpdp[c]	4138.0	100000.0	
+1	trnaasn	trnaasn[c]	791.9	100000.0	
+6	spmd	spmd[c]	1017.0	100000.0	
+1	trnaasp	trnaasp[c]	0.0	100000.0	
+1	trnacys	trnacys[c]	0.0	100000.0	
+1	trnagln	trnagln[c]	0.0	100000.0	
+2	ssaltpp	ssaltpp[c]	970.5	100000.0	
+4	udcpp	udcpp[c]	4142.3	100000.0	
+2	stcoa	stcoa[c]	3060.6	100000.0	
+2	trnaglu	trnaglu[c]	0.0	100000.0	
+1	trnagly	trnagly[c]	0.0	100000.0	
+2	suc6p	suc6p[c]	974.8	100000.0	
+2	udpLa4fn	udpLa4fn[c]	974.8	100000.0	
+2	sucarg	sucarg[c]	791.0	100000.0	
+1	trnahis	trnahis[c]	0.0	100000.0	
+1	udpLa4n	udpLa4n[c]	1023.9	100000.0	
+1	trnaile	trnaile[c]	0.0	100000.0	
+2	sucbz	sucbz[c]	369.2	100000.0	
+1	udpLa4o	udpLa4o[c]	835.0	100000.0	
+16	succ	succ[c]	182.9	100000.0	
+1	trnaleu	trnaleu[c]	0.0	100000.0	
+14	udp	udp[c]	504.7	100000.0	
+1	trnalys	trnalys[c]	0.0	100000.0	
+6	succoa	succoa[c]	1608.8	100000.0	
+1	trnamet	trnamet[c]	0.0	100000.0	
+1	trnaphe	trnaphe[c]	0.0	100000.0	
+1	trnapro	trnapro[c]	0.0	100000.0	
+2	sucglu	sucglu[c]	458.1	100000.0	
+9	udpg	udpg[c]	1021.3	100000.0	
+2	sucgsa	sucgsa[c]	509.0	100000.0	
+2	suchms	suchms[c]	558.1	100000.0	
+1	trnasecys	trnasecys[c]	0.0	100000.0	
+1	trnaser	trnaser[c]	0.0	100000.0	
+2	sucorn	sucorn[c]	697.9	100000.0	
+1	trnathr	trnathr[c]	0.0	100000.0	
+1	udpgal	udpgal[c]	1021.3	100000.0	
+1	trnatrp	trnatrp[c]	0.0	100000.0	
+1	trnatyr	trnatyr[c]	0.0	100000.0	
+3	sucsal	sucsal[c]	232.0	100000.0	
+2	sulfac	sulfac[c]	89.7	100000.0	
+1	trnaval	trnaval[c]	0.0	100000.0	
+4	trp__L	trp__L[c]	559.0	100000.0	
+2	udpgalfur	udpgalfur[c]	1021.3	100000.0	
+2	udpglcur	udpglcur[c]	877.3	100000.0	
+3	t3c11vaceACP	t3c11vaceACP[c]	2374.8	100000.0	
+3	t3c5ddeceACP	t3c5ddeceACP[c]	1815.8	100000.0	
+1	trptrna	trptrna[c]	511.5	100000.0	
+2	tsul	tsul[c]	-3.4	100000.0	
+3	t3c7mrseACP	t3c7mrseACP[c]	2002.1	100000.0	
+4	ugmd	ugmd[c]	2361.9	100000.0	
+3	t3c9palmeACP	t3c9palmeACP[c]	2188.4	100000.0	
+1	tag6p__D	tag6p__D[c]	509.0	100000.0	
+2	ugmda	ugmda[c]	2827.7	100000.0	
+1	tagdp__D	tagdp__D[c]	452.0	100000.0	
+2	um4p	um4p[c]	2594.8	100000.0	
+8	ttdca	ttdca[c]	1256.8	100000.0	
+1	tagur	tagur[c]	418.4	100000.0	
+8	ump	ump[c]	509.0	100000.0	
+1	tartr__L	tartr__L[c]	182.9	100000.0	
+8	ttdcea	ttdcea[c]	1163.7	100000.0	
+2	unaga	unaga[c]	4794.4	100000.0	
+2	taur	taur[c]	326.1	100000.0	
+2	unagamu	unagamu[c]	5255.9	100000.0	
+1	tungs	tungs[c]	-3.4	100000.0	
+1	unagamuf	unagamuf[c]	5861.5	100000.0	
+2	tcynt	tcynt[c]	91.7	4.8	
+3	uppg3	uppg3[c]	1621.9	100000.0	
+3	ura	ura[c]	186.3	100000.0	
+2	tyr__L	tyr__L[c]	512.4	100000.0	
+2	urate	urate[c]	-170.7	4.8	
+1	tyrtrna	tyrtrna[c]	465.0	100000.0	
+3	urdglyc	urdglyc[c]	232.0	100000.0	
+3	u23ga	u23ga[c]	3490.1	100000.0	
+1	urea	urea[c]	-16.5	4.8	
+1	u3aga	u3aga[c]	2372.2	100000.0	
+2	u3hga	u3hga[c]	2328.2	100000.0	
+2	uLa4fn	uLa4fn[c]	4610.7	100000.0	
+4	uri	uri[c]	559.0	100000.0	
+5	utp	utp[c]	498.6	100000.0	
+3	val__L	val__L[c]	512.4	100000.0	
+1	valtrna	valtrna[c]	465.0	100000.0	
+5	xan	xan[c]	186.3	100000.0	
+1	xdp	xdp[c]	504.7	100000.0	
+5	xmp	xmp[c]	509.0	100000.0	
+3	xtp	xtp[c]	498.6	100000.0	
+2	xtsn	xtsn[c]	559.0	100000.0	
+1	xu5p__D	xu5p__D[c]	415.8	100000.0	
+3	xu5p__L	xu5p__L[c]	415.8	100000.0	
+1	xyl__D	xyl__D[c]	465.8	100000.0	
+1	xylu__D	xylu__D[c]	465.8	100000.0	
+2	xylu__L	xylu__L[c]	465.8	100000.0	
+2	zn2	zn2[c]	-3.4	100000.0	

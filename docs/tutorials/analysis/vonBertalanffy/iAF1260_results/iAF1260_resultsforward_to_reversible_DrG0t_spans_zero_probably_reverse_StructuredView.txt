@@ -1,0 +1,527 @@
+Metabolites which force 59 qualitatively  forward -> quantiatively reversible (DrG0t span the zero line). Forward with probability greater than 0.7.
+882:	16	h[c]H+
+888:	14	h[p]H+
+1257:	2	na1[c]Sodium
+1263:	2	na1[p]Sodium
+1:	1	2agpg161[c]2-Acyl-sn-glycero-3-phosphoglycerol (n-C16:1)
+2:	1	2agpg161[p]2-Acyl-sn-glycero-3-phosphoglycerol (n-C16:1)
+3:	1	2agpg180[c]2-Acyl-sn-glycero-3-phosphoglycerol (n-C18:0)
+4:	1	2agpg180[p]2-Acyl-sn-glycero-3-phosphoglycerol (n-C18:0)
+5:	1	2agpg181[c]2-Acyl-sn-glycero-3-phosphoglycerol (n-C18:1)
+6:	1	2agpg181[p]2-Acyl-sn-glycero-3-phosphoglycerol (n-C18:1)
+12:	1	2ddecg3p[c]2-dodecanoyl-sn-glycerol 3-phosphate
+13:	1	2ddecg3p[p]2-dodecanoyl-sn-glycerol 3-phosphate
+21:	1	12dgr181[c]1,2-Diacyl-sn-glycerol (dioctadec-11-enoyl, n-C18:1)
+24:	1	12dgr120[c]1,2-Diacyl-sn-glycerol (didodecanoyl, n-C12:0)
+26:	1	12dgr181[p]1,2-Diacyl-sn-glycerol (dioctadec-11-enoyl, n-C18:1)
+30:	1	12dgr120[p]1,2-Diacyl-sn-glycerol (didodecanoyl, n-C12:0)
+32:	1	12dgr140[c]1,2-Diacyl-sn-glycerol (ditetradecanoyl, n-C14:0)
+33:	1	12dgr140[p]1,2-Diacyl-sn-glycerol (ditetradecanoyl, n-C14:0)
+41:	1	2hdec9eg3p[c]2-hexadec-9-enoyl-sn-glycerol 3-phosphate
+44:	1	2hdec9eg3p[p]2-hexadec-9-enoyl-sn-glycerol 3-phosphate
+47:	1	2hdecg3p[c]2-hexadecanoyl-sn-glycerol 3-phosphate
+50:	1	2hdecg3p[p]2-hexadecanoyl-sn-glycerol 3-phosphate
+71:	1	2odec11eg3p[c]2-octadec-11-enoyl-sn-glycerol 3-phosphate
+73:	1	2odec11eg3p[p]2-octadec-11-enoyl-sn-glycerol 3-phosphate
+76:	1	2odecg3p[c]2-octadecanoyl-sn-glycerol 3-phosphate
+79:	1	2odecg3p[p]2-octadecanoyl-sn-glycerol 3-phosphate
+125:	1	2tdec7eg3p[c]2-tetradec-7-enoyl-sn-glycerol 3-phosphate
+128:	1	2tdec7eg3p[p]2-tetradec-7-enoyl-sn-glycerol 3-phosphate
+131:	1	2tdecg3p[c]2-tetradecanoyl-sn-glycerol 3-phosphate
+134:	1	2tdecg3p[p]2-tetradecanoyl-sn-glycerol 3-phosphate
+210:	1	2agpe120[c]2-Acyl-sn-glycero-3-phosphoethanolamine (n-C12:0)
+214:	1	2agpe120[p]2-Acyl-sn-glycero-3-phosphoethanolamine (n-C12:0)
+218:	1	2agpe140[c]2-Acyl-sn-glycero-3-phosphoethanolamine (n-C14:0)
+220:	1	2agpe140[p]2-Acyl-sn-glycero-3-phosphoethanolamine (n-C14:0)
+234:	1	2agpe161[c]2-Acyl-sn-glycero-3-phosphoethanolamine (n-C16:1)
+238:	1	2agpe161[p]2-Acyl-sn-glycero-3-phosphoethanolamine (n-C16:1)
+251:	1	2agpg120[c]2-Acyl-sn-glycero-3-phosphoglycerol (n-C12:0)
+253:	1	2agpg120[p]2-Acyl-sn-glycero-3-phosphoglycerol (n-C12:0)
+257:	1	2agpg140[c]2-Acyl-sn-glycero-3-phosphoglycerol (n-C14:0)
+258:	1	2agpg140[p]2-Acyl-sn-glycero-3-phosphoglycerol (n-C14:0)
+264:	1	2agpg141[c]2-Acyl-sn-glycero-3-phosphoglycerol (n-C14:1)
+265:	1	2agpg141[p]2-Acyl-sn-glycero-3-phosphoglycerol (n-C14:1)
+266:	1	2agpg160[c]2-Acyl-sn-glycero-3-phosphoglycerol (n-C16:0)
+267:	1	2agpg160[p]2-Acyl-sn-glycero-3-phosphoglycerol (n-C16:0)
+334:	1	anhgm3p[c]N-Acetyl-D-glucosamine(anhydrous)N-Acetylmuramyl-tripeptide
+335:	1	ca2[c]Calcium
+338:	1	anhgm3p[p]N-Acetyl-D-glucosamine(anhydrous)N-Acetylmuramyl-tripeptide
+340:	1	anhgm4p[c]N-Acetyl-D-glucosamine(anhydrous)N-Acetylmuramyl-tetrapeptide
+341:	1	ca2[p]Calcium
+344:	1	anhgm4p[p]N-Acetyl-D-glucosamine(anhydrous)N-Acetylmuramyl-tetrapeptide
+366:	1	cd2[c]Cadmium
+369:	1	cd2[p]Cadmium
+383:	1	acnam[c]N-Acetylneuraminate
+389:	1	acnam[p]N-Acetylneuraminate
+428:	1	cit[c]Citrate
+434:	1	cit[p]Citrate
+442:	1	cl[c]Chloride
+448:	1	cl[p]Chloride
+491:	1	cobalt2[c]Co2+
+494:	1	cobalt2[p]Co2+
+500:	1	colipa[e]Core oligosaccharide lipid A
+504:	1	colipa[p]Core oligosaccharide lipid A
+548:	1	crn[c]L-Carnitine
+552:	1	crn[p]L-Carnitine
+589:	1	cys__L[c]L-Cysteine
+594:	1	cys__L[p]L-Cysteine
+672:	1	eca4colipa[e](enterobacterial common antigen)x4 core oligosaccharide lipid A
+675:	1	eca4colipa[p](enterobacterial common antigen)x4 core oligosaccharide lipid A
+688:	1	enlipa[e]Phosphoethanolamine KDO(2)-lipid (A)
+692:	1	enlipa[p]Phosphoethanolamine KDO(2)-lipid (A)
+695:	1	ddca[e]Dodecanoate (n-C12:0)
+697:	1	ddca[p]Dodecanoate (n-C12:0)
+774:	1	fe2[c]Fe2+ mitochondria
+780:	1	fe2[p]Fe2+ mitochondria
+832:	1	gbbtn[c]Gamma-butyrobetaine
+835:	1	gbbtn[p]Gamma-butyrobetaine
+867:	1	h2o[c]H2O H2O
+874:	1	kdo2lipid4[e]KDO(2)-lipid IV(A)
+877:	1	kdo2lipid4[p]KDO(2)-lipid IV(A)
+878:	1	glc__D[e]D-Glucose
+883:	1	glc__D[p]D-Glucose
+916:	1	hdcea[e]Hexadecenoate (n-C16:1)
+917:	1	hdcea[p]Hexadecenoate (n-C16:1)
+934:	1	glu__L[c]L-Glutamate
+936:	1	hg2[c]Mercury  charged 2  Hg
+941:	1	glu__L[p]L-Glutamate
+942:	1	hg2[p]Mercury  charged 2  Hg
+958:	1	lipa_old_[e]Cold adapted KDO(2)-lipid (A)
+963:	1	lipa_old_[p]Cold adapted KDO(2)-lipid (A)
+966:	1	lipa[e]KDO(2)-lipid (A)
+969:	1	lipa[p]KDO(2)-lipid (A)
+1047:	1	malt[e]Maltose C12H22O11
+1050:	1	malt[p]Maltose C12H22O11
+1064:	1	indole[c]Indole
+1070:	1	indole[p]Indole
+1133:	1	minohp[e]Myo-Inositol hexakisphosphate
+1135:	1	minohp[p]Myo-Inositol hexakisphosphate
+1146:	1	ocdcea[e]Octadecenoate (n-C18:1)
+1150:	1	ocdcea[p]Octadecenoate (n-C18:1)
+1156:	1	mn2[c]Manganese
+1162:	1	mn2[p]Manganese
+1216:	1	pheme[e]Protoheme C34H30FeN4O4
+1221:	1	pheme[p]Protoheme C34H30FeN4O4
+1246:	1	pi[c]Phosphate
+1267:	1	nac[c]Nicotinate
+1271:	1	ppa[c]Propionate (n-C3:0)
+1273:	1	nac[p]Nicotinate
+1277:	1	ppa[p]Propionate (n-C3:0)
+1281:	1	nadp[c]Nicotinamide adenine dinucleotide phosphate
+1282:	1	nadph[c]Nicotinamide adenine dinucleotide phosphate - reduced
+1298:	1	ni2[c]Nickel
+1304:	1	ni2[p]Nickel
+1307:	1	ppi[c]Diphosphate
+1311:	1	nmn[c]NMN C11H14N2O8P
+1313:	1	nmn[p]NMN C11H14N2O8P
+1353:	1	o16a4colipa[e](O16 antigen)x4 core oligosaccharide lipid A
+1355:	1	o16a4colipa[p](O16 antigen)x4 core oligosaccharide lipid A
+1480:	1	skm[c]Shikimate
+1486:	1	skm[p]Shikimate
+1490:	1	trdox[c]Oxidized thioredoxin
+1494:	1	trdrd[c]Reduced thioredoxin
+1525:	1	udcpp[c]Undecaprenyl phosphate
+1528:	1	udcpp[p]Undecaprenyl phosphate
+1538:	1	succ[c]Succinate
+1543:	1	succ[p]Succinate
+1595:	1	ttdca[e]Tetradecanoate (n-C14:0)
+1597:	1	ttdca[p]Tetradecanoate (n-C14:0)
+1666:	1	zn2[c]Zinc
+1668:	1	zn2[p]Zinc
+
+
+2	2-Acyl-sn-glycero-3-phosphatidate (n-C14:0) transporter via facilitated diffusion (periplasm)	2AGPA140tipp	-10.92	 28.28
+substrates:
+134	      -1	 1582.90	-29.69	-10.09	         2tdecg3p[p]	2-tetradecanoyl-sn-glycerol 3-phosphate
+products:
+131	       1	 1582.90	-29.69	-10.09	         2tdecg3p[c]	2-tetradecanoyl-sn-glycerol 3-phosphate
+
+4	2-Acyl-sn-glycero-3-phosphatidate (n-C14:1) transporter via facilitated diffusion (periplasm)	2AGPA141tipp	-10.92	 28.28
+substrates:
+128	      -1	 1489.73	-29.69	-10.09	       2tdec7eg3p[p]	2-tetradec-7-enoyl-sn-glycerol 3-phosphate
+products:
+125	       1	 1489.73	-29.69	-10.09	       2tdec7eg3p[c]	2-tetradec-7-enoyl-sn-glycerol 3-phosphate
+
+5	2-Acyl-sn-glycero-3-phosphatidate (n-C16:0) transporter via facilitated diffusion (periplasm)	2AGPA160tipp	-10.92	 28.28
+substrates:
+50	      -1	 1769.22	-29.69	-10.09	         2hdecg3p[p]	2-hexadecanoyl-sn-glycerol 3-phosphate
+products:
+47	       1	 1769.22	-29.69	-10.09	         2hdecg3p[c]	2-hexadecanoyl-sn-glycerol 3-phosphate
+
+7	2-Acyl-sn-glycero-3-phosphatidate (n-C16:1) transporter via facilitated diffusion (periplasm)	2AGPA161tipp	-10.92	 28.28
+substrates:
+44	      -1	 1676.06	-29.69	-10.09	       2hdec9eg3p[p]	2-hexadec-9-enoyl-sn-glycerol 3-phosphate
+products:
+41	       1	 1676.06	-29.69	-10.09	       2hdec9eg3p[c]	2-hexadec-9-enoyl-sn-glycerol 3-phosphate
+
+9	2-Acyl-sn-glycero-3-phosphatidate (n-C18:0) transporter via facilitated diffusion (periplasm)	2AGPA180tipp	-10.92	 28.28
+substrates:
+79	      -1	 1955.54	-29.69	-10.09	         2odecg3p[p]	2-octadecanoyl-sn-glycerol 3-phosphate
+products:
+76	       1	 1955.54	-29.69	-10.09	         2odecg3p[c]	2-octadecanoyl-sn-glycerol 3-phosphate
+
+11	2-Acyl-sn-glycero-3-phosphatidate (n-C18:1) transporter via facilitated diffusion (periplasm)	2AGPA181tipp	-10.92	 28.28
+substrates:
+73	      -1	 1862.38	-29.69	-10.09	      2odec11eg3p[p]	2-octadec-11-enoyl-sn-glycerol 3-phosphate
+products:
+71	       1	 1862.38	-29.69	-10.09	      2odec11eg3p[c]	2-octadec-11-enoyl-sn-glycerol 3-phosphate
+
+15	2-Acyl-sn-glycero-3-phosphoethanolamine (n-C12:0) transporter via facilitated diffusion (periplasm)	2AGPE120tipp	-19.60	 19.60
+substrates:
+214	      -1	 1676.92	-29.69	-10.09	         2agpe120[p]	2-Acyl-sn-glycero-3-phosphoethanolamine (n-C12:0)
+products:
+210	       1	 1676.92	-29.69	-10.09	         2agpe120[c]	2-Acyl-sn-glycero-3-phosphoethanolamine (n-C12:0)
+
+19	1,2 diacylglycerol transport via flipping (periplasm to cytoplasm, n-C12:0)	12DGR120tipp	-19.60	 19.60
+substrates:
+30	      -1	 2422.21	-29.69	-10.09	         12dgr120[p]	1,2-Diacyl-sn-glycerol (didodecanoyl, n-C12:0)
+products:
+24	       1	 2422.21	-29.69	-10.09	         12dgr120[c]	1,2-Diacyl-sn-glycerol (didodecanoyl, n-C12:0)
+
+20	1,2 diacylglycerol transport via flipping (periplasm to cytoplasm, n-C14:0)	12DGR140tipp	-19.60	 19.60
+substrates:
+33	      -1	 2794.86	-29.69	-10.09	         12dgr140[p]	1,2-Diacyl-sn-glycerol (ditetradecanoyl, n-C14:0)
+products:
+32	       1	 2794.86	-29.69	-10.09	         12dgr140[c]	1,2-Diacyl-sn-glycerol (ditetradecanoyl, n-C14:0)
+
+23	2-Acyl-sn-glycero-3-phosphoethanolamine (n-C14:0) transporter via facilitated diffusion (periplasm)	2AGPE140tipp	-19.60	 19.60
+substrates:
+220	      -1	 1863.24	-29.69	-10.09	         2agpe140[p]	2-Acyl-sn-glycero-3-phosphoethanolamine (n-C14:0)
+products:
+218	       1	 1863.24	-29.69	-10.09	         2agpe140[c]	2-Acyl-sn-glycero-3-phosphoethanolamine (n-C14:0)
+
+41	1,2 diacylglycerol transport via flipping (periplasm to cytoplasm, n-C18:1)	12DGR181tipp	-19.60	 19.60
+substrates:
+26	      -1	 3353.84	-29.69	-10.09	         12dgr181[p]	1,2-Diacyl-sn-glycerol (dioctadec-11-enoyl, n-C18:1)
+products:
+21	       1	 3353.84	-29.69	-10.09	         12dgr181[c]	1,2-Diacyl-sn-glycerol (dioctadec-11-enoyl, n-C18:1)
+
+68	2-Acyl-sn-glycero-3-phosphatidate (n-C12:0) transporter via facilitated diffusion (periplasm)	2AGPA120tipp	-10.92	 28.28
+substrates:
+13	      -1	 1396.57	-29.69	-10.09	         2ddecg3p[p]	2-dodecanoyl-sn-glycerol 3-phosphate
+products:
+12	       1	 1396.57	-29.69	-10.09	         2ddecg3p[c]	2-dodecanoyl-sn-glycerol 3-phosphate
+
+84	2-Acyl-sn-glycero-3-phosphoethanolamine (n-C16:1) transporter via facilitated diffusion (periplasm)	2AGPE161tipp	-19.60	 19.60
+substrates:
+238	      -1	 1956.40	-29.69	-10.09	         2agpe161[p]	2-Acyl-sn-glycero-3-phosphoethanolamine (n-C16:1)
+products:
+234	       1	 1956.40	-29.69	-10.09	         2agpe161[c]	2-Acyl-sn-glycero-3-phosphoethanolamine (n-C16:1)
+
+109	N-acetylneuraminate proton symport (periplasm)	ACNAMt2pp	-19.60	 19.60
+substrates:
+389	      -1	  837.60	-29.69	-10.09	            acnam[p]	N-Acetylneuraminate
+888	      -1	   45.72	-45.72	-45.72	                h[p]	H+
+products:
+383	       1	  837.60	-29.69	-10.09	            acnam[c]	N-Acetylneuraminate
+882	       1	   45.72	-45.72	-45.72	                h[c]	H+
+
+149	GlcNAc-anhMurNAc tripeptide transport in via proton symport (periplasm)	AGM3Pt2pp	-10.92	 28.28
+substrates:
+338	      -1	 2418.77	-29.69	-10.09	          anhgm3p[p]	N-Acetyl-D-glucosamine(anhydrous)N-Acetylmuramyl-tripeptide
+888	      -1	   45.72	-45.72	-45.72	                h[p]	H+
+products:
+334	       1	 2418.77	-29.69	-10.09	          anhgm3p[c]	N-Acetyl-D-glucosamine(anhydrous)N-Acetylmuramyl-tripeptide
+882	       1	   45.72	-45.72	-45.72	                h[c]	H+
+
+152	2-Acyl-sn-glycero-3-phosphoglycerol (n-C12:0) transporter via facilitated diffusion (periplasm)	2AGPG120tipp	-10.92	 28.28
+substrates:
+253	      -1	 1676.06	-29.69	-10.09	         2agpg120[p]	2-Acyl-sn-glycero-3-phosphoglycerol (n-C12:0)
+products:
+251	       1	 1676.06	-29.69	-10.09	         2agpg120[c]	2-Acyl-sn-glycero-3-phosphoglycerol (n-C12:0)
+
+162	GlcNAc-anhMurNAc tetrapeptide transport in via proton symport (periplasm)	AGM4Pt2pp	-10.92	 28.28
+substrates:
+344	      -1	 2651.68	-29.69	-10.09	          anhgm4p[p]	N-Acetyl-D-glucosamine(anhydrous)N-Acetylmuramyl-tetrapeptide
+888	      -1	   45.72	-45.72	-45.72	                h[p]	H+
+products:
+340	       1	 2651.68	-29.69	-10.09	          anhgm4p[c]	N-Acetyl-D-glucosamine(anhydrous)N-Acetylmuramyl-tetrapeptide
+882	       1	   45.72	-45.72	-45.72	                h[c]	H+
+
+172	2-Acyl-sn-glycero-3-phosphoglycerol (n-C14:0) transporter via facilitated diffusion (periplasm)	2AGPG140tipp	-10.92	 28.28
+substrates:
+258	      -1	 1862.38	-29.69	-10.09	         2agpg140[p]	2-Acyl-sn-glycero-3-phosphoglycerol (n-C14:0)
+products:
+257	       1	 1862.38	-29.69	-10.09	         2agpg140[c]	2-Acyl-sn-glycero-3-phosphoglycerol (n-C14:0)
+
+182	2-Acyl-sn-glycero-3-phosphoglycerol (n-C14:1) transporter via facilitated diffusion (periplasm)	2AGPG141tipp	-10.92	 28.28
+substrates:
+265	      -1	 1769.22	-29.69	-10.09	         2agpg141[p]	2-Acyl-sn-glycero-3-phosphoglycerol (n-C14:1)
+products:
+264	       1	 1769.22	-29.69	-10.09	         2agpg141[c]	2-Acyl-sn-glycero-3-phosphoglycerol (n-C14:1)
+
+197	2-Acyl-sn-glycero-3-phosphoglycerol (n-C16:0) transporter via facilitated diffusion (periplasm)	2AGPG160tipp	-10.92	 28.28
+substrates:
+267	      -1	 2048.71	-29.69	-10.09	         2agpg160[p]	2-Acyl-sn-glycero-3-phosphoglycerol (n-C16:0)
+products:
+266	       1	 2048.71	-29.69	-10.09	         2agpg160[c]	2-Acyl-sn-glycero-3-phosphoglycerol (n-C16:0)
+
+210	2-Acyl-sn-glycero-3-phosphoglycerol (n-C16:1) transporter via facilitated diffusion (periplasm)	2AGPG161tipp	-10.92	 28.28
+substrates:
+2	      -1	 1955.54	-29.69	-10.09	         2agpg161[p]	2-Acyl-sn-glycero-3-phosphoglycerol (n-C16:1)
+products:
+1	       1	 1955.54	-29.69	-10.09	         2agpg161[c]	2-Acyl-sn-glycero-3-phosphoglycerol (n-C16:1)
+
+225	2-Acyl-sn-glycero-3-phosphoglycerol (n-C18:0) transporter via facilitated diffusion (periplasm)	2AGPG180tipp	-10.92	 28.28
+substrates:
+4	      -1	 2235.03	-29.69	-10.09	         2agpg180[p]	2-Acyl-sn-glycero-3-phosphoglycerol (n-C18:0)
+products:
+3	       1	 2235.03	-29.69	-10.09	         2agpg180[c]	2-Acyl-sn-glycero-3-phosphoglycerol (n-C18:0)
+
+235	2-Acyl-sn-glycero-3-phosphoglycerol (n-C18:1) transporter via facilitated diffusion (periplasm)	2AGPG181tipp	-10.92	 28.28
+substrates:
+6	      -1	 2141.87	-29.69	-10.09	         2agpg181[p]	2-Acyl-sn-glycero-3-phosphoglycerol (n-C18:1)
+products:
+5	       1	 2141.87	-29.69	-10.09	         2agpg181[c]	2-Acyl-sn-glycero-3-phosphoglycerol (n-C18:1)
+
+362	Calcium (Ca+2) transport out via proton antiport (periplasm)	CA2t3pp	-10.92	 28.28
+substrates:
+335	      -1	   -3.44	-29.69	-10.09	              ca2[c]	Calcium
+888	      -1	   45.72	-45.72	-45.72	                h[p]	H+
+products:
+341	       1	   -3.44	-29.69	-10.09	              ca2[p]	Calcium
+882	       1	   45.72	-45.72	-45.72	                h[c]	H+
+
+395	Cadmium (Cd+2) transport out via proton antiport (periplasm)	CD2t3pp	-10.92	 28.28
+substrates:
+366	      -1	   -3.44	-29.69	-10.09	              cd2[c]	Cadmium
+888	      -1	   45.72	-45.72	-45.72	                h[p]	H+
+products:
+369	       1	   -3.44	-29.69	-10.09	              cd2[p]	Cadmium
+882	       1	   45.72	-45.72	-45.72	                h[c]	H+
+
+400	Citrate transport via succinate antiport (periplasm)	CITt7pp	-30.52	 47.89
+substrates:
+434	      -1	  225.16	-29.69	-10.09	              cit[p]	Citrate
+1538	      -1	  182.88	-29.69	-10.09	             succ[c]	Succinate
+products:
+428	       1	  225.16	-29.69	-10.09	              cit[c]	Citrate
+1543	       1	  182.88	-29.69	-10.09	             succ[p]	Succinate
+
+407	Cold lipid A transport via vector (periplasm to extracellular)	CLIPAtex	-19.60	 19.60
+substrates:
+963	      -1	 9378.41	-29.69	-10.09	        lipa_old_[p]	Cold adapted KDO(2)-lipid (A)
+products:
+958	       1	 9378.41	-29.69	-10.09	        lipa_old_[e]	Cold adapted KDO(2)-lipid (A)
+
+425	Carnitine/butyrobetaine antiporter (periplasm)	CRNt7pp	-39.20	 39.20
+substrates:
+552	      -1	  698.72	-29.69	-10.09	              crn[p]	L-Carnitine
+832	      -1	  698.72	-29.69	-10.09	            gbbtn[c]	Gamma-butyrobetaine
+products:
+548	       1	  698.72	-29.69	-10.09	              crn[c]	L-Carnitine
+835	       1	  698.72	-29.69	-10.09	            gbbtn[p]	Gamma-butyrobetaine
+
+434	Chloride transport out via proton antiport (2:1) (periplasm)	CLt3_2pp	-13.15	 65.25
+substrates:
+448	      -2	   -0.86	-29.69	-10.09	               cl[p]	Chloride
+882	      -1	   45.72	-45.72	-45.72	                h[c]	H+
+products:
+442	       2	   -0.86	-29.69	-10.09	               cl[c]	Chloride
+888	       1	   45.72	-45.72	-45.72	                h[p]	H+
+
+452	Cobalt (Co+2) transport out via proton antiport (periplasm)	COBALT2t3pp	-10.92	 28.28
+substrates:
+491	      -1	   -3.44	-29.69	-10.09	          cobalt2[c]	Co2+
+888	      -1	   45.72	-45.72	-45.72	                h[p]	H+
+products:
+494	       1	   -3.44	-29.69	-10.09	          cobalt2[p]	Co2+
+882	       1	   45.72	-45.72	-45.72	                h[c]	H+
+
+462	Core oligosaccharide lipid A transport via vector (periplasm to extracellular)	COLIPAtex	-19.60	 19.60
+substrates:
+504	      -1	14009.98	-29.69	-10.09	           colipa[p]	Core oligosaccharide lipid A
+products:
+500	       1	14009.98	-29.69	-10.09	           colipa[e]	Core oligosaccharide lipid A
+
+500	L-cysteine export via facilitated transport	CYStpp	-19.60	 19.60
+substrates:
+589	      -1	  326.07	-29.69	-10.09	           cys__L[c]	L-Cysteine
+products:
+594	       1	  326.07	-29.69	-10.09	           cys__L[p]	L-Cysteine
+
+550	Fatty acid (dodecanoate) transport via facilitated irreversible diffusion (extracellular to periplasm)	DDCAtexi	-19.60	 19.60
+substrates:
+695	      -1	 1070.50	-29.69	-10.09	             ddca[e]	Dodecanoate (n-C12:0)
+products:
+697	       1	 1070.50	-29.69	-10.09	             ddca[p]	Dodecanoate (n-C12:0)
+
+651	Enterobacterial common antigen (x4) core oligosaccharide lipid A transport (periplasm to extracellular)	ECA4COLIPAtex	-19.60	 19.60
+substrates:
+675	      -1	20628.20	-29.69	-10.09	       eca4colipa[p]	(enterobacterial common antigen)x4 core oligosaccharide lipid A
+products:
+672	       1	20628.20	-29.69	-10.09	       eca4colipa[e]	(enterobacterial common antigen)x4 core oligosaccharide lipid A
+
+696	Phosphoethanolamine lipid A transport via vector (periplasm to extracellular)	ENLIPAtex	-19.60	 19.60
+substrates:
+692	      -1	 9378.41	-29.69	-10.09	           enlipa[p]	Phosphoethanolamine KDO(2)-lipid (A)
+products:
+688	       1	 9378.41	-29.69	-10.09	           enlipa[e]	Phosphoethanolamine KDO(2)-lipid (A)
+
+985	Iron (Fe+2) transport out via proton antiport (periplasm)	FE2t3pp	-10.92	 28.28
+substrates:
+774	      -1	   -3.44	-29.69	-10.09	              fe2[c]	Fe2+ mitochondria
+888	      -1	   45.72	-45.72	-45.72	                h[p]	H+
+products:
+780	       1	   -3.44	-29.69	-10.09	              fe2[p]	Fe2+ mitochondria
+882	       1	   45.72	-45.72	-45.72	                h[c]	H+
+
+1172	Glucose transport via diffusion (extracellular to periplasm)	GLCtex_copy2	-19.60	 19.60
+substrates:
+878	      -1	  558.97	-29.69	-10.09	           glc__D[e]	D-Glucose
+products:
+883	       1	  558.97	-29.69	-10.09	           glc__D[p]	D-Glucose
+
+1220	Na+/glutamate symport (periplasm)	GLUt4pp	-39.20	 39.20
+substrates:
+941	      -1	  371.79	-29.69	-10.09	           glu__L[p]	L-Glutamate
+1263	      -1	   -0.86	-29.69	-10.09	              na1[p]	Sodium
+products:
+934	       1	  371.79	-29.69	-10.09	           glu__L[c]	L-Glutamate
+1257	       1	   -0.86	-29.69	-10.09	              na1[c]	Sodium
+
+1330	Hexadecenoate transport via facilitated irreversible diffusion (extracellular to periplasm)	HDCEAtexi	-19.60	 19.60
+substrates:
+916	      -1	 1349.99	-29.69	-10.09	            hdcea[e]	Hexadecenoate (n-C16:1)
+products:
+917	       1	 1349.99	-29.69	-10.09	            hdcea[p]	Hexadecenoate (n-C16:1)
+
+1361	Mercury (Hg+2) transport out via proton antiport (periplasm)	HG2t3pp	-10.92	 28.28
+substrates:
+888	      -1	   45.72	-45.72	-45.72	                h[p]	H+
+936	      -1	   -3.44	-29.69	-10.09	              hg2[c]	Mercury  charged 2  Hg
+products:
+882	       1	   45.72	-45.72	-45.72	                h[c]	H+
+942	       1	   -3.44	-29.69	-10.09	              hg2[p]	Mercury  charged 2  Hg
+
+1410	Indole transport via proton symport, irreversible (periplasm)	INDOLEt2pp	-10.92	 28.28
+substrates:
+882	      -1	   45.72	-45.72	-45.72	                h[c]	H+
+1064	      -1	  326.07	-29.69	-10.09	           indole[c]	Indole
+products:
+888	       1	   45.72	-45.72	-45.72	                h[p]	H+
+1070	       1	  326.07	-29.69	-10.09	           indole[p]	Indole
+
+1454	KDO(2)-lipid IV A transport via vector (periplasm to extracellular)	K2L4Atex	-19.60	 19.60
+substrates:
+877	      -1	 6863.03	-29.69	-10.09	       kdo2lipid4[p]	KDO(2)-lipid IV(A)
+products:
+874	       1	 6863.03	-29.69	-10.09	       kdo2lipid4[e]	KDO(2)-lipid IV(A)
+
+1489	Lipid A transport via vector (periplasm to extracellular)	LIPAtex	-19.60	 19.60
+substrates:
+969	      -1	 9098.92	-29.69	-10.09	             lipa[p]	KDO(2)-lipid (A)
+products:
+966	       1	 9098.92	-29.69	-10.09	             lipa[e]	KDO(2)-lipid (A)
+
+1592	MaltoseMaltotriose transport via diffusion (extracellular to periplasm) irreversible	MALTtexi	-19.60	 19.60
+substrates:
+1047	      -1	 1024.78	-29.69	-10.09	             malt[e]	Maltose C12H22O11
+products:
+1050	       1	 1024.78	-29.69	-10.09	             malt[p]	Maltose C12H22O11
+
+1668	Nickle (Ni+2) transport out via proton antiport (periplasm)	NI2t3pp	-10.92	 28.28
+substrates:
+888	      -1	   45.72	-45.72	-45.72	                h[p]	H+
+1298	      -1	   -3.44	-29.69	-10.09	              ni2[c]	Nickel
+products:
+882	       1	   45.72	-45.72	-45.72	                h[c]	H+
+1304	       1	   -3.44	-29.69	-10.09	              ni2[p]	Nickel
+
+1682	NMN permease (periplasm)	NMNPtpp	-10.92	 28.28
+substrates:
+1313	      -1	  651.27	-29.69	-10.09	              nmn[p]	NMN C11H14N2O8P
+products:
+1311	       1	  651.27	-29.69	-10.09	              nmn[c]	NMN C11H14N2O8P
+
+1685	Myo-inositol phosphate transport via diffusion (extracellular to periplasm)	MINOHPtexi	-19.60	 19.60
+substrates:
+1133	      -1	  155.63	-29.69	-10.09	           minohp[e]	Myo-Inositol hexakisphosphate
+products:
+1135	       1	  155.63	-29.69	-10.09	           minohp[p]	Myo-Inositol hexakisphosphate
+
+1705	Manganese (Mn+2) transport out via proton antiport (periplasm)	MN2t3pp	-10.92	 28.28
+substrates:
+888	      -1	   45.72	-45.72	-45.72	                h[p]	H+
+1156	      -1	   -3.44	-29.69	-10.09	              mn2[c]	Manganese
+products:
+882	       1	   45.72	-45.72	-45.72	                h[c]	H+
+1162	       1	   -3.44	-29.69	-10.09	              mn2[p]	Manganese
+
+1789	O16 antigen (x4) core oligosaccharide lipid A transport (periplasm to extracellular)	O16A4COLIPAtex	-19.60	 19.60
+substrates:
+1355	      -1	24257.81	-29.69	-10.09	      o16a4colipa[p]	(O16 antigen)x4 core oligosaccharide lipid A
+products:
+1353	       1	24257.81	-29.69	-10.09	      o16a4colipa[e]	(O16 antigen)x4 core oligosaccharide lipid A
+
+1824	Octadecenoate (n-C18:1) transport via facilitated irreversible diffusion (extracellular to periplasm)	OCDCEAtexi	-19.60	 19.60
+substrates:
+1146	      -1	 1536.31	-29.69	-10.09	           ocdcea[e]	Octadecenoate (n-C18:1)
+products:
+1150	       1	 1536.31	-29.69	-10.09	           ocdcea[p]	Octadecenoate (n-C18:1)
+
+1941	Protoheme transport irreversible out via diffusion (periplasm to extracellular)	PHEMEtiex	-19.60	 19.60
+substrates:
+1221	      -1	 1393.99	-29.69	-10.09	            pheme[p]	Protoheme C34H30FeN4O4
+products:
+1216	       1	 1393.99	-29.69	-10.09	            pheme[e]	Protoheme C34H30FeN4O4
+
+1970	Inorganic diphosphatase	PPA	-34.87	 42.83
+substrates:
+867	      -1	 -144.37	  0.00	  0.00	              h2o[c]	H2O H2O
+1307	      -1	-1932.23	-29.69	-10.09	              ppi[c]	Diphosphate
+products:
+882	       1	   45.72	-45.72	-45.72	                h[c]	H+
+1246	       2	-1049.22	-29.69	-10.09	               pi[c]	Phosphate
+
+1979	Na+/Propionate symporter (periplasm)	PPAt4pp	-39.20	 39.20
+substrates:
+1263	      -1	   -0.86	-29.69	-10.09	              na1[p]	Sodium
+1277	      -1	  232.05	-29.69	-10.09	              ppa[p]	Propionate (n-C3:0)
+products:
+1257	       1	   -0.86	-29.69	-10.09	              na1[c]	Sodium
+1271	       1	  232.05	-29.69	-10.09	              ppa[c]	Propionate (n-C3:0)
+
+2036	Nicotinic acid uptake (periplasm)	NACtpp	-10.92	 28.28
+substrates:
+1273	      -1	  185.46	-29.69	-10.09	              nac[p]	Nicotinate
+products:
+1267	       1	  185.46	-29.69	-10.09	              nac[c]	Nicotinate
+
+2167	Shikimate transport in via proton symport (periplasm)	SKMt2pp	-19.60	 19.60
+substrates:
+888	      -1	   45.72	-45.72	-45.72	                h[p]	H+
+1486	      -1	  418.37	-29.69	-10.09	              skm[p]	Shikimate
+products:
+882	       1	   45.72	-45.72	-45.72	                h[c]	H+
+1480	       1	  418.37	-29.69	-10.09	              skm[c]	Shikimate
+
+2245	Thioredoxin reductase (NADPH)	TRDR	 -7.06	 92.63
+substrates:
+882	      -1	   45.72	-45.72	-45.72	                h[c]	H+
+1282	      -1	  789.35	-29.69	-10.09	            nadph[c]	Nicotinamide adenine dinucleotide phosphate - reduced
+1490	      -1	  -28.56	-29.69	-10.09	            trdox[c]	Oxidized thioredoxin
+products:
+1281	       1	  727.57	-29.69	-10.09	             nadp[c]	Nicotinamide adenine dinucleotide phosphate
+1494	       1	  121.72	-29.69	-10.09	            trdrd[c]	Reduced thioredoxin
+
+2283	Tetradecanoate transport via facilitated irreversible diffusion (extracellular to periplasm)	TTDCAtexi	-19.60	 19.60
+substrates:
+1595	      -1	 1256.83	-29.69	-10.09	            ttdca[e]	Tetradecanoate (n-C14:0)
+products:
+1597	       1	 1256.83	-29.69	-10.09	            ttdca[p]	Tetradecanoate (n-C14:0)
+
+2342	Zinc (Zn+2) transport out via proton antiport (periplasm)	ZN2t3pp	-10.92	 28.28
+substrates:
+888	      -1	   45.72	-45.72	-45.72	                h[p]	H+
+1666	      -1	   -3.44	-29.69	-10.09	              zn2[c]	Zinc
+products:
+882	       1	   45.72	-45.72	-45.72	                h[c]	H+
+1668	       1	   -3.44	-29.69	-10.09	              zn2[p]	Zinc
+
+2354	Undecaprenyl phosphate transport (cytoplasm to periplasm)	UDCPPtppi	 -2.23	 36.97
+substrates:
+1528	      -1	 4142.27	-29.69	-10.09	            udcpp[p]	Undecaprenyl phosphate
+products:
+1525	       1	 4142.27	-29.69	-10.09	            udcpp[c]	Undecaprenyl phosphate
+

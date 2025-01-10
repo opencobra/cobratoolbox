@@ -1,0 +1,609 @@
+
+<!DOCTYPE html>
+
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>thermoFBA — The COBRA Toolbox</title>
+<link href="../../../../_static/img/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180"/>
+<link href="../../../../_static/img/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png"/>
+<link href="../../../../_static/img/favicon-16x16.png" rel="icon" sizes="16x16" type="image/png"/>
+<link color="#5bbad5" href="../../../../_static/img/safari-pinned-tab.svg" rel="mask-icon"/>
+<link href="../../../../_static/json/manifest.json" rel="manifest"/>
+<meta content="../../../../_static/browserconfig.xml" name="msapplication-config"/>
+<meta content="#ffffff" name="theme-color"/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+<script src="../../../../_static/js/jquery.easy-autocomplete.min.js" type="text/javascript"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" rel="stylesheet" type="text/css"/>
+<link href="../../../../_static/css/easy-autocomplete.min.css" rel="stylesheet" type="text/css"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
+<link href="../../../../_static/css/cobra.css" rel="stylesheet" type="text/css">
+<link href="../../../../genindex.html" rel="index" title="Index">
+<link href="../../../../search.html" rel="search" title="Search">
+<link href="../../../../index.html" rel="top" title="The COBRA Toolbox">
+<link href="../index.html" rel="up" title="Thermo">
+<link href="../transport/index.html" rel="next" title="Transport">
+<link href="../reactantContribution/index.html" rel="prev" title="reactantContribution">
+<script src="../../../../_static/js/modernizr.min.js"></script>
+</link></link></link></link></link></link></link></head>
+<!-- Google tag (gtag.js) -->
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-KFJTC6J15L"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-KFJTC6J15L');
+</script>
+
+<body class="wy-body-for-nav" role="document">
+<div class="wy-grid-for-nav">
+<nav class="wy-nav-side" data-toggle="wy-nav-shift">
+<div class="wy-side-scroll">
+<div class="wy-side-nav-search">
+<a class="icon icon-home" href="../../../../index.html"> The COBRA Toolbox
+          
+
+          
+            <img alt="cobratoolbox logo" class="logo" src="http://gibbs.unal.edu.co/cobradoc/cobratoolbox/img/cobratoolbox_logo_transparent.png"/>
+</a>
+<h1>The COBRA Toolbox</h1>
+<div role="search">
+<form action="../../../../search.html" class="wy-form" id="rtd-search-form" method="get">
+<input id="simple" name="q" placeholder="Search docs" type="text"/>
+<input name="check_keywords" type="hidden" value="yes"/>
+<input name="area" type="hidden" value="default"/>
+<script>
+    	var options = {
+
+		url: "../../../../_static/json/functions.json",
+
+		getValue: "name",
+
+		list: {
+            onKeyEnterEvent: function(item) {
+                    return "_static/../" + item.website_url
+            },
+            maxNumberOfElements: 25,
+			match: {
+					enabled: true,
+			},
+            sort: {
+			    enabled: true
+		    }
+		},
+
+    	template: {
+	    	type: "custom",
+		    method: function(value, item) {
+                return "<span><a href='../../../../search.html?q=" + item.name + "&check_keywords=yes&area=default'>" + value + "</a>" + "<a href='../../../../_static/../" + item.website_url + "' ><img src='../../../../_static/link.svg'/></a></span>";
+		    }
+	    },
+
+		theme: "square"
+
+	};
+
+	$("#simple").easyAutocomplete(options);
+
+
+    </script>
+</form>
+</div>
+</div>
+<div aria-label="main navigation" class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation">
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../index.html">Home</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">Functions</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Analysis</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../../coupling/index.html">Coupling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../deletion/index.html">Deletion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../dynamicFBA/index.html">Dynamic FBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../exploration/index.html">Exploration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../FBA/index.html">FBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../findMIIS/index.html">findMIIS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../fluxEnrichmentAnalysis/index.html">fluxEnrichmentAnalysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../FVA/index.html">FVA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../geometricFBA/index.html">geometricFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../gMCS/index.html">gMCS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../KLdistance/index.html">KLdistance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../mdFBA/index.html">mdFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../MOMA/index.html">MOMA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../multiSpecies/index.html">MultiSpecies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../parsimoniousFBA/index.html">parsimoniousFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../relaxedFBA/index.html">relaxedFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../rFBA/index.html">rFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../rMTA/index.html">rMTA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../robustnessAnalysis/index.html">robustnessAnalysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ROOM/index.html">ROOM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../rumba/index.html">rumba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sampling/index.html">Sampling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sparseFBA/index.html">sparseFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../subspaces/index.html">Subspaces</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html">Thermo</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../componentContribution/index.html">componentContribution</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../directionalityReport/index.html">directionalityReport</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../experimentalDesign/index.html">experimentalDesign</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../experimentalData/index.html">experimentalData</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../groupContribution/index.html">groupContribution</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../inchi/index.html">inchi</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../molFiles/index.html">molFiles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../protons/index.html">protons</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../reactantContribution/index.html">reactantContribution</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">thermoFBA</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../transport/index.html">Transport</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../utilities/index.html">Utilities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../vonBertalanffy/index.html">vonBertalanffy</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../topology/index.html">Topology</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../transport/index.html">Transport</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../uFBA/index.html">uFBA</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../base/index.html">Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../dataIntegration/index.html">Data integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../design/index.html">Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reconstruction/index.html">Reconstruction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../visualization/index.html">Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contributing.html">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../cite.html">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../support.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../plan.html">Development Plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contact.html">Contact</a></li>
+</ul>
+</div>
+</div>
+</nav>
+<section class="wy-nav-content-wrap" data-toggle="wy-nav-shift">
+<nav aria-label="top navigation" class="wy-nav-top" role="navigation">
+<i class="fa fa-bars" data-toggle="wy-nav-top"></i>
+<a href="../../../../index.html">The COBRA Toolbox</a>
+</nav>
+<div class="wy-nav-content">
+<div class="rst-content">
+<div aria-label="breadcrumbs navigation" role="navigation">
+<ul class="wy-breadcrumbs">
+<li><a class="icon icon-home" href="../../../../contents.html"></a> »</li>
+<li><a href="../../../index.html">Functions</a> »</li>
+<li><a href="../../index.html">Analysis</a> »</li>
+<li><a href="../index.html">Thermo</a> »</li>
+<li>thermoFBA</li>
+<li class="wy-breadcrumbs-aside">
+</li>
+</ul>
+<hr/>
+</div>
+<div class="document" itemscope="itemscope" itemtype="https://schema.org/Article" role="main">
+<div itemprop="articleBody">
+<div class="section" id="thermofba">
+<span id="id1"></span><h1>thermoFBA<a class="headerlink" href="#thermofba" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-src.analysis.thermo.thermoFBA"></span><dl class="function">
+<dt id="src.analysis.thermo.thermoFBA.addLoopLawConstraints">
+<code class="descname">addLoopLawConstraints</code><span class="sig-paren">(</span><em>LPproblem</em>, <em>model</em>, <em>rxnIndex</em>, <em>method</em>, <em>reduce_vars</em>, <em>loopInfo</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.thermo.thermoFBA.addLoopLawConstraints" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds loop law constraints to LP problem or MILP problem.</p>
+<p>USAGE:</p>
+<blockquote>
+<div>[MILPproblem] = addLoopLawConstraints(LPproblem, model, rxnIndex)</div></blockquote>
+<dl class="docutils">
+<dt>INPUTS:</dt>
+<dd><p class="first">LPproblem:      Structure containing the following fields:</p>
+<blockquote>
+<div><ul class="simple">
+<li>A - LHS matrix</li>
+<li>b - RHS vector</li>
+<li>c - Objective coeff vector</li>
+<li>lb - Lower bound vector</li>
+<li>ub - Upper bound vector</li>
+<li>osense - Objective sense (-1 max, +1 min)</li>
+<li>csense - Constraint senses, a string containting the constraint sense for
+each row in A (‘E’, equality, ‘G’ greater than, ‘L’ less than).</li>
+<li>F - (optional) If <cite>*QP</cite> problem</li>
+<li>vartype - (optional) if <cite>MI*P</cite> problem</li>
+</ul>
+</div></blockquote>
+<p class="last">model:          The model for which the loops should be removed</p>
+</dd>
+<dt>OPTIONAL INPUT:</dt>
+<dd><p class="first">rxnIndex:       The index of variables in LPproblem corresponding to fluxes. Default = <cite>[1:n]</cite>
+method:         Indicator which method to use:</p>
+<blockquote>
+<div><ul class="simple">
+<li>1 - Two variables for each reaction af, ar</li>
+<li>2 - One variable for each reaction af (default)</li>
+</ul>
+</div></blockquote>
+<p>reduce_vars:    Eliminates additional integer variables.  Should be faster in all cases but in practice may not be for some weird reason (default : true).
+loopInfo:       Structure containing at least a field named ‘method’,</p>
+<blockquote class="last">
+<div><p>for the method chosen to build loop constraints whose value can be:
+* ‘original’: use the original nullspace for internal reactions (Schellenberger et al., 2009)
+* ‘fastSNP’ : use the minimal feasible nullspace found by Fast-SNP (Saa and Nielson, 2016)
+* ‘LLC-NS’  : (default): use the minimal feasible nullspace found by solving a MILP (Chan et al., 2017)
+* ‘LLC-EFM’ : find whether reactions in cycles are connected by EFMs or not</p>
+<blockquote>
+<div>for faster localized loopless constraints (Chan et al., 2017)</div></blockquote>
+<p>Can contain other fields for LLC preprocessing which might be updated during this function</p>
+</div></blockquote>
+</dd>
+<dt>OUTPUT:</dt>
+<dd><p class="first">MILPproblem:    Problem structure containing the following fields describing an MILP problem:</p>
+<blockquote>
+<div><ul class="simple">
+<li>A, b, c, lb, ub - same as before but longer</li>
+<li>vartype - variable type of the MILP problem (‘C’, and ‘B’)</li>
+<li><cite>x0 = []</cite> - Needed for <cite>solveMILPproblem</cite></li>
+</ul>
+</div></blockquote>
+<p class="last">loopInfo:       Structure containing preprocessing data for using localized loop constraints (LLCs)</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="function">
+<dt id="src.analysis.thermo.thermoFBA.checkThermodynamicConsistency">
+<code class="descname">checkThermodynamicConsistency</code><span class="sig-paren">(</span><em>model</em>, <em>q</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.thermo.thermoFBA.checkThermodynamicConsistency" title="Permalink to this definition">¶</a></dt>
+<dd><p>USAGE:</p>
+<blockquote>
+<div>v = checkThermodynamicConsistency(model, q)</div></blockquote>
+<dl class="docutils">
+<dt>INPUTS:</dt>
+<dd>model:
+q:</dd>
+<dt>OUTPUT:</dt>
+<dd>v:</dd>
+</dl>
+</dd></dl>
+<dl class="function">
+<dt id="src.analysis.thermo.thermoFBA.connectedRxnsByEFM">
+<code class="descname">connectedRxnsByEFM</code><span class="sig-paren">(</span><em>model</em>, <em>conComp</em>, <em>rxnInLoops</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.thermo.thermoFBA.connectedRxnsByEFM" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find reactions lying in internal cycles that are connected by any EFMs.
+Used for minimizing the number of constraints for the loopless requirement
+when running loopless FVA using localized loopless constraints. This
+function requires EFMtool (<cite>CalculateFluxModes.m</cite>) to work.</p>
+<dl class="docutils">
+<dt>USAGE:</dt>
+<dd>rxnLink = connectedRxnsByEFM(model, conComp, rxnInLoops)</dd>
+<dt>INPUTS:</dt>
+<dd><p class="first">model:      COBRA model
+conComp:    reactions connected in the minimal nullspace for internal cycles, computed by <cite>connectedRxnsInNullSpace</cite>
+rxnInLoops: n-by-2 logical matrix where n = # of rxns in the model</p>
+<blockquote class="last">
+<div>rxnInLoops(k, 1) = true =&gt; forward direction of the k-th reaction in internal cycles
+rxnInLoops(k, 2) = true =&gt; reverse direction of the k-th reaction in internal cycles
+Returned by <cite>findMinNull.m</cite></div></blockquote>
+</dd>
+<dt>OPTIONAL INPUT:</dt>
+<dd>printLevel: true to show messages when the linkage matrix cannot be computed</dd>
+<dt>OUTPUT:</dt>
+<dd><dl class="first last docutils">
+<dt>rxnLink:    n-by-n matrix. rxnLink(i, j) = 1 =&gt; reactions i and j are connected</dt>
+<dd>by an EFM representing an elementary internal cycle.</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+<dl class="function">
+<dt id="src.analysis.thermo.thermoFBA.connectedRxnsInNullSpace">
+<code class="descname">connectedRxnsInNullSpace</code><span class="sig-paren">(</span><em>N</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.thermo.thermoFBA.connectedRxnsInNullSpace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find connected components for reactions given a minimal feasible nullspace as defined in Chan et al., Bioinfo, 2017.
+Two reactions in different connected components imply that no EFM connecting the reactions exists and therefore
+EFMs can be calculated in a modular approach. If the nullspace matrix represents the nullspace for reactions
+in internal loops, constraints for the loopless requirement are required only for the connected components
+involving the reactions required to have no flux through cycles (the target set).</p>
+<dl class="docutils">
+<dt>USAGE:</dt>
+<dd>conComp = connectedRxnsInNullSpace(N)</dd>
+<dt>INPUT:</dt>
+<dd><dl class="first last docutils">
+<dt>N:       a minimal nullspace matrix spanning the feasible flux space, having the same number row as the number of reactions</dt>
+<dd>Can be obtained from either <cite>findMinNull.m</cite> or <cite>fastSNP.m</cite></dd>
+</dl>
+</dd>
+<dt>OUTPUT:</dt>
+<dd><dl class="first last docutils">
+<dt>conComp: connected components for any reactions connected through the nullspace</dt>
+<dd>E.g., conComp = [1; 0; 1; 2; 3; 2] means that the 1st and 3rd reactions are in the same
+connected component, 4th and 6th also in the same, 5th alone in a connected component and
+the 2nd reaction is not in any connected component, which means it is a blocked reaction
+under the condition where the nullspace is calculated.</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+<dl class="function">
+<dt id="src.analysis.thermo.thermoFBA.consistentPotentials">
+<code class="descname">consistentPotentials</code><span class="sig-paren">(</span><em>model</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.thermo.thermoFBA.consistentPotentials" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find a consistent set of potentials for each metabolite in a biochemical
+network, given the directions specified by the bounds on each reaction
+i.e. find y0, such that <span class="math notranslate nohighlight">\(S^T y_0 &lt; 0\)</span> for a forward reaction and the opposite
+for reverse.</p>
+<p>USAGE:</p>
+<blockquote>
+<div>y0 = consistentPotentials(model, printLevel)</div></blockquote>
+<dl class="docutils">
+<dt>INPUTS:</dt>
+<dd><p class="first">model:         structure with fields:</p>
+<blockquote>
+<div><ul class="simple">
+<li>.S</li>
+<li>.lb</li>
+<li>.ub</li>
+</ul>
+</div></blockquote>
+<p class="last">printLevel:    verbose level</p>
+</dd>
+<dt>OUTPUT:</dt>
+<dd>y0:            consistent set of chemical potentials</dd>
+</dl>
+</dd></dl>
+<dl class="function">
+<dt id="src.analysis.thermo.thermoFBA.cycleFreeFlux">
+<code class="descname">cycleFreeFlux</code><span class="sig-paren">(</span><em>V0</em>, <em>C</em>, <em>model</em>, <em>SConsistentRxnBool</em>, <em>param</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.thermo.thermoFBA.cycleFreeFlux" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes stoichiometrically balanced cycles from FBA solutions when
+possible.</p>
+<p>A Matlab implementation of the CycleFreeFlux algorithm from Desouki et
+al., 2015. Minimises the one norm of fluxes subject to bounds determined
+by input flux.</p>
+<p>USAGE:</p>
+<blockquote>
+<div>V1 = cycleFreeFlux(V0, C, model, SConsistentRxnBool, relaxBounds);</div></blockquote>
+<dl class="docutils">
+<dt>INPUTS:</dt>
+<dd><p class="first">V0:       <cite>n x k</cite> matrix of <cite>k</cite> FBA solutions
+C:        <cite>n x k</cite> matrix of <cite>k</cite> FBA objectives
+model:    COBRA model structure with required fields:</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li>.S  - <cite>m x n</cite> stoichiometric matrix</li>
+<li>.b  - <cite>m x 1</cite> RHS vector</li>
+<li>.lb - <cite>n x 1</cite> lower bound vector</li>
+<li>.ub - <cite>n x 1</cite> lower bound vector</li>
+</ul>
+</div></blockquote>
+</dd>
+<dt>OPTIONAL INPUTS:</dt>
+<dd>SConsistentRxnBool:    <cite>n x 1</cite> logical array. True for internal reactions.
+param.relaxBounds:      Relax bounds that don’t include zero. Default is false.
+param.parallelize:      Turn parfor use on or off. Default is true if k &gt; 12.</dd>
+<dt>OUTPUT:</dt>
+<dd>V1:    <cite>n x k</cite> matrix of cycle free flux vectors</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>% Remove cycles from a single flux vector
+solution = optimizeCbModel(model);
+v1 = cycleFreeFlux(solution.v, model.c, model);</p>
+<p>% Remove cycles from multiple flux vectors
+[minFlux, maxFlux, Vmin, Vmax] = fluxVariability(model, 0, ‘max’, model.rxns, 0, 1, ‘FBA’);
+V0 = [Vmin, Vmax];
+n = size(model.S, 2);
+C = [eye(n), eye(n)];
+V1 = cycleFreeFlux(V0, C, model);</p>
+</dd></dl>
+<dl class="function">
+<dt id="src.analysis.thermo.thermoFBA.fastSNP">
+<code class="descname">fastSNP</code><span class="sig-paren">(</span><em>model</em>, <em>varargin</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.thermo.thermoFBA.fastSNP" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a minimal feasible basis for all internal cycles using the method
+Fast-SNP introduced in Saa and Nielson, Bioinformatics, 2016.</p>
+<dl class="docutils">
+<dt>USAGE:</dt>
+<dd>N = fastSNP(model, ‘name’, ‘value’, …)</dd>
+<dt>INPUTS</dt>
+<dd>model:             COBRA model</dd>
+<dt>OPTIONAL INPUTS:</dt>
+<dd>parameters:        solver-specific parameter structure or name-value pair argument for solverCobraLP</dd>
+<dt>OUTPUT:</dt>
+<dd><p class="first">N:                 a minimal feasible basis generating all internal cycles
+resInfo:           structure containing the following used parameters/information:</p>
+<blockquote class="last">
+<div><p><a href="#id2"><span class="problematic" id="id3">*</span></a>.iter:      number of iterations
+<a href="#id4"><span class="problematic" id="id5">*</span></a>.iterTime:  time for each iteration
+<a href="#id6"><span class="problematic" id="id7">*</span></a>.weight:    the random weight vector used for finding new basis vector
+<a href="#id8"><span class="problematic" id="id9">*</span></a>.M:         the bound for minimum/maximum flux
+<a href="#id10"><span class="problematic" id="id11">*</span></a>.feasTol:   feasibility tolerance for checking solution feasibility
+<a href="#id12"><span class="problematic" id="id13">*</span></a>.tol0:      tolerance for zeros in the basis vector
+<a href="#id14"><span class="problematic" id="id15">*</span></a>.epsilon:   tolerance for a new basis vector not</p>
+<blockquote>
+<div>lying in the projection of the current null-space,
+i.e. w’(I - P)v &gt;= epsilon or w’(I - P)v &lt;= -epsilon</div></blockquote>
+</div></blockquote>
+</dd>
+</dl>
+<p>Siu Hung Joshua Chan 2017 Nov</p>
+</dd></dl>
+<dl class="function">
+<dt id="src.analysis.thermo.thermoFBA.findMinNull">
+<code class="descname">findMinNull</code><span class="sig-paren">(</span><em>model</em>, <em>formulation</em>, <em>varargin</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.thermo.thermoFBA.findMinNull" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find a minimal null-space for all internal cycles by solving a MILP,
+as proposed in Chan et al., 2017.</p>
+<dl class="docutils">
+<dt>USAGE:</dt>
+<dd>[rxnInLoops, N, loopInfo] = findMinNull(model, formulation, parameters)</dd>
+<dt>INPUT:</dt>
+<dd>model:               COBRA model structure</dd>
+<dt>OPTIONAL INPUTS:</dt>
+<dd><dl class="first docutils">
+<dt>formulation:         1: solve the MILP problem for a minimal null-space basis</dt>
+<dd><blockquote class="first">
+<div>in an interlaced fashion by presolving some relaxed LPs to simultaneously
+determine the directions of reactions that participate in internal cycles
+(default, the quickest way as of 2017 Nov)</div></blockquote>
+<dl class="last docutils">
+<dt>2: directly solve the MILP. Then determine the directions</dt>
+<dd>of reactions that participate in internal cycles</dd>
+</dl>
+</dd>
+</dl>
+<p class="last">parameters:          solver-specific parameter structure or name-value pair argument for solverCobraMILP</p>
+</dd>
+<dt>OUTPUTS:</dt>
+<dd><dl class="first docutils">
+<dt>rxnInLoops:          #rxns-by-2 matrix. rxnInLoops(j, 1) = true =&gt; reverse direction of rxn j in loops</dt>
+<dd>rxnInLoops(j, 2) = true =&gt; forward direction of rxn j in loops</dd>
+</dl>
+<p>N:                   Minimal feasible null-space matrix for internal cycles
+loopInfo:            structure containing the following parameters/information:</p>
+<blockquote class="last">
+<div><p><a href="#id16"><span class="problematic" id="id17">*</span></a>.M:          the bound for minimum/maximum flux
+<a href="#id18"><span class="problematic" id="id19">*</span></a>.minFlux:    minimum flux required for a reaction to be active
+<a href="#id20"><span class="problematic" id="id21">*</span></a>.ignoreRxns: rxns with small coefficients that are prechecked</p>
+<blockquote>
+<div>before solving the MILP to avoid numerical issues</div></blockquote>
+<p><a href="#id22"><span class="problematic" id="id23">*</span></a>.nsTime:      wall time for finding the null-space
+<a href="#id24"><span class="problematic" id="id25">*</span></a>.nsCPU:      CPU time for finding the null-space
+<a href="#id26"><span class="problematic" id="id27">*</span></a>.loopPreprocessCPU:  CPU time for finding the directions of reactions participating in loops
+<a href="#id28"><span class="problematic" id="id29">*</span></a>.loopPreprocessTime: wall time for finding the directions of reactions participating in loops</p>
+</div></blockquote>
+</dd>
+</dl>
+</dd></dl>
+<dl class="function">
+<dt id="src.analysis.thermo.thermoFBA.metaboliteMassBalancePlot">
+<code class="descname">metaboliteMassBalancePlot</code><span class="sig-paren">(</span><em>model</em>, <em>metAbbr</em>, <em>solution</em>, <em>N</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.thermo.thermoFBA.metaboliteMassBalancePlot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plots the top N reactions producing and consuming a metabolite in a flux solution</p>
+<p>USAGE:</p>
+<blockquote>
+<div>metaboliteMassBalancePlot(model, metAbbr, solution, N)</div></blockquote>
+<dl class="docutils">
+<dt>INPUTS:</dt>
+<dd>model:       COBRA model structure
+metAbbr:     metabolite abbreviation
+solution:    <cite>solveCobraLP</cite> output of a solution to FBA problem
+N:           Number of reactions to include for production/consumption</dd>
+</dl>
+</dd></dl>
+<dl class="function">
+<dt id="src.analysis.thermo.thermoFBA.printDirectionalityFromBounds">
+<code class="descname">printDirectionalityFromBounds</code><span class="sig-paren">(</span><em>model</em>, <em>lb</em>, <em>ub</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.thermo.thermoFBA.printDirectionalityFromBounds" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prints the directionality for each reaction depending on the bounds for
+each reaction. Defaults to using <cite>model.lb</cite> &amp;  <cite>model.ub</cite> if none provided</p>
+<p>USAGE:</p>
+<blockquote>
+<div>directionality = printDirectionalityFromBounds(model, lb, ub)</div></blockquote>
+<dl class="docutils">
+<dt>INPUT:</dt>
+<dd>model:             COBRA model structure</dd>
+<dt>OPTIONAL INPUTS:</dt>
+<dd>lb:                flux lower bounds
+ub:                flux upper bounds</dd>
+<dt>OUTPUT:</dt>
+<dd>directionality:    <cite>n x 1</cite> cell array of strings with directionality for each reaction</dd>
+</dl>
+</dd></dl>
+<dl class="function">
+<dt id="src.analysis.thermo.thermoFBA.processingLLCs">
+<code class="descname">processingLLCs</code><span class="sig-paren">(</span><em>process</em>, <em>varargin</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.thermo.thermoFBA.processingLLCs" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function contains two different processes for manipulating the
+localized loop constraints (LLCs) to formulate a model-specific and
+objective-function-specific MILP for finding loopless flux distributions
+with a minimal number of binary variables</p>
+<dl class="docutils">
+<dt>USAGE:</dt>
+<dd><ol class="first last arabic simple">
+<li>Preprocess loop information after calling <cite>addLoopLawConstraints</cite>:
+[solveLP, MILPproblem, loopInfo] = processingLLCs(‘preprocess’, loopInfo, LPproblem, model, nRxns, osenseStr, MILPproblem)</li>
+<li>Update the loop constraints for a specific objective vector
+[solveLP, MILPproblem] = processingLLCs(‘update’, loopInfo, osenseStr, MILPproblem, objVector)</li>
+</ol>
+</dd>
+<dt>INPUTS:</dt>
+<dd><dl class="first docutils">
+<dt>loopInfo:      structure containing info about the loops, initially outputed</dt>
+<dd>from <cite>addLoopLawConstraints</cite> and updated by the current function</dd>
+</dl>
+<p>LPproblem:     original COBRA LP problem structure
+model:         the COBRA model from which LPproblem is constructed
+nRxns:         number of reactions in the model (default size(model.S, 2))
+osenseStr:     optimization sense of the current problem (e.g., FBA max v_biomass, or FVA min v_PYK)</p>
+<blockquote>
+<div>‘max’ (defaulted) or ‘min’</div></blockquote>
+<dl class="last docutils">
+<dt>MILPproblem:   COBRA MILP problem generated from LPproblem using <cite>addLoopLawConstraints</cite></dt>
+<dd>(default generated from LPproblem if not given in the preprocessing call)</dd>
+<dt>objVector:     nRxns-by-1 objective vector for the current optimization problem</dt>
+<dd>for updating LLCs (e.g., FVA min v_PYK given fixed v_biomass)</dd>
+</dl>
+</dd>
+<dt>OUTPUTS:</dt>
+<dd><dl class="first docutils">
+<dt>solveLP:       true if solving LP is sufficient to gaurantee the objective function value</dt>
+<dd>is the same as solving MILP with loop constraints</dd>
+</dl>
+<p class="last">MILPproblem:   updated MILP problem with LLCs
+loopInfo:      updated loopInfo with info about the loops (outputed only for the preprocess call)</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="script">
+<dt id="src.analysis.thermo.thermoFBA.testCheckThermodynamicConsistency">
+<code class="descname">testCheckThermodynamicConsistency</code><a class="headerlink" href="#src.analysis.thermo.thermoFBA.testCheckThermodynamicConsistency" title="Permalink to this definition">¶</a></dt>
+<dd><p>load textbook.mat</p>
+</dd></dl>
+</div>
+</div>
+<div class="articleComments">
+</div>
+</div>
+<footer>
+<div aria-label="footer navigation" class="rst-footer-buttons" role="navigation">
+<a accesskey="n" class="btn btn-default float-right" href="../transport/index.html" rel="next" title="Transport">Next <span class="fa fa-arrow-circle-right"></span></a>
+<a accesskey="p" class="btn btn-default" href="../reactantContribution/index.html" rel="prev" title="reactantContribution"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+</div>
+<hr/>
+<div role="contentinfo">
+<p>
+        © Copyright 2017-2020, The COBRA Toolbox developers.
+
+    </p>
+</div>
+  Built with Sphinx using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+</div>
+</div>
+</section>
+</div>
+<script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../',
+            VERSION:'2.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+<script src="../../../../_static/jquery.js" type="text/javascript"></script>
+<script src="../../../../_static/underscore.js" type="text/javascript"></script>
+<script src="../../../../_static/doctools.js" type="text/javascript"></script>
+<script src="../../../../_static/language_data.js" type="text/javascript"></script>
+<script src="https://cdn.jsdelivr.net/gh/mathjax/MathJax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+<script src="../../../../_static/js/theme.js" type="text/javascript"></script>
+<script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-TRCMZL1FKK"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TRCMZL1FKK');
+  </script>
+</body>
+</html>

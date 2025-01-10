@@ -1,0 +1,22 @@
+********************************************************************************************************
+********************************************************************************************************
+*This is an example of a reaction text file. 1 reaction per line and 11 columns divided with tabs, the column order is
+*stated under the broken line. If you create your metabolites in a program like Excel and copy/paste the
+*gene information to notepad the taps are automatically generated.								       
+*												       
+*You may notice that not all columns are aligned. This happens because specific columns have more 
+*characters then the next. It is normal and will not have any affect on the column order.	
+*
+*All lines that start with a star are regarded as comments. Please avoid from having empty lines,      
+*unnecessary information and etc in your text files.
+*
+*This information is strictly explanatory and not necessary accurate.
+*------------------------------------------------------------------------------------------------------
+*Abbreviation | Description | Neutral formula | Charged formula | Charge | KeggID | PubChemID | CheBIID | Inchi String | Smile | HMDB
+********************************************************************************************************
+********************************************************************************************************   
+1p2cbxl	1-pyrroline-2-carboxylate	C5H7NO2	C5H6NO2	-1	C03564	[]	17425	1/C5H7NO2	"	[]
+1p3h5c	L-1-Pyrroline-3-hydroxy-5-carboxylate	C5H7NO3	C5H6NO3	-1	C04281	6943	6151	1/C5H7NO3/4+/m1/s1/f/h8H	"	[]
+1pipdn2c	1-piperideine-2-carboxylic acid	"	C6H9NO2	0	C04092	6784	30912	1/C6H9NO2/	"	[]
+1pyr5c	1-pyrroline-5-carboxylate	C5H7NO2	C5H6NO2	-1	C03912	6977	15893	1/C5H7NO2/c7-5(8)	"	[]
+20ahchsterol	20-hydroxycholesterol	"	C27H46O2	0	[]	7853	1296	1/C	"	[]
