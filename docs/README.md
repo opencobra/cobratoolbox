@@ -1,10 +1,11 @@
 # Cobratoolbox Website Documentation
 
-This website is hosted on the GitHub servers using gh-pages. Here at the gh-pages branch is the source code of the website. If changes are made here, changes are made to the website. If you are interested to learn more about how gh-pages works check out the documentation for more information: https://docs.github.com/en/pages
+This website is hosted on the GitHub servers using gh-pages. Here at the gh-pages branch is the source code of the website. If changes are made here, changes are made to the website. If you are interested to learn more about how gh-pages works check out the documentation for more information: https://docs.github.com/en/pages. This file explains the procedure adapted for continuously integrating tutorials, functions (or modules), and contributors pages.
 
 
 ## Continuous Integration of Tutorials:
-Part 1 of the CI occurs when a contributor pushes their tutorial .mlx file to the Tutorials Repository. In this part the .mlx file is also converted into a .html and .pdf file. Detailed Documentation for the first part is ‘[here](https://github.com/opencobra/COBRA.tutorials/tree/master/.github/workflows)’
+### Part 1: Creating the HTML and PDF page for the tutorial. 
+First part of the CI occurs when a contributor pushes their tutorial .mlx file to the Tutorials Repository. In this part the .mlx file is also converted into a .html and .pdf file. Detailed Documentation for the first part is ‘[here](https://github.com/opencobra/COBRA.tutorials/tree/master/.github/workflows)’
 ### Part 2: The html files then get pushed to the gh-pages branch
 A workflow is then set up to be trigged when a .html file is to the gh-pages branch. The .yml file is called ‘[main.yml](https://github.com/opencobra/cobratoolbox/blob/gh-pages/.github/workflows/main.yml)’.
 
