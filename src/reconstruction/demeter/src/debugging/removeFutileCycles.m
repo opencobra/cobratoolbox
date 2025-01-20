@@ -540,6 +540,7 @@ reactionsToReplace = {'if present','if not present','removed','added'
     'FTMAOR' , [],'FTMAOR','FTMAORi'
     'NTMAOR' , [],'NTMAOR','NTMAORi'
     'D4DGCD',[],'D4DGCD','D4DGCDi'
+    'NDPK7 AND NTP13',[],'NTP13','NTP13i'
     };
 
 
