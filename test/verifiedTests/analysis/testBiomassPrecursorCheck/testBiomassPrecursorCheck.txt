@@ -1,4 +1,0 @@
-Cofactors in the biomass reaction that CAN be synthesized:
-atp[c]  -> adp[c] 
-Cofactors in the biomass reaction that CANNOT be synthesized:
-metTest1[c]  -> metTest2[c] 

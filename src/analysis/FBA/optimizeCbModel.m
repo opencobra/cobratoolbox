@@ -425,11 +425,7 @@ if isfield(param,'solveWBMmethod')
         model.c(:)=0;
         doLinearOptimisationFirst = 0;
         minNorm = param.minNorm;
-    else
-        param.solveWBMmethod = [];
     end
-else
-    param.solveWBMmethod = [];
 end
 
 
