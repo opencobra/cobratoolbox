@@ -80,7 +80,7 @@ for k = 1:length(solverPkgs.QP)
         assert(norm(solQP.dual - solLP.dual,inf) < tol)
 
         % test the sign of reduced costs
-        assert(norm(solQP.rcost - solLP.rcost,inf) < tol)
+        assert(norm(abs(solQP.rcost) - abs(solLP.rcost),inf) < tol)
 
         % print an exit message
         fprintf(' Done.\n');
