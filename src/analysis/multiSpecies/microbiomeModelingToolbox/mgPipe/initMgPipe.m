@@ -10,6 +10,9 @@ function [init, netSecretionFluxes, netUptakeFluxes, Y, modelStats, summary, sta
 %    abunFilePath:           char with path and name of file from which to retrieve abundance information
 %    computeProfiles:        boolean defining whether flux variability analysis to 
 %                            compute the metabolic profiles should be performed.
+% solver:                    String, indicates which solver is to be used
+%                            for solving WBMs. OPTIONAL, defaults to GLPK.
+%                            It is highly recommended to use gurobi or cplex
 %   
 % OPTIONAL INPUTS:
 %    resPath:                char with path of directory where results are saved
@@ -39,12 +42,6 @@ function [init, netSecretionFluxes, netUptakeFluxes, Y, modelStats, summary, sta
 %    pruneModels:            boolean indicating whether reactions that do not carry flux on the
 %                            input diet should be removed from the microbe models. 
 %                            Recommended for large datasets (default = false)
-%    simulateMicrobiotaModel: apply different diets (according to the user's input) 
-%                           to the microbiota models and run simulations computing FVAs
-%                           on exchanges reactions of the microbiota models. 
-%                           The output is saved in multiple .mat objects. 
-%                           Intermediate saving checkpoints are present
-%                           (default = false)
 %
 %
 % OUTPUTS:
