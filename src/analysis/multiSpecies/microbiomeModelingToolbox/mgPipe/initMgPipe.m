@@ -10,7 +10,7 @@ function [init, netSecretionFluxes, netUptakeFluxes, Y, modelStats, summary, sta
 %    abunFilePath:           char with path and name of file from which to retrieve abundance information
 %    computeProfiles:        boolean defining whether flux variability analysis to 
 %                            compute the metabolic profiles should be performed.
-%
+%   
 % OPTIONAL INPUTS:
 %    resPath:                char with path of directory where results are saved
 %    dietFilePath:           char with path of directory where the diet is saved.
@@ -38,7 +38,13 @@ function [init, netSecretionFluxes, netUptakeFluxes, Y, modelStats, summary, sta
 %                            adaptVMHDietToAGORA function or used as is (default=true)
 %    pruneModels:            boolean indicating whether reactions that do not carry flux on the
 %                            input diet should be removed from the microbe models. 
-%                            Recommended for large datasets (default: false)
+%                            Recommended for large datasets (default = false)
+%    simulateMicrobiotaModel: apply different diets (according to the user's input) 
+%                           to the microbiota models and run simulations computing FVAs
+%                           on exchanges reactions of the microbiota models. 
+%                           The output is saved in multiple .mat objects. 
+%                           Intermediate saving checkpoints are present
+%                           (default = false)
 %
 %
 % OUTPUTS:
@@ -73,8 +79,9 @@ parser = inputParser();
 parser.addRequired('modPath', @ischar);
 parser.addRequired('abunFilePath', @ischar);
 parser.addRequired('computeProfiles', @islogical);
+parser.addParameter('solver', @ischar);
 parser.addParameter('resPath', [pwd filesep 'Results'], @ischar);
-parser.addParameter('dietFilePath', 'AverageEuropeanDiet', @ischar);
+parser.addParameter('dietFilePath', @ischar);
 parser.addParameter('infoFilePath', '', @ischar);
 parser.addParameter('biomasses', {}, @iscell);
 parser.addParameter('hostPath', '', @ischar);
@@ -94,6 +101,7 @@ parser.parse(modPath, abunFilePath, computeProfiles, varargin{:});
 modPath = parser.Results.modPath;
 abunFilePath = parser.Results.abunFilePath;
 computeProfiles = parser.Results.computeProfiles;
+solver = parser.Results.solver;
 resPath = parser.Results.resPath;
 dietFilePath = parser.Results.dietFilePath;
 infoFilePath = parser.Results.infoFilePath;
@@ -110,9 +118,18 @@ includeHumanMets = parser.Results.includeHumanMets;
 adaptMedium = parser.Results.adaptMedium;
 pruneModels = parser.Results.pruneModels;
 
-global CBT_LP_SOLVER
-if isempty(CBT_LP_SOLVER)
-    initCobraToolbox
+% check if the solver is defined by the user
+if exist(solver)
+    changeCobraSolver(solver, 'LP')
+else
+    % otherwise use the default solver (*note: glpk takes excessive time
+    % running microbiotaModelSimulator: it is recommeneded to skip this
+    % step if you don't have a different solver and manually apply the diet
+    % instead using setDietConstraints -Anna Sheehy Jan 2025
+    global CBT_LP_SOLVER
+    if isempty(CBT_LP_SOLVER)
+        initCobraToolbox
+    end
 end
 
 % set parallel pool
@@ -127,10 +144,11 @@ end
 mkdir(resPath);
 
 currentDir=pwd;
-    
+
 if ~contains(dietFilePath,'.txt')
    dietFilePath=[dietFilePath '.txt']; 
 end
+
 if exist(dietFilePath)==0
     error('Path to file with dietary information is incorrect!');
 end
