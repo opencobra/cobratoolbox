@@ -1,4 +1,5 @@
 name: MATLAB Tests
+
 on:
   pull_request:
     branches:
@@ -8,13 +9,21 @@ jobs:
   build:
     runs-on: self-hosted
     steps:
-    - uses: actions/checkout@v2
+    
+    - name: Checkout PR Code
+      uses: actions/checkout@v4
+
+    - name: Merge PR with Develop
+      run: |
+        git fetch origin develop
+        git checkout -b test-branch
+        git merge origin/develop --no-edit
 
     - name: Clone COBRA Toolbox
       run: |
         git clone https://github.com/opencobra/cobratoolbox.git cobratoolbox
 
-    - name: Run MATLAB tests
+    - name: Run MATLAB Tests
       run: |
         matlab -batch "run('cobratoolbox/initCobraToolbox.m'); diary('test_results.txt'); run('cobratoolbox/runTestsAndGenerateReport.m'); diary off;"
 
