@@ -352,4 +352,4 @@ function out = escapeXML(in)
     out = strrep(out, '>', '&gt;');
     out = strrep(out, '"', '&quot;');
     out = strrep(out, '''', '&apos;');
-ens
+end
