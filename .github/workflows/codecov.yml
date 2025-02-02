@@ -14,9 +14,18 @@ jobs:
 
       - name: Rebase PR Branch on Top of Develop
         run: |
-          git fetch origin
-          git checkout ${{ github.event.pull_request.head.ref }}  # Checkout PR branch
-          git rebase origin/develop  # Rebase PR branch on develop
+          git fetch origin develop  # Fetch latest develop
+          if [[ "${{ github.event.pull_request.head.repo.full_name }}" == "${{ github.repository }}" ]]; then
+            # PR is from the same repo
+            git fetch origin ${{ github.event.pull_request.head.ref }}
+            git checkout ${{ github.event.pull_request.head.ref }}
+          else
+            # PR is from a forked repo
+            git remote add pr_repo ${{ github.event.pull_request.head.repo.clone_url }}
+            git fetch pr_repo ${{ github.event.pull_request.head.ref }}
+            git checkout -b test-rebase FETCH_HEAD
+          fi
+          git rebase origin/develop
           git push origin +HEAD:test-rebase --force  # Push rebased branch
 
       - name: Clone Rebased Branch on King Server
@@ -38,7 +47,7 @@ jobs:
           path: test_results.txt
 
       - name: Upload Coverage to Codecov
-        if: always()  # Ensure it runs even if tests fail
+        if: always()
         uses: codecov/codecov-action@v3
         with:
           files: ${{ github.workspace }}/CodeCovTestResults.xml
