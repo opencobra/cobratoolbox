@@ -9,56 +9,36 @@ jobs:
   build:
     runs-on: self-hosted
     steps:
+
       - name: Checkout PR Code
         uses: actions/checkout@v4
 
-      - name: Connect to King Server & Setup Rebase
+      - name: Clone COBRA Toolbox
         run: |
-          ssh saleh@king << 'EOF'
-          # Navigate to home directory
-          cd ~
+          git clone -b develop https://github.com/opencobra/cobratoolbox.git cobratoolbox
 
-          # Clone or update COBRA Toolbox
-          if [ ! -d "cobratoolbox" ]; then
-            git clone https://github.com/opencobra/cobratoolbox.git
-          fi
-          cd cobratoolbox
-
-          # Ensure develop is up-to-date
-          git fetch origin develop
-          git checkout develop
-          git reset --hard origin/develop  
-
-          # Fetch and rebase the PR branch
-          git fetch origin ${{ github.event.pull_request.head.ref }}
-          git checkout -b pr-rebase FETCH_HEAD
-          git rebase develop
-
-          # If rebase fails, abort and exit
-          if [ $? -ne 0 ]; then
-            git rebase --abort
-            exit 1
-          fi
-
-          # Run MATLAB tests
+      - name: Run MATLAB Tests
+        run: |
           matlab -batch "run('cobratoolbox/initCobraToolbox.m'); diary('test_results.txt'); run('cobratoolbox/test/testAll.m'); diary off;"
-
-          # Exit SSH session
-          exit
-          EOF
 
       - name: Upload Test Report
         uses: actions/upload-artifact@v4
         with:
           name: test-report
-          path: ~/cobratoolbox/test_results.txt
+          path: test_results.txt
 
       - name: Upload Coverage to Codecov
-        if: always()
+        if: always()  # Ensure it runs even if tests fail
         uses: codecov/codecov-action@v3
         with:
-          files: ~/cobratoolbox/CodeCovTestResults.xml
+          files: CodeCovTestResults.xml
           token: ${{ secrets.CODECOV_TOKEN }}
           fail_ci_if_error: true
           flags: matlab
           comment: true
+
+      - name: Upload Test Results to Codecov
+        if: always()
+        uses: codecov/test-results-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
