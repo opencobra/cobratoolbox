@@ -10,22 +10,26 @@ jobs:
     runs-on: self-hosted
     steps:
       - name: Checkout PR Code
-        uses: actions/checkout@v4
-        with:
-          submodules: false  # No need for Git to handle submodules
+        uses: actions/checkout@v4  # Fetches the PR branch
 
-      - name: Clone COBRA Toolbox
+      - name: Merge PR Branch with Develop
         run: |
-          git clone https://github.com/opencobra/cobratoolbox.git cobratoolbox
+          git fetch origin
+          git checkout -b test-merge
+          git merge origin/develop --allow-unrelated-histories --no-edit
+          git push origin test-merge --force  # Push the merged branch temporarily
 
-      - name: Run MATLAB Tests
+      - name: Clone Merged Branch on King Server
         run: |
-          matlab -batch "run('cobratoolbox/initCobraToolbox.m'); diary('test_results.txt'); run('cobratoolbox/test/testAll.m'); diary off;"
+          ssh saleh@king "rm -rf cobratoolbox && git clone -b test-merge https://github.com/opencobra/cobratoolbox.git cobratoolbox"
 
-      - name: Debug Check If Coverage File Exists
+      - name: Run MATLAB Tests on King Server
         run: |
-          ls -l $(pwd)
-          find . -name "CodeCovTestResults.xml"
+          ssh saleh@king "matlab -batch \"run('cobratoolbox/initCobraToolbox.m'); diary('test_results.txt'); run('cobratoolbox/test/testAll.m'); diary off;\""
+
+      - name: Retrieve Test Results from Server
+        run: |
+          scp saleh@king:cobratoolbox/test_results.txt .
 
       - name: Upload Test Report
         uses: actions/upload-artifact@v4
@@ -48,3 +52,8 @@ jobs:
         uses: codecov/test-results-action@v1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
+
+      - name: Cleanup Temporary Merged Branch
+        if: always()
+        run: |
+          git push origin --delete test-merge || true  # Delete the test-merge branch after tests
