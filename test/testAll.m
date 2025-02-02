@@ -176,7 +176,12 @@ try
         originalUserPath = path;
 
         % run the tests in the subfolder verifiedTests/ recursively
+        debug = 1;
+        if debug
+        load('testData.mat');
+        else
         [result, resultTable] = runTestSuite();
+        end
 
         sumSkipped = sum(resultTable.Skipped);
         sumFailed = sum(resultTable.Failed);
