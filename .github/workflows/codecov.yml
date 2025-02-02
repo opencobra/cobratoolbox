@@ -9,15 +9,18 @@ jobs:
   build:
     runs-on: self-hosted
     steps:
-
       - name: Checkout PR Code
         uses: actions/checkout@v4
+
+      - name: Initialize and Update Submodules
+        run: |
+          git submodule update --init --recursive
 
       - name: Merge PR with Develop
         run: |
           git fetch origin develop
           git checkout -b test-branch
-          git merge origin/develop --no-edit
+          git merge origin/develop --allow-unrelated-histories --no-edit
 
       - name: Clone COBRA Toolbox
         run: |
