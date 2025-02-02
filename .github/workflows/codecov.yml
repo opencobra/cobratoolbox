@@ -12,16 +12,16 @@ jobs:
       - name: Checkout PR Code
         uses: actions/checkout@v4  # Fetches the PR branch
 
-      - name: Merge PR Branch with Develop
+      - name: Rebase PR Branch on Top of Develop
         run: |
           git fetch origin
-          git checkout -b test-merge
-          git merge origin/develop --allow-unrelated-histories --no-edit
-          git push origin test-merge --force  # Push the merged branch temporarily
+          git checkout ${{ github.event.pull_request.head.ref }}  # Checkout PR branch
+          git rebase origin/develop  # Rebase PR branch on develop
+          git push origin +HEAD:test-rebase --force  # Push rebased branch
 
-      - name: Clone Merged Branch on King Server
+      - name: Clone Rebased Branch on King Server
         run: |
-          ssh saleh@king "rm -rf cobratoolbox && git clone -b test-merge https://github.com/opencobra/cobratoolbox.git cobratoolbox"
+          ssh saleh@king "rm -rf cobratoolbox && git clone -b test-rebase https://github.com/opencobra/cobratoolbox.git cobratoolbox"
 
       - name: Run MATLAB Tests on King Server
         run: |
@@ -53,7 +53,7 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
 
-      - name: Cleanup Temporary Merged Branch
+      - name: Cleanup Temporary Rebased Branch
         if: always()
         run: |
-          git push origin --delete test-merge || true  # Delete the test-merge branch after tests
+          git push origin --delete test-rebase || true  # Delete the test-rebase branch after tests
