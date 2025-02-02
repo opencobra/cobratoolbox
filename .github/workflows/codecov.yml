@@ -20,7 +20,7 @@ jobs:
 
       - name: Run MATLAB Tests
         run: |
-          matlab -batch "run('cobratoolbox/initCobraToolbox.m'); diary('test_results.txt'); run('cobratoolbox/testAll.m'); diary off;"
+          matlab -batch "run('cobratoolbox/initCobraToolbox.m'); diary('test_results.txt'); run('cobratoolbox/test/testAll.m'); diary off;"
 
       - name: Debug Check If Coverage File Exists
         run: |
