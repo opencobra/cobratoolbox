@@ -11,10 +11,14 @@ jobs:
     steps:
       - name: Checkout PR Code
         uses: actions/checkout@v4
+        with:
+          submodules: recursive  # Ensures GitHub Actions checks out submodules properly
 
       - name: Initialize and Update Submodules
         run: |
-          git submodule update --init --recursive
+          git submodule deinit --all --force  # Remove broken submodules
+          git submodule update --init --recursive --force
+          git submodule sync --recursive
 
       - name: Merge PR with Develop
         run: |
@@ -30,6 +34,11 @@ jobs:
         run: |
           matlab -batch "run('cobratoolbox/initCobraToolbox.m'); diary('test_results.txt'); run('cobratoolbox/testAll.m'); diary off;"
 
+      - name: Debug: Check If Coverage File Exists
+        run: |
+          ls -l $(pwd)
+          find . -name "CodeCovTestResults.xml"
+
       - name: Upload Test Report
         uses: actions/upload-artifact@v4
         with:
@@ -40,7 +49,7 @@ jobs:
         if: always()  # Ensure it runs even if tests fail
         uses: codecov/codecov-action@v3
         with:
-          files: CodeCovTestResults.xml
+          files: ${{ github.workspace }}/CodeCovTestResults.xml
           token: ${{ secrets.CODECOV_TOKEN }}
           fail_ci_if_error: true
           flags: matlab
