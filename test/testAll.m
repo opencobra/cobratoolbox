@@ -15,7 +15,7 @@ fprintf('                                                  | \n\n');
 
 % request explicitly from the user to launch test suite locally
 % if contains(getenv('HOME'), 'vmhadmin') || contains(getenv('HOME'), 'jenkins')
-if contains(getenv('HOME'), 'cobratoolbox')
+if contains(getenv('HOME'), 'saleh')
     % Running in CI environment
 %    fprintf('Running test in Jenkins/CI environment\n');
      fprintf('Running test in cobratoolbox/CI environment\n');
@@ -182,6 +182,55 @@ try
         sumFailed = sum(resultTable.Failed);
 
         fprintf(['\n > ', num2str(sumFailed), ' tests failed. ', num2str(sumSkipped), ' tests were skipped due to missing requirements.\n\n']);
+        %% NEW: Generate JUnit XML report for Codecov
+        xmlFileName = 'CodeCovTestResults.xml';
+        fid = fopen(xmlFileName, 'w');
+        if fid == -1
+            error('Could not open file for writing: %s', xmlFileName);
+        end
+
+        fprintf(fid, '<?xml version="1.0" encoding="UTF-8"?>\n');
+        
+        numTests = height(resultTable);
+        numFailures = sum(resultTable.Failed);
+        numSkipped = sum(resultTable.Skipped);
+        totalTime = 0;
+        for i = 1:numTests
+            if isnan(resultTable.Time(i))
+                tVal = 0;
+            else
+                tVal = resultTable.Time(i);
+            end
+            totalTime = totalTime + tVal;
+        end
+
+        fprintf(fid, '<testsuite name="COBRA Toolbox Test Suite" tests="%d" failures="%d" skipped="%d" time="%.3f">\n', ...
+            numTests, numFailures, numSkipped, totalTime);
+
+        for i = 1:numTests
+            testName = resultTable.TestName{i};
+            if isnan(resultTable.Time(i))
+                tVal = 0;
+            else
+                tVal = resultTable.Time(i);
+            end
+            fprintf(fid, '  <testcase classname="COBRA Toolbox" name="%s" time="%.3f"', testName, tVal);
+            if resultTable.Passed(i)
+                fprintf(fid, '/>\n');
+            else
+                fprintf(fid, '>\n');
+                if resultTable.Skipped(i)
+                    fprintf(fid, '    <skipped message="%s"/>\n', escapeXML(resultTable.Details{i}));
+                else
+                    fprintf(fid, '    <failure message="%s"/>\n', escapeXML(resultTable.Details{i}));
+                end
+                fprintf(fid, '  </testcase>\n');
+            end
+        end
+
+        fprintf(fid, '</testsuite>\n');
+        fclose(fid);
+        %% End of XML generation
 
         % count the number of covered lines of code
         if COVERAGE
@@ -291,3 +340,16 @@ if contains(getenv('HOME'), 'vmhadmin') || contains(getenv('HOME'), 'jenkins')
     % explicit 'exit' required for R2018b in non-interactive mode to avoid SEGV near end of test
     exit
 end
+
+%% Local helper function to escape XML special characters.
+function out = escapeXML(in)
+    if isempty(in)
+        out = '';
+        return;
+    end
+    out = strrep(in, '&', '&amp;');
+    out = strrep(out, '<', '&lt;');
+    out = strrep(out, '>', '&gt;');
+    out = strrep(out, '"', '&quot;');
+    out = strrep(out, '''', '&apos;');
+ens
