@@ -1,37 +1,50 @@
-name: Code Coverage
+name: MATLAB Tests and Code Coverage
+
 on:
-  push:
-    branches: [develop]
   pull_request:
-    branches: [develop]
+    branches:
+      - '**'
+
 jobs:
-  test:
-    runs-on: ubuntu-latest
+  build:
+    runs-on: self-hosted
     steps:
-      - uses: actions/checkout@v3
-      
-      - name: Set up MATLAB
-        uses: matlab-actions/setup-matlab@v1
+
+      - name: Checkout PR Code
+        uses: actions/checkout@v4
+
+      - name: Merge PR with Develop
+        run: |
+          git fetch origin develop
+          git checkout -b test-branch
+          git merge origin/develop --no-edit
+
+      - name: Clone COBRA Toolbox
+        run: |
+          git clone https://github.com/opencobra/cobratoolbox.git cobratoolbox
+
+      - name: Run MATLAB Tests
+        run: |
+          matlab -batch "run('cobratoolbox/initCobraToolbox.m'); diary('test_results.txt'); run('cobratoolbox/testAll.m'); diary off;"
+
+      - name: Upload Test Report
+        uses: actions/upload-artifact@v4
         with:
-          release: R2022a
-      
-      - name: Install MOcov
-        run: |
-          git clone https://github.com/MOxUnit/MOcov.git /opt/MOcov
-          sudo chmod -R 755 /opt/MOcov
-      
-      - name: Verify MATLAB installation
-        run: matlab -batch "version"
-      
-      - name: Run MATLAB tests
-        run: |
-          matlab -batch "addpath(genpath(pwd)); run_coverage_tests"
-      
-      - name: Upload coverage to Codecov
+          name: test-report
+          path: test_results.txt
+
+      - name: Upload Coverage to Codecov
+        if: always()  # Ensure it runs even if tests fail
         uses: codecov/codecov-action@v3
         with:
-          files: ./coverage.xml
-          flags: matlab
+          files: CodeCovTestResults.xml
           token: ${{ secrets.CODECOV_TOKEN }}
           fail_ci_if_error: true
+          flags: matlab
           comment: true
+
+      - name: Upload Test Results to Codecov
+        if: always()
+        uses: codecov/test-results-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
