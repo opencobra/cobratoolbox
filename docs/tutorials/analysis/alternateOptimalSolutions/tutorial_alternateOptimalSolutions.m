@@ -79,8 +79,8 @@ printConstraints(model,-1000,1000)
 % and use FBA to minimize and maximize this new objective in two separate steps.  
 % This will give the minimum and maximum possible fluxes through this reaction 
 % while contributing to the optimal objective value.
-% What reactions vary their optimal flux in the set of alternate optimal solutions to maximum growth of E. coli on succinate? Are there any reactions that are not used in one optimal solution but used in another optimal solution? What are the computational and biochemical aspects to consider when interpreting these alternate optimal solutions?
-% Hint: |fluxVariability|
+% What is the minimum and maximum rate of the malic enzyme reaction (ME1) when the E. coli core model grows at a maximal rate on succinate as a carbon source?
+% Hint: |changeRxnBounds, printConstraints, optimizeCbModel, changeObjective, solution = optimizeCbModel(model, osenseStr)|
 % Consider the variability of the malic enzyme reaction (ME1) in E. coli growing 
 % on succinate.  The minimum possible flux through this reaction is 0 mmol gDW-1 
 % hr-1 and the maximum is 6.49 mmol gDW-1 hr-1.  In one alternate optimal solution, 
@@ -136,11 +136,35 @@ FBAsolution_ME1_Max.f
 % Observe that the difference between these two is ~6.5 which means that it 
 % is possible to have a maximum growth rate at any rate of the malic enzyme reaction 
 % (ME1) between 0 and 6.5.
+% Display a flux map for alternate solutions for maximum aerobic growth on succinate.
+
+outputFormatOK = changeCbMapOutput('matlab');
+map=readCbMap('ecoli_core_map');
+options.zeroFluxWidth = 0.1;
+options.rxnDirMultiplier = 10;
+drawFlux(map, model, FBAsolution_ME1_Min.v, options);
+%% 
+% *Figure 4a*  Flux map of an alternate solution for maximum aerobic growth 
+% on succinate, with minimal use of ME1, the reaction ME1 that converts L-malate 
+% to pyruvate.
+
+outputFormatOK = changeCbMapOutput('matlab');
+map=readCbMap('ecoli_core_map');
+options.zeroFluxWidth = 0.1;
+options.rxnDirMultiplier = 10;
+drawFlux(map, model, FBAsolution_ME1_Max.v, options);
+%% 
+% *Figure 4b*   Flux map of an alternate solution for maximum aerobic growth 
+% on succinate, with maximal use of ME1, the reaction ME1 that converts L-malate 
+% to pyruvate.
 %% Systematic evaluation of alternate optima with Flux Variability Analysis
 % Flux variability analysis minimises and maximises the rate of each reaction 
 % in a model to evaluate what range of alternate optima exist for each reaction. 
 % The COBRA Toolbox includes a built in function for performing FVA called |fluxVariability|.  
-% This function is useful because it performs FVA on every reaction in a model.  
+% This function is useful because, by default, it performs FVA on every reaction 
+% in a model.  
+% What reactions vary their optimal flux in the set of alternate optimal solutions to maximum growth of E. coli on succinate? 
+% Hint: create a table with varying reactions using the output from |fluxVariability|
 % When FVA is performed on every reaction in the E. coli core model for growth 
 % on succinate, eight reactions are found to be variable (Table 5).  Inspection 
 % of the variable reactions shows that conversion of L-matate to pyruvate may 
@@ -165,34 +189,44 @@ FVAresults=FVAresults(bool,:)
 % *Table 5*  Variable reactions for growth on succinate (uptake rate = 20 mmol 
 % gDW-1 hr-1) under aerobic conditions.  The minimum and maximum possible flux 
 % for every reaction was calculated at the maximum growth rate and only reactions 
-% with variable fluxes are shown here.  FRD7 (fumarate reductase) and SUCDi (succinate 
-% dehydrogenase) always have highly variable fluxes in this model because they 
-% form a cycle that can carry any flux.  Physiologically, these fluxes are not 
-% relevant.  The other variable reactions are MDH (malate dehydrogenase), ME1 
-% (malic enzyme (NAD)), ME2 (malic enzyme (NADP)), NADTRHD (NAD transhydrogenase), 
-% PPCK (phosphoenolpyruvate carboxykinase), and PYK (pyruvate kinase).
+% with variable fluxes are shown here.  
+% Are there any reactions that are not used in one optimal solution but used in another optimal solution? 
+% Hint: study the flux variablity analysis results
+% FRD7 (fumarate reductase), ME1 (malic enzyme (NAD)), NADTRHD (NAD transhydrogenase), 
+% and PYK (pyruvate kinase).
+% What are the computational and biochemical aspects to consider when interpreting these alternate optimal solutions?
+% Hint: the flux span for some reactions is far larger than for other reactions
+% FRD7 (fumarate reductase) and SUCDi (succinate dehydrogenase) always have 
+% highly variable fluxes in this model because they form a cycle that can carry 
+% any flux.  Physiologically, these fluxes are not relevant, as they are a computational 
+% artefact of not enforcing energy conservation and the second law of thermodynamics.  
+% The other variable reactions are MDH (malate dehydrogenase), ME1 (malic enzyme 
+% (NAD)), ME2 (malic enzyme (NADP)), NADTRHD (NAD transhydrogenase), PPCK (phosphoenolpyruvate 
+% carboxykinase), and PYK (pyruvate kinase) and represent biochemical alternate 
+% optima.
+% In E.coli core, what reactions vary their optimal flux in the set of alternate optimal solutions where  PYK (pyruvate kinase) is always at a maximum rate? 
+% Hint: |fluxVariability, drawFlux|
 
-model_ME1 = changeObjective(model,'ME1');
-FBAsolution_ME1_Max = optimizeCbModel(model_ME1,'max');
-
-% Flux maps for alternate solutions for maximum aerobic growth on succinate.
-
-outputFormatOK = changeCbMapOutput('matlab');
-map=readCbMap('ecoli_core_map');
-options.zeroFluxWidth = 0.1;
-options.rxnDirMultiplier = 10;
-drawFlux(map, model, FBAsolution_ME1_Max.v, options);
-%% 
-% *Figure 4a*  Flux maps for an alternate solutions for maximum aerobic growth 
-% on succinate.  The reaction ME1 is used to convert L-malate to pyruvate.
-
+model = modelOri;
 model_PYK = changeObjective(model,'PYK');
-FBAsolution_PYK_Max = optimizeCbModel(model_PYK,'max');
-drawFlux(map, model, FBAsolution_PYK_Max.v, options); 
+
+FVAresults_PYK=cell(size(model.S,2)+1,1);
+FVAresults_PYK{1,1}='Reaction';
+FVAresults_PYK{1,2}='Minimum Flux';
+FVAresults_PYK{1,3}='Maximum Flux';
+FVAresults_PYK(2:end,1)=model.rxns;
+[minFlux, maxFlux, ~, ~] = fluxVariability(model_PYK, 100, 'max', [], 0, 1, 'FBA');
+for n=1:size(model.S,2)
+    FVAresults_PYK{n+1,2}=minFlux(n);
+    FVAresults_PYK{n+1,3}=maxFlux(n);
+end
+bool=abs(maxFlux-minFlux)>=1e-6;
+bool=[true;bool];
+FVAresults_PYK=FVAresults_PYK(bool,:)
+drawFlux(map, model, maxFlux - minFlux, options); 
 %% 
-% *Figure 4b*  Flux maps for an alternate solutions for maximum aerobic growth 
-% on succinate.  ME1 is is not used at all, and the reaction PYK is used.  *The 
-% two alternative reactions are highlighted in red.*
+% *Figure 4b*  Flux maps displaying the reactions with non-zero flux span for 
+% maximum aerobic growth on pyruvate.
 %% TIMING
 % _1 hrs_
 %% ANTICIPATED RESULTS
