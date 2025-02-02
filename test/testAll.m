@@ -176,13 +176,19 @@ try
         originalUserPath = path;
 
         % run the tests in the subfolder verifiedTests/ recursively
+        debug = 1;
+        if debug
+        load('testData.mat');
+        else
         [result, resultTable] = runTestSuite();
+        end
 
         sumSkipped = sum(resultTable.Skipped);
         sumFailed = sum(resultTable.Failed);
 
         fprintf(['\n > ', num2str(sumFailed), ' tests failed. ', num2str(sumSkipped), ' tests were skipped due to missing requirements.\n\n']);
         %% NEW: Generate JUnit XML report for Codecov
+        
         xmlFileName = 'CodeCovTestResults.xml';
         fid = fopen(xmlFileName, 'w');
         if fid == -1
@@ -190,23 +196,24 @@ try
         end
 
         fprintf(fid, '<?xml version="1.0" encoding="UTF-8"?>\n');
-        
-        numTests = height(resultTable);
+
+        numTests    = height(resultTable);
         numFailures = sum(resultTable.Failed);
-        numSkipped = sum(resultTable.Skipped);
-        totalTime = 0;
-        for i = 1:numTests
-            if isnan(resultTable.Time(i))
-                tVal = 0;
-            else
-                tVal = resultTable.Time(i);
-            end
-            totalTime = totalTime + tVal;
-        end
+        numErrors   = sum(resultTable.Failed);
+        numSkipped  = sum(resultTable.Skipped);
 
-        fprintf(fid, '<testsuite name="COBRA Toolbox Test Suite" tests="%d" failures="%d" skipped="%d" time="%.3f">\n', ...
-            numTests, numFailures, numSkipped, totalTime);
+        % Compute total time and also count how many are "failures" vs. "errors"
+        totalTime = sum(resultTable.Time);
 
+        % 1) Wrap in <testsuites> -- typical JUnit format
+        fprintf(fid, '<testsuites name="COBRA Toolbox Test Suites" tests="%d" failures="%d" errors="%d" time="%.3f">\n', ...
+            numTests, numFailures, numErrors, totalTime);
+
+        % 2) A single <testsuite> inside
+        fprintf(fid, '  <testsuite name="COBRA Toolbox Test Suite" tests="%d" failures="%d" errors="%d" skipped="%d" time="%.3f">\n', ...
+            numTests, numFailures, numErrors, numSkipped, totalTime);
+
+        % 3) Loop over each test case
         for i = 1:numTests
             testName = resultTable.TestName{i};
             if isnan(resultTable.Time(i))
@@ -214,21 +221,39 @@ try
             else
                 tVal = resultTable.Time(i);
             end
-            fprintf(fid, '  <testcase classname="COBRA Toolbox" name="%s" time="%.3f"', testName, tVal);
+
+            % Start the <testcase> tag
+            fprintf(fid, '    <testcase classname="COBRA Toolbox" name="%s" time="%.3f"', testName, tVal);
+
             if resultTable.Passed(i)
+                % Passed => just close
                 fprintf(fid, '/>\n');
-            else
+            elseif resultTable.Skipped(i)
+                % Skipped => <skipped/>
                 fprintf(fid, '>\n');
-                if resultTable.Skipped(i)
-                    fprintf(fid, '    <skipped message="%s"/>\n', escapeXML(resultTable.Details{i}));
+                fprintf(fid, '      <skipped message="%s"/>\n', escapeXML(resultTable.Details{i}));
+                fprintf(fid, '    </testcase>\n');
+            else
+                % Not passed, not skipped => either <failure> or <error>
+                % Check the .Error or .Details to decide
+                errMsg = result(i).Error.message;  % or getReport()
+
+                % Heuristic: if "Assertion" => <failure>, else <error>.
+                if contains(errMsg, 'Assertion') || contains(errMsg, 'assert')
+                    fprintf(fid, '>\n');
+                    fprintf(fid, '      <failure message="%s"/>\n', escapeXML(errMsg));
                 else
-                    fprintf(fid, '    <failure message="%s"/>\n', escapeXML(resultTable.Details{i}));
+                    fprintf(fid, '>\n');
+                    fprintf(fid, '      <error message="%s"/>\n', escapeXML(errMsg));
                 end
-                fprintf(fid, '  </testcase>\n');
+
+                fprintf(fid, '    </testcase>\n');
             end
         end
 
-        fprintf(fid, '</testsuite>\n');
+        % Close out the suite and suites
+        fprintf(fid, '  </testsuite>\n');
+        fprintf(fid, '</testsuites>\n');
         fclose(fid);
         %% End of XML generation
 
