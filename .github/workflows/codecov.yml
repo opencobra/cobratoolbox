@@ -12,19 +12,7 @@ jobs:
       - name: Checkout PR Code
         uses: actions/checkout@v4
         with:
-          submodules: recursive  # Ensures GitHub Actions checks out submodules properly
-
-      - name: Initialize and Update Submodules
-        run: |
-          git submodule deinit --all --force  # Remove broken submodules
-          git submodule update --init --recursive --force
-          git submodule sync --recursive
-
-      - name: Merge PR with Develop
-        run: |
-          git fetch origin develop
-          git checkout -b test-branch
-          git merge origin/develop --allow-unrelated-histories --no-edit
+          submodules: false  # No need for Git to handle submodules
 
       - name: Clone COBRA Toolbox
         run: |
