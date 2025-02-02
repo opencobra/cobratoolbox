@@ -23,8 +23,8 @@ currentDir = cd(fileparts(which(mfilename)));
 % determine the test path for references
 testPath = pwd;
 
-%Load Recon3DModel
-model = getDistributedModel('Recon3DModel_301.mat');
+%Load ecoli core model
+model = getDistributedModel('ecoli_core_model.mat');
 
 %Find the internal reaction subset of the network
 printLevel = -1;
