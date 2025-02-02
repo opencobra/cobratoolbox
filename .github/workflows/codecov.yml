@@ -34,7 +34,7 @@ jobs:
         run: |
           matlab -batch "run('cobratoolbox/initCobraToolbox.m'); diary('test_results.txt'); run('cobratoolbox/testAll.m'); diary off;"
 
-      - name: Debug: Check If Coverage File Exists
+      - name: Debug Check If Coverage File Exists
         run: |
           ls -l $(pwd)
           find . -name "CodeCovTestResults.xml"
