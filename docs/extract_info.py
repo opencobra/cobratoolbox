@@ -20,9 +20,9 @@ def get_file_info(file_path):
             template_content = template_file.read()
             template_content = template_content.replace('IFRAMETUTORIAL.html', "/".join(file_path.split('/')[2:]))  # Remove the first 2 directories from the file location
             template_content = template_content.replace('((TutorialName))', file_path.split('/')[-1].split('.')[0])  # Name of the tutorial
-            template_content = template_content.replace('((TutorialPDFpath))', "/".join(file_path.split('/')[2:]).replace('.html','.pdf'))  # path to the pdf file
-            template_content = template_content.replace('((TutorialMLXpath))', "/".join(file_path.split('/')[2:]).replace('.html','.mlx'))  # path to the mlx file
-            template_content = template_content.replace('((TutorialMATpath))', "/".join(file_path.split('/')[2:]).replace('.html','.m'))  # path to the .m file
+            template_content = template_content.replace('((TutorialPDFpath))', 'https://github.com/opencobra/COBRA.tutorials/tree/master/'+ "/".join(file_path.split('/')[2:]).replace('.html','.pdf'))  # path to the pdf file
+            template_content = template_content.replace('((TutorialMLXpath))',  'https://github.com/opencobra/COBRA.tutorials/tree/master/'+"/".join(file_path.split('/')[2:]).replace('.html','.mlx'))  # path to the mlx file
+            template_content = template_content.replace('((TutorialMATpath))', 'https://github.com/opencobra/COBRA.tutorials/tree/master/'+ "/".join(file_path.split('/')[2:]).replace('.html','.m'))  # path to the .m file
             template_content = template_content.replace('((TutorialGITHUBpath))', 'https://github.com/opencobra/COBRA.tutorials/tree/master/'+"/".join(file_path.split('/')[2:-1]))  # path to the github page
             new_file_path = os.path.join('docs/tutorials', "tutorial_"+os.path.basename(file_path))
             with open(new_file_path, 'w') as new_file:
