@@ -38,20 +38,14 @@ jobs:
           python -m pip install --upgrade pip
           pip install beautifulsoup4
 
-      - name: Get Changed HTML Files
+      - name: Get Changed HTML Files and update the index.html file of tutorial
         id: getfile
         if: steps.check_msg.outputs.run_job == 'true'
         run: |
-          changed_files=$(git diff --name-only HEAD~1 HEAD | grep '\.html')
-          echo "::set-output name=file::$changed_files"
-
-      - name: Extract Info from HTML Files
-        if: steps.check_msg.outputs.run_job == 'true'
-        run: |
-          for file in ${{ steps.getfile.outputs.file }}
-          do
-            echo "Processing: $file"
-            python ./docs/extract_info.py $file
+          changed_files=$(git diff --name-only HEAD~1 HEAD | grep '\.html' | tr '\n' ' ')
+          for file in $changed_files; do
+              echo "Processing: $file"
+              python ./docs/extract_info.py $file
           done
           
       - name: Commit and Push New File
