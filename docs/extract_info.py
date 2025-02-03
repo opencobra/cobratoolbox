@@ -24,7 +24,10 @@ def get_file_info(file_path):
             template_content = template_content.replace('((TutorialMLXpath))',  'https://github.com/opencobra/COBRA.tutorials/tree/master/'+"/".join(file_path.split('/')[2:]).replace('.html','.mlx'))  # path to the mlx file
             template_content = template_content.replace('((TutorialMATpath))', 'https://github.com/opencobra/COBRA.tutorials/tree/master/'+ "/".join(file_path.split('/')[2:]).replace('.html','.m'))  # path to the .m file
             template_content = template_content.replace('((TutorialGITHUBpath))', 'https://github.com/opencobra/COBRA.tutorials/tree/master/'+"/".join(file_path.split('/')[2:-1]))  # path to the github page
-            new_file_path = os.path.join('docs/tutorials', "tutorial_"+os.path.basename(file_path))
+            if os.path.basename(file_path).startswith('tutorial_'):
+                new_file_path = os.path.join('docs/tutorials', os.path.basename(file_path))
+            else:
+                new_file_path = os.path.join('docs/tutorials', "tutorial_"+os.path.basename(file_path))
             with open(new_file_path, 'w') as new_file:
                 new_file.write(template_content)
 
@@ -63,7 +66,10 @@ def main():
     heading = get_file_info(file_path)
 
     # Update index.html
-    update_index_html(section, "tutorial_"+os.path.basename(file_path), heading)
+    if os.path.basename(file_path).startswith('tutorial_'):
+        update_index_html(section, os.path.basename(file_path), heading)
+    else:
+        update_index_html(section, "tutorial_"+os.path.basename(file_path), heading)
 
     print('Process completed.')
 
