@@ -21,9 +21,9 @@ jobs:
         run: |
           commit_msg=$(git log --format=%B -n 1)
           if [[ "$commit_msg" == "Sync files from source repo" ]]; then
-            echo "::set-output name=run_job::true"
+            echo "run_job=true" >> $GITHUB_OUTPUT
           else
-            echo "::set-output name=run_job::false"
+            echo "run_job=false" >> $GITHUB_OUTPUT
           fi
 
       - name: Set up Python
