@@ -50,6 +50,7 @@ jobs:
         run: |
           for file in ${{ steps.getfile.outputs.file }}
           do
+            echo "Processing: $file"
             python ./docs/extract_info.py $file
           done
           
