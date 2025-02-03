@@ -1,26 +1,26 @@
 # Cobratoolbox Website Documentation
 
-This website is hosted on the GitHub servers using gh-pages. Here at the gh-pages branch is the source code of the website. If changes are made here, changes are made to the website. If you are interested to learn more about how gh-pages works check out the documentation for more information: https://docs.github.com/en/pages. This file explains the procedure adapted for continuously integrating tutorials, functions (or modules), and contributors pages.
+This website is hosted on the GitHub servers using ./docs. Here at the ./docs folder is the source code of the website. If changes are made here, changes are made to the website. If you are interested to learn more about how ./docs works check out the documentation for more information: https://docs.github.com/en/pages. This file explains the procedure adapted for continuously integrating tutorials, functions (or modules), and contributors pages.
 
 
 ## Continuous Integration of Tutorials:
 ### Part 1: Creating the HTML and PDF page for the tutorial. 
-First part of the CI occurs when a contributor pushes their tutorial .mlx file to the Tutorials Repository. In this part the .mlx file is also converted into a .html and .pdf file. Detailed Documentation for the first part is ‘[here](https://github.com/opencobra/COBRA.tutorials/tree/master/.github/workflows)’
-### Part 2: The html files then get pushed to the gh-pages branch
-A workflow is then set up to be trigged when a .html file is to the gh-pages branch. The .yml file is called ‘[main.yml](https://github.com/opencobra/cobratoolbox/blob/gh-pages/.github/workflows/main.yml)’.
+First part of the CI occurs when a contributor pushes their tutorial .mlx file to the Tutorials Repository. In this part the .mlx file is also converted into a .HTML, .pdf and .m file. Detailed Documentation for the first part is ‘[here](https://github.com/opencobra/COBRA.tutorials/tree/master/.github/workflows)’
+### Part 2: The html files then get pushed to the ./docs folder in master branch
+A workflow is then set up to be trigged when a .html file is to the ./docs folder. The .yml file is called ‘[UpdateTutorialIndex.yml](https://github.com/opencobra/cobratoolbox/blob/gh-pages/.github/workflows/UpdateTutorialIndex.yml)’.
 
-The main.yml can be explained as follows:
+The UpdateTutorialIndex.yml can be explained as follows:
 
 ```
 on:
   push:
-    branches: [ gh-pages ]
+    branches: [ master ]
     paths:
     - '**.html'
 ```
 
 
-This specifies that the .yml file will run if a .html file is pushed to the gh-pages branch.
+This specifies that the .yml file will run if a .html file is pushed to the master branch.
 
 ```
 jobs:
@@ -49,7 +49,7 @@ Here the second step is to checkout the repository and find any changes that wer
 ```
 
 
-In the tutorials repo we push to the gh-pages branch with the particular comment: ‘Sync files from source repo’. This helps distinguish between slight edits made to pages on the website and tutorial pushes from the tutorials repo. Here this piece of code checks this.
+In the tutorials repo we push to the master branch with the particular comment: ‘Sync files from source repo’. This helps distinguish between slight edits made to pages on the website and tutorial pushes from the tutorials repo. Here this piece of code checks this.
 
 ```
 - name: Set up Python
@@ -63,29 +63,25 @@ In the tutorials repo we push to the gh-pages branch with the particular comment
   run: |
     python -m pip install --upgrade pip
     pip install beautifulsoup4
-
-- name: Get Changed HTML Files
-  id: getfile
-  if: steps.check_msg.outputs.run_job == 'true'
-  run: |
-    changed_files=$(git diff --name-only HEAD~1 HEAD | grep '\.html')
-    echo "::set-output name=file::$changed_files"
 ```
 
-Here are some basic steps such as 1. Set up python got github actions 2. Install Python dependencies needed 3. Get the html files that were pushed to the repository.
+Here are some basic steps such as 1. Set up python using github actions 2. Install the required Python dependencies
 
 ```
-- name: Extract Info from HTML Files
-  if: steps.check_msg.outputs.run_job == 'true'
-  run: |
-    for file in ${{ steps.getfile.outputs.file }}
-    do
-      python extract_info.py $file
-    done
+- name: Get Changed HTML Files and update the index.html file of tutorial
+    id: getfile
+    if: steps.check_msg.outputs.run_job == 'true'
+    run: |
+      changed_files=$(git diff --name-only HEAD~1 HEAD | grep '\.html' | tr '\n' ' ')
+      for file in $changed_files; do
+          echo "Processing: $file"
+          python ./docs/extract_info.py $file
+      done
 ```
+Next the details of .html files that are pushed in the recent commit are fetched. For each HTML file, extract_info.py file is run on top of them.
 
-
-Now we run the python file to configure the website to adjust to the added tutorial.
+**What is extract_info.py?**
+This Python script processes the HTML file to extract its heading and then uses this information to update the website's [tutorial homepage](https://opencobra.github.io/cobratoolbox/tutorials/index.html). Initially, it reads the specified HTML file to find the main heading (inside an h1 tag). Then, it modifies a template HTML file (HOLDER_TEMPLATE.html) by replacing a placeholder with the path of the processed file, and saves this modified content as a new tutorial file within a predefined directory structure (./docs/tutorials). Additionally, the script updates the index.html file located within the .docs/tutorials directory, adding a link to the new tutorial under a specific section, which is determined by part of the original file's path.
 
 ```
 - name: Commit and Push New File
@@ -99,10 +95,6 @@ Now we run the python file to configure the website to adjust to the added tutor
 ```
 
 After changing and adding the folders/files around in the repo we push the changes to the repository
-
-**What is extract_info.py?**
-This Python script processes the HTML file to extract its heading and then uses this information to update the website's [tutorial homepage](https://opencobra.github.io/cobratoolbox/stable/tutorials/index.html). Initially, it reads the specified HTML file to find the main heading (inside an h1 tag). Then, it modifies a template HTML file (HOLDER_TEMPLATE.html) by replacing a placeholder with the path of the processed file, and saves this modified content as a new tutorial file within a predefined directory structure (stable/tutorials). Additionally, the script updates the index.html file located within the same stable/tutorials directory, adding a link to the new tutorial under a specific section, which is determined by part of the original file's path.
-
 
 ## Continuous Integration of Functions
 Each accepted pull request triggers two workflows (W1 and W2) to generate documentation for functions, 
