@@ -24,7 +24,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: test-report
-          path: test_results.txt
+          path: |
+            test_results.txt
+            cobratoolbox/CodeCovTestResults.xml
 
       # Parse Test Results and Comment on PR using regex
       - name: Parse Test Results and Comment on PR
@@ -34,7 +36,7 @@ jobs:
         with:
           script: |
             const fs = require('fs');
-            const xml = fs.readFileSync('CodeCovTestResults.xml', 'utf8');
+            const xml = fs.readFileSync('cobratoolbox/CodeCovTestResults.xml', 'utf8');
 
             // Extract data using regex
             const passedRegex = /tests="(\d+)" failures="(\d+)" errors="(\d+)" skipped="(\d+)"/;
@@ -47,11 +49,11 @@ jobs:
             let summary = `Test Results: Passed: ${totalTests - failures - skipped}, Failed: ${failures}, Errors: ${errors}, Skipped: ${skipped}`;
 
             // Find failed tests
-            const failedTestsRegex = /<testcase classname="[^"]*" name="([^"]+)"[^>]*>\s*<error[^>]*>([^<]*)<\/error>/g;
+            const failedTestsRegex = /<testcase classname="[^"]*" name="([^"]+)"[^>]*>\s*<(error|failure)[^>]*>([^<]*)<\/(error|failure)>/g;
             let failedTestDetails = '';
             let match;
             while ((match = failedTestsRegex.exec(xml)) !== null) {
-              failedTestDetails += `\n* ${match[1]}: ${match[2]}`;
+              failedTestDetails += `\n* ${match[1]}: ${match[3]}`;
             }
 
             if (failedTestDetails.length > 0) {
