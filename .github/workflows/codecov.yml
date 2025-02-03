@@ -26,7 +26,7 @@ jobs:
           name: test-report
           path: test_results.txt
 
-      # Parse Test Results and Comment on PR
+      # Parse Test Results and Comment on PR using regex
       - name: Parse Test Results and Comment on PR
         uses: actions/github-script@v5
         env:
@@ -34,33 +34,33 @@ jobs:
         with:
           script: |
             const fs = require('fs');
-            const xml2js = require('xml2js');
-            const parser = new xml2js.Parser({ explicitArray: true });
-
             const xml = fs.readFileSync('CodeCovTestResults.xml', 'utf8');
-            parser.parseString(xml, function (err, result) {
-              if (err) {
-                console.error('Failed to parse XML:', err);
-                return;
-              }
 
-              const testSuite = result.testsuites.testsuite[0];
-              const summary = `Test Results: Passed: ${testSuite.$.tests - testSuite.$.failures - testSuite.$.skipped}, Failed: ${testSuite.$.failures}, Skipped: ${testSuite.$.skipped}`;
-              
-              let details = '';
-              if (testSuite.$.failures > 0) {
-                details = '\n\nFailed Tests:\n';
-                testSuite.testcase.forEach(test => {
-                  if (test.error) {
-                    details += `* ${test.$.name}: ${test.error[0].$.message}\n`;
-                  }
-                });
-              }
+            // Extract data using regex
+            const passedRegex = /tests="(\d+)" failures="(\d+)" errors="(\d+)" skipped="(\d+)"/;
+            const matches = passedRegex.exec(xml);
+            const totalTests = matches[1];
+            const failures = matches[2];
+            const errors = matches[3];
+            const skipped = matches[4];
 
-              github.rest.issues.createComment({
-                issue_number: context.issue.number,
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                body: summary + details
-              });
+            let summary = `Test Results: Passed: ${totalTests - failures - skipped}, Failed: ${failures}, Errors: ${errors}, Skipped: ${skipped}`;
+
+            // Find failed tests
+            const failedTestsRegex = /<testcase classname="[^"]*" name="([^"]+)"[^>]*>\s*<error[^>]*>([^<]*)<\/error>/g;
+            let failedTestDetails = '';
+            let match;
+            while ((match = failedTestsRegex.exec(xml)) !== null) {
+              failedTestDetails += `\n* ${match[1]}: ${match[2]}`;
+            }
+
+            if (failedTestDetails.length > 0) {
+              summary += `\n\nFailed Tests:${failedTestDetails}`;
+            }
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: summary
             });
