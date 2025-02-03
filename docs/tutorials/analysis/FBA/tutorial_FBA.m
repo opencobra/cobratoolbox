@@ -12,7 +12,7 @@
 % 
 % where $c$ is a vector of linear objective coefficients, $S$ is an m times 
 % n matrix of stoichiometric coefficients for m molecular species involved in 
-% n reactions. $l\;\mathrm{and}\;u\;$are n times 1 vectors that are the lower 
+% n reactions. $l\;\textrm{and}\;u\;$are n times 1 vectors that are the lower 
 % and upper bounds on the n times 1 variable vector $v\;$of reaction rates (fluxes). 
 % The optimal objective value is $c^{T}v^{\star}$  is always unique, but the optimal 
 % vector $v^{\star}$ is usually not unique.
@@ -38,9 +38,8 @@
 % and verify that the pre-packaged LP and QP solvers are functional (tutorial_verify.mlx).
 %% PROCEDURE
 %% Load E. coli core model
-% The most direct way to load a model into The COBRA Toolbox is to use the |readCbModel| 
-% function. For example, to load a model from a MAT-file, you can simply use the 
-% filename (with or without file extension). 
+% The most appropriate way to load a model into The COBRA Toolbox is to use 
+% the |readCbModel| function. 
 
 fileName = 'ecoli_core_model.mat';
 if ~exist('modelOri','var')
@@ -120,7 +119,8 @@ model = changeObjective(model,'Biomass_Ecoli_core_N(w/GAM)-Nmet2');
 % enter:
 
 FBAsolution = optimizeCbModel(model,'max')
-%% 
+% What are the main fields to check in the FBAsolution structure?
+% Hint: |help optimizeCbModel|
 % There are many outputs fields in the |FBAsolution| structure, but the key 
 % ones for any FBA solution are
 
@@ -153,13 +153,9 @@ FBAsolution.v
 fluxData = FBAsolution.v;
 nonZeroFlag = 1;
 printFluxVector(model, fluxData, nonZeroFlag)
-%% 
-% It is best practice, when coding up an analysis pipeline, involving FBA, to 
-% always check the value of |solution.stat|, which returns the status of the solution.
+% What does FBAsolution.stat mean?
 % 
-% |solution.stat == 1|  means the FBA problem is solved successfully. Anything 
-% else and there is a problem. 
-%% Display an optimal flux vector on a metabolic map
+%% Example 2: Display an optimal flux vector on a metabolic map
 % Which reactions/pathways are in use (look at the flux vector and flux map)?
 % Hint: |drawFlux|
 
@@ -168,7 +164,10 @@ map=readCbMap('ecoli_core_map');
 options.zeroFluxWidth = 0.1;
 options.rxnDirMultiplier = 10;
 drawFlux(map, model, FBAsolution.v, options);
-%% 
+%% Example 3:  Anerobic growth
+% Growth of E. coli on glucose can be simulated under anaerobic conditions.  
+% What is the optimal growth rate under anaerobic conditions?
+% Hint: changeRxnBounds
 % Next, the same simulation is performed under anaerobic conditions.  With the 
 % same model:
 
@@ -190,7 +189,7 @@ fluxData = [FBAsolution.v,FBAsolution2.v];
 nonZeroFlag = 1;
 excFlag = 1;
 printFluxVector(model, fluxData, nonZeroFlag, excFlag)
-%drawFlux(map, model, FBAsolution2.v, options);
+drawFlux(map, model, FBAsolution2.v, options);
 %% 
 % 
 % 
@@ -203,7 +202,7 @@ printFluxVector(model, fluxData, nonZeroFlag, excFlag)
 % pathways shown in these maps are glycolysis (Glyc), pentose phosphate pathway 
 % (PPP), TCA cycle (TCA), oxidative phosphorylation (OxP), anaplerotic reactions 
 % (Ana), and fermentation pathways (Ferm). 
-%% Example 2:  Growth on alternate substrates
+%% Example 4:  Growth on alternate substrates
 % Just as FBA was used to calculate growth rates of E. coli on glucose, it can 
 % also be used to simulate growth on other substrates.  The core E. coli model 
 % contains exchange reactions for 13 different organic compounds, each of which 
@@ -237,8 +236,6 @@ checkObjective(model);
 
 FBAsolution = optimizeCbModel(model,'max');
 FBAsolution.f
-changeCobraSolver('pdco','QP')
-FBAsolution = optimizeCbModel(model,'max',1e-6);
 %% 
 % Growth can also be simulated under anaerobic conditions with any substrate 
 % by using changeRxnBounds to set the lower bound of the oxygen exchange reaction 
@@ -290,8 +287,8 @@ FBAsolution.f
 %                      * `2` - Unbounded solution
 %                      * `0` - Infeasible
 %% _Acknowledgments_
-% This tutorial was originally written by Jeff Orth and Ines Thiele for the 
-% publication "What is flux balance analysis?"
+% Part of this tutorial was originally written by Jeff Orth and Ines Thiele 
+% for the publication "What is flux balance analysis?"
 %% REFERENCES
 % 1. Orth, J.D., Fleming, R.M. & Palsson, B.O. in EcoSal - Escherichia coli 
 % and Salmonella Cellular and Molecular Biology. (ed. P.D. Karp) (ASM Press, Washington 

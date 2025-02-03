@@ -9,7 +9,8 @@
 % constraints using a double LP problem (i.e. a maximization and a subsequent 
 % minimization) for each reaction of interest [1]. 
 % 
-% % 
+% 
+% 
 % $$\begin{array}{lll}\\{v}_{j,upper}/\ {v}_{j,lower}=max\limits _{v}/\min\limits 
 % _{v} & v_{j} \\\text{s.t.} & Sv=0,\\ & l\leq v\leq u\\\end{array}$$
 % 
@@ -22,7 +23,7 @@
 % * |fluxVariability()| function - for the low dimensional FVA;
 % * |fastFVA()| function - for the models with more than 1,000 reactions;
 % * <https://github.com/opencobra/COBRA.jl distributedFBA.jl> - for high dimensional 
-% FVA,* *models larger than 10,000 reactions $$^2$.
+% FVA, models larger than 10,000 reactions $$^2$.
 %% EQUIPMENT SETUP
 % If necessary, initialize the cobra toolbox
 
@@ -108,8 +109,8 @@ modelfva2 = changeRxnBounds(modelfva2, 'EX_o2(e)',  0, 'l');
 rxnsList = {'DM_atp_c_'; 'ACOAHi'; 'ALCD21_D'; 'LALDO'; 'ME2m';...
     'AKGDm'; 'PGI'; 'PGM'; 'r0062'};
 %% 
-% The |verbFlag| input determines the verbose output (default - false). |allowLoops 
-% |input determines whether loops are allowed in the solution (default - true). 
+% The |verbFlag| input determines the verbose output (default - false). |allowLoops| 
+% input determines whether loops are allowed in the solution (default - true). 
 % Note that |allowLoops==false| invokes a mixed integer linear programming implementation 
 % of thermodynamically constrained flux variability analysis for each minimization 
 % or maximisation of a reaction rate. The |method| parameter input determines 
@@ -125,6 +126,7 @@ rxnsList = {'DM_atp_c_'; 'ACOAHi'; 'ALCD21_D'; 'LALDO'; 'ME2m';...
 [minFlux1, maxFlux1, Vmin1, Vmax1] = fluxVariability(modelfva1, 100, 'max', rxnsList)
 %% 
 % 
+
 % Run FVA analysis for the model with the constraints that 
 % simulates anaerobic conditions:
 [minFlux2, maxFlux2, Vmin2, Vmax2] = fluxVariability(modelfva2, [], [], rxnsList) 
@@ -160,10 +162,10 @@ legend({'Aerobic', 'Anaerobic'}, 'Location', 'southwest')
 title('Variations in fluxes in the aerobic and anaerobic conditions')
 %% 2) Fast FVA
 % When the number of reaction on which you want to perform a flux variability 
-% is higher to 1000, we recommend using |fastFVA()| function instead of |fluxVariability(). 
-% |Note that for large models the memory requirements may become prohibitive.
+% is higher to 1000, we recommend using |fastFVA()| function instead of |fluxVariability().| 
+% Note that for large models the memory requirements may become prohibitive.
 % 
-% The |fastFVA()| function only supports the <https://opencobra.github.io/cobratoolbox/docs/solvers.html  
+% The |fastFVA()| function only supports the <https://opencobra.github.io/cobratoolbox/docs/solvers.html 
 % CPLEX> solver.
 
 changeCobraSolver ('ibm_cplex', 'all', 1);
@@ -209,11 +211,11 @@ legend({'Aerobic', 'Anaerobic'})
 title('Variations in fluxes in the aerobic and anaerobic conditions')
 %% REFERENCES 
 % [1] Gudmundsson, S., Thiele, I. Computationally efficient flux variability 
-% analysis. _BMC Bioinformatics. _11, 489 (2010).
+% analysis. _BMC Bioinformatics._ 11, 489 (2010).
 % 
 % [2] Heirendt, L., Thiele, I., Fleming, R.M. DistributedFBA.jl: high-level, 
 % high-performance flux balance analysis in Julia. _Bioinformatics._ 33 (9), 1421-1423 
 % (2017).
 % 
 % [3] Thiele, I., et al. A community-driven global reconstruction of human metabolism. 
-% _Nat. Biotechnol., _31(5), 419–425 (2013).
+% _Nat. Biotechnol.,_ 31(5), 419–425 (2013).
