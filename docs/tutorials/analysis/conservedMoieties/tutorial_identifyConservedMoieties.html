@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge,IE=9,chrome=1"><meta name="generator" content="MATLAB 2024a"><title>Identify Conserved Moieties</title><style type="text/css">.rtcContent { padding: 30px; } .S0 { margin: 3px 10px 5px 4px; padding: 0px; line-height: 28.8px; min-height: 0px; white-space: pre-wrap; color: rgb(192, 76, 11); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 24px; font-weight: 400; text-align: left;  }
+.S1 { margin: 2px 10px 9px 4px; padding: 0px; line-height: 21px; min-height: 0px; white-space: pre-wrap; color: rgb(33, 33, 33); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 14px; font-weight: 400; text-align: left;  }
+.CodeBlock { background-color: #F5F5F5; margin: 10px 15px 10px 0; display: inline-block }
+.S2 { border-left: 1px solid rgb(217, 217, 217); border-right: 1px solid rgb(217, 217, 217); border-top: 1px solid rgb(217, 217, 217); border-bottom: 0px none rgb(33, 33, 33); border-radius: 4px 4px 0px 0px; padding: 6px 45px 0px 13px; line-height: 18.004px; min-height: 0px; white-space: nowrap; color: rgb(33, 33, 33); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S3 { border-left: 1px solid rgb(217, 217, 217); border-right: 1px solid rgb(217, 217, 217); border-top: 0px none rgb(33, 33, 33); border-bottom: 0px none rgb(33, 33, 33); border-radius: 0px; padding: 0px 45px 0px 13px; line-height: 18.004px; min-height: 0px; white-space: nowrap; color: rgb(33, 33, 33); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S4 { border-left: 1px solid rgb(217, 217, 217); border-right: 1px solid rgb(217, 217, 217); border-top: 0px none rgb(33, 33, 33); border-bottom: 1px solid rgb(217, 217, 217); border-radius: 0px 0px 4px 4px; padding: 0px 45px 4px 13px; line-height: 18.004px; min-height: 0px; white-space: nowrap; color: rgb(33, 33, 33); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S5 { margin: 3px 10px 5px 4px; padding: 0px; line-height: 18px; min-height: 0px; white-space: pre-wrap; color: rgb(33, 33, 33); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 15px; font-weight: 700; text-align: left;  }
+.S6 { border-left: 1px solid rgb(217, 217, 217); border-right: 1px solid rgb(217, 217, 217); border-top: 1px solid rgb(217, 217, 217); border-bottom: 1px solid rgb(217, 217, 217); border-radius: 4px; padding: 6px 45px 4px 13px; line-height: 18.004px; min-height: 0px; white-space: nowrap; color: rgb(33, 33, 33); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }</style></head><body><div class = rtcContent><h1  class = 'S0'><span>Identify Conserved Moieties</span></h1><div  class = 'S1'><span></span></div><div  class = 'S1'><span>These tutorials should generally be used in the following order:</span></div><div  class = 'S1'><span>1. Initialise and set the paths to inputs and outputs</span></div><div  class = 'S1'><span>driver_initConservedMoietyPaths.mlx   </span></div><div  class = 'S1'><span>2. Build an atom transition graph</span></div><div  class = 'S1'><span>tutorial_buildAtomTransitionMultigraph.mlx</span></div><div  class = 'S1'><span>3. Identify conserved moieties, given an atom transition graph                                               </span></div><div  class = 'S1'><span>tutorial_identifyConservedMoieties.mlx</span></div><div  class = 'S1'><span>4. Analyse the output of #3</span></div><div  class = 'S1'><span>tutorial_analyseConservedMoieties.mlx </span></div><div  class = 'S1'><span>5. Prepare for visualisation of individual conserved moieties (beta)      </span></div><div  class = 'S1'><span>tutorial_visualiseConservedMoieties.mlx</span></div><div  class = 'S1'><span></span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S2'><span style="white-space: pre"><span style="color: #0e00ff;">if </span><span >~exist(</span><span style="color: #a709f5;">'resultsDir'</span><span >,</span><span style="color: #a709f5;">'var'</span><span >)</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span >    driver_initConservedMoietyPaths</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre"><span style="color: #0e00ff;">end</span></span></div></div></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S2'><span style="white-space: pre"><span style="color: #0e00ff;">if </span><span >~recompute </span><span style="color: #008013;">%|| isequal(modelName,'iDopaNeuro1')</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span >    load([resultsDir modelName </span><span style="color: #a709f5;">'_arm.mat'</span><span >])</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span >    </span><span style="color: #0e00ff;">return</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre"><span style="color: #0e00ff;">end</span></span></div></div></div><h4  class = 'S5'><span>1.2.3. Conserved moieties </span></h4><div  class = 'S1'><span>With the atom mappings we obtained, we can compute the conserved moieties for the iDopaNeuro metabolic network using the atom transition network and the COBRA function </span><span style=' font-family: monospace;'>identifyConservedMoieties</span><span>.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S2'><span style="white-space: pre"><span style="color: #0e00ff;">switch </span><span >modelName</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span >    </span><span style="color: #0e00ff;">case </span><span style="color: #a709f5;">'DAS'</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span >        load([dataDir filesep </span><span style="color: #a709f5;">'models' </span><span >filesep modelName </span><span style="color: #a709f5;">'.mat'</span><span >])</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span >        load([resultsDir filesep modelName </span><span style="color: #a709f5;">'_dATM.mat'</span><span >])</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span >    </span><span style="color: #0e00ff;">case </span><span style="color: #a709f5;">'iDopaNeuro1'</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span >        load([resultsDir filesep modelName </span><span style="color: #a709f5;">'.mat'</span><span >])</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span >        load([resultsDir filesep modelName </span><span style="color: #a709f5;">'_dATM.mat'</span><span >])</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span >        </span></span></div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span >    </span><span style="color: #0e00ff;">case </span><span >{</span><span style="color: #a709f5;">'centralMetabolism'</span><span >,</span><span style="color: #a709f5;">'centralMetabolism_fastCore'</span><span >,</span><span style="color: #a709f5;">'centralMetabolism_thermoKernel'</span><span >}</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span >        load([resultsDir filesep modelName </span><span style="color: #a709f5;">'.mat'</span><span >])</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span >        load([resultsDir filesep modelName </span><span style="color: #a709f5;">'_dATM.mat'</span><span >])</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span >    </span><span style="color: #0e00ff;">otherwise</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span >        load([dataDir filesep modelName </span><span style="color: #a709f5;">'.mat'</span><span >])</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span style="color: #0e00ff;">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'>&nbsp;</div></div></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S2'><span style="white-space: pre"><span >options.sanityChecks=1;</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre"><span >[arm, moietyFormulae] = identifyConservedMoieties(model, dATM, options);</span></span></div></div></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S6'><span style="white-space: pre"><span >save([resultsDir filesep modelName </span><span style="color: #a709f5;">'_arm.mat'</span><span >],</span><span style="color: #a709f5;">'arm'</span><span >, </span><span style="color: #a709f5;">'moietyFormulae'</span><span >,</span><span style="color: #a709f5;">'options'</span><span >)</span></span></div></div></div><h4  class = 'S5'></h4>
+<br>
+<!-- 
+##### SOURCE BEGIN #####
+%% Identify Conserved Moieties
+% 
+% 
+% These tutorials should generally be used in the following order:
+% 
+% 1. Initialise and set the paths to inputs and outputs
+% 
+% driver_initConservedMoietyPaths.mlx   
+% 
+% 2. Build an atom transition graph
+% 
+% tutorial_buildAtomTransitionMultigraph.mlx
+% 
+% 3. Identify conserved moieties, given an atom transition graph                                               
+% 
+% tutorial_identifyConservedMoieties.mlx
+% 
+% 4. Analyse the output of #3
+% 
+% tutorial_analyseConservedMoieties.mlx 
+% 
+% 5. Prepare for visualisation of individual conserved moieties (beta)      
+% 
+% tutorial_visualiseConservedMoieties.mlx
+% 
+% 
+
+if ~exist('resultsDir','var')
+    driver_initConservedMoietyPaths
+end
+%%
+if ~recompute %|| isequal(modelName,'iDopaNeuro1')
+    load([resultsDir modelName '_arm.mat'])
+    return
+end
+% 1.2.3. Conserved moieties 
+% With the atom mappings we obtained, we can compute the conserved moieties 
+% for the iDopaNeuro metabolic network using the atom transition network and the 
+% COBRA function |identifyConservedMoieties|.
+
+switch modelName
+    case 'DAS'
+        load([dataDir filesep 'models' filesep modelName '.mat'])
+        load([resultsDir filesep modelName '_dATM.mat'])
+    case 'iDopaNeuro1'
+        load([resultsDir filesep modelName '.mat'])
+        load([resultsDir filesep modelName '_dATM.mat'])
+        
+    case {'centralMetabolism','centralMetabolism_fastCore','centralMetabolism_thermoKernel'}
+        load([resultsDir filesep modelName '.mat'])
+        load([resultsDir filesep modelName '_dATM.mat'])
+    otherwise
+        load([dataDir filesep modelName '.mat'])
+end
+
+%%
+options.sanityChecks=1;
+[arm, moietyFormulae] = identifyConservedMoieties(model, dATM, options);
+%%
+save([resultsDir filesep modelName '_arm.mat'],'arm', 'moietyFormulae','options')
+%
+##### SOURCE END #####
+-->
+</div></body></html>
