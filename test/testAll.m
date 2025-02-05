@@ -184,7 +184,8 @@ try
         fprintf(['\n > ', num2str(sumFailed), ' tests failed. ', num2str(sumSkipped), ' tests were skipped due to missing requirements.\n\n']);
         %% NEW: Generate JUnit XML report for Codecov
         
-        xmlFileName = 'CodeCovTestResults.xml';
+        xmlFileName = 'testReport.junit.xml';
+
         fid = fopen(xmlFileName, 'w');
         if fid == -1
             error('Could not open file for writing: %s', xmlFileName);
