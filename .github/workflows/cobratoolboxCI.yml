@@ -3,23 +3,31 @@ on:
   pull_request:
     branches:
       - master
-      - main  
+      - main
       - develop
 jobs:
   build:
     runs-on: self-hosted
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.pull_request.head.sha }}
-          fetch-depth: 0  # Merge base branch to the pull request branch and test the merged branch
+          fetch-depth: 0 # Fetches all history for all branches and tags to facilitate the merge.
 
-      - name: Setup MATLAB
-        uses: matlab-actions/setup-matlab@v2
-      
+      - name: Merge base branch into PR
+        run: |
+          # Fetch the latest commits from the base branch
+          git fetch origin ${{ github.base_ref }}
+          # Merge the base branch into the PR branch
+          git merge origin/${{ github.base_ref }}
+
+      - uses: matlab-actions/setup-matlab@v2
+
+      - name: Run testAll function
+        run: matlab -batch "addpath('test'); testAll; rmpath('test');"
+        # Ensure that testAll outputs a file named test.junit.xml in the current working directory or adjust path accordingly
+
       - name: Upload test results to Codecov
         uses: codecov/test-results-action@v1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          file: test.junit.xml  
+          file: testReport.junit.xml  
