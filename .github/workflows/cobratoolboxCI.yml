@@ -22,6 +22,9 @@ jobs:
 
       - uses: matlab-actions/setup-matlab@v2
 
+      - name: Set MATLAB license environment variable
+        run: echo "MLM_LICENSE_FILE=/usr/local/MATLAB/R2024a/licenses/license_king_41220376_R2024a.lic" >> $GITHUB_ENV
+
       - name: Run testAll function
         run: matlab -batch "addpath('test'); testAll; rmpath('test');"
         # Ensure that testAll outputs a file named test.junit.xml in the current working directory or adjust path accordingly
