@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="COBRA Toolbox Test Suites" tests="5" failures="1" errors="1" time="4.187">
+  <testsuite name="COBRA Toolbox Test Suite" tests="5" failures="1" errors="1" skipped="1" time="4.187">
+    <testcase classname="COBRA Toolbox" name="testBiomassPrecursorCheck.m" time="2.405">
+      <error message="Undefined function &apos;glpkcc&apos; for input arguments of type &apos;struct&apos;."/>
+    </testcase>
+    <testcase classname="COBRA Toolbox" name="testCalculateFluxShifts.m" time="0.459"/>
+    <testcase classname="COBRA Toolbox" name="testCalculatePercentile.m" time="1.067"/>
+    <testcase classname="COBRA Toolbox" name="testGeneExpressionComparison.m" time="0.138"/>
+    <testcase classname="COBRA Toolbox" name="testConnectedComponents.m" time="0.118">
+      <skipped message="The test requires the following Toolboxes to be installed: image_toolbox
+"/>
+    </testcase>
+  </testsuite>
+</testsuites>
