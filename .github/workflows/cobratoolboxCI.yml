@@ -20,7 +20,7 @@ jobs:
 
       - name: Run MATLAB Tests
         run: |
-          matlab -batch "run('cobratoolbox/initCobraToolbox.m'); run('cobratoolbox/test/testAll.m');"
+          matlab -batch "run('initCobraToolbox.m'); run('test/testAll.m');"
 
       - name: Upload test results to Codecov
         uses: codecov/test-results-action@v1
