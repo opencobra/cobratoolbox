@@ -1,33 +1,34 @@
-name: Example
+name: MATLAB Tests and Code Coverage
+
 on:
   pull_request:
     branches:
-      - master
-      - main
-      - develop
+      - '**'
+
 jobs:
   build:
     runs-on: self-hosted
     steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0 # Fetches all history for all branches and tags to facilitate the merge.
+      - name: Checkout PR Code
+        uses: actions/checkout@v4
 
-      - name: Merge base branch into PR
+      - name: Clone COBRA Toolbox
         run: |
-          # Fetch the latest commits from the base branch
-          git fetch origin ${{ github.base_ref }}
-          # Merge the base branch into the PR branch
-          git merge origin/${{ github.base_ref }}
-
-      - uses: matlab-actions/setup-matlab@v2
+          git clone -b develop https://github.com/opencobra/cobratoolbox.git cobratoolbox
 
       - name: Run MATLAB Tests
         run: |
-          matlab -batch "run('cobratoolbox/initCobraToolbox.m'); run('cobratoolbox/test/testAll.m');"
+          matlab -batch "run('cobratoolbox/initCobraToolbox.m'); diary('cobratoolbox/test_results.txt'); run('cobratoolbox/test/testAll.m'); diary off;"
 
-      - name: Upload test results to Codecov
-        uses: codecov/test-results-action@v1
+      - name: Upload Test Report
+        uses: actions/upload-artifact@v4
         with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          file: testReport.junit.xml  
+          name: test-report
+          path: cobratoolbox/test_results.txt  # Correct path
+
+      - name: Upload Coverage to Codecov
+        if: always()
+        uses: codecov/codecov-action@v3
+        with:
+          files: cobratoolbox/CodeCovTestResults.xml  # Correct path
+         
