@@ -26,6 +26,7 @@ if (nargin < 4)
     boundType = 'b';
 end
 
+
 if ((length(value) ~= length(rxnNameList) & length(value) > 1) | (length(boundType) ~= length(rxnNameList) & length(boundType) > 1))
    error('Inconsistent lenghts of arguments: rxnNameList, value & boundType');
 end
