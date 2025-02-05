@@ -1,0 +1,25 @@
+name: Example
+on:
+  pull_request:
+    branches:
+      - master
+      - main  
+      - develop
+jobs:
+  build:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0  # Merge base branch to the pull request branch and test the merged branch
+
+      - name: Setup MATLAB
+        uses: matlab-actions/setup-matlab@v2
+      
+      - name: Upload test results to Codecov
+        uses: codecov/test-results-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          file: test.junit.xml  
