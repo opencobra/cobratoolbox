@@ -193,10 +193,8 @@ if FBA.stat ==3 || FBA.stat ==0
             % may result in transporters being added without the exchange
             % reaction-need to add the exchange reaction in this case
             exMets={};
-            for j=1:length(addedRxns)
-                mets=findMetsFromRxns(relaxedModel,addedRxns{j});
-                exMets=union(exMets,mets(find(contains(mets,'[e]'))));
-            end
+            mets=findMetsFromRxns(relaxedModel,addedRxns);
+            exMets=union(exMets,mets(find(contains(mets,'[e]'))));
             exRxns={};
             for j=1:length(exMets)
                 exInd=find(strncmp(database.reactions(:,1),['EX_' strrep(exMets{j},'[e]','(e)')],length(['EX_' strrep(exMets{j},'[e]','(e)')])));
