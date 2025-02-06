@@ -273,7 +273,7 @@ end
 % also computed and saved in a file called "simRes".
 
 load([resPath filesep 'mapInfo.mat'])
-[exchanges, netProduction, netUptake, presolve, infeasModels] = microbiotaModelSimulator(resPath, exMets, sampNames, dietFilePath, hostPath, hostBiomassRxn, hostBiomassRxnFlux, numWorkers, rDiet, pDiet, computeProfiles, lowerBMBound, upperBMBound, includeHumanMets, adaptMedium);
+[exchanges, netProduction, netUptake, presolve, infeasModels] = microbiotaModelSimulator(resPath, exMets, sampNames, dietFilePath, hostPath, hostBiomassRxn, hostBiomassRxnFlux, numWorkers, rDiet, pDiet, computeProfiles, lowerBMBound, upperBMBound, includeHumanMets, adaptMedium, solver);
 % Finally, NMPCs (net maximal production capability) are computed in a metabolite
 % resolved manner and saved in a comma delimited file in the results folder. NMPCs
 % indicate the maximal production of each metabolite and are computing summing

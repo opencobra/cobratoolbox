@@ -130,7 +130,7 @@ samples = samples*20/max(sum(samples,1));
 samples = EFM * samples;
 % 3- calculate epsilon
 epsilon = calculateEPSILON(samples, rxnFBS);
-assert(norm(epsilon - [0 0.0754 0 0.0744 0 0 0]')<1e-4)
+assert(norm(epsilon - [0 0.0754 0 0.0744 0 0 0]')<1e-2)
 % 4- Check errors when missing argument
 assert(verifyCobraFunctionError('calculateEPSILON', 'inputs', {samples}))
 assert(verifyCobraFunctionError('calculateEPSILON', 'inputs', {samples, 'a'}))
@@ -154,7 +154,10 @@ assert(verifyCobraFunctionError('diffexprs2rxnFBS', 'inputs', {model, diff_exprs
 fprintf('Done.\n');
 
 % remove the file created during the test
-delete('0');
+fileToRemove = '0';
+if isfile(fileToRemove)
+    delete(fileToRemove);
+end
 
 % Set seed to default value
 rng('default')

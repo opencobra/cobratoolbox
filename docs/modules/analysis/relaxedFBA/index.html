@@ -1,0 +1,535 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Relaxedfba &mdash; The COBRA Toolbox</title>
+  
+
+  
+  
+  
+    <link rel="apple-touch-icon" sizes="180x180" href="../../../_static/img/apple-touch-icon.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../_static/img/favicon-32x32.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="16x16" href="../../../_static/img/favicon-16x16.png">
+  
+  
+    <link rel="mask-icon" href="../../../_static/img/safari-pinned-tab.svg" color="#5bbad5">
+  
+  
+    <link rel="manifest" href="../../../_static/json/manifest.json">
+  
+  
+    <meta name="msapplication-config" content="../../../_static/browserconfig.xml">
+  
+  <meta name="theme-color" content="#ffffff">
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+  <script src="../../../_static/js/jquery.easy-autocomplete.min.js" type="text/javascript" ></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+  <link href="../../../_static/css/easy-autocomplete.min.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/cobra.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../../_static/css/cobra.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="The COBRA Toolbox" href="../../../index.html"/>
+        <link rel="up" title="Analysis" href="../index.html"/>
+        <link rel="next" title="Topology" href="../topology/index.html"/>
+        <link rel="prev" title="Analysis" href="../index.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> The COBRA Toolbox
+          
+
+          
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
+          
+          </a>
+
+              
+          <h1>The COBRA Toolbox</h1>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" id="simple"/>
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+    <script>
+    	var options = {
+
+		url: "../../../_static/json/functions.json",
+
+		getValue: "name",
+
+		list: {
+            onKeyEnterEvent: function(item) {
+                    return "_static/../" + item.website_url
+            },
+            maxNumberOfElements: 25,
+			match: {
+					enabled: true,
+			},
+            sort: {
+			    enabled: true
+		    }
+		},
+
+    	template: {
+	    	type: "custom",
+		    method: function(value, item) {
+                return "<span><a href='../../../search.html?q=" + item.name + "&check_keywords=yes&area=default'>" + value + "</a>" + "<a href='../../../_static/../" + item.website_url + "' ><img src='../../../_static/link.svg'/></a></span>";
+		    }
+	    },
+
+		theme: "square"
+
+	};
+
+	$("#simple").easyAutocomplete(options);
+
+
+    </script>
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../../../index.html">Home</a></li>
+              </ul>
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Functions</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Analysis</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Relaxedfba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topology/index.html">Topology</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../KLdistance/index.html">Kldistance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dynamicFBA/index.html">Dynamicfba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ICONGEMs/index.html">Icongems</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../sampling/index.html">Sampling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../rFBA/index.html">Rfba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../percentileCalc/index.html">Percentilecalc</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../QFCA/index.html">Qfca</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../fluxEnrichmentAnalysis/index.html">Fluxenrichmentanalysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mdFBA/index.html">Mdfba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../MOMA/index.html">Moma</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exploration/index.html">Exploration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../geometricFBA/index.html">Geometricfba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../FVA/index.html">Fva</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../multiSpecies/index.html">Multispecies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gMCS/index.html">Gmcs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../parsimoniousFBA/index.html">Parsimoniousfba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../rumba/index.html">Rumba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../robustnessAnalysis/index.html">Robustnessanalysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ROOM/index.html">Room</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../transport/index.html">Transport</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../igemRNA/index.html">Igemrna</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../sparseFBA/index.html">Sparsefba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../uFBA/index.html">Ufba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../subspaces/index.html">Subspaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../fastForest/index.html">Fastforest</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../nutritionAlgorithm/index.html">Nutritionalgorithm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../thermo/index.html">Thermo</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../FBA/index.html">Fba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../coupling/index.html">Coupling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../rMTA/index.html">Rmta</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../deletion/index.html">Deletion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../wholeBody/index.html">Wholebody</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../findMIIS/index.html">Findmiis</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../base/index.html">Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dataIntegration/index.html">Dataintegration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../design/index.html">Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reconstruction/index.html">Reconstruction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../visualization/index.html">Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../cite.html">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../support.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../plan.html">Development Plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contact.html">Contact</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../citations.html">Citations</a></li>
+</ul>
+
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">The COBRA Toolbox</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../contents.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Functions</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Analysis</a></li>
+      <li class="breadcrumb-item active">Relaxedfba</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="https://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <section id="relaxedfba">
+<span id="id1"></span><h1>Relaxedfba<a class="headerlink" href="#relaxedfba" title="Permalink to this heading">¶</a></h1>
+<span class="target" id="module-src.analysis.relaxedFBA"></span><dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.relaxedFBA.relaxFBA_cappedL1">
+<span class="sig-name descname"><span class="pre">relaxFBA_cappedL1</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">param</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/relaxedFBA/relaxFBA_cappedL1.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.relaxedFBA.relaxFBA_cappedL1" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds the mimimal set of relaxations on bounds and steady state constraints to make the FBA problem feasible.
+The zero-norm is appproximated by capped-L1 norm</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[solution] = relaxFBA_cappedL1</strong> (<em>model, param</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – COBRA model structure</p></li>
+<li><p><strong>param</strong> – Structure containing the relaxation options:</p>
+<ul>
+<li><p>excludedReactions - bool vector of size n indicating the reactions to be excluded from relaxation
+* excludedReactions(i) = false : allow to relax bounds on reaction i
+* excludedReactions(i) = true : do not allow to relax bounds on reaction i</p></li>
+<li><p>excludedReactionLB - n x 1 bool vector indicating the reactions with lower bounds to be excluded from relaxation</p>
+<ul>
+<li><p>excludedReactionLB(i) = false : allow to relax lower bounds on reaction i (default)</p></li>
+<li><p>excludedReactionLB(i) = true : do not allow to relax lower bounds on reaction i</p></li>
+</ul>
+</li>
+<li><p>excludedReactionUB - n x 1 bool vector indicating the reactions with upper bounds to be excluded from relaxation</p>
+<ul>
+<li><p>excludedReactionUB(i) = false : allow to relax upper bounds on reaction i (default)</p></li>
+<li><p>excludedReactionUB(i) = true : do not allow to relax upper bounds on reaction i</p></li>
+</ul>
+</li>
+<li><p>excludedMetabolites - bool vector of size m indicating the metabolites to be excluded from relaxation
+* excludedMetabolites(i) = false : allow to relax steady state constraint on metabolite i
+* excludedMetabolites(i) = true : do not allow to relax steady state constraint on metabolite i</p></li>
+<li><p>gamma - weight on zero norm of fluxes</p></li>
+<li><p>lamda - weight on relaxation on steady state constraint (overridden by excludedMetabolites)</p></li>
+<li><p>alpha - weight on relaxation on bounds (overridden by excludedReactions)</p></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>solution</strong> – Structure containing the following fields:</p>
+<ul class="simple">
+<li><p>stat - status</p>
+<ul>
+<li><p>1  = Solution found</p></li>
+<li><p>0  = Infeasible</p></li>
+<li><p>-1 = Invalid input</p></li>
+</ul>
+</li>
+<li><p>r - relaxation on steady state constraints <span class="math notranslate nohighlight">\(S*v = b\)</span></p></li>
+<li><p>p - relaxation on lower bound of reactions</p></li>
+<li><p>q - relaxation on upper bound of reactions</p></li>
+<li><p>v - reaction rate</p></li>
+</ul>
+</dd>
+</dl>
+<div class="math notranslate nohighlight">
+\[\begin{split}min  ~&amp;~ c^T v + \gamma_1 ||v||_1 + \gamma_0 ||v||_0 + \lambda_1 ||r||_1 + \lambda_0 ||r||_0 \\
+     ~&amp;~   + \alpha_1 (||p||_1 + ||q||_1) + \alpha_0 (||p||_0 + ||q||_0) \\
+s.t. ~&amp;~ S v + r = b \\
+     ~&amp;~ l - p \leq v \leq u + q \\
+     ~&amp;~ r \in R^m \\
+     ~&amp;~ p,q \in R_+^n\end{split}\]</div>
+<p><cite>m</cite> - number of metabolites,
+<cite>n</cite> - number of reactions</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.relaxedFBA.relaxedFBA">
+<span class="sig-name descname"><span class="pre">relaxedFBA</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">param</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/relaxedFBA/relaxedFBA.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.relaxedFBA.relaxedFBA" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds the mimimal set of relaxations on bounds and steady state
+constraints to make the FBA problem feasible. The optional parameters,
+excludedReactions and excludedMetabolites override all other relaxation options.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}min ~&amp;~ c^T v + \gamma ||v||_0 + \lambda ||r||_0 + \alpha (||p||_0 + ||q||_0) \\
+s.t ~&amp;~ S v + r \leq, =, \geq  b \\
+    ~&amp;~ l - p \leq v \leq u + q \\
+    ~&amp;~ r \in R^nMets \\
+    ~&amp;~ p,q \in R_+^nRxns\end{split}\]</div>
+<p><cite>nMets</cite> - number of metabolites,
+<cite>nRxns</cite> - number of reactions</p>
+<dl class="field-list">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[solution] = relaxedFBA</strong> (<em>model, param</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><p><strong>model</strong> – COBRA model structure with the fields:
+* .S
+* .b
+* .ub
+* .ub
+* .mets  (required if model.SIntRxnBool absent)
+* .rxns  (required if model.SIntRxnBool absent)</p>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>model</strong> – COBRA model structure with the fields
+* .csense
+* .C
+* .d
+* .dsense
+* .SIntRxnBool</p></li>
+<li><p><strong>param</strong> –</p>
+<p>Structure optionally containing the relaxation parameters:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>.internalRelax:
+* 0 = do not allow to relax bounds on internal reactions
+* 1 = do not allow to relax bounds on internal reactions with finite bounds
+* {2} = allow to relax bounds on all internal reactions</p></li>
+<li><p>.exchangeRelax:
+* 0 = do not allow to relax bounds on exchange reactions
+* 1 = do not allow to relax bounds on exchange reactions of the type [0,0]
+* {2} = allow to relax bounds on all exchange reactions</p></li>
+<li><p>.steadyStateRelax:
+*    0 = do not allow to relax the steady state constraint S*v = b
+*  {1} = allow to relax the steady state constraint S*v = b</p></li>
+<li><p>.toBeUnblockedReactions - nRxns x 1 vector indicating the reactions to be unblocked
+* toBeUnblockedReactions(i) = 1 : impose v(i) to be positive
+* toBeUnblockedReactions(i) = -1 : impose v(i) to be negative
+* toBeUnblockedReactions(i) = 0 : do not add any constraint (default)</p></li>
+<li><p>.excludedReactions - nRxns x 1 bool vector indicating the reactions to be excluded from relaxation
+* excludedReactions(i) = false : allow to relax bounds on reaction i (default)
+* excludedReactions(i) = true : do not allow to relax bounds on reaction i</p></li>
+<li><p>.excludedReactionLB - nRxns x 1 bool vector indicating</p></li>
+</ul>
+<p>the reactions with lower bounds to be excluded from
+relaxation (overridden by excludedReactions)</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>excludedReactionLB(i) = false : allow to relax lower bounds on reaction i (default)</p></li>
+<li><p>excludedReactionLB(i) = true : do not allow to relax lower bounds on reaction i</p></li>
+</ul>
+</div></blockquote>
+<ul class="simple">
+<li><p>.excludedReactionUB - nRxns x 1 bool vector indicating</p></li>
+</ul>
+<dl class="simple">
+<dt>the reactions with upper bounds to be excluded from relaxation (overridden by excludedReactions)</dt><dd><ul class="simple">
+<li><p>excludedReactionUB(i) = false : allow to relax upper bounds on reaction i (default)</p></li>
+<li><p>excludedReactionUB(i) = true : do not allow to relax upper bounds on reaction i</p></li>
+</ul>
+</dd>
+</dl>
+<ul class="simple">
+<li><p>.excludedMetabolites - nMets x 1 bool vector indicating the metabolites to be excluded from relaxation
+* excludedMetabolites(i) = false : allow to relax steady state constraint on metabolite i (default)
+* excludedMetabolites(i) = true : do not allow to relax steady state constraint on metabolite i</p></li>
+<li><p>.lamda - weighting on relaxation of relaxation on steady state constraints S*v = b</p></li>
+<li><p>.alpha - weighting on relaxation of reaction bounds</p></li>
+<li><p>.gamma - weighting on zero norm of fluxes</p></li>
+</ul>
+</div></blockquote>
+<ul class="simple">
+<li><p>.nbMaxIteration - stopping criteria - number maximal of iteration (Default value = 100)</p></li>
+<li><p>.epsilon - stopping criteria - (Default value = 1e-6)</p></li>
+<li><dl class="simple">
+<dt>.theta - initial parameter of the approximation (Default value = 0.5)</dt><dd><p>Theoretically, the greater the value of step parameter, the better the approximation of a step function.
+However, practically, a greater inital value, will tend to optimise toward a local minima of the approximate
+cardinality optimisation problem.</p>
+</dd>
+</dl>
+</li>
+<li><p>.printLevel (Default = 0) Printing the progress of</p></li>
+</ul>
+<p>the algorithm is useful when trying different values
+of theta to start with the appropriate parameter
+giving the lowest cardinality solution.
+* .relaxedPrintLevel (Default = 0) Printing information on relaxed reaction bounds and steady state constraints
+* .maxRelaxR (Default = 1e4), maximum relaxation of any bound or equality constraint permitted</p>
+</li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUT</dt>
+<dd class="field-even"><p><strong>solution</strong> – Structure containing the following fields:</p>
+<ul class="simple">
+<li><p>stat - status</p>
+<ul>
+<li><p>1  = Solution found</p></li>
+<li><p>0  = Infeasible</p></li>
+<li><p>-1 = Invalid input</p></li>
+</ul>
+</li>
+<li><p>r - relaxation on steady state constraints S*v = b</p></li>
+<li><p>p - relaxation on lower bound of reactions</p></li>
+<li><p>q - relaxation on upper bound of reactions</p></li>
+<li><p>v - reaction rate</p></li>
+</ul>
+</dd>
+</dl>
+<p>relaxedModel       model structure that admits a flux balance solution</p>
+<p>Authors: - Hoai Minh Le, Ronan Fleming
+.. Please cite:
+Fleming RMT, Haraldsdottir HS, Le HM, Vuong PT, Hankemeier T, Thiele I.
+Cardinality optimisation in constraint-based modelling: Application to human metabolism, 2022 (submitted).</p>
+</dd></dl>
+
+</section>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../topology/index.html" class="btn btn-default float-right" title="Topology" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../index.html" class="btn btn-default" title="Analysis" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017-2021, The COBRA Toolbox developers.
+
+    </p>
+  </div>
+  Built with Sphinx using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'2.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+    <script type="text/javascript" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/sphinx_highlight.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/mathjax/MathJax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TRCMZL1FKK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TRCMZL1FKK');
+  </script>
+    
+</body>
+</html>

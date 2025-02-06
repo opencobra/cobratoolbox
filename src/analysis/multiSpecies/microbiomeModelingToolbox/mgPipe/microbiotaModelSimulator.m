@@ -1,4 +1,4 @@
-function [exchanges, netProduction, netUptake, growthRates, infeasModels] = microbiotaModelSimulator(resPath, exMets, sampNames, dietFilePath, hostPath, hostBiomassRxn, hostBiomassRxnFlux, numWorkers, rDiet, pDiet, computeProfiles, lowerBMBound, upperBMBound, includeHumanMets, adaptMedium)
+function [exchanges, netProduction, netUptake, growthRates, infeasModels] = microbiotaModelSimulator(resPath, exMets, sampNames, dietFilePath, hostPath, hostBiomassRxn, hostBiomassRxnFlux, numWorkers, rDiet, pDiet, computeProfiles, lowerBMBound, upperBMBound, includeHumanMets, adaptMedium, solver)
 
 % This function is called from the MgPipe pipeline. Its purpose is to apply
 % different diets (according to the user's input) to the microbiota models
@@ -54,7 +54,10 @@ global CBT_LP_SOLVER
 if isempty(CBT_LP_SOLVER)
     initCobraToolbox
 end
-solver = CBT_LP_SOLVER;
+
+if isempty(solver)
+    solver = CBT_LP_SOLVER;
+end
 
 if numWorkers>0 && ~isempty(ver('parallel'))
     % with parallelization

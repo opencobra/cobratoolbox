@@ -59,8 +59,10 @@ if nnz(N - round(N))
 end
 
 try
-    [rankA, p, q] = getRankLUSOL(N, 1);
-    N=N(:,q(1:rankA));
+    % [rankA, p, q] = getRankLUSOL(N, 1);
+    % N=N(:,q(1:rankA));
+    [rankN, rowPerm, colPerm] = getRankLUSOL(N, 1);
+    N = N(rowPerm(1:rankN), :);  % <-- Removing only rows instead of columns
     disp('extremePools: row reduction with getRankLUSOL worked.')
 catch
     disp('extremePools: row reduction with getRankLUSOL did not work, check installation of LUSOL. Proceeding without it.')
@@ -160,13 +162,16 @@ else
         modelName = 'model';
     end
 
-    b = zeros(size(N, 2),1);
-
-    csense(1:size(N, 2),1)='E';
+    % Set up the zero right-hand side for N*x = 0 (all constraints are equalities)
+    b = zeros(size(N, 1),1);
+    csense(1:size(N, 1),1)='E';
 
     % Output a file for lrs to convert an H-representation (half-space) of a
     % polyhedron to a V-representation (vertex / ray) via vertex enumeration
-    fileNameOut = lrsWriteHalfspace(N', b, csense, modelName, param);
+    % Write the half-space (H-representation) to file for LRS
+    % Here, N is an (n x m) matrix representing the transposed stoichiometry (S^T).
+    % The LRS tool will enumerate all nonnegative solutions x s.t. N*x = 0.
+    fileNameOut = lrsWriteHalfspace(N, b, csense, modelName, param);
 
     %run lrs
     param.facetEnumeration  = 0;%vertex enumeration
@@ -179,7 +184,9 @@ else
     V = Q(:,vertexBool);
     P = Q(:,~vertexBool)';%extreme rays
 
-    if any(any(P*N ~= 0))
+    % After LRS enumeration, we check that each extreme pool vector P indeed satisfies P*N' = 0,
+    % ensuring it lies in the left null space of the original stoichiometric matrix (S).
+    if any(any(P*N' ~= 0))
         warning('extreme pool not in left nullspace of stoichiometric matrix')
     end
 end
@@ -191,5 +198,3 @@ if ~param.debug
     delete('*.sh');
     delete('*.time');
 end
-
-
