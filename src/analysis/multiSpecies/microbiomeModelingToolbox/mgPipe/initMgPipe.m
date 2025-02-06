@@ -76,7 +76,7 @@ parser = inputParser();
 parser.addRequired('modPath', @ischar);
 parser.addRequired('abunFilePath', @ischar);
 parser.addRequired('computeProfiles', @islogical);
-parser.addParameter('solver', @ischar);
+parser.addParameter('solver', '',@ischar);
 parser.addParameter('resPath', [pwd filesep 'Results'], @ischar);
 parser.addParameter('dietFilePath', @ischar);
 parser.addParameter('infoFilePath', '', @ischar);
@@ -116,7 +116,7 @@ adaptMedium = parser.Results.adaptMedium;
 pruneModels = parser.Results.pruneModels;
 
 % check if the solver is defined by the user
-if exist(solver)
+if ~isempty(solver)
     changeCobraSolver(solver, 'LP')
 else
     % otherwise use the default solver (*note: glpk takes excessive time
@@ -214,7 +214,7 @@ fprintf(' > Microbiome Toolbox pipeline initialized successfully.\n');
 
 init = true;
 
-[netSecretionFluxes, netUptakeFluxes, Y, modelStats, summary, statistics, modelsOK] = mgPipe(modPath, abunFilePath, computeProfiles, resPath, dietFilePath, infoFilePath, biomasses, hostPath, hostBiomassRxn, hostBiomassRxnFlux, figForm, numWorkers, rDiet, pDiet, lowerBMBound, upperBMBound, includeHumanMets, adaptMedium, pruneModels);
+[netSecretionFluxes, netUptakeFluxes, Y, modelStats, summary, statistics, modelsOK] = mgPipe(modPath, abunFilePath, computeProfiles, resPath, dietFilePath, infoFilePath, biomasses, hostPath, hostBiomassRxn, hostBiomassRxnFlux, figForm, numWorkers, rDiet, pDiet, lowerBMBound, upperBMBound, includeHumanMets, adaptMedium, pruneModels, solver);
 
 cd(currentDir)
 
