@@ -18,7 +18,7 @@ if ~exist('FileName','var')
     if isempty(CBTDIR)
         initCobraToolbox(false); %Don't update the toolbox automatically
     end
-    FileName = [CBTDIR filesep 'docs' filesep 'source' filesep 'notes' filesep 'COBRAModelFields.md'];
+    FileName = [CBTDIR filesep 'documentation' filesep 'source' filesep 'notes' filesep 'COBRAModelFields.md'];
 end
 
 fieldProperties = getDefinedFieldProperties('Descriptions', true);
