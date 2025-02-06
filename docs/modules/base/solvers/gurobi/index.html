@@ -9,7 +9,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Msk &mdash; The COBRA Toolbox</title>
+  <title>Gurobi &mdash; The COBRA Toolbox</title>
   
 
   
@@ -69,8 +69,8 @@
         <link rel="search" title="Search" href="../../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../../index.html"/>
         <link rel="up" title="Solvers" href="../index.html"/>
-        <link rel="next" title="Rescale" href="../rescale/index.html"/>
-        <link rel="prev" title="Solvers" href="../index.html"/> 
+        <link rel="next" title="Param" href="../param/index.html"/>
+        <link rel="prev" title="Cplex" href="../cplex/index.html"/> 
 
   
   <script src="../../../../_static/js/modernizr.min.js"></script>
@@ -158,29 +158,30 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">Functions</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Base</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../../io/index.html">Io</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../paths/index.html">Paths</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../ci/index.html">Ci</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../install/index.html">Install</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../index.html">Solvers</a><ul class="current">
-<li class="toctree-l4 current"><a class="current reference internal" href="#">Msk</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../rescale/index.html">Rescale</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../param/index.html">Param</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../cardOpt/index.html">Cardopt</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../entropicFBA/index.html">Entropicfba</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../gams/index.html">Gams</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../varKin/index.html">Varkin</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../cplex/index.html">Cplex</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../cardOpt/index.html">Cardopt</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../init/index.html">Init</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../NLP/index.html">Nlp</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../getSetSolver/index.html">Getsetsolver</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../rescale/index.html">Rescale</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../entropicFBA/index.html">Entropicfba</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../lp_solve/index.html">Lp_solve</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../mosek/index.html">Mosek</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../cplex/index.html">Cplex</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Gurobi</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../param/index.html">Param</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../gams/index.html">Gams</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../NLP/index.html">Nlp</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../lindo/index.html">Lindo</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../utilities/index.html">Utilities</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../cobrarrow/index.html">Cobrarrow</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../utilities/index.html">Utilities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../paths/index.html">Paths</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../codeConsistency/index.html">Codeconsistency</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../install/index.html">Install</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ci/index.html">Ci</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../io/index.html">Io</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../dataIntegration/index.html">Dataintegration</a></li>
@@ -226,7 +227,7 @@
           <li class="breadcrumb-item"><a href="../../../index.html">Functions</a></li>
           <li class="breadcrumb-item"><a href="../../index.html">Base</a></li>
           <li class="breadcrumb-item"><a href="../index.html">Solvers</a></li>
-      <li class="breadcrumb-item active">Msk</li>
+      <li class="breadcrumb-item active">Gurobi</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -235,56 +236,16 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="https://schema.org/Article">
            <div itemprop="articleBody">
             
-  <section id="msk">
-<span id="id1"></span><h1>Msk<a class="headerlink" href="#msk" title="Permalink to this heading">¶</a></h1>
-<span class="target" id="module-src.base.solvers.msk"></span><dl class="mat function">
-<dt class="sig sig-object mat" id="src.base.solvers.msk.parseMskResult">
-<span class="sig-name descname"><span class="pre">parseMskResult</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">res</span></em>, <em class="sig-param"><span class="pre">solverOnlyParams</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/msk/parseMskResult.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.msk.parseMskResult" title="Permalink to this definition">¶</a></dt>
-<dd><p>parse the res structure returned from mosek
-:INPUTS: <strong>res</strong> – mosek results structure returned by mosekopt</p>
-<dl>
-<dt>OPTIONAL INPUTS</dt><dd><p>prob:        mosek problem structure passed to mosekopt
-solverOnlyParams:      Additional parameters provided which are not part</p>
-<blockquote>
-<div><p>of the COBRA parameters and are assumed to be part
-of direct solver input structs. For some solvers, it
-is essential to not include any extraneous fields that are
-outside the solver interface specification.</p>
-</div></blockquote>
-<p>printLevel:</p>
-</dd>
-</dl>
-<dl class="field-list simple">
-<dt class="field-odd">OUTPUTS</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>stat - Solver status in standardized form</strong> –</p>
-<ul>
-<li><p>0 - Infeasible problem</p></li>
-<li><p>1 - Optimal solution</p></li>
-<li><p>2 - Unbounded solution</p></li>
-<li><p>3 - Almost optimal solution</p></li>
-<li><p>-1 - Some other problem (timelimit, numerical problem etc)</p></li>
-</ul>
-</li>
-<li><p><strong>origStat</strong> – solver status</p></li>
-<li><p><strong>x</strong> – primal variable vector</p></li>
-<li><p><strong>y</strong> – dual variable vector to linear constraints (yl - yu)</p></li>
-<li><p><strong>yl</strong> – dual variable vector to lower bound on linear constraints</p></li>
-<li><p><strong>yu</strong> – dual variable vector to upper bound on linear constraints</p></li>
-<li><p><strong>z</strong> – dual variable vector to box constraints (zl - zu)</p></li>
-<li><p><strong>zl</strong> – dual variable vector to lower bounds</p></li>
-<li><p><strong>zu</strong> – dual variable vector to upper bounds</p></li>
-<li><p><strong>k</strong> – dual variable vector to affine conic constraints</p></li>
-<li><p><strong>basis  basis returned by mosekopt</strong></p></li>
-<li><p><strong>pobjval</strong> – primal objective value returned by modekopt</p></li>
-<li><p><strong>dobjval</strong> – dual objective value returned by modekopt</p></li>
-</ul>
-</dd>
-</dl>
-<p class="rubric">Example</p>
-<p>[~,res]=mosekopt(‘minimize’,prob);</p>
-<p>NOTE:</p>
-<p>Author(s): Ronan Fleming</p>
+  <section id="gurobi">
+<span id="id1"></span><h1>Gurobi<a class="headerlink" href="#gurobi" title="Permalink to this heading">¶</a></h1>
+<span class="target" id="module-src.base.solvers.gurobi"></span><dl class="mat function">
+<dt class="sig sig-object mat" id="src.base.solvers.gurobi.setGurobiParam">
+<span class="sig-name descname"><span class="pre">setGurobiParam</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">param</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/gurobi/setGurobiParam.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.gurobi.setGurobiParam" title="Permalink to this definition">¶</a></dt>
+<dd><p>The params struct contains Gurobi parameters. A full list may be
+found on the Parameter page of the reference manual:
+<a class="reference external" href="https://www.gurobi.com/documentation/current/refman/parameter_descriptions.html">https://www.gurobi.com/documentation/current/refman/parameter_descriptions.html</a>
+Parameters must be in TimeLimit not timelimit or timeLimit format, see
+below for full list that are eligible to be passed to the solver.</p>
 </dd></dl>
 
 </section>
@@ -299,10 +260,10 @@ outside the solver interface specification.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../rescale/index.html" class="btn btn-default float-right" title="Rescale" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../param/index.html" class="btn btn-default float-right" title="Param" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../index.html" class="btn btn-default" title="Solvers" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../cplex/index.html" class="btn btn-default" title="Cplex" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
