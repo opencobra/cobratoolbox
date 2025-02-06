@@ -1,0 +1,1060 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Pscmtoolbox &mdash; The COBRA Toolbox</title>
+  
+
+  
+  
+  
+    <link rel="apple-touch-icon" sizes="180x180" href="../../../../_static/img/apple-touch-icon.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../../_static/img/favicon-32x32.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="16x16" href="../../../../_static/img/favicon-16x16.png">
+  
+  
+    <link rel="mask-icon" href="../../../../_static/img/safari-pinned-tab.svg" color="#5bbad5">
+  
+  
+    <link rel="manifest" href="../../../../_static/json/manifest.json">
+  
+  
+    <meta name="msapplication-config" content="../../../../_static/browserconfig.xml">
+  
+  <meta name="theme-color" content="#ffffff">
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+  <script src="../../../../_static/js/jquery.easy-autocomplete.min.js" type="text/javascript" ></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+  <link href="../../../../_static/css/easy-autocomplete.min.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../_static/css/cobra.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../../../_static/css/cobra.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../../search.html"/>
+    <link rel="top" title="The COBRA Toolbox" href="../../../../index.html"/>
+        <link rel="up" title="Wholebody" href="../index.html"/>
+        <link rel="next" title="Bmrcalculations" href="BMRcalculations/index.html"/>
+        <link rel="prev" title="Wholebody" href="../index.html"/> 
+
+  
+  <script src="../../../../_static/js/modernizr.min.js"></script>
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> The COBRA Toolbox
+          
+
+          
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
+          
+          </a>
+
+              
+          <h1>The COBRA Toolbox</h1>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" id="simple"/>
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+    <script>
+    	var options = {
+
+		url: "../../../../_static/json/functions.json",
+
+		getValue: "name",
+
+		list: {
+            onKeyEnterEvent: function(item) {
+                    return "_static/../" + item.website_url
+            },
+            maxNumberOfElements: 25,
+			match: {
+					enabled: true,
+			},
+            sort: {
+			    enabled: true
+		    }
+		},
+
+    	template: {
+	    	type: "custom",
+		    method: function(value, item) {
+                return "<span><a href='../../../../search.html?q=" + item.name + "&check_keywords=yes&area=default'>" + value + "</a>" + "<a href='../../../../_static/../" + item.website_url + "' ><img src='../../../../_static/link.svg'/></a></span>";
+		    }
+	    },
+
+		theme: "square"
+
+	};
+
+	$("#simple").easyAutocomplete(options);
+
+
+    </script>
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../index.html">Home</a></li>
+              </ul>
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">Functions</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Analysis</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../../relaxedFBA/index.html">Relaxedfba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../topology/index.html">Topology</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../KLdistance/index.html">Kldistance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../dynamicFBA/index.html">Dynamicfba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ICONGEMs/index.html">Icongems</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sampling/index.html">Sampling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../rFBA/index.html">Rfba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../percentileCalc/index.html">Percentilecalc</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../QFCA/index.html">Qfca</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../fluxEnrichmentAnalysis/index.html">Fluxenrichmentanalysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../mdFBA/index.html">Mdfba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../MOMA/index.html">Moma</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../exploration/index.html">Exploration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../geometricFBA/index.html">Geometricfba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../FVA/index.html">Fva</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../multiSpecies/index.html">Multispecies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../gMCS/index.html">Gmcs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../parsimoniousFBA/index.html">Parsimoniousfba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../rumba/index.html">Rumba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../robustnessAnalysis/index.html">Robustnessanalysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ROOM/index.html">Room</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../transport/index.html">Transport</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../igemRNA/index.html">Igemrna</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sparseFBA/index.html">Sparsefba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../uFBA/index.html">Ufba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../subspaces/index.html">Subspaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../fastForest/index.html">Fastforest</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../nutritionAlgorithm/index.html">Nutritionalgorithm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../thermo/index.html">Thermo</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../FBA/index.html">Fba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../coupling/index.html">Coupling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../rMTA/index.html">Rmta</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../deletion/index.html">Deletion</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html">Wholebody</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Pscmtoolbox</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="BMRcalculations/index.html">Bmrcalculations</a></li>
+<li class="toctree-l5"><a class="reference internal" href="io/index.html">Io</a></li>
+<li class="toctree-l5"><a class="reference internal" href="setConstraints/index.html">Setconstraints</a></li>
+<li class="toctree-l5"><a class="reference internal" href="hostMicrobeInteraction/index.html">Hostmicrobeinteraction</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../Nutrition_Modelling_Toolbox/index.html">Nutrition_modelling_toolbox</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../findMIIS/index.html">Findmiis</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../base/index.html">Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../dataIntegration/index.html">Dataintegration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../design/index.html">Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reconstruction/index.html">Reconstruction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../visualization/index.html">Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contributing.html">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../cite.html">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../support.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../plan.html">Development Plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contact.html">Contact</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../citations.html">Citations</a></li>
+</ul>
+
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">The COBRA Toolbox</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../contents.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Functions</a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Analysis</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Wholebody</a></li>
+      <li class="breadcrumb-item active">Pscmtoolbox</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="https://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <section id="pscmtoolbox">
+<span id="id1"></span><h1>Pscmtoolbox<a class="headerlink" href="#pscmtoolbox" title="Permalink to this heading">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="BMRcalculations/index.html">Bmrcalculations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="io/index.html">Io</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setConstraints/index.html">Setconstraints</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="setConstraints/organWeight/index.html">Organweight</a></li>
+<li class="toctree-l2"><a class="reference internal" href="setConstraints/diets/index.html">Diets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="setConstraints/inputData/index.html">Inputdata</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="hostMicrobeInteraction/index.html">Hostmicrobeinteraction</a></li>
+</ul>
+</div>
+<span class="target" id="module-src.analysis.wholeBody.PSCMToolbox"></span><dl class="mat script">
+<dt class="sig sig-object mat" id="src.analysis.wholeBody.PSCMToolbox.LeakTestRecon">
+<span class="sig-name descname"><span class="pre">LeakTestRecon</span></span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/wholeBody/PSCMToolbox/LeakTestRecon.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.wholeBody.PSCMToolbox.LeakTestRecon" title="Permalink to this definition">¶</a></dt>
+<dd><p>changeCobraSolver(‘tomlab_cplex’,’lp’);
+modelClosed = modelConsistent;</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.wholeBody.PSCMToolbox.Test4HumanFctExtv5">
+<span class="sig-name descname"><span class="pre">Test4HumanFctExtv5</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">test</span></em>, <em class="sig-param"><span class="pre">optionSinks</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/wholeBody/PSCMToolbox/Test4HumanFctExtv5.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.wholeBody.PSCMToolbox.Test4HumanFctExtv5" title="Permalink to this definition">¶</a></dt>
+<dd><p>function [TestSolution,TestSolutionName] = Test4HumanFct(model,test)
+This functions test for the ~460 human functions -  I removed duplicates</p>
+<p>INPUT
+model             model structure (Recon1, with desired in silico</p>
+<blockquote>
+<div><p>condition)</p>
+</div></blockquote>
+<dl class="simple">
+<dt>test              possible statements: Recon1, IECori, IEC, all (default)</dt><dd><p>(choose IECori if you intend to test the IEC model OR a model that
+contains lumen (‘u’) as compartment otw choose IEC);
+all check for Recon1 and IEC</p>
+</dd>
+<dt>option            if true = set sink reactions to 0 (default, leave unchanged).</dt><dd><p>Note that all lb’s of exchanges and demands will be set to 0</p>
+</dd>
+</dl>
+<p>OUTPUT
+TestSolution      array containing the optimal value for the different</p>
+<blockquote>
+<div><p>tests</p>
+</div></blockquote>
+<p>TestSolutionName  array containing the names  for the different tests</p>
+<p>Ines Thiele, 09/05/09
+MKA, 03/04/12 some of the reaction names have changed in newer versions of Recon1
+and Recon2. Comment setup til line 146 if using an old version.
+MKA, 24/05/12 finds correct EX_reactions and changes these to zero
+IT, 07/20/12 added tests for sIEC model
+IT 2017 more tests added</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.wholeBody.PSCMToolbox.adjustWholeBodyRxnCoeff">
+<span class="sig-name descname"><span class="pre">adjustWholeBodyRxnCoeff</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">listOrgan</span></em>, <em class="sig-param"><span class="pre">listCoeff</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/wholeBody/PSCMToolbox/adjustWholeBodyRxnCoeff.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.wholeBody.PSCMToolbox.adjustWholeBodyRxnCoeff" title="Permalink to this definition">¶</a></dt>
+<dd><p>[model] = adjustWholeBodyRxnCoeff(model, listOrgan, listCoeff)</p>
+<p>This function adjusts the coefficients of the whole-body biomass
+maintenance (WBM) reaction. The WBM reaction contains each organ present
+in the whole-body metabolic reconstructions. For each organ, the
+stoichiometric coefficients represent the fractional weight contribution
+of the respective organ to the whole body weight. These coefficients can
+be updated to reflect individual specific body contributions. E.g., in
+obese individuals the ratio of muscle and adipose tissue is different
+than in a normal BMI individual. Hence, they can be updated with this
+function.</p>
+<p>INPUT
+model         whole-body metabolic model
+listOrgan     List of organs, whose stoichiometric coefficient should be</p>
+<blockquote>
+<div><p>updated</p>
+</div></blockquote>
+<dl class="simple">
+<dt>listCoeff     List of coefficients that replace current ones in the WBM</dt><dd><p>reaction (order must match the order of organs in
+ListOrgan)</p>
+</dd>
+</dl>
+<p>OUTPUT
+model         whole-body metabolic model with adjusted stoichiometric</p>
+<blockquote>
+<div><p>coefficients in the whole-body metabolic model</p>
+</div></blockquote>
+<p>Ines Thiele, 2012 - 2020</p>
+</dd></dl>
+
+<dl class="mat script">
+<dt class="sig sig-object mat" id="src.analysis.wholeBody.PSCMToolbox.annotateHH">
+<span class="sig-name descname"><span class="pre">annotateHH</span></span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/wholeBody/PSCMToolbox/annotateHH.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.wholeBody.PSCMToolbox.annotateHH" title="Permalink to this definition">¶</a></dt>
+<dd><p>annotate Harvey and Harvetta</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.wholeBody.PSCMToolbox.annotateModel">
+<span class="sig-name descname"><span class="pre">annotateModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">annotateRxns</span></em>, <em class="sig-param"><span class="pre">annotateMets</span></em>, <em class="sig-param"><span class="pre">modelID</span></em>, <em class="sig-param"><span class="pre">modelName</span></em>, <em class="sig-param"><span class="pre">modelAnnotation</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/wholeBody/PSCMToolbox/annotateModel.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.wholeBody.PSCMToolbox.annotateModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function annotates a model with VMH reaction and metabolite
+identifiers.</p>
+<p>function model = annotateModel(model, annotateRxns,annotateMets)</p>
+<p>INPUT
+model         Model structure
+annotateRxns  default: 1
+annotateMets  default: 1</p>
+<p>Optional:
+modelID       ID of model
+modelName     model Name</p>
+<p>OUTPUT
+model         Updated model structure</p>
+<p>Ines Thiele October 2019</p>
+</dd></dl>
+
+<dl class="mat script">
+<dt class="sig sig-object mat" id="src.analysis.wholeBody.PSCMToolbox.annotateOrganAtlas">
+<span class="sig-name descname"><span class="pre">annotateOrganAtlas</span></span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/wholeBody/PSCMToolbox/annotateOrganAtlas.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.wholeBody.PSCMToolbox.annotateOrganAtlas" title="Permalink to this definition">¶</a></dt>
+<dd><p>annotate OrganAtlas</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.wholeBody.PSCMToolbox.calcOrganFract">
+<span class="sig-name descname"><span class="pre">calcOrganFract</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">IndividualParameters</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/wholeBody/PSCMToolbox/calcOrganFract.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.wholeBody.PSCMToolbox.calcOrganFract" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function extrapolates the organ weight fractions based on polynomials given in
+<a class="reference external" href="http://www.ams.sunysb.edu/~hahn/psfile/pap_obesity.pdf">http://www.ams.sunysb.edu/~hahn/psfile/pap_obesity.pdf</a> (PMID 19267313), Table 3. Those ones that are not given are assumed to remain constant with weight
+using the fractions from the reference man and reference woman.</p>
+<p>[organs,OrganWeight,OrganWeightFract,IndividualParameters] = calcOrganFract(model, IndividualParameters)</p>
+<p>INPUT
+model                 Model structure
+IndividualParameters  Structure of individual parameters (sex, weight,</p>
+<blockquote>
+<div><p>blood volume)</p>
+</div></blockquote>
+<p>OUTPUT
+organs                List of organs
+OrganWeight           List of organ weights (same order as organs)
+OrganWeightFract      List of organ weight fractions (same order as organs)
+IndividualParameters  Updated structure of individual parameters</p>
+<p>Ines Thiele Nov 2017</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.wholeBody.PSCMToolbox.calculateBMR">
+<span class="sig-name descname"><span class="pre">calculateBMR</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">sex</span></em>, <em class="sig-param"><span class="pre">weight</span></em>, <em class="sig-param"><span class="pre">height</span></em>, <em class="sig-param"><span class="pre">age</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/wholeBody/PSCMToolbox/calculateBMR.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.wholeBody.PSCMToolbox.calculateBMR" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function calculates the basal metabolic rate using the
+phenomenological model proposed by Harris-Benedict and derivations
+thereof (see below.
+Please also refer to the corresponding wikipedia entry:
+<a class="reference external" href="https://en.wikipedia.org/wiki/Harris%E2%80%93Benedict_equation">https://en.wikipedia.org/wiki/Harris%E2%80%93Benedict_equation</a> for more
+details</p>
+<p>function BMR = calculateBMR(sex, weight, height, age)</p>
+<p>INPUT
+sex    ‘male’ or ‘female’
+weight    in kg
+height    in cm
+age       in years</p>
+<p>OUTPUT
+BMR       array with 3 numbers calculated based on</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>original Harris Benedict equations [1],[2]</p></li>
+<li><p>Harris Benedict equations revised by Roza and Shizgal in 1984.[3]</p></li>
+<li><p>The Harris Benedict equations revised by Mifflin and St Jeor in 1990:[4]</p></li>
+</ol>
+</div></blockquote>
+<p>References:
+[1]    Harris JA, Benedict FG (1918). “A Biometric Study of Human Basal Metabolism”. Proceedings of the National Academy of Sciences of the United States of America. 4 (12): 370?3. doi:10.1073/pnas.4.12.370. PMC 1091498?Freely accessible. PMID 16576330.
+[2]    A Biometric Study of Basal Metabolism in Man. J. Arthur Harris and Francis G. Benedict. Washington, DC: Carnegie Institution, 1919.
+[3]    Roza AM, Shizgal HM (1984). “The Harris Benedict equation reevaluated: resting energy requirements and the body cell mass”. The American Journal of Clinical Nutrition. 40 (1): 168?82. PMID 6741850.
+[4]    Mifflin MD, St Jeor ST, Hill LA, Scott BJ, Daugherty SA, Koh YO (1990). “A new predictive equation for resting energy expenditure in healthy individuals”. The American Journal of Clinical Nutrition. 51 (2): 241?7. PMID 2305711.</p>
+<p>Ines Thiele 01/2018</p>
+</dd></dl>
+
+<dl class="mat script">
+<dt class="sig sig-object mat" id="src.analysis.wholeBody.PSCMToolbox.checkIEM_WBM">
+<span class="sig-name descname"><span class="pre">checkIEM_WBM</span></span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/wholeBody/PSCMToolbox/checkIEM_WBM.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.wholeBody.PSCMToolbox.checkIEM_WBM" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function performs the inborn error of metabolism simulations by
+deleting (or reducing) the flux through reaction(s) affected by a gene
+defect and optimized the flux through a defined set of biomarker
+reactions.</p>
+<p>function [IEMSol] = checkIEM_WBM(model,IEMRxns, BiomarkerRxns,minRxnsFluxHealthy, reverseDirObj, fractionKO,minBiomarker,fixIEMlb)</p>
+<p>INPUT
+model                 whole-body metabolic reconstruction or Recon3Dmodel
+IEMRxns               Reaction(s) affected by the inborn error of</p>
+<blockquote>
+<div><p>metabolism</p>
+</div></blockquote>
+<p>minRxnsFluxHealthy    min flux value(s) through the IEMRxns
+reverseDirObj         the function maximizes the objective flux by</p>
+<blockquote>
+<div><p>default. If set to 1, the function also checks the minimization problem.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>fractionKO            By default, a complete knowckout of BiomarkerRxnsthe IEM</dt><dd><p>reactions is computed but it is possible to set a fraction (default = 1
+for 100% knockout)</p>
+</dd>
+</dl>
+<p>minBiomarker          Minimization through biomarker reaction (default = 0)
+fixIEMlb              fix IEM to lb = ub</p>
+<blockquote>
+<div><p>=(1-fractionKO)*solution.v(find(model.c)) (default = 0, i.e., lb =0,
+while ub = (1-fractionKO)*solution.v(find(model.c))</p>
+</div></blockquote>
+<dl class="simple">
+<dt>LPSolver              Define LPSolver (‘ILOGcomplex’ - default;</dt><dd><p>‘tomlab_cplex’)</p>
+</dd>
+</dl>
+<p>OUTPUT
+IEMSol                Predicted biomarker fluxes and comparison with the</p>
+<blockquote>
+<div><p>reported biomarkers</p>
+</div></blockquote>
+<p>USAGE:
+Exampe of preparation of a set of inputs to checkIEM_WBM</p>
+<blockquote>
+<div><p>R = {‘_2OXOADPTm’;’_2AMADPTm’;’_r0879’};
+RxnsAll2 = ‘’;
+for i = 1: length(R)</p>
+<blockquote>
+<div><p>RxnsAll = model.rxns(find(~cellfun(&#64;isempty,strfind(model.rxns,R{i}))));
+RxnsAll2 =[RxnsAll2;RxnsAll];</p>
+</div></blockquote>
+<p>end
+IEMRxns = unique(RxnsAll2);
+RxnMic = model.rxns(find(~cellfun(&#64;isempty,strfind(model.rxns,’<a href="#id2"><span class="problematic" id="id3">Micro_</span></a>’)))) ;
+IEMRxns = setdiff(IEMRxns,RxnMic);</p>
+<dl>
+<dt>if ~strcmp(modelName,’Recon3D’)</dt><dd><p>% add demand reactions to blood compartment for those biomarkers reported for blood
+% biomarker based on <a class="reference external" href="https://www.omim.org/entry/204750">https://www.omim.org/entry/204750</a>
+model = addDemandReaction(model, ‘L2aadp[bc]’);</p>
+<dl class="simple">
+<dt>BiomarkerRxns = {</dt><dd><p>‘DM_L2aadp[bc]’    ‘Increased (blood)’
+‘EX_2oxoadp[u]’    ‘Increased (urine)’
+‘EX_adpoh[u]’      ‘Increased (urine)’
+};</p>
+</dd>
+</dl>
+</dd>
+<dt>else</dt><dd><dl class="simple">
+<dt>BiomarkerRxns = {</dt><dd><p>‘EX_2oxoadp[u]’    ‘Increased (urine)’
+‘EX_adpoh[u]’      ‘Increased (urine)’
+};</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p>end</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Then call the checkIEM_WBM function</dt><dd><p>[IEMSol_2OAA] = checkIEM_WBM(model,IEMRxns, BiomarkerRxns,minRxnsFluxHealthy);</p>
+</dd>
+<dt>Example IEMSol returned from the above</dt><dd><p>{‘IEM Rxns All obj - Healthy’}    {‘65403.5393’ }    {0×0 double                    }
+{‘IEM Rxns All obj - Disease’}    {‘65403.5393’ }    {0×0 double                    }
+{‘WB obj - Healthy’          }    {‘NA’         }    {0×0 double                    }
+{‘WB obj - Disease’          }    {‘1’          }    {‘1’                           }
+{‘Healthy:DM_L2aadp[bc]’     }    {‘-5.5324e-08’}    {‘Disease - Reported:Increas…’}
+{‘Disease:DM_L2aadp[bc]’     }    {‘40.2418’    }    {‘Disease - Reported:Increas…’}
+{‘Healthy:EX_2oxoadp[u]’     }    {‘-2.3603e-10’}    {‘Disease - Reported:Increas…’}
+{‘Disease:EX_2oxoadp[u]’     }    {‘3.7368’     }    {‘Disease - Reported:Increas…’}
+{‘Healthy:EX_adpoh[u]’       }    {‘-1.6985e-10’}    {‘Disease - Reported:Increas…’}
+{‘Disease:EX_adpoh[u]’       }    {‘3.7368’     }    {‘Disease - Reported:Increas…’}</p>
+</dd>
+</dl>
+<p>2018 - Ines Thiele
+2019 - Ines Thiele, included more options (minBiomarker,fixIEMlb,LPSolver)
+2021 - Ines Thiele, Tests only for biomarker if the reaction exists in the WBM model</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.wholeBody.PSCMToolbox.compareBounds2Models">
+<span class="sig-name descname"><span class="pre">compareBounds2Models</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model1</span></em>, <em class="sig-param"><span class="pre">model2</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/wholeBody/PSCMToolbox/compareBounds2Models.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.wholeBody.PSCMToolbox.compareBounds2Models" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function compares the bounds between two models</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.wholeBody.PSCMToolbox.compareMaleFemale">
+<span class="sig-name descname"><span class="pre">compareMaleFemale</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">male</span></em>, <em class="sig-param"><span class="pre">female</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/wholeBody/PSCMToolbox/compareMaleFemale.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.wholeBody.PSCMToolbox.compareMaleFemale" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function compares basic features of the male and female whole-body
+metabolic models</p>
+<p>[ResultsMaleFemale] = compareMaleFemale(male,female)</p>
+<p>INPUT
+male                  model structure (male whole-body metabolic model)
+female                model structure (female whole-body metabolic model)</p>
+<p>OUTPUT
+ResultsMaleFemale     structure containing the basic differences and</p>
+<blockquote>
+<div><p>commenalities between male and female model</p>
+</div></blockquote>
+<p>Ines Thiele 2017</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.wholeBody.PSCMToolbox.convertATPflux2StepNumer">
+<span class="sig-name descname"><span class="pre">convertATPflux2StepNumer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">ATP_hydrolysis_flux</span></em>, <em class="sig-param"><span class="pre">sex</span></em>, <em class="sig-param"><span class="pre">weight</span></em>, <em class="sig-param"><span class="pre">height</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/wholeBody/PSCMToolbox/convertATPflux2StepNumer.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.wholeBody.PSCMToolbox.convertATPflux2StepNumer" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function converts an ATP hydrolysis flux (e.g., <a href="#id4"><span class="problematic" id="id5">Muscle_DM_atp_c_</span></a>
+into distance walked and step number). See below for assumptions and
+calculation details</p>
+<p>function [Energy_kJ,Energy_kcal,Meter,StepNumber] = convertATPflux2StepNumber(ATP_hydrolysis_flux, sex, weight, height)
+INPUT
+ATP_hydrolysis_flux   Flux value through the <a href="#id6"><span class="problematic" id="id7">Muscle_DM_atp_c_</span></a> reaction
+sex                ‘male’ or ‘female’
+weight                in kg
+height                in cm</p>
+<p>OUTPUT
+Energy_kJ             Energy value in kJ corresponding to the Flux value through the <a href="#id8"><span class="problematic" id="id9">Muscle_DM_atp_c_</span></a> reaction
+Energy_kcal           Energy value in kcal corresponding to the Flux value through the <a href="#id10"><span class="problematic" id="id11">Muscle_DM_atp_c_</span></a> reaction
+Meter                 Corresponding meter of walking that can be achieved
+StepNumber            Corresponding step number that can be achieved</p>
+<p>Ines Thiele 01/2018</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.wholeBody.PSCMToolbox.createModelNewCompartment">
+<span class="sig-name descname"><span class="pre">createModelNewCompartment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">OldComp</span></em>, <em class="sig-param"><span class="pre">NewComp</span></em>, <em class="sig-param"><span class="pre">NewCompName</span></em>, <em class="sig-param"><span class="pre">LB</span></em>, <em class="sig-param"><span class="pre">UB</span></em>, <em class="sig-param"><span class="pre">RemoveExch</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/wholeBody/PSCMToolbox/createModelNewCompartment.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.wholeBody.PSCMToolbox.createModelNewCompartment" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function converts a two compartment metabolic model into a three compartment metabolic model model</p>
+<p>function [modelComp] = createModelNewCompartment(model,OldComp,NewComp,NewCompName,LB,UB,RemoveExch)</p>
+<p>INPUT
+model         Model structure
+OldComp       Name of the current (to be replicated) compartment to be</p>
+<blockquote>
+<div><p>replicated and added</p>
+</div></blockquote>
+<p>NewCompName   Name of new compartment e.g., ‘lumen’
+LB            Value for Lower bound on new exchange compartment (default:-1000)
+UB            Value for Upper bound on new exchange compartment (default:1000)</p>
+<p>NewComp       Abrreviation for the new compartment,m e.g., ‘lu’
+RemoveExch    Option (if set to 1) to remove the old compartment</p>
+<p>OUTPUT
+modelComp     Model with three compartments</p>
+<p>Ines Thiele 2016-2017</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.wholeBody.PSCMToolbox.determineFluxValuesOnBoundary">
+<span class="sig-name descname"><span class="pre">determineFluxValuesOnBoundary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">solution</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/wholeBody/PSCMToolbox/determineFluxValuesOnBoundary.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.wholeBody.PSCMToolbox.determineFluxValuesOnBoundary" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function determines the number of reactions in the flux distributions that are on
+the boundaries</p>
+<p>[OfConstraint, OfAll] = determineFluxValuesOnBoundary(model, solution)</p>
+<p>INPUT
+model         Model structure
+solution      Solution structure</p>
+<p>OUTPUT
+OfConstraint  Fraction of flux values that are on the lower and upper bounds</p>
+<blockquote>
+<div><p>of all constrained reactions (assuming a minimum infinity
+of -1,000,000 and a  maximum infinity of 1,000,000</p>
+</div></blockquote>
+<dl class="simple">
+<dt>OfAll         Fraction of flux values that are on the lower and upper bounds</dt><dd><p>of all reactions in the model</p>
+</dd>
+</dl>
+<p>Ines Thiele, December 2018</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.wholeBody.PSCMToolbox.findMetinOrgan">
+<span class="sig-name descname"><span class="pre">findMetinOrgan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">WBModel</span></em>, <em class="sig-param"><span class="pre">metabolite</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/wholeBody/PSCMToolbox/findMetinOrgan.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.wholeBody.PSCMToolbox.findMetinOrgan" title="Permalink to this definition">¶</a></dt>
+<dd><p>find all organs in which a metabolite participates</p>
+<p>INPUT
+WBmodel       whole body metabolic model
+metabolite    abbrevition of the metabolite to be looked up</p>
+<p>OUTPUT
+OrganList     List of organs that the metabolite occurs in</p>
+<p>Ines Thiele, July 2020</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.wholeBody.PSCMToolbox.getBasicHarveyStats">
+<span class="sig-name descname"><span class="pre">getBasicHarveyStats</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">male</span></em>, <em class="sig-param"><span class="pre">female</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/wholeBody/PSCMToolbox/getBasicHarveyStats.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.wholeBody.PSCMToolbox.getBasicHarveyStats" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function compiles basic statistics on the male and female whole-body
+metabolic model</p>
+<p>function [TableHHStats] = getBasicHarveyStats(male,female)</p>
+<p>INPUT
+male          Model structure containing the male model
+female        Model structure containing the female model</p>
+<p>OUTPUT
+TableHHStats  Table containing the statistics</p>
+<p>Ines Thiele 2016- 2019</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.wholeBody.PSCMToolbox.getListOfUniqueIsozymes">
+<span class="sig-name descname"><span class="pre">getListOfUniqueIsozymes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/wholeBody/PSCMToolbox/getListOfUniqueIsozymes.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.wholeBody.PSCMToolbox.getListOfUniqueIsozymes" title="Permalink to this definition">¶</a></dt>
+<dd><p>this function gets a (preliminary list of unique isozymes for a given
+model or reconstruction</p>
+<p>INPUT
+model     model structure</p>
+<p>OUTPUT
+listIsozymes  list of isozymes</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.wholeBody.PSCMToolbox.getOrgansFromHarvey">
+<span class="sig-name descname"><span class="pre">getOrgansFromHarvey</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">modelWBM</span></em>, <em class="sig-param"><span class="pre">runTestsOnly</span></em>, <em class="sig-param"><span class="pre">OrganCompendium</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/wholeBody/PSCMToolbox/getOrgansFromHarvey.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.wholeBody.PSCMToolbox.getOrgansFromHarvey" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function cuts the organs from the whole-body metabolic model. Note that the different
+biofluid compartments are retained but all constraints on the exchange and transport reactions are overwritten
+Once the organs are extracted, the function runs the sanity check on each
+organ. This step can be also done independently by setting runTestsOnly
+to 1. In this case,  the OrganCompendium must be provided as input.
+The function also loads Recon 3* so that the test results can be compared
+with the organ test results.</p>
+<p>[OrganCompendium,TableCSources] = getOrgansFromHarvey(modelWBM, runTestsOnly, OrganCompendium)</p>
+<p>INPUT
+modelWBM                  model structure of whole-body metabolic model
+runTestsOnly</p>
+<p>OUTPUT
+OrganCompendium           Structure containing the individal organs as</p>
+<blockquote>
+<div><p>well as the basic tests that this organ passed</p>
+</div></blockquote>
+<dl class="simple">
+<dt>TableCSources             Overview table of ATP yield per carbon source</dt><dd><p>under aerobic and anaerobic conditions for each organ in the model
+structrure</p>
+</dd>
+</dl>
+<p>The organ compendium for each sex will be saved as
+OrganAtlas_Harvetta.mat and OrganAtlas_Harvey.mat along with the test
+results.</p>
+<p>Ines Thiele, 2017 - 2019</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.wholeBody.PSCMToolbox.getRxnsFromGene">
+<span class="sig-name descname"><span class="pre">getRxnsFromGene</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">gene</span></em>, <em class="sig-param"><span class="pre">causal</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/wholeBody/PSCMToolbox/getRxnsFromGene.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.wholeBody.PSCMToolbox.getRxnsFromGene" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function gets all reaction(s) associated with a particular gene by
+screening through the grRules provided in the model structure</p>
+<p>[Rxns, grRules] = getRxnsFromGene(model,gene,causal)</p>
+<p>INPUT
+model     model structure
+gene      gene of interest
+causal    if causal == 1 get only genes that would lead to loss of function of the</p>
+<blockquote>
+<div><p>associated reactions, otw get all associated reactions
+(default)</p>
+</div></blockquote>
+<p>OUTPUT
+Rxns      List of reaction(s) associated with the input gene
+grRules   List of grRules containing the input gene, same order as Rxns</p>
+<p>Ines Thiele 10/2019</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.wholeBody.PSCMToolbox.getStatsOrganComp">
+<span class="sig-name descname"><span class="pre">getStatsOrganComp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">female</span></em>, <em class="sig-param"><span class="pre">male</span></em>, <em class="sig-param"><span class="pre">OrganCompendium_female</span></em>, <em class="sig-param"><span class="pre">OrganCompendium_male</span></em>, <em class="sig-param"><span class="pre">violinPlots</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/wholeBody/PSCMToolbox/getStatsOrganComp.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.wholeBody.PSCMToolbox.getStatsOrganComp" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function compiles general statistics on the male and the female
+organ compendia derived from the male and female whole-body metabolic
+models.</p>
+<p>[TableProp_female,TableProp_male, TableGRM] = getStatsOrganComp(female, male, OrganCompendium_female, OrganCompendium_male, violinPlots)</p>
+<p>INPUT
+female                    model structure, female whole-body metabolic</p>
+<blockquote>
+<div><p>model</p>
+</div></blockquote>
+<dl class="simple">
+<dt>male                      model structure, male whole-body metabolic</dt><dd><p>model</p>
+</dd>
+<dt>OrganCompendium_female    strucutre containing the different organs</dt><dd><p>(generated with the function getOrgansFromHarvey</p>
+</dd>
+<dt>OrganCompendium_male      strucutre containing the different organs</dt><dd><p>(generated with the function getOrgansFromHarvey</p>
+</dd>
+<dt>violinPlots               plot violin plots (does not work below Matlab</dt><dd><ol class="arabic simple" start="2016">
+<li><p>(defaul = 0)</p></li>
+</ol>
+</dd>
+</dl>
+<p>OUTPUT
+TableProp_female          Table containing organ-specific information
+TableProp_male            Table containing organ-specific information</p>
+<p>A more comprehensive comparison output is provided in the file:
+Results_StatsOrganComp.mat that is created at the end of this function.</p>
+<p>Ines Thiele, 2017</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.wholeBody.PSCMToolbox.linearRegression">
+<span class="sig-name descname"><span class="pre">linearRegression</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">x</span></em>, <em class="sig-param"><span class="pre">y</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/wholeBody/PSCMToolbox/linearRegression.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.wholeBody.PSCMToolbox.linearRegression" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function calculates the linear regression in the form of y = a0 + a1*x</p>
+<p>function [a0,a1,Rsqr,Residuals] = linearRegression(x,y)</p>
+<p>INPUT
+x             Values for the explanatory variable x in y = a0 + a1*x
+y             Values for the dependent variable y in y = a0 + a1*x</p>
+<p>OUTPUT
+a0            Intercept
+a1            Slope of the line
+Rsqr          Square of the correlation coefficient
+Residuals     Regression residuals, provides an objective measure of the</p>
+<blockquote>
+<div><p>goodness of fit of the linear regression equation</p>
+</div></blockquote>
+<p>Ines Thiele 2018</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.wholeBody.PSCMToolbox.optimizeWBModel">
+<span class="sig-name descname"><span class="pre">optimizeWBModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">param</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/wholeBody/PSCMToolbox/optimizeWBModel.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.wholeBody.PSCMToolbox.optimizeWBModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Optimise whole body metabolic model</p>
+<p>Solves LP problems of the form</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}max/min  ~&amp; c^T v \\
+s.t.     ~&amp; S v = dxdt ~~~~~~~~~~~:y \\
+         ~&amp; C v \leq d~~~~~~~~:y \\
+         ~&amp; lb \leq v \leq ub~~~~:w\end{split}\]</div>
+<dl class="field-list">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>solution = optimizeCbModel</strong> (<em>model, osenseStr, minNorm, allowLoops, zeroNormApprox</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><p><strong>model</strong> – (the following fields are required - others can be supplied)</p>
+<ul class="simple">
+<li><p>S  - <cite>m x 1</cite> Stoichiometric matrix</p></li>
+<li><p>c  - <cite>n x 1</cite> Linear objective coefficients</p></li>
+<li><p>lb - <cite>n x 1</cite> Lower bounds</p></li>
+<li><p>ub - <cite>n x 1</cite> Upper bounds</p></li>
+<li><p>dxdt - <cite>m x 1</cite> change in concentration with time</p></li>
+<li><p>csense - <cite>m x 1</cite> character array with entries in {L,E,G}
+(The code is backward compatible with an m + k x 1 csense vector,
+where k is the number of coupling constraints)</p></li>
+<li><p>C - <cite>k x n</cite> Left hand side of C*v &lt;= d</p></li>
+<li><p>d - <cite>k x n</cite> Right hand side of C*v &lt;= d</p></li>
+<li><p>dsense - <cite>k x 1</cite> character array with entries in {L,E,G}</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUT</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>param</strong> – Additional parameters as a parameter struct
+All fields of the struct which are not COBRA parameters
+(see <cite>getCobraSolverParamsOptionsForType</cite>) for this
+problem type will be passed on to the solver in a
+solver specific manner.</p>
+<p>Some optional parameters which can be passed to the function
+as part of the options struct (DONE), or as parameter value
+pairs (TODO), or are listed below:</p>
+</li>
+<li><p><strong>* osenseStr</strong> – Maximize (‘max’)/minimize (‘min’) (opt, default =
+‘max’) linear part of the objective. Nonlinear
+parts of the objective are always assumed to be
+minimised.</p></li>
+<li><p><strong>* solverName</strong> – Solver name {‘tomlab_cplex’,’ibm_cplex’,’cplex_direct’,’mosek’}</p></li>
+<li><p><strong>* printLevel</strong> – verbose level
+*   if <cite>-1</cite>, warnings are silenced.
+*   if  <cite>0</cite>, warnings only. (default)
+*   if  <cite>1</cite>, print from optimizeWBModel, optimizeCbModel, or both.
+*   if  <cite>2</cite>, also print from solveCobraLP, solveCobraQP, or both.
+*   if  <cite>3</cite>, also progress info from solver
+*   if  <cite>4</cite>, also detailed progress info from solver</p></li>
+<li><p><strong>* minNorm</strong> – {(0), scalar , <cite>n x 1</cite> vector}, where <cite>[m, n] = size(S)</cite>;
+If not zero then, minimise the Euclidean length
+of the solution to the LP problem. minNorm ~1e-6 should be
+high enough for regularisation yet maintain the same value for
+the linear part of the objective. However, this should be
+checked on a case by case basis, by optimization with and
+without regularisation.</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUT</dt>
+<dd class="field-even"><p><strong>solution</strong> – solution object:</p>
+<ul class="simple">
+<li><p>f - Objective value</p></li>
+<li><p>v - Reaction rates (Optimal primal variable, legacy FBAsolution.x)</p></li>
+<li><p>y - Dual for the molecular species</p></li>
+<li><p>w - Reduced costs of the reactions</p></li>
+<li><p>s - Slacks of the molecular species</p></li>
+<li><p>stat - Solver status in standardized form:
+* <cite>-1</cite> - No solution reported (timelimit, numerical problem etc)
+*  <cite>0</cite> - Infeasible
+*  <cite>1</cite> - Optimal solution
+*  <cite>2</cite> - Unbounded solution</p></li>
+<li><p>origStat - Original status returned by the specific solver</p></li>
+<li><p>ctrs_y - the duals for the constraints from C</p></li>
+<li><p>ctrs_slack - Slacks of the additional constraints</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.wholeBody.PSCMToolbox.organEssentiality">
+<span class="sig-name descname"><span class="pre">organEssentiality</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">LPSolver</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/wholeBody/PSCMToolbox/organEssentiality.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.wholeBody.PSCMToolbox.organEssentiality" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function computes the organ essentiality in a whole-body model by
+setting each organ’s value to zero in the whole-body objective reaction,
+setting all organ-specific reaction bounds to zero (lower and upper),
+and then computes whether a non-zero flux through this objective is still
+possible.</p>
+<p>function [ResultsOrganEss] = organEssentiality(model, LPSolver)</p>
+<p>INPUT
+model             model structure (whole-body metabolic model)
+LPSolver          Define LPSolver (‘ILOGcomplex’;</p>
+<blockquote>
+<div><p>‘tomlab_cplex’ -default)</p>
+</div></blockquote>
+<p>OUTPUT
+ResultsOrganEss   Contains the maximally possible flux value for the</p>
+<blockquote>
+<div><p>whole-body reaction for each organ. Col 1: Organ name,
+Col 2: Max flux value, Col 3: Min flux value (if
+minimization is activated; default: inactive), Col 4:
+Solver status: 1 = feasible, 5 = feasible with
+numerical difficulties (rescaling issues), 3 =
+infeasible)</p>
+</div></blockquote>
+<p>Ines Thiele 2016
+Ines Thiele, added option to specify LPSolver - 10/2018</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.wholeBody.PSCMToolbox.performIEMAnalysis">
+<span class="sig-name descname"><span class="pre">performIEMAnalysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">geneMarkerList</span></em>, <em class="sig-param"><span class="pre">compartment</span></em>, <em class="sig-param"><span class="pre">urine</span></em>, <em class="sig-param"><span class="pre">minRxnsFluxHealthy</span></em>, <em class="sig-param"><span class="pre">causal</span></em>, <em class="sig-param"><span class="pre">reverseDirObj</span></em>, <em class="sig-param"><span class="pre">fractionKO</span></em>, <em class="sig-param"><span class="pre">minBiomarker</span></em>, <em class="sig-param"><span class="pre">fixIEMlb</span></em>, <em class="sig-param"><span class="pre">LPSolver</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/wholeBody/PSCMToolbox/performIEMAnalysis.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.wholeBody.PSCMToolbox.performIEMAnalysis" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function performs the IEMAnalysis from a list of genes, testing for
+the defined biomarker metabolites in one or more biofluid compartments.</p>
+<p>INPUT
+model                 WBM model structure
+geneMarkerList        Cell array containing the geneMarkerLists and</p>
+<blockquote>
+<div><p>the biomarkers to be tested for
+e.g.,
+geneMarkerListMarkerList = {</p>
+<blockquote>
+<div><p>‘5053.1’ ‘trp_L;actyr;phe_L;tyr_L’
+‘249.1’ ‘3pg;cholp;glyc3p;ethamp’
+};</p>
+</div></blockquote>
+</div></blockquote>
+<dl class="simple">
+<dt>compartment           List of biofluid compartments that the biomarkers</dt><dd><p>appear in and should be tested for</p>
+</dd>
+<dt>urine                 Indicate whether you want to test for the urine</dt><dd><p>excretion of the biomarker metabolite as well. Default = true</p>
+</dd>
+<dt>minRxnsFluxHealthy    Min flux value(s) through the IEMRxns (Default: 0.75</dt><dd><p>corresponding to 75%)</p>
+</dd>
+<dt>reverseDirObj         The function maximizes the objective flux by</dt><dd><p>default. If set to 1, the function also checks the minimization problem.</p>
+</dd>
+<dt>fractionKO            By default, a complete knowckout of BiomarkerRxnsthe IEM</dt><dd><p>reactions is computed but it is possible to set a fraction (default = 1
+for 100% knockout)</p>
+</dd>
+</dl>
+<p>minBiomarker          Minimization through biomarker reaction (default = 0)
+fixIEMlb              fix IEM to lb = ub</p>
+<blockquote>
+<div><p>=(1-fractionKO)*solution.v(find(model.c)) (default = 0, i.e., lb =0,
+while ub = (1-fractionKO)*solution.v(find(model.c))</p>
+</div></blockquote>
+<dl class="simple">
+<dt>LPSolver              Define LPSolver (‘ILOGcomplex’ - default;</dt><dd><p>‘tomlab_cplex’)</p>
+</dd>
+<dt>causal                if causal == 1 get only genes that would lead to loss of function of the</dt><dd><p>associated reactions, otw get all associated reactions
+(default)</p>
+</dd>
+</dl>
+<p>OUTPUT
+IEMSolutions      Structure containing the predictions for each gene.</p>
+<blockquote>
+<div><p>Metabolites that are not occurring in a biofluid, will have a ‘NA’ in the
+corresponding fields</p>
+</div></blockquote>
+<dl class="simple">
+<dt>IEMTable          Cell array containing the predictions for each gene (same</dt><dd><p>content as in IEMSolutions</p>
+</dd>
+</dl>
+<p>missingMetAll     Metabolites not appearing in a biolfuid</p>
+<p>Ines Thiele - 2020-2021</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.wholeBody.PSCMToolbox.performSanityChecksonRecon">
+<span class="sig-name descname"><span class="pre">performSanityChecksonRecon</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">resultsFileName</span></em>, <em class="sig-param"><span class="pre">ExtraCellCompIn</span></em>, <em class="sig-param"><span class="pre">ExtraCellCompOut</span></em>, <em class="sig-param"><span class="pre">runSingleGeneDeletion</span></em>, <em class="sig-param"><span class="pre">resultsPath</span></em>, <em class="sig-param"><span class="pre">param</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/wholeBody/PSCMToolbox/performSanityChecksonRecon.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.wholeBody.PSCMToolbox.performSanityChecksonRecon" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function performs various quality control and quality assurance
+tests.
+[TableChecks, Table_csources, CSourcesTestedRxns, TestSolutionNameOpenSinks,TestSolutionNameClosedSinks] = performSanityChecksonRecon(model,resultsFileName,ExtraCellCompIn,ExtraCellCompOut,runSingleGeneDeletion)</p>
+<p>INPUT
+model                         model structure
+resultsFileName               File name of the generated output file
+ExtraCellCompIn               [e] compartment by default, if extracellular</p>
+<blockquote>
+<div><p>uptake compartment is named differently, it
+can be specified here</p>
+</div></blockquote>
+<dl class="simple">
+<dt>ExtraCellCompOut              [e] compartment by default, if extracellular</dt><dd><p>secretion compartment is named differently, it
+can be specified here</p>
+</dd>
+</dl>
+<p>runSingleGeneDeletion         if 0 (default): function does not run single gene deletion otw choose 1
+resultsPath                   path where the results should be saved</p>
+<blockquote>
+<div><p>(default: location where ‘MethodSection3.mlx’ folder is)</p>
+</div></blockquote>
+<dl class="simple">
+<dt>param                         testing parameters. Some test are done by</dt><dd><p>default, others need to be specified (see
+below)</p>
+</dd>
+</dl>
+<p>OUTPUT
+TableChecks                   Table overview of the performed tests and</p>
+<blockquote>
+<div><p>their outcomes</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Table_csources                Table the test results for ATP yield from</dt><dd><p>various carbon scources under aerobic and anaerobic conditions</p>
+</dd>
+<dt>CSourcesTestedRxns            List of reactions active when testing the ATP</dt><dd><p>yield from the various carbon sources</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat script">
+<dt class="sig sig-object mat" id="src.analysis.wholeBody.PSCMToolbox.runIEM_HH">
+<span class="sig-name descname"><span class="pre">runIEM_HH</span></span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/wholeBody/PSCMToolbox/runIEM_HH.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.wholeBody.PSCMToolbox.runIEM_HH" title="Permalink to this definition">¶</a></dt>
+<dd><p>This script predicts known biomarker metabolites in
+different biofluid compartments (urine, blood, csf) of the whole-body
+model for 57 inborn-errors of metabolism (IEMs).
+The meaning of the abbreviations for metabolites and IEMs used in this
+script can be found at www.vmh.life.
+The supported model options are ‘male’, ‘female’, and ‘Recon3D’. Please
+define those using the variable ‘sex’ (e.g., sex = ‘male’).</p>
+<p>Ines Thiele 2018 - 2019</p>
+</dd></dl>
+
+</section>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="BMRcalculations/index.html" class="btn btn-default float-right" title="Bmrcalculations" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../index.html" class="btn btn-default" title="Wholebody" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017-2021, The COBRA Toolbox developers.
+
+    </p>
+  </div>
+  Built with Sphinx using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../',
+            VERSION:'2.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+    <script type="text/javascript" src="../../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../../_static/sphinx_highlight.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/mathjax/MathJax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+
+  
+  
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TRCMZL1FKK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TRCMZL1FKK');
+  </script>
+    
+</body>
+</html>

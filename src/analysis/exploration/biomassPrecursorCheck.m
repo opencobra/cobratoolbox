@@ -122,7 +122,10 @@ if checkConservedQuantities && ~isempty(missingMets)
         %EMV = identifyConservedMoieties(model, ATN);
         %types = classifyMoieties(EMV, model.S);
         %EMV = EMV(:, strcmp(types, 'Internal'));
-        arm = identifyConservedMoieties(model, ATN); %Hadjar
+        % As the ATNs are multi graphs, they cannot pass the sanity checks
+        % in the identifyChecks as it checks for normal graphs
+        options.sanityChecks = false;
+        arm = identifyConservedMoieties(model, ATN, options); %Hadjar
         L=arm.L; 
         types = classifyMoieties(L, model.S);
         L = L(strcmp(types, 'Internal'),:);

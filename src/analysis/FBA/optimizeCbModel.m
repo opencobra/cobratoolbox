@@ -256,6 +256,9 @@ if exist('osenseStr', 'var')
                     allowLoops=1;
                 end
             end
+        else
+            % Handle osenseStr when it's a string (e.g., 'min' or 'max')
+            model.osenseStr = osenseStr;
         end
     end
     % % override if osenseStr already in the model
@@ -422,11 +425,7 @@ if isfield(param,'solveWBMmethod')
         model.c(:)=0;
         doLinearOptimisationFirst = 0;
         minNorm = param.minNorm;
-    else
-        param.solveWBMmethod = [];
     end
-else
-    param.solveWBMmethod = [];
 end
 
 
@@ -636,6 +635,7 @@ if (doLinearOptimisationFirst==0 && ~isempty(minNorm)) || (doLinearOptimisationF
         if isempty(objectiveLP)
             objectiveLP = 0;
         end
+        optProblem2.b  = [optProblem.b;zeros(2*nRxns,1);objectiveLP];
         
         optProblem2.b  = [optProblem.b;zeros(2*nRxns,1);objectiveLP];
 

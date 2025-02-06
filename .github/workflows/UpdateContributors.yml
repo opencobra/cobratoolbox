@@ -5,6 +5,7 @@ on:
     types:
       - closed
     branches: [ master ]
+  
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -16,32 +17,22 @@ jobs:
       with:
         python-version: '3.10'
     - name: Install dependencies
-      working-directory: ./docs/source/Contributions
+      working-directory: ./documentation/source/Contributions
       run: |
         pip install -r requirements.txt
     - name: Update contributors
-      working-directory: ./docs/source/Contributions
+      working-directory: ./documentation/source/Contributions
       run: |
         python UpdateContributorsList.py
     - name: generate HTML file
-      working-directory: ./docs/source/Contributions
+      working-directory: ./documentation/source/Contributions
       run: |
         python GenerateContributorsHTML.py
-    - name: Deploy to latest/gh-pages
+    - name: Deploy to docs
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./docs/source/Contributions/contributors
-        publish_branch: gh-pages
+        publish_dir: ./documentation/source/Contributions/contributors
+        publish_branch: master
         keep_files: true
-        destination_dir: latest
-    - name: Deploy to stable/gh-pages
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./docs/source/Contributions/contributors
-        publish_branch: gh-pages
-        keep_files: true
-        destination_dir: stable
-
-        
+        destination_dir: docs

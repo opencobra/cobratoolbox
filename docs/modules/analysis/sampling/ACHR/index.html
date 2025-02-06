@@ -1,0 +1,637 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Achr &mdash; The COBRA Toolbox</title>
+  
+
+  
+  
+  
+    <link rel="apple-touch-icon" sizes="180x180" href="../../../../_static/img/apple-touch-icon.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../../_static/img/favicon-32x32.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="16x16" href="../../../../_static/img/favicon-16x16.png">
+  
+  
+    <link rel="mask-icon" href="../../../../_static/img/safari-pinned-tab.svg" color="#5bbad5">
+  
+  
+    <link rel="manifest" href="../../../../_static/json/manifest.json">
+  
+  
+    <meta name="msapplication-config" content="../../../../_static/browserconfig.xml">
+  
+  <meta name="theme-color" content="#ffffff">
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+  <script src="../../../../_static/js/jquery.easy-autocomplete.min.js" type="text/javascript" ></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+  <link href="../../../../_static/css/easy-autocomplete.min.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../_static/css/cobra.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../../../_static/css/cobra.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../../search.html"/>
+    <link rel="top" title="The COBRA Toolbox" href="../../../../index.html"/>
+        <link rel="up" title="Sampling" href="../index.html"/>
+        <link rel="next" title="Rfba" href="../../rFBA/index.html"/>
+        <link rel="prev" title="Chrr" href="../CHRR/index.html"/> 
+
+  
+  <script src="../../../../_static/js/modernizr.min.js"></script>
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> The COBRA Toolbox
+          
+
+          
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
+          
+          </a>
+
+              
+          <h1>The COBRA Toolbox</h1>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" id="simple"/>
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+    <script>
+    	var options = {
+
+		url: "../../../../_static/json/functions.json",
+
+		getValue: "name",
+
+		list: {
+            onKeyEnterEvent: function(item) {
+                    return "_static/../" + item.website_url
+            },
+            maxNumberOfElements: 25,
+			match: {
+					enabled: true,
+			},
+            sort: {
+			    enabled: true
+		    }
+		},
+
+    	template: {
+	    	type: "custom",
+		    method: function(value, item) {
+                return "<span><a href='../../../../search.html?q=" + item.name + "&check_keywords=yes&area=default'>" + value + "</a>" + "<a href='../../../../_static/../" + item.website_url + "' ><img src='../../../../_static/link.svg'/></a></span>";
+		    }
+	    },
+
+		theme: "square"
+
+	};
+
+	$("#simple").easyAutocomplete(options);
+
+
+    </script>
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../index.html">Home</a></li>
+              </ul>
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">Functions</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Analysis</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../../relaxedFBA/index.html">Relaxedfba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../topology/index.html">Topology</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../KLdistance/index.html">Kldistance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../dynamicFBA/index.html">Dynamicfba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ICONGEMs/index.html">Icongems</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html">Sampling</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../BarrierRound/index.html">Barrierround</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../CHRR/index.html">Chrr</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Achr</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../rFBA/index.html">Rfba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../percentileCalc/index.html">Percentilecalc</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../QFCA/index.html">Qfca</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../fluxEnrichmentAnalysis/index.html">Fluxenrichmentanalysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../mdFBA/index.html">Mdfba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../MOMA/index.html">Moma</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../exploration/index.html">Exploration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../geometricFBA/index.html">Geometricfba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../FVA/index.html">Fva</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../multiSpecies/index.html">Multispecies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../gMCS/index.html">Gmcs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../parsimoniousFBA/index.html">Parsimoniousfba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../rumba/index.html">Rumba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../robustnessAnalysis/index.html">Robustnessanalysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ROOM/index.html">Room</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../transport/index.html">Transport</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../igemRNA/index.html">Igemrna</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sparseFBA/index.html">Sparsefba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../uFBA/index.html">Ufba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../subspaces/index.html">Subspaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../fastForest/index.html">Fastforest</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../nutritionAlgorithm/index.html">Nutritionalgorithm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../thermo/index.html">Thermo</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../FBA/index.html">Fba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../coupling/index.html">Coupling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../rMTA/index.html">Rmta</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../deletion/index.html">Deletion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../wholeBody/index.html">Wholebody</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../findMIIS/index.html">Findmiis</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../base/index.html">Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../dataIntegration/index.html">Dataintegration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../design/index.html">Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reconstruction/index.html">Reconstruction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../visualization/index.html">Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contributing.html">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../cite.html">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../support.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../plan.html">Development Plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contact.html">Contact</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../citations.html">Citations</a></li>
+</ul>
+
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">The COBRA Toolbox</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../contents.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Functions</a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Analysis</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Sampling</a></li>
+      <li class="breadcrumb-item active">Achr</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="https://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <section id="achr">
+<span id="id1"></span><h1>Achr<a class="headerlink" href="#achr" title="Permalink to this heading">¶</a></h1>
+<span class="target" id="module-src.analysis.sampling.ACHR"></span><dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.sampling.ACHR.ACBSampler">
+<span class="sig-name descname"><span class="pre">ACBSampler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">warmupPoints</span></em>, <em class="sig-param"><span class="pre">fileName</span></em>, <em class="sig-param"><span class="pre">nFiles</span></em>, <em class="sig-param"><span class="pre">pointsPerFile</span></em>, <em class="sig-param"><span class="pre">nMixPts</span></em>, <em class="sig-param"><span class="pre">nWarmupNeeded</span></em>, <em class="sig-param"><span class="pre">saveMatFlag</span></em>, <em class="sig-param"><span class="pre">biasOpt</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/sampling/ACHR/ACBSampler.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.sampling.ACHR.ACBSampler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Artificial centering boundary sampler</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>ACBSampler</strong> (<em>model, warmupPoints, fileName, nFiles, pointsPerFile, nMixPts, nWarmupNeeded, saveMatFlag, biasOpt</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – Model structure</p></li>
+<li><p><strong>warmupPoints</strong> – Warmup points</p></li>
+<li><p><strong>fileName</strong> – Base <cite>fileName</cite> for saving results</p></li>
+<li><p><strong>nFiles</strong> – Number of sample point files created</p></li>
+<li><p><strong>pointsPerFile</strong> – Number of points per file saved</p></li>
+<li><p><strong>nMixPts</strong> – Number of steps initially used for mixing (not saved)</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nWarmupNeeded</strong> – Number of warmup points needed (Default = 20000)</p></li>
+<li><p><strong>saveMatFlag</strong> – Save points in mat format vs txt format (Default = true)</p></li>
+<li><p><strong>biasOpt</strong> – Options for biasing sampler (Default = no bias)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.sampling.ACHR.ACHRSampler">
+<span class="sig-name descname"><span class="pre">ACHRSampler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">warmupPoints</span></em>, <em class="sig-param"><span class="pre">fileName</span></em>, <em class="sig-param"><span class="pre">nFiles</span></em>, <em class="sig-param"><span class="pre">pointsPerFile</span></em>, <em class="sig-param"><span class="pre">stepsPerPoint</span></em>, <em class="sig-param"><span class="pre">initPoint</span></em>, <em class="sig-param"><span class="pre">fileBaseNo</span></em>, <em class="sig-param"><span class="pre">maxTime</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em>, <em class="sig-param"><span class="pre">minFlux</span></em>, <em class="sig-param"><span class="pre">maxFlux</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/sampling/ACHR/ACHRSampler.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.sampling.ACHR.ACHRSampler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Artificial Centering Hit-and-Run sampler</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>ACHRSampler</strong> (<em>model, warmupPoints, fileName, nFiles, pointsPerFile, stepsPerPoint, initPoint, fileBaseNo, maxTime</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – Model structure</p></li>
+<li><p><strong>warmupPoints</strong> – Warmup points</p></li>
+<li><p><strong>fileName</strong> – Base <cite>fileName</cite> for saving results</p></li>
+<li><p><strong>nFiles</strong> – Number of files created</p></li>
+<li><p><strong>pointsPerFile</strong> – Number of points per file saved</p></li>
+<li><p><strong>stepsPerPoint</strong> – Number of sampler steps per point saved</p></li>
+<li><p><strong>printLevel</strong> – 0 silent / 1 active</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>initPoint</strong> – Initial point (Default = centerPoint)</p></li>
+<li><p><strong>fileBaseNo</strong> – Base file number for continuing previous sampler run
+(Default = 0)</p></li>
+<li><p><strong>maxTime</strong> – Maximum time limit (Default = 36000 s)</p></li>
+<li><p><strong>minFlux</strong> – Lower bound of the solution space given by FVA</p></li>
+<li><p><strong>maxFlux</strong> – Upper bound of the solution space given by FVA</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.sampling.ACHR.ACHRSamplerParallelGeneral">
+<span class="sig-name descname"><span class="pre">ACHRSamplerParallelGeneral</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">sampleStruct</span></em>, <em class="sig-param"><span class="pre">nLoops</span></em>, <em class="sig-param"><span class="pre">stepsPerPoint</span></em>, <em class="sig-param"><span class="pre">maxtime</span></em>, <em class="sig-param"><span class="pre">proc</span></em>, <em class="sig-param"><span class="pre">fdirectory</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/sampling/ACHR/ACHRSamplerParallelGeneral.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.sampling.ACHR.ACHRSamplerParallelGeneral" title="Permalink to this definition">¶</a></dt>
+<dd><p>Artificial Centering Hit-and-Run sampler with in place (memory) point management</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>sampleStruct = ACHRSamplerParallelGeneral</strong> (<em>sampleStruct, nLoops, stepsPerPoint, maxtime, proc, fdirectory</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>sampleStruct</strong> – Sampling structure</p></li>
+<li><p><strong>nLoops</strong> – Number of iterations</p></li>
+<li><p><strong>stepsPerPoint</strong> – Number of sampler steps per point saved</p></li>
+<li><p><strong>maxtime</strong> – Amount of time to spend on calculation (in seconds)</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>proc</strong> – Number of processes if &gt; 0.  Otherwise, the proces #.</p></li>
+<li><p><strong>fdirectory</strong> – Do not use this parameter when calling function directly.</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUT</dt>
+<dd class="field-even"><p><strong>sampleStruct</strong> – Sampling structure with sample points</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.sampling.ACHR.convRevSamples">
+<span class="sig-name descname"><span class="pre">convRevSamples</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">samples</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/sampling/ACHR/convRevSamples.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.sampling.ACHR.convRevSamples" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts signs for reactions that are only running in
+reverse direction</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[model, samples] = convRevSamples</strong> (<em>model, samples</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><p><strong>model</strong> – Constraint-based model</p>
+</dd>
+<dt class="field-odd">OPTIONAL INPUT</dt>
+<dd class="field-odd"><p><strong>samples</strong> – Sample set</p>
+</dd>
+<dt class="field-even">OUTPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – COBRA model structure with negative-direction fluxes reversed</p></li>
+<li><p><strong>samples</strong> – Sample set with negative-direction fluxes reversed</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.sampling.ACHR.createHRWarmup">
+<span class="sig-name descname"><span class="pre">createHRWarmup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">nPoints</span></em>, <em class="sig-param"><span class="pre">verbFlag</span></em>, <em class="sig-param"><span class="pre">bias</span></em>, <em class="sig-param"><span class="pre">nPointsCheck</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/sampling/ACHR/createHRWarmup.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.sampling.ACHR.createHRWarmup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a warmup point set for hit-and-run sampling by
+combining orthogonal and random points</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>warmupPts = createHRWarmup</strong> (<em>model, nPoints, verbFlag, bias, nPointsCheck</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><p><strong>model</strong> – Model structure</p>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nPoints</strong> – Number of warmup points (Default = 5000);</p></li>
+<li><p><strong>verbFlag</strong> – Verbose flag (Default = false)</p></li>
+<li><p><strong>bias</strong> – Structure with fields:</p>
+<ul>
+<li><p>method - Biasing distribution: ‘uniform’, ‘normal’</p></li>
+<li><p>index - The reaction indexes which to bias (<cite>nBias</cite> total)</p></li>
+<li><p>param - <cite>nBias x 2</cite> matrix of parameters (for uniform it’s min max, for normal it’s <cite>mu</cite>, <cite>sigma</cite>).</p></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUT</dt>
+<dd class="field-even"><p><strong>warmupPts</strong> – Set of warmup points</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.sampling.ACHR.gpSampler">
+<span class="sig-name descname"><span class="pre">gpSampler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">sampleStruct</span></em>, <em class="sig-param"><span class="pre">nPoints</span></em>, <em class="sig-param"><span class="pre">bias</span></em>, <em class="sig-param"><span class="pre">maxTime</span></em>, <em class="sig-param"><span class="pre">maxSteps</span></em>, <em class="sig-param"><span class="pre">threads</span></em>, <em class="sig-param"><span class="pre">nPointsCheck</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/sampling/ACHR/gpSampler.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.sampling.ACHR.gpSampler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Samples an arbitrary linearly constrained space using a fixed
+number of points that are moved in parallel
+The space is defined by</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}A x \leq, =, \geq b \\
+lb \leq x \leq ub\end{split}\]</div>
+<dl class="field-list">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[sampleStructOut, mixedFraction] = gpSampler</strong> (<em>sampleStruct, nPoints, bias, maxTime, maxSteps, threads, nPointsCheck</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><p><strong>sampleStruct</strong> – Structure describing the space to be sampled and
+previous point sets:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>A - LHS matrix (optionally, if not A script checks for S)</p></li>
+<li><p>b - RHS vector</p></li>
+<li><p>lb - Lower bound</p></li>
+<li><p>ub - Upper bound</p></li>
+<li><p>csense - Constraint type for each row in <cite>A</cite> (‘G’, ‘L’, ‘E’)</p></li>
+<li><p>warmupPoints - Set of warmup points (optional, generated by default)</p></li>
+<li><p>points - Currently sampled points (optional)</p></li>
+</ul>
+</div></blockquote>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nPoints</strong> – Number of points used in sampling
+(default = <cite>2 * nRxns</cite> or 5000 whichever is greater)</p></li>
+<li><p><strong>bias</strong> – Structure with fields:</p>
+<ul>
+<li><p>method - Biasing distribution: ‘uniform’, ‘normal’</p></li>
+<li><p>index - The reaction indexes which to bias (<cite>nBias</cite> total)</p></li>
+<li><p>param - <cite>nBias x 2</cite> matrix of parameters (for uniform it’s min max, for normal it’s <cite>mu</cite>, <cite>sigma</cite>).</p></li>
+</ul>
+</li>
+<li><p><strong>maxTime</strong> – Maximum time alloted for the sampling in seconds
+(default 600 s, pass an empty number [] to set <cite>maxSteps</cite> instead)</p></li>
+<li><p><strong>maxSteps</strong> – Maximum number of steps to take (default 1e10). Sampler
+will run until either maxStep or maxTime is reached.
+Set maxStep or maxTime to 0 and no sampling will occur
+(only warmup points generated).</p></li>
+<li><p><strong>threads</strong> – number of threads the sampler will use.  If you have a
+dual core machine, you can set it to 2 etc.  The speed
+up is almost linear w/ the number of cores.
+If using this feature and 2009a or newer, a futher
+speedup can be obtained by starting matlab from the
+command line by “typing matlab -singleCompThread”
+New feature:  if <cite>threads</cite> &lt; 0, use distributed toolbox.</p></li>
+<li><p><strong>nPointsCheck</strong> – Checks that minimum number of points (<cite>2 * nRxns</cite>) are
+used. (Default = true).</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>sampleStructOut</strong> – The sampling structure with some extra fields.</p></li>
+<li><p><strong>mixedFract</strong> – The fraction mixed (relative to the <cite>warmupPts</cite>).  A value of 1
+means not mixed at all.  A value of .5 means completely mixed.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.sampling.ACHR.mixFraction">
+<span class="sig-name descname"><span class="pre">mixFraction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">sample1</span></em>, <em class="sig-param"><span class="pre">sample2</span></em>, <em class="sig-param"><span class="pre">fixed</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/sampling/ACHR/mixFraction.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.sampling.ACHR.mixFraction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compares two sets of sampled points and determines how mixed
+they are.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>mix = mixFraction</strong> (<em>sample1, sample2, fixed</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><p><strong>sample1, sample2</strong> – Ordered set of points. The points must be in
+the same order otherwise it does not make sense.</p>
+</dd>
+<dt class="field-odd">OPTIONAL INPUT</dt>
+<dd class="field-odd"><p><strong>fixed</strong> – The indexes of sampled reactions which are fixed
+and are not expected to mix. They are ignored.</p>
+</dd>
+<dt class="field-even">OUTPUT</dt>
+<dd class="field-even"><p><strong>mix</strong> – The mix fraction. Goes from 0 to 1 with 1 being
+completely unmixed and .5 being essentially
+perfectly mixed.</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>example 1:
+mix = mixFraction(sample1, sample2)
+example 2:
+fixed = findRxnIDs({R1, R2, …, Rx})
+mix = mixFraction(sample1, sample2, fixed)</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.sampling.ACHR.removeCorrelRxns">
+<span class="sig-name descname"><span class="pre">removeCorrelRxns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">R</span></em>, <em class="sig-param"><span class="pre">correlCutoff</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/sampling/ACHR/removeCorrelRxns.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.sampling.ACHR.removeCorrelRxns" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes fully or almost fully correlated reactions</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[selRxns, rxnSets, rxnList, Rfilt] = removeCorrelRxns</strong> (<em>model, R, correlCutoff</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – COBRA model structure</p></li>
+<li><p><strong>R</strong> – Correl coefficient matrix</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUT</dt>
+<dd class="field-odd"><p><strong>correlCutoff</strong> – Cutoff level for fully correlated <cite>rxns</cite> (Default 0.99999)</p>
+</dd>
+<dt class="field-even">OUTPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>selRxns</strong> – true/false vector that allow selecting non-redundant data</p></li>
+<li><p><strong>rxnSets</strong> – Correlated reaction sets</p></li>
+<li><p><strong>rxnList</strong> – Reaction list with correlated reactions concatenated</p></li>
+<li><p><strong>Rfilt</strong> – Filtered <cite>R</cite></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.sampling.ACHR.verifyPoints">
+<span class="sig-name descname"><span class="pre">verifyPoints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">sampleStruct</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/sampling/ACHR/verifyPoints.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.sampling.ACHR.verifyPoints" title="Permalink to this definition">¶</a></dt>
+<dd><p>Verify that a set of points are in the solutoin space of <cite>sampleStruct</cite>.
+Typically, this method would be called to check a set of warmup points or
+points generated via <cite>gpSampler</cite>. Also verifies if points moved from
+warmup points.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[errorsA, errorsLUB, stuckPoints] = verifyPoints</strong> (<em>sampleStruct</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><p><strong>sampleStruct</strong> – LPProblem containing points and warmup points</p>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>errorsA</strong> – Row index of the constraint in <cite>sampleStruct</cite> that
+is not consistent with the given points</p></li>
+<li><p><strong>errorsLUB</strong> – Upper and lower bounds of the constraint + tolerance</p></li>
+<li><p><strong>stuckPoints</strong> – Index of points which did not move.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../../rFBA/index.html" class="btn btn-default float-right" title="Rfba" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../CHRR/index.html" class="btn btn-default" title="Chrr" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017-2021, The COBRA Toolbox developers.
+
+    </p>
+  </div>
+  Built with Sphinx using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../',
+            VERSION:'2.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+    <script type="text/javascript" src="../../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../../_static/sphinx_highlight.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/mathjax/MathJax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+
+  
+  
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TRCMZL1FKK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TRCMZL1FKK');
+  </script>
+    
+</body>
+</html>
