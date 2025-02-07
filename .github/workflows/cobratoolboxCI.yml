@@ -1,6 +1,6 @@
 name: Example
 on:
-  pull_request:
+  pull_request_target:
     branches:
       - master
       - main
@@ -9,14 +9,20 @@ jobs:
   build:
     runs-on: self-hosted
     steps:
-      - uses: actions/checkout@v4
+      # Check out the PR’s head commit from the fork.
+      - name: Checkout PR head code
+        uses: actions/checkout@v4
         with:
+          # Use the head repository and branch from the pull request event payload.
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          ref: ${{ github.event.pull_request.head.ref }}
           fetch-depth: 0
 
+      # Merge in the base branch (the target branch) to simulate a merged state.
       - name: Merge base branch into PR
         run: |
-          git fetch origin ${{ github.base_ref }}
-          git merge origin/${{ github.base_ref }}
+          git fetch origin ${{ github.event.pull_request.base.ref }}
+          git merge origin/${{ github.event.pull_request.base.ref }}
 
       - name: Run MATLAB Tests
         run: |
