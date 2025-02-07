@@ -24,7 +24,8 @@ function model = changeGeneAssociation(model, rxnName, grRule, geneNameList, sys
 %       - Ines Thiele 08/03/2015, made rxnGeneMat optional
 %       - IT: updated the nargin statement to accommodate the additional option
 
-if exist('geneNameList','var') && exist('systNameList','var')
+if (exist('geneNameList','var') && ~isempty(geneNameList)...
+        && exist('systNameList','var') && ~isempty(systNameList))
     translateNamesFlag = true;
 else
     translateNamesFlag = false;

@@ -12,8 +12,8 @@ function variable = loadPSCMfile(fileName)
 % OUTPUT:
 % variable:     matlab variable returned
 
-global useSolveCobraLPCPLEX
-useSolveCobraLPCPLEX
+% global useSolveCobraLPCPLEX
+% useSolveCobraLPCPLEX
 
 useReadCbModel = 0;
 switch fileName

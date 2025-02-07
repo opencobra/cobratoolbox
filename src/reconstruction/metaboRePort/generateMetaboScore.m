@@ -95,7 +95,7 @@ modelProp.SinkRxns = SinkR;
 modelProp.Details.SinkRxns = [model.rxns(contains(model.rxns,'Sink_'));model.rxns(contains(model.rxns,'sink_'))];
 % biomass reactions
 modelProp.BiomassRxns = BioR;
-modelProp.Details.BiomassRxns = model.rxns(contains(lower(model.rxns,'biomass')));% exclude EX_biomass?
+modelProp.Details.BiomassRxns = model.rxns(contains(lower(model.rxns),'biomass'));% exclude EX_biomass?
 
 modelProp.MetabolicRxns = MetR;
 modelProp.Details.MetabolicRxns =MetRxns';

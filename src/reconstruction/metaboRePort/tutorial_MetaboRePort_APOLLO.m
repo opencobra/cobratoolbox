@@ -49,7 +49,7 @@ ScoresOverall = cell(length(modelList),2);
 end
 
 tic;
-for i = 1 : 100%length(modelList)
+for i = 100 : 500%length(modelList)
     disp(i)
     % Load model 
     model = load(modelPaths{i});

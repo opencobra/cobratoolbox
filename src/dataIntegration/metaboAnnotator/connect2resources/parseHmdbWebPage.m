@@ -47,6 +47,9 @@ InchiKeyList = '';d=1;
 fields = fieldnames(metabolite_structure.(Mets{1}));
 
 for i = startSearch : endSearch
+    
+    progress = i/(endSearch-startSearch+1);
+    fprintf([num2str(progress*100) ' percent ... Retrieving HMDB data ... \n']);
     if ~isempty(metabolite_structure.(Mets{i}).hmdb) && isempty(find(isnan(metabolite_structure.(Mets{i}).hmdb),1))
         % check that smile or inchiKey does not exist
         % go to chebi and parse website for smile
