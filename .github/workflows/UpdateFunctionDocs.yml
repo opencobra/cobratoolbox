@@ -52,7 +52,7 @@ jobs:
           folder: ./documentation/build/html/modules
           branch: develop
           target-folder: docs/modules
-          commit-message: "updateFunctionDocs"
+          commit-message: "update Function Docs (Automatic Workflow)"
 
       - name: Deploy the citations page
         uses: peaceiris/actions-gh-pages@v3
@@ -62,7 +62,7 @@ jobs:
           publish_branch: develop
           keep_files: true
           destination_dir: docs
-          commit_message: "updateFunctionDocs"
+          commit_message: "update Function Docs (Automatic Workflow)"
 
       - name: Deploy the citations static page
         uses: peaceiris/actions-gh-pages@v3
@@ -72,4 +72,4 @@ jobs:
           publish_branch: develop
           keep_files: true
           destination_dir: docs/_static
-          commit_message: "updateFunctionDocs"
+          commit_message: "update Function Docs (Automatic Workflow)"
