@@ -40,4 +40,4 @@ jobs:
           publish_branch: develop
           keep_files: true
           destination_dir: docs
-          commit_message: "updateContributorsWorkflow"
+          commit_message: "Update Contributors (Automatic Workflow)"
