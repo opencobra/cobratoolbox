@@ -43,7 +43,7 @@ function [gvalue, GR, PR, size1, size2, size3] = step2and3(model, targetMet, giv
 % size2        the number of gene deletions after Step2.
 % size3        the number of gene deletions after Step3.
 %
-%   Feb. 6, 2025  Takeyuki TAMURA
+%   Feb. 10, 2025  Takeyuki TAMURA
 %
 
 sss = sprintf('step2and3.mat');
