@@ -67,7 +67,7 @@ function [gvalue, GR, PR, size1, size2, size3, success] = TrimGdel(model, target
 %   in IEEE/ACM Transactions on Computational Biology and Bioinformatics, 
 %   vol. 20, no. 6, pp. 3748-3758, 2023, 
 %
-%   Feb. 6, 2025  Takeyuki TAMURA
+%   Feb. 10, 2025  Takeyuki TAMURA
 %
 
 [gvalue gr pr it success] = gDel_minRN(model, targetMet, maxLoop, PRLB, GRLB) % Step 1
