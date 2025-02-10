@@ -1,0 +1,13 @@
+function [outputArg1, outputArg2] = example2()
+% example2 calculates the gene deletion strategy for growth coupling
+% for biotin in iML1515.
+%
+% Feb. 6, 2025  Takeyuki TAMURA
+%
+
+load('iML1515.mat');
+model = iML1515;
+[gvalue, GR, PR, size1, size2, size3, success] = TrimGdel(model, 'btn_c', 10, 0.1, 0.1)
+
+end
+
