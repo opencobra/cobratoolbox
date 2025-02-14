@@ -20,7 +20,8 @@ The COBRA Toolbox |br| COnstraint-Based Reconstruction and Analysis Toolbox
        <a href="https://codecov.io/gh/opencobra/cobratoolbox/branch/master"><img src="https://codecov.io/gh/opencobra/cobratoolbox/branch/master/graph/badge.svg?maxAge=0"></a></div></td>
      </tr>
    </table>
-   <br>
+   <be>
+
 
 
 System Requirements and Solver Installation
