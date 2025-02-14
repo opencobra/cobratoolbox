@@ -22,6 +22,9 @@ solverPkgs = {'tomlab_cplex','ibm_cplex'};
 %QP solvers
 QPsolverPkgs = {'tomlab_cplex','ibm_cplex'};
 
+solverPkgs = prepareTest('requiredSolvers',solverPkgs);
+
+
 for k =1:length(solverPkgs)
 
     solverLPOK = changeCobraSolver(solverPkgs{k},'LP', 0);
