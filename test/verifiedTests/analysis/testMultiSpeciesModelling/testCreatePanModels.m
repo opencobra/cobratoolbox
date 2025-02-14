@@ -14,6 +14,8 @@
 fileDir = fileparts(which('testCreatePanModels'));
 cd(fileDir);
 
+solverPkgs = prepareTest('toolboxes', {'distrib_computing_toolbox'});
+
 modelList={
         'Abiotrophia_defectiva_ATCC_49176'
         'Acidaminococcus_fermentans_DSM_20731'
