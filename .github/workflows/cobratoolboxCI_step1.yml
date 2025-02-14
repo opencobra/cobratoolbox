@@ -1,9 +1,12 @@
 name: cobratoolboxCI (merge, test, and upload)
 on:
   pull_request:
+    branches:
+      - develop
+      - master
     types: [opened, synchronize, reopened]
   workflow_dispatch:
-
+    
 permissions:
   contents: read
   
