@@ -13,6 +13,8 @@
 % save the current path
 currentDir = pwd;
 
+solverPkgs = prepareTest('requiredSoftwares',{'lrs'});
+
 % set the model name
 modelName = 'test';
 
