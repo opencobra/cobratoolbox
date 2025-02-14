@@ -208,11 +208,11 @@ try
             totalTime = sum(resultTable.Time);
 
             % 1) Wrap in <testsuites> -- typical JUnit format
-            fprintf(fid, '<testsuites name="COBRA Toolbox Test Suites" tests="%d" failures="%d" errors="%d" time="%.3f">\n', ...
+            fprintf(fid, '<testsuites name="" tests="%d" failures="%d" errors="%d" time="%.3f">\n', ...
                 numTests, numFailures, numErrors, totalTime);
 
             % 2) A single <testsuite> inside
-            fprintf(fid, '  <testsuite name="COBRA Toolbox Test Suite" tests="%d" failures="%d" errors="%d" skipped="%d" time="%.3f">\n', ...
+            fprintf(fid, '  <testsuite name="" tests="%d" failures="%d" errors="%d" skipped="%d" time="%.3f">\n', ...
                 numTests, numFailures, numErrors, numSkipped, totalTime);
 
             % 3) Loop over each test case
