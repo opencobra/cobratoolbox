@@ -11,6 +11,12 @@ This design ensures security while allowing test reports to be posted on pull re
 
 ---
 
+## ⚠️ Important Note
+
+These workflows should be implemented on the **default branch** of the repository (either `master` or `main` in newer repositories) to ensure proper execution and integration. Running workflows on other branches may lead to unexpected behavior, security issues, or failure to post comments on pull requests.
+
+---
+
 ## 🔐 Handling Forked Repositories: Why Two Workflows?
 
 When a pull request originates from a fork, the `pull_request` event runs in the context of the fork, meaning it does not have permission to write to the base repository. This prevents the workflow from posting comments on the pull request.
@@ -64,6 +70,8 @@ This workflow is triggered when a pull request is opened, synchronized, or reope
 ```
 
 - **Save PR Number and Upload as an Artifact**:
+  To ensure that `testAllCI_step2` can correctly comment on the corresponding pull request, we save the PR number as an artifact in `testAllCI_step1`. Since `testAllCI_step2` is triggered by `testAllCI_step1` using `workflow_run`, it does not have direct access to the PR metadata. Uploading the PR number as an artifact allows `testAllCI_step2` to retrieve and use it for posting test results in the correct pull request.
+
 
 ```yaml
 - name: Save PR Number
@@ -89,7 +97,7 @@ Since this workflow only requires read permissions, it avoids potential security
 This workflow is triggered when `testAllCI_step1` completes successfully. It follows these steps:
 
 - **Download Test Report Artifact**:
-
+Since GitHub Actions does not allow direct artifact downloads across workflows using `actions/download-artifact`, we use `dawidd6/action-download-artifact@v8` instead. This repository enables downloading artifacts from a previous workflow run by specifying the `run_id`, which is essential when handling artifacts between separate workflows. It follows these steps:
 ```yaml
 - name: Download CTRF Artifact
   uses: dawidd6/action-download-artifact@v8
@@ -147,4 +155,3 @@ By structuring the workflows this way, we achieve the following:
 - **Seamless commenting** on pull requests with test results while mitigating security risks.
 
 This approach balances **security** and **functionality**, making it a robust solution for continuous integration in repositories that accept contributions from forks. 🚀
-
