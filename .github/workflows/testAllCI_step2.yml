@@ -36,11 +36,11 @@ jobs:
           echo "PR_NUMBER=$PR_NUMBER" >> $GITHUB_ENV
 
       - name: Publish Test Report
-        uses: ctrf-io/github-test-reporter@v1.0.5
+        uses: ctrf-io/github-test-reporter@v1.0.6
         with:
           report-path: 'artifacts/ctrf-report.json'          
-          summary-report: true
-          failed-report: true
+          community-report: true
+          community-report-name: 'cobra-report'
           issue: ${{ env.PR_NUMBER }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
