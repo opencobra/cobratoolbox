@@ -50,6 +50,7 @@ for k = 1:length(solvers.LP)
        
        % Compare the result with reference data
        assert(isequaln(refData, resultData));
+       assert(1 == 0);
        
        % output a success message
        fprintf('Done.\n');
