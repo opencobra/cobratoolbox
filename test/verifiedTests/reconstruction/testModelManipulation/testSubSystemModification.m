@@ -68,5 +68,8 @@ assert(~isReactionInSubSystem(model,model.rxns{9},'Citric Acid Cycle'))
 assert(all(isReactionInSubSystem(model,model.rxns(4:5),'Citric Acid Cycle')));
 assert(isequal(isReactionInSubSystem(model,21:-1:18,'Exchange'),[true; true; false; false]));
 
+% output a success message
+fprintf('... testSubSystemModification passed...\n')
+fprintf('Done.\n');
 %Return to old path
 cd(currentDir)

@@ -1,0 +1,692 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Thermodirectionality &mdash; The COBRA Toolbox</title>
+  
+
+  
+  
+  
+    <link rel="apple-touch-icon" sizes="180x180" href="../../../../_static/img/apple-touch-icon.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../../_static/img/favicon-32x32.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="16x16" href="../../../../_static/img/favicon-16x16.png">
+  
+  
+    <link rel="mask-icon" href="../../../../_static/img/safari-pinned-tab.svg" color="#5bbad5">
+  
+  
+    <link rel="manifest" href="../../../../_static/json/manifest.json">
+  
+  
+    <meta name="msapplication-config" content="../../../../_static/browserconfig.xml">
+  
+  <meta name="theme-color" content="#ffffff">
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+  <script src="../../../../_static/js/jquery.easy-autocomplete.min.js" type="text/javascript" ></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+  <link href="../../../../_static/css/easy-autocomplete.min.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../_static/css/cobra.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../../../_static/css/cobra.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../../search.html"/>
+    <link rel="top" title="The COBRA Toolbox" href="../../../../index.html"/>
+        <link rel="up" title="Thermo" href="../index.html"/>
+        <link rel="next" title="Experimentaldata" href="../experimentalData/index.html"/>
+        <link rel="prev" title="Reactantcontribution" href="../reactantContribution/index.html"/> 
+
+  
+  <script src="../../../../_static/js/modernizr.min.js"></script>
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> The COBRA Toolbox
+          
+
+          
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
+          
+          </a>
+
+              
+          <h1>The COBRA Toolbox</h1>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" id="simple"/>
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+    <script>
+    	var options = {
+
+		url: "../../../../_static/json/functions.json",
+
+		getValue: "name",
+
+		list: {
+            onKeyEnterEvent: function(item) {
+                    return "_static/../" + item.website_url
+            },
+            maxNumberOfElements: 25,
+			match: {
+					enabled: true,
+			},
+            sort: {
+			    enabled: true
+		    }
+		},
+
+    	template: {
+	    	type: "custom",
+		    method: function(value, item) {
+                return "<span><a href='../../../../search.html?q=" + item.name + "&check_keywords=yes&area=default'>" + value + "</a>" + "<a href='../../../../_static/../" + item.website_url + "' ><img src='../../../../_static/link.svg'/></a></span>";
+		    }
+	    },
+
+		theme: "square"
+
+	};
+
+	$("#simple").easyAutocomplete(options);
+
+
+    </script>
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../index.html">Home</a></li>
+              </ul>
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">Functions</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Analysis</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../../relaxedFBA/index.html">Relaxedfba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../topology/index.html">Topology</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../KLdistance/index.html">Kldistance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../dynamicFBA/index.html">Dynamicfba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ICONGEMs/index.html">Icongems</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sampling/index.html">Sampling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../rFBA/index.html">Rfba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../percentileCalc/index.html">Percentilecalc</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../QFCA/index.html">Qfca</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../fluxEnrichmentAnalysis/index.html">Fluxenrichmentanalysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../mdFBA/index.html">Mdfba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../MOMA/index.html">Moma</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../exploration/index.html">Exploration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../geometricFBA/index.html">Geometricfba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../FVA/index.html">Fva</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../multiSpecies/index.html">Multispecies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../gMCS/index.html">Gmcs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../parsimoniousFBA/index.html">Parsimoniousfba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../rumba/index.html">Rumba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../robustnessAnalysis/index.html">Robustnessanalysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ROOM/index.html">Room</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../transport/index.html">Transport</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../igemRNA/index.html">Igemrna</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sparseFBA/index.html">Sparsefba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../uFBA/index.html">Ufba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../subspaces/index.html">Subspaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../fastForest/index.html">Fastforest</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../nutritionAlgorithm/index.html">Nutritionalgorithm</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html">Thermo</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../directionalityReport/index.html">Directionalityreport</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../findThermoConsistentFluxSubset/index.html">Findthermoconsistentfluxsubset</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../vonBertalanffy/index.html">Vonbertalanffy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../protons/index.html">Protons</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../reactantContribution/index.html">Reactantcontribution</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Thermodirectionality</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../experimentalData/index.html">Experimentaldata</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../inchi/index.html">Inchi</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../utilities/index.html">Utilities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../thermoFBA/index.html">Thermofba</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../groupContribution/index.html">Groupcontribution</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../trainingModel/index.html">Trainingmodel</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../transport/index.html">Transport</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../experimentalDesign/index.html">Experimentaldesign</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../componentContribution/index.html">Componentcontribution</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../formulae/index.html">Formulae</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../optCardThermo/index.html">Optcardthermo</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../molFiles/index.html">Molfiles</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../FBA/index.html">Fba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../coupling/index.html">Coupling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../rMTA/index.html">Rmta</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../deletion/index.html">Deletion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../wholeBody/index.html">Wholebody</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../findMIIS/index.html">Findmiis</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../base/index.html">Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../dataIntegration/index.html">Dataintegration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../design/index.html">Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reconstruction/index.html">Reconstruction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../visualization/index.html">Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contributing.html">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../cite.html">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../support.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../plan.html">Development Plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contact.html">Contact</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../citations.html">Citations</a></li>
+</ul>
+
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">The COBRA Toolbox</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../contents.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Functions</a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Analysis</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Thermo</a></li>
+      <li class="breadcrumb-item active">Thermodirectionality</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="https://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <section id="thermodirectionality">
+<span id="id1"></span><h1>Thermodirectionality<a class="headerlink" href="#thermodirectionality" title="Permalink to this heading">¶</a></h1>
+<span class="target" id="module-src.analysis.thermo.thermoDirectionality"></span><dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.thermo.thermoDirectionality.assignQuantDir">
+<span class="sig-name descname"><span class="pre">assignQuantDir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/thermo/thermoDirectionality/assignQuantDir.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.thermo.thermoDirectionality.assignQuantDir" title="Permalink to this definition">¶</a></dt>
+<dd><p>Quantitatively assigns reaction directionality based on estimated bounds
+on transformed reaction Gibbs energies</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>model = assignQuantDir</strong> (<em>model</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><p><strong>model</strong> – structure with fields:</p>
+<ul class="simple">
+<li><p>.SIntRxnBool - <cite>n x 1</cite> boolean of internal reactions</p></li>
+<li><p>.DrGtMin - <cite>n x 1</cite> array of estimated lower bounds on
+transformed reaction Gibbs energies.</p></li>
+<li><p>.DrGtMax - <cite>n x 1</cite> array of estimated upper bounds on
+transformed reaction Gibbs energies.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>model</strong> – structure with fields:</p>
+<ul class="simple">
+<li><p>.quantDir - <cite>n x 1</cite> array indicating quantitatively assigned
+reaction directionality. 1 for reactions that are
+irreversible in the forward direction, -1 for
+reactions that are irreversible in the reverse
+direction, and 0 for reversible reactions.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.thermo.thermoDirectionality.dGfzeroGroupContToBiochemical">
+<span class="sig-name descname"><span class="pre">dGfzeroGroupContToBiochemical</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">Legendre</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/thermo/thermoDirectionality/dGfzeroGroupContToBiochemical.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.thermo.thermoDirectionality.dGfzeroGroupContToBiochemical" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transforms group contribution estimate of metabolite standard transformed Gibbs energy.
+Converts group contribution data biochemical standard transformed Gibbs
+energy of formation, at specified pH and ionic strength.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>model = dGfzeroGroupContToBiochemical</strong> (<em>model, Legendre</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><p><strong>model</strong> – structure with fields:</p>
+<ul class="simple">
+<li><p>model.mets{m}</p></li>
+<li><p>model.metCharges(m)</p></li>
+<li><p>model.metFormulas{m}</p></li>
+<li><p>model.T - temperature</p></li>
+<li><p>model.faradayConstant - Faraday constant</p></li>
+<li><p>model.gasConstant - Universal Gas Constant</p></li>
+<li><p>model.ph(p) - real pH in compartment defined by letter p</p></li>
+<li><p>model.is(p) - ionic strength (0 - 0.35M) in compartment defined by letter *</p></li>
+<li><p>model.chi(p) - electrical potential (mV) in compartment defined by letter *</p></li>
+<li><p>model.cellCompartments - <cite>1 x #</cite> cell array of distinct compartment letters</p></li>
+<li><p>model.NaNdfG0GCMetBool - <cite>m x 1</cite> boolean vector with 1 when no group contribution data is available for a metabolite generated in old <cite>SetupThermoModel.m</cite> only</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUT</dt>
+<dd class="field-odd"><p><strong>Legendre</strong> – {(1), 0} Legendre Transformation for specifc pH and electrical potential?</p>
+</dd>
+<dt class="field-even">OUTPUT</dt>
+<dd class="field-even"><p><strong>model</strong> – structure with fields:</p>
+<ul class="simple">
+<li><p>model.NaNdfG0GCMetBool - <cite>m x 1</cite> boolean vector with 1 when no group contribution data is available for a metabolite</p></li>
+<li><p>model.dfG0GroupCont(m) - group contribution estimate (kJ mol^-1)</p></li>
+<li><p>model.dfG0GroupContUncertainty(m) - error on group contribution estimate (kJ mol^-1)</p></li>
+<li><p>model.dfGt0GroupCont(m) - group contribution estimate +/-Legendre transform (kJ mol^-1)</p></li>
+<li><p>model.dfGt0GroupContUncertainty(m) - error on group contribution estimate +/- Legendre transform (kJ mol^-1)</p></li>
+<li><p>model.aveHbound(m) - average number of H+ bound</p></li>
+<li><p>model.aveZi(m) - average charge</p></li>
+<li><p>model.mf(m) - mole fraction of each species within a pseudoisomer group</p></li>
+<li><p>model.lambda(m) - activity coefficient</p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>At the moment, the charges of the metabolites are for pH 7 only so strictly it should be pH 7 only</p>
+</div>
+<p>iAF1260 Supplemental Note:
+“All delta_f_G_est_0 calculated for the reconstruction using the
+group contribution method are based upon the standard condition of
+aqueous solution with pH equal to 7, temperature equal to 298.15 K,
+zero ionic strength and 1M concentrations of all species except H+,
+and water. In the cases where multiple charged forms of a molecule
+exist at pH 7, the most abundant form is used.”
+Same as <cite>Janowski et al Biophysical Journal 95:1487-1499 (2008)</cite></p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.thermo.thermoDirectionality.deltaG0concFluxConstraintBounds">
+<span class="sig-name descname"><span class="pre">deltaG0concFluxConstraintBounds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">Legendre</span></em>, <em class="sig-param"><span class="pre">LegendreCHI</span></em>, <em class="sig-param"><span class="pre">gcmOutputFile</span></em>, <em class="sig-param"><span class="pre">gcmMetList</span></em>, <em class="sig-param"><span class="pre">jankowskiGroupData</span></em>, <em class="sig-param"><span class="pre">figures</span></em>, <em class="sig-param"><span class="pre">nStdDevGroupCont</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/thermo/thermoDirectionality/deltaG0concFluxConstraintBounds.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.thermo.thermoDirectionality.deltaG0concFluxConstraintBounds" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets reaction directionality bounds from thermodynamic data
+first pass assignment of reaction directionality based on standard
+transformed Gibbs energy and concentration bounds.</p>
+<dl class="field-list">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>model = deltaG0concFluxConstraintBounds</strong> (<em>model, Legendre, LegendreCHI, gcmOutputFile, gcmMetList, jankowskiGroupData, figures, nStdDevGroupCont</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – structure with fields:</p>
+<ul>
+<li><p>model.S</p></li>
+<li><p>model.SintRxnBool - Boolean indicating internal reactions</p></li>
+<li><p>model.gasConstant - gas constant</p></li>
+<li><p>model.T - temperature</p></li>
+<li><p>model.boundryConc - bounds on concentration of boundary metabolites</p></li>
+<li><p>model.dfGt0(m) - standard transformed Gibbs energy of formation(kJ/mol)</p></li>
+<li><p>model.dfG0GroupContUncertainty(m) - group. cont. uncertainty in estimate of standard Gibbs energy of formation (kJ/mol)</p></li>
+<li><p>model.xmin(m) - lower bound on metabolite concentration</p></li>
+<li><p>model.xmax(m) - upper bound on metabolite concentration</p></li>
+<li><p>model.metCharges(m) - reconstruction metabolite charge</p></li>
+<li><p>model.lb - reconstruction reaction lower bounds</p></li>
+<li><p>model.ub - reconstruction reaction upper bounds</p></li>
+<li><p>model.chi(p) - electrical potential (mV) in compartment defined by letter</p></li>
+</ul>
+</li>
+<li><p><strong>Legendre</strong> – {(1), 0} Legendre Transformation for specifc pHr?</p></li>
+<li><p><strong>LegendreCHI</strong> – {(1), 0} Legendre Transformation for specifc electrical potential?</p></li>
+<li><p><strong>gcmOutputFile</strong> – Path to output file from <cite>Jankowski et al.’s 2008
+implementation of the group contribution method.</cite></p></li>
+<li><p><strong>gcmMetList</strong> – Cell array with metabolite ID for metabolites in
+<cite>gcmOutputFile</cite>. Metabolite order must be the same in
+<cite>gcmOutputFile</cite> and <cite>gcmMetList</cite>.</p></li>
+<li><p><strong>jankowskiGroupData</strong> – Data on groups included in <cite>Jankowski et al.’s 2008
+implementation of the group contribution method.</cite>
+Included with von Bertalanffy 1.1. Location:
+<cite>…vonBertalanffysetupThermoModelexperimentalDatagroupContributionjankowskiGroupData.mat.</cite></p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>figures</strong> – {1, (0)} 1 = create figures</p></li>
+<li><p><strong>nStdDevGroupCont</strong> – {real, (1)} number of standard deviations of group contribution
+uncertainty, 1 means uncertainty given by group contribution method (one standard deviation)</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUT</dt>
+<dd class="field-even"><ul>
+<li><p><strong>nStdDevGroupCont</strong> – {real, (1)} number of standard deviations of group contribution
+uncertainty, 1 means uncertainty given by group contribution method (one standard deviation)</p></li>
+<li><p><strong>model</strong> – structure with fields:
+For each metabolite:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>model.xMin</p></li>
+<li><p>model.xMax</p></li>
+<li><p>model.dfGt0Min</p></li>
+<li><p>model.dfGt0Max</p></li>
+<li><p>model.dfGtMin</p></li>
+<li><p>model.dfGtMax</p></li>
+<li><p>model.NaNdfG0MetBool - metabolites without Gibbs Energy</p></li>
+</ul>
+</div></blockquote>
+<p>For each reaction:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>model.dGt0Max(n) - molar standard</p></li>
+<li><p>model.dGt0Min(n) - molar standard</p></li>
+<li><p>model.dGtMax(n)</p></li>
+<li><p>model.dGtMin(n)</p></li>
+<li><p>model.dGtmMMin(n) - mili molar standard</p></li>
+<li><p>model.dGtmMMax(n) - mili molar standard</p></li>
+<li><p>model.directionalityThermo(n)</p></li>
+<li><p>model.lb_reconThermo - lower bounds from dGtMin/dGtMax and recon directions if thermo data missing</p></li>
+<li><p>model.ub_reconThermo - upper bounds from dGtMin/dGtMax and recon directions if thermo data missing</p></li>
+<li><p>model.NaNdG0RxnBool - reactions with NaN Gibbs Energy</p></li>
+<li><p>model.transportRxnBool - transport reactions</p></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.thermo.thermoDirectionality.secondPassDirectionalityAssignment">
+<span class="sig-name descname"><span class="pre">secondPassDirectionalityAssignment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/thermo/thermoDirectionality/secondPassDirectionalityAssignment.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.thermo.thermoDirectionality.secondPassDirectionalityAssignment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Driver to call model specific code to manually generate a physiological model (if first pass does not result in a physiological model).</p>
+<p>The second pass directionality assignment needs careful manual curation
+since the adjustments necessary to get one organism to grow will not
+necessarily be the same as the ones which will get another
+organism to grow. There’s no avioding manual debugging at this stage.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[model, solutionThermoRecon, solutionRecon, model1] = secondPassDirectionalityAssignment</strong> (<em>model</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><p><strong>model</strong></p>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model</strong></p></li>
+<li><p><strong>solutionThermoRecon</strong></p></li>
+<li><p><strong>solutionRecon</strong></p></li>
+<li><p><strong>model1</strong></p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This is the code  used for a number of organisms in order to point out
+the kind of issues that arise. This is NOT supposed to work in the
+general case.</p>
+</div>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.thermo.thermoDirectionality.setThermoReactionDirectionalityiAF1260">
+<span class="sig-name descname"><span class="pre">setThermoReactionDirectionalityiAF1260</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">maxFlux</span></em>, <em class="sig-param"><span class="pre">hardCoupleOxPhos</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/thermo/thermoDirectionality/setThermoReactionDirectionalityiAF1260.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.thermo.thermoDirectionality.setThermoReactionDirectionalityiAF1260" title="Permalink to this definition">¶</a></dt>
+<dd><p>Second pass assignment of reaction directionality (E. coli specific)</p>
+<p>Set the upper and lower bounds for each internal flux based on
+thermodynamic data where available. The remainder of the reactions without
+thermodynamic data stay as they were in the reconstruction
+To apply this script to a particular stoichiometric model, one would have
+to modify it manually. At the moment, it is specfic to E. coli. The same
+manual adjustment of reaction directionality made here to get the model to
+grow, and grow at the rate seen in vivo, may not work for other organisms.
+Nevertheless, this script outlines the steps needed to identify what needs
+to be changed to get a model to grow and then to get it to grow at the
+correct rate. There is currently no automatic substitution for manual curation.</p>
+<dl class="field-list">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[modelD, solutionThermoRecon, solutionRecon, model1] = setThermoReactionDirectionalityiAF1260</strong> (<em>model, maxFlux, hardCoupleOxPhos</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><p><strong>model</strong> – structure with fields:</p>
+<ul>
+<li><p>model.NaNdG0RxnBool - reactions with NaN Gibbs Energy</p></li>
+<li><p>model.transportRxnBool - transport reactions</p></li>
+<li><p>model.directions: Reactions that are qualitatively assigned by thermodynamics:</p>
+<ul class="simple">
+<li><p>directions.fwdThermoOnlyBool</p></li>
+<li><p>directions.revThermoOnlyBool</p></li>
+<li><p>directions.reversibleThermoOnlyBool</p></li>
+</ul>
+<p>subsets of forward qualtiative -&gt; reversible quantiative change:</p>
+<ul class="simple">
+<li><p>directions.ChangeForwardReversible_dGfKeq</p></li>
+<li><p>directions.ChangeForwardReversibleBool_dGfGC</p></li>
+<li><p>directions.ChangeForwardReversibleBool_dGfGC_byConcLHS</p></li>
+<li><p>directions.ChangeForwardReversibleBool_dGfGC_byConcRHS</p></li>
+<li><p>directions.ChangeForwardReversibleBool_dGfGC_bydGt0</p></li>
+<li><p>directions.ChangeForwardReversibleBool_dGfGC_bydGt0LHS</p></li>
+<li><p>directions.ChangeForwardReversibleBool_dGfGC_bydGt0Mid</p></li>
+<li><p>directions.ChangeForwardReversibleBool_dGfGC_bydGt0RHS</p></li>
+<li><p>directions.ChangeForwardReversibleBool_dGfGC_byConc_No_dGt0ErrorLHS</p></li>
+<li><p>directions.ChangeForwardReversibleBool_dGfGC_byConc_No_dGt0ErrorRHS</p></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model</strong> – structure with fields:</p>
+<ul>
+<li><p>model.lb_reconThermo - lower bound</p></li>
+<li><p>model.ub_reconThermo - upper bound</p></li>
+</ul>
+</li>
+<li><p><strong>solutionThermoRecon</strong> – FBA with thermodynamic in preference to
+reconstruction directions, with exceptions
+specific to E. coli given below</p></li>
+<li><p><strong>solutionRecon</strong> – FBA with reconstruction direction</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.thermo.thermoDirectionality.thermoConstrainFluxBounds">
+<span class="sig-name descname"><span class="pre">thermoConstrainFluxBounds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">confidenceLevel</span></em>, <em class="sig-param"><span class="pre">DrG0_Uncertainty_Cutoff</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/thermo/thermoDirectionality/thermoConstrainFluxBounds.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.thermo.thermoDirectionality.thermoConstrainFluxBounds" title="Permalink to this definition">¶</a></dt>
+<dd><p>Thermodynamically constrain reaction bounds.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[modelThermo, directions] = thermoConstrainFluxBounds</strong> (<em>model, confidenceLevel, DrGt0_Uncertainty_Cutoff, printLevel</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – Model structure with following additional fields:</p>
+<ul>
+<li><p>.DrGtMin - <cite>n x 1</cite> array of estimated lower bounds on
+transformed reaction Gibbs energies.</p></li>
+<li><p>.DrGtMax - <cite>n x 1</cite> array of estimated upper bounds on
+transformed reaction Gibbs energies.</p></li>
+</ul>
+</li>
+<li><p><strong>confidenceLevel</strong></p></li>
+<li><p><strong>DrG0_Uncertainty_Cutoff</strong> – Thermodynamic data not used if uncertainty is
+high in estimates</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUT</dt>
+<dd class="field-odd"><p><strong>printLevel</strong> – -1 - print out to file, 0 - silent, 1 - print out to command window</p>
+</dd>
+<dt class="field-even">OUTPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>modelThermo</strong> – Model structure with following additional fields:</p>
+<ul>
+<li><p>modelThermo.lb_reconThermo - lower bound based on thermodynamic estimates,
+where uncertainty is below a threshold</p></li>
+<li><p>modelThermo.ub_reconThermo - upper bound based on thermodynamic estimates,
+where uncertainty is below a threshold</p></li>
+</ul>
+</li>
+<li><p><strong>directions</strong> – a structue of boolean vectors with different directionality
+assignments where some vectors contain subsets of others</p></li>
+</ul>
+</dd>
+</dl>
+<p>Qualitatively assigned direction:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>directions.forwardRecon</p></li>
+<li><p>directions.reverseRecon</p></li>
+<li><p>directions.reversibleRecon</p></li>
+</ul>
+</div></blockquote>
+<p>Qualitatively assigned directions using thermo in preference to
+qualitative assignments but using qualitative assignments where
+thermodynamic data is lacking:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>directions.forwardThermo</p></li>
+<li><p>directions.reverseThermo</p></li>
+<li><p>directions.reversibleThermo</p></li>
+<li><p>directions.uncertainThermo</p></li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+</section>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../experimentalData/index.html" class="btn btn-default float-right" title="Experimentaldata" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../reactantContribution/index.html" class="btn btn-default" title="Reactantcontribution" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017-2021, The COBRA Toolbox developers.
+
+    </p>
+  </div>
+  Built with Sphinx using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../',
+            VERSION:'2.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+    <script type="text/javascript" src="../../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../../_static/sphinx_highlight.js"></script>
+
+  
+
+
+  
+  
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TRCMZL1FKK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TRCMZL1FKK');
+  </script>
+    
+</body>
+</html>

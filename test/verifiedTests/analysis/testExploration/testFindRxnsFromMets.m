@@ -18,6 +18,9 @@ cd(fileDir);
 % load model
 model = getDistributedModel('ecoli_core_model.mat');
 
+% Initialize the test
+fprintf(' -- Running testFindRxnsFromMets ... \n');
+
 % First, find all reactions involved with 3pg
 singleTestMet = model.mets{3};
 involvedReacs = {'Biomass_Ecoli_core_w_GAM';'PGK';'PGM'};
@@ -84,8 +87,8 @@ assert(isequal(forms,res))
 %cleanup
 delete(diaryFile);
 
-
-
+% Print a success message
+fprintf('Done.\n');
 
 % change the directory
 cd(currentDir)

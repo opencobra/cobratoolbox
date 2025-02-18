@@ -1,4 +1,4 @@
-function [exchanges, netProduction, netUptake, growthRates, infeasModels] = microbiotaModelSimulator(resPath, exMets, sampNames, dietFilePath, hostPath, hostBiomassRxn, hostBiomassRxnFlux, numWorkers, rDiet, pDiet, computeProfiles, lowerBMBound, upperBMBound, includeHumanMets, adaptMedium)
+function [exchanges, netProduction, netUptake, growthRates, infeasModels] = microbiotaModelSimulator(resPath, exMets, sampNames, dietFilePath, hostPath, hostBiomassRxn, hostBiomassRxnFlux, numWorkers, rDiet, pDiet, computeProfiles, lowerBMBound, upperBMBound, includeHumanMets, adaptMedium, solver)
 
 % This function is called from the MgPipe pipeline. Its purpose is to apply
 % different diets (according to the user's input) to the microbiota models
@@ -54,7 +54,10 @@ global CBT_LP_SOLVER
 if isempty(CBT_LP_SOLVER)
     initCobraToolbox
 end
-solver = CBT_LP_SOLVER;
+
+if isempty(solver)
+    solver = CBT_LP_SOLVER;
+end
 
 if numWorkers>0 && ~isempty(ver('parallel'))
     % with parallelization
@@ -81,6 +84,8 @@ allDietExch = regexprep(allDietExch,'\[fe\]','\[d\]');
 % define human-derived metabolites present in the gut: primary bile acids, amines, mucins, host glycans
 if includeHumanMets
     HumanMets={'gchola','-10';'tdchola','-10';'tchola','-10';'dgchol','-10';'34dhphe','-10';'5htrp','-10';'Lkynr','-10';'f1a','-1';'gncore1','-1';'gncore2','-1';'dsT_antigen','-1';'sTn_antigen','-1';'core8','-1';'core7','-1';'core5','-1';'core4','-1';'ha','-1';'cspg_a','-1';'cspg_b','-1';'cspg_c','-1';'cspg_d','-1';'cspg_e','-1';'hspg','-1'};
+else
+    HumanMets = {};
 end
 
 %% start the simulations
@@ -269,7 +274,7 @@ else
                     model=changeRxnBounds(model,['Host_' hostBiomassRxn],0.001,'l');
                     model=changeRxnBounds(model,['Host_' hostBiomassRxn],hostBiomassRxnFlux,'u');
                 end
-
+                
                 solution_allOpen = optimizeCbModel(model);
                 % solution_allOpen=solveCobraLPCPLEX(model,2,0,0,[],0);
                 if solution_allOpen.stat==0
@@ -283,13 +288,13 @@ else
                     FecalRxn = AllRxn(FecalInd);
                     FecalRxn=setdiff(FecalRxn,'EX_microbeBiomass[fe]','stable');
                     DietRxn = AllRxn(DietInd);
-
+                    
                     %% computing fluxes on the rich diet
                     if rDiet==1 && computeProfiles
                         % remove exchanges that cannot carry flux
                         FecalRxn=intersect(FecalRxn,allFecalExch);
                         DietRxn=intersect(DietRxn,allDietExch);
-
+                        
                         [minFlux,maxFlux]=guidedSim(model,FecalRxn);
                         minFluxFecal = minFlux;
                         maxFluxFecal = maxFlux;
@@ -306,32 +311,35 @@ else
                             netUptakeTmp{k}{1}{index,3} = minFluxFecal(i,1);
                         end
                     end
-
+                    
                     %% Computing fluxes on the input diet
-
+                    
                     % remove exchanges that cannot carry flux
                     FecalRxn=intersect(FecalRxn,allFecalExch);
                     DietRxn=intersect(DietRxn,allDietExch);
-
+                    
                     model_sd=model;
                     if adaptMedium
                         [diet] = adaptVMHDietToAGORA(loadDiet,'Microbiota');
                     else
                         diet = readInputTableForPipeline(loadDiet);  % load the text file with the diet
- 
+                        
                         for j = 1:length(diet)
                             diet{j, 2} = num2str(-(diet{j, 2}));
                         end
                     end
                     [model_sd] = useDiet(model_sd, diet,0);
-
+                    
                     if includeHumanMets
-                        % add the human metabolites
+                        % add the human metabolites if not already included
+                        % in the diet
                         for l=1:length(HumanMets)
-                            model_sd=changeRxnBounds(model_sd,strcat('Diet_EX_',HumanMets{l},'[d]'),str2num(HumanMets{l,2}),'l');
+                            if isempty(find(strcmp(diet(:,1),['Diet_EX_',HumanMets{l},'[d]'])))
+                                model_sd=changeRxnBounds(model_sd,['Diet_EX_',HumanMets{l},'[d]'],str2num(HumanMets{l,2}),'l');
+                            end
                         end
                     end
-
+                    
                     solution_sDiet=optimizeCbModel(model_sd);
                     % solution_sDiet=solveCobraLPCPLEX(model_sd,2,0,0,[],0);
                     growthRatesTmp{k}{2}=solution_sDiet.f;
@@ -358,64 +366,64 @@ else
                                 netUptakeTmp{k}{2}{index,3} = minFluxFecal(i,1);
                             end
                         end
-
-                        microbiota_model=model_sd;
-                        parsave([resPath filesep 'Diet' filesep 'microbiota_model_diet_' sampleID '.mat'],microbiota_model)
-
-                        %% Using personalized diet not documented in MgPipe and bug checked yet!!!!
-
-                        if pDiet==1
-                            model_pd=model;
-                            [Numbers, Strings] = xlsread(strcat(abundancepath,fileNameDiets));
-                            % diet exchange reactions
-                            DietNames = Strings(2:end,1);
-                            % Diet exchanges for all individuals
-                            Diets(:,k) = cellstr(num2str((Numbers(1:end,k))));
-                            Dietexchanges = {DietNames{:,1} ; Diets{:,k}}';
-                            Dietexchanges = regexprep(Dietexchanges,'EX_','Diet_EX_');
-                            Dietexchanges = regexprep(Dietexchanges,'\(e\)','\[d\]');
-
-                            model_pd = setDietConstraints(model_pd,Dietexchanges);
-
-                            if includeHumanMets
-                                % add the human metabolites
-                                for l=1:length(HumanMets)
-                                    model_pd=changeRxnBounds(model_pd,strcat('Diet_EX_',HumanMets{l},'[d]'),str2num(HumanMets{l,2}),'l');
+                    end
+                    
+                    microbiota_model=model_sd;
+                    parsave([resPath filesep 'Diet' filesep 'microbiota_model_diet_' sampleID '.mat'],microbiota_model)
+                    
+                    %% Using personalized diet not documented in MgPipe and bug checked yet!!!!
+                    
+                    if pDiet==1
+                        model_pd=model;
+                        [Numbers, Strings] = xlsread(strcat(abundancepath,fileNameDiets));
+                        % diet exchange reactions
+                        DietNames = Strings(2:end,1);
+                        % Diet exchanges for all individuals
+                        Diets(:,k) = cellstr(num2str((Numbers(1:end,k))));
+                        Dietexchanges = {DietNames{:,1} ; Diets{:,k}}';
+                        Dietexchanges = regexprep(Dietexchanges,'EX_','Diet_EX_');
+                        Dietexchanges = regexprep(Dietexchanges,'\(e\)','\[d\]');
+                        
+                        model_pd = setDietConstraints(model_pd,Dietexchanges);
+                        
+                        if includeHumanMets
+                            % add the human metabolites
+                            for l=1:length(HumanMets)
+                                model_pd=changeRxnBounds(model_pd,strcat('Diet_EX_',HumanMets{l},'[d]'),str2num(HumanMets{l,2}),'l');
+                            end
+                        end
+                        
+                        solution_pdiet=optimizeCbModel(model_pd);
+                        %solution_pdiet=solveCobraLPCPLEX(model_pd,2,0,0,[],0);
+                        growthRatesTmp{k}{3}=solution_pdiet.f;
+                        if solution_pdiet.stat==0
+                            warning('growthRates detected one or more infeasible models. Please check infeasModels object !')
+                            infeasModelsTmp{k} = model.name;
+                            netProductionTmp{k}{3} = {};
+                            netUptakeTmp{k}{3} = {};
+                        else
+                            if computeProfiles
+                                [minFlux,maxFlux]=guidedSim(model_pd,FecalRxn);
+                                minFluxFecal = minFlux;
+                                maxFluxFecal = maxFlux;
+                                [minFlux,maxFlux]=guidedSim(model_pd,DietRxn);
+                                minFluxDiet = minFlux;
+                                maxFluxDiet = maxFlux;
+                                netProductionTmp{k}{3}=exchanges;
+                                netUptakeTmp{k}{3}=exchanges;
+                                for i =1:length(FecalRxn)
+                                    [truefalse, index] = ismember(FecalRxn(i), exchanges);
+                                    netProductionTmp{k}{3}{index,2} = minFluxDiet(i,1);
+                                    netProductionTmp{k}{3}{index,3} = maxFluxFecal(i,1);
+                                    netUptakeTmp{k}{3}{index,2} = maxFluxDiet(i,1);
+                                    netUptakeTmp{k}{3}{index,3} = minFluxFecal(i,1);
                                 end
                             end
-
-                            solution_pdiet=optimizeCbModel(model_pd);
-                            %solution_pdiet=solveCobraLPCPLEX(model_pd,2,0,0,[],0);
-                            growthRatesTmp{k}{3}=solution_pdiet.f;
-                            if solution_pdiet.stat==0
-                                warning('growthRates detected one or more infeasible models. Please check infeasModels object !')
-                                infeasModelsTmp{k} = model.name;
-                                netProductionTmp{k}{3} = {};
-                                netUptakeTmp{k}{3} = {};
-                            else
-                                if computeProfiles
-                                    [minFlux,maxFlux]=guidedSim(model_pd,FecalRxn);
-                                    minFluxFecal = minFlux;
-                                    maxFluxFecal = maxFlux;
-                                    [minFlux,maxFlux]=guidedSim(model_pd,DietRxn);
-                                    minFluxDiet = minFlux;
-                                    maxFluxDiet = maxFlux;
-                                    netProductionTmp{k}{3}=exchanges;
-                                    netUptakeTmp{k}{3}=exchanges;
-                                    for i =1:length(FecalRxn)
-                                        [truefalse, index] = ismember(FecalRxn(i), exchanges);
-                                        netProductionTmp{k}{3}{index,2} = minFluxDiet(i,1);
-                                        netProductionTmp{k}{3}{index,3} = maxFluxFecal(i,1);
-                                        netUptakeTmp{k}{3}{index,2} = maxFluxDiet(i,1);
-                                        netUptakeTmp{k}{3}{index,3} = minFluxFecal(i,1);
-                                    end
-                                end
-
-                                % save the model with personalized diet
-                                microbiota_model=model_pd;
-                                mkdir(strcat(resPath,'Personalized'))
-                                parsave([resPath filesep 'Personalized' filesep 'microbiota_model_pDiet_' sampleID '.mat'],microbiota_model)
-                            end
+                            
+                            % save the model with personalized diet
+                            microbiota_model=model_pd;
+                            mkdir(strcat(resPath,'Personalized'))
+                            parsave([resPath filesep 'Personalized' filesep 'microbiota_model_pDiet_' sampleID '.mat'],microbiota_model)
                         end
                     end
                 end
@@ -437,14 +445,14 @@ else
                 end
             end
             if ~isempty(growthRatesTmp{k})
-                 if ~isempty(growthRatesTmp{k}{1})
+                if ~isempty(growthRatesTmp{k}{1})
                     growthRates{k+1,2} = growthRatesTmp{k}{1};
                     growthRates{k+1,3} = growthRatesTmp{k}{2};
                     if length(growthRatesTmp{k})>2
                         growthRates{1,4} = 'Personalized diet';
                         growthRates{k+1,4} = growthRatesTmp{k}{3};
                     end
-                 end
+                end
             end
             if ~isempty(infeasModelsTmp) && k <= length(infeasModelsTmp)
                 infeasModels{k,1} = infeasModelsTmp{k};

@@ -16,11 +16,8 @@ function initCobraToolbox(updateToolbox)
 %
 %     initCobraToolbox
 %           -or-
-%     changeCobraSolver('gurobi');
-%     changeCobraSolver('gurobi', 'MILP');
-%     changeCobraSolver('tomlab_cplex', 'QP');
-%     changeCobraSolver('tomlab_cplex', 'MIQP');
-%     changeCbMapOutput('svg');
+%     changeCobraSolver('gurobi','all');
+%     changeCobraSolver('mosek', 'CLP');
 %
 %     Maintained by Ronan M.T. Fleming
 
@@ -31,6 +28,7 @@ global OPT_PROB_TYPES;
 global CBT_LP_SOLVER;
 global CBT_QP_SOLVER;
 global CBT_EP_SOLVER;
+global CBT_CLP_SOLVER;
 global CBT_MILP_SOLVER;
 global CBT_MIQP_SOLVER;
 global CBT_NLP_SOLVER;
@@ -86,7 +84,7 @@ if ~isfield(ENV_VARS, 'printLevel') || ENV_VARS.printLevel
     if usejava('desktop')
         docLink = ['<a href=\"', docLink, '\">', docLink, '</a>'];
     end
-    
+
     c = clock;
     fprintf('\n\n      _____   _____   _____   _____     _____     |\n');
     fprintf('     /  ___| /  _  \\ |  _  \\ |  _  \\   / ___ \\    |   COnstraint-Based Reconstruction and Analysis\n');
@@ -108,7 +106,7 @@ cd(CBTDIR);
 if 0
     % add the external install folder
     addpath(genpath([CBTDIR filesep 'external' filesep 'base' filesep 'install']));
-    
+
     %And the rdir directory
     addpath(genpath([CBTDIR filesep 'external' filesep 'base' filesep 'utilities' filesep 'rdir']));
 else
@@ -139,23 +137,23 @@ end
 if installedGit && exist([CBTDIR filesep '.git'], 'dir') ~= 7
     % initialize the directory
     [status_gitInit, result_gitInit] = system('git init');
-    
+
     if status_gitInit ~= 0
         fprintf(result_gitInit);
         error(' > This directory is not a git repository.\n');
     end
-    
+
     % set the remote origin
     [status_setOrigin, result_setOrigin] = system('git remote add origin https://github.com/opencobra/cobratoolbox.git');
-    
+
     if status_setOrigin ~= 0
         fprintf(result_setOrigin);
         error(' > The remote tracking origin could not be set.');
     end
-    
+
     % check curl
     [status_curl, result_curl] = checkCurlAndRemote();
-    
+
     if status_curl == 0
         % set the remote origin
         [status_fetch, result_fetch] = system(['git fetch origin master ' depthFlag]);
@@ -163,9 +161,9 @@ if installedGit && exist([CBTDIR filesep '.git'], 'dir') ~= 7
             fprintf(result_fetch);
             error(' > The files could not be fetched.');
         end
-        
+
         [status_resetMixed, result_resetMixed] = system('git reset --mixed origin/master');
-        
+
         if status_resetMixed ~= 0
             fprintf(result_resetMixed);
             error(' > The remote tracking origin could not be set.');
@@ -180,7 +178,7 @@ end
 if installedGit
     % temporary disable ssl verification
     [status_setSSLVerify, result_setSSLVerify] = system('git config --global http.sslVerify false');
-    
+
     if status_setSSLVerify ~= 0
         fprintf(strrep(result_setSSLVerify, '\', '\\'));
         warning('Your global git configuration could not be changed.');
@@ -199,13 +197,13 @@ if installedGit
         if ENV_VARS.printLevel
             fprintf(' > Initializing and updating submodules (this may take a while)...');
         end
-        
+
         % Clean the test/models folder
         [status, result] = system('git submodule status models');
         if status == 0 && strcmp(result(1), '-')
             [status, message, messageid] = rmdir([CBTDIR filesep 'test' filesep 'models'], 's');
         end
-        
+
         %Check for changes to submodules
         [status_gitSubmodule, result_gitSubmodule] = system('git submodule foreach git status');
         if status_gitSubmodule==0
@@ -218,32 +216,64 @@ if installedGit
                 end
             end
         end
-        
+
         % Update/initialize submodules
         %By default your submodules repository is in a state called 'detached HEAD'.
         %This means that the checked-out commit -- which is the one that the super-project (core) needs -- is not associated with a local branch name.
         %[status_gitSubmodule, result_gitSubmodule] = system(['git submodule update --init --remote --no-fetch ' depthFlag]);%old
         %[status_gitSubmodule, result_gitSubmodule] = system(['git submodule foreach git submodule update --init --recursive']);% 23/9/21 RF submodules point to master
-        [status_gitSubmodule, result_gitSubmodule] = system('git submodule update --init --recursive --depth 1');% 23/9/21 RF submodules point to master, don't pull in remote changes
+        [status_gitSubmoduleInit, result_gitSubmoduleInit] = system('git submodule update --init --recursive --depth 1');% 23/9/21 RF submodules point to master, don't pull in remote changes
         %[status_gitSubmodule, result_gitSubmodule] = system('git submodule foreach git checkout master');
-        [status_gitSubmodule, result_gitSubmodule] = system('git submodule foreach git checkout master');% 30/9/21 RF submodules point to master, don't pull in remote changes
-        
-        if status_gitSubmodule ~= 0
-            fprintf(strrep(result_gitSubmodule, '\', '\\'));
+        % [status_gitSubmodule, result_gitSubmodule] = system('git submodule foreach git checkout master');% 30/9/21 RF submodules point to master, don't pull in remote changes
+        %
+        if status_gitSubmoduleInit ~= 0
+            fprintf(strrep(result_gitSubmoduleInit, '\', '\\'));
             error('The submodules could not be initialized.');
         end
-        
+
+        % 19/01/2024 FZ Get all submodule path
+        submoduleInfo = evalc('system(''git submodule foreach echo $path'')');
+
+        % Extract submodule paths using regular expressions
+        pattern = 'Entering ''(.+?)''';
+        matches = regexp(submoduleInfo, pattern, 'tokens');
+
+        % Extract submodule paths from the matches
+        submodulePaths = cellfun(@(x) x{1}, matches, 'UniformOutput', false);
+
+        if isempty(submodulePaths)
+            error('Failed to retrieve submodules paths.');
+        end
+
+        for i = 1:length(submodulePaths)
+            % Run Git commands using the full path
+            submodulePath = fullfile(CBTDIR, submodulePaths{i});
+
+            % submodules point to master, don't pull in remote changes
+            [status_gitSubmodule, result_gitSubmodule] = system(['git -C "', submodulePath, '" checkout master']);
+
+            % In the cases where the default branch name is main, submodule
+            % points to main
+            if status_gitSubmodule
+                [status_gitSubmodule, result_gitSubmodule] = system(['git -C "', submodulePath, '" checkout main']);
+            end
+
+            if status_gitSubmodule
+                error('Failed to checkout submodule: %s to its default branch.', submodulePath);
+            end
+        end
+
         % reset each submodule
         %https://github.com/bazelbuild/continuous-integration/issues/727
         %[status_gitReset, result_gitReset] = system('git submodule foreach --recursive git reset --hard');
         %[status_gitReset, result_gitReset] = system('git submodule foreach --recursive "git reset --hard"'); % [opencobra/cobratoolbox] Matlab installation error (#1490)
         %[status_gitReset, result_gitReset] = system('git submodule foreach --recursive --git reset --hard');%old
-        
+
         %     if status_gitReset ~= 0
         %         fprintf(strrep(result_gitReset, '\', '\\'));
         %         warning('The submodules could not be reset.');
         %     end
-        
+
         if ENV_VARS.printLevel
             fprintf(' Done.\n');
         end
@@ -326,18 +356,10 @@ xmlTestFile = [getDistributedModelFolder(xmlTestModel) filesep xmlTestModel];
 % save the userpath
 originalUserPath = path;
 
-%These default tolerances are based on the default values for the Gurobi LP
-%solver. Do not change them without first consulting with other developers.
-%https://www.gurobi.com/documentation/9.0/refman/parameters.html
-% (primal) feasibility tolerance
-changeCobraSolverParams('LP', 'feasTol', 1e-6);
-% (dual) optimality tolerance
-changeCobraSolverParams('LP', 'optTol', 1e-6);
+% requires the solver compatibility to be re-read at each initialisation
+clear isCompatible
 
-% (primal) feasibility tolerance
-changeCobraSolverParams('EP', 'feasTol', 1e-8);
-% (dual) optimality tolerance
-changeCobraSolverParams('EP', 'optTol', 1e-12);
+
 
 % Check that SBML toolbox is installed and accessible
 if ~exist('TranslateSBML', 'file')
@@ -368,36 +390,34 @@ if ENV_VARS.printLevel
 end
 
 % define categories of solvers: LP, MILP, QP, MIQP, NLP
-OPT_PROB_TYPES = {'LP', 'MILP', 'QP', 'MIQP', 'NLP','EP'};
+OPT_PROB_TYPES = {'LP', 'MILP', 'QP', 'MIQP', 'NLP','EP','CLP'};
 
 %Define a set of "use first" solvers, other supported solvers will also be added to the struct.
 %This allows to assign them in any order but keep the most commonly used ones on top of the struct.
 SOLVERS = struct('gurobi',struct(),...
-    'ibm_cplex',struct(),...
-    'tomlab_cplex',struct(),...
-    'glpk',struct(),...
     'mosek',struct(),...
+    'glpk',struct(),...
     'matlab',struct());
 
 % active support - supported solvers
 SOLVERS.gurobi.type = {'LP', 'MILP', 'QP', 'MIQP'};
-SOLVERS.mosek.type = {'LP', 'QP','EP'};
+SOLVERS.mosek.type = {'LP', 'QP','EP','CLP'};
 SOLVERS.glpk.type = {'LP', 'MILP'};
 SOLVERS.pdco.type = {'LP', 'QP','EP'};
 SOLVERS.quadMinos.type = {'LP'};
 SOLVERS.dqqMinos.type = {'LP','QP'};
 SOLVERS.matlab.type = {'LP', 'NLP'};
-% active support of cplex interfaces - supported solvers
-SOLVERS.cplex_direct.type = {'LP', 'MILP', 'QP'};
-SOLVERS.ibm_cplex.type = {'LP', 'MILP', 'QP', 'MIQP'};
-SOLVERS.cplexlp.type = {'LP'};
-SOLVERS.tomlab_cplex.type = {'LP', 'MILP', 'QP', 'MIQP'};
+
 
 % passive support - solver interfaces
 SOLVERS.qpng.type = {'QP'};
 SOLVERS.tomlab_snopt.type = {'NLP'};
 
 % legacy solvers
+SOLVERS.cplex_direct.type = {'LP', 'MILP', 'QP'};
+SOLVERS.ibm_cplex.type = {'LP', 'MILP', 'QP', 'MIQP'};
+SOLVERS.cplexlp.type = {'LP'};
+SOLVERS.tomlab_cplex.type = {'LP', 'MILP', 'QP', 'MIQP'};
 %SOLVERS.gurobi_mex.type = {'LP', 'MILP', 'QP', 'MIQP'};
 %SOLVERS.lindo_old.type = {'LP'};
 %SOLVERS.lindo_legacy.type = {'LP'};
@@ -405,7 +425,6 @@ SOLVERS.lp_solve.type = {'LP'};
 %SOLVERS.opti.type = {'LP', 'MILP', 'QP', 'MIQP', 'NLP'};
 
 % definition of category of solvers with active support
-
 SOLVERS.dqqMinos.categ = 'active';
 SOLVERS.glpk.categ = 'active';
 SOLVERS.gurobi.categ = 'active';
@@ -413,11 +432,6 @@ SOLVERS.matlab.categ = 'active';
 SOLVERS.mosek.categ = 'active';
 SOLVERS.pdco.categ = 'active';
 SOLVERS.quadMinos.categ = 'active';
-
-SOLVERS.cplex_direct.categ = 'active';
-SOLVERS.ibm_cplex.categ = 'active';
-SOLVERS.cplexlp.categ = 'active';
-SOLVERS.tomlab_cplex.categ = 'active';
 
 % definition of category of solvers with passive support
 SOLVERS.qpng.categ = 'passive';
@@ -428,16 +442,21 @@ SOLVERS.tomlab_snopt.categ = 'passive';
 %SOLVERS.lindo_old.categ = 'legacy';
 %SOLVERS.lindo_legacy.categ = 'legacy';
 SOLVERS.lp_solve.categ = 'legacy';
+SOLVERS.cplex_direct.categ = 'legacy';
+SOLVERS.ibm_cplex.categ = 'legacy';
+SOLVERS.cplexlp.categ = 'legacy';
+SOLVERS.tomlab_cplex.categ = 'legacy';
 %SOLVERS.opti.categ = 'legacy';
 
 % definition of categories of solvers
 supportedSolversNames = fieldnames(SOLVERS);
-catSolverNames.LP = {}; 
-catSolverNames.MILP = {}; 
-catSolverNames.QP = {}; 
-catSolverNames.MIQP = {}; 
-catSolverNames.NLP = {}; 
+catSolverNames.LP = {};
+catSolverNames.MILP = {};
+catSolverNames.QP = {};
+catSolverNames.MIQP = {};
+catSolverNames.NLP = {};
 catSolverNames.EP = {};
+catSolverNames.CLP = {};
 for i = 1:length(supportedSolversNames)
     SOLVERS.(supportedSolversNames{i}).installed = false;
     SOLVERS.(supportedSolversNames{i}).working = false;
@@ -447,17 +466,19 @@ for i = 1:length(supportedSolversNames)
     end
 end
 
-% check the installation of the solver
+supportedSolversNames = setdiff(supportedSolversNames,{'cplex_direct','ibm_cplex','cplexlp','tomlab_cplex'});
+
+% check the installation of the solver - except cplex
 for i = 1:length(supportedSolversNames)
     if 0 %set to 1 to debug a new solver
         disp(supportedSolversNames{i})
-        if strcmp(supportedSolversNames{i},'quadMinos')
-            pause(0.1)
+        if strcmp(supportedSolversNames{i},'quadMinos') 
+            disp(supportedSolversNames{i})
         end
     end
     %We will validate all solvers in init. After this, all solvers are
     %checked, whether they actually work and the SOLVERS field is set.
-    [solverOK,solverInstalled] = changeCobraSolver(supportedSolversNames{i},SOLVERS.(supportedSolversNames{i}).type{1},0, 2);
+    [solverOK,solverInstalled] = changeCobraSolver(supportedSolversNames{i},SOLVERS.(supportedSolversNames{i}).type{1},0, 1);
     if strcmp(supportedSolversNames{i},'gurobi') && 0%use fordebugging
         disp(supportedSolversNames{i});
     end
@@ -479,6 +500,7 @@ if ENV_VARS.printLevel
     changeCobraSolver('glpk', 'LP', 0);
     changeCobraSolver('pdco', 'QP', 0);
     changeCobraSolver('mosek', 'EP', 0);
+    changeCobraSolver('mosek', 'CLP', 0);
     changeCobraSolver('matlab', 'NLP', 0);
     for k = 1:length(OPT_PROB_TYPES)
         varName = horzcat(['CBT_', OPT_PROB_TYPES{k}, '_SOLVER']);
@@ -494,8 +516,8 @@ for i = 1:length(supportedSolversNames)
     types = SOLVERS.(supportedSolversNames{i}).type;
     catList{i} = SOLVERS.(supportedSolversNames{i}).categ;
     for j = 1:length(types)
-        if 0 %set to 1 to debug a new solver
-            if strcmp(supportedSolversNames{i},'mosek') && strcmp(types{j},'EP')
+        if 1 %set to 1 to debug a new solver
+            if strcmp(supportedSolversNames{i},'mosek') && strcmp(types{j},'CLP')
                 pause(0.1)
             end
         end
@@ -503,7 +525,7 @@ for i = 1:length(supportedSolversNames)
         if SOLVERS.(supportedSolversNames{i}).installed
             solverStatus(i, k + 1) = 1;
             solverTypeInstalled(k) = solverTypeInstalled(k) + 1;
-            
+
             % set the default MIQP solver based on the solvers that are installed
             if strcmp(supportedSolversNames{i},'gurobi') && strcmp(types{j},'LP')
                 changeCobraSolver('gurobi', 'LP', 0);
@@ -512,6 +534,9 @@ for i = 1:length(supportedSolversNames)
                 changeCobraSolver('gurobi', 'QP', 0);
             end
             if strcmp(supportedSolversNames{i},'mosek') && strcmp(types{j},'EP')
+                changeCobraSolver(supportedSolversNames{i}, types{j}, 0);
+            end
+            if strcmp(supportedSolversNames{i},'mosek') && strcmp(types{j},'CLP')
                 changeCobraSolver(supportedSolversNames{i}, types{j}, 0);
             end
         else
@@ -573,21 +598,21 @@ end
 
 % print out a summary table
 if ENV_VARS.printLevel
-    colFormat = '\t%-12s \t%-13s \t%5s \t%5s \t%5s \t%5s \t%5s \t%5s\n';
+    colFormat = '\t%-12s \t%-13s \t%5s \t%5s \t%5s \t%5s \t%5s \t%5s \t%5s\n';
     sep = '\t------------------------------------------------------------------------------\n';
     fprintf('\n > Summary of available solvers and solver interfaces\n\n');
     if ispc
-        topLineFormat = '\t\t\t\t\tSupport        %5s \t%5s \t%5s \t%5s \t%5s \t%5s\n';
+        topLineFormat = '\t\t\t\t\tSupport        %5s \t%5s \t%5s \t%5s \t%5s \t%5s \t%5s\n';
     else
-        topLineFormat = '\t\t\tSupport \t%5s \t%5s \t%5s \t%5s \t%5s \t%5s\n';
+        topLineFormat = '\t\t\tSupport \t%5s \t%5s \t%5s \t%5s \t%5s \t%5s \t%5s\n';
     end
-    fprintf(topLineFormat, OPT_PROB_TYPES{1}, OPT_PROB_TYPES{2}, OPT_PROB_TYPES{3}, OPT_PROB_TYPES{4}, OPT_PROB_TYPES{5}, OPT_PROB_TYPES{6})
+    fprintf(topLineFormat, OPT_PROB_TYPES{1}, OPT_PROB_TYPES{2}, OPT_PROB_TYPES{3}, OPT_PROB_TYPES{4}, OPT_PROB_TYPES{5}, OPT_PROB_TYPES{6}, OPT_PROB_TYPES{7})
     fprintf(sep);
     for i = 1:length(catList)-2
-        fprintf(colFormat, rowNames{i}, catList{i}, statusTable{1}{i}, statusTable{2}{i}, statusTable{3}{i}, statusTable{4}{i}, statusTable{5}{i}, statusTable{6}{i})
+        fprintf(colFormat, rowNames{i}, catList{i}, statusTable{1}{i}, statusTable{2}{i}, statusTable{3}{i}, statusTable{4}{i}, statusTable{5}{i}, statusTable{6}{i}, statusTable{7}{i})
     end
     fprintf(sep);
-    fprintf(colFormat, rowNames{end}, catList{end}, statusTable{1}{end}, statusTable{2}{end}, statusTable{3}{end}, statusTable{4}{end}, statusTable{5}{end}, statusTable{6}{end})
+    fprintf(colFormat, rowNames{end}, catList{end}, statusTable{1}{end}, statusTable{2}{end}, statusTable{3}{end}, statusTable{4}{end}, statusTable{5}{end}, statusTable{6}{end}, statusTable{7}{end})
     fprintf('\n + Legend: - = not applicable, 0 = solver not compatible or not installed, 1 = solver installed.\n\n\n')
 end
 
@@ -626,7 +651,6 @@ end
 
 % use Gurobi (if installed) as the default solver for LP, QP and MILP problems
 changeCobraSolver('gurobi', 'ALL', 0);
-%changeCobraSolver('ibm_cplex', 'QP', 0); %until problem with gurobi QP sorted
 
 % check if a new update exists
 if installedGit && ENV_VARS.printLevel && status_curl == 0 && contains(result_curl, ' 200') && updateToolbox
@@ -638,13 +662,13 @@ else
 end
 
 if installedGit
-% restore global configuration by unsetting http.sslVerify
-[status_setSSLVerify, result_setSSLVerify] = system('git config --global --unset http.sslVerify');
+    % restore global configuration by unsetting http.sslVerify
+    [status_setSSLVerify, result_setSSLVerify] = system('git config --global --unset http.sslVerify');
 
-if status_setSSLVerify ~= 0
-    fprintf(strrep(result_setSSLVerify, '\', '\\'));
-    warning('Your global git configuration could not be restored.');
-end
+    if status_setSSLVerify ~= 0
+        fprintf(strrep(result_setSSLVerify, '\', '\\'));
+        warning('Your global git configuration could not be restored.');
+    end
 end
 
 % set up the COBRA System path
@@ -716,22 +740,22 @@ searchStr = 'git version';
 index = strfind(result_gitVersion, searchStr);
 
 if status_gitVersion == 0 && ~isempty(index)
-    
+
     % determine the version of git
     versionGitStr = result_gitVersion(length(searchStr)+1:end);
-    
+
     % replace line breaks and white spaces
     versionGitStr = regexprep(versionGitStr(1:7),'\s+','');
-    
+
     % replace the dots in the version number
     tmp = strrep(versionGitStr, '.', '');
-    
+
     % convert the string of the version number to a number
     versionGit = str2num(tmp);
-    
+
     % set the boolean to true
     installed = true;
-    
+
     if ENV_VARS.printLevel
         fprintf([' Done (version: ' versionGitStr ').\n']);
     end
@@ -743,7 +767,7 @@ else
         fprintf(result_gitVersion);
         warning(' > git is not installed.');
         fprintf(' > Please follow the guidelines on how to install git: https://opencobra.github.io/cobratoolbox/docs/requirements.html.\n');
-        
+
     end
     % set the boolean as false (not installed)
     installed = false;

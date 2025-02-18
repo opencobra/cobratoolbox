@@ -47,7 +47,7 @@ if (remFlag)
     listOfAbundantMets = vertcat(temp{:});
 
     % Remove metabolites and unused genes, if any
-    modelEFM = removeMetabolites(modelEFM, listOfAbundantMets, true); 
+    modelEFM = removeMetabolites(modelEFM, listOfAbundantMets, true, 'legacy'); 
 end
 
 % the unused genes in the model do not get removed, so remove mannually

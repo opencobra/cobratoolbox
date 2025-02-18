@@ -143,7 +143,7 @@ for i = startPnt:steps:length(modelList)
             catch
                 warning('fastFVA could not run, so fluxVariability is instead used. Consider installing fastFVA for shorter computation times.');
                 cd(currentDir)
-                solution=solveCobraLP(buildLPproblemFromModel(model));
+                solution=solveCobraLP(buildOptProblemFromModel(model));
                 if solution.stat==0
                     warning('Model infeasible. Could not perform FVA.')
                     ret=NaN;
@@ -285,13 +285,13 @@ end
 fluxSpans(delArray,:)=[];
 
 % minFluxes = secretion
-cell2csv(['Contributions' filesep 'Microbe_Secretion.csv'],minFluxes)
+cell2csv([resultsFolder filesep 'Microbe_Secretion.csv'],minFluxes)
 
 % maxFluxes = uptake
-cell2csv(['Contributions' filesep 'Microbe_Uptake.csv'],maxFluxes)
+cell2csv([resultsFolder filesep 'Microbe_Uptake.csv'],maxFluxes)
 
 % fluxSpans = span between minimal and maximal flux
-cell2csv(['Contributions' filesep 'Microbe_Flux_Spans.csv'],fluxSpans)
+cell2csv([resultsFolder filesep 'Microbe_Flux_Spans.csv'],fluxSpans)
 
 delete('minFluxes.mat')
 delete('maxFluxes.mat')

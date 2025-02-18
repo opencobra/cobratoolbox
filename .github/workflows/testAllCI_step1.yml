@@ -1,0 +1,45 @@
+name: cobratoolboxCI (merge, test, and upload)
+on:
+  pull_request:
+    branches:
+      - develop
+      - master
+    types: [opened, synchronize, reopened]
+  workflow_dispatch:
+    
+permissions:
+  contents: read
+  
+jobs:
+  build:
+    runs-on: self-hosted
+    steps:
+      - name: Check out merged PR code
+        uses: actions/checkout@v4
+
+      - name: Run MATLAB Tests
+        run: |
+          matlab -batch "run('initCobraToolbox.m'); run('test/testAll.m');"
+
+      - name: Convert JUnit to CTRF
+        run: |
+          npx junit-to-ctrf ./testReport.junit.xml -o ./ctrf/ctrf-report.json
+
+      - name: Upload CTRF Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: testReport
+          path: ./ctrf/ctrf-report.json
+          
+      - name: Save PR Number
+        run: echo "PR_NUMBER=${{ github.event.pull_request.number }}" >> $GITHUB_ENV
+
+      - name: Upload PR Number as Artifact
+        run: echo $PR_NUMBER > pr_number.txt
+        shell: bash
+
+      - name: Upload PR Number Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: pr_number
+          path: pr_number.txt

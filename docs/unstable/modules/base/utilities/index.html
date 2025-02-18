@@ -1,0 +1,1421 @@
+
+<!DOCTYPE html>
+
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Utilities — The COBRA Toolbox</title>
+<link href="../../../_static/img/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180"/>
+<link href="../../../_static/img/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png"/>
+<link href="../../../_static/img/favicon-16x16.png" rel="icon" sizes="16x16" type="image/png"/>
+<link color="#5bbad5" href="../../../_static/img/safari-pinned-tab.svg" rel="mask-icon"/>
+<link href="../../../_static/json/manifest.json" rel="manifest"/>
+<meta content="../../../_static/browserconfig.xml" name="msapplication-config"/>
+<meta content="#ffffff" name="theme-color"/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+<script src="../../../_static/js/jquery.easy-autocomplete.min.js" type="text/javascript"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/css/easy-autocomplete.min.css" rel="stylesheet" type="text/css"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
+<link href="../../../_static/css/cobra.css" rel="stylesheet" type="text/css">
+<link href="../../../genindex.html" rel="index" title="Index">
+<link href="../../../search.html" rel="search" title="Search">
+<link href="../../../index.html" rel="top" title="The COBRA Toolbox">
+<link href="../index.html" rel="up" title="Base">
+<link href="../../dataIntegration/index.html" rel="next" title="Data integration">
+<link href="../solvers/varKin/levMarMethods/index.html" rel="prev" title="levMarMethods">
+<script src="../../../_static/js/modernizr.min.js"></script>
+</link></link></link></link></link></link></link></head>
+<!-- Google tag (gtag.js) -->
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-KFJTC6J15L"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-KFJTC6J15L');
+</script>
+
+<body class="wy-body-for-nav" role="document">
+<div class="wy-grid-for-nav">
+<nav class="wy-nav-side" data-toggle="wy-nav-shift">
+<div class="wy-side-scroll">
+<div class="wy-side-nav-search">
+<a href="../../../index.html">
+<img alt="logo" class="logo" src="http://gibbs.unal.edu.co/cobradoc/img/logos/logo.png"/>
+</a>
+<h1>The COBRA Toolbox</h1>
+<div role="search">
+<form action="../../../search.html" class="wy-form" id="rtd-search-form" method="get">
+<input id="simple" name="q" placeholder="Search docs" type="text"/>
+<input name="check_keywords" type="hidden" value="yes"/>
+<input name="area" type="hidden" value="default"/>
+<script>
+    	var options = {
+
+		url: "../../../_static/json/functions.json",
+
+		getValue: "name",
+
+		list: {
+            onKeyEnterEvent: function(item) {
+                    return "_static/../" + item.website_url
+            },
+            maxNumberOfElements: 25,
+			match: {
+					enabled: true,
+			},
+            sort: {
+			    enabled: true
+		    }
+		},
+
+    	template: {
+	    	type: "custom",
+		    method: function(value, item) {
+                return "<span><a href='../../../search.html?q=" + item.name + "&check_keywords=yes&area=default'>" + value + "</a>" + "<a href='../../../_static/../" + item.website_url + "' ><img src='../../../_static/link.svg'/></a></span>";
+		    }
+	    },
+
+		theme: "square"
+
+	};
+
+	$("#simple").easyAutocomplete(options);
+
+
+    </script>
+</form>
+</div>
+</div>
+<div aria-label="main navigation" class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation">
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../index.html">Home</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Functions</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../analysis/index.html">Analysis</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Base</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../install/index.html">Install</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../io/index.html">IO</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../solvers/index.html">Solvers</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Utilities</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../dataIntegration/index.html">Data integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../design/index.html">Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reconstruction/index.html">Reconstruction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../visualization/index.html">Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../cite.html">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../support.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../funding.html">Funding</a></li>
+</ul>
+</div>
+</div>
+</nav>
+<section class="wy-nav-content-wrap" data-toggle="wy-nav-shift">
+<nav aria-label="top navigation" class="wy-nav-top" role="navigation">
+<i class="fa fa-bars" data-toggle="wy-nav-top"></i>
+<a href="../../../index.html">The COBRA Toolbox</a>
+</nav>
+<div class="wy-nav-content">
+<div class="rst-content">
+<div aria-label="breadcrumbs navigation" role="navigation">
+<ul class="wy-breadcrumbs">
+<li><a href="../../../contents.html">Docs</a> »</li>
+<li><a href="../../index.html">Functions</a> »</li>
+<li><a href="../index.html">Base</a> »</li>
+<li>Utilities</li>
+<li class="wy-breadcrumbs-aside">
+</li>
+</ul>
+<hr/>
+</div>
+<div class="document" itemscope="itemscope" itemtype="https://schema.org/Article" role="main">
+<div itemprop="articleBody">
+<div class="section" id="utilities">
+<span id="id1"></span><h1>Utilities<a class="headerlink" href="#utilities" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-src.base.io.utilities"></span><dl class="function">
+<dt id="src.base.io.utilities.buildRxnGeneMat">
+<code class="descname">buildRxnGeneMat</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/base/io/utilities/buildRxnGeneMat.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.utilities.buildRxnGeneMat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Build the rxnGeneMat based on the given models rules field</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>model = buildRxnGeneMat(model)</div></blockquote>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> –
+Model to build the rxnGeneMat. Must have the rules field,
+otherwise the rxnGeneMat is empty</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> –
+The Model including a rxnGeneMat field.</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+<dl class="function">
+<dt id="src.base.io.utilities.convertOldStyleModel">
+<code class="descname">convertOldStyleModel</code><span class="sig-paren">(</span><em>model</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/base/io/utilities/convertOldStyleModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.utilities.convertOldStyleModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts several old fields to their replacement.</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>model = convertOldStyleModel(model)
+model = convertOldStyleModel(model, printLevel)</div></blockquote>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> –
+a COBRA Model (potentially with old field names)</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>printLevel</strong> –
+indicates whether warnings and messages are given (default, 1).</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> –
+a COBRA model with old field names replaced by new ones and
+duplicated fields merged.</li>
+</ul>
+</div></blockquote>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>There are multiple fields which were used inconsistently in the course
+of the COBRA toolbox. This function provides a simple way to get these
+model fields converted to the current names. In addition, some fields
+were commonly not present in older models and are now checked in many
+newer models. These fields are initialized by this function, with
+default values, which do not alter any previous behaviour.
+The model fields changed are as follows:
+‘confidenceScores’   -&gt;      ‘rxnConfidenceScores’
+‘metCharge’          -&gt;      ‘metCharges’
+‘ecNumbers’          -&gt;      ‘rxnECNumbers’
+‘KEGGID’     -&gt;      ‘metKEGGID’
+‘metKeggID’          -&gt;      ‘metKEGGID’
+‘rxnKeggID’          -&gt;      ‘rxnKEGGID’
+‘metInchiString’     -&gt;      ‘metInChIString’
+‘metSmile’   -&gt;      ‘metSmiles’
+‘metHMDB’    -&gt;      ‘metHMDBID’
+If both an old and a new field is present, data from old fields is
+merged into new fields, with the data of new fields taking precedence
+(i.e. if not data is present in the new field at any position, the old
+field data replaces it, otherwise the new field data is kept.
+Furthermore, fields deemed to be required for Flux Balance analysis are generated if not present:
+osenseStr: Objective Sense.</p>
+<blockquote>
+<div>By default this field is initialized as ‘max’. If osense is
+present, a -1 will be translates as ‘max’ and a 1 will be
+translated as ‘min’</div></blockquote>
+<dl class="docutils">
+<dt>csense: Constraint sense.</dt>
+<dd>This field indicates the sense of the b matrix, i.e. if b
+stands for lower than (‘L’) or greater than (‘G’) or equality constraints (‘E’). It
+is initialized as a char vector of ‘E’ with the same size as
+model.mets.</dd>
+</dl>
+<p>genes:  A Field for genes present in the model.
+rules:  The rules field is a logical representation of the GPR rules,</p>
+<blockquote>
+<div>and used in multiple functions. If the grRules field is
+present, this field will be initialized according to grRules,
+otherwise it will be initialized as a cell array of the ame size as model.rxns
+with empty strings in each cell.</div></blockquote>
+<dl class="docutils">
+<dt>rev:    This field was deprecated and is therefore removed, for</dt>
+<dd>reversibility determination the toolbox relies on the lower
+bounds of the reactions.</dd>
+</dl>
+<p>The following fields might be altered to adhere to the definitions in
+the COBRAModelFields documentation:
+rxnConfidenceScores:  This field is defined as a number betwen 0 and 4</p>
+<blockquote>
+<div>indicating the confidence of a reaction. It is
+therefore assumed to be a double vector in COBRA
+functions. Some old models provide this as
+Strings, or a numeric cell array. Those fields
+are converted to double vectors, with the data
+retained.</div></blockquote>
+<dl class="last docutils">
+<dt>Fields with Cell arrays:  Some older models have defined cell array fields</dt>
+<dd>which have individual cells which are
+numeric (i.e. empty []). These empty cells
+are replaced by ‘’ for those fields, which
+are defined in the COBRAModelFields file as
+having cell arrays with chars.</dd>
+</dl>
+</div>
+</dd></dl>
+<dl class="function">
+<dt id="src.base.io.utilities.createEmptyFields">
+<code class="descname">createEmptyFields</code><span class="sig-paren">(</span><em>model</em>, <em>fieldNames</em>, <em>fieldDefinitions</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/base/io/utilities/createEmptyFields.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.utilities.createEmptyFields" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create the specified model field with its default values. Works only for
+fields defined in the toolbox if fieldDefinitions are not supplied.</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>model = createEmptyFields(model,fieldName, fieldDefinitions)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> –
+The model to add a field to</li>
+<li><strong>fieldNames</strong> –
+The names of the fields to add.</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>fieldDefinitions</strong> –
+The Specifications of the field. Only necessary
+if a field which is not defined yet should be
+added.</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> –
+The original model struct with the specified
+field added.</li>
+</ul>
+</div></blockquote>
+<dl class="docutils">
+<dt>Author:</dt>
+<dd>Thomas Pfau Nov 2017</dd>
+</dl>
+</dd></dl>
+<dl class="function">
+<dt id="src.base.io.utilities.creategrRulesField">
+<code class="descname">creategrRulesField</code><span class="sig-paren">(</span><em>model</em>, <em>positions</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/base/io/utilities/creategrRulesField.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.utilities.creategrRulesField" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates the grRules optional model field from the required rules and gene fields.</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>modelWithField = creategrRulesField(model, positions)</div></blockquote>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> –
+The COBRA Model structure to generate the grRules Field for
+an existing grRules field will be overwritten</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>positions</strong> –
+The positions to update. Can be supplied either as
+logical array, double indices, or reaction names (Default: model.rxns)</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> –
+The Output model with a grRules field</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+<dl class="function">
+<dt id="src.base.io.utilities.generateFieldDescriptionFile">
+<code class="descname">generateFieldDescriptionFile</code><span class="sig-paren">(</span><em>FileName</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/base/io/utilities/generateFieldDescriptionFile.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.utilities.generateFieldDescriptionFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates the ModelFields.md file describing the Required and Optional Fields of a COBRA model.</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>FileString = generateFieldDescriptionFile(FileName)</div></blockquote>
+<p><strong>Optional input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>FileName</strong> –
+The FileName to write to. (default [CBTDIR filesep ‘docs’ filesep ‘notes’ filesep ‘COBRAModelFields.md’])</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>FileString</strong> –
+The string written to the specified filename (or the default file)</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+<dl class="function">
+<dt id="src.base.io.utilities.getDatabaseMappings">
+<code class="descname">getDatabaseMappings</code><span class="sig-paren">(</span><em>field</em>, <em>qualifiers</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/base/io/utilities/getDatabaseMappings.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.utilities.getDatabaseMappings" title="Permalink to this definition">¶</a></dt>
+<dd><p>getDataBaseMappings returns information on known mappings of database
+entries to model field names, along with additional information about the
+fields.</p>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>field</strong> –
+the basic model field to extract mappings for (e.g. ‘met’, ‘gene’, ‘rxn’)</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>qualifiers</strong> –
+the qualifiers to restrict the selection to.
+These have to be part of the bioql modifiers
+definition (e.g. is, isDescribedBy, isEncodedBy
+etc) providing ‘all’ will return all associated
+Database mappings. Default: ‘all’</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>returnedmappings</strong> –
+The mappings known for the given field. The
+structure is:
+X{:,1} : the database ID (in identifiers.org/miriam annotation)
+X{:,2} : The qualifier associated with the DB
+X{:,3} : The model field associated with this db
+X{:,4} : The association field (met/rxn/gene/prot/comp)
+X{:,5} : The specified regular expression the identifier has to adhere to.
+X{:,6} : The type of the qualifier (modelQualifier or bioQualifier)</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+<dl class="function">
+<dt id="src.base.io.utilities.getDefaultCompartmentSymbols">
+<code class="descname">getDefaultCompartmentSymbols</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/base/io/utilities/getDefaultCompartmentSymbols.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.utilities.getDefaultCompartmentSymbols" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the default compartment symbol and
+name lists to use for model IO or compartment matching
+<strong>Usage</strong></p>
+<blockquote>
+<div>[defaultCompartmentSymbolList, defaultCompartmentNameList] = getDefaultCompartmentSymbols()</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>defaultCompartmentSymbolList</strong> –
+a List of abbreviations of
+compartment names</li>
+<li><strong>defaultCompartmentNameList</strong> –
+a List of names of compartments where element <cite>i</cite> corresponds
+to the <cite>i</cite>-th abbreviation in <cite>defaultCompartmentSymbolList</cite></li>
+</ul>
+</div></blockquote>
+</dd></dl>
+<dl class="function">
+<dt id="src.base.io.utilities.getDefaultCompartments">
+<code class="descname">getDefaultCompartments</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/base/io/utilities/getDefaultCompartments.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.utilities.getDefaultCompartments" title="Permalink to this definition">¶</a></dt>
+<dd><p>GETDEFAULTCOMPARTMENTS returns the default compartment Symbols and default Compartments</p>
+<blockquote>
+<div>USAGE:  [ compSymbolList, compNameList  ] = getDefaultCompartments( )</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>compSymbolList</strong> –
+Default symbols of compartments</li>
+<li><strong>compNameList</strong> –
+Names of the default compartments.</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+<dl class="function">
+<dt id="src.base.io.utilities.getDefinedFieldProperties">
+<code class="descname">getDefinedFieldProperties</code><span class="sig-paren">(</span><em>varargin</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/base/io/utilities/getDefinedFieldProperties.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.utilities.getDefinedFieldProperties" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the fields defined in the COBRA Toolbox along with checks for their properties</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>[fields] = getDefinedFieldProperties(varargin)</div></blockquote>
+<p><strong>Optional input</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>varargin</strong> –
+The following parameter/value pairs can be used:
+* Descriptions:         Whether to obtain the field descriptions (default = false).
+* SpecificFields:       Indication whether to only obtain definitions for a</p>
+<blockquote>
+<div><p>specific set of fields (default all).</p>
+</div></blockquote>
+<ul class="simple">
+<li>DataBaseFields:       Get the fields with specified Database relations (true, if requested).</li>
+</ul>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>fields</strong> –
+All fields and their properties as requested, if
+fields without definitions are requested, they
+will not be contained in the result.</li>
+</ul>
+</div></blockquote>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>The optional inputs are to be provided as parameter/value pairs.
+The returned Cell arrays are structured as follows:
+Default:</p>
+<blockquote>
+<div><ul class="simple">
+<li>X{:,1} are the field names</li>
+<li>X{:,2} are the associated fields for the first dimension (i.e.
+size(model.(X{A,1}),1) == size(model.(X{A,2}),1) has to evaluate
+to true</li>
+<li>X{:,3} are the associated fields for the second dimension (i.e.
+size(model.(X{A,1}),2) == size(model.(X{A,2}),1) has to evaluate
+to true</li>
+<li>X{:,4} are evaluateable statements, which have to evaluate to true for
+the model to be valid, these mainly check the content types.</li>
+<li>X{:,5} are default values (or evaluateable strings for cell
+arrays)</li>
+</ul>
+</div></blockquote>
+<p>E.g.</p>
+<blockquote>
+<div><p><cite>x = model.(X{A, 1})</cite>;</p>
+<p><cite>eval(X{A, 4})</cite> has to return 1</p>
+</div></blockquote>
+<p>DataBaseFields:</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li>X{:, 1} - database id</li>
+<li>X{:, 2} - qualifier</li>
+<li>X{:, 3} - model Field</li>
+<li>X{:, 4} - model field reference (without s)</li>
+<li>X{:, 5} - Patterns for ids from the respecive database.</li>
+</ul>
+</div></blockquote>
+</div>
+</dd></dl>
+<dl class="function">
+<dt id="src.base.io.utilities.getDistributedModel">
+<code class="descname">getDistributedModel</code><span class="sig-paren">(</span><em>modelName</em>, <em>description</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/base/io/utilities/getDistributedModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.utilities.getDistributedModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads the indicated model from the models submodule.</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>model = getDistributedModel(modelName)</div></blockquote>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>modelName</strong> –
+The name of the model including the file extension</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>description</strong> –
+If the model description should be set to a
+specific value</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> –
+The loaded model from the models submodule (i.e.
+those distributed for the test suite)</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+<dl class="function">
+<dt id="src.base.io.utilities.getDistributedModelFolder">
+<code class="descname">getDistributedModelFolder</code><span class="sig-paren">(</span><em>modelName</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/base/io/utilities/getDistributedModelFolder.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.utilities.getDistributedModelFolder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Identifies the folder a distributed model is located in.
+This function only works with models which are part of the models</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>modelDir = getDistributedModelFolder(modelName)</div></blockquote>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>modelName</strong> –
+The name of the model including the file extension</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>modelDir</strong> –
+The folder the model should be located in.</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+<dl class="function">
+<dt id="src.base.io.utilities.getMultiDimensionFields">
+<code class="descname">getMultiDimensionFields</code><span class="sig-paren">(</span><em>fieldDefinitions</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/base/io/utilities/getMultiDimensionFields.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.utilities.getMultiDimensionFields" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get those fields which have multiple dimensions depending on another
+field from the definitions</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>[fieldNames,firstDim,secondDim] = getMultiDimensionFields(fieldDefinitions)</div></blockquote>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>fieldDefinitions</strong> –
+Field Definitilons as obtained from
+getDefinedFieldProperties();</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>fieldNames</strong> –
+The names of the multi-dimensional fields</li>
+<li><strong>firstDim</strong> –
+the referenced field in the first dimension</li>
+<li><strong>secondDim</strong> –
+the referenced field in the second dimension</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+<dl class="function">
+<dt id="src.base.io.utilities.initFBAFields">
+<code class="descname">initFBAFields</code><span class="sig-paren">(</span><em>model</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/base/io/utilities/initFBAFields.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.utilities.initFBAFields" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function initializes all fields in a model that are required for
+downstream FBA analysis. It does so if and only if a Stoichiometric
+matrix S is provided.</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>model = convertOldStyleModel(model, printLevel)</div></blockquote>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> –
+a COBRA Model structure with at least the model.S field.
+All fields already present are retained and absent
+fields are initialized with their defaults.</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>printLevel</strong> –
+indicates whether warnings and messages are given (default, 1).</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> –
+a COBRA model struct with the following fields:
+.S (same as input)
+.rxns (default: a vector of strings R1 .. R size(S,2)
+.mets (default: a vector of strings M1 .. M size(S,1)
+.lb   (default: -1000 * ones(size(S,2),1) );
+.ub   (default: 1000 * ones(size(S,2),1) );
+.genes   (default: cell(0,1));
+.rules   (default: repmat({‘’},size(S,2),1))
+.osense (default: -1)
+.csense (default: a char vector of ‘E’ of the size size(S,1) x 1)</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+<dl class="function">
+<dt id="src.base.io.utilities.loadIdentifiedModel">
+<code class="descname">loadIdentifiedModel</code><span class="sig-paren">(</span><em>filename</em>, <em>directory</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/base/io/utilities/loadIdentifiedModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.utilities.loadIdentifiedModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load a single cobra toolbox model saved as a filename.mat file, then
+rename the model structure ‘model’ while retaining the original name of
+the model structure in model.modelID</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>model = loadIdentifiedModel(filename, directory)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>filename</strong> –
+name of the .mat file containing cobra toolbox model structure</li>
+<li><strong>directory</strong> –
+directory where the .mat file resides.</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> –
+COBRA model structure</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+<dl class="function">
+<dt id="src.base.io.utilities.mergeTextDataAndData">
+<code class="descname">mergeTextDataAndData</code><span class="sig-paren">(</span><em>textdata</em>, <em>data</em>, <em>headings</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/base/io/utilities/mergeTextDataAndData.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.utilities.mergeTextDataAndData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Merges textdata and data imported from .xls file assuming that the first
+row of textdata is column headings</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>mergedData = mergeTextDataAndData(textdata, data, headings)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>textdata</strong> –
+cell array from .xls import</li>
+<li><strong>data</strong> –
+matrix with numeric data from .xls import</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>headings</strong> –
+{(1), 0}, zero if no column headings</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>mergedData</strong> –
+merged cell array with all data from .xls import</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+<dl class="function">
+<dt id="src.base.io.utilities.model2xls">
+<code class="descname">model2xls</code><span class="sig-paren">(</span><em>model</em>, <em>fileName</em>, <em>compSymbols</em>, <em>compNames</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/base/io/utilities/model2xls.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.utilities.model2xls" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes a model to and Excel spreadsheet.</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>model2xls(model, fileName, compSymbols, compNames)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> –
+A COBRA model struct</li>
+<li><strong>fileName</strong> –
+filename with an xsl extension.</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>compSymbols</strong> –
+Symbols of compartments used in metabolite ids</li>
+<li><strong>compNames</strong> –
+Names of the compartments identified by the symbols</li>
+</ul>
+</div></blockquote>
+<p><strong>Example</strong></p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>'Reaction List' tab headers (case sensitive):
+
+  * Required:
+
+    * 'Abbreviation':      HEX1
+    * 'Reaction':          `1 atp[c] + 1 glc-D[c] --&gt; 1 adp[c] + 1 g6p[c] + 1 h[c]`
+    * 'GPR':               (3098.3) or (80201.1) or (2645.3) or ...
+  * Optional:
+
+    * 'Description':       Hexokinase
+    * 'Subsystem':         Glycolysis
+    * 'Reversible':        0 (false) or 1 (true)
+    * 'Lower bound':       0
+    * 'Upper bound':       1000
+    * 'Objective':         0/1
+    * 'Confidence Score':  0,1,2,3,4
+    * 'EC Number':         2.7.1.1;2.7.1.2
+    * 'KEGG ID':           R000001
+    * 'Notes':             Reaction also associated with EC 2.7.1.2
+    * 'References':        PMID:2043117;PMID:7150652,...
+
+'Metabolite List' tab: Required headers (case sensitive): (needs to be complete list of metabolites,
+i.e., if a metabolite appears in multiple compartments it has to be represented in multiple rows.
+Abbreviations need to overlap with use in Reaction List
+
+  * Required
+
+    * 'Abbreviation':      glc-D or glc-D[c]
+  * Optional:
+
+    * 'Charged formula' or formula:   C6H12O6
+    * 'Charge':                       0
+    * 'Compartment':                  cytosol
+    * 'Description':                  D-glucose
+    * 'KEGG ID':                      C00031
+    * 'PubChem ID':                   5793
+    * 'ChEBI ID':                     4167
+    * 'InChI string':                 InChI=1/C6H12O6/c7-1-2-3(8)4(9)5(10)6(11)12-2/h2-11H,1H2/t2-,3-,4+,5-,6?/m1/s1
+    * 'SMILES':                       OC[C@H]1OC(O)[C@H](O)[C@@H](O)[C@@H]1O
+    * 'HMDB ID':                      HMDB00122
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Optional inputs may be required for input on unix machines.</p>
+</div>
+</dd></dl>
+<dl class="function">
+<dt id="src.base.io.utilities.outputHypergraph">
+<code class="descname">outputHypergraph</code><span class="sig-paren">(</span><em>model</em>, <em>weights</em>, <em>fileName</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/base/io/utilities/outputHypergraph.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.utilities.outputHypergraph" title="Permalink to this definition">¶</a></dt>
+<dd><p>Outputs to a file a metabolic reaction network hypergraph with
+weights in reactions
+Output format: <cite>Rxn</cite> <cite>metabolite_1</cite> <cite>metabolite_2</cite> ... <cite>metabolite_n</cite> <cite>rxnWeight</cite></p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>outputHypergraph(model, weights, fileName)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> –
+Standard model structure</li>
+<li><strong>weights</strong> –
+Weights for each reaction</li>
+<li><strong>fileName</strong> –
+Output filename</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+<dl class="function">
+<dt id="src.base.io.utilities.outputNetworkCytoscape">
+<code class="descname">outputNetworkCytoscape</code><span class="sig-paren">(</span><em>model</em>, <em>fileBase</em>, <em>rxnList</em>, <em>rxnData</em>, <em>metList</em>, <em>metData</em>, <em>metDegreeThr</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/base/io/utilities/outputNetworkCytoscape.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.utilities.outputNetworkCytoscape" title="Permalink to this definition">¶</a></dt>
+<dd><p>Outputs a metabolic network in Cytoscape format</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>notShownMets = outputNetworkCytoscape(model, fileBase, rxnList, rxnData, metList, metData, metDegreeThr)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> –
+COBRA metabolic network model</li>
+<li><strong>fileBase</strong> –
+Base file name (without extensions) for Cytoscape input
+files that are generated by the function</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>rxnList</strong> –
+List of reactions that will included in the output
+(Default = all reactions)</li>
+<li><strong>rxnData</strong> –
+Vector or matrix of data or cell array of strings to output for each
+reaction in <cite>rxnList</cite> (Default = empty)</li>
+<li><strong>metList</strong> –
+List of metabolites that will be included in the output
+(Default = all metabolites)</li>
+<li><strong>metData</strong> –
+Vector or matrix of data or cell array of strings to output
+for each metabolite in <cite>metList</cite> (Default = empty)</li>
+<li><strong>metDegreeThr</strong> –
+Maximum degree of metabolites that will be included in the
+output. Allows filtering out highly connected metabolites
+such as ‘h2o’ or ‘atp’ (Default = no filtering)</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>notShownMets</strong> –
+Metabolites that are not included in the output</li>
+</ul>
+</div></blockquote>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Outputs three to five files:</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li>[baseName].sif - Basic network structure file containing
+reaction-metabolite and gene-reaction
+(if provided in model) associations</li>
+<li>[baseName]_nodeType.noa - Describes the node types (gene, rxn, met) in the network</li>
+<li>[baseName]_nodeComp.noa - Describes the compartments for metabolites</li>
+<li>[baseName]_subSys.noa - Describes the subsystems for reactions (if provided)</li>
+<li>[baseName]_rxnMetData.noa - Reaction and metabolite data (if provided)</li>
+</ul>
+</div></blockquote>
+</div>
+</dd></dl>
+<dl class="function">
+<dt id="src.base.io.utilities.outputNetworkOmix">
+<code class="descname">outputNetworkOmix</code><span class="sig-paren">(</span><em>model</em>, <em>rxnBool</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/base/io/utilities/outputNetworkOmix.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.utilities.outputNetworkOmix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Outputs a text file for import into omix
+<a class="reference external" href="http://www.13cflux.net/omix/">http://www.13cflux.net/omix/</a></p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>outputNetworkOmix(model, rxnBool)</div></blockquote>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> –
+COBRA model structure</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>rxnBool</strong> –
+boolean vector with 1 for each reaction to be exported</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+<dl class="function">
+<dt id="src.base.io.utilities.parseSBMLAnnotationField">
+<code class="descname">parseSBMLAnnotationField</code><span class="sig-paren">(</span><em>annotationField</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/base/io/utilities/parseSBMLAnnotationField.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.utilities.parseSBMLAnnotationField" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses the annotation field of an SBML file to extract metabolite information associations</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>[metCHEBI, metHMDB, metKEGG, metPubChem, metInChI] = parseSBMLAnnotationField(annotationField)</div></blockquote>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>annotationField</strong> –
+annotation filed of an SBML fileBase</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>metCHEBI</strong> –
+Formula for each metabolite in the ChEBI format</li>
+<li><strong>metHMDB</strong> –
+Formula for each metabolite in the HMDB format</li>
+<li><strong>metKEGG</strong> –
+Formula for each metabolite in the KEGG format</li>
+<li><strong>metPubChem</strong> –
+PubChem ID of each metabolite</li>
+<li><strong>metInChI</strong> –
+Formula for each metabolite in the InCHI strings format</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+<dl class="function">
+<dt id="src.base.io.utilities.parseSBMLAnnotationFieldRxn">
+<code class="descname">parseSBMLAnnotationFieldRxn</code><span class="sig-paren">(</span><em>annotationField</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/base/io/utilities/parseSBMLAnnotationFieldRxn.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.utilities.parseSBMLAnnotationFieldRxn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses the annotation field of an SBML file to extract reaction information associations</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>[rxnEC, rxnReference] = parseSBMLAnnotationFieldRxn(annotationField)</div></blockquote>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>annotationField</strong> –
+annotation filed of an SBML fileBase</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>rxnEC,rxnReference</strong> –
+only one of them is not empty depending on <cite>annotationField</cite></li>
+</ul>
+</div></blockquote>
+</dd></dl>
+<dl class="function">
+<dt id="src.base.io.utilities.parseSBMLNotesField">
+<code class="descname">parseSBMLNotesField</code><span class="sig-paren">(</span><em>notesField</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/base/io/utilities/parseSBMLNotesField.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.utilities.parseSBMLNotesField" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses the notes field of an SBML file to extract <cite>gene-rxn</cite> associations</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>[subSystem, grRule, formula, confidenceScore, citation, comment, ecNumber, charge] = parseSBMLNotesField(notesField)</div></blockquote>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>notesField</strong> –
+notes field of SBML file</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>subSystem</strong> –
+subSystem assignment for each reaction</li>
+<li><strong>grRule</strong> –
+a string representation of the GPR rules defined in a readable format</li>
+<li><strong>formula</strong> –
+elementa formula</li>
+<li><strong>confidenceScore</strong> –
+confidence scores for reaction presence</li>
+<li><strong>citation</strong> –
+joins strings with authors</li>
+<li><strong>comment</strong> –
+comments and notes</li>
+<li><strong>ecNumber</strong> –
+E.C. number for each reaction</li>
+<li><strong>charge</strong> –
+charge of the respective metabolite</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+<dl class="function">
+<dt id="src.base.io.utilities.planariseModel">
+<code class="descname">planariseModel</code><span class="sig-paren">(</span><em>model</em>, <em>replicateMetBool</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/base/io/utilities/planariseModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.utilities.planariseModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts model into a form that is suitable for display as a planar hypergraph</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>[modelPlane, replicateMetBool, metData, rxnData] = planariseModel(model, replicateMetBool)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> –
+model structure</li>
+<li><strong>replicateMetBool</strong> –
+<cite>met</cite> x 1 boolean vector of metabolites to be replicated for each reaction</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>modelPlane</strong> –
+structure with fields:<ul>
+<li>.S - matrix</li>
+<li>.mets - metabolites</li>
+<li>.origMets - original metabolites</li>
+</ul>
+</li>
+<li><strong>replicateMetBool</strong> –
+as in input</li>
+<li><strong>metData</strong> –
+data of metabolites</li>
+<li><strong>rxnData</strong> –
+data of reactions</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+<dl class="function">
+<dt id="src.base.io.utilities.readBooleanRegModel">
+<code class="descname">readBooleanRegModel</code><span class="sig-paren">(</span><em>metModel</em>, <em>fileName</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/base/io/utilities/readBooleanRegModel.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.utilities.readBooleanRegModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads Boolean regulatory network model</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>regModel = readBooleanRegModel(metModel, fileName)</div></blockquote>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>metModel</strong> –
+model</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>fileName</strong> –
+file name</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>regModel</strong> –
+model containing the following fields:<ul>
+<li>.mets - Metabolite rules:<ul>
+<li>name - Metabolite/pool name (internal to the reg network model)</li>
+<li>rule - Metabolite ‘activation’ rule</li>
+<li>type - Metabolite type (extra/intracellular/pool)</li>
+<li>excInd - Exchange flux indices corresponding to extracellular
+metabolites</li>
+<li>icmRules - Intracellular metabolite ‘activation’ rules (based on
+a flux vector - <cite>fluxVector</cite>)</li>
+<li>pool - Pool components</li>
+</ul>
+</li>
+<li>.regs - Regulator rules<ul>
+<li>name - Regulator name</li>
+<li>rule - Regulator rule</li>
+<li>comp - Regulator rule components (i.e. metabolites or other
+regulators that affect the state of this regulator)</li>
+<li>ruleParsed - Rule in parsed format (based on metabolite state -
+<cite>metState</cite>, regulator state - <cite>regState</cite>)</li>
+</ul>
+</li>
+<li>.tars - Target rules<ul>
+<li>name - Target name</li>
+<li>rule - Target rule</li>
+<li>comp - Target rule components (i.e. metabolites or other
+regulators that affect the state of this regulator)</li>
+<li>ruleParsed - Rule in parsed format (based on metabolite state -
+<cite>metState</cite>, regulator state - <cite>regState</cite>)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+<dl class="function">
+<dt id="src.base.io.utilities.readSBML">
+<code class="descname">readSBML</code><span class="sig-paren">(</span><em>fileName</em>, <em>defaultBound</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/base/io/utilities/readSBML.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.utilities.readSBML" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads in a SBML format model as a COBRA matlab structure</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>model = readSBML(fileName, defaultBound)</div></blockquote>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>fileName</strong> –
+File name for file to read in</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>defaultBound</strong> –
+Maximum bound for model (Default = 1000)</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> –
+COBRA model structure</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+<dl class="function">
+<dt id="src.base.io.utilities.readSimPhenyCMPD">
+<code class="descname">readSimPhenyCMPD</code><span class="sig-paren">(</span><em>fileName</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/base/io/utilities/readSimPhenyCMPD.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.utilities.readSimPhenyCMPD" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads SimPheny compound file obtained from admin console</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>[metInfo, mets] = readSimPhenyCMPD(fileName)</div></blockquote>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>fileName</strong> –
+SimPheny compound file name</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>metInfo</strong> –
+Structure contaning data on metabolites</li>
+<li><strong>mets</strong> –
+List of metabolites</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+<dl class="function">
+<dt id="src.base.io.utilities.readSimPhenyGPR">
+<code class="descname">readSimPhenyGPR</code><span class="sig-paren">(</span><em>fileName</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/base/io/utilities/readSimPhenyGPR.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.utilities.readSimPhenyGPR" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads SimPheny gene-protein-reaction association file obtained from admin console</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>[rxnInfo, rxns, allGenes] = readSimPhenyGPR(fileName)</div></blockquote>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>fileName</strong> –
+SimPheny GPR file</li>
+</ul>
+</div></blockquote>
+<p><strong>Outputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>rxnInfo</strong> –
+Structure containing data for each reaction</li>
+<li><strong>rxns</strong> –
+List of reactions</li>
+<li><strong>allGenes</strong> –
+List of all genes</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+<dl class="function">
+<dt id="src.base.io.utilities.readSimPhenyGprText">
+<code class="descname">readSimPhenyGprText</code><span class="sig-paren">(</span><em>file</em>, <em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/base/io/utilities/readSimPhenyGprText.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.utilities.readSimPhenyGprText" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses SimPheny GPRA’s in text format into a rxn x gene association matrix</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>gpraModel = readSimPhenyGPRText(file, model)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>file</strong> –
+GPR text file</li>
+<li><strong>model</strong> –
+COBRA model structure</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>gpraModel</strong> –
+COBRA model structure with reaction-gene association matrix</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+<dl class="function">
+<dt id="src.base.io.utilities.restrictModelsToFields">
+<code class="descname">restrictModelsToFields</code><span class="sig-paren">(</span><em>models</em>, <em>fieldNames</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/base/io/utilities/restrictModelsToFields.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.utilities.restrictModelsToFields" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes all fields not given as fieldnames from the models</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>restrictedModels = restrictModelsToFields(models, fieldNames)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>models</strong> –
+A Cell array of model structs (or single model
+struct that has all fieldNames provided.</li>
+<li><strong>fieldNames</strong> –
+Names of the fields the models will be restricted
+to.</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>restrictedModels</strong> –
+The models with the non names fields removed, or a single struct if its just one model.</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+<dl class="function">
+<dt id="src.base.io.utilities.write4ti2">
+<code class="descname">write4ti2</code><span class="sig-paren">(</span><em>SeFull</em>, <em>filename</em>, <em>uni</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/base/io/utilities/write4ti2.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.utilities.write4ti2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes an input file for 4ti2.
+‘ti2’ is a software package for algebraic, geometric and combinatorial
+problems on linear spaces - www.4ti2.de</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>write4ti2(SeFull, filename, uni)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>SeFull</strong> –
+full stoichiometric matrix</li>
+<li><strong>filename</strong> –
+name of the file</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>uni</strong> –
+{(0),1}, uni = 1 only outputs every second reaction</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+<dl class="function">
+<dt id="src.base.io.utilities.writeCytoscapeEdgeAttributeTable">
+<code class="descname">writeCytoscapeEdgeAttributeTable</code><span class="sig-paren">(</span><em>model</em>, <em>C</em>, <em>B</em>, <em>N</em>, <em>replicateMetBool</em>, <em>filename</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/base/io/utilities/writeCytoscapeEdgeAttributeTable.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.utilities.writeCytoscapeEdgeAttributeTable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes out a set of boolean edge attributes as one of a pair of colours,
+‘Red’ for ‘yes’, ‘Black’ for ‘no’</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>writeCytoscapeEdgeAttributeTable(model, C, B, N, replicateMetBool, filename)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> –
+structure with obligatory field .S - <cite>met</cite> x <cite>reaction</cite></li>
+<li><strong>C</strong> –
+<cite>reaction</cite> x <cite>attribute</cite> cell array</li>
+<li><strong>B</strong> –
+<cite>reaction</cite> x <cite>attribute</cite> Boolean matrix</li>
+<li><strong>N</strong> –
+<cite>reaction</cite> x <cite>attribute</cite> numeric array</li>
+<li><strong>replicateMetBool</strong> –
+boolean for replicated mets</li>
+<li><strong>filename</strong> –
+name of the file</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+<dl class="function">
+<dt id="src.base.io.utilities.writePajekNet">
+<code class="descname">writePajekNet</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/base/io/utilities/writePajekNet.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.utilities.writePajekNet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Builds a metabolite centric directed graph from a COBRA model
+and outputs a graph in a .net format ready
+to use for most graph analysis software e.g. Pajek, it does one fba to
+set the link width equal to reaction fluxes.</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>writePajekNet(model)</div></blockquote>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> –
+a COBRA structured model</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>.net</strong> –
+file containing the graph</li>
+</ul>
+</div></blockquote>
+<p>Ex: <cite>A + B -&gt; C</cite> (hypergraph) with <cite>v = 0</cite> =&gt; no output (empty line)</p>
+<p>if <cite>v &gt; 0</cite> then it becomes <cite>A -&gt; C</cite>; <cite>B -&gt; C</cite> (graph),</p>
+<p>if <cite>v &lt; 0</cite> then the order is reversed</p>
+</dd></dl>
+<dl class="function">
+<dt id="src.base.io.utilities.writeSBML">
+<code class="descname">writeSBML</code><span class="sig-paren">(</span><em>model</em>, <em>fileName</em>, <em>compSymbolList</em>, <em>compNameList</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/base/io/utilities/writeSBML.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.utilities.writeSBML" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exports a COBRA structure into an SBML FBCv2 file. A SBMLFBCv2 file  a file is written to the current Matlab path.</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>sbmlModel = writeSBML(model, fileName, compSymbolList, compNameList)</div></blockquote>
+<p><strong>Inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> –
+COBRA model structure</li>
+<li><strong>fileName</strong> –
+File name for output file</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>compSymbolList</strong> –
+List of compartment symbols</li>
+<li><strong>compNameList</strong> –
+List of copmartment names corresponding to compSymbolList</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>sbmlModel</strong> –
+SBML MATLAB structure</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+<dl class="function">
+<dt id="src.base.io.utilities.xls2model">
+<code class="descname">xls2model</code><span class="sig-paren">(</span><em>fileName</em>, <em>biomassRxnEquation</em>, <em>defaultbound</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/f3fe20df5c977cf0d212e12b1763bd96d15c8760/src/base/io/utilities/xls2model.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.base.io.utilities.xls2model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads a model from Excel spreadsheet.</p>
+<p><strong>Usage</strong></p>
+<blockquote>
+<div>model = xls2model(fileName, biomassRxnEquation, defaultbound)</div></blockquote>
+<p><strong>Input</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>fileName</strong> –
+xls spreadsheet, with one ‘Reaction List’ and one ‘Metabolite List’ tab</li>
+</ul>
+</div></blockquote>
+<p><strong>Optional inputs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>biomassRxnEquation</strong> –
+.xls may have a 255 character limit on each cell,
+so pass the biomass reaction separately if it hits this maximum.</li>
+<li><strong>defaultbound</strong> –
+the deault bound for lower and upper bounds, if
+no bounds are specified in the Excel sheet</li>
+</ul>
+</div></blockquote>
+<p><strong>Output</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>model</strong> –
+COBRA Toolbox model</li>
+</ul>
+</div></blockquote>
+<p><strong>Example</strong></p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>'Reaction List' tab headers (case sensitive):
+
+  * Required:
+
+    * 'Abbreviation':      HEX1
+    * 'Reaction':          `1 atp[c] + 1 glc-D[c] --&gt; 1 adp[c] + 1 g6p[c] + 1 h[c]`
+
+  * Optional:
+
+    * 'GPR':               (3098.3) or (80201.1) or (2645.3) or ...
+    * 'Description':       Hexokinase
+    * 'Subsystem':         Glycolysis
+    * 'Reversible':        0 (false) or 1 (true)
+    * 'Lower bound':       0
+    * 'Upper bound':       1000
+    * 'Objective':         0/1
+    * 'Confidence Score':  0,1,2,3,4
+    * 'EC Number':         2.7.1.1,2.7.1.2
+    * 'KEGG ID':           R000001
+    * 'Notes':             Reaction also associated with EC 2.7.1.2
+    * 'References':        PMID:2043117,PMID:7150652,...
+
+'Metabolite List' tab: Required headers (case sensitive): (needs to be complete list of metabolites,
+i.e., if a metabolite appears in multiple compartments it has to be represented in multiple rows.
+Abbreviations need to overlap with use in Reaction List
+
+  * Required
+
+    * 'Abbreviation':      glc-D or glc-D[c]
+  * Optional:
+
+    * 'Charged formula' or formula:   C6H12O6
+    * 'Charge':                       0
+    * 'Compartment':                  cytosol
+    * 'Description':                  D-glucose
+    * 'KEGG ID':                      C00031
+    * 'PubChem ID':                   5793
+    * 'ChEBI ID':                     4167
+    * 'InChI string':                 InChI=1/C6H12O6/c7-1-2-3(8)4(9)5(10)6(11)12-2/h2-11H,1H2/t2-,3-,4+,5-,6?/m1/s1
+    * 'SMILES':                       OC[C@H]1OC(O)[C@H](O)[C@@H](O)[C@@H]1O
+    * 'HMDB ID':                      HMDB00122
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Optional inputs may be required for input on unix machines.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Find an example Excel sheet at <cite>docs/source/examples/ExcelExample.xlsx</cite></p>
+</div>
+</dd></dl>
+</div>
+</div>
+<div class="articleComments">
+</div>
+</div>
+<footer>
+<div aria-label="footer navigation" class="rst-footer-buttons" role="navigation">
+<a accesskey="n" class="btn btn-default float-right" href="../../dataIntegration/index.html" rel="next" title="Data integration">Next <span class="fa fa-arrow-circle-right"></span></a>
+<a accesskey="p" class="btn btn-default" href="../solvers/varKin/levMarMethods/index.html" rel="prev" title="levMarMethods"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+</div>
+<hr/>
+<div role="contentinfo">
+<p>
+        © Copyright 2017-2018, The COBRA Toolbox developers.
+
+    </p>
+</div>
+  Built with Sphinx using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+</div>
+</div>
+</section>
+</div>
+<script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'2.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+<script src="../../../_static/jquery.js" type="text/javascript"></script>
+<script src="../../../_static/underscore.js" type="text/javascript"></script>
+<script src="../../../_static/doctools.js" type="text/javascript"></script>
+<script src="https://cdn.jsdelivr.net/gh/mathjax/MathJax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+<script src="../../../_static/js/theme.js" type="text/javascript"></script>
+<script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+</body>
+</html>

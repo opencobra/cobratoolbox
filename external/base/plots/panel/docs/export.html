@@ -1,0 +1,61 @@
+<!DOCTYPE HTML>
+
+<html>
+<head>
+<title>Panel Documentation</title>
+<link rel="stylesheet" type="text/css" href="panel.css" />
+</head>
+
+<body>
+
+
+
+
+<div id="main">
+
+<a href="export.png"><img src='export_thumb.png' style='float:right; margin:16px'></a>
+
+
+<div>
+<a href="index.html">Overview</a> | <a href="layout.html">Layout</a> | <u><a href="export.html">Export</a></u> | <a href="faq.html">FAQ</a>
+</div>
+
+
+<h1>Panel 2</h1>
+
+
+
+<h2>Export</h2>
+
+<p>The page on <a href="layout.html">Layout</a> describes how panels are packed into a rectangular space. On-screen, this space is the figure window. This page briefly describes exporting (see <tt>panel/export</tt>) whereby the panels are packed into an image file.</p>
+
+<p class="note"><b><i>Hint</b></i> When laying out, <b>Panel</b> respects the <i>physical sizes</i> of figures and margins and fonts. Thus, if you want the figure window on screen to work as an accurate preview of how an image file will be laid out, resize the window to the <i>physical</i> size you are exporting to (i.e. use a ruler!).</p>
+
+
+
+<h2>Paper Sizing Model</h2>
+
+<p>If you are targeting a paper publication, you might find the paper sizing model easiest. Usually, just indicate the number of columns and the aspect ratio, and <b>Panel</b> will work out the required image file size for you. Other options include paper type (default A4), paper orientation (default portrait), paper margin size and inter-column space. The illustration shows a figure placed into one column of an A4 page at the default aspect ratio (the golden ratio).</p>
+
+<p class="note"><b><i>Hint</b></i> The paper type, margin size and inter-column space do vary slightly across full-page publications (e.g. between US/Europe), but for the vast majority the default values (A4, 20mm, 5mm) are close enough that making them more precise has a negligible impact on the resulting image files. You may not need to adjust them at all. For small-format publications (particularly, LNCS and LNAI), try the page size "LNCS" (see <tt>help panel/export</tt>).</p>
+
+
+
+<h2>Explicit Sizing Model</h2>
+
+<p>If, for whatever reason, you don't want to use the Paper Sizing Model, you can specify the width and height of the target image file directly (w and h, see illustration). Or, specify just width and aspect ratio (fix to allow height & aspect ratio, coming soon).</p>
+
+
+
+<h2>Export Formats</h2>
+
+<p><b>Panel</b> exports using Matlab's <tt>print()</tt> function, and most of the formats supported there are also supported by <b>Panel</b> (see <tt>help panel/export</tt> for details). As of Release 2.6, <b>Panel</b> will also export to SVG, if the tool <tt>plot2svg()</tt> is found on the Matlab path (find this tool <a href="http://www.mathworks.com/matlabcentral/fileexchange/7401-scalable-vector-graphics-svg-export-of-figures">here</a>).<p>
+
+
+
+</div>
+
+
+
+</body>
+</html>

@@ -5,7 +5,8 @@
 %
 % Authors:
 %     - Original file: Stefania Magnusdottir August 2017
-%
+%                       Samira Ranjbar      -November 2023 (revise)
+
 
 global CBTDIR
 
@@ -46,16 +47,16 @@ end
 
 % check that result array has correct size and rxns
 assert(size(geneRxnsArray, 1) == length(rxnInds))
-assert(size(geneRxnsArray, 2) == 5)
+assert(size(geneRxnsArray, 2) == 6)
 assert(isequal(geneRxnsArray(:, 1), model.rxns(rxnInds)))
-assert(isequal(geneRxnsArray(:, 5), strcat('gene_', model.genes(geneInd))))
+assert(isequal(geneRxnsArray(:, 6), strcat('gene_', model.genes(geneInd))))
 
 % check that result structure has correct size and rxns
 for i = 1:length(geneInd)
     geneRxns = (geneRxnsStruct.(['gene_', model.genes{geneInd(i)}]));
     rxnInds = find(~cellfun(@isempty, strfind(model.rules, ['x(', num2str(geneInd(i)), ')'])));
     assert(size(geneRxns, 1) == length(rxnInds))
-    assert(size(geneRxns, 2) == 4)
+    assert(size(geneRxns, 2) == 5)
     assert(isequal(geneRxns(:, 1), model.rxns(rxnInds)))
 end
 

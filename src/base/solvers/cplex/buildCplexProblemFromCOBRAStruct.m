@@ -26,6 +26,9 @@ try
 catch ME
     error('CPLEX not installed or licence server not up')
 end
+[m,n]=size(Problem.A);
+b_L = sparse(m,1);
+b_U = sparse(m,1);
 if (~isempty(Problem.csense))
     % build the rhs/lhs of the problem.
     boolE = Problem.csense == 'E';
@@ -53,7 +56,7 @@ cplexProblem.Model.lhs = columnVector(b_L);
 cplexProblem.Model.ub = Problem.ub;
 cplexProblem.Model.lb = Problem.lb;
 
-if isfield(Problem,'F')
+if isfield(Problem,'F') && any(Problem.F,'all')
     f = diag(Problem.F);
     bool0 = f==0;
     if any(bool0)
@@ -62,24 +65,21 @@ if isfield(Problem,'F')
             feasTol = getCobraSolverParams('LP', 'feasTol');
             f(bool0)=feasTol/10;
             f(~bool0)=0;
-            Problem.F = Problem.F + spdiags(f,0,size(Problem.F,1),size(Problem.F,1));
+            Problem.F = Problem.F + spdiags(f,0,n,n);
             %fprintf('%s\n',['buildCplexProblemFromCOBRAStruct: Replacing zeros on the diagonal of QP problem.F with regularisation of ' num2str(feasTol/10)]) 
         end
     end
     cplexProblem.Model.Q = Problem.F;
 end
 
+%always set the problem to minimise, but change the linear objective sign   
+cplexProblem.Model.sense = 'minimize';
 if isfield(Problem,'c')
-    cplexProblem.Model.obj = Problem.c;
-end
-if isfield(Problem,'osense')
-    if Problem.osense == 1
-        cplexProblem.Model.sense = 'minimize';
+    if isfield(Problem,'osense')
+        cplexProblem.Model.obj = Problem.osense*Problem.c;
     else
-        cplexProblem.Model.sense = 'maximize';
+        cplexProblem.Model.obj = Problem.c;
     end
-else
-    cplexProblem.Model.sense = 'minimize';
 end
 
 if isfield(Problem,'vartype')

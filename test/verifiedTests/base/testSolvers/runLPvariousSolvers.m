@@ -184,17 +184,16 @@ for k = 1:length(solverPkgs)
             % test solveCobraLPCPLEX
             solution{i} = solveCobraLPCPLEX(model, 0, [], [], [], [], 'ILOGsimple');
             solution{i}.solver = solver;
-            solution{i}.algorithm = 'default';
+            solution{i}.method = 'AUTOMATIC';
             i = i + 1;
 
+            cplexLPMethods ={'AUTOMATIC','PRIMAL','DUAL','NETWORK','BARRIER','SIFTING','CONCURRENT'};
             % test solveCobraLP
-            for c = 0:6
-                if c ~= 3
-                    param.lpmethod.Cur = c;
-                    solution{i} = solveCobraLP(model, param);
-                    i = i + 1;
-                    clear param
-                end
+            for c = 1:length(cplexLPMethods)
+                param.lpmethod = cplexLPMethods{c};
+                solution{i} = solveCobraLP(model, param);
+                i = i + 1;
+                clear param
             end
         end
     end
@@ -299,10 +298,10 @@ for i = 1:ilt
         else
             tmp_rcost = full(solution{i}.rcost(randrcost));
         end
-        fprintf('%3d%15f%15f%15f%15f%20s\t%30s\n', i, solution{i}.time, solution{i}.obj, tmp_dual, tmp_rcost, solution{i}.solver, solution{i}.algorithm)
+        fprintf('%3d%15f%15f%15f%15f%20s\t%30s\n', i, solution{i}.time, solution{i}.obj, tmp_dual, tmp_rcost, solution{i}.solver, solution{i}.lpmethod)
         all_obj(i) = solution{i}.obj;
     else
-        fprintf('%3d%15f%15f%15f%15f%20s\t%30s\n', i, solution{i}.time, solution{i}.obj, NaN, NaN, solution{i}.solver, solution{i}.algorithm)
+        fprintf('%3d%15f%15f%15f%15f%20s\t%30s\n', i, solution{i}.time, solution{i}.obj, NaN, NaN, solution{i}.solver, solution{i}.lpmethod)
         all_obj(i) = 0.0;
     end
 end

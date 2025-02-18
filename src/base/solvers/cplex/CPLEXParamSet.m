@@ -193,7 +193,7 @@ if strcmp(interface,'tomlab_cplex')
     % 5 Sifting
     % 6 Concurrent Dual, Barrier and Primal
     % Default: 0
-    cpxControl.LPMETHOD = 0;  %%% was changed now default
+    cpxControl.LPMETHOD = 4;  %% barrier method is best for large models where it makes a difference - Ronan
 
     % Numerical emphasis.
     %  0 Off: Do not emphasize extreme caution in

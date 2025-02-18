@@ -1,0 +1,157 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge,IE=9,chrome=1"><meta name="generator" content="MATLAB 2024a"><title>Build Atom Transition Multigraph</title><style type="text/css">.rtcContent { padding: 30px; } .S0 { margin: 3px 10px 5px 4px; padding: 0px; line-height: 28.8px; min-height: 0px; white-space: pre-wrap; color: rgb(192, 76, 11); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 24px; font-weight: 400; text-align: left;  }
+.S1 { margin: 2px 10px 9px 4px; padding: 0px; line-height: 21px; min-height: 0px; white-space: pre-wrap; color: rgb(33, 33, 33); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 14px; font-weight: 400; text-align: left;  }
+.CodeBlock { background-color: #F5F5F5; margin: 10px 15px 10px 0; display: inline-block }
+.S2 { border-left: 1px solid rgb(217, 217, 217); border-right: 1px solid rgb(217, 217, 217); border-top: 1px solid rgb(217, 217, 217); border-bottom: 0px none rgb(33, 33, 33); border-radius: 4px 4px 0px 0px; padding: 6px 45px 0px 13px; line-height: 18.004px; min-height: 0px; white-space: nowrap; color: rgb(33, 33, 33); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S3 { border-left: 1px solid rgb(217, 217, 217); border-right: 1px solid rgb(217, 217, 217); border-top: 0px none rgb(33, 33, 33); border-bottom: 0px none rgb(33, 33, 33); border-radius: 0px; padding: 0px 45px 0px 13px; line-height: 18.004px; min-height: 0px; white-space: nowrap; color: rgb(33, 33, 33); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S4 { border-left: 1px solid rgb(217, 217, 217); border-right: 1px solid rgb(217, 217, 217); border-top: 0px none rgb(33, 33, 33); border-bottom: 1px solid rgb(217, 217, 217); border-radius: 0px 0px 4px 4px; padding: 0px 45px 4px 13px; line-height: 18.004px; min-height: 0px; white-space: nowrap; color: rgb(33, 33, 33); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.eoOutputWrapper { width: calc(90vw - 10px) !important; }
+.S5 { border-left: 1px solid rgb(217, 217, 217); border-right: 1px solid rgb(217, 217, 217); border-top: 1px solid rgb(217, 217, 217); border-bottom: 1px solid rgb(217, 217, 217); border-radius: 4px 4px 0px 0px; padding: 6px 45px 4px 13px; line-height: 18.004px; min-height: 0px; white-space: nowrap; color: rgb(33, 33, 33); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S6 { color: rgb(33, 33, 33); padding: 10px 0px 6px 17px; background: rgb(255, 255, 255) none repeat scroll 0% 0% / auto padding-box border-box; font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px; overflow-x: hidden; line-height: 17.234px;  }
+/* Styling that is common to warnings and errors is in diagnosticOutput.css */.embeddedOutputsErrorElement {    min-height: 18px;    max-height: 550px;}
+.embeddedOutputsErrorElement .diagnosticMessage-errorType {    overflow: auto;}
+.embeddedOutputsErrorElement.activeOutput .eoOutputContent {    user-select: text;    -webkit-user-select: text;}
+.embeddedOutputsErrorElement.activeOutput .eoOutputContent button {    user-select: none;    -webkit-user-select: none;}
+.embeddedOutputsErrorElement .eoOutputContent ::selection {}
+.embeddedOutputsErrorElement.inlineElement {}
+.embeddedOutputsErrorElement.rightPaneElement {}
+/* Styling that is common to warnings and errors is in diagnosticOutput.css */.embeddedOutputsWarningElement {    min-height: 18px;    max-height: 550px;}
+.embeddedOutputsWarningElement .diagnosticMessage-warningType {    overflow: auto;}
+.embeddedOutputsWarningElement.activeOutput .eoOutputContent {    user-select: text;    -webkit-user-select: text;}
+.embeddedOutputsWarningElement .eoOutputContent ::selection {}
+.embeddedOutputsWarningElement.inlineElement {}
+.embeddedOutputsWarningElement.rightPaneElement {}
+/* Copyright 2015-2023 The MathWorks, Inc. *//* In this file, styles are not scoped to rtcContainer since they could be in the Dojo Tooltip */.diagnosticMessage-wrapper {    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;    font-size: 12px;}
+.diagnosticMessage-wrapper.diagnosticMessage-warningType {    /*This fallback value will be used for appdesigner warnings*/    color: var(--rtc-warning-output-color, var(--mw-color-matlabWarning));}
+.diagnosticMessage-wrapper.diagnosticMessage-warningType a {    /*This fallback value will be used for appdesigner warnings*/    color: var(--rtc-warning-output-color, var(--mw-color-matlabWarning));    text-decoration: underline;}
+.rtcThemeDefaultOverride .diagnosticMessage-wrapper.diagnosticMessage-warningType,.rtcThemeDefaultOverride .diagnosticMessage-wrapper.diagnosticMessage-warningType a {    color: var(--mw-color-matlabWarning) !important;}
+.diagnosticMessage-wrapper.diagnosticMessage-errorType {    /*This fallback value will be used in appdesigner error tooltip text*/    color: var(--rtc-error-output-color, var(--mw-color-matlabErrors));}
+.diagnosticMessage-wrapper.diagnosticMessage-errorType a {    /*This fallback value will be used in appdesigner error tooltip text*/    color: var(--rtc-error-output-color, var(--mw-color-matlabErrors));    text-decoration: underline;}
+.rtcThemeDefaultOverride .diagnosticMessage-wrapper.diagnosticMessage-errorType,.rtcThemeDefaultOverride .diagnosticMessage-wrapper.diagnosticMessage-errorType a {    color: var(--mw-color-matlabErrors) !important;}
+.diagnosticMessage-wrapper .diagnosticMessage-messagePart,.diagnosticMessage-wrapper .diagnosticMessage-causePart {    white-space: pre-wrap;}
+.diagnosticMessage-wrapper .diagnosticMessage-stackPart {    white-space: pre;}
+.embeddedOutputsTextElement,.embeddedOutputsVariableStringElement {    white-space: pre;    word-wrap:  initial;    min-height: 18px;    max-height: 550px;}
+.embeddedOutputsTextElement .textElement,.embeddedOutputsVariableStringElement .textElement {    overflow: auto;}
+.embeddedOutputsTextElement.activeOutput .eoOutputContent,.embeddedOutputsVariableStringElement.activeOutput .eoOutputContent {    user-select: text;    -webkit-user-select: text;}
+/*embeddedOutputsTextElement has a different dom structure than embeddedOutputsVariableStringElement.Unlike variableString, the text output has both TEXT nodes and elements as children. Hence we needa selector for each.*/.embeddedOutputsTextElement .eoOutputContent::selection,.embeddedOutputsTextElement .eoOutputContent ::selection,.embeddedOutputsVariableStringElement .eoOutputContent ::selection {}
+.textElement,.rtcDataTipElement .textElement {    padding-top: 2px;}
+.embeddedOutputsTextElement.inlineElement,.embeddedOutputsVariableStringElement.inlineElement {}
+.inlineElement .textElement {}
+.embeddedOutputsTextElement.rightPaneElement,.embeddedOutputsVariableStringElement.rightPaneElement {    min-height: 16px;}
+.rightPaneElement .textElement {    padding-top: 2px;    padding-left: 9px;}
+.S7 { margin: 3px 10px 5px 4px; padding: 0px; line-height: 20px; min-height: 0px; white-space: pre-wrap; color: rgb(33, 33, 33); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 20px; font-weight: 700; text-align: left;  }
+.S8 { margin: 10px 10px 9px 4px; padding: 0px; line-height: 21px; min-height: 0px; white-space: pre-wrap; color: rgb(33, 33, 33); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 14px; font-weight: 400; text-align: left;  }
+.S9 { margin: 3px 10px 5px 4px; padding: 0px; line-height: 18px; min-height: 0px; white-space: pre-wrap; color: rgb(33, 33, 33); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 15px; font-weight: 700; text-align: left;  }
+.S10 { margin: 10px 10px 5px 4px; padding: 0px; line-height: 18px; min-height: 0px; white-space: pre-wrap; color: rgb(33, 33, 33); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 15px; font-weight: 700; text-align: left;  }</style></head><body><div class = rtcContent><h1  class = 'S0'><span>Build Atom Transition Multigraph</span></h1><div  class = 'S1'><span></span></div><div  class = 'S1'><span>These tutorials should generally be used in the following order:</span></div><div  class = 'S1'><span>1. Initialise and set the paths to inputs and outputs</span></div><div  class = 'S1'><span>driver_initConservedMoietyPaths.mlx   </span></div><div  class = 'S1'><span>2. Build an atom transition graph</span></div><div  class = 'S1'><span>tutorial_buildAtomTransitionMultigraph.mlx</span></div><div  class = 'S1'><span>3. Identify conserved moieties, given an atom transition graph                                               </span></div><div  class = 'S1'><span>tutorial_identifyConservedMoieties.mlx</span></div><div  class = 'S1'><span>4. Analyse the output of #3</span></div><div  class = 'S1'><span>tutorial_analyseConservedMoieties.mlx </span></div><div  class = 'S1'><span>5. Prepare for visualisation of individual conserved moieties (beta)      </span></div><div  class = 'S1'><span>tutorial_visualiseConservedMoieties.mlx</span></div><div  class = 'S1'><span></span></div><div  class = 'S1'><span>Define the model that will be used for conserved moiety decomposition</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S2'><span style="white-space: pre"><span style="color: #0e00ff;">if </span><span >~exist(</span><span style="color: #a709f5;">'modelName'</span><span >,</span><span style="color: #a709f5;">'var'</span><span >)</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span >    </span><span style="color: #008013;">%modelName = 'centralMetabolism_fastCore';</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span >    </span><span style="color: #008013;">%modelName = 'iDopaNeuroC';</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span >    modelName = </span><span style="color: #a709f5;">'DAS'</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre"><span style="color: #0e00ff;">end</span></span></div></div></div><div  class = 'S1'><span>Set the paths</span></div><div class="CodeBlock"><div class="inlineWrapper outputs"><div  class = 'S5'><span style="white-space: pre"><span >driver_initConservedMoietyPaths</span></span></div><div  class = 'S6'><div class="inlineElement eoOutputWrapper disableDefaultGestureHandling embeddedOutputsVariableStringElement" uid="1D7E9141" prevent-scroll="true" data-testid="output_0" tabindex="-1" style="width: 1145px; white-space: pre; font-style: normal; color: rgb(33, 33, 33); font-size: 12px;"><div class="textElement eoOutputContent" tabindex="-1" data-previous-available-width="1108" data-previous-scroll-height="20" data-hashorizontaloverflow="false" role="article" aria-roledescription="Use Browse Mode to explore " aria-description="variable output " style="max-height: 261px; white-space: pre; font-style: normal; color: rgb(33, 33, 33); font-size: 12px;"><div style="white-space: pre; font-style: normal; color: rgb(33, 33, 33); font-size: 12px;"><span class="variableNameElement" style="white-space: pre; font-style: normal; color: rgb(33, 33, 33); font-size: 12px;">projectDir = </span>'/home/rfleming/work/sbgCloud/code/fork-COBRA.tutorials/analysis/conservedMoieties'</div></div></div><div class="inlineElement eoOutputWrapper disableDefaultGestureHandling embeddedOutputsVariableStringElement" uid="50C4CC32" prevent-scroll="true" data-testid="output_1" tabindex="-1" style="width: 1145px; white-space: pre; font-style: normal; color: rgb(33, 33, 33); font-size: 12px;"><div class="textElement eoOutputContent" tabindex="-1" data-previous-available-width="1108" data-previous-scroll-height="20" data-hashorizontaloverflow="false" role="article" aria-roledescription="Use Browse Mode to explore " aria-description="variable output " style="max-height: 261px; white-space: pre; font-style: normal; color: rgb(33, 33, 33); font-size: 12px;"><div style="white-space: pre; font-style: normal; color: rgb(33, 33, 33); font-size: 12px;"><span class="variableNameElement" style="white-space: pre; font-style: normal; color: rgb(33, 33, 33); font-size: 12px;">dataDir = </span>'/home/rfleming/work/sbgCloud/code/fork-COBRA.tutorials/analysis/conservedMoieties/data'</div></div></div><div class="inlineElement eoOutputWrapper disableDefaultGestureHandling embeddedOutputsVariableStringElement" uid="B74AE85B" prevent-scroll="true" data-testid="output_2" tabindex="-1" style="width: 1145px; white-space: pre; font-style: normal; color: rgb(33, 33, 33); font-size: 12px;"><div class="textElement eoOutputContent" tabindex="-1" data-previous-available-width="1108" data-previous-scroll-height="20" data-hashorizontaloverflow="false" role="article" aria-roledescription="Use Browse Mode to explore " aria-description="variable output " style="max-height: 261px; white-space: pre; font-style: normal; color: rgb(33, 33, 33); font-size: 12px;"><div style="white-space: pre; font-style: normal; color: rgb(33, 33, 33); font-size: 12px;"><span class="variableNameElement" style="white-space: pre; font-style: normal; color: rgb(33, 33, 33); font-size: 12px;">softwareDir = </span>'/home/rfleming/work/sbgCloud/code/fork-COBRA.tutorials/analysis/conservedMoieties/software'</div></div></div><div class="inlineElement eoOutputWrapper disableDefaultGestureHandling embeddedOutputsVariableStringElement" uid="3013AA56" prevent-scroll="true" data-testid="output_3" tabindex="-1" style="width: 1145px; white-space: pre; font-style: normal; color: rgb(33, 33, 33); font-size: 12px;"><div class="textElement eoOutputContent" tabindex="-1" data-previous-available-width="1108" data-previous-scroll-height="20" data-hashorizontaloverflow="false" role="article" aria-roledescription="Use Browse Mode to explore " aria-description="variable output " style="max-height: 261px; white-space: pre; font-style: normal; color: rgb(33, 33, 33); font-size: 12px;"><div style="white-space: pre; font-style: normal; color: rgb(33, 33, 33); font-size: 12px;"><span class="variableNameElement" style="white-space: pre; font-style: normal; color: rgb(33, 33, 33); font-size: 12px;">visDataDir = </span>'/home/rfleming/work/sbgCloud/code/fork-COBRA.tutorials/analysis/conservedMoieties/data/visualisation'</div></div></div><div class="inlineElement eoOutputWrapper disableDefaultGestureHandling embeddedOutputsVariableStringElement" uid="4450A469" prevent-scroll="true" data-testid="output_4" tabindex="-1" style="width: 1145px; white-space: pre; font-style: normal; color: rgb(33, 33, 33); font-size: 12px;"><div class="textElement eoOutputContent" tabindex="-1" data-previous-available-width="1108" data-previous-scroll-height="20" data-hashorizontaloverflow="false" role="article" aria-roledescription="Use Browse Mode to explore " aria-description="variable output " style="max-height: 261px; white-space: pre; font-style: normal; color: rgb(33, 33, 33); font-size: 12px;"><div style="white-space: pre; font-style: normal; color: rgb(33, 33, 33); font-size: 12px;"><span class="variableNameElement" style="white-space: pre; font-style: normal; color: rgb(33, 33, 33); font-size: 12px;">resultsDir = </span>'/home/rfleming/work/sbgCloud/code/fork-COBRA.tutorials/analysis/conservedMoieties/results/DAS'</div></div></div><div class="inlineElement eoOutputWrapper disableDefaultGestureHandling embeddedOutputsVariableStringElement" uid="00C8681D" prevent-scroll="true" data-testid="output_5" tabindex="-1" style="width: 1145px; white-space: pre; font-style: normal; color: rgb(33, 33, 33); font-size: 12px;"><div class="textElement eoOutputContent" tabindex="-1" data-previous-available-width="1108" data-previous-scroll-height="20" data-hashorizontaloverflow="false" role="article" aria-roledescription="Use Browse Mode to explore " aria-description="variable output " style="max-height: 261px; white-space: pre; font-style: normal; color: rgb(33, 33, 33); font-size: 12px;"><div style="white-space: pre; font-style: normal; color: rgb(33, 33, 33); font-size: 12px;"><span class="variableNameElement" style="white-space: pre; font-style: normal; color: rgb(33, 33, 33); font-size: 12px;">ctfRxnfileDir = </span>'/home/rfleming/work/sbgCloud/code/fork-COBRA.tutorials/analysis/conservedMoieties/data/mini-ctf/rxns/atomMapped'</div></div></div></div></div></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S2'><span style="white-space: pre"><span style="color: #0e00ff;">if </span><span >~recompute</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span >    load([resultsDir modelName </span><span style="color: #a709f5;">'_dATM.mat'</span><span >])</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span >    </span><span style="color: #0e00ff;">return</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre"><span style="color: #0e00ff;">end</span></span></div></div></div><div  class = 'S1'><span>Load the model and input data</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S2'><span style="white-space: pre"><span style="color: #0e00ff;">switch </span><span >modelName</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span >    </span><span style="color: #0e00ff;">case </span><span style="color: #a709f5;">'DAS'</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span >        load([dataDir filesep </span><span style="color: #a709f5;">'models' </span><span >filesep modelName </span><span style="color: #a709f5;">'.mat'</span><span >])</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span >        </span><span style="color: #008013;">%load('DAS.mat')</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span >    </span><span style="color: #0e00ff;">case </span><span style="color: #a709f5;">'iDopaNeuro1'</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span >        load([dataDir filesep </span><span style="color: #a709f5;">'models' </span><span >filesep modelName </span><span style="color: #a709f5;">'.mat'</span><span >])</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span >        </span><span style="color: #008013;">%load('~/work/sbgCloud/programReconstruction/projects/exoMetDN/results/codeResults/iDN1/iDopaNeuro1/iDopaNeuro1.mat');</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span >        model = iDopaNeuro1;</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span >    </span><span style="color: #0e00ff;">case </span><span >{</span><span style="color: #a709f5;">'centralMetabolism'</span><span >,</span><span style="color: #a709f5;">'centralMetabolism_fastCore'</span><span >,</span><span style="color: #a709f5;">'centralMetabolism_thermoKernel'</span><span >}</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span >        load([resultsDir filesep modelName </span><span style="color: #a709f5;">'.mat'</span><span >])</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span >        model.SConsistentRxnBool(matches(model.rxns,</span><span style="color: #a709f5;">'DM_fad'</span><span >))=1;</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span >        </span><span style="color: #008013;">%ctfRxnfileDir ='~/work/sbgCloud/code/fork-ctf/rxns/atomMapped'</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span >    </span><span style="color: #0e00ff;">otherwise</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span >        load([dataDir </span><span style="color: #a709f5;">'models' </span><span >filesep modelName </span><span style="color: #a709f5;">'.mat'</span><span >])</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre"><span style="color: #0e00ff;">end</span></span></div></div></div><h2  class = 'S7'><span>Remove any flux inconsistent reactions</span></h2><div  class = 'S1'><span>Identify the flux consistent set</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S2'><span style="white-space: pre"><span >paramConsistency.epsilon = 1e-5;</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span >paramConsistency.method = </span><span style="color: #a709f5;">'fastcc'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre"><span >[~,~,~,~, model] = findFluxConsistentSubset(model, paramConsistency);</span></span></div></div></div><div  class = 'S8'><span>Optionally remove any flux inconsistent reactions and the corresponding metabolites and coupling constraints if necessary</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S2'><span style="white-space: pre"><span style="color: #0e00ff;">if </span><span >0</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span >    model = removeRxns(model, model.rxns(~fluxConsistentRxnBool),</span><span style="color: #a709f5;">'metRemoveMethod'</span><span >,</span><span style="color: #a709f5;">'exclusive'</span><span >,</span><span style="color: #a709f5;">'ctrsRemoveMethod'</span><span >,</span><span style="color: #a709f5;">'infeasible'</span><span >);</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre"><span style="color: #0e00ff;">end</span></span></div></div></div><div  class = 'S1'><span>Check to see if all internal reactions are already atom mapped within the Chemical Table File repository (https://github.com/opencobra/ctf). Clone this repository locally to ctfRxnfileDir then specify the path below.</span></div><div class="CodeBlock"><div class="inlineWrapper outputs"><div  class = 'S5'><span style="white-space: pre"><span >[metRXNBool,rxnRXNBool,internalRxnBool]  = findRXNFiles(model,ctfRxnfileDir);</span></span></div><div  class = 'S6'><div class="inlineElement eoOutputWrapper disableDefaultGestureHandling embeddedOutputsTextElement" uid="093525B2" prevent-scroll="true" data-testid="output_6" tabindex="-1" style="width: 1145px; white-space: pre; font-style: normal; color: rgb(33, 33, 33); font-size: 12px;"><div class=" textElement eoOutputContent" tabindex="-1" data-previous-available-width="1108" data-previous-scroll-height="32" data-hashorizontaloverflow="false" role="article" aria-roledescription="Use Browse Mode to explore " aria-description="text output " style="max-height: 261px; white-space: pre; font-style: normal; color: rgb(33, 33, 33); font-size: 12px;">RXN files available for 4 reactions.
+RXN files found for all 4 internal reactions.</div></div></div></div></div><div  class = 'S1'><span>If some internal reactions are missing atom mappings, then atomically resolve the metabolic model including atom mapping of as many internal reactions as possible, without mapping hydrogens, and then calculate the atom transition multigraph.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S2'><span style="white-space: pre"><span style="color: #0e00ff;">if </span><span >any(~rxnRXNBool(internalRxnBool))</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span >    param.debug=1;</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span >    [model, arm, report] = atomicallyResolveModel(model,param);</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre"><span style="color: #0e00ff;">end</span></span></div></div></div><h4  class = 'S9'><span style=' font-weight: bold;'>Atom transition multigraph</span></h4><div  class = 'S1'><span>If there are atom mappings for all reactions already, just calculate the atom transition multigraph in order to follow the path of all the atoms in the network (this may take some time).</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S2'><span style="white-space: pre"><span style="color: #0e00ff;">if </span><span >exist(</span><span style="color: #a709f5;">'arm'</span><span >,</span><span style="color: #a709f5;">'var'</span><span >)</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span >    dATM = arm.dATM;</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span style="color: #0e00ff;">else</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span >    cd(ctfRxnfileDir)</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span >    [dATM, metAtomMappedBool, rxnAtomMappedBool, M2Ai, Ti2R] = buildAtomTransitionMultigraph(model, ctfRxnfileDir);</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre"><span style="color: #0e00ff;">end</span></span></div></div></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S2'><span style="white-space: pre"><span >cd(resultsDir)</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre"><span >save([resultsDir filesep modelName </span><span style="color: #a709f5;">'_dATM.mat'</span><span >],</span><span style="color: #a709f5;">'dATM'</span><span >)</span></span></div></div></div><h4  class = 'S10'></h4>
+<br>
+<!-- 
+##### SOURCE BEGIN #####
+%% Build Atom Transition Multigraph
+% 
+% 
+% These tutorials should generally be used in the following order:
+% 
+% 1. Initialise and set the paths to inputs and outputs
+% 
+% driver_initConservedMoietyPaths.mlx   
+% 
+% 2. Build an atom transition graph
+% 
+% tutorial_buildAtomTransitionMultigraph.mlx
+% 
+% 3. Identify conserved moieties, given an atom transition graph                                               
+% 
+% tutorial_identifyConservedMoieties.mlx
+% 
+% 4. Analyse the output of #3
+% 
+% tutorial_analyseConservedMoieties.mlx 
+% 
+% 5. Prepare for visualisation of individual conserved moieties (beta)      
+% 
+% tutorial_visualiseConservedMoieties.mlx
+% 
+% 
+% 
+% Define the model that will be used for conserved moiety decomposition
+
+if ~exist('modelName','var')
+    %modelName = 'centralMetabolism_fastCore';
+    %modelName = 'iDopaNeuroC';
+    modelName = 'DAS'
+end
+%% 
+% Set the paths
+
+driver_initConservedMoietyPaths
+%%
+if ~recompute
+    load([resultsDir modelName '_dATM.mat'])
+    return
+end
+%% 
+% Load the model and input data
+
+switch modelName
+    case 'DAS'
+        load([dataDir filesep 'models' filesep modelName '.mat'])
+        %load('DAS.mat')
+    case 'iDopaNeuro1'
+        load([dataDir filesep 'models' filesep modelName '.mat'])
+        %load('~/work/sbgCloud/programReconstruction/projects/exoMetDN/results/codeResults/iDN1/iDopaNeuro1/iDopaNeuro1.mat');
+        model = iDopaNeuro1;
+    case {'centralMetabolism','centralMetabolism_fastCore','centralMetabolism_thermoKernel'}
+        load([resultsDir filesep modelName '.mat'])
+        model.SConsistentRxnBool(matches(model.rxns,'DM_fad'))=1;
+        %ctfRxnfileDir ='~/work/sbgCloud/code/fork-ctf/rxns/atomMapped'
+    otherwise
+        load([dataDir 'models' filesep modelName '.mat'])
+end
+%% Remove any flux inconsistent reactions
+% Identify the flux consistent set
+
+paramConsistency.epsilon = 1e-5;
+paramConsistency.method = 'fastcc';
+[~,~,~,~, model] = findFluxConsistentSubset(model, paramConsistency);
+%% 
+% Optionally remove any flux inconsistent reactions and the corresponding metabolites 
+% and coupling constraints if necessary
+
+if 0
+    model = removeRxns(model, model.rxns(~fluxConsistentRxnBool),'metRemoveMethod','exclusive','ctrsRemoveMethod','infeasible');
+end
+%% 
+% Check to see if all internal reactions are already atom mapped within the 
+% Chemical Table File repository (https://github.com/opencobra/ctf). Clone this 
+% repository locally to ctfRxnfileDir then specify the path below.
+
+[metRXNBool,rxnRXNBool,internalRxnBool]  = findRXNFiles(model,ctfRxnfileDir);
+%% 
+% If some internal reactions are missing atom mappings, then atomically resolve 
+% the metabolic model including atom mapping of as many internal reactions as 
+% possible, without mapping hydrogens, and then calculate the atom transition 
+% multigraph.
+
+if any(~rxnRXNBool(internalRxnBool))
+    param.debug=1;
+    [model, arm, report] = atomicallyResolveModel(model,param);
+end
+% *Atom transition multigraph*
+% If there are atom mappings for all reactions already, just calculate the atom 
+% transition multigraph in order to follow the path of all the atoms in the network 
+% (this may take some time).
+
+if exist('arm','var')
+    dATM = arm.dATM;
+else
+    cd(ctfRxnfileDir)
+    [dATM, metAtomMappedBool, rxnAtomMappedBool, M2Ai, Ti2R] = buildAtomTransitionMultigraph(model, ctfRxnfileDir);
+end
+%%
+cd(resultsDir)
+save([resultsDir filesep modelName '_dATM.mat'],'dATM')
+%
+##### SOURCE END #####
+-->
+</div></body></html>

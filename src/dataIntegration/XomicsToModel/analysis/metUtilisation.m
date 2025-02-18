@@ -8,7 +8,7 @@ function [graph_data, summary] = metUtilisation(model, met, flux_v, printFig, pa
 %   the graph to visualise the major producers and consumers of a
 %   metabolite. Flux can be given either as a single vector, as a pair of
 %   vector for a comparison between two different predictions, or as a
-%   sampling matrix, in which case a meana nd standard deviation will be
+%   sampling matrix, in which case a meana and standard deviation will be
 %   used to estimate idividual contributions of each reaction to the total
 %   metabolite balance
 %
@@ -56,6 +56,10 @@ function [graph_data, summary] = metUtilisation(model, met, flux_v, printFig, pa
 %                     *.EdgeLabel.text - cell array containg labels to be
 %                                        ploted on the graph edges (same
 %                                        length as EdgeLabel.rxns)
+%                     *.saveFig        -logical value, whether figure
+%                     should be save
+%                     *.modelName      -character, which will be used when
+%                     save the figure
 %
 % OUTPUTS:
 %
@@ -90,6 +94,7 @@ function [graph_data, summary] = metUtilisation(model, met, flux_v, printFig, pa
 %               decrease or no change between the two vectors
 %
 % Author(s): Agnieszka Wegrzyn
+%            Y
 
 modelOrg = model;
 
@@ -340,9 +345,14 @@ elseif isvector(flux_v)
         end
     end
 
+    % sort the edges by weights
+    [weights,I] = sort(weights);
+    nodes = nodes(I);
+    edges = edges(I);
 
     graph = digraph(nodes,edges,weights);
     nLabels = graph.Nodes.Variables;
+
     LWidths = 7*graph.Edges.Weight/max(graph.Edges.Weight); %scale numbers
 
     if ~isfield(param, 'EdgeLabel')
@@ -364,6 +374,25 @@ elseif isvector(flux_v)
             eColour(i,:) = [0.6350 0.0780 0.1840];
         end
     end
+    % add subsystems info to the labels
+    if strcmp(nLabels{1},met)
+        [lia,locb] = ismember(model.rxns,nLabels);
+        subsystems(locb(lia)) = model.subSystems(lia);
+        for l = 2:length(nLabels)
+            nLabels{l} = [nLabels{l},'__',subsystems{l}];
+
+        end
+    elseif any(ismember(nLabels,met))
+        [lia,locb] = ismember(model.rxns,nLabels);
+        [~,idx] = ismember(met,nLabels);
+        subsystems(locb(lia)) = model.subSystems(lia);
+        for l = 1:length(nLabels)
+            if l ~= idx
+                nLabels{l} = [nLabels{l},'__',subsystems{l}];
+            end
+        end
+    end
+
 
     if printFig == 1 && strcmp(param.NodeLabels,'rxns')
         figure();
@@ -686,6 +715,12 @@ elseif length(flux_v(1,:)) > 2
     graph_data.graph = graph;
     graph_data.eColour = eColour;
     graph_data.nLabels = nLabels;
+end
+metName = regexprep(met,'\[\w\]','');
+compartment = getCompartment(met);
+figName = [param.modelName,'_',metName,'_',compartment,'_graph.tif'];
+if param.saveFig
+    saveas(gcf, figName);
 end
 end
 

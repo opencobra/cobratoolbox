@@ -25,13 +25,15 @@ model = getDistributedModel('ecoli_core_model.mat');
 model.rev = double(model.lb < 0);
 A = fastcc(model, 1e-4, 0);
 
-% set the cobra solver
-solverLPOK = changeCobraSolver(solvers.LP{1}, 'LP', 0);
+for k = 1:length(solvers.LP)
+    % set the cobra solver
+    solverLPOK = changeCobraSolver(solvers.LP{k}, 'LP', 0);
 
-fprintf('\n -- Running swiftcc++ using the %s solver...\n\n', solvers.LP{1});
-component = partition(model, solvers.LP{1}, 'swift');
-assert(all(component(A)));
-assert(length(A) == sum(component));
+    fprintf('\n -- Running swiftcc++ using the %s solver...\n\n', solvers.LP{k});
+    component = partition(model, solvers.LP{k}, 'swift');
+    assert(all(component(A)));
+    assert(length(A) == sum(component));
+end
 
 % output a success message
 fprintf('\nDone.\n');
