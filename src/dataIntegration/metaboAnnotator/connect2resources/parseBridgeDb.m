@@ -75,9 +75,10 @@ mapping={
 for i = startSearch : endSearch
     % use Kegg as query term
     % if ~isempty(metabolite_structure.(Mets{i}).keggId) && isempty(find(isnan(metabolite_structure.(Mets{i}).keggId),1))
-    i
+    progress = i/(endSearch-startSearch+1);
+    fprintf([num2str(progress*100) ' percent ... Retrieving Bridge DB data ... \n']);
     for z = 1 : size(mapping,1)
-        if isfield(metabolite_structure.(Mets{i}),(mapping{z,1})) && ~isempty(metabolite_structure.(Mets{i}).(mapping{z,1})) && isempty(find(isnan(metabolite_structure.(Mets{i}).(mapping{z,1})),1))
+        if isfield(metabolite_structure.(Mets{i}),(mapping{z,1})) && ~isempty(metabolite_structure.(Mets{i}).(mapping{z,1})) && isempty(find(isnan(metabolite_structure.(Mets{i}).(mapping{z,1})),1)) 
             %  search for exact term
             try
                 % check if the field contains a list, if not go ahead with

@@ -24,9 +24,8 @@ end
 
 assoR = [];
 for i = 1 : length(model.grRules)
-     cnt = 0;
+    cnt = 0;
     if ~isempty(strfind(model.grRules{i},gene))
-         
         % case 1 - 1 gene
         if  ~isempty(strmatch(model.grRules{i},gene,'exact')) % perfect match
             assoR(i,1)=1;
@@ -37,12 +36,18 @@ for i = 1 : length(model.grRules)
                 assoR(i,1)=1;
             end
         elseif ~isempty(strfind(model.grRules{i},{' or '})) % consider cases of alt splices and ' or '
-          
+            
             [geneTok] = strtok(gene,'.');
+            geneTok = regexprep(geneTok,'\(','');
+            geneTok = regexprep(geneTok,'\)','');
+            geneTok = regexprep(geneTok,' ','');
             if isempty(strfind(model.grRules{i},{' and '})) % only 'or's
                 [c,d] = split(model.grRules{i},' or ');
                 for j = 1 : length(c)
                     cTok = strtok(c{j},'.');
+                    cTok = regexprep(cTok,'\(','');
+                    cTok = regexprep(cTok,'\)','');
+                    cTok = regexprep(cTok,' ','');
                     if ~isempty(strmatch(geneTok,cTok,'exact')) || length(find(strmatch(geneTok,cTok,'exact')))>=1% perfect match
                         cnt = cnt +1;
                     end
@@ -51,7 +56,7 @@ for i = 1 : length(model.grRules)
                     if cnt == length(c) % all genes in or are alt splice forms
                         assoR(i,1)=1;
                     end
-                 elseif cnt>0
+                elseif cnt>0
                     assoR(i,1)=1;
                 end
             else % contains 'and'
@@ -61,6 +66,9 @@ for i = 1 : length(model.grRules)
                         [a,b] = split(c{j},' and '); % split the 'and's
                         for k = 1 : length(a)
                             aTok = strtok(a{k},'.');
+                            aTok = regexprep(aTok,'\(','');
+                            aTok = regexprep(aTok,'\)','');
+                            aTok = regexprep(aTok,' ','');
                             if ~isempty(strmatch(geneTok,aTok,'exact')) % perfect match
                                 cnt = cnt +1;
                             end

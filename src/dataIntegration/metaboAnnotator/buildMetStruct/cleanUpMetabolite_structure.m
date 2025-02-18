@@ -21,6 +21,8 @@ end
 
 
 for i = startSearch : endSearch
+    i
+    
     % remove spaces in keggIds
     if isempty(find(isnan(metabolite_structure.(Mets{i}).keggId))) && ~isnumeric(metabolite_structure.(Mets{i}).keggId)
         metabolite_structure.(Mets{i}).keggId = regexprep(metabolite_structure.(Mets{i}).keggId,'\s','');

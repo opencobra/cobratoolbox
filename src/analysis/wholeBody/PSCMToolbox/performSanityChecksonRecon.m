@@ -98,6 +98,7 @@ model.rxns(find(ismember(model.rxns,'EX_biomass_maintenance_noTrTr')))={'biomass
 model.lb(find(ismember(model.rxns,'biomass_reaction')))=0;
 model.lb(find(ismember(model.rxns,'biomass_maintenance_noTrTr')))=0;
 model.lb(find(ismember(model.rxns,'biomass_maintenance')))=0;
+model.lb(find(contains(model.rxns,'biomass')))=0;
 
 
 TestSolutionNameOpenSinks ='';
