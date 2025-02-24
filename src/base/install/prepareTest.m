@@ -289,7 +289,7 @@ missingSoftware = {};
 % Generalized Software check
 for i = 1:length(requiredSoftwares)
     software = requiredSoftwares{i};
-    
+
     % Depending on the OS, different system commands may be needed
     % For Linux/Mac, you can generally use `which` or `command -v`
     % For Windows, `where` can be used to check if software is available
@@ -297,13 +297,14 @@ for i = 1:length(requiredSoftwares)
     if ispc  % Windows
         [status, ~] = system(['where ' software]);
     else  % Unix-based (Linux/Mac)
-        [status, ~] = system(['command -v ' software ' > /dev/null']);
+        [status, ~] = system(['which ' software ' > /dev/null 2>&1']);
     end
 
     if status ~= 0
         missingSoftware{end + 1} = software;
     end
 end
+
 
 % append the error message
 if ~isempty(missingTBs.License)
