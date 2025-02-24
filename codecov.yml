@@ -1,6 +1,7 @@
-coverage:
-  status:
-    project:
-      default:
-        threshold: 15
-    patch: off
+comment:
+  layout: "header, diff, flags, components, files, footer"
+  behavior: default
+  require_changes: false
+  require_base: false
+  require_head: true
+  hide_project_coverage: false

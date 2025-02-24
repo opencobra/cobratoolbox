@@ -24,7 +24,8 @@ function model = readMetRxnBoundsFiles(model, setDefaultConc, setDefaultFlux, co
 % OPTIONAL INPUTS:
 %    metBoundsFile:    name of tab delimited file with metabolite bounds
 %                      format: '%s %f %f'
-%                      i.e. abbreviation lowerBound upperBound
+%                      i.e. abbreviation lowerBound upperBound 
+%                      Concentration units in Molar
 %    rxnBoundsFile:    name of tab delimited file with reaction bounds
 %                      format: '%s %f %f'
 %                      i.e. abbreviation lowerBound upperBound

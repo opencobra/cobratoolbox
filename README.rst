@@ -103,7 +103,7 @@ within MATLAB by typing:
 
 |bulb| Check out `MATLAB.devTools
 <https://github.com/opencobra/MATLAB.devTools>`__ - and contribute the smart
-way! The **official documentation** is `here <https://opencobra.github.com/MATLAB.devTools>`__.
+way! The **official documentation** is `here <https://opencobra.github.io/MATLAB.devTools/ >`__.
 
 |thumbsup| Contribute to the ``opencobra/cobratoolbox`` repository by following `these
 instructions

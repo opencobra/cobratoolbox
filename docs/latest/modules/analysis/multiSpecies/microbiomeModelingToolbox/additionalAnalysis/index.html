@@ -1,0 +1,790 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Additionalanalysis &mdash; The COBRA Toolbox</title>
+  
+
+  
+  
+  
+    <link rel="apple-touch-icon" sizes="180x180" href="../../../../../_static/img/apple-touch-icon.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../../../_static/img/favicon-32x32.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="16x16" href="../../../../../_static/img/favicon-16x16.png">
+  
+  
+    <link rel="mask-icon" href="../../../../../_static/img/safari-pinned-tab.svg" color="#5bbad5">
+  
+  
+    <link rel="manifest" href="../../../../../_static/json/manifest.json">
+  
+  
+    <meta name="msapplication-config" content="../../../../../_static/browserconfig.xml">
+  
+  <meta name="theme-color" content="#ffffff">
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+  <script src="../../../../../_static/js/jquery.easy-autocomplete.min.js" type="text/javascript" ></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+  <link href="../../../../../_static/css/easy-autocomplete.min.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../../_static/css/cobra.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../../../../_static/css/cobra.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../../../search.html"/>
+    <link rel="top" title="The COBRA Toolbox" href="../../../../../index.html"/>
+        <link rel="up" title="Microbiomemodelingtoolbox" href="../index.html"/>
+        <link rel="next" title="Mgpipe" href="../mgPipe/index.html"/>
+        <link rel="prev" title="Pairwiseinteractionmodeling" href="../pairwiseInteractionModeling/index.html"/> 
+
+  
+  <script src="../../../../../_static/js/modernizr.min.js"></script>
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../../index.html" class="icon icon-home"> The COBRA Toolbox
+          
+
+          
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
+          
+          </a>
+
+              
+          <h1>The COBRA Toolbox</h1>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" id="simple"/>
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+    <script>
+    	var options = {
+
+		url: "../../../../../_static/json/functions.json",
+
+		getValue: "name",
+
+		list: {
+            onKeyEnterEvent: function(item) {
+                    return "_static/../" + item.website_url
+            },
+            maxNumberOfElements: 25,
+			match: {
+					enabled: true,
+			},
+            sort: {
+			    enabled: true
+		    }
+		},
+
+    	template: {
+	    	type: "custom",
+		    method: function(value, item) {
+                return "<span><a href='../../../../../search.html?q=" + item.name + "&check_keywords=yes&area=default'>" + value + "</a>" + "<a href='../../../../../_static/../" + item.website_url + "' ><img src='../../../../../_static/link.svg'/></a></span>";
+		    }
+	    },
+
+		theme: "square"
+
+	};
+
+	$("#simple").easyAutocomplete(options);
+
+
+    </script>
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../../index.html">Home</a></li>
+              </ul>
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../../index.html">Functions</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../../../index.html">Analysis</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../../../relaxedFBA/index.html">Relaxedfba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../topology/index.html">Topology</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../KLdistance/index.html">Kldistance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../dynamicFBA/index.html">Dynamicfba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../ICONGEMs/index.html">Icongems</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../sampling/index.html">Sampling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../rFBA/index.html">Rfba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../percentileCalc/index.html">Percentilecalc</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../QFCA/index.html">Qfca</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../fluxEnrichmentAnalysis/index.html">Fluxenrichmentanalysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../mdFBA/index.html">Mdfba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../MOMA/index.html">Moma</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../exploration/index.html">Exploration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../geometricFBA/index.html">Geometricfba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../FVA/index.html">Fva</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../../index.html">Multispecies</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="../index.html">Microbiomemodelingtoolbox</a><ul class="current">
+<li class="toctree-l5"><a class="reference internal" href="../pairwiseInteractionModeling/index.html">Pairwiseinteractionmodeling</a></li>
+<li class="toctree-l5 current"><a class="current reference internal" href="#">Additionalanalysis</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../mgPipe/index.html">Mgpipe</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../SteadyCom/index.html">Steadycom</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../gMCS/index.html">Gmcs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../parsimoniousFBA/index.html">Parsimoniousfba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../rumba/index.html">Rumba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../robustnessAnalysis/index.html">Robustnessanalysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../ROOM/index.html">Room</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../transport/index.html">Transport</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../igemRNA/index.html">Igemrna</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../sparseFBA/index.html">Sparsefba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../uFBA/index.html">Ufba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../subspaces/index.html">Subspaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../fastForest/index.html">Fastforest</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../nutritionAlgorithm/index.html">Nutritionalgorithm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../thermo/index.html">Thermo</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../FBA/index.html">Fba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../coupling/index.html">Coupling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../rMTA/index.html">Rmta</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../deletion/index.html">Deletion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../wholeBody/index.html">Wholebody</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../findMIIS/index.html">Findmiis</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../base/index.html">Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../dataIntegration/index.html">Dataintegration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../design/index.html">Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../reconstruction/index.html">Reconstruction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../visualization/index.html">Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../contributing.html">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../cite.html">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../support.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../plan.html">Development Plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../contact.html">Contact</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../citations.html">Citations</a></li>
+</ul>
+
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../index.html">The COBRA Toolbox</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../contents.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../../index.html">Functions</a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Analysis</a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Multispecies</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Microbiomemodelingtoolbox</a></li>
+      <li class="breadcrumb-item active">Additionalanalysis</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="https://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <section id="additionalanalysis">
+<span id="id1"></span><h1>Additionalanalysis<a class="headerlink" href="#additionalanalysis" title="Permalink to this heading">¶</a></h1>
+<span class="target" id="module-src.analysis.multiSpecies.microbiomeModelingToolbox.additionalAnalysis"></span><dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.multiSpecies.microbiomeModelingToolbox.additionalAnalysis.analyseObjectiveShadowPrices">
+<span class="sig-name descname"><span class="pre">analyseObjectiveShadowPrices</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">modelFolder</span></em>, <em class="sig-param"><span class="pre">objectiveList</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/multiSpecies/microbiomeModelingToolbox/additionalAnalysis/analyseObjectiveShadowPrices.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.multiSpecies.microbiomeModelingToolbox.additionalAnalysis.analyseObjectiveShadowPrices" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function determines the shadow prices indicating metabolites that
+are relevant for the flux through one or multiple objective functions
+optimized in one or more COBRA model structures. The objective functions
+entered are optimized one by one. By default, all metabolites with
+nonzero shadow prices are extracted from the computed flux solutions. The
+function was written for the Microbiome Modeling Toolbox, with the aim of
+allowing the computation of metabolic dependencies for metabolites of
+interest secreted by the personalzied models, though it can also be used
+for any other COBRA model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[objectives,shadowPrices]=analyseObjectiveShadowPrices</strong> (<em>modelFolder,objectiveList,varargin</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>modelFolder       Folder containing one or more COBRA model structures</strong></p></li>
+<li><p><strong>objectiveList     Cell array containing the names of one or more</strong> – objective functions of interest in vertical order
+Optional: second column with exchange reaction IDs
+for objective-specific precursors</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>resultsFolder     char with path of directory where results are saved</strong></p></li>
+<li><p><strong>osenseStr         String indicating whether objective function</strong> (<em>s</em>) – should be maximized or minimized. Allowed inputs:
+‘min’,’max’, default:’max’.</p></li>
+<li><p><strong>SPDef             String indicating whether positive, negative, or</strong> – all nonzero shadow prices should be collected.
+Allowed inputs: ‘Positive’,’Negative’,’Nonzero’,
+default: ‘Nonzero’.</p></li>
+<li><p><strong>numWorkers        Number indicating number of workers in parallel pool</strong> – (default: 0).</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUT</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>objectives        Computed objectives values</strong></p></li>
+<li><p><strong>shadowPrices      Table with shadow prices for metabolites that are</strong> – relevant for each analyzed objective in each analyzed
+model</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.multiSpecies.microbiomeModelingToolbox.additionalAnalysis.analyzeMgPipeResults">
+<span class="sig-name descname"><span class="pre">analyzeMgPipeResults</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">infoFilePath</span></em>, <em class="sig-param"><span class="pre">resPath</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/multiSpecies/microbiomeModelingToolbox/additionalAnalysis/analyzeMgPipeResults.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.multiSpecies.microbiomeModelingToolbox.additionalAnalysis.analyzeMgPipeResults" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function takes simulation results generated by mgPipe as the input
+and determines which computed fluxes and reaction abundances are
+significantly different between groups. Also creates violin plots of the
+simulation results. Requires a file with sample information (e.g.,
+disease group, age) for the microbiome models that were generated and
+interrogated through mgPipe.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>analyzeMgPipeResults</strong> (<em>infoFilePath,resPath,varargin</em>)</p>
+</dd>
+</dl>
+<p>REQUIRED INPUTS:
+infoFilePath:         Path to text file or spreadsheet with information</p>
+<blockquote>
+<div><p>on analyzed samples including group classification
+with sample IDs as rows</p>
+</div></blockquote>
+<dl class="simple">
+<dt>resPath:              char with path of directory where simulation</dt><dd><p>results are saved</p>
+</dd>
+</dl>
+<p>OPTIONAL INPUTS
+statPath:             char with path of directory where results of</p>
+<blockquote>
+<div><p>statistical analysis are saved</p>
+</div></blockquote>
+<dl class="simple">
+<dt>violinPath:           char with path of directory where violin plots are</dt><dd><p>saved</p>
+</dd>
+<dt>plotType              Type of plot to be created: violin plot (default)</dt><dd><p>or boxplot. Allowed entries: “ViolinPlot”,”Boxplot”</p>
+</dd>
+<dt>sampleGroupHeaders    list of one or more column headers in file with the</dt><dd><p>sample information that should be analyzed
+(e.g., disease status, age). If not provided, the
+second column will be used.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.multiSpecies.microbiomeModelingToolbox.additionalAnalysis.calculateReactionAbundance">
+<span class="sig-name descname"><span class="pre">calculateReactionAbundance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">abundancePath</span></em>, <em class="sig-param"><span class="pre">modelPath</span></em>, <em class="sig-param"><span class="pre">taxonomyPath</span></em>, <em class="sig-param"><span class="pre">rxnsList</span></em>, <em class="sig-param"><span class="pre">numWorkers</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/multiSpecies/microbiomeModelingToolbox/additionalAnalysis/calculateReactionAbundance.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.multiSpecies.microbiomeModelingToolbox.additionalAnalysis.calculateReactionAbundance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Part of the Microbiome Modeling Toolbox. This function calculates and
+plots the total abundance of reactions of interest in a given microbiome
+sample based on the strain-level composition.
+Reaction presence or absence in each strain is derived from the reaction content
+of the respective AGORA model. Two results are given: the total abundance,
+and the abundance on different taxonomical levels.</p>
+<p>USAGE</p>
+<blockquote>
+<div><p>[ReactionAbundance,TaxonomyInfo] = calculateReactionAbundance(abundancePath, modelPath, taxonomyPath, rxnsList, numWorkers)</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>abundancePath</strong> – Path to the .csv file with the abundance data.
+Example: ‘cobratoolbox/papers/018_microbiomeModelingToolbox/examples/normCoverage.csv’</p></li>
+<li><p><strong>modelPath</strong> – Folder containing the strain-specific AGORA models</p></li>
+</ul>
+</dd>
+<dt class="field-even">OPTIONAL INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>taxonomyPath</strong> – Path to the spreadsheet with the taxonomy
+information on organisms (default:
+AGORA_infoFile.xlsx)</p></li>
+<li><p><strong>rxnsList</strong> – List of reactions for which the abundance
+should be calculated (if left empty: all
+reactions in all models)</p></li>
+<li><p><strong>numWorkers</strong> – Number of workers used for parallel pool. If
+left empty, the parallel pool will not be
+started. Parallellization is recommended if
+all reactions are computed.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>ReactionAbundance       Structure with abundance for each microbiome</strong> –                        and reaction in total and on taxon levels
+TaxonomyInfo:          Taxonomical information on each taxon level</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.multiSpecies.microbiomeModelingToolbox.additionalAnalysis.calculateSubsystemAbundance">
+<span class="sig-name descname"><span class="pre">calculateSubsystemAbundance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">reactionAbundancePath</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/multiSpecies/microbiomeModelingToolbox/additionalAnalysis/calculateSubsystemAbundance.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.multiSpecies.microbiomeModelingToolbox.additionalAnalysis.calculateSubsystemAbundance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the subsystem abundance in microbiome models that were generated
+through the mgPipe pipeline from the calculated reaction abundances. The
+subsystem abundance is shown as the fraction of the highest possible
+subsystem abundance that could be achieved, which would be every reaction
+in the subsystem being in the microbiome model at a total abundance of 1.</p>
+<p>USAGE: subsystemAbundance = calculateSubsystemAbundance(reactionAbundancePath)</p>
+<p>INPUT
+reactionAbundancePath     Path to spreadsheet or text file with</p>
+<blockquote>
+<div><p>calculated reaction abundances for one or more
+microbiome models</p>
+</div></blockquote>
+<p>OUTPUT
+subsystemAbundance        Table with calculated subsystem abundances</p>
+<dl class="simple">
+<dt>AUTHOR</dt><dd><ul class="simple">
+<li><p>Almut Heinken, 08/2020</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.multiSpecies.microbiomeModelingToolbox.additionalAnalysis.correlateFluxWithTaxonAbundance">
+<span class="sig-name descname"><span class="pre">correlateFluxWithTaxonAbundance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">abundancePath</span></em>, <em class="sig-param"><span class="pre">fluxPath</span></em>, <em class="sig-param"><span class="pre">infoFilePath</span></em>, <em class="sig-param"><span class="pre">corrMethod</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/multiSpecies/microbiomeModelingToolbox/additionalAnalysis/correlateFluxWithTaxonAbundance.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.multiSpecies.microbiomeModelingToolbox.additionalAnalysis.correlateFluxWithTaxonAbundance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Part of the Microbiome Modeling Toolbox. This function calculates and
+plots the correlations between fluxes for one or more reactions of
+interest in a number of microbiome samples and the relative microbe
+abundance on different taxonomical levels in the same samples.
+The function should be used after running mgPipe to identify correlations
+between the computed metabolic profiles and specific taxa in the samples.</p>
+<p>USAGE</p>
+<blockquote>
+<div><p>[FluxCorrelations, PValues, TaxonomyInfo] = correlateFluxWithTaxonAbundance(abundancePath, fluxPath, taxonomy, corrMethod)</p>
+</div></blockquote>
+<dl class="field-list">
+<dt class="field-odd">INPUTS</dt>
+<dd class="field-odd"><p><strong>abundancePath</strong> –</p>
+<dl class="simple">
+<dt>Path to the .csv file with the abundance data.</dt><dd><p>Needs to be in same format as example file
+‘cobratoolbox/papers/018_microbiomeModelingToolbox/examples/normCoverage.csv’</p>
+</dd>
+<dt>fluxPath:         Path to the .csv file with the fluxes for reactions</dt><dd><p>of interest with sample IDs as rows and reaction
+IDs in microbiome community models as columns</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">OPTIONAL INPUTS</dt>
+<dd class="field-even"><p><strong>infoFilePath</strong> –</p>
+<dl class="simple">
+<dt>Path to the spreadsheet with the taxonomy information</dt><dd><p>on organisms (default: AGORA_infoFile.xlsx)</p>
+</dd>
+<dt>corrMethod:       Method to compute the linear correlation</dt><dd><p>coefficient. Allowed inputs: ‘Pearson’ (default),
+‘Kendall’, ‘Spearman’.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>FluxCorrelations</strong> – Structure with correlations between fluxes for each
+reaction and abundances on taxon levels</p></li>
+<li><p><strong>PValues</strong> – p-values corresponding to each calculated
+correlation</p></li>
+<li><p><strong>TaxonomyInfo</strong> – Taxonomical information on each taxon level</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.multiSpecies.microbiomeModelingToolbox.additionalAnalysis.drawSecPot">
+<span class="sig-name descname"><span class="pre">drawSecPot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">dietPath</span></em>, <em class="sig-param"><span class="pre">rxnmax</span></em>, <em class="sig-param"><span class="pre">startMet</span></em>, <em class="sig-param"><span class="pre">levels</span></em>, <em class="sig-param"><span class="pre">cutoff</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/multiSpecies/microbiomeModelingToolbox/additionalAnalysis/drawSecPot.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.multiSpecies.microbiomeModelingToolbox.additionalAnalysis.drawSecPot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Draws part of the community structure when maximized with the given
+reaction</p>
+<dl class="field-list">
+<dt class="field-odd">INPUTS</dt>
+<dd class="field-odd"><p><strong>dietPath          char with path of the model</strong></p>
+<p>rxnmax            char with name of the rxn that gets maximized with fastFVA
+startMet          char with starting metabolite for visualizing
+levels            number with levels that are connected to the starting</p>
+<blockquote>
+<div><p>metabolite</p>
+</div></blockquote>
+<dl class="simple">
+<dt>cutoff            number of fluxes that are considered for drawing,</dt><dd><p>only fluxes&gt;abs(cutoff) are considered</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.multiSpecies.microbiomeModelingToolbox.additionalAnalysis.fastCalculateReactionAbundance">
+<span class="sig-name descname"><span class="pre">fastCalculateReactionAbundance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">abundancePath</span></em>, <em class="sig-param"><span class="pre">modelPath</span></em>, <em class="sig-param"><span class="pre">rxnsList</span></em>, <em class="sig-param"><span class="pre">numWorkers</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/multiSpecies/microbiomeModelingToolbox/additionalAnalysis/fastCalculateReactionAbundance.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.multiSpecies.microbiomeModelingToolbox.additionalAnalysis.fastCalculateReactionAbundance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Part of the Microbiome Modeling Toolbox. This function calculates and
+plots the total abundance of reactions of interest in a given microbiome
+sample based on the strain-level composition.
+Reaction presence or absence in each strain is derived from the reaction content
+of the respective AGORA model.</p>
+<p>USAGE</p>
+<blockquote>
+<div><p>ReactionAbundance = fastCalculateReactionAbundance(abundancePath, modelPath, rxnsList, numWorkers)</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>abundancePath</strong> – Path to the .csv file with the abundance data.
+Example: ‘cobratoolbox/papers/018_microbiomeModelingToolbox/examples/normCoverage.csv’</p></li>
+<li><p><strong>modelPath</strong> – Folder containing the strain-specific AGORA models</p></li>
+</ul>
+</dd>
+<dt class="field-even">OPTIONAL INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>rxnsList</strong> – List of reactions for which the abundance
+should be calculated (if left empty: all
+reactions in all models)</p></li>
+<li><p><strong>numWorkers</strong> – Number of workers used for parallel pool. If
+left empty, the parallel pool will not be
+started. Parallellization is recommended if
+all reactions are computed.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ReactionAbundance       Table with total abundance for each microbiome</strong> – and reaction</p></li>
+<li><p><strong>ReactionPresence</strong> – Table with absolute reaction presence for
+all reactions in all microbiome samples</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.multiSpecies.microbiomeModelingToolbox.additionalAnalysis.inorder">
+<span class="sig-name descname"><span class="pre">inorder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">node</span></em>, <em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">visitedmets</span></em>, <em class="sig-param"><span class="pre">visitedrxns</span></em>, <em class="sig-param"><span class="pre">levels</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/multiSpecies/microbiomeModelingToolbox/additionalAnalysis/inorder.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.multiSpecies.microbiomeModelingToolbox.additionalAnalysis.inorder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Concatenates all reactions and metabolites connected over levels</p>
+<dl class="field-list">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[visitedmets, visitedrxns] = inorder</strong> (<em>node, model, visitedmets, visitedrxns, levels</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul>
+<li><p><strong>node</strong> – char with the name of the starting node</p></li>
+<li><p><strong>model</strong> – COBRA model of a community/microbe
+one microbe model that can carry flux</p></li>
+<li><p><strong>visitedmets</strong> – list of metabolites that are excluded
+(already visited)</p></li>
+<li><p><strong>visitedrxns</strong> –</p>
+<dl class="simple">
+<dt>list of reactions that are excluded</dt><dd><p>(already visited)</p>
+</dd>
+<dt>levels               indicates how many levels from the starting node (metabolite) are</dt><dd><p>considered</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>visitedmets</strong> – list of all metabolites that are connected over
+the levels</p></li>
+<li><p><strong>visitedrxns</strong> – list of all reactions that are connected over
+the levels</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.multiSpecies.microbiomeModelingToolbox.additionalAnalysis.makeViolinPlots">
+<span class="sig-name descname"><span class="pre">makeViolinPlots</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">sampleData</span></em>, <em class="sig-param"><span class="pre">sampleInformation</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/multiSpecies/microbiomeModelingToolbox/additionalAnalysis/makeViolinPlots.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.multiSpecies.microbiomeModelingToolbox.additionalAnalysis.makeViolinPlots" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function creates violin plots of input data (e.g., community model
+fluxes) while separating the data into two or more violins based on
+available sample stratification information.</p>
+<p>REQUIRED INPUTS
+sampleData           Table with input data to analyze (e.g., fluxes) with</p>
+<blockquote>
+<div><p>computed features as rows and sample IDs as columns</p>
+</div></blockquote>
+<dl class="simple">
+<dt>sampleInformation    Table with information on analyzed samples including</dt><dd><p>group classification with sample IDs as rows</p>
+</dd>
+</dl>
+<p>OPTIONAL INPUTS
+stratification       Column header containing the desired group</p>
+<blockquote>
+<div><p>classification in sampleInformation table. If not
+provided, the second column will be used.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>plotType             Type of plot to be created: violin plot (default) or</dt><dd><p>boxplot. Allowed entries: “ViolinPlot”,”Boxplot”</p>
+</dd>
+<dt>plottedFeature       Name of the feature to plot that will be displayed</dt><dd><p>as the plot title (e.g., ‘Flux”es’)</p>
+</dd>
+<dt>unit                 Unit of the plotted data that will be displayed as</dt><dd><p>the y axis label (e.g., mmol/person/day)</p>
+</dd>
+<dt>AUTHOR</dt><dd><ul class="simple">
+<li><p>Almut Heinken, 12/2020</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.multiSpecies.microbiomeModelingToolbox.additionalAnalysis.performStatisticalAnalysis">
+<span class="sig-name descname"><span class="pre">performStatisticalAnalysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">sampleData</span></em>, <em class="sig-param"><span class="pre">sampleInformation</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/multiSpecies/microbiomeModelingToolbox/additionalAnalysis/performStatisticalAnalysis.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.multiSpecies.microbiomeModelingToolbox.additionalAnalysis.performStatisticalAnalysis" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function determines if there is a significant difference between
+features computed for two or more groups in a cohort of samples. If the
+cohort contains two groups, the Wilcoxon rank sum test is used. If the
+cohort contains three or more groups, the Kruskal Wallis test is used.</p>
+<p>USAGE
+[Statistics,significantFeatures] = performStatisticalAnalysis(sampleData,sampleInformation,stratification)</p>
+<p>INPUTS
+sampleData           Table with input data to analyze (e.g., fluxes) with</p>
+<blockquote>
+<div><p>computed features as rows and sample IDs as columns</p>
+</div></blockquote>
+<dl class="simple">
+<dt>sampleInformation    Table with information on analyzed samples including</dt><dd><p>group classification with sample IDs as rows</p>
+</dd>
+</dl>
+<p>OPTIONAL INPUT
+stratification       Column header containing the desired group</p>
+<blockquote>
+<div><p>classification in sampleInformation table. If not
+provided, the second column will be used.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>groupTest            Decides whether Kruskal-Wallis test(default) or</dt><dd><p>ANOVA should be used for group comparisons.
+Allowed inputs: “Kruskal-Wallis”,”ANOVA”</p>
+</dd>
+</dl>
+<p>OUTPUTS
+Statistics           Table with results of statistical tests for each</p>
+<blockquote>
+<div><p>computed feature</p>
+</div></blockquote>
+<dl class="simple">
+<dt>significantFeatures  Table with input data reduced to only features that</dt><dd><p>were statistically significant</p>
+</dd>
+<dt>AUTHOR</dt><dd><ul class="simple">
+<li><p>Almut Heinken, 12/2020</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.multiSpecies.microbiomeModelingToolbox.additionalAnalysis.plotFluxesAgainstOrganismAbundances">
+<span class="sig-name descname"><span class="pre">plotFluxesAgainstOrganismAbundances</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">abundancePath</span></em>, <em class="sig-param"><span class="pre">fluxPath</span></em>, <em class="sig-param"><span class="pre">metabolites</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/multiSpecies/microbiomeModelingToolbox/additionalAnalysis/plotFluxesAgainstOrganismAbundances.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.multiSpecies.microbiomeModelingToolbox.additionalAnalysis.plotFluxesAgainstOrganismAbundances" title="Permalink to this definition">¶</a></dt>
+<dd><p>Part of the Microbiome Modeling Toolbox. This function plots the
+relationship between organism abundances and the computed flux profiles
+for metabolites of interest. The function should be used after running
+mgPipe to identify correlations between metabolites and specific taxa in
+the samples.</p>
+<p>USAGE</p>
+<blockquote>
+<div><p>plotFluxesAgainstOrganismAbundances(fluxPath,abundancePath,metabolites)</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>abundancePath</strong> – Path to the .csv file with the abundance data.
+Needs to be in same format as example file
+‘cobratoolbox/papers/018_microbiomeModelingToolbox/examples/normCoverage.csv’</p></li>
+<li><p><strong>fluxPath</strong> – Path to the .csv file with the fluxes for reactions
+of interest with sample IDs as rows and reaction
+IDs in microbiome community models as columns</p></li>
+</ul>
+</dd>
+<dt class="field-even">OPTIONAL INPUT</dt>
+<dd class="field-even"><p><strong>metabolites</strong> – Cell array with VMH metabolite IDs of metabolites to
+plot (default: all computed metabolites)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.multiSpecies.microbiomeModelingToolbox.additionalAnalysis.predictMicrobeContributions">
+<span class="sig-name descname"><span class="pre">predictMicrobeContributions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">modPath</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/multiSpecies/microbiomeModelingToolbox/additionalAnalysis/predictMicrobeContributions.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.multiSpecies.microbiomeModelingToolbox.additionalAnalysis.predictMicrobeContributions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Predicts the minimal and maximal fluxes through internal exchange
+reactions in microbes in a list of microbiome community models for a list
+of metabolites. This allows for the prediction of the individual
+contribution of each microbe to total metabolite uptake and secretion by
+the community.</p>
+<p>[minFluxes,maxFluxes,fluxSpans] = predictMicrobeContributions(modPath, varargin)</p>
+<dl class="field-list simple">
+<dt class="field-odd">INPUTS</dt>
+<dd class="field-odd"><p><strong>modPath            char with path of directory where models are stored</strong></p>
+</dd>
+<dt class="field-even">OPTIONAL INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>metList            List of VMH IDs for metabolites to analyze</strong> – (default: all exchanged metabolites)</p></li>
+<li><p><strong>resultsFolder      Path where results will be saved</strong></p></li>
+<li><p><strong>numWorkers         integer indicating the number of cores to use</strong> – for parallelization</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>minFluxes</strong> – Minimal fluxes through analyzed exchange reactions,
+corresponding to secretion fluxes for each microbe</p></li>
+<li><p><strong>maxFluxes</strong> – Maximal fluxes through analyzed exchange reactions,
+corresponding to uptake fluxes for each microbe</p></li>
+<li><p><strong>fluxSpans</strong> – Range between min and max fluxes for analyzed
+exchange reactions</p></li>
+</ul>
+</dd>
+</dl>
+<p>Define default input parameters if not specified</p>
+</dd></dl>
+
+</section>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../mgPipe/index.html" class="btn btn-default float-right" title="Mgpipe" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../pairwiseInteractionModeling/index.html" class="btn btn-default" title="Pairwiseinteractionmodeling" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017-2021, The COBRA Toolbox developers.
+
+    </p>
+  </div>
+  Built with Sphinx using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../../',
+            VERSION:'2.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+    <script type="text/javascript" src="../../../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script type="text/javascript" src="../../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../../../_static/sphinx_highlight.js"></script>
+
+  
+
+
+  
+  
+    <script type="text/javascript" src="../../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TRCMZL1FKK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TRCMZL1FKK');
+  </script>
+    
+</body>
+</html>

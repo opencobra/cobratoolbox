@@ -1,0 +1,362 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge,IE=9,chrome=1"><meta name="generator" content="MATLAB 2021a"><title>Testing basic properties of a metabolic model (aka sanity checks)</title><style type="text/css">.rtcContent { padding: 30px; } .S0 { margin: 3px 10px 5px 4px; padding: 0px; line-height: 28.8px; min-height: 0px; white-space: pre-wrap; color: rgb(213, 80, 0); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 24px; font-weight: normal; text-align: left;  }
+.S1 { margin: 2px 10px 9px 4px; padding: 0px; line-height: 21px; min-height: 0px; white-space: pre-wrap; color: rgb(0, 0, 0); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 14px; font-weight: normal; text-align: left;  }
+.S2 { margin: 20px 10px 5px 4px; padding: 0px; line-height: 20px; min-height: 0px; white-space: pre-wrap; color: rgb(60, 60, 60); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 20px; font-weight: bold; text-align: left;  }
+.S3 { margin: 10px 0px 20px; padding-left: 0px; font-family: Helvetica, Arial, sans-serif; font-size: 14px;  }
+.S4 { margin-left: 56px; line-height: 21px; min-height: 0px; text-align: left; white-space: pre-wrap;  }
+.S5 { margin: 3px 10px 5px 4px; padding: 0px; line-height: 20px; min-height: 0px; white-space: pre-wrap; color: rgb(60, 60, 60); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 20px; font-weight: bold; text-align: left;  }
+.CodeBlock { background-color: #F7F7F7; margin: 10px 0 10px 0;}
+.S6 { border-left: 1px solid rgb(233, 233, 233); border-right: 1px solid rgb(233, 233, 233); border-top: 1px solid rgb(233, 233, 233); border-bottom: 1px solid rgb(233, 233, 233); border-radius: 4px; padding: 6px 45px 4px 13px; line-height: 17.234px; min-height: 18px; white-space: nowrap; color: rgb(0, 0, 0); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S7 { margin: 10px 10px 9px 4px; padding: 0px; line-height: 21px; min-height: 0px; white-space: pre-wrap; color: rgb(0, 0, 0); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 14px; font-weight: normal; text-align: left;  }
+.S8 { border-left: 1px solid rgb(233, 233, 233); border-right: 1px solid rgb(233, 233, 233); border-top: 1px solid rgb(233, 233, 233); border-bottom: 0px none rgb(0, 0, 0); border-radius: 4px 4px 0px 0px; padding: 6px 45px 0px 13px; line-height: 17.234px; min-height: 18px; white-space: nowrap; color: rgb(0, 0, 0); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S9 { border-left: 1px solid rgb(233, 233, 233); border-right: 1px solid rgb(233, 233, 233); border-top: 0px none rgb(0, 0, 0); border-bottom: 0px none rgb(0, 0, 0); border-radius: 0px; padding: 0px 45px 0px 13px; line-height: 17.234px; min-height: 18px; white-space: nowrap; color: rgb(0, 0, 0); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S10 { border-left: 1px solid rgb(233, 233, 233); border-right: 1px solid rgb(233, 233, 233); border-top: 0px none rgb(0, 0, 0); border-bottom: 1px solid rgb(233, 233, 233); border-radius: 0px 0px 4px 4px; padding: 0px 45px 4px 13px; line-height: 17.234px; min-height: 18px; white-space: nowrap; color: rgb(0, 0, 0); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }</style></head><body><div class = rtcContent><h1  class = 'S0'><span>Testing basic properties of a metabolic model (aka sanity checks)</span></h1><div  class = 'S1'><span style=' font-weight: bold;'>Author(s): Ines Thiele, Ronan M. T. Fleming, Systems Biochemistry Group, LCSB, University of Luxembourg.</span></div><div  class = 'S1'><span style=' font-weight: bold;'>Reviewer(s): Almut Heinken, LCSB, University of Luxembourg.</span></div><div  class = 'S1'><span>In this tutorial, we show how test for basic modeling properties of a metabolic model. The tutorial was developed during the construction of the generic human metabolic model, Recon 3D [1] and can be applied to Recon 3D derived condition- and cell-type specific models, to the previous generic human reconstruction, Recon2, as well as other metabolic models.</span></div><h2  class = 'S2'><span>Content:</span></h2><div  class = 'S1'><span>The tests include:</span></div><ul  class = 'S3'><li  class = 'S4'><span>leak test</span></li><li  class = 'S4'><span>production of protons from nothing as well as from water, and/or oxygen alone</span></li><li  class = 'S4'><span>production of matter when atp hydrolysis reaction is allowed to work but all uptakes are closed</span></li><li  class = 'S4'><span>production of too much ATP from glucose under aerobic condition</span></li><li  class = 'S4'><span>duplicated reactions</span></li><li  class = 'S4'><span>empty colmuns in the model.rxnGeneMat</span></li><li  class = 'S4'><span>the single gene deletion analysis runs smoothly</span></li><li  class = 'S4'><span>ATP yield from different carbon sources</span></li><li  class = 'S4'><span>metabolic objective functions</span></li><li  class = 'S4'><span>flux consistency</span></li><li  class = 'S4'><span>demand reactions with negative lower bound (should not occur based on definition of demand reactions)</span></li><li  class = 'S4'><span>consistency of model.rev, which defines reaction reversibility, and the set values for the lower bounds on reactions. </span></li></ul><div  class = 'S1'><span>All results are stored in a table ('TableChecks').</span></div><h2  class = 'S5'><span>EQUIPMENT SETUP</span></h2><div  class = 'S1'><span>If necessary, initialize the cobra toolbox:</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S6'><span style="white-space: pre"><span >initCobraToolbox(false) </span><span style="color: rgb(2, 128, 9);">% false, as we don't want to update</span></span></div></div></div><div  class = 'S7'><span>For solving line</span><span>ar programming problems in FBA analysis, certain solvers are required:</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >changeCobraSolver (</span><span style="color: rgb(170, 4, 249);">'glpk'</span><span >, </span><span style="color: rgb(170, 4, 249);">'all'</span><span >, 1);</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span style="color: rgb(2, 128, 9);">%Uncomment if you don't want to use glpk.</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span style="color: rgb(2, 128, 9);">%changeCobraSolver ('ibm_cplex', 'all', 1); </span></span></div></div><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: pre"><span style="color: rgb(2, 128, 9);">%changeCobraSolver ('tomlab_cplex', 'all', 1);</span></span></div></div></div><div  class = 'S7'><span>This tutoria</span><span>l can be ru</span><span>n </span><span>with </span><span style=' font-family: monospace;'>'glpk</span><span style=' font-family: monospace;'>'</span><span> package as linear programming solver, which does not require additional instalation and configuration. However, for the analysis of large models, such as Recon 3, it is not recommended to use </span><span style=' font-family: monospace;'>'glpk</span><span style=' font-family: monospace;'>'</span><span> but rather industrial-strength solvers, such as the </span><span style=' font-family: monospace;'>'gurobi'</span><span> package. </span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S6'><span style="white-space: pre"><span >warning </span><span style="color: rgb(170, 4, 249);">off MATLAB:subscripting:noSubscriptsSpecified</span></span></div></div></div><h2  class = 'S5'><span>PROCEDURE</span></h2><div  class = 'S1'><span>Before proceeding with the simulations, the path for the model needs to be set up. In thi</span><span>s tutorial, the used</span><span> model is the generic model of human metabolism, Recon 3 [1]. If Recon 3 is not available, please use Recon 2.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >modelFileName = </span><span style="color: rgb(170, 4, 249);">'Recon2.0model.mat'</span><span >; </span><span style="color: rgb(2, 128, 9);">%Replace if you want to load Recon3D</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >modelDirectory = getDistributedModelFolder(modelFileName); </span><span style="color: rgb(2, 128, 9);">%Look up the folder for the distributed Models.</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >modelFileName= [modelDirectory filesep modelFileName]; </span><span style="color: rgb(2, 128, 9);">% Get the full path. Necessary to be sure, that the right model is loaded</span></span></div></div><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: pre"><span >model = readCbModel(modelFileName);</span></span></div></div></div><h2  class = 'S5'><span>Model Harmonization</span></h2><div  class = 'S1'><span>Replace reaction abbreviation for the ATP hydrolysis (DM_atp_c_) and Biomass reaction used differently in various models.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >model.rxns(find(ismember(model.rxns,</span><span style="color: rgb(170, 4, 249);">'ATPM'</span><span >)))={</span><span style="color: rgb(170, 4, 249);">'DM_atp_c_'</span><span >};</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >model.rxns(find(ismember(model.rxns,</span><span style="color: rgb(170, 4, 249);">'ATPhyd'</span><span >)))={</span><span style="color: rgb(170, 4, 249);">'DM_atp_c_'</span><span >};</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >model.rxns(find(ismember(model.rxns,</span><span style="color: rgb(170, 4, 249);">'DM_atp(c)'</span><span >)))={</span><span style="color: rgb(170, 4, 249);">'DM_atp_c_'</span><span >};</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >model.rxns(find(ismember(model.rxns,</span><span style="color: rgb(170, 4, 249);">'EX_biomass_reaction'</span><span >)))={</span><span style="color: rgb(170, 4, 249);">'biomass_reaction'</span><span >};</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >model.rxns(find(ismember(model.rxns,</span><span style="color: rgb(170, 4, 249);">'EX_biomass_maintenance'</span><span >)))={</span><span style="color: rgb(170, 4, 249);">'biomass_maintenance'</span><span >};</span></span></div></div><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: pre"><span >model.rxns(find(ismember(model.rxns,</span><span style="color: rgb(170, 4, 249);">'EX_biomass_maintenance_noTrTr'</span><span >)))={</span><span style="color: rgb(170, 4, 249);">'biomass_maintenance_noTrTr'</span><span >};</span></span></div></div></div><div  class = 'S7'><span>Set lower bound of the biomass reaction to 0.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >model.lb(find(ismember(model.rxns,</span><span style="color: rgb(170, 4, 249);">'biomass_reaction'</span><span >)))=0;</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >model.lb(find(ismember(model.rxns,</span><span style="color: rgb(170, 4, 249);">'biomass_maintenance_noTrTr'</span><span >)))=0;</span></span></div></div><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: pre"><span >model.lb(find(ismember(model.rxns,</span><span style="color: rgb(170, 4, 249);">'biomass_maintenance'</span><span >)))=0;</span></span></div></div></div><div  class = 'S7'><span>Harmonize different use of brackets.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >model.rxns = regexprep(model.rxns,</span><span style="color: rgb(170, 4, 249);">'\('</span><span >,</span><span style="color: rgb(170, 4, 249);">'\['</span><span >);</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >model.rxns = regexprep(model.rxns,</span><span style="color: rgb(170, 4, 249);">'\)'</span><span >,</span><span style="color: rgb(170, 4, 249);">'\]'</span><span >);</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >model.rxns = regexprep(model.rxns,</span><span style="color: rgb(170, 4, 249);">'Ex_'</span><span >,</span><span style="color: rgb(170, 4, 249);">'EX_'</span><span >);</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >model.rxns = regexprep(model.rxns,</span><span style="color: rgb(170, 4, 249);">'Sink_'</span><span >,</span><span style="color: rgb(170, 4, 249);">'sink_'</span><span >); </span></span></div></div><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: pre"><span >model.rxns = regexprep(model.rxns,</span><span style="color: rgb(170, 4, 249);">'-'</span><span >,</span><span style="color: rgb(170, 4, 249);">'_'</span><span >); </span></span></div></div></div><div  class = 'S7'><span>Define some parameters that we will need.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >cnt = 1;</span></span></div></div><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: pre"><span >tol = 1e-6;</span></span></div></div></div><div  class = 'S7'><span>Define the closed model. Here, we will set to zero the lower bounds of all reactions that represent exchange and siphon ('sink') reactions, or that contain only one entry in the column of the S matrix. The upper bound of those reactions is set to 1000 (i.e., infinity). Note that this overwrites any constraints on those reactions that may be present in a condition- and cell-type specific model.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >modelClosed = model;</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >modelexchanges1 = strmatch(</span><span style="color: rgb(170, 4, 249);">'Ex_'</span><span >,modelClosed.rxns);</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >modelexchanges4 = strmatch(</span><span style="color: rgb(170, 4, 249);">'EX_'</span><span >,modelClosed.rxns);</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >modelexchanges2 = strmatch(</span><span style="color: rgb(170, 4, 249);">'DM_'</span><span >,modelClosed.rxns);</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >modelexchanges3 = strmatch(</span><span style="color: rgb(170, 4, 249);">'sink_'</span><span >,modelClosed.rxns);</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >selExc = (find( full((sum(abs(modelClosed.S)==1,1) ==1) &amp; (sum(modelClosed.S~=0) == 1))))';</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >modelexchanges = unique([modelexchanges1;modelexchanges2;modelexchanges3;modelexchanges4;selExc]);</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >modelClosed.lb(find(ismember(modelClosed.rxns,modelClosed.rxns(modelexchanges))))=0;</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >modelClosed.ub(find(ismember(modelClosed.rxns,modelClosed.rxns(modelexchanges))))=1000;</span></span></div></div><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: pre"><span >modelClosedOri = modelClosed;</span></span></div></div></div><h2  class = 'S5'><span>Start with tests.</span></h2><div  class = 'S1'><span>Perform leak test, i.e., whether the closed model can produce any exchanged metabolite, as defined in the model, from nothing. </span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >modelClosed = modelClosedOri;</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >[LeakRxns,modelTested,LeakRxnsFluxVector] = fastLeakTest(modelClosed,modelClosed.rxns(selExc),</span><span style="color: rgb(170, 4, 249);">'false'</span><span >);</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >TableChecks{cnt,1} = </span><span style="color: rgb(170, 4, 249);">'fastLeakTest 1'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">if </span><span >length(LeakRxns)&gt;0</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >    warning(</span><span style="color: rgb(170, 4, 249);">'model leaks metabolites!'</span><span >)</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >    TableChecks{cnt,2} = </span><span style="color: rgb(170, 4, 249);">'Model leaks metabolites!'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">else</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >    TableChecks{cnt,2} = </span><span style="color: rgb(170, 4, 249);">'Leak free!'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: pre"><span >cnt = cnt + 1;</span></span></div></div></div><div  class = 'S7'><span>Test if something leaks when demand reactions for each metabolite in the model are added. Note that this step is time consuming.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >modelClosed = modelClosedOri;</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >[LeakRxnsDM,modelTestedDM,LeakRxnsFluxVectorDM] = fastLeakTest(modelClosed,modelClosed.rxns(selExc),</span><span style="color: rgb(170, 4, 249);">'true'</span><span >);</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >TableChecks{cnt,1} = </span><span style="color: rgb(170, 4, 249);">'fastLeakTest 2 - add demand reactions for each metabolite in the model'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">if </span><span >length(LeakRxnsDM)&gt;0</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >    TableChecks{cnt,2} = </span><span style="color: rgb(170, 4, 249);">'Model leaks metabolites when demand reactions are added!'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">else</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >    TableChecks{cnt,2} = </span><span style="color: rgb(170, 4, 249);">'Leak free when demand reactions are added!'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: pre"><span >cnt = cnt + 1;</span></span></div></div></div><div  class = 'S7'><span>Test if the model produces energy from water!</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >modelClosed = modelClosedOri;</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >modelClosedATP = changeObjective(modelClosed,</span><span style="color: rgb(170, 4, 249);">'DM_atp_c_'</span><span >);</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >modelClosedATP = changeRxnBounds(modelClosedATP,</span><span style="color: rgb(170, 4, 249);">'DM_atp_c_'</span><span >,0,</span><span style="color: rgb(170, 4, 249);">'l'</span><span >);</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >modelClosedATP = changeRxnBounds(modelClosedATP,</span><span style="color: rgb(170, 4, 249);">'EX_h2o[e]'</span><span >,-1,</span><span style="color: rgb(170, 4, 249);">'l'</span><span >);</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >FBA3=optimizeCbModel(modelClosedATP);</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >TableChecks{cnt,1} = </span><span style="color: rgb(170, 4, 249);">'Exchanges, sinks, and demands have  lb = 0, except h2o'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">if </span><span >abs(FBA3.f) &gt; 1e-6</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >    TableChecks{cnt,2} = </span><span style="color: rgb(170, 4, 249);">'model produces energy from water!'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">else</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >    TableChecks{cnt,2} = </span><span style="color: rgb(170, 4, 249);">'model DOES NOT produce energy from water!'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: pre"><span >cnt = cnt + 1;</span></span></div></div></div><div  class = 'S7'><span>Test if the model produces energy from water and oxygen!</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >modelClosed = modelClosedOri;</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >modelClosedATP = changeObjective(modelClosed,</span><span style="color: rgb(170, 4, 249);">'DM_atp_c_'</span><span >);</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >modelClosedATP = changeRxnBounds(modelClosedATP,</span><span style="color: rgb(170, 4, 249);">'DM_atp_c_'</span><span >,0,</span><span style="color: rgb(170, 4, 249);">'l'</span><span >);</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >modelClosedATP = changeRxnBounds(modelClosedATP,</span><span style="color: rgb(170, 4, 249);">'EX_h2o[e]'</span><span >,-1,</span><span style="color: rgb(170, 4, 249);">'l'</span><span >);</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >modelClosedATP = changeRxnBounds(modelClosedATP,</span><span style="color: rgb(170, 4, 249);">'EX_o2[e]'</span><span >,-1,</span><span style="color: rgb(170, 4, 249);">'l'</span><span >);</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >FBA6=optimizeCbModel(modelClosedATP);</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >TableChecks{cnt,1} = </span><span style="color: rgb(170, 4, 249);">'Exchanges, sinks, and demands have  lb = 0, except h2o and o2'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">if </span><span >abs(FBA6.f) &gt; 1e-6</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >    TableChecks{cnt,2} = </span><span style="color: rgb(170, 4, 249);">'model produces energy from water and oxygen!'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">else</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >    TableChecks{cnt,2} = </span><span style="color: rgb(170, 4, 249);">'model DOES NOT produce energy from water and oxygen!'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: pre"><span >cnt = cnt + 1;</span></span></div></div></div><div  class = 'S7'><span>Test if the model produces matter when atp demand is reversed!</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >modelClosed = modelClosedOri;</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >modelClosed = changeObjective(modelClosed,</span><span style="color: rgb(170, 4, 249);">'DM_atp_c_'</span><span >);</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >modelClosed.lb(find(ismember(modelClosed.rxns,</span><span style="color: rgb(170, 4, 249);">'DM_atp_c_'</span><span >))) = -1000;</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >FBA = optimizeCbModel(modelClosed);</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >TableChecks{cnt,1} = </span><span style="color: rgb(170, 4, 249);">'Exchanges, sinks, and demands have  lb = 0, allow DM_atp_c_ to be reversible'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">if </span><span >abs(FBA.f) &gt; 1e-6</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >    TableChecks{cnt,2} = </span><span style="color: rgb(170, 4, 249);">'model produces matter when atp demand is reversed!'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">else</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >    TableChecks{cnt,2} = </span><span style="color: rgb(170, 4, 249);">'model DOES NOT produce matter when atp demand is reversed!'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: pre"><span >cnt = cnt + 1;</span></span></div></div></div><div  class = 'S7'><span>Test if the model has flux through h[m] demand !</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >modelClosed = modelClosedOri;</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >modelClosed = addDemandReaction(modelClosed,</span><span style="color: rgb(170, 4, 249);">'h[m]'</span><span >);</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >modelClosed = changeObjective(modelClosed,</span><span style="color: rgb(170, 4, 249);">'DM_h[m]'</span><span >);</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >modelClosed.ub(find(ismember(modelClosed.rxns,</span><span style="color: rgb(170, 4, 249);">'DM_h[m]'</span><span >))) = 1000;</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >FBA = optimizeCbModel(modelClosed,</span><span style="color: rgb(170, 4, 249);">'max'</span><span >);</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >TableChecks{cnt,1} = </span><span style="color: rgb(170, 4, 249);">'Exchanges, sinks, and demands have  lb = 0, test flux through DM_h[m] (max)'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">if </span><span >abs(FBA.f) &gt; 1e-6</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >    TableChecks{cnt,2} = </span><span style="color: rgb(170, 4, 249);">'model has flux through h[m] demand (max)!'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">else</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >    TableChecks{cnt,2} = </span><span style="color: rgb(170, 4, 249);">'model has NO flux through h[m] demand (max)!'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: pre"><span >cnt = cnt + 1;</span></span></div></div></div><div  class = 'S7'><span>Test if the  model has flux through h[c] demand !</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >modelClosed = modelClosedOri;</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >modelClosed = addDemandReaction(modelClosed,</span><span style="color: rgb(170, 4, 249);">'h[c]'</span><span >);</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >modelClosed = changeObjective(modelClosed,</span><span style="color: rgb(170, 4, 249);">'DM_h[c]'</span><span >);</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >modelClosed.ub(find(ismember(modelClosed.rxns,</span><span style="color: rgb(170, 4, 249);">'DM_h[c]'</span><span >))) = 1000;</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >FBA = optimizeCbModel(modelClosed,</span><span style="color: rgb(170, 4, 249);">'max'</span><span >);</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >TableChecks{cnt,1} = </span><span style="color: rgb(170, 4, 249);">'Exchanges, sinks, and demands have  lb = 0, test flux through DM_h[c] (max)'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">if </span><span >abs(FBA.f) &gt; 1e-6</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >    TableChecks{cnt,2} = </span><span style="color: rgb(170, 4, 249);">'model has flux through h[c] demand (max)!'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">else</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >    TableChecks{cnt,2} = </span><span style="color: rgb(170, 4, 249);">'model has NO flux through h[c] demand (max)!'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: pre"><span >cnt = cnt + 1;</span></span></div></div></div><div  class = 'S7'><span>Test if the  m</span><span>odel produces too much atp demand from glucose under aerobic condition. Also consider using the tutorial testModelATPYield to test if the correct ATP yield from different carbon sources can be realized by the model.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >modelClosed = modelClosedOri;</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >modelClosed = changeObjective(modelClosed,</span><span style="color: rgb(170, 4, 249);">'DM_atp_c_'</span><span >);</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >modelClosed.lb(find(ismember(modelClosed.rxns,</span><span style="color: rgb(170, 4, 249);">'EX_o2[e]'</span><span >))) = -1000;</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >modelClosed.lb(find(ismember(modelClosed.rxns,</span><span style="color: rgb(170, 4, 249);">'EX_h2o[e]'</span><span >))) = -1000;</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >modelClosed.ub(find(ismember(modelClosed.rxns,</span><span style="color: rgb(170, 4, 249);">'EX_h2o[e]'</span><span >))) = 1000;</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >modelClosed.ub(find(ismember(modelClosed.rxns,</span><span style="color: rgb(170, 4, 249);">'EX_co2[e]'</span><span >))) = 1000;</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >FBAOri = optimizeCbModel(modelClosed,</span><span style="color: rgb(170, 4, 249);">'max'</span><span >);</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >TableChecks{cnt,1} = </span><span style="color: rgb(170, 4, 249);">'ATP yield '</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">if </span><span >abs(FBAOri.f) &gt; 31 </span><span style="color: rgb(2, 128, 9);">% this is the theoretical value</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >     TableChecks{cnt,2} = </span><span style="color: rgb(170, 4, 249);">'model produces too much atp demand from glc!'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">else</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >   TableChecks{cnt,2} =</span><span style="color: rgb(170, 4, 249);">'model DOES NOT produce too much atp demand from glc!'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: pre"><span >cnt = cnt + 1;</span></span></div></div></div><div  class = 'S7'><span>    Test metab</span><span>olic objective functions with open sinks. Note this step is time consuming and may only work reliably on Recon 3D derived models due to different usage of abbreviations.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >TableChecks{cnt,1} = </span><span style="color: rgb(170, 4, 249);">'Test metabolic objective functions with open sinks'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">if </span><span >1 </span><span style="color: rgb(2, 128, 9);">% perform test function</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >    [TestSolution,TestSolutionNameOpenSinks, TestedRxnsSinks, PercSinks] = Test4HumanFctExt(model,</span><span style="color: rgb(170, 4, 249);">'all'</span><span >);</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >    TableChecks{cnt,2} = strcat(</span><span style="color: rgb(170, 4, 249);">'Done. See variable TestSolutionNameOpenSinks for results. The model passes '</span><span >, num2str(length(find(abs(TestSolution)&gt;tol))),</span><span style="color: rgb(170, 4, 249);">' out of '</span><span >, num2str(length(TestSolution)), </span><span style="color: rgb(170, 4, 249);">'tests'</span><span >);</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">else</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >    TableChecks{cnt,2} = </span><span style="color: rgb(170, 4, 249);">'Not performed.'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: pre"><span >cnt =  cnt + 1;</span></span></div></div></div><div  class = 'S7'><span>Test metabolic </span><span>objective functions with closed sinks (lb). Note this step is time consuming and may only work reliably on Recon 3D derived models due to different usage of abbreviations.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >TableChecks{cnt,1} = </span><span style="color: rgb(170, 4, 249);">'Test metabolic objective functions with closed sinks (lb)'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">if </span><span >1 </span><span style="color: rgb(2, 128, 9);">% perform test functions</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >    [TestSolution,TestSolutionNameClosedSinks, TestedRxnsClosedSinks, PercClosedSinks] = test4HumanFctExt(model,</span><span style="color: rgb(170, 4, 249);">'all'</span><span >,0);</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >    TableChecks{cnt,2} = strcat(</span><span style="color: rgb(170, 4, 249);">'Done. See variable TestSolutionNameClosedSinks for results. The model passes '</span><span >, num2str(length(find(abs(TestSolution)&gt;tol))),</span><span style="color: rgb(170, 4, 249);">' out of '</span><span >, num2str(length(TestSolution)), </span><span style="color: rgb(170, 4, 249);">'tests'</span><span >);</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">else</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >    TableChecks{cnt,2} = </span><span style="color: rgb(170, 4, 249);">'Not performed.'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: pre"><span >cnt =  cnt + 1;</span></span></div></div></div><div  class = 'S7'><span>Compute ATP yie</span><span>ld. This test is identical to the material covered in the tutorial testModelATPYield.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >TableChecks{cnt,1} = </span><span style="color: rgb(170, 4, 249);">'Compute ATP yield'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">if </span><span >1 </span><span style="color: rgb(2, 128, 9);">% test ATP yield</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >    [Table_csources, TestedRxns, Perc] = testATPYieldFromCsources(model);</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >    TableChecks{cnt,2} = </span><span style="color: rgb(170, 4, 249);">'Done. See variable Table_csources for results.'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">else</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >    TableChecks{cnt,2} = </span><span style="color: rgb(170, 4, 249);">'Not performed.'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: pre"><span >cnt = cnt + 1;</span></span></div></div></div><div  class = 'S7'><span>Check for dupl</span><span>icated reactions in the model.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >TableChecks{cnt,1} = </span><span style="color: rgb(170, 4, 249);">'Check duplicated reactions'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >method=</span><span style="color: rgb(170, 4, 249);">'FR'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >removeFlag=0;</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >[modelOut,removedRxnInd, keptRxnInd] = checkDuplicateRxn(model,method,removeFlag,0);</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">if </span><span >isempty(removedRxnInd)</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >    TableChecks{cnt,2} = </span><span style="color: rgb(170, 4, 249);">'No duplicated reactions in model.'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">else</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >    TableChecks{cnt,2} = </span><span style="color: rgb(170, 4, 249);">'Duplicated reactions in model.'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: pre"><span >cnt = cnt + 1;</span></span></div></div></div><div  class = 'S7'><span>Check empty co</span><span>lumns in 'model.rxnGeneMat'.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >TableChecks{cnt,1} = </span><span style="color: rgb(170, 4, 249);">'Check empty columns in rxnGeneMat'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >E = find(sum(model.rxnGeneMat)==0);</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">if </span><span >isempty(E)</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >    TableChecks{cnt,2} = </span><span style="color: rgb(170, 4, 249);">'No empty columns in rxnGeneMat.'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">else</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >    TableChecks{cnt,2} = </span><span style="color: rgb(170, 4, 249);">'Empty columns in rxnGeneMat.'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: pre"><span >cnt = cnt + 1;</span></span></div></div></div><div  class = 'S7'><span>Check that dem</span><span>and reactions have a lb &gt;= 0.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >TableChecks{cnt,1} = </span><span style="color: rgb(170, 4, 249);">'Check that demand reactions have a lb &gt;= 0'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >DMlb = find(model.lb(strmatch(</span><span style="color: rgb(170, 4, 249);">'DM_'</span><span >,model.rxns))&lt;0);</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">if </span><span >isempty(DMlb)</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >    TableChecks{cnt,2} = </span><span style="color: rgb(170, 4, 249);">'No demand reaction can have flux in backward direction.'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">else</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >    TableChecks{cnt,2} = </span><span style="color: rgb(170, 4, 249);">'Demand reaction can have flux in backward direction.'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: pre"><span >cnt = cnt + 1;</span></span></div></div></div><div  class = 'S7'><span>Check whether </span><span>singleGeneDeletion runs smoothly.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >TableChecks{cnt,1} = </span><span style="color: rgb(170, 4, 249);">'Check whether singleGeneDeletion runs smoothly'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">try</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >    [grRatio,grRateKO,grRateWT,hasEffect,delRxns,fluxSolution] = singleGeneDeletion(model);</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >    TableChecks{cnt,2} = </span><span style="color: rgb(170, 4, 249);">'singleGeneDeletion finished without problems.'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">catch</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >    TableChecks{cnt,2} = </span><span style="color: rgb(170, 4, 249);">'There are problems with singleGeneDeletion.'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: pre"><span >cnt = cnt + 1;</span></span></div></div></div><div  class = 'S7'><span>Check for flux</span><span> consistency.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >TableChecks{cnt,1} = </span><span style="color: rgb(170, 4, 249);">'Check for flux consistency'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >param.epsilon=1e-4;</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >param.modeFlag=0;</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span style="color: rgb(2, 128, 9);">%param.method='null_fastcc';</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >param.method=</span><span style="color: rgb(170, 4, 249);">'fastcc'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >printLevel = 1;</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >[fluxConsistentMetBool,fluxConsistentRxnBool,fluxInConsistentMetBool,fluxInConsistentRxnBool,model] = findFluxConsistentSubset(model,param,printLevel);</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">if </span><span >isempty(find(fluxInConsistentRxnBool))</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >    TableChecks{cnt,2} = </span><span style="color: rgb(170, 4, 249);">'Model is flux consistent.'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">else</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >    TableChecks{cnt,2} = </span><span style="color: rgb(170, 4, 249);">'Model is NOT flux consistent'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: pre"><span >cnt = cnt + 1;</span></span></div></div></div><div  class = 'S7'><span>Display all re</span><span>sults.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S6'><span style="white-space: pre"><span >TableChecks</span></span></div></div></div><div  class = 'S7'><span>Save all re</span><span>sults.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >resultsFileName = </span><span style="color: rgb(170, 4, 249);">'TestResults'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: pre"><span >save(strcat(resultsFileName,</span><span style="color: rgb(170, 4, 249);">'.mat'</span><span >));</span></span></div></div></div><h2  class = 'S2'><span>References</span></h2><div  class = 'S1'><span> [1] Brunk, E. et al. Recon 3D: A resource enabling a three-dimensional view of gene variation in human metabolism. (submitted) 2017.</span></div>
+<br>
+<!-- 
+##### SOURCE BEGIN #####
+%% Testing basic properties of a metabolic model (aka sanity checks)
+% *Author(s): Ines Thiele, Ronan M. T. Fleming, Systems Biochemistry Group, 
+% LCSB, University of Luxembourg.*
+% 
+% *Reviewer(s): Almut Heinken, LCSB, University of Luxembourg.*
+% 
+% In this tutorial, we show how test for basic modeling properties of a metabolic 
+% model. The tutorial was developed during the construction of the generic human 
+% metabolic model, Recon 3D [1] and can be applied to Recon 3D derived condition- 
+% and cell-type specific models, to the previous generic human reconstruction, 
+% Recon2, as well as other metabolic models.
+%% Content:
+% The tests include:
+%% 
+% * leak test
+% * production of protons from nothing as well as from water, and/or oxygen 
+% alone
+% * production of matter when atp hydrolysis reaction is allowed to work but 
+% all uptakes are closed
+% * production of too much ATP from glucose under aerobic condition
+% * duplicated reactions
+% * empty colmuns in the model.rxnGeneMat
+% * the single gene deletion analysis runs smoothly
+% * ATP yield from different carbon sources
+% * metabolic objective functions
+% * flux consistency
+% * demand reactions with negative lower bound (should not occur based on definition 
+% of demand reactions)
+% * consistency of model.rev, which defines reaction reversibility, and the 
+% set values for the lower bounds on reactions. 
+%% 
+% All results are stored in a table ('TableChecks').
+%% EQUIPMENT SETUP
+% If necessary, initialize the cobra toolbox:
+
+initCobraToolbox(false) % false, as we don't want to update
+%% 
+% For solving linear programming problems in FBA analysis, certain solvers are 
+% required:
+
+changeCobraSolver ('glpk', 'all', 1);
+%Uncomment if you don't want to use glpk.
+%changeCobraSolver ('ibm_cplex', 'all', 1); 
+%changeCobraSolver ('tomlab_cplex', 'all', 1);
+%% 
+% This tutorial can be run with |'glpk'| package as linear programming solver, 
+% which does not require additional instalation and configuration. However, for 
+% the analysis of large models, such as Recon 3, it is not recommended to use 
+% |'glpk'| but rather industrial-strength solvers, such as the |'gurobi'| package. 
+
+warning off MATLAB:subscripting:noSubscriptsSpecified
+%% PROCEDURE
+% Before proceeding with the simulations, the path for the model needs to be 
+% set up. In this tutorial, the used model is the generic model of human metabolism, 
+% Recon 3 [1]. If Recon 3 is not available, please use Recon 2.
+
+modelFileName = 'Recon2.0model.mat'; %Replace if you want to load Recon3D
+modelDirectory = getDistributedModelFolder(modelFileName); %Look up the folder for the distributed Models.
+modelFileName= [modelDirectory filesep modelFileName]; % Get the full path. Necessary to be sure, that the right model is loaded
+model = readCbModel(modelFileName);
+%% Model Harmonization
+% Replace reaction abbreviation for the ATP hydrolysis (DM_atp_c_) and Biomass 
+% reaction used differently in various models.
+
+model.rxns(find(ismember(model.rxns,'ATPM')))={'DM_atp_c_'};
+model.rxns(find(ismember(model.rxns,'ATPhyd')))={'DM_atp_c_'};
+model.rxns(find(ismember(model.rxns,'DM_atp(c)')))={'DM_atp_c_'};
+model.rxns(find(ismember(model.rxns,'EX_biomass_reaction')))={'biomass_reaction'};
+model.rxns(find(ismember(model.rxns,'EX_biomass_maintenance')))={'biomass_maintenance'};
+model.rxns(find(ismember(model.rxns,'EX_biomass_maintenance_noTrTr')))={'biomass_maintenance_noTrTr'};
+%% 
+% Set lower bound of the biomass reaction to 0.
+
+model.lb(find(ismember(model.rxns,'biomass_reaction')))=0;
+model.lb(find(ismember(model.rxns,'biomass_maintenance_noTrTr')))=0;
+model.lb(find(ismember(model.rxns,'biomass_maintenance')))=0;
+%% 
+% Harmonize different use of brackets.
+
+model.rxns = regexprep(model.rxns,'\(','\[');
+model.rxns = regexprep(model.rxns,'\)','\]');
+model.rxns = regexprep(model.rxns,'Ex_','EX_');
+model.rxns = regexprep(model.rxns,'Sink_','sink_'); 
+model.rxns = regexprep(model.rxns,'-','_'); 
+%% 
+% Define some parameters that we will need.
+
+cnt = 1;
+tol = 1e-6;
+%% 
+% Define the closed model. Here, we will set to zero the lower bounds of all 
+% reactions that represent exchange and siphon ('sink') reactions, or that contain 
+% only one entry in the column of the S matrix. The upper bound of those reactions 
+% is set to 1000 (i.e., infinity). Note that this overwrites any constraints on 
+% those reactions that may be present in a condition- and cell-type specific model.
+
+modelClosed = model;
+modelexchanges1 = strmatch('Ex_',modelClosed.rxns);
+modelexchanges4 = strmatch('EX_',modelClosed.rxns);
+modelexchanges2 = strmatch('DM_',modelClosed.rxns);
+modelexchanges3 = strmatch('sink_',modelClosed.rxns);
+selExc = (find( full((sum(abs(modelClosed.S)==1,1) ==1) & (sum(modelClosed.S~=0) == 1))))';
+
+modelexchanges = unique([modelexchanges1;modelexchanges2;modelexchanges3;modelexchanges4;selExc]);
+modelClosed.lb(find(ismember(modelClosed.rxns,modelClosed.rxns(modelexchanges))))=0;
+modelClosed.ub(find(ismember(modelClosed.rxns,modelClosed.rxns(modelexchanges))))=1000;
+modelClosedOri = modelClosed;
+%% Start with tests.
+% Perform leak test, i.e., whether the closed model can produce any exchanged 
+% metabolite, as defined in the model, from nothing. 
+
+modelClosed = modelClosedOri;
+[LeakRxns,modelTested,LeakRxnsFluxVector] = fastLeakTest(modelClosed,modelClosed.rxns(selExc),'false');
+TableChecks{cnt,1} = 'fastLeakTest 1';
+if length(LeakRxns)>0
+    warning('model leaks metabolites!')
+    TableChecks{cnt,2} = 'Model leaks metabolites!';
+else
+    TableChecks{cnt,2} = 'Leak free!';
+end
+cnt = cnt + 1;
+%% 
+% Test if something leaks when demand reactions for each metabolite in the model 
+% are added. Note that this step is time consuming.
+
+modelClosed = modelClosedOri;
+[LeakRxnsDM,modelTestedDM,LeakRxnsFluxVectorDM] = fastLeakTest(modelClosed,modelClosed.rxns(selExc),'true');
+
+TableChecks{cnt,1} = 'fastLeakTest 2 - add demand reactions for each metabolite in the model';
+if length(LeakRxnsDM)>0
+    TableChecks{cnt,2} = 'Model leaks metabolites when demand reactions are added!';
+else
+    TableChecks{cnt,2} = 'Leak free when demand reactions are added!';
+end
+cnt = cnt + 1;
+%% 
+% Test if the model produces energy from water!
+
+modelClosed = modelClosedOri;
+modelClosedATP = changeObjective(modelClosed,'DM_atp_c_');
+modelClosedATP = changeRxnBounds(modelClosedATP,'DM_atp_c_',0,'l');
+modelClosedATP = changeRxnBounds(modelClosedATP,'EX_h2o[e]',-1,'l');
+FBA3=optimizeCbModel(modelClosedATP);
+TableChecks{cnt,1} = 'Exchanges, sinks, and demands have  lb = 0, except h2o';
+if abs(FBA3.f) > 1e-6
+    TableChecks{cnt,2} = 'model produces energy from water!';
+else
+    TableChecks{cnt,2} = 'model DOES NOT produce energy from water!';
+end
+cnt = cnt + 1;
+%% 
+% Test if the model produces energy from water and oxygen!
+
+modelClosed = modelClosedOri;
+modelClosedATP = changeObjective(modelClosed,'DM_atp_c_');
+modelClosedATP = changeRxnBounds(modelClosedATP,'DM_atp_c_',0,'l');
+modelClosedATP = changeRxnBounds(modelClosedATP,'EX_h2o[e]',-1,'l');
+modelClosedATP = changeRxnBounds(modelClosedATP,'EX_o2[e]',-1,'l');
+
+FBA6=optimizeCbModel(modelClosedATP);
+TableChecks{cnt,1} = 'Exchanges, sinks, and demands have  lb = 0, except h2o and o2';
+if abs(FBA6.f) > 1e-6
+    TableChecks{cnt,2} = 'model produces energy from water and oxygen!';
+else
+    TableChecks{cnt,2} = 'model DOES NOT produce energy from water and oxygen!';
+end
+cnt = cnt + 1;
+%% 
+% Test if the model produces matter when atp demand is reversed!
+
+modelClosed = modelClosedOri;
+modelClosed = changeObjective(modelClosed,'DM_atp_c_');
+modelClosed.lb(find(ismember(modelClosed.rxns,'DM_atp_c_'))) = -1000;
+FBA = optimizeCbModel(modelClosed);
+TableChecks{cnt,1} = 'Exchanges, sinks, and demands have  lb = 0, allow DM_atp_c_ to be reversible';
+if abs(FBA.f) > 1e-6
+    TableChecks{cnt,2} = 'model produces matter when atp demand is reversed!';
+else
+    TableChecks{cnt,2} = 'model DOES NOT produce matter when atp demand is reversed!';
+end
+cnt = cnt + 1;
+%% 
+% Test if the model has flux through h[m] demand !
+
+modelClosed = modelClosedOri;
+modelClosed = addDemandReaction(modelClosed,'h[m]');
+modelClosed = changeObjective(modelClosed,'DM_h[m]');
+modelClosed.ub(find(ismember(modelClosed.rxns,'DM_h[m]'))) = 1000;
+FBA = optimizeCbModel(modelClosed,'max');
+TableChecks{cnt,1} = 'Exchanges, sinks, and demands have  lb = 0, test flux through DM_h[m] (max)';
+if abs(FBA.f) > 1e-6
+    TableChecks{cnt,2} = 'model has flux through h[m] demand (max)!';
+else
+    TableChecks{cnt,2} = 'model has NO flux through h[m] demand (max)!';
+end
+cnt = cnt + 1;
+%% 
+% Test if the  model has flux through h[c] demand !
+
+modelClosed = modelClosedOri;
+modelClosed = addDemandReaction(modelClosed,'h[c]');
+modelClosed = changeObjective(modelClosed,'DM_h[c]');
+modelClosed.ub(find(ismember(modelClosed.rxns,'DM_h[c]'))) = 1000;
+FBA = optimizeCbModel(modelClosed,'max');
+TableChecks{cnt,1} = 'Exchanges, sinks, and demands have  lb = 0, test flux through DM_h[c] (max)';
+if abs(FBA.f) > 1e-6
+    TableChecks{cnt,2} = 'model has flux through h[c] demand (max)!';
+else
+    TableChecks{cnt,2} = 'model has NO flux through h[c] demand (max)!';
+end
+cnt = cnt + 1;
+%% 
+% Test if the  model produces too much atp demand from glucose under aerobic 
+% condition. Also consider using the tutorial testModelATPYield to test if the 
+% correct ATP yield from different carbon sources can be realized by the model.
+
+modelClosed = modelClosedOri;
+modelClosed = changeObjective(modelClosed,'DM_atp_c_');
+modelClosed.lb(find(ismember(modelClosed.rxns,'EX_o2[e]'))) = -1000;
+modelClosed.lb(find(ismember(modelClosed.rxns,'EX_h2o[e]'))) = -1000;
+modelClosed.ub(find(ismember(modelClosed.rxns,'EX_h2o[e]'))) = 1000;
+modelClosed.ub(find(ismember(modelClosed.rxns,'EX_co2[e]'))) = 1000;
+FBAOri = optimizeCbModel(modelClosed,'max');
+
+TableChecks{cnt,1} = 'ATP yield ';
+if abs(FBAOri.f) > 31 % this is the theoretical value
+     TableChecks{cnt,2} = 'model produces too much atp demand from glc!';
+else
+   TableChecks{cnt,2} ='model DOES NOT produce too much atp demand from glc!';
+end
+cnt = cnt + 1;
+%% 
+% Test metabolic objective functions with open sinks. Note this step is time 
+% consuming and may only work reliably on Recon 3D derived models due to different 
+% usage of abbreviations.
+
+TableChecks{cnt,1} = 'Test metabolic objective functions with open sinks';
+if 1 % perform test function
+    [TestSolution,TestSolutionNameOpenSinks, TestedRxnsSinks, PercSinks] = Test4HumanFctExt(model,'all');
+    TableChecks{cnt,2} = strcat('Done. See variable TestSolutionNameOpenSinks for results. The model passes ', num2str(length(find(abs(TestSolution)>tol))),' out of ', num2str(length(TestSolution)), 'tests');
+else
+    TableChecks{cnt,2} = 'Not performed.';
+end
+cnt =  cnt + 1;
+%% 
+% Test metabolic objective functions with closed sinks (lb). Note this step 
+% is time consuming and may only work reliably on Recon 3D derived models due 
+% to different usage of abbreviations.
+
+TableChecks{cnt,1} = 'Test metabolic objective functions with closed sinks (lb)';
+if 1 % perform test functions
+    [TestSolution,TestSolutionNameClosedSinks, TestedRxnsClosedSinks, PercClosedSinks] = test4HumanFctExt(model,'all',0);
+    TableChecks{cnt,2} = strcat('Done. See variable TestSolutionNameClosedSinks for results. The model passes ', num2str(length(find(abs(TestSolution)>tol))),' out of ', num2str(length(TestSolution)), 'tests');
+else
+    TableChecks{cnt,2} = 'Not performed.';
+end
+cnt =  cnt + 1;
+%% 
+% Compute ATP yield. This test is identical to the material covered in the tutorial 
+% testModelATPYield.
+
+TableChecks{cnt,1} = 'Compute ATP yield';
+if 1 % test ATP yield
+    [Table_csources, TestedRxns, Perc] = testATPYieldFromCsources(model);
+    TableChecks{cnt,2} = 'Done. See variable Table_csources for results.';
+else
+    TableChecks{cnt,2} = 'Not performed.';
+end
+cnt = cnt + 1;
+%% 
+% Check for duplicated reactions in the model.
+
+TableChecks{cnt,1} = 'Check duplicated reactions';
+method='FR';
+removeFlag=0;
+[modelOut,removedRxnInd, keptRxnInd] = checkDuplicateRxn(model,method,removeFlag,0);
+if isempty(removedRxnInd)
+    TableChecks{cnt,2} = 'No duplicated reactions in model.';
+else
+    TableChecks{cnt,2} = 'Duplicated reactions in model.';
+end
+cnt = cnt + 1;
+%% 
+% Check empty columns in 'model.rxnGeneMat'.
+
+TableChecks{cnt,1} = 'Check empty columns in rxnGeneMat';
+E = find(sum(model.rxnGeneMat)==0);
+if isempty(E)
+    TableChecks{cnt,2} = 'No empty columns in rxnGeneMat.';
+else
+    TableChecks{cnt,2} = 'Empty columns in rxnGeneMat.';
+end
+cnt = cnt + 1;
+%% 
+% Check that demand reactions have a lb >= 0.
+
+TableChecks{cnt,1} = 'Check that demand reactions have a lb >= 0';
+DMlb = find(model.lb(strmatch('DM_',model.rxns))<0);
+if isempty(DMlb)
+    TableChecks{cnt,2} = 'No demand reaction can have flux in backward direction.';
+else
+    TableChecks{cnt,2} = 'Demand reaction can have flux in backward direction.';
+end
+cnt = cnt + 1;
+%% 
+% Check whether singleGeneDeletion runs smoothly.
+
+TableChecks{cnt,1} = 'Check whether singleGeneDeletion runs smoothly';
+try
+    [grRatio,grRateKO,grRateWT,hasEffect,delRxns,fluxSolution] = singleGeneDeletion(model);
+    TableChecks{cnt,2} = 'singleGeneDeletion finished without problems.';
+catch
+    TableChecks{cnt,2} = 'There are problems with singleGeneDeletion.';
+end
+cnt = cnt + 1;
+%% 
+% Check for flux consistency.
+
+TableChecks{cnt,1} = 'Check for flux consistency';
+param.epsilon=1e-4;
+param.modeFlag=0;
+%param.method='null_fastcc';
+param.method='fastcc';
+printLevel = 1;
+[fluxConsistentMetBool,fluxConsistentRxnBool,fluxInConsistentMetBool,fluxInConsistentRxnBool,model] = findFluxConsistentSubset(model,param,printLevel);
+if isempty(find(fluxInConsistentRxnBool))
+    TableChecks{cnt,2} = 'Model is flux consistent.';
+else
+    TableChecks{cnt,2} = 'Model is NOT flux consistent';
+end
+cnt = cnt + 1;
+%% 
+% Display all results.
+
+TableChecks
+%% 
+% Save all results.
+
+resultsFileName = 'TestResults';
+save(strcat(resultsFileName,'.mat'));
+%% References
+% [1] Brunk, E. et al. Recon 3D: A resource enabling a three-dimensional view 
+% of gene variation in human metabolism. (submitted) 2017.
+##### SOURCE END #####
+-->
+</div></body></html>

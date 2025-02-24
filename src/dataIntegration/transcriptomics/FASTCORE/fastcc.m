@@ -77,7 +77,7 @@ N = (1:size(model.S,2));
 veryOrigModel=model;
 
 % build the Lp problem.
-LPproblem = buildLPproblemFromModel(model);
+LPproblem = buildOptProblemFromModel(model);
 
 %save the original LP problem
 origLPproblem=LPproblem;

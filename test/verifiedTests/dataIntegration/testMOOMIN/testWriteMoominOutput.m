@@ -45,7 +45,7 @@ assert(isequal(test, ref));
 writeMoominOutput(model, 'test.out', 'format', 'full');
 test = readtable('test.out', 'FileType', 'text');
 ref = readtable('ref_test_full.out', 'FileType', 'text');
-assert(isequal(test, ref));
+assert(isequaln(test, ref));    % because of the nan variables , isequaln must be used for comparison
 writeMoominOutput(model, 'test.out', 'type', 'input');
 test = importdata('test.out');
 ref = importdata('ref_test_input.out');

@@ -65,7 +65,7 @@ catch ME
     % test FVA without parrallel toolbox.
     % here, we can use dqq and quadMinos, because this is not parallel.
  solverPkgs = prepareTest('needsLP',true,'needsMILP',true,'needsQP',true,'needsMIQP',true, ...
-        'useSolversIfAvailable',{'gurobi'; 'ibm_cplex'; 'mosek'},...
+        'useSolversIfAvailable',{'mosek';'gurobi'},...
         'excludeSolvers',{'dqqMinos','quadMinos', 'matlab','pdco'},...
         'minimalMatlabSolverVersion',8.0);
 end
@@ -105,7 +105,9 @@ for k = 1:length(solverPkgs.LP)
             % launch the flux variability analysis
             fprintf('    Testing flux variability for the following reactions:\n');
             disp(rxnNames);
-            [minFluxT, maxFluxT] = fluxVariability(model, 90, 'max', rxnNames, 'threads', threads);
+            %[minFlux, maxFlux] = fluxVariability(model, optPercentage, osenseStr, rxnNameList, printLevel, allowLoops, method, solverParams, advind, threads, heuristics, useMtFVA)
+            %[minFluxT, maxFluxT] = fluxVariability(model,           90,     'max',    rxnNames,   'threads', threads);
+            [minFluxT, maxFluxT] = fluxVariability(model,           'optPercentage',90,  'osenseStr',  'max',    'rxnNameList', rxnNames,   'threads', threads);
 
             % retrieve the IDs of each reaction
             rxnID = findRxnIDs(model, rxnNames);

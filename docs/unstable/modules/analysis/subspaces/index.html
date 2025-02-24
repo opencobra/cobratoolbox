@@ -1,0 +1,539 @@
+
+<!DOCTYPE html>
+
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Subspaces — The COBRA Toolbox</title>
+<link href="../../../_static/img/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180"/>
+<link href="../../../_static/img/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png"/>
+<link href="../../../_static/img/favicon-16x16.png" rel="icon" sizes="16x16" type="image/png"/>
+<link color="#5bbad5" href="../../../_static/img/safari-pinned-tab.svg" rel="mask-icon"/>
+<link href="../../../_static/json/manifest.json" rel="manifest"/>
+<meta content="../../../_static/browserconfig.xml" name="msapplication-config"/>
+<meta content="#ffffff" name="theme-color"/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+<script src="../../../_static/js/jquery.easy-autocomplete.min.js" type="text/javascript"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/css/easy-autocomplete.min.css" rel="stylesheet" type="text/css"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
+<link href="../../../_static/css/cobra.css" rel="stylesheet" type="text/css">
+<link href="../../../genindex.html" rel="index" title="Index">
+<link href="../../../search.html" rel="search" title="Search">
+<link href="../../../index.html" rel="top" title="The COBRA Toolbox">
+<link href="../index.html" rel="up" title="Analysis">
+<link href="lsqr/index.html" rel="next" title="Lsqr">
+<link href="../sparseFBA/index.html" rel="prev" title="sparseFBA">
+<script src="../../../_static/js/modernizr.min.js"></script>
+</link></link></link></link></link></link></link></head>
+<!-- Google tag (gtag.js) -->
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-KFJTC6J15L"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-KFJTC6J15L');
+</script>
+
+<body class="wy-body-for-nav" role="document">
+<div class="wy-grid-for-nav">
+<nav class="wy-nav-side" data-toggle="wy-nav-shift">
+<div class="wy-side-scroll">
+<div class="wy-side-nav-search">
+<a class="icon icon-home" href="../../../index.html"> The COBRA Toolbox
+          
+
+          
+            <img alt="cobratoolbox logo" class="logo" src="http://gibbs.unal.edu.co/cobradoc/cobratoolbox/img/cobratoolbox_logo_transparent.png"/>
+</a>
+<h1>The COBRA Toolbox</h1>
+<div role="search">
+<form action="../../../search.html" class="wy-form" id="rtd-search-form" method="get">
+<input id="simple" name="q" placeholder="Search docs" type="text"/>
+<input name="check_keywords" type="hidden" value="yes"/>
+<input name="area" type="hidden" value="default"/>
+<script>
+    	var options = {
+
+		url: "../../../_static/json/functions.json",
+
+		getValue: "name",
+
+		list: {
+            onKeyEnterEvent: function(item) {
+                    return "_static/../" + item.website_url
+            },
+            maxNumberOfElements: 25,
+			match: {
+					enabled: true,
+			},
+            sort: {
+			    enabled: true
+		    }
+		},
+
+    	template: {
+	    	type: "custom",
+		    method: function(value, item) {
+                return "<span><a href='../../../search.html?q=" + item.name + "&check_keywords=yes&area=default'>" + value + "</a>" + "<a href='../../../_static/../" + item.website_url + "' ><img src='../../../_static/link.svg'/></a></span>";
+		    }
+	    },
+
+		theme: "square"
+
+	};
+
+	$("#simple").easyAutocomplete(options);
+
+
+    </script>
+</form>
+</div>
+</div>
+<div aria-label="main navigation" class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation">
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../index.html">Home</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Functions</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Analysis</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../coupling/index.html">Coupling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../deletion/index.html">Deletion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dynamicFBA/index.html">Dynamic FBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exploration/index.html">Exploration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../FBA/index.html">FBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../findMIIS/index.html">findMIIS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../fluxEnrichmentAnalysis/index.html">fluxEnrichmentAnalysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../FVA/index.html">FVA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../geometricFBA/index.html">geometricFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gMCS/index.html">gMCS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../KLdistance/index.html">KLdistance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mdFBA/index.html">mdFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../MOMA/index.html">MOMA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../multiSpecies/index.html">MultiSpecies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../parsimoniousFBA/index.html">parsimoniousFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../relaxedFBA/index.html">relaxedFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../rFBA/index.html">rFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../rMTA/index.html">rMTA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../robustnessAnalysis/index.html">robustnessAnalysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ROOM/index.html">ROOM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../rumba/index.html">rumba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../sampling/index.html">Sampling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../sparseFBA/index.html">sparseFBA</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Subspaces</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="lsqr/index.html">Lsqr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nullspace/index.html">Nullspace</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rank/index.html">Rank</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rowReduce/index.html">rowReduce</a></li>
+<li class="toctree-l4"><a class="reference internal" href="subspaceProjection/index.html">subspaceProjection</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../thermo/index.html">Thermo</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topology/index.html">Topology</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../transport/index.html">Transport</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../uFBA/index.html">uFBA</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../base/index.html">Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dataIntegration/index.html">Data integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../design/index.html">Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reconstruction/index.html">Reconstruction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../visualization/index.html">Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../cite.html">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../support.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../plan.html">Development Plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contact.html">Contact</a></li>
+</ul>
+</div>
+</div>
+</nav>
+<section class="wy-nav-content-wrap" data-toggle="wy-nav-shift">
+<nav aria-label="top navigation" class="wy-nav-top" role="navigation">
+<i class="fa fa-bars" data-toggle="wy-nav-top"></i>
+<a href="../../../index.html">The COBRA Toolbox</a>
+</nav>
+<div class="wy-nav-content">
+<div class="rst-content">
+<div aria-label="breadcrumbs navigation" role="navigation">
+<ul class="wy-breadcrumbs">
+<li><a class="icon icon-home" href="../../../contents.html"></a> »</li>
+<li><a href="../../index.html">Functions</a> »</li>
+<li><a href="../index.html">Analysis</a> »</li>
+<li>Subspaces</li>
+<li class="wy-breadcrumbs-aside">
+</li>
+</ul>
+<hr/>
+</div>
+<div class="document" itemscope="itemscope" itemtype="https://schema.org/Article" role="main">
+<div itemprop="articleBody">
+<div class="section" id="subspaces">
+<span id="id1"></span><h1>Subspaces<a class="headerlink" href="#subspaces" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="lsqr/index.html">Lsqr</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nullspace/index.html">Nullspace</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rank/index.html">Rank</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rowReduce/index.html">rowReduce</a></li>
+<li class="toctree-l1"><a class="reference internal" href="subspaceProjection/index.html">subspaceProjection</a></li>
+</ul>
+</div>
+<span class="target" id="module-src.analysis.subspaces"></span><dl class="function">
+<dt id="src.analysis.subspaces.checkScaling">
+<code class="descname">checkScaling</code><span class="sig-paren">(</span><em>model</em>, <em>estLevel</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.subspaces.checkScaling" title="Permalink to this definition">¶</a></dt>
+<dd><p>checks the scaling of the stoichiometric matrix and provides a recommendation on the precision of the solver</p>
+<p>USAGE:</p>
+<blockquote>
+<div>[precisionEstimate, scalingProperties] = checkScaling(model, estLevel, printLevel)</div></blockquote>
+<p>INPUTS:</p>
+<blockquote>
+<div>model:                       COBRA model structure</div></blockquote>
+<p>OPTIONAL INPUTS:</p>
+<blockquote>
+<div>estLevel:                level of estimation: <cite>crude</cite>, <cite>medium</cite>, <cite>fine</cite> (default)
+printLevel:              verbose level (default: 1). Level 0 is quiet.</div></blockquote>
+<p>OUTPUTS:</p>
+<blockquote>
+<div><p>precisionEstimate:       estimation of precision (string, <cite>double</cite> or <cite>quad</cite>, default: <cite>double</cite>)
+solverRecommendation:    cell array with recommendation of solver(s) to be used (default: {‘glpk’})
+scalingProperties:       structure with properties of scaling</p>
+<blockquote>
+<div><ul class="simple">
+<li>.estLevel: <cite>crude</cite>, <cite>medium</cite>, <cite>fine</cite> (default)</li>
+<li>.scltol: value between 0 and 1 (column or row ratio as large as possible)</li>
+<li>.matrixAS: name of matrix</li>
+<li>.nMets: number of metabolites</li>
+<li>.nRxns: number of reactions</li>
+<li>.minS: minimum of all stoichiometric coefficients</li>
+<li>.maxS: maximum of all stoichiometric coefficients</li>
+<li>.rmin: minimum of all row scaling coefficients</li>
+<li>.imin: index of the minimum of all row scaling coefficients</li>
+<li>.rmax: maximum of all row scaling coefficients</li>
+<li>.imax: index of the maximum of all row scaling coefficients</li>
+<li>.cmin: minimum of all column scaling coefficients</li>
+<li>.jmin: index of the minimum of all column scaling coefficients</li>
+<li>.cmax: maximum of all column scaling coefficients</li>
+<li>.jmax: index of the maximum of all column scaling coefficients</li>
+<li>.minLB: minimum of the lower bound vector</li>
+<li>.maxLB: maximum of the lower bound vector</li>
+<li>.minUB: minimum of the upper bound vector</li>
+<li>.maxUB: maximum of the upper bound vector</li>
+<li>.ratioS: ratio of the maximum and minimum stoichiometric coefficients</li>
+<li>.ratioS_orderOfMag: order of magnitude of the ratio of the
+maximum and minimum stoichiometric coefficients</li>
+<li>.ratioL: ratio of the maximum and minimum values of the lower bound vector</li>
+<li>.ratioL_orderOfMag: order of magnitude of the ratio of the
+maximum and minimum values of the lower bound vector</li>
+<li>.ratioU: ratio of the maximum and minimum values of the upper bound vector</li>
+<li>.ratioU_orderOfMag: order of magnitude of the ratio of the
+maximum and minimum values of the upper bound vector</li>
+<li>.ratioR: ratio of the maximum and minimum row scaling coefficients</li>
+<li>.ratioR_orderOfMag: order of magnitude of the ratio of the
+maximum and minimum row scaling coefficients</li>
+<li>.ratioC: ratio of the maximum and minimum column scaling coefficients</li>
+<li>.ratioC_orderOfMag: order of magnitude of the ratio of the
+maximum and minimum column scaling coefficients</li>
+</ul>
+</div></blockquote>
+</div></blockquote>
+</dd></dl>
+<dl class="function">
+<dt id="src.analysis.subspaces.conservationAnalysis">
+<code class="descname">conservationAnalysis</code><span class="sig-paren">(</span><em>model</em>, <em>massBalanced</em>, <em>printLevel</em>, <em>tol</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.subspaces.conservationAnalysis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the left and right nullspaces of a given stoichiometric matrix in echelon form.</p>
+<p>i.e. <span class="math notranslate nohighlight">\(L S = 0\)</span> where <span class="math notranslate nohighlight">\([-Lzero I] Pl^T S = 0\)</span>;
+and <span class="math notranslate nohighlight">\(S N = 0\)</span> where <span class="math notranslate nohighlight">\(S Pn [-Nzero; I] = S, [-Nzero^T I^T] Pn^T = 0\)</span>;</p>
+<p>USAGE:</p>
+<blockquote>
+<div>[L, N, Lzero, Nzero, Pl, Pn,iR, dR, iC, dC, rankS] = conservationAnalysis(model, massBalanced, printLevel, tol)</div></blockquote>
+<dl class="docutils">
+<dt>INPUT:</dt>
+<dd><p class="first">model:                 structure</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li>model.S - <cite>m x n</cite> stoichiometric matrix</li>
+</ul>
+</div></blockquote>
+</dd>
+<dt>OPTIONAL INPUTS:</dt>
+<dd><p class="first">massBalanced:            {(0), 1, -1}</p>
+<blockquote>
+<div><ul class="simple">
+<li>0 = conservation analysis of entire <cite>model.S</cite></li>
+<li>1 = conservation analysis of mass balanced reactions only</li>
+<li>-1 = conservation analysis of all except biomass reaction</li>
+</ul>
+</div></blockquote>
+<dl class="docutils">
+<dt>model.SIntRxnBool:       boolean vector indicating mass balanced</dt>
+<dd>reactions only. Optional if conservation
+analysis of <cite>massBalanced</cite> reactions only as
+otherwise <cite>findSExRxnInd</cite> will be used to find
+the mass imbalanced reactions</dd>
+</dl>
+<p>model.biomassRxnAbbr:    String with abbreviation of biomass reaction
+model.c:                 <cite>n x 1</cite> linear objective function
+printLevel:              {(0), 1}</p>
+<blockquote>
+<div><ul class="simple">
+<li>0 = Silent</li>
+<li>1 = Print out conservation relations using metabolite and reaction abbreviations</li>
+</ul>
+</div></blockquote>
+<p class="last">model.mets:              <cite>m x 1</cite> cell array of metabolite abbreviations
+model.rxns:              <cite>n x 1</cite> cell array of reaction abbreviations
+tol:                     upper bound on tolerance of linear independence,default no greater than 1e-12</p>
+</dd>
+<dt>OUTPUTS:</dt>
+<dd>L:                       Echelon form Left nullspace of <cite>S</cite>
+N:                       Echelon form Right nullspace of <cite>S</cite>
+iR:                      Boolean index of Independent rows
+dR:                      Boolean index of Dependent rows
+iC:                      Boolean index of Independent columns
+dC:                      Boolean index of Dependent columns</dd>
+</dl>
+<p>See: <cite>Conservation analysis of large biochemical networks
+Ravishankar Rao Vallabhajosyula , Vijay Chickarmane and Herbert M. Sauro</cite></p>
+</dd></dl>
+<dl class="function">
+<dt id="src.analysis.subspaces.detMinSpan">
+<code class="descname">detMinSpan</code><span class="sig-paren">(</span><em>model</em>, <em>params</em>, <em>vectors</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.subspaces.detMinSpan" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the MinSpan vectors for a COBRA model. The
+algorithm determines a set of linearly independent basis vectors that
+span the nullspace that meet the criteria of the flux bounds of the
+network and minimizes the number of reactions used. The algorithm
+operates in an interative manner and checkes for convergence after each
+iteration. Parameters may be provided to skip convergence and terminate
+the problem when models are large. See Bordbar et al. Mol Syst Biol 2014
+for more details. This algorithm has only been tested and requires Gurobi
+as MILP solver.</p>
+<dl class="docutils">
+<dt>INPUTS:</dt>
+<dd><dl class="first last docutils">
+<dt>model:             COBRA model structure (requires S, lb, ub)</dt>
+<dd>Note: MinSpan calculations are done w/o biomass
+reaction and all reactions must be able to carry a
+flux = 0 for the trivial solution to be feasible.
+model is auto corrected by bounds but biomass
+must be removed manually</dd>
+</dl>
+</dd>
+<dt>OPTIONAL INPUTS:</dt>
+<dd><dl class="first last docutils">
+<dt>params:            Optional parameters to calculate MinSpan.</dt>
+<dd><p class="first">Determining the MinSpan is a NP hard calculation.
+For large models, the algorithm may not converge
+and parameters must be provided to stop the
+algorithm to provide an approximate solution.</p>
+<ul class="simple">
+<li>.coverage - Number of iterations to run the algorithm, if not</li>
+</ul>
+<p class="last">converge (Default = 10)
+* .timeLimit - Time to spend on each MinSpan calculation (sec),
+(Default = 30)
+* .saveIntV - Save intermediate vectors in order to restart from
+latest iteration (Default = 0)
+* .cores - Number of cores to use (Default = 1)</p>
+</dd>
+<dt>vectors:           Set of intermediate MinSpan vectors that may</dt>
+<dd>have not yet reached convergence, allowing to
+pickup calculation from last spot.</dd>
+</dl>
+</dd>
+<dt>OUTPUTS:</dt>
+<dd>finalVectors:      MinSpan vectors for COBRA model</dd>
+</dl>
+</dd></dl>
+<dl class="function">
+<dt id="src.analysis.subspaces.determineSignMatrix">
+<code class="descname">determineSignMatrix</code><span class="sig-paren">(</span><em>S</em>, <em>sorted</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.subspaces.determineSignMatrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determine the binaryform of the stoichiometric matrix S and the connectivity vectors</p>
+<p>INPUT:</p>
+<blockquote>
+<div>S:            Stoichiometric matrix of size m x n (m rows, n columns)
+sorted:       Boolean flag to sort the connectivity vectors (default: false)</div></blockquote>
+<p>OUTPUTS:</p>
+<blockquote>
+<div>Shat:         Binary form of the stoichiometric matrix
+Shatabs:      Absolute value of Shat
+mconnect:     Compound connectivity (connectivity number; sum of the number of non-zero entries in a row)
+nconnect:     Reaction participation number (sum of the number of non-zero entries in a column)
+mconnectin:   Produced compound connectivity
+mconnectout:  Consumed compound connectivity</div></blockquote>
+</dd></dl>
+<dl class="function">
+<dt id="src.analysis.subspaces.fourFundamentalSubpaces">
+<code class="descname">fourFundamentalSubpaces</code><span class="sig-paren">(</span><em>S</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.subspaces.fourFundamentalSubpaces" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate linearly independent bases the four fundamental subspaces of <cite>S</cite> using LUSOL or SVD</p>
+<p>USAGE:</p>
+<blockquote>
+<div>[N, R, L, C, p, q, rankS] = fourFundamentalSubpaces(S, printLevel)</div></blockquote>
+<dl class="docutils">
+<dt>INPUT:</dt>
+<dd>S:             <cite>m x n</cite> stoichiometric matrix defined to be of rank <cite>r</cite>.</dd>
+<dt>OPTIONAL INPUT:</dt>
+<dd>printLevel:    default = 1</dd>
+<dt>OUTPUTS:</dt>
+<dd><dl class="first docutils">
+<dt>N:             <cite>n x (n-r)</cite> null space basis</dt>
+<dd>The null space of <cite>S</cite> contains all the steady-state flux distributions
+allowable in the network. The steady-state is of much interest since
+most homeostatic states are close to being steady-states.</dd>
+<dt>R:             <cite>n x r</cite> row space basis:</dt>
+<dd>The row space of S contains all the dynamic flux distributions
+of a network, and thus the thermodynamic driving forces that change the
+rate of reaction activity.</dd>
+<dt>L:             <cite>m x (m-r)</cite> left null space basis:</dt>
+<dd>The left null space of <cite>S</cite> contains all the conservation
+relationships, or time-invariants, that a network contains. The sum of
+conserved metabolites or conserved metabolic pools do not change with
+time and are combinations of concentration variables.</dd>
+<dt>C:             <cite>m  x r</cite> column space basis:</dt>
+<dd>The column space of <cite>S</cite> contains all the possible time
+derivatives of the concentration vector, and thus how the thermodynamic
+driving forces move the concentration state of the network.</dd>
+</dl>
+<p>rankS:         <cite>r</cite>, rank of the stoichiometric matrix
+p:             <cite>p(1:rankS)</cite> gives indices to the linearly independent columns of <cite>S</cite></p>
+<blockquote>
+<div><cite>p(rankS + 1:end)</cite> gives indices to the linearly dependent columns of <cite>S</cite></div></blockquote>
+<p>q:             <cite>q(1:rankS)</cite> gives indices to the linearly independent rows of <cite>S</cite></p>
+<blockquote class="last">
+<div><cite>q(rankS + 1:end)</cite> gives indices to the linearly dependent rows of <cite>S</cite></div></blockquote>
+</dd>
+</dl>
+</dd></dl>
+<dl class="function">
+<dt id="src.analysis.subspaces.gmscale">
+<code class="descname">gmscale</code><span class="sig-paren">(</span><em>A</em>, <em>iprint</em>, <em>scltol</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.subspaces.gmscale" title="Permalink to this definition">¶</a></dt>
+<dd><p>Geometric-Mean Scaling finds the scale values for the
+<cite>m x n</cite> sparse matrix <cite>A</cite>.</p>
+<p>USAGE:</p>
+<blockquote>
+<div>[cscale, rscale] = gmscale(A, iprint, scltol)</div></blockquote>
+<dl class="docutils">
+<dt>INPUTS:</dt>
+<dd><p class="first">A(i, j):           contains entries of <cite>A</cite>.
+iprint:            &gt; 0 requests messages to the screen (0 means no output).
+scltol:            should be in the range (0.0, 1.0).</p>
+<blockquote class="last">
+<div>Typically <cite>scltol</cite> = 0.9.  A bigger value like 0.99 asks
+<cite>gmscale</cite> to work a little harder (more passes).</div></blockquote>
+</dd>
+<dt>OUTPUTS:</dt>
+<dd><dl class="first last docutils">
+<dt>cscale, rscale:    column vectors of column and row scales such that</dt>
+<dd><cite>R</cite> (inverse) <cite>A</cite> <cite>C</cite> (inverse) should have entries near 1.0,
+where <cite>R= diag(rscale)</cite>, <cite>C = diag(cscale)</cite>.</dd>
+</dl>
+</dd>
+</dl>
+<p>An iterative procedure based on geometric means is used,
+following a routine written by Robert Fourer, 1979.
+Several passes are made through the columns and rows of <cite>A</cite>.
+The main steps are:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li>Compute <span class="math notranslate nohighlight">\(aratio = max_j (max_i Aij / min_i Aij)\)</span>.</li>
+<li>Divide each row <cite>i</cite> by <span class="math notranslate nohighlight">\(sqrt( max_j Aij * min_j Aij)\)</span>.</li>
+<li>Divide each column <cite>j</cite> by <span class="math notranslate nohighlight">\(sqrt( max_i Aij * min_i Aij)\)</span>.</li>
+<li>Compute <cite>sratio</cite> as in Step 1.</li>
+<li>If <span class="math notranslate nohighlight">\(sratio &lt; aratio * scltol\)</span>,
+set <span class="math notranslate nohighlight">\(aratio = sratio\)</span> and repeat from Step 2.</li>
+</ol>
+</div></blockquote>
+<p>To dampen the effect of very small elements, on each pass,
+a new row or column scale will not be smaller than sqrt(damp)
+times the largest (scaled) element in that row or column.</p>
+<p>Use of the scales:
+To apply the scales to a linear program,
+<span class="math notranslate nohighlight">\(min c^T x\)</span> st <span class="math notranslate nohighlight">\(A x = b\)</span>, <span class="math notranslate nohighlight">\(l \leq x \leq u\)</span>,
+we need to define “barred” quantities by the following relations:
+<cite>A = R Abar C</cite>, <cite>b = R bbar</cite>, <cite>C cbar = c</cite>,
+<cite>C l = lbar</cite>, <cite>C u = ubar</cite>, <cite>C x = xbar</cite>.</p>
+<p>This gives the scaled problem
+<span class="math notranslate nohighlight">\(min\ cbar^T xbar\)</span> st <span class="math notranslate nohighlight">\(Abar\ xbar = bbar\)</span>, <span class="math notranslate nohighlight">\(lbar \leq xbar \leq ubar\)</span>.</p>
+</dd></dl>
+<dl class="function">
+<dt id="src.analysis.subspaces.scaleSMatrix">
+<code class="descname">scaleSMatrix</code><span class="sig-paren">(</span><em>S</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.subspaces.scaleSMatrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Scales stoichimetric matrix to integers</p>
+<p>USAGE:</p>
+<blockquote>
+<div>S = scaleSMatrix(S)</div></blockquote>
+<dl class="docutils">
+<dt>INPUT:</dt>
+<dd>S:    <cite>S</cite> matrix</dd>
+<dt>OUTPUT:</dt>
+<dd>S:    Scaled <cite>S</cite> matrix</dd>
+</dl>
+</dd></dl>
+</div>
+</div>
+<div class="articleComments">
+</div>
+</div>
+<footer>
+<div aria-label="footer navigation" class="rst-footer-buttons" role="navigation">
+<a accesskey="n" class="btn btn-default float-right" href="lsqr/index.html" rel="next" title="Lsqr">Next <span class="fa fa-arrow-circle-right"></span></a>
+<a accesskey="p" class="btn btn-default" href="../sparseFBA/index.html" rel="prev" title="sparseFBA"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+</div>
+<hr/>
+<div role="contentinfo">
+<p>
+        © Copyright 2017-2020, The COBRA Toolbox developers.
+
+    </p>
+</div>
+  Built with Sphinx using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+</div>
+</div>
+</section>
+</div>
+<script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'2.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+<script src="../../../_static/jquery.js" type="text/javascript"></script>
+<script src="../../../_static/underscore.js" type="text/javascript"></script>
+<script src="../../../_static/doctools.js" type="text/javascript"></script>
+<script src="../../../_static/language_data.js" type="text/javascript"></script>
+<script src="https://cdn.jsdelivr.net/gh/mathjax/MathJax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+<script src="../../../_static/js/theme.js" type="text/javascript"></script>
+<script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-TRCMZL1FKK"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TRCMZL1FKK');
+  </script>
+</body>
+</html>

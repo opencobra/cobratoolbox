@@ -1,0 +1,917 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><script type="text/javascript" src="https://cdn.jsdelivr.net/gh/opencobra/cobratoolbox@ffa0229fc0c01c9236bb7e961f65712443277719/latest/_static/js/iframeResizer.contentWindow.min.js"></script><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge,IE=9,chrome=1"><meta name="generator" content="MATLAB 2021a"><title>Browse Networks in the Matlab Command Window Using surfNet</title><style type="text/css">.rtcContent { padding: 30px; } .S0 { margin: 3px 10px 5px 4px; padding: 0px; line-height: 28.8px; min-height: 0px; white-space: normal; color: rgb(213, 80, 0); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 24px; font-weight: normal; text-align: left;  }
+.S1 { margin: 20px 10px 5px 4px; padding: 0px; line-height: 20px; min-height: 0px; white-space: normal; color: rgb(60, 60, 60); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 20px; font-weight: bold; text-align: left;  }
+.S2 { margin: 2px 10px 9px 4px; padding: 0px; line-height: 21px; min-height: 0px; white-space: normal; color: rgb(0, 0, 0); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 14px; font-weight: normal; text-align: left;  }
+.CodeBlock { background-color: #F7F7F7; margin: 10px 0 10px 0;}
+.S3 { border-left: 1px solid rgb(233, 233, 233); border-right: 1px solid rgb(233, 233, 233); border-top: 1px solid rgb(233, 233, 233); border-bottom: 1px solid rgb(233, 233, 233); border-radius: 4px 4px 0px 0px; padding: 6px 45px 4px 13px; line-height: 17.234px; min-height: 18px; white-space: nowrap; color: rgb(0, 0, 0); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S4 { color: rgb(64, 64, 64); padding: 10px 0px 6px 17px; background: rgb(255, 255, 255) none repeat scroll 0% 0% / auto padding-box border-box; font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px; overflow-x: hidden; line-height: 17.234px;  }
+/* Styling that is common to warnings and errors is in diagnosticOutput.css */.embeddedOutputsErrorElement {    min-height: 18px;    max-height: 250px;    overflow: auto;}
+.embeddedOutputsErrorElement.inlineElement {}
+.embeddedOutputsErrorElement.rightPaneElement {}
+/* Styling that is common to warnings and errors is in diagnosticOutput.css */.embeddedOutputsWarningElement{    min-height: 18px;    max-height: 250px;    overflow: auto;}
+.embeddedOutputsWarningElement.inlineElement {}
+.embeddedOutputsWarningElement.rightPaneElement {}
+/* Copyright 2015-2019 The MathWorks, Inc. *//* In this file, styles are not scoped to rtcContainer since they could be in the Dojo Tooltip */.diagnosticMessage-wrapper {    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;    font-size: 12px;}
+.diagnosticMessage-wrapper.diagnosticMessage-warningType {    color: rgb(255,100,0);}
+.diagnosticMessage-wrapper.diagnosticMessage-warningType a {    color: rgb(255,100,0);    text-decoration: underline;}
+.diagnosticMessage-wrapper.diagnosticMessage-errorType {    color: rgb(230,0,0);}
+.diagnosticMessage-wrapper.diagnosticMessage-errorType a {    color: rgb(230,0,0);    text-decoration: underline;}
+.diagnosticMessage-wrapper .diagnosticMessage-messagePart,.diagnosticMessage-wrapper .diagnosticMessage-causePart {    white-space: normal;}
+.diagnosticMessage-wrapper .diagnosticMessage-stackPart {    white-space: normal;}
+.embeddedOutputsTextElement,.embeddedOutputsVariableStringElement {    white-space: normal;    word-wrap:  initial;    min-height: 18px;    max-height: 250px;    overflow: auto;}
+.textElement,.rtcDataTipElement .textElement {    padding-top: 3px;}
+.embeddedOutputsTextElement.inlineElement,.embeddedOutputsVariableStringElement.inlineElement {}
+.inlineElement .textElement {}
+.embeddedOutputsTextElement.rightPaneElement,.embeddedOutputsVariableStringElement.rightPaneElement {    min-height: 16px;}
+.rightPaneElement .textElement {    padding-top: 2px;    padding-left: 9px;}
+.S5 { border-left: 1px solid rgb(233, 233, 233); border-right: 1px solid rgb(233, 233, 233); border-top: 1px solid rgb(233, 233, 233); border-bottom: 0px none rgb(0, 0, 0); border-radius: 4px 4px 0px 0px; padding: 6px 45px 0px 13px; line-height: 17.234px; min-height: 18px; white-space: nowrap; color: rgb(0, 0, 0); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S6 { border-left: 1px solid rgb(233, 233, 233); border-right: 1px solid rgb(233, 233, 233); border-top: 0px none rgb(0, 0, 0); border-bottom: 0px none rgb(0, 0, 0); border-radius: 0px; padding: 0px 45px 0px 13px; line-height: 17.234px; min-height: 18px; white-space: nowrap; color: rgb(0, 0, 0); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S7 { border-left: 1px solid rgb(233, 233, 233); border-right: 1px solid rgb(233, 233, 233); border-top: 0px none rgb(0, 0, 0); border-bottom: 1px solid rgb(233, 233, 233); border-radius: 0px; padding: 0px 45px 4px 13px; line-height: 17.234px; min-height: 18px; white-space: nowrap; color: rgb(0, 0, 0); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S8 { border-left: 1px solid rgb(233, 233, 233); border-right: 1px solid rgb(233, 233, 233); border-top: 1px solid rgb(233, 233, 233); border-bottom: 1px solid rgb(233, 233, 233); border-radius: 0px 0px 4px 4px; padding: 6px 45px 4px 13px; line-height: 17.234px; min-height: 18px; white-space: nowrap; color: rgb(0, 0, 0); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S9 { margin: 10px 10px 9px 4px; padding: 0px; line-height: 21px; min-height: 0px; white-space: normal; color: rgb(0, 0, 0); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 14px; font-weight: normal; text-align: left;  }
+.S10 { border-left: 1px solid rgb(233, 233, 233); border-right: 1px solid rgb(233, 233, 233); border-top: 1px solid rgb(233, 233, 233); border-bottom: 1px solid rgb(233, 233, 233); border-radius: 0px; padding: 6px 45px 4px 13px; line-height: 17.234px; min-height: 18px; white-space: nowrap; color: rgb(0, 0, 0); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }</style></head><body><div class = rtcContent><h1  class = 'S0'><span>Browse Networks in the Matlab Command Window Using surfNet</span></h1><h2  class = 'S1'><span>Author(s): Siu Hung Joshua Chan, Department of Chemical Engineering, The Pennsylvania State University</span></h2><h2  class = 'S1'><span>Reviewer(s): </span></h2><div  class = 'S2'><span style=' font-style: italic;'></span></div><h2  class = 'S1'><span>INTRODUCTION</span></h2><div  class = 'S2'><span>In this tutorial, we will demonstrate how to browse a COBRA model in verbal format in the Matlab command window through an initial call and interactive mouse clicking.</span></div><h2  class = 'S1'><span>MATERIALS</span></h2><h2  class = 'S1'><span>EQUIPMENT SETUP</span></h2><div  class = 'S2'><span>Start CobraToolbox</span></div><div class="CodeBlock"><div class="inlineWrapper outputs"><div  class = 'S3'><span style="white-space: normal"><span >initCobraToolbox(false) </span><span style="color: rgb(2, 128, 9);">% false, as we don't want to update;</span></span></div><div  class = 'S4'><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement scrollableOutput" uid="F481CE9B" data-testid="output_0" data-width="428" data-height="801" data-hashorizontaloverflow="true" style="width: 458px; max-height: 261px; white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">      _____   _____   _____   _____     _____     |
+     /  ___| /  _  \ |  _  \ |  _  \   / ___ \    |   COnstraint-Based Reconstruction and Analysis
+     | |     | | | | | |_| | | |_| |  | |___| |   |   The COBRA Toolbox - 2019
+     | |     | | | | |  _  { |  _  /  |  ___  |   |
+     | |___  | |_| | | |_| | | | \ \  | |   | |   |   Documentation:
+     \_____| \_____/ |_____/ |_|  \_\ |_|   |_|   |   <a href="http://opencobra.github.io/cobratoolbox" style="white-space: normal; font-style: normal; color: rgb(0, 95, 206); font-size: 12px;">http://opencobra.github.io/cobratoolbox</a>
+                                                  | 
+
+ &gt; Checking if git is installed ...  Done (version: 2.17.1).
+ &gt; Checking if the repository is tracked using git ...  Done.
+ &gt; Checking if curl is installed ...  Done.
+ &gt; Checking if remote can be reached ...  Done.
+ &gt; Initializing and updating submodules (this may take a while)... Done.
+ &gt; Adding all the files of The COBRA Toolbox ...  Done.
+ &gt; Define CB map output... set to svg.
+ &gt; TranslateSBML is installed and working properly.
+ &gt; Configuring solver environment variables ...
+   - [*---] ILOG_CPLEX_PATH: /opt/ibm/ILOG/CPLEX_Studio128/cplex/matlab/x86-64_linux
+   - [*---] GUROBI_PATH: /opt/gurobi810/linux64/matlab
+   - [----] TOMLAB_PATH: --&gt; set this path manually after installing the solver ( see <a href="https://opencobra.github.io/cobratoolbox/docs/solvers.html" style="white-space: normal; font-style: normal; color: rgb(0, 95, 206); font-size: 12px;">instructions</a> )
+   - [---*] MOSEK_PATH: /opt/mosek/8/
+   Done.
+ &gt; Checking available solvers and solver interfaces ... Done.
+ &gt; Setting default solvers ... Done.
+ &gt; Saving the MATLAB path ... Done.
+   - The MATLAB path was saved as ~/pathdef.m.
+
+ &gt; Summary of available solvers and solver interfaces
+
+			Support 	   LP 	 MILP 	   QP 	 MIQP 	  NLP
+	----------------------------------------------------------------------
+	gurobi       	active        	    1 	    1 	    1 	    1 	    -
+	ibm_cplex    	active        	    1 	    1 	    1 	    1 	    -
+	tomlab_cplex 	active        	    0 	    0 	    0 	    0 	    -
+	glpk         	active        	    1 	    1 	    - 	    - 	    -
+	mosek        	active        	    1 	    - 	    1 	    - 	    -
+	matlab       	active        	    1 	    - 	    - 	    - 	    1
+	cplex_direct 	active        	    0 	    0 	    0 	    - 	    -
+	dqqMinos     	active        	    0 	    - 	    - 	    - 	    -
+	pdco         	active        	    1 	    - 	    1 	    - 	    -
+	quadMinos    	active        	    0 	    - 	    - 	    - 	    -
+	qpng         	passive       	    - 	    - 	    1 	    - 	    -
+	tomlab_snopt 	passive       	    - 	    - 	    - 	    - 	    0
+	lp_solve     	legacy        	    1 	    - 	    - 	    - 	    -
+	----------------------------------------------------------------------
+	Total        	-             	    7 	    3 	    5 	    2 	    1
+
+ + Legend: - = not applicable, 0 = solver not compatible or not installed, 1 = solver installed.
+
+
+ &gt; You can solve LP problems using: 'ibm_cplex' - 'glpk' - 'mosek' - 'matlab' - 'pdco' 
+ &gt; You can solve MILP problems using: 'ibm_cplex' - 'glpk' 
+ &gt; You can solve QP problems using: 'ibm_cplex' - 'mosek' - 'pdco' - 'qpng' 
+ &gt; You can solve MIQP problems using: 'ibm_cplex' 
+ &gt; You can solve NLP problems using: 'matlab' 
+
+&gt; Checking for available updates ... skipped</div></div></div></div></div><h2  class = 'S1'><span>PROCEDURE</span></h2><div  class = 'S2'><span>Load the </span><span style=' font-style: italic;'>E. coli</span><span> iJO1366 model as an example model.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: normal"><span >modelFileName = </span><span style="color: rgb(170, 4, 249);">'iJO1366.mat'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S6'><span style="white-space: normal"><span >modelDirectory = getDistributedModelFolder(modelFileName); </span><span style="color: rgb(2, 128, 9);">%Look up the folder for the distributed Models.</span></span></div></div><div class="inlineWrapper"><div  class = 'S6'><span style="white-space: normal"><span >modelFileName= [modelDirectory filesep modelFileName]; </span><span style="color: rgb(2, 128, 9);">% Get the full path. Necessary to be sure, that the right model is loaded</span></span></div></div><div class="inlineWrapper outputs"><div  class = 'S7'><span style="white-space: normal"><span >iJO1366 = readCbModel(modelFileName);</span></span></div><div  class = 'S4'><div class="inlineElement eoOutputWrapper embeddedOutputsWarningElement" uid="BD8BC954" data-testid="output_1" data-width="428" data-height="30" data-hashorizontaloverflow="false" style="width: 458px; max-height: 261px; white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="diagnosticMessage-wrapper diagnosticMessage-warningType" style="white-space: normal; font-style: normal; color: rgb(255, 100, 0); font-size: 12px;"><div class="diagnosticMessage-messagePart" style="white-space: normal; font-style: normal; color: rgb(255, 100, 0); font-size: 12px;">Warning: Metabolite IDs will be adjusted to COBRA style metID[e] instead of metID_e</div><div class="diagnosticMessage-stackPart" style="white-space: normal; font-style: normal; color: rgb(255, 100, 0); font-size: 12px;"></div></div></div></div></div><div class="inlineWrapper"><div  class = 'S8'></div></div></div><div  class = 'S2'><span style=' font-weight: bold;'>Browse a network</span></div><div  class = 'S2'><span>Browse the network by starting from an initial metabolite, e.g., D-glucose in the extracellular compartment.</span></div><div class="CodeBlock"><div class="inlineWrapper outputs"><div  class = 'S3'><span style="white-space: normal"><span >surfNet(iJO1366, </span><span style="color: rgb(170, 4, 249);">'glc__D[e]'</span><span >)</span></span></div><div  class = 'S4'><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement scrollableOutput" uid="CDEFF5E7" data-testid="output_2" data-width="428" data-height="171" data-hashorizontaloverflow="true" style="width: 458px; max-height: 261px; white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">Met #1195  glc__D[e], D-Glucose, C6H12O6
+
+Consuming reactions:
+  #164  EX_glc__D_e, Bd: -10 / 1000, D-Glucose exchange
+glc__D[e] &lt;=&gt;  
+  #1355  GLCtex_copy1, Bd: -1000 / 1000, Glucose transport via diffusion (extracellular to periplasm)
+glc__D[e] &lt;=&gt; glc__D[p]  
+  #1356  GLCtex_copy2, Bd: 0 / 1000, Glucose transport via diffusion (extracellular to periplasm)
+glc__D[e] -&gt; glc__D[p]  
+Producing reactions: none
+
+Show previous steps...</div></div></div></div></div><div  class = 'S9'><span>All reactions producing or consuming '</span><span style=' font-weight: bold; font-family: monospace;'>glc__D_e</span><span>' will have their reaction indices (#xxx), ids (.rxns), bounds (.lb/.ub), names (.rxnNames) and formulae printed on the command window. All reactions and the participating metabolites are hyperlinked. For example, </span><span style=' font-weight: bold;'>click</span><span> on the reaction '</span><span style=' font-weight: bold; font-family: monospace;'>GLCtex_copy1</span><span>'. (This is equivalent to run the following command.)</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: normal"><span style="color: rgb(2, 128, 9);">% called by clicking 'GLCtex_copy1'</span></span></div></div><div class="inlineWrapper outputs"><div  class = 'S7'><span style="white-space: normal"><span >surfNet([], </span><span style="color: rgb(170, 4, 249);">'GLCtex_copy1'</span><span >, 0, </span><span style="color: rgb(170, 4, 249);">'none'</span><span >, 0, 1, [], 0)  </span></span></div><div  class = 'S4'><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement scrollableOutput" uid="709EF731" data-testid="output_3" data-width="428" data-height="129" data-hashorizontaloverflow="true" style="width: 458px; max-height: 261px; white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">Rxn #1355  GLCtex_copy1, Bd: -1000 / 1000, Glucose transport via diffusion (extracellular to periplasm)
+glc__D[e] &lt;=&gt; glc__D[p]  
+  id     Met        Stoich     metNames, metFormulas
+Reactant:
+ #1195   glc__D[e]  -1         D-Glucose, C6H12O6
+Product:
+ #1587   glc__D[p]  1          D-Glucose, C6H12O6
+
+Show previous steps...</div></div></div></div></div><div  class = 'S9'><span>Details for the metabolites will appear, e.g., indeices, ids, stoichiometric coefficients, names and chemical formulae. By iteratively clicking on the reactions and metabolites that you are interested in, you can browse through the metabolic network.</span></div><div  class = 'S2'><span>Now, say you have gone through a series of metabolites and reactions (glc__D[e], GLCtex_copy1, glc__D[p], GLCptspp, g6p[c]): </span></div><div  class = 'S2'><span>Click glc__D_[p]:</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: normal"><span style="color: rgb(2, 128, 9);">% called by clicking 'glc__D_p'</span></span></div></div><div class="inlineWrapper outputs"><div  class = 'S7'><span style="white-space: normal"><span >surfNet([], </span><span style="color: rgb(170, 4, 249);">'glc__D[p]'</span><span >, 0, </span><span style="color: rgb(170, 4, 249);">'none'</span><span >, 0, 1, [], 0)  </span></span></div><div  class = 'S4'><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement scrollableOutput" uid="88A92FED" data-testid="output_4" data-width="428" data-height="339" data-hashorizontaloverflow="true" style="width: 458px; max-height: 350px; white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">Met #1587  glc__D[p], D-Glucose, C6H12O6
+
+Consuming reactions:
+  #1336  GLCDpp, Bd: 0 / 1000, Glucose dehydrogenase (ubiquinone-8 as acceptor) (periplasm)
+q8[c] + glc__D[p] + h2o[p] -&gt; q8h2[c] + glcn[p] + h[p]  
+  #1352  GLCabcpp, Bd: 0 / 1000, D-glucose transport via ABC system (periplasm)
+atp[c] + h2o[c] + glc__D[p] -&gt; adp[c] + glc__D[c] + h[c] + pi[c]  
+  #1353  GLCptspp, Bd: 0 / 1000, D-glucose transport via PEP:Pyr PTS (periplasm)
+pep[c] + glc__D[p] -&gt; g6p[c] + pyr[c]  
+  #1354  GLCt2pp, Bd: 0 / 1000, D-glucose transport in via proton symport (periplasm)
+glc__D[p] + h[p] -&gt; glc__D[c] + h[c]  
+Producing reactions:
+  #1252  G1PPpp, Bd: 0 / 1000, Glucose-1-phosphatase
+g1p[p] + h2o[p] -&gt; glc__D[p] + pi[p]  
+  #1355  GLCtex_copy1, Bd: -1000 / 1000, Glucose transport via diffusion (extracellular to periplasm)
+glc__D[e] &lt;=&gt; glc__D[p]  
+  #1356  GLCtex_copy2, Bd: 0 / 1000, Glucose transport via diffusion (extracellular to periplasm)
+glc__D[e] -&gt; glc__D[p]  
+  #1607  LACZpp, Bd: 0 / 1000, B-galactosidase
+h2o[p] + lcts[p] -&gt; gal[p] + glc__D[p]  
+  #2463  TREHpp, Bd: 0 / 1000, Alpha,alpha-trehalase (periplasm)
+h2o[p] + tre[p] -&gt; 2 glc__D[p]  
+
+Show previous steps...</div></div></div></div></div><div  class = 'S9'><span>Click GLCptspp:</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: normal"><span style="color: rgb(2, 128, 9);">% called by clicking 'GLCptspp'</span></span></div></div><div class="inlineWrapper outputs"><div  class = 'S7'><span style="white-space: normal"><span >surfNet([], </span><span style="color: rgb(170, 4, 249);">'GLCptspp'</span><span >, 0, </span><span style="color: rgb(170, 4, 249);">'none'</span><span >, 0, 1, [], 0)  </span></span></div><div  class = 'S4'><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement scrollableOutput" uid="857D3F21" data-testid="output_5" data-width="428" data-height="157" data-hashorizontaloverflow="true" style="width: 458px; max-height: 261px; white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">Rxn #1353  GLCptspp, Bd: 0 / 1000, D-glucose transport via PEP:Pyr PTS (periplasm)
+pep[c] + glc__D[p] -&gt; g6p[c] + pyr[c]  
+  id     Met        Stoich     metNames, metFormulas
+Reactant:
+ #784       pep[c]  -1         Phosphoenolpyruvate, C3H2O6P
+ #1587   glc__D[p]  -1         D-Glucose, C6H12O6
+Product:
+ #508       g6p[c]  1          D-Glucose 6-phosphate, C6H11O9P
+ #853       pyr[c]  1          Pyruvate, C3H3O3
+
+Show previous steps...</div></div></div></div></div><div  class = 'S9'><span>Click g6p_c:</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: normal"><span style="color: rgb(2, 128, 9);">% called by clicking 'g6p[c]'</span></span></div></div><div class="inlineWrapper outputs"><div  class = 'S7'><span style="white-space: normal"><span >surfNet([], </span><span style="color: rgb(170, 4, 249);">'g6p[c]'</span><span >, 0, </span><span style="color: rgb(170, 4, 249);">'none'</span><span >, 0, 1, [], 0)  </span></span></div><div  class = 'S4'><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement scrollableOutput" uid="5B0D3A3A" data-testid="output_6" data-width="428" data-height="423" data-hashorizontaloverflow="true" style="width: 458px; max-height: 434px; white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">Met #508  g6p[c], D-Glucose 6-phosphate, C6H11O9P
+
+Consuming reactions:
+  #1283  G6PDH2r, Bd: -1000 / 1000, Glucose 6-phosphate dehydrogenase
+g6p[c] + nadp[c] &lt;=&gt; 6pgl[c] + h[c] + nadph[c]  
+  #1284  G6PP, Bd: 0 / 1000, Glucose-6-phosphate phosphatase
+g6p[c] + h2o[c] -&gt; glc__D[c] + pi[c]  
+  #2077  PGI, Bd: -1000 / 1000, Glucose-6-phosphate isomerase
+g6p[c] &lt;=&gt; f6p[c]  
+  #2461  TRE6PS, Bd: 0 / 1000, Alpha,alpha-trehalose-phosphate synthase (UDP-forming)
+g6p[c] + udpg[c] -&gt; h[c] + tre6p[c] + udp[c]  
+Producing reactions:
+  #477  AB6PGH, Bd: 0 / 1000, Arbutin 6-phosphate glucohydrolase
+arbt6p[c] + h2o[c] -&gt; g6p[c] + hqn[c]  
+  #1214  FFSD, Bd: 0 / 1000, Beta-fructofuranosidase
+h2o[c] + suc6p[c] -&gt; fru[c] + g6p[c]  
+  #1231  FRULYSDG, Bd: -1000 / 1000, Fructoselysine phosphate deglycase
+frulysp[c] + h2o[c] &lt;=&gt; g6p[c] + lys__L[c]  
+  #1285  G6Pt6_2pp, Bd: 0 / 1000, Glucose-6-phosphate transport via phosphate antiport (periplasm)
+2 pi[c] + g6p[p] -&gt; g6p[c] + 2 pi[p]  
+  #1353  GLCptspp, Bd: 0 / 1000, D-glucose transport via PEP:Pyr PTS (periplasm)
+pep[c] + glc__D[p] -&gt; g6p[c] + pyr[c]  
+  #1500  HEX1, Bd: 0 / 1000, Hexokinase (D-glucose:ATP)
+atp[c] + glc__D[c] -&gt; adp[c] + g6p[c] + h[c]  
+  #2082  PGMT, Bd: -1000 / 1000, Phosphoglucomutase
+g1p[c] &lt;=&gt; g6p[c]  
+  #2459  TRE6PH, Bd: 0 / 1000, Trehalose-6-phosphate hydrolase
+h2o[c] + tre6p[c] -&gt; g6p[c] + glc__D[c]  
+
+Show previous steps...</div></div></div></div></div><div  class = 'S9'><span>In each click, there is also a button '</span><span style=' font-weight: bold;'>Show previous steps...</span><span>' at the bottom. Clicking on it will show the metabolites and reactions that you have visited in order. This is equivalent to calling:</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: normal"><span style="color: rgb(2, 128, 9);">% called by clicking 'Show previous steps...'</span></span></div></div><div class="inlineWrapper outputs"><div  class = 'S7'><span style="white-space: normal"><span >surfNet([], [], 0, </span><span style="color: rgb(170, 4, 249);">'none'</span><span >, 0, 1, [], 0, struct(</span><span style="color: rgb(170, 4, 249);">'showPrev'</span><span >, true))  </span></span></div><div  class = 'S4'><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement" uid="285BA88D" data-testid="output_7" data-width="428" data-height="18" data-hashorizontaloverflow="false" style="width: 458px; max-height: 261px; white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">glc__D[e]&gt;&gt;GLCtex_copy1&gt;&gt;glc__D[p]&gt;&gt;GLCptspp&gt;&gt;g6p[c]&gt;&gt;</div></div></div></div></div><div  class = 'S9'><span>You can go back to any of the intermediate metabolites/reactions by clicking the hyperlinked </span><span style=' font-family: monospace;'>mets/rxns</span><span> shown.</span></div><div  class = 'S2'><span style=' font-weight: bold;'>Call options</span></div><div  class = 'S2'><span>Shown below are various call options for including flux vectors and customizing display. All call options are preserved during the interactive browsing by mouse clicking.</span></div><div  class = 'S2'><span style=' font-weight: bold;'>Show objective reactions</span></div><div  class = 'S2'><span>Omit the '</span><span style=' font-family: monospace;'>metrxn</span><span>' (2nd) argument to print objective reactions:</span></div><div class="CodeBlock"><div class="inlineWrapper outputs"><div  class = 'S3'><span style="white-space: normal"><span >surfNet(iJO1366)</span></span></div><div  class = 'S4'><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement scrollableOutput" uid="7EE28695" data-testid="output_8" data-width="428" data-height="1263" data-hashorizontaloverflow="true" style="width: 458px; max-height: 261px; white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">Rxn #8  BIOMASS_Ec_iJO1366_core_53p95M, Bd: 0 / 1000, E. coli biomass objective function (iJO1366) - core - with 53.95 GAM estimate
+0.000223 10fthf[c] + 2.6e-05 2fe2s[c] + 0.000223 2ohph[c] + 0.00026 4fe4s[c] + 0.513689 ala__L[c] + 0.000223 amet[c] + 
+  0.295792 arg__L[c] + 0.241055 asn__L[c] + 0.241055 asp__L[c] + 54.1248 atp[c] + 0.000122 bmocogdp[c] + 2e-06 btn[c] + 
+  0.005205 ca2[c] + 0.005205 cl[c] + 0.000576 coa[c] + 2.5e-05 cobalt2[c] + 0.133508 ctp[c] + 0.000709 cu2[c] + 
+  0.09158 cys__L[c] + 0.026166 datp[c] + 0.027017 dctp[c] + 0.027017 dgtp[c] + 0.026166 dttp[c] + 0.000223 fad[c] + 
+  0.006715 fe2[c] + 0.007808 fe3[c] + 0.26316 gln__L[c] + 0.26316 glu__L[c] + 0.612638 gly[c] + 0.215096 gtp[c] + 48.6015 h2o[c] 
+  + 0.094738 his__L[c] + 0.290529 ile__L[c] + 0.195193 k[c] + 0.450531 leu__L[c] + 0.343161 lys__L[c] + 0.153686 met__L[c] + 
+  0.008675 mg2[c] + 0.000223 mlthf[c] + 0.000691 mn2[c] + 7e-06 mobd[c] + 0.001831 nad[c] + 0.000447 nadp[c] + 0.013013 nh4[c] + 
+  0.000323 ni2[c] + 0.017868 pe160[c] + 0.054154 pe161[c] + 0.185265 phe__L[c] + 0.000223 pheme[c] + 0.221055 pro__L[c] + 
+  0.000223 pydx5p[c] + 0.000223 ribflv[c] + 0.215792 ser__L[c] + 0.000223 sheme[c] + 0.004338 so4[c] + 0.000223 thf[c] + 
+  0.000223 thmpp[c] + 0.253687 thr__L[c] + 0.056843 trp__L[c] + 0.137896 tyr__L[c] + 5.5e-05 udcpdp[c] + 0.144104 utp[c] + 
+  0.423162 val__L[c] + 0.000341 zn2[c] + 0.019456 kdo2lipid4[e] + 0.013894 murein5px4p[p] + 0.045946 pe160[p] + 0.02106 pe161[p] 
+  -&gt; 53.95 adp[c] + 53.95 h[c] + 53.9457 pi[c] + 0.773903 ppi[c]  
+  id     Met             Stoich     metNames, metFormulas
+Reactant:
+ #1           10fthf[c]  -0.000223  10-Formyltetrahydrofolate, C20H21N7O7
+ #69           2fe2s[c]  -0.000026  [2Fe-2S] iron-sulfur cluster, S2Fe2
+ #82           2ohph[c]  -0.000223  2-Octaprenyl-6-hydroxyphenol, C46H70O2
+ #167          4fe4s[c]  -0.00026   [4Fe-4S] iron-sulfur cluster, S4Fe4
+ #255         ala__L[c]  -0.513689  L-Alanine, C3H7NO2
+ #265           amet[c]  -0.000223  S-Adenosyl-L-methionine, C15H23N6O5S
+ #294         arg__L[c]  -0.295792  L-Arginine, C6H15N4O2
+ #298         asn__L[c]  -0.241055  L-Asparagine, C4H8N2O3
+ #302         asp__L[c]  -0.241055  L-Aspartate, C4H6NO4
+ #307            atp[c]  -54.124831  ATP C10H12N5O13P3, C10H12N5O13P3
+ #314       bmocogdp[c]  -0.000122  Bis-molybdopterin guanine dinucleotide, C40H44N20O27P4S4Mo
+ #317            btn[c]  -0.000002  Biotin, C10H15N2O3S
+ #326            ca2[c]  -0.005205  Calcium, Ca
+ #355             cl[c]  -0.005205  Chloride, Cl
+ #358            coa[c]  -0.000576  Coenzyme A, C21H32N7O16P3S
+ #359        cobalt2[c]  -0.000025  Co2+, Co
+ #377            ctp[c]  -0.133508  CTP C9H12N3O14P3, C9H12N3O14P3
+ #379            cu2[c]  -0.000709  Copper, Cu
+ #383         cys__L[c]  -0.09158   L-Cysteine, C3H7NO2S
+ #392           datp[c]  -0.026166  DATP C10H12N5O12P3, C10H12N5O12P3
+ #401           dctp[c]  -0.027017  DCTP C9H12N3O13P3, C9H12N3O13P3
+ #412           dgtp[c]  -0.027017  DGTP C10H12N5O13P3, C10H12N5O13P3
+ #451           dttp[c]  -0.026166  DTTP C10H13N2O14P3, C10H13N2O14P3
+ #468            fad[c]  -0.000223  Flavin adenine dinucleotide oxidized, C27H31N9O15P2
+ #474            fe2[c]  -0.006715  Fe2+ mitochondria, Fe
+ #475            fe3[c]  -0.007808  Iron (Fe3+), Fe
+ #541         gln__L[c]  -0.26316   L-Glutamine, C5H10N2O3
+ #544         glu__L[c]  -0.26316   L-Glutamate, C5H8NO4
+ #551            gly[c]  -0.612638  Glycine, C2H5NO2
+ #574            gtp[c]  -0.215096  GTP C10H12N5O14P3, C10H12N5O14P3
+ #580            h2o[c]  -48.601527  H2O H2O, H2O
+ #597         his__L[c]  -0.094738  L-Histidine, C6H9N3O2
+ #621         ile__L[c]  -0.290529  L-Isoleucine, C6H13NO2
+ #637              k[c]  -0.195193  Potassium, K
+ #650         leu__L[c]  -0.450531  L-Leucine, C6H13NO2
+ #661         lys__L[c]  -0.343161  L-Lysine, C6H15N2O2
+ #686         met__L[c]  -0.153686  L-Methionine, C5H11NO2S
+ #691            mg2[c]  -0.008675  Magnesium, Mg
+ #694          mlthf[c]  -0.000223  5,10-Methylenetetrahydrofolate, C20H21N7O6
+ #697            mn2[c]  -0.000691  Manganese, Mn
+ #702           mobd[c]  -0.000007  Molybdate, MoO4
+ #720            nad[c]  -0.001831  Nicotinamide adenine dinucleotide, C21H26N7O14P2
+ #722           nadp[c]  -0.000447  Nicotinamide adenine dinucleotide phosphate, C21H25N7O17P3
+ #725            nh4[c]  -0.013013  Ammonium, H4N
+ #726            ni2[c]  -0.000323  Nickel, Ni
+ #780          pe160[c]  -0.017868  Phosphatidylethanolamine (dihexadecanoyl, n-C16:0), C37H74N1O8P1
+ #781          pe161[c]  -0.054154  Phosphatidylethanolamine (dihexadec-9enoyl, n-C16:1), C37H70N1O8P1
+ #800         phe__L[c]  -0.185265  L-Phenylalanine, C9H11NO2
+ #801          pheme[c]  -0.000223  Protoheme C34H30FeN4O4, C34H30FeN4O4
+ #834         pro__L[c]  -0.221055  L-Proline, C5H9NO2
+ #851         pydx5p[c]  -0.000223  Pyridoxal 5'-phosphate, C8H8NO6P
+ #868         ribflv[c]  -0.000223  Riboflavin C17H20N4O6, C17H20N4O6
+ #885         ser__L[c]  -0.215792  L-Serine, C3H7NO3
+ #889          sheme[c]  -0.000223  Siroheme C42H36FeN4O16, C42H36FeN4O16
+ #897            so4[c]  -0.004338  Sulfate, O4S
+ #936            thf[c]  -0.000223  5,6,7,8-Tetrahydrofolate, C19H21N7O6
+ #940          thmpp[c]  -0.000223  Thiamine diphosphate, C12H16N4O7P2S
+ #942         thr__L[c]  -0.253687  L-Threonine, C4H9NO3
+ #977         trp__L[c]  -0.056843  L-Tryptophan, C11H12N2O2
+ #985         tyr__L[c]  -0.137896  L-Tyrosine, C9H11NO3
+ #1001        udcpdp[c]  -0.000055  Undecaprenyl diphosphate, C55H89O7P2
+ #1025           utp[c]  -0.144104  UTP C9H11N2O15P3, C9H11N2O15P3
+ #1026        val__L[c]  -0.423162  L-Valine, C5H11NO2
+ #1039           zn2[c]  -0.000341  Zinc, Zn
+ #1238    kdo2lipid4[e]  -0.019456  KDO(2)-lipid IV(A), C84H148N2O37P2
+ #1676   murein5px4p[p]  -0.013894  Two disacharide linked murein units, pentapeptide crosslinked tetrapeptide (A2pm-&gt;D-ala) (middle of chain), C77H117N15O40
+ #1711         pe160[p]  -0.045946  Phosphatidylethanolamine (dihexadecanoyl, n-C16:0), C37H74N1O8P1
+ #1712         pe161[p]  -0.02106   Phosphatidylethanolamine (dihexadec-9enoyl, n-C16:1), C37H70N1O8P1
+Product:
+ #240            adp[c]  53.95      ADP C10H12N5O10P2, C10H12N5O10P2
+ #577              h[c]  53.95      H+, H
+ #808             pi[c]  53.945662  Phosphate, HO4P
+ #821            ppi[c]  0.773903   Diphosphate, HO7P2
+
+Show previous steps...</div></div></div></div></div><div  class = 'S9'><span style=' font-weight: bold;'>Call with a list of mets/rxns</span></div><div  class = 'S2'><span>The 'metrxn' arguement can be a string of id for a metabolite or reaction. It can also be a cell array of ids, e.g.,</span></div><div class="CodeBlock"><div class="inlineWrapper outputs"><div  class = 'S3'><span style="white-space: normal"><span >surfNet(iJO1366, {</span><span style="color: rgb(170, 4, 249);">'glc__D[p]'</span><span >; </span><span style="color: rgb(170, 4, 249);">'GLCptspp'</span><span >; </span><span style="color: rgb(170, 4, 249);">'g6p[c]'</span><span >})</span></span></div><div  class = 'S4'><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement scrollableOutput" uid="7F80BE9A" data-testid="output_9" data-width="428" data-height="885" data-hashorizontaloverflow="true" style="width: 458px; max-height: 261px; white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">Met #1587  glc__D[p], D-Glucose, C6H12O6
+
+Consuming reactions:
+  #1336  GLCDpp, Bd: 0 / 1000, Glucose dehydrogenase (ubiquinone-8 as acceptor) (periplasm)
+q8[c] + glc__D[p] + h2o[p] -&gt; q8h2[c] + glcn[p] + h[p]  
+  #1352  GLCabcpp, Bd: 0 / 1000, D-glucose transport via ABC system (periplasm)
+atp[c] + h2o[c] + glc__D[p] -&gt; adp[c] + glc__D[c] + h[c] + pi[c]  
+  #1353  GLCptspp, Bd: 0 / 1000, D-glucose transport via PEP:Pyr PTS (periplasm)
+pep[c] + glc__D[p] -&gt; g6p[c] + pyr[c]  
+  #1354  GLCt2pp, Bd: 0 / 1000, D-glucose transport in via proton symport (periplasm)
+glc__D[p] + h[p] -&gt; glc__D[c] + h[c]  
+Producing reactions:
+  #1252  G1PPpp, Bd: 0 / 1000, Glucose-1-phosphatase
+g1p[p] + h2o[p] -&gt; glc__D[p] + pi[p]  
+  #1355  GLCtex_copy1, Bd: -1000 / 1000, Glucose transport via diffusion (extracellular to periplasm)
+glc__D[e] &lt;=&gt; glc__D[p]  
+  #1356  GLCtex_copy2, Bd: 0 / 1000, Glucose transport via diffusion (extracellular to periplasm)
+glc__D[e] -&gt; glc__D[p]  
+  #1607  LACZpp, Bd: 0 / 1000, B-galactosidase
+h2o[p] + lcts[p] -&gt; gal[p] + glc__D[p]  
+  #2463  TREHpp, Bd: 0 / 1000, Alpha,alpha-trehalase (periplasm)
+h2o[p] + tre[p] -&gt; 2 glc__D[p]  
+
+Rxn #1353  GLCptspp, Bd: 0 / 1000, D-glucose transport via PEP:Pyr PTS (periplasm)
+pep[c] + glc__D[p] -&gt; g6p[c] + pyr[c]  
+  id     Met        Stoich     metNames, metFormulas
+Reactant:
+ #784       pep[c]  -1         Phosphoenolpyruvate, C3H2O6P
+ #1587   glc__D[p]  -1         D-Glucose, C6H12O6
+Product:
+ #508       g6p[c]  1          D-Glucose 6-phosphate, C6H11O9P
+ #853       pyr[c]  1          Pyruvate, C3H3O3
+
+Met #508  g6p[c], D-Glucose 6-phosphate, C6H11O9P
+
+Consuming reactions:
+  #1283  G6PDH2r, Bd: -1000 / 1000, Glucose 6-phosphate dehydrogenase
+g6p[c] + nadp[c] &lt;=&gt; 6pgl[c] + h[c] + nadph[c]  
+  #1284  G6PP, Bd: 0 / 1000, Glucose-6-phosphate phosphatase
+g6p[c] + h2o[c] -&gt; glc__D[c] + pi[c]  
+  #2077  PGI, Bd: -1000 / 1000, Glucose-6-phosphate isomerase
+g6p[c] &lt;=&gt; f6p[c]  
+  #2461  TRE6PS, Bd: 0 / 1000, Alpha,alpha-trehalose-phosphate synthase (UDP-forming)
+g6p[c] + udpg[c] -&gt; h[c] + tre6p[c] + udp[c]  
+Producing reactions:
+  #477  AB6PGH, Bd: 0 / 1000, Arbutin 6-phosphate glucohydrolase
+arbt6p[c] + h2o[c] -&gt; g6p[c] + hqn[c]  
+  #1214  FFSD, Bd: 0 / 1000, Beta-fructofuranosidase
+h2o[c] + suc6p[c] -&gt; fru[c] + g6p[c]  
+  #1231  FRULYSDG, Bd: -1000 / 1000, Fructoselysine phosphate deglycase
+frulysp[c] + h2o[c] &lt;=&gt; g6p[c] + lys__L[c]  
+  #1285  G6Pt6_2pp, Bd: 0 / 1000, Glucose-6-phosphate transport via phosphate antiport (periplasm)
+2 pi[c] + g6p[p] -&gt; g6p[c] + 2 pi[p]  
+  #1353  GLCptspp, Bd: 0 / 1000, D-glucose transport via PEP:Pyr PTS (periplasm)
+pep[c] + glc__D[p] -&gt; g6p[c] + pyr[c]  
+  #1500  HEX1, Bd: 0 / 1000, Hexokinase (D-glucose:ATP)
+atp[c] + glc__D[c] -&gt; adp[c] + g6p[c] + h[c]  
+  #2082  PGMT, Bd: -1000 / 1000, Phosphoglucomutase
+g1p[c] &lt;=&gt; g6p[c]  
+  #2459  TRE6PH, Bd: 0 / 1000, Trehalose-6-phosphate hydrolase
+h2o[c] + tre6p[c] -&gt; g6p[c] + glc__D[c]  
+
+Show previous steps...</div></div></div></div></div><div  class = 'S9'><span style=' font-weight: bold;'>Show metabolite names in reaction formulae</span></div><div  class = 'S2'><span>Some models may use generic ids for </span><span style=' font-family: monospace;'>mets/rxns</span><span>. In this case, call </span><span style=' font-family: monospace;'>surfNet()</span><span> with the '</span><span style=' font-family: monospace;'>metNameFlag</span><span>' (3rd) arguement turned on to show the names for metabolites (</span><span style=' font-family: monospace;'>.metNames</span><span>) in the reaction formulae, e.g.,</span></div><div class="CodeBlock"><div class="inlineWrapper outputs"><div  class = 'S3'><span style="white-space: normal"><span >surfNet(iJO1366, </span><span style="color: rgb(170, 4, 249);">'fgam[c]'</span><span >, 1)</span></span></div><div  class = 'S4'><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement scrollableOutput" uid="D63D7944" data-testid="output_10" data-width="428" data-height="213" data-hashorizontaloverflow="true" style="width: 458px; max-height: 261px; white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">Met #484  fgam[c], N2-Formyl-N1-(5-phospho-D-ribosyl)glycinamide, C8H13N2O9P
+
+Consuming reactions:
+  #2207  PRFGS, Bd: 0 / 1000, Phosphoribosylformylglycinamidine synthase
+ATP C10H12N5O13P3 + N2-Formyl-N1-(5-phospho-D-ribosyl)glycinamide + L-Glutamine + H2O H2O -&gt; ADP C10H12N5O10P2 + 2-(Formamido)-N1-(5-phospho-D-ribosyl)acetamidine 
+  + L-Glutamate + H+ + Phosphate  
+Producing reactions:
+  #1316  GARFT, Bd: -1000 / 1000, Phosphoribosylglycinamide formyltransferase
+10-Formyltetrahydrofolate + N1-(5-Phospho-D-ribosyl)glycinamide &lt;=&gt; N2-Formyl-N1-(5-phospho-D-ribosyl)glycinamide + H+ + 5,6,7,8-Tetrahydrofolate 
+   
+  #1317  GART, Bd: 0 / 1000, GAR transformylase-T
+ATP C10H12N5O13P3 + Formate + N1-(5-Phospho-D-ribosyl)glycinamide -&gt; ADP C10H12N5O10P2 + N2-Formyl-N1-(5-phospho-D-ribosyl)glycinamide 
+  + H+ + Phosphate  
+
+Show previous steps...</div></div></div></div></div><div  class = 'S9'><span style=' font-weight: bold;'>Hide reaction</span><span style=' font-weight: bold;'> detials</span></div><div  class = 'S2'><span>Turn off the '</span><span style=' font-family: monospace;'>showMets</span><span>' (6th) arguement to suppress details for reactions</span><span>, e.g.,</span></div><div class="CodeBlock"><div class="inlineWrapper outputs"><div  class = 'S3'><span style="white-space: normal"><span >surfNet(iJO1366, iJO1366.rxns(1001:1010), [], [], [], 0)</span></span></div><div  class = 'S4'><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement scrollableOutput" uid="42238530" data-testid="output_11" data-width="428" data-height="437" data-hashorizontaloverflow="true" style="width: 458px; max-height: 448px; white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">Rxn #1001  DHPPDA2, Bd: 0 / 1000, Diaminohydroxyphosphoribosylaminopryrimidine deaminase (25drapp)
+25drapp[c] + h[c] + h2o[c] -&gt; 5apru[c] + nh4[c]  
+
+Rxn #1002  DHPS2, Bd: 0 / 1000, Dihydropteroate synthase
+4abz[c] + 6hmhptpp[c] -&gt; dhpt[c] + ppi[c]  
+
+Rxn #1003  DHPTDCs2, Bd: 0 / 1000, 4,5-dihydroxy-2,3-pentanedione cyclization (spontaneous)
+dhptd[c] -&gt; mdhdhf[c]  
+
+Rxn #1004  DHPTDNR, Bd: 0 / 0, Dihydropteridine reductase
+dhptdn[c] + 3 h[c] + nadph[c] -&gt; nadp[c] + thptdn[c]  
+
+Rxn #1005  DHPTDNRN, Bd: 0 / 0, Dihydropteridine reductase (NADH)
+dhptdn[c] + 3 h[c] + nadh[c] -&gt; nad[c] + thptdn[c]  
+
+Rxn #1006  DHPTPE, Bd: -1000 / 1000, Dihydroneopterin triphosphate 2'-epimerase
+ahdt[c] &lt;=&gt; dhmptp[c]  
+
+Rxn #1007  DHQS, Bd: 0 / 1000, 3-dehydroquinate synthase
+2dda7p[c] -&gt; 3dhq[c] + pi[c]  
+
+Rxn #1008  DHQTi, Bd: 0 / 1000, 3-dehydroquinate dehydratase, irreversible
+3dhq[c] -&gt; 3dhsk[c] + h2o[c]  
+
+Rxn #1009  DIMPtex, Bd: -1000 / 1000, DIMP transport via diffusion (extracellular to periplasm)
+dimp[e] &lt;=&gt; dimp[p]  
+
+Rxn #1010  DINSt2pp, Bd: 0 / 1000, Deoxyinosine transport in via proton symport (periplasm)
+din[p] + h[p] -&gt; din[c] + h[c]  
+
+Show previous steps...</div></div></div></div></div><div  class = 'S9'><span style=' font-weight: bold;'>Look at one or more flux distributions</span></div><div  class = 'S2'><span>First, get a flux distribution by optimizing the biomass production of the model (the standard flux balance analysis</span><span texencoding="$^1" style="vertical-align:-5px"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAmCAYAAADN0BvRAAAAhUlEQVRIS+3VMQrCQBRF0ZNK3IrWgthkCW4gpJKsws3YW9q7gTRZTUgTQkAbyRB0Omd+/+7A5f0/hcgpIvMSAJxxxSHkKuTghBoNBmy/BcyBHi32vwDeDz5xzIDsILYHHXbYYFyqc2gXSlxQvUI3PHD/hCRwUFZvbnYghY8l92DVwF/0YALu1BMnstNhqgAAAABJRU5ErkJggg==" width="8" height="19" /></span><span>). Then call surfNet with the flux distribution (4th argument) to look at how the flux through pyruvate is distributed:</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: normal"><span >s = optimizeCbModel(iJO1366, </span><span style="color: rgb(170, 4, 249);">'max'</span><span >, </span><span style="color: rgb(170, 4, 249);">'one'</span><span >);</span></span></div></div><div class="inlineWrapper outputs"><div  class = 'S7'><span style="white-space: normal"><span >surfNet(iJO1366, </span><span style="color: rgb(170, 4, 249);">'pyr[c]'</span><span >, [], s.x)</span></span></div><div  class = 'S4'><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement scrollableOutput" uid="6CE5F762" data-testid="output_12" data-width="428" data-height="479" data-hashorizontaloverflow="true" style="width: 458px; max-height: 490px; white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">Met #853  pyr[c], Pyruvate, C3H3O3
+
+Consuming reactions with non-zero fluxes :
+  #511  ACHBS (0.28541), Bd: 0 / 1000, 2-aceto-2-hydroxybutanoate synthase
+2obut[c] + h[c] + pyr[c] -&gt; 2ahbut[c] + co2[c]  
+  #513  ACLS (0.85886), Bd: 0 / 1000, Acetolactate synthase
+h[c] + 2 pyr[c] -&gt; alac__S[c] + co2[c]  
+  #618  ALATA_L (-0.57111), Bd: -1000 / 1000, L-alanine transaminase
+akg[c] + ala__L[c] &lt;=&gt; glu__L[c] + pyr[c]  
+  #987  DHDPS (0.36441), Bd: 0 / 1000, Dihydrodipicolinate synthase
+aspsa[c] + pyr[c] -&gt; 23dhdp[c] + h[c] + 2 h2o[c]  
+  #1053  DXPS (0.00279), Bd: 0 / 1000, 1-deoxy-D-xylulose 5-phosphate synthase
+g3p[c] + h[c] + pyr[c] -&gt; co2[c] + dxyl5p[c]  
+  #2047  PDH (7.96919), Bd: 0 / 1000, Pyruvate dehydrogenase
+coa[c] + nad[c] + pyr[c] -&gt; accoa[c] + co2[c] + nadh[c]  
+  #2171  POR5 (0.10684), Bd: -1000 / 1000, Pyruvate synthase
+coa[c] + 2 flxso[c] + pyr[c] &lt;=&gt; accoa[c] + co2[c] + 2 flxr[c] + h[c]  
+  #2466  TRPAS2 (-0.05584), Bd: -1000 / 1000, Tryptophanase (L-tryptophan)
+h2o[c] + trp__L[c] &lt;=&gt; indole[c] + nh4[c] + pyr[c]  
+Producing reactions with non-zero fluxes :
+  #554  ADCL (0.00066), Bd: 0 / 1000, 4-aminobenzoate synthase
+4adcho[c] -&gt; 4abz[c] + h[c] + pyr[c]  
+  #666  ANS (0.05584), Bd: 0 / 1000, Anthranilate synthase
+chor[c] + gln__L[c] -&gt; anth[c] + glu__L[c] + h[c] + pyr[c]  
+  #813  CHRPL (0.00022), Bd: 0 / 1000, Chorismate pyruvate lyase
+chor[c] -&gt; 4hbz[c] + pyr[c]  
+  #908  CYSTL (0.1512), Bd: 0 / 1000, Cystathionine b-lyase
+cyst__L[c] + h2o[c] -&gt; hcys__L[c] + nh4[c] + pyr[c]  
+  #978  DHAPT (0.86538), Bd: 0 / 1000, Dihydroxyacetone phosphotransferase
+dha[c] + pep[c] -&gt; dhap[c] + pyr[c]  
+  #1353  GLCptspp (10), Bd: 0 / 1000, D-glucose transport via PEP:Pyr PTS (periplasm)
+pep[c] + glc__D[p] -&gt; g6p[c] + pyr[c]  
+
+Show previous steps...</div></div></div></div></div><div  class = 'S9'><span>All reactions involving pyruvate with non-zero fluxes are printed. The flux values are in the parentheses following the reaction ids. Note that reactions stated as consuming or producing the metabolite have taken the directions of the fluxes into account. Therefore, supplying a different flux distribution or not supplying may give different display. By default, only reactions with non-zero fluxes are printed if a flux distribution is supplied. Turn the '</span><span style=' font-family: monospace;'>nonzeroFluxFlag</span><span>' (5th) argument off to show all reactions:</span></div><div class="CodeBlock"><div class="inlineWrapper outputs"><div  class = 'S3'><span style="white-space: normal"><span >surfNet(iJO1366, </span><span style="color: rgb(170, 4, 249);">'pyr[c]'</span><span >, [], s.x, 0)</span></span></div><div  class = 'S4'><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement scrollableOutput" uid="72B340EC" data-testid="output_13" data-width="428" data-height="1823" data-hashorizontaloverflow="true" style="width: 458px; max-height: 261px; white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">Met #853  pyr[c], Pyruvate, C3H3O3
+
+Consuming reactions:
+  #511  ACHBS (0.28541), Bd: 0 / 1000, 2-aceto-2-hydroxybutanoate synthase
+2obut[c] + h[c] + pyr[c] -&gt; 2ahbut[c] + co2[c]  
+  #513  ACLS (0.85886), Bd: 0 / 1000, Acetolactate synthase
+h[c] + 2 pyr[c] -&gt; alac__S[c] + co2[c]  
+  #618  ALATA_L (-0.57111), Bd: -1000 / 1000, L-alanine transaminase
+akg[c] + ala__L[c] &lt;=&gt; glu__L[c] + pyr[c]  
+  #987  DHDPS (0.36441), Bd: 0 / 1000, Dihydrodipicolinate synthase
+aspsa[c] + pyr[c] -&gt; 23dhdp[c] + h[c] + 2 h2o[c]  
+  #1053  DXPS (0.00279), Bd: 0 / 1000, 1-deoxy-D-xylulose 5-phosphate synthase
+g3p[c] + h[c] + pyr[c] -&gt; co2[c] + dxyl5p[c]  
+  #2047  PDH (7.96919), Bd: 0 / 1000, Pyruvate dehydrogenase
+coa[c] + nad[c] + pyr[c] -&gt; accoa[c] + co2[c] + nadh[c]  
+  #2067  PFL (0), Bd: 0 / 1000, Pyruvate formate lyase
+coa[c] + pyr[c] -&gt; accoa[c] + for[c]  
+  #2171  POR5 (0.10684), Bd: -1000 / 1000, Pyruvate synthase
+coa[c] + 2 flxso[c] + pyr[c] &lt;=&gt; accoa[c] + co2[c] + 2 flxr[c] + h[c]  
+  #2172  POX (0), Bd: 0 / 1000, Pyruvate oxidase
+h2o[c] + pyr[c] + q8[c] -&gt; ac[c] + co2[c] + q8h2[c]  
+  #2198  PPS (0), Bd: 0 / 1000, Phosphoenolpyruvate synthase
+atp[c] + h2o[c] + pyr[c] -&gt; amp[c] + 2 h[c] + pep[c] + pi[c]  
+  #2466  TRPAS2 (-0.05584), Bd: -1000 / 1000, Tryptophanase (L-tryptophan)
+h2o[c] + trp__L[c] &lt;=&gt; indole[c] + nh4[c] + pyr[c]  
+Producing reactions:
+  #507  ACGAptspp (0), Bd: 0 / 1000, N-Acetyl-D-glucosamine transport via PEP:Pyr PTS  (periplasm)
+pep[c] + acgam[p] -&gt; acgam6p[c] + pyr[c]  
+  #516  ACMANAptspp (0), Bd: 0 / 1000, N-acetyl-D-mannosamine transport via PTS  (periplasm)
+pep[c] + acmana[p] -&gt; acmanap[c] + pyr[c]  
+  #518  ACMUMptspp (0), Bd: 0 / 1000, N-acetylmuramate transport via PEP:Pyr PTS (periplasm)
+pep[c] + acmum[p] -&gt; acmum6p[c] + pyr[c]  
+  #522  ACNML (0), Bd: 0 / 1000, N-Acetylneuraminate lyase
+acnam[c] -&gt; acmana[c] + pyr[c]  
+  #554  ADCL (0.00066), Bd: 0 / 1000, 4-aminobenzoate synthase
+4adcho[c] -&gt; 4abz[c] + h[c] + pyr[c]  
+  #617  ALATA_D2 (0), Bd: 0 / 1000, D-alanine transaminase
+ala__D[c] + pydx5p[c] -&gt; pyam5p[c] + pyr[c]  
+  #619  ALATA_L2 (0), Bd: 0 / 1000, Alanine transaminase
+ala__L[c] + pydx5p[c] -&gt; pyam5p[c] + pyr[c]  
+  #666  ANS (0.05584), Bd: 0 / 1000, Anthranilate synthase
+chor[c] + gln__L[c] -&gt; anth[c] + glu__L[c] + h[c] + pyr[c]  
+  #698  ARBTptspp (0), Bd: 0 / 1000, Arbutin transport via PEP:Pyr PTS (periplasm)
+pep[c] + arbt[p] -&gt; arbt6p[c] + pyr[c]  
+  #716  ASCBptspp (0), Bd: 0 / 1000, L-ascorbate transport via PEP:Pyr PTS (periplasm)
+pep[c] + ascb__L[p] -&gt; ascb6p[c] + pyr[c]  
+  #813  CHRPL (0.00022), Bd: 0 / 1000, Chorismate pyruvate lyase
+chor[c] -&gt; 4hbz[c] + pyr[c]  
+  #814  CHTBSptspp (0), Bd: 0 / 1000, Chitobiose transport via PEP:Pyr PTS (periplasm)
+pep[c] + chtbs[p] -&gt; chtbs6p[c] + pyr[c]  
+  #902  CYSDDS (0), Bd: 0 / 1000, D-cysteine desulfhydrase
+cys__D[c] + h2o[c] -&gt; h2s[c] + nh4[c] + pyr[c]  
+  #903  CYSDS (0), Bd: 0 / 1000, Cysteine Desulfhydrase
+cys__L[c] + h2o[c] -&gt; h2s[c] + nh4[c] + pyr[c]  
+  #908  CYSTL (0.1512), Bd: 0 / 1000, Cystathionine b-lyase
+cyst__L[c] + h2o[c] -&gt; hcys__L[c] + nh4[c] + pyr[c]  
+  #927  DAAD (0), Bd: 0 / 1000, D-Amino acid dehydrogenase
+ala__D[c] + fad[c] + h2o[c] -&gt; fadh2[c] + nh4[c] + pyr[c]  
+  #942  DAPAL (0), Bd: 0 / 1000, 2,3-diaminopropionate amonnia lyase
+23dappa[c] + h2o[c] -&gt; 2 nh4[c] + pyr[c]  
+  #970  DDPGALA (-0), Bd: -1000 / 1000, 2-dehydro-3-deoxy-6-phosphogalactonate aldolase
+2dh3dgal6p[c] &lt;=&gt; g3p[c] + pyr[c]  
+  #978  DHAPT (0.86538), Bd: 0 / 1000, Dihydroxyacetone phosphotransferase
+dha[c] + pep[c] -&gt; dhap[c] + pyr[c]  
+  #1094  EDA (0), Bd: 0 / 1000, 2-dehydro-3-deoxy-phosphogluconate aldolase
+2ddg6p[c] -&gt; g3p[c] + pyr[c]  
+  #1238  FRUpts2pp (0), Bd: 0 / 1000, Fructose transport via PEP:Pyr PTS (f6p generating) (periplasm)
+pep[c] + fru[p] -&gt; f6p[c] + pyr[c]  
+  #1239  FRUptspp (0), Bd: 0 / 1000, D-fructose transport via PEP:Pyr PTS (periplasm)
+pep[c] + fru[p] -&gt; f1p[c] + pyr[c]  
+  #1303  GALTptspp (0), Bd: 0 / 1000, Galactitol transport via PEP:Pyr PTS (periplasm)
+pep[c] + galt[p] -&gt; galt1p[c] + pyr[c]  
+  #1313  GAMptspp (0), Bd: 0 / 1000, D-glucosamine transport via PEP:Pyr PTS (periplasm)
+pep[c] + gam[p] -&gt; gam6p[c] + pyr[c]  
+  #1341  GLCRAL (0), Bd: 0 / 1000, 5-dehydro-4-deoxyglucarate aldolase
+5dh4dglc[c] -&gt; 2h3oppan[c] + pyr[c]  
+  #1353  GLCptspp (10), Bd: 0 / 1000, D-glucose transport via PEP:Pyr PTS (periplasm)
+pep[c] + glc__D[p] -&gt; g6p[c] + pyr[c]  
+  #1519  HOPNTAL (0), Bd: 0 / 1000, 4-hydroxy-2-oxopentanoate aldolase
+4h2opntn[c] -&gt; acald[c] + pyr[c]  
+  #1551  ICHORT (0), Bd: 0 / 1000, Isochorismatase
+h2o[c] + ichor[c] -&gt; 23ddhb[c] + pyr[c]  
+  #1601  L_LACD2 (0), Bd: 0 / 1000, L-Lactate dehydrogenase (ubiquinone)
+lac__L[c] + q8[c] -&gt; pyr[c] + q8h2[c]  
+  #1602  L_LACD3 (0), Bd: 0 / 1000, L-Lactate dehydrogenase (menaquinone)
+lac__L[c] + mqn8[c] -&gt; mql8[c] + pyr[c]  
+  #1622  LDH_D (0), Bd: -1000 / 1000, D-lactate dehydrogenase
+lac__D[c] + nad[c] &lt;=&gt; h[c] + nadh[c] + pyr[c]  
+  #1623  LDH_D2 (0), Bd: 0 / 1000, D-lactate dehydrogenase
+lac__D[c] + q8[c] -&gt; pyr[c] + q8h2[c]  
+  #1711  MALDDH (0), Bd: 0 / 1000, Malate decarboxylating oxidoreductase (decarboxylating)
+mal__D[c] + nad[c] -&gt; co2[c] + nadh[c] + pyr[c]  
+  #1725  MALTptspp (0), Bd: 0 / 1000, Maltose transport via PEP:Pyr PTS (periplasm)
+pep[c] + malt[p] -&gt; malt6p[c] + pyr[c]  
+  #1736  MANGLYCptspp (0), Bd: 0 / 1000, 2-O-alpha-mannosyl-D-glycerate transport via PEP:Pyr PTS (periplasm)
+pep[c] + manglyc[p] -&gt; man6pglyc[c] + pyr[c]  
+  #1739  MANptspp (0), Bd: 0 / 1000, D-mannose transport via PEP:Pyr PTS (periplasm)
+pep[c] + man[p] -&gt; man6p[c] + pyr[c]  
+  #1742  MCITL2 (0), Bd: -1000 / 1000, Methylisocitrate lyase
+micit[c] &lt;=&gt; pyr[c] + succ[c]  
+  #1745  MCPST (0), Bd: 0 / 1000, 3-mercaptopyruvate sulfurtransferase
+cyan[c] + mercppyr[c] -&gt; h[c] + pyr[c] + tcynt[c]  
+  #1761  ME1 (0), Bd: 0 / 1000, Malic enzyme (NAD)
+mal__L[c] + nad[c] -&gt; co2[c] + nadh[c] + pyr[c]  
+  #1762  ME2 (0), Bd: 0 / 1000, Malic enzyme (NADP)
+mal__L[c] + nadp[c] -&gt; co2[c] + nadph[c] + pyr[c]  
+  #1822  MNLptspp (0), Bd: 0 / 1000, Mannitol transport via PEP:Pyr PTS (periplasm)
+pep[c] + mnl[p] -&gt; mnl1p[c] + pyr[c]  
+  #1977  OAADC (0), Bd: 0 / 1000, Oxaloacetate decarboxylase
+h[c] + oaa[c] -&gt; co2[c] + pyr[c]  
+  #2266  PYK (0), Bd: 0 / 1000, Pyruvate kinase
+adp[c] + h[c] + pep[c] -&gt; atp[c] + pyr[c]  
+  #2269  PYRt2rpp (0), Bd: -1000 / 1000, Pyruvate reversible transport via proton symport (periplasm)
+h[p] + pyr[p] &lt;=&gt; h[c] + pyr[c]  
+  #2326  SBTptspp (0), Bd: 0 / 1000, D-sorbitol transport via PEP:Pyr PTS (periplasm)
+pep[c] + sbt__D[p] -&gt; pyr[c] + sbt6p[c]  
+  #2342  SERD_D (0), Bd: 0 / 1000, D-serine deaminase
+ser__D[c] -&gt; nh4[c] + pyr[c]  
+  #2343  SERD_L (0), Bd: 0 / 1000, L-serine deaminase
+ser__L[c] -&gt; nh4[c] + pyr[c]  
+  #2352  SHCHCS3 (0), Bd: 0 / 1000, 2-succinyl-6-hydroxy-2,4-cyclohexadiene 1-carboxylate synthase
+2sephchc[c] -&gt; 2shchc[c] + pyr[c]  
+  #2391  SUCptspp (0), Bd: 0 / 1000, Sucrose transport via PEP:Pyr  (periplasm)
+pep[c] + sucr[p] -&gt; pyr[c] + suc6p[c]  
+  #2464  TREptspp (0), Bd: 0 / 1000, Trehalose transport via PEP:Pyr PTS (periplasm)
+pep[c] + tre[p] -&gt; pyr[c] + tre6p[c]  
+  #2558  VPAMTr (0), Bd: -1000 / 1000, Valine-pyruvate aminotransferase
+3mob[c] + ala__L[c] &lt;=&gt; pyr[c] + val__L[c]  
+
+Show previous steps...</div></div></div></div></div><div  class = 'S9'><span>You can also compare multiple flux distributions by supplying them in a matrix format, each column being a flux distribution. For example, get another flux distribution maximizing the biomass production using D-fructose instead of glucose as substrate. Then call surfNet to look at reactions with different fluxes.</span></div><div  class = 'S2'><span>Original uptake rates:</span></div><div class="CodeBlock"><div class="inlineWrapper outputs"><div  class = 'S3'><span style="white-space: normal"><span >printUptakeBound(iJO1366);</span></span></div><div  class = 'S4'><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement" uid="A0B9DAC4" data-testid="output_14" data-width="428" data-height="353" data-hashorizontaloverflow="false" style="width: 458px; max-height: 364px; white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">EX_ca2_e            	       -1000
+EX_cbl1_e           	       -0.01
+EX_cl_e             	       -1000
+EX_co2_e            	       -1000
+EX_cobalt2_e        	       -1000
+EX_cu2_e            	       -1000
+EX_fe2_e            	       -1000
+EX_fe3_e            	       -1000
+EX_glc__D_e         	         -10
+EX_h_e              	       -1000
+EX_h2o_e            	       -1000
+EX_k_e              	       -1000
+EX_mg2_e            	       -1000
+EX_mn2_e            	       -1000
+EX_mobd_e           	       -1000
+EX_na1_e            	       -1000
+EX_nh4_e            	       -1000
+EX_ni2_e            	       -1000
+EX_o2_e             	       -1000
+EX_pi_e             	       -1000
+EX_sel_e            	       -1000
+EX_slnt_e           	       -1000
+EX_so4_e            	       -1000
+EX_tungs_e          	       -1000
+EX_zn2_e            	       -1000</div></div></div></div></div><div  class = 'S9'><span>Use fructose instead of glucose as substrate:</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: normal"><span >iJO1366 = changeRxnBounds(iJO1366, {</span><span style="color: rgb(170, 4, 249);">'EX_glc__D_e'</span><span >; </span><span style="color: rgb(170, 4, 249);">'EX_fru_e'</span><span >},</span><span style="color: rgb(14, 0, 255);">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S6'><span style="white-space: normal"><span >    [0; -10], {</span><span style="color: rgb(170, 4, 249);">'L'</span><span >; </span><span style="color: rgb(170, 4, 249);">'L'</span><span >});</span></span></div></div><div class="inlineWrapper outputs"><div  class = 'S7'><span style="white-space: normal"><span >printUptakeBound(iJO1366);</span></span></div><div  class = 'S4'><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement" uid="416176FF" data-testid="output_15" data-width="428" data-height="353" data-hashorizontaloverflow="false" style="width: 458px; max-height: 364px; white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">EX_ca2_e            	       -1000
+EX_cbl1_e           	       -0.01
+EX_cl_e             	       -1000
+EX_co2_e            	       -1000
+EX_cobalt2_e        	       -1000
+EX_cu2_e            	       -1000
+EX_fe2_e            	       -1000
+EX_fe3_e            	       -1000
+EX_fru_e            	         -10
+EX_h_e              	       -1000
+EX_h2o_e            	       -1000
+EX_k_e              	       -1000
+EX_mg2_e            	       -1000
+EX_mn2_e            	       -1000
+EX_mobd_e           	       -1000
+EX_na1_e            	       -1000
+EX_nh4_e            	       -1000
+EX_ni2_e            	       -1000
+EX_o2_e             	       -1000
+EX_pi_e             	       -1000
+EX_sel_e            	       -1000
+EX_slnt_e           	       -1000
+EX_so4_e            	       -1000
+EX_tungs_e          	       -1000
+EX_zn2_e            	       -1000</div></div></div></div></div><div  class = 'S9'><span>Run FBA again to get a flux distribution using fructose as substrate. Then look at reactions with different fluxes in the glucose and fructose cases using </span><span style=' font-family: monospace;'>surfNet</span><span>.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: normal"><span >sFru = optimizeCbModel(iJO1366, </span><span style="color: rgb(170, 4, 249);">'max'</span><span >, </span><span style="color: rgb(170, 4, 249);">'one'</span><span >);  </span><span style="color: rgb(2, 128, 9);">% FBA</span></span></div></div><div class="inlineWrapper"><div  class = 'S6'><span style="white-space: normal"><span >fluxMatrix = [s.x, sFru.x];  </span><span style="color: rgb(2, 128, 9);">% put two flux vectors in a matrix</span></span></div></div><div class="inlineWrapper"><div  class = 'S6'><span style="white-space: normal"><span style="color: rgb(2, 128, 9);">% reactions with different fluxes</span></span></div></div><div class="inlineWrapper"><div  class = 'S6'><span style="white-space: normal"><span >rxnDiff = abs(fluxMatrix(:, 1) - fluxMatrix(:, 2)) &gt; 1e-6;  </span></span></div></div><div class="inlineWrapper outputs"><div  class = 'S7'><span style="white-space: normal"><span >surfNet(iJO1366, iJO1366.rxns(rxnDiff), [], fluxMatrix, [], 0)</span></span></div><div  class = 'S4'><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement scrollableOutput" uid="6C344968" data-testid="output_16" data-width="428" data-height="773" data-hashorizontaloverflow="true" style="width: 458px; max-height: 261px; white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">Rxn #139  EX_fru_e (0, -10), Bd: -10 / 1000, D-Fructose exchange
+fru[e] &lt;=&gt;  
+
+Rxn #164  EX_glc__D_e (-10, 0), Bd: 0 / 1000, D-Glucose exchange
+glc__D[e] -&gt;  
+
+Rxn #623  ALAt2pp_copy2 (-0.00511, 0), Bd: -1000 / 1000, L-alanine transport in via proton symport (periplasm)
+ala__L[p] + h[p] &lt;=&gt; ala__L[c] + h[c]  
+
+Rxn #624  ALAt4pp (0.00511, 0), Bd: 0 / 1000, L-alanine transport in via sodium symport (periplasm)
+ala__L[p] + na1[p] -&gt; ala__L[c] + na1[c]  
+
+Rxn #1230  FRUK (0, 5.75203), Bd: 0 / 1000, Fructose-1-phosphate kinase
+atp[c] + f1p[c] -&gt; adp[c] + fdp[c] + h[c]  
+
+Rxn #1238  FRUpts2pp (0, 4.24797), Bd: 0 / 1000, Fructose transport via PEP:Pyr PTS (f6p generating) (periplasm)
+pep[c] + fru[p] -&gt; f6p[c] + pyr[c]  
+
+Rxn #1239  FRUptspp (0, 5.75203), Bd: 0 / 1000, D-fructose transport via PEP:Pyr PTS (periplasm)
+pep[c] + fru[p] -&gt; f1p[c] + pyr[c]  
+
+Rxn #1240  FRUtex (-0, 10), Bd: -1000 / 1000, D-fructose transport via diffusion (extracellular to periplasm)
+fru[e] &lt;=&gt; fru[p]  
+
+Rxn #1353  GLCptspp (10, 0), Bd: 0 / 1000, D-glucose transport via PEP:Pyr PTS (periplasm)
+pep[c] + glc__D[p] -&gt; g6p[c] + pyr[c]  
+
+Rxn #1356  GLCtex_copy2 (10, 0), Bd: 0 / 1000, Glucose transport via diffusion (extracellular to periplasm)
+glc__D[e] -&gt; glc__D[p]  
+
+Rxn #1377  GLUt2rpp (0, -0.00511), Bd: -1000 / 1000, L-glutamate transport via proton symport, reversible (periplasm)
+glu__L[p] + h[p] &lt;=&gt; glu__L[c] + h[c]  
+
+Rxn #1378  GLUt4pp (0, 0.00511), Bd: 0 / 1000, Na+/glutamate symport (periplasm)
+glu__L[p] + na1[p] -&gt; glu__L[c] + na1[c]  
+
+Rxn #1758  MDH (4.82506, 4.82528), Bd: -1000 / 1000, Malate dehydrogenase
+mal__L[c] + nad[c] &lt;=&gt; h[c] + nadh[c] + oaa[c]  
+
+Rxn #1837  MOX (0.0016, 0.00138), Bd: -1000 / 1000, Malate oxidase
+mal__L[c] + o2[c] &lt;=&gt; h2o2[c] + oaa[c]  
+
+Rxn #2048  PDX5PO2 (0.00022, 0), Bd: 0 / 1000, Pyridoxine 5'-phosphate oxidase (anaerboic
+nad[c] + pdx5p[c] -&gt; h[c] + nadh[c] + pydx5p[c]  
+
+Rxn #2049  PDX5POi (0, 0.00022), Bd: 0 / 1000, Pyridoxine 5'-phosphate oxidase
+o2[c] + pdx5p[c] -&gt; h2o2[c] + pydx5p[c]  
+
+Rxn #2064  PFK (5.75203, 0), Bd: 0 / 1000, Phosphofructokinase
+atp[c] + f6p[c] -&gt; adp[c] + fdp[c] + h[c]  
+
+Rxn #2077  PGI (5.91807, -4.08193), Bd: -1000 / 1000, Glucose-6-phosphate isomerase
+g6p[c] &lt;=&gt; f6p[c]  
+
+Show previous steps...</div></div></div></div></div><div  class = 'S9'><span style=' font-weight: bold;'>Customize model data to be displayed</span></div><div  class = 'S2'><span>Customize the fields for metabolites and reactions to be printed by supplying the '</span><span style=' font-family: monospace;'>field2print</span><span>' (7th) argument. It is defaulted to be:  </span></div><div  class = 'S2'><span style=' font-family: monospace;'>{{'metNames','metFormulas'}, {'rxnNames','lb','ub'}}</span></div><div  class = 'S2'><span>The first cell contains the metabolite-related fields to be printed and the second cell contains th</span><span>e reaction-related fields to be printed. It can also be inputted as a single cell array of strings, as long as from the size (equal to #</span><span style=' font-family: monospace;'>mets</span><span> or #</span><span style=' font-family: monospace;'>rxns)</span><span> or from the name of the field (starting with '</span><span style=' font-family: monospace;'>met</span><span>' or '</span><span style=' font-family: monospace;'>rxn</span><span>'), the fields are recognizable to be met- or rxn-related. For example, show the </span><span style=' font-family: monospace;'>grRules</span><span> for rxns but omit the bounds and show the constraint sense (</span><span style=' font-family: monospace;'>csense</span><span>) associated with each metabolite. Note the difference from the original call:</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: normal"><span >surfNet(iJO1366, </span><span style="color: rgb(170, 4, 249);">'fdp[c]'</span><span >, [], [], [], [],</span><span style="color: rgb(14, 0, 255);">...</span></span></div></div><div class="inlineWrapper outputs"><div  class = 'S7'><span style="white-space: normal"><span >    {</span><span style="color: rgb(170, 4, 249);">'metNames'</span><span >, </span><span style="color: rgb(170, 4, 249);">'metFormulas'</span><span >, </span><span style="color: rgb(170, 4, 249);">'rxnNames'</span><span >, </span><span style="color: rgb(170, 4, 249);">'grRules'</span><span >, </span><span style="color: rgb(170, 4, 249);">'csense'</span><span >})</span></span></div><div  class = 'S4'><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement scrollableOutput" uid="32B35A08" data-testid="output_17" data-width="428" data-height="199" data-hashorizontaloverflow="true" style="width: 458px; max-height: 261px; white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">Met #473  fdp[c], D-Fructose 1,6-bisphosphate, C6H10O12P2, csense: E
+
+Consuming reactions:
+  #1151  FBA, Fructose-bisphosphate aldolase, grRules: b2097 or b1773 or b2925
+fdp[c] &lt;=&gt; dhap[c] + g3p[c]  
+  #1153  FBP, Fructose-bisphosphatase, grRules: b3925 or b4232 or b2930
+fdp[c] + h2o[c] -&gt; f6p[c] + pi[c]  
+Producing reactions:
+  #1230  FRUK, Fructose-1-phosphate kinase, grRules: b2168
+atp[c] + f1p[c] -&gt; adp[c] + fdp[c] + h[c]  
+  #2064  PFK, Phosphofructokinase, grRules: b3916 or b1723
+atp[c] + f6p[c] -&gt; adp[c] + fdp[c] + h[c]  
+
+Show previous steps...</div></div></div></div><div class="inlineWrapper outputs"><div  class = 'S10'><span style="white-space: normal"><span >surfNet(iJO1366, </span><span style="color: rgb(170, 4, 249);">'fdp[c]'</span><span >)</span></span></div><div  class = 'S4'><div class="inlineElement eoOutputWrapper embeddedOutputsWarningElement" uid="CCCC5A5C" data-testid="output_18" data-width="428" data-height="30" data-hashorizontaloverflow="false" style="width: 458px; max-height: 261px; white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="diagnosticMessage-wrapper diagnosticMessage-warningType" style="white-space: normal; font-style: normal; color: rgb(255, 100, 0); font-size: 12px;"><div class="diagnosticMessage-messagePart" style="white-space: normal; font-style: normal; color: rgb(255, 100, 0); font-size: 12px;">Warning: The 2nd input is neither a metabolite nor reaction of the model.</div><div class="diagnosticMessage-stackPart" style="white-space: normal; font-style: normal; color: rgb(255, 100, 0); font-size: 12px;"></div></div></div></div></div></div><div  class = 'S9'><span>The last argument (8th) 'nCharBreak' sets the number of charact</span><span>ers printed per line. By default, it is equal to the width of the Matlab command window. Note the difference:</span></div><div  class = 'S2'><span>Characters per line = width of the command window (default):</span></div><div class="CodeBlock"><div class="inlineWrapper outputs"><div  class = 'S3'><span style="white-space: normal"><span >surfNet(iJO1366, [], [], [], [], 0)</span></span></div><div  class = 'S4'><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement scrollableOutput" uid="4C150AA9" data-testid="output_19" data-width="428" data-height="213" data-hashorizontaloverflow="true" style="width: 458px; max-height: 261px; white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">Rxn #8  BIOMASS_Ec_iJO1366_core_53p95M, Bd: 0 / 1000, E. coli biomass objective function (iJO1366) - core - with 53.95 GAM estimate
+0.000223 10fthf[c] + 2.6e-05 2fe2s[c] + 0.000223 2ohph[c] + 0.00026 4fe4s[c] + 0.513689 ala__L[c] + 0.000223 amet[c] + 
+  0.295792 arg__L[c] + 0.241055 asn__L[c] + 0.241055 asp__L[c] + 54.1248 atp[c] + 0.000122 bmocogdp[c] + 2e-06 btn[c] + 
+  0.005205 ca2[c] + 0.005205 cl[c] + 0.000576 coa[c] + 2.5e-05 cobalt2[c] + 0.133508 ctp[c] + 0.000709 cu2[c] + 
+  0.09158 cys__L[c] + 0.026166 datp[c] + 0.027017 dctp[c] + 0.027017 dgtp[c] + 0.026166 dttp[c] + 0.000223 fad[c] + 
+  0.006715 fe2[c] + 0.007808 fe3[c] + 0.26316 gln__L[c] + 0.26316 glu__L[c] + 0.612638 gly[c] + 0.215096 gtp[c] + 48.6015 h2o[c] 
+  + 0.094738 his__L[c] + 0.290529 ile__L[c] + 0.195193 k[c] + 0.450531 leu__L[c] + 0.343161 lys__L[c] + 0.153686 met__L[c] + 
+  0.008675 mg2[c] + 0.000223 mlthf[c] + 0.000691 mn2[c] + 7e-06 mobd[c] + 0.001831 nad[c] + 0.000447 nadp[c] + 0.013013 nh4[c] + 
+  0.000323 ni2[c] + 0.017868 pe160[c] + 0.054154 pe161[c] + 0.185265 phe__L[c] + 0.000223 pheme[c] + 0.221055 pro__L[c] + 
+  0.000223 pydx5p[c] + 0.000223 ribflv[c] + 0.215792 ser__L[c] + 0.000223 sheme[c] + 0.004338 so4[c] + 0.000223 thf[c] + 
+  0.000223 thmpp[c] + 0.253687 thr__L[c] + 0.056843 trp__L[c] + 0.137896 tyr__L[c] + 5.5e-05 udcpdp[c] + 0.144104 utp[c] + 
+  0.423162 val__L[c] + 0.000341 zn2[c] + 0.019456 kdo2lipid4[e] + 0.013894 murein5px4p[p] + 0.045946 pe160[p] + 0.02106 pe161[p] 
+  -&gt; 53.95 adp[c] + 53.95 h[c] + 53.9457 pi[c] + 0.773903 ppi[c]  
+
+Show previous steps...</div></div></div></div></div><div  class = 'S9'><span>40 characters per line:</span></div><div class="CodeBlock"><div class="inlineWrapper outputs"><div  class = 'S3'><span style="white-space: normal"><span >surfNet(iJO1366, [], [], [], [], 0, [], 40)</span></span></div><div  class = 'S4'><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement scrollableOutput" uid="5AC95D79" data-testid="output_20" data-width="428" data-height="633" data-hashorizontaloverflow="true" style="width: 458px; max-height: 261px; white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">Rxn #8  BIOMASS_Ec_iJO1366_core_53p95M, Bd: 0 / 1000, E. coli biomass objective function (iJO1366) - core - with 53.95 GAM estimate
+0.000223 10fthf[c] + 2.6e-05 2fe2s[c] + 
+  0.000223 2ohph[c] + 0.00026 4fe4s[c] + 
+  0.513689 ala__L[c] + 0.000223 amet[c] 
+  + 0.295792 arg__L[c] + 
+  0.241055 asn__L[c] + 
+  0.241055 asp__L[c] + 54.1248 atp[c] + 
+  0.000122 bmocogdp[c] + 2e-06 btn[c] + 
+  0.005205 ca2[c] + 0.005205 cl[c] + 
+  0.000576 coa[c] + 2.5e-05 cobalt2[c] + 
+  0.133508 ctp[c] + 0.000709 cu2[c] + 
+  0.09158 cys__L[c] + 0.026166 datp[c] + 
+  0.027017 dctp[c] + 0.027017 dgtp[c] + 
+  0.026166 dttp[c] + 0.000223 fad[c] + 
+  0.006715 fe2[c] + 0.007808 fe3[c] + 
+  0.26316 gln__L[c] + 0.26316 glu__L[c] 
+  + 0.612638 gly[c] + 0.215096 gtp[c] + 
+  48.6015 h2o[c] + 0.094738 his__L[c] + 
+  0.290529 ile__L[c] + 0.195193 k[c] + 
+  0.450531 leu__L[c] + 
+  0.343161 lys__L[c] + 
+  0.153686 met__L[c] + 0.008675 mg2[c] + 
+  0.000223 mlthf[c] + 0.000691 mn2[c] + 
+  7e-06 mobd[c] + 0.001831 nad[c] + 
+  0.000447 nadp[c] + 0.013013 nh4[c] + 
+  0.000323 ni2[c] + 0.017868 pe160[c] + 
+  0.054154 pe161[c] + 0.185265 phe__L[c] 
+  + 0.000223 pheme[c] + 
+  0.221055 pro__L[c] + 
+  0.000223 pydx5p[c] + 
+  0.000223 ribflv[c] + 
+  0.215792 ser__L[c] + 0.000223 sheme[c] 
+  + 0.004338 so4[c] + 0.000223 thf[c] + 
+  0.000223 thmpp[c] + 0.253687 thr__L[c] 
+  + 0.056843 trp__L[c] + 
+  0.137896 tyr__L[c] + 5.5e-05 udcpdp[c] 
+  + 0.144104 utp[c] + 0.423162 val__L[c] 
+  + 0.000341 zn2[c] + 
+  0.019456 kdo2lipid4[e] + 
+  0.013894 murein5px4p[p] + 
+  0.045946 pe160[p] + 0.02106 pe161[p] 
+  -&gt; 53.95 adp[c] + 53.95 h[c] + 
+  53.9457 pi[c] + 0.773903 ppi[c]  
+
+Show previous steps...</div></div></div></div></div><div  class = 'S9'><span>80 characters per line:</span></div><div class="CodeBlock"><div class="inlineWrapper outputs"><div  class = 'S3'><span style="white-space: normal"><span >surfNet(iJO1366, [], [], [], [], 0, [], 80)</span></span></div><div  class = 'S4'><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement scrollableOutput" uid="DE9ABF93" data-testid="output_21" data-width="428" data-height="325" data-hashorizontaloverflow="true" style="width: 458px; max-height: 336px; white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">Rxn #8  BIOMASS_Ec_iJO1366_core_53p95M, Bd: 0 / 1000, E. coli biomass objective function (iJO1366) - core - with 53.95 GAM estimate
+0.000223 10fthf[c] + 2.6e-05 2fe2s[c] + 0.000223 2ohph[c] + 0.00026 4fe4s[c] + 
+  0.513689 ala__L[c] + 0.000223 amet[c] + 0.295792 arg__L[c] + 
+  0.241055 asn__L[c] + 0.241055 asp__L[c] + 54.1248 atp[c] + 
+  0.000122 bmocogdp[c] + 2e-06 btn[c] + 0.005205 ca2[c] + 0.005205 cl[c] + 
+  0.000576 coa[c] + 2.5e-05 cobalt2[c] + 0.133508 ctp[c] + 0.000709 cu2[c] + 
+  0.09158 cys__L[c] + 0.026166 datp[c] + 0.027017 dctp[c] + 0.027017 dgtp[c] + 
+  0.026166 dttp[c] + 0.000223 fad[c] + 0.006715 fe2[c] + 0.007808 fe3[c] + 
+  0.26316 gln__L[c] + 0.26316 glu__L[c] + 0.612638 gly[c] + 0.215096 gtp[c] + 
+  48.6015 h2o[c] + 0.094738 his__L[c] + 0.290529 ile__L[c] + 0.195193 k[c] + 
+  0.450531 leu__L[c] + 0.343161 lys__L[c] + 0.153686 met__L[c] + 0.008675 mg2[c] 
+  + 0.000223 mlthf[c] + 0.000691 mn2[c] + 7e-06 mobd[c] + 0.001831 nad[c] + 
+  0.000447 nadp[c] + 0.013013 nh4[c] + 0.000323 ni2[c] + 0.017868 pe160[c] + 
+  0.054154 pe161[c] + 0.185265 phe__L[c] + 0.000223 pheme[c] + 
+  0.221055 pro__L[c] + 0.000223 pydx5p[c] + 0.000223 ribflv[c] + 
+  0.215792 ser__L[c] + 0.000223 sheme[c] + 0.004338 so4[c] + 0.000223 thf[c] + 
+  0.000223 thmpp[c] + 0.253687 thr__L[c] + 0.056843 trp__L[c] + 
+  0.137896 tyr__L[c] + 5.5e-05 udcpdp[c] + 0.144104 utp[c] + 0.423162 val__L[c] 
+  + 0.000341 zn2[c] + 0.019456 kdo2lipid4[e] + 0.013894 murein5px4p[p] + 
+  0.045946 pe160[p] + 0.02106 pe161[p] -&gt; 53.95 adp[c] + 53.95 h[c] + 
+  53.9457 pi[c] + 0.773903 ppi[c]  
+
+Show previous steps...</div></div></div></div></div><div  class = 'S9'><span></span></div><h2  class = 'S1'><span>REFERENCES</span></h2><div  class = 'S2'><span>[1] Orth, J. D., Thiele I., and Palsson, B. Ø. What is flux balance analysis? </span><span style=' font-style: italic;'>Nat. Biotechnol., 28</span><span>(3), 245–248 (2010).</span></div>
+<br>
+<!-- 
+##### SOURCE BEGIN #####
+%% Browse Networks in the Matlab Command Window Using surfNet
+%% Author(s): Siu Hung Joshua Chan, Department of Chemical Engineering, The Pennsylvania State University
+%% Reviewer(s): 
+% 
+%% INTRODUCTION
+% In this tutorial, we will demonstrate how to browse a COBRA model in verbal 
+% format in the Matlab command window through an initial call and interactive 
+% mouse clicking.
+%% MATERIALS
+%% EQUIPMENT SETUP
+% Start CobraToolbox
+
+initCobraToolbox(false) % false, as we don't want to update;
+%% PROCEDURE
+% Load the _E. coli_ iJO1366 model as an example model.
+
+modelFileName = 'iJO1366.mat';
+modelDirectory = getDistributedModelFolder(modelFileName); %Look up the folder for the distributed Models.
+modelFileName= [modelDirectory filesep modelFileName]; % Get the full path. Necessary to be sure, that the right model is loaded
+iJO1366 = readCbModel(modelFileName);
+
+%% 
+% *Browse a network*
+% 
+% Browse the network by starting from an initial metabolite, e.g., D-glucose 
+% in the extracellular compartment.
+
+surfNet(iJO1366, 'glc__D[e]')
+%% 
+% All reactions producing or consuming '|*glc__D_e*|' will have their reaction 
+% indices (#xxx), ids (.rxns), bounds (.lb/.ub), names (.rxnNames) and formulae 
+% printed on the command window. All reactions and the participating metabolites 
+% are hyperlinked. For example, *click* on the reaction '|*GLCtex_copy1*|'. (This 
+% is equivalent to run the following command.)
+
+% called by clicking 'GLCtex_copy1'
+surfNet([], 'GLCtex_copy1', 0, 'none', 0, 1, [], 0)  
+%% 
+% Details for the metabolites will appear, e.g., indeices, ids, stoichiometric 
+% coefficients, names and chemical formulae. By iteratively clicking on the reactions 
+% and metabolites that you are interested in, you can browse through the metabolic 
+% network.
+% 
+% Now, say you have gone through a series of metabolites and reactions (glc__D[e], 
+% GLCtex_copy1, glc__D[p], GLCptspp, g6p[c]): 
+% 
+% Click glc__D_[p]:
+
+% called by clicking 'glc__D_p'
+surfNet([], 'glc__D[p]', 0, 'none', 0, 1, [], 0)  
+%% 
+% Click GLCptspp:
+
+% called by clicking 'GLCptspp'
+surfNet([], 'GLCptspp', 0, 'none', 0, 1, [], 0)  
+%% 
+% Click g6p_c:
+
+% called by clicking 'g6p[c]'
+surfNet([], 'g6p[c]', 0, 'none', 0, 1, [], 0)  
+%% 
+% In each click, there is also a button '*Show previous steps...*' at the bottom. 
+% Clicking on it will show the metabolites and reactions that you have visited 
+% in order. This is equivalent to calling:
+
+% called by clicking 'Show previous steps...'
+surfNet([], [], 0, 'none', 0, 1, [], 0, struct('showPrev', true))  
+%% 
+% You can go back to any of the intermediate metabolites/reactions by clicking 
+% the hyperlinked |mets/rxns| shown.
+%% 
+% *Call options*
+% 
+% Shown below are various call options for including flux vectors and customizing 
+% display. All call options are preserved during the interactive browsing by mouse 
+% clicking.
+% 
+% *Show objective reactions*
+% 
+% Omit the '|metrxn|' (2nd) argument to print objective reactions:
+
+surfNet(iJO1366)
+%% 
+% *Call with a list of mets/rxns*
+% 
+% The 'metrxn' arguement can be a string of id for a metabolite or reaction. 
+% It can also be a cell array of ids, e.g.,
+
+surfNet(iJO1366, {'glc__D[p]'; 'GLCptspp'; 'g6p[c]'})
+%% 
+% *Show metabolite names in reaction formulae*
+% 
+% Some models may use generic ids for |mets/rxns|. In this case, call |surfNet()| 
+% with the '|metNameFlag|' (3rd) arguement turned on to show the names for metabolites 
+% (|.metNames|) in the reaction formulae, e.g.,
+
+surfNet(iJO1366, 'fgam[c]', 1)
+%% 
+% *Hide reaction detials*
+% 
+% Turn off the '|showMets|' (6th) arguement to suppress details for reactions, 
+% e.g.,
+
+surfNet(iJO1366, iJO1366.rxns(1001:1010), [], [], [], 0)
+%% 
+% *Look at one or more flux distributions*
+% 
+% First, get a flux distribution by optimizing the biomass production of the 
+% model (the standard flux balance analysis$$^1$). Then call surfNet with the 
+% flux distribution (4th argument) to look at how the flux through pyruvate is 
+% distributed:
+
+s = optimizeCbModel(iJO1366, 'max', 'one');
+surfNet(iJO1366, 'pyr[c]', [], s.x)
+%% 
+% All reactions involving pyruvate with non-zero fluxes are printed. The flux 
+% values are in the parentheses following the reaction ids. Note that reactions 
+% stated as consuming or producing the metabolite have taken the directions of 
+% the fluxes into account. Therefore, supplying a different flux distribution 
+% or not supplying may give different display. By default, only reactions with 
+% non-zero fluxes are printed if a flux distribution is supplied. Turn the '|nonzeroFluxFlag|' 
+% (5th) argument off to show all reactions:
+
+surfNet(iJO1366, 'pyr[c]', [], s.x, 0)
+%% 
+% You can also compare multiple flux distributions by supplying them in a matrix 
+% format, each column being a flux distribution. For example, get another flux 
+% distribution maximizing the biomass production using D-fructose instead of glucose 
+% as substrate. Then call surfNet to look at reactions with different fluxes.
+% 
+% Original uptake rates:
+
+printUptakeBound(iJO1366);
+%% 
+% Use fructose instead of glucose as substrate:
+
+iJO1366 = changeRxnBounds(iJO1366, {'EX_glc__D_e'; 'EX_fru_e'},...
+    [0; -10], {'L'; 'L'});
+printUptakeBound(iJO1366);
+%% 
+% Run FBA again to get a flux distribution using fructose as substrate. Then 
+% look at reactions with different fluxes in the glucose and fructose cases using 
+% |surfNet|.
+
+sFru = optimizeCbModel(iJO1366, 'max', 'one');  % FBA
+fluxMatrix = [s.x, sFru.x];  % put two flux vectors in a matrix
+% reactions with different fluxes
+rxnDiff = abs(fluxMatrix(:, 1) - fluxMatrix(:, 2)) > 1e-6;  
+surfNet(iJO1366, iJO1366.rxns(rxnDiff), [], fluxMatrix, [], 0)
+%% 
+% *Customize model data to be displayed*
+% 
+% Customize the fields for metabolites and reactions to be printed by supplying 
+% the '|field2print|' (7th) argument. It is defaulted to be:  
+% 
+% |{{'metNames','metFormulas'}, {'rxnNames','lb','ub'}}|
+% 
+% The first cell contains the metabolite-related fields to be printed and the 
+% second cell contains the reaction-related fields to be printed. It can also 
+% be inputted as a single cell array of strings, as long as from the size (equal 
+% to #|mets| or #|rxns)| or from the name of the field (starting with '|met|' 
+% or '|rxn|'), the fields are recognizable to be met- or rxn-related. For example, 
+% show the |grRules| for rxns but omit the bounds and show the constraint sense 
+% (|csense|) associated with each metabolite. Note the difference from the original 
+% call:
+
+surfNet(iJO1366, 'fdp[c]', [], [], [], [],...
+    {'metNames', 'metFormulas', 'rxnNames', 'grRules', 'csense'})
+surfNet(iJO1366, 'fdp[c]')
+%% 
+% The last argument (8th) 'nCharBreak' sets the number of characters printed 
+% per line. By default, it is equal to the width of the Matlab command window. 
+% Note the difference:
+% 
+% Characters per line = width of the command window (default):
+
+surfNet(iJO1366, [], [], [], [], 0)
+%% 
+% 40 characters per line:
+
+surfNet(iJO1366, [], [], [], [], 0, [], 40)
+%% 
+% 80 characters per line:
+
+surfNet(iJO1366, [], [], [], [], 0, [], 80)
+%% 
+% 
+%% REFERENCES
+% [1] Orth, J. D., Thiele I., and Palsson, B. Ø. What is flux balance analysis? 
+% _Nat. Biotechnol., 28_(3), 245–248 (2010).
+##### SOURCE END #####
+-->
+</div></body></html>

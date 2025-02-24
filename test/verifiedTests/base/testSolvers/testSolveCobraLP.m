@@ -101,10 +101,9 @@ end
 model = getDistributedModel('ecoli_core_model.mat');
 
 % set the tolerance
-tol = 1e-6;
+params.feasTol = getCobraSolverParams('LP','feasTol');
 
 % set pdco relative parameters
-params.feasTol = 1e-8;
 params.pdco_method = 21;
 params.pdco_maxiter = 400;
 params.pdco_xsize = 1;
@@ -169,8 +168,8 @@ end
 osenseStr = 'max';
 minNorm = 'zero';
 allowLoops = 1;
-zeroNormApprox = 'all';
-solution = optimizeCbModel(model, osenseStr,minNorm, allowLoops, zeroNormApprox);
+optimizeCbModel_param.zeroNormApprox = 'all';
+solution = optimizeCbModel(model, osenseStr,minNorm, allowLoops, optimizeCbModel_param);
 assert(solution.f0==1)
 %%
 % change the directory

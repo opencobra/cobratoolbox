@@ -101,7 +101,6 @@ Diet = {%'Exchange reactions'	'Total in mmol/(human*day)'
 'EX_tchola(e)'	'10'
 'EX_dgchol(e)'	'10'
 'EX_M01989(e)'	'10'
-'EX_M01989(e)'	'10'
 
     };
 Diet = regexprep(Diet,'EX_','Diet_EX_');

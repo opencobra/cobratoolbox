@@ -240,7 +240,7 @@ for i = 1:nCPLEXparams
 end
 
 % create an LP problem
-LPproblem = buildLPproblemFromModel(model);
+LPproblem = buildOptProblemFromModel(model);
 
 % define the stoichiometric matrix to be solved
 if matrixAS == 'A' 

@@ -78,6 +78,9 @@ function model = setupThermoModel(model, confidenceLevel)
 %                            transformed reaction Gibbs energies.
 %                          * .DrGtMax - `n x 1` array of estimated upper bounds on
 %                            transformed reaction Gibbs energies.
+%                          * .DfG0_Uncertainty - `m x 1` array of uncertainty in estimated standard
+%                            Gibbs energies of formation. Will be large for
+%                            metabolites that are not covered by component contributions.
 %
 % Written output - MetStructures.sdf - An SDF containing all structures input to the
 % component contribution method for estimation of standard Gibbs energies.

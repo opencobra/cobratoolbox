@@ -1,0 +1,122 @@
+<!DOCTYPE HTML>
+
+<html>
+<head>
+<title>Panel Documentation</title>
+<link rel="stylesheet" type="text/css" href="panel.css" />
+</head>
+
+<body>
+
+
+
+
+<div id="main">
+
+<a href="index.png"><img src='index_thumb.png' style='float:right; margin:16px'></a>
+
+
+<div>
+<u><a href="index.html">Overview</a></u> | <a href="layout.html">Layout</a> | <a href="export.html">Export</a> | <a href="faq.html">FAQ</a>
+</div>
+
+
+<h1>Panel 2</h1>
+
+
+
+<h2>Overview</h2>
+
+<p>At its simplest, <b>Panel</b> is a Matlab utility that simplifies the layout of multi-axis figures, for which you might otherwise use <tt>subplot()</tt>. An example layout is shown in the illustration (click to enlarge).</p>
+
+<!--
+<div class=snippet>
+p = panel();
+p.pack('h', {1/3 []})
+p(1).pack({2/3 []});
+p(1,1).pack(3, 2);
+p(2).pack(6, 2);
+p.de.margin = 2;
+p(1,1).marginbottom = 12;
+p(2).marginleft = 20;
+p.margin = [13 10 2 2];
+p.fontsize = 8;
+</div>
+-->
+
+<h2>Resources</h2>
+
+<ul>
+<li>These HTML pages provide a brief introduction to <b>Panel</b>. This page gives an overview of features, <a href="layout.html">Layout</a> covers how panel governs layout within a figure, and <a href="export.html">Export</a> briefly describes the additional concerns when exporting to image files. And, of course, there's the <a href="faq.html">FAQ</a>.</li>
+<li>The more complete User Guide for Panel comprises a collection of demo scripts; use <tt>help panel/demo</tt> at the prompt to see a list of the demos, and then use <tt>edit demopanel1</tt> to get started looking at the code.</li>
+<li>Detailed reference information is available through Matlab's documentation system (<tt>doc panel</tt>) or at the prompt (<tt>help panel</tt>, <tt>help panel/panel</tt>).</li>
+</ul>
+
+<p>If you are new to Panel, start with <tt>demopanel1</tt>, and work your way through until you grow bored. If you want to know how to do something in particular, try <tt>help panel/demo</tt> and look through the headings.</p>
+
+
+
+<h2>Features</h2>
+
+<ul>
+
+<li>Simple control over layout, for rapid development of complex nested layouts - see example top right, thirty seconds work (see demopanel1).</li>
+<li>Easy rearrangement of layout, as opposed to sometimes tricksy <tt>subplot</tt> renumbering operation.</li>
+<li>Figure-wide control of rendering (font size, face, etc.).</li>
+<li>Work in physical units (millimetres, inches, etc.) or relative sizes, where appropriate.</li>
+<li>An important feature is WYSIWYG rendering to image files. Coupled with the easy control over layout, this facilitates the generation of camera-ready artwork direct from Matlab.</li>
+<li>Labelling/Titling of subplot groups, rather than individual subplots.</li>
+<li>Interaction with other graphics objects (e.g. uipanels), not just axes.</li>
+
+</ul>
+
+
+
+<h2>Changes since Panel 1</h2>
+
+Upgrading users of Panel 1 will notice the following changes.
+
+<ul>
+<li>Moved to a <tt>classdef</tt> single-file implementation. The modern world, eh...</li>
+<li>Neater, but different, interface, mainly as a result of the above change.</li>
+<li>In Panel 1 you told Panel how to achieve the layout you want (rootmargin, axismargin, parentmargin). In Panel 2, you tell Panel what to aim for (one margin setting only, per panel) and it figures out for itself how to do it.</li>
+<li>Support for being a child and parent of other graphics objects (rather than just Figures and Axes).</li>
+<li>Miscellaneous feature additions (support for resize callbacks, layout reveal information, axis group labelling/titling, and some slight improvements to the export facility).</li>
+<li>Integrated various suggestions from Matlab Central users.</li>
+<li>One feature has not been integrated into Panel 2 - that's engineering scales. This will probably not be implemented since it's not about layout; alternative solutions can be found on Matlab Central.</li>
+</ul>
+
+
+<h2>Changes since Panel 2.9</h2>
+
+Upgrading users of Panel 2.9 (to 2.10) will notice the following changes.
+
+<ul>
+<li>Support is added for panels of fixed physical size (i.e. millimeters or inches). This required a change to the interface at <tt>panel.pack()</tt>. The legacy interface is still supported, but the documentation has been changed to promote the new interface to new users. Using the new interface is recommended in new code, but there are no plans to withdraw the legacy interface in a future update.</li>
+</ul>
+
+
+
+<h2>Gotchas</h2>
+
+<ul>
+<li>Matlab's <tt>hold off</tt> operation messes up panel's control over font properties. If you have to use <tt>hold off</tt>, see <tt>help panel/hold</tt> to see the options for working around this.</li>
+<!--<li>Panel solves a Linear Programming (LP) problem to maximise use of space. If you have the Mathworks Optimisation Toolbox installed, <tt>linprog()</tt> is used, which is very fast. If you do not, Panel uses its own internal solver, which is not optimised for large problems and so it can be noticeably slow for complex layouts. If you are having trouble with this, let me know and I will prioritise incorporating an optimised solver.</li>-->
+</ul>
+
+
+
+<h2>Acknowledgements</h2>
+
+<p>Several Matlab Central users have made helpful suggestions which have led to Panel being improved. These are Arthur Ward, Niko, LP Pakula, Ian, Daniel, Mukhtar Ullah, Brendan Sullivan, Ann Hickox, and Elliot. Export to SVG (Scalable Vector Graphics) requires <tt>plot2svg()</tt> by Juerg Schwizer (this does not ship with Panel, but is free to download <a href="http://www.mathworks.com/matlabcentral/fileexchange/7401-scalable-vector-graphics-svg-export-of-figures">here</a>).</p>
+
+<!-- REMOVED in 2.10. The incorporated LP solver is due to Jeff Stuart, formerly of USM. -->
+
+
+
+</div>
+
+
+
+</body>
+</html>

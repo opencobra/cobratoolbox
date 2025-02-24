@@ -283,7 +283,7 @@
                   <rdf:li rdf:resource="http://identifiers.org/bigg.metabolite/accoa"/>
                   <rdf:li rdf:resource="http://identifiers.org/biocyc/META:ACETYL-COA"/>
                   <rdf:li rdf:resource="http://identifiers.org/lipidmaps/LMFA07050029"/>
-                  <rdf:li rdf:resource="http://identifiers.org/lipidmaps/ LMFA07050281"/>
+                  <rdf:li rdf:resource="http://identifiers.org/lipidmaps/LMFA07050281"/>
                   <rdf:li rdf:resource="http://identifiers.org/seed.compound/cpd00022"/>
                   <rdf:li rdf:resource="http://identifiers.org/chebi/CHEBI:13712"/>
                   <rdf:li rdf:resource="http://identifiers.org/chebi/CHEBI:15351"/>
@@ -352,7 +352,7 @@
                 <rdf:Bag>
                   <rdf:li rdf:resource="http://identifiers.org/bigg.metabolite/adp"/>
                   <rdf:li rdf:resource="http://identifiers.org/biocyc/META:ADP"/>
-                  <rdf:li rdf:resource="http://identifiers.org/biocyc/ META:CPD0-1651"/>
+                  <rdf:li rdf:resource="http://identifiers.org/biocyc/META:CPD0-1651"/>
                   <rdf:li rdf:resource="http://identifiers.org/kegg.glycan/G11113"/>
                   <rdf:li rdf:resource="http://identifiers.org/seed.compound/cpd00008"/>
                   <rdf:li rdf:resource="http://identifiers.org/chebi/CHEBI:13222"/>
@@ -379,7 +379,7 @@
                 <rdf:Bag>
                   <rdf:li rdf:resource="http://identifiers.org/bigg.metabolite/atp"/>
                   <rdf:li rdf:resource="http://identifiers.org/biocyc/META:ATP"/>
-                  <rdf:li rdf:resource="http://identifiers.org/biocyc/ META:CPD0-1634"/>
+                  <rdf:li rdf:resource="http://identifiers.org/biocyc/META:CPD0-1634"/>
                   <rdf:li rdf:resource="http://identifiers.org/kegg.drug/D08646"/>
                   <rdf:li rdf:resource="http://identifiers.org/seed.compound/cpd00002"/>
                   <rdf:li rdf:resource="http://identifiers.org/chebi/CHEBI:10789"/>
@@ -408,9 +408,9 @@
                 <rdf:Bag>
                   <rdf:li rdf:resource="http://identifiers.org/bigg.metabolite/coa"/>
                   <rdf:li rdf:resource="http://identifiers.org/biocyc/META:CO-A"/>
-                  <rdf:li rdf:resource="http://identifiers.org/biocyc/ META:COA-GROUP"/>
+                  <rdf:li rdf:resource="http://identifiers.org/biocyc/META:COA-GROUP"/>
                   <rdf:li rdf:resource="http://identifiers.org/seed.compound/cpd00010"/>
-                  <rdf:li rdf:resource="http://identifiers.org/seed.compound/ cpd22528"/>
+                  <rdf:li rdf:resource="http://identifiers.org/seed.compound/cpd22528"/>
                   <rdf:li rdf:resource="http://identifiers.org/chebi/CHEBI:13294"/>
                   <rdf:li rdf:resource="http://identifiers.org/chebi/CHEBI:13295"/>
                   <rdf:li rdf:resource="http://identifiers.org/chebi/CHEBI:13298"/>
@@ -578,14 +578,14 @@
                 <rdf:Bag>
                   <rdf:li rdf:resource="http://identifiers.org/bigg.metabolite/for"/>
                   <rdf:li rdf:resource="http://identifiers.org/biocyc/META:CARBOXYL-GROUP"/>
-                  <rdf:li rdf:resource="http://identifiers.org/biocyc/ META:CPD-9845"/>
-                  <rdf:li rdf:resource="http://identifiers.org/biocyc/ META:CPD1G-1532"/>
-                  <rdf:li rdf:resource="http://identifiers.org/biocyc/ META:CPD1G-1533"/>
-                  <rdf:li rdf:resource="http://identifiers.org/biocyc/ META:CPD1G-1534"/>
-                  <rdf:li rdf:resource="http://identifiers.org/biocyc/ META:CPD1G-1535"/>
-                  <rdf:li rdf:resource="http://identifiers.org/biocyc/ META:FORMATE"/>
+                  <rdf:li rdf:resource="http://identifiers.org/biocyc/META:CPD-9845"/>
+                  <rdf:li rdf:resource="http://identifiers.org/biocyc/META:CPD1G-1532"/>
+                  <rdf:li rdf:resource="http://identifiers.org/biocyc/META:CPD1G-1533"/>
+                  <rdf:li rdf:resource="http://identifiers.org/biocyc/META:CPD1G-1534"/>
+                  <rdf:li rdf:resource="http://identifiers.org/biocyc/META:CPD1G-1535"/>
+                  <rdf:li rdf:resource="http://identifiers.org/biocyc/META:FORMATE"/>
                   <rdf:li rdf:resource="http://identifiers.org/seed.compound/cpd00047"/>
-                  <rdf:li rdf:resource="http://identifiers.org/seed.compound/ cpd22511"/>
+                  <rdf:li rdf:resource="http://identifiers.org/seed.compound/cpd22511"/>
                   <rdf:li rdf:resource="http://identifiers.org/chebi/CHEBI:14276"/>
                   <rdf:li rdf:resource="http://identifiers.org/chebi/CHEBI:15740"/>
                   <rdf:li rdf:resource="http://identifiers.org/chebi/CHEBI:24081"/>
@@ -610,14 +610,14 @@
                 <rdf:Bag>
                   <rdf:li rdf:resource="http://identifiers.org/bigg.metabolite/for"/>
                   <rdf:li rdf:resource="http://identifiers.org/biocyc/META:CARBOXYL-GROUP"/>
-                  <rdf:li rdf:resource="http://identifiers.org/biocyc/ META:CPD-9845"/>
-                  <rdf:li rdf:resource="http://identifiers.org/biocyc/ META:CPD1G-1532"/>
-                  <rdf:li rdf:resource="http://identifiers.org/biocyc/ META:CPD1G-1533"/>
-                  <rdf:li rdf:resource="http://identifiers.org/biocyc/ META:CPD1G-1534"/>
-                  <rdf:li rdf:resource="http://identifiers.org/biocyc/ META:CPD1G-1535"/>
-                  <rdf:li rdf:resource="http://identifiers.org/biocyc/ META:FORMATE"/>
+                  <rdf:li rdf:resource="http://identifiers.org/biocyc/META:CPD-9845"/>
+                  <rdf:li rdf:resource="http://identifiers.org/biocyc/META:CPD1G-1532"/>
+                  <rdf:li rdf:resource="http://identifiers.org/biocyc/META:CPD1G-1533"/>
+                  <rdf:li rdf:resource="http://identifiers.org/biocyc/META:CPD1G-1534"/>
+                  <rdf:li rdf:resource="http://identifiers.org/biocyc/META:CPD1G-1535"/>
+                  <rdf:li rdf:resource="http://identifiers.org/biocyc/META:FORMATE"/>
                   <rdf:li rdf:resource="http://identifiers.org/seed.compound/cpd00047"/>
-                  <rdf:li rdf:resource="http://identifiers.org/seed.compound/ cpd22511"/>
+                  <rdf:li rdf:resource="http://identifiers.org/seed.compound/cpd22511"/>
                   <rdf:li rdf:resource="http://identifiers.org/chebi/CHEBI:14276"/>
                   <rdf:li rdf:resource="http://identifiers.org/chebi/CHEBI:15740"/>
                   <rdf:li rdf:resource="http://identifiers.org/chebi/CHEBI:24081"/>
@@ -642,14 +642,14 @@
                 <rdf:Bag>
                   <rdf:li rdf:resource="http://identifiers.org/bigg.metabolite/for"/>
                   <rdf:li rdf:resource="http://identifiers.org/biocyc/META:CARBOXYL-GROUP"/>
-                  <rdf:li rdf:resource="http://identifiers.org/biocyc/ META:CPD-9845"/>
-                  <rdf:li rdf:resource="http://identifiers.org/biocyc/ META:CPD1G-1532"/>
-                  <rdf:li rdf:resource="http://identifiers.org/biocyc/ META:CPD1G-1533"/>
-                  <rdf:li rdf:resource="http://identifiers.org/biocyc/ META:CPD1G-1534"/>
-                  <rdf:li rdf:resource="http://identifiers.org/biocyc/ META:CPD1G-1535"/>
-                  <rdf:li rdf:resource="http://identifiers.org/biocyc/ META:FORMATE"/>
+                  <rdf:li rdf:resource="http://identifiers.org/biocyc/META:CPD-9845"/>
+                  <rdf:li rdf:resource="http://identifiers.org/biocyc/META:CPD1G-1532"/>
+                  <rdf:li rdf:resource="http://identifiers.org/biocyc/META:CPD1G-1533"/>
+                  <rdf:li rdf:resource="http://identifiers.org/biocyc/META:CPD1G-1534"/>
+                  <rdf:li rdf:resource="http://identifiers.org/biocyc/META:CPD1G-1535"/>
+                  <rdf:li rdf:resource="http://identifiers.org/biocyc/META:FORMATE"/>
                   <rdf:li rdf:resource="http://identifiers.org/seed.compound/cpd00047"/>
-                  <rdf:li rdf:resource="http://identifiers.org/seed.compound/ cpd22511"/>
+                  <rdf:li rdf:resource="http://identifiers.org/seed.compound/cpd22511"/>
                   <rdf:li rdf:resource="http://identifiers.org/chebi/CHEBI:14276"/>
                   <rdf:li rdf:resource="http://identifiers.org/chebi/CHEBI:15740"/>
                   <rdf:li rdf:resource="http://identifiers.org/chebi/CHEBI:24081"/>
@@ -674,13 +674,13 @@
                 <rdf:Bag>
                   <rdf:li rdf:resource="http://identifiers.org/bigg.metabolite/fru"/>
                   <rdf:li rdf:resource="http://identifiers.org/biocyc/META:CPD-15382"/>
-                  <rdf:li rdf:resource="http://identifiers.org/biocyc/ META:D-Fructopyranose"/>
-                  <rdf:li rdf:resource="http://identifiers.org/biocyc/ META:FRU"/>
-                  <rdf:li rdf:resource="http://identifiers.org/biocyc/ META:Fructofuranose"/>
+                  <rdf:li rdf:resource="http://identifiers.org/biocyc/META:D-Fructopyranose"/>
+                  <rdf:li rdf:resource="http://identifiers.org/biocyc/META:FRU"/>
+                  <rdf:li rdf:resource="http://identifiers.org/biocyc/META:Fructofuranose"/>
                   <rdf:li rdf:resource="http://identifiers.org/kegg.drug/D00114"/>
                   <rdf:li rdf:resource="http://identifiers.org/seed.compound/cpd00082"/>
-                  <rdf:li rdf:resource="http://identifiers.org/seed.compound/ cpd19015"/>
-                  <rdf:li rdf:resource="http://identifiers.org/seed.compound/ cpd27040"/>
+                  <rdf:li rdf:resource="http://identifiers.org/seed.compound/cpd19015"/>
+                  <rdf:li rdf:resource="http://identifiers.org/seed.compound/cpd27040"/>
                   <rdf:li rdf:resource="http://identifiers.org/chebi/CHEBI:12923"/>
                   <rdf:li rdf:resource="http://identifiers.org/chebi/CHEBI:15824"/>
                   <rdf:li rdf:resource="http://identifiers.org/chebi/CHEBI:20929"/>
@@ -715,7 +715,7 @@
                   <rdf:li rdf:resource="http://identifiers.org/bigg.metabolite/g3p"/>
                   <rdf:li rdf:resource="http://identifiers.org/biocyc/META:GAP"/>
                   <rdf:li rdf:resource="http://identifiers.org/seed.compound/cpd00102"/>
-                  <rdf:li rdf:resource="http://identifiers.org/seed.compound/ cpd19005"/>
+                  <rdf:li rdf:resource="http://identifiers.org/seed.compound/cpd19005"/>
                   <rdf:li rdf:resource="http://identifiers.org/chebi/CHEBI:12983"/>
                   <rdf:li rdf:resource="http://identifiers.org/chebi/CHEBI:12984"/>
                   <rdf:li rdf:resource="http://identifiers.org/chebi/CHEBI:14333"/>
@@ -747,7 +747,7 @@
                   <rdf:li rdf:resource="http://identifiers.org/biocyc/META:Glucopyranose"/>
                   <rdf:li rdf:resource="http://identifiers.org/kegg.drug/D00009"/>
                   <rdf:li rdf:resource="http://identifiers.org/seed.compound/cpd00027"/>
-                  <rdf:li rdf:resource="http://identifiers.org/seed.compound/ cpd26821"/>
+                  <rdf:li rdf:resource="http://identifiers.org/seed.compound/cpd26821"/>
                   <rdf:li rdf:resource="http://identifiers.org/chebi/CHEBI:12965"/>
                   <rdf:li rdf:resource="http://identifiers.org/chebi/CHEBI:17634"/>
                   <rdf:li rdf:resource="http://identifiers.org/chebi/CHEBI:20999"/>
@@ -772,7 +772,7 @@
                   <rdf:li rdf:resource="http://identifiers.org/biocyc/META:Glucopyranose"/>
                   <rdf:li rdf:resource="http://identifiers.org/kegg.drug/D00009"/>
                   <rdf:li rdf:resource="http://identifiers.org/seed.compound/cpd00027"/>
-                  <rdf:li rdf:resource="http://identifiers.org/seed.compound/ cpd26821"/>
+                  <rdf:li rdf:resource="http://identifiers.org/seed.compound/cpd26821"/>
                   <rdf:li rdf:resource="http://identifiers.org/chebi/CHEBI:12965"/>
                   <rdf:li rdf:resource="http://identifiers.org/chebi/CHEBI:17634"/>
                   <rdf:li rdf:resource="http://identifiers.org/chebi/CHEBI:20999"/>
@@ -797,7 +797,7 @@
                   <rdf:li rdf:resource="http://identifiers.org/biocyc/META:Glucopyranose"/>
                   <rdf:li rdf:resource="http://identifiers.org/kegg.drug/D00009"/>
                   <rdf:li rdf:resource="http://identifiers.org/seed.compound/cpd00027"/>
-                  <rdf:li rdf:resource="http://identifiers.org/seed.compound/ cpd26821"/>
+                  <rdf:li rdf:resource="http://identifiers.org/seed.compound/cpd26821"/>
                   <rdf:li rdf:resource="http://identifiers.org/chebi/CHEBI:12965"/>
                   <rdf:li rdf:resource="http://identifiers.org/chebi/CHEBI:17634"/>
                   <rdf:li rdf:resource="http://identifiers.org/chebi/CHEBI:20999"/>
@@ -820,16 +820,16 @@
                 <rdf:Bag>
                   <rdf:li rdf:resource="http://identifiers.org/bigg.metabolite/h2o"/>
                   <rdf:li rdf:resource="http://identifiers.org/biocyc/META:CPD-15815"/>
-                  <rdf:li rdf:resource="http://identifiers.org/biocyc/ META:HYDROXYL-GROUP"/>
-                  <rdf:li rdf:resource="http://identifiers.org/biocyc/ META:OH"/>
-                  <rdf:li rdf:resource="http://identifiers.org/biocyc/ META:OXONIUM"/>
-                  <rdf:li rdf:resource="http://identifiers.org/biocyc/ META:WATER"/>
+                  <rdf:li rdf:resource="http://identifiers.org/biocyc/META:HYDROXYL-GROUP"/>
+                  <rdf:li rdf:resource="http://identifiers.org/biocyc/META:OH"/>
+                  <rdf:li rdf:resource="http://identifiers.org/biocyc/META:OXONIUM"/>
+                  <rdf:li rdf:resource="http://identifiers.org/biocyc/META:WATER"/>
                   <rdf:li rdf:resource="http://identifiers.org/kegg.drug/D00001"/>
-                  <rdf:li rdf:resource="http://identifiers.org/kegg.drug/ D03703"/>
-                  <rdf:li rdf:resource="http://identifiers.org/kegg.drug/ D06322"/>
+                  <rdf:li rdf:resource="http://identifiers.org/kegg.drug/D03703"/>
+                  <rdf:li rdf:resource="http://identifiers.org/kegg.drug/D06322"/>
                   <rdf:li rdf:resource="http://identifiers.org/seed.compound/cpd00001"/>
-                  <rdf:li rdf:resource="http://identifiers.org/seed.compound/ cpd15275"/>
-                  <rdf:li rdf:resource="http://identifiers.org/seed.compound/ cpd27222"/>
+                  <rdf:li rdf:resource="http://identifiers.org/seed.compound/cpd15275"/>
+                  <rdf:li rdf:resource="http://identifiers.org/seed.compound/cpd27222"/>
                   <rdf:li rdf:resource="http://identifiers.org/chebi/CHEBI:10743"/>
                   <rdf:li rdf:resource="http://identifiers.org/chebi/CHEBI:13352"/>
                   <rdf:li rdf:resource="http://identifiers.org/chebi/CHEBI:13365"/>
@@ -951,9 +951,9 @@
                 <rdf:Bag>
                   <rdf:li rdf:resource="http://identifiers.org/bigg.metabolite/mthgxl"/>
                   <rdf:li rdf:resource="http://identifiers.org/biocyc/META:CPD-10807"/>
-                  <rdf:li rdf:resource="http://identifiers.org/biocyc/ META:METHYL-GLYOXAL"/>
+                  <rdf:li rdf:resource="http://identifiers.org/biocyc/META:METHYL-GLYOXAL"/>
                   <rdf:li rdf:resource="http://identifiers.org/seed.compound/cpd00428"/>
-                  <rdf:li rdf:resource="http://identifiers.org/seed.compound/ cpd22830"/>
+                  <rdf:li rdf:resource="http://identifiers.org/seed.compound/cpd22830"/>
                   <rdf:li rdf:resource="http://identifiers.org/chebi/CHEBI:11643"/>
                   <rdf:li rdf:resource="http://identifiers.org/chebi/CHEBI:14599"/>
                   <rdf:li rdf:resource="http://identifiers.org/chebi/CHEBI:17158"/>
@@ -1109,12 +1109,12 @@
                 <rdf:Bag>
                   <rdf:li rdf:resource="http://identifiers.org/bigg.metabolite/pi"/>
                   <rdf:li rdf:resource="http://identifiers.org/biocyc/META:CPD-16459"/>
-                  <rdf:li rdf:resource="http://identifiers.org/biocyc/ META:CPD-9010"/>
-                  <rdf:li rdf:resource="http://identifiers.org/biocyc/ META:PHOSPHATE-GROUP"/>
-                  <rdf:li rdf:resource="http://identifiers.org/biocyc/ META:Pi"/>
+                  <rdf:li rdf:resource="http://identifiers.org/biocyc/META:CPD-9010"/>
+                  <rdf:li rdf:resource="http://identifiers.org/biocyc/META:PHOSPHATE-GROUP"/>
+                  <rdf:li rdf:resource="http://identifiers.org/biocyc/META:Pi"/>
                   <rdf:li rdf:resource="http://identifiers.org/kegg.drug/D05467"/>
                   <rdf:li rdf:resource="http://identifiers.org/seed.compound/cpd00009"/>
-                  <rdf:li rdf:resource="http://identifiers.org/seed.compound/ cpd27787"/>
+                  <rdf:li rdf:resource="http://identifiers.org/seed.compound/cpd27787"/>
                   <rdf:li rdf:resource="http://identifiers.org/chebi/CHEBI:14791"/>
                   <rdf:li rdf:resource="http://identifiers.org/chebi/CHEBI:18367"/>
                   <rdf:li rdf:resource="http://identifiers.org/chebi/CHEBI:26078"/>
@@ -1227,9 +1227,9 @@
       </species>
     </listOfSpecies>
     <listOfParameters>
-      <parameter id="FB1N0" value="0" constant="true"/>
-      <parameter id="FB2N8" value="8" constant="true"/>
-      <parameter id="FB3N999999" value="999999" constant="true"/>
+      <parameter sboTerm="SBO:0000626" id="FB1N0" value="0" constant="true"/>
+      <parameter sboTerm="SBO:0000625" id="FB2N8" value="8" constant="true"/>
+      <parameter sboTerm="SBO:0000625" id="FB3N999999" value="999999" constant="true"/>
     </listOfParameters>
     <listOfReactions>
       <reaction metaid="R_ALR2" sboTerm="SBO:0000375" id="R_ALR2" name="Aldose reductase (methylglyoxal)" reversible="false" fast="false" fbc:lowerFluxBound="FB1N0" fbc:upperFluxBound="FB3N999999">
@@ -1241,9 +1241,9 @@
                   <rdf:li rdf:resource="http://identifiers.org/bigg.reaction/ALR2"/>
                   <rdf:li rdf:resource="http://identifiers.org/biocyc/META:RXN0-4281"/>
                   <rdf:li rdf:resource="http://identifiers.org/rhea/27986"/>
-                  <rdf:li rdf:resource="http://identifiers.org/rhea/ 27987"/>
-                  <rdf:li rdf:resource="http://identifiers.org/rhea/ 27988"/>
-                  <rdf:li rdf:resource="http://identifiers.org/rhea/ 27989"/>
+                  <rdf:li rdf:resource="http://identifiers.org/rhea/27987"/>
+                  <rdf:li rdf:resource="http://identifiers.org/rhea/27988"/>
+                  <rdf:li rdf:resource="http://identifiers.org/rhea/27989"/>
                   <rdf:li rdf:resource="http://identifiers.org/ec-code/1.1.1.-"/>
                   <rdf:li rdf:resource="http://identifiers.org/kegg.reaction/R02528"/>
                   <rdf:li rdf:resource="http://identifiers.org/metanetx.reaction/MNXR95788"/>
@@ -1315,9 +1315,9 @@
                   <rdf:li rdf:resource="http://identifiers.org/bigg.reaction/ENO"/>
                   <rdf:li rdf:resource="http://identifiers.org/biocyc/META:2PGADEHYDRAT-RXN"/>
                   <rdf:li rdf:resource="http://identifiers.org/rhea/10164"/>
-                  <rdf:li rdf:resource="http://identifiers.org/rhea/ 10165"/>
-                  <rdf:li rdf:resource="http://identifiers.org/rhea/ 10166"/>
-                  <rdf:li rdf:resource="http://identifiers.org/rhea/ 10167"/>
+                  <rdf:li rdf:resource="http://identifiers.org/rhea/10165"/>
+                  <rdf:li rdf:resource="http://identifiers.org/rhea/10166"/>
+                  <rdf:li rdf:resource="http://identifiers.org/rhea/10167"/>
                   <rdf:li rdf:resource="http://identifiers.org/ec-code/4.2.1.11"/>
                   <rdf:li rdf:resource="http://identifiers.org/kegg.reaction/R00658"/>
                   <rdf:li rdf:resource="http://identifiers.org/metanetx.reaction/MNXR97932"/>
@@ -1477,9 +1477,9 @@
                   <rdf:li rdf:resource="http://identifiers.org/bigg.reaction/F6PA"/>
                   <rdf:li rdf:resource="http://identifiers.org/biocyc/META:RXN0-313"/>
                   <rdf:li rdf:resource="http://identifiers.org/rhea/28002"/>
-                  <rdf:li rdf:resource="http://identifiers.org/rhea/ 28003"/>
-                  <rdf:li rdf:resource="http://identifiers.org/rhea/ 28004"/>
-                  <rdf:li rdf:resource="http://identifiers.org/rhea/ 28005"/>
+                  <rdf:li rdf:resource="http://identifiers.org/rhea/28003"/>
+                  <rdf:li rdf:resource="http://identifiers.org/rhea/28004"/>
+                  <rdf:li rdf:resource="http://identifiers.org/rhea/28005"/>
                   <rdf:li rdf:resource="http://identifiers.org/ec-code/4.1.2.-"/>
                   <rdf:li rdf:resource="http://identifiers.org/metanetx.reaction/MNXR99075"/>
                 </rdf:Bag>
@@ -1514,9 +1514,9 @@
                 <rdf:Bag>
                   <rdf:li rdf:resource="http://identifiers.org/bigg.reaction/FBA"/>
                   <rdf:li rdf:resource="http://identifiers.org/rhea/14729"/>
-                  <rdf:li rdf:resource="http://identifiers.org/rhea/ 14730"/>
-                  <rdf:li rdf:resource="http://identifiers.org/rhea/ 14731"/>
-                  <rdf:li rdf:resource="http://identifiers.org/rhea/ 14732"/>
+                  <rdf:li rdf:resource="http://identifiers.org/rhea/14730"/>
+                  <rdf:li rdf:resource="http://identifiers.org/rhea/14731"/>
+                  <rdf:li rdf:resource="http://identifiers.org/rhea/14732"/>
                   <rdf:li rdf:resource="http://identifiers.org/ec-code/4.1.2.13"/>
                   <rdf:li rdf:resource="http://identifiers.org/kegg.reaction/R01068"/>
                   <rdf:li rdf:resource="http://identifiers.org/metanetx.reaction/MNXR99459"/>
@@ -1554,9 +1554,9 @@
                   <rdf:li rdf:resource="http://identifiers.org/bigg.reaction/FORtppi"/>
                   <rdf:li rdf:resource="http://identifiers.org/biocyc/META:TRANS-RXN-1"/>
                   <rdf:li rdf:resource="http://identifiers.org/rhea/29679"/>
-                  <rdf:li rdf:resource="http://identifiers.org/rhea/ 29680"/>
-                  <rdf:li rdf:resource="http://identifiers.org/rhea/ 29681"/>
-                  <rdf:li rdf:resource="http://identifiers.org/rhea/ 29682"/>
+                  <rdf:li rdf:resource="http://identifiers.org/rhea/29680"/>
+                  <rdf:li rdf:resource="http://identifiers.org/rhea/29681"/>
+                  <rdf:li rdf:resource="http://identifiers.org/rhea/29682"/>
                   <rdf:li rdf:resource="http://identifiers.org/metanetx.reaction/MNXR99620"/>
                 </rdf:Bag>
               </bqbiol:is>
@@ -1590,9 +1590,9 @@
                   <rdf:li rdf:resource="http://identifiers.org/bigg.reaction/GAPD"/>
                   <rdf:li rdf:resource="http://identifiers.org/biocyc/META:GAPOXNPHOSPHN-RXN"/>
                   <rdf:li rdf:resource="http://identifiers.org/rhea/10300"/>
-                  <rdf:li rdf:resource="http://identifiers.org/rhea/ 10301"/>
-                  <rdf:li rdf:resource="http://identifiers.org/rhea/ 10302"/>
-                  <rdf:li rdf:resource="http://identifiers.org/rhea/ 10303"/>
+                  <rdf:li rdf:resource="http://identifiers.org/rhea/10301"/>
+                  <rdf:li rdf:resource="http://identifiers.org/rhea/10302"/>
+                  <rdf:li rdf:resource="http://identifiers.org/rhea/10303"/>
                   <rdf:li rdf:resource="http://identifiers.org/ec-code/1.2.1.12"/>
                   <rdf:li rdf:resource="http://identifiers.org/ec-code/1.2.1.59"/>
                   <rdf:li rdf:resource="http://identifiers.org/kegg.reaction/R01061"/>
@@ -1762,9 +1762,9 @@
                   <rdf:li rdf:resource="http://identifiers.org/bigg.reaction/MGSA"/>
                   <rdf:li rdf:resource="http://identifiers.org/biocyc/META:METHGLYSYN-RXN"/>
                   <rdf:li rdf:resource="http://identifiers.org/rhea/17937"/>
-                  <rdf:li rdf:resource="http://identifiers.org/rhea/ 17938"/>
-                  <rdf:li rdf:resource="http://identifiers.org/rhea/ 17939"/>
-                  <rdf:li rdf:resource="http://identifiers.org/rhea/ 17940"/>
+                  <rdf:li rdf:resource="http://identifiers.org/rhea/17938"/>
+                  <rdf:li rdf:resource="http://identifiers.org/rhea/17939"/>
+                  <rdf:li rdf:resource="http://identifiers.org/rhea/17940"/>
                   <rdf:li rdf:resource="http://identifiers.org/ec-code/4.2.3.3"/>
                   <rdf:li rdf:resource="http://identifiers.org/kegg.reaction/R01016"/>
                   <rdf:li rdf:resource="http://identifiers.org/metanetx.reaction/MNXR101551"/>
@@ -1797,9 +1797,9 @@
                 <rdf:Bag>
                   <rdf:li rdf:resource="http://identifiers.org/bigg.reaction/PFK"/>
                   <rdf:li rdf:resource="http://identifiers.org/rhea/16109"/>
-                  <rdf:li rdf:resource="http://identifiers.org/rhea/ 16110"/>
-                  <rdf:li rdf:resource="http://identifiers.org/rhea/ 16111"/>
-                  <rdf:li rdf:resource="http://identifiers.org/rhea/ 16112"/>
+                  <rdf:li rdf:resource="http://identifiers.org/rhea/16110"/>
+                  <rdf:li rdf:resource="http://identifiers.org/rhea/16111"/>
+                  <rdf:li rdf:resource="http://identifiers.org/rhea/16112"/>
                   <rdf:li rdf:resource="http://identifiers.org/ec-code/2.7.1.11"/>
                   <rdf:li rdf:resource="http://identifiers.org/metanetx.reaction/MNXR102507"/>
                 </rdf:Bag>
@@ -1837,9 +1837,9 @@
                   <rdf:li rdf:resource="http://identifiers.org/bigg.reaction/PFL"/>
                   <rdf:li rdf:resource="http://identifiers.org/biocyc/META:PYRUVFORMLY-RXN"/>
                   <rdf:li rdf:resource="http://identifiers.org/rhea/11844"/>
-                  <rdf:li rdf:resource="http://identifiers.org/rhea/ 11845"/>
-                  <rdf:li rdf:resource="http://identifiers.org/rhea/ 11846"/>
-                  <rdf:li rdf:resource="http://identifiers.org/rhea/ 11847"/>
+                  <rdf:li rdf:resource="http://identifiers.org/rhea/11845"/>
+                  <rdf:li rdf:resource="http://identifiers.org/rhea/11846"/>
+                  <rdf:li rdf:resource="http://identifiers.org/rhea/11847"/>
                   <rdf:li rdf:resource="http://identifiers.org/ec-code/2.3.1.54"/>
                   <rdf:li rdf:resource="http://identifiers.org/kegg.reaction/R00212"/>
                   <rdf:li rdf:resource="http://identifiers.org/metanetx.reaction/MNXR102514"/>
@@ -1892,9 +1892,9 @@
                   <rdf:li rdf:resource="http://identifiers.org/bigg.reaction/PTAr"/>
                   <rdf:li rdf:resource="http://identifiers.org/biocyc/META:PHOSACETYLTRANS-RXN"/>
                   <rdf:li rdf:resource="http://identifiers.org/rhea/19521"/>
-                  <rdf:li rdf:resource="http://identifiers.org/rhea/ 19522"/>
-                  <rdf:li rdf:resource="http://identifiers.org/rhea/ 19523"/>
-                  <rdf:li rdf:resource="http://identifiers.org/rhea/ 19524"/>
+                  <rdf:li rdf:resource="http://identifiers.org/rhea/19522"/>
+                  <rdf:li rdf:resource="http://identifiers.org/rhea/19523"/>
+                  <rdf:li rdf:resource="http://identifiers.org/rhea/19524"/>
                   <rdf:li rdf:resource="http://identifiers.org/ec-code/2.3.1.8"/>
                   <rdf:li rdf:resource="http://identifiers.org/kegg.reaction/R00230"/>
                   <rdf:li rdf:resource="http://identifiers.org/metanetx.reaction/MNXR103319"/>
@@ -1932,9 +1932,9 @@
                   <rdf:li rdf:resource="http://identifiers.org/bigg.reaction/PYK"/>
                   <rdf:li rdf:resource="http://identifiers.org/biocyc/META:PEPDEPHOS-RXN"/>
                   <rdf:li rdf:resource="http://identifiers.org/rhea/18157"/>
-                  <rdf:li rdf:resource="http://identifiers.org/rhea/ 18158"/>
-                  <rdf:li rdf:resource="http://identifiers.org/rhea/ 18159"/>
-                  <rdf:li rdf:resource="http://identifiers.org/rhea/ 18160"/>
+                  <rdf:li rdf:resource="http://identifiers.org/rhea/18158"/>
+                  <rdf:li rdf:resource="http://identifiers.org/rhea/18159"/>
+                  <rdf:li rdf:resource="http://identifiers.org/rhea/18160"/>
                   <rdf:li rdf:resource="http://identifiers.org/ec-code/2.7.1.40"/>
                   <rdf:li rdf:resource="http://identifiers.org/kegg.reaction/R00200"/>
                   <rdf:li rdf:resource="http://identifiers.org/metanetx.reaction/MNXR103371"/>
@@ -2009,9 +2009,9 @@
                   <rdf:li rdf:resource="http://identifiers.org/bigg.reaction/XYLI2"/>
                   <rdf:li rdf:resource="http://identifiers.org/biocyc/META:GLUCISOM-RXN"/>
                   <rdf:li rdf:resource="http://identifiers.org/rhea/28546"/>
-                  <rdf:li rdf:resource="http://identifiers.org/rhea/ 28547"/>
-                  <rdf:li rdf:resource="http://identifiers.org/rhea/ 28548"/>
-                  <rdf:li rdf:resource="http://identifiers.org/rhea/ 28549"/>
+                  <rdf:li rdf:resource="http://identifiers.org/rhea/28547"/>
+                  <rdf:li rdf:resource="http://identifiers.org/rhea/28548"/>
+                  <rdf:li rdf:resource="http://identifiers.org/rhea/28549"/>
                   <rdf:li rdf:resource="http://identifiers.org/ec-code/5.3.1.5"/>
                   <rdf:li rdf:resource="http://identifiers.org/kegg.reaction/R00307"/>
                   <rdf:li rdf:resource="http://identifiers.org/metanetx.reaction/MNXR105254"/>
@@ -2104,9 +2104,9 @@
                   <rdf:li rdf:resource="http://identifiers.org/bigg.reaction/ACKr"/>
                   <rdf:li rdf:resource="http://identifiers.org/biocyc/META:ACETATEKIN-RXN"/>
                   <rdf:li rdf:resource="http://identifiers.org/rhea/11352"/>
-                  <rdf:li rdf:resource="http://identifiers.org/rhea/ 11353"/>
-                  <rdf:li rdf:resource="http://identifiers.org/rhea/ 11354"/>
-                  <rdf:li rdf:resource="http://identifiers.org/rhea/ 11355"/>
+                  <rdf:li rdf:resource="http://identifiers.org/rhea/11353"/>
+                  <rdf:li rdf:resource="http://identifiers.org/rhea/11354"/>
+                  <rdf:li rdf:resource="http://identifiers.org/rhea/11355"/>
                   <rdf:li rdf:resource="http://identifiers.org/ec-code/2.7.2.1"/>
                   <rdf:li rdf:resource="http://identifiers.org/ec-code/2.7.2.15"/>
                   <rdf:li rdf:resource="http://identifiers.org/kegg.reaction/R00315"/>
@@ -2173,11 +2173,11 @@
                 <rdf:Bag>
                   <rdf:li rdf:resource="http://identifiers.org/bigg.reaction/ACtex"/>
                   <rdf:li rdf:resource="http://identifiers.org/biocyc/META:RXN0-1981"/>
-                  <rdf:li rdf:resource="http://identifiers.org/biocyc/ META:TRANS-RXN0-567"/>
+                  <rdf:li rdf:resource="http://identifiers.org/biocyc/META:TRANS-RXN0-567"/>
                   <rdf:li rdf:resource="http://identifiers.org/rhea/27814"/>
-                  <rdf:li rdf:resource="http://identifiers.org/rhea/ 27815"/>
-                  <rdf:li rdf:resource="http://identifiers.org/rhea/ 27816"/>
-                  <rdf:li rdf:resource="http://identifiers.org/rhea/ 27817"/>
+                  <rdf:li rdf:resource="http://identifiers.org/rhea/27815"/>
+                  <rdf:li rdf:resource="http://identifiers.org/rhea/27816"/>
+                  <rdf:li rdf:resource="http://identifiers.org/rhea/27817"/>
                   <rdf:li rdf:resource="http://identifiers.org/metanetx.reaction/MNXR95431"/>
                 </rdf:Bag>
               </bqbiol:is>
@@ -2350,9 +2350,9 @@
                   <rdf:li rdf:resource="http://identifiers.org/bigg.reaction/FORtex"/>
                   <rdf:li rdf:resource="http://identifiers.org/biocyc/META:TRANS-RXN-1"/>
                   <rdf:li rdf:resource="http://identifiers.org/rhea/29679"/>
-                  <rdf:li rdf:resource="http://identifiers.org/rhea/ 29680"/>
-                  <rdf:li rdf:resource="http://identifiers.org/rhea/ 29681"/>
-                  <rdf:li rdf:resource="http://identifiers.org/rhea/ 29682"/>
+                  <rdf:li rdf:resource="http://identifiers.org/rhea/29680"/>
+                  <rdf:li rdf:resource="http://identifiers.org/rhea/29681"/>
+                  <rdf:li rdf:resource="http://identifiers.org/rhea/29682"/>
                   <rdf:li rdf:resource="http://identifiers.org/metanetx.reaction/MNXR99620"/>
                 </rdf:Bag>
               </bqbiol:is>
@@ -2388,9 +2388,9 @@
                   <rdf:li rdf:resource="http://identifiers.org/bigg.reaction/Htex"/>
                   <rdf:li rdf:resource="http://identifiers.org/biocyc/META:RXN-14452"/>
                   <rdf:li rdf:resource="http://identifiers.org/rhea/34979"/>
-                  <rdf:li rdf:resource="http://identifiers.org/rhea/ 34980"/>
-                  <rdf:li rdf:resource="http://identifiers.org/rhea/ 34981"/>
-                  <rdf:li rdf:resource="http://identifiers.org/rhea/ 34982"/>
+                  <rdf:li rdf:resource="http://identifiers.org/rhea/34980"/>
+                  <rdf:li rdf:resource="http://identifiers.org/rhea/34981"/>
+                  <rdf:li rdf:resource="http://identifiers.org/rhea/34982"/>
                   <rdf:li rdf:resource="http://identifiers.org/metanetx.reaction/MNXR100765"/>
                 </rdf:Bag>
               </bqbiol:is>
@@ -2426,9 +2426,9 @@
                   <rdf:li rdf:resource="http://identifiers.org/bigg.reaction/PGK"/>
                   <rdf:li rdf:resource="http://identifiers.org/biocyc/META:PHOSGLYPHOS-RXN"/>
                   <rdf:li rdf:resource="http://identifiers.org/rhea/14801"/>
-                  <rdf:li rdf:resource="http://identifiers.org/rhea/ 14802"/>
-                  <rdf:li rdf:resource="http://identifiers.org/rhea/ 14803"/>
-                  <rdf:li rdf:resource="http://identifiers.org/rhea/ 14804"/>
+                  <rdf:li rdf:resource="http://identifiers.org/rhea/14802"/>
+                  <rdf:li rdf:resource="http://identifiers.org/rhea/14803"/>
+                  <rdf:li rdf:resource="http://identifiers.org/rhea/14804"/>
                   <rdf:li rdf:resource="http://identifiers.org/ec-code/2.7.2.3"/>
                   <rdf:li rdf:resource="http://identifiers.org/kegg.reaction/R01512"/>
                   <rdf:li rdf:resource="http://identifiers.org/metanetx.reaction/MNXR102538"/>
@@ -2462,11 +2462,11 @@
                 <rdf:Bag>
                   <rdf:li rdf:resource="http://identifiers.org/bigg.reaction/PGM"/>
                   <rdf:li rdf:resource="http://identifiers.org/biocyc/META:3PGAREARR-RXN"/>
-                  <rdf:li rdf:resource="http://identifiers.org/biocyc/ META:RXN-15513"/>
+                  <rdf:li rdf:resource="http://identifiers.org/biocyc/META:RXN-15513"/>
                   <rdf:li rdf:resource="http://identifiers.org/rhea/15901"/>
-                  <rdf:li rdf:resource="http://identifiers.org/rhea/ 15902"/>
-                  <rdf:li rdf:resource="http://identifiers.org/rhea/ 15903"/>
-                  <rdf:li rdf:resource="http://identifiers.org/rhea/ 15904"/>
+                  <rdf:li rdf:resource="http://identifiers.org/rhea/15902"/>
+                  <rdf:li rdf:resource="http://identifiers.org/rhea/15903"/>
+                  <rdf:li rdf:resource="http://identifiers.org/rhea/15904"/>
                   <rdf:li rdf:resource="http://identifiers.org/ec-code/5.4.2.1"/>
                   <rdf:li rdf:resource="http://identifiers.org/ec-code/5.4.2.11"/>
                   <rdf:li rdf:resource="http://identifiers.org/ec-code/5.4.2.12"/>
@@ -2531,7 +2531,7 @@
                 <rdf:Bag>
                   <rdf:li rdf:resource="http://identifiers.org/bigg.reaction/PYRtex"/>
                   <rdf:li rdf:resource="http://identifiers.org/biocyc/META:TRANS-RXN0-506"/>
-                  <rdf:li rdf:resource="http://identifiers.org/biocyc/ META:TRANS-RXN0-570"/>
+                  <rdf:li rdf:resource="http://identifiers.org/biocyc/META:TRANS-RXN0-570"/>
                   <rdf:li rdf:resource="http://identifiers.org/metanetx.reaction/MNXR103384"/>
                 </rdf:Bag>
               </bqbiol:is>
@@ -2560,62 +2560,734 @@
       </reaction>
     </listOfReactions>
     <fbc:listOfGeneProducts>
-      <fbc:geneProduct metaid="G_b2215" sboTerm="SBO:0000243" fbc:id="G_b2215" fbc:name="COBRAProtein1" fbc:label="b2215"/>
-      <fbc:geneProduct metaid="G_b0241" sboTerm="SBO:0000243" fbc:id="G_b0241" fbc:name="COBRAProtein2" fbc:label="b0241"/>
-      <fbc:geneProduct metaid="G_b0929" sboTerm="SBO:0000243" fbc:id="G_b0929" fbc:name="COBRAProtein3" fbc:label="b0929"/>
-      <fbc:geneProduct metaid="G_b1377" sboTerm="SBO:0000243" fbc:id="G_b1377" fbc:name="COBRAProtein4" fbc:label="b1377"/>
-      <fbc:geneProduct metaid="G_b4036" sboTerm="SBO:0000243" fbc:id="G_b4036" fbc:name="COBRAProtein9" fbc:label="b4036"/>
-      <fbc:geneProduct metaid="G_b3115" sboTerm="SBO:0000243" fbc:id="G_b3115" fbc:name="COBRAProtein73" fbc:label="b3115"/>
-      <fbc:geneProduct metaid="G_b2296" sboTerm="SBO:0000243" fbc:id="G_b2296" fbc:name="COBRAProtein74" fbc:label="b2296"/>
-      <fbc:geneProduct metaid="G_b1849" sboTerm="SBO:0000243" fbc:id="G_b1849" fbc:name="COBRAProtein75" fbc:label="b1849"/>
-      <fbc:geneProduct metaid="G_b3001" sboTerm="SBO:0000243" fbc:id="G_b3001" fbc:name="COBRAProtein189" fbc:label="b3001"/>
-      <fbc:geneProduct metaid="G_b1781" sboTerm="SBO:0000243" fbc:id="G_b1781" fbc:name="COBRAProtein190" fbc:label="b1781"/>
-      <fbc:geneProduct metaid="G_b0207" sboTerm="SBO:0000243" fbc:id="G_b0207" fbc:name="COBRAProtein191" fbc:label="b0207"/>
-      <fbc:geneProduct metaid="G_b3012" sboTerm="SBO:0000243" fbc:id="G_b3012" fbc:name="COBRAProtein192" fbc:label="b3012"/>
-      <fbc:geneProduct metaid="G_b3945" sboTerm="SBO:0000243" fbc:id="G_b3945" fbc:name="COBRAProtein193" fbc:label="b3945"/>
-      <fbc:geneProduct metaid="G_b3734" sboTerm="SBO:0000243" fbc:id="G_b3734" fbc:name="COBRAProtein274" fbc:label="b3734"/>
-      <fbc:geneProduct metaid="G_b3732" sboTerm="SBO:0000243" fbc:id="G_b3732" fbc:name="COBRAProtein275" fbc:label="b3732"/>
-      <fbc:geneProduct metaid="G_b3733" sboTerm="SBO:0000243" fbc:id="G_b3733" fbc:name="COBRAProtein276" fbc:label="b3733"/>
-      <fbc:geneProduct metaid="G_b3737" sboTerm="SBO:0000243" fbc:id="G_b3737" fbc:name="COBRAProtein277" fbc:label="b3737"/>
-      <fbc:geneProduct metaid="G_b3738" sboTerm="SBO:0000243" fbc:id="G_b3738" fbc:name="COBRAProtein278" fbc:label="b3738"/>
-      <fbc:geneProduct metaid="G_b3735" sboTerm="SBO:0000243" fbc:id="G_b3735" fbc:name="COBRAProtein279" fbc:label="b3735"/>
-      <fbc:geneProduct metaid="G_b3731" sboTerm="SBO:0000243" fbc:id="G_b3731" fbc:name="COBRAProtein280" fbc:label="b3731"/>
-      <fbc:geneProduct metaid="G_b3736" sboTerm="SBO:0000243" fbc:id="G_b3736" fbc:name="COBRAProtein281" fbc:label="b3736"/>
-      <fbc:geneProduct metaid="G_b3739" sboTerm="SBO:0000243" fbc:id="G_b3739" fbc:name="COBRAProtein282" fbc:label="b3739"/>
-      <fbc:geneProduct metaid="G_b2779" sboTerm="SBO:0000243" fbc:id="G_b2779" fbc:name="COBRAProtein468" fbc:label="b2779"/>
-      <fbc:geneProduct metaid="G_b0825" sboTerm="SBO:0000243" fbc:id="G_b0825" fbc:name="COBRAProtein473" fbc:label="b0825"/>
-      <fbc:geneProduct metaid="G_b3946" sboTerm="SBO:0000243" fbc:id="G_b3946" fbc:name="COBRAProtein474" fbc:label="b3946"/>
-      <fbc:geneProduct metaid="G_b2097" sboTerm="SBO:0000243" fbc:id="G_b2097" fbc:name="COBRAProtein484" fbc:label="b2097"/>
-      <fbc:geneProduct metaid="G_b2925" sboTerm="SBO:0000243" fbc:id="G_b2925" fbc:name="COBRAProtein485" fbc:label="b2925"/>
-      <fbc:geneProduct metaid="G_b1773" sboTerm="SBO:0000243" fbc:id="G_b1773" fbc:name="COBRAProtein486" fbc:label="b1773"/>
-      <fbc:geneProduct metaid="G_b2492" sboTerm="SBO:0000243" fbc:id="G_b2492" fbc:name="COBRAProtein540" fbc:label="b2492"/>
-      <fbc:geneProduct metaid="G_b0904" sboTerm="SBO:0000243" fbc:id="G_b0904" fbc:name="COBRAProtein541" fbc:label="b0904"/>
-      <fbc:geneProduct metaid="G_b2149" sboTerm="SBO:0000243" fbc:id="G_b2149" fbc:name="COBRAProtein596" fbc:label="b2149"/>
-      <fbc:geneProduct metaid="G_b2150" sboTerm="SBO:0000243" fbc:id="G_b2150" fbc:name="COBRAProtein597" fbc:label="b2150"/>
-      <fbc:geneProduct metaid="G_b2148" sboTerm="SBO:0000243" fbc:id="G_b2148" fbc:name="COBRAProtein598" fbc:label="b2148"/>
-      <fbc:geneProduct metaid="G_b2943" sboTerm="SBO:0000243" fbc:id="G_b2943" fbc:name="COBRAProtein599" fbc:label="b2943"/>
-      <fbc:geneProduct metaid="G_b1779" sboTerm="SBO:0000243" fbc:id="G_b1779" fbc:name="COBRAProtein600" fbc:label="b1779"/>
-      <fbc:geneProduct metaid="G_b0394" sboTerm="SBO:0000243" fbc:id="G_b0394" fbc:name="COBRAProtein715" fbc:label="b0394"/>
-      <fbc:geneProduct metaid="G_b0963" sboTerm="SBO:0000243" fbc:id="G_b0963" fbc:name="COBRAProtein850" fbc:label="b0963"/>
-      <fbc:geneProduct metaid="G_b1602" sboTerm="SBO:0000243" fbc:id="G_b1602" fbc:name="COBRAProtein897" fbc:label="b1602"/>
-      <fbc:geneProduct metaid="G_b1603" sboTerm="SBO:0000243" fbc:id="G_b1603" fbc:name="COBRAProtein898" fbc:label="b1603"/>
-      <fbc:geneProduct metaid="G_b0903" sboTerm="SBO:0000243" fbc:id="G_b0903" fbc:name="COBRAProtein960" fbc:label="b0903"/>
-      <fbc:geneProduct metaid="G_b3114" sboTerm="SBO:0000243" fbc:id="G_b3114" fbc:name="COBRAProtein961" fbc:label="b3114"/>
-      <fbc:geneProduct metaid="G_b2579" sboTerm="SBO:0000243" fbc:id="G_b2579" fbc:name="COBRAProtein962" fbc:label="b2579"/>
-      <fbc:geneProduct metaid="G_b0902" sboTerm="SBO:0000243" fbc:id="G_b0902" fbc:name="COBRAProtein963" fbc:label="b0902"/>
-      <fbc:geneProduct metaid="G_b1723" sboTerm="SBO:0000243" fbc:id="G_b1723" fbc:name="COBRAProtein994" fbc:label="b1723"/>
-      <fbc:geneProduct metaid="G_b3916" sboTerm="SBO:0000243" fbc:id="G_b3916" fbc:name="COBRAProtein995" fbc:label="b3916"/>
-      <fbc:geneProduct metaid="G_b3952" sboTerm="SBO:0000243" fbc:id="G_b3952" fbc:name="COBRAProtein996" fbc:label="b3952"/>
-      <fbc:geneProduct metaid="G_b3951" sboTerm="SBO:0000243" fbc:id="G_b3951" fbc:name="COBRAProtein997" fbc:label="b3951"/>
-      <fbc:geneProduct metaid="G_b2926" sboTerm="SBO:0000243" fbc:id="G_b2926" fbc:name="COBRAProtein1001" fbc:label="b2926"/>
-      <fbc:geneProduct metaid="G_b3612" sboTerm="SBO:0000243" fbc:id="G_b3612" fbc:name="COBRAProtein1004" fbc:label="b3612"/>
-      <fbc:geneProduct metaid="G_b4395" sboTerm="SBO:0000243" fbc:id="G_b4395" fbc:name="COBRAProtein1005" fbc:label="b4395"/>
-      <fbc:geneProduct metaid="G_b0755" sboTerm="SBO:0000243" fbc:id="G_b0755" fbc:name="COBRAProtein1006" fbc:label="b0755"/>
-      <fbc:geneProduct metaid="G_b2297" sboTerm="SBO:0000243" fbc:id="G_b2297" fbc:name="COBRAProtein1055" fbc:label="b2297"/>
-      <fbc:geneProduct metaid="G_b2458" sboTerm="SBO:0000243" fbc:id="G_b2458" fbc:name="COBRAProtein1056" fbc:label="b2458"/>
-      <fbc:geneProduct metaid="G_b1676" sboTerm="SBO:0000243" fbc:id="G_b1676" fbc:name="COBRAProtein1075" fbc:label="b1676"/>
-      <fbc:geneProduct metaid="G_b1854" sboTerm="SBO:0000243" fbc:id="G_b1854" fbc:name="COBRAProtein1076" fbc:label="b1854"/>
-      <fbc:geneProduct metaid="G_b3565" sboTerm="SBO:0000243" fbc:id="G_b3565" fbc:name="COBRAProtein1251" fbc:label="b3565"/>
+      <fbc:geneProduct metaid="G_b2215" sboTerm="SBO:0000243" fbc:id="G_b2215" fbc:name="COBRAProtein1" fbc:label="b2215">
+        <annotation xmlns:sbml="http://www.sbml.org/sbml/level3/version1/core">
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#G_b2215">
+              <bqbiol:is>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="http://identifiers.org/uniprot/P06996"/>
+                </rdf:Bag>
+              </bqbiol:is>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </fbc:geneProduct>
+      <fbc:geneProduct metaid="G_b0241" sboTerm="SBO:0000243" fbc:id="G_b0241" fbc:name="COBRAProtein2" fbc:label="b0241">
+        <annotation xmlns:sbml="http://www.sbml.org/sbml/level3/version1/core">
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#G_b0241">
+              <bqbiol:is>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="http://identifiers.org/uniprot/P02932"/>
+                </rdf:Bag>
+              </bqbiol:is>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </fbc:geneProduct>
+      <fbc:geneProduct metaid="G_b0929" sboTerm="SBO:0000243" fbc:id="G_b0929" fbc:name="COBRAProtein3" fbc:label="b0929">
+        <annotation xmlns:sbml="http://www.sbml.org/sbml/level3/version1/core">
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#G_b0929">
+              <bqbiol:is>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="http://identifiers.org/uniprot/P02931"/>
+                </rdf:Bag>
+              </bqbiol:is>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </fbc:geneProduct>
+      <fbc:geneProduct metaid="G_b1377" sboTerm="SBO:0000243" fbc:id="G_b1377" fbc:name="COBRAProtein4" fbc:label="b1377">
+        <annotation xmlns:sbml="http://www.sbml.org/sbml/level3/version1/core">
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#G_b1377">
+              <bqbiol:is>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="http://identifiers.org/uniprot/P77747"/>
+                </rdf:Bag>
+              </bqbiol:is>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </fbc:geneProduct>
+      <fbc:geneProduct metaid="G_b4036" sboTerm="SBO:0000243" fbc:id="G_b4036" fbc:name="COBRAProtein9" fbc:label="b4036">
+        <annotation xmlns:sbml="http://www.sbml.org/sbml/level3/version1/core">
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#G_b4036">
+              <bqbiol:is>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="http://identifiers.org/uniprot/P02943"/>
+                </rdf:Bag>
+              </bqbiol:is>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </fbc:geneProduct>
+      <fbc:geneProduct metaid="G_b3115" sboTerm="SBO:0000243" fbc:id="G_b3115" fbc:name="COBRAProtein73" fbc:label="b3115">
+        <annotation xmlns:sbml="http://www.sbml.org/sbml/level3/version1/core">
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#G_b3115">
+              <bqbiol:is>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="http://identifiers.org/uniprot/P11868"/>
+                </rdf:Bag>
+              </bqbiol:is>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </fbc:geneProduct>
+      <fbc:geneProduct metaid="G_b2296" sboTerm="SBO:0000243" fbc:id="G_b2296" fbc:name="COBRAProtein74" fbc:label="b2296">
+        <annotation xmlns:sbml="http://www.sbml.org/sbml/level3/version1/core">
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#G_b2296">
+              <bqbiol:is>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="http://identifiers.org/uniprot/P0A6A3"/>
+                </rdf:Bag>
+              </bqbiol:is>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </fbc:geneProduct>
+      <fbc:geneProduct metaid="G_b1849" sboTerm="SBO:0000243" fbc:id="G_b1849" fbc:name="COBRAProtein75" fbc:label="b1849">
+        <annotation xmlns:sbml="http://www.sbml.org/sbml/level3/version1/core">
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#G_b1849">
+              <bqbiol:is>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="http://identifiers.org/uniprot/P33221"/>
+                </rdf:Bag>
+              </bqbiol:is>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </fbc:geneProduct>
+      <fbc:geneProduct metaid="G_b3001" sboTerm="SBO:0000243" fbc:id="G_b3001" fbc:name="COBRAProtein189" fbc:label="b3001">
+        <annotation xmlns:sbml="http://www.sbml.org/sbml/level3/version1/core">
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#G_b3001">
+              <bqbiol:is>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="http://identifiers.org/uniprot/Q46851"/>
+                </rdf:Bag>
+              </bqbiol:is>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </fbc:geneProduct>
+      <fbc:geneProduct metaid="G_b1781" sboTerm="SBO:0000243" fbc:id="G_b1781" fbc:name="COBRAProtein190" fbc:label="b1781">
+        <annotation xmlns:sbml="http://www.sbml.org/sbml/level3/version1/core">
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#G_b1781">
+              <bqbiol:is>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="http://identifiers.org/uniprot/P76234"/>
+                </rdf:Bag>
+              </bqbiol:is>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </fbc:geneProduct>
+      <fbc:geneProduct metaid="G_b0207" sboTerm="SBO:0000243" fbc:id="G_b0207" fbc:name="COBRAProtein191" fbc:label="b0207">
+        <annotation xmlns:sbml="http://www.sbml.org/sbml/level3/version1/core">
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#G_b0207">
+              <bqbiol:is>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="http://identifiers.org/uniprot/P30863"/>
+                </rdf:Bag>
+              </bqbiol:is>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </fbc:geneProduct>
+      <fbc:geneProduct metaid="G_b3012" sboTerm="SBO:0000243" fbc:id="G_b3012" fbc:name="COBRAProtein192" fbc:label="b3012">
+        <annotation xmlns:sbml="http://www.sbml.org/sbml/level3/version1/core">
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#G_b3012">
+              <bqbiol:is>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="http://identifiers.org/uniprot/Q46857"/>
+                </rdf:Bag>
+              </bqbiol:is>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </fbc:geneProduct>
+      <fbc:geneProduct metaid="G_b3945" sboTerm="SBO:0000243" fbc:id="G_b3945" fbc:name="COBRAProtein193" fbc:label="b3945">
+        <annotation xmlns:sbml="http://www.sbml.org/sbml/level3/version1/core">
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#G_b3945">
+              <bqbiol:is>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="http://identifiers.org/uniprot/P0A9S5"/>
+                </rdf:Bag>
+              </bqbiol:is>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </fbc:geneProduct>
+      <fbc:geneProduct metaid="G_b3734" sboTerm="SBO:0000243" fbc:id="G_b3734" fbc:name="COBRAProtein274" fbc:label="b3734">
+        <annotation xmlns:sbml="http://www.sbml.org/sbml/level3/version1/core">
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#G_b3734">
+              <bqbiol:is>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="http://identifiers.org/uniprot/P0ABB0"/>
+                </rdf:Bag>
+              </bqbiol:is>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </fbc:geneProduct>
+      <fbc:geneProduct metaid="G_b3732" sboTerm="SBO:0000243" fbc:id="G_b3732" fbc:name="COBRAProtein275" fbc:label="b3732">
+        <annotation xmlns:sbml="http://www.sbml.org/sbml/level3/version1/core">
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#G_b3732">
+              <bqbiol:is>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="http://identifiers.org/uniprot/P0ABB4"/>
+                </rdf:Bag>
+              </bqbiol:is>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </fbc:geneProduct>
+      <fbc:geneProduct metaid="G_b3733" sboTerm="SBO:0000243" fbc:id="G_b3733" fbc:name="COBRAProtein276" fbc:label="b3733">
+        <annotation xmlns:sbml="http://www.sbml.org/sbml/level3/version1/core">
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#G_b3733">
+              <bqbiol:is>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="http://identifiers.org/uniprot/P0ABA6"/>
+                </rdf:Bag>
+              </bqbiol:is>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </fbc:geneProduct>
+      <fbc:geneProduct metaid="G_b3737" sboTerm="SBO:0000243" fbc:id="G_b3737" fbc:name="COBRAProtein277" fbc:label="b3737">
+        <annotation xmlns:sbml="http://www.sbml.org/sbml/level3/version1/core">
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#G_b3737">
+              <bqbiol:is>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="http://identifiers.org/uniprot/P68699"/>
+                </rdf:Bag>
+              </bqbiol:is>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </fbc:geneProduct>
+      <fbc:geneProduct metaid="G_b3738" sboTerm="SBO:0000243" fbc:id="G_b3738" fbc:name="COBRAProtein278" fbc:label="b3738">
+        <annotation xmlns:sbml="http://www.sbml.org/sbml/level3/version1/core">
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#G_b3738">
+              <bqbiol:is>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="http://identifiers.org/uniprot/P0AB98"/>
+                </rdf:Bag>
+              </bqbiol:is>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </fbc:geneProduct>
+      <fbc:geneProduct metaid="G_b3735" sboTerm="SBO:0000243" fbc:id="G_b3735" fbc:name="COBRAProtein279" fbc:label="b3735">
+        <annotation xmlns:sbml="http://www.sbml.org/sbml/level3/version1/core">
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#G_b3735">
+              <bqbiol:is>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="http://identifiers.org/uniprot/P0ABA4"/>
+                </rdf:Bag>
+              </bqbiol:is>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </fbc:geneProduct>
+      <fbc:geneProduct metaid="G_b3731" sboTerm="SBO:0000243" fbc:id="G_b3731" fbc:name="COBRAProtein280" fbc:label="b3731">
+        <annotation xmlns:sbml="http://www.sbml.org/sbml/level3/version1/core">
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#G_b3731">
+              <bqbiol:is>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="http://identifiers.org/uniprot/P0A6E6"/>
+                </rdf:Bag>
+              </bqbiol:is>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </fbc:geneProduct>
+      <fbc:geneProduct metaid="G_b3736" sboTerm="SBO:0000243" fbc:id="G_b3736" fbc:name="COBRAProtein281" fbc:label="b3736">
+        <annotation xmlns:sbml="http://www.sbml.org/sbml/level3/version1/core">
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#G_b3736">
+              <bqbiol:is>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="http://identifiers.org/uniprot/P0ABA0"/>
+                </rdf:Bag>
+              </bqbiol:is>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </fbc:geneProduct>
+      <fbc:geneProduct metaid="G_b3739" sboTerm="SBO:0000243" fbc:id="G_b3739" fbc:name="COBRAProtein282" fbc:label="b3739">
+        <annotation xmlns:sbml="http://www.sbml.org/sbml/level3/version1/core">
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#G_b3739">
+              <bqbiol:is>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="http://identifiers.org/uniprot/P0ABC0"/>
+                </rdf:Bag>
+              </bqbiol:is>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </fbc:geneProduct>
+      <fbc:geneProduct metaid="G_b2779" sboTerm="SBO:0000243" fbc:id="G_b2779" fbc:name="COBRAProtein468" fbc:label="b2779">
+        <annotation xmlns:sbml="http://www.sbml.org/sbml/level3/version1/core">
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#G_b2779">
+              <bqbiol:is>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="http://identifiers.org/uniprot/P0A6P9"/>
+                </rdf:Bag>
+              </bqbiol:is>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </fbc:geneProduct>
+      <fbc:geneProduct metaid="G_b0825" sboTerm="SBO:0000243" fbc:id="G_b0825" fbc:name="COBRAProtein473" fbc:label="b0825">
+        <annotation xmlns:sbml="http://www.sbml.org/sbml/level3/version1/core">
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#G_b0825">
+              <bqbiol:is>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="http://identifiers.org/uniprot/P78055"/>
+                </rdf:Bag>
+              </bqbiol:is>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </fbc:geneProduct>
+      <fbc:geneProduct metaid="G_b3946" sboTerm="SBO:0000243" fbc:id="G_b3946" fbc:name="COBRAProtein474" fbc:label="b3946">
+        <annotation xmlns:sbml="http://www.sbml.org/sbml/level3/version1/core">
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#G_b3946">
+              <bqbiol:is>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="http://identifiers.org/uniprot/P32669"/>
+                </rdf:Bag>
+              </bqbiol:is>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </fbc:geneProduct>
+      <fbc:geneProduct metaid="G_b2097" sboTerm="SBO:0000243" fbc:id="G_b2097" fbc:name="COBRAProtein484" fbc:label="b2097">
+        <annotation xmlns:sbml="http://www.sbml.org/sbml/level3/version1/core">
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#G_b2097">
+              <bqbiol:is>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="http://identifiers.org/uniprot/P0A991"/>
+                </rdf:Bag>
+              </bqbiol:is>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </fbc:geneProduct>
+      <fbc:geneProduct metaid="G_b2925" sboTerm="SBO:0000243" fbc:id="G_b2925" fbc:name="COBRAProtein485" fbc:label="b2925">
+        <annotation xmlns:sbml="http://www.sbml.org/sbml/level3/version1/core">
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#G_b2925">
+              <bqbiol:is>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="http://identifiers.org/uniprot/P0AB71"/>
+                </rdf:Bag>
+              </bqbiol:is>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </fbc:geneProduct>
+      <fbc:geneProduct metaid="G_b1773" sboTerm="SBO:0000243" fbc:id="G_b1773" fbc:name="COBRAProtein486" fbc:label="b1773">
+        <annotation xmlns:sbml="http://www.sbml.org/sbml/level3/version1/core">
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#G_b1773">
+              <bqbiol:is>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="http://identifiers.org/uniprot/P77704"/>
+                </rdf:Bag>
+              </bqbiol:is>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </fbc:geneProduct>
+      <fbc:geneProduct metaid="G_b2492" sboTerm="SBO:0000243" fbc:id="G_b2492" fbc:name="COBRAProtein540" fbc:label="b2492">
+        <annotation xmlns:sbml="http://www.sbml.org/sbml/level3/version1/core">
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#G_b2492">
+              <bqbiol:is>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="http://identifiers.org/uniprot/P77733"/>
+                </rdf:Bag>
+              </bqbiol:is>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </fbc:geneProduct>
+      <fbc:geneProduct metaid="G_b0904" sboTerm="SBO:0000243" fbc:id="G_b0904" fbc:name="COBRAProtein541" fbc:label="b0904">
+        <annotation xmlns:sbml="http://www.sbml.org/sbml/level3/version1/core">
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#G_b0904">
+              <bqbiol:is>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="http://identifiers.org/uniprot/P0AC23"/>
+                </rdf:Bag>
+              </bqbiol:is>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </fbc:geneProduct>
+      <fbc:geneProduct metaid="G_b2149" sboTerm="SBO:0000243" fbc:id="G_b2149" fbc:name="COBRAProtein596" fbc:label="b2149">
+        <annotation xmlns:sbml="http://www.sbml.org/sbml/level3/version1/core">
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#G_b2149">
+              <bqbiol:is>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="http://identifiers.org/uniprot/P0AAG8"/>
+                </rdf:Bag>
+              </bqbiol:is>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </fbc:geneProduct>
+      <fbc:geneProduct metaid="G_b2150" sboTerm="SBO:0000243" fbc:id="G_b2150" fbc:name="COBRAProtein597" fbc:label="b2150">
+        <annotation xmlns:sbml="http://www.sbml.org/sbml/level3/version1/core">
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#G_b2150">
+              <bqbiol:is>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="http://identifiers.org/uniprot/P0AEE5"/>
+                </rdf:Bag>
+              </bqbiol:is>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </fbc:geneProduct>
+      <fbc:geneProduct metaid="G_b2148" sboTerm="SBO:0000243" fbc:id="G_b2148" fbc:name="COBRAProtein598" fbc:label="b2148">
+        <annotation xmlns:sbml="http://www.sbml.org/sbml/level3/version1/core">
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#G_b2148">
+              <bqbiol:is>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="http://identifiers.org/uniprot/P23200"/>
+                </rdf:Bag>
+              </bqbiol:is>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </fbc:geneProduct>
+      <fbc:geneProduct metaid="G_b2943" sboTerm="SBO:0000243" fbc:id="G_b2943" fbc:name="COBRAProtein599" fbc:label="b2943">
+        <annotation xmlns:sbml="http://www.sbml.org/sbml/level3/version1/core">
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#G_b2943">
+              <bqbiol:is>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="http://identifiers.org/uniprot/P0AEP1"/>
+                </rdf:Bag>
+              </bqbiol:is>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </fbc:geneProduct>
+      <fbc:geneProduct metaid="G_b1779" sboTerm="SBO:0000243" fbc:id="G_b1779" fbc:name="COBRAProtein600" fbc:label="b1779">
+        <annotation xmlns:sbml="http://www.sbml.org/sbml/level3/version1/core">
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#G_b1779">
+              <bqbiol:is>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="http://identifiers.org/uniprot/P0A9B2"/>
+                </rdf:Bag>
+              </bqbiol:is>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </fbc:geneProduct>
+      <fbc:geneProduct metaid="G_b0394" sboTerm="SBO:0000243" fbc:id="G_b0394" fbc:name="COBRAProtein715" fbc:label="b0394">
+        <annotation xmlns:sbml="http://www.sbml.org/sbml/level3/version1/core">
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#G_b0394">
+              <bqbiol:is>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="http://identifiers.org/uniprot/P23917"/>
+                </rdf:Bag>
+              </bqbiol:is>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </fbc:geneProduct>
+      <fbc:geneProduct metaid="G_b0963" sboTerm="SBO:0000243" fbc:id="G_b0963" fbc:name="COBRAProtein850" fbc:label="b0963">
+        <annotation xmlns:sbml="http://www.sbml.org/sbml/level3/version1/core">
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#G_b0963">
+              <bqbiol:is>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="http://identifiers.org/uniprot/P0A731"/>
+                </rdf:Bag>
+              </bqbiol:is>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </fbc:geneProduct>
+      <fbc:geneProduct metaid="G_b1602" sboTerm="SBO:0000243" fbc:id="G_b1602" fbc:name="COBRAProtein897" fbc:label="b1602">
+        <annotation xmlns:sbml="http://www.sbml.org/sbml/level3/version1/core">
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#G_b1602">
+              <bqbiol:is>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="http://identifiers.org/uniprot/P0AB67"/>
+                </rdf:Bag>
+              </bqbiol:is>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </fbc:geneProduct>
+      <fbc:geneProduct metaid="G_b1603" sboTerm="SBO:0000243" fbc:id="G_b1603" fbc:name="COBRAProtein898" fbc:label="b1603">
+        <annotation xmlns:sbml="http://www.sbml.org/sbml/level3/version1/core">
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#G_b1603">
+              <bqbiol:is>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="http://identifiers.org/uniprot/P07001"/>
+                </rdf:Bag>
+              </bqbiol:is>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </fbc:geneProduct>
+      <fbc:geneProduct metaid="G_b0903" sboTerm="SBO:0000243" fbc:id="G_b0903" fbc:name="COBRAProtein960" fbc:label="b0903">
+        <annotation xmlns:sbml="http://www.sbml.org/sbml/level3/version1/core">
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#G_b0903">
+              <bqbiol:is>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="http://identifiers.org/uniprot/P09373"/>
+                </rdf:Bag>
+              </bqbiol:is>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </fbc:geneProduct>
+      <fbc:geneProduct metaid="G_b3114" sboTerm="SBO:0000243" fbc:id="G_b3114" fbc:name="COBRAProtein961" fbc:label="b3114">
+        <annotation xmlns:sbml="http://www.sbml.org/sbml/level3/version1/core">
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#G_b3114">
+              <bqbiol:is>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="http://identifiers.org/uniprot/P42632"/>
+                </rdf:Bag>
+              </bqbiol:is>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </fbc:geneProduct>
+      <fbc:geneProduct metaid="G_b2579" sboTerm="SBO:0000243" fbc:id="G_b2579" fbc:name="COBRAProtein962" fbc:label="b2579">
+        <annotation xmlns:sbml="http://www.sbml.org/sbml/level3/version1/core">
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#G_b2579">
+              <bqbiol:is>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="http://identifiers.org/uniprot/P68066"/>
+                </rdf:Bag>
+              </bqbiol:is>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </fbc:geneProduct>
+      <fbc:geneProduct metaid="G_b0902" sboTerm="SBO:0000243" fbc:id="G_b0902" fbc:name="COBRAProtein963" fbc:label="b0902">
+        <annotation xmlns:sbml="http://www.sbml.org/sbml/level3/version1/core">
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#G_b0902">
+              <bqbiol:is>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="http://identifiers.org/uniprot/P0A9N4"/>
+                </rdf:Bag>
+              </bqbiol:is>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </fbc:geneProduct>
+      <fbc:geneProduct metaid="G_b1723" sboTerm="SBO:0000243" fbc:id="G_b1723" fbc:name="COBRAProtein994" fbc:label="b1723">
+        <annotation xmlns:sbml="http://www.sbml.org/sbml/level3/version1/core">
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#G_b1723">
+              <bqbiol:is>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="http://identifiers.org/uniprot/P06999"/>
+                </rdf:Bag>
+              </bqbiol:is>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </fbc:geneProduct>
+      <fbc:geneProduct metaid="G_b3916" sboTerm="SBO:0000243" fbc:id="G_b3916" fbc:name="COBRAProtein995" fbc:label="b3916">
+        <annotation xmlns:sbml="http://www.sbml.org/sbml/level3/version1/core">
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#G_b3916">
+              <bqbiol:is>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="http://identifiers.org/uniprot/P0A796"/>
+                </rdf:Bag>
+              </bqbiol:is>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </fbc:geneProduct>
+      <fbc:geneProduct metaid="G_b3952" sboTerm="SBO:0000243" fbc:id="G_b3952" fbc:name="COBRAProtein996" fbc:label="b3952">
+        <annotation xmlns:sbml="http://www.sbml.org/sbml/level3/version1/core">
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#G_b3952">
+              <bqbiol:is>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="http://identifiers.org/uniprot/P32675"/>
+                </rdf:Bag>
+              </bqbiol:is>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </fbc:geneProduct>
+      <fbc:geneProduct metaid="G_b3951" sboTerm="SBO:0000243" fbc:id="G_b3951" fbc:name="COBRAProtein997" fbc:label="b3951">
+        <annotation xmlns:sbml="http://www.sbml.org/sbml/level3/version1/core">
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#G_b3951">
+              <bqbiol:is>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="http://identifiers.org/uniprot/P32674"/>
+                </rdf:Bag>
+              </bqbiol:is>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </fbc:geneProduct>
+      <fbc:geneProduct metaid="G_b2926" sboTerm="SBO:0000243" fbc:id="G_b2926" fbc:name="COBRAProtein1001" fbc:label="b2926">
+        <annotation xmlns:sbml="http://www.sbml.org/sbml/level3/version1/core">
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#G_b2926">
+              <bqbiol:is>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="http://identifiers.org/uniprot/P0A799"/>
+                </rdf:Bag>
+              </bqbiol:is>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </fbc:geneProduct>
+      <fbc:geneProduct metaid="G_b3612" sboTerm="SBO:0000243" fbc:id="G_b3612" fbc:name="COBRAProtein1004" fbc:label="b3612">
+        <annotation xmlns:sbml="http://www.sbml.org/sbml/level3/version1/core">
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#G_b3612">
+              <bqbiol:is>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="http://identifiers.org/uniprot/P37689"/>
+                </rdf:Bag>
+              </bqbiol:is>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </fbc:geneProduct>
+      <fbc:geneProduct metaid="G_b4395" sboTerm="SBO:0000243" fbc:id="G_b4395" fbc:name="COBRAProtein1005" fbc:label="b4395">
+        <annotation xmlns:sbml="http://www.sbml.org/sbml/level3/version1/core">
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#G_b4395">
+              <bqbiol:is>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="http://identifiers.org/uniprot/P0A7A2"/>
+                </rdf:Bag>
+              </bqbiol:is>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </fbc:geneProduct>
+      <fbc:geneProduct metaid="G_b0755" sboTerm="SBO:0000243" fbc:id="G_b0755" fbc:name="COBRAProtein1006" fbc:label="b0755">
+        <annotation xmlns:sbml="http://www.sbml.org/sbml/level3/version1/core">
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#G_b0755">
+              <bqbiol:is>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="http://identifiers.org/uniprot/P62707"/>
+                </rdf:Bag>
+              </bqbiol:is>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </fbc:geneProduct>
+      <fbc:geneProduct metaid="G_b2297" sboTerm="SBO:0000243" fbc:id="G_b2297" fbc:name="COBRAProtein1055" fbc:label="b2297">
+        <annotation xmlns:sbml="http://www.sbml.org/sbml/level3/version1/core">
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#G_b2297">
+              <bqbiol:is>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="http://identifiers.org/uniprot/P0A9M8"/>
+                </rdf:Bag>
+              </bqbiol:is>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </fbc:geneProduct>
+      <fbc:geneProduct metaid="G_b2458" sboTerm="SBO:0000243" fbc:id="G_b2458" fbc:name="COBRAProtein1056" fbc:label="b2458">
+        <annotation xmlns:sbml="http://www.sbml.org/sbml/level3/version1/core">
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#G_b2458">
+              <bqbiol:is>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="http://identifiers.org/uniprot/P77218"/>
+                </rdf:Bag>
+              </bqbiol:is>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </fbc:geneProduct>
+      <fbc:geneProduct metaid="G_b1676" sboTerm="SBO:0000243" fbc:id="G_b1676" fbc:name="COBRAProtein1075" fbc:label="b1676">
+        <annotation xmlns:sbml="http://www.sbml.org/sbml/level3/version1/core">
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#G_b1676">
+              <bqbiol:is>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="http://identifiers.org/uniprot/P0AD61"/>
+                </rdf:Bag>
+              </bqbiol:is>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </fbc:geneProduct>
+      <fbc:geneProduct metaid="G_b1854" sboTerm="SBO:0000243" fbc:id="G_b1854" fbc:name="COBRAProtein1076" fbc:label="b1854">
+        <annotation xmlns:sbml="http://www.sbml.org/sbml/level3/version1/core">
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#G_b1854">
+              <bqbiol:is>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="http://identifiers.org/uniprot/P21599"/>
+                </rdf:Bag>
+              </bqbiol:is>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </fbc:geneProduct>
+      <fbc:geneProduct metaid="G_b3565" sboTerm="SBO:0000243" fbc:id="G_b3565" fbc:name="COBRAProtein1251" fbc:label="b3565">
+        <annotation xmlns:sbml="http://www.sbml.org/sbml/level3/version1/core">
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:vCard4="http://www.w3.org/2006/vcard/ns#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+            <rdf:Description rdf:about="#G_b3565">
+              <bqbiol:is>
+                <rdf:Bag>
+                  <rdf:li rdf:resource="http://identifiers.org/uniprot/P00944"/>
+                </rdf:Bag>
+              </bqbiol:is>
+            </rdf:Description>
+          </rdf:RDF>
+        </annotation>
+      </fbc:geneProduct>
     </fbc:listOfGeneProducts>
     <groups:listOfGroups>
       <groups:group sboTerm="SBO:0000633" groups:id="group1" groups:name="Alternate Carbon Metabolism" groups:kind="partonomy">

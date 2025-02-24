@@ -90,7 +90,8 @@ function colors = distinguishable_colors(n_colors,bg,func)
     lab = func(rgb);
     bglab = func(bg);
   else
-    C = makecform('srgb2lab');
+    C = makecform("srgb2lab");
+    %C = makecform('srgb2cmyk');
     lab = applycform(rgb,C);
     bglab = applycform(bg,C);
   end

@@ -1,0 +1,681 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Polytopesimplifier &mdash; The COBRA Toolbox</title>
+  
+
+  
+  
+  
+    <link rel="apple-touch-icon" sizes="180x180" href="../../../../../_static/img/apple-touch-icon.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../../../_static/img/favicon-32x32.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="16x16" href="../../../../../_static/img/favicon-16x16.png">
+  
+  
+    <link rel="mask-icon" href="../../../../../_static/img/safari-pinned-tab.svg" color="#5bbad5">
+  
+  
+    <link rel="manifest" href="../../../../../_static/json/manifest.json">
+  
+  
+    <meta name="msapplication-config" content="../../../../../_static/browserconfig.xml">
+  
+  <meta name="theme-color" content="#ffffff">
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+  <script src="../../../../../_static/js/jquery.easy-autocomplete.min.js" type="text/javascript" ></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+  <link href="../../../../../_static/css/easy-autocomplete.min.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../../_static/css/cobra.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../../../../_static/css/cobra.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../../../search.html"/>
+    <link rel="top" title="The COBRA Toolbox" href="../../../../../index.html"/>
+        <link rel="up" title="Barrierround" href="../index.html"/>
+        <link rel="next" title="Coverage" href="coverage/index.html"/>
+        <link rel="prev" title="Barrierround" href="../index.html"/> 
+
+  
+  <script src="../../../../../_static/js/modernizr.min.js"></script>
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../../index.html" class="icon icon-home"> The COBRA Toolbox
+          
+
+          
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
+          
+          </a>
+
+              
+          <h1>The COBRA Toolbox</h1>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" id="simple"/>
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+    <script>
+    	var options = {
+
+		url: "../../../../../_static/json/functions.json",
+
+		getValue: "name",
+
+		list: {
+            onKeyEnterEvent: function(item) {
+                    return "_static/../" + item.website_url
+            },
+            maxNumberOfElements: 25,
+			match: {
+					enabled: true,
+			},
+            sort: {
+			    enabled: true
+		    }
+		},
+
+    	template: {
+	    	type: "custom",
+		    method: function(value, item) {
+                return "<span><a href='../../../../../search.html?q=" + item.name + "&check_keywords=yes&area=default'>" + value + "</a>" + "<a href='../../../../../_static/../" + item.website_url + "' ><img src='../../../../../_static/link.svg'/></a></span>";
+		    }
+	    },
+
+		theme: "square"
+
+	};
+
+	$("#simple").easyAutocomplete(options);
+
+
+    </script>
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../../index.html">Home</a></li>
+              </ul>
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../../index.html">Functions</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../../../index.html">Analysis</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../../../relaxedFBA/index.html">Relaxedfba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../topology/index.html">Topology</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../KLdistance/index.html">Kldistance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../dynamicFBA/index.html">Dynamicfba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../ICONGEMs/index.html">Icongems</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../../index.html">Sampling</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="../index.html">Barrierround</a><ul class="current">
+<li class="toctree-l5 current"><a class="current reference internal" href="#">Polytopesimplifier</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="coverage/index.html">Coverage</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="../CMatrix/index.html">Cmatrix</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../utils/index.html">Utils</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../CHRR/index.html">Chrr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ACHR/index.html">Achr</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../rFBA/index.html">Rfba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../percentileCalc/index.html">Percentilecalc</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../QFCA/index.html">Qfca</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../fluxEnrichmentAnalysis/index.html">Fluxenrichmentanalysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../mdFBA/index.html">Mdfba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../MOMA/index.html">Moma</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../exploration/index.html">Exploration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../geometricFBA/index.html">Geometricfba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../FVA/index.html">Fva</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../multiSpecies/index.html">Multispecies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../gMCS/index.html">Gmcs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../parsimoniousFBA/index.html">Parsimoniousfba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../rumba/index.html">Rumba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../robustnessAnalysis/index.html">Robustnessanalysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../ROOM/index.html">Room</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../transport/index.html">Transport</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../igemRNA/index.html">Igemrna</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../sparseFBA/index.html">Sparsefba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../uFBA/index.html">Ufba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../subspaces/index.html">Subspaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../fastForest/index.html">Fastforest</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../nutritionAlgorithm/index.html">Nutritionalgorithm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../thermo/index.html">Thermo</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../FBA/index.html">Fba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../coupling/index.html">Coupling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../rMTA/index.html">Rmta</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../deletion/index.html">Deletion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../wholeBody/index.html">Wholebody</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../findMIIS/index.html">Findmiis</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../base/index.html">Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../dataIntegration/index.html">Dataintegration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../design/index.html">Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../reconstruction/index.html">Reconstruction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../visualization/index.html">Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../contributing.html">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../cite.html">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../support.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../plan.html">Development Plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../contact.html">Contact</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../citations.html">Citations</a></li>
+</ul>
+
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../index.html">The COBRA Toolbox</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../contents.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../../index.html">Functions</a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Analysis</a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Sampling</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Barrierround</a></li>
+      <li class="breadcrumb-item active">Polytopesimplifier</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="https://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <section id="polytopesimplifier">
+<span id="id1"></span><h1>Polytopesimplifier<a class="headerlink" href="#polytopesimplifier" title="Permalink to this heading">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="coverage/index.html">Coverage</a></li>
+</ul>
+</div>
+<span class="target" id="module-src.analysis.sampling.BarrierRound.PolytopeSimplifier"></span><dl class="mat class">
+<dt class="sig sig-object mat" id="src.analysis.sampling.BarrierRound.PolytopeSimplifier.ConvexProgram">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">ConvexProgram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">Aeq</span></em>, <em class="sig-param"><span class="pre">beq</span></em>, <em class="sig-param"><span class="pre">c</span></em>, <em class="sig-param"><span class="pre">df</span></em>, <em class="sig-param"><span class="pre">ddf</span></em>, <em class="sig-param"><span class="pre">barrier</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/sampling/BarrierRound/PolytopeSimplifier/ConvexProgram.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.sampling.BarrierRound.PolytopeSimplifier.ConvexProgram" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convex Program is given by
+min &lt;c,x&gt; + sum f_i(x_i) subject Ax = b, x_i in K_i
+given that such block K_i is a <em>strictly</em> convex set</p>
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="src.analysis.sampling.BarrierRound.PolytopeSimplifier.ConvexProgram.A">
+<span class="sig-name descname"><span class="pre">A</span></span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/sampling/BarrierRound/PolytopeSimplifier/ConvexProgram.A.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.sampling.BarrierRound.PolytopeSimplifier.ConvexProgram.A" title="Permalink to this definition">¶</a></dt>
+<dd><p>constraint matrix A</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="src.analysis.sampling.BarrierRound.PolytopeSimplifier.ConvexProgram.ConvexProgram">
+<span class="sig-name descname"><span class="pre">ConvexProgram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">Aeq</span></em>, <em class="sig-param"><span class="pre">beq</span></em>, <em class="sig-param"><span class="pre">c</span></em>, <em class="sig-param"><span class="pre">df</span></em>, <em class="sig-param"><span class="pre">ddf</span></em>, <em class="sig-param"><span class="pre">barrier</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/sampling/BarrierRound/PolytopeSimplifier/ConvexProgram.ConvexProgram.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.sampling.BarrierRound.PolytopeSimplifier.ConvexProgram.ConvexProgram" title="Permalink to this definition">¶</a></dt>
+<dd><p>o = ConvexProgram(Aeq, beq, c, df, ddf, barrier)
+Output a ConvexProgram representing the linear program
+min &lt;c,x&gt; + sum f_i(x_i) subject Aeq x = beq, barrier(x) &lt; inf</p>
+</dd></dl>
+
+<dl class="mat staticmethod">
+<dt class="sig sig-object mat" id="src.analysis.sampling.BarrierRound.PolytopeSimplifier.ConvexProgram.LinearProgram">
+<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">LinearProgram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">Aeq</span></em>, <em class="sig-param"><span class="pre">beq</span></em>, <em class="sig-param"><span class="pre">c</span></em>, <em class="sig-param"><span class="pre">lb</span></em>, <em class="sig-param"><span class="pre">ub</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/sampling/BarrierRound/PolytopeSimplifier/ConvexProgram.LinearProgram.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.sampling.BarrierRound.PolytopeSimplifier.ConvexProgram.LinearProgram" title="Permalink to this definition">¶</a></dt>
+<dd><p>o = LinearProgram(Aeq, beq, c, lb, ub)
+Output a ConvexProgram representing the linear program
+min &lt;c,x&gt; subject Aeq x = beq, lb &lt;= x &lt;= ub</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="src.analysis.sampling.BarrierRound.PolytopeSimplifier.ConvexProgram.b">
+<span class="sig-name descname"><span class="pre">b</span></span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/sampling/BarrierRound/PolytopeSimplifier/ConvexProgram.b.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.sampling.BarrierRound.PolytopeSimplifier.ConvexProgram.b" title="Permalink to this definition">¶</a></dt>
+<dd><p>constraint vector b</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="src.analysis.sampling.BarrierRound.PolytopeSimplifier.ConvexProgram.barrier">
+<span class="sig-name descname"><span class="pre">barrier</span></span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/sampling/BarrierRound/PolytopeSimplifier/ConvexProgram.barrier.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.sampling.BarrierRound.PolytopeSimplifier.ConvexProgram.barrier" title="Permalink to this definition">¶</a></dt>
+<dd><p>barrier for prod K_i</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="src.analysis.sampling.BarrierRound.PolytopeSimplifier.ConvexProgram.c">
+<span class="sig-name descname"><span class="pre">c</span></span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/sampling/BarrierRound/PolytopeSimplifier/ConvexProgram.c.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.sampling.BarrierRound.PolytopeSimplifier.ConvexProgram.c" title="Permalink to this definition">¶</a></dt>
+<dd><p>cost vector c</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="src.analysis.sampling.BarrierRound.PolytopeSimplifier.ConvexProgram.collapse">
+<span class="sig-name descname"><span class="pre">collapse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">x</span></em>, <em class="sig-param"><span class="pre">blocks</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/sampling/BarrierRound/PolytopeSimplifier/ConvexProgram.collapse.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.sampling.BarrierRound.PolytopeSimplifier.ConvexProgram.collapse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Collapse the domain on the blocks to boundaries closest to x
+Return okay = 1 if the collapse is successful
+Return okay = 0 if the rows are not inconsistenc (infeasible).</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="src.analysis.sampling.BarrierRound.PolytopeSimplifier.ConvexProgram.ddf">
+<span class="sig-name descname"><span class="pre">ddf</span></span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/sampling/BarrierRound/PolytopeSimplifier/ConvexProgram.ddf.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.sampling.BarrierRound.PolytopeSimplifier.ConvexProgram.ddf" title="Permalink to this definition">¶</a></dt>
+<dd><p>second derivative of cost function</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="src.analysis.sampling.BarrierRound.PolytopeSimplifier.ConvexProgram.df">
+<span class="sig-name descname"><span class="pre">df</span></span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/sampling/BarrierRound/PolytopeSimplifier/ConvexProgram.df.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.sampling.BarrierRound.PolytopeSimplifier.ConvexProgram.df" title="Permalink to this definition">¶</a></dt>
+<dd><p>first derivative of cost function</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="src.analysis.sampling.BarrierRound.PolytopeSimplifier.ConvexProgram.distance">
+<span class="sig-name descname"><span class="pre">distance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">o</span></em>, <em class="sig-param"><span class="pre">x</span></em>, <em class="sig-param"><span class="pre">v</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/sampling/BarrierRound/PolytopeSimplifier/ConvexProgram.distance.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.sampling.BarrierRound.PolytopeSimplifier.ConvexProgram.distance" title="Permalink to this definition">¶</a></dt>
+<dd><p>t = o.distance(x)
+Output the distance of x with its closest boundary for each block
+Any negative entries implies infeasible</p>
+<p>t = o.distance(x, v)
+Output the maximum step from x with direction v for each coordinate
+(The maximum step may not reach the boundary.)</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="src.analysis.sampling.BarrierRound.PolytopeSimplifier.ConvexProgram.export">
+<span class="sig-name descname"><span class="pre">export</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">o</span></em>, <em class="sig-param"><span class="pre">x</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/sampling/BarrierRound/PolytopeSimplifier/ConvexProgram.export.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.sampling.BarrierRound.PolytopeSimplifier.ConvexProgram.export" title="Permalink to this definition">¶</a></dt>
+<dd><p>z = o.export(x)
+Output x in the original coordinate system</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="src.analysis.sampling.BarrierRound.PolytopeSimplifier.ConvexProgram.feasible">
+<span class="sig-name descname"><span class="pre">feasible</span></span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/sampling/BarrierRound/PolytopeSimplifier/ConvexProgram.feasible.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.sampling.BarrierRound.PolytopeSimplifier.ConvexProgram.feasible" title="Permalink to this definition">¶</a></dt>
+<dd><p>indicate if the domain is empty, [] means not determined</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="src.analysis.sampling.BarrierRound.PolytopeSimplifier.ConvexProgram.findInterior">
+<span class="sig-name descname"><span class="pre">findInterior</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">o</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/sampling/BarrierRound/PolytopeSimplifier/ConvexProgram.findInterior.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.sampling.BarrierRound.PolytopeSimplifier.ConvexProgram.findInterior" title="Permalink to this definition">¶</a></dt>
+<dd><p>x = o.findInterior()
+Find an interior point of the convex set using analytic center
+return NaN if the set is empty</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="src.analysis.sampling.BarrierRound.PolytopeSimplifier.ConvexProgram.idx">
+<span class="sig-name descname"><span class="pre">idx</span></span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/sampling/BarrierRound/PolytopeSimplifier/ConvexProgram.idx.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.sampling.BarrierRound.PolytopeSimplifier.ConvexProgram.idx" title="Permalink to this definition">¶</a></dt>
+<dd><p>original coordinates that x supported on</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="src.analysis.sampling.BarrierRound.PolytopeSimplifier.ConvexProgram.interior">
+<span class="sig-name descname"><span class="pre">interior</span></span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/sampling/BarrierRound/PolytopeSimplifier/ConvexProgram.interior.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.sampling.BarrierRound.PolytopeSimplifier.ConvexProgram.interior" title="Permalink to this definition">¶</a></dt>
+<dd><p>some interior point we found</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="src.analysis.sampling.BarrierRound.PolytopeSimplifier.ConvexProgram.normalize">
+<span class="sig-name descname"><span class="pre">normalize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">o</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/sampling/BarrierRound/PolytopeSimplifier/ConvexProgram.normalize.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.sampling.BarrierRound.PolytopeSimplifier.ConvexProgram.normalize" title="Permalink to this definition">¶</a></dt>
+<dd><p>x = o.normalize()</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="src.analysis.sampling.BarrierRound.PolytopeSimplifier.ConvexProgram.removeRedundantRows">
+<span class="sig-name descname"><span class="pre">removeRedundantRows</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/sampling/BarrierRound/PolytopeSimplifier/ConvexProgram.removeRedundantRows.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.sampling.BarrierRound.PolytopeSimplifier.ConvexProgram.removeRedundantRows" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove redundant rows from Ax=b
+Return 1 if the removal is successful
+Return 0 if the rows are not inconsistenc (infeasible).</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="src.analysis.sampling.BarrierRound.PolytopeSimplifier.ConvexProgram.rescale">
+<span class="sig-name descname"><span class="pre">rescale</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/sampling/BarrierRound/PolytopeSimplifier/ConvexProgram.rescale.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.sampling.BarrierRound.PolytopeSimplifier.ConvexProgram.rescale" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rescale rows to improve numerical stability</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="src.analysis.sampling.BarrierRound.PolytopeSimplifier.ConvexProgram.rowReorder">
+<span class="sig-name descname"><span class="pre">rowReorder</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/sampling/BarrierRound/PolytopeSimplifier/ConvexProgram.rowReorder.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.sampling.BarrierRound.PolytopeSimplifier.ConvexProgram.rowReorder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reorder rows to speed up sparse cholesky</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="src.analysis.sampling.BarrierRound.PolytopeSimplifier.ConvexProgram.scale">
+<span class="sig-name descname"><span class="pre">scale</span></span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/sampling/BarrierRound/PolytopeSimplifier/ConvexProgram.scale.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.sampling.BarrierRound.PolytopeSimplifier.ConvexProgram.scale" title="Permalink to this definition">¶</a></dt>
+<dd><p>scale of x.</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="src.analysis.sampling.BarrierRound.PolytopeSimplifier.ConvexProgram.scale2">
+<span class="sig-name descname"><span class="pre">scale2</span></span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/sampling/BarrierRound/PolytopeSimplifier/ConvexProgram.scale2.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.sampling.BarrierRound.PolytopeSimplifier.ConvexProgram.scale2" title="Permalink to this definition">¶</a></dt>
+<dd><p>scale.^2</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="src.analysis.sampling.BarrierRound.PolytopeSimplifier.ConvexProgram.solver">
+<span class="sig-name descname"><span class="pre">solver</span></span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/sampling/BarrierRound/PolytopeSimplifier/ConvexProgram.solver.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.sampling.BarrierRound.PolytopeSimplifier.ConvexProgram.solver" title="Permalink to this definition">¶</a></dt>
+<dd><p>Linear system solver used to solve (A W A’)^-1</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="src.analysis.sampling.BarrierRound.PolytopeSimplifier.ConvexProgram.x0">
+<span class="sig-name descname"><span class="pre">x0</span></span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/sampling/BarrierRound/PolytopeSimplifier/ConvexProgram.x0.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.sampling.BarrierRound.PolytopeSimplifier.ConvexProgram.x0" title="Permalink to this definition">¶</a></dt>
+<dd><p>We represent any z in the domain implicitly by x as follows:
+z = x0;
+z(idx) += scale.*x;</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="mat class">
+<dt class="sig sig-object mat" id="src.analysis.sampling.BarrierRound.PolytopeSimplifier.TwoSidedBarrier">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">TwoSidedBarrier</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">lb</span></em>, <em class="sig-param"><span class="pre">ub</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/sampling/BarrierRound/PolytopeSimplifier/TwoSidedBarrier.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.sampling.BarrierRound.PolytopeSimplifier.TwoSidedBarrier" title="Permalink to this definition">¶</a></dt>
+<dd><p>The log barrier for the domain {lu &lt;= x &lt;= ub}:
+phi(x) = - sum log(x - lb) - sum log(ub - x).</p>
+<dl class="mat method">
+<dt class="sig sig-object mat" id="src.analysis.sampling.BarrierRound.PolytopeSimplifier.TwoSidedBarrier.TwoSidedBarrier">
+<span class="sig-name descname"><span class="pre">TwoSidedBarrier</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">lb</span></em>, <em class="sig-param"><span class="pre">ub</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/sampling/BarrierRound/PolytopeSimplifier/TwoSidedBarrier.TwoSidedBarrier.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.sampling.BarrierRound.PolytopeSimplifier.TwoSidedBarrier.TwoSidedBarrier" title="Permalink to this definition">¶</a></dt>
+<dd><p>Construct a barrier with lower bound lb and upper bound ub.</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="src.analysis.sampling.BarrierRound.PolytopeSimplifier.TwoSidedBarrier.boundary">
+<span class="sig-name descname"><span class="pre">boundary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">o</span></em>, <em class="sig-param"><span class="pre">x</span></em>, <em class="sig-param"><span class="pre">blocks</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/sampling/BarrierRound/PolytopeSimplifier/TwoSidedBarrier.boundary.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.sampling.BarrierRound.PolytopeSimplifier.TwoSidedBarrier.boundary" title="Permalink to this definition">¶</a></dt>
+<dd><p>[idx, b] = o.boundary(x, blocks)
+Output the boundary value of each block and their cooresponding indices</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="src.analysis.sampling.BarrierRound.PolytopeSimplifier.TwoSidedBarrier.center">
+<span class="sig-name descname"><span class="pre">center</span></span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/sampling/BarrierRound/PolytopeSimplifier/TwoSidedBarrier.center.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.sampling.BarrierRound.PolytopeSimplifier.TwoSidedBarrier.center" title="Permalink to this definition">¶</a></dt>
+<dd><p>Some feasible point x</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="src.analysis.sampling.BarrierRound.PolytopeSimplifier.TwoSidedBarrier.derivatives">
+<span class="sig-name descname"><span class="pre">derivatives</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">o</span></em>, <em class="sig-param"><span class="pre">x</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/sampling/BarrierRound/PolytopeSimplifier/TwoSidedBarrier.derivatives.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.sampling.BarrierRound.PolytopeSimplifier.TwoSidedBarrier.derivatives" title="Permalink to this definition">¶</a></dt>
+<dd><p>[g, h, t] = o.derivatives(x)
+Output the gradient, Hessian and the third derivative of phi(x).</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="src.analysis.sampling.BarrierRound.PolytopeSimplifier.TwoSidedBarrier.distance">
+<span class="sig-name descname"><span class="pre">distance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">o</span></em>, <em class="sig-param"><span class="pre">x</span></em>, <em class="sig-param"><span class="pre">v</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/sampling/BarrierRound/PolytopeSimplifier/TwoSidedBarrier.distance.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.sampling.BarrierRound.PolytopeSimplifier.TwoSidedBarrier.distance" title="Permalink to this definition">¶</a></dt>
+<dd><p>t = o.distance(x)
+Output the distance of x with its closest boundary for each coordinate
+Any negative entries implies infeasible</p>
+<p>t = o.distance(x, v)
+Output the maximum step from x with direction v for each coordinate</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="src.analysis.sampling.BarrierRound.PolytopeSimplifier.TwoSidedBarrier.feasible">
+<span class="sig-name descname"><span class="pre">feasible</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">o</span></em>, <em class="sig-param"><span class="pre">x</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/sampling/BarrierRound/PolytopeSimplifier/TwoSidedBarrier.feasible.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.sampling.BarrierRound.PolytopeSimplifier.TwoSidedBarrier.feasible" title="Permalink to this definition">¶</a></dt>
+<dd><p>t = o.feasible(x)
+Output if x is feasible</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="src.analysis.sampling.BarrierRound.PolytopeSimplifier.TwoSidedBarrier.lb">
+<span class="sig-name descname"><span class="pre">lb</span></span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/sampling/BarrierRound/PolytopeSimplifier/TwoSidedBarrier.lb.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.sampling.BarrierRound.PolytopeSimplifier.TwoSidedBarrier.lb" title="Permalink to this definition">¶</a></dt>
+<dd><p>lb</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="src.analysis.sampling.BarrierRound.PolytopeSimplifier.TwoSidedBarrier.n">
+<span class="sig-name descname"><span class="pre">n</span></span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/sampling/BarrierRound/PolytopeSimplifier/TwoSidedBarrier.n.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.sampling.BarrierRound.PolytopeSimplifier.TwoSidedBarrier.n" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of variables</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="src.analysis.sampling.BarrierRound.PolytopeSimplifier.TwoSidedBarrier.remove">
+<span class="sig-name descname"><span class="pre">remove</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">x</span></em>, <em class="sig-param"><span class="pre">blocks</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/sampling/BarrierRound/PolytopeSimplifier/TwoSidedBarrier.remove.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.sampling.BarrierRound.PolytopeSimplifier.TwoSidedBarrier.remove" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove the blocks from the barrier</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="src.analysis.sampling.BarrierRound.PolytopeSimplifier.TwoSidedBarrier.rescale">
+<span class="sig-name descname"><span class="pre">rescale</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">scale</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/sampling/BarrierRound/PolytopeSimplifier/TwoSidedBarrier.rescale.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.sampling.BarrierRound.PolytopeSimplifier.TwoSidedBarrier.rescale" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rescale lb = lb .* scale, ub = ub .* scale</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="src.analysis.sampling.BarrierRound.PolytopeSimplifier.TwoSidedBarrier.set">
+<span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">lb</span></em>, <em class="sig-param"><span class="pre">ub</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/sampling/BarrierRound/PolytopeSimplifier/TwoSidedBarrier.set.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.sampling.BarrierRound.PolytopeSimplifier.TwoSidedBarrier.set" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update the bounds lb and ub.</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="src.analysis.sampling.BarrierRound.PolytopeSimplifier.TwoSidedBarrier.ub">
+<span class="sig-name descname"><span class="pre">ub</span></span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/sampling/BarrierRound/PolytopeSimplifier/TwoSidedBarrier.ub.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.sampling.BarrierRound.PolytopeSimplifier.TwoSidedBarrier.ub" title="Permalink to this definition">¶</a></dt>
+<dd><p>ub</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.sampling.BarrierRound.PolytopeSimplifier.analyticCenter">
+<span class="sig-name descname"><span class="pre">analyticCenter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">f</span></em>, <em class="sig-param"><span class="pre">x</span></em>, <em class="sig-param"><span class="pre">opts</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/sampling/BarrierRound/PolytopeSimplifier/analyticCenter.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.sampling.BarrierRound.PolytopeSimplifier.analyticCenter" title="Permalink to this definition">¶</a></dt>
+<dd><p>x = analyticCenter(f, opts, x)
+compute the analytic center for the domain {Ax=b} intersect the domain of f</p>
+<dl class="field-list">
+<dt class="field-odd">Input</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>f - a ConvexProgram</strong></p></li>
+<li><p><strong>x - a feasible initial point</strong> (<em>optional</em>)</p></li>
+<li><p><strong>opts - a structure for options with the following properties</strong> (<em>optional</em>) – MaxIter - maximum number of iterations
+Output - maximum number of iterations
+CentralityTol, FeasibilityTol - stop the following are satisfied</p>
+<blockquote>
+<div><p>||(A’ * lambda - grad f(x)) / sqrt(hess)||_inf &lt; CentralityTol
+||A x - b||_inf &lt; FeasibilityTol</p>
+</div></blockquote>
+<dl class="simple">
+<dt>CollapseDistanceTol -</dt><dd><p>if x_i is CollapseDistanceTol close to some boundary,
+we assume the block i is tight.</p>
+</dd>
+</dl>
+<p>SolverIter - the number of iteration in solving linear systems
+VectorType - the class we use for x (&#64;double, &#64;ddouble, &#64;qdouble)</p>
+</li>
+</ul>
+</dd>
+<dt class="field-even">Output</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>x - It outputs the analytic center of f</strong></p></li>
+<li><p><strong>info - a structure containing centrality, feasibility and iter.</strong></p></li>
+<li><p><strong>f - the problem f will be modified as we discover collapsed subspace</strong></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat script">
+<dt class="sig sig-object mat" id="src.analysis.sampling.BarrierRound.PolytopeSimplifier.demo">
+<span class="sig-name descname"><span class="pre">demo</span></span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/sampling/BarrierRound/PolytopeSimplifier/demo.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.sampling.BarrierRound.PolytopeSimplifier.demo" title="Permalink to this definition">¶</a></dt>
+<dd><p>it outputs NaN if the problem is infeasible.</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.sampling.BarrierRound.PolytopeSimplifier.lewisCenter">
+<span class="sig-name descname"><span class="pre">lewisCenter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">f</span></em>, <em class="sig-param"><span class="pre">x</span></em>, <em class="sig-param"><span class="pre">opts</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/sampling/BarrierRound/PolytopeSimplifier/lewisCenter.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.sampling.BarrierRound.PolytopeSimplifier.lewisCenter" title="Permalink to this definition">¶</a></dt>
+<dd><p>x = LewisCenter(f, opts, x)
+compute the analytic center for the domain {Ax=b} intersect the domain of f</p>
+<dl class="field-list">
+<dt class="field-odd">Input</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>f - a ConvexProgram</strong></p></li>
+<li><p><strong>x - a feasible initial point</strong></p></li>
+<li><p><strong>opts - a structure for options with the following properties</strong> (<em>optional</em>) – MaxIter - maximum number of iterations
+Output - maximum number of iterations
+CentralityTol, FeasibilityTol - stop the following are satisfied</p>
+<blockquote>
+<div><p>||(A’ * lambda - grad f(x)) / sqrt(hess)||_inf &lt; CentralityTol
+||A x - b||_inf &lt; FeasibilityTol</p>
+</div></blockquote>
+<p>p - the parameter for lp Lewis weight
+JLDim - the number of dimensions used in estimating leverage score</p>
+</li>
+</ul>
+</dd>
+<dt class="field-even">Output</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>x - It outputs the analytic center of f</strong></p></li>
+<li><p><strong>info - a structure containing centrality, feasibility and iter.</strong></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="coverage/index.html" class="btn btn-default float-right" title="Coverage" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../index.html" class="btn btn-default" title="Barrierround" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017-2021, The COBRA Toolbox developers.
+
+    </p>
+  </div>
+  Built with Sphinx using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../../',
+            VERSION:'2.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+    <script type="text/javascript" src="../../../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script type="text/javascript" src="../../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../../../_static/sphinx_highlight.js"></script>
+
+  
+
+
+  
+  
+    <script type="text/javascript" src="../../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TRCMZL1FKK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TRCMZL1FKK');
+  </script>
+    
+</body>
+</html>

@@ -5,17 +5,19 @@
 %       Cycle E. coli Core Model
 %
 
+global CBTDIR
+
+% define the features required to run the test
+requiredSoftwares = {'cxcalc', 'obabel', 'java'};
+
+% require the specified toolboxes and solvers, along with a UNIX OS
+solversPkgs = prepareTest('requiredSoftwares', requiredSoftwares);
+
 fprintf('   Testing generateChemicalDatabase ... \n' );
 
 % Save the current path
 currentDir = pwd;
 mkdir([currentDir filesep 'tmpDB'])
-
-% Check external software
-[cxcalcInstalled, ~] = system('cxcalc');
-cxcalcInstalled = ~cxcalcInstalled;
-[oBabelInstalled, ~] = system('obabel');
-[javaInstalled, ~] = system('java');
 
 % Load the E. coli Core Model TCA rxns
 load ecoli_core_model.mat
@@ -36,10 +38,6 @@ replace = false;
 
 options.outputDir = [currentDir filesep 'tmpDB'];
 options.printlevel = 0;
-
-if any([~cxcalcInstalled ~oBabelInstalled ~javaInstalled])
-    error('To test the function CXCALC, Open Babel and JAVA must be installed to test the function generateChemicalDatabase')
-end
 
 [info, model] = generateChemicalDatabase(model, options);
 

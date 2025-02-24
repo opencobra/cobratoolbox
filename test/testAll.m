@@ -13,11 +13,17 @@ fprintf('     | |___  | |_| | | |_| | | | \\ \\  | |   | |   |   Test Suite\n');
 fprintf(['     \\_____| \\_____/ |_____/ |_|  \\_\\ |_|   |_|   |\n']);
 fprintf('                                                  | \n\n');
 
+% Define CI boolean
+CIenv = false;
+
 % request explicitly from the user to launch test suite locally
-if contains(getenv('HOME'), 'vmhadmin') || contains(getenv('HOME'), 'jenkins')
+if contains(getenv('HOME'), 'saleh')
     % Running in CI environment
-    fprintf('Running test in Jenkins/CI environment\n');
-    
+    fprintf('Running test in cobratoolbox/CI environment\n');
+
+    % Set CI boolean to true
+    CIenv = true;
+
     % on the CI, always reset the path to make absolutely sure, that we test
     % the current version
     restoredefaultpath;
@@ -27,7 +33,7 @@ else
     while isempty(reply)
         reply = input([' -> Do you want to launch the test suite locally? Time estimate: more than 60 minutes Y/N: '], 's');
     end
-    
+
     if strcmpi(reply, 'y') || strcmpi(reply, 'yes')
         launchTestSuite = true;
     else
@@ -72,7 +78,7 @@ if launchTestSuite
     testDirContent = getFilesInDir('type', 'all');  % Get all currently present files in the folder.
     testDirPath = pwd;
     cd(currentDir);
-%{
+    %{
     if ~isempty(strfind(getenv('HOME'), 'jenkins')) || ~isempty(strfind(getenv('USERPROFILE'), 'jenkins'))
         WAITBAR_TYPE = 0;
 
@@ -84,7 +90,7 @@ if launchTestSuite
     else
         WAITBAR_TYPE = 1;
     end
-%}
+    %}
     if verLessThan('matlab', '8.2')
         error('The testsuite of The COBRA Toolbox can only be run with MATLAB R2014b+.')
     end
@@ -100,7 +106,7 @@ if launchTestSuite
         % only retain the lines that end with .txt and .m and
         % are not comments and point to files in the /src folder
         ignoredPatterns = {'^.{0,3}$', ...  % Is smaller than four.
-                        ['^[^s][^r][^c][^' regexptranslate('escape', filesep) ']']};  % does not start with src/
+            ['^[^s][^r][^c][^' regexptranslate('escape', filesep) ']']};  % does not start with src/
         filterPatterns = {'\.txt$', '\.m$'};  % Is either a .m file or a .txt file.
         ignoreFiles = getIgnoredFiles(ignoredPatterns, filterPatterns);
 
@@ -120,10 +126,10 @@ if launchTestSuite
             while ~feof(fid)
                 lineOfFile = strtrim(char(fgetl(fid)));
                 if length(lineOfFile) > 0 && length(strfind(lineOfFile(1), '%')) ~= 1  ...
-                    && length(strfind(lineOfFile, 'end')) ~= 1 && length(strfind(lineOfFile, 'otherwise')) ~= 1 ...
-                    && length(strfind(lineOfFile, 'switch')) ~= 1 && length(strfind(lineOfFile, 'else')) ~= 1  ...
-                    && length(strfind(lineOfFile, 'case')) ~= 1 && length(strfind(lineOfFile, 'function')) ~= 1
-                        nCodeLines = nCodeLines + 1;
+                        && length(strfind(lineOfFile, 'end')) ~= 1 && length(strfind(lineOfFile, 'otherwise')) ~= 1 ...
+                        && length(strfind(lineOfFile, 'switch')) ~= 1 && length(strfind(lineOfFile, 'else')) ~= 1  ...
+                        && length(strfind(lineOfFile, 'case')) ~= 1 && length(strfind(lineOfFile, 'function')) ~= 1
+                    nCodeLines = nCodeLines + 1;
 
                 elseif length(lineOfFile) == 0
                     nEmptyLines = nEmptyLines + 1;
@@ -140,11 +146,11 @@ if launchTestSuite
 
         grades = {'A', 'B', 'C', 'D', 'E', 'F'};
         intervals = [0, 3;
-                    3, 6;
-                    6, 9;
-                    9, 12;
-                    12, 15;
-                    15, 100];
+            3, 6;
+            6, 9;
+            9, 12;
+            12, 15;
+            15, 100];
 
         grade = 'F';
         for i = 1:length(intervals)
@@ -180,6 +186,79 @@ try
         sumFailed = sum(resultTable.Failed);
 
         fprintf(['\n > ', num2str(sumFailed), ' tests failed. ', num2str(sumSkipped), ' tests were skipped due to missing requirements.\n\n']);
+
+        if CIenv
+            %% NEW: Generate JUnit XML report for Codecov
+
+            xmlFileName = 'testReport.junit.xml';
+
+            fid = fopen(xmlFileName, 'w');
+            if fid == -1
+                error('Could not open file for writing: %s', xmlFileName);
+            end
+
+            fprintf(fid, '<?xml version="1.0" encoding="UTF-8"?>\n');
+
+            numTests    = height(resultTable);
+            numFailures = sum(resultTable.Failed);
+            numErrors   = sum(resultTable.Failed);
+            numSkipped  = sum(resultTable.Skipped);
+
+            % Compute total time and also count how many are "failures" vs. "errors"
+            totalTime = sum(resultTable.Time);
+
+            % 1) Wrap in <testsuites> -- typical JUnit format
+            fprintf(fid, '<testsuites name="" tests="%d" failures="%d" errors="%d" time="%.3f">\n', ...
+                numTests, numFailures, numErrors, totalTime);
+
+            % 2) A single <testsuite> inside
+            fprintf(fid, '  <testsuite name="" tests="%d" failures="%d" errors="%d" skipped="%d" time="%.3f">\n', ...
+                numTests, numFailures, numErrors, numSkipped, totalTime);
+
+            % 3) Loop over each test case
+            for i = 1:numTests
+                testName = resultTable.TestName{i};
+                if isnan(resultTable.Time(i))
+                    tVal = 0;
+                else
+                    tVal = resultTable.Time(i);
+                end
+
+                % Start the <testcase> tag
+                fprintf(fid, '    <testcase name="%s" time="%.3f"', testName, tVal);
+
+                if resultTable.Passed(i)
+                    % Passed => just close
+                    fprintf(fid, '/>\n');
+                elseif resultTable.Skipped(i)
+                    % Skipped => <skipped/>
+                    fprintf(fid, '>\n');
+                    fprintf(fid, '      <skipped message="%s"/>\n', escapeXML(resultTable.Details{i}));
+                    fprintf(fid, '    </testcase>\n');
+                else
+                    % Not passed, not skipped => either <failure> or <error>
+                    % Check the .Error or .Details to decide
+                    errMsg = result(i).Error.message;  % or getReport()
+
+                    % Heuristic: if "Assertion" => <failure>, else <error>.
+                    if contains(errMsg, 'Assertion') || contains(errMsg, 'assert')
+                        fprintf(fid, '>\n');
+                        fprintf(fid, '      <failure message="%s"/>\n', escapeXML(errMsg));
+                    else
+                        fprintf(fid, '>\n');
+                        fprintf(fid, '      <error message="%s"/>\n', escapeXML(errMsg));
+                    end
+
+                    fprintf(fid, '    </testcase>\n');
+                end
+            end
+
+            % Close out the suite and suites
+            fprintf(fid, '  </testsuite>\n');
+            fprintf(fid, '</testsuites>\n');
+            fclose(fid);
+        end
+        %% End of XML generation
 
         % count the number of covered lines of code
         if COVERAGE
@@ -238,7 +317,7 @@ try
                 fprintf('%s:\n', resultTable.TestName{failedTests(i)});
                 trace = result(failedTests(i)).Error.getReport();
                 tracePerLine = strsplit(trace, '\n');
-                testSuitePosition = find(cellfun(@(x) ~isempty(strfind(x, 'runTestSuite')), tracePerLine));
+                testSuitePosition = find(cellfun(@(x) contains(x, 'runTestSuite'), tracePerLine));
                 trace = sprintf(strjoin(tracePerLine(1:(testSuitePosition - 7)), '\n'));  % Remove the testSuiteTrace.
                 fprintf('%s\n', trace);
                 fprintf('------------------------------------------------\n')
@@ -288,4 +367,17 @@ if contains(getenv('HOME'), 'vmhadmin') || contains(getenv('HOME'), 'jenkins')
     fprintf('Running test in Jenkins/CI environment\n');
     % explicit 'exit' required for R2018b in non-interactive mode to avoid SEGV near end of test
     exit
+end
+
+%% Local helper function to escape XML special characters.
+function out = escapeXML(in)
+if isempty(in)
+    out = '';
+    return;
+end
+out = strrep(in, '&', '&amp;');
+out = strrep(out, '<', '&lt;');
+out = strrep(out, '>', '&gt;');
+out = strrep(out, '"', '&quot;');
+out = strrep(out, '''', '&apos;');
 end

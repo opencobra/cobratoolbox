@@ -1,43 +1,49 @@
 function P = standardize_problem(P)
-if isfield(P, 'A')
+if nonempty(P, 'A')
     error('Polytope:standardize', 'Use Aeq or Aineq instead of A in the model structure.');
 end
     
-if isfield(P, 'Aeq')
+if nonempty(P, 'Aeq')
     n = size(P.Aeq, 2);
-elseif isfield(P, 'Aineq')
+elseif nonempty(P, 'Aineq')
     n = size(P.Aineq, 2);
-elseif isfield(P, 'lb')
+elseif nonempty(P, 'lb')
     n = length(P.lb);
-elseif isfield(P, 'ub')
+elseif nonempty(P, 'ub')
     n = length(P.ub);
+elseif nonempty(P, 'center')
+    n = length(P.center);
 else
     error('Polytope:standardize', 'For unconstrained problems, an initial point "center" is required.');
 end
 
 %% Set all non-existence fields
-if ~isfield(P, 'Aeq')
+if ~nonempty(P, 'Aeq')
     P.Aeq = sparse(zeros(0, n));
 end
 
-if ~isfield(P, 'beq')
+if ~nonempty(P, 'beq')
     P.beq = zeros(size(P.Aeq, 1), 1);
 end
 
-if ~isfield(P, 'Aineq')
+if ~nonempty(P, 'Aineq')
     P.Aineq = sparse(zeros(0, n));
 end
 
-if ~isfield(P, 'bineq')
+if ~nonempty(P, 'bineq')
     P.bineq = zeros(size(P.Aineq, 1), 1);
 end
 
-if ~isfield(P, 'lb')
+if ~nonempty(P, 'lb')
     P.lb = -Inf * ones(n, 1);
 end
 
-if ~isfield(P,'ub')
+if ~nonempty(P,'ub')
     P.ub = Inf * ones(n,1);
+end
+
+if ~nonempty(P,'center')
+    P.center = [];
 end
 
 %% Store f, df, ddf, dddf

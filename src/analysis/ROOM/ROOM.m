@@ -112,7 +112,7 @@ ROOMmodel.c(:) = 0;
 ROOMmodel.evarc(cellfun(@length,regexp(ROOMmodel.evars,'^binary_'))==1) = 1;
 ROOMmodel.osenseStr = 'min';
 
-MILPproblem = buildLPproblemFromModel(ROOMmodel);
+MILPproblem = buildOptProblemFromModel(ROOMmodel);
 
 MILPproblem.vartype = char(ones(1,size(MILPproblem.A,2))*'C');
 MILPproblem.vartype(MILPproblem.c==1) = 'B';

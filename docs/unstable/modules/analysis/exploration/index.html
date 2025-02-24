@@ -1,0 +1,1393 @@
+
+<!DOCTYPE html>
+
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Exploration — The COBRA Toolbox</title>
+<link href="../../../_static/img/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180"/>
+<link href="../../../_static/img/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png"/>
+<link href="../../../_static/img/favicon-16x16.png" rel="icon" sizes="16x16" type="image/png"/>
+<link color="#5bbad5" href="../../../_static/img/safari-pinned-tab.svg" rel="mask-icon"/>
+<link href="../../../_static/json/manifest.json" rel="manifest"/>
+<meta content="../../../_static/browserconfig.xml" name="msapplication-config"/>
+<meta content="#ffffff" name="theme-color"/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+<script src="../../../_static/js/jquery.easy-autocomplete.min.js" type="text/javascript"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/css/easy-autocomplete.min.css" rel="stylesheet" type="text/css"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
+<link href="../../../_static/css/cobra.css" rel="stylesheet" type="text/css">
+<link href="../../../genindex.html" rel="index" title="Index">
+<link href="../../../search.html" rel="search" title="Search">
+<link href="../../../index.html" rel="top" title="The COBRA Toolbox">
+<link href="../index.html" rel="up" title="Analysis">
+<link href="../FBA/index.html" rel="next" title="FBA">
+<link href="../dynamicFBA/index.html" rel="prev" title="Dynamic FBA">
+<script src="../../../_static/js/modernizr.min.js"></script>
+</link></link></link></link></link></link></link></head>
+<!-- Google tag (gtag.js) -->
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-KFJTC6J15L"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-KFJTC6J15L');
+</script>
+
+<body class="wy-body-for-nav" role="document">
+<div class="wy-grid-for-nav">
+<nav class="wy-nav-side" data-toggle="wy-nav-shift">
+<div class="wy-side-scroll">
+<div class="wy-side-nav-search">
+<a class="icon icon-home" href="../../../index.html"> The COBRA Toolbox
+          
+
+          
+            <img alt="cobratoolbox logo" class="logo" src="http://gibbs.unal.edu.co/cobradoc/cobratoolbox/img/cobratoolbox_logo_transparent.png"/>
+</a>
+<h1>The COBRA Toolbox</h1>
+<div role="search">
+<form action="../../../search.html" class="wy-form" id="rtd-search-form" method="get">
+<input id="simple" name="q" placeholder="Search docs" type="text"/>
+<input name="check_keywords" type="hidden" value="yes"/>
+<input name="area" type="hidden" value="default"/>
+<script>
+    	var options = {
+
+		url: "../../../_static/json/functions.json",
+
+		getValue: "name",
+
+		list: {
+            onKeyEnterEvent: function(item) {
+                    return "_static/../" + item.website_url
+            },
+            maxNumberOfElements: 25,
+			match: {
+					enabled: true,
+			},
+            sort: {
+			    enabled: true
+		    }
+		},
+
+    	template: {
+	    	type: "custom",
+		    method: function(value, item) {
+                return "<span><a href='../../../search.html?q=" + item.name + "&check_keywords=yes&area=default'>" + value + "</a>" + "<a href='../../../_static/../" + item.website_url + "' ><img src='../../../_static/link.svg'/></a></span>";
+		    }
+	    },
+
+		theme: "square"
+
+	};
+
+	$("#simple").easyAutocomplete(options);
+
+
+    </script>
+</form>
+</div>
+</div>
+<div aria-label="main navigation" class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation">
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../index.html">Home</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Functions</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Analysis</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../coupling/index.html">Coupling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../deletion/index.html">Deletion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dynamicFBA/index.html">Dynamic FBA</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Exploration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../FBA/index.html">FBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../findMIIS/index.html">findMIIS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../fluxEnrichmentAnalysis/index.html">fluxEnrichmentAnalysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../FVA/index.html">FVA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../geometricFBA/index.html">geometricFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gMCS/index.html">gMCS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../KLdistance/index.html">KLdistance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mdFBA/index.html">mdFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../MOMA/index.html">MOMA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../multiSpecies/index.html">MultiSpecies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../parsimoniousFBA/index.html">parsimoniousFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../relaxedFBA/index.html">relaxedFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../rFBA/index.html">rFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../rMTA/index.html">rMTA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../robustnessAnalysis/index.html">robustnessAnalysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ROOM/index.html">ROOM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../rumba/index.html">rumba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../sampling/index.html">Sampling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../sparseFBA/index.html">sparseFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../subspaces/index.html">Subspaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../thermo/index.html">Thermo</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topology/index.html">Topology</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../transport/index.html">Transport</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../uFBA/index.html">uFBA</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../base/index.html">Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dataIntegration/index.html">Data integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../design/index.html">Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reconstruction/index.html">Reconstruction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../visualization/index.html">Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../cite.html">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../support.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../plan.html">Development Plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contact.html">Contact</a></li>
+</ul>
+</div>
+</div>
+</nav>
+<section class="wy-nav-content-wrap" data-toggle="wy-nav-shift">
+<nav aria-label="top navigation" class="wy-nav-top" role="navigation">
+<i class="fa fa-bars" data-toggle="wy-nav-top"></i>
+<a href="../../../index.html">The COBRA Toolbox</a>
+</nav>
+<div class="wy-nav-content">
+<div class="rst-content">
+<div aria-label="breadcrumbs navigation" role="navigation">
+<ul class="wy-breadcrumbs">
+<li><a class="icon icon-home" href="../../../contents.html"></a> »</li>
+<li><a href="../../index.html">Functions</a> »</li>
+<li><a href="../index.html">Analysis</a> »</li>
+<li>Exploration</li>
+<li class="wy-breadcrumbs-aside">
+</li>
+</ul>
+<hr/>
+</div>
+<div class="document" itemscope="itemscope" itemtype="https://schema.org/Article" role="main">
+<div itemprop="articleBody">
+<div class="section" id="exploration">
+<span id="id1"></span><h1>Exploration<a class="headerlink" href="#exploration" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-src.analysis.exploration"></span><dl class="function">
+<dt id="src.analysis.exploration.biomassPrecursorCheck">
+<code class="descname">biomassPrecursorCheck</code><span class="sig-paren">(</span><em>model</em>, <em>checkCoupling</em>, <em>checkConservedQuantities</em>, <em>ATN</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.exploration.biomassPrecursorCheck" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if biomass precursors are able to be synthesized.</p>
+<dl class="docutils">
+<dt>USAGE:</dt>
+<dd>[missingMets, presentMets, coupledMets, missingCofs, presentCofs] = biomassPrecursorCheck(model, checkCoupling, checkConservedQuantities)</dd>
+<dt>INPUT:</dt>
+<dd>model:             COBRA model structure</dd>
+<dt>OPTIONAL INPUT:</dt>
+<dd><dl class="first last docutils">
+<dt>checkCoupling:     Test, whether some compounds can only be produced</dt>
+<dd>if there is a sink for other biomass precursors
+(Default: false)</dd>
+<dt>checkConservedQuantities:  true to check whether the cofactor pairs containing conserved moieties</dt>
+<dd>(defined by the network structure) can be synthesized
+(e.g., ATP, NAD, NADPH, ACCOA, AA-charged tRNA, fatty acyl-ACP).
+They will otherwise be identified as missingMets (Default: false)</dd>
+<dt>ATN:               atom transition network outputed by <cite>buildAtomTransitionNetwork</cite></dt>
+<dd>If provided, true internal conserved moieties will be identified
+and used for checking conserved quantities (default [])</dd>
+</dl>
+</dd>
+<dt>OUTPUTS:</dt>
+<dd><p class="first">missingMets:    List of biomass precursors that are not able to be synthesized
+presentMets:    List of biomass precursors that are able to be synthesized
+coupledMets:    List of metabolites which need an exchange reaction for at least one other</p>
+<blockquote>
+<div>biomass component because their production is coupled to it
+(returned only if checkCoupling = true)</div></blockquote>
+<dl class="last docutils">
+<dt>missingCofs:    List of cofactor pairs (defined by the network conserved moieties)</dt>
+<dd>that are not able to be synthesized
+(returned only if checkConservedQuantities = true)</dd>
+<dt>presentCofs:    List of cofactor pairs that are able to be synthesized</dt>
+<dd>(returned only if checkConservedQuantities = true)</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+<dl class="function">
+<dt id="src.analysis.exploration.essentialRxn4MultipleModels">
+<code class="descname">essentialRxn4MultipleModels</code><span class="sig-paren">(</span><em>allModels</em>, <em>objFun</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.exploration.essentialRxn4MultipleModels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performs single reactions deletions across multiple models and identifies which reactions
+have variable essentiality across all models for the chosen objective function
+(eg. it identifies reactions whos deletion would result in a zero flux through ATP
+consumption reaction - ATPM).</p>
+<p>USAGE:</p>
+<blockquote>
+<div>[essentialRxn4Models, dataStruct] = essentialRxn4MultipleModels(allModels, objFun)</div></blockquote>
+<dl class="docutils">
+<dt>INPUTS:</dt>
+<dd>allModels:    directory of the structure with multiple COBRA model structures
+objFun:       string with objective function reaction (e.g. ‘ATPM’)</dd>
+<dt>OUTPUT:</dt>
+<dd><dl class="first docutils">
+<dt>essentialRxn4Models:    Table with reaction fluxes (within the objective function reaction)</dt>
+<dd>after single deletion of model reaction (rows) across models (columns)</dd>
+</dl>
+<p class="last">dataStruct:             Structure with all models</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>[essentialRxn4Models, dataStruct] = essentialRxn4MultipleModels(allModels, ‘ATPM’)</p>
+</dd></dl>
+<dl class="function">
+<dt id="src.analysis.exploration.findBlockedIrrRxns">
+<code class="descname">findBlockedIrrRxns</code><span class="sig-paren">(</span><em>model</em>, <em>tol</em>, <em>varargin</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.exploration.findBlockedIrrRxns" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>find all blocked irreversible reactions by solving one single LP problem:</dt>
+<dd><p class="first">min sum(z_pos + z_neg)
+s.t.   Sv = 0</p>
+<blockquote class="last">
+<div>lb &lt;= v &lt;= ub
+v_j + tol*z_pos_j &gt;= tol   for each reaction j with lb_j &gt;= 0
+v_j - tol*z_neg_j &lt;= -tol  for each reaction j with ub_j &lt;= 0</div></blockquote>
+</dd>
+<dt>USAGE:</dt>
+<dd>[blockedIrrRxns, fluxes] = findBlockedIrrRxns(model, tol, parameters)</dd>
+<dt>INPUT:</dt>
+<dd>model:           COBRA model</dd>
+<dt>OPTIONAL INPUTL</dt>
+<dd>tol:             tolerance for zeros (default feasTol*10, use default if the input is smaller)
+parameters:      COBRA and solver-specific parameters, as a input structure or parameter/value inputs</dd>
+<dt>OUTPUTS:</dt>
+<dd>blockedIrrRxns:  cell array of blocked irreversible reactions
+sol:             solution structure from solveCobraLP
+tol:             tolerance for zeros used (might be different from the input)</dd>
+</dl>
+</dd></dl>
+<dl class="function">
+<dt id="src.analysis.exploration.findBlockedReaction">
+<code class="descname">findBlockedReaction</code><span class="sig-paren">(</span><em>model</em>, <em>method</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.exploration.findBlockedReaction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determines those reactions which cannot carry any
+flux in the given simulation conditions.</p>
+<p>USAGE:</p>
+<blockquote>
+<div>BlockedReaction = findBlockedReaction(model)</div></blockquote>
+<dl class="docutils">
+<dt>INPUT:</dt>
+<dd>model:               COBRA model structure</dd>
+<dt>OPTIONAL INPUT:</dt>
+<dd><dl class="first last docutils">
+<dt>method:              ‘FVA’ for flux variability analysis (default)</dt>
+<dd>‘L2’  for 2-norm minimization</dd>
+</dl>
+</dd>
+<dt>OUTPUT:</dt>
+<dd>blockedReactions:    List of blocked reactions</dd>
+</dl>
+</dd></dl>
+<dl class="function">
+<dt id="src.analysis.exploration.findCarbonRxns">
+<code class="descname">findCarbonRxns</code><span class="sig-paren">(</span><em>model</em>, <em>nCarbonThr</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.exploration.findCarbonRxns" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the list of reactions that act of compounds which
+contain cabons greater than the thershhold set.</p>
+<p>USAGE:</p>
+<blockquote>
+<div>[hiCarbonRxns, zeroCarbonRxns, nCarbon] = findCarbonRxns(model, nCarbonThr)</div></blockquote>
+<dl class="docutils">
+<dt>INPUTS:</dt>
+<dd><dl class="first last docutils">
+<dt>model:             Structure containing all necessary variables to described a</dt>
+<dd>stoichiometric model</dd>
+<dt>nCarbonThr:        defines the min # of carbons that a metabolite, that is</dt>
+<dd>acted on in a reaction, can have in the final list of reactions</dd>
+</dl>
+</dd>
+<dt>OUTPUTS:</dt>
+<dd><dl class="first docutils">
+<dt>hiCarbonRxns:      The list of reactions that act on metabolites with</dt>
+<dd>greater than the threshold number of carbons</dd>
+</dl>
+<p class="last">zeroCarbonRxns:    Reactions with no carbon
+nCarbon:           The number of carbons in each metabolite in the model</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="function">
+<dt id="src.analysis.exploration.findEpistaticInteractions">
+<code class="descname">findEpistaticInteractions</code><span class="sig-paren">(</span><em>model</em>, <em>doubleDeletionFitness</em>, <em>lethalFlag</em>, <em>minEffect</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.exploration.findEpistaticInteractions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds synthetic lethal and/or synthetic sick
+interactions based on double deletion analysis data</p>
+<p>USAGE:</p>
+<blockquote>
+<div>[interactions, epistaticEffect] = findEpistaticInteractions(model, doubleDeletionFitness, lethalFlag, minEffect)</div></blockquote>
+<dl class="docutils">
+<dt>INPUTS:</dt>
+<dd><p class="first">model:                    COBRA model structure
+doubleDeletionFitness:    A matrix of fitness (or growth rate) values for</p>
+<blockquote class="last">
+<div>each of the double deletion strains. The diagonal
+of this matrix contains the single deletion fitness values.</div></blockquote>
+</dd>
+<dt>OPTIONAL INPUTS:</dt>
+<dd><p class="first">lethalFlag:               Only consider SL interactions (Default = false)
+minEffect:                Minimum fitness effect considered to be significant</p>
+<blockquote class="last">
+<div>(Default = 1e-2)</div></blockquote>
+</dd>
+<dt>OUTPUTS:</dt>
+<dd><dl class="first last docutils">
+<dt>interactions:             A sparse binary matrix indicating a SL or SS</dt>
+<dd>interaction between two genes in the model</dd>
+<dt>epistaticEffect:          Magnitude of the epistatic interaction defined as</dt>
+<dd>min(f1-f12, f2-f12) where f1 and f2 are the fitness
+values for the deletion strain of gene 1 and gene 2
+respectively and f12 is the fitness value for the
+double deletion strain of genes 1 and 2</dd>
+</dl>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>The criteria for establishing a synthetic sick interaction are that the
+double deletion strain fitness must be at least <cite>minEffect</cite> lower than the
+fitness of either of the single deletion strains, i.e.
+<cite>f12 &lt; f1 - minEffect</cite> and <cite>f12 &lt; f2 - minEffect</cite></p>
+<p>The additional criterion for establishing a synthetic lethal interaction
+is that the double deletion fitness value is smaller than <cite>minEffect</cite> (i.e.
+essentially zero)
+<cite>f12 &lt; minEffect</cite></p>
+<p class="last">Note that the interactions matrix double counts all interactions</p>
+</div>
+</dd></dl>
+<dl class="function">
+<dt id="src.analysis.exploration.findExcRxns">
+<code class="descname">findExcRxns</code><span class="sig-paren">(</span><em>model</em>, <em>inclObjFlag</em>, <em>irrevFlag</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.exploration.findExcRxns" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds exchange and uptake <cite>rxns</cite></p>
+<p>USAGE:</p>
+<blockquote>
+<div>[selExc, selUpt] = findExcRxns(model, inclObjFlag, irrevFlag)</div></blockquote>
+<dl class="docutils">
+<dt>INPUT:</dt>
+<dd>model:          COBRA model structure</dd>
+<dt>OPTIONAL INPUTS:</dt>
+<dd><dl class="first last docutils">
+<dt>inclObjFlag:    Include objective <cite>rxns</cite> in the exchange rxn set (1) or not (0)</dt>
+<dd>(Default = false)</dd>
+<dt>irrevFlag:      Model is in irreversible format (1) or not</dt>
+<dd>(Default = false)</dd>
+</dl>
+</dd>
+<dt>OUTPUTS:</dt>
+<dd><dl class="first last docutils">
+<dt>selExc:         Boolean vector indicating whether each reaction in</dt>
+<dd>model is exchange or not</dd>
+<dt>selUpt:         Boolean vector indicating whether each reaction in</dt>
+<dd>model is nutrient uptake or not</dd>
+</dl>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Exchange reactions only have one non-zero (+1 / -1) element in the
+corresponding column of the stoichiometric matrix. Uptake reactions are
+exchange reactions are exchange reactions with negative lower bounds.</p>
+</div>
+</dd></dl>
+<dl class="function">
+<dt id="src.analysis.exploration.findGPRFromRxns">
+<code class="descname">findGPRFromRxns</code><span class="sig-paren">(</span><em>model</em>, <em>rxnIDs</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.exploration.findGPRFromRxns" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the Textual representations of the GPR rules for the indicated
+reactions.
+USAGE:</p>
+<blockquote>
+<div>gprs = findGPRFromRxns(model,rxnIDs)</div></blockquote>
+<dl class="docutils">
+<dt>INPUTS:</dt>
+<dd>model:             The model to retrieve the GPR rules from
+rxnIDs:            The reaction IDs to obtain the GPR rules for</dd>
+</dl>
+<p>OUTPUTS:</p>
+<blockquote>
+<div>gprs:              The textual GPR Rules</div></blockquote>
+<p>Authors:</p>
+<blockquote>
+<div>Thomas Pfau Dec 2017</div></blockquote>
+</dd></dl>
+<dl class="function">
+<dt id="src.analysis.exploration.findGeneIDs">
+<code class="descname">findGeneIDs</code><span class="sig-paren">(</span><em>model</em>, <em>geneList</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.exploration.findGeneIDs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds gene numbers in a model</p>
+<p>USAGE:</p>
+<blockquote>
+<div>geneID = findGeneIDs(model, geneList)</div></blockquote>
+<dl class="docutils">
+<dt>INPUTS:</dt>
+<dd>model:       COBRA model structure
+geneList:    List of genes</dd>
+<dt>OUTPUT:</dt>
+<dd>geneID:      List of gene IDs corresponding to <cite>geneList</cite></dd>
+</dl>
+</dd></dl>
+<dl class="function">
+<dt id="src.analysis.exploration.findGenesFromRxns">
+<code class="descname">findGenesFromRxns</code><span class="sig-paren">(</span><em>model</em>, <em>reactions</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.exploration.findGenesFromRxns" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make a gene list of the genes that correspond to the
+selected reactions</p>
+<p>USAGE:</p>
+<blockquote>
+<div>[geneList] = findGenesFromRxns(model, reactions)</div></blockquote>
+<dl class="docutils">
+<dt>INPUTS:</dt>
+<dd>model:        COBRA model structure
+reactions:    Reactions to find the corresponding genes for</dd>
+<dt>OUTPUT:</dt>
+<dd>geneList:     List of genes corresponding to reactions</dd>
+</dl>
+</dd></dl>
+<dl class="function">
+<dt id="src.analysis.exploration.findHiCarbonRxns">
+<code class="descname">findHiCarbonRxns</code><span class="sig-paren">(</span><em>model</em>, <em>nCarbonThr</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.exploration.findHiCarbonRxns" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the list of reactions that act on compounds which
+contain cabons greater than the threshold set.</p>
+<p>USAGE:</p>
+<blockquote>
+<div>[hiCarbonRxns, nCarbon] = findHiCarbonRxns(model, nCarbonThr)</div></blockquote>
+<dl class="docutils">
+<dt>INPUTS:</dt>
+<dd><dl class="first last docutils">
+<dt>model:             Structure containing all necessary variables to describe a</dt>
+<dd>stoichiometric model</dd>
+<dt>nCarbonThr:        defines the min # of carbons that a metabolite, that is</dt>
+<dd>acted on in a reaction, can have in the final list of reactions</dd>
+</dl>
+</dd>
+<dt>OUTPUTS:</dt>
+<dd><dl class="first docutils">
+<dt>hiCarbonRxns:      The list of reactions that act on metabolites with</dt>
+<dd>greater than the threshold number of carbons</dd>
+</dl>
+<p class="last">zeroCarbonRxns:    Reactions with no carbon
+nCarbon:           The number of carbons in each metabolite in the model</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="function">
+<dt id="src.analysis.exploration.findMatchingFieldEntries">
+<code class="descname">findMatchingFieldEntries</code><span class="sig-paren">(</span><em>field</em>, <em>searchString</em>, <em>isAnnotation</em>, <em>minSim</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.exploration.findMatchingFieldEntries" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find elements of the field that are similar to the provided identifier</p>
+<dl class="docutils">
+<dt>USAGE:</dt>
+<dd>[matchingIDs, positons, similarities] = findMatchingFieldEntries(field, searchString, isAnnotation, minSim)</dd>
+<dt>INPUTS:</dt>
+<dd><p class="first">field:             A Cell Array of strings
+searchString:      The item to search for
+isAnnotation:      Whether the strings in the field are annotation</p>
+<blockquote>
+<div>strings (multiple identifiers are concatenated with ; and will be
+separated)</div></blockquote>
+<dl class="last docutils">
+<dt>minSim:            minimum “similarity” between element and search</dt>
+<dd>item.</dd>
+</dl>
+</dd>
+<dt>OUTPUTS:</dt>
+<dd><p class="first">matchingIDs:       All IDs which are matching to the search string.
+positions:         The positions of these IDs in the supplied field.
+similarities:      Similarities of the matchingIDs with the search</p>
+<blockquote class="last">
+<div>String</div></blockquote>
+</dd>
+</dl>
+</dd></dl>
+<dl class="function">
+<dt id="src.analysis.exploration.findMetFromCompartment">
+<code class="descname">findMetFromCompartment</code><span class="sig-paren">(</span><em>model</em>, <em>compartment</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.exploration.findMetFromCompartment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds all the metabolites and their identifiers in
+a compartment of interest.</p>
+<p>USAGE:</p>
+<blockquote>
+<div>[compartmentMetabolites] = findMetFromCompartment(model,Compartment)</div></blockquote>
+<dl class="docutils">
+<dt>INPUTS:</dt>
+<dd>model:                     COBRA model strcture
+compartment:               compartment of interest (e.g.: ‘[m]’, ‘[n]’, ‘[e]’, etc.)</dd>
+<dt>OUTPUT:</dt>
+<dd>compartmentMetabolites:    List of metabolites in the compartment of interest</dd>
+</dl>
+</dd></dl>
+<dl class="function">
+<dt id="src.analysis.exploration.findMetIDs">
+<code class="descname">findMetIDs</code><span class="sig-paren">(</span><em>model</em>, <em>metList</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.exploration.findMetIDs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds metabolite numbers in a model</p>
+<p>USAGE:</p>
+<blockquote>
+<div>metID = findMetIds(model, metList)</div></blockquote>
+<dl class="docutils">
+<dt>INPUTS:</dt>
+<dd>model:      COBRA model structure
+metList:    List of metabolites</dd>
+<dt>OUTPUT:</dt>
+<dd>metID:      List of metabolite IDs corresponding to <cite>metList</cite></dd>
+</dl>
+</dd></dl>
+<dl class="function">
+<dt id="src.analysis.exploration.findMetabolicJunctions">
+<code class="descname">findMetabolicJunctions</code><span class="sig-paren">(</span><em>model</em>, <em>nRxnsJnc</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.exploration.findMetabolicJunctions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds metabolic branchpoints with different numbers of branches</p>
+<p>USAGE:</p>
+<blockquote>
+<div>validJunctionMets = findMetabolicJunctions(model, nRxnsJnc)</div></blockquote>
+<dl class="docutils">
+<dt>INPUTS:</dt>
+<dd>model:                COBRA model structure
+nRxnJnc:              Number of reactions to be considered a junction</dd>
+<dt>OUTPUT:</dt>
+<dd>validJunctionMets:    List of junction metabolites</dd>
+</dl>
+</dd></dl>
+<dl class="function">
+<dt id="src.analysis.exploration.findMetsFromRxns">
+<code class="descname">findMetsFromRxns</code><span class="sig-paren">(</span><em>model</em>, <em>reactions</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.exploration.findMetsFromRxns" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get all Metabolites from a set of reactions.</p>
+<p>USAGE:</p>
+<blockquote>
+<div>[metList, stoichiometries] = findMetsFromRxns(model, reactions)
+[metList] = findMetsFromRxns(model, reactions)</div></blockquote>
+<dl class="docutils">
+<dt>INPUTS:</dt>
+<dd><p class="first">model:             COBRA model structure
+reactions:         Reaction IDs (Cell Array) or positions (Double array) to</p>
+<blockquote class="last">
+<div>find the corresponding metabolites for</div></blockquote>
+</dd>
+<dt>OUTPUT:</dt>
+<dd><dl class="first last docutils">
+<dt>metList:           If only one output is requested, returns an ordered set of all</dt>
+<dd>metabolites involved in the provided reactions.
+Otherwise, this is a Cell Array of cell arrays
+containing the metabolites involved in each of the
+provided reactions.</dd>
+<dt>stoichiometries:   this is a Cell array of double arrays of the</dt>
+<dd>stoichiometric coefficients corresponding to the
+reactions in the order of provided reaction ids.
+If reactions not in the model are provided, those
+will be represented by empty arrays.</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+<dl class="function">
+<dt id="src.analysis.exploration.findNeighborRxns">
+<code class="descname">findNeighborRxns</code><span class="sig-paren">(</span><em>model</em>, <em>rxns</em>, <em>asSingleArray</em>, <em>order</em>, <em>commonMets</em>, <em>withComp</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.exploration.findNeighborRxns" title="Permalink to this definition">¶</a></dt>
+<dd><p>Identifies the reactions and the corresponding genes
+that are adjacent (having a common metabolite) to a reaction of interest.
+Useful for characterizing the network around an orphan reaction.</p>
+<p>USAGE:</p>
+<blockquote>
+<div>[neighborRxns, neighborGenes, mets] = findNeighborRxns(model, rxns, asSingleArray, order, commonMets, withComp)</div></blockquote>
+<dl class="docutils">
+<dt>INPUTS:</dt>
+<dd>model:            COBRA model structure
+rxns:             the target reaction as a string or multiple reactions as cell array</dd>
+<dt>OPTIONAL INPUTS:</dt>
+<dd><dl class="first docutils">
+<dt>asSingleArray:    If false, then return cell array of cell arrays with neighbor reactions</dt>
+<dd>for one particular connecting metabolite and input reaction combination.
+Else just return all neighbors in one cell array. (Default = false)</dd>
+<dt>order:            maximal order of neighbors to be returned (default = 1)</dt>
+<dd><cite>order &gt;= 2</cite> only works with <cite>asSingleArray = true</cite>
+Neighborhoods of <cite>order &gt;= 2</cite> will usually also return the input reactions.</dd>
+<dt>commonMets:       Cell array of common metabolites, that should not count as edges between reactions.</dt>
+<dd>Use {‘’} if no such metabolite should be included
+(default = {‘atp’, ‘adp’, ‘h’, ‘h2o’, ‘pi’, ‘ppi’}).</dd>
+</dl>
+<p class="last">withComp:         if <cite>commonMets</cite> already have a compartment identifier, e.g. ‘atp[m]’, then true (default=false)</p>
+</dd>
+<dt>OUTPUTS:</dt>
+<dd>neighborRxns:     the neighboring rxns in the network, (having common metabolites)
+neighborGenes:    the genes associated with the neighbor <cite>rxns</cite>
+mets:             the metabolites in the target reaction</dd>
+</dl>
+</dd></dl>
+<dl class="function">
+<dt id="src.analysis.exploration.findOrphanRxns">
+<code class="descname">findOrphanRxns</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.exploration.findOrphanRxns" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds all orphan reactions in model (reactions with no
+associated genes), not including exchange <cite>rxns</cite></p>
+<p>USAGE:</p>
+<blockquote>
+<div>orphans = findOrphanRxns(model)</div></blockquote>
+<dl class="docutils">
+<dt>INPUT:</dt>
+<dd>model:      a COBRA model with GPRs</dd>
+<dt>OUTPUT:</dt>
+<dd>orphans:    all orphan reactions in the model</dd>
+</dl>
+</dd></dl>
+<dl class="function">
+<dt id="src.analysis.exploration.findRootNPmets">
+<code class="descname">findRootNPmets</code><span class="sig-paren">(</span><em>model</em>, <em>findNCmets</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.exploration.findRootNPmets" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds the root no production (and no consumption)
+metabolites in a model, used by <cite>gapFind</cite></p>
+<p>USAGE:</p>
+<blockquote>
+<div>gaps = findRootNPmets(model, findNCmets)</div></blockquote>
+<dl class="docutils">
+<dt>INPUT:</dt>
+<dd>model          a COBRA model</dd>
+<dt>OPTIONAL INPUT:</dt>
+<dd>findNCmets:    find no consumption mets as well as no production (default = false)</dd>
+<dt>OUTPUT:</dt>
+<dd>gaps:          all root no production metabolites</dd>
+</dl>
+</dd></dl>
+<dl class="function">
+<dt id="src.analysis.exploration.findRxnFromCompartment">
+<code class="descname">findRxnFromCompartment</code><span class="sig-paren">(</span><em>model</em>, <em>compartment</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.exploration.findRxnFromCompartment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds all the reactions and their identifiers in a compartment of interest.</p>
+<p>USAGE:</p>
+<blockquote>
+<div>[compartmentReactions] = findRxnFromCompartment(model,Compartment)</div></blockquote>
+<dl class="docutils">
+<dt>INPUTS:</dt>
+<dd>model:                     COBRA model strcture
+compartment:               compartment of interest (e.g.: ‘[m]’, ‘[n]’, ‘[e]’, etc.)</dd>
+<dt>OUTPUT:</dt>
+<dd>compartmentMetabolites:    List of reactions in the compartment of interest</dd>
+</dl>
+</dd></dl>
+<dl class="function">
+<dt id="src.analysis.exploration.findRxnIDs">
+<code class="descname">findRxnIDs</code><span class="sig-paren">(</span><em>model</em>, <em>rxnList</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.exploration.findRxnIDs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds reaction indices in a model</p>
+<p>USAGE:</p>
+<blockquote>
+<div>rxnID = findRxnIDs(model, rxnList)</div></blockquote>
+<dl class="docutils">
+<dt>INPUTS:</dt>
+<dd>model:      COBRA model structure
+rxnList:    cell array of reaction abbreviations</dd>
+<dt>OUTPUT:</dt>
+<dd>rxnID:      indices for reactions corresponding to rxnList</dd>
+</dl>
+</dd></dl>
+<dl class="function">
+<dt id="src.analysis.exploration.findRxnsActiveWithGenes">
+<code class="descname">findRxnsActiveWithGenes</code><span class="sig-paren">(</span><em>model</em>, <em>genes</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.exploration.findRxnsActiveWithGenes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds all reactions for which the provided genes
+show sufficient evidence (i.e. are usfficient according to the GPRs)</p>
+<p>USAGE:</p>
+<blockquote>
+<div>[Reaclist] = findRxnsActiveWithGenes(model, genes)</div></blockquote>
+<dl class="docutils">
+<dt>INPUT:</dt>
+<dd>model:        COBRA model structure
+genes:        A list of gene identifiers</dd>
+<dt>OUTPUTS:</dt>
+<dd>Reaclist:     Cell array of reactions which are supported by the provided genes</dd>
+</dl>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Only reactions which do have a GPR are considered for this function.
+Reactions without GPRs are ignored, as we don’t have evidence.</p>
+</div>
+</dd></dl>
+<dl class="function">
+<dt id="src.analysis.exploration.findRxnsFromGenes">
+<code class="descname">findRxnsFromGenes</code><span class="sig-paren">(</span><em>model</em>, <em>genes</em>, <em>numericFlag</em>, <em>ListResultsFlag</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.exploration.findRxnsFromGenes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print every reaction associated with a gene of interest</p>
+<p>USAGE:</p>
+<blockquote>
+<div>[results, ListResults] = findRxnsFromGenes(model, genes, numericFlag, ListResultsFlag)</div></blockquote>
+<dl class="docutils">
+<dt>INPUTS:</dt>
+<dd><p class="first">model:              COBRA model structure
+genes:              string of single gene or cell array of multiple</p>
+<blockquote class="last">
+<div>genes for which <cite>rxns</cite> are desired.</div></blockquote>
+</dd>
+<dt>OPTIONAL INPUTS:</dt>
+<dd>numericFlag:        1 if using Human Recon  (Default = 0)
+ListResultsFlag:    1 if you want to output <cite>ListResults</cite> (Default = 0)</dd>
+<dt>OUTPUTS:</dt>
+<dd><dl class="first docutils">
+<dt>results:            structure containing cell arrays for each gene.</dt>
+<dd>Each cell array has one column of rxn abbreviations
+and one column containing the reaction formula</dd>
+</dl>
+<p class="last">ListResults:        same as above, but in a cell array</p>
+</dd>
+</dl>
+<ul class="simple">
+<li>Ines Thiele Feb 2021 - Now also grRule is returned in the output</li>
+</ul>
+</dd></dl>
+<dl class="function">
+<dt id="src.analysis.exploration.findRxnsFromMets">
+<code class="descname">findRxnsFromMets</code><span class="sig-paren">(</span><em>model</em>, <em>metList</em>, <em>varargin</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.exploration.findRxnsFromMets" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of reactions in which at least one
+metabolite listed in metList participates.</p>
+<p>USAGE:</p>
+<blockquote>
+<div>[rxnList, rxnFormulaList] = findRxnsFromMets(model, metList, printFlag)</div></blockquote>
+<dl class="docutils">
+<dt>INPUTS:</dt>
+<dd>model:             COBRA model structure
+metList:           Metabolite list</dd>
+<dt>OPTIONAL INPUTS:</dt>
+<dd><p class="first">printFlag:          Print reaction formulas to screen (Default = false)
+Property/Value:    Allowed Properties are:</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li><cite>containsAll</cite> - If true only reactions containing all metabolites in metList are returned (Default: false)</li>
+<li><cite>printFlag</cite> - as above, will overwrite a <cite>printFlag</cite> set individually (Default: false)</li>
+<li><cite>producersOnly</cite> - Only return reactions which produce any of the given metabolites. (Default: false)</li>
+<li><cite>consumersOnly</cite> - Only return reactions which consume any of the given metabolites. (Default: false)</li>
+<li><cite>exclusive</cite> - Only return those reactions, which do not contain any metabolites but those given (Default: false)</li>
+</ul>
+</div></blockquote>
+</dd>
+<dt>OUTPUTS:</dt>
+<dd>rxnList:           List of reactions
+rxnFormulaList:    Reaction formulas coresponding to <cite>rxnList</cite></dd>
+</dl>
+</dd></dl>
+<dl class="function">
+<dt id="src.analysis.exploration.findRxnsFromSubSystem">
+<code class="descname">findRxnsFromSubSystem</code><span class="sig-paren">(</span><em>model</em>, <em>subSystem</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.exploration.findRxnsFromSubSystem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find all reactions which are part of a given subsystem.</p>
+<p>USAGE:</p>
+<blockquote>
+<div>[reactionNames,rxnPos]  = findRxnsFromSubSystem(model,subSystem)</div></blockquote>
+<dl class="docutils">
+<dt>INPUT:</dt>
+<dd><dl class="first docutils">
+<dt>model:                 A COBRA model struct with at least rxns and</dt>
+<dd>subSystems fields</dd>
+</dl>
+<p class="last">subSystem:             A String identifying a subsystem</p>
+</dd>
+<dt>OUTPUT:</dt>
+<dd><p class="first">reactionNames:         A Cell array of reaction names
+rxnPos:                A double array of positions of the reactions in</p>
+<blockquote class="last">
+<div>reactionNames in the model (same order).</div></blockquote>
+</dd>
+<dt>USAGE:</dt>
+<dd><dl class="first docutils">
+<dt>%Obtain all reactions with Glycolysis in their respective subSystems</dt>
+<dd>field.</dd>
+</dl>
+<p class="last">[reactionNames,rxnPos]  = findRxnsFromSubSystem(model,’Glycolysis’)</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="function">
+<dt id="src.analysis.exploration.findRxnsInActiveWithGenes">
+<code class="descname">findRxnsInActiveWithGenes</code><span class="sig-paren">(</span><em>model</em>, <em>genes</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.exploration.findRxnsInActiveWithGenes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds all reactions for which the provided genes
+show sufficient evidence of their absence. (i.e. make the corresponding GPRs always be zero)</p>
+<p>USAGE:</p>
+<blockquote>
+<div>[Reaclist] = findRxnsActiveWithGenes(model, genes)</div></blockquote>
+<dl class="docutils">
+<dt>INPUTS:</dt>
+<dd>model:        COBRA model structure
+genes:        A list of gene identifiers</dd>
+<dt>OUTPUT:</dt>
+<dd>Reaclist:     Cell array of reactions which are supported by the provided genes</dd>
+</dl>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Only reactions which do have a GPR are considered for this function.
+Reactions without GPRs are ignored, as we don’t have evidence.</p>
+</div>
+</dd></dl>
+<dl class="function">
+<dt id="src.analysis.exploration.findSubSysGen">
+<code class="descname">findSubSysGen</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.exploration.findSubSysGen" title="Permalink to this definition">¶</a></dt>
+<dd><p>Lists the subsystem that a reaction occurs in encoded by a
+gene. Returns list of subsystems. If multiple reactions are associated
+with gene, subsystem of first occurance will be listed.</p>
+<p>USAGE:</p>
+<blockquote>
+<div>[GenSubSystem]  = findSubSysGen(model)</div></blockquote>
+<dl class="docutils">
+<dt>INPUT:</dt>
+<dd>model:            COBRA model structure</dd>
+<dt>OUTPUT:</dt>
+<dd>GenSubSystem:     array listing genes and subsystmes</dd>
+</dl>
+</dd></dl>
+<dl class="function">
+<dt id="src.analysis.exploration.findSubSystemsFromGenes">
+<code class="descname">findSubSystemsFromGenes</code><span class="sig-paren">(</span><em>model</em>, <em>genes</em>, <em>varargin</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.exploration.findSubSystemsFromGenes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the subsystems associated with the provided genes.</p>
+<p>USAGE:</p>
+<blockquote>
+<div>[geneSubSystems,singleList] = findSubSystemsFromGenes(model,genes,…)</div></blockquote>
+<dl class="docutils">
+<dt>INPUT:</dt>
+<dd>model:            COBRA model structure</dd>
+<dt>OPTIONAL INPUTS:</dt>
+<dd><dl class="first last docutils">
+<dt>genes:            The genes to find subSystems for</dt>
+<dd>(Default: model.genes)</dd>
+<dt>varargin:         Optional arguments as parameter/value pairs, or parameter struct.</dt>
+<dd><ul class="first last simple">
+<li>structResult - return individual Gene Associations as a struct instead of a Cell Array with each gene represented by a field. Gene names might be adapted to fit to field names and all genes will be prefixed with <a href="#id2"><span class="problematic" id="id3">gene_</span></a>.</li>
+<li>onlyOneSub - Only return one subSystem for each gene.</li>
+</ul>
+</dd>
+</dl>
+</dd>
+<dt>OUTPUT:</dt>
+<dd>geneSubSystems:    All subsystems associated with the provided genes.</dd>
+<dt>OPTIONAL OUTPUT:</dt>
+<dd><dl class="first last docutils">
+<dt>singleList:       A Cell array of size(nGenes,2), with the first column</dt>
+<dd>representing the gene and the second column
+containing the subSystems associated with the gene.</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+<dl class="function">
+<dt id="src.analysis.exploration.findTrspRxnFromMet">
+<code class="descname">findTrspRxnFromMet</code><span class="sig-paren">(</span><em>model</em>, <em>metList</em>, <em>compFlag</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.exploration.findTrspRxnFromMet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find transport reactions for defined metabolites. Option available to
+define the compartment of the transport</p>
+<p>USAGE:</p>
+<blockquote>
+<div>[TrspRxns] = findTrspRxnFromMet(model, metList, compFlag)</div></blockquote>
+<dl class="docutils">
+<dt>INPUTS:</dt>
+<dd>model:       COBRA model structure
+metList:     metabolites list</dd>
+<dt>OPTIONAL INPUT:</dt>
+<dd>compFlag:    compartment of the transport (e.g. ‘c’, cytosol)</dd>
+<dt>OUTPUT:</dt>
+<dd>TrspRxns:    List of transporters reactions</dd>
+</dl>
+</dd></dl>
+<dl class="function">
+<dt id="src.analysis.exploration.getMIRIAMAnnotations">
+<code class="descname">getMIRIAMAnnotations</code><span class="sig-paren">(</span><em>model</em>, <em>type</em>, <em>varargin</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.exploration.getMIRIAMAnnotations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the MIRIAM Annotations a struct array of annotation structs for the given type</p>
+<dl class="docutils">
+<dt>USAGE:</dt>
+<dd>annotations = getMIRIAMAnnotations(model,field,…)</dd>
+<dt>INPUTS:</dt>
+<dd><p class="first">model:             The COBRA  model structure.
+type:              the basic field to get annotations for (e.g. rxn, met, or</p>
+<blockquote class="last">
+<div>model</div></blockquote>
+</dd>
+<dt>OPTIONAL INPUTS:</dt>
+<dd><dl class="first last docutils">
+<dt>varagin:           Additional arguments as parameter/value pairs.</dt>
+<dd><ul class="first last simple">
+<li>bioQualifiers - A Cell array of BioQualifiers to look for if not provided, or empty, all bioQualifiers defined in <cite>getBioQualifiers()</cite> will be used</li>
+<li>ids - A specific ID or IDs to get the annotation data for. Cannot be combined with type model.(Default: model.([type ‘s’])).</li>
+</ul>
+</dd>
+</dl>
+</dd>
+<dt>OUTPUT:</dt>
+<dd><dl class="first last docutils">
+<dt>annotations:       A struct array with the following structure:</dt>
+<dd><ul class="first last simple">
+<li>.annotation -&gt; A Struct array with one element per element of the given type.</li>
+<li>.annotation.cvterms -&gt; A Struct array of controlled vocabulary terms with one element per qualifier used</li>
+<li>.annotation.cvterms.qualifier -&gt; the bioQualifier for this all ressourcesof this cvterm</li>
+<li>.annotation.cvterms.qualifierType -&gt; the Qualifier type (modelQualifier or bioQualifier) for all ressources of this cvterm</li>
+<li>.annotation.cvterms.ressources -&gt; struct with the following fields:</li>
+<li>.annotation.cvterms.ressources.database -&gt; the database for this ressource.</li>
+<li>.annotation.cvterms.ressources.id-&gt; The ID in the database for this ressource.</li>
+</ul>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+<dl class="function">
+<dt id="src.analysis.exploration.getModelSizes">
+<code class="descname">getModelSizes</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.exploration.getModelSizes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the sizes of the basic fields of the model structure</p>
+<dl class="docutils">
+<dt>USAGE:</dt>
+<dd>[nMets, nRxns, nCtrs, nVars, nGenes, nComps] = getModelSizes(model)</dd>
+<dt>INPUT:</dt>
+<dd>model:     A COBRA model structure</dd>
+<dt>OUTPUTS:</dt>
+<dd>nMets:     The number of metabolites in the model
+nRxns:     The number of reactions in the model
+nCtrs:     The number of constraints in the model
+nVars:     The number of variables in the model
+nGenes:    The number of genes in the model
+nComps:    The number of compartments in the model</dd>
+</dl>
+</dd></dl>
+<dl class="function">
+<dt id="src.analysis.exploration.getModelSubSystems">
+<code class="descname">getModelSubSystems</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.exploration.getModelSubSystems" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get all subSystems present in a model</p>
+<p>USAGE:</p>
+<blockquote>
+<div>[subSystems]  = getModelSubSystems(model)</div></blockquote>
+<dl class="docutils">
+<dt>INPUT:</dt>
+<dd><dl class="first last docutils">
+<dt>model:                 A COBRA model struct with at least the</dt>
+<dd>subSystems fields</dd>
+</dl>
+</dd>
+<dt>OUTPUT:</dt>
+<dd><dl class="first last docutils">
+<dt>subSystems:            A Cell Array of strings containing all</dt>
+<dd>subSystems in the model</dd>
+</dl>
+</dd>
+<dt>USAGE:</dt>
+<dd>%Get all subSystems present in the model.
+[subSystems]  = getModelSubSystems(model)</dd>
+</dl>
+</dd></dl>
+<dl class="function">
+<dt id="src.analysis.exploration.getObjectiveSense">
+<code class="descname">getObjectiveSense</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.exploration.getObjectiveSense" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the objective sense of the model (both the osenseStr (‘max’ or ‘min’)
+and the correspdoning osense value (-1 or 1)</p>
+<dl class="docutils">
+<dt>USAGE:</dt>
+<dd>[osenseStr,osense] = getObjectiveSense(model)</dd>
+<dt>INPUTS:</dt>
+<dd><dl class="first last docutils">
+<dt>model:     The model to obtain the sense for. If the model has a</dt>
+<dd>osenseStr field, it has to be either ‘min’ or ‘max’ (case
+insensitive) otherwise this function will error.</dd>
+</dl>
+</dd>
+<dt>OUTPUS:</dt>
+<dd>osenseStr:     ‘min’ or ‘max’
+osense:        1 or -1;</dd>
+</dl>
+</dd></dl>
+<dl class="function">
+<dt id="src.analysis.exploration.identifyFastBlockedRxns">
+<code class="descname">identifyFastBlockedRxns</code><span class="sig-paren">(</span><em>model</em>, <em>rxnList</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.exploration.identifyFastBlockedRxns" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function evaluates the presence of blocked reactions in a metabolic model</p>
+<p>USAGE:</p>
+<blockquote>
+<div>[BlockedRxns] = identifyFastBlockedRxns(model,rxnList)</div></blockquote>
+<dl class="docutils">
+<dt>INPUTS:</dt>
+<dd>organisms:           model in COBRA model structure format
+rxnList:             nx1 cell array with reactions to test
+printLevel:          Verbose level (default: printLevel = 1)</dd>
+<dt>OUTPUT:</dt>
+<dd>BlockedRxns:         nx1 cell array containing blocked reactions</dd>
+</dl>
+</dd></dl>
+<dl class="function">
+<dt id="src.analysis.exploration.isReactionInSubSystem">
+<code class="descname">isReactionInSubSystem</code><span class="sig-paren">(</span><em>model</em>, <em>reactions</em>, <em>subSystem</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.exploration.isReactionInSubSystem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determine whether a reaction is in a given subSystem.</p>
+<p>USAGE:</p>
+<blockquote>
+<div>[subSystems]  = getModelSubSystems(model)</div></blockquote>
+<dl class="docutils">
+<dt>INPUT:</dt>
+<dd><dl class="first docutils">
+<dt>model:                 A COBRA model struct with at least rxns and</dt>
+<dd>subSystems fields</dd>
+<dt>reactions:             Either a string identifying a reaction, or a</dt>
+<dd>cell array of strings identifying multiple
+reactions, or a double vector identifying the
+positions.</dd>
+</dl>
+<p class="last">subSystem:             A String identifying a subsystem.</p>
+</dd>
+<dt>OUTPUT:</dt>
+<dd>present:               a boolean vector for each provided reaction.</dd>
+<dt>USAGE:</dt>
+<dd>%Get all subSystems present in the model.
+[subSystems]  = getModelSubSystems(model)</dd>
+</dl>
+</dd></dl>
+<dl class="function">
+<dt id="src.analysis.exploration.plotEssentialRxns">
+<code class="descname">plotEssentialRxns</code><span class="sig-paren">(</span><em>essentialRxn4Models</em>, <em>essentialityRange</em>, <em>numModelsPresent</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.exploration.plotEssentialRxns" title="Permalink to this definition">¶</a></dt>
+<dd><p>Identifies and plots (heatmap) a set of essential reactions (reactions of interest) based on conditional inputs.</p>
+<p>USAGE:</p>
+<blockquote>
+<div>rxnInterest4Models = plotEssentialRxns(essentialRxn4Models, essentialityRange, numModelsPresent)</div></blockquote>
+<dl class="docutils">
+<dt>INPUTS:</dt>
+<dd><dl class="first docutils">
+<dt>essentialRxn4Models:    Table with reaction fluxes (within the objective function reaction)</dt>
+<dd>after single deletion of model reaction (rows) across models (columns)
+This input can be obtained from essentialRxn4MultipleModels.m</dd>
+</dl>
+<p class="last">essentialityRange:      Range of fluxes (e.g. [-100,100])
+numModelsPresent:       Minimum number of models where a reaction is essential in order to be ploted.</p>
+</dd>
+<dt>OUTPUT:</dt>
+<dd><dl class="first last docutils">
+<dt>rxnInterest4Models:     Table with reaction fluxes (within the objective function reaction)</dt>
+<dd>for reactions of interest (rows) across models (columns)</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>rxnInterest4Models = plotEssentialRxns(essentialRxn4Models, essentialityRange, numModelsPresent)</p>
+</dd></dl>
+<dl class="function">
+<dt id="src.analysis.exploration.printConstraints">
+<code class="descname">printConstraints</code><span class="sig-paren">(</span><em>model</em>, <em>minInf</em>, <em>maxInf</em>, <em>rxnBool</em>, <em>modelAfter</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.exploration.printConstraints" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print all network constraints that are not <cite>-Inf (minInf)</cite> or <cite>+Inf (maxInf)</cite></p>
+<p>USAGE:</p>
+<blockquote>
+<div>printConstraints(model, minInf, maxInf)</div></blockquote>
+<dl class="docutils">
+<dt>INPUTS:</dt>
+<dd>model:     COBRA model structure
+minInf:    value that is considered as -Inf (or desired minimum cutoff value)
+maxInf:    value that is considered as +Inf (or desired maximum cutoff value)</dd>
+<dt>OPTIONAL INPUTS:</dt>
+<dd>modelAfter: model after some perturbation to the bounds
+printLevel:</dd>
+</dl>
+</dd></dl>
+<dl class="function">
+<dt id="src.analysis.exploration.printFluxBounds">
+<code class="descname">printFluxBounds</code><span class="sig-paren">(</span><em>model</em>, <em>rxns</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.exploration.printFluxBounds" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prints the reactionID and upper/lower flux bounds.</p>
+<p>USAGE:</p>
+<blockquote>
+<div>printFluxBounds(model, rxns)</div></blockquote>
+<dl class="docutils">
+<dt>INPUTS:</dt>
+<dd>model:    The model to print</dd>
+<dt>OPTIONAL INPUTS:</dt>
+<dd><dl class="first last docutils">
+<dt>rxns:     a string array of reaction ids for which flux bounds need to</dt>
+<dd>be printed</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+<dl class="function">
+<dt id="src.analysis.exploration.printFluxVector">
+<code class="descname">printFluxVector</code><span class="sig-paren">(</span><em>model</em>, <em>fluxData</em>, <em>nonZeroFlag</em>, <em>excFlag</em>, <em>sortCol</em>, <em>fileName</em>, <em>headerRow</em>, <em>formulaFlag</em>, <em>gprFlag</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.exploration.printFluxVector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prints a flux vector with reaction labels</p>
+<dl class="docutils">
+<dt>USAGE:</dt>
+<dd>printFluxVector(model, fluxData, nonZeroFlag, excFlag, sortCol, fileName, headerRow, formulaFlag, gprFlag)</dd>
+<dt>INPUTS:</dt>
+<dd>model:          COBRA model structure
+fluxData:       Data matrix/vector (for example, solution.v)</dd>
+<dt>OPTIONAL INPUTS:</dt>
+<dd><p class="first">nonZeroFlag:    Only print nonzero rows (Default = false)
+excFlag:        Only print exchange fluxes (Default = false)
+sortCol:        Column used for sorting (-1, none; 0, labels; &gt;0, data</p>
+<blockquote>
+<div>columns;) (Default = -1)</div></blockquote>
+<p class="last">fileName:       Name of output file (Default = [])
+headerRow:      Header (Default = [])
+formulaFlag:    Print reaction formulas (Default = false)
+gprFlag:      Print reaction GPR (Default = false)</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="function">
+<dt id="src.analysis.exploration.printGPRForRxns">
+<code class="descname">printGPRForRxns</code><span class="sig-paren">(</span><em>model</em>, <em>rxnIDs</em>, <em>printLevel</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.exploration.printGPRForRxns" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print the GPRs (in textual format) for the given RxnIDs
+USAGE:</p>
+<blockquote>
+<div>gprs = printGPRForRxns(model,rxnID)</div></blockquote>
+<dl class="docutils">
+<dt>INPUTS:</dt>
+<dd>model:             The model to retrieve the GPR rules from
+rxnIDs:            The reaction IDs to obtain the GPR rules for</dd>
+</dl>
+<p>OPTIONAL INPUTS:</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>printLevel:        Whether to print out the GPRs. If printLevel is 0,</dt>
+<dd>the function will only return the Strings in a cell
+array.</dd>
+</dl>
+</div></blockquote>
+<p>OUTPUTS:</p>
+<blockquote>
+<div>gprs:              The textual GPR Rules</div></blockquote>
+<p>Authors:</p>
+<blockquote>
+<div>Thomas Pfau Dec 2017</div></blockquote>
+</dd></dl>
+<dl class="function">
+<dt id="src.analysis.exploration.printLabeledData">
+<code class="descname">printLabeledData</code><span class="sig-paren">(</span><em>labels</em>, <em>data</em>, <em>nonzeroFlag</em>, <em>sortCol</em>, <em>fileName</em>, <em>headerRow</em>, <em>sortMode</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.exploration.printLabeledData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print a matrix of data with labels</p>
+<p>USAGE:</p>
+<blockquote>
+<div>printLabeledData(labels, data, nonzeroFlag, sortCol, fileName, headerRow, sortMode)</div></blockquote>
+<dl class="docutils">
+<dt>INPUTS:</dt>
+<dd>labels:         Row labels
+data:           Data matrix/vector
+nonzeroFlag:    Only print nonzero rows (opt)
+sortCol:        Column used for sorting (-1, none; 0, labels; &gt;0, data columns; opt)
+fileName:       Name of output file (opt)
+headerRow:      Header (opt)
+sortMode:       Sort mode, ‘ascend’ or ‘descend’ (opt, default ‘ascend’)</dd>
+</dl>
+</dd></dl>
+<dl class="function">
+<dt id="src.analysis.exploration.printMatrix">
+<code class="descname">printMatrix</code><span class="sig-paren">(</span><em>A</em>, <em>format</em>, <em>file</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.exploration.printMatrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prints matrix into a file or screen</p>
+<p>USAGE:</p>
+<blockquote>
+<div>printMatrix(A, format, file)</div></blockquote>
+<dl class="docutils">
+<dt>INPUTS:</dt>
+<dd>A:         Matrix
+format:    Format string (opt, default ‘%6.4ft’)
+file:      File name (opt)</dd>
+</dl>
+</dd></dl>
+<dl class="function">
+<dt id="src.analysis.exploration.printRxnFormula">
+<code class="descname">printRxnFormula</code><span class="sig-paren">(</span><em>model</em>, <em>varargin</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.exploration.printRxnFormula" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prints the reaction formulas for a list of reactions</p>
+<p>Reactions that have an upperbound &lt;= 0 and lowerbound &lt; 0 will have
+its directionality reversed unless directionFlag = false.</p>
+<p>USAGE:</p>
+<blockquote>
+<div>formulas = printRxnFormula(model, varargin)</div></blockquote>
+<dl class="docutils">
+<dt>INPUTS:</dt>
+<dd>model:             COBRA model structure</dd>
+</dl>
+<p>OPTIONAL INPUTS:</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>varargin:           Optional Inputs provided as ‘ParameterName’, Value</dt>
+<dd><blockquote class="first">
+<div>pairs. the following parameternames are available:</div></blockquote>
+<ul class="last simple">
+<li>rxnAbbrList:       Cell array of rxnIDs to be printed (Default = print all reactions)</li>
+<li>printFlag:        Print formulas or just return them (Default = true)</li>
+<li><dl class="first docutils">
+<dt>lineChangeFlag:    Append a line change at the end of each line</dt>
+<dd>(Default = true)</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>metNameFlag:       Print full met names instead of abbreviations</dt>
+<dd>(Default = false)</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>fid:               Optional file identifier for printing in files</dt>
+<dd>(default 1, i.e. stdout)</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>directionFlag:     Checks directionality of reaction. See Note.</dt>
+<dd>(Default = false)</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>gprFlag:           Print gene protein reaction association</dt>
+<dd>(Default = false)</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>proteinFlag:       Print the protein names associated with the genes in the</dt>
+<dd>GPRs associated with the reactions. (Default = false)</dd>
+</dl>
+</li>
+<li>printBounds:       Print the upper and lower Bounds of the reaction (Default = false)</li>
+</ul>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="docutils">
+<dt>OUTPUT:</dt>
+<dd>formulas:          Cell array containing formulas of specified reactions</dd>
+</dl>
+<p class="rubric">Examples</p>
+<ol class="arabic simple">
+<li>print only ATPM and TKT1:
+printRxnFormula(model,’rxnAbbrList’,{‘ATPM’,’TKT1’});</li>
+<li>print the reactions of the model with the metabolite Names instead of ids.
+printRxnFormula(model, ‘metNameFlag’,true);</li>
+<li>print all reactions with the metabolite names to a given fileID
+printRxnFormula(model, ‘metNameFlag’,true, ‘fid’, fileID);</li>
+</ol>
+</dd></dl>
+<dl class="function">
+<dt id="src.analysis.exploration.printUptakeBound">
+<code class="descname">printUptakeBound</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.exploration.printUptakeBound" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the indices to the substrate uptake reactions and prints substrate uptake bounds</p>
+<p>USAGE:</p>
+<blockquote>
+<div>uptakeInd = printUptakeBound(model)</div></blockquote>
+<dl class="docutils">
+<dt>INPUTS:</dt>
+<dd>model:    CORBRA model structure</dd>
+<dt>OUTPUTS:</dt>
+<dd>upInd:    Vector containing indecies of uptake reactions</dd>
+</dl>
+</dd></dl>
+<dl class="function">
+<dt id="src.analysis.exploration.searchModel">
+<code class="descname">searchModel</code><span class="sig-paren">(</span><em>model</em>, <em>searchTerm</em>, <em>varargin</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.exploration.searchModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Search for the specified term in the given model.
+The performed search is fuzzy if similarity is lower than 1.</p>
+<dl class="docutils">
+<dt>USAGE:</dt>
+<dd>results = searchModel(model,searchTerm,…)</dd>
+<dt>INPUTS:</dt>
+<dd><p class="first">model:         The model to search in
+searchTerm:    The term to search for
+varargin:      Additional parameters as parameter/value pairs or value struct.</p>
+<blockquote class="last">
+<div><dl class="docutils">
+<dt>Available parameters are:</dt>
+<dd><ul class="first last simple">
+<li>printLevel - Printout switch, 0 silent, 1 print results. (Default = 1) .</li>
+<li>similarity - Minimum similarity (as provided in calcSim) for matches.</li>
+</ul>
+</dd>
+</dl>
+</div></blockquote>
+</dd>
+<dt>OUTPUTS:</dt>
+<dd><p class="first">results:       The results struct build as follows:</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li>.field - a struct array containing of the basic fields (e.g. rxns, mets etc) of the model in which matches were found with each field indicating the matches as detailed below.</li>
+<li>.field.id - The id of the matching element</li>
+<li>.field.matches - information about the matches of the respective ID.</li>
+<li>.field.matches.value - the value that matched.</li>
+<li>.field.matches.source - the field that contained the matching value.</li>
+</ul>
+</div></blockquote>
+</dd>
+</dl>
+</dd></dl>
+<dl class="function">
+<dt id="src.analysis.exploration.surfNet">
+<code class="descname">surfNet</code><span class="sig-paren">(</span><em>varargin</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.exploration.surfNet" title="Permalink to this definition">¶</a></dt>
+<dd><p>A simple and convenient tool to navigate through the metabolic network
+interactively, possibly with given flux vectors, in the Matlab command
+window using mouse once the starting point is called by command.</p>
+<dl class="docutils">
+<dt>USAGE:</dt>
+<dd>surfNet(model, object, metNameFlag, flux, nonzeroFluxFlag, showMets, printFields, charPerLine, similarity)
+surfNet(model, object, … , ‘parameter’, ‘value’, …)</dd>
+<dt>INPUT:</dt>
+<dd>model:              COBRA model</dd>
+<dt>OPTIONAL INPUTS:</dt>
+<dd><blockquote class="first">
+<div><dl class="docutils">
+<dt>object:             met, rxn or gene names, can be a cell array of multiple rxns, mets and genes, or simply a string</dt>
+<dd>If the input is none of the above, will search related mets, rxns and genes using <cite>searchModel.m</cite>
+(default: objective reactions or a random reaction)</dd>
+</dl>
+</div></blockquote>
+<dl class="last docutils">
+<dt>(the arguments below can also be inputted as parameter/value pairs and partial matching is supported)</dt>
+<dd><p class="first">metNameFlag:        print model.metNames in reaction formulas. (default: false)
+flux:               flux vectors for the model, a #reactions x #columns matrix. (default: [])</p>
+<blockquote>
+<div>If given, the producing and consuming reactions displayed are in accordance with the flux direction.</div></blockquote>
+<p>nonzeroFluxFlag:    show only reactions with nonzero fluxes if flux is given (default: true)
+showMets:           show metabolites in a list when printing reactions (default: true)
+printFields:        a cell array of field names of the fields to be printed for each met and rxn.</p>
+<blockquote>
+<div>Default: {‘metNames’,’metFormulas’,’rxnNames’,’lb’,’ub’,’grRules’}
+Use, e.g., {‘default’, ‘rxnNotes’}, to print model.rxnNotes in addition to the defaulted fields.</div></blockquote>
+<p>charPerLine:        max. no. of characters per line for reaction formulas (default 0, the current width of the command window)
+thresholdSim:       threshold for the similarity of the results to be printed from searching the model for <cite>object</cite></p>
+<blockquote class="last">
+<div>if <cite>object</cite> is not a met, rxn or gene. Default 0.8. See the parameter <cite>similarity</cite> in <cite>searchModel.m</cite></div></blockquote>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<p>surfNet(model)  % for starting the navigation at the objective reaction
+surfNet(model, ‘glc-D[c]’)  % for starting the navigation at D-glucose
+surfNet(model, ‘glc-D[c]’, ‘metNameFlag’, 1)  % for printing model.metNames in reaction formulas
+surfNet(model, ‘glc-D[c]’, ‘m’, 1)  % support partial mapping of the parameter name
+surfNet(model, ‘glc-D[c]’, ‘f’, flux)  % for starting at glucose and show reactions with non-zero flux in ‘flux’ only
+surfNet(model, ‘EX_glc-D(e)’, ‘s’, 0)  % to show the reaction formulas only but not the details of metabolites during navigation
+surfNet(model, ‘EX_glc-D(e)’, ‘p’, {‘default’, ‘metKEGGID’})  % to print also the charge for each metabolite printed
+surfNet(model, ‘EX_glc-D(e)’, ‘p’, {‘d’, ‘metK’})  % support unambiguous partial matching
+surfNet(model, {‘glc-D[c]’; ‘fru[c]’; ‘b1779’})  % to view several mets, rxns, genes
+surfNet(model, ‘glucose’)  % search the model for mets, rxns, or genes similar to the term ‘glucose’
+surfNet(model, ‘glucose’, ‘t’, 0.6)  % search with a lower similarity threshold</p>
+</dd></dl>
+</div>
+</div>
+<div class="articleComments">
+</div>
+</div>
+<footer>
+<div aria-label="footer navigation" class="rst-footer-buttons" role="navigation">
+<a accesskey="n" class="btn btn-default float-right" href="../FBA/index.html" rel="next" title="FBA">Next <span class="fa fa-arrow-circle-right"></span></a>
+<a accesskey="p" class="btn btn-default" href="../dynamicFBA/index.html" rel="prev" title="Dynamic FBA"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+</div>
+<hr/>
+<div role="contentinfo">
+<p>
+        © Copyright 2017-2020, The COBRA Toolbox developers.
+
+    </p>
+</div>
+  Built with Sphinx using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+</div>
+</div>
+</section>
+</div>
+<script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'2.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+<script src="../../../_static/jquery.js" type="text/javascript"></script>
+<script src="../../../_static/underscore.js" type="text/javascript"></script>
+<script src="../../../_static/doctools.js" type="text/javascript"></script>
+<script src="../../../_static/language_data.js" type="text/javascript"></script>
+<script src="https://cdn.jsdelivr.net/gh/mathjax/MathJax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+<script src="../../../_static/js/theme.js" type="text/javascript"></script>
+<script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-TRCMZL1FKK"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TRCMZL1FKK');
+  </script>
+</body>
+</html>

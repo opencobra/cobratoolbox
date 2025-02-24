@@ -1,0 +1,43 @@
+name: Update Contributors list
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.10'
+      
+      - name: Install dependencies
+        working-directory: ./documentation/source/Contributions
+        run: |
+          pip install -r requirements.txt
+
+      - name: Update contributors
+        working-directory: ./documentation/source/Contributions
+        run: |
+          python UpdateContributorsList.py
+
+      - name: Generate HTML file
+        working-directory: ./documentation/source/Contributions
+        run: |
+          python GenerateContributorsHTML.py
+
+      - name: Deploy to docs
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./documentation/source/Contributions/contributors
+          publish_branch: develop
+          keep_files: true
+          destination_dir: docs
+          commit_message: "Update Contributors (Automatic Workflow)"

@@ -30,7 +30,7 @@ if (nargin < 3)||isempty(verbFlag), verbFlag = false; end
 if (nargin < 4), bias = []; end
 if (nargin < 5)||isempty(nPointsCheck), nPointsCheck = true; end
 
-LPproblem = buildLPproblemFromModel(model);
+LPproblem = buildOptProblemFromModel(model);
 
 [nMets,nRxns] = size(LPproblem.A);
 
@@ -133,7 +133,7 @@ while i <= nPoints/2
             display ('invalid solution')
             validFlag = false;
             display(status)
-            pause;
+        %   pause;
         end
 
         % Continue if optimal solution is found

@@ -30,14 +30,17 @@ if ~exist('pairedModelInfo', 'var')
         'Abiotrophia_defectiva_ATCC_49176'
         'Acidaminococcus_fermentans_DSM_20731'
         'Acidaminococcus_intestini_RyC_MR95'
-        'Acidaminococcus_sp_D21'
         'Acinetobacter_calcoaceticus_PHEA_2'
+        'Acinetobacter_baumannii_AB0057'
         };
     for i=1:length(modelList)
         model = getDistributedModel([modelList{i} '.mat']);
-        inputModels{i,1}=model;
+        % Save all the models into the modelFolder
+        save(fullfile(fileDir, modelList{i}), 'model');
     end
-    [pairedModels,pairedModelInfo] = joinModelsPairwiseFromList(modelList,inputModels);
+    joinModelsPairwiseFromList(modelList, fileDir);
+    % Load pairedModelInfo
+    load('pairedModelInfo.mat');
 end
 
 % define the solver packages to be used to run this test
@@ -52,7 +55,7 @@ for p = 1:length(solverPkgs)
         fprintf('   Testing simulation of pairwise interactions using %s ... ', solverPkgs{p});
         sigD = 0.1;
         % launch the simulation for pairwise interactions
-        [pairwiseInteractions]=simulatePairwiseInteractions(pwd,pairedModelInfo,'sigD',sigD);
+        [pairwiseInteractions]=simulatePairwiseInteractions(pwd,'sigD',sigD);
 
         for i = 2:size(pairwiseInteractions, 1)
             if strcmp(pairwiseInteractions{i, 8}, 'Competition')
@@ -110,10 +113,31 @@ for p = 1:length(solverPkgs)
                 assert(strcmp(pairwiseInteractions{i, 10}, 'Mutualism'))
             end
         end
-        % output a success message
-        fprintf('Done.\n');
+
     end
 end
+
+% Cleanup
+clear('pairedModelInfo')
+delete('Abiotrophia_defectiva_ATCC_49176.mat')
+delete('Acidaminococcus_fermentans_DSM_20731.mat')
+delete('Acidaminococcus_intestini_RyC_MR95.mat')
+delete('Acidaminococcus_sp_D21.mat')
+delete('Acinetobacter_calcoaceticus_PHEA_2.mat')
+delete('pairedModelInfo.mat')
+delete('pairedModel_Abiotrophia_defectiva_ATCC_49176_Acidaminococcus_fermentans_DSM_20731.mat')
+delete('pairedModel_Abiotrophia_defectiva_ATCC_49176_Acidaminococcus_intestini_RyC_MR95.mat')
+delete('pairedModel_Abiotrophia_defectiva_ATCC_49176_Acidaminococcus_sp_D21.mat')
+delete('pairedModel_Abiotrophia_defectiva_ATCC_49176_Acinetobacter_calcoaceticus_PHEA_2.mat')
+delete('pairedModel_Acidaminococcus_fermentans_DSM_20731_Acidaminococcus_intestini_RyC_MR95.mat')
+delete('pairedModel_Acidaminococcus_fermentans_DSM_20731_Acidaminococcus_sp_D21.mat')
+delete('pairedModel_Acidaminococcus_fermentans_DSM_20731_Acinetobacter_calcoaceticus_PHEA_2.mat')
+delete('pairedModel_Acidaminococcus_intestini_RyC_MR95_Acidaminococcus_sp_D21.mat')
+delete('pairedModel_Acidaminococcus_intestini_RyC_MR95_Acinetobacter_calcoaceticus_PHEA_2.mat')
+delete('pairedModel_Acidaminococcus_sp_D21_Acinetobacter_calcoaceticus_PHEA_2.mat')
+
+% output a success message
+fprintf('Done.\n');
 
 % change to the current directory
 cd(currentDir)

@@ -1,0 +1,544 @@
+
+<!DOCTYPE html>
+
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>FBA — The COBRA Toolbox</title>
+<link href="../../../_static/img/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180"/>
+<link href="../../../_static/img/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png"/>
+<link href="../../../_static/img/favicon-16x16.png" rel="icon" sizes="16x16" type="image/png"/>
+<link color="#5bbad5" href="../../../_static/img/safari-pinned-tab.svg" rel="mask-icon"/>
+<link href="../../../_static/json/manifest.json" rel="manifest"/>
+<meta content="../../../_static/browserconfig.xml" name="msapplication-config"/>
+<meta content="#ffffff" name="theme-color"/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+<script src="../../../_static/js/jquery.easy-autocomplete.min.js" type="text/javascript"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/css/easy-autocomplete.min.css" rel="stylesheet" type="text/css"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
+<link href="../../../_static/css/cobra.css" rel="stylesheet" type="text/css">
+<link href="../../../genindex.html" rel="index" title="Index">
+<link href="../../../search.html" rel="search" title="Search">
+<link href="../../../index.html" rel="top" title="The COBRA Toolbox">
+<link href="../index.html" rel="up" title="Analysis">
+<link href="../findMIIS/index.html" rel="next" title="findMIIS">
+<link href="../exploration/index.html" rel="prev" title="Exploration">
+<script src="../../../_static/js/modernizr.min.js"></script>
+</link></link></link></link></link></link></link></head>
+<!-- Google tag (gtag.js) -->
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-KFJTC6J15L"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-KFJTC6J15L');
+</script>
+
+<body class="wy-body-for-nav" role="document">
+<div class="wy-grid-for-nav">
+<nav class="wy-nav-side" data-toggle="wy-nav-shift">
+<div class="wy-side-scroll">
+<div class="wy-side-nav-search">
+<a class="icon icon-home" href="../../../index.html"> The COBRA Toolbox
+          
+
+          
+            <img alt="cobratoolbox logo" class="logo" src="http://gibbs.unal.edu.co/cobradoc/cobratoolbox/img/cobratoolbox_logo_transparent.png"/>
+</a>
+<h1>The COBRA Toolbox</h1>
+<div role="search">
+<form action="../../../search.html" class="wy-form" id="rtd-search-form" method="get">
+<input id="simple" name="q" placeholder="Search docs" type="text"/>
+<input name="check_keywords" type="hidden" value="yes"/>
+<input name="area" type="hidden" value="default"/>
+<script>
+    	var options = {
+
+		url: "../../../_static/json/functions.json",
+
+		getValue: "name",
+
+		list: {
+            onKeyEnterEvent: function(item) {
+                    return "_static/../" + item.website_url
+            },
+            maxNumberOfElements: 25,
+			match: {
+					enabled: true,
+			},
+            sort: {
+			    enabled: true
+		    }
+		},
+
+    	template: {
+	    	type: "custom",
+		    method: function(value, item) {
+                return "<span><a href='../../../search.html?q=" + item.name + "&check_keywords=yes&area=default'>" + value + "</a>" + "<a href='../../../_static/../" + item.website_url + "' ><img src='../../../_static/link.svg'/></a></span>";
+		    }
+	    },
+
+		theme: "square"
+
+	};
+
+	$("#simple").easyAutocomplete(options);
+
+
+    </script>
+</form>
+</div>
+</div>
+<div aria-label="main navigation" class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation">
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../index.html">Home</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Functions</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Analysis</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../coupling/index.html">Coupling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../deletion/index.html">Deletion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dynamicFBA/index.html">Dynamic FBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exploration/index.html">Exploration</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">FBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../findMIIS/index.html">findMIIS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../fluxEnrichmentAnalysis/index.html">fluxEnrichmentAnalysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../FVA/index.html">FVA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../geometricFBA/index.html">geometricFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gMCS/index.html">gMCS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../KLdistance/index.html">KLdistance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mdFBA/index.html">mdFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../MOMA/index.html">MOMA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../multiSpecies/index.html">MultiSpecies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../parsimoniousFBA/index.html">parsimoniousFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../relaxedFBA/index.html">relaxedFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../rFBA/index.html">rFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../rMTA/index.html">rMTA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../robustnessAnalysis/index.html">robustnessAnalysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ROOM/index.html">ROOM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../rumba/index.html">rumba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../sampling/index.html">Sampling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../sparseFBA/index.html">sparseFBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../subspaces/index.html">Subspaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../thermo/index.html">Thermo</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topology/index.html">Topology</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../transport/index.html">Transport</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../uFBA/index.html">uFBA</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../base/index.html">Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dataIntegration/index.html">Data integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../design/index.html">Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reconstruction/index.html">Reconstruction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../visualization/index.html">Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../cite.html">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../support.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../plan.html">Development Plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contact.html">Contact</a></li>
+</ul>
+</div>
+</div>
+</nav>
+<section class="wy-nav-content-wrap" data-toggle="wy-nav-shift">
+<nav aria-label="top navigation" class="wy-nav-top" role="navigation">
+<i class="fa fa-bars" data-toggle="wy-nav-top"></i>
+<a href="../../../index.html">The COBRA Toolbox</a>
+</nav>
+<div class="wy-nav-content">
+<div class="rst-content">
+<div aria-label="breadcrumbs navigation" role="navigation">
+<ul class="wy-breadcrumbs">
+<li><a class="icon icon-home" href="../../../contents.html"></a> »</li>
+<li><a href="../../index.html">Functions</a> »</li>
+<li><a href="../index.html">Analysis</a> »</li>
+<li>FBA</li>
+<li class="wy-breadcrumbs-aside">
+</li>
+</ul>
+<hr/>
+</div>
+<div class="document" itemscope="itemscope" itemtype="https://schema.org/Article" role="main">
+<div itemprop="articleBody">
+<div class="section" id="fba">
+<span id="id1"></span><h1>FBA<a class="headerlink" href="#fba" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-src.analysis.FBA"></span><dl class="function">
+<dt id="src.analysis.FBA.changeObjective">
+<code class="descname">changeObjective</code><span class="sig-paren">(</span><em>model</em>, <em>rxns</em>, <em>objectiveCoeff</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.FBA.changeObjective" title="Permalink to this definition">¶</a></dt>
+<dd><p>Changes the objective function of a constraint-based model</p>
+<p>USAGE:</p>
+<blockquote>
+<div>model = changeObjective(model, rxns, objectiveCoeff)</div></blockquote>
+<dl class="docutils">
+<dt>INPUTS:</dt>
+<dd>model:         COBRA model structure
+rxns:          a string or a cell array of strings matching some model.rxns{i}</dd>
+<dt>OPTIONAL INPUT:</dt>
+<dd>objectiveCoeff:    Value of objective coefficient for each reaction (Default = 1)</dd>
+<dt>OUTPUT:</dt>
+<dd>model:             COBRA model structure with new objective</dd>
+</dl>
+</dd></dl>
+<dl class="function">
+<dt id="src.analysis.FBA.changeRxnBounds">
+<code class="descname">changeRxnBounds</code><span class="sig-paren">(</span><em>model</em>, <em>rxnNameList</em>, <em>value</em>, <em>boundType</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.FBA.changeRxnBounds" title="Permalink to this definition">¶</a></dt>
+<dd><p>Changes upper or lower bounds of a reaction or a set of reactions</p>
+<p>USAGE:</p>
+<blockquote>
+<div>model = changeRxnBounds(model, rxnNameList, value, boundType)</div></blockquote>
+<dl class="docutils">
+<dt>INPUTS:</dt>
+<dd><p class="first">model:          COBRA model structure
+rxnNameList:    List of reactions (cell array or string)
+value:          Bound values.</p>
+<blockquote class="last">
+<div>Can either be a vector or a single scalar value if the same
+bound value is to be assinged to all reactions</div></blockquote>
+</dd>
+<dt>OPTIONAL INPUT:</dt>
+<dd><dl class="first last docutils">
+<dt>boundType:      ‘u’ - upper, ‘l’ - lower, ‘b’ - both (Default = ‘b’)</dt>
+<dd>Bound type can either be a cell array of strings or a
+string with as many letters as there are reactions in  <cite>rxnNameList</cite></dd>
+</dl>
+</dd>
+<dt>OUTPUT:</dt>
+<dd>model:          COBRA model structure with modified reaction bounds</dd>
+</dl>
+</dd></dl>
+<dl class="function">
+<dt id="src.analysis.FBA.enumerateOptimalSolutions">
+<code class="descname">enumerateOptimalSolutions</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.FBA.enumerateOptimalSolutions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a set of optimal flux distributions
+spanning the optimal set</p>
+<p>USAGE:</p>
+<blockquote>
+<div>[solution] = enumerateOptimalSolution(model)</div></blockquote>
+<dl class="docutils">
+<dt>INPUT:</dt>
+<dd>model:       COBRA model structure</dd>
+<dt>OUTPUT:</dt>
+<dd><p class="first">solution:    solution structure</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li>fluxes - Flux distribution for each iteration</li>
+<li>nonzero - Boolean matrix denoting which fluxes are nonzero for each iteration</li>
+</ul>
+</div></blockquote>
+</dd>
+</dl>
+</dd></dl>
+<dl class="function">
+<dt id="src.analysis.FBA.minimizeModelFlux">
+<code class="descname">minimizeModelFlux</code><span class="sig-paren">(</span><em>model</em>, <em>osenseStr</em>, <em>minNorm</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.FBA.minimizeModelFlux" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function finds the minimum flux through the network and returns the
+minimized flux and an irreversible model</p>
+<p>USAGE:</p>
+<blockquote>
+<div>[MinimizedFlux modelIrrev]= minimizeModelFlux(model)</div></blockquote>
+<dl class="docutils">
+<dt>INPUT:</dt>
+<dd>model:              COBRA model structure</dd>
+<dt>OPTIONAL INPUTS:</dt>
+<dd><p class="first">osenseStr:         Maximize (‘max’)/minimize (‘min’) (opt, default = ‘max’)
+minNorm:           {(0), ‘one’, ‘zero’, &gt; 0 , <cite>n x 1</cite> vector}, where <cite>[m,n]=size(S)</cite>;</p>
+<blockquote class="last">
+<div><p>0 - Default, normal LP,
+‘one’  Minimise the Taxicab Norm using LP.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}min  ~&amp;~ |v| \\
+s.t. ~&amp;~ S v = b \\
+     ~&amp;~ c^T v = f \\
+     ~&amp;~ lb \leq v \leq ub\end{split}\]</div>
+<p>A LP solver is required.
+‘zero’ Minimize the cardinality (zero-norm) of v</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}min  ~&amp;~ ||v||_0 \\
+s.t. ~&amp;~ S v = b \\
+     ~&amp;~ c^T v = f \\
+     ~&amp;~ lb \leq v \leq ub\end{split}\]</div>
+<p>The zero-norm is approximated by a non-convex approximation
+Six approximations are available: capped-L1 norm, exponential function
+logarithmic function, SCAD function, L_p norm with p&lt;0, L_p norm with 0&lt;p&lt;1
+Note : capped-L1, exponential and logarithmic function often give
+the best result in term of sparsity.</p>
+<p>The remaining options work only with a valid QP solver:</p>
+<p>&gt; 0    Minimises the Euclidean Norm of internal fluxes.
+Typically 1e-6 works well.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}min  ~&amp;~ ||v||      \\
+s.t. ~&amp;~ S v = b    \\
+     ~&amp;~ c^T v = f  \\
+     ~&amp;~ lb \leq v \leq ub\end{split}\]</div>
+<p><cite>n</cite> x 1   Forms the diagonal of positive definiate
+matrix <cite>F</cite> in the quadratic program</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}min  ~&amp;~ 0.5 v^T F v  \\
+s.t. ~&amp;~ S v = b      \\
+     ~&amp;~ c^T v = f    \\
+    ~&amp;~ lb \leq v \leq ub\end{split}\]</div>
+</div></blockquote>
+</dd>
+<dt>OUTPUTS:</dt>
+<dd>MinimizedFlux:    minimum flux possible through the netwok
+modelIrrev:       irreversible version of ‘model’</dd>
+</dl>
+</dd></dl>
+<dl class="function">
+<dt id="src.analysis.FBA.optimizeCbModel">
+<code class="descname">optimizeCbModel</code><span class="sig-paren">(</span><em>model</em>, <em>osenseStr</em>, <em>minNorm</em>, <em>allowLoops</em>, <em>param</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.FBA.optimizeCbModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solves flux balance analysis problems, and variants thereof</p>
+<p>Solves LP problems of the form</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}max/min  ~&amp; c^T v \\
+s.t.     ~&amp; S v = b ~~~~~~~~~~~:y \\
+         ~&amp; C v \leq d~~~~~~~~:y \\
+         ~&amp; lb \leq v \leq ub~~~~:w\end{split}\]</div>
+<p>USAGE:</p>
+<blockquote>
+<div>solution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, param)</div></blockquote>
+<dl class="docutils">
+<dt>INPUT:</dt>
+<dd><p class="first">model:             (the following fields are required - others can be supplied)</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li>S  - <cite>m x n</cite> Stoichiometric matrix</li>
+<li>c  - <cite>n x 1</cite> Linear objective coefficients</li>
+<li>lb - <cite>n x 1</cite> Lower bounds on net flux</li>
+<li>ub - <cite>n x 1</cite> Upper bounds on net flux</li>
+</ul>
+</div></blockquote>
+</dd>
+<dt>OPTIONAL INPUTS:</dt>
+<dd><blockquote class="first">
+<div><dl class="docutils">
+<dt>model:</dt>
+<dd><ul class="first last simple">
+<li>b - <cite>m x 1</cite> change in concentration with time</li>
+<li>csense - <cite>m x 1</cite> character array with entries in {L,E,G}
+(The code is backward compatible with an m + k x 1 csense vector,
+where k is the number of coupling constraints)</li>
+<li>C - <cite>k x n</cite> Left hand side of C*v &lt;= d</li>
+<li>d - <cite>k x n</cite> Right hand side of C*v &lt;= d</li>
+<li>dsense - <cite>k x 1</cite> character array with entries in {L,E,G}</li>
+<li>g0 - <cite>n x 1</cite> weights on zero norm</li>
+<li>g1 - <cite>n x 1</cite> weights on one norm</li>
+<li>g2 - <cite>n x 1</cite> weights on two norm</li>
+</ul>
+</dd>
+<dt>osenseStr:         Maximize (‘max’)/minimize (‘min’) (opt, default =</dt>
+<dd>‘max’) linear part of the objective. Nonlinear
+parts of the objective are always assumed to be
+minimised.</dd>
+<dt>minNorm:           {(0), ‘one’, ‘zero’, &gt; 0 , n x 1 vector}, where <cite>[m,n]=size(S)</cite>;</dt>
+<dd><p class="first">0 - Default, normal LP
+‘one’  Minimise the Taxicab Norm using LP.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}min  ~&amp; d.*|v| \\
+s.t. ~&amp; S v = b \\
+     ~&amp; c^T v = f \\
+     ~&amp; lb \leq v \leq ub\end{split}\]</div>
+<p>A LP solver is required.
+‘zero’ Minimize the cardinality (zero-norm) of v</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}min  ~&amp; d.*||v||_0 \\
+s.t. ~&amp; S v = b \\
+     ~&amp; c^T v = f \\
+     ~&amp; lb \leq v \leq ub\end{split}\]</div>
+<p>The zero-norm is approximated by a non-convex approximation
+Six approximations are available: capped-L1 norm, exponential function
+logarithmic function, SCAD function, L_p norm with p&lt;0, L_p norm with 0&lt;p&lt;1
+Note : capped-L1, exponential and logarithmic function often give
+the best result in term of sparsity.</p>
+<p>The remaining options work only with a valid QP solver:</p>
+<p>&gt; 0    Minimises the squared Euclidean Norm of internal fluxes.
+Typically 1e-6 works well.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}min  ~&amp; 1/2 v'*v \\
+s.t. ~&amp; S v = b \\
+     ~&amp; c^T v = f \\
+     ~&amp; lb \leq v \leq ub\end{split}\]</div>
+<p><cite>n</cite> x 1   Forms the diagonal of positive definite
+matrix <cite>F</cite> in the quadratic program</p>
+<div class="last math notranslate nohighlight">
+\[\begin{split}min  ~&amp; 0.5 v^T F v \\
+s.t. ~&amp; S v = b \\
+     ~&amp; c^T v = f \\
+     ~&amp; lb \leq v \leq ub\end{split}\]</div>
+</dd>
+<dt>allowLoops:        {0,(1)} If false, then instead of a conventional FBA,</dt>
+<dd>the solver will run an MILP version which does not allow
+loops in the final solution.  Default is true.
+Runs much slower when set to false.
+See <cite>addLoopLawConstraints.m</cite> to for more info.</dd>
+</dl>
+</div></blockquote>
+<dl class="docutils">
+<dt>param:              parameters structure passed directly to solver</dt>
+<dd>The following are some optional fields (amongst many others)</dd>
+</dl>
+<p><a href="#id2"><span class="problematic" id="id3">*</span></a>.zeroNormApprox:    appoximation type of zero-norm (only available when minNorm=’zero’) (default = ‘cappedL1’)</p>
+<blockquote>
+<div><ul class="simple">
+<li>‘cappedL1’ : Capped-L1 norm</li>
+<li>‘exp’      : Exponential function</li>
+<li>‘log’      : Logarithmic function</li>
+<li>‘SCAD’     : SCAD function</li>
+<li>‘lp-’      : L_p norm with p&lt;0</li>
+<li>‘lp+’      : L_p norm with 0&lt;p&lt;1</li>
+<li>‘all’      : try all approximations and return the best result</li>
+</ul>
+</div></blockquote>
+<p class="last"><a href="#id4"><span class="problematic" id="id5">*</span></a>.verify:     verify that the input fields are consistent (default: false);</p>
+</dd>
+<dt>OUTPUT:</dt>
+<dd><p class="first">solution:       solution object:</p>
+<blockquote class="last">
+<div><blockquote>
+<div><ul class="simple">
+<li>f - Linear objective value</li>
+<li>f0 - Zero-norm objective value (optional)</li>
+<li>f1 - One-norm objective value  (optional)</li>
+<li>f2 - Two-norm objective value  (optional)</li>
+<li>v - Reaction rates (Optimal primal variable, legacy FBAsolution.x)</li>
+<li>y - Dual to the matrix inequality constraints (Shadow prices)</li>
+<li>w - Dual to the box constraints (Reduced costs)</li>
+<li>s - Slacks of the metabolites</li>
+<li><dl class="first docutils">
+<dt>stat - Solver status in standardized form:</dt>
+<dd><ul class="first last">
+<li>0 - Infeasible problem</li>
+<li>1 - Optimal solution</li>
+<li>2 - Unbounded solution</li>
+<li>3 - Almost optimal solution</li>
+<li>-1 - Some other problem (timelimit, numerical problem etc)</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li>origStat - Original status returned by the specific solver</li>
+</ul>
+</div></blockquote>
+<p>If the input model contains <cite>C</cite> the following fields are added to the solution:</p>
+<blockquote>
+<div><ul class="simple">
+<li>ctrs_y - the duals for the constraints from C</li>
+<li>ctrs_s - Slacks of the additional constraints</li>
+</ul>
+</div></blockquote>
+<p>If the model contains the <cite>E</cite> field, the following fields are added to the solution:</p>
+<blockquote>
+<div><ul class="simple">
+<li>vars_v - The optimal primal values of the variables</li>
+<li>vars_w - The reduced costs of the additional variables from E</li>
+</ul>
+</div></blockquote>
+</div></blockquote>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p><cite>solution.stat</cite> is either 1, 2, 3, 0 or -1, and is a translation from <cite>solution.origStat</cite>,
+which is returned by each solver in a solver specific way. That is, not all solvers return
+the same type of <cite>solution.origStat</cite> and because the cobra toolbox can use many solvers,
+we need to return to the user of <cite>optimizeCbModel.m</cite> a standard representation, which is what
+<cite>solution.stat</cite> is.</p>
+<p class="last">If <cite>solution.stat = 1 or = 3</cite>, then a solution is returned, otherwise no solution is returned
+and the solution.f = NaN
+This means that it is up to the person calling <cite>optimizeCbModel</cite> to adapt their code to the
+case when no solution is returned, by checking the value of <cite>solution.stat</cite> first.</p>
+</div>
+</dd></dl>
+<dl class="function">
+<dt id="src.analysis.FBA.randomObjFBASol">
+<code class="descname">randomObjFBASol</code><span class="sig-paren">(</span><em>model</em>, <em>initArgs</em><span class="sig-paren">)</span><a class="headerlink" href="#src.analysis.FBA.randomObjFBASol" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solves an FBA problem with a random objective function</p>
+<p>USAGE:</p>
+<blockquote>
+<div>x0 = randomObjSol(model, initArgs)</div></blockquote>
+<dl class="docutils">
+<dt>INPUTS:</dt>
+<dd><p class="first">model:        COBRA model structure
+initArgs:     Cell array containing the following data:</p>
+<blockquote class="last">
+<div><ol class="arabic simple">
+<li>osenseStr - Maximize (‘max’) / minimize (‘min’)</li>
+<li>minObjFrac - Minimum initial objective fraction</li>
+<li>minObjValue - Minimum initial objective value (opt)
+(Default = <cite>minObjFrac*sol.f</cite>)</li>
+</ol>
+</div></blockquote>
+</dd>
+<dt>OUTPUT:</dt>
+<dd>x0:           solution of FBA problem</dd>
+</dl>
+</dd></dl>
+</div>
+</div>
+<div class="articleComments">
+</div>
+</div>
+<footer>
+<div aria-label="footer navigation" class="rst-footer-buttons" role="navigation">
+<a accesskey="n" class="btn btn-default float-right" href="../findMIIS/index.html" rel="next" title="findMIIS">Next <span class="fa fa-arrow-circle-right"></span></a>
+<a accesskey="p" class="btn btn-default" href="../exploration/index.html" rel="prev" title="Exploration"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+</div>
+<hr/>
+<div role="contentinfo">
+<p>
+        © Copyright 2017-2020, The COBRA Toolbox developers.
+
+    </p>
+</div>
+  Built with Sphinx using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+</div>
+</div>
+</section>
+</div>
+<script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'2.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+<script src="../../../_static/jquery.js" type="text/javascript"></script>
+<script src="../../../_static/underscore.js" type="text/javascript"></script>
+<script src="../../../_static/doctools.js" type="text/javascript"></script>
+<script src="../../../_static/language_data.js" type="text/javascript"></script>
+<script src="https://cdn.jsdelivr.net/gh/mathjax/MathJax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+<script src="../../../_static/js/theme.js" type="text/javascript"></script>
+<script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-TRCMZL1FKK"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TRCMZL1FKK');
+  </script>
+</body>
+</html>

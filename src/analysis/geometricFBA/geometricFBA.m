@@ -48,7 +48,7 @@ if length(ind) == 1
     model.lb(ind) = FBAsolution.f;
 end
 
-LPproblem = buildLPproblemFromModel(model);
+LPproblem = buildOptProblemFromModel(model);
 A = LPproblem.A;
 b = LPproblem.b;
 L = LPproblem.lb;

@@ -26,7 +26,7 @@ solution.fluxes = zeros(nRxns,0);
 solution.nonzero = zeros(nRxns,0);
 
 %sol = optimizeCbModel(model);
-LPproblem = buildLPproblemFromModel(model);
+LPproblem = buildOptProblemFromModel(model);
 NZ = zeros(nRxns,0);
 sol = solveCobraLP(LPproblem);
 tol = getCobraSolverParams('LP','feasTol');

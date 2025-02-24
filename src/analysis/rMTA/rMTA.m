@@ -250,7 +250,7 @@ fprintf('-------------------\n');
 fprintf('Step 2 in progress: MOMA\n');
 timerVal = tic;
 
-QPproblem = buildLPproblemFromModel(model);
+QPproblem = buildOptProblemFromModel(model);
 [~,nRxns] = size(model.S);
 [~,nVars] = size(QPproblem.A);
 QPproblem.c(1:nRxns) = -2*Vref;

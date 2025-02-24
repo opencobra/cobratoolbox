@@ -169,9 +169,9 @@ if oldRxnFlag
 end
 
 parser = inputParser();
-parser.addRequired('model',@isstruct) % we only check, whether its a struct, no details for speed
-parser.addRequired('rxnID',@ischar)
-parser.addParamValue('reactionName',defaultReactionName,@ischar)
+parser.addRequired('model',@isstruct); % we only check, whether its a struct, no details for speed
+parser.addRequired('rxnID',@ischar);
+parser.addParamValue('reactionName',defaultReactionName,@ischar);
 parser.addParamValue('metaboliteList',defaultMetaboliteList, @iscell);
 parser.addParamValue('stoichCoeffList',defaultStoichCoefList, @(x) isnumeric(x) || isempty(x));
 parser.addParamValue('reactionFormula','', @ischar);
