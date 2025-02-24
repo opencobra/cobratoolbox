@@ -34,6 +34,8 @@ function [exchanges, netProduction, netUptake, growthRates, infeasModels] = micr
 %                        present in the gut should be provexchangesed to the models (default: true)
 %    adaptMedium:        boolean indicating if the medium should be adapted through the
 %                        adaptVMHDietToAGORA function or used as is (default=true)
+%    solver:             char with the solver that will be used in microbiotamodelsimulator
+%                        If glpk, it will increase to model solve time to hours instead of seconds (default '')
 %
 % OUTPUTS:
 %    exchanges:          cell array with list of all unique exchanges to diet/
