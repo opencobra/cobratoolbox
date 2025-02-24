@@ -41,6 +41,8 @@ function [netSecretionFluxes, netUptakeFluxes, Y, modelStats, summary, statistic
 %    pruneModels:            boolean indicating whether reactions that do not carry flux on the
 %                            input diet should be removed from the microbe models. 
 %                            Recommended for large datasets (default: false)
+%    solver:                 char with the solver that will be used in microbiotamodelsimulator
+%                            If glpk, it will increase to model solve time to hours instead of seconds (default '')
 %
 % OUTPUTS:
 %    init:                   status of initialization
