@@ -8,7 +8,7 @@ function [exchanges, netProduction, netUptake, growthRates, infeasModels] = micr
 %
 % USAGE:
 %
-%   [exchanges, netProduction, netUptake, growthRates, infeasModels] = microbiotaModelSimulator(resPath, exMets, sampNames, dietFilePath, hostPath, hostBiomassRxn, hostBiomassRxnFlux, numWorkers, rDiet, pDiet, computeProfiles, lowerBMBound, upperBMBound, includeHumanMets, adaptMedium)
+%   [exchanges, netProduction, netUptake, growthRates, infeasModels] = microbiotaModelSimulator(resPath, exMets, sampNames, dietFilePath, hostPath, hostBiomassRxn, hostBiomassRxnFlux, numWorkers, rDiet, pDiet, computeProfiles, lowerBMBound, upperBMBound, includeHumanMets, adaptMedium, solver)
 %
 % INPUTS:
 %    resPath:            char with path of directory where results are saved
