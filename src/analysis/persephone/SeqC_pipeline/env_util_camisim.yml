@@ -1,0 +1,29 @@
+name: env_util_camisim
+channels:
+- bioconda
+- conda-forge
+dependencies:
+  - python=3.9.*
+  - perl
+  - ncurses
+  - perl-libxml-perl
+  - samtools
+  - conda-forge::h5py
+  - conda-forge::joblib
+  - conda-forge::scikit-learn
+  #micromamba install -n env_util_camisim joblib scikit-learn -c conda-forge
+  - pip
+  - pip:
+    - numpy
+    - ete3
+    - biom-format
+    - biopython
+    - numpy
+    - matplotlib
+    #- joblib
+    #- scikit-learn
+#numpy
+#biopython
+#matplotlib
+#biom-format
+#ete3
