@@ -1,0 +1,6 @@
+name: env_util_seqkit
+channels:
+- bioconda
+dependencies:
+- seqkit=2.8.2
+
