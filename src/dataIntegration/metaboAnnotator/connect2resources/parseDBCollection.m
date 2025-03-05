@@ -21,6 +21,7 @@ if ~exist('startSearch','var')
     startSearch = 1;
 end
 if ~exist('endSearch','var')
+    F = fieldnames(metabolite_structure);
     endSearch = length(F);
 end
 
