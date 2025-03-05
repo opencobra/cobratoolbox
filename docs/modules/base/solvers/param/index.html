@@ -69,8 +69,8 @@
         <link rel="search" title="Search" href="../../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../../index.html"/>
         <link rel="up" title="Solvers" href="../index.html"/>
-        <link rel="next" title="Cardopt" href="../cardOpt/index.html"/>
-        <link rel="prev" title="Rescale" href="../rescale/index.html"/> 
+        <link rel="next" title="Gams" href="../gams/index.html"/>
+        <link rel="prev" title="Lp_solve" href="../lp_solve/index.html"/> 
 
   
   <script src="../../../../_static/js/modernizr.min.js"></script>
@@ -158,29 +158,30 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">Functions</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Base</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html">Solvers</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../init/index.html">Init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../cplex/index.html">Cplex</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../entropicFBA/index.html">Entropicfba</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../gurobi/index.html">Gurobi</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../cardOpt/index.html">Cardopt</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../rescale/index.html">Rescale</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../NLP/index.html">Nlp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../varKin/index.html">Varkin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../getSetSolver/index.html">Getsetsolver</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../mosek/index.html">Mosek</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../lindo/index.html">Lindo</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../lp_solve/index.html">Lp_solve</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Param</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../gams/index.html">Gams</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../install/index.html">Install</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../io/index.html">Io</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../paths/index.html">Paths</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ci/index.html">Ci</a></li>
-<li class="toctree-l3 current"><a class="reference internal" href="../index.html">Solvers</a><ul class="current">
-<li class="toctree-l4"><a class="reference internal" href="../msk/index.html">Msk</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../rescale/index.html">Rescale</a></li>
-<li class="toctree-l4 current"><a class="current reference internal" href="#">Param</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../cardOpt/index.html">Cardopt</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../entropicFBA/index.html">Entropicfba</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../gams/index.html">Gams</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../varKin/index.html">Varkin</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../cplex/index.html">Cplex</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../init/index.html">Init</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../NLP/index.html">Nlp</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../getSetSolver/index.html">Getsetsolver</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../lp_solve/index.html">Lp_solve</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../lindo/index.html">Lindo</a></li>
-</ul>
-</li>
 <li class="toctree-l3"><a class="reference internal" href="../../utilities/index.html">Utilities</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../cobrarrow/index.html">Cobrarrow</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../codeConsistency/index.html">Codeconsistency</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../install/index.html">Install</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../cobrarrow/index.html">Cobrarrow</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../dataIntegration/index.html">Dataintegration</a></li>
@@ -309,7 +310,7 @@ without regularisation.</p>
 <dt class="sig sig-object mat" id="src.base.solvers.param.getCobraSolverParams">
 <span class="sig-name descname"><span class="pre">getCobraSolverParams</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">problemType</span></em>, <em class="sig-param"><span class="pre">paramNames</span></em>, <em class="sig-param"><span class="pre">paramStructure</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/param/getCobraSolverParams.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.param.getCobraSolverParams" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function gets the specified paramStructure in <cite>paramNames</cite> from
-paramStructure, the global cobra paramters variable or default values set within
+paramStructure, the global cobra parameters variable or default values set within
 this script.</p>
 <p>It will use values with the following priority
 paramStructure &gt; solver type paramStructure &gt; default paramStructure</p>
@@ -359,7 +360,7 @@ problem type.</p>
 </dd>
 <dt class="field-even">INPUT</dt>
 <dd class="field-even"><p><strong>problemType</strong> – One of the problem types available in the COBRA
-Toolbox (‘LP’,’QP’,’MILP’,’MIQP’,’NLP’)</p>
+Toolbox (‘LP’,’QP’,’EP’,’CLP’,’MILP’,’MIQP’,’NLP’)</p>
 </dd>
 </dl>
 <dl class="simple">
@@ -370,6 +371,12 @@ solver being used.</p>
 </dl>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.base.solvers.param.mergeCobraParams">
+<span class="sig-name descname"><span class="pre">mergeCobraParams</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">param1</span></em>, <em class="sig-param"><span class="pre">param2</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/param/mergeCobraParams.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.param.mergeCobraParams" title="Permalink to this definition">¶</a></dt>
+<dd><p>Merge the structures with preference to param1 fields over param2 fields</p>
 </dd></dl>
 
 <dl class="mat function">
@@ -419,10 +426,10 @@ otherwise an error will result.</p></li>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../cardOpt/index.html" class="btn btn-default float-right" title="Cardopt" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../gams/index.html" class="btn btn-default float-right" title="Gams" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../rescale/index.html" class="btn btn-default" title="Rescale" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../lp_solve/index.html" class="btn btn-default" title="Lp_solve" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

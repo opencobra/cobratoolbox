@@ -18,7 +18,7 @@ FileName = 'testData_generateFieldDescriptionFile.md';
 
 % rerun the default function and save the output for reference
 generateFieldDescriptionFile();
-fileID = fopen([CBTDIR filesep 'docs' filesep 'source' filesep 'notes' filesep 'COBRAModelFields.md'], 'r');
+fileID = fopen([CBTDIR filesep 'documentation' filesep 'source' filesep 'notes' filesep 'COBRAModelFields.md'], 'r');
 refData_FileString = fscanf(fileID, '%c');
 
 % function output

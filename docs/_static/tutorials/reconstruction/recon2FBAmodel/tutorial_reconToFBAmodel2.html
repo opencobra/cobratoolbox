@@ -1,0 +1,1075 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge,IE=9,chrome=1"><meta name="generator" content="MATLAB 2021a"><title>Convert a reconstruction into a flux balance analysis model </title><style type="text/css">.rtcContent { padding: 30px; } .S0 { margin: 3px 10px 5px 4px; padding: 0px; line-height: 28.8px; min-height: 0px; white-space: pre-wrap; color: rgb(213, 80, 0); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 24px; font-weight: normal; text-align: left;  }
+.S1 { margin: 20px 10px 5px 4px; padding: 0px; line-height: 20px; min-height: 0px; white-space: pre-wrap; color: rgb(60, 60, 60); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 20px; font-weight: bold; text-align: left;  }
+.S2 { margin: 2px 10px 9px 4px; padding: 0px; line-height: 21px; min-height: 0px; white-space: pre-wrap; color: rgb(0, 0, 0); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 14px; font-weight: normal; text-align: left;  }
+.S3 { margin: 3px 10px 5px 4px; padding: 0px; line-height: 20px; min-height: 0px; white-space: pre-wrap; color: rgb(60, 60, 60); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 20px; font-weight: bold; text-align: left;  }
+.CodeBlock { background-color: #F7F7F7; margin: 10px 0 10px 0;}
+.S4 { border-left: 1px solid rgb(233, 233, 233); border-right: 1px solid rgb(233, 233, 233); border-top: 1px solid rgb(233, 233, 233); border-bottom: 0px none rgb(0, 0, 0); border-radius: 4px 4px 0px 0px; padding: 6px 45px 0px 13px; line-height: 17.234px; min-height: 18px; white-space: nowrap; color: rgb(0, 0, 0); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S5 { border-left: 1px solid rgb(233, 233, 233); border-right: 1px solid rgb(233, 233, 233); border-top: 0px none rgb(0, 0, 0); border-bottom: 0px none rgb(0, 0, 0); border-radius: 0px; padding: 0px 45px 0px 13px; line-height: 17.234px; min-height: 18px; white-space: nowrap; color: rgb(0, 0, 0); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S6 { border-left: 1px solid rgb(233, 233, 233); border-right: 1px solid rgb(233, 233, 233); border-top: 0px none rgb(0, 0, 0); border-bottom: 1px solid rgb(233, 233, 233); border-radius: 0px; padding: 0px 45px 4px 13px; line-height: 17.234px; min-height: 18px; white-space: nowrap; color: rgb(0, 0, 0); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S7 { color: rgb(64, 64, 64); padding: 10px 0px 6px 17px; background: rgb(255, 255, 255) none repeat scroll 0% 0% / auto padding-box border-box; font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px; overflow-x: hidden; line-height: 17.234px;  }
+/* Styling that is common to warnings and errors is in diagnosticOutput.css */.embeddedOutputsErrorElement {    min-height: 18px;    max-height: 250px;    overflow: auto;}
+.embeddedOutputsErrorElement.inlineElement {}
+.embeddedOutputsErrorElement.rightPaneElement {}
+/* Styling that is common to warnings and errors is in diagnosticOutput.css */.embeddedOutputsWarningElement{    min-height: 18px;    max-height: 250px;    overflow: auto;}
+.embeddedOutputsWarningElement.inlineElement {}
+.embeddedOutputsWarningElement.rightPaneElement {}
+/* Copyright 2015-2019 The MathWorks, Inc. *//* In this file, styles are not scoped to rtcContainer since they could be in the Dojo Tooltip */.diagnosticMessage-wrapper {    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;    font-size: 12px;}
+.diagnosticMessage-wrapper.diagnosticMessage-warningType {    color: rgb(255,100,0);}
+.diagnosticMessage-wrapper.diagnosticMessage-warningType a {    color: rgb(255,100,0);    text-decoration: underline;}
+.diagnosticMessage-wrapper.diagnosticMessage-errorType {    color: rgb(230,0,0);}
+.diagnosticMessage-wrapper.diagnosticMessage-errorType a {    color: rgb(230,0,0);    text-decoration: underline;}
+.diagnosticMessage-wrapper .diagnosticMessage-messagePart,.diagnosticMessage-wrapper .diagnosticMessage-causePart {    white-space: pre-wrap;}
+.diagnosticMessage-wrapper .diagnosticMessage-stackPart {    white-space: pre;}
+.embeddedOutputsTextElement,.embeddedOutputsVariableStringElement {    white-space: pre;    word-wrap:  initial;    min-height: 18px;    max-height: 250px;    overflow: auto;}
+.textElement,.rtcDataTipElement .textElement {    padding-top: 3px;}
+.embeddedOutputsTextElement.inlineElement,.embeddedOutputsVariableStringElement.inlineElement {}
+.inlineElement .textElement {}
+.embeddedOutputsTextElement.rightPaneElement,.embeddedOutputsVariableStringElement.rightPaneElement {    min-height: 16px;}
+.rightPaneElement .textElement {    padding-top: 2px;    padding-left: 9px;}
+.S8 { margin: 10px 10px 9px 4px; padding: 0px; line-height: 21px; min-height: 0px; white-space: pre-wrap; color: rgb(0, 0, 0); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 14px; font-weight: normal; text-align: left;  }
+.S9 { border-left: 1px solid rgb(233, 233, 233); border-right: 1px solid rgb(233, 233, 233); border-top: 1px solid rgb(233, 233, 233); border-bottom: 1px solid rgb(233, 233, 233); border-radius: 4px; padding: 6px 45px 4px 13px; line-height: 17.234px; min-height: 18px; white-space: nowrap; color: rgb(0, 0, 0); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S10 { border-left: 1px solid rgb(233, 233, 233); border-right: 1px solid rgb(233, 233, 233); border-top: 0px none rgb(0, 0, 0); border-bottom: 1px solid rgb(233, 233, 233); border-radius: 0px 0px 4px 4px; padding: 0px 45px 4px 13px; line-height: 17.234px; min-height: 18px; white-space: nowrap; color: rgb(0, 0, 0); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S11 { border-left: 1px solid rgb(233, 233, 233); border-right: 1px solid rgb(233, 233, 233); border-top: 1px solid rgb(233, 233, 233); border-bottom: 1px solid rgb(233, 233, 233); border-radius: 0px; padding: 6px 45px 4px 13px; line-height: 17.234px; min-height: 18px; white-space: nowrap; color: rgb(0, 0, 0); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S12 { border-left: 1px solid rgb(233, 233, 233); border-right: 1px solid rgb(233, 233, 233); border-top: 1px solid rgb(233, 233, 233); border-bottom: 0px none rgb(0, 0, 0); border-radius: 0px; padding: 6px 45px 0px 13px; line-height: 17.234px; min-height: 18px; white-space: nowrap; color: rgb(0, 0, 0); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }</style></head><body><div class = rtcContent><h1  class = 'S0'><span style=' font-weight: bold;'>Convert a reconstruction into a flux balance analysis model </span></h1><h2  class = 'S1'><span style=' font-weight: bold;'>Author: Ronan Fleming, Ines Thiele, University of Luxembourg</span></h2><h2  class = 'S1'><span style=' font-weight: bold;'>Reviewers: </span></h2><h2  class = 'S1'><span>INTRODUCTION</span></h2><div  class = 'S2'><span>Even with quality control during the reconstruction process, it is not appropriate to assume that any reconstruction can be converted directly into a model and used to make predictions. A model must satisfy certain assumptions before it can be used to make reliable predictions. Depending on the type of model model, these assumptions will be different. Each assumption should be chemically or biologically motivated and expressed in an unambiguous manner and preferably both intuitively and mathematically. Flux balance analysis is a mathematical method widely used for studying genome-scale biochemical network. Here one aims to predict steady-state reaction fluxes, where there is a balance between production and consumption of each molecular species that is not exchanged across the specified boundary of a system. In this situation, one might obtain erroneous predictions if the system boundary is incorrectly specified. If a reconstruction contains one or more supposedly mass balanced reactions, but which are actually not mass balanced, such reactions in a model can lead to inadvertent leakage of a metabolite from the model, in violation of mass balance. Similarly, when generating a model for flux balance analysis, it is important to ensure that the network is flux consistent, that is, each reaction can carry a non-zero steady state flux. </span></div><div  class = 'S2'><span>Given a reconstruction with </span><span texencoding="$\hat{m}$" style="vertical-align:-5px"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAmCAYAAADX7PtfAAAC1ElEQVRYR+3Wa8jecxzH8dcsxVrJYSbNYTOGB+IBEZFWmlPJGHkwhBxziDxYQrGyQg61kITJmTLkmCkZjzxayAOHMWGRiIWRPvr+13//rvu6/lfu7kf399F9X7//7/f+/j7f02+GKbYZU8wzDRyk+LW4E79iGd4aJyzjSLojVuPiFuBvXIf7+0L7AnfHCzgBm3AJFuIOzMKDuApbR4H7AA/Fy1iAx3ENfq6DA30Ux2IdzsJPw6CjgCfjafyOS7F2wGE7lKy34xucjk8ngg4DNsnxHK4c5TkOxmNYhHPx+iDoRMC9kdttHDMLZ5asO+MZbOlCR0k6KgfGXp8Gji3ZqA3DJJ2Nw3A4XqqCz3l74DQksR7Bdy3ITjgH8/E8NvRJmgtwGY5Eaiw1uBv+wJIq/jl10Ls4sf7eD2/ioPp/M/apfdu4w274EY7AazgFZyC1eQXOx434HAcg3ehh3Iw482QR9sdX7VsOA6YG42Eg6+uwpfgT91SLS+eJIm+XQ19jeTWA37Ar/uoDjIQ/1odHFSA3jEyx5vZxJio8gA9rLRPlcrxasd4ujBPd8MyaDpEjG9e0Dtyl2lzie1P1z7S0xj7GIaXMvX2SJt80Xn5Ro2dVa2PiGScyFXKrU1trc1tZm7h+0hf4GQ7E95Xi7Z4YeBImdjzeax2aF0B6aGbmvEE1OUjSfVuZdT3u7mz8AEfjlRpF7eVGmczIC/sCL6oUT3bt2Rq22Z/pnuGb50Yy9sXOoU38zsNTfYHP4my8UYXe3re4SiDOpOP80lqMcwlBLLH8oQbzfcjb5z/rSpp5ltRP/WTCP9TxciVW4B0E3ra0uzxFEv8M4aury+S9s826wGOqyP+pXtl43Gxo6u8G3NUBpkRuw5c1tHPD/LaddYG34ha8j+M63+6Fb0uV1Fn33XISnigpo0TvGA6K9aT9Nj3xJ03Kicpi0gGjsnQa+L8VmPKy+BezLI8nVbCqnQAAAABJRU5ErkJggg==" width="14" height="19" /></span><span> reactants involved in </span><span texencoding="$\hat{n}$
+" style="vertical-align:-5px"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABcAAAAmCAYAAAAvDACoAAACP0lEQVRIS+3WS8hNYRTG8Z8oyjUpGbgWkRRCIpmgRGJEESFigNxyKRMhKeUSJkrkVuRODEwMhFyLARITlJQipISW1lfbcc7Z30km8k5O7f2+/3fttZ71rNPCX1wt/iLbvw/vjnMYjJOYg09lKW1OWkbiDLoWYHcxBS/rXVAGn4X9aI0D2I2dGIPXmIpbtS6oBY/nm7Aer7AAlxIS75ZhCz8FMQ/Hql1QDd4WhzOqI1iCd1UO98NBRNo2YwO+F/dVwntk4bphEU6XFK0lVmIjLmI2PjadqYRPzsKdxdsyNRTeD8AoPMKNWvAGeOVby9RSTqiz49+Ft0IUa0gW6klmoR3Go2/q/2FzdR77pmMVBmV3fkPI803q+ih6JzCk16uauurlvA0uYyyuY3S2fXTmUvRHXBJrGO5URl9W0JsYgbVpXvswCZ8xAVcS2BHvG4F3yk+NLhyKvdmBTxOyAtvxOL/it7TXi3waTuFZ2kC434kCIfxnJnalkTUEj0gXp6U+wMKK0+GWUeRIU5Nj/rKlXuQhu5BaTJz4DVjTGoiQ3xd0rjWVasF74kWStmJdRdTh5ztwFeNqOUAt+PycQEV9FxnnEQ66BtsahR/PRrqWOi+eD/XE8GiP4biNuTm4PxQ3Vos8nkUndsHy/PzimfgHcC+13gETEVMpZFla0PCRmO6x+uB5xZkZOTOj0HsQnRwd2ywprs483k/DqjwU8ruQ3nIoPehrc+G16tPw8zJvaRhYVtA/Av6Hl6bvf0GrpugH2NNoJ+M7xC4AAAAASUVORK5CYII=" width="11.5" height="19" /></span><span> reactions, this tutorial demonstrates a method to identify and extract the largest subset of the reconstruction whose internal reactions are both stoichoimetrically and flux consistent and whose external reactions are flux consistent. This model is then mathematically consistent with the basic requirements for generation of predictions using flux balance analysis. The identification of the component of the reconstruction that does not satisfy the aforementioned modelling conditions is also useful for targeting reconstruction effort towards resolving stoichiometric inconsistency or resolving flux inconsistency. The example used in this tutorial illustrates the process of extracting a model consistent with flux balance analsis, from a ReconX reconstruction.</span></div><h2  class = 'S1'><span>PROCEDURE</span></h2><h2  class = 'S3'><span>Select reconstruction to convert into a model and enter parameters</span></h2><div  class = 'S2'><span>Load the ReconX reconstruction, and save the original reconstruction in the workspace, unless it is already loaded into the workspace. </span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre"><span >clear </span><span style="color: rgb(170, 4, 249);">model</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">if </span><span >~exist(</span><span style="color: rgb(170, 4, 249);">'modelOrig'</span><span >,</span><span style="color: rgb(170, 4, 249);">'var'</span><span >)</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >    </span><span style="color: rgb(2, 128, 9);">%select your own model, or use Recon2.0model instead</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >    </span><span style="color: rgb(14, 0, 255);">if </span><span >1</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        filename=</span><span style="color: rgb(170, 4, 249);">'Recon3D_301.mat'</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        load(filename);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        model=Recon3D;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >    </span><span style="color: rgb(14, 0, 255);">else</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        filename=</span><span style="color: rgb(170, 4, 249);">'Recon2.0model.mat'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        </span><span style="color: rgb(14, 0, 255);">if </span><span >exist(</span><span style="color: rgb(170, 4, 249);">'Recon2.0model.mat'</span><span >,</span><span style="color: rgb(170, 4, 249);">'file'</span><span >)==2</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >            model = readCbModel(filename);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        </span><span style="color: rgb(14, 0, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >    </span><span style="color: rgb(14, 0, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >    model.csense(1:size(model.S,1),1)=</span><span style="color: rgb(170, 4, 249);">'E'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >    modelOrig = model;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">else</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >    model=modelOrig;</span></span></div></div><div class="inlineWrapper outputs"><div  class = 'S6'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">end</span></span></div><div  class = 'S7'><div class="inlineElement eoOutputWrapper embeddedOutputsVariableStringElement" uid="293D3B32" data-testid="output_0" data-width="420" data-height="20" data-hashorizontaloverflow="false" style="width: 450px; max-height: 261px; white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><span class="variableNameElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">filename = </span>'Recon3D_301.mat'</div></div></div></div></div></div><div  class = 'S8'><span>Set the level of pri</span><span>nting, zero for silent, higher for more output.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >printLevel=2;</span></span></div></div></div><div  class = 'S8'><span>Choose the directory to place the results</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre"><span >basePath=</span><span style="color: rgb(170, 4, 249);">'~/work/sbgCloud/'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span style="color: rgb(2, 128, 9);">%resultsPath=[basePath '/programReconstruction/projects/recon2models/results/reconXs/' model.modelID];</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >resultsPath=[basePath </span><span style="color: rgb(170, 4, 249);">'/courses/2019_Leiden_COBRA/practicalsDemo/Day4/' </span><span >model.modelID];</span></span></div></div><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: pre"><span >resultsFileName=[resultsPath filesep model.modelID];</span></span></div></div></div><div  class = 'S8'><span>Create and enter the folder for the results if it does not already exist</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">if </span><span >~exist(resultsPath,</span><span style="color: rgb(170, 4, 249);">'dir'</span><span >)</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >    mkdir(resultsPath)</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: pre"><span >cd(resultsPath)</span></span></div></div></div><div  class = 'S8'><span>Opt</span><span>ionally create a diary to save the output in case it is very long, this makes it easier to search, especially when debugging the process during the early stages.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">if </span><span >0</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >    diary([resultsFileName </span><span style="color: rgb(170, 4, 249);">'_diary.txt'</span><span >])</span></span></div></div><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">end</span></span></div></div></div><h2  class = 'S3'><span>Ove</span><span>rview some of the key properties of the reconstruction</span></h2><div  class = 'S2'><span>Noting the initial size of the reconstruction is useful for comparisons later with subsets derived according to mathematical specifications.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre"><span >[nMet,nRxn]=size(model.S);</span></span></div></div><div class="inlineWrapper outputs"><div  class = 'S6'><span style="white-space: pre"><span >fprintf(</span><span style="color: rgb(170, 4, 249);">'%6s\t%6s\n'</span><span >,</span><span style="color: rgb(170, 4, 249);">'#mets'</span><span >,</span><span style="color: rgb(170, 4, 249);">'#rxns'</span><span >)</span></span></div><div  class = 'S7'><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement" uid="E00B3478" data-testid="output_1" data-width="420" data-height="18" data-hashorizontaloverflow="false" style="width: 450px; max-height: 261px; white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"> #mets	 #rxns</div></div></div></div><div class="inlineWrapper outputs"><div  class = 'S11'><span style="white-space: pre"><span >fprintf(</span><span style="color: rgb(170, 4, 249);">'%6u\t%6u\t%s\n'</span><span >,nMet,nRxn,</span><span style="color: rgb(170, 4, 249);">' totals.'</span><span >)</span></span></div><div  class = 'S7'><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement" uid="CF3160C7" data-testid="output_2" data-width="420" data-height="18" data-hashorizontaloverflow="false" style="width: 450px; max-height: 261px; white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">  8399	 13543	 totals.</div></div></div></div></div><div  class = 'S8'><span>Make sure the stoichiometric matrix i</span><span>s stored in a sparse format as this accelerates computations with large networks</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >model.S=sparse(model.S);</span></span></div></div></div><h2  class = 'S1'><span>Check in case the reconstruction is a model that is already ready for flux balance analysis</span></h2><div  class = 'S2'><span>There is no need to run </span><span>this live script any further if the reconstruction already satisfies the conditions necessary for flux balance analysis. That is if all internal reactants and reactions are stoichiometrically consistent, and all reactions are flux consistent, then the reconstruction satisfies the criteria to designate it a model ready for flux balance analysis.</span></div><div  class = 'S2'><span>SIntMetBool                     m x 1 Boolean of metabolites heuristically though to be involved in mass balanced reactions.</span></div><div  class = 'S2'><span>SIntRxnBool                     n x 1 Boolean of reactions heuristically though to be mass balanced.</span></div><div  class = 'S2'><span>SConsistentMetBool        m x 1 Boolean vector indicating consistent mets</span></div><div  class = 'S2'><span>SConsistentRxnBool        n x 1 Boolean vector indicating consistent rxns</span></div><div  class = 'S2'><span>fluxConsistentMetBool     m x 1 Boolean vector indicating flux consistent mets</span></div><div  class = 'S2'><span>fluxConsistentRxnBool     n x 1 Boolean vector indicating flux consistent rxns</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">if </span><span >all(isfield(model,{</span><span style="color: rgb(170, 4, 249);">'SIntMetBool'</span><span >,</span><span style="color: rgb(170, 4, 249);">'SIntRxnBool'</span><span >,</span><span style="color: rgb(170, 4, 249);">'SConsistentMetBool'</span><span >,</span><span style="color: rgb(14, 0, 255);">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        </span><span style="color: rgb(170, 4, 249);">'SConsistentRxnBool'</span><span >,</span><span style="color: rgb(170, 4, 249);">'fluxConsistentMetBool'</span><span >,</span><span style="color: rgb(170, 4, 249);">'fluxConsistentRxnBool'</span><span >}))</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >    </span><span style="color: rgb(14, 0, 255);">if </span><span >all(model.SIntMetBool &amp; model.SConsistentMetBool)</span><span style="color: rgb(14, 0, 255);">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >            &amp;&amp; nnz(model.SIntRxnBool &amp; model.SConsistentRxnBool)==nnz(model.SIntRxnBool)</span><span style="color: rgb(14, 0, 255);">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >            &amp;&amp; all(model.fluxConsistentMetBool)</span><span style="color: rgb(14, 0, 255);">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >            &amp;&amp; all(model.fluxConsistentRxnBool)</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        fullyStoichAndFluxConsistent=1;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        fprintf(</span><span style="color: rgb(170, 4, 249);">'%s\n'</span><span >,</span><span style="color: rgb(170, 4, 249);">'Reconstruction is a model that is already ready for flux balance analysis'</span><span >)</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >    </span><span style="color: rgb(14, 0, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >    </span><span style="color: rgb(14, 0, 255);">return</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">else</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >    fullyStoichAndFluxConsistent=0;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >    fprintf(</span><span style="color: rgb(170, 4, 249);">'%s\n'</span><span >,</span><span style="color: rgb(170, 4, 249);">'Reconstruction must be tested to check if it is ready for flux balance analysis'</span><span >)</span></span></div></div><div class="inlineWrapper outputs"><div  class = 'S6'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">end</span></span></div><div  class = 'S7'><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement scrollableOutput" uid="F2845E12" data-testid="output_3" data-width="420" data-height="18" data-hashorizontaloverflow="true" style="width: 450px; max-height: 261px; white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">Reconstruction must be tested to check if it is ready for flux balance analysis</div></div></div></div></div><h2  class = 'S1'><span>Manually remove certain reactions from the reconstruction </span></h2><div  class = 'S2'><span>Bef</span><span>ore attempting to algorithmically remove stoichiometrically or flux inconsistent supposed internal reactions from a reconstruction to generate a model, there is an option to review the content of the reconstruction and manually identify reactions for removal. That is, there are two options:</span></div><div  class = 'S2'><span>A. Skip manual review of reconstruction content. Move to the next step.</span></div><div  class = 'S2'><span>B. Review the content of the reconstruction and omit any reactions that are assumed to be stoichiometrically or flux inconsistent. With respect to stoichiometric inconsistency, such reactions may be obviously mass imbalanced and not satisfy the heuristic conditions for indentification as an exernal reaction. Alternatively, such reactions may be identified by a previous pass through of this tutorial as being of unknown stoichometric consistent (model.unknownSConsistencyRxnBool(j)==1), after the largest stoichiometrically consistent subset of the network has been is identified. This is an iterative process where multiple rounds of identification of the largest stoichiometrically consistent set and manual curation of the remainder that is of unknown stoichiometric consistency is necessary.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">if </span><span >strcmp(filename,</span><span style="color: rgb(170, 4, 249);">'Recon3.0model'</span><span >)</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >    modelOrig=model;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >    </span><span style="color: rgb(14, 0, 255);">if </span><span >0</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        </span><span style="color: rgb(14, 0, 255);">if</span><span style="color: rgb(14, 0, 255);"> </span><span >1</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >            </span><span style="color: rgb(2, 128, 9);">%Rename some of the biomass reactions to make them more obviously exchange</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >            </span><span style="color: rgb(2, 128, 9);">%reactions</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >            model.rxns{strcmp(model.rxns,</span><span style="color: rgb(170, 4, 249);">'biomass_reaction'</span><span >)}= </span><span style="color: rgb(170, 4, 249);">'EX_biomass_reaction'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >            model.rxns{strcmp(model.rxns,</span><span style="color: rgb(170, 4, 249);">'biomass_maintenance'</span><span >)}= </span><span style="color: rgb(170, 4, 249);">'EX_biomass_maintenance'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >            model.rxns{strcmp(model.rxns,</span><span style="color: rgb(170, 4, 249);">'biomass_maintenance_noTrTr'</span><span >)}= </span><span style="color: rgb(170, 4, 249);">'EX_biomass_maintenance_noTrTr'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >            </span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >            </span><span style="color: rgb(2, 128, 9);">%ATP hydrolysis is not imbalanced like all the other demand reactions so</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >            </span><span style="color: rgb(2, 128, 9);">%give it a different accronym ATPM = ATP Maintenance</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >            bool=strcmp(</span><span style="color: rgb(170, 4, 249);">'DM_atp_c_'</span><span >,model.rxns);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >            model.rxns{bool}=</span><span style="color: rgb(170, 4, 249);">'ATPM'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        </span><span style="color: rgb(14, 0, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        [model,removeMetBool,removeRxnBool] = manuallyAdaptRecon3(model,printLevel);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >    </span><span style="color: rgb(14, 0, 255);">else</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        [model,removeMetBool,removeRxnBool] = manuallyAdaptRecon3Ines(model,printLevel);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >    </span><span style="color: rgb(14, 0, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >    [nMet0,nRxn0]=size(modelOrig.S);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >    [nMet,nRxn]=size(model.S);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >    </span><span style="color: rgb(14, 0, 255);">if </span><span >nMet0==nMet &amp;&amp; nRxn0==nRxn &amp;&amp; printLevel&gt;0</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        fprintf(</span><span style="color: rgb(170, 4, 249);">'%s\n'</span><span >,</span><span style="color: rgb(170, 4, 249);">'--- Manually removing rows and columns of the stoichiometric matrix----'</span><span >)</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        fprintf(</span><span style="color: rgb(170, 4, 249);">'%6s\t%6s\n'</span><span >,</span><span style="color: rgb(170, 4, 249);">'#mets'</span><span >,</span><span style="color: rgb(170, 4, 249);">'#rxns'</span><span >)</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        fprintf(</span><span style="color: rgb(170, 4, 249);">'%6u\t%6u\t%s\n'</span><span >,nMet0,nRxn0,</span><span style="color: rgb(170, 4, 249);">' totals.'</span><span >)</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        fprintf(</span><span style="color: rgb(170, 4, 249);">'%6u\t%6u\t%s\n'</span><span >,nMet0-nMet,nRxn0-nRxn,</span><span style="color: rgb(170, 4, 249);">' manually removed.'</span><span >)</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        fprintf(</span><span style="color: rgb(170, 4, 249);">'%6u\t%6u\t%s\n'</span><span >,nMet,nRxn,</span><span style="color: rgb(170, 4, 249);">' remaining.'</span><span >)</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >    </span><span style="color: rgb(14, 0, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">end</span></span></div></div></div><h2  class = 'S1'><span>Remove </span><span>any trivial rows and columns of the stoichiometric matrix</span></h2><div  class = 'S2'><span>Rem</span><span>ove any zero rows or columns of the stoichiometric matrix</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre"><span >modelOrig=model;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >model=removeTrivialStoichiometry(model);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >[nMet0,nRxn0]=size(modelOrig.S);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >[nMet,nRxn]=size(model.S);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">if </span><span >nMet0==nMet &amp;&amp; nRxn0==nRxn &amp;&amp; printLevel&gt;0</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >    fprintf(</span><span style="color: rgb(170, 4, 249);">'%s\n'</span><span >,</span><span style="color: rgb(170, 4, 249);">'---Checking for Remove any trivial rows and columns of the stoichiometric matrix----'</span><span >)</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >    fprintf(</span><span style="color: rgb(170, 4, 249);">'%6s\t%6s\n'</span><span >,</span><span style="color: rgb(170, 4, 249);">'#mets'</span><span >,</span><span style="color: rgb(170, 4, 249);">'#rxns'</span><span >)</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >    fprintf(</span><span style="color: rgb(170, 4, 249);">'%6u\t%6u\t%s\n'</span><span >,nMet0,nRxn0,</span><span style="color: rgb(170, 4, 249);">' totals.'</span><span >)</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >    fprintf(</span><span style="color: rgb(170, 4, 249);">'%6u\t%6u\t%s\n'</span><span >,nMet0-nMet,nRxn0-nRxn,</span><span style="color: rgb(170, 4, 249);">' duplicates removed.'</span><span >)</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >    fprintf(</span><span style="color: rgb(170, 4, 249);">'%6u\t%6u\t%s\n'</span><span >,nMet,nRxn,</span><span style="color: rgb(170, 4, 249);">' remaining.'</span><span >)</span></span></div></div><div class="inlineWrapper outputs"><div  class = 'S6'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">end</span></span></div><div  class = 'S7'><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement scrollableOutput" uid="217D61F0" data-testid="output_4" data-width="420" data-height="18" data-hashorizontaloverflow="true" style="width: 450px; max-height: 261px; white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">---Checking for Remove any trivial rows and columns of the stoichiometric matrix----</div></div><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement" uid="73839FB9" data-testid="output_5" data-width="420" data-height="18" data-hashorizontaloverflow="false" style="width: 450px; max-height: 261px; white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"> #mets	 #rxns</div></div><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement" uid="F625FFD1" data-testid="output_6" data-width="420" data-height="18" data-hashorizontaloverflow="false" style="width: 450px; max-height: 261px; white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">  8399	 13543	 totals.</div></div><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement" uid="F948C127" data-testid="output_7" data-width="420" data-height="18" data-hashorizontaloverflow="false" style="width: 450px; max-height: 261px; white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">     0	     0	 duplicates removed.</div></div><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement" uid="A8109FC3" data-testid="output_8" data-width="420" data-height="18" data-hashorizontaloverflow="false" style="width: 450px; max-height: 261px; white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">  8399	 13543	 remaining.</div></div></div></div></div><div  class = 'S2'><span>Che</span><span>ck for duplicate columns by detecting the columns of the  S matrix that are identical upto scalar multiplication.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre"><span >modelOrig=model;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >dupDetectMethod=</span><span style="color: rgb(170, 4, 249);">'FR'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >dupDetectMethod=</span><span style="color: rgb(170, 4, 249);">'S'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >removeFlag=0;</span></span></div></div><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: pre"><span >[modelOut,removedRxnInd, keptRxnInd] = checkDuplicateRxn(model,dupDetectMethod,removeFlag,printLevel-2);</span></span></div></div></div><div  class = 'S8'><span>Remove any du</span><span>plicate reac</span><span>tions, and</span><span> uniquely involved reactants, from the stoichiometric matrix</span><span>. </span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">if </span><span >length(removedRxnInd)&gt;0</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >    irrevFlag=0;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >    metFlag=1;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >    </span><span style="color: rgb(2, 128, 9);">%set all reactions reversible that are duplicates</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >    model.lb(removedRxnInd)=-model.ub(removedRxnInd);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >    </span><span style="color: rgb(2, 128, 9);">%remove duplicates</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >    model = removeRxns(model,model.rxns(removedRxnInd),irrevFlag,metFlag);</span></span></div></div><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">end</span></span></div></div></div><div  class = 'S8'><span>Display the statistics on the duplicate reactions, </span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre"><span >[nMet0,nRxn0]=size(modelOrig.S);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >[nMet,nRxn]=size(model.S);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">if </span><span >nMet0==nMet &amp;&amp; nRxn0==nRxn &amp;&amp; printLevel&gt;0</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >    fprintf(</span><span style="color: rgb(170, 4, 249);">'%s\n'</span><span >,</span><span style="color: rgb(170, 4, 249);">'---Remove any duplicate reactions----'</span><span >)</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >    [nMet0,nRxn0]=size(modelOrig.S);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >    [nMet,nRxn]=size(model.S);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >    fprintf(</span><span style="color: rgb(170, 4, 249);">'%6s\t%6s\n'</span><span >,</span><span style="color: rgb(170, 4, 249);">'#mets'</span><span >,</span><span style="color: rgb(170, 4, 249);">'#rxns'</span><span >)</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >    fprintf(</span><span style="color: rgb(170, 4, 249);">'%6u\t%6u\t%s\n'</span><span >,nMet0,nRxn0,</span><span style="color: rgb(170, 4, 249);">' totals.'</span><span >)</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >    fprintf(</span><span style="color: rgb(170, 4, 249);">'%6u\t%6u\t%s\n'</span><span >,nMet0-nMet,nRxn0-nRxn,</span><span style="color: rgb(170, 4, 249);">' duplicates removed.'</span><span >)</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >    fprintf(</span><span style="color: rgb(170, 4, 249);">'%6u\t%6u\t%s\n'</span><span >,nMet,nRxn,</span><span style="color: rgb(170, 4, 249);">' remaining.'</span><span >)</span></span></div></div><div class="inlineWrapper outputs"><div  class = 'S6'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">end</span></span></div><div  class = 'S7'><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement" uid="7265BA8F" data-testid="output_9" data-width="420" data-height="18" data-hashorizontaloverflow="false" style="width: 450px; max-height: 261px; white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">---Remove any duplicate reactions----</div></div><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement" uid="00343C82" data-testid="output_10" data-width="420" data-height="18" data-hashorizontaloverflow="false" style="width: 450px; max-height: 261px; white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"> #mets	 #rxns</div></div><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement" uid="4A83E0CE" data-testid="output_11" data-width="420" data-height="18" data-hashorizontaloverflow="false" style="width: 450px; max-height: 261px; white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">  8399	 13543	 totals.</div></div><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement" uid="1DB7F4E2" data-testid="output_12" data-width="420" data-height="18" data-hashorizontaloverflow="false" style="width: 450px; max-height: 261px; white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">     0	     0	 duplicates removed.</div></div><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement" uid="A95C2652" data-testid="output_13" data-width="420" data-height="18" data-hashorizontaloverflow="false" style="width: 450px; max-height: 261px; white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">  8399	 13543	 remaining.</div></div></div></div></div><h2  class = 'S3'><span>Rem</span><span>ove any duplicate reactions upto protons</span></h2><div  class = 'S2'><span>Remove reactions reactions that differ only in the number of protons involved as substrates or products. Also remove exclusively involved reactants.</span></div><div  class = 'S2'><span>Save a temporary model for testing, before making any changes.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >modelH=model;</span></span></div></div></div><div  class = 'S8'><span>Find the prot</span><span>on indicies in different compartments. A proton, with index i, is asumed to be represented by an abbreviation within model.mets{i} like h[*], where * denotes the compartment symbol.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre"><span >nMetChars=zeros(length(modelH.mets),1);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">for </span><span >m=1:length(modelH.mets)</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >    nMetChars(m,1)=length(modelH.mets{m});</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >protonMetBool=strncmp(modelH.mets,</span><span style="color: rgb(170, 4, 249);">'h'</span><span >,1) &amp; nMetChars==length(</span><span style="color: rgb(170, 4, 249);">'h[*]'</span><span >);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">if </span><span >printLevel&gt;2</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >    disp(modelH.mets(protonMetBool))</span></span></div></div><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">end</span></span></div></div></div><div  class = 'S8'><span>    Zero out the proton stoichiometr</span><span>ic coefficients from the temporary model for testing</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >modelH.S(protonMetBool,:)=0;</span></span></div></div></div><div  class = 'S8'><span>Check for duplicate columns, </span><span>upto protons, by detecting the columns of the  S matrix that are identical upto scalar multiplication.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre"><span >dupDetectMethod=</span><span style="color: rgb(170, 4, 249);">'FR'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >removeFlag=0;</span></span></div></div><div class="inlineWrapper outputs"><div  class = 'S6'><span style="white-space: pre"><span >[modelOut,removedRxnInd, keptRxnInd] = checkDuplicateRxn(modelH,dupDetectMethod,removeFlag,printLevel-1);</span></span></div><div  class = 'S7'><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement scrollableOutput" uid="909FE79D" data-testid="output_14" data-width="420" data-height="353" data-hashorizontaloverflow="true" style="width: 450px; max-height: 364px; white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">Checking for reaction duplicates by stoichiometry (up to orientation) ...
+     Keep: 	25HVITD2t	25hvitd2[c] 	-&gt;	25hvitd2[e] 
+Duplicate: 	25HVITD2tin	25hvitd2[e] 	-&gt;	25hvitd2[c] 
+     Keep: 	25HVITD2tin_m	25hvitd2[c] 	-&gt;	25hvitd2[m] 
+Duplicate: 	25HVITD2tm	25hvitd2[m] 	-&gt;	25hvitd2[c] 
+     Keep: 	25HVITD3t	25hvitd3[c] 	-&gt;	25hvitd3[e] 
+Duplicate: 	25HVITD3tin	25hvitd3[e] 	-&gt;	25hvitd3[c] 
+     Keep: 	25HVITD3tin_m	25hvitd3[c] 	-&gt;	25hvitd3[m] 
+Duplicate: 	25HVITD3tm	25hvitd3[m] 	-&gt;	25hvitd3[c] 
+     Keep: 	3MOBt2im	3mob[c] 	-&gt;	3mob[m] 
+Duplicate: 	HMR_3746	3mob[c] 	&lt;=&gt;	3mob[m] 
+     Keep: 	5MTHFt	5mthf[e] 	&lt;=&gt;	5mthf[c] 
+Duplicate: 	MTHFTe	5mthf[c] 	-&gt;	5mthf[e] 
+     Keep: 	ADNt	adn[e] 	&lt;=&gt;	adn[c] 
+Duplicate: 	ADNCNT3tc	adn[e] 	&lt;=&gt;	adn[c] 
+     Keep: 	ADPRIBt	adprib[e] 	-&gt;	adprib[c] 
+Duplicate: 	ADPRIBte	adprib[c] 	&lt;=&gt;	adprib[e] 
+     Keep: 	ALAt4	na1[e] + ala_L[e] 	-&gt;	na1[c] + ala_L[c] 
+Duplicate: 	HMR_9605	na1[e] + ala_L[e] 	-&gt;	na1[c] + ala_L[c] 
+     Keep: 	ALCD21_D	nad[c] + 12ppd_R[c] 	-&gt;	nadh[c] + lald_D[c] 
+Duplicate: 	PPDOx	nadh[c] + lald_D[c] 	-&gt;	nad[c] + 12ppd_R[c] 
+     Keep: 	ALCD22_D	nad[c] + lald_D[c] 	-&gt;	nadh[c] + mthgxl[c] 
+Duplicate: 	LALDO2x	nadh[c] + mthgxl[c] 	-&gt;	nad[c] + lald_D[c] 
+     Keep: 	ATPasel	h2o[c] + atp[c] 	-&gt;	adp[c] + pi[c] 
+Duplicate: 	DM_atp_c_	h2o[c] + atp[c] 	-&gt;	adp[c] + pi[c] </div></div><div class="inlineElement eoOutputWrapper embeddedOutputsWarningElement" uid="ECBD99B2" data-testid="output_15" data-width="420" data-height="18" data-hashorizontaloverflow="false" style="width: 450px; max-height: 261px; white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="diagnosticMessage-wrapper diagnosticMessage-warningType" style="white-space: normal; font-style: normal; color: rgb(255, 100, 0); font-size: 12px;"><div class="diagnosticMessage-messagePart" style="white-space: pre-wrap; font-style: normal; color: rgb(255, 100, 0); font-size: 12px;">Warning: BTNt2 has more than one replicate</div><div class="diagnosticMessage-stackPart" style="white-space: pre; font-style: normal; color: rgb(255, 100, 0); font-size: 12px;"></div></div></div><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement scrollableOutput" uid="BFFBF35F" data-testid="output_16" data-width="420" data-height="927" data-hashorizontaloverflow="true" style="width: 450px; max-height: 261px; white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">     Keep: 	BTNt2	btn[e] 	&lt;=&gt;	btn[c] 
+Duplicate: 	BTNTe	btn[c] 	-&gt;	btn[e] 
+     Keep: 	C14STRr	nadph[r] + 44mctr[r] 	-&gt;	nadp[r] + 44mzym[r] 
+Duplicate: 	r0780	nadp[r] + 44mzym[r] 	&lt;=&gt;	nadph[r] + 44mctr[r] 
+     Keep: 	C160CPT1	crn[c] + pmtcoa[c] 	&lt;=&gt;	coa[c] + pmtcrn[c] 
+Duplicate: 	C160CPT2rbc	coa[c] + pmtcrn[c] 	&lt;=&gt;	crn[c] + pmtcoa[c] 
+     Keep: 	C161CPT2	coa[m] + hdcecrn[m] 	&lt;=&gt;	crn[m] + hdcoa[m] 
+Duplicate: 	r0446	crn[m] + hdcoa[m] 	&lt;=&gt;	coa[m] + hdcecrn[m] 
+     Keep: 	C181CPT1	crn[c] + odecoa[c] 	&lt;=&gt;	coa[c] + odecrn[c] 
+Duplicate: 	C181CPT2rbc	coa[c] + odecrn[c] 	&lt;=&gt;	crn[c] + odecoa[c] 
+     Keep: 	CITtam	cit[c] + mal_L[m] 	&lt;=&gt;	cit[m] + mal_L[c] 
+Duplicate: 	HMR_4964	cit[c] + mal_L[m] 	-&gt;	cit[m] + mal_L[c] 
+     Keep: 	CRNt	crn[e] 	&lt;=&gt;	crn[c] 
+Duplicate: 	CRNtHa	crn[c] 	-&gt;	crn[e] 
+     Keep: 	CRNtuNa	na1[e] + crn[e] 	-&gt;	na1[c] + crn[c] 
+Duplicate: 	CRNCT2te	na1[c] + crn[c] 	&lt;=&gt;	na1[e] + crn[e] 
+     Keep: 	CRVNCtr	crvnc[e] 	&lt;=&gt;	crvnc[c] 
+Duplicate: 	CE0328te	crvnc[c] 	&lt;=&gt;	crvnc[e] 
+     Keep: 	CYSt4	na1[e] + cys_L[e] 	-&gt;	na1[c] + cys_L[c] 
+Duplicate: 	CYSSNAT5tc	na1[e] + cys_L[e] 	&lt;=&gt;	na1[c] + cys_L[c] 
+     Keep: 	CYTDt	cytd[e] 	&lt;=&gt;	cytd[c] 
+Duplicate: 	CYTDt2r	cytd[e] 	&lt;=&gt;	cytd[c] 
+     Keep: 	DALAt2r	ala_D[e] 	&lt;=&gt;	ala_D[c] 
+Duplicate: 	ALA-DTDe	ala_D[c] 	-&gt;	ala_D[e] 
+     Keep: 	DMHPTCRNte	dmhptcrn[c] 	&lt;=&gt;	dmhptcrn[e] 
+Duplicate: 	DMHPTCRNtr	dmhptcrn[e] 	&lt;=&gt;	dmhptcrn[c] 
+     Keep: 	DNDPt10m	dadp[c] + dcdp[m] 	-&gt;	dcdp[c] + dadp[m] 
+Duplicate: 	DNDPt29m	dcdp[c] + dadp[m] 	-&gt;	dadp[c] + dcdp[m] 
+     Keep: 	DNDPt11m	dadp[c] + dgdp[m] 	-&gt;	dgdp[c] + dadp[m] 
+Duplicate: 	DNDPt35m	dgdp[c] + dadp[m] 	-&gt;	dadp[c] + dgdp[m] 
+     Keep: 	DNDPt14m	dtdp[m] + dudp[c] 	-&gt;	dtdp[c] + dudp[m] 
+Duplicate: 	DNDPt22m	dtdp[c] + dudp[m] 	-&gt;	dtdp[m] + dudp[c] 
+     Keep: 	DNDPt15m	dgdp[m] + dudp[c] 	-&gt;	dgdp[c] + dudp[m] 
+Duplicate: 	DNDPt33m	dgdp[c] + dudp[m] 	-&gt;	dgdp[m] + dudp[c] 
+     Keep: 	DNDPt16m	dadp[m] + dudp[c] 	-&gt;	dadp[c] + dudp[m] 
+Duplicate: 	DNDPt8m	dadp[c] + dudp[m] 	-&gt;	dadp[m] + dudp[c] 
+     Keep: 	DNDPt17m	dcdp[m] + dudp[c] 	-&gt;	dcdp[c] + dudp[m] 
+Duplicate: 	DNDPt26m	dcdp[c] + dudp[m] 	-&gt;	dcdp[m] + dudp[c] 
+     Keep: 	DNDPt23m	dgdp[m] + dtdp[c] 	-&gt;	dgdp[c] + dtdp[m] 
+Duplicate: 	DNDPt34m	dgdp[c] + dtdp[m] 	-&gt;	dgdp[m] + dtdp[c] 
+     Keep: 	DNDPt24m	dadp[m] + dtdp[c] 	-&gt;	dadp[c] + dtdp[m] 
+Duplicate: 	DNDPt9m	dadp[c] + dtdp[m] 	-&gt;	dadp[m] + dtdp[c] 
+     Keep: 	DNDPt25m	dcdp[m] + dtdp[c] 	-&gt;	dcdp[c] + dtdp[m] 
+Duplicate: 	DNDPt27m	dcdp[c] + dtdp[m] 	-&gt;	dcdp[m] + dtdp[c] 
+     Keep: 	DNDPt28m	dcdp[c] + dgdp[m] 	-&gt;	dgdp[c] + dcdp[m] 
+Duplicate: 	DNDPt36m	dgdp[c] + dcdp[m] 	-&gt;	dcdp[c] + dgdp[m] 
+     Keep: 	DOPAtu	dopa[e] 	&lt;=&gt;	dopa[c] 
+Duplicate: 	DOPAENT4tc	dopa[e] 	&lt;=&gt;	dopa[c] 
+     Keep: 	EBP2r	zymstnl[r] 	-&gt;	lthstrl[r] 
+Duplicate: 	r1381	lthstrl[r] 	&lt;=&gt;	zymstnl[r] 
+     Keep: 	FE2t	fe2[e] 	-&gt;	fe2[c] 
+Duplicate: 	FE2DMT1	fe2[e] 	-&gt;	fe2[c] 
+     Keep: 	FE2tm	fe2[c] 	-&gt;	fe2[m] 
+Duplicate: 	HMR_5420	fe2[c] 	-&gt;	fe2[m] 
+     Keep: 	FUCFUCFUCGALACGLC13GALACGLCGAL14ACGLCGALGLUSIDEte	fucfucfucgalacglc13galacglcgal14acglcgalgluside_hs[e] 	&lt;=&gt;	fucfucfucgalacglc13galacglcgal14acglcgalgluside_hs[c] 
+Duplicate: 	HMR_9651	fucfucfucgalacglc13galacglcgal14acglcgalgluside_hs[c] 	&lt;=&gt;	fucfucfucgalacglc13galacglcgal14acglcgalgluside_hs[e] 
+     Keep: 	FUCFUCFUCGALACGLCGAL14ACGLCGALGLUSIDEte	fucfucfucgalacglcgal14acglcgalgluside_hs[e] 	&lt;=&gt;	fucfucfucgalacglcgal14acglcgalgluside_hs[c] 
+Duplicate: 	HMR_9645	fucfucfucgalacglcgal14acglcgalgluside_hs[c] 	&lt;=&gt;	fucfucfucgalacglcgal14acglcgalgluside_hs[e] 
+     Keep: 	FUCGALFUCGALACGLCGALGLUSIDEte	fucgalfucgalacglcgalgluside_hs[e] 	&lt;=&gt;	fucgalfucgalacglcgalgluside_hs[c] 
+Duplicate: 	HMR_9643	fucgalfucgalacglcgalgluside_hs[c] 	&lt;=&gt;	fucgalfucgalacglcgalgluside_hs[e] 
+     Keep: 	GALFUCGALACGLCGAL14ACGLCGALGLUSIDEte	galfucgalacglcgal14acglcgalgluside_hs[e] 	&lt;=&gt;	galfucgalacglcgal14acglcgalgluside_hs[c] 
+Duplicate: 	HMR_9646	galfucgalacglcgal14acglcgalgluside_hs[c] 	&lt;=&gt;	galfucgalacglcgal14acglcgalgluside_hs[e] 
+     Keep: 	GALt1r	gal[e] 	&lt;=&gt;	gal[c] 
+Duplicate: 	GALt2_2	gal[e] 	&lt;=&gt;	gal[c] 
+     Keep: 	GDPtg	gdp[c] 	&lt;=&gt;	gdp[g] 
+Duplicate: 	HMR_7743	gdp[c] 	&lt;=&gt;	gdp[g] </div></div><div class="inlineElement eoOutputWrapper embeddedOutputsWarningElement" uid="AA6BD7D8" data-testid="output_17" data-width="420" data-height="18" data-hashorizontaloverflow="false" style="width: 450px; max-height: 261px; white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="diagnosticMessage-wrapper diagnosticMessage-warningType" style="white-space: normal; font-style: normal; color: rgb(255, 100, 0); font-size: 12px;"><div class="diagnosticMessage-messagePart" style="white-space: pre-wrap; font-style: normal; color: rgb(255, 100, 0); font-size: 12px;">Warning: GLCt1r has more than one replicate</div><div class="diagnosticMessage-stackPart" style="white-space: pre; font-style: normal; color: rgb(255, 100, 0); font-size: 12px;"></div></div></div><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement scrollableOutput" uid="435288AB" data-testid="output_18" data-width="420" data-height="227" data-hashorizontaloverflow="true" style="width: 450px; max-height: 261px; white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">     Keep: 	GLCt1r	glc_D[e] 	&lt;=&gt;	glc_D[c] 
+Duplicate: 	GLCGLUT2	glc_D[c] 	-&gt;	glc_D[e] 
+     Keep: 	GLNtm	gln_L[c] 	-&gt;	gln_L[m] 
+Duplicate: 	HMR_5101	gln_L[c] 	-&gt;	gln_L[m] 
+     Keep: 	GLYC3Ptm	glyc3p[c] 	-&gt;	glyc3p[m] 
+Duplicate: 	GLYC3Ptmc	glyc3p[m] 	&lt;=&gt;	glyc3p[c] 
+     Keep: 	GLYt4	na1[e] + gly[e] 	-&gt;	na1[c] + gly[c] 
+Duplicate: 	GLYSNAT5tc	na1[e] + gly[e] 	&lt;=&gt;	na1[c] + gly[c] 
+     Keep: 	GSNt	gsn[e] 	&lt;=&gt;	gsn[c] 
+Duplicate: 	GSNt2r	gsn[e] 	&lt;=&gt;	gsn[c] 
+     Keep: 	HISt4	na1[e] + his_L[e] 	-&gt;	na1[c] + his_L[c] 
+Duplicate: 	HISSNAT5tc	na1[e] + his_L[e] 	&lt;=&gt;	na1[c] + his_L[c] 
+     Keep: 	HIStiDF	his_L[e] 	-&gt;	his_L[c] 
+Duplicate: 	HISCAT1	his_L[c] 	&lt;=&gt;	his_L[e] 
+     Keep: 	HSD17B7r	nadph[r] + estrone[r] 	-&gt;	nadp[r] + estradiol[r] 
+Duplicate: 	HMR_2041	nadph[r] + estrone[r] 	-&gt;	nadp[r] + estradiol[r] </div></div><div class="inlineElement eoOutputWrapper embeddedOutputsWarningElement" uid="BE91369C" data-testid="output_19" data-width="420" data-height="18" data-hashorizontaloverflow="false" style="width: 450px; max-height: 261px; white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="diagnosticMessage-wrapper diagnosticMessage-warningType" style="white-space: normal; font-style: normal; color: rgb(255, 100, 0); font-size: 12px;"><div class="diagnosticMessage-messagePart" style="white-space: pre-wrap; font-style: normal; color: rgb(255, 100, 0); font-size: 12px;">Warning: Htg has more than one replicate</div><div class="diagnosticMessage-stackPart" style="white-space: pre; font-style: normal; color: rgb(255, 100, 0); font-size: 12px;"></div></div></div><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement scrollableOutput" uid="326B7964" data-testid="output_20" data-width="420" data-height="115" data-hashorizontaloverflow="true" style="width: 450px; max-height: 261px; white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">     Keep: 	Htg		&lt;=&gt;	
+Duplicate: 	Htmi		-&gt;	
+     Keep: 	INSt	ins[e] 	&lt;=&gt;	ins[c] 
+Duplicate: 	INSt2	ins[e] 	&lt;=&gt;	ins[c] 
+     Keep: 	L_LACtcm	lac_L[c] 	-&gt;	lac_L[m] 
+Duplicate: 	L_LACtm	lac_L[c] 	-&gt;	lac_L[m] 
+     Keep: 	LNLCCPT1	crn[c] + lnlccoa[c] 	&lt;=&gt;	coa[c] + lnlccrn[c] 
+Duplicate: 	LNLCCPT2rbc	coa[c] + lnlccrn[c] 	&lt;=&gt;	crn[c] + lnlccoa[c] </div></div><div class="inlineElement eoOutputWrapper embeddedOutputsWarningElement" uid="4E181A5A" data-testid="output_21" data-width="420" data-height="18" data-hashorizontaloverflow="false" style="width: 450px; max-height: 261px; white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="diagnosticMessage-wrapper diagnosticMessage-warningType" style="white-space: normal; font-style: normal; color: rgb(255, 100, 0); font-size: 12px;"><div class="diagnosticMessage-messagePart" style="white-space: pre-wrap; font-style: normal; color: rgb(255, 100, 0); font-size: 12px;">Warning: NACUP has more than one replicate</div><div class="diagnosticMessage-stackPart" style="white-space: pre; font-style: normal; color: rgb(255, 100, 0); font-size: 12px;"></div></div></div><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement" uid="AF0350F9" data-testid="output_22" data-width="420" data-height="199" data-hashorizontaloverflow="false" style="width: 450px; max-height: 261px; white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">     Keep: 	NACUP	nac[e] 	-&gt;	nac[c] 
+Duplicate: 	NACHORCTL3le	nac[e] 	-&gt;	nac[c] 
+     Keep: 	NADHtpu	nadh[c] 	-&gt;	nadh[x] 
+Duplicate: 	NADtpu	nadh[x] 	-&gt;	nadh[c] 
+     Keep: 	NAt	na1[e] 	&lt;=&gt;	na1[c] 
+Duplicate: 	NAt3_1	na1[c] 	&lt;=&gt;	na1[e] 
+     Keep: 	NCAMUP	ncam[e] 	-&gt;	ncam[c] 
+Duplicate: 	NCAMDe	ncam[c] 	-&gt;	ncam[e] 
+     Keep: 	NH4t3r	nh4[c] 	&lt;=&gt;	nh4[e] 
+Duplicate: 	NH4tb	nh4[e] 	&lt;=&gt;	nh4[c] 
+     Keep: 	NOt	no[e] 	&lt;=&gt;	no[c] 
+Duplicate: 	NODe	no[c] 	&lt;=&gt;	no[e] 
+     Keep: 	OCTAt	octa[e] 	&lt;=&gt;	octa[c] 
+Duplicate: 	OCTAte	octa[c] 	&lt;=&gt;	octa[e] </div></div><div class="inlineElement eoOutputWrapper embeddedOutputsWarningElement" uid="FB24C27C" data-testid="output_23" data-width="420" data-height="18" data-hashorizontaloverflow="false" style="width: 450px; max-height: 261px; white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="diagnosticMessage-wrapper diagnosticMessage-warningType" style="white-space: normal; font-style: normal; color: rgb(255, 100, 0); font-size: 12px;"><div class="diagnosticMessage-messagePart" style="white-space: pre-wrap; font-style: normal; color: rgb(255, 100, 0); font-size: 12px;">Warning: ORNt4m has more than one replicate</div><div class="diagnosticMessage-stackPart" style="white-space: pre; font-style: normal; color: rgb(255, 100, 0); font-size: 12px;"></div></div></div><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement scrollableOutput" uid="D1BE1B2A" data-testid="output_24" data-width="420" data-height="227" data-hashorizontaloverflow="true" style="width: 450px; max-height: 261px; white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">     Keep: 	ORNt4m	orn[m] + citr_L[c] 	&lt;=&gt;	orn[c] + citr_L[m] 
+Duplicate: 	r2412	orn[c] + citr_L[m] 	-&gt;	orn[m] + citr_L[c] 
+     Keep: 	P5CRxm	nadh[m] + 1pyr5c[m] 	-&gt;	nad[m] + pro_L[m] 
+Duplicate: 	PRO1xm	nad[m] + pro_L[m] 	-&gt;	nadh[m] + 1pyr5c[m] 
+     Keep: 	PItx	pi[c] 	&lt;=&gt;	pi[x] 
+Duplicate: 	HMR_5344	pi[c] 	&lt;=&gt;	pi[x] 
+     Keep: 	PRODt2r	pro_D[e] 	&lt;=&gt;	pro_D[c] 
+Duplicate: 	PRO_Dtde	pro_D[c] 	&lt;=&gt;	pro_D[e] 
+     Keep: 	RIBt	rib_D[e] 	&lt;=&gt;	rib_D[c] 
+Duplicate: 	RIBt2	rib_D[e] 	-&gt;	rib_D[c] 
+     Keep: 	SRTNtu	srtn[e] 	&lt;=&gt;	srtn[c] 
+Duplicate: 	SRTNENT4tc	srtn[e] 	&lt;=&gt;	srtn[c] 
+     Keep: 	SUCCtp	succ[c] 	&lt;=&gt;	succ[x] 
+Duplicate: 	SUCCTD	succ[x] 	&lt;=&gt;	succ[c] 
+     Keep: 	TAGt	tag_hs[e] 	&lt;=&gt;	tag_hs[c] 
+Duplicate: 	TAGHSTDe	tag_hs[c] 	-&gt;	tag_hs[e] </div></div><div class="inlineElement eoOutputWrapper embeddedOutputsWarningElement" uid="15B4E4DC" data-testid="output_25" data-width="420" data-height="18" data-hashorizontaloverflow="false" style="width: 450px; max-height: 261px; white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="diagnosticMessage-wrapper diagnosticMessage-warningType" style="white-space: normal; font-style: normal; color: rgb(255, 100, 0); font-size: 12px;"><div class="diagnosticMessage-messagePart" style="white-space: pre-wrap; font-style: normal; color: rgb(255, 100, 0); font-size: 12px;">Warning: THYMDt1 has more than one replicate</div><div class="diagnosticMessage-stackPart" style="white-space: pre; font-style: normal; color: rgb(255, 100, 0); font-size: 12px;"></div></div></div><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement scrollableOutput" uid="1F3B42EB" data-testid="output_26" data-width="420" data-height="115" data-hashorizontaloverflow="true" style="width: 450px; max-height: 261px; white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">     Keep: 	THYMDt1	thymd[e] 	-&gt;	thymd[c] 
+Duplicate: 	THMDt2r	thymd[e] 	&lt;=&gt;	thymd[c] 
+     Keep: 	TRDRm	nadph[m] + trdox[m] 	-&gt;	nadp[m] + trdrd[m] 
+Duplicate: 	r1433	nadp[m] + trdrd[m] 	-&gt;	nadph[m] + trdox[m] 
+     Keep: 	URIt	uri[e] 	&lt;=&gt;	uri[c] 
+Duplicate: 	URIt2r	uri[e] 	&lt;=&gt;	uri[c] 
+     Keep: 	VITD3t	vitd3[c] 	-&gt;	vitd3[e] 
+Duplicate: 	VITD3t2	vitd3[e] 	-&gt;	vitd3[c] </div></div><div class="inlineElement eoOutputWrapper embeddedOutputsWarningElement" uid="AA8D9180" data-testid="output_27" data-width="420" data-height="18" data-hashorizontaloverflow="false" style="width: 450px; max-height: 261px; white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="diagnosticMessage-wrapper diagnosticMessage-warningType" style="white-space: normal; font-style: normal; color: rgb(255, 100, 0); font-size: 12px;"><div class="diagnosticMessage-messagePart" style="white-space: pre-wrap; font-style: normal; color: rgb(255, 100, 0); font-size: 12px;">Warning: VITD3tm has more than one replicate</div><div class="diagnosticMessage-stackPart" style="white-space: pre; font-style: normal; color: rgb(255, 100, 0); font-size: 12px;"></div></div></div><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement scrollableOutput" uid="5DB453B9" data-testid="output_28" data-width="420" data-height="4959" data-hashorizontaloverflow="true" style="width: 450px; max-height: 261px; white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">     Keep: 	VITD3tm	vitd3[m] 	-&gt;	vitd3[c] 
+Duplicate: 	HMR_2116	vitd3[c] 	&lt;=&gt;	vitd3[m] 
+     Keep: 	XOLEST2te	xolest2_hs[e] 	&lt;=&gt;	xolest2_hs[c] 
+Duplicate: 	XOLEST2HSTDle	xolest2_hs[c] 	-&gt;	xolest2_hs[e] 
+     Keep: 	r0276	nh4[c] + nadp[c] + imp[c] 	&lt;=&gt;	nadph[c] + gmp[c] 
+Duplicate: 	GMPR	nadph[c] + gmp[c] 	-&gt;	nh4[c] + nadp[c] + imp[c] 
+     Keep: 	r0488	2 nadp[c] + coa[c] + mev_R[c] 	&lt;=&gt;	2 nadph[c] + hmgcoa[c] 
+Duplicate: 	HMGCOARc	2 nadph[c] + hmgcoa[c] 	-&gt;	2 nadp[c] + coa[c] + mev_R[c] 
+     Keep: 	r0537	ethamp[c] + hxdcal[c] 	-&gt;	sph1p[c] 
+Duplicate: 	SGPL11c	sph1p[c] 	-&gt;	ethamp[c] + hxdcal[c] 
+     Keep: 	r0561	coa[m] + 2mpdhl[m] 	-&gt;	ibcoa[m] + dhlam[m] 
+Duplicate: 	RE3326M	ibcoa[m] + dhlam[m] 	&lt;=&gt;	coa[m] + 2mpdhl[m] 
+     Keep: 	r0808	HC00004[c] 	-&gt;	HC00004[e] 
+Duplicate: 	HC00004t1e	HC00004[e] 	-&gt;	HC00004[c] 
+     Keep: 	r0817	citr_L[c] 	&lt;=&gt;	citr_L[e] 
+Duplicate: 	CITRtr	citr_L[e] 	&lt;=&gt;	citr_L[c] 
+     Keep: 	r0839	orot[e] 	&lt;=&gt;	orot[c] 
+Duplicate: 	OROte	orot[e] 	-&gt;	orot[c] 
+     Keep: 	r0899	ala_B[c] 	&lt;=&gt;	ala_B[e] 
+Duplicate: 	BALAPAT1tc	ala_B[e] 	-&gt;	ala_B[c] 
+     Keep: 	r0913	icit[m] + mal_L[c] 	&lt;=&gt;	mal_L[m] + icit[c] 
+Duplicate: 	r2387	mal_L[m] + icit[c] 	-&gt;	icit[m] + mal_L[c] 
+     Keep: 	r0915	cit[c] + succ[m] 	&lt;=&gt;	cit[m] + succ[c] 
+Duplicate: 	r2382	cit[c] + succ[m] 	-&gt;	cit[m] + succ[c] 
+     Keep: 	r0944	spmd[c] 	&lt;=&gt;	spmd[e] 
+Duplicate: 	SPMTDe	spmd[e] 	&lt;=&gt;	spmd[c] 
+     Keep: 	r1050	chsterol[e] 	&lt;=&gt;	chsterol[c] 
+Duplicate: 	CHOLESTTDe	chsterol[c] 	-&gt;	chsterol[e] 
+     Keep: 	r1067	his_L[l] 	-&gt;	his_L[c] 
+Duplicate: 	HIShPTtc	his_L[l] 	-&gt;	his_L[c] 
+     Keep: 	r1078	tyr_L[c] 	-&gt;	tyr_L[m] 
+Duplicate: 	HMR_5099	tyr_L[c] 	&lt;=&gt;	tyr_L[m] 
+     Keep: 	r1127	HC00005[c] 	-&gt;	HC00005[r] 
+Duplicate: 	HC00005t1r	HC00005[r] 	-&gt;	HC00005[c] 
+     Keep: 	r1128	HC00009[c] 	-&gt;	HC00009[r] 
+Duplicate: 	HC00009t1r	HC00009[r] 	-&gt;	HC00009[c] 
+     Keep: 	r1129	HC00004[c] 	-&gt;	HC00004[r] 
+Duplicate: 	HC00004t1r	HC00004[r] 	-&gt;	HC00004[c] 
+     Keep: 	r1131	HC00006[c] 	-&gt;	HC00006[r] 
+Duplicate: 	HC00006t1r	HC00006[r] 	-&gt;	HC00006[c] 
+     Keep: 	r1132	HC00007[c] 	-&gt;	HC00007[r] 
+Duplicate: 	HC00007t1r	HC00007[r] 	-&gt;	HC00007[c] 
+     Keep: 	r1133	HC00008[c] 	-&gt;	HC00008[r] 
+Duplicate: 	HC00008t1r	HC00008[r] 	-&gt;	HC00008[c] 
+     Keep: 	r1147	akg[c] + icit[m] 	&lt;=&gt;	akg[m] + icit[c] 
+Duplicate: 	r2385	akg[m] + icit[c] 	-&gt;	akg[c] + icit[m] 
+     Keep: 	r1155	2obut[c] 	-&gt;	2obut[m] 
+Duplicate: 	r1454	2obut[m] 	-&gt;	2obut[c] 
+     Keep: 	r1423	pi[c] 	-&gt;	pi[e] 
+Duplicate: 	PIt6b	pi[e] 	&lt;=&gt;	pi[c] 
+     Keep: 	r1427	his_L[c] 	-&gt;	his_L[m] 
+Duplicate: 	r2416	his_L[m] 	-&gt;	his_L[c] 
+     Keep: 	r1429	glyc3p[c] 	&lt;=&gt;	glyc3p[x] 
+Duplicate: 	GLY3Pt	glyc3p[x] 	-&gt;	glyc3p[c] 
+     Keep: 	r1441	trdrd[c] 	-&gt;	trdrd[m] 
+Duplicate: 	HMR_6618	trdrd[c] 	&lt;=&gt;	trdrd[m] 
+     Keep: 	r1455	phe_L[c] 	-&gt;	phe_L[m] 
+Duplicate: 	r1456	phe_L[m] 	-&gt;	phe_L[c] 
+     Keep: 	r1618	tyr_L[c] + phe_L[e] 	&lt;=&gt;	phe_L[c] + tyr_L[e] 
+Duplicate: 	TYRPHELAT2tc	phe_L[c] + tyr_L[e] 	-&gt;	tyr_L[c] + phe_L[e] 
+     Keep: 	r1619	cys_L[c] + phe_L[e] 	&lt;=&gt;	cys_L[e] + phe_L[c] 
+Duplicate: 	CYSPHELAT2tc	cys_L[e] + phe_L[c] 	-&gt;	cys_L[c] + phe_L[e] 
+     Keep: 	r1620	leu_L[c] + phe_L[e] 	&lt;=&gt;	leu_L[e] + phe_L[c] 
+Duplicate: 	LEUPHELAT2tc	leu_L[e] + phe_L[c] 	&lt;=&gt;	leu_L[c] + phe_L[e] 
+     Keep: 	r1622	asn_L[c] + phe_L[e] 	&lt;=&gt;	asn_L[e] + phe_L[c] 
+Duplicate: 	ASNPHELAT2tc	asn_L[e] + phe_L[c] 	-&gt;	asn_L[c] + phe_L[e] 
+     Keep: 	r1623	phe_L[e] + val_L[c] 	&lt;=&gt;	phe_L[c] + val_L[e] 
+Duplicate: 	VALPHELAT2tc	phe_L[c] + val_L[e] 	-&gt;	phe_L[e] + val_L[c] 
+     Keep: 	r1624	thr_L[c] + phe_L[e] 	&lt;=&gt;	thr_L[e] + phe_L[c] 
+Duplicate: 	THRPHELAT2tc	thr_L[e] + phe_L[c] 	-&gt;	thr_L[c] + phe_L[e] 
+     Keep: 	r1626	ile_L[c] + phe_L[e] 	&lt;=&gt;	ile_L[e] + phe_L[c] 
+Duplicate: 	ILEPHELAT2tc	ile_L[e] + phe_L[c] 	-&gt;	ile_L[c] + phe_L[e] 
+     Keep: 	r1644	leu_L[e] + val_L[c] 	&lt;=&gt;	leu_L[c] + val_L[e] 
+Duplicate: 	VALLAT1tc	leu_L[c] + val_L[e] 	-&gt;	leu_L[e] + val_L[c] 
+     Keep: 	r1647	ile_L[c] + leu_L[e] 	&lt;=&gt;	ile_L[e] + leu_L[c] 
+Duplicate: 	ILELAT1tc	ile_L[e] + leu_L[c] 	-&gt;	ile_L[c] + leu_L[e] 
+     Keep: 	r1668	arg_L[e] + his_L[c] 	&lt;=&gt;	arg_L[c] + his_L[e] 
+Duplicate: 	HISyLATthc	arg_L[c] + his_L[e] 	-&gt;	arg_L[e] + his_L[c] 
+     Keep: 	r2009	ala_L[c] + arg_L[e] 	-&gt;	ala_L[e] + arg_L[c] 
+Duplicate: 	ALAyLATthc	ala_L[e] + arg_L[c] 	-&gt;	ala_L[c] + arg_L[e] 
+     Keep: 	r2010	gln_L[c] + arg_L[e] 	-&gt;	gln_L[e] + arg_L[c] 
+Duplicate: 	GLNyLATthc	gln_L[e] + arg_L[c] 	-&gt;	gln_L[c] + arg_L[e] 
+     Keep: 	r2012	arg_L[e] + met_L[c] 	-&gt;	arg_L[c] + met_L[e] 
+Duplicate: 	METyLATthc	arg_L[c] + met_L[e] 	-&gt;	arg_L[e] + met_L[c] 
+     Keep: 	r2014	arg_L[e] + phe_L[c] 	-&gt;	arg_L[c] + phe_L[e] 
+Duplicate: 	PHEyLATthc	arg_L[c] + phe_L[e] 	-&gt;	arg_L[e] + phe_L[c] 
+     Keep: 	r2017	arg_L[e] + leu_L[c] 	-&gt;	arg_L[c] + leu_L[e] 
+Duplicate: 	LEUyLAThtc	arg_L[c] + leu_L[e] 	-&gt;	arg_L[e] + leu_L[c] 
+     Keep: 	r2073	zn2[e] 	-&gt;	zn2[c] 
+Duplicate: 	r2465	zn2[c] 	-&gt;	zn2[e] 
+     Keep: 	r2346	wharachd[e] 	&lt;=&gt;	wharachd[c] 
+Duplicate: 	WHARACHDtd	wharachd[c] 	&lt;=&gt;	wharachd[e] 
+     Keep: 	r2355	HC02203[e] 	&lt;=&gt;	HC02203[c] 
+Duplicate: 	C05953td	HC02203[c] 	&lt;=&gt;	HC02203[e] 
+     Keep: 	r2364	HC02213[e] 	&lt;=&gt;	HC02213[c] 
+Duplicate: 	C06439td	HC02213[c] 	&lt;=&gt;	HC02213[e] 
+     Keep: 	r2373	akg[c] + cit[m] 	&lt;=&gt;	akg[m] + cit[c] 
+Duplicate: 	r2381	akg[m] + cit[c] 	-&gt;	akg[c] + cit[m] 
+     Keep: 	r2374	cit[m] + oxa[c] 	&lt;=&gt;	cit[c] + oxa[m] 
+Duplicate: 	r2384	cit[c] + oxa[m] 	-&gt;	cit[m] + oxa[c] 
+     Keep: 	r2375	icit[m] + succ[c] 	&lt;=&gt;	icit[c] + succ[m] 
+Duplicate: 	r2386	icit[c] + succ[m] 	-&gt;	icit[m] + succ[c] 
+     Keep: 	r2376	icit[m] + oxa[c] 	&lt;=&gt;	icit[c] + oxa[m] 
+Duplicate: 	r2388	icit[c] + oxa[m] 	-&gt;	icit[m] + oxa[c] 
+     Keep: 	r2377	akg[c] + HC00342[m] 	&lt;=&gt;	akg[m] + HC00342[c] 
+Duplicate: 	r2389	akg[m] + HC00342[c] 	-&gt;	akg[c] + HC00342[m] 
+     Keep: 	r2378	succ[c] + HC00342[m] 	&lt;=&gt;	succ[m] + HC00342[c] 
+Duplicate: 	r2390	succ[m] + HC00342[c] 	-&gt;	succ[c] + HC00342[m] 
+     Keep: 	r2379	mal_L[c] + HC00342[m] 	&lt;=&gt;	mal_L[m] + HC00342[c] 
+Duplicate: 	r2391	mal_L[m] + HC00342[c] 	-&gt;	mal_L[c] + HC00342[m] 
+     Keep: 	r2380	oxa[c] + HC00342[m] 	&lt;=&gt;	HC00342[c] + oxa[m] 
+Duplicate: 	r2392	HC00342[c] + oxa[m] 	-&gt;	oxa[c] + HC00342[m] 
+     Keep: 	r2395	lys_L[m] + arg_L[c] 	-&gt;	lys_L[c] + arg_L[m] 
+Duplicate: 	r2399	lys_L[c] + arg_L[m] 	-&gt;	lys_L[m] + arg_L[c] 
+     Keep: 	r2396	orn[c] + lys_L[m] 	-&gt;	lys_L[c] + orn[m] 
+Duplicate: 	r2403	lys_L[c] + orn[m] 	-&gt;	orn[c] + lys_L[m] 
+     Keep: 	r2397	lys_L[m] + his_L[c] 	-&gt;	lys_L[c] + his_L[m] 
+Duplicate: 	r2406	lys_L[c] + his_L[m] 	-&gt;	lys_L[m] + his_L[c] 
+     Keep: 	r2398	lys_L[m] + citr_L[c] 	-&gt;	lys_L[c] + citr_L[m] 
+Duplicate: 	r2410	lys_L[c] + citr_L[m] 	-&gt;	lys_L[m] + citr_L[c] 
+     Keep: 	r2400	orn[c] + arg_L[m] 	-&gt;	arg_L[c] + orn[m] 
+Duplicate: 	r2404	arg_L[c] + orn[m] 	-&gt;	orn[c] + arg_L[m] 
+     Keep: 	r2401	arg_L[m] + his_L[c] 	-&gt;	arg_L[c] + his_L[m] 
+Duplicate: 	r2407	arg_L[c] + his_L[m] 	-&gt;	arg_L[m] + his_L[c] 
+     Keep: 	r2402	arg_L[m] + citr_L[c] 	-&gt;	arg_L[c] + citr_L[m] 
+Duplicate: 	r2411	arg_L[c] + citr_L[m] 	-&gt;	arg_L[m] + citr_L[c] 
+     Keep: 	r2405	orn[m] + his_L[c] 	-&gt;	orn[c] + his_L[m] 
+Duplicate: 	r2408	orn[c] + his_L[m] 	-&gt;	orn[m] + his_L[c] 
+     Keep: 	r2409	citr_L[c] + his_L[m] 	-&gt;	citr_L[m] + his_L[c] 
+Duplicate: 	r2413	citr_L[m] + his_L[c] 	-&gt;	citr_L[c] + his_L[m] 
+     Keep: 	r2471	ser_L[e] 	-&gt;	ser_L[c] 
+Duplicate: 	r2526	ser_L[e] 	&lt;=&gt;	ser_L[c] 
+     Keep: 	r2516	lac_L[x] 	&lt;=&gt;	lac_L[c] 
+Duplicate: 	LACLt	lac_L[x] 	-&gt;	lac_L[c] 
+     Keep: 	RE3628M	dc2coa[m] 	&lt;=&gt;	dece3coa[m] 
+Duplicate: 	FAOXC101m	dece3coa[m] 	-&gt;	dc2coa[m] 
+     Keep: 	BCRNe	3bcrn[c] 	-&gt;	3bcrn[e] 
+Duplicate: 	3BCRNtr	3bcrn[e] 	&lt;=&gt;	3bcrn[c] 
+     Keep: 	C101CRNe	c101crn[c] 	-&gt;	c101crn[e] 
+Duplicate: 	C101CRNtr	c101crn[e] 	&lt;=&gt;	c101crn[c] 
+     Keep: 	C10CRNe	c10crn[c] 	-&gt;	c10crn[e] 
+Duplicate: 	C10CRNtr	c10crn[e] 	&lt;=&gt;	c10crn[c] 
+     Keep: 	C10DCe	c10dc[c] 	-&gt;	c10dc[e] 
+Duplicate: 	C10DCtr	c10dc[e] 	&lt;=&gt;	c10dc[c] 
+     Keep: 	C12DCe	c12dc[c] 	-&gt;	c12dc[e] 
+Duplicate: 	C12DCtr	c12dc[e] 	&lt;=&gt;	c12dc[c] 
+     Keep: 	C141OHe	3tetd7ecoacrn[c] 	-&gt;	3tetd7ecoacrn[e] 
+Duplicate: 	3TETD7ECOACRNtr	3tetd7ecoacrn[e] 	&lt;=&gt;	3tetd7ecoacrn[c] 
+     Keep: 	C142OHe	3ttetddcoacrn[c] 	-&gt;	3ttetddcoacrn[e] 
+Duplicate: 	3TTETDDCOACRNtr	3ttetddcoacrn[e] 	&lt;=&gt;	3ttetddcoacrn[c] 
+     Keep: 	C162OHe	3thexddcoacrn[c] 	-&gt;	3thexddcoacrn[e] 
+Duplicate: 	3THEXDDCOACRNtr	3thexddcoacrn[e] 	&lt;=&gt;	3thexddcoacrn[c] 
+     Keep: 	C16DCe	c16dc[c] 	-&gt;	c16dc[e] 
+Duplicate: 	C16DCtr	c16dc[e] 	&lt;=&gt;	c16dc[c] 
+     Keep: 	C3DCe	c3dc[c] 	-&gt;	c3dc[e] 
+Duplicate: 	C3DCtr	c3dc[e] 	&lt;=&gt;	c3dc[c] 
+     Keep: 	C4CRNe	c4crn[c] 	-&gt;	c4crn[e] 
+Duplicate: 	C4CRNtr	c4crn[e] 	&lt;=&gt;	c4crn[c] 
+     Keep: 	C4DCe	c4dc[c] 	-&gt;	c4dc[e] 
+Duplicate: 	C4DCtr	c4dc[e] 	&lt;=&gt;	c4dc[c] 
+     Keep: 	C5DCe	c5dc[c] 	-&gt;	c5dc[e] 
+Duplicate: 	C5DCtr	c5dc[e] 	&lt;=&gt;	c5dc[c] 
+     Keep: 	C6CRNe	c6crn[c] 	-&gt;	c6crn[e] 
+Duplicate: 	C6CRNtr	c6crn[e] 	&lt;=&gt;	c6crn[c] 
+     Keep: 	C6DCe	c6dc[c] 	-&gt;	c6dc[e] 
+Duplicate: 	C6DCtr	c6dc[e] 	&lt;=&gt;	c6dc[c] 
+     Keep: 	C81CRNe	c81crn[c] 	-&gt;	c81crn[e] 
+Duplicate: 	C81CRNtr	c81crn[e] 	&lt;=&gt;	c81crn[c] 
+     Keep: 	C8CRNe	c8crn[c] 	-&gt;	c8crn[e] 
+Duplicate: 	C8CRNtr	c8crn[e] 	&lt;=&gt;	c8crn[c] 
+     Keep: 	C8DCe	c8dc[c] 	-&gt;	c8dc[e] 
+Duplicate: 	C8DCtr	c8dc[e] 	&lt;=&gt;	c8dc[c] 
+     Keep: 	DDCRNe	3ddcrn[c] 	-&gt;	3ddcrn[e] 
+Duplicate: 	3DDCRNtr	3ddcrn[e] 	&lt;=&gt;	3ddcrn[c] 
+     Keep: 	DDECCRNe	ddeccrn[c] 	-&gt;	ddeccrn[e] 
+Duplicate: 	DDECCRNtr	ddeccrn[e] 	&lt;=&gt;	ddeccrn[c] 
+     Keep: 	DDECE1CRNe	ddece1crn[c] 	-&gt;	ddece1crn[e] 
+Duplicate: 	DDECE1CRNtr	ddece1crn[e] 	&lt;=&gt;	ddece1crn[c] 
+     Keep: 	DECCRNe	3deccrn[c] 	-&gt;	3deccrn[e] 
+Duplicate: 	3DECCRNtr	3deccrn[e] 	&lt;=&gt;	3deccrn[c] 
+     Keep: 	DECDICRNe	decdicrn[c] 	-&gt;	decdicrn[e] 
+Duplicate: 	DECDICRNtr	decdicrn[e] 	&lt;=&gt;	decdicrn[c] 
+     Keep: 	HEDCECRNe	3hdececrn[c] 	-&gt;	3hdececrn[e] 
+Duplicate: 	3HDECECRNtr	3hdececrn[e] 	&lt;=&gt;	3hdececrn[c] 
+     Keep: 	HEXDCRNe	3hexdcrn[c] 	-&gt;	3hexdcrn[e] 
+Duplicate: 	3HEXDCRNtr	3hexdcrn[e] 	&lt;=&gt;	3hexdcrn[c] 
+     Keep: 	HIVCRNe	3ivcrn[c] 	-&gt;	3ivcrn[e] 
+Duplicate: 	3IVCRNtr	3ivcrn[e] 	&lt;=&gt;	3ivcrn[c] 
+     Keep: 	HOCTDEC2CRNe	3octdec2crn[c] 	-&gt;	3octdec2crn[e] 
+Duplicate: 	3OCTDEC2CRNtr	3octdec2crn[e] 	&lt;=&gt;	3octdec2crn[c] 
+     Keep: 	HOCTDECCRNe	3octdeccrn[c] 	-&gt;	3octdeccrn[e] 
+Duplicate: 	3OCTDECCRNtr	3octdeccrn[e] 	&lt;=&gt;	3octdeccrn[c] 
+     Keep: 	HTDCRNe	3tdcrn[c] 	-&gt;	3tdcrn[e] 
+Duplicate: 	3TDCRNtr	3tdcrn[e] 	&lt;=&gt;	3tdcrn[c] 
+     Keep: 	IVCRNe	ivcrn[c] 	-&gt;	ivcrn[e] 
+Duplicate: 	IVCRNtr	ivcrn[e] 	&lt;=&gt;	ivcrn[c] 
+     Keep: 	OCTDECE1CRNe	3octdece1crn[c] 	-&gt;	3octdece1crn[e] 
+Duplicate: 	3OCTDECE1CRNtr	3octdece1crn[e] 	&lt;=&gt;	3octdece1crn[c] 
+     Keep: 	TDCRNe	ttdcrn[c] 	-&gt;	ttdcrn[e] 
+Duplicate: 	TTDCRNtr	ttdcrn[e] 	&lt;=&gt;	ttdcrn[c] 
+     Keep: 	TETDEC2CRNe	tetdec2crn[c] 	-&gt;	tetdec2crn[e] 
+Duplicate: 	TETDEC2CRntr	tetdec2crn[e] 	&lt;=&gt;	tetdec2crn[c] 
+     Keep: 	TETDECE1CRNe	tetdece1crn[c] 	-&gt;	tetdece1crn[e] 
+Duplicate: 	TETDECE1CRNtr	tetdece1crn[e] 	&lt;=&gt;	tetdece1crn[c] 
+     Keep: 	TIGCRNe	c51crn[c] 	-&gt;	c51crn[e] 
+Duplicate: 	C51CRNtr	c51crn[e] 	&lt;=&gt;	c51crn[c] 
+     Keep: 	CARPEPT1tc	carn[e] 	-&gt;	carn[c] 
+Duplicate: 	CARNtr	carn[e] 	&lt;=&gt;	carn[c] 
+     Keep: 	CBLTDe	adocbl[c] 	-&gt;	adocbl[e] 
+Duplicate: 	CBLtle	adocbl[e] 	-&gt;	adocbl[c] 
+     Keep: 	FOLTle	fol[e] 	-&gt;	fol[c] 
+Duplicate: 	r0963	fol[e] 	-&gt;	fol[c] 
+     Keep: 	GLYPROPEPT1tc	glypro[e] 	-&gt;	glypro[c] 
+Duplicate: 	GLYPROt	glypro[c] 	&lt;=&gt;	glypro[e] 
+     Keep: 	LEULEUPEPT1tc	leuleu[e] 	-&gt;	leuleu[c] 
+Duplicate: 	LEULEUt	leuleu[c] 	&lt;=&gt;	leuleu[e] 
+     Keep: 	PNTORDe	pnto_R[c] 	-&gt;	pnto_R[e] 
+Duplicate: 	PNTOte	pnto_R[e] 	&lt;=&gt;	pnto_R[c] 
+     Keep: 	PROGLYPEPT1tc	progly[e] 	-&gt;	progly[c] 
+Duplicate: 	PROGLyt	progly[c] 	&lt;=&gt;	progly[e] 
+     Keep: 	SBTle	sbt_D[e] 	-&gt;	sbt_D[c] 
+Duplicate: 	SBT_Dtde	sbt_D[c] 	&lt;=&gt;	sbt_D[e] 
+     Keep: 	TAUPAT1c	taur[e] 	-&gt;	taur[c] 
+Duplicate: 	TAURCHAe	taur[c] 	-&gt;	taur[e] 
+     Keep: 	GLYCTDle	glyc[e] 	&lt;=&gt;	glyc[c] 
+Duplicate: 	GLYCt	glyc[c] 	&lt;=&gt;	glyc[e] 
+     Keep: 	KHte	k[e] 	&lt;=&gt;	k[c] 
+Duplicate: 	r1492	k[c] 	-&gt;	k[e] 
+     Keep: 	PHEMEe	pheme[c] 	-&gt;	pheme[e] 
+Duplicate: 	PHEMEt	pheme[e] 	-&gt;	pheme[c] 
+     Keep: 	SPRMTDe	sprm[e] 	&lt;=&gt;	sprm[c] 
+Duplicate: 	SPRMt2r	sprm[e] 	&lt;=&gt;	sprm[c] 
+     Keep: 	BALABETAtc2	cala[e] 	&lt;=&gt;	cala[c] 
+Duplicate: 	CALAtr	cala[e] 	&lt;=&gt;	cala[c] 
+     Keep: 	CRTNtr	crtn[e] 	&lt;=&gt;	crtn[c] 
+Duplicate: 	HMR_9619	crtn[e] 	-&gt;	crtn[c] 
+     Keep: 	ALAPAT4te	ala_L[e] 	&lt;=&gt;	ala_L[c] 
+Duplicate: 	ALAt2r	ala_L[e] 	&lt;=&gt;	ala_L[c] 
+     Keep: 	PROPAT4te	pro_L[e] 	&lt;=&gt;	pro_L[c] 
+Duplicate: 	PROt2r	pro_L[e] 	&lt;=&gt;	pro_L[c] 
+     Keep: 	5AOPt	5aop[c] 	&lt;=&gt;	5aop[e] 
+Duplicate: 	5AOPt2	5aop[e] 	-&gt;	5aop[c] 
+     Keep: 	ABT_Dt	abt_D[e] 	&lt;=&gt;	abt_D[c] 
+Duplicate: 	ABT_Dt2	abt_D[e] 	&lt;=&gt;	abt_D[c] 
+     Keep: 	ELAIDCRNtd	elaidcrn[c] 	&lt;=&gt;	elaidcrn[e] 
+Duplicate: 	ELAIDCRNtr	elaidcrn[e] 	&lt;=&gt;	elaidcrn[c] 
+     Keep: 	HC02149td	pcrn[c] 	&lt;=&gt;	pcrn[e] 
+Duplicate: 	PCRNtr	pcrn[e] 	&lt;=&gt;	pcrn[c] 
+     Keep: 	LNLCCRNtd	lnlccrn[c] 	&lt;=&gt;	lnlccrn[e] 
+Duplicate: 	LNLCCRNtr	lnlccrn[e] 	&lt;=&gt;	lnlccrn[c] 
+     Keep: 	PCSsec	pcs[c] 	-&gt;	pcs[e] 
+Duplicate: 	PCSup	pcs[e] 	-&gt;	pcs[c] 
+     Keep: 	3HCINNMup	3hcinnm[e] 	-&gt;	3hcinnm[c] 
+Duplicate: 	3HCINNMsec	3hcinnm[c] 	-&gt;	3hcinnm[e] 
+     Keep: 	3HPPAup	3hppa[e] 	-&gt;	3hppa[c] 
+Duplicate: 	3HPPAsec	3hppa[c] 	-&gt;	3hppa[e] 
+     Keep: 	PACALDtm	pacald[c] 	&lt;=&gt;	pacald[m] 
+Duplicate: 	HMR_4684	pacald[c] 	&lt;=&gt;	pacald[m] 
+     Keep: 	ACNAMt2	acnam[e] 	-&gt;	acnam[c] 
+Duplicate: 	ACNAMtr	acnam[c] 	-&gt;	acnam[e] 
+     Keep: 	ETHAt	etha[e] 	&lt;=&gt;	etha[c] 
+Duplicate: 	ETHAtr	etha[c] 	-&gt;	etha[e] 
+     Keep: 	THMtrbc	thm[e] 	&lt;=&gt;	thm[c] 
+Duplicate: 	THMt3	thm[e] 	&lt;=&gt;	thm[c] 
+     Keep: 	BUTt2r	but[e] 	&lt;=&gt;	but[c] 
+Duplicate: 	HMR_0155	but[e] 	&lt;=&gt;	but[c] 
+     Keep: 	DIGALSGALSIDESECt	digalsgalside_hs[c] 	-&gt;	digalsgalside_hs[e] 
+Duplicate: 	DIGALSGALSIDEt1e	digalsgalside_hs[e] 	-&gt;	digalsgalside_hs[c] 
+     Keep: 	PAIL_hs_SECt	pail_hs[c] 	-&gt;	pail_hs[e] 
+Duplicate: 	PAIL_hs_t1e	pail_hs[e] 	-&gt;	pail_hs[c] 
+     Keep: 	PAILPALM_HSSECt	pailpalm_hs[c] 	-&gt;	pailpalm_hs[e] 
+Duplicate: 	PAILPALM_HSt1e	pailpalm_hs[e] 	-&gt;	pailpalm_hs[c] 
+     Keep: 	PAILR_HSSECt	pailar_hs[c] 	-&gt;	pailar_hs[e] 
+Duplicate: 	PAILR_HSt1e	pailar_hs[e] 	-&gt;	pailar_hs[c] 
+     Keep: 	PAILSTE_HSSECt	pailste_hs[c] 	-&gt;	pailste_hs[e] 
+Duplicate: 	PAILSTE_HSt1e	pailste_hs[e] 	-&gt;	pailste_hs[c] 
+     Keep: 	SPHMYLN180241_hs_SECt	sphmyln180241_hs[c] 	-&gt;	sphmyln180241_hs[e] 
+Duplicate: 	SPHMYLN180241_hs_t1	sphmyln180241_hs[e] 	-&gt;	sphmyln180241_hs[c] 
+     Keep: 	SPHMYLN18114_hs_SECt	sphmyln18114_hs[c] 	-&gt;	sphmyln18114_hs[e] 
+Duplicate: 	SPHMYLN18114_hs_t1	sphmyln18114_hs[e] 	-&gt;	sphmyln18114_hs[c] 
+     Keep: 	SPHMYLN18115_hs_SECt	sphmyln18115_hs[c] 	-&gt;	sphmyln18115_hs[e] 
+Duplicate: 	SPHMYLN18115_hs_t1	sphmyln18115_hs[e] 	-&gt;	sphmyln18115_hs[c] 
+     Keep: 	SPHMYLN18116_hs_SECt	sphmyln18116_hs[c] 	-&gt;	sphmyln18116_hs[e] 
+Duplicate: 	SPHMYLN18116_hs_t1	sphmyln18116_hs[e] 	-&gt;	sphmyln18116_hs[c] 
+     Keep: 	SPHMYLN181161_hs_SECt	sphmyln181161_hs[c] 	-&gt;	sphmyln181161_hs[e] 
+Duplicate: 	SPHMYLN181161_hs_t1	sphmyln181161_hs[e] 	-&gt;	sphmyln181161_hs[c] 
+     Keep: 	SPHMYLN18117_hs_SECt	sphmyln18117_hs[c] 	-&gt;	sphmyln18117_hs[e] 
+Duplicate: 	SPHMYLN18117_hs_t1	sphmyln18117_hs[e] 	-&gt;	sphmyln18117_hs[c] 
+     Keep: 	SPHMYLN18118_hs_SECt	sphmyln18118_hs[c] 	-&gt;	sphmyln18118_hs[e] 
+Duplicate: 	SPHMYLN18118_hs_t1	sphmyln18118_hs[e] 	-&gt;	sphmyln18118_hs[c] 
+     Keep: 	SPHMYLN181181_hs_SECt	sphmyln181181_hs[c] 	-&gt;	sphmyln181181_hs[e] 
+Duplicate: 	SPHMYLN181181_hs_t1	sphmyln181181_hs[e] 	-&gt;	sphmyln181181_hs[c] 
+     Keep: 	SPHMYLN18120_hs_SECt	sphmyln18120_hs[c] 	-&gt;	sphmyln18120_hs[e] 
+Duplicate: 	SPHMYLN18120_hs_t1	sphmyln18120_hs[e] 	-&gt;	sphmyln18120_hs[c] 
+     Keep: 	SPHMYLN181201_hs_SECt	sphmyln181201_hs[c] 	-&gt;	sphmyln181201_hs[e] 
+Duplicate: 	SPHMYLN181201_hs_t1	sphmyln181201_hs[e] 	-&gt;	sphmyln181201_hs[c] 
+     Keep: 	SPHMYLN18121_hs_SECt	sphmyln18121_hs[c] 	-&gt;	sphmyln18121_hs[e] 
+Duplicate: 	SPHMYLN18121_hs_t1	sphmyln18121_hs[e] 	-&gt;	sphmyln18121_hs[c] 
+     Keep: 	SPHMYLN18122_hs_SECt	sphmyln18122_hs[c] 	-&gt;	sphmyln18122_hs[e] 
+Duplicate: 	SPHMYLN18122_hs_t1	sphmyln18122_hs[e] 	-&gt;	sphmyln18122_hs[c] 
+     Keep: 	SPHMYLN181221_hs_SECt	sphmyln181221_hs[c] 	-&gt;	sphmyln181221_hs[e] 
+Duplicate: 	SPHMYLN181221_hs_t1	sphmyln181221_hs[e] 	-&gt;	sphmyln181221_hs[c] 
+     Keep: 	SPHMYLN18123_hs_SECt	sphmyln18123_hs[c] 	-&gt;	sphmyln18123_hs[e] 
+Duplicate: 	SPHMYLN18123_hs_t1	sphmyln18123_hs[e] 	-&gt;	sphmyln18123_hs[c] 
+     Keep: 	SPHMYLN1824_hs_SECt	sphmyln1824_hs[c] 	-&gt;	sphmyln1824_hs[e] 
+Duplicate: 	SPHMYLN1824_hs_t1	sphmyln1824_hs[e] 	-&gt;	sphmyln1824_hs[c] 
+     Keep: 	SPHMYLN1825_hs_SECt	sphmyln1825_hs[c] 	-&gt;	sphmyln1825_hs[e] 
+Duplicate: 	SPHMYLN1825_hs_t1	sphmyln1825_hs[e] 	-&gt;	sphmyln1825_hs[c] 
+     Keep: 	3AIBt1	3aib[e] 	&lt;=&gt;	3aib[c] 
+Duplicate: 	HMR_8090	3aib[c] 	-&gt;	3aib[e] 
+     Keep: 	2HXIC_Lt1e	2hxic_L[e] 	-&gt;	2hxic_L[c] 
+Duplicate: 	2HXIC_Lt2e	2hxic_L[c] 	-&gt;	2hxic_L[e] 
+     Keep: 	MMAt2e	mma[c] 	&lt;=&gt;	mma[e] 
+Duplicate: 	MMAte	mma[e] 	&lt;=&gt;	mma[c] 
+     Keep: 	CE4890te2	CE4890[c] 	&lt;=&gt;	CE4890[e] 
+Duplicate: 	CE4890te	CE4890[c] 	&lt;=&gt;	CE4890[e] 
+     Keep: 	MLTHFte	mlthf[e] 	-&gt;	mlthf[c] 
+Duplicate: 	MLTHFte3	mlthf[e] 	-&gt;	mlthf[c] 
+     Keep: 	TYMte2	tym[c] 	&lt;=&gt;	tym[e] 
+Duplicate: 	TYMte	tym[c] 	&lt;=&gt;	tym[e] 
+     Keep: 	1A25DHVITD3te	1a25dhvitd3[e] 	-&gt;	1a25dhvitd3[c] 
+Duplicate: 	1A25DHVITD3t2e	1a25dhvitd3[c] 	-&gt;	1a25dhvitd3[e] 
+     Keep: 	ORN_Dtx	orn_D[x] 	&lt;=&gt;	orn_D[c] 
+Duplicate: 	HMR_9179	orn_D[c] 	&lt;=&gt;	orn_D[x] 
+     Keep: 	ORN_Dte	orn_D[c] 	&lt;=&gt;	orn_D[e] 
+Duplicate: 	HMR_9180	orn_D[c] 	&lt;=&gt;	orn_D[e] 
+     Keep: 	HC00005te	HC00005[c] 	-&gt;	HC00005[e] 
+Duplicate: 	HC00005t1e	HC00005[e] 	-&gt;	HC00005[c] 
+     Keep: 	HC00006te	HC00006[c] 	-&gt;	HC00006[e] 
+Duplicate: 	HC00006t1e	HC00006[e] 	-&gt;	HC00006[c] 
+     Keep: 	HC00007te	HC00007[c] 	-&gt;	HC00007[e] 
+Duplicate: 	HC00007t1e	HC00007[e] 	-&gt;	HC00007[c] 
+     Keep: 	HC00008te	HC00008[c] 	-&gt;	HC00008[e] 
+Duplicate: 	HC00008t1e	HC00008[e] 	-&gt;	HC00008[c] 
+     Keep: 	HC00009te	HC00009[c] 	-&gt;	HC00009[e] 
+Duplicate: 	HC00009t1e	HC00009[e] 	-&gt;	HC00009[c] 
+     Keep: 	NO2te	no2[e] 	&lt;=&gt;	no2[c] 
+Duplicate: 	HMR_6991	no2[c] 	&lt;=&gt;	no2[e] 
+     Keep: 	HMR_0025	M01268[n] 	-&gt;	M01268[c] 
+Duplicate: 	HMR_0030	M01268[c] 	-&gt;	M01268[n] 
+     Keep: 	HMR_9581	M02035[c] 	&lt;=&gt;	M02035[e] 
+Duplicate: 	HMR_9582	M02035[e] 	-&gt;	M02035[c] 
+     Keep: 	HMR_9583	M02467[c] 	&lt;=&gt;	M02467[e] 
+Duplicate: 	HMR_9584	M02467[e] 	-&gt;	M02467[c] 
+     Keep: 	HMR_0031	0.0024 ak2gchol_hs[c] + 0.0008 dak2gpe_hs[c] + 0.0016 pail_hs[c] + 0.19 dag_hs[c] + 0.0092 pchol_hs[c] + 0.0034 pe_hs[c] + 0.005 chsterol[c] + 0.0006 lpchol_hs[c] + 0.0002 ps_hs[c] + 0.0004 sphmyln_hs[c] + 0.34 xolest2_hs[c] + 0.005 HC02065[c] + 0.44 M02958[c] + 0.0014 M00511[c] 	-&gt;	M02392[c] 
+Duplicate: 	HMR_0032	M02392[c] 	-&gt;	0.0024 ak2gchol_hs[c] + 0.0008 dak2gpe_hs[c] + 0.0016 pail_hs[c] + 0.19 dag_hs[c] + 0.0092 pchol_hs[c] + 0.0034 pe_hs[c] + 0.005 chsterol[c] + 0.0006 lpchol_hs[c] + 0.0002 ps_hs[c] + 0.0004 sphmyln_hs[c] + 0.34 xolest2_hs[c] + 0.005 HC02065[c] + 0.44 M02958[c] + 0.0014 M00511[c] 
+     Keep: 	ALLOP2tu	allop[e] 	-&gt;	allop[c] 
+Duplicate: 	ALLOPtepvb	allop[e] 	&lt;=&gt;	allop[c] 
+     Keep: 	ATVACIDMCTtu	atvacid[e] 	&lt;=&gt;	atvacid[c] 
+Duplicate: 	ATVACIDtdu	atvacid[e] 	&lt;=&gt;	atvacid[c] 
+     Keep: 	OXYPthc	oxyp[e] 	&lt;=&gt;	oxyp[c] 
+Duplicate: 	OXYPtepv	oxyp[c] 	&lt;=&gt;	oxyp[e] 
+     Keep: 	PVSHtu	pvs[e] 	&lt;=&gt;	pvs[c] 
+Duplicate: 	PVStep	pvs[c] 	&lt;=&gt;	pvs[e] </div></div></div></div></div><div  class = 'S8'><span>Remove any du</span><span>plicate reactions from the stoichiometric matrix, but do not remove the protons.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">if </span><span >length(removedRxnInd)&gt;0</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >    irrevFlag=0;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >    metFlag=0;</span><span style="color: rgb(2, 128, 9);">%dont remove the protons</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >    model = removeRxns(model,model.rxns(removedRxnInd),irrevFlag,metFlag);</span></span></div></div><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">end</span></span></div></div></div><div  class = 'S8'><span>Display statistics of the removed reactions</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">if </span><span >printLevel&gt;0</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >    [nMet0,nRxn0]=size(modelOrig.S);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >    [nMet,nRxn]=size(model.S);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >    fprintf(</span><span style="color: rgb(170, 4, 249);">'%6s\t%6s\n'</span><span >,</span><span style="color: rgb(170, 4, 249);">'#mets'</span><span >,</span><span style="color: rgb(170, 4, 249);">'#rxns'</span><span >)</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >    fprintf(</span><span style="color: rgb(170, 4, 249);">'%6u\t%6u\t%s\n'</span><span >,nMet0,nRxn0,</span><span style="color: rgb(170, 4, 249);">' totals.'</span><span >)</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >    fprintf(</span><span style="color: rgb(170, 4, 249);">'%6u\t%6u\t%s\n'</span><span >,nMet0-nMet,nRxn0-nRxn,</span><span style="color: rgb(170, 4, 249);">' duplicate reactions upto protons removed.'</span><span >)</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >    fprintf(</span><span style="color: rgb(170, 4, 249);">'%6u\t%6u\t%s\n'</span><span >,nMet,nRxn,</span><span style="color: rgb(170, 4, 249);">' remaining.'</span><span >)</span></span></div></div><div class="inlineWrapper outputs"><div  class = 'S6'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">end</span></span></div><div  class = 'S7'><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement" uid="0B765E84" data-testid="output_29" data-width="420" data-height="18" data-hashorizontaloverflow="false" style="width: 450px; max-height: 261px; white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"> #mets	 #rxns</div></div><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement" uid="E1AFEFFE" data-testid="output_30" data-width="420" data-height="18" data-hashorizontaloverflow="false" style="width: 450px; max-height: 261px; white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">  8399	 13543	 totals.</div></div><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement" uid="8E75B637" data-testid="output_31" data-width="420" data-height="18" data-hashorizontaloverflow="false" style="width: 450px; max-height: 261px; white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">     0	   253	 duplicate reactions upto protons removed.</div></div><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement" uid="0AD21350" data-testid="output_32" data-width="420" data-height="18" data-hashorizontaloverflow="false" style="width: 450px; max-height: 261px; white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">  8399	 13290	 remaining.</div></div></div></div><div class="inlineWrapper"><div  class = 'S12'><span style="white-space: pre"><span style="color: rgb(2, 128, 9);">%model size</span></span></div></div><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: pre"><span >[nMet,nRxn]=size(model.S);</span></span></div></div></div><h2  class = 'S3'><span>Heuristically identify exc</span><span>hange reactions and metabolites exclusively involved in exchange reactions</span></h2><div  class = 'S2'><span>An </span><span>external reacti</span><span>on is one tha</span><span>t is heuristically ide</span><span>ntified by a </span><span>s</span><span>ingle stoichiometric coefficient in the corresponding column of </span><span> </span><span>S, or an (abbreviated) reaction name matching a pattern (e.g. prefix EX_) or an external subsystem assignment. Any remaining reaction is assumed to be an internal reaction. If a reaction is not external then it is denoted an internal reaction. External reactants are exclusively involved in exchange reactions, and internal reactants otherwise. The findSExRxnInd function finds the external reactions in the model which export or import mass from or to the model, e.g. Exchange reactions, Demand reactions, Sink reactions.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">if </span><span >~isfield(model,</span><span style="color: rgb(170, 4, 249);">'SIntMetBool'</span><span >)  ||  ~isfield(model,</span><span style="color: rgb(170, 4, 249);">'SIntRxnBool'</span><span >)</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >     model = findSExRxnInd(model,[],printLevel-1);</span></span></div></div><div class="inlineWrapper outputs"><div  class = 'S6'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">end</span></span></div><div  class = 'S7'><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement" uid="D45F01ED" data-testid="output_33" data-width="420" data-height="18" data-hashorizontaloverflow="false" style="width: 450px; max-height: 261px; white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">Assuming biomass reaction is: biomass_reaction</div></div></div></div></div><h2  class = 'S1'><span>EXPECTED RESULTS</span></h2><div  class = 'S2'><span>In </span><span>the returned model, model.SIntRxnBool, is a boolean of reactions heuristically though to be mass balanced, while model.SIntMetBool is a boolean of metabolites heuristically though to be involved in mass balanced reactions.</span></div><h2  class = 'S1'><span>CAUTION</span></h2><div  class = 'S2'><span>The aforementioned assignments of external and internal reactions and reactants is the result of a heuristic and might result in one or more errors, either due to misspecification or because the names of external reactions and external subsystems often vary between laboratories. </span></div><h2  class = 'S3'><span>Find the reactions that are flux inconsistent </span></h2><div  class = 'S2'><span>Ultimately we seek to identify the set of stoichiometrically consistent reactions that are also flux consistent, with no bounds on reaction rates. However, finiding the stoichiometrically consistent subset can be demanding for large models so first we identify the subset of reactions that are flux consistent and focus on them.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre"><span >modelOrig=model;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >model.lb(~model.SIntRxnBool)=-1000;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >model.ub(~model.SIntRxnBool)= 1000;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">if </span><span >1</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >    </span><span style="color: rgb(14, 0, 255);">if </span><span >~isfield(model,</span><span style="color: rgb(170, 4, 249);">'fluxConsistentMetBool'</span><span >) || ~isfield(model,</span><span style="color: rgb(170, 4, 249);">'fluxConsistentRxnBool'</span><span >)</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        param.epsilon=1e-4;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        param.modeFlag=0;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        param.method=</span><span style="color: rgb(170, 4, 249);">'null_fastcc'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        </span><span style="color: rgb(2, 128, 9);">%param.method='fastcc';</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        [fluxConsistentMetBool,fluxConsistentRxnBool,</span><span style="color: rgb(14, 0, 255);">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >            fluxInConsistentMetBool,fluxInConsistentRxnBool,model]</span><span style="color: rgb(14, 0, 255);">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >            = findFluxConsistentSubset(model,param,printLevel);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >    </span><span style="color: rgb(14, 0, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >    </span><span style="color: rgb(2, 128, 9);">% Remove reactions that are flux inconsistent</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >    </span><span style="color: rgb(14, 0, 255);">if </span><span >any(fluxInConsistentRxnBool)</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        irrevFlag=0;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        metFlag=1;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        model = removeRxns(model,model.rxns(fluxInConsistentRxnBool),irrevFlag,metFlag);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        [nMet0,nRxn0]=size(modelOrig.S);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        [nMet,nRxn]=size(model.S);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        </span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        </span><span style="color: rgb(14, 0, 255);">if </span><span >printLevel&gt;0</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >            fprintf(</span><span style="color: rgb(170, 4, 249);">'%s\n'</span><span >,</span><span style="color: rgb(170, 4, 249);">'-------'</span><span >)</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >            fprintf(</span><span style="color: rgb(170, 4, 249);">'%6s\t%6s\n'</span><span >,</span><span style="color: rgb(170, 4, 249);">'#mets'</span><span >,</span><span style="color: rgb(170, 4, 249);">'#rxns'</span><span >)</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >            fprintf(</span><span style="color: rgb(170, 4, 249);">'%6u\t%6u\t%s\n'</span><span >,nMet0,nRxn0,</span><span style="color: rgb(170, 4, 249);">' totals.'</span><span >)</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >            fprintf(</span><span style="color: rgb(170, 4, 249);">'%6u\t%6u\t%s\n'</span><span >,nMet0-nMet,nRxn0-nRxn,</span><span style="color: rgb(170, 4, 249);">' flux inconsistent reactions removed.'</span><span >)</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >            fprintf(</span><span style="color: rgb(170, 4, 249);">'%6u\t%6u\t%s\n'</span><span >,nMet,nRxn,</span><span style="color: rgb(170, 4, 249);">' remaining.'</span><span >)</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >            fprintf(</span><span style="color: rgb(170, 4, 249);">'%s\n'</span><span >,</span><span style="color: rgb(170, 4, 249);">'-------'</span><span >)</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >            </span><span style="color: rgb(14, 0, 255);">if </span><span >printLevel&gt;1</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >                </span><span style="color: rgb(14, 0, 255);">for </span><span >n=1:nRxn0</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >                    </span><span style="color: rgb(14, 0, 255);">if </span><span >fluxInConsistentRxnBool(n)</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >                        fprintf(</span><span style="color: rgb(170, 4, 249);">'%15s\t%-100s\n'</span><span >,modelOrig.rxns{n},modelOrig.rxnNames{n})</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >                    </span><span style="color: rgb(14, 0, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >                </span><span style="color: rgb(14, 0, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >            </span><span style="color: rgb(14, 0, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        </span><span style="color: rgb(14, 0, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        </span><span style="color: rgb(2, 128, 9);">%revise model size</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        [nMet,nRxn]=size(model.S);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        </span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        </span><span style="color: rgb(2, 128, 9);">%Recompute</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        </span><span style="color: rgb(2, 128, 9);">%Heuristically identify exchange reactions and metabolites exclusively involved in exchange reactions</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        </span><span style="color: rgb(2, 128, 9);">%finds the reactions in the model which export/import from the model</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        </span><span style="color: rgb(2, 128, 9);">%boundary i.e. mass unbalanced reactions</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        </span><span style="color: rgb(2, 128, 9);">%e.g. Exchange reactions</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        </span><span style="color: rgb(2, 128, 9);">%     Demand reactions</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        </span><span style="color: rgb(2, 128, 9);">%     Sink reactions</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        </span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        model = findSExRxnInd(model,[],0);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        </span><span style="color: rgb(14, 0, 255);">if </span><span >printLevel&gt;0</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >            fprintf(</span><span style="color: rgb(170, 4, 249);">'%s\n'</span><span >,</span><span style="color: rgb(170, 4, 249);">'------end------'</span><span >)</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        </span><span style="color: rgb(14, 0, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >    </span><span style="color: rgb(14, 0, 255);">end</span></span></div></div><div class="inlineWrapper outputs"><div  class = 'S6'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">end</span></span></div><div  class = 'S7'><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement scrollableOutput" uid="F565ECFD" data-testid="output_34" data-width="420" data-height="199" data-hashorizontaloverflow="true" style="width: 450px; max-height: 261px; white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: pre; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"> 12164	Total reactions
+  5970	Reversible reactions.
+  6194	Irreversible reactions.
+ 11475	Flux consistent reactions, without flipping.
+   290	Flux inconsistent irreversible reactions, without flipping.
+   399	Flux inconsistent reactions, without flipping.
+ 11792	Flux consistent reactions.
+    82	Flux inconsistent reversible reactions left to flip.
+ 11794	Flux consistent reactions.
+    80	Flux inconsistent reversible reactions left to flip.
+ 11796	Flux consistent reactions.
+    78	Flux inconsistent reversible reactions left to flip.
+ 11798	Flux consistent reactions.
+    38	Flux inconsistent reversible reactions left to flip.</div></div></div></div></div><h2  class = 'S3'><span>Fin</span><span>d mas</span><span>s leaks or siphons within the heuristically internal part, without using the bounds given by the model</span></h2><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">if </span><span >1</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >    modelBoundsFlag=0;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >    leakParams.epsilon=1e-4;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >    leakParams.method=</span><span style="color: rgb(170, 4, 249);">'dc'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >    leakParams.theta=0.5;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >    [leakMetBool,leakRxnBool,siphonMetBool,siphonRxnBool,leakY,siphonY,statp,statn] =</span><span style="color: rgb(14, 0, 255);">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        findMassLeaksAndSiphons(model,model.SIntMetBool,model.SIntRxnBool,</span><span style="color: rgb(14, 0, 255);">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        modelBoundsFlag,leakParams,printLevel);</span></span></div></div><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">end</span></span></div></div></div><h2  class = 'S3'><span>Fin</span><span>d the maximal set of reactions that are stoichiometrically consistent</span></h2><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">if </span><span >~isfield(model,</span><span style="color: rgb(170, 4, 249);">'SConsistentMetBool'</span><span >) || ~isfield(model,</span><span style="color: rgb(170, 4, 249);">'SConsistentRxnBool'</span><span >)</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >    </span><span style="color: rgb(14, 0, 255);">if </span><span >strcmp(model.modelID,</span><span style="color: rgb(170, 4, 249);">'HMRdatabase2_00'</span><span >)</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        massBalanceCheck=0;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >    </span><span style="color: rgb(14, 0, 255);">else</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        massBalanceCheck=1;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >    </span><span style="color: rgb(14, 0, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >    </span><span style="color: rgb(14, 0, 255);">if </span><span >1</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        [SConsistentMetBool,SConsistentRxnBool,SInConsistentMetBool,SInConsistentRxnBool,unknownSConsistencyMetBool,unknownSConsistencyRxnBool,model]</span><span style="color: rgb(14, 0, 255);">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >            =findStoichConsistentSubset(model,massBalanceCheck,printLevel);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >    </span><span style="color: rgb(14, 0, 255);">else</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        </span><span style="color: rgb(2, 128, 9);">%print out problematic reactions to file</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        resultsFileName=[resultsPath filesep model.modelID];</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        [SConsistentMetBool,SConsistentRxnBool,SInConsistentMetBool,SInConsistentRxnBool,unknownSConsistencyMetBool,unknownSConsistencyRxnBool,model]</span><span style="color: rgb(14, 0, 255);">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >            =findStoichConsistentSubset(model,massBalanceCheck,printLevel,resultsFileName);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >    </span><span style="color: rgb(14, 0, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >    </span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >rxnBool=model.SInConsistentRxnBool &amp; model.SIntRxnBool;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">if </span><span >any(rxnBool)</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >    </span><span style="color: rgb(14, 0, 255);">if </span><span >printLevel&gt;0</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        fprintf(</span><span style="color: rgb(170, 4, 249);">'%s\n'</span><span >,</span><span style="color: rgb(170, 4, 249);">'Stoichiometrically inconsistent heuristically non-exchange reactions:'</span><span >)</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >    </span><span style="color: rgb(14, 0, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >    </span><span style="color: rgb(14, 0, 255);">for </span><span >n=1:nRxn</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        </span><span style="color: rgb(14, 0, 255);">if </span><span >rxnBool(n)</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >            fprintf(</span><span style="color: rgb(170, 4, 249);">'%20s\t%50s\t%s\n'</span><span >,model.rxns{n},model.rxnNames{n},model.subSystems{n})</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        </span><span style="color: rgb(14, 0, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >    </span><span style="color: rgb(14, 0, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >    </span><span style="color: rgb(14, 0, 255);">if </span><span >printLevel&gt;0</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        fprintf(</span><span style="color: rgb(170, 4, 249);">'%s\n'</span><span >,</span><span style="color: rgb(170, 4, 249);">'--------------'</span><span >)</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >    </span><span style="color: rgb(14, 0, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >    </span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >rxnBool=model.unknownSConsistencyRxnBool &amp; model.SIntRxnBool;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">if </span><span >any(rxnBool)</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >    </span><span style="color: rgb(14, 0, 255);">if </span><span >printLevel&gt;0</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        fprintf(</span><span style="color: rgb(170, 4, 249);">'%s\n'</span><span >,</span><span style="color: rgb(170, 4, 249);">'Unknown consistency heuristically non-exchange reactions:'</span><span >)</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >    </span><span style="color: rgb(14, 0, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >    </span><span style="color: rgb(14, 0, 255);">for </span><span >n=1:nRxn</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        </span><span style="color: rgb(14, 0, 255);">if </span><span >rxnBool(n)</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >            fprintf(</span><span style="color: rgb(170, 4, 249);">'%20s\t%50s\t%s\n'</span><span >,model.rxns{n},model.rxnNames{n},model.subSystems{n})</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        </span><span style="color: rgb(14, 0, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >    </span><span style="color: rgb(14, 0, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >    </span><span style="color: rgb(14, 0, 255);">if </span><span >printLevel&gt;0</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        fprintf(</span><span style="color: rgb(170, 4, 249);">'%s\n'</span><span >,</span><span style="color: rgb(170, 4, 249);">'--------------'</span><span >)</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >    </span><span style="color: rgb(14, 0, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">end</span></span></div></div></div><h2  class = 'S3'><span>San</span><span>ity check of stoichiometric and flux consistency of model</span><span> with open external reactions</span></h2><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre"><span >    </span><span style="color: rgb(14, 0, 255);">if</span><span >  all(model.SIntMetBool &amp; model.SConsistentMetBool)</span><span style="color: rgb(14, 0, 255);">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >            &amp;&amp; nnz(model.SIntRxnBool &amp; model.SConsistentRxnBool)==nnz(model.SIntRxnBool)</span><span style="color: rgb(14, 0, 255);">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >            &amp;&amp; all(model.fluxConsistentMetBool)</span><span style="color: rgb(14, 0, 255);">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >            &amp;&amp; all(model.fluxConsistentRxnBool)</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        </span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        [nMet,nRxn]=size(model.S);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        </span><span style="color: rgb(14, 0, 255);">if </span><span >printLevel&gt;1</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >            fprintf(</span><span style="color: rgb(170, 4, 249);">'%6s\t%6s\n'</span><span >,</span><span style="color: rgb(170, 4, 249);">'#mets'</span><span >,</span><span style="color: rgb(170, 4, 249);">'#rxns'</span><span >)</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >            fprintf(</span><span style="color: rgb(170, 4, 249);">'%6u\t%6u\t%s\n'</span><span >,nMet,nRxn,</span><span style="color: rgb(170, 4, 249);">' totals.'</span><span >)</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >            fprintf(</span><span style="color: rgb(170, 4, 249);">'%6u\t%6u\t%s\n'</span><span >,nnz(~model.SIntMetBool),nnz(~model.SIntRxnBool),</span><span style="color: rgb(170, 4, 249);">' heuristically exchange.'</span><span >)</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        </span><span style="color: rgb(14, 0, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        </span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        checksPassed=0;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        </span><span style="color: rgb(2, 128, 9);">%Check that all heuristically non-exchange reactions are also stoichiometrically consistent</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        </span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        </span><span style="color: rgb(2, 128, 9);">%exchange reactions</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        model.EXRxnBool=strncmp(</span><span style="color: rgb(170, 4, 249);">'EX_'</span><span >, model.rxns, 3)==1;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        </span><span style="color: rgb(2, 128, 9);">%demand reactions going out of model</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        model.DMRxnBool=strncmp(</span><span style="color: rgb(170, 4, 249);">'DM_'</span><span >, model.rxns, 3)==1;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        </span><span style="color: rgb(2, 128, 9);">%sink reactions going into or out of model</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        model.SinkRxnBool=strncmp(</span><span style="color: rgb(170, 4, 249);">'sink_'</span><span >, model.rxns, 5)==1;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        </span><span style="color: rgb(2, 128, 9);">%all heuristic non-exchanges, i.e., supposedly all external reactions</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        bool=~(model.EXRxnBool | model.DMRxnBool | model.SinkRxnBool);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        </span><span style="color: rgb(14, 0, 255);">if </span><span >nnz(bool &amp; model.SIntRxnBool &amp; model.SConsistentRxnBool)==nnz(model.SConsistentRxnBool)</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >            checksPassed=checksPassed+1;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >            </span><span style="color: rgb(14, 0, 255);">if </span><span >printLevel&gt;1</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >                fprintf(</span><span style="color: rgb(170, 4, 249);">'%6u\t%6u\t%s\n'</span><span >,nnz(model.SIntMetBool),nnz(model.SIntRxnBool),</span><span style="color: rgb(170, 4, 249);">' All internally stoichiometrically consistent. (Check 1: minimum cardinality of conservation relaxation vector.)'</span><span >);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >            </span><span style="color: rgb(14, 0, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        </span><span style="color: rgb(14, 0, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        </span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        </span><span style="color: rgb(2, 128, 9);">%Check for mass leaks or siphons in the stoichiometrically consistent part</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        </span><span style="color: rgb(2, 128, 9);">%There should be no leaks or siphons in the stiochiometrically consistent part</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        modelBoundsFlag=0;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        leakParams.epsilon=1e-4;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        leakParams.eta = getCobraSolverParams(</span><span style="color: rgb(170, 4, 249);">'LP'</span><span >, </span><span style="color: rgb(170, 4, 249);">'feasTol'</span><span >)*100;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        leakParams.method=</span><span style="color: rgb(170, 4, 249);">'dc'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        [leakMetBool,leakRxnBool,siphonMetBool,siphonRxnBool,leakY,siphonY,statp,statn]</span><span style="color: rgb(14, 0, 255);">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >            =findMassLeaksAndSiphons(model,model.SConsistentMetBool,model.SConsistentRxnBool,modelBoundsFlag,leakParams,printLevel);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        </span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        </span><span style="color: rgb(14, 0, 255);">if </span><span >nnz(leakMetBool)==0 &amp;&amp; nnz(leakRxnBool)==0 &amp;&amp; nnz(siphonMetBool)==0 &amp;&amp; nnz(siphonRxnBool)==0</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >            checksPassed=checksPassed+1;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >            </span><span style="color: rgb(14, 0, 255);">if </span><span >printLevel&gt;1</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >                fprintf(</span><span style="color: rgb(170, 4, 249);">'%6u\t%6u\t%s\n'</span><span >,nnz(leakMetBool | siphonMetBool),nnz(leakRxnBool | siphonRxnBool),</span><span style="color: rgb(170, 4, 249);">' No internal leaks or siphons. (Check 2: leak/siphon tests.)'</span><span >);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >            </span><span style="color: rgb(14, 0, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        </span><span style="color: rgb(14, 0, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        </span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        </span><span style="color: rgb(2, 128, 9);">%Check that the maximal conservation vector is nonzero for each the</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        </span><span style="color: rgb(2, 128, 9);">%internal stoichiometric matrix</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        maxCardinalityConsParams.epsilon=1e-4;</span><span style="color: rgb(2, 128, 9);">%1/epsilon is the largest mass considered, needed for numerical stability</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        maxCardinalityConsParams.method = </span><span style="color: rgb(170, 4, 249);">'quasiConcave'</span><span >;</span><span style="color: rgb(2, 128, 9);">%seems to work the best, but sometimes infeasible</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        maxCardinalityConsParams.theta = 0.5;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        maxCardinalityConsParams.eta=getCobraSolverParams(</span><span style="color: rgb(170, 4, 249);">'LP'</span><span >, </span><span style="color: rgb(170, 4, 249);">'feasTol'</span><span >)*100;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        [maxConservationMetBool,maxConservationRxnBool,solution]=maxCardinalityConservationVector(model.S(model.SConsistentMetBool,model.SConsistentRxnBool), maxCardinalityConsParams);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        </span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        </span><span style="color: rgb(14, 0, 255);">if </span><span >nnz(maxConservationMetBool)==size(model.S,1) &amp;&amp; nnz(maxConservationRxnBool)==nnz(model.SIntRxnBool)</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >            checksPassed=checksPassed+1;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >            </span><span style="color: rgb(14, 0, 255);">if </span><span >printLevel&gt;1</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >                fprintf(</span><span style="color: rgb(170, 4, 249);">'%6u\t%6u\t%s\n'</span><span >,nnz(maxConservationMetBool),nnz(maxConservationRxnBool),</span><span style="color: rgb(170, 4, 249);">' All internally stoichiometrically consistent. (Check 3: maximim cardinality conservation vector.)'</span><span >);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >            </span><span style="color: rgb(14, 0, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        </span><span style="color: rgb(14, 0, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        </span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        </span><span style="color: rgb(2, 128, 9);">%Check that each of the reactions in the model (with open external reactions) is flux consistent</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        modelOpen=model;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        modelOpen.lb(~model.SIntRxnBool)=-1000;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        modelOpen.ub(~model.SIntRxnBool)= 1000;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        param.epsilon=1e-4;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        param.modeFlag=0;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        param.method=</span><span style="color: rgb(170, 4, 249);">'null_fastcc'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        [fluxConsistentMetBool,fluxConsistentRxnBool,fluxInConsistentMetBool,fluxInConsistentRxnBool,modelOpen] = findFluxConsistentSubset(modelOpen,param,printLevel-2);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        </span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        </span><span style="color: rgb(14, 0, 255);">if </span><span >nnz(fluxConsistentMetBool)==size(model.S,1) &amp;&amp; nnz(fluxConsistentRxnBool)==size(model.S,2)</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >            checksPassed=checksPassed+1;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >            </span><span style="color: rgb(14, 0, 255);">if </span><span >printLevel&gt;1</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >                fprintf(</span><span style="color: rgb(170, 4, 249);">'%6u\t%6u\t%s\n'</span><span >,nnz(fluxConsistentMetBool),nnz(fluxConsistentRxnBool),</span><span style="color: rgb(170, 4, 249);">' All flux consistent. (Check 4: maximim cardinality constrained right nullspace.)'</span><span >);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >            </span><span style="color: rgb(14, 0, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        </span><span style="color: rgb(14, 0, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        </span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        </span><span style="color: rgb(14, 0, 255);">if </span><span >checksPassed==4</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >            </span><span style="color: rgb(2, 128, 9);">%save the model with open exchanges as the default generic</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >            </span><span style="color: rgb(2, 128, 9);">%model</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >            model=modelOpen;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >            </span><span style="color: rgb(14, 0, 255);">if </span><span >printLevel&gt;0</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >                fprintf(</span><span style="color: rgb(170, 4, 249);">'%s\n'</span><span >,</span><span style="color: rgb(170, 4, 249);">'Open external reactions is stoichiometrically and flux consistent. A flux balance model generated from a reconstruction. GREAT!!!!'</span><span >);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >            </span><span style="color: rgb(14, 0, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        </span><span style="color: rgb(14, 0, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >        save([resultsFileName </span><span style="color: rgb(170, 4, 249);">'_consistent.mat'</span><span >],</span><span style="color: rgb(170, 4, 249);">'model'</span><span >)</span></span></div></div><div class="inlineWrapper outputs"><div  class = 'S6'><span style="white-space: pre"><span >    </span><span style="color: rgb(14, 0, 255);">end</span></span></div><div  class = 'S7'><div class="inlineElement eoOutputWrapper embeddedOutputsErrorElement" uid="BE847244" data-testid="output_35" data-width="420" data-height="18" data-hashorizontaloverflow="false" style="width: 450px; max-height: 261px; white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="diagnosticMessage-wrapper diagnosticMessage-errorType" style="white-space: normal; font-style: normal; color: rgb(230, 0, 0); font-size: 12px;"><div class="diagnosticMessage-messagePart" style="white-space: pre-wrap; font-style: normal; color: rgb(230, 0, 0); font-size: 12px;">Reference to non-existent field 'SConsistentMetBool'.</div><div class="diagnosticMessage-stackPart" style="white-space: pre; font-style: normal; color: rgb(230, 0, 0); font-size: 12px;"></div></div></div></div></div></div><h2  class = 'S1'><span>R</span><span>EFE</span><span>RENCES</span></h2><div  class = 'S2'><span>Gevorgyan, A., Poolman, M. G., Fell D., Detection of stoichiometric inconsistencies in biomolecular models. Bioinformatics, 24(19):2245–51, 2008.</span></div><div  class = 'S2'><span>Flem</span><span>ing, R.M.T., et al., Cardinality optimisation in constraint-based modelling: Application to Recon 3D (submitted), 2017.</span></div><div  class = 'S2'><span>Brunk, E. et al. Recon 3D: A resource enabling a three-dimensional view of gene variation in human metabolism. (submitted) 2017.</span></div>
+<br>
+<!-- 
+##### SOURCE BEGIN #####
+%% *Convert a reconstruction into a flux balance analysis model* 
+%% *Author: Ronan Fleming, Ines Thiele, University of Luxembourg*
+%% *Reviewers:* 
+%% INTRODUCTION
+% Even with quality control during the reconstruction process, it is not appropriate 
+% to assume that any reconstruction can be converted directly into a model and 
+% used to make predictions. A model must satisfy certain assumptions before it 
+% can be used to make reliable predictions. Depending on the type of model model, 
+% these assumptions will be different. Each assumption should be chemically or 
+% biologically motivated and expressed in an unambiguous manner and preferably 
+% both intuitively and mathematically. Flux balance analysis is a mathematical 
+% method widely used for studying genome-scale biochemical network. Here one aims 
+% to predict steady-state reaction fluxes, where there is a balance between production 
+% and consumption of each molecular species that is not exchanged across the specified 
+% boundary of a system. In this situation, one might obtain erroneous predictions 
+% if the system boundary is incorrectly specified. If a reconstruction contains 
+% one or more supposedly mass balanced reactions, but which are actually not mass 
+% balanced, such reactions in a model can lead to inadvertent leakage of a metabolite 
+% from the model, in violation of mass balance. Similarly, when generating a model 
+% for flux balance analysis, it is important to ensure that the network is flux 
+% consistent, that is, each reaction can carry a non-zero steady state flux. 
+% 
+% Given a reconstruction with $$\hat{m}$$ reactants involved in $$\hat{n}$$ 
+% reactions, this tutorial demonstrates a method to identify and extract the largest 
+% subset of the reconstruction whose internal reactions are both stoichoimetrically 
+% and flux consistent and whose external reactions are flux consistent. This model 
+% is then mathematically consistent with the basic requirements for generation 
+% of predictions using flux balance analysis. The identification of the component 
+% of the reconstruction that does not satisfy the aforementioned modelling conditions 
+% is also useful for targeting reconstruction effort towards resolving stoichiometric 
+% inconsistency or resolving flux inconsistency. The example used in this tutorial 
+% illustrates the process of extracting a model consistent with flux balance analsis, 
+% from a ReconX reconstruction.
+%% PROCEDURE
+%% Select reconstruction to convert into a model and enter parameters
+% Load the ReconX reconstruction, and save the original reconstruction in the 
+% workspace, unless it is already loaded into the workspace. 
+
+clear model
+if ~exist('modelOrig','var')
+    %select your own model, or use Recon2.0model instead
+    if 1
+        filename='Recon3D_301.mat'
+        load(filename);
+        model=Recon3D;
+    else
+        filename='Recon2.0model.mat';
+        if exist('Recon2.0model.mat','file')==2
+            model = readCbModel(filename);
+        end
+    end
+    model.csense(1:size(model.S,1),1)='E';
+    modelOrig = model;
+else
+    model=modelOrig;
+end
+%% 
+% Set the level of printing, zero for silent, higher for more output.
+
+printLevel=2;
+%% 
+% Choose the directory to place the results
+
+basePath='~/work/sbgCloud/';
+%resultsPath=[basePath '/programReconstruction/projects/recon2models/results/reconXs/' model.modelID];
+resultsPath=[basePath '/courses/2019_Leiden_COBRA/practicalsDemo/Day4/' model.modelID];
+resultsFileName=[resultsPath filesep model.modelID];
+%% 
+% Create and enter the folder for the results if it does not already exist
+
+if ~exist(resultsPath,'dir')
+    mkdir(resultsPath)
+end
+cd(resultsPath)
+%% 
+% Optionally create a diary to save the output in case it is very long, this 
+% makes it easier to search, especially when debugging the process during the 
+% early stages.
+
+if 0
+    diary([resultsFileName '_diary.txt'])
+end
+%% Overview some of the key properties of the reconstruction
+% Noting the initial size of the reconstruction is useful for comparisons later 
+% with subsets derived according to mathematical specifications.
+
+[nMet,nRxn]=size(model.S);
+fprintf('%6s\t%6s\n','#mets','#rxns')
+fprintf('%6u\t%6u\t%s\n',nMet,nRxn,' totals.')
+%% 
+% Make sure the stoichiometric matrix is stored in a sparse format as this accelerates 
+% computations with large networks
+
+model.S=sparse(model.S);
+%% Check in case the reconstruction is a model that is already ready for flux balance analysis
+% There is no need to run this live script any further if the reconstruction 
+% already satisfies the conditions necessary for flux balance analysis. That is 
+% if all internal reactants and reactions are stoichiometrically consistent, and 
+% all reactions are flux consistent, then the reconstruction satisfies the criteria 
+% to designate it a model ready for flux balance analysis.
+% 
+% SIntMetBool                     m x 1 Boolean of metabolites heuristically 
+% though to be involved in mass balanced reactions.
+% 
+% SIntRxnBool                     n x 1 Boolean of reactions heuristically though 
+% to be mass balanced.
+% 
+% SConsistentMetBool        m x 1 Boolean vector indicating consistent mets
+% 
+% SConsistentRxnBool        n x 1 Boolean vector indicating consistent rxns
+% 
+% fluxConsistentMetBool     m x 1 Boolean vector indicating flux consistent 
+% mets
+% 
+% fluxConsistentRxnBool     n x 1 Boolean vector indicating flux consistent 
+% rxns
+
+if all(isfield(model,{'SIntMetBool','SIntRxnBool','SConsistentMetBool',...
+        'SConsistentRxnBool','fluxConsistentMetBool','fluxConsistentRxnBool'}))
+    if all(model.SIntMetBool & model.SConsistentMetBool)...
+            && nnz(model.SIntRxnBool & model.SConsistentRxnBool)==nnz(model.SIntRxnBool)...
+            && all(model.fluxConsistentMetBool)...
+            && all(model.fluxConsistentRxnBool)
+        fullyStoichAndFluxConsistent=1;
+        fprintf('%s\n','Reconstruction is a model that is already ready for flux balance analysis')
+    end
+    return
+else
+    fullyStoichAndFluxConsistent=0;
+    fprintf('%s\n','Reconstruction must be tested to check if it is ready for flux balance analysis')
+end
+%% Manually remove certain reactions from the reconstruction 
+% Before attempting to algorithmically remove stoichiometrically or flux inconsistent 
+% supposed internal reactions from a reconstruction to generate a model, there 
+% is an option to review the content of the reconstruction and manually identify 
+% reactions for removal. That is, there are two options:
+% 
+% A. Skip manual review of reconstruction content. Move to the next step.
+% 
+% B. Review the content of the reconstruction and omit any reactions that are 
+% assumed to be stoichiometrically or flux inconsistent. With respect to stoichiometric 
+% inconsistency, such reactions may be obviously mass imbalanced and not satisfy 
+% the heuristic conditions for indentification as an exernal reaction. Alternatively, 
+% such reactions may be identified by a previous pass through of this tutorial 
+% as being of unknown stoichometric consistent (model.unknownSConsistencyRxnBool(j)==1), 
+% after the largest stoichiometrically consistent subset of the network has been 
+% is identified. This is an iterative process where multiple rounds of identification 
+% of the largest stoichiometrically consistent set and manual curation of the 
+% remainder that is of unknown stoichiometric consistency is necessary.
+
+if strcmp(filename,'Recon3.0model')
+    modelOrig=model;
+    if 0
+        if 1
+            %Rename some of the biomass reactions to make them more obviously exchange
+            %reactions
+            model.rxns{strcmp(model.rxns,'biomass_reaction')}= 'EX_biomass_reaction';
+            model.rxns{strcmp(model.rxns,'biomass_maintenance')}= 'EX_biomass_maintenance';
+            model.rxns{strcmp(model.rxns,'biomass_maintenance_noTrTr')}= 'EX_biomass_maintenance_noTrTr';
+            
+            %ATP hydrolysis is not imbalanced like all the other demand reactions so
+            %give it a different accronym ATPM = ATP Maintenance
+            bool=strcmp('DM_atp_c_',model.rxns);
+            model.rxns{bool}='ATPM';
+        end
+        [model,removeMetBool,removeRxnBool] = manuallyAdaptRecon3(model,printLevel);
+    else
+        [model,removeMetBool,removeRxnBool] = manuallyAdaptRecon3Ines(model,printLevel);
+    end
+    [nMet0,nRxn0]=size(modelOrig.S);
+    [nMet,nRxn]=size(model.S);
+    if nMet0==nMet && nRxn0==nRxn && printLevel>0
+        fprintf('%s\n','REPLACE_WITH_DASH_DASH- Manually removing rows and columns of the stoichiometric matrixREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH')
+        fprintf('%6s\t%6s\n','#mets','#rxns')
+        fprintf('%6u\t%6u\t%s\n',nMet0,nRxn0,' totals.')
+        fprintf('%6u\t%6u\t%s\n',nMet0-nMet,nRxn0-nRxn,' manually removed.')
+        fprintf('%6u\t%6u\t%s\n',nMet,nRxn,' remaining.')
+    end
+end
+%% Remove any trivial rows and columns of the stoichiometric matrix
+% Remove any zero rows or columns of the stoichiometric matrix
+
+modelOrig=model;
+model=removeTrivialStoichiometry(model);
+[nMet0,nRxn0]=size(modelOrig.S);
+[nMet,nRxn]=size(model.S);
+if nMet0==nMet && nRxn0==nRxn && printLevel>0
+    fprintf('%s\n','REPLACE_WITH_DASH_DASH-Checking for Remove any trivial rows and columns of the stoichiometric matrixREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH')
+    fprintf('%6s\t%6s\n','#mets','#rxns')
+    fprintf('%6u\t%6u\t%s\n',nMet0,nRxn0,' totals.')
+    fprintf('%6u\t%6u\t%s\n',nMet0-nMet,nRxn0-nRxn,' duplicates removed.')
+    fprintf('%6u\t%6u\t%s\n',nMet,nRxn,' remaining.')
+end
+%% 
+% Check for duplicate columns by detecting the columns of the  S matrix that 
+% are identical upto scalar multiplication.
+
+modelOrig=model;
+dupDetectMethod='FR';
+dupDetectMethod='S';
+removeFlag=0;
+[modelOut,removedRxnInd, keptRxnInd] = checkDuplicateRxn(model,dupDetectMethod,removeFlag,printLevel-2);
+%% 
+% Remove any duplicate reactions, and uniquely involved reactants, from the 
+% stoichiometric matrix. 
+
+if length(removedRxnInd)>0
+    irrevFlag=0;
+    metFlag=1;
+    %set all reactions reversible that are duplicates
+    model.lb(removedRxnInd)=-model.ub(removedRxnInd);
+    %remove duplicates
+    model = removeRxns(model,model.rxns(removedRxnInd),irrevFlag,metFlag);
+end
+%% 
+% Display the statistics on the duplicate reactions, 
+
+[nMet0,nRxn0]=size(modelOrig.S);
+[nMet,nRxn]=size(model.S);
+if nMet0==nMet && nRxn0==nRxn && printLevel>0
+    fprintf('%s\n','REPLACE_WITH_DASH_DASH-Remove any duplicate reactionsREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH')
+    [nMet0,nRxn0]=size(modelOrig.S);
+    [nMet,nRxn]=size(model.S);
+    fprintf('%6s\t%6s\n','#mets','#rxns')
+    fprintf('%6u\t%6u\t%s\n',nMet0,nRxn0,' totals.')
+    fprintf('%6u\t%6u\t%s\n',nMet0-nMet,nRxn0-nRxn,' duplicates removed.')
+    fprintf('%6u\t%6u\t%s\n',nMet,nRxn,' remaining.')
+end
+%% Remove any duplicate reactions upto protons
+% Remove reactions reactions that differ only in the number of protons involved 
+% as substrates or products. Also remove exclusively involved reactants.
+% 
+% Save a temporary model for testing, before making any changes.
+
+modelH=model;
+%% 
+% Find the proton indicies in different compartments. A proton, with index i, 
+% is asumed to be represented by an abbreviation within model.mets{i} like h[*], 
+% where * denotes the compartment symbol.
+
+nMetChars=zeros(length(modelH.mets),1);
+for m=1:length(modelH.mets)
+    nMetChars(m,1)=length(modelH.mets{m});
+end
+protonMetBool=strncmp(modelH.mets,'h',1) & nMetChars==length('h[*]');
+if printLevel>2
+    disp(modelH.mets(protonMetBool))
+end
+%% 
+% Zero out the proton stoichiometric coefficients from the temporary model for 
+% testing
+
+modelH.S(protonMetBool,:)=0;
+%% 
+% Check for duplicate columns, upto protons, by detecting the columns of the  
+% S matrix that are identical upto scalar multiplication.
+
+dupDetectMethod='FR';
+removeFlag=0;
+[modelOut,removedRxnInd, keptRxnInd] = checkDuplicateRxn(modelH,dupDetectMethod,removeFlag,printLevel-1);
+%% 
+% Remove any duplicate reactions from the stoichiometric matrix, but do not 
+% remove the protons.
+
+if length(removedRxnInd)>0
+    irrevFlag=0;
+    metFlag=0;%dont remove the protons
+    model = removeRxns(model,model.rxns(removedRxnInd),irrevFlag,metFlag);
+end
+%% 
+% Display statistics of the removed reactions
+
+if printLevel>0
+    [nMet0,nRxn0]=size(modelOrig.S);
+    [nMet,nRxn]=size(model.S);
+    fprintf('%6s\t%6s\n','#mets','#rxns')
+    fprintf('%6u\t%6u\t%s\n',nMet0,nRxn0,' totals.')
+    fprintf('%6u\t%6u\t%s\n',nMet0-nMet,nRxn0-nRxn,' duplicate reactions upto protons removed.')
+    fprintf('%6u\t%6u\t%s\n',nMet,nRxn,' remaining.')
+end
+%model size
+[nMet,nRxn]=size(model.S);
+%% Heuristically identify exchange reactions and metabolites exclusively involved in exchange reactions
+% An external reaction is one that is heuristically identified by a single stoichiometric 
+% coefficient in the corresponding column of  S, or an (abbreviated) reaction 
+% name matching a pattern (e.g. prefix EX_) or an external subsystem assignment. 
+% Any remaining reaction is assumed to be an internal reaction. If a reaction 
+% is not external then it is denoted an internal reaction. External reactants 
+% are exclusively involved in exchange reactions, and internal reactants otherwise. 
+% The findSExRxnInd function finds the external reactions in the model which export 
+% or import mass from or to the model, e.g. Exchange reactions, Demand reactions, 
+% Sink reactions.
+
+if ~isfield(model,'SIntMetBool')  ||  ~isfield(model,'SIntRxnBool')
+     model = findSExRxnInd(model,[],printLevel-1);
+end
+%% EXPECTED RESULTS
+% In the returned model, model.SIntRxnBool, is a boolean of reactions heuristically 
+% though to be mass balanced, while model.SIntMetBool is a boolean of metabolites 
+% heuristically though to be involved in mass balanced reactions.
+%% CAUTION
+% The aforementioned assignments of external and internal reactions and reactants 
+% is the result of a heuristic and might result in one or more errors, either 
+% due to misspecification or because the names of external reactions and external 
+% subsystems often vary between laboratories. 
+%% Find the reactions that are flux inconsistent 
+% Ultimately we seek to identify the set of stoichiometrically consistent reactions 
+% that are also flux consistent, with no bounds on reaction rates. However, finiding 
+% the stoichiometrically consistent subset can be demanding for large models so 
+% first we identify the subset of reactions that are flux consistent and focus 
+% on them.
+
+modelOrig=model;
+model.lb(~model.SIntRxnBool)=-1000;
+model.ub(~model.SIntRxnBool)= 1000;
+if 1
+    if ~isfield(model,'fluxConsistentMetBool') || ~isfield(model,'fluxConsistentRxnBool')
+        param.epsilon=1e-4;
+        param.modeFlag=0;
+        param.method='null_fastcc';
+        %param.method='fastcc';
+        [fluxConsistentMetBool,fluxConsistentRxnBool,...
+            fluxInConsistentMetBool,fluxInConsistentRxnBool,model]...
+            = findFluxConsistentSubset(model,param,printLevel);
+    end
+    % Remove reactions that are flux inconsistent
+    if any(fluxInConsistentRxnBool)
+        irrevFlag=0;
+        metFlag=1;
+        model = removeRxns(model,model.rxns(fluxInConsistentRxnBool),irrevFlag,metFlag);
+        [nMet0,nRxn0]=size(modelOrig.S);
+        [nMet,nRxn]=size(model.S);
+        
+        if printLevel>0
+            fprintf('%s\n','REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH-')
+            fprintf('%6s\t%6s\n','#mets','#rxns')
+            fprintf('%6u\t%6u\t%s\n',nMet0,nRxn0,' totals.')
+            fprintf('%6u\t%6u\t%s\n',nMet0-nMet,nRxn0-nRxn,' flux inconsistent reactions removed.')
+            fprintf('%6u\t%6u\t%s\n',nMet,nRxn,' remaining.')
+            fprintf('%s\n','REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH-')
+            if printLevel>1
+                for n=1:nRxn0
+                    if fluxInConsistentRxnBool(n)
+                        fprintf('%15s\t%-100s\n',modelOrig.rxns{n},modelOrig.rxnNames{n})
+                    end
+                end
+            end
+        end
+        %revise model size
+        [nMet,nRxn]=size(model.S);
+        
+        %Recompute
+        %Heuristically identify exchange reactions and metabolites exclusively involved in exchange reactions
+        %finds the reactions in the model which export/import from the model
+        %boundary i.e. mass unbalanced reactions
+        %e.g. Exchange reactions
+        %     Demand reactions
+        %     Sink reactions
+        
+        model = findSExRxnInd(model,[],0);
+        if printLevel>0
+            fprintf('%s\n','REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHendREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH')
+        end
+    end
+end
+%% Find mass leaks or siphons within the heuristically internal part, without using the bounds given by the model
+
+if 1
+    modelBoundsFlag=0;
+    leakParams.epsilon=1e-4;
+    leakParams.method='dc';
+    leakParams.theta=0.5;
+    [leakMetBool,leakRxnBool,siphonMetBool,siphonRxnBool,leakY,siphonY,statp,statn] =...
+        findMassLeaksAndSiphons(model,model.SIntMetBool,model.SIntRxnBool,...
+        modelBoundsFlag,leakParams,printLevel);
+end
+%% Find the maximal set of reactions that are stoichiometrically consistent
+
+if ~isfield(model,'SConsistentMetBool') || ~isfield(model,'SConsistentRxnBool')
+    if strcmp(model.modelID,'HMRdatabase2_00')
+        massBalanceCheck=0;
+    else
+        massBalanceCheck=1;
+    end
+    if 1
+        [SConsistentMetBool,SConsistentRxnBool,SInConsistentMetBool,SInConsistentRxnBool,unknownSConsistencyMetBool,unknownSConsistencyRxnBool,model]...
+            =findStoichConsistentSubset(model,massBalanceCheck,printLevel);
+    else
+        %print out problematic reactions to file
+        resultsFileName=[resultsPath filesep model.modelID];
+        [SConsistentMetBool,SConsistentRxnBool,SInConsistentMetBool,SInConsistentRxnBool,unknownSConsistencyMetBool,unknownSConsistencyRxnBool,model]...
+            =findStoichConsistentSubset(model,massBalanceCheck,printLevel,resultsFileName);
+    end
+end
+    
+rxnBool=model.SInConsistentRxnBool & model.SIntRxnBool;
+if any(rxnBool)
+    if printLevel>0
+        fprintf('%s\n','Stoichiometrically inconsistent heuristically non-exchange reactions:')
+    end
+    for n=1:nRxn
+        if rxnBool(n)
+            fprintf('%20s\t%50s\t%s\n',model.rxns{n},model.rxnNames{n},model.subSystems{n})
+        end
+    end
+    if printLevel>0
+        fprintf('%s\n','REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH')
+    end
+end
+    
+rxnBool=model.unknownSConsistencyRxnBool & model.SIntRxnBool;
+if any(rxnBool)
+    if printLevel>0
+        fprintf('%s\n','Unknown consistency heuristically non-exchange reactions:')
+    end
+    for n=1:nRxn
+        if rxnBool(n)
+            fprintf('%20s\t%50s\t%s\n',model.rxns{n},model.rxnNames{n},model.subSystems{n})
+        end
+    end
+    if printLevel>0
+        fprintf('%s\n','REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH')
+    end
+end
+%% Sanity check of stoichiometric and flux consistency of model with open external reactions
+
+    if  all(model.SIntMetBool & model.SConsistentMetBool)...
+            && nnz(model.SIntRxnBool & model.SConsistentRxnBool)==nnz(model.SIntRxnBool)...
+            && all(model.fluxConsistentMetBool)...
+            && all(model.fluxConsistentRxnBool)
+        
+        [nMet,nRxn]=size(model.S);
+        if printLevel>1
+            fprintf('%6s\t%6s\n','#mets','#rxns')
+            fprintf('%6u\t%6u\t%s\n',nMet,nRxn,' totals.')
+            fprintf('%6u\t%6u\t%s\n',nnz(~model.SIntMetBool),nnz(~model.SIntRxnBool),' heuristically exchange.')
+        end
+        
+        checksPassed=0;
+        %Check that all heuristically non-exchange reactions are also stoichiometrically consistent
+        
+        %exchange reactions
+        model.EXRxnBool=strncmp('EX_', model.rxns, 3)==1;
+        %demand reactions going out of model
+        model.DMRxnBool=strncmp('DM_', model.rxns, 3)==1;
+        %sink reactions going into or out of model
+        model.SinkRxnBool=strncmp('sink_', model.rxns, 5)==1;
+        %all heuristic non-exchanges, i.e., supposedly all external reactions
+        bool=~(model.EXRxnBool | model.DMRxnBool | model.SinkRxnBool);
+        if nnz(bool & model.SIntRxnBool & model.SConsistentRxnBool)==nnz(model.SConsistentRxnBool)
+            checksPassed=checksPassed+1;
+            if printLevel>1
+                fprintf('%6u\t%6u\t%s\n',nnz(model.SIntMetBool),nnz(model.SIntRxnBool),' All internally stoichiometrically consistent. (Check 1: minimum cardinality of conservation relaxation vector.)');
+            end
+        end
+        
+        %Check for mass leaks or siphons in the stoichiometrically consistent part
+        %There should be no leaks or siphons in the stiochiometrically consistent part
+        modelBoundsFlag=0;
+        leakParams.epsilon=1e-4;
+        leakParams.eta = getCobraSolverParams('LP', 'feasTol')*100;
+        leakParams.method='dc';
+        [leakMetBool,leakRxnBool,siphonMetBool,siphonRxnBool,leakY,siphonY,statp,statn]...
+            =findMassLeaksAndSiphons(model,model.SConsistentMetBool,model.SConsistentRxnBool,modelBoundsFlag,leakParams,printLevel);
+        
+        if nnz(leakMetBool)==0 && nnz(leakRxnBool)==0 && nnz(siphonMetBool)==0 && nnz(siphonRxnBool)==0
+            checksPassed=checksPassed+1;
+            if printLevel>1
+                fprintf('%6u\t%6u\t%s\n',nnz(leakMetBool | siphonMetBool),nnz(leakRxnBool | siphonRxnBool),' No internal leaks or siphons. (Check 2: leak/siphon tests.)');
+            end
+        end
+        
+        %Check that the maximal conservation vector is nonzero for each the
+        %internal stoichiometric matrix
+        maxCardinalityConsParams.epsilon=1e-4;%1/epsilon is the largest mass considered, needed for numerical stability
+        maxCardinalityConsParams.method = 'quasiConcave';%seems to work the best, but sometimes infeasible
+        maxCardinalityConsParams.theta = 0.5;
+        maxCardinalityConsParams.eta=getCobraSolverParams('LP', 'feasTol')*100;
+        [maxConservationMetBool,maxConservationRxnBool,solution]=maxCardinalityConservationVector(model.S(model.SConsistentMetBool,model.SConsistentRxnBool), maxCardinalityConsParams);
+        
+        if nnz(maxConservationMetBool)==size(model.S,1) && nnz(maxConservationRxnBool)==nnz(model.SIntRxnBool)
+            checksPassed=checksPassed+1;
+            if printLevel>1
+                fprintf('%6u\t%6u\t%s\n',nnz(maxConservationMetBool),nnz(maxConservationRxnBool),' All internally stoichiometrically consistent. (Check 3: maximim cardinality conservation vector.)');
+            end
+        end
+        
+        %Check that each of the reactions in the model (with open external reactions) is flux consistent
+        modelOpen=model;
+        modelOpen.lb(~model.SIntRxnBool)=-1000;
+        modelOpen.ub(~model.SIntRxnBool)= 1000;
+        param.epsilon=1e-4;
+        param.modeFlag=0;
+        param.method='null_fastcc';
+        [fluxConsistentMetBool,fluxConsistentRxnBool,fluxInConsistentMetBool,fluxInConsistentRxnBool,modelOpen] = findFluxConsistentSubset(modelOpen,param,printLevel-2);
+        
+        if nnz(fluxConsistentMetBool)==size(model.S,1) && nnz(fluxConsistentRxnBool)==size(model.S,2)
+            checksPassed=checksPassed+1;
+            if printLevel>1
+                fprintf('%6u\t%6u\t%s\n',nnz(fluxConsistentMetBool),nnz(fluxConsistentRxnBool),' All flux consistent. (Check 4: maximim cardinality constrained right nullspace.)');
+            end
+        end
+        
+        if checksPassed==4
+            %save the model with open exchanges as the default generic
+            %model
+            model=modelOpen;
+            if printLevel>0
+                fprintf('%s\n','Open external reactions is stoichiometrically and flux consistent. A flux balance model generated from a reconstruction. GREAT!!!!');
+            end
+        end
+        save([resultsFileName '_consistent.mat'],'model')
+    end
+%% REFERENCES
+% Gevorgyan, A., Poolman, M. G., Fell D., Detection of stoichiometric inconsistencies 
+% in biomolecular models. Bioinformatics, 24(19):2245–51, 2008.
+% 
+% Fleming, R.M.T., et al., Cardinality optimisation in constraint-based modelling: 
+% Application to Recon 3D (submitted), 2017.
+% 
+% Brunk, E. et al. Recon 3D: A resource enabling a three-dimensional view of 
+% gene variation in human metabolism. (submitted) 2017.
+##### SOURCE END #####
+-->
+</div></body></html>

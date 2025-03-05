@@ -1,0 +1,11 @@
+name: env_s2_spades
+channels:
+- bioconda
+- conda-forge
+dependencies:
+- spades=4.0.0
+- sysroot_linux-64=2.17
+- tk=8.6.13
+- tzdata=2024a
+- wheel=0.42.0
+- xz=5.2.6

@@ -1,0 +1,415 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><script type="text/javascript" src="https://cdn.jsdelivr.net/gh/opencobra/cobratoolbox@ffa0229fc0c01c9236bb7e961f65712443277719/latest/_static/js/iframeResizer.contentWindow.min.js"></script><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge,IE=9,chrome=1"><meta name="generator" content="MATLAB 2021a"><title>Visualize Elementary Flux Modes from Human model </title><style type="text/css">.rtcContent { padding: 30px; } .S0 { margin: 3px 10px 5px 4px; padding: 0px; line-height: 28.8px; min-height: 0px; white-space: normal; color: rgb(213, 80, 0); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 24px; font-weight: normal; text-align: left;  }
+.S1 { margin: 20px 10px 5px 4px; padding: 0px; line-height: 20px; min-height: 0px; white-space: normal; color: rgb(60, 60, 60); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 20px; font-weight: bold; text-align: left;  }
+.S2 { margin: 2px 10px 9px 4px; padding: 0px; line-height: 21px; min-height: 0px; white-space: normal; color: rgb(0, 0, 0); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 14px; font-weight: normal; text-align: left;  }
+.S3 { margin: 10px 0px 20px; padding-left: 0px; font-family: Helvetica, Arial, sans-serif; font-size: 14px;  }
+.S4 { margin-left: 56px; line-height: 21px; min-height: 0px; text-align: left; white-space: normal;  }
+.S5 { margin: 3px 10px 5px 4px; padding: 0px; line-height: 20px; min-height: 0px; white-space: normal; color: rgb(60, 60, 60); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 20px; font-weight: bold; text-align: left;  }
+.CodeBlock { background-color: #F7F7F7; margin: 10px 0 10px 0;}
+.S6 { border-left: 1px solid rgb(233, 233, 233); border-right: 1px solid rgb(233, 233, 233); border-top: 1px solid rgb(233, 233, 233); border-bottom: 0px none rgb(0, 0, 0); border-radius: 4px 4px 0px 0px; padding: 6px 45px 0px 13px; line-height: 17.234px; min-height: 18px; white-space: nowrap; color: rgb(0, 0, 0); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S7 { border-left: 1px solid rgb(233, 233, 233); border-right: 1px solid rgb(233, 233, 233); border-top: 0px none rgb(0, 0, 0); border-bottom: 0px none rgb(0, 0, 0); border-radius: 0px; padding: 0px 45px 0px 13px; line-height: 17.234px; min-height: 18px; white-space: nowrap; color: rgb(0, 0, 0); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S8 { border-left: 1px solid rgb(233, 233, 233); border-right: 1px solid rgb(233, 233, 233); border-top: 0px none rgb(0, 0, 0); border-bottom: 1px solid rgb(233, 233, 233); border-radius: 0px 0px 4px 4px; padding: 0px 45px 4px 13px; line-height: 17.234px; min-height: 18px; white-space: nowrap; color: rgb(0, 0, 0); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S9 { margin: 10px 10px 9px 4px; padding: 0px; line-height: 21px; min-height: 0px; white-space: normal; color: rgb(0, 0, 0); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 14px; font-weight: normal; text-align: left;  }
+.S10 { border-left: 1px solid rgb(233, 233, 233); border-right: 1px solid rgb(233, 233, 233); border-top: 1px solid rgb(233, 233, 233); border-bottom: 1px solid rgb(233, 233, 233); border-radius: 4px; padding: 6px 45px 4px 13px; line-height: 17.234px; min-height: 18px; white-space: nowrap; color: rgb(0, 0, 0); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S11 { border-left: 1px solid rgb(233, 233, 233); border-right: 1px solid rgb(233, 233, 233); border-top: 0px none rgb(0, 0, 0); border-bottom: 1px solid rgb(233, 233, 233); border-radius: 0px; padding: 0px 45px 4px 13px; line-height: 17.234px; min-height: 18px; white-space: nowrap; color: rgb(0, 0, 0); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S12 { color: rgb(64, 64, 64); padding: 10px 0px 6px 17px; background: rgb(255, 255, 255) none repeat scroll 0% 0% / auto padding-box border-box; font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px; overflow-x: hidden; line-height: 17.234px;  }
+/* Styling that is common to warnings and errors is in diagnosticOutput.css */.embeddedOutputsErrorElement {    min-height: 18px;    max-height: 250px;    overflow: auto;}
+.embeddedOutputsErrorElement.inlineElement {}
+.embeddedOutputsErrorElement.rightPaneElement {}
+/* Styling that is common to warnings and errors is in diagnosticOutput.css */.embeddedOutputsWarningElement{    min-height: 18px;    max-height: 250px;    overflow: auto;}
+.embeddedOutputsWarningElement.inlineElement {}
+.embeddedOutputsWarningElement.rightPaneElement {}
+/* Copyright 2015-2019 The MathWorks, Inc. *//* In this file, styles are not scoped to rtcContainer since they could be in the Dojo Tooltip */.diagnosticMessage-wrapper {    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;    font-size: 12px;}
+.diagnosticMessage-wrapper.diagnosticMessage-warningType {    color: rgb(255,100,0);}
+.diagnosticMessage-wrapper.diagnosticMessage-warningType a {    color: rgb(255,100,0);    text-decoration: underline;}
+.diagnosticMessage-wrapper.diagnosticMessage-errorType {    color: rgb(230,0,0);}
+.diagnosticMessage-wrapper.diagnosticMessage-errorType a {    color: rgb(230,0,0);    text-decoration: underline;}
+.diagnosticMessage-wrapper .diagnosticMessage-messagePart,.diagnosticMessage-wrapper .diagnosticMessage-causePart {    white-space: normal;}
+.diagnosticMessage-wrapper .diagnosticMessage-stackPart {    white-space: normal;}
+.embeddedOutputsTextElement,.embeddedOutputsVariableStringElement {    white-space: normal;    word-wrap:  initial;    min-height: 18px;    max-height: 250px;    overflow: auto;}
+.textElement,.rtcDataTipElement .textElement {    padding-top: 3px;}
+.embeddedOutputsTextElement.inlineElement,.embeddedOutputsVariableStringElement.inlineElement {}
+.inlineElement .textElement {}
+.embeddedOutputsTextElement.rightPaneElement,.embeddedOutputsVariableStringElement.rightPaneElement {    min-height: 16px;}
+.rightPaneElement .textElement {    padding-top: 2px;    padding-left: 9px;}
+.S13 { border-left: 1px solid rgb(233, 233, 233); border-right: 1px solid rgb(233, 233, 233); border-top: 1px solid rgb(233, 233, 233); border-bottom: 0px none rgb(0, 0, 0); border-radius: 0px; padding: 6px 45px 0px 13px; line-height: 17.234px; min-height: 18px; white-space: nowrap; color: rgb(0, 0, 0); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }</style></head><body><div class = rtcContent><h1  class = 'S0'><span>Visualize Elementary Flux Modes from Human model </span></h1><h2  class = 'S1'><span>Author(s): Chaitra Sarathy (Maastricht University, The Netherlands)</span></h2><div  class = 'S2'><span style=' font-style: italic;'></span></div><h2  class = 'S1'><span>Reviewer(s): </span></h2><div  class = 'S2'><span style=' font-style: italic;'>Include those who have reviewed the tutorial, and are therefore partly responsible for picking up errors or omissions.</span></div><h2  class = 'S1'><span>INTRODUCTION</span></h2><div  class = 'S2'><span>Elementary Flux Modes (EFMs) are a tool for constraint-based modelling and metabolic network analysis. However, systematic and automated visualization of EFMs, capable of integrating various data types is still a challenge. This tutorial is part of the study by Sarathy et al. (2019, in preparation), "EFMviz: A COBRA Toolbox extension to visualize Elementary Flux Modes in genome-scale metabolic models". </span></div><div  class = 'S2'><span>This workflow can be used to visualize EFMs calculated using any currently available methods. Inputs for the workflow are: (1) the text file containing EFMs and (2) the genome-scale metabolic model used for generating EFMs. Additionally, omics data can be used to select one (or more) EFM(s) for visualization among the vast number of EFMs that usually results from EFM calculation. Sarathy et al. (2019, in preparation) demonstrate two examples of such a selection procedure (a) Yield Analysis and (b) EFM Enrichment with EFMs calculated from genome-scale metabolic models, (1) iAF1260 (E. coli) [1] and (2) Recon 2.2 (Human) [2]. </span></div><div  class = 'S2'><span>Each use case is explained with a tutorial. This tutorial corresponds to the second use case and it describes how to analyze and visualize EFMs from the human</span><span style=' font-style: italic;'> </span><span>model Recon 2.2</span><span style=' font-style: italic;'>. </span><span>The aim is to apply the workflow on a large-scale model and it can be used as a means to study cancer metabolism. EFMs were generated for glucose uptake reaction. For details on how EFMs were generated, please refer the citation section at </span><a href = "https://github.com/macsbio/efmviz"><span>https://github.com/macsbio/efmviz</span></a></div><div  class = 'S2'><span>The steps in the workflow include:</span></div><div  class = 'S2'><span>        </span><span style=' font-weight: bold;'>A. Specifying Inputs</span></div><div  class = 'S2'><span>        i. Import input data: file containing EFMs (.txt), model file (.mat), file containing gene level statistics typically resulting from a differential gene expression analysis (.txt)</span></div><div  class = 'S2'><span>       </span><span style=' font-weight: bold;'> B. EFM Selection</span></div><div  class = 'S2'><span>        i. Filter EFMs containing a reaction of interest</span></div><div  class = 'S2'><span>        ii. Perform EFM Enrichment Analysis</span></div><div  class = 'S2'><span>            a. Generate input files for EFM Enrichment (preprocessing)</span></div><div  class = 'S2'><span>            b. Call R script for Enrichment (EFM_enrichment.R)</span></div><div  class = 'S2'><span>        iii. EFM Selection</span></div><div  class = 'S2'><span>            a. Get indices of enriched EFMs </span></div><div  class = 'S2'><span>            b. Find Subsystem Occurrence in enriched EFMs for selecting an EFM for visualization, for example, EFM with reactions in TCA Cycle</span></div><div  class = 'S2'><span>        </span><span style=' font-weight: bold;'>C. Submodel Creation</span></div><div  class = 'S2'><span>        i. Write submodel (with ubiquitous metabolites)</span></div><div  class = 'S2'><span>        ii. Write submodel (withOUT ubiquitous metabolites)</span></div><div  class = 'S2'><span>        iii. Extract reactions occurring in a certain percentage of EFMs</span></div><div  class = 'S2'><span>        </span><span style=' font-weight: bold;'>D. Visualization</span></div><div  class = 'S2'><span>        Open the SBML file in Cytoscape and map the data used during step B.</span></div><div  class = 'S2'><span>The following sections will walk you through the code for performing the steps A-D, thereby reproducing the main results from Sarathy et al (2019, in preparation) (Use Case 2). For more details on the workflow please refer </span><a href = "https://github.com/macsbio/efmviz"><span>https://github.com/macsbio/efmviz</span></a></div><div  class = 'S2'><span style=' font-weight: bold;'>Input File Formats</span></div><ul  class = 'S3'><li  class = 'S4'><span>model (.mat): same as the model used for EFM generation </span></li><li  class = 'S4'><span>file containing EFMs (.txt): each row corresponds to an EFM and column has indices of reactions active in the EFM. Each row can have varied number of columns. The first column should contain an EFM ID.</span></li><li  class = 'S4'><span>file containing gene level statistics (.txt): Tab separated file containing an expression level (log2 fold change) and p-value for every gene. Columns: &lt;GeneID&gt;&lt;GeneName&gt;&lt;log2FC&gt;&lt;PValue&gt;. Make sure to have the gene IDs in the same format as in the model.</span></li></ul><h2  class = 'S5'><span>PROCEDURE</span></h2><h2  class = 'S1'><span style=' font-style: italic;'>A. Specifying Input</span><span> </span></h2><div  class = 'S2'><span>First, declare all the input variables such as file paths and filenames of input files and output files.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S6'><span style="white-space: normal"><span style="color: rgb(2, 128, 9);">% File names and location</span></span></div></div><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: normal"><span >modelFileLocation = strcat(pwd, filesep); </span></span></div></div><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: normal"><span >modelFileName = </span><span style="color: rgb(170, 4, 249);">'recon2_2_irr.mat'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S7'></div></div><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: normal"><span >efmFileLocation = strcat(pwd, filesep);</span></span></div></div><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: normal"><span >efmFileName = </span><span style="color: rgb(170, 4, 249);">'EFM-Dglucose-E10000-10757.txt'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S7'></div></div><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: normal"><span >geneStatFlieLocation = strcat(pwd, filesep);</span></span></div></div><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: normal"><span >geneStatFileName = </span><span style="color: rgb(170, 4, 249);">'data_useCase_2.txt'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S7'></div></div><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: normal"><span style="color: rgb(2, 128, 9);">% Prefixes for the output files </span></span></div></div><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: normal"><span >organism = </span><span style="color: rgb(170, 4, 249);">'human'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: normal"><span >dataFile = </span><span style="color: rgb(170, 4, 249);">'dataForMapping_EFM'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: normal"><span >efmBackboneFile = </span><span style="color: rgb(170, 4, 249);">'efmBackbone'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: normal"><span >efmPercentage = </span><span style="color: rgb(170, 4, 249);">'_EFMBackbone_percentage_'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: normal"><span >dataFileExt = </span><span style="color: rgb(170, 4, 249);">'.txt'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: normal"><span >sbmlExt = </span><span style="color: rgb(170, 4, 249);">'.xml'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: normal"><span >efmPre = </span><span style="color: rgb(170, 4, 249);">'_EFM_'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: normal"><span >metRem = </span><span style="color: rgb(170, 4, 249);">'_woUbMet_'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S7'></div></div><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: normal"><span style="color: rgb(2, 128, 9);">% Output file names</span></span></div></div><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: normal"><span >GSCFileName = strcat(</span><span style="color: rgb(170, 4, 249);">'GSC-'</span><span >, organism, dataFileExt); </span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: normal"><span >GSSFileName = strcat(</span><span style="color: rgb(170, 4, 249);">'GSS-'</span><span >, organism, dataFileExt); </span></span></div></div></div><div  class = 'S9'><span>Also define the numeric indices of reactions of interest i.e., acetate release and glucose uptake, which will be used for calculating yield.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S6'><span style="white-space: normal"><span >roi_glcUp = 10757; </span><span style="color: rgb(2, 128, 9);">% glucose uptake (EX_glc(e)_b, also the active reaction for EFM Generation)</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: normal"><span >roi_lacRel = 6613; </span><span style="color: rgb(2, 128, 9);">% lactate release, EX_lac_L(e)_f</span></span></div></div></div><div  class = 'S9'><span>If you know the reaction ID from the model, the corresponding index can be calculated as:</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: normal"><span style="color: rgb(2, 128, 9);">% index = find(contains(model_irr.rxns, 'EX_lac_L(e)_f')); % gives 6613 as output</span></span></div></div></div><div  class = 'S9'><span style=' font-weight: bold; font-style: italic;'>i. Import model, EFMs and gene level statistics</span></div><div  class = 'S2'><span>Load the same model that was used for generating set of EFMs. Here, Recon 2.2 was converted to a model containing only unidirectional (irreversible) reactions for EFM calculation.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: normal"><span >model_irr = importdata([modelFileLocation modelFileName]);</span></span></div></div></div><div  class = 'S9'><span>Alternatively, xml model file can also be used. In that case, use the COBRA function </span><span style=' font-style: italic;'>readCbModel.</span></div><div  class = 'S2'><span>Next, import the files containing EFMs. </span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: normal"><span >EFMRxns = efmImport(efmFileLocation, efmFileName);</span></span></div></div></div><div  class = 'S9'><span>Also, load the text file containing gene level statistics</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: normal"><span >geneData = readtable([geneStatFlieLocation geneStatFileName]); </span></span></div></div></div><div  class = 'S9'><span style=' font-weight: bold; text-decoration: underline;'>TIMING</span><span>: For large models and large set of EFMs, this step can take a few seconds to couple of minutes.</span></div><h2  class = 'S5'><span style=' font-style: italic;'>B. EFM Selection</span></h2><div  class = 'S2'><span style=' font-weight: bold; font-style: italic;'>i. Filter EFMs</span></div><div  class = 'S2'><span>Next, retain EFMs containing the acetate release reaction for further analysis.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: normal"><span >[filteredEFMs, filteredRows] = efmFilter(EFMRxns, roi_lacRel); </span></span></div></div></div><div  class = 'S9'><span>This results in 19 EFMs containing both glucose uptake and lactate release reactions. If large number of EFMs still remain, the above step can be repeated with additional reactions of interest.</span></div><div  class = 'S2'><span style=' font-weight: bold; font-style: italic;'>ii. EFM Enrichment</span></div><div  class = 'S2'><span>Enrichment is a two-step process consisting of preprocessing and enrichment analysis. Preprocessing will be done in MATLAB and enrichment itself will be done in R using the function 'runGSA()' which is a part of piano package [3]. Piano is useful for performing an enrichment analysis using custom gene sets.   </span></div><div  class = 'S2'><span style=' font-weight: bold; font-style: italic;'>a. Generate input files for EFM Enrichment (preprocessing)</span></div><div  class = 'S2'><span>The function runGSA() requires two input files - Gene Set Collection (GSC) and Gene Set Statistics (GSS). </span></div><div  class = 'S2'><span>GSC file: The gene set collection should describe the grouping of genes into gene sets. In this case, each EFM itself will be a set containing the reactions. A two-column (space-separated) file: &lt;EFM name or number&gt; and &lt;reaction ID&gt; will be generated.</span></div><div  class = 'S2'><span>GSS file:  The gene set collection should contain a p-value and expression value for each gene. Since our sets contain reactions, the gene level statistics will be mapped onto the reactions using the GPR rules defined in the model. A three-column (space-separated) file: &lt;reaction ID&gt; &lt;fold change&gt; &lt;p value&gt; will be generated.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S6'><span style="white-space: normal"><span style="color: rgb(2, 128, 9);">% create the expreData variale with specific fields (gene, value, sig) as required by COBRA functions that map expression from genes to reactions</span></span></div></div><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: normal"><span >exprData.gene = geneData.GeneID;</span></span></div></div><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: normal"><span >exprData.value = geneData.log2FC;</span></span></div></div><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: normal"><span >exprData.sig = geneData.PValue;</span></span></div></div><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: normal"><span style="color: rgb(2, 128, 9);">% exprSig = geneData.PValue;</span></span></div></div><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: normal"><span >minSum = false;</span></span></div></div><div class="inlineWrapper"><div  class = 'S7'></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: normal"><span >efmEnrichmentAnalysis1filteredEFMs, model_irr, exprData, GSCFileName, GSSFileName, minSum);</span></span></div></div></div><div  class = 'S9'><span>Once the input files needed for enrichment are written out, call the R script for performing enrichment.</span></div><div  class = 'S2'><span style=' font-weight: bold; font-style: italic;'>b. Call R script for Enrichment</span></div><div  class = 'S2'><span style=' font-weight: bold; text-decoration: underline;'>NOTE</span><span>: Modifiy the R directory according to the version of R installed on your system, if necessary.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S6'><span style="white-space: normal"><span style="color: rgb(2, 128, 9);">% ! "C:\Program Files\R\R-3.5.1\bin\Rscript.exe" EFM_enrichment.R</span></span></div></div><div class="inlineWrapper outputs"><div  class = 'S11'><span style="white-space: normal"><span style="color: rgb(178, 140, 0);">! "C:\Program Files\R\R-3.5.0\bin\Rscript.exe" EFM_enrichment.R</span></span></div><div  class = 'S12'><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement scrollableOutput" uid="1FAF376D" data-scroll-top="null" data-scroll-left="null" data-width="428" data-height="227" data-hashorizontaloverflow="true" data-testid="output_0" style="max-height: 261px; width: 458px; white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">Loading required package: piano 
+Warning message:
+package 'piano' was built under R version 3.5.1 
+Running gene set analysis:
+Checking arguments...done!
+Final gene/gene-set association: 2192 genes and 19 gene sets
+  Details:
+  Calculating gene set statistics from 2192 out of 11567 gene-level statistics
+  Using all 11567 gene-level statistics for significance estimation
+  Removed 0 genes from GSC due to lack of matching gene statistics
+  Removed 0 gene sets containing no genes after gene removal
+  Removed additionally 0 gene sets not matching the size limits
+  Loaded additional information for 0 gene sets
+Calculating gene set statistics...done!
+Calculating gene set significance...done!
+Adjusting for multiple testing...done!</div></div></div></div></div><div  class = 'S9'><span>An output file "EFMEnrichmentResults.xls" will be written in the working directory. </span></div><div  class = 'S2'><span style=' font-weight: bold; text-decoration: underline;'>TIMING</span><span>: Enrichment - Preprocessing and running the R script could take a few minutes.</span></div><div  class = 'S2'><span style=' font-weight: bold; text-decoration: underline;'>TROUBLESHOOTING:</span><span> Check the location where R is installed in your system. If different from the code above, replace the path.</span></div><div  class = 'S2'><span style=' font-weight: bold; font-style: italic;'>iii. EFM Selection</span></div><div  class = 'S2'><span style=' font-weight: bold; font-style: italic;'>a. Get indices of enriched EFMs </span></div><div  class = 'S2'><span>Inspect the resulting file to select the most significant EFM(s).</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: normal"><span >upIndices = [83 29 42 28 51 84 41 69 70 79 82 62 36 35 12 39 64];</span></span></div></div></div><div  class = 'S9'><span style=' font-weight: bold; font-style: italic;'>b. Find Subsystem Occurrence in enriched EFMs and plot</span></div><div  class = 'S2'><span>Once you have identified the most significant EFMs, extract the distribution of subsystems to select an EFM to visualize.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S6'><span style="white-space: normal"><span >upEFMs = EFMRxns(upIndices, :);</span></span></div></div><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: normal"><span >[subsysSummaryUp, uniqSubsysUp, countSubPerEFMUp] = efmSubsystemsExtraction(model_irr, upEFMs);</span></span></div></div><div class="inlineWrapper"><div  class = 'S7'></div></div><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: normal"><span style="color: rgb(14, 0, 255);">for </span><span >tt=1:size(upEFMs, 1)</span></span></div></div><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: normal"><span >   len(tt) = length(find(upEFMs(tt,:))) ;</span></span></div></div><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: normal"><span style="color: rgb(14, 0, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S7'></div></div><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: normal"><span >countPerLenUp = countSubPerEFMUp ./ len;</span></span></div></div><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: normal"><span style="color: rgb(14, 0, 255);">for </span><span >tt = 1:size(countPerLenUp,1)</span></span></div></div><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: normal"><span >    rowZeros(tt) = length(find(countPerLenUp(tt,:)==0));</span></span></div></div><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: normal"><span style="color: rgb(14, 0, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: normal"><span >countPerLen_filtered = countPerLenUp(rowZeros &lt; size(upEFMs,1)-round(0.5*size(upEFMs,1)),:);</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: normal"><span >uniqSubsysLeu_filtered = uniqSubsysUp(rowZeros &lt; size(upEFMs,1)-round(0.5*size(upEFMs,1)),:);</span></span></div></div></div><div  class = 'S2'><span style=' font-weight: bold; text-decoration: underline;'>CAUTION</span><span style=' text-decoration: underline;'>: DO NOT CLICK ON RUN! (FOR THIS SECTION ONLY)</span></div><div  class = 'S2'><span style=' text-decoration: underline;'>Select the below code for plotting and press F9</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S6'><span style="white-space: normal"><span >g3=clustergram(countPerLen_filtered);</span></span></div></div><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: normal"><span >g3.Colormap=flipud(summer(500));</span></span></div></div><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: normal"><span >g3.Cluster=3;</span></span></div></div><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: normal"><span >g3.Symmetric=false;</span></span></div></div><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: normal"><span >g3.DisplayRange=60;</span></span></div></div><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: normal"><span >g3.ColumnLabels=cellstr(strcat(</span><span style="color: rgb(170, 4, 249);">"EFM"</span><span >, string(upIndices)));</span></span></div></div><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: normal"><span >g3.RowLabels=cellstr(uniqSubsysLeu_filtered);</span></span></div></div><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: normal"><span >g3.Colormap(1,:) = [1, 1, 1];</span></span></div></div><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: normal"><span >g3.ColumnLabelsRotate = 30;</span></span></div></div><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: normal"><span >addTitle(g3, </span><span style="color: rgb(170, 4, 249);">"Subsystem Occurrence in EFMs containing Glucose uptake and Leucine release "</span><span >);</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'></div></div></div><div  class = 'S2'><span>As seen from the plot, EFM 83 is the shortest and stands out due to its highest density of reactions in Glycolysis/gluconeogenesis and Galactose metabolism and thus, was selected for visualization</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S10'><span style="white-space: normal"><span >selectedEFM = 83;</span></span></div></div></div><div  class = 'S9'><span>Once you have selected an EFM, you can extract the reactions in the EFM as a submodel (SMBL file) as explained below in C (Submodel Creation). This SBML file will be imported into Cytoscape in step D. You can choose to extract the SBML file with or without molecules that are connected to several reactions such as ATP and H2O using step C.i. or C.ii. respectively. We reccommend removing highly connected metabolites to improve the readability of the visualized network. In cases of analyzing/visualizing several EFMs, you can first visualize without ubquitous molecules to understand the underlying process and then look at the corresponding network with ubiquitous molecules.</span></div><div  class = 'S2'><span>An SBML file will be generated as output in each substep - C.i., C.ii. and C.iii. You can choose to run one step at a time. Follow the instructions in step D for each SBML file that you want to visualize.</span></div><h2  class = 'S1'><span style=' font-style: italic;'>C. Submodel Creation</span></h2><div  class = 'S2'><span style=' font-weight: bold; font-style: italic;'>i. Write submodel (with ubiquitous metabolites)</span></div><div  class = 'S2'><span>Get the indices of all reactions present in the selected EFM and extract it as a SBML file.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S6'><span style="white-space: normal"><span >selectedRxns = EFMRxns(selectedEFM, find(EFMRxns(selectedEFM,:))); </span></span></div></div><div class="inlineWrapper outputs"><div  class = 'S11'><span style="white-space: normal"><span >efmSubmodelExtractionAsSBML(model_irr, selectedRxns, char(strcat(organism, efmPre, string(selectedEFM), sbmlExt)));</span></span></div><div  class = 'S12'><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement" uid="CFB54305" data-scroll-top="null" data-scroll-left="null" data-width="428" data-height="18" data-hashorizontaloverflow="false" data-testid="output_1" style="max-height: 261px; width: 458px; white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">Document written</div></div></div></div></div><div  class = 'S9'><span>SBML file with all the metabolites is written in the current working directory.</span></div><div  class = 'S2'><span style=' font-weight: bold; text-decoration: underline;'>TIMING</span><span>: Writing SBML file could take a few seconds</span></div><div  class = 'S2'><span style=' font-weight: bold; font-style: italic;'>ii. Write submodel (withOUT ubiquitous metabolites)</span></div><div  class = 'S2'><span>Define the list of ubiquitous metabolites to be removed, making sure that the metabolite IDs match those in the model. Extract it as a SBML file</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S6'><span style="white-space: normal"><span >ubiquitousMets = {</span><span style="color: rgb(170, 4, 249);">'h'</span><span >;</span><span style="color: rgb(170, 4, 249);">'h2'</span><span >;</span><span style="color: rgb(170, 4, 249);">'h2o'</span><span >;</span><span style="color: rgb(170, 4, 249);">'atp'</span><span >;</span><span style="color: rgb(170, 4, 249);">'pi'</span><span >;</span><span style="color: rgb(170, 4, 249);">'adp'</span><span >;</span><span style="color: rgb(170, 4, 249);">'nad'</span><span >;</span><span style="color: rgb(170, 4, 249);">'ppi'</span><span >;</span><span style="color: rgb(170, 4, 249);">'pppi'</span><span >;</span><span style="color: rgb(170, 4, 249);">'nadh'</span><span >;</span><span style="color: rgb(170, 4, 249);">'nadp'</span><span >;</span><span style="color: rgb(170, 4, 249);">'nadph'</span><span >;</span><span style="color: rgb(170, 4, 249);">'amp'</span><span >;</span><span style="color: rgb(170, 4, 249);">'co2'</span><span >;</span><span style="color: rgb(170, 4, 249);">'coa'</span><span >;</span><span style="color: rgb(170, 4, 249);">'nh4'</span><span >;</span><span style="color: rgb(170, 4, 249);">'o2'</span><span >;</span><span style="color: rgb(170, 4, 249);">'fad'</span><span >;</span><span style="color: rgb(170, 4, 249);">'fadh2'</span><span >;</span><span style="color: rgb(170, 4, 249);">'fe2'</span><span >;</span><span style="color: rgb(170, 4, 249);">'fe3'</span><span >;</span><span style="color: rgb(170, 4, 249);">'na1'</span><span >;</span><span style="color: rgb(170, 4, 249);">'gdp'</span><span >;</span><span style="color: rgb(170, 4, 249);">'gtp'</span><span >;</span><span style="color: rgb(170, 4, 249);">'udp'</span><span >;</span><span style="color: rgb(170, 4, 249);">'ctp'</span><span >;</span><span style="color: rgb(170, 4, 249);">'utp'</span><span >;</span><span style="color: rgb(170, 4, 249);">'cdp'</span><span >;</span><span style="color: rgb(170, 4, 249);">'fmn'</span><span >;</span><span style="color: rgb(170, 4, 249);">'fmnh2'</span><span >};</span></span></div></div><div class="inlineWrapper outputs"><div  class = 'S11'><span style="white-space: normal"><span >efmSubmodelExtractionAsSBML(model_irr, selectedRxns, char(strcat(organism, efmPre, string(selectedEFM), metRem, sbmlExt)), 1, ubiquitousMets);</span></span></div><div  class = 'S12'><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement" uid="6451C618" data-scroll-top="null" data-scroll-left="null" data-width="428" data-height="18" data-hashorizontaloverflow="false" data-testid="output_2" style="max-height: 261px; width: 458px; white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">Document written</div></div></div></div></div><div  class = 'S9'><span>SBML file withOUT all the specified metabolites is written in the current working directory.</span></div><div  class = 'S2'><span>In addition to looking at single EFMs, you can also use this workflow to extract an "EFM Backbone", i.e., commonly occurring reactions in the EFMs A certain percentage can be used as an input criteria , for example, 80%, 50%, 25%.</span></div><div  class = 'S2'><span style=' font-weight: bold; font-style: italic;'>iii. Extract reactions occurring in a certain percentage of EFMs</span></div><div  class = 'S2'><span>First, set the desired percentage and extract the reactions that are present in 'percentage' of EFMs. Input this set of reactions to the function 'efmSubmodelExtractionAsSBML' to write it out as an SBML file.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S6'><span style="white-space: normal"><span >percentage = 40;</span></span></div></div><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: normal"><span >[selectedRxns,  rxnDistribution] = efmBackboneExtraction(filteredEFMs, percentage);</span></span></div></div><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: normal"><span style="color: rgb(2, 128, 9);">% x = h.BinEdges;</span></span></div></div><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: normal"><span style="color: rgb(2, 128, 9);">% y = h.Values;</span></span></div></div><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: normal"><span style="color: rgb(2, 128, 9);">% text(x(1:end-1)</span></span></div></div><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: normal"><span >rxnDistribution.rxnName = model_irr.rxns(rxnDistribution.rxnID);</span></span></div></div><div class="inlineWrapper outputs"><div  class = 'S11'><span style="white-space: normal"><span >efmSubmodelExtractionAsSBML(model_irr, selectedRxns.rxnID, char(strcat(organism, efmPercentage, string(percentage), sbmlExt)), 1, ubiquitousMets);</span></span></div><div  class = 'S12'><div class="inlineElement eoOutputWrapper embeddedOutputsTextElement" uid="97271A18" data-scroll-top="null" data-scroll-left="null" data-width="428" data-height="18" data-hashorizontaloverflow="false" data-testid="output_3" style="max-height: 261px; width: 458px; white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;"><div class="textElement" style="white-space: normal; font-style: normal; color: rgb(64, 64, 64); font-size: 12px;">Document written</div></div></div></div><div class="inlineWrapper"><div  class = 'S13'></div></div><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: normal"><span style="color: rgb(2, 128, 9);">% % [OPTIONAL] Plot the number of reactions present in different proportion of EFMs and save this data in a text and map on visualized network</span></span></div></div><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: normal"><span style="color: rgb(2, 128, 9);">% figure; h = his,y,num2str(y'),'vert','bottom','horiz','left');</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: normal"><span style="color: rgb(2, 128, 9);">% writetable(rxnDistribution, strcat(organism, dataFile, '_', efmBackboneFile, dataFileExt));</span></span></div></div></div><div  class = 'S9'><span>Note: The tutorial on use case 1 included an additional optional step here to extract flux data for mapping. Apart from flux data, you can also map gene expression data on the visualized network for which, the same input file from step B can be used.</span><span style=' font-weight: bold; font-style: italic;'> </span></div><h2  class = 'S5'><span>D. Visualization</span></h2><div  class = 'S2'><span>Follow these steps for each submodel SBML file that you wish to visualize.</span></div><ul  class = 'S3'><li  class = 'S4'><span>Make sure Cytoscape (v3 and above) is installed along with cy3sbml (app) and yFiles layout</span></li><li  class = 'S4'><span>Open the SBML file using the cy3sbml app. [Click on the cy3sbl app-specific icon and select the EFM submodel file to open. For every file imported, three networks are generated and are identified using the prefixes: All, Base and Kinetic. Use the Base network for rest of the tutorial.</span></li></ul><div  class = 'S2'><img class = "imageNode" src = "data:image/png;base64,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" alt = "" style = "vertical-align: baseline"></img></div><ul  class = 'S3'><li  class = 'S4'><span>Import the style file supplied with this workflow (efmviz_style.xml) and apply this style on the Base network. You can now see a network with three different types of nodes representing reactions, genes and metabolites and edges representing interaction between these molecule types. This is how your EFM looks!</span></li><li  class = 'S4'><span>Set the layout using Layout -&gt; yFiles Orthogonal layout. In our experience orthogonal layout works best for EFMs with 50-60 reactions. Beyond that, the EFM can be visualized, but will be difficult to interpret.</span></li><li  class = 'S4'><span>(Optionally) Import the data file generated in step C.iv to map on the reaction edges. Use the R script (see below for details)</span></li></ul><div  class = 'S2'><span>For running this step on several files, follow instructions in the R script, efmviz_rcy3_human.Rmd. </span></div><div  class = 'S2'><span style=' font-weight: bold; text-decoration: underline;'>Try it yourself</span><span style=' font-weight: bold;'>:</span><span> Repeat steps C and D for other EFMs.</span></div><h2  class = 'S1'><span>REFERENCES</span></h2><div  class = 'S2'><span>[1] Feist, A.M.; Henry, C.S.; Reed, J.L.; Krummenacker, M.; Joyce, A.R.; Karp, P.D.; Broadbelt, L.J.;Hatzimanikatis, V.; Palsson, B.Ø. A genome-scale metabolic reconstruction for Escherichia coli K-12 MG1655 that accounts for 1260 ORFs and thermodynamic information. Molecular Systems Biology 2007, 3, 121. doi:10.1038/MSB4100155.</span></div><div  class = 'S2'><span>[2] Swainston, N.; Smallbone, K.; Hefzi, H.; Dobson, P.D.; Brewer, J.; Hanscho, M.; Zielinski, D.C.; Ang, K.S.; Gardiner, N.J.; Gutierrez, J.M.; Kyriakopoulos, S.; Lakshmanan, M.; Li, S.; Liu, J.K.; Martínez, V.S.; Orellana, C.A.; Quek, L.E.; Thomas, A.; Zanghellini, J.; Borth, N.; Lee, D.Y.; Nielsen, L.K.; Kell, D.B.; Lewis, N.E.; Mendes, P. Recon 2.2: from reconstruction to model of human metabolism. Metabolomics 2016, 12, 109. doi:10.1007/s11306-016-1051-4.</span></div><div  class = 'S2'><span>[3] Varemo, L., Nielsen, J., Nookaew, I. Enriching the gene set analysis of genomewide data by incorporating directionality of gene expression and combining statistical hypotheses and methods. Nucleic Acids Research 2013, 41, 8. doi:10.1093/nar/gkt111</span></div>
+<br>
+<!-- 
+##### SOURCE BEGIN #####
+%% Visualize Elementary Flux Modes from Human model 
+%% Author(s): Chaitra Sarathy (Maastricht University, The Netherlands)
+% 
+%% Reviewer(s): 
+% _Include those who have reviewed the tutorial, and are therefore partly responsible 
+% for picking up errors or omissions._
+%% INTRODUCTION
+% Elementary Flux Modes (EFMs) are a tool for constraint-based modelling and 
+% metabolic network analysis. However, systematic and automated visualization 
+% of EFMs, capable of integrating various data types is still a challenge. This 
+% tutorial is part of the study by Sarathy et al. (2019, in preparation), "EFMviz: 
+% A COBRA Toolbox extension to visualize Elementary Flux Modes in genome-scale 
+% metabolic models". 
+% 
+% This workflow can be used to visualize EFMs calculated using any currently 
+% available methods. Inputs for the workflow are: (1) the text file containing 
+% EFMs and (2) the genome-scale metabolic model used for generating EFMs. Additionally, 
+% omics data can be used to select one (or more) EFM(s) for visualization among 
+% the vast number of EFMs that usually results from EFM calculation. Sarathy et 
+% al. (2019, in preparation) demonstrate two examples of such a selection procedure 
+% (a) Yield Analysis and (b) EFM Enrichment with EFMs calculated from genome-scale 
+% metabolic models, (1) iAF1260 (E. coli) [1] and (2) Recon 2.2 (Human) [2]. 
+% 
+% Each use case is explained with a tutorial. This tutorial corresponds to the 
+% second use case and it describes how to analyze and visualize EFMs from the 
+% human model Recon 2.2_._ The aim is to apply the workflow on a large-scale model 
+% and it can be used as a means to study cancer metabolism. EFMs were generated 
+% for glucose uptake reaction. For details on how EFMs were generated, please 
+% refer the citation section at <https://github.com/macsbio/efmviz https://github.com/macsbio/efmviz>
+% 
+% The steps in the workflow include:
+% 
+% *A. Specifying Inputs*
+% 
+% i. Import input data: file containing EFMs (.txt), model file (.mat), file 
+% containing gene level statistics typically resulting from a differential gene 
+% expression analysis (.txt)
+% 
+% *B. EFM Selection*
+% 
+% i. Filter EFMs containing a reaction of interest
+% 
+% ii. Perform EFM Enrichment Analysis
+% 
+% a. Generate input files for EFM Enrichment (preprocessing)
+% 
+% b. Call R script for Enrichment (EFM_enrichment.R)
+% 
+% iii. EFM Selection
+% 
+% a. Get indices of enriched EFMs 
+% 
+% b. Find Subsystem Occurrence in enriched EFMs for selecting an EFM for visualization, 
+% for example, EFM with reactions in TCA Cycle
+% 
+% *C. Submodel Creation*
+% 
+% i. Write submodel (with ubiquitous metabolites)
+% 
+% ii. Write submodel (withOUT ubiquitous metabolites)
+% 
+% iii. Extract reactions occurring in a certain percentage of EFMs
+% 
+% *D. Visualization*
+% 
+% Open the SBML file in Cytoscape and map the data used during step B.
+% 
+% The following sections will walk you through the code for performing the steps 
+% A-D, thereby reproducing the main results from Sarathy et al (2019, in preparation) 
+% (Use Case 2). For more details on the workflow please refer <https://github.com/macsbio/efmviz 
+% https://github.com/macsbio/efmviz>
+% 
+% *Input File Formats*
+%% 
+% * model (.mat): same as the model used for EFM generation 
+% * file containing EFMs (.txt): each row corresponds to an EFM and column has 
+% indices of reactions active in the EFM. Each row can have varied number of columns. 
+% The first column should contain an EFM ID.
+% * file containing gene level statistics (.txt): Tab separated file containing 
+% an expression level (log2 fold change) and p-value for every gene. Columns: 
+% <GeneID><GeneName><log2FC><PValue>. Make sure to have the gene IDs in the same 
+% format as in the model.
+%% PROCEDURE
+%% _A. Specifying Input_ 
+% First, declare all the input variables such as file paths and filenames of 
+% input files and output files.
+
+% File names and location
+modelFileLocation = strcat(pwd, filesep); 
+modelFileName = 'recon2_2_irr.mat';
+
+efmFileLocation = strcat(pwd, filesep);
+efmFileName = 'EFM-Dglucose-E10000-10757.txt';
+
+geneStatFlieLocation = strcat(pwd, filesep);
+geneStatFileName = 'data_useCase_2.txt';
+
+% Prefixes for the output files 
+organism = 'human';
+dataFile = 'dataForMapping_EFM';
+efmBackboneFile = 'efmBackbone';
+efmPercentage = '_EFMBackbone_percentage_';
+dataFileExt = '.txt';
+sbmlExt = '.xml';
+efmPre = '_EFM_';
+metRem = '_woUbMet_';
+
+% Output file names
+GSCFileName = strcat('GSC-', organism, dataFileExt); 
+GSSFileName = strcat('GSS-', organism, dataFileExt); 
+%% 
+% Also define the numeric indices of reactions of interest i.e., acetate release 
+% and glucose uptake, which will be used for calculating yield.
+
+roi_glcUp = 10757; % glucose uptake (EX_glc(e)_b, also the active reaction for EFM Generation)
+roi_lacRel = 6613; % lactate release, EX_lac_L(e)_f
+%% 
+% If you know the reaction ID from the model, the corresponding index can be 
+% calculated as:
+
+% index = find(contains(model_irr.rxns, 'EX_lac_L(e)_f')); % gives 6613 as output
+%% 
+% _*i. Import model, EFMs and gene level statistics*_
+% 
+% Load the same model that was used for generating set of EFMs. Here, Recon 
+% 2.2 was converted to a model containing only unidirectional (irreversible) reactions 
+% for EFM calculation.
+
+model_irr = importdata([modelFileLocation modelFileName]);
+%% 
+% Alternatively, xml model file can also be used. In that case, use the COBRA 
+% function _readCbModel._
+% 
+% Next, import the files containing EFMs. 
+
+EFMRxns = efmImport(efmFileLocation, efmFileName);
+%% 
+% Also, load the text file containing gene level statistics
+
+geneData = readtable([geneStatFlieLocation geneStatFileName]); 
+%% 
+% *TIMING*: For large models and large set of EFMs, this step can take a few 
+% seconds to couple of minutes.
+%% _B. EFM Selection_
+% _*i. Filter EFMs*_
+% 
+% Next, retain EFMs containing the acetate release reaction for further analysis.
+
+[filteredEFMs, filteredRows] = efmFilter(EFMRxns, roi_lacRel); 
+%% 
+% This results in 19 EFMs containing both glucose uptake and lactate release 
+% reactions. If large number of EFMs still remain, the above step can be repeated 
+% with additional reactions of interest.
+% 
+% _*ii. EFM Enrichment*_
+% 
+% Enrichment is a two-step process consisting of preprocessing and enrichment 
+% analysis. Preprocessing will be done in MATLAB and enrichment itself will be 
+% done in R using the function 'runGSA()' which is a part of piano package [3]. 
+% Piano is useful for performing an enrichment analysis using custom gene sets.   
+% 
+% _*a. Generate input files for EFM Enrichment (preprocessing)*_
+% 
+% The function runGSA() requires two input files - Gene Set Collection (GSC) 
+% and Gene Set Statistics (GSS). 
+% 
+% GSC file: The gene set collection should describe the grouping of genes into 
+% gene sets. In this case, each EFM itself will be a set containing the reactions. 
+% A two-column (space-separated) file: <EFM name or number> and <reaction ID> 
+% will be generated.
+% 
+% GSS file:  The gene set collection should contain a p-value and expression 
+% value for each gene. Since our sets contain reactions, the gene level statistics 
+% will be mapped onto the reactions using the GPR rules defined in the model. 
+% A three-column (space-separated) file: <reaction ID> <fold change> <p value> 
+% will be generated.
+
+% create the expreData variale with specific fields (gene, value, sig) as required by COBRA functions that map expression from genes to reactions
+exprData.gene = geneData.GeneID;
+exprData.value = geneData.log2FC;
+exprData.sig = geneData.PValue;
+% exprSig = geneData.PValue;
+minSum = false;
+
+efmEnrichmentAnalysis1filteredEFMs, model_irr, exprData, GSCFileName, GSSFileName, minSum);
+%% 
+% Once the input files needed for enrichment are written out, call the R script 
+% for performing enrichment.
+% 
+% _*b. Call R script for Enrichment*_
+% 
+% *NOTE*: Modifiy the R directory according to the version of R installed on 
+% your system, if necessary.
+
+% ! "C:\Program Files\R\R-3.5.1\bin\Rscript.exe" EFM_enrichment.R
+! "C:\Program Files\R\R-3.5.0\bin\Rscript.exe" EFM_enrichment.R
+%% 
+% An output file "EFMEnrichmentResults.xls" will be written in the working directory. 
+% 
+% *TIMING*: Enrichment - Preprocessing and running the R script could take a 
+% few minutes.
+% 
+% *TROUBLESHOOTING:* Check the location where R is installed in your system. 
+% If different from the code above, replace the path.
+%% 
+% _*iii. EFM Selection*_
+% 
+% _*a. Get indices of enriched EFMs*_ 
+% 
+% Inspect the resulting file to select the most significant EFM(s).
+
+upIndices = [83 29 42 28 51 84 41 69 70 79 82 62 36 35 12 39 64];
+%% 
+% _*b. Find Subsystem Occurrence in enriched EFMs and plot*_
+% 
+% Once you have identified the most significant EFMs, extract the distribution 
+% of subsystems to select an EFM to visualize.
+
+upEFMs = EFMRxns(upIndices, :);
+[subsysSummaryUp, uniqSubsysUp, countSubPerEFMUp] = efmSubsystemsExtraction(model_irr, upEFMs);
+
+for tt=1:size(upEFMs, 1)
+   len(tt) = length(find(upEFMs(tt,:))) ;
+end
+
+countPerLenUp = countSubPerEFMUp ./ len;
+for tt = 1:size(countPerLenUp,1)
+    rowZeros(tt) = length(find(countPerLenUp(tt,:)==0));
+end
+countPerLen_filtered = countPerLenUp(rowZeros < size(upEFMs,1)-round(0.5*size(upEFMs,1)),:);
+uniqSubsysLeu_filtered = uniqSubsysUp(rowZeros < size(upEFMs,1)-round(0.5*size(upEFMs,1)),:);
+%% 
+% *CAUTION*: DO NOT CLICK ON RUN! (FOR THIS SECTION ONLY)
+% 
+% Select the below code for plotting and press F9
+
+g3=clustergram(countPerLen_filtered);
+g3.Colormap=flipud(summer(500));
+g3.Cluster=3;
+g3.Symmetric=false;
+g3.DisplayRange=60;
+g3.ColumnLabels=cellstr(strcat("EFM", string(upIndices)));
+g3.RowLabels=cellstr(uniqSubsysLeu_filtered);
+g3.Colormap(1,:) = [1, 1, 1];
+g3.ColumnLabelsRotate = 30;
+addTitle(g3, "Subsystem Occurrence in EFMs containing Glucose uptake and Leucine release ");
+
+%% 
+% As seen from the plot, EFM 83 is the shortest and stands out due to its highest 
+% density of reactions in Glycolysis/gluconeogenesis and Galactose metabolism 
+% and thus, was selected for visualization
+
+selectedEFM = 83;
+%% 
+% Once you have selected an EFM, you can extract the reactions in the EFM as 
+% a submodel (SMBL file) as explained below in C (Submodel Creation). This SBML 
+% file will be imported into Cytoscape in step D. You can choose to extract the 
+% SBML file with or without molecules that are connected to several reactions 
+% such as ATP and H2O using step C.i. or C.ii. respectively. We reccommend removing 
+% highly connected metabolites to improve the readability of the visualized network. 
+% In cases of analyzing/visualizing several EFMs, you can first visualize without 
+% ubquitous molecules to understand the underlying process and then look at the 
+% corresponding network with ubiquitous molecules.
+% 
+% An SBML file will be generated as output in each substep - C.i., C.ii. and 
+% C.iii. You can choose to run one step at a time. Follow the instructions in 
+% step D for each SBML file that you want to visualize.
+%% _C. Submodel Creation_
+% _*i. Write submodel (with ubiquitous metabolites)*_
+% 
+% Get the indices of all reactions present in the selected EFM and extract it 
+% as a SBML file.
+
+selectedRxns = EFMRxns(selectedEFM, find(EFMRxns(selectedEFM,:))); 
+efmSubmodelExtractionAsSBML(model_irr, selectedRxns, char(strcat(organism, efmPre, string(selectedEFM), sbmlExt)));
+%% 
+% SBML file with all the metabolites is written in the current working directory.
+% 
+% *TIMING*: Writing SBML file could take a few seconds
+% 
+% _*ii. Write submodel (withOUT ubiquitous metabolites)*_
+% 
+% Define the list of ubiquitous metabolites to be removed, making sure that 
+% the metabolite IDs match those in the model. Extract it as a SBML file
+
+ubiquitousMets = {'h';'h2';'h2o';'atp';'pi';'adp';'nad';'ppi';'pppi';'nadh';'nadp';'nadph';'amp';'co2';'coa';'nh4';'o2';'fad';'fadh2';'fe2';'fe3';'na1';'gdp';'gtp';'udp';'ctp';'utp';'cdp';'fmn';'fmnh2'};
+efmSubmodelExtractionAsSBML(model_irr, selectedRxns, char(strcat(organism, efmPre, string(selectedEFM), metRem, sbmlExt)), 1, ubiquitousMets);
+%% 
+% SBML file withOUT all the specified metabolites is written in the current 
+% working directory.
+% 
+% In addition to looking at single EFMs, you can also use this workflow to extract 
+% an "EFM Backbone", i.e., commonly occurring reactions in the EFMs A certain 
+% percentage can be used as an input criteria , for example, 80%, 50%, 25%.
+% 
+% _*iii. Extract reactions occurring in a certain percentage of EFMs*_
+% 
+% First, set the desired percentage and extract the reactions that are present 
+% in 'percentage' of EFMs. Input this set of reactions to the function 'efmSubmodelExtractionAsSBML' 
+% to write it out as an SBML file.
+
+percentage = 40;
+[selectedRxns,  rxnDistribution] = efmBackboneExtraction(filteredEFMs, percentage);
+% x = h.BinEdges;
+% y = h.Values;
+% text(x(1:end-1)
+rxnDistribution.rxnName = model_irr.rxns(rxnDistribution.rxnID);
+efmSubmodelExtractionAsSBML(model_irr, selectedRxns.rxnID, char(strcat(organism, efmPercentage, string(percentage), sbmlExt)), 1, ubiquitousMets);
+
+% % [OPTIONAL] Plot the number of reactions present in different proportion of EFMs and save this data in a text and map on visualized network
+% figure; h = his,y,num2str(y'),'vert','bottom','horiz','left');
+% writetable(rxnDistribution, strcat(organism, dataFile, '_', efmBackboneFile, dataFileExt));
+%% 
+% Note: The tutorial on use case 1 included an additional optional step here 
+% to extract flux data for mapping. Apart from flux data, you can also map gene 
+% expression data on the visualized network for which, the same input file from 
+% step B can be used. 
+%% D. Visualization
+% Follow these steps for each submodel SBML file that you wish to visualize.
+%% 
+% * Make sure Cytoscape (v3 and above) is installed along with cy3sbml (app) 
+% and yFiles layout
+% * Open the SBML file using the cy3sbml app. [Click on the cy3sbl app-specific 
+% icon and select the EFM submodel file to open. For every file imported, three 
+% networks are generated and are identified using the prefixes: All, Base and 
+% Kinetic. Use the Base network for rest of the tutorial.
+%% 
+% 
+%% 
+% * Import the style file supplied with this workflow (efmviz_style.xml) and 
+% apply this style on the Base network. You can now see a network with three different 
+% types of nodes representing reactions, genes and metabolites and edges representing 
+% interaction between these molecule types. This is how your EFM looks!
+% * Set the layout using Layout -> yFiles Orthogonal layout. In our experience 
+% orthogonal layout works best for EFMs with 50-60 reactions. Beyond that, the 
+% EFM can be visualized, but will be difficult to interpret.
+% * (Optionally) Import the data file generated in step C.iv to map on the reaction 
+% edges. Use the R script (see below for details)
+%% 
+% For running this step on several files, follow instructions in the R script, 
+% efmviz_rcy3_human.Rmd. 
+% 
+% *Try it yourself:* Repeat steps C and D for other EFMs.
+%% REFERENCES
+% [1] Feist, A.M.; Henry, C.S.; Reed, J.L.; Krummenacker, M.; Joyce, A.R.; Karp, 
+% P.D.; Broadbelt, L.J.;Hatzimanikatis, V.; Palsson, B.Ø. A genome-scale metabolic 
+% reconstruction for Escherichia coli K-12 MG1655 that accounts for 1260 ORFs 
+% and thermodynamic information. Molecular Systems Biology 2007, 3, 121. doi:10.1038/MSB4100155.
+% 
+% [2] Swainston, N.; Smallbone, K.; Hefzi, H.; Dobson, P.D.; Brewer, J.; Hanscho, 
+% M.; Zielinski, D.C.; Ang, K.S.; Gardiner, N.J.; Gutierrez, J.M.; Kyriakopoulos, 
+% S.; Lakshmanan, M.; Li, S.; Liu, J.K.; Martínez, V.S.; Orellana, C.A.; Quek, 
+% L.E.; Thomas, A.; Zanghellini, J.; Borth, N.; Lee, D.Y.; Nielsen, L.K.; Kell, 
+% D.B.; Lewis, N.E.; Mendes, P. Recon 2.2: from reconstruction to model of human 
+% metabolism. Metabolomics 2016, 12, 109. doi:10.1007/s11306-016-1051-4.
+% 
+% [3] Varemo, L., Nielsen, J., Nookaew, I. Enriching the gene set analysis of 
+% genomewide data by incorporating directionality of gene expression and combining 
+% statistical hypotheses and methods. Nucleic Acids Research 2013, 41, 8. doi:10.1093/nar/gkt111
+##### SOURCE END #####
+-->
+</div></body></html>

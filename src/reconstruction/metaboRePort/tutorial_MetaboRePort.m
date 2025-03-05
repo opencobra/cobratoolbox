@@ -1,10 +1,11 @@
-%% MetaboRePort: 
+%% MetaboRePort:
 
 % Set path to the cobratoolbox
 global CBTDIR
 
+currentDir = pwd;
 % Set root directory
-root = '';
+root = '/Users/ines/Dropbox/MY PAPERS/SUBMITTED/Submitted/150k/metaboReports/APOLLOreconstructions';
 
 % user defined path
 folder = [root filesep 'refinedReconstructions']; % Set path to folder with reconstructions
@@ -33,21 +34,25 @@ metstructPath = [CBTDIR filesep 'tutorials' filesep 'dataIntegration' filesep...
 
 % Ensure that the name of the rBioNet metabolite structure is metabolite_structure_rBioNet 
 metabolite_structure_rBioNet = load(metstructPath);
-metabolite_structure_rBioNet = metabolite_structure_rBioNet.(string(fieldnames(metabolite_structure_rBioNet)));
+metabolite_structure_rBioNet = metabolite_structure_rBioNet.metabolite_structure_rBioNet;
 
 % Get reconstructions and reconstruction paths
 directory = what(folder);
 modelPaths = append(directory.path, filesep, directory.mat);
-modelList = getModelPaths(folder);
+modelList = modelPaths;
+ modelList(~contains(modelList(:,1),'.mat'),:)=[];
+ 
 
 % Preallocate ScoresOverall table for speed
+if ~exist(ScoresOverall,'var')
 ScoresOverall = cell(length(modelList),2);
+end
 
 tic;
-for i = 1 : length(modelList)
+for i = 1 : 100%length(modelList)
     disp(i)
     % Load model 
-    model = load(modelPaths(i));
+    model = load(modelPaths{i});
     model = model.(string(fieldnames(model))); % ensure that the name of the loaded model is "model".
     
     %[modelProp1,ScoresOverall1] = generateMemoteLikeScore(model);
@@ -63,10 +68,15 @@ for i = 1 : length(modelList)
 
     [modelProp2,ScoresOverall2] = generateMetaboScore(modelUpdated);
     
-    modelProperties.(regexprep(modelList{i},'.mat','')).ScoresOverall = ScoresOverall2;
-    modelProperties.(regexprep(modelList{i},'.mat','')).modelUpdated = modelUpdated;
-    modelProperties.(regexprep(modelList{i},'.mat','')).modelProp2 = modelProp2;
-    ScoresOverall{i,1} = regexprep(modelList{i},'.mat','');
+    chdir(strcat(updatedReconstructPath, filesep));
+    fileName = regexprep(modelList{i},folder,'');% replace folder name if present
+    fileName = regexprep(fileName,'\/','');% replace folder name if present
+    fileName = regexprep(fileName,'.mat','');
+    modelName = strcat('model_',fileName);
+    modelProperties.(modelName).ScoresOverall = ScoresOverall2;
+    modelProperties.(modelName).modelUpdated = modelUpdated;
+    modelProperties.(modelName).modelProp2 = modelProp2;
+    ScoresOverall{i,1} = regexprep(fileName,'.mat','');
     ScoresOverall{i,2} = num2str(ScoresOverall2);
     
     if mod(i,10) % Save every ten models
@@ -75,20 +85,25 @@ for i = 1 : length(modelList)
     
     % save updated mat file
     model = modelUpdated;
-    save(strcat(updatedReconstructPath, filesep, modelList(i), '.mat'),'model');
+    if ~contains(fileName,'.mat')
+    save(strcat(fileName, '.mat'),'model');
+    else
+    save(fileName,'model');
+    end
+    chdir(currentDir)
 
-    %% generate sbml file
+    % generate sbml file
     % remove description from model structure as this causes issues
     if any(contains(fieldnames(modelUpdated), {'description'}))
         modelUpdated = rmfield(modelUpdated,'description');
     end
     
     % Set sbml path
-    sbmlPath = char(strcat(annotatedSBMLreconstructions, filesep, 'Annotated_',modelList(i)));
+    sbmlPath = char(strcat(annotatedSBMLreconstructions, filesep, 'Annotated_',fileName));
     % Save model
     outmodel = writeCbModel(modelUpdated, 'format','sbml', 'fileName', sbmlPath);
-end
-toc;
-
+    
 % Generate a generateMetaboReport for each reconstruction
 evalc('generateMetaboReport(modelProperties,reportDir)');
+end
+toc;

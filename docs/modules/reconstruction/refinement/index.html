@@ -70,7 +70,7 @@
     <link rel="top" title="The COBRA Toolbox" href="../../../index.html"/>
         <link rel="up" title="Reconstruction" href="../index.html"/>
         <link rel="next" title="Gprlogic" href="GPRLogic/index.html"/>
-        <link rel="prev" title="Gui" href="../comparison/modelBorgifier/gui/index.html"/> 
+        <link rel="prev" title="Modelverification" href="../modelGeneration/modelVerification/index.html"/> 
 
   
   <script src="../../../_static/js/modernizr.min.js"></script>
@@ -161,17 +161,17 @@
 <li class="toctree-l2"><a class="reference internal" href="../../dataIntegration/index.html">Dataintegration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../design/index.html">Design</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html">Reconstruction</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../comparison/index.html">Comparison</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../modelGeneration/index.html">Modelgeneration</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Refinement</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="GPRLogic/index.html">Gprlogic</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../fastGapFill/index.html">Fastgapfill</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../demeter/index.html">Demeter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../fastGapFill/index.html">Fastgapfill</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../comparison/index.html">Comparison</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../metaboRePort/index.html">Metaboreport</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../modelGeneration/index.html">Modelgeneration</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../rBioNet/index.html">Rbionet</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../growthExpMatch/index.html">Growthexpmatch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../rBioNet/index.html">Rbionet</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../visualization/index.html">Visualization</a></li>
@@ -1025,6 +1025,38 @@ model     updated model structure</p>
 </dd></dl>
 
 <dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.refinement.buildRxn2subSystem">
+<span class="sig-name descname"><span class="pre">buildRxn2subSystem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">removeSubSystems</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/buildRxn2subSystem.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.buildRxn2subSystem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates reaction-subSystem matrix for a COBRA model
+This function adds two fields to the COBRA model: 1) rxnSubsystemMat and
+2)subSystemsNames and removes the old subSystems field(optional and can
+be set to false)</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[modelOut, rxn2subSystem, subSystemNames, nestedCells] = buildRxn2subSystem</strong> (<em>model, removeSubSystems</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><p><strong>model</strong> – COBRA model structure</p>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><p><strong>removeSubSystems</strong> – Binary variable, if equals to 1 (or true) subSystems
+field will be removed from the model default:true</p>
+</dd>
+<dt class="field-even">OUTPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>modelOut</strong> – COBRA model structure containing two added fields of
+“rxn2subSystem” and “subSystemsNames”</p></li>
+<li><p><strong>rxn2subSystem</strong> – Matrix of reactions vs subSystems</p></li>
+<li><p><strong>subSystemNames</strong> – Unique sub-system names in the model with order
+corrosponding to the matrix</p></li>
+<li><p><strong>nestedCells</strong> – logical variable, True if sub-system field is a
+nested cell vector and False if it’s not</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
 <dt class="sig sig-object mat" id="src.reconstruction.refinement.changeCOBRAConstraints">
 <span class="sig-name descname"><span class="pre">changeCOBRAConstraints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">constraintID</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/changeCOBRAConstraints.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.changeCOBRAConstraints" title="Permalink to this definition">¶</a></dt>
 <dd><p>Modify an existing COBRA constraint by providing new settings for the
@@ -1701,6 +1733,9 @@ dimenion(X)</p></li>
 </ul>
 </dd>
 </dl>
+<p>Note: Notice that this function checks if two models are the same, two
+same models does not necessary mean two same structures.
+use structeq.m to compare two structures</p>
 </dd></dl>
 
 <dl class="mat function">
@@ -2281,7 +2316,7 @@ wrong.</p>
         <a href="GPRLogic/index.html" class="btn btn-default float-right" title="Gprlogic" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../comparison/modelBorgifier/gui/index.html" class="btn btn-default" title="Gui" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../modelGeneration/modelVerification/index.html" class="btn btn-default" title="Modelverification" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

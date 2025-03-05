@@ -8,6 +8,8 @@
 % save the current path
 currentDir = pwd;
 
+solverPkgs = prepareTest('requiredSolvers',{'ibm_cplex'});
+
 %get the warning settings and turn on all warnings
 cwarn = warning;
 warning('on');
