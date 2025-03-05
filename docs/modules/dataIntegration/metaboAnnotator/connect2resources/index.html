@@ -69,8 +69,8 @@
         <link rel="search" title="Search" href="../../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../../index.html"/>
         <link rel="up" title="Metaboannotator" href="../index.html"/>
-        <link rel="next" title="Analysemetstruct" href="../analyseMetStruct/index.html"/>
-        <link rel="prev" title="Buildmetstruct" href="../buildMetStruct/index.html"/> 
+        <link rel="next" title="Generatemetinfo" href="../generateMetInfo/index.html"/>
+        <link rel="prev" title="Molfilefinder" href="../molFileFinder/index.html"/> 
 
   
   <script src="../../../../_static/js/modernizr.min.js"></script>
@@ -159,20 +159,20 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../base/index.html">Base</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Dataintegration</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../../fluxomics/index.html">Fluxomics</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../metanetxMapper/index.html">Metanetxmapper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../transcriptomics/index.html">Transcriptomics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chemoInformatics/index.html">Chemoinformatics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../XomicsToModel/index.html">Xomicstomodel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../metabotools/index.html">Metabotools</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../index.html">Metaboannotator</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="../buildMetStruct/index.html">Buildmetstruct</a></li>
-<li class="toctree-l4 current"><a class="current reference internal" href="#">Connect2resources</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../analyseMetStruct/index.html">Analysemetstruct</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../molFileFinder/index.html">Molfilefinder</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Connect2resources</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../generateMetInfo/index.html">Generatemetinfo</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../fluxomics/index.html">Fluxomics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../metabotools/index.html">Metabotools</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../XomicsToModel/index.html">Xomicstomodel</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../transcriptomics/index.html">Transcriptomics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chemoInformatics/index.html">Chemoinformatics</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../design/index.html">Design</a></li>
@@ -482,6 +482,28 @@ or using inchiKey</p>
 </dd></dl>
 
 <dl class="mat function">
+<dt class="sig sig-object mat" id="src.dataIntegration.metaboAnnotator.connect2resources.parseKeggWebpage">
+<span class="sig-name descname"><span class="pre">parseKeggWebpage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">metabolite_structure</span></em>, <em class="sig-param"><span class="pre">startSearch</span></em>, <em class="sig-param"><span class="pre">endSearch</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metaboAnnotator/connect2resources/parseKeggWebpage.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metaboAnnotator.connect2resources.parseKeggWebpage" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function searches kegg for identifiers. It will either use
+kegg ids provided by the metabolite structure.</p>
+<p>INPUT
+metabolite_structure  metabolite structure
+startSearch           specify where the search should start in the</p>
+<blockquote>
+<div><p>metabolite structure. Must be numeric (optional, default: all metabolites
+in the structure will be search for)</p>
+</div></blockquote>
+<dl class="simple">
+<dt>endSearch             specify where the search should end in the</dt><dd><p>metabolite structure. Must be numeric (optional, default: all metabolites
+in the structure will be search for)</p>
+</dd>
+</dl>
+<p>OUTPUT
+metabolite_structure  updated metabolite structure</p>
+<p>Ines Thiele, 09/2021</p>
+</dd></dl>
+
+<dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.metaboAnnotator.connect2resources.parseMetaNetXWebpage">
 <span class="sig-name descname"><span class="pre">parseMetaNetXWebpage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">metabolite_structure</span></em>, <em class="sig-param"><span class="pre">startSearch</span></em>, <em class="sig-param"><span class="pre">endSearch</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metaboAnnotator/connect2resources/parseMetaNetXWebpage.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metaboAnnotator.connect2resources.parseMetaNetXWebpage" title="Permalink to this definition">¶</a></dt>
 <dd><p>function [metabolite_structure,IDsAdded,IDsSuggested] = parseMetaNetXWebpage(metabolite_structure)
@@ -665,10 +687,10 @@ metabolite_structure  metabolite structure</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../analyseMetStruct/index.html" class="btn btn-default float-right" title="Analysemetstruct" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../generateMetInfo/index.html" class="btn btn-default float-right" title="Generatemetinfo" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../buildMetStruct/index.html" class="btn btn-default" title="Buildmetstruct" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../molFileFinder/index.html" class="btn btn-default" title="Molfilefinder" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
