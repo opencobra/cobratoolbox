@@ -85,8 +85,10 @@ end
 % Load WBMs in the COBRA v3 format
 try % Try to load WBM
     model = load(nameOfWBM);
-    % Loading the model in a variable makes it nested. Unnest variable
-    model = model.(string(fieldnames(model)));
+    if isscalar(fieldnames(model))
+        % Loading the model in a variable might make it nested. Unnest variable
+        model = model.(string(fieldnames(model)));
+    end
 catch ME
     disp(ME.message)
     warning('Could not load file. Now trying to load using readCbModel')
@@ -132,7 +134,7 @@ function nameOfWBM = findLatestWBM(filename, searchDirectory, excludeVersion)
 %         - Tim Hensen, August 2024
 
 if isempty(searchDirectory)
-    searchDirectory = what('2020_WholeBodyModelling\Data').path;
+    searchDirectory = what(['2020_WholeBodyModelling' filesep 'Data']).path;
 end
 
 if nargin<3
@@ -234,7 +236,10 @@ else
 end
 
 % Unnest variable
-model = model.(string(fieldnames(model)));
+if isscalar(fieldnames(model))
+    % Loading the model in a variable might make it nested. Unnest variable
+    model = model.(string(fieldnames(model)));
+end
 
 % Change subsystem names
 model.subSystems(strmatch('Transport, endoplasmic reticular',model.subSystems,'exact'))={'Transport, endoplasmic reticulum'};
