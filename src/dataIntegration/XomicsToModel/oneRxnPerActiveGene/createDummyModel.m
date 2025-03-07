@@ -255,7 +255,6 @@ model.dummyRxnBool = contains(model.rxns,'dummy_Rxn_');
 if 0 && isequal(modelExtractionAlgorithm, 'fastCore') 
     model.S = model.S(~model.dummyMetBool,~model.dummyRxnBool);
     model.b = model.b(~model.dummyMetBool,1);
-    model.mets = model.mets(~model.dummyMetBool);
     model.csense = model.csense(~model.dummyMetBool,1);
     model.mets = model.mets(~model.dummyMetBool);
     model.rxns = model.rxns(~model.dummyRxnBool);
@@ -358,6 +357,7 @@ if isequal(modelExtractionAlgorithm, 'fastCore')
         model.S = model.S(fluxConsistentMetBool,fluxConsistentRxnBool);
         model.b = model.b(fluxConsistentMetBool,1);
         model.csense = model.csense(fluxConsistentMetBool,1);
+        model.mets = model.mets(fluxConsistentMetBool);
         model.rxns = model.rxns(fluxConsistentRxnBool);
         model.rxnNames = model.rxnNames(fluxConsistentRxnBool);
         model.lb = model.lb(fluxConsistentRxnBool);
