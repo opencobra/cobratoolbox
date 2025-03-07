@@ -2,7 +2,7 @@ name: Extract HTML Info
 
 on:
   push:
-    branches: [develop]
+    branches: gh-pages
     paths:
     - '**.html'
 
@@ -55,4 +55,4 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add .
           git commit -m "Update Tutorial (Automatic Workflow)" || echo "No changes to commit"
-          git push origin master
+          git push
