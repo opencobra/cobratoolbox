@@ -16,7 +16,7 @@ def get_file_info(file_path):
             print(f'Heading: {heading_tag.text}')
 
         # Modify and create a copy of HOLDER_TEMPLATE.html
-        with open('docs/tutorials/HOLDER_TEMPLATE.html', 'r') as template_file:
+        with open('stable/tutorials/HOLDER_TEMPLATE.html', 'r') as template_file:
             template_content = template_file.read()
             template_content = template_content.replace('IFRAMETUTORIAL.html', "/".join(file_path.split('/')[2:]))  # Remove the first 2 directories from the file location
             template_content = template_content.replace('((TutorialName))', file_path.split('/')[-1].split('.')[0])  # Name of the tutorial
@@ -25,16 +25,16 @@ def get_file_info(file_path):
             template_content = template_content.replace('((TutorialMATpath))', 'https://github.com/opencobra/COBRA.tutorials/tree/master/'+ "/".join(file_path.split('/')[2:]).replace('.html','.m'))  # path to the .m file
             template_content = template_content.replace('((TutorialGITHUBpath))', 'https://github.com/opencobra/COBRA.tutorials/tree/master/'+"/".join(file_path.split('/')[2:-1]))  # path to the github page
             if os.path.basename(file_path).startswith('tutorial_'):
-                new_file_path = os.path.join('docs/tutorials', os.path.basename(file_path))
+                new_file_path = os.path.join('stable/tutorials', os.path.basename(file_path))
             else:
-                new_file_path = os.path.join('docs/tutorials', "tutorial_"+os.path.basename(file_path))
+                new_file_path = os.path.join('stable/tutorials', "tutorial_"+os.path.basename(file_path))
             with open(new_file_path, 'w') as new_file:
                 new_file.write(template_content)
 
         return heading_tag.text if heading_tag else None
 
 def update_index_html(section, file_name, heading):
-    with open('docs/tutorials/index.html', 'r') as f:
+    with open('stable/tutorials/index.html', 'r') as f:
         index_soup = BeautifulSoup(f, 'html.parser')
 
     if section == "dataIntegration":
@@ -52,7 +52,7 @@ def update_index_html(section, file_name, heading):
             new_li.append(new_a)
             ul.append(new_li)
 
-    with open('docs/tutorials/index.html', 'w') as f:
+    with open('stable/tutorials/index.html', 'w') as f:
         f.write(str(index_soup.prettify()))
 
 def main():
