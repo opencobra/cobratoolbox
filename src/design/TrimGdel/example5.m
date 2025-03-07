@@ -1,8 +1,12 @@
 function [outputArg1, outputArg2] = example5()
 % example5 calculates the gene deletion strategy for growth coupling
 % for succinate in iMM904.
+% 
+% USAGE:
 %
-% Feb. 6, 2025  Takeyuki TAMURA
+%     function [] = example5()
+%
+% .. Author:    - Takeyuki Tamura, Mar 06, 2025
 %
 
 load('iMM904.mat');

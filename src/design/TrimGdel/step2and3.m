@@ -5,45 +5,47 @@ function [gvalue, GR, PR, size1, size2, size3] = step2and3(model, targetMet, giv
 % Step 3 trims unnecessary deleted genes while maintaining GR and PR
 % at the maximization of GR.
 %
-% function [gvalue, finalGRPR, size1, size2, size3] = step2and3(model, targetMet, givenGvalue)
+% USAGE:
 %
-% INPUTS
-%  model     COBRA model structure containing the following required fields to perform gDel_minRN.
-%    rxns                    Rxns in the model
-%    mets                    Metabolites in the model
-%    genes               Genes in the model
-%    grRules            Gene-protein-reaction relations in the model
-%    S                       Stoichiometric matrix (sparse)
-%    b                       RHS of Sv = b (usually zeros)
-%    c                       Objective coefficients
-%    lb                      Lower bounds for fluxes
-%    ub                      Upper bounds for fluxes
-%    rev                     Reversibility of fluxes
+%    function [gvalue, finalGRPR, size1, size2, size3] = step2and3(model, targetMet, givenGvalue)
 %
-%  targetMet   target metabolites
-%             (e.g.,  'btn_c')
-%  givenGvalue  a large gene deletion strategy (obtained by step1).
-%              The first column is the list of genes.
-%              The second column is a 0/1 vector indicating which genes should be deleted.
-%              0 indicates genes to be deleted.
-%              1 indecates genes to be remained.
+% INPUTS:
 %
-% OUTPUTS
-%  gvalue       a small gene deletion strategy (obtained by TrimGdel).
-%              The first column is the list of genes.
-%              The second column is a 0/1 vector indicating which genes should be deleted.
-%              0 indicates genes to be deleted.
-%              1 indecates genes to be remained.
-%  GR           the maximum growth rate when the obtained gene deletion
-%              strategy represented by gvalue is applied.
-%  PR           the minimum production rate of the target metabolite under 
-%              the maximization of the growth rate when the obtained gene deletion
-%              strategy represented by gvalue is applied.
-% size1        the number of gene deletions after Step1.
-% size2        the number of gene deletions after Step2.
-% size3        the number of gene deletions after Step3.
+%    model:    COBRA model structure containing the following required fields to perform gDel_minRN.
+%        *.rxns:       Rxns in the model
+%        *.mets:       Metabolites in the model
+%        *.genes:      Genes in the model
+%        *.grRules:    Gene-protein-reaction relations in the model
+%        *.S:          Stoichiometric matrix (sparse)
+%        *.b:          RHS of Sv = b (usually zeros)
+%        *.c:          Objective coefficients
+%        *.lb:         Lower bounds for fluxes
+%        *.ub:         Upper bounds for fluxes
+%        *.rev:        Reversibility of fluxes
 %
-%   Feb. 10, 2025  Takeyuki TAMURA
+%    targetMet:      target metabolites    (e.g.,  'btn_c')
+%    givenGvalue:    a large gene deletion strategy (obtained by step1).
+%                    The first column is the list of genes.
+%                    The second column is a 0/1 vector indicating which genes should be deleted.
+%                        0: indicates genes to be deleted.
+%                        1: indecates genes to be remained.
+%
+% OUTPUTS:
+%    gvalue:    a small gene deletion strategy (obtained by TrimGdel).
+%               The first column is the list of genes.
+%               The second column is a 0/1 vector indicating which genes should be deleted.
+%                   0: indicates genes to be deleted.
+%                   1: indecates genes to be remained.
+%    GR:        the maximum growth rate when the obtained gene deletion
+%               strategy represented by gvalue is applied.
+%    PR:        the minimum production rate of the target metabolite under 
+%               the maximization of the growth rate when the obtained gene deletion
+%               strategy represented by gvalue is applied.
+%    size1:     the number of gene deletions after Step1.
+%    size2:     the number of gene deletions after Step2.
+%    size3:     the number of gene deletions after Step3.
+% 
+% .. Author:    - Takeyuki Tamura, Mar 06, 2025
 %
 
 sss = sprintf('step2and3.mat');
@@ -96,7 +98,7 @@ opt1 = gurobi(gm1);
 GRLB = opt1.x(gid);
 PRLB = opt1.x(pid);
 [term, ng, nt, nr, nko, reactionKO, reactionKO2term] = readGeneRules(model);
-[f, intcon, A, b, Aeq, beq, lb, ub, xname] = geneReactionMILP(model, term, ng, nt, nr, nko, reactionKO);
+[f, A, b, Aeq, beq, lb, ub, xname] = geneReactionMILP(model, term, ng, nt, nr, nko);
 
 lp.Aeq = Aeq;
 lp.beq = [zeros(size(lp.Aeq, 1), 1)];

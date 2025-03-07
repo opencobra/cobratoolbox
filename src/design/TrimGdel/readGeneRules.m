@@ -3,29 +3,32 @@ function [term, ng, nt, nr, nko, reactionKO, reactionKO2term] = readGeneRules(mo
 % gene-protein-reaction relations and outputs the necessary
 % information for the MILP formalization 
 %
-% function [term, ng, nt, nr, nko, reactionKO, reactionKO2term] = readGeneRules(model)
+% USAGE:
+%    function [term, ng, nt, nr, nko, reactionKO, reactionKO2term] = readGeneRules(model)
 %
-% INPUT
-%  model     COBRA model structure containing the following required fields to perform GridProd.
-%   rxns                    Rxns in the model
-%   mets                    Metabolites in the model
-%   S                       Stoichiometric matrix (sparse)
-%   b                       RHS of Sv = b (usually zeros)
-%   c                       Objective coefficients
-%   lb                      Lower bounds for fluxes
-%   ub                      Upper bounds for fluxes
-%   rev                     Reversibility of fluxes
+% INPUTS:
+%    model:    COBRA model structure containing the following required fields to perform gDel_minRN.
 %
-% OUTPUTS
-%  term    the list of Boolean functions extracted from the gene-protein-reaction relations
-%  ng  the number of genes
-%  nt  the number of internal terms
-%  nr  the number of reactions
-%  nko the number of repressible reactions
-% 
-%  Feb. 6 2025   Takeyuki TAMURA
+%        *.rxns:       Rxns in the model
+%        *.mets:       Metabolites in the model
+%        *.genes:      Genes in the model
+%        *.grRules:    Gene-protein-reaction relations in the model
+%        *.S:          Stoichiometric matrix (sparse)
+%        *.b:          RHS of Sv = b (usually zeros)
+%        *.c:          Objective coefficients
+%        *.lb:         Lower bounds for fluxes
+%        *.ub:         Upper bounds for fluxes
+%        *.rev:        Reversibility of fluxes
 %
-
+% OUTPUTS:
+%    term:    the list of Boolean functions extracted from the gene-protein-reaction relations
+%    ng:      the number of genes
+%    nt:      the number of internal terms
+%    nr:      the number of reactions
+%    nko:     the number of repressible reactions
+%
+% .. Author:    - Takeyuki Tamura, Mar 06, 2025
+%
 
 x = 1; y = 1; reactionKO = 0; qq = 0; ww = 0;
 for i=1:size(model.grRules)

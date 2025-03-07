@@ -3,31 +3,34 @@ function [model2, targetRID, extype] = modelSetting(model, targetMet)
 % exchange reaction for the target metabolite when there is no
 % original corresponding exchange reaction.
 %
-% function [model2,targetRID,extype] = modelSetting(model,targetMet)
+% USAGE:
 %
-% INPUTS
-% model     COBRA model structure containing the following required fields to perform gDel_minRN.
-%   rxns                    Rxns in the model
-%   mets                    Metabolites in the model
-%   genes               Genes in the model
-%   grRules            Gene-protein-reaction relations in the model
-%   S                       Stoichiometric matrix (sparse)
-%   b                       RHS of Sv = b (usually zeros)
-%   c                       Objective coefficients
-%   lb                      Lower bounds for fluxes
-%   ub                      Upper bounds for fluxes
-%   rev                     Reversibility of fluxes
-% targetMet   target metabolites
-%                           (e.g.,  'btn_c')
+%    function [model2,targetRID,extype] = modelSetting(model,targetMet)
 %
-% OUTPUTS
-%  model2        the model that has the exchange reaction of the target metabolite
-%  targetRID     ID of the exchange reaction of the target metabolite
-%  extype          indicates that an auxiliary exchange reaction was added.
-%                       1,2: there was the corresponding exchange reaction.
-%                        3: An auxiliary exchange reaction was added.
+% INPUTS:
+%    model:     COBRA model structure containing the following required fields to perform gDel_minRN.
 %
-%   Feb. 6, 2025   Takeyuki TAMURA
+%       *.rxns:       Rxns in the model
+%       *.mets:       Metabolites in the model
+%       *.genes:      Genes in the model
+%       *.grRules:    Gene-protein-reaction relations in the model
+%       *.S:          Stoichiometric matrix (sparse)
+%       *.b:          RHS of Sv = b (usually zeros)
+%       *.c:          Objective coefficients
+%       *.lb:         Lower bounds for fluxes
+%       *.ub:         Upper bounds for fluxes
+%       *.rev:        Reversibility of fluxes
+%
+%    targetMet:    target metabolites    (e.g.,  'btn_c')
+%
+% OUTPUTS:
+%    model2:       the model that has the exchange reaction of the target metabolite
+%    targetRID:    ID of the exchange reaction of the target metabolite
+%    extype:       indicates that an auxiliary exchange reaction was added.
+%                      1,2: there was the corresponding exchange reaction.
+%                      3: An auxiliary exchange reaction was added.
+% 
+% .. Author:    - Takeyuki Tamura, Mar 06, 2025
 %
 
 target = findMetIDs(model, targetMet);

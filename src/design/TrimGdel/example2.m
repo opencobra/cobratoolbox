@@ -1,8 +1,12 @@
 function [outputArg1, outputArg2] = example2()
 % example2 calculates the gene deletion strategy for growth coupling
 % for biotin in iML1515.
+% 
+% USAGE:
 %
-% Feb. 6, 2025  Takeyuki TAMURA
+%     function [] = example2()
+%
+% .. Author:    - Takeyuki Tamura, Mar 06, 2025
 %
 
 load('iML1515.mat');

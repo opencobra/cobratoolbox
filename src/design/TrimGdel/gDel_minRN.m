@@ -4,46 +4,48 @@ function [gvalue gr pr it success] = gDel_minRN(model, targetMet, maxLoop, PRLB,
 % for the target metabolite by repressing the maximum number of reactions 
 % via gene-protein-reaction relations.
 %
-% function [vg gr pr it success]  
-%      = gDel_minRN(model, targetMet, maxLoop, PRLB, GRLB)
+% USAGE:
 %
-% INPUTS
-%  model     COBRA model structure containing the following required fields to perform gDel_minRN.
-%    rxns                    Rxns in the model
-%    mets                    Metabolites in the model
-%    genes               Genes in the model
-%    grRules            Gene-protein-reaction relations in the model
-%    S                       Stoichiometric matrix (sparse)
-%    b                       RHS of Sv = b (usually zeros)
-%    c                       Objective coefficients
-%    lb                      Lower bounds for fluxes
-%    ub                      Upper bounds for fluxes
-%    rev                     Reversibility of fluxes
+%    function [vg gr pr it success]  
+%        = gDel_minRN(model, targetMet, maxLoop, PRLB, GRLB)
 %
-%  targetMet   target metabolites
-%              (e.g.,  'btn_c')
-%  maxLoop   the maximum number of iterations in gDel_minRN
-%  PRLB      the minimum required production rates of the target metabolites
-%            when gDel-minRN searches the gene deletion strategy candidates. 
-%                 (But it is not ensured to achieve this minimum required value
+% INPUTS:
+%    model:    COBRA model structure containing the following required fields to perform gDel_minRN.
+%
+%        *.rxns:       Rxns in the model
+%        *.mets:       Metabolites in the model
+%        *.genes:      Genes in the model
+%        *.grRules:    Gene-protein-reaction relations in the model
+%        *.S:          Stoichiometric matrix (sparse)
+%        *.b:          RHS of Sv = b (usually zeros)
+%        *.c:          Objective coefficients
+%        *.lb:         Lower bounds for fluxes
+%        *.ub:         Upper bounds for fluxes
+%        *.rev:        Reversibility of fluxes
+%
+%    targetMet:    target metabolites  (e.g.,  'btn_c')
+%    maxLoop:      the maximum number of iterations in gDel_minRN
+%    PRLB:         the minimum required production rates of the target metabolites
+%                  when gDel-minRN searches the gene deletion strategy candidates. 
+%                  (But it is not ensured to achieve this minimum required value
 %                  when GR is maximized withoug PRLB.)
-%  GRLB      the minimum required growth rate when gDel-minRN searches 
-%            the gene deletion strategy candidates. 
+%    GRLB:         the minimum required growth rate when gDel-minRN searches 
+%                  the gene deletion strategy candidates. 
 %
-% OUTPUTS
-%  gvalue    The first column is the list of genes in the original model.
-%            The second column contains a 0/1 vector indicating which genes should be deleted.
-%              0 indicates genes to be deleted.
-%              1 indecates genes to be remained.
-%  gr        the growth rate obained when the gene deletion strategy is
-%            applied and the growth rate is maximized.
-%  pr        the target metabolite production rate obained 
-%            when the gene deletion strategy is applied and the growth rate is maximized.
-%  it        indicates how many iterations were necessary to obtain the solution.
-%  success  indicates whether gDel_minRN obained an appropriate gene
-%               deletion strategy. (1:success, 0:failure)
-%
-%   Feb. 10, 2025  Takeyuki TAMURA
+% OUTPUTS:
+%    gvalue:     The first column is the list of genes in the original model.
+%                The second column contains a 0/1 vector indicating which genes should be deleted.
+%                    0: indicates genes to be deleted.
+%                    1: indecates genes to be remained.
+%    gr:         the growth rate obained when the gene deletion strategy is
+%                applied and the growth rate is maximized.
+%    pr:         the target metabolite production rate obained 
+%                when the gene deletion strategy is applied and the growth rate is maximized.
+%    it:         indicates how many iterations were necessary to obtain the solution.
+%    success:    indicates whether gDel_minRN obained an appropriate gene
+%                deletion strategy. (1:success, 0:failure)
+% 
+% .. Author:    - Takeyuki Tamura, Mar 06, 2025
 %
 
 tic;
@@ -110,7 +112,7 @@ opt0 = gurobi(gm);
 TMGR = -opt0.objval;
 big = TMGR; 
 [term, ng, nt, nr, nko, reactionKO, reactionKO2term] = readGeneRules(model);
- [f, intcon, A, b, Aeq, beq, lb, ub, xname] = geneReactionMILP(model, term, ng, nt, nr, nko, reactionKO);
+ [f, A, b, Aeq, beq, lb, ub, xname] = geneReactionMILP(model, term, ng, nt, nr, nko);
  
  lp.Aeq = [model.S zeros(m, ng+nt+nko+nko);
                zeros(size(Aeq, 1), n) Aeq zeros(size(Aeq, 1),nko);

@@ -1,8 +1,12 @@
 function [outputArg1, outputArg2] = exampl4()
 % example4 calculates the gene deletion strategy for growth coupling
 % for pantothenate in iML1515.
+% 
+% USAGE:
 %
-% Feb. 6, 2025  Takeyuki TAMURA
+%     function [] = example4()
+%
+% .. Author:    - Takeyuki Tamura, Mar 06, 2025
 %
 
 load('iML1515.mat');

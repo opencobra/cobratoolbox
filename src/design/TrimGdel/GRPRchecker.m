@@ -1,38 +1,40 @@
-function [GR ,PR] = GRPRchecker(model, targetMet, givenGvalue)
+function [GR ,PR] = GRPRchecker(model, targetMet, gvalue)
 % GRPRchecker calculates the maximum GR and the minimu PR 
 % under the GR maximization when a constraint-based model, a target
 % metabolite, and a gene deletion stratety are given.
 %
-% function [GR, PR]  
-%      = GRPRchecker(model, targetMet, givenGvalue)
+% USAGE:
 %
-% INPUTS
-%  model     COBRA model structure containing the following required fields to perform gDel_minRN.
-%    rxns                    Rxns in the model
-%    mets                    Metabolites in the model
-%    genes               Genes in the model
-%    grRules            Gene-protein-reaction relations in the model
-%    S                       Stoichiometric matrix (sparse)
-%    b                       RHS of Sv = b (usually zeros)
-%    c                       Objective coefficients
-%    lb                      Lower bounds for fluxes
-%    ub                      Upper bounds for fluxes
-%    rev                     Reversibility of fluxes
+%    function [GR, PR]  
+%        = GRPRchecker(model, targetMet, givenGvalue)
 %
-%  targetMet   target metabolites
-%              (e.g.,  'btn_c')
-%  givenGvalue    The first column is the list of genes in the original model.
-%                 The second column contains a 0/1 vector indicating which genes should be deleted.
-%                 0 indicates genes to be deleted.
-%                 1 indecates genes to be remained.
+% INPUTS:
+%    model:     COBRA model structure containing the following required fields to perform gDel_minRN.
 %
-% OUTPUTS
-%  GR        the growth rate obained when the gene deletion strategy is
-%            applied and the growth rate is maximized.
-%  PR        the minimum target metabolite production rate obained 
-%            when the gene deletion strategy is applied and the growth rate is maximized.
+%        *.rxns:       Rxns in the model
+%        *.mets:       Metabolites in the model
+%        *.genes:      Genes in the model
+%        *.grRules:    Gene-protein-reaction relations in the model
+%        *.S:          Stoichiometric matrix (sparse)
+%        *.b:          RHS of Sv = b (usually zeros)
+%        *.c:          Objective coefficients
+%        *.lb:         Lower bounds for fluxes
+%        *.ub:         Upper bounds for fluxes
+%        *.rev:        Reversibility of fluxes
 %
-%   Feb. 10, 2025  Takeyuki TAMURA
+%    targetMet:    target metabolites    (e.g.,  'btn_c')
+%    gvalue:       The first column is the list of genes in the original model.
+%                  The second column contains a 0/1 vector indicating which genes should be deleted.
+%                      0: indicates genes to be deleted.
+%                      1: indecates genes to be remained.
+%
+% OUTPUTS:
+%    GR:    the growth rate obained when the gene deletion strategy is
+%           applied and the growth rate is maximized.
+%    PR:    the minimum target metabolite production rate obained 
+%           when the gene deletion strategy is applied and the growth rate is maximized.
+% 
+% .. Author:    - Takeyuki Tamura, Mar 06, 2025
 %
 
 
@@ -46,7 +48,7 @@ pid = targetRID;
 
 
 model2 = model;
-[grRules0] = calculateGR(model, givenGvalue);
+[grRules0] = calculateGR(model, gvalue);
 lb2 = model.lb;
 ub2 = model.ub;
 

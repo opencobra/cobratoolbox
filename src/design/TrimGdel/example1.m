@@ -1,9 +1,14 @@
-function [outputArg1, outputArg2] = example1()
+function [] = example1()
 % example1 calculates the gene deletion strategy for growth coupling
 % for succinate in e_coli_core.
 %
-% Feb. 6, 2025  Takeyuki TAMURA
+% USAGE:
 %
+%     function [] = example1()
+%
+% .. Author:    - Takeyuki Tamura, Mar 05, 2025
+%
+
 
 load('e_coli_core.mat');
 model = e_coli_core;
