@@ -46,7 +46,7 @@ jobs:
           changed_files=$(git diff --name-only HEAD~1 HEAD | grep '\.html' | tr '\n' ' ')
           for file in $changed_files; do
               echo "Processing: $file"
-              python ./docs/extract_info.py $file
+              python ./stable/extract_info.py $file
           done
           
       - name: Commit and Push New File
