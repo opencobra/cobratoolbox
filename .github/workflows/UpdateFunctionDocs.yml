@@ -70,5 +70,5 @@ jobs:
           publish_dir: ./documentation/build/html/_static
           publish_branch: gh-pages
           keep_files: true
-          destination_dir: latest/_static
+          destination_dir: stable/_static
           commit_message: "update Function Docs (Automatic Workflow)"
