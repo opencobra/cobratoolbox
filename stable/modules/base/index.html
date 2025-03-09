@@ -339,6 +339,43 @@ type calculations</p>
 </dd></dl>
 
 <dl class="mat function">
+<dt class="sig sig-object mat" id="src.base.deleteit">
+<span class="sig-name descname"><span class="pre">deleteit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">data</span></em>, <em class="sig-param"><span class="pre">groups</span></em>, <em class="sig-param"><span class="pre">statName</span></em>, <em class="sig-param"><span class="pre">groupList</span></em>, <em class="sig-param"><span class="pre">randStat</span></em>, <em class="sig-param"><span class="pre">nRand</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/deleteit.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.deleteit" title="Permalink to this definition">¶</a></dt>
+<dd><p>calcGroupStats Calculate statistics such as mean or standard deviation for
+subgroups of a population</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[groupStat, groupList, groupCnt, zScore] = calcGroupStats</strong> (<em>data, groups, statName, groupList, randStat, nRand</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>data</strong> – Matrix of data (individuals x variables)</p></li>
+<li><p><strong>groups</strong> – Group identifier for each individual</p></li>
+<li><p><strong>statName</strong> – Name of the statistic to be computed for each group:
+‘mean’: mean value for group (default)
+‘std’: standard deviation for group
+‘median’: median for group
+‘count’: sum total of variable values for group</p></li>
+<li><p><strong>groupList</strong> – List of group identifiers to be considered (optional, default
+all values occurring in groups)</p></li>
+<li><p><strong>randStat</strong> – Perform randomization analysis</p></li>
+<li><p><strong>nRand</strong> – # of randomizations</p></li>
+</ul>
+</dd>
+</dl>
+<p>Group identifier can be either strings or numerical values</p>
+<dl class="field-list simple">
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>groupStat</strong> – Matrix of group statistic values for each group and variable</p></li>
+<li><p><strong>groupList</strong> – List of group identifiers considered</p></li>
+<li><p><strong>groupCount</strong> – Number of individuals in a group</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
 <dt class="sig sig-object mat" id="src.base.generateSystemConfigReport">
 <span class="sig-name descname"><span class="pre">generateSystemConfigReport</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/generateSystemConfigReport.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.generateSystemConfigReport" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generates a configuration report of the sytem and saves it as COBRAconfigReport.log</p>
