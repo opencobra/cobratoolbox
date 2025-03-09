@@ -133,7 +133,7 @@ jobs:
   run: |
     pip install -r requirements.txt
 ```
-- Next step is to install the required [libraries](https://github.com/pavan-kumar-s/cobratoolbox/blob/master/documentation/requirements.txt) for the automated generation of function docs and the citations page.
+- Next step is to install the required [libraries](https://github.com/opencobra/cobratoolbox/blob/master/documentation/requirements.txt) for the automated generation of function docs and the citations page.
 
  ```
 - name: Generate publications rst file
@@ -221,29 +221,71 @@ jobs:
 ```
 - This step copies the style files required for the modules and the citations page.
 
-   
-### W2 (.github/workflows/UpdateContributors.yml)
-This workflow does the following:
-1) Install python 3.10
-2) Install required packages defined in /docs/source/Contributions/requirements.txt
-3) Run Python code files:
-    1) /docs/source/Contributions/UpdateContributorsList.py
-    2) /docs/source/Contributions/GenerateContributorsHTML.py <br>
-       This code requires:
-       	1) '/docs/source/Contributions/AllContributors.csv'
-       	2) '/docs/source/Contributions/contributorsTemp.html'
-       	3) '/docs/source/Contributions/contributors/contributors.html'
-4) Deploying to gh-pages (/latest/contributors.html)
 
-## Running Matlab Tests on Pull Requests
-The testing workflow is defined in the main.yml file. This workflow is triggered on every push to the repository and runs the MATLAB tests using the GitHub Actions runner.
+## Continuous Integration of Contributors:
+The [contributors webpage](https://opencobra.github.io/cobratoolbox/stable/contributors.html) is updated based on each new commits made to the repo. This workflow is triggered by the [UpdateContributors.yml](https://github.com/opencobra/cobratoolbox/blob/master/.github/workflows/UpdateContributors.yml) file. The detailed description is given below.
 
-### Workflow Steps:
-Setup: Install the MATLAB environment on the GitHub Actions runner.
 
-Run Tests: Execute the runTestsAndGenerateReport.m script to run the tests and generate a report.
+```
+on:
+  push:
+    branches:
+      - master
+```
+- This workflow gets triggered only when a new push is made to the master branch of the cobratoolbox repo.
 
-(Optional) Publish Results: You may choose to publish test results or reports to external platforms or as GitHub Pages.
 
-### MATLAB Test Function: runTestsAndGenerateReport.m
-The test function runTestsAndGenerateReport.m is responsible for executing the tests and generating a report of the results. This script is executed as part of the GitHub Actions workflow. The tests are designed to be automatically run using GitHub Actions whenever code is pushed to the repository. This ensures that any new changes do not introduce unexpected behavior or break existing functionality.
+```
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.10'
+```
+- This workflow is set to run on the github-hosted server and it begins by checkout the repository and installing python version 3.10.
+
+```
+- name: Install dependencies
+  working-directory: ./documentation/source/Contributions
+  run: |
+    pip install -r requirements.txt
+```
+- Next step is to install the required [libraries](https://github.com/opencobra/cobratoolbox/blob/master/documentation/source/Contributions/requirements.txt) for the automated generation of contributors list.
+
+```
+- name: Update contributors
+  working-directory: ./documentation/source/Contributions
+  run: |
+    python UpdateContributorsList.py
+```
+- In this step list of all the contributors to cobratoolbox is obtained and stored in [AllContributors.csv](https://github.com/opencobra/cobratoolbox/blob/master/documentation/source/Contributions/AllContributors.csv) file.
+
+**What is UpdateContributorsList.py?**
+This [python file](https://github.com/opencobra/cobratoolbox/blob/master/documentation/source/Contributions/UpdateContributorsList.py) generates the AllContributors.csv file. This csv file stores the following information required to generate the html page: Contributor's github username; the avatar URL of the contributor; link to the github page of the contributor; number of contributions made (count of commits); whether or not contributed in past one year.
+
+```
+- name: Generate HTML file
+  working-directory: ./documentation/source/Contributions
+  run: |
+    python GenerateContributorsHTML.py
+```
+- Based on the details stored in the AllContributors.csv generated in the previous step, this step generates a .HTML page that is used in the webpage.
+
+```
+- name: Deploy to gh-pages/stable
+  uses: peaceiris/actions-gh-pages@v3
+  with:
+    github_token: ${{ secrets.GITHUB_TOKEN }}
+    publish_dir: ./documentation/source/Contributions/contributors
+    publish_branch: gh-pages
+    keep_files: true
+    destination_dir: stable
+    commit_message: "Update Contributors (Automatic Workflow)"
+```
+- The generated webpage is further deployed in this step
+
