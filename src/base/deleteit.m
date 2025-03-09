@@ -1,4 +1,4 @@
-function [groupStat, groupList, groupCnt, zScore] = calcGroupStats(data, groups, statName, groupList, randStat, nRand)
+function [groupStat, groupList, groupCnt, zScore] = deleteit(data, groups, statName, groupList, randStat, nRand)
 % calcGroupStats Calculate statistics such as mean or standard deviation for
 % subgroups of a population
 %
