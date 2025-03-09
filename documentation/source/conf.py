@@ -189,7 +189,7 @@ html_context = {'conf_py_path': os.path.join(os.sep, 'docs', 'source', ''),
                 'manifest': 'json/manifest.json',
                 'browserconfig': 'browserconfig.xml',
                 'show_source': False,
-                'project_logo_url': 'https://github.com/opencobra/cobratoolbox/blob/gh-pages/stable/_static/img/logo.png',
+                'project_logo_url': 'https://github.com/opencobra/cobratoolbox/raw/gh-pages/stable/_static/img/logo.png',
                 'project_logo_alt_text': 'cobratoolbox logo' }
 #                'display_github': True}
 # Add any paths that contain custom themes here, relative to this directory.
