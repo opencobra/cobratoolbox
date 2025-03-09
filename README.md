@@ -1,6 +1,8 @@
 # Cobratoolbox Website Documentation
 
-This website is hosted on the GitHub servers using gh-pages. Here at the gh-pages branch is the source code of the website. If changes are made here, changes are made to the website. If you are interested to learn more about how gh-pages works check out the documentation for more information: https://docs.github.com/en/pages
+This website is hosted on the GitHub servers using gh-pages. Here at the gh-pages branch is the source code of the website. If changes are made here, changes are made to the website. If you are interested to learn more about how gh-pages works check out the documentation for more information: https://docs.github.com/en/pages. 
+
+The following sections describe how continuous integration of tutorials, modules, and contributors work in gh-pages.
 
 
 ## Continuous Integration of Tutorials:
@@ -99,26 +101,126 @@ After changing and adding the folders/files in the repo we push the changes to t
 This Python script processes the HTML file to extract its heading and then uses this information to update the website's [tutorial homepage](https://opencobra.github.io/cobratoolbox/stable/tutorials/index.html). Initially, it reads the specified HTML file to find the main heading (inside an h1 tag). Then, it modifies a template HTML file (HOLDER_TEMPLATE.html) by replacing a placeholder with the path of the processed file, and saves this modified content as a new tutorial file within a predefined directory structure (stable/tutorials). Additionally, the script updates the index.html file located within the same stable/tutorials directory, adding a link to the new tutorial under a specific section, which is determined by part of the original file's path.
 
 
-## Continuous Integration of Functions
-Each accepted pull request triggers two workflows (W1 and W2) to generate documentation for functions, 
-contributors and citations.
+## Continuous Integration of Modules:
+The modules and citations webpages get updated for new pushes to the master branch. Each push to the master branch triggers [Update function docs workflow](https://github.com/opencobra/cobratoolbox/blob/master/.github/workflows/UpdateFunctionDocs.yml). Both modules pages and citation page work using the documentation tool [sphinx](https://www.sphinx-doc.org/en/master/). Detailed description of the workflow is given below:
 
-### W1 (.github/workflows/UpdateFunctionDocs.yml)
-This workflow does the following:
-1) Install python 3.10
-2) Install required packages defined in /docs/requirements.txt
-3) Run Python code (/docs/source/sphinxext/GenerateCitationsRST.py) to generate './docs/source/citations.rst' file
-4) Run Python code (/docs/source/sphinxext/copy_files.py) to adapt the installed packages for Matlab functions. Files required to run this:
-     1) 'docs/source/sphinxext/linkcode.py'
-     2) 'docs/source/sphinxext/tabs.css'
-5) Run python code (/docs/source/modules/GetRSTfiles.py) to generate all the .rst files required for documenting all the functions in '/src/'
-6) Generate documentation using 'make HTML'. Files required to run this:
-     1) 'docs/createModulesPage.sh'
-     2) 'docs/generateJSONList.py'
-     3) 'docs/source/sphinxext/CitationStyle.py'
-     4) 'docs/COBRA.bib'.
-COBRA.bib file has to be updated manually each month. Currently the .bib file is retrieved from [web of science](https://www.webofscience.com/wos/woscc/summary/d043671b-cd33-418b-9781-a92c21471897-bec2b3ea/relevance/1(overlay:export/exbt))
-7) Deploying to gh-pages in the latest folder (Only files in /latest/modules/ folder and /latest/citations.html will get updated). This requires 'docs/source/Citations/citations.html'
+```
+on:
+  push:
+    branches:
+      - master
+```
+- This workflow gets triggered only when a new push is made to the master branch of the cobratoolbox repo.
+
+
+```
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.10'
+```
+- This workflow is set to run on the github-hosted server and it begins by checkout the repository and installing python version 3.10.
+
+```
+- name: Install dependencies
+  working-directory: ./documentation
+  run: |
+    pip install -r requirements.txt
+```
+- Next step is to install the required [libraries](https://github.com/pavan-kumar-s/cobratoolbox/blob/master/documentation/requirements.txt) for the automated generation of function docs and the citations page.
+
+ ```
+- name: Generate publications rst file
+  working-directory: ./documentation/source/sphinxext
+  run: |
+    python GenerateCitationsRST.py
+```
+- This step in particular is to generate .rst file that is required in further steps to generate the [citations webpage](https://opencobra.github.io/cobratoolbox/stable/citations.html).
+**What is GenerateCitationsRST.py**
+  This python file generates the required .rst file that generates the webpage, citations.html. It begins with the year 2006 (from the initial publication that cited cobratoolbox) to the present year. Further the citations follow the style, ModStyle defined in [CitationStyle.py file](https://github.com/opencobra/cobratoolbox/blob/master/documentation/source/sphinxext/CitationStyle.py).
+
+ ```
+- name: Update packages
+  working-directory: ./documentation/source
+  run: |
+    python ./sphinxext/copy_files.py
+ ```
+- For the tab style shown in the current webpage of [citations.html](https://opencobra.github.io/cobratoolbox/stable/citations.html), [tab.css](https://github.com/opencobra/cobratoolbox/blob/master/documentation/source/sphinxext/tabs.css) file is required.
+- For appending each of the function docs with the github link, [linkcode.py](https://github.com/opencobra/cobratoolbox/blob/master/documentation/source/sphinxext/linkcode.py) file is required. Note that sphinx extensions have by default a linkcode.py file, but that does not work well for the matlab files (.m).
+- The above two files, are used despite of default style file (tab.css) and the linkcode file. [copy_files.py](https://github.com/opencobra/cobratoolbox/blob/master/documentation/source/sphinxext/copy_files.py) file replaces these two files.
+
+```
+- name: Generate functions rst files
+  working-directory: ./documentation/source/modules
+  run: |
+    python ./GetRSTfiles.py
+```
+- Website design using sphinx requires the .rst files to be predefined. These .rst files will further be used to create the .html files for the webpage.
+- [GetRSTfiles.py](https://github.com/opencobra/cobratoolbox/blob/master/documentation/source/modules/GetRSTfiles.py) automates the process of generating the .rst files.
+  
+**What is GetRSTfiles.py?**
+  For each of the sections in [src](https://github.com/opencobra/cobratoolbox/tree/master/src), all the subfolders are iterated and a separate .rst file is generated for each subfolder. These .rst files carry the information on the contents of the modules page.
+
+```
+- name: Generate documentation
+  working-directory: ./documentation
+  run: |
+    make HTML
+```
+- This creates the .HTML files required for the webpage using the .rst files obtained in previous steps.
+- This requires [conf.py](https://github.com/opencobra/cobratoolbox/blob/master/documentation/source/conf.py) that has the details of the extensions to be used, format of the function docs and other implementation details.
+- Further, for citations page, [COBRA.bib](https://github.com/opencobra/cobratoolbox/blob/master/documentation/COBRA.bib) file is required and this needs to be manually updated. Currently the .bib file is retrieved from [web of science](https://www.webofscience.com/wos/woscc/summary/d043671b-cd33-418b-9781-a92c21471897-bec2b3ea/relevance/1(overlay:export/exbt)).
+
+```
+- name: Copy the citations html page
+  run: |
+    cp ./documentation/build/html/citations.html ./documentation/source/Citations/citations.html
+```
+- Citations html page is alone copied into a new folder. This is because deployment requires all files in a folder to be copied and hence we need a separate folder
+
+```
+- name: Deploy the function modules
+  uses: JamesIves/github-pages-deploy-action@v4
+  with:
+    folder: ./documentation/build/html/modules
+    branch: gh-pages
+    target-folder: stable/modules
+    commit-message: "update Function Docs (Automatic Workflow)"
+```
+- This is the deploying step for the modules webpages.
+
+```
+- name: Deploy the citations page
+  uses: peaceiris/actions-gh-pages@v3
+  with:
+    github_token: ${{ secrets.GITHUB_TOKEN }}
+    publish_dir: ./documentation/source/Citations
+    publish_branch: gh-pages
+    keep_files: true
+    destination_dir: stable
+    commit_message: "update Function Docs (Automatic Workflow)"
+```
+- This is the deploying step for the citations webpage
+
+```
+- name: Deploy the citations static page
+  uses: peaceiris/actions-gh-pages@v3
+  with:
+    github_token: ${{ secrets.GITHUB_TOKEN }}
+    publish_dir: ./documentation/build/html/_static
+    publish_branch: gh-pages
+    keep_files: true
+    destination_dir: stable/_static
+    commit_message: "update Function Docs (Automatic Workflow)"
+```
+- This step copies the style files required for the modules and the citations page.
+
    
 ### W2 (.github/workflows/UpdateContributors.yml)
 This workflow does the following:
