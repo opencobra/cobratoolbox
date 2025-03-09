@@ -339,48 +339,6 @@ type calculations</p>
 </dd></dl>
 
 <dl class="mat function">
-<dt class="sig sig-object mat" id="src.base.deleteit">
-<span class="sig-name descname"><span class="pre">deleteit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">targetRxns</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/deleteit.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.deleteit" title="Permalink to this definition">¶</a></dt>
-<dd><p>GDLS (Genetic Design through Local Search) attempts to find genetic
-designs with greater in silico production of desired metabolites.</p>
-<dl class="field-list">
-<dt class="field-odd">USAGE</dt>
-<dd class="field-odd"><p><strong>[gdlsSolution, bilevelMILPProblem, gdlsSolutionStructs] = deleteit</strong> (<em>model, varargin</em>)</p>
-</dd>
-<dt class="field-even">INPUTS</dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>model</strong> – Cobra model structure</p></li>
-<li><p><strong>targetRxn</strong> – Reaction(s) to be maximized (Cell array of strings)</p></li>
-</ul>
-</dd>
-<dt class="field-odd">OPTIONAL INPUTS</dt>
-<dd class="field-odd"><p><strong>varargin</strong> – parameters entered using either a structure or list of
-parameter, parameter value. List of optional parameters:</p>
-<blockquote>
-<div><ul class="simple">
-<li><p><cite>nbhdsz</cite> - Neighborhood size (default: 1)</p></li>
-<li><p><cite>M</cite> - Number of search paths (default: 1)</p></li>
-<li><p><cite>maxKO</cite> - Maximum number of knockouts (default: 50)</p></li>
-<li><p><cite>koCost</cite> - Cost for knocking out a reaction, gene set, or gene. A different cost can be set for each knockout (default: 1 for each knockout)</p></li>
-<li><p><cite>selectedRxns</cite> - List of reactions/geneSets that can be knocked out</p></li>
-<li><p><cite>koType</cite> - What to knockout: reactions, gene sets, or genes {(‘rxns’), ‘geneSets’, ‘genes’}</p></li>
-<li><p><cite>iterationLimit</cite> - Maximum number of iterations (default: 70)</p></li>
-<li><p><cite>timeLimit</cite> - Maximum run time in seconds (default: 252000)</p></li>
-<li><p><cite>minGrowth</cite> - Minimum growth rate</p></li>
-</ul>
-</div></blockquote>
-</dd>
-<dt class="field-even">OUTPUTS</dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>gdlsSolution</strong> – GDLS solution structure (similar to <cite>OptKnock</cite> <cite>sol</cite> struct)</p></li>
-<li><p><strong>bilevelMILPProblem</strong> – Problem structure used in computation</p></li>
-<li><p><strong>gdlsSolutionStructs</strong></p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="mat function">
 <dt class="sig sig-object mat" id="src.base.generateSystemConfigReport">
 <span class="sig-name descname"><span class="pre">generateSystemConfigReport</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/generateSystemConfigReport.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.generateSystemConfigReport" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generates a configuration report of the sytem and saves it as COBRAconfigReport.log</p>
