@@ -4,16 +4,17 @@ This website is hosted on the GitHub servers using gh-pages. Here at the gh-page
 
 
 ## Continuous Integration of Tutorials:
-Part 1 of the CI occurs when a contributor pushes their tutorial .mlx file to the Tutorials Repository. In this part the .mlx file is also converted into a .html and .pdf file. Detailed Documentation for the first part is ‘[here](https://github.com/opencobra/COBRA.tutorials/tree/master/.github/workflows)’
-### Part 2: The html files then get pushed to the gh-pages branch
-A workflow is then set up to be trigged when a .html file is to the gh-pages branch. The .yml file is called ‘[main.yml](https://github.com/opencobra/cobratoolbox/blob/gh-pages/.github/workflows/main.yml)’.
+Part 1 of the CI occurs when a contributor pushes their tutorial .mlx file to the Tutorials Repository. In this part the .mlx file is also converted into a .html, .pdf and .m file. Detailed Documentation for the first part is ‘[here](https://github.com/opencobra/COBRA.tutorials/tree/master/.github/workflows)’. At the end of the first step, the .HTML file(s) of the new tutorial(s) is/are pushed to gh-pages branch at stable/tutorials/<folder of the tutorial> with the commit message being "Sync files from source repo".
 
-The main.yml can be explained as follows:
+### Part 2: The html files then converted to required format and the index.html file is updated
+A workflow is then set up to be trigged when a .html file is pushed to the gh-pages branch. The .yml file is called ‘[UpdateTutorialIndex.yml](https://github.com/opencobra/cobratoolbox/blob/gh-pages/.github/workflows/UpdateTutorialIndex.yml)’.
+
+The UpdateTutorialIndex.yml can be explained as follows:
 
 ```
 on:
   push:
-    branches: [ gh-pages ]
+    branches: gh-pages
     paths:
     - '**.html'
 ```
@@ -31,9 +32,10 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 0
+          ref: gh-pages
 ```
 
-Here the second step is to checkout the repository and find any changes that were made. Also note that we are now running on ‘ubuntu-latest’ and not ‘self-hosted’ as there is no need to use King for this part.
+Here the second step is to checkout the repository and find any changes that were made. Also note that we are now running on ‘ubuntu-latest’ and not ‘self-hosted’ as there is no need to use King for this part. Also, we are cloning only the gh-pages branch
 
 ```
 - name: Check Commit Message
@@ -41,14 +43,13 @@ Here the second step is to checkout the repository and find any changes that wer
   run: |
     commit_msg=$(git log --format=%B -n 1)
     if [[ "$commit_msg" == "Sync files from source repo" ]]; then
-      echo "::set-output name=run_job::true"
+      echo "run_job=true" >> $GITHUB_OUTPUT
     else
-      echo "::set-output name=run_job::false"
+      echo "run_job=false" >> $GITHUB_OUTPUT
     fi
 ```
 
-
-In the tutorials repo we push to the gh-pages branch with the particular comment: ‘Sync files from source repo’. This helps distinguish between slight edits made to pages on the website and tutorial pushes from the tutorials repo. Here this piece of code checks this.
+The commit message: ‘Sync files from source repo’ helps to distinguish between slight edits made to pages on the website and tutorial pushes from the COBRA.tutorials repo. The variable, run_job is created based on the commit message that helps in deciding whether to proceed or not.
 
 ```
 - name: Set up Python
@@ -62,42 +63,37 @@ In the tutorials repo we push to the gh-pages branch with the particular comment
   run: |
     python -m pip install --upgrade pip
     pip install beautifulsoup4
+```
 
-- name: Get Changed HTML Files
+Here are some basic steps such as 1. Set up python 2. Install Python dependencies needed. Only beautifulsoup4 is installed which helps in modifying the stable/tutorials/index.html file.
+
+```
+- name: Get Changed HTML Files and update the index.html file of tutorial
   id: getfile
   if: steps.check_msg.outputs.run_job == 'true'
   run: |
-    changed_files=$(git diff --name-only HEAD~1 HEAD | grep '\.html')
-    echo "::set-output name=file::$changed_files"
-```
-
-Here are some basic steps such as 1. Set up python got github actions 2. Install Python dependencies needed 3. Get the html files that were pushed to the repository.
-
-```
-- name: Extract Info from HTML Files
-  if: steps.check_msg.outputs.run_job == 'true'
-  run: |
-    for file in ${{ steps.getfile.outputs.file }}
-    do
-      python extract_info.py $file
+    changed_files=$(git diff --name-only HEAD~1 HEAD | grep '\.html' | tr '\n' ' ')
+    for file in $changed_files; do
+        echo "Processing: $file"
+        python ./stable/extract_info.py $file
     done
 ```
 
 
-Now we run the python file to configure the website to adjust to the added tutorial.
+Now we run the python file, ./stable/extract_info.py to configure the website to adjust to the added tutorial.
 
 ```
 - name: Commit and Push New File
   if: steps.check_msg.outputs.run_job == 'true'
   run: |
-    git config user.name "GitHub Action"
-    git config user.email "action@github.com"
+    git config user.name "github-actions[bot]"
+    git config user.email "github-actions[bot]@users.noreply.github.com"
     git add .
-    git commit -m "Sync files from source repo" || echo "No changes to commit"
-    git push -f origin gh-pages
+    git commit -m "Update Tutorial (Automatic Workflow)" || echo "No changes to commit"
+    git push
 ```
 
-After changing and adding the folders/files around in the repo we push the changes to the repository
+After changing and adding the folders/files in the repo we push the changes to the remote repository
 
 **What is extract_info.py?**
 This Python script processes the HTML file to extract its heading and then uses this information to update the website's [tutorial homepage](https://opencobra.github.io/cobratoolbox/stable/tutorials/index.html). Initially, it reads the specified HTML file to find the main heading (inside an h1 tag). Then, it modifies a template HTML file (HOLDER_TEMPLATE.html) by replacing a placeholder with the path of the processed file, and saves this modified content as a new tutorial file within a predefined directory structure (stable/tutorials). Additionally, the script updates the index.html file located within the same stable/tutorials directory, adding a link to the new tutorial under a specific section, which is determined by part of the original file's path.
