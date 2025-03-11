@@ -1,0 +1,814 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Entropicfba &mdash; The COBRA Toolbox</title>
+  
+
+  
+  
+  
+    <link rel="apple-touch-icon" sizes="180x180" href="../../../../_static/img/apple-touch-icon.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../../_static/img/favicon-32x32.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="16x16" href="../../../../_static/img/favicon-16x16.png">
+  
+  
+    <link rel="mask-icon" href="../../../../_static/img/safari-pinned-tab.svg" color="#5bbad5">
+  
+  
+    <link rel="manifest" href="../../../../_static/json/manifest.json">
+  
+  
+    <meta name="msapplication-config" content="../../../../_static/browserconfig.xml">
+  
+  <meta name="theme-color" content="#ffffff">
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+  <script src="../../../../_static/js/jquery.easy-autocomplete.min.js" type="text/javascript" ></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+  <link href="../../../../_static/css/easy-autocomplete.min.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../_static/css/cobra.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../../../_static/css/cobra.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../../search.html"/>
+    <link rel="top" title="The COBRA Toolbox" href="../../../../index.html"/>
+        <link rel="up" title="Solvers" href="../index.html"/>
+        <link rel="next" title="Gurobi" href="../gurobi/index.html"/>
+        <link rel="prev" title="Cplex" href="../cplex/index.html"/> 
+
+  
+  <script src="../../../../_static/js/modernizr.min.js"></script>
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> The COBRA Toolbox
+          
+
+          
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
+          
+          </a>
+
+              
+          <h1>The COBRA Toolbox</h1>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" id="simple"/>
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+    <script>
+    	var options = {
+
+		url: "../../../../_static/json/functions.json",
+
+		getValue: "name",
+
+		list: {
+            onKeyEnterEvent: function(item) {
+                    return "_static/../" + item.website_url
+            },
+            maxNumberOfElements: 25,
+			match: {
+					enabled: true,
+			},
+            sort: {
+			    enabled: true
+		    }
+		},
+
+    	template: {
+	    	type: "custom",
+		    method: function(value, item) {
+                return "<span><a href='../../../../search.html?q=" + item.name + "&check_keywords=yes&area=default'>" + value + "</a>" + "<a href='../../../../_static/../" + item.website_url + "' ><img src='../../../../_static/link.svg'/></a></span>";
+		    }
+	    },
+
+		theme: "square"
+
+	};
+
+	$("#simple").easyAutocomplete(options);
+
+
+    </script>
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../index.html">Home</a></li>
+              </ul>
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">Functions</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../../analysis/index.html">Analysis</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Base</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html">Solvers</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../init/index.html">Init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../cplex/index.html">Cplex</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Entropicfba</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../gurobi/index.html">Gurobi</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../cardOpt/index.html">Cardopt</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../rescale/index.html">Rescale</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../NLP/index.html">Nlp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../varKin/index.html">Varkin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../getSetSolver/index.html">Getsetsolver</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../mosek/index.html">Mosek</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../lindo/index.html">Lindo</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../lp_solve/index.html">Lp_solve</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../param/index.html">Param</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../gams/index.html">Gams</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../install/index.html">Install</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../io/index.html">Io</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../paths/index.html">Paths</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ci/index.html">Ci</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../utilities/index.html">Utilities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../codeConsistency/index.html">Codeconsistency</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../cobrarrow/index.html">Cobrarrow</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../dataIntegration/index.html">Dataintegration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../design/index.html">Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reconstruction/index.html">Reconstruction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../visualization/index.html">Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contributing.html">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../cite.html">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../support.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../plan.html">Development Plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contact.html">Contact</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../citations.html">Citations</a></li>
+</ul>
+
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">The COBRA Toolbox</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../contents.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Functions</a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Base</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Solvers</a></li>
+      <li class="breadcrumb-item active">Entropicfba</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="https://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <section id="entropicfba">
+<span id="id1"></span><h1>Entropicfba<a class="headerlink" href="#entropicfba" title="Permalink to this heading">¶</a></h1>
+<span class="target" id="module-src.base.solvers.entropicFBA"></span><dl class="mat function">
+<dt class="sig sig-object mat" id="src.base.solvers.entropicFBA.addExoMetToEFBA">
+<span class="sig-name descname"><span class="pre">addExoMetToEFBA</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">exoMet</span></em>, <em class="sig-param"><span class="pre">param</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/entropicFBA/addExoMetToEFBA.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.entropicFBA.addExoMetToEFBA" title="Permalink to this definition">¶</a></dt>
+<dd><p>generates H and h to add a min (alpha/2)(v-h)’<a href="#id2"><span class="problematic" id="id3">*</span></a>H*(v-h) term to an EFBA problem</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>modelOut = addExoMetToEFBA</strong> (<em>model,exoMet,param</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model.S</strong></p></li>
+<li><p><strong>model.rxns</strong></p></li>
+<li><p><strong>exoMet.rxns</strong></p></li>
+<li><p><strong>exoMet.mean</strong></p></li>
+<li><p><strong>exoMet.SD</strong></p></li>
+</ul>
+</dd>
+</dl>
+<dl>
+<dt>OPTIONAL INPUT</dt><dd><p>param.printLevel:
+param.alpha:              alpha in (alpha/2)(v-h)’<a href="#id4"><span class="problematic" id="id5">*</span></a>H*(v-h), default = 10000;
+param.metabolomicWeights: String indicating the type of weights to be applied to penalise the difference</p>
+<blockquote>
+<div><p>between of predicted and experimentally measured fluxes by, where
+‘SD’   weights = 1/(1+exoMet.SD^2)
+‘mean’ weights = 1/(1+exoMet.mean^2)  (Default)
+‘RSD’  weights = 1/((exoMet.SD./exoMet.mean)^2)</p>
+</div></blockquote>
+<p>param.relaxBounds: True to relax bounds on reaction whose fluxes are to be fitted to exometabolomic data</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><p><strong>modelOut</strong></p>
+</dd>
+</dl>
+<p>EXAMPLE:</p>
+<p>NOTE:</p>
+<p>Author(s):</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.base.solvers.entropicFBA.debugInfeasibleEntropyFBA">
+<span class="sig-name descname"><span class="pre">debugInfeasibleEntropyFBA</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/entropicFBA/debugInfeasibleEntropyFBA.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.entropicFBA.debugInfeasibleEntropyFBA" title="Permalink to this definition">¶</a></dt>
+<dd><p>try to diagnose the reasons a model is infeasible for Entropy FBA</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.base.solvers.entropicFBA.entropicFluxBalanceAnalysis">
+<span class="sig-name descname"><span class="pre">entropicFluxBalanceAnalysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">param</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/entropicFBA/entropicFluxBalanceAnalysis.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.entropicFBA.entropicFluxBalanceAnalysis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Entropy maximisation of fluxes (or fluxes and concentrations) subject to
+mass balance, optionally coupling constraints, optionally quadratic
+penalisation of deviation from given fluxes.</p>
+<p>minimize             g.*vf’<a href="#id6"><span class="problematic" id="id7">*</span></a>(log(vf) -1) + (cf + ci)’<a href="#id8"><span class="problematic" id="id9">*</span></a>vf
+vf,vr,w,x,x0       + g.*vr’<a href="#id10"><span class="problematic" id="id11">*</span></a>(log(vr) -1) + (cr - ci)’<a href="#id12"><span class="problematic" id="id13">*</span></a>vr</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>f.*x’ <a href="#id14"><span class="problematic" id="id15">*</span></a>(log(x)  -1) + u0’<a href="#id16"><span class="problematic" id="id17">*</span></a>x</p></li>
+<li><p>f.*x0’<a href="#id18"><span class="problematic" id="id19">*</span></a>(log(x0) -1) + u0’<a href="#id20"><span class="problematic" id="id21">*</span></a>x0</p></li>
+<li><p>ce’<a href="#id22"><span class="problematic" id="id23">*</span></a>w</p></li>
+<li><p>(1/2)v’<a href="#id24"><span class="problematic" id="id25">*</span></a>Q*v</p></li>
+<li><p>(1/2)(v-h)’<a href="#id26"><span class="problematic" id="id27">*</span></a>H*(v-h)</p></li>
+</ul>
+</div></blockquote>
+<p>subject to      [N B]*[v w] &lt;=&gt; b   : y_N
+subject to      N*(vf - vr)  + B*w = x - x0 = dx/dt</p>
+<dl>
+<dt>subject to      N*(vf - vr) - x + x0  &lt;=&gt; b<span class="classifier">y_N</span></dt><dd><dl>
+<dt>C*(vf - vr)           &lt;=&gt; d<span class="classifier">y_C</span></dt><dd><dl>
+<dt>lb &lt;= [vf - vr; w] &lt;= ub<span class="classifier">z_v</span></dt><dd><p>dxl &lt;= x  - x0 &lt;= dxu : z_dx
+vfl &lt;= vf      &lt;= vfu : z_vf
+vrl &lt;=      vr &lt;= vru : z_vr</p>
+<blockquote>
+<div><p>xl &lt;= x       &lt;= xu  : z_x</p>
+</div></blockquote>
+<p>x0l &lt;=      x0 &lt;= x0u : z_x0</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+<dt>with Biochemical optimality conditions</dt><dd><p>|| N*(vf - vr) - x + x0 - b ||_inf
+|| C*(vf - vr) - d ||_inf
+|| g*log(vf) + ci + cf + N’<a href="#id28"><span class="problematic" id="id29">*</span></a>y_N + C’<a href="#id30"><span class="problematic" id="id31">*</span></a>y_C + z_v + z_vf ||_inf
+|| g*log(vr) - ci + cr - N’<a href="#id32"><span class="problematic" id="id33">*</span></a>y_N - C’<a href="#id34"><span class="problematic" id="id35">*</span></a>y_C - z_v + z_vr ||_inf
+|| f.*log(x)  + u0 - y_N + z_dx - z_x  ||_inf
+|| f.*log(x0) + u0 + y_N - z_dx + z_x0 ||_inf</p>
+</dd>
+</dl>
+<p>with  Derived biochemical optimality conditions (fluxes)
+|| g*log(vr/vf) + cr - cf - 2*(ci + N’<a href="#id36"><span class="problematic" id="id37">*</span></a>y_N + C’<a href="#id38"><span class="problematic" id="id39">*</span></a>y_C + z_vi) + z_vr - z_vf ||_inf
+where z_vi is the subset of z_v corresponding to internal reactions</p>
+<p>with  Derived biochemical optimality conditions (concentrations)
+|| f.*log(x/x0) - 2*y_N + 2*z_dx + z_x - z_x0 ||_inf
+|| f.*log(x.*x0) + 2*u0 + z_x + z_x0 ||_inf</p>
+<p>Derived biochemical optimality conditions (fluxes and concentrations)
+|| g*log(vf) + cf + ci + N’<a href="#id40"><span class="problematic" id="id41">*</span></a>(u0 + log(x) + z_dx + z_x) + C’<a href="#id42"><span class="problematic" id="id43">*</span></a>y_C + z_vi + z_vf ||_inf
+|| g*log(vr) + cr - ci - N’<a href="#id44"><span class="problematic" id="id45">*</span></a>(u0 + log(x) + z_dx + z_x) - C’<a href="#id46"><span class="problematic" id="id47">*</span></a>y_C - z_vi + z_vr ||_inf</p>
+<p>Derived biochemical optimality conditions (fluxes and concentrations, combining forward and reverse)
+|| g*log(vr/vf) + cr - cf - 2*(ci + N’<a href="#id48"><span class="problematic" id="id49">*</span></a>(u0 + f*log(x)  + z_dx +   z_x) + C’<a href="#id50"><span class="problematic" id="id51">*</span></a>y_C + z_vi) - z_vf + z_vr ||_inf
+|| g*log(vr/vf) + cr - cf - 2*(ci - N’<a href="#id52"><span class="problematic" id="id53">*</span></a>(u0 + f*log(x0) - z_dx + z_x0) + C’<a href="#id54"><span class="problematic" id="id55">*</span></a>y_C + z_vi) - z_vf + z_vr ||_inf</p>
+<p>If (but not only if) the input data is as follows:
+g = 2, f = 1, cr = cf, ci = 0,
+C = 0, d = 0,  &lt;=&gt; y_C = 0
+vl = -inf, vu = inf &lt;=&gt; z_v = 0 (for internal reactions)
+dxl = -inf, dxu = inf, &lt;=&gt; z_dx = 0
+ub = inf, &lt;=&gt; z_vf = 0
+lb = - inf, &lt;=&gt; z_vr = 0
+x0l = -inf, x0u = inf, &lt;=&gt; z_x0 = 0
+then the above reduces to
+|| log(vr/vf) = N’<a href="#id56"><span class="problematic" id="id57">*</span></a>(u0 + log(x) + z_x) ||_inf
+where z_x is the dual variable to the bounds on concentration x.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[solution, modelOut] = entropicFluxBalanceAnalysis</strong> (<em>model,param</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><p><strong>model</strong> – (the following fields are required - others can be supplied)</p>
+<ul class="simple">
+<li><p>S  - <cite>m x (n + k)</cite> Stoichiometric matrix</p></li>
+<li><p>c  - <cite>(n + k) x 1</cite> Linear objective coefficients</p></li>
+<li><p>lb - <cite>(n + k) x 1</cite> Lower bounds on net flux</p></li>
+<li><p>ub - <cite>(n + k) x 1</cite> Upper bounds on net flux</p></li>
+</ul>
+</dd>
+</dl>
+<p>OPTIONAL INPUTS:
+model.osenseStr: Maximize (‘max’)/minimize (‘min’) (opt, default = ‘max’) linear part of the objective.</p>
+<blockquote>
+<div><p>Nonlinear parts of the objective are always assumed to be minimised.</p>
+</div></blockquote>
+<p>model.b         <cite>m x 1</cite> change in concentration with time
+model.csense    <cite>m x 1</cite> character array with entries in {L,E,G}</p>
+<p>model.C:       <cite>c x (n + k)</cite> Left hand side of C*v &lt;= d
+model.d:       <cite>c x (n + k)</cite> Right hand side of C*v &lt;= d
+model.dsense   <cite>c x 1</cite> character array with entries in {L,E,G}</p>
+<p>model.g         n x 1    strictly positive weight on internal flux entropy maximisation (default 2)
+model.cf:       n x 1    real valued linear objective coefficients on internal forward flux (default 0)
+model.cr:       n x 1    real valued linear objective coefficients on internal reverse flux (default 0)
+model.vfl:      n x 1    non-negative lower bound on internal forward flux (default 0)
+model.vfu:      n x 1    non-negative upper bound on internal forward flux (default inf)
+model.vrl:      n x 1    non-negative lower bound on internal reverse flux (default 0)
+model.vru:      n x 1    non-negative upper bound on internal reverse flux (default 0)</p>
+<p>model.f:       m x 1    strictly positive weight on concentration entropy maximisation (default 1)
+model.u0:      m x 1    real valued linear objective coefficients on concentrations (default 0)
+model.x0l:     m x 1    non-negative lower bound on initial molecular concentrations
+model.x0u:     m x 1    non-negative upper bound on initial molecular concentrations
+model.xl:      m x 1    non-negative lower bound on final molecular concentrations
+model.xu:      m x 1    non-negative lower bound on final molecular concentrations
+model.dxl:     m x 1    real valued lower bound on difference between final and initial molecular concentrations    dxl &lt;= x - x0
+model.dxu:     m x 1    real valued upper bound on difference between final and initial initial molecular concentrations  x - x0 &lt;= dxu</p>
+<p>model.Q        (n + k) x (n + k)    positive semi-definite matrix to minimise (1/2)v’<a href="#id58"><span class="problematic" id="id59">*</span></a>Q*v</p>
+<p>model.H        (n + k) x (n + k)    positive semi-definite matrix in objective (1/2)(v-h)’<a href="#id60"><span class="problematic" id="id61">*</span></a>H*(v-h) to be minimised
+model.h        (n + k) x 1          vector in objective (1/2)(v-h)’<a href="#id62"><span class="problematic" id="id63">*</span></a>H*(v-h) to be minimised</p>
+<p>model.SConsistentMetBool: m x 1  boolean indicating  stoichiometrically consistent metabolites
+model.SConsistentRxnBool: n x 1  boolean indicating  stoichiometrically consistent metabolites</p>
+<blockquote>
+<div><p>param.solver:                    {(‘pdco’),’mosek’}
+param.entropicFBAMethod:                    {(‘fluxes’),’fluxConc’)} maximise entropy of fluxes or also concentrations
+param.printLevel:                {(0),1}</p>
+</div></blockquote>
+<dl>
+<dt>Parameters related with flux optimisation</dt><dd><p>param.maxUnidirectionalFlux:     scalar real valued maximum expected value of unidirectional flux
+param.internalNetFluxBounds:     ‘original’ (default) maintains direction and magnitude of net flux from model.lb &amp; model.ub</p>
+<blockquote>
+<div><p>‘directional’ maintains direction of net flux from model.lb &amp; model.ub but not magnitude
+‘random’ random net flux direction, replacing constraints from model.lb &amp; model.ub</p>
+</div></blockquote>
+<p>Parameters related with concentration optimisation:
+param.maxConc:                   scalar maximum permitted metabolite concentration
+param.externalNetFluxBounds:     (‘original’) = use bounds on external reactions from model.lb and model.ub</p>
+<blockquote>
+<div><p>‘dxReplacement’ = replace model.lb and model.ub with bounds on change in concentration
+‘none’ = set exchange reactions to be unbounded</p>
+</div></blockquote>
+<p>model.gasConstant:    scalar gas constant (default 8.31446261815324 J K^-1 mol^-1)
+model.T:              scalar temperature (default 310.15 Kelvin)</p>
+</dd>
+</dl>
+<p>OUTPUTS:
+solution: solution structure with the following fields</p>
+<blockquote>
+<div><blockquote>
+<div><p><a href="#id64"><span class="problematic" id="id65">*</span></a>.v:   n x 1 double net flux
+<a href="#id66"><span class="problematic" id="id67">*</span></a>.vf:  n x 1 double unidirectional forward internal reaction flux
+<a href="#id68"><span class="problematic" id="id69">*</span></a>.vr:  n x 1 double unidirectional reverse internal reaction flux
+<a href="#id70"><span class="problematic" id="id71">*</span></a>.vt:  scalar total internal reaction flux sum(vf + vr)
+<a href="#id72"><span class="problematic" id="id73">*</span></a>.y_N: m × 1 double dual variable to steady state constraints
+<a href="#id74"><span class="problematic" id="id75">*</span></a>.y_C: z × 1 double dual variable to coupling constraints
+<a href="#id76"><span class="problematic" id="id77">*</span></a>.z_v: (n + k) x 1 double dual variable to box constraints on net flux
+<a href="#id78"><span class="problematic" id="id79">*</span></a>.z_vf: n x 1 double dual variable to box constraints on forward flux
+<a href="#id80"><span class="problematic" id="id81">*</span></a>.z_vr: n x 1 double dual variable to box constraints on reverse flux
+<a href="#id82"><span class="problematic" id="id83">*</span></a>.time: solve time
+<a href="#id84"><span class="problematic" id="id85">*</span></a>.stat: COBRA toolbox standard solution status
+<a href="#id86"><span class="problematic" id="id87">*</span></a>.origStat: solution status as provided by the solver</p>
+</div></blockquote>
+<p>modelOut: solved model with optional input fields populated by defaults, if they were not provided</p>
+</div></blockquote>
+<p>EXAMPLE:</p>
+<p>NOTE:</p>
+<p>Author(s): Ronan M.T. Fleming 2021</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.base.solvers.entropicFBA.processConcConstraints">
+<span class="sig-name descname"><span class="pre">processConcConstraints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">param</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/entropicFBA/processConcConstraints.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.entropicFBA.processConcConstraints" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[] = processConcConstraints</strong> (<em>model,param</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><p><strong>model</strong> – (the following fields are required - others can be supplied)</p>
+<ul class="simple">
+<li><p>S  - <cite>m x (n + k)</cite> Stoichiometric matrix</p></li>
+<li><p>c  - <cite>(n + k) x 1</cite> Linear objective coefficients</p></li>
+<li><p>lb - <cite>(n + k) x 1</cite> Lower bounds on net flux</p></li>
+<li><p>ub - <cite>(n + k) x 1</cite> Upper bounds on net flux</p></li>
+</ul>
+</dd>
+</dl>
+<p>OPTIONAL INPUTS
+model.SConsistentMetBool: m x 1  boolean indicating  stoichiometrically consistent metabolites
+model.SConsistentRxnBool: n x 1  boolean indicating  stoichiometrically consistent metabolites
+model.rxns:</p>
+<blockquote>
+<div><p>model.f:       m x 1    strictly positive weight on concentration entropy maximisation (default 1)
+model.u0:      m x 1    standard transformed Gibbs energy of formation (default 0)
+model.c0l:     m x 1    non-negative lower bound on initial molecular concentrations
+model.c0u:     m x 1    non-negative upper bound on initial molecular concentrations
+model.cl:      m x 1    non-negative lower bound on final molecular concentrations
+model.cu:      m x 1    non-negative lower bound on final molecular concentrations
+model.dcl:     m x 1    real valued lower bound on difference between final and initial molecular concentrations   (default -inf)
+model.dcu:     m x 1    real valued upper bound on difference between final and initial initial molecular concentrations  (default inf)
+model.gasConstant:    scalar gas constant (default 8.31446261815324 J K^-1 mol^-1)
+model.temperature:              scalar temperature (default 310.15 Kelvin)
+param.maxConc: (1e4) maximim micromolar concentration allowed
+param.maxConc: (1e-4) minimum micromolar concentration allowed
+param.externalNetFluxBounds:   (‘original’) =</p>
+<blockquote>
+<div><p>‘dxReplacement’ = when model.dcl or model.dcu is provided then they set the upper and lower bounds on metabolite exchange</p>
+</div></blockquote>
+<p>param.printLevel:</p>
+</div></blockquote>
+<p>OUTPUTS:
+f:       m x 1    strictly positive weight on concentration entropy maximisation (default 1)
+u0:      m x 1    standard transformed Gibbs energy of formation, divided by RT (default 0)
+c0l:     m x 1    non-negative lower bound on initial molecular concentrations
+c0u:     m x 1    non-negative upper bound on initial molecular concentrations
+cl:      m x 1    non-negative lower bound on final molecular concentrations
+cu:      m x 1    non-negative lower bound on final molecular concentrations
+dcl:     m x 1    real valued lower bound on difference between final and initial molecular concentrations
+dcu:     m x 1    real valued upper bound on difference between final and initial initial molecular concentrations</p>
+<blockquote>
+<div><p>wl:     k x 1    lower bound on external net flux
+wu:     k x 1    upper bound on external net flux</p>
+<blockquote>
+<div><p>B:    <cite>m x k</cite>   External stoichiometric matrix
+b:     m x 1    RHS of S*v = b</p>
+</div></blockquote>
+</div></blockquote>
+<p>EXAMPLE:</p>
+<p>NOTE:</p>
+<p>Author(s): Ronan Fleming</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.base.solvers.entropicFBA.processFluxConstraints">
+<span class="sig-name descname"><span class="pre">processFluxConstraints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">param</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/entropicFBA/processFluxConstraints.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.entropicFBA.processFluxConstraints" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>processFluxConstraints</strong> (<em>model</em>)</p></li>
+<li><p><strong>processFluxConstraints</strong> (<em>model,param</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><p><strong>model</strong> – (the following fields are required - others can be supplied)</p>
+<ul class="simple">
+<li><p>S  - <cite>m x (n + k)</cite> Stoichiometric matrix</p></li>
+<li><p>c  - <cite>(n + k) x 1</cite> Linear objective coefficients</p></li>
+<li><p>lb - <cite>(n + k) x 1</cite> Lower bounds on net flux</p></li>
+<li><p>ub - <cite>(n + k) x 1</cite> Upper bounds on net flux</p></li>
+</ul>
+</dd>
+</dl>
+<dl>
+<dt>OPTIONAL INPUTS</dt><dd><blockquote>
+<div><p>model.osenseStr: (‘max’) or ‘min’. The default linear objective sense is maximisation, i.e. ‘max’
+model.cf:       n x 1    real valued linear objective coefficients on internal forward flux (default 0)
+model.cr:       n x 1    real valued linear objective coefficients on internal reverse flux (default 0)
+model.g         n x 1    strictly positive weight on internal flux entropy maximisation (default 2)
+model.SConsistentRxnBool: n x 1  boolean indicating  stoichiometrically consistent metabolites
+model.vfl:      n x 1    non-negative lower bound on internal forward flux (default 0)
+model.vfu:      n x 1    non-negative upper bound on internal forward flux (default inf)
+model.vrl:      n x 1    non-negative lower bound on internal reverse flux (default 0)
+model.vru:      n x 1    non-negative upper bound on internal reverse flux (default 0)</p>
+</div></blockquote>
+<p>param.printLevel:
+param.solver:    {‘pdco’,(‘mosek’)}
+param.debug:     {(0),1} 1 = run in debug mode
+param.entropicFBAMethod:    {(‘fluxes’),’fluxesConcentrations’} maximise entropy of fluxes (default) or also concentrations
+param.maxUnidirectionalFlux: maximum unidirectional flux (1e5 by default)
+param.minUnidirectionalFlux: minimum unidirectional flux (zero by default)
+param.internalNetFluxBounds: (‘original’)   = use model.lb and model.ub to set the direction and magnitude of internal net flux bounds</p>
+<blockquote>
+<div><p>‘directional’ = use model.lb and model.ub to set the direction of net flux bounds (ignoring magnitude)
+‘none’        = ignore model.lb and model.ub and allow all net flues to be reversible</p>
+</div></blockquote>
+</dd>
+</dl>
+<p>OUTPUTS:
+vl:       n x 1    lower bound on internal net flux
+vu:       n x 1    upper bound on internal net flux
+vel:      k x 1    lower bound on external net flux
+veu:      k x 1    upper bound on external net flux
+vfl:      n x 1    non-negative lower bound on internal forward flux
+vfu:      n x 1    non-negative upper bound on internal forward flux
+vrl:      n x 1    non-negative lower bound on internal reverse flux
+vru:      n x 1    non-negative upper bound on internal reverse flux
+ci:       n x 1    linear objective coefficients corresponding to internal net fluxes
+vel:      k x 1    linear objective coefficients corresponding to external net fluxes
+cf:       n x 1    real valued linear objective coefficients on internal forward flux
+cr:       n x 1    real valued linear objective coefficients on internal reverse flux
+g         n x 1    strictly positive weight on internal flux entropy maximisation</p>
+<p>EXAMPLE:</p>
+<p>NOTE:</p>
+<p>Author(s): Ronan Fleming</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.base.solvers.entropicFBA.solveCobraEP">
+<span class="sig-name descname"><span class="pre">solveCobraEP</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">EPproblem</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/entropicFBA/solveCobraEP.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.entropicFBA.solveCobraEP" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solves the following optimisation problem:</p>
+<dl class="simple">
+<dt>minimize   osense*(c.*d)’x + d.*x’(log(x) -1) + (1/2)*x’<a href="#id88"><span class="problematic" id="id89">*</span></a>Q*x</dt><dd><p>x</p>
+</dd>
+<dt>subject to    A*x    &lt;=&gt; b<span class="classifier">y</span></dt><dd><p>lb &lt;= x  &lt;=  ub      : z</p>
+</dd>
+</dl>
+<p>or
+subject to    blc &lt;= A*x &lt;= buc   : y</p>
+<blockquote>
+<div><p>lb &lt;= x  &lt;=  ub     : z</p>
+</div></blockquote>
+<p>However, when EPproblem.P is present, the following optimisation problem
+is solved:</p>
+<dl class="simple">
+<dt>minimize   osense*(c.*d)’<a href="#id90"><span class="problematic" id="id91">*</span></a>x  + (d.*x)’<a href="#id92"><span class="problematic" id="id93">*</span></a>log(x./q) + (1/2)*x’<a href="#id94"><span class="problematic" id="id95">*</span></a>Q*x = osense*(c.*d)’<a href="#id96"><span class="problematic" id="id97">*</span></a>x  + (d.*x)’<a href="#id98"><span class="problematic" id="id99">*</span></a>log(x) - (d.*x)’<a href="#id100"><span class="problematic" id="id101">*</span></a>log(q) + (1/2)*x’<a href="#id102"><span class="problematic" id="id103">*</span></a>Q*x</dt><dd><p>x,q</p>
+</dd>
+<dt>subject to    A*x    &lt;=&gt; b<span class="classifier">y</span></dt><dd><p>P*x - q =  0         : r
+lb &lt;= x  &lt;=  ub      : z</p>
+</dd>
+</dl>
+<p>or
+subject to    blc &lt;= A*x &lt;= buc   : y</p>
+<blockquote>
+<div><p>P*x  -q =  0        : r
+lb &lt;= x  &lt;=  ub     : z</p>
+</div></blockquote>
+<dl class="field-list">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>sol = solveCobraEP</strong> (<em>EPproblem, varargin</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><p><strong>EPproblem</strong> –</p>
+<dl class="simple">
+<dt>Structure containing the following fields describing the EP problem to be solved</dt><dd><ul class="simple">
+<li><p>.A  - m x n Linear constraint matrix</p></li>
+<li><p>.c  - n x 1 Linear objective coeff vector</p></li>
+<li><p>.lb - n x 1 Lower bound vector</p></li>
+<li><p>.ub - n x 1 Upper bound vector</p></li>
+<li><dl class="simple">
+<dt>.d  - n x 1 Non-negative vector indicating the non-negative</dt><dd><p>variables whose entropy is maximised. If d(i)==0
+then there is only a linear objective on x(i).</p>
+</dd>
+</dl>
+</li>
+<li><p>.osense - Linear objective sense (-1 means maximise, 1 means minimise)</p></li>
+</ul>
+</dd>
+<dt>With either the following fields</dt><dd><ul class="simple">
+<li><p>.b - m x 1 right hand side vector i.e. A &lt;=&gt; b</p></li>
+<li><dl class="simple">
+<dt>.csense - m x 1 string containting the constraint sense for</dt><dd><p>each row in A (‘E’, equality, ‘G’ greater than, ‘L’ less than).</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt>Or with the following fields</dt><dd><ul class="simple">
+<li><p>.blc - m x 1  left hand side vector i.e.  blc &lt;= A*x</p></li>
+<li><p>.buc - m x 1 right hand side vector i.e.  A*x &lt;= buc</p></li>
+</ul>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><ul>
+<li><dl>
+<dt><strong>EPproblem</strong> – Structure containing the following fields describing the EP problem to be solved</dt><dd><blockquote>
+<div><ul class="simple">
+<li><dl class="simple">
+<dt>.P - p x n matrix with entries {0,1}, such that q_i := P_{i,:}*x is the sums</dt><dd><p>of the x corresponding to nonzero columns of the ith row of P, i.e. P_{i,:}.
+Used for normalised entropy maximisation.</p>
+</dd>
+</dl>
+</li>
+<li><p>.Q - positive semidefinite matrix for quadratic part of objective (see above)</p></li>
+</ul>
+</div></blockquote>
+<ul>
+<li><p><strong>varargin</strong> –</p>
+<dl class="simple">
+<dt>Additional parameters either as parameter struct, or as</dt><dd><p>parameter/value pairs. A combination is possible, if
+the parameter struct is either at the beginning or the
+end of the optional input.
+All fields of the struct which are not COBRA parameters
+(see <cite>getCobraSolverParamsOptionsForType</cite>) for this
+problem type will be passed on to the solver in a
+solver specific manner. Some optional parameters which
+can be passed to the function as parameter value pairs,
+or as part of the options struct are listed below:</p>
+</dd>
+</dl>
+<p>‘verify’
+‘printLevel’
+‘debug’
+‘feasTol’
+‘optTol’
+‘solver’</p>
+</li>
+<li><p><strong>printLevel</strong> – Printing level</p>
+<ul class="simple">
+<li><p>0 - Silent (Default)</p></li>
+<li><p>1 - Warnings and Errors</p></li>
+<li><p>2 - Summary information</p></li>
+<li><p>3 - More detailed information</p></li>
+<li><p>&gt; 10 - Pause statements, and maximal printing (debug mode)</p></li>
+</ul>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<p>solver:         Optimisation solver used, {(‘mosek’),’pdco’}
+feasTol:        Feasibility tolerance
+optTol:         Optimality tolerance</p>
+</dd>
+<dt class="field-even">OUTPUT</dt>
+<dd class="field-even"><p><strong>sol</strong> – Structure containing the following fields describing a LP sol:
+<a href="#id104"><span class="problematic" id="id105">*</span></a>.obj:          Objective value
+<a href="#id106"><span class="problematic" id="id107">*</span></a>.objLinear      osense*c’<a href="#id108"><span class="problematic" id="id109">*</span></a>x;
+<a href="#id110"><span class="problematic" id="id111">*</span></a>.objEntropy     d.*x’<a href="#id112"><span class="problematic" id="id113">*</span></a>(log(x) -1);
+<a href="#id114"><span class="problematic" id="id115">*</span></a>.objQuadratic   (1/2)*x’<a href="#id116"><span class="problematic" id="id117">*</span></a>Q*x;
+<a href="#id118"><span class="problematic" id="id119">*</span></a>.v:  n+k ×1 double
+<a href="#id120"><span class="problematic" id="id121">*</span></a>.vf: n × 1 double
+<a href="#id122"><span class="problematic" id="id123">*</span></a>.vr: n × 1 double
+<a href="#id124"><span class="problematic" id="id125">*</span></a>.vt: 1’<a href="#id126"><span class="problematic" id="id127">*</span></a>vt + 1’<a href="#id128"><span class="problematic" id="id129">*</span></a>vr
+<a href="#id130"><span class="problematic" id="id131">*</span></a>.y_N: m x 1 double   dual sol to constraints :math: <cite>A*x (‘E’ | ‘G’ | ‘L’) b</cite>
+<a href="#id132"><span class="problematic" id="id133">*</span></a>.z_dx: 0
+<a href="#id134"><span class="problematic" id="id135">*</span></a>.z_vf: n × 1 double    dual sol to <span class="math notranslate nohighlight">\(lb &lt;= vr &lt;= ub\)</span>
+<a href="#id136"><span class="problematic" id="id137">*</span></a>.z_vr: n × 1 double    dual sol to <span class="math notranslate nohighlight">\(lb &lt;= vf &lt;= ub\)</span>
+<a href="#id138"><span class="problematic" id="id139">*</span></a>.z_vi: n × 1 double    dual sol to <span class="math notranslate nohighlight">\(lb &lt;= v &lt;= ub\)</span>
+<a href="#id140"><span class="problematic" id="id141">*</span></a>.z_v: n + k × 1 double dual sol to <span class="math notranslate nohighlight">\(lb &lt;= w &lt;= ub\)</span>
+* .stat:         Solver status in standardized form</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>0 - Infeasible problem</p></li>
+<li><p>1 - Optimal sol</p></li>
+<li><p>2 - Unbounded sol</p></li>
+<li><p>3 - Almost optimal sol</p></li>
+<li><p>-1 - Some other problem (timelimit, numerical problem etc)</p></li>
+</ul>
+</div></blockquote>
+<ul class="simple">
+<li><p>.origStat:         Original status returned by the specific solver</p></li>
+<li><p>.origStatText:     Original status text returned by the specific solver</p></li>
+<li><p>.time:         Solve time in seconds</p></li>
+<li><p>.solver:       Solver used to solve EP problem</p></li>
+<li><p>.epmethod: solver method used e.g. ‘CONIC’</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../gurobi/index.html" class="btn btn-default float-right" title="Gurobi" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../cplex/index.html" class="btn btn-default" title="Cplex" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017-2021, The COBRA Toolbox developers.
+
+    </p>
+  </div>
+  Built with Sphinx using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../',
+            VERSION:'2.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+    <script type="text/javascript" src="../../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../../_static/sphinx_highlight.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/mathjax/MathJax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+
+  
+  
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TRCMZL1FKK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TRCMZL1FKK');
+  </script>
+    
+</body>
+</html>

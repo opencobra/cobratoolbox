@@ -1,0 +1,758 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Properties &mdash; The COBRA Toolbox</title>
+  
+
+  
+  
+  
+    <link rel="apple-touch-icon" sizes="180x180" href="../../../../../_static/img/apple-touch-icon.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../../../_static/img/favicon-32x32.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="16x16" href="../../../../../_static/img/favicon-16x16.png">
+  
+  
+    <link rel="mask-icon" href="../../../../../_static/img/safari-pinned-tab.svg" color="#5bbad5">
+  
+  
+    <link rel="manifest" href="../../../../../_static/json/manifest.json">
+  
+  
+    <meta name="msapplication-config" content="../../../../../_static/browserconfig.xml">
+  
+  <meta name="theme-color" content="#ffffff">
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+  <script src="../../../../../_static/js/jquery.easy-autocomplete.min.js" type="text/javascript" ></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+  <link href="../../../../../_static/css/easy-autocomplete.min.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../../_static/css/cobra.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../../../../_static/css/cobra.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../../../search.html"/>
+    <link rel="top" title="The COBRA Toolbox" href="../../../../../index.html"/>
+        <link rel="up" title="Src" href="../index.html"/>
+        <link rel="next" title="Integration" href="../integration/index.html"/>
+        <link rel="prev" title="Debugging" href="../debugging/index.html"/> 
+
+  
+  <script src="../../../../../_static/js/modernizr.min.js"></script>
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../../index.html" class="icon icon-home"> The COBRA Toolbox
+          
+
+          
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
+          
+          </a>
+
+              
+          <h1>The COBRA Toolbox</h1>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" id="simple"/>
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+    <script>
+    	var options = {
+
+		url: "../../../../../_static/json/functions.json",
+
+		getValue: "name",
+
+		list: {
+            onKeyEnterEvent: function(item) {
+                    return "_static/../" + item.website_url
+            },
+            maxNumberOfElements: 25,
+			match: {
+					enabled: true,
+			},
+            sort: {
+			    enabled: true
+		    }
+		},
+
+    	template: {
+	    	type: "custom",
+		    method: function(value, item) {
+                return "<span><a href='../../../../../search.html?q=" + item.name + "&check_keywords=yes&area=default'>" + value + "</a>" + "<a href='../../../../../_static/../" + item.website_url + "' ><img src='../../../../../_static/link.svg'/></a></span>";
+		    }
+	    },
+
+		theme: "square"
+
+	};
+
+	$("#simple").easyAutocomplete(options);
+
+
+    </script>
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../../index.html">Home</a></li>
+              </ul>
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../../index.html">Functions</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../../../analysis/index.html">Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../base/index.html">Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../dataIntegration/index.html">Dataintegration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../design/index.html">Design</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../../index.html">Reconstruction</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../../../modelGeneration/index.html">Modelgeneration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../refinement/index.html">Refinement</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../../index.html">Demeter</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../../suite/index.html">Suite</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="../index.html">Src</a><ul class="current">
+<li class="toctree-l5"><a class="reference internal" href="../refinement/index.html">Refinement</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../debugging/index.html">Debugging</a></li>
+<li class="toctree-l5 current"><a class="current reference internal" href="#">Properties</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../integration/index.html">Integration</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../fastGapFill/index.html">Fastgapfill</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../comparison/index.html">Comparison</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../metaboRePort/index.html">Metaboreport</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../growthExpMatch/index.html">Growthexpmatch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../rBioNet/index.html">Rbionet</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../visualization/index.html">Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../contributing.html">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../cite.html">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../support.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../plan.html">Development Plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../contact.html">Contact</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../citations.html">Citations</a></li>
+</ul>
+
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../index.html">The COBRA Toolbox</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../contents.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../../index.html">Functions</a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Reconstruction</a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Demeter</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Src</a></li>
+      <li class="breadcrumb-item active">Properties</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="https://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <section id="properties">
+<span id="id1"></span><h1>Properties<a class="headerlink" href="#properties" title="Permalink to this heading">¶</a></h1>
+<span class="target" id="module-src.reconstruction.demeter.src.properties"></span><dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.src.properties.computeFluxConsistentReactionPresence">
+<span class="sig-name descname"><span class="pre">computeFluxConsistentReactionPresence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">modelFolder</span></em>, <em class="sig-param"><span class="pre">propertiesFolder</span></em>, <em class="sig-param"><span class="pre">reconVersion</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/src/properties/computeFluxConsistentReactionPresence.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.src.properties.computeFluxConsistentReactionPresence" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function extracts the presence of flux consistent reactions for a
+resource of reconstructions that were refined through the semi-automatic
+refinement pipeline (1 = present in the flux consistent submodel, 0 = not
+present in the flux consistent submodel).</p>
+<dl class="simple">
+<dt>USAGE</dt><dd><p>computeFluxConsistentReactionPresence(modelFolder,propertiesFolder,reconVersion)</p>
+</dd>
+</dl>
+<p>INPUTS
+modelFolder                                                                                                                                                                                           Folder with COBRA models to be analyzed
+propertiesFolder      Folder where the retrieved reaction presences will</p>
+<blockquote>
+<div><p>be stored (default: current folder)</p>
+</div></blockquote>
+<p>reconVersion          Name assigned to the reconstruction resource</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>AUTHOR</p></li>
+</ul>
+<p>Almut Heinken, 12/2020</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.src.properties.computeInternalMetaboliteProduction">
+<span class="sig-name descname"><span class="pre">computeInternalMetaboliteProduction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">modelFolder</span></em>, <em class="sig-param"><span class="pre">propertiesFolder</span></em>, <em class="sig-param"><span class="pre">reconVersion</span></em>, <em class="sig-param"><span class="pre">metList</span></em>, <em class="sig-param"><span class="pre">numWorkers</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/src/properties/computeInternalMetaboliteProduction.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.src.properties.computeInternalMetaboliteProduction" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function extracts all metabolites that could be produced internally
+by at least one refined reconstruction in the tested reconstruction
+resource. Disregards whether the metabolite can be transported.</p>
+<dl class="simple">
+<dt>USAGE</dt><dd><p>computeInternalMetaboliteProduction(modelFolder,propertiesFolder,reconVersion,numWorkers)</p>
+</dd>
+</dl>
+<p>INPUTS
+modelFolder           Folder with reconstructions to be analyzed
+propertiesFolder      Folder where the retrieved uptake and secretion</p>
+<blockquote>
+<div><p>potential will be stored (default: current folder)</p>
+</div></blockquote>
+<dl class="simple">
+<dt>reconVersion          Name assigned to the reconstruction resource</dt><dd><p>(default: “Reconstructions”)</p>
+</dd>
+<dt>metList               List of VMH IDs of metabolites to analyze (default:</dt><dd><p>all metabolites in reconstruction resource)</p>
+</dd>
+</dl>
+<p>numWorkers            Number of workers in parallel pool (default: 0)</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>AUTHORS</p></li>
+</ul>
+<p>Almut Heinken, 11/2020</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.src.properties.computeMetabolicDistance">
+<span class="sig-name descname"><span class="pre">computeMetabolicDistance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">propertiesFolder</span></em>, <em class="sig-param"><span class="pre">reconVersion</span></em>, <em class="sig-param"><span class="pre">numWorkers</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/src/properties/computeMetabolicDistance.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.src.properties.computeMetabolicDistance" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function computes the Jaccard distance for each pairwise combination
+of analysed strains in terms of reaction presence and metabolite uptake
+and secretion potential.</p>
+<dl class="simple">
+<dt>USAGE</dt><dd><p>computeMetabolicDistance(propertiesFolder,reconVersion)</p>
+</dd>
+</dl>
+<p>INPUTS
+propertiesFolder      Folder where the reaction presences and uptake/secretion</p>
+<blockquote>
+<div><p>potentials to be analysed are stored</p>
+</div></blockquote>
+<p>reconVersion          Name assigned to the reconstruction resource</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>AUTHOR</p></li>
+</ul>
+<p>Almut Heinken, 07/2020</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.src.properties.computeModelProperties">
+<span class="sig-name descname"><span class="pre">computeModelProperties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">refinedFolder</span></em>, <em class="sig-param"><span class="pre">infoFilePath</span></em>, <em class="sig-param"><span class="pre">reconVersion</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/src/properties/computeModelProperties.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.src.properties.computeModelProperties" title="Permalink to this definition">¶</a></dt>
+<dd><p>Part of the DEMETER pipeline. This function analyzes and plots various
+properties of the refined and optionally the draft reconstructions. Note
+that this may be time-consuming.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>propertiesFolder = computeModelProperties</strong> (<em>refinedFolder, infoFilePath, reconVersion, varargin</em>)</p>
+</dd>
+</dl>
+<p>REQUIRED INPUTS
+refinedFolder            Folder with refined COBRA models to analyze
+infoFilePath             File with information on reconstructions to refine
+reconVersion             Name of the refined reconstruction resource</p>
+<blockquote>
+<div><p>(default: “Reconstructions”)</p>
+</div></blockquote>
+<p>OPTIONAL INPUTS
+numWorkers               Number of workers in parallel pool (default: 2)
+translatedDraftsFolder   Folder with draft COBRA models with translated</p>
+<blockquote>
+<div><p>nomenclature and stored as mat files</p>
+</div></blockquote>
+<dl class="simple">
+<dt>customFeatures           Features other than taxonomy to cluster microbes</dt><dd><p>by. Need to be a table header in the file with
+information on reconstructions.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.src.properties.computeReconstructionFeatures">
+<span class="sig-name descname"><span class="pre">computeReconstructionFeatures</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">translDraftsFolder</span></em>, <em class="sig-param"><span class="pre">refinedFolder</span></em>, <em class="sig-param"><span class="pre">propertiesFolder</span></em>, <em class="sig-param"><span class="pre">reconVersion</span></em>, <em class="sig-param"><span class="pre">numWorkers</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/src/properties/computeReconstructionFeatures.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.src.properties.computeReconstructionFeatures" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function prints a comparison of basic reconstruction features of
+the draft and refined reconstructions for the refined reconstruction
+resource.</p>
+<dl class="simple">
+<dt>USAGE</dt><dd><p>computeReconstructionFeatures(translDraftsFolder,refinedFolder,propertiesFolder,reconVersion,numWorkers)</p>
+</dd>
+</dl>
+<p>INPUTS
+translDraftsFolder    Folder with translated draft reconstructions
+refinedFolder         Folder with refined reconstructions to be analyzed
+propertiesFolder      Folder where the computed stochiometric and flux</p>
+<blockquote>
+<div><p>consistencies will be stored</p>
+</div></blockquote>
+<p>reconVersion          Name assigned to the reconstruction resource
+numWorkers            Number of workers in parallel pool</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>AUTHOR</p></li>
+</ul>
+<p>Almut Heinken, 07/2020</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.src.properties.computeUptakeSecretion">
+<span class="sig-name descname"><span class="pre">computeUptakeSecretion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">modelFolder</span></em>, <em class="sig-param"><span class="pre">propertiesFolder</span></em>, <em class="sig-param"><span class="pre">reconVersion</span></em>, <em class="sig-param"><span class="pre">metList</span></em>, <em class="sig-param"><span class="pre">numWorkers</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/src/properties/computeUptakeSecretion.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.src.properties.computeUptakeSecretion" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function extracts all metabolites that could be consumed or secreted
+by at least one refined reconstruction in the tested reconstruction
+resource.</p>
+<dl class="simple">
+<dt>USAGE</dt><dd><p>computeUptakeSecretion(modelFolder,propertiesFolder,reconVersion,metList,numWorkers)</p>
+</dd>
+</dl>
+<p>INPUTS
+modelFolder           Folder with reconstructions to be analyzed
+propertiesFolder      Folder where the retrieved uptake and secretion</p>
+<blockquote>
+<div><p>potential will be stored (default: current folder)</p>
+</div></blockquote>
+<p>reconVersion          Name assigned to the reconstruction resource
+metList               List of VMH IDs of metabolites to analyze (default:</p>
+<blockquote>
+<div><p>all metabolites in reconstruction resource)</p>
+</div></blockquote>
+<p>numWorkers            Number of workers in parallel pool (default: 0)</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>AUTHORS</p></li>
+</ul>
+<p>Almut Heinken, 06/2020</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.src.properties.extractReconstructionResourceSubset">
+<span class="sig-name descname"><span class="pre">extractReconstructionResourceSubset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">modelFolder</span></em>, <em class="sig-param"><span class="pre">infoFilePath</span></em>, <em class="sig-param"><span class="pre">subHeader</span></em>, <em class="sig-param"><span class="pre">subFeature</span></em>, <em class="sig-param"><span class="pre">subsetFolder</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/src/properties/extractReconstructionResourceSubset.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.src.properties.extractReconstructionResourceSubset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extracts a subset of a reconstruction resource (e.g., AGORA) that shares
+a certain feature (e.g., belonging to a particular taxon. Requires
+providing a table containing the information based on which the subset
+should be extracted.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[extractedSubset,subsetFolder] = extractReconstructionResourceSubset</strong> (<em>modelPath, infoFilePath, subHeader, subFeature, subsetFolder</em>)</p>
+</dd>
+</dl>
+<p>REQUIRED INPUTS
+modelFolder        Path to folder with reconstruction resource from which</p>
+<blockquote>
+<div><p>the subset should be retrieved</p>
+</div></blockquote>
+<dl class="simple">
+<dt>infoFilePath       Path to text or spreadsheet file with information on</dt><dd><p>each reconstruction in the resource
+(e.g., ‘AGORA_infoFile.xslx’)</p>
+</dd>
+<dt>subHeader          Name of column header in the information table which</dt><dd><p>contains the feature by which the subset should be
+extracted (e.g., ‘Phylum’)</p>
+</dd>
+<dt>subFeature         Name of the feature by which the subset should be</dt><dd><p>extracted (e.g., ‘Bacteroidetes’)</p>
+</dd>
+</dl>
+<p>OPTIONAL INPUTS
+subsetFolder       Path to folder in which the subset of reconstructions</p>
+<blockquote>
+<div><p>should be saved (Default: ‘extractedModels’)</p>
+</div></blockquote>
+<p>OUTPUTS
+extractedSubset    List of IDs of reconstructions in the extracted subset
+subsetFolder       Path to folder in which the subset of reconstructions</p>
+<blockquote>
+<div><p>is located</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.src.properties.getReactionMetabolitePresence">
+<span class="sig-name descname"><span class="pre">getReactionMetabolitePresence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">modelFolder</span></em>, <em class="sig-param"><span class="pre">propertiesFolder</span></em>, <em class="sig-param"><span class="pre">reconVersion</span></em>, <em class="sig-param"><span class="pre">numWorkers</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/src/properties/getReactionMetabolitePresence.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.src.properties.getReactionMetabolitePresence" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function extracts the presence of reactions and metabolites for a
+resource of reconstructions that were refined through the semi-automatic
+refinement pipeline (1 = present, 0 = not present).</p>
+<dl class="simple">
+<dt>USAGE</dt><dd><p>getReactionMetabolitePresence(modelFolder,propertiesFolder,reconVersion)</p>
+</dd>
+</dl>
+<p>INPUTS
+modelFolder                                                                                                                                                                                           Folder with COBRA models to be analyzed
+propertiesFolder      Folder where the retrieved reaction presences will</p>
+<blockquote>
+<div><p>be stored (default: current folder)</p>
+</div></blockquote>
+<p>reconVersion          Name assigned to the reconstruction resource</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>AUTHOR</p></li>
+</ul>
+<p>Almut Heinken, 06/2020</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.src.properties.getSubsystemPresence">
+<span class="sig-name descname"><span class="pre">getSubsystemPresence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">propertiesFolder</span></em>, <em class="sig-param"><span class="pre">reconVersion</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/src/properties/getSubsystemPresence.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.src.properties.getSubsystemPresence" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function extracts the presence of subsystems for a resource of
+reconstructions that were refined through the semi-automatic refinement
+pipeline. Shown is the fraction of total reactions in each subsystem for
+each reconstruction in the resource. Requires the function
+getreactionPresenceOnTaxonLevels to be run first.</p>
+<dl class="simple">
+<dt>USAGE</dt><dd><p>getSubsystemPresence(propertiesFolder,reconVersion)</p>
+</dd>
+</dl>
+<p>INPUTS                                                                                                                                                                                       Folder with COBRA models to be analyzed
+propertiesFolder      Folder where the retrieved subsystem presences will</p>
+<blockquote>
+<div><p>be stored (default: current folder)</p>
+</div></blockquote>
+<p>reconVersion          Name assigned to the reconstruction resource</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>AUTHOR</p></li>
+</ul>
+<p>Almut Heinken, 11/2020</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.src.properties.plotMetaboliteProducersConsumers">
+<span class="sig-name descname"><span class="pre">plotMetaboliteProducersConsumers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">propertiesFolder</span></em>, <em class="sig-param"><span class="pre">infoFilePath</span></em>, <em class="sig-param"><span class="pre">reconVersion</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/src/properties/plotMetaboliteProducersConsumers.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.src.properties.plotMetaboliteProducersConsumers" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function creates plots of strains that can consume or secrete a
+given list of metabolites. Plots are created on the strain level (each
+reconstruction separately) and, if taxonomical information is provided,
+on the species, genus, family, order, class, and phylum level.</p>
+<dl class="simple">
+<dt>USAGE</dt><dd><p>plotMetaboliteProducersConsumers(propertiesFolder,infoFilePath,reconVersion,varargin)</p>
+</dd>
+</dl>
+<p>INPUTS
+propertiesFolder      Folder where computed uptake and secretion profiles</p>
+<blockquote>
+<div><p>are stored</p>
+</div></blockquote>
+<dl class="simple">
+<dt>infoFilePath          Path to spreadsheet with taxonomical information of</dt><dd><p>the refined strains</p>
+</dd>
+</dl>
+<p>reconVersion          Name assigned to the reconstruction resource
+OPTIONAL INPUTS
+metsToAnalyze         Table with list of metabolites that should be</p>
+<blockquote>
+<div><p>analyzed (default: all computed metabolites)</p>
+</div></blockquote>
+<dl>
+<dt>metCategory           Name for type of metabolites to analyze that should</dt><dd><blockquote>
+<div><p>be in the plots (Default: ‘Metabolites’)</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>AUTHOR</p></li>
+</ul>
+<p>Almut Heinken, 07/2020</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.src.properties.predictGrowthRequirements">
+<span class="sig-name descname"><span class="pre">predictGrowthRequirements</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/src/properties/predictGrowthRequirements.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.src.properties.predictGrowthRequirements" title="Permalink to this definition">¶</a></dt>
+<dd><p>Predicts growth requirements for a genome-scale reconstruction.
+The list of predicted essential exchanges as well as a model
+constrained with these exchanges are returned.</p>
+<p>INPUT
+model                  COBRA model structure
+biomassReaction        String listing the biomass reaction</p>
+<p>OUTPUT
+growthOnMinimalMedium  Bool if growth on defined medium yes or no
+essentialExchanges     Exchanges that need to be open to enable growth
+constrainedModel       Model constrained with predicted essential</p>
+<blockquote>
+<div><p>exchanges</p>
+</div></blockquote>
+<p>Almut Heinken, November 2020</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.src.properties.printReconstructionContent">
+<span class="sig-name descname"><span class="pre">printReconstructionContent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">modelFolder</span></em>, <em class="sig-param"><span class="pre">propertiesFolder</span></em>, <em class="sig-param"><span class="pre">reconVersion</span></em>, <em class="sig-param"><span class="pre">numWorkers</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/src/properties/printReconstructionContent.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.src.properties.printReconstructionContent" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function creates text files containing all reactions and metabolites
+in the reconstruction resource.</p>
+<dl class="simple">
+<dt>USAGE</dt><dd><p>printReconstructionContent(modelFolder,propertiesFolder,reconVersion,numWorkers)</p>
+</dd>
+</dl>
+<p>INPUTS
+modelFolder         Folder with reconstructions to be printed
+propertiesFolder    Folder where the computed stochiometric and flux</p>
+<blockquote>
+<div><p>consistencies will be stored</p>
+</div></blockquote>
+<p>reconVersion        Name assigned to the reconstruction resource
+numWorkers          Number of workers in parallel pool</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>AUTHOR</p></li>
+</ul>
+<p>Almut Heinken, 07/2020</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.src.properties.producetSNEPlots">
+<span class="sig-name descname"><span class="pre">producetSNEPlots</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">propertiesFolder</span></em>, <em class="sig-param"><span class="pre">infoFilePath</span></em>, <em class="sig-param"><span class="pre">reconVersion</span></em>, <em class="sig-param"><span class="pre">customFeatures</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/src/properties/producetSNEPlots.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.src.properties.producetSNEPlots" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function plots reaction presence and uptake and secretion potential
+by taxon with t-SNE.</p>
+<dl class="simple">
+<dt>USAGE</dt><dd><p>producetSNEPlots(propertiesFolder,infoFilePath,reconVersion)</p>
+</dd>
+</dl>
+<p>INPUTS
+propertiesFolder      Folder where the reaction presences and uptake and</p>
+<blockquote>
+<div><p>secretion potential to be analyzed are stored
+(default: current folder)</p>
+</div></blockquote>
+<dl class="simple">
+<dt>infoFilePath          Path to spreadsheet with taxonomical information of</dt><dd><p>the refined strains</p>
+</dd>
+</dl>
+<p>reconVersion          Name assigned to the reconstruction resource
+OPTIONAL INPUT
+customFeatures        Features other than taxonomy to cluster microbes</p>
+<blockquote>
+<div><blockquote>
+<div><p>by. Need to be a table header in the file with
+information on reconstructions.</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>AUTHOR</p></li>
+</ul>
+<p>Almut Heinken, 06/2020</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.src.properties.rankFeaturesByIncidence">
+<span class="sig-name descname"><span class="pre">rankFeaturesByIncidence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">propertiesFolder</span></em>, <em class="sig-param"><span class="pre">reconVersion</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/src/properties/rankFeaturesByIncidence.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.src.properties.rankFeaturesByIncidence" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function counts the incidence of a number of features in the refined
+reconstruction resource and ranks them from most to least common.</p>
+<dl class="simple">
+<dt>USAGE</dt><dd><p>rankFeaturesByIncidence(curatedFolder,propertiesFolder,reconVersion)</p>
+</dd>
+</dl>
+<p>INPUTS
+propertiesFolder      Folder where the analyzed features are stored and</p>
+<blockquote>
+<div><p>the results will be stored (default: current folder)</p>
+</div></blockquote>
+<p>reconVersion          Name assigned to the reconstruction resource</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>AUTHOR</p></li>
+</ul>
+<p>Almut Heinken, 07/2020</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.src.properties.summarizeFeaturesOnTaxonLevels">
+<span class="sig-name descname"><span class="pre">summarizeFeaturesOnTaxonLevels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">propertiesFolder</span></em>, <em class="sig-param"><span class="pre">infoFilePath</span></em>, <em class="sig-param"><span class="pre">reconVersion</span></em>, <em class="sig-param"><span class="pre">customFeatures</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/src/properties/summarizeFeaturesOnTaxonLevels.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.src.properties.summarizeFeaturesOnTaxonLevels" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function summarizes calculated features of the reconstruction
+resource, if taxonomical information is provided, on the species, genus,
+family, order, class, and phylum level. A custom feature
+(.e.g, gram status, source of the strains) can also be used to summarize
+the data. In this case, the spreadsheet with strain information needs to
+contain a column with this information.</p>
+<dl class="simple">
+<dt>USAGE</dt><dd><p>summarizeFeaturesOnTaxonLevels(propertiesFolder,infoFilePath,reconVersion,customFeatures)</p>
+</dd>
+</dl>
+<p>INPUTS                                                                                                                                                                                          Folder with COBRA models to be analyzed
+propertiesFolder      Folder where the retrieved reaction presences will</p>
+<blockquote>
+<div><p>be stored (default: current folder)</p>
+</div></blockquote>
+<dl class="simple">
+<dt>infoFilePath          Path to spreadsheet with taxonomical information of</dt><dd><p>the refined strains</p>
+</dd>
+</dl>
+<p>reconVersion          Name assigned to the reconstruction resource
+OPTIONAL INPUT
+customFeatures        Features other than taxonomy to cluster microbes</p>
+<blockquote>
+<div><blockquote>
+<div><p>by. Need to be a table header in the file with
+information on reconstructions.</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>AUTHOR</p></li>
+</ul>
+<p>Almut Heinken, 06/2020</p>
+</div></blockquote>
+</dd></dl>
+
+</section>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../integration/index.html" class="btn btn-default float-right" title="Integration" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../debugging/index.html" class="btn btn-default" title="Debugging" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017-2021, The COBRA Toolbox developers.
+
+    </p>
+  </div>
+  Built with Sphinx using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../../',
+            VERSION:'2.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+    <script type="text/javascript" src="../../../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script type="text/javascript" src="../../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../../../_static/sphinx_highlight.js"></script>
+
+  
+
+
+  
+  
+    <script type="text/javascript" src="../../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TRCMZL1FKK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TRCMZL1FKK');
+  </script>
+    
+</body>
+</html>

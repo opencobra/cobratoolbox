@@ -1,0 +1,709 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Xomicstomodel &mdash; The COBRA Toolbox</title>
+  
+
+  
+  
+  
+    <link rel="apple-touch-icon" sizes="180x180" href="../../../_static/img/apple-touch-icon.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../_static/img/favicon-32x32.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="16x16" href="../../../_static/img/favicon-16x16.png">
+  
+  
+    <link rel="mask-icon" href="../../../_static/img/safari-pinned-tab.svg" color="#5bbad5">
+  
+  
+    <link rel="manifest" href="../../../_static/json/manifest.json">
+  
+  
+    <meta name="msapplication-config" content="../../../_static/browserconfig.xml">
+  
+  <meta name="theme-color" content="#ffffff">
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+  <script src="../../../_static/js/jquery.easy-autocomplete.min.js" type="text/javascript" ></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+  <link href="../../../_static/css/easy-autocomplete.min.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/cobra.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../../_static/css/cobra.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="The COBRA Toolbox" href="../../../index.html"/>
+        <link rel="up" title="Dataintegration" href="../index.html"/>
+        <link rel="next" title="Analysis" href="analysis/index.html"/>
+        <link rel="prev" title="Inchi" href="../chemoInformatics/inchi/index.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> The COBRA Toolbox
+          
+
+          
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
+          
+          </a>
+
+              
+          <h1>The COBRA Toolbox</h1>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" id="simple"/>
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+    <script>
+    	var options = {
+
+		url: "../../../_static/json/functions.json",
+
+		getValue: "name",
+
+		list: {
+            onKeyEnterEvent: function(item) {
+                    return "_static/../" + item.website_url
+            },
+            maxNumberOfElements: 25,
+			match: {
+					enabled: true,
+			},
+            sort: {
+			    enabled: true
+		    }
+		},
+
+    	template: {
+	    	type: "custom",
+		    method: function(value, item) {
+                return "<span><a href='../../../search.html?q=" + item.name + "&check_keywords=yes&area=default'>" + value + "</a>" + "<a href='../../../_static/../" + item.website_url + "' ><img src='../../../_static/link.svg'/></a></span>";
+		    }
+	    },
+
+		theme: "square"
+
+	};
+
+	$("#simple").easyAutocomplete(options);
+
+
+    </script>
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../../../index.html">Home</a></li>
+              </ul>
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Functions</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../analysis/index.html">Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../base/index.html">Base</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Dataintegration</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../fluxomics/index.html">Fluxomics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../metanetxMapper/index.html">Metanetxmapper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../transcriptomics/index.html">Transcriptomics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chemoInformatics/index.html">Chemoinformatics</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Xomicstomodel</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="analysis/index.html">Analysis</a></li>
+<li class="toctree-l4"><a class="reference internal" href="thermoKernel/index.html">Thermokernel</a></li>
+<li class="toctree-l4"><a class="reference internal" href="prepareData/index.html">Preparedata</a></li>
+<li class="toctree-l4"><a class="reference internal" href="oneRxnPerActiveGene/index.html">Onerxnperactivegene</a></li>
+<li class="toctree-l4"><a class="reference internal" href="proteomics/index.html">Proteomics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="metabolomics/index.html">Metabolomics</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../metabotools/index.html">Metabotools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../metaboAnnotator/index.html">Metaboannotator</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../design/index.html">Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reconstruction/index.html">Reconstruction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../visualization/index.html">Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../cite.html">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../support.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../plan.html">Development Plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contact.html">Contact</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../citations.html">Citations</a></li>
+</ul>
+
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">The COBRA Toolbox</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../contents.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Functions</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Dataintegration</a></li>
+      <li class="breadcrumb-item active">Xomicstomodel</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="https://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <section id="xomicstomodel">
+<span id="id1"></span><h1>Xomicstomodel<a class="headerlink" href="#xomicstomodel" title="Permalink to this heading">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="analysis/index.html">Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="thermoKernel/index.html">Thermokernel</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="thermoKernel/thermoQP/index.html">Thermoqp</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="prepareData/index.html">Preparedata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="oneRxnPerActiveGene/index.html">Onerxnperactivegene</a></li>
+<li class="toctree-l1"><a class="reference internal" href="proteomics/index.html">Proteomics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="metabolomics/index.html">Metabolomics</a></li>
+</ul>
+</div>
+<span class="target" id="module-src.dataIntegration.XomicsToModel"></span><dl class="mat function">
+<dt class="sig sig-object mat" id="src.dataIntegration.XomicsToModel.XomicsToModel">
+<span class="sig-name descname"><span class="pre">XomicsToModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">genericModel</span></em>, <em class="sig-param"><span class="pre">specificData</span></em>, <em class="sig-param"><span class="pre">param</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/XomicsToModel/XomicsToModel.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.XomicsToModel.XomicsToModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a generic model, this funtion generates a specific model using constraints generated
+from multi-omics data specific  to a particular cell type or context.
+Specific data can be transcriptomics, proteomics,  metabolomics or literature-based
+(“bibliomics”) data, or combinations thereof.</p>
+<dl class="field-list">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[model, modelGenerationReport] = XomicsToModel</strong> (<em>genericModel, specificData, param</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>genericModel</strong> – A generic COBRA model in standard format <a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/docs/source/notes/COBRAModelFields.md">https://github.com/opencobra/cobratoolbox/blob/master/docs/source/notes/COBRAModelFields.md</a></p></li>
+<li><p><strong>* .S</strong> – <a href="#id2"><span class="problematic" id="id3">`</span></a>m x n’ stoichiometric matrix</p></li>
+<li><p><strong>* .b</strong> – <cite>m x 1</cite> change in concentration with time</p></li>
+<li><p><strong>* .csense `m x 1` character array with entries in {L,E,G}</strong></p></li>
+<li><p><strong>* .mets</strong> – <cite>m x 1</cite> cell array of metabolite identifiers</p></li>
+<li><p><strong>* .metNames</strong> – <cite>m x 1</cite> cell array of metabolite names</p></li>
+<li><p><strong>* .rxns</strong> – <cite>n x 1</cite> cell array of reaction identifiers</p></li>
+<li><p><strong>* .rxnNames</strong> – <cite>n x 1</cite> cell array of reaction names</p></li>
+<li><p><strong>* .lb</strong> – <cite>n x 1</cite> double vector of lower bounds on reaction fluxes</p></li>
+<li><p><strong>* .ub</strong> – <cite>n x 1</cite> double vector of upper bounds on reaction fluxes</p></li>
+<li><p><strong>* .genes</strong> – <cite>g x 1</cite> - cell array of Entrez ID</p></li>
+<li><p><strong>* .grRules `g x 1` - cell array of boolean gene-protein-reaction associations</strong></p></li>
+<li><p><strong>* .rxnGeneMat `n x g` -  matrix with rows corresponding to reactions and columns corresponding to genes</strong></p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>genericModel</strong> – A generic COBRA model in standard format with optional fields</dt><dd><ul class="simple">
+<li><p>.metFormulas: <cite>m x 1</cite> cell array of metabolite formulae</p></li>
+<li><p>.c - <cite>n x 1</cite> linear objective coefficient vector</p></li>
+<li><p>.C - <cite>k x n</cite> Left hand side of C*v &lt;= d</p></li>
+<li><p>.d - <cite>k x 1</cite> Right hand side of C*v &lt;= d</p></li>
+<li><p>.dsense - <cite>k x 1</cite> character array with entries in {L,E,G}</p></li>
+<li><dl class="simple">
+<dt>.beta - A scalar weight on minimisation of one-norm of internal fluxes. Default 1e-4.</dt><dd><p>Larger values increase the incentive to find a flux vector to be thermodynamically feasibile in thermoKernel and decrease the incentive
+to search the steady state solution space for a flux vector that results in certain reactions and metabolites to be active and present,
+respectively.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+<p>specificData:  A structure containing context-specific data:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>.activeGenes - cell array of Entrez ID of genes that are known to be active based on the bibliomic data (Default: empty).</p></li>
+<li><p>.inactiveGenes - cell array of Entrez ID of genes known to be inactive based on the bibliomics data (Default: empty).</p></li>
+<li><p>.activeReactions -cell array of reaction identifiers know to be active based on bibliomic data (Default: empty).</p></li>
+<li><dl class="simple">
+<dt>.coupledRxns -﻿Table containing information about the coupled reactions. This includes the coupled reaction identifier, the</dt><dd><p>list of coupled reactions, the coefficients of those reactions, the constraint, the sense or the directionality of the constraint,
+and the reference (Default: empty).</p>
+</dd>
+</dl>
+</li>
+<li><p>.essentialAA - cell array of reaction identifiers of exchange reactions denoting essential amino acids (Default: empty).</p></li>
+<li><p>.exoMet -﻿Table with the fluxes obtained from exometabolomics experiments.</p></li>
+<li><p>.exoMet.mets: metabolite identifers</p></li>
+<li><p>.exoMet.rxns: reaction identifier</p></li>
+<li><p>.exoMet.rxnNames: reaction name</p></li>
+<li><p>.exoMet.mean: measured mean flux</p></li>
+<li><p>.exoMet.SD:  standard deviation of the measured flux,</p></li>
+<li><p>.exoMet.units: the flux units</p></li>
+<li><p>.exoMet.platform: platform used to measure it</p></li>
+<li><p>.mediaData -﻿Table containing information on metabolomic composition of fresh media (Default: empty)</p></li>
+<li><p>.mediaData.rxns: cell array of reaction identifiers</p></li>
+<li><p>.mediaData.mediumMaxUptake: maximum media uptake rate (same units as model.ub, e.g. umol/gDW/h))</p></li>
+<li><p>.mediaData.constraintDescription: description of each constraint</p></li>
+<li><p>.presentMetabolites.mets -﻿cell array of metabolites known to be present based on the bibliomics data (Default: empty).</p></li>
+<li><p>.presentMetabolites.weights -Weights on metabolites known to be present based on the bibliomics data (Default: empty).</p></li>
+<li><p>.absentMetabolites.mets -﻿cell array of metabolites known to be absent based on the bibliomics data (Default: empty).</p></li>
+<li><p>.absentMetabolites.weights -﻿Weights on metabolites known to be absent based on the bibliomics data (Default: empty).</p></li>
+<li><p>.rxns2add: table containing reactions to add to the generic model</p></li>
+<li><p>.rxns2add.rxns: cell array of reaction identifiers</p></li>
+<li><p>.rxns2add.rxnFormulas: cell array of reaction formulas</p></li>
+<li><p>.rxns2add.lb: vector of reaction lower bounds</p></li>
+<li><p>.rxns2add.ub: vector of reaction upper bounds</p></li>
+<li><p>.rxns2add.geneRule: gene rules to which the reaction is subject</p></li>
+<li><p>.rxns2remove.rxns - cell array of reaction identifiers know to be inactive based on bibliomic data (Default: empty).</p></li>
+<li><p>.rxns2constrain -﻿Table where each row corresponds to a reaction to constrain (Default: empty).</p></li>
+<li><p>.rxns2constrain.rxns: reaction identifier</p></li>
+<li><p>.rxns2constrain.lb:</p></li>
+<li><p>.rxns2constrain.ub:</p></li>
+<li><p>.rxns2constrain.constraintDescription: description of each constraint</p></li>
+<li><p>.rxns2constrain.notes: notes such as references or special cases</p></li>
+<li><p>.transcriptomicData -﻿Table with transcriptomic data, with one row per gene  (Default: empty)</p></li>
+<li><p>.transcriptomicData.genes - Entrez ID’s of the gene corresponding to each transcript</p></li>
+<li><p>.transcriptomicData.expVal - Non-negative transcriptomic expression value i.e. linear scale.</p></li>
+<li><p>.proteomicData:﻿Table of proteomic data, with one row per protein (Default: empty)</p></li>
+<li><p>.proteomicData.genes: Entrez ID’s of the gene corresponding to each protein</p></li>
+<li><p>.proteomicData.expVal: Non-negative abundance of each protein  i.e. linear scale.</p></li>
+</ul>
+</div></blockquote>
+<dl class="simple">
+<dt>param: a structure containing the parameters for the function:</dt><dd><ul class="simple">
+<li><p>.printLevel -﻿Level of verbose that should be printed (Default: 0).</p></li>
+<li><p>.debug -﻿Logical, should the function save its progress for debugging (Default: false).</p></li>
+<li><p>.addCoupledRxns -﻿Logical, determines if the flux of reactions specified in specificData.coupledRxns should be coupled (Default: true).</p></li>
+<li><p>.addSinksexoMet - Logical, should sink reactions be added for metabolites detected in exometabolomic data (if no exchange or sink is already present).</p></li>
+<li><dl class="simple">
+<dt>.activeGenesApproach -﻿String with the name of the active genes approach will be used</dt><dd><p>‘oneRxnPerActiveGene’ adds at least one reaction per active gene (Default)
+‘allRxnPerActiveGene’ adds all reactions corresponding to an active gene (generates a larger model)</p>
+</dd>
+</dl>
+</li>
+<li><p>.TolMaxBoundary -﻿The reaction boundary’s maximum value (Default: 1000)</p></li>
+<li><p>.TolMinBoundary -﻿The reaction boundary’s minimum value (Default: -1000)</p></li>
+<li><dl class="simple">
+<dt>.boundPrecisionLimit -﻿Precision of flux estimate, if the absolute valueof the lower bound or the upper bound are lower</dt><dd><p>than the boundPrecisionLimit but higher than 0 the value will be set to the boundPrecisionLimit
+(Default: primal feasibility tolerance x 10).</p>
+</dd>
+</dl>
+</li>
+<li><p>.closeIons -﻿Logical, it determines whether or not ion exchange reactions are closed. (Default: false).</p></li>
+<li><p>.closeUptakes -﻿Logical, decide whether or not all of the uptakes in the draft model will be closed (Default: false).</p></li>
+<li><p>.uptakeSign -﻿Sign for uptakes (Default: -1).</p></li>
+<li><p>.diaryFilename -﻿The location where a diary will be printed with the function output. (Default: 0).</p></li>
+<li><p>.fluxCCmethod -﻿String with thee name of the algorithm to be used for the flux consistency check (Possible options: ‘swiftcc’, ‘fastcc’ or ‘dc’, Default: ‘fastcc’).</p></li>
+<li><dl class="simple">
+<dt>.modelExtractionAlgorithm - Model extraction algorithm to be used to extract the context-specific model</dt><dd><p>‘thermoKernel’ (Default)
+‘fastCore’</p>
+</dd>
+</dl>
+</li>
+<li><p>.fluxEpsilon -﻿Minimum non-zero flux value accepted for tolerance (Default: Primal feasibility tolerance X 10).</p></li>
+<li><p>.thermoFluxEpsilon -﻿Flux epsilon used in ‘thermoKernel’ (Default: Primal feasibility tolerance X 10).</p></li>
+<li><p>.findThermoConsistentFluxSubset - True to identify largest thermodynamically flux consistent set before extracting a subset with thermoKernel (Default: true)</p></li>
+<li><p>.weightsFromOmics - True to use weights derived from transcriptomic data when biasing inclusion of reactions with thermoKernel (Default: true)</p></li>
+<li><p>.curationOverOmics -﻿True to use literature curated data with priority over other omics data (Default: false).</p></li>
+<li><p>.activeOverInactive -﻿True to use active data with priority over inactive data (Default: false).</p></li>
+<li><p>.inactiveGenesTranscriptomics - ﻿Logical, indicate if inactive genes in the transcriptomic analysis should be added to the list of inactive genes (Default: true).</p></li>
+<li><p>.transcriptomicThreshold - Logarithmic scale transcriptomic cutoff threshold for determining whether or not a gene is active (Default: 0).</p></li>
+<li><p>.thresholdP -﻿Logarithmic scale proteomic cutoff threshold for determining whether or not a gene is active (Default: 0).</p></li>
+<li><p>.growthMediaBeforeReactionRemoval - Logical, should the growth media data be added before the model extraction (Default: true).</p></li>
+<li><p>.metabolomicsBeforeExtraction - Logical, should the metabolomics data be added before the model extraction (Default: true).</p></li>
+<li><dl class="simple">
+<dt>.boundsToRelaxExoMet - String indicating the type of bounds allowed to be relaxed when fitting metabolomic data</dt><dd><p>‘all’  - allow to relax bounds on all reactions
+‘both’  - allow to relax both lower and upper bounds on reactions corresponding to specificData.exoMet.rxns (Default)
+‘upper’ - allow to relax both upper bounds on reactions corresponding to specificData.exoMet.rxns
+‘lower’ - allow to relax both lower bounds on reactions corresponding to specificData.exoMet.rxns</p>
+</dd>
+</dl>
+</li>
+<li><p>.metabolomicWeights -﻿String indicating the type of weights to be applied for metabolomics fitting (Possible options: ‘SD’, ‘mean’ and ‘RSD’; Default: ‘SD’)</p></li>
+<li><dl class="simple">
+<dt>.nonCoreSinksDemands -﻿The type of sink or demand reaction to close is indicated by a string</dt><dd><p>(Possible options: ‘closeReversible’, ‘closeForward’, ‘closeReverse’, ‘closeAll’ and ‘closeNone’; Default: ‘closeNone’).</p>
+</dd>
+</dl>
+</li>
+<li><p>.relaxOptions -﻿A structure array with the relaxation options if the problem becomes infeasible, see relaxedFBA.m</p></li>
+<li><p>.relaxOptions.steadyStateRelax (Default: param.relaxOptions.steadyStateRelax = 0).</p></li>
+<li><p>.relaxOptions.printLevel (Default: set to param.printLevel)</p></li>
+<li><p>.setObjective - Linear objective function to optimise (Default: none).</p></li>
+<li><dl class="simple">
+<dt>.biomassRxn -The biomass reaction that represents the growth capacity of cells</dt><dd><p>Possible options for Recon3: ‘biomass_reaction’ (Default: empty)</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>.maintenanceRxn -The biomass maintenance reaction that represents the turnover and update capacity of cells</dt><dd><p>(Possible options for Recon3:’biomass_maintenance’, ‘biomass_maintenance_noTrTr’) (Default: empty)</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">OUTPUTS</dt>
+<dd class="field-even"><p><strong>model</strong> –</p>
+<dl class="simple">
+<dt>A Context-specific COBRA model with the following fields (the</dt><dd><p>content of the variables specificData and param influences the
+generation of new fields):</p>
+</dd>
+</dl>
+<ul class="simple">
+<li><dl class="simple">
+<dt>.activeInactiveRxn - n x 1 vector indicating if a reaction is desigated</dt><dd><p>as present (1) absent (-1) or added by the XomicsToModel (0).</p>
+</dd>
+</dl>
+</li>
+<li><p>.alpha1 - thermoKernel parameter (step 20).</p></li>
+<li><p>.beta - thermoKernel parameter (step 20).</p></li>
+<li><p>.C - The constraint matrix containing coefficients for coupled reactions (step 12).</p></li>
+<li><p>.coupledRxnIdxs - Vector containing the indexes of the coupled reactions (step 12).</p></li>
+<li><p>.coupledRxns - IDs of the coupled reactions (step 12).</p></li>
+<li><p>.ctrs - The constraint IDs for coupled reactions (step 12).</p></li>
+<li><p>.d - The constraint right hand side values for coupled reactions (step 12).</p></li>
+<li><p>.delta0 - thermoKernel parameter (step 20).</p></li>
+<li><p>.delta1 - thermoKernel parameter (step 20).</p></li>
+<li><dl class="simple">
+<dt>.dsense - the constraint sense (‘L’: &lt;= , ‘G’: &gt;=, ‘E’: =), or a vector</dt><dd><p>for multiple constraints (default: (‘L’)) for coupled reactions
+(step 12).</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>.dummyMetBool - m x 1 boolean vector indicating dummy metabolites</dt><dd><p>i.e. contains(model.mets,’<a href="#id6"><span class="problematic" id="id7">dummy_Met_</span></a>’; step 19).</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>.dummyRxnBool - n x 1 boolean vector indicating dummy reactions</dt><dd><p>i.e. contains(model.rxns,’<a href="#id8"><span class="problematic" id="id9">dummy_Rxn_</span></a>’; step 19).</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>.exometRelaxation - Struct array identifying the reactions where the</dt><dd><p>bounds are relaxed (step 10/22)</p>
+</dd>
+</dl>
+</li>
+<li><p>.exometRelaxationObj - Flux fitting used (step 10/22)</p></li>
+<li><dl class="simple">
+<dt>.expressionRxns - n x 1 non-negative value for reaction expression,</dt><dd><p>corresponding to model.rxns. expressionRxns(j) is NaN when there
+is no expression data for the genes corresponding to reaction
+j (step 6).</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>.fluxConsistentMetBool - m x 1 boolean vector indicating flux</dt><dd><p>consistent metabolites.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>.fluxConsistentRxnBool - n x 1 boolean vector indicating flux</dt><dd><p>consistent reactions.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>.fluxInConsistentMetBool - m x 1 boolean vector indicating flux</dt><dd><p>inconsistent metabolites.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>.fluxInConsistentRxnBool - n x 1 boolean vector indicating flux</dt><dd><p>inconsistent reactions.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>.forcedIntRxnBool - n x 1 boolean vector indicating the internal</dt><dd><p>reactions that are thermodynamically forced (step 20).</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>.geneExpVal - Vector containing corresponding expression value for each gene</dt><dd><p>FPKM/RPKM; step 6).</p>
+</dd>
+</dl>
+</li>
+<li><p>.lambda0 - thermoKernel parameter (step 20).</p></li>
+<li><p>.lambda1 - thermoKernel parameter (step 20).</p></li>
+<li><dl class="simple">
+<dt>.lb_preconditioned - n x 1 vector containing the old lower bounds</dt><dd><p>prior to the media constraints (step 10/22).</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>.ub_preconditioned - n x 1 vector containing the old upper bounds</dt><dd><p>prior to the media constraints (step 10/22).</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>.lbpreSinkDemandOff - n x 1 vector with the original lower bounds</dt><dd><p>before colsing sink and demand reactions.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>.ubpreSinkDemandOff - n x 1 vector with the original upper bounds</dt><dd><p>before colsing sink and demand reactions.</p>
+</dd>
+</dl>
+</li>
+<li><p>.metRemoveBool - m x 1 boolean vector of metabolites removed to form stoichConsistModel.</p></li>
+<li><p>.rxnRemoveBool - n x 1 boolean vector of reactions removed to form stoichConsistModel.</p></li>
+<li><p>.metUnknownInconsistentRemoveBool - m x 1 boolean vector indicating removed mets</p></li>
+<li><p>.rxnUnknownInconsistentRemoveBool - n x 1 boolean vector indicating removed rxns</p></li>
+<li><p>.presentAbsentMet - m x 1 vector indicating if a metabolite is desigated as present (1) absent (-1) or added by the XomicsToModel (0).</p></li>
+<li><p>.SInConsistentMetBool - m x 1 boolean vector indicating inconsistent mets.</p></li>
+<li><p>.SInConsistentRxnBool - n x 1 boolean vector indicating inconsistent rxns.</p></li>
+<li><p>.relaxationUsed - Logical value indicating if the model was relaxed during XomicsToModel.</p></li>
+<li><p>.rxnFormulas - n x 1 cell array containing the formulas of the reactions.</p></li>
+<li><p>.unknownSConsistencyMetBool - m x 1 boolean vector indicating unknown consistent mets (all zeros when algorithm converged perfectly!).</p></li>
+<li><p>.unknownSConsistencyRxnBool - n x 1 boolean vector indicating unknown consistent rxns (all zeros when algorithm converged perfectly!).</p></li>
+<li><p>.XomicsToModelParam - Parameters used to generate the model.</p></li>
+<li><p>.XomicsToModelSpecificData - Context-specific data used to generate the model.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Requires The COBRA Toolbox and a linear optimisation solver (e.g. Gurobi) to be installed</p>
+<p>2023 German Preciat, Agnieszka Wegrzyn, Xi Luo, Ronan Fleming</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.dataIntegration.XomicsToModel.XomicsToMultipleModels">
+<span class="sig-name descname"><span class="pre">XomicsToMultipleModels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">modelGenerationConditions</span></em>, <em class="sig-param"><span class="pre">param</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/XomicsToModel/XomicsToMultipleModels.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.XomicsToModel.XomicsToMultipleModels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Variations of the xomicstomodel function can be generated using this
+function.</p>
+<dl class="field-list">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>directories = XomicsToMultipleModels</strong> (<em>modelGenerationConditions, param</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><p><strong>modelGenerationConditions</strong> – Options to vary or to save the data</p>
+<blockquote>
+<div><ul class="simple">
+<li><dl class="simple">
+<dt>.activeGenesApproach -﻿The different approached to identify the active</dt><dd><p>genes (Possible options: ‘allRxnPerActiveGene’ and ‘oneRxnPerActiveGene’;
+default: ‘oneRxnPerActiveGene’);</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>.boundsToRelaxExoMet - The type of bounds that can be relaxed, upper bounds,</dt><dd><p>lower bounds or both (‘b’; possible options: ‘u’, ‘l’ and ‘b’;
+default: ‘b’);</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>.closeIons - Indicate whether the ions are open or closed (Possible options:</dt><dd><p>true and false; default: false);</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>.cobraSolver - Optimisation solvers supported by the function. Possible</dt><dd><p>options: ‘glpk’, ‘gurobi’, ‘ibm_cplex’, ‘matlab’; default: ‘gurobi’;</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>.curationOverOmics - indicates whether curated data should take priority</dt><dd><p>over omics data ; default: false;</p>
+</dd>
+</dl>
+</li>
+</ul>
+<p><a href="#id4"><span class="problematic" id="id5">*</span></a>. genericModel: Generic COBRA model(s)
+* .inactiveGenesTranscriptomics - Use inactive transcriptomic genes or not</p>
+<blockquote>
+<div><p>(Possible options: true and false; default: false);</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>.specificData - Specific data variations (Default: empty)</p></li>
+<li><p>.limitBounds - Boundary on the model (Default: 1000).</p></li>
+<li><dl class="simple">
+<dt>.metabolomicsBeforeExtraction - Indicate whether the metabolomic</dt><dd><p>data is included before or after the extraction (Possible options:
+true and false; default: true);</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>.tissueSpecificSolver - Extraction solver (Possible options: ‘fastCore’ and</dt><dd><p>‘thermoKernel’; default: ‘thermoKernel’)</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>.outputDir - Directory where the models will be generated (Default: current</dt><dd><p>directory)</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>.transcriptomicThreshold - Transcriptomic thresholds that are defined by the</dt><dd><p>user (Default: log2(2));</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+<p>param:           Variable with fixed parameters (Default: empty struct array)</p>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><p><strong>directories - Array with the name of the new directories</strong></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat script">
+<dt class="sig sig-object mat" id="src.dataIntegration.XomicsToModel.modelExtraction">
+<span class="sig-name descname"><span class="pre">modelExtraction</span></span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/XomicsToModel/modelExtraction.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.XomicsToModel.modelExtraction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extract a tissue specific model, if no core reactions provided this step will be skipped</p>
+</dd></dl>
+
+</section>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="analysis/index.html" class="btn btn-default float-right" title="Analysis" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../chemoInformatics/inchi/index.html" class="btn btn-default" title="Inchi" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017-2021, The COBRA Toolbox developers.
+
+    </p>
+  </div>
+  Built with Sphinx using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'2.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+    <script type="text/javascript" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/sphinx_highlight.js"></script>
+
+  
+
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TRCMZL1FKK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TRCMZL1FKK');
+  </script>
+    
+</body>
+</html>

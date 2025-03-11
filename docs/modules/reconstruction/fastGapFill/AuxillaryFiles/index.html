@@ -1,0 +1,458 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Auxillaryfiles &mdash; The COBRA Toolbox</title>
+  
+
+  
+  
+  
+    <link rel="apple-touch-icon" sizes="180x180" href="../../../../_static/img/apple-touch-icon.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../../_static/img/favicon-32x32.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="16x16" href="../../../../_static/img/favicon-16x16.png">
+  
+  
+    <link rel="mask-icon" href="../../../../_static/img/safari-pinned-tab.svg" color="#5bbad5">
+  
+  
+    <link rel="manifest" href="../../../../_static/json/manifest.json">
+  
+  
+    <meta name="msapplication-config" content="../../../../_static/browserconfig.xml">
+  
+  <meta name="theme-color" content="#ffffff">
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+  <script src="../../../../_static/js/jquery.easy-autocomplete.min.js" type="text/javascript" ></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+  <link href="../../../../_static/css/easy-autocomplete.min.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../_static/css/cobra.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../../../_static/css/cobra.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../../search.html"/>
+    <link rel="top" title="The COBRA Toolbox" href="../../../../index.html"/>
+        <link rel="up" title="Fastgapfill" href="../index.html"/>
+        <link rel="next" title="Comparison" href="../../comparison/index.html"/>
+        <link rel="prev" title="Fastgapfill" href="../index.html"/> 
+
+  
+  <script src="../../../../_static/js/modernizr.min.js"></script>
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> The COBRA Toolbox
+          
+
+          
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
+          
+          </a>
+
+              
+          <h1>The COBRA Toolbox</h1>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" id="simple"/>
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+    <script>
+    	var options = {
+
+		url: "../../../../_static/json/functions.json",
+
+		getValue: "name",
+
+		list: {
+            onKeyEnterEvent: function(item) {
+                    return "_static/../" + item.website_url
+            },
+            maxNumberOfElements: 25,
+			match: {
+					enabled: true,
+			},
+            sort: {
+			    enabled: true
+		    }
+		},
+
+    	template: {
+	    	type: "custom",
+		    method: function(value, item) {
+                return "<span><a href='../../../../search.html?q=" + item.name + "&check_keywords=yes&area=default'>" + value + "</a>" + "<a href='../../../../_static/../" + item.website_url + "' ><img src='../../../../_static/link.svg'/></a></span>";
+		    }
+	    },
+
+		theme: "square"
+
+	};
+
+	$("#simple").easyAutocomplete(options);
+
+
+    </script>
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../index.html">Home</a></li>
+              </ul>
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">Functions</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../../analysis/index.html">Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../base/index.html">Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../dataIntegration/index.html">Dataintegration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../design/index.html">Design</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Reconstruction</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../../modelGeneration/index.html">Modelgeneration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../refinement/index.html">Refinement</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../demeter/index.html">Demeter</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html">Fastgapfill</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Auxillaryfiles</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../comparison/index.html">Comparison</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../metaboRePort/index.html">Metaboreport</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../growthExpMatch/index.html">Growthexpmatch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../rBioNet/index.html">Rbionet</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../visualization/index.html">Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contributing.html">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../cite.html">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../support.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../plan.html">Development Plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contact.html">Contact</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../citations.html">Citations</a></li>
+</ul>
+
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">The COBRA Toolbox</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../contents.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Functions</a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Reconstruction</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Fastgapfill</a></li>
+      <li class="breadcrumb-item active">Auxillaryfiles</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="https://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <section id="auxillaryfiles">
+<span id="id1"></span><h1>Auxillaryfiles<a class="headerlink" href="#auxillaryfiles" title="Permalink to this heading">¶</a></h1>
+<span class="target" id="module-src.reconstruction.fastGapFill.AuxillaryFiles"></span><dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.fastGapFill.AuxillaryFiles.assignRxnWeights">
+<span class="sig-name descname"><span class="pre">assignRxnWeights</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">MatricesSUX</span></em>, <em class="sig-param"><span class="pre">weights</span></em>, <em class="sig-param"><span class="pre">WeightsPerRxn</span></em>, <em class="sig-param"><span class="pre">NoWeight</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/fastGapFill/AuxillaryFiles/assignRxnWeights.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.fastGapFill.AuxillaryFiles.assignRxnWeights" title="Permalink to this definition">¶</a></dt>
+<dd><p>Assigns reaction weights</p>
+<dl class="field-list">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>MatricesSUX = assignRxnWeights</strong> (<em>MatricesSUX, weights, WeightsPerRxn, NoWeight</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul>
+<li><p><strong>MatricesSUX</strong> – Input model structure</p></li>
+<li><p><strong>weights</strong> – Weight structure that permits to add weights to
+non-core reactions (it is recommended to use values other than 0 and 1, with lower weight
+corresponding to higher priority. Format:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>weights.MetabolicRxns = 10; % Universal database metabolic reactions</p></li>
+<li><p>weights.ExchangeRxns = 10; % Exchange reactions</p></li>
+<li><p>weights.TransportRxns = 10; % Transport reactions</p></li>
+</ul>
+</div></blockquote>
+<p>Default: weigth of 10 for all non-core reactions.</p>
+</li>
+<li><p><strong>WeightsPerRxn</strong> – Structure containing a list of reactions that should be assined with
+individual weights (WeightsPerRxn.rxns) AND a list of Reaction weights (WeightsPerRxn.weights) in the same order.</p></li>
+<li><p><strong>NoWeight</strong> – Weight that should be assigned to those reactions NOT
+in core reaction set and NOT in WeightsPerRxn (default:1000)</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>MatricesSUX</strong> – Output model structure</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.fastGapFill.AuxillaryFiles.createUniversalReactionModel2">
+<span class="sig-name descname"><span class="pre">createUniversalReactionModel2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">KEGGFilename</span></em>, <em class="sig-param"><span class="pre">KEGGBlackList</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/fastGapFill/AuxillaryFiles/createUniversalReactionModel2.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.fastGapFill.AuxillaryFiles.createUniversalReactionModel2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates the U matrix using the universal data from the KEGG</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>KEGG = createUniversalReactionModel2</strong> (<em>KEGGFilename, KEGGBlackList</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>KEGGFilename</strong> – File name containing universal database (e.g., KEGG; optional input, default: <cite>reaction.lst</cite>)</p></li>
+<li><p><strong>KEGGblackList</strong> – List of excluded reactions from the universal database
+(e.g., KEGG) (optional input, default: no blacklist)</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>KEGG</strong> – Contains universal database (<cite>U</cite> matrix) in matrix format</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This file is KEGG-specific: if non-KEGG-type metabolite IDs are used
+it will not parse the reactions correctly and will throw an error.</p>
+</div>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.fastGapFill.AuxillaryFiles.createXMatrix2">
+<span class="sig-name descname"><span class="pre">createXMatrix2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">compoundsIn</span></em>, <em class="sig-param"><span class="pre">transport</span></em>, <em class="sig-param"><span class="pre">compartment</span></em>, <em class="sig-param"><span class="pre">model</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/fastGapFill/AuxillaryFiles/createXMatrix2.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.fastGapFill.AuxillaryFiles.createXMatrix2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a matrix full of exchange reactions based
+on the input list (creates an exchange reaction for each of the
+metabolites present in the model)</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>ExchangeRxnMatrix = createXMatrix2</strong> (<em>compoundsIn, transport, compartment, model</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>compoundsIn</strong> – List of metabolites</p></li>
+<li><p><strong>transport</strong> – if 1, transport reactions will be defined as well for every
+compounds (default: 0, which corresponds to only exchange reactions)</p></li>
+<li><p><strong>compartment</strong> – [c] –&gt; transport from cytoplasm [c] to extracellular space
+[e] (default), [p] creates transport from [c] to [p] and from [p] to [c]</p></li>
+<li><p><strong>model</strong> – model structure - used to check if exchange reaction exists
+already before adding it to <cite>ExchangeRxnMatrix</cite></p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>ExchangeRxnMatrix</strong> – Model structure containing all exchange and
+transport reactions</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.fastGapFill.AuxillaryFiles.findIntracellularRxns">
+<span class="sig-name descname"><span class="pre">findIntracellularRxns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/fastGapFill/AuxillaryFiles/findIntracellularRxns.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.fastGapFill.AuxillaryFiles.findIntracellularRxns" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function finds all reactions that do not contain metabolites in [e] comparment.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[intracellRxnList] = findIntracellularRxns</strong> (<em>model</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><p><strong>model</strong> – Model structure</p>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>intracellRxnList</strong> – List of intracellular reactions in model</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.fastGapFill.AuxillaryFiles.generateSUXComp">
+<span class="sig-name descname"><span class="pre">generateSUXComp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">dictionary</span></em>, <em class="sig-param"><span class="pre">KEGGFilename</span></em>, <em class="sig-param"><span class="pre">KEGGBlackList</span></em>, <em class="sig-param"><span class="pre">listCompartments</span></em>, <em class="sig-param"><span class="pre">KEGGMatrixLoad</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/fastGapFill/AuxillaryFiles/generateSUXComp.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.fastGapFill.AuxillaryFiles.generateSUXComp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates the matrices for gap filling for compartmentalized metabolic models (<cite>S</cite>) such
+that the universal database (<cite>U</cite>, e.g., KEGG) is placed in each compartment
+specified and reversible transport reactions (<cite>X</cite>) are added for each compound present in
+<cite>U</cite> and <cite>S</cite>, between the compartment and the cytosol. Additionally, exchange
+reactions are added for each metabolite in the extracellular space.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>MatricesSUX =generateSUXComp</strong> (<em>model, dictionary, KEGGFilename, KEGGBlackList, listCompartments</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – Model structure</p></li>
+<li><p><strong>dictionary</strong> – List of universal database IDs and their counterpart in the model (e.g.,
+<cite>KEGG_dictionary.xls</cite>)</p></li>
+<li><p><strong>KEGGFilename</strong> – File name containing the universal database (e.g., KEGG - <cite>reaction.lst</cite>)</p></li>
+<li><p><strong>KEGGBlackList</strong> – List of excluded reactions from the universal database
+(e.g., <cite>KEGG</cite>)</p></li>
+<li><p><strong>listCompartments</strong> – List of intracellular compartments in the model
+(optional input, default compartments to be considered: ‘[c]’ ,’[m]’, ‘[l]’, ‘[g]’, ‘[r]’, ‘[x]’, ‘[n]’)</p></li>
+<li><p><strong>KEGGMatrixLoad       load precomputed KEGG matrix (default</strong> – 0)</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>MatricesSUX</strong> – SUX matrix</p>
+</dd>
+</dl>
+<p>Based on <cite>generateSUX.m</cite> but updated and expanded for compartmentalized
+gap filling efforts.</p>
+<ul class="simple">
+<li><p>Ines Thiele, Jan 2021, added the option to preload KEGG matrix and</p></li>
+</ul>
+<p>KeggExchangeRxnMatrix, if multiple reconstructions will be tested this is
+faster</p>
+</dd></dl>
+
+</section>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../../comparison/index.html" class="btn btn-default float-right" title="Comparison" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../index.html" class="btn btn-default" title="Fastgapfill" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017-2021, The COBRA Toolbox developers.
+
+    </p>
+  </div>
+  Built with Sphinx using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../',
+            VERSION:'2.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+    <script type="text/javascript" src="../../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../../_static/sphinx_highlight.js"></script>
+
+  
+
+
+  
+  
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TRCMZL1FKK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TRCMZL1FKK');
+  </script>
+    
+</body>
+</html>

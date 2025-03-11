@@ -1,0 +1,1445 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Modelborgifier &mdash; The COBRA Toolbox</title>
+  
+
+  
+  
+  
+    <link rel="apple-touch-icon" sizes="180x180" href="../../../../_static/img/apple-touch-icon.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../../_static/img/favicon-32x32.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="16x16" href="../../../../_static/img/favicon-16x16.png">
+  
+  
+    <link rel="mask-icon" href="../../../../_static/img/safari-pinned-tab.svg" color="#5bbad5">
+  
+  
+    <link rel="manifest" href="../../../../_static/json/manifest.json">
+  
+  
+    <meta name="msapplication-config" content="../../../../_static/browserconfig.xml">
+  
+  <meta name="theme-color" content="#ffffff">
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+  <script src="../../../../_static/js/jquery.easy-autocomplete.min.js" type="text/javascript" ></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+  <link href="../../../../_static/css/easy-autocomplete.min.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../_static/css/cobra.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../../../_static/css/cobra.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../../search.html"/>
+    <link rel="top" title="The COBRA Toolbox" href="../../../../index.html"/>
+        <link rel="up" title="Comparison" href="../index.html"/>
+        <link rel="next" title="Gui" href="gui/index.html"/>
+        <link rel="prev" title="Comparison" href="../index.html"/> 
+
+  
+  <script src="../../../../_static/js/modernizr.min.js"></script>
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> The COBRA Toolbox
+          
+
+          
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
+          
+          </a>
+
+              
+          <h1>The COBRA Toolbox</h1>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" id="simple"/>
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+    <script>
+    	var options = {
+
+		url: "../../../../_static/json/functions.json",
+
+		getValue: "name",
+
+		list: {
+            onKeyEnterEvent: function(item) {
+                    return "_static/../" + item.website_url
+            },
+            maxNumberOfElements: 25,
+			match: {
+					enabled: true,
+			},
+            sort: {
+			    enabled: true
+		    }
+		},
+
+    	template: {
+	    	type: "custom",
+		    method: function(value, item) {
+                return "<span><a href='../../../../search.html?q=" + item.name + "&check_keywords=yes&area=default'>" + value + "</a>" + "<a href='../../../../_static/../" + item.website_url + "' ><img src='../../../../_static/link.svg'/></a></span>";
+		    }
+	    },
+
+		theme: "square"
+
+	};
+
+	$("#simple").easyAutocomplete(options);
+
+
+    </script>
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../index.html">Home</a></li>
+              </ul>
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">Functions</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../../analysis/index.html">Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../base/index.html">Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../dataIntegration/index.html">Dataintegration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../design/index.html">Design</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Reconstruction</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../../modelGeneration/index.html">Modelgeneration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../refinement/index.html">Refinement</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../demeter/index.html">Demeter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../fastGapFill/index.html">Fastgapfill</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html">Comparison</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Modelborgifier</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="gui/index.html">Gui</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../metaboRePort/index.html">Metaboreport</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../growthExpMatch/index.html">Growthexpmatch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../rBioNet/index.html">Rbionet</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../visualization/index.html">Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contributing.html">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../cite.html">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../support.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../plan.html">Development Plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contact.html">Contact</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../citations.html">Citations</a></li>
+</ul>
+
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">The COBRA Toolbox</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../contents.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Functions</a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Reconstruction</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Comparison</a></li>
+      <li class="breadcrumb-item active">Modelborgifier</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="https://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <section id="modelborgifier">
+<span id="id1"></span><h1>Modelborgifier<a class="headerlink" href="#modelborgifier" title="Permalink to this heading">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="gui/index.html">Gui</a></li>
+</ul>
+</div>
+<span class="target" id="module-src.reconstruction.comparison.modelBorgifier"></span><dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.comparison.modelBorgifier.TmodelFields">
+<span class="sig-name descname"><span class="pre">TmodelFields</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/comparison/modelBorgifier/TmodelFields.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.comparison.modelBorgifier.TmodelFields" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the field names of the <cite>Tmodel</cite> structure. This is
+to help alleviate control between different scripts.
+Called by <cite>cleanTmodel</cite>, <cite>readCbTmodel</cite>, <cite>verifyModel</cite>, <cite>organizeModelCool</cite>, <cite>TmodelStats</cite>, <cite>orderModelFieldsBorg</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>fields = TmodelFields()</strong></p>
+</dd>
+<dt class="field-even">OUTPUTS</dt>
+<dd class="field-even"><p><strong>Fields</strong> – A column cell array that contains the following in order:</p>
+<ul class="simple">
+<li><p>rxnFields</p></li>
+<li><p>rNumField</p></li>
+<li><p>metFields</p></li>
+<li><p>mNumFields</p></li>
+<li><p>allFields</p></li>
+</ul>
+</dd>
+</dl>
+<p>Please cite:
+<cite>Sauls, J. T., &amp; Buescher, J. M. (2014). Assimilating genome-scale
+metabolic reconstructions with modelBorgifier. Bioinformatics
+(Oxford, England), 30(7), 1036?8</cite>. <a class="reference external" href="http://doi.org/10.1093/bioinformatics/btt747">http://doi.org/10.1093/bioinformatics/btt747</a></p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.comparison.modelBorgifier.TmodelStats">
+<span class="sig-name descname"><span class="pre">TmodelStats</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">Tmodel</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/comparison/modelBorgifier/TmodelStats.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.comparison.modelBorgifier.TmodelStats" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provides information on <cite>Tmodel</cite>. Can also be used on a normal
+model. Called  by <cite>mergeModelsBorg</cite>, calls <cite>TmodelFields</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>Stats = TmodelStats</strong> (<em>Tmodel, [Stats]</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><p><strong>Tmodel</strong> – Model structure</p>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><p><strong>Stats</strong> – Will add information to current <cite>Stats</cite> structure.</p>
+</dd>
+<dt class="field-even">OUTPUTS</dt>
+<dd class="field-even"><p><strong>Stats</strong> – Stats array that contains weighting information from previous
+scoring work.</p>
+</dd>
+</dl>
+<p>Please cite:
+<cite>Sauls, J. T., &amp; Buescher, J. M. (2014). Assimilating genome-scale
+metabolic reconstructions with modelBorgifier. Bioinformatics
+(Oxford, England), 30(7), 1036?8</cite>. <a class="reference external" href="http://doi.org/10.1093/bioinformatics/btt747">http://doi.org/10.1093/bioinformatics/btt747</a></p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.comparison.modelBorgifier.addMetInfo">
+<span class="sig-name descname"><span class="pre">addMetInfo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/comparison/modelBorgifier/addMetInfo.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.comparison.modelBorgifier.addMetInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Allows for the addition of information to metabolites during matching. Is called by <cite>metCompareGUI</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>addMetInfo</strong> (<em>nowMet</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><p><strong>nowMet</strong> – Metabolite number of metabolite to be updated</p>
+</dd>
+</dl>
+<p>Please cite:
+<cite>Sauls, J. T., &amp; Buescher, J. M. (2014). Assimilating genome-scale
+metabolic reconstructions with modelBorgifier. Bioinformatics
+(Oxford, England), 30(7), 1036?8</cite>. <a class="reference external" href="http://doi.org/10.1093/bioinformatics/btt747">http://doi.org/10.1093/bioinformatics/btt747</a></p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.comparison.modelBorgifier.addToTmodel">
+<span class="sig-name descname"><span class="pre">addToTmodel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">Cmodel</span></em>, <em class="sig-param"><span class="pre">Tmodel</span></em>, <em class="sig-param"><span class="pre">rxnList</span></em>, <em class="sig-param"><span class="pre">metList</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/comparison/modelBorgifier/addToTmodel.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.comparison.modelBorgifier.addToTmodel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds reactions and info from a comparison model into the
+master template database, <cite>Tmodel</cite>. Called by <cite>mergeModelsBorg</cite>, calls <cite>cleanTmodel</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[TmodelC, Cmodel] = addToTModel</strong> (<em>Cmodel, Tmodel, rxnList, metList</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>Cmodel</strong> – Reaction model to draw new reactions from. Must be in the
+extended COBRA format.</p></li>
+<li><p><strong>Tmodel</strong> – Template database in which to add information
+and new reactions.</p></li>
+<li><p><strong>rxnList</strong> – Array the length of <cite>Cmodel.rxns</cite> with corresponding
+matching reaction numbers from <cite>Tmodel</cite>. If a rxn is unique
+in <cite>Cmodel</cite>, it has 0. <cite>rxnList</cite> is the output of
+<cite>reactionCompare</cite> GUI.</p></li>
+<li><p><strong>metList</strong> – Array the length of <cite>Cmodel.mets</cite> with corresponding
+matching met indexes from <cite>Tmodel</cite>. New mets should already
+have their correct index in <cite>Tmodel</cite>.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>‘NoClean’</strong> – Don’t call <cite>cleanTmodel</cite> at the end of this function</p></li>
+<li><p><strong>‘Verbose’</strong> – Ask when performing certain operations. Carries into
+<cite>cleanTmodel</cite>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUTS</dt>
+<dd class="field-even"><p><strong>Tmodel</strong> – The addended master reaction database.</p>
+</dd>
+</dl>
+<p>Please cite:
+<cite>Sauls, J. T., &amp; Buescher, J. M. (2014). Assimilating genome-scale
+metabolic reconstructions with modelBorgifier. Bioinformatics
+(Oxford, England), 30(7), 1036?8</cite>. <a class="reference external" href="http://doi.org/10.1093/bioinformatics/btt747">http://doi.org/10.1093/bioinformatics/btt747</a></p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.comparison.modelBorgifier.autoMatchReactions">
+<span class="sig-name descname"><span class="pre">autoMatchReactions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">scoreTotal</span></em>, <em class="sig-param"><span class="pre">rxnList</span></em>, <em class="sig-param"><span class="pre">metList</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/comparison/modelBorgifier/autoMatchReactions.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.comparison.modelBorgifier.autoMatchReactions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds confident matches from CMODEL to TMODEL.
+reactions which can not be confidently assigned are reviewed with
+<cite>reactionCompare</cite>. To make a confident assignment a matched reaction must
+have a score above a supplied cutoff and not have competing matches with
+similar scores. Called by <cite>reactionCompareGUI</cite>, calls <cite>metCompare</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>rxnList = autoMatchReactions</strong> (<em>scoreTotal, rxnList, metList, [rxnHighCutoff, rxnMargin, rxnLowCutoff], [metHighCutoff, metMargin, metLowCutoff]</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>scoreTotal</strong> – Optimized score matrix between <cite>CMODEL</cite> and <cite>TMODEL</cite> reactions.</p></li>
+<li><p><strong>rxnList</strong> – Only undeclared reactions will be automatched.</p></li>
+<li><p><strong>metList</strong> – Comparison array for metabolites</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rxnHighCutoff</strong> – Score value above which confident assignments can be made.</p></li>
+<li><p><strong>rxnMargin</strong> – Distance a best match has to be above a competitor match.</p></li>
+<li><p><strong>rxnLowCutoff</strong> – Score value below which reactions will be declared new.</p></li>
+<li><p><strong>metHighCutoff</strong> – The following three are the same but for mets.</p></li>
+<li><p><strong>metMargin</strong></p></li>
+<li><p><strong>metLowCutoff</strong></p></li>
+<li><p><strong>CMODEL</strong> – global input</p></li>
+<li><p><strong>TMODEL</strong> – global input</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUTS</dt>
+<dd class="field-even"><p><strong>rxnList</strong> – Array which correlates a reaction from CMODEL to the index
+of the best match in <cite>TMODEL</cite>. Rxns with 0 designation are
+new, ones with a -1 need manual review.</p>
+</dd>
+</dl>
+<p>Please cite:
+<cite>Sauls, J. T., &amp; Buescher, J. M. (2014). Assimilating genome-scale
+metabolic reconstructions with modelBorgifier. Bioinformatics
+(Oxford, England), 30(7), 1036?8</cite>. <a class="reference external" href="http://doi.org/10.1093/bioinformatics/btt747">http://doi.org/10.1093/bioinformatics/btt747</a></p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.comparison.modelBorgifier.buildRxnEquations">
+<span class="sig-name descname"><span class="pre">buildRxnEquations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">Model</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/comparison/modelBorgifier/buildRxnEquations.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.comparison.modelBorgifier.buildRxnEquations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes a COBRA model and creates reaction equations based
+on the metabolites list, <cite>S</cite> matrix and bound information. Returns the
+model with the additinal field <cite>rxnEquations</cite>. Is called by <cite>cleanTmodel</cite>, <cite>compareCbModels</cite>, <cite>readCbTmodel</cite>, <cite>verifyModel</cite>, <cite>addSEEDInfo</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>Model = buildRxnEquations</strong> (<em>Model</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><p><strong>Model</strong> – COBRA format model or <cite>Tmodel</cite></p>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><p><strong>Model</strong> – Model with corrected <cite>rxnEquations</cite> field.</p>
+</dd>
+</dl>
+<p>Please cite:
+<cite>Sauls, J. T., &amp; Buescher, J. M. (2014). Assimilating genome-scale
+metabolic reconstructions with modelBorgifier. Bioinformatics
+(Oxford, England), 30(7), 1036?8</cite>. <a class="reference external" href="http://doi.org/10.1093/bioinformatics/btt747">http://doi.org/10.1093/bioinformatics/btt747</a></p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.comparison.modelBorgifier.buildRxnEquationsFromName">
+<span class="sig-name descname"><span class="pre">buildRxnEquationsFromName</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">Model</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/comparison/modelBorgifier/buildRxnEquationsFromName.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.comparison.modelBorgifier.buildRxnEquationsFromName" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes a COBRA model and creates reaction equations based
+on the metabolite long names, S matrix and bound information. Returns the
+model with the additioanl field <cite>rxnEquations</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>Model = buildRxnEquations</strong> (<em>Model</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><p><strong>Model</strong> – COBRA format model or <cite>Tmodel</cite></p>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><p><strong>Model</strong> – Model with corrected <cite>rxnEquations</cite> field.</p>
+</dd>
+</dl>
+<p>Please cite:
+<cite>Sauls, J. T., &amp; Buescher, J. M. (2014). Assimilating genome-scale
+metabolic reconstructions with modelBorgifier. Bioinformatics
+(Oxford, England), 30(7), 1036?8</cite>. <a class="reference external" href="http://doi.org/10.1093/bioinformatics/btt747">http://doi.org/10.1093/bioinformatics/btt747</a></p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.comparison.modelBorgifier.buildTmodel">
+<span class="sig-name descname"><span class="pre">buildTmodel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">Model</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/comparison/modelBorgifier/buildTmodel.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.comparison.modelBorgifier.buildTmodel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initiates the template model (Tmodel). It adds model
+designations before some of the cell arrays add creates indenty arrays
+that indicate which reactions and metabolties are contained in which
+models. This function should be used after <cite>verifyModel</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>Tmodel = buildTmodel</strong> (<em>Model</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><p><strong>Model</strong> – Cobra model.</p>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><p><strong>Model</strong> – Template model which to which another model can be
+compared. Known as <cite>Tmodel</cite> in other scripts</p>
+</dd>
+</dl>
+<p>Please cite:
+<cite>Sauls, J. T., &amp; Buescher, J. M. (2014). Assimilating genome-scale
+metabolic reconstructions with modelBorgifier. Bioinformatics
+(Oxford, England), 30(7), 1036?8</cite>. <a class="reference external" href="http://doi.org/10.1093/bioinformatics/btt747">http://doi.org/10.1093/bioinformatics/btt747</a></p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.comparison.modelBorgifier.charpos">
+<span class="sig-name descname"><span class="pre">charpos</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">instr</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/comparison/modelBorgifier/charpos.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.comparison.modelBorgifier.charpos" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds the letter characters (as opposed to numeric characters) in a string
+and returns a logical array. Called by <cite>cleanTmodel</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>letterpos = charpos</strong> (<em>instr</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><p><strong>instr</strong> – String input.</p>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><p><strong>letterpos</strong> – Logical array with 1’s where the letters are in input.</p>
+</dd>
+</dl>
+<p>Please cite:
+<cite>Sauls, J. T., &amp; Buescher, J. M. (2014). Assimilating genome-scale
+metabolic reconstructions with modelBorgifier. Bioinformatics
+(Oxford, England), 30(7), 1036?8</cite>. <a class="reference external" href="http://doi.org/10.1093/bioinformatics/btt747">http://doi.org/10.1093/bioinformatics/btt747</a></p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.comparison.modelBorgifier.cleanTmodel">
+<span class="sig-name descname"><span class="pre">cleanTmodel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">Tmodel</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/comparison/modelBorgifier/cleanTmodel.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.comparison.modelBorgifier.cleanTmodel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reorganizes and checks <cite>Tmodel</cite> for completeness. To be used
+immediately after <cite>addToTmodel</cite>. Called by <cite>addToTmodel</cite>, <cite>mergeModelsBorg</cite>, <cite>mergeTrxns</cite>, calls <cite>TmodelFields</cite>, <cite>buildRxnEquations</cite>, <cite>removeDuplicateNames</cite>, <cite>makeNamesUnique</cite>, <cite>charpos</cite>, <cite>removeProblematicCharacters</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>Tmodel = cleanTmodel</strong> (<em>Tmodel</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><p><strong>Tmodel</strong> – Template model.</p>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><p><strong>‘Verbose’</strong> – Ask when performing certain operations.</p>
+</dd>
+<dt class="field-even">OUTPUTS</dt>
+<dd class="field-even"><p><strong>Tmodel</strong> – Cleaned template model</p>
+</dd>
+</dl>
+<p>Please cite:
+<cite>Sauls, J. T., &amp; Buescher, J. M. (2014). Assimilating genome-scale
+metabolic reconstructions with modelBorgifier. Bioinformatics
+(Oxford, England), 30(7), 1036?8</cite>. <a class="reference external" href="http://doi.org/10.1093/bioinformatics/btt747">http://doi.org/10.1093/bioinformatics/btt747</a></p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.comparison.modelBorgifier.colText">
+<span class="sig-name descname"><span class="pre">colText</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">inText</span></em>, <em class="sig-param"><span class="pre">inColor</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/comparison/modelBorgifier/colText.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.comparison.modelBorgifier.colText" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a HTML string with colored font. Used for GUIs.
+Called by <cite>metCompareGUI</cite>, <cite>reactionCompareGUI</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>outHtml = colText</strong> (<em>inText, inColor</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>inText</strong> – String</p></li>
+<li><p><strong>inColor      Color to make string.</strong></p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><p><strong>outHtml</strong> – Text with formatting</p>
+</dd>
+</dl>
+<p>Please cite:
+<cite>Sauls, J. T., &amp; Buescher, J. M. (2014). Assimilating genome-scale
+metabolic reconstructions with modelBorgifier. Bioinformatics
+(Oxford, England), 30(7), 1036?8</cite>. <a class="reference external" href="http://doi.org/10.1093/bioinformatics/btt747">http://doi.org/10.1093/bioinformatics/btt747</a></p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.comparison.modelBorgifier.compareAllMets">
+<span class="sig-name descname"><span class="pre">compareAllMets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">Cmodel</span></em>, <em class="sig-param"><span class="pre">Tmodel</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/comparison/modelBorgifier/compareAllMets.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.comparison.modelBorgifier.compareAllMets" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compares and scores similarity between all pairwise
+combinations of metabolites between two models. It is not however used
+by the main workflow.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>metScores = compareAllMets(Cmodel,Tmodel</strong></p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>Cmodel</strong> – Comparison model.</p></li>
+<li><p><strong>Tmodel</strong> – Template model.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><p><strong>metScore</strong> – Matrix of scores of all pairwise comparisons.</p>
+</dd>
+</dl>
+<p>Please cite:
+<cite>Sauls, J. T., &amp; Buescher, J. M. (2014). Assimilating genome-scale
+metabolic reconstructions with modelBorgifier. Bioinformatics
+(Oxford, England), 30(7), 1036?8</cite>. <a class="reference external" href="http://doi.org/10.1093/bioinformatics/btt747">http://doi.org/10.1093/bioinformatics/btt747</a></p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.comparison.modelBorgifier.compareCbModels">
+<span class="sig-name descname"><span class="pre">compareCbModels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">Cmodel</span></em>, <em class="sig-param"><span class="pre">Tmodel</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/comparison/modelBorgifier/compareCbModels.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.comparison.modelBorgifier.compareCbModels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate similarity of two Cb models. These models must
+be in a COBRA-like format. Called by <cite>driveModelBorgifier</cite>, calls <cite>addComparisonInfo</cite>, <cite>compareMetInfo</cite>, <cite>optimalScores</cite>, <cite>mapMatch</cite>, <cite>buildRxnEquations</cite>, <cite>fixNames</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[Cmodel, Tmodel, score, Stats] = compareCbModels</strong> (<em>Cmodel, Tmodel</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>Cmodel</strong> – Model to be compared to the template. In COBRA format.</p></li>
+<li><p><strong>Tmodel</strong> – Template model. In COBRA format.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><p><strong>‘Verbose’</strong> – Print progress information. Also controls plotting.</p>
+</dd>
+<dt class="field-even">OUTPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>Cmodel</strong> – Appended Cb comparison model with additional information to
+facilitate comparison.</p></li>
+<li><p><strong>Tmodel</strong> – Appended Cb template model with additional information to
+facilitate comparision.</p></li>
+<li><p><strong>score</strong> – Every individual score, split by number of comparison factors.
+<cite>Size = M x N x F</cite></p></li>
+<li><p><strong>Stats</strong> – Structure of statistics. Including:</p>
+<ul>
+<li><p>scoreTotal - <cite>M x N</cite> matrix of normalized (0 to 1) scores with <cite>M</cite> equal
+to the number of reactions in <cite>Cmodel</cite> and <cite>N</cite> equal to the
+number of reactions in <cite>Tmodel</cite>.</p></li>
+</ul>
+</li>
+</ul>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Use <cite>readCbModel</cite> to create a COBRA model from a SBML formatted .xml or an
+appropriate scipt to create the model from an .xls or other format.
+Run script through <cite>verifyModel</cite> to make sure that is has all the correct
+information for <cite>compareCbModels</cite>.</p>
+</div>
+<p>Please cite:
+<cite>Sauls, J. T., &amp; Buescher, J. M. (2014). Assimilating genome-scale
+metabolic reconstructions with modelBorgifier. Bioinformatics
+(Oxford, England), 30(7), 1036?8</cite>. <a class="reference external" href="http://doi.org/10.1093/bioinformatics/btt747">http://doi.org/10.1093/bioinformatics/btt747</a></p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.comparison.modelBorgifier.compareMatricies">
+<span class="sig-name descname"><span class="pre">compareMatricies</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">CMODEL</span></em>, <em class="sig-param"><span class="pre">Cspawn</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/comparison/modelBorgifier/compareMatricies.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.comparison.modelBorgifier.compareMatricies" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a structure with the matrices before and after merging. Useful
+for comparing how successful merging was.  Called by <cite>mergeModelsBorg</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>FluxCompare = compareMatricies</strong> (<em>CMODEL, Cspawn</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>CMODEL</strong> – model in cobra standard</p></li>
+<li><p><strong>Cspawn</strong> – <cite>Cmodel</cite> after it has been removed from the` <cite>TmodelC</cite></p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><p><strong>FluxCompare</strong> – structure with matrices</p>
+</dd>
+</dl>
+<p>Please cite:
+<cite>Sauls, J. T., &amp; Buescher, J. M. (2014). Assimilating genome-scale
+metabolic reconstructions with modelBorgifier. Bioinformatics
+(Oxford, England), 30(7), 1036?8</cite>. <a class="reference external" href="http://doi.org/10.1093/bioinformatics/btt747">http://doi.org/10.1093/bioinformatics/btt747</a></p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.comparison.modelBorgifier.countC">
+<span class="sig-name descname"><span class="pre">countC</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">nowFormula</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/comparison/modelBorgifier/countC.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.comparison.modelBorgifier.countC" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds number of carbons in a formula, if any.
+Called by <cite>reactionCompareGUI</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>cNum = countC</strong> (<em>nowFormula</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><p><strong>nowFormula</strong> – Current chemical formula</p>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><p><strong>cNum</strong> – Integer with number of carbons</p>
+</dd>
+</dl>
+<p>Please cite:
+<cite>Sauls, J. T., &amp; Buescher, J. M. (2014). Assimilating genome-scale
+metabolic reconstructions with modelBorgifier. Bioinformatics
+(Oxford, England), 30(7), 1036?8</cite>. <a class="reference external" href="http://doi.org/10.1093/bioinformatics/btt747">http://doi.org/10.1093/bioinformatics/btt747</a></p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.comparison.modelBorgifier.findMetMatch">
+<span class="sig-name descname"><span class="pre">findMetMatch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">cMet</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/comparison/modelBorgifier/findMetMatch.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.comparison.modelBorgifier.findMetMatch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds find possible matches for a given metabolite.
+Called by <cite>metCompare</cite>, <cite>metCompareGUI</cite>, calls <cite>stringSimilarityForward</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[matchScores, matchIndex, [hit]] = findMetMatch</strong> (<em>cMet, [tRxn]</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><p><strong>cMet</strong> – Metabolite number (relative to CMODEL) metabolite to be compared.</p>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tRxn</strong> – The reaction from <cite>TMODEL</cite> that this metabolite’s reaction is matched.</p></li>
+<li><p><strong>CMODEL</strong> – global input</p></li>
+<li><p><strong>TMODEL</strong> – global input</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>matchScores</strong> – Array of sorted, normalized scores for each met in <cite>TMODEL</cite>.</p></li>
+<li><p><strong>matchIndex</strong> – Index of match in <cite>TMODEL.mets</cite>.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="simple">
+<dt>OPTIONAL OUTPUTS:</dt><dd><p>hit:            Flag for if a match was found.</p>
+</dd>
+</dl>
+<p>Please cite:
+<cite>Sauls, J. T., &amp; Buescher, J. M. (2014). Assimilating genome-scale
+metabolic reconstructions with modelBorgifier. Bioinformatics
+(Oxford, England), 30(7), 1036?8</cite>. <a class="reference external" href="http://doi.org/10.1093/bioinformatics/btt747">http://doi.org/10.1093/bioinformatics/btt747</a></p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.comparison.modelBorgifier.findRxnMatch">
+<span class="sig-name descname"><span class="pre">findRxnMatch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">cRxn</span></em>, <em class="sig-param"><span class="pre">nMatch</span></em>, <em class="sig-param"><span class="pre">scoreTotal</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/comparison/modelBorgifier/findRxnMatch.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.comparison.modelBorgifier.findRxnMatch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds the highest scoring matches for a given reaction.
+Called by <cite>reactionCompareGUI</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>Data = findRxnMatch</strong> (<em>cRxn, nMatch, scoreTotal</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>cRxn</strong> – Number of the compared rxn.</p></li>
+<li><p><strong>nMatch</strong> – Number of matches to return.</p></li>
+<li><p><strong>scoreTotal</strong> – summed SCORE of reactions vs reactions.</p></li>
+<li><p><strong>CMODEL</strong> – global input</p></li>
+<li><p><strong>TMODEL</strong> – global input</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><p><strong>Data</strong> – Structure containing comparison information.</p>
+</dd>
+</dl>
+<p>Please cite:
+<cite>Sauls, J. T., &amp; Buescher, J. M. (2014). Assimilating genome-scale
+metabolic reconstructions with modelBorgifier. Bioinformatics
+(Oxford, England), 30(7), 1036?8</cite>. <a class="reference external" href="http://doi.org/10.1093/bioinformatics/btt747">http://doi.org/10.1093/bioinformatics/btt747</a></p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.comparison.modelBorgifier.fixChemFormulas">
+<span class="sig-name descname"><span class="pre">fixChemFormulas</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">formulaList</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/comparison/modelBorgifier/fixChemFormulas.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.comparison.modelBorgifier.fixChemFormulas" title="Permalink to this definition">¶</a></dt>
+<dd><p>Formats chemical formulas such that they do not include a
+‘1’ after elements that only occur once in the molecule. Only operates on
+C, H, N, O, P, S. Called by <cite>verifyModel</cite>, <cite>addSEEDInfo</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>formulaList = fixChemFormulas</strong> (<em>formulaList</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><p><strong>formulaList</strong> – Cell array of chemical formulas.</p>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><p><strong>formulaList</strong> – Same cell array, formated.</p>
+</dd>
+</dl>
+<p>Please cite:
+<cite>Sauls, J. T., &amp; Buescher, J. M. (2014). Assimilating genome-scale
+metabolic reconstructions with modelBorgifier. Bioinformatics
+(Oxford, England), 30(7), 1036?8</cite>. <a class="reference external" href="http://doi.org/10.1093/bioinformatics/btt747">http://doi.org/10.1093/bioinformatics/btt747</a></p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.comparison.modelBorgifier.fixNames">
+<span class="sig-name descname"><span class="pre">fixNames</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">nameList</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/comparison/modelBorgifier/fixNames.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.comparison.modelBorgifier.fixNames" title="Permalink to this definition">¶</a></dt>
+<dd><p>Standardizes names, ie, met, rxn and long names for them as well.
+<cite>fixNames</cite> makes the names lowercase, removes obtuse characters and
+whitespace and replaces them with underscores, and then removes starting
+and trailing underscores. Called by <cite>compareCbModels</cite>, <cite>verifyModel</cite>, <cite>addSEEDInfo</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>nameList = fixNames</strong> (<em>nameList</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><p><strong>nameList</strong> – Cell array of names.</p>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><p><strong>nameList</strong> – Same cell array but with fixed names.</p>
+</dd>
+</dl>
+<p>Please cite:
+<cite>Sauls, J. T., &amp; Buescher, J. M. (2014). Assimilating genome-scale
+metabolic reconstructions with modelBorgifier. Bioinformatics
+(Oxford, England), 30(7), 1036?8</cite>. <a class="reference external" href="http://doi.org/10.1093/bioinformatics/btt747">http://doi.org/10.1093/bioinformatics/btt747</a></p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.comparison.modelBorgifier.ismatlab">
+<span class="sig-name descname"><span class="pre">ismatlab</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/comparison/modelBorgifier/ismatlab.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.comparison.modelBorgifier.ismatlab" title="Permalink to this definition">¶</a></dt>
+<dd><p>Simply tests if Matlab is being used (as opposed to Octave).  Called by <cite>readCbTmodel</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>out = ismatlab</strong></p>
+</dd>
+<dt class="field-even">OUTPUTS</dt>
+<dd class="field-even"><p><strong>out</strong> – Boolean is true if this is Matlab.</p>
+</dd>
+</dl>
+<p>Please cite:
+<cite>Sauls, J. T., &amp; Buescher, J. M. (2014). Assimilating genome-scale
+metabolic reconstructions with modelBorgifier. Bioinformatics
+(Oxford, England), 30(7), 1036?8</cite>. <a class="reference external" href="http://doi.org/10.1093/bioinformatics/btt747">http://doi.org/10.1093/bioinformatics/btt747</a></p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.comparison.modelBorgifier.makeNamesUnique">
+<span class="sig-name descname"><span class="pre">makeNamesUnique</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">nameList</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/comparison/modelBorgifier/makeNamesUnique.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.comparison.modelBorgifier.makeNamesUnique" title="Permalink to this definition">¶</a></dt>
+<dd><p>Identifies duplicate names in a list of names (cell array)
+and prompts the user to input new names.
+Called by <cite>cleanTmodel</cite>, <cite>verifyModel</cite>, <cite>addSEEDInfo</cite>, calls <cite>countUnique</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>nameList = makeNamesUnique</strong> (<em>nameList, [nameInfo]</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><p><strong>nameList</strong> – Cell array of entires that contains duplicates.</p>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><p><strong>nameInfo</strong> – Cell array the same length as nameList that contains
+information pertaining to the matching entry in <cite>nameList</cite>. This
+array can help the renaming process.</p>
+</dd>
+<dt class="field-even">OUTPUTS</dt>
+<dd class="field-even"><p><strong>nameList</strong> – Version of nameList with all unique entires.</p>
+</dd>
+</dl>
+<p>Please cite:
+<cite>Sauls, J. T., &amp; Buescher, J. M. (2014). Assimilating genome-scale
+metabolic reconstructions with modelBorgifier. Bioinformatics
+(Oxford, England), 30(7), 1036?8</cite>. <a class="reference external" href="http://doi.org/10.1093/bioinformatics/btt747">http://doi.org/10.1093/bioinformatics/btt747</a></p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.comparison.modelBorgifier.mapMatch">
+<span class="sig-name descname"><span class="pre">mapMatch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">Cmodel</span></em>, <em class="sig-param"><span class="pre">Tmodel</span></em>, <em class="sig-param"><span class="pre">seedMets</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/comparison/modelBorgifier/mapMatch.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.comparison.modelBorgifier.mapMatch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compares the local network topology between the metabolites and
+reactions of two models. Called by <cite>compareCbModels</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[rmatch, mmatch] = mapMatch</strong> (<em>Cmodel, Tmodel, seedMets</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>Cmodel</strong> – model to be compared</p></li>
+<li><p><strong>Tmodel</strong> – reference model</p></li>
+<li><p><strong>seedMats</strong> – two column cell array with pairs of metabolite names in the
+two models that are the same</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rmatch</strong> – pairwise match score between reactions</p></li>
+<li><p><strong>mmatch</strong> – pairwise match score between metabolites</p></li>
+</ul>
+</dd>
+</dl>
+<p>Please cite:
+<cite>Sauls, J. T., &amp; Buescher, J. M. (2014). Assimilating genome-scale
+metabolic reconstructions with modelBorgifier. Bioinformatics
+(Oxford, England), 30(7), 1036?8</cite>. <a class="reference external" href="http://doi.org/10.1093/bioinformatics/btt747">http://doi.org/10.1093/bioinformatics/btt747</a></p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.comparison.modelBorgifier.mergeModelsBorg">
+<span class="sig-name descname"><span class="pre">mergeModelsBorg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">CmodelIn</span></em>, <em class="sig-param"><span class="pre">TmodelIn</span></em>, <em class="sig-param"><span class="pre">rxnList</span></em>, <em class="sig-param"><span class="pre">metList</span></em>, <em class="sig-param"><span class="pre">Stats</span></em>, <em class="sig-param"><span class="pre">score</span></em>, <em class="sig-param"><span class="pre">mode</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/comparison/modelBorgifier/mergeModelsBorg.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.comparison.modelBorgifier.mergeModelsBorg" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks Tmodel for duplicate reactions and other mistakes,
+that may have occured during reaction and metabolite matching. It
+resolves these problems and merges the models, and confirms that Cmodel
+is the same after being removed from the merged model. It also provides
+some statistics on the merging process and resulting combined model.
+Called by <cite>driveModelBorgifier</cite>, calls <cite>addToTmodel</cite>, <cite>compareMatricies</cite>, <cite>reactionCompare</cite>, <cite>cleanTmodel</cite>, organizeModelCool`, <cite>TmodelStats</cite>, <cite>readCbTmodel</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[TmodelC, Cspawn, Stats, CMODEL] = mergeModelsBorg</strong> (<em>CmodelIn, TmodelIn, rxnList, metList, Stats, score</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>CmodelIn</strong> – Comparison model</p></li>
+<li><p><strong>TmodelIn</strong> – Template model</p></li>
+<li><p><strong>rxnList</strong> – Array which designates matched and new reactions.</p></li>
+<li><p><strong>metList</strong> – Array which desginates matched and new metabolites.</p></li>
+<li><p><strong>Stats</strong> – Structure that comes from reactionCompare. Weighting
+information can be used and additional information addended.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><p><strong>score</strong> – The originalPress the any key to continue.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.comparison.modelBorgifier.mergeTrxns">
+<span class="sig-name descname"><span class="pre">mergeTrxns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">Tmodel</span></em>, <em class="sig-param"><span class="pre">mergerxns</span></em>, <em class="sig-param"><span class="pre">mergerxnsratio</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/comparison/modelBorgifier/mergeTrxns.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.comparison.modelBorgifier.mergeTrxns" title="Permalink to this definition">¶</a></dt>
+<dd><p>Merges identical reactions within <cite>Tmodel</cite> that were accidently
+kept separate during the model matching process.
+Calls <cite>charpos</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>Tmodel = mergeTrxns</strong> (<em>Tmodel, mergerxns, mergerxnsratio</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>Tmodel</strong> – Template model</p></li>
+<li><p><strong>mergerxns</strong> – Cell array of reactions to be merged</p></li>
+<li><p><strong>mergerxnsratio</strong> – Ratio of reactions to be merged</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><p><strong>Tmodel</strong> – <cite>Tmodel</cite> with reduced number of reactions.</p>
+</dd>
+</dl>
+<p>Please cite:
+<cite>Sauls, J. T., &amp; Buescher, J. M. (2014). Assimilating genome-scale
+metabolic reconstructions with modelBorgifier. Bioinformatics
+(Oxford, England), 30(7), 1036?8</cite>. <a class="reference external" href="http://doi.org/10.1093/bioinformatics/btt747">http://doi.org/10.1093/bioinformatics/btt747</a></p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.comparison.modelBorgifier.metCompare">
+<span class="sig-name descname"><span class="pre">metCompare</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">RxnInfo</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/comparison/modelBorgifier/metCompare.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.comparison.modelBorgifier.metCompare" title="Permalink to this definition">¶</a></dt>
+<dd><p>Launches the <cite>metCompareGUI</cite>, first preparing information for the
+GUI and automatching some metabolites. If all metabolites are matched,
+based on certain criteria, then the GUI is bypassed. <cite>metCompare</cite> then
+adjusts <cite>metList</cite> to reflect the new pairings.
+Called by <cite>reactionCompareGUI</cite>, <cite>autoMatchReactions</cite>, calls <cite>findMetMatch</cite>, <cite>metCompareGUI</cite>, <cite>fillRxnInfo</cite>, <cite>autoMatchMets</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[metList, stopFlag] = metCompare</strong> (<em>RxnInfo</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>RxnInfo</strong> – Structure which contains relevent info, including.</p></li>
+<li><p><strong>rxnIndex</strong> – Index of reaction being compared. If <cite>metCompare</cite> is being
+run to compare mets irregardless of reactions, this is 0.</p></li>
+<li><p><strong>rxnMatch</strong> – The index of that reaction’s match, if any.</p></li>
+<li><p><strong>rxnList</strong> – list of reactions</p></li>
+<li><p><strong>metList</strong> – list of metabolites</p></li>
+<li><p><strong>CMODEL</strong> – global input</p></li>
+<li><p><strong>TMODEL</strong> – globl input</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>metList</strong> – list of metabolites</p></li>
+<li><p><strong>stopFlag</strong> – Flag indicates that metabolite matching has been aborted.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Please cite:
+<cite>Sauls, J. T., &amp; Buescher, J. M. (2014). Assimilating genome-scale
+metabolic reconstructions with modelBorgifier. Bioinformatics
+(Oxford, England), 30(7), 1036?8</cite>. <a class="reference external" href="http://doi.org/10.1093/bioinformatics/btt747">http://doi.org/10.1093/bioinformatics/btt747</a></p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.comparison.modelBorgifier.metCompareGUI">
+<span class="sig-name descname"><span class="pre">metCompareGUI</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/comparison/modelBorgifier/metCompareGUI.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.comparison.modelBorgifier.metCompareGUI" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a comparison GUI for deciding which metabolite are
+in a new or existing reaction.
+Called by <cite>metCompare</cite>, calls <cite>findMetMatch</cite>, <cite>colText</cite>, <cite>addMetInfo</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[RxnInfo, stopFlag] = metCompareGUI</strong> (<em>RxnInfo</em>)</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>INPUTS</dt><dd><dl class="simple">
+<dt>RxnInfo:     Structure containing relevent info. See <cite>metCompare</cite> function</dt><dd><p><cite>fillRxnInfo</cite>.</p>
+</dd>
+</dl>
+</dd>
+<dt>OPTIONAL OUTPUTS:</dt><dd><p>RxnInfo:     Update structure.
+stopFlag:    Indicates if more metabolites need to be reviewed
+CMODEL:      global input
+TMODEL:      global input</p>
+</dd>
+</dl>
+<p>Please cite:
+<cite>Sauls, J. T., &amp; Buescher, J. M. (2014). Assimilating genome-scale
+metabolic reconstructions with modelBorgifier. Bioinformatics
+(Oxford, England), 30(7), 1036?8</cite>. <a class="reference external" href="http://doi.org/10.1093/bioinformatics/btt747">http://doi.org/10.1093/bioinformatics/btt747</a></p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.comparison.modelBorgifier.newCompsNewMets">
+<span class="sig-name descname"><span class="pre">newCompsNewMets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">metList</span></em>, <em class="sig-param"><span class="pre">Cmodel</span></em>, <em class="sig-param"><span class="pre">Tmodel</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/comparison/modelBorgifier/newCompsNewMets.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.comparison.modelBorgifier.newCompsNewMets" title="Permalink to this definition">¶</a></dt>
+<dd><p>Declares all metabolites in <cite>Cmodel</cite> that come from
+compartments NOT in <cite>Tmodel</cite> as new.
+Called by <cite>driveModelBorgifier</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>metList = newCompsNewMets</strong> (<em>metList, Cmodel, Tmodel</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>metList</strong> – list of metabolites</p></li>
+<li><p><strong>Cmodel</strong> – <cite>Cmodel</cite> structure</p></li>
+<li><p><strong>Tmodel</strong> – <cite>Tmodel</cite> structure</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><p><strong>metList</strong> – list of metabolites</p>
+</dd>
+</dl>
+<p>Please cite:
+<cite>Sauls, J. T., &amp; Buescher, J. M. (2014). Assimilating genome-scale
+metabolic reconstructions with modelBorgifier. Bioinformatics
+(Oxford, England), 30(7), 1036?8</cite>. <a class="reference external" href="http://doi.org/10.1093/bioinformatics/btt747">http://doi.org/10.1093/bioinformatics/btt747</a></p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.comparison.modelBorgifier.optWeightExp">
+<span class="sig-name descname"><span class="pre">optWeightExp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">weight</span></em>, <em class="sig-param"><span class="pre">highscoreVectors</span></em>, <em class="sig-param"><span class="pre">lowscoreVectors</span></em>, <em class="sig-param"><span class="pre">hitnum</span></em>, <em class="sig-param"><span class="pre">missnum</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/comparison/modelBorgifier/optWeightExp.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.comparison.modelBorgifier.optWeightExp" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is a optimization weighting function used for weighting
+the scores comparing reactions. Called by <cite>optimalScores</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>obj = optWeightExp</strong> (<em>weight, highscoreVectors, lowscoreVectors, hitnum, missnum</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>weight</strong> – Weights</p></li>
+<li><p><strong>highscoreVectors</strong> – Logical array of hits</p></li>
+<li><p><strong>lowscoreVectors</strong> – Loggical array of misses</p></li>
+<li><p><strong>hitVec</strong> – Number of hits.</p></li>
+<li><p><strong>missVec</strong> – Number of misses</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><p><strong>obj</strong> – New weights</p>
+</dd>
+</dl>
+<p>Please cite:
+<cite>Sauls, J. T., &amp; Buescher, J. M. (2014). Assimilating genome-scale
+metabolic reconstructions with modelBorgifier. Bioinformatics
+(Oxford, England), 30(7), 1036?8</cite>. <a class="reference external" href="http://doi.org/10.1093/bioinformatics/btt747">http://doi.org/10.1093/bioinformatics/btt747</a></p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.comparison.modelBorgifier.optWeightLin">
+<span class="sig-name descname"><span class="pre">optWeightLin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">weight</span></em>, <em class="sig-param"><span class="pre">highscoreVectors</span></em>, <em class="sig-param"><span class="pre">lowscoreVectors</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/comparison/modelBorgifier/optWeightLin.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.comparison.modelBorgifier.optWeightLin" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is the objective function for the linear optimization of the weighting of
+the individual scores. It maximizes the difference between the weighted sum of
+scores of the correctly assigned reactions and the incorrect matches in the
+training data set. Called by <cite>optimalScores</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>obj = optWeightLin</strong> (<em>weight, highscoreVectors, lowscoreVectors</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>weight</strong> – Weights</p></li>
+<li><p><strong>highscoreVectors</strong> – Logical array of hits</p></li>
+<li><p><strong>lowscoreVectors</strong> – Loggical array of misses</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><p><strong>obj</strong> – New weights</p>
+</dd>
+</dl>
+<p>Please cite:
+<cite>Sauls, J. T., &amp; Buescher, J. M. (2014). Assimilating genome-scale
+metabolic reconstructions with modelBorgifier. Bioinformatics
+(Oxford, England), 30(7), 1036?8</cite>. <a class="reference external" href="http://doi.org/10.1093/bioinformatics/btt747">http://doi.org/10.1093/bioinformatics/btt747</a></p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.comparison.modelBorgifier.optimalScores">
+<span class="sig-name descname"><span class="pre">optimalScores</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">rxnList</span></em>, <em class="sig-param"><span class="pre">optimizer</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/comparison/modelBorgifier/optimalScores.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.comparison.modelBorgifier.optimalScores" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes the 3D SCORE matrix produced from <cite>compareCbModels</cite> and
+weights the scores based on a given training set using either SVM or
+linear optimization. Colapses SCORE into a <cite>cRxnN x tRxnN</cite> matrix and
+also produced the structure <cite>Stats</cite>, which include the best matches for
+each reaction in <cite>CMODEL</cite> and the corresponding index in <cite>TMODEL</cite>. <cite>rxnList</cite>
+is the training set. If <cite>rxnList</cite> is not provided, then <cite>optimalScores</cite>
+just colapses the 3D SCORE matrix to <cite>scoreTotal</cite>.
+Called by <cite>reactionCompare</cite>, <cite>reactionCompareGUI</cite>, <cite>compareCbModels</cite>, calls <cite>optWeightLin</cite>, <cite>opnWeightExp</cite>, <cite>colapseScore</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>Stats = optimalScore</strong> (<em>rxnList, optimizer</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>rxnList</strong> – reactions` list</p></li>
+<li><p><strong>optimizer</strong> – Either ‘svm’, ‘RF’, ‘linear’, or ‘exp’; the latter two are custom
+functions contained within the functions <cite>optWeightLin</cite> and
+optWeightExp.</p></li>
+<li><p><strong>CMODEL</strong> – global input</p></li>
+<li><p><strong>TMODEL</strong> – global input</p></li>
+<li><p><strong>SCORE</strong> – global input</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Stats</strong> – Structure containing:</p></li>
+<li><p><strong>bestMatch</strong> – Array of the best matching reactions</p></li>
+<li><p><strong>bestMatchIndex</strong> – Indicies of the best matching reactions.</p></li>
+<li><p><strong>weightArray</strong></p></li>
+<li><p><strong>scoreTotal</strong> – Readjusted <cite>scoreTotal</cite> based on training set.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Please cite:
+<cite>Sauls, J. T., &amp; Buescher, J. M. (2014). Assimilating genome-scale
+metabolic reconstructions with modelBorgifier. Bioinformatics
+(Oxford, England), 30(7), 1036?8</cite>. <a class="reference external" href="http://doi.org/10.1093/bioinformatics/btt747">http://doi.org/10.1093/bioinformatics/btt747</a></p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.comparison.modelBorgifier.orderModelFieldsBorg">
+<span class="sig-name descname"><span class="pre">orderModelFieldsBorg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">Model</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/comparison/modelBorgifier/orderModelFieldsBorg.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.comparison.modelBorgifier.orderModelFieldsBorg" title="Permalink to this definition">¶</a></dt>
+<dd><p>Puts the fields in the correct order in the structure.
+Called by <cite>verifyModel</cite>, <cite>readCbTModel</cite>, calls <cite>TmodelFields</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>Model = orderModelFieldsBorg</strong> (<em>Model</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><p><strong>Model</strong> – model structure with unsorted fiels</p>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><p><strong>Model</strong> – model strucutre with sorted fields</p>
+</dd>
+</dl>
+<p>Please cite:
+<cite>Sauls, J. T., &amp; Buescher, J. M. (2014). Assimilating genome-scale
+metabolic reconstructions with modelBorgifier. Bioinformatics
+(Oxford, England), 30(7), 1036?8</cite>. <a class="reference external" href="http://doi.org/10.1093/bioinformatics/btt747">http://doi.org/10.1093/bioinformatics/btt747</a></p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.comparison.modelBorgifier.organizeModelCool">
+<span class="sig-name descname"><span class="pre">organizeModelCool</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">Model</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/comparison/modelBorgifier/organizeModelCool.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.comparison.modelBorgifier.organizeModelCool" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reorders a COBRA model such that the most promiscuous
+mets are listed first, with sister mets grouped together. Reactions are
+then organized so that the <cite>S</cite> matrix appoximates a rank order matrix, with
+exchange reactions at the end.
+Called by <cite>mergeModelsBorg</cite>, <cite>readCbTmodel</cite>, <cite>readCbTModel</cite>, <cite>verifyModel</cite>, calls <cite>TmodelFields</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>Model = organizeModelCool</strong> (<em>Model</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><p><strong>Model</strong> – Model in COBRA format. Also accept a <cite>Tmodel</cite>.</p>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><p><strong>Model</strong> – Organized model.</p>
+</dd>
+</dl>
+<p>Please cite:
+<cite>Sauls, J. T., &amp; Buescher, J. M. (2014). Assimilating genome-scale
+metabolic reconstructions with modelBorgifier. Bioinformatics
+(Oxford, England), 30(7), 1036?8</cite>. <a class="reference external" href="http://doi.org/10.1093/bioinformatics/btt747">http://doi.org/10.1093/bioinformatics/btt747</a></p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.comparison.modelBorgifier.reactionCompare">
+<span class="sig-name descname"><span class="pre">reactionCompare</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">CmodelIn</span></em>, <em class="sig-param"><span class="pre">TmodelIn</span></em>, <em class="sig-param"><span class="pre">scoreIn</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/comparison/modelBorgifier/reactionCompare.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.comparison.modelBorgifier.reactionCompare" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is the function front end for <cite>autoMatchReactions</cite> and
+the <cite>reactionCompareGUI</cite>. Loads <cite>CMODEL</cite>, <cite>TMODEL</cite>, <cite>Score</cite> and <cite>ScoreTotal</cite> from
+globals if they are not provided. If <cite>rxnList</cite> is not provided then it is
+generated with <cite>autoMatchReactions</cite>. If you are continuing comparison,
+include the optional inputs.
+Called by <cite>optimalScores</cite>, <cite>autoMatchReactions</cite>, <cite>reactionCompareGUI</cite>, calls <cite>mergeModelsBorg</cite>, <cite>driveModelBorgifier</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[rxnList, metList, Stats] = reactionCompare</strong> (<em>CmodelIn, TmodelIn, scoreIn, [rxnList, metList, Stats]</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>CmodelIn</strong> – Comparison model</p></li>
+<li><p><strong>TmodelIn</strong> – Template model</p></li>
+<li><p><strong>scoreIn</strong> – Score</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rxnList</strong> – Array pairs reactions in <cite>CMODEL</cite> with matches from <cite>TMODEL</cite> or
+declares them as new.</p></li>
+<li><p><strong>metList</strong> – Array pairs metabolites in <cite>CMODEL</cite> with matches from <cite>TMODEL</cite>,
+new metabolites are given their new met number in <cite>TMODEL</cite>.</p></li>
+<li><p><strong>Stats</strong> – Stats array that contains weighting information from previous
+scoring work.</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>rxnList</strong> – reactions’ list</p></li>
+<li><p><strong>metList</strong> – metabolites’ list</p></li>
+<li><p><strong>Stats</strong> – Structure of information regarding the merging and also stats
+on the combined model.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Please cite:
+<cite>Sauls, J. T., &amp; Buescher, J. M. (2014). Assimilating genome-scale
+metabolic reconstructions with modelBorgifier. Bioinformatics
+(Oxford, England), 30(7), 1036?8</cite>. <a class="reference external" href="http://doi.org/10.1093/bioinformatics/btt747">http://doi.org/10.1093/bioinformatics/btt747</a></p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.comparison.modelBorgifier.reactionCompareGUI">
+<span class="sig-name descname"><span class="pre">reactionCompareGUI</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/comparison/modelBorgifier/reactionCompareGUI.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.comparison.modelBorgifier.reactionCompareGUI" title="Permalink to this definition">¶</a></dt>
+<dd><p>Lauches a GUI compare reactions visually. After each
+reaction is declared, metabolites for that reaction are are also matched.
+<cite>reactionCompareGUI</cite> should be accessed exclusively through the function
+<cite>reactionCompare</cite>.
+Called by <cite>reactionCompare</cite>, calls <cite>optimalScores</cite>, <cite>autoMatchReactions</cite>, <cite>findRxnMatch</cite>, <cite>metCompare</cite>, <cite>countC</cite>, <cite>compareCbModels</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[rxnList, metList, Stats] = reactionCompareGUI</strong> (<em>InfoBall</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>InfoBall</strong> – Structure which contains relevent information, including:</p></li>
+<li><p><strong>rxnList</strong> – Array which links reactions in <cite>Cmodel</cite> to <cite>Tmodel</cite></p></li>
+<li><p><strong>metList</strong> – Array which links metabolites in <cite>Cmodel</cite> to <cite>Tmodel</cite>.</p></li>
+<li><p><strong>cModelName</strong> – Name of the model</p></li>
+<li><p><strong>Stats</strong> – Contains weighting parameters.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rxnList</strong> – Array pairs reactions in <cite>CMODEL</cite> with matches from <cite>TMODEL</cite> or
+declares them as new.</p></li>
+<li><p><strong>metList</strong> – Array pairs metabolites in <cite>CMODEL</cite> with matches from <cite>TMODEL</cite>,
+new metabolites are given their new met number in <cite>TMODEL</cite>.</p></li>
+<li><p><strong>Stats</strong> – Stats array that contains weighting information from previous
+scoring work.</p></li>
+<li><p><strong>CMODEL</strong> – global input</p></li>
+<li><p><strong>TMODEL</strong> – global input</p></li>
+<li><p><strong>SCORE</strong> – global input</p></li>
+</ul>
+</dd>
+</dl>
+<p>Please cite:
+<cite>Sauls, J. T., &amp; Buescher, J. M. (2014). Assimilating genome-scale
+metabolic reconstructions with modelBorgifier. Bioinformatics
+(Oxford, England), 30(7), 1036?8</cite>. <a class="reference external" href="http://doi.org/10.1093/bioinformatics/btt747">http://doi.org/10.1093/bioinformatics/btt747</a></p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.comparison.modelBorgifier.readCbTmodel">
+<span class="sig-name descname"><span class="pre">readCbTmodel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">modelName</span></em>, <em class="sig-param"><span class="pre">Tmodel</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/comparison/modelBorgifier/readCbTmodel.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.comparison.modelBorgifier.readCbTmodel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates COBRA format of a specific model from <cite>Tmodel</cite>.
+(composite database).
+Called by <cite>mergeModelsBorg</cite>, <cite>driveModelBorgifier</cite>, calls <cite>TmodelFields</cite>, <cite>orderModelFieldsBorg</cite>, <cite>organizeModelCool</cite>, <cite>buildRxnEquations</cite>, <cite>ismatlab</cite>, <cite>parseBoolean</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>Model = readCbTmodel</strong> (<em>modelName, Tmodel</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>modelName</strong> – Name of an available model (i.e. iAF1260). Available names
+can be found by looking in <cite>Tmodel.Models</cite></p></li>
+<li><p><strong>Tmodel</strong> – Otherwise <cite>Tmodel</cite> will be loaded from path below.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>emptyArrayChoice</strong> – “y” or “n” to remove empty arrays or not</p></li>
+<li><p><strong>‘Verbose’</strong> – Print progress stamps.</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUTS</dt>
+<dd class="field-even"><p><strong>Model</strong> – Model in COBRA format.</p>
+</dd>
+</dl>
+<p>Please cite:
+<cite>Sauls, J. T., &amp; Buescher, J. M. (2014). Assimilating genome-scale
+metabolic reconstructions with modelBorgifier. Bioinformatics
+(Oxford, England), 30(7), 1036?8</cite>. <a class="reference external" href="http://doi.org/10.1093/bioinformatics/btt747">http://doi.org/10.1093/bioinformatics/btt747</a></p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.comparison.modelBorgifier.removeDuplicateNames">
+<span class="sig-name descname"><span class="pre">removeDuplicateNames</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">infoList</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/comparison/modelBorgifier/removeDuplicateNames.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.comparison.modelBorgifier.removeDuplicateNames" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accepts a cell array of strings, with info seperated
+by a ‘|’ within each cell, and removes the duplicate names in each cell.
+Also orders the names by size from smallest to largest. Best used after
+<cite>fixNames</cite>.
+Called by <cite>cleanTmodel</cite>, <cite>verifyModel</cite>, <cite>addSEEDInfo</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>infoList = removeDuplicateNames</strong> (<em>infoList</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><p><strong>infoList</strong> – Cell array of strings.</p>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><p><strong>infoList</strong> – After removal</p>
+</dd>
+</dl>
+<p>Please cite:
+<cite>Sauls, J. T., &amp; Buescher, J. M. (2014). Assimilating genome-scale
+metabolic reconstructions with modelBorgifier. Bioinformatics
+(Oxford, England), 30(7), 1036?8</cite>. <a class="reference external" href="http://doi.org/10.1093/bioinformatics/btt747">http://doi.org/10.1093/bioinformatics/btt747</a></p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.comparison.modelBorgifier.removeProblematicCharacters">
+<span class="sig-name descname"><span class="pre">removeProblematicCharacters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">in</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/comparison/modelBorgifier/removeProblematicCharacters.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.comparison.modelBorgifier.removeProblematicCharacters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Replaces all problematic characters in input string in with substitute.
+Called by <cite>cleanTmodel</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>out = removeProblematicCharacters</strong> (<em>in, varargin</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>in</strong> – String.</p></li>
+<li><p><strong>sub</strong> – Character which to subtitute with. Default is ‘_’</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><p><strong>out</strong> – Newly formatted string</p>
+</dd>
+</dl>
+<p>Please cite:
+<cite>Sauls, J. T., &amp; Buescher, J. M. (2014). Assimilating genome-scale
+metabolic reconstructions with modelBorgifier. Bioinformatics
+(Oxford, England), 30(7), 1036?8</cite>. <a class="reference external" href="http://doi.org/10.1093/bioinformatics/btt747">http://doi.org/10.1093/bioinformatics/btt747</a></p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.comparison.modelBorgifier.rowvector">
+<span class="sig-name descname"><span class="pre">rowvector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">in</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/comparison/modelBorgifier/rowvector.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.comparison.modelBorgifier.rowvector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transposes the input vector to a row vector if it is not
+already a row vector. Called by <cite>verifyModel</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>out = columnvector</strong> (<em>in</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><p><strong>in</strong> – Vector</p>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><p><strong>out</strong> – Column vector</p>
+</dd>
+</dl>
+<p>Please cite:
+<cite>Sauls, J. T., &amp; Buescher, J. M. (2014). Assimilating genome-scale
+metabolic reconstructions with modelBorgifier. Bioinformatics
+(Oxford, England), 30(7), 1036?8</cite>. <a class="reference external" href="http://doi.org/10.1093/bioinformatics/btt747">http://doi.org/10.1093/bioinformatics/btt747</a></p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.comparison.modelBorgifier.verifyModelBorg">
+<span class="sig-name descname"><span class="pre">verifyModelBorg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">Model</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/comparison/modelBorgifier/verifyModelBorg.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.comparison.modelBorgifier.verifyModelBorg" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ensures that a model is in the correct format to be analyzed
+by any of the scripts in the <cite>Tmodel</cite> suite. It will add fields that are
+missing and expected for comparison. It will remove fields not in this list.
+Called by  <cite>driveModelBorgifier</cite>, calls <cite>TmodelFields</cite>, <cite>fixNames</cite>, <cite>removeDuplicateNames</cite>,
+<cite>makeNamesUnique</cite>, <cite>buildRxnEquations</cite>, <cite>fixChemFormulas</cite>, <cite>orderModelFieldsBorg</cite>, <cite>organizeModelCool</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>Model = verifyModelBorg</strong> (<em>Model</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><p><strong>Vmodel</strong> – Model from <cite>readCbModel</cite> or any of the <cite>readModel</cite> functions.</p>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>‘keepName’</strong> – Don’t ask for verification of model name</p></li>
+<li><p><strong>‘Verbose’</strong> – Print steps.</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUTS</dt>
+<dd class="field-even"><p><strong>Model</strong> – Model with additional fields and correct format.</p>
+</dd>
+</dl>
+<p>Please cite:
+<cite>Sauls, J. T., &amp; Buescher, J. M. (2014). Assimilating genome-scale
+metabolic reconstructions with modelBorgifier. Bioinformatics
+(Oxford, England), 30(7), 1036?8</cite>. <a class="reference external" href="http://doi.org/10.1093/bioinformatics/btt747">http://doi.org/10.1093/bioinformatics/btt747</a></p>
+</dd></dl>
+
+</section>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="gui/index.html" class="btn btn-default float-right" title="Gui" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../index.html" class="btn btn-default" title="Comparison" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017-2021, The COBRA Toolbox developers.
+
+    </p>
+  </div>
+  Built with Sphinx using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../',
+            VERSION:'2.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+    <script type="text/javascript" src="../../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../../_static/sphinx_highlight.js"></script>
+
+  
+
+
+  
+  
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TRCMZL1FKK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TRCMZL1FKK');
+  </script>
+    
+</body>
+</html>

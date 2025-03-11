@@ -1,0 +1,1027 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Refinement &mdash; The COBRA Toolbox</title>
+  
+
+  
+  
+  
+    <link rel="apple-touch-icon" sizes="180x180" href="../../../../../_static/img/apple-touch-icon.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../../../_static/img/favicon-32x32.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="16x16" href="../../../../../_static/img/favicon-16x16.png">
+  
+  
+    <link rel="mask-icon" href="../../../../../_static/img/safari-pinned-tab.svg" color="#5bbad5">
+  
+  
+    <link rel="manifest" href="../../../../../_static/json/manifest.json">
+  
+  
+    <meta name="msapplication-config" content="../../../../../_static/browserconfig.xml">
+  
+  <meta name="theme-color" content="#ffffff">
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+  <script src="../../../../../_static/js/jquery.easy-autocomplete.min.js" type="text/javascript" ></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+  <link href="../../../../../_static/css/easy-autocomplete.min.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../../_static/css/cobra.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../../../../_static/css/cobra.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../../../search.html"/>
+    <link rel="top" title="The COBRA Toolbox" href="../../../../../index.html"/>
+        <link rel="up" title="Src" href="../index.html"/>
+        <link rel="next" title="Debugging" href="../debugging/index.html"/>
+        <link rel="prev" title="Src" href="../index.html"/> 
+
+  
+  <script src="../../../../../_static/js/modernizr.min.js"></script>
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../../index.html" class="icon icon-home"> The COBRA Toolbox
+          
+
+          
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
+          
+          </a>
+
+              
+          <h1>The COBRA Toolbox</h1>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" id="simple"/>
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+    <script>
+    	var options = {
+
+		url: "../../../../../_static/json/functions.json",
+
+		getValue: "name",
+
+		list: {
+            onKeyEnterEvent: function(item) {
+                    return "_static/../" + item.website_url
+            },
+            maxNumberOfElements: 25,
+			match: {
+					enabled: true,
+			},
+            sort: {
+			    enabled: true
+		    }
+		},
+
+    	template: {
+	    	type: "custom",
+		    method: function(value, item) {
+                return "<span><a href='../../../../../search.html?q=" + item.name + "&check_keywords=yes&area=default'>" + value + "</a>" + "<a href='../../../../../_static/../" + item.website_url + "' ><img src='../../../../../_static/link.svg'/></a></span>";
+		    }
+	    },
+
+		theme: "square"
+
+	};
+
+	$("#simple").easyAutocomplete(options);
+
+
+    </script>
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../../index.html">Home</a></li>
+              </ul>
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../../index.html">Functions</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../../../analysis/index.html">Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../base/index.html">Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../dataIntegration/index.html">Dataintegration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../design/index.html">Design</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../../index.html">Reconstruction</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../../../modelGeneration/index.html">Modelgeneration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../refinement/index.html">Refinement</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../../index.html">Demeter</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../../suite/index.html">Suite</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="../index.html">Src</a><ul class="current">
+<li class="toctree-l5 current"><a class="current reference internal" href="#">Refinement</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../debugging/index.html">Debugging</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../properties/index.html">Properties</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../integration/index.html">Integration</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../fastGapFill/index.html">Fastgapfill</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../comparison/index.html">Comparison</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../metaboRePort/index.html">Metaboreport</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../growthExpMatch/index.html">Growthexpmatch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../rBioNet/index.html">Rbionet</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../visualization/index.html">Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../contributing.html">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../cite.html">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../support.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../plan.html">Development Plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../contact.html">Contact</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../citations.html">Citations</a></li>
+</ul>
+
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../index.html">The COBRA Toolbox</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../contents.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../../index.html">Functions</a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Reconstruction</a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Demeter</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Src</a></li>
+      <li class="breadcrumb-item active">Refinement</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="https://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <section id="refinement">
+<span id="id1"></span><h1>Refinement<a class="headerlink" href="#refinement" title="Permalink to this heading">¶</a></h1>
+<span class="target" id="module-src.reconstruction.demeter.src.refinement"></span><dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.src.refinement.addRefinementComments">
+<span class="sig-name descname"><span class="pre">addRefinementComments</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">summary</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/src/refinement/addRefinementComments.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.src.refinement.addRefinementComments" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds descriptions to the model.comments field based on refinement
+performed by the DEMETER pipeline</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>model = addRefinementComments</strong> (<em>model,summary</em>)</p>
+</dd>
+</dl>
+<p>INPUT
+model:            COBRA model structure
+summary           Structure with description of performed refinement</p>
+<p>OUTPUT
+model:            COBRA model structure with comments</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.src.refinement.anaerobicGrowthGapfill">
+<span class="sig-name descname"><span class="pre">anaerobicGrowthGapfill</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">biomassReaction</span></em>, <em class="sig-param"><span class="pre">database</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/src/refinement/anaerobicGrowthGapfill.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.src.refinement.anaerobicGrowthGapfill" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tests if the input microbe model can grow anaerobically and gap-fills
+by adding anaerobic co-factor utilizing reactions.</p>
+<dl class="simple">
+<dt>USAGE</dt><dd><p>[model,oxGapfillRxns,anaerGrowthOK] = anaerobicGrowthGapfill(model, biomassReaction, database)</p>
+</dd>
+</dl>
+<p>INPUT
+model             COBRA model structure
+biomassReaction   Biomass reaction abbreviation
+database          rBioNet reaction database containing min. 3 columns:</p>
+<blockquote>
+<div><p>Column 1: reaction abbreviation, Column 2: reaction
+name, Column 3: reaction formula.</p>
+</div></blockquote>
+<p>OUTPUT
+model             COBRA model structure</p>
+<p>Almut Heinken and Stefania Magnusdottir, 2016-2019</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.src.refinement.carbonSourceGapfill">
+<span class="sig-name descname"><span class="pre">carbonSourceGapfill</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">microbeID</span></em>, <em class="sig-param"><span class="pre">database</span></em>, <em class="sig-param"><span class="pre">inputDataFolder</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/src/refinement/carbonSourceGapfill.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.src.refinement.carbonSourceGapfill" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gap-fills carbon source utilization pathways in a microbial reconstruction based on
+experimental evidence.</p>
+<dl class="simple">
+<dt>USAGE</dt><dd><p>[model, addedRxns_carbonSources, removedRxns_carbonSources] =
+carbonSourceGapfill(model, microbeID, database,inputDataFolder)</p>
+</dd>
+</dl>
+<p>INPUT
+model             COBRA model structure
+microbeID:        ID of the reconstructed microbe that serves as the</p>
+<blockquote>
+<div><p>reconstruction name and to identify it in input tables</p>
+</div></blockquote>
+<dl class="simple">
+<dt>database          rBioNet reaction database containing min. 3 columns:</dt><dd><p>Column 1: reaction abbreviation, Column 2: reaction
+name, Column 3: reaction formula.</p>
+</dd>
+<dt>inputDataFolder   Folder with experimental data and database files</dt><dd><p>to load</p>
+</dd>
+</dl>
+<p>OUTPUT
+model             COBRA model structure refined through experimental data</p>
+<blockquote>
+<div><p>for carbon sources</p>
+</div></blockquote>
+<p>addedRxns         List of reactions that were added during refinement
+removedRxns       List of reactions that were removed during refinement</p>
+<p>Almut Heinken and Stefania Magnusdottir, 2016-2020</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.src.refinement.connectRxnGapfilling">
+<span class="sig-name descname"><span class="pre">connectRxnGapfilling</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">database</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/src/refinement/connectRxnGapfilling.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.src.refinement.connectRxnGapfilling" title="Permalink to this definition">¶</a></dt>
+<dd><p>Part of the DEMETER pipeline. This function adds reactions to unblock
+specific pathways.</p>
+<dl class="simple">
+<dt>USAGE</dt><dd><p>[resolveBlocked,model]=connectRxnGapfilling(model,database)</p>
+</dd>
+</dl>
+<p>INPUT
+model             COBRA model structure
+database          rBioNet reaction database containing min. 3 columns:</p>
+<blockquote>
+<div><p>Column 1: reaction abbreviation, Column 2: reaction
+name, Column 3: reaction formula.</p>
+</div></blockquote>
+<p>OUTPUT
+model             COBRA model structure</p>
+<p>Almut Heinken and Stefania Magnusdottir, 2016-2019</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.src.refinement.createPeriplasmaticSpace">
+<span class="sig-name descname"><span class="pre">createPeriplasmaticSpace</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">microbeID</span></em>, <em class="sig-param"><span class="pre">infoFile</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/src/refinement/createPeriplasmaticSpace.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.src.refinement.createPeriplasmaticSpace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Part of the DEMETER pipeline. This function creates a periplasmatic space
+for refined reconstructions if it is appropriate for the organism. The
+periplasmatic space is created by by retrieving all extracellular
+metabolites and adding a third compartment.</p>
+<dl class="simple">
+<dt>USAGE</dt><dd><p>[model] = createPeriplasmaticSpace(model,microbeID,infoFile)</p>
+</dd>
+</dl>
+<p>INPUT
+model             COBRA model structure
+microbeID:        ID of the reconstructed microbe that serves as the</p>
+<blockquote>
+<div><p>reconstruction name and to identify it in input tables</p>
+</div></blockquote>
+<dl class="simple">
+<dt>infoFile:         Table with taxonomic and gram staining information on</dt><dd><p>microbes to reconstruct</p>
+</dd>
+</dl>
+<p>OUTPUT
+model             COBRA model structure</p>
+<dl class="simple">
+<dt>AUTHOR:</dt><dd><ul class="simple">
+<li><p>Almut Heinken, 03/2020</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.src.refinement.createSBMLFiles">
+<span class="sig-name descname"><span class="pre">createSBMLFiles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">refinedFolder</span></em>, <em class="sig-param"><span class="pre">sbmlFolder</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/src/refinement/createSBMLFiles.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.src.refinement.createSBMLFiles" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates SBML files for the created refined reconstructions. This may be
+time-consuming.</p>
+<dl class="simple">
+<dt>USAGE</dt><dd><p>createSBMLFiles(refinedFolder, sbmlFolder)</p>
+</dd>
+</dl>
+<p>INPUTS
+refinedFolder            Folder with refined COBRA models generated by</p>
+<blockquote>
+<div><p>the refinement pipeline</p>
+</div></blockquote>
+<p>sbmlFolder               Folder where SBML files, if desired, will be saved</p>
+<dl class="simple">
+<dt>AUTHOR:</dt><dd><ul class="simple">
+<li><p>Almut Heinken, 03/2020</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.src.refinement.curateAgainstBacDiveData">
+<span class="sig-name descname"><span class="pre">curateAgainstBacDiveData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">microbeID</span></em>, <em class="sig-param"><span class="pre">database</span></em>, <em class="sig-param"><span class="pre">inputDataFolder</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/src/refinement/curateAgainstBacDiveData.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.src.refinement.curateAgainstBacDiveData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gap-fills and/or removes reactions in a genome-scale reconstructions
+based on data from BacDive (<a class="reference external" href="https://bacdive.dsmz.de">https://bacdive.dsmz.de</a>).</p>
+<dl class="simple">
+<dt>USAGE</dt><dd><p>[model, addedRxns, removedRxns] = gapfillAgainstBacDiveData(model, microbeID, database, inputDataFolder)</p>
+</dd>
+</dl>
+<p>INPUT
+model             COBRA model structure
+microbeID:        ID of the reconstructed microbe that serves as the</p>
+<blockquote>
+<div><p>reconstruction name and to identify it in input tables</p>
+</div></blockquote>
+<dl class="simple">
+<dt>database          rBioNet reaction database containing min. 3 columns:</dt><dd><p>Column 1: reaction abbreviation, Column 2: reaction
+name, Column 3: reaction formula.</p>
+</dd>
+<dt>inputDataFolder   Folder with experimental data and database files</dt><dd><p>to load</p>
+</dd>
+</dl>
+<p>OUTPUT
+model             COBRA model structure refined through BacDive data
+addedRxns         List of reactions that were added during refinement
+removedRxns       List of reactions that were removed during refinement</p>
+<p>Almut Heinken, 11/2021</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.src.refinement.curateGrowthRequirements">
+<span class="sig-name descname"><span class="pre">curateGrowthRequirements</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">microbeID</span></em>, <em class="sig-param"><span class="pre">database</span></em>, <em class="sig-param"><span class="pre">inputDataFolder</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/src/refinement/curateGrowthRequirements.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.src.refinement.curateGrowthRequirements" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes the growth requirements of an organism (if known) as input and
+refines the reconstruction accordingly. Reactions are gap-filled and/or
+delete to reconcile mismatches between experimental and in silico
+metabolite essentiality. These curation steps were determined manually.
+The first step is printing the organism’s biomass components and
+subsequent evaluation which ones are required/ not required by the model.
+There are four possible cases:
+1) essential in vivo and not in BOF -&gt; add to BOF and add transporter/
+remove unannotated biosynthesis reactions
+2) essential in vivo and in BOF -&gt; add transporter/
+remove unannotated biosynthesis reactions
+3) nonessential in vivo and not in BOF -&gt; OK
+4) nonessential in vivo and in BOF -&gt; if pathway is mostly present:
+gapfill. If pathway is not present: remove from BOF</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.src.refinement.deleteSeedGapfilledReactions">
+<span class="sig-name descname"><span class="pre">deleteSeedGapfilledReactions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">biomassReaction</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/src/refinement/deleteSeedGapfilledReactions.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.src.refinement.deleteSeedGapfilledReactions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Part of the DEMETER pipeline. Deletes reactions gapfilled by the Model
+SEED pipeline that are no longer needed after the reconstruction was
+refined.</p>
+<p>INPUT
+model             COBRA model structure
+biomassReaction   Biomass reaction abbreviation</p>
+<p>OUTPUT
+model             COBRA model structure
+deletedSEEDRxns   deleted gapfilled reactions</p>
+<p>Almut Heinken and Stefania Magnusdottir, 2016-2019</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.src.refinement.doubleCheckGapfilledReactions">
+<span class="sig-name descname"><span class="pre">doubleCheckGapfilledReactions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">summary</span></em>, <em class="sig-param"><span class="pre">biomassReaction</span></em>, <em class="sig-param"><span class="pre">microbeID</span></em>, <em class="sig-param"><span class="pre">database</span></em>, <em class="sig-param"><span class="pre">definedMediumGrowthOK</span></em>, <em class="sig-param"><span class="pre">inputDataFolder</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/src/refinement/doubleCheckGapfilledReactions.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.src.refinement.doubleCheckGapfilledReactions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Part of the DEMETER pipeline. Deletes reactions gapfilled by DEMETER that are no longer needed after the reconstruction was
+are no longer needed after finishing all steps of the pipeline.</p>
+<dl class="simple">
+<dt>USAGE</dt><dd><p>[model,summary]=doubleCheckGapfilledReactions(model,summary,biomassReaction,microbeID,database,definedMediumGrowthOK,inputDataFolder)</p>
+</dd>
+</dl>
+<p>INPUT
+model:                    COBRA model structure
+summary:                  Structure with information of refinement</p>
+<blockquote>
+<div><p>performed on the model</p>
+</div></blockquote>
+<p>biomassReaction:          Biomass reaction abbreviation
+microbeID:                ID of the reconstructed microbe that serves as the</p>
+<blockquote>
+<div><p>reconstruction name and to identify it in input tables</p>
+</div></blockquote>
+<dl class="simple">
+<dt>database                  rBioNet reaction database containing min. 3 columns:</dt><dd><p>Column 1: reaction abbreviation, Column 2: reaction
+name, Column 3: reaction formula.</p>
+</dd>
+<dt>definedMediumGrowthOK:    If 1, defined medium is available for the</dt><dd><p>organism and the model can grow on it</p>
+</dd>
+<dt>inputDataFolder:          Folder with experimental data and database files</dt><dd><p>to load</p>
+</dd>
+</dl>
+<p>OUTPUT
+model:                    COBRA model structure
+summary:                  Structure with information of refinement</p>
+<blockquote>
+<div><p>performed on the model</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.src.refinement.fermentationPathwayGapfill">
+<span class="sig-name descname"><span class="pre">fermentationPathwayGapfill</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">microbeID</span></em>, <em class="sig-param"><span class="pre">database</span></em>, <em class="sig-param"><span class="pre">inputDataFolder</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/src/refinement/fermentationPathwayGapfill.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.src.refinement.fermentationPathwayGapfill" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gap-fills fermentation pathways in a microbial reconstruction based on
+experimental evidence.</p>
+<dl class="simple">
+<dt>USAGE</dt><dd><p>[model, addedRxns, removedRxns] = fermentationPathwayGapfill(model, microbeID, database, inputDataFolder)</p>
+</dd>
+</dl>
+<p>INPUT
+model             COBRA model structure
+microbeID:        ID of the reconstructed microbe that serves as the</p>
+<blockquote>
+<div><p>reconstruction name and to identify it in input tables</p>
+</div></blockquote>
+<dl class="simple">
+<dt>fermDataTable     Data table with binary data showing which microbe</dt><dd><p>should have what fermentation pathway(s).
+Column 1: Cell array of strings with microbeIDs.
+Columns 2-29: Cell array of numbers either 0 (microbe
+does not have pathway) or 1 (has pathway).</p>
+</dd>
+<dt>database          rBioNet reaction database containing min. 3 columns:</dt><dd><p>Column 1: reaction abbreviation, Column 2: reaction
+name, Column 3: reaction formula.</p>
+</dd>
+</dl>
+<p>OUTPUT
+model             COBRA model structure
+addedRxns         List of reactions that were added during refinement
+removedRxns       List of reactions that were removed during refinement</p>
+<p>Almut Heinken and Stefania Magnusdottir, 2016-2020</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.src.refinement.findTransportersWithoutExchanges">
+<span class="sig-name descname"><span class="pre">findTransportersWithoutExchanges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/src/refinement/findTransportersWithoutExchanges.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.src.refinement.findTransportersWithoutExchanges" title="Permalink to this definition">¶</a></dt>
+<dd><p>Part of the DEMETER pipeline. Finds transporters to extracellular space
+that are blocked because they have no exchange reaction associated with
+them.</p>
+<dl class="simple">
+<dt>USAGE</dt><dd><p>[model, transportersWithoutExchanges] = findTransportersWithoutExchanges(model)</p>
+</dd>
+</dl>
+<p>INPUT
+model                             COBRA model structure</p>
+<p>OUTPUT
+model                             COBRA model structure
+transportersWithoutExchanges      Removed transport reactions</p>
+<p>Almut Heinken and Stefania Magnusdottir, 2016-2019</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.src.refinement.findUnusedExchangeReactions">
+<span class="sig-name descname"><span class="pre">findUnusedExchangeReactions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/src/refinement/findUnusedExchangeReactions.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.src.refinement.findUnusedExchangeReactions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Part of the DEMETER pipeline. Finds exchange reactions that are no longer
+used and should be deleted after deleting unnecessary transport reactions
+gapfilled by Model SEED.</p>
+<dl class="simple">
+<dt>USAGE</dt><dd><p>[model, unusedExchanges] = findUnusedExchangeReactions(model)</p>
+</dd>
+</dl>
+<p>INPUT
+model                COBRA model structure</p>
+<p>OUTPUT
+model                COBRA model structure
+unusedExchanges      Removed unused exchange reactions</p>
+<p>Almut Heinken and Stefania Magnusdottir, 2016-2019</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.src.refinement.performDataDrivenRefinement">
+<span class="sig-name descname"><span class="pre">performDataDrivenRefinement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">microbeID</span></em>, <em class="sig-param"><span class="pre">biomassReaction</span></em>, <em class="sig-param"><span class="pre">database</span></em>, <em class="sig-param"><span class="pre">inputDataFolder</span></em>, <em class="sig-param"><span class="pre">summary</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/src/refinement/performDataDrivenRefinement.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.src.refinement.performDataDrivenRefinement" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function is part of the DEMETER pipeline and performs data-driven
+refinement of a genome-scale reconstruction based on available
+species-specific experimental data.</p>
+<dl class="simple">
+<dt>USAGE</dt><dd><p>[model,summary] = performDataDrivenRefinement(model, microbeID, biomassReaction, database, inputDataFolder,summary)</p>
+</dd>
+</dl>
+<p>INPUTS
+model             COBRA model structure to refine
+microbeID         ID of the reconstructed microbe that serves as the</p>
+<blockquote>
+<div><p>reconstruction name and to identify it in input tables</p>
+</div></blockquote>
+<dl class="simple">
+<dt>inputDataFolder   Folder with input tables with experimental data and</dt><dd><p>databases that inform the refinement process</p>
+</dd>
+</dl>
+<p>summary           Structure with information on performed refinement</p>
+<p>OUTPUT
+refinedModel      Refined COBRA model structure
+summary           Structure with information on performed refinement</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.src.refinement.putrefactionPathwaysGapfilling">
+<span class="sig-name descname"><span class="pre">putrefactionPathwaysGapfilling</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">microbeID</span></em>, <em class="sig-param"><span class="pre">database</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/src/refinement/putrefactionPathwaysGapfilling.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.src.refinement.putrefactionPathwaysGapfilling" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function adds exchange, transport and biosynthesis reactions for
+putrefaction pathways according to data collected from Ref. PMID:29163445
+as part of the DEMETER pipeline.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[model,rxnsAdded]=putrefactionPathwaysGapfilling</strong> (<em>model,microbeID,database</em>)</p>
+</dd>
+</dl>
+<p>INPUTS
+model:             COBRA model structure
+microbeID:         ID of the reconstructed microbe that serves as the</p>
+<blockquote>
+<div><p>reconstruction name and to identify it in input tables</p>
+</div></blockquote>
+<dl class="simple">
+<dt>database:          rBioNet reaction database containing min. 3 columns:</dt><dd><p>Column 1: reaction abbreviation, Column 2: reaction
+name, Column 3: reaction formula.</p>
+</dd>
+</dl>
+<p>OUTPUTS
+model:             COBRA model structure with added pathways if applies
+rxnsAdded:         Reactions added based on experimental data</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.src.refinement.rebuildBiomassReaction">
+<span class="sig-name descname"><span class="pre">rebuildBiomassReaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">microbeID</span></em>, <em class="sig-param"><span class="pre">biomassReaction</span></em>, <em class="sig-param"><span class="pre">database</span></em>, <em class="sig-param"><span class="pre">infoFile</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/src/refinement/rebuildBiomassReaction.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.src.refinement.rebuildBiomassReaction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Part of the DEMETER pipeline. This function rebuilds the biomass
+objective function of the reconstruction based on taxonomical information
+for the organism. The biomass formulation is based on gram-staining,
+taxonomy (Bacteria vs. Archaea), and phylum-specific features.</p>
+<dl class="simple">
+<dt>USAGE</dt><dd><p>[model,removedBioComp,addedReactionsBiomass] = rebuildBiomassReaction(model,microbeID,biomassReaction,database,infoFile)</p>
+</dd>
+</dl>
+<p>INPUTS
+model:                  COBRA model structure
+biomassReaction:        Biomass reaction abbreviation
+microbeID:              ID of the reconstructed microbe that serves as the</p>
+<blockquote>
+<div><p>reconstruction name and to identify it in input tables</p>
+</div></blockquote>
+<dl class="simple">
+<dt>infoFile:               Table with taxonomic and gram staining</dt><dd><p>information on microbes to reconstruct</p>
+</dd>
+</dl>
+<p>OUTPUTS
+model:                  COBRA model structure
+removedBioComp:         Removed components that shpould not be in the BOF
+addedReactionsBiomass:  Reactions that were added to enable flux through</p>
+<blockquote>
+<div><p>the rebuilt BOF</p>
+</div></blockquote>
+<dl class="simple">
+<dt>AUTHOR:</dt><dd><ul class="simple">
+<li><p>Almut Heinken, 03/2020</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.src.refinement.rebuildModel">
+<span class="sig-name descname"><span class="pre">rebuildModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">database</span></em>, <em class="sig-param"><span class="pre">biomassReaction</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/src/refinement/rebuildModel.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.src.refinement.rebuildModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rebuilds a genome-scale reconstruction with Virtual Metabolic Human (VMH)
+metabolic and reaction nomenclature while ensuring quality control through
+rBioNet.</p>
+<p>USAGE
+[rebuiltModel] = rebuildModel(model,database)</p>
+<dl>
+<dt>INPUT</dt><dd><p>model            COBRA model structure
+database         Structure containing rBioNet reaction and metabolite</p>
+<blockquote>
+<div><p>database</p>
+</div></blockquote>
+</dd>
+<dt>OPTIONAL INPUT</dt><dd><dl class="simple">
+<dt>biomassReaction  Biomass reaction abbreviation (if needs to be</dt><dd><p>specified, otherwise, will be inferred automatically)</p>
+</dd>
+</dl>
+</dd>
+<dt>OUTPUT</dt><dd><p>rebuiltModel  Quality-controlled COBRA model structure</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.src.refinement.refineGenomeAnnotation">
+<span class="sig-name descname"><span class="pre">refineGenomeAnnotation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">microbeID</span></em>, <em class="sig-param"><span class="pre">database</span></em>, <em class="sig-param"><span class="pre">inputDataFolder</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/src/refinement/refineGenomeAnnotation.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.src.refinement.refineGenomeAnnotation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Part of the DEMETER pipeline. Refines a reconstruction based on
+comparative genomics data retrieved from PubSEED spreadsheets. Adds
+reactions linked to genes that were found in the respective organisms
+based on manual comparative genomic analyses. If the reaction is already
+present, the gene-protein-reaction association (GPR) is updated.</p>
+<dl class="simple">
+<dt>USAGE</dt><dd><p>[model,addAnnRxns,updateGPRCnt]=refineGenomeAnnotation(model,microbeID,database,inputDataFolder)</p>
+</dd>
+</dl>
+<p>INPUTS
+model:               COBRA model structure
+microbeID:           ID of the reconstructed microbe that serves as the</p>
+<blockquote>
+<div><p>reconstruction name and to identify it in input tables</p>
+</div></blockquote>
+<dl class="simple">
+<dt>database:            rBioNet reaction database containing min. 3 columns:</dt><dd><p>Column 1: reaction abbreviation, Column 2: reaction
+name, Column 3: reaction formula.</p>
+</dd>
+<dt>inputDataFolder:     Folder with experimental data and database files to</dt><dd><p>load</p>
+</dd>
+</dl>
+<p>OUTPUTS
+model:               COBRA model structure
+addAnnRxns:          Reactions newly added based on comparative genomics</p>
+<blockquote>
+<div><p>data</p>
+</div></blockquote>
+<dl class="simple">
+<dt>updateGPRCnt:        Reactions for which GPRs were updated based on</dt><dd><p>comparative genomics data</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.src.refinement.refinementPipeline">
+<span class="sig-name descname"><span class="pre">refinementPipeline</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">microbeID</span></em>, <em class="sig-param"><span class="pre">infoFilePath</span></em>, <em class="sig-param"><span class="pre">inputDataFolder</span></em>, <em class="sig-param"><span class="pre">translateModels</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/src/refinement/refinementPipeline.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.src.refinement.refinementPipeline" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function runs the semi-automatic refinement pipeline on a draft
+reconstruction generated by the KBase pipeline or a previously refined
+reconstruction.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[refinedModel, summary] = refinementPipeline</strong> (<em>modelIn, microbeID, infoFilePath, inputDataFolder, translateModels</em>)</p>
+</dd>
+</dl>
+<p>INPUTS
+model             COBRA model structure to refine
+microbeID         ID of the reconstructed microbe that serves as the</p>
+<blockquote>
+<div><p>reconstruction name and to identify it in input tables</p>
+</div></blockquote>
+<p>infoFilePath      File with information on reconstructions to refine
+inputDataFolder   Folder with input tables with experimental data and</p>
+<blockquote>
+<div><p>databases that inform the refinement process</p>
+</div></blockquote>
+<dl class="simple">
+<dt>translateModels   Boolean indicating whether to translate models if they</dt><dd><p>are in KBase nomenclature (default: true)</p>
+</dd>
+</dl>
+<p>OUTPUTS
+refinedModel      COBRA model structure refined through AGORA pipeline
+summary           Structure with description of performed refineemnt</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.src.refinement.removeUnannotatedReactions">
+<span class="sig-name descname"><span class="pre">removeUnannotatedReactions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">microbeID</span></em>, <em class="sig-param"><span class="pre">biomassReaction</span></em>, <em class="sig-param"><span class="pre">growsOnDefinedMedium</span></em>, <em class="sig-param"><span class="pre">inputDataFolder</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/src/refinement/removeUnannotatedReactions.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.src.refinement.removeUnannotatedReactions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Part of the DEMETER pipeline. Refines a reconstruction based on
+comparative genomics data retrieved from PubSEED spreadsheets. Removes
+reactions that were present in the reconstruction before refinement but
+that are not annotated in the organism according to manually performed
+comparative genomic analyses.</p>
+<dl class="simple">
+<dt>USAGE</dt><dd><p>[model,rmUnannRxns]=removeUnannotatedReactions(model,microbeID,biomassReaction,growsOnDefinedMedium,inputDataFolder)</p>
+</dd>
+</dl>
+<p>INPUTS
+model:                    COBRA model structure
+microbeID:                ID of the reconstructed microbe that serves as</p>
+<blockquote>
+<div><p>the reconstruction name and to identify it in
+input tables</p>
+</div></blockquote>
+<dl class="simple">
+<dt>definedMediumGrowthOK:    If 1, defined medium is available for the</dt><dd><p>organism and the model can grow on it</p>
+</dd>
+<dt>inputDataFolder:          Folder with experimental data and database</dt><dd><p>files to load</p>
+</dd>
+</dl>
+<p>OUTPUTS
+model:                    COBRA model structure
+rmUnannRxns:              Removed reactions based on comparative genomics</p>
+<blockquote>
+<div><p>data</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.src.refinement.runDemeter">
+<span class="sig-name descname"><span class="pre">runDemeter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">draftFolder</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/src/refinement/runDemeter.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.src.refinement.runDemeter" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function runs the DEMETER pipeline consisting of three steps:
+1) refining all draft reconstructions, 2) testing the refined
+reconstructions against the input data, 3) preparing a report
+detailing any additional debugging that needs to be performed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[refinedFolder,translatedDraftsFolder,summaryFolder,sbmlFolder] = runPipeline</strong> (<em>draftFolder, varargin</em>)</p>
+</dd>
+</dl>
+<p>REQUIRED INPUTS
+draftFolder              Folder with draft COBRA models generated by</p>
+<blockquote>
+<div><p>KBase pipeline to analyze</p>
+</div></blockquote>
+<p>OPTIONAL INPUTS
+translateModels          Boolean indicating whether to translate models</p>
+<blockquote>
+<div><p>if they are in KBase nomenclature (default: true)</p>
+</div></blockquote>
+<dl class="simple">
+<dt>refinedFolder            Folder with refined COBRA models generated by</dt><dd><p>the refinement pipeline</p>
+</dd>
+<dt>translatedDraftsFolder   Folder with draft COBRA models with translated</dt><dd><p>nomenclature and stored as mat files</p>
+</dd>
+</dl>
+<p>infoFilePath             File with information on reconstructions to refine
+inputDataFolder          Folder with experimental data and database files</p>
+<blockquote>
+<div><p>to load</p>
+</div></blockquote>
+<dl class="simple">
+<dt>summaryFolder            Folder with information on performed gapfilling</dt><dd><p>and refinement</p>
+</dd>
+<dt>reconVersion             Name of the refined reconstruction resource</dt><dd><p>(default: “Reconstructions”)</p>
+</dd>
+</dl>
+<p>numWorkers               Number of workers in parallel pool (default: 2)
+createSBML               Defines whether refined reconstructions should</p>
+<blockquote>
+<div><p>be exported in SBML format (default: false)</p>
+</div></blockquote>
+<p>OUTPUTS
+reconVersion             Name of the refined reconstruction resource</p>
+<blockquote>
+<div><p>(default: “Reconstructions”)</p>
+</div></blockquote>
+<dl class="simple">
+<dt>refinedFolder            Folder with refined COBRA models generated by</dt><dd><p>the refinement pipeline</p>
+</dd>
+<dt>translatedDraftsFolder   Folder with draft COBRA models with translated</dt><dd><p>nomenclature and stored as mat files</p>
+</dd>
+<dt>summaryFolder            Folder with information on performed gapfilling</dt><dd><p>and refinement</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.src.refinement.secretionProductGapfill">
+<span class="sig-name descname"><span class="pre">secretionProductGapfill</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">microbeID</span></em>, <em class="sig-param"><span class="pre">database</span></em>, <em class="sig-param"><span class="pre">inputDataFolder</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/src/refinement/secretionProductGapfill.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.src.refinement.secretionProductGapfill" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function adds exchange, transport and biosynthesis reactions for
+experimentally shown secreted metabolites according to data collected for
+the DEMETER pipeline.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[model,secretionRxnsAdded] = secretionProductGapfill</strong> (<em>model,microbeID,database,inputDataFolder</em>)</p>
+</dd>
+</dl>
+<p>INPUTS
+model:                COBRA model structure
+microbeID:            ID of the reconstructed microbe that serves as the</p>
+<blockquote>
+<div><p>reconstruction name and to identify it in input tables</p>
+</div></blockquote>
+<dl class="simple">
+<dt>database:             rBioNet reaction database containing min. 3 columns:</dt><dd><p>Column 1: reaction abbreviation, Column 2: reaction
+name, Column 3: reaction formula.</p>
+</dd>
+<dt>inputDataFolder:      Folder with input tables with experimental data</dt><dd><p>and databases that inform the refinement process</p>
+</dd>
+</dl>
+<p>OUTPUTS
+model:                COBRA model structure with added pathways if applies
+secretionRxnsAdded:   Reactions added based on experimental data</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.src.refinement.translateDraftReconstruction">
+<span class="sig-name descname"><span class="pre">translateDraftReconstruction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/src/refinement/translateDraftReconstruction.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.src.refinement.translateDraftReconstruction" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function translates reaction and metabolite IDs in KBase draft
+reconstructions to VMH nomenclature so the test suite can be performed on
+them. It does not make changes to the reaction content otherwise.</p>
+<p>USAGE: [translatedModel] = translateDraftReconstruction(model)</p>
+<p>INPUT
+model                     COBRA model structure generated by KBase</p>
+<blockquote>
+<div><p>reconstruction pipeline</p>
+</div></blockquote>
+<p>OUTPUT
+translatedModel:          COBRA model structure with metabolites and</p>
+<blockquote>
+<div><p>reactions translated to VMH identifiers (but
+not ran through refinement pipeline)</p>
+</div></blockquote>
+<dl class="simple">
+<dt>AUTHOR</dt><dd><ul class="simple">
+<li><p>Almut Heinken 09/2020</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.src.refinement.translateKBaseModel2VMHModel">
+<span class="sig-name descname"><span class="pre">translateKBaseModel2VMHModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">biomassReaction</span></em>, <em class="sig-param"><span class="pre">database</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/src/refinement/translateKBaseModel2VMHModel.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.src.refinement.translateKBaseModel2VMHModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Translates reaction and metabolite identifiers from a KBase/ModelSEED
+reconstruction to the Virtual Metabolic Human (<a class="reference external" href="https://vmh.life">https://vmh.life</a>)
+reaction and metabolite nomenclature.
+The reaction and metabolite database with VMH identifiers as well as the
+translation table from KBase/Model SEED to VMH reaction and metabolite
+identiers are retrieved from the folder
+cobratoolbox/papers/2018_microbiomeModelingToolbox/database.
+Note that there will likely be reactions and metabolites that are not yet
+included in the translation table and will thus be missing from the
+translated model.</p>
+<p>INPUT
+model                 COBRA model structure derived from KBase/ModelSEED
+biomassReaction       Biomass reaction abbreviation</p>
+<p>OUTPUTS
+translatedModel       Translated COBRA model structure
+notInTableRxns        Reactions that are currently not in translation</p>
+<blockquote>
+<div><p>table</p>
+</div></blockquote>
+<dl class="simple">
+<dt>notInTableMets        Metabolites that are currently not in translation</dt><dd><p>table</p>
+</dd>
+</dl>
+<p>… AUTHORS
+Stefania Magnusdottir, Oct 2017
+Almut Heinken, Dec 2018 - simplified inputs</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.src.refinement.uptakeMetaboliteGapfill">
+<span class="sig-name descname"><span class="pre">uptakeMetaboliteGapfill</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">microbeID</span></em>, <em class="sig-param"><span class="pre">database</span></em>, <em class="sig-param"><span class="pre">inputDataFolder</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/src/refinement/uptakeMetaboliteGapfill.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.src.refinement.uptakeMetaboliteGapfill" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function adds exchange, transport and biosynthesis reactions for
+experimentally shown consumed metabolites according to data collected for
+the DEMETER pipeline.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[model,uptakeRxnsAdded] = uptakeMetaboliteGapfill</strong> (<em>model,microbeID, database, inputDataFolder</em>)</p>
+</dd>
+</dl>
+<p>INPUTS
+model:             COBRA model structure
+microbeID:         ID of the reconstructed microbe that serves as the</p>
+<blockquote>
+<div><p>reconstruction name and to identify it in input tables</p>
+</div></blockquote>
+<dl class="simple">
+<dt>database:          rBioNet reaction database containing min. 3 columns:</dt><dd><p>Column 1: reaction abbreviation, Column 2: reaction
+name, Column 3: reaction formula.</p>
+</dd>
+<dt>inputDataFolder:   Folder with input tables with experimental data</dt><dd><p>and databases that inform the refinement process</p>
+</dd>
+</dl>
+<p>OUTPUTS
+model:             COBRA model structure with added pathways if applies
+uptakeRxnsAdded:   Reactions added based on experimental data</p>
+</dd></dl>
+
+</section>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../debugging/index.html" class="btn btn-default float-right" title="Debugging" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../index.html" class="btn btn-default" title="Src" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017-2021, The COBRA Toolbox developers.
+
+    </p>
+  </div>
+  Built with Sphinx using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../../',
+            VERSION:'2.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+    <script type="text/javascript" src="../../../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script type="text/javascript" src="../../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../../../_static/sphinx_highlight.js"></script>
+
+  
+
+
+  
+  
+    <script type="text/javascript" src="../../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TRCMZL1FKK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TRCMZL1FKK');
+  </script>
+    
+</body>
+</html>

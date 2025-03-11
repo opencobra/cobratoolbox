@@ -1,0 +1,1264 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Metabotools &mdash; The COBRA Toolbox</title>
+  
+
+  
+  
+  
+    <link rel="apple-touch-icon" sizes="180x180" href="../../../_static/img/apple-touch-icon.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../_static/img/favicon-32x32.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="16x16" href="../../../_static/img/favicon-16x16.png">
+  
+  
+    <link rel="mask-icon" href="../../../_static/img/safari-pinned-tab.svg" color="#5bbad5">
+  
+  
+    <link rel="manifest" href="../../../_static/json/manifest.json">
+  
+  
+    <meta name="msapplication-config" content="../../../_static/browserconfig.xml">
+  
+  <meta name="theme-color" content="#ffffff">
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+  <script src="../../../_static/js/jquery.easy-autocomplete.min.js" type="text/javascript" ></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+  <link href="../../../_static/css/easy-autocomplete.min.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/cobra.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../../_static/css/cobra.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="The COBRA Toolbox" href="../../../index.html"/>
+        <link rel="up" title="Dataintegration" href="../index.html"/>
+        <link rel="next" title="Metaboannotator" href="../metaboAnnotator/index.html"/>
+        <link rel="prev" title="Metabolomics" href="../XomicsToModel/metabolomics/index.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> The COBRA Toolbox
+          
+
+          
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
+          
+          </a>
+
+              
+          <h1>The COBRA Toolbox</h1>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" id="simple"/>
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+    <script>
+    	var options = {
+
+		url: "../../../_static/json/functions.json",
+
+		getValue: "name",
+
+		list: {
+            onKeyEnterEvent: function(item) {
+                    return "_static/../" + item.website_url
+            },
+            maxNumberOfElements: 25,
+			match: {
+					enabled: true,
+			},
+            sort: {
+			    enabled: true
+		    }
+		},
+
+    	template: {
+	    	type: "custom",
+		    method: function(value, item) {
+                return "<span><a href='../../../search.html?q=" + item.name + "&check_keywords=yes&area=default'>" + value + "</a>" + "<a href='../../../_static/../" + item.website_url + "' ><img src='../../../_static/link.svg'/></a></span>";
+		    }
+	    },
+
+		theme: "square"
+
+	};
+
+	$("#simple").easyAutocomplete(options);
+
+
+    </script>
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../../../index.html">Home</a></li>
+              </ul>
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Functions</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../analysis/index.html">Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../base/index.html">Base</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Dataintegration</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../fluxomics/index.html">Fluxomics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../metanetxMapper/index.html">Metanetxmapper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../transcriptomics/index.html">Transcriptomics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chemoInformatics/index.html">Chemoinformatics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../XomicsToModel/index.html">Xomicstomodel</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Metabotools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../metaboAnnotator/index.html">Metaboannotator</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../design/index.html">Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reconstruction/index.html">Reconstruction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../visualization/index.html">Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../cite.html">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../support.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../plan.html">Development Plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contact.html">Contact</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../citations.html">Citations</a></li>
+</ul>
+
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">The COBRA Toolbox</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../contents.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Functions</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Dataintegration</a></li>
+      <li class="breadcrumb-item active">Metabotools</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="https://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <section id="metabotools">
+<span id="id1"></span><h1>Metabotools<a class="headerlink" href="#metabotools" title="Permalink to this heading">¶</a></h1>
+<span class="target" id="module-src.dataIntegration.metabotools"></span><dl class="mat function">
+<dt class="sig sig-object mat" id="src.dataIntegration.metabotools.analyzeSingleGeneDeletion">
+<span class="sig-name descname"><span class="pre">analyzeSingleGeneDeletion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">ResultsAllCellLines</span></em>, <em class="sig-param"><span class="pre">path</span></em>, <em class="sig-param"><span class="pre">samples</span></em>, <em class="sig-param"><span class="pre">cutoff</span></em>, <em class="sig-param"><span class="pre">OverViewResults</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metabotools/analyzeSingleGeneDeletion.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metabotools.analyzeSingleGeneDeletion" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function conducts a single gene deletion analysis and provides
+statistcs about the frequency of essential genes, and partial effects and
+no effects across the unique set of genes and across the models in
+ResultsAllCellLines defined by samples.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[genes, ResultsAllCellLines, OverViewResults] = analyzeSingleGeneDeletion</strong> (<em>ResultsAllCellLines, path, samples, cutoff, OverViewResults</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>ResultsAllCellLines</strong> – Structure containing the models (the two models can be the same or pruned and starting model) of the format</p>
+<ul>
+<li><p>ResultsAllCellLines.samples.modelMin</p></li>
+<li><p>ResultsAllCellLines.samples.modelPruned</p></li>
+</ul>
+</li>
+<li><p><strong>path</strong> – Path where picture of heatmap is to be saved</p></li>
+<li><p><strong>samples</strong> – Name of samples</p></li>
+<li><p><strong>cutoff</strong> – Tolerance for small deviation from the optimal value whic his used to distinguish partial effects</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><p><strong>OverViewResults</strong> – Overview of results of the model building and analysis (generated by the function setQuantConstraints)</p>
+</dd>
+<dt class="field-even">OUTPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>genes</strong> – Table that lists unique gene, category, number
+of ‘no effect’, number of ‘KO’, number of ‘partial effect’, and
+number of models where the gene is absent ‘gene absent’</p></li>
+<li><p><strong>ResultsAllCellLines</strong> – Updated structure ResultsAllCellLines.sample.singleGeneDeletion</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="simple">
+<dt>OPTIONAL OUTPUTS:</dt><dd><p>OverViewResults:      Updated overview</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.dataIntegration.metabotools.calculateLODs">
+<span class="sig-name descname"><span class="pre">calculateLODs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">theo_mass</span></em>, <em class="sig-param"><span class="pre">lod_ngmL</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metabotools/calculateLODs.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metabotools.calculateLODs" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function converts detection limits of the unit ng/mL to mM using the
+theoretical mass (g/mol) for the metabolites</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[lod_mM] = calculateLODs</strong> (<em>theo_mass, lod_ngmL</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>theo_mass</strong> – Vector that specifies the theoretical mass (g/mol) of each metabolite</p></li>
+<li><p><strong>lod_ngmL</strong> – Instrumental limit of detection (ng/mL)</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>lod_mM</strong> – Detection limits in mM</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.dataIntegration.metabotools.calculateQuantitativeDiffs">
+<span class="sig-name descname"><span class="pre">calculateQuantitativeDiffs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">data_RXNS</span></em>, <em class="sig-param"><span class="pre">slope_Ratio</span></em>, <em class="sig-param"><span class="pre">ex_RXNS</span></em>, <em class="sig-param"><span class="pre">lod_mM</span></em>, <em class="sig-param"><span class="pre">cond1_uptake</span></em>, <em class="sig-param"><span class="pre">cond2_uptake</span></em>, <em class="sig-param"><span class="pre">cond1_secretion</span></em>, <em class="sig-param"><span class="pre">cond2_secretion</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metabotools/calculateQuantitativeDiffs.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metabotools.calculateQuantitativeDiffs" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function provides sets of exchange reactions with higher uptake and
+secretion in condition 1 and condition 2.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[cond1_upt_higher, cond2_upt_higher, cond2_secr_higher, cond1_secr_higher, cond1_uptake_LODs, cond2_uptake_LODs, cond1_secretion_LODs, cond2_secretion_LODs] = calculateQuantitativeDiffs</strong> (<em>data_RXNS, slope_Ratio, ex_RXNS, lod_mM, cond1_uptake, cond2_uptake, cond1_secretion, cond2_secretion</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>data_RXNS</strong> – Exchange reactions same order as Input_A and Input_B</p></li>
+<li><p><strong>slope_Ratio</strong> – For length of inputA/B, relative difference</p></li>
+<li><p><strong>ex_RXNS</strong> – Exchange reactions in the same order as LODs(lod_mM)</p></li>
+<li><p><strong>lod_mM</strong> – Detection limits in mM</p></li>
+<li><p><strong>cond1_uptake</strong> – List of exchanges that specify consumed metabolites in condition 1</p></li>
+<li><p><strong>cond2_uptake</strong> – List of exchanges that specify consumed metabolites in condition 2</p></li>
+<li><p><strong>cond1_secretion</strong> – List of exchanges that specify released metabolites in condition 1</p></li>
+<li><p><strong>cond2_secretion</strong> – List of exchanges that specify released metabolites in condition 2</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cond1_upt_higher</strong> – Exchange reactions and relative differences with higher uptake in condition 1 compared to condition 2</p></li>
+<li><p><strong>cond2_upt_higher</strong> – Exchange reactions and relative differences with higher uptake in condition 2 compared to condition 1</p></li>
+<li><p><strong>cond2_secr_higher</strong> – Exchange reactions and relative differences with higher secretion in condition 2 compared to condition 1</p></li>
+<li><p><strong>cond1_secr_higher</strong> – Exchange reactions and relative differences with higher secretion in condition 1 compared to condition 2</p></li>
+<li><p><strong>cond1_uptake_LODs</strong> – Detection limits for metabolites with higher uptake in condition 1</p></li>
+<li><p><strong>cond2_uptake_LODs</strong> – Detection limits for metabolites with higher uptake in condition 2</p></li>
+<li><p><strong>cond1_secretion_LODs</strong> – Detection limits for metabolites with higher secretion in condition 1</p></li>
+<li><p><strong>cond2_secretion_LODs</strong> – Detection limits for metabolites with higher secretion in condition 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.dataIntegration.metabotools.checkEffectRxnKO">
+<span class="sig-name descname"><span class="pre">checkEffectRxnKO</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">samples_to_test</span></em>, <em class="sig-param"><span class="pre">fill</span></em>, <em class="sig-param"><span class="pre">Genes_to_test</span></em>, <em class="sig-param"><span class="pre">samples</span></em>, <em class="sig-param"><span class="pre">ResultsAllCellLines</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metabotools/checkEffectRxnKO.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metabotools.checkEffectRxnKO" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function checks the effect of constraining reactions associated
+with a single or set of genes on the ability of the model to satisfy
+an objective.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[FBA_Rxns_KO, ListResults] = checkEffectRxnKO</strong> (<em>samples_to_test, fill, Genes_to_test, samples, ResultsAllCellLines</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>ResultsAllCellLines</strong> – uses <cite>modelMin</cite></p></li>
+<li><p><strong>samples</strong> – Name of samples</p></li>
+<li><p><strong>samples_to_test</strong> – Name of samples that should be tested (can be samples if all should be tested)</p></li>
+<li><p><strong>fill</strong> – Identifier if the <cite>rxns</cite> is not in the model (e.g.,100, num(‘NAN’))</p></li>
+<li><p><strong>Genes_to_test</strong> – Set of genes to be tested</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>FBA_Rxns_KO</strong> – FBA results for constraining one reaction at a time to zero.</p></li>
+<li><p><strong>ListResults</strong> – Reactions associated with <cite>Genes_to_test</cite>, same order as <cite>FBA_Rxns_KO</cite>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.dataIntegration.metabotools.checkExchangeProfiles">
+<span class="sig-name descname"><span class="pre">checkExchangeProfiles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">samples</span></em>, <em class="sig-param"><span class="pre">path</span></em>, <em class="sig-param"><span class="pre">nmets</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metabotools/checkExchangeProfiles.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metabotools.checkExchangeProfiles" title="Permalink to this definition">¶</a></dt>
+<dd><p>The Function generates a summary of the number of uptake exchanges
+and secretion exchanges per samples.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[mapped_exchanges, minMax, mapped_uptake, mapped_secretion] = checkExchangeProfiles</strong> (<em>samples, path, nmets</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>samples</strong></p></li>
+<li><p><strong>path</strong> – path to output of make exchangeprofiles</p></li>
+<li><p><strong>nmets</strong> – number of metabolites in data set (max number of uptake or secreted metabolites)</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mapped_exchanges</strong> – table listing for each sample the number of uptake and secretion that were mapped to the model</p></li>
+<li><p><strong>minMax</strong> – lists minimal and maximal number of uptakes, secretions, and total number of exchanges</p></li>
+<li><p><strong>mapped_uptake</strong> – table summarizing for each sample the uptake exchange reactions</p></li>
+<li><p><strong>mapped_secretion</strong> – table summarizing for each sample the secretion exchange reactions</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.dataIntegration.metabotools.computeFluxSplits">
+<span class="sig-name descname"><span class="pre">computeFluxSplits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">mets</span></em>, <em class="sig-param"><span class="pre">V</span></em>, <em class="sig-param"><span class="pre">coeffSign</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metabotools/computeFluxSplits.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metabotools.computeFluxSplits" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute relative contributions of fluxes (<cite>V</cite>) to the net production (<cite>P</cite>)
+and consumption (<cite>C</cite>) of a set of metabolites (<cite>mets</cite>)</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[P, C, vP, vC, s] = computeFluxSplits</strong> (<em>model, mets, V, 0</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – a COBRA model structure with required fields</p>
+<ul>
+<li><p>.S:        the <cite>m</cite> x <cite>n</cite> stoichiometric matrix</p></li>
+<li><p>.mets:     an <cite>m</cite> x <cite>1</cite> cell array of metabolite identifiers</p></li>
+</ul>
+</li>
+<li><p><strong>mets</strong> – a list of metabolite identifiers from model.mets</p></li>
+<li><p><strong>V</strong> – an <cite>n</cite> x <cite>k</cite> matrix of <cite>k</cite> flux distributions</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUT</dt>
+<dd class="field-odd"><p><strong>coeffSign</strong> – only use the sign of the stoichiometric coefficient
+(i.e. +1 or -1, Default = false)</p>
+</dd>
+<dt class="field-even">OUTPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>P</strong> – an <cite>n</cite> x <cite>k</cite> matrix of relative contributions to the production of mets</p></li>
+<li><p><strong>C</strong> – an <cite>n</cite> x <cite>k</cite> matrix of relative contributions to the consumption of mets</p></li>
+<li><p><strong>vP</strong> – an <cite>n</cite> x <cite>k</cite> matrix of net producing fluxes</p></li>
+<li><p><strong>vC</strong> – an <cite>n</cite> x <cite>k</cite> matrix of net consuming fluxes</p></li>
+<li><p><strong>s</strong> – net stoichiometry of reactions containing metabolites</p></li>
+</ul>
+</dd>
+</dl>
+<p>Example: [P,C,vP,vC,s] = computeFluxSplits(model,mets,V,1);</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.dataIntegration.metabotools.conc2Rate">
+<span class="sig-name descname"><span class="pre">conc2Rate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">metConc</span></em>, <em class="sig-param"><span class="pre">cellConc</span></em>, <em class="sig-param"><span class="pre">t</span></em>, <em class="sig-param"><span class="pre">cellWeight</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metabotools/conc2Rate.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metabotools.conc2Rate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts metabolite concentration and (viable) cell concentration into
+uptake rate.
+CellConc consumed MetConc in t.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[flux] = conc2Rate</strong> (<em>metConc, cellConc, t, cellWeight</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>metConc</strong> – Change in metabolite concentration (mM)</p></li>
+<li><p><strong>cellConc</strong> – Cell concentration (cells per 1 ml)</p></li>
+<li><p><strong>t</strong> – Time in hours</p></li>
+<li><p><strong>cellWeight</strong> – gDW per cell</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>flux</strong> – mmol/gDW/hr</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.dataIntegration.metabotools.defineUptakeSecretionProfiles">
+<span class="sig-name descname"><span class="pre">defineUptakeSecretionProfiles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">input_A</span></em>, <em class="sig-param"><span class="pre">input_B</span></em>, <em class="sig-param"><span class="pre">data_RXNS</span></em>, <em class="sig-param"><span class="pre">tol</span></em>, <em class="sig-param"><span class="pre">essAA_excl</span></em>, <em class="sig-param"><span class="pre">exclude_upt</span></em>, <em class="sig-param"><span class="pre">exclude_secr</span></em>, <em class="sig-param"><span class="pre">add_secr</span></em>, <em class="sig-param"><span class="pre">add_upt</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metabotools/defineUptakeSecretionProfiles.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metabotools.defineUptakeSecretionProfiles" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function calculated the slope ratios and gives out uptake&amp;secretion profiles for condition 1 and condition 2</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[cond1_uptake, cond2_uptake, cond1_secretion, cond2_secretion, slope_Ratio] = defineUptakeSecretionProfiles</strong> (<em>input_A, input_B, data_RXNS, tol, essAA_excl, exclude_upt, exclude_secr, add_secr, add_upt</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>input_A</strong> – Matrix, 4 columns</p>
+<ol class="arabic simple">
+<li><p>Control TP1,</p></li>
+<li><p>Control TP2,</p></li>
+<li><p>Condition 1 TP1,</p></li>
+<li><p>Condition 1 TP 2</p></li>
+</ol>
+</li>
+<li><p><strong>input_B</strong> – Matrix, 4 columns</p>
+<ol class="arabic simple">
+<li><p>Control2 TP1,</p></li>
+<li><p>Control2 TP2,</p></li>
+<li><p>Condition 2 TP1,</p></li>
+<li><p>Condition 2 TP 2</p></li>
+</ol>
+</li>
+<li><p><strong>data_RXNS</strong> – Exchange reactions same order as <cite>input_A</cite> and <cite>input_B</cite></p></li>
+<li><p><strong>tol</strong> – minimal threshold to call uptake or secretion (Default 0.05)=5%</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>essAA_excl</strong> – If essential amino acids should be excluded from the secretion profile 1(yes), or 0(no) (Default = 0);
+<cite>essAAs</cite> = {<cite>EX_his_L(e)</cite>; <cite>EX_ile_L(e)</cite>; <cite>EX_leu_L(e)</cite>; <cite>EX_lys_L(e)</cite>; <cite>EX_met_L(e)</cite>; <cite>EX_phe_L(e)</cite>; <cite>EX_thr_L(e)</cite>; <cite>EX_trp_L(e)</cite>; <cite>EX_val_L(e)</cite>}</p></li>
+<li><p><strong>exclude_upt</strong> – Exclude uncertain metabolites from uptake (e.g., metabolites from GlutaMax, e.g., <cite>EX_gln_L(e)</cite>, <cite>EX_cys_L(e)</cite>, <cite>EX_ala_L(e)</cite>)</p></li>
+<li><p><strong>exclude_secr</strong> – Exclude uncertain metabolites from secretion (e.g., metabolites from GlutaMax, e.g., <cite>EX_gln_L(e)</cite>, <cite>EX_cys_L(e)</cite>, <cite>EX_ala_L(e)</cite>)</p></li>
+<li><p><strong>add_secr</strong> – Due to mising data points automatic analysis might do wrong assignment of metabolites to secretion</p></li>
+<li><p><strong>add_upt</strong> – Due to mising data points automatic analysis might do wrong assignment of metabolites to uptake</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>cond1_uptake</strong> – List of exchanges that specify consumed metabolites in condition 1</p></li>
+<li><p><strong>cond2_uptake</strong> – List of exchanges that specify consumed metabolites in condition 2</p></li>
+<li><p><strong>cond1_secretion</strong> – List of exchanges that specify released metabolites in condition 1</p></li>
+<li><p><strong>cond2_secretion</strong> – List of exchanges that specify released metabolites in condition 2</p></li>
+<li><p><strong>slope_Ratio</strong> – For length of inputA/B, relative difference</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.dataIntegration.metabotools.extractConditionSpecificModel">
+<span class="sig-name descname"><span class="pre">extractConditionSpecificModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">threshold</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metabotools/extractConditionSpecificModel.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metabotools.extractConditionSpecificModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function prunes a subnetwork based on a user-defined threshold. The subnetwork does not contain blocked reactions. Please note that Recon has blocked reactions which will always be removed. Thus, not all reactions are removed as a consequence of the data integration.
+Depends on fastFVA, fluxVariability analysis</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[modelPruned] = extractConditionSpecificModel</strong> (<em>model, threshold</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – Global metabolic model (Recon) - constrained</p></li>
+<li><p><strong>threshold</strong> – Fluxes below the threshold will be considered zero and respective reactions as blocked, e.g., 10e-6.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><p><strong>modelPruned</strong> – submodel without blocked reactions</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.dataIntegration.metabotools.findMinCardModel">
+<span class="sig-name descname"><span class="pre">findMinCardModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">Ex_Rxns</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metabotools/findMinCardModel.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metabotools.findMinCardModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to find the minimal cardinality model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[modelMin, AddedExchange] = findMinCardModel</strong> (<em>model, Ex_Rxns</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – Metabolic model</p></li>
+<li><p><strong>Ex_Rxns</strong> – Vector of exchange reactions for FVA</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>modelMin</strong> – Updated model with new reaction bounds</p></li>
+<li><p><strong>AddedExchange</strong> – Vector of exchanged reactions</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.dataIntegration.metabotools.findOptExchRxns">
+<span class="sig-name descname"><span class="pre">findOptExchRxns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">Ex_Rxns</span></em>, <em class="sig-param"><span class="pre">parFVA</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metabotools/findOptExchRxns.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metabotools.findOptExchRxns" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[OptExchRxns] = findOptExchRxns</strong> (<em>model, Ex_Rxns, parFVA</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – Metabolic model</p></li>
+<li><p><strong>Ex_Rxns</strong> – Vector of exchange reactions for FVA</p></li>
+<li><p><strong>fastFVA</strong> – use FastFVA (default=0)</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><p><strong>OptExchRxns</strong></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.dataIntegration.metabotools.generateCompactExchModel">
+<span class="sig-name descname"><span class="pre">generateCompactExchModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">minGrowth</span></em>, <em class="sig-param"><span class="pre">biomassRxn</span></em>, <em class="sig-param"><span class="pre">prune</span></em>, <em class="sig-param"><span class="pre">fastFVA</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metabotools/generateCompactExchModel.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metabotools.generateCompactExchModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function identifies a subnetwork with the least number of possible exchange
+reactions given the model and the applied constraints. It returns the resulting pruned model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[modelMin, modelPruned, Ex_Rxns] = generateCompactExchModel</strong> (<em>model, minGrowth, biomassRxn, prune, fastFVA</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – model structure</p></li>
+<li><p><strong>minGrowth</strong> – minimal Growth rate to be set on biomass reaction</p></li>
+<li><p><strong>biomassRxn</strong> – biomass reaction name (default: ‘biomass_reaction2’)</p></li>
+<li><p><strong>prune</strong> – optional: to prune the model based on exchange reactions
+(default: 1)</p></li>
+<li><p><strong>fastFVA</strong> – optional: to use fastFVA instead of fluxvariability for
+computing FVA results (default: 0)</p></li>
+<li><p><strong>medium</strong> – (default: {})</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>modelUpdated</strong> – same as input model but constraints on blocked reactions
+are set to be 0</p></li>
+<li><p><strong>modelPruned</strong> – pruned model, where all blocked reactions are removed
+(attention this seems to cause issues with GPRs)</p></li>
+<li><p><strong>Ex_Rxns</strong> – List of exchange reactions in pruned model</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.dataIntegration.metabotools.illustrate_ppp">
+<span class="sig-name descname"><span class="pre">illustrate_ppp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">ResultsAllCellLines</span></em>, <em class="sig-param"><span class="pre">mets</span></em>, <em class="sig-param"><span class="pre">path</span></em>, <em class="sig-param"><span class="pre">samples</span></em>, <em class="sig-param"><span class="pre">label</span></em>, <em class="sig-param"><span class="pre">fonts</span></em>, <em class="sig-param"><span class="pre">tol</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metabotools/illustrate_ppp.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metabotools.illustrate_ppp" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function generates and saves heatmaps for the results of the function
+performPPP for all sample models.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>illustrate_ppp</strong> (<em>ResultsAllCellLines, mets, path, samples, label, fonts, tol</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>ResultsAllCellLines</strong> – Result structure</p></li>
+<li><p><strong>mets</strong> – Metabolites that were tested in the phase plane analysis</p></li>
+<li><p><strong>step_size</strong> – Step size of each metabololite tested</p></li>
+<li><p><strong>path</strong> – Path where output is saved</p></li>
+<li><p><strong>samples</strong> – Names of conditions</p></li>
+<li><p><strong>label</strong> – Defining label of X-axis, y-axis and z-axis, e.g., {<cite>Glucose uptake (fmol/cell/hr)</cite>; <cite>Oxygen uptake
+(fmol/cell/hr)</cite>; <cite>Growth rate (hr-1)</cite>} The z-axis is the growth rate which is color coded</p></li>
+<li><p><strong>fonts</strong> – Font size for labels on heatmap</p></li>
+<li><p><strong>tol</strong> – Fluxes are considered zero if they are below the tol</p></li>
+</ul>
+</dd>
+</dl>
+<p>Individual pdf files showing the result of the PPP are being saved automatically for each condition.</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.dataIntegration.metabotools.integrateGeneExpressionData">
+<span class="sig-name descname"><span class="pre">integrateGeneExpressionData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">dataGenes</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metabotools/integrateGeneExpressionData.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metabotools.integrateGeneExpressionData" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function sets constrains based on sets of absent genes. It does not test for the functionality of the model, to maintain full control over
+the model generation process. Alternatively, the COBRA function <cite>createTissueSpecificModel</cite> can be used, and which can produce a functional model.
+See the supplemental tutorial of <em>DOI:10.1371/journal.pone.0049978 (Aurich and Thiele, PloS One, 2012)</em> for description on potentially necessary curation when using this crude method of data integration.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[modelGE] = integrateGeneExpressionData</strong> (<em>model, dataGenes</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – Metabolic model (e.g., Recon)</p></li>
+<li><p><strong>dataGenes</strong> – Vector of absent genes. Follow the supplemental tutorial of <em>DOI: 10.1371/journal.pone.0049978 (Aurich and Thiele, PloS One, 2012)</em> for the generation of P/A calls, e.g., <cite>Absent_genes</cite> = [535;1548];</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>modelGE</strong> – Model, where all genes in <cite>DataGenes</cite> have been constrained to zero. Follow the supplemental tutorial of
+<em>DOI:10.1371/journal.pone.0049978 (Aurich and Thiele, PloS One, 2012)</em> for description of potentially necessary curation.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.dataIntegration.metabotools.make3Dplot">
+<span class="sig-name descname"><span class="pre">make3Dplot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">PHs</span></em>, <em class="sig-param"><span class="pre">maximum_contributing_flux</span></em>, <em class="sig-param"><span class="pre">fonts</span></em>, <em class="sig-param"><span class="pre">path</span></em>, <em class="sig-param"><span class="pre">diff_view</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metabotools/make3Dplot.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metabotools.make3Dplot" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function allows illustration on different phenotypes predicted in
+MetTB onto the 3D illustration plot. The phenotypes are defined as
+colors, the location of the points is based on the ATP flux predicted by the
+function <cite>predictFluxSplits</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>make3Dplot</strong> (<em>PHs, maximum_contributing_flux, fonts, path, diff_view</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>PHs</strong> – Phenotypes = [samples PHENOTYPE], is generated from different functions (<cite>predictFluxSplits</cite>,…)</p></li>
+<li><p><strong>maximum_contributing_flux</strong> – Output of the function <cite>predictFluxSplits</cite>, option ATP.</p></li>
+<li><p><strong>fonts</strong> – Font size</p></li>
+<li><p><strong>path</strong> – Path to save output</p></li>
+<li><p><strong>diff_view</strong> – Next to the standard view, print graphic from 3 different(2D) viewpoints (default = 0/off)</p></li>
+</ul>
+</dd>
+</dl>
+<p>PDFs are automatically saved to the user-defined path</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.dataIntegration.metabotools.makeSummaryModels">
+<span class="sig-name descname"><span class="pre">makeSummaryModels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">ResultsAllCellLines</span></em>, <em class="sig-param"><span class="pre">samples</span></em>, <em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">mk_union</span></em>, <em class="sig-param"><span class="pre">mk_intersect</span></em>, <em class="sig-param"><span class="pre">mk_reactionDiff</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metabotools/makeSummaryModels.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metabotools.makeSummaryModels" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function generates the union and the intersect model from the <cite>modelPruned</cite> in the <cite>ResultsAllCellLines</cite> structure.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[unionModel, intersectModel, diffRxns, diffExRxns] = makeSummaryModels</strong> (<em>ResultsAllCellLines, samples, model, mk_union, mk_intersect, mk_reactionDiff</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>ResultsAllCellLines</strong> – structure containing samples and models for the samples, e.g.,  <cite>ResultsAllCellLines.UACC_257.modelPruned</cite></p></li>
+<li><p><strong>samples</strong> – conditions or cell lines, e.g., UACC_257</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mk_union</strong> – make union model, yes=1, no=0 (Default = 1)</p></li>
+<li><p><strong>mk_intersect</strong> – make intersect model, yes=1, no=0 (Default = 1)</p></li>
+<li><p><strong>mk_reactionDiff</strong> – make reactionDiff, yes=1, no=0 (can only be 1 if union and intersect are 1 or []) (Default = 1).</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>unionModel</strong> – model containing all reactions appearing at least once in the models in the <cite>ResultsAllCellLines.sample.modelPruned</cite></p></li>
+<li><p><strong>intersectModel</strong> – model containing all reactions shared by all models in the <cite>ResultsAllCellLines.sample.modelPruned</cite></p></li>
+<li><p><strong>diffRxns</strong> – all differential reactions that distinguish <cite>unionModel</cite> and <cite>intersectModel</cite></p></li>
+<li><p><strong>diffExRxns</strong> – all differential exchange reactions that distinguish <cite>unionModel</cite> and <cite>intersectModel</cite></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.dataIntegration.metabotools.mkTableOfAddedExchanges">
+<span class="sig-name descname"><span class="pre">mkTableOfAddedExchanges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">ResultsAllCellLines</span></em>, <em class="sig-param"><span class="pre">samples</span></em>, <em class="sig-param"><span class="pre">Ex_added_all_unique</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metabotools/mkTableOfAddedExchanges.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metabotools.mkTableOfAddedExchanges" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function generates a table of the added exchanges defined by the
+function <cite>generateCompactExchModel</cite> called by the function <cite>setQuantConstraints</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[Added_all] = mkTableOfAddedExchanges</strong> (<em>ResultsAllCellLines, samples, Ex_added_all_unique</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>ResultsAllCellLines</strong></p></li>
+<li><p><strong>samples</strong></p></li>
+<li><p><strong>Ex_added_all_unique</strong> – Output of the function <cite>statisticsAddedExchanges</cite></p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>Added_all</strong> – Table overview of all added Exchanges for each sample</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.dataIntegration.metabotools.networkTopology">
+<span class="sig-name descname"><span class="pre">networkTopology</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metabotools/networkTopology.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metabotools.networkTopology" title="Permalink to this definition">¶</a></dt>
+<dd><p>Analysis of the metabolite connectivity of a metabolic model</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[MetConn, RxnLength] = NetworkTopology</strong> (<em>model</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><p><strong>model</strong> – Model structure</p>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>MetConn</strong> – Vector of metabolite connectivity (how many reactions a metabolite participates in (in same order as model.mets)</p></li>
+<li><p><strong>RxnLength</strong> – Vector of reaction participation, i.e., how many metabolites per reaction (in same order as <cite>mode.rxns</cite>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.dataIntegration.metabotools.performPPP">
+<span class="sig-name descname"><span class="pre">performPPP</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">ResultsAllCellLines</span></em>, <em class="sig-param"><span class="pre">mets</span></em>, <em class="sig-param"><span class="pre">step_size</span></em>, <em class="sig-param"><span class="pre">samples</span></em>, <em class="sig-param"><span class="pre">step_num</span></em>, <em class="sig-param"><span class="pre">direct</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metabotools/performPPP.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metabotools.performPPP" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function performs the a phase plane analysis. The analysis starts from zero and proceed <cite>step_num*step_size</cite> in the specified direction and for two exchanges.
+the results of the analysis will be saved into <cite>ResultsAllCellLines</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[ResultsAllCellLines] = performPPP</strong> (<em>ResultsAllCellLines, mets, step_size, samples, step_num, direct</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>ResultsAllCellLines</strong></p></li>
+<li><p><strong>samples</strong> – Conditions</p></li>
+<li><p><strong>mets</strong> – Set of two metabolites to test e.g.  mets ={<cite>EX_glc(e)</cite>, <cite>EX_gln(e)</cite>; <cite>EX_o2(e)</cite>, <cite>EX_o2(e)</cite>}</p></li>
+<li><p><strong>step_size</strong> – Step size for metabolites specified in mets e.g., <cite>step_size</cite> = 100</p></li>
+<li><p><strong>direct</strong> – Direction for metabolites specified in mets: uptake (-1) or secretion (1), e.g., direct = [-1,-1,-1,-1];</p></li>
+<li><p><strong>step_num</strong> – Number of steps (1000/20 = 50), step_num = [5,5;5,5]</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>ResultsAllCellLines</strong> – The matrix of growth rates are added to the <cite>ResultsAllCellLines</cite> structure alond with the values or the bounds using the same of the manipulated exchanges</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.dataIntegration.metabotools.performSampling">
+<span class="sig-name descname"><span class="pre">performSampling</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">warmupn</span></em>, <em class="sig-param"><span class="pre">fileName</span></em>, <em class="sig-param"><span class="pre">nFiles</span></em>, <em class="sig-param"><span class="pre">pointsPerFile</span></em>, <em class="sig-param"><span class="pre">stepsPerPoint</span></em>, <em class="sig-param"><span class="pre">fileBaseNo</span></em>, <em class="sig-param"><span class="pre">maxTime</span></em>, <em class="sig-param"><span class="pre">path</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metabotools/performSampling.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metabotools.performSampling" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function performs the sampling analysis for one model, combines
+multiple COBRA toolbox functions</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>performSampling</strong> (<em>model, warmupn, fileName, nFiles, pointsPerFile, stepsPerPoint, fileBaseNo, maxTime, path</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – Model to be sampled</p></li>
+<li><p><strong>warmupn</strong> – Number of warm-up points</p></li>
+<li><p><strong>fileName</strong> – Name for output files</p></li>
+<li><p><strong>nFiles</strong> – Number of files saved</p></li>
+<li><p><strong>pointsPerFilePoints</strong> – Points saved per file</p></li>
+<li><p><strong>stepsPerPoint</strong> – Steps skipped between two saved points, in order to increase mixing</p></li>
+<li><p><strong>fileBaseNo</strong> – Counter for the numbering of the output files, e.g., 0 to start with 1;</p></li>
+<li><p><strong>maxTime</strong> – Maximal running time after which the analysis should be terminated, e.g., 3600000;</p></li>
+<li><p><strong>path</strong> – Path to file</p></li>
+</ul>
+</dd>
+</dl>
+<p>Automatically saved to path using specified file name</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.dataIntegration.metabotools.predictFluxSplits">
+<span class="sig-name descname"><span class="pre">predictFluxSplits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">obj</span></em>, <em class="sig-param"><span class="pre">met2test</span></em>, <em class="sig-param"><span class="pre">samples</span></em>, <em class="sig-param"><span class="pre">ResultsAllCellLines</span></em>, <em class="sig-param"><span class="pre">dir</span></em>, <em class="sig-param"><span class="pre">transportRxns</span></em>, <em class="sig-param"><span class="pre">ATPprod</span></em>, <em class="sig-param"><span class="pre">carbon_source</span></em>, <em class="sig-param"><span class="pre">eucNorm</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metabotools/predictFluxSplits.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metabotools.predictFluxSplits" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function performs the flux splits analysis for the metabolites of
+interest, meaning it predicts the fraction of metabolite produced (or
+consumed) based all reactions producing (or consuming) the metabolite</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[BMall, ResultsAllCellLines, metRsall, maximum_contributing_rxn, maximum_contributing_flux, ATPyield] = predictFluxSplits</strong> (<em>model, obj, met2test, samples, ResultsAllCellLines, dir, transportRxns, ATPprod, carbon_source, eucNorm</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – Generic model, e.g., <cite>modelMedium</cite></p></li>
+<li><p><strong>obj</strong> – objective function, e.g., biomass or ATPM</p></li>
+<li><p><strong>met2test</strong> – e.g., <cite>atp[c]</cite>. Mind that the metabolites are produced in multiple compartments.</p></li>
+<li><p><strong>samples</strong> – Name of conditions as in <cite>ResultsAllCellLines</cite></p></li>
+<li><p><strong>ResultsAllCellLines</strong> – Structure containing the pruned submodels of the samples</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dir</strong> – Production = 1 (default = production), else consumption = 0</p></li>
+<li><p><strong>eucNorm</strong> – Default: 1e-6</p></li>
+<li><p><strong>transportRxns</strong> – Vector of reactions that do not really produce or consume the metabolite, e.g., reactions that transport ATP from one compartment to the other. This input is optional only to allow the initial prediction of all producing reactions to define the exclude reaction set.</p></li>
+<li><p><strong>carbon_source</strong> – Reference uptake for calculation of ATP yield, e.g.,{<cite>EX_glc(e)</cite>}.</p></li>
+<li><p><strong>ATPprod</strong></p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>BMall</strong> – Matrix of flux vectors used for calculations</p></li>
+<li><p><strong>ResultsAllCellLines</strong> – Structure containing results of run analysis</p></li>
+<li><p><strong>metRsall</strong> – Matrix of flux (producing or consuming) a defined metabolite</p></li>
+<li><p><strong>maximum_contributing_rxn</strong> – Reactions with highest flux (producing or
+consuming) a defined metabolite across analyzed samples (not
+necessarily &gt;50%), if multiple reactions have the same contribution, all will be reported seperated by a back slash.</p></li>
+<li><p><strong>maximum_contributing_flux</strong> – Matrix containing:</p>
+<ul>
+<li><p>highest flux (column 1),</p></li>
+<li><p>sum of flux (producing or consuming) a defined metabolite (column 2),</p></li>
+<li><p>percentage (column 3),</p></li>
+<li><p>contribution of glycolysis (column 4),</p></li>
+<li><p>contribution of ETC (column 5),</p></li>
+<li><p>combined contribution of glycolysis and ETC (column 6),</p></li>
+<li><p>contribution of TCA (column 7),</p></li>
+<li><p>combined contribution of glycolysis, ETC, and TCA (column 8).</p></li>
+</ul>
+</li>
+<li><p><strong>ATPyield</strong> – ATP yield calculated from the sum of ATP production divided by the predicted uptake flux of the metabolite specified as carbon_source.
+No extra constraints are applied, thus not only production  flux from the specified carbon source is considered.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>% if met2test is not atp to reduce number of useless outputs
+[BMall, ResultsAllCellLines, metRsall] = predictFluxSplits(model, obj, met2test,samples,ResultsAllCellLines, dir, eucNorm, transportRxns, ATPprod, carbon_source)</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.dataIntegration.metabotools.prepIntegrationQuant">
+<span class="sig-name descname"><span class="pre">prepIntegrationQuant</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">metData</span></em>, <em class="sig-param"><span class="pre">exchanges</span></em>, <em class="sig-param"><span class="pre">samples</span></em>, <em class="sig-param"><span class="pre">test_max</span></em>, <em class="sig-param"><span class="pre">test_min</span></em>, <em class="sig-param"><span class="pre">outputPath</span></em>, <em class="sig-param"><span class="pre">tol</span></em>, <em class="sig-param"><span class="pre">variation</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metabotools/prepIntegrationQuant.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metabotools.prepIntegrationQuant" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function generates individual uptake and secretion profiles from a
+data matrix (fluxes) with samples as columns and metabolites as rows.
+Negative values are interpreted as uptake and positive values are
+interpreted as secretion. The function tests based on the input model if
+uptake and secretion of all ‘Exchanges’ is possible. Subsequently, it
+removes from each sample the metabolite uptakes or secretions that cannot
+be realized by the model due to missing production or degradation
+pathways, or blocked reactions. If only secretion is not possible, only
+secretion is eliminated from the sample profile whereas uptake will still
+be mapped.
+The individual uptake and secretion profile for each sample is saved to
+the location specified in outputPath using the unique sample name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>prepIntegrationQuant</strong> (<em>model, metData, exchanges, samples, test_max, test_min, outputPath, tol, variation</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – Prepared global model (e.g., <cite>model_for_CORE</cite> from <cite>prepModel</cite>)</p></li>
+<li><p><strong>exchanges</strong> – Vector containing exchange reactions</p></li>
+<li><p><strong>metData</strong> – Fluxes of uptake (negative) and secretion(positive) flux values. The columns are the samples and the rows are the metabolites (Unit matching remaining model constraints!).</p></li>
+<li><p><strong>samples</strong> – Vector of sample names (no dublicate names)</p></li>
+<li><p><strong>test_max</strong> – Maximal uptake/secretion set while testing if model can perform uptake and secretion of a metabolite (e.g., 500)</p></li>
+<li><p><strong>test_min</strong> – Minimal uptake/secretion set while testing if model can perform uptake and secretion of a metabolite (e.g., 0.00001)</p></li>
+<li><p><strong>outputPath</strong> – Path where output files should be saved (e.g. ‘Y:StudiesData_integrationCOREusingRecon1models')</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tol</strong> – All fluxes below this value are considered to be zero, (e.g., 1e-6)</p></li>
+<li><p><strong>variation</strong> – Lower and upper bound are established with this value as error range in % (e.g.,20)</p></li>
+</ul>
+</dd>
+</dl>
+<p>For every sample a file is automatically saved and contains the following variables:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Secretion_not_possible:  Vector of metabolite (exchange reactions) that cannot be secreted by the model</p></li>
+<li><p>Uptake_not_possible:     Vector of metabolite (exchange reactions) that cannot be uptaken by the model</p></li>
+<li><p>FBA_all_secreted:        FBA results of test metabolite secretion</p></li>
+<li><p>FBA_all_secreted_names:  Name of exchange test metabolite secretion</p></li>
+<li><p>FBA_all_uptake:          FBA results of test metabolite uptake</p></li>
+<li><p>FBA_all_uptake_names:    Name of exchange test metabolite uptake</p></li>
+<li><p>uptake:                  Vector of exchange reactions that are associated with uptake in the cell line (no additional exchanges, since these reactions will not be closed)</p></li>
+<li><p>uptake_value:            Matrix of flux values, constitute the lower (column 2) and upper (column 3) limits for the model uptake</p></li>
+<li><p>secretion:               Vector of exchange reactions that are associated with secretion in the cell line (no additional exchanges, since these reactions will not be closed)</p></li>
+<li><p>secr_value:              Matrix of flux values, constitute the lower (column 2) and upper (column 3) limits for the model secretion</p></li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.dataIntegration.metabotools.pruneModel">
+<span class="sig-name descname"><span class="pre">pruneModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">minGrowth</span></em>, <em class="sig-param"><span class="pre">biomassRxn</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metabotools/pruneModel.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metabotools.pruneModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function prunes a model to its most compact subnetwork given some model
+constraints and a minimal growth rate by identifying and removing all blocked reactions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[modelUpdated, modelPruned, Ex_Rxns] = pruneModel</strong> (<em>model, minGrowth, biomassRxn</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – model structure</p></li>
+<li><p><strong>minGrowth</strong> – minimal Growth rate to be set on biomass reaction</p></li>
+<li><p><strong>biomassRxn</strong> – biomass reaction name (default: ‘biomass_reaction2’)</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>modelUpdated</strong> – same as input model but constraints on blocked reactions
+are set to be 0</p></li>
+<li><p><strong>modelPruned</strong> – pruned model, where all blocked reactions are removed
+(attention this seems to cause issues with GPRs)</p></li>
+<li><p><strong>Ex_Rxns</strong> – List of exchange reactions in pruned model</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.dataIntegration.metabotools.setConstraintsOnBiomassReaction">
+<span class="sig-name descname"><span class="pre">setConstraintsOnBiomassReaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">of</span></em>, <em class="sig-param"><span class="pre">dT</span></em>, <em class="sig-param"><span class="pre">tolerance</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metabotools/setConstraintsOnBiomassReaction.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metabotools.setConstraintsOnBiomassReaction" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function sets constrains biomass objective function in the model accoring to the condition specific doubling time.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[modelBM] = setConstraintsOnBiomassReaction</strong> (<em>model, of, dT, tolerance</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – Metabolic model (e.g., Recon)</p></li>
+<li><p><strong>of</strong> – Objective funtion, e.g., <cite>biomass_reaction</cite></p></li>
+<li><p><strong>dT</strong> – Doubling time</p></li>
+<li><p><strong>tolerance</strong> – Upper and lower limit of the growth rate are adjusted according to this tolerance value, e.g., 20 (%).</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><p><strong>modelBM</strong> – Model constrained with condition-specific growth rates</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.dataIntegration.metabotools.setMediumConstraints">
+<span class="sig-name descname"><span class="pre">setMediumConstraints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">set_inf</span></em>, <em class="sig-param"><span class="pre">current_inf</span></em>, <em class="sig-param"><span class="pre">medium_composition</span></em>, <em class="sig-param"><span class="pre">met_Conc_mM</span></em>, <em class="sig-param"><span class="pre">cellConc</span></em>, <em class="sig-param"><span class="pre">t</span></em>, <em class="sig-param"><span class="pre">cellWeight</span></em>, <em class="sig-param"><span class="pre">mediumCompounds</span></em>, <em class="sig-param"><span class="pre">mediumCompounds_lb</span></em>, <em class="sig-param"><span class="pre">customizedConstraints</span></em>, <em class="sig-param"><span class="pre">customizedConstraints_ub</span></em>, <em class="sig-param"><span class="pre">customizedConstraints_lb</span></em>, <em class="sig-param"><span class="pre">close_exchanges</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metabotools/setMediumConstraints.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metabotools.setMediumConstraints" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates and sets constraints according to fresh medium composition in mM. Is based on the function <cite>Conc2Rate</cite>. Returns a model with constraints.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[modelMedium, basisMedium] = setMediumConstraints</strong> (<em>model, set_inf, current_inf, medium_composition, met_Conc_mM, cellConc, t, cellWeight, mediumCompounds, mediumCompounds_lb, customizedConstraints, customizedConstraints_ub, customizedConstraints_lb, close_exchanges</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – Metabolic model (Recon)</p></li>
+<li><p><strong>current_inf</strong> – Models can have differently defined infinite constraints, e.g., 500</p></li>
+<li><p><strong>set_inf</strong> – New value for infinite constraints, e.g., 1000</p></li>
+<li><p><strong>medium_composition</strong> – Vector of exchange reactions of metabolites in the cell medium, e.g., RPMI medium</p></li>
+<li><p><strong>met_Conc_mM</strong> – Vector of the same length of ‘Exchanges’, providing the concentration (in mM) of each metabolite in the respective row</p></li>
+<li><p><strong>cellConc</strong> – Cell concentration (cells per 1 ml)</p></li>
+<li><p><strong>t</strong> – Time in hours</p></li>
+<li><p><strong>cellWeight</strong> – Cellular dry weight</p></li>
+<li><p><strong>mediumCompounds</strong> – Composition of basic medium, which are usually not defined in the composition of the medium and need to be defined in addition.</p></li>
+<li><p><strong>mediumCompounds_lb</strong> – Lower bound applied for all mediumCompounds (the same for all)</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>customizedConstraints</strong> – If additional constraints should be set apart from the basic medium and medium composition, e.g. <cite>EX_o2(e)</cite></p></li>
+<li><p><strong>customizedConstraints_lb</strong> – Vecor of lower bounds to be set (mmol/gDW/hr), must be of same length as customizedConstraints</p></li>
+<li><p><strong>customizedConstraints_ub</strong> – Vecor of upper bounds to be set (mmol/gDW/hr), must be of same length as customizedConstraints</p></li>
+<li><p><strong>close_exchanges</strong> – If exchange reactions except those specified should be closed (Default = 1) 1= close exchanges, 0=no</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>modelMedium</strong> – Model with set constraints, all exchanges not specified in  mediumCompounds, ions or customizedConstraints are set to secretion only</p></li>
+<li><p><strong>basisMedium</strong> – Vector of adjusted constraints, for reference such that these constraints are not overwritten at a later stage</p></li>
+</ul>
+</dd>
+</dl>
+<p>Please note that if metabolites of <cite>medium_composition</cite> and <cite>mediumCompounds</cite> overlap, the constraints of the <cite>Medium_composition</cite> will
+be set to 0 in the output model. The function depends on the functions <cite>conc2Rate</cite>, <cite>changeRxnBounds</cite>.</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.dataIntegration.metabotools.setQualitativeConstraints">
+<span class="sig-name descname"><span class="pre">setQualitativeConstraints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">cond_uptake</span></em>, <em class="sig-param"><span class="pre">cond_uptake_LODs</span></em>, <em class="sig-param"><span class="pre">cond_secretion</span></em>, <em class="sig-param"><span class="pre">cond_secretion_LODs</span></em>, <em class="sig-param"><span class="pre">cellConc</span></em>, <em class="sig-param"><span class="pre">t</span></em>, <em class="sig-param"><span class="pre">cellWeight</span></em>, <em class="sig-param"><span class="pre">ambiguous_metabolites</span></em>, <em class="sig-param"><span class="pre">basisMedium</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metabotools/setQualitativeConstraints.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metabotools.setQualitativeConstraints" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function sets qualitative constraints (by enforcing minimal uptake or secretion based on individual detection limits), e.g., based on the uptake and secretion
+profile of metabolites measured through mass-spectrometry. Uptake is only possible if the lower bound has been set to a value &gt;0 using <cite>setMediumConstraints</cite>
+The minimal allowable uptake and secretion flux is defined by enforcing uptake at or above the limit of detection (mass-spectrometry). If these values are not available, a very small value, e.g., 1.0E-06 can be used. Note that this
+value has to be below the concentrations defined in the medium. Otherwise the model will be infeasible. Alternatively to the LODs a small value can
+be used (e.g., 0.00001). Note that the value has to be above the threshold later called zero.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[modelLOD] = setQualitativeConstraints</strong> (<em>model, cond_uptake, cond_uptake_LODs, cond_secretion, cond_secretion_LODs, cellConc, t, cellWeight, ambiguous_metabolites, basisMedium</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – Metabolic model (Recon), with set constraints (output of <cite>setMediumConstraints</cite>)</p></li>
+<li><p><strong>cond_uptake</strong> – Vector of exchanges of metabolites consumed by the cells in the experiment</p></li>
+<li><p><strong>cond_uptake_LODs</strong> – Vector of detection limits (LOD in Mm) for the compounds and in the experiment</p></li>
+<li><p><strong>cond_secretion</strong> – Vector of metabolite exchanges consumed by the cells in the experiment</p></li>
+<li><p><strong>cond_secretion_LODs</strong> – Vector of detection limits (LOD in Mm) for the compounds and in the experiment</p></li>
+<li><p><strong>cellConc</strong> – Cell concentration (cells per 1 ml)</p></li>
+<li><p><strong>t</strong> – Time in hours</p></li>
+<li><p><strong>cellWeight</strong> – gDW per cell</p></li>
+<li><p><strong>ambiguous_metabolites</strong> – Since all exchanges, except the ones specified in <cite>uptake</cite> and <cite>secretion</cite> are closed in <cite>modelLOD</cite>, this input
+variable allows to specify metabolite exchanges that should remain open.
+Thus, if these exchanges are open in the starting model they can be uptaken
+or secreted by the <cite>modelLOD</cite>, e.g., <cite>ambiguous_metabolites</cite>
+This can for example be the case if it is suspected that an uptake or secretion might have taken place in concentrations below the
+detection limit.</p></li>
+<li><p><strong>basisMedium</strong> – Vector defining the metabolite exchanges of the basic medium, i.e., <cite>ions</cite>, <cite>mediumCompounds</cite></p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>modelLOD</strong> – Model that is constrained qualitatively to the condition-specific uptake and secretion profile</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.dataIntegration.metabotools.setQuantConstraints">
+<span class="sig-name descname"><span class="pre">setQuantConstraints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">samples</span></em>, <em class="sig-param"><span class="pre">tol</span></em>, <em class="sig-param"><span class="pre">minGrowth</span></em>, <em class="sig-param"><span class="pre">obj</span></em>, <em class="sig-param"><span class="pre">no_secretion</span></em>, <em class="sig-param"><span class="pre">no_uptake</span></em>, <em class="sig-param"><span class="pre">medium</span></em>, <em class="sig-param"><span class="pre">addExtraExch</span></em>, <em class="sig-param"><span class="pre">addExtraExch_value</span></em>, <em class="sig-param"><span class="pre">path</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metabotools/setQuantConstraints.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metabotools.setQuantConstraints" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function takes a model and quantitative extracellular metabolomic data and returns a model in which the data is integrated as constraints described
+in “MetaboTools: A Comprehensive Toolbox for Analysis of Genome-Scale Metabolic Models”, 2016, Front. Physiol., and the supplemental data “Tutorial II: Workflow for the integration
+of quantitative extracellular metabolomic data into the network context.” (Data Sheet 3.pdf)</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[ResultsAllCellLines, OverViewResults] = setQuantConstraints</strong> (<em>model, samples, tol, minGrowth, obj, no_secretion, no_uptake, medium, addExtraExch, addExtraExch_value, path, epsilon</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – Global metabolic model (Recon)</p></li>
+<li><p><strong>samples</strong> – Vector specifying the samples used (there must be an output file of function …. for each sample)</p></li>
+<li><p><strong>tol</strong> – Cutoff value for small numbers (e.g., -1e-8). All number smaller than tol will be treated as zero</p></li>
+<li><p><strong>minGrowth</strong> – Will be the lower bound of the objective function (e.g., 0.008). Forces the output model(s) to be able to produce a minimal objective value</p></li>
+<li><p><strong>obj</strong> – Objective function, e.g. <cite>biomass_reaction2</cite></p></li>
+<li><p><strong>no_secretion</strong> – Define metabolites that should not be secreted (e.g., {<cite>EX_o2(e)</cite>})</p></li>
+<li><p><strong>no_uptake</strong> – Define metabolites that should not be consumed (e.g., {<cite>EX_o2s(e)</cite>, <cite>EX_h2o2(e)</cite>})</p></li>
+<li><p><strong>medium</strong> – Define if certain exchanges should be excluded from minimization of exchanges (e.g., {}, if no medium except the exometabolomic data has been defined)</p></li>
+<li><p><strong>addExtraExch</strong> – After adding secretions, models are still not growing, this variable allows one to recover exchanges with a defined small value</p></li>
+<li><p><strong>addExtraExch_value</strong> – e.g. 1 as arbitrary small flux value / the resulting ub = 1, lb = -1.</p></li>
+<li><p><strong>path</strong> – Location of the .mat files for samples.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ResultsAllCellLines</strong> – Structure that contains pruned and unpruned model, Vector of the Exchange_reactions, the exchange reactions added by <cite>minExCard</cite>, <cite>minFLux</cite> and <cite>maxFlux</cite> of the added reactions, maximal objective value, and the results of the gene deletion</p></li>
+<li><p><strong>OverViewResults</strong> – Overview of model statistics, e.g., number of reactions, metabolites, genes, number of essential genes, min and max objective values for easy comparison between sets of models</p></li>
+</ul>
+</dd>
+</dl>
+<p>Depends on <cite>changeRxnBounds</cite>, <cite>fluxVariability</cite>, <cite>optimizeCbModel</cite>, <cite>generateCompactExchModel</cite> as well its dependent functions <cite>pruneModel</cite>, <cite>findMinCardModel</cite>, <cite>findOptExchRxns</cite></p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.dataIntegration.metabotools.setSemiQuantConstraints">
+<span class="sig-name descname"><span class="pre">setSemiQuantConstraints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">modelA</span></em>, <em class="sig-param"><span class="pre">modelB</span></em>, <em class="sig-param"><span class="pre">cond1_upt_higher</span></em>, <em class="sig-param"><span class="pre">cond2_upt_higher</span></em>, <em class="sig-param"><span class="pre">cond2_secr_higher</span></em>, <em class="sig-param"><span class="pre">cond1_secr_higher</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metabotools/setSemiQuantConstraints.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metabotools.setSemiQuantConstraints" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function establishes constraints for two models (<cite>modelA</cite> and <cite>modelB</cite>) based on the relative
+difference of signal intensities obtained from two samples. The prerequisite for the adjustment is that constraints have been applied on which the relative differences can be applied:</p>
+<ul class="simple">
+<li><ol class="upperalpha simple">
+<li><p>The uptake rates have been established based on the medium composition and concentrations (i.e., <cite>setMediumConstraints</cite>), and</p></li>
+</ol>
+</li>
+<li><ol class="upperalpha simple" start="2">
+<li><p>qualitative constraints have been applied based on know detection limits or small values (i.e., <cite>setQualitativeConstraints</cite>).</p></li>
+</ol>
+</li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[modelA_QUANT, modelB_QUANT] = setSemiQuantConstraints</strong> (<em>modelA, modelB, cond1_upt_higher, cond2_upt_higher, cond2_secr_higher, cond1_secr_higher</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>modelA</strong> – model constrained according to condition 1</p></li>
+<li><p><strong>modelB</strong> – model constrained according to condition 2</p></li>
+<li><p><strong>cond1_upt_higher</strong> – Exchange reactions and relative differences with higher uptake in condition 1 compared to condition 2</p></li>
+<li><p><strong>cond2_upt_higher</strong> – Exchange reactions and relative differences with higher uptake in condition 2 compared to condition 1</p></li>
+<li><p><strong>cond2_secr_higher</strong> – Exchange reactions and relative differences with higher secretion in condition 2 compared to condition 1</p></li>
+<li><p><strong>cond1_secr_higher</strong> – Exchange reactions and relative differences with higher secretion in condition 1 compared to condition 2</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>modelA_QUANT</strong> – model constrained according to condition 1</p></li>
+<li><p><strong>modelB_QUANT</strong> – model constrained according to condition 2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.dataIntegration.metabotools.statisticsAddedExchanges">
+<span class="sig-name descname"><span class="pre">statisticsAddedExchanges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">ResultsAllCellLines</span></em>, <em class="sig-param"><span class="pre">samples</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metabotools/statisticsAddedExchanges.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metabotools.statisticsAddedExchanges" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function performs statistics on the added exchange reactions using
+the structure <cite>ResultsAllCellLines</cite> generated by the function
+<cite>setQuantConstraints</cite> and across all samples.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[Ex_added_all_unique] = statisticsAddedExchanges</strong> (<em>ResultsAllCellLines, samples</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>ResultsAllCellLines</strong> – Last output <cite>ResultsAllCellLines</cite> that contains
+results of all samples (last in <cite>sampleResult.mat</cite>) e.g. in
+‘Y:StudiesData_integrationTutorial_paperToolboxUACC_257_2Result.mat’</p></li>
+<li><p><strong>samples</strong></p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><p><strong>Ex_added_all_unique</strong> – a table of exchange reactions which the models contain in addition to the
+mapped(metabolomics-based)-exchanges, ordered by the
+frequency of appearance.</p>
+<ul class="simple">
+<li><p>Column 1 = exchange reactions,</p></li>
+<li><p>Column 2 = frequency of use,</p></li>
+<li><p>Column 3 = secretion,</p></li>
+<li><p>Column 4 = uptake.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.dataIntegration.metabotools.summarizeSamplingResults">
+<span class="sig-name descname"><span class="pre">summarizeSamplingResults</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">modelA</span></em>, <em class="sig-param"><span class="pre">modelB</span></em>, <em class="sig-param"><span class="pre">path</span></em>, <em class="sig-param"><span class="pre">nFiles</span></em>, <em class="sig-param"><span class="pre">pointsPerFile</span></em>, <em class="sig-param"><span class="pre">starting_model</span></em>, <em class="sig-param"><span class="pre">dataGenes</span></em>, <em class="sig-param"><span class="pre">show_rxns</span></em>, <em class="sig-param"><span class="pre">fonts</span></em>, <em class="sig-param"><span class="pre">hist_per_page</span></em>, <em class="sig-param"><span class="pre">bin</span></em>, <em class="sig-param"><span class="pre">fileNameA</span></em>, <em class="sig-param"><span class="pre">fileNameB</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metabotools/summarizeSamplingResults.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metabotools.summarizeSamplingResults" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function summarizes the sampling results of the two models <cite>modelA</cite> and
+<cite>modelB</cite>. Subsequently, it returnes medians from the two models’ sampling,
+FVA results for the respective reaction, simple test results (<cite>stats</cite>).
+Finally, histograms are produced, one for each reactions containing the
+distributions of the two models. The set of analyzed reactions can be
+limited (<cite>show_rxns</cite>). Reactions associated with genes of special interest,
+e.g. differentially expressed genes, can be marked to facilitate the
+analysis, and simplify the identification of interesting histograms.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[stats, statsR] = summarizeSamplingResults</strong> (<em>modelA, modelB, path, nFiles, pointsPerFile, starting_model, dataGenes, show_rxns, fonts, hist_per_page, bin, fileNameA, fileNameB</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>modelA</strong> – Sampled modelA (condition 1)</p></li>
+<li><p><strong>modelB</strong> – Sampled modelB (condition 2)</p></li>
+<li><p><strong>path</strong> – Path to sampling output files</p></li>
+<li><p><strong>nFiles</strong> – Number of files saved, e.g., 20;</p></li>
+<li><p><strong>pointsPerFilePoints</strong> – Points saved per file, e.g., 5000;</p></li>
+<li><p><strong>starting_model</strong> – Original metabolic model (Recon)</p></li>
+<li><p><strong>dataGenes</strong> – Gene set, whose associated reactions should be emphasized by color, e.g., alternatively spliced or differentially expressed genes</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>show_rxns</strong> – Vector of reactions that should be displayed, e.g., certain pathways or non-loop reactions</p></li>
+<li><p><strong>fonts</strong> – Font size (default = 9)</p></li>
+<li><p><strong>hist_per_page</strong> – Defines the number of histogramms that are printed per page, e.g., 4, 9, or 25 (default = 9)</p></li>
+<li><p><strong>bin</strong> – Binning for histogramm (default = 30)</p></li>
+<li><p><strong>fileNameA</strong> – Name of files the sampling points are stored in</p></li>
+<li><p><strong>fileNameB</strong> – Name of files the sampling points are stored in</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>stats</strong> – Statistics from the sampling (Columns: Median modelA, Median modelB, minFlux_A, maxFlux_A, minFlux_B, maxFlux_B )</p></li>
+<li><p><strong>statsR</strong> – Reaction vector for stats output</p></li>
+</ul>
+</dd>
+</dl>
+<p>Depends on COBRA functions: <cite>loadsamples</cite>, <cite>findRxnsFromGenes</cite>, flux
+variability analysis / <cite>fastFVA</cite></p>
+</dd></dl>
+
+</section>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../metaboAnnotator/index.html" class="btn btn-default float-right" title="Metaboannotator" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../XomicsToModel/metabolomics/index.html" class="btn btn-default" title="Metabolomics" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017-2021, The COBRA Toolbox developers.
+
+    </p>
+  </div>
+  Built with Sphinx using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'2.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+    <script type="text/javascript" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/sphinx_highlight.js"></script>
+
+  
+
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TRCMZL1FKK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TRCMZL1FKK');
+  </script>
+    
+</body>
+</html>

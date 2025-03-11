@@ -1,0 +1,545 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Metabolites &mdash; The COBRA Toolbox</title>
+  
+
+  
+  
+  
+    <link rel="apple-touch-icon" sizes="180x180" href="../../../../_static/img/apple-touch-icon.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../../_static/img/favicon-32x32.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="16x16" href="../../../../_static/img/favicon-16x16.png">
+  
+  
+    <link rel="mask-icon" href="../../../../_static/img/safari-pinned-tab.svg" color="#5bbad5">
+  
+  
+    <link rel="manifest" href="../../../../_static/json/manifest.json">
+  
+  
+    <meta name="msapplication-config" content="../../../../_static/browserconfig.xml">
+  
+  <meta name="theme-color" content="#ffffff">
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+  <script src="../../../../_static/js/jquery.easy-autocomplete.min.js" type="text/javascript" ></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+  <link href="../../../../_static/css/easy-autocomplete.min.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../_static/css/cobra.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../../../_static/css/cobra.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../../search.html"/>
+    <link rel="top" title="The COBRA Toolbox" href="../../../../index.html"/>
+        <link rel="up" title="Chemoinformatics" href="../index.html"/>
+        <link rel="next" title="Reactions" href="../reactions/index.html"/>
+        <link rel="prev" title="Basicphysicochemicaldata" href="../molecularWeight/basicPhysicochemicalData/index.html"/> 
+
+  
+  <script src="../../../../_static/js/modernizr.min.js"></script>
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> The COBRA Toolbox
+          
+
+          
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
+          
+          </a>
+
+              
+          <h1>The COBRA Toolbox</h1>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" id="simple"/>
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+    <script>
+    	var options = {
+
+		url: "../../../../_static/json/functions.json",
+
+		getValue: "name",
+
+		list: {
+            onKeyEnterEvent: function(item) {
+                    return "_static/../" + item.website_url
+            },
+            maxNumberOfElements: 25,
+			match: {
+					enabled: true,
+			},
+            sort: {
+			    enabled: true
+		    }
+		},
+
+    	template: {
+	    	type: "custom",
+		    method: function(value, item) {
+                return "<span><a href='../../../../search.html?q=" + item.name + "&check_keywords=yes&area=default'>" + value + "</a>" + "<a href='../../../../_static/../" + item.website_url + "' ><img src='../../../../_static/link.svg'/></a></span>";
+		    }
+	    },
+
+		theme: "square"
+
+	};
+
+	$("#simple").easyAutocomplete(options);
+
+
+    </script>
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../index.html">Home</a></li>
+              </ul>
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">Functions</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../../analysis/index.html">Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../base/index.html">Base</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Dataintegration</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../../fluxomics/index.html">Fluxomics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../metanetxMapper/index.html">Metanetxmapper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../transcriptomics/index.html">Transcriptomics</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html">Chemoinformatics</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../molecularWeight/index.html">Molecularweight</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Metabolites</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../reactions/index.html">Reactions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../RXN/index.html">Rxn</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../inchi/index.html">Inchi</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../XomicsToModel/index.html">Xomicstomodel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../metabotools/index.html">Metabotools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../metaboAnnotator/index.html">Metaboannotator</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../design/index.html">Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reconstruction/index.html">Reconstruction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../visualization/index.html">Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contributing.html">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../cite.html">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../support.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../plan.html">Development Plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contact.html">Contact</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../citations.html">Citations</a></li>
+</ul>
+
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">The COBRA Toolbox</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../contents.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Functions</a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Dataintegration</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Chemoinformatics</a></li>
+      <li class="breadcrumb-item active">Metabolites</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="https://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <section id="metabolites">
+<span id="id1"></span><h1>Metabolites<a class="headerlink" href="#metabolites" title="Permalink to this heading">¶</a></h1>
+<span class="target" id="module-src.dataIntegration.chemoInformatics.metabolites"></span><dl class="mat function">
+<dt class="sig sig-object mat" id="src.dataIntegration.chemoInformatics.metabolites.addMetInfoInCBmodel">
+<span class="sig-name descname"><span class="pre">addMetInfoInCBmodel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">inputData</span></em>, <em class="sig-param"><span class="pre">replace</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/chemoInformatics/metabolites/addMetInfoInCBmodel.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.chemoInformatics.metabolites.addMetInfoInCBmodel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Integrates metabolite data from an external file and incorporates it into
+the COBRA model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[newModel, hasEffect] = addMetInfoInCBmodel</strong> (<em>model, inputData, replace</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – COBRA model with following fields:</p>
+<ul>
+<li><dl class="simple">
+<dt>.S - The m x n stoichiometric matrix for the</dt><dd><p>metabolic network.</p>
+</dd>
+</dl>
+</li>
+<li><p>.mets - An m x 1 array of metabolite identifiers.</p></li>
+</ul>
+</li>
+<li><p><strong>inputData</strong></p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><p><strong>replace</strong> – If the new ID should replace an existing ID, this
+logical value indicates so (default: false).</p>
+</dd>
+<dt class="field-even">OUTPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>newModel</strong> – COBRA model with updated identifiersCOBRA model with the identifiers updated.</p></li>
+<li><p><strong>hasEffect</strong></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.dataIntegration.chemoInformatics.metabolites.metDatabaseStatus">
+<span class="sig-name descname"><span class="pre">metDatabaseStatus</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">metDir</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/chemoInformatics/metabolites/metDatabaseStatus.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.chemoInformatics.metabolites.metDatabaseStatus" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prints the status of metabolite structure in a database in relation to a
+COBRA model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[summary, status] = metDatabaseStatus</strong> (<em>model, metDir</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – COBRA model with following fields:
+* .mets - An m x 1 array of metabolite identifiers.
+* .metFromulas - An m x 1 array of metabolite flormulas.
+* .metCharges - An m x 1 vector of metabolite charges.
+* .identifiers - An m x 1 array of metabolite identifiers.
+* .inchi - An m x 1 array of metabolite identifiers.
+* .kegg - An m x 1 array of metabolite identifiers.
+* .chebi - An m x 1 array of metabolite identifiers.
+* .hmdb - An m x 1 array of metabolite identifiers.
+* .pubchem - An m x 1 array of metabolite identifiers.</p></li>
+<li><p><strong>metDir</strong> – Directory of the metabolite database (MDL MOL files)</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>summary</strong> – Summary of the metabolite database and the identifiers.</p></li>
+<li><p><strong>status</strong> – Table with the status of each metabolite in the database.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.dataIntegration.chemoInformatics.metabolites.metaboliteStructuresTable">
+<span class="sig-name descname"><span class="pre">metaboliteStructuresTable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">metDir</span></em>, <em class="sig-param"><span class="pre">saveDir</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/chemoInformatics/metabolites/metaboliteStructuresTable.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.chemoInformatics.metabolites.metaboliteStructuresTable" title="Permalink to this definition">¶</a></dt>
+<dd><p>This fucntion creates a table of different representations of a
+metabolite structure including  smiles, inchi and inchikey,</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>metTable = metaboliteStructuresTable</strong> (<em>metDir, saveDir</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><p><strong>metDir</strong> – String with the directory containing mol files</p>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><p><strong>saveDir</strong> – String with the directory where the table format will be
+saved. If is empty, the format is not saved.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.dataIntegration.chemoInformatics.metabolites.obtainMetStructures">
+<span class="sig-name descname"><span class="pre">obtainMetStructures</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">metList</span></em>, <em class="sig-param"><span class="pre">outputDir</span></em>, <em class="sig-param"><span class="pre">sources</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/chemoInformatics/metabolites/obtainMetStructures.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.chemoInformatics.metabolites.obtainMetStructures" title="Permalink to this definition">¶</a></dt>
+<dd><p>Obtain MDL MOL files from various databases, including KEGG, HMDB, ChEBI,
+and PubChem. Alternatively, openBabel can be used to convert InChI
+strings or SMILES in MDL MOL files.</p>
+<p>USAGE:</p>
+<p>molCollectionReport = obtainMetStructures(model, mets, sources, standardisationApproach)</p>
+<dl class="field-list">
+<dt class="field-odd">INPUTS</dt>
+<dd class="field-odd"><p><strong>model</strong> – COBRA model with following fields:</p>
+<ul class="simple">
+<li><p>.S - The m x n stoichiometric matrix for the metabolic network.</p></li>
+<li><p>.mets - An m x 1 array of metabolite identifiers.</p></li>
+<li><p>.metInChIString - An m x 1 array of metabolite identifiers.</p></li>
+<li><p>.metSmiles - An m x 1 array of metabolite identifiers.</p></li>
+<li><p>.metVMHID - An m x 1 array of metabolite identifiers.</p></li>
+<li><p>.metCHEBIID - An m x 1 array of metabolite identifiers.</p></li>
+<li><p>.metKEGGID - An m x 1 array of metabolite identifiers.</p></li>
+<li><p>.metPubChemID - An m x 1 array of metabolite identifiers.</p></li>
+<li><p>.metHMDBID - An m x 1 array of metabolite identifiers.</p></li>
+<li><p>.metDrugbankID - An m x 1 array of metabolite identifiers.</p></li>
+<li><p>.metLipidmassID - An m x 1 array of metabolite identifiers.</p></li>
+</ul>
+</dd>
+<dt class="field-even">OPTIONAL INPUTS</dt>
+<dd class="field-even"><ul>
+<li><p><strong>mets</strong> – List of metabolites to be download (Default: All)</p></li>
+<li><p><strong>outputDir</strong> – Directory that will contain the obtained metabolite structures.</p></li>
+<li><p><strong>sources</strong> –</p>
+<dl class="simple">
+<dt>Sources where the MOL files will be obtained (Default: all).</dt><dd><p>The sources supported are:</p>
+</dd>
+</dl>
+<p>1.- ‘inchi’ (requires openBabel)
+2.- ‘smiles’ (requires openBabel)
+3.- ‘kegg’ (<a class="reference external" href="https://www.genome.jp/">https://www.genome.jp/</a>)
+4.- ‘hmdb’ (<a class="reference external" href="https://hmdb.ca/">https://hmdb.ca/</a>)
+5.- ‘pubchem’ (<a class="reference external" href="https://pubchem.ncbi.nlm.nih.gov/">https://pubchem.ncbi.nlm.nih.gov/</a>)
+6.- ‘chebi’ (<a class="reference external" href="https://www.ebi.ac.uk/">https://www.ebi.ac.uk/</a>)
+7.- ‘drugbank’ (<a class="reference external" href="https://go.drugbank.com/">https://go.drugbank.com/</a>)
+8.- ‘lipidmass’ (<a class="reference external" href="https://www.lipidmaps.org/">https://www.lipidmaps.org/</a>)</p>
+</li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>molCollectionReport</strong> – Report of the obtained MDL MOL files</p>
+<ul>
+<li><p>.metList - List of metabolites to be download</p></li>
+<li><p>.sources -﻿list of sources of metabolite structures</p></li>
+<li><p>.structuresObtained -﻿Total of metabolite structures obtained.</p></li>
+<li><dl class="simple">
+<dt>.structuresObtainedPerSource -﻿Boolean table with the metabolite</dt><dd><p>structures obtained by source.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>.databaseCoverage -﻿Table indicating the coverage of metabolites</dt><dd><p>obtained by each of the sources.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>.idsToCheck -﻿Id source from which no molecular structures could</dt><dd><p>be obtained due to a webTimeout, conversion error, or
+inconsistent id.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</li>
+<li><p><strong>newMolFilesDir</strong> – directory where new mol files were written, subdirectories for each source.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.dataIntegration.chemoInformatics.metabolites.standardiseMolDatabase">
+<span class="sig-name descname"><span class="pre">standardiseMolDatabase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">molDir</span></em>, <em class="sig-param"><span class="pre">metList</span></em>, <em class="sig-param"><span class="pre">standardisedDir</span></em>, <em class="sig-param"><span class="pre">standardisationApproach</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/chemoInformatics/metabolites/standardiseMolDatabase.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.chemoInformatics.metabolites.standardiseMolDatabase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Standardize an MDL MOL file directory by representing the reaction using
+normal chemical graphs, hydrogen suppressed chemical graphs, and chemical
+graphs with protonated molecules. The function also updates the header
+with the standardization information. It makes use of ChemAxon’s
+standardizer and openBabel.</p>
+<p>USAGE:</p>
+<p>[standardised, nonStandardised, InChIs, SMILES] = standardiseMolDatabase(molDir, standardisedDir, standardiseMolFiles)</p>
+<dl class="field-list">
+<dt class="field-odd">INPUTS</dt>
+<dd class="field-odd"><p><strong>molDir</strong> – Path to directory that contain the MDL MOL files
+to be standardised.</p>
+</dd>
+<dt class="field-even">OPTIONAL INPUTS</dt>
+<dd class="field-even"><ul>
+<li><p><strong>metList</strong> – 1 x n lest of metabolites to standardise</p></li>
+<li><p><strong>standardisedDir</strong> – Path to directory that will contain the standardised
+MDL MOL files (default: current directory).</p></li>
+<li><p><strong>standardisationApproach</strong> – String contianing the type of standarization
+for the moldecules (default: ‘explicitH’ if openBabel is
+installed, otherwise ‘basic’)</p>
+<p>‘explicitH’ - Normal chemical graphs.
+‘implicitH’ - Hydrogen suppressed chemical graphs.
+‘neutral’ - Neutral molecules
+‘basic’ - Updating the header.</p>
+</li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>standardisationReport</strong> – Struct array with the standarization report:</p>
+<ul>
+<li><p>.standardised: list of standardised metabolite structures</p></li>
+<li><dl class="simple">
+<dt>.nonStandardised: list of metabolite structures that were not</dt><dd><p>standardised.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>.InChIs: list of InChIs from the obtained metabolite</dt><dd><p>structures</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>.SMILES: list of SMILES from the obtained metabolite</dt><dd><p>structures</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>.InChIKeys: list of InChIKeys from the obtained metabolite</dt><dd><p>structures</p>
+</dd>
+</dl>
+</li>
+</ul>
+</li>
+<li><p><strong>A standardised molecular structures database</strong></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../reactions/index.html" class="btn btn-default float-right" title="Reactions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../molecularWeight/basicPhysicochemicalData/index.html" class="btn btn-default" title="Basicphysicochemicaldata" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017-2021, The COBRA Toolbox developers.
+
+    </p>
+  </div>
+  Built with Sphinx using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../',
+            VERSION:'2.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+    <script type="text/javascript" src="../../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../../_static/sphinx_highlight.js"></script>
+
+  
+
+
+  
+  
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TRCMZL1FKK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TRCMZL1FKK');
+  </script>
+    
+</body>
+</html>

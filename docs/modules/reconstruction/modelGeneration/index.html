@@ -1,0 +1,600 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Modelgeneration &mdash; The COBRA Toolbox</title>
+  
+
+  
+  
+  
+    <link rel="apple-touch-icon" sizes="180x180" href="../../../_static/img/apple-touch-icon.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../_static/img/favicon-32x32.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="16x16" href="../../../_static/img/favicon-16x16.png">
+  
+  
+    <link rel="mask-icon" href="../../../_static/img/safari-pinned-tab.svg" color="#5bbad5">
+  
+  
+    <link rel="manifest" href="../../../_static/json/manifest.json">
+  
+  
+    <meta name="msapplication-config" content="../../../_static/browserconfig.xml">
+  
+  <meta name="theme-color" content="#ffffff">
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+  <script src="../../../_static/js/jquery.easy-autocomplete.min.js" type="text/javascript" ></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+  <link href="../../../_static/css/easy-autocomplete.min.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/cobra.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../../_static/css/cobra.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="The COBRA Toolbox" href="../../../index.html"/>
+        <link rel="up" title="Reconstruction" href="../index.html"/>
+        <link rel="next" title="Modelproperties" href="modelProperties/index.html"/>
+        <link rel="prev" title="Reconstruction" href="../index.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> The COBRA Toolbox
+          
+
+          
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
+          
+          </a>
+
+              
+          <h1>The COBRA Toolbox</h1>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" id="simple"/>
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+    <script>
+    	var options = {
+
+		url: "../../../_static/json/functions.json",
+
+		getValue: "name",
+
+		list: {
+            onKeyEnterEvent: function(item) {
+                    return "_static/../" + item.website_url
+            },
+            maxNumberOfElements: 25,
+			match: {
+					enabled: true,
+			},
+            sort: {
+			    enabled: true
+		    }
+		},
+
+    	template: {
+	    	type: "custom",
+		    method: function(value, item) {
+                return "<span><a href='../../../search.html?q=" + item.name + "&check_keywords=yes&area=default'>" + value + "</a>" + "<a href='../../../_static/../" + item.website_url + "' ><img src='../../../_static/link.svg'/></a></span>";
+		    }
+	    },
+
+		theme: "square"
+
+	};
+
+	$("#simple").easyAutocomplete(options);
+
+
+    </script>
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../../../index.html">Home</a></li>
+              </ul>
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Functions</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../analysis/index.html">Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../base/index.html">Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dataIntegration/index.html">Dataintegration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../design/index.html">Design</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Reconstruction</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Modelgeneration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="modelProperties/index.html">Modelproperties</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stoichConsistency/index.html">Stoichconsistency</a></li>
+<li class="toctree-l4"><a class="reference internal" href="massBalance/index.html">Massbalance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="fluxConsistency/index.html">Fluxconsistency</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modelVerification/index.html">Modelverification</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../refinement/index.html">Refinement</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../demeter/index.html">Demeter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../fastGapFill/index.html">Fastgapfill</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../comparison/index.html">Comparison</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../metaboRePort/index.html">Metaboreport</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../growthExpMatch/index.html">Growthexpmatch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../rBioNet/index.html">Rbionet</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../visualization/index.html">Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../cite.html">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../support.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../plan.html">Development Plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contact.html">Contact</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../citations.html">Citations</a></li>
+</ul>
+
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">The COBRA Toolbox</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../contents.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Functions</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Reconstruction</a></li>
+      <li class="breadcrumb-item active">Modelgeneration</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="https://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <section id="modelgeneration">
+<span id="id1"></span><h1>Modelgeneration<a class="headerlink" href="#modelgeneration" title="Permalink to this heading">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="modelProperties/index.html">Modelproperties</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stoichConsistency/index.html">Stoichconsistency</a></li>
+<li class="toctree-l1"><a class="reference internal" href="massBalance/index.html">Massbalance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fluxConsistency/index.html">Fluxconsistency</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="fluxConsistency/GREEDY/index.html">Greedy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fluxConsistency/DCA/index.html">Dca</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modelVerification/index.html">Modelverification</a></li>
+</ul>
+</div>
+<span class="target" id="module-src.reconstruction.modelGeneration"></span><dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.modelGeneration.checkCobraModelUnique">
+<span class="sig-name descname"><span class="pre">checkCobraModelUnique</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">renameFlag</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/modelGeneration/checkCobraModelUnique.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.checkCobraModelUnique" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks uniqueness of reaction and metabolite names</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>model = checkCobraModelUnique</strong> (<em>model, renameFlag</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><p><strong>model</strong> – COBRA model structure</p>
+</dd>
+<dt class="field-odd">OPTIONAL INPUT</dt>
+<dd class="field-odd"><p><strong>renameFlag</strong> – Renames non-unique reaction names and metabolites
+(Default = false)</p>
+</dd>
+<dt class="field-even">OUTPUT</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – COBRA model structure</p></li>
+<li><p><strong>isUnique</strong> – true if the model has unique reaction and metabolite names</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.modelGeneration.checkDuplicateRxn">
+<span class="sig-name descname"><span class="pre">checkDuplicateRxn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">method</span></em>, <em class="sig-param"><span class="pre">removeFlag</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em>, <em class="sig-param"><span class="pre">boundsFlag</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/modelGeneration/checkDuplicateRxn.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.checkDuplicateRxn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks model for duplicate reactions and removes them.
+By default, it detects the columns of <cite>S</cite> that are identical upto scalar
+multiplication</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[modelOut, removedRxnInd, keptRxnInd] = checkDuplicateRxn</strong> (<em>model, method, removeFlag, printLevel, boundsFlag</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><p><strong>model</strong> – Cobra model structure</p>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><p><strong>method</strong> – S –&gt; checks rxn <cite>S</cite> matrix (default),
+rxnAbbr –&gt; checks rxn abbreviations,
+FR –&gt; checks <cite>F + R</cite> matrix, where <span class="math notranslate nohighlight">\(S:=-F + R\)</span>, which ignores
+reaction direction</p>
+</dd>
+<dt class="field-even">OUTPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>modelOut</strong> – COBRA model structure without (with) duplicate reactions</p></li>
+<li><p><strong>removedRxnInd</strong> – Reaction numbers in model that were (should be) removed</p></li>
+<li><p><strong>keptRxnInd</strong> – Reaction numbers in model that were (should be) kept</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.modelGeneration.checkModelPreFBA">
+<span class="sig-name descname"><span class="pre">checkModelPreFBA</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">param</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/modelGeneration/checkModelPreFBA.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.checkModelPreFBA" title="Permalink to this definition">¶</a></dt>
+<dd><p>checks if a model is (stoichiometrically and flux) consistent, which are
+necessary conditions prior to FBA</p>
+<blockquote>
+<div><p>INPUT
+model     COBRA model, or a fileName containing a model</p>
+<p>OPTIONAL INPUT
+param     parameters</p>
+<p>OUTPUT
+isConsistent  {1,0} if stoichiometrically and flux consistent, or not</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.modelGeneration.detectDeadEnds">
+<span class="sig-name descname"><span class="pre">detectDeadEnds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">removeExternalMets</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/modelGeneration/detectDeadEnds.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.detectDeadEnds" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of indices of metabolites which either participate in only
+one reaction or can only be produced or consumed (i.e. all reactions involving
+the metabolite either only produce or only consume it, respecting the reaction lower and upper bounds).</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>outputMets = detectDeadEnds</strong> (<em>model, removeExternalMets</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><p><strong>model</strong> – COBRA model structure</p>
+</dd>
+<dt class="field-odd">OPTIONAL INPUT</dt>
+<dd class="field-odd"><p><strong>removeExternalMets</strong> – Dont return metabolites that participate in reactions of the following type:
+“A &lt;=&gt;/-&gt; ” or ” &lt;=&gt;/-&gt; A” or exclusively present in
+inconsistent reactions as defined in <cite>Gevorgyan et al, Bioinformatics, 2008</cite></p>
+</dd>
+<dt class="field-even">OUTPUT</dt>
+<dd class="field-even"><p><strong>outputMets</strong> – List of indicies of metabolites which can ether
+only be produced or consumed.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.modelGeneration.fastLeakTest">
+<span class="sig-name descname"><span class="pre">fastLeakTest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">testRxns</span></em>, <em class="sig-param"><span class="pre">demandTest</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/modelGeneration/fastLeakTest.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.fastLeakTest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tests if any metabolites in a model are leaking. A metabolite is leaking
+if the exchange reaction can carry secretion flux in the closed model (no
+uptake flux through any exchange reactions is permitted).</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[LeakMets, modelClosed, FluxExV] = fastLeakTest</strong> (<em>model, testRxns, demandTest</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – Model structure</p></li>
+<li><p><strong>testRxns</strong> – List of exchange reactions to be testetd for leaks</p></li>
+<li><p><strong>demandTest</strong> – Optional: if ‘true’ is entered, demand reactions
+for all metabolites in the model are created</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>LeakMets</strong> – List of exchange reactions for leaking metabolites</p></li>
+<li><p><strong>modelClosed</strong> – Model strucutre that has been tested for leaks</p></li>
+<li><p><strong>FluxExV</strong> – Flux vector for computed exchange reactions in the closed model</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.modelGeneration.printObjective">
+<span class="sig-name descname"><span class="pre">printObjective</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/modelGeneration/printObjective.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.printObjective" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prints out the Stoichiometric Coefficients for each
+Metabolite, with the name of the objective</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>objectiveAbbr = printObjective</strong> (<em>model</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><p><strong>model</strong> – COBRA model structure</p>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>objectiveAbbr</strong> – Objective reaction abbreviation</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.modelGeneration.removeCompartments">
+<span class="sig-name descname"><span class="pre">removeCompartments</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">comp</span></em>, <em class="sig-param"><span class="pre">newComp</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/modelGeneration/removeCompartments.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.removeCompartments" title="Permalink to this definition">¶</a></dt>
+<dd><p>function [modelDecomp] = RemoveCompartments(model,comp,NewComp)</p>
+<p>Function removes list of compartments in metabolite names. It removes
+duplicates and empty entries.</p>
+<p>model         Model structure
+comp          List of compartments to remove or replace (e.g., {‘c’,’n’}
+newComp       New compartment (optional, default: ‘[c]’)</p>
+<p>modelDecomp   Decompartementalized model structure
+IT Nov 2009
+SM Feb 2014 - line 31, updated function name “AddReaction” to “addReaction”
+IT April 2024 - updated script</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.modelGeneration.removeDeadEnds">
+<span class="sig-name descname"><span class="pre">removeDeadEnds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/modelGeneration/removeDeadEnds.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.removeDeadEnds" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes all dead end metabolites and reactions from the
+model</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[model, removedMets, removedRxns] = removeDeadEnds</strong> (<em>model</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><p><strong>model</strong> – COBRA model structure</p>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model</strong> – COBRA model structure w/o dead end metabolites and
+reactions</p></li>
+<li><p><strong>removedMets</strong> – List of removed metabolites</p></li>
+<li><p><strong>removedRxns</strong> – List of removed reactions</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.modelGeneration.setConstraintsIrrevModel">
+<span class="sig-name descname"><span class="pre">setConstraintsIrrevModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">constrOpt</span></em>, <em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">modelIrrev</span></em>, <em class="sig-param"><span class="pre">rev2irrev</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/modelGeneration/setConstraintsIrrevModel.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.setConstraintsIrrevModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets constraints for a subset of <cite>rxns</cite> while
+converting reversible to irreversible reaction names and handling the
+constraint directions correctly</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>constrOptIrrev = setConstraintsIrrevModel</strong> (<em>rxnNameList, constrValue, constrSense, model, modelIrrev</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>constrOpt</strong> – Constraint options</p>
+<ul>
+<li><p>rxnList - Reaction selection cell array (for reversible
+representation)</p></li>
+<li><p>values - Constraint values</p></li>
+<li><p>sense - Constraint senses ordered as <cite>rxnNameList</cite></p></li>
+</ul>
+</li>
+<li><p><strong>model</strong> – Model in reversible format</p></li>
+<li><p><strong>modelIrrev</strong> – Model in irreversible format</p></li>
+<li><p><strong>rev2irrev</strong> – Reversible to irreversible reaction index conversion
+obtained from <cite>convertToIrreversible</cite></p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><p><strong>constrOpt</strong> – Constraint options in irrev model</p>
+<ul class="simple">
+<li><p>rxnList - Reaction selection cell array</p></li>
+<li><p>rxnInd - Selection index for constraints in irreversible model (e.g. [2 4 5 9 10])</p></li>
+<li><p>values - Correctly ordered constraint values</p></li>
+<li><p>sense - Correctly ordered constraint senses</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.modelGeneration.test4HumanFctExt">
+<span class="sig-name descname"><span class="pre">test4HumanFctExt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">test</span></em>, <em class="sig-param"><span class="pre">optionSinks</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/modelGeneration/test4HumanFctExt.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.test4HumanFctExt" title="Permalink to this definition">¶</a></dt>
+<dd><p>test for the ~288 human functions</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[TestSolution,TestSolutionName,TestedRxns,PercTestedRxns] = test4HumanFctExt</strong> (<em>model,test,optionSinks</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – model structure (Recon1, with desired in silico condition)</p></li>
+<li><p><strong>test</strong> – possible statements: Recon1, IECori, IEC, all (default)
+(choose IECori if you intend to test the IEC model OR a model that
+contains lumen (‘u’) as compartment otw choose IEC);
+all check for Recon1 and IEC</p></li>
+<li><p><strong>option</strong> – if true = set sink reactions to 0 (default, leave unchanged).
+Note that all lb’s of exchanges and demands will be set to 0</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>TestSolution</strong> – array containing the optimal value for the different tests</p></li>
+<li><p><strong>TestSolutionName</strong> – array containing the names  for the different tests</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.modelGeneration.testATPYieldFromCsources">
+<span class="sig-name descname"><span class="pre">testATPYieldFromCsources</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">modelName</span></em>, <em class="sig-param"><span class="pre">extraCellCompIn</span></em>, <em class="sig-param"><span class="pre">extraCellCompOut</span></em>, <em class="sig-param"><span class="pre">minCard</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/modelGeneration/testATPYieldFromCsources.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.testATPYieldFromCsources" title="Permalink to this definition">¶</a></dt>
+<dd><p>computes the ATP yield from various carbon sources in Recon2 or Recon3.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[Table_csources,TestedRxns,PercTestedRxns] = testATPYieldFromCsources</strong> (<em>model,modelName</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model            model structure</strong></p></li>
+<li><p><strong>modelName         name of the model structure, by default Recon3</strong></p></li>
+<li><p><strong>extraCellCompIn   abbreviation for extracellular compartment</strong> – (in-going), default [e]</p></li>
+<li><p><strong>extraCellCompOut  abbreviation for extracellular compartment</strong> – (out-going), default [e]</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Table_csources</strong> – table listing ATP yield computed for the carbon sources</p></li>
+<li><p><strong>TestedRxns</strong> – list of reactions that are contributing to ATP production from carbon sources</p></li>
+<li><p><strong>PercTestedRxns</strong> – Fraction that tested reactions make up compared with all reactions in model</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="modelProperties/index.html" class="btn btn-default float-right" title="Modelproperties" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../index.html" class="btn btn-default" title="Reconstruction" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017-2021, The COBRA Toolbox developers.
+
+    </p>
+  </div>
+  Built with Sphinx using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'2.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+    <script type="text/javascript" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/sphinx_highlight.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/mathjax/MathJax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TRCMZL1FKK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TRCMZL1FKK');
+  </script>
+    
+</body>
+</html>

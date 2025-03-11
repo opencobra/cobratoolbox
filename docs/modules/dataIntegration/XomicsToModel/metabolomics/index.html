@@ -1,0 +1,908 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Metabolomics &mdash; The COBRA Toolbox</title>
+  
+
+  
+  
+  
+    <link rel="apple-touch-icon" sizes="180x180" href="../../../../_static/img/apple-touch-icon.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../../_static/img/favicon-32x32.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="16x16" href="../../../../_static/img/favicon-16x16.png">
+  
+  
+    <link rel="mask-icon" href="../../../../_static/img/safari-pinned-tab.svg" color="#5bbad5">
+  
+  
+    <link rel="manifest" href="../../../../_static/json/manifest.json">
+  
+  
+    <meta name="msapplication-config" content="../../../../_static/browserconfig.xml">
+  
+  <meta name="theme-color" content="#ffffff">
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+  <script src="../../../../_static/js/jquery.easy-autocomplete.min.js" type="text/javascript" ></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+  <link href="../../../../_static/css/easy-autocomplete.min.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../_static/css/cobra.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../../../_static/css/cobra.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../../search.html"/>
+    <link rel="top" title="The COBRA Toolbox" href="../../../../index.html"/>
+        <link rel="up" title="Xomicstomodel" href="../index.html"/>
+        <link rel="next" title="Metabotools" href="../../metabotools/index.html"/>
+        <link rel="prev" title="Proteomics" href="../proteomics/index.html"/> 
+
+  
+  <script src="../../../../_static/js/modernizr.min.js"></script>
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> The COBRA Toolbox
+          
+
+          
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
+          
+          </a>
+
+              
+          <h1>The COBRA Toolbox</h1>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" id="simple"/>
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+    <script>
+    	var options = {
+
+		url: "../../../../_static/json/functions.json",
+
+		getValue: "name",
+
+		list: {
+            onKeyEnterEvent: function(item) {
+                    return "_static/../" + item.website_url
+            },
+            maxNumberOfElements: 25,
+			match: {
+					enabled: true,
+			},
+            sort: {
+			    enabled: true
+		    }
+		},
+
+    	template: {
+	    	type: "custom",
+		    method: function(value, item) {
+                return "<span><a href='../../../../search.html?q=" + item.name + "&check_keywords=yes&area=default'>" + value + "</a>" + "<a href='../../../../_static/../" + item.website_url + "' ><img src='../../../../_static/link.svg'/></a></span>";
+		    }
+	    },
+
+		theme: "square"
+
+	};
+
+	$("#simple").easyAutocomplete(options);
+
+
+    </script>
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../index.html">Home</a></li>
+              </ul>
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">Functions</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../../analysis/index.html">Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../base/index.html">Base</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Dataintegration</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../../fluxomics/index.html">Fluxomics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../metanetxMapper/index.html">Metanetxmapper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../transcriptomics/index.html">Transcriptomics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chemoInformatics/index.html">Chemoinformatics</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html">Xomicstomodel</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../analysis/index.html">Analysis</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../thermoKernel/index.html">Thermokernel</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../prepareData/index.html">Preparedata</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../oneRxnPerActiveGene/index.html">Onerxnperactivegene</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../proteomics/index.html">Proteomics</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Metabolomics</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../metabotools/index.html">Metabotools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../metaboAnnotator/index.html">Metaboannotator</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../design/index.html">Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reconstruction/index.html">Reconstruction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../visualization/index.html">Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contributing.html">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../cite.html">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../support.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../plan.html">Development Plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contact.html">Contact</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../citations.html">Citations</a></li>
+</ul>
+
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">The COBRA Toolbox</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../contents.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Functions</a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Dataintegration</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Xomicstomodel</a></li>
+      <li class="breadcrumb-item active">Metabolomics</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="https://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <section id="metabolomics">
+<span id="id1"></span><h1>Metabolomics<a class="headerlink" href="#metabolomics" title="Permalink to this heading">¶</a></h1>
+<span class="target" id="module-src.dataIntegration.XomicsToModel.metabolomics"></span><dl class="mat function">
+<dt class="sig sig-object mat" id="src.dataIntegration.XomicsToModel.metabolomics.constrainRxns">
+<span class="sig-name descname"><span class="pre">constrainRxns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">specificData</span></em>, <em class="sig-param"><span class="pre">param</span></em>, <em class="sig-param"><span class="pre">mode</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/XomicsToModel/metabolomics/constrainRxns.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.XomicsToModel.metabolomics.constrainRxns" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function used to apply constraints in the XomicsToModel function</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[newModel, rxnsConstrained, rxnBoundsCorrected, newOptions] = constrainRxns</strong> (<em>model, specificData, param, mode, metabolomicWeights, printLevel</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model.S</strong> – m x n stoichiometric matrix</p></li>
+<li><p><strong>model.rxns</strong> – n x 1 cell array of reaction identifiers</p></li>
+<li><p><strong>model.rxnNames</strong> – n x 1 cell array of reaction names</p></li>
+<li><p><strong>model.lb</strong> – n x 1 vector with lower bounds</p></li>
+<li><p><strong>model.ub</strong> – n x 1 vector with upper bounds</p></li>
+<li><p><strong>model.constraintDescription</strong></p></li>
+<li><p><strong>model.SIntRxnBool</strong></p></li>
+<li><p><strong>model.SinkRxnBool</strong></p></li>
+<li><p><strong>model.DMRxnBool</strong></p></li>
+<li><p><strong>specificData.rxns2constrain</strong></p></li>
+<li><p><strong>specificData.mediaData</strong></p></li>
+<li><p><strong>specificData.exoMet.rxns   k x 1 cell array of reaction identifiers</strong></p></li>
+<li><p><strong>specificData.exoMet.mean    k x 1 numeric array of mean measured reaction flux</strong></p></li>
+<li><p><strong>specificData.exoMet.SD      k x 1 numeric array of standard deviation in measured reaction flux</strong></p></li>
+<li><p><strong>specificData.essentialAA</strong></p></li>
+<li><p><strong>param.TolMinBoundary</strong></p></li>
+<li><p><strong>param.TolMaxBoundary</strong></p></li>
+<li><p><strong>param.boundPrecisionLimit</strong></p></li>
+<li><p><strong>param.metabolomicWeights</strong> – String indicating the type of weights to be applied to penalise the difference
+between of predicted and experimentally measured fluxes by, where
+‘SD’   weights = 1/(1+exoMet.SD^2)
+‘mean’ weights = 1/(1+exoMet.mean^2)
+‘RSD’  weights = 1/((exoMet.SD./exoMet.mean)^2)</p></li>
+<li><p><strong>param.eta</strong> – lower bound on significant bound costraint perturbation
+Default: feasTol*10;</p></li>
+<li><p><strong>param.printLevel</strong></p></li>
+<li><p><strong>mode</strong> – String indicating the type of constraints to be applied
+‘customConstraints’  uses specificData.rxns2constrain
+‘mediaDataConstraints’ uses specificData.mediaData
+‘exometabolomicConstraints’ uses specificData.exoMet</p></li>
+<li><p><strong>printLevel</strong></p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>newModel</strong></p></li>
+<li><p><strong>rxnsConstrained</strong></p></li>
+<li><p><strong>rxnBoundsCorrected</strong></p></li>
+<li><p><strong>newSpecificData</strong></p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>newModel</strong> – A cobra model with constraints applied</p></li>
+<li><p><strong>rxnsConstrained</strong> – List of the reactions constrained</p></li>
+<li><p><strong>rxnBoundsCorrected</strong> – list of reactions whose restrictions should have
+been modified to comply with TolMinBoundary,
+TolMaxBoundary and boundPrecisionLimit.</p></li>
+<li><p><strong>newSpecificData</strong> – A new structure containing arguments for the
+XomicsToModel function</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.dataIntegration.XomicsToModel.metabolomics.exoMetLOOCV">
+<span class="sig-name descname"><span class="pre">exoMetLOOCV</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">measuredFluxes</span></em>, <em class="sig-param"><span class="pre">param</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/XomicsToModel/metabolomics/exoMetLOOCV.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.XomicsToModel.metabolomics.exoMetLOOCV" title="Permalink to this definition">¶</a></dt>
+<dd><p>model: COBRA model</p>
+<dl>
+<dt>measuredFluxes:   table with the fluxes obtained from exometabolomics experiments with the following variables</dt><dd><blockquote>
+<div><ul class="simple">
+<li><p>.rxns:    k x 1 cell array of reaction identifiers</p></li>
+<li><p>.mean:    k x 1 double of measured mean flux</p></li>
+<li><p>.SD:      k x 1 double standard deviation of the measured flux</p></li>
+<li><p>.labels:  k x 1 cell array of labels to display on y axis</p></li>
+<li><p>.Properties.Description: string describing the data, used in plot legend</p></li>
+</ul>
+</div></blockquote>
+<p>param.alpha:              alpha in (alpha/2)(v-h)’<a href="#id2"><span class="problematic" id="id3">*</span></a>H*(v-h), default = 10000;
+param.metabolomicWeights: String indicating the type of weights to be applied to penalise the difference</p>
+<blockquote>
+<div><p>between of predicted and experimentally measured fluxes by, where
+‘SD’   weights = 1/(1+exoMet.SD^2)
+‘mean’ weights = 1/(1+exoMet.mean^2)
+‘RSD’  weights = 1/((exoMet.SD./exoMet.mean)^2)</p>
+</div></blockquote>
+<p>param.relaxBounds: True to relax bounds on reaction whose fluxes are to be fitted to exometabolomic data</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><p><strong>V</strong> – table with the fluxes predicted by leave one out cross validation
+* .rxns:    n x 1 cell array of reaction identifiers, one for each in input model
+* .v:       n x 1 double of predicted mean flux
+* .lb:      n x 1 double lower bound on reaction flux
+* .ub:      n x 1 double upper bound on reaction flux</p>
+</dd>
+</dl>
+<p>LIBkey:</p>
+<p>EXAMPLE:</p>
+<p>NOTE:</p>
+<p>Author(s):</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.dataIntegration.XomicsToModel.metabolomics.fitExperimentalFlux">
+<span class="sig-name descname"><span class="pre">fitExperimentalFlux</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">vExp</span></em>, <em class="sig-param"><span class="pre">weightLower</span></em>, <em class="sig-param"><span class="pre">weightUpper</span></em>, <em class="sig-param"><span class="pre">weightExpFlux</span></em>, <em class="sig-param"><span class="pre">param</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/XomicsToModel/metabolomics/fitExperimentalFlux.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.XomicsToModel.metabolomics.fitExperimentalFlux" title="Permalink to this definition">¶</a></dt>
+<dd><p>fit a vector of change in concentration, over a time interval, to the
+range of a stoichiometric matrix, minimising the weighed norm
+of the perturbations to the given lower and upper bounds on the
+corresponding exchange reactions of a model, to ensure that a steady
+state solution exists.</p>
+<dl>
+<dt>INPUT</dt><dd><blockquote>
+<div><p>model:             (the following fields are required - others can be supplied)</p>
+<blockquote>
+<div><blockquote>
+<div><ul class="simple">
+<li><p>.S  - <cite>m x 1</cite> Stoichiometric matrix</p></li>
+<li><p>.c  - <cite>n x 1</cite> Linear objective coefficients</p></li>
+<li><p>.osense - objective sense</p></li>
+<li><p>.lb - <cite>n x 1</cite> Lower bounds</p></li>
+<li><p>.ub - <cite>n x 1</cite> Upper bounds</p></li>
+</ul>
+</div></blockquote>
+<p>vExp:          <cite>n x 1</cite> experimental flux vector (NaN if no info)</p>
+</div></blockquote>
+</div></blockquote>
+<p>weightLower:          <cite>n x 1</cite> positive weight penalty on relaxation of lower bounds
+weightUpper:          <cite>n x 1</cite> positive weight penalty on relaxation of lower bounds</p>
+</dd>
+</dl>
+<p>weightExpFlux:          <cite>n x 1</cite> positive weight penalty on deviation from experimental flux</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.dataIntegration.XomicsToModel.metabolomics.growthMediaToModel">
+<span class="sig-name descname"><span class="pre">growthMediaToModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">specificData</span></em>, <em class="sig-param"><span class="pre">param</span></em>, <em class="sig-param"><span class="pre">coreRxnAbbr</span></em>, <em class="sig-param"><span class="pre">modelGenerationReport</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/XomicsToModel/metabolomics/growthMediaToModel.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.XomicsToModel.metabolomics.growthMediaToModel" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[model, specificData, coreRxnAbbr, modelGenerationReport] = growthMediaToModel</strong> (<em>model, specificData, param, coreRxnAbbr, modelGenerationReport</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model.rxns</strong></p></li>
+<li><p><strong>model.rxnNames</strong></p></li>
+<li><p><strong>model.lb</strong></p></li>
+<li><p><strong>model.ub</strong></p></li>
+<li><p><strong>specificData.mediaData</strong></p></li>
+<li><p><strong>specificData.mediaData.mets</strong></p></li>
+<li><p><strong>specificData.mediaData.rxns</strong></p></li>
+<li><p><strong>specificData.exoMet</strong></p></li>
+<li><p><strong>param.metabolomicsBeforeExtraction</strong></p></li>
+<li><p><strong>param.debug</strong></p></li>
+<li><p><strong>param.workingDirectory</strong></p></li>
+<li><p><strong>param.printLevel</strong></p></li>
+<li><p><strong>param.TolMinBoundary</strong></p></li>
+<li><p><strong>param.TolMaxBoundary</strong></p></li>
+<li><p><strong>param.relaxOptions</strong></p></li>
+<li><p><strong>coreRxnAbbr</strong></p></li>
+<li><p><strong>modelGenerationReport</strong></p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model.rxns</strong></p></li>
+<li><p><strong>model.rxnNames</strong></p></li>
+<li><p><strong>model.lb</strong></p></li>
+<li><p><strong>model.ub</strong></p></li>
+<li><p><strong>specificData.mediaData</strong></p></li>
+<li><p><strong>specificData.mediaData.mediaData</strong></p></li>
+<li><p><strong>specificData.mediaData.mets</strong></p></li>
+<li><p><strong>specificData.mediaData.Properties</strong></p></li>
+<li><p><strong>specificData.mediaData.rxns</strong></p></li>
+<li><p><strong>specificData.exoMet</strong></p></li>
+<li><p><strong>specificData.exoMet.exoMet</strong></p></li>
+<li><p><strong>specificData.exoMet.ismedia</strong></p></li>
+<li><p><strong>coreRxnAbbr</strong></p></li>
+<li><p><strong>modelGenerationReport</strong></p></li>
+</ul>
+</dd>
+</dl>
+<p>EXAMPLE:</p>
+<p>NOTE:</p>
+<p>Author(s): Aga W.</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.dataIntegration.XomicsToModel.metabolomics.mediaConstraints">
+<span class="sig-name descname"><span class="pre">mediaConstraints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">uptakeRates</span></em>, <em class="sig-param"><span class="pre">uptakeInChi</span></em>, <em class="sig-param"><span class="pre">uptakeNames</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/XomicsToModel/metabolomics/mediaConstraints.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.XomicsToModel.metabolomics.mediaConstraints" title="Permalink to this definition">¶</a></dt>
+<dd><p>this function finds the highest uptake rate for each metabolite in the
+uptakeRatesTable and sets this value as a lower boudary in the
+exchange reaction for that metabolite. If maximum uptake rate is higer
+than 0 (metabolite is only secreted by the cells) then lower boundary
+is set to 0</p>
+<blockquote>
+<div><dl>
+<dt>Inputs:</dt><dd><p>model - Cobra model
+uptakesRatesTable - Table consisting of ‘Chemical_Name’, ‘InChICode’,</p>
+<blockquote>
+<div><p>and numeric columns with the experimental data
+(uptake/secretion rates in mmol/gDW/h )</p>
+</div></blockquote>
+</dd>
+<dt>Output:</dt><dd><p>model -  Cobra model with constrained uptake rates</p>
+</dd>
+</dl>
+<p>20190617 Agnieszka Wegrzyn</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.dataIntegration.XomicsToModel.metabolomics.metabolomicsTomodel">
+<span class="sig-name descname"><span class="pre">metabolomicsTomodel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">specificData</span></em>, <em class="sig-param"><span class="pre">param</span></em>, <em class="sig-param"><span class="pre">coreRxnAbbr</span></em>, <em class="sig-param"><span class="pre">modelGenerationReport</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/XomicsToModel/metabolomics/metabolomicsTomodel.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.XomicsToModel.metabolomics.metabolomicsTomodel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Integrates metabolomics data to COBRA models obtained in the cell culture
+media either by metabolomics experiments or by the content of the culture
+medium</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[model, specificData, coreRxnAbbr, modifiedFluxes, modelGenerationReport] = metabolomicsToModel</strong> (<em>model, specificData, param, coreRxnAbbr, modelGenerationReport</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – A generic COBRA model</p>
+<ul>
+<li><p>.S - Stoichiometric matrix</p></li>
+<li><p>.mets - Metabolite ID vector</p></li>
+<li><p>.rxns - Reaction ID vector</p></li>
+<li><p>.lb - Lower bound vector</p></li>
+<li><p>.ub - Upper bound vector</p></li>
+<li><p>.genes - Upper bound vector</p></li>
+</ul>
+</li>
+<li><p><strong>specificData</strong> – A structure containing the context-specific data</p></li>
+<li><p><strong>param</strong> – a structure containing the parameters for the function</p></li>
+<li><p><strong>coreRxnAbbr</strong> – Set of core reactions</p></li>
+<li><p><strong>modelGenerationReport</strong> – A struct array where the data will be saved</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model</strong> – A Context-specific COBRA model with the metabolomic data.</p></li>
+<li><p><strong>specificData</strong> – The exometabolomic data is updated according to the
+relaxations</p></li>
+<li><p><strong>coreRxnAbbr</strong> – A Context-specific COBRA model with the metabolomic data.</p></li>
+<li><p><strong>modifiedFluxes</strong> – New set of core reactions.</p></li>
+<li><p><strong>modelGenerationReport</strong> – an updated version od the struct array</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.dataIntegration.XomicsToModel.metabolomics.metsToKeep">
+<span class="sig-name descname"><span class="pre">metsToKeep</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">dataOrg</span></em>, <em class="sig-param"><span class="pre">metRep</span></em>, <em class="sig-param"><span class="pre">calRelErr</span></em>, <em class="sig-param"><span class="pre">param</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/XomicsToModel/metabolomics/metsToKeep.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.XomicsToModel.metabolomics.metsToKeep" title="Permalink to this definition">¶</a></dt>
+<dd><p>removes the metabolomics measurements from the
+dataOrg table that have low measurement quality based on the relative SD
+of technical replicate sample (RSDqc provided in the metRep variable)
+and/or the average relative error (measured vs actual concentration) of
+the calibration line samples (RE provided in the calRelErr variable)</p>
+<dl class="field-list">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[cleanedData, metToKeepSummary] = metsToKeep</strong> (<em>dataOrg, metRep, calRelErr, param</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul>
+<li><p><strong>dataOrg</strong> – A table with original metabolomics data in a long format
+with information about measured samples, compounds,
+retention times (RT), area(s), concentrations, etc.
+the following column is required for the analysis:</p>
+<blockquote>
+<div><ul class="simple">
+<li><dl class="simple">
+<dt>.compound - compound (metabolite names) identical</dt><dd><p>to the names used in the metRep and
+calRE variables</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><strong>metRep</strong> – A table with quality information based on the dataOrg
+in a long format (output from mzQuality tool).
+The following columns are required for the analysis:</p>
+<blockquote>
+<div><ul class="simple">
+<li><dl class="simple">
+<dt>.compound - compound (metabolite names) identical</dt><dd><p>to the names used in the dataOrg and
+calRE variables</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>.RSDqc_* - one or more columns specifying the</dt><dd><p>relative standard deviation of the
+repeated measurement of a (quality)
+sample (per batch) per metabolite</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><strong>calRelErr</strong> – A table with quality information about the relative
+error (RE) of the concentration estimation of the
+calibration line samples based on the dataOrg
+in a long format with information about measured samples,
+compounds, retention times (RT), known concentrations,
+estimated concentrations, and relative error etc.
+The following columns are required for the analysis:</p>
+<blockquote>
+<div><ul class="simple">
+<li><dl class="simple">
+<dt>.compound - compound (metabolite names) identical</dt><dd><p>to the names used in the dataOrg and
+calRE variables</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>.RE* - a columns specifying the relative error of</dt><dd><p>the concentration estimation of the
+calibration line samples</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><strong>param.tresholdRSDqc</strong> – the treshold value for the relative SD of the repeated
+measurement of sample (default = 25 (%); based on
+the based on the “Guidelines and considerations for
+the use of system suitability and quality control
+samples in mass spectrometry assays applied in
+untargeted clinical metabolomic studies”)</p></li>
+<li><p><strong>param.tresholdCalRE</strong> – the treshold value for the relative error of the
+concentration estimation of the calibration line
+samples (default = 25 (%)</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>cleanedData</strong> – table in the same format as dataOrg without the
+metabolites of low quality (above set tresholds)</p></li>
+<li><p><strong>metToKeepSummary</strong> –</p>
+<dl class="simple">
+<dt>table in the same format as metRep variable with an</dt><dd><p>added columns:</p>
+</dd>
+</dl>
+<ul class="simple">
+<li><dl class="simple">
+<dt>.keep -     specifies whether a metabolite is to be</dt><dd><p>kept (1) or removed (0) from the further
+analysis</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>.REcheck - specifies whether a metabolite passed</dt><dd><p>(1) or failed (0) the check based on
+the relative error of the concentration
+estimation of the calibration line sample</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>.RSDqcCheck - specifies whether a metabolite passed</dt><dd><p>(1) or failed (0) the check based on
+the relative standard deviation of
+the repeated measurement of a (QC) sample</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>.sumRE -    shows the average relative error of the</dt><dd><p>concentration estimation of the
+calibration line sample per metabolite</p>
+</dd>
+</dl>
+</li>
+</ul>
+</li>
+</ul>
+</dd>
+</dl>
+<p>EXAMPLE:</p>
+<p>NOTE:</p>
+<p>Author(s): Agnieszka Wegrzyn (2021)</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.dataIntegration.XomicsToModel.metabolomics.plotExperimentalvsPredictedExchange">
+<span class="sig-name descname"><span class="pre">plotExperimentalvsPredictedExchange</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">measuredFluxes</span></em>, <em class="sig-param"><span class="pre">predictedFluxes</span></em>, <em class="sig-param"><span class="pre">otherFluxes</span></em>, <em class="sig-param"><span class="pre">extraFluxes</span></em>, <em class="sig-param"><span class="pre">param</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/XomicsToModel/metabolomics/plotExperimentalvsPredictedExchange.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.XomicsToModel.metabolomics.plotExperimentalvsPredictedExchange" title="Permalink to this definition">¶</a></dt>
+<dd><p>plot a comparison of experimental and predicted exchange reaction rates</p>
+<p>INPUT
+measuredFluxes:   table with the fluxes obtained from exometabolomics experiments with the following variables</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>.rxns:    k x 1 cell array of reaction identifiers</p></li>
+<li><p>.mean:    k x 1 double of measured mean flux</p></li>
+<li><p>.SD:      k x 1 double standard deviation of the measured flux</p></li>
+<li><p>.labels:  k x 1 cell array of labels to display on y axis</p></li>
+<li><p>.Properties.Description: string describing the data, used in plot legend</p></li>
+</ul>
+</div></blockquote>
+<dl class="simple">
+<dt>predictedFluxes:   table with the following variables</dt><dd><ul class="simple">
+<li><p>.rxns:    k x 1 cell array of reaction identifiers</p></li>
+<li><p>.v:       k x 1 double of predicted mean flux</p></li>
+<li><p>.lb:      k x 1 double lower bound on reaction flux</p></li>
+<li><p>.ub:      k x 1 double upper bound on reaction flux</p></li>
+<li><p>.labels:  k x 1 cell array of labels to display on y axis</p></li>
+<li><p>.Properties.Description: string describing the data, used in plot legend</p></li>
+</ul>
+</dd>
+</dl>
+<p>OPTIONAL INPUT
+otherFluxes:  table with the following variables</p>
+<blockquote>
+<div><blockquote>
+<div><ul class="simple">
+<li><p>.rxns:    k x 1 cell array of reaction identifiers</p></li>
+<li><p>.Properties.Description: sring describing the data, used in plot legend</p></li>
+<li><p>.labels:  k x 1 cell array of labels to display on y axis</p></li>
+</ul>
+</div></blockquote>
+<dl class="simple">
+<dt>and</dt><dd><ul class="simple">
+<li><p>.mean:    k x 1 double of measured mean flux</p></li>
+<li><p>.SD:      k x 1 double standard deviation of the measured flux</p></li>
+</ul>
+</dd>
+<dt>or</dt><dd><ul class="simple">
+<li><p>.v:       k x 1 double of predicted mean flux</p></li>
+<li><p>.lb:      k x 1 double lower bound on reaction flux</p></li>
+<li><p>.ub:      k x 1 double upper bound on reaction flux</p></li>
+</ul>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="simple">
+<dt>param: paramters structure with the following fields</dt><dd><ul class="simple">
+<li><p>.measuredFluxes  {(1),0} set to zero to not display experimental fluxes</p></li>
+<li><dl class="simple">
+<dt>.labelType determines which y axes lables to display</dt><dd><p>‘metabolitePlatform’ = platform left and metabolite name right
+‘metabolite’         = metabolite only right  (default)
+‘platform’           = platform only left</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>.expOrder {(1),0}</dt><dd><p>1  = order reactions by value of experimental flux
+0  = order reactions by value of predicted flux (predictedFluxes) for each reaction corresponding to an experimental flux</p>
+</dd>
+</dl>
+</li>
+<li><p>.saveFigures = 1 saves figure as .fig and .png to current directory</p></li>
+<li><p>.plotTitle: title of the plot</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat script">
+<dt class="sig sig-object mat" id="src.dataIntegration.XomicsToModel.metabolomics.plotPredictedAndExperimentalReactionRates">
+<span class="sig-name descname"><span class="pre">plotPredictedAndExperimentalReactionRates</span></span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/XomicsToModel/metabolomics/plotPredictedAndExperimentalReactionRates.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.XomicsToModel.metabolomics.plotPredictedAndExperimentalReactionRates" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot experimental uptake and secretion rates as well as error bars on logarithmic scale
+options to be specified and loaded before:</p>
+<blockquote>
+<div><p>exoMet = glcValidationData;
+fullReport = comparisonData_C1.fullReport;
+condition = ‘Complex I inhibition’;
+objective = ‘unWeightedTCBMfluxConc’;
+comparisonObjective=[];
+labelType = ‘metabolite’; %’platform’
+saveFigures = 1;
+comparison = comparisonData_glc.fullReport; % second predicted flux to be added for comparison
+comparison_label = ‘Control’;</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.dataIntegration.XomicsToModel.metabolomics.plotPredictedExchange">
+<span class="sig-name descname"><span class="pre">plotPredictedExchange</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">predictedFluxes</span></em>, <em class="sig-param"><span class="pre">otherFluxes</span></em>, <em class="sig-param"><span class="pre">extraFluxes</span></em>, <em class="sig-param"><span class="pre">param</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/XomicsToModel/metabolomics/plotPredictedExchange.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.XomicsToModel.metabolomics.plotPredictedExchange" title="Permalink to this definition">¶</a></dt>
+<dd><p>plot a comparison of experimental and predicted exchange reaction rates</p>
+<p>INPUT
+predictedFluxes:   table with the following variables</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>.rxns:    k x 1 cell array of reaction identifiers</p></li>
+<li><p>.v:       k x 1 double of predicted mean flux</p></li>
+<li><p>.lb:      k x 1 double lower bound on reaction flux</p></li>
+<li><p>.ub:      k x 1 double upper bound on reaction flux</p></li>
+<li><p>.labels:  k x 1 cell array of labels to display on y axis</p></li>
+<li><p>.Properties.Description: string describing the data, used in plot legend</p></li>
+</ul>
+</div></blockquote>
+<p>OPTIONAL INPUT
+otherFluxes:  table with the following variables</p>
+<blockquote>
+<div><blockquote>
+<div><ul class="simple">
+<li><p>.rxns:    k x 1 cell array of reaction identifiers</p></li>
+<li><p>.Properties.Description: sring describing the data, used in plot legend</p></li>
+<li><p>.labels:  k x 1 cell array of labels to display on y axis</p></li>
+</ul>
+</div></blockquote>
+<dl class="simple">
+<dt>and</dt><dd><ul class="simple">
+<li><p>.mean:    k x 1 double of measured mean flux</p></li>
+<li><p>.SD:      k x 1 double standard deviation of the measured flux</p></li>
+</ul>
+</dd>
+<dt>or</dt><dd><ul class="simple">
+<li><p>.v:       k x 1 double of predicted mean flux</p></li>
+<li><p>.lb:      k x 1 double lower bound on reaction flux</p></li>
+<li><p>.ub:      k x 1 double upper bound on reaction flux</p></li>
+</ul>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="simple">
+<dt>param: paramters structure with the following fields</dt><dd><ul class="simple">
+<li><p>.rxns: subset of reactions to plot</p></li>
+<li><p>.measuredFluxes  {(1),0} set to zero to not display experimental fluxes</p></li>
+<li><dl class="simple">
+<dt>.labelType determines which y axes lables to display</dt><dd><p>‘metabolitePlatform’ = platform left and metabolite name right
+‘metabolite’         = metabolite only right  (default)
+‘platform’           = platform only left</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>.expOrder {(1),0}</dt><dd><p>1  = order reactions by value of experimental flux
+0  = order reactions by value of predicted flux (predictedFluxes) for each reaction corresponding to an experimental flux</p>
+</dd>
+</dl>
+</li>
+<li><p>.saveFigures = 1 saves figure as .fig and .png to current directory</p></li>
+<li><p>.plotTitle: title of the plot</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.dataIntegration.XomicsToModel.metabolomics.summaryConcentrations">
+<span class="sig-name descname"><span class="pre">summaryConcentrations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">cleanedData</span></em>, <em class="sig-param"><span class="pre">param</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/XomicsToModel/metabolomics/summaryConcentrations.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.XomicsToModel.metabolomics.summaryConcentrations" title="Permalink to this definition">¶</a></dt>
+<dd><p>function to summarise metabolite concentrations per group/perturbation
+(calculate mean and SD), function can detect and remove outliers before
+data is summarised (param.removeOutliers). Furthermore, function can map
+metabolite names into model IDs using either user specified metabolite
+lookup table (param.metLookupTable) or/and model structure (param.model).</p>
+<dl class="field-list">
+<dt class="field-odd">Required inputs</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>cleanedData.Properties</strong></p></li>
+<li><p><strong>cleanedData.Properties.Properties</strong></p></li>
+<li><p><strong>cleanedData.Properties.VariableNames</strong></p></li>
+<li><p><strong>cleanedData.group</strong></p></li>
+<li><p><strong>cleanedData.perturbation</strong></p></li>
+<li><p><strong>cleanedData.compound</strong></p></li>
+<li><p><strong>cleanedData.sample</strong></p></li>
+<li><p><strong>cleanedData.concentration</strong> –</p>
+<dl class="simple">
+<dt>cleanedData          - metabolomics data in long format (output from</dt><dd><p>mzQuality, required columns: sample, type,
+compound, concentration, cellLine or group,
+perturbation)</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt class="field-even">Optional inputs</dt>
+<dd class="field-even"><ul class="simple">
+<li><dl class="simple">
+<dt><strong>param.model          - cobra model used to map metabolite to metss</strong></dt><dd><ul>
+<li><p><strong>param.metLookupTable - table with metabolite names and model</strong> – identifiers to be mapped onto (required
+columns: ChemicalName, AlternativeName,
+Mets(containing metss)</p></li>
+<li><p><strong>param.excludeGroup   - specifies any groups to be excluded from the</strong> – analysis (default: none)</p></li>
+<li><p><strong>param.group          - specify which groups are to be analysed (default</strong> – all unique groups specified in the cleanedData)</p></li>
+<li><p><strong>param.printLevel     - specifies if plots with median concentration</strong> – values should be printed (0)</p></li>
+<li><p><strong>param.perturbation   - specifies perturbations to that should be</strong> – summarised separately (default: all unique
+perturbations specified in the cleanedData)</p></li>
+<li><p><strong>param.removeOutliers - should outliers be found and removed from</strong> – the dataset (0)</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<p>2021/12 Aga Wegrzyn</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../../metabotools/index.html" class="btn btn-default float-right" title="Metabotools" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../proteomics/index.html" class="btn btn-default" title="Proteomics" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017-2021, The COBRA Toolbox developers.
+
+    </p>
+  </div>
+  Built with Sphinx using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../',
+            VERSION:'2.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+    <script type="text/javascript" src="../../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../../_static/sphinx_highlight.js"></script>
+
+  
+
+
+  
+  
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TRCMZL1FKK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TRCMZL1FKK');
+  </script>
+    
+</body>
+</html>

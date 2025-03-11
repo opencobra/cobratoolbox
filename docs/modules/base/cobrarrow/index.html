@@ -1,0 +1,1412 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Cobrarrow &mdash; The COBRA Toolbox</title>
+  
+
+  
+  
+  
+    <link rel="apple-touch-icon" sizes="180x180" href="../../../_static/img/apple-touch-icon.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../_static/img/favicon-32x32.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="16x16" href="../../../_static/img/favicon-16x16.png">
+  
+  
+    <link rel="mask-icon" href="../../../_static/img/safari-pinned-tab.svg" color="#5bbad5">
+  
+  
+    <link rel="manifest" href="../../../_static/json/manifest.json">
+  
+  
+    <meta name="msapplication-config" content="../../../_static/browserconfig.xml">
+  
+  <meta name="theme-color" content="#ffffff">
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+  <script src="../../../_static/js/jquery.easy-autocomplete.min.js" type="text/javascript" ></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+  <link href="../../../_static/css/easy-autocomplete.min.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/cobra.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../../_static/css/cobra.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="The COBRA Toolbox" href="../../../index.html"/>
+        <link rel="up" title="Base" href="../index.html"/>
+        <link rel="next" title="Dataintegration" href="../../dataIntegration/index.html"/>
+        <link rel="prev" title="Codeconsistency" href="../codeConsistency/index.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> The COBRA Toolbox
+          
+
+          
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
+          
+          </a>
+
+              
+          <h1>The COBRA Toolbox</h1>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" id="simple"/>
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+    <script>
+    	var options = {
+
+		url: "../../../_static/json/functions.json",
+
+		getValue: "name",
+
+		list: {
+            onKeyEnterEvent: function(item) {
+                    return "_static/../" + item.website_url
+            },
+            maxNumberOfElements: 25,
+			match: {
+					enabled: true,
+			},
+            sort: {
+			    enabled: true
+		    }
+		},
+
+    	template: {
+	    	type: "custom",
+		    method: function(value, item) {
+                return "<span><a href='../../../search.html?q=" + item.name + "&check_keywords=yes&area=default'>" + value + "</a>" + "<a href='../../../_static/../" + item.website_url + "' ><img src='../../../_static/link.svg'/></a></span>";
+		    }
+	    },
+
+		theme: "square"
+
+	};
+
+	$("#simple").easyAutocomplete(options);
+
+
+    </script>
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../../../index.html">Home</a></li>
+              </ul>
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Functions</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../analysis/index.html">Analysis</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Base</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../solvers/index.html">Solvers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../install/index.html">Install</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../io/index.html">Io</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../paths/index.html">Paths</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ci/index.html">Ci</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../utilities/index.html">Utilities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../codeConsistency/index.html">Codeconsistency</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Cobrarrow</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../dataIntegration/index.html">Dataintegration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../design/index.html">Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reconstruction/index.html">Reconstruction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../visualization/index.html">Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../cite.html">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../support.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../plan.html">Development Plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contact.html">Contact</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../citations.html">Citations</a></li>
+</ul>
+
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">The COBRA Toolbox</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../contents.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Functions</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Base</a></li>
+      <li class="breadcrumb-item active">Cobrarrow</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="https://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <section id="cobrarrow">
+<span id="id1"></span><h1>Cobrarrow<a class="headerlink" href="#cobrarrow" title="Permalink to this heading">¶</a></h1>
+<span class="target" id="module-src.base.cobrarrow"></span><dl class="mat class">
+<dt class="sig sig-object mat" id="src.base.cobrarrow.COBRArrow">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">COBRArrow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">host</span></em>, <em class="sig-param"><span class="pre">port</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/cobrarrow/COBRArrow.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.cobrarrow.COBRArrow" title="Permalink to this definition">¶</a></dt>
+<dd><p>COBRArrow is a class that establishes a connection to a gRPC service
+using Apache Arrow Flight in a Python environment. It provides methods
+to send and receive data between MATLAB and the Flight server.</p>
+<dl class="mat method">
+<dt class="sig sig-object mat" id="src.base.cobrarrow.COBRArrow.COBRArrow">
+<span class="sig-name descname"><span class="pre">COBRArrow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">host</span></em>, <em class="sig-param"><span class="pre">port</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/cobrarrow/COBRArrow.COBRArrow.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.cobrarrow.COBRArrow.COBRArrow" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes the Python environment and establishes a client connection.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>obj = COBRArrow</strong> (<em>host, port</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>host</strong> – The hostname or IP address of the gRPC server.</p></li>
+<li><p><strong>port</strong> – (Optional) The port number on which the gRPC server is running. Default is 50051.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>obj</strong> – Instance of the COBRArrow class with an initialized Python environment
+and established FlightClient connection.</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>arrowClient = COBRArrow(‘cobrarrow.chatimd.org’);
+arrowClient = COBRArrow(‘localhost’, 50051);</p>
+</dd></dl>
+
+<dl class="mat staticmethod">
+<dt class="sig sig-object mat" id="src.base.cobrarrow.COBRArrow.MatFieldToPyArrow">
+<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">MatFieldToPyArrow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">fieldData</span></em>, <em class="sig-param"><span class="pre">fieldName</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/cobrarrow/COBRArrow.MatFieldToPyArrow.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.cobrarrow.COBRArrow.MatFieldToPyArrow" title="Permalink to this definition">¶</a></dt>
+<dd><p>MatFieldToPyArrow converts a MATLAB struct field to an Apache Arrow record batch.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>pyArrowRecordBatch = COBRArrow.MatFieldToPyArrow</strong> (<em>fieldData, fieldName</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>fieldData</strong> – MATLAB data to be converted.</p></li>
+<li><p><strong>fieldName</strong> – Name of the field.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>pyArrowRecordBatch</strong> – Converted Apache Arrow record batch.</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>arrowBatch = MatFieldToPyArrow(data, ‘fieldName’);</p>
+<dl>
+<dt>DESCRIPTION:</dt><dd><p>This function converts a MATLAB struct field to an Apache Arrow record batch.
+It handles different data types including character vectors, numeric vectors,
+matrices, and cell vectors, and adds metadata to the record batch schema.</p>
+<p>The process involves:
+1. Determining the data type of the field.
+2. Converting the field data to an Apache Arrow record batch.
+3. Adding metadata to the schema of the record batch.</p>
+<p>The function returns the Apache Arrow record batch with the added metadata.</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>arrowBatch = COBRArrow.MatFieldToPyArrow(data, ‘fieldName’);</p>
+</dd></dl>
+
+<dl class="mat staticmethod">
+<dt class="sig sig-object mat" id="src.base.cobrarrow.COBRArrow.addMetadata">
+<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">addMetadata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">pyArrowRecordBatch</span></em>, <em class="sig-param"><span class="pre">fieldName</span></em>, <em class="sig-param"><span class="pre">fieldType</span></em>, <em class="sig-param"><span class="pre">fieldDimensions</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/cobrarrow/COBRArrow.addMetadata.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.cobrarrow.COBRArrow.addMetadata" title="Permalink to this definition">¶</a></dt>
+<dd><p>addMetadata adds metadata to the schema of a PyArrow record batch.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>pyArrowRecordBatch = COBRArrow.addMetadata</strong> (<em>pyArrowRecordBatch, fieldName</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>pyArrowRecordBatch</strong> – Apache Arrow record batch.</p></li>
+<li><p><strong>fieldName</strong> – Name of the field.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>pyArrowRecordBatch</strong> – Apache Arrow record batch with metadata.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>DESCRIPTION:</dt><dd><p>This function adds metadata to the schema of a PyArrow record batch.
+It converts the field name, field type, and field dimensions to Python strings
+and encodes them as UTF-8. The metadata is then added to the schema of the record batch.</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>arrowBatch = COBRArrow.addMetadata(arrowBatch, ‘fieldName’);</p>
+</dd></dl>
+
+<dl class="mat staticmethod">
+<dt class="sig sig-object mat" id="src.base.cobrarrow.COBRArrow.arrowToCellVector">
+<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">arrowToCellVector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">pyArrowTable</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/cobrarrow/COBRArrow.arrowToCellVector.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.cobrarrow.COBRArrow.arrowToCellVector" title="Permalink to this definition">¶</a></dt>
+<dd><p>arrowToCellVector converts a PyArrow table column to a MATLAB cell vector.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>fieldData = COBRArrow.arrowToCellVector</strong> (<em>pyArrowTable</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><p><strong>pyArrowTable</strong> – PyArrow table object containing the data.</p>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>fieldData</strong> – MATLAB cell vector converted from the PyArrow table column.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>DESCRIPTION:</dt><dd><p>This function handles the conversion of cell vector fields from a PyArrow table
+to a MATLAB cell vector. It extracts the first column of the PyArrow table,
+converts the data to a Python list, and then converts each element of the list
+to a MATLAB character array. The resulting cell array is then transposed to match
+the expected MATLAB format.</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>cellVector = COBRArrow.arrowToCellVector(arrowTable);</p>
+</dd></dl>
+
+<dl class="mat staticmethod">
+<dt class="sig sig-object mat" id="src.base.cobrarrow.COBRArrow.arrowToCharVector">
+<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">arrowToCharVector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">pyArrowTable</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/cobrarrow/COBRArrow.arrowToCharVector.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.cobrarrow.COBRArrow.arrowToCharVector" title="Permalink to this definition">¶</a></dt>
+<dd><p>arrowToCharVector converts a PyArrow table column to a MATLAB char vector.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>fieldData = COBRArrow.arrowToCharVector</strong> (<em>pyArrowTable</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><p><strong>pyArrowTable</strong> – PyArrow table object containing the data.</p>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>fieldData</strong> – MATLAB char vector converted from the PyArrow table column.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>DESCRIPTION:</dt><dd><p>This function handles the conversion of char vector fields from a PyArrow table
+to a MATLAB char vector. It extracts the first column of the PyArrow table,
+converts the data to a Python list, and then converts each element of the list
+to a MATLAB character array. The resulting char array is then transposed to match
+the expected MATLAB format.</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>charVector = COBRArrow.arrowToCharVector(arrowTable);</p>
+</dd></dl>
+
+<dl class="mat staticmethod">
+<dt class="sig sig-object mat" id="src.base.cobrarrow.COBRArrow.arrowToDoubleMatrix">
+<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">arrowToDoubleMatrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">pyArrowTable</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/cobrarrow/COBRArrow.arrowToDoubleMatrix.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.cobrarrow.COBRArrow.arrowToDoubleMatrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>arrowToDoubleMatrix converts a PyArrow table to a MATLAB sparse double matrix.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>fieldData = COBRArrow.arrowToDoubleMatrix</strong> (<em>pyArrowTable</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><p><strong>pyArrowTable</strong> – PyArrow table object containing the data.</p>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>fieldData</strong> – MATLAB sparse double matrix converted from the PyArrow table columns.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>DESCRIPTION:</dt><dd><p>This function converts a PyArrow table to a MATLAB sparse double matrix by extracting
+row, column, and value data from the table’s columns. It uses the extracted data
+along with metadata specifying the matrix dimensions to construct a sparse matrix.</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>sparseMatrix = COBRArrow.arrowToDoubleMatrix(arrowTable);</p>
+</dd></dl>
+
+<dl class="mat staticmethod">
+<dt class="sig sig-object mat" id="src.base.cobrarrow.COBRArrow.arrowToDoubleVector">
+<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">arrowToDoubleVector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">pyArrowTable</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/cobrarrow/COBRArrow.arrowToDoubleVector.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.cobrarrow.COBRArrow.arrowToDoubleVector" title="Permalink to this definition">¶</a></dt>
+<dd><p>arrowToDoubleVector converts a PyArrow table column to a MATLAB double vector.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>fieldData = COBRArrow.arrowToDoubleVector</strong> (<em>pyArrowTable</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><p><strong>pyArrowTable</strong> – PyArrow table object containing the data.</p>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>fieldData</strong> – MATLAB double vector converted from the PyArrow table column.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>DESCRIPTION:</dt><dd><p>This function handles the conversion of double vector fields from a PyArrow table
+to a MATLAB double vector. It extracts the first column of the PyArrow table,
+converts the data to a Python list, and then converts it to a MATLAB double array.
+The resulting double array is then transposed to match the expected MATLAB format.</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>doubleVector = COBRArrow.arrowToDoubleVector(arrowTable);</p>
+</dd></dl>
+
+<dl class="mat staticmethod">
+<dt class="sig sig-object mat" id="src.base.cobrarrow.COBRArrow.arrowToInt">
+<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">arrowToInt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">pyArrowTable</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/cobrarrow/COBRArrow.arrowToInt.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.cobrarrow.COBRArrow.arrowToInt" title="Permalink to this definition">¶</a></dt>
+<dd><p>arrowToInt converts a PyArrow table column to a MATLAB integer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>fieldData = COBRArrow.arrowToInt</strong> (<em>pyArrowTable</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><p><strong>pyArrowTable</strong> – PyArrow table object containing the data.</p>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>fieldData</strong> – MATLAB integer converted from the PyArrow table column.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>DESCRIPTION:</dt><dd><p>This function handles the conversion of integer fields from a PyArrow table
+to a MATLAB integer. It extracts the first column of the PyArrow table,
+converts the data to a Python list, and then converts the first element of
+the list to a MATLAB integer.</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>intValue = COBRArrow.arrowToInt(arrowTable);</p>
+</dd></dl>
+
+<dl class="mat staticmethod">
+<dt class="sig sig-object mat" id="src.base.cobrarrow.COBRArrow.arrowToIntVector">
+<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">arrowToIntVector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">pyArrowTable</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/cobrarrow/COBRArrow.arrowToIntVector.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.cobrarrow.COBRArrow.arrowToIntVector" title="Permalink to this definition">¶</a></dt>
+<dd><p>arrowToIntVector converts a PyArrow table column to a MATLAB integer vector.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>fieldData = COBRArrow.arrowToIntVector</strong> (<em>pyArrowTable</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><p><strong>pyArrowTable</strong> – PyArrow table object containing the data.</p>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><p><strong>fieldData</strong> – MATLAB integer vector converted from the PyArrow table column.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>DESCRIPTION:</dt><dd><p>This function handles the conversion of integer vector fields from a PyArrow table
+to a MATLAB integer vector. It extracts the first column of the PyArrow table,
+converts the data to a Python list, and then converts it to a MATLAB int64 array.
+The resulting integer array is then transposed to match the expected MATLAB format.</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>intVector = COBRArrow.arrowToIntVector(arrowTable);</p>
+</dd></dl>
+
+<dl class="mat staticmethod">
+<dt class="sig sig-object mat" id="src.base.cobrarrow.COBRArrow.arrowToString">
+<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">arrowToString</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">pyArrowTable</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/cobrarrow/COBRArrow.arrowToString.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.cobrarrow.COBRArrow.arrowToString" title="Permalink to this definition">¶</a></dt>
+<dd><p>arrowToString converts a PyArrow table column to a MATLAB string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>fieldData = COBRArrow.arrowToString</strong> (<em>pyArrowTable</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><p><strong>pyArrowTable</strong> – PyArrow table object containing the data.</p>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>fieldData</strong> – MATLAB string converted from the PyArrow table column.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>DESCRIPTION:</dt><dd><p>This function handles the conversion of string fields from a PyArrow table
+to a MATLAB string. It extracts the first column of the PyArrow table,
+converts the data to a Python list, and then converts the first element of
+the list to a MATLAB string.</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>str = COBRArrow.arrowToString(arrowTable);</p>
+</dd></dl>
+
+<dl class="mat staticmethod">
+<dt class="sig sig-object mat" id="src.base.cobrarrow.COBRArrow.charVectorToArrow">
+<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">charVectorToArrow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">fieldData</span></em>, <em class="sig-param"><span class="pre">fieldName</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/cobrarrow/COBRArrow.charVectorToArrow.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.cobrarrow.COBRArrow.charVectorToArrow" title="Permalink to this definition">¶</a></dt>
+<dd><p>charVectorToArrow converts a character vector to an Apache Arrow record batch.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>pyArrowRecordBatch = COBRArrow.charVectorToArrow</strong> (<em>fieldData, fieldName</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>fieldData</strong> – Character vector to be converted.</p></li>
+<li><p><strong>fieldName</strong> – Name of the field.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>pyArrowRecordBatch</strong> – Apache Arrow record batch containing the character vector.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>DESCRIPTION:</dt><dd><p>This function converts a character vector to an Apache Arrow record batch.
+It creates a Python list from the character vector and converts it to an Apache Arrow array.
+The array is then used to create an Apache Arrow record batch with the specified field name.</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>arrowBatch = COBRArrow.charVectorToArrow(‘example’, ‘fieldName’);</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="src.base.cobrarrow.COBRArrow.client">
+<span class="sig-name descname"><span class="pre">client</span></span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/cobrarrow/COBRArrow.client.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.cobrarrow.COBRArrow.client" title="Permalink to this definition">¶</a></dt>
+<dd><p>The FlightClient object for communication with the server</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="src.base.cobrarrow.COBRArrow.fetchField">
+<span class="sig-name descname"><span class="pre">fetchField</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">schemaName</span></em>, <em class="sig-param"><span class="pre">fieldName</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/cobrarrow/COBRArrow.fetchField.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.cobrarrow.COBRArrow.fetchField" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieves individual field data from the server using Apache Arrow Flight.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>fieldData = obj.fetchField</strong> (<em>schemaName, fieldName</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>obj</strong> – Instance of the COBRArrow class.</p></li>
+<li><p><strong>schemaName</strong> – String representing the schema name used as a prefix for keys.</p></li>
+<li><p><strong>fieldName</strong> – String representing the name of the field to be fetched.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>fieldData</strong> – Data of the fetched field in MATLAB format.</p>
+</dd>
+</dl>
+<dl>
+<dt>DESCRIPTION:</dt><dd><p>This function concatenates the schema name and field name to form a key,
+creates a FlightDescriptor for the key, and attempts to read the field data
+from the Flight server. If the data is not found on the server, it tries to
+load the data from DuckDB. The Arrow table data is then converted to MATLAB
+format and returned.</p>
+<p>If the field does not exist in either the server or DuckDB, an error is raised.</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>fieldData = arrowClient.fetchField(‘mySchema’, ‘myField’);</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="src.base.cobrarrow.COBRArrow.fetchModel">
+<span class="sig-name descname"><span class="pre">fetchModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">schemaName</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/cobrarrow/COBRArrow.fetchModel.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.cobrarrow.COBRArrow.fetchModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetches the model data from the server using Apache Arrow Flight.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>model = obj.fetchModel</strong> (<em>schemaName</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>obj</strong> – Instance of the COBRArrow class.</p></li>
+<li><p><strong>schemaName</strong> – String representing the schema name used as a prefix for keys.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>model</strong> – MATLAB structure containing the fetched model data.</p>
+</dd>
+</dl>
+<dl>
+<dt>DESCRIPTION:</dt><dd><p>This function creates an empty MATLAB structure <cite>model</cite> and retrieves descriptors
+associated with the given schema name from the server. If no descriptors are found,
+it attempts to load the data from DuckDB. The function iterates through each descriptor,
+fetches the corresponding field data, and assigns it to the relevant field in the <cite>model</cite>
+structure.</p>
+<p>If no data is found in the server or DuckDB, an error is raised.</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>model = arrowClient.fetchModel(‘mySchema’);</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="src.base.cobrarrow.COBRArrow.fetchModelForFBAAnalysis">
+<span class="sig-name descname"><span class="pre">fetchModelForFBAAnalysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">schemaName</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/cobrarrow/COBRArrow.fetchModelForFBAAnalysis.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.cobrarrow.COBRArrow.fetchModelForFBAAnalysis" title="Permalink to this definition">¶</a></dt>
+<dd><p>fetchModelForFBAAnalysis reads the necessary fields for FBA analysis from the server.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>FBAmodel = obj.fetchModelForFBAAnalysis</strong> (<em>schemaName</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>obj</strong> – Instance of the COBRArrow class.</p></li>
+<li><p><strong>schemaName</strong> – String representing the schema name to read the model from.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><p><strong>FBAmodel</strong> – Structure containing the fields required for FBA analysis.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>DESCRIPTION:</dt><dd><p>This function reads the required and optional fields for Flux Balance Analysis (FBA)
+from the server using the provided schema name. It initializes an empty struct and
+populates it with the necessary fields. If an optional field does not exist, the function
+continues without error.</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>FBAmodel = arrowClient.fetchModelForFBAAnalysis(‘mySchema’);</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="src.base.cobrarrow.COBRArrow.getAllDescriptors">
+<span class="sig-name descname"><span class="pre">getAllDescriptors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">schemaName</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/cobrarrow/COBRArrow.getAllDescriptors.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.cobrarrow.COBRArrow.getAllDescriptors" title="Permalink to this definition">¶</a></dt>
+<dd><p>getAllDescriptors retrieves all flight descriptors(unique identifier of the
+flight) from the server.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>descriptors = obj.getAllDescriptors()</strong></p></li>
+<li><p><strong>descriptors = obj.getAllDescriptors</strong> (<em>schemaName</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>obj</strong> – Instance of the FlightClient class.</p></li>
+<li><p><strong>schemaName</strong> – (Optional) String representing the schema name to filter flights.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>descriptors</strong> – Cell array containing descriptors of available flights.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>DESCRIPTION:</dt><dd><p>This function retrieves all flight descriptors from the server. If a schema name is provided,
+it filters the descriptors based on the schema name. The function converts the Python list of
+descriptors to a MATLAB cell array and returns it.</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>descriptors = arrowClient.getAllDescriptors();
+descriptors = arrowClient.getAllDescriptors(‘mySchema’);</p>
+</dd></dl>
+
+<dl class="mat staticmethod">
+<dt class="sig sig-object mat" id="src.base.cobrarrow.COBRArrow.getMetadata">
+<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">getMetadata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">pyArrowTable</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/cobrarrow/COBRArrow.getMetadata.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.cobrarrow.COBRArrow.getMetadata" title="Permalink to this definition">¶</a></dt>
+<dd><p>getMetadata extracts the field type from the metadata of a PyArrow table.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>metadataMap = COBRArrow.getMetadata</strong> (<em>pyArrowTable</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><p><strong>pyArrowTable</strong> – PyArrow table object containing the metadata.</p>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>matFieldType</strong> – The field type extracted from the metadata.</p>
+</dd>
+</dl>
+<dl>
+<dt>DESCRIPTION:</dt><dd><p>This function extracts metadata from the PyArrow table’s schema and converts
+it from a Python dictionary to a MATLAB containers.Map object. It then retrieves
+the field type from this map.</p>
+<p>The process involves:
+1. Extracting metadata from the PyArrow table schema.
+2. Converting the metadata dictionary’s keys and values from Python byte strings</p>
+<blockquote>
+<div><p>to MATLAB strings.</p>
+</div></blockquote>
+<ol class="arabic simple" start="3">
+<li><p>Creating a MATLAB containers.Map object to manage the metadata.</p></li>
+<li><p>Accessing the specific property ‘mat_field_type’ to determine the field type.</p></li>
+</ol>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>matFieldType = COBRArrow.getMetadata(pyArrowTable);</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="src.base.cobrarrow.COBRArrow.listAllFlights">
+<span class="sig-name descname"><span class="pre">listAllFlights</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">schemaName</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/cobrarrow/COBRArrow.listAllFlights.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.cobrarrow.COBRArrow.listAllFlights" title="Permalink to this definition">¶</a></dt>
+<dd><p>listAllFlights lists all available flights and detailed information from the server.</p>
+<dl class="field-list">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>flightsList = listAllFlights</strong> (<em>obj</em>)</p></li>
+<li><p><strong>flightsList = obj.listAllFlights</strong> (<em>schemaName</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>obj</strong> – Instance of the FlightClient class.</p></li>
+<li><p><strong>schemaName</strong> – (Optional) String representing the schema name to filter flights.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>flightsList</strong> – Cell array containing information about available flights.
+Each cell contains a struct with the following fields:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>descriptor: Unique identifier for the flight.</p></li>
+<li><p>total_records: Total number of records in the flight.</p></li>
+<li><p>total_bytes: Total number of bytes in the flight.</p></li>
+<li><p>endpoints: List of endpoints where the flight can be accessed.</p></li>
+<li><p>schema: Schema of the flight, including column names and data types.</p></li>
+<li><p>schema_metadata: Additional metadata associated with the schema, such as table name and description.</p></li>
+</ul>
+</div></blockquote>
+</dd>
+</dl>
+<dl class="simple">
+<dt>DESCRIPTION:</dt><dd><p>This function retrieves all available flights from the server and returns detailed information
+about each flight. If a schema name is provided, it filters the flights based on the schema name.
+The function converts the Python list of flights to a MATLAB cell array and returns it.</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>flightsList = arrowClient.listAllFlights();
+flightsList = arrowClient.listAllFlights(‘mySchema’);</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="src.base.cobrarrow.COBRArrow.loadFromDuckDB">
+<span class="sig-name descname"><span class="pre">loadFromDuckDB</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">schemaName</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/cobrarrow/COBRArrow.loadFromDuckDB.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.cobrarrow.COBRArrow.loadFromDuckDB" title="Permalink to this definition">¶</a></dt>
+<dd><p>loadFromDuckDB loads data from DuckDB into the Flight server.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>obj.loadFromDuckDB</strong> (<em>schemaName</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>obj</strong> – Instance of the COBRArrow class.</p></li>
+<li><p><strong>schemaName</strong> – String representing the schema name to be loaded from DuckDB.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><p><strong>None</strong></p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>DESCRIPTION:</dt><dd><p>This function triggers the loading of data from a DuckDB database into
+the Flight server. It constructs a request using the schema name, encodes
+it into bytes, and sends the request to the server using the Flight RPC protocol.</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>arrowClient.loadFromDuckDB(‘mySchema’);</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="src.base.cobrarrow.COBRArrow.login">
+<span class="sig-name descname"><span class="pre">login</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">username</span></em>, <em class="sig-param"><span class="pre">password</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/cobrarrow/COBRArrow.login.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.cobrarrow.COBRArrow.login" title="Permalink to this definition">¶</a></dt>
+<dd><p>Use username and password to authenticate the user, since the server requires authentication
+to use some of the services. The server requires authentication to send data, persist data,
+and to use optimization service.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>obj = obj.login</strong> (<em>username, password</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>obj</strong> – Instance of the COBRArrow class.</p></li>
+<li><p><strong>username</strong> – String representing the username for authentication</p></li>
+<li><p><strong>password</strong> – String representing the password for authentication</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>None</strong></p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>DESCRIPTION:</dt><dd><p>This function attempts to authenticate the user using the provided
+username and password. If the authentication is successful, it creates
+a token for the user and sets the options for the FlightClient object. The
+options include the token as part of the headers for the Flight RPC calls.
+If the authentication fails, an error is raised.</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>arrowClient = arrowClient.login(‘username’, ‘password’);</p>
+</dd></dl>
+
+<dl class="mat staticmethod">
+<dt class="sig sig-object mat" id="src.base.cobrarrow.COBRArrow.matrixToArrow">
+<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">matrixToArrow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">matrix</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/cobrarrow/COBRArrow.matrixToArrow.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.cobrarrow.COBRArrow.matrixToArrow" title="Permalink to this definition">¶</a></dt>
+<dd><p>matrixToArrow converts a MATLAB matrix to an Apache Arrow record batch.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>pyArrowRecordBatch = COBRArrow.matrixToArrow</strong> (<em>matrix</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><p><strong>matrix</strong> – MATLAB matrix to be converted.</p>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>pyArrowRecordBatch</strong> – Apache Arrow record batch containing the matrix data.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>DESCRIPTION:</dt><dd><p>This function converts a MATLAB matrix to an Apache Arrow record batch.
+It extracts the row, column, and value data from the matrix and converts them to Python lists.
+The lists are then used to create Apache Arrow arrays, which are combined into a record batch.</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>arrowBatch = COBRArrow.matrixToArrow(magic(3));</p>
+</dd></dl>
+
+<dl class="mat staticmethod">
+<dt class="sig sig-object mat" id="src.base.cobrarrow.COBRArrow.numericToArrow">
+<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">numericToArrow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">fieldData</span></em>, <em class="sig-param"><span class="pre">fieldName</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/cobrarrow/COBRArrow.numericToArrow.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.cobrarrow.COBRArrow.numericToArrow" title="Permalink to this definition">¶</a></dt>
+<dd><p>numericToArrow converts a single numeric value to an Apache Arrow record batch.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>pyArrowRecordBatch = COBRArrow.numericToArrow</strong> (<em>fieldData, fieldName</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>fieldData</strong> – Single numeric value to be converted.</p></li>
+<li><p><strong>fieldName</strong> – Name of the field.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>pyArrowRecordBatch</strong> – Apache Arrow record batch containing the numeric value.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>DESCRIPTION:</dt><dd><p>This function converts a single numeric value to an Apache Arrow record batch.
+It creates a Python scalar from the numeric value and converts it to an Apache Arrow array.
+The array is then used to create an Apache Arrow record batch with the specified field name.</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>arrowBatch = COBRArrow.numericToArrow(42, ‘fieldName’);</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="src.base.cobrarrow.COBRArrow.optimizeModel">
+<span class="sig-name descname"><span class="pre">optimizeModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">schemaName</span></em>, <em class="sig-param"><span class="pre">solver</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/cobrarrow/COBRArrow.optimizeModel.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.cobrarrow.COBRArrow.optimizeModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>optimizeModel sends an optimization action to the server and retrieves the result.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>resultStruct = obj.optimizeModel</strong> (<em>schemaName, solver</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>obj</strong> – Instance of the COBRArrow class.</p></li>
+<li><p><strong>schemaName</strong> – String representing the schema name to be optimized.</p></li>
+<li><p><strong>solver</strong> – Instance of the COBRArrowSolver class.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>resultStruct</strong> – Structure containing the optimization results.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>DESCRIPTION:</dt><dd><p>This function performs the following steps:
+1. Checks and sets the solver instance, defaulting to ‘GLPK’ if none is provided.
+2. Constructs an action body string with schema and solver details.
+3. Encodes the action body to bytes and creates a Flight Action.
+4. Sends the action to the server and retrieves the result stream.
+5. Converts the result stream into a PyArrow Table and then to a MATLAB struct.
+6. Handles and converts various data types as necessary.</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>result = arrowClient.optimizeModel(‘mySchema’, arrowSolver);</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="src.base.cobrarrow.COBRArrow.options">
+<span class="sig-name descname"><span class="pre">options</span></span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/cobrarrow/COBRArrow.options.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.cobrarrow.COBRArrow.options" title="Permalink to this definition">¶</a></dt>
+<dd><p>FlightCallOptions for the FlightClient object, it may include parameters like timeout, write_options, headers, and read_options</p>
+</dd></dl>
+
+<dl class="mat staticmethod">
+<dt class="sig sig-object mat" id="src.base.cobrarrow.COBRArrow.otherVectorToArrow">
+<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">otherVectorToArrow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">fieldData</span></em>, <em class="sig-param"><span class="pre">fieldName</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/cobrarrow/COBRArrow.otherVectorToArrow.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.cobrarrow.COBRArrow.otherVectorToArrow" title="Permalink to this definition">¶</a></dt>
+<dd><p>otherVectorToArrow converts a numeric or cell vector to an Apache Arrow record batch.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>pyArrowRecordBatch = COBRArrow.otherVectorToArrow</strong> (<em>fieldData, fieldName</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>fieldData</strong> – Numeric or cell vector to be converted.</p></li>
+<li><p><strong>fieldName</strong> – Name of the field.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>pyArrowRecordBatch</strong> – Apache Arrow record batch containing the vector data.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>DESCRIPTION:</dt><dd><p>This function converts a numeric or cell vector to an Apache Arrow record batch.
+It creates a Python list from the vector and converts it to an Apache Arrow array.
+The array is then used to create an Apache Arrow record batch with the specified field name.</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>arrowBatch = COBRArrow.otherVectorToArrow([1, 2, 3], ‘fieldName’);</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="src.base.cobrarrow.COBRArrow.persistModel">
+<span class="sig-name descname"><span class="pre">persistModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">schemaName</span></em>, <em class="sig-param"><span class="pre">toOverwrite</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/cobrarrow/COBRArrow.persistModel.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.cobrarrow.COBRArrow.persistModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>persistModel sends a persist action to the server to save the model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>obj.persistModel</strong> (<em>schemaName</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>obj</strong> – Instance of the COBRArrow class.</p></li>
+<li><p><strong>schemaName</strong> – String representing the schema name to be persisted.</p></li>
+<li><p><strong>toOverwrite</strong> – (Optional) Boolean indicating whether to overwrite the model on the server. Default is false.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>None</strong></p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>DESCRIPTION:</dt><dd><p>This function sends a persist action to the server using Apache Arrow Flight
+to save the model data. It creates a string representation of the dictionary
+and converts it to bytes using Python’s encode method. The action is then created
+and called on the server to save the model.</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>arrowClient.persistModel(‘mySchema’);</p>
+</dd></dl>
+
+<dl class="mat staticmethod">
+<dt class="sig sig-object mat" id="src.base.cobrarrow.COBRArrow.pyArrowTableToMatField">
+<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">pyArrowTableToMatField</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">pyArrowTable</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/cobrarrow/COBRArrow.pyArrowTableToMatField.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.cobrarrow.COBRArrow.pyArrowTableToMatField" title="Permalink to this definition">¶</a></dt>
+<dd><p>pyArrowTableToMatField converts a PyArrow table to a MATLAB struct field.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>fieldData = COBRArrow.pyArrowTableToMatField</strong> (<em>pyArrowTable</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><p><strong>pyArrowTable</strong> – PyArrow table object containing the data.</p>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>fieldData</strong> – MATLAB data converted from the PyArrow table.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>DESCRIPTION:</dt><dd><p>This function checks the type of the field and calls the appropriate
+helper function to convert the data from a PyArrow table to a MATLAB structure.</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>fieldData = COBRArrow.pyArrowTableToMatField(arrowTable);</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="src.base.cobrarrow.COBRArrow.pyarrowFlight">
+<span class="sig-name descname"><span class="pre">pyarrowFlight</span></span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/cobrarrow/COBRArrow.pyarrowFlight.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.cobrarrow.COBRArrow.pyarrowFlight" title="Permalink to this definition">¶</a></dt>
+<dd><p>PyArrow Flight library</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="src.base.cobrarrow.COBRArrow.pyarrowLib">
+<span class="sig-name descname"><span class="pre">pyarrowLib</span></span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/cobrarrow/COBRArrow.pyarrowLib.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.cobrarrow.COBRArrow.pyarrowLib" title="Permalink to this definition">¶</a></dt>
+<dd><p>PyArrow library</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="src.base.cobrarrow.COBRArrow.readFromFlightRpc">
+<span class="sig-name descname"><span class="pre">readFromFlightRpc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">descriptor</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/cobrarrow/COBRArrow.readFromFlightRpc.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.cobrarrow.COBRArrow.readFromFlightRpc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads data from the server using Flight RPC and converts it to a PyArrow table.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>pyArrowTable = readFromFlightRpc</strong> (<em>obj, descriptor</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>obj</strong> – Instance of the COBRArrow class.</p></li>
+<li><p><strong>descriptor</strong> – FlightDescriptor object that describes the data to be read.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>pyArrowTable</strong> – PyArrow Table containing the retrieved data.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>DESCRIPTION:</dt><dd><p>This function attempts to retrieve data from the Flight server using the
+provided descriptor. If the server does not have available endpoints, it
+raises an error. If endpoints are available, it retrieves the data from
+the first available endpoint and converts it into a PyArrow table.</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>arrowTable = arrowClient.readFromFlightRpc(descriptor);</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="src.base.cobrarrow.COBRArrow.requireAuthentication">
+<span class="sig-name descname"><span class="pre">requireAuthentication</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/cobrarrow/COBRArrow.requireAuthentication.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.cobrarrow.COBRArrow.requireAuthentication" title="Permalink to this definition">¶</a></dt>
+<dd><p>checkLoginStatus checks if the user is authenticated by verifying the options.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>isAuthenticated = obj.checkLoginStatus()</strong></p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><p><strong>obj</strong> – Instance of the COBRArrow class.</p>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>isAuthenticated</strong> – Boolean indicating whether the user is authenticated.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>DESCRIPTION:</dt><dd><p>This function checks if the user is authenticated by verifying the options
+for the FlightClient object. If the options include a token, the user is
+considered authenticated. If the options do not include a token, the user
+is considered unauthenticated.</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>isAuthenticated = arrowClient.checkLoginStatus();</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="src.base.cobrarrow.COBRArrow.retrieveFlightData">
+<span class="sig-name descname"><span class="pre">retrieveFlightData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">endpoint</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/cobrarrow/COBRArrow.retrieveFlightData.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.cobrarrow.COBRArrow.retrieveFlightData" title="Permalink to this definition">¶</a></dt>
+<dd><p>retrieveFlightData retrieves data from the server using Flight RPC and converts it to a PyArrow table.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>pyArrowTable = obj.retrieveFlightData</strong> (<em>endpoint</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>obj</strong> – Instance of the COBRArrow class.</p></li>
+<li><p><strong>endpoint</strong> – Endpoint object representing where the data can be accessed.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><p><strong>pyArrowTable</strong> – PyArrow Table containing the retrieved data.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>DESCRIPTION:</dt><dd><dl class="simple">
+<dt>This function retrieves data from the server using the Flight RPC protocol.</dt><dd><p>It attempts to read all data at once using the provided endpoint. If an error
+occurs during this process, it reads the data in smaller chunks and combines them
+into a single PyArrow Table. The function returns the PyArrow Table containing the
+retrieved data.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>arrowTable = arrowClient.retrieveFlightData(endpoint);</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="src.base.cobrarrow.COBRArrow.sendField">
+<span class="sig-name descname"><span class="pre">sendField</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">schemaName</span></em>, <em class="sig-param"><span class="pre">fieldName</span></em>, <em class="sig-param"><span class="pre">fieldData</span></em>, <em class="sig-param"><span class="pre">toOverwrite</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/cobrarrow/COBRArrow.sendField.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.cobrarrow.COBRArrow.sendField" title="Permalink to this definition">¶</a></dt>
+<dd><p>sendField Sends individual field data to the server using Apache Arrow Flight.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>obj.sendField</strong> (<em>schemaName, fieldName, fieldData, toOverwrite</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>obj</strong> – Instance of the COBRArrow class.</p></li>
+<li><p><strong>schemaName</strong> – String specifying the schema name used as a prefix for the key.</p></li>
+<li><p><strong>fieldName</strong> – String representing the name of the field to be sent.</p></li>
+<li><p><strong>fieldData</strong> – Data for the field to be sent to the server.</p></li>
+<li><p><strong>toOverwrite</strong> – (Optional) Boolean indicating whether to overwrite an existing field on the server. Defaults to false.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>None</strong></p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>DESCRIPTION:</dt><dd><p>This function performs the following steps:
+1. Concatenates the schema name and field name to form a unique key.
+2. Creates a FlightDescriptor using the key.
+3. Checks if a field with the same key already exists on the server.
+4. If the field exists and <cite>toOverwrite</cite> is false, it raises an error.
+5. Converts the field data to Apache Arrow format using the <cite>MatFieldToPyArrow</cite> method.
+6. Sends the field data to the server using Flight RPC via the <cite>writeToFlightRpc</cite> method.</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<p>% Send a new field with the option to overwrite if it exists
+arrowClient.sendField(‘mySchema’, ‘myField’, myData, true);</p>
+<p>% Send a field without overwriting existing fields
+arrowClient.sendField(‘mySchema’, ‘myField’, myData);</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="src.base.cobrarrow.COBRArrow.sendModel">
+<span class="sig-name descname"><span class="pre">sendModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">schemaName</span></em>, <em class="sig-param"><span class="pre">toPersist</span></em>, <em class="sig-param"><span class="pre">toOverwrite</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/cobrarrow/COBRArrow.sendModel.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.cobrarrow.COBRArrow.sendModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>sendModel Transmits model data to the server using Apache Arrow Flight.
+Note :
+1. Field <cite>subSystems</cite> are not sent.
+2. Field that has unsupported data type will be sent as an empty field, including struct type. It</p>
+<blockquote>
+<div><p>will raise a warning.</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>obj.sendModel</strong> (<em>model, schemaName, toPersist, toOverwrite</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>obj</strong> – Instance of the COBRArrow class.</p></li>
+<li><p><strong>model</strong> – MATLAB structure containing the model data to be sent.</p></li>
+<li><p><strong>schemaName</strong> – String specifying the schema name used as a prefix for keys in the data.</p></li>
+<li><p><strong>toPersist</strong> – (Optional) Boolean indicating whether to persist the model on the server. Defaults to false.</p></li>
+<li><p><strong>toOverwrite</strong> – (Optional) Boolean indicating whether to overwrite an existing model on the server. Defaults to false.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>None</strong></p>
+</dd>
+</dl>
+<dl>
+<dt>DESCRIPTION:</dt><dd><p>This function processes each field of the input model structure to:
+1. Create a FlightDescriptor for each field (excluding fields named ‘subSystems’ and ‘SetupInfo’).
+2. Convert the field data to Apache Arrow format using PyArrow.
+3. Send the formatted data to the server via Flight RPC.
+4. Optionally, persist the model on the server if <cite>toPersist</cite> is true.
+5. Ensure that the model is not overwritten unless explicitly allowed by <cite>toOverwrite</cite>.</p>
+<p>The function performs the following checks:
+- If <cite>toOverwrite</cite> is false and the schema already exists on the server, an error is raised.
+- If <cite>toPersist</cite> is true, it attempts to persist the model and handles any potential errors.</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<p>% Send a model with the option to overwrite if it exists
+arrowClient.sendModel(myModel, ‘mySchema’, true, true);</p>
+</dd></dl>
+
+<dl class="mat staticmethod">
+<dt class="sig sig-object mat" id="src.base.cobrarrow.COBRArrow.unsupportedFieldToArrow">
+<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">unsupportedFieldToArrow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">fieldName</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/cobrarrow/COBRArrow.unsupportedFieldToArrow.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.cobrarrow.COBRArrow.unsupportedFieldToArrow" title="Permalink to this definition">¶</a></dt>
+<dd><p>unsupportedFieldToArrow creates an empty Apache Arrow record batch for an unsupported field.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>pyArrowRecordBatch = COBRArrow.unsupportedFieldToArrow</strong> (<em>fieldName</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><p><strong>fieldName</strong> – Name of the unsupported field.</p>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>pyArrowRecordBatch</strong> – Apache Arrow record batch for the unsupported field.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>DESCRIPTION:</dt><dd><p>This function creates an empty Apache Arrow record batch for an unsupported field.
+It creates an empty string array and converts it to an Apache Arrow record batch.</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>arrowBatch = COBRArrow.unsupportedFieldToArrow(‘fieldName’);</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="src.base.cobrarrow.COBRArrow.writeToFlightRpc">
+<span class="sig-name descname"><span class="pre">writeToFlightRpc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">descriptor</span></em>, <em class="sig-param"><span class="pre">pyArrowRecordBatch</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/cobrarrow/COBRArrow.writeToFlightRpc.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.cobrarrow.COBRArrow.writeToFlightRpc" title="Permalink to this definition">¶</a></dt>
+<dd><p>writeToFlightRpc sends a PyArrow record batch to the server using Flight RPC.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>obj.writeToFlightRpc</strong> (<em>descriptor, pyArrowRecordBatch</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>obj</strong> – Instance of the COBRArrow class.</p></li>
+<li><p><strong>descriptor</strong> – FlightDescriptor object describing the data.</p></li>
+<li><p><strong>pyArrowRecordBatch</strong> – PyArrow RecordBatch to be sent to the server.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="simple">
+<dt>DESCRIPTION:</dt><dd><p>This function sends a PyArrow RecordBatch to the server using the Flight RPC protocol.
+It writes the batch to the server and closes the writer.</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>arrowClient.writeToFlightRpc(descriptor, pyArrowRecordBatch);</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="mat class">
+<dt class="sig sig-object mat" id="src.base.cobrarrow.COBRArrowSolver">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">COBRArrowSolver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">solverName</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/cobrarrow/COBRArrowSolver.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.cobrarrow.COBRArrowSolver" title="Permalink to this definition">¶</a></dt>
+<dd><p>COBRArrowSolver is a class for managing solver configurations.
+It allows setting a solver’s name and managing key-value pairs
+of parameters required by the solver.</p>
+<p>The class provides methods to set, update, remove, and display
+solver parameters, enabling easy configuration and adjustment
+of solver settings within MATLAB.</p>
+<dl class="simple">
+<dt>Example usage:</dt><dd><p>solver = COBRArrowSolver(‘GLPK’);
+solver = solver.setParameter(‘maxIterations’, 1000);
+solver.showParameters();</p>
+</dd>
+</dl>
+<dl class="mat method">
+<dt class="sig sig-object mat" id="src.base.cobrarrow.COBRArrowSolver.COBRArrowSolver">
+<span class="sig-name descname"><span class="pre">COBRArrowSolver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">solverName</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/cobrarrow/COBRArrowSolver.COBRArrowSolver.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.cobrarrow.COBRArrowSolver.COBRArrowSolver" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructor method to initialize the solver with a name
+and an empty dictionary for parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">INPUT</dt>
+<dd class="field-odd"><p><strong>solverName</strong> – A string specifying the name of the solver. It is not case-sensitive.
+Current supported solvers are ‘GLPK’, ‘Gurobi’, ‘CPLEX’.</p>
+</dd>
+<dt class="field-even">OUTPUT</dt>
+<dd class="field-even"><p><strong>obj</strong> – An instance of the COBRArrowSolver class.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="src.base.cobrarrow.COBRArrowSolver.clearParameters">
+<span class="sig-name descname"><span class="pre">clearParameters</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/cobrarrow/COBRArrowSolver.clearParameters.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.cobrarrow.COBRArrowSolver.clearParameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to clear all parameters from the solver’s dictionary.
+This reinitializes the parameters map to an empty state.</p>
+<dl class="field-list simple">
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>obj</strong> – The updated instance of the COBRArrowSolver class with cleared parameters.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="src.base.cobrarrow.COBRArrowSolver.name">
+<span class="sig-name descname"><span class="pre">name</span></span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/cobrarrow/COBRArrowSolver.name.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.cobrarrow.COBRArrowSolver.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>The name of the solver, e.g., ‘GLPK’</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="src.base.cobrarrow.COBRArrowSolver.parameters">
+<span class="sig-name descname"><span class="pre">parameters</span></span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/cobrarrow/COBRArrowSolver.parameters.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.cobrarrow.COBRArrowSolver.parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>A dictionary to store solver parameters as key-value pairs</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="src.base.cobrarrow.COBRArrowSolver.removeParameter">
+<span class="sig-name descname"><span class="pre">removeParameter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">key</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/cobrarrow/COBRArrowSolver.removeParameter.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.cobrarrow.COBRArrowSolver.removeParameter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to remove a parameter from the solver’s dictionary.
+The parameter is identified by its key.</p>
+<dl class="field-list simple">
+<dt class="field-odd">INPUT</dt>
+<dd class="field-odd"><p><strong>key</strong> – A string specifying the parameter’s key to be removed.</p>
+</dd>
+<dt class="field-even">OUTPUT</dt>
+<dd class="field-even"><p><strong>obj</strong> – The updated instance of the COBRArrowSolver class.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="src.base.cobrarrow.COBRArrowSolver.setName">
+<span class="sig-name descname"><span class="pre">setName</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">solverName</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/cobrarrow/COBRArrowSolver.setName.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.cobrarrow.COBRArrowSolver.setName" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to update the solver’s name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">INPUT</dt>
+<dd class="field-odd"><p><strong>solverName</strong> – A string specifying the new name of the solver.</p>
+</dd>
+<dt class="field-even">OUTPUT</dt>
+<dd class="field-even"><p><strong>obj</strong> – The updated instance of the COBRArrowSolver class.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="src.base.cobrarrow.COBRArrowSolver.setParameter">
+<span class="sig-name descname"><span class="pre">setParameter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">key</span></em>, <em class="sig-param"><span class="pre">value</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/cobrarrow/COBRArrowSolver.setParameter.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.cobrarrow.COBRArrowSolver.setParameter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to add or update a solver parameter.
+If the key already exists, its value is updated.</p>
+<dl class="field-list simple">
+<dt class="field-odd">INPUT</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>key</strong> – A string specifying the parameter’s key.</p></li>
+<li><p><strong>value</strong> – The value associated with the parameter key.</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUT</dt>
+<dd class="field-even"><p><strong>obj</strong> – The updated instance of the COBRArrowSolver class.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="src.base.cobrarrow.COBRArrowSolver.showParameters">
+<span class="sig-name descname"><span class="pre">showParameters</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/cobrarrow/COBRArrowSolver.showParameters.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.cobrarrow.COBRArrowSolver.showParameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to display all the solver’s parameters.
+The parameters are shown as key-value pairs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>None. This method displays the parameters in the console.</strong></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.base.cobrarrow.initCobrarrow">
+<span class="sig-name descname"><span class="pre">initCobrarrow</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/cobrarrow/initCobrarrow.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.cobrarrow.initCobrarrow" title="Permalink to this definition">¶</a></dt>
+<dd><p>Display MATLAB version</p>
+</dd></dl>
+
+</section>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../../dataIntegration/index.html" class="btn btn-default float-right" title="Dataintegration" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../codeConsistency/index.html" class="btn btn-default" title="Codeconsistency" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017-2021, The COBRA Toolbox developers.
+
+    </p>
+  </div>
+  Built with Sphinx using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'2.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+    <script type="text/javascript" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/sphinx_highlight.js"></script>
+
+  
+
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TRCMZL1FKK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TRCMZL1FKK');
+  </script>
+    
+</body>
+</html>

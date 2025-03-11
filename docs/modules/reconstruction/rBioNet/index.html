@@ -1,0 +1,1393 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Rbionet &mdash; The COBRA Toolbox</title>
+  
+
+  
+  
+  
+    <link rel="apple-touch-icon" sizes="180x180" href="../../../_static/img/apple-touch-icon.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../_static/img/favicon-32x32.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="16x16" href="../../../_static/img/favicon-16x16.png">
+  
+  
+    <link rel="mask-icon" href="../../../_static/img/safari-pinned-tab.svg" color="#5bbad5">
+  
+  
+    <link rel="manifest" href="../../../_static/json/manifest.json">
+  
+  
+    <meta name="msapplication-config" content="../../../_static/browserconfig.xml">
+  
+  <meta name="theme-color" content="#ffffff">
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+  <script src="../../../_static/js/jquery.easy-autocomplete.min.js" type="text/javascript" ></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+  <link href="../../../_static/css/easy-autocomplete.min.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/cobra.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../../_static/css/cobra.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="The COBRA Toolbox" href="../../../index.html"/>
+        <link rel="up" title="Reconstruction" href="../index.html"/>
+        <link rel="next" title="Gui" href="gui/index.html"/>
+        <link rel="prev" title="Growthexpmatch" href="../growthExpMatch/index.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> The COBRA Toolbox
+          
+
+          
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
+          
+          </a>
+
+              
+          <h1>The COBRA Toolbox</h1>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" id="simple"/>
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+    <script>
+    	var options = {
+
+		url: "../../../_static/json/functions.json",
+
+		getValue: "name",
+
+		list: {
+            onKeyEnterEvent: function(item) {
+                    return "_static/../" + item.website_url
+            },
+            maxNumberOfElements: 25,
+			match: {
+					enabled: true,
+			},
+            sort: {
+			    enabled: true
+		    }
+		},
+
+    	template: {
+	    	type: "custom",
+		    method: function(value, item) {
+                return "<span><a href='../../../search.html?q=" + item.name + "&check_keywords=yes&area=default'>" + value + "</a>" + "<a href='../../../_static/../" + item.website_url + "' ><img src='../../../_static/link.svg'/></a></span>";
+		    }
+	    },
+
+		theme: "square"
+
+	};
+
+	$("#simple").easyAutocomplete(options);
+
+
+    </script>
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../../../index.html">Home</a></li>
+              </ul>
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Functions</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../analysis/index.html">Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../base/index.html">Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dataIntegration/index.html">Dataintegration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../design/index.html">Design</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Reconstruction</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../modelGeneration/index.html">Modelgeneration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../refinement/index.html">Refinement</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../demeter/index.html">Demeter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../fastGapFill/index.html">Fastgapfill</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../comparison/index.html">Comparison</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../metaboRePort/index.html">Metaboreport</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../growthExpMatch/index.html">Growthexpmatch</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Rbionet</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gui/index.html">Gui</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../visualization/index.html">Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../cite.html">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../support.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../plan.html">Development Plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contact.html">Contact</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../citations.html">Citations</a></li>
+</ul>
+
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">The COBRA Toolbox</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../contents.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Functions</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Reconstruction</a></li>
+      <li class="breadcrumb-item active">Rbionet</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="https://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <section id="rbionet">
+<span id="id1"></span><h1>Rbionet<a class="headerlink" href="#rbionet" title="Permalink to this heading">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="gui/index.html">Gui</a></li>
+</ul>
+</div>
+<span class="target" id="module-src.reconstruction.rBioNet"></span><dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.rBioNet.BalancePrep">
+<span class="sig-name descname"><span class="pre">BalancePrep</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">meta_meta</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/BalancePrep.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.BalancePrep" title="Permalink to this definition">¶</a></dt>
+<dd><p>Balances the reactions, used in <cite>ReactionChecks</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>output = BalancePrep</strong> (<em>meta_meta</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><p><strong>meta_meta</strong> – matrix from <cite>ReconstructionTool</cite></p>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>output</strong> – <cite>leftside</cite>, <cite>rightside</cite>, <cite>charge_l</cite> and <cite>charge_r</cite> in <cite>varargout</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.rBioNet.CreateGPR">
+<span class="sig-name descname"><span class="pre">CreateGPR</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/CreateGPR.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.CreateGPR" title="Permalink to this definition">¶</a></dt>
+<dd><p>m-file for CreateGPR.fig
+CreateGPR, by itself, creates a new object or raises the existing
+singleton*.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>varargout = addmetabolites</strong> (<em>varargin</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><p><strong>varargin</strong> – various input arguments</p>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><p><strong>varargout</strong> – various output arguments</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>H = CreateGPR() %returns the handle to a new CreateGPR or the handle to the existing singleton*.</p>
+<p>CreateGPR(‘CALLBACK’,hObject,eventData,handles,…) %calls the local
+%function named <cite>CALLBACK</cite> in CreateGPR.M with the given input arguments.</p>
+<p>CreateGPR(‘Property’,’Value’,…) %creates a new CreateGPR or raises the
+%existing singleton*.  Starting from the left, property value pairs are
+%applied to the GUI before <cite>CreateGPR_OpeningFcn</cite> gets called. An
+%unrecognized property name or invalid value makes property application
+%stop. All inputs are passed to <cite>CreateGPR_OpeningFcn</cite> via <cite>varargin</cite>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>See GUI Options on GUIDE’s Tools menu.  Choose “GUI allows only one
+instance to run (singleton)”.
+See also: GUIDE, GUIDATA, GUIHANDLES</p>
+</div>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.rBioNet.GPR2Genes">
+<span class="sig-name descname"><span class="pre">GPR2Genes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">GPR</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/GPR2Genes.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.GPR2Genes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Input is a list of GPRs and output is a unique list of genes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>Genes = GPR2Genes</strong> (<em>GPR</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><p><strong>GPR</strong> – list of GPRs</p>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>Genes</strong> – unique list of genes</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.rBioNet.GenesAndReactions">
+<span class="sig-name descname"><span class="pre">GenesAndReactions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/GenesAndReactions.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.GenesAndReactions" title="Permalink to this definition">¶</a></dt>
+<dd><p>m-file for GenesAndReactions.fig
+GenesAndReactions, by itself, creates a new object or raises the existing
+singleton*.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>varargout = GenesAndReactions</strong> (<em>varargin</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><p><strong>varargin</strong> – various input arguments</p>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><p><strong>varargout</strong> – various output arguments</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>H = GenesAndReactions() %returns the handle to a new GenesAndReactions or the handle to the existing singleton*.</p>
+<p>GenesAndReactions(‘CALLBACK’,hObject,eventData,handles,…) %calls the local
+%function named <cite>CALLBACK</cite> in GenesAndReactions.M with the given input arguments.</p>
+<p>GenesAndReactions(‘Property’,’Value’,…) %creates a new GEN or raises the
+%existing singleton*.  Starting from the left, property value pairs are
+%applied to the GUI before <cite>GenesAndReactions_OpeningFcn</cite> gets called. An
+%unrecognized property name or invalid value makes property application
+%stop. All inputs are passed to <cite>GenesAndReactions_OpeningFcn</cite> via <cite>varargin</cite>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>See GUI Options on GUIDE’s Tools menu.  Choose “GUI allows only one
+instance to run (singleton)”.
+See also: GUIDE, GUIDATA, GUIHANDLES</p>
+</div>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.rBioNet.GenesReactions">
+<span class="sig-name descname"><span class="pre">GenesReactions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">genelist</span></em>, <em class="sig-param"><span class="pre">rxns</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/GenesReactions.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.GenesReactions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns genes in model and the associative reactions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>list = GenesReactions</strong> (<em>genelist, rxns</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>genelist</strong> – list of genes</p></li>
+<li><p><strong>rxns</strong> – reactions</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>list</strong> – genes in model and the associative reactions</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.rBioNet.Keep_reactions">
+<span class="sig-name descname"><span class="pre">Keep_reactions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/Keep_reactions.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.Keep_reactions" title="Permalink to this definition">¶</a></dt>
+<dd><p>m-file for Keep_reactions.fig
+Keep_reactions, by itself, creates a new object or raises the existing singleton*.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>varargout = Keep_reactions</strong> (<em>varargin</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><p><strong>varargin</strong> – various input arguments</p>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><p><strong>varargout</strong> – various output arguments</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>H = Keep_reactions() returns the handle to a new Keep_reactions or the handle to
+the existing singleton*.%</p>
+<p>Keep_reactions(‘CALLBACK’,hObject,eventData,handles,…) calls the local
+function named CALLBACK in Keep_reactions.M with the given input arguments.</p>
+<p>Keep_reactions(‘Property’,’Value’,…) creates a new Keep_reactions or raises the
+existing singleton*.  Starting from the left, property value pairs are
+applied to the GUI before <cite>Keep_reactions_OpeningFcn</cite> gets called.  An
+unrecognized property name or invalid value makes property application
+stop.  All inputs are passed to <cite>Keep_reactions_OpeningFcn</cite> via <cite>varargin</cite>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>See GUI Options on GUIDE’s Tools menu.  Choose “GUI allows only one
+instance to run (singleton)”.
+See also: GUIDE, GUIDATA, GUIHANDLES</p>
+</div>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.rBioNet.LegalRxnFormula">
+<span class="sig-name descname"><span class="pre">LegalRxnFormula</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">formula</span></em>, <em class="sig-param"><span class="pre">abbreviation</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/LegalRxnFormula.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.LegalRxnFormula" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if all reactions are legal</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>result = LegalRxnFormula</strong> (<em>formula, abbreviation</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>formula</strong> – cell vector with reactions formulas</p></li>
+<li><p><strong>abbreviation</strong> – cell vector with reaction abbreviation (optional)</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>result</strong> – true if all reactions are legal, else false. <cite>msgbox</cite> lets user know which reaction is incorrect</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This script is just a start and only contains a few checks.
+Add more tests in near future.</p>
+</div>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.rBioNet.LoadReaction">
+<span class="sig-name descname"><span class="pre">LoadReaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">rxnline</span></em>, <em class="sig-param"><span class="pre">metab</span></em>, <em class="sig-param"><span class="pre">meta_compartment</span></em>, <em class="sig-param"><span class="pre">rxn_line</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/LoadReaction.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.LoadReaction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provides input argument for <cite>ReconstructionTool</cite> and <cite>ReactionChecks</cite> and other functions</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>output = LoadReaction</strong> (<em>rxnline, metab, meta_compartment, rxn_line</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>rxnline</strong> – data of the reaction</p></li>
+<li><p><strong>metab</strong> – from ReconstructionTool</p></li>
+<li><p><strong>meta_compartment</strong> – from ReconstructionTool</p></li>
+<li><p><strong>rxn_line</strong> – not used</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><p><strong>output</strong> – input argument for <cite>ReconstructionTool</cite> and <cite>ReactionChecks</cite> and other functions</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.rBioNet.ReactionChecks">
+<span class="sig-name descname"><span class="pre">ReactionChecks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">rxn</span></em>, <em class="sig-param"><span class="pre">metab</span></em>, <em class="sig-param"><span class="pre">meta_compartment</span></em>, <em class="sig-param"><span class="pre">newrxns</span></em>, <em class="sig-param"><span class="pre">data</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/ReactionChecks.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.ReactionChecks" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is an start to simplefying the balancing and similarity
+checking of reactions process.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>data_output = ReactionChecks</strong> (<em>rxn, metab, meta_compartment, newrxns, data</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>rxn</strong> – reactions</p></li>
+<li><p><strong>metab</strong> – from ReconstructionTool</p></li>
+<li><p><strong>meta_compartment</strong> – from ReconstructionTool</p></li>
+<li><p><strong>newrxns</strong> – reactions to be added to model</p></li>
+<li><p><strong>data</strong> – data of reactions process</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>data_output</strong> – if everything is okay</p>
+<ul class="simple">
+<li><p>newrxns - (reactions can be removed) set table</p></li>
+<li><p>handles.data - all similarity info including dispdata.</p></li>
+<li><p>handles.check</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.rBioNet.ReactionEq">
+<span class="sig-name descname"><span class="pre">ReactionEq</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">react</span></em>, <em class="sig-param"><span class="pre">rxns</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/ReactionEq.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.ReactionEq" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compares reactions for equality</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>matched = ReactionEq</strong> (<em>react, rxns</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>react</strong> – new reaction</p></li>
+<li><p><strong>rxns</strong> – similar reactions</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>matched</strong> – abbreviation name for exact reaction match</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.rBioNet.ReconstructionCreator">
+<span class="sig-name descname"><span class="pre">ReconstructionCreator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/ReconstructionCreator.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.ReconstructionCreator" title="Permalink to this definition">¶</a></dt>
+<dd><p>m-file for ReconstructionCreator.fig
+ReconstructionCreator, by itself, creates a new object or raises the existing singleton*.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>varargout = ReconstructionCreator</strong> (<em>varargin</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><p><strong>varargin</strong> – various input arguments</p>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><p><strong>varargout</strong> – various output arguments</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>H = ReconstructionCreator returns the handle to a new ReconstructionCreator or the handle to
+the existing singleton*.</p>
+<p>ReconstructionCreator(‘CALLBACK’,hObject,eventData,handles,…) calls the local
+function named CALLBACK in ReconstructionCreator.M with the given input arguments.</p>
+<p>ReconstructionCreator(‘Property’,’Value’,…) creates a new ReconstructionCreator or raises the
+existing singleton*.  Starting from the left, property value pairs are
+applied to the GUI before <cite>ReconstructionCreator_OpeningFcn</cite> gets called.  An
+unrecognized property name or invalid value makes property application
+stop.  All inputs are passed to <cite>ReconstructionCreator_OpeningFcn</cite> via <cite>varargin</cite>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>See GUI Options on GUIDE’s Tools menu.  Choose “GUI allows only one
+instance to run (singleton)”.
+See also: GUIDE, GUIDATA, GUIHANDLES</p>
+</div>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.rBioNet.ReconstructionTool">
+<span class="sig-name descname"><span class="pre">ReconstructionTool</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/ReconstructionTool.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.ReconstructionTool" title="Permalink to this definition">¶</a></dt>
+<dd><p>m-file for ReconstructionTool.fig
+ReconstructionTool by itself, creates a new object or raises the existing singleton*.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>varargout = ReconstructionTool</strong> (<em>varargin</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><p><strong>varargin</strong> – various input arguments</p>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><p><strong>varargout</strong> – various output arguments</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>H = ReconstructionTool() returns the handle to a new ReconstructionTool or the handle to
+the existing singleton*.</p>
+<p>ReconstructionTool(‘CALLBACK’,hObject,eventData,handles,…) calls the local
+function named CALLBACK in ReconstructionTool.M with the given input arguments.</p>
+<p>ReconstructionTool(‘Property’,’Value’,…) creates a new ReconstructionTool or raises the
+existing singleton*.  Starting from the left, property value pairs are
+applied to the GUI before <cite>ReconstructionTool_OpeningFcn</cite> gets called.  An
+unrecognized property name or invalid value makes property application
+stop.  All inputs are passed to <cite>ReconstructionTool_OpeningFcn</cite> via <cite>varargin</cite>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>See GUI Options on GUIDE’s Tools menu.  Choose “GUI allows only one
+instance to run (singleton)”.
+See also: GUIDE, GUIDATA, GUIHANDLES</p>
+</div>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.rBioNet.addmetabolites">
+<span class="sig-name descname"><span class="pre">addmetabolites</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/addmetabolites.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.addmetabolites" title="Permalink to this definition">¶</a></dt>
+<dd><p>m-file for addmetabolites.fig
+addmetabolites, by itself, creates a new object or raises the existing singleton*.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>varargout = addmetabolites</strong> (<em>varargin</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><p><strong>varargin</strong> – various input arguments</p>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><p><strong>varargout</strong> – various output arguments</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>H = addmetabolites() %returns the handle to a new addmetabolites or the handle to the existing singleton*.</p>
+<p>addmetabolites(‘CALLBACK’,hObject,eventData,handles,…) %calls the local
+%function named <cite>CALLBACK</cite> in addmetabolites.M with the given input arguments.</p>
+<p>addmetabolites(‘Property’,’Value’,…) %creates a new addmetabolites or raises the
+%existing singleton*.  Starting from the left, property value pairs are
+%applied to the GUI before <cite>addmetabolites_OpeningFcn</cite> gets called. An
+%unrecognized property name or invalid value makes property application
+%stop. All inputs are passed to <cite>addmetabolites_OpeningFcn</cite> via <cite>varargin</cite>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>See GUI Options on GUIDE’s Tools menu.  Choose “GUI allows only one
+instance to run (singleton)”.
+See also: GUIDE, GUIDATA, GUIHANDLES</p>
+</div>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.rBioNet.addmissing">
+<span class="sig-name descname"><span class="pre">addmissing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/addmissing.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.addmissing" title="Permalink to this definition">¶</a></dt>
+<dd><p>MATLAB code for addmissing.fig
+addmissing, by itself, creates a new object or raises the existing
+singleton*.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>varargout = addmissing</strong> (<em>varargin</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><p><strong>varargin</strong> – various input arguments</p>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><p><strong>varargout</strong> – various output arguments</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>H = addmissing() %returns the handle to a new addmissing or the handle to
+%the existing singleton*.</p>
+<p>addmissing(‘CALLBACK’,hObject,eventData,handles,…) %calls the local
+%function named <cite>CALLBACK</cite> in addmissing.M with the given input arguments.</p>
+<p>addmissing(‘Property’,’Value’,…) creates a new addmissing or raises the
+%existing singleton*.  Starting from the left, property value pairs are
+%applied to the GUI before <cite>addmissing_OpeningFcn</cite> gets called. An
+%unrecognized property name or invalid value makes property application
+%stop. All inputs are passed to <cite>addmissing_OpeningFcn</cite> via <cite>varargin</cite>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>See GUI Options on GUIDE’s Tools menu.  Choose “GUI allows only one
+instance to run (singleton)”.
+See also: GUIDE, GUIDATA, GUIHANDLES</p>
+</div>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.rBioNet.addreactions">
+<span class="sig-name descname"><span class="pre">addreactions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/addreactions.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.addreactions" title="Permalink to this definition">¶</a></dt>
+<dd><p>m-file for addreactions.fig
+addreactions, by itself, creates a new object or raises the existing singleton*.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>varargout = addreactions</strong> (<em>varargin</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><p><strong>varargin</strong> – various input arguments</p>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><p><strong>varargout</strong> – various output arguments</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>H = addreactions() %returns the handle to a new addreactions or the handle to
+%the existing singleton*.</p>
+<p>addreactions(‘CALLBACK’,hObject,eventData,handles,…) %calls the local
+%function named <cite>CALLBACK</cite> in addreactions.M with the given input arguments.</p>
+<p>addreactions(‘Property’,’Value’,…) %creates a new addreactions or raises the
+%existing singleton*.  Starting from the left, property value pairs are
+%applied to the GUI before <cite>addreactions_OpeningFcn</cite> gets called.  An
+%unrecognized property name or invalid value makes property application
+%stop.  All inputs are passed to <cite>addreactions_OpeningFcn</cite> via <cite>varargin</cite>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>See GUI Options on GUIDE’s Tools menu.  Choose “GUI allows only one
+instance to run (singleton)”.
+See also: GUIDE, GUIDATA, GUIHANDLES</p>
+</div>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.rBioNet.balancecheck">
+<span class="sig-name descname"><span class="pre">balancecheck</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">meta_meta</span></em>, <em class="sig-param"><span class="pre">output</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/balancecheck.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.balancecheck" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns balance - if empty it means that balance checks out, otherwise the output is a cell matrix</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>balance = balancecheck</strong> (<em>meta_meta, output</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>meta_meta</strong> – is cell matrix meta_meta type, with one metabolite in each line,
+rows are [Abbreviation, Description, Coefficient, Compartment, Side, Charge formula].</p></li>
+<li><p><strong>output</strong> – default = 0, other option = 1</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>balance</strong> – is empty if balance checks out, if unbalanced it returns
+cell matrix with <cite>Elements</cite>, <cite>prod</cite> and <cite>sub</cite>;</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.rBioNet.closeGUI">
+<span class="sig-name descname"><span class="pre">closeGUI</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/closeGUI.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.closeGUI" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>closeGUI()</strong></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.rBioNet.compartment">
+<span class="sig-name descname"><span class="pre">compartment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/compartment.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.compartment" title="Permalink to this definition">¶</a></dt>
+<dd><p>m-file for compartment.fig
+compartment, by itself, creates a new object or raises the existing
+singleton*.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>varargout = compartment</strong> (<em>varargin</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><p><strong>varargin</strong> – various input arguments</p>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><p><strong>varargout</strong> – various output arguments</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>H = compartment() %returns the handle to a new compartment or the handle to
+%the existing singleton*.</p>
+<p>compartment(‘CALLBACK’,hObject,eventData,handles,…) %calls the local
+%function named CALLBACK in compartment.M with the given input arguments.</p>
+<p>compartment(‘Property’,’Value’,…) %creates a new compartment or raises the
+%existing singleton*.  Starting from the left, property value pairs are
+%applied to the GUI before <cite>compartment_OpeningFcn</cite> gets called.  An
+%unrecognized property name or invalid value makes property application
+%stop.  All inputs are passed to <cite>compartment_OpeningFcn</cite> via <cite>varargin</cite>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>See GUI Options on GUIDE’s Tools menu.  Choose “GUI allows only one
+instance to run (singleton)”.
+See also: GUIDE, GUIDATA, GUIHANDLES</p>
+</div>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.rBioNet.data2model">
+<span class="sig-name descname"><span class="pre">data2model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">data</span></em>, <em class="sig-param"><span class="pre">description</span></em>, <em class="sig-param"><span class="pre">database</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/data2model.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.data2model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes in data from <cite>rbionet</cite> to create a complete reconstruction</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>model_out = data2model</strong> (<em>data, description,database</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>data</strong> – data from <cite>rbionet</cite></p></li>
+<li><p><strong>description</strong> – model description</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUT</dt>
+<dd class="field-odd"><p><strong>database</strong> – file with reaction and metabolite database in format:
+database.reactions=reaction database
+database.metabolites=metabolite database</p>
+</dd>
+<dt class="field-even">OUTPUT</dt>
+<dd class="field-even"><p><strong>model_out</strong> – creates a complete reconstruction</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.rBioNet.formula2mets">
+<span class="sig-name descname"><span class="pre">formula2mets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">formula</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/formula2mets.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.formula2mets" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes a rxn formula and produces a list of metabolites</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>metabolites = formula2mets</strong> (<em>formula</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><p><strong>formula</strong> – rxn formula</p>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>metabolites</strong> – list of metabolites</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>uses <cite>parseRxnFormula.m</cite> (Cobra Toolbox)</p>
+</div>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.rBioNet.getgenelist">
+<span class="sig-name descname"><span class="pre">getgenelist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">input_dir</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/getgenelist.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.getgenelist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads gene-list text file and returns data.
+Default SIZE for GENELIST.txt is 7 columns! Each column is separated with
+a tab.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>out = getgenelist</strong> (<em>input_dir</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><p><strong>input_dir</strong> – gene-list text file</p>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>out</strong> – data</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.rBioNet.load_reaction">
+<span class="sig-name descname"><span class="pre">load_reaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/load_reaction.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.load_reaction" title="Permalink to this definition">¶</a></dt>
+<dd><p>m-file for load_reaction.fig
+load_reaction, by itself, creates a new object or raises the existing singleton*.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>varargout = load_reaction</strong> (<em>varargin</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><p><strong>varargin</strong> – various input arguments</p>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><p><strong>varargout</strong> – various output arguments</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>H = load_reaction returns the handle to a new load_reaction or the handle to
+the existing singleton*.</p>
+<p>load_reaction(‘CALLBACK’,hObject,eventData,handles,…) calls the local
+function named CALLBACK in load_reaction.M with the given input arguments.</p>
+<p>load_reaction(‘Property’,’Value’,…) creates a new load_reaction or raises the
+existing singleton*.  Starting from the left, property value pairs are
+applied to the GUI before <cite>load_reaction_OpeningFcn</cite> gets called.  An
+unrecognized property name or invalid value makes property application
+stop.  All inputs are passed to <cite>load_reaction_OpeningFcn</cite> via <cite>varargin</cite>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>See GUI Options on GUIDE’s Tools menu.  Choose “GUI allows only one
+instance to run (singleton)”.
+See also: GUIDE, GUIDATA, GUIHANDLES</p>
+</div>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.rBioNet.met_charge_formula">
+<span class="sig-name descname"><span class="pre">met_charge_formula</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/met_charge_formula.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.met_charge_formula" title="Permalink to this definition">¶</a></dt>
+<dd><p>MATLAB code for met_charge_formula.fig
+met_charge_formula, by itself, creates a new object or raises the existing singleton*.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>varargout = met_charge_formula</strong> (<em>varargin</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><p><strong>varargin</strong> – various input arguments</p>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><p><strong>varargout</strong> – various output arguments</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>H = met_charge_formula() returns the handle to a new met_charge_formula or the handle to
+the existing singleton*.</p>
+<p>met_charge_formula(‘CALLBACK’,hObject,eventData,handles,…) calls the local
+function named CALLBACK in met_charge_formula.M with the given input arguments.</p>
+<p>met_charge_formula(‘Property’,’Value’,…) creates a new met_charge_formula or raises the
+existing singleton*.  Starting from the left, property value pairs are
+applied to the GUI before <cite>met_charge_formula_OpeningFcn</cite> gets called.  An
+unrecognized property name or invalid value makes property application
+stop.  All inputs are passed to <cite>met_charge_formula_OpeningFcn</cite> via <cite>varargin</cite>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>See GUI Options on GUIDE’s Tools menu.  Choose “GUI allows only one
+instance to run (singleton)”.
+See also: GUIDE, GUIDATA, GUIHANDLES</p>
+</div>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.rBioNet.metabolites_in_database">
+<span class="sig-name descname"><span class="pre">metabolites_in_database</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/metabolites_in_database.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.metabolites_in_database" title="Permalink to this definition">¶</a></dt>
+<dd><p>m-file for metabolites_in_database.fig
+metabolites_in_database, by itself, creates a new object or raises the existing singleton*.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>varargout = metabolites_in_database</strong> (<em>varargin</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><p><strong>varargin</strong> – various input arguments</p>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><p><strong>varargout</strong> – various output arguments</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>H = metabolites_in_database() returns the handle to a new metabolites_in_database or the handle to
+the existing singleton*.</p>
+<p>metabolites_in_database(‘CALLBACK’,hObject,eventData,handles,…) calls the local
+function named CALLBACK in metabolites_in_database.M with the given input arguments.</p>
+<p>metabolites_in_database(‘Property’,’Value’,…) creates a new metabolites_in_database or raises the
+existing singleton*.  Starting from the left, property value pairs are
+applied to the GUI before <cite>metabolites_in_database_OpeningFcn</cite> gets called.  An
+unrecognized property name or invalid value makes property application
+stop.  All inputs are passed to <cite>metabolites_in_database_OpeningFcn</cite> via <cite>varargin</cite>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>See GUI Options on GUIDE’s Tools menu.  Choose “GUI allows only one
+instance to run (singleton)”.
+See also: GUIDE, GUIDATA, GUIHANDLES</p>
+</div>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.rBioNet.mets2str">
+<span class="sig-name descname"><span class="pre">mets2str</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">str</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/mets2str.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.mets2str" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates strings for message boxes</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>outstr = mets2str</strong> (<em>str</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><p><strong>str</strong> – struct of names</p>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>outstr</strong> – ‘act’, ‘acon-C’, ‘pep’</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.rBioNet.model2data">
+<span class="sig-name descname"><span class="pre">model2data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">fordb</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/model2data.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.model2data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load complete reconstructions and output format for rBioNets ReconstructionCreator.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>data_out = model2data</strong> (<em>model, fordb</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – model</p></li>
+<li><p><strong>fordb</strong> – 1 if metabolite table is wanted, default 0 if not</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>data_out</strong></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.rBioNet.model2text">
+<span class="sig-name descname"><span class="pre">model2text</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">data</span></em>, <em class="sig-param"><span class="pre">model</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/model2text.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.model2text" title="Permalink to this definition">¶</a></dt>
+<dd><p>This script takes in a reconstruction model and prints it out into a text
+file. It can be used standalone from the <cite>rBioNet</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>model2text</strong> (<em>data, model</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>data</strong> – model or .mat datafile table as in ReconstructionCreator (RC)</p></li>
+<li><p><strong>model</strong> – true if data is a model, false if RC table.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.rBioNet.model_description">
+<span class="sig-name descname"><span class="pre">model_description</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/model_description.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.model_description" title="Permalink to this definition">¶</a></dt>
+<dd><p>m-file for model_description.fig
+model_description, by itself, creates a new object or raises the existing
+singleton*.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>varargout = model_description</strong> (<em>varargin</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><p><strong>varargin</strong> – various input arguments</p>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><p><strong>varargout</strong> – various output arguments</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>H = model_description() returns the handle to a new model_description or the handle to
+the existing singleton*.</p>
+<p>model_description(‘CALLBACK’,hObject,eventData,handles,…) calls the local
+function named CALLBACK in model_description.M with the given input arguments.</p>
+<p>model_description(‘Property’,’Value’,…) creates a new model_description or raises the
+existing singleton*.  Starting from the left, property value pairs are
+applied to the GUI before <cite>model_description_OpeningFcn</cite> gets called.  An
+unrecognized property name or invalid value makes property application
+stop.  All inputs are passed to <cite>model_description_OpeningFcn</cite> via <cite>varargin</cite>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>See GUI Options on GUIDE’s Tools menu.  Choose “GUI allows only one
+instance to run (singleton)”.
+See also: GUIDE, GUIDATA, GUIHANDLES</p>
+</div>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.rBioNet.model_stats">
+<span class="sig-name descname"><span class="pre">model_stats</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/model_stats.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.model_stats" title="Permalink to this definition">¶</a></dt>
+<dd><p>MATLAB code for model_stats.fig
+model_stats, by itself, creates a new object or raises the existing singleton*.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>varargout = model_stats</strong> (<em>varargin</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><p><strong>varargin</strong> – various input arguments</p>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><p><strong>varargout</strong> – various output arguments</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>H = model_stats() returns the handle to a new model_stats or the handle to
+the existing singleton*.</p>
+<p>model_stats(‘CALLBACK’,hObject,eventData,handles,…) calls the local
+function named CALLBACK in model_stats.M with the given input arguments.</p>
+<p>model_stats(‘Property’,’Value’,…) creates a new model_stats or raises the
+existing singleton*.  Starting from the left, property value pairs are
+applied to the GUI before <cite>model_stats_OpeningFcn</cite> gets called.  An
+unrecognized property name or invalid value makes property application
+stop.  All inputs are passed to <cite>model_stats_OpeningFcn</cite> via <cite>varargin</cite>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>See GUI Options on GUIDE’s Tools menu.  Choose “GUI allows only one
+instance to run (singleton)”.
+See also: GUIDE, GUIDATA, GUIHANDLES</p>
+</div>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.rBioNet.neighborRxn2data">
+<span class="sig-name descname"><span class="pre">neighborRxn2data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">rxn_numb</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/neighborRxn2data.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.neighborRxn2data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Program used to get neigbor reactions and set up correct format for the
+Reconstruction analyzer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>data = neighborRxn2data</strong> (<em>model, rxn_numb</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – model</p></li>
+<li><p><strong>rxn_numb</strong> – number of reactions</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>data</strong></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.rBioNet.rBioNetAbout">
+<span class="sig-name descname"><span class="pre">rBioNetAbout</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/rBioNetAbout.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.rBioNetAbout" title="Permalink to this definition">¶</a></dt>
+<dd><p>MATLAB code for rBioNetAbout.fig
+rBioNetAbout, by itself, creates a new object or raises the existing singleton*.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>varargout = rBioNetAbout</strong> (<em>varargin</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><p><strong>varargin</strong> – various input arguments</p>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><p><strong>varargout</strong> – various output arguments</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>H = rBioNetAbout returns the handle to a new rBioNetAbout or the handle to
+the existing singleton*.</p>
+<p>rBioNetAbout(‘CALLBACK’,hObject,eventData,handles,…) calls the local
+function named CALLBACK in rBioNetAbout.M with the given input arguments.</p>
+<p>rBioNetAbout(‘Property’,’Value’,…) creates a new rBioNetAbout or raises the
+existing singleton*.  Starting from the left, property value pairs are
+applied to the GUI before <cite>rBioNetAbout_OpeningFcn</cite> gets called.  An
+unrecognized property name or invalid value makes property application
+stop.  All inputs are passed to <cite>rBioNetAbout_OpeningFcn</cite> via <cite>varargin</cite>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>See GUI Options on GUIDE’s Tools menu.  Choose “GUI allows only one
+instance to run (singleton)”.
+See also: GUIDE, GUIDATA, GUIHANDLES</p>
+</div>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.rBioNet.rBioNetSaveLoad">
+<span class="sig-name descname"><span class="pre">rBioNetSaveLoad</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">mode</span></em>, <em class="sig-param"><span class="pre">type</span></em>, <em class="sig-param"><span class="pre">data</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/rBioNetSaveLoad.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.rBioNetSaveLoad" title="Permalink to this definition">¶</a></dt>
+<dd><p>Through here the metabolite and reaction databases are loaded and saved.
+This script makes it possible to store databases in any path set in matlab.
+Missing for compartments, thats for later.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>output = rBioNetSaveLoad</strong> (<em>mode,type,data</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>mode</strong> – ‘save’ or ‘load’</p></li>
+<li><p><strong>type</strong> – ‘met’, ‘rxn’ or ‘comp’</p></li>
+<li><p><strong>data</strong> – data to save</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>output</strong> – if ‘load’ then data else 1 if succes by save, 0 if empty or failed</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.rBioNet.rBioNetSettings">
+<span class="sig-name descname"><span class="pre">rBioNetSettings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/rBioNetSettings.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.rBioNetSettings" title="Permalink to this definition">¶</a></dt>
+<dd><p>MATLAB code for rBioNetSettings.fig
+rBioNetSettings, by itself, creates a new object or raises the existing
+singleton*.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>varargout = rBioNetSettings</strong> (<em>varargin</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><p><strong>varargin</strong> – various input arguments</p>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><p><strong>varargout</strong> – various output arguments</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>H = rBioNetSettings() returns the handle to a new rBioNetSettings or the handle to
+the existing singleton*.</p>
+<p>rBioNetSettings(‘CALLBACK’,hObject,eventData,handles,…) calls the local
+function named CALLBACK in rBioNetSettings.M with the given input arguments.</p>
+<p>rBioNetSettings(‘Property’,’Value’,…) creates a new rBioNetSettings or raises the
+existing singleton*.  Starting from the left, property value pairs are
+applied to the GUI before <cite>rBioNetSettings_OpeningFcn</cite> gets called.  An
+unrecognized property name or invalid value makes property application
+stop.  All inputs are passed to <cite>rBioNetSettings_OpeningFcn</cite> via <cite>varargin</cite>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>See GUI Options on GUIDE’s Tools menu.  Choose “GUI allows only one
+instance to run (singleton)”.
+See also: GUIDE, GUIDATA, GUIHANDLES</p>
+</div>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.rBioNet.rBioNet_search">
+<span class="sig-name descname"><span class="pre">rBioNet_search</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">table</span></em>, <em class="sig-param"><span class="pre">column</span></em>, <em class="sig-param"><span class="pre">str</span></em>, <em class="sig-param"><span class="pre">exact</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/rBioNet_search.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.rBioNet_search" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performs simple searches in rBioNet tables.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>output = rBioNet_search</strong> (<em>table, column, str, exact</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>table</strong> – Table or model</p></li>
+<li><p><strong>Column</strong> – number</p></li>
+<li><p><strong>String</strong> – search phrase</p></li>
+<li><p><strong>Exact match</strong> – true or false</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>output</strong> – Array containing results.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.rBioNet.sim_general">
+<span class="sig-name descname"><span class="pre">sim_general</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/sim_general.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.sim_general" title="Permalink to this definition">¶</a></dt>
+<dd><p>MATLAB code for sim_general.fig
+sim_general, by itself, creates a new object or raises the existing singleton*.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>varargout = sim_general</strong> (<em>varargin</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><p><strong>varargin</strong> – various input arguments</p>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><p><strong>varargout</strong> – various output arguments</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>H = sim_general returns the handle to a new sim_general or the handle to
+the existing singleton*.</p>
+<p>sim_general(‘CALLBACK’,hObject,eventData,handles,…) calls the local
+function named CALLBACK in sim_general.M with the given input arguments.</p>
+<p>sim_general(‘Property’,’Value’,…) creates a new sim_general or raises the
+existing singleton*.  Starting from the left, property value pairs are
+applied to the GUI before <cite>sim_general_OpeningFcn</cite> gets called.  An
+unrecognized property name or invalid value makes property application
+stop.  All inputs are passed to <cite>sim_general_OpeningFcn</cite> via <cite>varargin</cite>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>See GUI Options on GUIDE’s Tools menu.  Choose “GUI allows only one
+instance to run (singleton)”.
+See also: GUIDE, GUIDATA, GUIHANDLES</p>
+</div>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.rBioNet.similarities">
+<span class="sig-name descname"><span class="pre">similarities</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/similarities.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.similarities" title="Permalink to this definition">¶</a></dt>
+<dd><p>m-file for similarities.fig
+similarities, by itself, creates a new object or raises the existing singleton*.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>varargout = similarities</strong> (<em>varargin</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><p><strong>varargin</strong> – various input arguments</p>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><p><strong>varargout</strong> – various output arguments</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>H = similarities() returns the handle to a new similarities or the handle to
+the existing singleton*.</p>
+<p>similarities(‘CALLBACK’,hObject,eventData,handles,…) calls the local
+function named CALLBACK in similarities.M with the given input arguments.</p>
+<p>similarities(‘Property’,’Value’,…) creates a new similarities or raises the
+existing singleton*.  Starting from the left, property value pairs are
+applied to the GUI before <cite>similarities_OpeningFcn</cite> gets called.  An
+unrecognized property name or invalid value makes property application
+stop.  All inputs are passed to <cite>similarities_OpeningFcn</cite> via <cite>varargin</cite>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>See GUI Options on GUIDE’s Tools menu.  Choose “GUI allows only one
+instance to run (singleton)”.
+See also: GUIDE, GUIDATA, GUIHANDLES</p>
+</div>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.rBioNet.similarity">
+<span class="sig-name descname"><span class="pre">similarity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">formula</span></em>, <em class="sig-param"><span class="pre">data</span></em>, <em class="sig-param"><span class="pre">bar</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/similarity.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.similarity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the reaction lines with similarities</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>reactions = similarity</strong> (<em>formula,data,bar</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>formula</strong> – reaction formula</p></li>
+<li><p><strong>data</strong> – reaction list</p></li>
+<li><p><strong>bar</strong> – <cite>waitbar</cite> exists then 1, else 0, default 1</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>reactions</strong> – numbers of rxn lines that share similarity</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.rBioNet.unbalanced">
+<span class="sig-name descname"><span class="pre">unbalanced</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/unbalanced.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.unbalanced" title="Permalink to this definition">¶</a></dt>
+<dd><p>m-file for unbalanced.fig
+unbalanced, by itself, creates a new object or raises the existing singleton*.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>varargout = unbalanced</strong> (<em>varargin</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><p><strong>varargin</strong> – various input arguments</p>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><p><strong>varargout</strong> – various output arguments</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>H = unbalanced returns the handle to a new unbalanced or the handle to
+the existing singleton*.</p>
+<p>unbalanced(‘CALLBACK’,hObject,eventData,handles,…) calls the local
+function named CALLBACK in unbalanced.M with the given input arguments.</p>
+<p>unbalanced(‘Property’,’Value’,…) creates a new unbalanced or raises the
+existing singleton*.  Starting from the left, property value pairs are
+applied to the GUI before <cite>unbalanced_OpeningFcn</cite> gets called.  An
+unrecognized property name or invalid value makes property application
+stop.  All inputs are passed to <cite>unbalanced_OpeningFcn</cite> via <cite>varargin</cite>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>See GUI Options on GUIDE’s Tools menu.  Choose “GUI allows only one
+instance to run (singleton)”.
+See also: GUIDE, GUIDATA, GUIHANDLES</p>
+</div>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.rBioNet.webDatabases">
+<span class="sig-name descname"><span class="pre">webDatabases</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">db</span></em>, <em class="sig-param"><span class="pre">str</span></em>, <em class="sig-param"><span class="pre">type</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/webDatabases.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.webDatabases" title="Permalink to this definition">¶</a></dt>
+<dd><p>Small script that links to major databases.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>webDatabases</strong> (<em>db, str, type</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>db</strong> – database = {‘kegg’, ‘ec’, ‘pubchem’, ‘chebi’, ‘hmdb’}</p></li>
+<li><p><strong>str</strong> – ID of metabolite / reaction</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUT</dt>
+<dd class="field-odd"><p><strong>type</strong> – 1 if reaction, 0 for metabolite (only used for the KEGG database.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.rBioNet.webKeggMapper">
+<span class="sig-name descname"><span class="pre">webKeggMapper</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">id</span></em>, <em class="sig-param"><span class="pre">str</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/webKeggMapper.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.webKeggMapper" title="Permalink to this definition">¶</a></dt>
+<dd><p>Small script that links to kegg mapper.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>webKeggMapper</strong> (<em>id,str</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>id</strong> – Either ‘ec’ or ‘kegg’</p></li>
+<li><p><strong>str</strong> – ID of themetabolite / reaction</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="gui/index.html" class="btn btn-default float-right" title="Gui" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../growthExpMatch/index.html" class="btn btn-default" title="Growthexpmatch" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017-2021, The COBRA Toolbox developers.
+
+    </p>
+  </div>
+  Built with Sphinx using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'2.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+    <script type="text/javascript" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/sphinx_highlight.js"></script>
+
+  
+
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TRCMZL1FKK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TRCMZL1FKK');
+  </script>
+    
+</body>
+</html>

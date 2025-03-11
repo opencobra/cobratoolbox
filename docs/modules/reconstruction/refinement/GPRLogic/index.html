@@ -1,0 +1,671 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Gprlogic &mdash; The COBRA Toolbox</title>
+  
+
+  
+  
+  
+    <link rel="apple-touch-icon" sizes="180x180" href="../../../../_static/img/apple-touch-icon.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../../_static/img/favicon-32x32.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="16x16" href="../../../../_static/img/favicon-16x16.png">
+  
+  
+    <link rel="mask-icon" href="../../../../_static/img/safari-pinned-tab.svg" color="#5bbad5">
+  
+  
+    <link rel="manifest" href="../../../../_static/json/manifest.json">
+  
+  
+    <meta name="msapplication-config" content="../../../../_static/browserconfig.xml">
+  
+  <meta name="theme-color" content="#ffffff">
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+  <script src="../../../../_static/js/jquery.easy-autocomplete.min.js" type="text/javascript" ></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+  <link href="../../../../_static/css/easy-autocomplete.min.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../_static/css/cobra.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../../../_static/css/cobra.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../../search.html"/>
+    <link rel="top" title="The COBRA Toolbox" href="../../../../index.html"/>
+        <link rel="up" title="Refinement" href="../index.html"/>
+        <link rel="next" title="Demeter" href="../../demeter/index.html"/>
+        <link rel="prev" title="Refinement" href="../index.html"/> 
+
+  
+  <script src="../../../../_static/js/modernizr.min.js"></script>
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> The COBRA Toolbox
+          
+
+          
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
+          
+          </a>
+
+              
+          <h1>The COBRA Toolbox</h1>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" id="simple"/>
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+    <script>
+    	var options = {
+
+		url: "../../../../_static/json/functions.json",
+
+		getValue: "name",
+
+		list: {
+            onKeyEnterEvent: function(item) {
+                    return "_static/../" + item.website_url
+            },
+            maxNumberOfElements: 25,
+			match: {
+					enabled: true,
+			},
+            sort: {
+			    enabled: true
+		    }
+		},
+
+    	template: {
+	    	type: "custom",
+		    method: function(value, item) {
+                return "<span><a href='../../../../search.html?q=" + item.name + "&check_keywords=yes&area=default'>" + value + "</a>" + "<a href='../../../../_static/../" + item.website_url + "' ><img src='../../../../_static/link.svg'/></a></span>";
+		    }
+	    },
+
+		theme: "square"
+
+	};
+
+	$("#simple").easyAutocomplete(options);
+
+
+    </script>
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../index.html">Home</a></li>
+              </ul>
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">Functions</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../../analysis/index.html">Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../base/index.html">Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../dataIntegration/index.html">Dataintegration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../design/index.html">Design</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Reconstruction</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../../modelGeneration/index.html">Modelgeneration</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html">Refinement</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Gprlogic</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../demeter/index.html">Demeter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../fastGapFill/index.html">Fastgapfill</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../comparison/index.html">Comparison</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../metaboRePort/index.html">Metaboreport</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../growthExpMatch/index.html">Growthexpmatch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../rBioNet/index.html">Rbionet</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../visualization/index.html">Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contributing.html">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../cite.html">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../support.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../plan.html">Development Plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contact.html">Contact</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../citations.html">Citations</a></li>
+</ul>
+
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">The COBRA Toolbox</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../contents.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Functions</a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Reconstruction</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Refinement</a></li>
+      <li class="breadcrumb-item active">Gprlogic</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="https://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <section id="gprlogic">
+<span id="id1"></span><h1>Gprlogic<a class="headerlink" href="#gprlogic" title="Permalink to this heading">¶</a></h1>
+<span class="target" id="module-src.reconstruction.refinement.GPRLogic"></span><dl class="mat class">
+<dt class="sig sig-object mat" id="src.reconstruction.refinement.GPRLogic.AndNode">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">AndNode</span></span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/GPRLogic/AndNode.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.GPRLogic.AndNode" title="Permalink to this definition">¶</a></dt>
+<dd><p>AndNode are an class that represents AND connections in a logical formula
+For further documentation please have a look at the Node Class.
+.. Authors</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Thomas Pfau 2016</p></li>
+</ul>
+</div></blockquote>
+<dl class="mat method">
+<dt class="sig sig-object mat" id="src.reconstruction.refinement.GPRLogic.AndNode.isValid">
+<span class="sig-name descname"><span class="pre">isValid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">self</span></em>, <em class="sig-param"><span class="pre">sizes</span></em>, <em class="sig-param"><span class="pre">step</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/GPRLogic/AndNode.isValid.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.GPRLogic.AndNode.isValid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check whether a given step is a valid possibility (no step
+element larger than sizes
+:USAGE: <strong>res = Node.isValid</strong> (<em>sizes,step</em>)</p>
+<dl class="field-list simple">
+<dt class="field-odd">INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sizes</strong> – An array of sizes</p></li>
+<li><p><strong>step</strong> – An array of suggested selections</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUTS</dt>
+<dd class="field-even"><p><strong>res</strong> – ~any(step &gt; sizes’)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="src.reconstruction.refinement.GPRLogic.AndNode.nextcombination">
+<span class="sig-name descname"><span class="pre">nextcombination</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">self</span></em>, <em class="sig-param"><span class="pre">sizes</span></em>, <em class="sig-param"><span class="pre">step</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/GPRLogic/AndNode.nextcombination.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.GPRLogic.AndNode.nextcombination" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the next combination given the current combination
+:USAGE: <strong>combination = Node.nextcombination</strong> (<em>sizes,step</em>)</p>
+<dl class="field-list simple">
+<dt class="field-odd">INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sizes</strong> – An array of maximal sizes</p></li>
+<li><p><strong>step</strong> – The current combination</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUTS</dt>
+<dd class="field-even"><p><strong>combination</strong> – The next allowed element of step
+incremented, and potentially others reset
+to 1.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="src.reconstruction.refinement.GPRLogic.AndNode.reduce">
+<span class="sig-name descname"><span class="pre">reduce</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">self</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/GPRLogic/AndNode.reduce.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.GPRLogic.AndNode.reduce" title="Permalink to this definition">¶</a></dt>
+<dd><p>we can merge any children of and nodes directly.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="mat class">
+<dt class="sig sig-object mat" id="src.reconstruction.refinement.GPRLogic.FormulaParser">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">FormulaParser</span></span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/GPRLogic/FormulaParser.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.GPRLogic.FormulaParser" title="Permalink to this definition">¶</a></dt>
+<dd><p>A FormulaParser is used to parse logic formulas in the format
+specified for the COBRA Toolbox tules field (i.e. logical formulas
+using | and &amp; as OR and AND symbols and x([0-9]+)  as a regexp
+matching all literals.</p>
+<dl class="mat method">
+<dt class="sig sig-object mat" id="src.reconstruction.refinement.GPRLogic.FormulaParser.FormulaParser">
+<span class="sig-name descname"><span class="pre">FormulaParser</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/GPRLogic/FormulaParser.FormulaParser.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.GPRLogic.FormulaParser.FormulaParser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Default FormulaParser constructor.
+:USAGE: <strong>obj = FormulaParser()</strong></p>
+<dl class="field-list simple">
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><p><strong>obj</strong> – The FormulaParser Object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="src.reconstruction.refinement.GPRLogic.FormulaParser.createNodeStructure">
+<span class="sig-name descname"><span class="pre">createNodeStructure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">self</span></em>, <em class="sig-param"><span class="pre">finalid</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/GPRLogic/FormulaParser.createNodeStructure.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.GPRLogic.FormulaParser.createNodeStructure" title="Permalink to this definition">¶</a></dt>
+<dd><p>Private Function</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="src.reconstruction.refinement.GPRLogic.FormulaParser.parseFormula">
+<span class="sig-name descname"><span class="pre">parseFormula</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">self</span></em>, <em class="sig-param"><span class="pre">formula</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/GPRLogic/FormulaParser.parseFormula.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.GPRLogic.FormulaParser.parseFormula" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse a Formula in the COBRA rules format (as detailed above).
+:USAGE: <strong>Head = FormulaParser.parseFormula</strong> (<em>formula</em>)</p>
+<dl class="field-list simple">
+<dt class="field-odd">INPUTS</dt>
+<dd class="field-odd"><p><strong>formula</strong> – A String of a GPR formula in rules format ( &amp;/| as
+operators, x(1) as literal symbols</p>
+</dd>
+<dt class="field-even">OUTPUTS</dt>
+<dd class="field-even"><p><strong>Head</strong> – The Head of a Tree representing the formula</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="mat class">
+<dt class="sig sig-object mat" id="src.reconstruction.refinement.GPRLogic.LiteralNode">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">LiteralNode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">id</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/GPRLogic/LiteralNode.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.GPRLogic.LiteralNode" title="Permalink to this definition">¶</a></dt>
+<dd><p>LiteralNode is a class that represents a literal in a logical formula
+For further documentation please have a look at the Node Class.
+.. Authors</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Thomas Pfau 2016</p></li>
+</ul>
+</div></blockquote>
+<dl class="mat method">
+<dt class="sig sig-object mat" id="src.reconstruction.refinement.GPRLogic.LiteralNode.deleteLiteral">
+<span class="sig-name descname"><span class="pre">deleteLiteral</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">self</span></em>, <em class="sig-param"><span class="pre">literalID</span></em>, <em class="sig-param"><span class="pre">keepClauses</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/GPRLogic/LiteralNode.deleteLiteral.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.GPRLogic.LiteralNode.deleteLiteral" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function is not applicable to a literal node, as a
+literal node cannot delete itself.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="mat class">
+<dt class="sig sig-object mat" id="src.reconstruction.refinement.GPRLogic.Node">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Node</span></span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/GPRLogic/Node.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.GPRLogic.Node" title="Permalink to this definition">¶</a></dt>
+<dd><p>Node are an Abstract class that handles different types of logical Nodes
+for a tree representation of a logical formula.</p>
+<dl class="mat method">
+<dt class="sig sig-object mat" id="src.reconstruction.refinement.GPRLogic.Node.Node">
+<span class="sig-name descname"><span class="pre">Node</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/GPRLogic/Node.Node.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.GPRLogic.Node.Node" title="Permalink to this definition">¶</a></dt>
+<dd><p>Default Node constructor.
+:USAGE: <strong>obj = Node()</strong></p>
+<dl class="field-list simple">
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><p><strong>obj</strong> – The Node Object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="src.reconstruction.refinement.GPRLogic.Node.addChild">
+<span class="sig-name descname"><span class="pre">addChild</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">self</span></em>, <em class="sig-param"><span class="pre">childNode</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/GPRLogic/Node.addChild.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.GPRLogic.Node.addChild" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add A Child to the node
+:USAGE: <strong>Node.addchild</strong> (<em>childNode</em>)</p>
+<dl class="field-list simple">
+<dt class="field-odd">INPUTS</dt>
+<dd class="field-odd"><p><strong>childNode</strong> – The child to add to the node.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="src.reconstruction.refinement.GPRLogic.Node.contains">
+<span class="sig-name descname"><span class="pre">contains</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">self</span></em>, <em class="sig-param"><span class="pre">literal</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/GPRLogic/Node.contains.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.GPRLogic.Node.contains" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check whether the given literal is part of this node.
+:USAGE: <strong>res = Node.contains</strong> (<em>literal</em>)</p>
+<dl class="field-list simple">
+<dt class="field-odd">INPUTS</dt>
+<dd class="field-odd"><p><strong>literal</strong> – The literal to look up (a string representation of
+a number from a rule</p>
+</dd>
+<dt class="field-even">OUTPUTS</dt>
+<dd class="field-even"><p><strong>res</strong> – Whether the literal is present in the tree starting
+at this node.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="src.reconstruction.refinement.GPRLogic.Node.deleteLiterals">
+<span class="sig-name descname"><span class="pre">deleteLiterals</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">self</span></em>, <em class="sig-param"><span class="pre">literals</span></em>, <em class="sig-param"><span class="pre">keepClauses</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/GPRLogic/Node.deleteLiterals.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.GPRLogic.Node.deleteLiterals" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove all duplicate literal nodes in this node.
+:USAGE: <strong>node.removeLiterals</strong> (<em>literals, keepClauses</em>)</p>
+<dl class="field-list simple">
+<dt class="field-odd">INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>literals</strong> – The literals to remove</p></li>
+<li><p><strong>keepClauses</strong> – Whether to retain AND nodes in which
+any of the lietrals are nested.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="src.reconstruction.refinement.GPRLogic.Node.getFunctionalGeneSets">
+<span class="sig-name descname"><span class="pre">getFunctionalGeneSets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">self</span></em>, <em class="sig-param"><span class="pre">geneNames</span></em>, <em class="sig-param"><span class="pre">getCNFSets</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/GPRLogic/Node.getFunctionalGeneSets.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.GPRLogic.Node.getFunctionalGeneSets" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get all functional gene sets useable for this node
+:USAGE: <strong>geneSets = Node.getFunctionalGeneSets</strong> (<em>geneNames</em>)</p>
+<dl class="field-list simple">
+<dt class="field-odd">INPUTS</dt>
+<dd class="field-odd"><p><strong>geneNames</strong> – the genes in the order represented by the
+literals (which represent positions)</p>
+</dd>
+<dt class="field-even">OPTIONAL INPUT</dt>
+<dd class="field-even"><p><strong>getCNFSets</strong> – Get the CNF sets from this node instead of the DNF sets.
+(i.e. get the or clauses instead of the
+protein representing and clauses)
+(Default: false)</p>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>geneSets</strong> – A cell array of gene Combinations that would make this node active</p></li>
+<li><p><strong>genePos</strong> – A set of positions (according to the parsed
+Rules) of genes that would make this tree
+evaluate to true.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="src.reconstruction.refinement.GPRLogic.Node.getID">
+<span class="sig-name descname"><span class="pre">getID</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">self</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/GPRLogic/Node.getID.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.GPRLogic.Node.getID" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the ID (commonly the class except for Literals
+:USAGE: <strong>id = Node.getID()</strong></p>
+<dl class="field-list simple">
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><p><strong>id</strong> – The id for literals the represented literal, or classname for other nodes of the node</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="src.reconstruction.refinement.GPRLogic.Node.getLiterals">
+<span class="sig-name descname"><span class="pre">getLiterals</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">self</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/GPRLogic/Node.getLiterals.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.GPRLogic.Node.getLiterals" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the set of literals present in the tree below this node.
+:USAGE: <strong>literals = Node.getLiterals()</strong></p>
+<dl class="field-list simple">
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><p><strong>literals</strong> – A cell array of all literals present in the tree under this node</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="src.reconstruction.refinement.GPRLogic.Node.hasNestedChildren">
+<span class="sig-name descname"><span class="pre">hasNestedChildren</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">self</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/GPRLogic/Node.hasNestedChildren.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.GPRLogic.Node.hasNestedChildren" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check, whether this Node has nested children (i.e. whether it has
+non literal children)
+:USAGE: <strong>tf = Node.hasNestedChildren()</strong></p>
+<dl class="field-list simple">
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><p><strong>tf</strong> – Whether this node has nested children</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="src.reconstruction.refinement.GPRLogic.Node.isDNF">
+<span class="sig-name descname"><span class="pre">isDNF</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">self</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/GPRLogic/Node.isDNF.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.GPRLogic.Node.isDNF" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check, whether this is a DNF node (i.e.)
+i.e. it is either a literal node, or an or node which only has
+children which are and nodes (with only literal children), or
+literal nodes. Or an AND node with only literal children
+:USAGE: <strong>tf = Node.isDNF()</strong></p>
+<dl class="field-list simple">
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><p><strong>tf</strong> – Whether this node is a DNF node or not.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="src.reconstruction.refinement.GPRLogic.Node.isequal">
+<span class="sig-name descname"><span class="pre">isequal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">self</span></em>, <em class="sig-param"><span class="pre">otherNode</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/GPRLogic/Node.isequal.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.GPRLogic.Node.isequal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get all functional gene sets useable for this node
+:USAGE: <strong>tf = Node.isequal</strong> (<em>otherNode</em>)</p>
+<dl class="field-list simple">
+<dt class="field-odd">INPUTS</dt>
+<dd class="field-odd"><p><strong>otherNode</strong> – The node to compare this node with</p>
+</dd>
+<dt class="field-even">OUTPUTS</dt>
+<dd class="field-even"><p><strong>tf</strong> – true, if this node is equal to the other
+node, i.e. it represents the same boolean truth table.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="src.reconstruction.refinement.GPRLogic.Node.removeDuplicateLiterals">
+<span class="sig-name descname"><span class="pre">removeDuplicateLiterals</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">self</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/GPRLogic/Node.removeDuplicateLiterals.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.GPRLogic.Node.removeDuplicateLiterals" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove all duplicate literal nodes in this node.
+:USAGE: <strong>node.removeDuplicateLiterals()</strong></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.refinement.GPRLogic.NormaliseGPRs">
+<span class="sig-name descname"><span class="pre">NormaliseGPRs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">geneRegExp</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/GPRLogic/NormaliseGPRs.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.GPRLogic.NormaliseGPRs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bring all GPRS into a DNF form and reduce them to the minimal DNF Form
+:USAGE: <strong>Outmodel = NormaliseGPRs</strong> (<em>model,geneRegExp</em>)</p>
+<dl class="field-list simple">
+<dt class="field-odd">INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model</strong> – The Model to convert the GPRs</p></li>
+<li><p><strong>geneRegExp</strong> – A Regular expression matching the genes in the model.</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUTS</dt>
+<dd class="field-even"><p><strong>Outmodel</strong> – The output model with all GPRS in minimal DNF form.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat class">
+<dt class="sig sig-object mat" id="src.reconstruction.refinement.GPRLogic.OrNode">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">OrNode</span></span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/GPRLogic/OrNode.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.GPRLogic.OrNode" title="Permalink to this definition">¶</a></dt>
+<dd><p>OrNode is a class that represents OR connections in a logical formula
+For further documentation please have a look at the Node Class.
+.. Authors</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Thomas Pfau 2016</p></li>
+</ul>
+</div></blockquote>
+<dl class="mat method">
+<dt class="sig sig-object mat" id="src.reconstruction.refinement.GPRLogic.OrNode.removeDNFduplicates">
+<span class="sig-name descname"><span class="pre">removeDNFduplicates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">self</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/GPRLogic/OrNode.removeDNFduplicates.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.GPRLogic.OrNode.removeDNFduplicates" title="Permalink to this definition">¶</a></dt>
+<dd><p>Assuming this is a DNF head node, removeDNFDuplicates checks
+all present AND nodes for equality and removes replicates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>Node.removeDNFduplicates()</strong></p>
+</dd>
+<dt class="field-even">OUTPUTS</dt>
+<dd class="field-even"><p><strong>Node</strong> – A OrNode with all duplicate And nodes removed.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.refinement.GPRLogic.combineChildren">
+<span class="sig-name descname"><span class="pre">combineChildren</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">CNFNode1</span></em>, <em class="sig-param"><span class="pre">CNFNode2</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/GPRLogic/combineChildren.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.GPRLogic.combineChildren" title="Permalink to this definition">¶</a></dt>
+<dd><p>Combine the children of two nodes such that all children of node 1 are mixed with children of node 2.
+Conjunct clauses which are superseeded are removed.
+:USAGE: <strong>[outputNode] = combineChildren</strong> (<em>CNFNode1,CNFNode2</em>)</p>
+<dl class="field-list simple">
+<dt class="field-odd">INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>CNFNode1</strong> – A Node in CNF format</p></li>
+<li><p><strong>CNFNode2</strong> – A Node in CNF format</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUTS</dt>
+<dd class="field-even"><p><strong>outputNode</strong> – A node with all children of the input nodes mixed.</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The function will mix all combinations of nodes. E.g. if node 1 is (A | B) &amp; (C | D) and node 2 is (E | F) &amp; G
+the resulting node will be (A | B | E | F) &amp; (A | B | G) &amp; (C | D | E | F) &amp; (C | D | G)</p>
+</div>
+</dd></dl>
+
+</section>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../../demeter/index.html" class="btn btn-default float-right" title="Demeter" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../index.html" class="btn btn-default" title="Refinement" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017-2021, The COBRA Toolbox developers.
+
+    </p>
+  </div>
+  Built with Sphinx using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../',
+            VERSION:'2.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+    <script type="text/javascript" src="../../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../../_static/sphinx_highlight.js"></script>
+
+  
+
+
+  
+  
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TRCMZL1FKK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TRCMZL1FKK');
+  </script>
+    
+</body>
+</html>

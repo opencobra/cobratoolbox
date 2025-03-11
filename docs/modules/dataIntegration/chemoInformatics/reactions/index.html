@@ -1,0 +1,488 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Reactions &mdash; The COBRA Toolbox</title>
+  
+
+  
+  
+  
+    <link rel="apple-touch-icon" sizes="180x180" href="../../../../_static/img/apple-touch-icon.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../../_static/img/favicon-32x32.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="16x16" href="../../../../_static/img/favicon-16x16.png">
+  
+  
+    <link rel="mask-icon" href="../../../../_static/img/safari-pinned-tab.svg" color="#5bbad5">
+  
+  
+    <link rel="manifest" href="../../../../_static/json/manifest.json">
+  
+  
+    <meta name="msapplication-config" content="../../../../_static/browserconfig.xml">
+  
+  <meta name="theme-color" content="#ffffff">
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+  <script src="../../../../_static/js/jquery.easy-autocomplete.min.js" type="text/javascript" ></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+  <link href="../../../../_static/css/easy-autocomplete.min.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../_static/css/cobra.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../../../_static/css/cobra.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../../search.html"/>
+    <link rel="top" title="The COBRA Toolbox" href="../../../../index.html"/>
+        <link rel="up" title="Chemoinformatics" href="../index.html"/>
+        <link rel="next" title="Rxn" href="../RXN/index.html"/>
+        <link rel="prev" title="Metabolites" href="../metabolites/index.html"/> 
+
+  
+  <script src="../../../../_static/js/modernizr.min.js"></script>
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> The COBRA Toolbox
+          
+
+          
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
+          
+          </a>
+
+              
+          <h1>The COBRA Toolbox</h1>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" id="simple"/>
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+    <script>
+    	var options = {
+
+		url: "../../../../_static/json/functions.json",
+
+		getValue: "name",
+
+		list: {
+            onKeyEnterEvent: function(item) {
+                    return "_static/../" + item.website_url
+            },
+            maxNumberOfElements: 25,
+			match: {
+					enabled: true,
+			},
+            sort: {
+			    enabled: true
+		    }
+		},
+
+    	template: {
+	    	type: "custom",
+		    method: function(value, item) {
+                return "<span><a href='../../../../search.html?q=" + item.name + "&check_keywords=yes&area=default'>" + value + "</a>" + "<a href='../../../../_static/../" + item.website_url + "' ><img src='../../../../_static/link.svg'/></a></span>";
+		    }
+	    },
+
+		theme: "square"
+
+	};
+
+	$("#simple").easyAutocomplete(options);
+
+
+    </script>
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../index.html">Home</a></li>
+              </ul>
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">Functions</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../../analysis/index.html">Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../base/index.html">Base</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Dataintegration</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../../fluxomics/index.html">Fluxomics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../metanetxMapper/index.html">Metanetxmapper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../transcriptomics/index.html">Transcriptomics</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html">Chemoinformatics</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../molecularWeight/index.html">Molecularweight</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../metabolites/index.html">Metabolites</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Reactions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../RXN/index.html">Rxn</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../inchi/index.html">Inchi</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../XomicsToModel/index.html">Xomicstomodel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../metabotools/index.html">Metabotools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../metaboAnnotator/index.html">Metaboannotator</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../design/index.html">Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reconstruction/index.html">Reconstruction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../visualization/index.html">Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contributing.html">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../cite.html">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../support.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../plan.html">Development Plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contact.html">Contact</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../citations.html">Citations</a></li>
+</ul>
+
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">The COBRA Toolbox</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../contents.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Functions</a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Dataintegration</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Chemoinformatics</a></li>
+      <li class="breadcrumb-item active">Reactions</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="https://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <section id="reactions">
+<span id="id1"></span><h1>Reactions<a class="headerlink" href="#reactions" title="Permalink to this heading">¶</a></h1>
+<span class="target" id="module-src.dataIntegration.chemoInformatics.reactions"></span><dl class="mat function">
+<dt class="sig sig-object mat" id="src.dataIntegration.chemoInformatics.reactions.findBondsBrokenAndFormed">
+<span class="sig-name descname"><span class="pre">findBondsBrokenAndFormed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">rxnList</span></em>, <em class="sig-param"><span class="pre">rxnDir</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/chemoInformatics/reactions/findBondsBrokenAndFormed.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.chemoInformatics.reactions.findBondsBrokenAndFormed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the the bonds broken and formed for the mass balanced reactions
+in a metabolic network based on atom mapping data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[bondsBrokenAndFormed, substrateMass] = findBondsBrokenAndFormed</strong> (<em>model, rxnDir, printLevel</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – COBRA model with following fields:</p>
+<ul>
+<li><dl class="simple">
+<dt>.rxns - An n x 1 array of reaction identifiers.</dt><dd><p>Should match metabolite identifiers in</p>
+</dd>
+</dl>
+</li>
+</ul>
+</li>
+<li><p><strong>rxnList    List of reactions from which the enthalpy change</strong> – will be computed.</p></li>
+<li><p><strong>rxnDir     Directory of with the RXN files.</strong></p></li>
+<li><p><strong>printLevel Print figure with the relation of mass vs bondsBF bondsE</strong></p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bondsBF       An n x 1 vector with the number of bonds broken and</strong> – formed. External or pasive transpor reactions are equal
+to 0; missing and unbalanced reactions are NaN.</p></li>
+<li><p><strong>substrateMass Total mass of the substrates</strong></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.dataIntegration.chemoInformatics.reactions.findEnthalpyChange">
+<span class="sig-name descname"><span class="pre">findEnthalpyChange</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">rxnList</span></em>, <em class="sig-param"><span class="pre">rxnDir</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/chemoInformatics/reactions/findEnthalpyChange.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.chemoInformatics.reactions.findEnthalpyChange" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the enthalphy change for mass balanced reactions in a
+metabolic network based on atom mapping data.</p>
+<p>The enthalpy change are based on:
+Huheey, pps. A-21 to A-34; T.L. Cottrell, “The Strengths of Chemical
+Bonds,” 2nd ed., Butterworths, London, 1958;
+B. deB. Darwent, “National Standard Reference Data Series,” National
+Bureau of Standards, No. 31,Washington, DC, 1970; S.W. Benson, J. Chem.
+Educ., 42, 502 (1965)</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[enthalpyChange, substrateMass] = findEnthalpyChange</strong> (<em>model, rxnList, rxnDir, printLevel</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – COBRA model with following fields:</p>
+<ul>
+<li><dl class="simple">
+<dt>.rxns - An n x 1 array of reaction identifiers.</dt><dd><p>Should match metabolite identifiers in</p>
+</dd>
+</dl>
+</li>
+</ul>
+</li>
+<li><p><strong>rxnList    List of reactions from which the number of broken and</strong> – formed bonds will be computed.</p></li>
+<li><p><strong>rxnDir     Directory of with the RXN files.</strong></p></li>
+<li><p><strong>printLevel Print figure with the relation of mass vs bondsBF bondsE</strong></p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>enthalpyChange      An n x 1 vector with the bond enthalpies in kJ/mol.</strong> – External or pasive transpor reactions are equal to 0;
+missing and unbalanced reactions are NaN.</p></li>
+<li><p><strong>substrateMass Total mass of the substrates</strong></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.dataIntegration.chemoInformatics.reactions.obtainAtomMappingsRDT">
+<span class="sig-name descname"><span class="pre">obtainAtomMappingsRDT</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">molFileDir</span></em>, <em class="sig-param"><span class="pre">rxnResultsDir</span></em>, <em class="sig-param"><span class="pre">rxnsToAM</span></em>, <em class="sig-param"><span class="pre">hMapping</span></em>, <em class="sig-param"><span class="pre">writeRXNonly</span></em>, <em class="sig-param"><span class="pre">replaceExistingAtomMappings</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/chemoInformatics/reactions/obtainAtomMappingsRDT.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.chemoInformatics.reactions.obtainAtomMappingsRDT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Using the reaction decoder tool, compute atom mappings for reactions in a
+COBRA model. Atom mapping data is presented in a variety of formats,
+including MDL RXN, SMILES, and images. If this option is selected, the
+function can remove all protons from the model and represent the
+reactions as a hydrogen suppressed chemical graph.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>standardisedRxns = obtainAtomMappingsRDT</strong> (<em>model, molFileDir, rxnResultsDir, rxnsToAM, hMapping, maxTime, standariseRxn</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – COBRA model with following fields:</p>
+<ul>
+<li><dl class="simple">
+<dt>.S - The m x n stoichiometric matrix for the</dt><dd><p>metabolic network.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>.mets - An m x 1 array of metabolite identifiers.</dt><dd><p>Should match metabolite identifiers in
+RXN.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>.metFormulas - An m x 1 array of metabolite</dt><dd><p>identifiers. Should match metabolite
+identifiers in RXN.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>.rxns - An n x 1 array of reaction identifiers.</dt><dd><p>Should match rxnfile names in rxnResultsDir_atomMapped.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</li>
+<li><p><strong>molFileDir</strong> – Path to the directory containing MOL files for
+metabolites in S. File names should correspond to
+reaction identifiers in input mets.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rxnResultsDir</strong> – Path to directory that will contain the RXN files with atom mappings (default: current directory).</p></li>
+<li><p><strong>rxnsToAM</strong> – List of reactions to atom map (default: all in the model).</p></li>
+<li><p><strong>hMapping</strong> – Logic value to select if hydrogen atoms will be atom mapped (default: TRUE).</p></li>
+<li><p><strong>writeRXNonly</strong> – True to write out standardised RXN files and not atom map them (default: FALSE).</p></li>
+<li><p><strong>replaceExistingAtomMappings</strong> – True to recompute atom mappings, replacing existing RXN files  (default: TRUE).</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUTS</dt>
+<dd class="field-even"><p><strong>atomMappingReport</strong> – A report with the atom mapping data
+* .rxnFilesWritten        the MDL RXN written
+* .balanced               the balanced reactions
+* .unbalancedBool         the unbalanced reactions
+* .inconsistentBool       the inconsistent reactions
+* .notMapped              the that couldn’t be mapped
+* .rxnResultsDir_unMapped        A directory with standardised RXN files.
+* .rxnResultsDir_atomMapped      A directory with atom mapped RXN files.
+* .rxnResultsDir_images          A directory images for atom mapped reactions.
+* .rxnResultsDir_txtData         A directory with txt files with data of the atom mappings (SMILES, REACTANT INPUT ATOM INDEX, PRODUCT INPUT ATOM INDEX).</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>example 1:
+molFileDir = [‘data’ filesep]
+standariseRxn = true;
+unmappedRxns = obtainAtomMappingsRDT(model, molFileDir, pwd, 1800, standariseRxn)
+example 2:
+molFileDir = [‘data’ filesep]
+standariseRxn = false;
+standardisedRxns = obtainAtomMappingsRDT(model, molFileDir, pwd, 1800, standariseRxn)</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.dataIntegration.chemoInformatics.reactions.sortAtomMappingIdx">
+<span class="sig-name descname"><span class="pre">sortAtomMappingIdx</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">rxnFile</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/chemoInformatics/reactions/sortAtomMappingIdx.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.chemoInformatics.reactions.sortAtomMappingIdx" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reassign the atom mapping numbers to be ascending in the RXN file V2000</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>ascendingRxnFile = acsendingAtomMaps</strong> (<em>rxnFile</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><p><strong>rxnFile</strong> – MDL RXN file</p>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><p><strong>ascendingRxnFile</strong> – A RXN file with ascending atom mappings.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../RXN/index.html" class="btn btn-default float-right" title="Rxn" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../metabolites/index.html" class="btn btn-default" title="Metabolites" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017-2021, The COBRA Toolbox developers.
+
+    </p>
+  </div>
+  Built with Sphinx using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../',
+            VERSION:'2.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+    <script type="text/javascript" src="../../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../../_static/sphinx_highlight.js"></script>
+
+  
+
+
+  
+  
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TRCMZL1FKK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TRCMZL1FKK');
+  </script>
+    
+</body>
+</html>

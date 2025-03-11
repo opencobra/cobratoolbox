@@ -1,0 +1,851 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Io &mdash; The COBRA Toolbox</title>
+  
+
+  
+  
+  
+    <link rel="apple-touch-icon" sizes="180x180" href="../../../_static/img/apple-touch-icon.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../_static/img/favicon-32x32.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="16x16" href="../../../_static/img/favicon-16x16.png">
+  
+  
+    <link rel="mask-icon" href="../../../_static/img/safari-pinned-tab.svg" color="#5bbad5">
+  
+  
+    <link rel="manifest" href="../../../_static/json/manifest.json">
+  
+  
+    <meta name="msapplication-config" content="../../../_static/browserconfig.xml">
+  
+  <meta name="theme-color" content="#ffffff">
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+  <script src="../../../_static/js/jquery.easy-autocomplete.min.js" type="text/javascript" ></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+  <link href="../../../_static/css/easy-autocomplete.min.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/cobra.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../../_static/css/cobra.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="The COBRA Toolbox" href="../../../index.html"/>
+        <link rel="up" title="Base" href="../index.html"/>
+        <link rel="next" title="Definitions" href="definitions/index.html"/>
+        <link rel="prev" title="Install" href="../install/index.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> The COBRA Toolbox
+          
+
+          
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
+          
+          </a>
+
+              
+          <h1>The COBRA Toolbox</h1>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" id="simple"/>
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+    <script>
+    	var options = {
+
+		url: "../../../_static/json/functions.json",
+
+		getValue: "name",
+
+		list: {
+            onKeyEnterEvent: function(item) {
+                    return "_static/../" + item.website_url
+            },
+            maxNumberOfElements: 25,
+			match: {
+					enabled: true,
+			},
+            sort: {
+			    enabled: true
+		    }
+		},
+
+    	template: {
+	    	type: "custom",
+		    method: function(value, item) {
+                return "<span><a href='../../../search.html?q=" + item.name + "&check_keywords=yes&area=default'>" + value + "</a>" + "<a href='../../../_static/../" + item.website_url + "' ><img src='../../../_static/link.svg'/></a></span>";
+		    }
+	    },
+
+		theme: "square"
+
+	};
+
+	$("#simple").easyAutocomplete(options);
+
+
+    </script>
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../../../index.html">Home</a></li>
+              </ul>
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Functions</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../analysis/index.html">Analysis</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Base</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../solvers/index.html">Solvers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../install/index.html">Install</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Io</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="definitions/index.html">Definitions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="newt/index.html">Newt</a></li>
+<li class="toctree-l4"><a class="reference internal" href="BiGG/index.html">Bigg</a></li>
+<li class="toctree-l4"><a class="reference internal" href="KEGG/index.html">Kegg</a></li>
+<li class="toctree-l4"><a class="reference internal" href="python/index.html">Python</a></li>
+<li class="toctree-l4"><a class="reference internal" href="json/index.html">Json</a></li>
+<li class="toctree-l4"><a class="reference internal" href="utilities/index.html">Utilities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="old/index.html">Old</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../paths/index.html">Paths</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ci/index.html">Ci</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../utilities/index.html">Utilities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../codeConsistency/index.html">Codeconsistency</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cobrarrow/index.html">Cobrarrow</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../dataIntegration/index.html">Dataintegration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../design/index.html">Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reconstruction/index.html">Reconstruction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../visualization/index.html">Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../cite.html">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../support.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../plan.html">Development Plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contact.html">Contact</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../citations.html">Citations</a></li>
+</ul>
+
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">The COBRA Toolbox</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../contents.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Functions</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Base</a></li>
+      <li class="breadcrumb-item active">Io</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="https://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <section id="io">
+<span id="id1"></span><h1>Io<a class="headerlink" href="#io" title="Permalink to this heading">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="definitions/index.html">Definitions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="newt/index.html">Newt</a></li>
+<li class="toctree-l1"><a class="reference internal" href="BiGG/index.html">Bigg</a></li>
+<li class="toctree-l1"><a class="reference internal" href="KEGG/index.html">Kegg</a></li>
+<li class="toctree-l1"><a class="reference internal" href="python/index.html">Python</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="python/pyPath/index.html">Pypath</a></li>
+<li class="toctree-l2"><a class="reference internal" href="python/cobrapy/index.html">Cobrapy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="python/condalab/index.html">Condalab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="python/tmp/index.html">Tmp</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="json/index.html">Json</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utilities/index.html">Utilities</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="utilities/SBML/index.html">Sbml</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="old/index.html">Old</a></li>
+</ul>
+</div>
+<span class="target" id="module-src.base.io"></span><dl class="mat function">
+<dt class="sig sig-object mat" id="src.base.io.convertCNAModelToCbModel">
+<span class="sig-name descname"><span class="pre">convertCNAModelToCbModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">cnaModel</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/io/convertCNAModelToCbModel.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.io.convertCNAModelToCbModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function uses the CNAcna2cobra from CellNetAnalyzer to
+convert a CNA model to a COBRA model</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>model = convertCNAModelToCbModel</strong> (<em>cnaModel, printLevel</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>cnaModel</strong> – CNA mass-flow project structure</p></li>
+<li><p><strong>printLevel</strong> – verbose level (default: 1)</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>model</strong> – COBRA model structure</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This functions requires a working installation of CellNetAnalyzer
+which can be downloaded from <a class="reference external" href="https://www2.mpi-magdeburg.mpg.de/projects/cna/cna.html">https://www2.mpi-magdeburg.mpg.de/projects/cna/cna.html</a></p>
+</div>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.base.io.convertCbModelToCNAModel">
+<span class="sig-name descname"><span class="pre">convertCbModelToCNAModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/io/convertCbModelToCNAModel.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.io.convertCbModelToCNAModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function uses the CNAcobra2cna from CellNetAnalyzer to
+convert a COBRA model to a CNA model</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>cnaModel = convertCNAModelToCbModel</strong> (<em>model, printLevel</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – COBRA model structure</p></li>
+<li><p><strong>printLevel</strong> – verbose level (default: 1)</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>cnaModel</strong> – cnaModel is a CNA mass-flow project structure</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This functions requires a working installation of CellNetAnalyzer
+which can be downloaded from <a class="reference external" href="https://www2.mpi-magdeburg.mpg.de/projects/cna/cna.html">https://www2.mpi-magdeburg.mpg.de/projects/cna/cna.html</a></p>
+</div>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.base.io.convertCobraLP2mps">
+<span class="sig-name descname"><span class="pre">convertCobraLP2mps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">LPProblem</span></em>, <em class="sig-param"><span class="pre">name</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/io/convertCobraLP2mps.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.io.convertCobraLP2mps" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates an MPS (Mathematical Programming System) format ascii file
+representing the Linear Programming problem given by LPProblem.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>OK = convertCobraLP2mps</strong> (<em>LPProblem, name</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><p><strong>LPproblem</strong> – Structure containing the following fields describing the LP problem to be solved</p>
+<ul class="simple">
+<li><p>.A - LHS matrix</p></li>
+<li><p>.b - RHS vector</p></li>
+<li><p>.c - Objective coeff vector</p></li>
+<li><p>.lb - Lower bound vector</p></li>
+<li><p>.ub - Upper bound vector</p></li>
+<li><p>.osense - Objective sense (max=-1, min=+1)</p></li>
+<li><p>.csense - Constraint senses, a string containting the constraint sense for
+each row in A (‘E’, equality, ‘G’ greater than, ‘L’ less than).</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUT</dt>
+<dd class="field-odd"><p><strong>name</strong> – string giving name of LP problem</p>
+</dd>
+<dt class="field-even">OUTPUT</dt>
+<dd class="field-even"><p><strong>OK</strong> – 1 if saving is success, 0 otherwise</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.base.io.convertModelToEX">
+<span class="sig-name descname"><span class="pre">convertModelToEX</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">filename</span></em>, <em class="sig-param"><span class="pre">rxnzero</span></em>, <em class="sig-param"><span class="pre">EXrxns</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/io/convertModelToEX.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.io.convertModelToEX" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a Matlab Model to XPA format</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>convertModelToEX</strong> (<em>model, filename, rxnzero, EXrxns</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – Model Structure</p></li>
+<li><p><strong>filename</strong> – Filename of Output File (make sure to include ‘.txt’ or ‘.xpa’)</p></li>
+<li><p><strong>rxnzero</strong> – Matrix containing all no flux var rxns (to skip, set=0)</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUT</dt>
+<dd class="field-odd"><p><strong>EXrxns</strong> – Exchange reactions</p>
+</dd>
+</dl>
+<p>Limitations</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Works properly with only integer value reaction coeff. (except for .5
+or -.5). Other non-integer value coeff. have to be edited manually</p></li>
+<li><p>Exchange reactions have to be clumped together in model</p></li>
+<li><p>If using rxnzero, make sure that EX reactions contain no compounds
+that are not used in the uncommented reactions</p></li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.base.io.readCbModel">
+<span class="sig-name descname"><span class="pre">readCbModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">fileName</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/io/readCbModel.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.io.readCbModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads in a constraint-based model. If no arguments are passed to the function, the user will be prompted for a file name.
+While some fields are necessary for a COBRA model, others are not.</p>
+<p>The <cite>readCbModel.m</cite> function is dependent on another function
+<cite>io/utilities/readSBML.m</cite> to use libSBML library
+(<a class="reference external" href="http://sbml.org/Software/libSBML">http://sbml.org/Software/libSBML</a>), to parse a SBML-FBCv2 file into a
+COBRA-Matlab structure.
+The <cite>readCbModel.m</cite> function is backward compatible with older SBML versions.
+A list of fields of a COBRA structure is described in
+<a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/docs/source/notes/COBRAModelFields.md">https://github.com/opencobra/cobratoolbox/blob/master/docs/source/notes/COBRAModelFields.md</a>
+and defined computationally in:
+src/base/io/definitions/COBRA_structure_fields.tab</p>
+<dl class="field-list">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>model = readCbModel</strong> (<em>fileName, varargin</em>)</p>
+</dd>
+<dt class="field-even">OPTIONAL INPUTS</dt>
+<dd class="field-even"><ul>
+<li><p><strong>fileName</strong> – File name for file to read in (char)</p></li>
+<li><p><strong>varargin</strong> – Optional values as ‘ParameterName’,value pairs
+with the following available parameters:
+- fileType:  File type for input files: ‘SBML’, ‘SimPheny’,</p>
+<blockquote>
+<div><dl class="simple">
+<dt>‘SimPhenyPlus’, ‘SimPhenyText’, ‘Matlab’, ‘BiGG’, ‘BiGGSBML’ or ‘Excel’ (Default = ‘Matlab’)</dt><dd><ul class="simple">
+<li><p>‘SBML’ indicates a file in <cite>SBML</cite> format</p></li>
+<li><p>‘SimPheny’ is a set of three files in <cite>SimPheny</cite> simulation output format</p></li>
+<li><p>‘SimPhenyPlus’ is the same as ‘SimPheny’ except with
+additional files containing gene-protein-reaction
+associations andcompound information</p></li>
+<li><p>‘SimPhenyText’ is the same as ‘SimPheny’ except with
+additionaltext file containing gene-protein-reaction
+associations</p></li>
+<li><p>Matlab will save the model as a matlab variable file.</p></li>
+<li><p>BiGG and BIGGSBML indicate that the fileName is a BiGG
+Model identifier and that the model should
+be loaded from the BiGG database (requires
+an Internet connection). BiGG loads it from
+the BiGG Database mat file, BiGGSBML uses
+the SBML file.</p></li>
+<li><p>Excel will save the model as a two sheet Excel Model.</p></li>
+</ul>
+</dd>
+</dl>
+</div></blockquote>
+<ul class="simple">
+<li><p>modelDescription:    Description of model contents (char), default is the
+choosen filename</p></li>
+<li><p>compSymbolList: Compartment Symbol List( cell array)</p></li>
+<li><p>defaultBound: The default bound value (default 1000)</p></li>
+<li><p>modelName: .mat file specific identifier, if
+provided, the specified model (if valid) will be
+loaded from the given mat file. If not given,
+the file will be scanned for models and all
+potential model structs will be provided as
+options to select from.
+(default: ‘all’)</p></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>model</strong> – Returns a model in the COBRA format with at least the following fields:</p>
+<ul class="simple">
+<li><p>.description - Description of model contents</p></li>
+<li><p>.rxns - Reaction names</p></li>
+<li><p>.mets - Metabolite names</p></li>
+<li><p>.S - Stoichiometric matrix</p></li>
+<li><p>.lb - Lower bounds</p></li>
+<li><p>.ub - Upper bounds</p></li>
+<li><p>.c - Objective coefficients</p></li>
+<li><p>.osenseStr - the objective sense (‘max’ or</p></li>
+</ul>
+<p>‘min’)
+* .csense - the constraint senses (‘L’ for</p>
+<blockquote>
+<div><p>lower than, ‘G’ - greated than, ‘E’ - equal)</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>.rules - Gene-reaction association rule in computable form</p></li>
+<li><p>.genes - List of all genes</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<dl class="simple">
+<dt>%1) Load a file to be specified in a dialog box:</dt><dd><p>model = readCbModel;</p>
+</dd>
+</dl>
+<p>%2) Load model named ‘iJR904’ in SBML format with maximum flux set
+%at 1000 (requires file named ‘iJR904.xml’ to exist)</p>
+<blockquote>
+<div><p>model = readCbModel(‘iJR904’,’fileType’,’SBML’,’defaultBound’, 1000);</p>
+</div></blockquote>
+<p>%3) Load model named ‘iJR904’ in SimPheny format with maximum flux set
+%at 500 (requires files named ‘iJR904.rxn’, ‘iJR904.met’, and ‘iJR904.sto’ to exist)</p>
+<blockquote>
+<div><p>model = readCbModel(‘iJR904’,’fileType’,’SimPheny’,’defaultBound’, 500);</p>
+</div></blockquote>
+<p>%4) Load model named ‘iJR904’ in SimPheny format with gpr and compound information
+%(requires files named ‘iJR904.rxn’, ‘iJR904.met’,’iJR904.sto’,
+%’iJR904_gpr.txt’, and ‘iJR904_cmpd.txt’ to exist)</p>
+<blockquote>
+<div><p>model = readCbModel(‘iJR904’,’fileType’,’SimPhenyPlus’);</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.base.io.readMinosSolution">
+<span class="sig-name descname"><span class="pre">readMinosSolution</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">fname</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/io/readMinosSolution.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.io.readMinosSolution" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads MINOS solution information from file fname.
+The file is created by MINOS with the run-time option
+Report file 81.
+Note that 81 is essential, and the gfortran compiler produces a file
+named fort.81 (which may be renamed by the script used to run MINOS).
+Other compilers may generate different generic names.</p>
+<p>The optimization problem solved by MINOS is assumed to be</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>min   <cite>osense*s(iobj)</cite></p></li>
+<li><p>st    <cite>Ax - s = 0</cite> + bounds on <cite>x</cite> and <cite>s</cite>,</p></li>
+</ul>
+</div></blockquote>
+<p>where <cite>A</cite> has <cite>m</cite> rows and <cite>n</cite> columns.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>sol = readMinosSolution</strong> (<em>fname</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><p><strong>fname</strong> – File</p>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>sol</strong> – Structure</p>
+<ul class="simple">
+<li><p>.inform - MINOS exit condition</p></li>
+<li><p>.m - Number of rows in <cite>A</cite></p></li>
+<li><p>.n - Number of columns in <cite>A</cite></p></li>
+<li><p>.osense - osense</p></li>
+<li><p>.objrow - Row of <cite>A</cite> containing a linear objective</p></li>
+<li><p>.obj - Value of MINOS objective (linear + nonlinear)</p></li>
+<li><p>.numinf - Number of infeasibilities in <cite>x</cite> and <cite>s</cite>.</p></li>
+<li><p>.suminf - Sum of infeasibilities in <cite>x</cite> and <cite>s</cite>.</p></li>
+<li><p>.xstate - <cite>n</cite> vector: state of each variable in <cite>x</cite>.</p></li>
+<li><p>.sstate - <cite>m</cite> vector: state of each slack in <cite>s</cite>.</p></li>
+<li><p>.x - <cite>n</cite> vector: value of each variable in <cite>x</cite>.</p></li>
+<li><p>.s - <cite>m</cite> vector: value of each slack in <cite>s</cite>.</p></li>
+<li><p>.rc - <cite>n</cite> vector: reduced gradients for <cite>x</cite>.</p></li>
+<li><p>.y - <cite>m</cite> vector: dual variables for <cite>Ax - s = 0</cite>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.base.io.readMixedData">
+<span class="sig-name descname"><span class="pre">readMixedData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">file</span></em>, <em class="sig-param"><span class="pre">n_header</span></em>, <em class="sig-param"><span class="pre">n_labels</span></em>, <em class="sig-param"><span class="pre">delimiter</span></em>, <em class="sig-param"><span class="pre">verbose</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/io/readMixedData.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.io.readMixedData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read floating point data with row identifiers (text) in the first <cite>n</cite> columns
+and <cite>m</cite> headerlines (text)</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[id, data, header] = readMixedData</strong> (<em>file, n_header, n_labels, delimiter, verbose</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>file</strong> – Filename</p></li>
+<li><p><strong>n_header</strong> – Number of header lines (default 0)</p></li>
+<li><p><strong>n_labels</strong> – Number of label columns (default 1)</p></li>
+<li><p><strong>delimiter</strong> – Delimiter character (default tab)</p></li>
+<li><p><strong>verbose</strong> – Print out the string to be evaluated for debugging (default 0)</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id</strong> – Identifiers</p></li>
+<li><p><strong>data</strong> – Read data</p></li>
+<li><p><strong>header</strong> – Headers</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.base.io.sbmlTestModelToMat">
+<span class="sig-name descname"><span class="pre">sbmlTestModelToMat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">originFolder</span></em>, <em class="sig-param"><span class="pre">destFolder</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/io/sbmlTestModelToMat.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.io.sbmlTestModelToMat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to translate a batch of sbml files in .xml format within an <cite>originFolder</cite>,
+into COBRA toolbox compatible models, saving each as a .mat file in <cite>destFolder</cite>
+containing one ‘model’ structure derived from the corresponding .xml file</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>sbmlTestModelToMat</strong> (<em>originFolder, destFolder</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>originFolder</strong> – full path to the folder with the input SBML XML files</p></li>
+<li><p><strong>destFolder</strong> – full path to the folder with the COBRA 2.0 toolbox compatible models,
+one each in a name.mat file where name is derived from the
+filename of the corresponding input name.xml file</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.base.io.writeCbModel">
+<span class="sig-name descname"><span class="pre">writeCbModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/io/writeCbModel.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.io.writeCbModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes out COBRA models in various formats</p>
+<dl class="field-list">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>outmodel = writeCbModel</strong> (<em>model, varargin</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><p><strong>model</strong> – Standard COBRA model structure</p>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><p><strong>varargin</strong> – Optional parameters in ‘Parametername’,value
+format. Available parameterNames are:
+* format:   File format to be used (‘text’, ‘xls’, ‘mat’(default), ‘expa’, ‘json’ or ‘sbml’)</p>
+<blockquote>
+<div><p>text will only output data from required fields (with GPR rules converted to string representation)
+xls is restricted to the fields defined in the xls io documentation.
+expa will print all reactions with Exchangers being detected by findExcRxns</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>fileName: File name for output file (optional, default opens dialog box)</p></li>
+<li><p>compSymbols: List of compartment symbols (Cell array)</p></li>
+<li><p>compNames:   List of compartment names corresponding to <cite>compSymbolList</cite> (Cell array)
+If compSymbols and compNames are not provided, they are obtained by default from getDefaultCompartmentSymbols()</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="simple">
+<dt>OPTIONAL OUTPUTS:</dt><dd><p>outmodel:          Only useable with sbml export. Will return the sbml structure, otherwise the input COBRA model structure is returned.</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<p>% Write a model in sbml format (a popup will ask for the name)
+outmodel = writeCbModel(model, ‘format’,’sbml’)
+% Write a model in the specified format with the given file name
+outmodel = writeCbModel(model, ‘format’,’mat’, ‘fileName’, ‘TestModel.mat’)
+% Write a model in xls
+outmodel = writeCbModel(Recon3D, ‘format’,’xls’,’fileName’,’Recon3D_301_Thiele_2018.xls’);</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <cite>writeCbModel</cite> function relies on another function
+<cite>io/utilities/writeSBML.m</cite> to convert a COBRA-Matlab structure into
+a libSBML-Matlab structure and then call <cite>libSBML</cite> to export a
+FBCv2 file. The current version of the <cite>writeSBML.m</cite> does not require the
+SBML toolbox (<a class="reference external" href="http://sbml.org/Software/SBMLToolbox">http://sbml.org/Software/SBMLToolbox</a>).</p>
+</div>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.base.io.writeGDXFromCOBRA">
+<span class="sig-name descname"><span class="pre">writeGDXFromCOBRA</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">cobraStruct</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/io/writeGDXFromCOBRA.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.io.writeGDXFromCOBRA" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes a GDX file with the stoichiometric matrix, bounds and
+reversibility information.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[helpText] = writeGDXFromCOBRA</strong> (<em>cobraStruct,…</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><p><strong>cobraStruct</strong> – Model Structure</p>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>FileName</strong> – Name for the generated .gdx file (date and time based name by default)</p></li>
+<li><p><strong>IncludeSets</strong> – Controls inclusion of metabolite and reaction sets in the gdx file (true by default)</p></li>
+<li><p><strong>IncludeBounds</strong> – Controls inclusion of model bounds in the gdx file (true by default)</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUT</dt>
+<dd class="field-even"><p><strong>helpText</strong> – String with example load</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>% Default call
+writeGDXFromCOBRA(cobraStruct);</p>
+<p>% Specify a filename
+writeGDXFromCOBRA(cobraStruct,’FileName’,’mymodel.gdx’);</p>
+<p>% Generate smaller size file by taking advantage of  “Domain Loading” in gams
+writeGDXFromCOBRA(cobraStruct,’IncludeSets’,false);</p>
+<p>% Don’t include the bounds in generated file
+writeGDXFromCOBRA(cobraStruct,’IncludeBounds’,false);</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Requires ‘wgdx’ to be on path, which is provided by a GAMS installation.</p>
+</div>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.base.io.writeLPProblem">
+<span class="sig-name descname"><span class="pre">writeLPProblem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">LPProblem</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/io/writeLPProblem.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.io.writeLPProblem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates an MPS (Mathematical Programming System) format ascii file representing the Linear Programming problem given by LPProblem.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>OK = writeLPProblem</strong> (<em>LPProblem, varargin</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><p><strong>LPproblem</strong> – Structure containing the following fields describing the LP problem to be solved</p>
+<ul class="simple">
+<li><p>.A - LHS matrix</p></li>
+<li><p>.b - RHS vector</p></li>
+<li><p>.c - Objective coeff vector</p></li>
+<li><p>.lb - Lower bound vector</p></li>
+<li><p>.ub - Upper bound vector</p></li>
+<li><p>.osense - Objective sense (max=-1, min=+1)</p></li>
+<li><p>.csense - Constraint senses, a string containting the constraint sense for
+each row in A (‘E’, equality, ‘G’ greater than, ‘L’ less than).</p></li>
+</ul>
+</dd>
+</dl>
+<dl>
+<dt>OPTIONAL INPUT</dt><dd><p>varargin:     a list of parameter/value pairs with the following parameters:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>‘fileName’ - Name of the output file (e.g. ‘Problem.mps’)</p></li>
+<li><p>‘solverParams’ - A struct containing the solver parameters if provided</p></li>
+<li><p>‘outputFormat’ - Currently only ‘mps’ is supported (and default)</p></li>
+<li><p>‘writeMatrix’ - Only write the Matrix, not the full problem (default
+true), will be ignored if solver params are provided</p></li>
+</ul>
+</div></blockquote>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>OK</strong> – 1 if saving is success, 0 otherwise</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>Write a model to a specified fileName:
+OK = writeLPProblem(LPProblem, ‘fileName’, ‘AFileName.ext’)</p>
+<p>Write a model problem using the specified solverParams
+OK = writeLPProblem(LPProblem, ‘solverParams’, Params)</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.base.io.writeMinosProblem">
+<span class="sig-name descname"><span class="pre">writeMinosProblem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">LPproblem</span></em>, <em class="sig-param"><span class="pre">precision</span></em>, <em class="sig-param"><span class="pre">modelName</span></em>, <em class="sig-param"><span class="pre">directory</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/io/writeMinosProblem.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.io.writeMinosProblem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Inputs a COBRA LPproblem Matlab structure and outputs
+a file that can be input to an F90 main program
+for solution by SQOPT or MINOS.</p>
+<dl class="field-list">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[directory, fname] = writeMinosProblem</strong> (<em>LPproblem, precision, modelName, directory, printLevel</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><p><strong>LPproblem</strong> – Structure containing the following fields describing the LP
+problem to be solved</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>.A - LHS matrix</p></li>
+<li><p>.b - RHS vector</p></li>
+<li><p>.c - Objective coeff vector</p></li>
+<li><p>.lb - Lower bound vector</p></li>
+<li><p>.ub - Upper bound vector</p></li>
+<li><p>.osense - Objective sense (-1 max, +1 min)</p></li>
+<li><p>.csense - Constraint senses, a string containting the constraint sense for
+each row in <cite>A</cite> (‘E’, equality, ‘G’ greater than, ‘L’ less than).</p></li>
+</ul>
+</div></blockquote>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>precision</strong> – ‘double’ or ‘single’ precision</p></li>
+<li><p><strong>modelName</strong> – name is the problem name (a character string)</p></li>
+<li><p><strong>directory</strong> – the directory where optimization problem file is saved</p></li>
+<li><p><strong>printLevel</strong> – verbose level</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUT</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>directory</strong> – directory for the file</p></li>
+<li><p><strong>fname</strong> – filename of the optimization problem</p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>BEFORE RUNNING <cite>writeMinosProblem</cite> DO THIS:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>Set <cite>modelNo</cite> = one of the switch numbers</p></li>
+<li><p>Set format  = 1 or 2</p></li>
+<li><p>Set name for the chosen <cite>modelNo</cite> (AT MOST 7 CHARACTERS WITH NO TRAILING BLANKS)</p></li>
+</ol>
+</div></blockquote>
+<p><cite>name</cite> is the problem name (a character string).
+A <cite>s</cite> is appended to name if format==2 (single precision),
+<cite>name.txt</cite> is the name of the output file.
+<cite>name</cite> is the first line in the output file.</p>
+</div>
+</dd></dl>
+
+</section>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="definitions/index.html" class="btn btn-default float-right" title="Definitions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../install/index.html" class="btn btn-default" title="Install" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017-2021, The COBRA Toolbox developers.
+
+    </p>
+  </div>
+  Built with Sphinx using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'2.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+    <script type="text/javascript" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/sphinx_highlight.js"></script>
+
+  
+
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TRCMZL1FKK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TRCMZL1FKK');
+  </script>
+    
+</body>
+</html>

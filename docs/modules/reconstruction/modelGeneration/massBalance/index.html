@@ -1,0 +1,809 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Massbalance &mdash; The COBRA Toolbox</title>
+  
+
+  
+  
+  
+    <link rel="apple-touch-icon" sizes="180x180" href="../../../../_static/img/apple-touch-icon.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../../_static/img/favicon-32x32.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="16x16" href="../../../../_static/img/favicon-16x16.png">
+  
+  
+    <link rel="mask-icon" href="../../../../_static/img/safari-pinned-tab.svg" color="#5bbad5">
+  
+  
+    <link rel="manifest" href="../../../../_static/json/manifest.json">
+  
+  
+    <meta name="msapplication-config" content="../../../../_static/browserconfig.xml">
+  
+  <meta name="theme-color" content="#ffffff">
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+  <script src="../../../../_static/js/jquery.easy-autocomplete.min.js" type="text/javascript" ></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+  <link href="../../../../_static/css/easy-autocomplete.min.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../_static/css/cobra.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../../../_static/css/cobra.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../../search.html"/>
+    <link rel="top" title="The COBRA Toolbox" href="../../../../index.html"/>
+        <link rel="up" title="Modelgeneration" href="../index.html"/>
+        <link rel="next" title="Fluxconsistency" href="../fluxConsistency/index.html"/>
+        <link rel="prev" title="Stoichconsistency" href="../stoichConsistency/index.html"/> 
+
+  
+  <script src="../../../../_static/js/modernizr.min.js"></script>
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> The COBRA Toolbox
+          
+
+          
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
+          
+          </a>
+
+              
+          <h1>The COBRA Toolbox</h1>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" id="simple"/>
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+    <script>
+    	var options = {
+
+		url: "../../../../_static/json/functions.json",
+
+		getValue: "name",
+
+		list: {
+            onKeyEnterEvent: function(item) {
+                    return "_static/../" + item.website_url
+            },
+            maxNumberOfElements: 25,
+			match: {
+					enabled: true,
+			},
+            sort: {
+			    enabled: true
+		    }
+		},
+
+    	template: {
+	    	type: "custom",
+		    method: function(value, item) {
+                return "<span><a href='../../../../search.html?q=" + item.name + "&check_keywords=yes&area=default'>" + value + "</a>" + "<a href='../../../../_static/../" + item.website_url + "' ><img src='../../../../_static/link.svg'/></a></span>";
+		    }
+	    },
+
+		theme: "square"
+
+	};
+
+	$("#simple").easyAutocomplete(options);
+
+
+    </script>
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../index.html">Home</a></li>
+              </ul>
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">Functions</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../../analysis/index.html">Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../base/index.html">Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../dataIntegration/index.html">Dataintegration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../design/index.html">Design</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Reconstruction</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html">Modelgeneration</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../modelProperties/index.html">Modelproperties</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../stoichConsistency/index.html">Stoichconsistency</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Massbalance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fluxConsistency/index.html">Fluxconsistency</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../modelVerification/index.html">Modelverification</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../refinement/index.html">Refinement</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../demeter/index.html">Demeter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../fastGapFill/index.html">Fastgapfill</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../comparison/index.html">Comparison</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../metaboRePort/index.html">Metaboreport</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../growthExpMatch/index.html">Growthexpmatch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../rBioNet/index.html">Rbionet</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../visualization/index.html">Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contributing.html">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../cite.html">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../support.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../plan.html">Development Plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contact.html">Contact</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../citations.html">Citations</a></li>
+</ul>
+
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">The COBRA Toolbox</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../contents.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Functions</a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Reconstruction</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Modelgeneration</a></li>
+      <li class="breadcrumb-item active">Massbalance</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="https://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <section id="massbalance">
+<span id="id1"></span><h1>Massbalance<a class="headerlink" href="#massbalance" title="Permalink to this heading">¶</a></h1>
+<span class="target" id="module-src.reconstruction.modelGeneration.massBalance"></span><dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.modelGeneration.massBalance.checkBalance">
+<span class="sig-name descname"><span class="pre">checkBalance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">element</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em>, <em class="sig-param"><span class="pre">fileName</span></em>, <em class="sig-param"><span class="pre">missingFormulaeBool</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/modelGeneration/massBalance/checkBalance.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.massBalance.checkBalance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks whether a set of reactions is elementally balanced.
+Note that exchange reactions are not elementally balanced.</p>
+<dl class="field-list">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[dE ,E, missingFormulaeBool] = checkBalance</strong> (<em>model, element, printLevel, fileName, missingFormulaeBool</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – COBRA model structure:</p>
+<ul>
+<li><p>.S - Stoichiometric matrix</p></li>
+<li><p>.metForumlas - Metabolite formulas</p></li>
+</ul>
+</li>
+<li><p><strong>element</strong> – Abbreviation of element e.g. C or Mg</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>printLevel</strong> – {-1, (0), 1} where:</p>
+<p>-1 = print out missing formulae to a file;
+0 = silent;
+1 = print out  missing formulae to screen reactions to screen</p>
+</li>
+<li><p><strong>fileName</strong> – name of the file</p></li>
+<li><p><strong>missingFormulaeBool</strong> – boolean variable for missing formulae</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>dE</strong> – <cite>n</cite> x 1 vector of net change in elements per reaction <cite>bal = E*S</cite>
+If <cite>isnan(dE(n))</cite> then the reaction involves a metabolite without a formula.</p></li>
+<li><p><strong>E</strong> – <cite>m</cite> x 1 vector with number of elements in each metabolite</p></li>
+<li><p><strong>missingFormulaeBool</strong> – boolean variable for missing formulae</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.modelGeneration.massBalance.checkFormulaValidty">
+<span class="sig-name descname"><span class="pre">checkFormulaValidty</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/modelGeneration/massBalance/checkFormulaValidty.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.massBalance.checkFormulaValidty" title="Permalink to this definition">¶</a></dt>
+<dd><p>Assesses whether metabolites in model are likely to be documented in databases.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[dbBool, noDocMets] = checkFormulaValidty</strong> (<em>model</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><p><strong>model</strong> – Model structure array</p>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dbBool</strong> – A boolean vector where the number of rows is equal to the number of
+metabolites in model. Contains a logical 1 in rows for metabolites that
+are likely to be documented in databases and a logical 0 elsewhere.</p></li>
+<li><p><strong>noDocMets</strong> – A cell array containing a list of all metabolites in model that
+are not likely to be documented in any database.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.modelGeneration.massBalance.checkMassChargeBalance">
+<span class="sig-name descname"><span class="pre">checkMassChargeBalance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em>, <em class="sig-param"><span class="pre">modelName</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/modelGeneration/massBalance/checkMassChargeBalance.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.massBalance.checkMassChargeBalance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tests for a list of reactions if these reactions are
+mass-balanced by adding all elements on left hand side and comparing them
+with the sums of elements on the right hand side of the reaction.
+A reaction is considered elementally imbalanced if any of the molecular
+species involved is missing a chemical formula.</p>
+<dl class="field-list">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[massImbalance, imBalancedMass, imBalancedCharge, imBalancedRxnBool, elements, missingFormulaeBool, balancedMetBool] = checkMassChargeBalance</strong> (<em>model, printLevel, modelName</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><p><strong>model</strong> – COBRA model structure:</p>
+<ul class="simple">
+<li><p>.S - <cite>m</cite> x <cite>n</cite> stoichiometric matrix</p></li>
+<li><p>.metForumlas - <cite>m</cite> x 1 cell array of metabolite formulas</p></li>
+<li><p>.metCharges - <cite>m</cite> x 1 double array of charges</p></li>
+<li><p>model.SIntRxnBool - Boolean of reactions heuristically though to be mass balanced. (optional)</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>printLevel</strong> – {-1, (0), 1} where:</p>
+<p>-1 = print out diagnostics on problem reactions to a file,
+0 = silent,
+1 = print elements as they are checked (display progress),
+2 = also print out diagnostics on problem reactions to screen</p>
+</li>
+<li><p><strong>modelName</strong> – name of the file</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>massImbalance</strong> – <cite>nRxn</cite> x <cite>nElement</cite> matrix with mass imbalance
+for each element checked. 0 if balanced.</p></li>
+<li><p><strong>imBalancedMass</strong> – <cite>nRxn</cite> x 1 cell with mass imbalance
+e.g. -3 H means three hydrogens disappear in the reaction.</p></li>
+<li><p><strong>imBalancedCharge</strong> – <cite>nRxn</cite> x 1 vector with charge imbalance, empty if no imbalanced reactions</p></li>
+<li><p><strong>imBalancedRxnBool</strong> – boolean vector indicating imbalanced reactions (including exchange reactions!)</p></li>
+<li><p><strong>elements</strong> – <cite>nElement</cite> x 1 cell array of element abbreviations checked</p></li>
+<li><p><strong>missingFormulaeBool</strong> – <cite>nMet</cite> x 1 boolean vector indicating metabolites without formulae</p></li>
+<li><p><strong>balancedMetBool</strong> – boolean vector indicating metabolites exclusively involved in balanced reactions</p></li>
+</ul>
+</dd>
+</dl>
+<p>OPTIONAL OUTPUT FILES:
+modelName_mass_imbalanced_reactions.txt  provides a human readable summary
+for each mass imbalanced reaction.</p>
+<p>For each reaction it contains:
+j             the index of the column of the stoichiometric matrix corresponding to the reaction
+rxns{j}       the abbreviation of the reaction
+imbalance     the number of each element that is unbalanced
+equation      the reaction equation</p>
+<p>For each metabolite involved in a reaction it contains
+i               the index of the row of the stoichiometric matrix corresponding to the metabolite
+mets{i}         the abbreviation of the reaction
+S(i,j)          the stoichiometric coefficient
+metFormulas{i}  the chemical formula of the metabolite</p>
+<p>Example
+#Rxn;rxnAbbr;imbalance;equation
+32;2AMACSULT;3 O, 1 S;2amac[c] + nadph[c] + paps[c]  -&gt; nadp[c] + Lcyst[c] + pap[c]</p>
+<blockquote>
+<div><p>58         2amac[c] -1      C3H5NO2
+60         nadph[c] -1      C21H26N7O17P3
+61          nadp[c] 1       C21H25N7O17P3
+62          paps[c] -1      C10H11N5O10P2
+63         Lcyst[c] 1       C3H6NO5S
+64           pap[c] 1       C10H11N5O10P2</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.modelGeneration.massBalance.computeElementalMatrix">
+<span class="sig-name descname"><span class="pre">computeElementalMatrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">metList</span></em>, <em class="sig-param"><span class="pre">warnings</span></em>, <em class="sig-param"><span class="pre">generalFormula</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/modelGeneration/massBalance/computeElementalMatrix.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.massBalance.computeElementalMatrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes elemental matrix</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[Ematrix, element] = computeElementalMatrix</strong> (<em>model, metList, warnings, generalFormula</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><p><strong>model</strong> – COBRA model structure (must define <cite>.mets</cite> and <cite>.metFormulas</cite>)</p>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>metList</strong> – Cell array of which metabolites to search for
+(Default = all metabolites in model)</p></li>
+<li><p><strong>warnings</strong> – Display warnings if there are errors with the
+formula. (Default = true)</p></li>
+<li><p><strong>generalFormula</strong> –</p>
+<ul>
+<li><p>(default) false to return composition for  [C N O H P other] only.</p></li>
+<li><p>true to support formulae with brackets, decimal places and any chemical elements
+including undefined groups (e.g., ‘([H2O]2(CuSO4))2Generic_element0.5’).</p></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUT</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>Ematrix</strong> – <cite>m x 6</cite> matrix of order [C N O H P other] if genericFormula = 0
+<cite>m x e</cite> matrix if genericFormula = 1 given e elements in the chemical formulae</p></li>
+<li><p><strong>elements</strong> – cell array of elements corresponding to the columns of Ematrix</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.modelGeneration.massBalance.computeMetFormulae">
+<span class="sig-name descname"><span class="pre">computeMetFormulae</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/modelGeneration/massBalance/computeMetFormulae.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.massBalance.computeMetFormulae" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the chemical formulas for metabolites without formulas using a set of metabolites with
+known formulae by minimizing the overall inconsistency in elemental balance. They are combined with the
+conserved moiety vectors identified from the left null space of S-matrix to return the general formulae.
+Known formulae for all external mets (including sink/demand) suffice to infer the formulae for all
+metabolites. More mets with known formulae will reveal more inconsistency in mass balance.
+This is particularly useful for checking the molecular weight of the biomass produced in the model,
+which should be curated to have MW = 1000 g/mol for prediction fidelity.
+Metabolites that may have adjustable stoichiometries (e.g., H+, H2O) can be supplied to fill up inconsistency.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Find unknown chemical formulae for all metabolites</strong> – [model, metFormulae, elements, metEle, rxnBal, S_fill, solInfo, LP] = computeMetFormulae(model, ‘parameter’, value, … )</p></li>
+<li><p><strong>Find the min/max possible MW of a particular metabolite of interest</strong> – [mwRange, metFormulae, elements, metEle, rxnBal, S_fill, solInfo, LP] = computeMetFormulae(model, ‘metMwRange’, met, …)</p></li>
+<li><p><strong>Also support direct input in the following order</strong> – […] = computeMetFormulae(model, knownMets, balancedRxns, fillMets, calcCMs, nameCMs, deadCMs, metMwRange, LPparams, …)</p></li>
+</ul>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><p><strong>model</strong> – COBRA model</p>
+</dd>
+</dl>
+<dl>
+<dt>OPTIONAL INPUTS (support name-value argument input):</dt><dd><dl>
+<dt>knownMets:      Known metabolites (cell array of strings or vector of met IDs)</dt><dd><p>[default all mets with nonempty .metFormulas]</p>
+</dd>
+<dt>balancedRxns:   The set of reactions for inferring formulae (cell array of strings or vector of rxn IDs)</dt><dd><p>[default all non-exchange reactions]</p>
+</dd>
+<dt>fillMets:       The chemical formulas for compounds for freely filling the imbalance, e.g. {‘HCharge1’, ‘H2O’}.</dt><dd><p>‘none’ not to have any. [default ‘HCharge1’ if charge info exists else ‘H’]</p>
+</dd>
+<dt>calcCMs:        Calculate conserved moieties from the left null space of S. Options:</dt><dd><ul class="simple">
+<li><dl class="simple">
+<dt>‘efmtool’: Use EFMtool (most comprehensive, recommanded, but computational</dt><dd><p>cost may be high if there are many deadend mets)</p>
+</dd>
+</dl>
+</li>
+<li><p>‘null’:    Use the rational basis computed by Matlab</p></li>
+<li><dl class="simple">
+<dt>N:         Directly supply the matrix <span class="math notranslate nohighlight">\(N\)</span> for conserved moieties</dt><dd><p>(from rational basis or the set of extreme rays)</p>
+</dd>
+</dl>
+</li>
+<li><p>false:     Not to find conserved moieties and return minimal formulae</p></li>
+</ul>
+<p>[default ‘efmtool’ if ‘CalculateFluxModes.m’ is in path, else switch to ‘null’]</p>
+</dd>
+<dt>nameCMs:        Name the identified conserved moieties or not [default 0]</dt><dd><ul class="simple">
+<li><p>0:  The program assigns default names for conserved moieties (Conserve_a, Conserve_b, …)</p></li>
+<li><p>1:  Name true conserved moieties interactively (exclude dead end mets).</p></li>
+<li><p>2:  Name all interactively (including dead end)</p></li>
+<li><p>cell array of names for the conserved moieties, corresponding
+to the columns in <span class="math notranslate nohighlight">\(N\)</span> (N must be supplied as calcCMs to use this option)</p></li>
+</ul>
+</dd>
+</dl>
+<p>deadCMs:        true to include dead end metabolites when finding conserved moieties (default true)
+metMwRange:     the metabolite of interest (or its ID) for which the range of possible molecular weights is determined</p>
+<blockquote>
+<div><p>(if supplied, inputs ‘fillMets’, … , ‘deadCMs’ are all not used)</p>
+</div></blockquote>
+<p>LPparams:       Additional parameters for <cite>solveCobraLP</cite>. See <cite>solveCobraLP</cite> for details</p>
+</dd>
+</dl>
+<dl class="field-list">
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>model</strong> – COBRA model with updated formulas and charges (1st output if ‘metMwRange’ is not called)</p></li>
+<li><p><strong>mwRange</strong> – range for the MW of the metabolite of interest (1st output if ‘metMwRange’ is called)</p></li>
+<li><p><strong>metFormulae</strong> – Formulae for unknown mets (#unknown mets x 2 cell array) if ‘metMwRange’ is not called
+Cell array of two chemical formulae for the min/max MW of the metabolite of interest if ‘metMwRange’ is called</p></li>
+<li><p><strong>elements</strong> – Elements corresponding to the row of rxnBal, the coloumn of metEle</p></li>
+<li><p><strong>metEle</strong> – Chemical formulas in matrix (#metKnown x #elements)</p></li>
+<li><p><strong>rxnBal</strong> – Elemental balance of rxns (#elements x #rxns)</p></li>
+<li><p><strong>S_fill</strong> – Adjustment of the S-matrix by ‘metFill’ (#metFill x #rxns in the input)</p></li>
+<li><p><strong>solInfo</strong> – Info for the solutions for each of the optimization problems solved:
+* metUnknown:    mets whose formulae are being solved for (#met_unknown x 1 cell)
+* metFill:       metabolite formulae used to automatically fill inconsistency
+* rxns:          reactions with elemental balance imposed
+* elements:      the chemical elements present in the model’s formulae.
+* eleConnect:    connected components partitioning solInfo.elements (#elements x #components logical matrix).</p>
+<blockquote>
+<div><p>Elements in the same component mean that they are connected
+by some ‘metFill’ and are optimized in the same round.</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>metEleUnknown: the formulae found for unknown metabolites in different steps (#met_unknown x #elements)</p></li>
+<li><p>S_fill:        solution for S_fill in each step</p></li>
+<li><p>solEachEle:    structure of solutions, one for each connected componenets of elements</p></li>
+<li><p>feasTol:       tolerance used to determine solution feasibility</p></li>
+<li><dl class="simple">
+<dt>stat:          minIncon/minFill/minForm/mixed/infeasible stating where the final solution metEleUnknwon</dt><dd><p>is obtained from. Ideally minForm if no numerical issue on feasibility.
+(minIncon/minMw/maxMw/minMw &amp; maxMw if calling with option ‘metMwRange’)</p>
+</dd>
+</dl>
+</li>
+<li><p>N:             the minimal conserved moiety vectors</p></li>
+<li><p>cmFormulae:    the chemical formulae for each conserved moiety in N</p></li>
+<li><dl class="simple">
+<dt>cmUnknown:     logical vector indicating which columns in N represent moieties with unknown formulae.</dt><dd><p>These are usually cofactors cycled in the network.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>cmDeadend:     logical vector indicating which columns in N represent moieties in deadend metabolites.</dt><dd><p>These are usually isolated conversion steps between dead end metabolites.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</li>
+<li><p><strong>LP</strong> – LP problem structure for solveCobraLP (#components x 1)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.modelGeneration.massBalance.elementalMatrixToFormulae">
+<span class="sig-name descname"><span class="pre">elementalMatrixToFormulae</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">Ematrix</span></em>, <em class="sig-param"><span class="pre">elements</span></em>, <em class="sig-param"><span class="pre">dMax</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/modelGeneration/massBalance/elementalMatrixToFormulae.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.massBalance.elementalMatrixToFormulae" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert the elemental composition matrix into chemical formulae</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>metForm = elementalMatrixToFormulae</strong> (<em>elements, Ematrix, dMax</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>Ematrix</strong> – elemental composition (<cite>M</cite> x <cite>E</cite> matrix) for <cite>M</cite> metabolites and <cite>E</cite> elements</p></li>
+<li><p><strong>elements</strong> – cell array of elements corresponding to the columns of Ematrix</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUT</dt>
+<dd class="field-odd"><p><strong>dMax</strong> – the maximum number of decimal places for the stoichiometry (default 12)</p>
+</dd>
+</dl>
+<p>Siu Hung Joshua Chan Nov 2016</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.modelGeneration.massBalance.findSExRxnInd">
+<span class="sig-name descname"><span class="pre">findSExRxnInd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">nRealMet</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/modelGeneration/massBalance/findSExRxnInd.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.massBalance.findSExRxnInd" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a model with boolean vectors indicating internal vs external (exchange/demand/sink) reactions.
+Finds the reactions in the model which export/import from the model boundary</p>
+<p>e.g. Exchange reactions,
+Demand reactions,
+Sink reactions</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>model = findSExRxnInd</strong> (<em>model, nRealMet, printLevel</em>)</p>
+</dd>
+</dl>
+<p>model.SIntRxnBool         Boolean of reactions heuristically though to be mass balanced.</p>
+<dl class="field-list simple">
+<dt class="field-odd">INPUT</dt>
+<dd class="field-odd"><p><strong>model</strong> – structure with:</p>
+<ul class="simple">
+<li><p>S - m x n stoichiometric matrix</p></li>
+</ul>
+</dd>
+<dt class="field-even">OPTIONAL INPUT</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – structure with:
+* model.biomassRxnAbbr - abbreviation of biomass reaction</p></li>
+<li><p><strong>nRealMet</strong> – specified in case extra rows in <cite>S</cite> which dont correspond to metabolties</p></li>
+<li><p><strong>printLevel</strong> – verbose level</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>model</strong> – structure with:</p>
+<ul class="simple">
+<li><p>.SIntRxnBool - Boolean of reactions heuristically though to be mass balanced.</p></li>
+<li><p>.SIntMetBool - Boolean of metabolites heuristically though to be involved in mass balanced reactions.</p></li>
+<li><p>.SOnlyIntMetBool - Boolean of metabolites heuristically though only to be involved in mass balanced reactions.</p></li>
+<li><p>.SExMetBool - Boolean of metabolites heuristically though to be involved in mass imbalanced reactions.</p></li>
+<li><p>.SOnlyExMetBool - Boolean of metabolites heuristically though only to be involved in mass imbalanced reactions.</p></li>
+<li><p>.biomassBool - Boolean of biomass reaction</p></li>
+<li><p>.DMRxnBool - Boolean of demand reactions. Prefix <cite>DM_</cite> (optional field)</p></li>
+<li><p>.SinkRxnBool - Boolean of sink reactions. Prefix <cite>sink_</cite> (optional field)</p></li>
+<li><p>.ExchRxnBool - Boolean of exchange reactions. Prefix <cite>EX_</cite> or <cite>Exch_</cite> or <cite>Ex_</cite> or ‘Excretion_EX’ (optional field)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.modelGeneration.massBalance.getElementalComposition">
+<span class="sig-name descname"><span class="pre">getElementalComposition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">formulae</span></em>, <em class="sig-param"><span class="pre">elements</span></em>, <em class="sig-param"><span class="pre">chargeInFormula</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/modelGeneration/massBalance/getElementalComposition.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.massBalance.getElementalComposition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the complete elemental composition matrix. It supports formulae with
+generic elements, parentheses and decimal places</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[Ematrix, elements] = getElementalComposition</strong> (<em>formulae, elements, chargeInFormula</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><p><strong>formulae</strong> – cell array of strings of chemical formulae. Can contain any generic elements starting
+with a capital letter followed by lowercase letters or ‘_’, followed by a non-negative number.
+Also support ‘()’, ‘[]’, ‘{}’. E.g. {‘H2O’; ‘[H2O]2(CuSO4)Generic_element0.5’}</p>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>elements</strong> – elements from previous call to preserve the order (default {})</p></li>
+<li><p><strong>chargeInFormula</strong> – true to accept formulae containing the generic element ‘Charge’ representing the charges,
+followed by a real number, e.g., ‘HCharge1’, ‘SO4Charge-2’ (default false).</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>Ematrix</strong> – elemental composition matrix (#formulae x #elements)</p></li>
+<li><p><strong>elements</strong> – cell array of elements corresponding to the columns of Ematrix</p></li>
+</ul>
+</dd>
+</dl>
+<dl>
+<dt>E.g., [Ematrix, elements] = getElementalComposition({‘H2O’; ‘[H2O]2(CuSO4)Generic_element0.5’}) would return:</dt><dd><p>elements = {‘H’, ‘O’, ‘Cu’, ‘S’, ‘Generic_element’}
+Ematrix = [ 2,   1,    0,   0,   0;</p>
+<blockquote>
+<div><p>4,   6,    1,   1,   0.5]</p>
+</div></blockquote>
+</dd>
+</dl>
+<p>Siu Hung Joshua Chan May 2017</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.modelGeneration.massBalance.ispolymer">
+<span class="sig-name descname"><span class="pre">ispolymer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">formula</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/modelGeneration/massBalance/ispolymer.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.massBalance.ispolymer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks to see if a formula corresponds to a polymer</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>res = ispolymer</strong> (<em>formula</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><p><strong>formula</strong> – formula to be checked</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.modelGeneration.massBalance.numAtomsOfElementInFormula">
+<span class="sig-name descname"><span class="pre">numAtomsOfElementInFormula</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">formula</span></em>, <em class="sig-param"><span class="pre">element</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/modelGeneration/massBalance/numAtomsOfElementInFormula.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.massBalance.numAtomsOfElementInFormula" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the number of atoms of a single element in a formula</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>N = numAtomsOfElementInFormula</strong> (<em>formula, element, printLevel</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>formula</strong> – formula in format Element then NumberOfAtoms with no spaces</p></li>
+<li><p><strong>element</strong> – Abbreviation of element e.g. C or Mg</p></li>
+<li><p><strong>printLevel</strong> – verbose level</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>N</strong> – number of atoms of this element in the formula provided</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.modelGeneration.massBalance.pHbalanceProtons">
+<span class="sig-name descname"><span class="pre">pHbalanceProtons</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">massImbalance</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em>, <em class="sig-param"><span class="pre">fileName</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/modelGeneration/massBalance/pHbalanceProtons.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.massBalance.pHbalanceProtons" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mass balance protons for each reaction by adjusting the hydrogen ion stoichiometric coefficient.</p>
+<p>For each non transport reaction the proton stoichiometric coefficient for each
+reaction is given by the difference between the sum of the average number
+of protons bound by substrate reactants and the average number of protons
+bound by product reactants</p>
+<p>i.e. proton <cite>S_ij = sum(substrates(S_ij*aveHbound)) - sum(products(S_ij*aveHbound))</cite></p>
+<p>For each transport reaction, model  transport across the membrane as three
+reactions, one where non-proton reactants convert into non-proton metabolites
+involved in one compartment,then in the other compartment, non-proton
+metabolites convert into non-proton reactants. In between is a reconstruction
+transport reaction which must be elementally balanced for <cite>H</cite> to begin
+with. We assume that the transporter involved has affinity only for a particular
+species of metabolite defined by the reconstrution.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>model = pHbalanceProtons</strong> (<em>model, massImbalance, printLevel, fileName</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><p><strong>model</strong> – structure with fields:</p>
+<ul class="simple">
+<li><p>model.S - stoichiometric matrix</p></li>
+<li><p>model.mets - metabolites</p></li>
+<li><p>model.SIntRxnBool - Boolean of internal reactions</p></li>
+<li><p>model.aveHbound - average number of bound hydrogen ions</p></li>
+<li><p>model.metFormulas - average number of bound hydrogen ions</p></li>
+<li><p>model.metCharges - charge of metabolite species from reconstruction</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>massImbalance</strong> – <cite>nRxn</cite> x <cite>nElement</cite> matrix where <cite>massImbalance(i,j)</cite> is imbalance of
+reaction <cite>i</cite> for element <cite>j</cite>. <cite>massImbalance(i,j) == 0</cite> if
+balanced for that element. The first column is assumed
+to correspond to <cite>H</cite> balancing.</p></li>
+<li><p><strong>printLevel</strong> – {(0), -2, -1, 0, 1, 2, 3) print more to file or more to the command window</p></li>
+<li><p><strong>fileName</strong> – name of the file to print out to</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUT</dt>
+<dd class="field-even"><p><strong>model</strong> – structure containing:</p>
+<ul class="simple">
+<li><p>.S - Stoichiometric matrix balanced for protons where each row.
+corresponds to a reactant at specific pH.</p></li>
+<li><p>.Srecon - Stoichiometric matrix of the reconstruction</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.modelGeneration.massBalance.regulariseModelFormulae">
+<span class="sig-name descname"><span class="pre">regulariseModelFormulae</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/modelGeneration/massBalance/regulariseModelFormulae.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.massBalance.regulariseModelFormulae" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update the molecular formulae to make sure that they are consistent with
+model metadata, and expressed in Hill notation, with the exception that
+all R groups are replaced with the letter A</p>
+</dd></dl>
+
+</section>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../fluxConsistency/index.html" class="btn btn-default float-right" title="Fluxconsistency" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../stoichConsistency/index.html" class="btn btn-default" title="Stoichconsistency" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017-2021, The COBRA Toolbox developers.
+
+    </p>
+  </div>
+  Built with Sphinx using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../',
+            VERSION:'2.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+    <script type="text/javascript" src="../../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../../_static/sphinx_highlight.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/mathjax/MathJax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+
+  
+  
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TRCMZL1FKK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TRCMZL1FKK');
+  </script>
+    
+</body>
+</html>

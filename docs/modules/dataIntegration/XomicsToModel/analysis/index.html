@@ -1,0 +1,671 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Analysis &mdash; The COBRA Toolbox</title>
+  
+
+  
+  
+  
+    <link rel="apple-touch-icon" sizes="180x180" href="../../../../_static/img/apple-touch-icon.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../../_static/img/favicon-32x32.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="16x16" href="../../../../_static/img/favicon-16x16.png">
+  
+  
+    <link rel="mask-icon" href="../../../../_static/img/safari-pinned-tab.svg" color="#5bbad5">
+  
+  
+    <link rel="manifest" href="../../../../_static/json/manifest.json">
+  
+  
+    <meta name="msapplication-config" content="../../../../_static/browserconfig.xml">
+  
+  <meta name="theme-color" content="#ffffff">
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+  <script src="../../../../_static/js/jquery.easy-autocomplete.min.js" type="text/javascript" ></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+  <link href="../../../../_static/css/easy-autocomplete.min.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../_static/css/cobra.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../../../_static/css/cobra.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../../search.html"/>
+    <link rel="top" title="The COBRA Toolbox" href="../../../../index.html"/>
+        <link rel="up" title="Xomicstomodel" href="../index.html"/>
+        <link rel="next" title="Thermokernel" href="../thermoKernel/index.html"/>
+        <link rel="prev" title="Xomicstomodel" href="../index.html"/> 
+
+  
+  <script src="../../../../_static/js/modernizr.min.js"></script>
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> The COBRA Toolbox
+          
+
+          
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
+          
+          </a>
+
+              
+          <h1>The COBRA Toolbox</h1>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" id="simple"/>
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+    <script>
+    	var options = {
+
+		url: "../../../../_static/json/functions.json",
+
+		getValue: "name",
+
+		list: {
+            onKeyEnterEvent: function(item) {
+                    return "_static/../" + item.website_url
+            },
+            maxNumberOfElements: 25,
+			match: {
+					enabled: true,
+			},
+            sort: {
+			    enabled: true
+		    }
+		},
+
+    	template: {
+	    	type: "custom",
+		    method: function(value, item) {
+                return "<span><a href='../../../../search.html?q=" + item.name + "&check_keywords=yes&area=default'>" + value + "</a>" + "<a href='../../../../_static/../" + item.website_url + "' ><img src='../../../../_static/link.svg'/></a></span>";
+		    }
+	    },
+
+		theme: "square"
+
+	};
+
+	$("#simple").easyAutocomplete(options);
+
+
+    </script>
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../index.html">Home</a></li>
+              </ul>
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">Functions</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../../analysis/index.html">Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../base/index.html">Base</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Dataintegration</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../../fluxomics/index.html">Fluxomics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../metanetxMapper/index.html">Metanetxmapper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../transcriptomics/index.html">Transcriptomics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chemoInformatics/index.html">Chemoinformatics</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html">Xomicstomodel</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Analysis</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../thermoKernel/index.html">Thermokernel</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../prepareData/index.html">Preparedata</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../oneRxnPerActiveGene/index.html">Onerxnperactivegene</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../proteomics/index.html">Proteomics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../metabolomics/index.html">Metabolomics</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../metabotools/index.html">Metabotools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../metaboAnnotator/index.html">Metaboannotator</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../design/index.html">Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reconstruction/index.html">Reconstruction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../visualization/index.html">Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contributing.html">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../cite.html">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../support.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../plan.html">Development Plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contact.html">Contact</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../citations.html">Citations</a></li>
+</ul>
+
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">The COBRA Toolbox</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../contents.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Functions</a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Dataintegration</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Xomicstomodel</a></li>
+      <li class="breadcrumb-item active">Analysis</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="https://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <section id="analysis">
+<span id="id1"></span><h1>Analysis<a class="headerlink" href="#analysis" title="Permalink to this heading">¶</a></h1>
+<span class="target" id="module-src.dataIntegration.XomicsToModel.analysis"></span><dl class="mat function">
+<dt class="sig sig-object mat" id="src.dataIntegration.XomicsToModel.analysis.compareModelsFeatures">
+<span class="sig-name descname"><span class="pre">compareModelsFeatures</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">models</span></em>, <em class="sig-param"><span class="pre">param</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/XomicsToModel/analysis/compareModelsFeatures.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.XomicsToModel.analysis.compareModelsFeatures" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compare the information of different COBRA models including dimentions,
+essential pathways, main energy sources, etc.</p>
+<dl class="field-list">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[comparisonResults, comparisonTable] = compareModelsFeatures</strong> (<em>models, param</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><ul>
+<li><p><strong>models</strong> – Struct file containing the models to compare</p></li>
+<li><p><strong>param</strong> – a structure containing the parameters for the function:
+* .comparisons -﻿Cell array indicating the type of comparison that</p>
+<blockquote>
+<div><dl class="simple">
+<dt>will be performed (Default: all):</dt><dd><ul class="simple">
+<li><p>‘compartments’: Check the metabolites on each of the cellular
+compartments.</p></li>
+<li><p>‘uniqueElements’: Check the genes, metabolites and reactions
+present unique for each model.</p></li>
+<li><p>‘fluxAnalysis’: Uses the selected objective function to predict
+the flux in different metabolic pathways</p></li>
+<li><p>‘sparseFBA’: Identify the number of essential reactions per
+model</p></li>
+<li><p>‘predictiveCapacity’: Using the selected objective function,
+test the predictive capacity of the models</p></li>
+</ul>
+</dd>
+</dl>
+</div></blockquote>
+<ul>
+<li><dl>
+<dt>.objectives -﻿The objective that will be used, includes the</dt><dd><p>optimization of reactions or objectives (Default:
+unWeightedTCBMflux):
+- ‘unWeighted0norm’ min 0-norm unweighted.
+- ‘Weighted0normGE’ min 0-norm weighted by the gene expression.
+- ‘unWeighted1norm’ min 1-norm unweighted
+- ‘Weighted1normGE’ min 1-norm weighted by the gene expression
+- ‘unWeighted2norm’ min 2-norm unweighted
+- ‘Weighted2normGE’ min 2-norm weighted by the gene expression
+- {‘unWeightedTCBMflux’} unweighted thermodynamic constraint</p>
+<blockquote>
+<div><p>based modelling for fluxes</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>‘unWeightedTCBMfluxConc’ unweighted thermodynamic constraint
+based modelling for fluxes and concentrations</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>.groups - Uses a common string to group the models together</dt><dd><p>(e.g., ‘controlGroup’)</p>
+</dd>
+</dl>
+</li>
+<li><p>.printLevel - Verborese level</p></li>
+<li><dl class="simple">
+<dt>.trainingSet - Table with the training set. It includes the</dt><dd><p>reaction identifier, the reaction name, the measured mean flux,
+standard deviation of the flux, the flux units, and the platform
+used to measure it (Required for test ‘flux’).</p>
+</dd>
+</dl>
+</li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>comparisonResults</strong> – Struct array with all data obtained</p></li>
+<li><p><strong>comparisonTable</strong> – Table summarising the analysis</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.dataIntegration.XomicsToModel.analysis.compareXomicsModels">
+<span class="sig-name descname"><span class="pre">compareXomicsModels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">multiModels</span></em>, <em class="sig-param"><span class="pre">printFlag</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/XomicsToModel/analysis/compareXomicsModels.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.XomicsToModel.analysis.compareXomicsModels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compare generated models in mets, rxns, genes</p>
+<dl class="field-list">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[overlapResults,statistic] = compareXomicsModels</strong> (<em>multiModels, printFlag</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><ul>
+<li><p><strong>multiModels</strong> – struct format with models that need to compare
+e.g.multimodels.model1</p>
+<blockquote>
+<div><p>multimodels.model2 …</p>
+</div></blockquote>
+</li>
+<li><p><strong>printFlag</strong> – 1 if information should be printed to a table.
+Default = 0</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>overlapResults</strong> – the overlapped met/rxn/gene numbers of each pair of models</p></li>
+<li><p><strong>statistic</strong> – the overlapped porportion matrix of each pair of models</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>[overlapResults,statistic] = compareXomicsModels(multiModels)</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This function is used to compare generated models from xomicsToModel
+pipeline</p>
+</div>
+<dl class="simple">
+<dt>Author(s): - Xi Luo, update at 2024/10</dt><dd><ul class="simple">
+<li><p>Hanneke Leegwater (2022)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.dataIntegration.XomicsToModel.analysis.coreMetRxnAnalysis">
+<span class="sig-name descname"><span class="pre">coreMetRxnAnalysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">oldModel</span></em>, <em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">coreMetAbbr</span></em>, <em class="sig-param"><span class="pre">coreRxnAbbr</span></em>, <em class="sig-param"><span class="pre">deletedMets</span></em>, <em class="sig-param"><span class="pre">deletedRxns</span></em>, <em class="sig-param"><span class="pre">param</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/XomicsToModel/analysis/coreMetRxnAnalysis.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.XomicsToModel.analysis.coreMetRxnAnalysis" title="Permalink to this definition">¶</a></dt>
+<dd><p>compares the set of core metabolites and reactions with the current model
+report the core metabolites and reactions removed
+reduce the set of core metabolites and reactions</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[coreMetAbbrNew, coreRxnAbbrNew] = coreMetRxnAnalysis</strong> (<em>oldModel,model, coreMetAbbr, coreRxnAbbr, deletedMets, deletedRxns, param</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>oldModel</strong> – model prior to adjustment, with the following fields</p></li>
+<li><p><strong>* .mets</strong></p></li>
+<li><p><strong>* .rxns</strong></p></li>
+<li><p><strong>* .metNames</strong></p></li>
+</ul>
+</dd>
+</dl>
+<dl>
+<dt>model: new model after adjustments, with the following fields</dt><dd><ul class="simple">
+<li><p>.mets:</p></li>
+<li><p>.rxns:</p></li>
+</ul>
+<p>coreMetAbbr: core metabolite identifiers
+coreRxnAbbr: core reaction identifiers</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>deletedMets</strong> – set of metabolites removed from oldModel. If empty, given by setdiff(oldModel.mets,model.mets);</p></li>
+<li><p><strong>deletedRxns</strong> – set of reactions removed from oldModel. If empty, setdiff(oldModel.rxns,model.rxns);</p></li>
+<li><p><strong>param.message</strong></p></li>
+<li><p><strong>param.printLevel</strong></p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>coreMetAbbrNew</strong> – set of core metabolites in the new model</p></li>
+<li><p><strong>coreRxnAbbrNew</strong> – set of core reactions in the new model</p></li>
+</ul>
+</dd>
+</dl>
+<p>EXAMPLE:</p>
+<p>NOTE:</p>
+<p>Author(s):</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.dataIntegration.XomicsToModel.analysis.debugXomicsToModel">
+<span class="sig-name descname"><span class="pre">debugXomicsToModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">genericModel</span></em>, <em class="sig-param"><span class="pre">directory</span></em>, <em class="sig-param"><span class="pre">modelGenerationReport</span></em>, <em class="sig-param"><span class="pre">coreData</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/XomicsToModel/analysis/debugXomicsToModel.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.XomicsToModel.analysis.debugXomicsToModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Examine the debug files generated by the XomicsToModel function for
+metabolites, reactions, and genes of interest to determine whether or not
+they were removed during the XomicsToModel process.</p>
+<dl class="field-list">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>debugXomicsToModel</strong> (<em>model, directory, contextSpecificData</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><p><strong>genericModel</strong> – The generic input COBRA model used in XomicsToModel</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>.S - Stoichiometric matrix</p></li>
+<li><p>.mets - Metabolite ID vector</p></li>
+<li><p>.rxns - Reaction ID vector</p></li>
+<li><p>.lb - Lower bound vector</p></li>
+<li><p>.ub - Upper bound vector</p></li>
+<li><p>.genes - Upper bound vector</p></li>
+</ul>
+</div></blockquote>
+<p>directory:  Folder where the debug files are located</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.dataIntegration.XomicsToModel.analysis.metUtilisation">
+<span class="sig-name descname"><span class="pre">metUtilisation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">met</span></em>, <em class="sig-param"><span class="pre">flux_v</span></em>, <em class="sig-param"><span class="pre">printFig</span></em>, <em class="sig-param"><span class="pre">param</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/XomicsToModel/analysis/metUtilisation.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.XomicsToModel.analysis.metUtilisation" title="Permalink to this definition">¶</a></dt>
+<dd><p>metUtilisation - a graph analysis of reactions producing and consuming given
+metabolite</p>
+<blockquote>
+<div><blockquote>
+<div><p>This function can be used to visualise the fluxes of the reactions
+that either produce or consume certain metabolite. User can choose
+whether to only study a generic topography or add flux estimation to
+the graph to visualise the major producers and consumers of a
+metabolite. Flux can be given either as a single vector, as a pair of
+vector for a comparison between two different predictions, or as a
+sampling matrix, in which case a meana and standard deviation will be
+used to estimate idividual contributions of each reaction to the total
+metabolite balance</p>
+</div></blockquote>
+<p>USAGE:</p>
+<blockquote>
+<div><p>[graph, summary] = metUtilisation(model,mets, flux_v, printFig, param)</p>
+</div></blockquote>
+<dl>
+<dt>INPUT:</dt><dd><p>model:     A generic COBRA model</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>.S - Stoichiometric matrix</p></li>
+<li><p>.mets - Metabolite ID vector</p></li>
+<li><p>.rxns - Reaction ID vector</p></li>
+<li><p>.lb - Lower bound vector</p></li>
+<li><p>.ub - Upper bound vector</p></li>
+</ul>
+</div></blockquote>
+<dl class="simple">
+<dt>met:     A string with metabolite ID with or without compartment</dt><dd><p>information (e.g. ‘atp[c]’ or ‘atp’) as found in model.mets;
+if no compartment information provided, function will
+include all compartments for the analysis</p>
+</dd>
+</dl>
+</dd>
+<dt>OPTIONAL INPUTS:</dt><dd><blockquote>
+<div><dl class="simple">
+<dt>flux_v:    A single flux distribution vector (as obtained from optimisation</dt><dd><p>algorithm, e.g. FBA) or a matrix (if obtained from flux
+sampling).
+Or an array [control_v perturbation_v] containing two flux
+vectors provided to perform a comparison between two conditions.
+The first vector is then used as a control, and second as
+a perturbation to be plotted.
+Or a matrix containing the results of the flux sampling
+algorithm.
+(default = {})</p>
+</dd>
+</dl>
+</div></blockquote>
+<p>printFig:   Logical, whether figure should be printed out (default = 1)
+param:      a structure containg additional parameters for the function</p>
+<blockquote>
+<div><p>and plotting:</p>
+<blockquote>
+<div><dl class="simple">
+<dt><a href="#id2"><span class="problematic" id="id3">*</span></a>.treshold_v     - flux value below which reaction is</dt><dd><p>considered active (default = 1e-6)</p>
+</dd>
+<dt><a href="#id4"><span class="problematic" id="id5">*</span></a>.NodeLabels     - what value should be plotted as a</dt><dd><p>node edge: ‘rxns’ for reaction
+abbreviation or ‘rxnNames’ for a
+full reaction name (default = ‘rxns’)</p>
+</dd>
+<dt><a href="#id6"><span class="problematic" id="id7">*</span></a>.EdgeLabel.rxns - cell array containg reaction IDs</dt><dd><p>(in the format of model.rxns)</p>
+</dd>
+<dt><a href="#id8"><span class="problematic" id="id9">*</span></a>.EdgeLabel.text - cell array containg labels to be</dt><dd><p>ploted on the graph edges (same
+length as EdgeLabel.rxns)</p>
+</dd>
+</dl>
+<p><a href="#id10"><span class="problematic" id="id11">*</span></a>.saveFig        -logical value, whether figure
+should be save
+<a href="#id12"><span class="problematic" id="id13">*</span></a>.modelName      -character, which will be used when
+save the figure</p>
+</div></blockquote>
+</div></blockquote>
+</dd>
+</dl>
+<p>OUTPUTS:</p>
+<blockquote>
+<div><blockquote>
+<div><dl class="simple">
+<dt>graph:      matlab graph with metabolite as a central node and reactions</dt><dd><p>producing (left) and consuming (right) metabolite as nodes,
+if v is provided, the tickness of edges (weight) represents
+a relative contribution of each reaction to the metabolite
+utilisation</p>
+</dd>
+</dl>
+</div></blockquote>
+<dl>
+<dt>graph_data: additional data used for plotting (can be used to modify</dt><dd><dl>
+<dt>final graph aesthetics)</dt><dd><p><a href="#id14"><span class="problematic" id="id15">*</span></a>.edgeLabels - labels used to describe edges
+<a href="#id16"><span class="problematic" id="id17">*</span></a>.LWidths - scaled widths of edges based on the weights
+<a href="#id18"><span class="problematic" id="id19">*</span></a>.graph - matlab graph with metabolite as a central</p>
+<blockquote>
+<div><p>node and reactions producing (left) and
+consuming (right) metabolite as nodes,
+if v is provided, the tickness of edges
+(weight) represents a relative contribution
+of each reaction to the metabolite utilisation</p>
+</div></blockquote>
+<p><a href="#id20"><span class="problematic" id="id21">*</span></a>.eColour - colours used for the edges
+<a href="#id22"><span class="problematic" id="id23">*</span></a>.nLabels - labels used to describe nodes</p>
+</dd>
+</dl>
+</dd>
+<dt>summary:    table consisting of all reactions (rxns) identified as nodes,</dt><dd><p>together with their full reaction name (rxnNames), ID in the model (rxnsIDs),
+stoichimeric coefficient (scoff) representing if metabolite
+is consumed (-1) or produced (1) by the reaction,
+reaction formulas, flux values, either as a single flux
+vector, a pair of vectors used for comparison (flux_v1, flux_v2)
+or summary statistics from flux sampling data (mean, median, mode, and
+standard deviation), and in case of the comparison between
+two flux vectors, labels showing the relative increase,
+decrease or no change between the two vectors</p>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="simple">
+<dt>Author(s): Agnieszka Wegrzyn</dt><dd><p>Y</p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.dataIntegration.XomicsToModel.analysis.plotOverlapResults">
+<span class="sig-name descname"><span class="pre">plotOverlapResults</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">overlapresults</span></em>, <em class="sig-param"><span class="pre">statistic</span></em>, <em class="sig-param"><span class="pre">savepath</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/XomicsToModel/analysis/plotOverlapResults.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.XomicsToModel.analysis.plotOverlapResults" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>plot the overlapped heatmap for each model with proportion text labels</strong></p>
+</dd>
+<dt class="field-even">Input</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>overlapresults</strong> – from compareXomicsModels.m</p></li>
+<li><p><strong>statistic</strong> – from compareXomicsModels.m</p></li>
+<li><p><strong>savepath</strong> (<em>optional</em>) – the path to save the plot</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Output</dt>
+<dd class="field-odd"><p><strong>a heat map plot</strong></p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Author(s):</dt><dd><p>Xi Luo, update 2024/10</p>
+</dd>
+</dl>
+<p>use proportion data to create map</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.dataIntegration.XomicsToModel.analysis.quanQualAcc">
+<span class="sig-name descname"><span class="pre">quanQualAcc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">validationData</span></em>, <em class="sig-param"><span class="pre">predictedFlux</span></em>, <em class="sig-param"><span class="pre">param</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/XomicsToModel/analysis/quanQualAcc.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.XomicsToModel.analysis.quanQualAcc" title="Permalink to this definition">¶</a></dt>
+<dd><p>param.boundPrecisionLimit</p>
+</dd></dl>
+
+</section>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../thermoKernel/index.html" class="btn btn-default float-right" title="Thermokernel" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../index.html" class="btn btn-default" title="Xomicstomodel" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017-2021, The COBRA Toolbox developers.
+
+    </p>
+  </div>
+  Built with Sphinx using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../',
+            VERSION:'2.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+    <script type="text/javascript" src="../../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../../_static/sphinx_highlight.js"></script>
+
+  
+
+
+  
+  
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TRCMZL1FKK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TRCMZL1FKK');
+  </script>
+    
+</body>
+</html>

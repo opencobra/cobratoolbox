@@ -1,0 +1,642 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Lp_solve &mdash; The COBRA Toolbox</title>
+  
+
+  
+  
+  
+    <link rel="apple-touch-icon" sizes="180x180" href="../../../../_static/img/apple-touch-icon.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../../_static/img/favicon-32x32.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="16x16" href="../../../../_static/img/favicon-16x16.png">
+  
+  
+    <link rel="mask-icon" href="../../../../_static/img/safari-pinned-tab.svg" color="#5bbad5">
+  
+  
+    <link rel="manifest" href="../../../../_static/json/manifest.json">
+  
+  
+    <meta name="msapplication-config" content="../../../../_static/browserconfig.xml">
+  
+  <meta name="theme-color" content="#ffffff">
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+  <script src="../../../../_static/js/jquery.easy-autocomplete.min.js" type="text/javascript" ></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+  <link href="../../../../_static/css/easy-autocomplete.min.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../_static/css/cobra.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../../../_static/css/cobra.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../../search.html"/>
+    <link rel="top" title="The COBRA Toolbox" href="../../../../index.html"/>
+        <link rel="up" title="Solvers" href="../index.html"/>
+        <link rel="next" title="Param" href="../param/index.html"/>
+        <link rel="prev" title="Lindo" href="../lindo/index.html"/> 
+
+  
+  <script src="../../../../_static/js/modernizr.min.js"></script>
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> The COBRA Toolbox
+          
+
+          
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
+          
+          </a>
+
+              
+          <h1>The COBRA Toolbox</h1>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" id="simple"/>
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+    <script>
+    	var options = {
+
+		url: "../../../../_static/json/functions.json",
+
+		getValue: "name",
+
+		list: {
+            onKeyEnterEvent: function(item) {
+                    return "_static/../" + item.website_url
+            },
+            maxNumberOfElements: 25,
+			match: {
+					enabled: true,
+			},
+            sort: {
+			    enabled: true
+		    }
+		},
+
+    	template: {
+	    	type: "custom",
+		    method: function(value, item) {
+                return "<span><a href='../../../../search.html?q=" + item.name + "&check_keywords=yes&area=default'>" + value + "</a>" + "<a href='../../../../_static/../" + item.website_url + "' ><img src='../../../../_static/link.svg'/></a></span>";
+		    }
+	    },
+
+		theme: "square"
+
+	};
+
+	$("#simple").easyAutocomplete(options);
+
+
+    </script>
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../index.html">Home</a></li>
+              </ul>
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">Functions</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../../analysis/index.html">Analysis</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Base</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html">Solvers</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../init/index.html">Init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../cplex/index.html">Cplex</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../entropicFBA/index.html">Entropicfba</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../gurobi/index.html">Gurobi</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../cardOpt/index.html">Cardopt</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../rescale/index.html">Rescale</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../NLP/index.html">Nlp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../varKin/index.html">Varkin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../getSetSolver/index.html">Getsetsolver</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../mosek/index.html">Mosek</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../lindo/index.html">Lindo</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Lp_solve</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../param/index.html">Param</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../gams/index.html">Gams</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../install/index.html">Install</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../io/index.html">Io</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../paths/index.html">Paths</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ci/index.html">Ci</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../utilities/index.html">Utilities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../codeConsistency/index.html">Codeconsistency</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../cobrarrow/index.html">Cobrarrow</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../dataIntegration/index.html">Dataintegration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../design/index.html">Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reconstruction/index.html">Reconstruction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../visualization/index.html">Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contributing.html">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../cite.html">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../support.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../plan.html">Development Plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contact.html">Contact</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../citations.html">Citations</a></li>
+</ul>
+
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">The COBRA Toolbox</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../contents.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Functions</a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Base</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Solvers</a></li>
+      <li class="breadcrumb-item active">Lp_solve</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="https://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <section id="lp-solve">
+<span id="id1"></span><h1>Lp_solve<a class="headerlink" href="#lp-solve" title="Permalink to this heading">¶</a></h1>
+<span class="target" id="module-src.base.solvers.lp_solve"></span><dl class="mat function">
+<dt class="sig sig-object mat" id="src.base.solvers.lp_solve.lp_solve">
+<span class="sig-name descname"><span class="pre">lp_solve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">f</span></em>, <em class="sig-param"><span class="pre">a</span></em>, <em class="sig-param"><span class="pre">b</span></em>, <em class="sig-param"><span class="pre">e</span></em>, <em class="sig-param"><span class="pre">vlb</span></em>, <em class="sig-param"><span class="pre">vub</span></em>, <em class="sig-param"><span class="pre">xint</span></em>, <em class="sig-param"><span class="pre">scalemode</span></em>, <em class="sig-param"><span class="pre">keep</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/lp_solve/lp_solve.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.lp_solve.lp_solve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solves mixed integer linear programming problems.
+Solves the MILP problem
+<span class="math notranslate nohighlight">\(max v = f'*x\)</span>
+<span class="math notranslate nohighlight">\(a*x &lt;&gt; b\)</span>
+<span class="math notranslate nohighlight">\(vlb &lt;= x &lt;= vub\)</span>
+<cite>x(int)`</cite> are integer</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[obj, x, duals, stat] = lp_solve</strong> (<em>f, a, b, e, vlb, vub, xint, scalemode, keep</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>f</strong> – <cite>n</cite> vector of coefficients for a linear objective function.</p></li>
+<li><p><strong>a</strong> – <cite>m</cite> by n matrix representing linear constraints.</p></li>
+<li><p><strong>b</strong> – <cite>m</cite> vector of right sides for the inequality constraints.</p></li>
+<li><p><strong>e</strong> – <cite>m</cite> vector that determines the sense of the inequalities:</p>
+<ul>
+<li><p><cite>e(i)</cite> = -1  ==&gt; Less Than</p></li>
+<li><p><cite>e(i)</cite> =  0  ==&gt; Equals</p></li>
+<li><p><cite>e(i)</cite> =  1  ==&gt; Greater Than</p></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>vlb</strong> – <cite>n</cite> vector of lower bounds. If empty or omitted,
+then the lower bounds are set to zero.</p></li>
+<li><p><strong>vub</strong> – <cite>n</cite> vector of upper bounds. May be omitted or empty.</p></li>
+<li><p><strong>xint</strong> – vector of integer variables. May be omitted or empty.</p></li>
+<li><p><strong>scalemode</strong> – scale flag. Off when 0 or omitted.</p></li>
+<li><p><strong>keep</strong> – Flag for keeping the lp problem after it’s been solved.
+If omitted, the lp will be deleted when solved.</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUT</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>obj</strong> – Optimal value of the objective function.</p></li>
+<li><p><strong>x</strong> – Optimal value of the decision variables.</p></li>
+<li><p><strong>duals</strong> – solution of the dual problem.</p></li>
+<li><p><strong>stat</strong> – result of <cite>mxlpsolve</cite> function</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat script">
+<dt class="sig sig-object mat" id="src.base.solvers.lp_solve.mxlpsolve">
+<span class="sig-name descname"><span class="pre">mxlpsolve</span></span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/lp_solve/mxlpsolve.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.lp_solve.mxlpsolve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mex file interface to the lp_solve 5.5 toolkit. Please see
+reference guide for more information.</p>
+<p>mxlpsolve is a low-level interface to the <cite>lp_solve toolkit</cite>. It may be called
+directly, or may be used to build higher level functions for solving
+various kinds of linear and mixed-integer linear programs. It uses an
+integer handle to point to a linear program.</p>
+<blockquote>
+<div><p>return = mxlpsolve(‘add_column’, lp, [column])</p>
+<p>return = mxlpsolve(‘add_columnex’, lp, [column])</p>
+<p>return = mxlpsolve(‘add_constraint’, lp, [row], constr_type, rh)</p>
+<p>return = mxlpsolve(‘add_constraintex’, lp, [row], constr_type, rh)</p>
+<p>return = mxlpsolve(‘add_SOS’, lp, name, sostype, priority, [sosvars], [weights])</p>
+<p>return = mxlpsolve(‘column_in_lp’, lp, [column])</p>
+<p>mxlpsolve(‘default_basis’, lp)</p>
+<p>return = mxlpsolve(‘del_column’, lp, column)</p>
+<p>return = mxlpsolve(‘del_constraint’, lp, del_row)</p>
+<p>lp_handle = mxlpsolve(‘copy_lp’, lp)</p>
+<p>mxlpsolve(‘delete_lp’, lp)</p>
+<p>mxlpsolve(‘dualize_lp’, lp)</p>
+<p>mxlpsolve(‘free_lp’, lp)</p>
+<p>return = mxlpsolve(‘get_anti_degen’, lp)</p>
+<p>[bascolumn] = mxlpsolve(‘get_basis’, lp {, nonbasic})</p>
+<p>return = mxlpsolve(‘get_basiscrash’, lp)</p>
+<p>return = mxlpsolve(‘get_bb_depthlimit’, lp)</p>
+<p>return = mxlpsolve(‘get_bb_floorfirst’, lp)</p>
+<p>return = mxlpsolve(‘get_bb_rule’, lp)</p>
+<p>return = mxlpsolve(‘get_bounds_tighter’, lp)</p>
+<p>return = mxlpsolve(‘get_break_at_value’, lp)</p>
+<p>name = mxlpsolve(‘get_col_name’, lp, column)</p>
+<p>[names] = mxlpsolve(‘get_col_name’, lp)</p>
+<p>[column, return] = mxlpsolve(‘get_column’, lp, col_nr)</p>
+<p>[column, return] = mxlpsolve(‘get_columnex’, lp, col_nr)</p>
+<p>return = mxlpsolve(‘get_constr_type’, lp, row)</p>
+<p>return = mxlpsolve(‘get_constr_value’, lp, row {, primsolution})</p>
+<p>[constr_type] = mxlpsolve(‘get_constr_type’, lp)</p>
+<p>[constr, return] = mxlpsolve(‘get_constraints’, lp)</p>
+<p>[duals, return] = mxlpsolve(‘get_dual_solution’, lp)</p>
+<p>return = mxlpsolve(‘get_epsb’, lp)</p>
+<p>return = mxlpsolve(‘get_epsd’, lp)</p>
+<p>return = mxlpsolve(‘get_epsel’, lp)</p>
+<p>return = mxlpsolve(‘get_epsint’, lp)</p>
+<p>return = mxlpsolve(‘get_epsperturb’, lp)</p>
+<p>return = mxlpsolve(‘get_epspivot’, lp)</p>
+<p>lp_handle = mxlpsolve(‘get_handle’, lp_name)</p>
+<p>return = mxlpsolve(‘get_improve’, lp)</p>
+<p>return = mxlpsolve(‘get_infinite’, lp)</p>
+<p>return = mxlpsolve(‘get_lowbo’, lp, column)</p>
+<p>[return] = mxlpsolve(‘get_lowbo’, lp)</p>
+<p>return = mxlpsolve(‘get_lp_index’, lp, orig_index)</p>
+<p>name = mxlpsolve(‘get_lp_name’, lp)</p>
+<p>value = mxlpsolve(‘get_mat’, lp, row, col)</p>
+<p>[matrix, return] = mxlpsolve(‘get_mat’, lp {, sparse})</p>
+<p>return = mxlpsolve(‘get_max_level’, lp)</p>
+<p>return = mxlpsolve(‘get_maxpivot’, lp)</p>
+<p>return = mxlpsolve(‘get_mip_gap’, lp, absolute)</p>
+<p>return = mxlpsolve(‘get_nameindex’, lp, name, isrow)</p>
+<p>return = mxlpsolve(‘get_Ncolumns’, lp)</p>
+<p>return = mxlpsolve(‘get_negrange’, lp)</p>
+<p>return = mxlpsolve(‘get_nonzeros’, lp)</p>
+<p>return = mxlpsolve(‘get_Norig_columns’, lp)</p>
+<p>return = mxlpsolve(‘get_Norig_rows’, lp)</p>
+<p>return = mxlpsolve(‘get_Nrows’, lp)</p>
+<p>return = mxlpsolve(‘get_obj_bound’, lp)</p>
+<p>[row_vec, return] = mxlpsolve(‘get_obj_fn’, lp)</p>
+<p>[row_vec, return] = mxlpsolve(‘get_obj_fun’, lp)</p>
+<p>return = mxlpsolve(‘get_objective’, lp)</p>
+<p>name = mxlpsolve(‘get_objective_name’, lp)</p>
+<p>return = mxlpsolve(‘get_orig_index’, lp, lp_index)</p>
+<p>name = mxlpsolve(‘get_origcol_name’, lp, column)</p>
+<p>[names] = mxlpsolve(‘get_origcol_name’, lp)</p>
+<p>name = mxlpsolve(‘get_origrow_name’, lp, row)</p>
+<p>[names] = mxlpsolve(‘get_origrow_name’, lp)</p>
+<p>return = mxlpsolve(‘get_pivoting’, lp)</p>
+<p>return = mxlpsolve(‘get_presolve’, lp)</p>
+<p>return = mxlpsolve(‘get_presolveloops’, lp)</p>
+<p>[pv, return] = mxlpsolve(‘get_primal_solution’, lp)</p>
+<p>return = mxlpsolve(‘get_print_sol’, lp)</p>
+<p>return = mxlpsolve(‘get_rh’, lp, row)</p>
+<p>[rh] = mxlpsolve(‘get_rh’, lp)</p>
+<p>return = mxlpsolve(‘get_rh_range’, lp, row)</p>
+<p>[rh_ranges] = mxlpsolve(‘get_rh_range’, lp)</p>
+<p>[row, return] = mxlpsolve(‘get_row’, lp, row_nr)</p>
+<p>[row, return] = mxlpsolve(‘get_rowex’, lp, row_nr)</p>
+<p>name = mxlpsolve(‘get_row_name’, lp, row)</p>
+<p>[names] = mxlpsolve(‘get_row_name’, lp)</p>
+<p>return = mxlpsolve(‘get_scalelimit’, lp)</p>
+<p>return = mxlpsolve(‘get_scaling’, lp)</p>
+<p>[objfrom, objtill, objfromvalue, objtillvalue, return] = mxlpsolve(‘get_sensitivity_obj’, lp)</p>
+<p>[objfrom, objtill, objfromvalue, objtillvalue, return] = mxlpsolve(‘get_sensitivity_objex’, lp)</p>
+<p>[duals, dualsfrom, dualstill, return] = mxlpsolve(‘get_sensitivity_rhs’, lp)</p>
+<p>[duals, dualsfrom, dualstill, return] = mxlpsolve(‘get_sensitivity_rhsex’, lp)</p>
+<p>return = mxlpsolve(‘get_simplextype’, lp)</p>
+<p>[obj, x, duals, return] = mxlpsolve(‘get_solution’, lp)</p>
+<p>return = mxlpsolve(‘get_solutioncount’, lp)</p>
+<p>return = mxlpsolve(‘get_solutionlimit’, lp)</p>
+<p>return = mxlpsolve(‘get_status’, lp)</p>
+<p>return = mxlpsolve(‘get_statustext’, lp, statuscode)</p>
+<p>return = mxlpsolve(‘get_timeout’, lp)</p>
+<p>return = mxlpsolve(‘get_total_iter’, lp)</p>
+<p>return = mxlpsolve(‘get_total_nodes’, lp)</p>
+<p>return = mxlpsolve(‘get_upbo’, lp, column)</p>
+<p>[upbo] = mxlpsolve(‘get_upbo’, lp)</p>
+<p>return = mxlpsolve(‘get_var_branch’, lp, column)</p>
+<p>[var_branch] = mxlpsolve(‘get_var_branch’, lp)</p>
+<p>return = mxlpsolve(‘get_var_dualresult’, lp, index)</p>
+<p>return = mxlpsolve(‘get_var_primalresult’, lp, index)</p>
+<p>return = mxlpsolve(‘get_var_priority’, lp, column)</p>
+<p>[var_priority] = mxlpsolve(‘get_var_priority’, lp)</p>
+<p>[var, return] = mxlpsolve(‘get_variables’, lp)</p>
+<p>return = mxlpsolve(‘get_verbose’, lp)</p>
+<p>return = mxlpsolve(‘get_working_objective’, lp)</p>
+<p>return = mxlpsolve(‘has_BFP’, lp)</p>
+<p>return = mxlpsolve(‘has_XLI’, lp)</p>
+<p>return = mxlpsolve(‘is_add_rowmode’, lp)</p>
+<p>return = mxlpsolve(‘is_anti_degen’, lp, testmask)</p>
+<p>return = mxlpsolve(‘is_binary’, lp, column)</p>
+<p>[binary] = mxlpsolve(‘is_binary’, lp)</p>
+<p>return = mxlpsolve(‘is_break_at_first’, lp)</p>
+<p>return = mxlpsolve(‘is_constr_type’, lp, row, mask)</p>
+<p>return = mxlpsolve(‘is_debug’, lp)</p>
+<p>return = mxlpsolve(‘is_feasible’, lp, [values] {, threshold})</p>
+<p>return = mxlpsolve(‘is_free’, lp, column)</p>
+<p>return = mxlpsolve(‘is_unbounded’, lp, column)</p>
+<p>[free] = mxlpsolve(‘is_free’, lp)</p>
+<p>[free] = mxlpsolve(‘is_unbounded’, lp)</p>
+<p>return = mxlpsolve(‘is_infinite’, lp, value)</p>
+<p>return = mxlpsolve(‘is_int’, lp, column)</p>
+<p>[int] = mxlpsolve(‘is_int’, lp)</p>
+<p>return = mxlpsolve(‘is_integerscaling’, lp)</p>
+<p>return = mxlpsolve(‘is_maxim’, lp)</p>
+<p>return = mxlpsolve(‘is_nativeBFP’, lp)</p>
+<p>return = mxlpsolve(‘is_nativeXLI’, lp)</p>
+<p>return = mxlpsolve(‘is_negative’, lp, column)</p>
+<p>[negative] = mxlpsolve(‘is_negative’, lp)</p>
+<p>return = mxlpsolve(‘is_piv_mode’, lp, testmask)</p>
+<p>return = mxlpsolve(‘is_piv_rule’, lp, rule)</p>
+<p>return = mxlpsolve(‘is_presolve’, lp, testmask)</p>
+<p>return = mxlpsolve(‘is_scalemode’, lp, testmask)</p>
+<p>return = mxlpsolve(‘is_scaletype’, lp, scaletype)</p>
+<p>return = mxlpsolve(‘is_semicont’, lp, column)</p>
+<p>[semicont] = mxlpsolve(‘is_semicont’, lp)</p>
+<p>return = mxlpsolve(‘is_SOS_var’, lp, column)</p>
+<p>[SOS_var] = mxlpsolve(‘is_SOS_var’, lp)</p>
+<p>return = mxlpsolve(‘is_trace’, lp)</p>
+<p>return = mxlpsolve(‘is_use_names’, lp, isrow)</p>
+<p>versionstring = mxlpsolve(‘lp_solve_version’)</p>
+<p>lp_handle = mxlpsolve(‘make_lp’, rows, columns)</p>
+<p>mxlpsolve(‘print_constraints’, lp {, columns})</p>
+<p>return = mxlpsolve(‘print_debugdump’, lp, filename)</p>
+<p>mxlpsolve(‘print_duals’, lp)</p>
+<p>mxlpsolve(‘print_lp’, lp)</p>
+<p>mxlpsolve(‘print_objective’, lp)</p>
+<p>mxlpsolve(‘print_scales’, lp)</p>
+<p>mxlpsolve(‘print_solution’, lp {, columns})</p>
+<p>mxlpsolve(‘print_str’, lp, str)</p>
+<p>mxlpsolve(‘print_tableau’, lp)</p>
+<p>[handle_vec] = mxlpsolve(‘print_handle’)</p>
+<p>lp_handle = mxlpsolve(‘read_freeMPS’, filename {, verbose})</p>
+<p>lp_handle = mxlpsolve(‘read_lp_file’, filename {, verbose {, lp_name}})</p>
+<p>lp_handle = mxlpsolve(‘read_lp’, filename {, verbose {, lp_name}})</p>
+<p>lp_handle = mxlpsolve(‘read_LP’, filename {, verbose {, lp_name}})</p>
+<p>lp_handle = mxlpsolve(‘read_mps’, filename {, verbose})</p>
+<p>lp_handle = mxlpsolve(‘read_MPS’, filename {, verbose})</p>
+<p>return = mxlpsolve(‘read_params’, lp, filename {, options})</p>
+<p>return = mxlpsolve(‘reset_params’, lp)</p>
+<p>lp_handle = mxlpsolve(‘read_XLI’, xliname, modelname {, dataname {, options {, verbose}}})</p>
+<p>return = mxlpsolve(‘set_add_rowmode’, lp, turnon)</p>
+<p>mxlpsolve(‘set_anti_degen’, lp, anti_degen)</p>
+<p>return = mxlpsolve(‘set_basis’, lp, [bascolumn], nonbasic)</p>
+<p>mxlpsolve(‘set_basiscrash’, lp, mode)</p>
+<p>mxlpsolve(‘set_basisvar’, lp, basisPos, enteringCol)</p>
+<p>mxlpsolve(‘set_bb_depthlimit’, lp, bb_maxlevel)</p>
+<p>mxlpsolve(‘set_bb_floorfirst’, lp, bb_floorfirst)</p>
+<p>mxlpsolve(‘set_bb_rule’, lp, bb_rule)</p>
+<p>return = mxlpsolve(‘set_BFP’, lp, filename)</p>
+<p>return = mxlpsolve(‘set_binary’, lp, column, must_be_bin)</p>
+<p>return = mxlpsolve(‘set_binary’, lp, [must_be_bin])</p>
+<p>return = mxlpsolve(‘set_bounds’, lp, column, lower, upper)</p>
+<p>return = mxlpsolve(‘set_bounds’, lp, [lower], [upper])</p>
+<p>mxlpsolve(‘set_bounds_tighter’, lp, tighten)</p>
+<p>mxlpsolve(‘set_break_at_first’, lp, break_at_first)</p>
+<p>mxlpsolve(‘set_break_at_value’, lp, break_at_value)</p>
+<p>return = mxlpsolve(‘set_col_name’, lp, column, name)</p>
+<p>return = mxlpsolve(‘set_col_name’, lp, [names])</p>
+<p>return = mxlpsolve(‘set_column’, lp, col_no, [column])</p>
+<p>return = mxlpsolve(‘set_columnex’, lp, col_no, [column])</p>
+<p>return = mxlpsolve(‘set_constr_type’, lp, row, con_type)</p>
+<p>return = mxlpsolve(‘set_constr_type’, lp, [con_type])</p>
+<p>mxlpsolve(‘set_debug’, lp, debug)</p>
+<p>mxlpsolve(‘set_epsb’, lp, epsb)</p>
+<p>mxlpsolve(‘set_epsd’, lp, epsd)</p>
+<p>mxlpsolve(‘set_epsel’, lp, epsel)</p>
+<p>mxlpsolve(‘set_epsint’, lp, epsint)</p>
+<p>mxlpsolve(‘set_epslevel’, lp, epslevel)</p>
+<p>mxlpsolve(‘set_epsperturb’, lp, epsperturb)</p>
+<p>mxlpsolve(‘set_epspivot’, lp, epspivot)</p>
+<p>return = mxlpsolve(‘set_free’, lp, column)</p>
+<p>return = mxlpsolve(‘set_unbounded’, lp, column)</p>
+<p>mxlpsolve(‘set_improve’, lp, improve)</p>
+<p>mxlpsolve(‘set_infinite’, lp, infinite)</p>
+<p>return = mxlpsolve(‘set_int’, lp, column, must_be_int)</p>
+<p>return = mxlpsolve(‘set_int’, lp, [must_be_int])</p>
+<p>return = mxlpsolve(‘set_lowbo’, lp, column, value)</p>
+<p>return = mxlpsolve(‘set_lowbo’, lp, [values])</p>
+<p>return = mxlpsolve(‘set_lp_name’, lp, name)</p>
+<p>return = mxlpsolve(‘set_mat’, lp, [matrix])</p>
+<p>return = mxlpsolve(‘set_mat’, lp, row, column, value)</p>
+<p>mxlpsolve(‘set_maxim’, lp)</p>
+<p>mxlpsolve(‘set_maxpivot’, max_num_inv)</p>
+<p>mxlpsolve(‘set_minim’, lp)</p>
+<p>mxlpsolve(‘set_mip_gap’, lp, absolute, mip_gap)</p>
+<p>mxlpsolve(‘set_negrange’, negrange)</p>
+<p>return = mxlpsolve(‘set_obj’, lp, column, value)</p>
+<p>return = mxlpsolve(‘set_obj’, lp, [values])</p>
+<p>mxlpsolve(‘set_obj_bound’, lp, obj_bound)</p>
+<p>return = mxlpsolve(‘set_obj_fn’, lp, [row])</p>
+<p>return = mxlpsolve(‘set_obj_fnex’, lp, [row])</p>
+<p>return = mxlpsolve(‘set_outputfile’, lp, filename)</p>
+<p>mxlpsolve(‘set_pivoting’, lp, pivoting)</p>
+<p>mxlpsolve(‘set_preferdual’, lp, dodual)</p>
+<p>mxlpsolve(‘set_presolve’, lp, do_presolve {, maxloops})</p>
+<p>mxlpsolve(‘set_print_sol’, lp, print_sol)</p>
+<p>return = mxlpsolve(‘set_rh’, lp, row, value)</p>
+<p>return = mxlpsolve(‘set_rh’, lp, [values])</p>
+<p>return = mxlpsolve(‘set_rh_range’, lp, row, deltavalue)</p>
+<p>return = mxlpsolve(‘set_rh_range’, lp, [deltavalues])</p>
+<p>mxlpsolve(‘set_rh_vec’, lp, [rh])</p>
+<p>return = mxlpsolve(‘set_row’, lp, row_no, [row])</p>
+<p>return = mxlpsolve(‘set_rowex’, lp, row_no, [row])</p>
+<p>return = mxlpsolve(‘set_row_name’, lp, row, name)</p>
+<p>return = mxlpsolve(‘set_row_name’, lp, [names])</p>
+<p>mxlpsolve(‘set_scalelimit’, lp, scalelimit)</p>
+<p>mxlpsolve(‘set_scaling’, lp, scalemode)</p>
+<p>return = mxlpsolve(‘set_semicont’, lp, column, must_be_sc)</p>
+<p>return = mxlpsolve(‘set_semicont’, lp, [must_be_sc])</p>
+<p>mxlpsolve(‘set_sense’, lp, maximize)</p>
+<p>mxlpsolve(‘set_simplextype’, lp, simplextype)</p>
+<p>mxlpsolve(‘set_solutionlimit’, lp, simplextype)</p>
+<p>mxlpsolve(‘set_timeout’, lp, sectimeout)</p>
+<p>mxlpsolve(‘set_trace’, lp, trace)</p>
+<p>return = mxlpsolve(‘set_upbo’, lp, column, value)</p>
+<p>return = mxlpsolve(‘set_upbo’, lp, [values])</p>
+<p>mxlpsolve(‘set_use_names’, lp, isrow, use_names)</p>
+<p>return = mxlpsolve(‘set_var_branch’, lp, column, branch_mode)</p>
+<p>return = mxlpsolve(‘set_var_branch’, lp, [branch_mode])</p>
+<p>return = mxlpsolve(‘set_var_weights’, lp, [weights])</p>
+<p>mxlpsolve(‘set_verbose’, lp, verbose)</p>
+<p>return = mxlpsolve(‘set_XLI’, lp, filename)</p>
+<p>result = mxlpsolve(‘solve’, lp)</p>
+<p>return = mxlpsolve(‘time_elapsed’, lp)</p>
+<p>mxlpsolve(‘unscale’, lp)</p>
+<p>return = mxlpsolve(‘write_freemps’, lp, filename)</p>
+<p>return = mxlpsolve(‘write_freeMPS’, lp, filename)</p>
+<p>return = mxlpsolve(‘write_lp’, lp, filename)</p>
+<p>return = mxlpsolve(‘write_LP’, lp, filename)</p>
+<p>return = mxlpsolve(‘write_mps’, lp, filename)</p>
+<p>return = mxlpsolve(‘write_MPS’, lp, filename)</p>
+<p>return = mxlpsolve(‘write_params’, lp, filename {, options})</p>
+<p>return = mxlpsolve(‘write_XLI’, lp, filename {, options {, results}})</p>
+</div></blockquote>
+</dd></dl>
+
+</section>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../param/index.html" class="btn btn-default float-right" title="Param" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../lindo/index.html" class="btn btn-default" title="Lindo" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017-2021, The COBRA Toolbox developers.
+
+    </p>
+  </div>
+  Built with Sphinx using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../',
+            VERSION:'2.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+    <script type="text/javascript" src="../../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../../_static/sphinx_highlight.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/mathjax/MathJax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+
+  
+  
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TRCMZL1FKK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TRCMZL1FKK');
+  </script>
+    
+</body>
+</html>
