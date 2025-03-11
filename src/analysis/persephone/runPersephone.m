@@ -273,7 +273,6 @@ function [progress] = runPersephone(configPath)
 tic;
 % Load all variables defined in the configPersephone.m
 run(configPath);
-resultPath
 % Do not run MARS if seqC was run.
 if paths.seqC.flagSeqC == true
     paths.Mars.paths.Mars.flagMars = false;
@@ -284,11 +283,9 @@ end
 
 % Validate the set workspace variables and give descriptive errors on which
 % variables were not set correctly.
-resultPath
 validatePersephoneInputs(paths,resultPath);
 
 % Create log file on the pipeline setup
-resultPath
 diary(fullfile(resultPath, 'logFile_initialisation.txt'))
 
 % Initialise PERSEPHONE
@@ -414,44 +411,6 @@ else
     disp(' > Calculation of relative abundances with MARS is skipped')
 end
 diary('off'); % Save MARS logfile
-% %% Adjust metadata to remove any potential missing samples compared to the microbiome sample.
-% % Remove samples in the metadata that are not in the microbiome data
-% if ~isempty(paths.Mars.relAbunFilePath)
-% 
-%     % Load microbiome data
-%     relAbunFile = readtable(paths.Mars.relAbunFilePath,'VariableNamingRule','preserve');
-% 
-%     % Check if the microbiome table is empty
-%     validateattributes(relAbunFile, {'table'}, {'nonempty'}, mfilename, 'readsTable')
-% 
-%     % Check if a column named Taxon exists
-%     if ~ismember('Taxon', relAbunFile.Properties.VariableNames)
-%         error('COBRA:BadInput', 'Microbiome read table must contain an Taxon column')
-%     end
-% 
-%     % Read in the metadata
-%     metadata = readMetadataForPersephone(paths.General.metadataPath);
-% 
-%     % Find the intersection of samples between the readsTable and the
-%     % metadata table
-%     [~,ia] = intersect(metadata.ID, ...
-%         relAbunFile.Properties.VariableNames(2:end)','stable');
-%     % Perform checks
-%     if isempty(ia)
-%         error('COBRA:BadInput', 'No overlapping samples could be found between the reads table and the metadata table.')
-%     else
-%         numRemovedSamples = size(metadata,1)-numel(ia);
-%         if numRemovedSamples>0
-%             disp(strcat("> Removed ", string(numRemovedSamples), " samples in the metadata that were not present in the reads table."))
-%         end
-%         metadata = metadata(ia,:);
-%     end
-% 
-%     % Remove all samples in the metadata that are not in the readsTable
-%     disp(strcat("> ", string(size(metadata,1)), " samples were included in this study."))
-%     writetable(metadata,paths.General.metadataPath);
-% end
-
 %% Part 2:
 %%%%%%%%%%%%%%%%%%%%%%% Create microbiome models %%%%%%%%%%%%%%%%%%%%%%%%%%
 tic;
