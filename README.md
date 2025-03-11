@@ -6,7 +6,7 @@ The following sections describe how continuous integration of tutorials, modules
 
 
 ## Continuous Integration of Tutorials:
-Part 1 of the CI occurs when a contributor pushes their tutorial .mlx file to the Tutorials Repository. In this part the .mlx file is also converted into a .html, .pdf and .m file. Detailed Documentation for the first part is ‘[here](https://github.com/opencobra/COBRA.tutorials/tree/master/.github/workflows)’. At the end of the first step, the .HTML file(s) of the new tutorial(s) is/are pushed to gh-pages branch at stable/tutorials/<folder of the tutorial> with the commit message being "Sync files from source repo".
+**Part 1** of the CI occurs when a contributor pushes their tutorial .mlx file to the Tutorials Repository. In this part the .mlx file is also converted into a .html, .pdf and .m file. Detailed Documentation for the first part is ‘[here](https://github.com/opencobra/COBRA.tutorials/tree/master/.github/workflows)’. At the end of the first step, the .HTML file(s) of the new tutorial(s) is/are pushed to gh-pages branch at stable/tutorials/<folder of the tutorial> with the commit message being "Sync files from source repo".
 
 ### Part 2: The html files then converted to required format and the index.html file is updated
 A workflow is then set up to be trigged when a .html file is pushed to the gh-pages branch. The .yml file is called ‘[UpdateTutorialIndex.yml](https://github.com/opencobra/cobratoolbox/blob/gh-pages/.github/workflows/UpdateTutorialIndex.yml)’.
