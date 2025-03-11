@@ -607,7 +607,7 @@ if (doLinearOptimisationFirst==0 && ~isempty(minNorm)) || (doLinearOptimisationF
         solution.slack  = [];
 
     elseif strcmp(minNorm, 'one')
-        % Optimize the absolute value of fluxes
+        % Minimise the absolute value of fluxes
         % Solve secondary LP to optimize weighted 1-norm of v
         % Weight provided by model.g1
         % Set up the optimization problem
@@ -637,6 +637,8 @@ if (doLinearOptimisationFirst==0 && ~isempty(minNorm)) || (doLinearOptimisationF
         end
         optProblem2.b  = [optProblem.b;zeros(2*nRxns,1);objectiveLP];
         
+        optProblem2.b  = [optProblem.b;zeros(2*nRxns,1);objectiveLP];
+
         %csense for 3 & 4 above
         optProblem2.csense = [optProblem.csense; repmat('G',2*nRxns,1)];
         % constrain the optimal value according to the original problem
@@ -648,7 +650,7 @@ if (doLinearOptimisationFirst==0 && ~isempty(minNorm)) || (doLinearOptimisationF
             %LPproblem2.csense(nTotalVars+1) = 'L';  %wrong
         end
         
-        optProblem2.osense = 1;
+        optProblem2.osense = 1;%minimise
         % Re-solve the problem
         if allowLoops
             solution = solveCobraLP(optProblem2, param);

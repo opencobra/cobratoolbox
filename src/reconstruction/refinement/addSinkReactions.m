@@ -23,7 +23,7 @@ function [model, rxnsInModel] = addSinkReactions(model, metabolites, lb, ub)
 
 if ~iscell(metabolites) & ischar(metabolites)
     % assumes it is a single metabolite in a char vector
-    metabolites = {metabolites}
+    metabolites = {metabolites};
 end
 if any(~ismember(metabolites,model.mets))
     notFound = metabolites(~ismember(metabolites,model.mets)); 
