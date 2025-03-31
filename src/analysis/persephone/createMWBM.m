@@ -42,6 +42,9 @@ modelHM = setDietConstraints(modelHM, Diet, factor);
 
 %%% Step 3: Populate model setup information for tracktability %%%
 
+% Copy the setup info from the original WBM
+modelHM.SetupInfo = WBM_model.SetupInfo;
+
 % Add sex info
 modelHM.SetupInfo.sex = WBM_model.sex;
 modelHM.sex = string(WBM_model.sex); % For PSCM toolbox interoperability
@@ -76,21 +79,21 @@ modelHM.SetupInfo.MicrobiotaComposition = microbiotaInfo;
 % ID and the "iWBM" indication. iWBM models will be updated as muiWBM
 % models. Unpersonalised WBMs will be updated to mWBM. 
 
-% Check if the ID field with iWBM exists.
-addIDfield = true;
-if isfield(WBM_model,'ID')
-    if contains(WBM_model.ID,'iWBM')
-        addIDfield = false;
+% Check if iWBMs are used by looking if modelHM.SetupInfo.Status is set to
+% personalised. If so then we save the model as miWBM
+mWBMtrue = true;
+if isfield(modelHM.SetupInfo, 'Status')
+    if strcmpi(modelHM.SetupInfo.Status, 'personalised')
+        modelHM.ID = ['miWBM_' char(microbiota_model.name)];
+        mWBMtrue = false;
     end
 end
 
-% Add mWBM in a new ID field or update the ID field with mWBM
-if addIDfield == true 
+% If the field is modelHM.SetupInfo.Status is not set to personalised we
+% save the model as mWBM
+if mWBMtrue == true
     modelHM.ID = ['mWBM_' char(microbiota_model.name)];
-else
-    modelHM.ID = ['m' char(WBM_model.ID)];
 end
-
 
 %%% Step 4: Parameterise the model for analysis %%% 
 
