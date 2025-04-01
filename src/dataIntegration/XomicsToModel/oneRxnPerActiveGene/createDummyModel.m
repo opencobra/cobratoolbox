@@ -37,13 +37,17 @@ if ~exist('fluxEpsilon','var')
 end
 
 
-if isequal(modelExtractionAlgorithm, 'fastCore') && 0
+if isequal(modelExtractionAlgorithm, 'fastCore') %&& 0
     paramConsistency.epsilon = fluxEpsilon;
     paramConsistency.method = 'fastcc';
     [fluxConsistentMetBoolOrig, fluxConsistentRxnBoolOrig] = findFluxConsistentSubset(model, paramConsistency, 2);
     if any(~fluxConsistentMetBoolOrig) || any(~fluxConsistentRxnBoolOrig)
         warning('%6u\t%6u\t%s\n', nnz(~fluxConsistentMetBoolOrig), nnz(~fluxConsistentRxnBoolOrig),' flux inconsistent metabolites and reactions in input model.')
     end
+    
+    [~, ~, ~, ~, ~, ~, model, stoichConsistModel] = findStoichConsistentSubset(model, ...
+        0, 0, [], 1e-6 * 10);
+
 end
 
 %any zero rows or columns are considered inconsistent
@@ -344,14 +348,16 @@ if isequal(modelExtractionAlgorithm, 'fastCore')
     end
     
     if any(~fluxConsistentMetBool) || any(~fluxConsistentRxnBool)
-        
+
         fluxInConsistentRxn = model.rxns(~fluxConsistentRxnBool);
         fprintf('%s\n',[int2str(nnz(~fluxConsistentRxnBool)) ' flux inconsistent reaction(s) after dummy model creation, removed:'])
         disp(model.rxns(~fluxConsistentRxnBool))
-        
+        fluxConsistentRxnBool(~fluxConsistentRxnBool ) = 0;
+
         model.S = model.S(fluxConsistentMetBool,fluxConsistentRxnBool);
         model.b = model.b(fluxConsistentMetBool,1);
         model.csense = model.csense(fluxConsistentMetBool,1);
+        model.mets = model.mets(fluxConsistentMetBool);
         model.rxns = model.rxns(fluxConsistentRxnBool);
         model.rxnNames = model.rxnNames(fluxConsistentRxnBool);
         model.lb = model.lb(fluxConsistentRxnBool);
