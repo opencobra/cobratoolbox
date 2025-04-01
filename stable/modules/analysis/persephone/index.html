@@ -1,0 +1,1570 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Persephone &mdash; The COBRA Toolbox</title>
+  
+
+  
+  
+  
+    <link rel="apple-touch-icon" sizes="180x180" href="../../../_static/img/apple-touch-icon.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../_static/img/favicon-32x32.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="16x16" href="../../../_static/img/favicon-16x16.png">
+  
+  
+    <link rel="mask-icon" href="../../../_static/img/safari-pinned-tab.svg" color="#5bbad5">
+  
+  
+    <link rel="manifest" href="../../../_static/json/manifest.json">
+  
+  
+    <meta name="msapplication-config" content="../../../_static/browserconfig.xml">
+  
+  <meta name="theme-color" content="#ffffff">
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+  <script src="../../../_static/js/jquery.easy-autocomplete.min.js" type="text/javascript" ></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+  <link href="../../../_static/css/easy-autocomplete.min.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/cobra.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../../_static/css/cobra.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="The COBRA Toolbox" href="../../../index.html"/>
+        <link rel="up" title="Analysis" href="../index.html"/>
+        <link rel="next" title="Seqc_pipeline" href="SeqC_pipeline/index.html"/>
+        <link rel="prev" title="Fast-sl" href="../deletion/Syntheticlethals/Fast-SL/index.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> The COBRA Toolbox
+          
+
+          
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
+          
+          </a>
+
+              
+          <h1>The COBRA Toolbox</h1>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" id="simple"/>
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+    <script>
+    	var options = {
+
+		url: "../../../_static/json/functions.json",
+
+		getValue: "name",
+
+		list: {
+            onKeyEnterEvent: function(item) {
+                    return "_static/../" + item.website_url
+            },
+            maxNumberOfElements: 25,
+			match: {
+					enabled: true,
+			},
+            sort: {
+			    enabled: true
+		    }
+		},
+
+    	template: {
+	    	type: "custom",
+		    method: function(value, item) {
+                return "<span><a href='../../../search.html?q=" + item.name + "&check_keywords=yes&area=default'>" + value + "</a>" + "<a href='../../../_static/../" + item.website_url + "' ><img src='../../../_static/link.svg'/></a></span>";
+		    }
+	    },
+
+		theme: "square"
+
+	};
+
+	$("#simple").easyAutocomplete(options);
+
+
+    </script>
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../../../index.html">Home</a></li>
+              </ul>
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Functions</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Analysis</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../dynamicFBA/index.html">Dynamicfba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../fluxEnrichmentAnalysis/index.html">Fluxenrichmentanalysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topology/index.html">Topology</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../deletion/index.html">Deletion</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Persephone</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="SeqC_pipeline/index.html">Seqc_pipeline</a></li>
+<li class="toctree-l4"><a class="reference internal" href="additionalFunctions/index.html">Additionalfunctions</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../transport/index.html">Transport</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../parsimoniousFBA/index.html">Parsimoniousfba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../sparseFBA/index.html">Sparsefba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../relaxedFBA/index.html">Relaxedfba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../sampling/index.html">Sampling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../percentileCalc/index.html">Percentilecalc</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../rumba/index.html">Rumba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../multiSpecies/index.html">Multispecies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../rFBA/index.html">Rfba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ROOM/index.html">Room</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../QFCA/index.html">Qfca</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../nutritionAlgorithm/index.html">Nutritionalgorithm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../geometricFBA/index.html">Geometricfba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../wholeBody/index.html">Wholebody</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../thermo/index.html">Thermo</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exploration/index.html">Exploration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../igemRNA/index.html">Igemrna</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../findMIIS/index.html">Findmiis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../KLdistance/index.html">Kldistance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../subspaces/index.html">Subspaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../uFBA/index.html">Ufba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../MOMA/index.html">Moma</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../coupling/index.html">Coupling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gMCS/index.html">Gmcs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ICONGEMs/index.html">Icongems</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../FBA/index.html">Fba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mdFBA/index.html">Mdfba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../robustnessAnalysis/index.html">Robustnessanalysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../FVA/index.html">Fva</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../rMTA/index.html">Rmta</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../fastForest/index.html">Fastforest</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../base/index.html">Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dataIntegration/index.html">Dataintegration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../design/index.html">Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reconstruction/index.html">Reconstruction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../visualization/index.html">Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../cite.html">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../support.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../plan.html">Development Plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contact.html">Contact</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../citations.html">Citations</a></li>
+</ul>
+
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">The COBRA Toolbox</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../contents.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Functions</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Analysis</a></li>
+      <li class="breadcrumb-item active">Persephone</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="https://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <section id="persephone">
+<span id="id1"></span><h1>Persephone<a class="headerlink" href="#persephone" title="Permalink to this heading">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="SeqC_pipeline/index.html">Seqc_pipeline</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="SeqC_pipeline/seqc_proc/index.html">Seqc_proc</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="additionalFunctions/index.html">Additionalfunctions</a></li>
+</ul>
+</div>
+<span class="target" id="module-src.analysis.persephone"></span><dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.persephone.analyseWBMs">
+<span class="sig-name descname"><span class="pre">analyseWBMs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">mWBMPath</span></em>, <em class="sig-param"><span class="pre">fluxPath</span></em>, <em class="sig-param"><span class="pre">rxnList</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/persephone/analyseWBMs.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.persephone.analyseWBMs" title="Permalink to this definition">¶</a></dt>
+<dd><p>analyseWBMs predicts the maximal fluxes for a list of user-defined
+reactions (rxnList). All predicted are further described in
+analyseWBMsol.m.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[FBA_results, pathsToFilesForStatistics] = analyseWBMs</strong> (<em>mWBMPath, fluxPath, rxnList</em>)</p>
+</dd>
+</dl>
+<p>INPUTS:
+mWBMPath      Path (character array) to WBMs
+fluxPath      Path to directory where the results will be stored
+rxnList       Cell array of VMH metabolites to investigate.</p>
+<blockquote>
+<div><p>Example: rxnList = {‘DM_trp_L[bc], DM_met_L[bc],’Brain_trp_L[c],
+Heart_met_L[x]}. Note that demand reactions are
+automatically added if they are not present in the models.</p>
+</div></blockquote>
+<p>OPTIONAL INPUTS
+numWorkersOptimization    Number of workers that will perform FBA in parallel. Note</p>
+<blockquote>
+<div><p>that more workers does not necessarily make the function
+faster. It is generally not recommended to set numWorkersOptimization
+equal to the number of available cores (see:
+feature(‘numCores’)) as linear solvers can already
+support multi-core linear optimisation, thus resulting in
+unnessessary overhead. On computers with 8 cores or less, it
+is recommended to set numWorkersOptimization to 1. On a computer with
+36 cores, an optimal configuration of numWorkersOptimization=6 was
+found.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>saveFullRes   Boolean (true/false) indicating if all the complete .v, .y.</dt><dd><p>, and .w vectors are stored in the result. Default = true.
+It is recommended to set saveFullRes</p>
+</dd>
+</dl>
+<p>paramFluxProcessing       Structured array with optional parameters:</p>
+<blockquote>
+<div><p>.NumericalRounding defines how much the predicted flux values are
+rounded. A defined value of 1e-6 means that a flux value of
+2 + 2.3e-8 is rounded to 2. A flux value of 0 + 1e-15 would be rounded to
+exactly zero. This rounding factor will also be applied to the shadow
+price values. If microbiome relative abundance data is provided, the same
+rounding factor will be applied to the relative abundance data.</p>
+<p>Default parameterisation:
+- paramFluxProcessing.NumericalRounding = 1e-6;</p>
+<p>Example:
+- paramFluxProcessing.NumericalRounding = 1e-6;</p>
+<p>paramFluxProcessing.NumericalRounding = 1e-6;</p>
+<p>.RxnRemovalCutoff defines the minimal number of samples for which a
+unique reaction flux could be obtained, before removing the reaction for
+further analysis. This parameter can be expressed as
+* fraction:  the fraction of samples with unique values,
+* SD: the standard deviation across samples, and
+* count: the counted number of unique values. If microbiome relative
+abundance data is provided, the same removal cutoff factor will be
+applied to the relative abundance data.</p>
+<p>Default parameterisation:
+- paramFluxProcessing.RxnRemovalCutoff = {‘fraction’,0.1};</p>
+<p>Examples:
+- paramFluxProcessing.RxnRemovalCutoff = {‘fraction’,0.1};
+- paramFluxProcessing.RxnRemovalCutoff = {‘SD’,1};
+- paramFluxProcessing.RxnRemovalCutoff = {‘count’,30};</p>
+<p>paramFluxProcessing.RxnRemovalCutoff = {‘fraction’,0.1};</p>
+<p>.RxnEquivalenceThreshold defines the minimal threshold of when
+functionally identical flux values are predicted, and are thus part of
+the same linear pathways. The threshold for functional equivalence is
+expressed as the R2 (r-squared) value after performing a simple linear
+regression between two reactions.</p>
+<p>Default parameterisation:
+- paramFluxProcessing.RxnEquivalenceThreshold = 0.999;</p>
+<p>Example:
+- paramFluxProcessing.RxnEquivalenceThreshold = 0.999;</p>
+<p>paramFluxProcessing.RxnEquivalenceThreshold = 0.999;</p>
+<p>.fluxMicrobeCorrelationType defines the method for correlating the
+predicted fluxes with microbial relative abundances. Note that this
+metric is not used if mWBMs are not present. The available correlation
+types are:
+* regression_r2:  the R2 (r-squared) value from pairwised linear regression on the
+predicted fluxes against microbial relative abundances.
+* spearman_rho: the correlation coefficient, rho obtained from pairwise
+Spearman nonparametric correlations between predicted fluxes and
+microbial relative abundances.</p>
+<p>Default parameterisation:
+- paramFluxProcessing.fluxMicrobeCorrelationMetric = ‘regression_r2’;</p>
+<p>Examples:
+- paramFluxProcessing.fluxMicrobeCorrelationMetric = ‘regression_r2’;
+- paramFluxProcessing.fluxMicrobeCorrelationMetric = ‘spearman_rho’;</p>
+</div></blockquote>
+<dl class="simple">
+<dt>fluxAnalysisPath:               Character array with path to directory where all</dt><dd><p>results will be saved (Default = pwd)</p>
+</dd>
+<dt>Solver:                Validated solvers: ‘cplex_direct’,’ibm_cplex’</dt><dd><p>‘tomlab_cplex’, ‘gurobi’, ‘mosek’</p>
+</dd>
+</dl>
+<p>OUTPUT
+results       Structured array with FBA fluxes, solver statistics, and</p>
+<blockquote>
+<div><p>paths to the flux table and raw flux results</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.persephone.analyseWBMsol">
+<span class="sig-name descname"><span class="pre">analyseWBMsol</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">fluxPath</span></em>, <em class="sig-param"><span class="pre">paramFluxProcessing</span></em>, <em class="sig-param"><span class="pre">fluxAnalysisPath</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/persephone/analyseWBMsol.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.persephone.analyseWBMsol" title="Permalink to this definition">¶</a></dt>
+<dd><p>analyseWBMsol loads the FBA solutions produced in
+analyseWBMs.m, prepares the FBA results for further
+analyses, and produces summary statistics into the flux results.</p>
+<dl>
+<dt>The function contains six parts:</dt><dd><ul class="simple">
+<li><p>PART 1: Loading the flux solutions and corresponding shadow prices</p></li>
+<li><p>PART 2: Converting the microbial  biomass shadow prices</p></li>
+</ul>
+<p>associated with each optimised reaction flux to human readable
+tables and producing statistics on microbial influences on the flux
+results.
+- PART 3: Isolate the microbial component of the fluxes by
+subtracting the germ-free fluxes in a sex specific manner. In this
+part, descriptive statistics are also obtained on the fluxes across
+samples and metabolites are removed based on a user defined
+threshold (see thresholds input)
+- PART 4: In this part, microbe-flux associations defined by the
+species biomass shadow prices (PART 2) are further quantified by
+performing Spearman correlations on the fluxes and microbe relative
+abundances.
+- PART 5: Reactions with identical or near identical fluxes across
+samples (user defined) are grouped and collapsed into a single
+result.
+- PART 6: Save all results</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[FBA_results, pathsToFilesForStatistics] = analyseWBMsol</strong> (<em>fluxPath,paramFluxProcessing, fluxAnalysisPath</em>)</p>
+</dd>
+</dl>
+<p>INPUTS:
+fluxPath         Character array with path to .mat files produced in</p>
+<blockquote>
+<div><p>optimiseRxnMultipleWBM.m</p>
+</div></blockquote>
+<p>paramFluxProcessing       Structured array with optional parameters:</p>
+<blockquote>
+<div><p>.numericalRounding defines how much the predicted flux values are
+rounded. A defined value of 1e-6 means that a flux value of
+2 + 2.3e-8 is rounded to 2. A flux value of 0 + 1e-15 would be rounded to
+exactly zero. This rounding factor will also be applied to the shadow
+price values. If microbiome relative abundance data is provided, the same
+rounding factor will be applied to the relative abundance data.</p>
+<p>Default parameterisation:
+- paramFluxProcessing.numericalRounding = 1e-6;</p>
+<p>Example:
+- paramFluxProcessing.numericalRounding = 1e-6;</p>
+<p>paramFluxProcessing.numericalRounding = 1e-6;</p>
+<p>.rxnRemovalCutoff defines the minimal number of samples for which a
+unique reaction flux could be obtained, before removing the reaction for
+further analysis. This parameter can be expressed as
+* fraction:  the fraction of samples with unique values,
+* SD: the standard deviation across samples, and
+* count: the counted number of unique values. If microbiome relative
+abundance data is provided, the same removal cutoff factor will be
+applied to the relative abundance data.</p>
+<p>Default parameterisation:
+- paramFluxProcessing.rxnRemovalCutoff = {‘fraction’,0.1};</p>
+<p>Examples:
+- paramFluxProcessing.rxnRemovalCutoff = {‘fraction’,0.1};
+- paramFluxProcessing.rxnRemovalCutoff = {‘SD’,1};
+- paramFluxProcessing.rxnRemovalCutoff = {‘count’,30};</p>
+<p>paramFluxProcessing.rxnRemovalCutoff = {‘fraction’,0.1};
+RxnEquivalenceThreshold
+.rxnEquivalenceThreshold defines the minimal threshold of when
+functionally identical flux values are predicted, and are thus part of
+the same linear pathways. The threshold for functional equivalence is
+expressed as the R2 (r-squared) value after performing a simple linear
+regression between two reactions.</p>
+<p>Default parameterisation:
+- paramFluxProcessing.rxnEquivalenceThreshold = 0.999;</p>
+<p>Example:
+- paramFluxProcessing.rxnEquivalenceThreshold = 0.999;</p>
+<p>paramFluxProcessing.rxnEquivalenceThreshold = 0.999;</p>
+<p>.fluxMicrobeCorrelationMetric defines the method for correlating the
+predicted fluxes with microbial relative abundances. Note that this
+metric is not used if mWBMs are not present. The available correlation
+types are:
+* regression_r2:  the R2 (r-squared) value from pairwised linear regression on the
+predicted fluxes against microbial relative abundances.
+* spearman_rho: the correlation coefficient, rho obtained from pairwise
+Spearman nonparametric correlations between predicted fluxes and
+microbial relative abundances.</p>
+<p>Default parameterisation:
+- paramFluxProcessing.fluxMicrobeCorrelationMetric = ‘regression_r2’;</p>
+<p>Examples:
+- paramFluxProcessing.fluxMicrobeCorrelationMetric = ‘regression_r2’;
+- paramFluxProcessing.fluxMicrobeCorrelationMetric = ‘spearman_rho’;</p>
+</div></blockquote>
+<dl class="simple">
+<dt>fluxAnalysisPath</dt><dd><p>Character array with path to directory where all
+results will be saved.</p>
+</dd>
+<dt>AUTHOR:</dt><dd><ul class="simple">
+<li><p>Tim Hensen, July 2024</p></li>
+<li><p>Jonas Widder, 11/2024 (small bugfixes)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.persephone.createBatchMWBM">
+<span class="sig-name descname"><span class="pre">createBatchMWBM</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">mgpipePath</span></em>, <em class="sig-param"><span class="pre">mWBMPath</span></em>, <em class="sig-param"><span class="pre">metadataPath</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/persephone/createBatchMWBM.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.persephone.createBatchMWBM" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function creates personalised host-microbiome WBM models (mWBMs) by joining
+microbiome community models with unpersonalised WBM models in a
+sex-specific manner. The models are parameterised on a predefined diet.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[modelStats, summaryStats, dietInfo, dietGrowthStats] = createBatchMWBM</strong> (<em>mgpipePath, mWBMPath, metadataPath</em>)</p>
+</dd>
+</dl>
+<p>INPUTS
+mgpipePath:                   Path to microbiome community models created by the</p>
+<blockquote>
+<div><p>microbiome modelling toolbox.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>mWBMPath                      Path to directory where the HM models are</dt><dd><p>saved</p>
+</dd>
+</dl>
+<p>OPTIONAL INPUTS
+Diet                          Diet option: ‘EUAverageDiet’ (default)
+numWorkersCreation                    Number of cores used for parallelisation.</p>
+<blockquote>
+<div><p>Default = 4.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>checkFeasibility              Flag (true/false) to run the</dt><dd><p>ensureHMfeasibility.m function and check if
+the generated models can grow on the diet.
+Default = true.</p>
+</dd>
+<dt>wbmDirectory                  Path to directory with user defined WBMs.</dt><dd><p>This function supports one user adapted male and one user adapted female
+WBM or personalised germ free WBMs for each sample with a microbiome
+community model. Default is empty. If wbmDirectory is empty,
+Harvey/Harvetta version 1.04c are used.</p>
+</dd>
+</dl>
+<p>OUTPUTS
+modelStats                    Table with summary statistics on the generated WBMs:</p>
+<blockquote>
+<div><p>gender, number of reactions, metabolites,constrainsts,
+and taxa.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>summaryStats                  Table with the mean and SD of the model</dt><dd><p>statistics in the modelStats variable.</p>
+</dd>
+<dt>dietInfo                      Table with diet growth information.</dt><dd><p>models can grow on the given diet.</p>
+</dd>
+</dl>
+<p>dietGrowthStats               Table with statistics on</p>
+<p>Authors:  Tim Hensen, 2023, 2024</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.persephone.createForestPlot">
+<span class="sig-name descname"><span class="pre">createForestPlot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">estimates</span></em>, <em class="sig-param"><span class="pre">ci</span></em>, <em class="sig-param"><span class="pre">names</span></em>, <em class="sig-param"><span class="pre">pValues</span></em>, <em class="sig-param"><span class="pre">plotTitle</span></em>, <em class="sig-param"><span class="pre">xTitle</span></em>, <em class="sig-param"><span class="pre">hideLegend</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/persephone/createForestPlot.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.persephone.createForestPlot" title="Permalink to this definition">¶</a></dt>
+<dd><p>createForestPlot generates a forest plot to display confidence intervals for estimates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>createForestPlot</strong> (<em>estimates, ci, names, pValues, plotTitle, xTitle, hideLegend</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>estimates   - Vector of estimates</strong> (<em>e.g., effect sizes or log fold changes</em>)</p></li>
+<li><p><strong>ci          - Matrix of confidence intervals [n x 2] with lower and upper bounds in columns.</strong></p></li>
+<li><p><strong>names       - Cell array of labels for each data point.</strong></p></li>
+<li><p><strong>pValues     - Vector of p-values corresponding to each estimate.</strong></p></li>
+<li><p><strong>plotTitle   - String, title of the plot.</strong></p></li>
+<li><p><strong>xTitle      - String, label for the x-axis</strong> (<em>typically “Effect Size” or “Log Fold Change”</em>)</p></li>
+<li><p><strong>hideLegend  - Logical, if true, hides the legend</strong> (<em>default is false</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.persephone.createMWBM">
+<span class="sig-name descname"><span class="pre">createMWBM</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">microbiota_model</span></em>, <em class="sig-param"><span class="pre">WBM_model</span></em>, <em class="sig-param"><span class="pre">Diet</span></em>, <em class="sig-param"><span class="pre">saveDir</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/persephone/createMWBM.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.persephone.createMWBM" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function creates personalised host-microbiome WBM models by joining
+microbiome community models with unpersonalised WBM models. The models
+are parameterised on a predefined diet.</p>
+<p>Example: modelHM = createMWBM(microbiota_model, WBM_model, ‘EUAverageDiet’)</p>
+<p>INPUTS
+microbiota model:             Microbiome community model created by the</p>
+<blockquote>
+<div><p>microbiome modelling toolbox.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>WBM_model:                    Harvey or Harvetta whole-body metabolic</dt><dd><p>model</p>
+</dd>
+</dl>
+<p>Diet                          Diet option: ‘EUAverageDiet’ (default)</p>
+<p>Output
+modelHM:                      Personalised host-microbiome WBM model</p>
+<dl class="simple">
+<dt>Authors:  Tim Hensen, Bronson Weston, 2022</dt><dd><p>Tim Hensen, expanded WBM parameterisation July 2024
+Tim Hensen, improved mWBM annotation November 2024</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.persephone.createVulcanoPlot">
+<span class="sig-name descname"><span class="pre">createVulcanoPlot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">estimates</span></em>, <em class="sig-param"><span class="pre">pValues</span></em>, <em class="sig-param"><span class="pre">names</span></em>, <em class="sig-param"><span class="pre">plotTitle</span></em>, <em class="sig-param"><span class="pre">xTitle</span></em>, <em class="sig-param"><span class="pre">yTitle</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/persephone/createVulcanoPlot.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.persephone.createVulcanoPlot" title="Permalink to this definition">¶</a></dt>
+<dd><p>createVulcanoPlot generates a volcano plot to visualize the relationship
+between regression estimates and p-values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>createVulcanoPlot</strong> (<em>estimates, pValues, names, plotTitle, xTitle, yTitle</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>estimates - [vector] Regression estimates for each data point</strong> (<em>e.g., effect sizes or log fold changes</em>)</p></li>
+<li><p><strong>pValues   - [vector] p-values corresponding to each estimate.</strong></p></li>
+<li><p><strong>names     - [cell array] Labels or names for each data point.</strong></p></li>
+<li><p><strong>plotTitle - [string] Title of the plot.</strong></p></li>
+<li><p><strong>xTitle    - [string] Label for the x-axis</strong> (<em>e.g., “Effect Size” or “Log Fold Change”</em>)</p></li>
+<li><p><strong>yTitle    - [string] Label for the y-axis</strong> (<em>e.g., “-log10(p-value)”</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><p><strong>None      - This function generates a volcano plot in the current figure.</strong></p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<dl class="simple">
+<dt>createVulcanoPlot(estimates, pValues, {‘Metabolite1’, ‘Metabolite2’}, …</dt><dd><p>‘Volcano Plot’, ‘Log Fold Change’, ‘-log10(p-value)’)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.persephone.ensureWBMfeasibility">
+<span class="sig-name descname"><span class="pre">ensureWBMfeasibility</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">mWBMPath</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/persephone/ensureWBMfeasibility.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.persephone.ensureWBMfeasibility" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function checks for the WBMs in the specified mWBMPath to grow on the
+given diet, finds a diet that makes all WBMs feasible and propagates this
+diet onto the models. The functions works as follows:
+1) Load the WBMs from the directory and test which models are feasible on
+the diet.
+2) If any WBM is not feasible, collect all infeasible WBMs, open all diet
+reactions, and test if the WBMs can grow on any diet. If one or more WBMs
+cannot grow when opening all diet reactions, the statistics are
+collected and the function stops. The user will need to debug the WBMs
+manually.
+3) If all previously infeasible WBMs can grow when all diet reactions are
+opened,missing diet components are searched using getMissingDietModelHM.
+If getMissingDietModelHM cannot find a diet after one function call, this
+function is run again until a hard limit of 10 iterations is reached. If
+this limit is reached, no feasible diet can be found for all models and
+the user will need to manually debug the infeasible models. If missing
+diet components are found in one WBMs, these component are automatically propagated
+to the other WBMs infeasible on the original diet before searching for
+more missing diet components
+4) If a new diet is found for which all previously infeasible WBMs can grow,
+the updated diet is propagated to all models in the mWBMPath.
+5) The updated diet is stored as an output variable for this function and
+for each model, its feasibility on the original and updated diet is
+recorded.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[dietInfo, dietGrowthStats] = ensureHMfeasibility</strong> (<em>mWBMPath, Diet</em>)</p>
+</dd>
+</dl>
+<p>INPUTS
+mWBMPath           Path to directory where the HM models are saved
+Diet                  Diet option: ‘EUAverageDiet’ (default)</p>
+<p>OUTPUTS
+dietInfo              Structured variable containing the missing diet</p>
+<blockquote>
+<div><p>components and the updated diet propagated to all models.
+This variable is empty if no updated diet could be found.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>dietGrowthStats       Table indicating which WBMs could initially not grow on</dt><dd><p>the diet, which WBMs could not grow on any diet,
+and which WBMs could not grow on an updated diet.</p>
+</dd>
+</dl>
+<p class="rubric">Authors</p>
+<ul class="simple">
+<li><p>Tim Hensen, 2024</p></li>
+</ul>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.persephone.fdrBHadjustment">
+<span class="sig-name descname"><span class="pre">fdrBHadjustment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">p</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/persephone/fdrBHadjustment.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.persephone.fdrBHadjustment" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>IMPORTANT; This function was partially generated by chatGPT o3-mini.</dt><dd><p>The code is manually tested and altered with bug fixes. This function
+performs identical to running q = mafdr(p, ‘BHFDR’, true)
+using the Matlab bioinformatics toolbox.</p>
+</dd>
+</dl>
+<p>FDR_BH Performs Benjamini-Hochberg FDR correction on a vector of p-values.</p>
+<blockquote>
+<div><p>q = FDR_BH(p) returns the FDR-corrected p-values q for the input vector p.</p>
+<dl class="simple">
+<dt>Input:</dt><dd><p>p - a vector of p-values (assumed to be in the interval [0, 1])</p>
+</dd>
+<dt>Output:</dt><dd><p>q - a vector of FDR corrected p-values, in the same order as p.</p>
+</dd>
+<dt>The function implements the procedure described in:</dt><dd><p>Benjamini, Y. and Hochberg, Y. (1995) Controlling the false discovery
+rate: a practical and powerful approach to multiple testing.</p>
+</dd>
+<dt>Example:</dt><dd><p>pvals = [0.01, 0.04, 0.03, 0.002, 0.07];
+qvals = fdr_bh(pvals);</p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.persephone.findPvalCategories">
+<span class="sig-name descname"><span class="pre">findPvalCategories</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">pValues</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/persephone/findPvalCategories.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.persephone.findPvalCategories" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function inputs a list of p values and outputs the variables
+pValueGroups and colourGroups. A maximum of three groups are defined,
+FDR&lt;0.05, P&lt;0.05, and P&gt;0.05.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[groupsToPlot, colours] = findPvalCategories</strong> (<em>pValues</em>)</p>
+</dd>
+</dl>
+<p>INPUT
+pValues</p>
+<p>OUTPUTS
+groupsToPlot      Table that categorises the indices of the p-value list.
+colours           Cell array with numerical encodings for the</p>
+<blockquote>
+<div><p>category-associated colours.</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.persephone.generateStackedBarPlot_PhylumMARScoverage">
+<span class="sig-name descname"><span class="pre">generateStackedBarPlot_PhylumMARScoverage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">input_relAbundances_preMapping</span></em>, <em class="sig-param"><span class="pre">input_relAbundances_postMapping</span></em>, <em class="sig-param"><span class="pre">saveDir</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/persephone/generateStackedBarPlot_PhylumMARScoverage.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.persephone.generateStackedBarPlot_PhylumMARScoverage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates stacked bar plots from mean relative abundances of phyla pre- &amp;
+post-mapping to a model-database in MARS.</p>
+<dl class="field-list simple">
+<dt class="field-odd">INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_relAbundances_preMapping</strong> – [chars/string] Path to table which contains phyla taxa and their
+mean relative abundances across samples pre-mapped to a model-database
+(original dataset). This spreadsheet is a standard output generated in MARS.</p></li>
+<li><p><strong>input_relAbundances_postMapping</strong> – [chars/string] Path to table which contains phyla taxa and their
+mean relative abundances across samples post-mapped to a model-database
+(filtered dataset). This spreadsheet is a standard output generated in MARS.</p></li>
+<li><p><strong>saveDir</strong> – [chars/string] Path to the
+directory where the stacked bar plot should be saved.</p></li>
+<li><p><strong>mappingDatabase_name</strong> – [chars/string] The name of the model-database used for
+mapping in MARS, which will be displayed in the title of the graph.
+Defaults to ‘’.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="simple">
+<dt>AUTHOR:</dt><dd><ul class="simple">
+<li><p>Jonas Widder, 12/2024 &amp; 01/2025</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.persephone.initPersephone">
+<span class="sig-name descname"><span class="pre">initPersephone</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">resultPath</span></em>, <em class="sig-param"><span class="pre">paths</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/persephone/initPersephone.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.persephone.initPersephone" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Initializes the Persephone pipeline by:</dt><dd><ul class="simple">
+<li><p>Checking for MATLAB toolbox dependencies.</p></li>
+<li><p>Processing and validating the metadata file.</p></li>
+<li><p>Cross-referencing metadata with microbiome data (if provided).</p></li>
+<li><p>Setting up directory structures for Persephone results.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[initialised, paths, statToolboxInstalled] = initPersephone</strong> (<em>resultPath, metadataPath, readsTablePath</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>resultPath        -</strong> (<em>char</em>)</p></li>
+<li><p><strong>metadataPath     -</strong> (<em>char) Path to the metadata file (.csv or .xlsx</em>)</p></li>
+<li><p><strong>readsTablePath   -</strong> (<em>char</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>initialised           -</strong> (<em>logical</em>)</p></li>
+<li><p><strong>paths             -</strong> (<em>struct</em>)</p></li>
+<li><p><strong>statToolboxInstalled  -</strong> (<em>logical</em>)</p></li>
+<li><p><strong>updatedMetadataPath   -</strong> (<em>char</em>)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="simple">
+<dt>REQUIREMENTS:</dt><dd><ul class="simple">
+<li><p>MATLAB R2020b or newer.</p></li>
+<li><p>Parallel Computing Toolbox (mandatory).</p></li>
+<li><p>Statistics and Machine Learning Toolbox (recommended for analysis).</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>Metadata must contain a column of sample IDs and a column of sex information.</p></li>
+<li><p>Metadata and reads table will be synchronized to ensure consistent samples across analyses.</p></li>
+<li><p>Any discrepancies in variable naming (e.g., “ID”, “Sex”) are automatically resolved.</p></li>
+<li><p>Processed metadata is saved to an updated file.</p></li>
+</ul>
+<p class="rubric">Example</p>
+<p>resultPath = ‘./results’;
+metadataPath = ‘./data/metadata.csv’;
+readsTablePath = ‘./data/readsTable.csv’;
+[initialised, paths, statToolboxInstalled] = initPersephone(resultPath, metadataPath, readsTablePath);</p>
+<dl class="simple">
+<dt>AUTHOR:</dt><dd><ul class="simple">
+<li><p>Tim Hensen, January 2025</p></li>
+<li><p>Bram Nap, July 2024: Automatic creation of output folders</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.persephone.loadMinimalWBM">
+<span class="sig-name descname"><span class="pre">loadMinimalWBM</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">modPath</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/persephone/loadMinimalWBM.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.persephone.loadMinimalWBM" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function loads the smallest possible combination of WBM model fields
+needed to perform FBA. Loading the minimal model can
+decrease loading times by 6X.</p>
+<p>Author: Tim Hensen, November 2024</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.persephone.performRegressions">
+<span class="sig-name descname"><span class="pre">performRegressions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">data</span></em>, <em class="sig-param"><span class="pre">metadata</span></em>, <em class="sig-param"><span class="pre">formula</span></em>, <em class="sig-param"><span class="pre">exponentiateLogOdds</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/persephone/performRegressions.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.persephone.performRegressions" title="Permalink to this definition">¶</a></dt>
+<dd><p>This functions performs linear or logistic regressions on either flux
+data or microbial relative abundances. The function supports control
+variables &amp; moderators in the regression formulae.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>results = performRegressions</strong> (<em>data,metadata,formula</em>)</p>
+</dd>
+</dl>
+<p>INPUT
+data:     Table with flux or microbiome data. The first column must be the ID</p>
+<blockquote>
+<div><p>column.</p>
+</div></blockquote>
+<p>metadata: Metadata table. The first column must be the ID column.
+formula: Must contain either “Flux or “relative_abundance” as predictor.
+exponentiateLogOdds: Logical variable on if a logistic regression estimate
+should be exponentiately to obtain the odds ratios.</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.persephone.performStatsPersephone">
+<span class="sig-name descname"><span class="pre">performStatsPersephone</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">statPath</span></em>, <em class="sig-param"><span class="pre">pathToProcessedFluxes</span></em>, <em class="sig-param"><span class="pre">metadataPath</span></em>, <em class="sig-param"><span class="pre">response</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/persephone/performStatsPersephone.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.persephone.performStatsPersephone" title="Permalink to this definition">¶</a></dt>
+<dd><p>The performStatistics function is part of the PSCM toolbox. This
+function performs regression analyses on processed fluxes and gut
+microbiome relative abundance data in large cohort studies. This function needs a
+minimal sample size of 50 samples. This function performs different
+statistical analyses depending on the user defined inputs.</p>
+<p>If the response variable is binary and no confounders are given,
+wilcoxon tests will be performed for the fluxes and microbiome
+abundances.
+If the response variable is binary and confounders are given, multiple
+logistic regressions will be performed.
+If the response variable is continuous and no confounders are given,
+simple linear regressions will be performed.
+If the response variable is continuous and confounders are given,
+multiple linear regressions will be performed.</p>
+<p>The fluxes are z-transformed before statistical testing. The microbiome
+relative abundances are log transformed before testing.
+If a moderator variable is given and a regression is
+performed, a moderation analysis on the moderator with the predictor will be performed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>performStatistics</strong> (<em>statPath, pathToProcessedFluxes, pathToWbmRelAbundances, metadataPath, response, confounders, moderator, microbeCutoff,threshold</em>)</p>
+</dd>
+</dl>
+<p>INPUT
+statPath                          Path (character array) to working directory
+pathToProcessedFluxes                 Path to processed flux data
+pathToWbmRelAbundances                  Path to microbial relative abundances
+metadataPath                      Path to metadata file
+response                          Name of response variables (char or string)</p>
+<p>OPTIONAL INPUTS
+confounders                       Cell array with the names of confounding variables to</p>
+<blockquote>
+<div><p>be included. Default = empty.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>microbeCutoff                     Cutoff threshold for the number of samples a</dt><dd><p>microbe needs to present to be analysed. Default = 0.1. (10%)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.persephone.persWBM">
+<span class="sig-name descname"><span class="pre">persWBM</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">metadataPath</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/persephone/persWBM.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.persephone.persWBM" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function takes a table of physiological parameters for an individual or multiple individuals
+(listed in inputs) and adjusts the paramteres of a provided WBM or Harvey/Harvetta to
+create a personalised WBM</p>
+<p>The calculation of physiological parameteres will be performed based on
+the available data e.g., if the user provides Cardiac output, this given
+value is assigned, if the user provides stroked volume and no CO, CO is
+calculated based on SV. If neither values are provided, CO will be
+calculated based on XXX. All details of parameter calculation are
+detailed in the personalised model output and in the excel file provided
+by this function.</p>
+<p>INPUTS</p>
+<p>REQUIRED:
+metadata                     Can be a cell array or a table or a path to an</p>
+<blockquote>
+<div><p>excel file. In any case, this should contain
+a list with a minimum of three column and option
+for additional columns for each individual for which a model should be created:</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.persephone.persWBMmetabolomics">
+<span class="sig-name descname"><span class="pre">persWBMmetabolomics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">sex</span></em>, <em class="sig-param"><span class="pre">metabolomicParams</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/persephone/persWBMmetabolomics.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.persephone.persWBMmetabolomics" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function takes a table of metabolomic parameters for an individual or multiple individuals
+(listed in inputs) and adjusts the paramteres of a provided WBM or Harvey/Harvetta to
+create a personalised WBM</p>
+<p>The calculation of metabolomic parameteres will be performed based on
+the available data</p>
+<p>INPUTS</p>
+<p>REQUIRED:
+metabolomicParamters         Can be a cell array or a table or a path to an</p>
+<blockquote>
+<div><p>excel file. In any case, this should contain
+a list with a minimum of three columns and option
+for additional columns for each individual for which a model should be created:</p>
+<p><a href="#id2"><span class="problematic" id="id3">|</span></a>”compartment”    <a href="#id4"><span class="problematic" id="id5">|</span></a>”blood”       <a href="#id6"><span class="problematic" id="id7">|</span></a>”urine”   |
+<a href="#id8"><span class="problematic" id="id9">|</span></a>”unit”           <a href="#id10"><span class="problematic" id="id11">|</span></a>”mg/dL”       | “mg/dL”  |
+<a href="#id12"><span class="problematic" id="id13">|</span></a>”Individual1”    <a href="#id14"><span class="problematic" id="id15">|</span></a>180           <a href="#id16"><span class="problematic" id="id17">|</span></a>50        |
+<a href="#id18"><span class="problematic" id="id19">|</span></a>”Individual2”    <a href="#id20"><span class="problematic" id="id21">|</span></a>150           <a href="#id22"><span class="problematic" id="id23">|</span></a>66        |</p>
+<p>Sex must be provided for each model. The compartment must be specified and must be
+one of the following: csf, u, blParameters that can be personalised include:
+All of those metabolites which are found in
+the
+<a href="#id24"><span class="problematic" id="id25">*</span></a>for each the default unit used by the model
+is provided. For x, y, z- unit conversion
+will be performed for all known common units of
+measurement.</p>
+</div></blockquote>
+<p>OPTIONAL:
+WBM/(s)                     User can provide a WBM (Whole Body Metabolic Model) or a path to multiple models.</p>
+<blockquote>
+<div><p>If no model is provided, either Harvey or Harvetta will be loaded from the COBRA
+toolbox, depending on sex in provided physiological data.
+If multiple models are provided, the model ID must
+match the model name provided in the physiological data.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>resPath                     Path on which to store personalised model and</dt><dd><p>other outputs.
+Default = current directory</p>
+</dd>
+<dt>Diet                        Diet in the form of text file or named .mat</dt><dd><p>file from the COBRA toolbox (default =
+EUAverageDiet)
+** This function can also be run in isolation
+but if a user wants to personalise both
+physiological and metabolomic- this function
+should alway be run and NOT
+persWBMmetabolomics in isolation!</p>
+</dd>
+</dl>
+<p>OUTPUTS</p>
+<dl class="simple">
+<dt>iWBM                        Model with updated physiological paramteres</dt><dd><p>(stored as “persModelName.mat”). All updated
+paramteres are described in
+model.IndividualisedParameters</p>
+</dd>
+<dt>controlWBM                  This is a WBM with no personalised</dt><dd><p>adjustments. When a WBM or multiple WBMs have
+been given as inputs, the controlWBMs are
+exact copies of those. When Harvey or
+Harvetta are used, controlWBM is copies of
+Harvey/Harvetta.</p>
+</dd>
+<dt>persParameters              Excel file with details of the updated</dt><dd><p>parameter and how it was calculated</p>
+</dd>
+</dl>
+<p>author: Anna Sheehy November 2024
+Step One: Read in the available data, check all data is valid
+Define the input parser</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.persephone.readMetadataForPersephone">
+<span class="sig-name descname"><span class="pre">readMetadataForPersephone</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">metadataPath</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/persephone/readMetadataForPersephone.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.persephone.readMetadataForPersephone" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>DESCRIPTION:</dt><dd><p>This function loads a metadata file into a MATLAB table. It accounts for:
+- Preserving the full variable names by disabling automatic truncation.
+- Capturing variable units if provided in the second row of the file.
+- Storing the captured units in the ‘VariableUnits’ property of the table.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>metadata = readMetadataForPersephone</strong> (<em>metadataPath</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><p><strong>metadataPath</strong> – A string specifying the path to the metadata file
+(in CSV or XLSX format).</p>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><p><strong>metadata</strong> – A MATLAB table containing the processed metadata.
+Variable units, if present in the second row of the file,
+are stored in the table’s ‘VariableUnits’ property.</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>If variable names exceed 64 characters, they are truncated, but the
+true variable names are preserved in the ‘VariableDescriptions’ property.</p></li>
+<li><p>Warnings related to variable name truncation are suppressed to avoid
+unnecessary console output.</p></li>
+</ul>
+<p class="rubric">AUTHORS</p>
+<p>Tim Hensen, January 2025</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.persephone.runMars">
+<span class="sig-name descname"><span class="pre">runMars</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">pythonPath</span></em>, <em class="sig-param"><span class="pre">marsRepoPath</span></em>, <em class="sig-param"><span class="pre">cutoffMARS</span></em>, <em class="sig-param"><span class="pre">outputExtensionMARS</span></em>, <em class="sig-param"><span class="pre">flagLoneSpecies</span></em>, <em class="sig-param"><span class="pre">taxaSplit</span></em>, <em class="sig-param"><span class="pre">removeCladeExtensionsFromTaxa</span></em>, <em class="sig-param"><span class="pre">whichModelDatabase</span></em>, <em class="sig-param"><span class="pre">userDatabase_path</span></em>, <em class="sig-param"><span class="pre">sample_read_counts_cutoff</span></em>, <em class="sig-param"><span class="pre">readsTablePath</span></em>, <em class="sig-param"><span class="pre">taxaTable</span></em>, <em class="sig-param"><span class="pre">outputPathMARS</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/persephone/runMars.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.persephone.runMars" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function integrates MATLAB with the MARS Python repository to process
+microbiome taxonomy and read abundance data. The MARS pipeline maps
+joined microbiome data to a metabolic model database for downstream analysis.</p>
+<dl class="field-list simple">
+<dt class="field-odd">INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pythonPath                      char with path to the Python executable</strong> (<em>e.g., Anaconda installation</em>)</p></li>
+<li><p><strong>marsRepoPath                    char with path to the directory containing the MARS pipeline repository.</strong></p></li>
+<li><p><strong>cutoffMARS                      double with relative abundance cutoff threshold below which relative abundances</strong> – are treated as zero. Defaul is 1e-6.</p></li>
+<li><p><strong>outputExtensionMARS             char with desired file format for output files</strong> (<em>e.g., ‘csv’, ‘txt’</em>)</p></li>
+<li><p><strong>flagLoneSpecies                 logical that indicates if genus name is omitted in species names</strong> – (e.g., “copri” instead of “Prevotella copri”).</p></li>
+<li><p><strong>taxaSplit                       char with delimiter used to separate taxonomic levels.</strong></p></li>
+<li><p><strong>removeCladeExtensionsFromTaxa   Logical which specifies whether clade name extensions should be removed</strong> – from microbiome taxa for compatibility with AGORA2 models.</p></li>
+<li><p><strong>whichModelDatabase              char that specifies the metabolic model database to use.</strong> – Options: ‘AGORA2’, ‘APOLLO’, ‘full_db’, ‘user_db’ (requires ‘userDatabase_path’).</p></li>
+<li><p><strong>userDatabase_path               char with path to a user-defined model database file, required only if ‘whichModelDatabase’ is set to ‘user_db’.</strong></p></li>
+<li><p><strong>sample_read_counts_cutoff       double variable. Threshold for read counts below which samples are excluded.</strong> – Only applies if ‘readsTablePath’ contains absolute read counts.</p></li>
+<li><p><strong>readsTablePath                  char with path to the file containing microbiome taxonomy and read abundance data.</strong></p></li>
+<li><p><strong>taxaTable                       char with path to the file containing taxonomic assignments.</strong> – Required only if taxonomy is not included in ‘readsTablePath’.</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>The function does not return variables but writes processed results</strong></p></li>
+<li><p><strong>to the specified output directory in the MARS pipeline.</strong></p></li>
+</ul>
+</dd>
+</dl>
+<dl class="simple">
+<dt>DEPENDENCIES:</dt><dd><ul class="simple">
+<li><p>Python and the MARS repository must be installed and accessible.</p></li>
+<li><p>COBRA Toolbox for MATLAB must be properly set up if further
+integration with COBRA models is required.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>Ensure ‘pythonPath’ is set to the correct Python executable version
+and environment containing the required MARS dependencies.</p></li>
+<li><p>If ‘readsTablePath’ already includes taxonomy assignments, ‘taxaTable’ is optional.</p></li>
+</ul>
+<dl class="simple">
+<dt>AUTHOR: Tim Hensen, January 2025</dt><dd><p>modified by Jonas Widder, January 2025 (added generateStackedBarPlot_PhylumMARScoverage.m)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.persephone.runNonparametricTests">
+<span class="sig-name descname"><span class="pre">runNonparametricTests</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">data</span></em>, <em class="sig-param"><span class="pre">metadata</span></em>, <em class="sig-param"><span class="pre">predictor</span></em>, <em class="sig-param"><span class="pre">response</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/persephone/runNonparametricTests.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.persephone.runNonparametricTests" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performs non-parametric statistical tests (Wilcoxon or Kruskal-Wallis) on metabolic data</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>resultTable = runNonparametricTests</strong> (<em>data, metadata, predictor, response</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>data</strong> – (table) m x n table containing:
+* m samples
+* n reactions/taxa with flux or abundance values
+* First column must contain sample IDs</p></li>
+<li><p><strong>metadata</strong> – (table) Sample metadata containing:
+* Sample IDs in first column
+* Response variable in separate column</p></li>
+<li><p><strong>predictor</strong> – (char) Name of predictor variable (‘Flux’ or ‘relative_abundance’)</p></li>
+<li><p><strong>response</strong> – (char) Name of response variable in metadata</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><p><strong>resultTable</strong> – (table) Statistical results with columns:
+* name:      Reaction/Taxa identifier
+* groups:    Cell array of group names
+* n:         Array of group sizes
+* statistic: Test statistic (Wilcoxon or Kruskal-Wallis)
+* p-value:   Unadjusted p-value
+* FDR:       Benjamini-Hochberg adjusted p-value
+* effectSize: Effect size (r for Wilcoxon, η² for Kruskal-Wallis)
+* confidence: 95% confidence interval (only for binary comparisons)</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>% Binary comparison (Wilcoxon test)
+resultTable = runNonparametricTests(fluxData, metadata, ‘Flux’, ‘Disease’)</p>
+<p>% Multiple group comparison (Kruskal-Wallis test)
+resultTable = runNonparametricTests(abundanceData, metadata, ‘relative_abundance’, ‘Treatment’)</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ol class="arabic simple">
+<li><p>Automatically selects appropriate test based on number of groups</p></li>
+<li><p>Data is automatically normalized before testing</p></li>
+<li><p>Missing values (NaN) are removed before analysis</p></li>
+<li><p>Multiple testing correction uses Benjamini-Hochberg FDR</p></li>
+<li><p>Minimum group size of 3 samples is required for valid testing</p></li>
+</ol>
+</div>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.persephone.runPersephone">
+<span class="sig-name descname"><span class="pre">runPersephone</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">configPath</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/persephone/runPersephone.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.persephone.runPersephone" title="Permalink to this definition">¶</a></dt>
+<dd><p>This pipeline runs throught the entire process of mapping taxonomy
+assigned reads to AGORA2/APOLLO models to create relative abundance files
+through the MARS pipeline. The relative panSpecies abundance file is then
+used to create microbiome models through mgpipe (Microbiome Modelling
+Toolbox PMID:xx). Before HM models are created there is an option to
+personalise the WBMs with physiological or metabolomic data through the
+xx function. The HM creation can then either connect the microbiomes with
+base-WBMs based on the sex associated with the sample ID in the metadata
+file or connect it with a personalised WBM. Based on a list of reactions,
+the HM models will be solved and the flux results will be processed and
+various analyses such as shadow price and regression are performed. Then
+based on the make-up of the study used to run this pipeline,
+mixed-effect linear regression modelling can be used for various response
+variables while taking into account the effect of predictors. All
+response and predictor variables need to be present in the metadata file.
+By default the code will do perform two runs where in one flux data is
+added as an additional predictor and in the other the relative abundance
+of panSpecies models. Finally the results are visualised in various
+plots. The user can indicate which parts of the pipeline should be run
+with various “flags” described in the input variables below. If the code
+or matlab stops unexpectedly, parts of pipeline that are already
+performed will be skipped. If the entire pipeline should be rerun -
+delete the progress.mat file. If only certain parts of the pipeline
+should be rerun, open the progress.mat file and alter change the value of
+the relevant flags to false or 0.</p>
+<p>Most of the inputs are optional as the pipeline is designed that parts of
+the analysis could be skipped. This however means that some of the
+optional variables are actually required variables in order to run a
+certain part of the pipeline. Behind the input description indication if
+the variable is required is given.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Usage</dt>
+<dd class="field-odd"><p><strong>fullPipeline()</strong></p>
+</dd>
+</dl>
+<p>Inputs:
+:Required inputs: * <strong>resultPath</strong> – A string with the path to the directory where all</p>
+<blockquote>
+<div><blockquote>
+<div><p>results should be stored</p>
+</div></blockquote>
+<ul class="simple">
+<li><p><strong>metadataPath</strong> – A string with the path to the metadata file.</p></li>
+</ul>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Optional inputs</dt>
+<dd class="field-odd"><p><strong>solver</strong> – String, indicates which solver is to be used for solving WBMs.
+OPTIONAL, defaults to GLPK. It is highly recommended to use gurobi or cplex</p>
+</dd>
+</dl>
+<dl>
+<dt>SeqC:</dt><dd><dl class="simple">
+<dt>paths.seqC.flagSeqC:       Logical variable indicating if bioinformatic processing</dt><dd><p>of sequencing data is performed by SeqC.</p>
+</dd>
+<dt>paths.seqC.repoPathSeqC:   <em>REQUIRED</em>. String specifying the directory where the</dt><dd><p>SeqC repository is located.</p>
+</dd>
+<dt>paths.seqC.outputPathSeqC: String specifying the folder where the final output</dt><dd><p>of SeqC is stored.</p>
+</dd>
+<dt>paths.seqC.fileIDSeqC:     <em>REQUIRED</em>. String specifying the file name containing</dt><dd><p>sample IDs for FASTQ files (e.g., sample_id.txt).</p>
+</dd>
+<dt>paths.seqC.procKeepSeqC:   Logical variable indicating if intermediary outputs are</dt><dd><p>retained (e.g., post-QC FASTQ). If false, only the final
+MARS output is kept, and all intermediary content is deleted
+once SeqC completes.</p>
+</dd>
+<dt>paths.seqC.maxMemSeqC:     Numeric value specifying the maximum amount of memory</dt><dd><p>allowed in gigabytes.</p>
+</dd>
+<dt>paths.seqC.maxCpuSeqC:     Numeric value specifying the maximum number of CPU threads</dt><dd><p>allowed for processing.</p>
+</dd>
+<dt>paths.seqC.maxProcSeqC:    Numeric value specifying the maximum number of parallel</dt><dd><p>processes allowed.</p>
+</dd>
+<dt>paths.seqC.debugSeqC:      Logical variable indicating if additional debugging</dt><dd><p>messages should be included in the log.</p>
+</dd>
+</dl>
+</dd>
+<dt>MARS:</dt><dd><dl class="simple">
+<dt>paths.Mars.flagMars:             Boolean, indicates if Part 2 of the pipeline</dt><dd><p>MARS should be run. OPTIONAL, Defaults to true</p>
+</dd>
+<dt>marsRepoPath:         String to the directory where the mars-pipeline</dt><dd><p>repository is stored. REQUIRED</p>
+</dd>
+<dt>pythonPath:           String to the python.exe file. How to obtain</dt><dd><p>the path is described in .txt. REQUIRED</p>
+</dd>
+<dt>OTUTable:             String to the file where OTUs are matched to</dt><dd><p>taxonomic assignments. OPTIONAL if the
+taxonomic assignments are already in the
+readsTablePath. REQUIRED if not.</p>
+</dd>
+<dt>readsTablePath:       String to the file where the reads are assigned</dt><dd><p>to either OTUs or taxonomic assignments.
+REQUIRED</p>
+</dd>
+<dt>outputPathMARS:       String to the directory where MARS should store</dt><dd><p>the results. OPTIONAL, defaults to [resultPath,
+filesep, ‘ResultMARS’].</p>
+</dd>
+<dt>cutoff:               Numeric value under which relative abundances</dt><dd><p>are considered 0. OPTIONAL, defaults to 1e-6.</p>
+</dd>
+<dt>outputExtensionMARS:  String with the desired file extension of the</dt><dd><p>saved outputs. OPTIONAL, defaults to ‘csv’.</p>
+</dd>
+<dt>flagLoneSpecies:      A boolean to indicate if the genus name is in</dt><dd><p>the name of the species e.g. Prevotella copri.
+If genus name is in species name set to false.
+Otherwise set to true. OPTIONAL, defaults to
+false.</p>
+</dd>
+<dt>taxaSplit:            String with the delimiter used to separate</dt><dd><p>taxonomic levels. OPTIONAL, defaults to ‘; ‘.</p>
+</dd>
+</dl>
+</dd>
+<dt>MARS analysis</dt><dd><dl class="simple">
+<dt>marsStats:            Boolean indicates if Part 2.5 of the pipeline</dt><dd><p>MARS descriptive statistics should be run.
+OPTIONAL, defaults to true</p>
+</dd>
+<dt>microbiomePath:       String with the path to the file where the</dt><dd><p>reads and taxonomic assignments are combined.
+Could be the same file as readsTablePath. OPTIONAL,
+default to [Ask TIMHuls to Create].</p>
+</dd>
+<dt>relAbunFilePath:      String with the path to the relative abundance</dt><dd><p>species file, an output from MARS. OPTIONAL,
+defaults to [outputPathMARS, filesep,
+‘present’, filesep, ‘present_species.’,
+outputExtensionMARS] if MARS is run with this
+pipeline. If run online, the path needs to be
+specified explicitly.</p>
+</dd>
+<dt>analysisDirMARS:      Strin with the path where the descriptive</dt><dd><p>statistics of the MARS output should be stored.
+OPTIONAL, default to [outputPathMARS, filesep,
+‘Analysis’].</p>
+</dd>
+</dl>
+</dd>
+<dt>MgPipe:</dt><dd><dl class="simple">
+<dt>paths.mgPipe.flagMgPipe: Boolean, indicates if Part 3 of the pipeline:</dt><dd><p>MgPipe/microbiome model creation should be run.
+Defaults to true. OPTIONAL, defaults to true</p>
+</dd>
+<dt>panModelsPath:        String with path to the directory with the</dt><dd><p>panSpecies models. REQUIRED</p>
+</dd>
+<dt>relAbunFilePath:      String with the path to the relative abundance</dt><dd><p>species file, an output from MARS. OPTIONAL,
+defaults to [outputPathMARS, filesep,
+‘present’, filesep, ‘present_species.’,
+outputExtensionMARS] if MARS is run with this
+pipeline. If run online, the path needs to be
+specified explicitly.</p>
+</dd>
+<dt>computeProfiles:      Boolean, indicates of netSecretion and</dt><dd><p>netUptake are calculated for the microbiome
+models via fastFVA. OPTIONAL, defaults to false</p>
+</dd>
+<dt>numWorkersCreation:   Numeric value, amount of workers that are to be</dt><dd><p>used to create microbiome models. OPTIONAL,
+default to use all available cores.</p>
+</dd>
+<dt>mgpipeDir:            String with the path to where the results of</dt><dd><p>MgPipe should be saved. OPTIONAL, defaults to
+[resultPath, filesep, ‘ResultMgPipe’];</p>
+</dd>
+</dl>
+</dd>
+<dt>WBM Personalisation:</dt><dd><dl class="simple">
+<dt>paths.persWBM.flagPersonalize<span class="classifier">Boolean, indicates if Part 4 of the pipeline:</span></dt><dd><p>WBM personalisation should be run. OPTIONAL,
+defaults to false.</p>
+</dd>
+<dt>personalisedWBMDir:   String with the path to the location where the</dt><dd><p>personalised WBM are stored. OPTIONAL, defaults
+to [resultPath, filesep, ‘personalisedWBMs’].</p>
+</dd>
+<dt>diet:                 String or nx2 character array defining the diet</dt><dd><p>to constrain WBM models with. OPTIONAL, defaults
+to EUAverageDiet.</p>
+</dd>
+</dl>
+</dd>
+<dt>HM Creation:</dt><dd><dl class="simple">
+<dt>paths.mWBM.flagMWBMCreation:       Boolean, indicates if Part 5 of the pipeline:</dt><dd><p>HM creation and descriptive statistics should
+be run. OPTIONAL, defaults to true</p>
+</dd>
+<dt>mgpipeDir:        String with the path to the location where the</dt><dd><p>community microbiome models generated from
+MgPipe are stored. OPTIONAL, if this pipeline
+is used to run MgPipe it defaults to
+[mgpipeDir, filesep, ‘Diet’]. If MgPipe was
+used outside of this function state the path
+explicitly.</p>
+</dd>
+<dt>hmDir:                The path where the HM models will be stored.</dt><dd><p>OPTIONAL, defaults to [resultPath, filesep,
+‘HMmodels’].</p>
+</dd>
+<dt>diet:                 String or nx2 character array defining the diet</dt><dd><p>to constrain HM models with. OPTIONAL, defaults
+to EUAverageDiet.</p>
+</dd>
+<dt>numWorkersCreation:   Numeric value, amount of workers that are to be</dt><dd><p>used to create HM WBMs. OPTIONAL,
+default to use all available cores.</p>
+</dd>
+</dl>
+</dd>
+<dt>Flux balance analysis:</dt><dd><blockquote>
+<div><dl>
+<dt>paths.fba.flagFBA:              Boolean, indicates if Part 6 of the pipeline:</dt><dd><p>FBA should be run. OPTIONAL, defaults to true</p>
+</dd>
+<dt>hmDir:                String with the path to the directory with the</dt><dd><p>models to use. OPTIONAL, if HM models were made
+it defaults to hmDirectory used in part 4. If
+HM models were created outside this function,
+the path has to be explicitly stated.</p>
+</dd>
+<dt>fluxDir:              String with the path where the flux results</dt><dd><p>should be stored. OPTIONAL, defaults to
+[resultPath, filesep, ‘fluxResults’].</p>
+</dd>
+<dt>rxnList:              Character array contain reaction IDs for</dt><dd><p>reactions that are to be optimised. If the user
+wants to solve non-existing demand reactions,
+simply add <a href="#id26"><span class="problematic" id="id27">DM_</span></a> infront of the desired
+metabolite and add to the rxnList variable.
+REQUIRED.</p>
+</dd>
+<dt>mgpipeDir:        String with the path to the relative abundance</dt><dd><p>species file, an output from MARS. OPTIONAL,
+defaults to [outputPathMARS, filesep,
+‘present’, filesep, ‘present_species.’,
+outputExtensionMARS] if MARS is run with this
+pipeline. If run online, the path needs to be
+specified explicitly.</p>
+</dd>
+<dt>thresholds:           1x3 numerical vector. OPTIONAL, defaults to</dt><dd><p>[90, 90, 0.999]</p>
+<ul class="simple">
+<li><p>thresholds(1): “metabolite removal threshold”</p></li>
+</ul>
+<p>This threshold indicates the maximum allowable
+number of duplicate flux results between
+samples expressed in the percentage of total
+samples. Reactions that exceed this threshold
+will be removed.</p>
+<ul class="simple">
+<li><p>thresholds(2): “Microbe presence threshold”</p></li>
+</ul>
+<p>This threshold indicates the maximum allowable
+number of samples where a microbe is absent
+expressed by the percentage of total samples.
+Microbes that exceed this threshold will be
+removed from the analysis.</p>
+<ul class="simple">
+<li><p>thresholds(3): “Reaction grouping threshold”</p></li>
+</ul>
+<p>This threshold indicates the minimal pairwise
+Spearman correlation between fluxes across the
+population where reactions are grouped and
+handled as one result.
+ADD TEXT 4th input for std dev.</p>
+</dd>
+</dl>
+</div></blockquote>
+<dl>
+<dt>numWorkersOptmisation:  Numeric value, amount of workers that are to be</dt><dd><blockquote>
+<div><p>used to solve the WBM models. OPTIONAL,
+default to 1.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>saveFullRes:          Boolean, indicates if the complete .v, .y., and</dt><dd><p>.w vectors are stored in the result. OPTIONAL,
+defaults to true. It is recommended to set
+saveFullRes.</p>
+</dd>
+<dt>fluxAnlsysDir:        String with the path where the analyses of the</dt><dd><p>flux results are stored. OPTIONAL, defaults to
+[fluxDir, filesep, ‘fluxAnalysis’]</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+<dt>Statistical analysis:</dt><dd><dl class="simple">
+<dt>paths.stats.flagStatistics:       Boolean, indicates if Part 7 of the pipeline:</dt><dd><p>statistical analysis should be run. OPTIONAL,
+defaults to true</p>
+</dd>
+<dt>statDir:              String with the path where the results of the</dt><dd><p>statistical analyses and the figures should be
+saved. OPTIONAL, defaults to [resultPath,
+filesep, ‘statisticsResults’].</p>
+</dd>
+<dt>fluxDir:              String with the path to the location of the</dt><dd><p>analysed flux results. OPTIONAL, defaults to
+[resultPath, filesep, ‘fluxResults’, filesep,
+‘fluxAnalysis’].</p>
+</dd>
+<dt>microbiomePath:       String with the path to the relative abundance</dt><dd><p>panSpecies file generated by MARS. OPTIONAL,
+defaults to [resultPath, filesep, resultMars,
+filesep, present,filesep, ‘present_species.csv’]</p>
+</dd>
+<dt>response:             A character or string array with variables</dt><dd><p>found in the metdata file that the user wants
+to use as response for statistical analysis.
+REQUIRED</p>
+</dd>
+<dt>confounders:          A character or string sarray with variables</dt><dd><p>found in the metadata file that are used as
+confounders in the statistical analyses.
+OPTIONAL, defaults to an empty cell array.</p>
+</dd>
+<dt>moderationAnalysis:   Boolean that indicates if a moderation analysis</dt><dd><p>will be performed. A moderation analysis can
+only be performed if confounders. OPTIOANL,
+defaults to false.</p>
+</dd>
+<dt>microbeCutoff:        Numeric value, threshold for the number of</dt><dd><p>samples a microbe needs to present in to be to
+be analysed. The same variable as thresholds(2)
+OPTIONAL, defaults to 0.1</p>
+</dd>
+<dt>threshold:            Numeric value used to find the correct instance</dt><dd><p>of the ‘processed_fluxes_Thr_x_xxx file, where
+the threshold value is x_xxx. The same value as
+thresholds (3). OPTIONAL, defaults to 0.999.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p>Outputs:</p>
+<dl class="simple">
+<dt>Example (minimal required input to run all sections):</dt><dd><p>fullPipeline(resultPath,metadataPath,’marsRepoPath’, marsRepoPath,…
+‘pythonPath’, pythonPath, ‘OTUTable’, OTUTable, ‘readsTablePath’ readsTablePath,…
+‘panModelsPath’, panModelsPath, ‘rxnList’, rxnList, ‘response’, response)</p>
+</dd>
+</dl>
+<p>Example (MARS is run online and is skipped in the this pipeline):</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.persephone.runSeqC">
+<span class="sig-name descname"><span class="pre">runSeqC</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">repoPathSeqC</span></em>, <em class="sig-param"><span class="pre">outputPathSeqC</span></em>, <em class="sig-param"><span class="pre">fileIDSeqC</span></em>, <em class="sig-param"><span class="pre">procKeepSeqC</span></em>, <em class="sig-param"><span class="pre">maxMemSeqC</span></em>, <em class="sig-param"><span class="pre">maxCpuSeqC</span></em>, <em class="sig-param"><span class="pre">maxProcSeqC</span></em>, <em class="sig-param"><span class="pre">debugSeqC</span></em>, <em class="sig-param"><span class="pre">readsTablePath</span></em>, <em class="sig-param"><span class="pre">outputPathMARS</span></em>, <em class="sig-param"><span class="pre">outputExtensionMARS</span></em>, <em class="sig-param"><span class="pre">relAbunFilePath</span></em>, <em class="sig-param"><span class="pre">sample_read_counts_cutoff</span></em>, <em class="sig-param"><span class="pre">cutoffMARS</span></em>, <em class="sig-param"><span class="pre">OTUTable</span></em>, <em class="sig-param"><span class="pre">flagLoneSpecies</span></em>, <em class="sig-param"><span class="pre">taxaSplit</span></em>, <em class="sig-param"><span class="pre">removeCladeExtensionsFromTaxa</span></em>, <em class="sig-param"><span class="pre">whichModelDatabase</span></em>, <em class="sig-param"><span class="pre">userDatabase_path</span></em>, <em class="sig-param"><span class="pre">taxaTable</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/persephone/runSeqC.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.persephone.runSeqC" title="Permalink to this definition">¶</a></dt>
+<dd><dl>
+<dt>======================================================================================================#</dt><dd><p>Title: SeqC as Flux Pipeline MATLAB Wrapper
+Author: Wiley Barton
+Modified code sources:</p>
+<blockquote>
+<div><p>matlab script structure: Tim Hensen, runMars.m, 2025.01
+assistance and reference from a generative AI model [ChatGPT](<a class="reference external" href="https://chatgpt.com/">https://chatgpt.com/</a>)</p>
+<blockquote>
+<div><p>clean-up and improved readability</p>
+</div></blockquote>
+</div></blockquote>
+<p>Last Modified: 2025.02.09
+Part of: Persephone Pipeline</p>
+<dl>
+<dt>Description:</dt><dd><p>This function builds and runs the SeqC Docker image from a MATLAB environment.
+It ensures necessary databases exist and coordinates execution with the MARS pipeline.</p>
+</dd>
+<dt>Inputs:</dt><dd><ul class="simple">
+<li><p>repoPathSeqC (char) : Path to the SeqC repository</p></li>
+<li><p>outputPathSeqC (char) : Path for SeqC output</p></li>
+<li><p>fileIDSeqC (char) : Unique identifier for file processing</p></li>
+<li><p>procKeepSeqC (logical) : Keep all files (true/false)</p></li>
+<li><p>maxMemSeqC (int) : Maximum memory allocation for SeqC</p></li>
+<li><p>maxCpuSeqC (int) : Maximum CPU allocation for SeqC</p></li>
+<li><p>maxProcSeqC (int) : Maximum processes for SeqC</p></li>
+<li><p>debugSeqC (logical) : Enable debug mode (true/false)</p></li>
+</ul>
+<p>…</p>
+</dd>
+<dt>Dependencies:</dt><dd><ul class="simple">
+<li><p>MATLAB</p></li>
+<li><p>Docker installed and accessible in the system path</p></li>
+</ul>
+</dd>
+</dl>
+</dd>
+<dt>======================================================================================================#</dt><dd><p>Determine Operating System</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.persephone.validatePersephoneInputs">
+<span class="sig-name descname"><span class="pre">validatePersephoneInputs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">paths</span></em>, <em class="sig-param"><span class="pre">resultPath</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/persephone/validatePersephoneInputs.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.persephone.validatePersephoneInputs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Validates the inputs provided in the <cite>paths</cite> structure for the Persephone
+pipeline. This function ensures that all required fields, flags, and
+parameters are present, appropriately formatted, and meet the expected
+constraints. Validation is performed across multiple pipeline components,
+including MARS, mgPipe, WBM personalization, HM creation, FBA, and statistics.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>validated = validatePersephoneInput</strong> (<em>paths</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><p><strong>paths       Structure containing all required input fields for the Persephone</strong> – pipeline. Fields include:
+- General flags and paths (e.g., <cite>flagSeqC</cite>, <cite>resultPath</cite>)
+- Component-specific flags and parameters (e.g., <cite>flagMars</cite>,
+<cite>marsRepoPath</cite>, <cite>flagMgPipe</cite>, <cite>metadataPath</cite>, etc.)</p>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>validated   Logical scalar indicating whether the validation succeeded</strong> – (true) or failed (false).</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>Ensure all required flags and fields in the <cite>paths</cite> structure are defined
+prior to invoking this function. Undefined or mismatched fields will
+result in validation failure.</p></li>
+<li><p>This function is designed to be modular and extendable for future
+additions to the Persephone pipeline.</p></li>
+</ul>
+<dl class="simple">
+<dt>AUTHOR:</dt><dd><p>Tim Hensen, January 2025</p>
+</dd>
+</dl>
+<p>See also: validateattributes, validatestring, COBRA Toolbox</p>
+</dd></dl>
+
+</section>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="SeqC_pipeline/index.html" class="btn btn-default float-right" title="Seqc_pipeline" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../deletion/Syntheticlethals/Fast-SL/index.html" class="btn btn-default" title="Fast-sl" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017-2021, The COBRA Toolbox developers.
+
+    </p>
+  </div>
+  Built with Sphinx using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'2.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+    <script type="text/javascript" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/sphinx_highlight.js"></script>
+
+  
+
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TRCMZL1FKK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TRCMZL1FKK');
+  </script>
+    
+</body>
+</html>

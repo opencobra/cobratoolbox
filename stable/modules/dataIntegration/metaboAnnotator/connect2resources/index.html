@@ -92,7 +92,7 @@
           
 
           
-            <img src="https://github.com/opencobra/cobratoolbox/raw/gh-pages/stable/_static/img/logo.png" class="logo" alt="cobratoolbox logo" />
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
           
           </a>
 
@@ -479,6 +479,28 @@ or using inchiKey</p>
 <dt class="sig sig-object mat" id="src.dataIntegration.metaboAnnotator.connect2resources.parseFDAsisWebpage">
 <span class="sig-name descname"><span class="pre">parseFDAsisWebpage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">metabolite_structure</span></em>, <em class="sig-param"><span class="pre">startSearch</span></em>, <em class="sig-param"><span class="pre">endSearch</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metaboAnnotator/connect2resources/parseFDAsisWebpage.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metaboAnnotator.connect2resources.parseFDAsisWebpage" title="Permalink to this definition">¶</a></dt>
 <dd><p>uses unii IDs to parse</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.dataIntegration.metaboAnnotator.connect2resources.parseKeggWebpage">
+<span class="sig-name descname"><span class="pre">parseKeggWebpage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">metabolite_structure</span></em>, <em class="sig-param"><span class="pre">startSearch</span></em>, <em class="sig-param"><span class="pre">endSearch</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metaboAnnotator/connect2resources/parseKeggWebpage.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metaboAnnotator.connect2resources.parseKeggWebpage" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function searches kegg for identifiers. It will either use
+kegg ids provided by the metabolite structure.</p>
+<p>INPUT
+metabolite_structure  metabolite structure
+startSearch           specify where the search should start in the</p>
+<blockquote>
+<div><p>metabolite structure. Must be numeric (optional, default: all metabolites
+in the structure will be search for)</p>
+</div></blockquote>
+<dl class="simple">
+<dt>endSearch             specify where the search should end in the</dt><dd><p>metabolite structure. Must be numeric (optional, default: all metabolites
+in the structure will be search for)</p>
+</dd>
+</dl>
+<p>OUTPUT
+metabolite_structure  updated metabolite structure</p>
+<p>Ines Thiele, 09/2021</p>
 </dd></dl>
 
 <dl class="mat function">

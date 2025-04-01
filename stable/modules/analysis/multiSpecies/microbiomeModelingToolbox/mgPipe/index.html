@@ -92,7 +92,7 @@
           
 
           
-            <img src="https://github.com/opencobra/cobratoolbox/raw/gh-pages/stable/_static/img/logo.png" class="logo" alt="cobratoolbox logo" />
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
           
           </a>
 
@@ -161,6 +161,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../fluxEnrichmentAnalysis/index.html">Fluxenrichmentanalysis</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../topology/index.html">Topology</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../deletion/index.html">Deletion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../persephone/index.html">Persephone</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../transport/index.html">Transport</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../parsimoniousFBA/index.html">Parsimoniousfba</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../sparseFBA/index.html">Sparsefba</a></li>
@@ -757,7 +758,7 @@ for reactions. Includes all fields that are necessary to join models.</p>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.analysis.multiSpecies.microbiomeModelingToolbox.mgPipe.mgPipe">
-<span class="sig-name descname"><span class="pre">mgPipe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">modPath</span></em>, <em class="sig-param"><span class="pre">abunFilePath</span></em>, <em class="sig-param"><span class="pre">computeProfiles</span></em>, <em class="sig-param"><span class="pre">resPath</span></em>, <em class="sig-param"><span class="pre">dietFilePath</span></em>, <em class="sig-param"><span class="pre">infoFilePath</span></em>, <em class="sig-param"><span class="pre">biomasses</span></em>, <em class="sig-param"><span class="pre">hostPath</span></em>, <em class="sig-param"><span class="pre">hostBiomassRxn</span></em>, <em class="sig-param"><span class="pre">hostBiomassRxnFlux</span></em>, <em class="sig-param"><span class="pre">figForm</span></em>, <em class="sig-param"><span class="pre">numWorkers</span></em>, <em class="sig-param"><span class="pre">rDiet</span></em>, <em class="sig-param"><span class="pre">pDiet</span></em>, <em class="sig-param"><span class="pre">lowerBMBound</span></em>, <em class="sig-param"><span class="pre">upperBMBound</span></em>, <em class="sig-param"><span class="pre">includeHumanMets</span></em>, <em class="sig-param"><span class="pre">adaptMedium</span></em>, <em class="sig-param"><span class="pre">pruneModels</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/mgPipe.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.multiSpecies.microbiomeModelingToolbox.mgPipe.mgPipe" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">mgPipe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">modPath</span></em>, <em class="sig-param"><span class="pre">abunFilePath</span></em>, <em class="sig-param"><span class="pre">computeProfiles</span></em>, <em class="sig-param"><span class="pre">resPath</span></em>, <em class="sig-param"><span class="pre">dietFilePath</span></em>, <em class="sig-param"><span class="pre">infoFilePath</span></em>, <em class="sig-param"><span class="pre">biomasses</span></em>, <em class="sig-param"><span class="pre">hostPath</span></em>, <em class="sig-param"><span class="pre">hostBiomassRxn</span></em>, <em class="sig-param"><span class="pre">hostBiomassRxnFlux</span></em>, <em class="sig-param"><span class="pre">figForm</span></em>, <em class="sig-param"><span class="pre">numWorkers</span></em>, <em class="sig-param"><span class="pre">rDiet</span></em>, <em class="sig-param"><span class="pre">pDiet</span></em>, <em class="sig-param"><span class="pre">lowerBMBound</span></em>, <em class="sig-param"><span class="pre">upperBMBound</span></em>, <em class="sig-param"><span class="pre">includeHumanMets</span></em>, <em class="sig-param"><span class="pre">adaptMedium</span></em>, <em class="sig-param"><span class="pre">pruneModels</span></em>, <em class="sig-param"><span class="pre">solver</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/mgPipe.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.multiSpecies.microbiomeModelingToolbox.mgPipe.mgPipe" title="Permalink to this definition">¶</a></dt>
 <dd><p>mgPipe is a MATLAB based pipeline to integrate microbial abundances
 (coming from metagenomic data) with constraint based modeling, creating
 individuals’ personalized models.
@@ -770,7 +771,7 @@ reactions are coupled to the objective function.
 [PART 3] Simulations under different diet regimes.</p>
 <dl class="field-list simple">
 <dt class="field-odd">USAGE</dt>
-<dd class="field-odd"><p><strong>[netSecretionFluxes, netUptakeFluxes, Y, modelStats, summary, statistics, modelsOK] = mgPipe</strong> (<em>modPath, abunFilePath, computeProfiles, resPath, dietFilePath, infoFilePath, biomasses, hostPath, hostBiomassRxn, hostBiomassRxnFlux, figForm, numWorkers, rDiet, pDiet, lowerBMBound, upperBMBound, includeHumanMets, adaptMedium, pruneModels</em>)</p>
+<dd class="field-odd"><p><strong>[netSecretionFluxes, netUptakeFluxes, Y, modelStats, summary, statistics, modelsOK] = mgPipe</strong> (<em>modPath, abunFilePath, computeProfiles, resPath, dietFilePath, infoFilePath, biomasses, hostPath, hostBiomassRxn, hostBiomassRxnFlux, figForm, numWorkers, rDiet, pDiet, lowerBMBound, upperBMBound, includeHumanMets, adaptMedium, pruneModels, solver</em>)</p>
 </dd>
 <dt class="field-even">INPUTS</dt>
 <dd class="field-even"><ul class="simple">
@@ -801,6 +802,8 @@ adaptVMHDietToAGORA function or used as is (default=true)</p></li>
 <li><p><strong>pruneModels</strong> – boolean indicating whether reactions that do not carry flux on the
 input diet should be removed from the microbe models.
 Recommended for large datasets (default: false)</p></li>
+<li><p><strong>solver</strong> – char with the solver that will be used in microbiotamodelsimulator
+If glpk, it will increase to model solve time to hours instead of seconds (default ‘’)</p></li>
 </ul>
 </dd>
 <dt class="field-odd">OUTPUTS</dt>
@@ -875,7 +878,7 @@ models. The output is saved in multiple .mat objects. Intermediate saving
 checkpoints are present.</p>
 <dl class="field-list simple">
 <dt class="field-odd">USAGE</dt>
-<dd class="field-odd"><p><strong>[exchanges, netProduction, netUptake, growthRates, infeasModels] = microbiotaModelSimulator</strong> (<em>resPath, exMets, sampNames, dietFilePath, hostPath, hostBiomassRxn, hostBiomassRxnFlux, numWorkers, rDiet, pDiet, computeProfiles, lowerBMBound, upperBMBound, includeHumanMets, adaptMedium</em>)</p>
+<dd class="field-odd"><p><strong>[exchanges, netProduction, netUptake, growthRates, infeasModels] = microbiotaModelSimulator</strong> (<em>resPath, exMets, sampNames, dietFilePath, hostPath, hostBiomassRxn, hostBiomassRxnFlux, numWorkers, rDiet, pDiet, computeProfiles, lowerBMBound, upperBMBound, includeHumanMets, adaptMedium, solver</em>)</p>
 </dd>
 <dt class="field-even">INPUTS</dt>
 <dd class="field-even"><ul class="simple">
@@ -902,6 +905,8 @@ compute the metabolic profiles should be performed.</p></li>
 present in the gut should be provexchangesed to the models (default: true)</p></li>
 <li><p><strong>adaptMedium</strong> – boolean indicating if the medium should be adapted through the
 adaptVMHDietToAGORA function or used as is (default=true)</p></li>
+<li><p><strong>solver</strong> – char with the solver that will be used in microbiotamodelsimulator
+If glpk, it will increase to model solve time to hours instead of seconds (default ‘’)</p></li>
 </ul>
 </dd>
 <dt class="field-odd">OUTPUTS</dt>

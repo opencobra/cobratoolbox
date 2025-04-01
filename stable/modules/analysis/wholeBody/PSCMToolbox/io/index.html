@@ -92,7 +92,7 @@
           
 
           
-            <img src="https://github.com/opencobra/cobratoolbox/raw/gh-pages/stable/_static/img/logo.png" class="logo" alt="cobratoolbox logo" />
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
           
           </a>
 
@@ -161,6 +161,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../fluxEnrichmentAnalysis/index.html">Fluxenrichmentanalysis</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../topology/index.html">Topology</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../deletion/index.html">Deletion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../persephone/index.html">Persephone</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../transport/index.html">Transport</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../parsimoniousFBA/index.html">Parsimoniousfba</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../sparseFBA/index.html">Sparsefba</a></li>
@@ -272,7 +273,7 @@ Please note that the desired sex has to be specified (‘male’ or ‘female’
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.analysis.wholeBody.PSCMToolbox.io.addReactionsHH">
-<span class="sig-name descname"><span class="pre">addReactionsHH</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">rxnAbbrs</span></em>, <em class="sig-param"><span class="pre">rxnNames</span></em>, <em class="sig-param"><span class="pre">reactions</span></em>, <em class="sig-param"><span class="pre">gprs</span></em>, <em class="sig-param"><span class="pre">subSystems</span></em>, <em class="sig-param"><span class="pre">couplingFactor</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/wholeBody/PSCMToolbox/io/addReactionsHH.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.wholeBody.PSCMToolbox.io.addReactionsHH" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">addReactionsHH</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">rxnAbbrs</span></em>, <em class="sig-param"><span class="pre">rxnNames</span></em>, <em class="sig-param"><span class="pre">reactions</span></em>, <em class="sig-param"><span class="pre">gprs</span></em>, <em class="sig-param"><span class="pre">subSystems</span></em>, <em class="sig-param"><span class="pre">couplingFactor</span></em>, <em class="sig-param"><span class="pre">rxnNotes</span></em>, <em class="sig-param"><span class="pre">rxnReferences</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/wholeBody/PSCMToolbox/io/addReactionsHH.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.wholeBody.PSCMToolbox.io.addReactionsHH" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function add reaction(s) to the whole-body metabolic model,
 including the required coupling constraint.
 This function is based on model = addReaction(model,’newRxn1’,’A -&gt; B + 2 C’)</p>
@@ -284,10 +285,13 @@ rxnNames          List of reaction names
 reactions         List of reaction formula {‘A -&gt; B + 2 C’}
 gprs              List of grRules
 subSystems        List of subSystems
-couplingFactor    Coupling factor to be added, default 20000</p>
+couplingFactor    Coupling factor to be added, default 20000
+rxnNotes          List of notes for the reactions (optional)
+rxnReferences     List of references for the reactions (optional)</p>
 <p>OUTPUT
 model             Updated model structure</p>
-<p>Ines Thiele 2018</p>
+<p>Ines Thiele 2018
+IT - added gpr rules to be properly taken into account</p>
 </dd></dl>
 
 <dl class="mat function">
