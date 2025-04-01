@@ -1,0 +1,1594 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Metaboliccartography &mdash; The COBRA Toolbox</title>
+  
+
+  
+  
+  
+    <link rel="apple-touch-icon" sizes="180x180" href="../../../_static/img/apple-touch-icon.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../_static/img/favicon-32x32.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="16x16" href="../../../_static/img/favicon-16x16.png">
+  
+  
+    <link rel="mask-icon" href="../../../_static/img/safari-pinned-tab.svg" color="#5bbad5">
+  
+  
+    <link rel="manifest" href="../../../_static/json/manifest.json">
+  
+  
+    <meta name="msapplication-config" content="../../../_static/browserconfig.xml">
+  
+  <meta name="theme-color" content="#ffffff">
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+  <script src="../../../_static/js/jquery.easy-autocomplete.min.js" type="text/javascript" ></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+  <link href="../../../_static/css/easy-autocomplete.min.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/cobra.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../../_static/css/cobra.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="The COBRA Toolbox" href="../../../index.html"/>
+        <link rel="up" title="Visualization" href="../index.html"/>
+        <link rel="next" title="Visualizeepistasis" href="../visualizeEpistasis/index.html"/>
+        <link rel="prev" title="Entropicfba" href="../entropicFBA/index.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> The COBRA Toolbox
+          
+
+          
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
+          
+          </a>
+
+              
+          <h1>The COBRA Toolbox</h1>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" id="simple"/>
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+    <script>
+    	var options = {
+
+		url: "../../../_static/json/functions.json",
+
+		getValue: "name",
+
+		list: {
+            onKeyEnterEvent: function(item) {
+                    return "_static/../" + item.website_url
+            },
+            maxNumberOfElements: 25,
+			match: {
+					enabled: true,
+			},
+            sort: {
+			    enabled: true
+		    }
+		},
+
+    	template: {
+	    	type: "custom",
+		    method: function(value, item) {
+                return "<span><a href='../../../search.html?q=" + item.name + "&check_keywords=yes&area=default'>" + value + "</a>" + "<a href='../../../_static/../" + item.website_url + "' ><img src='../../../_static/link.svg'/></a></span>";
+		    }
+	    },
+
+		theme: "square"
+
+	};
+
+	$("#simple").easyAutocomplete(options);
+
+
+    </script>
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../../../index.html">Home</a></li>
+              </ul>
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Functions</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../analysis/index.html">Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../base/index.html">Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dataIntegration/index.html">Dataintegration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../design/index.html">Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reconstruction/index.html">Reconstruction</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Visualization</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../cellDesigner/index.html">Celldesigner</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../paint4Net/index.html">Paint4net</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../entropicFBA/index.html">Entropicfba</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Metaboliccartography</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../visualizeEpistasis/index.html">Visualizeepistasis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../SAMMIM/index.html">Sammim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../convert/index.html">Convert</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../EscherMap/index.html">Eschermap</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../efmviz/index.html">Efmviz</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../createMetIntrcNetwork/index.html">Createmetintrcnetwork</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../maps/index.html">Maps</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../cite.html">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../support.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../plan.html">Development Plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contact.html">Contact</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../citations.html">Citations</a></li>
+</ul>
+
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">The COBRA Toolbox</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../contents.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Functions</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Visualization</a></li>
+      <li class="breadcrumb-item active">Metaboliccartography</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="https://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <section id="metaboliccartography">
+<span id="id1"></span><h1>Metaboliccartography<a class="headerlink" href="#metaboliccartography" title="Permalink to this heading">¶</a></h1>
+<span class="target" id="module-src.visualization.metabolicCartography"></span><dl class="mat function">
+<dt class="sig sig-object mat" id="src.visualization.metabolicCartography.addColourNode">
+<span class="sig-name descname"><span class="pre">addColourNode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">map</span></em>, <em class="sig-param"><span class="pre">rxnList</span></em>, <em class="sig-param"><span class="pre">colour</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/metabolicCartography/addColourNode.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.metabolicCartography.addColourNode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add colour to all metabolites linked to a list of reaction names.
+If no colour is specified as input, ‘RED’ will be used by default.
+Complementary function of changeRxnColorAndWidth.m</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[map] = addColourNode</strong> (<em>map, rxnList, color</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>map</strong> – A parsed model structure generated by
+‘transformXML2Map’ function</p></li>
+<li><p><strong>rxnlist</strong> – List of reactions which nodes have to be coloured</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUT</dt>
+<dd class="field-odd"><p><strong>color</strong> – Color string. Default color being ‘RED’</p>
+</dd>
+<dt class="field-even">OUTPUT</dt>
+<dd class="field-even"><p><strong>map</strong> – New parsed file with the colored entities linked
+to reactions list given as input</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.visualization.metabolicCartography.addFluxFBA">
+<span class="sig-name descname"><span class="pre">addFluxFBA</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">map</span></em>, <em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">fbaSolution</span></em>, <em class="sig-param"><span class="pre">color</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/metabolicCartography/addFluxFBA.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.metabolicCartography.addFluxFBA" title="Permalink to this definition">¶</a></dt>
+<dd><p>Change reactions type for a specific list of reactions
+Visualize the fluxes obtained in a cobra model (FBA) in a CellDesigner map</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[map2, flux3, fluxMap] = addFluxFBA</strong> (<em>map, model, fbaSolution, rxnsColour</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>map</strong> – A parsed model structure generated by
+‘transformXML2Map’ function</p></li>
+<li><p><strong>model</strong> – A COBRA model</p></li>
+<li><p><strong>fbaSolution</strong> – Structure obtain from flux balance analysis</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUT</dt>
+<dd class="field-odd"><p><strong>color</strong> – Add colour to the reactions carrying fluxes</p>
+</dd>
+<dt class="field-even">OUTPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>map2</strong> – New parsed file with the changes in the reactions</p></li>
+<li><p><strong>flux</strong> – Fluxes and normalized fluxes through all rxns</p></li>
+<li><p><strong>fluxMap</strong> – List of reactions carrying flux in the map + width value</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.visualization.metabolicCartography.addFluxFBAdirectionAndColor">
+<span class="sig-name descname"><span class="pre">addFluxFBAdirectionAndColor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">map</span></em>, <em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">fbaSolution</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/metabolicCartography/addFluxFBAdirectionAndColor.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.metabolicCartography.addFluxFBAdirectionAndColor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Change reactions type for a specific list of reactions</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[map, flux2, fluxMap] = addFluxFBAdirectionAndColor</strong> (<em>map, model, fbaSolution</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>map</strong> – A parsed model structure generated by
+‘transformXML2Map’ function</p></li>
+<li><p><strong>model</strong> – A COBRA model</p></li>
+<li><p><strong>fbaSolution</strong> – structure obtain from flux balance analysis</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>map</strong> – mew parsed file with the changes in the reactions</p></li>
+<li><p><strong>flux2</strong> – fluxes and normalized fluxes through all rxns</p></li>
+<li><p><strong>fluxMap</strong> – list of reactions carrying flux in the map + width value</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.visualization.metabolicCartography.addFluxFromFileWidthAndColor">
+<span class="sig-name descname"><span class="pre">addFluxFromFileWidthAndColor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">map</span></em>, <em class="sig-param"><span class="pre">csvFilePath</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/metabolicCartography/addFluxFromFileWidthAndColor.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.metabolicCartography.addFluxFromFileWidthAndColor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Visualizes fluxes on a CellDesigner map. Rxn line width is
+proportional to flux magnitude. Positive fluxes are displayed in
+shades of red, and negative fluxes in shades of indigo. Higher flux
+magnitudes have higher hue saturation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>map</strong> – A parsed model structure generated by
+‘transformXML2Map’ function.</p></li>
+<li><p><strong>csvFilePath</strong> – Path to the CSV file containing reaction IDs in the
+first column and fluxes in the second column. The first row
+contains the respective headers.</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>map</strong> – Updated map with reaction fluxes and colors.</p></li>
+<li><p><strong>flux2</strong> – Fluxes and line widths through all reactions.</p></li>
+<li><p><strong>fluxMap</strong> – List of reactions carrying flux in the map and their
+corresponding line widths.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.visualization.metabolicCartography.addFluxWidthAndColor">
+<span class="sig-name descname"><span class="pre">addFluxWidthAndColor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">map</span></em>, <em class="sig-param"><span class="pre">reactionIDs</span></em>, <em class="sig-param"><span class="pre">fluxValues</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/metabolicCartography/addFluxWidthAndColor.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.metabolicCartography.addFluxWidthAndColor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to add flux widths and corresponding color shades to a map based on flux values.
+Rxn line width is
+proportional to flux magnitude. Positive fluxes are displayed in
+shades of red, and negative fluxes in shades of indigo. Higher flux
+magnitudes have higher hue saturation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>map</strong> – A parsed model structure generated by
+‘transformXML2Map’ function.</p></li>
+<li><p><strong>reactionIDs</strong> – Cell array of reaction IDs.</p></li>
+<li><p><strong>fluxValues</strong> – Array of flux values corresponding to the reaction IDs.</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>map</strong> – Updated map with reaction fluxes and colors.</p></li>
+<li><p><strong>flux2</strong> – Fluxes and line widths through all reactions.</p></li>
+<li><p><strong>fluxMap</strong> – List of reactions carrying flux in the map and their
+corresponding line widths.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.visualization.metabolicCartography.addNotes">
+<span class="sig-name descname"><span class="pre">addNotes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">map</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/metabolicCartography/addNotes.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.metabolicCartography.addNotes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to add notes from a model to a metabolic map</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[newMap] = addNotes</strong> (<em>model, map</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – COBRA model</p></li>
+<li><p><strong>map</strong> – A parsed model structure generated by
+‘transformXML2Map’ function</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>newMap</strong> – Modified map containing notes from the model</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.visualization.metabolicCartography.changeMetColor">
+<span class="sig-name descname"><span class="pre">changeMetColor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">map</span></em>, <em class="sig-param"><span class="pre">metList</span></em>, <em class="sig-param"><span class="pre">color</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/metabolicCartography/changeMetColor.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.metabolicCartography.changeMetColor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Change color of every metabolite from a list of Names</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[newMap] = changeMetColor</strong> (<em>map, metList, color</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>map</strong> – file from CellDesigner parsed to MATLAB format</p></li>
+<li><p><strong>metList</strong> – List of metabolites names</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUT</dt>
+<dd class="field-odd"><p><strong>color</strong> – New color of metabolites from list(default: RED)</p>
+</dd>
+<dt class="field-even">OUTPUT</dt>
+<dd class="field-even"><p><strong>newMap</strong> – Matlab structure of map with reaction modifications</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.visualization.metabolicCartography.changeNodesArea">
+<span class="sig-name descname"><span class="pre">changeNodesArea</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">map</span></em>, <em class="sig-param"><span class="pre">metList</span></em>, <em class="sig-param"><span class="pre">areaHeight</span></em>, <em class="sig-param"><span class="pre">areaWidth</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/metabolicCartography/changeNodesArea.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.metabolicCartography.changeNodesArea" title="Permalink to this definition">¶</a></dt>
+<dd><p>Change the area size of a list of metabolites (standardize the map)</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[map2] = changeNodesArea</strong> (<em>map,metList,areaHeight,areaWidth</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>map</strong> – A parsed model structure generated by
+‘transformXML2Map’ function</p></li>
+<li><p><strong>metList</strong> – list of metabolites which area wants to be changed</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>areaHeight</strong> – change heigt</p></li>
+<li><p><strong>areaWidth</strong> – change areaWidth</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUTS</dt>
+<dd class="field-even"><p><strong>map2</strong> – New parsed file with the changes in the reactions</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.visualization.metabolicCartography.changeRxnColorAndWidth">
+<span class="sig-name descname"><span class="pre">changeRxnColorAndWidth</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">map</span></em>, <em class="sig-param"><span class="pre">rxnList</span></em>, <em class="sig-param"><span class="pre">color</span></em>, <em class="sig-param"><span class="pre">areaWidth</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/metabolicCartography/changeRxnColorAndWidth.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.metabolicCartography.changeRxnColorAndWidth" title="Permalink to this definition">¶</a></dt>
+<dd><p>Change color and areaWidth of reactions from a list of names</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[newMap] = changeRxnColorAndareaWidth</strong> (<em>map, rxnList, color, areaWidth</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>map</strong> – File from CellDesigner parsed to MATLAB format</p></li>
+<li><p><strong>rxnList</strong> – List of reactions</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>color</strong> – New color of reactions from list (default: ‘RED’)</p></li>
+<li><p><strong>areaWidth</strong> – New areaWidth of reactions from list (default: 8)</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUT</dt>
+<dd class="field-even"><p><strong>newMap</strong> – Matlab structure of map with reaction modifications</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.visualization.metabolicCartography.changeRxnType">
+<span class="sig-name descname"><span class="pre">changeRxnType</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">map</span></em>, <em class="sig-param"><span class="pre">rxnsList</span></em>, <em class="sig-param"><span class="pre">rxnsType</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/metabolicCartography/changeRxnType.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.metabolicCartography.changeRxnType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Change reactions type for a specific list of reactions.
+For example, pass from ‘STATE_TRANSITION’ to ‘TRANSPORT’.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[map2] = changeRxnType</strong> (<em>map,listRxns,typeRxns</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>map</strong> – A parsed model structure generated by
+‘transformXML2Map’ function</p></li>
+<li><p><strong>rxnsList</strong> – List of reactions names want to be changed</p></li>
+<li><p><strong>rxnsType</strong> – string (new reaction type)</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>map2</strong> – New parsed file with the changes in the reactions</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.visualization.metabolicCartography.checkCDerrors">
+<span class="sig-name descname"><span class="pre">checkCDerrors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">map</span></em>, <em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em>, <em class="sig-param"><span class="pre">excelName</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/metabolicCartography/checkCDerrors.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.metabolicCartography.checkCDerrors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check discrepancies between a CD map and a COBRA model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[rxn, met, rev, form] = checkCDerros</strong> (<em>map, model</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>map</strong> – A parsed model structure generated by
+‘transformXML2Map’ function</p></li>
+<li><p><strong>model</strong> – A COBRA model</p></li>
+<li><p><strong>printLevel</strong></p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rxn</strong> – structure with common reactions between map and model
+extra reactions in map not in the model.
+extra reactions in the model not in the map.</p></li>
+<li><p><strong>met</strong> – structure with common mets in map and model
+extra mets in map not in model.
+extra mets in model not in map.</p></li>
+<li><p><strong>rev</strong> – structure with
+reversible reaction in map, considered irreversible
+in model.
+irreversible reaction in map, considered reversible
+in model.</p></li>
+<li><p><strong>form</strong> – structure with formula errors etc</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.visualization.metabolicCartography.colorProtein">
+<span class="sig-name descname"><span class="pre">colorProtein</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">map</span></em>, <em class="sig-param"><span class="pre">protList</span></em>, <em class="sig-param"><span class="pre">color</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/metabolicCartography/colorProtein.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.metabolicCartography.colorProtein" title="Permalink to this definition">¶</a></dt>
+<dd><p>Color protein nodes base on a list of protein Names</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[newMap] = colorProtein</strong> (<em>map, protList, color</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>map</strong> – xml file parsed to Matlab using the function
+‘transformFullXML2Map’</p></li>
+<li><p><strong>protList</strong> – List of protein names</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUT</dt>
+<dd class="field-odd"><p><strong>color</strong> – Color for the proteins in CAPITALS</p>
+</dd>
+<dt class="field-even">OUTPUT</dt>
+<dd class="field-even"><p><strong>newMap</strong> – Map with proteins nodes coloured (default: ‘RED’)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.visualization.metabolicCartography.colorRxnType">
+<span class="sig-name descname"><span class="pre">colorRxnType</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">map</span></em>, <em class="sig-param"><span class="pre">type</span></em>, <em class="sig-param"><span class="pre">color</span></em>, <em class="sig-param"><span class="pre">width</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/metabolicCartography/colorRxnType.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.metabolicCartography.colorRxnType" title="Permalink to this definition">¶</a></dt>
+<dd><p>colors reactions based on their type and modifies their width.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[newMap] = createColorsMap</strong> (<em>map, type, color</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>map</strong> – Map from CellDesigner parsed to MATLAB format</p></li>
+<li><p><strong>type</strong> – Type of reactions to be colored (as String)</p></li>
+<li><p><strong>color</strong> – Color used to color reactions (see createColorsMap.m)</p></li>
+<li><p><strong>width</strong> – Width size for reactions (default: 8)</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>newMap</strong> – MATLAB structure of new map with needed reactions type
+colored and width modified</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.visualization.metabolicCartography.colorRxnsFromGenes">
+<span class="sig-name descname"><span class="pre">colorRxnsFromGenes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">map</span></em>, <em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">entrezList</span></em>, <em class="sig-param"><span class="pre">color</span></em>, <em class="sig-param"><span class="pre">areaWidth</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/metabolicCartography/colorRxnsFromGenes.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.metabolicCartography.colorRxnsFromGenes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Color and change the areaWidth of reactions based on the implicated gene
+given from a list of entezIDs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[newmap] = colorRxnsFromGenes</strong> (<em>map, model, entrezList, color, areaWidth</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>map</strong> – map from CellDesigner parsed to MATLAB format</p></li>
+<li><p><strong>model</strong> – COBRA model</p></li>
+<li><p><strong>entrezList</strong> – List of genes, given as entrezIDs.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>color</strong> – Preferred color, as written in function
+‘createColorsMap’. (default: ‘RED’)</p></li>
+<li><p><strong>areaWidth</strong> – Preferred areaWidth of lines. (default: 8)</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUT</dt>
+<dd class="field-even"><p><strong>newmap          MATLAB structure of new map with default look</strong></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.visualization.metabolicCartography.colorSubsystemCD">
+<span class="sig-name descname"><span class="pre">colorSubsystemCD</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">map</span></em>, <em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">subsystem</span></em>, <em class="sig-param"><span class="pre">color</span></em>, <em class="sig-param"><span class="pre">areaWidth</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/metabolicCartography/colorSubsystemCD.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.metabolicCartography.colorSubsystemCD" title="Permalink to this definition">¶</a></dt>
+<dd><p>Color and increase areaWidth of every reaction in a specific subsystem</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[newMap] = colorSubsystemCD</strong> (<em>map, model, subsystem, color, areaWidth</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>map</strong> – File from CellDesigner parsed to MATLAB format</p></li>
+<li><p><strong>model</strong> – COBRA model structure</p></li>
+<li><p><strong>subsystem</strong> – Name of a subsystem as a String</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>color</strong> – Color desired for reactions in CAPITALS</p></li>
+<li><p><strong>areaWidth</strong> – Width desired for reactions</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUT</dt>
+<dd class="field-even"><p><strong>newMap          MATLAB structure of map with reaction modifications</strong></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.visualization.metabolicCartography.compareModelMapFormulas">
+<span class="sig-name descname"><span class="pre">compareModelMapFormulas</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">map</span></em>, <em class="sig-param"><span class="pre">excelName</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/metabolicCartography/compareModelMapFormulas.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.metabolicCartography.compareModelMapFormulas" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks the errors in a given map using a given base model by
+comparing the reactions formulas. As different errors can exist, the
+output is separated in 4 different tables that can later be exported
+into Excel spreadsheets (see commented lines at the end).</p>
+<dl class="field-list">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[wrongTable, absentModelTable, absentMapTable, duplicateTable] = compareModelMapFormulas</strong> (<em>model, map, excelName</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – COBRA structure of a model</p></li>
+<li><p><strong>map</strong> – MATLAB structure of the map obtained from the
+function <cite>transformXML2Map</cite>.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUT</dt>
+<dd class="field-odd"><p><strong>excelName</strong> – Name of the excel file in which to export the info</p>
+</dd>
+<dt class="field-even">OUTPUTS</dt>
+<dd class="field-even"><ul>
+<li><p><strong>wrongTable</strong> – Table containing the information on wrong
+reactions. The fields are arranged as
+followed:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>rxnName - Name of the reaction in the map</p></li>
+<li><p>rxnID - ID of the reaction in the map</p></li>
+<li><p>modelFormula - Formula of the reaction from the model</p></li>
+<li><p>mapFormula - Formula of the reaction from the map</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><strong>absentModelTable</strong> – Table containing the information on
+reactions present in the map but absent
+from the model. The fields are arranged as
+followed:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>rxnName - Name of the reaction in the map</p></li>
+<li><p>rxnID - ID of the reaction in the map</p></li>
+<li><p>mapFormula - Formula of the reaction from the map</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><strong>absentMapTable</strong> – Table containing the information on
+reactions present in the model but absent
+from the map. The fields are arranged as
+followed:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>rxnName - Name of the reaction in the model</p></li>
+<li><p>modelFormula - Formula of the reaction from the model</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><strong>duplicateTable</strong> – Table containing the information on
+duplicated reactions in the map. The fields
+are arranged as followed:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>rxnName - Name of the reaction in the model</p></li>
+<li><p>rxnID - ID of the reaction in the map</p></li>
+<li><p>modelFormula - Formula of the reaction from the model</p></li>
+<li><p>mapFormula - Formula of the reaction from the map</p></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.visualization.metabolicCartography.correctMetNameCD">
+<span class="sig-name descname"><span class="pre">correctMetNameCD</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">map</span></em>, <em class="sig-param"><span class="pre">metStructure</span></em>, <em class="sig-param"><span class="pre">metList</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/metabolicCartography/correctMetNameCD.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.metabolicCartography.correctMetNameCD" title="Permalink to this definition">¶</a></dt>
+<dd><p>Correct the list of wrong metabolites names in the map obtained from
+checkCDerrors given a list of metabolites with the right names.
+Therefore, the wrong names in the map should become those of the model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[map] = correctMetNameCD</strong> (<em>map, metStructure, metList</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>map</strong> – A parsed model structure generated by
+‘transformXML2Map’ function</p></li>
+<li><p><strong>metStructure</strong> – Second OUTPUT obtained when running checkCDerrors</p></li>
+<li><p><strong>metList</strong> – List of metabolites with right names</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>map</strong> – Corrected map</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.visualization.metabolicCartography.correctRxnNameCD">
+<span class="sig-name descname"><span class="pre">correctRxnNameCD</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">map</span></em>, <em class="sig-param"><span class="pre">rxnStucture</span></em>, <em class="sig-param"><span class="pre">rxnList</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/metabolicCartography/correctRxnNameCD.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.metabolicCartography.correctRxnNameCD" title="Permalink to this definition">¶</a></dt>
+<dd><p>Correct the list of wrong reaction names in the map obtained from
+checkCDerrors given a list of reaction with the right names.
+Therefore, the wrong names in the map should become those of the model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[map] = correctRxnNameCD</strong> (<em>map, rxnStucture, rxnList</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>map</strong> – A parsed model structure generated by
+‘transformXML2Map’ function</p></li>
+<li><p><strong>rxnStucture</strong> – First OUTPUT obtained when running checkCDerrors</p></li>
+<li><p><strong>rxnList</strong> – list of reactions with right names</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>map</strong> – corrected map</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.visualization.metabolicCartography.createColorsMap">
+<span class="sig-name descname"><span class="pre">createColorsMap</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/metabolicCartography/createColorsMap.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.metabolicCartography.createColorsMap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a Map type of structure storing colors by their name in
+capitals and giving their corresponding HTML color code.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[colors] = createColorsMap()</strong></p>
+</dd>
+<dt class="field-even">OUTPUTS</dt>
+<dd class="field-even"><p><strong>colors</strong> – Map structure (similar to a dictionary) containing a
+list of colors in the string format and giving the
+corresponding colors when called in the Map.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.visualization.metabolicCartography.defaultColorCD">
+<span class="sig-name descname"><span class="pre">defaultColorCD</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">map</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/metabolicCartography/defaultColorCD.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.metabolicCartography.defaultColorCD" title="Permalink to this definition">¶</a></dt>
+<dd><p>Change all reaction lines to black and default areaWidth</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[newmap] = defaultColorCD</strong> (<em>map</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><p><strong>map</strong> – file from CellDesigner parsed to matlab format</p>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>newmap</strong> – MATLAB structure of map with all rxn lines as default
+color and areaWidth</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.visualization.metabolicCartography.defaultLookMap">
+<span class="sig-name descname"><span class="pre">defaultLookMap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">map</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/metabolicCartography/defaultLookMap.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.metabolicCartography.defaultLookMap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Give default look to structures on map in terms of color, size and areaWidth.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>[newmap] = defaultLookMap</strong> (<em>map</em>)</p></li>
+<li><p><strong>INPUT</strong></p></li>
+<li><p><strong>map</strong> – Map from CellDesigner parsed to matlab format</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUT</dt>
+<dd class="field-even"><p><strong>newmap</strong> – MATLAB structure of new map with default look</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Note that this is specific to MitoMap and Recon3Map, as it uses Recon3
+and PDmap nomenclature for metabolites</p>
+</div>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.visualization.metabolicCartography.findMetsFromCompartInMap">
+<span class="sig-name descname"><span class="pre">findMetsFromCompartInMap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">map</span></em>, <em class="sig-param"><span class="pre">compartment</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/metabolicCartography/findMetsFromCompartInMap.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.metabolicCartography.findMetsFromCompartInMap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds all the metabolites and their names in the map structure for
+a compartment of interest.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[mets, id] = findMetFromCompartMap</strong> (<em>map, Compartment</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>map</strong> – Map from CellDesigner parsed to matlab format</p></li>
+<li><p><strong>compartment</strong> – Compartment of interest (e.g.: ‘[m]’,’[n]’,’[e]’,etc.)</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mets</strong> – List of metabolites names</p></li>
+<li><p><strong>id</strong> – Metabolites indexes</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.visualization.metabolicCartography.findMetsInMap">
+<span class="sig-name descname"><span class="pre">findMetsInMap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">map</span></em>, <em class="sig-param"><span class="pre">metList</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/metabolicCartography/findMetsInMap.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.metabolicCartography.findMetsInMap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds metabolites indices in a CellDesigner map for a given list of names</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[metID] = findMetIdsMap</strong> (<em>map, metList</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>map</strong> – Map from CellDesigner parsed to MATLAB format</p></li>
+<li><p><strong>metList</strong> – List of metabolites names</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>metID</strong> – List of metabolite indices corresponding to <cite>metList</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.visualization.metabolicCartography.findRxnsFromCompartInMap">
+<span class="sig-name descname"><span class="pre">findRxnsFromCompartInMap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">map</span></em>, <em class="sig-param"><span class="pre">compartment</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/metabolicCartography/findRxnsFromCompartInMap.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.metabolicCartography.findRxnsFromCompartInMap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds all the reactions and their names in the map structure for
+a compartment of interest.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[rxns, id] = findRxnFromCompartMap</strong> (<em>map, Compartment</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>map</strong> – Map from CellDesigner parsed to matlab format</p></li>
+<li><p><strong>compartment</strong> – Compartment of interest (e.g.: ‘[m]’,’[n]’,’[e]’,etc.)</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rxns</strong> – List of reaction names</p></li>
+<li><p><strong>id</strong> – Reactions indexes</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.visualization.metabolicCartography.findRxnsInMap">
+<span class="sig-name descname"><span class="pre">findRxnsInMap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">map</span></em>, <em class="sig-param"><span class="pre">rxnList</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/metabolicCartography/findRxnsInMap.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.metabolicCartography.findRxnsInMap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds reaction indices in a CellDesigner map from a list of names</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[rxnID, rxnIDref] = findRxnIDs</strong> (<em>map, rxnList</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>map</strong> – Map from CellDesigner parsed to MATLAB format</p></li>
+<li><p><strong>rxnList</strong> – List of reaction names</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rxnIDref</strong> – ID reference for reactions</p></li>
+<li><p><strong>rxnID</strong> – List of reactions indices</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.visualization.metabolicCartography.findRxnsPerTypeInMap">
+<span class="sig-name descname"><span class="pre">findRxnsPerTypeInMap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">map</span></em>, <em class="sig-param"><span class="pre">rxnType</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/metabolicCartography/findRxnsPerTypeInMap.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.metabolicCartography.findRxnsPerTypeInMap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds reaction names based on the type of reactions in the map. Useful
+to look for transport, catalysis or simple state_transition.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[listRxns] = findTransRxns</strong> (<em>map, rxnType</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>map</strong> – Map from CellDesigner parsed to MATLAB format</p></li>
+<li><p><strong>rxnType</strong> – Reaction type as a String</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>listRxns</strong> – List of reactions indexes (1st column) and
+reaction names (2nd column)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.visualization.metabolicCartography.getMapMatrices">
+<span class="sig-name descname"><span class="pre">getMapMatrices</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">map</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/metabolicCartography/getMapMatrices.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.metabolicCartography.getMapMatrices" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds 3 matrices to the map structure given as input.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[map] = getMapMatrices</strong> (<em>map</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><p><strong>map</strong> – MATLAB structure of the map</p>
+<ul class="simple">
+<li><p>sID -  Stoichiometric matrix with <cite>rows = MetabolitesID</cite> and
+<cite>columns = ReactionsID</cite> in the same order as in the map
+structure. Contains <cite>-1</cite> if the metabolite is a
+reactant/substract, <cite>+1</cite> if the metabolite is a product
+and <cite>0</cite> if it does not participate in the reaction.</p></li>
+<li><p>sAlias - Stoichiometric matrix with <cite>rows = MetabolitesAlias</cite> and
+<cite>columns = ReactionsID</cite> in the same order as in the map
+structure. Contains <cite>-1</cite> if the metabolite is a
+reactant/substract, <cite>+1</cite> if the metabolite is a product
+and <cite>0</cite> if it does not participate in the reaction.</p></li>
+<li><p>idAlias - Logical matrix with <cite>rows = MetabolitesID</cite> and
+<cite>columns = MetabolitesAlias</cite>. Contains <cite>+1</cite> if the
+<cite>MetaboliteID</cite> match with the <cite>MetaboliteAlias</cite> and <cite>0</cite>
+if it doesn’t.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>map</strong> – Updated map structure from the input containing
+the 3 matrices</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.visualization.metabolicCartography.mapFormula">
+<span class="sig-name descname"><span class="pre">mapFormula</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">map</span></em>, <em class="sig-param"><span class="pre">rxnList</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/metabolicCartography/mapFormula.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.metabolicCartography.mapFormula" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prints reactions formulas from a CellDesigner XML map file</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[formulaList, rxnsList, absentRxns, duplicatedRxns] = mapFormula</strong> (<em>map, rxnList</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>map</strong> – A parsed model structure generated by
+“transformXML2Map” function</p></li>
+<li><p><strong>rxnList</strong> – List of reactions which formulas will to be printed</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>formulaList</strong> – List of formulas</p></li>
+<li><p><strong>rxnsList</strong> – Present reactions from the list (rxnList) in the map</p></li>
+<li><p><strong>absentRxns</strong> – Reactions in the map not in the model</p></li>
+<li><p><strong>duplicatedRxns</strong> – Duplicated reactions in the map</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.visualization.metabolicCartography.modifyReactionsMetabolites">
+<span class="sig-name descname"><span class="pre">modifyReactionsMetabolites</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">map</span></em>, <em class="sig-param"><span class="pre">rxnList</span></em>, <em class="sig-param"><span class="pre">metList</span></em>, <em class="sig-param"><span class="pre">newColor</span></em>, <em class="sig-param"><span class="pre">newAreaWidth</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/metabolicCartography/modifyReactionsMetabolites.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.metabolicCartography.modifyReactionsMetabolites" title="Permalink to this definition">¶</a></dt>
+<dd><p>Modifies the color and areaWidth of reactions from a given list as input
+and the color of the corresponding metabolites from a given list as
+input. The colors and areaWidth are given as inputs and only metabolites
+present in the given reactions list will be colored.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[mapStruct] = modifyReactionsMetabolites</strong> (<em>map, rxnList, metList, newColor, newAreaWidth</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>map</strong> – Matlab structure of the map obtained from the
+function “transformXML2Map”.</p></li>
+<li><p><strong>rxnList</strong> – List of reaction names as a string array</p></li>
+<li><p><strong>metList</strong> – List of metabolite names as a string array</p></li>
+<li><p><strong>newColor</strong> – Color chosen for reaction lines and metabolites
+given as a string with the corresponding real name.
+Possible names can be found in the function
+“createColorsMap.m”.</p></li>
+<li><p><strong>newAreaWidth</strong> – Width size for the reaction lines. Can be given as
+a string or a double.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>mapStruct</strong> – Updated map structure with the changed areaWidth and
+color of the reactions and their corresponding
+metabolites.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.visualization.metabolicCartography.removeCDReactions">
+<span class="sig-name descname"><span class="pre">removeCDReactions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">fileName</span></em>, <em class="sig-param"><span class="pre">rxnRemoveList</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/metabolicCartography/removeCDReactions.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.metabolicCartography.removeCDReactions" title="Permalink to this definition">¶</a></dt>
+<dd><p>removes a list of reactions from a cell designer map, also removes
+correspinding species and species aliases if necessary</p>
+<blockquote>
+<div><dl>
+<dt>INPUT</dt><dd><dl class="simple">
+<dt>xmlStruct:      Structure obtained from the “xml2struct” function.</dt><dd><p>To be kept for the conversion back to an XML file
+of the structure.</p>
+</dd>
+<dt>map:            Matlab structure of the map containing all the</dt><dd><p>relevant fields usable for checking and correction.</p>
+</dd>
+</dl>
+<p>rxnRemoveList:  Cell array of reaction abbreviation to be removed</p>
+<p>printLevel:     {0,(1)}</p>
+</dd>
+<dt>OUTPUT</dt><dd><dl class="simple">
+<dt>xmlStructOut:   Structure for the conversion back to an XML file</dt><dd><p>of the structure.</p>
+</dd>
+<dt>mapOut:         Matlab structure of the smaller map containing all the</dt><dd><p>relevant fields usable for checking and correction.</p>
+</dd>
+</dl>
+</dd>
+<dt>rxnNotInMap: boolean vector the length of rxnRemoveList</dt><dd><p>indicating reactions that could not be found in the map</p>
+</dd>
+</dl>
+<p>Ronan Fleming 2020</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.visualization.metabolicCartography.removeMapMol">
+<span class="sig-name descname"><span class="pre">removeMapMol</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">xmlStruct</span></em>, <em class="sig-param"><span class="pre">map</span></em>, <em class="sig-param"><span class="pre">molRemoveList</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/metabolicCartography/removeMapMol.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.metabolicCartography.removeMapMol" title="Permalink to this definition">¶</a></dt>
+<dd><p>removes a list of molecules (species alias) from a cell designer map, also removes
+corresponding reaction if necessary</p>
+<blockquote>
+<div><dl>
+<dt>INPUT</dt><dd><dl class="simple">
+<dt>xmlStruct:      Structure obtained from the “xml2struct” function.</dt><dd><p>To be kept for the conversion back to an XML file
+of the structure.</p>
+</dd>
+<dt>map:            Matlab structure of the map containing all the</dt><dd><p>relevant fields usable for checking and correction.</p>
+</dd>
+</dl>
+<p>molRemoveList:  Cell array of molecule abbreviation to be removed</p>
+<p>printLevel:     {0,(1)}</p>
+</dd>
+<dt>OUTPUT</dt><dd><dl class="simple">
+<dt>xmlStructOut:   Structure for the conversion back to an XML file</dt><dd><p>of the structure.</p>
+</dd>
+<dt>mapOut:         Matlab structure of the smaller map containing all the</dt><dd><p>relevant fields usable for checking and correction.</p>
+</dd>
+</dl>
+</dd>
+<dt>specNotInMap:    boolean vector the length of molRemoveList</dt><dd><p>indicating species that could not be found in the map</p>
+</dd>
+</dl>
+<p>Ronan Fleming 2020</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.visualization.metabolicCartography.removeMapReactions">
+<span class="sig-name descname"><span class="pre">removeMapReactions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">xmlStruct</span></em>, <em class="sig-param"><span class="pre">map</span></em>, <em class="sig-param"><span class="pre">rxnRemoveList</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/metabolicCartography/removeMapReactions.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.metabolicCartography.removeMapReactions" title="Permalink to this definition">¶</a></dt>
+<dd><p>removes a list of reactions from a cell designer map, also removes
+correspinding species and species aliases if necessary</p>
+<blockquote>
+<div><dl>
+<dt>INPUT</dt><dd><dl class="simple">
+<dt>xmlStruct:      Structure obtained from the “xml2struct” function.</dt><dd><p>To be kept for the conversion back to an XML file
+of the structure.</p>
+</dd>
+<dt>map:            Matlab structure of the map containing all the</dt><dd><p>relevant fields usable for checking and correction.</p>
+</dd>
+</dl>
+<p>rxnRemoveList:  Cell array of reaction abbreviation to be removed</p>
+<p>printLevel:     {0,(1)}</p>
+</dd>
+<dt>OUTPUT</dt><dd><dl class="simple">
+<dt>xmlStructOut:   Structure for the conversion back to an XML file</dt><dd><p>of the structure.</p>
+</dd>
+<dt>mapOut:         Matlab structure of the smaller map containing all the</dt><dd><p>relevant fields usable for checking and correction.</p>
+</dd>
+</dl>
+</dd>
+<dt>rxnNotInMap: boolean vector the length of rxnRemoveList</dt><dd><p>indicating reactions that could not be found in the map</p>
+</dd>
+</dl>
+<p>Ronan Fleming 2020</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.visualization.metabolicCartography.removeMapSpecies">
+<span class="sig-name descname"><span class="pre">removeMapSpecies</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">xmlStruct</span></em>, <em class="sig-param"><span class="pre">map</span></em>, <em class="sig-param"><span class="pre">specRemoveList</span></em>, <em class="sig-param"><span class="pre">specRemoveType</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/metabolicCartography/removeMapSpecies.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.metabolicCartography.removeMapSpecies" title="Permalink to this definition">¶</a></dt>
+<dd><p>removes a list of species from a cell designer map, also removes
+corresponding species aliases and reactions</p>
+<blockquote>
+<div><dl>
+<dt>INPUT</dt><dd><dl class="simple">
+<dt>xmlStruct:      Structure obtained from the “xml2struct” function.</dt><dd><p>To be kept for the conversion back to an XML file
+of the structure.</p>
+</dd>
+<dt>map:            Matlab structure of the map containing all the</dt><dd><p>relevant fields usable for checking and correction.</p>
+</dd>
+</dl>
+<p>specRemoveList:  Cell array of species abbreviation to be removed</p>
+<p>printLevel:     {0,(1)}</p>
+</dd>
+<dt>OUTPUT</dt><dd><dl class="simple">
+<dt>xmlStructOut:   Structure for the conversion back to an XML file</dt><dd><p>of the structure.</p>
+</dd>
+<dt>mapOut:         Matlab structure of the smaller map containing all the</dt><dd><p>relevant fields usable for checking and correction.</p>
+</dd>
+</dl>
+</dd>
+<dt>specNotInMap:    boolean vector the length of specRemoveList</dt><dd><p>indicating species that could not be found in the map</p>
+</dd>
+</dl>
+<p>Ronan Fleming 2020</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.visualization.metabolicCartography.removeMapSpeciesOnly">
+<span class="sig-name descname"><span class="pre">removeMapSpeciesOnly</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">xmlStruct</span></em>, <em class="sig-param"><span class="pre">map</span></em>, <em class="sig-param"><span class="pre">specRemoveList</span></em>, <em class="sig-param"><span class="pre">specRemoveType</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/metabolicCartography/removeMapSpeciesOnly.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.metabolicCartography.removeMapSpeciesOnly" title="Permalink to this definition">¶</a></dt>
+<dd><p>removes a list of species from a cell designer map, also removes
+corresponding species aliases and but does not remove reactions</p>
+<blockquote>
+<div><dl>
+<dt>INPUT</dt><dd><dl class="simple">
+<dt>xmlStruct:      Structure obtained from the “xml2struct” function.</dt><dd><p>To be kept for the conversion back to an XML file
+of the structure.</p>
+</dd>
+<dt>map:            Matlab structure of the map containing all the</dt><dd><p>relevant fields usable for checking and correction.</p>
+</dd>
+</dl>
+<p>specRemoveList:  Cell array of species abbreviation to be removed</p>
+<p>printLevel:     {0,(1)}</p>
+</dd>
+<dt>OUTPUT</dt><dd><dl class="simple">
+<dt>xmlStruct:   Structure for the conversion back to an XML file</dt><dd><p>of the structure.</p>
+</dd>
+<dt>map:         Matlab structure of the smaller map containing all the</dt><dd><p>relevant fields usable for checking and correction.</p>
+</dd>
+</dl>
+</dd>
+<dt>specNotInMap:    boolean vector the length of specRemoveList</dt><dd><p>indicating species that could not be found in the map</p>
+</dd>
+</dl>
+<p>Ronan Fleming 2020</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.visualization.metabolicCartography.transformFullMap2XML">
+<span class="sig-name descname"><span class="pre">transformFullMap2XML</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">xmlStruct</span></em>, <em class="sig-param"><span class="pre">map</span></em>, <em class="sig-param"><span class="pre">fileName</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/metabolicCartography/transformFullMap2XML.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.metabolicCartography.transformFullMap2XML" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a new XML file from the information contained in the map
+structure. Uses the function “struct2xml” to transform a matlab
+structure into an XML text format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>transformFullMap2XML</strong> (<em>xmlStruct, map, fileName</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>xmlStruct</strong> – XML structure obtained from the function
+“xml2struct”. Used by the function “struct2xml”
+to obtain the XML file.</p></li>
+<li><p><strong>map</strong> – Matlab structure of the map with the relevant
+information. This information is then transfered to
+the xmlStruct for the conversion.</p></li>
+<li><p><strong>fileName</strong> – Path and name of the new XML file.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.visualization.metabolicCartography.transformFullXML2Map">
+<span class="sig-name descname"><span class="pre">transformFullXML2Map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">fileName</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/metabolicCartography/transformFullXML2Map.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.metabolicCartography.transformFullXML2Map" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a MATLAB structure from a given XML file.
+The XML file is first parsed through the “xml2struct” function and
+then transformed into a structure. The content of this structure can be
+found in the [description document](<a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/docs/source/notes/fullMATLABStructure.md">https://github.com/opencobra/cobratoolbox/blob/master/docs/source/notes/fullMATLABStructure.md</a>)</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[xmlStruct, map] = transformFullXML2Map</strong> (<em>fileName</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><p><strong>fileName</strong> – Path to the XML file.</p>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>xmlStruct</strong> – Structure obtained from the “xml2struct” function.
+To be kept for the conversion back to an XML file
+of the structure.</p></li>
+<li><p><strong>map</strong> – Matlab structure of the map containing all the
+relevant fields usable for checking and correction.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.visualization.metabolicCartography.transformMap2XML">
+<span class="sig-name descname"><span class="pre">transformMap2XML</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">xmlStruct</span></em>, <em class="sig-param"><span class="pre">map</span></em>, <em class="sig-param"><span class="pre">fileName</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/metabolicCartography/transformMap2XML.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.metabolicCartography.transformMap2XML" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a new XML file from the information contained in the map
+structure. Uses the function “struct2xml” to transform a matlab
+structure into an XML text format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>transformMap2XML</strong> (<em>xmlStruct, map, fileName</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>xmlStruct</strong> – XML structure obtained from the function
+“xml2struct”. Used by the function “struct2xml”
+to obtain the XML file.</p></li>
+<li><p><strong>map</strong> – Matlab structure of the map with the relevant
+information. This information is then transfered to
+the xmlStruct for the conversion.</p></li>
+<li><p><strong>fileName</strong> – Path and name of the new XML file.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.visualization.metabolicCartography.transformToIrreversibleMap">
+<span class="sig-name descname"><span class="pre">transformToIrreversibleMap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">map</span></em>, <em class="sig-param"><span class="pre">rxnlist</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/metabolicCartography/transformToIrreversibleMap.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.metabolicCartography.transformToIrreversibleMap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a map structure from irreversible format to
+reversible format for a list of reaction names</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[mapIrrev] = transformToIrreversibleMap</strong> (<em>map, rxnlist</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>map</strong> – Map from CellDesigner parsed to MATLAB format</p></li>
+<li><p><strong>rxnlist</strong> – List of reaction names to transform</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>mapIrrev</strong> – Map with reactions in irreversible format</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.visualization.metabolicCartography.transformToReversibleMap">
+<span class="sig-name descname"><span class="pre">transformToReversibleMap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">map</span></em>, <em class="sig-param"><span class="pre">rxnlist</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/metabolicCartography/transformToReversibleMap.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.metabolicCartography.transformToReversibleMap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a map structure from irreversible format to
+reversible format for a list of reaction names</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[mapRev] = transformToReversibleMap</strong> (<em>map, rxnlist</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>map</strong> – Map from CellDesigner parsed to MATLAB format</p></li>
+<li><p><strong>rxnlist</strong> – List of reaction names to transform</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>mapRev</strong> – Map in reversible format</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.visualization.metabolicCartography.transformXML2Map">
+<span class="sig-name descname"><span class="pre">transformXML2Map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">fileName</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/metabolicCartography/transformXML2Map.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.metabolicCartography.transformXML2Map" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a MATLAB structure from a given XML file.
+The XML file is first parsed through the “xml2struct” function and
+then transformed into a structure. The content of this structure can be
+found in the [description document](<a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/docs/source/notes/simpleMATLABStructure.md">https://github.com/opencobra/cobratoolbox/blob/master/docs/source/notes/simpleMATLABStructure.md</a>)</p>
+<dl class="field-list">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[xmlStruct, map] = transformXML2Map</strong> (<em>fileName</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><p><strong>fileName</strong> – Path to the XML file.</p>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>xmlStruct</strong> – Structure obtained from the “xml2struct” function.
+To be kept for the conversion back to an XML file
+of the structure.</p></li>
+<li><p><strong>map</strong> –</p>
+<dl class="simple">
+<dt>Matlab structure of the map containing all the</dt><dd><p>relevant fields usable for checking and correction.</p>
+</dd>
+</dl>
+<ul class="simple">
+<li><p>sID -  Stoichiometric matrix with <cite>rows = MetabolitesID</cite> and
+<cite>columns = ReactionsID</cite> in the same order as in the map
+structure. Contains <cite>-1</cite> if the metabolite is a
+reactant/substract, <cite>+1</cite> if the metabolite is a product
+and <cite>0</cite> if it does not participate in the reaction.</p></li>
+<li><p>sAlias - Stoichiometric matrix with <cite>rows = MetabolitesAlias</cite> and
+<cite>columns = ReactionsID</cite> in the same order as in the map
+structure. Contains <cite>-1</cite> if the metabolite is a
+reactant/substract, <cite>+1</cite> if the metabolite is a product
+and <cite>0</cite> if it does not participate in the reaction.</p></li>
+<li><p>idAlias - Logical matrix with <cite>rows = MetabolitesID</cite> and
+<cite>columns = MetabolitesAlias</cite>. Contains <cite>+1</cite> if the
+<cite>MetaboliteID</cite> match with the <cite>MetaboliteAlias</cite> and <cite>0</cite>
+if it doesn’t.</p></li>
+</ul>
+</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.visualization.metabolicCartography.unifyMetabolicMapCD">
+<span class="sig-name descname"><span class="pre">unifyMetabolicMapCD</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">map</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/metabolicCartography/unifyMetabolicMapCD.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.metabolicCartography.unifyMetabolicMapCD" title="Permalink to this definition">¶</a></dt>
+<dd><p>Unify colours in a metabolic map as a standard. Reaction will be grey
+and Metabolites will be White.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[map2] = unifyMetabolicMapCD</strong> (<em>map</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><p><strong>map</strong> – MATLAB structure of CellDesigner map</p>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>map2</strong> – Map with grey reactions colour, width 1 and white nodes colour.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.visualization.metabolicCartography.unifyMetabolicPPImapCD">
+<span class="sig-name descname"><span class="pre">unifyMetabolicPPImapCD</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">map</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/metabolicCartography/unifyMetabolicPPImapCD.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.metabolicCartography.unifyMetabolicPPImapCD" title="Permalink to this definition">¶</a></dt>
+<dd><p>Unify a metabolic and protein-protein interaction map as a standard.
+Reaction will be grey and Metabolites/Complexes will be White.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[map2] = unifyMetabolicPPImapCD</strong> (<em>map</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><p><strong>map</strong> – MATLAB structure of CellDesigner map</p>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>map2</strong> – Map with grey reactions colour, width 1 and white nodes colour.
+Change colour complex to white</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.visualization.metabolicCartography.uniqueMetabolites">
+<span class="sig-name descname"><span class="pre">uniqueMetabolites</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/metabolicCartography/uniqueMetabolites.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.metabolicCartography.uniqueMetabolites" title="Permalink to this definition">¶</a></dt>
+<dd><p>uniqueMetabolites - Identifies unique metabolites by ignoring compartment tags</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>uniqueMets = uniqueMetabolites</strong> (<em>model</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><p><strong>model</strong> – COBRA model structure containing metabolites in model.mets</p>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>uniqueMets</strong> – Cell array of unique metabolite names, excluding compartment tags</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.visualization.metabolicCartography.uniqueSpeciesInMap">
+<span class="sig-name descname"><span class="pre">uniqueSpeciesInMap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">mapMicroMap</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/metabolicCartography/uniqueSpeciesInMap.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.metabolicCartography.uniqueSpeciesInMap" title="Permalink to this definition">¶</a></dt>
+<dd><p>uniqueSpeciesInMap - Identifies unique metabolites and other species in a CellDesigner map structure</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>uniqueSpecies = uniqueSpeciesInMap</strong> (<em>mapMicroMap</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><p><strong>mapMicroMap</strong> – Structure containing species from a CellDesigner map
+mapMicroMap.specName contains species names</p>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>uniqueSpecies</strong> – Structure with fields:
+- mets: Unique metabolites (names without compartment tags)
+- nonMets: Unique non-metabolite species</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.visualization.metabolicCartography.visualizeFluxFromFile">
+<span class="sig-name descname"><span class="pre">visualizeFluxFromFile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">mapXMLFile</span></em>, <em class="sig-param"><span class="pre">fluxCSVFile</span></em>, <em class="sig-param"><span class="pre">outputXMLFile</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/metabolicCartography/visualizeFluxFromFile.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.metabolicCartography.visualizeFluxFromFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function takes a CellDesigner map XML file and a flux vector table file (e.g., CSV or XLSX),
+visualizes the flux on the map, and saves the output map as a CellDesigner XML file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mapXMLFile</strong> – The input CellDesigner .xml file for the map.</p></li>
+<li><p><strong>fluxCSVFile</strong> – The input file containing the flux vector, e.g., CSV</p></li>
+<li><p><strong>or XLSX.</strong></p></li>
+<li><p><strong>outputXMLFile</strong> – (Optional) The output .xml file name for the updated map.</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUTS</dt>
+<dd class="field-even"><p><strong>The map with visualized flux saved as the specified CellDesigner XML file.</strong></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.visualization.metabolicCartography.visualizeFluxTimeseriesFromFile">
+<span class="sig-name descname"><span class="pre">visualizeFluxTimeseriesFromFile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">mapXMLFile</span></em>, <em class="sig-param"><span class="pre">fluxDataFile</span></em>, <em class="sig-param"><span class="pre">outputFileNameBase</span></em>, <em class="sig-param"><span class="pre">numCores</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/metabolicCartography/visualizeFluxTimeseriesFromFile.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.metabolicCartography.visualizeFluxTimeseriesFromFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Visualize fluxes for multiple time points from a data table file (CSV or XLSX).
+Supports both sequential and parallel processing based on the availability of the Parallel Computing Toolbox.</p>
+<dl class="field-list simple">
+<dt class="field-odd">INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mapXMLFile</strong> – The input CellDesigner .xml file for the map.</p></li>
+<li><p><strong>fluxDataFile</strong> – The input .csv or .xlsx file containing the flux vectors.</p></li>
+<li><p><strong>outputFileNameBase</strong> – (Optional) The base name for the output files.</p></li>
+<li><p><strong>numCores</strong> – (Optional) Number of cores to use if parallel computing is available.
+If not provided, all available cores will be used.</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUTS</dt>
+<dd class="field-even"><p><strong>Saves a CellDesigner XML map with visualized fluxes for each time point.</strong></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.visualization.metabolicCartography.visualizeNormalizedRxnPresence">
+<span class="sig-name descname"><span class="pre">visualizeNormalizedRxnPresence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">mapDir</span></em>, <em class="sig-param"><span class="pre">setColours</span></em>, <em class="sig-param"><span class="pre">numCores</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/metabolicCartography/visualizeNormalizedRxnPresence.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.metabolicCartography.visualizeNormalizedRxnPresence" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function that takes reconstruction visualizations in CellDesigner XML format and extracts
+reactions with a specific colour that indicates the reaction presence.
+Reaction presence is then stored in a table as 0 or 1 (absent or present). Each
+column represents an individual map. The reaction presence of all maps are then
+summed to obtain a total count of reaction presence over all the maps.
+The reaction presence is then normalized over the total amount of maps
+used, colors and line widths are assigned based on the fraction value,
+and the newly coloured map is saved in the directory with the XML files
+used to create it. Parallelization is used if the Parallel Computing Toolbox
+is available.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Usage</dt>
+<dd class="field-odd"><p><strong>rxnPrsTable = visualiseNormalisedRxnPresence</strong> (<em>mapDir, setColours, numCores</em>)</p>
+</dd>
+<dt class="field-even">Required inputs</dt>
+<dd class="field-even"><p><strong>mapDir</strong> – The directory with the XML files to be used.</p>
+</dd>
+<dt class="field-odd">Optional inputs</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>setColours</strong> – Cell array that defines the colour and line width scheme
+based on normalised reaction presence. Each row of setColours
+should contain [fraction, colour, line width]. For example:
+{1, ‘c92a2a’, 10; 0.9, ‘ff6b6b’, 8; …}.
+If not provided, a default set of colours and widths will be used.</p></li>
+<li><p><strong>numCores</strong> – (Optional) If the Parallel Computing Toolbox is available, this
+specifies the number of cores to use for parallel processing.
+If not provided, all available cores will be used.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Output</dt>
+<dd class="field-even"><p><strong>rxnPrsTable</strong> – Table with for each map the reaction presence.</p>
+</dd>
+</dl>
+<p>Authors:
+.. Bram Nap. University of Galway, Ireland, 27/09/2024.
+.. modified by Cyrille C. Thinnes. University of Galway, Ireland,
+27/09/2024. Reduced the color range and added taking account of rxn line
+width for improved readability of the heatmap. Implemented parallel
+computing capabilities.</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.visualization.metabolicCartography.visualizeReconstructionsOnMap">
+<span class="sig-name descname"><span class="pre">visualizeReconstructionsOnMap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">mapFile</span></em>, <em class="sig-param"><span class="pre">folderPath</span></em>, <em class="sig-param"><span class="pre">numCores</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/metabolicCartography/visualizeReconstructionsOnMap.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.metabolicCartography.visualizeReconstructionsOnMap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Visualizes genome-scale metabolic reconstructions on a metabolic map.
+This function processes multiple metabolic reconstructions either sequentially or in parallel,
+depending on the availability of the Parallel Computing Toolbox.</p>
+<dl class="field-list simple">
+<dt class="field-odd">INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mapFile</strong> – The input CellDesigner .xml file for the metabolic map.</p></li>
+<li><p><strong>folderPath</strong> – Path to the folder containing genome-scale reconstructions (.mat files).</p></li>
+<li><p><strong>numCores</strong> – (Optional) Number of cores to use if parallel computing is available.
+If unspecified, all available cores will be used.</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUTS</dt>
+<dd class="field-even"><p><strong>Saves a CellDesigner XML file for each reconstruction.</strong></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../visualizeEpistasis/index.html" class="btn btn-default float-right" title="Visualizeepistasis" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../entropicFBA/index.html" class="btn btn-default" title="Entropicfba" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017-2021, The COBRA Toolbox developers.
+
+    </p>
+  </div>
+  Built with Sphinx using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'2.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+    <script type="text/javascript" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/sphinx_highlight.js"></script>
+
+  
+
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TRCMZL1FKK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TRCMZL1FKK');
+  </script>
+    
+</body>
+</html>

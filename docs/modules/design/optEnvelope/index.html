@@ -1,0 +1,570 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Optenvelope &mdash; The COBRA Toolbox</title>
+  
+
+  
+  
+  
+    <link rel="apple-touch-icon" sizes="180x180" href="../../../_static/img/apple-touch-icon.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../_static/img/favicon-32x32.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="16x16" href="../../../_static/img/favicon-16x16.png">
+  
+  
+    <link rel="mask-icon" href="../../../_static/img/safari-pinned-tab.svg" color="#5bbad5">
+  
+  
+    <link rel="manifest" href="../../../_static/json/manifest.json">
+  
+  
+    <meta name="msapplication-config" content="../../../_static/browserconfig.xml">
+  
+  <meta name="theme-color" content="#ffffff">
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+  <script src="../../../_static/js/jquery.easy-autocomplete.min.js" type="text/javascript" ></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+  <link href="../../../_static/css/easy-autocomplete.min.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/cobra.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../../_static/css/cobra.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="The COBRA Toolbox" href="../../../index.html"/>
+        <link rel="up" title="Design" href="../index.html"/>
+        <link rel="next" title="Optforcegams" href="../optForceGAMS/index.html"/>
+        <link rel="prev" title="Optforce" href="../optForce/index.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> The COBRA Toolbox
+          
+
+          
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
+          
+          </a>
+
+              
+          <h1>The COBRA Toolbox</h1>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" id="simple"/>
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+    <script>
+    	var options = {
+
+		url: "../../../_static/json/functions.json",
+
+		getValue: "name",
+
+		list: {
+            onKeyEnterEvent: function(item) {
+                    return "_static/../" + item.website_url
+            },
+            maxNumberOfElements: 25,
+			match: {
+					enabled: true,
+			},
+            sort: {
+			    enabled: true
+		    }
+		},
+
+    	template: {
+	    	type: "custom",
+		    method: function(value, item) {
+                return "<span><a href='../../../search.html?q=" + item.name + "&check_keywords=yes&area=default'>" + value + "</a>" + "<a href='../../../_static/../" + item.website_url + "' ><img src='../../../_static/link.svg'/></a></span>";
+		    }
+	    },
+
+		theme: "square"
+
+	};
+
+	$("#simple").easyAutocomplete(options);
+
+
+    </script>
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../../../index.html">Home</a></li>
+              </ul>
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Functions</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../analysis/index.html">Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../base/index.html">Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dataIntegration/index.html">Dataintegration</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Design</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../optForce/index.html">Optforce</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Optenvelope</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../optForceGAMS/index.html">Optforcegams</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../reconstruction/index.html">Reconstruction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../visualization/index.html">Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../cite.html">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../support.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../plan.html">Development Plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contact.html">Contact</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../citations.html">Citations</a></li>
+</ul>
+
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">The COBRA Toolbox</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../contents.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Functions</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Design</a></li>
+      <li class="breadcrumb-item active">Optenvelope</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="https://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <section id="optenvelope">
+<span id="id1"></span><h1>Optenvelope<a class="headerlink" href="#optenvelope" title="Permalink to this heading">¶</a></h1>
+<span class="target" id="module-src.design.optEnvelope"></span><dl class="mat function">
+<dt class="sig sig-object mat" id="src.design.optEnvelope.addEnv">
+<span class="sig-name descname"><span class="pre">addEnv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">origModel</span></em>, <em class="sig-param"><span class="pre">biomass</span></em>, <em class="sig-param"><span class="pre">desiredProduct</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/design/optEnvelope/addEnv.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.design.optEnvelope.addEnv" title="Permalink to this definition">¶</a></dt>
+<dd><p>addEnv adds envelope to figure
+Algorithm is able to knock out genes as well as reactions to produce
+production envelope</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>line = addEnv</strong> (<em>origModel, biomass, desiredProduct, ‘KnockOuts’, knockouts, ‘colour’, colour, ‘prodMol’, prodMol, ‘subUptake’, subUptake, ‘molarSum’, molarSum</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>origModel         COBRA model structure [struct]</strong></p></li>
+<li><p><strong>biomass           Reaction name of biomass [char]</strong></p></li>
+<li><p><strong>desiredProduct    Reaction name of desired product [char]</strong></p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>KnockOuts</strong> (<em>opt</em>) – {})</p></li>
+<li><p><strong>colour</strong> (<em>opt</em>) – ‘r’ (red))</p></li>
+<li><p><strong>prodMol</strong> (<em>opt</em>)</p></li>
+<li><p><strong>subUptake</strong> (<em>opt</em>)</p></li>
+<li><p><strong>molarSum</strong> (<em>opt</em>)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="simple">
+<dt>OUTPUTS</dt><dd><p>line              Line data for plot function</p>
+</dd>
+<dt>NOTES</dt><dd><p>Sometimes last point of envelope drops to zero (might be rounding error)
+but this function connects last points of lines so the graph creates
+continuous line.
+This algorithm only adds graph. It does not change labels.</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>line = addEnv(model, ‘BIOMASS_Ecoli’, ‘EX_ac_e’, {‘GHMT2r’,’GND’,’SUCCt2r’,’SUCD4’,’AKGt2r’,’GLUt2r’}, ‘m’)</p>
+<p class="rubric">AUTHORS</p>
+<p>Created by Kristaps Berzins    31/10/2022
+Modified by Kristaps Berzins   30/09/2024</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.design.optEnvelope.milpOEReinserts">
+<span class="sig-name descname"><span class="pre">milpOEReinserts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">data</span></em>, <em class="sig-param"><span class="pre">K</span></em>, <em class="sig-param"><span class="pre">minP</span></em>, <em class="sig-param"><span class="pre">numKO</span></em>, <em class="sig-param"><span class="pre">toDel</span></em>, <em class="sig-param"><span class="pre">timeLimit</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/design/optEnvelope/milpOEReinserts.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.design.optEnvelope.milpOEReinserts" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function is creating and calculating MILP to get certain amount
+of knockouts to achieve best production envelope</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[knockouts] = milpOEReinserts</strong> (<em>model, data, K, minP, numKO, toDel, timeLimit, printLevel</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model       COBRA model structure in irreversible form [struct]</strong></p></li>
+<li><p><strong>data        Struct with information about</strong> –</p>
+<ul>
+<li><p>mainActive    List of active reactions for main envelope [cell array]</p></li>
+</ul>
+</li>
+<li><p><strong>K           List of reactions that cannot be selected for knockout</strong> (<em>reaction IDs</em>)</p></li>
+<li><p><strong>minP        Struct with information about biomass and desired product.</strong> –</p>
+<ul>
+<li><dl class="simple">
+<dt>bioID         ID of biomass [double]</dt><dd><ul>
+<li><p>proID         ID of desired product[double]</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</li>
+<li><p><strong>numKO       Number of knockouts to achieve [double]</strong></p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>toDel       Numeric variable that shows what to delete</strong> – 0: reactions
+1: genes
+2: enzymes</p></li>
+<li><p><strong>timeLimit   Time limit for gurobi optimization</strong> (<em>in seconds</em>)</p></li>
+<li><p><strong>printLevel  Print level for gurobi optimization [double]</strong></p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUTS</dt>
+<dd class="field-even"><p><strong>knockouts   List of reactions that when removed gives optimal envelope</strong></p>
+</dd>
+</dl>
+<p class="rubric">AUTHORS</p>
+<p>created by Kristaps Berzins 31/10/2022</p>
+<p class="rubric">Notes</p>
+<p>This function is not designed for stand-alone use. Should be used by
+using optEnvelope.m with set numKO parameter</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.design.optEnvelope.minActiveRxns">
+<span class="sig-name descname"><span class="pre">minActiveRxns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">matchRev</span></em>, <em class="sig-param"><span class="pre">K</span></em>, <em class="sig-param"><span class="pre">minP</span></em>, <em class="sig-param"><span class="pre">toDel</span></em>, <em class="sig-param"><span class="pre">timeLimit</span></em>, <em class="sig-param"><span class="pre">midPoints</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/design/optEnvelope/minActiveRxns.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.design.optEnvelope.minActiveRxns" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function finds a set of minimum number of reactions needed to be active at
+a specific point on production envelope for best possible production
+envelope</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[data]=minActiveRxns</strong> (<em>model, matchRev, K, minP, toDel, timeLimit, midPoints, printLevel</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model         COBRA model structure in irreversible form [struct]</strong></p></li>
+<li><p><strong>matchRev      Matching of forward and backward reactions of a reversible</strong> – reaction [double array]</p></li>
+<li><p><strong>K             List of reactions that cannot be selected for knockout</strong> (<em>reaction IDs</em>)</p></li>
+<li><p><strong>minP          Struct with information about biomass and desired product.</strong> –</p>
+<ul>
+<li><p>bioID         ID of biomass [double]</p></li>
+<li><p>bioMin        1% of max value of biomass in wild-type [double]</p></li>
+<li><p>bioMax        max value of biomass in wild-type [double]</p></li>
+<li><p>proID         ID of desired product[double]</p></li>
+<li><p>proMin        1% of max value of desired product in wild-type [double]</p></li>
+<li><p>proMax        max value of desired product in wild-type [double]</p></li>
+</ul>
+</li>
+<li><p><strong>toDel         Numeric variable that shows what to delete</strong> – 0: reactions
+1: genes
+2: enzymes</p></li>
+<li><p><strong>timeLimit     Time limit for gurobi optimization</strong> (<em>in seconds</em>)</p></li>
+<li><p><strong>midPoints     Number of mid points to calculate active reactions for (default</strong> – 0) [double]</p></li>
+<li><p><strong>printLevel    Print level for gurobi optimization (default</strong> – 0) [double]</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><p><strong>data          Struct with information about</strong> –</p>
+<ul class="simple">
+<li><p>pro           Minimal product for best envelope</p></li>
+<li><p>bio           Maximum biomass for best envelope</p></li>
+<li><p>results       results of MILP</p></li>
+<li><p>mainModel     model for main envelope</p></li>
+<li><p>mainActive    List of active reactions for main envelope</p></li>
+<li><p>models        models for all mid envelopes</p></li>
+<li><p>active        Lists for active reactions for mid envelopes</p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This function is designed to be used with optEnvelope and was not
+designed as stand-alone function.</p>
+</div>
+<p class="rubric">AUTHORS</p>
+<p>created by    Ehsan Motamedian        09/02/2022
+modified by   Kristaps Berzins        31/10/2022
+modified by   Kristaps Berzins        30/10/2024     Added calculation of active reactions for middle points</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.design.optEnvelope.optEnvelope">
+<span class="sig-name descname"><span class="pre">optEnvelope</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">desiredProduct</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/design/optEnvelope/optEnvelope.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.design.optEnvelope.optEnvelope" title="Permalink to this definition">¶</a></dt>
+<dd><p>optEnvelope uses MILP to find minimum active reactions and then finds
+smallest set of reactions in the pool of inactive reactions that offers same production envelope.
+Algorith provides multiple ways to reinsert reactions - sequential, MILP, GA(under construction)</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[main, mid] = optEnvelope</strong> (<em>model, desiredProduct, ‘protectedRxns’, protectedRxns, ‘numTries’, numTries, ‘numKO’, numKO, ‘prodMol’, prodMol, ‘midPoints’, midPoints, ‘timeLimit’, timeLimit, ‘printLevel’, printLevel, ‘drawEnvelope’, drawEnvelope</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model              COBRA model structure [struct]</strong></p></li>
+<li><p><strong>desiredProduct     Reaction name of desired product [char]</strong></p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>protectedRxns</strong> (<em>opt) Aditional reactions to ignore (must be in irreversible form</em>) – {})</p></li>
+<li><p><strong>numTries</strong> (<em>opt</em>) – [])</p></li>
+<li><p><strong>numKO</strong> (<em>opt) Number of reactions to remove for final result (triggers MILP for reaction reinsertion</em>) – [])</p></li>
+<li><p><strong>prodMol</strong> (<em>opt) Molar mass of product for yield plot (g/mol</em>) – [])</p></li>
+<li><p><strong>midPoints</strong> (<em>opt</em>) – 0)</p></li>
+<li><p><strong>timeLimit</strong> (<em>opt) Time limit for gurobi optimization in seconds (also limits time for numTries</em>) – inf)</p></li>
+<li><p><strong>printLevel</strong> (<em>opt</em>) – 0)</p></li>
+<li><p><strong>drawEnvelope</strong> (<em>opt</em>) – true)</p></li>
+<li><p><strong>delGenes</strong> (<em>unfinished function</em>)</p></li>
+<li><p><strong>delEnzymes</strong> (<em>unfinished function</em>)</p></li>
+<li><p><strong>GAon</strong> (<em>unfinished function</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>main               Structure that contains information about reactions to remove for optimal envelope</strong> – Information about most probable point</p></li>
+<li><p><strong>mid                Structure that contains information about reactions to remove for midpoint envelopes</strong> – Information about most probable points for midpoint envelopes</p></li>
+<li><p><strong>EXAMPLE</strong> – [mainKnockouts, midKnockouts] = optEnvelope(model, ‘EX_ac_e’, ‘timeLimit’, 600, ‘protectedRxns’, {‘H2Ot_f’,’H2Ot_b’}, ‘midPoints’, 15);</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="simple">
+<dt>NOTES</dt><dd><p>It should be mentioned that a figure (desired product versus biomass)
+including plots for wild-type and opt enveople is presented after
+running optEnvelope
+Mid Envelopes currently work only for sequential (default) reinsertions</p>
+</dd>
+</dl>
+<p class="rubric">AUTHORS</p>
+<p>created by  Ehsan Motamedian     02/09/2022
+modified by Kristaps Berzins     06/12/2022
+modified by Ehsan Motamedian     25/01/2023 switch to middle points was added
+modified by Kristaps Berzins     30/09/2024 improved algorightms, fixed bugs, added functionality</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.design.optEnvelope.seperateTransposeJoinOE">
+<span class="sig-name descname"><span class="pre">seperateTransposeJoinOE</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">A</span></em>, <em class="sig-param"><span class="pre">Ay</span></em>, <em class="sig-param"><span class="pre">B</span></em>, <em class="sig-param"><span class="pre">C</span></em>, <em class="sig-param"><span class="pre">ySize</span></em>, <em class="sig-param"><span class="pre">yMax</span></em>, <em class="sig-param"><span class="pre">aSizeCol</span></em>, <em class="sig-param"><span class="pre">highNum</span></em>, <em class="sig-param"><span class="pre">zSize</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/design/optEnvelope/seperateTransposeJoinOE.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.design.optEnvelope.seperateTransposeJoinOE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to transpose and join arrays for milpOEReinserts.m function</p>
+<p>Author(s): Kristaps Berzins</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.design.optEnvelope.sequentialOEReinserts">
+<span class="sig-name descname"><span class="pre">sequentialOEReinserts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">modelOld</span></em>, <em class="sig-param"><span class="pre">data</span></em>, <em class="sig-param"><span class="pre">K</span></em>, <em class="sig-param"><span class="pre">toDel</span></em>, <em class="sig-param"><span class="pre">minP</span></em>, <em class="sig-param"><span class="pre">midPoints</span></em>, <em class="sig-param"><span class="pre">numTries</span></em>, <em class="sig-param"><span class="pre">timeLimit</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/design/optEnvelope/sequentialOEReinserts.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.design.optEnvelope.sequentialOEReinserts" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function is going through inactive reactions sequentially and
+reinserting them one by one to get best possible set of knockouts while
+retaining optimal envelope. With numTries parameter this can be done
+multiple times by randomizing list of inactive reactions</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[mainKnockouts, finalMidKnockouts] = sequentialOEReinserts</strong> (<em>modelOld, data, K, toDel, minP, midPoints, numTries, timeLimit</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>modelOld            COBRA model structure in irreversible form [struct]</strong></p></li>
+<li><p><strong>data                Struct with information about</strong> –</p>
+<ul>
+<li><p>mainModel     model for main envelope [struct]</p></li>
+<li><p>mainActive    List of active reactions for main envelope [cell array]</p></li>
+<li><p>models        models for all mid envelopes [struct]</p></li>
+<li><p>active        Lists for active reactions for mid envelopes [cell array]</p></li>
+</ul>
+</li>
+<li><p><strong>K                   List of reactions that cannot be selected for knockout</strong> (<em>reaction IDs</em>)</p></li>
+<li><p><strong>toDel               Variable that shows what to delete</strong> – 0: reactions
+1: genes
+2: enzymes</p></li>
+<li><p><strong>minP                Struct with information about</strong> –</p>
+<ul>
+<li><p>bioID         ID of biomass [double]</p></li>
+<li><p>proID         ID of desired product [double]</p></li>
+</ul>
+</li>
+<li><p><strong>midPoints           Number of middle points to calculate mid envelopes for [double]</strong></p></li>
+<li><p><strong>numTries            Number of iterations for randomizing indexes of inactive reactions [double]</strong></p></li>
+<li><p><strong>timeLimit           Time limit for gurobi optimization</strong> (<em>in seconds</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mainKnockouts       List of reactions that when removed gives optimal envelope</strong></p></li>
+<li><p><strong>finalMidKnockouts   List of reactions that when removed gives optimal</strong> – envelopes for middle envelopes</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>[mainKnockouts, finalMidKnockouts] = sequentialOEReinserts(model, data, K, 0, minP, 10, 10, 60)</p>
+<p class="rubric">AUTHORS</p>
+<p>created by Kristaps Berzins 31/10/2022</p>
+<p class="rubric">Notes</p>
+<p>This function is not designed for stand-alone use. Should be used by
+using optEnvelope.m</p>
+</dd></dl>
+
+</section>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../optForceGAMS/index.html" class="btn btn-default float-right" title="Optforcegams" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../optForce/index.html" class="btn btn-default" title="Optforce" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017-2021, The COBRA Toolbox developers.
+
+    </p>
+  </div>
+  Built with Sphinx using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'2.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+    <script type="text/javascript" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/sphinx_highlight.js"></script>
+
+  
+
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TRCMZL1FKK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TRCMZL1FKK');
+  </script>
+    
+</body>
+</html>

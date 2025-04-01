@@ -1,0 +1,521 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Varkin &mdash; The COBRA Toolbox</title>
+  
+
+  
+  
+  
+    <link rel="apple-touch-icon" sizes="180x180" href="../../../../_static/img/apple-touch-icon.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../../_static/img/favicon-32x32.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="16x16" href="../../../../_static/img/favicon-16x16.png">
+  
+  
+    <link rel="mask-icon" href="../../../../_static/img/safari-pinned-tab.svg" color="#5bbad5">
+  
+  
+    <link rel="manifest" href="../../../../_static/json/manifest.json">
+  
+  
+    <meta name="msapplication-config" content="../../../../_static/browserconfig.xml">
+  
+  <meta name="theme-color" content="#ffffff">
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+  <script src="../../../../_static/js/jquery.easy-autocomplete.min.js" type="text/javascript" ></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+  <link href="../../../../_static/css/easy-autocomplete.min.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../_static/css/cobra.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../../../_static/css/cobra.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../../search.html"/>
+    <link rel="top" title="The COBRA Toolbox" href="../../../../index.html"/>
+        <link rel="up" title="Solvers" href="../index.html"/>
+        <link rel="next" title="Bdcamethods" href="BDCAmethods/index.html"/>
+        <link rel="prev" title="Nlp" href="../NLP/index.html"/> 
+
+  
+  <script src="../../../../_static/js/modernizr.min.js"></script>
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> The COBRA Toolbox
+          
+
+          
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
+          
+          </a>
+
+              
+          <h1>The COBRA Toolbox</h1>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" id="simple"/>
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+    <script>
+    	var options = {
+
+		url: "../../../../_static/json/functions.json",
+
+		getValue: "name",
+
+		list: {
+            onKeyEnterEvent: function(item) {
+                    return "_static/../" + item.website_url
+            },
+            maxNumberOfElements: 25,
+			match: {
+					enabled: true,
+			},
+            sort: {
+			    enabled: true
+		    }
+		},
+
+    	template: {
+	    	type: "custom",
+		    method: function(value, item) {
+                return "<span><a href='../../../../search.html?q=" + item.name + "&check_keywords=yes&area=default'>" + value + "</a>" + "<a href='../../../../_static/../" + item.website_url + "' ><img src='../../../../_static/link.svg'/></a></span>";
+		    }
+	    },
+
+		theme: "square"
+
+	};
+
+	$("#simple").easyAutocomplete(options);
+
+
+    </script>
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../index.html">Home</a></li>
+              </ul>
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">Functions</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../../analysis/index.html">Analysis</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Base</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html">Solvers</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../init/index.html">Init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../cplex/index.html">Cplex</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../entropicFBA/index.html">Entropicfba</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../gurobi/index.html">Gurobi</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../cardOpt/index.html">Cardopt</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../rescale/index.html">Rescale</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../NLP/index.html">Nlp</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Varkin</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="BDCAmethods/index.html">Bdcamethods</a></li>
+<li class="toctree-l5"><a class="reference internal" href="levMarMethods/index.html">Levmarmethods</a></li>
+<li class="toctree-l5"><a class="reference internal" href="derFreeMethods/index.html">Derfreemethods</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../getSetSolver/index.html">Getsetsolver</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../mosek/index.html">Mosek</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../lindo/index.html">Lindo</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../lp_solve/index.html">Lp_solve</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../param/index.html">Param</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../gams/index.html">Gams</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../install/index.html">Install</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../io/index.html">Io</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../paths/index.html">Paths</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ci/index.html">Ci</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../utilities/index.html">Utilities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../codeConsistency/index.html">Codeconsistency</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../cobrarrow/index.html">Cobrarrow</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../dataIntegration/index.html">Dataintegration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../design/index.html">Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reconstruction/index.html">Reconstruction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../visualization/index.html">Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contributing.html">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../cite.html">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../support.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../plan.html">Development Plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contact.html">Contact</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../citations.html">Citations</a></li>
+</ul>
+
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">The COBRA Toolbox</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../contents.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Functions</a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Base</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Solvers</a></li>
+      <li class="breadcrumb-item active">Varkin</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="https://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <section id="varkin">
+<span id="id1"></span><h1>Varkin<a class="headerlink" href="#varkin" title="Permalink to this heading">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="BDCAmethods/index.html">Bdcamethods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="levMarMethods/index.html">Levmarmethods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="derFreeMethods/index.html">Derfreemethods</a></li>
+</ul>
+</div>
+<span class="target" id="module-src.base.solvers.varKin"></span><dl class="mat function">
+<dt class="sig sig-object mat" id="src.base.solvers.varKin.optimizeVKmodel0">
+<span class="sig-name descname"><span class="pre">optimizeVKmodel0</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">solver</span></em>, <em class="sig-param"><span class="pre">x0</span></em>, <em class="sig-param"><span class="pre">parms</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/varKin/optimizeVKmodel0.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.varKin.optimizeVKmodel0" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function for finding a solution of the nonlinear system
+<span class="math notranslate nohighlight">\(h(x) = f(x) = 0\)</span>, <cite>x</cite> in <span class="math notranslate nohighlight">\(R^m\)</span>, (I)
+or <span class="math notranslate nohighlight">\(h(x) = (f(x)^T, l(x)^T)^T = 0\)</span>, <cite>x</cite> in <span class="math notranslate nohighlight">\(R^m\)</span>, (II)
+where <span class="math notranslate nohighlight">\(f(x) = [F - R, R - F]*exp(k + [F, R]^T * x)\)</span>, <span class="math notranslate nohighlight">\(l(x) = L*exp(x) - l_0\)</span>,
+using the nonlinear unconstrained minimization
+<span class="math notranslate nohighlight">\(\textrm{min}\ psi(x) = 1/2 ||h(x)||^2\)</span> s.t. <cite>x</cite> in <span class="math notranslate nohighlight">\(R^m\)</span>.
+with several solvers. For (I), one can use all the following solvers;
+however, for (II), one can only apply local solvers LLM_F, LLM_FY,
+LLM_YF, LLM and global solvers GLM_FY, GLM_YF, LevMar, LMLS, and LMTR.
+If <cite>sonver</cite> field is empty, the code will use LMTR as the default.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>output = optimizeVKmodel</strong> (<em>model, solver, x0, parms</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – structure includes <cite>F</cite>, <cite>R</cite> and/or <cite>L</cite></p>
+<ul>
+<li><p>.F - forward stoichiometric matrix</p></li>
+<li><p>.R - reverse stoichiometric matrix</p></li>
+<li><p>.L - basis for the left null-space of <cite>N = R - F</cite></p></li>
+<li><p>.l0 - constant <span class="math notranslate nohighlight">\(l_0\)</span></p></li>
+</ul>
+</li>
+<li><p><strong>solver</strong> –</p>
+<ul>
+<li><p>Local <cite>Levenberg-Marquardt</cite> (LM) solvers:</p>
+<ul>
+<li><p>LLM - LM of <cite>Ahookhosh et al.</cite></p></li>
+<li><p>LLM_F - LM of <cite>Fischer</cite></p></li>
+<li><p>LLM_FY - LM of <cite>Fun</cite> and <cite>Yuan</cite></p></li>
+<li><p>LLM_YF - LM of <cite>Yamashita</cite> and <cite>Fukushima</cite></p></li>
+</ul>
+</li>
+<li><p>Global <cite>Levenberg-Marquardt</cite> (LM) solvers:</p>
+<ul>
+<li><p>LM_FY - LM of <cite>Fun</cite> and <cite>Yuan</cite></p></li>
+<li><p>LM_YF - LM of <cite>Yamashita</cite> and <cite>Fukushima</cite></p></li>
+<li><p>LevMar - LM of <cite>Kelly</cite></p></li>
+<li><p>LMLS - LM line search of <cite>Ahookhosh et al.</cite></p></li>
+<li><p>LMTR - LM trust-region of <cite>Ahookhosh et al.</cite></p></li>
+</ul>
+</li>
+<li><p>DC programming solvers:</p>
+<ul>
+<li><p>DCA - DC programming algorithm</p></li>
+<li><p>BDCA - boosted DC programming algorithm</p></li>
+</ul>
+</li>
+<li><p>Duplomonotone derivative-free solvers:</p>
+<ul>
+<li><p>BDF - Derivative-free duplomonotone method 1</p></li>
+<li><p>CSDF - Derivative-free duplomonotone method 2</p></li>
+<li><p>DBDF - Derivative-free duplomonotone method 3</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>Parameters for LLM_F, LLM_FY, LLM_YF, LLM, GLM_FY, GLM_YF, LevMar, LMLS, LMTR</strong></p></li>
+<li><p><strong>parms</strong> – structure including the parameteres of schemes</p>
+<ul>
+<li><p>.eta - constant for <cite>Levenberg-Marquardt</cite> parameter</p></li>
+<li><p>.MaxNumIter - maximum number of iterations</p></li>
+<li><p>.MaxNumMapEval - maximum number of function evaluations</p></li>
+<li><p>.MaxNumGmapEval - maximum number of gradient evaluations</p></li>
+<li><p>.TimeLimit - maximum running time</p></li>
+<li><p>.epsilon - accuracy parameter</p></li>
+<li><p>.x_opt - optimizer</p></li>
+<li><p>.psi_opt - optimum</p></li>
+<li><p>.adaptive - update lambda adaptively</p></li>
+<li><p>.kin - kinetic parameter in <span class="math notranslate nohighlight">\(R^{2n}\)</span></p></li>
+<li><p>.flag_x_error - 1: saves <cite>x_error</cite>, 0: do not saves <cite>x_error</cite> (default)</p></li>
+<li><p>.flag_psi_error - 1: saves <cite>psi_error</cite>, 0: do not saves <cite>psi_error</cite> (default)</p></li>
+<li><p>.flag_time - 1: saves <cite>psi_error</cite>, 0: do not saves <cite>psi_error</cite> (default)</p></li>
+<li><p>.Stopping_Crit - stopping criterion</p>
+<ol class="arabic simple">
+<li><p>stop if <span class="math notranslate nohighlight">\(||grad|| \leq \epsilon\)</span></p></li>
+<li><p>stop if <span class="math notranslate nohighlight">\(||nhxk|| \leq \epsilon\)</span></p></li>
+<li><p>stop if <cite>MaxNumIter</cite> is reached</p></li>
+<li><p>stop if <cite>MaxNumMapEval</cite> is reached</p></li>
+<li><p>stop if <cite>MaxNumGmapEval</cite> is reached</p></li>
+<li><p>stop if <cite>TimeLimit</cite> is reached</p></li>
+<li><p>stop if <span class="math notranslate nohighlight">\(||grad|| \leq \textrm{max}(\epsilon, \epsilon ^2 * ngradx_0)\)</span></p></li>
+<li><p>stop if <span class="math notranslate nohighlight">\(||nhxk|| \leq \textrm{max}(\epsilon, \epsilon^2 * nhx_0)\)</span></p></li>
+<li><p>stop if (default) <span class="math notranslate nohighlight">\(||hxk|| \leq \epsilon\)</span> or <cite>MaxNumIter</cite> is reached</p></li>
+</ol>
+</li>
+</ul>
+</li>
+<li><p><strong>Parameters for DCA, BDCA</strong></p></li>
+<li><p><strong>parms</strong> – structure including the parameteres of schemes</p>
+<ul>
+<li><p>mapp - function handle provides <cite>f(x)</cite> and gradient <cite>f(x)</cite></p></li>
+</ul>
+</li>
+<li><p><strong>x0</strong> – initial point</p></li>
+<li><p><strong>options</strong> – structure including the parameteres of scheme</p>
+<ul>
+<li><p>.MaxNumIter - maximum number of iterations</p></li>
+<li><p>.MaxNumMapEval - maximum number of function evaluations</p></li>
+<li><p>.TimeLimit - maximum running time</p></li>
+<li><p>.epsilon - accuracy parameter</p></li>
+<li><p>.x_opt - optimizer</p></li>
+<li><p>.psi_opt - optimum</p></li>
+<li><p>.alpha - constant for the line search</p></li>
+<li><p>.beta - backtarcking constant</p></li>
+<li><p>.lambda_bar - starting step-size for the line search</p></li>
+<li><p>.rho - strong convexity parameter</p></li>
+<li><p>.kin - kinetic parameter in <span class="math notranslate nohighlight">\(R^{2n}\)</span></p></li>
+<li><p>.flag_line_search - “Armijo” or “Quadratic_interpolation”</p></li>
+<li><p>.flag_x_error - 1: saves <cite>x_error</cite>, 0: do not saves <cite>x_error</cite> (default)</p></li>
+<li><p>.flag_psi_error - 1: saves <cite>psi_error</cite>, 0: do not saves <cite>psi_error</cite> (default)</p></li>
+<li><p>.flag_time - 1: saves <cite>psi_error</cite>, 0: do not saves <cite>psi_error</cite> (default)</p></li>
+<li><p>.Stopping_Crit - stopping criterion</p>
+<ul>
+<li><p>1 : stop if <span class="math notranslate nohighlight">\(||nfxk|| \leq \epsilon\)</span></p></li>
+<li><p>2 : stop if <cite>MaxNumIter</cite> is reached</p></li>
+<li><p>3 : stop if <cite>MaxNumMapEval</cite> is reached</p></li>
+<li><p>4 : stop if <cite>TimeLimit</cite> is reached</p></li>
+<li><p>5 : stop if (default) <span class="math notranslate nohighlight">\(||hxk|| \leq \epsilon\)</span> or <cite>MaxNumIter</cite> is reached</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>Parameters for BDF, CSDF, DBDF</strong></p></li>
+<li><p><strong>parms</strong> – structure including the parameteres of schemes</p>
+<ul>
+<li><p>mapp - function handle provides <cite>f(x)</cite> and gradient <cite>f(x)</cite></p></li>
+</ul>
+</li>
+<li><p><strong>x0</strong> – initial point</p></li>
+<li><p><strong>options</strong> – structure including the parameteres of scheme</p>
+<ul>
+<li><p>.MaxNumIter - maximum number of iterations</p></li>
+<li><p>.MaxNumMapEval - maximum number of function evaluations</p></li>
+<li><p>.TimeLimit - maximum running time</p></li>
+<li><p>.epsilon - accuracy parameter</p></li>
+<li><p>.x_opt - optimizer</p></li>
+<li><p>.psi_opt - optimum</p></li>
+<li><p>.alpha - constant with <span class="math notranslate nohighlight">\(\alpha &lt; 2 \sigma\)</span></p></li>
+<li><p>.beta - is the backtarcking constant;</p></li>
+<li><p>.lambda_min - lower bound of the step-size</p></li>
+<li><p>.lambda_max - upper bound of the step-size</p></li>
+<li><p>.flag_x_error - 1: saves <cite>x_error</cite>, 0: do not saves <cite>x_error</cite> (default)</p></li>
+<li><p>.flag_psi_error - 1: saves <cite>psi_error</cite>, 0: do not saves <cite>psi_error</cite> (default)</p></li>
+<li><p>.flag_time - 1: saves <cite>psi_error</cite>, 0: do not saves <cite>psi_error</cite> (default)</p></li>
+<li><p>.Stopping_Crit - stopping criterion</p>
+<ul>
+<li><p>1 : stop if <span class="math notranslate nohighlight">\(||nfxk|| \leq \epsilon\)</span></p></li>
+<li><p>2 : stop if <cite>MaxNumIter</cite> is reached</p></li>
+<li><p>3 : stop if <cite>MaxNumMapEval</cite> is reached</p></li>
+<li><p>4 : stop if <cite>TimeLimit</cite> is reached</p></li>
+<li><p>5 : stop if (default) <span class="math notranslate nohighlight">\(||hxk|| \leq \epsilon\)</span> or <cite>MaxNumIter</cite> is reached</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>output</strong> – structure including more output information:</p>
+<ul class="simple">
+<li><p>.x_best - the best approximation of the optimizer</p></li>
+<li><p>.psi_best - the best approximation of the optimum</p></li>
+<li><p>.T - running time</p></li>
+<li><p>.Niter - total number of iterations</p></li>
+<li><p>.Nmap - total number of mapping evaluations</p></li>
+<li><p>.Ngmap - total number of mapping gradient evaluations</p></li>
+<li><p>.merit_func - array including all merit function  values</p></li>
+<li><p>.x_error - relative error <span class="math notranslate nohighlight">\(norm(x_k(:)-x_{opt}(:))/norm(x_{opt})\)</span></p></li>
+<li><p>.psi_error - relative error <span class="math notranslate nohighlight">\((psi_k-psi_{opt})/(psi_0-psi_{opt}))\)</span></p></li>
+<li><p>.Status - reason of termination</p></li>
+<li><p>.Time - running time of all iterations</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="BDCAmethods/index.html" class="btn btn-default float-right" title="Bdcamethods" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../NLP/index.html" class="btn btn-default" title="Nlp" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017-2021, The COBRA Toolbox developers.
+
+    </p>
+  </div>
+  Built with Sphinx using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../',
+            VERSION:'2.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+    <script type="text/javascript" src="../../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../../_static/sphinx_highlight.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/mathjax/MathJax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+
+  
+  
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TRCMZL1FKK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TRCMZL1FKK');
+  </script>
+    
+</body>
+</html>

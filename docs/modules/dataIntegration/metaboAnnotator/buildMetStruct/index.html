@@ -1,0 +1,563 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Buildmetstruct &mdash; The COBRA Toolbox</title>
+  
+
+  
+  
+  
+    <link rel="apple-touch-icon" sizes="180x180" href="../../../../_static/img/apple-touch-icon.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../../_static/img/favicon-32x32.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="16x16" href="../../../../_static/img/favicon-16x16.png">
+  
+  
+    <link rel="mask-icon" href="../../../../_static/img/safari-pinned-tab.svg" color="#5bbad5">
+  
+  
+    <link rel="manifest" href="../../../../_static/json/manifest.json">
+  
+  
+    <meta name="msapplication-config" content="../../../../_static/browserconfig.xml">
+  
+  <meta name="theme-color" content="#ffffff">
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+  <script src="../../../../_static/js/jquery.easy-autocomplete.min.js" type="text/javascript" ></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+  <link href="../../../../_static/css/easy-autocomplete.min.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../_static/css/cobra.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../../../_static/css/cobra.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../../search.html"/>
+    <link rel="top" title="The COBRA Toolbox" href="../../../../index.html"/>
+        <link rel="up" title="Metaboannotator" href="../index.html"/>
+        <link rel="next" title="Analysemetstruct" href="../analyseMetStruct/index.html"/>
+        <link rel="prev" title="Metaboannotator" href="../index.html"/> 
+
+  
+  <script src="../../../../_static/js/modernizr.min.js"></script>
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> The COBRA Toolbox
+          
+
+          
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
+          
+          </a>
+
+              
+          <h1>The COBRA Toolbox</h1>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" id="simple"/>
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+    <script>
+    	var options = {
+
+		url: "../../../../_static/json/functions.json",
+
+		getValue: "name",
+
+		list: {
+            onKeyEnterEvent: function(item) {
+                    return "_static/../" + item.website_url
+            },
+            maxNumberOfElements: 25,
+			match: {
+					enabled: true,
+			},
+            sort: {
+			    enabled: true
+		    }
+		},
+
+    	template: {
+	    	type: "custom",
+		    method: function(value, item) {
+                return "<span><a href='../../../../search.html?q=" + item.name + "&check_keywords=yes&area=default'>" + value + "</a>" + "<a href='../../../../_static/../" + item.website_url + "' ><img src='../../../../_static/link.svg'/></a></span>";
+		    }
+	    },
+
+		theme: "square"
+
+	};
+
+	$("#simple").easyAutocomplete(options);
+
+
+    </script>
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../index.html">Home</a></li>
+              </ul>
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">Functions</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../../analysis/index.html">Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../base/index.html">Base</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Dataintegration</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../../fluxomics/index.html">Fluxomics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../metanetxMapper/index.html">Metanetxmapper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../transcriptomics/index.html">Transcriptomics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chemoInformatics/index.html">Chemoinformatics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../XomicsToModel/index.html">Xomicstomodel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../metabotools/index.html">Metabotools</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html">Metaboannotator</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Buildmetstruct</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../analyseMetStruct/index.html">Analysemetstruct</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../molFileFinder/index.html">Molfilefinder</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../connect2resources/index.html">Connect2resources</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../generateMetInfo/index.html">Generatemetinfo</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../design/index.html">Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reconstruction/index.html">Reconstruction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../visualization/index.html">Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contributing.html">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../cite.html">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../support.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../plan.html">Development Plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contact.html">Contact</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../citations.html">Citations</a></li>
+</ul>
+
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">The COBRA Toolbox</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../contents.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Functions</a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Dataintegration</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Metaboannotator</a></li>
+      <li class="breadcrumb-item active">Buildmetstruct</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="https://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <section id="buildmetstruct">
+<span id="id1"></span><h1>Buildmetstruct<a class="headerlink" href="#buildmetstruct" title="Permalink to this heading">¶</a></h1>
+<span class="target" id="module-src.dataIntegration.metaboAnnotator.buildMetStruct"></span><dl class="mat function">
+<dt class="sig sig-object mat" id="src.dataIntegration.metaboAnnotator.buildMetStruct.addField2MetStructure">
+<span class="sig-name descname"><span class="pre">addField2MetStructure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">metabolite_structure</span></em>, <em class="sig-param"><span class="pre">metField</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metaboAnnotator/buildMetStruct/addField2MetStructure.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metaboAnnotator.buildMetStruct.addField2MetStructure" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function adds fields to the metabolite_structure as defined in
+metaboliteStructureFieldNames.m. Please note that this function does not
+populate the fields with new data.</p>
+<p>INPUT
+metabolite_structure  Metabolite structure
+metField                   specify metabolite (optional)</p>
+<p>OUTPUT
+metabolite_structure  Updated metabolite structure</p>
+<p>Ines Thiele 2020/2021</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.dataIntegration.metaboAnnotator.buildMetStruct.cleanUpMetabolite_structure">
+<span class="sig-name descname"><span class="pre">cleanUpMetabolite_structure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">metabolite_structure</span></em>, <em class="sig-param"><span class="pre">startSearch</span></em>, <em class="sig-param"><span class="pre">endSearch</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metaboAnnotator/buildMetStruct/cleanUpMetabolite_structure.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metaboAnnotator.buildMetStruct.cleanUpMetabolite_structure" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function aims at removing the most commonly occuring issues with the
+data obtained from different resources.</p>
+<p>INPUT
+metabolite_structure  Metabolite structure</p>
+<p>OUTPUT
+metabolite_structure  Updated metabolite structure</p>
+<p>IT Oct 2020</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.dataIntegration.metaboAnnotator.buildMetStruct.convertModel2Metstructure">
+<span class="sig-name descname"><span class="pre">convertModel2Metstructure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metaboAnnotator/buildMetStruct/convertModel2Metstructure.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metaboAnnotator.buildMetStruct.convertModel2Metstructure" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function converts the metabolite information present in a metabolic
+reconstruction (contained in a model structure) into a metabolite
+structure to make the reconstruction amenable to the metaboAnnotator
+extension.</p>
+<p>INPUT
+model                 model structure</p>
+<p>OUTPUT
+metabolite_structure  metabolite structure</p>
+<p>Ines Thiele, 2020/2021</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.dataIntegration.metaboAnnotator.buildMetStruct.createNewMetEntryFromArray">
+<span class="sig-name descname"><span class="pre">createNewMetEntryFromArray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">metInput</span></em>, <em class="sig-param"><span class="pre">source</span></em>, <em class="sig-param"><span class="pre">populate</span></em>, <em class="sig-param"><span class="pre">molFileDirectory</span></em>, <em class="sig-param"><span class="pre">metab_rBioNet_online</span></em>, <em class="sig-param"><span class="pre">rxn_rBioNet_online</span></em>, <em class="sig-param"><span class="pre">metabolite_structure_rBioNet</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metaboAnnotator/buildMetStruct/createNewMetEntryFromArray.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metaboAnnotator.buildMetStruct.createNewMetEntryFromArray" title="Permalink to this definition">¶</a></dt>
+<dd><p>[metabolite_structure, VMH_existance,rBioNet_existance] = createNewMetEntryFromArray(metInput,source,populate,molFileDirectory)
+This function takes a list of metabolites (as specified below) and 1.
+checks whether the metabolite abbr are new to VMH and/or rBioNet (both as
+in the online versions). Then, it obtained the inchi string from the
+provided HMDB as well as the mol file. Using, ChemAxonn it determine the
+most abundant pseudoisomer at ph 7. Then, it uses BridgeDB to obtain
+further ID’s.</p>
+<p>INPUT
+metInput              Cell array containing the metabolites</p>
+<blockquote>
+<div><p>The information provided must be as follows:
+metList={
+‘VMH ID’ ‘metabolite_name’ ‘HMDB’ ‘inchistring’ ‘neutral_formula’ ‘charged_formula’ ‘charge’
+‘cot’ ‘Cotinine’ ‘HMDB0001046’  ‘’ ‘’ ‘’ ‘’
+‘coto’ ‘Cotinine n-oxide’ ‘HMDB0001411’  ‘’ ‘’ ‘’ ‘’</p>
+</div></blockquote>
+<dl class="simple">
+<dt>source                source of the information contained in metArray</dt><dd><p>(e.g., ‘Manually assembled by IT’)</p>
+</dd>
+<dt>populate              Populate new metabolite information based on the</dt><dd><p>provided HMDB Id’s. If no HMDB Id’s are provided, please use other
+functions in the metaboAnnotator for population.
+(Default:true; false).</p>
+</dd>
+<dt>molFileDirectory      Specify directory where the mol files should be</dt><dd><p>deposited. (Default: ‘current path’/molFiles).</p>
+</dd>
+</dl>
+<p>OUTPUT
+updatedMetList        updated metList
+VMH_existance         Lists whether the abbreviation exists in VMH (online),</p>
+<blockquote>
+<div><p>as a reaction (2nd entry) or as a metabolite (3rd entry)</p>
+</div></blockquote>
+<dl class="simple">
+<dt>rBioNet_existance     Lists whether the abbreviation exists in rBioNet (as deposited in cobra toolbox online),</dt><dd><p>as a reaction (2nd entry) or as a metabolite (3rd entry)</p>
+</dd>
+</dl>
+<p>Ines Thiele, 09/2021</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.dataIntegration.metaboAnnotator.buildMetStruct.createNewMetaboliteStructure">
+<span class="sig-name descname"><span class="pre">createNewMetaboliteStructure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">input</span></em>, <em class="sig-param"><span class="pre">source</span></em>, <em class="sig-param"><span class="pre">metabolite_structure_rBioNet</span></em>, <em class="sig-param"><span class="pre">metab</span></em>, <em class="sig-param"><span class="pre">rxnDB</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metaboAnnotator/buildMetStruct/createNewMetaboliteStructure.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metaboAnnotator.buildMetStruct.createNewMetaboliteStructure" title="Permalink to this definition">¶</a></dt>
+<dd><dl>
+<dt>This function creates a metabolite structure using the provided input. If</dt><dd><p>no VMHId is provided in the header of the input, then VMHId are
+generated.</p>
+<p>USAGE:</p>
+<blockquote>
+<div><p>[metabolite_structure] = createNewMetaboliteStructure(input,source,metabolite_structure_rBioNet,metab,rxnDB)</p>
+</div></blockquote>
+<dl>
+<dt>INPUT:</dt><dd><dl class="simple">
+<dt>Input:                             Cell array containing the metabolites</dt><dd><p>The information provided must be as follows:
+metList={
+‘VMH ID’ ‘metabolite_name’ ‘HMDB’ ‘inchistring’ ‘neutral_formula’ ‘charged_formula’ ‘charge’
+‘cot’ ‘Cotinine’ ‘HMDB0001046’  ‘’ ‘’ ‘’ ‘’
+‘coto’ ‘Cotinine n-oxide’ ‘HMDB0001411’  ‘’ ‘’ ‘’ ‘’</p>
+</dd>
+<dt>source:                            source of the information contained in metArray</dt><dd><p>(e.g., ‘Manually assembled by IT’)</p>
+</dd>
+<dt>metabolite_structure_rBioNet:      (optional and only necessary if the</dt><dd><p>input has no VMHId)</p>
+</dd>
+</dl>
+<p>metab:
+rxnDB:</p>
+</dd>
+<dt>OUTPUT:</dt><dd><p>metabolite_structure:              metabolite structure</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.dataIntegration.metaboAnnotator.buildMetStruct.createrBioNetStructure">
+<span class="sig-name descname"><span class="pre">createrBioNetStructure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">metabolite_structure_rBioNet</span></em>, <em class="sig-param"><span class="pre">start</span></em>, <em class="sig-param"><span class="pre">stop</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metaboAnnotator/buildMetStruct/createrBioNetStructure.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metaboAnnotator.buildMetStruct.createrBioNetStructure" title="Permalink to this definition">¶</a></dt>
+<dd><p>for the moment rBioNet will serve as universal database, but I will
+update this</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.dataIntegration.metaboAnnotator.buildMetStruct.generateVMHMetAbbr">
+<span class="sig-name descname"><span class="pre">generateVMHMetAbbr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">met</span></em>, <em class="sig-param"><span class="pre">metabolite_structure_rBioNet</span></em>, <em class="sig-param"><span class="pre">metab</span></em>, <em class="sig-param"><span class="pre">rxnDB</span></em>, <em class="sig-param"><span class="pre">customMetAbbrList</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metaboAnnotator/buildMetStruct/generateVMHMetAbbr.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metaboAnnotator.buildMetStruct.generateVMHMetAbbr" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function generates VMH ID’s based on a metabolites based on
+predefined rules, as we would generally do it manually</p>
+<p>INPUT
+met                           Metabolite name or list of names
+metabolite_structure_rBioNet  To save time provide rBioNet either as</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>string to mat file to load, e.g.,: /path/to/metabolite_structure_rBioNet.mat</p></li>
+<li><p>structure already in memory: metabolite_structure_rBioNet</p></li>
+</ol>
+</div></blockquote>
+<dl class="simple">
+<dt>metab                         To save time provide rBioNet (as</dt><dd><p>metab.mat file)</p>
+</dd>
+<dt>rxnDB                         To save time provide rBioNet (as</dt><dd><p>rxn.mat file)</p>
+</dd>
+<dt>customMetaboliteList          List of metabolite abbr against which</dt><dd><p>uniqueness should also be checked</p>
+</dd>
+</dl>
+<p>OUTPUT
+VMHId                         New VMH ID or list of IDs</p>
+<p>Ines Thiele, 09/2021</p>
+</dd></dl>
+
+<dl class="mat script">
+<dt class="sig sig-object mat" id="src.dataIntegration.metaboAnnotator.buildMetStruct.metaboliteStructureFieldNames">
+<span class="sig-name descname"><span class="pre">metaboliteStructureFieldNames</span></span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metaboAnnotator/buildMetStruct/metaboliteStructureFieldNames.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metaboAnnotator.buildMetStruct.metaboliteStructureFieldNames" title="Permalink to this definition">¶</a></dt>
+<dd><p>This m file contains the list of allowable fields in the
+metabolite_structure</p>
+<p>Ines Thiele, 2020/2021</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.dataIntegration.metaboAnnotator.buildMetStruct.model2MetStructure">
+<span class="sig-name descname"><span class="pre">model2MetStructure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">filename</span></em>, <em class="sig-param"><span class="pre">filetype</span></em>, <em class="sig-param"><span class="pre">outputFileName</span></em>, <em class="sig-param"><span class="pre">metabolite_structure_rBioNet</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metaboAnnotator/buildMetStruct/model2MetStructure.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metaboAnnotator.buildMetStruct.model2MetStructure" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function populates metabolites present in a model structure with
+metabolite identifiers, using the MetaboAnnotator.</p>
+<p>INPUT
+filename                      Name of the metabolic reconstruction
+filetype                      Filetype of the metabolic reconstruction to be loaded. Valid</p>
+<blockquote>
+<div><p>input arguments are:’SBML’, ‘SimPheny’,’SimPhenyPlus’, ‘SimPhenyText’,
+‘Matlab’, ‘BiGG’, ‘BiGGSBML’ or ‘Excel’ (Default = ‘Matlab’), see
+readCbModel.m for more details.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>outputFileName                File name under which the metabolite structure</dt><dd><p>and any other information will be saved.</p>
+</dd>
+</dl>
+<p>metabolite_structure_rBioNet</p>
+<p>OUTPUT
+metabolite_structure          metabolite structure containing retrieved metabolite</p>
+<blockquote>
+<div><p>identifiers for each metabolite in the
+metabolic reconstruction</p>
+</div></blockquote>
+<dl class="simple">
+<dt>tableMappingOverview          Table listing the IDs and their count</dt><dd><p>before and after running the function</p>
+</dd>
+<dt>TableIDs                      Table containing the individual IDs. Same</dt><dd><p>content as in metabolite_structure</p>
+</dd>
+</dl>
+<p>Ines Thiele, 2020/2021</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.dataIntegration.metaboAnnotator.buildMetStruct.populateModelMetStr">
+<span class="sig-name descname"><span class="pre">populateModelMetStr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">metabolite_structure</span></em>, <em class="sig-param"><span class="pre">replaceAllHits</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metaboAnnotator/buildMetStruct/populateModelMetStr.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metaboAnnotator.buildMetStruct.populateModelMetStr" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function populates the model structure with information contained in
+the metabolite structure</p>
+<p>INPUT
+model                     model structure
+metabolite_structure      metabolite structure
+replaceAllHits            replace existing entries (defaul: false)</p>
+<p>OUTPUT
+model                     updated model structure</p>
+<p>Ines Thiele 10/2021</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.dataIntegration.metaboAnnotator.buildMetStruct.removeSmilesInchiKey">
+<span class="sig-name descname"><span class="pre">removeSmilesInchiKey</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">metabolite_structure</span></em>, <em class="sig-param"><span class="pre">removeInchiKey</span></em>, <em class="sig-param"><span class="pre">removeSmiles</span></em>, <em class="sig-param"><span class="pre">generateSmiles</span></em>, <em class="sig-param"><span class="pre">generateInchiKey</span></em>, <em class="sig-param"><span class="pre">generateMolFile</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metaboAnnotator/buildMetStruct/removeSmilesInchiKey.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metaboAnnotator.buildMetStruct.removeSmilesInchiKey" title="Permalink to this definition">¶</a></dt>
+<dd><p>this function removes all smiles and InchiKeys from fields if InchiString
+exists. This is done to reduce cummulative errors. The next step will be
+to compute smiles and InchiKeys from InchiString - for this use
+[result] = convertInchiString2format(inchiString,format)</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.dataIntegration.metaboAnnotator.buildMetStruct.replaceVMHIds">
+<span class="sig-name descname"><span class="pre">replaceVMHIds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">metabolite_structure</span></em>, <em class="sig-param"><span class="pre">reaction_structure</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metaboAnnotator/buildMetStruct/replaceVMHIds.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metaboAnnotator.buildMetStruct.replaceVMHIds" title="Permalink to this definition">¶</a></dt>
+<dd><p>add, remove, or replace errors present in the metabolite annotation
+all mentions in this file are manually done and will result in the
+removal or replacement of the entries.</p>
+<p>INPUT
+metabolite_structure  metabolite structure
+reaction_structure    reaction structure (not done yet)</p>
+<p>OUTPUT
+metabolite_structure  updated metabolite structure
+reaction_structure    updated reaction structure (not done yet)</p>
+<p>Ines Thiele 2020/2021</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.dataIntegration.metaboAnnotator.buildMetStruct.sanityCheckMetIds">
+<span class="sig-name descname"><span class="pre">sanityCheckMetIds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">metabolite_structure</span></em>, <em class="sig-param"><span class="pre">removeErrors</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metaboAnnotator/buildMetStruct/sanityCheckMetIds.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metaboAnnotator.buildMetStruct.sanityCheckMetIds" title="Permalink to this definition">¶</a></dt>
+<dd><p>perform basic sanity checks</p>
+</dd></dl>
+
+<dl class="mat script">
+<dt class="sig sig-object mat" id="src.dataIntegration.metaboAnnotator.buildMetStruct.translateMetStr2COBRAmodel">
+<span class="sig-name descname"><span class="pre">translateMetStr2COBRAmodel</span></span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metaboAnnotator/buildMetStruct/translateMetStr2COBRAmodel.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metaboAnnotator.buildMetStruct.translateMetStr2COBRAmodel" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>allowed COBRA fields can be found here</dt><dd><p>fileName = which(‘COBRA_structure_fields.tab’);
+[raw] = descFileRead(fileName);</p>
+</dd>
+</dl>
+<p>raw.Model_Field
+this table translates metabolite structure fields and COBRA model fields</p>
+</dd></dl>
+
+</section>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../analyseMetStruct/index.html" class="btn btn-default float-right" title="Analysemetstruct" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../index.html" class="btn btn-default" title="Metaboannotator" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017-2021, The COBRA Toolbox developers.
+
+    </p>
+  </div>
+  Built with Sphinx using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../',
+            VERSION:'2.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+    <script type="text/javascript" src="../../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../../_static/sphinx_highlight.js"></script>
+
+  
+
+
+  
+  
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TRCMZL1FKK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TRCMZL1FKK');
+  </script>
+    
+</body>
+</html>
