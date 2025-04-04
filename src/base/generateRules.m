@@ -1,12 +1,17 @@
-function model = generateRules(model)
-% updateRulesFromGrRules - Generates model.rules from model.grRules
-% Requires: model.grRules and model.genes to be defined
+function modelOut = generateRules(model)
+% This function generates standard rules field in a genome-scale model
 %
-% Inputs:
+% USAGE:
+%           modelOut = generateRules(model)
+%
+% INPUTS:
 %   model - COBRA model structure with fields 'genes' and 'grRules'
-% Outputs:
-%   model - updated model with 'rules' field populated
-% Author: Farid Zare, April 2025
+%
+% OUTPUTS:
+%   modelOut - updated model with 'rules' field populated
+%
+% ...Author: Farid Zare, April 2025
+%
 
     % Initialise rules cell array
     model.rules = cell(size(model.grRules));
@@ -48,5 +53,8 @@ function model = generateRules(model)
         % Store in model.rules
         model.rules{i} = grRule;
     end
+
+    % Return updated model
+    modelOut = model;
 
 end
