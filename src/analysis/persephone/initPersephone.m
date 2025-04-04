@@ -100,7 +100,7 @@ metadata = readMetadataForPersephone(paths.General.metadataPath);
 acceptableIdNameList = {'id','sample','name','sample_id','sample_name','sample id','sample name'}; % Can be extended in the future
 
 % Check if ID information can be found in the metadata
-varNames = metadata.Properties.VariableDescriptions;
+varNames = metadata.Properties.VariableNames;
 if any(matches(acceptableIdNameList,varNames{1},"IgnoreCase",true))
     metadata = renamevars(metadata, varNames{1},'ID');
     metadata.ID = string(metadata.ID);
