@@ -3,7 +3,7 @@ name: Update function docs
 on:
   push:
     branches:
-      - develop
+      - master
 
 jobs:
   build:
@@ -11,7 +11,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-
       - name: Set up Python 3.10
         uses: actions/setup-python@v3
         with:
@@ -50,8 +49,8 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           folder: ./documentation/build/html/modules
-          branch: develop
-          target-folder: docs/modules
+          branch: gh-pages
+          target-folder: stable/modules
           commit-message: "update Function Docs (Automatic Workflow)"
 
       - name: Deploy the citations page
@@ -59,9 +58,9 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./documentation/source/Citations
-          publish_branch: develop
+          publish_branch: gh-pages
           keep_files: true
-          destination_dir: docs
+          destination_dir: stable
           commit_message: "update Function Docs (Automatic Workflow)"
 
       - name: Deploy the citations static page
@@ -69,7 +68,7 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./documentation/build/html/_static
-          publish_branch: develop
+          publish_branch: gh-pages
           keep_files: true
-          destination_dir: docs/_static
+          destination_dir: stable/_static
           commit_message: "update Function Docs (Automatic Workflow)"
