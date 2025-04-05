@@ -220,7 +220,7 @@ B = model.S(:,~model.SConsistentRxnBool);
 [~,k] = size(B);  % number of external reactions
 
 %% processing for fluxes
-[vl,vu,vel,veu,vfl,vfu,vrl,vru,ci,ce,cf,cr,g] = processFluxConstraints(model,param);
+[vl,vu,vel,veu,vfl,vfu,vrl,vru,ci,ce,cf,cr,g, param] = processFluxConstraints(model,param);
 
 if param.debug && 0 %TODO - remove this
     modelProcessed = model;
