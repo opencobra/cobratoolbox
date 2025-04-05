@@ -1,0 +1,829 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Additionalfunctions &mdash; The COBRA Toolbox</title>
+  
+
+  
+  
+  
+    <link rel="apple-touch-icon" sizes="180x180" href="../../../../_static/img/apple-touch-icon.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../../_static/img/favicon-32x32.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="16x16" href="../../../../_static/img/favicon-16x16.png">
+  
+  
+    <link rel="mask-icon" href="../../../../_static/img/safari-pinned-tab.svg" color="#5bbad5">
+  
+  
+    <link rel="manifest" href="../../../../_static/json/manifest.json">
+  
+  
+    <meta name="msapplication-config" content="../../../../_static/browserconfig.xml">
+  
+  <meta name="theme-color" content="#ffffff">
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+  <script src="../../../../_static/js/jquery.easy-autocomplete.min.js" type="text/javascript" ></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+  <link href="../../../../_static/css/easy-autocomplete.min.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../_static/css/cobra.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../../../_static/css/cobra.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../../search.html"/>
+    <link rel="top" title="The COBRA Toolbox" href="../../../../index.html"/>
+        <link rel="up" title="Persephone" href="../index.html"/>
+        <link rel="next" title="Transport" href="../../transport/index.html"/>
+        <link rel="prev" title="Seqc_proc" href="../SeqC_pipeline/seqc_proc/index.html"/> 
+
+  
+  <script src="../../../../_static/js/modernizr.min.js"></script>
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> The COBRA Toolbox
+          
+
+          
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
+          
+          </a>
+
+              
+          <h1>The COBRA Toolbox</h1>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" id="simple"/>
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+    <script>
+    	var options = {
+
+		url: "../../../../_static/json/functions.json",
+
+		getValue: "name",
+
+		list: {
+            onKeyEnterEvent: function(item) {
+                    return "_static/../" + item.website_url
+            },
+            maxNumberOfElements: 25,
+			match: {
+					enabled: true,
+			},
+            sort: {
+			    enabled: true
+		    }
+		},
+
+    	template: {
+	    	type: "custom",
+		    method: function(value, item) {
+                return "<span><a href='../../../../search.html?q=" + item.name + "&check_keywords=yes&area=default'>" + value + "</a>" + "<a href='../../../../_static/../" + item.website_url + "' ><img src='../../../../_static/link.svg'/></a></span>";
+		    }
+	    },
+
+		theme: "square"
+
+	};
+
+	$("#simple").easyAutocomplete(options);
+
+
+    </script>
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../index.html">Home</a></li>
+              </ul>
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">Functions</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Analysis</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../../dynamicFBA/index.html">Dynamicfba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../fluxEnrichmentAnalysis/index.html">Fluxenrichmentanalysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../topology/index.html">Topology</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../deletion/index.html">Deletion</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html">Persephone</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../SeqC_pipeline/index.html">Seqc_pipeline</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Additionalfunctions</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../transport/index.html">Transport</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../parsimoniousFBA/index.html">Parsimoniousfba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sparseFBA/index.html">Sparsefba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../relaxedFBA/index.html">Relaxedfba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sampling/index.html">Sampling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../percentileCalc/index.html">Percentilecalc</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../rumba/index.html">Rumba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../multiSpecies/index.html">Multispecies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../rFBA/index.html">Rfba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ROOM/index.html">Room</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../QFCA/index.html">Qfca</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../nutritionAlgorithm/index.html">Nutritionalgorithm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../geometricFBA/index.html">Geometricfba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../wholeBody/index.html">Wholebody</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../thermo/index.html">Thermo</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../exploration/index.html">Exploration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../igemRNA/index.html">Igemrna</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../findMIIS/index.html">Findmiis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../KLdistance/index.html">Kldistance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../subspaces/index.html">Subspaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../uFBA/index.html">Ufba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../MOMA/index.html">Moma</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../coupling/index.html">Coupling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../gMCS/index.html">Gmcs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ICONGEMs/index.html">Icongems</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../FBA/index.html">Fba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../mdFBA/index.html">Mdfba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../robustnessAnalysis/index.html">Robustnessanalysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../FVA/index.html">Fva</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../rMTA/index.html">Rmta</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../fastForest/index.html">Fastforest</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../base/index.html">Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../dataIntegration/index.html">Dataintegration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../design/index.html">Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reconstruction/index.html">Reconstruction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../visualization/index.html">Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contributing.html">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../cite.html">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../support.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../plan.html">Development Plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contact.html">Contact</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../citations.html">Citations</a></li>
+</ul>
+
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">The COBRA Toolbox</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../contents.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Functions</a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Analysis</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Persephone</a></li>
+      <li class="breadcrumb-item active">Additionalfunctions</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="https://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <section id="additionalfunctions">
+<span id="id1"></span><h1>Additionalfunctions<a class="headerlink" href="#additionalfunctions" title="Permalink to this heading">¶</a></h1>
+<span class="target" id="module-src.analysis.persephone.additionalFunctions"></span><dl class="mat script">
+<dt class="sig sig-object mat" id="src.analysis.persephone.additionalFunctions.CreateClusterAndRAtables">
+<span class="sig-name descname"><span class="pre">CreateClusterAndRAtables</span></span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/persephone/additionalFunctions/CreateClusterAndRAtables.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.persephone.additionalFunctions.CreateClusterAndRAtables" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create clusters and their respective rel abund tables</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.persephone.additionalFunctions.combineFluxResults">
+<span class="sig-name descname"><span class="pre">combineFluxResults</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">directory1</span></em>, <em class="sig-param"><span class="pre">directory2</span></em>, <em class="sig-param"><span class="pre">resultdirectory</span></em>, <em class="sig-param"><span class="pre">set_regexp</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/persephone/additionalFunctions/combineFluxResults.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.persephone.additionalFunctions.combineFluxResults" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function merges &amp; prunes the FBA solutions between two runs of the
+optimiseRxnMultipleWBMs.m function. Reaction fluxes, FBA statistics, &amp;
+shadow prices get therefore concatenated. Note that in case the sample
+filenames differ from the standard, the regular expression needs to be adapted.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[dietInfo, dietGrowthStats] = ensureHMfeasibility</strong> (<em>hmDirectory, Diet</em>)</p>
+</dd>
+</dl>
+<p>INPUTS
+directory1            [char array] Directory to flux solutions from the first run
+directory2            [char array] Directory to flux solutions from the second run
+resultdirectory       [char array] Directory to empty folder where the combined fluxes</p>
+<blockquote>
+<div><p>will be saved.</p>
+</div></blockquote>
+<p>OPTIONAL INPUT
+set_regexp            [char array] Specifying alternative regular expression in case</p>
+<blockquote>
+<div><p>the sample filenames are different from their style
+than the standard optimiseRxnMultipleWBMs.m output.</p>
+</div></blockquote>
+<p class="rubric">Authors</p>
+<ul class="simple">
+<li><p>Tim Hensen, 2024</p></li>
+<li><p>modified by Jonas Widder, 10/2024 &amp; 11/2024 (function can now also merge dirs
+with unequal number of samples + added set_regexp option)</p></li>
+</ul>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.persephone.additionalFunctions.completeSpeciesFolder">
+<span class="sig-name descname"><span class="pre">completeSpeciesFolder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">agoraPath</span></em>, <em class="sig-param"><span class="pre">panPath</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/persephone/additionalFunctions/completeSpeciesFolder.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.persephone.additionalFunctions.completeSpeciesFolder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Some strains in AGORA2 only have one strain. These strains are not moved to the
+pan model folder, resulting in some soecies not being captured in the
+models. By converting the strain reconstructions with only a single
+strain to the species folder, you can solve this problem.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>completeSpeciesFolder</strong> (<em>strainPath, panSpeciesPath</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>strainPath     Path to folder with strain reconstructions</strong></p></li>
+<li><p><strong>panSpeciesPath Path to folder with pan species models</strong></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.persephone.additionalFunctions.convertVMHIDName">
+<span class="sig-name descname"><span class="pre">convertVMHIDName</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">metNames</span></em>, <em class="sig-param"><span class="pre">VMHIDs</span></em>, <em class="sig-param"><span class="pre">suggestSimilar</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/persephone/additionalFunctions/convertVMHIDName.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.persephone.additionalFunctions.convertVMHIDName" title="Permalink to this definition">¶</a></dt>
+<dd><p>FOUR FUNCTIONS:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>Retrieve metabolite IDs corresponding to the given metabolite names AND/OR</p></li>
+<li><dl class="simple">
+<dt>Retrieve metabolite names corresponding to a given metabolite ID or some</dt><dd><p>reactions</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Convert metabolite tranport reactions e.g., DM_glc_d[bc] to D-Glucose or</dt><dd><p>EX_glc_D[c] to metabolite name e.g., D-Glucose.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Suggest similar names for metabolite names provided that are</dt><dd><p>not found in the data base</p>
+</dd>
+</dl>
+</li>
+</ol>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Inputs</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>metNames -         EITHER</strong> – Cell array of metabolite names (strings) or metabolilte transport
+reactions (can be mixed)for which IDs are required or flag indicating to skip step (0).</p></li>
+<li><p><strong>metIDs -           Cell array of metabolite IDs</strong> (<em>strings</em>) – required or flag indicating to skip step (0).</p></li>
+<li><p><strong>suggestSimilar -   Flag indicating whether to generate suggestions</strong> (<em>1) or not (0</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Outputs</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>foundVMHIDs -      Cell array of metabolite IDs corresponding to the input names.</strong></p></li>
+<li><p><strong>foundMetNames -    Cell array of metabolite Names corresponsing to the input IDs</strong></p></li>
+<li><p><strong>similarMets -      Cell array of possible matches for each unfound metabolite name,</strong> – when searching for names.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Other requirements: COBRA toolbox installation (and paths set)</p>
+<p>EXAMPLE OF USE:</p>
+<p>VMHIDs = {‘DM_gam[bc]’; ‘malttr’};
+metNames = {‘D-glucose’, ‘fructose’, ‘carbon’};
+% metNames = false;
+% VMHIDs = false;
+% suggestSimilar = false;
+suggestSimilar = true;</p>
+<p>% [foundVMHIDs, foundMetNames, similarMets] = convertVMHIDName(metNames,VMHIDs, suggestSimilar);</p>
+<p>Author: - Anna Sheehy &amp; Tim Hensen - 18/07/2024</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.persephone.additionalFunctions.dimensionalityReductionAndMultivariateAnalysis">
+<span class="sig-name descname"><span class="pre">dimensionalityReductionAndMultivariateAnalysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">measuresTable</span></em>, <em class="sig-param"><span class="pre">metadataTable</span></em>, <em class="sig-param"><span class="pre">varOfInterest</span></em>, <em class="sig-param"><span class="pre">results_path</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/persephone/additionalFunctions/dimensionalityReductionAndMultivariateAnalysis.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.persephone.additionalFunctions.dimensionalityReductionAndMultivariateAnalysis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dimensionality reduction of high-dimensional measures (e.g. microbiome relative abundances
+or reaction relative abundances) by RPCA following data preprocessing OR beta-diversity measures by PCoA,
+with the aim to:</p>
+<blockquote>
+<div><p>1. Find whether there are general differences between groups of a metadata variable of interest
+(e.g. disease vs ctrl status), in case variable is categorical.
+2. Identify variables from the measures (e.g. microbial taxa, reactions)
+which contribute the most to the first principle component (PC1) of RPCA &amp;
+therefore its explained variance.
+3. Perform linear regression on PC1 ~ metadata variable (e.g. Sex, disease vs Ctrl status)
+to find metadata variables which might be important confounders in
+follow-up analysis in case they are significantly correlated &amp;
+explain a lot of the variance of PC1 from RPCA/PCoA.</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>measuresTable</strong> – [table] Contains high-dimensional measures (e.g. microbiome relative abundances
+or reaction relative abundances), with columns = samples &amp;
+rows = measured groups (e.g. taxa/reactions).</p></li>
+<li><p><strong>metadataTable</strong> – [table] Contains metadata information for samples (e.g.
+sex), with columns = variables (e.g. Sex) &amp; rows = samples.</p></li>
+<li><p><strong>varOfInterest</strong> – [string] Variable (e.g. Sex or disease status)
+contained in metadata.</p></li>
+<li><p><strong>results_path</strong> – [string] Directory path, where results should be stored
+(figures &amp; statistical results in spreadsheet format).</p></li>
+<li><p><strong>varargin</strong></p></li>
+<li><p><strong>numLoadings</strong> – [numeric] Number of PC loadings which shall be
+displayed in plot of PC strongest feature
+contributions.
+Defaults to 15 loadings.</p></li>
+<li><p><strong>inputDataType</strong> – [chars/string] Specify whether data input is of type “abundance” or
+“betaDiversityMatrix”, which results in alternative processing routes
+(the input is treated case-insensitive).
+Defaults to “abundance”.</p></li>
+<li><p><strong>PCofInterest</strong> – [numeric] Principle component/principle coordinate of
+interest, which analysis will be performed on.
+Defaults to PC 1.</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUTS</dt>
+<dd class="field-even"><p><strong>In form of tables &amp; plots into dir at results_path location.</strong></p>
+</dd>
+</dl>
+<p class="rubric">Authors</p>
+<ul class="simple">
+<li><p>Jonas Widder, 12/2024 &amp; 01/2025</p></li>
+</ul>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.persephone.additionalFunctions.downloadAGORA2">
+<span class="sig-name descname"><span class="pre">downloadAGORA2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">directory</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/persephone/additionalFunctions/downloadAGORA2.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.persephone.additionalFunctions.downloadAGORA2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Download and unpack agora2
+INPUT
+directory     Directory indicating where to donwload AGORA2</p>
+<p>OUTPUT
+AGORA2_dir    Directory to AGORA2 folder</p>
+<p>Author:  Tim Hensen, 2024</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.persephone.additionalFunctions.filterMetabolitesNotPresentInWBMmodel">
+<span class="sig-name descname"><span class="pre">filterMetabolitesNotPresentInWBMmodel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">metabolitesOfInterest</span></em>, <em class="sig-param"><span class="pre">WBM_compartment</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/persephone/additionalFunctions/filterMetabolitesNotPresentInWBMmodel.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.persephone.additionalFunctions.filterMetabolitesNotPresentInWBMmodel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Filters a table with metabolites for their presence in selected
+compartment(s) of the unpersonalized Harvey &amp; Harvetta WBM models and returns
+both the present &amp; absent metabolites in seperate tables.
+This process ensures that all metabolites of interest are actually present
+in the models &amp; fluxes can be calculated for.</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.persephone.additionalFunctions.findOptimalCoreCount">
+<span class="sig-name descname"><span class="pre">findOptimalCoreCount</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">modelDir</span></em>, <em class="sig-param"><span class="pre">solver</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/persephone/additionalFunctions/findOptimalCoreCount.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.persephone.additionalFunctions.findOptimalCoreCount" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function finds the optimal number of workers for the HM models being investigated
+INPUT:
+modelPath             Path to folder with COBRA models
+OPTIONAL INPUT
+subSetSize            Size of the random subset of models used for testing</p>
+<p>OUTPUT
+fig                   Figure showing the average speedup factor for each tested</p>
+<blockquote>
+<div><p>configuration of workers.</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="mat script">
+<dt class="sig sig-object mat" id="src.analysis.persephone.additionalFunctions.generateAGORA2MappingStatTable">
+<span class="sig-name descname"><span class="pre">generateAGORA2MappingStatTable</span></span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/persephone/additionalFunctions/generateAGORA2MappingStatTable.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.persephone.additionalFunctions.generateAGORA2MappingStatTable" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<hr class="docutils" />
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.persephone.additionalFunctions.generatePanAGORA2database">
+<span class="sig-name descname"><span class="pre">generatePanAGORA2database</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/persephone/additionalFunctions/generatePanAGORA2database.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.persephone.additionalFunctions.generatePanAGORA2database" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create lookup file for checking which reactions and metabolites are
+present in which AGORA2 strains</p>
+<p>OUTPUT
+lookupFilePath        Path to the generated lookup file</p>
+<p>Authors:  Tim Hensen, 2024</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.persephone.additionalFunctions.generatePanDatabase">
+<span class="sig-name descname"><span class="pre">generatePanDatabase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">inputDir</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/persephone/additionalFunctions/generatePanDatabase.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.persephone.additionalFunctions.generatePanDatabase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create lookup file for checking which reactions and metabolites are
+present in which AGORA2 models</p>
+<p>OUTPUT
+lookupFilePath        Path to the generated lookup file</p>
+<p>Authors:  Tim Hensen, 2024</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.persephone.additionalFunctions.generateStackedBarPlot">
+<span class="sig-name descname"><span class="pre">generateStackedBarPlot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">input_relAbundances</span></em>, <em class="sig-param"><span class="pre">saveDir</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/persephone/additionalFunctions/generateStackedBarPlot.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.persephone.additionalFunctions.generateStackedBarPlot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates stacked bar plots from relative abundances of taxa for single or multiple samples.</p>
+<dl class="field-list simple">
+<dt class="field-odd">INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_relAbundances</strong> – [table] Contains taxa and their relative abundances for
+all samples. Requires column ‘Taxon’ and one or more
+sample columns.</p></li>
+<li><p><strong>saveDir</strong> – [chars/string] Path to the directory where the
+stacked bar plot should be saved.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="simple">
+<dt>AUTHOR:</dt><dd><ul class="simple">
+<li><p>Jonas Widder, 12/2024 &amp; 01/2025</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.persephone.additionalFunctions.getDirectorySize">
+<span class="sig-name descname"><span class="pre">getDirectorySize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">dirPath</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/persephone/additionalFunctions/getDirectorySize.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.persephone.additionalFunctions.getDirectorySize" title="Permalink to this definition">¶</a></dt>
+<dd><dl>
+<dt>======================================================================================================#</dt><dd><p>Title: Directory disk use calculator
+Author: Wiley Barton
+Modified code sources:</p>
+<blockquote>
+<div><dl class="simple">
+<dt>assistance and reference from a generative AI model [ChatGPT](<a class="reference external" href="https://chatgpt.com/">https://chatgpt.com/</a>)</dt><dd><p>clean-up and improved readability</p>
+</dd>
+</dl>
+</div></blockquote>
+<p>Last Modified: 2025.01.29
+Part of: Persephone Pipeline</p>
+<dl>
+<dt>Description:</dt><dd><p>This function determines the size of a selected directory</p>
+</dd>
+<dt>Inputs:</dt><dd><ul class="simple">
+<li><p>repoPathSeqC (char) : Path to the SeqC repository</p></li>
+<li><p>outputPathSeqC (char) : Path for SeqC output</p></li>
+<li><p>fileIDSeqC (char) : Unique identifier for file processing</p></li>
+<li><p>procKeepSeqC (logical) : Keep all files (true/false)</p></li>
+<li><p>maxMemSeqC (int) : Maximum memory allocation for SeqC</p></li>
+<li><p>maxCpuSeqC (int) : Maximum CPU allocation for SeqC</p></li>
+<li><p>maxProcSeqC (int) : Maximum processes for SeqC</p></li>
+<li><p>debugSeqC (logical) : Enable debug mode (true/false)</p></li>
+</ul>
+<p>…</p>
+</dd>
+<dt>Dependencies:</dt><dd><ul class="simple">
+<li><p>MATLAB</p></li>
+<li><p>Docker installed and accessible in the system path</p></li>
+</ul>
+</dd>
+</dl>
+</dd>
+</dl>
+<p>======================================================================================================#</p>
+</dd></dl>
+
+<dl class="mat script">
+<dt class="sig sig-object mat" id="src.analysis.persephone.additionalFunctions.getMicrobeFluxMappingStats">
+<span class="sig-name descname"><span class="pre">getMicrobeFluxMappingStats</span></span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/persephone/additionalFunctions/getMicrobeFluxMappingStats.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.persephone.additionalFunctions.getMicrobeFluxMappingStats" title="Permalink to this definition">¶</a></dt>
+<dd><p>INPUT: saveDirStats</p>
+</dd></dl>
+
+<dl class="mat script">
+<dt class="sig sig-object mat" id="src.analysis.persephone.additionalFunctions.getPanSpeciesMetProdCapacity">
+<span class="sig-name descname"><span class="pre">getPanSpeciesMetProdCapacity</span></span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/persephone/additionalFunctions/getPanSpeciesMetProdCapacity.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.persephone.additionalFunctions.getPanSpeciesMetProdCapacity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create lookup file for checking which reactions and metabolites are
+present in which AGORA2 taxa</p>
+<p>OUTPUT
+lookupFilePath        Path to the generated lookup file</p>
+<p>Authors:  Tim Hensen, 2024</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.persephone.additionalFunctions.getVMHID">
+<span class="sig-name descname"><span class="pre">getVMHID</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">mets</span></em>, <em class="sig-param"><span class="pre">suggest</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/persephone/additionalFunctions/getVMHID.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.persephone.additionalFunctions.getVMHID" title="Permalink to this definition">¶</a></dt>
+<dd><p>getVMHID - Retrieve metabolite IDs corresponding to the given metabolite names.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Inputs</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mets - Cell array of metabolite names</strong> (<em>strings</em>)</p></li>
+<li><p><strong>suggest - Flag indicating whether to generate suggestions</strong> (<em>1) or not (0</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Outputs</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>metIDs - Cell array of metabolite IDs corresponding to the input names.</strong></p></li>
+<li><p><strong>suggestedMets - Cell array of possible matches for each unfound metabolite name.</strong></p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>metaboliteNames = {‘glucose’, ‘fructose’};
+[metIDs, suggestedMets] = getVMHID(metaboliteNames, 1);</p>
+<p>Other requirements: COBRA toolbox installation and initialisation</p>
+<p>Author: - Anna Sheehy - 16/07/2024</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.persephone.additionalFunctions.microbiomeMappingStats">
+<span class="sig-name descname"><span class="pre">microbiomeMappingStats</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">rawPath</span></em>, <em class="sig-param"><span class="pre">marsPath</span></em>, <em class="sig-param"><span class="pre">saveDir</span></em>, <em class="sig-param"><span class="pre">metadataPath</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/persephone/additionalFunctions/microbiomeMappingStats.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.persephone.additionalFunctions.microbiomeMappingStats" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function for obtaining statistics on AGORA2 mapping</p>
+<p>INPUT
+rawPath: path to the unfiltered microbiome data
+marsPath: path to mapped microbiome data
+saveDir: path to folder where the results are saved</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.persephone.additionalFunctions.physiologicalConstraintsHMDBbasedTEMP">
+<span class="sig-name descname"><span class="pre">physiologicalConstraintsHMDBbasedTEMP</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">IndividualParameters</span></em>, <em class="sig-param"><span class="pre">ExclList</span></em>, <em class="sig-param"><span class="pre">Type</span></em>, <em class="sig-param"><span class="pre">InputData</span></em>, <em class="sig-param"><span class="pre">Biofluid</span></em>, <em class="sig-param"><span class="pre">setDefault</span></em>, <em class="sig-param"><span class="pre">ExclMet</span></em>, <em class="sig-param"><span class="pre">ExclMetAbbr</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/persephone/additionalFunctions/physiologicalConstraintsHMDBbasedTEMP.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.persephone.additionalFunctions.physiologicalConstraintsHMDBbasedTEMP" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function applies  constraints to the whole-body metabolic model
+metabolite concentrations have to be given in uM
+organ weights have to be given in g
+Please note that reaction specific constraints are applied at the end of
+the function, which have been derived from the literature.</p>
+<p>function modelConstraint = physiologicalConstraintsHMDBbased(model,IndividualParameters, ExclList, Type, InputData, Biofluid, setDefault,ExclMet,ExclMetAbbr)</p>
+<p>INPUT
+model                     model structure
+IndividualParameters      Structure containing physiological parameters,</p>
+<blockquote>
+<div><p>as generated in standardPhysiolDefaultParameters</p>
+</div></blockquote>
+<dl class="simple">
+<dt>ExclList                  List of reaction(s) to which no updated bound</dt><dd><p>should be assigned to</p>
+</dd>
+<dt>Type                      Input type (either ‘xlsx’ (default) –&gt; loads by default</dt><dd><p>‘Parsed_hmdbConc.xlsx’ or ‘direct’). If
+‘direct’ InputData must be provided</p>
+</dd>
+<dt>InputData                 first column corresponds to vmh id’s of</dt><dd><p>metabolites, 2nd to data points (will be set as lb and ub)</p>
+</dd>
+<dt>Biofluid                  ‘all’ (default if type is xlsx). For direct:</dt><dd><p>‘bc’,’u’,’csf’</p>
+</dd>
+<dt>setDefault                If input data does not contain concentration information for a given metabolite</dt><dd><p>then a default concentration ranges will be used to calculate the constraints (default: 1)
+Note that the default metabolite concentration
+ranges are specified in IndividualParameters
+for the different biofluid compartments.</p>
+</dd>
+<dt>ExclMet                   Specify if certain metabolites, and thus their associated reactions, should be</dt><dd><p>excluded from the constraint application (default: 0)</p>
+</dd>
+<dt>ExclMetAbbr               Provide list of metabolites that should be</dt><dd><p>excluded</p>
+</dd>
+</dl>
+<p>OUTPUT
+modelConstraint           model structure with updated constraints</p>
+<p>Ines Thiele, 2015-2019</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.persephone.additionalFunctions.plotAbsentTaxaEffectOnMARScoverage">
+<span class="sig-name descname"><span class="pre">plotAbsentTaxaEffectOnMARScoverage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">mars_preprocessedInput</span></em>, <em class="sig-param"><span class="pre">absentTaxa_abundanceMetrics</span></em>, <em class="sig-param"><span class="pre">readCounts</span></em>, <em class="sig-param"><span class="pre">results_path</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/persephone/additionalFunctions/plotAbsentTaxaEffectOnMARScoverage.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.persephone.additionalFunctions.plotAbsentTaxaEffectOnMARScoverage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Based on MARS mapping input, this function generates a plot which
+visualizes how much of an effect the addition of currently unmapped taxa
+to the microbiome community model would have in terms of read coverage,
+starting from the most abundant taxa.</p>
+<dl class="field-list simple">
+<dt class="field-odd">INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mars_preprocessedInput</strong> – [table] MARS output “preprocessed_input” which
+contains read counts per pre-mapped taxa.</p></li>
+<li><p><strong>absentTaxa_abundanceMetrics</strong> – [table] MARS output listing all
+unmapped taxa together with summary statistics on their relative
+abundance across samples (mean relative abundance is of importance for
+the function).</p></li>
+<li><p><strong>readCounts</strong> – [table] Original data table containing
+read counts per taxa.</p></li>
+<li><p><strong>results_path</strong> – [string] Directory path, where results should be stored (figure).</p></li>
+<li><p><strong>numAbsentTaxaToInvestigate</strong> – [numerical] Number of unmapped taxa
+whose effect should be tested for &amp; plotted.
+Optional, defaults to the full list of all unmapped taxa.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Authors</p>
+<ul class="simple">
+<li><p>Jonas Widder, 11/2024 &amp; 01/2025</p></li>
+</ul>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.persephone.additionalFunctions.runStatisticsOnModerationAnalysisResults">
+<span class="sig-name descname"><span class="pre">runStatisticsOnModerationAnalysisResults</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">data</span></em>, <em class="sig-param"><span class="pre">metadata</span></em>, <em class="sig-param"><span class="pre">formula</span></em>, <em class="sig-param"><span class="pre">regressionResults</span></em>, <em class="sig-param"><span class="pre">moderationThreshold_usePValue</span></em>, <em class="sig-param"><span class="pre">moderationThreshold</span></em>, <em class="sig-param"><span class="pre">saveDir</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/persephone/additionalFunctions/runStatisticsOnModerationAnalysisResults.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.persephone.additionalFunctions.runStatisticsOnModerationAnalysisResults" title="Permalink to this definition">¶</a></dt>
+<dd><p>Filters regression results from moderation analysis for significantly
+correlating metabolites fluxes/bacterial taxa. Then stratifies the filtered
+flux/rel. abundances data for the moderator &amp; performs new statistical analysis
+on the stratified data.
+Notes: The moderator needs to be categorical.</p>
+<dl class="field-list simple">
+<dt class="field-odd">INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> – [Table] Processed flux/relative abundances data.</p></li>
+<li><p><strong>metadata</strong> – [Table] Metadata containing ID &amp; pot. additional variables
+(confounders, moderators)</p></li>
+<li><p><strong>formula</strong> – [String] Regression formula in Wilkinson notation.</p></li>
+<li><p><strong>regressionResults</strong> – [Struct] Structure containing tables for flux &amp;
+rel. abundances regression results.</p></li>
+<li><p><strong>moderationThreshold_usePValue</strong> – [Boolean] Cutoff threshold being either
+FDR or pValue.
+Default = true.</p></li>
+<li><p><strong>moderationThreshold</strong> – [Numerical] Cutoff threshold for maximal FDR value from
+moderation analysis a metabolite/bacterial taxa needs to
+pass that it will be included in subsequent
+analysis of stratified fluxes/taxa.
+Default = 0.05 (5%).</p></li>
+<li><p><strong>saveDir</strong> – [Character array] Path to working directory.</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUT</dt>
+<dd class="field-even"><p><strong>statResults</strong> – [Struct] Structure containing tables for
+regression results for moderator stratified data
+of significant hits from initial from moderation
+analysis regressions.
+Will be empty, if regression does not contain Flux
+or relative abundance.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>AUTHOR:</dt><dd><p>Jonas Widder, 11/2024</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.persephone.additionalFunctions.setResultPath">
+<span class="sig-name descname"><span class="pre">setResultPath</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">solutionDir</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/persephone/additionalFunctions/setResultPath.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.persephone.additionalFunctions.setResultPath" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function for creating a common path to all flux results</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.persephone.additionalFunctions.slimDownFBAresults">
+<span class="sig-name descname"><span class="pre">slimDownFBAresults</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">FBAsolutionDir</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/persephone/additionalFunctions/slimDownFBAresults.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.persephone.additionalFunctions.slimDownFBAresults" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function prunes FBA solution results obtained in
+optimiseRxnMultipleWBM.m and saves the slimmed down solution results in a
+new folder. The function first creates a new folder and generates paths
+for the flux results in that folder. Then, only the following data is
+loaded: ‘rxns’,’ID’,’sex’,’f’, and’stat’. If microbiome data was available:
+‘speciesBIO’,’shadowPriceBIO’, and ‘relAbundances’. Then, the solutions
+are saved to the new paths.</p>
+<p>INPUT
+FBAsolutionDir            Character array with path to FBA solutions.</p>
+<p>OUTPUT
+smallFBAsolutionPaths     Path to slimmed down FBA results</p>
+<p>AUTHOR: Tim Hensen, October 2024</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.persephone.additionalFunctions.validateDietPath">
+<span class="sig-name descname"><span class="pre">validateDietPath</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">Diet</span></em>, <em class="sig-param"><span class="pre">resPath</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/persephone/additionalFunctions/validateDietPath.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.persephone.additionalFunctions.validateDietPath" title="Permalink to this definition">¶</a></dt>
+<dd><p>validateDietPath checks if ‘Diet’ is a valid COBRA Toolbox diet or file path
+and either loads the corresponding data or saves it to a text file.</p>
+</dd></dl>
+
+</section>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../../transport/index.html" class="btn btn-default float-right" title="Transport" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../SeqC_pipeline/seqc_proc/index.html" class="btn btn-default" title="Seqc_proc" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017-2021, The COBRA Toolbox developers.
+
+    </p>
+  </div>
+  Built with Sphinx using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../',
+            VERSION:'2.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+    <script type="text/javascript" src="../../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../../_static/sphinx_highlight.js"></script>
+
+  
+
+
+  
+  
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TRCMZL1FKK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TRCMZL1FKK');
+  </script>
+    
+</body>
+</html>

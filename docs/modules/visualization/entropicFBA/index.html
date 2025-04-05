@@ -225,6 +225,24 @@
   <section id="entropicfba">
 <span id="id1"></span><h1>Entropicfba<a class="headerlink" href="#entropicfba" title="Permalink to this heading">¶</a></h1>
 <span class="target" id="module-src.visualization.entropicFBA"></span><dl class="mat function">
+<dt class="sig sig-object mat" id="src.visualization.entropicFBA.calculateGeneWeight">
+<span class="sig-name descname"><span class="pre">calculateGeneWeight</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">Transcriptomic</span></em>, <em class="sig-param"><span class="pre">Threshold</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/entropicFBA/calculateGeneWeight.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.entropicFBA.calculateGeneWeight" title="Permalink to this definition">¶</a></dt>
+<dd><p>Inputs:
+model              - A COBRA model with mandatory fields: grRules and SConsistentRxnBool.
+Transcriptomic     - A table with entrezID and geneExpression values.
+Threshold          - Threshold for transcriptomic data.</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.visualization.entropicFBA.calculateReactionMasses">
+<span class="sig-name descname"><span class="pre">calculateReactionMasses</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/entropicFBA/calculateReactionMasses.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.entropicFBA.calculateReactionMasses" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function calculates mass related to each reaction, products mass and
+substrates mass,using the left null space of stochiometric matrix,
+useful to unbiased flux through reactions with massive
+metabolites in entropicFBA</p>
+</dd></dl>
+
+<dl class="mat function">
 <dt class="sig sig-object mat" id="src.visualization.entropicFBA.plotyy_eFBA">
 <span class="sig-name descname"><span class="pre">plotyy_eFBA</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">objective</span></em>, <em class="sig-param"><span class="pre">C_max</span></em>, <em class="sig-param"><span class="pre">N</span></em>, <em class="sig-param"><span class="pre">d</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/entropicFBA/plotyy_eFBA.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.entropicFBA.plotyy_eFBA" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="simple">
