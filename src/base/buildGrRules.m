@@ -1,24 +1,32 @@
 function rulesOut = buildGrRules(parsedGPR)
-%GPRUNPARSER Reconstructs GPR rules from the parsed cell array format.
+% 
+% Takes the output of GPRparser (a cell array where each cell contains 
+% the parsed representation of a GPR rule) and converts it back into a 
+% string representation with parentheses around each gene complex. 
+% It also removes duplicate gene entries within each complex and duplicate
+% complexes across the rule.
 %
-%   rulesOut = buildGrRules(parsedGPR) takes the output of GPRparser (a cell
-%   array where each cell contains the parsed representation of a GPR rule)
-%   and converts it back into a string representation with parentheses
-%   around each gene complex. It also removes duplicate gene entries within 
-%   each complex and duplicate complexes across the rule.
+% USAGE:
+%       [rulesOut] = buildGrRules(parsedGPR) 
 %
 %   For example, if a parsed rule is given as:
 %       { {'geneA', 'geneB', 'geneA'}, {'geneC'}, {'geneA', 'geneB'} }
 %   then the output string will be:
 %       '(geneA and geneB) or (geneC)'
 %
-%   INPUT:
+% INPUT:
 %       parsedGPR  - Cell array containing parsed GPR rules.
 %
-%   OUTPUT:
+% OUTPUT:
 %       rulesOut   - Cell array of strings with the reconstructed GPR rules.
 %
-%   AUTHORS: Your Name, Date
+% EXAMPLE:
+%   if a parsed rule is given as:
+%       { {'geneA', 'geneB', 'geneA'}, {'geneC'}, {'geneA', 'geneB'} }
+%   then the output string will be:
+%       {'(geneA and geneB) or (geneC)'}
+%
+% AUTHORS: Farid Zare, April 2025
 
 numRxns = numel(parsedGPR);
 rulesOut = cell(numRxns, 1);

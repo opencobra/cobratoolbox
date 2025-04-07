@@ -1,4 +1,4 @@
-% The COBRAToolbox: test_removeGeneVersions.m
+% The COBRAToolbox: testRemoveGeneVersions.m
 %
 % Purpose:
 %     - Test the removeGeneVersions function to ensure it correctly removes
@@ -33,8 +33,7 @@ ref_grRules = { '(857 and 34) or (45)'; '(857 and 451)'; '(45 and 451) or (857 a
 ref_rules = {'( x(1) & x(2) ) | ( x(3) )'; '( x(1) & x(4) )'; '( x(3) & x(4) ) | ( x(1) & x(3) )'; '( x(3) & x(4) ) | ( x(2) & x(4) ) | ( x(1) & x(3) ) | ( x(1) & x(2) )'};
 ref_rxnGeneMat = sparse([1, 1, 1, 0; 1, 0, 0, 1; 1, 0, 1, 1; 1, 1, 1, 1]);
 
-
-fprintf(' -- Running test_removeGeneVersions: ... ');
+fprintf(' -- Running testRemoveGeneVersions: ... ');
 
 % Run the function under test
 modelOut = removeGeneVersions(model);
