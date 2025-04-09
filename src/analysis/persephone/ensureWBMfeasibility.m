@@ -70,7 +70,7 @@ end
 changeCobraSolver(solver,'LP');
 
 % Set parellel pool
-if numWorkers > 1
+if numWorkers > 0
     poolobj = gcp('nocreate');
     if isempty(poolobj)
         parpool(numWorkers)
@@ -305,11 +305,12 @@ if allModelsFeasible == false && modelsInfeasibleOnAnyDiet == false && allModels
         dietRxnIdx = contains(model.rxns,'Diet_EX_') & model.lb<0;
 
         % Save diet information for function output
-        if i == length(paths)
-            originalDiet = table(...
+        originalDiet = table(...
             model.rxns(dietRxnIdx),model.lb(dietRxnIdx), model.ub(dietRxnIdx),...
             'VariableNames',{'Diet reactions','Lower flux bound','Upper flux bound'}); 
-        end
+
+        % Save original diet in model
+        model.SetupInfo.originalDiet = originalDiet;
 
         % Set the upper bound of all diet reactions to zero
         model.ub(dietRxnIdx) = 0;
@@ -382,6 +383,10 @@ if allModelsFeasible == false && modelsInfeasibleOnAnyDiet == false && allModels
     dietGrowthStats.("Infeasible on updated diet (true/false)")(~feasibleOnDiet) = ~feasibleOnUpdatedDiet;
 end
 writetable(dietGrowthStats,[mWBMPath filesep 'dietGrowthStats.xlsx']);
+writetable(dietInfo.updatedDiet,[mWBMPath filesep 'dietGrowthStats.xlsx'],'Sheet','Updated_diet');
+writecell(missingDietComponents,[mWBMPath filesep 'dietGrowthStats.xlsx'],'Sheet','Added_diet_metabolites');
+
+
 end
 
 function convertedModels = checkWbmFormat(paths)
