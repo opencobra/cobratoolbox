@@ -143,7 +143,7 @@ if createMWBMs == true
     [~,ia,ib]=intersect(metadata.ID,microbiomeSamples,'stable');
     metadata = metadata(ia,:);
     microbiomePaths = microbiomePaths(ib);
-
+    microbiomeSamples = microbiomeSamples(ib);
     % Check if mWBMs can be created and update createMWBMs accordingly
     if isempty(microbiomePaths)
         createMWBMs = false;
