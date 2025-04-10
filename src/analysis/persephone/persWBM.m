@@ -135,6 +135,19 @@ end
 if ~ischar(metadataPath)
     error('metadata data does not satisfy the input requirments (iscell, ischar, istable)')
 else
+    % Locate metadata file allowing for .csv or .xlsx
+    unprocessedMetadata = strrep(metadataPath, '_processed.csv', '');
+    d = dir([unprocessedMetadata, '.*']);
+    match = d(endsWith({d.name}, {'.csv', '.xlsx'}, 'IgnoreCase', true));
+    
+    if isempty(match)
+        error('No matching metadata file (.csv or .xlsx) found.')
+    end
+    
+    % Set unprocessedMetadata to full path of matched file
+    unprocessedMetadata = fullfile(match(1).folder, match(1).name);
+ 
+    
     % Read the metadata table. If the variable names have more than 64
     % characters, the variable names in the table will be truncated. We account
     % for this later, so this warning is ignored here.
@@ -143,19 +156,19 @@ else
     opts = setvartype(opts, opts.VariableNames(1), 'string');
     Data = readtable(metadataPath, opts);
     warning('on')
-
+ 
     % Check if metadata table is not empty
     validateattributes(Data, {'table'}, {'nonempty'}, mfilename, 'metadataTable')
-
+ 
     % The variable names in the metadata table will be truncated if the names
     % are longer than 64 characters. Read the true variable names and store
     % them in the VariableDescriptions property.
     % Next, the first 2 lines of the metadata are loaded
-    unprocessedMetadata = strrep(metadataPath, '_processed', '');
     metadataCell = readcell(unprocessedMetadata,"TextType","string",'Range', '1:2');
     Data.Properties.VariableUnits = string(metadataCell(2,:));
-
+ 
 end
+
 
 
 
