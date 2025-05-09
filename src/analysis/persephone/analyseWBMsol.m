@@ -806,8 +806,8 @@ if all(iWBMs) && any(mWBMs)
     % Add new rows with duplicate samples to the fluxes
     fluxesGF = [fluxesGF; fluxesGFDupl];
 
-    % Sort these rows in alphabetical order 
-    fluxesGF = sortrows(fluxesGF, 'RowNames');
+    % Initialise a storage table for the scaled fluxed
+    scaledFluxes = fluxes_rm;
 
     % Remove germ free fluxes from microbiome personalised fluxes
     scaledFluxes{:,:} = fluxes_rm{:,:} - fluxesGF{:,:};

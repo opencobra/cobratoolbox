@@ -1,0 +1,2390 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Refinement &mdash; The COBRA Toolbox</title>
+  
+
+  
+  
+  
+    <link rel="apple-touch-icon" sizes="180x180" href="../../../_static/img/apple-touch-icon.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../_static/img/favicon-32x32.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="16x16" href="../../../_static/img/favicon-16x16.png">
+  
+  
+    <link rel="mask-icon" href="../../../_static/img/safari-pinned-tab.svg" color="#5bbad5">
+  
+  
+    <link rel="manifest" href="../../../_static/json/manifest.json">
+  
+  
+    <meta name="msapplication-config" content="../../../_static/browserconfig.xml">
+  
+  <meta name="theme-color" content="#ffffff">
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+  <script src="../../../_static/js/jquery.easy-autocomplete.min.js" type="text/javascript" ></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+  <link href="../../../_static/css/easy-autocomplete.min.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/cobra.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../../_static/css/cobra.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="The COBRA Toolbox" href="../../../index.html"/>
+        <link rel="up" title="Reconstruction" href="../index.html"/>
+        <link rel="next" title="Gprlogic" href="GPRLogic/index.html"/>
+        <link rel="prev" title="Modelverification" href="../modelGeneration/modelVerification/index.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> The COBRA Toolbox
+          
+
+          
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
+          
+          </a>
+
+              
+          <h1>The COBRA Toolbox</h1>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" id="simple"/>
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+    <script>
+    	var options = {
+
+		url: "../../../_static/json/functions.json",
+
+		getValue: "name",
+
+		list: {
+            onKeyEnterEvent: function(item) {
+                    return "_static/../" + item.website_url
+            },
+            maxNumberOfElements: 25,
+			match: {
+					enabled: true,
+			},
+            sort: {
+			    enabled: true
+		    }
+		},
+
+    	template: {
+	    	type: "custom",
+		    method: function(value, item) {
+                return "<span><a href='../../../search.html?q=" + item.name + "&check_keywords=yes&area=default'>" + value + "</a>" + "<a href='../../../_static/../" + item.website_url + "' ><img src='../../../_static/link.svg'/></a></span>";
+		    }
+	    },
+
+		theme: "square"
+
+	};
+
+	$("#simple").easyAutocomplete(options);
+
+
+    </script>
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../../../index.html">Home</a></li>
+              </ul>
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Functions</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../analysis/index.html">Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../base/index.html">Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dataIntegration/index.html">Dataintegration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../design/index.html">Design</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Reconstruction</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../modelGeneration/index.html">Modelgeneration</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Refinement</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="GPRLogic/index.html">Gprlogic</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../demeter/index.html">Demeter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../fastGapFill/index.html">Fastgapfill</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../comparison/index.html">Comparison</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../metaboRePort/index.html">Metaboreport</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../growthExpMatch/index.html">Growthexpmatch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../rBioNet/index.html">Rbionet</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../visualization/index.html">Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../cite.html">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../support.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../plan.html">Development Plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contact.html">Contact</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../citations.html">Citations</a></li>
+</ul>
+
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">The COBRA Toolbox</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../contents.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Functions</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Reconstruction</a></li>
+      <li class="breadcrumb-item active">Refinement</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="https://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <section id="refinement">
+<span id="id1"></span><h1>Refinement<a class="headerlink" href="#refinement" title="Permalink to this heading">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="GPRLogic/index.html">Gprlogic</a></li>
+</ul>
+</div>
+<span class="target" id="module-src.reconstruction.refinement"></span><dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.refinement.addCOBRAConstraints">
+<span class="sig-name descname"><span class="pre">addCOBRAConstraints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">idList</span></em>, <em class="sig-param"><span class="pre">d</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/addCOBRAConstraints.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.addCOBRAConstraints" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a constraint to the model in the form c1 * v(id1) + c2 * v(id2) * … cj * v(idj) dsense d
+where c is a vector with coefficients for each element in idList
+(default 1 for each reaction), dsense is one of lower than (‘L’, default), greater than
+(‘G’), or equal (‘E’), and d is a value.
+:USAGE: <strong>model = addCOBRAConstraints</strong> (<em>model, idList, d, varargin</em>)</p>
+<dl class="field-list">
+<dt class="field-odd">INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model</strong> – model structure</p></li>
+<li><p><strong>idList</strong> – cell array of ids either from either the rxns, or the
+evars vectors. Can also be a a double vector of indices (in which
+case indices in evars have to be set off by
+numel(rxns).</p></li>
+<li><p><strong>d</strong> – The right hand side of the C*v &lt;= d constraint (or a
+vector, for multiple simultaneous addition;</p></li>
+<li><p><strong>varargin</strong> –</p>
+<ul>
+<li><dl class="simple">
+<dt>c:                the coefficients to use with one entry per</dt><dd><p>reaction of a constraint for multiple constraints, a matrix
+(default: 1 for each element indicated in idList)</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>dsense:           the constraint sense (‘L’: &lt;= ,</dt><dd><p>‘G’: &gt;=, ‘E’: =), or a vector for multiple constraints
+(default: (‘L’))</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>ConstraintID:     the Name of the constraint. by</dt><dd><p>(default: ‘ConstraintXYZ’ with XYZ being the initial
+position in the ctrs vector)
+or a cell array of Strings for
+multiple Constraints</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>checkDuplicates:  check whether the constraint already</dt><dd><p>exists, and if it does, don’t add it (default: false)</p>
+</dd>
+</dl>
+</li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUT</dt>
+<dd class="field-even"><p><strong>modelConstrained</strong> – The constrained model containing the added
+constraints in the respective fields:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><cite>.C</cite> - The constraint matrix containing coefficients for reactions</p></li>
+<li><p><cite>.ctrs</cite> - The constraint IDs</p></li>
+<li><p><cite>.dsense</cite> - The constraint senses</p></li>
+<li><p><cite>.d</cite> the constraint right hand side values</p></li>
+<li><p>Optional: <cite>D</cite>, the matrix conatining coefficients for additional variables.</p></li>
+</ul>
+</div></blockquote>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>Add a constraint that leads to EX_glc and EX_fru not carrying a
+combined flux higher than 5
+model = addCOBRAConstraints(model, {‘EX_glc’,’EX_fru’}, 5)
+Assume Reaction 4 to be 2 A -&gt; D and reaction 5 being A -&gt; F. Create a
+constraint that requires that the two reactions remove at least 4 units of A:
+model = addCOBRAConstraints(model, model.rxns(4:5), 4, ‘c’, [2 1], ‘dsense’, ‘G’)</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This function will, if not present create the <cite>C</cite>, <cite>ctrs</cite>, <cite>dsense</cite>, <cite>d</cite> and,
+if additional variables (i.e. the <cite>E</cite> matrix) is present, the <cite>D</cite>
+field as defined in the model field definitions. The <cite>C</cite> field containts
+the constraint coefficients referring to reactions, while the <cite>D</cite>
+field contains the Constraint coefficients referring to additional
+variables. <cite>d</cite> represents the right hand side of constraints and
+<cite>dsense</cite> the sense (lower -‘L’ , equal - ‘E’ or greater than - ‘G’) of the constraint.
+<cite>ctrs</cite> stores unique IDs for the constraints.</p>
+</div>
+<p>Author: Thomas Pfau, Nov 2017</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.refinement.addCOBRAVariables">
+<span class="sig-name descname"><span class="pre">addCOBRAVariables</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">idList</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/addCOBRAVariables.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.addCOBRAVariables" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a Variable to the COBRA model provided. These variables can be
+referred to by additional constraints added via addCOBRAConstraint. Their
+IDs have to be mutually exclusive with the IDs in model.rxns
+:USAGE: <strong>model = addCOBRAVariables</strong> (<em>model, idList, varargin</em>)</p>
+<dl class="field-list">
+<dt class="field-odd">INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model</strong> – model structure</p></li>
+<li><p><strong>idList</strong> – cell array of ids</p></li>
+<li><p><strong>varargin</strong> –</p>
+<ul>
+<li><dl class="simple">
+<dt>lb:               The lower bounds of the variables</dt><dd><p>Has to be of the same size as
+idlist
+(default: -1000)</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>ub:               The upper bounds of the variables.</dt><dd><p>Has to be of the same size as
+idlist
+(default: 1000)</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>c:                The objective coefficient of the variables</dt><dd><p>Has to be of the same size as idlist
+(default: 0)</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Names:            Descriptive names of the variables.</dt><dd><p>(default: idList)</p>
+</dd>
+</dl>
+</li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUT</dt>
+<dd class="field-even"><p><strong>model</strong> – constrained model containing the new variables in the
+respective fields (<cite>E</cite>,`evars`,`evarub`,`evarlb`,`evarc`)</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><cite>.E</cite> - The coefficient matrix for coefficients of metabolites for the variables</p></li>
+<li><p><cite>.evars</cite> - The variable IDs</p></li>
+<li><p><cite>.evarlb</cite> - The variable lower bounds</p></li>
+<li><p><cite>.evarub</cite> - The variable upper bounds</p></li>
+<li><p><cite>.evarc</cite> - The variable objective coefficient</p></li>
+<li><p>Optional: <cite>D</cite>, the matrix conatining coefficients for additional variables.</p></li>
+</ul>
+</div></blockquote>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This function will, if not present create the <cite>E</cite>, <cite>evars</cite>, <cite>evarlb</cite>, <cite>evarub</cite>, <cite>evarc</cite> and,
+if additional Constraints (i.e. the <cite>C</cite> matrix) is present, the <cite>D</cite>
+field as defined in the model field definitions. The <cite>E</cite> matrix containts
+the Variable coefficients referring to metabolites, while the <cite>D</cite>
+field contains the variable coefficients referring to additional
+Constraints from <cite>C</cite>. <cite>evars</cite> contains the IDs of the additional
+variables, with one entrey per column of <cite>E</cite>. <cite>evarlb</cite> and <cite>evarub</cite>
+represent the lower and upper bounds of the variables respectively.
+<cite>evarc</cite> are objective coefficients of the variables.</p>
+</div>
+<p>Author: Thomas Pfau, Oct 2018</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.refinement.addDemandReaction">
+<span class="sig-name descname"><span class="pre">addDemandReaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">metaboliteNameList</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/addDemandReaction.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.addDemandReaction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds demand reactions for a set of metabolites
+The reaction names for the demand reactions will be <cite>DM_[metaboliteName]`</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>model = addDemandReaction</strong> (<em>model, metaboliteNameList</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – COBRA model structure</p></li>
+<li><p><strong>metaboliteNameList</strong> – List of metabolite names (cell array)</p></li>
+<li><p><strong>addMissingMetabolites  adds missing metabolites to model (default</strong> – true)</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUT</dt>
+<dd class="field-odd"><p><strong>printLevel</strong> – If &gt; 0 will print out the reaction formulas (Default: 1).</p>
+</dd>
+<dt class="field-even">OUTPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – COBRA model structure with added demand reactions</p></li>
+<li><p><strong>rxnNames</strong> – List of added reactions</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.refinement.addExchangeRxn">
+<span class="sig-name descname"><span class="pre">addExchangeRxn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">metList</span></em>, <em class="sig-param"><span class="pre">lb</span></em>, <em class="sig-param"><span class="pre">ub</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/addExchangeRxn.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.addExchangeRxn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds exchange reactions</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>newModel = addExchangeRxn</strong> (<em>model, metList, lb, ub</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – Cobra model structure</p></li>
+<li><p><strong>metList</strong> – List of metabolites</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lb</strong> – Array of lower bounds</p></li>
+<li><p><strong>ub</strong> – Array of upper bounds</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUT</dt>
+<dd class="field-even"><p><strong>newModel</strong> – COBRA model with added exchange reactions</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.refinement.addGenes">
+<span class="sig-name descname"><span class="pre">addGenes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">geneIDs</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/addGenes.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.addGenes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add Genes (or a single gene) to the model</p>
+<dl class="field-list">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>model = addGenes</strong> (<em>model,geneIDs,varargin</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><ul>
+<li><p><strong>model</strong> – The model to add the Metabolite batch to.</p></li>
+<li><p><strong>geneIDs</strong> – The IDs of the genes that shall be added.</p></li>
+<li><p><strong>varargin</strong> – fieldName, Value pairs. The given fields will be set
+according to the values. Only defined COBRA fields may be
+used. The following fields will be ignored (as they
+are dependent on the existing model structure):</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>rxnGeneMat - The size will be extended, but no associations will be set.</p></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>newmodel</strong> – The model structure with the additional reactions.</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>%To add genes with specific fields use:
+<cite>model = addGenes(model, {‘G1’, ‘Gene2’, ‘InterestingGene’}, ‘proteins’, {‘Protein1’,’Protein B’,’Protein Alpha’}, ‘geneField2’, {‘D’,’E’,’F’})</cite></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>All fields (geneField1/geneField2) have to be present in
+the model, or defined in the field definitions, otherwise they are
+ignored.</p>
+</div>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.refinement.addMIRIAMAnnotations">
+<span class="sig-name descname"><span class="pre">addMIRIAMAnnotations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">elementIDs</span></em>, <em class="sig-param"><span class="pre">databases</span></em>, <em class="sig-param"><span class="pre">ids</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/addMIRIAMAnnotations.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.addMIRIAMAnnotations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a MIRIAM style annotation to the model</p>
+<dl class="field-list">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>model = addMIRIAMAnnotation</strong> (<em>model, elementID, database, id, …</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – A COBRA Style model struct</p></li>
+<li><p><strong>elementID</strong> – The element IDs to annotate (either a single ID as a
+char array, or a cell array of model IDs. Must be
+present in one of the basic fields of the model.</p></li>
+<li><p><strong>databases</strong> – The databases for which annotations are added. Either a
+single char array if it is the same database for all
+annotated elements, or a cell array of strings with one
+element for each added element. The databases have to
+be registered with identifiers.org and must match
+either the identifiers.org prefix or the exact name!</p></li>
+<li><p><strong>ids</strong> – The IDs to set for each element. Either a char array if
+only a single element is annotated, or a cell array of
+chars if multiple elements are annotated.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><p><strong>varargin</strong> – Additional parameters either as parameter/value pairs
+or as a parameter struct with the following
+options/fieldnames:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>referenceField - the field in which to look up the ids (e.g. rxns, mets, comps etc…) If this is ‘model’, than the annotation will be assumed to be a model annotation, and the ID will be ignored. If empty, the whole model will be checked, and all matching ids will be annotated.</p></li>
+<li><p>annotationTypes - The type of the annotation. either ‘bio’ or ‘model’. Default(‘bio’)</p></li>
+<li><p>annotationQualifiers - The qualifier of the annotation ( see <a class="reference external" href="http://co.mbine.org/standards/qualifiers">http://co.mbine.org/standards/qualifiers</a> ) for possible qualifiers (Default: ‘is’)</p></li>
+<li><p>replaceAnnotation - Replace existing annotations with those supplied now (Default: false)</p></li>
+<li><p>printLevel - How much output to produce - 0, silent ; 1, verbose - (Default: 0)</p></li>
+</ul>
+</div></blockquote>
+</dd>
+<dt class="field-even">OUTPUT</dt>
+<dd class="field-even"><p><strong>model</strong> – The COBRA model with the added annotations</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.refinement.addMetabolite">
+<span class="sig-name descname"><span class="pre">addMetabolite</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">metID</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/addMetabolite.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.addMetabolite" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a Metabolite to the Current Reconstruction</p>
+<dl class="field-list">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>newModel = addMetabolite</strong> (<em>model, metID, metName, formula, ChEBIID, KEGGId, PubChemID, InChi, Charge, b</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – Cobra model structure</p></li>
+<li><p><strong>metID</strong> – The ID(s) of the metabolite(s) (will be the identifier in model.mets)</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><p><strong>varargin</strong> – Optional Inputs provided as ‘ParameterName’, Value
+pairs. the following parameternames are available:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>metName:       Human readable name(s) (default metID, String)</p></li>
+<li><p>metFormula:    The chemical formula(s) (default ‘’, String)</p></li>
+<li><p>ChEBIID:       The CHEBI Id(s) (default ‘’, String)</p></li>
+<li><p>KEGGId:        The KEGG Compound ID(s) (default ‘’, String)</p></li>
+<li><p>PubChemID:     The PubChemID(s) (default ‘’, String)</p></li>
+<li><p>InChi:         The InChi description(s) (default ‘’, String)</p></li>
+<li><p>Charge:        The Charge(s) (default NaN, int)</p></li>
+<li><p>b:             The accumulation(s) or release(s) (default 0, double)</p></li>
+<li><p>csense:        The sense of this metabolite (default ‘E’, char)</p></li>
+</ul>
+</div></blockquote>
+</dd>
+<dt class="field-even">OUTPUT</dt>
+<dd class="field-even"><p><strong>newModel</strong> – COBRA model with added metabolite(s)</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<p>1) add a Metabolite which should be accumulated
+model = addMetabolite(model,’MetToAcc’,’b’,5);
+2) Add a Metabolite with a given Formula and a given Charge
+model = addMetabolite(model,’MetWithForm’,’metFormula’,’H3O’,’metCharge’,1);</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><cite>metID</cite> and all optional arguments either have to be a single value or cell
+arrays. <cite>Charge</cite> and <cite>b</cite> have to be double arrays.</p>
+</div>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.refinement.addMultipleMetabolites">
+<span class="sig-name descname"><span class="pre">addMultipleMetabolites</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">metIDs</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/addMultipleMetabolites.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.addMultipleMetabolites" title="Permalink to this definition">¶</a></dt>
+<dd><p>Simultaneously add multiple metabolites. Allows the use of the field names of the model struct to specify additional properties of the metabolites added.</p>
+<dl class="field-list">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>newmodel = addMultipleMetabolites</strong> (<em>model, metIDs, varargin</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – The model to add the Metabolite batch to.</p></li>
+<li><p><strong>metIDs</strong> – The metabolite IDs to add. No duplicate IDs may be provided
+and no ID may be present in the supplied model.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><p><strong>varargin</strong> – fieldName, Value pairs with additional properties for the
+added metabolites. In addition, a ‘printLevel’ flag can be used (default: 0).
+The given values fields will be set according to the values.
+Only fields associated with mets defined in the COBRA definitions (except <cite>S</cite>)
+or fields already in the model may be used.
+Examples for this use would be:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>‘metNames’,{‘Glucose’;’Pyruvate’}</p></li>
+<li><p>‘metCharges’,[0;-2]</p></li>
+</ul>
+</div></blockquote>
+</dd>
+<dt class="field-even">OUTPUTS</dt>
+<dd class="field-even"><p><strong>newmodel</strong> – The model structure with the additional metabolites.</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>% To add metabolites, with charges, formulas and KEGG ids:
+model = addMultipleMetabolites(model,{‘A’,’b’,’c’},’metCharges’, [ -1 1 0], ‘metFormulas’, {‘C’,’CO2’,’H2OKOPF’}, ‘metKEGGID’,{‘C000012’,’C000023’,’C000055’})</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.refinement.addMultipleReactions">
+<span class="sig-name descname"><span class="pre">addMultipleReactions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">rxnIDs</span></em>, <em class="sig-param"><span class="pre">metList</span></em>, <em class="sig-param"><span class="pre">Stoichiometries</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/addMultipleReactions.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.addMultipleReactions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add multiple Reactions to the model. In contrast to addReaction, this
+function allows the addition of multiple reactions at once but requires
+all used metabolites to be already present in the model.</p>
+<dl class="field-list">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>newmodel = addMultipleReactions</strong> (<em>model,rxnIDs,metList,Stoichiometries,varargin</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – The model to add the Metabolite batch to.</p></li>
+<li><p><strong>rxnIDs</strong> – The IDs of the reactions that shall be added (cell Array).</p></li>
+<li><p><strong>metList</strong> – A list of metabolites for which stoichiometric coefficients are given</p></li>
+<li><p><strong>Stoichiometries</strong> – A Stoichiometric matrix of dimension
+numel(metList) x numel(rxnID).</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><p><strong>varargin</strong> – fieldName, Value pairs. The given fields will be set
+according to the values. Only defined COBRA fields may be
+used. The following fields will be ignored (as they
+are dependent on the existing model structure)</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><cite>S</cite>:  this is being resolved by the metList/Stoichiometries combination</p></li>
+<li><p><cite>rxnGeneMat</cite>: This depends on the original model structure, and is thus nor considered.</p></li>
+</ul>
+</div></blockquote>
+<p>You can provide GPR rules in different ways to
+this function:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>By providing a grRules array in the varargin</p></li>
+<li><p>By providing a genes field in the varargin and a
+corresponding rules field</p></li>
+<li><p>By providing a rules field, that directly refers
+to the genes in the model.</p></li>
+</ul>
+</div></blockquote>
+<p>Examples of parameters are:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>‘rxnNames’,{‘RuBisCo’,’Transketloase’}</p></li>
+<li><p>‘rxnKEGGID,{‘R00024’,’R01641’}</p></li>
+<li><p>‘lb’,[0,-1000]</p></li>
+<li><p>or any field name associated with reactions (except
+for S and rxnGeneMat) as defined in the COBRA
+Model field definitions.</p></li>
+</ul>
+</div></blockquote>
+<p>It is also possible to add a printout to the
+function by using the ‘printLevel’, 1 argument.</p>
+</dd>
+<dt class="field-even">OUTPUTS</dt>
+<dd class="field-even"><p><strong>newmodel</strong> – The model structure with the additional reactions.</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>% To add the following reactions, with lower and upper bounds:
+% ExA: A &lt;-&gt; ; ATob: A &lt;-&gt; B ; BToC: B &lt;-&gt; C
+model = addMultipleReactions(model, {‘ExA’,’ATob’,’BToC’}, {‘A’,’b’,’c’}, [1 -1 0; 0,1,-1;0,0,1], ‘lb’, [-50,30,1], ‘ub’, [0,60,15])
+% To add them with GPRs in text form:
+% ExA: A &lt;-&gt; ; ATob: A &lt;-&gt; B ; BToC: B &lt;-&gt; C
+model = addMultipleReactions(model, {‘ExA’,’ATob’,’BToC’}, {‘A’,’b’,’c’}, [1 -1 0; 0,1,-1;0,0,1], ‘grRules’, {‘G1 or G2’, ‘G3 and G4’,’’})</p>
+<p>% To add them with the same GPRs in logical format assuming that model.genes is {‘G1’;’G2’;’G3’;’G4’}:
+% ExA: A &lt;-&gt; ; ATob: A &lt;-&gt; B ; BToC: B &lt;-&gt; C
+model = addMultipleReactions(model, {‘ExA’,’ATob’,’BToC’}, {‘A’,’b’,’c’}, [1 -1 0; 0,1,-1;0,0,1], ‘rules’, {‘x(1) | x(2)’, ‘x(3) and x(4)’,’’})
+% To add them with the same GPRs in logical format without assuming anything for the model:
+% ExA: A &lt;-&gt; ; ATob: A &lt;-&gt; B ; BToC: B &lt;-&gt; C
+model = addMultipleReactions(model, {‘ExA’,’ATob’,’BToC’}, {‘A’,’b’,’c’}, [1 -1 0; 0,1,-1;0,0,1], ‘rules’, {‘x(3) | x(2)’, ‘x(4) &amp; x(1)’,’’}, ‘genes’, {‘G4’;’G2’;’G1’;’G3’})</p>
+<p>% Print the above:
+model = addMultipleReactions(model, {‘ExA’,’ATob’,’BToC’}, {‘A’,’b’,’c’}, [1 -1 0; 0,1,-1;0,0,1], ‘printLevel’, 1, ‘rules’, {‘x(3) | x(2)’, ‘x(4) &amp; x(1)’,’’}, ‘genes’, {‘G4’;’G2’;’G1’;’G3’})</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.refinement.addMultipleReactionsIT">
+<span class="sig-name descname"><span class="pre">addMultipleReactionsIT</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">rxnIDs</span></em>, <em class="sig-param"><span class="pre">metList</span></em>, <em class="sig-param"><span class="pre">Stoichiometries</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/addMultipleReactionsIT.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.addMultipleReactionsIT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add multiple Reactions to the model. In contrast to addReaction, this
+function allows the addition of multiple reactions at once but requires
+all used metabolites to be already present in the model.</p>
+<dl class="field-list">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>newmodel = addMultipleReactions</strong> (<em>model,rxnIDs,metList,Stoichiometries,varargin</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – The model to add the Metabolite batch to.</p></li>
+<li><p><strong>rxnIDs</strong> – The IDs of the reactions that shall be added (cell Array).</p></li>
+<li><p><strong>metList</strong> – A list of metabolites for which stoichiometric coefficients are given</p></li>
+<li><p><strong>Stoichiometries</strong> – A Stoichiometric matrix of dimension
+numel(metList) x numel(rxnID).</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><p><strong>varargin</strong> – fieldName, Value pairs. The given fields will be set
+according to the values. Only defined COBRA fields may be
+used. The following fields will be ignored (as they
+are dependent on the existing model structure)</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><cite>S</cite>:  this is being resolved by the metList/Stoichiometries combination</p></li>
+<li><p><cite>rxnGeneMat</cite>: This depends on the original model structure, and is thus nor considered.</p></li>
+</ul>
+</div></blockquote>
+<p>You can provide GPR rules in different ways to
+this function:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>By providing a grRules array in the varargin</p></li>
+<li><p>By providing a genes field in the varargin and a
+corresponding rules field</p></li>
+<li><p>By providing a rules field, that directly refers
+to the genes in the model.</p></li>
+</ul>
+</div></blockquote>
+<p>Examples of parameters are:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>‘rxnNames’,{‘RuBisCo’,’Transketloase’}</p></li>
+<li><p>‘rxnKEGGID,{‘R00024’,’R01641’}</p></li>
+<li><p>‘lb’,[0,-1000]</p></li>
+<li><p>or any field name associated with reactions (except
+for S and rxnGeneMat) as defined in the COBRA
+Model field definitions.</p></li>
+</ul>
+</div></blockquote>
+<p>It is also possible to add a printout to the
+function by using the ‘printLevel’, 1 argument.</p>
+</dd>
+<dt class="field-even">OUTPUTS</dt>
+<dd class="field-even"><p><strong>newmodel</strong> – The model structure with the additional reactions.</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>% To add the following reactions, with lower and upper bounds:
+% ExA: A &lt;-&gt; ; ATob: A &lt;-&gt; B ; BToC: B &lt;-&gt; C
+model = addMultipleReactions(model, {‘ExA’,’ATob’,’BToC’}, {‘A’,’b’,’c’}, [1 -1 0; 0,1,-1;0,0,1], ‘lb’, [-50,30,1], ‘ub’, [0,60,15])
+% To add them with GPRs in text form:
+% ExA: A &lt;-&gt; ; ATob: A &lt;-&gt; B ; BToC: B &lt;-&gt; C
+model = addMultipleReactions(model, {‘ExA’,’ATob’,’BToC’}, {‘A’,’b’,’c’}, [1 -1 0; 0,1,-1;0,0,1], ‘grRules’, {‘G1 or G2’, ‘G3 and G4’,’’})</p>
+<p>% To add them with the same GPRs in logical format assuming that model.genes is {‘G1’;’G2’;’G3’;’G4’}:
+% ExA: A &lt;-&gt; ; ATob: A &lt;-&gt; B ; BToC: B &lt;-&gt; C
+model = addMultipleReactions(model, {‘ExA’,’ATob’,’BToC’}, {‘A’,’b’,’c’}, [1 -1 0; 0,1,-1;0,0,1], ‘rules’, {‘x(1) | x(2)’, ‘x(3) and x(4)’,’’})
+% To add them with the same GPRs in logical format without assuming anything for the model:
+% ExA: A &lt;-&gt; ; ATob: A &lt;-&gt; B ; BToC: B &lt;-&gt; C
+model = addMultipleReactions(model, {‘ExA’,’ATob’,’BToC’}, {‘A’,’b’,’c’}, [1 -1 0; 0,1,-1;0,0,1], ‘rules’, {‘x(3) | x(2)’, ‘x(4) &amp; x(1)’,’’}, ‘genes’, {‘G4’;’G2’;’G1’;’G3’})</p>
+<p>% Print the above:
+model = addMultipleReactions(model, {‘ExA’,’ATob’,’BToC’}, {‘A’,’b’,’c’}, [1 -1 0; 0,1,-1;0,0,1], ‘printLevel’, 1, ‘rules’, {‘x(3) | x(2)’, ‘x(4) &amp; x(1)’,’’}, ‘genes’, {‘G4’;’G2’;’G1’;’G3’})</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.refinement.addReaction">
+<span class="sig-name descname"><span class="pre">addReaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">rxnID</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/addReaction.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.addReaction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a reaction to the model or modify an existing reaction</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[model, rxnIDexists] = addReaction</strong> (<em>model, rxnID, varargin</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – COBRA model structure</p></li>
+<li><p><strong>rxnID</strong> – Reaction name abbreviation (i.e. ‘ACALD’)</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><p><strong>varargin</strong> – Input of additional information as parameter/Value pairs</p>
+<ul class="simple">
+<li><p>reactionName - a Descriptive name of the reaction
+(default ID)</p></li>
+<li><p>metaboliteList - Cell array of metabolite names. Either this
+parameter or reactionFormula are required.</p></li>
+<li><p>stoichCoeffList - List of stoichiometric coefficients (reactants -ve,
+products +ve), if not provided, all stoichiometries
+are assumed to be -1 (Exchange, or consumption).</p></li>
+<li><p>reactionFormula - A Reaction formula in string format (‘A + B -&gt; C’).
+If this parameter is provided metaboliteList MUST
+be empty, and vice versa.</p></li>
+<li><p>reversible - Reversibility flag (Default = true)</p></li>
+<li><p>lowerBound - Lower bound (Default = 0 or -vMax`)</p></li>
+<li><p>upperBound - Upper bound (Default = <cite>vMax</cite>)</p></li>
+<li><p>objectiveCoef - Objective coefficient (Default = 0)</p></li>
+<li><p>subSystem - Subsystem (Default = {‘’})</p></li>
+<li><p>geneRule - Gene-reaction rule in boolean format (and/or allowed)
+(Default = ‘’);</p></li>
+<li><p>geneNameList - List of gene names (used only for translation from
+common gene names to systematic gene names) (Default empty)</p></li>
+<li><p>systNameList - List of systematic names (Default empty)</p></li>
+<li><p>checkDuplicate - Check <cite>S</cite> matrix too see if a duplicate reaction is
+already in the model (Deafult false)</p></li>
+<li><p>printLevel - default = 0</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – COBRA model structure with new reaction</p></li>
+<li><p><strong>rxnIDexists</strong> – Empty if the reaction did not exist previously, or if
+checkDuplicate is false. Otherwise it contains the ID
+of an identical reaction already present in the model.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<p>%1) Add a new irreversible reaction using the formula approach
+model = addReaction(model,’newRxn1’,’reactionFormula’,’A -&gt; B + 2 C’)
+%2) Add a the same reaction using the list approach
+model = addReaction(model,’newRxn1’,’metaboliteList’,{‘A’,’B’,’C’},’stoichCoeffList’,[-1 1 2], ‘reversible’,false);
+%3) Add a new irreversible reaction using the formula approach with a
+given GPR Rule
+model = addReaction(model,’newRxn1’,’reactionFormula’,’A -&gt; B + 2 C’,…</p>
+<blockquote>
+<div><p>‘geneRule’, ‘Gene1 or Gene2’);</p>
+</div></blockquote>
+<p>%4) Add a the same reaction but also mark it as being in the
+Glycolysis subSystem
+model = addReaction(model,’newRxn1’,’reactionFormula’,’A -&gt; B + 2 C’, …</p>
+<blockquote>
+<div><p>‘subSystem’, ‘Glycolysis’, ‘geneRule’, ‘Gene1 or Gene2’);</p>
+</div></blockquote>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Using <cite>addReaction</cite> to add several reactions iteratively is a very
+inefficient procedure, as it extends all reaction related fields one
+at a time, leading to a large memory reallocation overhead. There are
+also many checks performed which allow for a more flexible use of the
+function, but which simultaneously lead to a slower computation time.
+This function is mainly intended to be used when adding individual reactions during
+analysis. When adding multiple reactions, in particular when coding
+for a more compex methodology, please use the <cite>addMultipleReactions</cite>
+function which only performs very basic checks, but is much more
+efficient.</p>
+</div>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.refinement.addReactionGEM">
+<span class="sig-name descname"><span class="pre">addReactionGEM</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">rxns</span></em>, <em class="sig-param"><span class="pre">rxnNames</span></em>, <em class="sig-param"><span class="pre">rxnFormulas</span></em>, <em class="sig-param"><span class="pre">rev</span></em>, <em class="sig-param"><span class="pre">lb</span></em>, <em class="sig-param"><span class="pre">ub</span></em>, <em class="sig-param"><span class="pre">nRxn</span></em>, <em class="sig-param"><span class="pre">subSystems</span></em>, <em class="sig-param"><span class="pre">grRules</span></em>, <em class="sig-param"><span class="pre">rules</span></em>, <em class="sig-param"><span class="pre">genes</span></em>, <em class="sig-param"><span class="pre">HTABLE</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/addReactionGEM.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.addReactionGEM" title="Permalink to this definition">¶</a></dt>
+<dd><p>Manually adds reactions to a specified model, may add one or more reactions at a time</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[newmodel, HTABLE] = addReactionGEM</strong> (<em>model, rxns, rxnNames, rxnFormulas, rev, lb, ub, nRxn, subSystems, grRules, rules, genes, HTABLE</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – COBRA model structure</p></li>
+<li><p><strong>rxns</strong> – Identifiers for the reactions</p></li>
+<li><p><strong>rxnNames</strong> – List of reactions</p></li>
+<li><p><strong>rxnFormulas</strong> – reactions’ formulas</p></li>
+<li><p><strong>rev</strong> – 0 = irrev, 1 = rev</p></li>
+<li><p><strong>lb</strong> – The lower bounds for fluxes</p></li>
+<li><p><strong>ub</strong> – The upper bounds for fluxes</p></li>
+<li><p><strong>subSystems</strong> – subSystem assignment for each reaction, default = ‘’</p></li>
+<li><p><strong>grRules</strong> – A string representation of the GPR rules defined in a readable format, default = ‘’</p></li>
+<li><p><strong>rules</strong> – GPR rules in evaluateable format for each reaction, default = ‘’</p></li>
+<li><p><strong>genes</strong> – Identifiers of the genes in the model, default = ‘’</p></li>
+<li><p><strong>HTABLE</strong> – hash table</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>newmodel</strong> – changed model</p></li>
+<li><p><strong>HTABLE</strong> – hash table</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>[modelLB_NH3] = addReactionSmiley(modelLB, ‘NH3r’, ‘NH3 protonization’, cellstr(‘1 NH3[c] + 1 H[c] &lt;==&gt; 1 NH4[c]’), 1, -1000, 1000, ‘Others’);</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Manually add reactions to a specified model, can either add one or
+multiple reactions at a time</p>
+<p>All syntax standards must comply with the specified model</p>
+<p>For reaction formulas, use: ‘–&gt;’ for irreversible or ‘&lt;==&gt;’ for
+reversible</p>
+</div>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.refinement.addSinkReactions">
+<span class="sig-name descname"><span class="pre">addSinkReactions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">metabolites</span></em>, <em class="sig-param"><span class="pre">lb</span></em>, <em class="sig-param"><span class="pre">ub</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/addSinkReactions.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.addSinkReactions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a sink reaction for the list of metabolites</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[model] = addSinkReactions</strong> (<em>model, metabolites, lb, ub</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – COBRA model structure</p></li>
+<li><p><strong>metabolites</strong> – Cell array of metabolite abreviations as they appear in <cite>model.mets</cite></p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lb</strong> – Lower bounds of reactions</p></li>
+<li><p><strong>ub</strong> – Upper bounds of reactions</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – COBRA model structure containing sink reactions</p></li>
+<li><p><strong>rxnsInModel</strong> – Vector, contains -1 if the reaction did not exist
+previously, otherwise it contains the reaction ID of
+an identical reaction already present in the model</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.refinement.addSubSystemsToReactions">
+<span class="sig-name descname"><span class="pre">addSubSystemsToReactions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">reactions</span></em>, <em class="sig-param"><span class="pre">subSystems</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/addSubSystemsToReactions.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.addSubSystemsToReactions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds the subSystems to the specified reactions</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[model]  = addSubSystemToReaction</strong> (<em>model,reaction,subSystem</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – A COBRA model struct with at least rxns and
+subSystems fields</p></li>
+<li><p><strong>reactions</strong> – Either a string identifying a reaction, or a
+cell array of strings identifying multiple
+reactions, or a double vector or boolean vector
+identifying positions.</p></li>
+<li><p><strong>subSystems</strong> – A String identifying a subsystem, or a cell
+array of strings to add multiple subSystems.
+An empty string will be filtered. All
+subSystems will be added to all identified
+reactions.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>model</strong> – The model with the subSystems added to the
+respective reactions (old, non empty, values are retained).</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>% Add TCA to a set of reactions
+[model]  = addSubSystemsToReactions(model,{‘ACONTa’;’ACONTb’;’AKGDH’;’CS’;’FUM’;’ICDHyr’;’MDH’;’SUCOAS’},’TCA’)
+% Add Glycolysis/Gluconeogenesis to a the reaction 18 of the model
+[model]  = addSubSystemsToReactions(model,18,{‘Glycolysis’,’Gluconeogenesis’})</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.refinement.alphabetizeModel">
+<span class="sig-name descname"><span class="pre">alphabetizeModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/alphabetizeModel.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.alphabetizeModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sorts the rxns, metabolites, and genes in a model into alphabetical
+order, useful after adding new reactions to a model. This function needs
+to be modified to work on models with different fields than these
+(currently set for <cite>iAF1260c</cite>)</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>abcModel = alphabetizeModel</strong> (<em>model</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><p><strong>model</strong> – COBRA model structure</p>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>abcModel</strong> – the alphabetized model</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.refinement.annotateSBOTerms">
+<span class="sig-name descname"><span class="pre">annotateSBOTerms</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/annotateSBOTerms.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.annotateSBOTerms" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add SBO terms to model entities</p>
+<p>INPUT
+model     model structure</p>
+<p>OUTPUT
+model     updated model structure</p>
+<p>Ines Thiele June 2022</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.refinement.assignGPRA">
+<span class="sig-name descname"><span class="pre">assignGPRA</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">gpraFile</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/assignGPRA.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.assignGPRA" title="Permalink to this definition">¶</a></dt>
+<dd><p>Assigns each reaction a Gene-protein-reaction association</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>model = assignGPRA</strong> (<em>model, gpraFile</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – COBRA model structure</p></li>
+<li><p><strong>gpraFile</strong> – SimPheny GPRA file</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>model</strong> – COBRA model with gene-protein-reaction assoction</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.refinement.assignSubSystems">
+<span class="sig-name descname"><span class="pre">assignSubSystems</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">gpraFile</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/assignSubSystems.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.assignSubSystems" title="Permalink to this definition">¶</a></dt>
+<dd><p>Assigns each reaction a subsystem in the model structure</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>model = assignSubSystems</strong> (<em>model, gpraFile</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – COBRA model structure</p></li>
+<li><p><strong>gpraFile</strong> – SimPheny GPRA file</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>model</strong> – COBRA model structure with subsystem assignment</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.refinement.buildRxn2subSystem">
+<span class="sig-name descname"><span class="pre">buildRxn2subSystem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">removeSubSystems</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/buildRxn2subSystem.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.buildRxn2subSystem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates reaction-subSystem matrix for a COBRA model
+This function adds two fields to the COBRA model: 1) rxnSubsystemMat and
+2)subSystemsNames and removes the old subSystems field(optional and can
+be set to false)</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[modelOut, rxn2subSystem, subSystemNames, nestedCells] = buildRxn2subSystem</strong> (<em>model, removeSubSystems</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><p><strong>model</strong> – COBRA model structure</p>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><p><strong>removeSubSystems</strong> – Binary variable, if equals to 1 (or true) subSystems
+field will be removed from the model default:true</p>
+</dd>
+<dt class="field-even">OUTPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>modelOut</strong> – COBRA model structure containing two added fields of
+“rxn2subSystem” and “subSystemsNames”</p></li>
+<li><p><strong>rxn2subSystem</strong> – Matrix of reactions vs subSystems</p></li>
+<li><p><strong>subSystemNames</strong> – Unique sub-system names in the model with order
+corrosponding to the matrix</p></li>
+<li><p><strong>nestedCells</strong> – logical variable, True if sub-system field is a
+nested cell vector and False if it’s not</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.refinement.changeCOBRAConstraints">
+<span class="sig-name descname"><span class="pre">changeCOBRAConstraints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">constraintID</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/changeCOBRAConstraints.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.changeCOBRAConstraints" title="Permalink to this definition">¶</a></dt>
+<dd><p>Modify an existing COBRA constraint by providing new settings for the
+constraint to update existing settings.
+:USAGE: <strong>model = changeCOBRAConstraints</strong> (<em>model, constraintID, varargin</em>)</p>
+<dl class="field-list simple">
+<dt class="field-odd">INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model</strong> – model structure</p></li>
+<li><p><strong>constraintID</strong> – The ID of the constraint (or the index in the
+ctrs field)</p></li>
+</ul>
+</dd>
+<dt class="field-even">OPTIONAL INPUTS</dt>
+<dd class="field-even"><p><strong>varargin</strong> – all elements (name, d, dsense and c can be modified as indicated below.
+* idList:           cell array of ids either from either the rxns, or the evars vectors. Can also be a a double vector of indices (in which case indices in evars have to be set off by numel(rxns).
+* c:                the elements of the C matrix. If idList is empty, this has to be a vector of length #rxns + #evars
+* dsense:           the constraint sense (‘L’: &lt;= ,’G’: &gt;=, ‘E’: =), or a vector for multiple constraints
+* d:                The right hand side of the C*v &lt;= d constraint (or a vector, for multiple simultaneous addition)
+* name:             The new, descriptive name of the constraint.</p>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>model</strong> – constrained model</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>Modify the constraint ‘A_and_B_Lower_10’ to read A + B + C &lt;= 10
+model = addCOBRAConstraints(model, ‘A_and_B_Lower_10’, ‘idList’, {‘A’,’B’,’C’}, ‘c’, [1,1,1]);</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If c is provided, the whole constraint coefficients will be reset and
+existing coefficients will be removed!</p>
+</div>
+<p>Author: Thomas Pfau, Oct 2018</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.refinement.changeCOBRAVariable">
+<span class="sig-name descname"><span class="pre">changeCOBRAVariable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">variableID</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/changeCOBRAVariable.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.changeCOBRAVariable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Modify an existing COBRA variable by providing new settings for the
+variable to update existing settings.
+:USAGE: <strong>model = changeCOBRAVariable</strong> (<em>model, variableID, varargin</em>)</p>
+<dl class="field-list simple">
+<dt class="field-odd">INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model</strong> – model structure</p></li>
+<li><p><strong>variableID</strong> – The ID of the variable (or the index in the
+evars field)</p></li>
+</ul>
+</dd>
+<dt class="field-even">OPTIONAL INPUTS</dt>
+<dd class="field-even"><p><strong>varargin</strong> –</p>
+<ul class="simple">
+<li><p>lb:               the lower bound of the variable</p></li>
+<li><p>ub:               the upper bound of the variable</p></li>
+<li><p>c:                the objective coefficient of the variable</p></li>
+<li><p>Name:             The new, descriptive name of the variable.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>model</strong> – model with modified variable</p>
+</dd>
+</dl>
+<p>Author: Thomas Pfau, Oct 2018</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.refinement.changeGeneAssociation">
+<span class="sig-name descname"><span class="pre">changeGeneAssociation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">rxnName</span></em>, <em class="sig-param"><span class="pre">grRule</span></em>, <em class="sig-param"><span class="pre">geneNameList</span></em>, <em class="sig-param"><span class="pre">systNameList</span></em>, <em class="sig-param"><span class="pre">addRxnGeneMat</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/changeGeneAssociation.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.changeGeneAssociation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Change gene associations in a model</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>model = changeGeneAssociation</strong> (<em>model, rxnName, grRule, geneNameList, systNameList, addRxnGeneMat</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – COBRA Toolbox model structure</p></li>
+<li><p><strong>rxnName</strong> – Name of the new reaction</p></li>
+<li><p><strong>grRule</strong> – Gene-reaction rule in boolean format (and/or allowed)</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>geneNameList</strong> – List of gene names (used only for translation from
+common gene names to systematic gene names)</p></li>
+<li><p><strong>systNameList</strong> – List of systematic names</p></li>
+<li><p><strong>addRxnGeneMat</strong> – adds rxnGeneMat to model structure (default = true)</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUT</dt>
+<dd class="field-even"><p><strong>model</strong> – COBRA Toolbox model structure with new gene reaction associations</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.refinement.changeRxnMets">
+<span class="sig-name descname"><span class="pre">changeRxnMets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">Mets2change</span></em>, <em class="sig-param"><span class="pre">NewMets</span></em>, <em class="sig-param"><span class="pre">Rxn</span></em>, <em class="sig-param"><span class="pre">NewStoich</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/changeRxnMets.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.changeRxnMets" title="Permalink to this definition">¶</a></dt>
+<dd><p>Changes metabolites in a specified reaction, or
+randomly chosen reactions.</p>
+<dl class="field-list">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[model ModifiedRxns] = changeRxnMets</strong> (<em>model, Mets2change, NewMets, Rxn, NewStoich</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – COBRA model structure</p></li>
+<li><p><strong>Mets2change</strong> – Cell array of metabolites to change</p></li>
+<li><p><strong>NewMets</strong> – Cell array of replacement metabolites (must be in
+order of those that will be replaced</p></li>
+<li><p><strong>Rxn</strong> – reaction to change (string) or cell array, or if a number is put
+here, that number of reactions (with <cite>Mets2change</cite>) will
+be randomly chosen and the metabolites will be swapped</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUT</dt>
+<dd class="field-odd"><p><strong>NewStoich</strong> – Stoichiometry of new metabs (conserved from old mets by default).
+If multiple reactions are being changed, this must be
+a <cite>mets</cite> x <cite>rxns</cite> matrix,</p>
+<p>e.g. for 2 new reactions: Rxn = {‘r1’, ‘r2’},</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>r1: 2 A + 3 B -&gt; 1 C</p></li>
+<li><p>r2: 4 A + 3 B -&gt; 3 C</p></li>
+</ul>
+</div></blockquote>
+<p>where A and C are the new metabolites,
+NewMets = {‘A’, ‘C’}
+NewStoich = [ 2 4; 1 3]</p>
+</dd>
+<dt class="field-even">OUTPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – COBRA model structure with changed reaction</p></li>
+<li><p><strong>ModifiedRxns</strong> – <cite>Rxns</cite> which were modified</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.refinement.checkIDsForTypeExist">
+<span class="sig-name descname"><span class="pre">checkIDsForTypeExist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">ids</span></em>, <em class="sig-param"><span class="pre">basefield</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/checkIDsForTypeExist.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.checkIDsForTypeExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check whether the given IDs exist for the given type of base field. Base
+fields include rxns, mets, genes, comps, proteins, ctrs, evars. ctrs/mets
+as well as rxns/evars will be considered as a combined field.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[bool,existing] = checkIDsForTypeExist</strong> (<em>model,ids,basefield</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – model structure</p></li>
+<li><p><strong>ids</strong> – cell array of identifiers</p></li>
+<li><p><strong>basefield</strong> – Any base field defined.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bool</strong> – Boolean vector true if any of the IDs exist.</p></li>
+<li><p><strong>existing</strong> – Unique set of pre-existing IDs for this base field.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>[bool,existing] = checkIDsForTypeExist(model,’atp[c]’,’mets’)</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.refinement.convertIrrevFluxDistribution">
+<span class="sig-name descname"><span class="pre">convertIrrevFluxDistribution</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">vIrrev</span></em>, <em class="sig-param"><span class="pre">matchRev</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/convertIrrevFluxDistribution.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.convertIrrevFluxDistribution" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts irreversible flux distribution to reversible</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>vRev = covertIrrevFluxDistribution</strong> (<em>vIrrev, matchRev</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>vIrrev</strong> – Irreversible flux distribution</p></li>
+<li><p><strong>matchRev</strong> – Vector mapping irreversible fluxes to reversible fluxes
+(Generated by <cite>convertToIrreversible</cite>)</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>vRev</strong> – Reversible flux distribution</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.refinement.convertToIrreversible">
+<span class="sig-name descname"><span class="pre">convertToIrreversible</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/convertToIrreversible.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.convertToIrreversible" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts model to irreversible format, either for the entire model or for
+a defined list of reversible reactions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[modelIrrev, matchRev, rev2irrev, irrev2rev] = convertToIrreversible</strong> (<em>model, varargin</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><p><strong>model</strong> – COBRA model structure</p>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><p><strong>varargin</strong> – Additional Options as ParameterName/Value pairs.
+Allowed Parameters are:</p>
+<ul class="simple">
+<li><p>sRxns: List of specific reversible reactions to convert to
+irreversible (Default = model.rxns)</p></li>
+<li><p>flipOrientation:  Alter reactions that can only carry negative
+flux by flipping and marking them with ‘_r’
+(Default = true)</p></li>
+<li><p>orderReactions: Order Reactions such that reverse
+reactions directly follow their forward reaction.</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>modelIrrev</strong> – Model in irreversible format</p></li>
+<li><p><strong>matchRev</strong> – Matching of forward and backward reactions of a reversible reaction</p></li>
+<li><p><strong>rev2irrev</strong> – Matching from reversible to irreversible reactions</p></li>
+<li><p><strong>irrev2rev</strong> – Matching from irreversible to reversible reactions</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>% To convert a whole model to an irreversible model:
+[modelIrrev, matchRev, rev2irrev, irrev2rev] = convertToIrreversible(model)</p>
+<p>% To Convert only Reactions R1, R2 and R15:
+reactionsToRevert = {‘R1’, ‘R2’, ‘R15’};
+[modelIrrev, matchRev, rev2irrev, irrev2rev] = convertToIrreversible(model, ‘sRxns’, reactionsToRevert)</p>
+<p>% To order the reactions such that backward follows forward reaction:
+[modelIrrev, matchRev, rev2irrev, irrev2rev] = convertToIrreversible(model, ‘orderReactions’, true)</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Uses the reversible list to construct a new model with reversible
+reactions separated into forward and backward reactions.  Separated
+reactions are appended with ‘_f’ and ‘_b’ and the reversible list tracks
+these changes with a ‘1’ corresponding to separated forward reactions.
+Reactions entirely in the negative direction will be reversed and
+appended with ‘_r’.</p>
+</div>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.refinement.convertToReversible">
+<span class="sig-name descname"><span class="pre">convertToReversible</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/convertToReversible.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.convertToReversible" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a model structure from irreversible format to
+reversible format</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>modelRev = convertToReversible</strong> (<em>model</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><p><strong>model</strong> – COBRA model in irreversible format (forward/backward reactions separated)
+forward reactions have to be marked with an _f in the id,
+backward with an _b. reverse reactions (i.e. reactions
+which were originally only allowed to carry negative flux
+must have a _r tag at the end of the reaction id.
+It is further assumed, that there is an exact 1:1 match
+between _f and _b reactions.</p>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>modelRev</strong> – Model in reversible format</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.refinement.createModel">
+<span class="sig-name descname"><span class="pre">createModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/createModel.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.createModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a COBRA model from inputs or an empty model
+structure if no inputs are provided.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>model = createModel</strong> (<em>rxnAbrList, rxnNameList, rxnList, revFlagList, lowerBoundList, upperBoundList, subSystemList, grRuleList, geneNameList, systNameList</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>rxnAbrList</strong> – List of names of the new reactions</p></li>
+<li><p><strong>rxnNameList</strong> – List of descriptive names of the new reactions</p></li>
+<li><p><strong>rxnList</strong> – List of reactions: format: {<cite>A -&gt; B + 2 C</cite>}
+If the compartment of a metabolite is not
+specified, it is assumed to be cytoplasmic, i.e. [<cite>c</cite>]</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>revFlagList</strong> – List of reversibility flag (opt, default = 1)</p></li>
+<li><p><strong>lowerBoundList</strong> – List of lower bound (Default = 0 or <cite>-vMax</cite>)</p></li>
+<li><p><strong>upperBoundList</strong> – List of upper bound (Default = <cite>vMax</cite>)</p></li>
+<li><p><strong>subSystemList</strong> – List of subsystem (Default = {‘’})</p></li>
+<li><p><strong>grRuleList</strong> – List of gene-reaction rule in boolean format (and/or allowed)
+(Default = ‘’);</p></li>
+<li><p><strong>geneNameList</strong> – List of gene names (used only for translation
+from common gene names to systematic gene names)</p></li>
+<li><p><strong>systNameList</strong> – List of systematic names</p></li>
+<li><p><strong>printLevel</strong> – Verbosity (0 - no outputs, except warnings, 1- normal printout (default))</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUT</dt>
+<dd class="field-even"><p><strong>model</strong> – COBRA model structure</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<p>1) Create A model with two Reactions (R1 : ‘A -&gt; B + C’, R2: ‘C -&gt; D’)
+model = createModel({‘R1’,’R2’},{‘Reaction 1’,’Reaction 2’},{‘A -&gt; B + C’, ‘C -&gt; D’});
+2) Also set the subSystems of the two Reactions (R1: Sub1, R2: Sub2):
+model = createModel({‘R1’,’R2’},{‘Reaction 1’,’Reaction 2’},{‘A -&gt; B + C’, ‘C -&gt; D’},…
+‘subSystemList’, {‘Sub1’,’Sub2’});
+3) Also set upper and lower bounds:
+model = createModel({‘R1’,’R2’},{‘Reaction 1’,’Reaction 2’},{‘A -&gt; B + C’, ‘C -&gt; D’},…
+‘subSystemList’, {‘Sub1’,’Sub2’}, ‘lowerBoundList’,[-3 -1000],’upperBoundList’,[120 17]);</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.refinement.createXMatrix">
+<span class="sig-name descname"><span class="pre">createXMatrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">compoundsIn</span></em>, <em class="sig-param"><span class="pre">transport</span></em>, <em class="sig-param"><span class="pre">compartment</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/createXMatrix.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.createXMatrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a matrix full of exchange reactions based
+on the input list (creates an exchange reaction for each of the
+metabolites present in the model)</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>ExchangeRxnMatrix = createXMatrix</strong> (<em>compoundsIn, transport, compartment</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>compoundsIn</strong> – SU matrix</p></li>
+<li><p><strong>transport</strong> – if 1, transport reactions will be defined as well for
+every compound (default: 0, which corresponds to only
+exchange reactions (from the specified compartment)</p></li>
+<li><p><strong>compartment</strong> – (default = ‘[c]’) –&gt; transport from cytoplasm [c] to
+extracellular space [e] (or sink)
+any other compartment (except ‘[e]’ creates transport from [c] to
+the compartment, from the compartment to the external compartment
+and an exchanger in the external compartment.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>ExchangeRxnMatrix</strong> – model containing all exchange reactions for all
+compounds in compoundsIn</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.refinement.dispStoichAsTable">
+<span class="sig-name descname"><span class="pre">dispStoichAsTable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/dispStoichAsTable.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.dispStoichAsTable" title="Permalink to this definition">¶</a></dt>
+<dd><p>display stoichiometric matrix as a table</p>
+<dl class="simple">
+<dt>INPUT</dt><dd><p>model</p>
+</dd>
+<dt>OUTPUT</dt><dd><p>Table</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.refinement.extendModelFieldsForType">
+<span class="sig-name descname"><span class="pre">extendModelFieldsForType</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">type</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/extendModelFieldsForType.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.extendModelFieldsForType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extend all existing fields relevant for the given type to the size of the
+field of the given type, or a specified size.
+:USAGE: <strong>model = extendModelFieldsForType</strong> (<em>model, type, varargin</em>)</p>
+<dl class="field-list simple">
+<dt class="field-odd">INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model</strong> – the model to update</p></li>
+<li><p><strong>type</strong> – the Type of field to update one of
+(‘rxns’,’mets’,’comps’,’genes’,’evars’,’ctrs’)</p></li>
+</ul>
+</dd>
+<dt class="field-even">OPTIONAL INPUTS</dt>
+<dd class="field-even"><p><strong>varargin</strong> – Additional Options as ‘ParameterName’, Value pairs. Options are:</p>
+<ul class="simple">
+<li><p>‘originalSize’, the original size of the field,
+this is used to determine fields which have to be
+adjusted (default length of field type - 1).</p></li>
+<li><p>‘targetSize’, the target size to which the field
+should be extended. Default values will be used as
+defined in the ModelFieldDefinitions to fill empty
+entries (default length of field type).</p></li>
+<li><p>‘excludeFields’, fields that should be ignored
+during update.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>model</strong> – A model with the requested fields associated to the
+given type updated. Associated fields are determined
+by size, and if multiple base fields have the same
+size, the Model Field definition along with checks
+for field Names (e.g. rxnXYZ is associated with
+rxns) is used. Added values are either default
+values (if defined in the ModelFieldDefinitions), or
+{‘’} for cell arrays, NaN for numeric arrays and
+false for logical arrays. Char Arrays will be
+ignored.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.refinement.extractCompModel">
+<span class="sig-name descname"><span class="pre">extractCompModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">compSymbol</span></em>, <em class="sig-param"><span class="pre">intOnlyFlag</span></em>, <em class="sig-param"><span class="pre">updateGenes</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/extractCompModel.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.extractCompModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates model for a cellular compartment</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>compModel = extractCompModel</strong> (<em>model, compSymbol, intOnlyFlag</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – COBRA model structure</p></li>
+<li><p><strong>compSymbol</strong> – Compartment symbol</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUT</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>intOnlyFlag</strong> – Include only non-transport reactions (Default = true)</p></li>
+<li><p><strong>updateGenes</strong> – Update the GPR rules removing all unassociated genes.
+This can take some time on larger models.(default
+false)</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUT</dt>
+<dd class="field-even"><p><strong>compModel</strong> – COBRA model for a cellular compartment</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.refinement.extractMetModel">
+<span class="sig-name descname"><span class="pre">extractMetModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">metabNames</span></em>, <em class="sig-param"><span class="pre">nLayers</span></em>, <em class="sig-param"><span class="pre">allCompFlag</span></em>, <em class="sig-param"><span class="pre">nRxnsMetThr</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/extractMetModel.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.extractMetModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a subnetwork model around one or more metabolites</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>metabModel = extractMetModel</strong> (<em>model, metabNames, nLayers, allCompFlag, nRxnsMetThr</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – COBRA model structure</p></li>
+<li><p><strong>metabNames</strong> – Metabolites to build subnetwork model around</p></li>
+<li><p><strong>nLayers</strong> – Number of layers</p></li>
+<li><p><strong>allCompFlag</strong> – Use all metabolites regardless of compartment</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUT</dt>
+<dd class="field-odd"><p><strong>nRxnsMetThr</strong> – Ignore metabolites which appear in more than <cite>nRxnMetThr</cite> (Default = 100)</p>
+</dd>
+<dt class="field-even">OUTPUT</dt>
+<dd class="field-even"><p><strong>metabModel</strong> – COBRA model around one or more metabolites</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.refinement.extractSubNetwork">
+<span class="sig-name descname"><span class="pre">extractSubNetwork</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">rxnList</span></em>, <em class="sig-param"><span class="pre">metList</span></em>, <em class="sig-param"><span class="pre">updateGenes</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/extractSubNetwork.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.extractSubNetwork" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extract subnetwork model
+:USAGE: <strong>subModel = extractSubNetwork</strong> (<em>model, rxnList, metList</em>)</p>
+<dl class="field-list simple">
+<dt class="field-odd">INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model</strong> – COBRA model structure</p></li>
+<li><p><strong>rxnList</strong> – Reaction list for the subnetwork to be extracted</p></li>
+</ul>
+</dd>
+<dt class="field-even">OPTIONAL INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>metNames</strong> – Metabolite list for the subnetwork to be extracted</p></li>
+<li><p><strong>updateGenes</strong> – Also remove unused genes (can take some time on large
+networks)</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>subModel</strong> – COBRA model of subnetwork</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.refinement.extractSubSysModel">
+<span class="sig-name descname"><span class="pre">extractSubSysModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">subSysNames</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/extractSubSysModel.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.extractSubSysModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates model for one of more model subsystems</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>subSysModel = extractSubSysModel</strong> (<em>model, subSysNames</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – COBRA model structure</p></li>
+<li><p><strong>subSysNames</strong> – List of subsystems to extract</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>subSysModel</strong> – COBRA model of selected subsystems</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.refinement.flipRxnOrientation">
+<span class="sig-name descname"><span class="pre">flipRxnOrientation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">rxnList</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/flipRxnOrientation.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.flipRxnOrientation" title="Permalink to this definition">¶</a></dt>
+<dd><p>flips the directionality of the given reactions and adjusts the bounds
+and objective coefficients accordingly.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>model = flipRxnDirectionality</strong> (<em>model, rxnList</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – A COBRA Style model structure</p></li>
+<li><p><strong>rxnList</strong> – A List of reactions or a single reaction</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><p><strong>model</strong> – The model with the specified reactions flipped.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.refinement.generateRules">
+<span class="sig-name descname"><span class="pre">generateRules</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/generateRules.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.generateRules" title="Permalink to this definition">¶</a></dt>
+<dd><p>If a model does not have a model.rules field but has a model.grRules
+field, can be regenerated using this script</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[model] = generateRules</strong> (<em>model</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – COBRA model with model.grRules</p></li>
+<li><p><strong>printLevel</strong> – optional variable to print out all new genes
+(default = TRUE), can be zero if not needed</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>model</strong> – same model but with model.rules added</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.refinement.getEmptyConstraints">
+<span class="sig-name descname"><span class="pre">getEmptyConstraints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/getEmptyConstraints.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.getEmptyConstraints" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a list of empty constraints (i.e. constraints that have no non-zero
+values.
+:USAGE: <strong>emptyConstraints = getEmptyConstraints</strong> (<em>model</em>)</p>
+<dl class="field-list simple">
+<dt class="field-odd">INPUTS</dt>
+<dd class="field-odd"><p><strong>model</strong> – model structure</p>
+</dd>
+<dt class="field-even">OUTPUT</dt>
+<dd class="field-even"><p><strong>emptyConstraints</strong> – A list of IDs of empty constraints.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Author:</dt><dd><p>Thomas Pfau - Sep 2018</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.refinement.getIDPositions">
+<span class="sig-name descname"><span class="pre">getIDPositions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">ids</span></em>, <em class="sig-param"><span class="pre">basefield</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/getIDPositions.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.getIDPositions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the positions of the IDs for the given basefield.
+This function will currently only work for rxns and mets and also checks the
+associated ctrs (for mets) and evars (for rxns) fields for the given IDs.
+elements from evars / ctrs will have positions nRxns/nMets + position
+respectively.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[pos,pres] = getIDPositions</strong> (<em>model,ids,basefield</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – model structure</p></li>
+<li><p><strong>ids</strong> – cell array of reaction names</p></li>
+<li><p><strong>basefield</strong> – Either ‘rxns’, or ‘mets’</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>pos</strong> – The positions of the given ids in the
+[rxns;evars] or [mets;ctrs] vectors for rxns and
+mets , respectively.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.refinement.getMetAbbr">
+<span class="sig-name descname"><span class="pre">getMetAbbr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">mets</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/getMetAbbr.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.getMetAbbr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the abbreviation for each metabolite, and the unique abbreviations,
+from metabolite abbreviation(s), each of which must have compartment
+symbol concatentated on the right hand side (i.e. <cite>metAbbr[*]</cite>).</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[metAbbr, uniqueMetAbbrs] = getMetComp</strong> (<em>mets</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><p><strong>metAbbr</strong> – char array with a single metabolite abbreviation
+or
+<cite>m x 1</cite> cell array of metabolite abbreviations</p>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>compartments</strong> – char array with a single compartment identifier
+or
+<cite>m x 1</cite> cell array of compartment identifiers</p></li>
+<li><p><strong>uniqueCompartments</strong> – char array with a single compartment identifier
+or
+cell array of unique compartment identifiers</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.refinement.getModelFieldsForType">
+<span class="sig-name descname"><span class="pre">getModelFieldsForType</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">type</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/getModelFieldsForType.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.getModelFieldsForType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the fields in the model which are associated with the given type.
+:USAGE: <strong>matchingFields = getModelFieldsForType</strong> (<em>model, type, varargin</em>)</p>
+<dl class="field-list simple">
+<dt class="field-odd">INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model</strong> – the model to update</p></li>
+<li><p><strong>type</strong> – the Type of field to update one of
+(‘rxns’,’mets’,’comps’,’genes’,’ctrs’,’evars’,’rxnName’,’specName’)</p></li>
+</ul>
+</dd>
+<dt class="field-even">OPTIONAL INPUTS</dt>
+<dd class="field-even"><p><strong>varargin</strong> – Additional Options as ‘ParameterName’, Value pairs. Options are:</p>
+<ul class="simple">
+<li><p>‘fieldSize’, the original size of the field (if
+mets was already adjusted, this size will be used
+to determine matching fields.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>matchingfields</strong> – A cell array of fields associated with the
+given type. The initial check is for the size of the field, if
+multiple base fields have the same size, it is
+assumed, that fields named e.g. rxnXYZ are
+associated with rxns, and only those fields are
+adapted along with fields which are specified in the
+Model FieldDefinitions.</p></li>
+<li><p><strong>dimensions</strong> – The dimension associated with the given type in the
+given field. matchingField(X) is matching to type in
+dimenion(X)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.refinement.isSameCobraModel">
+<span class="sig-name descname"><span class="pre">isSameCobraModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model1</span></em>, <em class="sig-param"><span class="pre">model2</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/isSameCobraModel.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.isSameCobraModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if two COBRA models are the same</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[isSame, nDiff, commonFields] = isSameCobraModel</strong> (<em>model1, model2, printLevel</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model1</strong> – COBRA model structure 1</p></li>
+<li><p><strong>model2</strong> – COBRA model structure 2</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><p><strong>printLevel</strong> – Whether to provide additional output (0 - no output (default), 1 - output).</p>
+</dd>
+<dt class="field-even">OUTPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>isSame</strong> – True if all common fields are identical, else false</p></li>
+<li><p><strong>nDiff</strong> – Number of differences between the two models for each field</p></li>
+<li><p><strong>commonFields</strong> – List of common fields</p></li>
+</ul>
+</dd>
+</dl>
+<p>Note: Notice that this function checks if two models are the same, two
+same models does not necessary mean two same structures.
+use structeq.m to compare two structures</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.refinement.keepCompartment">
+<span class="sig-name descname"><span class="pre">keepCompartment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">compartments</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/keepCompartment.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.keepCompartment" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function removes reactions in all compartments except those
+specified by the cell array “compartments”</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>model = keepCompartment</strong> (<em>model, compartments</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – COBRA model structure</p></li>
+<li><p><strong>compartments</strong> – cell array of strings (e.g., to discard all
+reactions except those in the mitochondria and
+cytosol, compartments = {‘[m]’, ‘[c]’};</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>model</strong> – COBRA model with reactions in the specified compartmetns</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.refinement.mergeModelFieldPositions">
+<span class="sig-name descname"><span class="pre">mergeModelFieldPositions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">type</span></em>, <em class="sig-param"><span class="pre">positions</span></em>, <em class="sig-param"><span class="pre">mergeFunctions</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/mergeModelFieldPositions.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.mergeModelFieldPositions" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[modelNew] = mergeModelFieldPositions</strong> (<em>model,type,positions</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – The model with the fields to merge</p></li>
+<li><p><strong>type</strong> – the field type to merge ( rxns, mets, comps or genes)</p></li>
+<li><p><strong>positions</strong> – The positions in the given field type to merge either as indices or as logical array.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><p><strong>mergeFunctions</strong> – A cell array of fieldNames and functions that can be
+called on a larger array of the type used for the
+field. e.g.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>{‘metCharges’,&#64;(x) x(1); ‘grRules’, &#64;(x) strjoin(x,’ or ‘);</p></li>
+<li><p>by default, all numeric fields are added up, all
+unique entries in cell arrays are concatenated with
+‘;’,</p></li>
+<li><p>grRules and rules are assumed to be merged with
+and (i.e. a batch reaction is assumed to need all
+associated GPRs)</p></li>
+</ul>
+</div></blockquote>
+</dd>
+<dt class="field-even">OUTPUT</dt>
+<dd class="field-even"><p><strong>modelNew</strong> – merged model with the positions merged into one.
+Unique entries in Related String fields will be
+concatenated with ‘;’ matrices will be summed up.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.refinement.mergeTwoModels">
+<span class="sig-name descname"><span class="pre">mergeTwoModels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model1</span></em>, <em class="sig-param"><span class="pre">model2</span></em>, <em class="sig-param"><span class="pre">objrxnmodel</span></em>, <em class="sig-param"><span class="pre">mergeGenes</span></em>, <em class="sig-param"><span class="pre">rmDuplRxns</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/mergeTwoModels.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.mergeTwoModels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Merge two models. If fields conflict, the data from fields in model1 will be
+used.
+:USAGE: <strong>[modelNew] = mergeTwoModels</strong> (<em>model1,model2,objrxnmodel, mergeGenes, rmDuplRxns</em>)</p>
+<dl class="field-list simple">
+<dt class="field-odd">INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model1</strong> – model 1</p></li>
+<li><p><strong>model2</strong> – model 2</p></li>
+</ul>
+</dd>
+<dt class="field-even">OPTIONAL INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>objrxnmodel</strong> – Set as 1 or 2 to set objective reaction from
+desired model</p></li>
+<li><p><strong>mergeGenes</strong> – Do merge the gene associated data, if false the genes
+field and the rules field will be cleared and other fields
+associated with genes will not be merged. GPR rules can be
+reconstructed using the grRules field.(Default = true)</p></li>
+<li><p><strong>rmDuplRxns</strong> – Boolean indicating whether duplicate reactions should
+be removed (default=true)</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>modelNew</strong> – merged model</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.refinement.moveRxn">
+<span class="sig-name descname"><span class="pre">moveRxn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">startspot</span></em>, <em class="sig-param"><span class="pre">endspot</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/moveRxn.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.moveRxn" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function moves a reaction from one spot in the network to another,
+useful for placing important reactions at the beginning of the network to
+easier follow certain reactions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[model] = moveRxn</strong> (<em>model, startspot, endspot</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – COBRA model structure</p></li>
+<li><p><strong>startspot</strong> – The reaction number to move</p></li>
+<li><p><strong>endspot</strong> – The spot where the reaction is moving to</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><p><strong>model</strong> – COBRA toolbox model structure with moved reaction</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.refinement.orderModelFields">
+<span class="sig-name descname"><span class="pre">orderModelFields</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/orderModelFields.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.orderModelFields" title="Permalink to this definition">¶</a></dt>
+<dd><p>Orders the fields in a model according to the field
+definitions. Defined first, Remaining fields in
+alphabetical order.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>orderedModel = orderModelFields</strong> (<em>model</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><p><strong>model</strong> – a model structure in COBRA format</p>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>orderedModel</strong> – a model with fields ordered according to the field definitions.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.refinement.reassignFwBwMatch">
+<span class="sig-name descname"><span class="pre">reassignFwBwMatch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">match</span></em>, <em class="sig-param"><span class="pre">selVec</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/reassignFwBwMatch.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.reassignFwBwMatch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reassings forward-backward matches when modifying an
+irreversible model</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>matchNew = reassignFwBwMatch</strong> (<em>match, selVec</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>match</strong> – Forward-backwards mapping vector</p></li>
+<li><p><strong>selVec</strong> – Selection vector marking reactions to remap</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>matchNew</strong> – Modified forward-backwards mapping vector</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.refinement.reduceModel">
+<span class="sig-name descname"><span class="pre">reduceModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">tol</span></em>, <em class="sig-param"><span class="pre">irrevFlag</span></em>, <em class="sig-param"><span class="pre">verbFlag</span></em>, <em class="sig-param"><span class="pre">negFluxAllowedFlag</span></em>, <em class="sig-param"><span class="pre">checkConsistencyFlag</span></em>, <em class="sig-param"><span class="pre">changeBoundsFlag</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/reduceModel.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.reduceModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes from the model all of the reactions that are never used (max and
+min are &lt; tol). Finds the minimal bounds for the flux through each reaction.
+Also returns the results for flux variability analysis (maxes, mins).</p>
+<p>USAGE</p>
+<blockquote>
+<div><p>[modelRed, hasFlux, maxes, mins] = reduceModel(model, tol, irrevFlag, verbFlag, negFluxAllowedFlag, checkConsistencyFlag, changeBoundsFlag)</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">INPUT</dt>
+<dd class="field-odd"><p><strong>model</strong> – COBRA model structure</p>
+</dd>
+<dt class="field-even">OPTIONAL INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>tol</strong> – Tolerance for non-zero bounds - bounds smaller in absolute
+value than this value will be set to zero (Default = 1e-6)</p></li>
+<li><p><strong>irrevFlag</strong> – Determines if the models should be treated using
+the irreversible form. (Default = false)</p></li>
+<li><p><strong>verbFlag</strong> – Verbose output (Default = false)</p></li>
+<li><p><strong>negFluxAllowedFlag</strong> – Allow negative fluxes through irrev reactions
+(Default = false)</p></li>
+<li><p><strong>checkConsistencyFlag</strong> – Do a consistency check of the optimal solution
+(Default = true)</p></li>
+<li><p><strong>changeBoundsFlag</strong> – Change upper/lower bounds to the minimal bounds
+(Default = true)</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>modelRed</strong> – Reduced model</p></li>
+<li><p><strong>hasFlux</strong> – The indexes of the reactions that are not blocked
+in the model</p></li>
+<li><p><strong>maxes</strong> – Maximum fluxes</p></li>
+<li><p><strong>mins</strong> – Minimum fluxes</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.refinement.removeCOBRAConstraints">
+<span class="sig-name descname"><span class="pre">removeCOBRAConstraints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">constraintsToRemove</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/removeCOBRAConstraints.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.removeCOBRAConstraints" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove the specified Non Metabolic Constraints.
+:USAGE: <strong>model = removeCOBRAConstraint</strong> (<em>model, constraintsToRemove</em>)</p>
+<dl class="field-list simple">
+<dt class="field-odd">INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model</strong> – model structure</p></li>
+<li><p><strong>constraintsToRemove</strong> – cell array of Constraint IDs, or Constraint
+Positions to remove, or a boolean vector of
+positions to remove.</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUT</dt>
+<dd class="field-even"><p><strong>model</strong> – the model with the constraints removed.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Author:</dt><dd><p>Thomas Pfau - Nov 2017</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.refinement.removeFieldEntriesForType">
+<span class="sig-name descname"><span class="pre">removeFieldEntriesForType</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">indicesToRemove</span></em>, <em class="sig-param"><span class="pre">type</span></em>, <em class="sig-param"><span class="pre">fieldSize</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/removeFieldEntriesForType.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.removeFieldEntriesForType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove field entries at the specified indices from all fields associated
+with the given type
+:USAGE: <strong>model = removeFieldEntriesForType</strong> (<em>model, indicesToRemove, type, varargin</em>)</p>
+<dl class="field-list">
+<dt class="field-odd">INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model</strong> – the model to update</p></li>
+<li><p><strong>indicesToRemove</strong> – indices which should be removed (either a logical array or double indices)</p></li>
+<li><p><strong>type</strong> – the Type of field to update. one of
+(‘rxns’,’mets’,’comps’,’genes’,’ctrs’,’evars’,’rxnName’,’specName’,’molAlias’)</p></li>
+<li><p><strong>fieldSize</strong> – The size of the original field before
+modification. This is necessary to identify fields
+from which entries have to be removed.</p></li>
+</ul>
+</dd>
+<dt class="field-even">OPTIONAL INPUTS</dt>
+<dd class="field-even"><p><strong>varargin</strong> – Additional Options as ‘ParameterName’, Value pairs. Options are:
+- ‘excludeFields’, fields which should not be</p>
+<blockquote>
+<div><p>adjusted but kept how they are.</p>
+</div></blockquote>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>modelNew</strong> – the model in which all fields associated with the
+given type have the entries indicated removed. The
+initial check is for the size of the field, if
+multiple base fields have the same size, it is
+assumed, that fields named e.g. rxnXYZ are
+associated with rxns, and only those fields are
+adapted along with fields which are specified in the
+Model FieldDefinitions.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.refinement.removeGenesFromModel">
+<span class="sig-name descname"><span class="pre">removeGenesFromModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">geneList</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/removeGenesFromModel.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.removeGenesFromModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes the given genes from the model. GPR rules will be adjusted to reflect the removal.
+By default, the rules are converted to DNF and all clauses containing any of the given
+genes are removed. Note, that this function is not supposed to be used to model
+single gene deletions. Instead, use deleteModelGenes.m for that.</p>
+<dl class="field-list">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[model, affectedRxns, originalGPRs, deletedReactions] = removeGenesFromModel</strong> (<em>model, geneList</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – COBRA model with the appropriate constrains for a
+particular condition</p></li>
+<li><p><strong>geneList</strong> – List of genes to be deleted as cell array, or a
+single gene as char</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><p><strong>varargin</strong> – Additional Parameter/value pairs or a parameter
+struct with the following parameter names:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>keepReactions - Whether to keep reactions if its GPR is
+hanged to an empty GPR, i.e. all complexes catalyzing
+it are removed. (default: true)</p></li>
+<li><p>keepClauses - Do not remove clauses containing the gene,
+but instead just remove the gene from the clause (default: false).</p></li>
+</ul>
+</div></blockquote>
+</dd>
+<dt class="field-even">OUTPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – COBRA model with the selected genes deleted</p></li>
+<li><p><strong>affectedRxns</strong> – A list of reactions which have their rules altered</p></li>
+<li><p><strong>originalGPRs</strong> – The original GPR rules for the affected reactions
+in grRules format.</p></li>
+<li><p><strong>deletedReactions</strong> – The list of reactions removed from the model (if
+keepReaction was false).</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.refinement.removeMetabolites">
+<span class="sig-name descname"><span class="pre">removeMetabolites</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">metRemoveList</span></em>, <em class="sig-param"><span class="pre">removeRxnFlag</span></em>, <em class="sig-param"><span class="pre">rxnRemoveMethod</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/removeMetabolites.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.removeMetabolites" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes metabolites from a model</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[model, rxnRemoveList] = removeMetabolites</strong> (<em>model, metRemoveList, removeRxnFlag</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – COBRA model structure</p></li>
+<li><p><strong>metRemoveList</strong> – List of metabolites to be removed</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUT</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>removeRxnFlag</strong> – Remove reactions with no metabolites (Default = true)</p></li>
+<li><p><strong>rxnRemoveMethod</strong> – {(‘inclusive’),’exclusive’,’legacy’}, to remove reactions in a
+stoichiometrically consistent manner, or possibly
+not consistently if either of the last options are
+chosen.</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUT</dt>
+<dd class="field-even"><p><strong>model</strong> – COBRA model with removed metabolites</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.refinement.removeRxns">
+<span class="sig-name descname"><span class="pre">removeRxns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">rxnRemoveList</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/removeRxns.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.removeRxns" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes reactions from a model</p>
+<dl class="field-list">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>model = removeRxns</strong> (<em>model, rxnRemoveList, varargin</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – COBRA model structure</p></li>
+<li><p><strong>rxnRemoveList</strong> – Cell array of reaction abbreviations to be removed</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><p><strong>varargin</strong> – Parameters in ParameterName, Value pair representation.
+Available parameters are:
+*  metRemoveMethod</p>
+<blockquote>
+<div><p>‘exclusive’ =  remove metabolites exclusively involved in removed reactions (default)
+‘inclusive’ =  remove any metabolite involved in one or more removed reactions (can cause stoichiometric inconsistency)</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>ctrsRemoveMethod
+‘exclusive’ =  only remove constraints exclusively involved in removed reactions (default)
+‘inclusive’ =  any constraint involved in a removed reaction is to be removed
+‘infeasible’ = if a removed reaction involves any constraint then remove that constraint, unless the constraint is still feasible.
+‘legacy’ =  remove empty constraints, it seems equivalent to ‘exclusive’, but kept for completeness</p></li>
+<li><p>irrevFlag:   Irreverseble (true) or reversible (false) reaction
+format (Default = false)</p></li>
+<li><p>metFlag:   Remove unused metabolites (Default = true)</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUT</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – COBRA model w/o selected reactions</p></li>
+<li><p><strong>metRemovedList</strong> – Cell array of metabolite abbreviations that were removed</p></li>
+<li><p><strong>ctrsRemovedList</strong> – Cell array of model.ctrs that were removed
+Alternatively, if model.ctrs did not exist, then a
+boolean vector displaying the rows of C*v &lt;=d that were
+removed.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Optional inputs are used as parameter value pairs</p>
+<p class="rubric">Examples</p>
+<p>1) Remove the reactions ‘ATPM’ and ‘TKT1’ from the given model
+model = removeRxns(model,{‘ATPM’,’TKT1’});
+2) Remove the same reactions but keep any metabolites which would now
+be not present in any reaction:
+model = removeRxns(model,{‘ATPM’,’TKT1’}, ‘metFlag’, false);</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.refinement.removeSubSystemsFromRxns">
+<span class="sig-name descname"><span class="pre">removeSubSystemsFromRxns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">reactions</span></em>, <em class="sig-param"><span class="pre">subSystems</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/removeSubSystemsFromRxns.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.removeSubSystemsFromRxns" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds the subSystem to the specified reaction</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[model]  = addSubSystemToReaction</strong> (<em>model,reaction,subSystem</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – A COBRA model struct with at least rxns and
+subSystems fields</p></li>
+<li><p><strong>reactions</strong> – Either a string identifying a reaction, or a
+cell array of strings identifying multiple
+reactions, or a double vector or boolean vector
+identifying positions.</p></li>
+<li><p><strong>subSystems</strong> – A String identifying a subsystem, or a cell
+array of strings to assign multiple subSystems.
+If multiple strings are present, an empty
+string will be removed</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>model</strong> – The model with the subSystems set to the
+respective reactions (old values will be removed).</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>%Remove TCA as subSystem from a set of reactions
+[model]  = removeSubSystemsFromRxns(model,{‘ACONTa’;’ACONTb’;’AKGDH’;’CS’;’FUM’;’ICDHyr’;’MDH’;’SUCOAS’},’TCA’)
+%Remove Glycolysis/Gluconeogenesis from reaction 18 of the model
+[model]  = removeSubSystemsFromRxns(model,18,{‘Glycolysis’,’Gluconeogenesis’})</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.refinement.removeTrivialStoichiometry">
+<span class="sig-name descname"><span class="pre">removeTrivialStoichiometry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/removeTrivialStoichiometry.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.removeTrivialStoichiometry" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes metabolites and reactions corresponding to zero rows and columns</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>modelOut=removeTrivialStoichiometry</strong> (<em>model</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><p><strong>model</strong> – Model with metabolites and reactions to remove</p>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>modelOut</strong> – Obtained model with removed metabolites and reactions</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.refinement.removeUnusedGenes">
+<span class="sig-name descname"><span class="pre">removeUnusedGenes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/removeUnusedGenes.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.removeUnusedGenes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates the rules, genes, and rxnGeneMat fields based on the grRules field for
+reactions in the model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>modelNew = removeUnusedGenes</strong> (<em>model</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><p><strong>model</strong> – COBRA structure</p>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>modelNew</strong> – COBRA model structure with updated gene field reflecting only
+content present in the model</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.refinement.setRxnSubSystems">
+<span class="sig-name descname"><span class="pre">setRxnSubSystems</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">reactions</span></em>, <em class="sig-param"><span class="pre">subSystems</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/setRxnSubSystems.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.setRxnSubSystems" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the subSystems of the specified reactions to the specified
+subSystems</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[model]  = addSubSystemToReaction</strong> (<em>model,reaction,subSystem</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – A COBRA model struct with at least rxns and
+subSystems fields</p></li>
+<li><p><strong>reactions</strong> – Either a string identifying a reaction, or a
+cell array of strings identifying multiple
+reactions, or a double vector or boolean vector
+identifying positions.</p></li>
+<li><p><strong>subSystems</strong> – A String identifying a subsystem, or a cell
+array of strings to assign multiple subSystems.
+If multiple strings are present, an empty
+string will be removed</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>model</strong> – The model with the subSystems set to the
+respective reactions (old values will be removed).</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>% Set TCA as subSystem for a set of reactions
+[model]  = setRxnSubSystems(model, {‘ACONTa’;’ACONTb’;’AKGDH’;’CS’;’FUM’;’ICDHyr’;’MDH’;’SUCOAS’}, ‘TCA’)
+% Set Glycolysis/Gluconeogenesis to reaction 18 of the model
+[model]  = setRxnSubSystems(model, 18, {‘Glycolysis’,’Gluconeogenesis’})</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.refinement.updateFieldOrderForType">
+<span class="sig-name descname"><span class="pre">updateFieldOrderForType</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">type</span></em>, <em class="sig-param"><span class="pre">newOrder</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/updateFieldOrderForType.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.updateFieldOrderForType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reorder the fields associated with the provided type to the new order.
+:USAGE: <strong>matchingFields = updateFieldOrderForType</strong> (<em>model, type, newOrder</em>)</p>
+<dl class="field-list simple">
+<dt class="field-odd">INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model</strong> – the model to update</p></li>
+<li><p><strong>type</strong> – the Type of field to update one of
+(‘rxns’,’mets’,’comps’,’genes’)</p></li>
+<li><p><strong>newOrder</strong> – The new Order. must be of the same size as the
+requested model.(type) field.</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUT</dt>
+<dd class="field-even"><p><strong>model</strong> – The model with all field associated with type
+reordered</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.refinement.updateGenes">
+<span class="sig-name descname"><span class="pre">updateGenes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/updateGenes.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.updateGenes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update the model genes field (if it does not exist, generate it from the
+grRules field, if it exists, remove Unused genes and  remove duplicate genes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[modelNew] = updateGenes</strong> (<em>model</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><p><strong>model</strong> – COBRA model structure</p>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>modelNew</strong> – COBRA model structure with corrected genes</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The gene order will be changed to sorted. You should probably use
+buildRxnGeneMat to make sure the order matches in all relevant
+fields.</p>
+</div>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.refinement.updateMetNames">
+<span class="sig-name descname"><span class="pre">updateMetNames</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">referenceModel</span></em>, <em class="sig-param"><span class="pre">modelToUpdate</span></em>, <em class="sig-param"><span class="pre">wipeExisting</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/updateMetNames.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.updateMetNames" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates model.metNames in a new model, using metNames of a reference
+model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[updatedModel] = updateMetNames</strong> (<em>referenceModel, modelToUpdate, wipeExisting</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>referenceModel</strong> – COBRA model structure with correct model.metNames</p></li>
+<li><p><strong>modelToUpdate</strong> – COBRA model structure that needs to have its
+model.metNames updated</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><p><strong>wipeExisting</strong> – true: remove all existing model.metNames in
+modelToUpdate, especially when model.metNames is
+wrong.</p>
+</dd>
+<dt class="field-even">OUTPUT</dt>
+<dd class="field-even"><p><strong>updatedModel</strong> – COBRA model structure with corrected metNames</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="GPRLogic/index.html" class="btn btn-default float-right" title="Gprlogic" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../modelGeneration/modelVerification/index.html" class="btn btn-default" title="Modelverification" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017-2021, The COBRA Toolbox developers.
+
+    </p>
+  </div>
+  Built with Sphinx using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'2.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+    <script type="text/javascript" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/sphinx_highlight.js"></script>
+
+  
+
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TRCMZL1FKK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TRCMZL1FKK');
+  </script>
+    
+</body>
+</html>

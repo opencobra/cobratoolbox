@@ -45,28 +45,13 @@ warning('on')
 % Check if metadata table is not empty
 validateattributes(metadataTable, {'table'}, {'nonempty'}, mfilename, 'metadataTable')
 
-% The variable names in the metadata table will be truncated if the names
-% are longer than 64 characters. Read the true variable names and store
-% them in the VariableDescriptions property.
-% Next, the first 2 lines of the metadata are loaded 
-unprocessedMetadata = strrep(metadataPath, '_processed', '');
-metadataCell = readcell(unprocessedMetadata,"TextType","string",'Range', '1:2');
-metadataTable.Properties.VariableDescriptions = string(metadataCell(1,:));
 
-% If the metadata table has a second row with units, we need to remove that
-% row from the loaded metadataTable and store it in the VariableUnits
-% property.
-if matches(metadataCell{2,1},{'unit','units'},'ignoreCase',true)
-
+% % If the metadata table has a second row with units, we need to remove that
+% % row from the loaded metadataTable and store it in the VariableUnits
+% % property.
+if any(matches(metadataTable{1,1},{'unit','units'},'ignoreCase',true))
     % Remove the second header line from the table
-    % metadataTable(1,:) = [];
-
-    % Get the variable units
-    units = string(metadataCell(2,:));
-    units(ismissing(units)) = "NA";
-
-    % Add unit information to the table
-    metadataTable.Properties.VariableUnits = units;
+    metadataTable(1,:) = [];
 end
 
 % Set output

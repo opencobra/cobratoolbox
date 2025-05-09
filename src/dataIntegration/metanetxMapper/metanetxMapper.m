@@ -122,7 +122,8 @@ metData = struct('metName', "", 'metMetaNetXID', "", 'metVMHID', "", 'metCheBIID
 % Make the request using webread and respond an empty response to empty
 % names
 if ~isempty(metInfo)
-    response = webread(url, params{:});
+    options = weboptions('Timeout', 30);  % set timeout to 30 seconds
+    response = webread(url, params{:}, options);
 else
     response = '';
 end

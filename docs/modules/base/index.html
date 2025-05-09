@@ -1,0 +1,798 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Base &mdash; The COBRA Toolbox</title>
+  
+
+  
+  
+  
+    <link rel="apple-touch-icon" sizes="180x180" href="../../_static/img/apple-touch-icon.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="32x32" href="../../_static/img/favicon-32x32.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="16x16" href="../../_static/img/favicon-16x16.png">
+  
+  
+    <link rel="mask-icon" href="../../_static/img/safari-pinned-tab.svg" color="#5bbad5">
+  
+  
+    <link rel="manifest" href="../../_static/json/manifest.json">
+  
+  
+    <meta name="msapplication-config" content="../../_static/browserconfig.xml">
+  
+  <meta name="theme-color" content="#ffffff">
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+  <script src="../../_static/js/jquery.easy-autocomplete.min.js" type="text/javascript" ></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+  <link href="../../_static/css/easy-autocomplete.min.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/cobra.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../_static/css/cobra.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../genindex.html"/>
+        <link rel="search" title="Search" href="../../search.html"/>
+    <link rel="top" title="The COBRA Toolbox" href="../../index.html"/>
+        <link rel="up" title="Functions" href="../index.html"/>
+        <link rel="next" title="Solvers" href="solvers/index.html"/>
+        <link rel="prev" title="Fastforest" href="../analysis/fastForest/index.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> The COBRA Toolbox
+          
+
+          
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
+          
+          </a>
+
+              
+          <h1>The COBRA Toolbox</h1>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" id="simple"/>
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+    <script>
+    	var options = {
+
+		url: "../../_static/json/functions.json",
+
+		getValue: "name",
+
+		list: {
+            onKeyEnterEvent: function(item) {
+                    return "_static/../" + item.website_url
+            },
+            maxNumberOfElements: 25,
+			match: {
+					enabled: true,
+			},
+            sort: {
+			    enabled: true
+		    }
+		},
+
+    	template: {
+	    	type: "custom",
+		    method: function(value, item) {
+                return "<span><a href='../../search.html?q=" + item.name + "&check_keywords=yes&area=default'>" + value + "</a>" + "<a href='../../_static/../" + item.website_url + "' ><img src='../../_static/link.svg'/></a></span>";
+		    }
+	    },
+
+		theme: "square"
+
+	};
+
+	$("#simple").easyAutocomplete(options);
+
+
+    </script>
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../../index.html">Home</a></li>
+              </ul>
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Functions</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../analysis/index.html">Analysis</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Base</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="solvers/index.html">Solvers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="install/index.html">Install</a></li>
+<li class="toctree-l3"><a class="reference internal" href="io/index.html">Io</a></li>
+<li class="toctree-l3"><a class="reference internal" href="paths/index.html">Paths</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ci/index.html">Ci</a></li>
+<li class="toctree-l3"><a class="reference internal" href="utilities/index.html">Utilities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="codeConsistency/index.html">Codeconsistency</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cobrarrow/index.html">Cobrarrow</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../dataIntegration/index.html">Dataintegration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design/index.html">Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reconstruction/index.html">Reconstruction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../visualization/index.html">Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cite.html">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../support.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../plan.html">Development Plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contact.html">Contact</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../citations.html">Citations</a></li>
+</ul>
+
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">The COBRA Toolbox</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../contents.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Functions</a></li>
+      <li class="breadcrumb-item active">Base</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="https://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <script src="../../_static/js/json-menu.js"></script>
+<style>
+   h1 {font-size:0px;}
+</style><div class="tutorialSectionBox base">
+   <div class="sectionLogo"><img class="avatar" src="https://king.nuigalway.ie/cobratoolbox/img/icon_base_wb.png" alt="base"></div>
+   <div class="sectionTitle"><h3>Base</h3></div>
+   <div class="row">
+      <div class="col-xs-6">
+         <div><section id="id1">
+<h1>Base<a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="solvers/index.html">Solvers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="solvers/init/index.html">Init</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solvers/cplex/index.html">Cplex</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solvers/entropicFBA/index.html">Entropicfba</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solvers/gurobi/index.html">Gurobi</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solvers/cardOpt/index.html">Cardopt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solvers/rescale/index.html">Rescale</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solvers/NLP/index.html">Nlp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solvers/varKin/index.html">Varkin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solvers/getSetSolver/index.html">Getsetsolver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solvers/mosek/index.html">Mosek</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solvers/lindo/index.html">Lindo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solvers/lp_solve/index.html">Lp_solve</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solvers/param/index.html">Param</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solvers/gams/index.html">Gams</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="install/index.html">Install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="io/index.html">Io</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="io/definitions/index.html">Definitions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="io/newt/index.html">Newt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="io/BiGG/index.html">Bigg</a></li>
+<li class="toctree-l2"><a class="reference internal" href="io/KEGG/index.html">Kegg</a></li>
+<li class="toctree-l2"><a class="reference internal" href="io/python/index.html">Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="io/json/index.html">Json</a></li>
+<li class="toctree-l2"><a class="reference internal" href="io/utilities/index.html">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="io/old/index.html">Old</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="paths/index.html">Paths</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ci/index.html">Ci</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utilities/index.html">Utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="codeConsistency/index.html">Codeconsistency</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cobrarrow/index.html">Cobrarrow</a></li>
+</ul>
+</div>
+         </div>
+      </div>
+      </div>
+      <div class="col-xs-6">
+         <div class="dropdown dropdown-cobra">
+            <a href="" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="width: 100%;">
+                Function list
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu base-menu dropdown-scrollable">
+            </ul>
+         </div>
+         <script> buildList("https://opencobra.github.io/cobratoolbox/unstable/modules/basefunctions.json", "base") </script>
+      </div>
+   </div>
+</div>
+
+<br><span class="target" id="module-src.base"></span><dl class="mat function">
+<dt class="sig sig-object mat" id="src.base.calcGroupStats">
+<span class="sig-name descname"><span class="pre">calcGroupStats</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">data</span></em>, <em class="sig-param"><span class="pre">groups</span></em>, <em class="sig-param"><span class="pre">statName</span></em>, <em class="sig-param"><span class="pre">groupList</span></em>, <em class="sig-param"><span class="pre">randStat</span></em>, <em class="sig-param"><span class="pre">nRand</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/calcGroupStats.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.calcGroupStats" title="Permalink to this definition">¶</a></dt>
+<dd><p>calcGroupStats Calculate statistics such as mean or standard deviation for
+subgroups of a population</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[groupStat, groupList, groupCnt, zScore] = calcGroupStats</strong> (<em>data, groups, statName, groupList, randStat, nRand</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>data</strong> – Matrix of data (individuals x variables)</p></li>
+<li><p><strong>groups</strong> – Group identifier for each individual</p></li>
+<li><p><strong>statName</strong> – Name of the statistic to be computed for each group:
+‘mean’: mean value for group (default)
+‘std’: standard deviation for group
+‘median’: median for group
+‘count’: sum total of variable values for group</p></li>
+<li><p><strong>groupList</strong> – List of group identifiers to be considered (optional, default
+all values occurring in groups)</p></li>
+<li><p><strong>randStat</strong> – Perform randomization analysis</p></li>
+<li><p><strong>nRand</strong> – # of randomizations</p></li>
+</ul>
+</dd>
+</dl>
+<p>Group identifier can be either strings or numerical values</p>
+<dl class="field-list simple">
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>groupStat</strong> – Matrix of group statistic values for each group and variable</p></li>
+<li><p><strong>groupList</strong> – List of group identifiers considered</p></li>
+<li><p><strong>groupCount</strong> – Number of individuals in a group</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.base.createDeltaMatchMatrix">
+<span class="sig-name descname"><span class="pre">createDeltaMatchMatrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">set1</span></em>, <em class="sig-param"><span class="pre">set2</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/createDeltaMatchMatrix.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.createDeltaMatchMatrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a flux difference constraint matrix for MOMA
+type calculations</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>A = createDeltaMatchMatrix</strong> (<em>set1, set2</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><p><strong>set1, set2</strong> – input sets</p>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>A</strong> – flux difference matrix</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.base.generateSystemConfigReport">
+<span class="sig-name descname"><span class="pre">generateSystemConfigReport</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/generateSystemConfigReport.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.generateSystemConfigReport" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a configuration report of the sytem and saves it as COBRAconfigReport.log</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>generateSystemConfigReport()</strong></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.base.hyperlink">
+<span class="sig-name descname"><span class="pre">hyperlink</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">url</span></em>, <em class="sig-param"><span class="pre">urlText</span></em>, <em class="sig-param"><span class="pre">altText1</span></em>, <em class="sig-param"><span class="pre">altText2</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/hyperlink.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.hyperlink" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a url to a clickable link in order to improve usability
+when using the MATLAB desktop environment</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>outLink = hyperlink</strong> (<em>url, urlText, altText1, altText2</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>url</strong> – url address</p></li>
+<li><p><strong>urlText</strong> – url for java</p></li>
+<li><p><strong>altText1</strong> – alternative text before link</p></li>
+<li><p><strong>altText2</strong> – alternative text after link</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>outLink</strong> – clickable link</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.base.parseBoolean">
+<span class="sig-name descname"><span class="pre">parseBoolean</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">str</span></em>, <em class="sig-param"><span class="pre">tokens</span></em>, <em class="sig-param"><span class="pre">allowedElementChars</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/parseBoolean.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.parseBoolean" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses a Boolean logic statement</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[elements, newRule] = parseBoolean</strong> (<em>str, tokens, allowedElementChars</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>str</strong> – Input string or cell array of boolean statements</p></li>
+<li><p><strong>tokens</strong> – Allowed operators in boolean statements (optional,
+default ‘()&amp;|~’)</p></li>
+<li><p><strong>allowedElementChars</strong> – Allowed characters in elements of the statement</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>elements</strong> – Non-operator elements</p></li>
+<li><p><strong>newRule</strong> – New rule translated to element numbers</p></li>
+<li><p><strong>rxnGeneMat</strong> – If str is a cell array, rxnGeneMat is the normal
+COBRA rxnGeneMat (a matrix with rows corresponding
+to reactions, and columns corresponding to genes).</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.base.parseCobraVarargin">
+<span class="sig-name descname"><span class="pre">parseCobraVarargin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">varArgIn</span></em>, <em class="sig-param"><span class="pre">optArgin</span></em>, <em class="sig-param"><span class="pre">defaultValues</span></em>, <em class="sig-param"><span class="pre">validator</span></em>, <em class="sig-param"><span class="pre">problemTypes</span></em>, <em class="sig-param"><span class="pre">keyForSolverParams</span></em>, <em class="sig-param"><span class="pre">emptyForDefault</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/parseCobraVarargin.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.parseCobraVarargin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse varargin for a COBRA function to obtain function inputs and
+cobra-problem-specific parameters. Used to handle inputs for functions
+supporting all of (i) direct argument inputs, (ii) name-value inputs, and
+(iii) parameter structure inputss</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[funParams, cobraParams, solverVaragin] = parseCobraVarargin</strong> (<em>optArgin, defaultValues, validator, problemTypes, keyForSolverParams, emptyForDefault</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>varArgIn</strong> – cell array of additional inputs for the function (= varargin in that function)</p></li>
+<li><p><strong>optArgin</strong> – cell array of strings for the optional arguments of a function</p></li>
+<li><p><strong>defaultValues</strong> – cell array of default values corresponding to optArgin</p></li>
+<li><p><strong>validator</strong> – cell array of function handles for validating the inputs corresponding to optArgin
+Will return error if the inputs do not return true from the validator</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>problemTypes</strong> – cell array of cobra supported optimization problems needed to solve in the function
+(default {‘LP’, ‘MILP’, ‘QP’, ‘MIQP’})</p></li>
+<li><p><strong>keyForSolverParams</strong> – the keyword for solver-specific parameter structure in <cite>optArgin</cite> if solver-specific parameter structure
+is an explicit optional input argument in optArgin (which is NOT encouraged when writing cobra functions
+because the solver-specific parameter structure as a convention among cobra functions can be inputted
+without keyword and is handled this way in this parsing process).
+If this is the case, provide the keyword and it will be handled (default ‘’). Note that in this case
+the solver parameter structure will not be included in <cite>funParams</cite> but instead integrated in <cite>solverVaragin</cite></p></li>
+<li><p><strong>emptyForDefault</strong> – True to interpret empty inputs for positional arguments as using the default values (default false)</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>funParams</strong> – cell array of optional argument inputs corresponding to optArgin.
+Can be assigned in the function easily by [argIn1, argIn2, …] = deal(funParams{:})</p></li>
+<li><p><strong>cobraParams</strong> – structure containing parsed cobra parameters for each problem type in <cite>problemTypes</cite>,
+to be used within the cobra function being written.</p></li>
+<li><p><strong>solverVaragin</strong> – structure containing parsed cobra-problem-specific addition inputs as a cell array for each problem type in <cite>problemTypes</cite>,
+with the first cell being the solver-specific parameter structure
+e.g., solverVarargin.LP contains the additional inputs for solveCobraLP, with solverVarargin.LP{1}
+being the solver-specific parameter structure, called as solveCobraLP(LPproblem, solverVarargin.LP{:})</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.base.parseGPR">
+<span class="sig-name descname"><span class="pre">parseGPR</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">grRuleString</span></em>, <em class="sig-param"><span class="pre">currentGenes</span></em>, <em class="sig-param"><span class="pre">preparsed</span></em>, <em class="sig-param"><span class="pre">positions</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/parseGPR.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.parseGPR" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert a GPR rule in string format to a rule in logic format.
+We assume the following properties of GPR Rules:
+1. There are no genes called “and” or “or” (in any capitalization).
+2. A gene name does not contain any of the following characters:
+(),{},[],|,&amp; and no whitespace.
+3. The general format of a GPR is: Gene1 or Gene2 and (Gene3 or Gene4)
+4. ‘and’ and ‘or’ operators as well as gene names have to be followed and preceded by either a
+whitespace character or a opening or closing bracket, respectively. Gene
+Names can also be at the beginning or the end of the string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[ruleString, totalGeneList, newGeneList] = parseGPR</strong> (<em>grRuleString, currentGenes, preparsed</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>grRuleString</strong> – The rule string in textual format.</p></li>
+<li><p><strong>currentGenes</strong> – Names of all currently known genes. Encountered
+genes (column cell Array of Strings)</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUT</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>preparsed</strong> – Whether the sring inserted into the function was
+preparsed or not. If provided, it is assumed, that
+currentGenes ONLY contains the genes in this rule
+AND that positions is the actual position of each
+gene to be used for the rule.</p></li>
+<li><p><strong>positions</strong> – Only used when preparsed is true.
+positions(ismember(currentGenes,gene)) will become
+the number used for that gene in the rule.</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUT</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>ruleString</strong> – The logical formula representing the grRuleString.
+Any position refers to the totalGeneList returned.</p></li>
+<li><p><strong>totalGeneList</strong> – The concatenation of currentGenes and newGeneList</p></li>
+<li><p><strong>newGeneList</strong> – A list of gene Names that were not present in
+currentGenes</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.base.parseMetNames">
+<span class="sig-name descname"><span class="pre">parseMetNames</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">metNames</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/parseMetNames.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.parseMetNames" title="Permalink to this definition">¶</a></dt>
+<dd><p>Figures out the base metabolite names and compartments for each metabolite</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[baseMetNames, compSymbols, uniqueMetNames, uniqueCompSymbols] = parseMetNames</strong> (<em>metNames</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><p><strong>metNames</strong> – List of metabolite names</p>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>baseMetNames</strong> – List of met names without compartment symbol</p></li>
+<li><p><strong>compSymbols</strong> – Compartment symbols for each metabolite</p></li>
+<li><p><strong>uniqueMetNames</strong> – Unique metabolite names (w/o comp symbol)</p></li>
+<li><p><strong>uniqueCompSymbols</strong> – Unique compartment symbols</p></li>
+</ul>
+</dd>
+</dl>
+<p>Metabolite names should describe the compartment assignment in the
+form “metName[compName]”</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.base.parseRxnFormula">
+<span class="sig-name descname"><span class="pre">parseRxnFormula</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">formula</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/parseRxnFormula.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.parseRxnFormula" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses reaction formula into a list of metabolites and a
+list of <cite>S</cite> coefficients</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[metaboliteList, stoichCoeffList, revFlag] = parseRxnFormula</strong> (<em>formula</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><p><strong>formula</strong> – Reaction formula, may contain symbols ‘+’, ‘-&gt;’, ‘&lt;=&gt;’ in
+addition to stoichiometric coefficients and metabolite names
+examples:
+‘0.01 cdpdag-SC[m] + 0.01 pg-SC[m]  -&gt; 0.01 clpn-SC[m] + cmp[m] + h[m]’ (irreversible reaction)
+‘cit[c] + icit[x]  &lt;=&gt; cit[x] + icit[c] ‘ (reversible reaction)
+If no stoichiometric coefficient is provided, it is assumed
+to be = 1.
+Reaction formula should be a string, not a cell array</p>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>metaboliteList</strong> – Cell array with metabolite names</p></li>
+<li><p><strong>stoichCoeffList</strong> – List of <cite>S</cite> coefficients</p></li>
+<li><p><strong>revFlag</strong> – Indicates whether the reaction is reversible (true) or not (false)</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>formula = ‘0.01 cdpdag-SC[m] + 0.01 pg-SC[m]  -&gt; 0.01 clpn-SC[m] + cmp[m] + h[m]’</p>
+<p>[metaboliteList, stoichCoeffList, revFlag] = parseRxnFormula(formula)</p>
+<p>%metaboliteList = ‘cdpdag-SC[m]’    ‘pg-SC[m]’    ‘clpn-SC[m]’    ‘cmp[m]’    ‘h[m]’
+%stoichCoeffList = -0.01 -0.01 0.01 1 1
+%revFlag = false</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.base.preparseGPR">
+<span class="sig-name descname"><span class="pre">preparseGPR</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">grRules</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/preparseGPR.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.preparseGPR" title="Permalink to this definition">¶</a></dt>
+<dd><p>preparse model.grRules before parsing the remaining part
+and transforming model.grRules into model.rules</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>preParsedGrRules = preparseGPR</strong> (<em>grRules</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><p><strong>grRules</strong> – grRules cell or single grRule</p>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>preParsedGrRules</strong> – preparsed grRules cell or single grRule</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.base.reporterMets">
+<span class="sig-name descname"><span class="pre">reporterMets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">data</span></em>, <em class="sig-param"><span class="pre">nRand</span></em>, <em class="sig-param"><span class="pre">pValFlag</span></em>, <em class="sig-param"><span class="pre">nLayers</span></em>, <em class="sig-param"><span class="pre">metric</span></em>, <em class="sig-param"><span class="pre">dataRxns</span></em>, <em class="sig-param"><span class="pre">inclExchFlag</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/reporterMets.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.reporterMets" title="Permalink to this definition">¶</a></dt>
+<dd><p>Implements the reporter metabolites algorithm by Patil &amp; Nielsen</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[normScore, nRxnsMet, nRxnsMetUni, rawScore] = reporterMets</strong> (<em>model, data, nRand, pValFlag, nLayers, metric, dataRxns</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – Metabolic network reconstruction structure</p></li>
+<li><p><strong>data</strong> – Data matrix/vector</p></li>
+<li><p><strong>nRand</strong> – Number of randomizations</p></li>
+<li><p><strong>pValFlag</strong> – The data are p-values and should be converted to z-scores</p></li>
+<li><p><strong>nLayers</strong> – Number of reaction layers around each metabolite considered (default = 1)</p></li>
+<li><p><strong>metric</strong> – Metric used to evaluate score
+(‘default’,’mean’, ‘median’, ‘std’, ‘count’)</p></li>
+<li><p><strong>dataRxns</strong> – Reaction list for the data file (if different from the
+model reactions)</p></li>
+<li><p><strong>inclExchFlag</strong> – Flag for exchange reactions</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>normScore</strong> – Normalized scores for each metabolite</p></li>
+<li><p><strong>nRxnsMet</strong> – Number of reactions connected to each metabolite</p></li>
+<li><p><strong>nRxnsMetUni</strong></p></li>
+<li><p><strong>rawScore</strong> – Raw unnormalized scores</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.base.selMatrix">
+<span class="sig-name descname"><span class="pre">selMatrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">selVec</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/selMatrix.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.selMatrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create selection matrix from a selection vector</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>selMat = selMatrix</strong> (<em>selVec</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><p><strong>selVec</strong> – selection vector</p>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>selMat</strong> – selection matrix</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>selVec = [1 0 0 1 0 0]
+% returns
+selMat = [1 0 0 0 0 0</p>
+<blockquote>
+<div><p>0 0 0 1 0 0]</p>
+</div></blockquote>
+<p>% For reversible selections
+selVec = [1 0 0 1 -1 0]
+% returns
+selMat = [1 0 0 0  0 0</p>
+<blockquote>
+<div><p>0 0 0 1 -1 0]</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.base.setWorkerCount">
+<span class="sig-name descname"><span class="pre">setWorkerCount</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">nworkers</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/setWorkerCount.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.setWorkerCount" title="Permalink to this definition">¶</a></dt>
+<dd><p>configures the number of (parallel) workers</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>setWorkerCount</strong> (<em>nworkers</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><p><strong>nworkers</strong> – Number of workers in the pool</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Requires the Parallel computing toolbox</p>
+</div>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.base.splitString">
+<span class="sig-name descname"><span class="pre">splitString</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">string</span></em>, <em class="sig-param"><span class="pre">delimiter</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/splitString.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.splitString" title="Permalink to this definition">¶</a></dt>
+<dd><p>Splits a string Perl style</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>fields = splitString</strong> (<em>string, delimiter</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>string</strong> – Either a single string or a cell array of strings</p></li>
+<li><p><strong>delimiter</strong> – Splitting delimiter</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>fields</strong> – Either a single cell array of fields or a cell array of cell
+arrays of fields</p>
+</dd>
+</dl>
+<p>Default delimiter is ‘s’ (whitespace)
+Delimiters are perl regular expression style, e.g. ‘|’ has to be expressed
+as ‘|’
+Results are returned in the cell array fields</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.base.translateList">
+<span class="sig-name descname"><span class="pre">translateList</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">list</span></em>, <em class="sig-param"><span class="pre">trList1</span></em>, <em class="sig-param"><span class="pre">trList2</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/translateList.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.translateList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Translate a list of identifiers (either numerical or cell array) using a dictionary</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>list = translateList</strong> (<em>list, trList1, trList2</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>list</strong> – original list</p></li>
+<li><p><strong>trList1</strong> – list of elemets to be changed</p></li>
+<li><p><strong>trList2</strong> – list of elements to be changed into</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><p><strong>list</strong> – list after changes</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>% Define original list
+list = {‘a’, ‘b’, ‘c’}</p>
+<p>% Define dictionary
+trList1 = {‘b’, ‘c’}
+trList2 = {‘B’, ‘C’}</p>
+<p>newList = translateList(list, trList1, trList2);</p>
+<p>% returns
+newList = {‘a’, ‘B’, ‘C’};</p>
+</dd></dl>
+
+</section>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="solvers/index.html" class="btn btn-default float-right" title="Solvers" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../analysis/fastForest/index.html" class="btn btn-default" title="Fastforest" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017-2021, The COBRA Toolbox developers.
+
+    </p>
+  </div>
+  Built with Sphinx using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'2.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+    <script type="text/javascript" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/sphinx_highlight.js"></script>
+
+  
+
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TRCMZL1FKK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TRCMZL1FKK');
+  </script>
+    
+</body>
+</html>

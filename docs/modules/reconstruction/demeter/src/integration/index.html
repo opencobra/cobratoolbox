@@ -1,0 +1,686 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Integration &mdash; The COBRA Toolbox</title>
+  
+
+  
+  
+  
+    <link rel="apple-touch-icon" sizes="180x180" href="../../../../../_static/img/apple-touch-icon.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../../../_static/img/favicon-32x32.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="16x16" href="../../../../../_static/img/favicon-16x16.png">
+  
+  
+    <link rel="mask-icon" href="../../../../../_static/img/safari-pinned-tab.svg" color="#5bbad5">
+  
+  
+    <link rel="manifest" href="../../../../../_static/json/manifest.json">
+  
+  
+    <meta name="msapplication-config" content="../../../../../_static/browserconfig.xml">
+  
+  <meta name="theme-color" content="#ffffff">
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+  <script src="../../../../../_static/js/jquery.easy-autocomplete.min.js" type="text/javascript" ></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+  <link href="../../../../../_static/css/easy-autocomplete.min.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../../_static/css/cobra.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../../../../_static/css/cobra.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../../../search.html"/>
+    <link rel="top" title="The COBRA Toolbox" href="../../../../../index.html"/>
+        <link rel="up" title="Src" href="../index.html"/>
+        <link rel="next" title="Fastgapfill" href="../../../fastGapFill/index.html"/>
+        <link rel="prev" title="Properties" href="../properties/index.html"/> 
+
+  
+  <script src="../../../../../_static/js/modernizr.min.js"></script>
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../../index.html" class="icon icon-home"> The COBRA Toolbox
+          
+
+          
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
+          
+          </a>
+
+              
+          <h1>The COBRA Toolbox</h1>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" id="simple"/>
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+    <script>
+    	var options = {
+
+		url: "../../../../../_static/json/functions.json",
+
+		getValue: "name",
+
+		list: {
+            onKeyEnterEvent: function(item) {
+                    return "_static/../" + item.website_url
+            },
+            maxNumberOfElements: 25,
+			match: {
+					enabled: true,
+			},
+            sort: {
+			    enabled: true
+		    }
+		},
+
+    	template: {
+	    	type: "custom",
+		    method: function(value, item) {
+                return "<span><a href='../../../../../search.html?q=" + item.name + "&check_keywords=yes&area=default'>" + value + "</a>" + "<a href='../../../../../_static/../" + item.website_url + "' ><img src='../../../../../_static/link.svg'/></a></span>";
+		    }
+	    },
+
+		theme: "square"
+
+	};
+
+	$("#simple").easyAutocomplete(options);
+
+
+    </script>
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../../index.html">Home</a></li>
+              </ul>
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../../index.html">Functions</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../../../analysis/index.html">Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../base/index.html">Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../dataIntegration/index.html">Dataintegration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../design/index.html">Design</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../../index.html">Reconstruction</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../../../modelGeneration/index.html">Modelgeneration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../refinement/index.html">Refinement</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../../index.html">Demeter</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../../suite/index.html">Suite</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="../index.html">Src</a><ul class="current">
+<li class="toctree-l5"><a class="reference internal" href="../refinement/index.html">Refinement</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../debugging/index.html">Debugging</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../properties/index.html">Properties</a></li>
+<li class="toctree-l5 current"><a class="current reference internal" href="#">Integration</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../fastGapFill/index.html">Fastgapfill</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../comparison/index.html">Comparison</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../metaboRePort/index.html">Metaboreport</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../growthExpMatch/index.html">Growthexpmatch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../rBioNet/index.html">Rbionet</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../visualization/index.html">Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../contributing.html">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../cite.html">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../support.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../plan.html">Development Plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../contact.html">Contact</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../citations.html">Citations</a></li>
+</ul>
+
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../index.html">The COBRA Toolbox</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../contents.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../../index.html">Functions</a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Reconstruction</a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Demeter</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Src</a></li>
+      <li class="breadcrumb-item active">Integration</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="https://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <section id="integration">
+<span id="id1"></span><h1>Integration<a class="headerlink" href="#integration" title="Permalink to this heading">¶</a></h1>
+<span class="target" id="module-src.reconstruction.demeter.src.integration"></span><dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.src.integration.adaptDraftModelID">
+<span class="sig-name descname"><span class="pre">adaptDraftModelID</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">modelIDIn</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/src/integration/adaptDraftModelID.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.src.integration.adaptDraftModelID" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function adapts the name of the draft reconstruction entered into
+the pipeline into a suitable curated reconstruction ID.</p>
+<p>USAGE: microbeID = adaptKBaseModelID(modelIDIn)</p>
+<p>INPUT
+modelIDIn     name of the KBase draft reconstruction file to refine</p>
+<p>OUTPUT
+microbeID     name of the resulting refined reconstruction</p>
+<p>AUTHOR: Almut Heinken, 06/2020.</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.src.integration.checkInputData">
+<span class="sig-name descname"><span class="pre">checkInputData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">inputData</span></em>, <em class="sig-param"><span class="pre">strainInformation</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/src/integration/checkInputData.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.src.integration.checkInputData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Part of the DEMETER pipeline. This function checks for duplicate and
+removed strains in the input data files and removes them. Also adds
+strains in the reconstruction resource that were not yet present in the
+input file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[checkedData,addedStrains,removedStrains,duplicateStrains] = checkInputData</strong> (<em>inputData,strainInformation</em>)</p>
+</dd>
+</dl>
+<p>INPUT
+inputData:            Table with experimental data to check
+strainInformation:    Table with list on all strains to reconstruct</p>
+<p>OUTPUT
+checkedData:          Corrected table with experimental data to check
+addedStrains:         Strains that were missing from inputData
+removedStrains:       Strains that were in inputData but are not present</p>
+<blockquote>
+<div><p>in strainInformation</p>
+</div></blockquote>
+<p>duplicateStrains:     Strains that were in inputData more than once</p>
+<p>AUTHOR: Almut Heinken, 06/2020</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.src.integration.createRBioNetDBFromVMHDB">
+<span class="sig-name descname"><span class="pre">createRBioNetDBFromVMHDB</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/src/integration/createRBioNetDBFromVMHDB.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.src.integration.createRBioNetDBFromVMHDB" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function creates an input fit for rBioNet from the VMH metabolite
+and reaction database and builds a new database settings file. It enables
+using the VMH database to modify or build reconstructions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>createRBioNetDBFromVMHDB</strong> (<em>‘rBioNetDBFolder’,rBioNetDBFolder</em>)</p>
+</dd>
+<dt class="field-even">OPTIONAL INPUT</dt>
+<dd class="field-even"><p><strong>rBioNetDBFolder          Path where to save the created database and</strong> – database settings file. Default: current path</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.src.integration.gapfillRefinedGenomeReactions">
+<span class="sig-name descname"><span class="pre">gapfillRefinedGenomeReactions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">genomeAnnotation</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/src/integration/gapfillRefinedGenomeReactions.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.src.integration.gapfillRefinedGenomeReactions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Part of the DEMETER pipelinbe. Adds reactions needed to connect pathways
+introduced based on comparative genomic analyses.comparative genomics.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>gapfilledGenomeAnnotation = gapfillRefinedGenomeReactions</strong> (<em>genomeAnnotation</em>)</p>
+</dd>
+</dl>
+<p>INPUT
+genomeAnnotation              Text file with genome annotations that had</p>
+<blockquote>
+<div><p>been retrieved through the function
+writeReactionsFromPubSeedSpreadsheets</p>
+</div></blockquote>
+<p>OUTPUT
+gapfilledGenomeAnnotation     Text file with genome annotations that have</p>
+<blockquote>
+<div><p>been gap-filled to enable flux through
+reactions added based on genome annotations</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.src.integration.getCurationStatus">
+<span class="sig-name descname"><span class="pre">getCurationStatus</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">infoFilePath</span></em>, <em class="sig-param"><span class="pre">inputDataFolder</span></em>, <em class="sig-param"><span class="pre">getComparativeGenomics</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/src/integration/getCurationStatus.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.src.integration.getCurationStatus" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function retrieves for each organism in a reconstruction resource
+whether the strain was refined based on experimental data and/or
+comparative genomic data. For experimental data, 2 indicates that the
+reconstruction was refined against available experimental data for the
+strain, 1 indicates that published studied were available for the strain
+but no suitable data was found or all findings were negative, and 0
+indicates that no experimental data was available. For comparative
+genomic data, 2 indicates that genome annotations were refined for all
+subsystems, 1 indicates that certain subsystems were refined, and 0
+indicates that no comparative genomic refinement was performed.
+the file with curation status information will be saved as a file called
+curationStatus.txt in the inputDataFolder.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>curationStatus = getCurationStatus</strong> (<em>infoFilePath,inputDataFolder,getComparativeGenomics</em>)</p>
+</dd>
+</dl>
+<p>INPUTS
+infoFilePath:             File with information on reconstructions to refine
+inputDataFolder:          Folder with experimental data and database files to
+getComparativeGenomics:   Boolean indicating whether PubSEED spreadsheets</p>
+<blockquote>
+<div><p>with information on the reconstructed strains are
+available</p>
+</div></blockquote>
+<p>OUTPUT
+curationStatus:           Table with curation status of each model</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.src.integration.getUnannotatedReactionsFromPubSeedSpreadsheets">
+<span class="sig-name descname"><span class="pre">getUnannotatedReactionsFromPubSeedSpreadsheets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">infoFilePath</span></em>, <em class="sig-param"><span class="pre">inputDataFolder</span></em>, <em class="sig-param"><span class="pre">spreadsheetFolder</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/src/integration/getUnannotatedReactionsFromPubSeedSpreadsheets.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.src.integration.getUnannotatedReactionsFromPubSeedSpreadsheets" title="Permalink to this definition">¶</a></dt>
+<dd><p>Part of the DEMETER pipeline. Prepares input file for the refinement
+based on comparative genomics analyses.
+Gets all the reactions that were not found in the respective organism
+through comparative genomics to remove them from the draft
+reconstructions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>unannotatedRxns = getUnannotatedReactionsFromPubSeedSpreadsheets</strong> (<em>infoFilePath,inputDataFolder,spreadsheetFolder</em>)</p>
+</dd>
+</dl>
+<p>INPUTS
+infoFilePath          File with information on reconstructions to refine
+inputDataFolder       Folder to save propagated data to (default: folder</p>
+<blockquote>
+<div><p>in current path called “InputData”)</p>
+</div></blockquote>
+<dl class="simple">
+<dt>spreadsheetFolder     Folder with comparative genomics data retrieved</dt><dd><p>from PubSEED in spreadsheet format if available.
+For an example of the required format, see
+cobratoolbox/papers/2021_demeter/exampleSpreadsheets.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.src.integration.loadVMHDatabase">
+<span class="sig-name descname"><span class="pre">loadVMHDatabase</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/src/integration/loadVMHDatabase.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.src.integration.loadVMHDatabase" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function loads the database with reactions and metabolites in
+Virtual Metabolic Human (<a class="reference external" href="https://www.vmh.life/">https://www.vmh.life/</a>) nomenclature.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>database=loadVMHDatabase</strong></p>
+</dd>
+</dl>
+<p>OUTPUT
+database  Structure with reaction and metabolite database</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.src.integration.mapKBaseToVMHReactions">
+<span class="sig-name descname"><span class="pre">mapKBaseToVMHReactions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">translatedRxns</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/src/integration/mapKBaseToVMHReactions.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.src.integration.mapKBaseToVMHReactions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Part of the DEMETER pipeline. This functions aids in translating
+reactions from KBase to VMH nomenclature. Requires running the function
+propagateKBaseMetTranslationToRxns beforehand to translate metabolite
+IDs, which will then allow matching translated reactions to reactions
+that already exist in the VMH (Virtual Metabolic Human) database.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[sameReactions,similarReactions] = mapKBaseToVMHReactions</strong> (<em>translatedRxns</em>)</p>
+</dd>
+</dl>
+<p>INPUTS
+translatedRxns:       Table with untranslated KBase reactions but</p>
+<blockquote>
+<div><p>translated metabolite IDs</p>
+</div></blockquote>
+<p>OUTPUT
+sameReactions:        Table with translated KBase reactions that already</p>
+<blockquote>
+<div><p>exist in the VMH database with corresponding IDs</p>
+</div></blockquote>
+<dl class="simple">
+<dt>similarReactions:     Table with translated KBase reactions for which a</dt><dd><p>reaction with the same formula but irreversible in
+VMH and reversible in KBase (or vice versa) exists</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.src.integration.mapMediumData2AGORA">
+<span class="sig-name descname"><span class="pre">mapMediumData2AGORA</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">strainGrowth</span></em>, <em class="sig-param"><span class="pre">inputMedia</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/src/integration/mapMediumData2AGORA.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.src.integration.mapMediumData2AGORA" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function extracts experimentally determined growth of species on
+multiple media and converts the in silico minimal medium the strain can
+grow on into an input fit for DEMETER. The input data was retrieved from
+Tramontano et al., Nat Microbiol 2019 (PMID: 29556107).</p>
+<dl class="simple">
+<dt>USAGE</dt><dd><p>mappedMedia = mapMediumData2AGORA(strainGrowth,inputMedia)</p>
+</dd>
+</dl>
+<p>INPUTS
+strainGrowth          Growth of strains on the different media reported</p>
+<blockquote>
+<div><p>by Tramontano et al.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>inputMedia            Growth media tested by Tramontano et al. converted</dt><dd><p>into a computationally readable format</p>
+</dd>
+</dl>
+<p>OUTPUT
+mappedMedia           Data from Tramontano et al. converted into a format</p>
+<blockquote>
+<div><p>that can be added to GrowthRequirementsTable</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.src.integration.parseNCBItaxonomy">
+<span class="sig-name descname"><span class="pre">parseNCBItaxonomy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">NCBI</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/src/integration/parseNCBItaxonomy.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.src.integration.parseNCBItaxonomy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Grabs taxonomic lineage from NCBI using the NCBI ID</p>
+<p>INPUT
+NCBI          NCBI ID (e.g., 511145)</p>
+<p>OUTPUT
+taxonomy      structure containing the taxonomic lineage</p>
+<p>Stefania Magnusdottir, Nov 2017</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.src.integration.prepareInputData">
+<span class="sig-name descname"><span class="pre">prepareInputData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">infoFilePath</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/src/integration/prepareInputData.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.src.integration.prepareInputData" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function propagates available experimental data that was collected for
+AGORA2 (<a class="reference external" href="https://www.biorxiv.org/content/10.1101/2020.11.09.375451v1">https://www.biorxiv.org/content/10.1101/2020.11.09.375451v1</a>) to newly
+reconstructed strains and reads information from comparative genomic data
+in PubSEED spreadsheet format if available. It is recommended to check the
+propagated data manually afterwards.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[adaptedInfoFilePath,inputDataFolder] = prepareInputData</strong> (<em>infoFilePath,varargin</em>)</p>
+</dd>
+</dl>
+<p>REQUIRED INPUT
+infoFilePath          File with information on reconstructions to refine
+OPTIONAL INPUTS
+inputDataFolder       Folder to save propagated data to (default: folder</p>
+<blockquote>
+<div><p>in current path called “InputData”)</p>
+</div></blockquote>
+<dl class="simple">
+<dt>spreadsheetFolder     Folder with comparative genomics data retrieved</dt><dd><p>from PubSEED in spreadsheet format if available.
+For an example of the required format, see
+cobratoolbox/papers/2021_demeter/exampleSpreadsheets.</p>
+</dd>
+</dl>
+<p>OUTPUTS
+adaptedInfoFilePath   Path to file with taxonomic information adapted</p>
+<blockquote>
+<div><p>with gram staining information</p>
+</div></blockquote>
+<dl class="simple">
+<dt>inputDataFolder       Folder to save propagated data to (default: folder</dt><dd><p>in current path called “InputData”)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.src.integration.printRefinedModelIDs">
+<span class="sig-name descname"><span class="pre">printRefinedModelIDs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">draftFolder</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/src/integration/printRefinedModelIDs.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.src.integration.printRefinedModelIDs" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function prints the adapted names of the draft reconstruction
+entered into DEMETER. The adapted names need to be present in the
+MicrobeID column of the file with taxonomic information exactly as
+written in the output refinedModelIDs.</p>
+<p>USAGE: refinedModelIDs = printRefinedModelIDs(draftFolder)</p>
+<p>INPUT
+draftFolder            Folder with draft COBRA models generated by</p>
+<blockquote>
+<div><p>KBase pipeline to analyze</p>
+</div></blockquote>
+<p>OUTPUT
+refinedModelIDs        Names of the refined models generated by DEMETER</p>
+<p>AUTHOR: Almut Heinken, 01/2021.</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.src.integration.propagateKBaseMetTranslationToRxns">
+<span class="sig-name descname"><span class="pre">propagateKBaseMetTranslationToRxns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">toTranslatePath</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/src/integration/propagateKBaseMetTranslationToRxns.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.src.integration.propagateKBaseMetTranslationToRxns" title="Permalink to this definition">¶</a></dt>
+<dd><p>This functions replaced already translated metabolites in reactions with
+KBase/Model SEED nomenclature that are not yet translated. The function
+creates an output fit for the ReconstructionTool interface in rBioNet
+that can be used to check if the reactions already exist in the VMH
+database.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[translatedRxns]=propagateKBaseMetTranslationToRxns</strong> (<em>toTranslatePath</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><p><strong>toTranslatePath           String containing the path to xlsx, csv, or</strong> – txt file with reaction IDs in KBase/ModelSEED
+nomenclature to translate (e.g., rxn00001)</p>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><p><strong>translatedRxns            Table with reactions with already translated</strong> – metabolite IDs replaced that can serve as
+input for rBioNet to check if the reactions
+already exist in the VMH database.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.src.integration.readInputTableForPipeline">
+<span class="sig-name descname"><span class="pre">readInputTableForPipeline</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">tablePath</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/src/integration/readInputTableForPipeline.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.src.integration.readInputTableForPipeline" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads tables, such as text files, that are needed as input data for
+DEMETER in a format fit for the pipeline. The necessary inputs depend on
+the version of MATLAB.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>formattedTable = readInputTableForPipeline</strong> (<em>tablePath</em>)</p>
+</dd>
+</dl>
+<p>INPUT
+tablePath             Path to file with the table to read in text or</p>
+<blockquote>
+<div><p>table format</p>
+</div></blockquote>
+<p>OUTPUT
+formattedTable        Table in cell array format</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.src.integration.translateKBaseToVMHMets">
+<span class="sig-name descname"><span class="pre">translateKBaseToVMHMets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">toTranslatePath</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/src/integration/translateKBaseToVMHMets.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.src.integration.translateKBaseToVMHMets" title="Permalink to this definition">¶</a></dt>
+<dd><p>This functions translates metabolites inKBase/Model SEED nomenclature
+that are not yet translated to VMH nomenclature based on names/InCHi keys.
+It is recommended the resulting translated is verified through manual
+inspection.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[translatedMets]=translateKBaseToVMHMets</strong> (<em>toTranslatePath</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><p><strong>toTranslatePath         String containing the path to xlsx, csv, or</strong> – txt file with metabolite IDs in KBase/ModelSEED
+nomenclature to translate (e.g., cpd00001)</p>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><p><strong>translatedMets          Table with KBase metabolite IDs that could be</strong> – matched to VMH metabolite IDs</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.src.integration.writeReactionsFromPubSeedSpreadsheets">
+<span class="sig-name descname"><span class="pre">writeReactionsFromPubSeedSpreadsheets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">infoFilePath</span></em>, <em class="sig-param"><span class="pre">inputDataFolder</span></em>, <em class="sig-param"><span class="pre">spreadsheetFolder</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/src/integration/writeReactionsFromPubSeedSpreadsheets.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.src.integration.writeReactionsFromPubSeedSpreadsheets" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prepares input file for the comparative genomics part
+Write reaction spreadsheets from InReactions and PubSEED spreadsheets.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>writeReactionsFromPubSeedSpreadsheets</strong> (<em>infoFilePath,inputDataFolder,spreadsheetFolder</em>)</p>
+</dd>
+</dl>
+<p>INPUTS
+infoFilePath          File with information on reconstructions to refine
+inputDataFolder       Folder to save propagated data to (default: folder</p>
+<blockquote>
+<div><p>in current path called “InputData”)</p>
+</div></blockquote>
+<dl class="simple">
+<dt>spreadsheetFolder     Folder with comparative genomics data retrieved</dt><dd><p>from PubSEED in spreadsheet format if available.
+For an example of the required format, see
+cobratoolbox/papers/2021_demeter/exampleSpreadsheets.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../../../fastGapFill/index.html" class="btn btn-default float-right" title="Fastgapfill" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../properties/index.html" class="btn btn-default" title="Properties" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017-2021, The COBRA Toolbox developers.
+
+    </p>
+  </div>
+  Built with Sphinx using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../../',
+            VERSION:'2.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+    <script type="text/javascript" src="../../../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script type="text/javascript" src="../../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../../../_static/sphinx_highlight.js"></script>
+
+  
+
+
+  
+  
+    <script type="text/javascript" src="../../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TRCMZL1FKK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TRCMZL1FKK');
+  </script>
+    
+</body>
+</html>

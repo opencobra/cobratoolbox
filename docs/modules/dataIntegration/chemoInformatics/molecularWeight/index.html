@@ -1,0 +1,478 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Molecularweight &mdash; The COBRA Toolbox</title>
+  
+
+  
+  
+  
+    <link rel="apple-touch-icon" sizes="180x180" href="../../../../_static/img/apple-touch-icon.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../../_static/img/favicon-32x32.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="16x16" href="../../../../_static/img/favicon-16x16.png">
+  
+  
+    <link rel="mask-icon" href="../../../../_static/img/safari-pinned-tab.svg" color="#5bbad5">
+  
+  
+    <link rel="manifest" href="../../../../_static/json/manifest.json">
+  
+  
+    <meta name="msapplication-config" content="../../../../_static/browserconfig.xml">
+  
+  <meta name="theme-color" content="#ffffff">
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+  <script src="../../../../_static/js/jquery.easy-autocomplete.min.js" type="text/javascript" ></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+  <link href="../../../../_static/css/easy-autocomplete.min.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../_static/css/cobra.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../../../_static/css/cobra.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../../search.html"/>
+    <link rel="top" title="The COBRA Toolbox" href="../../../../index.html"/>
+        <link rel="up" title="Chemoinformatics" href="../index.html"/>
+        <link rel="next" title="Basicphysicochemicaldata" href="basicPhysicochemicalData/index.html"/>
+        <link rel="prev" title="Chemoinformatics" href="../index.html"/> 
+
+  
+  <script src="../../../../_static/js/modernizr.min.js"></script>
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> The COBRA Toolbox
+          
+
+          
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
+          
+          </a>
+
+              
+          <h1>The COBRA Toolbox</h1>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" id="simple"/>
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+    <script>
+    	var options = {
+
+		url: "../../../../_static/json/functions.json",
+
+		getValue: "name",
+
+		list: {
+            onKeyEnterEvent: function(item) {
+                    return "_static/../" + item.website_url
+            },
+            maxNumberOfElements: 25,
+			match: {
+					enabled: true,
+			},
+            sort: {
+			    enabled: true
+		    }
+		},
+
+    	template: {
+	    	type: "custom",
+		    method: function(value, item) {
+                return "<span><a href='../../../../search.html?q=" + item.name + "&check_keywords=yes&area=default'>" + value + "</a>" + "<a href='../../../../_static/../" + item.website_url + "' ><img src='../../../../_static/link.svg'/></a></span>";
+		    }
+	    },
+
+		theme: "square"
+
+	};
+
+	$("#simple").easyAutocomplete(options);
+
+
+    </script>
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../index.html">Home</a></li>
+              </ul>
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">Functions</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../../analysis/index.html">Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../base/index.html">Base</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Dataintegration</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../../fluxomics/index.html">Fluxomics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../metanetxMapper/index.html">Metanetxmapper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../transcriptomics/index.html">Transcriptomics</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html">Chemoinformatics</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Molecularweight</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="basicPhysicochemicalData/index.html">Basicphysicochemicaldata</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../metabolites/index.html">Metabolites</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../reactions/index.html">Reactions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../RXN/index.html">Rxn</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../inchi/index.html">Inchi</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../XomicsToModel/index.html">Xomicstomodel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../metabotools/index.html">Metabotools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../metaboAnnotator/index.html">Metaboannotator</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../design/index.html">Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reconstruction/index.html">Reconstruction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../visualization/index.html">Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contributing.html">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../cite.html">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../support.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../plan.html">Development Plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contact.html">Contact</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../citations.html">Citations</a></li>
+</ul>
+
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">The COBRA Toolbox</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../contents.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Functions</a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Dataintegration</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Chemoinformatics</a></li>
+      <li class="breadcrumb-item active">Molecularweight</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="https://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <section id="molecularweight">
+<span id="id1"></span><h1>Molecularweight<a class="headerlink" href="#molecularweight" title="Permalink to this heading">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="basicPhysicochemicalData/index.html">Basicphysicochemicaldata</a></li>
+</ul>
+</div>
+<span class="target" id="module-src.dataIntegration.chemoInformatics.molecularWeight"></span><dl class="mat function">
+<dt class="sig sig-object mat" id="src.dataIntegration.chemoInformatics.molecularWeight.computeMW">
+<span class="sig-name descname"><span class="pre">computeMW</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">metList</span></em>, <em class="sig-param"><span class="pre">warnings</span></em>, <em class="sig-param"><span class="pre">generalFormula</span></em>, <em class="sig-param"><span class="pre">isotopeAbundance</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/chemoInformatics/molecularWeight/computeMW.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.chemoInformatics.molecularWeight.computeMW" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes molecular weight and elemental matrix of compounds</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[MW, Ematrix, elements, knownWeights, unknownElements] = computeMW</strong> (<em>model, metList, warnings, generalFormula, isotopeAbundance</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><p><strong>model</strong> – COBRA model structure (must define .mets and .metFormulas)</p>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>metList</strong> – Cell array of which metabolites to search for. (Default = all metabolites in model)</p></li>
+<li><p><strong>warnings</strong> – Display warnings if there are errors with the formula. (Default = true)</p></li>
+<li><p><strong>generalFormula</strong> –</p>
+<ul>
+<li><p>(default) false to calculate MWs for formulae containing consisting of common
+biological elements using their mass numbers (instead of the standard atomic mass)</p></li>
+<li><p>true to support formulae with brackets, decimal places and any chemical elements
+including undefined groups (e.g., ‘([H2O]2(CuSO4))2Generic_element0.5’).
+MW = NaN for any formulae with chemical elements of unknown weights
+except the reserved formula ‘Mass0’ for denoting truly massless metabolites (e.g., photon)</p></li>
+</ul>
+</li>
+<li><p><strong>(isotopeAbundance is used only if genericFormula = true)</strong></p></li>
+<li><p><strong>isotopeAbundance</strong> –</p>
+<ul>
+<li><p>(default) false to use standard atomic weights</p></li>
+<li><dl class="simple">
+<dt>true to use the weights of naturally predominant isotopes for biological</dt><dd><p>elements and standard weights for other elements.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><cite>m</cite> x 3 cell arrray with user defined isotope abundance:</dt><dd><p>isotopeAbundance{i, 1} = ‘Atomic_Symbol’;
+isotopeAbundance{i, 2} = Mass_Number;
+isotopeAbundance{i, 3} = abundance;
+(where sum of abundances of all isotopes of an element must be one)</p>
+</dd>
+</dl>
+</li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>MW</strong> – Vector of molecular weights</p></li>
+<li><p><strong>Ematrix</strong> –</p>
+<ul>
+<li><p><cite>m</cite> x 6 matrix of order [C N O H P other] if genericFormula = false</p></li>
+<li><p><cite>m</cite> x <cite>e</cite> matrix if genericFormula = true given <cite>e</cite> elements in the chemical formulae</p></li>
+</ul>
+</li>
+<li><p><strong>element</strong> – cell array of elements corresponding to the columns of Ematrix</p></li>
+<li><p><strong>(knownWeights and unknownElements are non-empty only if genericFormula = true)</strong></p></li>
+<li><p><strong>knownWeights</strong> – MWs for the part whose MW is computable ofr each of the formulae</p></li>
+<li><p><strong>unknownElements</strong> – cell arrary of elements without known atomic weights that appear in the formulae</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.dataIntegration.chemoInformatics.molecularWeight.getMolecularMass">
+<span class="sig-name descname"><span class="pre">getMolecularMass</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">formulae</span></em>, <em class="sig-param"><span class="pre">isotopeAbundance</span></em>, <em class="sig-param"><span class="pre">generalFormula</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/chemoInformatics/molecularWeight/getMolecularMass.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.chemoInformatics.molecularWeight.getMolecularMass" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets monoisotopic exact molecular mass for a single formula or a cell array of
+formulae using the relative atomic mass of the most abundant isotope of each element
+as specified by NIST <a class="reference external" href="http://physics.nist.gov/PhysRefData/Compositions/">http://physics.nist.gov/PhysRefData/Compositions/</a></p>
+<p>An atomic weight of an element from a specified source is the ratio of
+the average mass per atom of the element to 1/12 of the mass of an
+atom of 12C.</p>
+<p>Note the term “relative atomic mass” is usually reserved for the mass of a
+specific nuclide (or isotope), while “atomic weight” is usually used for the
+weighted mean of the relative atomic mass over all the atoms in the
+sample (polyisotopic mass).</p>
+<p>If the ratio of the different isotopes are known exactly, this may be
+provided in the <cite>m</cite> x 3 cell array of m isotopes, i.e. <cite>isotopeAbundance</cite>.</p>
+<p>By default, this script gives the molecular mass assuming monoisotopic
+exact mass.</p>
+<dl class="field-list">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[Masses, knownMasses, unknownElements, Ematrix, elements] = getMolecularMass</strong> (<em>formulae, isotopeAbundance, generalFormula</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><p><strong>formulae</strong> – single formula or a cell array of formulae</p>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>isotopeAbundance</strong> – {(1), 0} where:</p>
+<p>1 = monoisotopic exact mass i.e. only uses naturally predominant isotope
+of each element.</p>
+<p>0 = polyisotopic inexact mass i.e. uses all isotopes of each element weighted
+by natural abundance</p>
+<p>or</p>
+<p><cite>m</cite> x 3 cell arrray with user defined isotope abundance:
+isotopeAbundance{i, 1} = ‘Atomic_Symbol’;
+isotopeAbundance{i, 2} = Mass_Number;
+isotopeAbundance{i, 3} = abundance;
+(where sum of abundances of all isotopes of an element must be one)</p>
+</li>
+<li><dl class="simple">
+<dt><strong>generalFormula       *</strong> (<em>false</em>) –   Return Masses = 0 if a formula contains none of these elements.</dt><dd><p>(C, O, P, N, S, H, Mg, Na, K, Cl, Ca, Zn, Fe, Cu, Mo, I)</p>
+</dd>
+</dl>
+<ul class="simple">
+<li><p>true to support formulae with brackets, decimal places and any chemical elements
+including undefined groups (e.g., ‘([H2O]2(CuSO4))2Generic_element0.5’).
+Return Masses = NaN for any formulae with chemical elements of unknown weights
+except the reserved formula ‘Mass0’ for denoting truly massless metabolites (e.g., photon)</p></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUT</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>Masses</strong> – molecular mass(es) in (gram/Mol)</p></li>
+<li><p><strong>(the below are non-empty only if general = true)</strong></p></li>
+<li><p><strong>knownWeights</strong> – MWs for the part whose MW is computable ofr each of the formulae</p></li>
+<li><p><strong>unknownElements</strong> – cell arrary of elements without known atomic weights that appear in the formulae</p></li>
+<li><p><strong>Ematrix</strong> – elemental composition matrix (#formulae x #elements)</p></li>
+<li><p><strong>element</strong> – cell array of elements corresponding to the columns of Ematrix</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>% e.g. Carbon, all as C13
+isotopeAbundance{i,1}= ‘C’
+isotopeAbundance{i,2}= 12;
+isotopeAbundance{i,3}= 0;
+isotopeAbundance{i+1,1}= ‘C’
+isotopeAbundance{i+1,2}= 13;
+isotopeAbundance{i+1,3}= 1;
+isotopeAbundance{i+2,1}= ‘C’
+isotopeAbundance{i+2,2}= 14;
+isotopeAbundance{i+2,3}= 0;</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Exact mass check:
+If you want to double check that the mass given by this script is correct
+then compare it to either</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>OpenBabel: <cite>echo “InChIstring” | obabel -iinchi -  -oreport</cite>  or</p></li>
+<li><p><a class="reference external" href="http://www.sisweb.com/referenc/tools/exactmass.htm">http://www.sisweb.com/referenc/tools/exactmass.htm</a></p></li>
+</ol>
+</div></blockquote>
+<p>Please report any errors as these are critical for use of this script
+with mass spec machines.</p>
+</div>
+</dd></dl>
+
+</section>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="basicPhysicochemicalData/index.html" class="btn btn-default float-right" title="Basicphysicochemicaldata" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../index.html" class="btn btn-default" title="Chemoinformatics" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017-2021, The COBRA Toolbox developers.
+
+    </p>
+  </div>
+  Built with Sphinx using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../',
+            VERSION:'2.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+    <script type="text/javascript" src="../../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../../_static/sphinx_highlight.js"></script>
+
+  
+
+
+  
+  
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TRCMZL1FKK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TRCMZL1FKK');
+  </script>
+    
+</body>
+</html>

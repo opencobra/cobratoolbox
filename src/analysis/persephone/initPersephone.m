@@ -49,19 +49,36 @@ arguments
     paths (1, :) {mustBeNonempty}
 end
 
+
 %%% Test for Matlab toolbox dependency issues %%%
-
-% Check if the parallel toolbox is installed (Required)
-if ~matlab.addons.isAddonEnabled('Parallel Computing Toolbox')
-    error('It seems the Paralell Computing Toolbox is not installed. Please consider installing it via the add-on option in MATLAB, it is required to generate microbiome models, HM models and to generate flux results.')
+%fix for error from missing toolbox - stats and ML - wb 20250305
+sysAddons = matlab.addons.installedAddons();
+if any(strcmp(sysAddons.Name,'Parallel Computing Toolbox'))
+    % Check if the parallel toolbox is installed (Required)
+    if ~matlab.addons.isAddonEnabled('Parallel Computing Toolbox')
+        error('It seems the Paralell Computing Toolbox is not installed. Please consider installing it via the add-on option in MATLAB, it is required to generate microbiome models, HM models and to generate flux results.')
+    else
+        if ~license('test','Distrib_Computing_Toolbox')
+          error('It seems the Paralell Computing Toolbox is installed but no valid license exists. Please consider updating/obtaining a license, it is required to generate microbiome models, HM models and to generate flux results.')
+        end   
+    end
 end
-
 % Check if the statistics toolbox is installed (Not critical, but recommended)
-if ~matlab.addons.isAddonEnabled('Statistics and Machine Learning Toolbox')
-    statToolboxInstalled = false;
-    warning('It seems the Statistics and Machine Learning Toolbox is not installed. Please consider installing it via the add-on option in MATLAB as it is required for analysis')
+if any(strcmp(sysAddons.Name,'Statistics and Machine Learning Toolbox'))
+    if ~matlab.addons.isAddonEnabled('Statistics and Machine Learning Toolbox')
+        statToolboxInstalled = false;
+        warning('It seems the Statistics and Machine Learning Toolbox is not installed. Please consider installing it via the add-on option in MATLAB as it is required for analysis')
+    else
+        if license('test', 'Statistics_Toolbox')
+        statToolboxInstalled = true;
+        else 
+         warning('It seems the Statistics and Machine Learning Toolbox installed but no valid license exists. Please consider updating/obtaining a license as it is required for analysis')
+        statToolboxInstalled = false;
+        end    
+    end
 else
-    statToolboxInstalled = true;
+    statToolboxInstalled = false;
+
 end
 
 
@@ -83,7 +100,7 @@ metadata = readMetadataForPersephone(paths.General.metadataPath);
 acceptableIdNameList = {'id','sample','name','sample_id','sample_name','sample id','sample name'}; % Can be extended in the future
 
 % Check if ID information can be found in the metadata
-varNames = metadata.Properties.VariableDescriptions;
+varNames = metadata.Properties.VariableNames;
 if any(matches(acceptableIdNameList,varNames{1},"IgnoreCase",true))
     metadata = renamevars(metadata, varNames{1},'ID');
     metadata.ID = string(metadata.ID);

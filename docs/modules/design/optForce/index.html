@@ -1,0 +1,1724 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Optforce &mdash; The COBRA Toolbox</title>
+  
+
+  
+  
+  
+    <link rel="apple-touch-icon" sizes="180x180" href="../../../_static/img/apple-touch-icon.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../_static/img/favicon-32x32.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="16x16" href="../../../_static/img/favicon-16x16.png">
+  
+  
+    <link rel="mask-icon" href="../../../_static/img/safari-pinned-tab.svg" color="#5bbad5">
+  
+  
+    <link rel="manifest" href="../../../_static/json/manifest.json">
+  
+  
+    <meta name="msapplication-config" content="../../../_static/browserconfig.xml">
+  
+  <meta name="theme-color" content="#ffffff">
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+  <script src="../../../_static/js/jquery.easy-autocomplete.min.js" type="text/javascript" ></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+  <link href="../../../_static/css/easy-autocomplete.min.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/cobra.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../../_static/css/cobra.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="The COBRA Toolbox" href="../../../index.html"/>
+        <link rel="up" title="Design" href="../index.html"/>
+        <link rel="next" title="Optenvelope" href="../optEnvelope/index.html"/>
+        <link rel="prev" title="Design" href="../index.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> The COBRA Toolbox
+          
+
+          
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
+          
+          </a>
+
+              
+          <h1>The COBRA Toolbox</h1>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" id="simple"/>
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+    <script>
+    	var options = {
+
+		url: "../../../_static/json/functions.json",
+
+		getValue: "name",
+
+		list: {
+            onKeyEnterEvent: function(item) {
+                    return "_static/../" + item.website_url
+            },
+            maxNumberOfElements: 25,
+			match: {
+					enabled: true,
+			},
+            sort: {
+			    enabled: true
+		    }
+		},
+
+    	template: {
+	    	type: "custom",
+		    method: function(value, item) {
+                return "<span><a href='../../../search.html?q=" + item.name + "&check_keywords=yes&area=default'>" + value + "</a>" + "<a href='../../../_static/../" + item.website_url + "' ><img src='../../../_static/link.svg'/></a></span>";
+		    }
+	    },
+
+		theme: "square"
+
+	};
+
+	$("#simple").easyAutocomplete(options);
+
+
+    </script>
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../../../index.html">Home</a></li>
+              </ul>
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Functions</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../analysis/index.html">Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../base/index.html">Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dataIntegration/index.html">Dataintegration</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Design</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Optforce</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../optEnvelope/index.html">Optenvelope</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../optForceGAMS/index.html">Optforcegams</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../reconstruction/index.html">Reconstruction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../visualization/index.html">Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../cite.html">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../support.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../plan.html">Development Plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contact.html">Contact</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../citations.html">Citations</a></li>
+</ul>
+
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">The COBRA Toolbox</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../contents.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Functions</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Design</a></li>
+      <li class="breadcrumb-item active">Optforce</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="https://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <section id="optforce">
+<span id="id1"></span><h1>Optforce<a class="headerlink" href="#optforce" title="Permalink to this heading">¶</a></h1>
+<span class="target" id="module-src.design.optForce"></span><dl class="mat function">
+<dt class="sig sig-object mat" id="src.design.optForce.FVAOptForce">
+<span class="sig-name descname"><span class="pre">FVAOptForce</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">constrW</span></em>, <em class="sig-param"><span class="pre">constrM</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/design/optForce/FVAOptForce.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.design.optForce.FVAOptForce" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function calculates flux ranges for each reaction in the wild-type
+strain and in the mutant strain. Constraints should be specified for at
+least one strain (wild-type or mutant)</p>
+<dl class="field-list">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[minFluxesW, maxFluxesW, minFluxesM, maxFluxesM, boundsW, boundsM] = FVAOptForce</strong> (<em>model, constrWT, constrMT</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul>
+<li><p><strong>model</strong> – (structure) COBRA metabolic model with at least
+the following fields:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>.rxns - Reaction IDs in the model</p></li>
+<li><p>.mets - Metabolite IDs in the model</p></li>
+<li><p>.S -    Stoichiometric matrix (sparse)</p></li>
+<li><p>.b -    RHS of <cite>Sv = b</cite> (usually zeros)</p></li>
+<li><p>.c -    Objective coefficients</p></li>
+<li><p>.lb -   Lower bounds for fluxes</p></li>
+<li><p>.ub -   Upper bounds for fluxes</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><strong>constrW</strong> – (structure) structure containing contraints
+for the wild-type strain. The structure has
+the following fields:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>.rxnList - Reaction list (cell array)</p></li>
+<li><p>.values - Values for constrained reactions (double array)</p></li>
+<li><p>.rxnBoundType - Type of bound (char array)
+(‘b’: both bounds; ‘l’: lower bound; ‘u’: upper bound)
+E.g.: <cite>constrW = struct(‘rxnList’, {{‘R75’; ‘EX_suc’}}, ‘rxnValues’, [0; 155.55], ‘rxnBoundType’, [‘b’; ‘b’]);</cite></p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><strong>constrM</strong> – (structure) structure containing contraints
+for the mutant strain. The structure has the following:
+fields:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>.rxnList - Reaction list (cell array)</p></li>
+<li><p>.values - Values for constrained reactions
+(double array)</p></li>
+<li><p>.rxnBoundType - Type of bound (char array)
+(‘b’: both bounds; ‘l’: lower bound; ‘u’: upper bound)
+E.g.: <cite>constrW = struct(‘rxnList’, {{‘R75’; ‘EX_suc’}}, ‘rxnValues’, [0; 155.55], ‘rxnBoundType’, [‘b’; ‘b’]);</cite></p></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>minFluxesW</strong> – (double array) minimum values for reactions in
+the wild-type strain. It has dimensions
+(number of reactions) x 1</p></li>
+<li><p><strong>maxFluxesW</strong> – (double array) maximum values for reactions in
+the wild-type strain. It has dimensions
+(number of reactions) x 1</p></li>
+<li><p><strong>minFluxesM</strong> – (double array) minimum values for reactions in
+the mutant strain. It has dimensions
+(number of reactions) x 1</p></li>
+<li><p><strong>maxFluxesM</strong> – (double array) minimum values for reactions in
+the wild-type strain. It has dimensions
+(number of reactions) x 1</p></li>
+<li><p><strong>boundsW</strong> – (cell array) bounds given by the minimum and
+maximum values for reactions in the wild-type
+strain. The reaction IDs are in the first
+column, the minimun values in the second and
+the maximum values in the third. It has
+dimensions (number of reactions) x 3</p></li>
+<li><p><strong>boundsM</strong> – (cell array) bounds given by the minimum and
+maximum values for reactions in the mutant
+strain. The reaction IDs are in the first
+column, the minimun values in the second and
+the maximum values in the third. It has
+dimensions (number of reactions) x 3</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.design.optForce.analyzeOptForceSol">
+<span class="sig-name descname"><span class="pre">analyzeOptForceSol</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">targetRxn</span></em>, <em class="sig-param"><span class="pre">biomassRxn</span></em>, <em class="sig-param"><span class="pre">solution</span></em>, <em class="sig-param"><span class="pre">relax</span></em>, <em class="sig-param"><span class="pre">tol</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/design/optForce/analyzeOptForceSol.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.design.optForce.analyzeOptForceSol" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function will calculate the minimum and maximum rates for target
+production when applying a set of interventions (upregulations,
+downregulations, knockouts) in the model. Flux for each intervened
+reaction in the mutant must be specified in the structure solution (third
+input).</p>
+<dl class="field-list">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[maxGrowthRate, minTarget, maxTarget] = analyzeOptForceSol</strong> (<em>model, targetRxn, solution, relax, tol</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul>
+<li><p><strong>model</strong> – (structure) COBRA metabolic model with at least
+the following fields:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>.rxns - Reaction IDs in the model</p></li>
+<li><p>.mets - Metabolite IDs in the model</p></li>
+<li><p>.S -    Stoichiometric matrix (sparse)</p></li>
+<li><p>.b -    RHS of <cite>Sv = b</cite> (usually zeros)</p></li>
+<li><p>.c -    Objective coefficients</p></li>
+<li><p>.lb -   Lower bounds for fluxes</p></li>
+<li><p>.ub -   Upper bounds for fluxes</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><strong>targetRxn</strong> – (string) Reaction identifier for target reaction
+E.g.: <cite>targetRxn = ‘EX_suc’</cite></p></li>
+<li><p><strong>solution</strong> – (structure) Structure containing information about the inverventions.
+E.g.: <cite>solution = struct(‘reactions’, …
+{{‘R21’; ‘R24’}}, ‘flux’, [10; 0])</cite>
+In this example, the reaction R21 will be
+regulated at 10 (mmol/gDW h) (upregulation or
+downregulation depending on the value for the
+wild-type strain) and R21 will be regulated at 0
+(mmol/gDW h) (knockout) Only two fields are
+needed for this structure:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>.reactions - identifiers for reactions
+that will be intervened</p></li>
+<li><p>.flux - new flux achieved in the intervened
+reactions.</p></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>relax</strong> – (double) Boolean to describe if constraints
+should be apply in an rounded way (<cite>relax = 1</cite>)
+or in an exactly way (<cite>relax = 0</cite>)
+Default: <cite>relax = 1</cite></p></li>
+<li><p><strong>tol</strong> – (double) range for tolerance when relaxing
+contraints.
+Default: <cite>tol = 1e-7</cite></p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>maxGrowthRate</strong> – (double) Maximum growth rate of mutant strain
+(after applying the inverventions)</p></li>
+<li><p><strong>minTarget</strong> – (double) Minimum production rate of target at
+max growth rate</p></li>
+<li><p><strong>maxTarget</strong> – (double) Maximum production rate of target at
+max growth rate</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.design.optForce.findMustL">
+<span class="sig-name descname"><span class="pre">findMustL</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">minFluxesW</span></em>, <em class="sig-param"><span class="pre">maxFluxesW</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/design/optForce/findMustL.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.design.optForce.findMustL" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function runs the second step of <cite>optForce</cite>, that is to solve a
+bilevel mixed integer linear programming  problem to find a first order
+<cite>MustL</cite> set.</p>
+<dl class="field-list">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[mustLSet, posMustL] = findMustL</strong> (<em>model, minFluxesW, maxFluxesW, varargin</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul>
+<li><p><strong>model</strong> – (structure) COBRA metabolic model
+with at least the following fields:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>.rxns - Reaction IDs in the model</p></li>
+<li><p>.mets - Metabolite IDs in the model</p></li>
+<li><p>.S -    Stoichiometric matrix (sparse)</p></li>
+<li><p>.b -    RHS of <cite>Sv = b</cite> (usually zeros)</p></li>
+<li><p>.c -    Objective coefficients</p></li>
+<li><p>.lb -   Lower bounds for fluxes</p></li>
+<li><p>.ub -   Upper bounds for fluxes</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><strong>minFluxesW</strong> – (double array) of <cite>size n_rxns x 1</cite>.
+Minimum fluxes for each
+reaction in the model for wild-type strain.
+This can be obtained by running the
+function <cite>FVAOptForce</cite>.
+E.g.: <cite>minFluxesW = [-90; -56];</cite></p></li>
+<li><p><strong>maxFluxesW</strong> – (double array) of size <cite>n_rxns x 1</cite>.
+Maximum fluxes for each
+reaction in the model for wild-type strain.
+This can be obtained by running the
+function <cite>FVAOptForce</cite>.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>constrOpt</strong> – (structure) structure containing
+additional contraints. Include here only
+reactions whose flux is fixed, i.e.,
+reactions whose lower and upper bounds have
+the same value. Do not include here
+reactions whose lower and upper bounds have
+different values. Such contraints should be
+defined in the lower and upper bounds of
+the model. The structure has the following
+fields:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>.rxnList - Reaction list (cell array)</p></li>
+<li><p>.values -  Values for constrained
+reactions (double array)
+E.g.: <cite>struct(‘rxnList’, {{‘EX_gluc’, ‘R75’, ‘EX_suc’}}, ‘values’, [-100, 0, 155.5]’);</cite></p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><strong>runID</strong> – (string) ID for identifying this run.
+Default: [‘run’ date hour].</p></li>
+<li><p><strong>outputFolder</strong> – (string) name for folder in which results
+will be stored.
+Default: ‘OutputsFindMustL’.</p></li>
+<li><p><strong>outputFileName</strong> – (string) name for files in which results
+will be stored.
+Default: ‘MustLSet’.</p></li>
+<li><p><strong>printExcel</strong> – (double) boolean to describe wheter data
+must be printed in an excel file or not.
+Default: 1</p></li>
+<li><p><strong>printText</strong> – (double) boolean to describe wheter data
+must be printed in an plaint text file or not.
+Default: 1</p></li>
+<li><p><strong>printReport</strong> – (double) 1 to generate a report in a plain
+text file. 0 otherwise.
+Default: 1</p></li>
+<li><p><strong>keepInputs</strong> – (double) 1 to save inputs to run
+<cite>findMustL.m</cite> 0 otherwise.
+Default: 1</p></li>
+<li><p><strong>printLevel</strong> – (double) 1 to print results in console.
+0 otherwise.
+Default: 0</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUTS</dt>
+<dd class="field-even"><ul>
+<li><p><strong>mustLSet</strong> – (cell array) Size: number of reactions found X 1.
+Cell array containing the
+reactions ID which belong to the <cite>Must_U</cite> Set</p></li>
+<li><p><strong>posMustL</strong> – (double array)
+Size: number of reactions found X 1
+double array containing the
+positions of reactions in the model.</p></li>
+<li><p><strong>outputFileName.xls         File containing one column array</strong> – with identifiers for reactions in <cite>MustL</cite>. This
+file will only be generated if the user entered
+<cite>printExcel = 1</cite>. Note that the user can choose
+the name of this file entering the input
+<cite>outputFileName = ‘PutYourOwnFileNameHere’;</cite></p></li>
+<li><p><strong>outputFileName.txt         File containing one column array</strong> – with identifiers for reactions in <cite>MustL</cite>. This
+file will only be generated if the user entered
+<cite>printText = 1</cite>. Note that the user can choose
+the name of this file entering the input
+<cite>outputFileName = ‘PutYourOwnFileNameHere’;</cite></p></li>
+<li><dl class="simple">
+<dt><strong>outputFileName_Info.xls    File containing five column arrays.</strong> –   * C1: identifiers for reactions in <cite>MustL</cite></dt><dd><ul class="simple">
+<li><p>C2: min fluxes for reactions according to FVA</p></li>
+<li><p>C3: max fluxes for reactions according to FVA</p></li>
+<li><p>C4: min fluxes achieved for reactions,
+according to <cite>findMustL</cite></p></li>
+<li><p>C5: max fluxes achieved for reactions,
+according to <cite>findMustL</cite></p></li>
+</ul>
+</dd>
+</dl>
+<p>This file will only be generated if the user
+entered <cite>printExcel = 1</cite>. Note that the user can
+choose the name of this file entering the input
+<cite>outputFileName = ‘PutYourOwnFileNameHere’;</cite></p>
+</li>
+<li><dl class="simple">
+<dt><strong>outputFileName_Info.txt    File containing five column arrays.</strong> –   * C1: identifiers for reactions in <cite>MustL</cite>.</dt><dd><ul class="simple">
+<li><p>C2: min fluxes for reactions according to FVA</p></li>
+<li><p>C3: max fluxes for reactions according to FVA</p></li>
+<li><p>C4: min fluxes achieved for reactions,
+according to <cite>findMustL</cite></p></li>
+<li><p>C5: max fluxes achieved for reactions,
+according to <cite>findMustL</cite></p></li>
+</ul>
+</dd>
+</dl>
+<p>This file will only be generated if the user
+entered <cite>printText = 1</cite>. Note that the user can
+choose the name of this file entering the input
+<cite>outputFileName = ‘PutYourOwnFileNameHere’;</cite></p>
+</li>
+</ul>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This function is based in the GAMS files written by Sridhar
+Ranganathan which were provided by the research group of Costas D.
+Maranas. For a detailed description of the <cite>optForce</cite> procedure, please
+see: <cite>Ranganathan S, Suthers PF, Maranas CD (2010) OptForce: An
+Optimization Procedure for Identifying All Genetic Manipulations
+Leading to Targeted Overproductions. PLOS Computational Biology 6(4):
+e1000744</cite>. <a class="reference external" href="https://doi.org/10.1371/journal.pcbi.1000744">https://doi.org/10.1371/journal.pcbi.1000744</a></p>
+</div>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.design.optForce.findMustLL">
+<span class="sig-name descname"><span class="pre">findMustLL</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">minFluxesW</span></em>, <em class="sig-param"><span class="pre">maxFluxesW</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/design/optForce/findMustLL.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.design.optForce.findMustLL" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function runs the second step of optForce, that is to solve a
+bilevel mixed integer linear programming  problem to find a second order
+<cite>MustLL</cite> set.</p>
+<dl class="field-list">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[mustLL, posMustLL, mustLL_linear, pos_mustLL_linear] = findMustLL</strong> (<em>model, minFluxesW, maxFluxesW, varargin</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul>
+<li><p><strong>model</strong> – (structure) COBRA metabolic model
+with at least the following fields:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>.rxns - Reaction IDs in the model</p></li>
+<li><p>.mets - Metabolite IDs in the model</p></li>
+<li><p>.S -    Stoichiometric matrix (sparse)</p></li>
+<li><p>.b -    RHS of <cite>Sv = b</cite> (usually zeros)</p></li>
+<li><p>.c -    Objective coefficients</p></li>
+<li><p>.lb -   Lower bounds for fluxes</p></li>
+<li><p>.ub -   Upper bounds for fluxes</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><strong>minFluxesW</strong> – (double array) of <cite>size n_rxns x 1</cite>
+Minimum fluxes for each
+reaction in the model for wild-type strain.
+This can be obtained by running the
+function <cite>FVAOptForce</cite>.
+E.g.: <cite>minFluxesW = [-90; -56];</cite></p></li>
+<li><p><strong>maxFluxesW</strong> – (double array) of size <cite>n_rxns x 1</cite>
+Maximum fluxes for each
+reaction in the model for wild-type strain.
+This can be obtained by</p></li>
+</ul>
+</dd>
+</dl>
+<dl>
+<dt>OPTIONAL INPUTS</dt><dd><dl>
+<dt>constrOpt:                  (structure) structure containing</dt><dd><p>additional contraints. Include here only
+reactions whose flux is fixed, i.e.,
+reactions whose lower and upper bounds have
+the same value. Do not include here
+reactions whose lower and upper bounds have
+different values. Such contraints should be
+defined in the lower and upper bounds of
+the model. The structure has the following
+fields:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>.rxnList - Reaction list (cell array)</p></li>
+<li><p>.values -  Values for constrained
+reactions (double array)
+E.g.: <cite>struct(‘rxnList’, {{‘EX_gluc’, ‘R75’, ‘EX_suc’}}, ‘values’, [-100, 0, 155.5]’);</cite></p></li>
+</ul>
+</div></blockquote>
+</dd>
+<dt>excludedRxns:               (cell array) Reactions to be excluded to</dt><dd><p>the <cite>MustLL</cite> set. This could be used to avoid
+finding transporters or exchange reactions
+in the set.
+Default: empty.</p>
+</dd>
+<dt>runID:                      (string) ID for identifying this run.</dt><dd><p>Default: [‘run’ date hour].</p>
+</dd>
+<dt>outputFolder:               (string) name for folder in which results</dt><dd><p>will be stored.
+Default: ‘OutputsFindMustLL’.</p>
+</dd>
+<dt>outputFileName:             (string) name for files in which results</dt><dd><p>will be stored.
+Default: ‘MustLLSet’.</p>
+</dd>
+<dt>printExcel:                 (double) boolean to describe wheter data</dt><dd><p>must be printed in an excel file or not.
+Default: 1</p>
+</dd>
+<dt>printText:                  (double) boolean to describe wheter data</dt><dd><p>must be printed in an plaint text file or not.
+Default: 1</p>
+</dd>
+<dt>printReport:                (double) 1 to generate a report in a plain</dt><dd><p>text file. 0 otherwise.
+Default: 1</p>
+</dd>
+<dt>keepInputs:                 (double) 1 to save inputs to run</dt><dd><p><cite>findMustLL.m</cite>, 0 otherwise.
+Default: 1</p>
+</dd>
+<dt>printLevel:                 (double) 1 to print results in console.</dt><dd><p>0 otherwise.
+Default: 0</p>
+</dd>
+</dl>
+</dd>
+<dt>OUTPUTS</dt><dd><dl class="simple">
+<dt>mustLL:                     (cell array) Size: number of sets found X 2</dt><dd><p>cell array containing the
+reactions IDs which belong to the <cite>MustLL</cite>
+set. Each row contain a couple of
+reactions.</p>
+</dd>
+<dt>posMustLL:                  (double array) Size: number of sets found X 2</dt><dd><p>double array containing the
+positions of each reaction in <cite>mustLL</cite> with
+regard to <cite>model.rxns</cite></p>
+</dd>
+<dt>mustLL_linear:              (cell array) Size: number of unique reactions found X 1</dt><dd><p>cell array containing the
+unique reactions ID which belong to the
+<cite>MustLL</cite> Set</p>
+</dd>
+<dt>pos_mustLL_linear:          (double array) Size: number of unique reactions found X 1</dt><dd><p>double array containing
+positions for reactions in <cite>mustLL_linear</cite>.
+with regard to <cite>model.rxns</cite></p>
+</dd>
+<dt>outputFileName.xls:         File containing one column array</dt><dd><p>with identifiers for reactions in <cite>MustLL</cite>. This
+file will only be generated if the user entered
+<cite>printExcel = 1</cite>. Note that the user can choose
+the name of this file entering the input
+<cite>outputFileName = ‘PutYourOwnFileNameHere’;</cite></p>
+</dd>
+<dt>outputFileName.txt:         File containing one column array</dt><dd><p>with identifiers for reactions in <cite>MustLL</cite>. This
+file will only be generated if the user entered
+<cite>printText = 1</cite>. Note that the user can choose
+the name of this file entering the input
+<cite>outputFileName = ‘PutYourOwnFileNameHere’;</cite></p>
+</dd>
+<dt>outputFileName_Info.xls:    File containing one column array.</dt><dd><p>In each row the user will find a couple of
+reactions. Each couple of reaction was found in
+one iteration of <cite>FindMustLL.gms</cite>. This file will
+only be generated if the user entered
+<cite>printExcel = 1</cite>. Note that the user can choose
+the name of this file entering the input
+<cite>outputFileName = ‘PutYourOwnFileNameHere’;</cite></p>
+</dd>
+<dt>outputFileName_Info.txt:    File containing one column array.</dt><dd><p>In each row the user will find a couple of
+reactions. Each couple of reaction was found in
+one iteration of <cite>FindMustLL.gms</cite>. This file will
+only be generated if the user entered
+<cite>printText = 1</cite>. Note that the user can choose
+the name of this file entering the input
+<cite>outputFileName = ‘PutYourOwnFileNameHere’;</cite></p>
+</dd>
+</dl>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This function is based in the GAMS files written by Sridhar
+Ranganathan which were provided by the research group of Costas D.
+Maranas. For a detailed description of the <cite>optForce</cite> procedure, please
+see: <cite>Ranganathan S, Suthers PF, Maranas CD (2010) OptForce: An
+Optimization Procedure for Identifying All Genetic Manipulations
+Leading to Targeted Overproductions. PLOS Computational Biology 6(4):
+e1000744</cite>. <a class="reference external" href="https://doi.org/10.1371/journal.pcbi.1000744">https://doi.org/10.1371/journal.pcbi.1000744</a></p>
+</div>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.design.optForce.findMustU">
+<span class="sig-name descname"><span class="pre">findMustU</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">minFluxesW</span></em>, <em class="sig-param"><span class="pre">maxFluxesW</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/design/optForce/findMustU.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.design.optForce.findMustU" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function runs the second step of <cite>optForce</cite>, that is to solve a
+bilevel mixed integer linear programming  problem to find a first order
+<cite>MustU</cite> set.</p>
+<dl class="field-list">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[mustUSet, posMustU] = findMustU</strong> (<em>model, minFluxesW, maxFluxesW, varargin</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul>
+<li><p><strong>model</strong> – (structure) COBRA metabolic model
+with at least the following fields:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>.rxns - Reaction IDs in the model</p></li>
+<li><p>.mets - Metabolite IDs in the model</p></li>
+<li><p>.S -    Stoichiometric matrix (sparse)</p></li>
+<li><p>.b -    RHS of <cite>Sv = b</cite> (usually zeros)</p></li>
+<li><p>.c -    Objective coefficients</p></li>
+<li><p>.lb -   Lower bounds for fluxes</p></li>
+<li><p>.ub -   Upper bounds for fluxes</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><strong>minFluxesW</strong> – (double array) of size <cite>n_rxns x 1</cite>
+Minimum fluxes for each
+reaction in the model for wild-type strain.
+This can be obtained by running the
+function <cite>FVAOptForce</cite>.
+E.g.: <cite>minFluxesW = [-90; -56];</cite></p></li>
+<li><p><strong>maxFluxesW</strong> – (double array) of size <cite>n_rxns x 1</cite>
+Maximum fluxes for each
+reaction in the model for wild-type strain.
+This can be obtained by running the
+function <cite>FVAOptForce</cite>.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>constrOpt</strong> – (structure) structure containing
+additional contraints. Include here only
+reactions whose flux is fixed, i.e.,
+reactions whose lower and upper bounds have
+the same value. Do not include here
+reactions whose lower and upper bounds have
+different values. Such contraints should be
+defined in the lower and upper bounds of
+the model. The structure has the following
+fields:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>.rxnList - Reaction list (cell array)</p></li>
+<li><p>.values -  Values for constrained
+reactions (double array)
+E.g.: <cite>struct(‘rxnList’, {{‘EX_gluc’, ‘R75’, ‘EX_suc’}}, ‘values’, [-100, 0, 155.5]’);</cite></p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><strong>runID</strong> – (string) ID for identifying this run.
+Default: [‘run’ date hour].</p></li>
+<li><p><strong>outputFolder</strong> – (string) name for folder in which results
+will be stored.
+Default: ‘OutputsFindMustU’.</p></li>
+<li><p><strong>outputFileName</strong> – (string) name for files in which results
+will be stored.
+Default: ‘MustUSet’.</p></li>
+<li><p><strong>printExcel</strong> – (double) boolean to describe wheter data
+must be printed in an excel file or not.
+Default: 1</p></li>
+<li><p><strong>printText</strong> – (double) boolean to describe wheter data
+must be printed in an plaint text file or not.
+Default: 1</p></li>
+<li><p><strong>printReport</strong> – (double) 1 to generate a report in a plain
+text file. 0 otherwise.
+Default: 1</p></li>
+<li><p><strong>keepInputs</strong> – (double) 1 to save inputs to run
+<cite>findMustU.m</cite>, 0 otherwise.
+Default: 1</p></li>
+<li><p><strong>printLevel</strong> – (double) 1 to print results in console.
+0 otherwise.
+Default: 0</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUTS</dt>
+<dd class="field-even"><ul>
+<li><p><strong>mustUSet</strong> – (cell array) Size: number of reactions found X 1
+cell array containing the
+reactions ID which belong to the <cite>Must_U</cite> Set</p></li>
+<li><p><strong>posMustU</strong> – (double array) Size: number of reactions found X 1
+double array containing the
+positions of reactions in the model.</p></li>
+<li><p><strong>outputFileName.xls         File containing one column array</strong> – with identifiers for reactions in <cite>MustU</cite>. This
+file will only be generated if the user entered
+<cite>printExcel = 1</cite>. Note that the user can choose
+the name of this file entering the input
+<cite>outputFileName = ‘PutYourOwnFileNameHere’;</cite></p></li>
+<li><p><strong>outputFileName.txt         File containing one column array</strong> – with identifiers for reactions in MustU. This
+file will only be generated if the user entered
+<cite>printText = 1</cite>. Note that the user can choose
+the name of this file entering the input
+<cite>outputFileName = ‘PutYourOwnFileNameHere’;</cite></p></li>
+<li><dl class="simple">
+<dt><strong>outputFileName_Info.xls    File containing five column arrays.</strong> –   * C1: identifiers for reactions in <cite>MustU</cite></dt><dd><ul class="simple">
+<li><p>C2: min fluxes for reactions according to FVA</p></li>
+<li><p>C3: max fluxes for reactions according to FVA</p></li>
+<li><p>C4: min fluxes achieved for reactions,
+according to <cite>findMustU</cite></p></li>
+<li><p>C5: max fluxes achieved for reactions,
+according to <cite>findMustU</cite></p></li>
+</ul>
+</dd>
+</dl>
+<p>This file will only be generated if the user
+entered <cite>printExcel = 1</cite>. Note that the user can
+choose the name of this file entering the input
+<cite>outputFileName = ‘PutYourOwnFileNameHere’;</cite></p>
+</li>
+<li><dl class="simple">
+<dt><strong>outputFileName_Info.txt    File containing five column arrays.</strong> –   * C1: identifiers for reactions in <cite>MustU</cite>.</dt><dd><ul class="simple">
+<li><p>C2: min fluxes for reactions according to FVA</p></li>
+<li><p>C3: max fluxes for reactions according to FVA</p></li>
+<li><p>C4: min fluxes achieved for reactions,
+according to <cite>findMustU</cite></p></li>
+<li><p>C5: max fluxes achieved for reactions,
+according to <cite>findMustU</cite></p></li>
+</ul>
+</dd>
+</dl>
+<p>This file will only be generated if the user
+entered <cite>printText = 1</cite>. Note that the user can
+choose the name of this file entering the input
+<cite>outputFileName = ‘PutYourOwnFileNameHere’;</cite></p>
+</li>
+</ul>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This function is based in the GAMS files written by Sridhar
+Ranganathan which were provided by the research group of Costas D.
+Maranas. For a detailed description of the <cite>optForce</cite> procedure, please
+see: <cite>Ranganathan S, Suthers PF, Maranas CD (2010) OptForce: An
+Optimization Procedure for Identifying All Genetic Manipulations
+Leading to Targeted Overproductions. PLOS Computational Biology 6(4):
+e1000744</cite>. <a class="reference external" href="https://doi.org/10.1371/journal.pcbi.1000744">https://doi.org/10.1371/journal.pcbi.1000744</a></p>
+</div>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.design.optForce.findMustUL">
+<span class="sig-name descname"><span class="pre">findMustUL</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">minFluxesW</span></em>, <em class="sig-param"><span class="pre">maxFluxesW</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/design/optForce/findMustUL.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.design.optForce.findMustUL" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function runs the second step of <cite>optForce</cite>, that is to solve a
+bilevel mixed integer linear programming  problem to find a second order
+<cite>MustUL</cite> set.</p>
+<dl class="field-list">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[mustUL, posMustUL, mustUL_linear, pos_mustUL_linear] = findMustUL</strong> (<em>model, minFluxesW, maxFluxesW, varargin</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul>
+<li><p><strong>model</strong> – (structure) COBRA metabolic model
+with at least the following fields:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>.rxns - Reaction IDs in the model</p></li>
+<li><p>.mets - Metabolite IDs in the model</p></li>
+<li><p>.S -    Stoichiometric matrix (sparse)</p></li>
+<li><p>.b -    RHS of <cite>Sv = b</cite> (usually zeros)</p></li>
+<li><p>.c -    Objective coefficients</p></li>
+<li><p>.lb -   Lower bounds for fluxes</p></li>
+<li><p>.ub -   Upper bounds for fluxes</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><strong>minFluxesW</strong> – (double array) of size <cite>n_rxns x 1</cite>.
+Minimum fluxes for each
+reaction in the model for wild-type strain.
+This can be obtained by running the
+function <cite>FVAOptForce</cite>.
+E.g.: <cite>minFluxesW = [-90; -56];</cite></p></li>
+<li><p><strong>maxFluxesW</strong> – (double array) of <cite>size n_rxns x 1</cite>.
+Maximum fluxes for each
+reaction in the model for wild-type strain.
+This can be obtained by</p></li>
+</ul>
+</dd>
+</dl>
+<dl>
+<dt>OPTIONAL INPUTS</dt><dd><dl>
+<dt>constrOpt:                  (structure) structure containing</dt><dd><p>additional contraints. Include here only
+reactions whose flux is fixed, i.e.,
+reactions whose lower and upper bounds have
+the same value. Do not include here
+reactions whose lower and upper bounds have
+different values. Such contraints should be
+defined in the lower and upper bounds of
+the model. The structure has the following
+fields:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>.rxnList - Reaction list (cell array)</p></li>
+<li><p>.values -  Values for constrained
+reactions (double array)
+E.g.: <cite>struct(‘rxnList’, {{‘EX_gluc’, ‘R75’, ‘EX_suc’}}, ‘values’, [-100, 0, 155.5]’);</cite></p></li>
+</ul>
+</div></blockquote>
+</dd>
+<dt>excludedRxns:               (cell array) Reactions to be excluded to</dt><dd><p>the <cite>MustUL</cite> set. This could be used to avoid
+finding transporters or exchange reactions
+in the set.
+Default: empty.</p>
+</dd>
+<dt>runID:                      (string) ID for identifying this run.</dt><dd><p>Default: [‘run’ date hour].</p>
+</dd>
+<dt>outputFolder:               (string) name for folder in which results</dt><dd><p>will be stored.
+Default: ‘OutputsFindMustUL’.</p>
+</dd>
+<dt>outputFileName:             (string) name for files in which results</dt><dd><p>will be stored.
+Default: ‘MustULSet’.</p>
+</dd>
+<dt>printExcel:                 (double) boolean to describe wheter data</dt><dd><p>must be printed in an excel file or not.
+Default: 1</p>
+</dd>
+<dt>printText:                  (double) boolean to describe wheter data</dt><dd><p>must be printed in an plaint text file or not.
+Default: 1</p>
+</dd>
+<dt>printReport:                (double) 1 to generate a report in a plain</dt><dd><p>text file. 0 otherwise.
+Default: 1</p>
+</dd>
+<dt>keepInputs:                 (double) 1 to save inputs to run</dt><dd><p><cite>findMustUL.m</cite>, 0 otherwise.
+Default: 1</p>
+</dd>
+<dt>printLevel:                 (double) 1 to print results in console.</dt><dd><p>0 otherwise.
+Default: 0</p>
+</dd>
+</dl>
+</dd>
+<dt>OUTPUTS</dt><dd><dl class="simple">
+<dt>mustUL:                     (cell array) Size: number of sets found X 2</dt><dd><p>cell array containing the
+reactions IDs which belong to the <cite>MustUL</cite>
+set. Each row contain a couple of
+reactions.</p>
+</dd>
+<dt>posMustUL:                  (double array) Size: number of sets found X 2</dt><dd><p>double array containing the
+positions of each reaction in mustUL with
+regard to <cite>model.rxns</cite></p>
+</dd>
+<dt>mustUL_linear:              (cell array) Size: number of unique reactions found X 1</dt><dd><p>cell array containing the
+unique reactions ID which belong to the <cite>MustUL</cite> Set</p>
+</dd>
+<dt>pos_mustUL_linear:          (double array) Size: number of unique reactions found X 1</dt><dd><p>double array containing
+positions for reactions in <cite>mustUL_linear</cite>.
+with regard to <cite>model.rxns</cite></p>
+</dd>
+<dt>outputFileName.xls:         File containing one column array</dt><dd><p>with identifiers for reactions in <cite>MustUL</cite>. This
+file will only be generated if the user entered
+<cite>printExcel = 1</cite>. Note that the user can choose
+the name of this file entering the input
+<cite>outputFileName = ‘PutYourOwnFileNameHere’;</cite></p>
+</dd>
+<dt>outputFileName.txt:         File containing one column array</dt><dd><p>with identifiers for reactions in MustUL. This
+file will only be generated if the user entered
+<cite>printText = 1</cite>. Note that the user can choose
+the name of this file entering the input
+<cite>outputFileName = ‘PutYourOwnFileNameHere’;</cite></p>
+</dd>
+<dt>outputFileName_Info.xls:    File containing one column array.</dt><dd><p>In each row the user will find a couple of
+reactions. Each couple of reaction was found in
+one iteration of <cite>FindMustUL.gms</cite>. This file will
+only be generated if the user entered
+<cite>printExcel = 1</cite>. Note that the user can choose
+the name of this file entering the input
+<cite>outputFileName = ‘PutYourOwnFileNameHere’;</cite></p>
+</dd>
+<dt>outputFileName_Info.txt:    File containing one column array.</dt><dd><p>In each row the user will find a couple of
+reactions. Each couple of reaction was found in
+one iteration of <cite>FindMustUL.gms</cite>. This file will
+only be generated if the user entered
+<cite>printText = 1</cite>. Note that the user can choose
+the name of this file entering the input
+<cite>outputFileName = ‘PutYourOwnFileNameHere’;</cite></p>
+</dd>
+</dl>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This function is based in the GAMS files written by Sridhar
+Ranganathan which were provided by the research group of Costas D.
+Maranas. For a detailed description of the <cite>optForce</cite> procedure, please
+see: <cite>Ranganathan S, Suthers PF, Maranas CD (2010) OptForce: An
+Optimization Procedure for Identifying All Genetic Manipulations
+Leading to Targeted Overproductions. PLOS Computational Biology 6(4):
+e1000744</cite>. <a class="reference external" href="https://doi.org/10.1371/journal.pcbi.1000744">https://doi.org/10.1371/journal.pcbi.1000744</a></p>
+</div>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.design.optForce.findMustUU">
+<span class="sig-name descname"><span class="pre">findMustUU</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">minFluxesW</span></em>, <em class="sig-param"><span class="pre">maxFluxesW</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/design/optForce/findMustUU.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.design.optForce.findMustUU" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function runs the second step of <cite>optForce</cite>, that is to solve a
+bilevel mixed integer linear programming  problem to find a second order
+<cite>MustUU</cite> set.</p>
+<dl class="field-list">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[mustUU, posMustUU, mustUU_linear, pos_mustUU_linear] = findMustUU</strong> (<em>model, minFluxesW, maxFluxesW, varargin</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul>
+<li><p><strong>model</strong> – (structure) COBRA metabolic model
+with at least the following fields:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>.rxns - Reaction IDs in the model</p></li>
+<li><p>.mets - Metabolite IDs in the model</p></li>
+<li><p>.S -    Stoichiometric matrix (sparse)</p></li>
+<li><p>.b -    RHS of <cite>Sv = b</cite> (usually zeros)</p></li>
+<li><p>.c -    Objective coefficients</p></li>
+<li><p>.lb -   Lower bounds for fluxes</p></li>
+<li><p>.ub -   Upper bounds for fluxes</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><strong>minFluxesW</strong> – (double array) of size <cite>n_rxns x 1</cite>.
+Minimum fluxes for each
+reaction in the model for wild-type strain.
+This can be obtained by running the
+function <cite>FVAOptForce</cite>.
+E.g.: <cite>minFluxesW = [-90; -56];</cite></p></li>
+<li><p><strong>maxFluxesW</strong> – (double array) of size <cite>n_rxns x 1</cite>.
+Maximum fluxes for each
+reaction in the model for wild-type strain.
+This can be obtained by</p></li>
+</ul>
+</dd>
+</dl>
+<dl>
+<dt>OPTIONAL INPUTS</dt><dd><dl>
+<dt>constrOpt:                  (structure) structure containing</dt><dd><p>additional contraints. Include here only
+reactions whose flux is fixed, i.e.,
+reactions whose lower and upper bounds have
+the same value. Do not include here
+reactions whose lower and upper bounds have
+different values. Such contraints should be
+defined in the lower and upper bounds of
+the model. The structure has the following
+fields:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>.rxnList - Reaction list (cell array)</p></li>
+<li><p>.values -  Values for constrained
+reactions (double array)
+E.g.: <cite>struct(‘rxnList’, {{‘EX_gluc’, ‘R75’, ‘EX_suc’}}, ‘values’, [-100, 0, 155.5]’);</cite></p></li>
+</ul>
+</div></blockquote>
+</dd>
+<dt>excludedRxns:               (cell array) Reactions to be excluded to</dt><dd><p>the <cite>MustUU</cite> set. This could be used to avoid
+finding transporters or exchange reactions
+in the set.
+Default: empty.</p>
+</dd>
+<dt>runID:                      (string) ID for identifying this run.</dt><dd><p>Default: [‘run’ date hour].</p>
+</dd>
+<dt>outputFolder:               (string) name for folder in which results</dt><dd><p>will be stored.
+Default: ‘OutputsFindMustUU’.</p>
+</dd>
+<dt>outputFileName:             (string) name for files in which results</dt><dd><p>will be stored.
+Default: ‘MustUUSet’.</p>
+</dd>
+<dt>printExcel:                 (double) boolean to describe wheter data</dt><dd><p>must be printed in an excel file or not.
+Default: 1</p>
+</dd>
+<dt>printText:                  (double) boolean to describe wheter data</dt><dd><p>must be printed in an plaint text file or not.
+Default: 1</p>
+</dd>
+<dt>printReport:                (double) 1 to generate a report in a plain</dt><dd><p>text file. 0 otherwise.
+Default: 1</p>
+</dd>
+<dt>keepInputs:                 (double) 1 to save inputs to run</dt><dd><p><cite>findMustUU.m</cite>, 0 otherwise.
+Default: 1</p>
+</dd>
+<dt>printLevel:                 (double) 1 to print results in console.</dt><dd><p>0 otherwise.
+Default: 0</p>
+</dd>
+</dl>
+</dd>
+<dt>OUTPUTS</dt><dd><dl class="simple">
+<dt>mustUU:                     (cell array) Size: number of sets found X 2</dt><dd><p>cell array containing the
+reactions IDs which belong to the <cite>MustUU</cite>
+set. Each row contain a couple of
+reactions.</p>
+</dd>
+<dt>posMustUU:                  (double array) Size: number of sets found X 2</dt><dd><p>double array containing the
+positions of each reaction in <cite>mustUU</cite> with
+regard to <cite>model.rxns</cite></p>
+</dd>
+<dt>mustUU_linear:              (cell array) Size: number of unique reactions found X 1</dt><dd><p>Cell array containing the
+unique reactions ID which belong to the
+<cite>MustUU</cite> Set</p>
+</dd>
+<dt>pos_mustUU_linear:          (double array) Size: number of unique reactions found X 1</dt><dd><p>double array containing
+positions for reactions in <cite>mustUU_linear</cite>.
+with regard to <cite>model.rxns</cite></p>
+</dd>
+<dt>outputFileName.xls:         File containing one column array</dt><dd><p>with identifiers for reactions in <cite>MustUU</cite>. This
+file will only be generated if the user entered
+<cite>printExcel = 1</cite>. Note that the user can choose
+the name of this file entering the input
+<cite>outputFileName = ‘PutYourOwnFileNameHere’;</cite></p>
+</dd>
+<dt>outputFileName.txt:         File containing one column array</dt><dd><p>with identifiers for reactions in <cite>MustUU</cite>. This
+file will only be generated if the user entered
+<cite>printText = 1</cite>. Note that the user can choose
+the name of this file entering the input
+<cite>outputFileName = ‘PutYourOwnFileNameHere’;</cite></p>
+</dd>
+<dt>outputFileName_Info.xls:    File containing one column array.</dt><dd><p>In each row the user will find a couple of
+reactions. Each couple of reaction was found in
+one iteration of <cite>FindMustUU.gms</cite>. This file will
+only be generated if the user entered
+<cite>printExcel = 1</cite>. Note that the user can choose
+the name of this file entering the input
+<cite>outputFileName = ‘PutYourOwnFileNameHere’;</cite></p>
+</dd>
+<dt>outputFileName_Info.txt:    File containing one column array.</dt><dd><p>In each row the user will find a couple of
+reactions. Each couple of reaction was found in
+one iteration of <cite>FindMustUU.gms</cite>. This file will
+only be generated if the user entered
+<cite>printText = 1</cite>. Note that the user can choose
+the name of this file entering the input
+<cite>outputFileName = ‘PutYourOwnFileNameHere’;</cite></p>
+</dd>
+</dl>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This function is based in the GAMS files written by Sridhar
+Ranganathan which were provided by the research group of Costas D.
+Maranas. For a detailed description of the <cite>optForce</cite> procedure, please
+see: <cite>Ranganathan S, Suthers PF, Maranas CD (2010) OptForce: An
+Optimization Procedure for Identifying All Genetic Manipulations
+Leading to Targeted Overproductions. PLOS Computational Biology 6(4):
+e1000744</cite>. <a class="reference external" href="https://doi.org/10.1371/journal.pcbi.1000744">https://doi.org/10.1371/journal.pcbi.1000744</a></p>
+</div>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.design.optForce.optForce">
+<span class="sig-name descname"><span class="pre">optForce</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">targetRxn</span></em>, <em class="sig-param"><span class="pre">biomassRxn</span></em>, <em class="sig-param"><span class="pre">mustU</span></em>, <em class="sig-param"><span class="pre">mustL</span></em>, <em class="sig-param"><span class="pre">minFluxesW</span></em>, <em class="sig-param"><span class="pre">maxFluxesW</span></em>, <em class="sig-param"><span class="pre">minFluxesM</span></em>, <em class="sig-param"><span class="pre">maxFluxesM</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/design/optForce/optForce.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.design.optForce.optForce" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function runs the third step of <cite>optForce</cite> that is to solve a
+bilevel mixed integer linear programming problem to find sets of
+interventions that lead to an increased production of a particular target</p>
+<dl class="field-list">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[optForceSets, posOptForceSets, typeRegOptForceSets, fluxOptForceSets] = optForce</strong> (<em>model, targetRxn, mustU, mustL, minFluxesW, maxFluxesW, minFluxesM, maxFluxesM, k, varargin</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul>
+<li><p><strong>model</strong> – (structure) COBRA metabolic model
+with at least the following fields:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>.rxns - Reaction IDs in the model</p></li>
+<li><p>.mets - Metabolite IDs in the model</p></li>
+<li><p>.S -    Stoichiometric matrix (sparse)</p></li>
+<li><p>.b -    RHS of <cite>Sv = b</cite> (usually zeros)</p></li>
+<li><p>.c -    Objective coefficients</p></li>
+<li><p>.lb -   Lower bounds for fluxes</p></li>
+<li><p>.ub -   Upper bounds for fluxes</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><strong>targetRxn</strong> – (string) string containing the ID for the
+reaction whose flux is intented to be increased.
+For E.g., if the production of succionate is
+desired to be increased, ‘EX_suc’ should be
+chosen as the target reaction.
+E.g.: <cite>targetRxn = ‘EX_suc’;</cite></p></li>
+<li><p><strong>mustU</strong> – (cell array) List of reactions in the <cite>MustU</cite> set
+This input can be obtained by running the
+script <cite>findMustU.m</cite>.
+E.g. <cite>mustU = {‘R21_f’;’R22_f’};</cite></p></li>
+<li><p><strong>mustL</strong> – (cell array) List of reactions in the <cite>MustL</cite> set
+This input can be obtained by running the
+script <cite>findMustL.m</cite>.
+E.g. first usage: <cite>mustL = {‘R11_f’;’R26_f’};</cite></p></li>
+<li><p><strong>minFluxesW</strong> – (double array) of size <cite>n_rxns x 1</cite>. Minimum fluxes for each
+reaction in the model for wild-type strain.
+This can be obtained by running the
+function <cite>FVAOptForce</cite>.
+E.g.: <cite>minFluxesW = [-90; -56];</cite></p></li>
+<li><p><strong>maxFluxesW</strong> – (double array) of size <cite>n_rxns x 1</cite>. Maximum fluxes for each
+reaction in the model for wild-type strain.
+This can be obtained by running the
+function <cite>FVAOptForce</cite>.
+E.g.: <cite>maxFluxesW = [90; 56];</cite></p></li>
+<li><p><strong>minFluxesM</strong> – (double array) of size <cite>n_rxns x 1</cite>. Minimum fluxes for each
+reaction in the model for mutant strain.
+This can be obtained by running the
+function <cite>FVAOptForce</cite>.
+E.g.: <cite>minFluxesM = [-90; -56];</cite></p></li>
+<li><p><strong>maxFluxesM</strong> – (double array) of size n_rxns x1. Maximum fluxes for each
+reaction in the model for mutant strain.
+This can be obtained by running the
+function <cite>FVAOptForce</cite>.
+E.g.: <cite>maxFluxesM = [90; 56];</cite></p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>k</strong> – (double) number of intervations to be found
+Default <cite>k = 1</cite>;</p></li>
+<li><p><strong>nSets</strong> – (double) maximum number of force sets
+returned by <cite>optForce</cite>.
+Default <cite>nSets = 1</cite>;</p></li>
+<li><p><strong>constrOpt</strong> – (structure) structure containing
+additional contraints. Include here only
+reactions whose flux is fixed, i.e.,
+reactions whose lower and upper bounds have
+the same value. Do not include here
+reactions whose lower and upper bounds have
+different values. Such contraints should be
+defined in the lower and upper bounds of
+the model. The structure has the following
+fields:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>.rxnList - Reaction list (cell array)</p></li>
+<li><p>.values -  Values for constrained
+reactions (double array)
+E.g.: <cite>struct(‘rxnList’, {{‘EX_gluc’, ‘R75’, ‘EX_suc’}}, ‘values’, [-100, 0, 155.5]’);</cite></p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><strong>excludedRxns</strong> – (structure) Reactions to be excluded. This
+structure has the following fields:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>.rxnList - Reaction list (cell array)</p></li>
+<li><p>.typeReg - set from which reaction is
+excluded (char array) (U: Set of
+upregulared reactions, D: set of
+downregulared reations, K: set of knockout
+reactions)</p></li>
+</ul>
+</div></blockquote>
+<p>E.g.: <cite>excludedRxns = struct(‘rxnList’, {{‘SUCt’, ‘R68_b’}}, ‘typeReg’, ‘UD’)</cite>
+In this E.g. ‘SUCt’ is prevented to appear in
+the set of upregulated reactions and ‘R68_b’ is
+prevented to appear in the downregulated set of
+reactions.
+Default: empty.</p>
+</li>
+<li><p><strong>runID</strong> – (string) ID for identifying this run.
+Default: [‘run’ date hour].</p></li>
+<li><p><strong>outputFolder</strong> – (string) name for folder in which
+results will be stored.
+Default: ‘OutputsFindMustLL’.</p></li>
+<li><p><strong>outputFileName</strong> – (string) name for files in which
+results. will be stored.
+Default: ‘MustLLSet’.</p></li>
+<li><p><strong>printExcel</strong> – (double) boolean to describe wheter
+data must be printed in an excel file or not.
+Default: 1</p></li>
+<li><p><strong>printText</strong> – (double) boolean to describe wheter
+data must be printed in an plaint text file or not.
+Default: 1</p></li>
+<li><p><strong>printReport</strong> – (double) 1 to generate a report in a
+plain text file. 0 otherwise.
+Default: 1</p></li>
+<li><p><strong>keepInputs</strong> – (double) 1 to mantain folder with
+inputs to run <cite>findMustLL.gms</cite>. 0 otherwise.
+Default: 1</p></li>
+<li><p><strong>printLevel</strong> – (double) 1 to print results in console.
+0 otherwise.
+Default: 0</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUTS</dt>
+<dd class="field-even"><ul>
+<li><p><strong>optForceSets</strong> – (cell array) cell array of size  <cite>n x m</cite>, where
+<cite>n</cite> = number of sets found and <cite>m</cite> = size of sets
+found (<cite>k</cite>) Element in position <cite>i</cite>, <cite>j</cite> is reaction
+<cite>j</cite> in set <cite>i</cite>.
+E.g.:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 38%" />
+<col style="width: 31%" />
+<col style="width: 31%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p></p></td>
+<td><p>rxn1</p></td>
+<td><p>rxn2</p></td>
+</tr>
+<tr class="row-even"><td><p>set 1</p></td>
+<td><p>R4</p></td>
+<td><p>R2</p></td>
+</tr>
+<tr class="row-odd"><td><p>set 2</p></td>
+<td><p>R3</p></td>
+<td><p>R1</p></td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p><strong>posOptForceSets</strong> – (double array) double array of size  <cite>n x m</cite>, where
+<cite>n</cite> = number of sets found and <cite>m</cite> = size of sets
+found (<cite>k</cite>) Element in position <cite>i</cite>, <cite>j</cite> is the
+position of reaction in <cite>optForceSets(i,j)</cite> in
+<cite>model.rxns</cite>
+E.g.:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 38%" />
+<col style="width: 31%" />
+<col style="width: 31%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p></p></td>
+<td><p>rxn1</p></td>
+<td><p>rxn2</p></td>
+</tr>
+<tr class="row-even"><td><p>set 1</p></td>
+<td><p>4</p></td>
+<td><p>2</p></td>
+</tr>
+<tr class="row-odd"><td><p>set 2</p></td>
+<td><p>3</p></td>
+<td><p>1</p></td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p><strong>typeRegOptForceSets</strong> – (cell array) cell array of size  <cite>n x m</cite>, where
+<cite>n</cite> = number of sets found and <cite>m</cite> = size of sets
+found (<cite>k</cite>) Element in position <cite>i</cite>, <cite>j</cite> is the kind
+of intervention for reaction in
+<cite>optForceSets(i,j)</cite>
+E.g.:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 16%" />
+<col style="width: 39%" />
+<col style="width: 45%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p></p></td>
+<td><p>rxn1</p></td>
+<td><p>rxn2</p></td>
+</tr>
+<tr class="row-even"><td><p>set 1</p></td>
+<td><p>upregulation</p></td>
+<td><p>downregulation</p></td>
+</tr>
+<tr class="row-odd"><td><p>set 2</p></td>
+<td><p>upregulation</p></td>
+<td><p>knockout</p></td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p><strong>fluxOptForceSets</strong> – (double) matrix Matrix of size <cite>n + m</cite>, where
+<cite>n</cite> = number of sets found and <cite>m</cite> = size of sets
+found (<cite>k</cite>) The number in <cite>(i,j)</cite> is the flux
+achieved for the reaction in <cite>optForceSets(i,j)</cite></p></li>
+<li><p><strong>outputFileName.xls</strong> – file containing 11 columns.</p>
+<ul class="simple">
+<li><p>C1: Number of interventions (<cite>k</cite>)</p></li>
+<li><p>C2: Set Number</p></li>
+<li><p>C3: Identifiers for reactions in the force set</p></li>
+<li><p>C4: Type of regulations for each reaction in
+the force set</p></li>
+<li><p>C5: min flux of each reaction in force set,
+according to FVA</p></li>
+<li><p>C6: max flux of each reaction in force set,
+according to FVA</p></li>
+<li><p>C7: achieved flux of each of the reactions in
+the force set after applying the inverventions</p></li>
+<li><p>C8: objetive function achieved by <cite>OptForce.gms</cite></p></li>
+<li><p>C9: Minimum flux fot target when applying the
+interventions</p></li>
+<li><p>C10: Maximum flux fot target when applying the
+interventions</p></li>
+<li><p>C11: Maximum growth rate when applying the
+interventions.</p></li>
+<li><p>In the rows, the user can see each of the
+<cite>optForce</cite> sets found.</p></li>
+</ul>
+</li>
+<li><p><strong>outputFileName.txt</strong> – Same as outputFileName.xls but in a .txt file,
+separated by tabs.</p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This function is based in the GAMS files written by Sridhar
+Ranganathan which were provided by the research group of Costas D.
+Maranas. For a detailed description of the <cite>optForce</cite> procedure, please
+see: <cite>Ranganathan S, Suthers PF, Maranas CD (2010) OptForce: An
+Optimization Procedure for Identifying All Genetic Manipulations
+Leading to Targeted Overproductions. PLOS Computational Biology 6(4):
+e1000744</cite>. <a class="reference external" href="https://doi.org/10.1371/journal.pcbi.1000744">https://doi.org/10.1371/journal.pcbi.1000744</a></p>
+</div>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.design.optForce.saveInputsMustSetsFirstOrder">
+<span class="sig-name descname"><span class="pre">saveInputsMustSetsFirstOrder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">minFluxesW</span></em>, <em class="sig-param"><span class="pre">maxFluxesW</span></em>, <em class="sig-param"><span class="pre">constrOpt</span></em>, <em class="sig-param"><span class="pre">inputFolder</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/design/optForce/saveInputsMustSetsFirstOrder.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.design.optForce.saveInputsMustSetsFirstOrder" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function saves all the inputs needed to run functions to find first
+order Must Sets (<cite>MustU, `MustL</cite>) The inputs will be stored in
+inputFolder.</p>
+<dl class="field-list">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>saveInputsMustSetsFirstOrder</strong> (<em>model, minFluxesW, maxFluxesW, constrOpt,inputFolder</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul>
+<li><p><strong>model</strong> – (structure) COBRA metabolic model with at least
+the following fields:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>.rxns - Reaction IDs in the model</p></li>
+<li><p>.mets - Metabolite IDs in the model</p></li>
+<li><p>.S -    Stoichiometric matrix (sparse)</p></li>
+<li><p>.b -    RHS of <cite>Sv = b</cite> (usually zeros)</p></li>
+<li><p>.c -    Objective coefficients</p></li>
+<li><p>.lb -   Lower bounds for fluxes</p></li>
+<li><p>.ub -   Upper bounds for fluxes</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><strong>minFluxesW</strong> – (double array) of size <cite>n_rxns x 1</cite>.
+Minimum fluxes for each
+reaction in the model for wild-type strain.
+This can be obtained by running the
+function <cite>FVAOptForce</cite>.
+E.g.: <cite>minFluxesW = [-90; -56];</cite></p></li>
+<li><p><strong>maxFluxesW</strong> – (double array) of size <cite>n_rxns x 1</cite>
+Maximum fluxes for each
+reaction in the model for wild-type strain.
+This can be obtained by running the
+function <cite>FVAOptForce</cite>.
+E.g.: <cite>maxFluxesW = [90; 56];</cite></p></li>
+<li><p><strong>constrOpt</strong> – (structure) structure containing
+additional contraints. Include here only
+reactions whose flux is fixed, i.e.,
+reactions whose lower and upper bounds have
+the same value. Do not include here
+reactions whose lower and upper bounds have
+different values. Such contraints should be
+defined in the lower and upper bounds of
+the model. The structure has the following
+fields:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>.rxnList - Reaction list (cell array)</p></li>
+<li><p>.values -  Values for constrained
+reactions (double array)
+E.g.: <cite>struct(‘rxnList’, {{‘EX_gluc’, ‘R75’, ‘EX_suc’}}, ‘values’, [-100, 0, 155.5]’);</cite></p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><strong>inputFolder</strong> – (string) Folder where inputs for GAMS
+function will be stored</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model.mat          File containing the model</strong></p></li>
+<li><p><strong>minFluxesW.mat</strong> – File containing the minimum fluxes for the wild-type</p></li>
+<li><p><strong>maxFluxesW.mat</strong> – File containing the maximum fluxes for the mutant</p></li>
+<li><p><strong>constrOpt.mat</strong> – File containing the constraints used</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.design.optForce.saveInputsMustSetsSecondOrder">
+<span class="sig-name descname"><span class="pre">saveInputsMustSetsSecondOrder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">minFluxesW</span></em>, <em class="sig-param"><span class="pre">maxFluxesW</span></em>, <em class="sig-param"><span class="pre">constrOpt</span></em>, <em class="sig-param"><span class="pre">excludedRxns</span></em>, <em class="sig-param"><span class="pre">inputFolder</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/design/optForce/saveInputsMustSetsSecondOrder.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.design.optForce.saveInputsMustSetsSecondOrder" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function saves all the inputs needed to run functions to find second
+order Must Sets (<cite>MustUU</cite>, <cite>MustLL</cite> and <cite>MustUL</cite>) The inputs will be stored in
+inputFolder.</p>
+<dl class="field-list">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>saveInputsMustSetsSecondOrder</strong> (<em>model, minFluxesW, maxFluxesW, constrOpt, excludedRxns, inputFolder</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul>
+<li><p><strong>model</strong> – (structure) COBRA metabolic model with at least
+the following fields:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>.rxns - Reaction IDs in the model</p></li>
+<li><p>.mets - Metabolite IDs in the model</p></li>
+<li><p>.S -    Stoichiometric matrix (sparse)</p></li>
+<li><p>.b -    RHS of <cite>Sv = b</cite> (usually zeros)</p></li>
+<li><p>.c -    Objective coefficients</p></li>
+<li><p>.lb -   Lower bounds for fluxes</p></li>
+<li><p>.ub -   Upper bounds for fluxes</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><strong>minFluxesW</strong> – (double array) of size <cite>n_rxns x 1</cite>.
+Minimum fluxes for each
+reaction in the model for wild-type strain.
+This can be obtained by running the
+function <cite>FVAOptForce</cite>.
+E.g.: <cite>minFluxesW = [-90; -56];</cite></p></li>
+<li><p><strong>maxFluxesW</strong> – (double array) of size <cite>n_rxns x 1</cite>
+Maximum fluxes for each
+reaction in the model for wild-type strain.
+This can be obtained by running the
+function <cite>FVAOptForce</cite>.
+E.g.: <cite>maxFluxesW = [90; 56];</cite></p></li>
+<li><p><strong>constrOpt</strong> – (structure) structure containing
+additional contraints. Include here only
+reactions whose flux is fixed, i.e.,
+reactions whose lower and upper bounds have
+the same value. Do not include here
+reactions whose lower and upper bounds have
+different values. Such contraints should be
+defined in the lower and upper bounds of
+the model. The structure has the following
+fields:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>.rxnList - Reaction list (cell array)</p></li>
+<li><p>.values -  Values for constrained
+reactions (double array)
+E.g.: <cite>struct(‘rxnList’, {{‘EX_gluc’, ‘R75’, ‘EX_suc’}}, ‘values’, [-100, 0, 155.5]’);</cite></p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><strong>excludedRxns</strong> – (cell array) Reactions to be excluded to the
+<cite>MustXX</cite> set. This could be used to avoid finding
+transporters or exchange reactions in the set
+Default: empty.</p></li>
+<li><p><strong>inputFolder</strong> – (string) Folder where inputs for GAMS
+function will be stored</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model.mat</strong> – File containing the model</p></li>
+<li><p><strong>minFluxesW.mat</strong> – File containing the minimum fluxes for the wild-type</p></li>
+<li><p><strong>maxFluxesW.mat</strong> – File containing the maximum fluxes for the mutant</p></li>
+<li><p><strong>constrOpt.mat</strong> – File containing the constraints used</p></li>
+<li><p><strong>excludedRsns.mat</strong> – File containing the excluded reactions</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.design.optForce.saveInputsOptForce">
+<span class="sig-name descname"><span class="pre">saveInputsOptForce</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">targetRxn</span></em>, <em class="sig-param"><span class="pre">mustU</span></em>, <em class="sig-param"><span class="pre">mustL</span></em>, <em class="sig-param"><span class="pre">minFluxesW</span></em>, <em class="sig-param"><span class="pre">maxFluxesW</span></em>, <em class="sig-param"><span class="pre">minFluxesM</span></em>, <em class="sig-param"><span class="pre">maxFluxesM</span></em>, <em class="sig-param"><span class="pre">k</span></em>, <em class="sig-param"><span class="pre">nSets</span></em>, <em class="sig-param"><span class="pre">constrOpt</span></em>, <em class="sig-param"><span class="pre">excludedURxns</span></em>, <em class="sig-param"><span class="pre">excludedLRxns</span></em>, <em class="sig-param"><span class="pre">excludedKRxns</span></em>, <em class="sig-param"><span class="pre">inputFolder</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/design/optForce/saveInputsOptForce.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.design.optForce.saveInputsOptForce" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function saves all the inputs needed to run functions to find second
+order Must Sets (<cite>MustUU</cite>, <cite>MustLL</cite> and <cite>MustUL</cite>) The inputs will be stored in
+inputFolder.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>saveInputsOptForce</strong> (<em>model, targetRxn, mustU, mustL, minFluxesW, maxFluxesW, minFluxesM, maxFluxesM, k, nSets, constrOpt, excludedURxns, excludedLRxns, excludedKRxns, inputFolder</em>)</p>
+</dd>
+</dl>
+<dl>
+<dt>INPUTS</dt><dd><dl>
+<dt>model:             (structure) COBRA metabolic model with at least</dt><dd><p>the following fields:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>.rxns - Reaction IDs in the model</p></li>
+<li><p>.mets - Metabolite IDs in the model</p></li>
+<li><p>.S -    Stoichiometric matrix (sparse)</p></li>
+<li><p>.b -    RHS of <cite>Sv = b</cite> (usually zeros)</p></li>
+<li><p>.c -    Objective coefficients</p></li>
+<li><p>.lb -   Lower bounds for fluxes</p></li>
+<li><p>.ub -   Upper bounds for fluxes</p></li>
+</ul>
+</div></blockquote>
+</dd>
+<dt>minFluxesW:        (double array) of size <cite>n_rxns x 1</cite></dt><dd><p>Minimum fluxes for each
+reaction in the model for wild-type strain.
+This can be obtained by running the
+function <cite>FVAOptForce</cite>.
+E.g.: <cite>minFluxesW = [-90; -56];</cite></p>
+</dd>
+<dt>maxFluxesW:        (double array) of size <cite>n_rxns x 1</cite></dt><dd><p>Maximum fluxes for each
+reaction in the model for wild-type strain.
+This can be obtained by running the
+function <cite>FVAOptForce</cite>.</p>
+</dd>
+<dt>minFluxesM:        (double array) of size <cite>n_rxns x 1</cite></dt><dd><p>Minimum fluxes for each
+reaction in the model for mutant strain.
+This can be obtained by running the
+function <cite>FVAOptForce</cite>.
+E.g.: <cite>minFluxesW = [-90; -56];</cite></p>
+</dd>
+<dt>maxFluxesM:        (double array) of size <cite>n_rxns x 1</cite></dt><dd><p>Maximum fluxes for each
+reaction in the model for mutant strain.
+This can be obtained by running the
+function <cite>FVAOptForce</cite>.</p>
+</dd>
+<dt>constrOpt:         (structure) structure containing</dt><dd><p>additional contraints. Include here only
+reactions whose flux is fixed, i.e.,
+reactions whose lower and upper bounds have
+the same value. Do not include here
+reactions whose lower and upper bounds have
+different values. Such contraints should be
+defined in the lower and upper bounds of
+the model. The structure has the following
+fields:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>.rxnList - Reaction list (cell array)</p></li>
+<li><p>.values -  Values for constrained
+reactions (double array)
+E.g.: <cite>struct(‘rxnList’, {{‘EX_gluc’, ‘R75’, ‘EX_suc’}}, ‘values’, [-100, 0, 155.5]’);</cite></p></li>
+</ul>
+</div></blockquote>
+</dd>
+<dt>excludedURxns:     (cell array) Reactions to be excluded from</dt><dd><p>upregulations. This could be used to avoid finding
+transporters or exchange reactions in the set</p>
+</dd>
+<dt>excludedLRxns:     (cell array) Reactions to be excluded from</dt><dd><p>downregulations. This could be used to avoid
+finding transporters or exchange reactions in the
+set</p>
+</dd>
+<dt>excludedKRxns:     (cell array) Reactions to be excluded from</dt><dd><p>knockouts This could be used to avoid finding
+transporters or exchange reactions in the set</p>
+</dd>
+</dl>
+<p>inputFolder:       (string) Folder where inputs for GAMS function will be stored</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">OUTPUTS</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model.mat</strong> – File containing the model</p></li>
+<li><p><strong>targetRxn.mat</strong> – File containing the target reaction</p></li>
+<li><p><strong>mustU.mat</strong> – File containing <cite>mustU</cite> set</p></li>
+<li><p><strong>mustL.mat</strong> – File containing <cite>mustL</cite> set</p></li>
+<li><p><strong>minFluxesW.mat</strong> – File containing the minimum fluxes for the wild-type</p></li>
+<li><p><strong>maxFluxes.mat</strong> – File containing the maximum fluxes for the wild-type</p></li>
+<li><p><strong>minFluxesM.mat</strong> – File containing the minimum fluxes for the mutant</p></li>
+<li><p><strong>maxFluxesM.mat</strong> – File containing the maximum fluxes for the mutant</p></li>
+<li><p><strong>k.mat</strong> – File containing <cite>k</cite> the number of reactions in the <cite>optForce</cite> set</p></li>
+<li><p><strong>nSets.mat</strong> – File containing the maximum number of sets found by <cite>optForce</cite></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../optEnvelope/index.html" class="btn btn-default float-right" title="Optenvelope" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../index.html" class="btn btn-default" title="Design" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017-2021, The COBRA Toolbox developers.
+
+    </p>
+  </div>
+  Built with Sphinx using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'2.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+    <script type="text/javascript" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/sphinx_highlight.js"></script>
+
+  
+
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TRCMZL1FKK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TRCMZL1FKK');
+  </script>
+    
+</body>
+</html>

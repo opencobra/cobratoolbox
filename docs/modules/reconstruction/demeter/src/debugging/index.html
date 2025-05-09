@@ -1,0 +1,658 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Debugging &mdash; The COBRA Toolbox</title>
+  
+
+  
+  
+  
+    <link rel="apple-touch-icon" sizes="180x180" href="../../../../../_static/img/apple-touch-icon.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../../../_static/img/favicon-32x32.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="16x16" href="../../../../../_static/img/favicon-16x16.png">
+  
+  
+    <link rel="mask-icon" href="../../../../../_static/img/safari-pinned-tab.svg" color="#5bbad5">
+  
+  
+    <link rel="manifest" href="../../../../../_static/json/manifest.json">
+  
+  
+    <meta name="msapplication-config" content="../../../../../_static/browserconfig.xml">
+  
+  <meta name="theme-color" content="#ffffff">
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+  <script src="../../../../../_static/js/jquery.easy-autocomplete.min.js" type="text/javascript" ></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+  <link href="../../../../../_static/css/easy-autocomplete.min.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../../_static/css/cobra.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../../../../_static/css/cobra.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../../../search.html"/>
+    <link rel="top" title="The COBRA Toolbox" href="../../../../../index.html"/>
+        <link rel="up" title="Src" href="../index.html"/>
+        <link rel="next" title="Properties" href="../properties/index.html"/>
+        <link rel="prev" title="Refinement" href="../refinement/index.html"/> 
+
+  
+  <script src="../../../../../_static/js/modernizr.min.js"></script>
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../../index.html" class="icon icon-home"> The COBRA Toolbox
+          
+
+          
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
+          
+          </a>
+
+              
+          <h1>The COBRA Toolbox</h1>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" id="simple"/>
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+    <script>
+    	var options = {
+
+		url: "../../../../../_static/json/functions.json",
+
+		getValue: "name",
+
+		list: {
+            onKeyEnterEvent: function(item) {
+                    return "_static/../" + item.website_url
+            },
+            maxNumberOfElements: 25,
+			match: {
+					enabled: true,
+			},
+            sort: {
+			    enabled: true
+		    }
+		},
+
+    	template: {
+	    	type: "custom",
+		    method: function(value, item) {
+                return "<span><a href='../../../../../search.html?q=" + item.name + "&check_keywords=yes&area=default'>" + value + "</a>" + "<a href='../../../../../_static/../" + item.website_url + "' ><img src='../../../../../_static/link.svg'/></a></span>";
+		    }
+	    },
+
+		theme: "square"
+
+	};
+
+	$("#simple").easyAutocomplete(options);
+
+
+    </script>
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../../index.html">Home</a></li>
+              </ul>
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../../index.html">Functions</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../../../analysis/index.html">Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../base/index.html">Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../dataIntegration/index.html">Dataintegration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../design/index.html">Design</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../../index.html">Reconstruction</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../../../modelGeneration/index.html">Modelgeneration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../refinement/index.html">Refinement</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../../index.html">Demeter</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../../suite/index.html">Suite</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="../index.html">Src</a><ul class="current">
+<li class="toctree-l5"><a class="reference internal" href="../refinement/index.html">Refinement</a></li>
+<li class="toctree-l5 current"><a class="current reference internal" href="#">Debugging</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../properties/index.html">Properties</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../integration/index.html">Integration</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../fastGapFill/index.html">Fastgapfill</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../comparison/index.html">Comparison</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../metaboRePort/index.html">Metaboreport</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../growthExpMatch/index.html">Growthexpmatch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../rBioNet/index.html">Rbionet</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../visualization/index.html">Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../contributing.html">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../cite.html">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../support.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../plan.html">Development Plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../contact.html">Contact</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../citations.html">Citations</a></li>
+</ul>
+
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../index.html">The COBRA Toolbox</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../contents.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../../index.html">Functions</a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Reconstruction</a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Demeter</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Src</a></li>
+      <li class="breadcrumb-item active">Debugging</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="https://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <section id="debugging">
+<span id="id1"></span><h1>Debugging<a class="headerlink" href="#debugging" title="Permalink to this heading">¶</a></h1>
+<span class="target" id="module-src.reconstruction.demeter.src.debugging"></span><dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.src.debugging.conditionSpecificGapFilling">
+<span class="sig-name descname"><span class="pre">conditionSpecificGapFilling</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">database</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/src/debugging/conditionSpecificGapFilling.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.src.debugging.conditionSpecificGapFilling" title="Permalink to this definition">¶</a></dt>
+<dd><p>Part of the DEMETER pipeline. Resolves reactions that were replaced by
+irreversible versions during the conversion from KBase to VMH
+nomenclature. As a result, models may no longer grow. This function adds
+reactions that restore grow and allow the production of biomass
+precursors in a realisitc manner. All solutions were identified
+through manual inspection. Any new solutions identified for reaction
+combinations not yet encountered by DEMETER may be added.</p>
+<dl class="simple">
+<dt>USAGE</dt><dd><p>[model] = conditionSpecificGapFilling(model,database)</p>
+</dd>
+</dl>
+<p>INPUT
+model             COBRA model structure
+database          rBioNet reaction database containing min. 3 columns:</p>
+<blockquote>
+<div><p>Column 1: reaction abbreviation, Column 2: reaction
+name, Column 3: reaction formula.</p>
+</div></blockquote>
+<p>OUTPUT
+model             COBRA model structure</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.src.debugging.debugCouplingConstraints">
+<span class="sig-name descname"><span class="pre">debugCouplingConstraints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">biomassReaction</span></em>, <em class="sig-param"><span class="pre">database</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/src/debugging/debugCouplingConstraints.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.src.debugging.debugCouplingConstraints" title="Permalink to this definition">¶</a></dt>
+<dd><p>Part of the DEMETER pipeline. In rare cases, the implementation of
+coupling constraints, which is required for the Microbiome Modeling
+Toolbox, renders the model unable to grow. This can be fixed by adding
+certain reactions that were identiifed through manual testing.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[model,addedCouplingRxns] = debugCouplingConstraints</strong> (<em>model,biomassReaction,database</em>)</p>
+</dd>
+</dl>
+<p>INPUTS
+model:               COBRA model structure
+biomassReaction:     Reaction ID of the biomass objective function
+database:            rBioNet reaction database containing min. 3 columns:</p>
+<blockquote>
+<div><p>Column 1: reaction abbreviation, Column 2: reaction
+name, Column 3: reaction formula.</p>
+</div></blockquote>
+<p>OUTPUT
+model:               COBRA model structure
+addedCouplingRxns:   Reactions added to enable growth with coupling</p>
+<blockquote>
+<div><p>constraints</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.src.debugging.debugModel">
+<span class="sig-name descname"><span class="pre">debugModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">testResults</span></em>, <em class="sig-param"><span class="pre">inputDataFolder</span></em>, <em class="sig-param"><span class="pre">infoFilePath</span></em>, <em class="sig-param"><span class="pre">microbeID</span></em>, <em class="sig-param"><span class="pre">biomassReaction</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/src/debugging/debugModel.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.src.debugging.debugModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function runs a suite of debugging functions on a refined
+reconstruction produced by the DEMETER pipeline. Tests
+are performed whether or not the models can produce biomass aerobically
+and anaerobically, and whether or not unrealistically high ATP is
+produced on a complex medium.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[revisedModel,gapfilledReactions,replacedReactions]=debugModel</strong> (<em>model,testResults,inputDataFolder,infoFilePath,microbeID,biomassReaction</em>)</p>
+</dd>
+</dl>
+<p>INPUTS
+model:                 COBRA model structure
+testResults:           Structure with results of test run
+inputDataFolder:       Folder with input tables with experimental data</p>
+<blockquote>
+<div><p>and databases that inform the refinement process</p>
+</div></blockquote>
+<p>infoFilePath           File with information on reconstructions to refine
+microbeID:             ID of the reconstructed microbe that serves as</p>
+<blockquote>
+<div><p>the reconstruction name and to identify it in
+input tables</p>
+</div></blockquote>
+<p>biomassReaction:       Reaction ID of the biomass objective function</p>
+<p>OUTPUT
+revisedModel:          Gapfilled COBRA model structure
+gapfilledReactions:    Reactions gapfilled to enable flux
+replacedReactions:     Reactions replaced because they were causing</p>
+<blockquote>
+<div><p>futile cycles</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.src.debugging.findFutileCycle">
+<span class="sig-name descname"><span class="pre">findFutileCycle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">cut</span></em>, <em class="sig-param"><span class="pre">closedModel</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/src/debugging/findFutileCycle.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.src.debugging.findFutileCycle" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function attempts to find reactions involved in the atp-driving
+futile cycle</p>
+<p>INPUT
+model         model structure
+cut           cutoff value for reactions to be displayed
+closedModel   if 1 the model will be closed otw the applied medium</p>
+<blockquote>
+<div><p>constraints count (DEFAULT:1);</p>
+</div></blockquote>
+<p>OUTPUT
+T         Table of reactions potentially involved</p>
+<p>Ines Thiele 03/2022</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.src.debugging.identifyFutileCycles">
+<span class="sig-name descname"><span class="pre">identifyFutileCycles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/src/debugging/identifyFutileCycles.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.src.debugging.identifyFutileCycles" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function serves to debug a refined reconstruction generated by the
+DEMETER pipeline that produced infeasible amounts of ATP. The output
+futileCycleReactions shows reactions that are involved in futile cycles.
+To eliminate the futile cycle, one of these reactions needs to be
+replaced by an irreversible version of the same reaction. To accomplish
+this, the replacement step needs to be added to the function
+removeFutileCycles. It is requested that identified solutions are
+submitted as a pull request.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[gapfilledReactions,replacedReactions,revisedModel]=debugModel</strong> (<em>model,testResultsFolder, inputDataFolder,reconVersion,microbeID,biomassReaction</em>)</p>
+</dd>
+</dl>
+<p>INPUT
+model:                   COBRA model structure</p>
+<p>OUTPUT
+futileCycleReactions:    Reactions that are involved in futile cycles and</p>
+<blockquote>
+<div><p>need to be constrained</p>
+</div></blockquote>
+<p>FutileCyclesTest         Computed fluxes for ATP production</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.src.debugging.removeFutileCycles">
+<span class="sig-name descname"><span class="pre">removeFutileCycles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">biomassReaction</span></em>, <em class="sig-param"><span class="pre">database</span></em>, <em class="sig-param"><span class="pre">unionRxns</span></em>, <em class="sig-param"><span class="pre">constrainedModel</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/src/debugging/removeFutileCycles.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.src.debugging.removeFutileCycles" title="Permalink to this definition">¶</a></dt>
+<dd><p>Part of the DEMETER pipeline. Resolves reactions that are running in
+infeasible directions and causing futile cycles that result in
+unrealistically high ATP production. All solutions were identified
+through manual inspection. Any new solutions identified for reaction
+combinations not yet encountered by DEMETER may be added.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[model, deletedRxns, addedRxns, gfRxns] = removeFutileCycles</strong> (<em>model, biomassReaction, database,unionRxns,constrainedModel</em>)</p>
+</dd>
+</dl>
+<p>INPUTS
+model:               COBRA model structure
+biomassReaction:     Reaction ID of the biomass objective function
+database:            rBioNet reaction database containing min. 3 columns:</p>
+<blockquote>
+<div><p>Column 1: reaction abbreviation, Column 2: reaction
+name, Column 3: reaction formula.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>unionRxns:           Union of reactions from  multiple reconstructions</dt><dd><p>(only for debugging multi-species models)</p>
+</dd>
+<dt>constrainedModels:   COBRA model constrained with defined medium (for</dt><dd><p>certain steps of DEMETER)</p>
+</dd>
+</dl>
+<p>OUTPUT
+model:               COBRA model structure
+deletedRxns:         Deleted reactions that were causing futile cycles
+addedRxns:           Added irreversible versions of the deleted reactions
+gfRxns:              Additional gap-filled reactions needed to enable</p>
+<blockquote>
+<div><p>growth. Low confidence score.</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.src.debugging.runDebuggingTools">
+<span class="sig-name descname"><span class="pre">runDebuggingTools</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">refinedFolder</span></em>, <em class="sig-param"><span class="pre">testResultsFolder</span></em>, <em class="sig-param"><span class="pre">inputDataFolder</span></em>, <em class="sig-param"><span class="pre">infoFilePath</span></em>, <em class="sig-param"><span class="pre">reconVersion</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/src/debugging/runDebuggingTools.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.src.debugging.runDebuggingTools" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function runs a suite of debugging functions on a set of refined
+reconstructions produced by the DEMETER pipeline. Tests are performed
+whether or not the models can produce biomass aerobically and
+anaerobically, and whether or not unrealistically high ATP is produced
+on the complex medium.</p>
+<dl class="simple">
+<dt>USAGE</dt><dd><p>[debuggingReport, fixedModels, failedModels]=runDebuggingTools(refinedFolder,testResultsFolder,inputDataFolder,infoFilePath,reconVersion,varargin)</p>
+</dd>
+</dl>
+<p>INPUTS
+refinedFolder          Folder with refined COBRA models generated by</p>
+<blockquote>
+<div><p>the refinement pipeline</p>
+</div></blockquote>
+<p>testResultsFolder      Folder where the test results are saved
+inputDataFolder        Folder with experimental data and database files
+infoFilePath           File with information on reconstructions to refine
+reconVersion           Name of the refined reconstruction resource</p>
+<p>OPTIONAL INPUTS
+numWorkers             Number of workers in parallel pool (default: 2)
+translatedDraftsFolder Folder with  translated draft COBRA models</p>
+<blockquote>
+<div><p>generated by KBase pipeline to analyze (will only
+be re-analyzed if folder is provided)</p>
+</div></blockquote>
+<p>OUTPUT
+debuggingReport         Report of changes that where made to debug the</p>
+<blockquote>
+<div><p>models, if any</p>
+</div></blockquote>
+<dl class="simple">
+<dt>fixedModels             IDs of models that passed tests after additional</dt><dd><p>gap-filling</p>
+</dd>
+<dt>failedModels            IDs of models that still do not pass one or more</dt><dd><p>tests</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.src.debugging.runGapfillingFunctions">
+<span class="sig-name descname"><span class="pre">runGapfillingFunctions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">objectiveFunction</span></em>, <em class="sig-param"><span class="pre">biomassReaction</span></em>, <em class="sig-param"><span class="pre">osenseStr</span></em>, <em class="sig-param"><span class="pre">database</span></em>, <em class="sig-param"><span class="pre">curateDefMedia</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/src/debugging/runGapfillingFunctions.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.src.debugging.runGapfillingFunctions" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function runs a set of gapfillling functions on a reconstruction to
+refined as part of the DEMETER pipeline. Reactions are filled in to
+enable flux through an objective function, e.g., the biomass objective
+function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[model,condGF,targetGF,relaxGF] = runGapfillingFunctions</strong> (<em>model,objectiveFunction,biomassReaction,osenseStr,database</em>)</p>
+</dd>
+</dl>
+<p>INPUTS
+model:               COBRA model structure
+objectiveFunction    Reaction ID of the objective function for which flux</p>
+<blockquote>
+<div><p>will be enabled through gapfilling</p>
+</div></blockquote>
+<dl class="simple">
+<dt>biomassReaction:     Reaction ID of the biomass objective function that</dt><dd><p>will be restored afterwards (if objectiveFunction is
+not biomassReaction)</p>
+</dd>
+<dt>osenseStr:           Maximize (‘max’)/minimize (‘min’) linear part of the</dt><dd><p>objective</p>
+</dd>
+<dt>database:            rBioNet reaction database containing min. 3 columns:</dt><dd><p>Column 1: reaction abbreviation, Column 2: reaction
+name, Column 3: reaction formula.</p>
+</dd>
+</dl>
+<p>OPTIONAL INPUT
+curateDefMedia:      boolean indicating that growth on defined medium is</p>
+<blockquote>
+<div><p>being curated (default=false)</p>
+</div></blockquote>
+<p>OUTPUT
+model:               COBRA model structure
+condGF               Reactions added based on conditions (recognizing</p>
+<blockquote>
+<div><p>certain patterns of reactions)</p>
+</div></blockquote>
+<dl class="simple">
+<dt>targetGF             Reactions added based on targeted gapfilling</dt><dd><p>(specific metabolites that could not be produced)</p>
+</dd>
+<dt>relaxGF              Reactions added based on relaxFBA (lowest level of</dt><dd><p>confidence)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.src.debugging.targetedGapFilling">
+<span class="sig-name descname"><span class="pre">targetedGapFilling</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">osenseStr</span></em>, <em class="sig-param"><span class="pre">database</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/src/debugging/targetedGapFilling.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.src.debugging.targetedGapFilling" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function gapfills a reconstruction during the DEMETER refinement
+suite to conform with experimental data and/or to enable growth.
+Metabolites are identified that would enable flux and reactions are
+gapfilled based on that.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>model = targetedGapFilling</strong> (<em>model,osenseStr,database</em>)</p>
+</dd>
+</dl>
+<p>INPUTS
+model:              COBRA model structure
+osenseStr:          Maximize (‘max’)/minimize (‘min’)linear part of the</p>
+<blockquote>
+<div><p>objective.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>database:           rBioNet reaction database containing min. 3 columns:</dt><dd><p>Column 1: reaction abbreviation, Column 2: reaction
+name, Column 3: reaction formula.</p>
+</dd>
+</dl>
+<p>OUTPUT
+model:               Gapfilled COBRA model structure</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.src.debugging.untargetedGapFilling">
+<span class="sig-name descname"><span class="pre">untargetedGapFilling</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">osenseStr</span></em>, <em class="sig-param"><span class="pre">database</span></em>, <em class="sig-param"><span class="pre">excludeDMs</span></em>, <em class="sig-param"><span class="pre">excludeSinks</span></em>, <em class="sig-param"><span class="pre">excludeExchanges</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/src/debugging/untargetedGapFilling.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.src.debugging.untargetedGapFilling" title="Permalink to this definition">¶</a></dt>
+<dd><p>This script is part of the DEMETER pipeline and attemps to find a
+reaction from the complete reaction database through the use of
+relaxedFBA that could enable flux through the objective function. This
+function will be performed only if targeted gap-filling failed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[model,addedRxns] = untargetedGapFilling</strong> (<em>model,osenseStr,database</em>)</p>
+</dd>
+</dl>
+<p>INPUTS
+model:              COBRA model structure
+osenseStr:          Maximize (‘max’)/minimize (‘min’)linear part of the</p>
+<blockquote>
+<div><p>objective.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>database:           rBioNet reaction database containing min. 3 columns:</dt><dd><p>Column 1: reaction abbreviation, Column 2: reaction
+name, Column 3: reaction formula.</p>
+</dd>
+<dt>excludeDMs          boolean indicating if demand reactions should be</dt><dd><p>excluded from gap-filling reactions (default: true)</p>
+</dd>
+<dt>excludeSinks        boolean indicating if sink reactions should be</dt><dd><p>excluded from gap-filling reactions (default: true)</p>
+</dd>
+<dt>excludeExchanges    boolean indicating if exchanges reactions should be</dt><dd><p>excluded from gap-filling reactions (default: false)</p>
+</dd>
+</dl>
+<p>OUTPUT
+model:              Gapfilled COBRA model structure
+addedRxns:          Added gapfilled reactions</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.src.debugging.verifyGapfilledReactions">
+<span class="sig-name descname"><span class="pre">verifyGapfilledReactions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">osenseStr</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/src/debugging/verifyGapfilledReactions.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.src.debugging.verifyGapfilledReactions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Part of the DEMETER pipeline. Checks whether reactions that were added
+by the gapfilling steps performed in DEMETER are required for biomass
+production. Reactions that are no longer needed are removed.</p>
+<dl class="simple">
+<dt>USAGE</dt><dd><p>model = verifyGapfilledReactions(model,osenseStr)</p>
+</dd>
+</dl>
+<p>INPUT
+model             COBRA model structure
+osenseStr:        Maximize (‘max’)/minimize (‘min’) linear part of the</p>
+<blockquote>
+<div><p>objective</p>
+</div></blockquote>
+</dd></dl>
+
+</section>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../properties/index.html" class="btn btn-default float-right" title="Properties" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../refinement/index.html" class="btn btn-default" title="Refinement" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017-2021, The COBRA Toolbox developers.
+
+    </p>
+  </div>
+  Built with Sphinx using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../../',
+            VERSION:'2.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+    <script type="text/javascript" src="../../../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script type="text/javascript" src="../../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../../../_static/sphinx_highlight.js"></script>
+
+  
+
+
+  
+  
+    <script type="text/javascript" src="../../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TRCMZL1FKK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TRCMZL1FKK');
+  </script>
+    
+</body>
+</html>

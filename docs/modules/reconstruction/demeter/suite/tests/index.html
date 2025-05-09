@@ -1,0 +1,948 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Tests &mdash; The COBRA Toolbox</title>
+  
+
+  
+  
+  
+    <link rel="apple-touch-icon" sizes="180x180" href="../../../../../_static/img/apple-touch-icon.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../../../_static/img/favicon-32x32.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="16x16" href="../../../../../_static/img/favicon-16x16.png">
+  
+  
+    <link rel="mask-icon" href="../../../../../_static/img/safari-pinned-tab.svg" color="#5bbad5">
+  
+  
+    <link rel="manifest" href="../../../../../_static/json/manifest.json">
+  
+  
+    <meta name="msapplication-config" content="../../../../../_static/browserconfig.xml">
+  
+  <meta name="theme-color" content="#ffffff">
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+  <script src="../../../../../_static/js/jquery.easy-autocomplete.min.js" type="text/javascript" ></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+  <link href="../../../../../_static/css/easy-autocomplete.min.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../../_static/css/cobra.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../../../../_static/css/cobra.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../../../search.html"/>
+    <link rel="top" title="The COBRA Toolbox" href="../../../../../index.html"/>
+        <link rel="up" title="Suite" href="../index.html"/>
+        <link rel="next" title="Reports" href="../reports/index.html"/>
+        <link rel="prev" title="Suite" href="../index.html"/> 
+
+  
+  <script src="../../../../../_static/js/modernizr.min.js"></script>
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../../index.html" class="icon icon-home"> The COBRA Toolbox
+          
+
+          
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
+          
+          </a>
+
+              
+          <h1>The COBRA Toolbox</h1>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" id="simple"/>
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+    <script>
+    	var options = {
+
+		url: "../../../../../_static/json/functions.json",
+
+		getValue: "name",
+
+		list: {
+            onKeyEnterEvent: function(item) {
+                    return "_static/../" + item.website_url
+            },
+            maxNumberOfElements: 25,
+			match: {
+					enabled: true,
+			},
+            sort: {
+			    enabled: true
+		    }
+		},
+
+    	template: {
+	    	type: "custom",
+		    method: function(value, item) {
+                return "<span><a href='../../../../../search.html?q=" + item.name + "&check_keywords=yes&area=default'>" + value + "</a>" + "<a href='../../../../../_static/../" + item.website_url + "' ><img src='../../../../../_static/link.svg'/></a></span>";
+		    }
+	    },
+
+		theme: "square"
+
+	};
+
+	$("#simple").easyAutocomplete(options);
+
+
+    </script>
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../../index.html">Home</a></li>
+              </ul>
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../../index.html">Functions</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../../../analysis/index.html">Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../base/index.html">Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../dataIntegration/index.html">Dataintegration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../design/index.html">Design</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../../index.html">Reconstruction</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../../../modelGeneration/index.html">Modelgeneration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../refinement/index.html">Refinement</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../../index.html">Demeter</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="../index.html">Suite</a><ul class="current">
+<li class="toctree-l5 current"><a class="current reference internal" href="#">Tests</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../reports/index.html">Reports</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../src/index.html">Src</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../fastGapFill/index.html">Fastgapfill</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../comparison/index.html">Comparison</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../metaboRePort/index.html">Metaboreport</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../growthExpMatch/index.html">Growthexpmatch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../rBioNet/index.html">Rbionet</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../visualization/index.html">Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../contributing.html">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../cite.html">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../support.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../plan.html">Development Plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../contact.html">Contact</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../citations.html">Citations</a></li>
+</ul>
+
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../index.html">The COBRA Toolbox</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../contents.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../../index.html">Functions</a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Reconstruction</a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Demeter</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Suite</a></li>
+      <li class="breadcrumb-item active">Tests</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="https://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <section id="tests">
+<span id="id1"></span><h1>Tests<a class="headerlink" href="#tests" title="Permalink to this heading">¶</a></h1>
+<span class="target" id="module-src.reconstruction.demeter.suite.tests"></span><dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.suite.tests.batchTestAllReconstructionFunctions">
+<span class="sig-name descname"><span class="pre">batchTestAllReconstructionFunctions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">modelFolder</span></em>, <em class="sig-param"><span class="pre">testResultsFolder</span></em>, <em class="sig-param"><span class="pre">inputDataFolder</span></em>, <em class="sig-param"><span class="pre">reconVersion</span></em>, <em class="sig-param"><span class="pre">numWorkers</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/suite/tests/batchTestAllReconstructionFunctions.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.suite.tests.batchTestAllReconstructionFunctions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Part of the DEMETER pipeline. This function performs all quality
+control/quality assurance tests on a batch of reconstructions and saves
+the results for each reconstruction in the input folder.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>batchTestAllReconstructionFunctions</strong> (<em>modelFolder,testResultsFolder,inputDataFolder,reconVersion, numWorkers</em>)</p>
+</dd>
+</dl>
+<p>INPUTS
+modelFolder           Folder with COBRA models (draft or refined</p>
+<blockquote>
+<div><p>reconstructions) to analyze</p>
+</div></blockquote>
+<p>testResultsFolder     Folder where the test results should be saved
+inputDataFolder       Folder with experimental data and database files</p>
+<blockquote>
+<div><p>to load</p>
+</div></blockquote>
+<p>reconVersion          Name of the refined reconstruction resource
+numWorkers            Number of workers in parallel pool</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.suite.tests.plotATPTestResults">
+<span class="sig-name descname"><span class="pre">plotATPTestResults</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">refinedFolder</span></em>, <em class="sig-param"><span class="pre">reconVersion</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/suite/tests/plotATPTestResults.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.suite.tests.plotATPTestResults" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function plots the maximal ATP yield by refined reconstructions and
+reports whether ATP production is feasible. Optionally, draft
+reconstructions can be included.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[tooHighATP,ATP_fluxes] = plotATPTestResults</strong> (<em>refinedFolder, reconVersion, varargin</em>)</p>
+</dd>
+</dl>
+<p>REQUIRED INPUTS
+refinedFolder             Folder with refined COBRA models generated by</p>
+<blockquote>
+<div><p>the refinement pipeline</p>
+</div></blockquote>
+<p>reconVersion              Name of the refined reconstruction resource</p>
+<p>OPTIONAL INPUTS
+testResultsFolder         Folder where the test results should be saved
+numWorkers                Number of workers in parallel pool (default: 0)
+translatedDraftsFolder    Folder with  translated draft COBRA models</p>
+<blockquote>
+<div><p>generated by KBase pipeline to analyze (will
+only be analyzed if folder is provided)</p>
+</div></blockquote>
+<p>OUTPUT
+tooHighATP                List of IDs for refined reconstructions that</p>
+<blockquote>
+<div><p>produce too much ATP on complex medium</p>
+</div></blockquote>
+<p>ATP_fluxes                 Computed ATP production fluxes for each model</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.suite.tests.plotBiomassTestResults">
+<span class="sig-name descname"><span class="pre">plotBiomassTestResults</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">refinedFolder</span></em>, <em class="sig-param"><span class="pre">reconVersion</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/suite/tests/plotBiomassTestResults.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.suite.tests.plotBiomassTestResults" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function plots the growth of refined reconstructions and
+reports whether any reconstructions are incapable of biomass production.
+Optionally, draft reconstructions can be included.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[notGrowing,Biomass_fluxes] = plotBiomassTestResults</strong> (<em>refinedFolder, reconVersion, varargin</em>)</p>
+</dd>
+</dl>
+<p>REQUIRED INPUTS
+refinedFolder             Folder with refined COBRA models generated by</p>
+<blockquote>
+<div><p>the refinement pipeline</p>
+</div></blockquote>
+<p>reconVersion              Name of the refined reconstruction resource</p>
+<p>OPTIONAL INPUTS
+testResultsFolder         Folder where the test results should be saved
+numWorkers                Number of workers in parallel pool (default: 0)
+translatedDraftsFolder    Folder with  translated draft COBRA models</p>
+<blockquote>
+<div><p>generated by KBase pipeline to analyze (will
+only be analyzed if folder is provided)</p>
+</div></blockquote>
+<p>OUTPUT
+notGrowing                List of IDs for refined reconstructions that</p>
+<blockquote>
+<div><p>cannot produce biomass on at least one condition</p>
+</div></blockquote>
+<p>Biomass_fluxes             Computed biomass production fluxes for each model</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.suite.tests.plotTestSuiteResults">
+<span class="sig-name descname"><span class="pre">plotTestSuiteResults</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">testResultsFolder</span></em>, <em class="sig-param"><span class="pre">reconVersion</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/suite/tests/plotTestSuiteResults.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.suite.tests.plotTestSuiteResults" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function prints and summarizes the results of testAllReconstructionFunctions.</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.suite.tests.runTestSuiteTools">
+<span class="sig-name descname"><span class="pre">runTestSuiteTools</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">refinedFolder</span></em>, <em class="sig-param"><span class="pre">infoFilePath</span></em>, <em class="sig-param"><span class="pre">inputDataFolder</span></em>, <em class="sig-param"><span class="pre">reconVersion</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/suite/tests/runTestSuiteTools.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.suite.tests.runTestSuiteTools" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function initialzes the test suite on all reconstructions in
+that should be refined through DEMETER.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[testResultsFolder,curationReport] = runTestSuiteTools</strong> (<em>refinedFolder, infoFilePath, inputDataFolder, reconVersion, varargin</em>)</p>
+</dd>
+</dl>
+<p>REQUIRED INPUTS
+refinedFolder             Folder with refined COBRA models generated by the</p>
+<blockquote>
+<div><p>refinement pipeline</p>
+</div></blockquote>
+<p>infoFilePath              File with information on reconstructions to refine
+inputDataFolder           Folder with experimental data and database files to
+reconVersion              Name of the refined reconstruction resource</p>
+<p>OPTIONAL INPUTS
+testResultsFolder         Folder where the test results are saved
+numWorkers                Number of workers in parallel pool (default: 2)
+createReports             Boolean defining if a report for each</p>
+<blockquote>
+<div><p>reconstruction should be created (default: false).</p>
+</div></blockquote>
+<p>reportsFolder             Folder where reports should be saved
+translatedDraftsFolder    Folder with  translated draft COBRA models generated by KBase</p>
+<blockquote>
+<div><p>pipeline to analyze (will only be analyzed if
+folder is provided)</p>
+</div></blockquote>
+<p>OUTPUTS
+testResultsFolder         Folder where the test results are saved
+curationReport            Summary of results of QA/QC tests</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.suite.tests.runTestsOnModel">
+<span class="sig-name descname"><span class="pre">runTestsOnModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">microbeID</span></em>, <em class="sig-param"><span class="pre">inputDataFolder</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/suite/tests/runTestsOnModel.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.suite.tests.runTestsOnModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Part of the DEMETER pipeline. This function performs all quality
+control/quality assurance tests on a model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>testResults = runTestsOnModel</strong> (<em>model, microbeID, inputDataFolder</em>)</p>
+</dd>
+</dl>
+<p>INPUTS
+modelFolder           Folder with COBRA models (draft or refined</p>
+<blockquote>
+<div><p>reconstructions) to analyze</p>
+</div></blockquote>
+<dl class="simple">
+<dt>inputDataFolder       Folder with experimental data and database files</dt><dd><p>to load</p>
+</dd>
+</dl>
+<p>OUTPUT
+testResults           Structure with results of the test run</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.suite.tests.testATP">
+<span class="sig-name descname"><span class="pre">testATP</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/suite/tests/testATP.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.suite.tests.testATP" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tests flux through the ATP demand reaction (<a href="#id2"><span class="problematic" id="id3">DM_atp_c_</span></a>) on a complex
+medium-constrained model, both aerobic and anaerobic.
+USAGE</p>
+<blockquote>
+<div><p>[atpFluxAerobic, atpFluxAnaerobic] = testATP(model)</p>
+</div></blockquote>
+<p>INPUT
+model             COBRA model structure</p>
+<p>OUTPUT
+atpFluxAerobic    Numeric vector showing the flux through the ATP demand</p>
+<blockquote>
+<div><p>reaction under aerobic conditions (mmol/gDW/h).</p>
+</div></blockquote>
+<dl class="simple">
+<dt>atpFluxAnaerobic  Numeric vector showing the flux through the ATP demand</dt><dd><p>reaction under anaerobic conditions (mmol/gDW/h)</p>
+</dd>
+</dl>
+<p>Stefania Magnusdottir, Nov 2017</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.suite.tests.testAromaticAADegradation">
+<span class="sig-name descname"><span class="pre">testAromaticAADegradation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">microbeID</span></em>, <em class="sig-param"><span class="pre">biomassReaction</span></em>, <em class="sig-param"><span class="pre">database</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/suite/tests/testAromaticAADegradation.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.suite.tests.testAromaticAADegradation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performs an FVA and reports those AromaticAA pathway end reactions (exchange reactions)
+that can carry flux in the model and should carry flux according to
+data (true positives) and those AromaticAA pathway end reactions that
+cannot carry flux in the model but should be secreted according to in
+vitro data (false negatives).</p>
+<p>INPUT
+model             COBRA model structure
+microbeID         Microbe ID in carbon source data file
+biomassReaction   Biomass objective functions (low flux through BOF</p>
+<blockquote>
+<div><p>required in analysis)</p>
+</div></blockquote>
+<dl class="simple">
+<dt>database          Structure containing rBioNet reaction and metabolite</dt><dd><p>database</p>
+</dd>
+</dl>
+<p>OUTPUT
+TruePositives     Cell array of strings listing all aromatic amino acid
+degradation products
+that can be secreted by the model and in comnparative genomic data.
+FalseNegatives    Cell array of strings listing all aromatic amino acid
+degradation products
+that cannot be secreted by the model but should be secreted according to comparative genomic data.</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.suite.tests.testBileAcidBiosynthesis">
+<span class="sig-name descname"><span class="pre">testBileAcidBiosynthesis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">microbeID</span></em>, <em class="sig-param"><span class="pre">biomassReaction</span></em>, <em class="sig-param"><span class="pre">database</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/suite/tests/testBileAcidBiosynthesis.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.suite.tests.testBileAcidBiosynthesis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performs an FVA and reports those bile acid metabolites (exchange reactions)
+that can be secreted by the model and should be secreted according to
+data (true positives) and those bile acid metabolites that cannot be secreted by
+the model but should be secreted according to in vitro data (false
+negatives).</p>
+<p>INPUT
+model             COBRA model structure
+microbeID         Microbe ID in data file
+biomassReaction   Biomass objective functions (low flux through BOF</p>
+<blockquote>
+<div><p>required in analysis)</p>
+</div></blockquote>
+<dl class="simple">
+<dt>database          Structure containing rBioNet reaction and metabolite</dt><dd><p>database</p>
+</dd>
+</dl>
+<p>OUTPUT
+TruePositives     Cell array of strings listing all bile acid products</p>
+<blockquote>
+<div><p>(exchange reactions) that can be secreted by the model
+and in in vitro data.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>FalseNegatives    Cell array of strings listing all bile acid products</dt><dd><p>(exchange reactions) that cannot be secreted by the model
+but should be secreted according to in vitro data.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.suite.tests.testCarbonSources">
+<span class="sig-name descname"><span class="pre">testCarbonSources</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">microbeID</span></em>, <em class="sig-param"><span class="pre">biomassReaction</span></em>, <em class="sig-param"><span class="pre">database</span></em>, <em class="sig-param"><span class="pre">inputDataFolder</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/suite/tests/testCarbonSources.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.suite.tests.testCarbonSources" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performs an FVA and reports those carbon sources (exchange reactions)
+that can be taken up by the model and should be taken up according to
+data (true positives) and those carbon sources that cannot be taken up by
+the model but should be taken up according to in vitro data (false
+negatives).</p>
+<p>INPUT
+model             COBRA model structure
+microbeID         Microbe ID in carbon source data file
+biomassReaction   Biomass objective functions (low flux through BOF</p>
+<blockquote>
+<div><p>required in analysis)</p>
+</div></blockquote>
+<dl class="simple">
+<dt>database          Structure containing rBioNet reaction and metabolite</dt><dd><p>database</p>
+</dd>
+<dt>inputDataFolder   Folder with experimental data and database files</dt><dd><p>to load</p>
+</dd>
+</dl>
+<p>OUTPUT
+TruePositives     Cell array of strings listing all carbon sources</p>
+<blockquote>
+<div><p>(exchange reactions) that can be taken up by the model
+and in in vitro data.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>FalseNegatives    Cell array of strings listing all carbon sources</dt><dd><p>(exchange reactions) that cannot be taken up by the model
+but should be taken up according to in vitro data.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.suite.tests.testDrugMetabolism">
+<span class="sig-name descname"><span class="pre">testDrugMetabolism</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">microbeID</span></em>, <em class="sig-param"><span class="pre">biomassReaction</span></em>, <em class="sig-param"><span class="pre">database</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/suite/tests/testDrugMetabolism.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.suite.tests.testDrugMetabolism" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performs an FVA and reports those drug metabolites (exchange reactions)
+that can be taken up and/or secreted by the model and should be secreted according to
+data (true positives) and those bile acid metabolites that cannot be secreted by
+the model but should be secreted according to in vitro data (false
+negatives).</p>
+<p>INPUT
+model             COBRA model structure
+microbeID         Microbe ID in carbon source data file
+biomassReaction   Biomass objective functions (low flux through BOF</p>
+<blockquote>
+<div><p>required in analysis)</p>
+</div></blockquote>
+<dl class="simple">
+<dt>database          Structure containing rBioNet reaction and metabolite</dt><dd><p>database</p>
+</dd>
+</dl>
+<p>OUTPUT
+TruePositives     Cell array of strings listing all drug metabolites</p>
+<blockquote>
+<div><p>(exchange reactions) that can be taken up and/or secreted by the model
+and in in vitro data.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>FalseNegatives    Cell array of strings listing all drug metabolites</dt><dd><p>(exchange reactions) that cannot be taken up and/or secreted by the model
+but should be secreted according to in vitro data.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.suite.tests.testFermentationProducts">
+<span class="sig-name descname"><span class="pre">testFermentationProducts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">microbeID</span></em>, <em class="sig-param"><span class="pre">biomassReaction</span></em>, <em class="sig-param"><span class="pre">database</span></em>, <em class="sig-param"><span class="pre">inputDataFolder</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/suite/tests/testFermentationProducts.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.suite.tests.testFermentationProducts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performs an FVA and reports those fermentation products (exchange reactions)
+that can be secreted by the model and should be secreted according to
+data (true positives) and those fermentation products that cannot be secreted by
+the model but should be secreted according to in vitro data (false
+negatives).</p>
+<p>INPUT
+model             COBRA model structure
+microbeID         Microbe ID in carbon source data file
+biomassReaction   Biomass objective functions (low flux through BOF</p>
+<blockquote>
+<div><p>required in analysis)</p>
+</div></blockquote>
+<dl class="simple">
+<dt>database          Structure containing rBioNet reaction and metabolite</dt><dd><p>database</p>
+</dd>
+<dt>inputDataFolder   Folder with experimental data and database files</dt><dd><p>to load</p>
+</dd>
+</dl>
+<p>OUTPUT
+TruePositives     Cell array of strings listing all fermentation products</p>
+<blockquote>
+<div><p>(exchange reactions) that can be secreted by the model
+and in in vitro data.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>FalseNegatives    Cell array of strings listing all fermentation products</dt><dd><p>(exchange reactions) that cannot be secreted by the model
+but should be secreted according to in vitro data.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.suite.tests.testGeneRules">
+<span class="sig-name descname"><span class="pre">testGeneRules</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/suite/tests/testGeneRules.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.suite.tests.testGeneRules" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds gene rules that have an incorrect nomenclature.</p>
+<p>INPUT
+model             COBRA model structure</p>
+<p>OUTPUT
+incorrectGeneRules       Cell array listing entries in model.rules that</p>
+<blockquote>
+<div><p>have incorrect nomenclature.</p>
+</div></blockquote>
+<p>Almut Heinken, Oct 2019</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.suite.tests.testGrowth">
+<span class="sig-name descname"><span class="pre">testGrowth</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">biomassReaction</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/suite/tests/testGrowth.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.suite.tests.testGrowth" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tests growth, both on unlimited media and complex medium, both aerobic and
+anaerobic conditions. In anaerobic conditions, both oxygen uptake
+(exchange reaction) and cytosolic oxygen-utilizing reactions are blocked.</p>
+<dl class="simple">
+<dt>USAGE</dt><dd><p>[AerobicGrowth, AnaerobicGrowth] = testGrowth(model, biomassReaction)</p>
+</dd>
+</dl>
+<p>INPUT
+model             COBRA model structure
+biomassReaction   String listing the biomass reaction</p>
+<p>OUTPUT
+AerobicGrowth     Numeric vector showing the flux through the biomass</p>
+<blockquote>
+<div><p>reaction (aerobic conditions):
+Column 1: “unlimited” media (all exchanges to -1000
+mmol/gDW/h)
+Column 2: complex medium as defined in
+InputFilesComplexMedium.txt</p>
+</div></blockquote>
+<dl class="simple">
+<dt>AnaerobicGrowth   Numeric vector showing the flux through the biomass</dt><dd><p>reaction (anaerobic conditions):
+Column 1: “unlimited” media (all exchanges to -1000
+mmol/gDW/h)
+Column 2: complex medium as defined in
+InputFilesComplexMedium.txt</p>
+</dd>
+</dl>
+<p>Stefania Magnusdottir, Nov 2017</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.suite.tests.testGrowthOnDefinedMedia">
+<span class="sig-name descname"><span class="pre">testGrowthOnDefinedMedia</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">microbeID</span></em>, <em class="sig-param"><span class="pre">biomassReaction</span></em>, <em class="sig-param"><span class="pre">inputDataFolder</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/suite/tests/testGrowthOnDefinedMedia.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.suite.tests.testGrowthOnDefinedMedia" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tests growth on a minimal medium retrieved from the experimental data on
+growth requirements. The output is the calculated growth rates.
+If the model can grow on the defined medium, a minimal medium is also
+computed and the list of essential exchanges as well as a model
+constrained with these exchanges are returned.</p>
+<p>INPUT
+model                         COBRA model structure
+microbeID                     Microbe ID in data file
+biomassReaction               String listing the biomass reaction
+inputDataFolder               Folder with experimental data and database files</p>
+<blockquote>
+<div><p>to load</p>
+</div></blockquote>
+<p>OUTPUT
+growsOnDefinedMedium          Bool if growth on defined medium yes or no
+constrainedModel              Model constrained with essential exchanges (anaerobic)
+growthOnKnownCarbonSources    Aerobic and anaerobic growth on known</p>
+<blockquote>
+<div><p>carbon sources for the organism</p>
+</div></blockquote>
+<p>Almut Heinken, November 2018</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.suite.tests.testInputFiles">
+<span class="sig-name descname"><span class="pre">testInputFiles</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/suite/tests/testInputFiles.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.suite.tests.testInputFiles" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tests if the names of all reconstructed microbes are present in the input
+files for the AGORA2 pipeline.</p>
+<p>OUTPUT
+modelIDsMissingInTable       AGORA2 reconstruction IDs missing in the table
+incorrectIDsInTable          Reconstruction IDs in the table not</p>
+<blockquote>
+<div><p>corresponding to any reconstruction</p>
+</div></blockquote>
+<p>Almut Heinken, 09/2019</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.suite.tests.testLeakingMetabolites">
+<span class="sig-name descname"><span class="pre">testLeakingMetabolites</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/suite/tests/testLeakingMetabolites.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.suite.tests.testLeakingMetabolites" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds metabolites that can be produced when no metabolites enter the
+model (produced from nothing).</p>
+<p>INPUT
+model             COBRA model structure</p>
+<p>OUTPUT
+leakingMets       Cell array listing any metabolites that can be be</p>
+<blockquote>
+<div><p>produced from nothing.</p>
+</div></blockquote>
+<p>Stefania Magnusdottir, Nov 2017</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.suite.tests.testMetaboliteUptake">
+<span class="sig-name descname"><span class="pre">testMetaboliteUptake</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">microbeID</span></em>, <em class="sig-param"><span class="pre">biomassReaction</span></em>, <em class="sig-param"><span class="pre">database</span></em>, <em class="sig-param"><span class="pre">inputDataFolder</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/suite/tests/testMetaboliteUptake.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.suite.tests.testMetaboliteUptake" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performs an FVA and reports those metabolites (exchange reactions)
+that can be taken up by the model and should be taken up according to
+data (true positives) and those metabolites that cannot be taken up by
+the model but should be taken up according to in vitro data (false
+negatives).
+Based on literature search of reported vitamin-secreting probiotics
+performed 11/2017, and a compendium of uptake and uptake products
+(PMID:28585563)</p>
+<p>INPUT
+model             COBRA model structure
+microbeID         Microbe ID in uptake product data file
+biomassReaction   Biomass objective functions (low flux through BOF</p>
+<blockquote>
+<div><p>required in analysis)</p>
+</div></blockquote>
+<dl class="simple">
+<dt>database          Structure containing rBioNet reaction and metabolite</dt><dd><p>database</p>
+</dd>
+<dt>inputDataFolder   Folder with experimental data and database files</dt><dd><p>to load</p>
+</dd>
+</dl>
+<p>OUTPUT
+TruePositives     Cell array of strings listing all metabolites</p>
+<blockquote>
+<div><p>(exchange reactions) that can be taken up by the model
+and in in vitro data.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>FalseNegatives    Cell array of strings listing all metabolites</dt><dd><p>(exchange reactions) that cannot be taken up by the model
+but should be taken up according to in vitro data.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.suite.tests.testModelMassChargeBalance">
+<span class="sig-name descname"><span class="pre">testModelMassChargeBalance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">excludeExchanges</span></em>, <em class="sig-param"><span class="pre">biomassReaction</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/suite/tests/testModelMassChargeBalance.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.suite.tests.testModelMassChargeBalance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Uses the COBRA Toolbox function checkMassChargeBalance to test for mass
+and charge imbalanced reactions. Reports the mass and/or charge imblanced
+reactions along with reaction formulas and imblanced elements. Reports
+metabolites involved in mass or charge imblanced reactions along with
+their formulas and charges.</p>
+<p>INPUT
+model                 COBRA model structure
+excludeExchanges      Exclude exchange reactions when reporting imbalanced</p>
+<blockquote>
+<div><p>reactions (default: true).</p>
+</div></blockquote>
+<p>OPTIONAL INPUT
+biomassReaction       Model biomass reaction (will be excluded from</p>
+<blockquote>
+<div><p>report if provided)</p>
+</div></blockquote>
+<p>OUTPUT
+massImbalancedRxns    Cell array listing (col 1) all mass imbalanced</p>
+<blockquote>
+<div><p>reactions in the model, (col 2) the reaction
+formulas, and (col 3) the imbalanced elements.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>chargeImbalancedRxns  Cell array listing (col 1) all charge imbalanced</dt><dd><p>reactions in the model, (col 2) the reaction
+formulas, and (col 3) the imblanced elements.</p>
+</dd>
+<dt>imbalancedRxnMets     Cell array listing (col 1) all metabolites involved</dt><dd><p>in any mass or charge imblanced reaction, (col 2)
+the metabolite name, (col 3) the metabolite
+formula, and (col 4) the metabolite charge.</p>
+</dd>
+<dt>metsMissingFormulas   Cell array listing (col 1) all metabolites that do</dt><dd><p>not have metabolite formulas and (col 2) the
+metabolite names.</p>
+</dd>
+</dl>
+<p>Stefania Magnusdottir, Oct 2017</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.suite.tests.testPutrefactionPathways">
+<span class="sig-name descname"><span class="pre">testPutrefactionPathways</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">microbeID</span></em>, <em class="sig-param"><span class="pre">biomassReaction</span></em>, <em class="sig-param"><span class="pre">database</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/suite/tests/testPutrefactionPathways.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.suite.tests.testPutrefactionPathways" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performs an FVA and reports those putrefaction pathway end reactions (exchange reactions)
+that can carry flux in the model and should carry flux according to
+data (true positives) and those putrefaction pathway end reactions that
+cannot carry flux in the model but should be secreted according to in
+vitro data (false negatives).</p>
+<p>INPUT
+model             COBRA model structure
+microbeID         Microbe ID in carbon source data file
+biomassReaction   Biomass objective functions (low flux through BOF</p>
+<blockquote>
+<div><p>required in analysis)</p>
+</div></blockquote>
+<dl class="simple">
+<dt>database          Structure containing rBioNet reaction and metabolite</dt><dd><p>database</p>
+</dd>
+</dl>
+<p>OUTPUT
+TruePositives     Cell array of strings listing all putrefaction reactions
+that can carry flux in the model and in in vitro data.
+FalseNegatives    Cell array of strings listing all putrefaction reactions
+that cannot carry flux in the model but should carry flux according to in
+vitro data.</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.suite.tests.testRefinedReactions">
+<span class="sig-name descname"><span class="pre">testRefinedReactions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">microbeID</span></em>, <em class="sig-param"><span class="pre">BlockedRxns</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/suite/tests/testRefinedReactions.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.suite.tests.testRefinedReactions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tests if reactions that were added through the refinement of gene
+annotations in the reconstructed organism can carry flux.</p>
+<p>INPUT
+microbeID         Microbe ID in data file with refined genome annotations
+BlockedRxns       Reactions in the COBRA model that cannot carry flux:</p>
+<blockquote>
+<div><p>output of identifyBlockedRxns function</p>
+</div></blockquote>
+<p>OUTPUT
+RefinedReactionsCarryingFlux     Reactions that were added through</p>
+<blockquote>
+<div><p>refinement of the genome annotations
+and can carry flux</p>
+</div></blockquote>
+<dl class="simple">
+<dt>BlockedRefinedReactions          Reactions that were added through</dt><dd><p>refinement of the genome annotations
+and cannot carry flux</p>
+</dd>
+</dl>
+<p>Almut Heinken, Nov 2019</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.suite.tests.testSecretionProducts">
+<span class="sig-name descname"><span class="pre">testSecretionProducts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">microbeID</span></em>, <em class="sig-param"><span class="pre">biomassReaction</span></em>, <em class="sig-param"><span class="pre">database</span></em>, <em class="sig-param"><span class="pre">inputDataFolder</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/suite/tests/testSecretionProducts.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.suite.tests.testSecretionProducts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performs an FVA and reports those secretions (exchange reactions)
+that can be secreted by the model and should be secreted according to
+data (true positives) and those secretions that cannot be secreted by
+the model but should be secreted according to in vitro data (false
+negatives).
+Based on literature search of reported secretion-secreting probiotics
+performed 11/2017</p>
+<p>INPUT
+model             COBRA model structure
+microbeID         Microbe ID in secretion secretion data file
+biomassReaction   Biomass objective functions (low flux through BOF</p>
+<blockquote>
+<div><p>required in analysis)</p>
+</div></blockquote>
+<dl class="simple">
+<dt>database          Structure containing rBioNet reaction and metabolite</dt><dd><p>database</p>
+</dd>
+<dt>inputDataFolder   Folder with experimental data and database files</dt><dd><p>to load</p>
+</dd>
+</dl>
+<p>OUTPUT
+TruePositives     Cell array of strings listing all secretions</p>
+<blockquote>
+<div><p>(exchange reactions) that can be secreted by the model
+and in in vitro data.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>FalseNegatives    Cell array of strings listing all secretions</dt><dd><p>(exchange reactions) that cannot be secreted by the model
+but should be secreted according to in vitro data.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.suite.tests.validateCompartments">
+<span class="sig-name descname"><span class="pre">validateCompartments</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/suite/tests/validateCompartments.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.suite.tests.validateCompartments" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function checks if there are any reactions with incorrect
+compartments in the refined reconstructions. Appropriate compartments
+include [c], [e], and [p].</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[incorrectRxns,incorrectMets] = validateCompartments</strong> (<em>model</em>)</p>
+</dd>
+</dl>
+<p>INPUTS
+model             COBRA model structure</p>
+<p>OUTPUTS</p>
+<p>incorrectRxns     Reactions including metabolites in inappropriate compartments
+incorrectMets     Metabolites located in inappropriate compartments</p>
+<dl class="simple">
+<dt>AUTHOR:</dt><dd><p>Almut Heinken, 10/2020</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../reports/index.html" class="btn btn-default float-right" title="Reports" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../index.html" class="btn btn-default" title="Suite" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017-2021, The COBRA Toolbox developers.
+
+    </p>
+  </div>
+  Built with Sphinx using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../../',
+            VERSION:'2.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+    <script type="text/javascript" src="../../../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script type="text/javascript" src="../../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../../../_static/sphinx_highlight.js"></script>
+
+  
+
+
+  
+  
+    <script type="text/javascript" src="../../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TRCMZL1FKK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TRCMZL1FKK');
+  </script>
+    
+</body>
+</html>
