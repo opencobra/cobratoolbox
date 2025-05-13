@@ -49,7 +49,7 @@ parser = inputParser();
 parser.addRequired('templateFilePath', @ischar);
 parser.addParameter('searchType', 'iterative',@ischar);
 parser.addParameter('addStarch', false,@islogical);
-parser.addParameter('databaseType', 'usda',@ischar);
+parser.addParameter('databaseType', 'mixed',@ischar);
 parser.addParameter('maxItems', 50, @isnumeric);
 parser.addParameter('outputDir', [pwd filesep 'NT_Result'], @ischar);
 parser.addParameter('foodSources2Use', {'sr_legacy_food';'foundation_food';'survey_fndds_food'}, @iscell);
@@ -70,7 +70,7 @@ userInput = readtable(templateFilePath, 'preserveVariableNames', true);
 
 % Read in the database
 if strcmpi(databaseType, 'usda')
-    foodNames = load('USDAfoodItems.mat').food;
+    foodNames = load('USDAfoodItems.mat').allFoods;
 
     for i = 1:max(size(foodSources2Use))
         if i == 1
@@ -190,15 +190,20 @@ for i = 1:size(userInput,1)
 
         % Obtain words that should be excluded from the search
         notIncludeQuery = foodInfo.toExclude;
-        notIncludeKeyWords = splitKeyWord(notIncludeQuery, adjust);
-
+        if any(isletter(string(notIncludeQuery)))
+            notIncludeKeyWords = splitKeyWord(notIncludeQuery, adjust);
+        else
+            notIncludeKeyWords = {};
+        end
         % Find VMH food suggestions with the searcher function
         if strcmpi(databaseType, 'mixed')
             totGroupSubUsda = searcher(keyWords, foodNamesUsda, "searchType", searchType, "notInclude", notIncludeKeyWords);
             totGroupSubFrida = searcher(keyWords, foodNamesFrida, "searchType", searchType, "notInclude", notIncludeKeyWords);
             totGroupSub = [totGroupSubUsda;totGroupSubFrida];
-        else
-            totGroupSub = searcher(keyWords, foodNames, "searchType", searchType, "notInclude", notIncludeKeyWords);
+        elseif strcmpi(databaseType, 'usda')
+            totGroupSub = searcher(keyWords, foodNamesUsda, "searchType", searchType, "notInclude", notIncludeKeyWords);
+        elseif strcmpi(databaseType, 'frida')
+            totGroupSub = searcher(keyWords, foodNamesFrida, "searchType", searchType, "notInclude", notIncludeKeyWords);
         end
 
         % Initialise a boolean indication if the keywords were changed
@@ -408,4 +413,6 @@ else
 end
 % Split the keywords on ;
 keyWordsSplit = split(keyWordsSplit, ';');
+
+keyWordsSplit(cellfun(@isempty, keyWordsSplit)) = [];
 end

@@ -141,7 +141,7 @@ sMatrix(isnan(sMatrix))=0;
 for i=1:length(foodItems(:,2))
     if ischar(foodItems{i,2})
         foodItems{i,2}=str2num(foodItems{i,2});
-    elseif double(foodItems{i,2})==0
+    elseif double(foodItems{i,2})<0
         error(['diet position' num2str(i) 'has invalid flux input'])
     end
     if ~ischar(foodItems{i,1})

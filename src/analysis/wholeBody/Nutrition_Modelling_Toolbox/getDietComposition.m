@@ -149,7 +149,7 @@ else
         % For lipids if 1004 is not 0 (presumed NaN) take 1085. Adding does
         % not work as in cases we will get 2x the amount of fat. If no fat
         % 1085 will also be 0.
-        if totMacrosUsda(foodMacroUsda.nutrient_id == 1004) == 0
+        if totMacrosUsda(foodMacroUsda.nutrient_id == 1004) ~= 0
             Lipids = totMacrosUsda(foodMacroUsda.nutrient_id == 1004);
         else
             Lipids = totMacrosUsda(foodMacroUsda.nutrient_id == 1085);

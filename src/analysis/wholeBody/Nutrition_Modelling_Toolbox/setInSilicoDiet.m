@@ -176,6 +176,7 @@ if constrainFluxWBM
     end
 
     for i = 2:size(dietFlux,2)
+        disp(fprintf('Setting diet %s', string(dietFlux.Properties.VariableNames(i))))
         % Extract the diet name
         dietName = dietFlux.Properties.VariableNames(i);
         % Extract the diet with female WBM diet metabolites
@@ -223,7 +224,7 @@ if constrainFluxWBM
                     end
                 else
                     % If there are specific models for diets
-                    model2Load = modelDir(contains(modelDir, strcat('_', sampleID(j), '_')));
+                    model2Load = char(modelDir(contains(modelDir, strcat('_', sampleID(j), '_'))));
                     % Check if the model with the correct ID can be found
                     if isempty(model2Load)
                         warning('Sample ID %s is not found. Ensure that the filenames have underscores _ around the sample ID in the filename of the WBM');
@@ -232,7 +233,7 @@ if constrainFluxWBM
                         model2Alter = loadPSCMfile(model2Load, pathToWbms);
 
                         % Set the filename
-                        fileName = strrep(model2Load, '.mat', 'fluxDiet.mat');
+                        fileName = strcat(metConstrainedWBM, filesep, strrep(model2Load, '.mat', 'fluxDiet.mat'));
 
                         % Set the diet and save the model
                         setFluxDietNSave(model2Alter, diet2Set, fileName, dietName);
@@ -261,7 +262,7 @@ if constrainFoodWBM
 
     % Create the WBMs that have food item reactions added
     for i = 4:size(dietToSet,2)
-
+        disp(fprintf('Setting diet %s', string(foodItemsUsed.Properties.VariableNames(end))))
         % Obtain the diet of food items that needs to be set
         foodItemsUsed = dietToSet(:, [2:3 i]);
         % Transfort the database ID and database name into the reaction ID
@@ -341,7 +342,7 @@ if constrainFoodWBM
                         foodModel = setFoodRxnsWbm(model2Alter, dietToSet.databaseUsed);
     
                         % Set the filename
-                        fileName = strrep(model2Load, '.mat', 'foodItem.mat');
+                        fileName = strcat(foodConstrainedWBM, filesep,strrep(model2Load, '.mat', 'foodItem.mat'));
                         % Set the diet and save
                         setFoodItemNSave(foodModel, foodRxns, foodItemsUsed, mets2Add, fileName)
                     end
