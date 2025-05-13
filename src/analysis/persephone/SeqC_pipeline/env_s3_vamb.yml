@@ -1,6 +1,0 @@
-name: env_s3_vamb
-channels:
-  - conda-forge
-  - bioconda
-dependencies:
-  - python==3.12

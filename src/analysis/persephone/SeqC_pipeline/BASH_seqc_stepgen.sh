@@ -3,7 +3,7 @@
 # Title: bash script maker bash script
 # Program by: Wiley Barton - 2022.02.07
 # Modified for conda/docker pipeline - 2024.02.22
-# last update - 2024.10.14
+# last update - 2025.04.29
 # Modified code sources:
 #   
 # Notes: generate bash files according to user input for the completion of pipeline
@@ -92,7 +92,7 @@ awk '\''BEGIN {FS="\t";OFS=FS} {if(NR >= 0){print $1}}'\'' $vawk_in | awk \
 '"$v_umam_com"'
 { printf "\n" }
 END { printf "#EoB" }'\''> '$v_scrp_run'
-sh '$v_scrp_run'
+bash '$v_scrp_run'
 #EoB
 '
 #{ printf "vawk_in %s vawk0 %s vawk1 %s va_out %s vawk4_comms %s",$1,vawk0,vawk1,va_out,vawk4 }
