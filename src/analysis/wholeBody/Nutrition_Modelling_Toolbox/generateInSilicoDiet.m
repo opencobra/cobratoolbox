@@ -121,7 +121,7 @@ for i = 4:size(toCreateDiet,2)
     else
         dietFlux = outerjoin(dietFlux, metFlux, "MergeKeys", true, "Keys","VMHID");
         dietMacroMets = outerjoin(dietMacroMets, macroMets, "MergeKeys", true, "Keys","Category");
-        dietMacroLabel = outerjoin(dietMacroLabel, macroMets, "MergeKeys", true, "Keys","Category");
+        dietMacroLabel = outerjoin(dietMacroLabel, macroLabel, "MergeKeys", true, "Keys","Category");
     end
 end
 

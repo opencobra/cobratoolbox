@@ -440,7 +440,10 @@ function model_out = setupWbmOnDiet(model_in, Diet)
 % Parameterise microbiome-WBMs and give user specified diet
 
 % Set diet
-model_in = setDietConstraints(model_in,Diet, 1);
+if ~isfield(model_in.SetupInfo, 'dietName')
+    disp('set defaultdiet')
+    model_in = setDietConstraints(model_in,Diet, 1);
+end
     
 % enforce microbial growth (i.e., microbal fecal excretion)
 model_in = changeRxnBounds(model_in, 'Excretion_EX_microbiota_LI_biomass[fe]', 1, 'b');
