@@ -55,7 +55,7 @@ parser.addParameter('confounders', '', @iscell);
 %parser.addParameter('moderationThreshold_usePValue', true, @islogical)
 %parser.addParameter('moderationThreshold', 0.05, @isnumeric);
 parser.addParameter('microbeCutoff', 0.1, @isnumeric);
-parser.addParameter('alternativeVulcanoPlotTitle', '', @(x) ischar(x) | isstring(x));
+parser.addParameter('alternativevolcanoPlotTitle', '', @(x) ischar(x) | isstring(x));
 
 % Parse required and optional inputs
 parser.parse(statPath, pathToProcessedFluxes, metadataPath, response, varargin{:});
@@ -68,7 +68,7 @@ response = parser.Results.response;
 pathToWbmRelAbundances = parser.Results.pathToWbmRelAbundances;
 confounders = parser.Results.confounders;
 microbeCutoff = parser.Results.microbeCutoff;
-alternativeVulcanoPlotTitle = parser.Results.alternativeVulcanoPlotTitle;
+alternativevolcanoPlotTitle = parser.Results.alternativevolcanoPlotTitle;
 
 % Check if gut microbiota need to be tested
 testMicrobiota = false;
@@ -173,7 +173,7 @@ results = saveStatisticalResults(logfile,testMicrobiota,annotationCell,fluxStats
 %%% PART 5: Visualise the flux results
 if 0 % TO BE DEBUGGED
     pathTofluxMicrobeCorr = '';
-    visualisations(fluxStats,annotationTable,alternativeVulcanoPlotTitle,response,statPath,pathTofluxMicrobeCorr,microbeCutoff,microbiotaStats);
+    visualisations(fluxStats,annotationTable,alternativevolcanoPlotTitle,response,statPath,pathTofluxMicrobeCorr,microbeCutoff,microbiotaStats);
 end
 
 end
@@ -582,7 +582,7 @@ end
 
 function fig = visualiseRegressionFit(regressionResults, response, formula, statPathFull)
 
-% Collect input for vulcano plot
+% Collect input for volcano plot
 estimates = regressionResults.estimate;
 pValues = regressionResults.pValue;
 names = regressionResults{:,1};
@@ -595,11 +595,11 @@ yTitle = '-log10 p-value';
 
 fig=figure('Position',[571,171,809,682]);
 
-% Create vulcano plot
-createVulcanoPlot(estimates,pValues,names,plotTitle,xTitle,yTitle);
+% Create volcano plot
+createvolcanoPlot(estimates,pValues,names,plotTitle,xTitle,yTitle);
 
 % Save figure
-exportgraphics(fig,[statPathFull, 'vulcanoPlot_' formula '.png'])
+exportgraphics(fig,[statPathFull, 'volcanoPlot_' formula '.png'])
 end
 
 

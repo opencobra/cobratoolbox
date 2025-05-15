@@ -1,9 +1,9 @@
-function createVulcanoPlot(estimates, pValues, names, plotTitle, xTitle, yTitle)
-% createVulcanoPlot generates a volcano plot to visualize the relationship 
+function createVolcanoPlot(estimates, pValues, names, plotTitle, xTitle, yTitle)
+% createVolcanoPlot generates a volcano plot to visualize the relationship 
 % between regression estimates and p-values.
 %
 % USAGE:
-%   createVulcanoPlot(estimates, pValues, names, plotTitle, xTitle, yTitle)
+%   createVolcanoPlot(estimates, pValues, names, plotTitle, xTitle, yTitle)
 %
 % INPUTS:
 %   estimates - [vector] Regression estimates for each data point (e.g., effect sizes or log fold changes).
@@ -17,7 +17,7 @@ function createVulcanoPlot(estimates, pValues, names, plotTitle, xTitle, yTitle)
 %   None      - This function generates a volcano plot in the current figure.
 %
 % EXAMPLE:
-%   createVulcanoPlot(estimates, pValues, {'Metabolite1', 'Metabolite2'}, ...
+%   createVolcanoPlot(estimates, pValues, {'Metabolite1', 'Metabolite2'}, ...
 %                     'Volcano Plot', 'Log Fold Change', '-log10(p-value)')
 %
 % .. Author:
