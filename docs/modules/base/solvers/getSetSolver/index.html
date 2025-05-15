@@ -1,0 +1,731 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Getsetsolver &mdash; The COBRA Toolbox</title>
+  
+
+  
+  
+  
+    <link rel="apple-touch-icon" sizes="180x180" href="../../../../_static/img/apple-touch-icon.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../../_static/img/favicon-32x32.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="16x16" href="../../../../_static/img/favicon-16x16.png">
+  
+  
+    <link rel="mask-icon" href="../../../../_static/img/safari-pinned-tab.svg" color="#5bbad5">
+  
+  
+    <link rel="manifest" href="../../../../_static/json/manifest.json">
+  
+  
+    <meta name="msapplication-config" content="../../../../_static/browserconfig.xml">
+  
+  <meta name="theme-color" content="#ffffff">
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+  <script src="../../../../_static/js/jquery.easy-autocomplete.min.js" type="text/javascript" ></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+  <link href="../../../../_static/css/easy-autocomplete.min.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../_static/css/cobra.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../../../_static/css/cobra.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../../search.html"/>
+    <link rel="top" title="The COBRA Toolbox" href="../../../../index.html"/>
+        <link rel="up" title="Solvers" href="../index.html"/>
+        <link rel="next" title="Mosek" href="../mosek/index.html"/>
+        <link rel="prev" title="Derfreemethods" href="../varKin/derFreeMethods/index.html"/> 
+
+  
+  <script src="../../../../_static/js/modernizr.min.js"></script>
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> The COBRA Toolbox
+          
+
+          
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
+          
+          </a>
+
+              
+          <h1>The COBRA Toolbox</h1>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" id="simple"/>
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+    <script>
+    	var options = {
+
+		url: "../../../../_static/json/functions.json",
+
+		getValue: "name",
+
+		list: {
+            onKeyEnterEvent: function(item) {
+                    return "_static/../" + item.website_url
+            },
+            maxNumberOfElements: 25,
+			match: {
+					enabled: true,
+			},
+            sort: {
+			    enabled: true
+		    }
+		},
+
+    	template: {
+	    	type: "custom",
+		    method: function(value, item) {
+                return "<span><a href='../../../../search.html?q=" + item.name + "&check_keywords=yes&area=default'>" + value + "</a>" + "<a href='../../../../_static/../" + item.website_url + "' ><img src='../../../../_static/link.svg'/></a></span>";
+		    }
+	    },
+
+		theme: "square"
+
+	};
+
+	$("#simple").easyAutocomplete(options);
+
+
+    </script>
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../index.html">Home</a></li>
+              </ul>
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">Functions</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../../analysis/index.html">Analysis</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Base</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html">Solvers</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../init/index.html">Init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../cplex/index.html">Cplex</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../entropicFBA/index.html">Entropicfba</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../gurobi/index.html">Gurobi</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../cardOpt/index.html">Cardopt</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../rescale/index.html">Rescale</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../NLP/index.html">Nlp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../varKin/index.html">Varkin</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Getsetsolver</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../mosek/index.html">Mosek</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../lindo/index.html">Lindo</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../lp_solve/index.html">Lp_solve</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../param/index.html">Param</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../gams/index.html">Gams</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../install/index.html">Install</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../io/index.html">Io</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../paths/index.html">Paths</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ci/index.html">Ci</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../utilities/index.html">Utilities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../codeConsistency/index.html">Codeconsistency</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../cobrarrow/index.html">Cobrarrow</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../dataIntegration/index.html">Dataintegration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../design/index.html">Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../reconstruction/index.html">Reconstruction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../visualization/index.html">Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contributing.html">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../cite.html">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../support.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../plan.html">Development Plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contact.html">Contact</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../citations.html">Citations</a></li>
+</ul>
+
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">The COBRA Toolbox</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../contents.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Functions</a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Base</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Solvers</a></li>
+      <li class="breadcrumb-item active">Getsetsolver</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="https://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <section id="getsetsolver">
+<span id="id1"></span><h1>Getsetsolver<a class="headerlink" href="#getsetsolver" title="Permalink to this heading">¶</a></h1>
+<span class="target" id="module-src.base.solvers.getSetSolver"></span><dl class="mat function">
+<dt class="sig sig-object mat" id="src.base.solvers.getSetSolver.changeCobraSolver">
+<span class="sig-name descname"><span class="pre">changeCobraSolver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">solverName</span></em>, <em class="sig-param"><span class="pre">problemType</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em>, <em class="sig-param"><span class="pre">validationLevel</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/getSetSolver/changeCobraSolver.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.getSetSolver.changeCobraSolver" title="Permalink to this definition">¶</a></dt>
+<dd><p>Changes the Cobra Toolbox optimization solver(s)</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>[solverOK, solverInstalled] = changeCobraSolver</strong> (<em>solverName, problemType, printLevel, validationLevel</em>)</p>
+</dd>
+<dt class="field-even">INPUTS</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>solverName</strong> – Solver name</p></li>
+<li><p><strong>problemType</strong> – Problem type (‘LP’ by default)
+(a) One of the following: <cite>LP</cite> <cite>MILP</cite>, <cite>QP</cite>, <cite>MIQP</cite> ‘EP’, ‘CLP’
+(b) ‘all’ attempts to change all applicable solvers to solverName.  This is purely a shorthand convenience.
+(c) Cell array of problemTypes, e.g. {‘LP’,’QP’}</p></li>
+<li><p><strong>printLevel</strong> – verbose level</p>
+<ul>
+<li><p>if <cite>0</cite>, warnings and errors are silenced</p></li>
+<li><p>if <cite>&gt; 0</cite>, warnings and errors are thrown. (default: 1)</p></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUT</dt>
+<dd class="field-odd"><p><strong>validationLevel</strong> – how much validation to use</p>
+<ul class="simple">
+<li><p><cite>-1</cite>: assign only the global variable. Do not assign any path.</p></li>
+<li><p><cite>0</cite>: adjust solver paths but don’t validate the solver</p></li>
+<li><p><cite>1</cite>: validate but remove outputs, silent  (default)</p></li>
+<li><p><cite>2</cite>: validate and keep any outputs</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUT</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>solverOK</strong> – <cite>true</cite> if solver can be accessed, <cite>false</cite> if not</p></li>
+<li><p><strong>solverInstalled</strong> – <cite>true</cite> if the solver is installed (not
+necessarily working)</p></li>
+</ul>
+</dd>
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>The following is an example of how to change gurobi to be the LP solver</strong></p></li>
+<li><p><strong>[solverOK, solverInstalled] = changeCobraSolver</strong> (<em>‘gurobi’,’LP’</em>)</p></li>
+<li><p><strong>If there are problems changing to a solver, use the following call to debug</strong></p></li>
+<li><p><strong>[solverOK, solverInstalled] = changeCobraSolver</strong> (<em>‘gurobi’,’LP’,1,1</em>)</p></li>
+</ul>
+</dd>
+</dl>
+<p>Currently allowed LP solvers:</p>
+<blockquote>
+<div><ul>
+<li><p>fully supported solvers</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 17%" />
+<col style="width: 83%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>cplex_direct</p></td>
+<td><p>CPLEX accessed directly through Tomlab <cite>cplex.m</cite>. This gives
+the user more control of solver parameters. e.g.
+minimising the Euclidean norm of the internal flux to
+get rid of net flux around loops</p></td>
+</tr>
+<tr class="row-even"><td><p>dqqMinos</p></td>
+<td><p>Double Quad Quad precision solver for ill scaled prob</p></td>
+</tr>
+<tr class="row-odd"><td><p>pronnb</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>glpk</p></td>
+<td><p>GLPK solver with Matlab mex interface (glpkmex)</p></td>
+</tr>
+<tr class="row-odd"><td><p>gurobi</p></td>
+<td><p>Gurobi solver</p></td>
+</tr>
+<tr class="row-even"><td><p>ibm_cplex</p></td>
+<td><p>The IBM API for CPLEX using the CPLEX class</p></td>
+</tr>
+<tr class="row-odd"><td><p>matlab</p></td>
+<td><p>MATLAB’s linprog function</p></td>
+</tr>
+<tr class="row-even"><td><p>mosek</p></td>
+<td><p>Mosek LP solver with Matlab API (using linprog.m from Mosek)</p></td>
+</tr>
+<tr class="row-odd"><td><p>pdco</p></td>
+<td><p>PDCO solver</p></td>
+</tr>
+<tr class="row-even"><td><p>quadMinos</p></td>
+<td><p>quad solver</p></td>
+</tr>
+<tr class="row-odd"><td><p>tomlab_cplex</p></td>
+<td><p>CPLEX accessed through Tomlab environment (default)</p></td>
+</tr>
+<tr class="row-even"><td><p>cplexlp</p></td>
+<td><p>CPLEX accessed through IBM matlab functions</p></td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+<ul>
+<li><p>legacy solvers:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 17%" />
+<col style="width: 83%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>lindo_new</p></td>
+<td><p>Lindo API &gt; v2.0</p></td>
+</tr>
+<tr class="row-even"><td><p>lindo_legacy</p></td>
+<td><p>Lindo API &lt; v2.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>lp_solve</p></td>
+<td><p>lp_solve with Matlab API</p></td>
+</tr>
+<tr class="row-even"><td><p>gurobi_mex</p></td>
+<td><p>Gurobi accessed through Matlab mex interface (Gurobi mex)</p></td>
+</tr>
+<tr class="row-odd"><td><p>opti</p></td>
+<td><p>CLP(recommended), CSDP, DSDP, OOQP and SCIP(recommended)
+solver installed and called with OPTI TB wrapper
+Lower level calls with installed mex files are possible
+but best avoided for all solvers</p></td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+</div></blockquote>
+<p>Currently allowed MILP solvers:</p>
+<blockquote>
+<div><ul>
+<li><p>fully supported solvers:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 17%" />
+<col style="width: 83%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>cplex_direct</p></td>
+<td><p>CPLEX accessed directly through Tomlab cplex.m. This gives
+the user more control of solver parameters. e.g.
+minimising the Euclidean norm of the internal flux to
+get rid of net flux around loops</p></td>
+</tr>
+<tr class="row-even"><td><p>glpk</p></td>
+<td><p>glpk MILP solver with Matlab mex interface (glpkmex)</p></td>
+</tr>
+<tr class="row-odd"><td><p>gurobi</p></td>
+<td><p>Gurobi solver</p></td>
+</tr>
+<tr class="row-even"><td><p>ibm_cplex</p></td>
+<td><p>The IBM API for CPLEX using the CPLEX class</p></td>
+</tr>
+<tr class="row-odd"><td><p>mosek</p></td>
+<td><p>Mosek LP solver with Matlab API (using linprog.m from Mosek)</p></td>
+</tr>
+<tr class="row-even"><td><p>tomlab_cplex</p></td>
+<td><p>CPLEX MILP solver accessed through Tomlab environment</p></td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p>legacy solvers:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 17%" />
+<col style="width: 83%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>gurobi_mex</p></td>
+<td><p>Gurobi accessed through Matlab mex interface (Gurobi mex)</p></td>
+</tr>
+<tr class="row-even"><td><p>opti</p></td>
+<td><p>CLP(recommended), CSDP, DSDP, OOQP and SCIP(recommended)
+solver installed and called with OPTI TB wrapper
+Lower level calls with installed mex files are possible
+but best avoided for all solvers</p></td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+</div></blockquote>
+<p>Currently allowed QP solvers:</p>
+<blockquote>
+<div><ul>
+<li><p>fully supported solvers:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 17%" />
+<col style="width: 83%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>cplex_direct</p></td>
+<td><p>CPLEX accessed directly through Tomlab cplex.m. This gives
+the user more control of solver parameters. e.g.
+minimising the Euclidean norm of the internal flux to
+get rid of net flux around loops</p></td>
+</tr>
+<tr class="row-even"><td><p>gurobi</p></td>
+<td><p>Gurobi solver</p></td>
+</tr>
+<tr class="row-odd"><td><p>ibm_cplex</p></td>
+<td><p>The IBM API for CPLEX using the CPLEX class</p></td>
+</tr>
+<tr class="row-even"><td><p>mosek</p></td>
+<td><p>Mosek QP solver with Matlab API</p></td>
+</tr>
+<tr class="row-odd"><td><p>pdco</p></td>
+<td><p>PDCO solver</p></td>
+</tr>
+<tr class="row-even"><td><p>tomlab_cplex</p></td>
+<td><p>CPLEX QP solver accessed through Tomlab environment</p></td>
+</tr>
+<tr class="row-odd"><td><p>dqqMinos</p></td>
+<td><p>Double Quad Quad precision solver for ill scaled prob</p></td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p>experimental support:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 17%" />
+<col style="width: 83%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>qpng</p></td>
+<td><p>qpng QP solver with Matlab mex interface (in glpkmex
+package, only limited support for small problems)</p></td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p>legacy solvers:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 17%" />
+<col style="width: 83%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>gurobi_mex</p></td>
+<td><p>Gurobi accessed through Matlab mex interface (Gurobi mex)</p></td>
+</tr>
+<tr class="row-even"><td><p>opti</p></td>
+<td><p>CLP(recommended), CSDP, DSDP, OOQP and SCIP(recommended)
+solver installed and called with OPTI TB wrapper.
+Lower level calls with installed mex files are possible</p></td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+</div></blockquote>
+<p>Currently allowed MIQP solvers:</p>
+<blockquote>
+<div><ul>
+<li><p>fully supported solvers:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 17%" />
+<col style="width: 83%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>cplex_direct</p></td>
+<td><p>CPLEX accessed directly through Tomlab cplex.m. This gives
+the user more control of solver parameters. e.g.
+minimising the Euclidean norm of the internal flux to
+get rid of net flux around loops</p></td>
+</tr>
+<tr class="row-even"><td><p>gurobi</p></td>
+<td><p>Gurobi solver</p></td>
+</tr>
+<tr class="row-odd"><td><p>ibm_cplex</p></td>
+<td><p>The IBM API for CPLEX using the CPLEX class</p></td>
+</tr>
+<tr class="row-even"><td><p>tomlab_cplex</p></td>
+<td><p>CPLEX MIQP solver accessed through Tomlab environment</p></td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p>legacy solvers:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 17%" />
+<col style="width: 83%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>gurobi_mex</p></td>
+<td><p>Gurobi accessed through Matlab mex interface (Gurobi mex)</p></td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+</div></blockquote>
+<p>Currently allowed NLP solvers:</p>
+<blockquote>
+<div><ul>
+<li><p>fully supported solvers:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 17%" />
+<col style="width: 83%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>matlab</p></td>
+<td><p>MATLAB’s fmincon.m</p></td>
+</tr>
+<tr class="row-even"><td><p>quadMinos</p></td>
+<td><p>quad solver</p></td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p>experimental support:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 17%" />
+<col style="width: 83%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>tomlab_snopt</p></td>
+<td><p>SNOPT solver accessed through Tomlab environment</p></td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+</div></blockquote>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>It is a good idea to put this function call into your <cite>startup.m</cite> file
+(usually matlabinstall/toolboxes/local/startup.m)</p>
+</div>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.base.solvers.getSetSolver.getAvailableSolversByType">
+<span class="sig-name descname"><span class="pre">getAvailableSolversByType</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/getSetSolver/getAvailableSolversByType.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.getSetSolver.getAvailableSolversByType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the available solvers for the different solver types on the system.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>solvers = getAvailableSolversByType()</strong></p>
+</dd>
+<dt class="field-even">OUTPUT</dt>
+<dd class="field-even"><p><strong>solvers</strong> – struct containing one field per Problem type listing all
+solvers installed on the system for that problem type.
+Also contains an ALL field indicating all available solvers</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.base.solvers.getSetSolver.getCobraSolver">
+<span class="sig-name descname"><span class="pre">getCobraSolver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">solverType</span></em>, <em class="sig-param"><span class="pre">validate</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/getSetSolver/getCobraSolver.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.getSetSolver.getCobraSolver" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the current solver name given a solver type</p>
+<dl class="field-list simple">
+<dt class="field-odd">INPUTS</dt>
+<dd class="field-odd"><p><strong>solverType</strong> – Solver type, <cite>LP</cite>, <cite>MILP</cite>, <cite>QP</cite>, <cite>MIQP</cite> (opt, default
+<cite>LP</cite>, <cite>all</cite>).  ‘all’ attempts to change all applicable
+solvers to solverName.  This is purely a shorthand
+convenience.</p>
+</dd>
+</dl>
+<p>validate</p>
+<dl class="field-list simple">
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>solverName</strong> – Solver name</p></li>
+<li><p><strong>solverOK</strong> – <cite>true</cite> if solver can be accessed, <cite>false</cite> if not</p></li>
+<li><p><strong>solverInstalled</strong> – <cite>true</cite> if the solver is installed (not
+necessarily working)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.base.solvers.getSetSolver.getCobraSolverVersion">
+<span class="sig-name descname"><span class="pre">getCobraSolverVersion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">solverName</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em>, <em class="sig-param"><span class="pre">rootPathSolver</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/getSetSolver/getCobraSolverVersion.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.getSetSolver.getCobraSolverVersion" title="Permalink to this definition">¶</a></dt>
+<dd><p>detects the version of given COBRA solver</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE</dt>
+<dd class="field-odd"><p><strong>solverVersion = getCobraSolverVersion</strong> (<em>solverName, printLevel, rootPathSolver</em>)</p>
+</dd>
+<dt class="field-even">INPUT</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>solverName</strong> – Name of the solver</p></li>
+<li><p><strong>printLevel</strong> – verbose level (default: 0)</p></li>
+<li><p><strong>rootPathSolver</strong> – Path to the solver installation</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT</dt>
+<dd class="field-odd"><p><strong>solverVersion</strong> – string that contains the version number</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../mosek/index.html" class="btn btn-default float-right" title="Mosek" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../varKin/derFreeMethods/index.html" class="btn btn-default" title="Derfreemethods" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017-2021, The COBRA Toolbox developers.
+
+    </p>
+  </div>
+  Built with Sphinx using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../',
+            VERSION:'2.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+    <script type="text/javascript" src="../../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../../_static/sphinx_highlight.js"></script>
+
+  
+
+
+  
+  
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TRCMZL1FKK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TRCMZL1FKK');
+  </script>
+    
+</body>
+</html>

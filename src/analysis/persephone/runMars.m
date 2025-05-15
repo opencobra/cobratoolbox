@@ -57,7 +57,8 @@ disp(' > Import the MARS repository.');
 py.importlib.import_module('MARS');
 
 %Enter folder that contains the "main.py" script
-cd(strcat(marsRepoPath, '\MARS'));
+
+cd(fullfile(marsRepoPath, 'MARS'));
 
 % Set all optional inputs in Python readable format
 marsOptArg = pyargs('cutoff', cutoffMARS, ...

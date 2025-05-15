@@ -109,9 +109,9 @@ end
 
 % Validate inputs for statistics
 if paths.stats.flagStatistics
-    validateattributes(paths.stats.outputPathStatistics,{'char','string'},{'nonempty'},'outputPathStatistics')
+    validateattributes(paths.stats.outputPathStatistics,{'char','string','cell'},{'nonempty'},'outputPathStatistics')
     validateattributes(paths.stats.response,{'char','string','cell'},{'nonempty'},'response')
-    validateattributes(paths.stats.confounders,{'char','string','cell'},{'nonempty'},'confounders')
+    validateattributes(paths.stats.confounders,{'char','string','cell'},{''},'confounders')
     validateattributes(paths.stats.moderationAnalysis,{'logical'},{'scalar'},'moderationAnalysis')
 end
 
