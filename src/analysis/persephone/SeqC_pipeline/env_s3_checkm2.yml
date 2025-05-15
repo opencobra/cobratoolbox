@@ -1,6 +1,0 @@
-name: env_s3_checkm2
-channels:
-- conda-forge
-- bioconda
-dependencies:
-  - checkm2=1.0.2
