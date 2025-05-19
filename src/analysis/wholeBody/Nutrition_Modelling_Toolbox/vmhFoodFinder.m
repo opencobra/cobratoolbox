@@ -342,8 +342,8 @@ end
 % Save results
 writecell(output, [outputDir, filesep, 'fullComparisonFoodItems.xlsx']);
 writecell(outputCut, [outputDir, filesep, 'topResultsComparisonFoodItems.xlsx']);
-writecell(manyResult', [outputDir, filesep, 'manyResultFoodItems.xlsx']);
-writecell(noResult, [outputDir, filesep, 'noResultFoodItems.txt']);
+writecell(manyResult', [outputDir, filesep, 'tooManyDatabaseHits.xlsx']);
+writecell(noResult, [outputDir, filesep, 'noDatabaseHits.txt']);
 
 % Find the cells in the saved excel worksheet where food items with altered
 % key words are stored
