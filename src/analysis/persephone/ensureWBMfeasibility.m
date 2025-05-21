@@ -383,7 +383,7 @@ if allModelsFeasible == false && modelsInfeasibleOnAnyDiet == false && allModels
     dietGrowthStats.("Infeasible on updated diet (true/false)")(~feasibleOnDiet) = ~feasibleOnUpdatedDiet;
 end
 writetable(dietGrowthStats,[mWBMPath filesep 'dietGrowthStats.xlsx']);
-writetable(dietInfo.updatedDiet,[mWBMPath filesep 'dietGrowthStats.xlsx'],'Sheet','Updated_diet');
+writecell(dietInfo.updatedDiet,[mWBMPath filesep 'dietGrowthStats.xlsx'],'Sheet','Updated_diet');
 writecell(missingDietComponents,[mWBMPath filesep 'dietGrowthStats.xlsx'],'Sheet','Added_diet_metabolites');
 
 

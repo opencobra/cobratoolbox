@@ -262,9 +262,10 @@ if constrainFoodWBM
 
     % Create the WBMs that have food item reactions added
     for i = 4:size(dietToSet,2)
-        disp(fprintf('Setting diet %s', string(foodItemsUsed.Properties.VariableNames(end))))
+        
         % Obtain the diet of food items that needs to be set
         foodItemsUsed = dietToSet(:, [2:3 i]);
+        disp(fprintf('Setting diet %s', string(foodItemsUsed.Properties.VariableNames(end))))
         % Transfort the database ID and database name into the reaction ID
         % format used in the WBMs
         foodRxns = strcat('Food_EX_', foodItemsUsed.databaseID, '_', foodItemsUsed.databaseUsed);

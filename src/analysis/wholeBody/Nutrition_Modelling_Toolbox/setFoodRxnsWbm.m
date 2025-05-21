@@ -95,9 +95,9 @@ if sum(strcmpi(database, 'usda')) > 0
     % Initialise the correct structure to add price as a variable
     pricesUsda = energyUsda;
     % set all the number to 0
-    pricesUsda(1, 2:end) = 0;
+    pricesUsda(1, 2:end) = num2cell(zeros([1,size(pricesUsda,2)-1]));
     % Change the first cell to money
-    pricesUsda(1,1) = 'money';
+    pricesUsda(1,1) = {'money'};
 
     if ~isempty(addPrice)
         if any(strcmpi(addPrice(:,2), 'usda'))
@@ -143,9 +143,9 @@ if sum(strcmpi(database, 'frida')) > 0
     % Initialise the correct structure to add price as a variable
     pricesFrida = energyFrida;
     % set all the number to 0
-    pricesFrida(1, 2:end) = 0;
+    pricesFrida(1, 2:end) = num2cell(zeros([1,size(pricesFrida,2)-1]));
     % Change the first cell to money
-    pricesFrida(1,1) = 'money';
+    pricesFrida(1,1) = {'money'};
 
     if ~isempty(addPrice)
         if any(strcmpi(addPrice(:,2), 'frida'))
@@ -243,7 +243,7 @@ ub = [ubEx;ubBreak];
 if ~any(strcmp(model.mets, 'energy[d]'))
     % Create exchange reaction S matrix vector for dietary macros[d]
     indFirstMacro = find(strcmp(metabolitesFromFood, 'energy[d]'));
-    for i = 1:5
+    for i = 1:(size(metabolitesFromFood,1) - indFirstMacro+1)
         macroExchange = zeros(size(sMatrix,1),1);
         macroExchange(indFirstMacro + (i-1), 1) = -1;
         % Add exchange reaction for macros (e.g., energy[d] ->)
