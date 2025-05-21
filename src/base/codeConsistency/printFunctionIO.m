@@ -96,7 +96,8 @@ end
 n=1;
 for i=1:length(inputNames)
     %https://nl.mathworks.com/help/matlab/ref/alphanumericspattern.html
-    pat = pattern([sprintf(inputNames{i})]) + '.' + alphanumericsPattern;
+    patternStr = asManyOfPattern(alphanumericsPattern | "_", 1);
+    pat = pattern([sprintf(inputNames{i})]) + '.' + patternStr;
     inputInds = find(contains(C,pat));
     if isempty(inputInds)
         inputs{n,1}=inputNames{i};
@@ -107,19 +108,19 @@ for i=1:length(inputNames)
             if any(contains(extractedText,'LPproblem.Solution')) || 0
                 disp(extractedText)
             end
-            extractedField = extract(extractedText,'.' + alphanumericsPattern);
+            extractedField = extract(extractedText,'.' + patternStr);
             for k=1:length(extractedField)
                 inputs{n,1} = strtrim([inputNames{i} extractedField{k}]);
                 %disp(inputs{n,1})
                 n=n+1;
                 
                 %one level deeper
-                pat2 = pattern((sprintf(inputNames{i}))) + extractedField{k} + '.' + alphanumericsPattern;
+                pat2 = pattern((sprintf(inputNames{i}))) + extractedField{k} + '.' + patternStr;
                 outputInds2 = find(contains(C,pat2));
                 if ~isempty(outputInds2)
                     for j2=1:length(outputInds2)
                         extractedText2 = extract(C{outputInds2(j2)},pat2);
-                        extractedField2 = extract(extractedText2,'.' + alphanumericsPattern);
+                        extractedField2 = extract(extractedText2,'.' + patternStr);
                         for k2=1:length(extractedField2)
                             inputs{n,1} = strtrim([inputNames{i} extractedField{k} extractedField2{k2}]);
                             n=n+1;
@@ -144,7 +145,7 @@ if ~isempty(indL) && ~isempty(indR)
 else
     %oinly one output
     %     'function solution = solveCobraLP(LPproblem, varargin)'
-    pat = pattern('function') + whitespacePattern + alphanumericsPattern + whitespacePattern + pattern('='); 
+    pat = pattern('function') + whitespacePattern + patternStr + whitespacePattern + pattern('='); 
     outputNames = extract(C{1},pat);
     outputNames = strrep(outputNames,'function','');
     outputNames = strrep(outputNames,'=','');
@@ -156,7 +157,7 @@ if isempty(outputNames)
 else
     for i=1:length(outputNames)
         %https://nl.mathworks.com/help/matlab/ref/alphanumericspattern.html
-        pat = pattern((sprintf(outputNames{i}))) + '.' + alphanumericsPattern;
+        pat = pattern((sprintf(outputNames{i}))) + '.' + patternStr;
         outputInds = find(contains(C,pat));
         if isempty(outputInds)
             outputs{n,1}=strtrim(outputNames{i});
@@ -167,19 +168,19 @@ else
                 if any(strcmp(extractedText,'LPproblem.Solution')) || 0
                     disp(extractedText)
                 end
-                extractedField = extract(extractedText,'.' + alphanumericsPattern);
+                extractedField = extract(extractedText,'.' + patternStr);
                 for k=1:length(extractedField)
                     
                     outputs{n,1} = strtrim([outputNames{i} extractedField{k}]);
                     n=n+1;
                     
                     %one level deeper
-                    pat2 = pattern((sprintf(outputNames{i}))) + extractedField{k} + '.' + alphanumericsPattern;
+                    pat2 = pattern((sprintf(outputNames{i}))) + extractedField{k} + '.' + patternStr;
                     outputInds2 = find(contains(C,pat2));
                     if ~isempty(outputInds2)
                         for j2=1:length(outputInds2)
                             extractedText2 = extract(C{outputInds2(j2)},pat2);
-                            extractedField2 = extract(extractedText2,'.' + alphanumericsPattern);
+                            extractedField2 = extract(extractedText2,'.' + patternStr);
                             for k2=1:length(extractedField2)
                                 outputs{n,1} = strtrim([outputNames{i} extractedField{k} extractedField2{k2}]);
                                 n=n+1;

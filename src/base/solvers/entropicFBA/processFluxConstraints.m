@@ -1,4 +1,4 @@
-function [vl,vu,vel,veu,vfl,vfu,vrl,vru,ci,ce,cf,cr,g] = processFluxConstraints(model,param)
+function [vl,vu,vel,veu,vfl,vfu,vrl,vru,ci,ce,cf,cr,g, paramOut] = processFluxConstraints(model,param)
 %
 % USAGE:
 %   processFluxConstraints(model)
@@ -47,7 +47,7 @@ function [vl,vu,vel,veu,vfl,vfu,vrl,vru,ci,ce,cf,cr,g] = processFluxConstraints(
 % cf:       n x 1    real valued linear objective coefficients on internal forward flux
 % cr:       n x 1    real valued linear objective coefficients on internal reverse flux
 % g         n x 1    strictly positive weight on internal flux entropy maximisation
-%
+% paramOut  return param structure to capture any param set internally
 %
 % EXAMPLE:
 %
@@ -398,3 +398,5 @@ else
         error('g and cf must have the same dimensions')
     end
 end
+
+paramOut=param;
