@@ -16,6 +16,7 @@ function [results,regressions] = performRegressions(data,metadata,formula,expone
 %
 % .. Author:
 %       - Tim Hensen, 2024
+%       - Tim Hensen, May 2025, Added support for unnested mixed effect regressions.
 
 if nargin < 4
     exponentiateLogOdds = false;
@@ -52,6 +53,16 @@ predictors = variables(2:end);
 % Remove moderator term (defined by use of ":") from predictors
 predictors = predictors(~contains(predictors, ":"));
 
+% Test if a random effect is encoded in the formula
+mixedEffectRegression = false;
+randomEffect = regexp(formula,'(?<=\|).*?(?=\))','match'); % Find random effect
+if ~isempty(randomEffect)
+    mixedEffectRegression = true;
+    % Add random effect to predictors of interest
+    predictors = predictors(~contains(predictors, ["(1",")"])); 
+    predictors = [predictors,randomEffect];
+end
+
 % Check if regression should be linear or logistic
 
 respVarData = data.(string(response));
@@ -63,6 +74,8 @@ if numel(unique(respVarData))==2
     else
         responseDistribution = 'binomial';
     end
+else
+    responseDistribution = 'normal';
 end
 
 respVarData = data.(string(response));
@@ -99,10 +112,19 @@ end
 regressions = struct;
 for i = 1:length(unique(groups))
     lastwarn('')
+    if mixedEffectRegression == true % Perform mixed effect regression
+        try % If no fit could be found, fitglme does not output an empty variable. This is hardcoded here.
+            mdl = fitglme(data(groups==i,:),formula,'Distribution',responseDistribution);
+        catch ME
+            mdl = {};
+        end
+    end
 
-    if firthRegression == true
+    if mixedEffectRegression == false && firthRegression == true % Perform regression with jeffreys-prior penalty for improved robustness
         mdl = fitglm(data(groups==i,:),formula,'Distribution',responseDistribution,'LikelihoodPenalty','jeffreys-prior'); % Firth's regression
-    else
+    end
+
+    if mixedEffectRegression == false && firthRegression == false % Perform regression
         mdl = fitglm(data(groups==i,:),formula,'Distribution',responseDistribution);
     end     
 
@@ -155,7 +177,11 @@ if ~isempty(nonEmptyResults)
                 % Add sample number
                 predictorTable.N(i) = mdl.NumObservations;
                 % Add regression estimate
-                predictorTable{i,{'estimate','SE','tStat','pValue'}} = mdl.Coefficients{j,:};
+                if mixedEffectRegression == true
+                    predictorTable{i,{'estimate','SE','tStat','pValue'}} = double(mdl.Coefficients(2,{'Estimate','SE','tStat','pValue'}));
+                else
+                    predictorTable{i,{'estimate','SE','tStat','pValue'}} = mdl.Coefficients{j,:};
+                end
                 % Add 95% CI for predictor
                 ci=coefCI(mdl);
                 predictorTable{i,{'low','high'}} = ci(j,:);

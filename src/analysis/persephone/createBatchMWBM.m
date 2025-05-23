@@ -50,8 +50,8 @@ parser.addParameter('numWorkersOptimisation', 2, @isnumeric);
 parser.addParameter('checkFeasibility', true, @islogical);
 parser.addParameter('wbmDirectory', '', @ischar);
 parser.addParameter('solver', 'gurobi', @ischar);
-parser.addParameter('maleUnpersonalisedWBMpath', 'Harvey_1_04c', @ischar);
-parser.addParameter('femaleUnpersonalisedWBMpath', 'Harvetta_1_04c', @ischar);
+parser.addParameter('maleUnpersonalisedWBMpath', 'Harvey_1_03d', @ischar);
+parser.addParameter('femaleUnpersonalisedWBMpath', 'Harvetta_1_03d', @ischar);
 
 % Parse required and optional inputs
 parser.parse(mgpipePath, mWBMPath, metadataPath, varargin{:});
@@ -143,7 +143,7 @@ if createMWBMs == true
     [~,ia,ib]=intersect(metadata.ID,microbiomeSamples,'stable');
     metadata = metadata(ia,:);
     microbiomePaths = microbiomePaths(ib);
-
+    microbiomeSamples = microbiomeSamples(ib);
     % Check if mWBMs can be created and update createMWBMs accordingly
     if isempty(microbiomePaths)
         createMWBMs = false;
@@ -201,8 +201,9 @@ if createMWBMs == true
         % Make sure that each iWBM is paired with their corresponding
         % microbiota model
         iWBMnames = what(wbmDirectory).mat;
-        iWBMnames = extractBetween(iWBMnames,'iWBM_','.mat');
-    
+        iWBMnames = replace(iWBMnames, {'iWBM_','miWBM_','iWBM','miWBM','.mat'},'');
+        %iWBMnames = extractAfter(iWBMnames,'iWBM','.mat');
+        %iWBMnames = extractAfter(iWBMnames,'_','.mat');
         % Find the intersection between the iWBM and microbiome samples and
         % reorder the name arrays.
         [~,ia,ib] = intersect(iWBMnames,microbiomeSamples,'stable');

@@ -1,4 +1,4 @@
-function [f,u0,c0l,c0u,cl,cu,dcl,dcu,wl,wu,B,b,rl,ru] = processConcConstraints(model,param)
+function [f,u0,c0l,c0u,cl,cu,dcl,dcu,wl,wu,B,b,l_r,u_r,paramOut] = processConcConstraints(model,param)
 %
 % USAGE:
 %   [] = processConcConstraints(model,param)
@@ -25,10 +25,11 @@ function [f,u0,c0l,c0u,cl,cu,dcl,dcu,wl,wu,B,b,rl,ru] = processConcConstraints(m
 %  model.cu:      m x 1    non-negative lower bound on final molecular concentrations
 %  model.dcl:     m x 1    real valued lower bound on difference between final and initial molecular concentrations   (default -inf)
 %  model.dcu:     m x 1    real valued upper bound on difference between final and initial initial molecular concentrations  (default inf)
-%  model.gasConstant:    scalar gas constant (default 8.31446261815324 J K^-1 mol^-1)
+%  model.gasConstant:    8.3144621e-3; % Gas constant in kJ/(K*mol)
 %  model.temperature:              scalar temperature (default 310.15 Kelvin)
+% param.concentrationBounds: {('none')} whether to set bounds on concentration or not
 %  param.maxConc: (1e4) maximim micromolar concentration allowed
-%  param.maxConc: (1e-4) minimum micromolar concentration allowed
+%  param.minConc: (1e-4) minimum micromolar concentration allowed
 %  param.externalNetFluxBounds:   ('original') =  
 %                                 'dxReplacement' = when model.dcl or model.dcu is provided then they set the upper and lower bounds on metabolite exchange
 %  param.printLevel:
@@ -46,6 +47,10 @@ function [f,u0,c0l,c0u,cl,cu,dcl,dcu,wl,wu,B,b,rl,ru] = processConcConstraints(m
 %  wu:     k x 1    upper bound on external net flux
 %   B:    `m x k`   External stoichiometric matrix
 %   b:     m x 1    RHS of S*v = b
+% l_r:     m x 1    lower bound on regularisation term in S*v + r = b (default -inf)
+% u_r:     m x 1    upper bound on regularisation term in S*v + r = b (default  inf)
+% paramOut  return param structure to capture any param set internally
+
 %
 % EXAMPLE:
 %
@@ -65,17 +70,30 @@ else
     b = zeros(m,1);
 end
 
+%assume units are in mMol
+if ~isfield(param,'concUnit')
+    param.concUnit = 10-3;
+end
+
 %% processing for concentrations
+if ~isfield(param,'concentrationBounds')
+    param.concentrationBounds='none';
+end
 if ~isfield(param,'maxConc')
     param.maxConc=inf;
 end
 if ~isfield(param,'minConc')
     param.minConc=0;
 end
-% %assume units are in mMol
-% if ~isfield(param,'concUnit')
-%     param.concUnit = 10-3;
-% end
+
+%for backward compatiblity
+if isfield(param,'qpMassBalance')
+    param.massBalancePenalty = param.qpMassBalance;
+end
+if ~isfield(param,'massBalancePenalty')
+    param.massBalancePenalty='none';
+end
+
 
 if ~isfield(param,'externalNetFluxBounds')
     if isfield(model,'dcl') || isfield(model,'dcu')
@@ -88,7 +106,7 @@ end
 nMetabolitesPerRxn = sum(model.S~=0,1)';
 bool = nMetabolitesPerRxn>1 & ~model.SConsistentRxnBool;
 if any(bool)
-    warning([ int2str(nnz(bool)) ' stoichiometrically inconsistent reactions involving more than one metabolite, check bounds on x - x0'])
+    fprintf('%s\n',[ int2str(nnz(bool)) ' stoichiometrically inconsistent reactions involving more than one metabolite'])
     if nnz(bool)>10
         ind=find(bool);
         disp(model.rxns(ind(1:10)))
@@ -160,8 +178,8 @@ if any(~model.SConsistentRxnBool)
             %force initial and final concentration to be equal
             dcl = zeros(m,1);
             dcu = zeros(m,1);
-            rl = zeros(m,1);
-            ru = zeros(m,1);
+            l_r = zeros(m,1);
+            u_r = zeros(m,1);
         case 'dxReplacement'
             %TODO
             error('revise how net initial and final conc bounds are dealt with')
@@ -181,8 +199,8 @@ if any(~model.SConsistentRxnBool)
             B = B*0;
             wl = model.lb(~model.SConsistentRxnBool)*0;
             wu = model.ub(~model.SConsistentRxnBool)*0;
-            rl = zeros(m,1);
-            ru = zeros(m,1);
+            l_r = zeros(m,1);
+            u_r = zeros(m,1);
         otherwise
             error(['param.externalNetFluxBounds = ' param.externalNetFluxBounds ' is an unrecognised input'])
     end
@@ -199,12 +217,15 @@ if isfield(param,'strictMassBalance')
     param.qpMassBalance=~param.strictMassBalance;
 end
 
-if param.qpMassBalance
-    rl = -inf*ones(m,1);
-    ru =  inf*ones(m,1);
-else
-    rl = zeros(m,1);
-    ru = zeros(m,1);
+switch param.massBalancePenalty
+    case 'quadratic'
+        l_r = -inf*ones(m,1);
+        u_r =  inf*ones(m,1);
+    case 'none'
+        l_r = zeros(m,1);
+        u_r = zeros(m,1);
+    otherwise
+        error(['param.massBalancePenalty = ' param.massBalancePenalty ' is an unrecognised input'])
 end
 
 clear lb ub
@@ -219,15 +240,25 @@ if isfield(model,'c0u')
 else
     c0u = param.maxConc*ones(m,1);
 end
-if isfield(model,'cl')
-    cl = model.cl;
-else
-    cl = param.minConc*ones(m,1);
+
+if isfield(model,'cl') && isfield(model,'cu')
+    param.concentrationBounds = 'setToGiven';
 end
-if isfield(model,'cu')
-    cu = model.cu;
-else
-    cu = param.maxConc*ones(m,1);
+
+switch param.concentrationBounds
+    case 'none'
+        cl = zeros(m,1);
+        cu = inf*ones(m,1);      
+    case 'setToGiven'
+        if isfield(model,'cl') && isfield(model,'cu')
+            cl = model.cl;
+            cu = model.cu;
+        end
+    case 'maximimumFiniteRange'
+        cl = param.minConc*ones(m,1);
+        cu = param.maxConc*ones(m,1);
+    otherwise
+        error('unrecognised option for param.concentrationBounds')
 end
 
 if ~isfield(model,'u0') || isempty(model.u0)
@@ -266,8 +297,7 @@ if isfield(model,'gasConstant') && isfield(model,'T')
     if isfield(model,'gasConstant')
         gasConstant = model.gasConstant;
     else
-        %8.31446261815324 J K^-1 mol^-1
-        gasConstant = 8.3144621e-3; % Gas constant in kJ K^-1 mol^-1
+        gasConstant=8.3144621e-3; % Gas constant in kJ/(K*mol) %same as vonB default
     end
     if isfield(model,'T')
         temperature = model.T;
@@ -306,3 +336,6 @@ else
         error('f must all be finite')
     end
 end
+
+
+paramOut=param;
