@@ -43,7 +43,7 @@ function [vl,vu,vel,veu,vfl,vfu,vrl,vru,ci,ce,cf,cr,g, paramOut] = processFluxCo
 % vrl:      n x 1    non-negative lower bound on internal reverse flux 
 % vru:      n x 1    non-negative upper bound on internal reverse flux
 % ci:       n x 1    linear objective coefficients corresponding to internal net fluxes
-% vel:      k x 1    linear objective coefficients corresponding to external net fluxes
+% ce:       k x 1    linear objective coefficients corresponding to internal net fluxes
 % cf:       n x 1    real valued linear objective coefficients on internal forward flux
 % cr:       n x 1    real valued linear objective coefficients on internal reverse flux
 % g         n x 1    strictly positive weight on internal flux entropy maximisation
