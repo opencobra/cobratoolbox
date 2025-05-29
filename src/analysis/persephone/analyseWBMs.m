@@ -175,13 +175,13 @@ if ~any(iWBMs) && all(mWBMs)
     femaleWBMs = modelNames(contains(modelNames,'_female'));
 
     if ~isempty(maleWBMs) % Add male germ-free model to investigate
-        gfWBM = strrep(maleWBMs{1},'mWBM','gf');
+        gfWBM = strrep(maleWBMs{1},'mWBM','gfWBM');
         modelNames{end+1} = gfWBM;
         hmPaths(end+1) = [hmDir.path filesep maleWBMs{1}];
     end
 
     if ~isempty(femaleWBMs) % Add male germ-free model to investigate
-        gfWBM = strrep(femaleWBMs{1},'mWBM','gf');
+        gfWBM = strrep(femaleWBMs{1},'mWBM','gfWBM');
         modelNames{end+1} = gfWBM;
         hmPaths(end+1) = [hmDir.path filesep femaleWBMs{1}];
     end
@@ -396,8 +396,8 @@ for i = 1:size(solPaths,1)
         disp(append('Solution file ', string(solNames(i)), ' has ', string(numTimedOut) ,' infeasibilities caused by a time out error. Trying to resolve them through optimisation on 1 worker.'))
         
         % Adjust file name to find the corresponding mWBM model
-        if contains(solNames(i), 'FBA_sol_gf_')
-            fileName = strrep(solNames(i), 'FBA_sol_gf_', 'mWBM_');
+        if contains(solNames(i), 'FBA_sol_gf')
+            fileName = strrep(solNames(i), 'FBA_sol_gf', 'm');
         else
             fileName = strrep(solNames(i), 'FBA_sol_', '');
         end
@@ -436,18 +436,20 @@ for i = 1:size(solPaths,1)
                     % If a new solution is found overwrite the structure
                     disp('New solution found')
                 
-                    f(j) = fba.f;
-                    stat(j) = fba.stat;
                     v(:,j) = sparse(fba.v);
                     w(:,j) = sparse(fba.w);
                     y(:,j) = sparse(fba.y);
+
+                    if any(contains(modelTmpRxn.rxns,'Micro_EX_'))
+                        % Save species biomass shadow prices
+                        shadowPriceBIO(:,j) = fba.y(matches(modelTmpRxn.mets,strcat(slimSolStruct.taxonNames, '_biomass[c]')));
+                    end
                 else
                     disp('Reran and no solution found. Consider debugging or using a different solver.')
                 end
-                if any(contains(modelTmpRxn.rxns,'Micro_EX_'))
-                    % Save species biomass shadow prices
-                    shadowPriceBIO(:,j) = fba.y(matches(modelTmpRxn.mets,strcat(slimSolStruct.taxonNames, '_biomass[c]')));
-                end
+                
+                f(j) = fba.f;
+                stat(j) = fba.stat;
             end
         end
         % Save updated solution structure
