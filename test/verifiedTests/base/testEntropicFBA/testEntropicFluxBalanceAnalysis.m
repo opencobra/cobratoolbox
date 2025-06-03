@@ -25,6 +25,8 @@ fileDir = fileparts(which('testEntropicFluxBalanceAnalysis'));
 cd(fileDir);
 
 % Testing entropicFluxBalanceAnalysis
+solverPkgs = prepareTest('requiredSolvers',{'mosek'}, 'needsEP', true);
+fprintf('   Testing entropicFluxBalanceAnalysis using solver %s ... ', solverPkgs.EP{k})
 
 % 1. load model
 model = getDistributedModel('Recon3DModel_301.mat');
