@@ -10,7 +10,9 @@
 % save the current path
 currentDir = pwd;
 % initialize the test
-cd(fileparts(which('testcreateMetIntrcNetwork')))
+cd(fileparts(which('testCreateMetIntrcNetwork')))
+
+fprintf('   Testing createMetIntrcNetwork...\n')
 
 % load the ecoli core model
 model= getDistributedModel('ecoli_core_model.mat');
@@ -108,8 +110,8 @@ assert(~any(ismember(GraphObj.Edges.EndNodes(:,2),'A')));
 %the network as a source
 assert(~any(ismember(GraphObj.Edges.EndNodes(:,1),'G')));
 
-
-display('finished')
+% output a success message
+fprintf('Done.\n');
 
 
 
