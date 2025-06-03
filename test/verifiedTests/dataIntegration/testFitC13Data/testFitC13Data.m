@@ -8,17 +8,16 @@
 %     - CI integration: Laurent Heirendt March 2017
 %
 
-
-% Check Requirements
-solvers = prepareTest('needsLP', true, 'needsNLP', true);
-fprintf('   Testing fitC13Data using solver %s ... \n', solverPkgs.LP{1})
-
 % save the current path
 currentDir = pwd;
 
 % initialize the test
 fileDir = fileparts(which('testFitC13Data'));
 cd(fileDir);
+
+% Check Requirements
+solvers = prepareTest('needsLP', true, 'needsNLP', true);
+fprintf('   Testing fitC13Data using solver %s ... \n', solverPkgs.LP{1})
 
 majorIterationLimit = 10000;  % fitting length
 model = readCbModel('model.mat');  % loads modelWT

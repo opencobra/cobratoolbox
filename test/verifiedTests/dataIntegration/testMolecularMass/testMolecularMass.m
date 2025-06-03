@@ -1,3 +1,23 @@
+% The COBRAToolbox: getMolecularMass.m
+%
+% Purpose:
+%     - testMolecularMass tests the getMolecularMass function using a small toy model.
+%
+% Authors:
+%     - Original file: Ronan Fleming 02/10/2020
+%     - Enhancement:   Farid Zare    03/06/2025
+%
+
+% save the current path
+currentDir = pwd;
+
+% initialize the test
+fileDir = fileparts(which('testMolecularMass'));
+cd(fileDir);
+
+% Check Requirements
+fprintf('   Testing getMolecularMass function... \n')
+
 
 formulae = {'C7H13A2N3O2';'C4H5A2N2O3';'CHA2NO';'C9H17A2N3O2';'C47H68O5';'C41H83NO8P';'C48H93NO8';'C13H24NO10P';...
           'C31H54NO4';'C28H44N2NaO23';'C5H10O3';'C6H11NO4';'C4H9N3O5P';'C55H95AN3O30';'C9H20ANO7P';'C39H44N4O12';'H';'Na';'C19H28O2'};
@@ -18,3 +38,9 @@ differenceMW = [0.00221999999999412;0.00127999999997996;0.000340000000001339;0.0
 %TODO not sure what is the correct code to use
 res = molweightMasses - getMolecularMassMasses - differenceMW;
 assert(norm(res(isfinite(res)),inf)<1e-11)
+
+% output a success message
+fprintf('Done.\n');
+
+% change the directory
+cd(currentDir)
