@@ -537,7 +537,7 @@ You may find information on how to install <code class="docutils literal notrans
 <li><a class="reference external" href="#gurobi">GUROBI</a></li>
 <li><a class="reference external" href="#mosek">MOSEK</a></li>
 </ul>
-<p><img alt="warning" height="20px" src="http://gibbs.unal.edu.co/cobradoc/cobratoolbox/img/warning.png" width="20px"/> Please make sure that you install a compatible solver. Check the
+<p><img alt="warning" height="20px" src="_static/img/warning.png" width="20px"/> Please make sure that you install a compatible solver. Check the
 compatibility
 <a class="reference external" href="https://opencobra.github.io/cobratoolbox/docs/compatibility.html">here</a>.</p>
 <p>Platform-specific instructions are marked with</p>
@@ -546,8 +546,8 @@ compatibility
 <li><strong>macOS</strong> - <img alt="macOS" height="20px" src="_static/img/apple.png" width="20px"/></li>
 <li><strong>linux</strong> - <img alt="linux" height="20px" src="_static/img/linux.png" width="20px"/></li>
 </ul>
-<p><img alt="warning" height="20px" src="http://gibbs.unal.edu.co/cobradoc/cobratoolbox/img/warning.png" width="20px"/> Most steps require superuser or administrator rights (<code class="docutils literal notranslate"><span class="pre">sudo</span></code>).</p>
-<p><img alt="pencil" height="20px" src="http://gibbs.unal.edu.co/cobradoc/cobratoolbox/img/pencil.png" width="20px"/> Make sure that you replace <code class="docutils literal notranslate"><span class="pre">&lt;ver&gt;</span></code> with the respective
+<p><img alt="warning" height="20px" src="_static/img/warning.png" width="20px"/> Most steps require superuser or administrator rights (<code class="docutils literal notranslate"><span class="pre">sudo</span></code>).</p>
+<p><img alt="pencil" height="20px" src="_static/img/pencil.png" width="20px"/> Make sure that you replace <code class="docutils literal notranslate"><span class="pre">&lt;ver&gt;</span></code> with the respective
 <code class="docutils literal notranslate"><span class="pre">version</span></code> of the installed solver when setting the environment
 variables.</p>
 <div class="section" id="tomlab">
@@ -579,7 +579,7 @@ change its permissions (you must have superuser or <code class="docutils literal
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> sudo chmod <span class="m">644</span> tomlab.lic
 </pre></div>
 </div>
-<p><img alt="windows" height="20px" src="_static/img/windows.png" width="20px"/> Copy the <code class="docutils literal notranslate"><span class="pre">tomlab.lic</span></code> license to the folder <code class="docutils literal notranslate"><span class="pre">C:\tomlab</span></code>. <img alt="macOS" height="20px" src="http://gibbs.unal.edu.co/cobradoc/cobratoolbox/img/apple.png" width="20px"/> Copy the <code class="docutils literal notranslate"><span class="pre">tomlab.lic</span></code> license to the
+<p><img alt="windows" height="20px" src="_static/img/windows.png" width="20px"/> Copy the <code class="docutils literal notranslate"><span class="pre">tomlab.lic</span></code> license to the folder <code class="docutils literal notranslate"><span class="pre">C:\tomlab</span></code>. <img alt="macOS" height="20px" src="_static/img/apple.png" width="20px"/> Copy the <code class="docutils literal notranslate"><span class="pre">tomlab.lic</span></code> license to the
 folder <code class="docutils literal notranslate"><span class="pre">/Applications/tomlab</span></code>.</p>
 </li>
 <li><p class="first"><img alt="macOS" height="20px" src="_static/img/apple.png" width="20px"/> <img alt="linux" height="20px" src="_static/img/linux.png" width="20px"/> Set the environment variable by editing your <code class="docutils literal notranslate"><span class="pre">~/.bashrc</span></code> file:</p>
@@ -647,7 +647,7 @@ installation instructions and install <code class="docutils literal notranslate"
 <p><img alt="windows" height="20px" src="_static/img/windows.png" width="20px"/> <img alt="#ff0000" src="https://placehold.it/15/ff0000/000000?text=+"> Make sure that you select <code class="docutils literal notranslate"><span class="pre">Yes,</span> <span class="pre">update</span> <span class="pre">the</span> <span class="pre">PATH</span> <span class="pre">variable.</span></code>. You can
 also follow the instructions
 <a class="reference external" href="https://www.ibm.com/support/knowledgecenter/SSSA5P_12.6.1/ilog.odms.cplex.help/CPLEX/GettingStarted/topics/set_up/Windows.html">here</a>.</img></p>
-<p><img alt="windows" height="20px" src="_static/img/windows.png" width="20px"/> <img alt="warning" height="20px" src="http://gibbs.unal.edu.co/cobradoc/cobratoolbox/img/warning.png" width="20px"/> If you installed cplex in a non default folder (or if you are using the community version) please make sure, that you create an environment variable <code class="docutils literal notranslate"><span class="pre">ILOG_CPLEX_PATH</span></code> pointing to the directory containing the CPLEX matlab bindings. This can also be done by creating a <cite>startup.m</cite> file as detailed here <a class="reference external" href="https://nl.mathworks.com/help/matlab/ref/startup.html">here</a>.
+<p><img alt="windows" height="20px" src="_static/img/windows.png" width="20px"/> <img alt="warning" height="20px" src="_static/img/warning.png" width="20px"/> If you installed cplex in a non default folder (or if you are using the community version) please make sure, that you create an environment variable <code class="docutils literal notranslate"><span class="pre">ILOG_CPLEX_PATH</span></code> pointing to the directory containing the CPLEX matlab bindings. This can also be done by creating a <cite>startup.m</cite> file as detailed here <a class="reference external" href="https://nl.mathworks.com/help/matlab/ref/startup.html">here</a>.
 In this startup file add the following command:
 <code class="docutils literal notranslate"><span class="pre">setenv('ILOG_CPLEX_PATH','C:\&lt;yourCPLEXPath&gt;\CPLEX_Studio&lt;ver&gt;\cplex\matlab\&lt;arch&gt;')</span></code>
 where <code class="docutils literal notranslate"><span class="pre">&lt;yourCPLEXPath&gt;</span></code> is the path to cplex, <code class="docutils literal notranslate"><span class="pre">&lt;ver&gt;</span></code> is the installed version and <code class="docutils literal notranslate"><span class="pre">&lt;arch&gt;</span></code> is the architecture identifier.</p>
@@ -750,7 +750,7 @@ superuser or <code class="docutils literal notranslate"><span class="pre">sudo</
 <p><img alt="windows" height="20px" src="_static/img/windows.png" width="20px"/> Run <code class="docutils literal notranslate"><span class="pre">moseksetupwin64x86.msi</span></code> and select <code class="docutils literal notranslate"><span class="pre">Typical</span></code> installation. This
 will install <code class="docutils literal notranslate"><span class="pre">mosek</span></code> in <code class="docutils literal notranslate"><span class="pre">C:\Program</span> <span class="pre">Files\Mosek</span></code>.</p>
 <p><img alt="macOS" height="20px" src="_static/img/apple.png" width="20px"/> Browse to <code class="docutils literal notranslate"><span class="pre">/Applications</span></code> and double-click the archive to uncompress.
-<img alt="warning" height="20px" src="http://gibbs.unal.edu.co/cobradoc/cobratoolbox/img/warning.png" width="20px"/> It is important to run the script <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">/Applications/mosek/&lt;ver&gt;/tools/platform/osx64x86/bin/install.py</span></code>,
+<img alt="warning" height="20px" src="_static/img/warning.png" width="20px"/> It is important to run the script <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">/Applications/mosek/&lt;ver&gt;/tools/platform/osx64x86/bin/install.py</span></code>,
 which makes important updates to the installation.</p>
 </li>
 <li><p class="first"><img alt="macOS" height="20px" src="_static/img/apple.png" width="20px"/> <img alt="linux" height="20px" src="_static/img/linux.png" width="20px"/> Configure the <code class="docutils literal notranslate"><span class="pre">PATH</span></code> and <code class="docutils literal notranslate"><span class="pre">MOSEKLM_LICENSE_FILE</span></code> environment
