@@ -11,6 +11,7 @@
 
 % Check Requirements
 solvers = prepareTest('needsLP', true, 'needsNLP', true);
+fprintf('   Testing fitC13Data using solver %s ... \n', solverPkgs.LP{1})
 
 % save the current path
 currentDir = pwd;
