@@ -1,9 +1,24 @@
-clear
+% The COBRAToolbox: testStoichiometricConsistency.m
+%
+% Purpose:
+%     - tests the checkStoichiometricConsistency function
+%
+% Authors:
+%     - Ronan Fleming 03/12/2014
+%     - Farid Zare    03/06/2024 enhanced formatting
+%
 
-[solversToUse] = prepareTest('requireOneSolverOf',{'gurobi','ibm_cplex'});
+% save the current path
+currentDir = pwd;
+
+% initialize the test
+fileDir = fileparts(which('testStoichiometricConsistency'));
+cd(fileDir);
+
+[solversToUse] = prepareTest('requireOneSolverOf',{'gurobi'});
 
 printLevel=1;
-solverOK = changeCobraSolver('ibm_cplex','LP');
+solverOK = changeCobraSolver('gurobi','LP');
 modelToLoad='Recon3DModel_301';
 %modelToLoad='ecoli_core_model';
 
@@ -172,5 +187,11 @@ else
     m=full(m);
     
 end
+
+% output a success message
+fprintf('Done.\n');
+
+% change the directory
+cd(currentDir)
 
        
