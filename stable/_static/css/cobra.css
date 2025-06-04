@@ -5543,7 +5543,7 @@ div[class^='highlight'] pre {
 .wy-nav-content {
     padding: 1.618em 3.236em;
     height: 100%;
-    max-width: 800px;
+    max-width: 100vw;
     margin: auto
 }
 

@@ -102,25 +102,25 @@ Submit your changes and open a pull request
 
 .. |icon_analysis| raw:: html
 
-   <img src="http://gibbs.unal.edu.co/cobradoc/cobratoolbox/img/icon_analysis.png" height="14px">
+   <img src="_static/img/icon_analysis.png" height="14px">
 
 .. |icon_base| raw:: html
 
-   <img src="http://gibbs.unal.edu.co/cobradoc/cobratoolbox/img/icon_base.png" height="14px">
+   <img src="_static/img/icon_base.png" height="14px">
 
 .. |icon_dataIntegration| raw:: html
 
-   <img src="http://gibbs.unal.edu.co/cobradoc/cobratoolbox/img/icon_di.png" height="14px">
+   <img src="_static/img/icon_di.png" height="14px">
 
 .. |icon_design| raw:: html
 
-   <img src="http://gibbs.unal.edu.co/cobradoc/cobratoolbox/img/icon_design.png" height="14px">
+   <img src="_static/img/icon_design.png" height="14px">
 
 .. |icon_reconstruction| raw:: html
 
-   <img src="http://gibbs.unal.edu.co/cobradoc/cobratoolbox/img/icon_reconstruction.png" height="14px">
+   <img src="_static/img/icon_reconstruction.png" height="14px">
 
 .. |icon_visualization| raw:: html
 
-   <img src="http://gibbs.unal.edu.co/cobradoc/cobratoolbox/img/icon_visualization.png" height="14px">
+   <img src="_static/img/icon_visualization.png" height="14px">
 
