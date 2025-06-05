@@ -16,6 +16,8 @@ global CBTDIR;
 % save the current path
 currentDir = pwd;
 
+solverPkgs = prepareTest('requiredToolboxes', {'statistics_toolbox'});
+
 % Get SAMMIM folder
 sammipath = strrep(which('sammi'),'/sammi.m','');
 
