@@ -16,7 +16,7 @@ currentDir = pwd;
 fileDir = fileparts(which('testOptCardinality'));
 cd(fileDir);
 
-solvers = prepareTest('needsLP', true, 'excludeSolvers', {'ibm_cplex'});
+solverPkgs = prepareTest('needsLP', true, 'excludeSolvers', {'ibm_cplex'});
 
 for k = 1:length(solverPkgs.LP)
 
@@ -28,7 +28,7 @@ for k = 1:length(solverPkgs.LP)
         fprintf('   Testing optimizeCardinality & optimizeWeightedCardinality using solver %s...', solverPkgs.LP{k})
 
 
-        if 0
+        if 1
             filename='Recon2.0model.mat';
             if exist('Recon2.0model.mat','file')==2
                 model = getDistributedModel(filename);

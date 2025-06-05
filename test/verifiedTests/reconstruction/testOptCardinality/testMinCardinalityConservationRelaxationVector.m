@@ -15,7 +15,7 @@ currentDir = pwd;
 fileDir = fileparts(which('testMinCardinalityConservationRelaxationVector'));
 cd(fileDir);
 
-solvers = prepareTest('needsLP', true, 'excludeSolvers', {'ibm_cplex'});
+solverPkgs = prepareTest('needsLP', true, 'excludeSolvers', {'ibm_cplex'});
 
 for k = 1:length(solverPkgs.LP)
 
