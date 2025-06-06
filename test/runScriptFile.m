@@ -1,7 +1,7 @@
 function result = runScriptFile(fileName)
 % This function runs the test in fileName
 % It can distinguish between skipped and Failed tests. A test is considered
-% to be skipped if it throws a COBRA:RequirementsNotMet error.
+% to be skipped if it throws a COBRA:RequirementsNotMet error. 
 %
 % OUTPUTS:
 %
