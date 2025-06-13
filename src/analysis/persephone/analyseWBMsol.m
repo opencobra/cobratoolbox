@@ -130,8 +130,6 @@ end
 % values. 
 fluxCutoff = paramFluxProcessing.numericalRounding;
 
-paramFluxProcessing.rxnRemovalCutoff
-
 % Convert the cutoff value to a string in scientific notation; then extract
 % the last character and convert that character back to a numerical type. 
 paramFluxProcessing.roundingFactor  = double(regexp(string(num2str(fluxCutoff,'%g')),'.$','match'));
