@@ -54,7 +54,7 @@ for k = 2:length(LP_str)  % title is different
     assert(isequal(LP_str{k}, LP2_str{k}))
 end
 
-%Sample LP Problem
+% Sample LP Problem
 LPproblem.A = [1 1 0; -1 0 -1; 0 -1 1];             %LHS matrix
 LPproblem.b = [5; -10; 7];                          %RHS vector
 LPproblem.lb = [0; -1; 0];                          %Lower bound vector

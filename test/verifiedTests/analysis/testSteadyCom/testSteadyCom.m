@@ -630,6 +630,8 @@ end
 if ~isempty(origSolver) && ~strcmp(CBT_LP_SOLVER, origSolver)
     changeCobraSolver(origSolver, 'LP');
 end
+% delete created files
+rmdir([pwd filesep 'testSteadyComFVAsave'], 's')
 
 % output a success message
 fprintf('Done.\n');

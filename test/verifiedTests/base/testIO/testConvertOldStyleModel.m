@@ -13,17 +13,36 @@
 currentDir = pwd;
 
 % initialize the test
-fileDir = fileparts(which('testConvertOldStyleModel'));
+fileDir = fileparts(which(mfilename));
 cd(fileDir);
+
 % prepare the test, i.e. require LP solver
 solverPkgs = prepareTest('needsLP',true,'useMinimalNumberOfSolvers',true);
 
 changeCobraSolver(solverPkgs.LP{1},'LP');
 % Test with 
-fprintf('>> Testing Model conversion and field merging:\n');
+%s ... ', solverPkgs.LP{k}
+fprintf('>> Testing Model conversion and field merging:%s ... \n', solverPkgs.LP{1});
 %Explicitly load the model by load to ensure that its an old style model
 %that we can convert.
-load('Abiotrophia_defectiva_ATCC_49176','model')
+% Core model structure
+model = struct;
+model.mets = {'m1'; 'm2'; 'm3'};
+model.rxns = {'r1'; 'r2'};
+model.S = [1 -1; -1 1; 0 0];
+model.lb = [-1000; 0];
+model.ub = [1000; 1000];
+model.c = [1; 0];
+model.b = [0; 0; 0];
+
+% Old-style fields
+model.metHMDB = {'HMDB00001'; 'HMDB00002'; 'HMDB00003'};
+model.metSmile = {'C(C(=O)O)N'; 'CCO'; 'COC'};
+model.metInchiString = {'InChI=1S/C2H5NO2'; 'InChI=1S/C2H6O'; 'InChI=1S/CH4O'};
+model.confidenceScores = {'4'; '3'};  % Old format, as strings
+model.ecNumbers = {'1.1.1.1'; '2.7.1.1'};
+model.rxnKeggID = {'R00001'; 'R00002'};
+model.metKeggID = {'C00001'; 'C00002'; 'C00003'};
 
 convertedFields = {'metHMDB','metSmile','metInchiString','confidenceScores','ecNumbers','rxnKeggID','metKeggID'};
 newFields = {'metHMDBID','metSmiles','metInChIString','rxnConfidenceScores','rxnECNumbers','rxnKEGGID','metKEGGID'};
@@ -47,7 +66,7 @@ for i = 1:numel(convertedFields)
 end
 
 
-model.metHMDBID = {'Lets','Test','Something'};
+model.metHMDBID = {'Lets','Test'};
 
 modelnew = convertOldStyleModel(model);
 convertedFields = {'metSmile','metInchiString','confidenceScores','ecNumbers','rxnKeggID','metKeggID'};
@@ -144,6 +163,9 @@ modelWithA = fixedModel;
 modelWithA.A = fixedModel.S;
 modelConverted = convertOldStyleModel(modelWithA);
 assert(verifyModel(modelConverted,'simpleCheck',true));
+
+% output a success message
+fprintf('Done.\n');
 
 % change the directory
 cd(currentDir)
