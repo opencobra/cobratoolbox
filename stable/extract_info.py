@@ -51,17 +51,13 @@ def update_index_html(section, file_name, heading):
     if section_div:
         ul = section_div.find('ul', {'class': 'simple'})
         if ul:
-            # Remove duplicate links
-            seen = set()
+            # Remove existing entries with same href
             for li in ul.find_all('li'):
                 a_tag = li.find('a')
                 href = a_tag.get('href') if a_tag else None
-                if href:
-                    if href in seen:
-                        li.decompose()
-                        duplicates_removed = True
-                    else:
-                        seen.add(href)
+                if href == file_name:
+                    li.decompose()
+                    duplicates_removed = True
 
             # Add new entry
             new_li = index_soup.new_tag('li')
