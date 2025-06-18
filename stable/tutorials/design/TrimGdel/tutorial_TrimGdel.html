@@ -1,0 +1,97 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge,IE=9,chrome=1"><meta name="generator" content="MATLAB 2024a"><title>TrimGdel</title><style type="text/css">.rtcContent { padding: 30px; } .S0 { margin: 3px 10px 5px 4px; padding: 0px; line-height: 28.8px; min-height: 0px; white-space: pre-wrap; color: rgb(192, 76, 11); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 24px; font-weight: 400; text-align: left;  }
+.S1 { margin: 20px 10px 5px 4px; padding: 0px; line-height: 20px; min-height: 0px; white-space: pre-wrap; color: rgb(33, 33, 33); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 20px; font-weight: 700; text-align: left;  }
+.S2 { margin: 2px 10px 9px 4px; padding: 0px; line-height: 21px; min-height: 0px; white-space: pre-wrap; color: rgb(33, 33, 33); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 14px; font-weight: 400; text-align: left;  }
+.CodeBlock { background-color: #F5F5F5; margin: 10px 15px 10px 0; display: inline-block }
+.S3 { border-left: 1px solid rgb(217, 217, 217); border-right: 1px solid rgb(217, 217, 217); border-top: 1px solid rgb(217, 217, 217); border-bottom: 0px none rgb(33, 33, 33); border-radius: 4px 4px 0px 0px; padding: 6px 45px 0px 13px; line-height: 18.004px; min-height: 0px; white-space: nowrap; color: rgb(33, 33, 33); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S4 { border-left: 1px solid rgb(217, 217, 217); border-right: 1px solid rgb(217, 217, 217); border-top: 0px none rgb(33, 33, 33); border-bottom: 1px solid rgb(217, 217, 217); border-radius: 0px 0px 4px 4px; padding: 0px 45px 4px 13px; line-height: 18.004px; min-height: 0px; white-space: nowrap; color: rgb(33, 33, 33); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S5 { margin: 3px 10px 5px 4px; padding: 0px; line-height: 20px; min-height: 0px; white-space: pre-wrap; color: rgb(33, 33, 33); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 20px; font-weight: 700; text-align: left;  }
+.S6 { border-left: 1px solid rgb(217, 217, 217); border-right: 1px solid rgb(217, 217, 217); border-top: 0px none rgb(33, 33, 33); border-bottom: 0px none rgb(33, 33, 33); border-radius: 0px; padding: 0px 45px 0px 13px; line-height: 18.004px; min-height: 0px; white-space: nowrap; color: rgb(33, 33, 33); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }</style></head><body><div class = rtcContent><h1  class = 'S0'><span>TrimGdel</span></h1><h2  class = 'S1'><span>Author(s): Takeyuki Tamura, Kyoto University</span></h2><h2  class = 'S1'><span>Reviewer(s): Ronan M.T. Fleming</span></h2><h2  class = 'S1'><span>INTRODUCTION </span></h2><div  class = 'S2'><span>TrimGdel determines a minimal gene deletion strategy to achieve growth-coupled production for a given target metabolite and a genome-scale model even in the worst-case analysis (ensures the weak-growth-coupled production). It should be noted that TrimGdel directly implements the Boolean functions of GPR rules, whereas gMCS-based methods convert GPR rules into a stoichiometric representation, which may introduce approximations in the Boolean functions. Consequently, the gene deletion strategies derived from TrimGdel often differ from those obtained using gMCS-based methods. On the other hand, the gMCS-based methods can ensure growth-coupled production even when the growth rate is not maximized. (ensures the strong-growth-coupled production)</span></div><h2  class = 'S1'><span>MATERIALS - EQUIPMENT SETUP</span></h2><div  class = 'S2'><span>MATLAB and Gurobi are required for this version. </span></div><h2  class = 'S1'><span>PROCEDURE</span></h2><h2  class = 'S1'><span>1. Toy example (~5 sec)</span></h2><div  class = 'S2'><span>In this tutorial, we apply TrimGdel to a toy example represented in Fig. 2 of [1].</span></div><div  class = 'S2'><span>First we load the small toy exapmle of Fig. 2 of [1]. The target metabolite is set as m6.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span >load(</span><span style="color: #a709f5;">'TrimGdelToyExample.mat'</span><span >);</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre"><span >targetMet = </span><span style="color: #a709f5;">'m6'</span></span></div></div></div><h2  class = 'S5'><span>2. Step 1</span></h2><div  class = 'S2'><span>As Step 1 of TrimGdel, gDel_minRN is applied. gDel_minRN identifies the gene deletion strategy that leads to growth-coupled production while maximizing the number of reppressed reactions.</span></div><div  class = 'S2'><span>gdel_minRN iteratively finds and verifies candidate solutions. If a candidate does not lead to growth-coupled production, it is added to the exclusion set, and the next candidate is explored. maxloop sets the upper limit on the number of iterations, which is set to 1 here.</span></div><div  class = 'S2'><span>When searching for candidate solutions, lower bounds are set for the growth rate and production rate, represented by GRLB and PRLB, respectively. Here, both are set to 1.</span></div><div  class = 'S2'><span>Step 1 (gDel_minRN) outputs gvalue, which represents the gene deletion strategy; gr, the maximum growth rate achieved; pr, the minimum production rate when the growth rate is maximized; it, the number of iterations required to find a solution; and success, indicating whether the process was successful or not.</span></div><div  class = 'S2'><span>The obtained strategy represented by gvalue deletes three genes, g1, g3, g4. gr = 5, pr = 5, it = 1, and success = 1 are obtained.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span >maxLoop = 1;</span></span></div></div><div class="inlineWrapper"><div  class = 'S6'><span style="white-space: pre"><span >PRLB = 1;</span></span></div></div><div class="inlineWrapper"><div  class = 'S6'><span style="white-space: pre"><span >GRLB = 1;</span></span></div></div><div class="inlineWrapper"><div  class = 'S6'>&nbsp;</div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre"><span >[gvalue gr pr it success] = gDel_minRN(model, targetMet, maxLoop, PRLB, GRLB) </span><span style="color: #008013;">% Step 1</span></span></div></div></div><h2  class = 'S5'><span>3. Steps 2 and 3</span></h2><div  class = 'S2'><span>Steps 2 and 3 reduces the size of gene deletions, starting with the gene deletion strategy obtained by Step 1. When Step 1 fails, Steps 2 and 3 are omitted and TrimGdel outputs failure.</span></div><div  class = 'S2'><span>The obtained strategy represented by gvalue deletes only one genes, g4. GR = 10, PR = 10, size1 = 3, size2 = 3, and size3 = 1 are obtained.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span style="color: #0e00ff;">if </span><span >success</span></span></div></div><div class="inlineWrapper"><div  class = 'S6'><span style="white-space: pre"><span >    [gvalue, GR, PR, size1, size2, size3] = step2and3(model, targetMet, gvalue) </span><span style="color: #008013;">% Step 2 and 3</span></span></div></div><div class="inlineWrapper"><div  class = 'S6'>&nbsp;</div></div><div class="inlineWrapper"><div  class = 'S6'>&nbsp;</div></div><div class="inlineWrapper"><div  class = 'S6'><span style="white-space: pre"><span style="color: #0e00ff;">else</span></span></div></div><div class="inlineWrapper"><div  class = 'S6'><span style="white-space: pre"><span >    gvalue = [];</span></span></div></div><div class="inlineWrapper"><div  class = 'S6'><span style="white-space: pre"><span >    GR = 0;</span></span></div></div><div class="inlineWrapper"><div  class = 'S6'><span style="white-space: pre"><span >    PR = 0;</span></span></div></div><div class="inlineWrapper"><div  class = 'S6'><span style="white-space: pre"><span >    size1 = 0;</span></span></div></div><div class="inlineWrapper"><div  class = 'S6'><span style="white-space: pre"><span >    size2 = 0;</span></span></div></div><div class="inlineWrapper"><div  class = 'S6'><span style="white-space: pre"><span >    size3 = 0;</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre"><span style="color: #0e00ff;">end</span></span></div></div></div><h2  class = 'S5'><span>ANTICIPATED RESULTS</span></h2><div  class = 'S2'><span>GR = 10, PR = 10, size1 = 3, size2 = 3, size3 = 1 gvalue indicates the deletion of only g4 (b0004).</span></div><h2  class = 'S1'><span style=' font-style: italic;'>Acknowledgments</span></h2><div  class = 'S2'><span>The author sincerely appreciate the administrators and reviewers.</span></div><h2  class = 'S1'><span>REFERENCES</span></h2><div  class = 'S2'><span style=' font-style: italic;'>1. Tamura, T. Trimming gene deletion strategies for growth-coupled production in constraint-based metabolic networks: TrimGdel. IEEE/ACM Transactions on Computational Biology and Bioinformatics. 20, 2, 1540-1549 (2023).</span><span> </span></div>
+<br>
+<!-- 
+##### SOURCE BEGIN #####
+%% TrimGdel
+%% Author(s): Takeyuki Tamura, Kyoto University
+%% Reviewer(s): Ronan M.T. Fleming
+%% INTRODUCTION 
+% TrimGdel determines a minimal gene deletion strategy to achieve growth-coupled 
+% production for a given target metabolite and a genome-scale model even in the 
+% worst-case analysis (ensures the weak-growth-coupled production). It should 
+% be noted that TrimGdel directly implements the Boolean functions of GPR rules, 
+% whereas gMCS-based methods convert GPR rules into a stoichiometric representation, 
+% which may introduce approximations in the Boolean functions. Consequently, the 
+% gene deletion strategies derived from TrimGdel often differ from those obtained 
+% using gMCS-based methods. On the other hand, the gMCS-based methods can ensure 
+% growth-coupled production even when the growth rate is not maximized. (ensures 
+% the strong-growth-coupled production)
+%% MATERIALS - EQUIPMENT SETUP
+% MATLAB and Gurobi are required for this version. 
+%% PROCEDURE
+%% 1. Toy example (~5 sec)
+% In this tutorial, we apply TrimGdel to a toy example represented in Fig. 2 
+% of [1].
+% 
+% First we load the small toy exapmle of Fig. 2 of [1]. The target metabolite 
+% is set as m6.
+
+load('TrimGdelToyExample.mat');
+targetMet = 'm6'
+%% 2. Step 1
+% As Step 1 of TrimGdel, gDel_minRN is applied. gDel_minRN identifies the gene 
+% deletion strategy that leads to growth-coupled production while maximizing the 
+% number of reppressed reactions.
+% 
+% gdel_minRN iteratively finds and verifies candidate solutions. If a candidate 
+% does not lead to growth-coupled production, it is added to the exclusion set, 
+% and the next candidate is explored. maxloop sets the upper limit on the number 
+% of iterations, which is set to 1 here.
+% 
+% When searching for candidate solutions, lower bounds are set for the growth 
+% rate and production rate, represented by GRLB and PRLB, respectively. Here, 
+% both are set to 1.
+% 
+% Step 1 (gDel_minRN) outputs gvalue, which represents the gene deletion strategy; 
+% gr, the maximum growth rate achieved; pr, the minimum production rate when the 
+% growth rate is maximized; it, the number of iterations required to find a solution; 
+% and success, indicating whether the process was successful or not.
+% 
+% The obtained strategy represented by gvalue deletes three genes, g1, g3, g4. 
+% gr = 5, pr = 5, it = 1, and success = 1 are obtained.
+
+maxLoop = 1;
+PRLB = 1;
+GRLB = 1;
+
+[gvalue gr pr it success] = gDel_minRN(model, targetMet, maxLoop, PRLB, GRLB) % Step 1
+%% 3. Steps 2 and 3
+% Steps 2 and 3 reduces the size of gene deletions, starting with the gene deletion 
+% strategy obtained by Step 1. When Step 1 fails, Steps 2 and 3 are omitted and 
+% TrimGdel outputs failure.
+% 
+% The obtained strategy represented by gvalue deletes only one genes, g4. GR 
+% = 10, PR = 10, size1 = 3, size2 = 3, and size3 = 1 are obtained.
+
+if success
+    [gvalue, GR, PR, size1, size2, size3] = step2and3(model, targetMet, gvalue) % Step 2 and 3
+
+
+else
+    gvalue = [];
+    GR = 0;
+    PR = 0;
+    size1 = 0;
+    size2 = 0;
+    size3 = 0;
+end
+%% ANTICIPATED RESULTS
+% GR = 10, PR = 10, size1 = 3, size2 = 3, size3 = 1 gvalue indicates the deletion 
+% of only g4 (b0004).
+%% _Acknowledgments_
+% The author sincerely appreciate the administrators and reviewers.
+%% REFERENCES
+% _1. Tamura, T. Trimming gene deletion strategies for growth-coupled production 
+% in constraint-based metabolic networks: TrimGdel. IEEE/ACM Transactions on Computational 
+% Biology and Bioinformatics. 20, 2, 1540-1549 (2023)._
+##### SOURCE END #####
+-->
+</div></body></html>
