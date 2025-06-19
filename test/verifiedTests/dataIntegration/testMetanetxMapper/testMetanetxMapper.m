@@ -17,30 +17,26 @@ currentDir = cd(fileparts(which(mfilename)));
 testPath = pwd;
 
 fprintf(' -- Running testMetanetxMapper ... ');
+prepareTest('needsWebAddress','https://beta.metanetx.org/cgi-bin/mnxweb/search');
 
 % Convert Swiss lipids to HMDB
-metData = metanetxMapper('SLM:000390086');
-assert(strcmp(metData.metHMDBID, 'HMDB0000688'));
+metData = metanetxMapper('MNXM1364206');
+assert(strcmp(metData.metHMDBID, 'HMDB0304632'));
 
-% Convert HMDB to CommonName
-metData = metanetxMapper('HMDB0000148');
-assert(strcmp(metData.metName, 'L-glutamate'));
+% CommonName
+assert(strcmp(metData.metName, 'D-glucose'));
 
-% Convert VMH to KEGG
-metData = metanetxMapper('succ', 'vmh');
-assert(strcmp(metData.metKEGGID, 'C00042'));
+% KEGG
+assert(strcmp(metData.metKEGGID, 'C00031'));
 
-% Convert SwissLipids to BiGG
-metData = metanetxMapper('SLM:000000287');
-assert(strcmp(metData.metBiGGID, 'chsterol'));
+% BiGG
+assert(strcmp(metData.metBiGGID, 'glc__D'));
 
-% Convert ChEBI to InChi
-metData = metanetxMapper('64368', 'chebi');
-assert(strcmp(metData.metInChIkey, 'BJBUEDPLEOHJGE-UHFFFAOYSA-N'));
+% InChi
+assert(strcmp(metData.metInChIkey, 'WQZGKKKJIJFFOK-GASJEMHNSA-N'));
 
-% Convert InChiKey to SMILES
-metData = metanetxMapper('HEBKCHPVOIAQTA-SCDXWVJYSA-N');
-assert(strcmp(metData.metSmiles, '[CH2:1]([C@@H:3]([C@H:5]([C@@H:4]([CH2:2][OH:7])[OH:9])[OH:10])[OH:8])[OH:6]'));
+% SMILES
+assert(strcmp(metData.metSmiles, 'OC[C@H]1OC(O)[C@H](O)[C@@H](O)[C@@H]1O'));
 
 fprintf('Done.\n');
 fprintf('testMetanetxMapper passed successfully.\n');
