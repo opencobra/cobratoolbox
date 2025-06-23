@@ -2573,11 +2573,5 @@ EOF
 }
 fi #Eocheck=0
 ((v_scrp_check++))
-<<<<<<< HEAD
 done #Eowhile
 #EoB
-=======
-done
-#Eowhile
-#EoB
->>>>>>> f04436753 (update of makedb to fix issue with check on current dir resulting in false determination of existing db and update of mama to change permissions of created content)
