@@ -3,7 +3,7 @@
 # Title: make pipeline DBs
 # Program by: Wiley Barton - 2022.02.07
 # Modified for conda/docker pipeline - 2024.02.22
-# last update - 2025.05.05
+# last update - 2025.05.19
 # Modified code sources:
 #   check volume size: https://stackoverflow.com/questions/8110530/check-free-disk-space-for-current-partition-in-bash
 #   semi-array in env var: https://unix.stackexchange.com/questions/393091/unable-to-use-an-array-as-environment-variable
@@ -47,7 +47,7 @@ v_vol_used=0
 # Arrays of core DBs, standard dir and retrieval command
 if [[ -z "${v_dir_db}" ]]; then
 #set as default
-  v_dir_db='/DB'
+    v_dir_db='/DB'
 fi
 vn=0
 varr_db_name[$vn]=''
@@ -122,10 +122,8 @@ vt_R=$(printf %.0f $(echo "${v_vol_gm} * ${varr_db_size[$vn]}" | bc -l))
 ((vn++))
 varr_db_name[$vn]='tool_ncbi_taxd'
 varr_db_path[$vn]=${varr_db_path[0]}'/REPO_tool/ncbi_NR'
-#varr_db_gets[3]='micromamba run -n env_s1 kneaddata_database --download mouse_C57BL bowtie2 '${varr_db_path[3]}'/C57BL.tar.gz'
 varr_db_gets[$vn]='wget --no-check-certificate https://ftp.ncbi.nlm.nih.gov/pub/taxonomy/taxdump.tar.gz -O '${varr_db_path[$vn]}'/taxdump.tar.gz'
-varr_db_pack[$vn]=${varr_db_pack[0]}${varr_db_path[$vn]}'/taxdump.tar.gz --directory '${varr_db_path[$vn]}
-#mkdir taxonomy && tar -xxvf taxdump.tar.gz -C taxonomy && mv ./taxonomy/ /DB/DEPO_demo/REPO_tool/ncbi_NR
+varr_db_pack[$vn]='mkdir -p '${varr_db_path[$vn]}'/taxonomy && '${varr_db_pack[0]}${varr_db_path[$vn]}'/taxdump.tar.gz --directory '${varr_db_path[$vn]}'/taxonomy'
 varr_db_size[$vn]=0.5
 vt_L=$(du -BM ${varr_db_path[$vn]} 2> /dev/null | cut --fields 1 | tail -1 | sed 's|M||g')
 vt_R=$(printf %.0f $(echo "${v_vol_gm} * ${varr_db_size[$vn]}" | bc -l))

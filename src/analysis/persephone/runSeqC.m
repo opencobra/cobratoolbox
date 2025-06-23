@@ -1,4 +1,4 @@
-function status = runSeqC(...
+function runSeqC(...
     repoPathSeqC, outputPathSeqC, fileIDSeqC, procKeepSeqC, maxMemSeqC, maxCpuSeqC, maxProcSeqC, debugSeqC, ...
     readsTablePath, outputPathMARS, outputExtensionMARS, relAbunFilePath, sample_read_counts_cutoff, cutoffMARS, ...
     OTUTable, flagLoneSpecies, taxaSplit, removeCladeExtensionsFromTaxa, whichModelDatabase, ...
@@ -11,7 +11,7 @@ function status = runSeqC(...
 %   matlab script structure: Tim Hensen, runMars.m, 2025.01
 %   assistance and reference from a generative AI model [ChatGPT](https://chatgpt.com/)
 %       clean-up and improved readability
-% Last Modified: 2025.02.09
+% Last Modified: 2025.06.23
 % Part of: Persephone Pipeline
 %
 % Description:
@@ -27,11 +27,14 @@ function status = runSeqC(...
 %   - maxCpuSeqC (int) : Maximum CPU allocation for SeqC
 %   - maxProcSeqC (int) : Maximum processes for SeqC
 %   - debugSeqC (logical) : Enable debug mode (true/false)
+%   - runApptainer (logical) : Enable apptainer wrapping (true/false)
 %   ...
 %
 % Dependencies:
 %   - MATLAB
 %   - Docker installed and accessible in the system path
+% Optional:
+%   - Apptainer (formerly Singularity) version 1.3.4
 %======================================================================================================#
 %% Determine Operating System
 if ismac
@@ -45,6 +48,16 @@ else
     error('Unsupported operating system.');
 end
 
+%% Determine availability of Apptainer - 0=ya
+% if on system and T in runApptainer, pass with vAPTER=0
+[vAPTER, cmdout] = system('which apptainer');
+if vAPTER == 0
+    if runApptainer
+        vAPTER = 0;
+    else
+        vAPTER = 1;
+    end
+end
 %% Determine directory size and estimate usage exapansion
 % TODO add check for getD 
 dirPath = fullfile(repoPathSeqC,'seqc_input/'); % Directory path
@@ -107,6 +120,18 @@ comm_run_core = 'docker run --interactive --tty --user 0 --rm --mount';
 % sans interactive
 comm_run_core = sprintf('docker run --tty --user 0 --rm --memory=%s --cpus=%s --mount',sprintf('%sg',maxMemSeqC),maxCpuSeqC);
 
+%% Apptainer commands
+% Build from docker image
+if vAPTER == 0
+    comm_build_apter = 'apptainer build apter_seqc.sif docker-daemon://dock_seqc:latest'
+% Run statement
+    comm_run_core = sprintf('apptainer exec --cwd /home/seqc_user/seqc_project --writable-tmpfs --no-mount tmp --no-home -e --cpus %s --memory %s',maxCpuSeqC,sprintf('%sG',maxMemSeqC));
+    comm_run_dir_I = '--mount type=bind,src=$(pwd)/seqc_input,dst=/home/seqc_user/seqc_project/step0_data_in'
+    comm_run_dir_O = '--mount type=bind,src=$(pwd)/seqc_output,dst=/home/seqc_user/seqc_project/final_reports'
+    comm_run_dir_P = '--mount type=bind,src=$(pwd)/seqc_proc,dst=/DB'
+    comm_run_main = sprintf('%s %s %s %s apter_seqc.sif /bin/bash',comm_run_core,comm_run_dir_I,comm_run_dir_O,comm_run_dir_P);
+end
+
 %% Set Database Assignment Command
 switch whichModelDatabase
     case 'AGORA'
@@ -134,31 +159,40 @@ end
 comm_mama_full = sprintf('%s -i "step0_data_in/" -n "%s" -r "SR" -s 0', comm_mama_full, fileIDSeqC);
 % Append volume mapping commands to core
 % OS sensitive
-if strcmp(vOS, 'unix')
-    comm_run_main = sprintf('%s "type=bind,src=$(pwd)/seqc_input,target=/home/seqc_user/seqc_project/step0_data_in" --mount "type=bind,src=$(pwd)/seqc_output,target=/home/seqc_user/seqc_project/final_reports" --mount "type=volume,dst=/DB,volume-driver=local,volume-opt=type=none,volume-opt=o=bind,volume-opt=device=$(pwd)/seqc_proc" dock_seqc /bin/bash', comm_run_core);
-%    comm_exit_mv = 'mv -r $(pwd)/seqc_proc/DEPO_proc/* $(pwd)/seqc_output'
-elseif strcmp(vOS, 'mac')
-    comm_run_main = sprintf('%s "type=bind,src=$(pwd)/seqc_input,target=/home/seqc_user/seqc_project/step0_data_in" --mount "type=bind,src=$(pwd)/seqc_output,target=/home/seqc_user/seqc_project/final_reports" --mount "type=volume,dst=/DB,volume-driver=local,volume-opt=type=none,volume-opt=o=bind,volume-opt=device=$(pwd)/seqc_proc" dock_seqc /bin/bash', comm_run_core);
-%    comm_exit_mv = 'mv -r $(pwd)/seqc_proc/DEPO_proc/* $(pwd)/seqc_output'
-elseif strcmp(vOS, 'win')
-    comm_run_main = sprintf('%s "type=bind,src=%s\\seqc_input,target=/home/seqc_user/seqc_project/step0_data_in" --mount "type=bind,src=%s\\seqc_output,target=/home/seqc_user/seqc_project/final_reports" --mount "type=bind,src=%s\\seqc_proc,target=/DB" dock_seqc /bin/bash', comm_run_core, pwd, pwd, pwd);
-%    comm_exit_mv = 'mv -r .\seqc_proc\DEPO_proc\* .\seqc_output\'
+% Block with apptainer+
+if vAPTER ~= 0
+    if strcmp(vOS, 'unix')
+        comm_run_main = sprintf('%s "type=bind,src=$(pwd)/seqc_input,target=/home/seqc_user/seqc_project/step0_data_in" --mount "type=bind,src=$(pwd)/seqc_output,target=/home/seqc_user/seqc_project/final_reports" --mount "type=volume,dst=/DB,volume-driver=local,volume-opt=type=none,volume-opt=o=bind,volume-opt=device=$(pwd)/seqc_proc" dock_seqc /bin/bash', comm_run_core);
+    %    comm_exit_mv = 'mv -r $(pwd)/seqc_proc/DEPO_proc/* $(pwd)/seqc_output'
+    elseif strcmp(vOS, 'mac')
+        comm_run_main = sprintf('%s "type=bind,src=$(pwd)/seqc_input,target=/home/seqc_user/seqc_project/step0_data_in" --mount "type=bind,src=$(pwd)/seqc_output,target=/home/seqc_user/seqc_project/final_reports" --mount "type=volume,dst=/DB,volume-driver=local,volume-opt=type=none,volume-opt=o=bind,volume-opt=device=$(pwd)/seqc_proc" dock_seqc /bin/bash', comm_run_core);
+    %    comm_exit_mv = 'mv -r $(pwd)/seqc_proc/DEPO_proc/* $(pwd)/seqc_output'
+    elseif strcmp(vOS, 'win')
+        comm_run_main = sprintf('%s "type=bind,src=%s\\seqc_input,target=/home/seqc_user/seqc_project/step0_data_in" --mount "type=bind,src=%s\\seqc_output,target=/home/seqc_user/seqc_project/final_reports" --mount "type=bind,src=%s\\seqc_proc,target=/DB" dock_seqc /bin/bash', comm_run_core, pwd, pwd, pwd);
+    %    comm_exit_mv = 'mv -r .\seqc_proc\DEPO_proc\* .\seqc_output\'
+    end
 end
 %% Run Commands
 try
     % check for preexisting image
     imageName = 'dock_seqc';
-[status, cmdout] = system(['docker images -q ' imageName]);
+    [status, cmdout] = system(['docker images -q ' imageName]);
 
 if isempty(strtrim(cmdout))
     disp(['Image "' imageName '" does NOT exist. Now creating...']);
-    disp(' > Building SeqC docker image, wait time ~10min.');
+    disp(' > Building SeqC docker image, wait time ~15min.');
     [status, cmdout] = system(comm_build);
     if status ~= 0, error('Docker build failed:\n%s', cmdout); end
 else
     disp(['Docker Image "' imageName '" exists.']);
 end
-    
+
+% Build apptainer on condition X
+if vAPTER == 0
+    disp(' > Building SeqC Apptainer/Singularity image, wait time ~15min...again');
+    [status, cmdout] = system(comm_build_apter);
+    if status ~= 0, warning('Apptainer/Singularity build failed:\n%s', cmdout); end
+end
     % Test MAMA script - TMP
     [status, cmdout] = system(sprintf('%s %s',comm_run_main, comm_mama_help));
     if status ~= 0, warning('MAMA test failed:\n%s', cmdout); end

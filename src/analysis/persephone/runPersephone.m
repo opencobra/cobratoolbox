@@ -31,6 +31,8 @@ function [progress] = runPersephone(configPath)
 % certain part of the pipeline. Behind the input description indication if
 % the variable is required is given.
 %
+% Updated: 2025.06.23 wbarton
+%
 % Usage:
 %     fullPipeline()
 %
@@ -64,6 +66,8 @@ function [progress] = runPersephone(configPath)
 %                                processes allowed.
 %     paths.seqC.debugSeqC:      Logical variable indicating if additional debugging
 %                                messages should be included in the log.
+%     paths.seqC.runApptainer:      Logical variable indicating if Apptainer/singularity
+%                                wrapper should be used.
 % MARS:
 %     paths.Mars.flagMars:             Boolean, indicates if Part 2 of the pipeline
 %                           MARS should be run. OPTIONAL, Defaults to true
@@ -339,6 +343,7 @@ if paths.seqC.flagSeqC
         paths.seqC.maxCpuSeqC, ...
         paths.seqC.maxProcSeqC, ...
         paths.seqC.debugSeqC, ...
+        paths.seqC.runApptainer, ...
         paths.Mars.readsTablePath, ...
         paths.Mars.outputPathMars, ...
         paths.Mars.outputExtensionMars, ...
