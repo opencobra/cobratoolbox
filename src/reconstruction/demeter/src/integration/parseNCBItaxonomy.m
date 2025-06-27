@@ -19,12 +19,14 @@ end
 hmtlString = urlread(['https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=', NCBI]);
 lineage = {
     'superkingdom'
+    'kingdom'
     'phylum'
     'class'
     'order'
     'family'
     'genus'
-    'species'};
+    'species'
+    };
 
 % extract information from html string and fill in data (different parsing
 % types)

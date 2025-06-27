@@ -1,0 +1,17 @@
+
+*lrs:lrslib v.7.1 2021.6.2(64bit,lrslong.h,hybrid arithmetic)
+*Input taken from  /home/farid/cobratoolbox-develop/test/additionalTests/testTopology/loop3b_neg_eq.ine
+loop3b
+*Input linearity in row 3 is redundant--converted to inequality
+V-representation
+linearity 1  1
+begin
+***** 4 rational
+ 0 -1  1  1 
+ 1  0  0  0 
+end
+*Totals: vertices=1 rays=0 bases=1 integer_vertices=1  linearities=1 vertices+rays+linearities=2
+*Dictionary Cache: max size= 1 misses= 0/0   Tree Depth= 0
+*Overflow checking on lrslong arithmetic
+*lrs:lrslib v.7.1 2021.6.2(64bit,lrslong.h,hybrid arithmetic)
+*0.001u 0.000s 1920Kb 2 flts 0 swaps 640 blks-in 8 blks-out 

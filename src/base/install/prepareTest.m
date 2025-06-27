@@ -169,7 +169,9 @@ if linuxOnly
 end
 
 if ~isempty(needsWebAddress)
-    [status_curl, result_curl] = system(['curl -s -k ' needsWebAddress]);
+    timeoutSeconds = 15; % or however long you'd like to wait
+    [status_curl, result_curl] = system(sprintf('curl -s -k --max-time %d "%s"', timeoutSeconds, needsWebAddress));
+
     if status_curl ~= 0 || isempty(result_curl)
         errorMessage{end + 1} = sprintf('This function needs to connect to %s and was unable to do so.',needsWebAddress);
     end
