@@ -118,8 +118,8 @@ for i = dminRxn1:dinc:dmaxRxn1
     % is flux variability analysis is performed
     if FVAflag == true
         [minFlux, maxFlux, optsol, ret] = fastFVA(model, 99.9, 'max');
-        minFluxes(:, cnt) = minFlux;
-        maxFluxes(:, cnt) = maxFlux;
+        minFluxes(:, cnt) = num2cell(minFlux);
+        maxFluxes(:, cnt) = num2cell(maxFlux);
     end
     cnt = cnt + 1;
 end
