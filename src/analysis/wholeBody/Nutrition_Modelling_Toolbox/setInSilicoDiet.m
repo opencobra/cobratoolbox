@@ -176,7 +176,7 @@ if constrainFluxWBM
     end
 
     for i = 2:size(dietFlux,2)
-        disp(fprintf('Setting diet %s', string(dietFlux.Properties.VariableNames(i))))
+        fprintf('Setting dietary flux vector on WBMs for  %s\n', string(dietFlux.Properties.VariableNames(i)))
         % Extract the diet name
         dietName = dietFlux.Properties.VariableNames(i);
         % Extract the diet with female WBM diet metabolites
@@ -265,7 +265,7 @@ if constrainFoodWBM
         
         % Obtain the diet of food items that needs to be set
         foodItemsUsed = dietToSet(:, [2:3 i]);
-        disp(fprintf('Setting diet %s', string(foodItemsUsed.Properties.VariableNames(end))))
+        fprintf('Setting food items on WBM for %s\n', string(foodItemsUsed.Properties.VariableNames(end)))
         % Transfort the database ID and database name into the reaction ID
         % format used in the WBMs
         foodRxns = strcat('Food_EX_', foodItemsUsed.databaseID, '_', foodItemsUsed.databaseUsed);
@@ -449,8 +449,8 @@ function setFoodItemNSave(model, foodRxns, dietUsed, mets2Add, fileName)
 % If there is no metadata, set the diet on both WBMs
 model = changeRxnBounds(model, foodRxns, -1*dietUsed{:,end}, 'b');
 % Update the setupInfo field
-model.SetupInfo.dietName = string(fileName);
-model.SetupInfo.diet = dietUsed;
+model.SetupInfo.dietName = string(dietUsed.Properties.VariableNames(end));
+model.SetupInfo.dietComposition = dietUsed;
 model.SetupInfo.dietAddition = mets2Add;
 
 % Set additional metabolite contraints needed for feasibility

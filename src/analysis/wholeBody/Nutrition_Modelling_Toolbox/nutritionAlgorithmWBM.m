@@ -258,12 +258,6 @@ elseif ~strcmpi(foodOrMets,'foodmets') && ~strcmpi(foodOrMets,'allmets')
     error('foodOrMets invalid. Possible inputs are: "Food", "AllMets", "FoodMets".')
 end
 
-% remove reactions if so specified
-if ~isempty(removeFoodItem)
-    rxns2Remove = strcat('Food_EX_', removeFoodItem(:,1), '_', removeFoodItem(:,2));
-    model = removeRxns(model, rxns2Remove);
-end
-
 % Add the price to the model if food reactions were already added
 if ~isempty(addPrice) && foodItemInModel
     % Store the original food dietary bounds
@@ -272,6 +266,7 @@ if ~isempty(addPrice) && foodItemInModel
     % remove all food_EX and breakdown_ reactions
     model = removeRxns(model, model.rxns(contains(model.rxns, 'Food_EX_')));
     model = removeRxns(model, model.rxns(contains(model.rxns, 'Breakdown_')));
+    model = removeRxns(model, {'Diet_EX_energy[d]', 'Diet_EX_carbohydrate[d]', 'Diet_EX_protein[d]', 'Diet_EX_lipid[d]', 'Diet_EX_sugars[d]', 'Diet_EX_money[d]'});
     
     % Re-introduce the food reactions with the money metabolite associated
     model = setFoodRxnsWbm(model, {'usda', 'frida'}, false, addPrice);
@@ -279,6 +274,13 @@ if ~isempty(addPrice) && foodItemInModel
     % Reset the dietary food bounds on the model
     model.lb(contains(model.rxns, 'Food_EX_')) = originalFoodBounds(:,1);
     model.ub(contains(model.rxns, 'Food_EX_')) = originalFoodBounds(:,2);
+
+end
+
+% remove reactions if so specified
+if ~isempty(removeFoodItem)
+    rxns2Remove = strcat('Food_EX_', removeFoodItem(:,1), '_', removeFoodItem(:,2));
+    model = removeRxns(model, rxns2Remove);
 end
 
 %adjust ub and lb if roiBound specifies 'Unbound'
