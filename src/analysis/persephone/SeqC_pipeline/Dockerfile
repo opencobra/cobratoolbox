@@ -6,7 +6,7 @@
 # Program by: Wiley Barton - 2024.02.22
 # Modified for conda/docker pipeline - 2024.02.22
 # Version for Persephone
-# last update - 2025.05.05
+# last update - 2025.07.01
 #--------------------------------------------------
 # Modified code sources:
 # umamba merge via: https://micromamba-docker.readthedocs.io/en/latest/advanced_usage.html#adding-micromamba-to-an-existing-docker-image
@@ -62,6 +62,8 @@ WORKDIR /home
 #--------------------------------------------------------------------------------------------------
 ARG v_seqcusr="seqc_user"
 ARG v_proj="seqc_project"
+ARG USER_UID=1000
+ARG USER_GID=1000
 ARG MAMBA_USER=${v_seqcusr}
 ARG varg_cpu_max=8
 ARG varg_proc_max=4
@@ -119,14 +121,22 @@ ENV venv_mars_readsTablePath=${varg_mars_readsTablePath} \
     venv_mars_userDatabase_path=${varg_mars_userDatabase_path} \
     venv_mars_taxaTable=${varg_mars_taxaTable}
 #--------------------------------------------------------------------------------------------------
+# User build
+#--------------------------------------------------------------------------------------------------
+RUN groupadd --gid $USER_GID $MAMBA_USER && \
+    useradd --uid $USER_UID --gid $USER_GID --create-home $MAMBA_USER && \
+    usermod -aG sudo $MAMBA_USER && \
+    echo "$MAMBA_USER ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+#--------------------------------------------------------------------------------------------------
 # Directory build
 #--------------------------------------------------------------------------------------------------
-#USER root
+#Temp root use
 WORKDIR ${venv_dir_work}
 RUN cd ${venv_dir_work}
 USER 0
 RUN [ "/bin/bash", "-c", "eval mkdir -p ${venv_dir_db} ${v_path0} ${v_path1} ${v_path2} ${v_path3} ${v_path4} 2> /dev/null" ]
 RUN [ "/bin/bash", "-c", "eval mv ${venv_dir_work}/${venv_dir_db} / 2> /dev/null" ]
+RUN chown -R ${USER_UID}:${USER_GID} ${venv_dir_db}
 #--------------------------------------------------------------------------------------------------
 # System dependencies installation
 #--------------------------------------------------------------------------------------------------
@@ -166,8 +176,8 @@ RUN git clone --depth=1 --branch master https://github.com/DerrickWood/kraken2.g
 #--------------------------------------------------------------------------------------------------
 # Establish Micromamba & Conda Environments
 #--------------------------------------------------------------------------------------------------
-ARG MAMBA_USER_ID=57439
-ARG MAMBA_USER_GID=57439
+ARG MAMBA_USER_ID=${USER_UID}
+ARG MAMBA_USER_GID=${USER_GID}
 ENV MAMBA_ROOT_PREFIX="/opt/conda"
 # Copy Micromamba binaries from stage 1
 ENV MAMBA_USER=$MAMBA_USER
@@ -179,12 +189,13 @@ RUN /usr/local/bin/_dockerfile_initialize_user_accounts.sh && /usr/local/bin/_do
 #----------------------------------------------------------------------------------------
 # Populate with core seqc scripts
 #----------------------------------------------------------------------------------------
-COPY --chown=$MAMBA_USER:$MAMBA_USER BASH_*.sh /usr/bin/
-COPY --chown=$MAMBA_USER:$MAMBA_USER env_*.yml /tmp/
-COPY --chown=$MAMBA_USER:$MAMBA_USER taxa2proc_*_out.txt /tmp/
-RUN chown -R $MAMBA_USER:$MAMBA_USER /lib
-RUN chown -R $MAMBA_USER:$MAMBA_USER /tmp
-RUN chown -R $MAMBA_USER:$MAMBA_USER /DB
+#COPY --chown=$MAMBA_USER:$MAMBA_USER BASH_*.sh /usr/bin/
+COPY --chown=${USER_UID}:${USER_GID} BASH_*.sh /usr/bin/
+COPY --chown=${USER_UID}:${USER_GID} env_*.yml /tmp/
+COPY --chown=${USER_UID}:${USER_GID} taxa2proc_*_out.txt /tmp/
+RUN chown -R ${USER_UID}:${USER_GID} /lib
+RUN chown -R ${USER_UID}:${USER_GID} /tmp
+RUN chown -R ${USER_UID}:${USER_GID} /DB
 # Install Conda environments
 COPY env_*.yml /tmp/
 # Clean lock
@@ -213,8 +224,6 @@ RUN [ "/bin/bash", "-c", "mv /opt/conda/envs/env_s4_kraken/lib/kraken2/kraken2{,
 RUN [ "/bin/bash", "-c", "mv /opt/conda/envs/env_s4_kraken/lib/bracken/bracken{,-build} /opt/conda/envs/env_s4_kraken/bin" ]
 RUN [ "/bin/bash", "-c", "mv /opt/conda/envs/env_s4_kraken/lib/bracken/src /opt/conda/envs/env_s4_kraken/bin" ]
 RUN [ "/bin/bash", "-c", "mv /opt/conda/envs/env_s4_kraken/lib/bracken/analysis_scripts/combine_bracken_outputs.py /opt/conda/envs/env_s4_kraken/bin" ]
-# Modify ownership - TMP
-#RUN chown -R $MAMBA_USER:$MAMBA_USER /lib
 #--------------------------------------------------------------------------------------------------
 # Fix for: Kneaddata, ENA Search, regrex extension, permissions, windows file conversion
 #--------------------------------------------------------------------------------------------------

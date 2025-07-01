@@ -31,7 +31,7 @@ function [progress] = runPersephone(configPath)
 % certain part of the pipeline. Behind the input description indication if
 % the variable is required is given.
 %
-% Updated: 2025.06.23 wbarton
+% Updated: 2025.07.01 wbarton
 %
 % Usage:
 %     fullPipeline()
@@ -66,7 +66,7 @@ function [progress] = runPersephone(configPath)
 %                                processes allowed.
 %     paths.seqC.debugSeqC:      Logical variable indicating if additional debugging
 %                                messages should be included in the log.
-%     paths.seqC.runApptainer:      Logical variable indicating if Apptainer/singularity
+%     paths.seqC.runApptainer:   Logical variable indicating if Apptainer/singularity
 %                                wrapper should be used.
 % MARS:
 %     paths.Mars.flagMars:             Boolean, indicates if Part 2 of the pipeline
@@ -509,7 +509,7 @@ end
 % if paths.persWBM.flagPersonalize is still true, personalize models
 if paths.persWBM.flagPersonalise
 
-   [iWBM, iWBMcontrol_female, iWBMcontrol_male, persParameters] = persWBM(...
+    [iWBM, iWBMcontrol_female, iWBMcontrol_male, persParameters] = persWBM(...
     paths.General.metadataPath, ...
     'persPhysiology', paths.persWBM.persPhysiology, ...
     'resPath', paths.persWBM.outputPathPersonalisation, ...

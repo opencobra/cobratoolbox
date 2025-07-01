@@ -1,5 +1,7 @@
-function runSeqC(...
-    repoPathSeqC, outputPathSeqC, fileIDSeqC, procKeepSeqC, maxMemSeqC, maxCpuSeqC, maxProcSeqC, debugSeqC, ...
+function status = runSeqC(...
+    repoPathSeqC, outputPathSeqC, fileIDSeqC, ...
+    procKeepSeqC, maxMemSeqC, maxCpuSeqC, ...
+    maxProcSeqC, debugSeqC, runApptainer ...
     readsTablePath, outputPathMARS, outputExtensionMARS, relAbunFilePath, sample_read_counts_cutoff, cutoffMARS, ...
     OTUTable, flagLoneSpecies, taxaSplit, removeCladeExtensionsFromTaxa, whichModelDatabase, ...
     userDatabase_path, taxaTable ...
@@ -11,7 +13,7 @@ function runSeqC(...
 %   matlab script structure: Tim Hensen, runMars.m, 2025.01
 %   assistance and reference from a generative AI model [ChatGPT](https://chatgpt.com/)
 %       clean-up and improved readability
-% Last Modified: 2025.06.23
+% Last Modified: 2025.07.01
 % Part of: Persephone Pipeline
 %
 % Description:
@@ -74,7 +76,7 @@ vdir_out_seqc = 'seqc_output';
 vdir_out_mars = fullfile(vdir_out_seqc, 'mars_out');
 % Set system to seqc repo
 cd(repoPathSeqC);
-    
+
 %% Convert Numeric Inputs to Strings
 maxCpuSeqC = num2str(maxCpuSeqC);
 maxMemSeqC = num2str(maxMemSeqC);
@@ -84,6 +86,26 @@ if isnumeric(cutoffMARS)
 end
 
 %% Build Docker Options
+% User ID params
+if strcmp(vOS, 'unix')
+    [~, v_uid] = system('id -u');
+    [~, v_gid] = system('id -g');
+    % Strip newline characters
+    v_uid = strtrim(v_uid);
+    v_gid = strtrim(v_gid);
+    comm_build_opt_UID = sprintf('--build-arg USER_UID=%s --build-arg USER_GID=%s', v_uid, v_gid);
+elseif strcmp(vOS, 'mac')
+    [~, v_uid] = system('id -u');
+    [~, v_gid] = system('id -g');
+    v_uid = strtrim(v_uid);
+    v_gid = strtrim(v_gid);
+    comm_build_opt_UID = sprintf('--build-arg USER_UID=%s --build-arg USER_GID=%s', v_uid, v_gid);
+elseif strcmp(vOS, 'win')
+    % fixed for windows jank
+    v_uid = num2str(1000);
+    v_gid = num2str(1000);
+    comm_build_opt_UID = sprintf('--build-arg USER_UID=%s --build-arg USER_GID=%s', v_uid, v_gid);
+end
 % Hardware params
 comm_build_opt_hw = sprintf('--build-arg varg_cpu_max=%s --build-arg varg_mem_max=%s --build-arg varg_proc_max=%s', ...
                             maxCpuSeqC, maxMemSeqC, maxProcSeqC);
@@ -112,20 +134,22 @@ for vi = 1:length(optionalParams)
 end
 
 %% Build Docker Image command
-comm_build = sprintf('docker build -t dock_seqc --ulimit nofile=65536:65536 %s %s .', comm_build_opt_hw, comm_build_opt_mars);
+comm_build = sprintf('docker build -t dock_seqc --ulimit nofile=65536:65536 %s %s %s .', comm_build_opt_hw, comm_build_opt_mars, comm_build_opt_UID);
 
 %% Docker run commands
 % core run command
 comm_run_core = 'docker run --interactive --tty --user 0 --rm --mount';
 % sans interactive
-comm_run_core = sprintf('docker run --tty --user 0 --rm --memory=%s --cpus=%s --mount',sprintf('%sg',maxMemSeqC),maxCpuSeqC);
+comm_run_core = sprintf('docker run --tty --user %s:%s --rm --memory=%s --cpus=%s --mount',v_uid,v_gid,sprintf('%sg',maxMemSeqC),maxCpuSeqC);
 
 %% Apptainer commands
 % Build from docker image
 if vAPTER == 0
     comm_build_apter = 'apptainer build apter_seqc.sif docker-daemon://dock_seqc:latest'
 % Run statement
-    comm_run_core = sprintf('apptainer exec --cwd /home/seqc_user/seqc_project --writable-tmpfs --no-mount tmp --no-home -e --cpus %s --memory %s',maxCpuSeqC,sprintf('%sG',maxMemSeqC));
+% cgroups error with resource flags - bypassed by ommision atm
+%    comm_run_core = sprintf('apptainer exec --cwd /home/seqc_user/seqc_project --writable-tmpfs --no-mount tmp --no-home -e --cpus %s --memory %s',maxCpuSeqC,sprintf('%sG',maxMemSeqC));
+    comm_run_core = 'apptainer exec --cwd /home/seqc_user/seqc_project --writable-tmpfs --no-mount tmp --no-home -e';
     comm_run_dir_I = '--mount type=bind,src=$(pwd)/seqc_input,dst=/home/seqc_user/seqc_project/step0_data_in'
     comm_run_dir_O = '--mount type=bind,src=$(pwd)/seqc_output,dst=/home/seqc_user/seqc_project/final_reports'
     comm_run_dir_P = '--mount type=bind,src=$(pwd)/seqc_proc,dst=/DB'
@@ -144,6 +168,7 @@ switch whichModelDatabase
         comm_run_db_kb = '-s "tool_k2_agora2apollo"'; % Default case
 end
 comm_run_db_kd = '-s "host_kd_hsapcontam"';
+%comm_run_db_kb = '-s "tool_k2_std8"'; % smol test DB
 comm_run_db = sprintf('BASH_seqc_makedb.sh %s %s', comm_run_db_kd, comm_run_db_kb);
 
 %% Construct Command for Running SeqC
@@ -188,12 +213,19 @@ else
 end
 
 % Build apptainer on condition X
-if vAPTER == 0
-    disp(' > Building SeqC Apptainer/Singularity image, wait time ~15min...again');
-    [status, cmdout] = system(comm_build_apter);
-    if status ~= 0, warning('Apptainer/Singularity build failed:\n%s', cmdout); end
-end
-    % Test MAMA script - TMP
+    if vAPTER == 0
+        % check for preexisting image
+        imageName = 'apter_seqc.sif';
+        %[status, cmdout] = system(['docker images -q ' imageName]);
+        if isfile(imageName)
+            disp(['Apptainer Object "' imageName '" exists - BUILD SKIPPED']);
+        else
+            disp(' > Building SeqC Apptainer/Singularity image, wait time ~15min...again');
+            [status, cmdout] = system(comm_build_apter);
+            if status ~= 0, warning('Apptainer/Singularity build failed:\n%s', cmdout); end
+        end
+    end
+    % Test MAMA script
     [status, cmdout] = system(sprintf('%s %s',comm_run_main, comm_mama_help));
     if status ~= 0, warning('MAMA test failed:\n%s', cmdout); end
 
