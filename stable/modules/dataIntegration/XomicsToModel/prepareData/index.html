@@ -5,7 +5,7 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
@@ -69,8 +69,8 @@
         <link rel="search" title="Search" href="../../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../../index.html"/>
         <link rel="up" title="Xomicstomodel" href="../index.html"/>
-        <link rel="next" title="Onerxnperactivegene" href="../oneRxnPerActiveGene/index.html"/>
-        <link rel="prev" title="Thermoqp" href="../thermoKernel/thermoQP/index.html"/> 
+        <link rel="next" title="Fluxomics" href="../../fluxomics/index.html"/>
+        <link rel="prev" title="Proteomics" href="../proteomics/index.html"/> 
 
   
   <script src="../../../../_static/js/modernizr.min.js"></script>
@@ -92,7 +92,7 @@
           
 
           
-            <img src="/cobratoolbox/stable/_static/img/logo.png" class="logo" alt="cobratoolbox logo" />
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
           
           </a>
 
@@ -159,21 +159,21 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../base/index.html">Base</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Dataintegration</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../../fluxomics/index.html">Fluxomics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../metanetxMapper/index.html">Metanetxmapper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../transcriptomics/index.html">Transcriptomics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../metaboAnnotator/index.html">Metaboannotator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../metanetxMapper/index.html">Metanetxmapper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../metabotools/index.html">Metabotools</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../chemoInformatics/index.html">Chemoinformatics</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../index.html">Xomicstomodel</a><ul class="current">
-<li class="toctree-l4"><a class="reference internal" href="../analysis/index.html">Analysis</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../thermoKernel/index.html">Thermokernel</a></li>
-<li class="toctree-l4 current"><a class="current reference internal" href="#">Preparedata</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../oneRxnPerActiveGene/index.html">Onerxnperactivegene</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../proteomics/index.html">Proteomics</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../metabolomics/index.html">Metabolomics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../analysis/index.html">Analysis</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../oneRxnPerActiveGene/index.html">Onerxnperactivegene</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../thermoKernel/index.html">Thermokernel</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../proteomics/index.html">Proteomics</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Preparedata</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../metabotools/index.html">Metabotools</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../metaboAnnotator/index.html">Metaboannotator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../fluxomics/index.html">Fluxomics</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../design/index.html">Design</a></li>
@@ -234,16 +234,16 @@
 <span class="sig-name descname"><span class="pre">preprocessingOmicsModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">inputData</span></em>, <em class="sig-param"><span class="pre">setMinActiveFlux</span></em>, <em class="sig-param"><span class="pre">setMaxActiveFlux</span></em>, <em class="sig-param"><span class="pre">specificData</span></em>, <em class="sig-param"><span class="pre">TolMaxBoundary</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/XomicsToModel/prepareData/preprocessingOmicsModel.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.XomicsToModel.prepareData.preprocessingOmicsModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Prepare data for the omicsModelGeneration function</p>
 <dl class="field-list">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>specificData = preprocessingOmicsModel</strong> (<em>inputData</em>)</p>
 </dd>
-<dt class="field-even">INPUT</dt>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>inputData</strong> – Location of the file containing the optional
 variables where the first row of each column
 represents the name of the optional variables and the
 following rows represent the data on them.</p>
 </dd>
-<dt class="field-odd">OPTIONAL INPUT</dt>
+<dt class="field-odd">OPTIONAL INPUT<span class="colon">:</span></dt>
 <dd class="field-odd"><ul>
 <li><p><strong>setMinActiveFlux  {0}, 1 - change the LB of forced</strong> – active reactions based on the (primal) feasibility
 tolerance (feasTol*100)</p></li>
@@ -257,7 +257,7 @@ tolerance (feasTol*100)</p></li>
 </li>
 </ul>
 </dd>
-<dt class="field-even">OUTPUT</dt>
+<dt class="field-even">OUTPUT<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>specificData</strong> – Structure containing the additional optional variables to
 generate a context-specific omics model</p>
 </dd>
@@ -283,10 +283,10 @@ Htmi    h[i]    -&gt;      h[m]</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../oneRxnPerActiveGene/index.html" class="btn btn-default float-right" title="Onerxnperactivegene" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../../fluxomics/index.html" class="btn btn-default float-right" title="Fluxomics" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../thermoKernel/thermoQP/index.html" class="btn btn-default" title="Thermoqp" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../proteomics/index.html" class="btn btn-default" title="Proteomics" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -324,9 +324,6 @@ Htmi    h[i]    -&gt;      h[m]</p>
         };
     </script>
     <script type="text/javascript" src="../../../../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
-    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
-    <script type="text/javascript" src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script type="text/javascript" src="../../../../_static/doctools.js"></script>
     <script type="text/javascript" src="../../../../_static/sphinx_highlight.js"></script>
 

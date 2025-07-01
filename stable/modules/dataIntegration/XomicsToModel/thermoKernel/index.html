@@ -5,7 +5,7 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
@@ -70,7 +70,7 @@
     <link rel="top" title="The COBRA Toolbox" href="../../../../index.html"/>
         <link rel="up" title="Xomicstomodel" href="../index.html"/>
         <link rel="next" title="Thermoqp" href="thermoQP/index.html"/>
-        <link rel="prev" title="Analysis" href="../analysis/index.html"/> 
+        <link rel="prev" title="Onerxnperactivegene" href="../oneRxnPerActiveGene/index.html"/> 
 
   
   <script src="../../../../_static/js/modernizr.min.js"></script>
@@ -92,7 +92,7 @@
           
 
           
-            <img src="/cobratoolbox/stable/_static/img/logo.png" class="logo" alt="cobratoolbox logo" />
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
           
           </a>
 
@@ -159,24 +159,24 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../base/index.html">Base</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Dataintegration</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../../fluxomics/index.html">Fluxomics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../metanetxMapper/index.html">Metanetxmapper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../transcriptomics/index.html">Transcriptomics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../metaboAnnotator/index.html">Metaboannotator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../metanetxMapper/index.html">Metanetxmapper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../metabotools/index.html">Metabotools</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../chemoInformatics/index.html">Chemoinformatics</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../index.html">Xomicstomodel</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../metabolomics/index.html">Metabolomics</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../analysis/index.html">Analysis</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../oneRxnPerActiveGene/index.html">Onerxnperactivegene</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">Thermokernel</a><ul>
 <li class="toctree-l5"><a class="reference internal" href="thermoQP/index.html">Thermoqp</a></li>
 </ul>
 </li>
-<li class="toctree-l4"><a class="reference internal" href="../prepareData/index.html">Preparedata</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../oneRxnPerActiveGene/index.html">Onerxnperactivegene</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../proteomics/index.html">Proteomics</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../metabolomics/index.html">Metabolomics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../prepareData/index.html">Preparedata</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../metabotools/index.html">Metabotools</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../metaboAnnotator/index.html">Metaboannotator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../fluxomics/index.html">Fluxomics</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../design/index.html">Design</a></li>
@@ -293,7 +293,7 @@ a set of penalties on activity/inactivity of reactions (rxnWeights),
 a set of present and absent metabolites (presentAbsentMet), and
 a set of penalties on presence/absence of metabolites (metWeights).</p>
 <dl class="field-list">
-<dt class="field-odd">INPUT</dt>
+<dt class="field-odd">INPUT<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>model</strong> – (the following fields are required - others can be supplied)</p>
 <ul class="simple">
 <li><p>S  - <cite>m x n</cite> Stoichiometric matrix</p></li>
@@ -302,7 +302,7 @@ a set of penalties on presence/absence of metabolites (metWeights).</p>
 <li><p>ub - <cite>n x 1</cite> Upper bounds</p></li>
 </ul>
 </dd>
-<dt class="field-even">OPTIONAL INPUTS</dt>
+<dt class="field-even">OPTIONAL INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul>
 <li><p><strong>model</strong> – (optional fields)
 * .b - <cite>m x 1</cite> change in concentration with time
@@ -395,7 +395,7 @@ metWeights  = metWeights./sum(abs(metWeights));</p>
         <a href="thermoQP/index.html" class="btn btn-default float-right" title="Thermoqp" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../analysis/index.html" class="btn btn-default" title="Analysis" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../oneRxnPerActiveGene/index.html" class="btn btn-default" title="Onerxnperactivegene" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -433,9 +433,6 @@ metWeights  = metWeights./sum(abs(metWeights));</p>
         };
     </script>
     <script type="text/javascript" src="../../../../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
-    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
-    <script type="text/javascript" src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script type="text/javascript" src="../../../../_static/doctools.js"></script>
     <script type="text/javascript" src="../../../../_static/sphinx_highlight.js"></script>
 

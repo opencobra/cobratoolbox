@@ -5,7 +5,7 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
@@ -69,7 +69,7 @@
         <link rel="search" title="Search" href="../../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../../index.html"/>
         <link rel="up" title="Transcriptomics" href="../index.html"/>
-        <link rel="next" title="Fastcore" href="../FASTCORE/index.html"/>
+        <link rel="next" title="Eflux" href="../eFlux/index.html"/>
         <link rel="prev" title="Mba" href="../MBA/index.html"/> 
 
   
@@ -92,7 +92,7 @@
           
 
           
-            <img src="/cobratoolbox/stable/_static/img/logo.png" class="logo" alt="cobratoolbox logo" />
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
           
           </a>
 
@@ -159,24 +159,24 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../base/index.html">Base</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Dataintegration</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../../fluxomics/index.html">Fluxomics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../metanetxMapper/index.html">Metanetxmapper</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../index.html">Transcriptomics</a><ul class="current">
-<li class="toctree-l4"><a class="reference internal" href="../eFlux/index.html">Eflux</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../SWIFTCORE/index.html">Swiftcore</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../MOOMIN/index.html">Moomin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../preprocessing/index.html">Preprocessing</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../INIT/index.html">Init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../FASTCORE/index.html">Fastcore</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GIMME/index.html">Gimme</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../MBA/index.html">Mba</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">Imat</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../FASTCORE/index.html">Fastcore</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../MOOMIN/index.html">Moomin</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../GIMME/index.html">Gimme</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../SWIFTCORE/index.html">Swiftcore</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../preprocessing/index.html">Preprocessing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../eFlux/index.html">Eflux</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="../../metaboAnnotator/index.html">Metaboannotator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../metanetxMapper/index.html">Metanetxmapper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../metabotools/index.html">Metabotools</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../chemoInformatics/index.html">Chemoinformatics</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../XomicsToModel/index.html">Xomicstomodel</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../metabotools/index.html">Metabotools</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../metaboAnnotator/index.html">Metaboannotator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../fluxomics/index.html">Fluxomics</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../design/index.html">Design</a></li>
@@ -239,10 +239,10 @@
 specific model using data. iMAT algorithm find the optimal trade-off
 between inluding high-expression reactions and removing low-expression reactions.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>tissueModel = iMAT</strong> (<em>model, expressionRxns, threshold_lb, threshold_ub</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>model</strong> – input model (COBRA model structure)</p></li>
 <li><p><strong>expressionRxns</strong> – reaction expression, expression data corresponding to model.rxns.
@@ -255,7 +255,7 @@ expression below this value are “non-expressed”</p></li>
 expression above this value are “expressed”</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>tol</strong> – minimum flux threshold for “expressed” reactions
 (default 1e-8)</p></li>
@@ -267,7 +267,7 @@ the high confidence set (default - no core reactions)</p></li>
 (default 1)</p></li>
 </ul>
 </dd>
-<dt class="field-even">OUTPUT</dt>
+<dt class="field-even">OUTPUT<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>tissueModel</strong> – extracted model</p>
 </dd>
 </dl>
@@ -287,7 +287,7 @@ the high confidence set (default - no core reactions)</p></li>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../FASTCORE/index.html" class="btn btn-default float-right" title="Fastcore" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../eFlux/index.html" class="btn btn-default float-right" title="Eflux" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="../MBA/index.html" class="btn btn-default" title="Mba" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
@@ -328,9 +328,6 @@ the high confidence set (default - no core reactions)</p></li>
         };
     </script>
     <script type="text/javascript" src="../../../../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
-    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
-    <script type="text/javascript" src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script type="text/javascript" src="../../../../_static/doctools.js"></script>
     <script type="text/javascript" src="../../../../_static/sphinx_highlight.js"></script>
 

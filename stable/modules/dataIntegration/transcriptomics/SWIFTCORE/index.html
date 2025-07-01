@@ -5,7 +5,7 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
@@ -69,8 +69,8 @@
         <link rel="search" title="Search" href="../../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../../index.html"/>
         <link rel="up" title="Transcriptomics" href="../index.html"/>
-        <link rel="next" title="Preprocessing" href="../preprocessing/index.html"/>
-        <link rel="prev" title="Gimme" href="../GIMME/index.html"/> 
+        <link rel="next" title="Moomin" href="../MOOMIN/index.html"/>
+        <link rel="prev" title="Transcriptomics" href="../index.html"/> 
 
   
   <script src="../../../../_static/js/modernizr.min.js"></script>
@@ -92,7 +92,7 @@
           
 
           
-            <img src="/cobratoolbox/stable/_static/img/logo.png" class="logo" alt="cobratoolbox logo" />
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
           
           </a>
 
@@ -159,24 +159,24 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../base/index.html">Base</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Dataintegration</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../../fluxomics/index.html">Fluxomics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../metanetxMapper/index.html">Metanetxmapper</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../index.html">Transcriptomics</a><ul class="current">
-<li class="toctree-l4"><a class="reference internal" href="../eFlux/index.html">Eflux</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Swiftcore</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../MOOMIN/index.html">Moomin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../preprocessing/index.html">Preprocessing</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../INIT/index.html">Init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../FASTCORE/index.html">Fastcore</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GIMME/index.html">Gimme</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../MBA/index.html">Mba</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../iMAT/index.html">Imat</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../FASTCORE/index.html">Fastcore</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../MOOMIN/index.html">Moomin</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../GIMME/index.html">Gimme</a></li>
-<li class="toctree-l4 current"><a class="current reference internal" href="#">Swiftcore</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../preprocessing/index.html">Preprocessing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../eFlux/index.html">Eflux</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="../../metaboAnnotator/index.html">Metaboannotator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../metanetxMapper/index.html">Metanetxmapper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../metabotools/index.html">Metabotools</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../chemoInformatics/index.html">Chemoinformatics</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../XomicsToModel/index.html">Xomicstomodel</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../metabotools/index.html">Metabotools</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../metaboAnnotator/index.html">Metaboannotator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../fluxomics/index.html">Fluxomics</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../design/index.html">Design</a></li>
@@ -237,10 +237,10 @@
 <span class="sig-name descname"><span class="pre">blocked</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">S</span></em>, <em class="sig-param"><span class="pre">rev</span></em>, <em class="sig-param"><span class="pre">solver</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/transcriptomics/SWIFTCORE/blocked.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.transcriptomics.SWIFTCORE.blocked" title="Permalink to this definition">¶</a></dt>
 <dd><p>blocked finds all the irreversible blocked reactions and is utilized in swiftcc</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>result = blocked</strong> (<em>S, rev, solver</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>S</strong> – the associated sparse stoichiometric matrix</p></li>
 <li><p><strong>rev</strong> – the 0-1 vector with 1’s corresponding to the reversible reactions</p></li>
@@ -250,7 +250,7 @@
 another supported solver is called.</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OUTPUT</dt>
+<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>result</strong> – the result returned by the LP solver; among the last n entries,
 all the -1 entries are blocked, and the other entries are zero.
 The first m entries are its fictitious metabolite certificate.</p>
@@ -264,10 +264,10 @@ The first m entries are its fictitious metabolite certificate.</p>
 <dd><p>core finds a feasible flux distribution to unblock a given list of blocked
 reactions and is utilized in swiftcore</p>
 <dl class="field-list">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>flux = core</strong> (<em>S, rev, blocked, weights, solver</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul>
 <li><p><strong>model</strong> – the metabolic network with fields:
 * .S - the associated sparse stoichiometric matrix
@@ -285,7 +285,7 @@ reactions and is utilized in swiftcore</p>
 </li>
 </ul>
 </dd>
-<dt class="field-odd">OUTPUT</dt>
+<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>flux</strong> – a feasible flux distribution</p>
 </dd>
 </dl>
@@ -296,10 +296,10 @@ reactions and is utilized in swiftcore</p>
 <span class="sig-name descname"><span class="pre">partition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">solver</span></em>, <em class="sig-param"><span class="pre">algorithm</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/transcriptomics/SWIFTCORE/partition.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.transcriptomics.SWIFTCORE.partition" title="Permalink to this definition">¶</a></dt>
 <dd><p>swiftcc++ and fastcc++ augment swiftcc and fastcc by this preprocess</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>component = partition</strong> (<em>model, solver, algorithm</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>model</strong> – the metabolic network reconstruction
 * .S - the associated sparse stoichiometric matrix
@@ -314,7 +314,7 @@ if another supported solver is called.</p></li>
 <li><p><strong>algorithm</strong> – the backend algorithm to be utilized between ‘swift’ and ‘fast’</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OUTPUT</dt>
+<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>component</strong> – the index set of the reactions constituting the maximum
 flux consistent metabolic subnetwork</p>
 </dd>
@@ -330,22 +330,22 @@ flux consistent metabolic subnetwork</p>
 <span class="sig-name descname"><span class="pre">swiftcc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">S</span></em>, <em class="sig-param"><span class="pre">rev</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/transcriptomics/SWIFTCORE/swiftcc.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.transcriptomics.SWIFTCORE.swiftcc" title="Permalink to this definition">¶</a></dt>
 <dd><p>swiftcc is an even faster version of fastcc</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>consistent = swiftcc</strong> (<em>S, rev [, solver]</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>S</strong> – the associated sparse stoichiometric matrix</p></li>
 <li><p><strong>rev</strong> – the 0-1 vector with 1’s corresponding to the reversible reactions</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OPTIONAL INPUT</dt>
+<dt class="field-odd">OPTIONAL INPUT<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>solver</strong> – the LP solver to be used; the currently available options are
 ‘gurobi’, ‘linprog’, and ‘cplex’ with the default value of
 ‘linprog’. It fallbacks to the COBRA LP solver interface if
 another supported solver is called.</p>
 </dd>
-<dt class="field-even">OUTPUT</dt>
+<dt class="field-even">OUTPUT<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>consistent</strong> – the 0-1 indicator vector of the reactions constituting
 the maximum flux consistent metabolic subnetwork</p>
 </dd>
@@ -357,10 +357,10 @@ the maximum flux consistent metabolic subnetwork</p>
 <span class="sig-name descname"><span class="pre">swiftcore</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">coreInd</span></em>, <em class="sig-param"><span class="pre">weights</span></em>, <em class="sig-param"><span class="pre">tol</span></em>, <em class="sig-param"><span class="pre">reduction</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/transcriptomics/SWIFTCORE/swiftcore.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.transcriptomics.SWIFTCORE.swiftcore" title="Permalink to this definition">¶</a></dt>
 <dd><p>swifcore is an even faster version of fastcore</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[reconstruction, reconInd, LP] = swiftcore</strong> (<em>model, coreInd, weights, tol, reduction, solver</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>model</strong> – the metabolic network with fields:
 * .S - the associated sparse stoichiometric matrix
@@ -374,13 +374,13 @@ the maximum flux consistent metabolic subnetwork</p>
 <li><p><strong>reduction</strong> – boolean enabling the metabolic network reduction preprocess</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OPTIONAL INPUT</dt>
+<dt class="field-odd">OPTIONAL INPUT<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>solver</strong> – the LP solver to be used; the currently available options are
 ‘gurobi’, ‘linprog’, and ‘cplex’ with the default value of
 ‘linprog’. It fallbacks to the COBRA LP solver interface if
 another supported solver is called.</p>
 </dd>
-<dt class="field-even">OUTPUTS</dt>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>reconstruction</strong> – the flux consistent metabolic network reconstructed
 from the core reactions</p></li>
@@ -410,10 +410,10 @@ Also, note that the input model is assumed to be flux consistent.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../preprocessing/index.html" class="btn btn-default float-right" title="Preprocessing" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../MOOMIN/index.html" class="btn btn-default float-right" title="Moomin" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../GIMME/index.html" class="btn btn-default" title="Gimme" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../index.html" class="btn btn-default" title="Transcriptomics" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -451,9 +451,6 @@ Also, note that the input model is assumed to be flux consistent.</p>
         };
     </script>
     <script type="text/javascript" src="../../../../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
-    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
-    <script type="text/javascript" src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script type="text/javascript" src="../../../../_static/doctools.js"></script>
     <script type="text/javascript" src="../../../../_static/sphinx_highlight.js"></script>
 

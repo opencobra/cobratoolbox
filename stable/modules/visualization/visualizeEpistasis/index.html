@@ -5,7 +5,7 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
@@ -69,8 +69,8 @@
         <link rel="search" title="Search" href="../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../index.html"/>
         <link rel="up" title="Visualization" href="../index.html"/>
-        <link rel="next" title="Sammim" href="../SAMMIM/index.html"/>
-        <link rel="prev" title="Metaboliccartography" href="../metabolicCartography/index.html"/> 
+        <link rel="next" title="Paint4net" href="../paint4Net/index.html"/>
+        <link rel="prev" title="Convert" href="../convert/index.html"/> 
 
   
   <script src="../../../_static/js/modernizr.min.js"></script>
@@ -92,7 +92,7 @@
           
 
           
-            <img src="/cobratoolbox/stable/_static/img/logo.png" class="logo" alt="cobratoolbox logo" />
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
           
           </a>
 
@@ -162,17 +162,17 @@
 <li class="toctree-l2"><a class="reference internal" href="../../design/index.html">Design</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../reconstruction/index.html">Reconstruction</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html">Visualization</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../cellDesigner/index.html">Celldesigner</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../paint4Net/index.html">Paint4net</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../entropicFBA/index.html">Entropicfba</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../metabolicCartography/index.html">Metaboliccartography</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Visualizeepistasis</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../SAMMIM/index.html">Sammim</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../convert/index.html">Convert</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../EscherMap/index.html">Eschermap</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../efmviz/index.html">Efmviz</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../createMetIntrcNetwork/index.html">Createmetintrcnetwork</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../maps/index.html">Maps</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../efmviz/index.html">Efmviz</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../entropicFBA/index.html">Entropicfba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cellDesigner/index.html">Celldesigner</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../SAMMIM/index.html">Sammim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../metabolicCartography/index.html">Metaboliccartography</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../convert/index.html">Convert</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Visualizeepistasis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../paint4Net/index.html">Paint4net</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../createMetIntrcNetwork/index.html">Createmetintrcnetwork</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../EscherMap/index.html">Eschermap</a></li>
 </ul>
 </li>
 </ul>
@@ -230,10 +230,10 @@
 <dd><p>This function was written to find out the type of epistatic interactions
 that either exist between two different or within same subsystem</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[neg,zer,nd,pos] = convertGene2PathwayInteractions</strong> (<em>E,epSys,uSys</em>)</p>
 </dd>
-<dt class="field-even">INPUT</dt>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>E</strong> – A square epistatic interaction matrix (or genes or reactions)</p></li>
 <li><p><strong>epSys</strong> – Subsystems belonging to the gene at that index (a second
@@ -245,7 +245,7 @@ epCmpt{1,1} = {‘Glycolysis’;’TCA cycle’}</p></li>
 interested in interactions between selected subsystems in the epSys)</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OUTPUTS</dt>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>neg</strong> – matrix of number of aggravating (negative) pathway-pair interactions</p></li>
 <li><p><strong>zer</strong> – matrix of number of no-epistatic interactions pathway-pair interactions</p></li>
@@ -267,17 +267,17 @@ depend upon environmental conditions”, Mol. BioSyst., 10, 2578-2589.</p>
 <span class="sig-name descname"><span class="pre">findSubsystemOfGenes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">genes</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/visualizeEpistasis/findSubsystemOfGenes.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.visualizeEpistasis.findSubsystemOfGenes" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function is used to find out which genes belong to which subsystem</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[rxns,subsys,subsysGenes,uSys,Nr,rxnNames]=findSubsystemOfGenes</strong> (<em>model,genes</em>)</p>
 </dd>
-<dt class="field-even">INPUT</dt>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>model</strong> – model to which genes belong to</p></li>
 <li><p><strong>genes</strong> – genes in question, if not provided will do it for all
 the genes, default: model.genes</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OUTPUT</dt>
+<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>rxns</strong> – Reactions governed by these genes</p></li>
 <li><p><strong>subsys</strong> – subsystem(s) to which the gene belongs to</p></li>
@@ -307,10 +307,10 @@ type of interaction. The color of the edge represents if the interactions
 are positive negative or mixed. The with of the edge represent the total number
 of interactions between any two given pathways.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[both,pos,neg]=visualizePathwayInEpistasis</strong> (<em>Nall,radius,pathwayNames</em>)</p>
 </dd>
-<dt class="field-even">INPUT</dt>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>Nall</strong> – a structure representing the epistatic interaction networks:
 Nall.pos: a square matrix representing number of positive interactions shared by any two pathways.
@@ -320,7 +320,7 @@ Nall.neg: a square matrix representing number of negative interactions shared by
 structure</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OUTPUT</dt>
+<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>both</strong> – contains both positive and negative interactions</p></li>
 <li><p><strong>pos</strong> – contains only positive interactions</p></li>
@@ -348,10 +348,10 @@ depend upon environmental conditions”, Mol. BioSyst., 10, 2578-2589.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../SAMMIM/index.html" class="btn btn-default float-right" title="Sammim" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../paint4Net/index.html" class="btn btn-default float-right" title="Paint4net" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../metabolicCartography/index.html" class="btn btn-default" title="Metaboliccartography" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../convert/index.html" class="btn btn-default" title="Convert" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -389,9 +389,6 @@ depend upon environmental conditions”, Mol. BioSyst., 10, 2578-2589.</p>
         };
     </script>
     <script type="text/javascript" src="../../../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../../../_static/jquery.js"></script>
-    <script type="text/javascript" src="../../../_static/underscore.js"></script>
-    <script type="text/javascript" src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
     <script type="text/javascript" src="../../../_static/sphinx_highlight.js"></script>
 

@@ -5,7 +5,7 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
@@ -69,8 +69,8 @@
         <link rel="search" title="Search" href="../../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../../index.html"/>
         <link rel="up" title="Transcriptomics" href="../index.html"/>
-        <link rel="next" title="Moomin" href="../MOOMIN/index.html"/>
-        <link rel="prev" title="Imat" href="../iMAT/index.html"/> 
+        <link rel="next" title="Gimme" href="../GIMME/index.html"/>
+        <link rel="prev" title="Init" href="../INIT/index.html"/> 
 
   
   <script src="../../../../_static/js/modernizr.min.js"></script>
@@ -92,7 +92,7 @@
           
 
           
-            <img src="/cobratoolbox/stable/_static/img/logo.png" class="logo" alt="cobratoolbox logo" />
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
           
           </a>
 
@@ -159,24 +159,24 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../base/index.html">Base</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Dataintegration</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../../fluxomics/index.html">Fluxomics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../metanetxMapper/index.html">Metanetxmapper</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../index.html">Transcriptomics</a><ul class="current">
-<li class="toctree-l4"><a class="reference internal" href="../eFlux/index.html">Eflux</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../SWIFTCORE/index.html">Swiftcore</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../MOOMIN/index.html">Moomin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../preprocessing/index.html">Preprocessing</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../INIT/index.html">Init</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Fastcore</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GIMME/index.html">Gimme</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../MBA/index.html">Mba</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../iMAT/index.html">Imat</a></li>
-<li class="toctree-l4 current"><a class="current reference internal" href="#">Fastcore</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../MOOMIN/index.html">Moomin</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../GIMME/index.html">Gimme</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../SWIFTCORE/index.html">Swiftcore</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../preprocessing/index.html">Preprocessing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../eFlux/index.html">Eflux</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="../../metaboAnnotator/index.html">Metaboannotator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../metanetxMapper/index.html">Metanetxmapper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../metabotools/index.html">Metabotools</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../chemoInformatics/index.html">Chemoinformatics</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../XomicsToModel/index.html">Xomicstomodel</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../metabotools/index.html">Metabotools</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../metaboAnnotator/index.html">Metaboannotator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../fluxomics/index.html">Fluxomics</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../design/index.html">Design</a></li>
@@ -239,7 +239,7 @@
 core reaction (K) yet minimises the activity of any non-core reaction (P).
 Implementation of LP-10 for input sets K, P (see FASTCORE paper)</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>V = LP10</strong> (<em>K, P, v, epsilon</em>)</p>
 </dd>
 </dl>
@@ -250,7 +250,7 @@ Implementation of LP-10 for input sets K, P (see FASTCORE paper)</p>
 <span class="sig-name descname"><span class="pre">LP10cvx</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">K</span></em>, <em class="sig-param"><span class="pre">P</span></em>, <em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">epsilon</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/transcriptomics/FASTCORE/LP10cvx.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.transcriptomics.FASTCORE.LP10cvx" title="Permalink to this definition">¶</a></dt>
 <dd><p>CPLEX implementation of LP-9 for input sets K, P (see FASTCORE paper)</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>V = LP9cvx</strong> (<em>K, P, model, epsilon</em>)</p>
 </dd>
 </dl>
@@ -261,7 +261,7 @@ Implementation of LP-10 for input sets K, P (see FASTCORE paper)</p>
 <span class="sig-name descname"><span class="pre">LP3</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">J</span></em>, <em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">LPproblem</span></em>, <em class="sig-param"><span class="pre">basis</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/transcriptomics/FASTCORE/LP3.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.transcriptomics.FASTCORE.LP3" title="Permalink to this definition">¶</a></dt>
 <dd><p>Implementation of LP-3 for input set J (see FASTCORE paper)</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[v, basis] = LP3</strong> (<em>J, model, basis</em>)</p>
 </dd>
 </dl>
@@ -273,10 +273,10 @@ Implementation of LP-10 for input sets K, P (see FASTCORE paper)</p>
 <dd><p>Implementation of LP-7 for input set J (see FASTCORE paper).
 Maximises the number of feasible fluxes in J whose value is at least epsilon</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[v, basis] = LP7</strong> (<em>J, model, epsilon, basis</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>J</strong> – indicies of irreversible reactions</p></li>
 <li><p><strong>model</strong> – model</p></li>
@@ -284,7 +284,7 @@ Maximises the number of feasible fluxes in J whose value is at least epsilon</p>
 <li><p><strong>epsilon</strong> – tolerance</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OUTPUTS</dt>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>v</strong> – optimal steady state flux vector</p></li>
 <li><p><strong>basis</strong> – basis</p></li>
@@ -299,10 +299,10 @@ Maximises the number of feasible fluxes in J whose value is at least epsilon</p>
 <dd><p>Based on: <cite>The FASTCORE algorithm for context-specific metabolic network reconstruction, Vlassis et
 al., 2013, PLoS Comp Biol.</cite></p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>A = fastCoreWeighted</strong> (<em>C, model, epsilon</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>C</strong> – List of reaction numbers corresponding to the core set</p>
 </dd>
 </dl>
@@ -312,7 +312,7 @@ weights  Weight vector for each reaction in the model</p>
 <div><p>epsilon:  Parameter (default: getCobraSolverParams(‘LP’, ‘feasTol’)*100; see Vlassis et al for more details)</p>
 </div></blockquote>
 <dl class="field-list simple">
-<dt class="field-odd">OUTPUT</dt>
+<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>A</strong> – A most compact model consistent with the applied constraints and
 containing the desired core set reactions (as given in <cite>C</cite>)</p>
 </dd>
@@ -325,10 +325,10 @@ containing the desired core set reactions (as given in <cite>C</cite>)</p>
 <dd><p>The FASTCC algorithm for testing the consistency of a stoichiometric model.
 Output A is the consistent part of the model [A,V] = fastcc(model, epsilon, printLevel)</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[A, modelFlipped, V] = fastcc</strong> (<em>model, epsilon, printLevel, modeFlag, method</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>model</strong> – cobra model structure containing the fields:</p>
 <ul class="simple">
 <li><p>S - <cite>m</cite> x <cite>n</cite> stoichiometric matrix</p></li>
@@ -337,7 +337,7 @@ Output A is the consistent part of the model [A,V] = fastcc(model, epsilon, prin
 <li><p>rxns - <cite>n</cite> x 1 cell array of reaction abbreviations</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>model</strong> –</p>
 <ul>
@@ -352,13 +352,13 @@ Output A is the consistent part of the model [A,V] = fastcc(model, epsilon, prin
 <li><p><strong>printLevel</strong> – 0 = silent, 1 = summary, 2 = debug</p></li>
 </ul>
 </dd>
-<dt class="field-even">OPTIONAL INPUTS</dt>
+<dt class="field-even">OPTIONAL INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>modeFlag</strong> – {(0),1}; 1=return matrix of modes V</p></li>
 <li><p><strong>method</strong> – ‘original’ - default or ‘nonconvex’</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OUTPUTS</dt>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>A</strong> – indices of flux consistent reactions in model</p></li>
 <li><p><strong>orientation</strong> – <cite>n</cite> x 1 vector indicating the orientation of flux
@@ -377,10 +377,10 @@ specific model. FASTCORE algorithm defines one set of core
 reactions that is guaranteed to be active in the extracted model and find
 the minimum of reactions possible to support the core.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>tissueModel = fastcore</strong> (<em>model, coreRxnInd</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt><strong>model</strong> – (the following fields are required - others can be supplied)</dt><dd><ul class="simple">
 <li><p>S  - <cite>m x 1</cite> Stoichiometric matrix</p></li>
@@ -394,14 +394,14 @@ the minimum of reactions possible to support the core.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>epsilon</strong> – smallest flux value that is considered nonzero
 (default getCobraSolverParams(‘LP’, ‘feasTol’)*100)</p></li>
 <li><p><strong>printLevel</strong> – 0 = silent, 1 = summary, 2 = debug (default - 0)</p></li>
 </ul>
 </dd>
-<dt class="field-even">OUTPUT</dt>
+<dt class="field-even">OUTPUT<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>tissueModel</strong> – extracted model</p></li>
 <li><p><strong>coreRxnBool</strong> – n x 1 boolean vector indicating core reactions</p></li>
@@ -419,10 +419,10 @@ e1003424.’</p>
 <dd><p>Finds a mode that contains as many reactions from J and as few from P.
 Returns its support, or [] if no reaction from J can get flux above epsilon</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>Supp = findSparseMode</strong> (<em>J, P, singleton, model, LPproblem, epsilon</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>J</strong> – Indicies of irreversible reactions</p></li>
 <li><p><strong>P</strong> – Reactions</p></li>
@@ -432,10 +432,10 @@ Returns its support, or [] if no reaction from J can get flux above epsilon</p>
 <li><p><strong>epsilon</strong> – Parameter (default: getCobraSolverParams(‘LP’, ‘feasTol’)*100; see <cite>Vlassis et al</cite> for more details)</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OPTIONAL INPUT</dt>
+<dt class="field-odd">OPTIONAL INPUT<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>basis</strong> – Basis</p>
 </dd>
-<dt class="field-even">OUTPUTS</dt>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>Supp</strong> – Support or [] if no reaction from <cite>J</cite> can get flux above epsilon</p></li>
 <li><p><strong>basis</strong> – Basis</p></li>
@@ -453,10 +453,10 @@ Based on: <cite>The FASTCORE algorithm for context-specific metabolic network re
 Input C is the core set, and output A is the reconstruction, Vlassis et
 al., 2013, PLoS Comp Biol.</cite></p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>Supp = findSparseMode</strong> (<em>J, P, singleton, model, epsilon</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>J</strong> – Indicies of irreversible reactions</p></li>
 <li><p><strong>P</strong> – Reactions</p></li>
@@ -467,7 +467,7 @@ al., 2013, PLoS Comp Biol.</cite></p>
 <li><p><strong>epsilon</strong> – Parameter (default: getCobraSolverParams(‘LP’, ‘feasTol’)*100; see Vlassis et al for more details)</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OUTPUT</dt>
+<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>Supp</strong> – Support or [] if no reaction from J can get flux above epsilon</p>
 </dd>
 </dl>
@@ -485,10 +485,10 @@ al., 2013, PLoS Comp Biol.</cite></p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../MOOMIN/index.html" class="btn btn-default float-right" title="Moomin" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../GIMME/index.html" class="btn btn-default float-right" title="Gimme" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../iMAT/index.html" class="btn btn-default" title="Imat" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../INIT/index.html" class="btn btn-default" title="Init" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -526,9 +526,6 @@ al., 2013, PLoS Comp Biol.</cite></p>
         };
     </script>
     <script type="text/javascript" src="../../../../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
-    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
-    <script type="text/javascript" src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script type="text/javascript" src="../../../../_static/doctools.js"></script>
     <script type="text/javascript" src="../../../../_static/sphinx_highlight.js"></script>
 

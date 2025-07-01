@@ -5,7 +5,7 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
@@ -69,8 +69,8 @@
         <link rel="search" title="Search" href="../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../index.html"/>
         <link rel="up" title="Dataintegration" href="../index.html"/>
-        <link rel="next" title="Molecularweight" href="molecularWeight/index.html"/>
-        <link rel="prev" title="Preprocessing" href="../transcriptomics/preprocessing/index.html"/> 
+        <link rel="next" title="Rxn" href="RXN/index.html"/>
+        <link rel="prev" title="Metabotools" href="../metabotools/index.html"/> 
 
   
   <script src="../../../_static/js/modernizr.min.js"></script>
@@ -92,7 +92,7 @@
           
 
           
-            <img src="/cobratoolbox/stable/_static/img/logo.png" class="logo" alt="cobratoolbox logo" />
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
           
           </a>
 
@@ -159,20 +159,20 @@
 <li class="toctree-l2"><a class="reference internal" href="../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../base/index.html">Base</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html">Dataintegration</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../fluxomics/index.html">Fluxomics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../metanetxMapper/index.html">Metanetxmapper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../transcriptomics/index.html">Transcriptomics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../metaboAnnotator/index.html">Metaboannotator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../metanetxMapper/index.html">Metanetxmapper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../metabotools/index.html">Metabotools</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Chemoinformatics</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="molecularWeight/index.html">Molecularweight</a></li>
-<li class="toctree-l4"><a class="reference internal" href="metabolites/index.html">Metabolites</a></li>
-<li class="toctree-l4"><a class="reference internal" href="reactions/index.html">Reactions</a></li>
 <li class="toctree-l4"><a class="reference internal" href="RXN/index.html">Rxn</a></li>
+<li class="toctree-l4"><a class="reference internal" href="metabolites/index.html">Metabolites</a></li>
 <li class="toctree-l4"><a class="reference internal" href="inchi/index.html">Inchi</a></li>
+<li class="toctree-l4"><a class="reference internal" href="molecularWeight/index.html">Molecularweight</a></li>
+<li class="toctree-l4"><a class="reference internal" href="reactions/index.html">Reactions</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../XomicsToModel/index.html">Xomicstomodel</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../metabotools/index.html">Metabotools</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../metaboAnnotator/index.html">Metaboannotator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../fluxomics/index.html">Fluxomics</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../design/index.html">Design</a></li>
@@ -229,17 +229,17 @@
 <span id="id1"></span><h1>Chemoinformatics<a class="headerlink" href="#chemoinformatics" title="Permalink to this heading">¶</a></h1>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="molecularWeight/index.html">Molecularweight</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="molecularWeight/basicPhysicochemicalData/index.html">Basicphysicochemicaldata</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="metabolites/index.html">Metabolites</a></li>
-<li class="toctree-l1"><a class="reference internal" href="reactions/index.html">Reactions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="RXN/index.html">Rxn</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="RXN/old/index.html">Old</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="metabolites/index.html">Metabolites</a></li>
 <li class="toctree-l1"><a class="reference internal" href="inchi/index.html">Inchi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="molecularWeight/index.html">Molecularweight</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="molecularWeight/basicPhysicochemicalData/index.html">Basicphysicochemicaldata</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="reactions/index.html">Reactions</a></li>
 </ul>
 </div>
 <span class="target" id="module-src.dataIntegration.chemoInformatics"></span><dl class="mat function">
@@ -272,13 +272,13 @@ A := incidence(dATM);</p>
 </dl>
 <p>so we have the atomic decomposition M2Ai*M2Ai’<a href="#id2"><span class="problematic" id="id3">*</span></a>N = M2Ai*A*Ti2R</p>
 <dl class="field-list simple">
-<dt class="field-odd">INPUTS</dt>
+<dt class="field-odd">INPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>model</strong> – COBRA model with following fields:
 * .S - The m x n stoichiometric matrix for the metabolic network.
 * .rxns - An n x 1 array of reaction identifiers.
 * .mets - An m x 1 array of metabolite identifiers.</p>
 </dd>
-<dt class="field-even">OPTIONAL INPUTS</dt>
+<dt class="field-even">OPTIONAL INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>model</strong> – COBRA model with following fields:
 * .metFormulas - An m x 1 array of metabolite chemical formulas.
@@ -391,13 +391,13 @@ arm.Ti2R:              <cite>t</cite> x <cite>n</cite> matrix mapping one or mor
 <span class="sig-name descname"><span class="pre">deleteProtons</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/chemoInformatics/deleteProtons.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.chemoInformatics.deleteProtons" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to delete the protons in the metabolic network</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>newModel = deleteProtons</strong> (<em>model</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>model</strong> – COBRA model.</p>
 </dd>
-<dt class="field-odd">OUTPUTS</dt>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>newModel</strong> – COBRA model without protons nor protons trasport
 reactions.</p>
 </dd>
@@ -413,13 +413,13 @@ reactions.</p>
 them with a R group. Produces a chemical formula from a string of atoms.
 Removes or add atoms in the formula.</p>
 <dl class="field-list">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[metFormula] = cobraFormulaToChemFormula</strong> (<em>metReconFormula</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>metReconFormula</strong> – An n x 1 array of metabolite Recon formulas</p>
 </dd>
-<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>addOrRemove</strong> – A struct array containing:
 <a href="#id4"><span class="problematic" id="id5">*</span></a>.elements - element to edit
 <a href="#id6"><span class="problematic" id="id7">*</span></a>.times - vector indicated the times the</p>
@@ -428,7 +428,7 @@ Removes or add atoms in the formula.</p>
 added (positive)</p>
 </div></blockquote>
 </dd>
-<dt class="field-even">OUTPUTS</dt>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>newFormula</strong> – A chemical formula for a metabolite</p>
 </dd>
 </dl>
@@ -446,10 +446,10 @@ there is a MDL MOL file for each metabolite in a metabolic reaction.
 If JAVA is installed, it also atom maps the metabolic reactions
 with an MDL RXN file.</p>
 <dl class="field-list">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[info, modelOut] = generateChemicalDatabase</strong> (<em>model, options</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul>
 <li><p><strong>model</strong> – COBRA model with following fields:</p>
 <ul class="simple">
@@ -621,10 +621,10 @@ since another structure was missing.</p>
 to have openbabel installed. The formats that can be converted are used
 MDL MOL, SMILES, InChI, InChIKey, MDL RXN, reaction SMILES and rInChI.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>newStructure = openBabelConverter</strong> (<em>origFormat, outputFormat, saveFile</em>)</p>
 </dd>
-<dt class="field-even">INPUT</dt>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>origFormat</strong> – Original chemoinformatic format. Chemical tables such
 as MDL MOL or MDL RXN must be provided as files</p></li>
@@ -632,7 +632,7 @@ as MDL MOL or MDL RXN must be provided as files</p></li>
 mol, inchi, inchikey, rxn and rinchi.</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>saveFileDir</strong> – String with the directory where the new format will be
 saved. If is empty, the format is not saved.</p>
 </dd>
@@ -664,10 +664,10 @@ newFormat = openBabelConverter(origFormat, outputFormat);</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="molecularWeight/index.html" class="btn btn-default float-right" title="Molecularweight" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="RXN/index.html" class="btn btn-default float-right" title="Rxn" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../transcriptomics/preprocessing/index.html" class="btn btn-default" title="Preprocessing" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../metabotools/index.html" class="btn btn-default" title="Metabotools" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -705,9 +705,6 @@ newFormat = openBabelConverter(origFormat, outputFormat);</p>
         };
     </script>
     <script type="text/javascript" src="../../../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../../../_static/jquery.js"></script>
-    <script type="text/javascript" src="../../../_static/underscore.js"></script>
-    <script type="text/javascript" src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
     <script type="text/javascript" src="../../../_static/sphinx_highlight.js"></script>
 

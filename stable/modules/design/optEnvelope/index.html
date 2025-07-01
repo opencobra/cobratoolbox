@@ -5,7 +5,7 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
@@ -69,8 +69,8 @@
         <link rel="search" title="Search" href="../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../index.html"/>
         <link rel="up" title="Design" href="../index.html"/>
-        <link rel="next" title="Optforcegams" href="../optForceGAMS/index.html"/>
-        <link rel="prev" title="Optforce" href="../optForce/index.html"/> 
+        <link rel="next" title="Reconstruction" href="../../reconstruction/index.html"/>
+        <link rel="prev" title="Trimgdel" href="../TrimGdel/index.html"/> 
 
   
   <script src="../../../_static/js/modernizr.min.js"></script>
@@ -92,7 +92,7 @@
           
 
           
-            <img src="/cobratoolbox/stable/_static/img/logo.png" class="logo" alt="cobratoolbox logo" />
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
           
           </a>
 
@@ -160,9 +160,10 @@
 <li class="toctree-l2"><a class="reference internal" href="../../base/index.html">Base</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../dataIntegration/index.html">Dataintegration</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html">Design</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../optForce/index.html">Optforce</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Optenvelope</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../optForceGAMS/index.html">Optforcegams</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../optForce/index.html">Optforce</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../TrimGdel/index.html">Trimgdel</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Optenvelope</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../reconstruction/index.html">Reconstruction</a></li>
@@ -223,17 +224,17 @@
 Algorithm is able to knock out genes as well as reactions to produce
 production envelope</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>line = addEnv</strong> (<em>origModel, biomass, desiredProduct, ‘KnockOuts’, knockouts, ‘colour’, colour, ‘prodMol’, prodMol, ‘subUptake’, subUptake, ‘molarSum’, molarSum</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>origModel         COBRA model structure [struct]</strong></p></li>
 <li><p><strong>biomass           Reaction name of biomass [char]</strong></p></li>
 <li><p><strong>desiredProduct    Reaction name of desired product [char]</strong></p></li>
 </ul>
 </dd>
-<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>KnockOuts</strong> (<em>opt</em>) – {})</p></li>
 <li><p><strong>colour</strong> (<em>opt</em>) – ‘r’ (red))</p></li>
@@ -265,10 +266,10 @@ Modified by Kristaps Berzins   30/09/2024</p>
 <dd><p>This function is creating and calculating MILP to get certain amount
 of knockouts to achieve best production envelope</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[knockouts] = milpOEReinserts</strong> (<em>model, data, K, minP, numKO, toDel, timeLimit, printLevel</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>model       COBRA model structure in irreversible form [struct]</strong></p></li>
 <li><p><strong>data        Struct with information about</strong> –</p>
@@ -291,7 +292,7 @@ of knockouts to achieve best production envelope</p>
 <li><p><strong>numKO       Number of knockouts to achieve [double]</strong></p></li>
 </ul>
 </dd>
-<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>toDel       Numeric variable that shows what to delete</strong> – 0: reactions
 1: genes
@@ -300,7 +301,7 @@ of knockouts to achieve best production envelope</p>
 <li><p><strong>printLevel  Print level for gurobi optimization [double]</strong></p></li>
 </ul>
 </dd>
-<dt class="field-even">OUTPUTS</dt>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>knockouts   List of reactions that when removed gives optimal envelope</strong></p>
 </dd>
 </dl>
@@ -318,10 +319,10 @@ using optEnvelope.m with set numKO parameter</p>
 a specific point on production envelope for best possible production
 envelope</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[data]=minActiveRxns</strong> (<em>model, matchRev, K, minP, toDel, timeLimit, midPoints, printLevel</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>model         COBRA model structure in irreversible form [struct]</strong></p></li>
 <li><p><strong>matchRev      Matching of forward and backward reactions of a reversible</strong> – reaction [double array]</p></li>
@@ -344,7 +345,7 @@ envelope</p>
 <li><p><strong>printLevel    Print level for gurobi optimization (default</strong> – 0) [double]</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OUTPUTS</dt>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>data          Struct with information about</strong> –</p>
 <ul class="simple">
 <li><p>pro           Minimal product for best envelope</p></li>
@@ -375,16 +376,16 @@ modified by   Kristaps Berzins        30/10/2024     Added calculation of active
 smallest set of reactions in the pool of inactive reactions that offers same production envelope.
 Algorith provides multiple ways to reinsert reactions - sequential, MILP, GA(under construction)</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[main, mid] = optEnvelope</strong> (<em>model, desiredProduct, ‘protectedRxns’, protectedRxns, ‘numTries’, numTries, ‘numKO’, numKO, ‘prodMol’, prodMol, ‘midPoints’, midPoints, ‘timeLimit’, timeLimit, ‘printLevel’, printLevel, ‘drawEnvelope’, drawEnvelope</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>model              COBRA model structure [struct]</strong></p></li>
 <li><p><strong>desiredProduct     Reaction name of desired product [char]</strong></p></li>
 </ul>
 </dd>
-<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>protectedRxns</strong> (<em>opt) Aditional reactions to ignore (must be in irreversible form</em>) – {})</p></li>
 <li><p><strong>numTries</strong> (<em>opt</em>) – [])</p></li>
@@ -399,7 +400,7 @@ Algorith provides multiple ways to reinsert reactions - sequential, MILP, GA(und
 <li><p><strong>GAon</strong> (<em>unfinished function</em>)</p></li>
 </ul>
 </dd>
-<dt class="field-even">OUTPUTS</dt>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>main               Structure that contains information about reactions to remove for optimal envelope</strong> – Information about most probable point</p></li>
 <li><p><strong>mid                Structure that contains information about reactions to remove for midpoint envelopes</strong> – Information about most probable points for midpoint envelopes</p></li>
@@ -436,10 +437,10 @@ reinserting them one by one to get best possible set of knockouts while
 retaining optimal envelope. With numTries parameter this can be done
 multiple times by randomizing list of inactive reactions</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[mainKnockouts, finalMidKnockouts] = sequentialOEReinserts</strong> (<em>modelOld, data, K, toDel, minP, midPoints, numTries, timeLimit</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>modelOld            COBRA model structure in irreversible form [struct]</strong></p></li>
 <li><p><strong>data                Struct with information about</strong> –</p>
@@ -465,7 +466,7 @@ multiple times by randomizing list of inactive reactions</p>
 <li><p><strong>timeLimit           Time limit for gurobi optimization</strong> (<em>in seconds</em>)</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OUTPUTS</dt>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>mainKnockouts       List of reactions that when removed gives optimal envelope</strong></p></li>
 <li><p><strong>finalMidKnockouts   List of reactions that when removed gives optimal</strong> – envelopes for middle envelopes</p></li>
@@ -493,10 +494,10 @@ using optEnvelope.m</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../optForceGAMS/index.html" class="btn btn-default float-right" title="Optforcegams" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../../reconstruction/index.html" class="btn btn-default float-right" title="Reconstruction" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../optForce/index.html" class="btn btn-default" title="Optforce" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../TrimGdel/index.html" class="btn btn-default" title="Trimgdel" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -534,9 +535,6 @@ using optEnvelope.m</p>
         };
     </script>
     <script type="text/javascript" src="../../../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../../../_static/jquery.js"></script>
-    <script type="text/javascript" src="../../../_static/underscore.js"></script>
-    <script type="text/javascript" src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
     <script type="text/javascript" src="../../../_static/sphinx_highlight.js"></script>
 

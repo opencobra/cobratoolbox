@@ -5,7 +5,7 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
@@ -92,7 +92,7 @@
           
 
           
-            <img src="/cobratoolbox/stable/_static/img/logo.png" class="logo" alt="cobratoolbox logo" />
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
           
           </a>
 
@@ -161,10 +161,11 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../dataIntegration/index.html">Dataintegration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../design/index.html">Design</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Reconstruction</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../../modelGeneration/index.html">Modelgeneration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../metaboRePort/index.html">Metaboreport</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../refinement/index.html">Refinement</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../demeter/index.html">Demeter</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../fastGapFill/index.html">Fastgapfill</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../rBioNet/index.html">Rbionet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../growthExpMatch/index.html">Growthexpmatch</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../index.html">Comparison</a><ul class="current">
 <li class="toctree-l4 current"><a class="current reference internal" href="#">Modelborgifier</a><ul>
 <li class="toctree-l5"><a class="reference internal" href="gui/index.html">Gui</a></li>
@@ -172,9 +173,8 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../metaboRePort/index.html">Metaboreport</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../growthExpMatch/index.html">Growthexpmatch</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../rBioNet/index.html">Rbionet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../fastGapFill/index.html">Fastgapfill</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modelGeneration/index.html">Modelgeneration</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../visualization/index.html">Visualization</a></li>
@@ -240,10 +240,10 @@
 to help alleviate control between different scripts.
 Called by <cite>cleanTmodel</cite>, <cite>readCbTmodel</cite>, <cite>verifyModel</cite>, <cite>organizeModelCool</cite>, <cite>TmodelStats</cite>, <cite>orderModelFieldsBorg</cite>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>fields = TmodelFields()</strong></p>
 </dd>
-<dt class="field-even">OUTPUTS</dt>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>Fields</strong> – A column cell array that contains the following in order:</p>
 <ul class="simple">
 <li><p>rxnFields</p></li>
@@ -266,16 +266,16 @@ metabolic reconstructions with modelBorgifier. Bioinformatics
 <dd><p>Provides information on <cite>Tmodel</cite>. Can also be used on a normal
 model. Called  by <cite>mergeModelsBorg</cite>, calls <cite>TmodelFields</cite>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>Stats = TmodelStats</strong> (<em>Tmodel, [Stats]</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>Tmodel</strong> – Model structure</p>
 </dd>
-<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>Stats</strong> – Will add information to current <cite>Stats</cite> structure.</p>
 </dd>
-<dt class="field-even">OUTPUTS</dt>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>Stats</strong> – Stats array that contains weighting information from previous
 scoring work.</p>
 </dd>
@@ -291,10 +291,10 @@ metabolic reconstructions with modelBorgifier. Bioinformatics
 <span class="sig-name descname"><span class="pre">addMetInfo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/comparison/modelBorgifier/addMetInfo.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.comparison.modelBorgifier.addMetInfo" title="Permalink to this definition">¶</a></dt>
 <dd><p>Allows for the addition of information to metabolites during matching. Is called by <cite>metCompareGUI</cite>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>addMetInfo</strong> (<em>nowMet</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>nowMet</strong> – Metabolite number of metabolite to be updated</p>
 </dd>
 </dl>
@@ -310,10 +310,10 @@ metabolic reconstructions with modelBorgifier. Bioinformatics
 <dd><p>Adds reactions and info from a comparison model into the
 master template database, <cite>Tmodel</cite>. Called by <cite>mergeModelsBorg</cite>, calls <cite>cleanTmodel</cite></p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[TmodelC, Cmodel] = addToTModel</strong> (<em>Cmodel, Tmodel, rxnList, metList</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>Cmodel</strong> – Reaction model to draw new reactions from. Must be in the
 extended COBRA format.</p></li>
@@ -328,14 +328,14 @@ matching met indexes from <cite>Tmodel</cite>. New mets should already
 have their correct index in <cite>Tmodel</cite>.</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>‘NoClean’</strong> – Don’t call <cite>cleanTmodel</cite> at the end of this function</p></li>
 <li><p><strong>‘Verbose’</strong> – Ask when performing certain operations. Carries into
 <cite>cleanTmodel</cite>.</p></li>
 </ul>
 </dd>
-<dt class="field-even">OUTPUTS</dt>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>Tmodel</strong> – The addended master reaction database.</p>
 </dd>
 </dl>
@@ -354,17 +354,17 @@ reactions which can not be confidently assigned are reviewed with
 have a score above a supplied cutoff and not have competing matches with
 similar scores. Called by <cite>reactionCompareGUI</cite>, calls <cite>metCompare</cite>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>rxnList = autoMatchReactions</strong> (<em>scoreTotal, rxnList, metList, [rxnHighCutoff, rxnMargin, rxnLowCutoff], [metHighCutoff, metMargin, metLowCutoff]</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>scoreTotal</strong> – Optimized score matrix between <cite>CMODEL</cite> and <cite>TMODEL</cite> reactions.</p></li>
 <li><p><strong>rxnList</strong> – Only undeclared reactions will be automatched.</p></li>
 <li><p><strong>metList</strong> – Comparison array for metabolites</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>rxnHighCutoff</strong> – Score value above which confident assignments can be made.</p></li>
 <li><p><strong>rxnMargin</strong> – Distance a best match has to be above a competitor match.</p></li>
@@ -376,7 +376,7 @@ similar scores. Called by <cite>reactionCompareGUI</cite>, calls <cite>metCompar
 <li><p><strong>TMODEL</strong> – global input</p></li>
 </ul>
 </dd>
-<dt class="field-even">OUTPUTS</dt>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>rxnList</strong> – Array which correlates a reaction from CMODEL to the index
 of the best match in <cite>TMODEL</cite>. Rxns with 0 designation are
 new, ones with a -1 need manual review.</p>
@@ -395,13 +395,13 @@ metabolic reconstructions with modelBorgifier. Bioinformatics
 on the metabolites list, <cite>S</cite> matrix and bound information. Returns the
 model with the additinal field <cite>rxnEquations</cite>. Is called by <cite>cleanTmodel</cite>, <cite>compareCbModels</cite>, <cite>readCbTmodel</cite>, <cite>verifyModel</cite>, <cite>addSEEDInfo</cite>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>Model = buildRxnEquations</strong> (<em>Model</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>Model</strong> – COBRA format model or <cite>Tmodel</cite></p>
 </dd>
-<dt class="field-odd">OUTPUTS</dt>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>Model</strong> – Model with corrected <cite>rxnEquations</cite> field.</p>
 </dd>
 </dl>
@@ -418,13 +418,13 @@ metabolic reconstructions with modelBorgifier. Bioinformatics
 on the metabolite long names, S matrix and bound information. Returns the
 model with the additioanl field <cite>rxnEquations</cite>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>Model = buildRxnEquations</strong> (<em>Model</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>Model</strong> – COBRA format model or <cite>Tmodel</cite></p>
 </dd>
-<dt class="field-odd">OUTPUTS</dt>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>Model</strong> – Model with corrected <cite>rxnEquations</cite> field.</p>
 </dd>
 </dl>
@@ -442,13 +442,13 @@ designations before some of the cell arrays add creates indenty arrays
 that indicate which reactions and metabolties are contained in which
 models. This function should be used after <cite>verifyModel</cite>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>Tmodel = buildTmodel</strong> (<em>Model</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>Model</strong> – Cobra model.</p>
 </dd>
-<dt class="field-odd">OUTPUTS</dt>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>Model</strong> – Template model which to which another model can be
 compared. Known as <cite>Tmodel</cite> in other scripts</p>
 </dd>
@@ -465,13 +465,13 @@ metabolic reconstructions with modelBorgifier. Bioinformatics
 <dd><p>Finds the letter characters (as opposed to numeric characters) in a string
 and returns a logical array. Called by <cite>cleanTmodel</cite>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>letterpos = charpos</strong> (<em>instr</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>instr</strong> – String input.</p>
 </dd>
-<dt class="field-odd">OUTPUTS</dt>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>letterpos</strong> – Logical array with 1’s where the letters are in input.</p>
 </dd>
 </dl>
@@ -487,16 +487,16 @@ metabolic reconstructions with modelBorgifier. Bioinformatics
 <dd><p>Reorganizes and checks <cite>Tmodel</cite> for completeness. To be used
 immediately after <cite>addToTmodel</cite>. Called by <cite>addToTmodel</cite>, <cite>mergeModelsBorg</cite>, <cite>mergeTrxns</cite>, calls <cite>TmodelFields</cite>, <cite>buildRxnEquations</cite>, <cite>removeDuplicateNames</cite>, <cite>makeNamesUnique</cite>, <cite>charpos</cite>, <cite>removeProblematicCharacters</cite>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>Tmodel = cleanTmodel</strong> (<em>Tmodel</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>Tmodel</strong> – Template model.</p>
 </dd>
-<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>‘Verbose’</strong> – Ask when performing certain operations.</p>
 </dd>
-<dt class="field-even">OUTPUTS</dt>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>Tmodel</strong> – Cleaned template model</p>
 </dd>
 </dl>
@@ -512,16 +512,16 @@ metabolic reconstructions with modelBorgifier. Bioinformatics
 <dd><p>Returns a HTML string with colored font. Used for GUIs.
 Called by <cite>metCompareGUI</cite>, <cite>reactionCompareGUI</cite>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>outHtml = colText</strong> (<em>inText, inColor</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>inText</strong> – String</p></li>
 <li><p><strong>inColor      Color to make string.</strong></p></li>
 </ul>
 </dd>
-<dt class="field-odd">OUTPUTS</dt>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>outHtml</strong> – Text with formatting</p>
 </dd>
 </dl>
@@ -538,16 +538,16 @@ metabolic reconstructions with modelBorgifier. Bioinformatics
 combinations of metabolites between two models. It is not however used
 by the main workflow.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>metScores = compareAllMets(Cmodel,Tmodel</strong></p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>Cmodel</strong> – Comparison model.</p></li>
 <li><p><strong>Tmodel</strong> – Template model.</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OUTPUTS</dt>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>metScore</strong> – Matrix of scores of all pairwise comparisons.</p>
 </dd>
 </dl>
@@ -563,19 +563,19 @@ metabolic reconstructions with modelBorgifier. Bioinformatics
 <dd><p>Calculate similarity of two Cb models. These models must
 be in a COBRA-like format. Called by <cite>driveModelBorgifier</cite>, calls <cite>addComparisonInfo</cite>, <cite>compareMetInfo</cite>, <cite>optimalScores</cite>, <cite>mapMatch</cite>, <cite>buildRxnEquations</cite>, <cite>fixNames</cite>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[Cmodel, Tmodel, score, Stats] = compareCbModels</strong> (<em>Cmodel, Tmodel</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>Cmodel</strong> – Model to be compared to the template. In COBRA format.</p></li>
 <li><p><strong>Tmodel</strong> – Template model. In COBRA format.</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>‘Verbose’</strong> – Print progress information. Also controls plotting.</p>
 </dd>
-<dt class="field-even">OUTPUTS</dt>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>Cmodel</strong> – Appended Cb comparison model with additional information to
 facilitate comparison.</p></li>
@@ -612,16 +612,16 @@ metabolic reconstructions with modelBorgifier. Bioinformatics
 <dd><p>Creates a structure with the matrices before and after merging. Useful
 for comparing how successful merging was.  Called by <cite>mergeModelsBorg</cite>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>FluxCompare = compareMatricies</strong> (<em>CMODEL, Cspawn</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>CMODEL</strong> – model in cobra standard</p></li>
 <li><p><strong>Cspawn</strong> – <cite>Cmodel</cite> after it has been removed from the` <cite>TmodelC</cite></p></li>
 </ul>
 </dd>
-<dt class="field-odd">OUTPUTS</dt>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>FluxCompare</strong> – structure with matrices</p>
 </dd>
 </dl>
@@ -637,13 +637,13 @@ metabolic reconstructions with modelBorgifier. Bioinformatics
 <dd><p>Finds number of carbons in a formula, if any.
 Called by <cite>reactionCompareGUI</cite>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>cNum = countC</strong> (<em>nowFormula</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>nowFormula</strong> – Current chemical formula</p>
 </dd>
-<dt class="field-odd">OUTPUTS</dt>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>cNum</strong> – Integer with number of carbons</p>
 </dd>
 </dl>
@@ -659,20 +659,20 @@ metabolic reconstructions with modelBorgifier. Bioinformatics
 <dd><p>Finds find possible matches for a given metabolite.
 Called by <cite>metCompare</cite>, <cite>metCompareGUI</cite>, calls <cite>stringSimilarityForward</cite>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[matchScores, matchIndex, [hit]] = findMetMatch</strong> (<em>cMet, [tRxn]</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>cMet</strong> – Metabolite number (relative to CMODEL) metabolite to be compared.</p>
 </dd>
-<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>tRxn</strong> – The reaction from <cite>TMODEL</cite> that this metabolite’s reaction is matched.</p></li>
 <li><p><strong>CMODEL</strong> – global input</p></li>
 <li><p><strong>TMODEL</strong> – global input</p></li>
 </ul>
 </dd>
-<dt class="field-even">OUTPUTS</dt>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>matchScores</strong> – Array of sorted, normalized scores for each met in <cite>TMODEL</cite>.</p></li>
 <li><p><strong>matchIndex</strong> – Index of match in <cite>TMODEL.mets</cite>.</p></li>
@@ -695,10 +695,10 @@ metabolic reconstructions with modelBorgifier. Bioinformatics
 <dd><p>Finds the highest scoring matches for a given reaction.
 Called by <cite>reactionCompareGUI</cite>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>Data = findRxnMatch</strong> (<em>cRxn, nMatch, scoreTotal</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>cRxn</strong> – Number of the compared rxn.</p></li>
 <li><p><strong>nMatch</strong> – Number of matches to return.</p></li>
@@ -707,7 +707,7 @@ Called by <cite>reactionCompareGUI</cite>.</p>
 <li><p><strong>TMODEL</strong> – global input</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OUTPUTS</dt>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>Data</strong> – Structure containing comparison information.</p>
 </dd>
 </dl>
@@ -724,13 +724,13 @@ metabolic reconstructions with modelBorgifier. Bioinformatics
 ‘1’ after elements that only occur once in the molecule. Only operates on
 C, H, N, O, P, S. Called by <cite>verifyModel</cite>, <cite>addSEEDInfo</cite>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>formulaList = fixChemFormulas</strong> (<em>formulaList</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>formulaList</strong> – Cell array of chemical formulas.</p>
 </dd>
-<dt class="field-odd">OUTPUTS</dt>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>formulaList</strong> – Same cell array, formated.</p>
 </dd>
 </dl>
@@ -748,13 +748,13 @@ metabolic reconstructions with modelBorgifier. Bioinformatics
 whitespace and replaces them with underscores, and then removes starting
 and trailing underscores. Called by <cite>compareCbModels</cite>, <cite>verifyModel</cite>, <cite>addSEEDInfo</cite>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>nameList = fixNames</strong> (<em>nameList</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>nameList</strong> – Cell array of names.</p>
 </dd>
-<dt class="field-odd">OUTPUTS</dt>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>nameList</strong> – Same cell array but with fixed names.</p>
 </dd>
 </dl>
@@ -769,10 +769,10 @@ metabolic reconstructions with modelBorgifier. Bioinformatics
 <span class="sig-name descname"><span class="pre">ismatlab</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/comparison/modelBorgifier/ismatlab.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.comparison.modelBorgifier.ismatlab" title="Permalink to this definition">¶</a></dt>
 <dd><p>Simply tests if Matlab is being used (as opposed to Octave).  Called by <cite>readCbTmodel</cite>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>out = ismatlab</strong></p>
 </dd>
-<dt class="field-even">OUTPUTS</dt>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>out</strong> – Boolean is true if this is Matlab.</p>
 </dd>
 </dl>
@@ -789,18 +789,18 @@ metabolic reconstructions with modelBorgifier. Bioinformatics
 and prompts the user to input new names.
 Called by <cite>cleanTmodel</cite>, <cite>verifyModel</cite>, <cite>addSEEDInfo</cite>, calls <cite>countUnique</cite>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>nameList = makeNamesUnique</strong> (<em>nameList, [nameInfo]</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>nameList</strong> – Cell array of entires that contains duplicates.</p>
 </dd>
-<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>nameInfo</strong> – Cell array the same length as nameList that contains
 information pertaining to the matching entry in <cite>nameList</cite>. This
 array can help the renaming process.</p>
 </dd>
-<dt class="field-even">OUTPUTS</dt>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>nameList</strong> – Version of nameList with all unique entires.</p>
 </dd>
 </dl>
@@ -816,10 +816,10 @@ metabolic reconstructions with modelBorgifier. Bioinformatics
 <dd><p>Compares the local network topology between the metabolites and
 reactions of two models. Called by <cite>compareCbModels</cite>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[rmatch, mmatch] = mapMatch</strong> (<em>Cmodel, Tmodel, seedMets</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>Cmodel</strong> – model to be compared</p></li>
 <li><p><strong>Tmodel</strong> – reference model</p></li>
@@ -827,7 +827,7 @@ reactions of two models. Called by <cite>compareCbModels</cite>.</p>
 two models that are the same</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OUTPUTS</dt>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>rmatch</strong> – pairwise match score between reactions</p></li>
 <li><p><strong>mmatch</strong> – pairwise match score between metabolites</p></li>
@@ -850,10 +850,10 @@ is the same after being removed from the merged model. It also provides
 some statistics on the merging process and resulting combined model.
 Called by <cite>driveModelBorgifier</cite>, calls <cite>addToTmodel</cite>, <cite>compareMatricies</cite>, <cite>reactionCompare</cite>, <cite>cleanTmodel</cite>, organizeModelCool`, <cite>TmodelStats</cite>, <cite>readCbTmodel</cite>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[TmodelC, Cspawn, Stats, CMODEL] = mergeModelsBorg</strong> (<em>CmodelIn, TmodelIn, rxnList, metList, Stats, score</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>CmodelIn</strong> – Comparison model</p></li>
 <li><p><strong>TmodelIn</strong> – Template model</p></li>
@@ -863,7 +863,7 @@ Called by <cite>driveModelBorgifier</cite>, calls <cite>addToTmodel</cite>, <cit
 information can be used and additional information addended.</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>score</strong> – The originalPress the any key to continue.</p>
 </dd>
 </dl>
@@ -876,17 +876,17 @@ information can be used and additional information addended.</p></li>
 kept separate during the model matching process.
 Calls <cite>charpos</cite>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>Tmodel = mergeTrxns</strong> (<em>Tmodel, mergerxns, mergerxnsratio</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>Tmodel</strong> – Template model</p></li>
 <li><p><strong>mergerxns</strong> – Cell array of reactions to be merged</p></li>
 <li><p><strong>mergerxnsratio</strong> – Ratio of reactions to be merged</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OUTPUTS</dt>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>Tmodel</strong> – <cite>Tmodel</cite> with reduced number of reactions.</p>
 </dd>
 </dl>
@@ -905,10 +905,10 @@ based on certain criteria, then the GUI is bypassed. <cite>metCompare</cite> the
 adjusts <cite>metList</cite> to reflect the new pairings.
 Called by <cite>reactionCompareGUI</cite>, <cite>autoMatchReactions</cite>, calls <cite>findMetMatch</cite>, <cite>metCompareGUI</cite>, <cite>fillRxnInfo</cite>, <cite>autoMatchMets</cite>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[metList, stopFlag] = metCompare</strong> (<em>RxnInfo</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>RxnInfo</strong> – Structure which contains relevent info, including.</p></li>
 <li><p><strong>rxnIndex</strong> – Index of reaction being compared. If <cite>metCompare</cite> is being
@@ -920,7 +920,7 @@ run to compare mets irregardless of reactions, this is 0.</p></li>
 <li><p><strong>TMODEL</strong> – globl input</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OUTPUTS</dt>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>metList</strong> – list of metabolites</p></li>
 <li><p><strong>stopFlag</strong> – Flag indicates that metabolite matching has been aborted.</p></li>
@@ -940,7 +940,7 @@ metabolic reconstructions with modelBorgifier. Bioinformatics
 in a new or existing reaction.
 Called by <cite>metCompare</cite>, calls <cite>findMetMatch</cite>, <cite>colText</cite>, <cite>addMetInfo</cite>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[RxnInfo, stopFlag] = metCompareGUI</strong> (<em>RxnInfo</em>)</p>
 </dd>
 </dl>
@@ -969,17 +969,17 @@ metabolic reconstructions with modelBorgifier. Bioinformatics
 compartments NOT in <cite>Tmodel</cite> as new.
 Called by <cite>driveModelBorgifier</cite>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>metList = newCompsNewMets</strong> (<em>metList, Cmodel, Tmodel</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>metList</strong> – list of metabolites</p></li>
 <li><p><strong>Cmodel</strong> – <cite>Cmodel</cite> structure</p></li>
 <li><p><strong>Tmodel</strong> – <cite>Tmodel</cite> structure</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OUTPUTS</dt>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>metList</strong> – list of metabolites</p>
 </dd>
 </dl>
@@ -995,10 +995,10 @@ metabolic reconstructions with modelBorgifier. Bioinformatics
 <dd><p>This is a optimization weighting function used for weighting
 the scores comparing reactions. Called by <cite>optimalScores</cite>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>obj = optWeightExp</strong> (<em>weight, highscoreVectors, lowscoreVectors, hitnum, missnum</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>weight</strong> – Weights</p></li>
 <li><p><strong>highscoreVectors</strong> – Logical array of hits</p></li>
@@ -1007,7 +1007,7 @@ the scores comparing reactions. Called by <cite>optimalScores</cite>.</p>
 <li><p><strong>missVec</strong> – Number of misses</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OUTPUTS</dt>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>obj</strong> – New weights</p>
 </dd>
 </dl>
@@ -1025,17 +1025,17 @@ the individual scores. It maximizes the difference between the weighted sum of
 scores of the correctly assigned reactions and the incorrect matches in the
 training data set. Called by <cite>optimalScores</cite>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>obj = optWeightLin</strong> (<em>weight, highscoreVectors, lowscoreVectors</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>weight</strong> – Weights</p></li>
 <li><p><strong>highscoreVectors</strong> – Logical array of hits</p></li>
 <li><p><strong>lowscoreVectors</strong> – Loggical array of misses</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OUTPUTS</dt>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>obj</strong> – New weights</p>
 </dd>
 </dl>
@@ -1057,10 +1057,10 @@ is the training set. If <cite>rxnList</cite> is not provided, then <cite>optimal
 just colapses the 3D SCORE matrix to <cite>scoreTotal</cite>.
 Called by <cite>reactionCompare</cite>, <cite>reactionCompareGUI</cite>, <cite>compareCbModels</cite>, calls <cite>optWeightLin</cite>, <cite>opnWeightExp</cite>, <cite>colapseScore</cite>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>Stats = optimalScore</strong> (<em>rxnList, optimizer</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>rxnList</strong> – reactions` list</p></li>
 <li><p><strong>optimizer</strong> – Either ‘svm’, ‘RF’, ‘linear’, or ‘exp’; the latter two are custom
@@ -1071,7 +1071,7 @@ optWeightExp.</p></li>
 <li><p><strong>SCORE</strong> – global input</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OUTPUTS</dt>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>Stats</strong> – Structure containing:</p></li>
 <li><p><strong>bestMatch</strong> – Array of the best matching reactions</p></li>
@@ -1093,13 +1093,13 @@ metabolic reconstructions with modelBorgifier. Bioinformatics
 <dd><p>Puts the fields in the correct order in the structure.
 Called by <cite>verifyModel</cite>, <cite>readCbTModel</cite>, calls <cite>TmodelFields</cite>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>Model = orderModelFieldsBorg</strong> (<em>Model</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>Model</strong> – model structure with unsorted fiels</p>
 </dd>
-<dt class="field-odd">OUTPUTS</dt>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>Model</strong> – model strucutre with sorted fields</p>
 </dd>
 </dl>
@@ -1118,13 +1118,13 @@ then organized so that the <cite>S</cite> matrix appoximates a rank order matrix
 exchange reactions at the end.
 Called by <cite>mergeModelsBorg</cite>, <cite>readCbTmodel</cite>, <cite>readCbTModel</cite>, <cite>verifyModel</cite>, calls <cite>TmodelFields</cite>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>Model = organizeModelCool</strong> (<em>Model</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>Model</strong> – Model in COBRA format. Also accept a <cite>Tmodel</cite>.</p>
 </dd>
-<dt class="field-odd">OUTPUTS</dt>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>Model</strong> – Organized model.</p>
 </dd>
 </dl>
@@ -1144,17 +1144,17 @@ generated with <cite>autoMatchReactions</cite>. If you are continuing comparison
 include the optional inputs.
 Called by <cite>optimalScores</cite>, <cite>autoMatchReactions</cite>, <cite>reactionCompareGUI</cite>, calls <cite>mergeModelsBorg</cite>, <cite>driveModelBorgifier</cite>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[rxnList, metList, Stats] = reactionCompare</strong> (<em>CmodelIn, TmodelIn, scoreIn, [rxnList, metList, Stats]</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>CmodelIn</strong> – Comparison model</p></li>
 <li><p><strong>TmodelIn</strong> – Template model</p></li>
 <li><p><strong>scoreIn</strong> – Score</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>rxnList</strong> – Array pairs reactions in <cite>CMODEL</cite> with matches from <cite>TMODEL</cite> or
 declares them as new.</p></li>
@@ -1164,7 +1164,7 @@ new metabolites are given their new met number in <cite>TMODEL</cite>.</p></li>
 scoring work.</p></li>
 </ul>
 </dd>
-<dt class="field-even">OUTPUTS</dt>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>rxnList</strong> – reactions’ list</p></li>
 <li><p><strong>metList</strong> – metabolites’ list</p></li>
@@ -1188,10 +1188,10 @@ reaction is declared, metabolites for that reaction are are also matched.
 <cite>reactionCompare</cite>.
 Called by <cite>reactionCompare</cite>, calls <cite>optimalScores</cite>, <cite>autoMatchReactions</cite>, <cite>findRxnMatch</cite>, <cite>metCompare</cite>, <cite>countC</cite>, <cite>compareCbModels</cite>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[rxnList, metList, Stats] = reactionCompareGUI</strong> (<em>InfoBall</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>InfoBall</strong> – Structure which contains relevent information, including:</p></li>
 <li><p><strong>rxnList</strong> – Array which links reactions in <cite>Cmodel</cite> to <cite>Tmodel</cite></p></li>
@@ -1200,7 +1200,7 @@ Called by <cite>reactionCompare</cite>, calls <cite>optimalScores</cite>, <cite>
 <li><p><strong>Stats</strong> – Contains weighting parameters.</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OUTPUTS</dt>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>rxnList</strong> – Array pairs reactions in <cite>CMODEL</cite> with matches from <cite>TMODEL</cite> or
 declares them as new.</p></li>
@@ -1227,23 +1227,23 @@ metabolic reconstructions with modelBorgifier. Bioinformatics
 (composite database).
 Called by <cite>mergeModelsBorg</cite>, <cite>driveModelBorgifier</cite>, calls <cite>TmodelFields</cite>, <cite>orderModelFieldsBorg</cite>, <cite>organizeModelCool</cite>, <cite>buildRxnEquations</cite>, <cite>ismatlab</cite>, <cite>parseBoolean</cite>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>Model = readCbTmodel</strong> (<em>modelName, Tmodel</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>modelName</strong> – Name of an available model (i.e. iAF1260). Available names
 can be found by looking in <cite>Tmodel.Models</cite></p></li>
 <li><p><strong>Tmodel</strong> – Otherwise <cite>Tmodel</cite> will be loaded from path below.</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>emptyArrayChoice</strong> – “y” or “n” to remove empty arrays or not</p></li>
 <li><p><strong>‘Verbose’</strong> – Print progress stamps.</p></li>
 </ul>
 </dd>
-<dt class="field-even">OUTPUTS</dt>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>Model</strong> – Model in COBRA format.</p>
 </dd>
 </dl>
@@ -1262,13 +1262,13 @@ Also orders the names by size from smallest to largest. Best used after
 <cite>fixNames</cite>.
 Called by <cite>cleanTmodel</cite>, <cite>verifyModel</cite>, <cite>addSEEDInfo</cite>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>infoList = removeDuplicateNames</strong> (<em>infoList</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>infoList</strong> – Cell array of strings.</p>
 </dd>
-<dt class="field-odd">OUTPUTS</dt>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>infoList</strong> – After removal</p>
 </dd>
 </dl>
@@ -1284,16 +1284,16 @@ metabolic reconstructions with modelBorgifier. Bioinformatics
 <dd><p>Replaces all problematic characters in input string in with substitute.
 Called by <cite>cleanTmodel</cite>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>out = removeProblematicCharacters</strong> (<em>in, varargin</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>in</strong> – String.</p></li>
 <li><p><strong>sub</strong> – Character which to subtitute with. Default is ‘_’</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OUTPUTS</dt>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>out</strong> – Newly formatted string</p>
 </dd>
 </dl>
@@ -1309,13 +1309,13 @@ metabolic reconstructions with modelBorgifier. Bioinformatics
 <dd><p>Transposes the input vector to a row vector if it is not
 already a row vector. Called by <cite>verifyModel</cite>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>out = columnvector</strong> (<em>in</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>in</strong> – Vector</p>
 </dd>
-<dt class="field-odd">OUTPUTS</dt>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>out</strong> – Column vector</p>
 </dd>
 </dl>
@@ -1334,19 +1334,19 @@ missing and expected for comparison. It will remove fields not in this list.
 Called by  <cite>driveModelBorgifier</cite>, calls <cite>TmodelFields</cite>, <cite>fixNames</cite>, <cite>removeDuplicateNames</cite>,
 <cite>makeNamesUnique</cite>, <cite>buildRxnEquations</cite>, <cite>fixChemFormulas</cite>, <cite>orderModelFieldsBorg</cite>, <cite>organizeModelCool</cite>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>Model = verifyModelBorg</strong> (<em>Model</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>Vmodel</strong> – Model from <cite>readCbModel</cite> or any of the <cite>readModel</cite> functions.</p>
 </dd>
-<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>‘keepName’</strong> – Don’t ask for verification of model name</p></li>
 <li><p><strong>‘Verbose’</strong> – Print steps.</p></li>
 </ul>
 </dd>
-<dt class="field-even">OUTPUTS</dt>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>Model</strong> – Model with additional fields and correct format.</p>
 </dd>
 </dl>
@@ -1409,9 +1409,6 @@ metabolic reconstructions with modelBorgifier. Bioinformatics
         };
     </script>
     <script type="text/javascript" src="../../../../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
-    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
-    <script type="text/javascript" src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script type="text/javascript" src="../../../../_static/doctools.js"></script>
     <script type="text/javascript" src="../../../../_static/sphinx_highlight.js"></script>
 

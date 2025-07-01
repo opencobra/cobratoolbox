@@ -5,7 +5,7 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
@@ -69,8 +69,8 @@
         <link rel="search" title="Search" href="../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../index.html"/>
         <link rel="up" title="Base" href="../index.html"/>
-        <link rel="next" title="Io" href="../io/index.html"/>
-        <link rel="prev" title="Gams" href="../solvers/gams/index.html"/> 
+        <link rel="next" title="Utilities" href="../utilities/index.html"/>
+        <link rel="prev" title="Ci" href="../ci/index.html"/> 
 
   
   <script src="../../../_static/js/modernizr.min.js"></script>
@@ -92,7 +92,7 @@
           
 
           
-            <img src="/cobratoolbox/stable/_static/img/logo.png" class="logo" alt="cobratoolbox logo" />
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
           
           </a>
 
@@ -158,14 +158,14 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Functions</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html">Base</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../solvers/index.html">Solvers</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Install</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../io/index.html">Io</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../paths/index.html">Paths</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../ci/index.html">Ci</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../utilities/index.html">Utilities</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../codeConsistency/index.html">Codeconsistency</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ci/index.html">Ci</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Install</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../utilities/index.html">Utilities</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../cobrarrow/index.html">Cobrarrow</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../solvers/index.html">Solvers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../io/index.html">Io</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../dataIntegration/index.html">Dataintegration</a></li>
@@ -227,7 +227,7 @@
 <dd><p>Adapts the path for binaries on a mac with Sierra/High Sierra or higher
 and Anything below.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>adaptMacPath();</strong></p>
 </dd>
 </dl>
@@ -238,7 +238,7 @@ and Anything below.</p>
 <span class="sig-name descname"><span class="pre">addCOBRABinaryPathToSystemPath</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/install/addCOBRABinaryPathToSystemPath.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.install.addCOBRABinaryPathToSystemPath" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sets up the path to system executables shipped by the toolbox.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>addCOBRABinaryPathToSystemPath()</strong></p>
 </dd>
 </dl>
@@ -251,14 +251,14 @@ and Anything below.</p>
 If the public key of the <cite>site.ext</cite> does not exist,
 adds the public key to the known hosts</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>keyAdded = addKeyToKnownHosts()</strong></p>
 </dd>
-<dt class="field-even">INPUT</dt>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>siteName</strong> – Name of the site for which the public key shall be added
 (default: <cite>github.com</cite>)</p>
 </dd>
-<dt class="field-odd">OUTPUT</dt>
+<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>keyAdded</strong> – Boolean (true if key has been added successfully or exists)</p>
 </dd>
 </dl>
@@ -269,13 +269,13 @@ adds the public key to the known hosts</p>
 <span class="sig-name descname"><span class="pre">checkCNAinstallation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">printLevel</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/install/checkCNAinstallation.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.install.checkCNAinstallation" title="Permalink to this definition">¶</a></dt>
 <dd><p>checks the installation of CellNetAnalyzer</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>status = checkCNAinstallation</strong> (<em>printLevel</em>)</p>
 </dd>
-<dt class="field-even">INPUT</dt>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>printLevel</strong> – verbose level (default: 1)</p>
 </dd>
-<dt class="field-odd">OUTPUT</dt>
+<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>status</strong> – Boolean if CellNetAnalyzer is installed properly</p>
 </dd>
 </dl>
@@ -289,10 +289,10 @@ based on the git ls-file command. If the directory is not git controlled, the
 type is assumed to be ‘all’ and all files (except for .git files
 will be returned).</p>
 <dl class="field-list">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>files = getFilesInDir</strong> (<em>varargin</em>)</p>
 </dd>
-<dt class="field-even">OPTIONAL INPUTS</dt>
+<dt class="field-even">OPTIONAL INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>varargin</strong> – Options as ‘ParameterName’ value pairs with the following options:</p>
 <ul>
 <li><p><cite>dirToList</cite>: the directory to list the files for (default: the current working directory)</p></li>
@@ -319,7 +319,7 @@ will be returned).</p>
 </li>
 </ul>
 </dd>
-<dt class="field-odd">OUTPUTS</dt>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>files</strong> – A Cell Array of files with absolute file pathes.
 present in this folder matching the options choosen.</p>
 </dd>
@@ -341,10 +341,10 @@ files = getFilesInDir(‘type’, ‘ignored’);</p>
 <dd><p>On Windows, this function determines the version of gitBash.
 This function can only be run on Windows, and throws an error when run on a UNIX system.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[installedVersion, installedVersionNum] = getGitBashVersion()</strong></p>
 </dd>
-<dt class="field-even">OUTPUT</dt>
+<dt class="field-even">OUTPUT<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>installedVersion</strong> – String of installed version of gitBash in the form <cite>2.13.2</cite></p></li>
 <li><p><strong>installedVersionNum</strong> – Integer of <cite>installedVersion</cite>, e.g. <cite>2132</cite></p></li>
@@ -359,7 +359,7 @@ This function can only be run on Windows, and throws an error when run on a UNIX
 <dd><p>Get all files/patterns which are ignored by git in the COBRA Toolbox directory..
 :USAGE: <strong>ignoreFiles = getIgnoredFiles()</strong></p>
 <dl class="field-list simple">
-<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>ignorePatterns</strong> – A cell array of regexp patterns indicating files
 which are not to be listed</p></li>
@@ -367,7 +367,7 @@ which are not to be listed</p></li>
 files which should be returned after ignoring.</p></li>
 </ul>
 </dd>
-<dt class="field-even">OUTPUTS</dt>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>ignoredFiles</strong> – All files (and patterns) indicated as ignored in
 the gitignore file.</p>
 </dd>
@@ -380,10 +380,10 @@ the gitignore file.</p>
 <dd><p>checks if the MATLAB.devTools are already present and installs the
 MATLAB.devTools next to the cloned folder cobratoolbox (if not present yet)</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>installDevTools</strong> (<em>repoName</em>)</p>
 </dd>
-<dt class="field-even">OPTIONAL INPUT</dt>
+<dt class="field-even">OPTIONAL INPUT<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>repoName</strong> – Name of the repository (default: ‘opencobra/cobratoolbox’)</p>
 </dd>
 </dl>
@@ -401,7 +401,7 @@ The full documentation of the MATLAB.devTools is <a class="reference external" h
 <dd><p>This function wraps the installer for PortableGit and checks for available updates.
 This function can only be run on Windows, and throws an error when run on a UNIX system.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>installGitBash()</strong></p>
 </dd>
 </dl>
@@ -414,10 +414,10 @@ This function can only be run on Windows, and throws an error when run on a UNIX
 and moves the contents to the hidden .tmp folder in a folder called <cite>PortableGit-a.bc.c</cite>
 This function can only be run on Windows, and throws an error when run on a UNIX system.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>portableGitSetup</strong> (<em>gitBashVersion, removeFlag</em>)</p>
 </dd>
-<dt class="field-even">INPUT</dt>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>removeFlag</strong> – Flag to remove old versions from the path or not</p>
 <ul class="simple">
 <li><p>0: install, don’t remove anything</p></li>
@@ -436,10 +436,10 @@ This function can only be run on Windows, and throws an error when run on a UNIX
 the input parameters. If the requirements are NOT met, a
 COBRA:RequirementsNotMet error is thrown.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[solversToUse] = prepareTest</strong> (<em>varargin</em>)</p>
 </dd>
-<dt class="field-even">OPTIONAL INPUTS</dt>
+<dt class="field-even">OPTIONAL INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>varagin</strong> – <cite>ParameterName</cite> value pairs with the following options:</p>
 <ul class="simple">
 <li><p><cite>toolboxes</cite> or <cite>requiredToolboxes</cite>: Names of required toolboxes (the license feature name).(default: {})</p></li>
@@ -464,7 +464,7 @@ COBRA:RequirementsNotMet error is thrown.</p>
 <li><p><cite>requiredSoftwares</cite>: cell array of required installed softwares (default: {})</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OUTPUTS</dt>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>solversToUse</strong> – A struct with one field per solver type listing
 the solvers to use for that type of problem in a cell array.
 If neither of the ‘useIfAvailable’ nor the ‘reqSolvers’
@@ -523,16 +523,16 @@ solvers =</p>
 the oldcontent. By default only removes those files which match files
 mentioned in the COBRA .gitignore file.</p>
 <dl class="field-list">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>status = removeTempFiles</strong> (<em>directory, oldcontent, varargin</em>)</p>
 </dd>
-<dt class="field-even">INPUT</dt>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>directory</strong> – The directory which should be checked for changing files.</p></li>
 <li><p><strong>content</strong> – Absolute file names of the original conten in a cell array.</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OPTIONAL INPUT</dt>
+<dt class="field-odd">OPTIONAL INPUT<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>varargin</strong> – Additional options as <cite>ParameterName</cite>, value
 pairs with the following options:</p>
 <blockquote>
@@ -542,7 +542,7 @@ pairs with the following options:</p>
 </ul>
 </div></blockquote>
 </dd>
-<dt class="field-even">OUTPUT</dt>
+<dt class="field-even">OUTPUT<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>status</strong> – status of the deletion (<cite>true</cite> if successful)</p>
 </dd>
 </dl>
@@ -554,10 +554,10 @@ pairs with the following options:</p>
 <dd><p>Checks new commits exist on the master branch of the openCOBRA repository
 and asks the user to update The COBRA Toolbox (updates the develop and master branches)</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>updateCobraToolbox()</strong></p>
 </dd>
-<dt class="field-even">INPUT</dt>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>fetchAndCheckOnly</strong> – if set to true, the repository is not updated but only new commits are fetched (default: false)</p>
 </dd>
 </dl>
@@ -569,10 +569,10 @@ and asks the user to update The COBRA Toolbox (updates the develop and master br
 <dd><p>On windows, this function updates the already existing version of gitBash.
 This function can only be run on Windows, and throws an error when run on a UNIX system.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>updateGitBash</strong> (<em>fetchAndCheckOnly</em>)</p>
 </dd>
-<dt class="field-even">INPUT</dt>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>fetchAndCheckOnly</strong> – if set to <cite>true</cite>, gitBash is not updated, but only a check is made (default: <cite>false</cite>)</p>
 </dd>
 </dl>
@@ -590,10 +590,10 @@ This function can only be run on Windows, and throws an error when run on a UNIX
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../io/index.html" class="btn btn-default float-right" title="Io" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../utilities/index.html" class="btn btn-default float-right" title="Utilities" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../solvers/gams/index.html" class="btn btn-default" title="Gams" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../ci/index.html" class="btn btn-default" title="Ci" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -631,9 +631,6 @@ This function can only be run on Windows, and throws an error when run on a UNIX
         };
     </script>
     <script type="text/javascript" src="../../../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../../../_static/jquery.js"></script>
-    <script type="text/javascript" src="../../../_static/underscore.js"></script>
-    <script type="text/javascript" src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
     <script type="text/javascript" src="../../../_static/sphinx_highlight.js"></script>
 

@@ -5,7 +5,7 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
@@ -69,8 +69,8 @@
         <link rel="search" title="Search" href="../../../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../../../index.html"/>
         <link rel="up" title="Src" href="../index.html"/>
-        <link rel="next" title="Fastgapfill" href="../../../fastGapFill/index.html"/>
-        <link rel="prev" title="Properties" href="../properties/index.html"/> 
+        <link rel="next" title="Debugging" href="../debugging/index.html"/>
+        <link rel="prev" title="Src" href="../index.html"/> 
 
   
   <script src="../../../../../_static/js/modernizr.min.js"></script>
@@ -92,7 +92,7 @@
           
 
           
-            <img src="/cobratoolbox/stable/_static/img/logo.png" class="logo" alt="cobratoolbox logo" />
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
           
           </a>
 
@@ -161,24 +161,24 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../dataIntegration/index.html">Dataintegration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../design/index.html">Design</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../../index.html">Reconstruction</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../../../modelGeneration/index.html">Modelgeneration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../metaboRePort/index.html">Metaboreport</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../refinement/index.html">Refinement</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../../index.html">Demeter</a><ul class="current">
-<li class="toctree-l4"><a class="reference internal" href="../../suite/index.html">Suite</a></li>
 <li class="toctree-l4 current"><a class="reference internal" href="../index.html">Src</a><ul class="current">
-<li class="toctree-l5"><a class="reference internal" href="../refinement/index.html">Refinement</a></li>
-<li class="toctree-l5"><a class="reference internal" href="../debugging/index.html">Debugging</a></li>
-<li class="toctree-l5"><a class="reference internal" href="../properties/index.html">Properties</a></li>
 <li class="toctree-l5 current"><a class="current reference internal" href="#">Integration</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../debugging/index.html">Debugging</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../refinement/index.html">Refinement</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../properties/index.html">Properties</a></li>
 </ul>
 </li>
+<li class="toctree-l4"><a class="reference internal" href="../../suite/index.html">Suite</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../../fastGapFill/index.html">Fastgapfill</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../comparison/index.html">Comparison</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../metaboRePort/index.html">Metaboreport</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../growthExpMatch/index.html">Growthexpmatch</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../rBioNet/index.html">Rbionet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../growthExpMatch/index.html">Growthexpmatch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../comparison/index.html">Comparison</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../fastGapFill/index.html">Fastgapfill</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modelGeneration/index.html">Modelgeneration</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../visualization/index.html">Visualization</a></li>
@@ -254,7 +254,7 @@ removed strains in the input data files and removes them. Also adds
 strains in the reconstruction resource that were not yet present in the
 input file.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[checkedData,addedStrains,removedStrains,duplicateStrains] = checkInputData</strong> (<em>inputData,strainInformation</em>)</p>
 </dd>
 </dl>
@@ -273,16 +273,44 @@ removedStrains:       Strains that were in inputData but are not present</p>
 </dd></dl>
 
 <dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.src.integration.createInfoFileDEMETER">
+<span class="sig-name descname"><span class="pre">createInfoFileDEMETER</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">taxIDs</span></em>, <em class="sig-param"><span class="pre">strainNames</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/src/integration/createInfoFileDEMETER.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.src.integration.createInfoFileDEMETER" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a taxonomy table that can be used as input for DEMETER from a
+list of NCBI Taxonomy IDs. The taxonomy IDs can be on any taxonomical
+level but should be on the strain level to generate a unique model ID.
+If this is not the case, a list of unique and custom gene names each
+corresponding to each taxonomy ID can be provided to serve as strain
+identifiers.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>createInfoFileDEMETER</strong> (<em>taxIDs</em>)</p>
+</dd>
+</dl>
+<p>REQUIRED INPUT
+taxIDs         Vector or cell array of numerics that represent valid NCBI</p>
+<blockquote>
+<div><p>Taxonomy IDs.</p>
+</div></blockquote>
+<p>OPTIONAL INPUT
+% strainNames  List of custom gene names to be used a model IDs</p>
+<p>OUTPUT
+infoFile       Table with taxonomic information, gram staining, and</p>
+<blockquote>
+<div><p>oxygen requirement for each strain</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="mat function">
 <dt class="sig sig-object mat" id="src.reconstruction.demeter.src.integration.createRBioNetDBFromVMHDB">
 <span class="sig-name descname"><span class="pre">createRBioNetDBFromVMHDB</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/src/integration/createRBioNetDBFromVMHDB.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.src.integration.createRBioNetDBFromVMHDB" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function creates an input fit for rBioNet from the VMH metabolite
 and reaction database and builds a new database settings file. It enables
 using the VMH database to modify or build reconstructions.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>createRBioNetDBFromVMHDB</strong> (<em>‘rBioNetDBFolder’,rBioNetDBFolder</em>)</p>
 </dd>
-<dt class="field-even">OPTIONAL INPUT</dt>
+<dt class="field-even">OPTIONAL INPUT<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>rBioNetDBFolder          Path where to save the created database and</strong> – database settings file. Default: current path</p>
 </dd>
 </dl>
@@ -294,7 +322,7 @@ using the VMH database to modify or build reconstructions.</p>
 <dd><p>Part of the DEMETER pipelinbe. Adds reactions needed to connect pathways
 introduced based on comparative genomic analyses.comparative genomics.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>gapfilledGenomeAnnotation = gapfillRefinedGenomeReactions</strong> (<em>genomeAnnotation</em>)</p>
 </dd>
 </dl>
@@ -328,7 +356,7 @@ indicates that no comparative genomic refinement was performed.
 the file with curation status information will be saved as a file called
 curationStatus.txt in the inputDataFolder.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>curationStatus = getCurationStatus</strong> (<em>infoFilePath,inputDataFolder,getComparativeGenomics</em>)</p>
 </dd>
 </dl>
@@ -353,7 +381,7 @@ Gets all the reactions that were not found in the respective organism
 through comparative genomics to remove them from the draft
 reconstructions.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>unannotatedRxns = getUnannotatedReactionsFromPubSeedSpreadsheets</strong> (<em>infoFilePath,inputDataFolder,spreadsheetFolder</em>)</p>
 </dd>
 </dl>
@@ -377,7 +405,7 @@ cobratoolbox/papers/2021_demeter/exampleSpreadsheets.</p>
 <dd><p>This function loads the database with reactions and metabolites in
 Virtual Metabolic Human (<a class="reference external" href="https://www.vmh.life/">https://www.vmh.life/</a>) nomenclature.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>database=loadVMHDatabase</strong></p>
 </dd>
 </dl>
@@ -394,7 +422,7 @@ propagateKBaseMetTranslationToRxns beforehand to translate metabolite
 IDs, which will then allow matching translated reactions to reactions
 that already exist in the VMH (Virtual Metabolic Human) database.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[sameReactions,similarReactions] = mapKBaseToVMHReactions</strong> (<em>translatedRxns</em>)</p>
 </dd>
 </dl>
@@ -462,7 +490,7 @@ reconstructed strains and reads information from comparative genomic data
 in PubSEED spreadsheet format if available. It is recommended to check the
 propagated data manually afterwards.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[adaptedInfoFilePath,inputDataFolder] = prepareInputData</strong> (<em>infoFilePath,varargin</em>)</p>
 </dd>
 </dl>
@@ -517,14 +545,14 @@ creates an output fit for the ReconstructionTool interface in rBioNet
 that can be used to check if the reactions already exist in the VMH
 database.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[translatedRxns]=propagateKBaseMetTranslationToRxns</strong> (<em>toTranslatePath</em>)</p>
 </dd>
-<dt class="field-even">INPUT</dt>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>toTranslatePath           String containing the path to xlsx, csv, or</strong> – txt file with reaction IDs in KBase/ModelSEED
 nomenclature to translate (e.g., rxn00001)</p>
 </dd>
-<dt class="field-odd">OUTPUTS</dt>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>translatedRxns            Table with reactions with already translated</strong> – metabolite IDs replaced that can serve as
 input for rBioNet to check if the reactions
 already exist in the VMH database.</p>
@@ -539,7 +567,7 @@ already exist in the VMH database.</p>
 DEMETER in a format fit for the pipeline. The necessary inputs depend on
 the version of MATLAB.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>formattedTable = readInputTableForPipeline</strong> (<em>tablePath</em>)</p>
 </dd>
 </dl>
@@ -560,17 +588,36 @@ that are not yet translated to VMH nomenclature based on names/InCHi keys.
 It is recommended the resulting translated is verified through manual
 inspection.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[translatedMets]=translateKBaseToVMHMets</strong> (<em>toTranslatePath</em>)</p>
 </dd>
-<dt class="field-even">INPUT</dt>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>toTranslatePath         String containing the path to xlsx, csv, or</strong> – txt file with metabolite IDs in KBase/ModelSEED
 nomenclature to translate (e.g., cpd00001)</p>
 </dd>
-<dt class="field-odd">OUTPUTS</dt>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>translatedMets          Table with KBase metabolite IDs that could be</strong> – matched to VMH metabolite IDs</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.demeter.src.integration.updateAGORATaxonomyFile">
+<span class="sig-name descname"><span class="pre">updateAGORATaxonomyFile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">version</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/src/integration/updateAGORATaxonomyFile.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.src.integration.updateAGORATaxonomyFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieved up to date taxonomic information for AGORA strains from NCBI
+and saves an updated table with the most recent taxonomic assignments.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>updateAGORATaxonomyFile</strong> (<em>version</em>)</p>
+</dd>
+</dl>
+<p>REQUIRED INPUT
+version          Version of AGORA for which the information table should</p>
+<blockquote>
+<div><p>be updated (allowed inputs: ‘AGORA’,’AGORA2’)</p>
+</div></blockquote>
+<p>OUTPUT
+infoFile       Updated table with up to date taxonomic information</p>
 </dd></dl>
 
 <dl class="mat function">
@@ -579,7 +626,7 @@ nomenclature to translate (e.g., cpd00001)</p>
 <dd><p>Prepares input file for the comparative genomics part
 Write reaction spreadsheets from InReactions and PubSEED spreadsheets.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>writeReactionsFromPubSeedSpreadsheets</strong> (<em>infoFilePath,inputDataFolder,spreadsheetFolder</em>)</p>
 </dd>
 </dl>
@@ -609,10 +656,10 @@ cobratoolbox/papers/2021_demeter/exampleSpreadsheets.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../../../fastGapFill/index.html" class="btn btn-default float-right" title="Fastgapfill" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../debugging/index.html" class="btn btn-default float-right" title="Debugging" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../properties/index.html" class="btn btn-default" title="Properties" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../index.html" class="btn btn-default" title="Src" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -650,9 +697,6 @@ cobratoolbox/papers/2021_demeter/exampleSpreadsheets.</p>
         };
     </script>
     <script type="text/javascript" src="../../../../../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../../../../../_static/jquery.js"></script>
-    <script type="text/javascript" src="../../../../../_static/underscore.js"></script>
-    <script type="text/javascript" src="../../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script type="text/javascript" src="../../../../../_static/doctools.js"></script>
     <script type="text/javascript" src="../../../../../_static/sphinx_highlight.js"></script>
 

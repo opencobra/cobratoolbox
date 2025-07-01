@@ -5,7 +5,7 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
@@ -69,8 +69,8 @@
         <link rel="search" title="Search" href="../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../index.html"/>
         <link rel="up" title="Reconstruction" href="../index.html"/>
-        <link rel="next" title="Rbionet" href="../rBioNet/index.html"/>
-        <link rel="prev" title="Other" href="../metaboRePort/other/index.html"/> 
+        <link rel="next" title="Comparison" href="../comparison/index.html"/>
+        <link rel="prev" title="Gui" href="../rBioNet/gui/index.html"/> 
 
   
   <script src="../../../_static/js/modernizr.min.js"></script>
@@ -92,7 +92,7 @@
           
 
           
-            <img src="/cobratoolbox/stable/_static/img/logo.png" class="logo" alt="cobratoolbox logo" />
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
           
           </a>
 
@@ -161,14 +161,14 @@
 <li class="toctree-l2"><a class="reference internal" href="../../dataIntegration/index.html">Dataintegration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../design/index.html">Design</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html">Reconstruction</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../modelGeneration/index.html">Modelgeneration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../metaboRePort/index.html">Metaboreport</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../refinement/index.html">Refinement</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../demeter/index.html">Demeter</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../fastGapFill/index.html">Fastgapfill</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../comparison/index.html">Comparison</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../metaboRePort/index.html">Metaboreport</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Growthexpmatch</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../rBioNet/index.html">Rbionet</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Growthexpmatch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../comparison/index.html">Comparison</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../fastGapFill/index.html">Fastgapfill</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../modelGeneration/index.html">Modelgeneration</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../visualization/index.html">Visualization</a></li>
@@ -226,10 +226,10 @@
 <span class="sig-name descname"><span class="pre">growthExpMatch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">KEGGFilename</span></em>, <em class="sig-param"><span class="pre">compartment</span></em>, <em class="sig-param"><span class="pre">iterations</span></em>, <em class="sig-param"><span class="pre">dictionary</span></em>, <em class="sig-param"><span class="pre">logFile</span></em>, <em class="sig-param"><span class="pre">threshold</span></em>, <em class="sig-param"><span class="pre">KEGGBlackList</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/growthExpMatch/growthExpMatch.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.growthExpMatch.growthExpMatch" title="Permalink to this definition">¶</a></dt>
 <dd><p>Runs the <cite>growthExpMatch</cite> algorithm</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[solution] = growthExpMatch</strong> (<em>model, KEGGFilename, compartment, iterations, dictionary, logFile, threshold, KEGGBlackList</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>model</strong> – COBRA model structure</p></li>
 <li><p><strong>KEGGFilename</strong> – File name containing Kegg database (.lst file with list of
@@ -245,7 +245,7 @@ Kegg ID’s to the compound abbreviations from BiGG database
 2nd column is Kegg ID) Both columns are the same length.</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>logFile</strong> – solution is printed in this file (name of reaction added and
 flux of that particular reaction) (Default = GEMLog.txt)</p></li>
@@ -254,7 +254,7 @@ to be growing when the flux of the biomass reaction is
 above threshold. (Default = 0.05)</p></li>
 </ul>
 </dd>
-<dt class="field-even">OUTPUT</dt>
+<dt class="field-even">OUTPUT<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>solution</strong> – MILP solution that consists of the continuous solution, integer
 solution, objective value, stat, full solution, and
 imported reactions</p>
@@ -282,10 +282,10 @@ generateSUXMatrix(model, dictionary, KEGGFilename, compartment)</cite></p></li>
 <span class="sig-name descname"><span class="pre">printSolutionGEM</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">MatricesSUX</span></em>, <em class="sig-param"><span class="pre">solution</span></em>, <em class="sig-param"><span class="pre">logFile</span></em>, <em class="sig-param"><span class="pre">itNum</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/growthExpMatch/printSolutionGEM.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.growthExpMatch.printSolutionGEM" title="Permalink to this definition">¶</a></dt>
 <dd><p>Displays the solution for <cite>growthExpMatch</cite> iterations</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>printSolutionGEM</strong> (<em>MatricesSUX, solution, logFile, itNum</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>MatricesSUX</strong> – SUX Matrix</p></li>
 <li><p><strong>solution</strong> – MILP solution that consists of the continuous solution, integer
@@ -311,10 +311,10 @@ flux of that particular reaction) (Default = GEMLog.txt)</p></li>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../rBioNet/index.html" class="btn btn-default float-right" title="Rbionet" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../comparison/index.html" class="btn btn-default float-right" title="Comparison" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../metaboRePort/other/index.html" class="btn btn-default" title="Other" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../rBioNet/gui/index.html" class="btn btn-default" title="Gui" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -352,9 +352,6 @@ flux of that particular reaction) (Default = GEMLog.txt)</p></li>
         };
     </script>
     <script type="text/javascript" src="../../../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../../../_static/jquery.js"></script>
-    <script type="text/javascript" src="../../../_static/underscore.js"></script>
-    <script type="text/javascript" src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
     <script type="text/javascript" src="../../../_static/sphinx_highlight.js"></script>
 

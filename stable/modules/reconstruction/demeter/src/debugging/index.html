@@ -5,7 +5,7 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
@@ -69,8 +69,8 @@
         <link rel="search" title="Search" href="../../../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../../../index.html"/>
         <link rel="up" title="Src" href="../index.html"/>
-        <link rel="next" title="Properties" href="../properties/index.html"/>
-        <link rel="prev" title="Refinement" href="../refinement/index.html"/> 
+        <link rel="next" title="Refinement" href="../refinement/index.html"/>
+        <link rel="prev" title="Integration" href="../integration/index.html"/> 
 
   
   <script src="../../../../../_static/js/modernizr.min.js"></script>
@@ -92,7 +92,7 @@
           
 
           
-            <img src="/cobratoolbox/stable/_static/img/logo.png" class="logo" alt="cobratoolbox logo" />
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
           
           </a>
 
@@ -161,24 +161,24 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../dataIntegration/index.html">Dataintegration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../design/index.html">Design</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../../index.html">Reconstruction</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../../../modelGeneration/index.html">Modelgeneration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../metaboRePort/index.html">Metaboreport</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../refinement/index.html">Refinement</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../../index.html">Demeter</a><ul class="current">
-<li class="toctree-l4"><a class="reference internal" href="../../suite/index.html">Suite</a></li>
 <li class="toctree-l4 current"><a class="reference internal" href="../index.html">Src</a><ul class="current">
-<li class="toctree-l5"><a class="reference internal" href="../refinement/index.html">Refinement</a></li>
-<li class="toctree-l5 current"><a class="current reference internal" href="#">Debugging</a></li>
-<li class="toctree-l5"><a class="reference internal" href="../properties/index.html">Properties</a></li>
 <li class="toctree-l5"><a class="reference internal" href="../integration/index.html">Integration</a></li>
+<li class="toctree-l5 current"><a class="current reference internal" href="#">Debugging</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../refinement/index.html">Refinement</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../properties/index.html">Properties</a></li>
 </ul>
 </li>
+<li class="toctree-l4"><a class="reference internal" href="../../suite/index.html">Suite</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../../fastGapFill/index.html">Fastgapfill</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../comparison/index.html">Comparison</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../metaboRePort/index.html">Metaboreport</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../growthExpMatch/index.html">Growthexpmatch</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../rBioNet/index.html">Rbionet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../growthExpMatch/index.html">Growthexpmatch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../comparison/index.html">Comparison</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../fastGapFill/index.html">Fastgapfill</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modelGeneration/index.html">Modelgeneration</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../visualization/index.html">Visualization</a></li>
@@ -266,7 +266,7 @@ coupling constraints, which is required for the Microbiome Modeling
 Toolbox, renders the model unable to grow. This can be fixed by adding
 certain reactions that were identiifed through manual testing.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[model,addedCouplingRxns] = debugCouplingConstraints</strong> (<em>model,biomassReaction,database</em>)</p>
 </dd>
 </dl>
@@ -295,7 +295,7 @@ are performed whether or not the models can produce biomass aerobically
 and anaerobically, and whether or not unrealistically high ATP is
 produced on a complex medium.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[revisedModel,gapfilledReactions,replacedReactions]=debugModel</strong> (<em>model,testResults,inputDataFolder,infoFilePath,microbeID,biomassReaction</em>)</p>
 </dd>
 </dl>
@@ -351,7 +351,7 @@ this, the replacement step needs to be added to the function
 removeFutileCycles. It is requested that identified solutions are
 submitted as a pull request.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[gapfilledReactions,replacedReactions,revisedModel]=debugModel</strong> (<em>model,testResultsFolder, inputDataFolder,reconVersion,microbeID,biomassReaction</em>)</p>
 </dd>
 </dl>
@@ -374,7 +374,7 @@ unrealistically high ATP production. All solutions were identified
 through manual inspection. Any new solutions identified for reaction
 combinations not yet encountered by DEMETER may be added.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[model, deletedRxns, addedRxns, gfRxns] = removeFutileCycles</strong> (<em>model, biomassReaction, database,unionRxns,constrainedModel</em>)</p>
 </dd>
 </dl>
@@ -451,7 +451,7 @@ refined as part of the DEMETER pipeline. Reactions are filled in to
 enable flux through an objective function, e.g., the biomass objective
 function.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[model,condGF,targetGF,relaxGF] = runGapfillingFunctions</strong> (<em>model,objectiveFunction,biomassReaction,osenseStr,database</em>)</p>
 </dd>
 </dl>
@@ -498,7 +498,7 @@ suite to conform with experimental data and/or to enable growth.
 Metabolites are identified that would enable flux and reactions are
 gapfilled based on that.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>model = targetedGapFilling</strong> (<em>model,osenseStr,database</em>)</p>
 </dd>
 </dl>
@@ -525,7 +525,7 @@ reaction from the complete reaction database through the use of
 relaxedFBA that could enable flux through the objective function. This
 function will be performed only if targeted gap-filling failed.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[model,addedRxns] = untargetedGapFilling</strong> (<em>model,osenseStr,database</em>)</p>
 </dd>
 </dl>
@@ -581,10 +581,10 @@ osenseStr:        Maximize (‘max’)/minimize (‘min’) linear part of the</
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../properties/index.html" class="btn btn-default float-right" title="Properties" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../refinement/index.html" class="btn btn-default float-right" title="Refinement" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../refinement/index.html" class="btn btn-default" title="Refinement" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../integration/index.html" class="btn btn-default" title="Integration" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -622,9 +622,6 @@ osenseStr:        Maximize (‘max’)/minimize (‘min’) linear part of the</
         };
     </script>
     <script type="text/javascript" src="../../../../../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../../../../../_static/jquery.js"></script>
-    <script type="text/javascript" src="../../../../../_static/underscore.js"></script>
-    <script type="text/javascript" src="../../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script type="text/javascript" src="../../../../../_static/doctools.js"></script>
     <script type="text/javascript" src="../../../../../_static/sphinx_highlight.js"></script>
 

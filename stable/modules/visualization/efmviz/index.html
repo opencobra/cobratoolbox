@@ -5,7 +5,7 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
@@ -69,8 +69,8 @@
         <link rel="search" title="Search" href="../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../index.html"/>
         <link rel="up" title="Visualization" href="../index.html"/>
-        <link rel="next" title="Createmetintrcnetwork" href="../createMetIntrcNetwork/index.html"/>
-        <link rel="prev" title="Eschermap" href="../EscherMap/index.html"/> 
+        <link rel="next" title="Entropicfba" href="../entropicFBA/index.html"/>
+        <link rel="prev" title="Reconmap" href="../maps/ReconMap/index.html"/> 
 
   
   <script src="../../../_static/js/modernizr.min.js"></script>
@@ -92,7 +92,7 @@
           
 
           
-            <img src="/cobratoolbox/stable/_static/img/logo.png" class="logo" alt="cobratoolbox logo" />
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
           
           </a>
 
@@ -162,17 +162,17 @@
 <li class="toctree-l2"><a class="reference internal" href="../../design/index.html">Design</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../reconstruction/index.html">Reconstruction</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html">Visualization</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../cellDesigner/index.html">Celldesigner</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../paint4Net/index.html">Paint4net</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../entropicFBA/index.html">Entropicfba</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../metabolicCartography/index.html">Metaboliccartography</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../visualizeEpistasis/index.html">Visualizeepistasis</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../SAMMIM/index.html">Sammim</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../convert/index.html">Convert</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../EscherMap/index.html">Eschermap</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Efmviz</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../createMetIntrcNetwork/index.html">Createmetintrcnetwork</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../maps/index.html">Maps</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Efmviz</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../entropicFBA/index.html">Entropicfba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cellDesigner/index.html">Celldesigner</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../SAMMIM/index.html">Sammim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../metabolicCartography/index.html">Metaboliccartography</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../convert/index.html">Convert</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../visualizeEpistasis/index.html">Visualizeepistasis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../paint4Net/index.html">Paint4net</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../createMetIntrcNetwork/index.html">Createmetintrcnetwork</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../EscherMap/index.html">Eschermap</a></li>
 </ul>
 </li>
 </ul>
@@ -229,16 +229,16 @@
 <span class="sig-name descname"><span class="pre">efmBackboneExtraction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">EFMRxns</span></em>, <em class="sig-param"><span class="pre">percentage</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/efmviz/efmBackboneExtraction.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.efmviz.efmBackboneExtraction" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function extracts all the reactions present in a certain percentage of EFMs</p>
 <dl class="field-list">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[selectedRxns,  rxnDistribution] = efmBackboneExtraction</strong> (<em>EFMRxns, percentage</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>efmData</strong> – matlab array containing reactions in EFMs (each row is an EFM and every entry indicates the reaction IDs in the EFM)</p></li>
 <li><p><strong>percentage</strong> – a number indicating the cut off percentage. The reactions which are present in &gt;= ‘percentage’ number of EFMs will be returned as output. ex. ‘80’</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OUTPUTS</dt>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><ul>
 <li><p><strong>selectedRxns</strong> – table of reactions which are present in &gt;= ‘percentage’ number of EFMs.
 The columns in the table are:</p>
@@ -277,10 +277,10 @@ A three-column (space-separated) file: &lt;reaction ID&gt; &lt;fold change&gt; &
 </dd>
 </dl>
 <dl class="field-list">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>efmEnrichmentAnalysis</strong> (<em>EFMRxns, model, exprData, GSCFileName, GSSFileName</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul>
 <li><p><strong>EFMRxns</strong> – matlab array containing reactions in EFMs (each row is an EFM and every entry indicates the reaction IDs in the EFM)</p></li>
 <li><p><strong>model</strong> – COBRA model structure</p></li>
@@ -299,12 +299,12 @@ A three-column (space-separated) file: &lt;reaction ID&gt; &lt;fold change&gt; &
 <li><p><strong>GSSFileName</strong> – file name of GSS file</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>minSum</strong> – boolean flag for how GPR rule must be used. ‘false’ means use
 min for AND and max for OR (default), ‘true’ means use min for
 AND and Sum for OR</p>
 </dd>
-<dt class="field-even">OUTPUTS</dt>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>Two files GSC File and GSS File are written in the working directory</strong></p>
 </dd>
 </dl>
@@ -316,16 +316,16 @@ AND and Sum for OR</p>
 <dd><p>This function returns a subset of EFMs that contain a desired reaction of
 interest</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>filteredEFMs = filterEFMs</strong> (<em>EFMRxns, roi</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>EFMRxns</strong> – matlab array containing reactions in EFMs (as returned by the function importEFMs)</p></li>
 <li><p><strong>roi</strong> – (numeric) index of the reaction of interest as in the input model</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OUTPUTS</dt>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>filteredEFMs</strong> – matlab array containing subset of EFMs that contain ‘roi’</p>
 </dd>
 </dl>
@@ -342,22 +342,22 @@ interest</p>
 <span class="sig-name descname"><span class="pre">efmImport</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">EFMfileLocation</span></em>, <em class="sig-param"><span class="pre">EFMFileName</span></em>, <em class="sig-param"><span class="pre">EFMFluxfileLocation</span></em>, <em class="sig-param"><span class="pre">EFMFluxFileName</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/efmviz/efmImport.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.efmviz.efmImport" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function reads the file containing all EFMs</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[EFMRxns, EFMFluxes] = importEFMs</strong> (<em>EFMfileLocation, EFMFileName, EFMFluxfileLocation, EFMFluxFileName</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>EFMfileLocation</strong> – location of the file containing all EFMs</p></li>
 <li><p><strong>EFMFileName</strong> – name of the file containing all EFMs &lt;name.txt&gt;</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>EFMFluxfileLocation</strong> – location of the file containing relative fluxes of EFMs</p></li>
 <li><p><strong>EFMFluxFileName</strong> – name of the file containing relative fluxes of EFMs &lt;name.txt&gt;</p></li>
 </ul>
 </dd>
-<dt class="field-even">OUTPUTS</dt>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>EFMRxns</strong> – matlab array containing reactions in EFMs.
 Each row corresponds to an EFM and contains indices of reactions active in the EFM</p>
 </dd>
@@ -382,20 +382,20 @@ EFMRxns = importEFMs(‘’, ‘test.txt’); % when the file is in the current 
 <span class="sig-name descname"><span class="pre">efmSubmodelExtractionAsSBML</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">rxnsForSubmodel</span></em>, <em class="sig-param"><span class="pre">outputFileName</span></em>, <em class="sig-param"><span class="pre">remFlag</span></em>, <em class="sig-param"><span class="pre">ubiquitousMets</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/efmviz/efmSubmodelExtractionAsSBML.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.efmviz.efmSubmodelExtractionAsSBML" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function takes an input array containing reaction indices (in an EFM) and extracts as a sub-model (SBML file) which can be visualised in Cytoscape</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>modelEFM = extractSBMLFromEFM</strong> (<em>model, data, outputFileName</em>)</p></li>
 <li><p><strong>modelEFM = extractSBMLFromEFM</strong> (<em>model, data, outputFileName, remFlag, ubiquitousMets</em>)</p></li>
 </ul>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>model</strong> – COBRA model that was used for EFM calculation</p></li>
 <li><p><strong>rxnsForSubmodel</strong> – array of reaction indices (such as those in an EFM)</p></li>
 <li><p><strong>outputFileName</strong> – file name of the output sbml file e.g., &lt;name&gt;.xml</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>remFlag</strong> – boolean indicating whether ubiquitous metabolites should be removed</p></li>
 <li><p><strong>ubiquitousMets</strong> – list of metabolites to remove.
@@ -403,7 +403,7 @@ An example list of ubiquitous metabolites:
 ubiquitousMets = {‘h’;’h2’;’fe3’;’fe2’;’h2o’;’na1’;’atp’;’datp’;’hco3’;’pi’;’adp’;’dadp’;’nadp’;’nadph’;’coa’;’o2’;’nad’;’nadh’;’ppi’;’pppi’;’amp’;’so4’;’fad’;’fadh2’;’udp’;’dudp’;’co2’;’h2o2’;’nh4’;’ctp’;’utp’;’gtp’;’cdp’;’gdp’;’dcdp’;’dgdp’;’dtdp’;’dctp’;’dttp’;’dutp’;’dgtp’;’cmp’;’gmp’;’ump’;’dcmp’;’dtmp’;’dgmp’;’dump’;’damp’;’cl’};</p></li>
 </ul>
 </dd>
-<dt class="field-even">OUTPUTS</dt>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>modelEFM</strong> – submodel containing reactions, metabolites and genes in the EFM of interest</p>
 </dd>
 </dl>
@@ -417,16 +417,16 @@ modelEFM = extractSBMLFromEFM(model, data) ;</p>
 <span class="sig-name descname"><span class="pre">efmSubsystemsExtraction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">EFMRxns</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/efmviz/efmSubsystemsExtraction.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.efmviz.efmSubsystemsExtraction" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function finds all unique subsystems in the input set of EFMs</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[subsysSummary, uniqSubsys, countSubPerEFM] = efmSubsystemsExtraction</strong> (<em>model, EFMRxns</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>model</strong> – COBRA model that was used for EFM calculation</p></li>
 <li><p><strong>EFMRxns</strong> – matlab array containing reactions in EFMs (as returned by the function efmImport)</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OUTPUTS</dt>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>subsysSummary</strong></p></li>
 <li><p><strong>uniqSubsys</strong></p></li>
@@ -442,17 +442,17 @@ modelEFM = extractSBMLFromEFM(model, data) ;</p>
 <span class="sig-name descname"><span class="pre">efmYieldAnalysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">EFMFluxes</span></em>, <em class="sig-param"><span class="pre">uptkRxnID</span></em>, <em class="sig-param"><span class="pre">relRxnID</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/efmviz/efmYieldAnalysis.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.efmviz.efmYieldAnalysis" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function performs yield analysis on the input set of EFMs</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>EFMyield = EFMYieldAnalysis</strong> (<em>fluxData, uptkRxnID, relRxnID</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>EFMFluxes</strong> – matlab array containing relative fluxes of reactions in EFM</p></li>
 <li><p><strong>uptkRxnID</strong> – (numeric) index of the desired uptake reaction as in the input model</p></li>
 <li><p><strong>relRxnID</strong> – (numeric) index of the desired release reaction as in the input model</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OUTPUTS</dt>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>EFMyield</strong> – matlab array with yields for all input set of EFMs</p>
 </dd>
 </dl>
@@ -472,10 +472,10 @@ modelEFM = extractSBMLFromEFM(model, data) ;</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../createMetIntrcNetwork/index.html" class="btn btn-default float-right" title="Createmetintrcnetwork" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../entropicFBA/index.html" class="btn btn-default float-right" title="Entropicfba" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../EscherMap/index.html" class="btn btn-default" title="Eschermap" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../maps/ReconMap/index.html" class="btn btn-default" title="Reconmap" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -513,9 +513,6 @@ modelEFM = extractSBMLFromEFM(model, data) ;</p>
         };
     </script>
     <script type="text/javascript" src="../../../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../../../_static/jquery.js"></script>
-    <script type="text/javascript" src="../../../_static/underscore.js"></script>
-    <script type="text/javascript" src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
     <script type="text/javascript" src="../../../_static/sphinx_highlight.js"></script>
 

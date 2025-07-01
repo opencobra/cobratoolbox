@@ -5,7 +5,7 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
@@ -69,7 +69,7 @@
         <link rel="search" title="Search" href="../../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../../index.html"/>
         <link rel="up" title="Fastgapfill" href="../index.html"/>
-        <link rel="next" title="Comparison" href="../../comparison/index.html"/>
+        <link rel="next" title="Modelgeneration" href="../../modelGeneration/index.html"/>
         <link rel="prev" title="Fastgapfill" href="../index.html"/> 
 
   
@@ -92,7 +92,7 @@
           
 
           
-            <img src="/cobratoolbox/stable/_static/img/logo.png" class="logo" alt="cobratoolbox logo" />
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
           
           </a>
 
@@ -161,17 +161,17 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../dataIntegration/index.html">Dataintegration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../design/index.html">Design</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Reconstruction</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../../modelGeneration/index.html">Modelgeneration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../metaboRePort/index.html">Metaboreport</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../refinement/index.html">Refinement</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../demeter/index.html">Demeter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../rBioNet/index.html">Rbionet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../growthExpMatch/index.html">Growthexpmatch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../comparison/index.html">Comparison</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../index.html">Fastgapfill</a><ul class="current">
 <li class="toctree-l4 current"><a class="current reference internal" href="#">Auxillaryfiles</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../comparison/index.html">Comparison</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../metaboRePort/index.html">Metaboreport</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../growthExpMatch/index.html">Growthexpmatch</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../rBioNet/index.html">Rbionet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modelGeneration/index.html">Modelgeneration</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../visualization/index.html">Visualization</a></li>
@@ -230,10 +230,10 @@
 <span class="sig-name descname"><span class="pre">assignRxnWeights</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">MatricesSUX</span></em>, <em class="sig-param"><span class="pre">weights</span></em>, <em class="sig-param"><span class="pre">WeightsPerRxn</span></em>, <em class="sig-param"><span class="pre">NoWeight</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/fastGapFill/AuxillaryFiles/assignRxnWeights.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.fastGapFill.AuxillaryFiles.assignRxnWeights" title="Permalink to this definition">¶</a></dt>
 <dd><p>Assigns reaction weights</p>
 <dl class="field-list">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>MatricesSUX = assignRxnWeights</strong> (<em>MatricesSUX, weights, WeightsPerRxn, NoWeight</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul>
 <li><p><strong>MatricesSUX</strong> – Input model structure</p></li>
 <li><p><strong>weights</strong> – Weight structure that permits to add weights to
@@ -254,7 +254,7 @@ individual weights (WeightsPerRxn.rxns) AND a list of Reaction weights (WeightsP
 in core reaction set and NOT in WeightsPerRxn (default:1000)</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OUTPUT</dt>
+<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>MatricesSUX</strong> – Output model structure</p>
 </dd>
 </dl>
@@ -265,17 +265,17 @@ in core reaction set and NOT in WeightsPerRxn (default:1000)</p></li>
 <span class="sig-name descname"><span class="pre">createUniversalReactionModel2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">KEGGFilename</span></em>, <em class="sig-param"><span class="pre">KEGGBlackList</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/fastGapFill/AuxillaryFiles/createUniversalReactionModel2.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.fastGapFill.AuxillaryFiles.createUniversalReactionModel2" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates the U matrix using the universal data from the KEGG</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>KEGG = createUniversalReactionModel2</strong> (<em>KEGGFilename, KEGGBlackList</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>KEGGFilename</strong> – File name containing universal database (e.g., KEGG; optional input, default: <cite>reaction.lst</cite>)</p></li>
 <li><p><strong>KEGGblackList</strong> – List of excluded reactions from the universal database
 (e.g., KEGG) (optional input, default: no blacklist)</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OUTPUT</dt>
+<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>KEGG</strong> – Contains universal database (<cite>U</cite> matrix) in matrix format</p>
 </dd>
 </dl>
@@ -293,10 +293,10 @@ it will not parse the reactions correctly and will throw an error.</p>
 on the input list (creates an exchange reaction for each of the
 metabolites present in the model)</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>ExchangeRxnMatrix = createXMatrix2</strong> (<em>compoundsIn, transport, compartment, model</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>compoundsIn</strong> – List of metabolites</p></li>
 <li><p><strong>transport</strong> – if 1, transport reactions will be defined as well for every
@@ -307,7 +307,7 @@ compounds (default: 0, which corresponds to only exchange reactions)</p></li>
 already before adding it to <cite>ExchangeRxnMatrix</cite></p></li>
 </ul>
 </dd>
-<dt class="field-odd">OUTPUT</dt>
+<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>ExchangeRxnMatrix</strong> – Model structure containing all exchange and
 transport reactions</p>
 </dd>
@@ -319,13 +319,13 @@ transport reactions</p>
 <span class="sig-name descname"><span class="pre">findIntracellularRxns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/fastGapFill/AuxillaryFiles/findIntracellularRxns.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.fastGapFill.AuxillaryFiles.findIntracellularRxns" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function finds all reactions that do not contain metabolites in [e] comparment.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[intracellRxnList] = findIntracellularRxns</strong> (<em>model</em>)</p>
 </dd>
-<dt class="field-even">INPUT</dt>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>model</strong> – Model structure</p>
 </dd>
-<dt class="field-odd">OUTPUT</dt>
+<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>intracellRxnList</strong> – List of intracellular reactions in model</p>
 </dd>
 </dl>
@@ -340,10 +340,10 @@ specified and reversible transport reactions (<cite>X</cite>) are added for each
 <cite>U</cite> and <cite>S</cite>, between the compartment and the cytosol. Additionally, exchange
 reactions are added for each metabolite in the extracellular space.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>MatricesSUX =generateSUXComp</strong> (<em>model, dictionary, KEGGFilename, KEGGBlackList, listCompartments</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>model</strong> – Model structure</p></li>
 <li><p><strong>dictionary</strong> – List of universal database IDs and their counterpart in the model (e.g.,
@@ -356,7 +356,7 @@ reactions are added for each metabolite in the extracellular space.</p>
 <li><p><strong>KEGGMatrixLoad       load precomputed KEGG matrix (default</strong> – 0)</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OUTPUT</dt>
+<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>MatricesSUX</strong> – SUX matrix</p>
 </dd>
 </dl>
@@ -381,7 +381,7 @@ faster</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../../comparison/index.html" class="btn btn-default float-right" title="Comparison" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../../modelGeneration/index.html" class="btn btn-default float-right" title="Modelgeneration" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="../index.html" class="btn btn-default" title="Fastgapfill" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
@@ -422,9 +422,6 @@ faster</p>
         };
     </script>
     <script type="text/javascript" src="../../../../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
-    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
-    <script type="text/javascript" src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script type="text/javascript" src="../../../../_static/doctools.js"></script>
     <script type="text/javascript" src="../../../../_static/sphinx_highlight.js"></script>
 

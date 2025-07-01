@@ -1,0 +1,769 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Trimgdel &mdash; The COBRA Toolbox</title>
+  
+
+  
+  
+  
+    <link rel="apple-touch-icon" sizes="180x180" href="../../../_static/img/apple-touch-icon.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../_static/img/favicon-32x32.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="16x16" href="../../../_static/img/favicon-16x16.png">
+  
+  
+    <link rel="mask-icon" href="../../../_static/img/safari-pinned-tab.svg" color="#5bbad5">
+  
+  
+    <link rel="manifest" href="../../../_static/json/manifest.json">
+  
+  
+    <meta name="msapplication-config" content="../../../_static/browserconfig.xml">
+  
+  <meta name="theme-color" content="#ffffff">
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+  <script src="../../../_static/js/jquery.easy-autocomplete.min.js" type="text/javascript" ></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+  <link href="../../../_static/css/easy-autocomplete.min.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/cobra.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../../_static/css/cobra.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="The COBRA Toolbox" href="../../../index.html"/>
+        <link rel="up" title="Design" href="../index.html"/>
+        <link rel="next" title="Optenvelope" href="../optEnvelope/index.html"/>
+        <link rel="prev" title="Optforce" href="../optForce/index.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> The COBRA Toolbox
+          
+
+          
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
+          
+          </a>
+
+              
+          <h1>The COBRA Toolbox</h1>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" id="simple"/>
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+    <script>
+    	var options = {
+
+		url: "../../../_static/json/functions.json",
+
+		getValue: "name",
+
+		list: {
+            onKeyEnterEvent: function(item) {
+                    return "_static/../" + item.website_url
+            },
+            maxNumberOfElements: 25,
+			match: {
+					enabled: true,
+			},
+            sort: {
+			    enabled: true
+		    }
+		},
+
+    	template: {
+	    	type: "custom",
+		    method: function(value, item) {
+                return "<span><a href='../../../search.html?q=" + item.name + "&check_keywords=yes&area=default'>" + value + "</a>" + "<a href='../../../_static/../" + item.website_url + "' ><img src='../../../_static/link.svg'/></a></span>";
+		    }
+	    },
+
+		theme: "square"
+
+	};
+
+	$("#simple").easyAutocomplete(options);
+
+
+    </script>
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../../../index.html">Home</a></li>
+              </ul>
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Functions</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../analysis/index.html">Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../base/index.html">Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dataIntegration/index.html">Dataintegration</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Design</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../optForceGAMS/index.html">Optforcegams</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../optForce/index.html">Optforce</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Trimgdel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../optEnvelope/index.html">Optenvelope</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../reconstruction/index.html">Reconstruction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../visualization/index.html">Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../cite.html">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../support.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../funding.html">Funding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../plan.html">Development Plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contact.html">Contact</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../citations.html">Citations</a></li>
+</ul>
+
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">The COBRA Toolbox</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../contents.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Functions</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Design</a></li>
+      <li class="breadcrumb-item active">Trimgdel</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="https://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <section id="trimgdel">
+<span id="id1"></span><h1>Trimgdel<a class="headerlink" href="#trimgdel" title="Permalink to this heading">¶</a></h1>
+<span class="target" id="module-src.design.TrimGdel"></span><dl class="mat function">
+<dt class="sig sig-object mat" id="src.design.TrimGdel.GRPRchecker">
+<span class="sig-name descname"><span class="pre">GRPRchecker</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">targetMet</span></em>, <em class="sig-param"><span class="pre">gvalue</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/design/TrimGdel/GRPRchecker.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.design.TrimGdel.GRPRchecker" title="Permalink to this definition">¶</a></dt>
+<dd><p>GRPRchecker calculates the maximum GR and the minimu PR
+under the GR maximization when a constraint-based model, a target
+metabolite, and a gene deletion stratety are given.</p>
+<dl class="field-list">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>function [GR, PR]</strong> – = GRPRchecker(model, targetMet, givenGvalue)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul>
+<li><p><strong>model</strong> – COBRA model structure containing the following required fields to perform gDel_minRN.</p>
+<p><a href="#id2"><span class="problematic" id="id3">*</span></a>.rxns:       Rxns in the model
+<a href="#id4"><span class="problematic" id="id5">*</span></a>.mets:       Metabolites in the model
+<a href="#id6"><span class="problematic" id="id7">*</span></a>.genes:      Genes in the model
+<a href="#id8"><span class="problematic" id="id9">*</span></a>.grRules:    Gene-protein-reaction relations in the model
+<a href="#id10"><span class="problematic" id="id11">*</span></a>.S:          Stoichiometric matrix (sparse)
+<a href="#id12"><span class="problematic" id="id13">*</span></a>.b:          RHS of Sv = b (usually zeros)
+<a href="#id14"><span class="problematic" id="id15">*</span></a>.c:          Objective coefficients
+<a href="#id16"><span class="problematic" id="id17">*</span></a>.lb:         Lower bounds for fluxes
+<a href="#id18"><span class="problematic" id="id19">*</span></a>.ub:         Upper bounds for fluxes
+<a href="#id20"><span class="problematic" id="id21">*</span></a>.rev:        Reversibility of fluxes</p>
+</li>
+<li><p><strong>targetMet</strong> – target metabolites    (e.g.,  ‘btn_c’)</p></li>
+<li><p><strong>gvalue</strong> – The first column is the list of genes in the original model.
+The second column contains a 0/1 vector indicating which genes should be deleted.</p>
+<blockquote>
+<div><p>0: indicates genes to be deleted.
+1: indecates genes to be remained.</p>
+</div></blockquote>
+</li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>GR</strong> – the growth rate obained when the gene deletion strategy is
+applied and the growth rate is maximized.</p></li>
+<li><p><strong>PR</strong> – the minimum target metabolite production rate obained
+when the gene deletion strategy is applied and the growth rate is maximized.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.design.TrimGdel.TrimGdel">
+<span class="sig-name descname"><span class="pre">TrimGdel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">targetMet</span></em>, <em class="sig-param"><span class="pre">maxLoop</span></em>, <em class="sig-param"><span class="pre">PRLB</span></em>, <em class="sig-param"><span class="pre">GRLB</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/design/TrimGdel/TrimGdel.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.design.TrimGdel.TrimGdel" title="Permalink to this definition">¶</a></dt>
+<dd><p>TrimGdel appropriately considers GPR rules and determines
+a minimal gene deletion strategies to achieve growth-coupled production
+for a given target metabolite and a genome-scale model.
+even in the worst-case analysis (ensures the weak-growth-coupled production).</p>
+<p>Gurobi is required for this version.
+The CPLEX version is available on <a class="reference external" href="https://github.com/MetNetComp/TrimGdel">https://github.com/MetNetComp/TrimGdel</a></p>
+<dl class="field-list">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>function [gvalue, GR, PR, size1, size2, size3, success]</strong> – = TrimGdel(model, targetMet, maxLoop, PRLB, GRLB)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul>
+<li><p><strong>model</strong> – COBRA model structure containing the following required fields to perform gDel_minRN.</p>
+<p><a href="#id22"><span class="problematic" id="id23">*</span></a>.rxns:       Rxns in the model
+<a href="#id24"><span class="problematic" id="id25">*</span></a>.mets:       Metabolites in the model
+<a href="#id26"><span class="problematic" id="id27">*</span></a>.genes:      Genes in the model
+<a href="#id28"><span class="problematic" id="id29">*</span></a>.grRules:    Gene-protein-reaction relations in the model
+<a href="#id30"><span class="problematic" id="id31">*</span></a>.S:          Stoichiometric matrix (sparse)
+<a href="#id32"><span class="problematic" id="id33">*</span></a>.b:          RHS of Sv = b (usually zeros)
+<a href="#id34"><span class="problematic" id="id35">*</span></a>.c:          Objective coefficients
+<a href="#id36"><span class="problematic" id="id37">*</span></a>.lb:         Lower bounds for fluxes
+<a href="#id38"><span class="problematic" id="id39">*</span></a>.ub:         Upper bounds for fluxes
+<a href="#id40"><span class="problematic" id="id41">*</span></a>.rev:        Reversibility of fluxes</p>
+</li>
+<li><p><strong>targetMet</strong> – target metabolites    (e.g.,  ‘btn_c’)</p></li>
+<li><p><strong>maxLoop</strong> – the maximum number of iterations in gDel_minRN</p></li>
+<li><p><strong>PRLB</strong> – the minimum required production rates of the target metabolites
+when gDel-minRN searches the gene deletion
+strategy candidates.
+(But it is not ensured to achieve this minimum required value
+when GR is maximized withoug PRLB.)</p></li>
+<li><p><strong>GRLB</strong> – the minimum required growth rate
+when gDel-minRN searches the gene deletion
+strategy candidates.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul>
+<li><p><strong>gvalue</strong> – a small gene deletion strategy (obtained by TrimGdel).
+The first column is the list of genes.
+The second column is a 0/1 vector indicating which genes should be deleted.</p>
+<blockquote>
+<div><p>0: indicates genes to be deleted.
+1: indecates genes to be remained.</p>
+</div></blockquote>
+</li>
+<li><p><strong>GR</strong> – the maximum growth rate when the obtained gene deletion
+strategy represented by gvalue is applied.</p></li>
+<li><p><strong>PR</strong> – the minimum production rate of the target metabolite under
+the maximization of the growth rate when the obtained gene deletion
+strategy represented by gvalue is applied.</p></li>
+<li><p><strong>size1</strong> – the number of gene deletions after Step1.</p></li>
+<li><p><strong>size2</strong> – the number of gene deletions after Step2.</p></li>
+<li><p><strong>size3</strong> – the number of gene deletions after Step3.</p></li>
+<li><p><strong>success</strong> – indicates whether TrimGdel obained an appropriate gene
+deletion strategy. (1:success, 0:failure)</p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>T. Tamura, “Trimming Gene Deletion Strategies for Growth-Coupled
+Production in Constraint-Based Metabolic Networks: TrimGdel,”
+in IEEE/ACM Transactions on Computational Biology and Bioinformatics,
+vol. 20, no. 2, pp. 1540-1549, 2023.</p>
+<p>Comprehensive computational results are accumulated in MetNetComp
+database.
+<a class="reference external" href="https://metnetcomp.github.io/database1/indexFiles/index.html">https://metnetcomp.github.io/database1/indexFiles/index.html</a></p>
+<p>T. Tamura, “MetNetComp: Database for Minimal and Maximal Gene-Deletion Strategies
+for Growth-Coupled Production of Genome-Scale Metabolic Networks,”
+in IEEE/ACM Transactions on Computational Biology and Bioinformatics,
+vol. 20, no. 6, pp. 3748-3758, 2023,</p>
+</div>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.design.TrimGdel.calculateGR">
+<span class="sig-name descname"><span class="pre">calculateGR</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">gvalue</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/design/TrimGdel/calculateGR.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.design.TrimGdel.calculateGR" title="Permalink to this definition">¶</a></dt>
+<dd><p>calculateGR is a function of gDel_minRN that reads
+a COBRA model and a 0-1 assignment for genes and outputs whether
+each reaction is repressed or not.</p>
+<dl class="field-list">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>function [grRules] = calculateGR</strong> (<em>model, gvalue</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul>
+<li><p><strong>model</strong> – COBRA model structure containing the following required fields to perform gDel_minRN.</p>
+<p><a href="#id42"><span class="problematic" id="id43">*</span></a>.rxns:       Rxns in the model
+<a href="#id44"><span class="problematic" id="id45">*</span></a>.mets:       Metabolites in the model
+<a href="#id46"><span class="problematic" id="id47">*</span></a>.genes:      Genes in the model
+<a href="#id48"><span class="problematic" id="id49">*</span></a>.grRules:    Gene-protein-reaction relations in the model
+<a href="#id50"><span class="problematic" id="id51">*</span></a>.S:          Stoichiometric matrix (sparse)
+<a href="#id52"><span class="problematic" id="id53">*</span></a>.b:          RHS of Sv = b (usually zeros)
+<a href="#id54"><span class="problematic" id="id55">*</span></a>.c:          Objective coefficients
+<a href="#id56"><span class="problematic" id="id57">*</span></a>.lb:         Lower bounds for fluxes
+<a href="#id58"><span class="problematic" id="id59">*</span></a>.ub:         Upper bounds for fluxes
+<a href="#id60"><span class="problematic" id="id61">*</span></a>.rev:        Reversibility of fluxes</p>
+</li>
+<li><p><strong>gvalue</strong> – The first column is the list of genes in the original model.
+The second column contains a 0/1 vector indicating which genes should be deleted.</p>
+<blockquote>
+<div><p>0: indicates genes to be deleted.
+1: indecates genes to be remained.</p>
+</div></blockquote>
+</li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>grRules</strong> – The first column is the list of GPR-rules. If a reaction does
+not have a GPR-rule, it is represented as 1.
+In the second columun, each gene is converted to 0 or 1 based
+on the given 0-1 assignment, with AND converted to * and OR
+converted to +.
+The third comumn contains the calculation results from the
+second column.
+The fourth column is 0 if the third column is 0 and 1 if it is
+greater. If it is 0, the reaction is repressed; if it is 1, it
+is not repressed.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.design.TrimGdel.example1">
+<span class="sig-name descname"><span class="pre">example1</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/design/TrimGdel/example1.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.design.TrimGdel.example1" title="Permalink to this definition">¶</a></dt>
+<dd><p>example1 calculates the gene deletion strategy for growth coupling
+for succinate in e_coli_core.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>function [] = example1()</strong></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.design.TrimGdel.example2">
+<span class="sig-name descname"><span class="pre">example2</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/design/TrimGdel/example2.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.design.TrimGdel.example2" title="Permalink to this definition">¶</a></dt>
+<dd><p>example2 calculates the gene deletion strategy for growth coupling
+for biotin in iML1515.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>function [] = example2()</strong></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.design.TrimGdel.example3">
+<span class="sig-name descname"><span class="pre">example3</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/design/TrimGdel/example3.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.design.TrimGdel.example3" title="Permalink to this definition">¶</a></dt>
+<dd><p>example3 calculates the gene deletion strategy for growth coupling
+for riboflavin in iML1515.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>function [] = example3()</strong></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.design.TrimGdel.example4">
+<span class="sig-name descname"><span class="pre">example4</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/design/TrimGdel/example4.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.design.TrimGdel.example4" title="Permalink to this definition">¶</a></dt>
+<dd><p>example4 calculates the gene deletion strategy for growth coupling
+for pantothenate in iML1515.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>function [] = example4()</strong></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.design.TrimGdel.example5">
+<span class="sig-name descname"><span class="pre">example5</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/design/TrimGdel/example5.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.design.TrimGdel.example5" title="Permalink to this definition">¶</a></dt>
+<dd><p>example5 calculates the gene deletion strategy for growth coupling
+for succinate in iMM904.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>function [] = example5()</strong></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.design.TrimGdel.gDel_minRN">
+<span class="sig-name descname"><span class="pre">gDel_minRN</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">targetMet</span></em>, <em class="sig-param"><span class="pre">maxLoop</span></em>, <em class="sig-param"><span class="pre">PRLB</span></em>, <em class="sig-param"><span class="pre">GRLB</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/design/TrimGdel/gDel_minRN.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.design.TrimGdel.gDel_minRN" title="Permalink to this definition">¶</a></dt>
+<dd><p>gDel-minRN (Step 1 of TrimGdel) determines gene deletion strategies
+by mixed integer linear programming to achieve growth coupling
+for the target metabolite by repressing the maximum number of reactions
+via gene-protein-reaction relations.</p>
+<dl class="field-list">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>function [vg gr pr it success]</strong> – = gDel_minRN(model, targetMet, maxLoop, PRLB, GRLB)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul>
+<li><p><strong>model</strong> – COBRA model structure containing the following required fields to perform gDel_minRN.</p>
+<p><a href="#id62"><span class="problematic" id="id63">*</span></a>.rxns:       Rxns in the model
+<a href="#id64"><span class="problematic" id="id65">*</span></a>.mets:       Metabolites in the model
+<a href="#id66"><span class="problematic" id="id67">*</span></a>.genes:      Genes in the model
+<a href="#id68"><span class="problematic" id="id69">*</span></a>.grRules:    Gene-protein-reaction relations in the model
+<a href="#id70"><span class="problematic" id="id71">*</span></a>.S:          Stoichiometric matrix (sparse)
+<a href="#id72"><span class="problematic" id="id73">*</span></a>.b:          RHS of Sv = b (usually zeros)
+<a href="#id74"><span class="problematic" id="id75">*</span></a>.c:          Objective coefficients
+<a href="#id76"><span class="problematic" id="id77">*</span></a>.lb:         Lower bounds for fluxes
+<a href="#id78"><span class="problematic" id="id79">*</span></a>.ub:         Upper bounds for fluxes
+<a href="#id80"><span class="problematic" id="id81">*</span></a>.rev:        Reversibility of fluxes</p>
+</li>
+<li><p><strong>targetMet</strong> – target metabolites  (e.g.,  ‘btn_c’)</p></li>
+<li><p><strong>maxLoop</strong> – the maximum number of iterations in gDel_minRN</p></li>
+<li><p><strong>PRLB</strong> – the minimum required production rates of the target metabolites
+when gDel-minRN searches the gene deletion strategy candidates.
+(But it is not ensured to achieve this minimum required value
+when GR is maximized withoug PRLB.)</p></li>
+<li><p><strong>GRLB</strong> – the minimum required growth rate when gDel-minRN searches
+the gene deletion strategy candidates.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul>
+<li><p><strong>gvalue</strong> – The first column is the list of genes in the original model.
+The second column contains a 0/1 vector indicating which genes should be deleted.</p>
+<blockquote>
+<div><p>0: indicates genes to be deleted.
+1: indecates genes to be remained.</p>
+</div></blockquote>
+</li>
+<li><p><strong>gr</strong> – the growth rate obained when the gene deletion strategy is
+applied and the growth rate is maximized.</p></li>
+<li><p><strong>pr</strong> – the target metabolite production rate obained
+when the gene deletion strategy is applied and the growth rate is maximized.</p></li>
+<li><p><strong>it</strong> – indicates how many iterations were necessary to obtain the solution.</p></li>
+<li><p><strong>success</strong> – indicates whether gDel_minRN obained an appropriate gene
+deletion strategy. (1:success, 0:failure)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.design.TrimGdel.geneReactionMILP">
+<span class="sig-name descname"><span class="pre">geneReactionMILP</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">term</span></em>, <em class="sig-param"><span class="pre">ng</span></em>, <em class="sig-param"><span class="pre">nt</span></em>, <em class="sig-param"><span class="pre">nr</span></em>, <em class="sig-param"><span class="pre">nko</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/design/TrimGdel/geneReactionMILP.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.design.TrimGdel.geneReactionMILP" title="Permalink to this definition">¶</a></dt>
+<dd><p>geneReactionMILP is a submodule to convert GPR relations to MILP.</p>
+<dl class="field-list">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>function [f, A, b, Aeq, beq, lb, ub, xname]</strong> – = geneReactionMILP(model, term, ng, nt, nr, nko)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul>
+<li><p><strong>model</strong> – COBRA model structure containing the following required fields to perform gDel_minRN.</p>
+<p><a href="#id82"><span class="problematic" id="id83">*</span></a>.rxns:        Rxns in the model
+<a href="#id84"><span class="problematic" id="id85">*</span></a>.mets:        Metabolites in the model
+<a href="#id86"><span class="problematic" id="id87">*</span></a>.genes:       Genes in the model
+<a href="#id88"><span class="problematic" id="id89">*</span></a>.grRules:     Gene-protein-reaction relations in the model
+<a href="#id90"><span class="problematic" id="id91">*</span></a>.S:           Stoichiometric matrix (sparse)
+<a href="#id92"><span class="problematic" id="id93">*</span></a>.b:           RHS of Sv = b (usually zeros)
+<a href="#id94"><span class="problematic" id="id95">*</span></a>.c:           Objective coefficients
+<a href="#id96"><span class="problematic" id="id97">*</span></a>.lb:          Lower bounds for fluxes
+<a href="#id98"><span class="problematic" id="id99">*</span></a>.ub:          Upper bounds for fluxes
+<a href="#id100"><span class="problematic" id="id101">*</span></a>.rev:         Reversibility of fluxes</p>
+</li>
+<li><p><strong>term</strong> – the list of Boolean functions extracted from the gene-protein-reaction relations</p></li>
+<li><p><strong>ng</strong> – the number of genes</p></li>
+<li><p><strong>nt</strong> – the number of internal terms</p></li>
+<li><p><strong>nr</strong> – the number of reactions</p></li>
+<li><p><strong>nko</strong> – the number of repressible reactions</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul>
+<li><p><strong>f</strong> – the weighted vector for the objective function of the resulting MILP.</p></li>
+<li><p><strong>A, b, Aeq, beq, lb, ub</strong> – correspond to each matrix included in the
+following part of the MILP constraints.</p>
+<blockquote>
+<div><p>A*x &lt;= b
+Aeq*x=beq
+lb &lt;= x &lt;= ub</p>
+</div></blockquote>
+</li>
+<li><p><strong>xname</strong> – variable names in the resulting MILP.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.design.TrimGdel.modelSetting">
+<span class="sig-name descname"><span class="pre">modelSetting</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">targetMet</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/design/TrimGdel/modelSetting.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.design.TrimGdel.modelSetting" title="Permalink to this definition">¶</a></dt>
+<dd><p>modelSetting is a function of gDel_minRN that adds an auxiliary
+exchange reaction for the target metabolite when there is no
+original corresponding exchange reaction.</p>
+<dl class="field-list">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>function [model2,targetRID,extype] = modelSetting</strong> (<em>model,targetMet</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul>
+<li><p><strong>model</strong> – COBRA model structure containing the following required fields to perform gDel_minRN.</p>
+<p><a href="#id102"><span class="problematic" id="id103">*</span></a>.rxns:       Rxns in the model
+<a href="#id104"><span class="problematic" id="id105">*</span></a>.mets:       Metabolites in the model
+<a href="#id106"><span class="problematic" id="id107">*</span></a>.genes:      Genes in the model
+<a href="#id108"><span class="problematic" id="id109">*</span></a>.grRules:    Gene-protein-reaction relations in the model
+<a href="#id110"><span class="problematic" id="id111">*</span></a>.S:          Stoichiometric matrix (sparse)
+<a href="#id112"><span class="problematic" id="id113">*</span></a>.b:          RHS of Sv = b (usually zeros)
+<a href="#id114"><span class="problematic" id="id115">*</span></a>.c:          Objective coefficients
+<a href="#id116"><span class="problematic" id="id117">*</span></a>.lb:         Lower bounds for fluxes
+<a href="#id118"><span class="problematic" id="id119">*</span></a>.ub:         Upper bounds for fluxes
+<a href="#id120"><span class="problematic" id="id121">*</span></a>.rev:        Reversibility of fluxes</p>
+</li>
+<li><p><strong>targetMet</strong> – target metabolites    (e.g.,  ‘btn_c’)</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model2</strong> – the model that has the exchange reaction of the target metabolite</p></li>
+<li><p><strong>targetRID</strong> – ID of the exchange reaction of the target metabolite</p></li>
+<li><p><strong>extype</strong> – indicates that an auxiliary exchange reaction was added.
+1,2: there was the corresponding exchange reaction.
+3: An auxiliary exchange reaction was added.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.design.TrimGdel.readGeneRules">
+<span class="sig-name descname"><span class="pre">readGeneRules</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/design/TrimGdel/readGeneRules.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.design.TrimGdel.readGeneRules" title="Permalink to this definition">¶</a></dt>
+<dd><p>readGeneRules is a function of gDel_minRN that reads
+gene-protein-reaction relations and outputs the necessary
+information for the MILP formalization</p>
+<dl class="field-list">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>function [term, ng, nt, nr, nko, reactionKO, reactionKO2term] = readGeneRules</strong> (<em>model</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>model</strong> – COBRA model structure containing the following required fields to perform gDel_minRN.</p>
+<p><a href="#id122"><span class="problematic" id="id123">*</span></a>.rxns:       Rxns in the model
+<a href="#id124"><span class="problematic" id="id125">*</span></a>.mets:       Metabolites in the model
+<a href="#id126"><span class="problematic" id="id127">*</span></a>.genes:      Genes in the model
+<a href="#id128"><span class="problematic" id="id129">*</span></a>.grRules:    Gene-protein-reaction relations in the model
+<a href="#id130"><span class="problematic" id="id131">*</span></a>.S:          Stoichiometric matrix (sparse)
+<a href="#id132"><span class="problematic" id="id133">*</span></a>.b:          RHS of Sv = b (usually zeros)
+<a href="#id134"><span class="problematic" id="id135">*</span></a>.c:          Objective coefficients
+<a href="#id136"><span class="problematic" id="id137">*</span></a>.lb:         Lower bounds for fluxes
+<a href="#id138"><span class="problematic" id="id139">*</span></a>.ub:         Upper bounds for fluxes
+<a href="#id140"><span class="problematic" id="id141">*</span></a>.rev:        Reversibility of fluxes</p>
+</dd>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>term</strong> – the list of Boolean functions extracted from the gene-protein-reaction relations</p></li>
+<li><p><strong>ng</strong> – the number of genes</p></li>
+<li><p><strong>nt</strong> – the number of internal terms</p></li>
+<li><p><strong>nr</strong> – the number of reactions</p></li>
+<li><p><strong>nko</strong> – the number of repressible reactions</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.design.TrimGdel.step2and3">
+<span class="sig-name descname"><span class="pre">step2and3</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">targetMet</span></em>, <em class="sig-param"><span class="pre">givenGvalue</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/design/TrimGdel/step2and3.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.design.TrimGdel.step2and3" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function step2and3 implements Step 2 and Step 3 of TrimGdel.
+Step 2 minimizes the number of deleted genes while maintaining
+which reactions are repressed.
+Step 3 trims unnecessary deleted genes while maintaining GR and PR
+at the maximization of GR.</p>
+<dl class="field-list">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>function [gvalue, finalGRPR, size1, size2, size3] = step2and3</strong> (<em>model, targetMet, givenGvalue</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul>
+<li><p><strong>model</strong> – COBRA model structure containing the following required fields to perform gDel_minRN.
+<a href="#id142"><span class="problematic" id="id143">*</span></a>.rxns:       Rxns in the model
+<a href="#id144"><span class="problematic" id="id145">*</span></a>.mets:       Metabolites in the model
+<a href="#id146"><span class="problematic" id="id147">*</span></a>.genes:      Genes in the model
+<a href="#id148"><span class="problematic" id="id149">*</span></a>.grRules:    Gene-protein-reaction relations in the model
+<a href="#id150"><span class="problematic" id="id151">*</span></a>.S:          Stoichiometric matrix (sparse)
+<a href="#id152"><span class="problematic" id="id153">*</span></a>.b:          RHS of Sv = b (usually zeros)
+<a href="#id154"><span class="problematic" id="id155">*</span></a>.c:          Objective coefficients
+<a href="#id156"><span class="problematic" id="id157">*</span></a>.lb:         Lower bounds for fluxes
+<a href="#id158"><span class="problematic" id="id159">*</span></a>.ub:         Upper bounds for fluxes
+<a href="#id160"><span class="problematic" id="id161">*</span></a>.rev:        Reversibility of fluxes</p></li>
+<li><p><strong>targetMet</strong> – target metabolites    (e.g.,  ‘btn_c’)</p></li>
+<li><p><strong>givenGvalue</strong> – a large gene deletion strategy (obtained by step1).
+The first column is the list of genes.
+The second column is a 0/1 vector indicating which genes should be deleted.</p>
+<blockquote>
+<div><p>0: indicates genes to be deleted.
+1: indecates genes to be remained.</p>
+</div></blockquote>
+</li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul>
+<li><p><strong>gvalue</strong> – a small gene deletion strategy (obtained by TrimGdel).
+The first column is the list of genes.
+The second column is a 0/1 vector indicating which genes should be deleted.</p>
+<blockquote>
+<div><p>0: indicates genes to be deleted.
+1: indecates genes to be remained.</p>
+</div></blockquote>
+</li>
+<li><p><strong>GR</strong> – the maximum growth rate when the obtained gene deletion
+strategy represented by gvalue is applied.</p></li>
+<li><p><strong>PR</strong> – the minimum production rate of the target metabolite under
+the maximization of the growth rate when the obtained gene deletion
+strategy represented by gvalue is applied.</p></li>
+<li><p><strong>size1</strong> – the number of gene deletions after Step1.</p></li>
+<li><p><strong>size2</strong> – the number of gene deletions after Step2.</p></li>
+<li><p><strong>size3</strong> – the number of gene deletions after Step3.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../optEnvelope/index.html" class="btn btn-default float-right" title="Optenvelope" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../optForce/index.html" class="btn btn-default" title="Optforce" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017-2021, The COBRA Toolbox developers.
+
+    </p>
+  </div>
+  Built with Sphinx using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'2.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+    <script type="text/javascript" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/sphinx_highlight.js"></script>
+
+  
+
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TRCMZL1FKK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TRCMZL1FKK');
+  </script>
+    
+</body>
+</html>

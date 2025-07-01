@@ -5,7 +5,7 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
@@ -92,7 +92,7 @@
           
 
           
-            <img src="/cobratoolbox/stable/_static/img/logo.png" class="logo" alt="cobratoolbox logo" />
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
           
           </a>
 
@@ -161,17 +161,17 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../dataIntegration/index.html">Dataintegration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../design/index.html">Design</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Reconstruction</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../../modelGeneration/index.html">Modelgeneration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../metaboRePort/index.html">Metaboreport</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../index.html">Refinement</a><ul class="current">
 <li class="toctree-l4 current"><a class="current reference internal" href="#">Gprlogic</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../demeter/index.html">Demeter</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../fastGapFill/index.html">Fastgapfill</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../comparison/index.html">Comparison</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../metaboRePort/index.html">Metaboreport</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../growthExpMatch/index.html">Growthexpmatch</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../rBioNet/index.html">Rbionet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../growthExpMatch/index.html">Growthexpmatch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../comparison/index.html">Comparison</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../fastGapFill/index.html">Fastgapfill</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modelGeneration/index.html">Modelgeneration</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../visualization/index.html">Visualization</a></li>
@@ -243,13 +243,13 @@ For further documentation please have a look at the Node Class.
 element larger than sizes
 :USAGE: <strong>res = Node.isValid</strong> (<em>sizes,step</em>)</p>
 <dl class="field-list simple">
-<dt class="field-odd">INPUTS</dt>
+<dt class="field-odd">INPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>sizes</strong> – An array of sizes</p></li>
 <li><p><strong>step</strong> – An array of suggested selections</p></li>
 </ul>
 </dd>
-<dt class="field-even">OUTPUTS</dt>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>res</strong> – ~any(step &gt; sizes’)</p>
 </dd>
 </dl>
@@ -261,13 +261,13 @@ element larger than sizes
 <dd><p>Get the next combination given the current combination
 :USAGE: <strong>combination = Node.nextcombination</strong> (<em>sizes,step</em>)</p>
 <dl class="field-list simple">
-<dt class="field-odd">INPUTS</dt>
+<dt class="field-odd">INPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>sizes</strong> – An array of maximal sizes</p></li>
 <li><p><strong>step</strong> – The current combination</p></li>
 </ul>
 </dd>
-<dt class="field-even">OUTPUTS</dt>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>combination</strong> – The next allowed element of step
 incremented, and potentially others reset
 to 1.</p>
@@ -296,7 +296,7 @@ matching all literals.</p>
 <dd><p>Default FormulaParser constructor.
 :USAGE: <strong>obj = FormulaParser()</strong></p>
 <dl class="field-list simple">
-<dt class="field-odd">OUTPUTS</dt>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>obj</strong> – The FormulaParser Object</p>
 </dd>
 </dl>
@@ -314,11 +314,11 @@ matching all literals.</p>
 <dd><p>Parse a Formula in the COBRA rules format (as detailed above).
 :USAGE: <strong>Head = FormulaParser.parseFormula</strong> (<em>formula</em>)</p>
 <dl class="field-list simple">
-<dt class="field-odd">INPUTS</dt>
+<dt class="field-odd">INPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>formula</strong> – A String of a GPR formula in rules format ( &amp;/| as
 operators, x(1) as literal symbols</p>
 </dd>
-<dt class="field-even">OUTPUTS</dt>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>Head</strong> – The Head of a Tree representing the formula</p>
 </dd>
 </dl>
@@ -357,7 +357,7 @@ for a tree representation of a logical formula.</p>
 <dd><p>Default Node constructor.
 :USAGE: <strong>obj = Node()</strong></p>
 <dl class="field-list simple">
-<dt class="field-odd">OUTPUTS</dt>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>obj</strong> – The Node Object</p>
 </dd>
 </dl>
@@ -369,7 +369,7 @@ for a tree representation of a logical formula.</p>
 <dd><p>Add A Child to the node
 :USAGE: <strong>Node.addchild</strong> (<em>childNode</em>)</p>
 <dl class="field-list simple">
-<dt class="field-odd">INPUTS</dt>
+<dt class="field-odd">INPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>childNode</strong> – The child to add to the node.</p>
 </dd>
 </dl>
@@ -381,11 +381,11 @@ for a tree representation of a logical formula.</p>
 <dd><p>Check whether the given literal is part of this node.
 :USAGE: <strong>res = Node.contains</strong> (<em>literal</em>)</p>
 <dl class="field-list simple">
-<dt class="field-odd">INPUTS</dt>
+<dt class="field-odd">INPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>literal</strong> – The literal to look up (a string representation of
 a number from a rule</p>
 </dd>
-<dt class="field-even">OUTPUTS</dt>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>res</strong> – Whether the literal is present in the tree starting
 at this node.</p>
 </dd>
@@ -398,7 +398,7 @@ at this node.</p>
 <dd><p>Remove all duplicate literal nodes in this node.
 :USAGE: <strong>node.removeLiterals</strong> (<em>literals, keepClauses</em>)</p>
 <dl class="field-list simple">
-<dt class="field-odd">INPUTS</dt>
+<dt class="field-odd">INPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>literals</strong> – The literals to remove</p></li>
 <li><p><strong>keepClauses</strong> – Whether to retain AND nodes in which
@@ -414,17 +414,17 @@ any of the lietrals are nested.</p></li>
 <dd><p>Get all functional gene sets useable for this node
 :USAGE: <strong>geneSets = Node.getFunctionalGeneSets</strong> (<em>geneNames</em>)</p>
 <dl class="field-list simple">
-<dt class="field-odd">INPUTS</dt>
+<dt class="field-odd">INPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>geneNames</strong> – the genes in the order represented by the
 literals (which represent positions)</p>
 </dd>
-<dt class="field-even">OPTIONAL INPUT</dt>
+<dt class="field-even">OPTIONAL INPUT<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>getCNFSets</strong> – Get the CNF sets from this node instead of the DNF sets.
 (i.e. get the or clauses instead of the
 protein representing and clauses)
 (Default: false)</p>
 </dd>
-<dt class="field-odd">OUTPUTS</dt>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>geneSets</strong> – A cell array of gene Combinations that would make this node active</p></li>
 <li><p><strong>genePos</strong> – A set of positions (according to the parsed
@@ -441,7 +441,7 @@ evaluate to true.</p></li>
 <dd><p>Get the ID (commonly the class except for Literals
 :USAGE: <strong>id = Node.getID()</strong></p>
 <dl class="field-list simple">
-<dt class="field-odd">OUTPUTS</dt>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>id</strong> – The id for literals the represented literal, or classname for other nodes of the node</p>
 </dd>
 </dl>
@@ -453,7 +453,7 @@ evaluate to true.</p></li>
 <dd><p>Get the set of literals present in the tree below this node.
 :USAGE: <strong>literals = Node.getLiterals()</strong></p>
 <dl class="field-list simple">
-<dt class="field-odd">OUTPUTS</dt>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>literals</strong> – A cell array of all literals present in the tree under this node</p>
 </dd>
 </dl>
@@ -466,7 +466,7 @@ evaluate to true.</p></li>
 non literal children)
 :USAGE: <strong>tf = Node.hasNestedChildren()</strong></p>
 <dl class="field-list simple">
-<dt class="field-odd">OUTPUTS</dt>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>tf</strong> – Whether this node has nested children</p>
 </dd>
 </dl>
@@ -481,7 +481,7 @@ children which are and nodes (with only literal children), or
 literal nodes. Or an AND node with only literal children
 :USAGE: <strong>tf = Node.isDNF()</strong></p>
 <dl class="field-list simple">
-<dt class="field-odd">OUTPUTS</dt>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>tf</strong> – Whether this node is a DNF node or not.</p>
 </dd>
 </dl>
@@ -493,10 +493,10 @@ literal nodes. Or an AND node with only literal children
 <dd><p>Get all functional gene sets useable for this node
 :USAGE: <strong>tf = Node.isequal</strong> (<em>otherNode</em>)</p>
 <dl class="field-list simple">
-<dt class="field-odd">INPUTS</dt>
+<dt class="field-odd">INPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>otherNode</strong> – The node to compare this node with</p>
 </dd>
-<dt class="field-even">OUTPUTS</dt>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>tf</strong> – true, if this node is equal to the other
 node, i.e. it represents the same boolean truth table.</p>
 </dd>
@@ -518,13 +518,13 @@ node, i.e. it represents the same boolean truth table.</p>
 <dd><p>Bring all GPRS into a DNF form and reduce them to the minimal DNF Form
 :USAGE: <strong>Outmodel = NormaliseGPRs</strong> (<em>model,geneRegExp</em>)</p>
 <dl class="field-list simple">
-<dt class="field-odd">INPUTS</dt>
+<dt class="field-odd">INPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>model</strong> – The Model to convert the GPRs</p></li>
 <li><p><strong>geneRegExp</strong> – A Regular expression matching the genes in the model.</p></li>
 </ul>
 </dd>
-<dt class="field-even">OUTPUTS</dt>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>Outmodel</strong> – The output model with all GPRS in minimal DNF form.</p>
 </dd>
 </dl>
@@ -547,10 +547,10 @@ For further documentation please have a look at the Node Class.
 <dd><p>Assuming this is a DNF head node, removeDNFDuplicates checks
 all present AND nodes for equality and removes replicates.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>Node.removeDNFduplicates()</strong></p>
 </dd>
-<dt class="field-even">OUTPUTS</dt>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>Node</strong> – A OrNode with all duplicate And nodes removed.</p>
 </dd>
 </dl>
@@ -565,13 +565,13 @@ all present AND nodes for equality and removes replicates.</p>
 Conjunct clauses which are superseeded are removed.
 :USAGE: <strong>[outputNode] = combineChildren</strong> (<em>CNFNode1,CNFNode2</em>)</p>
 <dl class="field-list simple">
-<dt class="field-odd">INPUTS</dt>
+<dt class="field-odd">INPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>CNFNode1</strong> – A Node in CNF format</p></li>
 <li><p><strong>CNFNode2</strong> – A Node in CNF format</p></li>
 </ul>
 </dd>
-<dt class="field-even">OUTPUTS</dt>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>outputNode</strong> – A node with all children of the input nodes mixed.</p>
 </dd>
 </dl>
@@ -635,9 +635,6 @@ the resulting node will be (A | B | E | F) &amp; (A | B | G) &amp; (C | D | E | 
         };
     </script>
     <script type="text/javascript" src="../../../../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
-    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
-    <script type="text/javascript" src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script type="text/javascript" src="../../../../_static/doctools.js"></script>
     <script type="text/javascript" src="../../../../_static/sphinx_highlight.js"></script>
 

@@ -5,7 +5,7 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
@@ -69,7 +69,7 @@
         <link rel="search" title="Search" href="../../../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../../../index.html"/>
         <link rel="up" title="Thermokernel" href="../index.html"/>
-        <link rel="next" title="Preparedata" href="../../prepareData/index.html"/>
+        <link rel="next" title="Proteomics" href="../../proteomics/index.html"/>
         <link rel="prev" title="Thermokernel" href="../index.html"/> 
 
   
@@ -92,7 +92,7 @@
           
 
           
-            <img src="/cobratoolbox/stable/_static/img/logo.png" class="logo" alt="cobratoolbox logo" />
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
           
           </a>
 
@@ -159,24 +159,24 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../base/index.html">Base</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../../index.html">Dataintegration</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../../../fluxomics/index.html">Fluxomics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../metanetxMapper/index.html">Metanetxmapper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../transcriptomics/index.html">Transcriptomics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../metaboAnnotator/index.html">Metaboannotator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../metanetxMapper/index.html">Metanetxmapper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../metabotools/index.html">Metabotools</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../chemoInformatics/index.html">Chemoinformatics</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../../index.html">Xomicstomodel</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../../metabolomics/index.html">Metabolomics</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../analysis/index.html">Analysis</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../oneRxnPerActiveGene/index.html">Onerxnperactivegene</a></li>
 <li class="toctree-l4 current"><a class="reference internal" href="../index.html">Thermokernel</a><ul class="current">
 <li class="toctree-l5 current"><a class="current reference internal" href="#">Thermoqp</a></li>
 </ul>
 </li>
-<li class="toctree-l4"><a class="reference internal" href="../../prepareData/index.html">Preparedata</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../oneRxnPerActiveGene/index.html">Onerxnperactivegene</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../proteomics/index.html">Proteomics</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../metabolomics/index.html">Metabolomics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../prepareData/index.html">Preparedata</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../../metabotools/index.html">Metabotools</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../metaboAnnotator/index.html">Metaboannotator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../fluxomics/index.html">Fluxomics</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../design/index.html">Design</a></li>
@@ -263,7 +263,7 @@ and external components: S = [N B] and v = [z; w],</p>
 <dd><p>Compute an approximately thermodynamically feasible flux by minimising
 the Euclidean norm, weighted by the conductances provided in q.</p>
 <dl class="field-list simple">
-<dt class="field-odd">INPUT</dt>
+<dt class="field-odd">INPUT<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>model</strong> – (the following fields are required - others can be supplied)</p>
 <ul>
@@ -276,7 +276,7 @@ the Euclidean norm, weighted by the conductances provided in q.</p>
 <li><p><strong>q</strong> – <cite>n x 1</cite> vector of reaction conductances</p></li>
 </ul>
 </dd>
-<dt class="field-even">OPTIONAL INPUTS</dt>
+<dt class="field-even">OPTIONAL INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>model</strong> –</p>
 <ul>
@@ -292,7 +292,7 @@ where k is the number of coupling constraints)</p></li>
 <li><p><strong>osenseStr</strong> – Maximize (‘max’)/minimize (‘min’) (opt, default = ‘max’)</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OUTPUT</dt>
+<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>sol</strong> – sol object:</p>
 <ul class="simple">
 <li><p>f - Objective value</p></li>
@@ -318,7 +318,7 @@ where k is the number of coupling constraints)</p></li>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../../prepareData/index.html" class="btn btn-default float-right" title="Preparedata" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../../proteomics/index.html" class="btn btn-default float-right" title="Proteomics" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="../index.html" class="btn btn-default" title="Thermokernel" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
@@ -359,9 +359,6 @@ where k is the number of coupling constraints)</p></li>
         };
     </script>
     <script type="text/javascript" src="../../../../../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../../../../../_static/jquery.js"></script>
-    <script type="text/javascript" src="../../../../../_static/underscore.js"></script>
-    <script type="text/javascript" src="../../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script type="text/javascript" src="../../../../../_static/doctools.js"></script>
     <script type="text/javascript" src="../../../../../_static/sphinx_highlight.js"></script>
 

@@ -5,7 +5,7 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
@@ -15,16 +15,16 @@
   
   
   
-    <link rel="apple-touch-icon" sizes="180x180" href="/cobratoolbox/stable/_static/img/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../_static/img/apple-touch-icon.png">
   
   
-    <link rel="icon" type="image/png" sizes="32x32" href="/cobratoolbox/stable/_static/img/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../_static/img/favicon-32x32.png">
   
   
-    <link rel="icon" type="image/png" sizes="16x16" href="/cobratoolbox/stable/_static/img/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../_static/img/favicon-16x16.png">
   
   
-    <link rel="mask-icon" href="/cobratoolbox/stable/_static/img/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="mask-icon" href="../../_static/img/safari-pinned-tab.svg" color="#5bbad5">
   
   
     <link rel="manifest" href="../../_static/json/manifest.json">
@@ -69,8 +69,8 @@
         <link rel="search" title="Search" href="../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../index.html"/>
         <link rel="up" title="Functions" href="../index.html"/>
-        <link rel="next" title="Optforce" href="optForce/index.html"/>
-        <link rel="prev" title="Generatemetinfo" href="../dataIntegration/metaboAnnotator/generateMetInfo/index.html"/> 
+        <link rel="next" title="Optforcegams" href="optForceGAMS/index.html"/>
+        <link rel="prev" title="C13solver" href="../dataIntegration/fluxomics/c13solver/index.html"/> 
 
   
   <script src="../../_static/js/modernizr.min.js"></script>
@@ -92,7 +92,7 @@
           
 
           
-            <img src="/cobratoolbox/stable/_static/img/logo.png" class="logo" alt="cobratoolbox logo" />
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
           
           </a>
 
@@ -160,9 +160,10 @@
 <li class="toctree-l2"><a class="reference internal" href="../base/index.html">Base</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../dataIntegration/index.html">Dataintegration</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Design</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="optForce/index.html">Optforce</a></li>
-<li class="toctree-l3"><a class="reference internal" href="optEnvelope/index.html">Optenvelope</a></li>
 <li class="toctree-l3"><a class="reference internal" href="optForceGAMS/index.html">Optforcegams</a></li>
+<li class="toctree-l3"><a class="reference internal" href="optForce/index.html">Optforce</a></li>
+<li class="toctree-l3"><a class="reference internal" href="TrimGdel/index.html">Trimgdel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="optEnvelope/index.html">Optenvelope</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../reconstruction/index.html">Reconstruction</a></li>
@@ -217,7 +218,7 @@
 <style>
    h1 {font-size:0px;}
 </style><div class="tutorialSectionBox design">
-   <div class="sectionLogo"><img class="avatar" src="/cobratoolbox/stable/_static/img/design.png" alt="design"></div>
+   <div class="sectionLogo"><img class="avatar" src="https://king.nuigalway.ie/cobratoolbox/img/icon_design_wb.png" alt="design"></div>
    <div class="sectionTitle"><h3>Design</h3></div>
    <div class="row">
       <div class="col-xs-6">
@@ -225,9 +226,10 @@
 <h1>Design<a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h1>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="optForce/index.html">Optforce</a></li>
-<li class="toctree-l1"><a class="reference internal" href="optEnvelope/index.html">Optenvelope</a></li>
 <li class="toctree-l1"><a class="reference internal" href="optForceGAMS/index.html">Optforcegams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="optForce/index.html">Optforce</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TrimGdel/index.html">Trimgdel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="optEnvelope/index.html">Optenvelope</a></li>
 </ul>
 </div>
          </div>
@@ -253,16 +255,16 @@
 <dd><p>GDLS (Genetic Design through Local Search) attempts to find genetic
 designs with greater in silico production of desired metabolites.</p>
 <dl class="field-list">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[gdlsSolution, bilevelMILPProblem, gdlsSolutionStructs] = GDLS</strong> (<em>model, varargin</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>model</strong> – Cobra model structure</p></li>
 <li><p><strong>targetRxn</strong> – Reaction(s) to be maximized (Cell array of strings)</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>varargin</strong> – parameters entered using either a structure or list of
 parameter, parameter value. List of optional parameters:</p>
 <blockquote>
@@ -279,7 +281,7 @@ parameter, parameter value. List of optional parameters:</p>
 </ul>
 </div></blockquote>
 </dd>
-<dt class="field-even">OUTPUTS</dt>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>gdlsSolution</strong> – GDLS solution structure (similar to <cite>OptKnock</cite> <cite>sol</cite> struct)</p></li>
 <li><p><strong>bilevelMILPProblem</strong> – Problem structure used in computation</p></li>
@@ -294,10 +296,10 @@ parameter, parameter value. List of optional parameters:</p>
 <span class="sig-name descname"><span class="pre">GetOptGeneSol</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">targetRxn</span></em>, <em class="sig-param"><span class="pre">substrateRxn</span></em>, <em class="sig-param"><span class="pre">generxnList</span></em>, <em class="sig-param"><span class="pre">population</span></em>, <em class="sig-param"><span class="pre">x</span></em>, <em class="sig-param"><span class="pre">scores</span></em>, <em class="sig-param"><span class="pre">isGeneList</span></em>, <em class="sig-param"><span class="pre">saveFile</span></em>, <em class="sig-param"><span class="pre">outputFolder</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/design/GetOptGeneSol.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.design.GetOptGeneSol" title="Permalink to this definition">¶</a></dt>
 <dd><p>Saves the solution from optGene and <cite>optGeneR</cite> in same format as <cite>OptKnock</cite></p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[optGeneSol] = GetOptGeneSol</strong> (<em>model, targetRxn, substrateRxn, generxnList, population, x, scores, isGeneList</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>model</strong> – model structure</p></li>
 <li><p><strong>targetRxn</strong> – target reactions</p></li>
@@ -311,7 +313,7 @@ parameter, parameter value. List of optional parameters:</p>
 <li><p><strong>outputFolder</strong> – char. Default = pwd;</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OUTPUT</dt>
+<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>optGeneSol</strong> – Solution in the desired format</p>
 </dd>
 </dl>
@@ -322,10 +324,10 @@ parameter, parameter value. List of optional parameters:</p>
 <span class="sig-name descname"><span class="pre">OptKnock</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">selectedRxnList</span></em>, <em class="sig-param"><span class="pre">options</span></em>, <em class="sig-param"><span class="pre">constrOpt</span></em>, <em class="sig-param"><span class="pre">prevSolutions</span></em>, <em class="sig-param"><span class="pre">verbFlag</span></em>, <em class="sig-param"><span class="pre">solutionFileNameTmp</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/design/OptKnock.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.design.OptKnock" title="Permalink to this definition">¶</a></dt>
 <dd><p>Runs <cite>OptKnock</cite> in the most general form</p>
 <dl class="field-list">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>OptKnock</strong> (<em>model, selectedRxnList, options, constrOpt, prevSolutions, verbFlag, solutionFileNameTmp</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul>
 <li><p><strong>model</strong> – Structure containing all necessary variables to described a
 stoichiometric model</p>
@@ -345,7 +347,7 @@ stoichiometric model</p>
 <li><p><strong>selectedRxnList</strong> – n x 1 cell array where each cell is a reaction in model.rxns that can be knocked-out in OptKnock</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>options</strong> – <cite>OptKnock</cite> options</p>
 <ul>
@@ -371,7 +373,7 @@ stoichiometric model</p>
 <li><p><strong>solutionFileNameTmp</strong> – File name for storing temporary solutions</p></li>
 </ul>
 </dd>
-<dt class="field-even">OUTPUTS</dt>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>optKnockSol</strong> – <cite>optKnock</cite> solution structure
 This is the same as the solution Structure
@@ -394,10 +396,10 @@ irreversible reactions. If you wish to constrain a reaction, use
 <dd><p>Analyzes results with replacement knockouts
 should get closer to local maxima.  Must have num <cite>KOs</cite> &gt; 1.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[improvedRxns, intermediateSlns] = analyzeGCdesign</strong> (<em>modelRed, selectedRxns, target, deletions, maxKOs, objFunction, delPenalty, intermediateSlns</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>modelRed</strong> – reduced model</p></li>
 <li><p><strong>selectedRxns</strong> – selected reaction list from the reduced model</p></li>
@@ -405,7 +407,7 @@ should get closer to local maxima.  Must have num <cite>KOs</cite> &gt; 1.</p>
 <li><p><strong>deletions</strong> – initial set of <cite>KO</cite> <cite>rxns</cite> (must have at least 1 <cite>rxn</cite>)</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>maxKOs</strong> – maximum number of <cite>rxn</cite> <cite>KOs</cite> to allow (Default = 10)</p></li>
 <li><p><strong>objFunction</strong> – pick an objective function to use (Default = 1):</p>
@@ -424,7 +426,7 @@ should get closer to local maxima.  Must have num <cite>KOs</cite> &gt; 1.</p>
 <li><p><strong>intermediateSlns</strong> – Previous set of solutions (Default = deletions)</p></li>
 </ul>
 </dd>
-<dt class="field-even">OUTPUTS</dt>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>improvedRxns</strong> – the <cite>KO</cite> <cite>rxns</cite> for an improved strain</p></li>
 <li><p><strong>intermediateSlns</strong> – all the sets of best <cite>KO</cite> <cite>rxns</cite> that are picked before the
@@ -440,24 +442,24 @@ final set is reached</p></li>
 <dd><p>Determines whether an optknock solution is growth coupled
 or not and what the maximum growth and production rates are</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[type, maxGrowth, maxProd, minProd] = analyzeOptKnock</strong> (<em>model, deletions, target, biomassRxn, geneDelFlag</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>model</strong> – COBRA model structure</p></li>
 <li><p><strong>deletions</strong> – list of reaction or gene deletions (empty if wild type)</p></li>
 <li><p><strong>target</strong> – the exchange reaction for the <cite>OptKnock</cite> target metabolite</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>biomassRxn</strong> – the biomass reaction name (Default = whatever is defined in
 the model)</p></li>
 <li><p><strong>geneDelFlag</strong> – perform gene and not reaction deletions (Default = false)</p></li>
 </ul>
 </dd>
-<dt class="field-even">OUTPUTS</dt>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>type</strong> – the type of <cite>OptKnock</cite> solution (growth coupled or not)</p></li>
 <li><p><strong>maxGrowth</strong> – the maximum growth rate of the knockout strain</p></li>
@@ -476,17 +478,17 @@ maximum growth rate</p></li>
 <dd><p>Determines which knockout reactions occur most often
 when a specified product is produced</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[allRxns, rxnCount] = analyzeRxns</strong> (<em>product, listProducts, listRxns</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>product</strong> – the product to investigate</p></li>
 <li><p><strong>listProducts</strong> – the list of all products produced in a <cite>RandKnock</cite></p></li>
 <li><p><strong>listRxns</strong> – the list of all rxns knocked out in a <cite>RandKnock</cite></p></li>
 </ul>
 </dd>
-<dt class="field-odd">OUTPUTS</dt>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>allRxns</strong> – all of the rxns knocked out in strains producing the product</p></li>
 <li><p><strong>rxnCount</strong> – the number of times each rxn was knocked out</p></li>
@@ -502,23 +504,23 @@ when a specified product is produced</p>
 “non-unique” optknock solutions by favoring the lowest production rate at
 a given predicted max growth-rate.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[model, rxn_name] = augmentBOF</strong> (<em>model, targetRxn, epsilon</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>model</strong> – Structure containing all necessary variables to described a
 stoichiometric model</p></li>
 <li><p><strong>targetRxn</strong> – objective of the optimization</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OPTIONAL INPUT</dt>
+<dt class="field-odd">OPTIONAL INPUT<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>epsilon</strong> – degree of augmentation considering the biochemical objective</p></li>
 <li><p><strong>printLevel</strong> – determine output level. (default: 0)</p></li>
 </ul>
 </dd>
-<dt class="field-even">OUTPUTS</dt>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>model</strong> – Augmented model structure</p></li>
 <li><p><strong>rxn_name</strong> – reaction that carries the augmented value</p></li>
@@ -541,10 +543,10 @@ besides the exchange reaction and the OM transport reaction</p></li>
 <dd><p>Creates the necessary matrices and vectors to solve a bilevel MILP with designated inner
 and outer problem objective functions</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>bilevelMILPproblem = createBilevelMILPProblem</strong> (<em>model, cLinear, cInteger, selRxns, selRxnMatch, constrOpt, measOpt, options, selPrevSol</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>model</strong> – Model in irreversible format</p></li>
 <li><p><strong>cLinear</strong> – Objective for linear part of the MILP problem (i.e. for fluxes)</p></li>
@@ -576,7 +578,7 @@ that can be deleted) (in the form [0 0 1 0 0 1 0 1 1 0 1])</p></li>
 <li><p><strong>selPrevSol</strong> – Previous solutions (optional)</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OUTPUTS</dt>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>bilevelMILPproblem</strong> – struct with:</p>
 <ul class="simple">
 <li><p>A - LHS matrix</p></li>
@@ -599,10 +601,10 @@ that can be deleted) (in the form [0 0 1 0 0 1 0 1 1 0 1])</p></li>
 <dd><p>Plots maximum growth rate as a function of the
 output of two specified products</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[x1, x2, y] = doubleProductionEnvelope</strong> (<em>model, deletions, prod1, prod2, biomassRxn, geneDelFlag, nPts</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>model</strong> – COBRA model structure</p></li>
 <li><p><strong>deletions</strong> – The reactions or genes to knockout of the model</p></li>
@@ -610,7 +612,7 @@ output of two specified products</p>
 <li><p><strong>prod2</strong> – The other product to investigate</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>biomassRxn</strong> – The biomass objective function rxn name
 (Default = ‘biomass_SC4_bal’)</p></li>
@@ -620,7 +622,7 @@ output of two specified products</p>
 (Default = 20)</p></li>
 </ul>
 </dd>
-<dt class="field-even">OUTPUTS</dt>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>x1</strong> – The range of rates plotted for <cite>prod1</cite></p></li>
 <li><p><strong>x2</strong> – The range of rates plotted for <cite>prod2</cite></p></li>
@@ -636,13 +638,13 @@ output of two specified products</p>
 <dd><p>Calculates the byproduct secretion envelopes for
 every product (excreted metabolites with 1 or more Carbons)</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[biomassValues, targetValues] = multiProductionEnvelope</strong> (<em>model, deletions, biomassRxn, geneDelFlag, nPts, plotTools</em>)</p>
 </dd>
-<dt class="field-even">INPUT</dt>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>model</strong> – COBRA model structure</p>
 </dd>
-<dt class="field-odd">OPTIONAL INPUT</dt>
+<dt class="field-odd">OPTIONAL INPUT<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>deletions</strong> – List of reaction or gene deletions (empty if wild type)
 (Default = {})</p></li>
@@ -655,7 +657,7 @@ coupled (Default = false)</p></li>
 <li><p><strong>plotTools</strong> – boolean (default = false) - add tools for editing the figure and its properties</p></li>
 </ul>
 </dd>
-<dt class="field-even">OUTPUT</dt>
+<dt class="field-even">OUTPUT<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>biomassValues</strong> – Biomass values for plotting</p></li>
 <li><p><strong>targetUpperBounds</strong> – Target upper bounds for plotting (
@@ -674,13 +676,13 @@ biomassvalues x reactions)</p></li>
 <dd><p>Calculates the byproduct secretion envelopes
 for every product, including inorganic compounds</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[biomassValues, targetValues] = multiProductionEnvelopeInorg</strong> (<em>model, deletions, biomassRxn, geneDelFlag, nPts, plotAllFlag, plotTools</em>)</p>
 </dd>
-<dt class="field-even">INPUT</dt>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>model</strong> – COBRA model structure</p>
 </dd>
-<dt class="field-odd">OPTIONAL INPUT</dt>
+<dt class="field-odd">OPTIONAL INPUT<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>deletions</strong> – List of reaction or gene deletions (empty if wild type)
 (Default = {})</p></li>
@@ -692,7 +694,7 @@ for every product, including inorganic compounds</p>
 <li><p><strong>plotTools</strong> – boolean (default = false) - add tools for editing the figure and its properties</p></li>
 </ul>
 </dd>
-<dt class="field-even">OUTPUT</dt>
+<dt class="field-even">OUTPUT<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>biomassValues</strong> – Biomass values for plotting</p></li>
 <li><p><strong>targetValues</strong> – Target upper and lower bounds for plotting</p></li>
@@ -706,10 +708,10 @@ for every product, including inorganic compounds</p>
 <span class="sig-name descname"><span class="pre">optGene</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">targetRxn</span></em>, <em class="sig-param"><span class="pre">substrateRxn</span></em>, <em class="sig-param"><span class="pre">generxnList</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/design/optGene.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.design.optGene" title="Permalink to this definition">¶</a></dt>
 <dd><p>Implements the optgene algorithm.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[x, population, scores, optGeneSol] = optGene</strong> (<em>model, targetRxn, substrateRxn, generxnList, MaxKOs, population</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>model</strong> – Model of reconstruction</p></li>
 <li><p><strong>targetRxn</strong> – (char) String name of reaction which is to
@@ -721,7 +723,7 @@ which of the two it is, based on the content
 in model.</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>MaxKOs</strong> – (double) Maximal KnockOuts</p></li>
 <li><p><strong>population</strong> – (logical matrix) population matrix. Use this
@@ -754,7 +756,7 @@ inputs and outputs. Default = false;</p></li>
 files will be generated</p></li>
 </ul>
 </dd>
-<dt class="field-even">OUTPUTS</dt>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>x</strong> – best optimized value found</p></li>
 <li><p><strong>population</strong> – Population of individuals.  Pass this back
@@ -772,10 +774,10 @@ you left off.</p></li>
 <span class="sig-name descname"><span class="pre">optGeneFitness</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">rxn_vector_matrix</span></em>, <em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">targetRxn</span></em>, <em class="sig-param"><span class="pre">rxnListInput</span></em>, <em class="sig-param"><span class="pre">isGeneList</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/design/optGeneFitness.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.design.optGeneFitness" title="Permalink to this definition">¶</a></dt>
 <dd><p>The fitness function</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[val] = optGeneFitness</strong> (<em>rxn_vector_matrix, model, targetRxn, rxnListInput, isGeneList</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>rxn_vector_matrix</strong> – reactions vectors in a matrix</p></li>
 <li><p><strong>model</strong> – model structure</p></li>
@@ -784,7 +786,7 @@ you left off.</p></li>
 <li><p><strong>isGeneList</strong> – bolean checking if it is a gene list</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OUTPUT</dt>
+<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>val</strong> – fitness value</p>
 </dd>
 </dl>
@@ -795,10 +797,10 @@ you left off.</p></li>
 <span class="sig-name descname"><span class="pre">optGeneFitnessTilt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">rxn_vector_matrix</span></em>, <em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">targetRxn</span></em>, <em class="sig-param"><span class="pre">rxnListInput</span></em>, <em class="sig-param"><span class="pre">isGeneList</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/design/optGeneFitnessTilt.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.design.optGeneFitnessTilt" title="Permalink to this definition">¶</a></dt>
 <dd><p>The fitness function</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[val] = optGeneFitnessTilt</strong> (<em>rxn_vector_matrix, model, targetRxn, rxnListInput, isGeneList</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>rxn_vector_matrix</strong> – reactions vectors in a matrix</p></li>
 <li><p><strong>model</strong> – model structure</p></li>
@@ -807,7 +809,7 @@ you left off.</p></li>
 <li><p><strong>isGeneList</strong> – bolean checking if it is a gene list</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OUTPUT</dt>
+<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>val</strong> – fitness value</p>
 </dd>
 </dl>
@@ -818,13 +820,13 @@ you left off.</p></li>
 <span class="sig-name descname"><span class="pre">productionEnvelope</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">deletions</span></em>, <em class="sig-param"><span class="pre">lineColor</span></em>, <em class="sig-param"><span class="pre">targetRxn</span></em>, <em class="sig-param"><span class="pre">biomassRxn</span></em>, <em class="sig-param"><span class="pre">geneDelFlag</span></em>, <em class="sig-param"><span class="pre">nPts</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/design/productionEnvelope.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.design.productionEnvelope" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates the byproduct secretion envelope</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[biomassValues, targetValues, lineHandle] = productionEnvelope</strong> (<em>model, deletions, lineColor, targetRxn, biomassRxn, geneDelFlag, nPts</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>model</strong> – COBRA model structure</p>
 </dd>
-<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>deletions</strong> – List of reaction or gene deletions (empty if wild type)</p></li>
 <li><p><strong>lineColor</strong> – Line color for plotting (see help plot for color codes)</p></li>
@@ -834,7 +836,7 @@ you left off.</p></li>
 <li><p><strong>nPts</strong> – Number of points in the plot</p></li>
 </ul>
 </dd>
-<dt class="field-even">OUTPUTS</dt>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>biomassValues</strong> – Biomass values for plotting</p></li>
 <li><p><strong>targetValues</strong> – Target upper and lower bounds for plotting</p></li>
@@ -849,10 +851,10 @@ you left off.</p></li>
 <span class="sig-name descname"><span class="pre">randomKO</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">modelRed</span></em>, <em class="sig-param"><span class="pre">selectedRxns</span></em>, <em class="sig-param"><span class="pre">N</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/design/randomKO.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.design.randomKO" title="Permalink to this definition">¶</a></dt>
 <dd><p>Knocks out <cite>N</cite> random genes and reports products from FBA</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[products, productRates, KOrxns, BOF] = randomKO</strong> (<em>modelRed, selectedRxns, N</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>modelRed</strong> – a reduced model (from the <cite>reduceModel.m</cite> function)</p></li>
 <li><p><strong>selectedRxns</strong> – the reactions eligible for deletion (from the
@@ -860,7 +862,7 @@ you left off.</p></li>
 <li><p><strong>N</strong> – the number of reactions to randomly knockout</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OUTPUTS</dt>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>products</strong> – the exchange reactions that produce a siginifcant output</p></li>
 <li><p><strong>productRates</strong> – the rates of those exhange reactions</p></li>
@@ -878,16 +880,16 @@ knockout strain</p></li>
 <dd><p>Simple <cite>OptKnock</cite> is used to check all one gene or reaction deletions for
 growth-coupled metabolite production</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[wtRes, delRes] = simpleOptKnock</strong> (<em>model, targetRxn, deletions, geneDelFlag, minGrowth, doubleDelFlag</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>model</strong> – COBRA model structure</p></li>
 <li><p><strong>targetRxn</strong> – Target metabolite production reaction</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>deletions</strong> – Set of gene or reaction deletions to consider for <cite>KO</cite>
 (Default = all reactions)</p></li>
@@ -896,7 +898,7 @@ growth-coupled metabolite production</p>
 <li><p><strong>doubleDelFlag</strong> – Double deletions (Default = false)</p></li>
 </ul>
 </dd>
-<dt class="field-even">OUTPUTS</dt>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>wtRes</strong> – Wild type results</p></li>
 <li><p><strong>delRes</strong> – Deletion strain results</p></li>
@@ -919,10 +921,10 @@ growth-coupled metabolite production</p>
 <dd><p>Plots maximum growth rate as a function of the
 output of one specified products</p>
 <dl class="field-list">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>singleProductionEnvelope</strong> (<em>model, deletions, product, biomassRxn, geneDelFlag, nPts</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul>
 <li><p><strong>model</strong> – (struct) a metabolic model with at least
 the following fields:</p>
@@ -944,7 +946,7 @@ the model</p></li>
 <li><p><strong>biomassRxn</strong> – (char) the biomass objective function</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>geneDelFlag</strong> – (double or boolean) perform gene and not reaction
 deletions
@@ -975,20 +977,20 @@ y2:              y results for the second curve - ‘Maximum Wild-type’</p>
 <span class="sig-name descname"><span class="pre">testOptKnockSol</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">targetRxn</span></em>, <em class="sig-param"><span class="pre">deletions</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/design/testOptKnockSol.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.design.testOptKnockSol" title="Permalink to this definition">¶</a></dt>
 <dd><p>Tests an <cite>OptKnock</cite> knockout strain</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[growthRate, minProd, maxProd] = testOptKnockSol</strong> (<em>model, targetRxn, deletions</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>model</strong> – COBRA model structure</p></li>
 <li><p><strong>targetRxn</strong> – Target reaction (e.g. ‘EX_etoh(e)’)</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OPTIONAL INPUT</dt>
+<dt class="field-odd">OPTIONAL INPUT<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>deletions</strong> – Set of reaction deletions (e.g. {‘PGI’, ‘TPI’})
 (Default = [])</p>
 </dd>
-<dt class="field-even">OUTPUTS</dt>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>growthRate</strong> – Maximim growth rate of the strain</p></li>
 <li><p><strong>minProd</strong> – Minimum production rate at max growth rate</p></li>
@@ -1003,16 +1005,16 @@ y2:              y results for the second curve - ‘Maximum Wild-type’</p>
 <span class="sig-name descname"><span class="pre">theoretMaxProd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">inputrxn</span></em>, <em class="sig-param"><span class="pre">criterion</span></em>, <em class="sig-param"><span class="pre">normalize</span></em>, <em class="sig-param"><span class="pre">rxns</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/design/theoretMaxProd.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.design.theoretMaxProd" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determines the max theoretical output for each exchange reaction</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[ExRxns, MaxTheoOut]= theoreticalMaxProduction</strong> (<em>model, inputrxn, criterion, normalize, rxns</em>)</p>
 </dd>
-<dt class="field-even">INPUT</dt>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>model</strong> – model structure</p></li>
 <li><p><strong>inputrxn</strong> – the input reaction (‘EX_glu(e)’, etc.)</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OPTIONAL INPUT</dt>
+<dt class="field-odd">OPTIONAL INPUT<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>criterion</strong> – One of</p>
 <ul>
@@ -1027,7 +1029,7 @@ in molecular weight (Default = false)</p></li>
 <li><p><strong>rxns</strong> – Selection Vector (1 for selected, 0 otherwise)</p></li>
 </ul>
 </dd>
-<dt class="field-even">OUTPUTS</dt>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>ExRxns</strong> – Vector of exchange reactions</p></li>
 <li><p><strong>MaxThroOut</strong> – The max theoretical output for each exchange reaction</p></li>
@@ -1048,10 +1050,10 @@ in molecular weight (Default = false)</p></li>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="optForce/index.html" class="btn btn-default float-right" title="Optforce" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="optForceGAMS/index.html" class="btn btn-default float-right" title="Optforcegams" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../dataIntegration/metaboAnnotator/generateMetInfo/index.html" class="btn btn-default" title="Generatemetinfo" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../dataIntegration/fluxomics/c13solver/index.html" class="btn btn-default" title="C13solver" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -1089,9 +1091,6 @@ in molecular weight (Default = false)</p></li>
         };
     </script>
     <script type="text/javascript" src="../../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../../_static/jquery.js"></script>
-    <script type="text/javascript" src="../../_static/underscore.js"></script>
-    <script type="text/javascript" src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
     <script type="text/javascript" src="../../_static/sphinx_highlight.js"></script>
 

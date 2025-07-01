@@ -5,7 +5,7 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
@@ -69,7 +69,7 @@
         <link rel="search" title="Search" href="../../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../../index.html"/>
         <link rel="up" title="Fluxomics" href="../index.html"/>
-        <link rel="next" title="Metanetxmapper" href="../../metanetxMapper/index.html"/>
+        <link rel="next" title="Design" href="../../../design/index.html"/>
         <link rel="prev" title="Atn" href="../atomTransition/ATN/index.html"/> 
 
   
@@ -92,7 +92,7 @@
           
 
           
-            <img src="/cobratoolbox/stable/_static/img/logo.png" class="logo" alt="cobratoolbox logo" />
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
           
           </a>
 
@@ -159,17 +159,17 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../base/index.html">Base</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Dataintegration</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../../transcriptomics/index.html">Transcriptomics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../metaboAnnotator/index.html">Metaboannotator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../metanetxMapper/index.html">Metanetxmapper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../metabotools/index.html">Metabotools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chemoInformatics/index.html">Chemoinformatics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../XomicsToModel/index.html">Xomicstomodel</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../index.html">Fluxomics</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="../atomTransition/index.html">Atomtransition</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">C13solver</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../metanetxMapper/index.html">Metanetxmapper</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../transcriptomics/index.html">Transcriptomics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../chemoInformatics/index.html">Chemoinformatics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../XomicsToModel/index.html">Xomicstomodel</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../metabotools/index.html">Metabotools</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../metaboAnnotator/index.html">Metaboannotator</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../design/index.html">Design</a></li>
@@ -232,16 +232,16 @@
 adapted from Combinadics
 <a class="reference external" href="http://msdn.microsoft.com/en-us/library/aa289166(VS.71).aspx">http://msdn.microsoft.com/en-us/library/aa289166(VS.71).aspx</a></p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[out] = Combination</strong> (<em>n, k</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>n</strong> – number of elements in the pool</p></li>
 <li><p><strong>k</strong> – number of elements to pick from <cite>n</cite></p></li>
 </ul>
 </dd>
-<dt class="field-odd">OUTPUT</dt>
+<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>out</strong> – array of combinations</p>
 </dd>
 </dl>
@@ -254,13 +254,13 @@ adapted from Combinadics
 <cite>idv = cdv2idv(log2(length(cdv)))*cdv</cite>;
 Employs memoization.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[out] = cdv2idv</strong> (<em>n</em>)</p>
 </dd>
-<dt class="field-even">INPUT</dt>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>n</strong> – cdv</p>
 </dd>
-<dt class="field-odd">OUTPUT</dt>
+<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>out</strong> – idv</p>
 </dd>
 </dl>
@@ -274,10 +274,10 @@ indexes of every reaction in there as well.
 After that it calls converter.pl, optimizer.pl and validator.pl but I can
 take care of that.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>generateIsotopomerSolver</strong> (<em>model, inputMet, experiment, FVAflag</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>model</strong> – model structure with .isotopomer filed</p></li>
 <li><p><strong>inputMet</strong> – input metabolites</p></li>
@@ -295,13 +295,13 @@ take care of that.</p>
 <dd><p>Returns transformation to go from idv to cumomers.
 <cite>cdv = idv2cdv(log2(length(idv)))*idv</cite>;</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[out] = idv2cdv</strong> (<em>n</em>)</p>
 </dd>
-<dt class="field-even">INPUT</dt>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>n</strong> – idv</p>
 </dd>
-<dt class="field-odd">OUTPUT</dt>
+<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>out</strong> – cdv</p>
 </dd>
 </dl>
@@ -316,13 +316,13 @@ take care of that.</p>
 <p>order 2 (mine)</p>
 <p>000, 100, 010, 110, 001, 101, 011, 111</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[out] = idv2idv</strong> (<em>n</em>)</p>
 </dd>
-<dt class="field-even">INPUT</dt>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>n</strong> – matrix, size of matrix <cite>(2^n x 2^n)</cite></p>
 </dd>
-<dt class="field-odd">OUTPUT</dt>
+<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>out</strong> – transforamtion matrix</p>
 </dd>
 </dl>
@@ -334,16 +334,16 @@ take care of that.</p>
 <dd><p>Returns transofmation matrix from idv’s (either Jennie’s or Jan’s order).
 <cite>MDV = idv2mdv(log2(length(idv)))*idv</cite>;</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[out] = idv2mdv</strong> (<em>n, fragment</em>)</p>
 </dd>
-<dt class="field-even">INPUT</dt>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>n</strong> – matrix</p>
 </dd>
-<dt class="field-odd">OPTIONAL INPUT</dt>
+<dt class="field-odd">OPTIONAL INPUT<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>fragment</strong> – a vector of carbons to be included.  [ 0, 0, 1, 1, 1]’ = last 3 carbons.</p>
 </dd>
-<dt class="field-even">OUTPUT</dt>
+<dt class="field-even">OUTPUT<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>out</strong> – transformation matrix</p>
 </dd>
 </dl>
@@ -357,10 +357,10 @@ a given flux vector, <cite>v</cite>, (2) and then computes an error score by tak
 running sum of the squared difference between the theortical and
 experimental <cite>mdv</cite> vectors.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[output] = scoreC13Fit</strong> (<em>flux, expdata, model, namesset, method</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>flux</strong> – flux vector</p></li>
 <li><p><strong>expdata</strong> – experimental data structure</p></li>
@@ -369,7 +369,7 @@ experimental <cite>mdv</cite> vectors.</p>
 <li><p><strong>method</strong> – method 1 = cumomer, method 2 = CMU</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OUTPUT</dt>
+<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>output</strong> – contains fields:</p>
 <ul class="simple">
 <li><p>error - the calculated error sum value</p></li>
@@ -409,7 +409,7 @@ expdata - experimental data structure</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../../metanetxMapper/index.html" class="btn btn-default float-right" title="Metanetxmapper" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../../../design/index.html" class="btn btn-default float-right" title="Design" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="../atomTransition/ATN/index.html" class="btn btn-default" title="Atn" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
@@ -450,9 +450,6 @@ expdata - experimental data structure</p>
         };
     </script>
     <script type="text/javascript" src="../../../../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
-    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
-    <script type="text/javascript" src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script type="text/javascript" src="../../../../_static/doctools.js"></script>
     <script type="text/javascript" src="../../../../_static/sphinx_highlight.js"></script>
 

@@ -5,7 +5,7 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
@@ -69,7 +69,7 @@
         <link rel="search" title="Search" href="../../../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../../../index.html"/>
         <link rel="up" title="Rxn" href="../index.html"/>
-        <link rel="next" title="Inchi" href="../../inchi/index.html"/>
+        <link rel="next" title="Metabolites" href="../../metabolites/index.html"/>
         <link rel="prev" title="Rxn" href="../index.html"/> 
 
   
@@ -92,7 +92,7 @@
           
 
           
-            <img src="/cobratoolbox/stable/_static/img/logo.png" class="logo" alt="cobratoolbox logo" />
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
           
           </a>
 
@@ -159,23 +159,23 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../base/index.html">Base</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../../index.html">Dataintegration</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../../../fluxomics/index.html">Fluxomics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../metanetxMapper/index.html">Metanetxmapper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../transcriptomics/index.html">Transcriptomics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../metaboAnnotator/index.html">Metaboannotator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../metanetxMapper/index.html">Metanetxmapper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../metabotools/index.html">Metabotools</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../../index.html">Chemoinformatics</a><ul class="current">
-<li class="toctree-l4"><a class="reference internal" href="../../molecularWeight/index.html">Molecularweight</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../metabolites/index.html">Metabolites</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../reactions/index.html">Reactions</a></li>
 <li class="toctree-l4 current"><a class="reference internal" href="../index.html">Rxn</a><ul class="current">
 <li class="toctree-l5 current"><a class="current reference internal" href="#">Old</a></li>
 </ul>
 </li>
+<li class="toctree-l4"><a class="reference internal" href="../../metabolites/index.html">Metabolites</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../inchi/index.html">Inchi</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../molecularWeight/index.html">Molecularweight</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reactions/index.html">Reactions</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../../XomicsToModel/index.html">Xomicstomodel</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../metabotools/index.html">Metabotools</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../metaboAnnotator/index.html">Metaboannotator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../fluxomics/index.html">Fluxomics</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../design/index.html">Design</a></li>
@@ -263,10 +263,10 @@ A := incidence(dATM);</p>
 </dl>
 <p>so we have the atomic decomposition M2Ai*M2Ai’<a href="#id2"><span class="problematic" id="id3">*</span></a>N = M2Ai*A*Ti2R</p>
 <dl class="field-list">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[dATM, metAtomMappedBool, rxnAtomMappedBool, M2Ai, Ti2R] = buildAtomTransitionNetwork</strong> (<em>model, rxnfileDir, options</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul>
 <li><p><strong>model</strong> – Directed stoichiometric hypergraph
 Represented by a matlab structure with following fields:</p>
@@ -298,7 +298,7 @@ e.g. git clone <a class="reference external" href="https://github.com/opencobra/
 </li>
 </ul>
 </dd>
-<dt class="field-odd">OUTPUT</dt>
+<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>dATM</strong> – Directed atom transition multigraph as a MATLAB digraph structure with the following tables:</p>
 <ul class="simple">
 <li><p>.Nodes — Table of node information, with <cite>p</cite> rows, one for each atom.</p></li>
@@ -337,17 +337,17 @@ Ti2R              <cite>t</cite> x <cite>n</cite> matrix mapping each directed a
 <dd><p>Read atom mappings from a rxnfile (Accelrys, San Diego, CA), written with
 <cite>writeRxnfile.m</cite>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[mets, elements, metNrs, rxnNrs, isSubstrate, instances] = readAtomMappingFromRxnFile</strong> (<em>rxnfileName, rxnfileDirectory</em>)</p>
 </dd>
-<dt class="field-even">INPUT</dt>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>rxnfileName</strong> – The file name.</p>
 </dd>
-<dt class="field-odd">OPTIONAL INPUT</dt>
+<dt class="field-odd">OPTIONAL INPUT<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>rxnfileDirectory</strong> – Path to directory containing the rxnfile. Defaults
 to current directory.</p>
 </dd>
-<dt class="field-even">OUTPUTS</dt>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>mets</strong> – A <cite>p</cite> x 1 cell array of metabolite identifiers for atoms.</p></li>
 <li><p><strong>elements</strong> – A <cite>p</cite> x 1 cell array of element symbols for atoms.</p></li>
@@ -375,7 +375,7 @@ products in the reaction.</p></li>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../../inchi/index.html" class="btn btn-default float-right" title="Inchi" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../../metabolites/index.html" class="btn btn-default float-right" title="Metabolites" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="../index.html" class="btn btn-default" title="Rxn" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
@@ -416,9 +416,6 @@ products in the reaction.</p></li>
         };
     </script>
     <script type="text/javascript" src="../../../../../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../../../../../_static/jquery.js"></script>
-    <script type="text/javascript" src="../../../../../_static/underscore.js"></script>
-    <script type="text/javascript" src="../../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script type="text/javascript" src="../../../../../_static/doctools.js"></script>
     <script type="text/javascript" src="../../../../../_static/sphinx_highlight.js"></script>
 

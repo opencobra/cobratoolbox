@@ -5,7 +5,7 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
@@ -70,7 +70,7 @@
     <link rel="top" title="The COBRA Toolbox" href="../../../index.html"/>
         <link rel="up" title="Reconstruction" href="../index.html"/>
         <link rel="next" title="Gui" href="gui/index.html"/>
-        <link rel="prev" title="Growthexpmatch" href="../growthExpMatch/index.html"/> 
+        <link rel="prev" title="Tests" href="../demeter/suite/tests/index.html"/> 
 
   
   <script src="../../../_static/js/modernizr.min.js"></script>
@@ -92,7 +92,7 @@
           
 
           
-            <img src="/cobratoolbox/stable/_static/img/logo.png" class="logo" alt="cobratoolbox logo" />
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
           
           </a>
 
@@ -161,17 +161,17 @@
 <li class="toctree-l2"><a class="reference internal" href="../../dataIntegration/index.html">Dataintegration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../design/index.html">Design</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html">Reconstruction</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../modelGeneration/index.html">Modelgeneration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../metaboRePort/index.html">Metaboreport</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../refinement/index.html">Refinement</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../demeter/index.html">Demeter</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../fastGapFill/index.html">Fastgapfill</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../comparison/index.html">Comparison</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../metaboRePort/index.html">Metaboreport</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../growthExpMatch/index.html">Growthexpmatch</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Rbionet</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="gui/index.html">Gui</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="../growthExpMatch/index.html">Growthexpmatch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../comparison/index.html">Comparison</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../fastGapFill/index.html">Fastgapfill</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../modelGeneration/index.html">Modelgeneration</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../visualization/index.html">Visualization</a></li>
@@ -234,13 +234,13 @@
 <span class="sig-name descname"><span class="pre">BalancePrep</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">meta_meta</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/BalancePrep.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.BalancePrep" title="Permalink to this definition">¶</a></dt>
 <dd><p>Balances the reactions, used in <cite>ReactionChecks</cite></p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>output = BalancePrep</strong> (<em>meta_meta</em>)</p>
 </dd>
-<dt class="field-even">INPUT</dt>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>meta_meta</strong> – matrix from <cite>ReconstructionTool</cite></p>
 </dd>
-<dt class="field-odd">OUTPUT</dt>
+<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>output</strong> – <cite>leftside</cite>, <cite>rightside</cite>, <cite>charge_l</cite> and <cite>charge_r</cite> in <cite>varargout</cite></p>
 </dd>
 </dl>
@@ -253,13 +253,13 @@
 CreateGPR, by itself, creates a new object or raises the existing
 singleton*.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>varargout = addmetabolites</strong> (<em>varargin</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>varargin</strong> – various input arguments</p>
 </dd>
-<dt class="field-odd">OUTPUTS</dt>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>varargout</strong> – various output arguments</p>
 </dd>
 </dl>
@@ -285,13 +285,13 @@ See also: GUIDE, GUIDATA, GUIHANDLES</p>
 <span class="sig-name descname"><span class="pre">GPR2Genes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">GPR</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/GPR2Genes.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.GPR2Genes" title="Permalink to this definition">¶</a></dt>
 <dd><p>Input is a list of GPRs and output is a unique list of genes.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>Genes = GPR2Genes</strong> (<em>GPR</em>)</p>
 </dd>
-<dt class="field-even">INPUT</dt>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>GPR</strong> – list of GPRs</p>
 </dd>
-<dt class="field-odd">OUTPUT</dt>
+<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>Genes</strong> – unique list of genes</p>
 </dd>
 </dl>
@@ -304,13 +304,13 @@ See also: GUIDE, GUIDATA, GUIHANDLES</p>
 GenesAndReactions, by itself, creates a new object or raises the existing
 singleton*.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>varargout = GenesAndReactions</strong> (<em>varargin</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>varargin</strong> – various input arguments</p>
 </dd>
-<dt class="field-odd">OUTPUTS</dt>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>varargout</strong> – various output arguments</p>
 </dd>
 </dl>
@@ -336,16 +336,16 @@ See also: GUIDE, GUIDATA, GUIHANDLES</p>
 <span class="sig-name descname"><span class="pre">GenesReactions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">genelist</span></em>, <em class="sig-param"><span class="pre">rxns</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/GenesReactions.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.GenesReactions" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns genes in model and the associative reactions.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>list = GenesReactions</strong> (<em>genelist, rxns</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>genelist</strong> – list of genes</p></li>
 <li><p><strong>rxns</strong> – reactions</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OUTPUT</dt>
+<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>list</strong> – genes in model and the associative reactions</p>
 </dd>
 </dl>
@@ -357,13 +357,13 @@ See also: GUIDE, GUIDATA, GUIHANDLES</p>
 <dd><p>m-file for Keep_reactions.fig
 Keep_reactions, by itself, creates a new object or raises the existing singleton*.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>varargout = Keep_reactions</strong> (<em>varargin</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>varargin</strong> – various input arguments</p>
 </dd>
-<dt class="field-odd">OUTPUTS</dt>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>varargout</strong> – various output arguments</p>
 </dd>
 </dl>
@@ -390,16 +390,16 @@ See also: GUIDE, GUIDATA, GUIHANDLES</p>
 <span class="sig-name descname"><span class="pre">LegalRxnFormula</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">formula</span></em>, <em class="sig-param"><span class="pre">abbreviation</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/LegalRxnFormula.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.LegalRxnFormula" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks if all reactions are legal</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>result = LegalRxnFormula</strong> (<em>formula, abbreviation</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>formula</strong> – cell vector with reactions formulas</p></li>
 <li><p><strong>abbreviation</strong> – cell vector with reaction abbreviation (optional)</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OUTPUT</dt>
+<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>result</strong> – true if all reactions are legal, else false. <cite>msgbox</cite> lets user know which reaction is incorrect</p>
 </dd>
 </dl>
@@ -415,10 +415,10 @@ Add more tests in near future.</p>
 <span class="sig-name descname"><span class="pre">LoadReaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">rxnline</span></em>, <em class="sig-param"><span class="pre">metab</span></em>, <em class="sig-param"><span class="pre">meta_compartment</span></em>, <em class="sig-param"><span class="pre">rxn_line</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/LoadReaction.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.LoadReaction" title="Permalink to this definition">¶</a></dt>
 <dd><p>Provides input argument for <cite>ReconstructionTool</cite> and <cite>ReactionChecks</cite> and other functions</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>output = LoadReaction</strong> (<em>rxnline, metab, meta_compartment, rxn_line</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>rxnline</strong> – data of the reaction</p></li>
 <li><p><strong>metab</strong> – from ReconstructionTool</p></li>
@@ -426,7 +426,7 @@ Add more tests in near future.</p>
 <li><p><strong>rxn_line</strong> – not used</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OUTPUTS</dt>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>output</strong> – input argument for <cite>ReconstructionTool</cite> and <cite>ReactionChecks</cite> and other functions</p>
 </dd>
 </dl>
@@ -438,10 +438,10 @@ Add more tests in near future.</p>
 <dd><p>This is an start to simplefying the balancing and similarity
 checking of reactions process.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>data_output = ReactionChecks</strong> (<em>rxn, metab, meta_compartment, newrxns, data</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>rxn</strong> – reactions</p></li>
 <li><p><strong>metab</strong> – from ReconstructionTool</p></li>
@@ -450,7 +450,7 @@ checking of reactions process.</p>
 <li><p><strong>data</strong> – data of reactions process</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OUTPUT</dt>
+<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>data_output</strong> – if everything is okay</p>
 <ul class="simple">
 <li><p>newrxns - (reactions can be removed) set table</p></li>
@@ -466,16 +466,16 @@ checking of reactions process.</p>
 <span class="sig-name descname"><span class="pre">ReactionEq</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">react</span></em>, <em class="sig-param"><span class="pre">rxns</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/ReactionEq.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.ReactionEq" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compares reactions for equality</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>matched = ReactionEq</strong> (<em>react, rxns</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>react</strong> – new reaction</p></li>
 <li><p><strong>rxns</strong> – similar reactions</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OUTPUT</dt>
+<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>matched</strong> – abbreviation name for exact reaction match</p>
 </dd>
 </dl>
@@ -487,13 +487,13 @@ checking of reactions process.</p>
 <dd><p>m-file for ReconstructionCreator.fig
 ReconstructionCreator, by itself, creates a new object or raises the existing singleton*.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>varargout = ReconstructionCreator</strong> (<em>varargin</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>varargin</strong> – various input arguments</p>
 </dd>
-<dt class="field-odd">OUTPUTS</dt>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>varargout</strong> – various output arguments</p>
 </dd>
 </dl>
@@ -521,13 +521,13 @@ See also: GUIDE, GUIDATA, GUIHANDLES</p>
 <dd><p>m-file for ReconstructionTool.fig
 ReconstructionTool by itself, creates a new object or raises the existing singleton*.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>varargout = ReconstructionTool</strong> (<em>varargin</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>varargin</strong> – various input arguments</p>
 </dd>
-<dt class="field-odd">OUTPUTS</dt>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>varargout</strong> – various output arguments</p>
 </dd>
 </dl>
@@ -555,13 +555,13 @@ See also: GUIDE, GUIDATA, GUIHANDLES</p>
 <dd><p>m-file for addmetabolites.fig
 addmetabolites, by itself, creates a new object or raises the existing singleton*.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>varargout = addmetabolites</strong> (<em>varargin</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>varargin</strong> – various input arguments</p>
 </dd>
-<dt class="field-odd">OUTPUTS</dt>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>varargout</strong> – various output arguments</p>
 </dd>
 </dl>
@@ -589,13 +589,13 @@ See also: GUIDE, GUIDATA, GUIHANDLES</p>
 addmissing, by itself, creates a new object or raises the existing
 singleton*.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>varargout = addmissing</strong> (<em>varargin</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>varargin</strong> – various input arguments</p>
 </dd>
-<dt class="field-odd">OUTPUTS</dt>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>varargout</strong> – various output arguments</p>
 </dd>
 </dl>
@@ -623,13 +623,13 @@ See also: GUIDE, GUIDATA, GUIHANDLES</p>
 <dd><p>m-file for addreactions.fig
 addreactions, by itself, creates a new object or raises the existing singleton*.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>varargout = addreactions</strong> (<em>varargin</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>varargin</strong> – various input arguments</p>
 </dd>
-<dt class="field-odd">OUTPUTS</dt>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>varargout</strong> – various output arguments</p>
 </dd>
 </dl>
@@ -656,17 +656,17 @@ See also: GUIDE, GUIDATA, GUIHANDLES</p>
 <span class="sig-name descname"><span class="pre">balancecheck</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">meta_meta</span></em>, <em class="sig-param"><span class="pre">output</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/balancecheck.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.balancecheck" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns balance - if empty it means that balance checks out, otherwise the output is a cell matrix</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>balance = balancecheck</strong> (<em>meta_meta, output</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>meta_meta</strong> – is cell matrix meta_meta type, with one metabolite in each line,
 rows are [Abbreviation, Description, Coefficient, Compartment, Side, Charge formula].</p></li>
 <li><p><strong>output</strong> – default = 0, other option = 1</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OUTPUT</dt>
+<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>balance</strong> – is empty if balance checks out, if unbalanced it returns
 cell matrix with <cite>Elements</cite>, <cite>prod</cite> and <cite>sub</cite>;</p>
 </dd>
@@ -677,7 +677,7 @@ cell matrix with <cite>Elements</cite>, <cite>prod</cite> and <cite>sub</cite>;<
 <dt class="sig sig-object mat" id="src.reconstruction.rBioNet.closeGUI">
 <span class="sig-name descname"><span class="pre">closeGUI</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/closeGUI.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.closeGUI" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>closeGUI()</strong></p>
 </dd>
 </dl>
@@ -690,13 +690,13 @@ cell matrix with <cite>Elements</cite>, <cite>prod</cite> and <cite>sub</cite>;<
 compartment, by itself, creates a new object or raises the existing
 singleton*.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>varargout = compartment</strong> (<em>varargin</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>varargin</strong> – various input arguments</p>
 </dd>
-<dt class="field-odd">OUTPUTS</dt>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>varargout</strong> – various output arguments</p>
 </dd>
 </dl>
@@ -723,21 +723,21 @@ See also: GUIDE, GUIDATA, GUIHANDLES</p>
 <span class="sig-name descname"><span class="pre">data2model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">data</span></em>, <em class="sig-param"><span class="pre">description</span></em>, <em class="sig-param"><span class="pre">database</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/data2model.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.data2model" title="Permalink to this definition">¶</a></dt>
 <dd><p>Takes in data from <cite>rbionet</cite> to create a complete reconstruction</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>model_out = data2model</strong> (<em>data, description,database</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>data</strong> – data from <cite>rbionet</cite></p></li>
 <li><p><strong>description</strong> – model description</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OPTIONAL INPUT</dt>
+<dt class="field-odd">OPTIONAL INPUT<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>database</strong> – file with reaction and metabolite database in format:
 database.reactions=reaction database
 database.metabolites=metabolite database</p>
 </dd>
-<dt class="field-even">OUTPUT</dt>
+<dt class="field-even">OUTPUT<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>model_out</strong> – creates a complete reconstruction</p>
 </dd>
 </dl>
@@ -748,13 +748,13 @@ database.metabolites=metabolite database</p>
 <span class="sig-name descname"><span class="pre">formula2mets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">formula</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/formula2mets.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.formula2mets" title="Permalink to this definition">¶</a></dt>
 <dd><p>Takes a rxn formula and produces a list of metabolites</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>metabolites = formula2mets</strong> (<em>formula</em>)</p>
 </dd>
-<dt class="field-even">INPUT</dt>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>formula</strong> – rxn formula</p>
 </dd>
-<dt class="field-odd">OUTPUT</dt>
+<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>metabolites</strong> – list of metabolites</p>
 </dd>
 </dl>
@@ -771,13 +771,13 @@ database.metabolites=metabolite database</p>
 Default SIZE for GENELIST.txt is 7 columns! Each column is separated with
 a tab.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>out = getgenelist</strong> (<em>input_dir</em>)</p>
 </dd>
-<dt class="field-even">INPUT</dt>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>input_dir</strong> – gene-list text file</p>
 </dd>
-<dt class="field-odd">OUTPUT</dt>
+<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>out</strong> – data</p>
 </dd>
 </dl>
@@ -789,13 +789,13 @@ a tab.</p>
 <dd><p>m-file for load_reaction.fig
 load_reaction, by itself, creates a new object or raises the existing singleton*.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>varargout = load_reaction</strong> (<em>varargin</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>varargin</strong> – various input arguments</p>
 </dd>
-<dt class="field-odd">OUTPUTS</dt>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>varargout</strong> – various output arguments</p>
 </dd>
 </dl>
@@ -823,13 +823,13 @@ See also: GUIDE, GUIDATA, GUIHANDLES</p>
 <dd><p>MATLAB code for met_charge_formula.fig
 met_charge_formula, by itself, creates a new object or raises the existing singleton*.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>varargout = met_charge_formula</strong> (<em>varargin</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>varargin</strong> – various input arguments</p>
 </dd>
-<dt class="field-odd">OUTPUTS</dt>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>varargout</strong> – various output arguments</p>
 </dd>
 </dl>
@@ -857,13 +857,13 @@ See also: GUIDE, GUIDATA, GUIHANDLES</p>
 <dd><p>m-file for metabolites_in_database.fig
 metabolites_in_database, by itself, creates a new object or raises the existing singleton*.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>varargout = metabolites_in_database</strong> (<em>varargin</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>varargin</strong> – various input arguments</p>
 </dd>
-<dt class="field-odd">OUTPUTS</dt>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>varargout</strong> – various output arguments</p>
 </dd>
 </dl>
@@ -890,13 +890,13 @@ See also: GUIDE, GUIDATA, GUIHANDLES</p>
 <span class="sig-name descname"><span class="pre">mets2str</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">str</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/mets2str.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.mets2str" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates strings for message boxes</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>outstr = mets2str</strong> (<em>str</em>)</p>
 </dd>
-<dt class="field-even">INPUT</dt>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>str</strong> – struct of names</p>
 </dd>
-<dt class="field-odd">OUTPUT</dt>
+<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>outstr</strong> – ‘act’, ‘acon-C’, ‘pep’</p>
 </dd>
 </dl>
@@ -907,16 +907,16 @@ See also: GUIDE, GUIDATA, GUIHANDLES</p>
 <span class="sig-name descname"><span class="pre">model2data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">fordb</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/model2data.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.model2data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load complete reconstructions and output format for rBioNets ReconstructionCreator.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>data_out = model2data</strong> (<em>model, fordb</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>model</strong> – model</p></li>
 <li><p><strong>fordb</strong> – 1 if metabolite table is wanted, default 0 if not</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OUTPUT</dt>
+<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>data_out</strong></p>
 </dd>
 </dl>
@@ -928,10 +928,10 @@ See also: GUIDE, GUIDATA, GUIHANDLES</p>
 <dd><p>This script takes in a reconstruction model and prints it out into a text
 file. It can be used standalone from the <cite>rBioNet</cite>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>model2text</strong> (<em>data, model</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>data</strong> – model or .mat datafile table as in ReconstructionCreator (RC)</p></li>
 <li><p><strong>model</strong> – true if data is a model, false if RC table.</p></li>
@@ -947,13 +947,13 @@ file. It can be used standalone from the <cite>rBioNet</cite>.</p>
 model_description, by itself, creates a new object or raises the existing
 singleton*.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>varargout = model_description</strong> (<em>varargin</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>varargin</strong> – various input arguments</p>
 </dd>
-<dt class="field-odd">OUTPUTS</dt>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>varargout</strong> – various output arguments</p>
 </dd>
 </dl>
@@ -981,13 +981,13 @@ See also: GUIDE, GUIDATA, GUIHANDLES</p>
 <dd><p>MATLAB code for model_stats.fig
 model_stats, by itself, creates a new object or raises the existing singleton*.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>varargout = model_stats</strong> (<em>varargin</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>varargin</strong> – various input arguments</p>
 </dd>
-<dt class="field-odd">OUTPUTS</dt>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>varargout</strong> – various output arguments</p>
 </dd>
 </dl>
@@ -1015,16 +1015,16 @@ See also: GUIDE, GUIDATA, GUIHANDLES</p>
 <dd><p>Program used to get neigbor reactions and set up correct format for the
 Reconstruction analyzer.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>data = neighborRxn2data</strong> (<em>model, rxn_numb</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>model</strong> – model</p></li>
 <li><p><strong>rxn_numb</strong> – number of reactions</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OUTPUT</dt>
+<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>data</strong></p>
 </dd>
 </dl>
@@ -1036,13 +1036,13 @@ Reconstruction analyzer.</p>
 <dd><p>MATLAB code for rBioNetAbout.fig
 rBioNetAbout, by itself, creates a new object or raises the existing singleton*.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>varargout = rBioNetAbout</strong> (<em>varargin</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>varargin</strong> – various input arguments</p>
 </dd>
-<dt class="field-odd">OUTPUTS</dt>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>varargout</strong> – various output arguments</p>
 </dd>
 </dl>
@@ -1071,17 +1071,17 @@ See also: GUIDE, GUIDATA, GUIHANDLES</p>
 This script makes it possible to store databases in any path set in matlab.
 Missing for compartments, thats for later.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>output = rBioNetSaveLoad</strong> (<em>mode,type,data</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>mode</strong> – ‘save’ or ‘load’</p></li>
 <li><p><strong>type</strong> – ‘met’, ‘rxn’ or ‘comp’</p></li>
 <li><p><strong>data</strong> – data to save</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OUTPUT</dt>
+<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>output</strong> – if ‘load’ then data else 1 if succes by save, 0 if empty or failed</p>
 </dd>
 </dl>
@@ -1094,13 +1094,13 @@ Missing for compartments, thats for later.</p>
 rBioNetSettings, by itself, creates a new object or raises the existing
 singleton*.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>varargout = rBioNetSettings</strong> (<em>varargin</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>varargin</strong> – various input arguments</p>
 </dd>
-<dt class="field-odd">OUTPUTS</dt>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>varargout</strong> – various output arguments</p>
 </dd>
 </dl>
@@ -1127,10 +1127,10 @@ See also: GUIDE, GUIDATA, GUIHANDLES</p>
 <span class="sig-name descname"><span class="pre">rBioNet_search</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">table</span></em>, <em class="sig-param"><span class="pre">column</span></em>, <em class="sig-param"><span class="pre">str</span></em>, <em class="sig-param"><span class="pre">exact</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/rBioNet_search.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.rBioNet_search" title="Permalink to this definition">¶</a></dt>
 <dd><p>Performs simple searches in rBioNet tables.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>output = rBioNet_search</strong> (<em>table, column, str, exact</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>table</strong> – Table or model</p></li>
 <li><p><strong>Column</strong> – number</p></li>
@@ -1138,7 +1138,7 @@ See also: GUIDE, GUIDATA, GUIHANDLES</p>
 <li><p><strong>Exact match</strong> – true or false</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OUTPUT</dt>
+<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>output</strong> – Array containing results.</p>
 </dd>
 </dl>
@@ -1150,13 +1150,13 @@ See also: GUIDE, GUIDATA, GUIHANDLES</p>
 <dd><p>MATLAB code for sim_general.fig
 sim_general, by itself, creates a new object or raises the existing singleton*.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>varargout = sim_general</strong> (<em>varargin</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>varargin</strong> – various input arguments</p>
 </dd>
-<dt class="field-odd">OUTPUTS</dt>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>varargout</strong> – various output arguments</p>
 </dd>
 </dl>
@@ -1184,13 +1184,13 @@ See also: GUIDE, GUIDATA, GUIHANDLES</p>
 <dd><p>m-file for similarities.fig
 similarities, by itself, creates a new object or raises the existing singleton*.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>varargout = similarities</strong> (<em>varargin</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>varargin</strong> – various input arguments</p>
 </dd>
-<dt class="field-odd">OUTPUTS</dt>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>varargout</strong> – various output arguments</p>
 </dd>
 </dl>
@@ -1217,17 +1217,17 @@ See also: GUIDE, GUIDATA, GUIHANDLES</p>
 <span class="sig-name descname"><span class="pre">similarity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">formula</span></em>, <em class="sig-param"><span class="pre">data</span></em>, <em class="sig-param"><span class="pre">bar</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/similarity.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.similarity" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the reaction lines with similarities</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>reactions = similarity</strong> (<em>formula,data,bar</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>formula</strong> – reaction formula</p></li>
 <li><p><strong>data</strong> – reaction list</p></li>
 <li><p><strong>bar</strong> – <cite>waitbar</cite> exists then 1, else 0, default 1</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OUTPUT</dt>
+<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>reactions</strong> – numbers of rxn lines that share similarity</p>
 </dd>
 </dl>
@@ -1239,13 +1239,13 @@ See also: GUIDE, GUIDATA, GUIHANDLES</p>
 <dd><p>m-file for unbalanced.fig
 unbalanced, by itself, creates a new object or raises the existing singleton*.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>varargout = unbalanced</strong> (<em>varargin</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>varargin</strong> – various input arguments</p>
 </dd>
-<dt class="field-odd">OUTPUTS</dt>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>varargout</strong> – various output arguments</p>
 </dd>
 </dl>
@@ -1272,16 +1272,16 @@ See also: GUIDE, GUIDATA, GUIHANDLES</p>
 <span class="sig-name descname"><span class="pre">webDatabases</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">db</span></em>, <em class="sig-param"><span class="pre">str</span></em>, <em class="sig-param"><span class="pre">type</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/webDatabases.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.webDatabases" title="Permalink to this definition">¶</a></dt>
 <dd><p>Small script that links to major databases.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>webDatabases</strong> (<em>db, str, type</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>db</strong> – database = {‘kegg’, ‘ec’, ‘pubchem’, ‘chebi’, ‘hmdb’}</p></li>
 <li><p><strong>str</strong> – ID of metabolite / reaction</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OPTIONAL INPUT</dt>
+<dt class="field-odd">OPTIONAL INPUT<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>type</strong> – 1 if reaction, 0 for metabolite (only used for the KEGG database.</p>
 </dd>
 </dl>
@@ -1292,10 +1292,10 @@ See also: GUIDE, GUIDATA, GUIHANDLES</p>
 <span class="sig-name descname"><span class="pre">webKeggMapper</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">id</span></em>, <em class="sig-param"><span class="pre">str</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/rBioNet/webKeggMapper.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.rBioNet.webKeggMapper" title="Permalink to this definition">¶</a></dt>
 <dd><p>Small script that links to kegg mapper.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>webKeggMapper</strong> (<em>id,str</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>id</strong> – Either ‘ec’ or ‘kegg’</p></li>
 <li><p><strong>str</strong> – ID of themetabolite / reaction</p></li>
@@ -1319,7 +1319,7 @@ See also: GUIDE, GUIDATA, GUIHANDLES</p>
         <a href="gui/index.html" class="btn btn-default float-right" title="Gui" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../growthExpMatch/index.html" class="btn btn-default" title="Growthexpmatch" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../demeter/suite/tests/index.html" class="btn btn-default" title="Tests" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -1357,9 +1357,6 @@ See also: GUIDE, GUIDATA, GUIHANDLES</p>
         };
     </script>
     <script type="text/javascript" src="../../../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../../../_static/jquery.js"></script>
-    <script type="text/javascript" src="../../../_static/underscore.js"></script>
-    <script type="text/javascript" src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
     <script type="text/javascript" src="../../../_static/sphinx_highlight.js"></script>
 

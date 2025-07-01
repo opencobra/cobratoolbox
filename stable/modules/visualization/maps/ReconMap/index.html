@@ -5,7 +5,7 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
@@ -69,7 +69,7 @@
         <link rel="search" title="Search" href="../../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../../index.html"/>
         <link rel="up" title="Maps" href="../index.html"/>
-        <link rel="next" title="Tutorials" href="../../../../tutorials/index.html"/>
+        <link rel="next" title="Efmviz" href="../../efmviz/index.html"/>
         <link rel="prev" title="Maps" href="../index.html"/> 
 
   
@@ -92,7 +92,7 @@
           
 
           
-            <img src="/cobratoolbox/stable/_static/img/logo.png" class="logo" alt="cobratoolbox logo" />
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
           
           </a>
 
@@ -162,20 +162,20 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../design/index.html">Design</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../reconstruction/index.html">Reconstruction</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Visualization</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../../cellDesigner/index.html">Celldesigner</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../paint4Net/index.html">Paint4net</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../entropicFBA/index.html">Entropicfba</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../metabolicCartography/index.html">Metaboliccartography</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../visualizeEpistasis/index.html">Visualizeepistasis</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../SAMMIM/index.html">Sammim</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../convert/index.html">Convert</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../EscherMap/index.html">Eschermap</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../efmviz/index.html">Efmviz</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../createMetIntrcNetwork/index.html">Createmetintrcnetwork</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../index.html">Maps</a><ul class="current">
 <li class="toctree-l4 current"><a class="current reference internal" href="#">Reconmap</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="../../efmviz/index.html">Efmviz</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../entropicFBA/index.html">Entropicfba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../cellDesigner/index.html">Celldesigner</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../SAMMIM/index.html">Sammim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../metabolicCartography/index.html">Metaboliccartography</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../convert/index.html">Convert</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../visualizeEpistasis/index.html">Visualizeepistasis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../paint4Net/index.html">Paint4net</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../createMetIntrcNetwork/index.html">Createmetintrcnetwork</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../EscherMap/index.html">Eschermap</a></li>
 </ul>
 </li>
 </ul>
@@ -236,10 +236,10 @@ of identifiers is not provided it is assumed that the map and the COBRA
 model’s nomenclature is coherent. Sends the layout to the remote MINERVA
 instance</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[serverResponse] = buildFluxDistLayout</strong> (<em>minerva, model, solution, identifier, hexColour, thickness, content</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>minerva</strong> – Struct with the information of minerva instance:
 address, login, password and model (map)</p></li>
@@ -248,7 +248,7 @@ address, login, password and model (map)</p></li>
 <li><p><strong>identifier</strong> – Name for the layout in MINERVA</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OPTIONAL INPUT</dt>
+<dt class="field-odd">OPTIONAL INPUT<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>hexColour          colour of overlay</strong> (<em>hex color format</em>) – e.g. ‘#009933’ corresponds to <a class="reference external" href="http://www.color-hex.com/color/009933">http://www.color-hex.com/color/009933</a>
 If you want to make a color gradient, you can input
@@ -261,7 +261,7 @@ reaction to be displayed. Bypasses the use of solution.v to set the format.
 ‘name%09reactionIdentifier%09lineWidth%09color%0D’</p></li>
 </ul>
 </dd>
-<dt class="field-even">OUTPUT</dt>
+<dt class="field-even">OUTPUT<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>serverResponse</strong> – Response of the MINERVA</p>
 </dd>
 </dl>
@@ -291,10 +291,10 @@ outputFormat if no inputs provided.</p>
 <span class="sig-name descname"><span class="pre">generateSubsystemLayouts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">minerva</span></em>, <em class="sig-param"><span class="pre">cobra_model</span></em>, <em class="sig-param"><span class="pre">color</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/maps/ReconMap/generateSubsystemLayouts.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.maps.ReconMap.generateSubsystemLayouts" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generates subsystem layouts</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>generateSubsystemLayouts</strong> (<em>minerva, cobra_model, color</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>minerva</strong> – Struct with the information of minerva instance:
 address, login, password and model (map)</p></li>
@@ -310,10 +310,10 @@ address, login, password and model (map)</p></li>
 <span class="sig-name descname"><span class="pre">generateSubsytemsLayout</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">minerva</span></em>, <em class="sig-param"><span class="pre">cobra_model</span></em>, <em class="sig-param"><span class="pre">subsystem</span></em>, <em class="sig-param"><span class="pre">color</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/maps/ReconMap/generateSubsytemsLayout.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.maps.ReconMap.generateSubsytemsLayout" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generates subsystem layouts</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>generateSubsytemsLayout</strong> (<em>minerva, cobra_model, subsystem, color</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>minerva</strong> – Struct with the information of minerva instance:
 address, login, password and model (map)</p></li>
@@ -330,17 +330,17 @@ address, login, password and model (map)</p></li>
 <span class="sig-name descname"><span class="pre">makeColorGradient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">col1</span></em>, <em class="sig-param"><span class="pre">col2</span></em>, <em class="sig-param"><span class="pre">ncol</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/maps/ReconMap/makeColorGradient.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.maps.ReconMap.makeColorGradient" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generates a color gradient in hex format, based on color 1 and 2</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[cmap] = makeColorGradient</strong> (<em>col1, col2, ncol</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>col1</strong> – First color</p></li>
 <li><p><strong>col2</strong> – Last color</p></li>
 <li><p><strong>ncol</strong> – Number of colors in between</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OUTPUT</dt>
+<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>cmap</strong> – Color gradient map with the corresponding
 colors in hex format</p>
 </dd>
@@ -352,10 +352,10 @@ colors in hex format</p>
 <span class="sig-name descname"><span class="pre">postMINERVArequest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">login</span></em>, <em class="sig-param"><span class="pre">password</span></em>, <em class="sig-param"><span class="pre">map</span></em>, <em class="sig-param"><span class="pre">googleLicenseContent</span></em>, <em class="sig-param"><span class="pre">identifier</span></em>, <em class="sig-param"><span class="pre">content</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/maps/ReconMap/postMINERVArequest.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.maps.ReconMap.postMINERVArequest" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sends a new layout to a MINERVA instance</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[response] = postMINERVArequest</strong> (<em>minerva_servlet, login, password, map, identifier, content</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>minerva_servlet</strong> – URL</p></li>
 <li><p><strong>login</strong> – MINERVA username</p></li>
@@ -367,7 +367,7 @@ use: <a class="reference external" href="https://cloud.google.com/maps-platform/
 <li><p><strong>content</strong> – Content of the layout</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OUTPUT</dt>
+<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>response</strong> – MINERVA’s response - cell array index 1 - 0/1
 whether the overlay was successfully uploaded.
 index 2 - success or error message</p>
@@ -381,10 +381,10 @@ index 2 - success or error message</p>
 <dd><p>This function generates a TXT file that can be integrated in the VMH
 database (vmh.life) to overlay certain reactions</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>printInRecon3Dmap</strong> (<em>rxnList, output, values</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>rxnList</strong> – List of rxn to be higligted</p></li>
 <li><p><strong>colorValues</strong> – Numerical value for each reaction (to assign
@@ -415,7 +415,7 @@ default is ‘C__fakepath_data4ReconMap3_’.</p></li>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../../../../tutorials/index.html" class="btn btn-default float-right" title="Tutorials" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../../efmviz/index.html" class="btn btn-default float-right" title="Efmviz" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="../index.html" class="btn btn-default" title="Maps" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
@@ -456,9 +456,6 @@ default is ‘C__fakepath_data4ReconMap3_’.</p></li>
         };
     </script>
     <script type="text/javascript" src="../../../../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
-    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
-    <script type="text/javascript" src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script type="text/javascript" src="../../../../_static/doctools.js"></script>
     <script type="text/javascript" src="../../../../_static/sphinx_highlight.js"></script>
 

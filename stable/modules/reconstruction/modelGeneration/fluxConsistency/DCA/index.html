@@ -5,7 +5,7 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
@@ -69,7 +69,7 @@
         <link rel="search" title="Search" href="../../../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../../../index.html"/>
         <link rel="up" title="Fluxconsistency" href="../index.html"/>
-        <link rel="next" title="Modelverification" href="../../modelVerification/index.html"/>
+        <link rel="next" title="Stoichconsistency" href="../../stoichConsistency/index.html"/>
         <link rel="prev" title="Greedy" href="../GREEDY/index.html"/> 
 
   
@@ -92,7 +92,7 @@
           
 
           
-            <img src="/cobratoolbox/stable/_static/img/logo.png" class="logo" alt="cobratoolbox logo" />
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
           
           </a>
 
@@ -161,25 +161,25 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../dataIntegration/index.html">Dataintegration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../design/index.html">Design</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../../index.html">Reconstruction</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../../../metaboRePort/index.html">Metaboreport</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../refinement/index.html">Refinement</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../demeter/index.html">Demeter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../rBioNet/index.html">Rbionet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../growthExpMatch/index.html">Growthexpmatch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../comparison/index.html">Comparison</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../fastGapFill/index.html">Fastgapfill</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../../index.html">Modelgeneration</a><ul class="current">
-<li class="toctree-l4"><a class="reference internal" href="../../modelProperties/index.html">Modelproperties</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../stoichConsistency/index.html">Stoichconsistency</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../modelVerification/index.html">Modelverification</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../massBalance/index.html">Massbalance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../modelProperties/index.html">Modelproperties</a></li>
 <li class="toctree-l4 current"><a class="reference internal" href="../index.html">Fluxconsistency</a><ul class="current">
 <li class="toctree-l5"><a class="reference internal" href="../GREEDY/index.html">Greedy</a></li>
 <li class="toctree-l5 current"><a class="current reference internal" href="#">Dca</a></li>
 </ul>
 </li>
-<li class="toctree-l4"><a class="reference internal" href="../../modelVerification/index.html">Modelverification</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../stoichConsistency/index.html">Stoichconsistency</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../../refinement/index.html">Refinement</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../demeter/index.html">Demeter</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../fastGapFill/index.html">Fastgapfill</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../comparison/index.html">Comparison</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../metaboRePort/index.html">Metaboreport</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../growthExpMatch/index.html">Growthexpmatch</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../rBioNet/index.html">Rbionet</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../visualization/index.html">Visualization</a></li>
@@ -240,10 +240,10 @@
 <dd><p>The FASTCC algorithm for testing the consistency of a stoichiometric model
 Output <cite>A</cite> is the consistent part of the model</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[A, V] = fastcc_nonconvex</strong> (<em>model, epsilon, printLevel, modeFlag</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>model</strong> – cobra model structure containing the fields:</p>
 <ul>
@@ -257,10 +257,10 @@ Output <cite>A</cite> is the consistent part of the model</p>
 <li><p><strong>printLevel</strong> – 0 = silent, 1 = summary, 2 = debug</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OPTIONAL INPUT</dt>
+<dt class="field-odd">OPTIONAL INPUT<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>modeFlag</strong> – {(0), 1}; 1 = return matrix of modes <cite>V</cite></p>
 </dd>
-<dt class="field-even">OUTPUT</dt>
+<dt class="field-even">OUTPUT<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>A</strong> – <cite>n</cite> x 1 boolean vector indicating the flux consistent reactions</p></li>
 <li><p><strong>V</strong> – <cite>n</cite> x <cite>k</cite> matrix such that <cite>S(:,A)*V(:,A) = 0</cite> and <cite>|V(:,A)|’*1 &gt; 0</cite></p></li>
@@ -281,7 +281,7 @@ Output <cite>A</cite> is the consistent part of the model</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../../modelVerification/index.html" class="btn btn-default float-right" title="Modelverification" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../../stoichConsistency/index.html" class="btn btn-default float-right" title="Stoichconsistency" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="../GREEDY/index.html" class="btn btn-default" title="Greedy" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
@@ -322,9 +322,6 @@ Output <cite>A</cite> is the consistent part of the model</p>
         };
     </script>
     <script type="text/javascript" src="../../../../../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../../../../../_static/jquery.js"></script>
-    <script type="text/javascript" src="../../../../../_static/underscore.js"></script>
-    <script type="text/javascript" src="../../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script type="text/javascript" src="../../../../../_static/doctools.js"></script>
     <script type="text/javascript" src="../../../../../_static/sphinx_highlight.js"></script>
 

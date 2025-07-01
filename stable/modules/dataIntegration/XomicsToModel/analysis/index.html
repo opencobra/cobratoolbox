@@ -5,7 +5,7 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
@@ -69,8 +69,8 @@
         <link rel="search" title="Search" href="../../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../../index.html"/>
         <link rel="up" title="Xomicstomodel" href="../index.html"/>
-        <link rel="next" title="Thermokernel" href="../thermoKernel/index.html"/>
-        <link rel="prev" title="Xomicstomodel" href="../index.html"/> 
+        <link rel="next" title="Onerxnperactivegene" href="../oneRxnPerActiveGene/index.html"/>
+        <link rel="prev" title="Metabolomics" href="../metabolomics/index.html"/> 
 
   
   <script src="../../../../_static/js/modernizr.min.js"></script>
@@ -92,7 +92,7 @@
           
 
           
-            <img src="/cobratoolbox/stable/_static/img/logo.png" class="logo" alt="cobratoolbox logo" />
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
           
           </a>
 
@@ -159,21 +159,21 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../base/index.html">Base</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Dataintegration</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../../fluxomics/index.html">Fluxomics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../metanetxMapper/index.html">Metanetxmapper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../transcriptomics/index.html">Transcriptomics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../metaboAnnotator/index.html">Metaboannotator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../metanetxMapper/index.html">Metanetxmapper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../metabotools/index.html">Metabotools</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../chemoInformatics/index.html">Chemoinformatics</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../index.html">Xomicstomodel</a><ul class="current">
-<li class="toctree-l4 current"><a class="current reference internal" href="#">Analysis</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../thermoKernel/index.html">Thermokernel</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../prepareData/index.html">Preparedata</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../oneRxnPerActiveGene/index.html">Onerxnperactivegene</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../proteomics/index.html">Proteomics</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../metabolomics/index.html">Metabolomics</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Analysis</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../oneRxnPerActiveGene/index.html">Onerxnperactivegene</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../thermoKernel/index.html">Thermokernel</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../proteomics/index.html">Proteomics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../prepareData/index.html">Preparedata</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../metabotools/index.html">Metabotools</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../metaboAnnotator/index.html">Metaboannotator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../fluxomics/index.html">Fluxomics</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../design/index.html">Design</a></li>
@@ -235,10 +235,10 @@
 <dd><p>Compare the information of different COBRA models including dimentions,
 essential pathways, main energy sources, etc.</p>
 <dl class="field-list">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[comparisonResults, comparisonTable] = compareModelsFeatures</strong> (<em>models, param</em>)</p>
 </dd>
-<dt class="field-even">INPUT</dt>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
 <dd class="field-even"><ul>
 <li><p><strong>models</strong> – Struct file containing the models to compare</p></li>
 <li><p><strong>param</strong> – a structure containing the parameters for the function:
@@ -298,7 +298,7 @@ used to measure it (Required for test ‘flux’).</p>
 </li>
 </ul>
 </dd>
-<dt class="field-odd">OUTPUTS</dt>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>comparisonResults</strong> – Struct array with all data obtained</p></li>
 <li><p><strong>comparisonTable</strong> – Table summarising the analysis</p></li>
@@ -312,10 +312,10 @@ used to measure it (Required for test ‘flux’).</p>
 <span class="sig-name descname"><span class="pre">compareXomicsModels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">multiModels</span></em>, <em class="sig-param"><span class="pre">printFlag</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/XomicsToModel/analysis/compareXomicsModels.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.XomicsToModel.analysis.compareXomicsModels" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compare generated models in mets, rxns, genes</p>
 <dl class="field-list">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[overlapResults,statistic] = compareXomicsModels</strong> (<em>multiModels, printFlag</em>)</p>
 </dd>
-<dt class="field-even">INPUT</dt>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
 <dd class="field-even"><ul>
 <li><p><strong>multiModels</strong> – struct format with models that need to compare
 e.g.multimodels.model1</p>
@@ -327,7 +327,7 @@ e.g.multimodels.model1</p>
 Default = 0</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OUTPUT</dt>
+<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>overlapResults</strong> – the overlapped met/rxn/gene numbers of each pair of models</p></li>
 <li><p><strong>statistic</strong> – the overlapped porportion matrix of each pair of models</p></li>
@@ -356,10 +356,10 @@ pipeline</p>
 report the core metabolites and reactions removed
 reduce the set of core metabolites and reactions</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[coreMetAbbrNew, coreRxnAbbrNew] = coreMetRxnAnalysis</strong> (<em>oldModel,model, coreMetAbbr, coreRxnAbbr, deletedMets, deletedRxns, param</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>oldModel</strong> – model prior to adjustment, with the following fields</p></li>
 <li><p><strong>* .mets</strong></p></li>
@@ -378,7 +378,7 @@ coreRxnAbbr: core reaction identifiers</p>
 </dd>
 </dl>
 <dl class="field-list simple">
-<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>deletedMets</strong> – set of metabolites removed from oldModel. If empty, given by setdiff(oldModel.mets,model.mets);</p></li>
 <li><p><strong>deletedRxns</strong> – set of reactions removed from oldModel. If empty, setdiff(oldModel.rxns,model.rxns);</p></li>
@@ -386,7 +386,7 @@ coreRxnAbbr: core reaction identifiers</p>
 <li><p><strong>param.printLevel</strong></p></li>
 </ul>
 </dd>
-<dt class="field-even">OUTPUTS</dt>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>coreMetAbbrNew</strong> – set of core metabolites in the new model</p></li>
 <li><p><strong>coreRxnAbbrNew</strong> – set of core reactions in the new model</p></li>
@@ -405,10 +405,10 @@ coreRxnAbbr: core reaction identifiers</p>
 metabolites, reactions, and genes of interest to determine whether or not
 they were removed during the XomicsToModel process.</p>
 <dl class="field-list">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>debugXomicsToModel</strong> (<em>model, directory, contextSpecificData</em>)</p>
 </dd>
-<dt class="field-even">INPUT</dt>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>genericModel</strong> – The generic input COBRA model used in XomicsToModel</p>
 <blockquote>
 <div><ul class="simple">
@@ -555,17 +555,17 @@ decrease or no change between the two vectors</p>
 <dt class="sig sig-object mat" id="src.dataIntegration.XomicsToModel.analysis.plotOverlapResults">
 <span class="sig-name descname"><span class="pre">plotOverlapResults</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">overlapresults</span></em>, <em class="sig-param"><span class="pre">statistic</span></em>, <em class="sig-param"><span class="pre">savepath</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/XomicsToModel/analysis/plotOverlapResults.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.XomicsToModel.analysis.plotOverlapResults" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>plot the overlapped heatmap for each model with proportion text labels</strong></p>
 </dd>
-<dt class="field-even">Input</dt>
+<dt class="field-even">Input<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>overlapresults</strong> – from compareXomicsModels.m</p></li>
 <li><p><strong>statistic</strong> – from compareXomicsModels.m</p></li>
 <li><p><strong>savepath</strong> (<em>optional</em>) – the path to save the plot</p></li>
 </ul>
 </dd>
-<dt class="field-odd">Output</dt>
+<dt class="field-odd">Output<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>a heat map plot</strong></p>
 </dd>
 </dl>
@@ -594,10 +594,10 @@ decrease or no change between the two vectors</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../thermoKernel/index.html" class="btn btn-default float-right" title="Thermokernel" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../oneRxnPerActiveGene/index.html" class="btn btn-default float-right" title="Onerxnperactivegene" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../index.html" class="btn btn-default" title="Xomicstomodel" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../metabolomics/index.html" class="btn btn-default" title="Metabolomics" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -635,9 +635,6 @@ decrease or no change between the two vectors</p>
         };
     </script>
     <script type="text/javascript" src="../../../../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
-    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
-    <script type="text/javascript" src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script type="text/javascript" src="../../../../_static/doctools.js"></script>
     <script type="text/javascript" src="../../../../_static/sphinx_highlight.js"></script>
 

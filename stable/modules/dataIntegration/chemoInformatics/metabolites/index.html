@@ -5,7 +5,7 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
@@ -69,8 +69,8 @@
         <link rel="search" title="Search" href="../../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../../index.html"/>
         <link rel="up" title="Chemoinformatics" href="../index.html"/>
-        <link rel="next" title="Reactions" href="../reactions/index.html"/>
-        <link rel="prev" title="Basicphysicochemicaldata" href="../molecularWeight/basicPhysicochemicalData/index.html"/> 
+        <link rel="next" title="Inchi" href="../inchi/index.html"/>
+        <link rel="prev" title="Old" href="../RXN/old/index.html"/> 
 
   
   <script src="../../../../_static/js/modernizr.min.js"></script>
@@ -92,7 +92,7 @@
           
 
           
-            <img src="/cobratoolbox/stable/_static/img/logo.png" class="logo" alt="cobratoolbox logo" />
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
           
           </a>
 
@@ -159,20 +159,20 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../base/index.html">Base</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Dataintegration</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../../fluxomics/index.html">Fluxomics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../metanetxMapper/index.html">Metanetxmapper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../transcriptomics/index.html">Transcriptomics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../metaboAnnotator/index.html">Metaboannotator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../metanetxMapper/index.html">Metanetxmapper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../metabotools/index.html">Metabotools</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../index.html">Chemoinformatics</a><ul class="current">
-<li class="toctree-l4"><a class="reference internal" href="../molecularWeight/index.html">Molecularweight</a></li>
-<li class="toctree-l4 current"><a class="current reference internal" href="#">Metabolites</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../reactions/index.html">Reactions</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../RXN/index.html">Rxn</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Metabolites</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../inchi/index.html">Inchi</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../molecularWeight/index.html">Molecularweight</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../reactions/index.html">Reactions</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../XomicsToModel/index.html">Xomicstomodel</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../metabotools/index.html">Metabotools</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../metaboAnnotator/index.html">Metaboannotator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../fluxomics/index.html">Fluxomics</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../design/index.html">Design</a></li>
@@ -234,10 +234,10 @@
 <dd><p>Integrates metabolite data from an external file and incorporates it into
 the COBRA model.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[newModel, hasEffect] = addMetInfoInCBmodel</strong> (<em>model, inputData, replace</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>model</strong> – COBRA model with following fields:</p>
 <ul>
@@ -252,11 +252,11 @@ the COBRA model.</p>
 <li><p><strong>inputData</strong></p></li>
 </ul>
 </dd>
-<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>replace</strong> – If the new ID should replace an existing ID, this
 logical value indicates so (default: false).</p>
 </dd>
-<dt class="field-even">OUTPUTS</dt>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>newModel</strong> – COBRA model with updated identifiersCOBRA model with the identifiers updated.</p></li>
 <li><p><strong>hasEffect</strong></p></li>
@@ -271,10 +271,10 @@ logical value indicates so (default: false).</p>
 <dd><p>Prints the status of metabolite structure in a database in relation to a
 COBRA model.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[summary, status] = metDatabaseStatus</strong> (<em>model, metDir</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>model</strong> – COBRA model with following fields:
 * .mets - An m x 1 array of metabolite identifiers.
@@ -289,7 +289,7 @@ COBRA model.</p>
 <li><p><strong>metDir</strong> – Directory of the metabolite database (MDL MOL files)</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OUTPUTS</dt>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>summary</strong> – Summary of the metabolite database and the identifiers.</p></li>
 <li><p><strong>status</strong> – Table with the status of each metabolite in the database.</p></li>
@@ -304,13 +304,13 @@ COBRA model.</p>
 <dd><p>This fucntion creates a table of different representations of a
 metabolite structure including  smiles, inchi and inchikey,</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>metTable = metaboliteStructuresTable</strong> (<em>metDir, saveDir</em>)</p>
 </dd>
-<dt class="field-even">INPUT</dt>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>metDir</strong> – String with the directory containing mol files</p>
 </dd>
-<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>saveDir</strong> – String with the directory where the table format will be
 saved. If is empty, the format is not saved.</p>
 </dd>
@@ -326,7 +326,7 @@ strings or SMILES in MDL MOL files.</p>
 <p>USAGE:</p>
 <p>molCollectionReport = obtainMetStructures(model, mets, sources, standardisationApproach)</p>
 <dl class="field-list">
-<dt class="field-odd">INPUTS</dt>
+<dt class="field-odd">INPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>model</strong> – COBRA model with following fields:</p>
 <ul class="simple">
 <li><p>.S - The m x n stoichiometric matrix for the metabolic network.</p></li>
@@ -342,7 +342,7 @@ strings or SMILES in MDL MOL files.</p>
 <li><p>.metLipidmassID - An m x 1 array of metabolite identifiers.</p></li>
 </ul>
 </dd>
-<dt class="field-even">OPTIONAL INPUTS</dt>
+<dt class="field-even">OPTIONAL INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul>
 <li><p><strong>mets</strong> – List of metabolites to be download (Default: All)</p></li>
 <li><p><strong>outputDir</strong> – Directory that will contain the obtained metabolite structures.</p></li>
@@ -362,7 +362,7 @@ strings or SMILES in MDL MOL files.</p>
 </li>
 </ul>
 </dd>
-<dt class="field-odd">OUTPUTS</dt>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>molCollectionReport</strong> – Report of the obtained MDL MOL files</p>
 <ul>
@@ -404,11 +404,11 @@ standardizer and openBabel.</p>
 <p>USAGE:</p>
 <p>[standardised, nonStandardised, InChIs, SMILES] = standardiseMolDatabase(molDir, standardisedDir, standardiseMolFiles)</p>
 <dl class="field-list">
-<dt class="field-odd">INPUTS</dt>
+<dt class="field-odd">INPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>molDir</strong> – Path to directory that contain the MDL MOL files
 to be standardised.</p>
 </dd>
-<dt class="field-even">OPTIONAL INPUTS</dt>
+<dt class="field-even">OPTIONAL INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul>
 <li><p><strong>metList</strong> – 1 x n lest of metabolites to standardise</p></li>
 <li><p><strong>standardisedDir</strong> – Path to directory that will contain the standardised
@@ -423,7 +423,7 @@ installed, otherwise ‘basic’)</p>
 </li>
 </ul>
 </dd>
-<dt class="field-odd">OUTPUTS</dt>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>standardisationReport</strong> – Struct array with the standarization report:</p>
 <ul>
@@ -468,10 +468,10 @@ installed, otherwise ‘basic’)</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../reactions/index.html" class="btn btn-default float-right" title="Reactions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../inchi/index.html" class="btn btn-default float-right" title="Inchi" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../molecularWeight/basicPhysicochemicalData/index.html" class="btn btn-default" title="Basicphysicochemicaldata" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../RXN/old/index.html" class="btn btn-default" title="Old" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -509,9 +509,6 @@ installed, otherwise ‘basic’)</p>
         };
     </script>
     <script type="text/javascript" src="../../../../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
-    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
-    <script type="text/javascript" src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script type="text/javascript" src="../../../../_static/doctools.js"></script>
     <script type="text/javascript" src="../../../../_static/sphinx_highlight.js"></script>
 

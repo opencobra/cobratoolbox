@@ -5,7 +5,7 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
@@ -69,8 +69,8 @@
         <link rel="search" title="Search" href="../../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../../index.html"/>
         <link rel="up" title="Xomicstomodel" href="../index.html"/>
-        <link rel="next" title="Metabotools" href="../../metabotools/index.html"/>
-        <link rel="prev" title="Proteomics" href="../proteomics/index.html"/> 
+        <link rel="next" title="Analysis" href="../analysis/index.html"/>
+        <link rel="prev" title="Xomicstomodel" href="../index.html"/> 
 
   
   <script src="../../../../_static/js/modernizr.min.js"></script>
@@ -92,7 +92,7 @@
           
 
           
-            <img src="/cobratoolbox/stable/_static/img/logo.png" class="logo" alt="cobratoolbox logo" />
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
           
           </a>
 
@@ -159,21 +159,21 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../base/index.html">Base</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Dataintegration</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../../fluxomics/index.html">Fluxomics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../metanetxMapper/index.html">Metanetxmapper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../transcriptomics/index.html">Transcriptomics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../metaboAnnotator/index.html">Metaboannotator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../metanetxMapper/index.html">Metanetxmapper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../metabotools/index.html">Metabotools</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../chemoInformatics/index.html">Chemoinformatics</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../index.html">Xomicstomodel</a><ul class="current">
-<li class="toctree-l4"><a class="reference internal" href="../analysis/index.html">Analysis</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../thermoKernel/index.html">Thermokernel</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../prepareData/index.html">Preparedata</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../oneRxnPerActiveGene/index.html">Onerxnperactivegene</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../proteomics/index.html">Proteomics</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">Metabolomics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../analysis/index.html">Analysis</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../oneRxnPerActiveGene/index.html">Onerxnperactivegene</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../thermoKernel/index.html">Thermokernel</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../proteomics/index.html">Proteomics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../prepareData/index.html">Preparedata</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../metabotools/index.html">Metabotools</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../metaboAnnotator/index.html">Metaboannotator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../fluxomics/index.html">Fluxomics</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../design/index.html">Design</a></li>
@@ -234,10 +234,10 @@
 <span class="sig-name descname"><span class="pre">constrainRxns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">specificData</span></em>, <em class="sig-param"><span class="pre">param</span></em>, <em class="sig-param"><span class="pre">mode</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/XomicsToModel/metabolomics/constrainRxns.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.XomicsToModel.metabolomics.constrainRxns" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function used to apply constraints in the XomicsToModel function</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[newModel, rxnsConstrained, rxnBoundsCorrected, newOptions] = constrainRxns</strong> (<em>model, specificData, param, mode, metabolomicWeights, printLevel</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>model.S</strong> – m x n stoichiometric matrix</p></li>
 <li><p><strong>model.rxns</strong> – n x 1 cell array of reaction identifiers</p></li>
@@ -272,7 +272,7 @@ Default: feasTol*10;</p></li>
 <li><p><strong>printLevel</strong></p></li>
 </ul>
 </dd>
-<dt class="field-odd">OUTPUTS</dt>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>newModel</strong></p></li>
 <li><p><strong>rxnsConstrained</strong></p></li>
@@ -280,7 +280,7 @@ Default: feasTol*10;</p></li>
 <li><p><strong>newSpecificData</strong></p></li>
 </ul>
 </dd>
-<dt class="field-even">OUTPUTS</dt>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>newModel</strong> – A cobra model with constraints applied</p></li>
 <li><p><strong>rxnsConstrained</strong> – List of the reactions constrained</p></li>
@@ -320,7 +320,7 @@ param.metabolomicWeights: String indicating the type of weights to be applied to
 </dd>
 </dl>
 <dl class="field-list simple">
-<dt class="field-odd">OUTPUTS</dt>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>V</strong> – table with the fluxes predicted by leave one out cross validation
 * .rxns:    n x 1 cell array of reaction identifiers, one for each in input model
 * .v:       n x 1 double of predicted mean flux
@@ -369,10 +369,10 @@ weightUpper:          <cite>n x 1</cite> positive weight penalty on relaxation o
 <dt class="sig sig-object mat" id="src.dataIntegration.XomicsToModel.metabolomics.growthMediaToModel">
 <span class="sig-name descname"><span class="pre">growthMediaToModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">specificData</span></em>, <em class="sig-param"><span class="pre">param</span></em>, <em class="sig-param"><span class="pre">coreRxnAbbr</span></em>, <em class="sig-param"><span class="pre">modelGenerationReport</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/XomicsToModel/metabolomics/growthMediaToModel.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.XomicsToModel.metabolomics.growthMediaToModel" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[model, specificData, coreRxnAbbr, modelGenerationReport] = growthMediaToModel</strong> (<em>model, specificData, param, coreRxnAbbr, modelGenerationReport</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>model.rxns</strong></p></li>
 <li><p><strong>model.rxnNames</strong></p></li>
@@ -393,7 +393,7 @@ weightUpper:          <cite>n x 1</cite> positive weight penalty on relaxation o
 <li><p><strong>modelGenerationReport</strong></p></li>
 </ul>
 </dd>
-<dt class="field-odd">OUTPUTS</dt>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>model.rxns</strong></p></li>
 <li><p><strong>model.rxnNames</strong></p></li>
@@ -448,10 +448,10 @@ uptakesRatesTable - Table consisting of ‘Chemical_Name’, ‘InChICode’,</p
 media either by metabolomics experiments or by the content of the culture
 medium</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[model, specificData, coreRxnAbbr, modifiedFluxes, modelGenerationReport] = metabolomicsToModel</strong> (<em>model, specificData, param, coreRxnAbbr, modelGenerationReport</em>)</p>
 </dd>
-<dt class="field-even">INPUT</dt>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>model</strong> – A generic COBRA model</p>
 <ul>
@@ -469,7 +469,7 @@ medium</p>
 <li><p><strong>modelGenerationReport</strong> – A struct array where the data will be saved</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OUTPUTS</dt>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>model</strong> – A Context-specific COBRA model with the metabolomic data.</p></li>
 <li><p><strong>specificData</strong> – The exometabolomic data is updated according to the
@@ -491,10 +491,10 @@ of technical replicate sample (RSDqc provided in the metRep variable)
 and/or the average relative error (measured vs actual concentration) of
 the calibration line samples (RE provided in the calRelErr variable)</p>
 <dl class="field-list">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[cleanedData, metToKeepSummary] = metsToKeep</strong> (<em>dataOrg, metRep, calRelErr, param</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul>
 <li><p><strong>dataOrg</strong> – A table with original metabolomics data in a long format
 with information about measured samples, compounds,
@@ -567,7 +567,7 @@ concentration estimation of the calibration line
 samples (default = 25 (%)</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OUTPUTS</dt>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><ul>
 <li><p><strong>cleanedData</strong> – table in the same format as dataOrg without the
 metabolites of low quality (above set tresholds)</p></li>
@@ -777,7 +777,7 @@ data is summarised (param.removeOutliers). Furthermore, function can map
 metabolite names into model IDs using either user specified metabolite
 lookup table (param.metLookupTable) or/and model structure (param.model).</p>
 <dl class="field-list">
-<dt class="field-odd">Required inputs</dt>
+<dt class="field-odd">Required inputs<span class="colon">:</span></dt>
 <dd class="field-odd"><ul>
 <li><p><strong>cleanedData.Properties</strong></p></li>
 <li><p><strong>cleanedData.Properties.Properties</strong></p></li>
@@ -796,7 +796,7 @@ perturbation)</p>
 </li>
 </ul>
 </dd>
-<dt class="field-even">Optional inputs</dt>
+<dt class="field-even">Optional inputs<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><dl class="simple">
 <dt><strong>param.model          - cobra model used to map metabolite to metss</strong></dt><dd><ul>
@@ -831,10 +831,10 @@ perturbations specified in the cleanedData)</p></li>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../../metabotools/index.html" class="btn btn-default float-right" title="Metabotools" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../analysis/index.html" class="btn btn-default float-right" title="Analysis" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../proteomics/index.html" class="btn btn-default" title="Proteomics" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../index.html" class="btn btn-default" title="Xomicstomodel" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -872,9 +872,6 @@ perturbations specified in the cleanedData)</p></li>
         };
     </script>
     <script type="text/javascript" src="../../../../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
-    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
-    <script type="text/javascript" src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script type="text/javascript" src="../../../../_static/doctools.js"></script>
     <script type="text/javascript" src="../../../../_static/sphinx_highlight.js"></script>
 

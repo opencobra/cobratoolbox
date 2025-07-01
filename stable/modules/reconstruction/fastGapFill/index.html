@@ -5,7 +5,7 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
@@ -70,7 +70,7 @@
     <link rel="top" title="The COBRA Toolbox" href="../../../index.html"/>
         <link rel="up" title="Reconstruction" href="../index.html"/>
         <link rel="next" title="Auxillaryfiles" href="AuxillaryFiles/index.html"/>
-        <link rel="prev" title="Integration" href="../demeter/src/integration/index.html"/> 
+        <link rel="prev" title="Gui" href="../comparison/modelBorgifier/gui/index.html"/> 
 
   
   <script src="../../../_static/js/modernizr.min.js"></script>
@@ -92,7 +92,7 @@
           
 
           
-            <img src="/cobratoolbox/stable/_static/img/logo.png" class="logo" alt="cobratoolbox logo" />
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
           
           </a>
 
@@ -161,17 +161,17 @@
 <li class="toctree-l2"><a class="reference internal" href="../../dataIntegration/index.html">Dataintegration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../design/index.html">Design</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html">Reconstruction</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../modelGeneration/index.html">Modelgeneration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../metaboRePort/index.html">Metaboreport</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../refinement/index.html">Refinement</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../demeter/index.html">Demeter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../rBioNet/index.html">Rbionet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../growthExpMatch/index.html">Growthexpmatch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../comparison/index.html">Comparison</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Fastgapfill</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="AuxillaryFiles/index.html">Auxillaryfiles</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../comparison/index.html">Comparison</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../metaboRePort/index.html">Metaboreport</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../growthExpMatch/index.html">Growthexpmatch</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../rBioNet/index.html">Rbionet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../modelGeneration/index.html">Modelgeneration</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../visualization/index.html">Visualization</a></li>
@@ -235,10 +235,10 @@
 <dd><p>This function requires the fastCORE algorithm (Vlassis et al., 2013, <a class="reference external" href="http://arxiv.org/abs/1304.7992">http://arxiv.org/abs/1304.7992</a>) as
 well as the output from <cite>prepareFastGapFill</cite>.</p>
 <dl class="field-list">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[AddedRxns] = fastGapFill</strong> (<em>consistMatricesSUX, epsilon, weights, weightsPerReaction</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul>
 <li><p><strong>consistMatricesSUX</strong> – To be obtained from <cite>prepareFastGapFill</cite></p></li>
 <li><p><strong>epsilon</strong> – Parameter for <cite>fastCore</cite> (optional input, default: getCobraSolverParams(‘LP’, ‘feasTol’)*100).
@@ -259,7 +259,7 @@ Format:</p>
 <li><p><strong>weightsPerReaction</strong> – Weights per reaction</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OUTPUT</dt>
+<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>AddedRxns</strong> – Reactions that have been added from <cite>UX</cite> matrix to <cite>S</cite></p>
 </dd>
 </dl>
@@ -270,16 +270,16 @@ Format:</p>
 <span class="sig-name descname"><span class="pre">generateSUXMatrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">dictionary</span></em>, <em class="sig-param"><span class="pre">KEGGFilename</span></em>, <em class="sig-param"><span class="pre">KEGGBlackList</span></em>, <em class="sig-param"><span class="pre">compartment</span></em>, <em class="sig-param"><span class="pre">addModel</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/fastGapFill/generateSUXMatrix.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.fastGapFill.generateSUXMatrix" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates the matrices for matlab smiley – &gt; combines <cite>S</cite>, <cite>U</cite>, (<cite>KEGG</cite>), <cite>X</cite> (transport)</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>MatricesSUX = generateSUXMatrix</strong> (<em>model, dictionary, KEGGFilename, KEGGBlackList, compartment, addModel</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>model</strong> – model structure</p></li>
 <li><p><strong>dictionary</strong> – disctionary used to transform KEGG model</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><dl class="simple">
 <dt><strong>KEGGID</strong> – List of KEGGIDs for compounds</dt><dd><ul>
@@ -307,16 +307,16 @@ model naming. Also, the list should be unique.</p></li>
 in <cite>The FASTCORE algorithm for context-specific metabolic network reconstructions, Vlassis et
 al., 2013, PLoS Comp Biol.`</cite></p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[consistModel, BlockedRxns] = identifyBlockedRxns</strong> (<em>model, epsilon</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>model</strong> – Model structure</p></li>
 <li><p><strong>epsilon</strong> – Parameter (default: getCobraSolverParams(‘LP’, ‘feasTol’)*100; see Vlassis et al for more details)</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OUTPUT</dt>
+<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>consistModel</strong> – Flux consistent model that does not contain any blocked
 reactions anymore</p></li>
@@ -338,10 +338,10 @@ such that the flux through this reaction is maximized while the sum of
 all fluxes is minimized. This analysis can be helpful to put the solution
 reactions into the network context.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[AddedRxnsExtended] = postProcessGapFillSolutions</strong> (<em>AddedRxns, model, BlockedRxns, IdentifyPW</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>AddedRxns</strong> – Output from <cite>fastGapFill.m</cite></p></li>
 <li><p><strong>model</strong> – Model structure. Original model given as input into <cite>prepareFastGapFill</cite></p></li>
@@ -350,7 +350,7 @@ consistent model and added reactions to have flux through previously
 blocked reaction, default: false</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OUTPUT</dt>
+<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>AddedRxnsExtended</strong> – Structure containing the information present in
 <cite>AddedRxns</cite> along with the statistics and if desired pathways containing
 the flux vectors.</p>
@@ -365,10 +365,10 @@ the flux vectors.</p>
 <cite>fastGapFill.m</cite>. Please refer to Thiele et al, 2013 for more details.
 This function is based on the fastCORE algorithm (<cite>Vlassis et al., 2013</cite>).</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[consistModel, consistMatricesSUX, BlockedRxns] = prepareFastGapFill</strong> (<em>model, listCompartments, epsilon, filename, dictionary_file, blackList</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>model</strong> – Model structure</p></li>
 <li><p><strong>listCompartments</strong> – List of intracellular compartments in the model
@@ -383,7 +383,7 @@ details on this parameter.</p></li>
 (e.g., KEGG) (optional input, default: no blacklist)</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OUTPUT</dt>
+<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>consistModel</strong> – Flux consistent subnetwork of the input model</p></li>
 <li><p><strong>consistMatricesSUX</strong> – Flux consistent <cite>SUX</cite> matrix, which contains the flux
@@ -416,10 +416,10 @@ in running <cite>fastGapFill</cite> or <cite>swiftGapFill</cite> so should be sp
 if running without a weight file.</p>
 <p>All inputs are optional, defaults to E. coli model iAF1260 and example files)</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[AddedRxns] = submitGapFill</strong> (<em>swift, modelFile, dbFile, dictionaryFile, prepareFGFResults, weightsPerRxnFile, forceRerun, epsilon, blackList, listCompartments</em>)</p>
 </dd>
-<dt class="field-even">OPTIONAL INPUTS</dt>
+<dt class="field-even">OPTIONAL INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>swift</strong> – Boolean specifying whether to run swiftGapFill or
 fastGapFill (default: false)</p></li>
@@ -448,7 +448,7 @@ the default is set within <cite>prepareGapFill</cite>
 (default: all compartments specified in the model)</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OUTPUT</dt>
+<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>AddedRxns</strong> – Reactions that have been added from UX matrix to <cite>S</cite></p>
 </dd>
 </dl>
@@ -459,13 +459,13 @@ the default is set within <cite>prepareGapFill</cite>
 <span class="sig-name descname"><span class="pre">swiftGapFill</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">consistMatricesSUX</span></em>, <em class="sig-param"><span class="pre">tol</span></em>, <em class="sig-param"><span class="pre">weights</span></em>, <em class="sig-param"><span class="pre">weightsPerReaction</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/fastGapFill/swiftGapFill.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.fastGapFill.swiftGapFill" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function requires the swiftcore algorithm as well as the output from <cite>prepareFastGapFill</cite>.</p>
 <dl class="field-list">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[reconstruction, AddedRxns] = swiftGapFill</strong> (<em>consistMatricesSUX, tol, weights, weightsPerReaction</em>)</p>
 </dd>
-<dt class="field-even">INPUT</dt>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>consistMatricesSUX</strong> – To be obtained from <cite>prepareFastGapFill</cite></p>
 </dd>
-<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><ul>
 <li><p><strong>tol</strong> – Parameter for <cite>swiftcore</cite> (default: 1e-10).</p></li>
 <li><p><strong>weights</strong> – Weight structure that permits to add weights to non-core reactions
@@ -484,7 +484,7 @@ Format:</p>
 <li><p><strong>weightsPerReaction</strong> – Weights per reaction</p></li>
 </ul>
 </dd>
-<dt class="field-even">OUTPUT</dt>
+<dt class="field-even">OUTPUT<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>AddedRxns</strong> – Reactions that have been added from <cite>UX</cite> matrix to <cite>S</cite></p>
 </dd>
 </dl>
@@ -505,7 +505,7 @@ Format:</p>
         <a href="AuxillaryFiles/index.html" class="btn btn-default float-right" title="Auxillaryfiles" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../demeter/src/integration/index.html" class="btn btn-default" title="Integration" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../comparison/modelBorgifier/gui/index.html" class="btn btn-default" title="Gui" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -543,9 +543,6 @@ Format:</p>
         };
     </script>
     <script type="text/javascript" src="../../../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../../../_static/jquery.js"></script>
-    <script type="text/javascript" src="../../../_static/underscore.js"></script>
-    <script type="text/javascript" src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
     <script type="text/javascript" src="../../../_static/sphinx_highlight.js"></script>
 

@@ -5,7 +5,7 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
@@ -69,8 +69,8 @@
         <link rel="search" title="Search" href="../../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../../index.html"/>
         <link rel="up" title="Chemoinformatics" href="../index.html"/>
-        <link rel="next" title="Rxn" href="../RXN/index.html"/>
-        <link rel="prev" title="Metabolites" href="../metabolites/index.html"/> 
+        <link rel="next" title="Xomicstomodel" href="../../XomicsToModel/index.html"/>
+        <link rel="prev" title="Basicphysicochemicaldata" href="../molecularWeight/basicPhysicochemicalData/index.html"/> 
 
   
   <script src="../../../../_static/js/modernizr.min.js"></script>
@@ -92,7 +92,7 @@
           
 
           
-            <img src="/cobratoolbox/stable/_static/img/logo.png" class="logo" alt="cobratoolbox logo" />
+            <img src="https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png" class="logo" alt="cobratoolbox logo" />
           
           </a>
 
@@ -159,20 +159,20 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../base/index.html">Base</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Dataintegration</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../../fluxomics/index.html">Fluxomics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../metanetxMapper/index.html">Metanetxmapper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../transcriptomics/index.html">Transcriptomics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../metaboAnnotator/index.html">Metaboannotator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../metanetxMapper/index.html">Metanetxmapper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../metabotools/index.html">Metabotools</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../index.html">Chemoinformatics</a><ul class="current">
-<li class="toctree-l4"><a class="reference internal" href="../molecularWeight/index.html">Molecularweight</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../metabolites/index.html">Metabolites</a></li>
-<li class="toctree-l4 current"><a class="current reference internal" href="#">Reactions</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../RXN/index.html">Rxn</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../metabolites/index.html">Metabolites</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../inchi/index.html">Inchi</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../molecularWeight/index.html">Molecularweight</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Reactions</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../XomicsToModel/index.html">Xomicstomodel</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../metabotools/index.html">Metabotools</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../metaboAnnotator/index.html">Metaboannotator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../fluxomics/index.html">Fluxomics</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../design/index.html">Design</a></li>
@@ -234,10 +234,10 @@
 <dd><p>Calculate the the bonds broken and formed for the mass balanced reactions
 in a metabolic network based on atom mapping data.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[bondsBrokenAndFormed, substrateMass] = findBondsBrokenAndFormed</strong> (<em>model, rxnDir, printLevel</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>model</strong> – COBRA model with following fields:</p>
 <ul>
@@ -253,7 +253,7 @@ in a metabolic network based on atom mapping data.</p>
 <li><p><strong>printLevel Print figure with the relation of mass vs bondsBF bondsE</strong></p></li>
 </ul>
 </dd>
-<dt class="field-odd">OUTPUTS</dt>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>bondsBF       An n x 1 vector with the number of bonds broken and</strong> – formed. External or pasive transpor reactions are equal
 to 0; missing and unbalanced reactions are NaN.</p></li>
@@ -275,10 +275,10 @@ B. deB. Darwent, “National Standard Reference Data Series,” National
 Bureau of Standards, No. 31,Washington, DC, 1970; S.W. Benson, J. Chem.
 Educ., 42, 502 (1965)</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[enthalpyChange, substrateMass] = findEnthalpyChange</strong> (<em>model, rxnList, rxnDir, printLevel</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>model</strong> – COBRA model with following fields:</p>
 <ul>
@@ -294,7 +294,7 @@ Educ., 42, 502 (1965)</p>
 <li><p><strong>printLevel Print figure with the relation of mass vs bondsBF bondsE</strong></p></li>
 </ul>
 </dd>
-<dt class="field-odd">OUTPUTS</dt>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>enthalpyChange      An n x 1 vector with the bond enthalpies in kJ/mol.</strong> – External or pasive transpor reactions are equal to 0;
 missing and unbalanced reactions are NaN.</p></li>
@@ -313,10 +313,10 @@ including MDL RXN, SMILES, and images. If this option is selected, the
 function can remove all protons from the model and represent the
 reactions as a hydrogen suppressed chemical graph.</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>standardisedRxns = obtainAtomMappingsRDT</strong> (<em>model, molFileDir, rxnResultsDir, rxnsToAM, hMapping, maxTime, standariseRxn</em>)</p>
 </dd>
-<dt class="field-even">INPUTS</dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>model</strong> – COBRA model with following fields:</p>
 <ul>
@@ -349,7 +349,7 @@ metabolites in S. File names should correspond to
 reaction identifiers in input mets.</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OPTIONAL INPUTS</dt>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>rxnResultsDir</strong> – Path to directory that will contain the RXN files with atom mappings (default: current directory).</p></li>
 <li><p><strong>rxnsToAM</strong> – List of reactions to atom map (default: all in the model).</p></li>
@@ -358,7 +358,7 @@ reaction identifiers in input mets.</p></li>
 <li><p><strong>replaceExistingAtomMappings</strong> – True to recompute atom mappings, replacing existing RXN files  (default: TRUE).</p></li>
 </ul>
 </dd>
-<dt class="field-even">OUTPUTS</dt>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>atomMappingReport</strong> – A report with the atom mapping data
 * .rxnFilesWritten        the MDL RXN written
 * .balanced               the balanced reactions
@@ -387,13 +387,13 @@ standardisedRxns = obtainAtomMappingsRDT(model, molFileDir, pwd, 1800, standaris
 <span class="sig-name descname"><span class="pre">sortAtomMappingIdx</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">rxnFile</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/chemoInformatics/reactions/sortAtomMappingIdx.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.chemoInformatics.reactions.sortAtomMappingIdx" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reassign the atom mapping numbers to be ascending in the RXN file V2000</p>
 <dl class="field-list simple">
-<dt class="field-odd">USAGE</dt>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>ascendingRxnFile = acsendingAtomMaps</strong> (<em>rxnFile</em>)</p>
 </dd>
-<dt class="field-even">INPUT</dt>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>rxnFile</strong> – MDL RXN file</p>
 </dd>
-<dt class="field-odd">OUTPUTS</dt>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>ascendingRxnFile</strong> – A RXN file with ascending atom mappings.</p>
 </dd>
 </dl>
@@ -411,10 +411,10 @@ standardisedRxns = obtainAtomMappingsRDT(model, molFileDir, pwd, 1800, standaris
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../RXN/index.html" class="btn btn-default float-right" title="Rxn" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../../XomicsToModel/index.html" class="btn btn-default float-right" title="Xomicstomodel" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../metabolites/index.html" class="btn btn-default" title="Metabolites" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../molecularWeight/basicPhysicochemicalData/index.html" class="btn btn-default" title="Basicphysicochemicaldata" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -452,9 +452,6 @@ standardisedRxns = obtainAtomMappingsRDT(model, molFileDir, pwd, 1800, standaris
         };
     </script>
     <script type="text/javascript" src="../../../../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
-    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
-    <script type="text/javascript" src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script type="text/javascript" src="../../../../_static/doctools.js"></script>
     <script type="text/javascript" src="../../../../_static/sphinx_highlight.js"></script>
 
