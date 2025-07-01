@@ -5,7 +5,7 @@
 # Program by: Wiley Barton - 2024.02.22
 # Modified for conda/docker pipeline - 2024.02.22
 # Version for Persephone
-# last update - 2025.02.18
+# last update - 2025.03.11
 #--------------------------------------------------
 # Modified code sources:
 # umamba merge via: https://micromamba-docker.readthedocs.io/en/latest/advanced_usage.html#adding-micromamba-to-an-existing-docker-image
@@ -27,29 +27,12 @@
 # |-BASH_seqc_*.sh
 # |-env_*_tool.yml
 # |-taxa2proc_*_out.txt
-#  pipeline structure: QC (kneaddata) > assemble (metaspades) > bin (VAMB) > QC (checkm2) > assign taxa (mmseqs2) | assign genes (prodigal) > assign function eggNOG-mapperv2
-#  volume maps: seqc_input:step0_data_in, seqc_output:final_reports, seqc_proc:/DB (process on /DB/DEPO_proc)
 #--------------------------------------------------
 # Resources
 #   alt. microbeannotator [https://doi.org/10.1186/s12859-020-03940-5]
 #--------------------------------------------------
 # ToDo+_+
 # CRIT - resolve issue of .gitkeep blocking volume creation
-# evaluate fastani placement in pipeline
-# eval alt step1 with fastp (currently bad install with umamba) and hocort (micromamba create -n env_s1_hocort -c conda-forge -c bioconda hocort)
-#  fastplong for LR branch
-# incorp repaq for fq compression https://github.com/OpenGene/repaq
-# sys eval for build
-# elaborate resource use - https://docs.docker.com/config/containers/resource_constraints/
-#  eg FROM centos:7
-#   ARG arg
-#   RUN if [[ -z "$arg" ]] ; then echo Argument not provided ; else echo Argument is $arg ; fi
-#   docker build -t my_docker .  --build-arg arg=45
-# incorp sendmail
-# pot. convert/branch to snakemake: https://snakemake.readthedocs.io/en/stable/tutorial/basics.html
-# pot. amr screen: abricate https://github.com/tseemann/abricate, resfinder https://academic.oup.com/nar/article/51/W1/W493/7173762
-# pot. gene cluster with gutsmash: https://doi.org/10.1038/s41587-023-01675-1
-# short+long read MAG approach w/ BASALT: https://www.nature.com/articles/s41467-024-46539-7
 #--------------------------------------------------
 # CLI COMMS
 # kill all: docker stop $(docker ps -aq), wsl --shutdown
@@ -58,14 +41,17 @@
 #----------------------------------------------------------------------------------------
 # START
 #----------------------------------------------------------------------------------------
+ARG BUILDPLATFORM='linux/amd64'
+#--------------------------------------------------------------------------------------------------
+# Stage 1: Use micromamba base image
 # bring in the micromamba image so we can copy files from it - mambaorg/micromamba:1.5.8
-#FROM mambaorg/micromamba:latest AS micromamba
-FROM --platform=linux/amd64 mambaorg/micromamba:latest AS micromamba
+#--------------------------------------------------------------------------------------------------
+FROM --platform=${BUILDPLATFORM} mambaorg/micromamba:latest AS micromamba
+#--------------------------------------------------------------------------------------------------
+# Stage 2: Base OS Setup (Ubuntu)
 # This is the image micromamba is added to:
-#FROM ubuntu:latest AS base_os
-#append with --platform=linux/amd64 to emulate
-FROM --platform=linux/amd64 ubuntu:latest AS base_os
-#FROM --platform=$BUILDPLATFORM ubuntu:latest AS base_os
+#--------------------------------------------------------------------------------------------------
+FROM --platform=${BUILDPLATFORM} ubuntu:latest AS base_os
 WORKDIR /home
 #establish variables
 #ARG and ENV both invoke in build, ENV made variable in container
@@ -127,15 +113,10 @@ ENV v_logdir=${v_dir_work}/logs
 RUN printf '%s\nStart of pipeline log -- Docker Initialized@: %s\n%s\n' "${v_logblock0}" "$(date)" "${v_logblock0}" > $v_logfile
 #build workflow dirs - op moved to mama due to .gitkeep block on initial build
 RUN [ "/bin/bash", "-c", "mkdir -p ${v_dir_work}/{final_reports,logs,scrp_job,scrp_run,step0_data_in}/" ]
-#RUN mkdir /home/${v_seqcusr} && mkdir ${v_dir_work} && cd ${v_dir_work}
 WORKDIR ${v_dir_work}
 RUN cd ${v_dir_work}
 #move logfile
 RUN [ "/bin/bash", "-c", "mv /home/${v_logfile} ${v_logdir}" ]
-#./logs
-#approach changed for relocation of logs/ to proc
-#ENV v_logfile=${v_dir_work}/logs/${v_logfile}
-#RUN mv ${v_dir_work}/logs ${v_dir_proc}
 #----------------------------------------------------------------------------------------
 # Install ubuntu packages - stable layer
 #----------------------------------------------------------------------------------------
@@ -161,20 +142,11 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive && \
     wget \
     zip && \
     apt-get clean && \
-   rm -rf /var/lib/apt/lists/*
+    rm -rf /var/lib/apt/lists/*
 RUN apt-get update
 #Install NCBI CLI
 RUN curl -o /bin/datasets 'https://ftp.ncbi.nlm.nih.gov/pub/datasets/command-line/v2/linux-amd64/datasets'
 RUN curl -o /bin/dataformat 'https://ftp.ncbi.nlm.nih.gov/pub/datasets/command-line/v2/linux-amd64/dataformat'
-#RUN curl -o /bin/sratoolkit.tar.gz 'https://ftp-trace.ncbi.nlm.nih.gov/sra/sdk/current/sratoolkit.current-ubuntu64.tar.gz'
-#wget --output-document sratoolkit.tar.gz https://ftp-trace.ncbi.nlm.nih.gov/sra/sdk/current/sratoolkit.current-ubuntu64.tar.gz
-#tar -vxzf sratoolkit.tar.gz
-# Get Rust - OSX troublshooting
-#RUN curl https://sh.rustup.rs -sSf | bash -s -- -y
-#RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | bash -s -- -y
-#RUN echo 'source $HOME/.cargo/env' >> $HOME/.bashrc
-#ENV PATH="/root/.cargo/bin:${PATH}"
-
 RUN chmod +x /bin/datasets /bin/dataformat
 #----------------------------------------------------------------------------------------
 # Pull git repos
@@ -182,12 +154,6 @@ RUN chmod +x /bin/datasets /bin/dataformat
 RUN [ "/bin/bash", "-c", "git clone -b master https://github.com/DerrickWood/kraken2 /lib/kraken2" ]
 RUN [ "/bin/bash", "-c", "git clone -b master https://github.com/jenniferlu717/Bracken /lib/bracken" ]
 RUN [ "/bin/bash", "-c", "git clone -b master https://github.com/ThieleLAB/mars-pipeline /lib/mars" ]
-#RUN [ "/bin/bash", "-c", "git clone -b master https://github.com/Unsaif/mars-pipeline /lib/mars" ]
-#RUN [ "/bin/bash", "-c", "git clone -b main https://github.com/TheWileyB/mars-pipeline_offline /lib/mars" ]
-#git clone -b main https://github.com/apcamargo/pycoverm
-#git clone -b master https://github.com/rust-bio/rust-htslib && cd rust-htslib/ && cargo build && apt install libclang-dev
-#git clone -b master https://github.com/
-#RUN git config --global --add safe.directory /usr/lib/vamb
 # For all users and all repositories
 RUN git config --system --add safe.directory '*'
 #----------------------------------------------------------------------------------------
@@ -238,7 +204,6 @@ micromamba config append channels conda-forge && \
 micromamba config append channels bioconda && \
 micromamba config remove channels defaults && \
 micromamba config set channel_priority flexible && \
-#RUN micromamba install --yes --name base conda-forge::conda-libmamba-solver conda-forge::libmamba conda-forge::libmambapy conda-forge::libarchive
 micromamba create --yes --file /tmp/env_s1_kneaddata.yml && \
 micromamba create --yes --file /tmp/env_s4_kraken.yml && \
 micromamba create --yes --file /tmp/env_util_seqkit.yml && \
@@ -246,7 +211,6 @@ micromamba create --yes --file /tmp/env_util_taxonkit.yml && \
 micromamba create --yes --file /tmp/env_util_enasearch.yml && \
 micromamba create --yes --file /tmp/env_util_mars.yml && \
 micromamba clean --all --yes
-#micromamba create --yes --name env_util_sratool -c conda-forge -c bioconda sra-tools && micromamba clean --all --yes
 # Move git executables to respective env
 USER root
 RUN [ "/bin/bash", "-c", "mv /lib/kraken2 /opt/conda/envs/env_s4_kraken/lib/" ]
@@ -266,7 +230,6 @@ RUN sed -i 's/data\/warehouse/portal\/api/' /opt/conda/envs/env_util_enasearch/l
 # Initialise mamba env
 ARG MAMBA_DOCKERFILE_ACTIVATE=1
 USER root
-
 # Kraken build fix for linux 
 RUN micromamba install --yes --name env_s4_kraken kraken2 -c bioconda -c conda-forge
 #----------------------------------------------------------------------------------------

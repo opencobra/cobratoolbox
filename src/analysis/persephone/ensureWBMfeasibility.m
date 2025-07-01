@@ -41,6 +41,9 @@ function [dietInfo, dietGrowthStats] = ensureWBMfeasibility(mWBMPath, varargin)
 %
 % Authors:  
 %   - Tim Hensen, 2024
+%   - Bram Nap, 07-2025 remove parfor functionality. Time save is not
+%   massive and allows the function to be used for other purposes besides
+%   Persephone.
 
 % Define default parameters if not defined
 parser = inputParser();
@@ -59,7 +62,6 @@ Diet = parser.Results.Diet;
 solver = parser.Results.solver;
 numWorkers = parser.Results.numWorkers;
 
-
 % Initialise cobratoolbox if needed
 global CBT_LP_SOLVER
 if isempty(CBT_LP_SOLVER)
@@ -69,16 +71,17 @@ end
 % Set solver 
 changeCobraSolver(solver,'LP');
 
-% Set parellel pool
-if numWorkers > 1
-    poolobj = gcp('nocreate');
-    if isempty(poolobj)
-        parpool(numWorkers)
-    else
-        delete(poolobj);
-        parpool(numWorkers);
-    end
-end
+% % Set parellel pool - Commented out to remove parfor functionality in the
+% code.
+% if numWorkers > 0
+%     poolobj = gcp('nocreate');
+%     if isempty(poolobj)
+%         parpool(numWorkers)
+%     else
+%         delete(poolobj);
+%         parpool(numWorkers);
+%     end
+% end
 
 %% STEP 1: Test which models are feasible on the given diet
 disp('EnsureGrowthOnDiet -- STEP 1: Test which models are feasible on the given diet')
@@ -94,14 +97,14 @@ modelNames = string(erase(modDir.mat,'.mat'));
 % times. 
 checkWbmFormat(paths);
 
-% Save environment to variable for parallel computing
-environment = getEnvironment();
+% % Save environment to variable for parallel computing
+% environment = getEnvironment();
 
 % Load WBMs and record feasibility to grow on the given diet
 feasibleOnDiet = zeros(length(paths),1);
 solverStatus = zeros(length(paths),1);
-parfor i=1:length(paths)
-    restoreEnvironment(environment);
+for i=1:length(paths) % This used to be a parfor
+    % restoreEnvironment(environment);
     changeCobraSolver(solver, 'LP', 0, -1);
 
     % Load model
@@ -178,10 +181,10 @@ if allModelsFeasible == false
 
     % Test if the infeasible models would be feasible with all dietary inputs given
     feasibleOnAnyDiet = zeros(length(infeasibleModelPaths),1);
-    parfor i = 1:length(infeasibleModelPaths)
+    for i = 1:length(infeasibleModelPaths) % This used to be parfor
 
-        % Load environment variables and set solver
-        restoreEnvironment(environment);
+        % % Load environment variables and set solver
+        % restoreEnvironment(environment);
         changeCobraSolver(solver, 'LP', 0, -1);
 
         % Load WBM
@@ -305,11 +308,12 @@ if allModelsFeasible == false && modelsInfeasibleOnAnyDiet == false && allModels
         dietRxnIdx = contains(model.rxns,'Diet_EX_') & model.lb<0;
 
         % Save diet information for function output
-        if i == length(paths)
-            originalDiet = table(...
+        originalDiet = table(...
             model.rxns(dietRxnIdx),model.lb(dietRxnIdx), model.ub(dietRxnIdx),...
             'VariableNames',{'Diet reactions','Lower flux bound','Upper flux bound'}); 
-        end
+
+        % Save original diet in model
+        model.SetupInfo.originalDiet = originalDiet;
 
         % Set the upper bound of all diet reactions to zero
         model.ub(dietRxnIdx) = 0;
@@ -382,6 +386,10 @@ if allModelsFeasible == false && modelsInfeasibleOnAnyDiet == false && allModels
     dietGrowthStats.("Infeasible on updated diet (true/false)")(~feasibleOnDiet) = ~feasibleOnUpdatedDiet;
 end
 writetable(dietGrowthStats,[mWBMPath filesep 'dietGrowthStats.xlsx']);
+writecell(dietInfo.updatedDiet,[mWBMPath filesep 'dietGrowthStats.xlsx'],'Sheet','Updated_diet');
+writecell(missingDietComponents,[mWBMPath filesep 'dietGrowthStats.xlsx'],'Sheet','Added_diet_metabolites');
+
+
 end
 
 function convertedModels = checkWbmFormat(paths)
@@ -435,7 +443,10 @@ function model_out = setupWbmOnDiet(model_in, Diet)
 % Parameterise microbiome-WBMs and give user specified diet
 
 % Set diet
-model_in = setDietConstraints(model_in,Diet, 1);
+if ~isfield(model_in.SetupInfo, 'dietName')
+    disp('set default diet')
+    model_in = setDietConstraints(model_in,Diet, 1);
+end
     
 % enforce microbial growth (i.e., microbal fecal excretion)
 model_in = changeRxnBounds(model_in, 'Excretion_EX_microbiota_LI_biomass[fe]', 1, 'b');

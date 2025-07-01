@@ -1,7 +1,0 @@
-name: env_s3_minimap2
-channels:
-- bioconda
-- conda-forge
-dependencies:
-  - minimap2
-  - samtools

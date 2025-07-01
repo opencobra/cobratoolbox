@@ -224,7 +224,7 @@ if strcmp(accessSolution,'dontAccess')
         case {'DUAL_INFEASIBLE_CER','MSK_SOL_STA_DUAL_INFEAS_CER','MSK_SOL_STA_NEAR_DUAL_INFEAS_CER'}
             stat=2; % Unbounded solution
             origStat = [origStat ' & ' res.rcodestr];
-        case {'UNKNOWN','PRIM_ILLPOSED_CER','DUAL_ILLPOSED_CER','PRIM_FEAS','DUAL_FEAS','PRIM_AND_DUAL_FEAS','DUAL_FEASIBLE'}
+        case {'UNKNOWN','PRIM_ILLPOSED_CER','PRIMAL_ILLPOSED_CER','DUAL_ILLPOSED_CER','PRIM_FEAS','DUAL_FEAS','PRIM_AND_DUAL_FEAS','DUAL_FEASIBLE'}
             stat=-1; %some other problem
             origStat = [origStat ' & ' res.rcodestr];
         otherwise

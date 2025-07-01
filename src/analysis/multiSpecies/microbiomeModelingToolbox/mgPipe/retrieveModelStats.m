@@ -159,6 +159,13 @@ else
             statistics{i+1,5}=stats.zval;
             
         elseif length(groups)>2
+            
+            group = {};
+            for j=1:size(modelList,2)
+                if ~isempty(find(strcmp(infoFile(:,1),modelList{1,j})))
+                    group{j,1}=infoFile{find(strcmp(infoFile(:,1),modelList{1,j})),2};
+                end
+            end
             % use Kruskal Wallis test
             [p,ANOVATAB] = kruskalwallis(dataAll,group);
             close all

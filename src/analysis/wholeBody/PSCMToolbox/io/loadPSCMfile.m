@@ -85,8 +85,10 @@ end
 % Load WBMs in the COBRA v3 format
 try % Try to load WBM
     model = load(nameOfWBM);
-    % Loading the model in a variable makes it nested. Unnest variable
-    model = model.(string(fieldnames(model)));
+    if isscalar(fieldnames(model))
+        % Loading the model in a variable might make it nested. Unnest variable
+        model = model.(string(fieldnames(model)));
+    end
 catch ME
     disp(ME.message)
     warning('Could not load file. Now trying to load using readCbModel')
@@ -131,66 +133,71 @@ function nameOfWBM = findLatestWBM(filename, searchDirectory, excludeVersion)
 % Author: 
 %         - Tim Hensen, August 2024
 
-% global useSolveCobraLPCPLEX
-% useSolveCobraLPCPLEX
+if isempty(searchDirectory)
+    searchDirectory = what(['2020_WholeBodyModelling' filesep 'Data']).path;
+end
 
-useReadCbModel = 0;
-switch fileName
-    case 'Harvey'
-        if useSolveCobraLPCPLEX
-            %COBRA v2 format
-            load Harvey_1_01c
-            
-            male.subSystems(strmatch('Transport, endoplasmic reticular',male.subSystems,'exact'))={'Transport, endoplasmic reticulum'};
-            male.subSystems(strmatch('Arginine and Proline Metabolism',male.subSystems,'exact'))={'Arginine and proline Metabolism'};
-            male.subSystems(strmatch(' ',male.subSystems,'exact'))={'Miscellaneous'};
-            
-            if 1
-                %convert to v3 format except for coupling constraints
-                male   = convertOldStyleModel(male,0,0);
-            end
-        else
-            if useReadCbModel
-                male = readCbModel('Harvey_1_03c', 'fileType','Matlab', 'modelName', 'male');
-            else
-                %COBRA v3 format
-                %load Harvey_1_02c
-                try
-                    load Harvey_1_03d
-                catch
-                    load Harvey_1_03c
-                end
-            end
-        end
-        if isfield(male,'gender')
-            male.sex = male.gender;
-            male = rmfield(male,'gender');
-        else
-            male.sex = 'male';
-        end
-        if isfield(male,'rxnGeneMat')
-            male = rmfield(male,'rxnGeneMat');
-        end
-        variable = male;
-    case 'Harvetta'
-        if useSolveCobraLPCPLEX
-            %COBRA v2 format
-            try
-                load Harvetta_1_01d
-            catch
-                load Harvetta_1_01c
-            end
-            female.subSystems(strmatch('Transport, endoplasmic reticular',female.subSystems,'exact'))={'Transport, endoplasmic reticulum'};
-            female.subSystems(strmatch('Arginine and Proline Metabolism',female.subSystems,'exact'))={'Arginine and proline Metabolism'};
-            female.subSystems(strmatch(' ',female.subSystems,'exact'))={'Miscellaneous'};
-            
-            if 1
-                %convert to v3 format except for coupling constraints
-                female = convertOldStyleModel(female,0,0);
-            end
-        else
-            if useReadCbModel
-                female = readCbModel('Harvetta_1_03c', 'fileType','Matlab', 'modelName', 'male');
+if nargin<3
+    excludeVersion = '';
+end
+
+% Find latest harvery/harvetta models
+WBMs = what(searchDirectory).mat;
+
+% Check if any WBMs can be found
+if isempty(WBMs)
+    error('No WBM .mat files found in folder.')
+end
+
+% Remove .mat
+WBMs = erase(WBMs,'.mat');
+
+% Exclude WBMs if needed
+if ~isempty(excludeVersion)
+    WBMs(excludeVersion)=[];
+end
+
+% Filter on Harvey or Harvetta
+WBMs(~contains(WBMs,filename))=[];
+
+% Find version numbers in reconstruction names
+modelNumbers = regexp(WBMs,'[0-9]','match');
+
+% Produce 2 column numerical array with the major version in the first
+% column and the minor version in the second column.
+modelNumbers = string(vertcat(modelNumbers{:}));
+modelNumbers = str2double(horzcat(modelNumbers(:,1), strcat(modelNumbers(:,2), modelNumbers(:,3))));
+
+% Add the version letter
+letterVersions = string(regexp(WBMs,'(?<=\d)[a-zA-Z]','match'));
+% Convert lettes to numbers using ascii table
+modelNumbers = [modelNumbers double(char(letterVersions))-96]; % https://www.asciitable.com/
+
+% Find latest version
+checkLatest = @(x) max(x) == x;
+
+% Find versions with the latest major release
+latestMajor = checkLatest(modelNumbers(:,1));
+if sum(latestMajor)==1
+    % Select model if only one entry has the highest major release
+    nameOfWBM = WBMs(latestMajor);
+else
+    % Remove all entries without the latest major release
+    modelNumbers(~latestMajor,:)=[];
+    WBMs(~latestMajor)=[];
+    % Find entries with the latest minor release
+    latestMinor = checkLatest(modelNumbers(:,2));
+    if sum(latestMinor)==1
+            % Select model if only one entry has the highest major release
+            nameOfWBM = WBMs(latestMinor);
+    else
+            % Remove all entries without the latest minor release
+            modelNumbers(~latestMinor,:)=[];
+            WBMs(~latestMinor)=[];
+            % Find entries with the latest letter release
+            latestLetter = checkLatest(modelNumbers(:,3));
+            if sum(latestLetter)==1
+                nameOfWBM = WBMs(latestLetter);
             else
                 error('No single latest model could be found')
             end
@@ -228,8 +235,10 @@ else
     model = load(fileName);
 end
 
-% Unnest variable
-model = model.(string(fieldnames(model)));
+if isscalar(fieldnames(model))
+    % Loading the model in a variable might make it nested. Unnest variable
+    model = model.(string(fieldnames(model)));
+end
 
 % Change subsystem names
 model.subSystems(strmatch('Transport, endoplasmic reticular',model.subSystems,'exact'))={'Transport, endoplasmic reticulum'};

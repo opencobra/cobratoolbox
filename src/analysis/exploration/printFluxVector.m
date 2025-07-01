@@ -73,8 +73,18 @@ if formulaFlag
     if nonZeroFlag
         %only generate the formulas for the nonzero entries
         labels(bool,end+1) = printRxnFormula(model, labels(bool,1), false, false);
+        labels = cellfun(@(x) string(x), labels, 'UniformOutput', false);
+        col = reshape(string([labels{:,end}]), [], 1);
+        col = pad(col);
+        % Convert padded string array back to cell array for assignment
+        labels(:,end) = cellstr(col);
     else
         labels(:,end+1) = printRxnFormula(model, labels, false, false);
+        labels = cellfun(@(x) string(x), labels, 'UniformOutput', false);
+        col = reshape(string([labels{:,end}]), [], 1);
+        col = pad(col);
+        % Convert padded string array back to cell array for assignment
+        labels(:,end) = cellstr(col);
     end
 end
 
@@ -83,6 +93,11 @@ if gprFlag
     if nonZeroFlag
         %only generate the gprs for the nonzero entries
         labels(bool,end+1) = model.grRules(bool);
+        labels = cellfun(@(x) string(x), labels, 'UniformOutput', false);
+        col = reshape(string([labels{:,end}]), [], 1);
+        col = pad(col);
+        % Convert padded string array back to cell array for assignment
+        labels(:,end) = cellstr(col);
     else
         labels = [labels, model.grRules];
     end

@@ -3,7 +3,8 @@
 # Title: mama script: take run commands, est db link, run stepgen
 # Program by: Wiley Barton - 2022.02.27
 # Modified for conda/docker pipeline - 2024.02.22
-# last update - 2025.01.30
+# Version for Persephone
+# last update - 2025.05.13
 # Modified code sources:
 #   https://stackoverflow.com/questions/2043453/executing-multi-line-statements-in-the-one-line-command-line
 # Notes: generate bash files according to user input for the completion of pipeline
@@ -36,6 +37,7 @@
 #  flesh out func_demo to build complete demo run within /DB/DEPO_demo
 #  auto compile file list from input dir in absence of provided list
 #  expand splash to include system params: cpu, mem, du of key directories
+# implement pv for progress bar... tar -I pigz -xvf stuff.tar.gz | pv
 #refs
 # prodigal:https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-11-119#citeas
 # https://www.cyberciti.biz/tips/bash-shell-parameter-substitution-2.html
@@ -53,6 +55,8 @@ var_rep_len=${#var_rep_ary[@]}
 #size check -db
 v_vol_real=$(du -bs $v_dir_db | cut -f1 )
 v_vol_none=60000
+#system max cpu
+v_sys_mem=$(nproc)
 v_scrp_check=0
 #var_rep_ary[var_rep_len]='x/y/z/cat'*'.kitty'
 #var_rep_out=${var_rep_ary[@]}
@@ -136,7 +140,7 @@ func_help () {
 	printf " -o OUTPUT: Directory to contain final output (/path/to/output)\n"
 	printf " -r BrANCH: Branch of pipeline to use, one of SR, MAG, ALL\n\t(default: SR)\n"
 	printf " -c COMMS : Commands applied to step\n"
-	printf " -s STEPS : Steps of pipeline to run with '0' complete run \n\t(steps=( $( eval echo {1..9} ) ))\n"
+	printf " -s STEPS : Steps of pipeline to run with '0' complete run \n\t(alt. -s 2 -3)\n"
 	printf " -e HeAD  : Head of files, from first char to start of variable region\n"
 	printf "\tsample_01.fastq\n\t...\n\tsample_10.fastq\n\t^^^^^^^\n"
 	printf " -t TAIL  : File tail, ~extension, constant across all input\n"
@@ -1309,7 +1313,7 @@ if [[ ${v_scrp_check} -eq 1 ]];then
 					vopt_step=( $( eval echo {1..6} ) )
 				fi
 			else
-				vopt_step=${OPTARG}
+				vopt_step+=("$OPTARG")
 				vopt_part=1
 			fi
 			if ((vopt_dbug));then
@@ -1518,6 +1522,7 @@ if (( ${vopt_log} ));then
 		fi
 		printf 'Input file type: %s\n%s\n' "${vopt_file_type}" "${v_logblock1}" >> ${v_logfile}
 		# Check zip status - CRIT - extend to .tar files in dir
+		#	pot. just exclude .tar
 		vt_L=$( printf '%s\n' "${v_file_in_good[@]}" | grep -E "\.gz|gzip$" | wc -l )
 		vt_R='0'
 		if [[ ${vt_L} -gt ${vt_R} ]];then
@@ -1724,12 +1729,21 @@ for istep in "${vopt_step[@]}";do
 			vin_head=''
 			vin_tail=''
 		fi
+		# proc check - ensure that too many processes are not called
+		if [[ -z ${venv_proc_max} ]];then
+			venv_proc_max=$(( ${venv_cpu_max} / 2 ))
+		fi
+		if [[ $(printf %.0f $(echo "${venv_cpu_max} * ${venv_proc_max}" | bc -l)) -gt "${v_sys_mem}" ]];then
+			vt="${venv_proc_max}"
+			while [[ $(printf %.0f $(echo "${venv_cpu_max} * ${vt}" | bc -l)) -gt "${v_sys_mem}" ]];do
+				((vt--))
+				#printf 'in%s\n' "${vt}"
+			done
+			#printf 'out%s\n' "${vt}"
+			venv_proc_max="${vt}"
+		fi
 		if [[ ${vopt_com_log} -eq 0 ]];then
 			#insert as awk print block - ex: vopt_com='{ printf "--output-format tsv --output-basename %s",va_nID }'
-			#improve with adjustment to :--processes <1>
-			if [[ -z ${venv_proc_max} ]];then
-				venv_proc_max=$(( ${venv_cpu_max} / 2 ))
-			fi
 			vin_com='{ printf " --remove-intermediate-output --reference-db %s --threads %s --processes %s --max-memory %sg --trimmomatic /opt/conda/envs/env_s1_kneaddata/share/trimmomatic --reorder","'${vin_host_rm}'",'${venv_cpu_max}','${venv_proc_max}','${venv_mem_max}' }'
 		fi
 		#WORKING EX
@@ -1757,6 +1771,9 @@ for istep in "${vopt_step[@]}";do
 			v_drop_exit=${v_drop_exit}' '${vout_sX}/${v_drop_catch}
 		fi
 		# exit logging
+		# TODO more elaborate permissions transfer approach
+		# pot. grab user ID at start and set ownership directly
+		chmod -R +777 ${vout_sX}/*
 		v_print_size=$( du -sh ${vout_sX} | cut -f 1 )
 		v_print_count=$( find ${vout_sX} | wc -l )
 		printf 'Step product location:\t%s\nStep run script location:\t%s\nStep output size(disk use):\t%s\nStep output count(files):\t%s\n%s\n' \
@@ -1986,7 +2003,7 @@ for istep in "${vopt_step[@]}";do
 					v_k2mpa_out=${v_kjoin_out/out/mpa_out_RA}
 					cat ${v_kjoin_out/out/mpa_out} | cut --fields 2${v_bk_col_frac} > "${v_k2mpa_out}"
 					#drop col type for match with meta data
-					sed -i "1 s/_$v_match//" "${v_k2mpa_out}"
+					sed -i "1,1s/_$v_match//g" "${v_k2mpa_out}"
 					#counts
 					v_match='num'
 					v_bk_cols=( $( head ${v_kjoin_out/out/mpa_out} -n 1 ) )
@@ -2006,7 +2023,7 @@ for istep in "${vopt_step[@]}";do
 					v_k2mpa_out=${v_kjoin_out/out/mpa_out_RC}
 					cat ${v_kjoin_out/out/mpa_out} | cut --fields 2${v_bk_col_num} > "${v_k2mpa_out}"
 					#drop col type for match with meta data
-					sed -i "1 s/_$v_match//" "${v_k2mpa_out}"
+					sed -i "1,1s/_$v_match//g" "${v_k2mpa_out}"
 					#default mars input is now "${v_k2mpa_out}" = /DB/DEPO_proc/step2_kraken/KB_S_mpa_out_RC.txt
 					vout_sX=${vout_s2}
 					# step keep-clean
@@ -2016,10 +2033,13 @@ for istep in "${vopt_step[@]}";do
 						v_drop_catch='*_{k2,bracken}_*{.txt,.fastq}'
 						eval "rm ${vout_sX}/${v_drop_catch}" 2> /dev/null
 						#statment for final drop
-						v_drop_catch='KB_*.txt'
+						v_drop_catch='KB_S_{taxid,out,mpa_out}.txt'
 						v_drop_exit=${v_drop_exit}' '${vout_sX}/${v_drop_catch}
 					fi
 					# exit logging
+					# TODO more elaborate permissions transfer approach
+					# pot. grab user ID at start and set ownership directly
+					chmod -R +777 ${vout_sX}/*
 					v_print_size=$( du -sh ${vout_sX} | cut -f 1 )
 					v_print_count=$( find ${vout_sX} | wc -l  )
 					printf 'Step product location:\t%s\nStep run script location:\t%s\nStep output size(disk use):\t%s\nStep output count(files):\t%s\n%s\n' \
@@ -2204,6 +2224,9 @@ for istep in "${vopt_step[@]}";do
 					vout_s3=${vin_O_dir}/${v_exit_dir}
 					# exit logging
 					vout_sX=${vout_s3}
+					# TODO more elaborate permissions transfer approach
+					# pot. grab user ID at start and set ownership directly
+					chmod -R +777 ${vout_sX}/*
 					v_print_size=$( du -sh ${vout_sX} | cut -f 1 )
 					v_print_count=$( find ${vout_sX} | wc -l  )
 					printf 'Step product location:\t%s\nStep run script location:\t%s\nStep output size(disk use):\t%s\nStep output count(files):\t%s\n%s\n' \
@@ -2582,6 +2605,9 @@ if (( ${vopt_log} ));then
 	# Relocate taxonomy output
 	v_drop_catch='KB_S_mpa_out_{RC,RA}.txt'
 	eval "mv ${vout_s2}/${v_drop_catch} /home/seqc_user/seqc_project/final_reports/" 2> /dev/null
+	# TODO more elaborate permissions transfer approach
+	# pot. grab user ID at start and set ownership directly
+	chmod -R +777 /home/seqc_user/seqc_project/final_reports
 fi
 if (( ${vopt_log} ));then
 	printf 'SeqC Stuff ENDS @: %s\n' "$(date +"%Y.%m.%d %H.%M.%S (%Z)")"
@@ -2665,7 +2691,7 @@ if [[ ${v_scrp_check} -eq 0 ]];then
 	#startup splash - ascii gen from: https://patorjk.com/software/taag, standard,slant,alpha,isometric1,impossible
 	#https://medium.com/@Frozenashes/making-a-custom-startup-message-for-a-linux-shell-using-bashrc-and-bash-scripting-280268fdaa17
 	func_splash() {
-  	#if null create
+	#if null create
 		if [[ -z "${VEN_SPLASH}" ]]; then
 			echo "VEN_SPLASH="\"1\" >> /etc/environment
 			echo "export VEN_SPLASH=1" >>  /root/.bashrc
@@ -2701,7 +2727,7 @@ if [[ ${v_scrp_check} -eq 0 ]];then
   ___\:::\   \:::\    \/::::::\   \:::\    \/:::/    / \:::\    \/:::/    / \:::\    \
  /\   \:::\   \:::\____\::/\:::\   \:::\____\::/____/   \:::\____\::/    /   \:::\____\
 /::\   \:::\   \::/    /:/__\:::\   \::/    /:|    |    |:::|    |::____/     \::/    /
-\:::\   \:::\   \/____/::\   \:::\   \/____/::|____|    |:::|____/::\    \     \/____/
+\:::\   \:::\   \/____/::\   \:::\   \/____/::|____|    |:::|____|::\    \     \/____/
  \:::\   \:::\____\   \:::\   \:::\____\   |:::\   _\___/:::/    /:::\    \
   \:::\  /:::/    /    \:::\   \::/    /    \:::\ |::| /:::/    / \:::\    \
    \:::\/:::/    /______\:::\   \/____/______\:::\|::|/:::/    /___\:::\    \    _____    _____       ______

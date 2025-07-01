@@ -112,11 +112,11 @@ validateattributes(fluxAnalysisPath, {'char', 'string'}, {'nonempty'}, mfilename
 
 % Set default parameter values for if fields in paramFluxProcessing are
 % missing.
-defaultParams = struct(...
-    'NumericalRounding', 1e-6, ...
-    'RxnRemovalCutoff', {'fraction', 0.1}, ...
-    'RxnEquivalenceThreshold', 0.999, ...
-    'fluxMicrobeCorrelationMetric', 'regression_r2');
+defaultParams=struct;
+defaultParams.numericalRounding = 1e-6;
+defaultParams.rxnRemovalCutoff = {'fraction', 0.1};
+defaultParams.rxnEquivalenceThreshold = 0.999;
+defaultParams.fluxMicrobeCorrelationMetric = 'spearman_rho';
 
 % Check if all fields in paramFluxProcessing are present. Add fields with
 % default values if one or more fields are not present. 
@@ -126,37 +126,13 @@ for i = 1:length(fieldPresent)
     paramFluxProcessing.(defaultFields(fieldPresent(i))) = defaultParams.(defaultFields(fieldPresent(i)));
 end
 
-% Calculate the rounding factor based on the NumericalRounding cutoff
+% Find the number of digits right of the decimal point to round the flux
+% values. 
 fluxCutoff = paramFluxProcessing.numericalRounding;
-fluxCutoffString = num2str(fluxCutoff, '%.20f');
-roundingFactor = find(fluxCutoffString ~= '0' & fluxCutoffString ~= '.', 1) - 2;
 
-% Convert the threshold for when a metabolite should be removed from any
-% further analysis, e.g., 90% of samples.
-% rxnRemovalThreshold = (1-thresholds(2)) * 100; 
-% rxnRemovalThreshold = paramFluxProcessing.rxnRemovalCutoff;
-
-% Convert threshold for for when a microbial species should be removed from 
-% further analysis, e.g., 90% of samples.
-% microbeCutoff = (1-thresholds(3)) * 100;
-% microbeCutoff = rxnRemovalThreshold;
-
-% Set threshold for when multiple reactions are linearly dependent to each
-% other. 
-
-% Set optional threshold for the minimum standard deviation before removing
-% the reaction.
-% if length(thresholds)==5
-%     SD_threshold = thresholds(5);
-% else
-%     SD_threshold = 0;
-% end
-
-% if length(thresholds)==6
-%     performSpearmanCorrelations = thresholds(6);
-% else
-%     performSpearmanCorrelations = 0;
-% end
+% Convert the cutoff value to a string in scientific notation; then extract
+% the last character and convert that character back to a numerical type. 
+paramFluxProcessing.roundingFactor  = double(regexp(string(num2str(fluxCutoff,'%g')),'.$','match'));
 
 %% PART 1: Load FBA solutions 
 disp('PART 1: Load the flux solutions')
@@ -206,11 +182,8 @@ for i = 1:length(solPaths)
     % Add flux data to table
     solution.f(dupIDX)=[];
 
-    % Set all fluxes with absolute values lower than the cutoff to zero.
-    % solution.f(abs(solution.f)<fluxCutoff)=0;
-
     % Round the fluxes bases on the user defined 
-    solution.f = round(solution.f,roundingFactor);
+    solution.f = round(solution.f,paramFluxProcessing.roundingFactor);
 
     % Store fluxes in table
     fluxes{i,:} = solution.f;
@@ -257,7 +230,7 @@ if ~isempty(modelSP) % Only run this section if microbiome personalised results 
 
     % Find the microbe biomass shadow prices for each optimised reaction
     % and produce summary statistics
-    [microbiomeContributions, microbesContributed, modelsInfluenced, microbeInfluenceStats, wbmRelativeAbundances] = extractMicrobeContributions(modelSP,rxnNames,fluxAnalysisPath,roundingFactor);
+    [microbesContributed, modelsInfluenced, microbeInfluenceStats, wbmRelativeAbundances] = extractMicrobeContributions(modelSP,rxnNames,fluxAnalysisPath,paramFluxProcessing.roundingFactor);
 
 else 
     disp('SKIP PART 2: Obtain the shadow prices of microbe biomass for each reaction')
@@ -282,21 +255,11 @@ fluxesPruned = stats.Fluxes_removed_reactions; % Host-microbiome fluxes with rem
 
 %% PART 5: Find correlations between the fluxes and relative microbe abundances (Microbiome only)
 
-% Remove germ free models
-% modelSP(endsWith(string(modelSP(:,1)),'_GF'),:) = [];
-
 if ~isempty(modelSP) % Only run this section if microbiome personalised results are included
     disp('PART 5: Correlate the predicted fluxes with the relative microbe abundances ')
-
-    % Set function parameters
-    % parameters = struct;
-    % parameters.microbeCutoff = paramFluxProcessing;
-    paramFluxProcessing.roundingFactor = roundingFactor;
-    % parameters.performSpearmanCorrelations = performSpearmanCorrelations;
-
     % Correlate fluxes with the relative abundances and the microbial
     % metabolic influence values
-    [fluxMicrobeCorr, fluxMicrobeInfluenceCorr]= correlateFluxesAgainstMicrobes(fluxes, modelSP, paramFluxProcessing);
+    fluxMicrobeCorr= correlateFluxesAgainstMicrobes(fluxes, modelSP, paramFluxProcessing);
 else
     disp('Skipped PART 5: Correlate the predicted fluxes with the relative microbe abundances ')
 end
@@ -305,13 +268,13 @@ end
 disp('PART 6: Collect all results')
 
 % Create index sheet for saved results
-sheetNumbers = 16;
+sheetNumbers = 13;
 tableNames = append("Table ",string(1:sheetNumbers)');
 indexTable = table(tableNames,string(zeros(sheetNumbers,1)),'VariableNames',{'Table','Descriptions'});
 
 i=1;
 indexTable.Descriptions(i) = 'FBA solver statistics'; i=i+1;
-indexTable.Descriptions(i) = 'FBA original solver statistics'; i=i+1;
+% indexTable.Descriptions(i) = 'FBA original solver statistics'; i=i+1;
 indexTable.Descriptions(i) = 'Distribution statistics of fluxes across samples'; i=i+1;
 indexTable.Descriptions(i) = 'Predicted fluxes'; i=i+1;
 indexTable.Descriptions(i) = 'Predicted fluxes with removed reactions'; i=i+1;
@@ -323,15 +286,13 @@ indexTable.Descriptions(i) = 'Scaled fluxes with removed reactions and grouped m
 if ~isempty(modelSP) % Only produce these tables if HM models were investigated
 
     % shadow price analysis results
-    indexTable.Descriptions(i) = 'EXPERIMENTAL: Potential microbiome metabolic flux contributions'; i=i+1; % Microbiome only
-    indexTable.Descriptions(i) = 'EXPERIMENTAL: Number of potential flux limiting taxa per sample'; i=i+1; % Microbiome only
-    indexTable.Descriptions(i) = 'EXPERIMENTAL: Number of samples containing potential flux limiting taxon'; i=i+1; % Microbiome only
-    indexTable.Descriptions(i) = 'EXPERIMENTAL: Summary statistics for potential flux limiting taxa'; i=i+1; % Microbiome only
+    indexTable.Descriptions(i) = 'Number of potential flux limiting taxa per sample'; i=i+1; % Microbiome only
+    indexTable.Descriptions(i) = 'Number of samples containing potential flux limiting taxon'; i=i+1; % Microbiome only
+    indexTable.Descriptions(i) = 'Summary statistics for potential flux limiting taxa'; i=i+1; % Microbiome only
     indexTable.Descriptions(i) = 'Microbial species relative abundances in WBMs'; i=i+1; % Microbiome only
 
     % Flux microbe correlation results
     indexTable.Descriptions(i) = 'Flux - taxon relative abundance correlations'; i=i+1;% Microbiome only
-    indexTable.Descriptions(i) = 'EXPERIMENTAL: Correlations on Fluxes vs potential microbial metabolic contributions'; % Microbiome only
 end
 
 % Add index table to results structure
@@ -341,7 +302,7 @@ FBA_results.Index = indexTable;
 % Add FBA statistics
 N=1; 
 FBA_results.(strcat("Table_",string(N))) = fbaStats; N = N+1; % Increment table number
-FBA_results.(strcat("Table_",string(N))) = fbaOrigStats; N = N+1; % Increment table number
+% FBA_results.(strcat("Table_",string(N))) = fbaOrigStats; N = N+1; % Increment table number
 
 % Add results from the flux summary analysis
 FBA_results.(strcat("Table_",string(N))) = stats.Flux_summary_statistics; N = N+1; % Increment table number
@@ -355,7 +316,6 @@ FBA_results.(strcat("Table_",string(N))) = reactionGroups; N = N+1; % Increment 
 FBA_results.(strcat("Table_",string(N))) = fluxesGrouped; N = N+1; % Increment table number
 
 % Add results from the shadow price analysis (Microbiome only)
-FBA_results.(strcat("Table_",string(N))) = microbiomeContributions; N = N+1; % Increment table number
 FBA_results.(strcat("Table_",string(N))) = microbesContributed; N = N+1; % Increment table number
 FBA_results.(strcat("Table_",string(N))) = modelsInfluenced; N = N+1; % Increment table number
 FBA_results.(strcat("Table_",string(N))) = microbeInfluenceStats; N = N+1; % Increment table number
@@ -363,7 +323,6 @@ FBA_results.(strcat("Table_",string(N))) = wbmRelativeAbundances; N = N+1; % Inc
 
 % Add results from the flux-microbe correlation function (Microbiome only)
 FBA_results.(strcat("Table_",string(N))) = fluxMicrobeCorr; N = N+1; % Increment table number
-FBA_results.(strcat("Table_",string(N))) = fluxMicrobeInfluenceCorr; N = N+1; % Increment table number
 
 %% PART 7: Save all results
 disp('PART 7: Save all results to "flux_results.xlsx"')
@@ -403,7 +362,7 @@ pathsToFilesForStatistics = [string(pathToFluxResults); string(WBMmicrobiomePath
 
 end
 
-function [microbiomeContributions, microbesContributed, modelsInfluenced, microbeInfluenceStats, relativeAbundances] = extractMicrobeContributions(modelSP,rxnNames,fluxAnalysisPath,roundingFactor)
+function [microbesContributed, modelsInfluenced, microbeInfluenceStats, relativeAbundances] = extractMicrobeContributions(modelSP,rxnNames,fluxAnalysisPath,roundingFactor)
 % Function for processing and saving the species biomass[c] shadow prices.
 % M x n tables of the species biomass shadow prices are generated for each
 % m samples and n microbial species. These tables are generated for each
@@ -452,86 +411,28 @@ allSpecies = unique(vertcat(modelSP{:,2}));
 % reaction names in the z dimension.
 [biomShadowPrices, relativeAbundances] = extractMicroWbmSpAndRa(allSpecies, modelSP);
 
-% Preallocate array with relative abundances
-relAbun = table2array(relativeAbundances);
-
-
-%%% Calculate the total gut microbiome flux contributions %%%
-
-% The biomass shadow prices represent the incremental change in  the flux 
-% result (fba.f) when incrementally changing a constraining exchange flux
-% for a metabolite (Palsson, 2015, chapter 18), pi = -1 * dZ / dB, with pi
-% being the shadow price, dZ being the change in the objective function
-% solution in mmol/person/day, and dB being the change in metabolite abundance. The
-% relationship between dZ and dB is reversed to reflect that dB>0 implies
-% an increase in consumption through an exchange reaction 
-% (Palsson, 2015, chapter 18). However, to find the practical relationship
-% between metabolite abundance B and objective function Z, reversal of
-% their relationship is not needed. Thus, to find the relationship between
-% microbial growth of a pan model and fba.f, pi_inv = dZ / dB can be used. 
-%
-% In (host) microbiome models, the flux through the pan biomass reactions, 
-% i.e., microbial growth, or the predicted abundance of biomass metabolite
-% B, is scaled with the relative abundance of the pan model to ensure 
-% proportional microbial growth in the microbiota compartment. This property 
-% of pan biomass metabolites can be used to obtain gut microbial
-% importances to the flux results. 
-% 
-% Given dZ / dB > 0 and a relative abundance, RA_0 = 0, a microbe cannot grow
-% and thus will not contribute to Z, resulting in Z_0. If RA_0 would be 
-% increased to any non-zero number between zero and one, RA_1 the pan model 
-% will contribute to Z, resulting in Z_1. The change in flux, 
-% dZ = Z_1 - Z_0 can be attributed to a change in relative abundance,
-% dRA = RA_1 - RA_0. As the relative abundance of a microbe, is encoded as
-% the proportional microbial growth, or proportional production of pan
-% biomass compounds, dRA represents dB for the pan biomass compound. With 
-% dRA being equivalent to dB for pan biomass metabolites, the change in 
-% flux dZ, can be calculated by dZ = pi_inv * dB or dZ = pi_inv * dRA. To
-% summarise, the gut microbial contribution in mmol/person/day of a pan
-% model can be calculated by multiplying the shadow price value by its
-% relative abundance. 
-
-% Calculate flux contributions
-contributions = (-1* biomShadowPrices) .* relAbun;
-
-% Set all flux contributions below threshol to zero
-contributions = round(contributions,roundingFactor);
+% Set all microbe biomass shadow prices below threshold to zero
+biomShadowPrices = round(biomShadowPrices,roundingFactor);
 
 % Set all zeros to nan 
-contributions(contributions==0) = nan;
-
-
-%%% Find the total microbiome contributions %%% 
-
-% Obtain total microbial component of the fluxes
-microbiomeContributions = reshape(sum(contributions,2,'omitnan'),size(biomShadowPrices,[1 3])); 
-
-% Add the total microbiome influence scores to the contributions variable
-contributions(:,end+1,:) = microbiomeContributions;
-
-% Add the total relative abundances to the relativeAbundances variable
-relativeAbundances.("Sum of taxa") = sum(relAbun,2,'omitnan');
-
-% Create table with the total microbiome contributions
-microbiomeContributions = array2table(microbiomeContributions,'RowNames',relativeAbundances.Properties.RowNames,'VariableNames',rxnNames);
-
+biomShadowPrices(biomShadowPrices==0) = nan;
 
 %%% Find the contributing taxa %%% 
 
 % Obtain the contributing microbes
-contributed = ~isnan(contributions);
+contributed = ~isnan(biomShadowPrices);
 
 % Find the number of microbes that contributed to the predicted flux
-microbesContributed = reshape(sum(contributed,2,'omitnan'),size(contributions,[1 3])); 
+microbesContributed = reshape(sum(contributed,2,'omitnan'),size(biomShadowPrices,[1 3])); 
 microbesContributed = array2table(microbesContributed,'RowNames',relativeAbundances.Properties.RowNames,'VariableNames',rxnNames);
 
 % Find the number of samples in which each microbe contributed to the flux
-modelsInfluenced = reshape(sum(contributed,1,'omitnan'),size(contributions,[2 3]));
+modelsInfluenced = reshape(sum(contributed,1,'omitnan'),size(biomShadowPrices,[2 3]));
 modelsInfluenced = array2table(modelsInfluenced,'RowNames',relativeAbundances.Properties.VariableNames,'VariableNames',rxnNames);
 
 % Find the total number of microbes that contributed to the fluxes across
 % the cohort.
-totalMicrobes = reshape(sum(any(contributed,1)),[size(contributions,3) 1]);
+totalMicrobes = reshape(sum(any(contributed,1)),[size(biomShadowPrices,3) 1]);
 
 
 %%% Prepare summary statistics table %%% 
@@ -560,20 +461,6 @@ for i=1:size(biomShadowPrices,3)
     shadowPriceTable = array2table(biomShadowPrices(:,:,i),'RowNames',string(modelSP(:,1)),'VariableNames',allSpecies');
     shadowPricePath = [shadowPriceDirectory filesep strcat(rxnNames{i},'.csv')];
     writetable(shadowPriceTable,shadowPricePath,'WriteRowNames',true);
-end
-
-% Create directory for writing csv files with metabolic influences
-influenceScoreDirectory = [fluxAnalysisPath filesep 'metabolic_influence_scores' filesep];
-if ~exist(influenceScoreDirectory,'dir')
-    mkdir(influenceScoreDirectory)
-end
-
-% Save tables with metabolic influence scores prices to directory
-allSpecies1 = [allSpecies; {'Sum of taxa'}];
-for i=1:size(contributions,3)
-    influenceScoreTable = array2table(contributions(:,:,i),'RowNames',string(modelSP(:,1)),'VariableNames',allSpecies1');
-    metabolicInfluencePath = [influenceScoreDirectory filesep strcat(rxnNames{i},'.csv')];
-    writetable(influenceScoreTable,metabolicInfluencePath,'WriteRowNames',true);
 end
 
 end
@@ -644,7 +531,7 @@ fluxesForStats(contains(fluxesForStats.Properties.RowNames,'sol_gf','IgnoreCase'
 % Preallocate table
 fluxesForStatsArray = table2array(fluxesForStats);
 % varNames = {'Reaction','No results','Duplicate fluxes','Duplicate fluxes (%)','Mean','Variance','Standard deviation','Skewness','Kurtosis','KS normality p-value','Removed'};
-varNames = {'Reaction','No results','Unique results','Mean','Variance','Standard deviation','Skewness','Kurtosis','KS normality p-value','Removed'};
+varNames = {'Reaction','No results','Unique results','Mean','Variance','Standard deviation','Removed'};
 
 fluxStats = table('Size',[size(fluxesForStatsArray,2),length(varNames)],'VariableTypes',[{'string'},repmat({'double'},1,length(varNames)-1)],'VariableNames',varNames);
 
@@ -677,22 +564,22 @@ fluxStats.Variance = var(fluxesForStatsArray,[],1,'omitnan')';
 fluxStats.("Standard deviation") = std(fluxesForStatsArray,[],1,'omitnan')';
 
 % Get distribution skewness
-fluxStats.Skewness = skewness(fluxesForStatsArray)';
-
-% Get distribution kurtosis
-fluxStats.Kurtosis = kurtosis(fluxesForStatsArray)';
+% fluxStats.Skewness = skewness(fluxesForStatsArray)';
+% 
+% % Get distribution kurtosis
+% fluxStats.Kurtosis = kurtosis(fluxesForStatsArray)';
 
 % Check normality using the ks-test
-pvals = nan(size(fluxesForStatsArray,2),1);
-for ii = 1:size(fluxesForStatsArray,2)
-    try % For some fluxes, there are not enough unique samples to perform the ks test. 
-        % If the ks test cannot be run, the next reaction will be
-        % investigated.
-        [~,pvals(ii)] = kstest(normalize(fluxesForStatsArray(:,ii)));
-    end
-end
-% Add p-values to the table
-fluxStats.("KS normality p-value") = pvals;
+% pvals = nan(size(fluxesForStatsArray,2),1);
+% for ii = 1:size(fluxesForStatsArray,2)
+%     try % For some fluxes, there are not enough unique samples to perform the ks test. 
+%         % If the ks test cannot be run, the next reaction will be
+%         % investigated.
+%         [~,pvals(ii)] = kstest(normalize(fluxesForStatsArray(:,ii)));
+%     end
+% end
+% % Add p-values to the table
+% fluxStats.("KS normality p-value") = pvals;
 
 
 %%% Remove metabolites based on user defined threshold value %%%
@@ -713,24 +600,6 @@ switch typeCutoff
         fluxStats.Removed = fluxStats.("Unique results") < cutoffValue;
 end
 
-% TO BE REMOVED
-% If the microbiome is present, remove metabolites based on the
-% microbiomeFluxContributions table. 
-% if microbiomePresent
-% 
-%     % Ensure the order is identical in the microbiomeFluxContributions and
-%     % fluxStats
-%     [~,~,ib] = intersect(fluxStats.Reaction,microbiomeFluxContributions.Properties.VariableNames,'stable');
-%     microbiomeFluxContributions = microbiomeFluxContributions(:,ib);
-% 
-%     % Find the number of samples where each microbe influenced the metabolite
-%     contributionBinary = table2array(microbiomeFluxContributions)~=0;
-%     fluxStats.contributed = any(contributionBinary)';
-% 
-%     fluxStats.contributedCount = sum(contributionBinary)';
-%     fluxStats.Removed = fluxStats.contributedCount < (size(contributionBinary,1)*(100 - rxnRemovalThreshold) / 100);
-% end
-
 % Remove reactions according to "fluxStats.Removed"
 fluxes_rm =fluxes;
 fluxes_rm(:,fluxStats.Removed') = [];
@@ -748,7 +617,6 @@ mWBMs = contains(sexInfo.ID,{'mWBM','miWBM'});
 iWBMs = contains(sexInfo.ID,'iWBM');
 
 if any(mWBMs) && ~any(iWBMs)
-%if calcGermFree && ~calcUnpersonalised
 
     % If only the microbiome is personalised - obtain the generic male and
     % female germ-free models and substract that from the male and female
@@ -767,7 +635,6 @@ if any(mWBMs) && ~any(iWBMs)
 end
 
 if ~any(mWBMs) && all(iWBMs)
-%elseif ~calcGermFree && calcUnpersonalised
 
     % If there is no microbiome and only human personalisation, substract
     % the values of Harvey and Harvetta from the respective flux values of
@@ -787,9 +654,6 @@ if ~any(mWBMs) && all(iWBMs)
 end
 
 if all(iWBMs) && any(mWBMs)
-%elseif calcGermFree && calcUnpersonalised
-
-    %%% NOTE TIM HENSEN, 27 September 2024. I do not understand this part. 
 
     % If both the microbiome and human are personalised, substract the
     % germfree values from the respective sample flux values.
@@ -806,8 +670,8 @@ if all(iWBMs) && any(mWBMs)
     % Add new rows with duplicate samples to the fluxes
     fluxesGF = [fluxesGF; fluxesGFDupl];
 
-    % Sort these rows in alphabetical order 
-    fluxesGF = sortrows(fluxesGF, 'RowNames');
+    % Initialise a storage table for the scaled fluxed
+    scaledFluxes = fluxes_rm;
 
     % Remove germ free fluxes from microbiome personalised fluxes
     scaledFluxes{:,:} = fluxes_rm{:,:} - fluxesGF{:,:};
@@ -932,13 +796,6 @@ stats.("Fluxes") = fluxes;
 stats.("Fluxes_removed_reactions") = fluxes_rm;
 stats.("Scaled_flux_summary_statistics") = scaledFluxStats;
 stats.("Scaled_fluxes") = scaledFluxes;
-
-% if ~isempty(fluxAnalysisPath)
-%     statsPath = [fluxAnalysisPath filesep 'flux_results.xlsx'];
-%     for i = 1:length(stats)
-%         writetable(stats{i},statsPath,'Sheet',strcat("Table ",string(i)))
-%     end
-% end
 
 end
 
@@ -1067,7 +924,7 @@ function [fluxMicrobeCorr,fluxMicrobeInfluenceCorr] = correlateFluxesAgainstMicr
 % samples, defined by the microbeCutoff variable. 
 %
 % USAGE:
-%       [fluxMicrobeCorr,fluxMicrobeInfluenceCorr] = correlateFluxesAgainstMicrobes(fluxes, microbiomeDir, modelSP, fluxAnalysisPath, microbeCutoff, roundingFactor)
+%       [fluxMicrobeCorr,fluxMicrobeInfluenceCorr] = correlateFluxesAgainstMicrobes(fluxes, microbiomeDir, modelSP, paramFluxProcessing)
 % 
 % INPUTS:
 % fluxes:                       M x n table with flux values for each reaction n and each sample m. 
@@ -1095,27 +952,6 @@ function [fluxMicrobeCorr,fluxMicrobeInfluenceCorr] = correlateFluxesAgainstMicr
 % .. Author:
 %       - Tim Hensen       July, 2024
 
-% Extract function parameters
-% setParams = fieldnames(parameters);
-% 
-% microbeCutoff = 90;
-% if any(matches(setParams,'microbeCutoff'))
-%     microbeCutoff = parameters.microbeCutoff;
-% end
-% 
-% roundingFactor = 6;
-% if any(matches(setParams,'roundingFactor'))
-%     roundingFactor = parameters.roundingFactor;
-% end
-% 
-% performSpearmanCorrelations = 0;
-% if any(matches(setParams,'performSpearmanCorrelations'))
-%     performSpearmanCorrelations = parameters.performSpearmanCorrelations;
-% end
-
-% Rescale the microbe presence cutoff
-% microbeCutoff = 1-(microbeCutoff/100);
-
 % Remove GF samples
 fluxes(contains(fluxes.Properties.RowNames,{'Harv','gf'}),:) = [];
 
@@ -1137,11 +973,11 @@ allSpecies = unique(vertcat(modelSP{:,2}));
 [biomShadowPrices, relativeAbundances] = extractMicroWbmSpAndRa(allSpecies, modelSP);
 %%
 % Preallocate array with relative abundances
-relAbun = table2array(relativeAbundances);
+% relAbun = table2array(relativeAbundances);
 
 % Calculate flux contributions (See extractMicrobeContributions for
 % explanation)
-contributions = (-1* biomShadowPrices) .* relAbun;
+contributions = biomShadowPrices;%(-1* biomShadowPrices) .* relAbun;
 
 % Set all flux contributions below threshol to zero
 contributions = round(contributions, paramFluxProcessing.roundingFactor);

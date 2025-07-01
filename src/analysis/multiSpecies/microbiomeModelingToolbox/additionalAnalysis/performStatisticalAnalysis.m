@@ -5,7 +5,7 @@ function [Statistics,significantFeatures] = performStatisticalAnalysis(sampleDat
 % cohort contains three or more groups, the Kruskal Wallis test is used.
 %
 % USAGE
-% [Statistics,significantFeatures] = performStatisticalAnalysis(sampleData,sampleInformation,stratification)
+% [Statistics,significantFeatures] = performStatisticalAnalysis(sampleData,sampleInformation,varargin)
 %
 % INPUTS
 % sampleData           Table with input data to analyze (e.g., fluxes) with
@@ -20,6 +20,9 @@ function [Statistics,significantFeatures] = performStatisticalAnalysis(sampleDat
 % groupTest            Decides whether Kruskal-Wallis test(default) or
 %                      ANOVA should be used for group comparisons.
 %                      Allowed inputs: "Kruskal-Wallis","ANOVA"
+% BHFDR                Defines whether Benjamini and Hochberg (true) or
+%                      Storey (false) procedure should be used for 
+%                      correction for multiple testing. Default=false.
 %
 % OUTPUTS
 % Statistics           Table with results of statistical tests for each
@@ -35,6 +38,7 @@ parser.addRequired('sampleData', @iscell);
 parser.addRequired('sampleInformation', @iscell);
 parser.addParameter('stratification', '', @ischar);
 parser.addParameter('groupTest', 'Kruskal-Wallis', @ischar);
+parser.addParameter('BHFDR', false, @islogical);
 
 parser.parse(sampleData, sampleInformation, varargin{:});
 
@@ -42,6 +46,7 @@ sampleData = parser.Results.sampleData;
 sampleInformation = parser.Results.sampleInformation;
 stratification = parser.Results.stratification;
 groupTest = parser.Results.groupTest;
+BHFDR = parser.Results.BHFDR;
 
 if ~any(strcmp(groupTest,{'Kruskal-Wallis','ANOVA'}))
     error('Wrong input for group test!')
@@ -177,8 +182,14 @@ end
 
 %% correct for false discovery (FDR) rate
 pAverages=cell2mat(Statistics(2:end,3));
-fdr = mafdr(pAverages,'BHFDR', true);
-Statistics(2:end,4)=num2cell(fdr);
+
+if BHFDR
+    fdr = mafdr(pAverages,'BHFDR', BHFDR);
+    Statistics(2:end,4)=num2cell(fdr);
+else
+    [fdr,q] = mafdr(pAverages,'BHFDR', BHFDR);
+    Statistics(2:end,4)=num2cell(q);
+end
 
 for i=2:size(Statistics,1)
     if Statistics{i,4} <0.05

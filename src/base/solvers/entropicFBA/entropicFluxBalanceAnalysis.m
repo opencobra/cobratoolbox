@@ -3,6 +3,7 @@ function [solution, modelOut] = entropicFluxBalanceAnalysis(model, param)
 % mass balance, optionally coupling constraints, optionally quadratic
 % penalisation of deviation from given fluxes.
 % 
+% 
 % minimize             g.*vf'*(log(vf) -1) + (cf + ci)'*vf 
 % vf,vr,w,x,x0       + g.*vr'*(log(vr) -1) + (cr - ci)'*vr
 %                    + f.*x' *(log(x)  -1) + u0'*x 
@@ -67,7 +68,10 @@ function [solution, modelOut] = entropicFluxBalanceAnalysis(model, param)
 %    model:             (the following fields are required - others can be supplied)
 %
 %          * S  - `m x (n + k)` Stoichiometric matrix
-%          * c  - `(n + k) x 1` Linear objective coefficients
+%          * c  - `(n + k) x 1` Linear objective coefficients, split into
+%                               internal and external as follows:
+%                  ci:   n x 1  linear objective coefficients corresponding to internal net fluxes
+%                  ce:   k x 1  linear objective coefficients corresponding to internal net fluxes
 %          * lb - `(n + k) x 1` Lower bounds on net flux
 %          * ub - `(n + k) x 1` Upper bounds on net flux
 %
@@ -167,7 +171,12 @@ if ~isfield(param,'solver')
 end
 
 if ~isfield(param,'entropicFBAMethod')
-    param.entropicFBAMethod='fluxes';
+    if isfield(param,'entropicMethod')
+        %forward compatibility
+        param.entropicFBAMethod=param.entropicMethod;
+    else
+        param.entropicFBAMethod='fluxes';
+    end
 end
 if ~isfield(param,'externalNetFluxBounds')
     param.externalNetFluxBounds='original';
@@ -220,7 +229,7 @@ B = model.S(:,~model.SConsistentRxnBool);
 [~,k] = size(B);  % number of external reactions
 
 %% processing for fluxes
-[vl,vu,vel,veu,vfl,vfu,vrl,vru,ci,ce,cf,cr,g] = processFluxConstraints(model,param);
+[vl,vu,vel,veu,vfl,vfu,vrl,vru,ci,ce,cf,cr,g, param] = processFluxConstraints(model,param);
 
 if param.debug && 0 %TODO - remove this
     modelProcessed = model;
@@ -1364,7 +1373,7 @@ switch param.entropicFBAMethod
                             valf = k_vf - g.*reallog(vf) - g;
                             fprintf('%8.2g %s\n',norm(valf,inf), '|| g.*log(vf) + g - k_vf ||_inf');
                             bool = abs(valf) > 1e-4;
-                            if any(bool) && param.printLevel>1
+                            if any(bool) && param.printLevel>2
                                 T = table(k_vf(bool),g(bool).*reallog(vf(bool)) + g(bool),vfl(bool),vfu(bool),z_vf(bool),vl(bool),vu(bool),y_vi(bool),'VariableNames',{'k_vf','glog(vf)+g','vfl','vfu','z_vf','vl','vu','z_vi'});
                                 disp(T)
                             end
