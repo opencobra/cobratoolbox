@@ -51,6 +51,6 @@ if [ "$ARCH" = "Linux" ] && [ "$MATLAB_VER" = "R2016b" ] && [ "$GIT_BRANCH" = "o
 
     # provide an output message
     echo " > Local .zip file removed"
-    echo "-- Done. The zip file can be downloaded from /cobratoolbox/stable/_static/releases/theCOBRAToolbox-$lastCommit.zip --"
+    echo "-- Done. The zip file can be downloaded from https://opencobra.github.io/cobratoolbox/stable/_static/releases/theCOBRAToolbox-$lastCommit.zip --"
 
 fi
