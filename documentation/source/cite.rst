@@ -8,42 +8,42 @@ How to cite
 
 .. |macos| raw:: html
 
-   <img src="https://king.nuigalway.ie/cobratoolbox/img/apple.png" height="20px" width="20px" alt="macOS">
+   <img src="/cobratoolbox/stable/_static/img/apple.png" height="20px" width="20px" alt="macOS">
 
 
 .. |linux| raw:: html
 
-   <img src="https://king.nuigalway.ie/cobratoolbox/img/linux.png" height="20px" width="20px" alt="linux">
+   <img src="/cobratoolbox/stable/_static/img/linux.png" height="20px" width="20px" alt="linux">
 
 
 .. |windows| raw:: html
 
-   <img src="https://king.nuigalway.ie/cobratoolbox/img/apple.png" height="20px" width="20px" alt="windows">
+   <img src="/cobratoolbox/stable/_static/img/apple.png" height="20px" width="20px" alt="windows">
 
 
 .. |warning| raw:: html
 
-   <img src="https://king.nuigalway.ie/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning">
+   <img src="/cobratoolbox/stable/_static/img/warning.png" height="20px" width="20px" alt="warning">
 
 
 .. |matlab| raw:: html
 
-   <img src="https://king.nuigalway.ie/cobratoolbox/img/matlab.png" height="20px" width="20px" alt="matlab">
+   <img src="/cobratoolbox/stable/_static/img/matlab.png" height="20px" width="20px" alt="matlab">
 
 
 .. |tada| raw:: html
 
-   <img src="https://king.nuigalway.ie/cobratoolbox/img/tada.png" height="20px" width="20px" alt="tada">
+   <img src="/cobratoolbox/stable/_static/img/tada.png" height="20px" width="20px" alt="tada">
 
 
 .. |thumbsup| raw:: html
 
-   <img src="https://king.nuigalway.ie/cobratoolbox/img/thumbsUP.png" height="20px" width="20px" alt="thumbsup">
+   <img src="/cobratoolbox/stable/_static/img/thumbsUP.png" height="20px" width="20px" alt="thumbsup">
 
 
 .. |bulb| raw:: html
 
-   <img src="https://king.nuigalway.ie/cobratoolbox/img/bulb.png" height="20px" width="20px" alt="bulb">
+   <img src="/cobratoolbox/stable/_static/img/bulb.png" height="20px" width="20px" alt="bulb">
 
 
 .. |tutorials| raw:: html
