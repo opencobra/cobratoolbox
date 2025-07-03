@@ -12,9 +12,9 @@
     </tr>
     <tr>
         <td><b>Summary</b></td>
-        <td><div align="center"><a href="https://king.nuigalway.ie/jenkins/job/COBRAToolbox-branches-auto-linux/"><img src="https://king.nuigalway.ie/cobratoolbox/badges/linux.svg"></a></div></td>
-        <td><div align="center"><a href="https://king.nuigalway.ie/jenkins/job/COBRAToolbox-branches-auto-macOS/"><img src="https://king.nuigalway.ie/cobratoolbox/badges/macOS.svg"></a></div></td>
-        <td colspan="2"><div align="center"><a href="https://king.nuigalway.ie/jenkins/job/COBRAToolbox-branches-auto-windows7/"><img src="https://king.nuigalway.ie/cobratoolbox/badges/windows.svg"></a></div></td>
+        <td><div align="center"><a href="https://king.nuigalway.ie/jenkins/job/COBRAToolbox-branches-auto-linux/"><img src="https://opencobra.github.io/cobratoolbox/stable/_static/badges/linux.svg"></a></div></td>
+        <td><div align="center"><a href="https://king.nuigalway.ie/jenkins/job/COBRAToolbox-branches-auto-macOS/"><img src="https://opencobra.github.io/cobratoolbox/stable/_static/badges/macOS.svg"></a></div></td>
+        <td colspan="2"><div align="center"><a href="https://king.nuigalway.ie/jenkins/job/COBRAToolbox-branches-auto-windows7/"><img src="https://opencobra.github.io/cobratoolbox/stable/_static/badges/windows.svg"></a></div></td>
     </tr>
     <tr>
         <td><b>Job</b></td>
