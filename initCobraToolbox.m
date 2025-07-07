@@ -86,7 +86,7 @@ if ~isfield(ENV_VARS, 'printLevel') || ENV_VARS.printLevel
     if usejava('desktop')
         docLink = ['<a href=\"', docLink, '\">', docLink, '</a>'];
     end
-
+    
     c = clock;
     fprintf('\n\n      _____   _____   _____   _____     _____     |\n');
     fprintf('     /  ___| /  _  \\ |  _  \\ |  _  \\   / ___ \\    |   COnstraint-Based Reconstruction and Analysis\n');
@@ -108,7 +108,7 @@ cd(CBTDIR);
 if 0
     % add the external install folder
     addpath(genpath([CBTDIR filesep 'external' filesep 'base' filesep 'install']));
-
+    
     %And the rdir directory
     addpath(genpath([CBTDIR filesep 'external' filesep 'base' filesep 'utilities' filesep 'rdir']));
 else
@@ -139,23 +139,23 @@ end
 if installedGit && exist([CBTDIR filesep '.git'], 'dir') ~= 7
     % initialize the directory
     [status_gitInit, result_gitInit] = system('git init');
-
+    
     if status_gitInit ~= 0
         fprintf(result_gitInit);
         error(' > This directory is not a git repository.\n');
     end
-
+    
     % set the remote origin
     [status_setOrigin, result_setOrigin] = system('git remote add origin https://github.com/opencobra/cobratoolbox.git');
-
+    
     if status_setOrigin ~= 0
         fprintf(result_setOrigin);
         error(' > The remote tracking origin could not be set.');
     end
-
+    
     % check curl
     [status_curl, result_curl] = checkCurlAndRemote();
-
+    
     if status_curl == 0
         % set the remote origin
         [status_fetch, result_fetch] = system(['git fetch origin master ' depthFlag]);
@@ -163,9 +163,9 @@ if installedGit && exist([CBTDIR filesep '.git'], 'dir') ~= 7
             fprintf(result_fetch);
             error(' > The files could not be fetched.');
         end
-
+        
         [status_resetMixed, result_resetMixed] = system('git reset --mixed origin/master');
-
+        
         if status_resetMixed ~= 0
             fprintf(result_resetMixed);
             error(' > The remote tracking origin could not be set.');
@@ -180,7 +180,7 @@ end
 if installedGit
     % temporary disable ssl verification
     [status_setSSLVerify, result_setSSLVerify] = system('git config --global http.sslVerify false');
-
+    
     if status_setSSLVerify ~= 0
         fprintf(strrep(result_setSSLVerify, '\', '\\'));
         warning('Your global git configuration could not be changed.');
@@ -199,13 +199,13 @@ if installedGit
         if ENV_VARS.printLevel
             fprintf(' > Initializing and updating submodules (this may take a while)...');
         end
-
+        
         % Clean the test/models folder
         [status, result] = system('git submodule status models');
         if status == 0 && strcmp(result(1), '-')
             [status, message, messageid] = rmdir([CBTDIR filesep 'test' filesep 'models'], 's');
         end
-
+        
         %Check for changes to submodules
         [status_gitSubmodule, result_gitSubmodule] = system('git submodule foreach git status');
         if status_gitSubmodule==0
@@ -218,64 +218,75 @@ if installedGit
                 end
             end
         end
-
-        % Update/initialize submodules
-        %By default your submodules repository is in a state called 'detached HEAD'.
-        %This means that the checked-out commit -- which is the one that the super-project (core) needs -- is not associated with a local branch name.
-        %[status_gitSubmodule, result_gitSubmodule] = system(['git submodule update --init --remote --no-fetch ' depthFlag]);%old
-        %[status_gitSubmodule, result_gitSubmodule] = system(['git submodule foreach git submodule update --init --recursive']);% 23/9/21 RF submodules point to master
-        [status_gitSubmoduleInit, result_gitSubmoduleInit] = system('git submodule update --init --recursive --depth 1');% 23/9/21 RF submodules point to master, don't pull in remote changes
-        %[status_gitSubmodule, result_gitSubmodule] = system('git submodule foreach git checkout master');
-        % [status_gitSubmodule, result_gitSubmodule] = system('git submodule foreach git checkout master');% 30/9/21 RF submodules point to master, don't pull in remote changes
-        %
+        
+        % 7/07/2025 Checking if parpool is active.If so it will skip submodules
+        % Update M.Moghimi
+        if isempty(getCurrentTask())
+            % Update/initialize submodules
+            %By default your submodules repository is in a state called 'detached HEAD'.
+            %This means that the checked-out commit -- which is the one that the super-project (core) needs -- is not associated with a local branch name.
+            %[status_gitSubmodule, result_gitSubmodule] = system(['git submodule update --init --remote --no-fetch ' depthFlag]);%old
+            %[status_gitSubmodule, result_gitSubmodule] = system(['git submodule foreach git submodule update --init --recursive']);% 23/9/21 RF submodules point to master
+            [status_gitSubmoduleInit, result_gitSubmoduleInit] = system('git submodule update --init --recursive --depth 1');% 23/9/21 RF submodules point to master, don't pull in remote changes
+            %[status_gitSubmodule, result_gitSubmodule] = system('git submodule foreach git checkout master');
+            % [status_gitSubmodule, result_gitSubmodule] = system('git submodule foreach git checkout master');% 30/9/21 RF submodules point to master, don't pull in remote changes
+            %
+        else
+            status_gitSubmoduleInit = 0; result_gitSubmoduleInit = '';
+        end
         if status_gitSubmoduleInit ~= 0
             fprintf(strrep(result_gitSubmoduleInit, '\', '\\'));
             error('The submodules could not be initialized.');
         end
-
+        
         % 19/01/2024 FZ Get all submodule path
         submoduleInfo = evalc('system(''git submodule foreach echo $path'')');
-
+        
         % Extract submodule paths using regular expressions
         pattern = 'Entering ''(.+?)''';
         matches = regexp(submoduleInfo, pattern, 'tokens');
-
+        
         % Extract submodule paths from the matches
         submodulePaths = cellfun(@(x) x{1}, matches, 'UniformOutput', false);
-
+        
         if isempty(submodulePaths)
             error('Failed to retrieve submodules paths.');
         end
-
+        
         for i = 1:length(submodulePaths)
             % Run Git commands using the full path
             submodulePath = fullfile(currentDir, submodulePaths{i});
-
-            % submodules point to master, don't pull in remote changes
-            [status_gitSubmodule, result_gitSubmodule] = system(['git -C "', submodulePath, '" checkout master']);
-
-            % In the cases where the default branch name is main, submodule
-            % points to main
-            if status_gitSubmodule
-                [status_gitSubmodule, result_gitSubmodule] = system(['git -C "', submodulePath, '" checkout main']);
-            end
-
-            if status_gitSubmodule
-                error('Failed to checkout submodule: %s to its default branch.', submodulePath);
+            % 7/07/2025 Checking if parpool is active.If so it will skip submodules
+            % Update M.Moghimi
+            if isempty(getCurrentTask())
+                % submodules point to master, don't pull in remote changes
+                [status_gitSubmodule, result_gitSubmodule] = system(['git -C "', submodulePath, '" checkout master']);
+                
+                % In the cases where the default branch name is main, submodule
+                % points to main
+                if status_gitSubmodule
+                    [status_gitSubmodule, result_gitSubmodule] = system(['git -C "', submodulePath, '" checkout main']);
+                end
+                
+                if status_gitSubmodule
+                    error('Failed to checkout submodule: %s to its default branch.', submodulePath);
+                end
+            else
+                status_gitSubmodule = 0;
             end
         end
-
+        
         % reset each submodule
         %https://github.com/bazelbuild/continuous-integration/issues/727
         %[status_gitReset, result_gitReset] = system('git submodule foreach --recursive git reset --hard');
         %[status_gitReset, result_gitReset] = system('git submodule foreach --recursive "git reset --hard"'); % [opencobra/cobratoolbox] Matlab installation error (#1490)
         %[status_gitReset, result_gitReset] = system('git submodule foreach --recursive --git reset --hard');%old
-
+        
         %     if status_gitReset ~= 0
         %         fprintf(strrep(result_gitReset, '\', '\\'));
         %         warning('The submodules could not be reset.');
         %     end
-
+        
         if ENV_VARS.printLevel
             fprintf(' Done.\n');
         end
@@ -535,7 +546,7 @@ for i = 1:length(supportedSolversNames)
         if SOLVERS.(supportedSolversNames{i}).installed
             solverStatus(i, k + 1) = 1;
             solverTypeInstalled(k) = solverTypeInstalled(k) + 1;
-
+            
             % set the default MIQP solver based on the solvers that are installed
             if strcmp(supportedSolversNames{i},'gurobi') && strcmp(types{j},'LP')
                 changeCobraSolver('gurobi', 'LP', 0);
@@ -672,7 +683,7 @@ end
 if installedGit
     % restore global configuration by unsetting http.sslVerify
     [status_setSSLVerify, result_setSSLVerify] = system('git config --global --unset http.sslVerify');
-
+    
     if status_setSSLVerify ~= 0
         fprintf(strrep(result_setSSLVerify, '\', '\\'));
         warning('Your global git configuration could not be restored.');
@@ -748,22 +759,22 @@ searchStr = 'git version';
 index = strfind(result_gitVersion, searchStr);
 
 if status_gitVersion == 0 && ~isempty(index)
-
+    
     % determine the version of git
     versionGitStr = result_gitVersion(length(searchStr)+1:end);
-
+    
     % replace line breaks and white spaces
     versionGitStr = regexprep(versionGitStr(1:7),'\s+','');
-
+    
     % replace the dots in the version number
     tmp = strrep(versionGitStr, '.', '');
-
+    
     % convert the string of the version number to a number
     versionGit = str2num(tmp);
-
+    
     % set the boolean to true
     installed = true;
-
+    
     if ENV_VARS.printLevel
         fprintf([' Done (version: ' versionGitStr ').\n']);
     end
@@ -775,7 +786,7 @@ else
         fprintf(result_gitVersion);
         warning(' > git is not installed.');
         fprintf(' > Please follow the guidelines on how to install git: https://opencobra.github.io/cobratoolbox/docs/requirements.html.\n');
-
+        
     end
     % set the boolean as false (not installed)
     installed = false;
