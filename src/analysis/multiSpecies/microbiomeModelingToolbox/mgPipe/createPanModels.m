@@ -1,4 +1,4 @@
-function createPanModels(agoraPath, panPath, taxonLevel, numWorkers, taxTable)
+function createPanModels(agoraPath, panPath, taxonLevel, agoraVersion, numWorkers, builtTaxa)
 % This function creates pan-models for all unique taxa (e.g., species)
 % included in the AGORA resource. If reconstructions of multiple strains
 % in a given taxon are present, the reactions in these reconstructions will
@@ -14,7 +14,7 @@ function createPanModels(agoraPath, panPath, taxonLevel, numWorkers, taxTable)
 %
 % USAGE:
 %
-%   createPanModels(agoraPath,panPath,taxonLevel)
+%   createPanModels(agoraPath,panPath,taxonLevel, agoraVersion, numWorkers)
 %
 % INPUTS:
 %    agoraPath     String containing the path to the AGORA reconstructions.
@@ -23,16 +23,22 @@ function createPanModels(agoraPath, panPath, taxonLevel, numWorkers, taxTable)
 %                  created pan-models will be stored in. Must end with a file separator.
 %    taxonLevel    String with desired taxonomical level of the pan-models.
 %                  Allowed inputs are 'Species','Genus','Family','Order', 'Class','Phylum'.
+%    agoraVersion  Version of AGORA that will be used (allowed inputs: 'AGORA', 'AGORA2', 
+%                  alternatively: path to custom table with reconstruction information)
 %
 % OPTIONAL INPUTS
 %    numWorkers    Number of workers for parallel pool (default: no pool)
-%    taxTable      File with information on taxonomy of reconstruction
-%                  resource (default: 'AGORA_infoFile.xlsx')
+%    builtTaxa     Names of taxa in table that will be built (default:
+%                  all). Need to be entered as a cell array of strings with names written
+%                  exactly as in the corresponding column in the table.
 %
 % .. Authors
 %       - Stefania Magnusdottir, 2016
 %       - Almut Heinken, 06/2018: adapted to function.
 %       - Almut Heinken, 03/2021: enabled parallelization
+%       - Almut Heinken, 05/2024: enforced specifying AGORA version
+%       - Almut Heinken, 10/2024: allowed specifying input table and taxa
+%                                 to create
 
 tol = 1e-5;
 
@@ -58,10 +64,13 @@ end
 solver = CBT_LP_SOLVER;
 environment = getEnvironment();
 
-if ~exist('taxTable','var')
+% load the file with information on AGORA/AGORA2 or custom table
+if strcmp(agoraVersion,'AGORA')
     infoFile = readInputTableForPipeline('AGORA_infoFile.xlsx');
+elseif strcmp(agoraVersion,'AGORA2')
+    infoFile = readInputTableForPipeline('AGORA2_infoFile.xlsx');
 else
-    infoFile = readInputTableForPipeline(taxTable);
+    infoFile = readInputTableForPipeline(agoraVersion);
 end
 
 % get the reaction and metabolite database
@@ -74,6 +83,12 @@ allTaxa = unique(infoFile(2:end, findTaxCol));
 % Remove unclassified and unnamed organisms
 allTaxa(strncmp(allTaxa, 'unclassified',  12)) = [];
 allTaxa(strcmp(allTaxa, '')) = [];
+
+% reduce to specified list of taxa to build if entered
+if nargin >5
+    [~,I] = setdiff(allTaxa,builtTaxa);
+    allTaxa(I,:) = [];
+end
 
 % Remove models that have already been assembled from the list of models to create
 dInfo = dir(panPath);

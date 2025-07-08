@@ -1,4 +1,4 @@
-function [model] = addReactionsHH(model, rxnAbbrs,rxnNames, reactions, gprs, subSystems,couplingFactor)
+function [model] = addReactionsHH(model, rxnAbbrs,rxnNames, reactions, gprs, subSystems,couplingFactor,rxnNotes,rxnReferences)
 % This function add reaction(s) to the whole-body metabolic model,
 % including the required coupling constraint.
 % This function is based on model = addReaction(model,'newRxn1','A -> B + 2 C')
@@ -13,14 +13,28 @@ function [model] = addReactionsHH(model, rxnAbbrs,rxnNames, reactions, gprs, sub
 % gprs              List of grRules
 % subSystems        List of subSystems
 % couplingFactor    Coupling factor to be added, default 20000
+% rxnNotes          List of notes for the reactions (optional)
+% rxnReferences     List of references for the reactions (optional)
 %
 % OUTPUT
 % model             Updated model structure
 %
 % Ines Thiele 2018
+% IT - added gpr rules to be properly taken into account
 
-if ~exist('couplingFactor','var')
+
+if ~exist('couplingFactor','var') || ~isempty(couplingFactor)
     couplingFactor = 20000;
+end
+if ~exist('rxnNotes','var') || isempty(rxnNotes)
+    rxnNotesPresent = 0;
+else
+        rxnNotesPresent = 1;
+end
+if ~exist('rxnReferences','var') || isempty(rxnReferences)
+    rxnRefPresent = 0;
+else
+    rxnRefPresent = 1;
 end
 
 for i = 1 : length(rxnAbbrs)
@@ -31,8 +45,17 @@ for i = 1 : length(rxnAbbrs)
         model = addReaction(model,rxnAbbrs{i},reactions{i});
         A = strmatch(rxnAbbrs(i),model.rxns,'exact');
         model.subSystems(A) = subSystems(i);
-        model.grRules(A) = gprs(i);
+        %model.grRules(A) = gprs(i);
+        if ~isempty(gprs{i})
+            model = changeGeneAssociation(model, rxnAbbrs{i}, gprs{i}, {}, {}, 0);
+        end
         model.rxnNames(A) = rxnNames(i);
+        if isfield(model,'rxnNotes') && rxnNotesPresent == 1
+            model.rxnNotes(A) = rxnNotes(i);
+        end
+        if isfield(model,'rxnReferences') && rxnRefPresent == 1
+            model.rxnReferences(A) = rxnReferences(i);
+        end
         [token,rem] = strtok(rxnAbbrs{i},'_');
         % find organ biomass
         if strcmp(token,'sIEC')

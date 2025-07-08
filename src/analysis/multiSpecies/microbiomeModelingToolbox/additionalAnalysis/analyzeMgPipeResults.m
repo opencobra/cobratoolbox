@@ -112,9 +112,9 @@ for i=1:length(fileList)
             % Print the results as a text file
             filename = strrep(fileList{i},'.csv','');
             filename = strrep(filename,'.txt','');
-            writetable(cell2table(Statistics),[statPath filesep filename '_' sampleGroupHeaders{j} '_Statistics'],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
+            writetable(cell2table(Statistics),[statPath filesep filename '_' sampleGroupHeaders{j} '_Statistics.csv'],'WriteVariableNames',false);
             if size(significantFeatures,2)>1
-                writetable(cell2table(significantFeatures),[statPath filesep filename '_' sampleGroupHeaders{j} '_SignificantFeatures'],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
+                writetable(cell2table(significantFeatures),[statPath filesep filename '_' sampleGroupHeaders{j} '_SignificantFeatures.csv'],'WriteVariableNames',false);
             end
             
             % create plots
@@ -133,9 +133,9 @@ for i=1:length(fileList)
         % Print the results as a text file
         filename = strrep(fileList{i},'.csv','');
         filename = strrep(filename,'.txt','');
-        writetable(cell2table(Statistics),[statPath filesep filename '_Statistics'],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
+        writetable(cell2table(Statistics),[statPath filesep filename '_Statistics.csv'],'WriteVariableNames',false);
         if size(significantFeatures,2)>1
-            writetable(cell2table(significantFeatures),[statPath filesep filename '_SignificantFeatures'],'FileType','text','WriteVariableNames',false,'Delimiter','tab');
+            writetable(cell2table(significantFeatures),[statPath filesep filename '_SignificantFeatures.csv'],'WriteVariableNames',false);
         end
         
         % create violin plots

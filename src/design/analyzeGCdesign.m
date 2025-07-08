@@ -178,8 +178,8 @@ for i = 1:length(rxns)+1
 
                 %see if objective is increased by this new gene
                 if newObjective > bestObjective2
-                    bestObjective2 = newObjective
-                    bestRxns2 = newRxns
+                    bestObjective2 = newObjective;
+                    bestRxns2 = newRxns;
                     intermediateSlns{length(intermediateSlns)+1} = bestRxns2; %add new intermediateSln to the list
                 end
             end
@@ -192,15 +192,13 @@ for i = 1:length(rxns)+1
     end
 end
 
-bestObjective
-bestRxns
-
 % recursively call analyzeGCdesign again until no improvement is found
 if length(bestRxns) ~= length(rxns)
     [bestRxns,intermediateSlns] = analyzeGCdesign(modelRed,selectedRxns,target,bestRxns,maxKOs,objFunction,delPenalty,intermediateSlns);
 elseif length(find(strcmp(bestRxns,rxns)))~=length(rxns)
     [bestRxns,intermediateSlns] = analyzeGCdesign(modelRed,selectedRxns,target,bestRxns,maxKOs,objFunction,delPenalty,intermediateSlns);
 end
+fprintf('\n'); 
 
 % print final results
-improvedRxns = sort(bestRxns)
+improvedRxns = sort(bestRxns);

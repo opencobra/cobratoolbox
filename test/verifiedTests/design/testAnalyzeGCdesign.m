@@ -51,9 +51,12 @@ for k = 1:numel(solverPkgs.QP)
     end
 
     % tests
-    assert(isequal({'EX_akg(e)', 'EX_co2(e)'}, improvedRxns));
+    assert(isequal({'EX_akg(e)', 'EX_co2(e)', 'EX_etoh(e)'}, improvedRxns));
     assert(isequal({'EX_acald(e)'}, intermediateSlnsM{7}{1}));
 end
+
+% output a success message
+fprintf('Done.\n');
 
 % change to old directory
 cd(currentDir);

@@ -18,8 +18,8 @@ currentDir = pwd;
 fileDir = fileparts(which('testFBA'));
 cd(fileDir);
 
-% set the tolerance
-tol = 1e-8;
+% set the tolerance to the optimality tolerance
+tol = getCobraSolverParams('LP','optTol')*5;
 
 % define the solver packages to be used to run this test
 solverPkgs = {'ibm_cplex', 'mosek', 'gurobi', 'tomlab_cplex', 'glpk'};
@@ -41,7 +41,11 @@ for k = 1:length(solverPkgs)
         solution = optimizeCbModel(model);
 
         % testing if f values are within range
-        assert(abs(solution.f - solutionStd.f) < tol);
+        bool = abs(solution.f - solutionStd.f) < tol;
+        if ~bool
+            disp(bool)
+        end
+        assert(bool);
 
         % testing if c*x == f
         assert(abs(model.c' * solution.x - solution.f) < tol);
@@ -80,7 +84,11 @@ for k = 1:length(solverPkgs)
         solution4 = optimizeCbModel(model4);
 
         % testing if f values are within range
-        assert(abs(solution4.f - solution4Std.f) < tol);
+        bool =(abs(solution4.f - solution4Std.f) < tol);
+        if ~bool
+            disp(bool)
+        end
+        assert(bool);
 
         % testing if c*x == f
         assert(abs(model4.c' * solution4.x - solution4.f) < tol);

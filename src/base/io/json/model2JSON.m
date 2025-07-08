@@ -1,13 +1,19 @@
 function model2JSON(model,fileName)
-% This function writes a json file from matlab structure.
-% I validated json format with https://jsonlint.com/.
+% This function writes a JSON file from Matlab structure.
+% JSON files can be validated by isValidJSON function or online tools like
+% https://jsonlint.com/.
+%
+% USAGE:
+%
+%    model2JSON(model,fileName)
 %
 % INPUT
-% model     model structure
-% fileName  name of file including extension .json
+%     model:     model structure
+%     fileName:  name of file including extension .json
 %
 %
-% Ines Thiele, May 2023
+% .. Author: -Ines Thiele, May 2023
+%            -Farid Zare, 2024/08/14 improved code to produce valid JSON 
 
 if isempty(strfind(fileName,'.json'));
     fileName = strcat(fileName,'.json');
@@ -20,76 +26,81 @@ cnt = 1;
 % write metabolites
 for i = 1 : length(model.mets)
     fprintf(fid, '{\n');
+    % convert compartment handling from square brackets to underline
+    % glucose[c] -> glucose_c
     met = regexprep(model.mets{i},'\[','_');
     met = regexprep(met,'\]','');
     fprintf(fid,strcat( '"id":"',met,'",\n'));
     fprintf(fid,strcat( '"name":"',model.metNames{i},'",\n'));
-    x = split(model.mets{i},'[');
-    comp = regexprep(x{2},'\]','');
+    comp = getCompartment(model.mets{i});
     fprintf(fid,strcat( '"compartment":"',comp,'",\n'));
-    fprintf(fid,strcat( '"charge":',num2str(model.metCharges(i)),',\n'));
-    fprintf(fid,strcat( '"formula":"',(model.metFormulas{i}),'",\n'));
+    if isfield(model, 'metCharges')
+        fprintf(fid,strcat( '"charge":',num2str(model.metCharges(i)),',\n'));
+    end
+    if isfield(model, 'metFormulas')
+        fprintf(fid,strcat( '"formula":"',(model.metFormulas{i}),'",\n'));
+    end
     fprintf(fid,'"notes":{\n');
     fprintf(fid,'"original_vmh_ids":[\n');
     fprintf(fid,strcat('"',model.mets{i},'"\n'));
-    fprintf(fid,']\n');
-    fprintf(fid,'},\n');
+    fprintf(fid,']\n'); % close original_vmh_ids
+    fprintf(fid,'},\n'); % close notes
     fprintf(fid,'"annotation":{\n');
+
+    % Define metStr for more control over trainling commas
+    metStr = '';
     if isfield(model, 'metBiGGID')
-        fprintf(fid,'"bigg.metabolite":[\n');
-        fprintf(fid,strcat('"',model.metBiGGID{i},'"\n'));
-        fprintf(fid,'],\n');
+        metStr = strcat(metStr, '"bigg.metabolite":[\n', ...
+            '"', model.metBiGGID{i}, '"\n],\n');
     end
     if isfield(model, 'metBioCycID')
-        fprintf(fid,'"biocyc":[\n');
-        model.metBioCycID{i} = regexprep(model.metBioCycID{i},'%','');
-        fprintf(fid,strcat('"',model.metBioCycID{i},'"\n'));
-        fprintf(fid,'],\n');
+        metStr = strcat(metStr, '"biocyc":[\n', ...
+            '"', regexprep(model.metBioCycID{i}, '%', ''), '"\n],\n');
     end
     if isfield(model, 'metChEBIID')
-        fprintf(fid,'"chebi":[\n');
-        fprintf(fid,strcat('"',model.metChEBIID{i},'"\n'));
-        fprintf(fid,'],\n');
+        metStr = strcat(metStr, '"chebi":[\n', ...
+            '"', model.metChEBIID{i}, '"\n],\n');
     end
     if isfield(model, 'metHMDBID')
-        fprintf(fid,'"hmdb":[\n');
-        fprintf(fid,strcat('"',model.metHMDBID{i},'"\n'));
-        fprintf(fid,'],\n');
+        metStr = strcat(metStr, '"hmdb":[\n', ...
+            '"', model.metHMDBID{i}, '"\n],\n');
     end
     if isfield(model, 'metInchiKey')
-        fprintf(fid,'"inchi_key":[\n');
-        fprintf(fid,strcat('"',model.metInchiKey{i},'"'));
-        fprintf(fid,'],');
+        metStr = strcat(metStr, '"inchi_key":[\n', ...
+            '"', model.metInchiKey{i}, '"\n],\n');
     end
     if isfield(model, 'metKEGGID')
-        fprintf(fid,'"kegg.compound":[\n');
-        fprintf(fid,strcat('"',model.metKEGGID{i},'"\n'));
-        fprintf(fid,'],\n');
+        metStr = strcat(metStr, '"kegg.compound":[\n', ...
+            '"', model.metKEGGID{i}, '"\n],\n');
     end
     if isfield(model, 'metMetaNetXID')
-        fprintf(fid,'"metanetx.chemical":[\n');
-        fprintf(fid,strcat('"',model.metMetaNetXID{i},'"\n'));
-        fprintf(fid,'],\n');
+        metStr = strcat(metStr, '"metanetx.chemical":[\n', ...
+            '"', model.metMetaNetXID{i}, '"\n],\n');
     end
     if isfield(model, 'metReactomeID')
-        fprintf(fid,'"reactome.compound":[\n');
-        fprintf(fid,strcat('"',model.metReactomeID{i},'"\n'));
-        fprintf(fid,'],\n');
+        metStr = strcat(metStr, '"reactome.compound":[\n', ...
+            '"', model.metReactomeID{i}, '"\n],\n');
     end
     if isfield(model, 'metSabiork')
-        fprintf(fid,'"sabiork":[\n');
-        fprintf(fid,strcat('"',model.metSabiork{i},'"\n'));
-        fprintf(fid,'],\n');
-        
+        metStr = strcat(metStr, '"sabiork":[\n', ...
+            '"', model.metSabiork{i}, '"\n],\n');
     end
     if isfield(model, 'metSBOTerms')
-        fprintf(fid,strcat('"sbo":"',model.metSBOTerms{i},'",\n'));
+        metStr = strcat(metStr, '"sbo":"', model.metSBOTerms{i}, '",\n');
     end
     if isfield(model, 'metSEEDID')
-        fprintf(fid,'"seed.compound":[\n');
-        fprintf(fid,strcat('"',model.metSEEDID{i},'"'));
+        metStr = strcat(metStr, '"seed.compound":[\n', ...
+            '"', model.metSEEDID{i}, '"\n],\n');
     end
-    fprintf(fid,']\n');
+    % Remove trailing comma before closing annotation
+    if ~isempty(metStr)
+        % Remove last trailing comma
+        metStr(end-2) = []; 
+
+        % Add metStr into fid
+        fprintf(fid, metStr);
+    end
+
     fprintf(fid,'}\n'); % close annotation
     if i < length(model.mets)
         fprintf(fid,'},\n'); % close metabolite
@@ -114,7 +125,8 @@ for i = 1 : length(model.rxns)
     for j = 1 : length(metList)
         met = regexprep(metList{j},'\[','_');
         met = regexprep(met,'\]','');
-        if isempty(strfind(num2str(stoichiometries(j,1)),'.'))
+        % Avoid using .0 for scientific notations
+        if ~contains(num2str(stoichiometries(j,1)),'.') && ~contains(num2str(stoichiometries(j,1)), 'e') && ~contains(num2str(stoichiometries(j,1)), 'E')
             fprintf(fid,strcat('"',met,'":',num2str(stoichiometries(j,1)),'.0'));
         else
             fprintf(fid,strcat('"',met,'":',num2str(stoichiometries(j,1)),''));
@@ -143,16 +155,25 @@ for i = 1 : length(model.rxns)
     
     
     fprintf(fid,'"annotation":{\n');
+    % Define rxnStr for more control over trainling commas
+    rxnStr = '';
     if isfield(model,'rxnMetaNetXID')
-        fprintf(fid,'"metanetx.reaction":[\n');
-        fprintf(fid,strcat('"',model.rxnMetaNetXID{i},'"\n'));
-        fprintf(fid,'],\n');
+        rxnStr = strcat(rxnStr, '"metanetx.reaction":[\n', '"',model.rxnMetaNetXID{i},'"\n],\n');
     end
     if isfield(model,'rxnSBOTerms')
-        fprintf(fid,strcat('"sbo":"',model.rxnSBOTerms{i},'"\n'));
+        rxnStr = strcat(rxnStr, '"sbo":[\n', '"',model.rxnSBOTerms{i},'"\n],\n');
     end
 
-    fprintf(fid,'}'); % close annotation
+    % Remove trailing comma before closing annotation
+    if ~isempty(rxnStr)
+        % Remove last trailing comma
+        rxnStr(end-2) = []; 
+
+        % Add metStr into fid
+        fprintf(fid, rxnStr);
+    end
+
+    fprintf(fid,'}\n'); % close annotation
     if i < length(model.rxns)
         fprintf(fid,'},\n'); % close reaction
     else
@@ -231,7 +252,9 @@ end
 % close list of genes
 fprintf(fid,'],\n');
 % model ID
-fprintf(fid, strcat('"id":"',model.modelID,'",\n'));
+if isfield(model, 'modelID')
+    fprintf(fid, strcat('"id":"',model.modelID,'",\n'));
+end
 % compartments
 [~, uniqueCompartments, ~, ~] = getCompartment(model.mets);
 fprintf(fid, strcat('"compartments":{','\n'));
@@ -241,7 +264,7 @@ for i = 1 : length(uniqueCompartments)
     elseif strcmp('e',uniqueCompartments{i})
         fprintf(fid, '"e":"extracellular space"');
     elseif strcmp('g',uniqueCompartments{i})
-        fprintf(fid, '"g":"golgi apparatus",');
+        fprintf(fid, '"g":"golgi apparatus"');
     elseif strcmp('i',uniqueCompartments{i})
         fprintf(fid, '"i":"inner mitochondrial compartment"');
     elseif strcmp('l',uniqueCompartments{i})
@@ -253,7 +276,7 @@ for i = 1 : length(uniqueCompartments)
     elseif strcmp('r',uniqueCompartments{i})
         fprintf(fid, '"r":"endoplasmic reticulum"');
     elseif strcmp('p',uniqueCompartments{i})
-        fprintf(fid, '"p":"periplasm');
+        fprintf(fid, '"p":"periplasm"');
     elseif strcmp('x',uniqueCompartments{i})
         fprintf(fid, '"x":"peroxisome/glyoxysome"');
     end
@@ -263,9 +286,9 @@ for i = 1 : length(uniqueCompartments)
         fprintf(fid, '\n');
     end
 end
-fprintf(fid, '},\n'); % close compartments
+fprintf(fid, '}\n'); % close compartments
 if isfield(model,'modelAnnotation')
-    fprintf(fid, strcat('"version":"',model.modelAnnotation{2},'"\n'));
+    fprintf(fid, strcat(',"version":"',model.modelAnnotation{2},'"\n'));
 end
 
 fprintf(fid, '}\n'); % close file

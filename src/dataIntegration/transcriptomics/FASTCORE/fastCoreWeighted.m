@@ -28,7 +28,7 @@ tic
 
 model_org = model;
 
-LPproblem = buildLPproblemFromModel(model);
+LPproblem = buildOptProblemFromModel(model);
 
 N = 1:numel(model.rxns);
 I = find(model.lb>=0);

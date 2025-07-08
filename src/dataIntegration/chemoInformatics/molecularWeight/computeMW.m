@@ -62,13 +62,26 @@ if ~generalFormula
     % molecular weight of elements in a structure
     elementMwStruct = struct('H', 1, 'C', 12, 'N', 14, 'O', 16, 'Na', 23, 'Mg', 24, 'P', 31, ...
         'S', 32, 'Cl', 35, 'K', 39, 'Ca', 40, 'Mn', 55, 'Fe', 56, 'Ni', 58, 'Co', 59, ...
-        'Cu', 63, 'Zn', 65, 'As', 75, 'Se', 80, 'Ag', 107, 'Cd', 114, 'W', 184, 'Hg', 202);
+        'Cu', 63, 'Zn', 65, 'As', 75, 'Se', 80, 'Ag', 107, 'Cd', 114, 'W', 184, 'Hg', 202,...
+       'F', 19, 'I', 127, 'Ba', 137, 'Y', 89 );
     elementNames = fieldnames(elementMwStruct);  % elements' names
     MW = zeros(size(metIDs));
 
     for n = 1:length(metIDs)
         i = metIDs(n);
         formula = model.metFormulas(i);
+        
+        % Skip calculations for metabolites containing 'FULLRCO'
+        if contains(formula, 'FULLR')|| contains(formula,'R')
+            MW(n) = NaN; % Assign NaN to indicate R-group
+            identifire = 'R-group';
+            continue;
+        elseif contains(formula, 'X')
+            MW(n) = NaN; % Assign NaN to indicate 'X'
+            identifire = 'X';
+            continue;
+        end
+        
         [compounds, tok] = regexp(formula, '([A-Z][a-z]*)(\d*)', 'match', 'tokens');
         tok = tok{1, 1};
         for j = 1:length(tok)  % go through each token.

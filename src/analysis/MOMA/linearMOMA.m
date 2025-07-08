@@ -110,8 +110,8 @@ if solutionWT.stat == 1
     % 3: delta+ >= v1-v2
     % 4: delta- >= v2-v1
     % 5: c'v1 = f1 (wild type)
-    LPWT = buildLPproblemFromModel(modelWT);
-    LPDel = buildLPproblemFromModel(modelDel);
+    LPWT = buildOptProblemFromModel(modelWT);
+    LPDel = buildOptProblemFromModel(modelDel);
     [nWTCtrs,nWTVars] = size(LPWT.A);
     [nDelCtrs,nDelVars] = size(LPDel.A);
     deltaMat = createDeltaMatchMatrix(modelWT.rxns,modelDel.rxns);

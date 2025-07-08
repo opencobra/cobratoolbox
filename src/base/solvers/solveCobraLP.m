@@ -61,7 +61,7 @@ function solution = solveCobraLP(LPproblem, varargin)
 %                     * .rcost:        Reduced costs, dual solution to :math:`lb <= v <= ub`
 %                     * .dual:         dual solution to `A*v ('E' | 'G' | 'L') b`
 %                     * .solver:       Solver used to solve LP problem
-%                     * .algorithm:    Algorithm used by solver to solve LP problem
+%                     * .lpmethod:    Algorithm used by solver to solve LP problem
 %                     * .stat:         Solver status in standardized form
 %
 %                       * 0 - Infeasible problem
@@ -125,9 +125,11 @@ global MINOS_PATH
 solver = problemTypeParams.solver;
 
 % check solver compatibility with minNorm option
-if ~isempty(problemTypeParams.minNorm)
-    if ~any(strcmp(solver, {'cplex_direct'}))
-        error(['Solver is ' solver ' but minNorm only works for LP solver ''cplex_direct'' from this interface, use optimizeCbModel for other solvers.'])
+if isfield(problemTypeParams,'minNorm')
+    if ~isempty(problemTypeParams.minNorm) && problemTypeParams.minNorm~=0
+        if ~any(strcmp(solver, {'cplex_direct'}))
+            error(['Solver is ' solver ' but minNorm only works for LP solver ''cplex_direct'' from this interface, use optimizeCbModel for other solvers.'])
+        end
     end
 end
 
@@ -142,7 +144,7 @@ if ~isempty(problemTypeParams.saveInput)
 end
 
 % support for lifting of ill-scaled models
-if problemTypeParams.lifting == 1
+if isfield(solverParams,'lifting') && solverParams.lifting == 1
     largeNb = 1e4;  % suitable for double precision solvers
     [LPproblem] = reformulate(LPproblem, largeNb, printLevel);
 end
@@ -178,6 +180,9 @@ end
 if ~isfield(LPproblem, 'modelID')
     LPproblem.modelID = 'aModelID';
 end
+if ~isfield(LPproblem, 'names')
+    LPproblem.names = [];
+end
 
 %too time consuming
 % if any(~isfinite(LPproblem.A),'all')
@@ -195,7 +200,7 @@ end
 
             
 % extract the problem from the structure
-[A, b, c, lb, ub, csense, osense, modelID] = deal(sparse(LPproblem.A), LPproblem.b, LPproblem.c, LPproblem.lb, LPproblem.ub, LPproblem.csense, LPproblem.osense, LPproblem.modelID);
+[A, b, c, lb, ub, csense, osense, modelID, names] = deal(sparse(LPproblem.A), LPproblem.b, LPproblem.c, LPproblem.lb, LPproblem.ub, LPproblem.csense, LPproblem.osense, LPproblem.modelID,LPproblem.names);
 
 if isfield(LPproblem,'basis') && ~isempty(LPproblem.basis)
     basis = LPproblem.basis;
@@ -220,7 +225,7 @@ w = [];
 stat = 0;
 origStat = [];
 origStatText = [];
-algorithm = 'default';
+lpmethod = '';
 
 t_start = clock;
 if isempty(solver)
@@ -266,7 +271,7 @@ switch solver
         % switch opts.solver
         %     case 'clp'
         %         % https://projects.coin-or.org/Clp
-        %         % set CLP algorithm  - options
+        %         % set CLP method  - options
         %         % 1. automatic
         %         % 2. barrier
         %         % 3. primalsimplex - primal simplex
@@ -321,7 +326,7 @@ switch solver
         % else
         %     f = obj;
         % end
-        % [w, y, algorithm, stat, origStat, t] = parseOPTIresult(exitflag, info);
+        % [w, y, method, stat, origStat, t] = parseOPTIresult(exitflag, info);
 
     case 'dqqMinos'
         if ~isunix
@@ -543,6 +548,12 @@ switch solver
 
     case 'glpk'
         %% GLPK
+        %           msglev (default: 1)
+        %                  Level of messages output by solver routines:
+        %                   0 - No output.
+        %                   1 - Error messages only.
+        %                   2 - Normal output.
+        %                   3 - Full output (includes informational messages).
         param.msglev = problemTypeParams.printLevel;  % level of verbosity
         param.tolbnd = problemTypeParams.feasTol;  % tolerance
         param.toldj = problemTypeParams.optTol;  % tolerance
@@ -628,58 +639,13 @@ switch solver
         w = [];
     case 'mosek'
         % mosek
-        % use msklpopt with full control over all mosek parameters
-        % http://docs.mosek.com/7.0/toolbox/Parameters.html
-        % see also
-        % http://docs.mosek.com/7.0/toolbox/A_guided_tour.html#SEC:VIEWSETPARAM
-        % e.g.
-        % http://docs.mosek.com/7.0/toolbox/MSK_IPAR_OPTIMIZER.html
-
-        %[rcode,res]         = mosekopt('param echo(0)',[],solverParams);
-        
-        % Remove outer function specific parameters to avoid crashing solver interfaces
-        solverParams = mosekParamStrip(solverParams);
-
-        param = solverParams;
-        % only set the print level if not already set via solverParams structure
-        if ~isfield(param, 'MSK_IPAR_LOG')
-            switch problemTypeParams.printLevel
-                case 0
-                    echolev = 0;
-                case 1
-                    echolev = 3;
-                case 2
-                    param.MSK_IPAR_LOG_INTPNT = 1;
-                    param.MSK_IPAR_LOG_SIM = 1;
-                    echolev = 3;
-                otherwise
-                    echolev = 0;
-            end
-            if echolev == 0
-                param.MSK_IPAR_LOG = 0;
-                cmd = ['minimize echo(' int2str(echolev) ')'];
-            else
-                cmd = 'minimize';
-            end
-        end
-
-        %https://docs.mosek.com/8.1/toolbox/solving-linear.html
-        if ~isfield(param, 'MSK_DPAR_INTPNT_TOL_PFEAS')
-            param.MSK_DPAR_INTPNT_TOL_PFEAS=problemTypeParams.feasTol;
-        end
-        if ~isfield(param, 'MSK_DPAR_INTPNT_TOL_DFEAS.')
-            param.MSK_DPAR_INTPNT_TOL_DFEAS=problemTypeParams.feasTol;
-        end
-        %If the feasibility tolerance is changed by the solverParams
-        %struct, this needs to be forwarded to the cobra Params for the
-        %final consistency test!
-        if isfield(param,'MSK_DPAR_INTPNT_TOL_PFEAS')
-            problemTypeParams.feasTol = param.MSK_DPAR_INTPNT_TOL_PFEAS;
-        end
+        param = mergeCobraParams(solverParams,problemTypeParams);
+        [cmd,mosekParam] = setMosekParam(param);
+     
         % basis reuse - TODO
         % http://docs.mosek.com/7.0/toolbox/A_guided_tour.html#section-node-_A%20guided%20tour_Advanced%20start%20%28hot-start%29
 
-        % Syntax:      [res] = msklpopt(c,a,blc,buc,blx,bux,param,cmd)
+        % Syntax:      [res] = msklpopt(c,a,blc,buc,blx,bux,solverParams,cmd)
         %
         % Purpose:     Solves the optimization problem
         %
@@ -696,7 +662,7 @@ switch solver
         %                buc    Upper bounds on constraints.
         %                blx    Lower bounds on variables.
         %                bux    Upper bounds on variables.
-        %                param  New MOSEK parameters.
+        %                solverParams  New MOSEK parameters.
         %                cmd    MOSEK commands.
         %
         %              blc=[] and buc=[] means that the
@@ -705,51 +671,80 @@ switch solver
         %              blx and bux. Note -inf is allowed in blc and blx.
         %              Similarly, inf is allowed in buc and bux.
 
-        
+
         blc = b;
         buc = b;
         buc(csense == 'G') = inf;
         blc(csense == 'L') = -inf;
         
-        if 0
-            [res] = msklpopt(osense * c, A, blc, buc, lb, ub, param, cmd);
-            %             res.sol.itr
-            %             min(buc(csense == 'E')-A((csense == 'E'),:)*res.sol.itr.xx)
-            %             min(A((csense == 'E'),:)*res.sol.itr.xx-blc(csense == 'E'))
-            %             pasue(eps)
-            
-        else
-            prob.c = osense * c;
-            prob.a = A;
-            prob.blc     = blc;
-            prob.buc     = buc;
-            prob.blx     = lb;
-            prob.bux     = ub;
-            
-            if ~isempty(basis)
-                prob.sol.bas.skc  = basis.skc;
-                prob.sol.bas.skx  = basis.skx;
-                prob.sol.bas.xc   = basis.xc;
-                prob.sol.bas.xx   = basis.xx;
-            end
-            
-            % Use the primal simplex optimizer.
-            param.MSK_IPAR_OPTIMIZER = 'MSK_OPTIMIZER_PRIMAL_SIMPLEX';
-            [rcode,res] = mosekopt(cmd,prob,param);
+        prob.c = osense * c;
+        prob.a = A;
+        prob.blc     = blc;
+        prob.buc     = buc;
+        prob.blx     = lb;
+        prob.bux     = ub;
+
+        if ~isempty(basis)
+            prob.sol.bas.skc  = basis.skc;
+            prob.sol.bas.skx  = basis.skx;
+            prob.sol.bas.xc   = basis.xc;
+            prob.sol.bas.xx   = basis.xx;
         end
-                
+
+        if isfield(param,'saveProb') && param.saveProb
+            formattedTime = datestr(now, 'yyyymmddHHMMSS');
+            LP.cmd=cmd;
+            LP.prob=prob;
+            LP.param=mosekParam;
+            save([formattedTime '_LP_probBeforeMosekopt'],"LP");
+        end
+
+        if isfield(param,'debug') && param.debug==1
+            prob.names = names;
+        end
+
+        if isfield(param,'defaultSolverParam') && param.defaultSolverParam
+            [rcode,res] = mosekopt(cmd,prob);
+        else
+            [rcode,res] = mosekopt(cmd,prob,mosekParam);
+        end
+        if isfield(param,'lpmethod')
+            lpmethod = param.lpmethod;
+        else
+            lpmethod = 'FREE';
+        end
+
+        if rcode~=0
+            % MSK_RES_TRM_STALL
+            % https://docs.mosek.com/latest/toolbox/response-codes.html#mosek.rescode.trm_stall
+            suffix = res.rcodestr;
+            suffix = lower(replace(suffix,'MSK_RES_',''));
+            url  = 'https://docs.mosek.com/latest/toolbox/response-codes.html';
+            url2 = ['https://docs.mosek.com/latest/toolbox/response-codes.html#mosek.rescode.' suffix];
+            fprintf('Mosek returned an error or warning, open the following link in your browser:\n');
+            %fprintf('<a href="%s">%s</a>\n', url, url);
+            fprintf('<a href="%s">%s</a>\n', url2, url2);
+        end
+            
         %parse mosek result structure
-        [stat,origStat,x,y,w, wl, wu ,s,~,basis] = parseMskResult(res,A,blc,buc,problemTypeParams.printLevel,param);
-        if stat ==1
-            f=c'*x;
+        [stat,origStat,x,y,yl,yu,z,zl,zu,k,basis,pobjval,dobjval] = parseMskResult(res);
+        
+        if stat ==1 || stat ==3
+            f = c'*x;
+            %slacks
+            sbl = prob.a*x - prob.blc;
+            sbu = prob.buc - prob.a*x;
+            s = sbu - sbl; %TODO -double check this
+            w = zl - zu;
+            if problemTypeParams.printLevel>1
+                fprintf('%8.2g %s\n',min(sbl), ' min(sbl) = min(A*x - bl), (should be positive)');
+                fprintf('%8.2g %s\n',min(sbu), ' min(sbu) = min(bu - A*x), (should be positive)');
+            end
         else
             f = NaN;
             s = NaN*ones(size(A,1),1);
         end
-            
-        if isfield(param,'MSK_IPAR_OPTIMIZER')
-            algorithm=param.MSK_IPAR_OPTIMIZER;
-        end
+        
     case 'mosek_linprog'
         %% mosek
         % if mosek is installed, and the paths are added ahead of matlab's
@@ -806,53 +801,8 @@ switch solver
     case 'gurobi'
         % Free academic licenses for the Gurobi solver can be obtained from
         % http://www.gurobi.com/html/academic.html
-        % resultgurobi = struct('x',[],'objval',[],'pi',[]);
-
-        %  The params struct contains Gurobi parameters. A full list may be
-        %  found on the Parameter page of the reference manual:
-        %     http://www.gurobi.com/documentation/5.5/reference-manual/node798#sec:Parameters
-        %  For example:
-        %   params.outputflag = 0;          % Silence gurobi
-        %   params.resultfile = 'test.mps'; % Write out problem to MPS file
-
-        % params.method gives the algorithm used to solve continuous models
-        % -1=automatic,
-        %  0=primal simplex,
-        %  1=dual simplex,
-        %  2=barrier,
-        %  3=concurrent,
-        %  4=deterministic concurrent
-        % i.e. params.method     = 1;          % use dual simplex method
-
-        param=solverParams;
-        if ~isfield(param,'OutputFlag')
-            switch problemTypeParams.printLevel
-                case 0
-                    param.OutputFlag = 0;
-                    param.DisplayInterval = 1;
-                case 1
-                    param.OutputFlag = 0;
-                    param.DisplayInterval = 1;
-                otherwise
-                    % silent
-                    param.OutputFlag = 0;
-                    param.DisplayInterval = 1;
-            end
-        end
-
-        if isfield(param,'FeasibilityTol')
-            % update tolerance according to actual setting
-            problemTypeParams.feasTol = param.FeasibilityTol;
-        else
-            param.FeasibilityTol = problemTypeParams.feasTol;
-        end
-            
-        if isfield(param,'OptimalityTol')
-            % update tolerance according to actual setting
-            problemTypeParams.optTol = param.OptimalityTol;
-        else      
-            param.OptimalityTol = problemTypeParams.optTol;
-        end
+        param = mergeCobraParams(solverParams,problemTypeParams);
+        gurobiParam = setGurobiParam(param);
 
         gurobiLP.sense(1:length(b),1) = '=';
         gurobiLP.sense(csense == 'L') = '<';
@@ -879,24 +829,14 @@ switch solver
         %gurobi wants a dense double vector as an objective
         gurobiLP.obj = double(c)+0;%full
 
-
         % basis reuse - Ronan
         if ~isempty(basis)
             gurobiLP.cbasis = full(basis.cbasis);
             gurobiLP.vbasis = full(basis.vbasis);
         end
-        % set the solver specific parameters
-        param = updateStructData(param,solverParams);
 
-%         LPproblem = rmfield(LPproblem,'c');
-%         LPproblem = rmfield(LPproblem,'b');
-%         LPproblem = rmfield(LPproblem,'lb');
-%         LPproblem = rmfield(LPproblem,'ub');
-%         LPproblem = rmfield(LPproblem,'osense');
-%         LPproblem = rmfield(LPproblem,'csense');
-        
         % call the solver
-        resultgurobi = gurobi(gurobiLP,param);
+        resultgurobi = gurobi(gurobiLP,gurobiParam);
 
         % see the solvers original status -Ronan
         origStat = resultgurobi.status;
@@ -956,17 +896,17 @@ switch solver
             % i.e. params.method     = 1;          % use dual simplex method
             switch param.Method
                 case -1
-                    algorithm='automatic';
+                    method='automatic';
                 case 1
-                    algorithm='primal simplex';
+                    method='primal simplex';
                 case 2
-                    algorithm='dual simplex';
+                    method='dual simplex';
                 case 3
-                    algorithm='barrier';
+                    method='barrier';
                 case 4
-                    algorithm='concurrent';
+                    method='concurrent';
                 otherwise
-                    algorithm='deterministic concurrent';
+                    method='deterministic concurrent';
             end
         end
 
@@ -1153,7 +1093,7 @@ switch solver
         [solution,LPprob] = solveCobraLPCPLEX(LPproblem,problemTypeParams.printLevel,1,[],[],minNorm);
         solution.basis = LPprob.LPBasis;
         solution.solver = solver;
-        solution.algorithm = algorithm; % dummy
+        solution.lpmethod = lpmethod; % dummy
      %   solution.slack = [];
         if exist([pwd filesep 'clone1.log'],'file')
             delete('clone1.log')
@@ -1176,12 +1116,12 @@ switch solver
 %         Output:
 %         x             Solution found by the optimization function. If exitflag > 0, then x is a solution; otherwise, x is the value of the optimization routine when it terminated prematurely.
 %         fval          Value of the objective function at the solution x
-%         exitflag 	    Integer identifying the reason the optimization algorithm terminated
+%         exitflag 	    Integer identifying the reason the optimization method terminated
 %         output 	    Structure containing information about the optimization. The fields of the structure are:
 %           iterations:   Number of iterations
-%           algorithm:    Optimization algorithm used
+%           method:    Optimization method used
 %           message:      Exit message
-%           time:         Execution time of the algorithm
+%           time:         Execution time of the method
 %           cplexstatus:  Status code of the solution
 %           cplexstatusstring: Status string of the solution
 %         lambda 	    Structure containing the Lagrange multipliers at the solution x (separated by constraint type). This is only available for problems that do not contain quadratic constraints. See cplexqp() for details.
@@ -1266,9 +1206,9 @@ switch solver
             %this is the dual to the simple ineequality constraints : reduced costs
             w =  lambda.lower - lambda.upper;
             
-            algorithm = output.algorithm;
+            lpmethod = output.method;
             if 0 %debug
-                disp(algorithm)
+                disp(method)
                 norm(osense * c  - A' * y - w,inf)
             end
         else
@@ -1307,13 +1247,20 @@ switch solver
         %stat = origStat;
         if origStat==1 && isfield(CplexLPproblem.Solution,'dual')
             stat = 1;
-            f = CplexLPproblem.Solution.objval;
             if ~isfield(CplexLPproblem.Solution,'x')
                 disp(CplexLPproblem)
             end
             x = CplexLPproblem.Solution.x;
-            w = osense*CplexLPproblem.Solution.reducedcost;
-            y = osense*CplexLPproblem.Solution.dual;
+            if 1
+                f = c'*x;
+                w = CplexLPproblem.Solution.reducedcost;
+                y = CplexLPproblem.Solution.dual;
+            else
+                f = CplexLPproblem.Solution.objval; %do not use as it gives the opposite sign for maximise
+                w = osense*CplexLPproblem.Solution.reducedcost;
+                y = osense*CplexLPproblem.Solution.dual;
+            end
+
             %res1 = A*solution.full + solution.slack - b;
             s = b - A * x; % output the slack variables
             
@@ -1362,30 +1309,35 @@ switch solver
             if isfield(CplexLPproblem.Solution ,'dual')
                 y = osense*CplexLPproblem.Solution.dual;
             end
+        elseif origStat==101
+            warning('101')
         else
             stat = -1;
         end
-        
-        % cplexStatus analyzes the CPLEX output Inform code and returns
-        % the CPLEX solution status message in ExitText and the TOMLAB exit flag
-        % in ExitFlag
-        [origStatText, ~] = cplexStatus(origStat);
+        if 0
+            % cplexStatus analyzes the CPLEX output Inform code and returns
+            % the CPLEX solution status message in ExitText and the TOMLAB exit flag
+            % in ExitFlag
+            [origStatText, ~] = cplexStatus(origStat);
+        else
+            origStat = CplexLPproblem.Solution.statusstring;
+        end
 
         switch CplexLPproblem.Param.lpmethod.Cur
             case 0
-                algorithm='Automatic';
+                method='AUTOMATIC';
             case 1
-                algorithm='Primal Simplex';
+                method='PRIMAL';
             case 2
-                algorithm='Dual Simplex';
+                method='DUAL';
             case 3
-                algorithm='Network Simplex (Does not work for almost all stoichiometric matrices)';
+                method='NETWORK';
             case 4
-                algorithm='Barrier (Interior point method)';
+                method='BARRIER';
             case 5
-                algorithm='Sifting';
+                method='SIFTING';
             case 6
-                algorithm='Concurrent Dual, Barrier and Primal';
+                method='CONCURRENT';
         end
         % 1 = (Simplex or Barrier) Optimal solution is available.
         labindex = 1;
@@ -1551,6 +1503,7 @@ switch solver
         fprintf(' > The interface to ''mps'' from solveCobraLP is not supported anymore.\n -> Instead use >> writeCbModel(model, ''mps'');\n');
         % temporary legacy support
         writeLPProblem(LPproblem,'fileName','LP.mps','solverParams',solverParams);
+        stat = 1;
     otherwise
         if isempty(solver)
             error('There is no solver for LP problems available');
@@ -1586,11 +1539,11 @@ end
 
 if ~strcmp(solver,'cplex_direct') && ~strcmp(solver,'mps')
     % assign solution
-    t = etime(clock, t_start);
+    time = etime(clock, t_start);
     if ~exist('basis','var'), basis=[]; end
     [solution.full, solution.obj, solution.rcost, solution.dual, solution.slack, ...
-     solution.solver, solution.algorithm, solution.stat, solution.origStat, ...
-     solution.origStatText,solution.time,solution.basis] = deal(x,f,w,y,s,solver,algorithm,stat,origStat,origStatText,t,basis);
+     solution.solver, solution.lpmethod, solution.stat, solution.origStat, ...
+     solution.origStatText,solution.time,solution.basis] = deal(x,f,w,y,s,solver,lpmethod,stat,origStat,origStatText,time,basis);
 elseif strcmp(solver,'mps')
     solution = [];
 end
@@ -1774,12 +1727,12 @@ end
 % end
 
 
-% function [w,y,algorithm,stat,exitflag,t] = parseOPTIresult(varargin)
+% function [w,y,method,stat,exitflag,t] = parseOPTIresult(varargin)
 % exitflag = varargin{1};
 % info = varargin{2};
 % w = [];
 % y = [];
-% algorithm = [];
+% method = [];
 % stat = exitflag;
 % t = [];
 % if isfield(info,'Lambda')
@@ -1792,7 +1745,7 @@ end
 %     end
 % end
 % if isfield(info,'Algorithm')
-%     algorithm = info.Algorithm;
+%     method = info.Algorithm;
 % end
 % switch exitflag
 %     case -5 % user exit
@@ -1858,18 +1811,18 @@ end
 %     end
 %     if strcmp(params.solver,'clp') | strcmp(params.solver,'ooqp') |...
 %        strcmp(params.solver,'scip') | strcmp(params.solver,'auto')
-%         if isfield(params,'algorithm')
-%             solverOpts.algorithm = params.algorithm;
+%         if isfield(params,'method')
+%             solverOpts.method = params.method;
 %         end
 %     else
-%         warning('OPTI algorithm cannot be set for LP solvers other than CLP, OOQP and SCIP');
+%         warning('OPTI method cannot be set for LP solvers other than CLP, OOQP and SCIP');
 %     end
 %     varargin = varargin(2:end);
 % end
 % % other input arguments are name value pairs
 % optname = varargin(1:2:length(varargin));
 % optval = varargin(2:2:length(varargin));
-% % optlist = {'solver','algorithm','printLevel','display','warnings',...
+% % optlist = {'solver','method','printLevel','display','warnings',...
 % %            'tolrfun','tolafun','optTol','solverOpts'};
 % if any(strcmpi(optname,'solver'))
 %     opts = optiset(opts,'solver',optval{strcmpi(optname,'solver')});
@@ -1907,8 +1860,8 @@ end
 % % else
 % %     solverOpts = [];
 % % end
-% if any(strcmpi(optname,'algorithm'))
-%     solverOpts.algorithm = optval{strcmpi(optname,'algorithm')};
+% if any(strcmpi(optname,'method'))
+%     solverOpts.method = optval{strcmpi(optname,'method')};
 % end
 % if any(strcmpi(optname,'optTol'))
 %     optTol = optval{strcmpi(optname,'optTol')};

@@ -5,6 +5,8 @@
 %
 
 % initialize the test
+solverPkgs = prepareTest('requiredToolboxes', {'statistics_toolbox'});
+
 fileDir = fileparts(which('testSampleCbModelRHMC'));
 models = {};
 models{1} = getDistributedModel('ecoli_core_model.mat');

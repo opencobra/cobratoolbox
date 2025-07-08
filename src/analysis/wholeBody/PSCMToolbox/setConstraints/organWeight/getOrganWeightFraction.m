@@ -17,7 +17,7 @@ for i = 1 : size(organWeightData,1)
             elseif  exist('weigth', 'var') && weigth ==125
                 Col = Cols(4)-2;
             else
-                Col = Cols(1)-2
+                Col = Cols(1)-2;
             end
         elseif strcmp(sex,'female')
             Col = Cols(2)-2;

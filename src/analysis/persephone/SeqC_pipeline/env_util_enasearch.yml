@@ -1,0 +1,6 @@
+name: env_util_enasearch
+channels:
+- bioconda
+- conda-forge
+dependencies:
+- enasearch

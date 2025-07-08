@@ -1,5 +1,22 @@
 function [metabolite_structure,IDsAdded] = parseKeggWebpage(metabolite_structure,startSearch,endSearch)
 
+% This function searches kegg for identifiers. It will either use
+% kegg ids provided by the metabolite structure.
+%
+% INPUT
+% metabolite_structure  metabolite structure
+% startSearch           specify where the search should start in the
+%                       metabolite structure. Must be numeric (optional, default: all metabolites
+%                       in the structure will be search for)
+% endSearch             specify where the search should end in the
+%                       metabolite structure. Must be numeric (optional, default: all metabolites
+%                       in the structure will be search for)
+%
+% OUTPUT
+% metabolite_structure  updated metabolite structure
+%
+%
+% Ines Thiele, 09/2021
 
 annotationSource = 'Kegg website';
 annotationType = 'automatic';

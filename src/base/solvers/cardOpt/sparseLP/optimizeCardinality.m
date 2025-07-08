@@ -88,7 +88,9 @@ solution.y = [];
 solution.z = [];
 solution.stat = 1;
 
-feasTol = getCobraSolverParams('LP', 'feasTol');
+[feasTol] = getCobraSolverParams('LP', 'feasTol');
+
+global CBT_LP_SOLVER
 
 %% Check inputs
 if ~exist('param','var') || isempty(param)
@@ -187,111 +189,92 @@ if ~isfield(problem,'alpha1')
 end
 
 if ~isfield(problem,'p')
-    error('Error: the size of vector x is not defined');
     solution.stat = -1;
-    return;
+    error('Error: the size of vector x is not defined');
 else
     ltp=length(problem.p);
     ltq=length(problem.q);
     ltr=length(problem.r);
-    if ltp==1
-        if problem.p < 0
-            error('Error: p should be a non-negative number');
+    if ltp==1 && problem.p~=0
+        if length(problem.p)~=1 && ~islogical(problem.p)
             solution.stat = -1;
-            return;
+            error('Error: p should be a logical vector');
         end
     else
         if ltp~=ltq && ltq~=ltr
-            error('Error: if p,q,r are Boolean vectors, they should be the same dimension');
             solution.stat = -1;
+            error('Error: if p,q,r are Boolean vectors, they should be the same dimension');
         end
     end
 end
 
 if ~isfield(problem,'q')
-    error('Error: the size/location of vector y is not defined');
     solution.stat = -1;
-    return;
+    error('Error: the size/location of vector y is not defined');
 else
-    if length(problem.q)==1
-        if problem.q < 0
-            error('Error: q should be a non-negative number');
-            solution.stat = -1;
-            return;
-        end
+    if length(problem.q)~=1 && ~islogical(problem.q) && problem.q~=0
+        solution.stat = -1;
+        error('Error: q should be a logical vector');
     end
 end
 
 if ~isfield(problem,'r')
-    error('Error: the size of vector z is not defined');
     solution.stat = -1;
-    return;
+    error('Error: the size of vector z is not defined');
 else
-    if length(problem.r)==1
-        if problem.r < 0
-            error('Error: r should be a non-negative number');
-            solution.stat = -1;
-            return;
-        end
+    if length(problem.r)~=1 && ~islogical(problem.r)
+        solution.stat = -1;
+        error('Error: r should be a logical vector');
     end
 end
 
 if ~isfield(problem,'A')
-    error('Error: LHS matrix is not defined');
     solution.stat = -1;
-    return;
+    error('Error: LHS matrix is not defined');
 else
     if length(problem.p)==1
         if size(problem.A,2) ~= (problem.p + problem.q + problem.r)
-            error('Error: the number of columns of A is not correct');
             solution.stat = -1;
-            return;
+            error('Error: the number of columns of A is not correct');
         end
     else
         if size(problem.A,2) ~= length(problem.p)
-            error('The number of columns of A is not consistent with the dimension of boolean vectors p,q,r.');
             solution.stat = -1;
-            return;
+            error('The number of columns of A is not consistent with the dimension of boolean vectors p,q,r.');
         end
     end
 end
 
 if ~isfield(problem,'lb')
-    error('Error: lower bound vector is not defined');
     solution.stat = -1;
-    return;
+    error('Error: lower bound vector is not defined');
 else
     if length(problem.p)==1
         if length(problem.lb) ~= (problem.p + problem.q + problem.r)
-            error('Error: the size of vector lb is not correct');
             solution.stat = -1;
-            return;
+            error('Error: the size of vector lb is not correct');
         end
     else
         if length(problem.lb) ~= length(problem.p)
-            error('Error: the size of vector lb is not correct');
             solution.stat = -1;
-            return;
+            error('Error: the size of vector lb is not correct');
         end
     end
 end
 
 if ~isfield(problem,'ub')
-    error('Error: upper bound vector is not defined');
     solution.stat = -1;
-    return;
+    error('Error: upper bound vector is not defined');
 else
     if length(problem.p)==1
         if length(problem.ub) ~= (problem.p + problem.q + problem.r)
-            error('Error: the size of vector ub is not correct');
             solution.stat = -1;
-            return;
+            error('Error: the size of vector ub is not correct');
         end
     else
         if length(problem.ub) ~= length(problem.p)
-            error('Error: the size of vector ub is not correct');
             solution.stat = -1;
-            return;
+            error('Error: the size of vector ub is not correct');
         end
     end
 end
@@ -313,26 +296,22 @@ if ~isfield(problem,'k')
 else
     if length(problem.p)==1
         if length(problem.k) ~= problem.p
-            error('Error: the size of weight vector k is not correct');
             solution.stat = -1;
-            return;
+            error('Error: the size of weight vector k is not correct');
         else
             if any(problem.k <=0)
-                error('Error: the weight vector k should be strictly positive');
                 solution.stat = -1;
-                return;
+                error('Error: the weight vector k should be strictly positive');
             end
         end
     else
         if length(problem.k) ~= length(problem.p)
-            error('Error: the size of weight vector k is not correct');
             solution.stat = -1;
-            return;
+            error('Error: the size of weight vector k is not correct');
         else
             if any(problem.k(problem.p) <=0) %only select subset
-                error('Error: the weight vector k(problem.p) should be strictly positive');
                 solution.stat = -1;
-                return;
+                error('Error: the weight vector k(problem.p) should be strictly positive');
             end
         end
     end

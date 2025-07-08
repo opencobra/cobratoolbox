@@ -249,8 +249,9 @@ else
     cplex.Param.sifting.display.Cur = printLevel;
 end
 
-%limit the processing to 3 threads
-cplex.Param.threads.Cur = 3;
+% Sets the default number of parallel threads that will be invoked by any CPLEX parallel optimizer.
+cplex.Param.threads.Cur = 3; %limit the processing to 3 threads
+cplex.Param.threads.Cur = 0; % Automatic: let CPLEX decide; default
 
 % Optimize the problem
 cplex.solve();

@@ -1,0 +1,10 @@
+sphinxcontrib-matlabdomain==0.18.0
+recommonmark
+sphinxcontrib-fulltoc==1.2.0
+sphinx-tabs
+sphinx_rtd_theme==1.2.2
+git+https://github.com/opencobra/sphinx_cobra_theme.git@develop#egg=sphinx_cobra_theme
+sphinxcontrib-napoleon
+pyGithub
+sphinxcontrib-bibtex
+datetime

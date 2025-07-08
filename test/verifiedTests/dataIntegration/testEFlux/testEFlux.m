@@ -6,10 +6,15 @@
 % Author:
 %     - Original file: Thomas Pfau
 
-currentDir = pwd;
+
+% save the current path and initialize the test
+currentDir = cd(fileparts(which(mfilename)));
+
+% determine the test path for references
+testPath = pwd;
+
 % initialize the test
-fileDir = fileparts(which('testEFlux.m'));
-cd(fileDir);
+fprintf(' -- Running testEFlux ...\n');
 
 % requires access to GEO to download data.
 % Matlabs tolerances and precision seem incompatible for this function.
@@ -64,4 +69,9 @@ for k = 1:numel(solverPkgs.LP)
     assert(abs(fChangeNoise-fChangeOrig) < 1e-4);
     assert(stderr > 0) % this should could be wrong at some point, but it is so unlikely....    
 end
+
+% Print a success message
+fprintf('Done.\n');
+fprintf('testEFlux passed successfully.\n');
+
 cd(currentDir)

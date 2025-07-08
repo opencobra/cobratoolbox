@@ -29,6 +29,10 @@ printConstraints(model, minInf, maxInf);
 diary off
 text1 = readMixedData('refData_printConstraints.txt');
 text2 = readMixedData('printConstraints.txt');
+
+% Remove formatting difference
+text1 = regexprep(text1, '<strong>|</strong>', '');  % Remove HTML tags
+text2 = regexprep(text2, '<strong>|</strong>', '');  % Just in case
 assert(isequal(text1, text2));
 
 % remove the generated file

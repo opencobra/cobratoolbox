@@ -10,8 +10,8 @@ function directories = XomicsToMultipleModels(modelGenerationConditions, param)
 %    modelGenerationConditions: Options to vary or to save the data
 %
 %       * .activeGenesApproach -﻿The different approached to identify the active
-%          genes (Possible options: 'deleteModelGenes' and 'oneRxnPerActiveGene';
-%          default: 'deleteModelGenes');
+%          genes (Possible options: 'allRxnPerActiveGene' and 'oneRxnPerActiveGene';
+%          default: 'oneRxnPerActiveGene');
 %       * .boundsToRelaxExoMet - The type of bounds that can be relaxed, upper bounds,
 %          lower bounds or both ('b'; possible options: 'u', 'l' and 'b';
 %          default: 'b');
@@ -29,7 +29,7 @@ function directories = XomicsToMultipleModels(modelGenerationConditions, param)
 %       * .metabolomicsBeforeExtraction - Indicate whether the metabolomic
 %          data is included before or after the extraction (Possible options:
 %          true and false; default: true);
-%       * .modelExtractionAlgorithm - Extraction solver (Possible options: 'fastCore' and
+%       * .tissueSpecificSolver - Extraction solver (Possible options: 'fastCore' and
 %          'thermoKernel'; default: 'thermoKernel')
 %       * .outputDir - Directory where the models will be generated (Default: current
 %          directory)
@@ -62,8 +62,9 @@ directories = [];
 if isfield(modelGenerationConditions, 'cobraSolver')
     cobraSolver = modelGenerationConditions.cobraSolver;
 else
-    cobraSolver = {'gurobi'};
+    cobraSolver = {'mosek'};
 end
+
 % genericModel
 if isfield(modelGenerationConditions, 'genericModel')
     models = modelGenerationConditions.genericModel;
@@ -71,6 +72,7 @@ if isfield(modelGenerationConditions, 'genericModel')
 else
     error('A generic model is needed in modelGenerationConditions.genericModel')
 end
+
 % Context-specific input data
 if isfield(modelGenerationConditions, 'specificData')
     specificDataforXomics = modelGenerationConditions.specificData;
@@ -78,14 +80,16 @@ if isfield(modelGenerationConditions, 'specificData')
 else
     specificDataforXomics = struct;
 end
+
 % Tissue specific solver
-if isfield(modelGenerationConditions, 'modelExtractionAlgorithm')
-    modelExtractionAlgorithm = modelGenerationConditions.modelExtractionAlgorithm;
-elseif ~isfield(modelGenerationConditions, 'modelExtractionAlgorithm') && isfield(param, 'modelExtractionAlgorithm')
-    modelExtractionAlgorithm = {param.modelExtractionAlgorithm};
+if isfield(modelGenerationConditions, 'tissueSpecificSolver')
+    tissueSpecificSolver = modelGenerationConditions.tissueSpecificSolver;
+elseif ~isfield(modelGenerationConditions, 'tissueSpecificSolver') && isfield(param, 'tissueSpecificSolver')
+    tissueSpecificSolver = {param.tissueSpecificSolver};
 else
-    modelExtractionAlgorithm = {'thermoKernel'};
+    tissueSpecificSolver = {'thermoKernel'};
 end
+
 % Active genes approach
 if isfield(modelGenerationConditions, 'activeGenesApproach')
     activeGenesApproach = modelGenerationConditions.activeGenesApproach;
@@ -94,6 +98,7 @@ elseif ~isfield(modelGenerationConditions, 'activeGenesApproach') && isfield(par
 else
     activeGenesApproach = {'oneRxnPerActiveGene'};
 end
+
 % Transcriptomic threshold
 if isfield(modelGenerationConditions, 'transcriptomicThreshold')
     transcriptomicThreshold = modelGenerationConditions.transcriptomicThreshold;
@@ -102,6 +107,7 @@ elseif ~isfield(modelGenerationConditions, 'transcriptomicThreshold') && isfield
 else
     transcriptomicThreshold = 2;
 end
+
 % Limit bounds
 if isfield(modelGenerationConditions, 'limitBounds')
     limitBounds = modelGenerationConditions.limitBounds;
@@ -110,6 +116,7 @@ elseif ~isfield(modelGenerationConditions, 'limitBounds') && isfield(param, 'lim
 else
     limitBounds = 10e4;
 end
+
 % Use inactive genes from transcriptomics
 if isfield(modelGenerationConditions, 'inactiveGenesTranscriptomics')
     inactiveGenesTranscriptomics = modelGenerationConditions.inactiveGenesTranscriptomics;
@@ -118,6 +125,7 @@ elseif ~isfield(modelGenerationConditions, 'inactiveGenesTranscriptomics') && is
 else
     inactiveGenesTranscriptomics = false;
 end
+
 % Ions exchange
 if isfield(modelGenerationConditions, 'closeIons')
     closeIons = modelGenerationConditions.closeIons;
@@ -126,12 +134,23 @@ elseif ~isfield(modelGenerationConditions, 'closeIons') && isfield(param, 'close
 else
     closeIons = false;
 end
+
 % boundsToRelaxExoMet
 if isfield(modelGenerationConditions, 'boundsToRelaxExoMet')
     boundsToRelaxExoMet = modelGenerationConditions.boundsToRelaxExoMet;
 else
     boundsToRelaxExoMet = {'b'};
 end
+
+% activeOverInactive
+if isfield(modelGenerationConditions, 'activeOverInactive')
+    activeOverInactive = modelGenerationConditions.activeOverInactive;
+elseif ~isfield(modelGenerationConditions, 'activeOverInactive') && isfield(param, 'activeOverInactive')
+    activeOverInactive = param.activeOverInactive;
+else
+    activeOverInactive = false;
+end
+
 % curationOverOmics
 if isfield(modelGenerationConditions, 'curationOverOmics')
     curationOverOmics = modelGenerationConditions.curationOverOmics;
@@ -140,6 +159,7 @@ elseif ~isfield(modelGenerationConditions, 'curationOverOmics') && isfield(param
 else
     curationOverOmics = false;
 end
+
 % metabolomicsBeforeExtraction
 if isfield(modelGenerationConditions, 'metabolomicsBeforeExtraction')
     metabolomicsBeforeExtraction = modelGenerationConditions.metabolomicsBeforeExtraction;
@@ -163,7 +183,7 @@ end
 if length(specificDataLabels) > 1
     conditionsBool(3) = true;
 end
-if length(modelExtractionAlgorithm) > 1
+if length(tissueSpecificSolver) > 1
     conditionsBool(4) = true;
 end
 if length(activeGenesApproach) > 1
@@ -181,7 +201,7 @@ end
 if length(closeIons) > 1
     conditionsBool(9) = true;
 end
-if length(boundsToRelaxExoMet) > 1
+if length(activeOverInactive) > 1
     conditionsBool(10) = true;
 end
 if length(curationOverOmics) > 1
@@ -197,13 +217,13 @@ unknownmodelGenerationConditions = setdiff(fieldnames(modelGenerationConditions)
     {'cobraSolver' 
     'genericModel'
     'specificData'
-    'modelExtractionAlgorithm'
+    'tissueSpecificSolver'
     'activeGenesApproach'
     'transcriptomicThreshold'
     'limitBounds'
     'inactiveGenesTranscriptomics'
     'closeIons'
-    'boundsToRelaxExoMet'
+    'activeOverInactive'
     'curationOverOmics'
     'metabolomicsBeforeExtraction'
     'outputDir'});
@@ -227,7 +247,8 @@ for firstGruoup = 1:length(cobraSolver)
             [solverOK, solverInstalled] = changeCobraSolver('ibm_cplex','all');
         case 'mosek'
             solverLabel = 'mosek';
-            [solverOK, solverInstalled] = changeCobraSolver('mosek','all');
+            [solverOK, solverInstalled] = changeCobraSolver('mosek','LP');
+            [solverOK, solverInstalled] = changeCobraSolver('mosek','QP');
     end
     
     % Input model
@@ -241,8 +262,8 @@ for firstGruoup = 1:length(cobraSolver)
             specificData = specificDataforXomics.(specificDataLabels{thirdGruoup});
             
             % Extraction algorithm
-            for fourthGroup = 1:length(modelExtractionAlgorithm)
-                param.modelExtractionAlgorithm = modelExtractionAlgorithm{fourthGroup};
+            for fourthGroup = 1:length(tissueSpecificSolver)
+                param.tissueSpecificSolver = tissueSpecificSolver{fourthGroup};
                 
                 % Active genes approach
                 for fifthGroup = 1:length(activeGenesApproach)
@@ -277,18 +298,15 @@ for firstGruoup = 1:length(cobraSolver)
                                         ionsLabel = 'openIons';
                                     end
                                     
-                                    % Bounds to relax metabolomicsToModel (TODO)
-                                    for tenthGroup = 1:length(boundsToRelaxExoMet)
-                                        param.relaxOptions.bounds = boundsToRelaxExoMet{tenthGroup};
-                                        switch boundsToRelaxExoMet{tenthGroup}
-                                            case 'upper'
-                                                boundsLabel = 'mediaUBRelaxed';
-                                            case 'lower'
-                                                boundsLabel = 'mediaLBRelaxed';
-                                            case 'both'
-                                                boundsLabel = 'mediaBBRelaxed';
+                                    % Active data over inactive
+                                    for tenthGroup = 1:length(activeOverInactive)
+                                        param.activeOverInactive = activeOverInactive(tenthGroup);
+                                        if activeOverInactive(tenthGroup)
+                                            activationLabel = 'activeOverInactive';
+                                        else
+                                            activationLabel = 'inactiveOverActive';
                                         end
-                                        
+
                                         for eleventhGroup = 1:length(curationOverOmics)
                                             param.curationOverOmics = curationOverOmics(eleventhGroup);
                                             if curationOverOmics(eleventhGroup)
@@ -309,13 +327,13 @@ for firstGruoup = 1:length(cobraSolver)
                                                 conditions = [solverLabel; ...
                                                     modelLabel; ...
                                                     specificDataLabel; ...
-                                                    modelExtractionAlgorithm{fourthGroup}; ...
+                                                    tissueSpecificSolver{fourthGroup}; ...
                                                     activeGenesApproach{fifthGroup}; ...
                                                     {['transcriptomicsT' num2str(transcriptomicThreshold(sixthGroup))]}; ...
                                                     {['limitBoundary.' num2str(limitBounds(seventhGroup))]}; ...
                                                     inactiveGenesTLabel; ...
                                                     ionsLabel; ...
-                                                    boundsLabel;
+                                                    activationLabel;
                                                     priorityLabel;
                                                     exoMetLabel];
                                                 
@@ -358,20 +376,20 @@ for firstGruoup = 1:length(cobraSolver)
                                                     fprintf('%s\n', ['Prexisting model in ' workingDirectory ])
                                                 else
                                                     fprintf('%s\n', ['Computing new model in ' workingDirectory ])
-                                                    try
+%                                                     try
                                                         [omicsModel, modelGenerationReport] = XomicsToModel(genericModel, specificData, param);
                                                         % Save the model with the correct name
                                                         Model = omicsModel;
                                                         save([workingDirectory filesep 'Model.mat'], 'Model', 'modelGenerationReport')
-                                                    catch ME
-                                                        warning('XomicsToModel failed to run')
-                                                        disp(param)
-                                                        disp(ME)
-                                                        msgText = getReport(ME)
-                                                        % Close the diary if the run crashed
-                                                        fprintf('%s\n', ['Diary written to: ' param.diaryFilename])
-                                                        diary off
-                                                    end
+%                                                     catch ME
+%                                                         warning('XomicsToModel failed to run')
+%                                                         disp(param)
+%                                                         disp(ME)
+%                                                         msgText = getReport(ME)
+%                                                         % Close the diary if the run crashed
+%                                                         fprintf('%s\n', ['Diary written to: ' param.diaryFilename])
+%                                                         diary off
+%                                                     end
                                                 end
                                                
                                                 if any(conditionsBool)

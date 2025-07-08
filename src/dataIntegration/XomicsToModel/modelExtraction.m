@@ -106,6 +106,7 @@ if ~isempty(coreMetAbbr) || ~isempty(coreRxnAbbr) || isfield(specificData, 'pres
                 fprintf('%s\n', 'Using unitary weights on metabolites and reactions as input to thermoKernel.')
                 defaultRxnWeicoreRxnBool = ismember(model.rxns, coreRxnAbbr);ght = 1.1;
                 defaultMetWeight = 1.1;
+                defaultRxnWeight = 1.1;
             end
             
             % Correspondence between weights on core metabolites and reactions

@@ -191,7 +191,7 @@ function [] = configEnvVars(printLevel)
                 end
 
                 % Method 1: check if the solver is already on the MATLAB path
-                isOnPath = ~isempty(strfind(lower(path), lower(possibleDir)));
+                isOnPath = contains(lower(path), lower(possibleDir));
 
                 % find the index of the most recently added solver path
                 tmp = path;

@@ -1,0 +1,10 @@
+name: env_s4_kraken
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - python
+#  - bracken
+#    - bioconda::bracken=2.9
+#  - bioconda::kraken2=2.1.*
+#  - krakentools=1.2 

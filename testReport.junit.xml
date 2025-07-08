@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="COBRA Toolbox Test Suites" tests="235" failures="10" errors="10" time="824.781">
+  <testsuite name="COBRA Toolbox Test Suite" tests="235" failures="10" errors="10" skipped="28" time="824.781">
+    <testcase classname="COBRA Toolbox" name="testBiomassPrecursorCheck.m" time="0.168">
+      <skipped message="The test requires licenses for the following Toolboxes: statistics_toolbox
+The test requires the following Toolboxes to be installed: statistics_toolbox
+"/>
+    </testcase>
+    <testcase classname="COBRA Toolbox" name="testCalculateFluxShifts.m" time="4.403"/>
+    <testcase classname="COBRA Toolbox" name="testCalculatePercentile.m" time="0.517"/>
+    <testcase classname="COBRA Toolbox" name="testGeneExpressionComparison.m" time="0.849"/>
+    <testcase classname="COBRA Toolbox" name="testConnectedComponents.m" time="0.059">
+      <skipped message="The test requires licenses for the following Toolboxes: image_toolbox
+The test requires the following Toolboxes to be installed: image_toolbox
+"/>
+    </testcase>
+    <testcase classname="COBRA Toolbox" name="testCorrespondingRowsCols.m" time="0.105"/>
+    <testcase classname="COBRA Toolbox" name="testDeletionStudy.m" time="2.357"/>
+    <testcase classname="COBRA Toolbox" name="testDynamicFBA.m" time="0.261"/>
+    <testcase classname="COBRA Toolbox" name="testenumOptimalSols.m" time="1.687"/>
+    <testcase classname="COBRA Toolbox" name="testFindMetsFromRxns.m" time="0.201"/>
+    <testcase classname="COBRA Toolbox" name="testFindRxnsFromGenes.m" time="0.174"/>
+    <testcase classname="COBRA Toolbox" name="testFindRxnsFromMets.m" time="0.274"/>
+    <testcase classname="COBRA Toolbox" name="testFindSubSystemsFromGenes.m" time="0.221"/>
+    <testcase classname="COBRA Toolbox" name="testGetModelSizes.m" time="2.156"/>
+    <testcase classname="COBRA Toolbox" name="testSearchModel.m" time="1.853"/>
+    <testcase classname="COBRA Toolbox" name="testFASTCC.m" time="0.397"/>
+    <testcase classname="COBRA Toolbox" name="testFASTCORE.m" time="1.263"/>
+    <testcase classname="COBRA Toolbox" name="testCheckModelPreFBA.m" time="1.934"/>
+    <testcase classname="COBRA Toolbox" name="testFBA.m" time="1.597"/>
+    <testcase classname="COBRA Toolbox" name="testMinimizeModelFlux.m" time="0.492"/>
+    <testcase classname="COBRA Toolbox" name="testFEA.m" time="0.058">
+      <skipped message="The test requires licenses for the following Toolboxes: bioinformatics_toolbox and statistics_toolbox
+The test requires the following Toolboxes to be installed: bioinformatics_toolbox and statistics_toolbox
+"/>
+    </testcase>
+    <testcase classname="COBRA Toolbox" name="testFVA.m" time="26.158">
+      <failure message="Assertion failed."/>
+    </testcase>
+    <testcase classname="COBRA Toolbox" name="testFastFVA.m" time="0.104">
+      <skipped message="ibm_cplex is a required solver for the test and not available on your system.
+The test requires licenses for the following Toolboxes: distrib_computing_toolbox
+The test requires the following Toolboxes to be installed: distrib_computing_toolbox
+"/>
+    </testcase>
+    <testcase classname="COBRA Toolbox" name="testMtFVA.m" time="0.039">
+      <skipped message="ibm_cplex is a required solver for the test and not available on your system.
+"/>
+    </testcase>
+    <testcase classname="COBRA Toolbox" name="testFilterNonFluxReactions.m" time="1.262"/>
+    <testcase classname="COBRA Toolbox" name="testFilterRateLimittingReactions.m" time="1.152"/>
+    <testcase classname="COBRA Toolbox" name="testFindBlockedReaction.m" time="1.463"/>
+    <testcase classname="COBRA Toolbox" name="testFindRxnsFromSubSystem.m" time="0.085"/>
+    <testcase classname="COBRA Toolbox" name="testFindHighlyLowlyExpressedGenesGT1.m" time="0.400"/>
+    <testcase classname="COBRA Toolbox" name="testGeneMCS.m" time="0.061">
+      <skipped message="ibm_cplex is a required solver for the test and not available on your system.
+"/>
+    </testcase>
+    <testcase classname="COBRA Toolbox" name="testGeometricFBA.m" time="0.582"/>
+    <testcase classname="COBRA Toolbox" name="testGetModelSubSystems.m" time="0.144"/>
+    <testcase classname="COBRA Toolbox" name="testIsReactionInSubSystem.m" time="0.125"/>
+    <testcase classname="COBRA Toolbox" name="testKLDis.m" time="0.100"/>
+    <testcase classname="COBRA Toolbox" name="testFindHighlyLowlyExpressedGenesLT1.m" time="2.982"/>
+    <testcase classname="COBRA Toolbox" name="testFindHighlyLowlyExpressedGenesLT2.m" time="3.596"/>
+    <testcase classname="COBRA Toolbox" name="testMDFBA.m" time="1.390"/>
+    <testcase classname="COBRA Toolbox" name="testMOMA.m" time="0.134">
+      <skipped message="The test requires at least one QP solver but no solver is installed
+The following solvers are not compatible with this test and therefore excluded:
+qpng and mosek and gurobi and pdco"/>
+    </testcase>
+    <testcase classname="COBRA Toolbox" name="testMTA.m" time="0.035">
+      <skipped message="The test requires licenses for the following Toolboxes: statistics_toolbox
+The test requires the following Toolboxes to be installed: statistics_toolbox
+qpng is not compatible with the tested function and thus excluded."/>
+    </testcase>
+    <testcase classname="COBRA Toolbox" name="testCoupleRxnList2Rxn.m" time="1.240"/>
+    <testcase classname="COBRA Toolbox" name="testCreateMultipleSpeciesModel.m" time="1.852"/>
+    <testcase classname="COBRA Toolbox" name="testCreatePanModels.m" time="10.889">
+      <error message="Undefined function &apos;gcp&apos; for input arguments of type &apos;char&apos;."/>
+    </testcase>
+    <testcase classname="COBRA Toolbox" name="testJoinModelsPairwiseFromList.m" time="31.829"/>
+    <testcase classname="COBRA Toolbox" name="testMgPipe.m" time="0.063">
+      <skipped message="ibm_cplex is a required solver for the test and not available on your system.
+The test requires licenses for the following Toolboxes: distrib_computing_toolbox
+The test requires the following Toolboxes to be installed: distrib_computing_toolbox
+"/>
+    </testcase>
+    <testcase classname="COBRA Toolbox" name="testSimulatePairwiseInteractions.m" time="63.379"/>
+    <testcase classname="COBRA Toolbox" name="testTranslateMetagenome2AGORA.m" time="0.229"/>
+    <testcase classname="COBRA Toolbox" name="testNullspace.m" time="0.621"/>
+    <testcase classname="COBRA Toolbox" name="testOptimizeCbModel.m" time="3.967"/>
+    <testcase classname="COBRA Toolbox" name="testOptimizeCbModelCardinality.m" time="0.344"/>
+    <testcase classname="COBRA Toolbox" name="testPrintConstraints.m" time="0.818"/>
+    <testcase classname="COBRA Toolbox" name="testPrintFluxVector.m" time="0.754"/>
+    <testcase classname="COBRA Toolbox" name="testPrintGPRForRxns.m" time="0.622"/>
+    <testcase classname="COBRA Toolbox" name="testPrintRxnFormula.m" time="0.467"/>
+    <testcase classname="COBRA Toolbox" name="testPrintUptakeBound.m" time="0.286"/>
+    <testcase classname="COBRA Toolbox" name="testSurfNet.m" time="3.563"/>
+    <testcase classname="COBRA Toolbox" name="testQFCA.m" time="0.918"/>
+    <testcase classname="COBRA Toolbox" name="testROOM.m" time="1.110"/>
+    <testcase classname="COBRA Toolbox" name="testRank.m" time="1.091"/>
+    <testcase classname="COBRA Toolbox" name="testRobustnessAnalysis.m" time="2.196"/>
+    <testcase classname="COBRA Toolbox" name="testGpSampler.m" time="12.039"/>
+    <testcase classname="COBRA Toolbox" name="testSampleCbModel.m" time="0.056">
+      <skipped message="The test requires licenses for the following Toolboxes: statistics_toolbox
+The test requires the following Toolboxes to be installed: statistics_toolbox
+The following solvers are not compatible with this test and therefore excluded:
+mosek and dqqMinos and quadMinos and matlab and pdco"/>
+    </testcase>
+    <testcase classname="COBRA Toolbox" name="testSampleCbModelRHMC.m" time="2.134">
+      <error message="Unrecognized property &apos;extraHessian&apos; for class &apos;TwoSidedBarrier&apos;."/>
+    </testcase>
+    <testcase classname="COBRA Toolbox" name="testSteadyCom.m" time="0.121">
+      <skipped message="The test requires licenses for the following Toolboxes: statistics_toolbox
+The test requires the following Toolboxes to be installed: statistics_toolbox
+"/>
+    </testcase>
+    <testcase classname="COBRA Toolbox" name="testDetermineSignMatrix.m" time="0.968"/>
+    <testcase classname="COBRA Toolbox" name="testMinSpan.m" time="7.823"/>
+    <testcase classname="COBRA Toolbox" name="testScaleSMatrix.m" time="2.061"/>
+    <testcase classname="COBRA Toolbox" name="testSubspaces.m" time="32.824"/>
+    <testcase classname="COBRA Toolbox" name="testAddLoopLawConstraints.m" time="1.290"/>
+    <testcase classname="COBRA Toolbox" name="testCycleFreeFlux.m" time="1.854"/>
+    <testcase classname="COBRA Toolbox" name="testExtremePathways.m" time="0.579">
+      <error message="Could not read lrs output file."/>
+    </testcase>
+    <testcase classname="COBRA Toolbox" name="testExtremePools.m" time="0.433">
+      <error message="Could not read lrs output file."/>
+    </testcase>
+    <testcase classname="COBRA Toolbox" name="testFindExtremePathway.m" time="0.187"/>
+    <testcase classname="COBRA Toolbox" name="testLrsInterface.m" time="0.118">
+      <error message="Could not read lrs output file."/>
+    </testcase>
+    <testcase classname="COBRA Toolbox" name="testMatrixCoherence.m" time="0.039"/>
+    <testcase classname="COBRA Toolbox" name="testMoieties.m" time="0.064">
+      <skipped message="The test requires licenses for the following Toolboxes: statistics_toolbox
+The test requires the following Toolboxes to be installed: statistics_toolbox
+"/>
+    </testcase>
+    <testcase classname="COBRA Toolbox" name="testConvertHypergraph2BipartiteGraph.m" time="0.309"/>
+    <testcase classname="COBRA Toolbox" name="testfindMIIS.m" time="0.042">
+      <skipped message="ibm_cplex is a required solver for the test and not available on your system.
+"/>
+    </testcase>
+    <testcase classname="COBRA Toolbox" name="testpFBA.m" time="16.074"/>
+    <testcase classname="COBRA Toolbox" name="testOptimizeRegModel.m" time="0.212"/>
+    <testcase classname="COBRA Toolbox" name="testSolveBooleanRegModel.m" time="0.211"/>
+    <testcase classname="COBRA Toolbox" name="testdynamicRFBA.m" time="18.639">
+      <error message="Arrays have incompatible sizes for this operation."/>
+    </testcase>
+    <testcase classname="COBRA Toolbox" name="testuFBA.m" time="0.079">
+      <skipped message="The test requires licenses for the following Toolboxes: statistics_toolbox
+The test requires the following Toolboxes to be installed: statistics_toolbox
+"/>
+    </testcase>
+    <testcase classname="COBRA Toolbox" name="testSparseLP.m" time="1.838"/>
+    <testcase classname="COBRA Toolbox" name="testConvertCNAModelToCbModel.m" time="0.238"/>
+    <testcase classname="COBRA Toolbox" name="testConvertCobraToSBML.m" time="5.224"/>
+    <testcase classname="COBRA Toolbox" name="testConvertModelToEX.m" time="0.167"/>
+    <testcase classname="COBRA Toolbox" name="testConvertOldStyleModel.m" time="0.103"/>
+    <testcase classname="COBRA Toolbox" name="testListBiGGModels.m" time="1.776"/>
+    <testcase classname="COBRA Toolbox" name="testLoadBiGGModel.m" time="26.765"/>
+    <testcase classname="COBRA Toolbox" name="testReadSBML.m" time="17.596"/>
+    <testcase classname="COBRA Toolbox" name="testReadWriteCbModel.m" time="12.359"/>
+    <testcase classname="COBRA Toolbox" name="testSbmlTestModelToMat.m" time="33.988"/>
+    <testcase classname="COBRA Toolbox" name="testWriteCbModel.m" time="1.683"/>
+    <testcase classname="COBRA Toolbox" name="testWriteMinosProblem.m" time="0.070"/>
+    <testcase classname="COBRA Toolbox" name="testWriteSBML.m" time="42.281"/>
+    <testcase classname="COBRA Toolbox" name="testIsValidJSON.m" time="0.233"/>
+    <testcase classname="COBRA Toolbox" name="testTransformModel2KEGG.m" time="0.212"/>
+    <testcase classname="COBRA Toolbox" name="testGenerateFieldDescriptionFile.m" time="0.212">
+      <error message="Invalid file identifier. Use fopen to generate a valid file identifier."/>
+    </testcase>
+    <testcase classname="COBRA Toolbox" name="testGetDatabaseMappings.m" time="0.047"/>
+    <testcase classname="COBRA Toolbox" name="testGetDefaultCompartmentSymbols.m" time="0.048"/>
+    <testcase classname="COBRA Toolbox" name="testGetDefaultCompartments.m" time="0.047"/>
+    <testcase classname="COBRA Toolbox" name="testLoadIdentifiedModel.m" time="0.127"/>
+    <testcase classname="COBRA Toolbox" name="testOutputHypergraph.m" time="0.172"/>
+    <testcase classname="COBRA Toolbox" name="testOutputNetworkOmix.m" time="0.199"/>
+    <testcase classname="COBRA Toolbox" name="testPlanariseModel.m" time="0.130"/>
+    <testcase classname="COBRA Toolbox" name="testRestrictModelsToFields.m" time="4.535"/>
+    <testcase classname="COBRA Toolbox" name="testWriteCytoscapeEdgeAttributeTable.m" time="0.661"/>
+    <testcase classname="COBRA Toolbox" name="testAddKeyToKnownHosts.m" time="1.380"/>
+    <testcase classname="COBRA Toolbox" name="testLiftCouplingConstraints.m" time="0.275"/>
+    <testcase classname="COBRA Toolbox" name="testLiftModel.m" time="1.192"/>
+    <testcase classname="COBRA Toolbox" name="testReformulate.m" time="0.070"/>
+    <testcase classname="COBRA Toolbox" name="testMPS.m" time="1.195"/>
+    <testcase classname="COBRA Toolbox" name="testOutputNetworkCytoscape.m" time="0.590"/>
+    <testcase classname="COBRA Toolbox" name="testParseCobraVarargin.m" time="0.223"/>
+    <testcase classname="COBRA Toolbox" name="testChangeCobraSolver.m" time="0.704"/>
+    <testcase classname="COBRA Toolbox" name="testChangeIBMCplexParams.m" time="0.325">
+      <error message="The condition input argument must be convertible to a scalar logical."/>
+    </testcase>
+    <testcase classname="COBRA Toolbox" name="testDualRCostDefinition.m" time="2.037"/>
+    <testcase classname="COBRA Toolbox" name="testDuals.m" time="0.704"/>
+    <testcase classname="COBRA Toolbox" name="testGurobiQP.m" time="0.101"/>
+    <testcase classname="COBRA Toolbox" name="testIsCompatible.m" time="0.206">
+      <error message="Invalid file identifier. Use fopen to generate a valid file identifier."/>
+    </testcase>
+    <testcase classname="COBRA Toolbox" name="testOptimizeCbModelNLP.m" time="0.033">
+      <skipped message="matlab is a required solver for the test and not available on your system.
+"/>
+    </testcase>
+    <testcase classname="COBRA Toolbox" name="testOptimizeTwoCbModels.m" time="0.464"/>
+    <testcase classname="COBRA Toolbox" name="testSolveCobraCPLEX.m" time="0.028">
+      <skipped message="ibm_cplex is a required solver for the test and not available on your system.
+"/>
+    </testcase>
+    <testcase classname="COBRA Toolbox" name="testSolveCobraEP.m" time="0.200"/>
+    <testcase classname="COBRA Toolbox" name="testSolveCobraLP.m" time="3.080"/>
+    <testcase classname="COBRA Toolbox" name="testSolveCobraLPCPLEX.m" time="0.032">
+      <skipped message="The test requires that at least one of the following solvers is installed:
+tomlab_cplex, ILOGsimple or ILOGcomplex
+"/>
+    </testcase>
+    <testcase classname="COBRA Toolbox" name="testSolveCobraMILP.m" time="0.477"/>
+    <testcase classname="COBRA Toolbox" name="testSolveCobraMIQP.m" time="0.167"/>
+    <testcase classname="COBRA Toolbox" name="testSolveCobraNLP.m" time="0.058">
+      <skipped message="The test requires at least one NLP solver but no solver is installed
+"/>
+    </testcase>
+    <testcase classname="COBRA Toolbox" name="testSolveCobraQP.m" time="0.330"/>
+    <testcase classname="COBRA Toolbox" name="testTuneParam.m" time="0.046">
+      <skipped message="ibm_cplex is a required solver for the test and not available on your system.
+"/>
+    </testcase>
+    <testcase classname="COBRA Toolbox" name="testVerifyCobraProblem.m" time="0.151"/>
+    <testcase classname="COBRA Toolbox" name="testCalcGroupStats.m" time="0.213"/>
+    <testcase classname="COBRA Toolbox" name="testCheckCobraModelUnique.m" time="0.046"/>
+    <testcase classname="COBRA Toolbox" name="testColumnVector.m" time="0.047"/>
+    <testcase classname="COBRA Toolbox" name="testGenerateSystemConfigReport.m" time="8.170"/>
+    <testcase classname="COBRA Toolbox" name="testJaccardIndex.m" time="0.294"/>
+    <testcase classname="COBRA Toolbox" name="testMergeModelFieldPositions.m" time="0.435"/>
+    <testcase classname="COBRA Toolbox" name="testParseBoolean.m" time="0.092"/>
+    <testcase classname="COBRA Toolbox" name="testPrintLabeledData.m" time="0.101"/>
+    <testcase classname="COBRA Toolbox" name="testPrintMatrix.m" time="0.307"/>
+    <testcase classname="COBRA Toolbox" name="testReadMixedData.m" time="0.228"/>
+    <testcase classname="COBRA Toolbox" name="testReporterMets.m" time="0.982"/>
+    <testcase classname="COBRA Toolbox" name="testSelMatrix.m" time="0.204"/>
+    <testcase classname="COBRA Toolbox" name="testShowprogress.m" time="2.507"/>
+    <testcase classname="COBRA Toolbox" name="testSplitString.m" time="0.081"/>
+    <testcase classname="COBRA Toolbox" name="testTranslateList.m" time="0.106"/>
+    <testcase classname="COBRA Toolbox" name="testUnionCell.m" time="0.106"/>
+    <testcase classname="COBRA Toolbox" name="testXls2Model.m" time="0.576"/>
+    <testcase classname="COBRA Toolbox" name="testwritePajekNet.m" time="0.093"/>
+    <testcase classname="COBRA Toolbox" name="testDeleteProtons.m" time="0.158"/>
+    <testcase classname="COBRA Toolbox" name="testGenerateChemicalDatabase.m" time="0.108">
+      <skipped message="The following required software is not installed: cxcalc, obabel
+"/>
+    </testcase>
+    <testcase classname="COBRA Toolbox" name="testEFlux.m" time="0.648">
+      <skipped message="The test requires licenses for the following Toolboxes: bioinformatics_toolbox
+The test requires the following Toolboxes to be installed: bioinformatics_toolbox
+The following solvers are not compatible with this test and therefore excluded:
+matlab and pdco"/>
+    </testcase>
+    <testcase classname="COBRA Toolbox" name="testInactiveGeneDeletion.m" time="25.696"/>
+    <testcase classname="COBRA Toolbox" name="testMoomin.m" time="0.089">
+      <skipped message="ibm_cplex is a required solver for the test and not available on your system.
+The test requires at least one MILP solver but no solver is installed
+The following solvers are not compatible with this test and therefore excluded:
+glpk and gurobi"/>
+    </testcase>
+    <testcase classname="COBRA Toolbox" name="testWriteMoominOutput.m" time="15.217"/>
+    <testcase classname="COBRA Toolbox" name="testCalculateLODs.m" time="0.282"/>
+    <testcase classname="COBRA Toolbox" name="testComputeFluxSplits.m" time="8.187"/>
+    <testcase classname="COBRA Toolbox" name="testConc2Rate.m" time="0.212"/>
+    <testcase classname="COBRA Toolbox" name="testExtractConditionSpecificModel.m" time="0.675"/>
+    <testcase classname="COBRA Toolbox" name="testFluxSplits.m" time="0.285"/>
+    <testcase classname="COBRA Toolbox" name="testPruneModel.m" time="0.871"/>
+    <testcase classname="COBRA Toolbox" name="testSetConstraintsOnBiomassReaction.m" time="0.127"/>
+    <testcase classname="COBRA Toolbox" name="testSetMediumConstraints.m" time="4.308"/>
+    <testcase classname="COBRA Toolbox" name="testMetanetxMapper.m" time="4.096"/>
+    <testcase classname="COBRA Toolbox" name="testPreprocessing.m" time="1.096"/>
+    <testcase classname="COBRA Toolbox" name="testPartition.m" time="0.216">
+      <skipped message="The test requires licenses for the following Toolboxes: bioinformatics_toolbox
+The test requires the following Toolboxes to be installed: bioinformatics_toolbox
+"/>
+    </testcase>
+    <testcase classname="COBRA Toolbox" name="testSWIFTCORE.m" time="0.070">
+      <skipped message="The test requires licenses for the following Toolboxes: statistics_toolbox
+The test requires the following Toolboxes to be installed: statistics_toolbox
+The following solvers are not compatible with this test and therefore excluded:
+matlab and lp_solve and pdco"/>
+    </testcase>
+    <testcase classname="COBRA Toolbox" name="testAnalyzeGCdesign.m" time="7.001"/>
+    <testcase classname="COBRA Toolbox" name="testMultiProductionEnvelope.m" time="2.721"/>
+    <testcase classname="COBRA Toolbox" name="testMultiProductionEnvelopeInorg.m" time="17.136"/>
+    <testcase classname="COBRA Toolbox" name="testOptGene.m" time="0.103">
+      <skipped message="The test requires licenses for the following Toolboxes: gads_toolbox
+The test requires the following Toolboxes to be installed: gads_toolbox
+"/>
+    </testcase>
+    <testcase classname="COBRA Toolbox" name="testProductionEnvelope.m" time="0.706"/>
+    <testcase classname="COBRA Toolbox" name="testSimpleOptKnock.m" time="1.367"/>
+    <testcase classname="COBRA Toolbox" name="testSingleProductionEnvelope.m" time="3.873"/>
+    <testcase classname="COBRA Toolbox" name="testTheoretMaxProd.m" time="1.275"/>
+    <testcase classname="COBRA Toolbox" name="testGDLS.m" time="1.338"/>
+    <testcase classname="COBRA Toolbox" name="testOptEnvelope.m" time="32.287"/>
+    <testcase classname="COBRA Toolbox" name="testExportSetToGAMS.m" time="0.342"/>
+    <testcase classname="COBRA Toolbox" name="testOptForce.m" time="8.784"/>
+    <testcase classname="COBRA Toolbox" name="testOptKnock.m" time="0.817"/>
+    <testcase classname="COBRA Toolbox" name="testCreateXMatrix.m" time="0.525"/>
+    <testcase classname="COBRA Toolbox" name="testBuildRxn2subSystem.m" time="0.060"/>
+    <testcase classname="COBRA Toolbox" name="testComputeMetFormulae.m" time="0.091">
+      <skipped message="ibm_cplex is a required solver for the test and not available on your system.
+"/>
+    </testcase>
+    <testcase classname="COBRA Toolbox" name="testGetMolecularMass.m" time="1.715"/>
+    <testcase classname="COBRA Toolbox" name="testConstraintModifciation.m" time="0.594"/>
+    <testcase classname="COBRA Toolbox" name="testDetectDeadEnds.m" time="0.464"/>
+    <testcase classname="COBRA Toolbox" name="testElementalBalance.m" time="0.248"/>
+    <testcase classname="COBRA Toolbox" name="testFastGapFill.m" time="0.046">
+      <skipped message="The test requires that the following solver is installed:
+ibm_cplex
+The test requires licenses for the following Toolboxes: statistics_toolbox
+The test requires the following Toolboxes to be installed: statistics_toolbox
+"/>
+    </testcase>
+    <testcase classname="COBRA Toolbox" name="testFastLeakTest.m" time="1.232"/>
+    <testcase classname="COBRA Toolbox" name="testGPRLogic.m" time="0.561"/>
+    <testcase classname="COBRA Toolbox" name="testGapFind.m" time="0.571"/>
+    <testcase classname="COBRA Toolbox" name="testGrowthExpMatch.m" time="6.852"/>
+    <testcase classname="COBRA Toolbox" name="testInchi.m" time="0.275"/>
+    <testcase classname="COBRA Toolbox" name="testMassChargeBalance.m" time="0.751"/>
+    <testcase classname="COBRA Toolbox" name="testMaxCardConservationVector.m" time="1.312"/>
+    <testcase classname="COBRA Toolbox" name="testModelBorgifier.m" time="30.614"/>
+    <testcase classname="COBRA Toolbox" name="testTest4HumanFctExt.m" time="98.733"/>
+    <testcase classname="COBRA Toolbox" name="testVerifyModel.m" time="0.131"/>
+    <testcase classname="COBRA Toolbox" name="testBatchAddition.m" time="0.667"/>
+    <testcase classname="COBRA Toolbox" name="testChangeObjective.m" time="0.046"/>
+    <testcase classname="COBRA Toolbox" name="testChangeRxnBounds.m" time="0.053"/>
+    <testcase classname="COBRA Toolbox" name="testCheckObjective.m" time="0.199"/>
+    <testcase classname="COBRA Toolbox" name="testConstraints.m" time="0.686"/>
+    <testcase classname="COBRA Toolbox" name="testDynamicModelFieldModification.m" time="0.351"/>
+    <testcase classname="COBRA Toolbox" name="testExtractMetModel.m" time="5.505"/>
+    <testcase classname="COBRA Toolbox" name="testGenerateRules.m" time="7.517"/>
+    <testcase classname="COBRA Toolbox" name="testMIRIAMAnnotation.m" time="1.070"/>
+    <testcase classname="COBRA Toolbox" name="testMergeTwoModels.m" time="0.453"/>
+    <testcase classname="COBRA Toolbox" name="testModelManipulation.m" time="13.017"/>
+    <testcase classname="COBRA Toolbox" name="testRemoveDuplicateRxn.m" time="0.101"/>
+    <testcase classname="COBRA Toolbox" name="testSubSystemModification.m" time="0.493"/>
+    <testcase classname="COBRA Toolbox" name="testUpdateGenes.m" time="11.344"/>
+    <testcase classname="COBRA Toolbox" name="testGPR2Genes.m" time="0.445"/>
+    <testcase classname="COBRA Toolbox" name="testGetGeneList.m" time="0.139"/>
+    <testcase classname="COBRA Toolbox" name="testLegalRxnFormula.m" time="0.131"/>
+    <testcase classname="COBRA Toolbox" name="testLoadReaction.m" time="0.167"/>
+    <testcase classname="COBRA Toolbox" name="testMets2str.m" time="0.033"/>
+    <testcase classname="COBRA Toolbox" name="testModel2data.m" time="0.488"/>
+    <testcase classname="COBRA Toolbox" name="testNeighborRxn2data.m" time="0.256"/>
+    <testcase classname="COBRA Toolbox" name="testRBioNetSaveLoad.m" time="0.863"/>
+    <testcase classname="COBRA Toolbox" name="testReactionEq.m" time="0.192"/>
+    <testcase classname="COBRA Toolbox" name="testSimilarity.m" time="0.176"/>
+    <testcase classname="COBRA Toolbox" name="testEfmBackboneExtraction.m" time="0.081">
+      <skipped message="The test requires licenses for the following Toolboxes: statistics_toolbox
+The test requires the following Toolboxes to be installed: statistics_toolbox
+"/>
+    </testcase>
+    <testcase classname="COBRA Toolbox" name="testEfmEnrichmentAnalysis.m" time="3.317"/>
+    <testcase classname="COBRA Toolbox" name="testEfmFilter.m" time="1.655"/>
+    <testcase classname="COBRA Toolbox" name="testEfmImport.m" time="1.475"/>
+    <testcase classname="COBRA Toolbox" name="testEfmSubmodelExtractionAsSBML.m" time="8.435"/>
+    <testcase classname="COBRA Toolbox" name="testEfmSubsystemsExtraction.m" time="0.039"/>
+    <testcase classname="COBRA Toolbox" name="testEfmYieldAnalysis.m" time="2.161"/>
+    <testcase classname="COBRA Toolbox" name="testPrintInRecon3Dmap.m" time="4.609"/>
+    <testcase classname="COBRA Toolbox" name="testReconMap.m" time="3.899"/>
+    <testcase classname="COBRA Toolbox" name="testConvertGene2PathwayInteractions.m" time="2.206"/>
+    <testcase classname="COBRA Toolbox" name="testFindSubsystemOfGenes.m" time="2.431"/>
+    <testcase classname="COBRA Toolbox" name="testVisualizeEpistasis.m" time="0.614"/>
+  </testsuite>
+</testsuites>

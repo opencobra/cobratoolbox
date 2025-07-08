@@ -1,101 +1,121 @@
-% A class for displaying a structure as a row of a table
+% This class is used internal for testing only
+% It prints out a table (to a string) row by row.
 classdef TableDisplay < handle
-   properties
-      % Each field contains a structure with fields
-      %    label
-      %	  format
-      %	  length
-      %	  default	(default value for the field)
-      %	  type		(double or string)
-      fields
-      
-      % Function handle for the output function
-      output = @disp
-   end
-   
-   methods
-      function o = TableDisplay(varargin)
-         % o = TableDisplay(name1, format1, name2, format2, ...)
-         % name is the fieldname of the structure
-         % format is the format string for fprintf
-         
-         assert(mod(nargin,2) == 0)
-         for i = 1:(nargin/2)
-            name = varargin{i*2 - 1};
-            format = varargin{i*2};
-            field = struct('format', format, 'label', name);
+    properties
+        format
+    end
+    
+    methods
+        function o = TableDisplay(format)
+            % o = TableDisplay(format)
+            % format is struct where each field is a col in the table.
+            % If that field is a string,
+            %    it represents the format (according to printf)
+            % otherwise
+            %    it is a structure with fields
+            %        format 
+            %        default    (default value for the field)
+            %        length
+            %        label
+            %        type       (double or string)
             
-            % check the type of the field
-            if endsWith(format, 's')
-               field.type = 'string';
-               field.default = '';
-            else
-               field.type = 'double';
-               field.default = NaN;
+            fields = fieldnames(format);
+            for i = 1:length(fields)
+                name = fields{i};
+                field = format.(fields{i});
+                
+                % if the field contains only a string,
+                % convert it into the structure format.
+                if ischar(field)
+                    formattmp = field;
+                    field = struct;
+                    field.format = formattmp;
+                end
+                
+                % read off the type if not specified
+                if ~(isfield(field, 'type'))
+                    if endsWith(field.format, 's')
+                        field.type = 'string';
+                    else
+                        field.type = 'double';
+                    end
+                end
+                
+                % set the default if not specified
+                if ~(isfield(field, 'default'))
+                    if strcmp(field.type, 'string')
+                        field.default = '';
+                    else
+                        field.default = NaN;
+                    end
+                end
+                
+                % read off the length from the format if not specified
+                if ~(isfield(field, 'length'))
+                    matchStr = regexp(field.format, '[0-9]*', 'match', 'once');
+                    if ismissing(matchStr)
+                        field.length = +Inf;
+                    else
+                        field.length = str2double(matchStr);
+                    end
+                end
+                
+                % use the field id as label if not specified
+                if ~(isfield(field, 'label'))
+                    field.label = name;
+                end
+                
+                format.(name) = field;
+            end
+            o.format = format;
+        end
+        
+        function s = header(o)
+            % s = o.header();
+            % Print out the header of the table
+            
+            s = '';
+            fields = fieldnames(o.format);
+            total_length = 0;
+            for i = 1:length(fields)
+                field = o.format.(fields{i});
+                if field.length == +Inf
+                    f = '%s';
+                    total_length = total_length + strlength(field.label);
+                else
+                    f = strcat('%', num2str(field.length), 's');
+                    total_length = total_length + field.length + 1;
+                end
+                s = strcat(s, sprintf(f, field.label), ' ');
+            end
+            total_length = total_length - 1;
+            
+            s = [s, newline, repmat('-', 1, total_length), newline];
+        end
+        
+        function s = print(o, data)
+            % s = o.print(item);
+            % Print out a row of the table with the data
+            
+            s = '';
+            fields = fieldnames(o.format);
+            for i = 1:length(fields)
+                name = fields{i};
+                if (isfield(data, name))
+                    data_i = data.(name);
+                else
+                    data_i = o.format.(fields{i}).default;
+                end
+                field = o.format.(name);
+                if  strcmp(field.type, 'string') && ...
+                    strlength(data_i) > field.length-1
+                    data_i = extractBetween(data_i, 1, field.length-1);
+                    data_i = data_i{1};
+                end
+                s = strcat(s, sprintf(strcat('%', field.format), data_i), ' ');
             end
             
-            % Set the length from the format
-            matchStr = regexp(field.format, '[0-9]*', 'match', 'once');
-            if ismissing(matchStr)
-               field.length = +Inf;
-            else
-               field.length = str2double(matchStr);
-            end
-            
-            fields.(name) = field;
-         end
-         o.fields = fields;
-      end
-      
-      function header(o)
-         % o.header();
-         % Print out the header of the table
-         
-         if isempty(o.output), return; end
-         s = '';
-         names = fieldnames(o.fields);
-         total_length = 0;
-         for i = 1:length(names)
-            field = o.fields.(names{i});
-            if field.length == +Inf
-               f = '%s ';
-               total_length = total_length + strlength(field.label);
-            else
-               f = ['%', num2str(field.length), 's '];
-               total_length = total_length + field.length + 1;
-            end
-            s = [s, sprintf(f, field.label)];
-         end
-         total_length = total_length - 1;
-         
-         s = [s, newline, repmat('-', 1, total_length)];
-         o.output(s);
-      end
-      
-      function row(o, data)
-         % o.row(item);
-         % Print out a row of the table with the data
-         
-         if isempty(o.output), return; end
-         s = '';
-         names = fieldnames(o.fields);
-         for i = 1:length(names)
-            name = names{i};
-            if (isfield(data, name))
-               data_i = data.(name);
-            else
-               data_i = o.fields.(name).default;
-            end
-            field = o.fields.(name);
-            if  strcmp(field.type, 'string') && ...
-                  strlength(data_i) > field.length-1
-               data_i = extractBetween(data_i, 1, field.length-1);
-               data_i = data_i{1};
-            end
-            s = [s, sprintf(['%', field.format], data_i), ' '];
-         end
-         
-         o.output(s);
-      end
-   end
+            s = [s, newline];
+        end
+    end
 end

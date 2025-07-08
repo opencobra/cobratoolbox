@@ -18,6 +18,7 @@ function [rxnList, rxnFormulaList] = findRxnsFromMets(model, metList, varargin)
 %                        * `producersOnly` - Only return reactions which produce any of the given metabolites. (Default: false)
 %                        * `consumersOnly` - Only return reactions which consume any of the given metabolites. (Default: false)
 %                        * `exclusive` - Only return those reactions, which do not contain any metabolites but those given (Default: false)
+%                        * `minimalReactionN` - return the minimal number of reactions corresponding to the given metabolites using cardinality optimization (Default: false)
 %
 % OUTPUTS:
 %    rxnList:           List of reactions
@@ -115,8 +116,8 @@ elseif minimalReactionN
     totals = solution.x ~=0;
     rels = totals > 0;
 else
-    %totals = sum(model.S(index,:) ~= 0,1); %RF: This seems wrong as it omits production of metabolites.
-    totals = sum(model.S(index,:) ~= 0);
+    totals = sum(model.S(index,:) ~= 0,1); %RF: This seems wrong as it omits production of metabolites.
+    % totals = sum(model.S(index,:) ~= 0);
     rels = totals > 0;
 end
 

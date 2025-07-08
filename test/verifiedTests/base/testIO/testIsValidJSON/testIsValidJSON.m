@@ -1,0 +1,86 @@
+% The COBRAToolbox: testIsValidJSONJSON.m
+%
+% Purpose:
+%     Test the isValidJSON.m function, ensuring it can correctly
+%     distingush a valid JSON file from an invalid one
+%
+% Authors:
+%     - Farid Zare, 2024/08/15
+%
+
+% Save the current path and initialize the test
+currentDir = cd(fileparts(which(mfilename)));
+
+% Determine the test path for references
+testPath = pwd;
+
+% Initiate the test
+fprintf(' -- Running testIsValidJSONJSON ... \n');
+
+% Case 1
+% Expected JSON content (with No metabolite annotation)
+validJSONfile = [
+    '{\n',...
+    '"metabolites":[\n',...
+    '{\n"id":"A_c",\n"name":"Metabolite A",\n"compartment":"c",\n"charge":0,\n"formula":"C6H12O6",\n"notes":{\n"original_vmh_ids":[\n"A[c]"\n]\n},\n"annotation":',...
+    '{\n"reactome.compound":[\n"a"\n],\n"seed.compound":[\n"a"\n]\n}\n},\n',...
+    '{\n"id":"B_c",\n"name":"Metabolite B",\n"compartment":"c",\n"charge":0,\n"formula":"C4H4O4",\n"notes":{\n"original_vmh_ids":[\n"B[c]"\n]\n},\n"annotation":',...
+    '{\n"reactome.compound":[\n"b"\n],\n"seed.compound":[\n"b"\n]\n}\n}\n],\n',...
+    '"reactions":[\n',...
+    '{\n"id":"R1",\n"name":"Reaction 1",\n"metabolites":{\n"A_c":-1.0,\n"B_c":1.0\n},\n"lower_bound":0,\n"upper_bound":1000,\n"gene_reaction_rule":"G1",\n"subsystem":',...
+    '"Subsystem 1",\n"notes":{\n"original_vmh_ids":[\n"R1"\n]\n},\n"annotation":{\n"metanetx.reaction":[\n"m1"\n],\n"sbo":[\n"s1"\n]\n}\n}\n],\n',...
+    '"genes":[\n',...
+    '{\n"id":"G1",\n"name":"",\n"notes":{\n"original_vmh_ids":[\n"G1"\n]\n},\n"annotation":{\n}\n}\n],\n',...
+    '"id":"ToyModel",\n',...
+    '"compartments":{\n"c":"cytosol"\n}\n',...
+    '}\n'
+]; 
+
+% Write it as JSON file
+fileName = 'validJSONtest.json';
+fid = fopen(fileName, 'w');
+fprintf(fid, validJSONfile);
+fclose(fid);
+
+% Test to see if isValidJSON function confirms the validity
+[isValid] = isValidJSON(fileName);
+assert(isValid)
+
+% Case 2
+% Make an invalid JSON file by adding one extra comma
+
+validJSONfile = [
+    '{\n',...
+    '"metabolites":[\n',...
+    '{\n"id":"A_c",\n"name":"Metabolite A",\n"compartment":"c",\n"charge":0,\n"formula":"C6H12O6",\n"notes":{\n"original_vmh_ids":[\n"A[c]"\n]\n},\n"annotation":',...
+    '{\n"reactome.compound":[\n"a"\n],\n"seed.compound":[\n"a"\n],\n}\n},\n',...
+    '{\n"id":"B_c",\n"name":"Metabolite B",\n"compartment":"c",\n"charge":0,\n"formula":"C4H4O4",\n"notes":{\n"original_vmh_ids":[\n"B[c]"\n]\n},\n"annotation":',...
+    '{\n"reactome.compound":[\n"b"\n],\n"seed.compound":[\n"b"\n]\n}\n}\n],\n',...
+    '"reactions":[\n',...
+    '{\n"id":"R1",\n"name":"Reaction 1",\n"metabolites":{\n"A_c":-1.0,\n"B_c":1.0\n},\n"lower_bound":0,\n"upper_bound":1000,\n"gene_reaction_rule":"G1",\n"subsystem":',...
+    '"Subsystem 1",\n"notes":{\n"original_vmh_ids":[\n"R1"\n]\n},\n"annotation":{\n"metanetx.reaction":[\n"m1"\n],\n"sbo":[\n"s1"\n]\n}\n}\n],\n',...
+    '"genes":[\n',...
+    '{\n"id":"G1",\n"name":"",\n"notes":{\n"original_vmh_ids":[\n"G1"\n]\n},\n"annotation":{\n}\n}\n],\n',...
+    '"id":"ToyModel",\n',...
+    '"compartments":{\n"c":"cytosol"\n}\n',...
+    '}\n'
+]; 
+
+% Write it as JSON file
+fileName = 'validJSONtest.json';
+fid = fopen(fileName, 'w');
+fprintf(fid, validJSONfile);
+fclose(fid);
+
+% Test to see if isValidJSON function rejects the validity
+[isValid] = isValidJSON(fileName);
+assert(~isValid)
+
+% Clean up (delete the generated JSON file)
+delete(fileName);
+
+% Change the directory back to the original
+cd(currentDir);
+
+% output a success message
+fprintf('Done.\n');

@@ -59,24 +59,27 @@ function [Vthermo,thermoConsistentFluxBool] = cycleFreeFlux(V0, C, model, SConsi
 % .. Author: - Hulda S. Haraldsdottir, 25/5/2018, Ronan M.T. Fleming 2019 - 2022, regularisation, debug, relaxation etc.
 
 if ~exist('SConsistentRxnBool', 'var') || isempty(SConsistentRxnBool) % Set defaults
-    if isfield(model, 'SIntRxnBool')
+    if isfield(model,'SConsistentRxnBool')
+        SConsistentRxnBool = model.SConsistentRxnBool;
+        SConsistentMetBool = model.SConsistentMetBool;
+    elseif isfield(model, 'SIntRxnBool')
         warning('Assuming SConsistentMetBool and SConsistentRxnBool heuristically. Better to use findStoichConsistentSubset')
         SConsistentRxnBool = model.SIntRxnBool;
         SConsistentMetBool = true(size(model.S,1),1);
     else
         tmp = model;
         tmp.c(:) = 0;
-        
+
         if isfield(tmp, 'biomassRxnAbbr')
             tmp = rmfield(tmp, 'biomassRxnAbbr');
         end
-        
+
         [SConsistentMetBool, SConsistentRxnBool] = findStoichConsistentSubset(tmp, 0, 0);
-        
+
         clear tmp
     end
 else
-    SConsistentMetBool = model.SConsistentMetBool;
+    SConsistentMetBool = getCorrespondingRows(model.S,true(size(model.S,1),1),SConsistentRxnBool,'inclusive');
 end
 
 
@@ -253,8 +256,8 @@ else
             v1 = computeCycleFreeFluxVector(v0, c0, osense, model_S, model_b, model_csense, model_lb, model_ub, model_C, model_d, model_dsense, SConsistentRxnBool, param); % see subfunction below
             Vthermo(:, i) = v1;
             thermoConsistentFluxBool(:,i) = abs(v0 - v1) < eta;
-            forcedFwdRxnBool = model.SConsistentRxnBool & model_lb > 0 & model_ub > 0 ;
-            forcedRevRxnBool = model.SConsistentRxnBool & model_lb < 0 & model_ub < 0 ;
+            forcedFwdRxnBool = SConsistentRxnBool & model_lb > 0 & model_ub > 0 ;
+            forcedRevRxnBool = SConsistentRxnBool & model_lb < 0 & model_ub < 0 ;
             if param.relaxBounds
                 %if bounds can be relaxed, forced internal reaction assumed to be thermodynamically consistent if reparied flux in the same direction and greater as the forcing
                 bool = forcedFwdRxnBool & thermoConsistentFluxBool & v1 < model_lb;
@@ -288,8 +291,8 @@ else
                 %fprintf('%s\n','computeCycleFreeFluxVector: infeasible problem without relaxation of positive lower bounds and negative upper bounds')
                 if ~param.relaxBounds
                     %if bounds cannot be relaxed, any forced internal reaction is assumed not to be thermodynamically consistent, unless the repaired flux is not on the forcing bound
-                    forcedFwdRxnBool = model.SConsistentRxnBool & model_lb > 0 & model_ub > 0 & abs(v2 - model_lb) < eta;
-                    forcedRevRxnBool = model.SConsistentRxnBool & model_lb < 0 & model_ub < 0 & abs(v2 - model_ub) < eta;
+                    forcedFwdRxnBool = SConsistentRxnBool & model_lb > 0 & model_ub > 0 & abs(v2 - model_lb) < eta;
+                    forcedRevRxnBool = SConsistentRxnBool & model_lb < 0 & model_ub < 0 & abs(v2 - model_ub) < eta;
                     thermoConsistentFluxBool(forcedFwdRxnBool)=0;
                     thermoConsistentFluxBool(forcedRevRxnBool)=0;
                 end

@@ -1,39 +1,53 @@
-function [vl,vu,vel,veu,vfl,vfu,vrl,vru,ci,ce,cf,cr,g] = processFluxConstraints(model,param)
+function [vl,vu,vel,veu,vfl,vfu,vrl,vru,ci,ce,cf,cr,g, paramOut] = processFluxConstraints(model,param)
 %
 % USAGE:
+%   processFluxConstraints(model)
 %   processFluxConstraints(model,param)
 %
 % INPUTS:
-%  model.osenseStr:
-%  model.S:              
-%  model.SConsistentRxnBool:
-%  model.lb:                    
-%  model.ub: 
-%  model.c:              
-%  model.cf:            
-%  model.cr:            
-%  model.g: 
+%    model:             (the following fields are required - others can be supplied)
 %
-%  param.printLevel:
-%  param.maxUnidirectionalFlux:
-%  param.solver:    
-%  param.minUnidirectionalFlux:
-%  param.internalNetFluxBounds:
-%  param.debug:      
-%  param.method:    
+%          * S  - `m x (n + k)` Stoichiometric matrix
+%          * c  - `(n + k) x 1` Linear objective coefficients
+%          * lb - `(n + k) x 1` Lower bounds on net flux
+%          * ub - `(n + k) x 1` Upper bounds on net flux          
 %
 % OPTIONAL INPUTS
-%  model.vfl:          
-%  model.vfu:          
-%  model.vrl:          
-%  model.vru:  
-
-% OUTPUTS:
-% vfl:          
-% vfu:          
-% vrl:          
-% vru:  
+%   model.osenseStr: ('max') or 'min'. The default linear objective sense is maximisation, i.e. 'max'
+%   model.cf:       n x 1    real valued linear objective coefficients on internal forward flux (default 0)
+%   model.cr:       n x 1    real valued linear objective coefficients on internal reverse flux (default 0)
+%   model.g         n x 1    strictly positive weight on internal flux entropy maximisation (default 2) 
+%   model.SConsistentRxnBool: n x 1  boolean indicating  stoichiometrically consistent metabolites
+%   model.vfl:      n x 1    non-negative lower bound on internal forward flux (default 0) 
+%   model.vfu:      n x 1    non-negative upper bound on internal forward flux (default inf) 
+%   model.vrl:      n x 1    non-negative lower bound on internal reverse flux (default 0) 
+%   model.vru:      n x 1    non-negative upper bound on internal reverse flux (default 0) 
 %
+%  param.printLevel:
+%  param.solver:    {'pdco',('mosek')}
+%  param.debug:     {(0),1} 1 = run in debug mode 
+%  param.entropicFBAMethod:    {('fluxes'),'fluxesConcentrations'} maximise entropy of fluxes (default) or also concentrations
+%  param.maxUnidirectionalFlux: maximum unidirectional flux (1e5 by default)
+%  param.minUnidirectionalFlux: minimum unidirectional flux (zero by default)
+%  param.internalNetFluxBounds: ('original')   = use model.lb and model.ub to set the direction and magnitude of internal net flux bounds
+%                                'directional' = use model.lb and model.ub to set the direction of net flux bounds (ignoring magnitude)
+%                                'none'        = ignore model.lb and model.ub and allow all net flues to be reversible
+%
+% OUTPUTS:
+% vl:       n x 1    lower bound on internal net flux 
+% vu:       n x 1    upper bound on internal net flux
+% vel:      k x 1    lower bound on external net flux 
+% veu:      k x 1    upper bound on external net flux
+% vfl:      n x 1    non-negative lower bound on internal forward flux
+% vfu:      n x 1    non-negative upper bound on internal forward flux
+% vrl:      n x 1    non-negative lower bound on internal reverse flux 
+% vru:      n x 1    non-negative upper bound on internal reverse flux
+% ci:       n x 1    linear objective coefficients corresponding to internal net fluxes
+% ce:       k x 1    linear objective coefficients corresponding to internal net fluxes
+% cf:       n x 1    real valued linear objective coefficients on internal forward flux
+% cr:       n x 1    real valued linear objective coefficients on internal reverse flux
+% g         n x 1    strictly positive weight on internal flux entropy maximisation
+% paramOut  return param structure to capture any param set internally
 %
 % EXAMPLE:
 %
@@ -42,6 +56,31 @@ function [vl,vu,vel,veu,vfl,vfu,vrl,vru,ci,ce,cf,cr,g] = processFluxConstraints(
 % Author(s): Ronan Fleming
 
 %% processing for fluxes
+if ~isfield(param,'maxUnidirectionalFlux')
+    %try to set the maximum unidirectional flux based on the magnitude of the largest bound but dont have it greater than 1e5
+    param.maxUnidirectionalFlux=min(1e5,max(abs(model.ub)));
+    %param.maxUnidirectionalFlux=inf;
+end
+if ~isfield(param,'minUnidirectionalFlux')
+    param.minUnidirectionalFlux = 0;
+end
+
+if ~isfield(param,'internalNetFluxBounds')
+    param.internalNetFluxBounds='original';
+end
+
+if ~isfield(param,'externalNetFluxBounds')
+    param.externalNetFluxBounds='original';
+end
+
+if ~isfield(param,'entropicFBAMethod')
+    if isfield(param,'method') && contains(param.method,'flux')
+        param.entropicFBAMethod=param.method;
+        param=rmfield(param,'method');
+    else
+        param.entropicFBAMethod='fluxes';
+    end
+end
 
 %find the maximal set of metabolites and reactions that are stoichiometrically consistent
 if ~isfield(model,'SConsistentMetBool') || ~isfield(model,'SConsistentRxnBool')
@@ -59,31 +98,15 @@ if ~isfield(model,'osenseStr') || isempty(model.osenseStr)
 end
 [~,osense] = getObjectiveSense(model);
 
-if ~isfield(param,'maxUnidirectionalFlux')
-    %try to set the maximum unidirectional flux based on the magnitude of the largest bound but dont have it greater than 1e5
-    %param.maxUnidirectionalFlux=min(1e5,max(abs(model.ub)));
-    param.maxUnidirectionalFlux=inf;
-end
-if ~isfield(param,'minUnidirectionalFlux')
-    if isequal(param.solver,'mosek')
-        %try to set the minimum unidirectional flux
-        param.minUnidirectionalFlux=0;
-    else
-        param.minUnidirectionalFlux = 0;
-    end
-end
-
-if ~isfield(param,'internalNetFluxBounds')
-    param.internalNetFluxBounds='original';
-end
 if isfield(param,'internalBounds')
     error('internalBounds replaced by other parameter options')
 end
 
-if param.debug
-    solution_optimizeCbModel = optimizeCbModel(model);
+if isfield(param,'debug') && param.debug && 0
+    solution_optimizeCbModel = optimizeCbModel(model,param);
     switch solution_optimizeCbModel.stat
         case 0
+            disp(solution_optimizeCbModel.origStat)
             message = 'Input model is not feasible according to optimizeCbModel.';
             warning(message)
             solution = solution_optimizeCbModel;
@@ -144,7 +167,7 @@ switch param.internalNetFluxBounds
         ub(model.SConsistentRxnBool)= ones(n,1)*param.maxUnidirectionalFlux;
         
     case 'none'
-        if param.printLevel>0
+        if isfield(param,'printLevel') && param.printLevel>0
             fprintf('%s\n','Using no internal net flux bounds.')
         end
         lb(model.SConsistentRxnBool,1)=-ones(n,1)*inf;
@@ -179,7 +202,7 @@ end
 switch param.externalNetFluxBounds
     case 'none'
         if param.printLevel>0
-            fprintf('%s\n','Using no internal net flux bounds.')
+            fprintf('%s\n','Using no external net flux bounds.')
         end
         lb(~model.SConsistentRxnBool,1)=-ones(k,1)*inf;
         ub(~model.SConsistentRxnBool,1)= ones(k,1)*inf;
@@ -201,6 +224,11 @@ if isfield(model,'vfl')
     vfl = model.vfl;
 else
     vfl = max(param.minUnidirectionalFlux,vl);
+    %vfl = ones(n,1)*param.minUnidirectionalFlux;
+end
+
+if any(vfl<0)
+    error('lower bound on forward flux cannot be less than zero')
 end
 %upper bounds on forward fluxes
 if isfield(model,'vfu')
@@ -210,14 +238,44 @@ else
         vfu = ones(n,1)*param.maxUnidirectionalFlux;
     else
         vfu = vu;
-        vfu(vfu<=0) = param.maxUnidirectionalFlux;
+        bool = vfu<=0;
+        vfu(bool) = param.maxUnidirectionalFlux;
     end
+end
+if any(vfl>0)
+    if param.printLevel
+        fprintf('%s\n','Lower bound on forward flux is positive for the following internal reactions:')
+        vfl2= zeros(n+k,1);
+        vfl2(model.SConsistentRxnBool,1)=vfl;
+        %print the non-zero lower bounds
+        printFluxVector(model,vfl2,1);
+    end
+end
+if any(vfl>vfu)
+    bool = vfl>vfu;
+    %print the problematic bounds
+    fprintf('%s%s%s\n','Reaction','vfl','vul')
+    vfl2 = vfl;
+    vfl2(vfl<=vfu)=0;
+    vfl3 = zeros(n+k,1);
+    vfl3(model.SConsistentRxnBool,1)=vfl;
+
+    vfu2 = vfu;
+    vfu2(vfl<=vfu)=0;
+    vfu3 = zeros(n+k,1);
+    vfu3(model.SConsistentRxnBool,1)=vfu;
+    printFluxVector(model,[vfl3,vfu3],1);
+    error('lower bound on forward flux is greater than upper bound')
 end
 %lower bounds on reverse fluxes
 if isfield(model,'vrl')
     vrl = model.vrl;
 else
     vrl = max(param.minUnidirectionalFlux,-vu);
+    %vrl = ones(n,1)*param.minUnidirectionalFlux;
+end
+if any(vrl<0)
+    error('lower bound on reverse flux cannot be less than zero')
 end
 %upper bounds on reverse fluxes
 if isfield(model,'vru')
@@ -230,17 +288,8 @@ else
         vru(vru<=0) = param.maxUnidirectionalFlux;
     end
 end
-if any(vfl<0)
-    error('lower bound on forward flux cannot be less than zero')
-end
-if any(vrl<0)
-    error('lower bound on reverse flux cannot be less than zero')
-end
-if any(vfl>vfu)
-    error('lower bound on forward flux greater than upper bound')
-end
 if any(vrl>vru)
-    error('lower bound on reverse flux greater than upper bound')
+    error('lower bound on reverse flux is greater than upper bound')
 end
 
 if any(vl>0 | vu<0) && ~strcmp(param.internalNetFluxBounds,'original')
@@ -258,6 +307,13 @@ else
     %osense is only used to changes the sense of the model.c part
     ci = osense*model.c(model.SConsistentRxnBool);
     ce = osense*model.c(~model.SConsistentRxnBool);
+end
+
+if ~isfield(model,'cf') && isfield(model,'c_vf')
+    model.cf=model.c_vf;
+end
+if ~isfield(model,'cr') && isfield(model,'c_vr')
+    model.cr=model.c_vr;
 end
 
 if ~isfield(model,'cf') || isempty(model.cf)
@@ -303,7 +359,7 @@ else
 end
 
 if ~isfield(model,'g') || isempty(model.g)
-    if isequal(param.method,'fluxes')
+    if isequal(param.entropicFBAMethod,'fluxes')
         model.g='one';
     else
         model.g='two';
@@ -342,3 +398,5 @@ else
         error('g and cf must have the same dimensions')
     end
 end
+
+paramOut=param;
