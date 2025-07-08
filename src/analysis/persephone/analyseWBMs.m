@@ -448,7 +448,11 @@ for i = 1:size(solPaths,1)
                     disp('Reran and no solution found. Consider debugging or using a different solver.')
                 end
                 
-                f(j) = fba.f;
+                if ~isempty(fba.f)
+                    f(j) = fba.f;
+                else
+                    f(j) = "nan";
+                end
                 stat(j) = fba.stat;
             end
         end

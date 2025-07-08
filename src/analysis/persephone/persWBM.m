@@ -65,6 +65,13 @@ function [iWBM, iWBMcontrol_female, iWBMcontrol_male, persParams] = persWBM(meta
 %                             physiological and metabolomic- this function
 %                             should alway be run and NOT
 %                             persWBMmetabolomics in isolation!
+% IndividualParameters        Structure containing the model parameters as 
+%                             with running: 
+%                             sex = "male"; or sex = "female";
+%                             standardPhysiolDefaultParameters;
+%                             Organ weights and blood flow data can also be
+%                             added into this structure (will they be used
+%                             to calculate something??? not right now)
 %
 % OUTPUTS
 %
@@ -97,6 +104,8 @@ addParameter(parser, 'resPath', pwd, @ischar);
 addParameter(parser, 'persMetabolites',{}, @iscell);
 addParameter(parser, 'Diet', '', @ischar);
 addParameter(parser, 'solver', 'glpk', @ischar);
+addParameter(parser, 'IndividualParameters', '', @(x) isstruct(x));
+
 
 % Parse required and optional inputs
 parse(parser, metadataPath, varargin{:});
@@ -137,7 +146,7 @@ if ~ischar(metadataPath)
 else
     % Locate metadata file allowing for .csv or .xlsx
     unprocessedMetadata = strrep(metadataPath, '_processed.csv', '');
-    d = dir([unprocessedMetadata, '.*']);
+    d = dir([unprocessedMetadata, '*']);
     match = d(endsWith({d.name}, {'.csv', '.xlsx'}, 'IgnoreCase', true));
     
     if isempty(match)
@@ -182,7 +191,7 @@ end
 
 AllParams = {
     'age'; ...
-    'organ weight';...
+
     'modelID'; ...
     'body weight';...
     'body fat'; ...
@@ -242,14 +251,34 @@ if ~isempty(persPhysiology)
     end
 else
     personalisingPhys = false;
-    disp(' > Physiological personalisation will be skipped (persPhysiology not provided as input)')
+    disp(' > persPhysiology not provided as input')
 end
 
 if ~isempty(parser.Results.persMetabolites)
     personalisingMets = true;
 else
     personalisingMets = false;
-    disp(' > Metabolomic personalisation will be skipped (persMetabolites not provided as input)')
+    disp(' > Metabolomic personalisation will be skipped (persMetabolites not provided as input)\n')
+end
+
+% If neither physiological or metabolomic paramters were speficief to
+% personalise with, compare the parameters in the metadata to those we can
+% personalise and extract the relevant parameters
+if ~personalisingPhys && ~personalisingMets
+    fprintf('> No parameters from metadata were specified to be used in personalisation\n');
+
+    % Match variable names (case-insensitive)
+    vars = metadata.Properties.VariableNames;
+    matches = ismember(lower(vars), lower(AllParams));
+    persPhysiology = vars(matches);
+
+    if isempty(persPhysiology)
+        error(['No valid parameters found in metadata for personalising WBMs.\n' ...
+               'Check names against valid list: %s'], strjoin(AllParams, ', '));
+    end
+
+    fprintf('> Using matched parameters from metadata:\n');
+    disp(persPhysiology);
 end
 
 disp(" > All parameters are valid");
@@ -441,7 +470,7 @@ for s = 1:size(Data, 1)
                 Age = Age / 365;
             elseif strcmp(currentUnit, "months")
                 Age = Age / 12;
-            elseif strcmp(currentUnit, "years")
+            elseif strcmp(currentUnit, "years")|| strcmp(currentUnit, "yrs")
                 
             else
                 error('Age not provided in a valid unit');
@@ -563,7 +592,7 @@ for s = 1:size(Data, 1)
         
         % GLOMERULAR FILTRATION RATE
         if any(strcmp(lower(dataCurrent.Properties.VariableNames),'glomerular filtration rate')) || any(strcmp(lower(dataCurrent.Properties.VariableNames),'gfr'))
-            idxGFR = find(strcmp(lower(dataCurrent.Properties.VariableNames),'glomerular filtration rate'));
+            idxGFR = find(strcmp(varNamesLower, 'glomerular filtration rate') | strcmp(varNamesLower, 'gfr'));
             if size(idxGFR, 2)>1
                 error('More than one column header in the metadata contains the paramter glomerular filtration rate!')
             end

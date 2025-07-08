@@ -48,7 +48,7 @@ parser.addRequired('pathToProcessedFluxes',  @(x) ischar(x) | isstring(x));
 parser.addRequired('metadataPath', @(x) ischar(x) | isstring(x));
 parser.addRequired('response', @(x) ischar(x) | isstring(x));
 
-parser.addParameter('pathToWbmRelAbundances', @(x) ischar(x) | isstring(x));
+parser.addParameter('pathToWbmRelAbundances', [], @(x) ischar(x) | isstring(x));
 parser.addParameter('confounders', '', @iscell);
 % Moderation analysis will be added back later
 %parser.addParameter('moderator', '', @iscell); 
@@ -154,6 +154,8 @@ if testMicrobiota == true
     % Perform analyses on the relative abundances
     predictor = 'relative_abundance';
     [microbiotaStats, logfile] = runStatistics(microbiome, metadata, response, predictor, confounders, logfile, statPathFull);
+else
+    microbiotaStats = 'noMicrobes';
 end
 
 %%% PART 3: Annotate the investigated reactions by finding the the reaction
@@ -558,7 +560,7 @@ if logisticRegControlForSex == true
 end
 
 if logisticRegControlForSexAndOtherConfounders == true
-
+    
     rowCount = rowCount + 1;
     % Description
     formula = append(response,'~',predictor,'+Sex+',strjoin(confounders,'+'));
@@ -569,10 +571,18 @@ if logisticRegControlForSexAndOtherConfounders == true
     regRes = performRegressions(data,metadata,formula);
     % Visualise regressions and save result
     resultToVis = string(fieldnames(regRes));
-    regressionResults = regRes.(resultToVis(1));    
+    regressionResults = regRes.(resultToVis(1));
     fig = visualiseRegressionFit(regressionResults, response, formula, statPathFull); close(fig)
-    % Add results to table    
-    statResults{rowCount,2} = regRes.(predictor); 
+    % Add results to table
+    statResults{rowCount,2} = regRes.(predictor);
+    if ~isfield(regRes, 'NotDefined')
+        % Visualise regressions and save result
+        resultToVis = string(fieldnames(regRes));
+        regressionResults = regRes.(resultToVis(1));
+        fig = visualiseRegressionFit(regressionResults, response, formula, statPathFull); close(fig)
+        % Add results to table
+        statResults{rowCount,2} = regRes.(predictor);
+    end
 end
 
 % Remove empty rows
@@ -596,7 +606,7 @@ yTitle = '-log10 p-value';
 fig=figure('Position',[571,171,809,682]);
 
 % Create volcano plot
-createvolcanoPlot(estimates,pValues,names,plotTitle,xTitle,yTitle);
+createVolcanoPlot(estimates,pValues,names,plotTitle,xTitle,yTitle);
 
 % Save figure
 exportgraphics(fig,[statPathFull, 'volcanoPlot_' formula '.png'])
@@ -639,6 +649,8 @@ for i = 2:height(allRes)
     % Get result
     sheet = allRes{i,2};
     % Write to table
-    writetable(sheet,resultPath,'Sheet',sheetNames(i),'WriteRowNames',true,'PreserveFormat',true)
+    if ~isempty(sheet)
+        writetable(sheet,resultPath,'Sheet',sheetNames(i),'WriteRowNames',true,'PreserveFormat',true)
+    end
 end
 end
