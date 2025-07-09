@@ -8,6 +8,11 @@ Citations
 Publications that cited COBRA Toolbox
 ------------------------------------
 .. tabs::
+	.. tab:: 2025
+		.. bibliography::
+			:list: enumerated
+			:filter: year == "2025"
+			:style: modstyle
 	.. tab:: 2024
 		.. bibliography::
 			:list: enumerated

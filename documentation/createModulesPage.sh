@@ -31,7 +31,7 @@ do
     echo ".. raw:: html" >> $rstFunctionPath
     echo "" >> $rstFunctionPath
     echo "   <div class=\"tutorialSectionBox $section\">" >> $rstFunctionPath
-    echo "     <div class=\"sectionLogo\"><img class=\"avatar\" src=\"/cobratoolbox/stable/_static/img/icon_${section}_wb.png\"></div>" >> $rstFunctionPath
+    echo "     <div class=\"sectionLogo\"><img class=\"avatar\" src=\"/cobratoolbox/stable/_static/img/${section}.png\"></div>" >> $rstFunctionPath
     echo "     <div class=\"sectionTitle\"><h3>${subs[$section]}</h3></div>" >> $rstFunctionPath
     echo "     <div class=\"row\">" >> $rstFunctionPath
     echo "       <div class=\"col-xs-6\">" >> $rstFunctionPath
