@@ -46,5 +46,5 @@ target_element2= soup.find("div", id="previous-contributors-list")
 target_element2.insert_after(past_contri)
 
 # Save the modified HTML
-with open("./contributors/contributors.html", "w") as f:
+with open("./contributors/contributors.html", "w", encoding="utf-8") as f:
     f.write(html.unescape(soup.prettify()))

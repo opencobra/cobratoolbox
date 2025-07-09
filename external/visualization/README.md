@@ -1,1 +1,1 @@
-# <img src="https://opencobra.github.io/cobratoolbox/stable/_static/img/icon_visualization.png" height="22px">&nbsp;&nbsp;External dependencies - visualization
+# <img src="https://opencobra.github.io/cobratoolbox/stable/_static/img/visualization.png" height="22px">&nbsp;&nbsp;External dependencies - visualization

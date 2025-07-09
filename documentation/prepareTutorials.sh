@@ -408,7 +408,7 @@ if [ $buildPNG = true ] || [ $buildMD = true ] || [ $buildRST = true ]; then
             echo $readmePath
             mkdir -p $readmePath
             echo "<p align=\"center\">" > $readmePath/README.md
-            echo "    <a href=\"$pdfHyperlink\" title=\"Download PDF file\" target=\"_blank\"><img src=\"$server/cobratoolbox/img/icon_pdf.png\" height=\"90px\" alt=\"pdf\"></a>&nbsp;&nbsp;&nbsp;<a href=\"$mlxHyperlink\" title=\"Download Live Script file\" target=\"_blank\"><img src=\"$server/cobratoolbox/img/icon_mlx.png\" height=\"90px\" alt=\"MLX\"></a>&nbsp;&nbsp;&nbsp;<a href=\"$mHyperlink\" title=\"Download MATLAB file\" target=\"_blank\"><img src=\"$server/cobratoolbox/img/icon_m.png\" height=\"90px\" alt=\"M file\"></a>&nbsp;&nbsp;&nbsp;<a href=\"$dirHyperlink\" title=\"View on Github\" target=\"_blank\"><img src=\"$server/cobratoolbox/img/icon_view.png\" height=\"90px\" alt=\"view\"></a><a href=\"https://opencobra.github.io/cobratoolbox/latest/tutorials/index.html\" title=\"Tutorials\"><img src=\"$server/cobratoolbox/img/icon_tut.png\" height=\"90px\" alt=\"tutorials\"></a>" >> $readmePath/README.md
+            echo "    <a href=\"$pdfHyperlink\" title=\"Download PDF file\" target=\"_blank\"><img src=\"$server/cobratoolbox/img/pdf.png\" height=\"90px\" alt=\"pdf\"></a>&nbsp;&nbsp;&nbsp;<a href=\"$mlxHyperlink\" title=\"Download Live Script file\" target=\"_blank\"><img src=\"$server/cobratoolbox/img/mlx.png\" height=\"90px\" alt=\"MLX\"></a>&nbsp;&nbsp;&nbsp;<a href=\"$mHyperlink\" title=\"Download MATLAB file\" target=\"_blank\"><img src=\"$server/cobratoolbox/img/m.png\" height=\"90px\" alt=\"M file\"></a>&nbsp;&nbsp;&nbsp;<a href=\"$dirHyperlink\" title=\"View on Github\" target=\"_blank\"><img src=\"$server/cobratoolbox/img/view.png\" height=\"90px\" alt=\"view\"></a><a href=\"https://opencobra.github.io/cobratoolbox/latest/tutorials/index.html\" title=\"Tutorials\"><img src=\"$server/cobratoolbox/img/icon_tut.png\" height=\"90px\" alt=\"tutorials\"></a>" >> $readmePath/README.md
             echo "<br><br>" >> $readmePath/README.md
             echo "</p>" >> $readmePath/README.md
 
@@ -456,7 +456,7 @@ if [ $buildPNG = true ] || [ $buildMD = true ] || [ $buildRST = true ]; then
                 echo ".. raw:: html" >> $rstPath/index.rst
                 echo "" >> $rstPath/index.rst
                 echo "   <div class=\"tutorialSectionBox $section\">" >> $rstPath/index.rst
-                echo "     <div class=\"sectionLogo\"><img class=\"avatar\" src=\"$server/cobratoolbox/img/icon_${section}_wb.png\" alt=\"$section\"></div>" >> $rstPath/index.rst
+                echo "     <div class=\"sectionLogo\"><img class=\"avatar\" src=\"/cobratoolbox/stable/img/${section}.png\" alt=\"$section\"></div>" >> $rstPath/index.rst
                 echo "     <div class=\"sectionTitle\"><h3>${subs[$section]}<a class=\"headerlink\" href=\"#$section\" title=\"Permalink to this headline\">¶</a></h3></div>" >> $rstPath/index.rst
                 echo "     <div class=\"sectionContent\">" >> $rstPath/index.rst
                 echo >> $rstPath/index.rst
