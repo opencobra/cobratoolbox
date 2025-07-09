@@ -27,7 +27,7 @@ def generate_section_rst_code(section):
     rst_code += ".. raw:: html\n\n"
     rst_code += "\n".join([
         t+f"<div class=\"tutorialSectionBox {section}\">",
-        t*2+f"<div class=\"sectionLogo\"><img class=\"avatar\" src=\"/cobratoolbox/stable/_static/img/icon_{section}_wb.png\" alt=\"{section}\"></div>",
+        t*2+f"<div class=\"sectionLogo\"><img class=\"avatar\" src=\"/cobratoolbox/stable/_static/img/{section}.png\" alt=\"{section}\"></div>",
         t*2+f"<div class=\"sectionTitle\"><h3>{section.capitalize()}</h3></div>",
         t*2+"<div class=\"row\">",
         t*3+"<div class=\"col-xs-6\">",

@@ -16,7 +16,7 @@ Analysis
 .. raw:: html
 
    <div class="tutorialSectionBox analysis">
-     <div class="sectionLogo"><img class="avatar" src="https://king.nuigalway.ie/img/icon_analysis_wb.png" alt="analysis"></div>
+     <div class="sectionLogo"><img class="avatar" src="https://king.nuigalway.ie/img/analysis.png" alt="analysis"></div>
      <div class="sectionTitle"><h3>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h3></div>
      <div class="sectionContent">
 
@@ -57,7 +57,7 @@ Base
 .. raw:: html
 
    <div class="tutorialSectionBox base">
-     <div class="sectionLogo"><img class="avatar" src="https://king.nuigalway.ie/img/icon_base_wb.png" alt="base"></div>
+     <div class="sectionLogo"><img class="avatar" src="https://king.nuigalway.ie/img/base.png" alt="base"></div>
      <div class="sectionTitle"><h3>Base<a class="headerlink" href="#base" title="Permalink to this headline">¶</a></h3></div>
      <div class="sectionContent">
 
@@ -79,7 +79,7 @@ Data integration
 .. raw:: html
 
    <div class="tutorialSectionBox dataIntegration">
-     <div class="sectionLogo"><img class="avatar" src="https://king.nuigalway.ie/img/icon_dataIntegration_wb.png" alt="dataIntegration"></div>
+     <div class="sectionLogo"><img class="avatar" src="https://king.nuigalway.ie/img/dataIntegration.png" alt="dataIntegration"></div>
      <div class="sectionTitle"><h3>Data integration<a class="headerlink" href="#dataIntegration" title="Permalink to this headline">¶</a></h3></div>
      <div class="sectionContent">
 
@@ -102,7 +102,7 @@ Design
 .. raw:: html
 
    <div class="tutorialSectionBox design">
-     <div class="sectionLogo"><img class="avatar" src="https://king.nuigalway.ie/img/icon_design_wb.png" alt="design"></div>
+     <div class="sectionLogo"><img class="avatar" src="https://king.nuigalway.ie/img/design.png" alt="design"></div>
      <div class="sectionTitle"><h3>Design<a class="headerlink" href="#design" title="Permalink to this headline">¶</a></h3></div>
      <div class="sectionContent">
 
@@ -125,7 +125,7 @@ Reconstruction
 .. raw:: html
 
    <div class="tutorialSectionBox reconstruction">
-     <div class="sectionLogo"><img class="avatar" src="https://king.nuigalway.ie/img/icon_reconstruction_wb.png" alt="reconstruction"></div>
+     <div class="sectionLogo"><img class="avatar" src="https://king.nuigalway.ie/img/reconstruction.png" alt="reconstruction"></div>
      <div class="sectionTitle"><h3>Reconstruction<a class="headerlink" href="#reconstruction" title="Permalink to this headline">¶</a></h3></div>
      <div class="sectionContent">
 
@@ -164,7 +164,7 @@ Visualization
 .. raw:: html
 
    <div class="tutorialSectionBox visualization">
-     <div class="sectionLogo"><img class="avatar" src="https://king.nuigalway.ie/img/icon_visualization_wb.png" alt="visualization"></div>
+     <div class="sectionLogo"><img class="avatar" src="https://king.nuigalway.ie/img/visualization.png" alt="visualization"></div>
      <div class="sectionTitle"><h3>Visualization<a class="headerlink" href="#visualization" title="Permalink to this headline">¶</a></h3></div>
      <div class="sectionContent">
 
