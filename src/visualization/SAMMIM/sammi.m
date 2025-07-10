@@ -193,14 +193,33 @@ html = strrep(html,'//MATLAB_CODE_HERE//',jsonstr);
 %Account for speial characters
 html = strrep(html,'%','%%');
 
-%Write to file
-fid = fopen([sfolder options.htmlName],'w');
-fprintf(fid,html);
+% Determine output path from options.htmlName
+[outputFolder, name, ext] = fileparts(options.htmlName);
+if isempty(ext)
+    ext = '.html';
+end
+if isempty(outputFolder)
+    outputPath = fullfile(sfolder, [name ext]);
+else
+    outputPath = fullfile(outputFolder, [name ext]);
+end
+
+% Ensure the directory exists
+if ~exist(outputFolder, 'dir') && ~isempty(outputFolder)
+    mkdir(outputFolder);
+end
+
+% Write to file
+fid = fopen(outputPath, 'w');
+if fid == -1
+    error('Could not open file %s for writing.', outputPath);
+end
+fprintf(fid, html);
 fclose(fid);
 
-%Open window
+% Open in browser
 if options.load
-    web([sfolder options.htmlName],'-browser')
+    web(outputPath, '-browser');
 end
 end
 

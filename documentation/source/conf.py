@@ -182,14 +182,14 @@ html_context = {'conf_py_path': os.path.join(os.sep, 'docs', 'source', ''),
                 'github_repo': 'cobratoolbox',
                 'github_version': 'master',
                 'theme_logo_only': True,
-                'favicon_apple_touch': 'img/apple-touch-icon.png',
+                'favapple_touch': 'img/apple-touch-icon.png',
                 'favicon32x32': 'img/favicon-32x32.png',
                 'favicon16x16': 'img/favicon-16x16.png',
-                'favicon_safari_pinned_tab': 'img/safari-pinned-tab.svg',
+                'favsafari_pinned_tab': 'img/safari-pinned-tab.svg',
                 'manifest': 'json/manifest.json',
                 'browserconfig': 'browserconfig.xml',
                 'show_source': False,
-                'project_logo_url': 'https://king.nuigalway.ie/cobratoolbox/img/cobratoolbox_logo_transparent.png',
+                'project_logo_url': '/cobratoolbox/stable/_static/img/logo.png',
                 'project_logo_alt_text': 'cobratoolbox logo' }
 #                'display_github': True}
 # Add any paths that contain custom themes here, relative to this directory.
@@ -207,7 +207,7 @@ html_title = u'The COBRA Toolbox'
 # The name of an image file (relative to this directory) to place at the top
 # of the sidebar.
 #
-#html_logo = 'https://king.nuigalway.ie/cobratoolbox/img/logo.png'
+#html_logo = '/cobratoolbox/stable/_static/img/logo.png'
 
 # The name of an image file (relative to this directory) to use as a favicon of
 # the docs.  This file should be a Windows icon file (.ico) being 16x16 or 32x32

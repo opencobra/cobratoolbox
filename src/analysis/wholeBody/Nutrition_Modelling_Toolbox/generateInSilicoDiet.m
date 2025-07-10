@@ -155,7 +155,9 @@ if analyseMacros
 
     % Make figure
     % Set the tiled layout - 5 horizontal barcharts
-    fig = tiledlayout(5,1);
+    fig = figure('Position',[571,171,809,682]);
+    
+    tiledlayout(5,1);
     % Initialise the axis for the figure
     ax1 = nexttile;
     % Create the bar chart
@@ -163,33 +165,33 @@ if analyseMacros
     % Add the title
     title(ax1, 'Comparison of lipids between the original and in silico diets')
     % Add axis
-    ylabel(ax1, 'Total lipids (g)')
+    ylabel(ax1, 'Lipids (g)')
 
     ax2 = nexttile;
     bar(dietMacroLabel.Properties.VariableNames(2:end), carbohydrates);
     title(ax2, 'Comparison of carbohydrates between the original and in silico diets')
-    ylabel(ax2, 'Total carbohydrates (g)')
+    ylabel(ax2, 'Carbohydrates (g)')
 
     ax3 = nexttile;
     bar(dietMacroLabel.Properties.VariableNames(2:end), protein);
     title(ax3, 'Comparison of protein between the original and in silico diets')
-    ylabel(ax3, 'Total protein (g)')
+    ylabel(ax3, 'Protein (g)')
 
     ax4 = nexttile;
     bar(dietMacroLabel.Properties.VariableNames(2:end), sugars);
     title(ax4, 'Comparison of sugars between the original and in silico diets')
-    ylabel(ax4, 'Total sugar (g)')
+    ylabel(ax4, 'Sugar (g)')
 
     ax5 = nexttile;
     bar(dietMacroLabel.Properties.VariableNames(2:end), energy);
     title(ax5, 'Comparison of energy between the original and in silico diets')
-    ylabel(ax5, 'Total energy (kcal)')
+    ylabel(ax5, 'Energy (kcal)')
     
     % Add a single legend as it is the same for all plots and adjust the
     % position.
     lgnd = legend(legendLabel, 'Orientation','horizontal');
 
-    lgnd.Position(1) = 0.39;
+    lgnd.Position(1) = 0.25;
     lgnd.Position(2) = 0.05;
 
     % Save figure

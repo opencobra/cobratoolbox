@@ -39,8 +39,9 @@ if FVAflag
     [m1, m2] = fluxVariability(model,0);
     userxn = (abs(m1) > 1e-7 | abs(m2) > 1e-7);
     if any(userxn == false)
-        display('ommitting reactions due to FVA')
-        model.rxns(userxn == false)
+    fprintf('Omitting reactions due to FVA constraint:\n');
+    omittedRxns = model.rxns(~userxn);
+    disp(omittedRxns);
     end
 end
 
@@ -79,7 +80,7 @@ Isotopomer_Info = vertcat(inputMet, Isotopomer_Info);
 
 isotopomer = dataset(Isotopomer_Info);
 xdir = which('generateIsotopomerSolver');
-xdir = strrep(xdir, 'generateIsotopomerSolver.m', '') % get only directory
+xdir = strrep(xdir, 'generateIsotopomerSolver.m', ''); % get only directory
 
 %export(isotopomer,'file','C:\UserSVN\isotopomer\solver\Isotopomer_Text.txt');
 export(isotopomer,'file',strcat(xdir,'IsotopomerModel.txt'),'WriteVarNames',false);

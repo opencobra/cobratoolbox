@@ -188,6 +188,18 @@ for j = init:fl
     end
 end
 
+% export metabolite names and subsystems
+database = loadVMHDatabase;
+metNames = netSecretionFluxes(:,1);
+metNames(1,2:3) = {'Metabolite name','Subsystem'};
+for i=2:size(metNames,1)
+    met = strrep(metNames{i,1},'EX_','');
+    met = strrep(met,'[fe]','');
+    metNames{i,2} = database.metabolites{find(strcmp(database.metabolites(:,1),met)),2};
+    metNames{i,3} = database.metabolites{find(strcmp(database.metabolites(:,1),met)),13};
+end
+    writetable(cell2table(metNames),[resPath names{1, j} '_metaboliteNames.csv'],'WriteVariableNames',false);
+
 % delete files that are no longer needed
 delete([resPath filesep 'exchanges.csv'])
 delete([resPath filesep 'intRes.mat'])
