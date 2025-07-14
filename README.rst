@@ -28,9 +28,9 @@ System Requirements and Solver Installation
 
 .. begin-requirements-marker
 
-|warning| Please follow `this guide <https://opencobra.github.io/cobratoolbox/docs/requirements.html>`__ in order to configure your system properly.
+⚠️  Please follow `this guide <https://opencobra.github.io/cobratoolbox/docs/requirements.html>`__ in order to configure your system properly.
 
-|warning| Please make sure you install a compatible solver. Check the compatibility `here <https://opencobra.github.io/cobratoolbox/docs/compatibility.html>`__.
+⚠️  Please make sure you install a compatible solver. Check the compatibility `here <https://opencobra.github.io/cobratoolbox/docs/compatibility.html>`__.
 
 You may install ``TOMLAB``, ``IBM ILOG CPLEX``, ``GUROBI``, or ``MOSEK`` by following these `detailed instructions <https://opencobra.github.io/cobratoolbox/docs/solvers.html>`__.
 
@@ -49,11 +49,12 @@ Installation
       $ git clone --depth=1 https://github.com/opencobra/cobratoolbox.git cobratoolbox
 
 
-   |warning| Please note the ``--depth=1`` in the clone command. Run this command in ``Terminal`` (on |macos| and |linux|) or in ``Git Bash`` (on |windows|) -
-   **not** in |matlab|. Although not recommended, you can download the
-   repository as a `compressed archive </cobratoolbox/stable/_static/releases/theCOBRAToolbox.zip>`__.
+> ⚠️ **Please note** the `--depth=1` in the clone command.  
+> Run this command in **Terminal** (on macOS and Linux) or in **Git Bash** (on Windows) — **not** in MATLAB.  
+Although not recommended, you can download the repository as a `compressed archive <https://github.com/opencobra/cobratoolbox/archive/refs/heads/master.zip>`__.
 
-2. Change to the folder ``cobratoolbox/`` and run from |matlab|
+
+2. Change to the folder ``cobratoolbox/`` and run from MATLAB
 
    .. code-block:: matlab
 
@@ -83,8 +84,8 @@ How to contribute
 
 .. begin-how-to-contribute-marker
 
-|thumbsup| |tada| First off, thanks for taking the time to contribute to `The COBRA
-Toolbox <https://github.com/opencobra/cobratoolbox>`__! |tada| |thumbsup|
+👍 🎉 First off, thanks for taking the time to contribute to `The COBRA Toolbox <https://github.com/opencobra/cobratoolbox>`__! 🎉 👍
+
 
 .. raw:: html
 
@@ -101,19 +102,17 @@ within MATLAB by typing:
 
     >> installDevTools()
 
-|bulb| Check out `MATLAB.devTools
-<https://github.com/opencobra/MATLAB.devTools>`__ - and contribute the smart
-way! The **official documentation** is `here <https://opencobra.github.io/MATLAB.devTools/ >`__.
+💡 Check out `MATLAB.devTools <https://github.com/opencobra/MATLAB.devTools>`__ – and contribute the smart way!  
+The **official documentation** is `here <https://opencobra.github.io/MATLAB.devTools/>`__.
 
-|thumbsup| Contribute to the ``opencobra/cobratoolbox`` repository by following `these
-instructions
-<https://opencobra.github.io/MATLAB.devTools/stable/contribute.html#the-cobra-toolbox>`__:
+👉 Contribute to the ``opencobra/cobratoolbox`` repository by following `these instructions <https://opencobra.github.io/MATLAB.devTools/stable/contribute.html#the-cobra-toolbox>`__:
+
 
 .. code-block:: matlab
 
     >> contribute('opencobra/cobratoolbox');
 
-|thumbsup| Contribute to the ``opencobra/COBRA.tutorials`` repository by following `these
+👉 Contribute to the ``opencobra/COBRA.tutorials`` repository by following `these
 instructions
 <https://opencobra.github.io/MATLAB.devTools/stable/contribute.html#cobra-tutorials>`__:
 
@@ -189,7 +188,7 @@ implemented in The COBRA Toolbox v3.0 [2], was employed.*
 Binaries and Compatibility
 --------------------------
 
-|warning| Please make sure you install a compatible solver. Check the
+⚠️ Please make sure you install a compatible solver. Check the
 compatibility
 `here <https://opencobra.github.io/cobratoolbox/docs/compatibility.html>`__.
 
@@ -244,7 +243,7 @@ holder.*
    <img src="/cobratoolbox/stable/_static/img/windows.png" height="20px" width="20px" alt="windows">
 
 
-.. |warning| raw:: html
+.. ⚠️ raw:: html
 
    <img src="/cobratoolbox/stable/_static/img/warning.png" height="20px" width="20px" alt="warning">
 
