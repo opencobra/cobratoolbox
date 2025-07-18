@@ -15,11 +15,24 @@ function [iWBM, iWBMcontrol_female, iWBMcontrol_male, persParams] = persWBM(meta
 % INPUTS
 %
 % REQUIRED:
-% metadata                     Can be a cell array or a table or a path to an
-%                              excel file. In any case, this should contain
-%                              a list with a minimum of three column and option
-%                              for additional columns for each individual for which a model should be created:
+% metadata                     Can be a struct (for personalising one model) 
+%                              or a path to an excel file (for batch 
+%                              personalisation). If it is a cell array, it
+%                              should follow the format of the individualised 
+%                              parameters struct obtained from running: 
+%                              > sex = "male";  
+%                              OR
+%                              > sex = "female";
+%                              AND 
+%                              > standardPhysiolDefaultParameters;
 
+%                              There must be a field with sex in the struct
+%                              which is a string containing "male" or
+%                              "female"
+%                              For batch personalisation using an excel
+%                              file, a list with a minimum of three column 
+%                              and option for additional columns for each 
+%                              individual for which a model should be created:
 %
 %                              |"ID"              |"Sex"    |"CardiacOutput"|
 %                              ----------------------------------------------
@@ -67,8 +80,7 @@ function [iWBM, iWBMcontrol_female, iWBMcontrol_male, persParams] = persWBM(meta
 %                             persWBMmetabolomics in isolation!
 % IndividualParameters        Structure containing the model parameters as 
 %                             with running: 
-%                             sex = "male"; or sex = "female";
-%                             standardPhysiolDefaultParameters;
+
 %                             Organ weights and blood flow data can also be
 %                             added into this structure (will they be used
 %                             to calculate something??? not right now)
@@ -94,7 +106,7 @@ function [iWBM, iWBMcontrol_female, iWBMcontrol_male, persParams] = persWBM(meta
 % Define the input parser
 parser = inputParser();
 % Add required inputs (based on your description)
-addRequired(parser, 'metadataPath', @ischar);
+addRequired(parser, 'metadataPath', @(x) ischar(x) || isstring(x) || isstruct(x));
 
 % Add optional parameters
 addParameter(parser, 'persPhysiology',{}, @iscell);
@@ -139,6 +151,7 @@ end
 
 if ~exist('Diet', 'var') || isempty(Diet)
     EUAverageDietNew;
+    disp(' > No valid diet provided, average European diet will be used')
 end
     
 if ~ischar(metadataPath)
@@ -191,7 +204,6 @@ end
 
 AllParams = {
     'age'; ...
-
     'modelID'; ...
     'body weight';...
     'body fat'; ...
@@ -204,8 +216,7 @@ AllParams = {
     'hematocrit'; ...
     'creatinine'; ....
     'blood flow rate';...
-    'glomerular filtration rate';...
-    'blood flow for each organ'};
+    'glomerular filtration rate'};
 
 % Check that the data given matches the parameters that can be personalised
 % Ensure male and female are not m and f, ensure column 1 is paramters and
@@ -265,10 +276,10 @@ end
 % personalise with, compare the parameters in the metadata to those we can
 % personalise and extract the relevant parameters
 if ~personalisingPhys && ~personalisingMets
-    fprintf('> No parameters from metadata were specified to be used in personalisation\n');
+    fprintf(' > No parameters from metadata were specified to be used in personalisation\n');
 
     % Match variable names (case-insensitive)
-    vars = metadata.Properties.VariableNames;
+    vars = Data.Properties.VariableNames;
     matches = ismember(lower(vars), lower(AllParams));
     persPhysiology = vars(matches);
 
@@ -276,9 +287,10 @@ if ~personalisingPhys && ~personalisingMets
         error(['No valid parameters found in metadata for personalising WBMs.\n' ...
                'Check names against valid list: %s'], strjoin(AllParams, ', '));
     end
-
-    fprintf('> Using matched parameters from metadata:\n');
+    
+    fprintf('> Using matched parameters from metadata to personalise:\n');
     disp(persPhysiology);
+    personalisingPhys = true; 
 end
 
 disp(" > All parameters are valid");
@@ -288,7 +300,6 @@ maleControlCreated = isfile(fullfile(resPath, 'iWBMcontrol_male.mat'));
 
 % Create male control if not already completed and metadata contains
 % male models
-
 if sexType == "male" || sexType == "mixed"
     if isempty(maleWBM)
         maleWBM = loadPSCMfile('Harvey');
@@ -422,18 +433,28 @@ for s = 1:size(Data, 1)
         % Load the default parameters
         standardPhysiolDefaultParameters;
         IndividualParameters.sex = sex;
+        
+        % Create table to save detail on source of parameter (user define,
+        % default, calculated using x)
+        % Create a 1-row table from the structure
+        fieldsToDelete = {'bloodFlowData', 'OrgansWeights', 'bloodFlowPercCol', 'bloodFlowOrganCol'};
+        paramSource = rmfield(IndividualParameters, fieldsToDelete);
+        paramSource = struct2table(paramSource);
+
+        
         if sex  == "male"
             WBMcurrent = maleWBM;
         else
             WBMcurrent = femaleWBM;
         end
-        
+        paramSource.sex = 'User defined';
         
         % ID
         if any(strcmp(lower(dataCurrent.Properties.VariableNames), 'id'))
             idxID = find(strcmp(lower(dataCurrent.Properties.VariableNames),'id'));
             ID = dataCurrent{2, idxID};
             IndividualParameters.ID = ID;
+            paramSource.ID = 'User defined';
             WBMcurrent.ID = ID;
         end
         
@@ -456,6 +477,9 @@ for s = 1:size(Data, 1)
             else
                 warning("Unable to read weight for patient %s, default weight will be applied", ID)
             end
+            paramSource.bodyWeight = 'User defined';
+        else
+            paramSource.bodyWeight = 'Default';
         end
         
         % AGE
@@ -476,6 +500,9 @@ for s = 1:size(Data, 1)
                 error('Age not provided in a valid unit');
             end
             IndividualParameters.Age = Age;
+            paramSource.Age = 'User defined';
+        else
+            paramSource.Age = 'Default';
         end
         
         % HEIGHT
@@ -495,6 +522,9 @@ for s = 1:size(Data, 1)
             else
                 warning("Unable to read height for patient %s, default height will be applied", ID)
             end
+            paramSource.Height = 'User defined';
+        else
+            paramSource.Height = 'Default';
         end
         
         
@@ -510,6 +540,9 @@ for s = 1:size(Data, 1)
                 error('Heart rate must be provided in bpm');
             end
             IndividualParameters.HeartRate = HR;
+            paramSource.HeartRate = 'User defined';
+        else
+            paramSource.HeartRate = 'Default';
         end
         
         % STROKE VOLUME
@@ -524,6 +557,9 @@ for s = 1:size(Data, 1)
                 error('Stroke volume must be provided in ml');
             end
             IndividualParameters.StrokeVolume = SV;
+            paramSource.StrokeVolume = 'User defined';
+        else
+            paramSource.StrokeVolume = 'Default';
         end
         
         % CARDIAC OUTPUT
@@ -540,6 +576,9 @@ for s = 1:size(Data, 1)
                 error("Cardiac Output Unit not valid")
             end
             IndividualParameters.CardiacOutput = CO;
+            paramSource.CardiacOutput = 'User defined';
+        else
+            paramSource.CardiacOutput = 'Default';
         end
         
         % HEMATOCRIT
@@ -559,6 +598,9 @@ for s = 1:size(Data, 1)
                 end
             end
             IndividualParameters.Hematocrit = Hmt;
+            paramSource.Hematocrit = 'User defined';
+        else
+            paramSource.Hematocrit = 'Default';
         end
         
         % CREATININE
@@ -574,6 +616,11 @@ for s = 1:size(Data, 1)
                 error('Creatinine must be provided in mg/dL');
             end
             IndividualParameters.Creatinine = Cn;
+            paramSource.MConUrCreatinineMin = 'User defined';
+            paramSource.MConUrCreatinineMax = 'User defined';
+        else
+            paramSource.MConUrCreatinineMin = 'Default';
+            paramSource.MConUrCreatinineMax = 'Default';
         end
         
         % BLOOD FLOW RATE
@@ -588,6 +635,9 @@ for s = 1:size(Data, 1)
                 error('Blood flow rate must be provided in mL/min');
             end
             IndividualParameters.BloodFlowRate = BFR;
+            %paramSource.BloodFlowRate = 'User defined';
+        else
+            %paramSource.BloodFlowRate = 'Default';
         end
         
         % GLOMERULAR FILTRATION RATE
@@ -602,6 +652,9 @@ for s = 1:size(Data, 1)
                 error('Glomerular Filtration rate must be provided in mL/min/1.73m^2');
             end
             IndividualParameters.GlomerularFiltrationRate = GFR;
+            paramSource.GlomerularFiltrationRate = 'User defined';
+        else
+            paramSource.GlomerularFiltrationRate = 'Default';
         end
         
         % LEAN BODY MASS
@@ -620,6 +673,9 @@ for s = 1:size(Data, 1)
                 error('Lean body mass must be provided in g or kg');
             end
             IndividualParameters.LeanBodyMass = LBM;
+            paramSource.LeanBodyMass = 'User defined';
+        else
+            %paramSource.LeanBodyMass = 'Default';
         end
         
         % BODY FAT PERCENTAGE
@@ -638,6 +694,9 @@ for s = 1:size(Data, 1)
                 warning('Body weight (Wt) is in the wrong unit or conversion is not possible.');
             end
             IndividualParameters.BodyFat = BF;
+            paramSource.BodyFat = 'User defined';
+        else
+            %paramSource.BodyFat = 'Default';
         end
         
         clear idxAge idxBF idxBFR idxCn idxCO idxGFR idxHmt idxHR idxHt idxID idxLBM idxSex idxSV idxWt Age Col Cols cParam currentUnit Hmt Ht Numbers Wt
@@ -648,6 +707,7 @@ for s = 1:size(Data, 1)
         elseif strcmp(IndividualParameters.sex, 'female')
             IndividualParameters.BloodVolume = (0.3561 * (IndividualParameters.Height/100)^3 + 0.03308 * IndividualParameters.bodyWeight + 0.1833)*1000;
         end
+        paramSource.BloodVolume = 'Estimated based on sex, height & weight';
         
         % For now, 1 is hardcoded. Should update to check available
         % parameters and then accoordingly use the most accurate
@@ -657,16 +717,16 @@ for s = 1:size(Data, 1)
         % 2. Estimate (resting) cardiac output from blood volume in case that no stroke volume is provided
         if optionCardiacOutput ~=-1 % skip adjustment of CO
                 IndividualParameters.CardiacOutput = IndividualParameters.HeartRate * IndividualParameters.StrokeVolume; % in ml/min = beats/min * ml/beat
-                IndividualParameters.CardiacOutput_Note = 'Calculated from personalized StrokeVolume and heart rate';
+                paramSource.CardiacOutput = 'Calculated from personalized StrokeVolume and heart rate';
             elseif optionCardiacOutput == 1  
                 % actually I think that it makes more sense to keep the cardiac output to
                 % be calculated based on default strokevolume and heart rate
                 IndividualParameters.CardiacOutput = IndividualParameters.HeartRate * IndividualParameters.StrokeVolume; % in ml/min = beats/min * ml/beat
-                IndividualParameters.CardiacOutput_Note = 'Calculated from default StrokeVolume and heart rate';
+                paramSource.CardiacOutput = 'Calculated from default StrokeVolume and heart rate';
             elseif optionCardiacOutput == 2
                 IndividualParameters.StrokeVolume ='NaN';
                 IndividualParameters.CardiacOutput = IndividualParameters.BloodVolume;
-                IndividualParameters.CardiacOutput_Note = 'Estimated from BloodVolume'; % in ml/min = beats/min * ml/beat
+                paramSource.CardiacOutput = 'Estimated from BloodVolume'; % in ml/min = beats/min * ml/beat
             elseif optionCardiacOutput == 0
                 % With the blood volume estimate the CO gets too low.
                 % hence I used the equation given here:
@@ -675,7 +735,7 @@ for s = 1:size(Data, 1)
                 
                 Wt = IndividualParameters.bodyWeight;
                 IndividualParameters.CardiacOutput = 9119-exp(9.164-2.91e-2*Wt+3.91e-4*Wt^2-1.91e-6*Wt^3);
-                IndividualParameters.CardiacOutput_Note = 'Estimated from CO equation'; % in ml/min = beats/min * ml/beat
+                paramSource.CardiacOutput = 'Estimated from CO equation'; % in ml/min = beats/min * ml/beat
             elseif optionCardiacOutput == 3
                 % from wikipedia: https://en.wikipedia.org/wiki/Fick_principle
                 %     VO_2 = (CO \times\ C_a) - (CO \times\ C_v)
@@ -684,7 +744,7 @@ for s = 1:size(Data, 1)
                 % Cardiac Output = (125 ml O2/minute x 1.9) / (200 ml O2/L - 150 ml O2/L) = 4.75 L/minute
                 % can be refined to account for haemoglobin content
                 IndividualParameters.CardiacOutput = ((IndividualParameters.VO2*1000)*60*24/(200 - 150));
-                IndividualParameters.CardiacOutput_Note = 'Estimated from VO2 ';
+                paramSource.CardiacOutput = 'Estimated from VO2 (Fick principle)';
             elseif optionCardiacOutput == 4 %
                 %Cardiac Output = (125 ml O2/minute x 1.9) / (200 ml O2/L - 150 ml O2/L) = 4.75 L/minute
                 % Various calculations have been published to arrive at the BSA without direct measurement. In the following formulae, BSA is in m2, W is mass in kg, and H is height in cm.
@@ -694,7 +754,7 @@ for s = 1:size(Data, 1)
                 H = IndividualParameters.Height;
                 BSA=0.007184 * W^0.425* H^0.725 ;
                 IndividualParameters.CardiacOutput = ((0.125*1000*BSA)*60*24/(200 - 150));
-                IndividualParameters.CardiacOutput_Note = 'Estimated from surface area ';
+                paramSource.CardiacOutput = 'Estimated from surface area';
             elseif optionCardiacOutput == 5 %
                 % estimation of vO2max
                 % file:///Users/ines.thiele/Dropbox/work/Papers/SystemsPhysiology/schneider2013.pdf
@@ -713,6 +773,7 @@ for s = 1:size(Data, 1)
                 end
                 VO2 = 0.07*VO2max;
                 IndividualParameters.CardiacOutput = ((VO2)*60*24/(200 - 150));
+                paramSource.CardiacOutput = 'Estimated based on VO2 max (Schneider, 2013)';
             elseif  optionCardiacOutput == 6 %
                 %estimation of stroke volume based on Frick
                 % http://circ.ahajournals.org/content/circulationaha/14/2/250.full.pdf
@@ -720,6 +781,7 @@ for s = 1:size(Data, 1)
                 DP = 80; % diatstolic blood pressure
                 IndividualParameters.StrokeVolume = 91.0 + 0.54 * PP - 0.57*DP-0.61 *IndividualParameters.age ;
                 IndividualParameters.CardiacOutput = IndividualParameters.HeartRate * IndividualParameters.StrokeVolume; % in ml/min = beats/min * ml/beat
+                paramSource.CardiacOutput = 'Calculated based on HR and SV (stroke volume estimated based on Frick';
             elseif  optionCardiacOutput == 7 %
                 %estimation of stroke volume based on Bridwell
                 % http://circ.ahajournals.org/content/circulationaha/14/2/250.full.pdf
@@ -727,6 +789,7 @@ for s = 1:size(Data, 1)
                 DP = 80; % diatstolic blood pressure
                 IndividualParameters.StrokeVolume = 66.0 + 0.34 * PP - 0.11*DP-0.36 *IndividualParameters.age ;
                 IndividualParameters.CardiacOutput = IndividualParameters.HeartRate * IndividualParameters.StrokeVolume; % in ml/min = beats/min * ml/beat
+                paramSource.CardiacOutput = 'Calculated based on HR and SV (stroke volume estimated based on Bridwell';
         end
         %% Step 5: Update organ weight and the biomass
         [organs,~,OrganWeightFract,IndividualParametersN] = calcOrganFract(WBMcurrent, IndividualParameters);
@@ -787,17 +850,17 @@ for s = 1:size(Data, 1)
                 WBMcurrent = femaleWBM;
             end
             iWBM = WBMcurrent;
-            iWBM.SetupInfo.IndividualParameters = IndividualParameters;
             if any(strcmp(lower(Data.Properties.VariableNames), 'id'))
                 idxID = find(strcmp(lower(Data.Properties.VariableNames),'id'));
                 ID = Data{s, idxID};
                 IndividualParameters.ID = ID;
             end
+            iWBM.SetupInfo.IndividualParameters = IndividualParameters;
         end
         
         % match every metabolite in persMetabolites to the
         % correct compartment in DataCurrentM
-        for m = 1:length(persMetabolites)
+        for m = 1:size(persMetabolites, 1)
             met = persMetabolites{m, 1};
             comp = persMetabolites(m, 2);
             idxMet = find(strcmp(lower(dataCurrentM.Properties.VariableNames), lower(met)));
@@ -833,21 +896,7 @@ for s = 1:size(Data, 1)
             % Display the warning with multiple lines
             fprintf(2, '%s\n', warningMsg);
         end
-
-    else
     end
-    
-    
-    %% Step 7: sanity check
-    iWBM = setDietConstraints(iWBM, Diet);
-    iWBM = changeRxnBounds(iWBM, 'Whole_body_objective_rxn', 1, 'b');
-    iWBM.osenseStr = 'max';
-    iWBM = changeObjective(iWBM, 'Whole_body_objective_rxn');
-    FBA = optimizeWBModel(iWBM);
-    fprintf(' > FBA for model %s complete: \n     FBA.stat = %f \n     origStatText = %s\n', ID, FBA.stat, FBA.origStat);
-    IndividualParametersN.FBAstat{1, 1} = FBA.stat;
-    IndividualParametersN.FBAorigStat{1, 1} = FBA.origStat;
-    
     %% Step 8: Save the updated iWBM, controlWBM and personalisationOverview
     if exist('iWBM', 'var') && isstruct(iWBM)
         if personalisingPhys == 1 && personalisingMets == 1
@@ -865,19 +914,21 @@ for s = 1:size(Data, 1)
     
     filename = fullfile(resPath, strcat('iWBM_', num2str(ID), '.mat'));
     save(filename ,'-struct', 'iWBM');
-   
+    
     % Join physiological personalisation details together where personalising
     % for more than one model
     if personalisingPhys == 1
         fieldsToDelete = {'bloodFlowData', 'OrgansWeightsRefMan', 'OrgansWeights', 'bloodFlowPercCol', 'bloodFlowOrganCol'};
         IndividualParametersN = rmfield(IndividualParametersN, fieldsToDelete);
         persParamCurrent = struct2table(IndividualParametersN);
+        % Insert the type of parameter detail (user input, default,
+        % calculated etc.)% Add a new empty row to persParamCurrent
+        persParamCurrent(end+1, :) = persParamCurrent(1, :);  % Copy structure    
         if s == 1 && persParamsCheck == 0
             persParams = persParamCurrent;
         else
             persParams.ID = cellstr(persParams.ID);
             persParamCurrent.ID = cellstr(persParamCurrent.ID);
-            persParamCurrent.FBAstat = cell2mat(IndividualParametersN.FBAstat);
             persParams = [persParams; persParamCurrent];
         end
     end
@@ -896,15 +947,59 @@ for s = 1:size(Data, 1)
     end
 end
 
+%% Step 7: sanity check
+[~, dietGrowthStats] =ensureWBMfeasibility(resPath);
+
+if any(dietGrowthStats(:, 2) == false)
+    disp("All models were found to be feasible on the given diet")
+elseif any(dietGrowthStats(:, 3) == false)
+    disp("Some models were not feasible on the given and some adjustments" + newline + ...
+        "were made to ensure feasibility, the adjustments are stored in ...:ADD")
+elseif any(dietGrowthStats(:, 4) == false)
+    disp("Some models were found that were not feasible on any diet,..." + newline + ...
+        "they are listed in the file: dietGrowthStats in the same folder as your iWBMs")
+end
+persParams = {};
 if numModels > 0
     clear persParamCurrent persParamMCurrent dataCurrent missing
+    if persPhysiology == 1
+    % Update some table headers for clarity
+    oldNames = { ...
+        'MConUrCreatinineMax', 'MConUrCreatinineMin', 'MConDefaultBc', ...
+        'MConDefaultCSF', 'MConDefaultUrMax', 'MConDefaultUrMin'};
+    newNames = { ...
+        'Max conc of creatinine in the urine', ...
+        'Min conc of creatinine in the urine', ...
+        'Max conc of a metabolite in the blood plasma', ...
+        'Max conc of a metabolite in the CSF', ...
+        'Max conc of a metabolite in the urine', ...
+        'Min conc of a metabolite in the urine'};
+
+    for k = 1:numel(oldNames)
+        i = strcmp(paramSource.Properties.VariableNames, oldNames{k});
+        if any(i), paramSource.Properties.VariableNames{i} = newNames{k}; end
+        
+        j = strcmp(persParams.Properties.VariableNames, oldNames{k});
+        if any(j), persParams.Properties.VariableNames{j} = newNames{k}; end
+    end
+
+
+    % Join descriptor row with the calculation detail of the parameter
+    paramSourceC = [paramSource.Properties.VariableNames; table2cell(paramSource)];
+    persParamsC = [persParams.Properties.VariableNames; table2cell(persParams)];
+    % Check headers match (or reconcile manually if needed)
+    % Here, just concatenate assuming same headers
+    persParamsC = [paramSourceC; persParamsC(2:end,:)];  % skip second header rows
     excelFilename = fullfile(resPath, 'persParameters.xlsx');
+end 
+    persParams = {};
     %% Save an excel file with a summary of all changes made to all models
     if personalisingPhys == 1 && personalisingMets == 1
-        writetable(persParams, excelFilename, 'Sheet', 'PhysiologicalParameters');
+        writecell(persParamsC, excelFilename, 'Sheet', 'PhysiologicalParameters');
         writetable(persParamsM, excelFilename, 'Sheet', 'MetabolomicParameters'); 
+        %persParams = 
     elseif personalisingPhys == 1
-        writetable(persParams, excelFilename, 'Sheet', 'PhysiologicalParameters');
+        writecell(persParamsC, excelFilename, 'Sheet', 'PhysiologicalParameters');
     elseif personalisingMets == 1
         writetable(persParamsM, excelFilename, 'Sheet', 'MetabolomicParameters');
     end
