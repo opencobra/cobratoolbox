@@ -15,6 +15,11 @@ function [FBA_results, pathsToFilesForStatistics] = analyseWBMs(mWBMPath, fluxPa
 %               automatically added if they are not present in the models.
 %
 % OPTIONAL INPUTS
+% rxnSense       Character array containing either 'max' or 'min'
+%                to specificy the sense of the objective. Option
+%                to specifcy for each objective- character array 
+%                should then be exact length of rxnList.
+%                (OPTIONAL, Default = 'max').
 % numWorkersOptimization    Number of workers that will perform FBA in parallel. Note
 %               that more workers does not necessarily make the function
 %               faster. It is generally not recommended to set numWorkersOptimization
@@ -119,6 +124,8 @@ parser.addRequired('mWBMPath', @ischar);
 parser.addRequired('fluxPath', @ischar);
 parser.addRequired('rxnList', @iscell);
 
+% Optional inputs
+parser.addParameter('rxnSense', '', @iscell);
 parser.addParameter('numWorkersOptimization', 1, @isnumeric);
 parser.addParameter('saveFullRes', true, @islogical);
 parser.addParameter('paramFluxProcessing', struct(), @isstruct);
@@ -128,6 +135,7 @@ parser.addParameter('solver', '', @ischar);
 % Parse required and optional inputs
 parser.parse(mWBMPath, fluxPath, rxnList, varargin{:});
 
+rxnSense = parser.Restuls.rxnSense;
 mWBMPath = parser.Results.mWBMPath;
 fluxPath = parser.Results.fluxPath;
 rxnList = parser.Results.rxnList;
@@ -293,7 +301,7 @@ parfor i = 1:length(hmPaths)
         solution.shadowPriceBIO = zeros(length(solution.taxonNames),length(solution.rxns));
     end
 
-    % Maximise reactions
+    % solve reactions
     for j = 1 : length(rxnList)
         % Set reaction objective
         model = changeObjective(model,rxnList{j});
@@ -303,8 +311,14 @@ parfor i = 1:length(hmPaths)
             model = changeRxnBounds(model,rxnList{j},100000,'u');
         end
 
-        % Set objective function to maximise for the reaction
-        model.osenseStr = 'max';
+        % Set objective function to user defined sense for the reaction
+        if ~isempty(rxnSense) && size(rxnList) == 1
+            model.osenseStr = rxnSense
+        elseif ~isempty(rxnSense) && size(rxnList)>1
+            model.osenseStr = rxnSense{j}
+        else 
+            model.osenseStr = 'max';
+        end 
 
         disp(strcat("Investigate reaction ", string(rxnList{j})))
         FBA = optimizeWBModel(model);
@@ -448,11 +462,7 @@ for i = 1:size(solPaths,1)
                     disp('Reran and no solution found. Consider debugging or using a different solver.')
                 end
                 
-                if ~isempty(fba.f)
-                    f(j) = fba.f;
-                else
-                    f(j) = "nan";
-                end
+                f(j) = fba.f;
                 stat(j) = fba.stat;
             end
         end
