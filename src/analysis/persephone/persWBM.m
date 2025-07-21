@@ -1,4 +1,4 @@
-function [iWBM, iWBMcontrol_female, iWBMcontrol_male, persParams] = persWBM(metadataPath, varargin)
+function [iWBM, iWBMcontrol_female, iWBMcontrol_male, persParams] = persWBM(metadata, varargin)
 %
 % This function takes a table of physiological parameters for an individual or multiple individuals
 % (listed in inputs) and adjusts the paramteres of a provided WBM or Harvey/Harvetta to
@@ -15,23 +15,23 @@ function [iWBM, iWBMcontrol_female, iWBMcontrol_male, persParams] = persWBM(meta
 % INPUTS
 %
 % REQUIRED:
-% metadata                     Can be a struct (for personalising one model) 
-%                              or a path to an excel file (for batch 
-%                              personalisation). If it is a cell array, it
-%                              should follow the format of the individualised 
-%                              parameters struct obtained from running: 
-%                              > sex = "male";  
+% metadata                     Can be a struct (for personalising one model)
+%                              or a path to an excel file (for batch
+%                              personalisation). If it is a structure, it
+%                              should follow the format of the individualised
+%                              parameters struct obtained from running:
+%                              > sex = "male";
 %                              OR
 %                              > sex = "female";
-%                              AND 
+%                              AND
 %                              > standardPhysiolDefaultParameters;
 
 %                              There must be a field with sex in the struct
 %                              which is a string containing "male" or
 %                              "female"
 %                              For batch personalisation using an excel
-%                              file, a list with a minimum of three column 
-%                              and option for additional columns for each 
+%                              file, a list with a minimum of three column
+%                              and option for additional columns for each
 %                              individual for which a model should be created:
 %
 %                              |"ID"              |"Sex"    |"CardiacOutput"|
@@ -39,7 +39,8 @@ function [iWBM, iWBMcontrol_female, iWBMcontrol_male, persParams] = persWBM(meta
 %                              |"unit"           |""        | "mg/dL"       |
 %                              |"Individual1"    |"male"    |5345           |
 %                              |"Individual2"    |"female"  |5360           |
-% 
+%
+%
 % OPTIONAL:
 % persPhysiology               A list of all non-metabolite paramters in the
 %                              metadata that you would like the models to be personalised with.
@@ -78,12 +79,6 @@ function [iWBM, iWBMcontrol_female, iWBMcontrol_male, persParams] = persWBM(meta
 %                             physiological and metabolomic- this function
 %                             should alway be run and NOT
 %                             persWBMmetabolomics in isolation!
-% IndividualParameters        Structure containing the model parameters as 
-%                             with running: 
-
-%                             Organ weights and blood flow data can also be
-%                             added into this structure (will they be used
-%                             to calculate something??? not right now)
 %
 % OUTPUTS
 %
@@ -91,7 +86,7 @@ function [iWBM, iWBMcontrol_female, iWBMcontrol_male, persParams] = persWBM(meta
 %                             (stored as "persModelName.mat"). All updated
 %                             paramteres are described in
 %                             model.IndividualisedParameters
-% controlWBM                  This is a WBM with no personalised
+% controlWBM(s)               This is a WBM with no personalised
 %                             adjustments. When a WBM or multiple WBMs have
 %                             been given as inputs, the controlWBMs are
 %                             exact copies of those. When Harvey or
@@ -105,8 +100,9 @@ function [iWBM, iWBMcontrol_female, iWBMcontrol_male, persParams] = persWBM(meta
 %% Step 1: Read in the available data, check all data is valid
 % Define the input parser
 parser = inputParser();
-% Add required inputs (based on your description)
-addRequired(parser, 'metadataPath', @(x) ischar(x) || isstring(x) || isstruct(x));
+
+% Add required inputs
+addRequired(parser, 'metadata', @(x) ischar(x) || isstring(x) || isstruct(x));
 
 % Add optional parameters
 addParameter(parser, 'persPhysiology',{}, @iscell);
@@ -115,15 +111,14 @@ addParameter(parser, 'maleWBM', '', @(x) isstruct(x));
 addParameter(parser, 'resPath', pwd, @ischar);
 addParameter(parser, 'persMetabolites',{}, @iscell);
 addParameter(parser, 'Diet', '', @ischar);
-addParameter(parser, 'solver', 'glpk', @ischar);
-addParameter(parser, 'IndividualParameters', '', @(x) isstruct(x));
 
+addParameter(parser, 'solver', '', @ischar);
 
 % Parse required and optional inputs
-parse(parser, metadataPath, varargin{:});
+parse(parser, metadata, varargin{:});
 
 % Access the parsed inputs
-metadataPath = parser.Results.metadataPath;
+metadata = parser.Results.metadata;
 persPhysiology = parser.Results.persPhysiology;
 femaleWBM = parser.Results.femaleWBM;
 maleWBM = parser.Results.maleWBM;
@@ -132,11 +127,80 @@ persMetabolites = parser.Results.persMetabolites;
 Diet = parser.Results.Diet;
 solver = parser.Results.solver;
 
-disp(' > Personalisation of WBMs will now be performed')
+metadataStruct = 0;
 
+% Decide what metadata is
+if isstruct(metadata)
+    disp(' > Detected metadata structure, ensuring all required paramteres are present');
+    % Rename user defined Individual parameters
+    IndividualParametersP = metadata;
+    sex = IndividualParametersP.sex;
+    standardPhysiolDefaultParameters;
+    % Ensure all fields from IndividualParameters are in metadata
+    fields = fieldnames(IndividualParameters);
+    for i = 1:numel(fields)
+        if ~isfield(IndividualParametersP, fields{i})
+            IndividualParametersP.(fields{i}) = IndividualParameters.(fields{i});
+        end
+    end
+    % If creatinine is provided, calculate min and max (+/- 10%) to use for
+    % constraining metabolite exchange in urine
+    fn = fieldnames(IndividualParametersP);
+    idx = find(strcmpi(fn, 'creatinine'), 1);
+    if ~isempty(idx)
+        Cn = IndividualParametersP.(fn{idx});
+        IndividualParametersP.MConUrCreatinineMin = Cn * 0.9;
+        IndividualParametersP.MConUrCreatinineMax = Cn * 1.1;
+    end
+    metadataStruct = 1;
+else
+    
+    if ~ischar(metadata)
+        error('metadata data does not satisfy the input requirments (iscell, ischar, isstruct)')
+    else
+        disp('Detected metadata is file path, reading and checking table');
+        % Locate metadata file allowing for .csv or .xlsx ('_processed'
+        % removal relevant only if running this function as part of the
+        % Persephone pipeline)
+        unprocessedMetadata = strrep(metadata, '_processed.csv', '');
+        d = dir([unprocessedMetadata, '*']);
+        match = d(endsWith({d.name}, {'.csv', '.xlsx'}, 'IgnoreCase', true));
+        
+        if isempty(match)
+            error('No matching metadata file (.csv or .xlsx) found.')
+        end
+        % Set unprocessedMetadata to full path of matched file
+        unprocessedMetadata = fullfile(match(1).folder, match(1).name);
+        
+        % Read the metadata table. If the variable names have more than 64
+        % characters, the variable names in the table will be truncated. We account
+        % for this later, so this warning is ignored here.
+        warning('off')
+        opts = detectImportOptions(metadataPath, 'VariableNamingRule', 'preserve');
+        opts = setvartype(opts, opts.VariableNames(1), 'string');
+        Data = readtable(metadataPath, opts);
+        warning('on')
+        
+        % Check if metadata table is not empty
+        validateattributes(Data, {'table'}, {'nonempty'}, mfilename, 'metadataTable')
+        
+        % The variable names in the metadata table will be truncated if the names
+        % are longer than 64 characters. Read the true variable names and store
+        % them in the VariableDescriptions property.
+        % Next, the first 2 lines of the metadata are loaded
+        metadataCell = readcell(unprocessedMetadata,"TextType","string",'Range', '1:2');
+        Data.Properties.VariableUnits = string(metadataCell(2,:));
+        
+    end
+end
+
+
+
+
+disp(' > Personalisation of WBMs will now be performed')
 % check if the solver is defined by the user
 if ~isempty(solver)
-    evalc('changeCobraSolver(solver, ''LP'');');    
+    evalc('changeCobraSolver(solver, ''LP'');');
 else
     % otherwise use the default solver (*note: glpk takes excessive time
     % running microbiotaModelSimulator: it is recommeneded to skip this
@@ -153,53 +217,13 @@ if ~exist('Diet', 'var') || isempty(Diet)
     EUAverageDietNew;
     disp(' > No valid diet provided, average European diet will be used')
 end
-    
-if ~ischar(metadataPath)
-    error('metadata data does not satisfy the input requirments (iscell, ischar, istable)')
-else
-    % Locate metadata file allowing for .csv or .xlsx
-    unprocessedMetadata = strrep(metadataPath, '_processed.csv', '');
-    d = dir([unprocessedMetadata, '*']);
-    match = d(endsWith({d.name}, {'.csv', '.xlsx'}, 'IgnoreCase', true));
-    
-    if isempty(match)
-        error('No matching metadata file (.csv or .xlsx) found.')
-    end
-    
-    % Set unprocessedMetadata to full path of matched file
-    unprocessedMetadata = fullfile(match(1).folder, match(1).name);
- 
-    
-    % Read the metadata table. If the variable names have more than 64
-    % characters, the variable names in the table will be truncated. We account
-    % for this later, so this warning is ignored here.
-    warning('off')
-    opts = detectImportOptions(metadataPath, 'VariableNamingRule', 'preserve');
-    opts = setvartype(opts, opts.VariableNames(1), 'string');
-    Data = readtable(metadataPath, opts);
-    warning('on')
- 
-    % Check if metadata table is not empty
-    validateattributes(Data, {'table'}, {'nonempty'}, mfilename, 'metadataTable')
- 
-    % The variable names in the metadata table will be truncated if the names
-    % are longer than 64 characters. Read the true variable names and store
-    % them in the VariableDescriptions property.
-    % Next, the first 2 lines of the metadata are loaded
-    metadataCell = readcell(unprocessedMetadata,"TextType","string",'Range', '1:2');
-    Data.Properties.VariableUnits = string(metadataCell(2,:));
- 
-end
-
-
 
 
 % Check Data has units stored in table properties
-if ~strcmp('ID', Data.Properties.VariableNames{1})
+if ~metadataStruct && ~strcmp('ID', Data.Properties.VariableNames{1})
     error('Please ensure column 1 of your metadata is ID and is labelled accordingly')
-elseif isempty(Data.Properties.VariableUnits)
+elseif ~metadataStruct && isempty(Data.Properties.VariableUnits)
     error('Please ensure row 2 of your metadata contains units and is labelled accordingly')
-else
 end
 
 AllParams = {
@@ -223,11 +247,16 @@ AllParams = {
 % column 2 is units
 % Data = processMetadata(Data);
 % Check sex is in metadata
-sex = cell2mat(strfind(lower(Data.Properties.VariableNames), 'sex'));
-%
-if sex == 0
-    error("Sex info not found in metadata")
+if metadataStruct
+    sex = metadata.sex;
+    sexType = sex;
 else
+    sex = cell2mat(strfind(lower(Data.Properties.VariableNames), 'sex'));
+end
+%
+if ~metadataStruct && sex == 0
+    error("Sex info not found in metadata")
+elseif ~metadataStruct 
     sexCol = find(strcmp(lower(Data.Properties.VariableNames), 'sex'));
     sexType = table2cell(unique(lower(Data(:, sexCol))));
     if size(sexType, 1) == 2
@@ -253,7 +282,7 @@ end
 % Check that each parameter specified to be used in personalisation is usable, display warning for those that
 % will be excluded
 if ~isempty(persPhysiology)
-    personalisingPhys = true; 
+    personalisingPhys = true;
     for s = 2:size(persPhysiology)
         matches = find(strcmp(lower(persPhysiology{s}), AllParams));
         if matches == 0
@@ -269,28 +298,30 @@ if ~isempty(parser.Results.persMetabolites)
     personalisingMets = true;
 else
     personalisingMets = false;
-    disp(' > Metabolomic personalisation will be skipped (persMetabolites not provided as input)\n')
+    disp(' > persMetabolites not provided as input')
 end
 
 % If neither physiological or metabolomic paramters were speficief to
 % personalise with, compare the parameters in the metadata to those we can
 % personalise and extract the relevant parameters
-if ~personalisingPhys && ~personalisingMets
+if ~metadataStruct && ~personalisingPhys && ~personalisingMets
     fprintf(' > No parameters from metadata were specified to be used in personalisation\n');
-
+    
     % Match variable names (case-insensitive)
     vars = Data.Properties.VariableNames;
     matches = ismember(lower(vars), lower(AllParams));
     persPhysiology = vars(matches);
-
+    
     if isempty(persPhysiology)
         error(['No valid parameters found in metadata for personalising WBMs.\n' ...
-               'Check names against valid list: %s'], strjoin(AllParams, ', '));
+            'Check names against valid list: %s'], strjoin(AllParams, ', '));
     end
     
     fprintf('> Using matched parameters from metadata to personalise:\n');
     disp(persPhysiology);
-    personalisingPhys = true; 
+    personalisingPhys = true;
+elseif  metadataStruct && ~personalisingPhys && ~personalisingMets
+    personalisingPhys = true;
 end
 
 disp(" > All parameters are valid");
@@ -333,7 +364,6 @@ femaleControlCreated = isfile(fullfile(resPath, 'iWBMcontrol_female.mat'));
 
 % Create female control if not already completed and metadata contains
 % female models
-
 if sexType == "female" || sexType == "mixed"
     if isempty(femaleWBM)
         femaleWBM = loadPSCMfile('Harvetta');
@@ -365,21 +395,28 @@ end
 
 %% Step 3: Process the data for each  model and update Individualized paramteres based on the metadata
 % Check if some models are already created and remove them from data if so
-origSizeData = size(Data, 1);
-fprintf(' > There are %d models found in the metadata.\n', origSizeData);
-fileList = dir(fullfile(resPath, 'iWBM_*.mat'));
-existingIDs = extractBetween({fileList.name}, 'iWBM_', '.mat');
-existingIDs = string(existingIDs);
-
-% Filter Data table to remove already created models
-mask = ~ismember(string(Data{:,1}), existingIDs);
-Data = Data(mask, :);
-numModels = size(Data, 1);
-if numModels == 0
-    fprintf(' > All models found to be created, skipping personalisation')
-    iWBM = 'complete';
-else
-    fprintf(' > %d of %d models in the metadata have already been personalised, %d models will now be personalised.\n', (origSizeData-numModels), origSizeData, numModels)
+if ~metadataStruct
+    origSizeData = size(Data, 1);
+    fprintf(' > There are %d models found in the metadata.\n', origSizeData);
+    fileList = dir(fullfile(resPath, 'iWBM_*.mat'));
+    existingIDs = extractBetween({fileList.name}, 'iWBM_', '.mat');
+    existingIDs = string(existingIDs);
+    
+    % Filter Data table to remove already created models
+    mask = ~ismember(string(Data{:,1}), existingIDs);
+    Data = Data(mask, :);
+    numModels = size(Data, 1);
+    if numModels == 0
+        fprintf(' > All models found to be created, skipping personalisation')
+        iWBM = 'complete';
+    else
+        fprintf(' > %d of %d models in the metadata have already been personalised, %d models will now be personalised.\n', (origSizeData-numModels), origSizeData, numModels)
+    end
+    % extract units
+    units = cell2table(Data.Properties.VariableUnits);
+    units.Properties.VariableNames = Data.Properties.VariableNames;
+else 
+    numModels = 1;
 end
 
 % Define file path and check existence
@@ -396,7 +433,7 @@ if isfile(persParamsFile)
         persParamsCheck = false;
         warning('Missing sheet: PhysiologicalParameters');
     end
-
+    
     if ismember('MetabolomicParameters', sheets)
         persParamsMCheck = true;
         persParamsM = readtable(persParamsFile, 'Sheet', 'MetabolomicParameters');
@@ -405,426 +442,422 @@ if isfile(persParamsFile)
         persParamsMCheck = false;
         warning('Missing sheet: MetabolomicParameters');
     end
-else 
+else
     persParamsCheck = false;
     persParamsMCheck = false;
 end
 
 
-% extract units
-units = cell2table(Data.Properties.VariableUnits);
-units.Properties.VariableNames = Data.Properties.VariableNames;
-
-for s = 1:size(Data, 1)
+for s = 1:numModels
     if personalisingPhys == 1
-        % extract relevant data
-        dataCurrent = Data(s, :);
-        warning('off', 'all')
-        % delete empty rows need to get working or just use paramsPhysiology
-        dataCurrent = [units; dataCurrent];
-        keepIndices = find(ismember(lower(dataCurrent.Properties.VariableNames), lower(persPhysiology)));
-        dataCurrent = dataCurrent(:, unique([1, keepIndices, sexCol], 'stable'));
-        warning('on', 'all')
-        
-        % Update based on the subject
-        % SEX
-        sexID = find(strcmp(lower(dataCurrent.Properties.VariableNames),'sex'));
-        sex = string(dataCurrent{2, sexID});
-        % Load the default parameters
-        standardPhysiolDefaultParameters;
-        IndividualParameters.sex = sex;
-        
-        % Create table to save detail on source of parameter (user define,
-        % default, calculated using x)
-        % Create a 1-row table from the structure
-        fieldsToDelete = {'bloodFlowData', 'OrgansWeights', 'bloodFlowPercCol', 'bloodFlowOrganCol'};
-        paramSource = rmfield(IndividualParameters, fieldsToDelete);
-        paramSource = struct2table(paramSource);
-
-        
-        if sex  == "male"
-            WBMcurrent = maleWBM;
-        else
-            WBMcurrent = femaleWBM;
-        end
-        paramSource.sex = 'User defined';
-        
-        % ID
-        if any(strcmp(lower(dataCurrent.Properties.VariableNames), 'id'))
-            idxID = find(strcmp(lower(dataCurrent.Properties.VariableNames),'id'));
-            ID = dataCurrent{2, idxID};
-            IndividualParameters.ID = ID;
-            paramSource.ID = 'User defined';
-            WBMcurrent.ID = ID;
-        end
-        
-        % BODY WEIGHT
-        if any(strcmp(lower(dataCurrent.Properties.VariableNames),'body weight')) || any(strcmp(lower(dataCurrent.Properties.VariableNames),'weight'))
-            idxWt = find(strcmp(lower(dataCurrent.Properties.VariableNames),'body weight'));
-            if size(idxWt, 2)>1
-                error('More than one column header in the metadata contains the paramter weight!')
-            end
-            if isempty(idxWt)
-                idxWt = find(strcmp(lower(dataCurrent.Properties.VariableNames),'weight'));
-            end
-            Wt = cell2mat(dataCurrent{2, idxWt});
-            currentUnit = dataCurrent{1, idxWt};
-            % Convert lbs to kg
-            if ~isempty(currentUnit) && (strcmp(currentUnit, "kgs") || strcmp(currentUnit, "kg"))
-                IndividualParameters.bodyWeight = Wt;
-            elseif strcmp(currentUnit, "lb") || strcmp(currentUnit, "lbs")
-                Wt = Wt * 0.453592;
+        if ~metadataStruct
+            % extract relevant data
+            dataCurrent = Data(s, :);
+            warning('off', 'all')
+            % delete empty rows need to get working or just use paramsPhysiology
+            dataCurrent = [units; dataCurrent];
+            keepIndices = find(ismember(lower(dataCurrent.Properties.VariableNames), lower(persPhysiology)));
+            dataCurrent = dataCurrent(:, unique([1, keepIndices, sexCol], 'stable'));
+            warning('on', 'all')
+            
+            % Update based on the subject
+            % SEX
+            sexID = find(strcmp(lower(dataCurrent.Properties.VariableNames),'sex'));
+            sex = string(dataCurrent{2, sexID});
+            
+            % Load the default parameters
+            standardPhysiolDefaultParameters;
+            IndividualParameters.sex = sex;
+            if sex  == "male"
+                WBMcurrent = maleWBM;
             else
-                warning("Unable to read weight for patient %s, default weight will be applied", ID)
+                WBMcurrent = femaleWBM;
             end
-            paramSource.bodyWeight = 'User defined';
-        else
-            paramSource.bodyWeight = 'Default';
-        end
-        
-        % AGE
-        if any(strcmp(lower(dataCurrent.Properties.VariableNames),'age'))
-            idxAge = find(strcmp(lower(dataCurrent.Properties.VariableNames),'age'));
-            if size(idxAge, 2)>1
-                error('More than one column header in the metadata contains the paramter age!')
+            
+            % Create table to save detail on source of parameter (user define,
+            % default, calculated using x)
+            % Create a 1-row table from the structure
+            fieldsToDelete = {'bloodFlowData', 'OrgansWeights', 'bloodFlowPercCol', 'bloodFlowOrganCol'};
+            paramSource = rmfield(IndividualParameters, fieldsToDelete);
+            paramSource = struct2table(paramSource);
+            % Add some constant descriptions
+            paramSource.sex = 'User defined';
+            paramSource.BloodVolume = 'Estimated based on sex, height & weight';
+            
+            % ID
+            if any(strcmp(lower(dataCurrent.Properties.VariableNames), 'id'))
+                idxID = find(strcmp(lower(dataCurrent.Properties.VariableNames),'id'));
+                ID = dataCurrent{2, idxID};
+                IndividualParameters.ID = ID;
+                paramSource.ID = 'User defined';
+                WBMcurrent.ID = ID;
             end
-            Age = cell2mat(dataCurrent{2, idxAge});
-            currentUnit = dataCurrent{1, idxAge};
-            if strcmp(currentUnit, "days")
-                Age = Age / 365;
-            elseif strcmp(currentUnit, "months")
-                Age = Age / 12;
-            elseif strcmp(currentUnit, "years")|| strcmp(currentUnit, "yrs")
+            
+            % BODY WEIGHT
+            if any(strcmp(lower(dataCurrent.Properties.VariableNames),'body weight')) || any(strcmp(lower(dataCurrent.Properties.VariableNames),'weight')) || any(strcmp(lower(dataCurrent.Properties.VariableNames),'bodyweight'))
+                idxWt = find(strcmp(lower(dataCurrent.Properties.VariableNames),'body weight') | strcmp(lower(dataCurrent.Properties.VariableNames),'weight')| strcmp(lower(dataCurrent.Properties.VariableNames),'bodyweight'));
+                if size(idxWt, 2)>1
+                    error('More than one column header in the metadata contains the paramter weight!')
+                end
+                if isempty(idxWt)
+                    idxWt = find(strcmp(lower(dataCurrent.Properties.VariableNames),'weight'));
+                end
+                Wt = cell2mat(dataCurrent{2, idxWt});
+                currentUnit = dataCurrent{1, idxWt};
+                % Convert lbs to kg
+                if ~isempty(currentUnit) && (strcmp(currentUnit, "kgs") || strcmp(currentUnit, "kg"))
+                    IndividualParameters.bodyWeight = Wt;
+                elseif strcmp(currentUnit, "lb") || strcmp(currentUnit, "lbs")
+                    Wt = Wt * 0.453592;
+                else
+                    warning("Unable to read weight for patient %s, default weight will be applied", ID)
+                end
+                paramSource.bodyWeight = 'User defined';
+            else
+                paramSource.bodyWeight = 'Default';
+            end
+            
+            % AGE
+            if any(strcmp(lower(dataCurrent.Properties.VariableNames),'age'))
+                idxAge = find(strcmp(lower(dataCurrent.Properties.VariableNames),'age'));
+                if size(idxAge, 2)>1
+                    error('More than one column header in the metadata contains the paramter age!')
+                end
+                Age = cell2mat(dataCurrent{2, idxAge});
+                currentUnit = dataCurrent{1, idxAge};
+                if strcmp(currentUnit, "days")
+                    Age = Age / 365;
+                elseif strcmp(currentUnit, "months")
+                    Age = Age / 12;
+                elseif strcmp(currentUnit, "years")|| strcmp(currentUnit, "yrs")
+                    
+                else
+                    error('Age not provided in a valid unit');
+                end
+                IndividualParameters.Age = Age;
+                paramSource.Age = 'User defined';
+            else
+                paramSource.Age = 'Default';
+            end
+            
+            % HEIGHT
+            if any(strcmp(lower(dataCurrent.Properties.VariableNames),'height'))
+                idxHt = find(strcmp(lower(dataCurrent.Properties.VariableNames),'height'));
+                if size(idxHt, 2)>1
+                    error('More than one column header in the metadata contains the paramter height!')
+                end
+                Ht = cell2mat(dataCurrent{2, idxHt});
+                currentUnit = dataCurrent{1, idxHt};
+                if ~isempty(currentUnit) && strcmp(currentUnit, "cm")
+                    IndividualParameters.Height = Ht;
+                elseif strcmp(currentUnit, "ft")
+                    Ht = Ht * 30.48;
+                elseif strcmp(currentUnit, "in")
+                    Ht = Ht * 2.54;
+                else
+                    warning("Unable to read height for patient %s, default height will be applied", ID)
+                end
+                paramSource.Height = 'User defined';
+            else
+                paramSource.Height = 'Default';
+            end
+            
+            
+            % HEART RATE
+            if any(strcmp(lower(dataCurrent.Properties.VariableNames),'heart rate'))|| any(strcmp(lower(dataCurrent.Properties.VariableNames),'heartrate'))|| any(strcmp(lower(dataCurrent.Properties.VariableNames),'bpm'))
+                idxHR = find(strcmp(lower(dataCurrent.Properties.VariableNames),'heart rate')| strcmp(lower(dataCurrent.Properties.VariableNames),'heartrate')| strcmp(lower(dataCurrent.Properties.VariableNames),'bpm'));
+                if size(idxHR, 2)>1
+                    error('More than one column header in the metadata contains the paramter heart rate!')
+                end
+                HR = cell2mat(dataCurrent{2, idxHR});
+                currentUnit = dataCurrent{1, idxHR};
+                if ~strcmp(currentUnit, "bpm")
+                    error('Heart rate must be provided in bpm');
+                end
+                IndividualParameters.HeartRate = HR;
+                paramSource.HeartRate = 'User defined';
+            else
+                paramSource.HeartRate = 'Default';
+            end
+            
+            % STROKE VOLUME
+            if any(strcmp(lower(dataCurrent.Properties.VariableNames),'stroke volume')) || any(strcmp(lower(dataCurrent.Properties.VariableNames),'SV'))|| any(strcmp(lower(dataCurrent.Properties.VariableNames),'strokevolume'))
+                idxSV = find(strcmp(lower(dataCurrent.Properties.VariableNames),'stroke volume') | strcmp(lower(dataCurrent.Properties.VariableNames),'SV')| strcmp(lower(dataCurrent.Properties.VariableNames),'strokevolume'));
+                if size(idxSV, 2)>1
+                    error('More than one column header in the metadata contains the paramter stroke volume!')
+                end
+                SV = cell2mat(dataCurrent{2, idxSV});
+                currentUnit = dataCurrent{1, idxSV};
+                if ~strcmp(currentUnit, "mL") && ~strcmp(currentUnit, "ml")
+                    error('Stroke volume must be provided in ml');
+                end
+                IndividualParameters.StrokeVolume = SV;
+                paramSource.StrokeVolume = 'User defined';
+            else
+                paramSource.StrokeVolume = 'Default';
+            end
+            
+            % HEMATOCRIT
+            if any(strcmp(lower(dataCurrent.Properties.VariableNames),'hematocrit'))
+                idxHmt = find(strcmp(lower(dataCurrent.Properties.VariableNames),'hematocrit'));
+                if size(idxHmt, 2)>1
+                    error('More than one column header in the metadata contains the paramter hematocrit!')
+                end
+                Hmt = cell2mat(dataCurrent{2, idxHmt});
+                currentUnit = dataCurrent{1, idxHmt};
+                % convert % to decimal
+                if Hmt > 1
+                    try
+                        Hmt = Hmt / 100;
+                    catch
+                        Hmt = str2double(Hmt) / 100;
+                    end
+                end
+                IndividualParameters.Hematocrit = Hmt;
+                paramSource.Hematocrit = 'User defined';
+            else
+                paramSource.Hematocrit = 'Default';
+            end
+            
+            % CREATININE
+            if any(strcmp(lower(dataCurrent.Properties.VariableNames),'creatinine'))
+                idxCn = find(strcmp(lower(dataCurrent.Properties.VariableNames),'creatinine'));
+                if size(idxCn, 2)>1
+                    error('More than one column header in the metadata contains the paramter creatinine!')
+                end
+                Cn = cell2mat(dataCurrent{2, idxCn});
+                currentUnit = dataCurrent{1, idxCn};
+                % Validate the unit
+                if ~strcmp(currentUnit, "mg/dL")
+                    error('Creatinine must be provided in mg/dL');
+                end
+                IndividualParameters.MConUrCreatinineMin = Cn*0.9;
+                IndividualParameters.MConUrCreatinineMax = Cn*1.1;
+                paramSource.MConUrCreatinineMin = 'User defined';
+                paramSource.MConUrCreatinineMax = 'User defined';
+            else
+                paramSource.MConUrCreatinineMin = 'Default';
+                paramSource.MConUrCreatinineMax = 'Default';
+            end
+            
+            
+            
+            % GLOMERULAR FILTRATION RATE
+            if any(strcmp(lower(dataCurrent.Properties.VariableNames),'glomerular filtration rate')) || any(strcmp(lower(dataCurrent.Properties.VariableNames),'gfr'))
+                idxGFR = find(strcmp(varNamesLower, 'glomerular filtration rate') | strcmp(varNamesLower, 'gfr'));
+                if size(idxGFR, 2)>1
+                    error('More than one column header in the metadata contains the paramter glomerular filtration rate!')
+                end
+                GFR = cell2mat(dataCurrent{2, idxGFR});
+                currentUnit = dataCurrent{1, idxGFR};
+                if ~strcmp(currentUnit, "mL/min/1.73m^2")
+                    error('Glomerular Filtration rate must be provided in mL/min/1.73m^2');
+                end
+                IndividualParameters.GlomerularFiltrationRate = GFR;
+                paramSource.GlomerularFiltrationRate = 'User defined';
+            else
+                paramSource.GlomerularFiltrationRate = 'Default';
+            end
+            
+            % LEAN BODY MASS
+            if any(strcmp(lower(dataCurrent.Properties.VariableNames),'lean body mass'))
+                idxLBM = find(strcmp(lower(dataCurrent.Properties.VariableNames),'lean body mass'));
+                if size(idxLBM, 2)>1
+                    error('More than one column header in the metadata contains the paramter lean body mass!')
+                end
+                LBM = cell2mat(dataCurrent{2, idxLBM});
+                currentUnit = dataCurrent{1, idxLBM};
+                if strcmp(currentUnit, "g")
+                    LBM = LBM / 1000; % Convert grams to kilograms
+                elseif strcmp(currentUnit, "kg")
+                    % No conversion needed
+                else
+                    error('Lean body mass must be provided in g or kg');
+                end
+                IndividualParameters.LeanBodyMass = LBM;
+                paramSource.LeanBodyMass = 'User defined';
+            else
+                %paramSource.LeanBodyMass = 'Default';
+            end
+            
+            % BODY FAT PERCENTAGE
+            if any(strcmp(lower(dataCurrent.Properties.VariableNames),'body fat'))
+                idxBF = find(strcmp(lower(dataCurrent.Properties.VariableNames),'body fat'));
+                if size(idxBF, 2)>1
+                    error('More than one column header in the metadata contains the paramter body fat!')
+                end
+                BF = cell2mat(dataCurrent{2, idxBF});
+                currentUnit = dataCurrent{1, idxBF};
+                if ~strcmp(currentUnit, '%') && strcmp(currentUnit, 'kg')
+                    BF = (BF /Wt)*100;
+                elseif strcmp(currentUnit, 'g')
+                    BF = (BF/(Wt*1000))*100;
+                elseif isempty(currentUnit)
+                    warning('Body weight (Wt) is in the wrong unit or conversion is not possible.');
+                end
+                IndividualParameters.BodyFat = BF;
+                paramSource.BodyFat = 'User defined';
+            else
+                %paramSource.BodyFat = 'Default';
+            end
+            
+            clear idxAge idxBF idxBFR idxCn idxCO idxGFR idxHmt idxHR idxHt idxID idxLBM idxSex idxSV idxWt Age Col Cols cParam currentUnit Hmt Ht Numbers Wt
+           
+            % For now, 1 is hardcoded. Should update to check available
+            % parameters and then accoordingly use the most accurate
+            % calculation
+            % CARDIAC OUTPUT
+            if any(strcmp(lower(dataCurrent.Properties.VariableNames),'cardiac output')) || any(strcmp(lower(dataCurrent.Properties.VariableNames),'CO'))|| any(strcmp(lower(dataCurrent.Properties.VariableNames),'cardiacoutput'))
+                idxCO = find(strcmp(lower(dataCurrent.Properties.VariableNames),'cardiac output') | strcmp(lower(dataCurrent.Properties.VariableNames),'CO')| strcmp(lower(dataCurrent.Properties.VariableNames),'cardiacoutput'));
+                if size(idxCO, 2)>1
+                    error('More than one column header in the metadata contains the paramter cardiac output!')
+                end
+                CO = cell2mat(dataCurrent{2, idxCO});
+                currentUnit = dataCurrent{1, idxCO};
+                if strcmp(currentUnit, "L/min")
+                    CO = CO*1000;
+                elseif strcmp(currentUnit, "ml/min")
+                    % no change needed
+                else
+                    error("Cardiac Output Unit not valid")
+                end
+                IndividualParameters.CardiacOutput = CO;
+                paramSource.CardiacOutput = 'User defined';
+            else
+                paramSource.CardiacOutput = 'Default';
+                optionCardiacOutput =1;
                 
-            else
-                error('Age not provided in a valid unit');
-            end
-            IndividualParameters.Age = Age;
-            paramSource.Age = 'User defined';
-        else
-            paramSource.Age = 'Default';
-        end
-        
-        % HEIGHT
-        if any(strcmp(lower(dataCurrent.Properties.VariableNames),'height'))
-            idxHt = find(strcmp(lower(dataCurrent.Properties.VariableNames),'height'));
-            if size(idxHt, 2)>1
-                error('More than one column header in the metadata contains the paramter height!')
-            end
-            Ht = cell2mat(dataCurrent{2, idxHt});
-            currentUnit = dataCurrent{1, idxHt};
-            if ~isempty(currentUnit) && strcmp(currentUnit, "cm")
-                IndividualParameters.Height = Ht;
-            elseif strcmp(currentUnit, "ft")
-                Ht = Ht * 30.48;
-            elseif strcmp(currentUnit, "in")
-                Ht = Ht * 2.54;
-            else
-                warning("Unable to read height for patient %s, default height will be applied", ID)
-            end
-            paramSource.Height = 'User defined';
-        else
-            paramSource.Height = 'Default';
-        end
-        
-        
-        % HEART RATE
-        if any(strcmp(lower(dataCurrent.Properties.VariableNames),'heart rate'))
-            idxHR = find(strcmp(lower(dataCurrent.Properties.VariableNames),'heart rate'));
-            if size(idxHR, 2)>1
-                error('More than one column header in the metadata contains the paramter heart rate!')
-            end
-            HR = cell2mat(dataCurrent{2, idxHR});
-            currentUnit = dataCurrent{1, idxHR};
-            if ~strcmp(currentUnit, "bpm")
-                error('Heart rate must be provided in bpm');
-            end
-            IndividualParameters.HeartRate = HR;
-            paramSource.HeartRate = 'User defined';
-        else
-            paramSource.HeartRate = 'Default';
-        end
-        
-        % STROKE VOLUME
-        if any(strcmp(lower(dataCurrent.Properties.VariableNames),'stroke volume'))
-            idxSV = find(strcmp(lower(dataCurrent.Properties.VariableNames),'stroke volume'));
-             if size(idxSV, 2)>1
-                error('More than one column header in the metadata contains the paramter stroke volume!')
-            end
-            SV = cell2mat(dataCurrent{2, idxSV});
-            currentUnit = dataCurrent{1, idxSV};
-            if ~strcmp(currentUnit, "mL") && ~strcmp(currentUnit, "ml")
-                error('Stroke volume must be provided in ml');
-            end
-            IndividualParameters.StrokeVolume = SV;
-            paramSource.StrokeVolume = 'User defined';
-        else
-            paramSource.StrokeVolume = 'Default';
-        end
-        
-        % CARDIAC OUTPUT
-        if any(strcmp(lower(dataCurrent.Properties.VariableNames),'cardiac output'))
-            idxCO = find(strcmp(lower(dataCurrent.Properties.VariableNames),'cardiac output'));
-            if size(idxCO, 2)>1
-                error('More than one column header in the metadata contains the paramter cardiac output!')
-            end
-            CO = cell2mat(dataCurrent{2, idxCO});
-            currentUnit = dataCurrent{1, idxCO};
-            if strcmp(currentUnit, "L/min")
-                CO = CO*1000;
-            elseif ~strcmp(currentUnit, "L/min")
-                error("Cardiac Output Unit not valid")
-            end
-            IndividualParameters.CardiacOutput = CO;
-            paramSource.CardiacOutput = 'User defined';
-        else
-            paramSource.CardiacOutput = 'Default';
-        end
-        
-        % HEMATOCRIT
-        if any(strcmp(lower(dataCurrent.Properties.VariableNames),'hematocrit'))
-            idxHmt = find(strcmp(lower(dataCurrent.Properties.VariableNames),'hematocrit'));
-            if size(idxHmt, 2)>1
-                error('More than one column header in the metadata contains the paramter hematocrit!')
-            end
-            Hmt = cell2mat(dataCurrent{2, idxHmt});
-            currentUnit = dataCurrent{1, idxHmt};
-            % convert % to decimal
-            if Hmt > 1
-                try 
-                    Hmt = Hmt / 100; 
-                catch
-                    Hmt = str2double(Hmt) / 100; 
+                % 2. Estimate (resting) cardiac output from blood volume in case that no stroke volume is provided
+                if optionCardiacOutput ~=-1 % skip adjustment of CO
+                    IndividualParameters.CardiacOutput = IndividualParameters.HeartRate * IndividualParameters.StrokeVolume; % in ml/min = beats/min * ml/beat
+                    paramSource.CardiacOutput = 'Calculated from personalized StrokeVolume and heart rate';
+                elseif optionCardiacOutput == 1
+                    % actually I think that it makes more sense to keep the cardiac output to
+                    % be calculated based on default strokevolume and heart rate
+                    IndividualParameters.CardiacOutput = IndividualParameters.HeartRate * IndividualParameters.StrokeVolume; % in ml/min = beats/min * ml/beat
+                    paramSource.CardiacOutput = 'Calculated from default StrokeVolume and heart rate';
+                elseif optionCardiacOutput == 2
+                    IndividualParameters.StrokeVolume ='NaN';
+                    IndividualParameters.CardiacOutput = IndividualParameters.BloodVolume;
+                    paramSource.CardiacOutput = 'Estimated from BloodVolume'; % in ml/min = beats/min * ml/beat
+                elseif optionCardiacOutput == 0
+                    % With the blood volume estimate the CO gets too low.
+                    % hence I used the equation given here:
+                    % http://www.ams.sunysb.edu/~hahn/psfile/pap_obesity.pdf
+                    % note that the weight here is given in kg rather than g
+                    
+                    Wt = IndividualParameters.bodyWeight;
+                    IndividualParameters.CardiacOutput = 9119-exp(9.164-2.91e-2*Wt+3.91e-4*Wt^2-1.91e-6*Wt^3);
+                    paramSource.CardiacOutput = 'Estimated from CO equation'; % in ml/min = beats/min * ml/beat
+                elseif optionCardiacOutput == 3
+                    % from wikipedia: https://en.wikipedia.org/wiki/Fick_principle
+                    %     VO_2 = (CO \times\ C_a) - (CO \times\ C_v)
+                    % where CO = Cardiac Output, Ca = Oxygen concentration of arterial blood and Cv = Oxygen concentration of mixed venous blood.
+                    % Note that (Ca ? Cv) is also known as the arteriovenous oxygen difference.
+                    % Cardiac Output = (125 ml O2/minute x 1.9) / (200 ml O2/L - 150 ml O2/L) = 4.75 L/minute
+                    % can be refined to account for haemoglobin content
+                    IndividualParameters.CardiacOutput = ((IndividualParameters.VO2*1000)*60*24/(200 - 150));
+                    paramSource.CardiacOutput = 'Estimated from VO2 (Fick principle)';
+                elseif optionCardiacOutput == 4 %
+                    %Cardiac Output = (125 ml O2/minute x 1.9) / (200 ml O2/L - 150 ml O2/L) = 4.75 L/minute
+                    % Various calculations have been published to arrive at the BSA without direct measurement. In the following formulae, BSA is in m2, W is mass in kg, and H is height in cm.
+                    % The most widely used is the Du Bois, Du Bois formula,[4][5] which has been shown to be equally as effective in estimating body fat in obese and non-obese patients, something the Body mass index fails to do.[6]
+                    % BSA=0.007184 * W^{0.425}* H^{0.725}}
+                    W = IndividualParameters.bodyWeight;
+                    H = IndividualParameters.Height;
+                    BSA=0.007184 * W^0.425* H^0.725 ;
+                    IndividualParameters.CardiacOutput = ((0.125*1000*BSA)*60*24/(200 - 150));
+                    paramSource.CardiacOutput = 'Estimated from surface area';
+                elseif optionCardiacOutput == 5 %
+                    % estimation of vO2max
+                    % file:///Users/ines.thiele/Dropbox/work/Papers/SystemsPhysiology/schneider2013.pdf
+                    % for males: VO2max/kg = -0.42 A + 58, where A is age
+                    % for females: VO2max/kg = -0.35 A + 46, where A is age
+                    % assuming that at low activity the vo2 is 25% of vo2max
+                    % "At low exercise intensities (25% of maximal oxygen uptake (VO2max)), which in an average
+                    % healthy untrained young adult (VO2max per kg body mass = 42 ml kg?1min?1)
+                    % corresponds with level walking at 4?5 km h?1
+                    W = IndividualParameters.bodyWeight;
+                    A = IndividualParameters.age;
+                    if strcmp(IndividualParameters.sex,'male')
+                        VO2max = (-0.42* A + 58)*W; %ml/min
+                    elseif strcmp(IndividualParameters.sex,'female')
+                        VO2max = (-0.35* A + 46)*W;
+                    end
+                    VO2 = 0.07*VO2max;
+                    IndividualParameters.CardiacOutput = ((VO2)*60*24/(200 - 150));
+                    paramSource.CardiacOutput = 'Estimated based on VO2 max (Schneider, 2013)';
+                elseif  optionCardiacOutput == 6 %
+                    %estimation of stroke volume based on Frick
+                    % http://circ.ahajournals.org/content/circulationaha/14/2/250.full.pdf
+                    PP = 40; % pulse pressure
+                    DP = 80; % diatstolic blood pressure
+                    IndividualParameters.StrokeVolume = 91.0 + 0.54 * PP - 0.57*DP-0.61 *IndividualParameters.age ;
+                    IndividualParameters.CardiacOutput = IndividualParameters.HeartRate * IndividualParameters.StrokeVolume; % in ml/min = beats/min * ml/beat
+                    paramSource.CardiacOutput = 'Calculated based on HR and SV (stroke volume estimated based on Frick';
+                elseif  optionCardiacOutput == 7 %
+                    %estimation of stroke volume based on Bridwell
+                    % http://circ.ahajournals.org/content/circulationaha/14/2/250.full.pdf
+                    PP = 40; % pulse pressure
+                    DP = 80; % diatstolic blood pressure
+                    IndividualParameters.StrokeVolume = 66.0 + 0.34 * PP - 0.11*DP-0.36 *IndividualParameters.age ;
+                    IndividualParameters.CardiacOutput = IndividualParameters.HeartRate * IndividualParameters.StrokeVolume; % in ml/min = beats/min * ml/beat
+                    paramSource.CardiacOutput = 'Calculated based on HR and SV (stroke volume estimated based on Bridwell';
                 end
             end
-            IndividualParameters.Hematocrit = Hmt;
-            paramSource.Hematocrit = 'User defined';
         else
-            paramSource.Hematocrit = 'Default';
-        end
-        
-        % CREATININE
-        if any(strcmp(lower(dataCurrent.Properties.VariableNames),'creatinine'))
-            idxCn = find(strcmp(lower(dataCurrent.Properties.VariableNames),'creatinine'));
-            if size(idxCn, 2)>1
-                error('More than one column header in the metadata contains the paramter creatinine!')
-            end
-            Cn = cell2mat(dataCurrent{2, idxCn});
-            currentUnit = dataCurrent{1, idxCn};
-            % Validate the unit
-            if ~strcmp(currentUnit, "mg/dL")
-                error('Creatinine must be provided in mg/dL');
-            end
-            IndividualParameters.Creatinine = Cn;
-            paramSource.MConUrCreatinineMin = 'User defined';
-            paramSource.MConUrCreatinineMax = 'User defined';
-        else
-            paramSource.MConUrCreatinineMin = 'Default';
-            paramSource.MConUrCreatinineMax = 'Default';
-        end
-        
-        % BLOOD FLOW RATE
-        if any(strcmp(lower(dataCurrent.Properties.VariableNames),'blood flow rate'))
-            idxBFR = find(strcmp(lower(dataCurrent.Properties.VariableNames),'blood flow rate'));
-            if size(idxBFR, 2)>1
-                error('More than one column header in the metadata contains the paramter blood flow rate!')
-            end
-            BFR = cell2mat(dataCurrent{2, idxBFR});
-            currentUnit = dataCurrent{1, idxBFR};
-            if ~strcmp(currentUnit, "mL/min")
-                error('Blood flow rate must be provided in mL/min');
-            end
-            IndividualParameters.BloodFlowRate = BFR;
-            %paramSource.BloodFlowRate = 'User defined';
-        else
-            %paramSource.BloodFlowRate = 'Default';
-        end
-        
-        % GLOMERULAR FILTRATION RATE
-        if any(strcmp(lower(dataCurrent.Properties.VariableNames),'glomerular filtration rate')) || any(strcmp(lower(dataCurrent.Properties.VariableNames),'gfr'))
-            idxGFR = find(strcmp(varNamesLower, 'glomerular filtration rate') | strcmp(varNamesLower, 'gfr'));
-            if size(idxGFR, 2)>1
-                error('More than one column header in the metadata contains the paramter glomerular filtration rate!')
-            end
-            GFR = cell2mat(dataCurrent{2, idxGFR});
-            currentUnit = dataCurrent{1, idxGFR};
-            if ~strcmp(currentUnit, "mL/min/1.73m^2")
-                error('Glomerular Filtration rate must be provided in mL/min/1.73m^2');
-            end
-            IndividualParameters.GlomerularFiltrationRate = GFR;
-            paramSource.GlomerularFiltrationRate = 'User defined';
-        else
-            paramSource.GlomerularFiltrationRate = 'Default';
-        end
-        
-        % LEAN BODY MASS
-        if any(strcmp(lower(dataCurrent.Properties.VariableNames),'lean body mass'))
-            idxLBM = find(strcmp(lower(dataCurrent.Properties.VariableNames),'lean body mass'));
-            if size(idxLBM, 2)>1
-                error('More than one column header in the metadata contains the paramter lean body mass!')
-            end
-            LBM = cell2mat(dataCurrent{2, idxLBM});
-            currentUnit = dataCurrent{1, idxLBM};
-            if strcmp(currentUnit, "g")
-                LBM = LBM / 1000; % Convert grams to kilograms
-            elseif strcmp(currentUnit, "kg")
-                % No conversion needed
+            % If using a structure, check sex and load the correct model
+            if IndividualParametersP.sex  == "male"
+                WBMcurrent = maleWBM;
             else
-                error('Lean body mass must be provided in g or kg');
+                WBMcurrent = femaleWBM;
             end
-            IndividualParameters.LeanBodyMass = LBM;
-            paramSource.LeanBodyMass = 'User defined';
-        else
-            %paramSource.LeanBodyMass = 'Default';
+            % Update the structure with the user defined inputs
+            IndividualParameters = IndividualParametersP;
+            ID = IndividualParameters.ID;
         end
         
-        % BODY FAT PERCENTAGE
-        if any(strcmp(lower(dataCurrent.Properties.VariableNames),'body fat'))
-            idxBF = find(strcmp(lower(dataCurrent.Properties.VariableNames),'body fat'));
-            if size(idxBF, 2)>1
-                error('More than one column header in the metadata contains the paramter body fat!')
-            end
-            BF = cell2mat(dataCurrent{2, idxBF});
-            currentUnit = dataCurrent{1, idxBF};
-            if ~strcmp(currentUnit, '%') && strcmp(currentUnit, 'kg')
-                BF = (BF /Wt)*100;
-            elseif strcmp(currentUnit, 'g')
-                BF = (BF/(Wt*1000))*100;
-            elseif isempty(currentUnit)
-                warning('Body weight (Wt) is in the wrong unit or conversion is not possible.');
-            end
-            IndividualParameters.BodyFat = BF;
-            paramSource.BodyFat = 'User defined';
-        else
-            %paramSource.BodyFat = 'Default';
-        end
-        
-        clear idxAge idxBF idxBFR idxCn idxCO idxGFR idxHmt idxHR idxHt idxID idxLBM idxSex idxSV idxWt Age Col Cols cParam currentUnit Hmt Ht Numbers Wt
         %% Step 4: Conditional calculations:
         % 1. Estimate blood volume
-        if strcmp(IndividualParameters.sex, 'male')
+        if strcmp(IndividualParameters.sex, 'male') && ~isfield(IndividualParameters, 'BloodVolume')
             IndividualParameters.BloodVolume = (0.3669 * (IndividualParameters.Height/100)^3 + 0.03219 * IndividualParameters.bodyWeight + 0.6041)*1000;
-        elseif strcmp(IndividualParameters.sex, 'female')
+        elseif strcmp(IndividualParameters.sex, 'female')&& ~isfield(IndividualParameters, 'BloodVolume')
             IndividualParameters.BloodVolume = (0.3561 * (IndividualParameters.Height/100)^3 + 0.03308 * IndividualParameters.bodyWeight + 0.1833)*1000;
         end
-        paramSource.BloodVolume = 'Estimated based on sex, height & weight';
         
-        % For now, 1 is hardcoded. Should update to check available
-        % parameters and then accoordingly use the most accurate
-        % calculation
-        optionCardiacOutput =1;
-        
-        % 2. Estimate (resting) cardiac output from blood volume in case that no stroke volume is provided
-        if optionCardiacOutput ~=-1 % skip adjustment of CO
-                IndividualParameters.CardiacOutput = IndividualParameters.HeartRate * IndividualParameters.StrokeVolume; % in ml/min = beats/min * ml/beat
-                paramSource.CardiacOutput = 'Calculated from personalized StrokeVolume and heart rate';
-            elseif optionCardiacOutput == 1  
-                % actually I think that it makes more sense to keep the cardiac output to
-                % be calculated based on default strokevolume and heart rate
-                IndividualParameters.CardiacOutput = IndividualParameters.HeartRate * IndividualParameters.StrokeVolume; % in ml/min = beats/min * ml/beat
-                paramSource.CardiacOutput = 'Calculated from default StrokeVolume and heart rate';
-            elseif optionCardiacOutput == 2
-                IndividualParameters.StrokeVolume ='NaN';
-                IndividualParameters.CardiacOutput = IndividualParameters.BloodVolume;
-                paramSource.CardiacOutput = 'Estimated from BloodVolume'; % in ml/min = beats/min * ml/beat
-            elseif optionCardiacOutput == 0
-                % With the blood volume estimate the CO gets too low.
-                % hence I used the equation given here:
-                % http://www.ams.sunysb.edu/~hahn/psfile/pap_obesity.pdf
-                % note that the weight here is given in kg rather than g
+            
+            %% Step 5: Update organ weight and the biomass
+            [organs,~,OrganWeightFract,IndividualParametersN] = calcOrganFract(WBMcurrent, IndividualParameters);
+            [WBMcurrent] = adjustWholeBodyRxnCoeff(WBMcurrent, organs, OrganWeightFract);
+            
+            %% Step 6: Update constraints based on new physiological parameters and biomass
+            iWBM = physiologicalConstraintsHMDBbased(WBMcurrent,IndividualParametersN);
+            
+            % Find indices where lower bounds exceed upper bounds
+            invalidIdx = find(iWBM.lb > iWBM.ub);
+            if ~isempty(invalidIdx)
+                % Initialize a string for the warning message
+                warningMsg = 'Physiological personalisation has caused invalid bounds for the following reactions\n';
                 
-                Wt = IndividualParameters.bodyWeight;
-                IndividualParameters.CardiacOutput = 9119-exp(9.164-2.91e-2*Wt+3.91e-4*Wt^2-1.91e-6*Wt^3);
-                paramSource.CardiacOutput = 'Estimated from CO equation'; % in ml/min = beats/min * ml/beat
-            elseif optionCardiacOutput == 3
-                % from wikipedia: https://en.wikipedia.org/wiki/Fick_principle
-                %     VO_2 = (CO \times\ C_a) - (CO \times\ C_v)
-                % where CO = Cardiac Output, Ca = Oxygen concentration of arterial blood and Cv = Oxygen concentration of mixed venous blood.
-                % Note that (Ca ? Cv) is also known as the arteriovenous oxygen difference.
-                % Cardiac Output = (125 ml O2/minute x 1.9) / (200 ml O2/L - 150 ml O2/L) = 4.75 L/minute
-                % can be refined to account for haemoglobin content
-                IndividualParameters.CardiacOutput = ((IndividualParameters.VO2*1000)*60*24/(200 - 150));
-                paramSource.CardiacOutput = 'Estimated from VO2 (Fick principle)';
-            elseif optionCardiacOutput == 4 %
-                %Cardiac Output = (125 ml O2/minute x 1.9) / (200 ml O2/L - 150 ml O2/L) = 4.75 L/minute
-                % Various calculations have been published to arrive at the BSA without direct measurement. In the following formulae, BSA is in m2, W is mass in kg, and H is height in cm.
-                % The most widely used is the Du Bois, Du Bois formula,[4][5] which has been shown to be equally as effective in estimating body fat in obese and non-obese patients, something the Body mass index fails to do.[6]
-                % BSA=0.007184 * W^{0.425}* H^{0.725}}
-                W = IndividualParameters.bodyWeight;
-                H = IndividualParameters.Height;
-                BSA=0.007184 * W^0.425* H^0.725 ;
-                IndividualParameters.CardiacOutput = ((0.125*1000*BSA)*60*24/(200 - 150));
-                paramSource.CardiacOutput = 'Estimated from surface area';
-            elseif optionCardiacOutput == 5 %
-                % estimation of vO2max
-                % file:///Users/ines.thiele/Dropbox/work/Papers/SystemsPhysiology/schneider2013.pdf
-                % for males: VO2max/kg = -0.42 A + 58, where A is age
-                % for females: VO2max/kg = -0.35 A + 46, where A is age
-                % assuming that at low activity the vo2 is 25% of vo2max
-                % "At low exercise intensities (25% of maximal oxygen uptake (VO2max)), which in an average
-                % healthy untrained young adult (VO2max per kg body mass = 42 ml kg?1min?1)
-                % corresponds with level walking at 4?5 km h?1
-                W = IndividualParameters.bodyWeight;
-                A = IndividualParameters.age;
-                if strcmp(IndividualParameters.sex,'male')
-                    VO2max = (-0.42* A + 58)*W; %ml/min
-                elseif strcmp(IndividualParameters.sex,'female')
-                    VO2max = (-0.35* A + 46)*W;
+                % Loop through each invalid index and accumulate the message
+                for i = 1:length(invalidIdx)
+                    warningMsg = [warningMsg, sprintf('%s (%s): lb = %.2f, ub = %.2f\n', ...
+                        iWBM.rxns{invalidIdx(i)}, ...
+                        iWBM.rxnNames{invalidIdx(i)}, ...
+                        iWBM.lb(invalidIdx(i)), ...
+                        iWBM.ub(invalidIdx(i)))];
                 end
-                VO2 = 0.07*VO2max;
-                IndividualParameters.CardiacOutput = ((VO2)*60*24/(200 - 150));
-                paramSource.CardiacOutput = 'Estimated based on VO2 max (Schneider, 2013)';
-            elseif  optionCardiacOutput == 6 %
-                %estimation of stroke volume based on Frick
-                % http://circ.ahajournals.org/content/circulationaha/14/2/250.full.pdf
-                PP = 40; % pulse pressure
-                DP = 80; % diatstolic blood pressure
-                IndividualParameters.StrokeVolume = 91.0 + 0.54 * PP - 0.57*DP-0.61 *IndividualParameters.age ;
-                IndividualParameters.CardiacOutput = IndividualParameters.HeartRate * IndividualParameters.StrokeVolume; % in ml/min = beats/min * ml/beat
-                paramSource.CardiacOutput = 'Calculated based on HR and SV (stroke volume estimated based on Frick';
-            elseif  optionCardiacOutput == 7 %
-                %estimation of stroke volume based on Bridwell
-                % http://circ.ahajournals.org/content/circulationaha/14/2/250.full.pdf
-                PP = 40; % pulse pressure
-                DP = 80; % diatstolic blood pressure
-                IndividualParameters.StrokeVolume = 66.0 + 0.34 * PP - 0.11*DP-0.36 *IndividualParameters.age ;
-                IndividualParameters.CardiacOutput = IndividualParameters.HeartRate * IndividualParameters.StrokeVolume; % in ml/min = beats/min * ml/beat
-                paramSource.CardiacOutput = 'Calculated based on HR and SV (stroke volume estimated based on Bridwell';
-        end
-        %% Step 5: Update organ weight and the biomass
-        [organs,~,OrganWeightFract,IndividualParametersN] = calcOrganFract(WBMcurrent, IndividualParameters);
-        [WBMcurrent] = adjustWholeBodyRxnCoeff(WBMcurrent, organs, OrganWeightFract);
-        
-        %% Step 6: Update constraints based on new physiological parameters and biomass
-        iWBM = physiologicalConstraintsHMDBbased(WBMcurrent,IndividualParametersN);
-        
-        % Find indices where lower bounds exceed upper bounds
-        invalidIdx = find(iWBM.lb > iWBM.ub);
-        if ~isempty(invalidIdx)
-            % Initialize a string for the warning message
-            warningMsg = 'Physiological personalisation has caused invalid bounds for the following reactions\n';
-            
-            % Loop through each invalid index and accumulate the message
-            for i = 1:length(invalidIdx)
-                warningMsg = [warningMsg, sprintf('%s (%s): lb = %.2f, ub = %.2f\n', ...
-                    iWBM.rxns{invalidIdx(i)}, ...
-                    iWBM.rxnNames{invalidIdx(i)}, ...
-                    iWBM.lb(invalidIdx(i)), ...
-                    iWBM.ub(invalidIdx(i)))];
+                
+                % Display the warning with multiple lines
+                fprintf(2, '%s', warningMsg);
+                
             end
-            
-            % Display the warning with multiple lines
-            fprintf(2, '%s', warningMsg);
-        end
-
-
-        
-        fprintf(" > Physiological parameters incorporated in model for subject %d of %d\n", s, numModels);
-        iWBM.SetupInfo.Status = 'personalised';
-        iWBM.SetupInfo.IndividualParameters = IndividualParametersN;
-       
+            fprintf(" > Physiological parameters incorporated in model for subject %d of %d\n", s, numModels);
+            iWBM.SetupInfo.Status = 'personalised';
+            iWBM.SetupInfo.IndividualParameters = IndividualParametersN;
     end
-     %% Step 6.1: option to personalise using metabolomic data
+    
+    %% Step 6.1: option to personalise using metabolomic data
     if personalisingMets
         % extract relevant data
         dataCurrentM = Data(s, :);
@@ -844,11 +877,6 @@ for s = 1:size(Data, 1)
             % Load the default parameters
             standardPhysiolDefaultParameters;
             IndividualParameters.sex = sex;
-            if sex  == "male"
-                WBMcurrent = maleWBM;
-            else
-                WBMcurrent = femaleWBM;
-            end
             iWBM = WBMcurrent;
             if any(strcmp(lower(Data.Properties.VariableNames), 'id'))
                 idxID = find(strcmp(lower(Data.Properties.VariableNames),'id'));
@@ -897,58 +925,58 @@ for s = 1:size(Data, 1)
             fprintf(2, '%s\n', warningMsg);
         end
     end
-    %% Step 8: Save the updated iWBM, controlWBM and personalisationOverview
-    if exist('iWBM', 'var') && isstruct(iWBM)
-        if personalisingPhys == 1 && personalisingMets == 1
-            iWBM.status = 'iWBM personalised with physiological and metabolomic data';
-        elseif personalisingPhys == 1
-            iWBM.status = 'iWBM personalised with physiological data';
-        elseif personalisingMets == 1
-            iWBM.status = 'iWBM personalised with metabolomic data';
-        else
-            iWBM.status = 'iWBM not personalised';
-        end
+end
+%% Step 8: Save the updated iWBM, controlWBM and personalisationOverview
+if exist('iWBM', 'var') && isstruct(iWBM)
+    if personalisingPhys == 1 && personalisingMets == 1
+        iWBM.status = 'iWBM personalised with physiological and metabolomic data';
+    elseif personalisingPhys == 1
+        iWBM.status = 'iWBM personalised with physiological data';
+    elseif personalisingMets == 1
+        iWBM.status = 'iWBM personalised with metabolomic data';
     else
-        warning('iWBM does not exist or is not a structure. Status update skipped.');
+        iWBM.status = 'iWBM not personalised';
     end
-    
-    filename = fullfile(resPath, strcat('iWBM_', num2str(ID), '.mat'));
-    save(filename ,'-struct', 'iWBM');
-    
-    % Join physiological personalisation details together where personalising
-    % for more than one model
-    if personalisingPhys == 1
-        fieldsToDelete = {'bloodFlowData', 'OrgansWeightsRefMan', 'OrgansWeights', 'bloodFlowPercCol', 'bloodFlowOrganCol'};
-        IndividualParametersN = rmfield(IndividualParametersN, fieldsToDelete);
-        persParamCurrent = struct2table(IndividualParametersN);
-        % Insert the type of parameter detail (user input, default,
-        % calculated etc.)% Add a new empty row to persParamCurrent
-        persParamCurrent(end+1, :) = persParamCurrent(1, :);  % Copy structure    
-        if s == 1 && persParamsCheck == 0
-            persParams = persParamCurrent;
-        else
-            persParams.ID = cellstr(persParams.ID);
-            persParamCurrent.ID = cellstr(persParamCurrent.ID);
-            persParams = [persParams; persParamCurrent];
-        end
+else
+    warning('iWBM does not exist or is not a structure. Status update skipped.');
+end
+
+filename = fullfile(resPath, strcat('iWBM_', num2str(ID), '.mat'));
+save(filename ,'-struct', 'iWBM');
+
+% Join physiological personalisation details together where personalising
+% for more than one model
+if personalisingPhys == 1
+    fieldsToDelete = {'bloodFlowData', 'OrgansWeightsRefMan', 'OrgansWeights', 'bloodFlowPercCol', 'bloodFlowOrganCol'};
+    IndividualParametersN = rmfield(IndividualParametersN, fieldsToDelete);
+    persParamCurrent = struct2table(IndividualParametersN);
+    % Insert the type of parameter detail (user input, default,
+    % calculated etc.)% Add a new empty row to persParamCurrent
+    persParamCurrent(end+1, :) = persParamCurrent(1, :);  % Copy structure
+    if s == 1 && persParamsCheck == 0
+        persParams = persParamCurrent;
+    else
+        persParams.ID = cellstr(persParams.ID);
+        persParamCurrent.ID = cellstr(persParamCurrent.ID);
+        persParams = [persParams; persParamCurrent];
     end
-    
-    % Join metabolic personalisation details together where personalising
-    % for more than one model
-    if personalisingMets == 1
-        if s == 1 && persParamsMCheck == 0
-            persParamsM = persParamMcurrent;
-        else
-            persParamsM.ID = cellstr(persParamsM.ID);
-            persParamMcurrent.ID = cellstr(persParamMcurrent.ID);
-            % persParamsM.Properties.VariableNames = persParamMcurrent.Properties.VariableNames;
-            persParamsM = [persParamsM; persParamMcurrent];
-        end
+end
+
+% Join metabolic personalisation details together where personalising
+% for more than one model
+if personalisingMets == 1
+    if s == 1 && persParamsMCheck == 0
+        persParamsM = persParamMcurrent;
+    else
+        persParamsM.ID = cellstr(persParamsM.ID);
+        persParamMcurrent.ID = cellstr(persParamMcurrent.ID);
+        % persParamsM.Properties.VariableNames = persParamMcurrent.Properties.VariableNames;
+        persParamsM = [persParamsM; persParamMcurrent];
     end
 end
 
 %% Step 7: sanity check
-[~, dietGrowthStats] =ensureWBMfeasibility(resPath);
+[dietInfo, dietGrowthStats] = ensureWBMfeasibility(resPath);
 
 if any(dietGrowthStats(:, 2) == false)
     disp("All models were found to be feasible on the given diet")
@@ -962,43 +990,43 @@ end
 persParams = {};
 if numModels > 0
     clear persParamCurrent persParamMCurrent dataCurrent missing
-    if persPhysiology == 1
-    % Update some table headers for clarity
-    oldNames = { ...
-        'MConUrCreatinineMax', 'MConUrCreatinineMin', 'MConDefaultBc', ...
-        'MConDefaultCSF', 'MConDefaultUrMax', 'MConDefaultUrMin'};
-    newNames = { ...
-        'Max conc of creatinine in the urine', ...
-        'Min conc of creatinine in the urine', ...
-        'Max conc of a metabolite in the blood plasma', ...
-        'Max conc of a metabolite in the CSF', ...
-        'Max conc of a metabolite in the urine', ...
-        'Min conc of a metabolite in the urine'};
-
-    for k = 1:numel(oldNames)
-        i = strcmp(paramSource.Properties.VariableNames, oldNames{k});
-        if any(i), paramSource.Properties.VariableNames{i} = newNames{k}; end
+    if personalisingPhys == 1 && ~metadataStruct
+        % Update some table headers for clarity
+        oldNames = { ...
+            'MConUrCreatinineMax', 'MConUrCreatinineMin', 'MConDefaultBc', ...
+            'MConDefaultCSF', 'MConDefaultUrMax', 'MConDefaultUrMin'};
+        newNames = { ...
+            'Max conc of creatinine in the urine', ...
+            'Min conc of creatinine in the urine', ...
+            'Max conc of a metabolite in the blood plasma', ...
+            'Max conc of a metabolite in the CSF', ...
+            'Max conc of a metabolite in the urine', ...
+            'Min conc of a metabolite in the urine'};
         
-        j = strcmp(persParams.Properties.VariableNames, oldNames{k});
-        if any(j), persParams.Properties.VariableNames{j} = newNames{k}; end
+        for k = 1:numel(oldNames)
+            i = strcmp(paramSource.Properties.VariableNames, oldNames{k});
+            if any(i), paramSource.Properties.VariableNames{i} = newNames{k}; end
+            
+            j = strcmp(persParams.Properties.VariableNames, oldNames{k});
+            if any(j), persParams.Properties.VariableNames{j} = newNames{k}; end
+        end
+        
+        
+        % Join descriptor row with the calculation detail of the parameter
+        paramSourceC = [paramSource.Properties.VariableNames; table2cell(paramSource)];
+        persParamsC = [persParams.Properties.VariableNames; table2cell(persParams)];
+        % Check headers match (or reconcile manually if needed)
+        % Here, just concatenate assuming same headers
+        persParamsC = [paramSourceC; persParamsC(2:end,:)];  % skip second header rows
+        excelFilename = fullfile(resPath, 'persParameters.xlsx');
     end
-
-
-    % Join descriptor row with the calculation detail of the parameter
-    paramSourceC = [paramSource.Properties.VariableNames; table2cell(paramSource)];
-    persParamsC = [persParams.Properties.VariableNames; table2cell(persParams)];
-    % Check headers match (or reconcile manually if needed)
-    % Here, just concatenate assuming same headers
-    persParamsC = [paramSourceC; persParamsC(2:end,:)];  % skip second header rows
-    excelFilename = fullfile(resPath, 'persParameters.xlsx');
-end 
     persParams = {};
     %% Save an excel file with a summary of all changes made to all models
     if personalisingPhys == 1 && personalisingMets == 1
         writecell(persParamsC, excelFilename, 'Sheet', 'PhysiologicalParameters');
-        writetable(persParamsM, excelFilename, 'Sheet', 'MetabolomicParameters'); 
-        %persParams = 
-    elseif personalisingPhys == 1
+        writetable(persParamsM, excelFilename, 'Sheet', 'MetabolomicParameters');
+        %persParams =
+    elseif personalisingPhys == 1 && ~metadataStruct 
         writecell(persParamsC, excelFilename, 'Sheet', 'PhysiologicalParameters');
     elseif personalisingMets == 1
         writetable(persParamsM, excelFilename, 'Sheet', 'MetabolomicParameters');

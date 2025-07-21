@@ -460,7 +460,8 @@ if strcmp( Biofluid, 'bc') || strcmp( Biofluid, 'all')
                                     % 30% higher than cv, allowing the tissue to take up
                                     % maximally 30% of the maximally reported cv value
                                     if ~isempty(MCon)
-                                        %  MUptakeRateBc = ((MCon*(100/70)-MCon)/1000)*PlasmaFlowRate(i,1)*60*24/1000; % in mmol/day/person
+                                   
+                                        
                                         MUptakeRateBc = ((MCon)/1000)*PlasmaFlowRate(i,1)*60*24/1000; % in mmol/day/person
                                         if  modelConstraint.lb(ExR(j)) < 0
                                             if MCon>1e-3%abs(MUptakeRateBc)>1e-3; % at least 1 nM
@@ -489,7 +490,7 @@ if strcmp( Biofluid, 'bc') || strcmp( Biofluid, 'all')
                                         %
                                         %                                         modelConstraint.ub(ExR(j)) = MSecretRateBc; % maximal possible secretion rate
                                         %                                     end
-                                        %                                 end0
+                                        %                                 end
                                     end
                                 end
                                 
