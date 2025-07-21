@@ -1,5 +1,5 @@
 function [FBA_results, pathsToFilesForStatistics] = analyseWBMs(mWBMPath, fluxPath, rxnList, varargin)
-% analyseWBMs predicts the maximal fluxes for a list of user-defined
+% analyseWBMs predicts the optimal fluxes for a list of user-defined
 % reactions (rxnList). All predicted are further described in
 % analyseWBMsol.m.
 %
@@ -16,9 +16,9 @@ function [FBA_results, pathsToFilesForStatistics] = analyseWBMs(mWBMPath, fluxPa
 %
 % OPTIONAL INPUTS
 % rxnSense       Character array containing either 'max' or 'min'
-%                to specificy the sense of the objective. Option
-%                to specifcy for each objective- character array 
-%                should then be exact length of rxnList.
+%                to specify the sense of the objective. Option
+%                to specify differently for each objective- to do so provide
+%                character array the exact length of rxnList.
 %                (OPTIONAL, Default = 'max').
 % numWorkersOptimization    Number of workers that will perform FBA in parallel. Note
 %               that more workers does not necessarily make the function
