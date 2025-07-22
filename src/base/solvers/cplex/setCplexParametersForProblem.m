@@ -300,7 +300,7 @@ if isfield(solverParams,'timelimit')
 end
 if isfield(solverParams,'secondsTimeLimit')
     % https://www.ibm.com/docs/en/icos/12.10.0?topic=parameters-optimizer-time-limit-in-seconds
-    cplexProblem.Param.timelimit.Cur = solverParams.secondsTimeLimit;
+    cplexProblem.Param.timelimit.Cur = solverParams.secondsTimeLimit*5;
 end
 
 if isfield(solverParams,'emphasis_numerical')

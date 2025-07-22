@@ -176,9 +176,9 @@ else
         % characters, the variable names in the table will be truncated. We account
         % for this later, so this warning is ignored here.
         warning('off')
-        opts = detectImportOptions(metadataPath, 'VariableNamingRule', 'preserve');
+        opts = detectImportOptions(metadata, 'VariableNamingRule', 'preserve');
         opts = setvartype(opts, opts.VariableNames(1), 'string');
-        Data = readtable(metadataPath, opts);
+        Data = readtable(metadata, opts);
         warning('on')
         
         % Check if metadata table is not empty
@@ -924,58 +924,57 @@ for s = 1:numModels
             % Display the warning with multiple lines
             fprintf(2, '%s\n', warningMsg);
         end
+    end % end of personalising metabolites
+    %% Step 7: Save the updated iWBM, controlWBM and personalisationOverview
+    if exist('iWBM', 'var') && isstruct(iWBM)
+        if personalisingPhys == 1 && personalisingMets == 1
+            iWBM.status = 'iWBM personalised with physiological and metabolomic data\n';
+        elseif personalisingPhys == 1
+            iWBM.status = 'iWBM personalised with physiological data\n';
+        elseif personalisingMets == 1
+            iWBM.status = 'iWBM personalised with metabolomic data\n';
+        else
+            iWBM.status = 'iWBM not personalised\n';
+        end
     end
-end
-%% Step 8: Save the updated iWBM, controlWBM and personalisationOverview
-if exist('iWBM', 'var') && isstruct(iWBM)
-    if personalisingPhys == 1 && personalisingMets == 1
-        iWBM.status = 'iWBM personalised with physiological and metabolomic data';
-    elseif personalisingPhys == 1
-        iWBM.status = 'iWBM personalised with physiological data';
-    elseif personalisingMets == 1
-        iWBM.status = 'iWBM personalised with metabolomic data';
-    else
-        iWBM.status = 'iWBM not personalised';
+    
+    filename = fullfile(resPath, strcat('iWBM_', num2str(ID), '.mat'));
+    save(filename ,'-struct', 'iWBM');
+    % Join physiological personalisation details together where personalising
+    % for more than one model
+    if personalisingPhys == 1
+        fieldsToDelete = {'bloodFlowData', 'OrgansWeightsRefMan', 'OrgansWeights', 'bloodFlowPercCol', 'bloodFlowOrganCol'};
+        IndividualParametersN = rmfield(IndividualParametersN, fieldsToDelete);
+        persParamCurrent = struct2table(IndividualParametersN);
+        % Insert the type of parameter detail (user input, default,
+        % calculated etc.)% Add a new empty row to persParamCurrent
+        persParamCurrent(end+1, :) = persParamCurrent(1, :);  % Copy structure
+        if s == 1 && persParamsCheck == 0
+            persParams = persParamCurrent;
+        else
+            persParams.ID = cellstr(persParams.ID);
+            persParamCurrent.ID = cellstr(persParamCurrent.ID);
+            persParams = [persParams; persParamCurrent];
+        end
     end
-else
-    warning('iWBM does not exist or is not a structure. Status update skipped.');
-end
+    
+    % Join metabolic personalisation details together where personalising
+    % for more than one model
+    if personalisingMets == 1
+        if s == 1 && persParamsMCheck == 0
+            persParamsM = persParamMcurrent;
+        else
+            persParamsM.ID = cellstr(persParamsM.ID);
+            persParamMcurrent.ID = cellstr(persParamMcurrent.ID);
+            % persParamsM.Properties.VariableNames = persParamMcurrent.Properties.VariableNames;
+            persParamsM = [persParamsM; persParamMcurrent];
+        end
+    end 
+    
+end % end of forloop for each model
 
-filename = fullfile(resPath, strcat('iWBM_', num2str(ID), '.mat'));
-save(filename ,'-struct', 'iWBM');
 
-% Join physiological personalisation details together where personalising
-% for more than one model
-if personalisingPhys == 1
-    fieldsToDelete = {'bloodFlowData', 'OrgansWeightsRefMan', 'OrgansWeights', 'bloodFlowPercCol', 'bloodFlowOrganCol'};
-    IndividualParametersN = rmfield(IndividualParametersN, fieldsToDelete);
-    persParamCurrent = struct2table(IndividualParametersN);
-    % Insert the type of parameter detail (user input, default,
-    % calculated etc.)% Add a new empty row to persParamCurrent
-    persParamCurrent(end+1, :) = persParamCurrent(1, :);  % Copy structure
-    if s == 1 && persParamsCheck == 0
-        persParams = persParamCurrent;
-    else
-        persParams.ID = cellstr(persParams.ID);
-        persParamCurrent.ID = cellstr(persParamCurrent.ID);
-        persParams = [persParams; persParamCurrent];
-    end
-end
-
-% Join metabolic personalisation details together where personalising
-% for more than one model
-if personalisingMets == 1
-    if s == 1 && persParamsMCheck == 0
-        persParamsM = persParamMcurrent;
-    else
-        persParamsM.ID = cellstr(persParamsM.ID);
-        persParamMcurrent.ID = cellstr(persParamMcurrent.ID);
-        % persParamsM.Properties.VariableNames = persParamMcurrent.Properties.VariableNames;
-        persParamsM = [persParamsM; persParamMcurrent];
-    end
-end
-
-%% Step 7: sanity check
+%% Step 8: sanity check
 [dietInfo, dietGrowthStats] = ensureWBMfeasibility(resPath);
 
 if any(dietGrowthStats(:, 2) == false)

@@ -266,13 +266,15 @@ function dataProcessed = processDataForStats(data)
 dataToProcess = table2array(data(:,2:end));
 
 % Set all zeros to nan
-dataToProcess(dataToProcess <= 0) = nan;
+%dataToProcess(dataToProcess <= 0) = nan;
 
 % Log transform the data
-dataLog2 = log2(dataToProcess);
+% dataLog2 = log2(dataToProcess);
 
 % Normalise the data using z-transformation
-dataNorm = normalize(dataLog2);
+% dataNorm = normalize(dataLog2);
+
+dataNorm = normalize(dataToProcess);
 
 % Add data back to table
 dataProcessed = data;
@@ -326,12 +328,19 @@ if sum(~dmSinkRxns)>0
     reactionsToAnnotate = extractAfter(reactionsToAnnotate,'_');
 
     % Find reaction descriptions
-    [~,~,ib] = intersect(reactionsToAnnotate,database.reactions(:,1),'stable');    
-
-    % Add reaction annotations to the table
-    rxnAnnotations = database.reactions(ib,[1 2 12]);
-    annotationTable.Description(~dmSinkRxns) = rxnAnnotations(:,2);
-    annotationTable.Subsystem(~dmSinkRxns) = rxnAnnotations(:,3);
+    [~,~,ib] = intersect(reactionsToAnnotate,database.reactions(:,1),'stable');
+    
+    if isempty(ib)
+         % Add note to say no reaction annotation found
+        rxnAnnotations = 'Not found';
+        annotationTable.Description(~dmSinkRxns) = {'Not found'};
+        annotationTable.Subsystem(~dmSinkRxns) = {'Not found'};
+    else
+        % Add reaction annotations to the table
+        rxnAnnotations = database.reactions(ib,[1 2 12]);
+        annotationTable.Description(~dmSinkRxns) = rxnAnnotations(:,2);
+        annotationTable.Subsystem(~dmSinkRxns) = rxnAnnotations(:,3);
+    end
 end
 end
 
