@@ -154,15 +154,17 @@ if isempty(parser.Results.iWBMcontrol)
                 error('Unknown unit: %s', unit);
         end
         comp = string(metabolomicParams{3, m+1});
-        if strcmp(comp, 'blood')
+        if strcmp(comp, '[bc]')||strcmp(comp, 'blood')
             % Append to blood table
             dataBC = [dataBC; {met, Conc_umolL * 0.8, Conc_umolL * 1.2}];
-        elseif strcmp(comp, 'urine')
+        elseif strcmp(comp, '[u]')||strcmp(comp, 'urine')
             % Append to urine table
             dataU = [dataU; {met, Conc_umolL * 0.8, Conc_umolL * 1.2}];
-        else
+        elseif strcmp(comp, '[csf]')||strcmp(comp, 'csf')||strcmp(comp, 'cerebrospinalfluid')
             % Append to CSF table
             dataCSF = [dataCSF; {met, Conc_umolL * 0.8, Conc_umolL * 1.2}];
+        else
+            error('No valid compartment found in input data for personalising metabolites. Please indlude an extra column in your input with blood, urine or csf')
         end
         
     end

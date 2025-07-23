@@ -78,7 +78,7 @@ parser.addRequired('abunFilePath', @ischar);
 parser.addRequired('computeProfiles', @islogical);
 parser.addParameter('solver', '',@ischar);
 parser.addParameter('resPath', [pwd filesep 'Results'], @ischar);
-parser.addParameter('dietFilePath', @ischar);
+parser.addParameter('dietFilePath', '', @ischar);
 parser.addParameter('infoFilePath', '', @ischar);
 parser.addParameter('biomasses', {}, @iscell);
 parser.addParameter('hostPath', '', @ischar);
@@ -147,7 +147,10 @@ if ~contains(dietFilePath,'.txt')
 end
 
 if exist(dietFilePath)==0
-    error('Path to file with dietary information is incorrect!');
+    warning('No path to file with dietary info provided, using average European diet!');
+    EUAverageDietNew;
+    writecell(Diet, fullfile(pwd, 'diet.txt'), 'Delimiter', '\t');
+    dietFilePath = fullfile(pwd, 'diet.txt');
 end
 
 % test if abundances are normalized
