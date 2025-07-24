@@ -49,7 +49,6 @@ end
 
 if strcmpi(macroType, 'metabolites')
     % Load metabolite category tables
-  git add 
     load('frida2024_infoFile.mat', "nutrientInfoFileFrida");
     nutrientVmhTable = nutrientVmhTable(nutrientVmhTable.metBool ==1,:);
     nutrientInfoFileFrida = nutrientInfoFileFrida(nutrientInfoFileFrida.metBool==1,:);
