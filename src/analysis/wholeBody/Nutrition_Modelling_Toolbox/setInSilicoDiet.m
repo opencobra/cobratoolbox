@@ -97,6 +97,18 @@ for i = 4:size(dietToSet,2)
             metFlux{strcmpi(metFlux(:,1), 'diet_ex_pi[d]'),2} = 10;
         end
     end
+    
+    % If choline is present in less than 5.3 mmol/human/day in the diet it
+    % will be set to 5.3 as per the highest recommended intake for humans (
+    % EFSA Panel on Dietetic Products, Nutrition and Allergies (NDA), 
+    % doi.org/10.2903/j.efsa.2016.4484) to make the WBMs feasible.
+
+    if ~isempty(metFlux(strcmpi(metFlux(:,1), 'diet_ex_chol[d]')))
+        if metFlux{strcmpi(metFlux(:,1), 'diet_ex_chol[d]'),2} <= 5.3
+            metFlux{strcmpi(metFlux(:,1), 'diet_ex_chol[d]'),2} = 5.3;
+
+        end
+    end
 
     % Convert the dietary flux vector to a table
     metFlux = cell2table(metFlux,"VariableNames", [{'VMHID'}; dietToSet.Properties.VariableNames(i)]);
@@ -122,8 +134,8 @@ if isempty(pathToWbms)
     only2Models = true;
     if isempty(wbmVersion)
         % If no version is given load the lastest available
-        female = loadPSCMfile('Harvetta_1_04c');
-        male = loadPSCMfile('Harvey_1_04c');
+        female = loadPSCMfile('Harvetta');
+        male = loadPSCMfile('Harvey');
     else
         % If a version is given load the specific version
         female = loadPSCMfile(strcat('Harvetta_', wbmVersion));
@@ -176,7 +188,7 @@ if constrainFluxWBM
     end
 
     for i = 2:size(dietFlux,2)
-        disp(fprintf('Setting diet %s', string(dietFlux.Properties.VariableNames(i))))
+        fprintf('Setting dietary flux vector on WBMs for  %s\n', string(dietFlux.Properties.VariableNames(i)))
         % Extract the diet name
         dietName = dietFlux.Properties.VariableNames(i);
         % Extract the diet with female WBM diet metabolites
@@ -265,7 +277,7 @@ if constrainFoodWBM
         
         % Obtain the diet of food items that needs to be set
         foodItemsUsed = dietToSet(:, [2:3 i]);
-        disp(fprintf('Setting diet %s', string(foodItemsUsed.Properties.VariableNames(end))))
+        fprintf('Setting food items on WBM for %s\n', string(foodItemsUsed.Properties.VariableNames(end)))
         % Transfort the database ID and database name into the reaction ID
         % format used in the WBMs
         foodRxns = strcat('Food_EX_', foodItemsUsed.databaseID, '_', foodItemsUsed.databaseUsed);
@@ -419,11 +431,20 @@ mets2Add = mets2Add(idx,:);
 mets2Add = [mets2Add; dietMets2Add];
 
 % If the value of phosphate in the diet is set to 10 mmol/day or almost
-% only has traces
+% only has traces,  (Crook, Hally and Panteli, 2001. PMID:11448586)
 if str2double(diet(strcmp(diet(:,1),'Diet_EX_pi[d]'),2)) <= 0.1 || str2double(diet(strcmp(diet(:,1),'Diet_EX_pi[d]'),2)) == 10 
     % If not yet in the list of mets to add, add phosphate exchange
-    mets2Add(end+1,:) = {'Diet_EX_pi[d]', 10};
+    mets2Add(end+1,:) = {'Diet_EX_pi[d]', -10};
 end
+
+% If the value of cholate in the diet is lower than the highest recommended
+% value. EFSA Panel on Dietetic Products, Nutrition and Allergies (NDA), 
+% doi.org/10.2903/j.efsa.2016.4484)
+if str2double(diet(strcmp(diet(:,1),'Diet_EX_chol[d]'),2)) <= 5.3 || str2double(diet(strcmp(diet(:,1),'Diet_EX_chol[d]'),2)) == 5.3
+% If not yet in the list of mets to add, add cholate exchange
+mets2Add(end+1,:) = {'Diet_EX_chol[d]', -5.3};
+end
+
 end
 
 function setFoodItemNSave(model, foodRxns, dietUsed, mets2Add, fileName)
@@ -449,8 +470,8 @@ function setFoodItemNSave(model, foodRxns, dietUsed, mets2Add, fileName)
 % If there is no metadata, set the diet on both WBMs
 model = changeRxnBounds(model, foodRxns, -1*dietUsed{:,end}, 'b');
 % Update the setupInfo field
-model.SetupInfo.dietName = string(fileName);
-model.SetupInfo.diet = dietUsed;
+model.SetupInfo.dietName = string(dietUsed.Properties.VariableNames(end));
+model.SetupInfo.DietComposition = dietUsed;
 model.SetupInfo.dietAddition = mets2Add;
 
 % Set additional metabolite contraints needed for feasibility

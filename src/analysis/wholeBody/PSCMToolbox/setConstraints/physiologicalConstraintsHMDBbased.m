@@ -230,7 +230,7 @@ end
 % 1. steady-state
 % 2. transport is bulk flow limited, not diffusion limited,  which is at
 %    least true for higher blood flow rates
-% 3. the metabolites is maximally consumed by tissue (gives an upper bound),
+% 3. the metabolite is maximally consumed by tissue (gives an upper bound),
 %    for metabolites for which the venal concentration is known the
 %    difference between arterial and venal concentration should be rather used.
 % Equation:
@@ -297,7 +297,7 @@ end
 % Organs excluded from secretion into [bc]
 ExclOrgan={'sIEC', 'Colon','Spleen','Pancreas','Gall','Brain'};
 
-% compute maximal possible uptake and secretion rate for each metabolite in
+%% compute maximal possible uptake and secretion rate for each metabolite in
 % each organ
 if strcmp( Biofluid, 'bc') || strcmp( Biofluid, 'all')
     for i = 1 : length(OrgansListExt)
@@ -326,7 +326,7 @@ if strcmp( Biofluid, 'bc') || strcmp( Biofluid, 'all')
                         end
                     end
                     if goOn ==1
-                        %       && length(strfind(modelConstraint.rxns{ExR(j)},'_co2(e)'))==0
+                        %&& length(strfind(modelConstraint.rxns{ExR(j)},'_co2(e)'))==0
                         %&& length(strfind(modelConstraint.rxns{ExR(j)},'_o2(e)'))==0 ... %no oxygen constraint
                         
                         %  && length(strfind(modelConstraint.rxns{ExR(j)},'_aicar(e)'))==0    ...
@@ -415,9 +415,9 @@ if strcmp( Biofluid, 'bc') || strcmp( Biofluid, 'all')
                                 %% checked this part of the code - 29.04. IT
                                 % get maximal concentration for metabolite
                                 X = find(ismember(strcat(metConcDataBc(:,VMHIDCol),'[bc]'),ExM));
-                                   if isempty(X) %co2 and o2 are now getting in straight from rbc
-                            X = find(ismember(strcat('RBC_',metConcDataBc(:,VMHIDCol),'[bc]'),ExM));
-                            end
+                                if isempty(X) %co2 and o2 are now getting in straight from rbc
+                                    X = find(ismember(strcat('RBC_',metConcDataBc(:,VMHIDCol),'[bc]'),ExM));
+                                end
                                 clear MCon
                                 if isempty(X) && setDefault == 1 && ~strcmp(Type,'direct')% no concentration range/maximum defined in input data; only if requested
                                     MCon =  MConDefaultBc;
@@ -460,9 +460,10 @@ if strcmp( Biofluid, 'bc') || strcmp( Biofluid, 'all')
                                     % 30% higher than cv, allowing the tissue to take up
                                     % maximally 30% of the maximally reported cv value
                                     if ~isempty(MCon)
-                                        %  MUptakeRateBc = ((MCon*(100/70)-MCon)/1000)*PlasmaFlowRate(i,1)*60*24/1000; % in mmol/day/person
+                                   
+                                        
                                         MUptakeRateBc = ((MCon)/1000)*PlasmaFlowRate(i,1)*60*24/1000; % in mmol/day/person
-                                        if  modelConstraint.lb(ExR(j)) < 0;
+                                        if  modelConstraint.lb(ExR(j)) < 0
                                             if MCon>1e-3%abs(MUptakeRateBc)>1e-3; % at least 1 nM
                                                 modelConstraint.lb(ExR(j)) = -1*MUptakeRateBc; % maximal possible uptake rate
                                             else
@@ -489,7 +490,7 @@ if strcmp( Biofluid, 'bc') || strcmp( Biofluid, 'all')
                                         %
                                         %                                         modelConstraint.ub(ExR(j)) = MSecretRateBc; % maximal possible secretion rate
                                         %                                     end
-                                        %                                 end0
+                                        %                                 end
                                     end
                                 end
                                 

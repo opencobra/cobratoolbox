@@ -335,8 +335,13 @@ for i = 1:size(userInput,1)
     end
 end
 
-if ~exist(outputDir, 'dir')
-    mkdir(outputDir);
+% Check if the NT_result folder is in the output directory and if it doesnt
+% exist create the folder
+if ~contains(outputDir, 'NT_result')
+    outputDir = strcat(outputDir, filesep, 'NT_result');
+    if ~exist(outputDir, 'dir')
+        mkdir(outputDir);
+    end
 end
 
 % Save results
