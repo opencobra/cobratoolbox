@@ -4,7 +4,7 @@
 # Program by: Wiley Barton - 2022.02.27
 # Modified for conda/docker pipeline - 2024.02.22
 # Version for: PERSEPHONE
-# last update - 2025.06.23
+# last update - 2025.08.01
 # Modified code sources:
 #   https://stackoverflow.com/questions/2043453/executing-multi-line-statements-in-the-one-line-command-line
 # Notes: generate bash files according to user input for the completion of pipeline
@@ -77,10 +77,12 @@ v_version='1.0.1'
 declare VEN_SPLASH
 # user input of script
 v_com_log="$@"
+# set user bashrc
+[[ $(whoami) = 'root' ]] && v_dir_rc='/root' || v_dir_rc='/home/'${MAMBA_USER}
 #----------------------------------------------------------------------------------------
 # Directory check/config - ROUGH
 #----------------------------------------------------------------------------------------
-mkdir -p /DB/{DEPO_demo,DEPO_proc/{logs,tmp},REPO_host/{btau,hsap,hsap_contam,mmus}/bowtie2,REPO_tool/{checkm2,humann,kraken,mmseqs2,ncbi_NR}}/
+mkdir -p /DB/{DEPO_demo,DEPO_proc/{logs,tmp},REPO_gref/{t2p,ref_genome,host/{btau,hsap,hsap_contam,mmus}/bowtie2},REPO_tool/{kraken,ncbi_NR}}/
 #----------------------------------------------------------------------------------------
 # Logging check/config
 #----------------------------------------------------------------------------------------
@@ -164,12 +166,10 @@ func_log () {
 	fi
 	# Build debug log file on vopt_dbug=1
 	if [[ $1 -eq 2 ]] || [[ $1 -eq 0 ]];then
-	#
 		local line_info call_line
         line_info=$(caller 0)
         call_line=${line_info%% *}
         #printf '%s:FS:%s_DEBUG(LINE%s):FS:%s\n' "$2" "$3" "$call_line" "$4" >> "$v_logfile_dbug"
-	#
 		# type/entry/value
     	((vopt_dbug)) && printf '%s:FS:%s_DEBUG(LINE%s):FS:%s\n' "$2" "$3" "$call_line" "$4" >> "$v_logfile_dbug"
 		#func_log "2" "MESSAGE" "FUNC_MAMA" "Something wild to say"
@@ -371,12 +371,12 @@ func_mama2 () {
         esac
     done
     # Required check
-#    if [[ -z "${vloc_com[*]}" || -z "$vloc_env" || -z "$vloc_pac" || -z "$JOB_SCRIPT_NAME" || -z "$vloc_name" ]]; then
- #       echo "Usage: func_mama -s <statements> -e <mamba_env> -p <package> -j <job_script> -f <file_with_samples> \
-#		-S <step> -I <input_dir> -C <input_command_dir> -O <output_dir> -D <output_command_dir> -c <commands> \
-#		-H <head> -T <tail> -N <name_file> -u <script_path> -b <debug> -m <mkdir>"
- #       return 1
-  #  fi
+    #if [[ -z "${vloc_com[*]}" || -z "$vloc_env" || -z "$vloc_pac" || -z "$JOB_SCRIPT_NAME" || -z "$vloc_name" ]]; then
+    #    echo "Usage: func_mama -s <statements> -e <mamba_env> -p <package> -j <job_script> -f <file_with_samples> \
+	#	-S <step> -I <input_dir> -C <input_command_dir> -O <output_dir> -D <output_command_dir> -c <commands> \
+	#	-H <head> -T <tail> -N <name_file> -u <script_path> -b <debug> -m <mkdir>"
+    #	return 1
+    #fi
     local vloc_string="${vloc_head}${vloc_tail}"
 	# Set up working directories and file paths
     DIR_JOB="$(pwd)/scrp_job"
@@ -387,7 +387,6 @@ func_mama2 () {
 
     # Join statements into a single string for awk
 	local COMBINED_CMD="${vloc_com[*]}"
-#	ESCAPED_CMD=$(echo "$COMBINED_CMD" | sed 's/"/\\"/g')
 	local ESCAPED_CMD=$(func_awk_esc "${COMBINED_CMD}")
     #ESCAPED_CMD=$(printf "%s\n" "${vloc_com[@]}" | sed ':a;N;$!ba;s/\n/\\n/g')
 	# Check for input
@@ -1096,7 +1095,7 @@ func_demo () {
 		--remove-intermediate-output \
 		--input1 "${v_dir_cami_read}"/camisim_agora_smol_s"${v_i}"_1.fq.gz \
 		--input2 "${v_dir_cami_read}"/camisim_agora_smol_s"${v_i}"_2.fq.gz \
-		--output ${v_dir_db}/DEPO_demo/demo/step1_kneaddata --reference-db /DB/REPO_host/hsap_contam/bowtie2/ \
+		--output ${v_dir_db}/DEPO_demo/demo/step1_kneaddata --reference-db /DB/REPO_gref/host/hsap_contam/bowtie2/ \
 		--threads ${venv_cpu_max} --max-memory 200g --cat-final-output \
 		#--trimmomatic-options "ILLUMINACLIP:/data/adapters/TruSeq3-PE.fa:2:30:10: SLIDINGWINDOW:4:20 MINLEN:50" \
 		--trimmomatic /opt/conda/envs/env_s1_kneaddata/share/trimmomatic --reorder
@@ -1347,7 +1346,7 @@ if [[ ${v_scrp_check} -eq 1 ]];then
 			# if 0 then convert to array with all steps according to branch
 				vopt_part=0
 				if [[ ${vopt_branch} = 'SR' ]];then
-					vopt_step=( {1..3} )
+					vopt_step=( {1..2} ) #MARS disable > 1..2 from 1..3
 				fi
 				if [[ ${vopt_branch} = 'ALL' ]];then
 					vopt_step=( $( eval echo {1..6} ) )
@@ -1395,7 +1394,7 @@ if [[ ${v_scrp_check} -eq 1 ]];then
 			# secret option to envoke splash page
 			func_splash
 			source /etc/environment
-			source /root/.bashrc
+			source ${v_dir_rc}/.bashrc
 			exit 1
 			;;
 		:)
@@ -1409,14 +1408,14 @@ if [[ ${v_scrp_check} -eq 1 ]];then
 			;;
 		esac
 	done
-  	shift $((OPTIND -1))
+	shift $((OPTIND -1))
 	# check and switch error output to dbug log
 	(( ${vopt_dbug} )) && v_dir_err=${v_logfile_dbug} || v_dir_err='/dev/null'
 	#generate step array if unspecified and branch provided
 	if (( ${vopt_log} ));then
 		if [[ -z ${vopt_step} ]];then
 			if [[ ${vopt_branch} = 'SR' ]];then
-				vopt_step=( {1..3} )
+				vopt_step=( {1..2} ) #MARS disable > 1..2 from 1..3
 			fi
 			if [[ ${vopt_branch} = 'ALL' ]];then
 				vopt_step=( $( eval echo {1..6} ) )
@@ -1432,7 +1431,7 @@ if [[ ${v_scrp_check} -eq 1 ]];then
 		# complete list per branch
 			vopt_pac[0]=''
 			if [[ ${vopt_branch} = 'SR' ]];then
-				vref_pac=( '' 'kneaddata' 'kraken' 'mars' )
+				vref_pac=( '' 'kneaddata' 'kraken' ) #MARS disable > vref_pac=( '' 'kneaddata' 'kraken' ) from vref_pac=( '' 'kneaddata' 'kraken' 'mars' )
 				vref_pac1='kneaddata'
 				vref_pac2='kraken'
 				vref_pac3='mars'
@@ -1707,8 +1706,8 @@ if (( ${vopt_log} ));then
 			for idb in "${vopt_db[@]}";do
 				if [[ ${idb} = 'host_kd_hsapcontam' ]];then
 				#TODO perform check - sophisticate with check fun
-					vin_path_db[1]=${vin_path_db[0]}'/REPO_host/hsap_contam/bowtie2'
-					vin_host_rm='/DB/REPO_host/hsap_contam/bowtie2'
+					vin_path_db[1]=${vin_path_db[0]}'/REPO_gref/host/hsap_contam/bowtie2'
+					vin_host_rm='/DB/REPO_gref/host/hsap_contam/bowtie2'
 					if [[ $(ls -1 "${vin_path_db[1]}"/*.bt2 2>/dev/null | wc -l) -lt 6 ]];then
 						printf 'FUNC_CHECK: DB: %s not found, installing...\n' "${idb}" >> ${v_logfile}
 						BASH_seqc_makedb.sh -s 'host_kd_hsapcontam'
@@ -1810,7 +1809,7 @@ if (( ${vopt_log} ));then
 	# valid pot tools not selected will be absent rather than =0, pot issue?
 	v_pac_s1='kneaddata'
 	v_pac_s2=( 'kraken' 'spades' )
-	v_pac_s3=( 'mars' 'minimap2' 'strobealign' 'vamb' 'checkm2' )
+	v_pac_s3=( 'mars' )
 	for istep in "${vopt_step[@]}";do
 		if [[ ${istep} -eq 1 ]];then
 			vstat_step=$( func_status_adj "get" "${v_logfile_status}" "STATE" "step"${istep} )
@@ -2429,14 +2428,9 @@ if (( ${vopt_log} ));then
 		v_print_type='FAILURE XO'	
 	fi
 	printf '%s\n%s\n\tStatus: %s\nEnd time: %s\n%s\n' "${v_logblock0}" "${v_print_head}" "${v_print_type}" "${v_TS}" "${v_logblock0}" >> ${v_logfile}
-	#STATE:FS:run_status:FS:PENDING
 	if (( $vstat_done ));then
 		# successful exiting
 		# Relocate input taxonomy for mars to final out
-		# PERSEPHONE FIX - REDUND
-#		if [[ ! -z ${v_mars_kin} ]];then
-#			mv ${v_mars_kin} /home/seqc_user/seqc_project/final_reports/
-#		fi
 		# exit keep-clean
 		if (( ${vopt_keep} ));then
 			printf 'All files retained\n' >> ${v_logfile}
@@ -2471,8 +2465,7 @@ if (( ${vopt_log} ));then
 		v_drop_catch='KB_S_mpa_out_{RC,RA}.txt'
 		eval "mv ${vout_s2}/${v_drop_catch} /home/seqc_user/seqc_project/final_reports/" 2> /dev/null
 		# TODO more elaborate permissions transfer approach
-		# pot. grab user ID at start and set ownership directly
-		chmod -R +777 /home/seqc_user/seqc_project/final_reports/*
+		# OoD: chmod -R +777 /home/seqc_user/seqc_project/final_reports/*
 	fi
 	printf 'SeqC Stuff ENDS @: %s\n' "$(date +"%Y.%m.%d %H.%M.%S (%Z)")"
 fi #END of exit log and check
@@ -2481,13 +2474,13 @@ if [[ ${v_scrp_check} -eq 0 ]];then
 	#startup splash - ascii gen from: https://patorjk.com/software/taag, standard,slant,alpha,isometric1,impossible
 	#https://medium.com/@Frozenashes/making-a-custom-startup-message-for-a-linux-shell-using-bashrc-and-bash-scripting-280268fdaa17
 	func_splash() {
-  	#if null create
+	#if null create
 		if [[ -z "${VEN_SPLASH}" ]]; then
 			echo "VEN_SPLASH="\"1\" >> /etc/environment
-			echo "export VEN_SPLASH=1" >>  /root/.bashrc
-			echo "BASH_seqc_mama.sh -2" >> /root/.bashrc
+			echo "export VEN_SPLASH=1" >>  ${v_dir_rc}/.bashrc
+			echo "BASH_seqc_mama.sh -2" >> ${v_dir_rc}/.bashrc
 			source /etc/environment
-			source /root/.bashrc
+			source ${v_dir_rc}/.bashrc
 			export VEN_SPLASH=1
 			declare -x VEN_SPLASH=1
 			exit 1
@@ -2554,14 +2547,14 @@ EOF
 		printf 'Welcome %s!\n' "${venv_seqcusr}"
 		# Create proc dirs as .gitkeep blocks action on fresh build - expand
 		printf 'Checking for expected folder structure...\n'
-		mkdir -p ${v_dir_db}/REPO_host/{hsap,hsap_contam,mmus,btau}/bowtie2/
-		mkdir -p ${v_dir_db}/REPO_tool/{kraken,humann,checkm2,mmseqs2,ncbi_NR}/
+		mkdir -p ${v_dir_db}/REPO_gref/{t2p,ref_genome,host/{hsap,hsap_contam,mmus,btau}/bowtie2/}
+		mkdir -p ${v_dir_db}/REPO_tool/{kraken,ncbi_NR}/
 		mkdir -p ${v_dir_db}/DEPO_demo/demo/{tmp,camisim/AGORA_smol/{genomes,run_params}}/
 		#tmp failing to create now?!?!
 		mkdir -p ${v_dir_db}/DEPO_proc/{logs,tmp}/ 2> /dev/null
 		# relocate taxa2proc files
-		mkdir -p ${v_dir_db}/REPO_tool/kraken/t2p
-		mv /tmp/taxa2proc_*_out.txt ${v_dir_db}/REPO_tool/kraken/t2p
+		mkdir -p ${v_dir_db}/REPO_gref/t2p
+		mv /tmp/taxa2proc_*.txt ${v_dir_db}/REPO_gref/t2p
 		# syslink of log dir
 		# currently impossible with docker: ln -s ${v_logfile%/*}/ ${venv_dir_proc}
 		# Display info
