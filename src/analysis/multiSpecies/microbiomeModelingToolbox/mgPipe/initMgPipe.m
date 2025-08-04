@@ -78,7 +78,7 @@ parser.addRequired('abunFilePath', @ischar);
 parser.addRequired('computeProfiles', @islogical);
 parser.addParameter('solver', '',@ischar);
 parser.addParameter('resPath', [pwd filesep 'Results'], @ischar);
-parser.addParameter('dietFilePath', '', @ischar);
+parser.addParameter('dietFilePath', @ischar);
 parser.addParameter('infoFilePath', '', @ischar);
 parser.addParameter('biomasses', {}, @iscell);
 parser.addParameter('hostPath', '', @ischar);
@@ -115,6 +115,11 @@ includeHumanMets = parser.Results.includeHumanMets;
 adaptMedium = parser.Results.adaptMedium;
 pruneModels = parser.Results.pruneModels;
 
+% do not provide host metabolites if host is included
+if ~isempty(hostPath)
+    includeHumanMets = false;
+end
+
 % check if the solver is defined by the user
 if ~isempty(solver)
     changeCobraSolver(solver, 'LP')
@@ -147,10 +152,7 @@ if ~contains(dietFilePath,'.txt')
 end
 
 if exist(dietFilePath)==0
-    warning('No path to file with dietary info provided, using average European diet!');
-    EUAverageDietNew;
-    writecell(Diet, fullfile(pwd, 'diet.txt'), 'Delimiter', '\t');
-    dietFilePath = fullfile(pwd, 'diet.txt');
+    error('Path to file with dietary information is incorrect!');
 end
 
 % test if abundances are normalized
@@ -188,7 +190,7 @@ if ~strcmpi(resPath(end), filesep)
 end
 
 % define file type for images
-figForm = '-depsc';
+figForm = '-dpng';
 
 % Check for installation of parallel Toolbox
 try

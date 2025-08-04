@@ -60,6 +60,7 @@ modelFolder = parser.Results.modelFolder;
 resultsFolder = parser.Results.resultsFolder;
 objectiveList = parser.Results.objectiveList;
 numWorkers = parser.Results.numWorkers;
+osenseStr = parser.Results.osenseStr;
 SPDef = parser.Results.SPDef;
 
 mkdir(resultsFolder)
@@ -91,6 +92,11 @@ modelList(~any(contains(modelList(:,1),{'.mat','.sbml','.xml'})),:)=[];
 
 if size(modelList,1) ==0
     error('There are no models to load in the model folder!')
+end
+
+% also allow list in horizontal order as input
+if size(objectiveList,1)==1
+    objectiveList = objectiveList';
 end
 
 objectives=cell(length(objectiveList)+1,length(modelList)+2);
@@ -147,7 +153,11 @@ for s=1:steps:length(modelList)
         end
 
         % compute the flux balance analysis solution
-        FBAsolution = computeSolForObj(model, objectiveList);
+        FBAsolution = {};
+        for k=1:size(objectiveList,1)
+            modelObj = changeObjective(model,objectiveList{k,1});
+            FBAsolution{k,1} = optimizeCbModel(modelObj,osenseStr);
+        end
         % save solutions one by one-complete file would be enormous
         parsave([resultsFolder filesep strrep(modelList{i,1},'.mat','') '_solution.mat'],FBAsolution)
         end
@@ -282,25 +292,48 @@ tol = 1e-8;
 for i=1:length(model.mets)
     % Do not include slack variables
     if ~strncmp('slack_',model.mets{i},6)
-        if strcmp(SPDef,'Negative')
-            if FBAsolution.dual(i)  <0 && abs(FBAsolution.dual(i)) > tol
-                extractedShadowPrices{cnt,1}=model.mets{i};
-                extractedShadowPrices{cnt,2}=FBAsolution.dual(i);
-                cnt=cnt+1;
+        if isfield(FBAsolution,'y')
+            if strcmp(SPDef,'Negative')
+                if FBAsolution.y(i)  <0 && abs(FBAsolution.y(i)) > tol
+                    extractedShadowPrices{cnt,1}=model.mets{i};
+                    extractedShadowPrices{cnt,2}=FBAsolution.y(i);
+                    cnt=cnt+1;
+                end
+            elseif strcmp(SPDef,'Positive')
+                if FBAsolution.y(i)  >0 && abs(FBAsolution.y(i)) > tol
+                    extractedShadowPrices{cnt,1}=model.mets{i};
+                    extractedShadowPrices{cnt,2}=FBAsolution.y(i);
+                    cnt=cnt+1;
+                end
+            elseif strcmp(SPDef,'Nonzero')
+                if FBAsolution.y(i)  ~=0 && abs(FBAsolution.y(i)) > tol
+                    extractedShadowPrices{cnt,1}=model.mets{i};
+                    extractedShadowPrices{cnt,2}=FBAsolution.y(i);
+                    cnt=cnt+1;
+                end
             end
-        elseif strcmp(SPDef,'Positive')
-            if FBAsolution.dual(i)  >0 && abs(FBAsolution.dual(i)) > tol
-                extractedShadowPrices{cnt,1}=model.mets{i};
-                extractedShadowPrices{cnt,2}=FBAsolution.dual(i);
-                cnt=cnt+1;
-            end
-        elseif strcmp(SPDef,'Nonzero')
-            if FBAsolution.dual(i)  ~=0 && abs(FBAsolution.dual(i)) > tol
-                extractedShadowPrices{cnt,1}=model.mets{i};
-                extractedShadowPrices{cnt,2}=FBAsolution.dual(i);
-                cnt=cnt+1;
+        else
+            if strcmp(SPDef,'Negative')
+                if FBAsolution.dual(i)  <0 && abs(FBAsolution.dual(i)) > tol
+                    extractedShadowPrices{cnt,1}=model.mets{i};
+                    extractedShadowPrices{cnt,2}=FBAsolution.dual(i);
+                    cnt=cnt+1;
+                end
+            elseif strcmp(SPDef,'Positive')
+                if FBAsolution.dual(i)  >0 && abs(FBAsolution.dual(i)) > tol
+                    extractedShadowPrices{cnt,1}=model.mets{i};
+                    extractedShadowPrices{cnt,2}=FBAsolution.dual(i);
+                    cnt=cnt+1;
+                end
+            elseif strcmp(SPDef,'Nonzero')
+                if FBAsolution.dual(i)  ~=0 && abs(FBAsolution.dual(i)) > tol
+                    extractedShadowPrices{cnt,1}=model.mets{i};
+                    extractedShadowPrices{cnt,2}=FBAsolution.dual(i);
+                    cnt=cnt+1;
+                end
             end
         end
     end
 end
+
 end
