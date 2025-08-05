@@ -130,6 +130,15 @@ for i=1:length(fileList)
         end
     else
         [Statistics,significantFeatures] = performStatisticalAnalysis(sampleData,infoFile);
+       % create plots
+            currentDir=pwd;
+            cd(violinPath)
+            
+            % create violin plots for net uptake and secretion files
+            if any(contains(fileList{i,1},{'net_uptake_fluxes.csv','net_secretion_fluxes.csv'}))
+                makeViolinPlots(sampleData, infoFile, 'plotType' , plotType, 'unit', 'mmol/person/day')
+            end
+            cd(currentDir)
         
         % Print the results as a text file
         filename = strrep(fileList{i},'.csv','');
