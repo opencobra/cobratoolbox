@@ -1,0 +1,1137 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge,IE=9,chrome=1"><meta name="generator" content="MATLAB 2024a"><title>Tutorial One: Creating Community Microbiome Models</title><style type="text/css">.rtcContent { padding: 30px; } .S0 { margin: 3px 10px 5px 4px; padding: 0px; line-height: 28.8px; min-height: 0px; white-space: pre-wrap; color: rgb(192, 76, 11); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 24px; font-weight: 400; text-align: left;  }
+.S1 { margin: 2px 10px 9px 4px; padding: 0px; line-height: 21px; min-height: 0px; white-space: pre-wrap; color: rgb(33, 33, 33); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 14px; font-weight: 400; text-align: left;  }
+.S2 { margin: 10px 0px 20px; padding-left: 0px; font-family: Helvetica, Arial, sans-serif; font-size: 14px;  }
+.S3 { margin-left: 56px; line-height: 21px; min-height: 0px; text-align: left; white-space: pre-wrap;  }
+.S4 { margin: 15px 10px 5px 4px; padding: 0px; line-height: 28.8px; min-height: 0px; white-space: pre-wrap; color: rgb(192, 76, 11); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 24px; font-weight: 400; text-align: left;  }
+.S5 { margin: 20px 10px 5px 4px; padding: 0px; line-height: 20px; min-height: 0px; white-space: pre-wrap; color: rgb(33, 33, 33); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 20px; font-weight: 700; text-align: left;  }
+.CodeBlock { background-color: #F5F5F5; margin: 10px 15px 10px 0; display: inline-block }
+.S6 { border-left: 1px solid rgb(217, 217, 217); border-right: 1px solid rgb(217, 217, 217); border-top: 1px solid rgb(217, 217, 217); border-bottom: 1px solid rgb(217, 217, 217); border-radius: 4px; padding: 6px 45px 4px 13px; line-height: 18.004px; min-height: 0px; white-space: nowrap; color: rgb(33, 33, 33); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S7 { border-left: 1px solid rgb(217, 217, 217); border-right: 1px solid rgb(217, 217, 217); border-top: 1px solid rgb(217, 217, 217); border-bottom: 0px none rgb(33, 33, 33); border-radius: 4px 4px 0px 0px; padding: 6px 45px 0px 13px; line-height: 18.004px; min-height: 0px; white-space: nowrap; color: rgb(33, 33, 33); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S8 { border-left: 1px solid rgb(217, 217, 217); border-right: 1px solid rgb(217, 217, 217); border-top: 0px none rgb(33, 33, 33); border-bottom: 0px none rgb(33, 33, 33); border-radius: 0px; padding: 0px 45px 0px 13px; line-height: 18.004px; min-height: 0px; white-space: nowrap; color: rgb(33, 33, 33); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S9 { border-left: 1px solid rgb(217, 217, 217); border-right: 1px solid rgb(217, 217, 217); border-top: 0px none rgb(33, 33, 33); border-bottom: 1px solid rgb(217, 217, 217); border-radius: 0px 0px 4px 4px; padding: 0px 45px 4px 13px; line-height: 18.004px; min-height: 0px; white-space: nowrap; color: rgb(33, 33, 33); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S10 { margin: 10px 10px 9px 4px; padding: 0px; line-height: 21px; min-height: 0px; white-space: pre-wrap; color: rgb(33, 33, 33); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 14px; font-weight: 400; text-align: left;  }
+.S11 { margin: 3px 10px 5px 4px; padding: 0px; line-height: 18px; min-height: 0px; white-space: pre-wrap; color: rgb(33, 33, 33); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 15px; font-weight: 700; text-align: left;  }
+.S12 { margin: 10px 10px 5px 4px; padding: 0px; line-height: 18px; min-height: 0px; white-space: pre-wrap; color: rgb(33, 33, 33); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 15px; font-weight: 700; text-align: left;  }
+.S13 { margin: 3px 10px 5px 4px; padding: 0px; line-height: 20px; min-height: 0px; white-space: pre-wrap; color: rgb(33, 33, 33); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 20px; font-weight: 700; text-align: left;  }</style></head><body><div class = rtcContent><h1  class = 'S0'><span>Tutorial One: Creating Community Microbiome Models</span></h1><div  class = 'S1'><span>This tutorial will take you step by step through creating community microbiome models. There are three main steps to the process: </span></div><ol  class = 'S2'><li  class = 'S3'><span>Bioinformatic processing of sequence data (SeqC): takes you frum raw sequence data to taxonomy assigned read counts</span></li><li  class = 'S3'><span>Micorbial Abundances Retrieved from Sequening data (MARS): takes you from taxonomy assigned read counts to reative abundances mapped to you chosed microbial reconstruction resource e.g., AGORA2</span></li><li  class = 'S3'><span>Microbiome model creation with mgPipe: takes your mapped relative abundance data and creates personalised community micrcobiome models personalised for each sample in your metagenomic data file</span></li></ol><div  class = 'S1'><span>Depending on your data you can start with step 1 (raw reads) or jump to step 2 (assigned taxonomy read counts). </span></div><h1  class = 'S4'><span>Bioinformatic processing of sequencing data</span></h1><div  class = 'S1'><span>Authors: Wiley Barton</span></div><div  class = 'S1'><span>Created: 2025.02.04</span></div><h2  class = 'S5'><span>Requirements:</span></h2><div  class = 'S1'><span>To successfully follow this tutorial, you need to have the following</span></div><div  class = 'S1'><span> installed on your system:</span></div><ul  class = 'S2'><li  class = 'S3'><span>    </span><span style=' font-weight: bold;'>Docker Desktop or Engine</span><span> (tested@ 4.37.1 (178610))</span></li><li  class = 'S3'><span>    </span><span style=' font-weight: bold;'>MATLAB</span><span> (tested@R2024b)</span></li><li  class = 'S3'><span>   </span><span style=' font-weight: bold;'>SeqC Repository</span><span> (Bioinformatics pipeline for taxonomic classification)</span></li></ul><div  class = 'S1'><span>**IMPORTANT: This step is time-consuming and only advised for those with a desktop set up with a minimum of X RAM, X CPU. If you are working on a computer that does not meet these requirements you can skip to the next section: 'Creating Community Microbiome Models' </span></div><h2  class = 'S5'><span>Introduction</span></h2><div  class = 'S1'><span>This tutorial is part of a series to support the use of the </span><span style=' font-style: italic;'>Persephone</span><span> pipeline.</span><span style=' font-style: italic;'> </span><span>This tutorial goes through the steps of the overall pipeline that interact directly with the </span><span style=' font-style: italic;'>Sequence Conversion (SeqC) pipeline</span><span>. SeqC is a Docker-based bioinformatic environment with the purpose of providing a standardised, efficient, and portable means to generate the microbial taxonomic inputs for the rest of Persephone from raw sequencing data. SeqC performs quality control of fastq files with </span><span style=' font-style: italic;'>Kneaddata</span><span> [1], taxonomic assignment to reads with a combination of </span><span style=' font-style: italic;'>Kraken2 </span><span>[2] and </span><span style=' font-style: italic;'>bracken</span><span> [3]--using custom assignment databases derived from AGORA2 [4] and or APOLLO [5], and additional configuration with MARS [6].</span></div><h2  class = 'S5'><span>Section 1: Environment Preparation</span></h2><div  class = 'S1'><span>The SeqC pipeline is executed using the </span><span style=' font-family: monospace;'>runSeqC</span><span> function, which is called by the main </span><span style=' font-family: monospace;'>runPersephone</span><span> function. This function relies on configurations set in the </span><span style=' font-weight: bold;'>configPersephone.m</span><span> file.</span></div><div  class = 'S1'><span style=' font-weight: bold;'>Downloading SeqC</span></div><div  class = 'S1'><span>SeqC is included in the </span><span style=' font-weight: bold;'>COBRA Toolbox</span><span>. If you have not installed it yet, refer to previous tutorials or follow the instructions available here: </span><a href = "https://github.com/opencobra/cobratoolbox"><span>https://github.com/opencobra/cobratoolbox</span></a></div><div  class = 'S1'><span>Alternatively, you can manually clone the SeqC repository by running the following command from you systems command line:</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S6'><span style="white-space: pre"><span style="color: #008013;">% git clone git@gitlab.com:thielelab/wbm_modelingcode.git --branch master</span></span></div></div></div><div  class = 'S1'><span style=' font-weight: bold;'>Configuring SeqC Paths</span></div><div  class = 'S1'><span>Once SeqC is installed, you need to specify key file paths in </span><span style=' font-weight: bold;'>MATLAB</span><span>:</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: pre"><span style="color: #008013;">% Character array variable specifying the folder where seqC repository is stored</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% e.g., 'C:\Users\cobratoolbox\src\analysis\persephone\SeqC_pipeline'</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >paths.seqC.repoPathSeqC = </span><span style="color: #a709f5;">''</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% Character array variable specifying the folder</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% where the final output of SeqC is stored.</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >resultPath = </span><span style="color: #a709f5;">''</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'>&nbsp;</div></div><div class="inlineWrapper"><div  class = 'S8'>&nbsp;</div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >paths.seqC.outputPathSeqC = [resultPath filesep, </span><span style="color: #a709f5;">'ResultSeqC'</span><span >];</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% *REQUIRED*. Character array variable of the file name</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% containing sample IDs for FASTQ files (e.g., sample_id.txt)</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >paths.seqC.fileIDSeqC = </span><span style="color: #a709f5;">'sample_id_demo.txt'</span><span >;</span></span></div></div></div><div  class = 'S10'><span>These variables control how SeqC processes sequencing data and determines available computational resources.</span></div><h4  class = 'S11'><span>Set the paths to all inputs for seqC</span></h4><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: pre"><span style="color: #008013;">% Logical variable indicating if intermediary outputs are</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% retained (e.g., post-QC FASTQ). False results in the</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% singular output of MARS, and the deletion of all</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% intermediary content once SeqC completes.</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >paths.seqC.procKeepSeqC = false;</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% Numeric, the maximum amount of memory allowed in gigabytes.</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >paths.seqC.maxMemSeqC = 20;</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'>&nbsp;</div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% Numeric, the maximum number of threads allowed.</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >paths.seqC.maxCpuSeqC = 4;</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'>&nbsp;</div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% Numeric, the maximum number of processes allowed.</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >paths.seqC.maxProcSeqC = 4;</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% Logical variable indicating if additional debugging</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% messaging should be included in the log.</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >paths.seqC.debugSeqC = false;</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'>&nbsp;</div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% describe</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >paths.seqC.apptainer = false;</span></span></div></div></div><h4  class = 'S12'><span>Set the paths to all inputs for seqC</span></h4><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: pre"><span style="color: #008013;">%% 1.5 MARS inputs</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% Logical variable indicating if taxonomic mapping by MARS</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% is performed independently of SeqC.</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >paths.Mars.flagMars = true;</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% *REQUIRED*. Character array variable with path to the microbiome taxonomy</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% and read abundance file.</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >paths.Mars.readsTablePath = </span><span style="color: #a709f5;">''</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% Character array variable to the folder where the output of MARS is stored.</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >paths.Mars.outputPathMars = [resultPath filesep, </span><span style="color: #a709f5;">'ResultMars'</span><span >];</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'>&nbsp;</div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% Character array variable indicating the desired file format for saving</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% outputs: this is needed for the relative abundance file path used in the</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% next line</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >paths.Mars.outputExtensionMars = </span><span style="color: #a709f5;">'csv'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'>&nbsp;</div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% Path to relative abundance file</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >paths.Mars.relAbunFilePath = [paths.Mars.outputExtensionMars filesep </span><span style="color: #a709f5;">'present'</span><span style="color: #0e00ff;">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >    filesep </span><span style="color: #a709f5;">'present_species' </span><span >filesep paths.Mars.outputExtensionMars];</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'>&nbsp;</div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% Numeric value for total read counts per sample under which samples are</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% excluded from analysis. Only applies when readsTable contains absolute</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% read counts (not relative abundances). Defaults to 1, with minimum of 1.</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >paths.Mars.sample_read_counts_cutoff = 1;</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'>&nbsp;</div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% Numeric value under which relative abundances are considered to be zero</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% default = 1e-6</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >paths.Mars.cutoffMars = 1e-6;</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% String to the file where OTUs are matched to taxonomic assignments.</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% OPTIONAL if the taxonomic assignments are already in the readsTable.</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% REQUIRED if not.</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >paths.Mars.OTUTable = </span><span style="color: #a709f5;">""</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'>&nbsp;</div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% A boolean to indicate if the genus name is in the name of the species e.g.</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% Prevotella copri. If genus name is in species name set to false.</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% Otherwise set to true. OPTIONAL, defaults to false.</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >paths.Mars.flagLoneSpecies = true;</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'>&nbsp;</div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% The delimeter used to separate taxonomic levels</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >paths.Mars.taxaDelimiter = </span><span style="color: #a709f5;">';'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'>&nbsp;</div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% A boolean specifying if one wants to remove clade name extensions from</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% all taxonomic levels of microbiome taxa. If set to false, MARS might find</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% significantly less models in AGORA2, as clade extensions are not included</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% there.</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >paths.Mars.removeClade = true;</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% A string defining if AGORA2, APOLLO, a combination of both or a user-defined</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% database should be used as model database to check presence in.</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% Allowed Input (case-insensitive): "AGORA2", "APOLLO", "full_db", "user_db".</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% Default: "full_db".</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >paths.Mars.reconstructionDb = </span><span style="color: #a709f5;">"full_db"</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% A string containing the full path to the user-defined database,</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% which should be in .csv, .txt, .parquet or .xlsx format and</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% have column names = taxonomic levels. Only required if reconstructionDb</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% is set to "user_db".</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >paths.Mars.userDbPath  = </span><span style="color: #a709f5;">""</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >paths.Mars.taxaTable = </span><span style="color: #a709f5;">""</span><span >;</span></span></div></div></div><h2  class = 'S13'><span>Section 2: Running SeqC</span></h2><div  class = 'S1'><span>The function runSeqC begins by setting the working directory to that of the SeqC repository, and assessing environmental variables and ensuring they are correctly formatted.</span></div><div  class = 'S1'><span>Now that the environment is set up, you can execute </span><span style=' font-weight: bold;'>SeqC</span><span> by calling:</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: pre"><span >runSeqC(</span><span style="color: #0e00ff;">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >            paths.seqC.repoPathSeqC, </span><span style="color: #0e00ff;">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >            paths.seqC.outputPathSeqC, </span><span style="color: #0e00ff;">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >            paths.seqC.fileIDSeqC, </span><span style="color: #0e00ff;">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >            paths.seqC.procKeepSeqC, </span><span style="color: #0e00ff;">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >            paths.seqC.maxMemSeqC, </span><span style="color: #0e00ff;">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >            paths.seqC.maxCpuSeqC, </span><span style="color: #0e00ff;">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >            paths.seqC.maxProcSeqC, </span><span style="color: #0e00ff;">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >            paths.seqC.debugSeqC, </span><span style="color: #0e00ff;">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >            paths.seqC.apptainer, </span><span style="color: #0e00ff;">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >            paths.Mars.readsTablePath, </span><span style="color: #0e00ff;">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >            paths.Mars.outputPathMars, </span><span style="color: #0e00ff;">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >            paths.Mars.outputExtensionMars, </span><span style="color: #0e00ff;">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >            paths.Mars.relAbunFilePath, </span><span style="color: #0e00ff;">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >            paths.Mars.sample_read_counts_cutoff, </span><span style="color: #0e00ff;">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >            paths.Mars.cutoffMars, </span><span style="color: #0e00ff;">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >            paths.Mars.OTUTable, </span><span style="color: #0e00ff;">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >            paths.Mars.flagLoneSpecies, </span><span style="color: #0e00ff;">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >            paths.Mars.taxaDelimiter, </span><span style="color: #0e00ff;">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >            paths.Mars.removeClade, </span><span style="color: #0e00ff;">...</span><span style="color: #008013;"> </span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >            paths.Mars.reconstructionDb, </span><span style="color: #0e00ff;">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >            paths.Mars.userDbPath, </span><span style="color: #0e00ff;">...</span><span style="color: #008013;"> </span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >            paths.Mars.taxaTable </span><span style="color: #0e00ff;">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >    );</span></span></div></div></div><div  class = 'S1'><span style=' font-weight: bold;'>Checking Your Operating System</span></div><div  class = 'S1'><span>The tutorial automatically detects your OS and ensures that </span><span style=' font-weight: bold;'>Docker</span><span> is properly configured:</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: pre"><span style="color: #008013;">%% Determine Operating System</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% Some arguments are OS specific</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #0e00ff;">if </span><span >ismac</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >    vOS = </span><span style="color: #a709f5;">'mac'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >    setenv(</span><span style="color: #a709f5;">'PATH'</span><span >, [getenv(</span><span style="color: #a709f5;">'PATH'</span><span >) </span><span style="color: #a709f5;">':/usr/local/bin'</span><span >]); </span><span style="color: #008013;">% Ensure Docker is found</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #0e00ff;">elseif </span><span >isunix</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >    vOS = </span><span style="color: #a709f5;">'unix'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #0e00ff;">elseif </span><span >ispc</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >    vOS = </span><span style="color: #a709f5;">'win'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #0e00ff;">else</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >    error(</span><span style="color: #a709f5;">'Unsupported operating system.'</span><span >);</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span style="color: #0e00ff;">end</span></span></div></div></div><div  class = 'S10'><span>Ensure </span><span style=' font-weight: bold;'>Docker</span><span> is running before executing SeqC, especially on Windows.</span></div><div  class = 'S1'><span style=' font-weight: bold;'>Estimating Disk Usage</span></div><div  class = 'S1'><span>SeqC requires a considerable amount of storage. To estimate space requirements, an optional estimation of the size of outputs generated is calculated below.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: pre"><span style="color: #008013;">%% Determine directory size and estimate usage exapansion</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >dirPath = fullfile(paths.seqC.repoPathSeqC,</span><span style="color: #a709f5;">'seqc_input/'</span><span >); </span><span style="color: #008013;">% Directory path</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >totalBytes = getDirectorySize(dirPath); </span><span style="color: #008013;">% Function from previous response</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >totalMB = totalBytes / (1024^2); </span><span style="color: #008013;">% Convert to MB</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >totalGB = totalBytes / (1024^3); </span><span style="color: #008013;">% Convert to GB</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >inflateRatio = 3.2; </span><span style="color: #008013;">% inflation term</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >inflateGB = totalGB * inflateRatio;</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >msgDsize = sprintf([</span><span style="color: #a709f5;">'Total size of directory: %.2f GB\nExpected ...' </span><span style="color: #0e00ff;">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >    </span><span style="color: #a709f5;">'inflation size: %.2f GB\n'</span><span >], totalGB, inflateGB);</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'>&nbsp;</div></div></div><div  class = 'S1'><span>Before running SeqC, we need to define and initialize key directories. This ensures that the pipeline can correctly locate input files and store output results.</span></div><div  class = 'S1'><span>In </span><span style=' font-weight: bold;'>MATLAB</span><span>, initialize the required paths with:</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: pre"><span style="color: #008013;">%% Initialize Paths</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >vdir_init = cd;</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >vdir_out_seqc = </span><span style="color: #a709f5;">'seqc_output'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >vdir_out_mars = fullfile(vdir_out_seqc, </span><span style="color: #a709f5;">'mars_out'</span><span >);</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% Set system to seqc repo</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >cd(paths.seqC.repoPathSeqC);</span></span></div></div></div><div  class = 'S1'><span>Before passing computational resource constraints to the Docker container, we convert numeric values to strings for compatibility. </span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: pre"><span style="color: #008013;">%% Convert Numeric Inputs to Strings</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >maxCpuSeqC = num2str(paths.seqC.maxCpuSeqC);</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >maxMemSeqC = num2str(paths.seqC.maxMemSeqC);</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >maxProcSeqC = num2str(paths.seqC.maxProcSeqC);</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #0e00ff;">if </span><span >isnumeric(paths.Mars.cutoffMars)</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >    paths.Mars.cutoffMars = sprintf(</span><span style="color: #a709f5;">'%f'</span><span >, paths.Mars.cutoffMars);</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span style="color: #0e00ff;">end</span></span></div></div></div><div  class = 'S10'><span>Then, following command constructs Docker build arguments using the previously converted string values.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: pre"><span style="color: #008013;">%% Build Docker Options</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% Hardware params</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >comm_build_opt_hw = sprintf([</span><span style="color: #a709f5;">'--build-arg varg_cpu_max=%s --build-arg...' </span><span style="color: #0e00ff;">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >    </span><span style="color: #a709f5;">'  varg_mem_max=%s...' ' --build-arg varg_proc_max=%s'</span><span >], </span><span style="color: #0e00ff;">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >    paths.seqC.maxCpuSeqC, paths.seqC.maxMemSeqC, paths.seqC.maxProcSeqC);</span></span></div></div></div><div  class = 'S1'><span>To ensure MARS settings are correctly passed to Docker, we construct a command string with the necessary arguments. This configures MARS within the SeqC pipeline for proper execution inside the container.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: pre"><span style="color: #008013;">% MARS params</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >comm_build_opt_mars = sprintf([</span><span style="color: #a709f5;">'--build-arg varg_mars_outputExtensionMars=%s' </span><span style="color: #0e00ff;">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #a709f5;">' --build-arg varg_mars_sample_read_counts_cutoff=%d' </span><span style="color: #0e00ff;">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #a709f5;">' --build-arg varg_mars_cutoffMars=%s' </span><span style="color: #0e00ff;">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #a709f5;">' --build-arg varg_mars_flagLoneSpecies=%s' </span><span style="color: #0e00ff;">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #a709f5;">' --build-arg varg_mars_taxaDelimiter="%s"' </span><span style="color: #0e00ff;">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #a709f5;">' --build-arg varg_mars_removeClade =%s' </span><span style="color: #0e00ff;">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #a709f5;">' --build-arg varg_mars_reconstructionDb=%s'</span><span >], </span><span style="color: #0e00ff;">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >paths.Mars.outputExtensionMars, paths.Mars.sample_read_counts_cutoff, </span><span style="color: #0e00ff;">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >paths.Mars.cutoffMars, string(paths.Mars.flagLoneSpecies), </span><span style="color: #0e00ff;">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >string(paths.Mars.taxaDelimiter), string(paths.Mars.removeClade), paths.Mars.reconstructionDb);</span></span></div></div></div><div  class = 'S1'><span>Optional MARS parameters are appended to the Docker build command only if they are provided. This ensures a flexible and efficient configuration within the SeqC pipeline.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: pre"><span style="color: #008013;">%% Append Optional Build Arguments - MARS</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% exclude if empty</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >optionalParams = {paths.Mars.OTUTable, paths.Mars.readsTablePath, </span><span style="color: #0e00ff;">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >    paths.Mars.relAbunFilePath, paths.Mars.userDbPath, paths.Mars.taxaTable};</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >paramNames = {</span><span style="color: #a709f5;">'varg_mars_OTUTable'</span><span >, </span><span style="color: #a709f5;">'varg_mars_readsTablePath'</span><span >, </span><span style="color: #0e00ff;">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >    </span><span style="color: #a709f5;">'varg_mars_relAbunFilePath'</span><span >, </span><span style="color: #a709f5;">'varg_mars_userDbPath '</span><span >, </span><span style="color: #a709f5;">'varg_mars_taxaTable'</span><span >};</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #0e00ff;">for </span><span >vi = 1:length(optionalParams)</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >    </span><span style="color: #0e00ff;">if </span><span >~ismissing(optionalParams{vi})</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >        </span><span style="color: #0e00ff;">if </span><span >~isempty(optionalParams{vi}) &amp;&amp; ~strcmpi(optionalParams{vi}, </span><span style="color: #a709f5;">""</span><span >)</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >            comm_build_opt_mars = sprintf(</span><span style="color: #a709f5;">'%s --build-arg %s=%s'</span><span >, </span><span style="color: #0e00ff;">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >                comm_build_opt_mars, paramNames{vi}, optionalParams{vi});</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >        </span><span style="color: #0e00ff;">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >    </span><span style="color: #0e00ff;">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #0e00ff;">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'>&nbsp;</div></div></div><div  class = 'S1'><span>The Docker image is built with hardware and MARS-specific options, ensuring proper resource allocation. The run command is configured for interactive and non-interactive execution, adapting to system constraints.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: pre"><span style="color: #008013;">%% Build Docker Image command</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >comm_build = sprintf(</span><span style="color: #a709f5;">'docker build -t dock_seqc --ulimit nofile=65536:65536 %s %s .'</span><span >,</span><span style="color: #0e00ff;">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >    comm_build_opt_hw, comm_build_opt_mars);</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'>&nbsp;</div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">%% Docker run commands</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% core run command</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >comm_run_core = </span><span style="color: #a709f5;">'docker run --interactive --tty --user 0 --rm --mount'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% sans interactive</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >comm_run_core = sprintf([</span><span style="color: #a709f5;">'docker run --tty --user 0 --rm --memory=%s...' </span><span style="color: #0e00ff;">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >    </span><span style="color: #a709f5;">' --cpus=%s --mount'</span><span >],sprintf(</span><span style="color: #a709f5;">'%sg'</span><span >,maxMemSeqC),maxCpuSeqC);</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'>&nbsp;</div></div></div><div  class = 'S1'><span>The user can select a taxonomic database (AGORA, APOLLO, or combined) based on user input and constructs a command to run the database creation script with the chosen database and a human contamination filter.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: pre"><span style="color: #008013;">%% Set Database Assignment Command</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #0e00ff;">switch </span><span >paths.Mars.reconstructionDb</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >    </span><span style="color: #0e00ff;">case </span><span style="color: #a709f5;">'AGORA'</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >        comm_run_db_kb = </span><span style="color: #a709f5;">'-s "tool_k2_agora"'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >    </span><span style="color: #0e00ff;">case </span><span style="color: #a709f5;">'APOLLO'</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >        comm_run_db_kb = </span><span style="color: #a709f5;">'-s "tool_k2_apollo"'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >    </span><span style="color: #0e00ff;">case </span><span style="color: #a709f5;">'full_db'</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >        comm_run_db_kb = </span><span style="color: #a709f5;">'-s "tool_k2_agora2apollo"'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >    </span><span style="color: #0e00ff;">otherwise</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >        comm_run_db_kb = </span><span style="color: #a709f5;">'-s "tool_k2_agora2apollo"'</span><span >; </span><span style="color: #008013;">% Default case</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #0e00ff;">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >comm_run_db_kd = </span><span style="color: #a709f5;">'-s "host_kd_hsapcontam"'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >comm_run_db = sprintf(</span><span style="color: #a709f5;">'BASH_seqc_makedb.sh %s %s'</span><span >, comm_run_db_kd, comm_run_db_kb);</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'>&nbsp;</div></div></div><div  class = 'S1'><span>Next, we construct the command to run the SeqC pipeline, optionally appending flags for debugging and keeping intermediate files based on user settings. We then format the full command with input data directory, sample IDs, and other required parameters.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: pre"><span style="color: #008013;">%% Construct Command for Running SeqC</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >comm_mama_help = </span><span style="color: #a709f5;">'BASH_seqc_mama.sh -h'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >comm_mama_full = </span><span style="color: #a709f5;">'BASH_seqc_mama.sh'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% append optional flags</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #0e00ff;">if </span><span >paths.seqC.debugSeqC</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >    comm_mama_full = [comm_mama_full </span><span style="color: #a709f5;">' -b'</span><span >];</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #0e00ff;">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #0e00ff;">if </span><span >paths.seqC.procKeepSeqC</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >    comm_mama_full = [comm_mama_full </span><span style="color: #a709f5;">' -k'</span><span >];</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #0e00ff;">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >comm_mama_full = sprintf(</span><span style="color: #a709f5;">'%s -i "step0_data_in/" -n "%s" -r "SR" -s 0'</span><span >, </span><span style="color: #0e00ff;">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >    comm_mama_full, paths.seqC.fileIDSeqC);</span></span></div></div></div><div  class = 'S1'><span>Next, we construct the command to run the SeqC process in a Docker container, adjusting the volume and directory mappings based on the operating system (Unix, Mac, or Windows). This binds input and output directories and specifies where the processing data will be stored within the container.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: pre"><span style="color: #008013;">% Append volume mapping commands to core</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% OS sensitive</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #0e00ff;">if </span><span >strcmp(vOS, </span><span style="color: #a709f5;">'unix'</span><span >)</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >    comm_run_main = sprintf([</span><span style="color: #a709f5;">'%s "type=bind,src=$(pwd)/seqc_input,target=/home/...'</span><span style="color: #0e00ff;">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >        </span><span style="color: #a709f5;">'seqc_user/seqc_project/step0_data_in" --mount "type=bind,src=$(pwd)/...' </span><span style="color: #0e00ff;">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >        </span><span style="color: #a709f5;">'seqc_output,...' 'target=/home/seqc_user/seqc_project/final_reports" ...' </span><span style="color: #0e00ff;">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >        </span><span style="color: #a709f5;">'--mount "type=volume,...' 'dst=/DB,volume-driver=local,...' </span><span style="color: #0e00ff;">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >        </span><span style="color: #a709f5;">'volume-opt=type=none,volume-opt=o=bind,...' 'volume-opt=device=$(pwd)/...' </span><span style="color: #0e00ff;">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >        </span><span style="color: #a709f5;">'seqc_proc" dock_seqc /bin/bash'</span><span >], comm_run_core);</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">%    comm_exit_mv = 'mv -r $(pwd)/seqc_proc/DEPO_proc/* $(pwd)/seqc_output'</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #0e00ff;">elseif </span><span >strcmp(vOS, </span><span style="color: #a709f5;">'mac'</span><span >)</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >    comm_run_main = sprintf([</span><span style="color: #a709f5;">'%s "type=bind,src=$(pwd)/seqc_input,target=/home/...'</span><span style="color: #0e00ff;">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >        </span><span style="color: #a709f5;">'seqc_user/seqc_project/step0_data_in" --mount "type=bind,src=$(pwd)/...' </span><span style="color: #0e00ff;">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >        </span><span style="color: #a709f5;">'seqc_output,...' 'target=/home/seqc_user/seqc_project/final_reports" ...' </span><span style="color: #0e00ff;">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >        </span><span style="color: #a709f5;">'--mount "type=volume,....' 'dst=/DB,volume-driver=local,...' </span><span style="color: #0e00ff;">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >        </span><span style="color: #a709f5;">'volume-opt=type=none,volume-opt=o=bind,...' 'volume-opt=device=$(pwd)/...' </span><span style="color: #0e00ff;">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >        </span><span style="color: #a709f5;">'seqc_proc" dock_seqc /bin/bash'</span><span >], comm_run_core);</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">%    comm_exit_mv = 'mv -r $(pwd)/seqc_proc/DEPO_proc/* $(pwd)/seqc_output'</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #0e00ff;">elseif </span><span >strcmp(vOS, </span><span style="color: #a709f5;">'win'</span><span >)</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >    comm_run_main = sprintf([</span><span style="color: #a709f5;">'%s "type=bind,src=%s\\seqc_input,target=/home/...'</span><span style="color: #0e00ff;">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >        </span><span style="color: #a709f5;">'seqc_user/seqc_project/step0_data_in" --mount "type=bind,src=%s\\...' </span><span style="color: #0e00ff;">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >        </span><span style="color: #a709f5;">'seqc_output,....' 'target=/home/seqc_user/seqc_project/...' </span><span style="color: #0e00ff;">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >        </span><span style="color: #a709f5;">'final_reports" --mount "type=bind,...' 'src=%s\\seqc_proc,...' </span><span style="color: #0e00ff;">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >        </span><span style="color: #a709f5;">'target=/DB" dock_seqc /bin/bash'</span><span >], comm_run_core, pwd, pwd, pwd);</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">%    comm_exit_mv = 'mv -r .\seqc_proc\DEPO_proc\* .\seqc_output\'</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span style="color: #0e00ff;">end</span></span></div></div></div><h2  class = 'S13'><span>Section 3: Running Docker for SeqC</span></h2><div  class = 'S1'><span>SeqC runs within a </span><span style=' font-weight: bold;'>Docker container</span><span>. The following commands:</span></div><ol  class = 'S2'><li  class = 'S3'><span>Build the </span><span style=' font-weight: bold;'>Docker image</span><span> if it does not exist</span></li><li  class = 'S3'><span>Run the </span><span style=' font-weight: bold;'>SeqC pipeline</span></li></ol><div  class = 'S1'><span style=' font-weight: bold;'>Step 1: Build the Docker Image</span></div><div  class = 'S1'><span>Once all the variables and Docker statements are constructed, Docker is engaged and an image of SeqC is created if a previous image is not found.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: pre"><span style="color: #008013;">% check for preexisting image</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >    imageName = </span><span style="color: #a709f5;">'dock_seqc'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >[status, cmdout] = system([</span><span style="color: #a709f5;">'docker images -q ' </span><span >imageName]);</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'>&nbsp;</div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #0e00ff;">if </span><span >isempty(strtrim(cmdout))</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >    disp([</span><span style="color: #a709f5;">'Image "' </span><span >imageName </span><span style="color: #a709f5;">'" does NOT exist. Now creating...'</span><span >]);</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >    disp(</span><span style="color: #a709f5;">' &gt; Building SeqC docker image, wait time ~10min.'</span><span >);</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >    [status, cmdout] = system(comm_build);</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >    </span><span style="color: #0e00ff;">if </span><span >status ~= 0, error(</span><span style="color: #a709f5;">'Docker build failed:\n%s'</span><span >, cmdout); </span><span style="color: #0e00ff;">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #0e00ff;">else</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >    disp([</span><span style="color: #a709f5;">'Docker Image "' </span><span >imageName </span><span style="color: #a709f5;">'" exists.'</span><span >]);</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span style="color: #0e00ff;">end</span></span></div></div></div><div  class = 'S1'><span style=' font-weight: bold;'>Step 2: Run the Pipeline</span></div><div  class = 'S1'><span>Once the Docker image is built, the following commands that will:</span></div><ul  class = 'S2'><li  class = 'S3'><span>Test to confirm image viability</span></li><li  class = 'S3'><span>Establish required databases</span></li><li  class = 'S3'><span>Proccess sequencing files</span></li></ul><div  class = 'S1'><span>First we run a test of the MAMA script to verify if the Docker image and related commands work correctly. If it fails, a warning is displayed.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: pre"><span style="color: #008013;">% Test MAMA script</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >[status, cmdout] = system(sprintf(</span><span style="color: #a709f5;">'%s %s'</span><span >,comm_run_main, comm_mama_help));</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span style="color: #0e00ff;">if </span><span >status ~= 0, warning(</span><span style="color: #a709f5;">'MAMA test failed:\n%s'</span><span >, cmdout); </span><span style="color: #0e00ff;">end</span></span></div></div></div><div  class = 'S1'><span>Next we must initiate the database setup for the pipeline, with an estimated wait time of 30 minutes.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: pre"><span style="color: #008013;">% Run database creation</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >disp(</span><span style="color: #a709f5;">' &gt; Running database setup, wait time ~30min....'</span><span >);</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >[status, cmdout] = system(sprintf(</span><span style="color: #a709f5;">'%s %s'</span><span >,comm_run_main, comm_run_db));</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span style="color: #0e00ff;">if </span><span >status ~= 0, error(</span><span style="color: #a709f5;">'Database setup failed:\n%s'</span><span >, cmdout); </span><span style="color: #0e00ff;">end</span></span></div></div></div><div  class = 'S1'><span>And finaly, this command starts the full SeqC processing pipeline:</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: pre"><span style="color: #008013;">% Run full SeqC pipeline</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >disp(sprintf(</span><span style="color: #a709f5;">' &gt; SeqC Processing Begins...\n%s'</span><span >,msgDsize));</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >[status, cmdout] = system(sprintf(</span><span style="color: #a709f5;">'%s %s'</span><span >,comm_run_main, comm_mama_full));</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #0e00ff;">if </span><span >status ~= 0, error(</span><span style="color: #a709f5;">'SeqC pipeline execution failed:\n%s'</span><span >, cmdout); </span><span style="color: #0e00ff;">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >disp(</span><span style="color: #a709f5;">' &gt; SeqC Processing Ends.'</span><span >);</span></span></div></div></div><h2  class = 'S13'><span>Section 4: Managing Output Files</span></h2><div  class = 'S1'><span>After processing, results are stored in the </span><span style=' font-weight: bold;'>outputPathSeqC</span><span> folder. If MARS is used, additional outputs are placed in </span><span style=' font-weight: bold;'>outputPathMars, </span><span>this file structure is important for advancement in the Persephone workflow</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: pre"><span style="color: #008013;">% Move final output</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >movefile(fullfile(vdir_out_seqc, </span><span style="color: #a709f5;">'*'</span><span >), paths.seqC.outputPathSeqC);</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% Update mars path</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >vdir_out_mars = fullfile(paths.seqC.outputPathSeqC, </span><span style="color: #a709f5;">'mars_out'</span><span >);</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #0e00ff;">if </span><span >~strcmp(paths.seqC.outputPathSeqC, paths.Mars.outputPathMars)</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >    movefile(fullfile(vdir_out_mars, </span><span style="color: #a709f5;">'*'</span><span >), paths.Mars.outputPathMars);</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >    vdir_out_mars = fullfile(paths.seqC.outputPathSeqC);</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span style="color: #0e00ff;">end</span></span></div></div></div><h1  class = 'S0'><span>Creating Community Microbiome Models</span></h1><div  class = 'S1'><span>Authors: Bram Nap -  07-2024</span></div><div  class = 'S1'><span> In this tutorial we will cover how to create community microbiome from metagenomic reads data. We will explain how to use Microbial Abundances Retrieved from Sequencing data—automated NCBI Taxonomy (MARS) [1] to map metagenomic reads to AGORA2 database [2]. We will then explain how to process the output of MARS through the Microbiome Modelling Toolbox [3] to generate community microbiome models. </span></div><h2  class = 'S13'><span>Section 1: Setup</span></h2><div  class = 'S1'><span>Here we show which steps are required to set up your device to support the various functions used to create and analyse human-microbiome models for all three tutorials. First we need to have a copy of COBRA toolbox. COBRA Toolbox download instructions can be found at </span><a href = "https://github.com/opencobra/cobratoolbox"><span>https://github.com/opencobra/cobratoolbox</span></a></div><div  class = 'S1'><span>To see if the COBRA toolbox is installed correctly we run initCobraToolbox</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: pre"><span style="color: #0e00ff;">global</span><span style="color: #0e00ff;"> </span><span >CBTDIR</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #0e00ff;">if </span><span >isempty(CBTDIR)</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >    initCobraToolbox</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span style="color: #0e00ff;">end</span></span></div></div></div><div  class = 'S10'><span>As the function gives no errors or warnings we know that the COBRA toolbox is correctly set-up and ready to use.</span></div><div  class = 'S1'><span>To decrease simulation times of the models we need an industrial solver. The different solvers supported are</span></div><ul  class = 'S2'><li  class = 'S3'><span>ibm_cplex</span></li><li  class = 'S3'><span>tomlab_cplex</span></li><li  class = 'S3'><span>gurobi</span></li><li  class = 'S3'><span>mosek</span></li></ul><div  class = 'S1'><span>To see MATLAB version and solver version compatibility see </span><a href = "https://opencobra.github.io/cobratoolbox/stable/installation.html#solver-installation."><span>https://opencobra.github.io/cobratoolbox/stable/installation.html#solver-installation.</span></a><span> Various solvers can be obtained through an free academic license. For modelling purposes here, we recommomend using ibm_cplex if possible.</span></div><div  class = 'S1'><span>To set our solver we use changeCobraSolver. If another solver than ibm_cplex is used, replace the 'ibm_cplex' in the the code line below with the solver name you use as found in the bullet list above.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: pre"><span >solver = </span><span style="color: #a709f5;">'ibm_cplex'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% solver = 'gurobi';</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'>&nbsp;</div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >changeCobraSolver(solver);</span></span></div></div></div><div  class = 'S1'><span>MATLAB also needs to have two additional toolboxes installed, the Statistics and Machine Learning Toolbox and the Parallel Computing Toolbox. We can check the installations with the code matlab.addons.isAddonEnabled.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: pre"><span style="color: #008013;">% Check the install of the parallel computing toolbox</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >parallelToolboxInstall = matlab.addons.isAddonEnabled(</span><span style="color: #a709f5;">'Parallel Computing Toolbox'</span><span >)</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'>&nbsp;</div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% Check the install of the statistics and machine learning toolbox</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >statToolboxInstall = matlab.addons.isAddonEnabled(</span><span style="color: #a709f5;">'Statistics and Machine Learning Toolbox'</span><span >)</span></span></div></div></div><div  class = 'S10'><span>If the parallelEnabled and statisticsEnables are both 1 (true) both toolboxes are correctly installed in MATLAB and ready to be used. If either one is 0 we recommended adding the toolbox from Home tab -&gt; Add-Ons -&gt; Get Add-Ons. The parallel computing toolbox is a must as the code creating the mWMBs does not work without out. The statistics toolbox is not required to create the mWBMs but without it we cannot run the statistical analyses performed in tutorial 4.</span></div><div  class = 'S1'><span>Before we can start with creating mWBMs, we need to set up the paths to the general results directory, the metadata file, and the taxonomy assigned reads table. We will use the general results directory to create a folder structure where we can easily store our results in pre-defined locations. This will help as functions generally need the outputs of functions run before them. The metadata and reads tables undergo sanity checks. The variables we will set up are then:</span></div><ul  class = 'S2'><li  class = 'S3'><span style=' font-weight: bold;'>resultDir</span><span> - The path where all the results of this tutorial will be stored. This ensure all your results will be in one place and are thus easily accesible. Make sure the the folder is accesible to you.</span></li><li  class = 'S3'><span style=' font-weight: bold;'>metadataPath</span><span> - The location of the metadata file. This is used in both the generation of human-microbiome models as well as the analysis of results towards the end of the tutorial.</span></li><li  class = 'S3'><span style=' font-weight: bold;'>readsTablePath</span><span> - The path to the the taxonomic reads file containing the amount of reads per taxonomic assignment. If the taxonomic assignments are in the reads file the first column needs to be called Taxon. If not the first column of the readsFile and the first column of taxaTable needs to have to same name. See the example files.</span></li></ul><div  class = 'S1'><span>We set up the variables in the </span><span style=' font-weight: bold;'>paths</span><span> variable, which is a structure. Each field in the structure is dedicated to store the relevant variables used in the different steps of Persephone. Normally we would define each variable at the start in the configuration file. However here we will only specifiy the output directories used in Persephone. The other variables we will define as we go along for clarity.</span></div><div  class = 'S1'><span>Please copy and paste the paths to the required files in the code below. Remember to add file extensions where relevant.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: pre"><span style="color: #008013;">%Define the location of the required files, make sure you dont forget the file extensions where relevant!</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% e.g., 'C:\Users\Owner\Persephone\Tutorials\Results'</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >resultPath = </span><span style="color: #a709f5;">''</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'>&nbsp;</div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% e.g., 'C:\Users\Owner\cobratoolbox\tutorials\analysis\persephone\Demo\demo_metadata.csv'</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >paths.General.metadataPath = </span><span style="color: #a709f5;">''</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'>&nbsp;</div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% e.g., 'C:\Users\Owner\cobratoolbox\tutorials\analysis\persephone\Demo\KB_mpa_out_RC.txt'</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >paths.Mars.readsTablePath = </span><span style="color: #a709f5;">''</span><span >;</span></span></div></div></div><div  class = 'S1'><span>Now we will define some paths as to where we want to store all of our results. We do not have to make these directories ourselves, the code will do it for us.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: pre"><span >paths.seqC.outputPathSeqC = [resultPath, filesep, </span><span style="color: #a709f5;">'resultSeqC'</span><span >];</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >paths.Mars.outputPathMars = [resultPath, filesep, </span><span style="color: #a709f5;">'resultMars'</span><span >];</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >paths.mgPipe.outputPathMgPipe = [resultPath, filesep, </span><span style="color: #a709f5;">'resultMgPipe'</span><span >];</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >paths.persWBM.outputPathPersonalisation = [resultPath, filesep, </span><span style="color: #a709f5;">'personalisedWBMs'</span><span >];</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >paths.mWBM.outputPathMWBM = [resultPath, filesep, </span><span style="color: #a709f5;">'mWBMmodels'</span><span >];</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >paths.fba.outputPathFluxResult = [resultPath, filesep, </span><span style="color: #a709f5;">'resultFlux'</span><span >];</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >paths.fba.outputPathFluxAnalysis = [paths.fba.outputPathFluxAnalysis, filesep, </span><span style="color: #a709f5;">'fluxAnalysis'</span><span >];</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >paths.stats.outputPathStatistics = [resultPath, filesep, </span><span style="color: #a709f5;">'resultStatistics'</span><span >];</span></span></div></div></div><div  class = 'S1'><span>The function initPersephone.m performs the initCobraToolbox.m function, sets the COBRA solver and checks if the required toolboxes are installed (line 1-7). Additionaly it generates the folder structure for the results. IMPORTANT, the output structure used in all 3 tutorials is generated with initPersephone.m. The metadata and the reads table are put through sanity checks. initPersphpne.m ensures that in the metdata the columns with the sample IDs and sample sex have the correct headers and readable data types. It always assumed the first column contains sample IDs. It will create a new updated file and will also update the metadata path accordingly. If you use the test data files you can see that the column sample ID has been changed to ID and the column gender has been altered to Sex. Additionally the data in the column Sex has been changed from M/F to male/female. Important if your own metadata does not have alternative headers accounted for in the function it will raise an error. That is easily fixed by changing your column headers to ID or Sex depending on which data type is causing the issue. Finally we test if the sample IDs in the microbiome data match that of the metadata.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: pre"><span style="color: #008013;">% Create the file structure for the results of all the parts of the</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% tutorial (not just this tutorial)</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >[initialised, statToolboxInstalled, updatedMetadataPath] = initPersephone(resultPath, paths)</span></span></div></div></div><div  class = 'S10'><span>The following ouputs are returned from initPersephone</span></div><ul  class = 'S2'><li  class = 'S3'><span style=' font-weight: bold;'>initialised -</span><span> Boolean, indicates if Persephone was succesfully initialised.</span></li><li  class = 'S3'><span style=' font-weight: bold;'>statToolboxInstalled -</span><span> Boolean, indicates if the statistics toolbox is installed. Parts of Persephone are skipped if false</span></li><li  class = 'S3'><span style=' font-weight: bold;'>updatedMetdataPath</span><span>  - </span><span style=' font-weight: bold;'> </span><span>The path to the updated metadata file.</span></li></ul><div  class = 'S1'><span>If you look at the directory given in the resultPath variable, you will see the following folder structure.</span></div><div  class = 'S1'><span>-resultDir</span></div><div  class = 'S1'><span>    -HMmodels</span></div><div  class = 'S1'><span>    -personalisedWBMs </span></div><div  class = 'S1'><span>    -resultFlux</span></div><div  class = 'S1'><span>        -fluxAnalysis</span></div><div  class = 'S1'><span>    -resultMars</span></div><div  class = 'S1'><span>    -resultMgPipe</span></div><div  class = 'S1'><span>    -resultSeqC</span></div><div  class = 'S1'><span>    -resultStatistics</span></div><div  class = 'S1'><span>The content of each of the folders will be discussed in the appropriate sections in the three tutorials.</span></div><div  class = 'S1'><span>We have to also update the metadata path to reflect the updated metadata file.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S6'><span style="white-space: pre"><span >paths.General.metadataPath = updatedMetadataPath;</span></span></div></div></div><div  class = 'S10'><span>Now that we have checked that all our software is installed and available, our results directory has been set up and our metadata and read files has been processed and ready for use we can start with processing the metagenomic reads data through MARS.</span></div><h2  class = 'S13'><span>Section 2: Running MARS</span></h2><div  class = 'S1'><span>In this section we will run MARS to convert the taxonomic reads table to AGORA2 mapped and normalised relative abundance table. MARS works as following:</span></div><ul  class = 'S2'><li  class = 'S3'><span>First, if the taxonomic assignments and reads tables are separated - it will merge them into a single dataframe</span></li><li  class = 'S3'><span>It removes clade extensions from all taxonomic levels names (e.g. Firmicutes__A &amp; Firmicutes__B will be merged to Firmicutes) to allow for optimal AGORA2 mapping</span></li><li  class = 'S3'><span>It translates certain species based on a pre-defined list to make sure the species names match the ones in the AGORA2 databases</span></li><li  class = 'S3'><span>It removes all reads associated with a taxonomics identification that does not have information up to the specified taxonomic level that is looked at (e.g., looking at species, only reads with information up to the species level will be retained)</span></li><li  class = 'S3'><span>It maps each taxonomic level (kingdom, phylum,species etc.) to the AGORA2 databases. If the taxonomic identification matches it means there is a model present</span></li><li  class = 'S3'><span>The mapped reads are normalised to obtain relative abundances</span></li><li  class = 'S3'><span>All relative abundances under a certain cutoff are removed and the data is re-normalised. The default cutoff is 1e-6.</span></li></ul><div  class = 'S1'><span>Important before running this section is that MARS can also be ran online in your browser on </span><a href = "https://mars-pipeline.streamlit.app."><span>https://mars-pipeline.streamlit.app.</span></a><span> The website explains what you have to input and the variables you can use are the same as explained here. Important is that you download the present_species.csv file (file exentsion can differ) and save it in either the 'present' directory in resultMARS named as 'present_species.csv' or give the correct path to MgPipe (discussed in the next section) This ensures that we the MARS output file can still be found by the rest of the functions.</span></div><div  class = 'S1'><span>If we want to run MARS offline we need to make sure all of our dependencies are installed. Follow the code below to install your dependencies and obtain your python path.</span></div><div  class = 'S1'><span>Instructions on how prepare the python environment with 2 options: via miniconda, via user created environment. If you do not have a lot of (python) coding experience the mini-conda way is most user friendly Anaconda: Install Anaconda (https://docs.anaconda.com/miniconda/miniconda-install/)</span></div><div  class = 'S1'><span>open Anaconda Prompt (miniconda3)</span></div><div  class = 'S1'><span>    &gt;&gt; pip install pandas</span></div><div  class = 'S1'><span>    &gt;&gt; pip install numpy</span></div><div  class = 'S1'><span>    &gt;&gt; pip install pyarrow==18.1.0 (latest version of pyarrow gives compatibility issues)</span></div><div  class = 'S1'><span>    &gt;&gt; pip install fastparquet</span></div><div  class = 'S1'><span>    &gt;&gt; pip install openpyxl</span></div><div  class = 'S1'><span>Find the path to the python.exe file in mini-conda(Windows):</span></div><div  class = 'S1'><span>	-Anaconda Prompt (miniconda3)</span></div><div  class = 'S1'><span>	-enter "where python" in the prompt</span></div><div  class = 'S1'><span>	-If no new enivironment is made (the anaconda navigotor only has "base" in environments)</span></div><div  class = 'S1'><span>	-enter "where python" in the prompt</span></div><div  class = 'S1'><span>	For macOS and Linux run "which python"</span></div><div  class = 'S1'><span>The python.file exention file location to copy should be in \anaconda3\python.file extension. Paste this path in the pythonPath variable in line 19</span></div><div  class = 'S1'><span>For a user created environment: Make sure you have a working python.exe file on  your computer. Install from </span><a href = "https://www.python.org/downloads"><span>https://www.python.org/downloads/.</span></a><span> Follow the steps in </span><a href = "https://nl.mathworks.com/matlabcentral/answers/1750425-python-virtual-environments-with-matlab."><span>https://nl.mathworks.com/matlabcentral/answers/1750425-python-virtual-environments-with-matlab.</span></a><span> Make sure you install</span></div><div  class = 'S1'><span>    &gt;&gt; pip install pandas</span></div><div  class = 'S1'><span>    &gt;&gt; pip install numpy</span></div><div  class = 'S1'><span>    &gt;&gt; pip install pyarrow</span></div><div  class = 'S1'><span>    &gt;&gt; pip install fastparquet</span></div><div  class = 'S1'><span>    &gt;&gt; pip install openpyxl</span></div><div  class = 'S1'><span>Find the path of the executable of the virtual environment as described</span></div><div  class = 'S1'><span>		&gt;&gt; import sys</span></div><div  class = 'S1'><span>		&gt;&gt; sys.executable</span></div><div  class = 'S1'><span>The python.file exention file location to copy should be in \anaconda3\python.file extension. Paste this path in the pythonPath variable in line 19</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: pre"><span style="color: #008013;">% e.g., 'C:\Users\OwnerPG\AppData\Local\Programs\Python\Python38\python.exe'</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >pythonPath = </span><span style="color: #a709f5;">''</span><span >;</span></span></div></div></div><div  class = 'S10'><span>Next we need to clone the MARS repository. Instructions can be found at </span><a href = "https://github.com/thielelab/mars-pipeline"><span>https://github.com/thielelab/mars-pipeline</span></a><span>. Set the path where the MARS repository was saved as marsRepoPath.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: pre"><span style="color: #008013;">% e.g., 'C:\Users\Owner\mars-pipeline'</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >marsRepoPath = </span><span style="color: #a709f5;">''</span><span >;</span></span></div></div></div><div  class = 'S1'><span>First we will test if Python is already coupled with Matlab. Then we enter the cloned MARS repository and add the MARS as a readable module. In order to call the apporiate function, we have to enter the MARS directory.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: pre"><span style="color: #008013;">% Check if Python is already coupled to MATLAB, otherwise couple it</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >pyStatus = pyenv(</span><span style="color: #a709f5;">'Version'</span><span >,pythonPath);</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'>&nbsp;</div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% Enter the MARS folder</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >cd(marsRepoPath);</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'>&nbsp;</div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% Import the entire MARS repository so that the all scripts are on a path</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">%that MATLAB recognises</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >MARS = py.importlib.import_module(</span><span style="color: #a709f5;">'MARS'</span><span >);</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'>&nbsp;</div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% Enter folder that contains the "main.py" script</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >cd(fullfile(marsRepoPath, </span><span style="color: #a709f5;">'MARS'</span><span >));</span></span></div></div></div><div  class = 'S1'><span>Now we can prepare for the actual MARS inputs</span></div><div  class = 'S1'><span>Required inputs</span></div><ul  class = 'S2'><li  class = 'S3'><span style=' font-weight: bold;'>readsTable</span><span> - The path to the the taxonomic reads file containing the amount of reads per taxonomic assignment. If the taxonomic assignments are in the reads file the first column needs to be called Taxon. If not the first column of the readsFile and the first column of taxaTable needs to have to same name. See the example files. (we set this already at the start)</span></li><li  class = 'S3'><span style=' font-weight: bold;'>taxaTable</span><span> - The path to the taxonomic assignments for the taxomomic unit name used in your taxonomic assignment software (e.g., OTU, ASV, OGU). This has to be set to string(missing) if your readsTable already has taxonomic assignment included. Otherwise it need to consists of a column with header similar to the first header in readsTable and the column header "Taxon".</span></li><li  class = 'S3'><span style=' font-weight: bold;'>outputPathMars</span><span> - The path where the MARS results should be stored. We created this directory in the section 1 and is stored in paths.mars.</span></li></ul><div  class = 'S1'><span>Optional inputs</span></div><ul  class = 'S2'><li  class = 'S3'><span style=' font-weight: bold;'>sample_read_counts_cutoff</span><span> - Numeric value for total read counts per sample under which samples are excluded from analysis. Only applies when readsTable contains absolute read counts (not relative abundances). Defaults to 1, with minimum of 1.</span></li><li  class = 'S3'><span style=' font-weight: bold;'>cutoffMars</span><span> - The cutoff underwich all relative abundances will be considered 0. If smaller relative abundances are kept, numerical difficulties/infeasibilites could occur later on when solving the microbiome models. Also, relative abundances below this value will most likely not have a noticable impact on the flux results as their contribution to fluxes is minimal due to their low relative abundance. Default is 1e-6.</span></li><li  class = 'S3'><span style=' font-weight: bold;'>outputExtensionMars</span><span> - The file type of your output. Default is csv</span></li><li  class = 'S3'><span style=' font-weight: bold;'>flagLoneSpecies</span><span> - A boolean, flagLoneSpecies, which is true if the species name does NOT have the genus name already there. False if otherwise. Defaults to false</span></li><li  class = 'S3'><span style=' font-weight: bold;'>taxaSplit</span><span> - A string,  taxaSplit, which indicates the delimiter used to separate taxonomic levels in the taxonomic assignment.Defaults to '; '</span></li><li  class = 'S3'><span style=' font-weight: bold;'>removeCladeExtensionsFromTaxa</span><span> - A boolean, removeCladeExtensionsFromTaxa, which removes all reads associated with a taxonomics identification that does not have information up to the specified taxonomic level that is looked at. Defaults to true.</span></li><li  class = 'S3'><span style=' font-weight: bold;'>whichModelDatabase</span><span>: A string defining if AGORA2, APOLLO, a combination of both or a user-defined database should be used as model database to check presence in.  Allowed Input (case-insensitive): "AGORA2", "APOLLO", "full_db", "user_db". Defaults to "full_db".</span></li><li  class = 'S3'><span style=' font-weight: bold;'>userDatabase_path</span><span>: A string containing the full path to the user-defined database, which should be in .csv, .txt, .parquet or .xlsx format and have column names = taxonomic levels. Only required if 'whichModelDatabase' is set to "user_db". Note, that the user database needs to have the same structure as the integrated AGORA2 &amp; APOLLO database to function properly!</span></li></ul><div  class = 'S1'><span>We know now which inputs we need to define. Let us start with the required ones.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: pre"><span style="color: #008013;">% Set the path the taxaTable. If you do not have a taxaTable file, put a %</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% infront of line 41 and remove % from line 42.</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% taxaTable = '';</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >taxaTable = string(missing)</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% The output path stored in the paths variable</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >outputPathMars = paths.Mars.outputPathMars; </span><span style="color: #008013;">% This is the default path created by initPersephone</span></span></div></div></div><div  class = 'S1'><span>Now let us set the optional inputs. You can change these according to your own dataset, for the test data set we recommend using the settings set here.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: pre"><span style="color: #008013;">% Numeric value for total read counts per sample under which samples are</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% excluded from analysis. Only applies when readsTable contains absolute</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% read counts (not relative abundances). Defaults to 1, with minimum of 1.</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >sample_read_counts_cutoff = 1;</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'>&nbsp;</div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% The cutoff value for relative abundances</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >cutoffMars = 1e-6;</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'>&nbsp;</div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% The file extension for the output files</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >outputExtensionMars = </span><span style="color: #a709f5;">'csv'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'>&nbsp;</div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% The flag if genus name is in the species name</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >flagLoneSpecies = true;</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'>&nbsp;</div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% The delimeter used to separate taxonomic levels</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >taxaSplit = </span><span style="color: #a709f5;">';'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'>&nbsp;</div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% A boolean specifying if one wants to remove clade name extensions from</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% all taxonomic levels of microbiome taxa. If set to false, MARS might find</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% significantly less models in AGORA2, as clade extensions are not included</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% there.</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >removeCladeExtensionsFromTaxa = true;</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'>&nbsp;</div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% A string defining if AGORA2, APOLLO, a combination of both or a user-defined</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% database should be used as model database to check presence in. </span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% Allowed Input (case-insensitive): "AGORA2", "APOLLO", "full_db", "user_db".</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% Default: "full_db".</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >whichModelDatabase=</span><span style="color: #a709f5;">"full_db"</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'>&nbsp;</div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% A string containing the full path to the user-defined database,</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% which should be in .csv, .txt, .parquet or .xlsx format and</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% have column names = taxonomic levels. Only required if whichModelDatabase</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% is set to "user_db".</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >userDatabase_path=</span><span style="color: #a709f5;">""</span><span >;</span></span></div></div></div><div  class = 'S1'><span>We have now defined all our variables for MARS. In order to call the optional arguments, we need to convert them into paired arguments readable by Python through the pyargs function. We will store these converted inputs int he marsOptArg variable.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: pre"><span style="color: #008013;">% Set all optional inputs in Python readable format</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >marsOptArg = pyargs(</span><span style="color: #a709f5;">'cutoff'</span><span >, cutoffMars, </span><span style="color: #a709f5;">'output_format'</span><span >, string(outputExtensionMars),</span><span style="color: #0e00ff;">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >    </span><span style="color: #a709f5;">'flagLoneSpecies'</span><span >,flagLoneSpecies, </span><span style="color: #a709f5;">'taxaSplit'</span><span >, string(taxaSplit), </span><span style="color: #0e00ff;">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >    </span><span style="color: #a709f5;">'removeCladeExtensionsFromTaxa'</span><span >, removeCladeExtensionsFromTaxa, </span><span style="color: #0e00ff;">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >    </span><span style="color: #a709f5;">'whichModelDatabase'</span><span >, whichModelDatabase, </span><span style="color: #0e00ff;">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >    </span><span style="color: #a709f5;">'sample_read_counts_cutoff'</span><span >, sample_read_counts_cutoff);</span></span></div></div></div><div  class = 'S1'><span>With the optional arguments set we can run MARS</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: pre"><span style="color: #008013;">% Run MARS</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >py.main.process_microbial_abundances(paths.Mars.readsTablePath, taxaTable, outputPathMars, marsOptArg);</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% return back to the result directory</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >cd(resultPath);</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'>&nbsp;</div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% Set the relative abundance file path to be used by other functions</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >relAbunFilePath = [paths.Mars.outputPathMars, filesep, </span><span style="color: #a709f5;">'renormalized_mapped_forModelling'</span><span >, filesep,</span><span style="color: #0e00ff;">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >   </span><span style="color: #a709f5;">'renormalized_mapped_forModelling_species.csv'</span><span >];</span></span></div></div></div><div  class = 'S10'><span>Follow the instructions if you get errors when running line 61:</span></div><div  class = 'S1'><span style=' font-weight: bold;'>ERROR: Unable to resolve the name py.main.process microbial abundances.</span></div><div  class = 'S1'><span style=' font-style: italic;'>    Check if all you python dependencies are correctly installed. If you had to install them/update them restart MATLAB and rerun the section 1 and section 2 of this tutorial. Check if you have installed pyarrow 18.1.0. To degrade use &gt;&gt; pip uninstall pyarrow. &gt;&gt; pip install pyarrow==18.1.0. It could also be that the MATLAB version is incompatible with the Python version. Either upgrade your MATLAB version or downgrade your Python version.</span></div><div  class = 'S1'><span style=' font-weight: bold;'>ERROR: </span><span>Python Error:</span><span style=' font-weight: bold;'> ValueError: Unsupported file type: not found</span></div><div  class = 'S1'><span style=' font-weight: bold;'>    </span><span style=' font-style: italic;'>Double check the file extensions of your readsTable and taxaTable inputs. If taxaTable does not exist make sure to set it to string(missing)</span></div><div  class = 'S1'><span style=' font-weight: bold;'>ERROR </span><span>Python Error: ValueError: Length mismatch: Expected axis has 8 elements, new values have 7 elements or a variation on this</span></div><div  class = 'S1'><span style=' font-style: italic;'>    Make sure that the taxaSplit is the one that can properly split the taxonomic assignments you have put in. MARS expects that every taxonomical level is defined. If you have only species information in the file, add blank taxonomical information infront in the style of the example (e.g., ; ; ; ; ; ;species name)</span></div><div  class = 'S1'><span style=' font-weight: bold;'>ERROR:</span><span> Python Error: OSError: Repetition level histogram size mismatch. </span></div><div  class = 'S1'><span>There is an incompatibility reading parquet files with pyarrow 19.0. This is fixed by degrading to pyarrow 18.1.0. To see the current pyarrow version run</span></div><div  class = 'S1'><span style=' font-style: italic;'>&gt;&gt; pip show pyarrow</span></div><div  class = 'S1'><span>in the terminal or prompt you used to install Python packages with. If the version is 19.0, degrade by running</span></div><div  class = 'S1'><span style=' font-style: italic;'>&gt;&gt; pip uninstall pyarrow</span></div><div  class = 'S1'><span style=' font-style: italic;'>&gt;&gt; pip install pyarrow == 18.1.0</span></div><div  class = 'S1'><span style=' font-style: italic;'></span></div><div  class = 'S1'><span>If MARS finished succesfully then you can find the results in the resultMars directory. </span></div><ul  class = 'S2'><li  class = 'S3'><span>metrics - For each taxonomic level, various metric such as alpha and beta diversity are calculated.</span></li><li  class = 'S3'><span>normalized_mapped - For each taxonomic level, only the mapped taxa, abundances are not renormalised and still have the values from the pre-mapping normalisation. Columns do not add up to 1</span></li><li  class = 'S3'><span>normalized_preMapped - For each taxonomic level, all the taxa are normalised to the total reads. Columns add up to 1.</span></li><li  class = 'S3'><span>normalized_unMapped - For each taxonomic level, only the unmapped taxa, abundances are not renormalised and still have the values from the pre-mapping normalisation. Columns do not add up to 1.</span></li><li  class = 'S3'><span>renornmalized_mapped_forModelling - For  each taxonomic level, the mapped taxa are renormalised so that each column adds up to 1.</span></li></ul><div  class = 'S1'><span>The file renormalized_mapped_forModelling_species.csv (file extension can change based on user input) in the ”renormalized_mapped_forModelling” directory is used as input to create community microbiome models. We can expect for about 70-80% of the total reads to be able to be mapped to the AGORA2 database if you use whole-genome shotgun data. Using 16s sequencing, this can drop to 30-40%, mostly because many of the reads do not have information on the species level and are automatically discarded.</span></div><div  class = 'S1'><span>NOTE: If in the normalised_unMappedfile_species file has many species absent it might be worthwile to see if homosynonyms can be found. You can either do this manually or run your list of absent species throught the MARS-ANT pipeline that checks for homosynonyms and presence in the AGORA2 resources. </span><a href = "https://mars-pipeline.streamlit.app."><span>https://mars-pipeline.streamlit.app.</span></a><span> Again If the online app is used, please store the files in the appropriate location in your resultDir we defined at the beginning of this part of the tutorial. This allows for seemless integration with the other function and eliminates the need to generate new path variables. If you did fine homosynomys manually, you will need to adjust the names of your taxonomic assignments in either the readsTable or the taxaTable and rerun MARS.</span></div><h2  class = 'S13'><span>Section 3: Creating microbiome community models</span></h2><div  class = 'S1'><span>In this section we will create community microbiome models using the Microbiome Modelling Toolbox 2.0 [3]. We will use here pan-species models from the AGORA2 resource [2]. Pan-species means that all the strains of a species were combined into one general model that has all the metabolic capabilities of the individual strains. This is done as metagenomic sequencing usually can only distinguish up untill the species level. We will explain how to pipeline generates community metabolic models and how to call on the pipeline (MgPipe). The microbiome modelling toolbox does the following:</span></div><ul  class = 'S2'><li  class = 'S3'><span>It transforms all microbial reconstructions present in the relative abundance file. The external compartment is changed from [e] to [u] and reactions names are adapted. This is done to prepare the models to exchange with the internal environment of the microbiome [u].</span></li><li  class = 'S3'><span>All metabolites that each microbial reconstruction can exchange with its environment are stored</span></li><li  class = 'S3'><span>All reactions present in each reconstruction are stored as well as their associated subsystems. These will be used to calculate reactionsPresence, reactionAbundance and subsystemAbundance and can be used to describe the metabolic capabilities of indiviual microbioem models.</span></li><li  class = 'S3'><span>All microbe reconstructions that are present in a sample are added together in one big model. The reconstructions can exchange metabolites in the [u] compartment created in the beginning of the function. The microbiome model can exchange metabolites with the outside environemt by transporting metabolites from [u] to [e] and vice versa.</span></li><li  class = 'S3'><span>A microbiome biomass reaction is formulated which looks like: a microbe1 + b micobre2 + c microbe3 + ... The letters a,b and c are the relative abundance for the respective microbes as found in the relative abundance file we calculated via MARS.</span></li><li  class = 'S3'><span>A standard diet is added to the microbiome models and checked if the total growth rate of 1 microbiome exchange per day (read as 1 fecal exchange per day) can be reached.</span></li><li  class = 'S3'><span>Statistics on total amount of reactions, metabolites and microbes for each microbiome are collected and plotted in violin plots.</span></li></ul><div  class = 'S1'><span>To run MgPipe we need to understand the inputs required. NOTE: we here only use a small subset of inputs for MgPipe, if you want a more detailed explanation of the various inputs for the pipeline please look at </span><a href = "https://github.com/opencobra/COBRA.tutorials/tree/0d5becf7171844e53d3d43437035917a2bd9cc61/analysis/microbiomeModelingToolbox."><span>https://github.com/opencobra/COBRA.tutorials/tree/0d5becf7171844e53d3d43437035917a2bd9cc61/analysis/microbiomeModelingToolbox.</span></a><span> Which is also a tutorial in the COBRA toolbox.</span></div><div  class = 'S1'><span>Required inputs</span></div><ul  class = 'S2'><li  class = 'S3'><span>panModelsPath - The path to the directory with the pan-species models. These can be downloaded from xx</span></li><li  class = 'S3'><span>relAbunFilePath - The path to the file with the AGORA2 mapped relative abundances. This is the present_species.csv file created by MARS in section 2. If the file is stored in the "present" directory in the "resultMars" directory, the variable relAbunFile in the paths variable can be used. Otherwise you have to define it yourself</span></li><li  class = 'S3'><span>computeProfiles - A boolean (true or false) that tells the pipeline if we want to calculate the exctretion and uptake profiles of the microbiome models. We will not do this during this tutorial. However if you are more interested in the microbiome output, you can put this variable to true. This is a time-consuming step and is sped-up by using ibm_cplex as solver. For more information on the extra output if this is set to true look at this tutorial in the COBRA toolbox </span><a href = "https://github.com/opencobra/COBRA.tutorials/tree/0d5becf7171844e53d3d43437035917a2bd9cc61/analysis/microbiomeModelingToolbox"><span>https://github.com/opencobra/COBRA.tutorials/tree/0d5becf7171844e53d3d43437035917a2bd9cc61/analysis/microbiomeModelingToolbox</span></a></li></ul><div  class = 'S1'><span>Optional inputs</span></div><ul  class = 'S2'><li  class = 'S3'><span>numWorkersCreation - Number of workers you want to use for parellelisation. More workers means faster computing times. If you are unsure about the value, follow instructions in the code below. That will help make a decision.</span></li><li  class = 'S3'><span>mgPipeRes - The path where the mgpipe results and the microbiome community models will be stored. The directory is stored in the paths variable created in section 1</span></li></ul><div  class = 'S1'><span>We know how MgPipe works and which inputs we need, we will now define the variables.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: pre"><span style="color: #008013;">% The path to the pan-species directory</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% e.g., 'C:/Users/Owner/APOLLOAGORA/panSpecies'</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >panModelsPath = </span><span style="color: #a709f5;">''</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'>&nbsp;</div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% If the relative abundance file is not in the correct MARS folder remove</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% the % in front of line 71 and set the correct path</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% relAbundFilePath = 'C:Users/User/folder/present/present_species.csv'</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'>&nbsp;</div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% Set computeProfiles variable</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >computeProfiles = false;</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'>&nbsp;</div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% Set mgPipeRes variable</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >mgPipeResPath = paths.mgPipe.outputPathMgPipe;</span></span></div></div></div><div  class = 'S1'><span>It can be difficult if you are unfamiliar with the concept to define the number of workers you want to use. Here as some tips you can use. Running "feature('numcores')" will tell you the amount of available cores on your device. An automatic way of chosing your amount of workers is by taking 80% of the available cores on your device which leaves cores available for non-MATLAB related tasks. If working on a cluster or if the device is not required for anythin else, take all available cores. This is recommended when the numCores is greater than 4. If smaller you want want to set the amount of cores to 2 or 3. You cannot go lower than 2 workers. Below is the code that sets the numworkers for you. </span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: pre"><span style="color: #008013;">% Find how many available cores you have</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >numCores = feature(</span><span style="color: #a709f5;">'numcores'</span><span >)</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% Set the number of workers manually. You can change this value.</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span >numWorkersCreation = 10;</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'>&nbsp;</div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% Remove the % at line 106 if you want to use all cores. This will overwrite</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% the workers set in line 104.</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% numWorkersCreation = numCores;</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'>&nbsp;</div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% Remove the % at line 108 if you want to use 80% of the cores. This will overwrite</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% the workers set in line 104 or 108 if active.</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span style="color: #008013;">% numWorkersCreation = floor(feature('numCores')*0.8);</span></span></div></div></div><div  class = 'S1'><span>Now that we have set all our inputs we can run MgPipe with the initMgPipe.m function.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S7'><span style="white-space: pre"><span style="color: #008013;">% Run MgPipe COPY IN THE COMMAND WINDOW AND RUN FROM THERE. </span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% IF RUN IN MLX IT WILL FREEZE YOUR MLX FILE AND YOU WILL NEED TO RESTART MATLAB</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% AND COPY AND PASTE THE ENTIRE FILE TO A NEW.MLX VERSION</span></span></div></div><div class="inlineWrapper"><div  class = 'S8'><span style="white-space: pre"><span style="color: #008013;">% initMgPipe(panModelsPath, relAbunFilePath, computeProfiles, "numWorkers", numWorkersCreation, 'resPath', ...</span></span></div></div><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span style="color: #008013;">% paths.mgPipe.outputPathMgPipe, 'solver', solver);</span></span></div></div></div><div  class = 'S10'><span>Warnings might pop up such as</span></div><ul  class = 'S2'><li  class = 'S3'><span>Individual health status not declared. Analysis will ignore that</span></li><li  class = 'S3'><span>Directory already exists</span></li><li  class = 'S3'><span>The temporary variable 'loadDiet' will be cleared at the beginning of each iteration of the parfor-loop. If 'loadDiet' is used before it is set, a runtime error will occur</span></li><li  class = 'S3'><span>Column headers from the file were modified to make them valid MATLAB identifiers before creating variable names for the table. The original column headers are saved in the VariableDescriptions property. Set 'VariableNamingRule' to 'preserve' to use the original column headers as table variable names.</span></li><li  class = 'S3'><span>Reaction x not in model</span></li><li  class = 'S3'><span>File 'simRes.mat' not found.</span></li><li  class = 'S3'><span>File 'intRes.mat' not found.</span></li></ul><div  class = 'S1'><span>These warnings are expected to occur and can be safely ignored. Press Run Section in the Live Editor to run the MgPipe function.</span></div><div  class = 'S1'><span>If the followig errors occurs, follow the advice below</span></div><div  class = 'S1'><span style=' font-weight: bold;'>ERROR: Modelname cant be found (you dont have the model in the directory or there is some sort of misspelling in the filenames)</span></div><div  class = 'S1'><span>If no errors popped up the microbiome models should now have been created. You can find them in your output folder under mgpipeResults. There you also find the csv files:</span></div><ul  class = 'S2'><li  class = 'S3'><span>GrowthRates - It gives the maximum growth rate of each microbiome under a rich diet and a pre-defined diet. </span></li><li  class = 'S3'><span>ModelStatistics - for each microbiome model it gives the total amount of reactions, metabolites and microbes. MicrobiomeModel_sizes.png is a visual representation of this information.</span></li><li  class = 'S3'><span>ModelStatsSummary - gives you the mean, median, min and max of the amount reactions metabolites and microbes considering all microbiome models. </span></li><li  class = 'S3'><span>ReactionAbundance - gives the relative abundance of a reaction for each metabolic reaction in each microbiome model. Reaction abundances are based on the relative abundance of the microbe and wether or not the microbe has that specific reaction.</span></li><li  class = 'S3'><span>ReactionPresence - says if a reaction is present in at least 1 microbe in a microbiome model.</span></li><li  class = 'S3'><span>SubsystemAbundance - the same as reactionAbundance, however now all reactions are assigned a subsystem and abundances for the same subsystems are summed.</span></li></ul><div  class = 'S1'><span>You will also find .mat files of the microbiome models unconstrained (mirobiota_model_samp_sample ID) or diet constrained (folder Diet, microbiota_model_diet_sample ID). The individual microbe modelsused to create the microbiome models are stored in the modelStorage folder. infeasModels.mat has information on models that could not produce biomass. mapInfo.mat is used to hotstart the pipeline in case there were errors or MATLAB was unexpectly stopped or crashed during execution of the pipeline.</span></div><h1  class = 'S0'><span>References (APA style)</span></h1><div  class = 'S1'><span>[1] Hulshof, T., Nap, B., Martinelli, F., &amp; Thiele, I. (2024). Microbial abundances retrieved from sequencing data—automated NCBI taxonomy  (MARS): a pipeline to create relative microbial abundance data for the  microbiome modelling toolbox and utilising homosynonyms for efficient  mapping to resources. </span><span style=' font-style: italic;'>Bioinformatics Advances</span><span>, vbae068.</span></div><div  class = 'S1'><span>[2] Heinken, A., Acharya, G., Ravcheev, D. A., Hertel, J., Nyga, M., Okpala, O. E., ... &amp; Thiele, I. (2020). AGORA2: Large scale reconstruction  of the microbiome highlights wide-spread drug-metabolising capacities. </span><span style=' font-style: italic;'>BioRxiv</span><span>, 2020-11.</span></div><div  class = 'S1'><span>[3] Heinken, A., &amp; Thiele, I. (2022). Microbiome Modelling Toolbox 2.0:  efficient, tractable modelling of microbiome communities. </span><span style=' font-style: italic;'>Bioinformatics</span><span>, </span><span style=' font-style: italic;'>38</span><span>(8), 2367-2368.</span></div>
+<br>
+<!-- 
+##### SOURCE BEGIN #####
+%% Tutorial One: Creating Community Microbiome Models
+% This tutorial will take you step by step through creating community microbiome 
+% models. There are three main steps to the process: 
+%% 
+% # Bioinformatic processing of sequence data (SeqC): takes you frum raw sequence 
+% data to taxonomy assigned read counts
+% # Micorbial Abundances Retrieved from Sequening data (MARS): takes you from 
+% taxonomy assigned read counts to reative abundances mapped to you chosed microbial 
+% reconstruction resource e.g., AGORA2
+% # Microbiome model creation with mgPipe: takes your mapped relative abundance 
+% data and creates personalised community micrcobiome models personalised for 
+% each sample in your metagenomic data file
+%% 
+% Depending on your data you can start with step 1 (raw reads) or jump to step 
+% 2 (assigned taxonomy read counts). 
+%% Bioinformatic processing of sequencing data
+% Authors: Wiley Barton
+% 
+% Created: 2025.02.04
+%% Requirements:
+% To successfully follow this tutorial, you need to have the following
+% 
+% installed on your system:
+%% 
+% * *Docker Desktop or Engine* (tested@ 4.37.1 (178610))
+% * *MATLAB* (tested@R2024b)
+% * *SeqC Repository* (Bioinformatics pipeline for taxonomic classification)
+%% 
+% **IMPORTANT: This step is time-consuming and only advised for those with a 
+% desktop set up with a minimum of X RAM, X CPU. If you are working on a computer 
+% that does not meet these requirements you can skip to the next section: 'Creating 
+% Community Microbiome Models' 
+%% Introduction
+% This tutorial is part of a series to support the use of the _Persephone_ pipeline. 
+% This tutorial goes through the steps of the overall pipeline that interact directly 
+% with the _Sequence Conversion (SeqC) pipeline_. SeqC is a Docker-based bioinformatic 
+% environment with the purpose of providing a standardised, efficient, and portable 
+% means to generate the microbial taxonomic inputs for the rest of Persephone 
+% from raw sequencing data. SeqC performs quality control of fastq files with 
+% _Kneaddata_ [1], taxonomic assignment to reads with a combination of _Kraken2_ 
+% [2] and _bracken_ [3]REPLACE_WITH_DASH_DASHusing custom assignment databases derived from AGORA2 
+% [4] and or APOLLO [5], and additional configuration with MARS [6].
+%% Section 1: Environment Preparation
+% The SeqC pipeline is executed using the |runSeqC| function, which is called 
+% by the main |runPersephone| function. This function relies on configurations 
+% set in the *configPersephone.m* file.
+% 
+% *Downloading SeqC*
+% 
+% SeqC is included in the *COBRA Toolbox*. If you have not installed it yet, 
+% refer to previous tutorials or follow the instructions available here: <https://github.com/opencobra/cobratoolbox 
+% https://github.com/opencobra/cobratoolbox>
+% 
+% Alternatively, you can manually clone the SeqC repository by running the following 
+% command from you systems command line:
+
+% git clone git@gitlab.com:thielelab/wbm_modelingcode.git REPLACE_WITH_DASH_DASHbranch master
+%% 
+% *Configuring SeqC Paths*
+% 
+% Once SeqC is installed, you need to specify key file paths in *MATLAB*:
+
+% Character array variable specifying the folder where seqC repository is stored
+% e.g., 'C:\Users\cobratoolbox\src\analysis\persephone\SeqC_pipeline'
+paths.seqC.repoPathSeqC = '';
+% Character array variable specifying the folder
+% where the final output of SeqC is stored.
+resultPath = '';
+
+
+paths.seqC.outputPathSeqC = [resultPath filesep, 'ResultSeqC'];
+% *REQUIRED*. Character array variable of the file name
+% containing sample IDs for FASTQ files (e.g., sample_id.txt)
+paths.seqC.fileIDSeqC = 'sample_id_demo.txt';
+%% 
+% These variables control how SeqC processes sequencing data and determines 
+% available computational resources.
+% Set the paths to all inputs for seqC
+
+% Logical variable indicating if intermediary outputs are
+% retained (e.g., post-QC FASTQ). False results in the
+% singular output of MARS, and the deletion of all
+% intermediary content once SeqC completes.
+paths.seqC.procKeepSeqC = false;
+% Numeric, the maximum amount of memory allowed in gigabytes.
+paths.seqC.maxMemSeqC = 20;
+
+% Numeric, the maximum number of threads allowed.
+paths.seqC.maxCpuSeqC = 4;
+
+% Numeric, the maximum number of processes allowed.
+paths.seqC.maxProcSeqC = 4;
+% Logical variable indicating if additional debugging
+% messaging should be included in the log.
+paths.seqC.debugSeqC = false;
+
+% describe
+paths.seqC.apptainer = false;
+% Set the paths to all inputs for seqC
+
+%% 1.5 MARS inputs
+% Logical variable indicating if taxonomic mapping by MARS
+% is performed independently of SeqC.
+paths.Mars.flagMars = true;
+% *REQUIRED*. Character array variable with path to the microbiome taxonomy
+% and read abundance file.
+paths.Mars.readsTablePath = '';
+% Character array variable to the folder where the output of MARS is stored.
+paths.Mars.outputPathMars = [resultPath filesep, 'ResultMars'];
+
+% Character array variable indicating the desired file format for saving
+% outputs: this is needed for the relative abundance file path used in the
+% next line
+paths.Mars.outputExtensionMars = 'csv';
+
+% Path to relative abundance file
+paths.Mars.relAbunFilePath = [paths.Mars.outputExtensionMars filesep 'present'...
+    filesep 'present_species' filesep paths.Mars.outputExtensionMars];
+
+% Numeric value for total read counts per sample under which samples are
+% excluded from analysis. Only applies when readsTable contains absolute
+% read counts (not relative abundances). Defaults to 1, with minimum of 1.
+paths.Mars.sample_read_counts_cutoff = 1;
+
+% Numeric value under which relative abundances are considered to be zero
+% default = 1e-6
+paths.Mars.cutoffMars = 1e-6;
+% String to the file where OTUs are matched to taxonomic assignments.
+% OPTIONAL if the taxonomic assignments are already in the readsTable.
+% REQUIRED if not.
+paths.Mars.OTUTable = "";
+
+% A boolean to indicate if the genus name is in the name of the species e.g.
+% Prevotella copri. If genus name is in species name set to false.
+% Otherwise set to true. OPTIONAL, defaults to false.
+paths.Mars.flagLoneSpecies = true;
+
+% The delimeter used to separate taxonomic levels
+paths.Mars.taxaDelimiter = ';';
+
+% A boolean specifying if one wants to remove clade name extensions from
+% all taxonomic levels of microbiome taxa. If set to false, MARS might find
+% significantly less models in AGORA2, as clade extensions are not included
+% there.
+paths.Mars.removeClade = true;
+% A string defining if AGORA2, APOLLO, a combination of both or a user-defined
+% database should be used as model database to check presence in.
+% Allowed Input (case-insensitive): "AGORA2", "APOLLO", "full_db", "user_db".
+% Default: "full_db".
+paths.Mars.reconstructionDb = "full_db";
+% A string containing the full path to the user-defined database,
+% which should be in .csv, .txt, .parquet or .xlsx format and
+% have column names = taxonomic levels. Only required if reconstructionDb
+% is set to "user_db".
+paths.Mars.userDbPath  = "";
+paths.Mars.taxaTable = "";
+%% Section 2: Running SeqC
+% The function runSeqC begins by setting the working directory to that of the 
+% SeqC repository, and assessing environmental variables and ensuring they are 
+% correctly formatted.
+% 
+% Now that the environment is set up, you can execute *SeqC* by calling:
+
+runSeqC(...
+            paths.seqC.repoPathSeqC, ...
+            paths.seqC.outputPathSeqC, ...
+            paths.seqC.fileIDSeqC, ...
+            paths.seqC.procKeepSeqC, ...
+            paths.seqC.maxMemSeqC, ...
+            paths.seqC.maxCpuSeqC, ...
+            paths.seqC.maxProcSeqC, ...
+            paths.seqC.debugSeqC, ...
+            paths.seqC.apptainer, ...
+            paths.Mars.readsTablePath, ...
+            paths.Mars.outputPathMars, ...
+            paths.Mars.outputExtensionMars, ...
+            paths.Mars.relAbunFilePath, ...
+            paths.Mars.sample_read_counts_cutoff, ...
+            paths.Mars.cutoffMars, ...
+            paths.Mars.OTUTable, ...
+            paths.Mars.flagLoneSpecies, ...
+            paths.Mars.taxaDelimiter, ...
+            paths.Mars.removeClade, ... 
+            paths.Mars.reconstructionDb, ...
+            paths.Mars.userDbPath, ... 
+            paths.Mars.taxaTable ...
+    );
+%% 
+% *Checking Your Operating System*
+% 
+% The tutorial automatically detects your OS and ensures that *Docker* is properly 
+% configured:
+
+%% Determine Operating System
+% Some arguments are OS specific
+if ismac
+    vOS = 'mac';
+    setenv('PATH', [getenv('PATH') ':/usr/local/bin']); % Ensure Docker is found
+elseif isunix
+    vOS = 'unix';
+elseif ispc
+    vOS = 'win';
+else
+    error('Unsupported operating system.');
+end
+%% 
+% Ensure *Docker* is running before executing SeqC, especially on Windows.
+%% 
+% *Estimating Disk Usage*
+% 
+% SeqC requires a considerable amount of storage. To estimate space requirements, 
+% an optional estimation of the size of outputs generated is calculated below.
+
+%% Determine directory size and estimate usage exapansion
+dirPath = fullfile(paths.seqC.repoPathSeqC,'seqc_input/'); % Directory path
+totalBytes = getDirectorySize(dirPath); % Function from previous response
+totalMB = totalBytes / (1024^2); % Convert to MB
+totalGB = totalBytes / (1024^3); % Convert to GB
+inflateRatio = 3.2; % inflation term
+inflateGB = totalGB * inflateRatio;
+msgDsize = sprintf(['Total size of directory: %.2f GB\nExpected ...' ...
+    'inflation size: %.2f GB\n'], totalGB, inflateGB);
+
+%% 
+% Before running SeqC, we need to define and initialize key directories. This 
+% ensures that the pipeline can correctly locate input files and store output 
+% results.
+% 
+% In *MATLAB*, initialize the required paths with:
+
+%% Initialize Paths
+vdir_init = cd;
+vdir_out_seqc = 'seqc_output';
+vdir_out_mars = fullfile(vdir_out_seqc, 'mars_out');
+% Set system to seqc repo
+cd(paths.seqC.repoPathSeqC);
+%% 
+% Before passing computational resource constraints to the Docker container, 
+% we convert numeric values to strings for compatibility. 
+
+%% Convert Numeric Inputs to Strings
+maxCpuSeqC = num2str(paths.seqC.maxCpuSeqC);
+maxMemSeqC = num2str(paths.seqC.maxMemSeqC);
+maxProcSeqC = num2str(paths.seqC.maxProcSeqC);
+if isnumeric(paths.Mars.cutoffMars)
+    paths.Mars.cutoffMars = sprintf('%f', paths.Mars.cutoffMars);
+end
+%% 
+% Then, following command constructs Docker build arguments using the previously 
+% converted string values.
+
+%% Build Docker Options
+% Hardware params
+comm_build_opt_hw = sprintf(['REPLACE_WITH_DASH_DASHbuild-arg varg_cpu_max=%s REPLACE_WITH_DASH_DASHbuild-arg...' ...
+    '  varg_mem_max=%s...' ' REPLACE_WITH_DASH_DASHbuild-arg varg_proc_max=%s'], ...
+    paths.seqC.maxCpuSeqC, paths.seqC.maxMemSeqC, paths.seqC.maxProcSeqC);
+%% 
+% To ensure MARS settings are correctly passed to Docker, we construct a command 
+% string with the necessary arguments. This configures MARS within the SeqC pipeline 
+% for proper execution inside the container.
+
+% MARS params
+comm_build_opt_mars = sprintf(['REPLACE_WITH_DASH_DASHbuild-arg varg_mars_outputExtensionMars=%s' ...
+' REPLACE_WITH_DASH_DASHbuild-arg varg_mars_sample_read_counts_cutoff=%d' ...
+' REPLACE_WITH_DASH_DASHbuild-arg varg_mars_cutoffMars=%s' ...
+' REPLACE_WITH_DASH_DASHbuild-arg varg_mars_flagLoneSpecies=%s' ...
+' REPLACE_WITH_DASH_DASHbuild-arg varg_mars_taxaDelimiter="%s"' ...
+' REPLACE_WITH_DASH_DASHbuild-arg varg_mars_removeClade =%s' ...
+' REPLACE_WITH_DASH_DASHbuild-arg varg_mars_reconstructionDb=%s'], ...
+paths.Mars.outputExtensionMars, paths.Mars.sample_read_counts_cutoff, ...
+paths.Mars.cutoffMars, string(paths.Mars.flagLoneSpecies), ...
+string(paths.Mars.taxaDelimiter), string(paths.Mars.removeClade), paths.Mars.reconstructionDb);
+%% 
+% Optional MARS parameters are appended to the Docker build command only if 
+% they are provided. This ensures a flexible and efficient configuration within 
+% the SeqC pipeline.
+
+%% Append Optional Build Arguments - MARS
+% exclude if empty
+optionalParams = {paths.Mars.OTUTable, paths.Mars.readsTablePath, ...
+    paths.Mars.relAbunFilePath, paths.Mars.userDbPath, paths.Mars.taxaTable};
+paramNames = {'varg_mars_OTUTable', 'varg_mars_readsTablePath', ...
+    'varg_mars_relAbunFilePath', 'varg_mars_userDbPath ', 'varg_mars_taxaTable'};
+for vi = 1:length(optionalParams)
+    if ~ismissing(optionalParams{vi})
+        if ~isempty(optionalParams{vi}) && ~strcmpi(optionalParams{vi}, "")
+            comm_build_opt_mars = sprintf('%s REPLACE_WITH_DASH_DASHbuild-arg %s=%s', ...
+                comm_build_opt_mars, paramNames{vi}, optionalParams{vi});
+        end
+    end
+end
+
+%% 
+% The Docker image is built with hardware and MARS-specific options, ensuring 
+% proper resource allocation. The run command is configured for interactive and 
+% non-interactive execution, adapting to system constraints.
+
+%% Build Docker Image command
+comm_build = sprintf('docker build -t dock_seqc REPLACE_WITH_DASH_DASHulimit nofile=65536:65536 %s %s .',...
+    comm_build_opt_hw, comm_build_opt_mars);
+
+%% Docker run commands
+% core run command
+comm_run_core = 'docker run REPLACE_WITH_DASH_DASHinteractive REPLACE_WITH_DASH_DASHtty REPLACE_WITH_DASH_DASHuser 0 REPLACE_WITH_DASH_DASHrm REPLACE_WITH_DASH_DASHmount';
+% sans interactive
+comm_run_core = sprintf(['docker run REPLACE_WITH_DASH_DASHtty REPLACE_WITH_DASH_DASHuser 0 REPLACE_WITH_DASH_DASHrm REPLACE_WITH_DASH_DASHmemory=%s...' ...
+    ' REPLACE_WITH_DASH_DASHcpus=%s REPLACE_WITH_DASH_DASHmount'],sprintf('%sg',maxMemSeqC),maxCpuSeqC);
+
+%% 
+% The user can select a taxonomic database (AGORA, APOLLO, or combined) based 
+% on user input and constructs a command to run the database creation script with 
+% the chosen database and a human contamination filter.
+
+%% Set Database Assignment Command
+switch paths.Mars.reconstructionDb
+    case 'AGORA'
+        comm_run_db_kb = '-s "tool_k2_agora"';
+    case 'APOLLO'
+        comm_run_db_kb = '-s "tool_k2_apollo"';
+    case 'full_db'
+        comm_run_db_kb = '-s "tool_k2_agora2apollo"';
+    otherwise
+        comm_run_db_kb = '-s "tool_k2_agora2apollo"'; % Default case
+end
+comm_run_db_kd = '-s "host_kd_hsapcontam"';
+comm_run_db = sprintf('BASH_seqc_makedb.sh %s %s', comm_run_db_kd, comm_run_db_kb);
+
+%% 
+% Next, we construct the command to run the SeqC pipeline, optionally appending 
+% flags for debugging and keeping intermediate files based on user settings. We 
+% then format the full command with input data directory, sample IDs, and other 
+% required parameters.
+
+%% Construct Command for Running SeqC
+comm_mama_help = 'BASH_seqc_mama.sh -h';
+comm_mama_full = 'BASH_seqc_mama.sh';
+% append optional flags
+if paths.seqC.debugSeqC
+    comm_mama_full = [comm_mama_full ' -b'];
+end
+if paths.seqC.procKeepSeqC
+    comm_mama_full = [comm_mama_full ' -k'];
+end
+comm_mama_full = sprintf('%s -i "step0_data_in/" -n "%s" -r "SR" -s 0', ...
+    comm_mama_full, paths.seqC.fileIDSeqC);
+%% 
+% Next, we construct the command to run the SeqC process in a Docker container, 
+% adjusting the volume and directory mappings based on the operating system (Unix, 
+% Mac, or Windows). This binds input and output directories and specifies where 
+% the processing data will be stored within the container.
+
+% Append volume mapping commands to core
+% OS sensitive
+if strcmp(vOS, 'unix')
+    comm_run_main = sprintf(['%s "type=bind,src=$(pwd)/seqc_input,target=/home/...'...
+        'seqc_user/seqc_project/step0_data_in" REPLACE_WITH_DASH_DASHmount "type=bind,src=$(pwd)/...' ...
+        'seqc_output,...' 'target=/home/seqc_user/seqc_project/final_reports" ...' ...
+        'REPLACE_WITH_DASH_DASHmount "type=volume,...' 'dst=/DB,volume-driver=local,...' ...
+        'volume-opt=type=none,volume-opt=o=bind,...' 'volume-opt=device=$(pwd)/...' ...
+        'seqc_proc" dock_seqc /bin/bash'], comm_run_core);
+%    comm_exit_mv = 'mv -r $(pwd)/seqc_proc/DEPO_proc/* $(pwd)/seqc_output'
+elseif strcmp(vOS, 'mac')
+    comm_run_main = sprintf(['%s "type=bind,src=$(pwd)/seqc_input,target=/home/...'...
+        'seqc_user/seqc_project/step0_data_in" REPLACE_WITH_DASH_DASHmount "type=bind,src=$(pwd)/...' ...
+        'seqc_output,...' 'target=/home/seqc_user/seqc_project/final_reports" ...' ...
+        'REPLACE_WITH_DASH_DASHmount "type=volume,....' 'dst=/DB,volume-driver=local,...' ...
+        'volume-opt=type=none,volume-opt=o=bind,...' 'volume-opt=device=$(pwd)/...' ...
+        'seqc_proc" dock_seqc /bin/bash'], comm_run_core);
+%    comm_exit_mv = 'mv -r $(pwd)/seqc_proc/DEPO_proc/* $(pwd)/seqc_output'
+elseif strcmp(vOS, 'win')
+    comm_run_main = sprintf(['%s "type=bind,src=%s\\seqc_input,target=/home/...'...
+        'seqc_user/seqc_project/step0_data_in" REPLACE_WITH_DASH_DASHmount "type=bind,src=%s\\...' ...
+        'seqc_output,....' 'target=/home/seqc_user/seqc_project/...' ...
+        'final_reports" REPLACE_WITH_DASH_DASHmount "type=bind,...' 'src=%s\\seqc_proc,...' ...
+        'target=/DB" dock_seqc /bin/bash'], comm_run_core, pwd, pwd, pwd);
+%    comm_exit_mv = 'mv -r .\seqc_proc\DEPO_proc\* .\seqc_output\'
+end
+%% Section 3: Running Docker for SeqC
+% SeqC runs within a *Docker container*. The following commands:
+%% 
+% # Build the *Docker image* if it does not exist
+% # Run the *SeqC pipeline*
+%% 
+% *Step 1: Build the Docker Image*
+% 
+% Once all the variables and Docker statements are constructed, Docker is engaged 
+% and an image of SeqC is created if a previous image is not found.
+
+% check for preexisting image
+    imageName = 'dock_seqc';
+[status, cmdout] = system(['docker images -q ' imageName]);
+
+if isempty(strtrim(cmdout))
+    disp(['Image "' imageName '" does NOT exist. Now creating...']);
+    disp(' > Building SeqC docker image, wait time ~10min.');
+    [status, cmdout] = system(comm_build);
+    if status ~= 0, error('Docker build failed:\n%s', cmdout); end
+else
+    disp(['Docker Image "' imageName '" exists.']);
+end
+%% 
+% *Step 2: Run the Pipeline*
+% 
+% Once the Docker image is built, the following commands that will:
+%% 
+% * Test to confirm image viability
+% * Establish required databases
+% * Proccess sequencing files
+%% 
+% First we run a test of the MAMA script to verify if the Docker image and related 
+% commands work correctly. If it fails, a warning is displayed.
+
+% Test MAMA script
+[status, cmdout] = system(sprintf('%s %s',comm_run_main, comm_mama_help));
+if status ~= 0, warning('MAMA test failed:\n%s', cmdout); end
+%% 
+% Next we must initiate the database setup for the pipeline, with an estimated 
+% wait time of 30 minutes.
+
+% Run database creation
+disp(' > Running database setup, wait time ~30min....');
+[status, cmdout] = system(sprintf('%s %s',comm_run_main, comm_run_db));
+if status ~= 0, error('Database setup failed:\n%s', cmdout); end
+%% 
+% And finaly, this command starts the full SeqC processing pipeline:
+
+% Run full SeqC pipeline
+disp(sprintf(' > SeqC Processing Begins...\n%s',msgDsize));
+[status, cmdout] = system(sprintf('%s %s',comm_run_main, comm_mama_full));
+if status ~= 0, error('SeqC pipeline execution failed:\n%s', cmdout); end
+disp(' > SeqC Processing Ends.');
+%% Section 4: Managing Output Files
+% After processing, results are stored in the *outputPathSeqC* folder. If MARS 
+% is used, additional outputs are placed in *outputPathMars,* this file structure 
+% is important for advancement in the Persephone workflow
+
+% Move final output
+movefile(fullfile(vdir_out_seqc, '*'), paths.seqC.outputPathSeqC);
+% Update mars path
+vdir_out_mars = fullfile(paths.seqC.outputPathSeqC, 'mars_out');
+if ~strcmp(paths.seqC.outputPathSeqC, paths.Mars.outputPathMars)
+    movefile(fullfile(vdir_out_mars, '*'), paths.Mars.outputPathMars);
+    vdir_out_mars = fullfile(paths.seqC.outputPathSeqC);
+end
+%% Creating Community Microbiome Models
+% Authors: Bram Nap -  07-2024
+% 
+% In this tutorial we will cover how to create community microbiome from metagenomic 
+% reads data. We will explain how to use Microbial Abundances Retrieved from Sequencing 
+% data—automated NCBI Taxonomy (MARS) [1] to map metagenomic reads to AGORA2 database 
+% [2]. We will then explain how to process the output of MARS through the Microbiome 
+% Modelling Toolbox [3] to generate community microbiome models. 
+%% Section 1: Setup
+% Here we show which steps are required to set up your device to support the 
+% various functions used to create and analyse human-microbiome models for all 
+% three tutorials. First we need to have a copy of COBRA toolbox. COBRA Toolbox 
+% download instructions can be found at <https://github.com/opencobra/cobratoolbox 
+% https://github.com/opencobra/cobratoolbox>
+% 
+% To see if the COBRA toolbox is installed correctly we run initCobraToolbox
+
+global CBTDIR
+if isempty(CBTDIR)
+    initCobraToolbox
+end
+%% 
+% As the function gives no errors or warnings we know that the COBRA toolbox 
+% is correctly set-up and ready to use.
+%% 
+% To decrease simulation times of the models we need an industrial solver. The 
+% different solvers supported are
+%% 
+% * ibm_cplex
+% * tomlab_cplex
+% * gurobi
+% * mosek
+%% 
+% To see MATLAB version and solver version compatibility see <https://opencobra.github.io/cobratoolbox/stable/installation.html#solver-installation. 
+% https://opencobra.github.io/cobratoolbox/stable/installation.html#solver-installation.> 
+% Various solvers can be obtained through an free academic license. For modelling 
+% purposes here, we recommomend using ibm_cplex if possible.
+% 
+% To set our solver we use changeCobraSolver. If another solver than ibm_cplex 
+% is used, replace the 'ibm_cplex' in the the code line below with the solver 
+% name you use as found in the bullet list above.
+
+solver = 'ibm_cplex';
+% solver = 'gurobi';
+
+changeCobraSolver(solver);
+%% 
+% MATLAB also needs to have two additional toolboxes installed, the Statistics 
+% and Machine Learning Toolbox and the Parallel Computing Toolbox. We can check 
+% the installations with the code matlab.addons.isAddonEnabled.
+
+% Check the install of the parallel computing toolbox
+parallelToolboxInstall = matlab.addons.isAddonEnabled('Parallel Computing Toolbox')
+
+% Check the install of the statistics and machine learning toolbox
+statToolboxInstall = matlab.addons.isAddonEnabled('Statistics and Machine Learning Toolbox')
+%% 
+% If the parallelEnabled and statisticsEnables are both 1 (true) both toolboxes 
+% are correctly installed in MATLAB and ready to be used. If either one is 0 we 
+% recommended adding the toolbox from Home tab -> Add-Ons -> Get Add-Ons. The 
+% parallel computing toolbox is a must as the code creating the mWMBs does not 
+% work without out. The statistics toolbox is not required to create the mWBMs 
+% but without it we cannot run the statistical analyses performed in tutorial 
+% 4.
+% 
+% Before we can start with creating mWBMs, we need to set up the paths to the 
+% general results directory, the metadata file, and the taxonomy assigned reads 
+% table. We will use the general results directory to create a folder structure 
+% where we can easily store our results in pre-defined locations. This will help 
+% as functions generally need the outputs of functions run before them. The metadata 
+% and reads tables undergo sanity checks. The variables we will set up are then:
+%% 
+% * *resultDir* - The path where all the results of this tutorial will be stored. 
+% This ensure all your results will be in one place and are thus easily accesible. 
+% Make sure the the folder is accesible to you.
+% * *metadataPath* - The location of the metadata file. This is used in both 
+% the generation of human-microbiome models as well as the analysis of results 
+% towards the end of the tutorial.
+% * *readsTablePath* - The path to the the taxonomic reads file containing the 
+% amount of reads per taxonomic assignment. If the taxonomic assignments are in 
+% the reads file the first column needs to be called Taxon. If not the first column 
+% of the readsFile and the first column of taxaTable needs to have to same name. 
+% See the example files.
+%% 
+% We set up the variables in the *paths* variable, which is a structure. Each 
+% field in the structure is dedicated to store the relevant variables used in 
+% the different steps of Persephone. Normally we would define each variable at 
+% the start in the configuration file. However here we will only specifiy the 
+% output directories used in Persephone. The other variables we will define as 
+% we go along for clarity.
+%% 
+% Please copy and paste the paths to the required files in the code below. Remember 
+% to add file extensions where relevant.
+
+%Define the location of the required files, make sure you dont forget the file extensions where relevant!
+% e.g., 'C:\Users\Owner\Persephone\Tutorials\Results'
+resultPath = '';
+
+% e.g., 'C:\Users\Owner\cobratoolbox\tutorials\analysis\persephone\Demo\demo_metadata.csv'
+paths.General.metadataPath = '';
+
+% e.g., 'C:\Users\Owner\cobratoolbox\tutorials\analysis\persephone\Demo\KB_mpa_out_RC.txt'
+paths.Mars.readsTablePath = '';
+%% 
+% Now we will define some paths as to where we want to store all of our results. 
+% We do not have to make these directories ourselves, the code will do it for 
+% us.
+
+paths.seqC.outputPathSeqC = [resultPath, filesep, 'resultSeqC'];
+paths.Mars.outputPathMars = [resultPath, filesep, 'resultMars'];
+paths.mgPipe.outputPathMgPipe = [resultPath, filesep, 'resultMgPipe'];
+paths.persWBM.outputPathPersonalisation = [resultPath, filesep, 'personalisedWBMs'];
+paths.mWBM.outputPathMWBM = [resultPath, filesep, 'mWBMmodels'];
+paths.fba.outputPathFluxResult = [resultPath, filesep, 'resultFlux'];
+paths.fba.outputPathFluxAnalysis = [paths.fba.outputPathFluxAnalysis, filesep, 'fluxAnalysis'];
+paths.stats.outputPathStatistics = [resultPath, filesep, 'resultStatistics'];
+%% 
+% The function initPersephone.m performs the initCobraToolbox.m function, sets 
+% the COBRA solver and checks if the required toolboxes are installed (line 1-7). 
+% Additionaly it generates the folder structure for the results. IMPORTANT, the 
+% output structure used in all 3 tutorials is generated with initPersephone.m. 
+% The metadata and the reads table are put through sanity checks. initPersphpne.m 
+% ensures that in the metdata the columns with the sample IDs and sample sex have 
+% the correct headers and readable data types. It always assumed the first column 
+% contains sample IDs. It will create a new updated file and will also update 
+% the metadata path accordingly. If you use the test data files you can see that 
+% the column sample ID has been changed to ID and the column gender has been altered 
+% to Sex. Additionally the data in the column Sex has been changed from M/F to 
+% male/female. Important if your own metadata does not have alternative headers 
+% accounted for in the function it will raise an error. That is easily fixed by 
+% changing your column headers to ID or Sex depending on which data type is causing 
+% the issue. Finally we test if the sample IDs in the microbiome data match that 
+% of the metadata.
+
+% Create the file structure for the results of all the parts of the
+% tutorial (not just this tutorial)
+[initialised, statToolboxInstalled, updatedMetadataPath] = initPersephone(resultPath, paths)
+%% 
+% The following ouputs are returned from initPersephone
+%% 
+% * *initialised -* Boolean, indicates if Persephone was succesfully initialised.
+% * *statToolboxInstalled -* Boolean, indicates if the statistics toolbox is 
+% installed. Parts of Persephone are skipped if false
+% * *updatedMetdataPath*  -  The path to the updated metadata file.
+%% 
+% If you look at the directory given in the resultPath variable, you will see 
+% the following folder structure.
+% 
+% -resultDir
+% 
+% -HMmodels
+% 
+% -personalisedWBMs 
+% 
+% -resultFlux
+% 
+% -fluxAnalysis
+% 
+% -resultMars
+% 
+% -resultMgPipe
+% 
+% -resultSeqC
+% 
+% -resultStatistics
+% 
+% The content of each of the folders will be discussed in the appropriate sections 
+% in the three tutorials.
+%% 
+% We have to also update the metadata path to reflect the updated metadata file.
+
+paths.General.metadataPath = updatedMetadataPath;
+%% 
+% Now that we have checked that all our software is installed and available, 
+% our results directory has been set up and our metadata and read files has been 
+% processed and ready for use we can start with processing the metagenomic reads 
+% data through MARS.
+%% Section 2: Running MARS
+% In this section we will run MARS to convert the taxonomic reads table to AGORA2 
+% mapped and normalised relative abundance table. MARS works as following:
+%% 
+% * First, if the taxonomic assignments and reads tables are separated - it 
+% will merge them into a single dataframe
+% * It removes clade extensions from all taxonomic levels names (e.g. Firmicutes__A 
+% & Firmicutes__B will be merged to Firmicutes) to allow for optimal AGORA2 mapping
+% * It translates certain species based on a pre-defined list to make sure the 
+% species names match the ones in the AGORA2 databases
+% * It removes all reads associated with a taxonomics identification that does 
+% not have information up to the specified taxonomic level that is looked at (e.g., 
+% looking at species, only reads with information up to the species level will 
+% be retained)
+% * It maps each taxonomic level (kingdom, phylum,species etc.) to the AGORA2 
+% databases. If the taxonomic identification matches it means there is a model 
+% present
+% * The mapped reads are normalised to obtain relative abundances
+% * All relative abundances under a certain cutoff are removed and the data 
+% is re-normalised. The default cutoff is 1e-6.
+%% 
+% Important before running this section is that MARS can also be ran online 
+% in your browser on <https://mars-pipeline.streamlit.app. https://mars-pipeline.streamlit.app.> 
+% The website explains what you have to input and the variables you can use are 
+% the same as explained here. Important is that you download the present_species.csv 
+% file (file exentsion can differ) and save it in either the 'present' directory 
+% in resultMARS named as 'present_species.csv' or give the correct path to MgPipe 
+% (discussed in the next section) This ensures that we the MARS output file can 
+% still be found by the rest of the functions.
+% 
+% If we want to run MARS offline we need to make sure all of our dependencies 
+% are installed. Follow the code below to install your dependencies and obtain 
+% your python path.
+% 
+% Instructions on how prepare the python environment with 2 options: via miniconda, 
+% via user created environment. If you do not have a lot of (python) coding experience 
+% the mini-conda way is most user friendly Anaconda: Install Anaconda (https://docs.anaconda.com/miniconda/miniconda-install/)
+% 
+% open Anaconda Prompt (miniconda3)
+% 
+% >> pip install pandas
+% 
+% >> pip install numpy
+% 
+% >> pip install pyarrow==18.1.0 (latest version of pyarrow gives compatibility 
+% issues)
+% 
+% >> pip install fastparquet
+% 
+% >> pip install openpyxl
+% 
+% Find the path to the python.exe file in mini-conda(Windows):
+% 
+% -Anaconda Prompt (miniconda3)
+% 
+% -enter "where python" in the prompt
+% 
+% -If no new enivironment is made (the anaconda navigotor only has "base" in 
+% environments)
+% 
+% -enter "where python" in the prompt
+% 
+% For macOS and Linux run "which python"
+% 
+% The python.file exention file location to copy should be in \anaconda3\python.file 
+% extension. Paste this path in the pythonPath variable in line 19
+% 
+% For a user created environment: Make sure you have a working python.exe file 
+% on  your computer. Install from <https://www.python.org/downloads https://www.python.org/downloads/.> 
+% Follow the steps in <https://nl.mathworks.com/matlabcentral/answers/1750425-python-virtual-environments-with-matlab. 
+% https://nl.mathworks.com/matlabcentral/answers/1750425-python-virtual-environments-with-matlab.> 
+% Make sure you install
+% 
+% >> pip install pandas
+% 
+% >> pip install numpy
+% 
+% >> pip install pyarrow
+% 
+% >> pip install fastparquet
+% 
+% >> pip install openpyxl
+% 
+% Find the path of the executable of the virtual environment as described
+% 
+% >> import sys
+% 
+% >> sys.executable
+% 
+% The python.file exention file location to copy should be in \anaconda3\python.file 
+% extension. Paste this path in the pythonPath variable in line 19
+
+% e.g., 'C:\Users\OwnerPG\AppData\Local\Programs\Python\Python38\python.exe'
+pythonPath = '';
+%% 
+% Next we need to clone the MARS repository. Instructions can be found at <https://github.com/thielelab/mars-pipeline 
+% https://github.com/thielelab/mars-pipeline>. Set the path where the MARS repository 
+% was saved as marsRepoPath.
+
+% e.g., 'C:\Users\Owner\mars-pipeline'
+marsRepoPath = '';
+%% 
+% First we will test if Python is already coupled with Matlab. Then we enter 
+% the cloned MARS repository and add the MARS as a readable module. In order to 
+% call the apporiate function, we have to enter the MARS directory.
+
+% Check if Python is already coupled to MATLAB, otherwise couple it
+pyStatus = pyenv('Version',pythonPath);
+
+% Enter the MARS folder
+cd(marsRepoPath);
+
+% Import the entire MARS repository so that the all scripts are on a path
+%that MATLAB recognises
+MARS = py.importlib.import_module('MARS');
+
+% Enter folder that contains the "main.py" script
+cd(fullfile(marsRepoPath, 'MARS'));
+%% 
+% Now we can prepare for the actual MARS inputs
+% 
+% Required inputs
+%% 
+% * *readsTable* - The path to the the taxonomic reads file containing the amount 
+% of reads per taxonomic assignment. If the taxonomic assignments are in the reads 
+% file the first column needs to be called Taxon. If not the first column of the 
+% readsFile and the first column of taxaTable needs to have to same name. See 
+% the example files. (we set this already at the start)
+% * *taxaTable* - The path to the taxonomic assignments for the taxomomic unit 
+% name used in your taxonomic assignment software (e.g., OTU, ASV, OGU). This 
+% has to be set to string(missing) if your readsTable already has taxonomic assignment 
+% included. Otherwise it need to consists of a column with header similar to the 
+% first header in readsTable and the column header "Taxon".
+% * *outputPathMars* - The path where the MARS results should be stored. We 
+% created this directory in the section 1 and is stored in paths.mars.
+%% 
+% Optional inputs
+%% 
+% * *sample_read_counts_cutoff* - Numeric value for total read counts per sample 
+% under which samples are excluded from analysis. Only applies when readsTable 
+% contains absolute read counts (not relative abundances). Defaults to 1, with 
+% minimum of 1.
+% * *cutoffMars* - The cutoff underwich all relative abundances will be considered 
+% 0. If smaller relative abundances are kept, numerical difficulties/infeasibilites 
+% could occur later on when solving the microbiome models. Also, relative abundances 
+% below this value will most likely not have a noticable impact on the flux results 
+% as their contribution to fluxes is minimal due to their low relative abundance. 
+% Default is 1e-6.
+% * *outputExtensionMars* - The file type of your output. Default is csv
+% * *flagLoneSpecies* - A boolean, flagLoneSpecies, which is true if the species 
+% name does NOT have the genus name already there. False if otherwise. Defaults 
+% to false
+% * *taxaSplit* - A string,  taxaSplit, which indicates the delimiter used to 
+% separate taxonomic levels in the taxonomic assignment.Defaults to '; '
+% * *removeCladeExtensionsFromTaxa* - A boolean, removeCladeExtensionsFromTaxa, 
+% which removes all reads associated with a taxonomics identification that does 
+% not have information up to the specified taxonomic level that is looked at. 
+% Defaults to true.
+% * *whichModelDatabase*: A string defining if AGORA2, APOLLO, a combination 
+% of both or a user-defined database should be used as model database to check 
+% presence in.  Allowed Input (case-insensitive): "AGORA2", "APOLLO", "full_db", 
+% "user_db". Defaults to "full_db".
+% * *userDatabase_path*: A string containing the full path to the user-defined 
+% database, which should be in .csv, .txt, .parquet or .xlsx format and have column 
+% names = taxonomic levels. Only required if 'whichModelDatabase' is set to "user_db". 
+% Note, that the user database needs to have the same structure as the integrated 
+% AGORA2 & APOLLO database to function properly!
+%% 
+% We know now which inputs we need to define. Let us start with the required 
+% ones.
+
+% Set the path the taxaTable. If you do not have a taxaTable file, put a %
+% infront of line 41 and remove % from line 42.
+% taxaTable = '';
+taxaTable = string(missing)
+% The output path stored in the paths variable
+outputPathMars = paths.Mars.outputPathMars; % This is the default path created by initPersephone
+%% 
+% Now let us set the optional inputs. You can change these according to your 
+% own dataset, for the test data set we recommend using the settings set here.
+
+% Numeric value for total read counts per sample under which samples are
+% excluded from analysis. Only applies when readsTable contains absolute
+% read counts (not relative abundances). Defaults to 1, with minimum of 1.
+sample_read_counts_cutoff = 1;
+
+% The cutoff value for relative abundances
+cutoffMars = 1e-6;
+
+% The file extension for the output files
+outputExtensionMars = 'csv';
+
+% The flag if genus name is in the species name
+flagLoneSpecies = true;
+
+% The delimeter used to separate taxonomic levels
+taxaSplit = ';';
+
+% A boolean specifying if one wants to remove clade name extensions from
+% all taxonomic levels of microbiome taxa. If set to false, MARS might find
+% significantly less models in AGORA2, as clade extensions are not included
+% there.
+removeCladeExtensionsFromTaxa = true;
+
+% A string defining if AGORA2, APOLLO, a combination of both or a user-defined
+% database should be used as model database to check presence in. 
+% Allowed Input (case-insensitive): "AGORA2", "APOLLO", "full_db", "user_db".
+% Default: "full_db".
+whichModelDatabase="full_db";
+
+% A string containing the full path to the user-defined database,
+% which should be in .csv, .txt, .parquet or .xlsx format and
+% have column names = taxonomic levels. Only required if whichModelDatabase
+% is set to "user_db".
+userDatabase_path="";
+%% 
+% We have now defined all our variables for MARS. In order to call the optional 
+% arguments, we need to convert them into paired arguments readable by Python 
+% through the pyargs function. We will store these converted inputs int he marsOptArg 
+% variable.
+
+% Set all optional inputs in Python readable format
+marsOptArg = pyargs('cutoff', cutoffMars, 'output_format', string(outputExtensionMars),...
+    'flagLoneSpecies',flagLoneSpecies, 'taxaSplit', string(taxaSplit), ...
+    'removeCladeExtensionsFromTaxa', removeCladeExtensionsFromTaxa, ...
+    'whichModelDatabase', whichModelDatabase, ...
+    'sample_read_counts_cutoff', sample_read_counts_cutoff);
+%% 
+% With the optional arguments set we can run MARS
+
+% Run MARS
+py.main.process_microbial_abundances(paths.Mars.readsTablePath, taxaTable, outputPathMars, marsOptArg);
+% return back to the result directory
+cd(resultPath);
+
+% Set the relative abundance file path to be used by other functions
+relAbunFilePath = [paths.Mars.outputPathMars, filesep, 'renormalized_mapped_forModelling', filesep,...
+   'renormalized_mapped_forModelling_species.csv'];
+%% 
+% Follow the instructions if you get errors when running line 61:
+% 
+% *ERROR: Unable to resolve the name py.main.process microbial abundances.*
+% 
+% _Check if all you python dependencies are correctly installed. If you had 
+% to install them/update them restart MATLAB and rerun the section 1 and section 
+% 2 of this tutorial. Check if you have installed pyarrow 18.1.0. To degrade use 
+% >> pip uninstall pyarrow. >> pip install pyarrow==18.1.0. It could also be that 
+% the MATLAB version is incompatible with the Python version. Either upgrade your 
+% MATLAB version or downgrade your Python version._
+% 
+% *ERROR:* Python Error: *ValueError: Unsupported file type: not found*
+% 
+% _Double check the file extensions of your readsTable and taxaTable inputs. 
+% If taxaTable does not exist make sure to set it to string(missing)_
+% 
+% *ERROR* Python Error: ValueError: Length mismatch: Expected axis has 8 elements, 
+% new values have 7 elements or a variation on this
+% 
+% _Make sure that the taxaSplit is the one that can properly split the taxonomic 
+% assignments you have put in. MARS expects that every taxonomical level is defined. 
+% If you have only species information in the file, add blank taxonomical information 
+% infront in the style of the example (e.g., ; ; ; ; ; ;species name)_
+% 
+% *ERROR:* Python Error: OSError: Repetition level histogram size mismatch. 
+% 
+% There is an incompatibility reading parquet files with pyarrow 19.0. This 
+% is fixed by degrading to pyarrow 18.1.0. To see the current pyarrow version 
+% run
+% 
+% _>> pip show pyarrow_
+% 
+% in the terminal or prompt you used to install Python packages with. If the 
+% version is 19.0, degrade by running
+% 
+% _>> pip uninstall pyarrow_
+% 
+% _>> pip install pyarrow == 18.1.0_
+% 
+% 
+% 
+% If MARS finished succesfully then you can find the results in the resultMars 
+% directory. 
+%% 
+% * metrics - For each taxonomic level, various metric such as alpha and beta 
+% diversity are calculated.
+% * normalized_mapped - For each taxonomic level, only the mapped taxa, abundances 
+% are not renormalised and still have the values from the pre-mapping normalisation. 
+% Columns do not add up to 1
+% * normalized_preMapped - For each taxonomic level, all the taxa are normalised 
+% to the total reads. Columns add up to 1.
+% * normalized_unMapped - For each taxonomic level, only the unmapped taxa, 
+% abundances are not renormalised and still have the values from the pre-mapping 
+% normalisation. Columns do not add up to 1.
+% * renornmalized_mapped_forModelling - For  each taxonomic level, the mapped 
+% taxa are renormalised so that each column adds up to 1.
+%% 
+% The file renormalized_mapped_forModelling_species.csv (file extension can 
+% change based on user input) in the ”renormalized_mapped_forModelling” directory 
+% is used as input to create community microbiome models. We can expect for about 
+% 70-80% of the total reads to be able to be mapped to the AGORA2 database if 
+% you use whole-genome shotgun data. Using 16s sequencing, this can drop to 30-40%, 
+% mostly because many of the reads do not have information on the species level 
+% and are automatically discarded.
+% 
+% NOTE: If in the normalised_unMappedfile_species file has many species absent 
+% it might be worthwile to see if homosynonyms can be found. You can either do 
+% this manually or run your list of absent species throught the MARS-ANT pipeline 
+% that checks for homosynonyms and presence in the AGORA2 resources. <https://mars-pipeline.streamlit.app. 
+% https://mars-pipeline.streamlit.app.> Again If the online app is used, please 
+% store the files in the appropriate location in your resultDir we defined at 
+% the beginning of this part of the tutorial. This allows for seemless integration 
+% with the other function and eliminates the need to generate new path variables. 
+% If you did fine homosynomys manually, you will need to adjust the names of your 
+% taxonomic assignments in either the readsTable or the taxaTable and rerun MARS.
+%% Section 3: Creating microbiome community models
+% In this section we will create community microbiome models using the Microbiome 
+% Modelling Toolbox 2.0 [3]. We will use here pan-species models from the AGORA2 
+% resource [2]. Pan-species means that all the strains of a species were combined 
+% into one general model that has all the metabolic capabilities of the individual 
+% strains. This is done as metagenomic sequencing usually can only distinguish 
+% up untill the species level. We will explain how to pipeline generates community 
+% metabolic models and how to call on the pipeline (MgPipe). The microbiome modelling 
+% toolbox does the following:
+%% 
+% * It transforms all microbial reconstructions present in the relative abundance 
+% file. The external compartment is changed from [e] to [u] and reactions names 
+% are adapted. This is done to prepare the models to exchange with the internal 
+% environment of the microbiome [u].
+% * All metabolites that each microbial reconstruction can exchange with its 
+% environment are stored
+% * All reactions present in each reconstruction are stored as well as their 
+% associated subsystems. These will be used to calculate reactionsPresence, reactionAbundance 
+% and subsystemAbundance and can be used to describe the metabolic capabilities 
+% of indiviual microbioem models.
+% * All microbe reconstructions that are present in a sample are added together 
+% in one big model. The reconstructions can exchange metabolites in the [u] compartment 
+% created in the beginning of the function. The microbiome model can exchange 
+% metabolites with the outside environemt by transporting metabolites from [u] 
+% to [e] and vice versa.
+% * A microbiome biomass reaction is formulated which looks like: a microbe1 
+% + b micobre2 + c microbe3 + ... The letters a,b and c are the relative abundance 
+% for the respective microbes as found in the relative abundance file we calculated 
+% via MARS.
+% * A standard diet is added to the microbiome models and checked if the total 
+% growth rate of 1 microbiome exchange per day (read as 1 fecal exchange per day) 
+% can be reached.
+% * Statistics on total amount of reactions, metabolites and microbes for each 
+% microbiome are collected and plotted in violin plots.
+%% 
+% To run MgPipe we need to understand the inputs required. NOTE: we here only 
+% use a small subset of inputs for MgPipe, if you want a more detailed explanation 
+% of the various inputs for the pipeline please look at <https://github.com/opencobra/COBRA.tutorials/tree/0d5becf7171844e53d3d43437035917a2bd9cc61/analysis/microbiomeModelingToolbox. 
+% https://github.com/opencobra/COBRA.tutorials/tree/0d5becf7171844e53d3d43437035917a2bd9cc61/analysis/microbiomeModelingToolbox.> 
+% Which is also a tutorial in the COBRA toolbox.
+% 
+% Required inputs
+%% 
+% * panModelsPath - The path to the directory with the pan-species models. These 
+% can be downloaded from xx
+% * relAbunFilePath - The path to the file with the AGORA2 mapped relative abundances. 
+% This is the present_species.csv file created by MARS in section 2. If the file 
+% is stored in the "present" directory in the "resultMars" directory, the variable 
+% relAbunFile in the paths variable can be used. Otherwise you have to define 
+% it yourself
+% * computeProfiles - A boolean (true or false) that tells the pipeline if we 
+% want to calculate the exctretion and uptake profiles of the microbiome models. 
+% We will not do this during this tutorial. However if you are more interested 
+% in the microbiome output, you can put this variable to true. This is a time-consuming 
+% step and is sped-up by using ibm_cplex as solver. For more information on the 
+% extra output if this is set to true look at this tutorial in the COBRA toolbox 
+% <https://github.com/opencobra/COBRA.tutorials/tree/0d5becf7171844e53d3d43437035917a2bd9cc61/analysis/microbiomeModelingToolbox 
+% https://github.com/opencobra/COBRA.tutorials/tree/0d5becf7171844e53d3d43437035917a2bd9cc61/analysis/microbiomeModelingToolbox>
+%% 
+% Optional inputs
+%% 
+% * numWorkersCreation - Number of workers you want to use for parellelisation. 
+% More workers means faster computing times. If you are unsure about the value, 
+% follow instructions in the code below. That will help make a decision.
+% * mgPipeRes - The path where the mgpipe results and the microbiome community 
+% models will be stored. The directory is stored in the paths variable created 
+% in section 1
+%% 
+% We know how MgPipe works and which inputs we need, we will now define the 
+% variables.
+
+% The path to the pan-species directory
+% e.g., 'C:/Users/Owner/APOLLOAGORA/panSpecies'
+panModelsPath = '';
+
+% If the relative abundance file is not in the correct MARS folder remove
+% the % in front of line 71 and set the correct path
+% relAbundFilePath = 'C:Users/User/folder/present/present_species.csv'
+
+% Set computeProfiles variable
+computeProfiles = false;
+
+% Set mgPipeRes variable
+mgPipeResPath = paths.mgPipe.outputPathMgPipe;
+%% 
+% It can be difficult if you are unfamiliar with the concept to define the number 
+% of workers you want to use. Here as some tips you can use. Running "feature('numcores')" 
+% will tell you the amount of available cores on your device. An automatic way 
+% of chosing your amount of workers is by taking 80% of the available cores on 
+% your device which leaves cores available for non-MATLAB related tasks. If working 
+% on a cluster or if the device is not required for anythin else, take all available 
+% cores. This is recommended when the numCores is greater than 4. If smaller you 
+% want want to set the amount of cores to 2 or 3. You cannot go lower than 2 workers. 
+% Below is the code that sets the numworkers for you. 
+
+% Find how many available cores you have
+numCores = feature('numcores')
+% Set the number of workers manually. You can change this value.
+numWorkersCreation = 10;
+
+% Remove the % at line 106 if you want to use all cores. This will overwrite
+% the workers set in line 104.
+% numWorkersCreation = numCores;
+
+% Remove the % at line 108 if you want to use 80% of the cores. This will overwrite
+% the workers set in line 104 or 108 if active.
+% numWorkersCreation = floor(feature('numCores')*0.8);
+%% 
+% Now that we have set all our inputs we can run MgPipe with the initMgPipe.m 
+% function.
+
+% Run MgPipe COPY IN THE COMMAND WINDOW AND RUN FROM THERE. 
+% IF RUN IN MLX IT WILL FREEZE YOUR MLX FILE AND YOU WILL NEED TO RESTART MATLAB
+% AND COPY AND PASTE THE ENTIRE FILE TO A NEW.MLX VERSION
+% initMgPipe(panModelsPath, relAbunFilePath, computeProfiles, "numWorkers", numWorkersCreation, 'resPath', ...
+% paths.mgPipe.outputPathMgPipe, 'solver', solver);
+%% 
+% Warnings might pop up such as
+%% 
+% * Individual health status not declared. Analysis will ignore that
+% * Directory already exists
+% * The temporary variable 'loadDiet' will be cleared at the beginning of each 
+% iteration of the parfor-loop. If 'loadDiet' is used before it is set, a runtime 
+% error will occur
+% * Column headers from the file were modified to make them valid MATLAB identifiers 
+% before creating variable names for the table. The original column headers are 
+% saved in the VariableDescriptions property. Set 'VariableNamingRule' to 'preserve' 
+% to use the original column headers as table variable names.
+% * Reaction x not in model
+% * File 'simRes.mat' not found.
+% * File 'intRes.mat' not found.
+%% 
+% These warnings are expected to occur and can be safely ignored. Press Run 
+% Section in the Live Editor to run the MgPipe function.
+% 
+% If the followig errors occurs, follow the advice below
+% 
+% *ERROR: Modelname cant be found (you dont have the model in the directory 
+% or there is some sort of misspelling in the filenames)*
+% 
+% If no errors popped up the microbiome models should now have been created. 
+% You can find them in your output folder under mgpipeResults. There you also 
+% find the csv files:
+%% 
+% * GrowthRates - It gives the maximum growth rate of each microbiome under 
+% a rich diet and a pre-defined diet. 
+% * ModelStatistics - for each microbiome model it gives the total amount of 
+% reactions, metabolites and microbes. MicrobiomeModel_sizes.png is a visual representation 
+% of this information.
+% * ModelStatsSummary - gives you the mean, median, min and max of the amount 
+% reactions metabolites and microbes considering all microbiome models. 
+% * ReactionAbundance - gives the relative abundance of a reaction for each 
+% metabolic reaction in each microbiome model. Reaction abundances are based on 
+% the relative abundance of the microbe and wether or not the microbe has that 
+% specific reaction.
+% * ReactionPresence - says if a reaction is present in at least 1 microbe in 
+% a microbiome model.
+% * SubsystemAbundance - the same as reactionAbundance, however now all reactions 
+% are assigned a subsystem and abundances for the same subsystems are summed.
+%% 
+% You will also find .mat files of the microbiome models unconstrained (mirobiota_model_samp_sample 
+% ID) or diet constrained (folder Diet, microbiota_model_diet_sample ID). The 
+% individual microbe modelsused to create the microbiome models are stored in 
+% the modelStorage folder. infeasModels.mat has information on models that could 
+% not produce biomass. mapInfo.mat is used to hotstart the pipeline in case there 
+% were errors or MATLAB was unexpectly stopped or crashed during execution of 
+% the pipeline.
+%% References (APA style)
+% [1] Hulshof, T., Nap, B., Martinelli, F., & Thiele, I. (2024). Microbial abundances 
+% retrieved from sequencing data—automated NCBI taxonomy  (MARS): a pipeline to 
+% create relative microbial abundance data for the  microbiome modelling toolbox 
+% and utilising homosynonyms for efficient  mapping to resources. _Bioinformatics 
+% Advances_, vbae068.
+% 
+% [2] Heinken, A., Acharya, G., Ravcheev, D. A., Hertel, J., Nyga, M., Okpala, 
+% O. E., ... & Thiele, I. (2020). AGORA2: Large scale reconstruction  of the microbiome 
+% highlights wide-spread drug-metabolising capacities. _BioRxiv_, 2020-11.
+% 
+% [3] Heinken, A., & Thiele, I. (2022). Microbiome Modelling Toolbox 2.0:  efficient, 
+% tractable modelling of microbiome communities. _Bioinformatics_, _38_(8), 2367-2368.
+##### SOURCE END #####
+-->
+</div></body></html>
