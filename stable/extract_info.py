@@ -23,10 +23,22 @@ def get_file_info(file_path):
 
             template_content = template_content.replace('IFRAMETUTORIAL.html', relative_path)
             template_content = template_content.replace('((TutorialName))', base_name)
-            template_content = template_content.replace('((TutorialPDFpath))', f'https://github.com/opencobra/COBRA.tutorials/tree/master/{relative_path.replace(".html", ".pdf")}')
-            template_content = template_content.replace('((TutorialMLXpath))', f'https://github.com/opencobra/COBRA.tutorials/tree/master/{relative_path.replace(".html", ".mlx")}')
-            template_content = template_content.replace('((TutorialMATpath))', f'https://github.com/opencobra/COBRA.tutorials/tree/master/{relative_path.replace(".html", ".m")}')
-            template_content = template_content.replace('((TutorialGITHUBpath))', f'https://github.com/opencobra/COBRA.tutorials/tree/master/{"/".join(file_path.split("/")[2:-1])}')
+            template_content = template_content.replace(
+                '((TutorialPDFpath))',
+                f'https://github.com/opencobra/COBRA.tutorials/tree/master/{relative_path.replace(".html", ".pdf")}'
+            )
+            template_content = template_content.replace(
+                '((TutorialMLXpath))',
+                f'https://github.com/opencobra/COBRA.tutorials/tree/master/{relative_path.replace(".html", ".mlx")}'
+            )
+            template_content = template_content.replace(
+                '((TutorialMATpath))',
+                f'https://github.com/opencobra/COBRA.tutorials/tree/master/{relative_path.replace(".html", ".m")}'
+            )
+            template_content = template_content.replace(
+                '((TutorialGITHUBpath))',
+                f'https://github.com/opencobra/COBRA.tutorials/tree/master/{"/".join(file_path.split("/")[2:-1])}'
+            )
 
             if os.path.basename(file_path).startswith('tutorial_'):
                 new_file_path = os.path.join('stable/tutorials', os.path.basename(file_path))
@@ -68,8 +80,17 @@ def update_index_html(section, file_name, heading):
             new_li.append(new_a)
             ul.append(new_li)
 
+            # Sort the list items alphabetically by visible text
+            sorted_lis = sorted(
+                ul.find_all('li'),
+                key=lambda li: li.get_text().strip().lower()
+            )
+            ul.clear()
+            for li in sorted_lis:
+                ul.append(li)
+
     with open('stable/tutorials/index.html', 'w', encoding='utf-8') as f:
-        f.write(str(index_soup.prettify()))
+        f.write(index_soup.prettify())
 
     if duplicates_removed:
         print("Duplicate links found and removed")
