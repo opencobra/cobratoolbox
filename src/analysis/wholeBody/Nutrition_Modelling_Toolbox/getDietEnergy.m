@@ -38,13 +38,13 @@ databaseType = parser.Results.databaseType;
 
 if strcmp(databaseType, 'metabolites')
     % Load metabolite category tables
-    load("usda2vmhInfoFile.mat", "usda2vmhInfoFile");
+    load('usda2024_infofile.mat', "nutrientVmhTable")
     load('frida2024_infoFile.mat', "nutrientInfoFileFrida");
-    usda2vmhInfoFile = usda2vmhInfoFile(usda2vmhInfoFile.metBool ==1,:);
+    nutrientVmhTable = nutrientVmhTable(nutrientVmhTable.metBool ==1,:);
     nutrientInfoFileFrida = nutrientInfoFileFrida(nutrientInfoFileFrida.metBool==1,:);
 
     % Combine the two and extract the unique values
-    metInfo = [usda2vmhInfoFile.vmhID,usda2vmhInfoFile.macroCategory;
+    metInfo = [nutrientVmhTable.vmhID,nutrientVmhTable.macroCategory;
         nutrientInfoFileFrida.vmhID, nutrientInfoFileFrida.macroCategory];
     [~, uniqueIdx] = unique(metInfo(:,1));
     metInfo = metInfo(uniqueIdx, :);
@@ -56,11 +56,11 @@ if strcmp(databaseType, 'metabolites')
     vmhDatabase = loadVMHDatabase;
     metaboliteData = cell2table(vmhDatabase.metabolites);
 
-    % Extract the metabolite formalas of metabolites
+    % Extract the metabolite formulas of metabolites
     [~, metidx] = ismember(metInfo(:,1), metaboliteData.Var1);
     formulas = metaboliteData.Var4(metidx);
 
-    % Obtain the molecular mass from the formulas in gram/mol
+    % Obtain the molecular mass from the formulas in grams/mol
     mws = getMolecularMass(formulas);
 
     % Add molecular weights for cobalt and nickel
@@ -113,14 +113,14 @@ else
     usdaItems = diet(strcmp(databaseType,'usda'),:);
     fridaItems = diet(strcmp(databaseType,'frida'),:);
 
-    %Sum any duplicate entries in diet
+    %Sum any duplicate entries in the diet
     if size(unique(usdaItems(:,1)),1) ~= size(usdaItems,1)
         fprintf('The same food ID has been found in the diet. Adding the consumed weights together');
         summedDiet = groupsummary(cell2table(usdaItems),1,"sum");
         usdaItems = [summedDiet{:,1},num2cell(summedDiet{:,3})];
     end
 
-    %Sum any duplicate entries in diet
+    %Sum any duplicate entries in the diet
     if size(unique(fridaItems(:,1)),1) ~= size(fridaItems,1)
         fprintf('The same food ID has been found in the diet. Adding the consumed weights together');
         summedDiet = groupsummary(cell2table(fridaItems),1,"sum");
@@ -133,7 +133,7 @@ else
     if ~isempty(usdaItems)
         % Load the macro table from the USDA fooddata central database
         load("USDA2024_100gMacros.mat", "foodMacroUsda");
-        % initalise the energy variable
+        % initialise the energy variable
         energy = 0;
         for i = 1:size(usdaItems,1)
             % Obtain the kcal for the food item
@@ -160,9 +160,9 @@ else
                 warning(strcat('The following USDA food ID does not seem to have a KCAL assocatiated with it. Please take note:', string(usdaItems{i,1})));
             end
             % Divide the calories for each food item by 100 to get it /1g of
-            % food item and mulitply by the amount of food eaten
+            % food item and multiply by the amount of food eaten
             spefCal = (totCal/100) * usdaItems{i,2};
-            % Caculate the total amount of calories from the input
+            % Calculate the total amount of calories from the input
             energy = energy + spefCal;
         end
     end
@@ -184,9 +184,9 @@ else
             end
             
             % Divide the calories for each food item by 100 to get it /1g of
-            % food item and mulitply by the amount of food eaten
+            % food item and multiply by the amount of food eaten
             spefCal = (totCal/100) * fridaItems{i,2};
-            % Caculate the total amount of calories from the input
+            % Calculate the total amount of calories from the input
             energy = energy + spefCal;
         end
     end
