@@ -1,9 +1,12 @@
 .. raw:: html
 
 
-The COBRA Toolbox |br| COnstraint-Based Reconstruction and Analysis Toolbox
----------------------------------------------------------------------------
+.. raw:: html
 
+   <h1 align="center">
+   The COBRA Toolbox<br>
+   COnstraint-Based Reconstruction and Analysis Toolbox
+   </h1>
 .. raw:: html
 
 The COBRA Toolbox is a comprehensive suite of functions for constraint-based modeling of biological networks. It supports the analysis of genome-scale metabolic reconstructions and other constraint-based models in MATLAB.
