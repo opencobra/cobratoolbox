@@ -26,7 +26,7 @@ if ~isempty(ruleString)
         % now, either our x is not large enough, or the formula is invalid.
         % lets grab the largest number from the formula
         try
-            res = regexp(ruleString,'tokens');
+            res = regexp(ruleString, '(\d+)', 'tokens');
             vals = cellfun(@(x) str2num(x{1}),res);
             % update x to the given values 
             x = true(max(vals),1);

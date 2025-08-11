@@ -1,15 +1,16 @@
 function makeViolinPlots(sampleData, sampleInformation, varargin)
 % This function creates violin plots of input data (e.g., community model
 % fluxes) while separating the data into two or more violins based on
-% available sample stratification information.
+% available sample stratification information. If no sample information is
+% available, then single violins are created.
 %
 % REQUIRED INPUTS
 % sampleData           Table with input data to analyze (e.g., fluxes) with
 %                      computed features as rows and sample IDs as columns
-% sampleInformation    Table with information on analyzed samples including
-%                      group classification with sample IDs as rows
 %
 % OPTIONAL INPUTS
+% sampleInformation    Table with information on analyzed samples including
+%                      group classification with sample IDs as rows
 % stratification       Column header containing the desired group
 %                      classification in sampleInformation table. If not
 %                      provided, the second column will be used.
@@ -68,120 +69,188 @@ for i=2:size(sampleData,1)
 end
 sampleData(delArray,:)=[];
 
-sampleStratification = {};
-for i=2:size(sampleData,2)
-    sampleStratification{i-1,1}=sampleInformation{find(strcmp(sampleInformation(:,1),sampleData{1,i})),stratCol};
-end
-
-% define colors for boxplots
-if strcmp(plotType,'Boxplot')
-    groups = unique(sampleStratification);
-    if length(groups)==2
-        cols =[1 0 0
-            0 0 1];
-    elseif length(groups)==3
-        cols =[0 1 0
-            1 0 0
-            0 0 1];
-    else
-        cols = [];
-        for j=1:length(groups)
-            cols(j,:)=[rand rand rand];
+% if there is no sample data, create single violins
+if isempty(sampleInformation)
+    for i=2:size(sampleData,1)
+        % get the predicted metabolite
+        varname=strrep(sampleData{i,1},'EX_','');
+        varname=strrep(varname,'[fe]','');
+        varname=strrep(varname,'Host_','');
+        varname=strrep(varname,'_eb','');
+        if ~isempty(find(strcmp(database.metabolites(:,1),varname)))
+            varname=database.metabolites{find(strcmp(database.metabolites(:,1),varname)),2};
         end
-    end
-end
-
-for i=2:size(sampleData,1)
-    % get the predicted metabolite
-    varname=strrep(sampleData{i,1},'EX_','');
-    varname=strrep(varname,'[fe]','');
-    if ~isempty(find(strcmp(database.metabolites(:,1),varname)))
-        varname=database.metabolites{find(strcmp(database.metabolites(:,1),varname)),2};
-    end
-    % create plots
-    % if there are nonzero values in each stratification group and the
-    % values aren't all the same
-    strats=unique(sampleStratification);
-    
-    if contains(version,'(R202') % for Matlab R2020a and newer
-        plotdata=cell2mat(sampleData(i,2:end))';
-    else
-        plotdata=str2double(sampleData(i,2:end))';
-    end
-    
-    for j=1:length(strats)
-        valsinstrat(j)=sum(plotdata(find(strcmp(sampleStratification,strats{j}))));
-        uniquevals(j)=numel(unique(plotdata(find(strcmp(sampleStratification,strats{j})))));
-        % workaround if all values in one category are zero
-        if abs(valsinstrat(j))<0.0000001
-            plotdata(find(strcmp(sampleStratification,strats{j}))) = 0.0000001;
-        end
-    end
+        % create plots
         
-    if ~any(uniquevals<2)
-        figure
-        hold on
-        if strcmp(plotType,'ViolinPlot')
-            violinplot(plotdata,sampleStratification);
-        elseif strcmp(plotType,'Boxplot')
-            boxplot(plotdata,sampleStratification)
-            h = findobj(gca,'Tag','Box');
-            for j=1:length(h)
-                patch(get(h(j),'XData'),get(h(j),'YData'),cols(j,:),'FaceAlpha',.5);
+        if contains(version,'(R202') % for Matlab R2020a and newer
+            plotdata=cell2mat(sampleData(i,2:end))';
+        else
+            plotdata=str2double(sampleData(i,2:end))';
+        end
+        uniquevals=numel(unique(plotdata));
+        
+        if uniquevals>2
+            figure
+            hold on
+            if strcmp(plotType,'ViolinPlot')
+                violinplot(plotdata);
+            elseif strcmp(plotType,'Boxplot')
+                boxplot(plotdata)
+            else
+                error('Invalid entry for plot type!')
             end
-        else
-            error('Invalid entry for plot type!')
-        end
-        if length(strats) > 3
-            set(gca, 'FontSize', 10)
-        else
             set(gca, 'FontSize', 16)
-        end
-        if length(strats) > 6
-            xtickangle(45)
-        end
-        
-        ylim([min(plotdata) max(plotdata)])
-        
-        if ~isempty(unit)
-            h=ylabel(unit);
+            ylim([min(plotdata) max(plotdata)])
+            
+            if ~isempty(unit)
+                h=ylabel(unit);
+                set(h,'interpreter','none')
+            end
+            h=title(varname,'FontSize',16,'FontWeight','bold');
             set(h,'interpreter','none')
-        end
-        h=title(varname,'FontSize',16,'FontWeight','bold');
-        set(h,'interpreter','none')
-        set(gca,'TickLabelInterpreter','none')
-        filename=strrep(varname,' ','_');
-        filename=strrep(filename,'(','_');
-        filename=strrep(filename,')','_');
-        filename=strrep(filename,'(','_');
-        filename=strrep(filename,'-','_');
-        filename=strrep(filename,':','_');
-        filename=strrep(filename,'/','_');
-        filename=strrep(filename,'___','_');
-        filename=strrep(filename,'__','_');
-
-        % some filenames may be too long
-        if length(filename)>25
-            filename=filename(1:25);
-        end
-
-        if ~isempty(plottedFeature)
-            featName=[strrep(plottedFeature,' ','_') '_'];
-        else
-            featName='';
-        end
-
-        if ~isempty(stratification)
-
-            print([featName stratification '_' filename],'-dpng','-r300')
-            % print('-bestfit',[featName stratification '_' filename],'-dpdf','-r300')
-            % append_pdfs([featName stratification '_' 'All_plots.pdf'],[featName stratification '_' filename '.pdf']);
-        else
+            set(gca,'TickLabelInterpreter','none')
+            filename=strrep(varname,' ','_');
+            filename=strrep(filename,'(','_');
+            filename=strrep(filename,')','_');
+            filename=strrep(filename,'(','_');
+            filename=strrep(filename,'-','_');
+            filename=strrep(filename,':','_');
+            filename=strrep(filename,'/','_');
+            filename=strrep(filename,'___','_');
+            filename=strrep(filename,'__','_');
+            
+            % some filenames may be too long
+            if length(filename)>25
+                filename=filename(1:25);
+            end
+            
+            if ~isempty(plottedFeature)
+                featName=[strrep(plottedFeature,' ','_') '_'];
+            else
+                featName='';
+            end
+            
             print([featName filename],'-dpng','-r300')
-            % print('-bestfit',[featName filename],'-dpdf','-r300')
-            % append_pdfs([featName 'All_plots.pdf'],[featName filename '.pdf']);
+            close all
         end
-        close all
+    end
+else
+    % create violins by category
+    sampleStratification = {};
+    for i=2:size(sampleData,2)
+        sampleStratification{i-1,1}=sampleInformation{find(strcmp(sampleInformation(:,1),sampleData{1,i})),stratCol};
+    end
+    
+    % define colors for boxplots
+    if strcmp(plotType,'Boxplot')
+        groups = unique(sampleStratification);
+        if length(groups)==2
+            cols =[1 0 0
+                0 0 1];
+        elseif length(groups)==3
+            cols =[0 1 0
+                1 0 0
+                0 0 1];
+        else
+            cols = [];
+            for j=1:length(groups)
+                cols(j,:)=[rand rand rand];
+            end
+        end
+    end
+    
+    for i=2:size(sampleData,1)
+        % get the predicted metabolite
+        varname=strrep(sampleData{i,1},'EX_','');
+        varname=strrep(varname,'[fe]','');
+        if ~isempty(find(strcmp(database.metabolites(:,1),varname)))
+            varname=database.metabolites{find(strcmp(database.metabolites(:,1),varname)),2};
+        end
+        % create plots
+        % if there are nonzero values in each stratification group and the
+        % values aren't all the same
+        strats=unique(sampleStratification);
+        
+        if contains(version,'(R202') % for Matlab R2020a and newer
+            plotdata=cell2mat(sampleData(i,2:end))';
+        else
+            plotdata=str2double(sampleData(i,2:end))';
+        end
+        
+        for j=1:length(strats)
+            valsinstrat(j)=sum(plotdata(find(strcmp(sampleStratification,strats{j}))));
+            uniquevals(j)=numel(unique(plotdata(find(strcmp(sampleStratification,strats{j})))));
+            % workaround if all values in one category are zero
+            if abs(valsinstrat(j))<0.0000001
+                plotdata(find(strcmp(sampleStratification,strats{j}))) = 0.0000001;
+            end
+        end
+        
+        if ~any(uniquevals<2)
+            figure
+            hold on
+            if strcmp(plotType,'ViolinPlot')
+                violinplot(plotdata,sampleStratification);
+            elseif strcmp(plotType,'Boxplot')
+                boxplot(plotdata,sampleStratification)
+                h = findobj(gca,'Tag','Box');
+                for j=1:length(h)
+                    patch(get(h(j),'XData'),get(h(j),'YData'),cols(j,:),'FaceAlpha',.5);
+                end
+            else
+                error('Invalid entry for plot type!')
+            end
+            if length(strats) > 3
+                set(gca, 'FontSize', 10)
+            else
+                set(gca, 'FontSize', 16)
+            end
+            if length(strats) > 6
+                xtickangle(45)
+            end
+            
+            ylim([min(plotdata) max(plotdata)])
+            
+            if ~isempty(unit)
+                h=ylabel(unit);
+                set(h,'interpreter','none')
+            end
+            h=title(varname,'FontSize',16,'FontWeight','bold');
+            set(h,'interpreter','none')
+            set(gca,'TickLabelInterpreter','none')
+            filename=strrep(varname,' ','_');
+            filename=strrep(filename,'(','_');
+            filename=strrep(filename,')','_');
+            filename=strrep(filename,'(','_');
+            filename=strrep(filename,'-','_');
+            filename=strrep(filename,':','_');
+            filename=strrep(filename,'/','_');
+            filename=strrep(filename,'___','_');
+            filename=strrep(filename,'__','_');
+            
+            % some filenames may be too long
+            if length(filename)>25
+                filename=filename(1:25);
+            end
+            
+            if ~isempty(plottedFeature)
+                featName=[strrep(plottedFeature,' ','_') '_'];
+            else
+                featName='';
+            end
+            
+            if ~isempty(stratification)
+                
+                print([featName stratification '_' filename],'-dpng','-r300')
+                % print('-bestfit',[featName stratification '_' filename],'-dpdf','-r300')
+                % append_pdfs([featName stratification '_' 'All_plots.pdf'],[featName stratification '_' filename '.pdf']);
+            else
+                print([featName filename],'-dpng','-r300')
+                % print('-bestfit',[featName filename],'-dpdf','-r300')
+                % append_pdfs([featName 'All_plots.pdf'],[featName filename '.pdf']);
+            end
+            close all
+        end
     end
 end
 

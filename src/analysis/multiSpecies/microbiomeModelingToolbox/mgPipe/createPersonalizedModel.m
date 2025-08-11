@@ -1,4 +1,4 @@
-function [createdModels] = createPersonalizedModel(abundance, resPath, model, sampNames, orglist, couplingMatrix, host, hostBiomassRxn)
+function [createdModels] = createPersonalizedModel(abundance, resPath, model, sampNames, orglist, couplingMatrix, host, hostBiomassRxn, hostBiomassRxnFlux)
 % This function creates personalized models from integration of given
 % organisms abundances into the previously built global setup. Coupling
 % constraints are also added for each organism. All the operations are
@@ -7,7 +7,7 @@ function [createdModels] = createPersonalizedModel(abundance, resPath, model, sa
 %
 % USAGE:
 %
-%    [createdModels] = createPersonalizedModel(abundance, resPath, model, sampNames, orglist, host, hostBiomassRxn)
+%    [createdModels] = createPersonalizedModel(abundance, resPath, model, sampNames, orglist, host, hostBiomassRxn, hostBiomassRxnFlux)
 %
 % INPUTS:
 %   abundance:          table with abundance information
@@ -21,6 +21,8 @@ function [createdModels] = createPersonalizedModel(abundance, resPath, model, sa
 %   host:               Contains the host model if path to host model was
 %                       defined. Otherwise empty.
 %   hostBiomassRxn:     char with name of biomass reaction in host (default: empty)
+%   hostBiomassRxnFlux: double with the desired upper bound on flux through the host
+%                       biomass reaction (default: 1)
 %
 % OUTPUT:
 %   createdModels:      created personalized models
@@ -102,6 +104,37 @@ if isempty(mapP)
         pruned_model.C(matInd1,matInd2) = couplingMatrixRed{i,1};
         
         matStart=matStart+size(couplingMatrixRed{i,1},1);
+    end
+    
+    % set constraints on host exchanges if present
+    if ~isempty(host)
+        hostEXrxns=find(strncmp(pruned_model.rxns,'Host_EX_',8));
+        pruned_model=changeRxnBounds(pruned_model,pruned_model.rxns(hostEXrxns),0,'l');
+        % constrain blood exchanges but make exceptions for metabolites that should be taken up from
+        % blood
+        takeupExch={'h2o','hco3','o2','co2'};
+        takeupExch=strcat('Host_EX_', takeupExch, '_eb');
+        pruned_model=changeRxnBounds(pruned_model,takeupExch,-100,'l');
+        % close internal exchanges except for human metabolites known
+        % to be found in the intestine
+        hostIEXrxns=find(strncmp(pruned_model.rxns,'Host_IEX_',9));
+        pruned_model=changeRxnBounds(pruned_model,pruned_model.rxns(hostIEXrxns),0,'l');
+        takeupExch={'gchola','tdchola','tchola','dgchol','34dhphe','5htrp','Lkynr','f1a','gncore1','gncore2','dsT_antigen','sTn_antigen','core8','core7','core5','core4','ha','cspg_a','cspg_b','cspg_c','cspg_d','cspg_e','hspg'};
+        takeupExch=strcat('Host_IEX_', takeupExch, '[u]tr');
+        pruned_model=changeRxnBounds(pruned_model,takeupExch,-1000,'l');
+        % close host sink and demand reactions
+        if ~isempty(find(contains(pruned_model.rxns,'Host_sink_')))
+            hostSinkRxns=find(strncmp(pruned_model.rxns,'Host_sink_',10));
+        elseif ~isempty(find(contains(pruned_model.rxns,'Host_SK_')))
+            hostSinkRxns=find(strncmp(pruned_model.rxns,'Host_SK_',8));
+        end
+        pruned_model=changeRxnBounds(pruned_model,pruned_model.rxns(hostSinkRxns),0,'b');
+        hostDMRxns=find(strncmp(pruned_model.rxns,'Host_DM_',8));
+        pruned_model=changeRxnBounds(pruned_model,pruned_model.rxns(hostDMRxns),0,'l');
+        % set a minimum and a limit for flux through host biomass
+        % reaction
+        pruned_model=changeRxnBounds(pruned_model,['Host_' hostBiomassRxn],0.001,'l');
+        pruned_model=changeRxnBounds(pruned_model,['Host_' hostBiomassRxn],hostBiomassRxnFlux,'u');
     end
     
     % Coupling constraints for host (optional but recommended)

@@ -263,6 +263,13 @@ allFoods.description = strrep(allFoods.description, ';', ',');
 allFoods.description = strrep(allFoods.description, '''', ' ');
 allFoods.description = strrep(allFoods.description, "'", '');
 
+foodCats = unique(allFoods.data_type);
+for i = 1:size(foodCats,1)
+    if ~any(strcmp(foodSource2Use, foodCats(i)))
+        allFoods(strcmp(allFoods.data_type, foodCats(i)),:) = [];
+    end
+end
+
 save([outputDir, filesep, 'USDAFoodItems.mat'], 'allFoods');
 
 end

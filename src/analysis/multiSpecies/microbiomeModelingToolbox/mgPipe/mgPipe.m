@@ -90,7 +90,7 @@ if isempty(mapP)
 
     % The number of microbeNames, their names, the number of samples and their identifiers
     % are automatically detected from the input file.
-    [sampNames,microbeNames,exMets]=getIndividualSizeName(abunFilePath,modPath);
+    [sampNames,microbeNames]=getIndividualSizeName(abunFilePath,modPath);
 
     % remove rows of organisms that are not present in any sample
     if contains(version,'(R202') % for Matlab R2020a and newer
@@ -103,7 +103,9 @@ if isempty(mapP)
 
     % Extracellular spaces simulating the lumen are built and stored for
     % each microbe.
-    [activeExMets,couplingMatrix]=buildModelStorage(microbeNames, modPath, dietFilePath, adaptMedium, includeHumanMets, numWorkers, pruneModels, biomasses);
+    % Extracellular metabolites that can carry flux in at least one
+    % organism are also computed.
+    [exMets,couplingMatrix]=buildModelStorage(microbeNames, modPath, dietFilePath, adaptMedium, includeHumanMets, numWorkers, pruneModels, biomasses);
 
     % Computing reaction abundance and reaction presence
     [ReactionAbundance,ReactionPresence] = fastCalculateReactionAbundance(abunFilePath, modPath, {}, numWorkers);
@@ -148,10 +150,10 @@ if isempty(mapP)
 
     set(gca,'TickLabelInterpreter', 'none');
     title('Relative reaction abundances summarized by subsystem')
-    print(strcat(resPath, 'Subsystem_abundances'), figForm)
+    print(strcat(resPath, 'Subsystem_abundances'), figForm,'-r300')
 
     % save mapping info
-    save([resPath filesep 'mapInfo.mat'], 'mapP', 'exMets', 'activeExMets', 'sampNames', 'microbeNames', 'couplingMatrix', 'abundance','-v7.3')
+    save([resPath filesep 'mapInfo.mat'], 'mapP', 'exMets', 'sampNames', 'microbeNames', 'couplingMatrix', 'abundance','-v7.3')
 end
 
 %end of trigger for Autoload
@@ -222,7 +224,7 @@ for j=1:steps:length(sampNames)
     end
     getErrors={};
 
-    parfor i=j:j+endPnt
+    for i=j:j+endPnt
         % Each personalized model will be created separately.
         % get the list of models for each sample and remove the ones not in
         % this sample
@@ -246,7 +248,7 @@ for j=1:steps:length(sampNames)
             setupModel = fastSetupCreator(exMets, microbeNamesSample, host);
 
             % create personalized models for the batch
-            createdModel=createPersonalizedModel(abunRed,resPath,setupModel,sampNames(i,1),microbeNamesSample,couplingMatrixSample,host,hostBiomassRxn);
+            createdModel=createPersonalizedModel(abunRed,resPath,setupModel,sampNames(i,1),microbeNamesSample,couplingMatrixSample,host,hostBiomassRxn, hostBiomassRxnFlux);
             results=verifyModel(createdModel{1});
             getErrors{i} = results;
         end
@@ -275,7 +277,7 @@ end
 % also computed and saved in a file called "simRes".
 
 load([resPath filesep 'mapInfo.mat'])
-[exchanges, netProduction, netUptake, presolve, infeasModels] = microbiotaModelSimulator(resPath, exMets, sampNames, dietFilePath, hostPath, hostBiomassRxn, hostBiomassRxnFlux, numWorkers, rDiet, pDiet, computeProfiles, lowerBMBound, upperBMBound, includeHumanMets, adaptMedium, solver);
+[exchanges, netProduction, netUptake, presolve, infeasModels] = microbiotaModelSimulator(resPath, exMets, sampNames, dietFilePath, hostPath, numWorkers, rDiet, pDiet, computeProfiles, lowerBMBound, upperBMBound, includeHumanMets, adaptMedium, solver);
 % Finally, NMPCs (net maximal production capability) are computed in a metabolite
 % resolved manner and saved in a comma delimited file in the results folder. NMPCs
 % indicate the maximal production of each metabolite and are computing summing
@@ -294,13 +296,17 @@ end
 
 % get stats on microbiome models-number of reactions and metabolites
 for i=1:length(sampNames)
-    modelNames{i}=['microbiota_model_samp_' sampNames{i}];
+    if isempty(host)
+        modelNames{i}=['microbiota_model_samp_' sampNames{i}];
+    else
+        modelNames{i}=['host_microbiota_model_samp_' sampNames{i}];
+    end
 end
 
 if ~isempty(infoFilePath)
-    [modelStats,summary,statistics]=retrieveModelStats(resPath, modelNames, abunFilePath, numWorkers, infoFilePath);
+    [modelStats,summary,statistics]=retrieveModelStats(resPath, modelNames, abunFilePath, numWorkers, figForm, infoFilePath);
 else
-    [modelStats,summary,statistics]=retrieveModelStats(resPath, modelNames, abunFilePath, numWorkers);
+    [modelStats,summary,statistics]=retrieveModelStats(resPath, modelNames, abunFilePath, numWorkers, figForm);
 end
 writetable(cell2table(modelStats),[resPath filesep 'ModelStatistics.csv'], 'WriteVariableNames', false);
 writetable(cell2table(summary),[resPath filesep 'ModelStatsSummary.csv'], 'WriteVariableNames', false);

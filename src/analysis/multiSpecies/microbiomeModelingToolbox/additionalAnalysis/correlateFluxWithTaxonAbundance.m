@@ -37,6 +37,7 @@ function [FluxCorrelations, PValues, TaxonomyInfo] = correlateFluxWithTaxonAbund
 %                                     abundance data
 %                           01/2020:  adapted to be suitable for pan-models, and
 %                                     changed flux input to a csv file.
+%                           07/2025:  added automatic export of results
 
 % read the csv file with the abundance data
 abundance = readInputTableForPipeline(abundancePath);
@@ -60,6 +61,8 @@ if ~isempty(setdiff(fluxes(1,2:end),abundance(1,2:end)))
         error('Sample IDs in abundance and flux files do not agree!')
     end
 end
+
+mkdir('Taxon_Flux_Correlations')
 
 % load database
 database=loadVMHDatabase;
@@ -270,6 +273,15 @@ for t = 2:size(TaxonomyLevels, 1)
     TaxonomyInfo.(TaxonomyLevels{t})=TaxonomyReduced(IA,:);
 end
 
+% save all data as tables
+for t = 2:size(TaxonomyLevels, 1)
+    writetable(cell2table(FluxCorrelations.(TaxonomyLevels{t})),['Taxon_Flux_Correlations' filesep TaxonomyLevels{t} '_Correlations.csv'],'writeVariableNames',false)
+    writetable(cell2table(PValues.(TaxonomyLevels{t})),['Taxon_Flux_Correlations' filesep TaxonomyLevels{t} '_pValues.csv'],'writeVariableNames',false)
+    if t>1
+        writetable(cell2table(TaxonomyInfo.(TaxonomyLevels{t})),['Taxon_Flux_Correlations' filesep TaxonomyLevels{t} '_TaxonomicInformation.csv'],'writeVariableNames',false)
+    end
+end
+
 set(0, 'DefaultTextInterpreter', 'none')
 
 % Plot the calculated correlations.
@@ -278,7 +290,7 @@ for t = 1:length(TaxonomyLevels)
     data = str2double(data);
 
     if size(FluxCorrelations.(TaxonomyLevels{t}),2) > 5 && size(FluxCorrelations.(TaxonomyLevels{t}),1) > 5
-        if size(FluxCorrelations.(TaxonomyLevels{t}),2) < 50
+        if size(FluxCorrelations.(TaxonomyLevels{t}),2) < 20
             cgo = clustergram(data,...
                 'RowLabels', FluxCorrelations.(TaxonomyLevels{t})(2:end,1),...
                 'ColumnLabels', FluxCorrelations.(TaxonomyLevels{t})(1,2:end),...
@@ -300,7 +312,10 @@ for t = 1:length(TaxonomyLevels)
         h = plot(cgo);
         set(h,'TickLabelInterpreter','none');
         colorbar(h)
+        print(['Taxon_Flux_Correlations' filesep TaxonomyLevels{t} '_Correlations'],'-dpng','-r300')
     end
 end
+
+close all force
 
 end
