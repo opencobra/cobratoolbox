@@ -115,6 +115,11 @@ includeHumanMets = parser.Results.includeHumanMets;
 adaptMedium = parser.Results.adaptMedium;
 pruneModels = parser.Results.pruneModels;
 
+% do not provide host metabolites if host is included
+if ~isempty(hostPath)
+    includeHumanMets = false;
+end
+
 % check if the solver is defined by the user
 if ~isempty(solver)
     changeCobraSolver(solver, 'LP')
@@ -185,7 +190,7 @@ if ~strcmpi(resPath(end), filesep)
 end
 
 % define file type for images
-figForm = '-depsc';
+figForm = '-dpng';
 
 % Check for installation of parallel Toolbox
 try

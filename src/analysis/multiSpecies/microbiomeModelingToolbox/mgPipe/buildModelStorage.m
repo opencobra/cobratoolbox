@@ -122,11 +122,12 @@ for i = 1:size(microbeNames, 1)
         cd(currentDir)
         [minFlux,maxFlux]=fluxVariability(model,0,'max',ex_rxns);
     end
-    minflux=find(abs(minFlux) > 0.00000001);
-    maxflux=find(abs(maxFlux) > 0.00000001);
-    flux=union(minflux,maxflux);
-
-    pruned_ex_rxns = ex_rxns(flux);
+    
+    % get all exchange reactions that can carry minimal and/or maximal
+    % flux
+    minflux=ex_rxns(find(abs(minFlux) > 0.00000001));
+    maxflux=ex_rxns(find(abs(maxFlux) > 0.00000001));
+    pruned_ex_rxns=union(minflux,maxflux);
     pruned_ex_rxns=strrep(pruned_ex_rxns,'EX_','');
     pruned_ex_rxns=strrep(pruned_ex_rxns,'(e)','[e]');
     activeExMets = union(activeExMets,pruned_ex_rxns);
@@ -195,12 +196,17 @@ parfor i = 1:size(microbeNames, 1)
     bioRxn=model.rxns{find(strncmp(model.rxns,'bio',3))};
     model=coupleRxnList2Rxn(model,model.rxns,bioRxn,400,0); %couple the specific reactions
 
-    %     [~,BlockedRxns] = identifyBlockedRxns(model);
-    BlockedReaction = findBlockedReaction(model,'L2');
-
-    model = modelPrevious;
-    %     model=removeRxns(model,BlockedRxns.allRxns);
-    model=removeRxns(model,BlockedReaction);
+    % findBlockedReaction may sometimes fail due to infeasiblity
+    try
+        BlockedReaction = findBlockedReaction(model,'L2');
+        model = modelPrevious;
+        model=removeRxns(model,BlockedReaction);
+    catch
+        [~,BlockedRxns] = identifyBlockedRxns(model);
+        model = modelPrevious;
+        model=removeRxns(model,BlockedRxns.allRxns);
+    end
+    
     end
 
     % temp fix

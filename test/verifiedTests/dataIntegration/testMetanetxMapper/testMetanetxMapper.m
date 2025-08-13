@@ -16,11 +16,11 @@ currentDir = cd(fileparts(which(mfilename)));
 % determine the test path for references
 testPath = pwd;
 
-fprintf(' -- Running testMetanetxMapper ... ');
-prepareTest('needsWebAddress','https://beta.metanetx.org/cgi-bin/mnxweb/search');
+fprintf(' -- Running testMetanetxMapper ... \n');
+prepareTest('needsWebAddress','https://beta.metanetx.org');
 
 % Convert Swiss lipids to HMDB
-metData = metanetxMapper('MNXM1364206');
+metData = metanetxMapper('MNXM1364063');
 assert(strcmp(metData.metHMDBID, 'HMDB0304632'));
 
 % CommonName

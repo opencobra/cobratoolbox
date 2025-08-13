@@ -100,6 +100,13 @@ dummy = updateFieldOrderForType(dummy,'rxns',order);
 
 %% create a new extracellular space [b] for host
 if ~isempty(host)
+    % needed for integration with mouse genome-scale reconstruction
+    % iMM1865
+    host.mets = regexprep(host.mets,'__D\[\e','_D\[\e');
+    host.mets = regexprep(host.mets,'__L\[\e','_L\[\e');
+    host.mets = regexprep(host.mets,'__R\[\e','_R\[\e');
+    host.mets = regexprep(host.mets,'__S\[\e','_S\[\e');
+    %
     exMets = find(~cellfun(@isempty, strfind(host.mets, '[e]')));  % find all mets that appear in [e]
     exRxns = host.rxns(strncmp('EX_', host.rxns, 3));  % find exchanges in host
     exMetRxns = find(sum(abs(host.S(exMets, :)), 1) ~= 0);  % find reactions that contain mets from [e]
@@ -173,15 +180,14 @@ else
 end
 
 %% Merging with host if present
-
+if isfield(model,'C')
+    model=rmfield(model,'C');
+end
 if ~isempty(host)
     [model] = mergeTwoModels(host,model,1,false,false);
 end
 
 %% Merge with fecal and body fluids compartment
-if isfield(model,'C')
-    model=rmfield(model,'C');
-end
 [model] = mergeTwoModels(dummy,model,2,false,false);
 
 end

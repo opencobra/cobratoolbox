@@ -1,4 +1,4 @@
-function [modelStats,summary,statistics]=retrieveModelStats(modelPath, modelList, abunFilePath, numWorkers, infoFilePath)
+function [modelStats,summary,statistics]=retrieveModelStats(modelPath, modelList, abunFilePath, numWorkers, figForm, infoFilePath)
 % This function retrieves statistics on the number of reactions and
 % metabolites across microbiome models. If a file with stratification
 % information on individuals is provided, it will also determine if
@@ -7,7 +7,7 @@ function [modelStats,summary,statistics]=retrieveModelStats(modelPath, modelList
 %
 % USAGE:
 %
-%   [modelStats,summary,statistics]=retrieveModelStats(modelPath, modelList, numWorkers, infoFilePath)
+%   [modelStats,summary,statistics]=retrieveModelStats(modelPath, modelList, numWorkers, figForm, infoFilePath)
 %
 % INPUTS
 % modelPath:        Path to models for which statistics should be retrieved
@@ -16,6 +16,7 @@ function [modelStats,summary,statistics]=retrieveModelStats(modelPath, modelList
 % abunFilePath:     char with path and name of file from which to retrieve 
 %                   abundance information
 % numWorkers:       integer indicating the number of cores to use for parallelization
+% figForm:          format to use for saving figures
 %
 % OPTIONAL INPUT:
 % infoFilePath:     char with path to stratification criteria if available
@@ -64,6 +65,7 @@ abundance(1,:) = strrep(abundance(1,:),'-','_');
 abundance(1,:) = strrep(abundance(1,:),'.','_');
 for i=1:length(modelList)
     samp=strrep(modelList{i},'.mat','');
+    samp=strrep(samp,'host_microbiota_model_samp_','');
     samp=strrep(samp,'microbiota_model_samp_','');
     ind=find(strcmp(abundance(1,:),samp));
     if contains(version,'(R202') % for Matlab R2020a and newer
@@ -94,12 +96,13 @@ end
 % print a table with model IDs and stats
 modelStats={'ModelIDs','Reactions','Metabolites','Microbes'};
 modelStats(2:length(modelList)+1,1)=modelList;
+modelStats(:,1)=strrep(modelStats(:,1),'host_microbiota_model_samp_','');
 modelStats(:,1)=strrep(modelStats(:,1),'microbiota_model_samp_','');
 modelStats(:,1)=strrep(modelStats(:,1),'microbiota_model_diet_','');
 modelStats(2:end,2:4)=num2cell(data);
 
 % create violin plot of model stats
-if nargin <5
+if nargin <6
     % have reactions and metabolites in one plot
     % does not work if all data points are the same
     if ~numel(unique(data(:,1)))==1 && ~numel(unique(data(:,2)))==1 && ~numel(unique(data(:,3)))==1
@@ -111,7 +114,7 @@ if nargin <5
         violinplot(data(:,3),{'Microbes'});
         set(gca, 'FontSize', 12)
         sgtitle('Reaction, metabolite and microbe numbers in microbiome models')
-        print('MicrobiomeModel_Sizes','-dpng','-r300')
+        print('MicrobiomeModel_Sizes',figForm,'-r300')
     end
     
 else
@@ -119,6 +122,7 @@ else
     infoFile = readInputTableForPipeline(infoFilePath);
     
     % remove individuals not in simulations
+    modelList=strrep(modelList,'host_microbiota_model_samp_','');
     modelList=strrep(modelList,'microbiota_model_samp_','');
     modelList=strrep(modelList,'microbiota_model_diet_','');
     [C,IA] = setdiff(infoFile(:,1),modelList);
@@ -199,7 +203,7 @@ else
     set(gca, 'FontSize', 12)
     hold on
     sgtitle('Reaction, metabolite and microbe numbers in microbiome models')
-    print('MicrobiomeModel_Sizes','-dpng','-r300')
+    print('MicrobiomeModel_Sizes',figForm,'-r300')
 end
 
 end

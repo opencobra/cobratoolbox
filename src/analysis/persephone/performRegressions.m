@@ -41,6 +41,10 @@ names(matches(names,'ID'))=[];
 data = stack(data,names,'NewDataVariableName',value,'IndexVariableName',name);
 data.ID = strrep(data.ID,'HM_','');
 % combine with metadata
+if ~isequal(class(data.ID), class(metadata.ID))
+    [data.ID, metadata.ID] = deal(string(data.ID), string(metadata.ID));
+end
+
 data = innerjoin(data,metadata,'Keys','ID');
 
 % Filter on variables included in the formula
