@@ -644,7 +644,7 @@ for s = 1:numModels
             
             % GLOMERULAR FILTRATION RATE
             if any(strcmp(lower(dataCurrent.Properties.VariableNames),'glomerular filtration rate')) || any(strcmp(lower(dataCurrent.Properties.VariableNames),'gfr'))
-                idxGFR = find(strcmp(varNamesLower, 'glomerular filtration rate') | strcmp(varNamesLower, 'gfr'));
+                idxGFR = find(strcmp(lower(dataCurrent.Properties.VariableNames), 'glomerular filtration rate') | strcmp(lower(dataCurrent.Properties.VariableNames), 'gfr'));
                 if size(idxGFR, 2)>1
                     error('More than one column header in the metadata contains the paramter glomerular filtration rate!')
                 end
