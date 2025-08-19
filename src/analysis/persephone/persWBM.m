@@ -947,7 +947,6 @@ for s = 1:numModels
         IndividualParametersN = rmfield(IndividualParametersN, fieldsToDelete);
         persParamCurrent = struct2table(IndividualParametersN);
         if s == 1 && persParamsCheck == 0
-            persParamCurrent(end+1, :) = persParamCurrent(1, :);  % Copy structure
             persParams = persParamCurrent;
         else
             persParams.ID = cellstr(persParams.ID);
