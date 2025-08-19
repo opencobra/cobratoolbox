@@ -946,10 +946,8 @@ for s = 1:numModels
         fieldsToDelete = {'bloodFlowData', 'OrgansWeightsRefMan', 'OrgansWeights', 'bloodFlowPercCol', 'bloodFlowOrganCol'};
         IndividualParametersN = rmfield(IndividualParametersN, fieldsToDelete);
         persParamCurrent = struct2table(IndividualParametersN);
-        % Insert the type of parameter detail (user input, default,
-        % calculated etc.)% Add a new empty row to persParamCurrent
-        persParamCurrent(end+1, :) = persParamCurrent(1, :);  % Copy structure
         if s == 1 && persParamsCheck == 0
+            persParamCurrent(end+1, :) = persParamCurrent(1, :);  % Copy structure
             persParams = persParamCurrent;
         else
             persParams.ID = cellstr(persParams.ID);
@@ -986,7 +984,7 @@ elseif any(dietGrowthStats(:, 4) == false)
     disp("Some models were found that were not feasible on any diet,..." + newline + ...
         "they are listed in the file: dietGrowthStats in the same folder as your iWBMs")
 end
-persParams = {};
+
 if numModels > 0
     clear persParamCurrent persParamMCurrent dataCurrent missing
     if personalisingPhys == 1 && ~metadataStruct
