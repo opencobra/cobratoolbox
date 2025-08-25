@@ -294,7 +294,7 @@ for i = 1:size(userInput,1)
     % Check if the alias is found in the scoredFoods variable
     if isfield(scoredFoods, shadow)
         % Extract the table with macros and score
-        tempTable = scoredFoods.(cell2mat(shadow));
+        tempTable = scoredFoods.(string(shadow));
         % Sort the table with the highest score on top
         tempTableSort = sortrows(tempTable, size(tempTable,2), "ascend");
 

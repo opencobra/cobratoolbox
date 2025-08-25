@@ -165,7 +165,7 @@ function [progress] = runPersephone(configPath)
 %                           used to create HM WBMs. OPTIONAL,
 %                           default to use all available cores.
 % Flux balance analysis:
-%     paths.fba.flagFBA:              Boolean, indicates if Part 6 of the pipeline:
+%     paths.fba.flagFBA:    Boolean, indicates if Part 6 of the pipeline:
 %                           FBA should be run. OPTIONAL, defaults to true
 %     hmDir:                String with the path to the directory with the
 %                           models to use. OPTIONAL, if HM models were made
@@ -175,13 +175,18 @@ function [progress] = runPersephone(configPath)
 %     fluxDir:              String with the path where the flux results
 %                           should be stored. OPTIONAL, defaults to
 %                           [resultPath, filesep, 'fluxResults'].
-%     rxnList:              Character array contain reaction IDs for
+%     rxnList:              Character array containing reaction IDs for
 %                           reactions that are to be optimised. If the user
 %                           wants to solve non-existing demand reactions,
 %                           simply add DM_ infront of the desired
 %                           metabolite and add to the rxnList variable.
 %                           REQUIRED.
-%     mgpipeDir:        String with the path to the relative abundance
+%     rxnSense:             Character array containing either 'max' or 'min'
+%                           to specificy the sense of the objective. Option
+%                           to specifcy for each objective- character array 
+%                           should then be exact length of rxnList.
+%                           (OPTIONAL, Default = 'max').
+%     mgpipeDir:            String with the path to the relative abundance
 %                           species file, an output from MARS. OPTIONAL,
 %                           defaults to [outputPathMARS, filesep,
 %                           'present', filesep, 'present_species.',
@@ -591,6 +596,7 @@ if paths.fba.flagFBA == 1
     FBA_results = analyseWBMs(paths.mWBM.outputPathMWBM, ...
         paths.fba.outputPathFluxResult, ...
         paths.fba.rxnList,...
+        'rxnSense', paths.fba.rxnSense,...
         'paramFluxProcessing', paths.fba.paramFluxProcessing,...
         'numWorkers', paths.General.numWorkersOptimisation, ...
         'saveFullRes', paths.fba.saveFullRes,...
@@ -616,7 +622,8 @@ if paths.stats.flagStatistics && statToolboxInstalled
     for i = 1:size(paths.stats.response,2)
         singleResp = paths.stats.response{i};
         % Run statistics pipeline
-        if progress.mWBMCreation(1)
+        if isfield(progress, 'mWBMCreation')
+            if progress.mWBMCreation(1)
             results = performStatsPersephone( ...
                 paths.stats.outputPathStatistics, ...
                 fullfile(paths.fba.outputPathFluxAnalysis, 'processed_fluxes.csv'), ...
@@ -624,6 +631,7 @@ if paths.stats.flagStatistics && statToolboxInstalled
                 singleResp, ...
                 'confounders',paths.stats.confounders, ...
                 'pathToWbmRelAbundances', fullfile(paths.fba.outputPathFluxAnalysis, 'WBM_relative_abundances.csv'));
+            end
         else
             results = performStatsPersephone( ...
                 paths.stats.outputPathStatistics, ...

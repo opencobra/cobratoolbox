@@ -48,7 +48,7 @@ parser.addRequired('pathToProcessedFluxes',  @(x) ischar(x) | isstring(x));
 parser.addRequired('metadataPath', @(x) ischar(x) | isstring(x));
 parser.addRequired('response', @(x) ischar(x) | isstring(x));
 
-parser.addParameter('pathToWbmRelAbundances', @(x) ischar(x) | isstring(x));
+parser.addParameter('pathToWbmRelAbundances', [], @(x) ischar(x) | isstring(x));
 parser.addParameter('confounders', '', @iscell);
 % Moderation analysis will be added back later
 %parser.addParameter('moderator', '', @iscell); 
@@ -154,6 +154,8 @@ if testMicrobiota == true
     % Perform analyses on the relative abundances
     predictor = 'relative_abundance';
     [microbiotaStats, logfile] = runStatistics(microbiome, metadata, response, predictor, confounders, logfile, statPathFull);
+else
+    microbiotaStats = 'noMicrobes';
 end
 
 %%% PART 3: Annotate the investigated reactions by finding the the reaction
@@ -264,13 +266,15 @@ function dataProcessed = processDataForStats(data)
 dataToProcess = table2array(data(:,2:end));
 
 % Set all zeros to nan
-dataToProcess(dataToProcess <= 0) = nan;
+%dataToProcess(dataToProcess <= 0) = nan;
 
 % Log transform the data
-dataLog2 = log2(dataToProcess);
+% dataLog2 = log2(dataToProcess);
 
 % Normalise the data using z-transformation
-dataNorm = normalize(dataLog2);
+% dataNorm = normalize(dataLog2);
+
+dataNorm = normalize(dataToProcess);
 
 % Add data back to table
 dataProcessed = data;
@@ -324,12 +328,19 @@ if sum(~dmSinkRxns)>0
     reactionsToAnnotate = extractAfter(reactionsToAnnotate,'_');
 
     % Find reaction descriptions
-    [~,~,ib] = intersect(reactionsToAnnotate,database.reactions(:,1),'stable');    
-
-    % Add reaction annotations to the table
-    rxnAnnotations = database.reactions(ib,[1 2 12]);
-    annotationTable.Description(~dmSinkRxns) = rxnAnnotations(:,2);
-    annotationTable.Subsystem(~dmSinkRxns) = rxnAnnotations(:,3);
+    [~,~,ib] = intersect(reactionsToAnnotate,database.reactions(:,1),'stable');
+    
+    if isempty(ib)
+         % Add note to say no reaction annotation found
+        rxnAnnotations = 'Not found';
+        annotationTable.Description(~dmSinkRxns) = {'Not found'};
+        annotationTable.Subsystem(~dmSinkRxns) = {'Not found'};
+    else
+        % Add reaction annotations to the table
+        rxnAnnotations = database.reactions(ib,[1 2 12]);
+        annotationTable.Description(~dmSinkRxns) = rxnAnnotations(:,2);
+        annotationTable.Subsystem(~dmSinkRxns) = rxnAnnotations(:,3);
+    end
 end
 end
 
@@ -558,7 +569,7 @@ if logisticRegControlForSex == true
 end
 
 if logisticRegControlForSexAndOtherConfounders == true
-
+    
     rowCount = rowCount + 1;
     % Description
     formula = append(response,'~',predictor,'+Sex+',strjoin(confounders,'+'));
@@ -569,10 +580,18 @@ if logisticRegControlForSexAndOtherConfounders == true
     regRes = performRegressions(data,metadata,formula);
     % Visualise regressions and save result
     resultToVis = string(fieldnames(regRes));
-    regressionResults = regRes.(resultToVis(1));    
+    regressionResults = regRes.(resultToVis(1));
     fig = visualiseRegressionFit(regressionResults, response, formula, statPathFull); close(fig)
-    % Add results to table    
-    statResults{rowCount,2} = regRes.(predictor); 
+    % Add results to table
+    statResults{rowCount,2} = regRes.(predictor);
+    if ~isfield(regRes, 'NotDefined')
+        % Visualise regressions and save result
+        resultToVis = string(fieldnames(regRes));
+        regressionResults = regRes.(resultToVis(1));
+        fig = visualiseRegressionFit(regressionResults, response, formula, statPathFull); close(fig)
+        % Add results to table
+        statResults{rowCount,2} = regRes.(predictor);
+    end
 end
 
 % Remove empty rows
@@ -596,7 +615,7 @@ yTitle = '-log10 p-value';
 fig=figure('Position',[571,171,809,682]);
 
 % Create volcano plot
-createvolcanoPlot(estimates,pValues,names,plotTitle,xTitle,yTitle);
+createVolcanoPlot(estimates,pValues,names,plotTitle,xTitle,yTitle);
 
 % Save figure
 exportgraphics(fig,[statPathFull, 'volcanoPlot_' formula '.png'])
@@ -639,6 +658,8 @@ for i = 2:height(allRes)
     % Get result
     sheet = allRes{i,2};
     % Write to table
-    writetable(sheet,resultPath,'Sheet',sheetNames(i),'WriteRowNames',true,'PreserveFormat',true)
+    if ~isempty(sheet)
+        writetable(sheet,resultPath,'Sheet',sheetNames(i),'WriteRowNames',true,'PreserveFormat',true)
+    end
 end
 end

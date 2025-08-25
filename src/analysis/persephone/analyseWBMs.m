@@ -1,5 +1,5 @@
 function [FBA_results, pathsToFilesForStatistics] = analyseWBMs(mWBMPath, fluxPath, rxnList, varargin)
-% analyseWBMs predicts the maximal fluxes for a list of user-defined
+% analyseWBMs predicts the optimal fluxes for a list of user-defined
 % reactions (rxnList). All predicted are further described in
 % analyseWBMsol.m.
 %
@@ -15,6 +15,11 @@ function [FBA_results, pathsToFilesForStatistics] = analyseWBMs(mWBMPath, fluxPa
 %               automatically added if they are not present in the models.
 %
 % OPTIONAL INPUTS
+% rxnSense       Character array containing either 'max' or 'min'
+%                to specify the sense of the objective. Option
+%                to specify differently for each objective- to do so provide
+%                character array the exact length of rxnList.
+%                (OPTIONAL, Default = 'max').
 % numWorkersOptimization    Number of workers that will perform FBA in parallel. Note
 %               that more workers does not necessarily make the function
 %               faster. It is generally not recommended to set numWorkersOptimization
@@ -119,6 +124,8 @@ parser.addRequired('mWBMPath', @ischar);
 parser.addRequired('fluxPath', @ischar);
 parser.addRequired('rxnList', @iscell);
 
+% Optional inputs
+parser.addParameter('rxnSense', '', @iscell);
 parser.addParameter('numWorkersOptimization', 1, @isnumeric);
 parser.addParameter('saveFullRes', true, @islogical);
 parser.addParameter('paramFluxProcessing', struct(), @isstruct);
@@ -128,6 +135,7 @@ parser.addParameter('solver', '', @ischar);
 % Parse required and optional inputs
 parser.parse(mWBMPath, fluxPath, rxnList, varargin{:});
 
+rxnSense = parser.Results.rxnSense;
 mWBMPath = parser.Results.mWBMPath;
 fluxPath = parser.Results.fluxPath;
 rxnList = parser.Results.rxnList;
@@ -205,6 +213,28 @@ if ~all(iWBMs) && any(iWBMs)
     error('The mWBMPath contains both iWBM and non-iWBMs. Please make sure that all or none of the WBMs in mWBMPath are iWBMs')
 end
 
+% create sense for each onjective
+if isempty(rxnSense) || isempty(rxnSense{1,1})
+    % Use default if empty or empty cell content
+    sense = "max";
+    rxnSense = repmat({sense}, numel(rxnList), 1);
+elseif size(rxnSense, 1) == 1
+    % Repeat the single entry
+    rxnSense = repmat(rxnSense(1,1), numel(rxnList), 1);
+end
+
+% Check if all DM reactions are set to max
+for m = 1:numel(rxnList)
+    rxn = rxnList{m};
+    % Determine sense
+    sense = rxnSense{m};
+    % Check for invalid sense on demand reactions
+    if contains(rxn, 'DM') && strcmp(sense, 'min')
+        warning('Sense for all demand reactions must be MAX. Objective: %s sense changed to MAX ', rxn);
+        rxnSense{m, 1} = 'max';  % correct it in the list
+    end
+end
+
 % Set parellel pool
 % Check if numWorkersOptimization is not a negative number are calls no workers.
 if numWorkersOptimization > 0
@@ -233,6 +263,7 @@ end
 % Store environment variables and paths
 environment = getEnvironment();
 disp('analyseWBMs -- Perform FBA on WBMs.')
+
 parfor i = 1:length(hmPaths)
     restoreEnvironment(environment);
     changeCobraSolver(solver, 'LP', 0, -1);
@@ -293,19 +324,20 @@ parfor i = 1:length(hmPaths)
         solution.shadowPriceBIO = zeros(length(solution.taxonNames),length(solution.rxns));
     end
 
-    % Maximise reactions
+    % solve reactions
     for j = 1 : length(rxnList)
         % Set reaction objective
         model = changeObjective(model,rxnList{j});
+        
+         % Set objective function to user defined sense for the reaction
+         model.osenseStr = rxnSense{j}
 
         % Open the reaction if it is a demand reaction
         if contains(rxnList(j),'DM_')
             model = changeRxnBounds(model,rxnList{j},100000,'u');
         end
 
-        % Set objective function to maximise for the reaction
-        model.osenseStr = 'max';
-
+       
         disp(strcat("Investigate reaction ", string(rxnList{j})))
         FBA = optimizeWBModel(model);
 
@@ -364,99 +396,6 @@ parfor i = 1:length(hmPaths)
     fbaPath = [fluxPath filesep 'FBA_sol_' char(solution.ID)];
     parsave(fbaPath, solution)
 end
-%% Try to fix FBAs that have solver status 3 (time out)
-
-% Rerun FBAs that got solver status 3
-% Find the solution files
-solDir = what(fluxPath);
-solPaths = string(append(solDir.path, filesep, solDir.mat));
-solNames = solDir.mat;
-
-% Find paths to the mWBMs/iWBMs/miWBMs
-hmDir = what(mWBMPath);
-hmPaths = string(append(hmDir.path, filesep, hmDir.mat));
-modelNames = hmDir.mat;
-
-for i = 1:size(solPaths,1)
-    % Load the solver status of the solution files
-    slimSolStruct = load(solPaths(i), 'stat', 'rxns', 'v', 'w', 'y', 'taxonNames', 'shadowPriceBIO', 'f');
-    % See if there are any time out infeasibilities
-    if any(slimSolStruct.stat == 3)
-        % Load the solver file fully
-        rxns2Solve = slimSolStruct.rxns;
-                    f = slimSolStruct.f;
-                    stat = slimSolStruct.stat;
-                    v = slimSolStruct.v;
-                    w = slimSolStruct.w;
-                    y = slimSolStruct.y;
-                    shadowPriceBIO = slimSolStruct.shadowPriceBIO;
-        % Find how many reactions are timed out
-        numTimedOut = sum(slimSolStruct.stat == 3);
-        % Print a statement
-        disp(append('Solution file ', string(solNames(i)), ' has ', string(numTimedOut) ,' infeasibilities caused by a time out error. Trying to resolve them through optimisation on 1 worker.'))
-        
-        % Adjust file name to find the corresponding mWBM model
-        if contains(solNames(i), 'FBA_sol_gf')
-            fileName = strrep(solNames(i), 'FBA_sol_gf', 'm');
-        else
-            fileName = strrep(solNames(i), 'FBA_sol_', '');
-        end
-
-
-        % Load the model
-        modelTmp = loadMinimalWBM(hmPaths(strcmp(modelNames, fileName)));
-        
-        % Check if the model has to be make germ free
-        makeGF=false;
-        if contains(solNames(i), 'FBA_sol_gf')
-            makeGF=true;
-        end
-
-        % Setup the model
-        modelTmp = prepareModel(modelTmp, rxns2Solve, makeGF);
-
-        % For every solver status 3 resolve the model
-        for j = 1:size(slimSolStruct.stat,2)
-            if slimSolStruct.stat(j) == 3
-                % Store model in temporary variable
-                modelTmpRxn = modelTmp;
-
-                % Open the demand reaction if it is an objective function
-                if contains(rxns2Solve, 'DM_')
-                    modelTmpRxn = changeRxnBounds(modelTmpRxn, rxns2Solve(j),100000,'u');
-                end
-                
-                % Set objective
-                modelTmpRxn = changeObjective(modelTmpRxn, rxns2Solve(j));
-
-                % Run FBA
-                fba = optimizeWBModel(modelTmpRxn);
-
-                if fba.stat == 1
-                    % If a new solution is found overwrite the structure
-                    disp('New solution found')
-                
-                    v(:,j) = sparse(fba.v);
-                    w(:,j) = sparse(fba.w);
-                    y(:,j) = sparse(fba.y);
-
-                    if any(contains(modelTmpRxn.rxns,'Micro_EX_'))
-                        % Save species biomass shadow prices
-                        shadowPriceBIO(:,j) = fba.y(matches(modelTmpRxn.mets,strcat(slimSolStruct.taxonNames, '_biomass[c]')));
-                    end
-                else
-                    disp('Reran and no solution found. Consider debugging or using a different solver.')
-                end
-                
-                f(j) = fba.f;
-                stat(j) = fba.stat;
-            end
-        end
-        % Save updated solution structure
-        save(solPaths{i}, 'f','stat','v', 'w', 'y', 'shadowPriceBIO', '-append');
-    end
-end
-
 %%
 
 % Run flux processing pipeline

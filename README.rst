@@ -1,26 +1,21 @@
 .. raw:: html
 
 
-The COBRA Toolbox |br| COnstraint-Based Reconstruction and Analysis Toolbox
----------------------------------------------------------------------------
-
 .. raw:: html
 
-   <table>
-     <tr>
-     <td><div align="center"><a href="https://opencobra.github.io/cobratoolbox/latest/tutorials/index.html"><img src="https://img.shields.io/badge/COBRA-tutorials-blue.svg?maxAge=0"></a>
-       <a href="https://opencobra.github.io/cobratoolbox/latest"><img src="https://img.shields.io/badge/COBRA-docs-blue.svg?maxAge=0"></a>
-       <a href="https://groups.google.com/forum/#!forum/cobra-toolbox"><img src="https://img.shields.io/badge/COBRA-forum-blue.svg?maxAge=0"></a></div></td>
-       <td><div align="center"><a href="https://king.nuigalway.ie/jenkins/job/COBRAToolbox-branches-auto-linux/"><img src="/cobratoolbox/stable/_static/badges/linux.svg"></a>
-       <a href="https://king.nuigalway.ie/jenkins/job/COBRAToolbox-branches-auto-macOS/"><img src="/cobratoolbox/stable/_static/badges/macOS.svg"></a>
-       <a href="https://king.nuigalway.ie/jenkins/job/COBRAToolbox-branches-auto-windows7/"><img src="/cobratoolbox/stable/_static/badges/windows.svg"></a>
-       <a href="http://opencobra.github.io/cobratoolbox/docs/builds.html"><img src="http://concordion.org/img/benefit-links.png?maxAge=0" height="20px" alt="All continuous integration builds"></a>
-       </div></td>
-       <td><div align="center"><img src="/cobratoolbox/stable/_static/codegrade/codegrade.svg" alt="Ratio of the number of inefficient code lines and the total number of lines of code (in percent). A: 0-3%, B: 3-6%, C: 6-9%, D: 9-12%, E: 12-15%, F: > 15%.">
-       <a href="https://codecov.io/gh/opencobra/cobratoolbox/branch/master"><img src="https://codecov.io/gh/opencobra/cobratoolbox/branch/master/graph/badge.svg?maxAge=0"></a></div></td>
-     </tr>
-   </table>
-   <br>
+   <h1 align="center">
+   The COBRA Toolbox<br>
+   COnstraint-Based Reconstruction and Analysis Toolbox
+   </h1>
+.. raw:: html
+
+The COBRA Toolbox is a comprehensive suite of functions for constraint-based modeling of biological networks. It supports the analysis of genome-scale metabolic reconstructions and other constraint-based models in MATLAB.
+
+Resources
+---------
+- 📘 **Installation**: https://opencobra.github.io/cobratoolbox/stable/installation.html
+- 🎓 **Tutorials**: https://opencobra.github.io/cobratoolbox/stable/tutorials/index.html
+- 💬 **Community Support**: https://groups.google.com/forum/#!forum/cobra-toolbox
 
 
 System Requirements and Solver Installation
@@ -28,9 +23,9 @@ System Requirements and Solver Installation
 
 .. begin-requirements-marker
 
-|warning| Please follow `this guide <https://opencobra.github.io/cobratoolbox/docs/requirements.html>`__ in order to configure your system properly.
+⚠️  Please follow `this guide <https://opencobra.github.io/cobratoolbox/docs/requirements.html>`__ in order to configure your system properly.
 
-|warning| Please make sure you install a compatible solver. Check the compatibility `here <https://opencobra.github.io/cobratoolbox/docs/compatibility.html>`__.
+⚠️  Please make sure you install a compatible solver. Check the compatibility `here <https://opencobra.github.io/cobratoolbox/docs/compatibility.html>`__.
 
 You may install ``TOMLAB``, ``IBM ILOG CPLEX``, ``GUROBI``, or ``MOSEK`` by following these `detailed instructions <https://opencobra.github.io/cobratoolbox/docs/solvers.html>`__.
 
@@ -49,11 +44,12 @@ Installation
       $ git clone --depth=1 https://github.com/opencobra/cobratoolbox.git cobratoolbox
 
 
-   |warning| Please note the ``--depth=1`` in the clone command. Run this command in ``Terminal`` (on |macos| and |linux|) or in ``Git Bash`` (on |windows|) -
-   **not** in |matlab|. Although not recommended, you can download the
-   repository as a `compressed archive </cobratoolbox/stable/_static/releases/theCOBRAToolbox.zip>`__.
+> ⚠️ **Please note** the `--depth=1` in the clone command.  
+> Run this command in **Terminal** (on macOS and Linux) or in **Git Bash** (on Windows) — **not** in MATLAB.  
+Although not recommended, you can download the repository as a `compressed archive <https://github.com/opencobra/cobratoolbox/archive/refs/heads/master.zip>`__.
 
-2. Change to the folder ``cobratoolbox/`` and run from |matlab|
+
+2. Change to the folder ``cobratoolbox/`` and run from MATLAB
 
    .. code-block:: matlab
 
@@ -83,8 +79,8 @@ How to contribute
 
 .. begin-how-to-contribute-marker
 
-|thumbsup| |tada| First off, thanks for taking the time to contribute to `The COBRA
-Toolbox <https://github.com/opencobra/cobratoolbox>`__! |tada| |thumbsup|
+👍 🎉 First off, thanks for taking the time to contribute to `The COBRA Toolbox <https://github.com/opencobra/cobratoolbox>`__! 🎉 👍
+
 
 .. raw:: html
 
@@ -101,19 +97,17 @@ within MATLAB by typing:
 
     >> installDevTools()
 
-|bulb| Check out `MATLAB.devTools
-<https://github.com/opencobra/MATLAB.devTools>`__ - and contribute the smart
-way! The **official documentation** is `here <https://opencobra.github.io/MATLAB.devTools/ >`__.
+💡 Check out `MATLAB.devTools <https://github.com/opencobra/MATLAB.devTools>`__ – and contribute the smart way!  
+The **official documentation** is `here <https://opencobra.github.io/MATLAB.devTools/>`__.
 
-|thumbsup| Contribute to the ``opencobra/cobratoolbox`` repository by following `these
-instructions
-<https://opencobra.github.io/MATLAB.devTools/stable/contribute.html#the-cobra-toolbox>`__:
+👉 Contribute to the ``opencobra/cobratoolbox`` repository by following `these instructions <https://opencobra.github.io/MATLAB.devTools/stable/contribute.html#the-cobra-toolbox>`__:
+
 
 .. code-block:: matlab
 
     >> contribute('opencobra/cobratoolbox');
 
-|thumbsup| Contribute to the ``opencobra/COBRA.tutorials`` repository by following `these
+👉 Contribute to the ``opencobra/COBRA.tutorials`` repository by following `these
 instructions
 <https://opencobra.github.io/MATLAB.devTools/stable/contribute.html#cobra-tutorials>`__:
 
@@ -197,7 +191,7 @@ Example citation:
 Binaries and Compatibility
 --------------------------
 
-|warning| Please make sure you install a compatible solver. Check the
+⚠️ Please make sure you install a compatible solver. Check the
 compatibility
 `here <https://opencobra.github.io/cobratoolbox/docs/compatibility.html>`__.
 
@@ -252,7 +246,7 @@ holder.*
    <img src="/cobratoolbox/stable/_static/img/windows.png" height="20px" width="20px" alt="windows">
 
 
-.. |warning| raw:: html
+.. ⚠️ raw:: html
 
    <img src="/cobratoolbox/stable/_static/img/warning.png" height="20px" width="20px" alt="warning">
 

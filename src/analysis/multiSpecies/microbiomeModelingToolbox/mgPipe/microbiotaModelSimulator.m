@@ -1,4 +1,4 @@
-function [exchanges, netProduction, netUptake, growthRates, infeasModels] = microbiotaModelSimulator(resPath, exMets, sampNames, dietFilePath, hostPath, hostBiomassRxn, hostBiomassRxnFlux, numWorkers, rDiet, pDiet, computeProfiles, lowerBMBound, upperBMBound, includeHumanMets, adaptMedium, solver)
+function [exchanges, netProduction, netUptake, growthRates, infeasModels] = microbiotaModelSimulator(resPath, exMets, sampNames, dietFilePath, hostPath, numWorkers, rDiet, pDiet, computeProfiles, lowerBMBound, upperBMBound, includeHumanMets, adaptMedium, solver)
 
 % This function is called from the MgPipe pipeline. Its purpose is to apply
 % different diets (according to the user's input) to the microbiota models
@@ -8,7 +8,7 @@ function [exchanges, netProduction, netUptake, growthRates, infeasModels] = micr
 %
 % USAGE:
 %
-%   [exchanges, netProduction, netUptake, growthRates, infeasModels] = microbiotaModelSimulator(resPath, exMets, sampNames, dietFilePath, hostPath, hostBiomassRxn, hostBiomassRxnFlux, numWorkers, rDiet, pDiet, computeProfiles, lowerBMBound, upperBMBound, includeHumanMets, adaptMedium, solver)
+%   [exchanges, netProduction, netUptake, growthRates, infeasModels] = microbiotaModelSimulator(resPath, exMets, sampNames, dietFilePath, hostPath, numWorkers, rDiet, pDiet, computeProfiles, lowerBMBound, upperBMBound, includeHumanMets, adaptMedium, solver)
 %
 % INPUTS:
 %    resPath:            char with path of directory where results are saved
@@ -19,9 +19,6 @@ function [exchanges, netProduction, netUptake, growthRates, infeasModels] = micr
 %                        Can also be a list of the sample names with
 %                        individual diet files.
 %    hostPath:           char with path to host model, e.g., Recon3D (default: empty)
-%    hostBiomassRxn:     char with name of biomass reaction in host (default: empty)
-%    hostBiomassRxnFlux: double with the desired upper bound on flux through the host
-%                        biomass reaction (default: 1)
 %    numWorkers:         integer indicating the number of cores to use for parallelization
 %    rDiet:              boolean indicating if to simulate a rich diet
 %    pDiet:              boolean indicating if a personalized diet
@@ -175,11 +172,11 @@ else
         else
             endPnt=length(sampNames)-s;
         end
-
+        
         parfor k=s:s+endPnt
             restoreEnvironment(environment);
             changeCobraSolver(solver, 'LP', 0, -1);
-
+            
             % prepare the variables temporarily storing the simulation results
             netProductionTmp{k}{2} = {};
             netProductionTmp{k}{1} = {};
@@ -255,28 +252,6 @@ else
                 model=changeRxnBounds(model,model.rxns(strmatch('DUt_',model.rxns)),1000000,'u');
                 model=changeRxnBounds(model,model.rxns(strmatch('EX_',model.rxns)),1000000,'u');
 
-                % set constraints on host exchanges if present
-                if ~isempty(hostBiomassRxn)
-                    hostEXrxns=find(strncmp(model.rxns,'Host_EX_',8));
-                    model=changeRxnBounds(model,model.rxns(hostEXrxns),0,'l');
-                    % constrain blood exchanges but make exceptions for metabolites that should be taken up from
-                    % blood
-                    takeupExch={'h2o','hco3','o2'};
-                    takeupExch=strcat('Host_EX_', takeupExch, '[e]b');
-                    model=changeRxnBounds(model,takeupExch,-100,'l');
-                    % close internal exchanges except for human metabolites known
-                    % to be found in the intestine
-                    hostIEXrxns=find(strncmp(model.rxns,'Host_IEX_',9));
-                    model=changeRxnBounds(model,model.rxns(hostIEXrxns),0,'l');
-                    takeupExch={'gchola','tdchola','tchola','dgchol','34dhphe','5htrp','Lkynr','f1a','gncore1','gncore2','dsT_antigen','sTn_antigen','core8','core7','core5','core4','ha','cspg_a','cspg_b','cspg_c','cspg_d','cspg_e','hspg'};
-                    takeupExch=strcat('Host_IEX_', takeupExch, '[u]tr');
-                    model=changeRxnBounds(model,takeupExch,-1000,'l');
-                    % set a minimum and a limit for flux through host biomass
-                    % reaction
-                    model=changeRxnBounds(model,['Host_' hostBiomassRxn],0.001,'l');
-                    model=changeRxnBounds(model,['Host_' hostBiomassRxn],hostBiomassRxnFlux,'u');
-                end
-                
                 solution_allOpen = optimizeCbModel(model);
                 % solution_allOpen=solveCobraLPCPLEX(model,2,0,0,[],0);
                 if solution_allOpen.stat==0

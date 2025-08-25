@@ -85,7 +85,7 @@ if sum(strcmpi(database, 'usda')) > 0
     sugar2 = foodMacroUsda(foodMacroUsda.nutrient_id == 2000,3:end);
     sugar2{1, isnan(table2array(sugar2))} = 0;   
      
-    sugarUsda = [foodMacroUsda(foodMacroUsda.nutrient_id == 1079,2), sugar1+sugar2];
+    sugarUsda = [foodMacroUsda(foodMacroUsda.nutrient_id == 1079,2), array2table(table2array(sugar1) + table2array(sugar2), 'VariableNames', sugar1.Properties.VariableNames)];
 
     % Rename the way macros is named to energy to be able to match with
     % frida

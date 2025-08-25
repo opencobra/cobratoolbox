@@ -1,10 +1,10 @@
-function [sampNames, organisms, exMets] = getIndividualSizeName(abunFilePath,modPath)
+function [sampNames, organisms] = getIndividualSizeName(abunFilePath,modPath)
 % This function automatically detects organisms, names and number of individuals present
 % in the study.
 %
 % USAGE:
 %
-%   [sampNames, organisms, exMets] = getIndividualSizeName(abunFilePath,modPath)
+%   [sampNames, organisms] = getIndividualSizeName(abunFilePath,modPath)
 %
 % INPUTS:
 %   abunFilePath:      char with path and name of file from which to retrieve information
@@ -13,8 +13,6 @@ function [sampNames, organisms, exMets] = getIndividualSizeName(abunFilePath,mod
 % OUTPUTS:
 %   sampNames:         nx1 cell array cell array with names of individuals in the study
 %   organisms:         nx1 cell array cell array with names of organisms in the study
-%   exMets:            cell array with all unique extracellular metabolites
-%                      contained in the models
 %
 % .. Author: Federico Baldini 2017-2018
 %            Almut Heinken, 03/2021: simplified inputs
@@ -76,18 +74,6 @@ for i=1:length(sampNames)
    if isvarname(sampNames{i,1})==0
        error('ERROR:I tried with no success to change your samples names into Matlab valid names. Please change your samples (observations) names and try running again mgPipe.')
    end
-end
-
-parfor i = 1:length(organisms) % find the unique set of all the reactions contained in the models
-    model =readCbModel([modPath filesep organisms{i,1} '.mat']);
-    models{i, 1} = model;
-end
-
-exMets = {};
-for i = 1:length(organisms) % find the unique set of all the reactions contained in the models
-    model = models{i, 1};
-    findmets = model.mets(find(contains(model.mets,'[e]')));
-    exMets = union(exMets,findmets);
 end
 
 end
