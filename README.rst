@@ -178,6 +178,18 @@ implemented in The COBRA Toolbox v3.0 [2], was employed.*
     v3.0**, Nature Protocols, volume 14, pages 639–702, 2019
     `doi.org/10.1038/s41596-018-0098-2 <https://doi.org/10.1038/s41596-018-0098-2>`__.
 
+It is important if you are submitting a paper that depends on the COBRA toolbox to mention a specific release version, and ideally also the git sha-1 hash code that identifies the current commit to make sure that reviewers are using the correct version.
+
+Example citation:
+
+   COBRA Toolbox v3.5 ( commit ``ffd220aa7996b03d5546a7d24d9f8c626749d169`` ) was used for all analyses.
+
+   You can find the release number on the `Releases page <https://github.com/opencobra/cobratoolbox/releases>`__, and the commit SHA-1 hash with the command:
+   
+   .. code-block:: console
+
+      git rev-parse HEAD
+
 .. end-how-to-cite-marker
 
 Binaries and Compatibility
