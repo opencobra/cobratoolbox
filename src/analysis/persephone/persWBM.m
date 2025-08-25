@@ -644,7 +644,7 @@ for s = 1:numModels
             
             % GLOMERULAR FILTRATION RATE
             if any(strcmp(lower(dataCurrent.Properties.VariableNames),'glomerular filtration rate')) || any(strcmp(lower(dataCurrent.Properties.VariableNames),'gfr'))
-                idxGFR = find(strcmp(varNamesLower, 'glomerular filtration rate') | strcmp(varNamesLower, 'gfr'));
+                idxGFR = find(strcmp(lower(dataCurrent.Properties.VariableNames), 'glomerular filtration rate') | strcmp(lower(dataCurrent.Properties.VariableNames), 'gfr'));
                 if size(idxGFR, 2)>1
                     error('More than one column header in the metadata contains the paramter glomerular filtration rate!')
                 end
@@ -946,9 +946,6 @@ for s = 1:numModels
         fieldsToDelete = {'bloodFlowData', 'OrgansWeightsRefMan', 'OrgansWeights', 'bloodFlowPercCol', 'bloodFlowOrganCol'};
         IndividualParametersN = rmfield(IndividualParametersN, fieldsToDelete);
         persParamCurrent = struct2table(IndividualParametersN);
-        % Insert the type of parameter detail (user input, default,
-        % calculated etc.)% Add a new empty row to persParamCurrent
-        persParamCurrent(end+1, :) = persParamCurrent(1, :);  % Copy structure
         if s == 1 && persParamsCheck == 0
             persParams = persParamCurrent;
         else
@@ -986,7 +983,7 @@ elseif any(dietGrowthStats(:, 4) == false)
     disp("Some models were found that were not feasible on any diet,..." + newline + ...
         "they are listed in the file: dietGrowthStats in the same folder as your iWBMs")
 end
-persParams = {};
+
 if numModels > 0
     clear persParamCurrent persParamMCurrent dataCurrent missing
     if personalisingPhys == 1 && ~metadataStruct
