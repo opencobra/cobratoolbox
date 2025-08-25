@@ -182,10 +182,14 @@ It is important if you are submitting a paper that depends on the COBRA toolbox 
 
 Example citation:
 
-   COBRA Toolbox v3.5 (commit `ffd220aa7996b03d5546a7d24d9f8c626749d169`) was used for all analyses.
+   COBRA Toolbox v3.5 ( commit ``ffd220aa7996b03d5546a7d24d9f8c626749d169`` ) was used for all analyses.
 
-   You can find the release number on the [Releases page](link to releases), and the commit SHA-1 hash with the command:
-   `git rev-parse HEAD`
+   You can find the release number on the `Releases page <https://github.com/opencobra/cobratoolbox/releases>`__, and the commit SHA-1 hash with the command:
+   
+   .. code-block:: console
+
+      git rev-parse HEAD
+
 .. end-how-to-cite-marker
 
 Binaries and Compatibility
