@@ -277,12 +277,12 @@ holder.*
 
 .. |tutorials| raw:: html
 
-   <a href="https://opencobra.github.io/cobratoolbox/latest/tutorials/index.html"><img src="https://img.shields.io/badge/COBRA-tutorials-blue.svg?maxAge=0"></a>
+   <a href="https://opencobra.github.io/cobratoolbox/stable/tutorials/index.html"><img src="https://img.shields.io/badge/COBRA-tutorials-blue.svg?maxAge=0"></a>
 
 
 .. |latest| raw:: html
 
-   <a href="https://opencobra.github.io/cobratoolbox/latest"><img src="https://img.shields.io/badge/COBRA-docs-blue.svg?maxAge=0"></a>
+   <a href="https://opencobra.github.io/cobratoolbox/stable"><img src="https://img.shields.io/badge/COBRA-docs-blue.svg?maxAge=0"></a>
 
 
 .. |forum| raw:: html
