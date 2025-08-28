@@ -48,7 +48,7 @@ validateattributes(paths.General.solver,{'char','string'},{'nonempty'},'solver')
 validatestring(paths.General.solver,{'ibm_cplex','gurobi','tomlab_cplex','mosek'},'solver');
 validateattributes(paths.General.diet,{'char','string','cell'},{'nonempty'},'diet')
 validateattributes(paths.General.metadataPath,{'char','string'},{'nonempty'},'metadataPath')
-  validateattributes(paths.General.numWorkersCreation,{'double','integer'},{'<=',feature('numCores')},'numWorkersCreation')
+validateattributes(paths.General.numWorkersCreation,{'double','integer'},{'<=',feature('numCores')},'numWorkersCreation')
 validateattributes(paths.General.numWorkersOptimisation,{'double','integer'},{'<=',feature('numCores')},'numWorkersOptimisation')
 
 

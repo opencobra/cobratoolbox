@@ -141,6 +141,11 @@ disp('PART 1: Load the flux solutions')
 solDir = what(fluxPath);
 solPaths = string(append(solDir.path, filesep, solDir.mat));
 modelNames = string(erase(solDir.mat,'.mat'));
+analyseGF = false; 
+if any(contains(modelNames, 'gfWBM')) || any(contains(modelNames, 'gfiWBM'))
+    analyseGF = true;
+end
+
 
 % Get number of metabolites investigated
 tmpSol = solPaths(~contains(solPaths,'Harv'));
@@ -245,13 +250,20 @@ disp('PART 3: Rescale flux results and produce summary statistics')
 fluxes = [metadata fluxes];
 
 % Create statistics for fluxes and prune results
-stats = describeFluxes(fluxes,paramFluxProcessing);
+if analyseGF
+    stats = describeFluxes(fluxes,paramFluxProcessing);
+else
+    stats = [];
+    
+end
 
 %% PART 4: Group reactions with identical or near identical flux results
 disp('PART 4: Find reaction groups and group flux results')
 
-fluxesPruned = stats.Fluxes_removed_reactions; % Host-microbiome fluxes with removed metabolites
-[fluxesGrouped, reactionGroups] = groupFluxes(fluxesPruned, paramFluxProcessing.rxnEquivalenceThreshold,{});
+if analyseGF
+    fluxesPruned = stats.Fluxes_removed_reactions; % Host-microbiome fluxes with removed metabolites
+    [fluxesGrouped, reactionGroups] = groupFluxes(fluxesPruned, paramFluxProcessing.rxnEquivalenceThreshold,{});
+end
 
 %% PART 5: Find correlations between the fluxes and relative microbe abundances (Microbiome only)
 
@@ -304,16 +316,20 @@ N=1;
 FBA_results.(strcat("Table_",string(N))) = fbaStats; N = N+1; % Increment table number
 % FBA_results.(strcat("Table_",string(N))) = fbaOrigStats; N = N+1; % Increment table number
 
-% Add results from the flux summary analysis
-FBA_results.(strcat("Table_",string(N))) = stats.Flux_summary_statistics; N = N+1; % Increment table number
-FBA_results.(strcat("Table_",string(N))) = stats.Fluxes; N = N+1; % Increment table number
-FBA_results.(strcat("Table_",string(N))) = stats.Fluxes_removed_reactions; N = N+1; % Increment table number
-FBA_results.(strcat("Table_",string(N))) = stats.Scaled_flux_summary_statistics; N = N+1; % Increment table number
-FBA_results.(strcat("Table_",string(N))) = stats.Scaled_fluxes; N = N+1; % Increment table number
+if analyseGF
+    % Add results from the flux summary analysis
+    FBA_results.(strcat("Table_",string(N))) = stats.Flux_summary_statistics; N = N+1; % Increment table number
+    FBA_results.(strcat("Table_",string(N))) = stats.Fluxes; N = N+1; % Increment table number
+    FBA_results.(strcat("Table_",string(N))) = stats.Fluxes_removed_reactions; N = N+1; % Increment table number
+    FBA_results.(strcat("Table_",string(N))) = stats.Scaled_flux_summary_statistics; N = N+1; % Increment table number
+    FBA_results.(strcat("Table_",string(N))) = stats.Scaled_fluxes; N = N+1; % Increment table number
+    
+    % Add results from the flux grouping function
+    FBA_results.(strcat("Table_",string(N))) = reactionGroups; N = N+1; % Increment table number
+    FBA_results.(strcat("Table_",string(N))) = fluxesGrouped; N = N+1; % Increment table number
 
-% Add results from the flux grouping function
-FBA_results.(strcat("Table_",string(N))) = reactionGroups; N = N+1; % Increment table number
-FBA_results.(strcat("Table_",string(N))) = fluxesGrouped; N = N+1; % Increment table number
+end
+
 
 % Add results from the shadow price analysis (Microbiome only)
 FBA_results.(strcat("Table_",string(N))) = microbesContributed; N = N+1; % Increment table number
@@ -344,10 +360,12 @@ for i = 1:length(sheetNames)
 end
 
 %%% NOTE: This part will be removed once the pipeline is more mature
-
-% Save fluxes and flux-microbe correlations in separate files
 pathToFluxResults = [fluxAnalysisPath filesep 'processed_fluxes.csv'];
-writetable(fluxesPruned,pathToFluxResults)
+    
+if analyseGF
+    % Save fluxes and flux-microbe correlations in separate file
+    writetable(fluxesPruned,pathToFluxResults)
+end
 
 % Save microbiome relative abundances
 WBMmicrobiomePath = [fluxAnalysisPath filesep 'WBM_relative_abundances.csv'];
@@ -616,7 +634,12 @@ mWBMs = contains(sexInfo.ID,{'mWBM','miWBM'});
 % Check which WBMs are iWBMs or miWBMs
 iWBMs = contains(sexInfo.ID,'iWBM');
 
-if any(mWBMs) && ~any(iWBMs)
+analyseGF = false; 
+if any(contains(fluxes.Properties.RowNames, 'gfWBM')) || any(contains(fluxes.Properties.RowNames, 'gfiWBM'))
+    analyseGF = true;
+end
+
+if any(mWBMs) && ~any(iWBMs) && analyseGF
 
     % If only the microbiome is personalised - obtain the generic male and
     % female germ-free models and substract that from the male and female
@@ -653,7 +676,7 @@ if ~any(mWBMs) && all(iWBMs)
     scaledFluxes{matches(sexInfo.Sex,'female'),:} = fluxes_rm{matches(sexInfo.Sex,'female'),:} - iWBM_control_female{:,:};
 end
 
-if all(iWBMs) && any(mWBMs)
+if all(iWBMs) && any(mWBMs) 
 
     % If both the microbiome and human are personalised, substract the
     % germfree values from the respective sample flux values.

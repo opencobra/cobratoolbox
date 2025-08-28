@@ -49,18 +49,17 @@ end
 
 if strcmpi(macroType, 'metabolites')
     % Load metabolite category tables
+    load('usda2024_infoFile.mat', "nutrientVmhTable");
     load('frida2024_infoFile.mat', "nutrientInfoFileFrida");
     load("usda2024_InfoFile.mat", "nutrientVmhTable");
     nutrientVmhTable = nutrientVmhTable(nutrientVmhTable.metBool ==1,:);
     nutrientInfoFileFrida = nutrientInfoFileFrida(nutrientInfoFileFrida.metBool==1,:);
+
     % Combine the two and extract the unique values
     metInfo = [nutrientVmhTable.vmhID,nutrientVmhTable.macroCategory;
         nutrientInfoFileFrida.vmhID, nutrientInfoFileFrida.macroCategory];
-    
     [~, uniqueIdx] = unique(metInfo(:,1));
-
     metInfo = metInfo(uniqueIdx, :);
-
     % Convert the metabolite names so they can be identified
     input(:,1) = strrep(input(:,1), 'Diet_EX_', '');
     input(:,1) = strrep(input(:,1), '[d]', '');
