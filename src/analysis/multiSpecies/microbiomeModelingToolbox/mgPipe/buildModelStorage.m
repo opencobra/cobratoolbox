@@ -5,7 +5,7 @@ function [activeExMets,couplingMatrix] = buildModelStorage(microbeNames,modPath,
 % given diet are removed to reduce computation time.
 %
 % USAGE
-%    [activeExMets,couplingMatrix] = buildModelStorage(microbeNames,modPath,dietFilePath,adaptMedium,includeHumanMets,numWorkers,pruneModels)
+%    [activeExMets,couplingMatrix] = buildModelStorage(microbeNames,modPath,numWorkers,pruneModels)
 %
 % INPUTS
 %    microbeNames:           list of microbe models included in the microbiome models
