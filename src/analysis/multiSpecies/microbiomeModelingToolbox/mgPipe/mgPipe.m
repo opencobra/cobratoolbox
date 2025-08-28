@@ -105,7 +105,7 @@ if isempty(mapP)
     % each microbe.
     % Extracellular metabolites that can carry flux in at least one
     % organism are also computed.
-    [exMets,couplingMatrix]=buildModelStorage(microbeNames, modPath, dietFilePath, adaptMedium, includeHumanMets, numWorkers, pruneModels, biomasses);
+    [exMets,couplingMatrix]=buildModelStorage(microbeNames, modPath, numWorkers, pruneModels, biomasses);
 
     % Computing reaction abundance and reaction presence
     [ReactionAbundance,ReactionPresence] = fastCalculateReactionAbundance(abunFilePath, modPath, {}, numWorkers);

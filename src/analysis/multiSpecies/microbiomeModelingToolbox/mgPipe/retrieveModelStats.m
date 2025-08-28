@@ -120,13 +120,14 @@ if nargin <6
 else
     % perform statistical analysis if file with stratification is provided
     infoFile = readInputTableForPipeline(infoFilePath);
+    infoFile(1,:) = [];
     
     % remove individuals not in simulations
     modelList=strrep(modelList,'host_microbiota_model_samp_','');
     modelList=strrep(modelList,'microbiota_model_samp_','');
     modelList=strrep(modelList,'microbiota_model_diet_','');
-    [C,IA] = setdiff(infoFile(:,1),modelList);
-    infoFile(IA,:)=[];
+    [C,IA,IC] = intersect(infoFile(:,1),modelList,'rows','stable');
+    infoFile = infoFile(IA,:);
     
     % get the number of conditions
     groups=unique(infoFile(:,2));
@@ -145,9 +146,8 @@ else
         % separate data by group
         dataAll=data(:,i);
         for j=1:length(groups)
-            group=groups{j};
             dataGrouped{j}=dataAll;
-            delInd=find(~strcmp(group,groups{j}));
+            delInd=find(~strcmp(infoFile(:,2),groups{j}));
             dataGrouped{j}(delInd,:)=[];
         end
         
@@ -195,7 +195,7 @@ else
     title('Metabolites')
     set(gca, 'FontSize', 12)
     % does not work if all data points are the same
-    if ~numel(unique(data(:,3)))==1
+    if ~(numel(unique(data(:,3)))==1)
         subplot(1,3,3)
         violinplot(data(:,3),infoFile(:,2));
         title('Microbes')
