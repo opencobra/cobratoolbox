@@ -1,13 +1,13 @@
-Software Lifecycle
+Software Development Life Cycle
 ==============================================================
 
 Introduction
 ----------------
 
 The COBRA Toolbox is an open-source MATLAB platform for constraint-based
-modelling of biological networks. It supports optimization methods such
+modeling of biological networks. It supports optimization methods such
 as Flux Balance Analysis (FBA), gene deletion analysis, thermodynamic
-feasibility studies, and multi-scale modelling. To ensure quality,
+feasibility studies, and multi-scale modeling. To ensure quality,
 reproducibility, and long-term maintainability, we follow a structured
 Software Development Lifecycle (SDLC).
 
@@ -17,7 +17,7 @@ Development Model
 We use an **iterative and incremental model** focused on reproducibility
 and scientific validation. Each cycle covers planning, design,
 implementation, testing, release, and maintenance. This allows us to
-integrate new methods, optimise existing functionality, and fix issues
+integrate new methods, optimize existing functionality, and fix issues
 while keeping the software stable.
 
 Phases
