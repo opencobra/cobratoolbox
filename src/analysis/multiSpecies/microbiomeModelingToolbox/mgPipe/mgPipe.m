@@ -224,7 +224,7 @@ for j=1:steps:length(sampNames)
     end
     getErrors={};
 
-    for i=j:j+endPnt
+    parfor i=j:j+endPnt
         % Each personalized model will be created separately.
         % get the list of models for each sample and remove the ones not in
         % this sample
