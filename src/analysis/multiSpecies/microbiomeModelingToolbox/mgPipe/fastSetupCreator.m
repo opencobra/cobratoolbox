@@ -100,12 +100,15 @@ dummy = updateFieldOrderForType(dummy,'rxns',order);
 
 %% create a new extracellular space [b] for host
 if ~isempty(host)
-    % needed for integration with mouse genome-scale reconstruction
-    % iMM1865
-    host.mets = regexprep(host.mets,'__D\[\e','_D\[\e');
-    host.mets = regexprep(host.mets,'__L\[\e','_L\[\e');
-    host.mets = regexprep(host.mets,'__R\[\e','_R\[\e');
-    host.mets = regexprep(host.mets,'__S\[\e','_S\[\e');
+    % needed for integration with mouse genome-scale reconstruction iMM1865
+    host.mets = regexprep(host.mets,'__D\[e\','_D\[e\');
+    host.mets = regexprep(host.mets,'__L\[e\','_L\[e\');
+    host.mets = regexprep(host.mets,'__R\[e\','_R\[e\');
+    host.mets = regexprep(host.mets,'__S\[e\','_S\[e\');
+    host.rxns = regexprep(host.rxns,'__D_e','_D_e');
+    host.rxns = regexprep(host.rxns,'__L_e','_L_e');
+    host.rxns = regexprep(host.rxns,'__R_e','_R_e');
+    host.rxns = regexprep(host.rxns,'__S_e','_S_e');
     %
     exMets = find(~cellfun(@isempty, strfind(host.mets, '[e]')));  % find all mets that appear in [e]
     exRxns = host.rxns(strncmp('EX_', host.rxns, 3));  % find exchanges in host
