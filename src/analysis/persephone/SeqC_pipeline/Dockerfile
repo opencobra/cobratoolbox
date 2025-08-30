@@ -6,7 +6,7 @@
 # Program by: Wiley Barton - 2024.02.22
 # Modified for conda/docker pipeline - 2024.02.22
 # Version for Persephone
-# last update - 2025.08.01
+# last update - 2025.08.30
 #--------------------------------------------------
 # Modified code sources:
 # umamba merge via: https://micromamba-docker.readthedocs.io/en/latest/advanced_usage.html#adding-micromamba-to-an-existing-docker-image
@@ -159,6 +159,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
     less \
     lftp \
     libz-dev \
+    parallel \
     pigz \
     pip \
     pkg-config \

@@ -4,7 +4,7 @@
 # Program by: Wiley Barton - 2022.02.07
 # Modified for conda/docker pipeline - 2024.02.22
 # Version for: PERSEPHONE
-# last update - 2025.08.01
+# last update - 2025.08.30
 # Modified code sources:
 #   check volume size: https://stackoverflow.com/questions/8110530/check-free-disk-space-for-current-partition-in-bash
 #   semi-array in env var: https://unix.stackexchange.com/questions/393091/unable-to-use-an-array-as-environment-variable
@@ -50,6 +50,17 @@ if [[ -z "${v_dir_db}" ]]; then
     #set as default
     v_dir_db='/DB'
 fi
+# --- Helper: check size --- TODO check and implement
+check_db_size() {
+    #varr_db_check[$vn]=$(check_db_size "${varr_db_path[$vn]}" "${varr_db_size[$vn]}")
+    local path="$1" size="$2"
+    local current expected
+    current=$(du -BM "$path" 2>/dev/null | awk '{print $1}' | tail -1 | tr -d 'M')
+    expected=$(printf %.0f "$(echo "$v_vol_gm * $size" | bc -l)")
+    [[ ${current:-0} -gt $expected ]] && echo 1 || echo 0
+}
+# --- Declare arrays ---
+declare -A db_name db_path db_gets db_pack db_size db_check
 vn=0
 varr_db_name[$vn]=''
 varr_db_path[$vn]=${v_dir_db}
@@ -72,21 +83,14 @@ varr_db_pack[$vn]=${varr_db_pack[0]}${varr_db_path[$vn]}'/hsap_hg37_contam.tar.g
 # check - if size > 1 then assume preexisting
 # TODO - set to compression size as min threshold
 varr_db_size[$vn]=7.4
-# Pull current size
-vt_L=$(du -BM ${varr_db_path[$vn]} 2> /dev/null | cut --fields 1 | tail -1 | sed 's|M||g')
-# Pull expected size
-vt_R=$(printf %.0f $(echo "${v_vol_gm} * ${varr_db_size[$vn]}" | bc -l))
-# test and set accordingly
-[[ ${vt_L} -gt ${vt_R} ]] && varr_db_check[$vn]=1 || varr_db_check[$vn]=0
+varr_db_check[$vn]=$(check_db_size "${varr_db_path[$vn]}" "${varr_db_size[$vn]}")
 # host - ncbi-bt2 - btau - 3.7G ~ 30min w/ 6 threads
 ((vn++))
 varr_db_name[$vn]='host_kd_btau'
 varr_db_path[$vn]=${varr_db_path[0]}'/REPO_gref/host/btau'
 varr_db_gets[$vn]='datasets download genome accession GCF_002263795.3 --include genome --filename '${varr_db_path[$vn]}'/btau_ARS-UCD2.0.zip && unzip -qq '${varr_db_path[$vn]}'/btau_ARS-UCD2.0.zip -d '${varr_db_path[$vn]}' && micromamba run -n env_s1_kneaddata bowtie2-build --threads '${venv_cpu_max}' '${varr_db_path[$vn]}'/ncbi_dataset/data/GCF_002263795.3/GCF_002263795.3_ARS-UCD2.0_genomic.fna '${varr_db_path[$vn]}'/bowtie2/btau_ucd2'
 varr_db_size[$vn]=3.7
-vt_L=$(du -BM ${varr_db_path[$vn]} 2> /dev/null | cut --fields 1 | tail -1 | sed 's|M||g')
-vt_R=$(printf %.0f $(echo "${v_vol_gm} * ${varr_db_size[$vn]}" | bc -l))
-[[ ${vt_L} -gt ${vt_R} ]] && varr_db_check[$vn]=1 || varr_db_check[$vn]=0
+varr_db_check[$vn]=$(check_db_size "${varr_db_path[$vn]}" "${varr_db_size[$vn]}")
 # host - bowtie2 - mmus 3.5G
 ((vn++))
 varr_db_name[$vn]='host_kd_mmus'
@@ -95,9 +99,7 @@ varr_db_path[$vn]=${varr_db_path[0]}'/REPO_gref/host/mmus/bowtie2'
 varr_db_gets[$vn]='wget --no-check-certificate http://huttenhower.sph.harvard.edu/kneadData_databases/mouse_C57BL_6NJ_Bowtie2_v0.1.tar.gz -O '${varr_db_path[$vn]}'/C57BL.tar.gz'
 varr_db_pack[$vn]=${varr_db_pack[0]}${varr_db_path[$vn]}'/C57BL.tar.gz'' --directory '${varr_db_path[$vn]}
 varr_db_size[$vn]=3.5
-vt_L=$(du -BM ${varr_db_path[$vn]} 2> /dev/null | cut --fields 1 | tail -1 | sed 's|M||g')
-vt_R=$(printf %.0f $(echo "${v_vol_gm} * ${varr_db_size[$vn]}" | bc -l))
-[[ ${vt_L} -gt ${vt_R} ]] && varr_db_check[$vn]=1 || varr_db_check[$vn]=0
+varr_db_check[$vn]=$(check_db_size "${varr_db_path[$vn]}" "${varr_db_size[$vn]}")
 # Tool repo
 #checkm2 - 2.9G
 ((vn++))
@@ -109,9 +111,7 @@ varr_db_pack[$vn]=''
 #varr_db_gets[4]='wget https://zenodo.org/records/5571251/files/checkm2_database.tar.gz -O '${varr_db_path[4]}'/CheckM2_database.tar.gz'
 #varr_db_pack[4]=${varr_db_pack[0]}${varr_db_path[4]}'/CheckM2_database.tar.gz'' --directory '${varr_db_path[4]}
 varr_db_size[$vn]=2.9
-vt_L=$(du -BM ${varr_db_path[$vn]} 2> /dev/null | cut --fields 1 | tail -1 | sed 's|M||g')
-vt_R=$(printf %.0f $(echo "${v_vol_gm} * ${varr_db_size[$vn]}" | bc -l))
-[[ ${vt_L} -gt ${vt_R} ]] && varr_db_check[$vn]=1 || varr_db_check[$vn]=0
+varr_db_check[$vn]=$(check_db_size "${varr_db_path[$vn]}" "${varr_db_size[$vn]}")
 #NCBI
 # taxdump - 0.5G (493M)
 ((vn++))
@@ -120,9 +120,7 @@ varr_db_path[$vn]=${varr_db_path[0]}'/REPO_tool/ncbi_NR'
 varr_db_gets[$vn]='wget --no-check-certificate https://ftp.ncbi.nlm.nih.gov/pub/taxonomy/taxdump.tar.gz -O '${varr_db_path[$vn]}'/taxdump.tar.gz'
 varr_db_pack[$vn]='mkdir -p '${varr_db_path[$vn]}'/taxonomy && '${varr_db_pack[0]}${varr_db_path[$vn]}'/taxdump.tar.gz --directory '${varr_db_path[$vn]}'/taxonomy'
 varr_db_size[$vn]=0.5
-vt_L=$(du -BM ${varr_db_path[$vn]} 2> /dev/null | cut --fields 1 | tail -1 | sed 's|M||g')
-vt_R=$(printf %.0f $(echo "${v_vol_gm} * ${varr_db_size[$vn]}" | bc -l))
-[[ ${vt_L} -gt ${vt_R} ]] && varr_db_check[$vn]=1 || varr_db_check[$vn]=0
+varr_db_check[$vn]=$(check_db_size "${varr_db_path[$vn]}" "${varr_db_size[$vn]}")
 # kraken/bracken
 ## premade - pluspf smol - 8G
 ((vn++))
@@ -131,53 +129,42 @@ varr_db_path[$vn]=${varr_db_path[0]}'/REPO_tool/kraken'
 varr_db_gets[$vn]='wget --no-check-certificate https://genome-idx.s3.amazonaws.com/kraken/k2_pluspf_08gb_20240605.tar.gz -O '${varr_db_path[$vn]}'/kdb_std8.tar.gz'
 varr_db_pack[$vn]=${varr_db_pack[0]}${varr_db_path[$vn]}'/kdb_std8.tar.gz --directory '${varr_db_path[$vn]}'/kdb_std8'
 varr_db_size[$vn]=8
-vt_L=$(du -BM ${varr_db_path[$vn]} 2> /dev/null | cut --fields 1 | tail -1 | sed 's|M||g')
-vt_R=$(printf %.0f $(echo "${v_vol_gm} * ${varr_db_size[$vn]}" | bc -l))
-[[ ${vt_L} -gt ${vt_R} ]] && varr_db_check[$vn]=1 || varr_db_check[$vn]=0
-# custom agora/apollo - apollo @ 4.5G
+varr_db_check[$vn]=$(check_db_size "${varr_db_path[$vn]}" "${varr_db_size[$vn]}")
+# Custom agora/apollo - apollo @ 4.5G
+# <A2A,AGORA,APOLLO><NR,FULL><SSP,SPP> - legacy mask eg.'tool_k2_apollo/kdb_apollo' = apollo_NR_SSP
+tar -I pigz --transform='s,^kdb_a2a_ssp/,kraken_db/,' -xvf _repo/wbm_modelingcode/src/SeqC_pipeline/seqc_proc/REPO_tool/kraken/kdb_a2a_ssp.tar.gz --directory _repo/BACKUP/new_KRAK/
 ## apollo
 ((vn++))
 varr_db_name[$vn]='tool_k2_apollo'
 varr_db_path[$vn]=${varr_db_path[0]}'/REPO_tool/kraken/kdb_apollo'
 varr_db_gets[$vn]='wget --no-check-certificate https://zenodo.org/records/14884732/files/kdb_apollo.tar.gz -O '${varr_db_path[$vn]}'.tar.gz'
-varr_db_pack[$vn]='tar -I pigz -xvf '${varr_db_path[$vn]}'.tar.gz --directory '${varr_db_path[0]}'/REPO_tool/kraken/'
+#varr_db_pack[$vn]='tar -I pigz -xvf '${varr_db_path[$vn]}'.tar.gz --directory '${varr_db_path[0]}'/REPO_tool/kraken/'
+varr_db_pack[$vn]="tar -I pigz --transform='s,^kdb_apollo_ssp/,kdb_apollo/,' -xvf '${varr_db_path[$vn]}'.tar.gz --directory '${varr_db_path[0]}'/REPO_tool/kraken/"
 varr_db_size[$vn]=4.5
-vt_L=$(du -BM ${varr_db_path[$vn]} 2> /dev/null | cut --fields 1 | tail -1 | sed 's|M||g')
-vt_R=$(printf %.0f $(echo "${v_vol_gm} * ${varr_db_size[$vn]}" | bc -l))
-[[ ${vt_L} -gt ${vt_R} ]] && varr_db_check[$vn]=1 || varr_db_check[$vn]=0
-## agora2 - 50G (clean?) TODO confirm
+varr_db_check[$vn]=$(check_db_size "${varr_db_path[$vn]}" "${varr_db_size[$vn]}")
+## agora2 - 14G pre 7.5G post
 ((vn++))
 varr_db_name[$vn]='tool_k2_agora'
 varr_db_path[$vn]=${varr_db_path[0]}'/REPO_tool/kraken/kdb_agora'
 varr_db_gets[$vn]='wget --no-check-certificate https://zenodo.org/records/14884741/files/kdb_agora.tar.gz -O '${varr_db_path[$vn]}'.tar.gz'
-varr_db_pack[$vn]='tar -I pigz -xvf '${varr_db_path[$vn]}'.tar.gz --directory '${varr_db_path[0]}'/REPO_tool/kraken/'
-varr_db_size[$vn]=50
-vt_L=$(du -BM ${varr_db_path[$vn]} 2> /dev/null | cut --fields 1 | tail -1 | sed 's|M||g')
-vt_R=$(printf %.0f $(echo "${v_vol_gm} * ${varr_db_size[$vn]}" | bc -l))
-[[ ${vt_L} -gt ${vt_R} ]] && varr_db_check[$vn]=1 || varr_db_check[$vn]=0
+varr_db_pack[$vn]="tar -I pigz --transform='s,^kdb_agora_ssp/,kdb_agora/,' -xvf '${varr_db_path[$vn]}'.tar.gz --directory '${varr_db_path[0]}'/REPO_tool/kraken/"
+varr_db_size[$vn]=14
+varr_db_check[$vn]=$(check_db_size "${varr_db_path[$vn]}" "${varr_db_size[$vn]}")
 ## agora2 and apollo - 154G pre 69 post - 84G genomes - TODO ADJUST FOR FINAL BUILD 238
 ((vn++))
+#previous record 14888918
 varr_db_name[$vn]='tool_k2_agora2apollo'
 varr_db_path[$vn]=${varr_db_path[0]}'/REPO_tool/kraken/kdb_a2a'
-varr_db_gets[$vn]='wget --no-check-certificate https://zenodo.org/records/14888918/files/kdb_a2a.tar.gz -O '${varr_db_path[$vn]}'.tar.gz'
-varr_db_pack[$vn]='tar -I pigz -xvf '${varr_db_path[$vn]}'.tar.gz --directory '${varr_db_path[0]}'/REPO_tool/kraken/'
-varr_db_size[$vn]=69
-vt_L=$(du -BM ${varr_db_path[$vn]} 2> /dev/null | cut --fields 1 | tail -1 | sed 's|M||g')
-vt_R=$(printf %.0f $(echo "${v_vol_gm} * ${varr_db_size[$vn]}" | bc -l))
-[[ ${vt_L} -gt ${vt_R} ]] && varr_db_check[$vn]=1 || varr_db_check[$vn]=0
+varr_db_gets[$vn]='wget --no-check-certificate https://zenodo.org/records/16969998/files/kdb_a2a.tar.gz -O '${varr_db_path[$vn]}'.tar.gz'
+varr_db_pack[$vn]="tar -I pigz --transform='s,^kdb_a2a_ssp/,kdb_a2a/,' -xvf '${varr_db_path[$vn]}'.tar.gz --directory '${varr_db_path[0]}'/REPO_tool/kraken/"
+varr_db_size[$vn]=8.6
+varr_db_check[$vn]=$(check_db_size "${varr_db_path[$vn]}" "${varr_db_size[$vn]}")
 ##smol demo - actual size needed
 ((vn++))
 varr_db_name[$vn]='tool_k2_demo'
 varr_db_path[$vn]=${varr_db_path[0]}'/REPO_tool/kraken/kdb_demo'
-if [[ "$(du ${varr_db_path[$vn]} 2> /dev/null | cut --fields 1 | tail -1)" -gt 1 ]];then 
-varr_db_check[$vn]=1
-else
-varr_db_check[$vn]=0
-fi
 varr_db_size[$vn]=8
-vt_L=$(du -BM ${varr_db_path[$vn]} 2> /dev/null | cut --fields 1 | tail -1 | sed 's|M||g')
-vt_R=$(printf %.0f $(echo "${v_vol_gm} * ${varr_db_size[$vn]}" | bc -l))
-[[ ${vt_L} -gt ${vt_R} ]] && varr_db_check[$vn]=1 || varr_db_check[$vn]=0
+varr_db_check[$vn]=$(check_db_size "${varr_db_path[$vn]}" "${varr_db_size[$vn]}")
 # humann
 func_help () {
 # Help content
