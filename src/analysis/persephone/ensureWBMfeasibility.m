@@ -297,7 +297,6 @@ if any(feasibleOnAnyDiet)
                         end
                     end
                 end
-                
             end
         end
     end

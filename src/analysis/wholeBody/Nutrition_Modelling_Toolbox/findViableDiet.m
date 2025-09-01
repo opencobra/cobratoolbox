@@ -17,9 +17,9 @@ function [viableModel,pointsModel,pointsSln,dietChanges] = findViableDiet(model,
 %                  for a viable diet and a scalar of ten returns ten times
 %                  the necessary flux)
 %    specifiedWeights: A cell array that can be used to manipulate
-%                       weights to favor specific nutrients over
-%                       others. Default weights are equal to one
-%                       (e.g. {'Diet_EX_glu[d]',0.1;'Diet_EX_fru[d]',10})%
+%                         weights to favor specific nutrients over
+%                         others. Default weights are equal to one
+%                         (e.g. {'Diet_EX_glu[d]',0.1;'Diet_EX_fru[d]',10})%
 %    tol:         A numerical value (double) indicating the threshold that
 %                 is assumed to be associated with a zero flux (default is
 %                 1e-8)

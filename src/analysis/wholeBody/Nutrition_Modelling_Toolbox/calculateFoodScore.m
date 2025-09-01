@@ -72,7 +72,7 @@ for i = 1:size(structNames,1)
     % Obtain the similarity score through cosine method
     similarityScore = zeros(size(labelMacrosValues,1),1);
     for j = 1:size(labelMacrosValues,1)
-        similarityScore(j,1) = sqrt(bsxfun(@plus, sum(orgNumbers.^2,2), sum(labelMacrosValues(j,:).^2,2)')- 2*(orgNumbers*labelMacrosValues(j,:)'));    
+        similarityScore(j,1) = sqrt(bsxfun(@plus, sum(orgNumbers.^2,2), sum(labelMacrosValues(j,:).^2,2)')- 2*(orgNumbers*labelMacrosValues(j,:)'));
     end
     
     similarityScore = [0;similarityScore];
