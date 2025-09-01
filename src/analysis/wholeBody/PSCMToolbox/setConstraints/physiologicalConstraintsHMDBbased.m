@@ -101,6 +101,7 @@ catch
     BK = (BK);
 end
 RenalFlowRate=BK*CardiacOutput*(1-Hematocrit); % k_plasma_organ in ml/min
+% TO UPDATE- if user defined, go with user input
 GlomerularFiltrationRate = RenalFlowRate*RenalFiltrationFraction;% in ml/min
 %% read data
 % read metabolic concentrations from HMDB if no input data are defined

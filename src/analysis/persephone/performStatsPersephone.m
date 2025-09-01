@@ -563,9 +563,11 @@ if logisticRegControlForSex == true
     % Visualise regressions and save result
     resultToVis = string(fieldnames(regRes));
     regressionResults = regRes.(resultToVis(1));    
-    fig = visualiseRegressionFit(regressionResults, response, formula, statPathFull); close(fig)
-    % Add results to table    
-    statResults{rowCount,2} = regRes.(predictor); 
+    if ~contains(resultToVis, 'NotDefined')
+        fig = visualiseRegressionFit(regressionResults, response, formula, statPathFull); close(fig)
+        % Add results to table
+        statResults{rowCount,2} = regRes.(predictor);
+    end
 end
 
 if logisticRegControlForSexAndOtherConfounders == true
@@ -580,13 +582,14 @@ if logisticRegControlForSexAndOtherConfounders == true
     regRes = performRegressions(data,metadata,formula);
     % Visualise regressions and save result
     resultToVis = string(fieldnames(regRes));
-    regressionResults = regRes.(resultToVis(1));
-    fig = visualiseRegressionFit(regressionResults, response, formula, statPathFull); close(fig)
-    % Add results to table
-    statResults{rowCount,2} = regRes.(predictor);
-    if ~isfield(regRes, 'NotDefined')
-        % Visualise regressions and save result
+    if ~contains(resultToVis, 'NotDefined')
+        regressionResults = regRes.(resultToVis(1));
+        fig = visualiseRegressionFit(regressionResults, response, formula, statPathFull); close(fig)
+        % Add results to table
+        statResults{rowCount,2} = regRes.(predictor);
         resultToVis = string(fieldnames(regRes));
+        
+        % Visualise regressions and save result
         regressionResults = regRes.(resultToVis(1));
         fig = visualiseRegressionFit(regressionResults, response, formula, statPathFull); close(fig)
         % Add results to table

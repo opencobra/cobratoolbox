@@ -650,7 +650,7 @@ for s = 1:numModels
                 end
                 GFR = cell2mat(dataCurrent{2, idxGFR});
                 currentUnit = dataCurrent{1, idxGFR};
-                if ~strcmp(currentUnit, "mL/min/1.73m^2")
+                if ~strcmp(currentUnit, "mL/min/1.73m^2") || ~strcmp(currentUnit, "mL/min")
                     error('Glomerular Filtration rate must be provided in mL/min/1.73m^2');
                 end
                 IndividualParameters.GlomerularFiltrationRate = GFR;
