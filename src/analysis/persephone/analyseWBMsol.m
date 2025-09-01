@@ -348,8 +348,8 @@ if analyseGF
     FBA_results.(strcat("Table_",string(N))) = stats.Scaled_fluxes; N = N+1; % Increment table number
     
     % Add results from the flux grouping function
-    FBA_results.(strcat("Table_",string(N))) = reactionGroups; N = N+1; % Increment table number
-    FBA_results.(strcat("Table_",string(N))) = fluxesGrouped; N = N+1; % Increment table number
+    %FBA_results.(strcat("Table_",string(N))) = reactionGroups; N = N+1; % Increment table number
+    %FBA_results.(strcat("Table_",string(N))) = fluxesGrouped; N = N+1; % Increment table number
 
 end
 
@@ -384,15 +384,7 @@ end
 
 %%% NOTE: This part will be removed once the pipeline is more mature
 pathToFluxResults = [fluxAnalysisPath filesep 'processed_fluxes.csv'];
-    
-if analyseGF
-    % Save fluxes and flux-microbe correlations in separate file
-    writetable(fluxesPruned,pathToFluxResults)
-else 
-    % save fluxes with out the germfree flux subtracted if you are not
-    % doing germ-free analysis (so they can still be used in performStatsPersephone
-    writetable(fluxes,pathToFluxResults)
-end
+writetable(fluxes,pathToFluxResults) 
 
 % Save microbiome relative abundances
 WBMmicrobiomePath = [fluxAnalysisPath filesep 'WBM_relative_abundances.csv'];
