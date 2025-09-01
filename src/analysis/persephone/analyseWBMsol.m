@@ -141,6 +141,11 @@ disp('PART 1: Load the flux solutions')
 solDir = what(fluxPath);
 solPaths = string(append(solDir.path, filesep, solDir.mat));
 modelNames = string(erase(solDir.mat,'.mat'));
+analyseGF = false; 
+if any(contains(modelNames, 'gfWBM')) || any(contains(modelNames, 'gfiWBM'))
+    analyseGF = true;
+end
+
 
 % Get number of metabolites investigated
 tmpSol = solPaths(~contains(solPaths,'Harv'));
@@ -221,22 +226,45 @@ warning('on')
 modelSP(cellfun(@isempty,modelSP(:,2)),:)=[];
 
 %% PART 2: Obtain and process species biomass shadow prices (Microbiome only)
+% 
+% if ~isempty(modelSP) % Only run this section if microbiome personalised results are included
+%     disp('PART 2: Obtain the shadow prices of microbe biomass for each reaction')
+% 
+%     % Obtain the names of the optimised reactions
+%     rxnNames = fluxes.Properties.VariableNames;
+% 
+%     % Find the microbe biomass shadow prices for each optimised reaction
+%     % and produce summary statistics
+%     [microbesContributed, modelsInfluenced, microbeInfluenceStats, wbmRelativeAbundances] = extractMicrobeContributions(modelSP,rxnNames,fluxAnalysisPath,paramFluxProcessing.roundingFactor);
+% 
+% else 
+%     disp('SKIP PART 2: Obtain the shadow prices of microbe biomass for each reaction')
+%     disp('NO FBA solutions from microbiome personalised WBMs were detected.')
+% end
 
-if ~isempty(modelSP) % Only run this section if microbiome personalised results are included
-    disp('PART 2: Obtain the shadow prices of microbe biomass for each reaction')
+%% PART 2: Correlate fluxes with microbial relative abundances
+% Process flux and relative abundances data 
+% Extract relative abundances
+wbmRelativeAbundances = extractWbmRelativeAbundances(modelSP);
 
-    % Obtain the names of the optimised reactions
-    rxnNames = fluxes.Properties.VariableNames;
+fluxNames  = string(fluxes.Properties.RowNames);
+abundNames = string(wbmRelativeAbundances.Properties.RowNames);
 
-    % Find the microbe biomass shadow prices for each optimised reaction
-    % and produce summary statistics
-    [microbesContributed, modelsInfluenced, microbeInfluenceStats, wbmRelativeAbundances] = extractMicrobeContributions(modelSP,rxnNames,fluxAnalysisPath,paramFluxProcessing.roundingFactor);
+% Extract everything between the first and last underscore
+fluxIDs  = regexprep(fluxNames,  '^.*_(.*?)_.*$', '$1');
+abundIDs = regexprep(abundNames, '^.*_(.*?)_.*$', '$1');
 
-else 
-    disp('SKIP PART 2: Obtain the shadow prices of microbe biomass for each reaction')
-    disp('NO FBA solutions from microbiome personalised WBMs were detected.')
-end
+% Now match
+[~, ia, ib] = intersect(fluxIDs, abundIDs, 'stable');
+fluxesToCorrelate = fluxes(ia,:); 
+relAbunToCorrelate = wbmRelativeAbundances(ib,:);
 
+makeAr = @(x) table2array(x(:,2:end)); % Transform table to array
+RHO = corr(makeAr(fluxesToCorrelate),makeAr(relAbunToCorrelate),'type','Spearman','rows','pairwise')'; % Create spearman correlations
+fluxMicrobeCorr = array2table(RHO,... % Transform correlation matrix to table
+    'RowNames', relAbunToCorrelate.Properties.VariableNames(2:end)',...
+    'VariableNames',fluxesToCorrelate.Properties.VariableNames(2:end)...
+    );
 
 %% PART 3: Scale fluxes and produce summary statistics
 disp('PART 3: Rescale flux results and produce summary statistics')
@@ -245,24 +273,31 @@ disp('PART 3: Rescale flux results and produce summary statistics')
 fluxes = [metadata fluxes];
 
 % Create statistics for fluxes and prune results
-stats = describeFluxes(fluxes,paramFluxProcessing);
+if analyseGF
+    stats = describeFluxes(fluxes,paramFluxProcessing);
+else
+    stats = [];
+    
+end
 
 %% PART 4: Group reactions with identical or near identical flux results
-disp('PART 4: Find reaction groups and group flux results')
-
-fluxesPruned = stats.Fluxes_removed_reactions; % Host-microbiome fluxes with removed metabolites
-[fluxesGrouped, reactionGroups] = groupFluxes(fluxesPruned, paramFluxProcessing.rxnEquivalenceThreshold,{});
-
+% disp('PART 4: Find reaction groups and group flux results')
+% 
+% if analyseGF
+%     fluxesPruned = stats.Fluxes_removed_reactions; % Host-microbiome fluxes with removed metabolites
+%     [fluxesGrouped, reactionGroups] = groupFluxes(fluxesPruned, paramFluxProcessing.rxnEquivalenceThreshold,{});
+% end
+% 
 %% PART 5: Find correlations between the fluxes and relative microbe abundances (Microbiome only)
-
-if ~isempty(modelSP) % Only run this section if microbiome personalised results are included
-    disp('PART 5: Correlate the predicted fluxes with the relative microbe abundances ')
-    % Correlate fluxes with the relative abundances and the microbial
-    % metabolic influence values
-    fluxMicrobeCorr= correlateFluxesAgainstMicrobes(fluxes, modelSP, paramFluxProcessing);
-else
-    disp('Skipped PART 5: Correlate the predicted fluxes with the relative microbe abundances ')
-end
+% 
+% if ~isempty(modelSP) % Only run this section if microbiome personalised results are included
+%     disp('PART 5: Correlate the predicted fluxes with the relative microbe abundances ')
+%     % Correlate fluxes with the relative abundances and the microbial
+%     % metabolic influence values
+%     fluxMicrobeCorr= correlateFluxesAgainstMicrobes(fluxes, modelSP, paramFluxProcessing);
+% else
+%     disp('Skipped PART 5: Correlate the predicted fluxes with the relative microbe abundances ')
+% end
 
 %% PART 6: Create table with all results
 disp('PART 6: Collect all results')
@@ -304,21 +339,25 @@ N=1;
 FBA_results.(strcat("Table_",string(N))) = fbaStats; N = N+1; % Increment table number
 % FBA_results.(strcat("Table_",string(N))) = fbaOrigStats; N = N+1; % Increment table number
 
-% Add results from the flux summary analysis
-FBA_results.(strcat("Table_",string(N))) = stats.Flux_summary_statistics; N = N+1; % Increment table number
-FBA_results.(strcat("Table_",string(N))) = stats.Fluxes; N = N+1; % Increment table number
-FBA_results.(strcat("Table_",string(N))) = stats.Fluxes_removed_reactions; N = N+1; % Increment table number
-FBA_results.(strcat("Table_",string(N))) = stats.Scaled_flux_summary_statistics; N = N+1; % Increment table number
-FBA_results.(strcat("Table_",string(N))) = stats.Scaled_fluxes; N = N+1; % Increment table number
+if analyseGF
+    % Add results from the flux summary analysis
+    FBA_results.(strcat("Table_",string(N))) = stats.Flux_summary_statistics; N = N+1; % Increment table number
+    FBA_results.(strcat("Table_",string(N))) = stats.Fluxes; N = N+1; % Increment table number
+    FBA_results.(strcat("Table_",string(N))) = stats.Fluxes_removed_reactions; N = N+1; % Increment table number
+    FBA_results.(strcat("Table_",string(N))) = stats.Scaled_flux_summary_statistics; N = N+1; % Increment table number
+    FBA_results.(strcat("Table_",string(N))) = stats.Scaled_fluxes; N = N+1; % Increment table number
+    
+    % Add results from the flux grouping function
+    FBA_results.(strcat("Table_",string(N))) = reactionGroups; N = N+1; % Increment table number
+    FBA_results.(strcat("Table_",string(N))) = fluxesGrouped; N = N+1; % Increment table number
 
-% Add results from the flux grouping function
-FBA_results.(strcat("Table_",string(N))) = reactionGroups; N = N+1; % Increment table number
-FBA_results.(strcat("Table_",string(N))) = fluxesGrouped; N = N+1; % Increment table number
+end
+
 
 % Add results from the shadow price analysis (Microbiome only)
-FBA_results.(strcat("Table_",string(N))) = microbesContributed; N = N+1; % Increment table number
-FBA_results.(strcat("Table_",string(N))) = modelsInfluenced; N = N+1; % Increment table number
-FBA_results.(strcat("Table_",string(N))) = microbeInfluenceStats; N = N+1; % Increment table number
+% FBA_results.(strcat("Table_",string(N))) = microbesContributed; N = N+1; % Increment table number
+% FBA_results.(strcat("Table_",string(N))) = modelsInfluenced; N = N+1; % Increment table number
+% FBA_results.(strcat("Table_",string(N))) = microbeInfluenceStats; N = N+1; % Increment table number
 FBA_results.(strcat("Table_",string(N))) = wbmRelativeAbundances; N = N+1; % Increment table number
 
 % Add results from the flux-microbe correlation function (Microbiome only)
@@ -344,14 +383,20 @@ for i = 1:length(sheetNames)
 end
 
 %%% NOTE: This part will be removed once the pipeline is more mature
-
-% Save fluxes and flux-microbe correlations in separate files
 pathToFluxResults = [fluxAnalysisPath filesep 'processed_fluxes.csv'];
-writetable(fluxesPruned,pathToFluxResults)
+    
+if analyseGF
+    % Save fluxes and flux-microbe correlations in separate file
+    writetable(fluxesPruned,pathToFluxResults)
+else 
+    % save fluxes with out the germfree flux subtracted if you are not
+    % doing germ-free analysis (so they can still be used in performStatsPersephone
+    writetable(fluxes,pathToFluxResults)
+end
 
 % Save microbiome relative abundances
 WBMmicrobiomePath = [fluxAnalysisPath filesep 'WBM_relative_abundances.csv'];
-writetable(wbmRelativeAbundances,WBMmicrobiomePath,'WriteRowNames',true)
+% writetable(wbmRelativeAbundances,WBMmicrobiomePath,'WriteRowNames',true)
 
 % Save flux-microbe correlations
 fluxMicrobePath = [fluxAnalysisPath filesep 'microbe_metabolite_R2.csv'];
@@ -359,109 +404,6 @@ writetable(fluxMicrobeCorr,fluxMicrobePath,'WriteRowNames',true)
 
 % Output paths
 pathsToFilesForStatistics = [string(pathToFluxResults); string(WBMmicrobiomePath); string(fluxMicrobePath)];
-
-end
-
-function [microbesContributed, modelsInfluenced, microbeInfluenceStats, relativeAbundances] = extractMicrobeContributions(modelSP,rxnNames,fluxAnalysisPath,roundingFactor)
-% Function for processing and saving the species biomass[c] shadow prices.
-% M x n tables of the species biomass shadow prices are generated for each
-% m samples and n microbial species. These tables are generated for each
-% optimised reaction. After obtaining these tables, statistics are
-% generated on 1) the number of samples where each microbial species
-% influences a given reaction, 2) the number of microbial species that influence a
-% reaction in each sample, and summary statistics for the number of
-% microbes that influence each reaction flux.
-%
-% USAGE:
-%       [microbiomeContributions, microbesContributed, modelsInfluenced, microbeInfluenceStats, relativeAbundances] = extractMicrobeContributions(modelSP,rxnNames,fluxAnalysisPath,roundingFactor)
-% INPUTS:
-%    modelSP:               Cell array with three columns. The first column
-%                                   contains the sample IDs. The second column contains cell arrays of the
-%                                   microbial species present in the samples. 
-%                                   The third column contains for each cell a m x n numerical matrix with the
-%                                   shadow prices for m microbial species and for each reaction n. 
-%    rxnNames:              Cell array with reaction names. Note that the reaction names need to 
-%                                   correspond with each column in each cell in modelSP(:,3).
-%    fluxAnalysisPath                   Character array with path and name of file from which to retrieve abundance information
-%
-% OUTPUTS:
-%   nInflMicrobes               Table that contains the number of samples where each microbial species
-%                                        influences a given reaction.
-% sampSpeciesInfluence  Table containing the number of microbial species that influence a
-%                                        reaction in each sample.
-% microbeInfluenceStats   Table containing summary statistics for the number of microbes 
-%                                        that influence each reaction flux.
-%
-% .. Author:
-%       - Tim Hensen       July, 2024
-
-if nargin<4
-    roundingFactor = 6;
-end
-
-
-%%% Obtain the pan species biomass shadow prices and their relative abundances. %%% 
-
-% Find the pan species names
-allSpecies = unique(vertcat(modelSP{:,2}));
-
-% Extract shadow price and relative abundance info from the FBA solutions
-% (modelSP). The biomShadowPrices array contains shadow prices in a 3 dimensional 
-% array with samples in the x dimension, the pan species in the y dimension, and the 
-% reaction names in the z dimension.
-[biomShadowPrices, relativeAbundances] = extractMicroWbmSpAndRa(allSpecies, modelSP);
-
-% Set all microbe biomass shadow prices below threshold to zero
-biomShadowPrices = round(biomShadowPrices,roundingFactor);
-
-% Set all zeros to nan 
-biomShadowPrices(biomShadowPrices==0) = nan;
-
-%%% Find the contributing taxa %%% 
-
-% Obtain the contributing microbes
-contributed = ~isnan(biomShadowPrices);
-
-% Find the number of microbes that contributed to the predicted flux
-microbesContributed = reshape(sum(contributed,2,'omitnan'),size(biomShadowPrices,[1 3])); 
-microbesContributed = array2table(microbesContributed,'RowNames',relativeAbundances.Properties.RowNames,'VariableNames',rxnNames);
-
-% Find the number of samples in which each microbe contributed to the flux
-modelsInfluenced = reshape(sum(contributed,1,'omitnan'),size(biomShadowPrices,[2 3]));
-modelsInfluenced = array2table(modelsInfluenced,'RowNames',relativeAbundances.Properties.VariableNames,'VariableNames',rxnNames);
-
-% Find the total number of microbes that contributed to the fluxes across
-% the cohort.
-totalMicrobes = reshape(sum(any(contributed,1)),[size(biomShadowPrices,3) 1]);
-
-
-%%% Prepare summary statistics table %%% 
-
-% Obtain summary statistics for gut microbial influences
-microbeCounts = table2array(microbesContributed);
-contributionStats = [mean(microbeCounts)' std(microbeCounts)' totalMicrobes];
-
-% Prepare table with summary statistics
-microbeInfluenceStats=array2table(contributionStats);
-microbeInfluenceStats.Properties.VariableNames = {'Mean microbe count','SD microbe count','Total microbes'};
-microbeInfluenceStats.Reaction = rxnNames';
-microbeInfluenceStats = movevars(microbeInfluenceStats,"Reaction","Before",1);
-
-
-%%% Save individual microbe influences %%% 
-
-% Create directory for writing csv files with shadow prices
-shadowPriceDirectory = [fluxAnalysisPath filesep 'biomass_shadow_prices' filesep];
-if ~exist(shadowPriceDirectory,'dir')
-    mkdir(shadowPriceDirectory)
-end
-
-% Save tables with biomass shadow prices to directory
-for i=1:size(biomShadowPrices,3)
-    shadowPriceTable = array2table(biomShadowPrices(:,:,i),'RowNames',string(modelSP(:,1)),'VariableNames',allSpecies');
-    shadowPricePath = [shadowPriceDirectory filesep strcat(rxnNames{i},'.csv')];
-    writetable(shadowPriceTable,shadowPricePath,'WriteRowNames',true);
-end
 
 end
 
@@ -616,7 +558,12 @@ mWBMs = contains(sexInfo.ID,{'mWBM','miWBM'});
 % Check which WBMs are iWBMs or miWBMs
 iWBMs = contains(sexInfo.ID,'iWBM');
 
-if any(mWBMs) && ~any(iWBMs)
+analyseGF = false; 
+if any(contains(fluxes.Properties.RowNames, 'gfWBM')) || any(contains(fluxes.Properties.RowNames, 'gfiWBM'))
+    analyseGF = true;
+end
+
+if any(mWBMs) && ~any(iWBMs) && analyseGF
 
     % If only the microbiome is personalised - obtain the generic male and
     % female germ-free models and substract that from the male and female
@@ -653,7 +600,7 @@ if ~any(mWBMs) && all(iWBMs)
     scaledFluxes{matches(sexInfo.Sex,'female'),:} = fluxes_rm{matches(sexInfo.Sex,'female'),:} - iWBM_control_female{:,:};
 end
 
-if all(iWBMs) && any(mWBMs)
+if all(iWBMs) && any(mWBMs) 
 
     % If both the microbiome and human are personalised, substract the
     % germfree values from the respective sample flux values.
@@ -799,372 +746,15 @@ stats.("Scaled_fluxes") = scaledFluxes;
 
 end
 
-function [fluxesGrouped, reactionGroups] = groupFluxes(fluxes, threshold,fluxAnalysisPath)
-% This function performs pairwise correlations between the reaction flux results and finds 
-% groups of identical fluxes within the data. 
-%
-% USAGE:
-%       [fluxesGrouped, reactionGroups] = groupFluxes(fluxes, threshold,saveFilePath)
-%
-% INPUTS:
-%       fluxes:                 M x n table with flux values for each reaction n and each sample m. 
-%       threshold             Scalar value between 0 and 1 indicating the
-%                                   Spearman correlation strength when two flux distributions are
-%                                   grouped and handled as one result. Default =
-%                                   0.999
-%
-% OPTIONAL INPUTS
-% fluxAnalysisPath                      Filename and path to excel file (.xlsx) with
-% grouping results. Default is empty {}. Nothing is saved to file.
-%
-% OUTPUTS
-%    fluxesGrouped        M x n table with flux values for each reaction n and
-%                                   each sample m. The grouped reactions are appended as columns at the
-%                                   end while the reactions in these groups are removed from the input
-%                                   fluxes table.
-%    reactionGroups      Table with one column for the grouped reactions
-%                                   and one column for the new names of the reaction groups. 
-% .. Author:
-%       - Tim Hensen       July, 2024
-
-% Remove ID and Sex
-ID = fluxes(:,'ID');
-fluxes(:,matches(fluxes.Properties.VariableNames,{'ID','Sex'}))=[];
-rxnNames = fluxes.Properties.VariableNames;
-
-% Obtain Pearson correlations
-adjMatrix=corr(table2array(fluxes),'Type','Pearson','Rows','pairwise');
-
-% Set the diagonal to zero
-adjMatrix(1:size(adjMatrix,1) + 1:end) = 0;
-
-% Find identical distributions
-adjMatrix(adjMatrix<threshold | isnan(adjMatrix)) = 0;
-adjMatrix(adjMatrix>threshold) = 1;
-
-% Create graph and get all with a degreee of nonzero
-G = graph(adjMatrix,rxnNames);
-G.Nodes.degree = degree(G);
-G.Nodes.Name(G.Nodes.degree~=0);
-
-% Find subnetworks
-subnetworks = conncomp(G);
-
-% Extract the subnetworks as a list
-subnetwork_list = table(G.Nodes.Name, subnetworks',G.Nodes.degree);
-
-subnetwork_list_dup = subnetwork_list(subnetwork_list.Var3~=0,:);
-
-% Get groups
-groups = findgroups(subnetwork_list_dup.Var2);
-subNets = cell(length(unique(groups)),2);
-for i = 1:length(unique(groups))
-    subNets{i,1} = strjoin(string(subnetwork_list_dup.Var1(groups==i)), '/');
-    subNets{i,2} = subnetwork_list_dup.Var1(groups==i);
-end
-
-% Replace duplicate flux results with group
-fluxesGrouped = fluxes;
-for i=1:size(subNets,1)
-    dupFluxes = find(matches(fluxesGrouped.Properties.VariableNames,subNets{i,2}'));
-    try
-        fluxesGrouped.(subNets{i,1}) = table2array(fluxesGrouped(:,dupFluxes(1)));
-    catch % Catch names with length more than 64
-        shortened = char(subNets{i,1});
-        shortened(64:end)=[];
-        shortened=string(shortened);
-        fluxesGrouped.(shortened) = table2array(fluxesGrouped(:,dupFluxes(1)));
-    end
-    fluxesGrouped(:,dupFluxes)=[];
-end
-% Add back sample names
-fluxesGrouped = [ID fluxesGrouped];
-
-% Prepare flux groups for saving
-subNets1 = subNets;
-for i = 1:size(subNets1,1)
-    identicalMets = string(subNets1{i,2}');
-    subNets1(i,3) = cellstr(strjoin(identicalMets,';'));
-end
-subNets1(:,2)=[];
-
-if ~isempty(subNets1)
-% Convert subNets1 to table
-subNets2 = cell2table(subNets1,'VariableNames',{'Metabolite group name','Included metabolites'});
-subNets2.("Spearman rho") = repmat(threshold,height(subNets2),1);
-else
-    subNets2 = table();
-end
-reactionGroups = subNets2;
-
-if ~isempty(fluxAnalysisPath)
-    % Generate paths
-    thresholdName = replace(string(threshold),'.','_');
-    fluxesXlsxPath = [fluxAnalysisPath filesep 'flux_results.xlsx'];
-    fluxProcessedPath = [fluxAnalysisPath filesep 'processed_fluxes_Thr_' char(thresholdName) '.csv'];
-    sheetGroupedFluxes = ['Table 5 grouped_flux_Thr_' char(thresholdName)];
-    sheetGroupedNames = 'Table 6 Reaction groups';
-    
-    disp('Save grouped fluxes')
-    writetable(fluxesGrouped, fluxesXlsxPath,'Sheet',sheetGroupedFluxes,'WriteRowNames',false)
-    writetable(reactionGroups,fluxesXlsxPath,'Sheet',sheetGroupedNames)
-    writetable(fluxesGrouped, fluxProcessedPath)
-end
-end
-
-function [fluxMicrobeCorr,fluxMicrobeInfluenceCorr] = correlateFluxesAgainstMicrobes(fluxes, modelSP, paramFluxProcessing)
-% Function for assessing Spearman correlations between the predicted fluxes and
-% relative microbe abundances. The r-squared values are obtained by
-% performing simple Spearman correlations between the flux (response) and the
-% relative abundance (predictor). Correlations are only performed for
-% microbe-reaction combinations where the species biomass metabolite has a
-% nonzero (tol=1e-6) shadow price for the optimised reaction. These microbe-flux associations are
-% mapped in the sampSpeciesInfluence variable. Microbes are also only
-% regressed if they are present in at least a certain percentage of
-% samples, defined by the microbeCutoff variable. 
-%
-% USAGE:
-%       [fluxMicrobeCorr,fluxMicrobeInfluenceCorr] = correlateFluxesAgainstMicrobes(fluxes, microbiomeDir, modelSP, paramFluxProcessing)
-% 
-% INPUTS:
-% fluxes:                       M x n table with flux values for each reaction n and each sample m. 
-% microbiomeDir                 Character array with path to the merged taxa-read
-%                               MARS output file.
-% modelSP:                      Cell array with three columns. The first column
-%                               contains the sample IDs. The second column contains cell arrays of the
-%                               microbial species present in the samples. 
-%                               The third column contains for each cell a m x n numerical matrix with the
-%                               shadow prices for m microbial species and for each reaction n. 
-% microbeCutoff                 Cutoff for the percentage of samples where a
-%                               microbe can be absent in the samples to be included in the correlations. Default
-%                               limit is 90%
-% OPTIONAL INPUT
-%           fluxAnalysisPath             Path to directory where the fluxMicrobeCorr
-%                               variable is saved. Default is empty and
-%                               nothing is saved.
-%           paramFluxProcessing TODO
-%
-% OUTPUTS:
-% fluxMicrobeCorr               M x n table of m microbial species and n
-%                               reactions with r-squared values for the associated microbe-flux
-%                               connections.
-%
-% .. Author:
-%       - Tim Hensen       July, 2024
-
-% Remove GF samples
-fluxes(contains(fluxes.Properties.RowNames,{'Harv','gf'}),:) = [];
-
-% Remove ID and sex columns. Note that the sample IDs are still in the
-% table rows.
-fluxes(:,matches(fluxes.Properties.VariableNames,{'ID','Sex'}))=[];
-
-
-%%% Create species relative abundance table from model coefficients %%%
+function relativeAbundances = extractWbmRelativeAbundances(modelSP)
+% Author: Tim Hensen.
+% TO DO TH: Add documentations!
 
 % Find the pan species names
 allSpecies = unique(vertcat(modelSP{:,2}));
 
-% Extract shadow price and relative abundance info from the FBA solutions
-% (modelSP). The biomShadowPrices array contains shadow prices in a 3 dimensional 
-% array with samples in the x dimension, the pan species in the y dimension, and the 
-% reaction names in the z dimension.
-%%
-[biomShadowPrices, relativeAbundances] = extractMicroWbmSpAndRa(allSpecies, modelSP);
-%%
-% Preallocate array with relative abundances
-% relAbun = table2array(relativeAbundances);
-
-% Calculate flux contributions (See extractMicrobeContributions for
-% explanation)
-contributions = biomShadowPrices;%(-1* biomShadowPrices) .* relAbun;
-
-% Set all flux contributions below threshol to zero
-contributions = round(contributions, paramFluxProcessing.roundingFactor);
-
-% Set all zeros to nan 
-contributions(contributions==0) = nan;
-
-% Add the sum of microbe contributions and the sum of relative abundances
-% to the datasets
-
-% Find the total microbial component of the fluxes
-microbiomeContributions = reshape(sum(contributions,2,'omitnan'),size(biomShadowPrices,[1 3]));
-
-% Add the sum of microbial influences to contributions
-contributions(:,end+1,:) = microbiomeContributions;
-
-% Find the species richness in the contributions
-speciesRichness = reshape(sum(isnan(contributions),2,'omitnan'),size(biomShadowPrices,[1 3]));
-
-% Add the species Richness to the contributions
-contributions(:,end+1,:) = speciesRichness;
-
-% Calculate the sum of relative abundances and add to the relative
-% abundance table
-relativeAbundances.("Sum of taxa") = sum(table2array(relativeAbundances),2,'omitnan');
-
-% Add species richness (alpha diversity)
-relativeAbundances.("Species richness") = sum(isnan(table2array(relativeAbundances)),2);
-
-% Correlate fluxes with microbiome flux contributions
-
-% Obtain reaction and taxon names
-rxnNames = fluxes.Properties.VariableNames;
-Taxa = relativeAbundances.Properties.VariableNames';
-
-% Preallocate correlation table
-fluxMicrobeCorr = array2table(nan(size(relativeAbundances,2),size(fluxes,2)),'RowNames',Taxa','VariableNames',rxnNames);
-fluxMicrobeInfluenceCorr = array2table(nan(size(relativeAbundances,2),size(fluxes,2)),'RowNames',Taxa','VariableNames',rxnNames);
-
-% Declare the type of correlation to be tested
-correlationType = paramFluxProcessing.fluxMicrobeCorrelationMetric;
-
-% Declare which reaction-microbe correlations are tested based on the
-% user defined cutoff value and the type of cutoff. 
-typeCutoff = paramFluxProcessing.rxnRemovalCutoff{1}; % Either 'fraction', 'SD', or 'count'
-cutoffValue = paramFluxProcessing.rxnRemovalCutoff{2}; 
-
-switch correlationType
-
-    case 'regression_r2'
-
-        disp('Perform linear regressions on the relative abundances against the fluxes')
-        % Obtain correlations from r-squared values using simple linear regressions
-    
-        tic
-        warning('off')
-        for i=1:length(Taxa)
-            for j=1:length(rxnNames)
-        
-                % Obtain flux value for rxn i
-                flux = fluxes.(rxnNames{j});
-        
-                % Obtain microbiome contribution for taxon j and reaction i
-                influence = contributions(:,i,j);
-        
-                % Obtain relative abundances for taxon j
-                microbe = relativeAbundances.(Taxa{i});
-        
-                % Check if enough values are available in the microbe and influence
-                % variable and only perform regression correlations if possible            
-                testComparison = false;
-                switch typeCutoff
-                    case 'fraction'
-                        if sum(~isnan(influence)) > size(influence,1)*cutoffValue
-                            testComparison = true;
-                        end
-                    case 'SD'
-                        if std(influence,'omitnan') > cutoffValue
-                            testComparison = true;
-                        end
-                    case 'count'
-                        if sum(~isnan(influence)) > cutoffValue
-                            testComparison = true;
-                        end
-                end
-        
-                if testComparison == true
-        
-                    % Perform linear regression on flux-microbial influences
-                    fit_influence = fitlm(flux, influence);
-                    
-                    % Perform linear regression on flux and relative abundances
-                    fit_microbe = fitlm(flux, microbe);
-        
-                    % Add R2 values to table
-                    fluxMicrobeInfluenceCorr{i,j} = fit_influence.Rsquared.Ordinary;            
-                    fluxMicrobeCorr{i,j} = fit_microbe.Rsquared.Ordinary;
-                end
-            end
-        end
-        warning('on')
-        toc
-
-    case 'spearman_rho'
-
-        disp('Perform pairwise Spearman correlations on the relative abundances against the fluxes')
-        % Obtain correlations from Spearman correlation coefficients
-        
-        % Create arrays with the flux and relative abundance data
-        fluxArray = table2array(fluxes);
-        relativeAbundanceArray = table2array(relativeAbundances);
-    
-        % Remove microbes not present in enough samples
-        totalInfluences = sum(~isnan(relativeAbundanceArray));
-        reactionsToKeep = totalInfluences > size(relativeAbundanceArray,1)*0.1;
-    
-        % Prune relative abundance array
-        relativeAbundanceArrayPruned = relativeAbundanceArray(:,reactionsToKeep);
-    
-        % Correlated fluxes with relative abundances
-        rho_RA = corr(fluxArray,relativeAbundanceArrayPruned,'type','Spearman','rows','pairwise');
-    
-        % Transpose correlation coefficients so that rows = taxa and columns =
-        % reaction fluxes.
-        rho_RA = rho_RA';
-    
-        % Add correlations to the fluxMicrobeCorr table
-        fluxMicrobeCorr{reactionsToKeep',:} = rho_RA;
-    
-        % Now perform the same correlations on the metabolic contribution data
-        rho_MI = nan(size(contributions,2),size(fluxes,2));
-        for j=1:size(contributions,3)
-            influenceArray = contributions(:,:,j);
-        
-            % Again remove microbes not present in enough samples
-            totalInfluences = sum(~isnan(influenceArray));
-            
-            % Define which reactions should be removed
-            switch typeCutoff
-                case 'fraction'
-                    reactionsToKeep = totalInfluences > size(influenceArray,1)*cutoffValue;
-                case 'SD'
-                    reactionsToKeep = std(influenceArray,'omitnan') > cutoffValue;
-                case 'count'
-                    reactionsToKeep = totalInfluences > cutoffValue;
-            end
-        
-            % Prune metabolic contribution array
-            influenceArrayPruned = influenceArray(:,reactionsToKeep);
-        
-            % Correlated fluxes with relative abundances
-            rho_MI(reactionsToKeep',j) = corr(fluxArray(:,j),influenceArrayPruned,'type','Spearman','rows','pairwise')';
-        end
-    
-        % Add results to fluxMicrobeInfluenceCorr
-        fluxMicrobeInfluenceCorr{:,:} = rho_MI; 
-end
-
-% Erase pan biomass metabolite names
-fluxMicrobeCorr.Properties.RowNames = erase(fluxMicrobeCorr.Properties.RowNames,{'pan','_biomass[c]'});
-fluxMicrobeInfluenceCorr.Properties.RowNames = erase(fluxMicrobeInfluenceCorr.Properties.RowNames,{'pan','_biomass[c]'});
-
-end
-
-% This function is used in correlateFluxesAgainstMicrobes and extractMicrobeContributions
-function [biomShadowPrices, relativeAbundances] = extractMicroWbmSpAndRa(allSpecies, modelSP)
-% This function extracts the shadow price values of each triplet of
-% predicted flux, pan model biomass shadow prices, and sample IDs. If a 
-% second output argument is given, the function also extracts the relative 
-% abundances of the pan models from modelSP. 
-%
-% INPUT:
-% allSpecies            Cell array of pan species biomass metabolite names 
-% modelSP               Cell array with sample IDs (column 1), present pan
-%                       species models for each sample (column 2), biomass metabolite shadow
-%                       prices for each maximised reactions (column 3), and the pan model
-%                       relative abundances (column 4). 
-%
-% OUTPUT
-% biomShadowPrices      Three dimension array with shadow price values.   
-% relativeAbundances    Table with microbe relative abundances from WBMs.
-%
-% Authors: Tim Hensen and Mohammadreza Moghimi.
-
-% Preallocate biomShadowPrices array for shadow prices
-numRxns = size(modelSP{1,3},2);
-biomShadowPrices = nan(length(allSpecies), numRxns, size(modelSP, 1));
+% Find the microbial relative abundances from the models
+relAbun = nan(size(modelSP,1),length(allSpecies));
 for i = 1:size(modelSP, 1)
     
     % Find which species in the sample are present
@@ -1175,45 +765,19 @@ for i = 1:size(modelSP, 1)
     
     if ~isempty(index2)
         % Get the shadow prices for valid species
-        samp_SP = modelSP{i, 3};
-        samp_SP = samp_SP(index2, :);
+        samp_ra = modelSP{i, 4};
+        samp_ra = samp_ra(index2);
+
+        % Rescale the relative abundances so that they sum up to one
+        % instead of 100. 
+        samp_ra = samp_ra / 100;
         
         % Assign the shadow prices to the result array
-        biomShadowPrices(index1, :, i) = samp_SP;
+        relAbun(i, index1) = samp_ra;
     end
 end
 
-% Swap the tensor z and x axis for easy data accessing
-biomShadowPrices = permute(biomShadowPrices,[3 1 2]);
-
-if nargout>1
-    % Find the microbial relative abundances from the models
-    relAbun = nan(size(modelSP,1),length(allSpecies));
-    for i = 1:size(modelSP, 1)
-        
-        % Find which species in the sample are present
-        [index1, index2] = ismember(allSpecies, modelSP{i, 2});
-    
-        % Remove zero indices for non-present species in index2
-        index2 = index2(index2 > 0);
-        
-        if ~isempty(index2)
-            % Get the shadow prices for valid species
-            samp_ra = modelSP{i, 4};
-            samp_ra = samp_ra(index2);
-
-            % Rescale the relative abundances so that they sum up to one
-            % instead of 100. 
-            samp_ra = samp_ra / 100;
-            
-            % Assign the shadow prices to the result array
-            relAbun(i, index1) = samp_ra;
-        end
-    end
-    
-    % Create a table with the microbial relative abundances
-    taxa = erase(allSpecies,{'pan','_biomass[c]'});
-    relativeAbundances = array2table(relAbun,'RowNames',string(modelSP(:,1)),'VariableNames',taxa);
-end
-
+% Create a table with the microbial relative abundances
+taxa = erase(allSpecies,{'pan','_biomass[c]'});
+relativeAbundances = array2table(relAbun,'RowNames',string(modelSP(:,1)),'VariableNames',taxa);
 end
