@@ -51,6 +51,10 @@ function runMars(readsTablePath, varargin)
 %   outputPathMars:         String; path to the directory where the output 
 %                           of MARS is stored. Optional, defaults to
 %                           [pwd, filesep, 'resultMars'].
+%   calculateBrayCurtis:    Boolean; Specifies if the Bray-Curtis
+%                           dissimilarity index is calculated. Caution!
+%                           Putting this to true can greatly increase the
+%                           time MARS needs to run. Defaults to false.
 %
 % OUTPUTS:
 %   The function does not return variables but writes processed results
@@ -73,6 +77,8 @@ parser.addParameter('userDbPath', '', @(x)ischar(x)||isstring(x));
 parser.addParameter('sampleReadCountCutoff', 1, @isnumeric);
 parser.addParameter('taxaTablePath', '', @(x)ischar(x)||isstring(x));
 parser.addParameter('outputPathMars', [pwd, filesep, 'resultMars'], @(x)ischar(x)||isstring(x));
+parser.addParameter('calculateBrayCurtis', false, @islogical);
+parser.addParameter('compoundedDatabase', false, @islogical);
 
 % Parse required and optional inputs
 parser.parse(readsTablePath, varargin{:});
@@ -87,6 +93,8 @@ userDbPath = parser.Results.userDbPath;
 sampleReadCountCutoff = parser.Results.sampleReadCountCutoff;
 taxaTablePath = parser.Results.taxaTablePath;
 outputPathMars = parser.Results.outputPathMars;
+calculateBrayCurtis = parser.Results.calculateBrayCurtis;
+compoundedDatabase = parser.Results.compoundedDatabase;
 
 disp('> Starting MARS');
 
@@ -130,7 +138,7 @@ else
 end
 
 % Load full dataset
-microbiome = readtable(readsTablePath);
+microbiome = readtable(readsTablePath, 'ReadVariableNames',true, 'VariableNamingRule','preserve');
 
 % Extract the column headers from the reads table
 readTableColumn = microbiome.Properties.VariableNames;
@@ -251,8 +259,8 @@ end
 
 % Apply renaming according to dictionary in
 taxaNames = taxonomyInfo_filter1;
-taxaNames = regexprep(taxaNames, renamingDict{2}(:,1),renamingDict{2}(:,2)); % Rename taxonomic groups
-taxaNames = regexprep(taxaNames, renamingDict{3}(:,1),renamingDict{3}(:,2)); % Rename larger taxonomic groups
+
+taxaNames = regexprep(taxaNames, renamingDict{2}(:,1),renamingDict{2}(:,2)); % Rename larger, general taxonomic groups
 taxonomyInfo_filter2 = taxaNames;
 
 % Paste updated taxonomic information
@@ -303,6 +311,22 @@ end
 taxaInfo = array2table(cellstr(horzcat(taxaInfo{:})),'VariableNames',levels);
 taxaInfo.Taxon = taxaToSplit; % Add original vector
 
+% Check if taxonomic split happened correctly
+if all(all(cellfun(@isempty, taxaInfo{:,1:7})))
+    % If no taxonomic level indicator is present manually split the
+    % taxonomic assignment
+    for i = 1:size(taxaInfo,1)
+        splitTaxa = split(taxaInfo{i, 8}, taxaDelimiter);
+        % Check if names start with a whitespace
+        whitespaceStart = startsWith(splitTaxa, ' ');
+        splitTaxa(whitespaceStart) = cellfun(@(x) x(2:end), splitTaxa(whitespaceStart), 'UniformOutput', false);
+        % Store the taxonomic assignments
+        taxaInfo{i, 1:length(splitTaxa)} = cellstr(splitTaxa)';
+    end
+end
+
+taxaInfo.Taxon = taxaToSplit; % Add original vector
+
 % If the previous taxonomic level does not have any taxonomic information,
 % the subsequent levels also should not have taxonomic information.
 for i = 1:length(levels)-1
@@ -310,17 +334,54 @@ for i = 1:length(levels)-1
     taxaInfo(col1,i+1) = {''};
 end
 
-x = cellfun(@isempty, table2array(taxaInfo(:, 2:end-1)));
+% Rename genus and species combinations to APOLLO / AGORA2 naming standards
+% Dont perform this if the user uses their own database
+if ~strcmp(reconstructionDb, 'user_db')
+    % Extract the species and taxa that have to be renamed
+    oldTaxa = removePunctuation(renamingDict{3}(:,1));
+    newTaxa = removePunctuation(renamingDict{3}(:,2));
+    
+    % Split them so we have genus and species in two seperate columns
+    oldTaxaSplit = regexp(oldTaxa,' ','split','once');
+    oldTaxaSplit = vertcat(oldTaxaSplit{:});
 
-ind = strcmp(taxaInfo.Kingdom, 'Bacteria') & sum(x,2) == 6;
-
-compoundedDatabase = false;
-if any(ind)
-    kingdomValue = microbiome{ind,2:end};
-    resValue = sum(microbiome{strcmp(taxaInfo.Kingdom, 'Bacteria'),2:end});
-    compoundedValues = kingdomValue > resValue;
-    if sum(compoundedValues) < 0.99*length(compoundedValues)
-        compoundedDatabase = true;
+    newTaxaSplit = regexp(newTaxa,' ','split','once');
+    newTaxaSplit = vertcat(newTaxaSplit{:});
+    
+    % If the genus name is NOT in the species name
+    if flagLoneSpecies
+        for i = 1:size(oldTaxa,1)
+            % Find indexes for the genus match and species match for the
+            % taxa we want to rename
+            gIdx = find(strcmp(oldTaxaSplit(i,1), taxaInfo.Genus));
+            sIdx = find(strcmp(oldTaxaSplit(i,2), taxaInfo.Species));
+            
+            % See if there are common indexes, this is what should be
+            % renamed in the data
+            replaceIdx = intersect(sIdx, gIdx);
+            % If an index is found, replace the genus and species name
+            if ~isempty(replaceIdx)
+                taxaInfo(replaceIdx, 'Genus') = newTaxaSplit(i,1);
+                taxaInfo(replaceIdx, 'Species') = newTaxaSplit(i,2);
+            end
+        end
+    else
+        % If the genus name IS in the species name
+        % Clean up the species names from the data
+        cleanSpecies = removePunctuation(taxaInfo.Species);
+        for i = 1:size(oldTaxa,1)
+            % See if the genus + species name that has to be replaced is
+            % present in the dataset
+            sIdx = find(strcmp(oldTaxa(i), cleanSpecies));
+        
+            if ~isempty(sIdx)
+                % If it is present replace the species column with the new
+                % genus + species name
+                taxaInfo(sIdx, "Species") = newTaxa(i);
+                % Adjust the genus name as well
+                taxaInfo(sIdx, "Genus") = newTaxaSplit(i,1);
+            end
+        end
     end
 end
 
@@ -337,7 +398,8 @@ for i = 1:size(levels,2)
         % If the genus name is not in the species name add it. Otherwise there will
         % be no database matches
         if flagLoneSpecies
-            taxaInfo.Species = strcat(taxaInfo.Genus, {' '}, taxaInfo.Species);
+            emptySpecies = cellfun(@isempty, taxaInfo.Species);
+            taxaInfo.Species(~emptySpecies) = strcat(taxaInfo.Genus(~emptySpecies), {' '}, taxaInfo.Species(~emptySpecies));
         end
     end
     % Adjust database and species names to ensure formatting issues do not
@@ -350,11 +412,11 @@ for i = 1:size(levels,2)
         rows2Pick = sum(rows2Pick, 2) == 1;
         phylumInput = [taxaInfo.Phylum, taxaInfo.(levels{i})];
         
-        [processed, mapped, unmapped, metrics, bray, taxonSummary, taxaSetToZero, summaryMetrics, phylaDistr] = mapTaxaCalcMetrics(phylumInput(rows2Pick,:), database.(levels{i}), microbiome(rows2Pick,:), cutoffMars);
+        [processed, mapped, unmapped, metrics, bray, taxonSummary, taxaSetToZero, summaryMetrics, phylaDistr] = mapTaxaCalcMetrics(phylumInput(rows2Pick,:), database.(levels{i}), microbiome(rows2Pick,:), cutoffMars, calculateBrayCurtis);
 
     else
         % Map the taxa onto the database
-        [processed, mapped, unmapped, metrics, bray, taxonSummary, taxaSetToZero, summaryMetrics, phylaDistr] = mapTaxaCalcMetrics([taxaInfo.Phylum, taxaInfo.(levels{i})], database.(levels{i}), microbiome, cutoffMars);
+        [processed, mapped, unmapped, metrics, bray, taxonSummary, taxaSetToZero, summaryMetrics, phylaDistr] = mapTaxaCalcMetrics([taxaInfo.Phylum, taxaInfo.(levels{i})], database.(levels{i}), microbiome, cutoffMars, calculateBrayCurtis);
     end
     % Store the results in their respective structures
     mappedStruc.(levels{i}) = mapped;
@@ -398,11 +460,12 @@ for j = 1:size(levels,2)
     writetable(allMetrics.(levels{j}).taxonSummary.originalData, strcat(subDir, filesep, 'taxonSummary.xlsx'), "Sheet", 'originalData', 'WriteRowNames',true)
     writetable(allMetrics.(levels{j}).taxonSummary.originalData, strcat(subDir, filesep, 'taxonSummary.xlsx'), "Sheet", 'processedData', 'WriteRowNames',true)
     writetable(allMetrics.(levels{j}).taxonSummary.originalData, strcat(subDir, filesep, 'taxonSummary.xlsx'), "Sheet", 'mappedData', 'WriteRowNames',true)
-
+    
+    if calculateBrayCurtis
     writetable(allMetrics.(levels{j}).brayCurtis.originalData, strcat(subDir, filesep, 'brayCurtisDissimilarity.xlsx'), "Sheet", 'originalData', 'WriteRowNames',true)
     writetable(allMetrics.(levels{j}).brayCurtis.originalData, strcat(subDir, filesep, 'brayCurtisDissimilarity.xlsx'), "Sheet", 'processedData', 'WriteRowNames',true)
     writetable(allMetrics.(levels{j}).brayCurtis.originalData, strcat(subDir, filesep, 'brayCurtisDissimilarity.xlsx'), "Sheet", 'mappedData', 'WriteRowNames',true)
-    
+    end
     % Create and save histograms
     
     % generateStackedBarPlot_PhylumMARScoverage(allMetrics.(levels{j}).phylaDistr.originalData, allMetrics.(levels{j}).phylaDistr.processed, allMetrics.(levels{j}).phylaDistr.mapped)
@@ -417,23 +480,23 @@ end
 disp(' > Generate metrics visualizations.');
 
 % 1) Generate stacked barplots comparing pre to post MARS-mapped Pyhlum mean relative abundances
-input_stackedBarPlots_preMapping_path = string(fullfile(outputPathMARS, 'metrics', 'Phylum', sprintf('preMapping_abundanceMetrics_Phylum.%s', outputExtensionMARS)));
-input_stackedBarPlots_postMapping_path = string(fullfile(outputPathMARS, 'metrics', 'Phylum', sprintf('mapped_abundanceMetrics_Phylum.%s', outputExtensionMARS)));
-saveDir_stackedBarPlot_path = string(fullfile(outputPathMARS, 'metrics', 'Phylum'));
+% input_stackedBarPlots_preMapping_path = string(fullfile(outputPathMars, 'metrics', 'Phylum', sprintf('preMapping_abundanceMetrics_Phylum.%s', outputExtensionMARS)));
+% input_stackedBarPlots_postMapping_path = string(fullfile(outputPathMars, 'metrics', 'Phylum', sprintf('mapped_abundanceMetrics_Phylum.%s', outputExtensionMARS)));
+% saveDir_stackedBarPlot_path = string(fullfile(outputPathMARS, 'metrics', 'Phylum'));
 
 % In case the input paths exist run the visualization function on the inputs
 % If an error arises in figure creation, skip the step & continue Persephone, but log a warning
-if exist(input_stackedBarPlots_preMapping_path, 'file') == 2 && exist(input_stackedBarPlots_postMapping_path, 'file') == 2
-    try
-        generateStackedBarPlot_PhylumMARScoverage(input_stackedBarPlots_preMapping_path, ...
-            input_stackedBarPlots_postMapping_path, saveDir_stackedBarPlot_path, 'mappingDatabase_name', whichModelDatabase)
-    catch ME
-        warning('Error occurred in generateStackedBarPlot_PhylumMARScoverage function:');
-        disp(ME.message);
-    end
-else
-    warning('One or both input files do not exist. Skipping generateStackedBarPlot_PhylumMARScoverage function.');
-end
+% if exist(input_stackedBarPlots_preMapping_path, 'file') == 2 && exist(input_stackedBarPlots_postMapping_path, 'file') == 2
+    % try
+        % generateStackedBarPlot_PhylumMARScoverage(input_stackedBarPlots_preMapping_path, ...
+            % input_stackedBarPlots_postMapping_path, saveDir_stackedBarPlot_path, 'mappingDatabase_name', whichModelDatabase)
+    % catch ME
+        % warning('Error occurred in generateStackedBarPlot_PhylumMARScoverage function:');
+        % disp(ME.message);
+    % end
+% else
+    % warning('One or both input files do not exist. Skipping generateStackedBarPlot_PhylumMARScoverage function.');
+% end
 
 % Save files for the normalised_forModelling folder
 removedSamples = levels;
@@ -442,7 +505,7 @@ for j = 1:size(levels,2)
 
     writetable(forMgpipe.(levels{j}).relAbund, strcat(subDir, filesep, 'normalised_forModelling', levels{j}, '.csv'));
     if ~isempty(forMgpipe.(levels{j}).removedSamples)
-        removedSamples(2:size(forMgpipe.(levels{j}).removedSamples,1)+1, j) = forMgpipe.(levels{j}).removedSamples;
+        removedSamples(2:size(forMgpipe.(levels{j}).removedSamples,2)+1, j) = forMgpipe.(levels{j}).removedSamples;
     end
 end
 
@@ -520,7 +583,7 @@ adjustedArray = strrep(adjustedArray, '  ', ' ');
 
 end
 
-function [processed, mapped, unmapped, metrics, brayStruct, taxonSummary, taxaSetToZero, summaryMetrics, phylaDistr] = mapTaxaCalcMetrics(taxonomy, database, microbiome, cutoffMars)
+function [processed, mapped, unmapped, metrics, brayStruct, taxonSummary, taxaSetToZero, summaryMetrics, phylaDistr] = mapTaxaCalcMetrics(taxonomy, database, microbiome, cutoffMars, calculateBrayCurtis)
 
 % initialise structures to store results in
 brayStruct = struct();
@@ -611,14 +674,18 @@ else
     mappedReads = table2array(mapped(:,2:end));
 end
 
+if isempty(mapped)
+    mappedReads = zeros(1,size(microbiome,2)-1);
+end
+
 % Calculate the coverages
 coverageMappedVsTotal = mappedReads./totalReads;
 coverageMappedVsProcessed = mappedReads ./readsProcessed;
 
 % Caluclate the metrics
-[brayTotal, pielousTotal, summaryTotal] = calculateMetrics(microbiome);
-[brayProcessed, pielousProcessed, summaryProcessed] = calculateMetrics(processed);
-[brayMapped, pielousMapped, summaryMapped] = calculateMetrics(mapped);
+[brayTotal, pielousTotal, summaryTotal] = calculateMetrics(microbiome, calculateBrayCurtis);
+[brayProcessed, pielousProcessed, summaryProcessed] = calculateMetrics(processed, calculateBrayCurtis);
+[brayMapped, pielousMapped, summaryMapped] = calculateMetrics(mapped, calculateBrayCurtis);
 
 % Calculate bacteroidetes / firmicutes ratio
 [bacFirRatioTotal, phylaDistrTotal] = calcBacFirRatio(microbiome, phylum);
@@ -719,7 +786,7 @@ toplot = metrics{"Coverage mapped / Processed",:};
 toplot(toplot==1) = toplot(toplot==1) - 0.005;
 histogram(toplot, 'BinWidth',0.1);
 % Set title and axis and change fonts
-subtitle(sprintf('Coverage of mapped reads over total %s-associated reads', lower(taxon)))
+subtitle(sprintf('Coverage of mapped reads over %s-associated reads', lower(taxon)))
 ax2.XLim = [0 1];
 ax2.FontSize = 12;
 ylabel('Number of samples');
@@ -788,39 +855,40 @@ fBRatio = totFirm ./ totBact;
 phylumDistr = data;
 end
 
-function [bray, pielous, taxonSummary]= calculateMetrics(data)
+function [bray, pielous, taxonSummary]= calculateMetrics(data, calculateBrayCurtis)
 % Initialise array to store results
 bray = zeros(size(data,2), size(data,2));
 
 % Sum all columns for faster caclulation times
 dataSummed = [0,sum(data{:, 2:end})];
 
-% Skip first column as that contain taxonomy information
-for i = 2:size(data,2)-1
-    % Obtain the column of sample 1
-    samp1 = table2array(data(:,i));
-    % Sum the total reads of sample 1
-    sumSamp1 = dataSummed(i);
-    
-    % Extract the all the other samples in a matrix
-    % As pair wise calculation are done, we can move in a step wise
-    % progression only comparing i against i+1:end.
-    comparisonData = data{:, i+1:end};
-    % Make a matrix of sample 1 for improved speed in calculations
-    samp1Matrix = repmat(samp1,1,size(comparisonData,2));
-    
-    % Obtain logical array where sample 1 is smaller than the rest of the
-    % samples
-    smallestNumber = samp1Matrix < comparisonData;
-    % Use the logical indexes to replace the larger values in the rest of
-    % the samples with the smaller value from sample 1
-    comparisonData(smallestNumber) = samp1Matrix(smallestNumber);
-    
-    % Calculate bray-curtis dissimilarity
-    bray(i+1:end,i) = 1-(2*sum(comparisonData))./(sumSamp1 + dataSummed(i+1:end));
-    bray(i,i+1:end) = 1-(2*sum(comparisonData))./(sumSamp1 + dataSummed(i+1:end));
+if calculateBrayCurtis
+    % Skip first column as that contain taxonomy information
+    for i = 2:size(data,2)-1
+        % Obtain the column of sample 1
+        samp1 = table2array(data(:,i));
+        % Sum the total reads of sample 1
+        sumSamp1 = dataSummed(i);
+        
+        % Extract the all the other samples in a matrix
+        % As pair wise calculation are done, we can move in a step wise
+        % progression only comparing i against i+1:end.
+        comparisonData = data{:, i+1:end};
+        % Make a matrix of sample 1 for improved speed in calculations
+        samp1Matrix = repmat(samp1,1,size(comparisonData,2));
+        
+        % Obtain logical array where sample 1 is smaller than the rest of the
+        % samples
+        smallestNumber = samp1Matrix < comparisonData;
+        % Use the logical indexes to replace the larger values in the rest of
+        % the samples with the smaller value from sample 1
+        comparisonData(smallestNumber) = samp1Matrix(smallestNumber);
+        
+        % Calculate bray-curtis dissimilarity
+        bray(i+1:end,i) = 1-(2*sum(comparisonData))./(sumSamp1 + dataSummed(i+1:end));
+        bray(i,i+1:end) = 1-(2*sum(comparisonData))./(sumSamp1 + dataSummed(i+1:end));
+    end
 end
-
 % Convert to table
 bray = array2table(bray(2:end, 2:end), 'RowNames', data.Properties.VariableNames(2:end)', 'VariableNames',data.Properties.VariableNames(2:end));
 
