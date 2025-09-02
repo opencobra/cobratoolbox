@@ -132,7 +132,7 @@ varr_db_size[$vn]=8
 varr_db_check[$vn]=$(check_db_size "${varr_db_path[$vn]}" "${varr_db_size[$vn]}")
 # Custom agora/apollo - apollo @ 4.5G
 # <A2A,AGORA,APOLLO><NR,FULL><SSP,SPP> - legacy mask eg.'tool_k2_apollo/kdb_apollo' = apollo_NR_SSP
-tar -I pigz --transform='s,^kdb_a2a_ssp/,kraken_db/,' -xvf _repo/wbm_modelingcode/src/SeqC_pipeline/seqc_proc/REPO_tool/kraken/kdb_a2a_ssp.tar.gz --directory _repo/BACKUP/new_KRAK/
+#tar -I pigz --transform='s,^kdb_a2a_ssp/,kraken_db/,' -xvf _repo/wbm_modelingcode/src/SeqC_pipeline/seqc_proc/REPO_tool/kraken/kdb_a2a_ssp.tar.gz --directory _repo/BACKUP/new_KRAK/
 ## apollo
 ((vn++))
 varr_db_name[$vn]='tool_k2_apollo'
