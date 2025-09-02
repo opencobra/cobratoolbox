@@ -165,7 +165,7 @@ else
         unprocessedMetadata = strrep(metadata, '_processed.csv', '');
         d = dir([unprocessedMetadata, '*']);
         match = d(endsWith({d.name}, {'.csv', '.xlsx'}, 'IgnoreCase', true));
-        
+
         if isempty(match)
             error('No matching metadata file (.csv or .xlsx) found.')
         end
@@ -183,7 +183,7 @@ else
         
         % Check if metadata table is not empty
         validateattributes(Data, {'table'}, {'nonempty'}, mfilename, 'metadataTable')
-        
+
         % The variable names in the metadata table will be truncated if the names
         % are longer than 64 characters. Read the true variable names and store
         % them in the VariableDescriptions property.
@@ -429,6 +429,21 @@ if isfile(persParamsFile)
         persParamsCheck = true;
         persParams = readtable(persParamsFile, 'Sheet', 'PhysiologicalParameters');
         fprintf(' > Loaded %d PhysiologicalParameters entries.\n', height(persParams));
+        newNames = { ...
+            'MConUrCreatinineMax', 'MConUrCreatinineMin', 'MConDefaultBc', ...
+            'MConDefaultCSF', 'MConDefaultUrMax', 'MConDefaultUrMin'};
+        oldNames = { ...
+            'Max conc of creatinine in the urine', ...
+            'Min conc of creatinine in the urine', ...
+            'Max conc of a metabolite in the blood plasma', ...
+            'Max conc of a metabolite in the CSF', ...
+            'Max conc of a metabolite in the urine', ...
+            'Min conc of a metabolite in the urine'};
+        
+        for k = 1:numel(oldNames)
+            j = strcmp(persParams.Properties.VariableNames, oldNames{k});
+            if any(j), persParams.Properties.VariableNames{j} = newNames{k}; end
+        end
     else
         persParamsCheck = false;
         warning('Missing sheet: PhysiologicalParameters');
@@ -877,13 +892,20 @@ for s = 1:numModels
             % Load the default parameters
             standardPhysiolDefaultParameters;
             IndividualParameters.sex = sex;
-            iWBM = WBMcurrent;
+            if sex  == "male"
+                iWBM = maleWBM;
+            else
+                iWBM = femaleWBM;
+            end
             if any(strcmp(lower(Data.Properties.VariableNames), 'id'))
                 idxID = find(strcmp(lower(Data.Properties.VariableNames),'id'));
                 ID = Data{s, idxID};
                 IndividualParameters.ID = ID;
+                iWBM.ID = ID;
             end
             iWBM.SetupInfo.IndividualParameters = IndividualParameters;
+        else 
+            iWBM = WBMcurrent;
         end
         
         % match every metabolite in persMetabolites to the
@@ -908,6 +930,14 @@ for s = 1:numModels
         % Find indices where lower bounds exceed upper bounds
         invalidIdx = find(iWBM.lb > iWBM.ub);
         if ~isempty(invalidIdx)
+            % Collect the data into a table
+            conflictingBounds = table;
+            conflictingBounds.ID      = repmat({ID}, length(invalidIdx), 1);  % repeat ID for each row
+            conflictingBounds.rxns    = iWBM.rxns(invalidIdx);
+            conflictingBounds.rxnName = iWBM.rxnNames(invalidIdx);
+            conflictingBounds.lb      = iWBM.lb(invalidIdx);
+            conflictingBounds.ub      = iWBM.ub(invalidIdx);
+            
             % Initialize a string for the warning message
             warningMsg = 'Metabolomic personalisation has caused invalid bounds for the following reactions:';
             
@@ -968,10 +998,23 @@ for s = 1:numModels
         end
     end 
     
+    if exist('conflictingBounds', 'var')
+        if s == 1 && persParamsMCheck == 0
+            conflictingBoundsAll = conflictingBounds;
+        else
+            conflictingBoundsAll = [conflictingBoundsAll; conflictingBounds];
+        end
+    end 
+  
 end % end of forloop for each model
 
+writetable(conflictingBoundsAll, resPath)
 
 %% Step 8: sanity check
+% REMOVE MODELS WITH CONFLICTING BOUNDS
+% infeasModels = unique(conflictingBoundsAll.ID);
+% feasPaths = ~contain(resPath.name, infeasModels)
+% resPathFeas = resPath(feasPaths);
 [dietInfo, dietGrowthStats] = ensureWBMfeasibility(resPath);
 
 if any(dietGrowthStats(:, 2) == false)
@@ -1014,18 +1057,28 @@ if numModels > 0
         % Check headers match (or reconcile manually if needed)
         % Here, just concatenate assuming same headers
         persParamsC = [paramSourceC; persParamsC(2:end,:)];  % skip second header rows
-        excelFilename = fullfile(resPath, 'persParameters.xlsx');
+        
     end
-    persParams = {};
+    excelFilename = fullfile(resPath, 'persParameters.xlsx');
     %% Save an excel file with a summary of all changes made to all models
     if personalisingPhys == 1 && personalisingMets == 1
         writecell(persParamsC, excelFilename, 'Sheet', 'PhysiologicalParameters');
         writetable(persParamsM, excelFilename, 'Sheet', 'MetabolomicParameters');
-        %persParams =
-    elseif personalisingPhys == 1 && ~metadataStruct 
+    elseif personalisingPhys == 1 && ~metadataStruct
         writecell(persParamsC, excelFilename, 'Sheet', 'PhysiologicalParameters');
     elseif personalisingMets == 1
         writetable(persParamsM, excelFilename, 'Sheet', 'MetabolomicParameters');
     end
+    
+end
+% assign output for persParams
+if exist('persParamsC', 'var') && exist('persParamsM', 'var')
+    persParams = struct('PhysiologicalParams', persParamsC,'MetabolomicParams', persParamsM);
+elseif exist('persParamsC', 'var')
+    persParams = persParamsC;
+elseif exist('persParamsM', 'var')
+    persParams = persParamsM;
+else
+    persParams = {};
 end
 end
