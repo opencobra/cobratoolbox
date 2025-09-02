@@ -1008,7 +1008,7 @@ for s = 1:numModels
   
 end % end of forloop for each model
 
-writetable(conflictingBoundsAll, resPath)
+writetable(conflictingBoundsAll, fullfile(resPath, 'conflictingBounds.xlsx'));
 
 %% Step 8: sanity check
 % REMOVE MODELS WITH CONFLICTING BOUNDS
