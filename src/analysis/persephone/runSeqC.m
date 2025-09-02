@@ -13,7 +13,7 @@ function status = runSeqC(...
 %   matlab script structure: Tim Hensen, runMars.m, 2025.01
 %   assistance and reference from a generative AI model [ChatGPT](https://chatgpt.com/)
 %       clean-up and improved readability
-% Last Modified: 2025.07.01
+% Last Modified: 2025.07.07
 % Part of: Persephone Pipeline
 %
 % Description:
@@ -95,15 +95,14 @@ if strcmp(vOS, 'unix')
     v_gid = strtrim(v_gid);
     comm_build_opt_UID = sprintf('--build-arg USER_UID=%s --build-arg USER_GID=%s', v_uid, v_gid);
 elseif strcmp(vOS, 'mac')
-    [~, v_uid] = system('id -u');
-    [~, v_gid] = system('id -g');
-    v_uid = strtrim(v_uid);
-    v_gid = strtrim(v_gid);
+    % fixed for OSX jank
+    v_uid = num2str(42069);
+    v_gid = num2str(42069);
     comm_build_opt_UID = sprintf('--build-arg USER_UID=%s --build-arg USER_GID=%s', v_uid, v_gid);
 elseif strcmp(vOS, 'win')
     % fixed for windows jank
-    v_uid = num2str(1000);
-    v_gid = num2str(1000);
+    v_uid = num2str(42069);
+    v_gid = num2str(42069);
     comm_build_opt_UID = sprintf('--build-arg USER_UID=%s --build-arg USER_GID=%s', v_uid, v_gid);
 end
 % Hardware params
@@ -137,42 +136,60 @@ end
 comm_build = sprintf('docker build -t dock_seqc --ulimit nofile=65536:65536 %s %s %s .', comm_build_opt_hw, comm_build_opt_mars, comm_build_opt_UID);
 
 %% Docker run commands
-% core run command
-comm_run_core = 'docker run --interactive --tty --user 0 --rm --mount';
-% sans interactive
-comm_run_core = sprintf('docker run --tty --user %s:%s --rm --memory=%s --cpus=%s --mount',v_uid,v_gid,sprintf('%sg',maxMemSeqC),maxCpuSeqC);
-
-%% Apptainer commands
-% Build from docker image
 if vAPTER == 0
+    %% Apptainer commands
+    % Build from docker image
     comm_build_apter = 'apptainer build apter_seqc.sif docker-daemon://dock_seqc:latest'
 % Run statement
 % cgroups error with resource flags - bypassed by ommision atm
 %    comm_run_core = sprintf('apptainer exec --cwd /home/seqc_user/seqc_project --writable-tmpfs --no-mount tmp --no-home -e --cpus %s --memory %s',maxCpuSeqC,sprintf('%sG',maxMemSeqC));
     comm_run_core = 'apptainer exec --cwd /home/seqc_user/seqc_project --writable-tmpfs --no-mount tmp --no-home -e';
-    comm_run_dir_I = '--mount type=bind,src=$(pwd)/seqc_input,dst=/home/seqc_user/seqc_project/step0_data_in'
-    comm_run_dir_O = '--mount type=bind,src=$(pwd)/seqc_output,dst=/home/seqc_user/seqc_project/final_reports'
-    comm_run_dir_P = '--mount type=bind,src=$(pwd)/seqc_proc,dst=/DB'
+    comm_run_dir_I = '--mount type=bind,src=$(pwd)/seqc_input,dst=/home/seqc_user/seqc_project/step0_data_in';
+    comm_run_dir_O = '--mount type=bind,src=$(pwd)/seqc_output,dst=/home/seqc_user/seqc_project/final_reports';
+    comm_run_dir_P = '--mount type=bind,src=$(pwd)/seqc_proc,dst=/DB';
     comm_run_main = sprintf('%s %s %s %s apter_seqc.sif /bin/bash',comm_run_core,comm_run_dir_I,comm_run_dir_O,comm_run_dir_P);
+elseif strcmp(vOS, 'unix')
+    % core run command
+    comm_run_core = sprintf('docker run --tty --user %s:%s --rm --memory=%s --cpus=%s',v_uid,v_gid,sprintf('%sg',maxMemSeqC),maxCpuSeqC);
+    % Append volume mapping commands to core
+    comm_run_dir_I = '--mount type=bind,src=$(pwd)/seqc_input,dst=/home/seqc_user/seqc_project/step0_data_in';
+    comm_run_dir_O = '--mount type=bind,src=$(pwd)/seqc_output,dst=/home/seqc_user/seqc_project/final_reports';
+    comm_run_dir_P = '--mount type=bind,src=$(pwd)/seqc_proc,dst=/DB';
+    comm_run_main = sprintf('%s %s %s %s dock_seqc /bin/bash',comm_run_core,comm_run_dir_I,comm_run_dir_O,comm_run_dir_P);
+elseif strcmp(vOS, 'mac')
+    % currently unable to simulate user permission transfer
+    comm_run_core = sprintf('docker run --tty --user 0 --rm --memory=%s --cpus=%s',sprintf('%sg',maxMemSeqC),maxCpuSeqC);
+    comm_run_dir_I = '--mount type=bind,src=$(pwd)/seqc_input,dst=/home/seqc_user/seqc_project/step0_data_in';
+    comm_run_dir_O = '--mount type=bind,src=$(pwd)/seqc_output,dst=/home/seqc_user/seqc_project/final_reports';
+    comm_run_dir_P = '--mount type=bind,src=$(pwd)/seqc_proc,dst=/DB';
+    comm_run_main = sprintf('%s %s %s %s dock_seqc /bin/bash',comm_run_core,comm_run_dir_I,comm_run_dir_O,comm_run_dir_P);
+    system("chmod -R a+rw ./seqc_input ./seqc_output ./seqc_proc"); % allow interaction from host:dock
+elseif strcmp(vOS, 'win')
+    comm_run_core = sprintf('docker run --tty --user %s:%s --rm --memory=%s --cpus=%s',v_uid,v_gid,sprintf('%sg',maxMemSeqC),maxCpuSeqC);
+    comm_run_dir_I = sprintf('--mount "type=bind,src=%s\\seqc_input,target=/home/seqc_user/seqc_project/step0_data_in"', pwd);
+    comm_run_dir_O = sprintf('--mount "type=bind,src=%s\\seqc_output,target=/home/seqc_user/seqc_project/final_reports"', pwd);
+    comm_run_dir_P = sprintf('--mount "type=bind,src=%s\\seqc_proc,target=/DB"', pwd);
+    comm_run_main = sprintf('%s %s %s %s dock_seqc /bin/bash',comm_run_core,comm_run_dir_I,comm_run_dir_O,comm_run_dir_P);
 end
 
 %% Set Database Assignment Command
 switch whichModelDatabase
     case 'AGORA'
-        comm_run_db_kb = '-s "tool_k2_agora"';
+        comm_run_db_kb = '"tool_k2_agora"';
     case 'APOLLO'
-        comm_run_db_kb = '-s "tool_k2_apollo"';
+        comm_run_db_kb = '"tool_k2_apollo"';
     case 'full_db'
-        comm_run_db_kb = '-s "tool_k2_agora2apollo"';
+        comm_run_db_kb = '"tool_k2_agora2apollo"';
+    case 'smol_db'
+        comm_run_db_kb = '"tool_k2_std8"'; % smol test db
     otherwise
-        comm_run_db_kb = '-s "tool_k2_agora2apollo"'; % Default case
+        comm_run_db_kb = '"tool_k2_agora2apollo"'; % Default case
 end
-comm_run_db_kd = '-s "host_kd_hsapcontam"';
-%comm_run_db_kb = '-s "tool_k2_std8"'; % smol test DB
-comm_run_db = sprintf('BASH_seqc_makedb.sh %s %s', comm_run_db_kd, comm_run_db_kb);
-
+comm_run_db_kd = '"host_kd_hsapcontam"';
+comm_run_db = sprintf('BASH_seqc_makedb.sh -s %s -s %s', comm_run_db_kd, comm_run_db_kb);
+comm_mama_db = sprintf('-d %s -d %s', comm_run_db_kd, comm_run_db_kb); % to include in main run rather sep DB
 %% Construct Command for Running SeqC
-comm_mama_help = 'BASH_seqc_mama.sh -h';
+comm_mama_help = 'BASH_seqc_mama.sh -v';
 comm_mama_full = 'BASH_seqc_mama.sh';
 % append optional flags
 if debugSeqC
@@ -181,22 +198,25 @@ end
 if procKeepSeqC
     comm_mama_full = [comm_mama_full ' -k'];
 end
-comm_mama_full = sprintf('%s -i "step0_data_in/" -n "%s" -r "SR" -s 0', comm_mama_full, fileIDSeqC);
+%comm_mama_full = sprintf('%s -i "step0_data_in/" -n "%s" -r "SR" -s 0', comm_mama_full, fileIDSeqC);
+comm_mama_full = sprintf('%s -i "step0_data_in/" -n "%s" -r "SR" -s 0 %s', comm_mama_full, fileIDSeqC, comm_mama_db);
 % Append volume mapping commands to core
 % OS sensitive
 % Block with apptainer+
-if vAPTER ~= 0
-    if strcmp(vOS, 'unix')
-        comm_run_main = sprintf('%s "type=bind,src=$(pwd)/seqc_input,target=/home/seqc_user/seqc_project/step0_data_in" --mount "type=bind,src=$(pwd)/seqc_output,target=/home/seqc_user/seqc_project/final_reports" --mount "type=volume,dst=/DB,volume-driver=local,volume-opt=type=none,volume-opt=o=bind,volume-opt=device=$(pwd)/seqc_proc" dock_seqc /bin/bash', comm_run_core);
+%if vAPTER ~= 0
+%    if strcmp(vOS, 'unix')
+%        comm_run_main = sprintf('%s "type=bind,src=$(pwd)/seqc_input,target=/home/seqc_user/seqc_project/step0_data_in" --mount "type=bind,src=$(pwd)/seqc_output,target=/home/seqc_user/seqc_project/final_reports" --mount "type=volume,dst=/DB,volume-driver=local,volume-opt=type=none,volume-opt=o=bind,volume-opt=device=$(pwd)/seqc_proc" dock_seqc /bin/bash', comm_run_core);
     %    comm_exit_mv = 'mv -r $(pwd)/seqc_proc/DEPO_proc/* $(pwd)/seqc_output'
-    elseif strcmp(vOS, 'mac')
-        comm_run_main = sprintf('%s "type=bind,src=$(pwd)/seqc_input,target=/home/seqc_user/seqc_project/step0_data_in" --mount "type=bind,src=$(pwd)/seqc_output,target=/home/seqc_user/seqc_project/final_reports" --mount "type=volume,dst=/DB,volume-driver=local,volume-opt=type=none,volume-opt=o=bind,volume-opt=device=$(pwd)/seqc_proc" dock_seqc /bin/bash', comm_run_core);
+%    elseif strcmp(vOS, 'mac')
+        %comm_run_main = sprintf('%s "type=bind,src=$(pwd)/seqc_input,target=/home/seqc_user/seqc_project/step0_data_in" --mount "type=bind,src=$(pwd)/seqc_output,target=/home/seqc_user/seqc_project/final_reports" --mount "type=volume,dst=/DB,volume-driver=local,volume-opt=type=none,volume-opt=o=bind,volume-opt=device=$(pwd)/seqc_proc" dock_seqc /bin/bash', comm_run_core);
+%        comm_run_main = sprintf('%s "type=bind,src=$(pwd)/seqc_input,target=/home/seqc_user/seqc_project/step0_data_in" --mount "type=bind,src=$(pwd)/seqc_output,target=/home/seqc_user/seqc_project/final_reports" --mount "type=bind,src=$(pwd)/seqc_proc,target=/DB" dock_seqc /bin/bash', comm_run_core);
+%        system("chmod -R a+rw ./seqc_input ./seqc_output ./seqc_proc");
     %    comm_exit_mv = 'mv -r $(pwd)/seqc_proc/DEPO_proc/* $(pwd)/seqc_output'
-    elseif strcmp(vOS, 'win')
-        comm_run_main = sprintf('%s "type=bind,src=%s\\seqc_input,target=/home/seqc_user/seqc_project/step0_data_in" --mount "type=bind,src=%s\\seqc_output,target=/home/seqc_user/seqc_project/final_reports" --mount "type=bind,src=%s\\seqc_proc,target=/DB" dock_seqc /bin/bash', comm_run_core, pwd, pwd, pwd);
+%    elseif strcmp(vOS, 'win')
+%        comm_run_main = sprintf('%s "type=bind,src=%s\\seqc_input,target=/home/seqc_user/seqc_project/step0_data_in" --mount "type=bind,src=%s\\seqc_output,target=/home/seqc_user/seqc_project/final_reports" --mount "type=bind,src=%s\\seqc_proc,target=/DB" dock_seqc /bin/bash', comm_run_core, pwd, pwd, pwd);
     %    comm_exit_mv = 'mv -r .\seqc_proc\DEPO_proc\* .\seqc_output\'
-    end
-end
+%    end
+%end
 %% Run Commands
 try
     % check for preexisting image
@@ -236,6 +256,7 @@ end
 
     % Run full SeqC pipeline
     disp(sprintf(' > SeqC Processing Begins...\n%s',msgDsize));
+    sprintf('%s %s',comm_run_main, comm_mama_full)
     [status, cmdout] = system(sprintf('%s %s',comm_run_main, comm_mama_full));
     if status ~= 0, error('SeqC pipeline execution failed:\n%s', cmdout); end
     disp(' > SeqC Processing Ends.');
