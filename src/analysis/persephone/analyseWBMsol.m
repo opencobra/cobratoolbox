@@ -225,23 +225,6 @@ warning('on')
 % WBMs. 
 modelSP(cellfun(@isempty,modelSP(:,2)),:)=[];
 
-%% PART 2: Obtain and process species biomass shadow prices (Microbiome only)
-% 
-% if ~isempty(modelSP) % Only run this section if microbiome personalised results are included
-%     disp('PART 2: Obtain the shadow prices of microbe biomass for each reaction')
-% 
-%     % Obtain the names of the optimised reactions
-%     rxnNames = fluxes.Properties.VariableNames;
-% 
-%     % Find the microbe biomass shadow prices for each optimised reaction
-%     % and produce summary statistics
-%     [microbesContributed, modelsInfluenced, microbeInfluenceStats, wbmRelativeAbundances] = extractMicrobeContributions(modelSP,rxnNames,fluxAnalysisPath,paramFluxProcessing.roundingFactor);
-% 
-% else 
-%     disp('SKIP PART 2: Obtain the shadow prices of microbe biomass for each reaction')
-%     disp('NO FBA solutions from microbiome personalised WBMs were detected.')
-% end
-
 %% PART 2: Correlate fluxes with microbial relative abundances
 % Process flux and relative abundances data 
 % Extract relative abundances
@@ -280,95 +263,46 @@ else
     
 end
 
-%% PART 4: Group reactions with identical or near identical flux results
-% disp('PART 4: Find reaction groups and group flux results')
-% 
-% if analyseGF
-%     fluxesPruned = stats.Fluxes_removed_reactions; % Host-microbiome fluxes with removed metabolites
-%     [fluxesGrouped, reactionGroups] = groupFluxes(fluxesPruned, paramFluxProcessing.rxnEquivalenceThreshold,{});
-% end
-% 
-%% PART 5: Find correlations between the fluxes and relative microbe abundances (Microbiome only)
-% 
-% if ~isempty(modelSP) % Only run this section if microbiome personalised results are included
-%     disp('PART 5: Correlate the predicted fluxes with the relative microbe abundances ')
-%     % Correlate fluxes with the relative abundances and the microbial
-%     % metabolic influence values
-%     fluxMicrobeCorr= correlateFluxesAgainstMicrobes(fluxes, modelSP, paramFluxProcessing);
-% else
-%     disp('Skipped PART 5: Correlate the predicted fluxes with the relative microbe abundances ')
-% end
-
-%% PART 6: Create table with all results
+%% PART 4: Create table with all results
 disp('PART 6: Collect all results')
 
-% Create index sheet for saved results
-sheetNumbers = 13;
-tableNames = append("Table ",string(1:sheetNumbers)');
-indexTable = table(tableNames,string(zeros(sheetNumbers,1)),'VariableNames',{'Table','Descriptions'});
+% Predefine table descriptions and corresponding data sources
+tableMeta = {...
+    'FBA solver statistics'                             , fbaStats; ...
+    'Distribution statistics of fluxes across samples'  , stats.Flux_summary_statistics; ...
+    'Predicted fluxes'                                  , stats.Fluxes; ...
+    'Predicted fluxes with removed reactions'           , stats.Fluxes_removed_reactions};
 
-i=1;
-indexTable.Descriptions(i) = 'FBA solver statistics'; i=i+1;
-% indexTable.Descriptions(i) = 'FBA original solver statistics'; i=i+1;
-indexTable.Descriptions(i) = 'Distribution statistics of fluxes across samples'; i=i+1;
-indexTable.Descriptions(i) = 'Predicted fluxes'; i=i+1;
-indexTable.Descriptions(i) = 'Predicted fluxes with removed reactions'; i=i+1;
-indexTable.Descriptions(i) = 'Scaled fluxes summary statistics'; i=i+1;
-indexTable.Descriptions(i) = 'Scaled fluxes with removed reactions'; i=i+1;
-indexTable.Descriptions(i) = 'Linearly dependent groups of metabolic fluxes'; i=i+1;
-indexTable.Descriptions(i) = 'Scaled fluxes with removed reactions and grouped metabolites'; i=i+1;
-
-if ~isempty(modelSP) % Only produce these tables if HM models were investigated
-
-    % shadow price analysis results
-    indexTable.Descriptions(i) = 'Number of potential flux limiting taxa per sample'; i=i+1; % Microbiome only
-    indexTable.Descriptions(i) = 'Number of samples containing potential flux limiting taxon'; i=i+1; % Microbiome only
-    indexTable.Descriptions(i) = 'Summary statistics for potential flux limiting taxa'; i=i+1; % Microbiome only
-    indexTable.Descriptions(i) = 'Microbial species relative abundances in WBMs'; i=i+1; % Microbiome only
-
-    % Flux microbe correlation results
-    indexTable.Descriptions(i) = 'Flux - taxon relative abundance correlations'; i=i+1;% Microbiome only
+if analyseGF
+    tableMeta = [tableMeta; {
+        'Scaled fluxes summary statistics'      , stats.Scaled_flux_summary_statistics; ...
+        'Scaled fluxes with removed reactions'  , stats.Scaled_fluxes}];
 end
 
-% Add index table to results structure
+if ~isempty(modelSP)
+    tableMeta = [tableMeta; {
+        'Microbial taxon relative abundances in WBMs', wbmRelativeAbundances; ...
+        'Flux - taxon relative abundance correlations' , fluxMicrobeCorr}];
+end
+
+% Create index table
+tableNames = "Table " + (1:size(tableMeta,1))';
+indexTable = table(tableNames, string(tableMeta(:,1)), ...
+    'VariableNames', {'Table','Descriptions'});
+
+% Assemble results structure
 FBA_results = struct;
 FBA_results.Index = indexTable;
 
-% Add FBA statistics
-N=1; 
-FBA_results.(strcat("Table_",string(N))) = fbaStats; N = N+1; % Increment table number
-% FBA_results.(strcat("Table_",string(N))) = fbaOrigStats; N = N+1; % Increment table number
-
-if analyseGF
-    % Add results from the flux summary analysis
-    FBA_results.(strcat("Table_",string(N))) = stats.Flux_summary_statistics; N = N+1; % Increment table number
-    FBA_results.(strcat("Table_",string(N))) = stats.Fluxes; N = N+1; % Increment table number
-    FBA_results.(strcat("Table_",string(N))) = stats.Fluxes_removed_reactions; N = N+1; % Increment table number
-    FBA_results.(strcat("Table_",string(N))) = stats.Scaled_flux_summary_statistics; N = N+1; % Increment table number
-    FBA_results.(strcat("Table_",string(N))) = stats.Scaled_fluxes; N = N+1; % Increment table number
-    
-    % Add results from the flux grouping function
-    FBA_results.(strcat("Table_",string(N))) = reactionGroups; N = N+1; % Increment table number
-    FBA_results.(strcat("Table_",string(N))) = fluxesGrouped; N = N+1; % Increment table number
-
+for k = 1:size(tableMeta,1)
+    FBA_results.(sprintf("Table_%d",k)) = tableMeta{k,2};
 end
 
-
-% Add results from the shadow price analysis (Microbiome only)
-% FBA_results.(strcat("Table_",string(N))) = microbesContributed; N = N+1; % Increment table number
-% FBA_results.(strcat("Table_",string(N))) = modelsInfluenced; N = N+1; % Increment table number
-% FBA_results.(strcat("Table_",string(N))) = microbeInfluenceStats; N = N+1; % Increment table number
-FBA_results.(strcat("Table_",string(N))) = wbmRelativeAbundances; N = N+1; % Increment table number
-
-% Add results from the flux-microbe correlation function (Microbiome only)
-FBA_results.(strcat("Table_",string(N))) = fluxMicrobeCorr; N = N+1; % Increment table number
-
-%% PART 7: Save all results
+%% PART 5: Save all results
 disp('PART 7: Save all results to "flux_results.xlsx"')
 sheetNames = string(fieldnames(FBA_results));
 
 resultPath = [fluxAnalysisPath filesep 'flux_results.xlsx'];
-
 % Remove excel file if it already exists to prevent partial overwriting.
 if ~isempty(which(resultPath))
     delete(resultPath);
@@ -384,19 +318,11 @@ end
 
 %%% NOTE: This part will be removed once the pipeline is more mature
 pathToFluxResults = [fluxAnalysisPath filesep 'processed_fluxes.csv'];
-    
-if analyseGF
-    % Save fluxes and flux-microbe correlations in separate file
-    writetable(fluxesPruned,pathToFluxResults)
-else 
-    % save fluxes with out the germfree flux subtracted if you are not
-    % doing germ-free analysis (so they can still be used in performStatsPersephone
-    writetable(fluxes,pathToFluxResults)
-end
+writetable(fluxes,pathToFluxResults) 
 
 % Save microbiome relative abundances
 WBMmicrobiomePath = [fluxAnalysisPath filesep 'WBM_relative_abundances.csv'];
-% writetable(wbmRelativeAbundances,WBMmicrobiomePath,'WriteRowNames',true)
+writetable(wbmRelativeAbundances,WBMmicrobiomePath,'WriteRowNames',true)
 
 % Save flux-microbe correlations
 fluxMicrobePath = [fluxAnalysisPath filesep 'microbe_metabolite_R2.csv'];

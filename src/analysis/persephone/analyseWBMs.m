@@ -361,7 +361,7 @@ parfor i = 1:length(hmPaths)
 
         % Add LP and solver statistics
         solution.solver = FBA.solver;
-        solution.osenseStr = model.osenseStr;
+        solution.osenseStr{1,j} = model.osenseStr;
         solution.stat(1,j)=FBA.stat;
         if isfield(solution, "origStat")
             solution.origStat(1,j)=FBA.origStat;
