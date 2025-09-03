@@ -1,11 +1,12 @@
+# Set Docker syntax version
 #syntax=docker/dockerfile:1
 #escape=\
-#====================================================================================================#
+#==================================================================================================#
 # Title: SeqC Pipeline Docker file: create environment for sequencing data processing
 # Program by: Wiley Barton - 2024.02.22
 # Modified for conda/docker pipeline - 2024.02.22
 # Version for Persephone
-# last update - 2025.03.11
+# last update - 2025.08.30
 #--------------------------------------------------
 # Modified code sources:
 # umamba merge via: https://micromamba-docker.readthedocs.io/en/latest/advanced_usage.html#adding-micromamba-to-an-existing-docker-image
@@ -21,7 +22,11 @@
 # |__ /seqc_proc
 # |  |__ /DEPO_demo
 # |  |__ /DEPO_proc
-# |  |__ /REPO_host
+# |  |__ /REPO_gref
+# |  |  |__ /t2p
+# |  |  |__ /ref_genome
+# |  |  |__ /host
+# |  |  |  |__ /hsap
 # |  |__ /REPO_tool
 # |-Dockerfile
 # |-BASH_seqc_*.sh
@@ -36,92 +41,110 @@
 #--------------------------------------------------
 # CLI COMMS
 # kill all: docker stop $(docker ps -aq), wsl --shutdown
+# clear cache: docker buildx prune
+# clean all: docker system prune
+# windows bloated wsl issue: Optimize-VHD -Path "$env:LOCALAPPDATA\Docker\wsl\disk\docker_data.vhdx" -Mode Full
+# windows config wsl for better resource use: wsl --shutdown; %UserProfile%\.wslconfig
+#https://docs.docker.com/desktop/settings-and-maintenance/settings/#resources
+#https://mrakelinggar.medium.com/set-up-configs-like-memory-limits-in-docker-for-windows-and-wsl2-80689997309c
+#mac os https://medium.com/takemetoprod/configure-ram-settings-before-you-run-docker-on-mac-8680286324ff
 # direct command: docker run --rm -v`pwd`:`pwd` trinityrnaseq/trinityrnaseq Trinity  --seqType fq --left `pwd`/reads.left.fq.gz --right `pwd`/reads.right.fq.gz --max_memory 1G --CPU 8 --output `pwd`/trinity_out_dir
-#======================================================================================================#
-#----------------------------------------------------------------------------------------
-# START
-#----------------------------------------------------------------------------------------
+#==================================================================================================#
 ARG BUILDPLATFORM='linux/amd64'
-#--------------------------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------------------------#
 # Stage 1: Use micromamba base image
-# bring in the micromamba image so we can copy files from it - mambaorg/micromamba:1.5.8
-#--------------------------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------------------------#
 FROM --platform=${BUILDPLATFORM} mambaorg/micromamba:latest AS micromamba
-#--------------------------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------------------------#
 # Stage 2: Base OS Setup (Ubuntu)
-# This is the image micromamba is added to:
-#--------------------------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------------------------#
 FROM --platform=${BUILDPLATFORM} ubuntu:latest AS base_os
 WORKDIR /home
-#establish variables
-#ARG and ENV both invoke in build, ENV made variable in container
-# run parameters
-ENV v_proj="seqc_project"
-ENV v_seqcusr="seqc_user"
-#maximum cpus/threads to use, recommend 48
+#--------------------------------------------------------------------------------------------------#
+# Stage 3: Set environment variables and arguments for configurability
+# ARG and ENV both invoke in build, ENV made variable in container
+#--------------------------------------------------------------------------------------------------#
+ARG v_seqcusr="seqc_user"
+ARG v_proj="seqc_project"
+ARG USER_UID=1000
+ARG USER_GID=1000
+ARG MAMBA_USER=${v_seqcusr}
 ARG varg_cpu_max=8
-ENV venv_cpu_max=${varg_cpu_max}
-#maximum proccess to use, recommend 48
 ARG varg_proc_max=4
-ENV venv_proc_max=${varg_proc_max}
-#maximum memory to use in G, recommend 200
 ARG varg_mem_max=16
-ENV venv_mem_max=${varg_mem_max}
-ENV v_dir_work=/home/${v_seqcusr}/${v_proj}
-ENV v_dir_db=/DB
-ENV venv_dir_proc=${v_dir_db}/DEPO_proc
-ENV venv_dir_out=${v_dir_work}/final_reports
-ENV venv_dir_in=${v_dir_work}/step0_data_in
-# MARS parameters
+ARG v_dir_work=/home/${v_seqcusr}/${v_proj}
+ARG varg_dir_db="/DB"
+ARG varg_dir_work=${v_dir_work}
+ARG v_path0=${v_dir_work}/{final_reports,scrp_job,scrp_run,step0_data_in}/
+ARG v_path1=${v_dir_work}/${varg_dir_db}/REPO_gref/{t2p,ref_genome,host/{hsap,hsap_contam,mmus,btau}/bowtie2/}
+ARG v_path2=${v_dir_work}/${varg_dir_db}/REPO_tool/{kraken,ncbi_NR}/
+ARG v_path3=${v_dir_work}/${varg_dir_db}/DEPO_demo/{tmp,camisim/AGORA_smol/{genomes,run_params}}/
+ARG v_path4=${v_dir_work}/${varg_dir_db}/DEPO_proc/{logs,tmp}/
+# Set CORE environment variables
+ENV venv_seqcusr=${v_seqcusr} \
+    venv_proj=${v_proj} \
+    venv_cpu_max=${varg_cpu_max} \
+    venv_proc_max=${varg_proc_max} \
+    venv_mem_max=${varg_mem_max} \
+    v_dir_work=${v_dir_work} \
+    venv_dir_db=${varg_dir_db} \
+    venv_dir_work=${varg_dir_work}
+ENV venv_dir_in=${venv_dir_work}/step0_data_in \
+    venv_dir_out=${venv_dir_work}/final_reports \
+    venv_dir_proc=${venv_dir_db}/DEPO_proc
+ENV venv_dir_log=${venv_dir_proc}/logs
+#log parameters
+ENV v_logblock0='#=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-' \
+    v_logblock1='#------------------------------------------------------------------' \
+    v_logblock2='#---------------------------------' \
+    venv_log_init="log_"${v_proj}".txt"
+# Set MARS environment variables
 ARG varg_mars_readsTablePath=''
-ENV venv_mars_readsTablePath=${varg_mars_readsTablePath}
 ARG varg_mars_outputExtensionMARS='csv'
-ENV venv_mars_outputExtensionMARS=${varg_mars_outputExtensionMARS}
 ARG varg_mars_relAbunFilePath=''
-ENV venv_mars_relAbunFilePath=${varg_mars_relAbunFilePath}
 ARG varg_mars_sample_read_counts_cutoff=1
-ENV venv_mars_sample_read_counts_cutoff=${varg_mars_sample_read_counts_cutoff}
-#handle conversion of sci to float 1e-6(default) to 0.000001
 ARG varg_mars_cutoffMARS='0.000001'
-ENV venv_mars_cutoffMARS=${varg_mars_cutoffMARS}
 ARG varg_mars_OTUTable=''
-ENV venv_mars_OTUTable=${varg_mars_OTUTable}
-#% A boolean to indicate if the genus name is in the name of the species e.g.
-#% Prevotella copri. If genus name is in species name set to false. 
-#% Otherwise set to true. OPTIONAL, defaults to false.
 ARG varg_mars_flagLoneSpecies='False'
-ENV venv_mars_flagLoneSpecies=${varg_mars_flagLoneSpecies}
 ARG varg_mars_taxaSplit=';'
-ENV venv_mars_taxaSplit=${varg_mars_taxaSplit}
 ARG varg_mars_removeCladeExtensionsFromTaxa='True'
-ENV venv_mars_removeCladeExtensionsFromTaxa=${varg_mars_removeCladeExtensionsFromTaxa}
 #% Allowed Input (case-insensitive): "AGORA2", "APOLLO", "full_db", "user_db".
 ARG varg_mars_whichModelDatabase='full_db'
-ENV venv_mars_whichModelDatabase=${varg_mars_whichModelDatabase}
 ARG varg_mars_userDatabase_path=''
-ENV venv_mars_userDatabase_path=${varg_mars_userDatabase_path}
 ARG varg_mars_taxaTable=''
-ENV venv_mars_taxaTable=${varg_mars_taxaTable}
-#USER ${v_seqcusr}
-#log parameters
-ENV v_logblock0='#=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-'
-ENV v_logblock1='#------------------------------------------------------------------'
-ENV v_logblock2='#---------------------------------'
-ENV v_logfile="log_"${v_proj}".txt"
-ENV v_logdir=${v_dir_work}/logs
-#initialise log
-RUN printf '%s\nStart of pipeline log -- Docker Initialized@: %s\n%s\n' "${v_logblock0}" "$(date)" "${v_logblock0}" > $v_logfile
-#build workflow dirs - op moved to mama due to .gitkeep block on initial build
-RUN [ "/bin/bash", "-c", "mkdir -p ${v_dir_work}/{final_reports,logs,scrp_job,scrp_run,step0_data_in}/" ]
-WORKDIR ${v_dir_work}
-RUN cd ${v_dir_work}
-#move logfile
-RUN [ "/bin/bash", "-c", "mv /home/${v_logfile} ${v_logdir}" ]
-#----------------------------------------------------------------------------------------
-# Install ubuntu packages - stable layer
-#----------------------------------------------------------------------------------------
-RUN apt-get update && DEBIAN_FRONTEND=noninteractive && \
-    apt-get install -y --no-install-recommends \
+ENV venv_mars_readsTablePath=${varg_mars_readsTablePath} \
+    venv_mars_outputExtensionMARS=${varg_mars_outputExtensionMARS} \
+    venv_mars_relAbunFilePath=${varg_mars_relAbunFilePath} \
+    venv_mars_sample_read_counts_cutoff=${varg_mars_sample_read_counts_cutoff} \
+    venv_mars_cutoffMARS=${varg_mars_cutoffMARS} \
+    venv_mars_OTUTable=${varg_mars_OTUTable} \
+    venv_mars_flagLoneSpecies=${varg_mars_flagLoneSpecies} \
+    venv_mars_taxaSplit=${varg_mars_taxaSplit} \
+    venv_mars_removeCladeExtensionsFromTaxa=${varg_mars_removeCladeExtensionsFromTaxa} \
+    venv_mars_whichModelDatabase=${varg_mars_whichModelDatabase} \
+    venv_mars_userDatabase_path=${varg_mars_userDatabase_path} \
+    venv_mars_taxaTable=${varg_mars_taxaTable}
+#--------------------------------------------------------------------------------------------------#
+# User build
+#--------------------------------------------------------------------------------------------------#
+RUN groupadd --gid $USER_GID $MAMBA_USER && \
+    useradd --uid $USER_UID --gid $USER_GID --create-home $MAMBA_USER && \
+    usermod -aG sudo $MAMBA_USER && \
+    echo "$MAMBA_USER ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+#--------------------------------------------------------------------------------------------------#
+# Directory build
+#--------------------------------------------------------------------------------------------------#
+#Temp root use
+WORKDIR ${venv_dir_work}
+RUN cd ${venv_dir_work}
+USER 0
+RUN [ "/bin/bash", "-c", "eval mkdir -p ${venv_dir_db} ${v_path0} ${v_path1} ${v_path2} ${v_path3} ${v_path4} 2> /dev/null" ]
+RUN [ "/bin/bash", "-c", "eval mv ${venv_dir_work}/${venv_dir_db} / 2> /dev/null" ]
+RUN chown -R ${USER_UID}:${USER_GID} ${venv_dir_db}
+#--------------------------------------------------------------------------------------------------#
+# System dependencies installation
+#--------------------------------------------------------------------------------------------------#
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
     apt-transport-https \
     bc \
     build-essential \
@@ -132,112 +155,104 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive && \
     emacs \
     gawk \
     git \
+    jq \
     less \
-    libz-dev \
     lftp \
-    pip \
+    libz-dev \
+    parallel \
     pigz \
+    pip \
     pkg-config \
     unzip \
     wget \
     zip && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
-RUN apt-get update
-#Install NCBI CLI
-RUN curl -o /bin/datasets 'https://ftp.ncbi.nlm.nih.gov/pub/datasets/command-line/v2/linux-amd64/datasets'
-RUN curl -o /bin/dataformat 'https://ftp.ncbi.nlm.nih.gov/pub/datasets/command-line/v2/linux-amd64/dataformat'
-RUN chmod +x /bin/datasets /bin/dataformat
-#----------------------------------------------------------------------------------------
-# Pull git repos
-#----------------------------------------------------------------------------------------
-RUN [ "/bin/bash", "-c", "git clone -b master https://github.com/DerrickWood/kraken2 /lib/kraken2" ]
-RUN [ "/bin/bash", "-c", "git clone -b master https://github.com/jenniferlu717/Bracken /lib/bracken" ]
-RUN [ "/bin/bash", "-c", "git clone -b master https://github.com/ThieleLAB/mars-pipeline /lib/mars" ]
-# For all users and all repositories
-RUN git config --system --add safe.directory '*'
-#----------------------------------------------------------------------------------------
-# Establish mamba
-# if your image defaults to a non-root user, then you may want to make the
-# next 3 ARG commands match the values in your image. You can get the values
-# by running: docker run --rm -it my/image id -a
-#----------------------------------------------------------------------------------------
-ARG MAMBA_USER=${v_seqcusr}
-ARG MAMBA_USER_ID=57439
-ARG MAMBA_USER_GID=57439
-#ARG MAMBA_USER_ID=0
-#ARG MAMBA_USER_GID=0
+    apt-get clean && rm -rf /var/lib/apt/lists/*
+#--------------------------------------------------------------------------------------------------#
+# Install NCBI CLI tools
+#--------------------------------------------------------------------------------------------------#
+RUN curl -fsSL -o /bin/datasets https://ftp.ncbi.nlm.nih.gov/pub/datasets/command-line/v2/linux-amd64/datasets && \
+    curl -fsSL -o /bin/dataformat https://ftp.ncbi.nlm.nih.gov/pub/datasets/command-line/v2/linux-amd64/dataformat && \
+    curl -fsSL -o /bin/edirect https://ftp.ncbi.nlm.nih.gov/entrez/entrezdirect/install-edirect.sh && \
+    chmod +x /bin/datasets /bin/dataformat
+#--------------------------------------------------------------------------------------------------#
+# Clone required Git repositories
+#--------------------------------------------------------------------------------------------------#
+RUN git clone --depth=1 --branch master https://github.com/DerrickWood/kraken2.git /lib/kraken2 && \
+    git clone --depth=1 --branch master https://github.com/jenniferlu717/Bracken.git /lib/bracken && \
+    git clone --depth=1 --branch master https://github.com/ThieleLAB/mars-pipeline.git /lib/mars
+#--------------------------------------------------------------------------------------------------#
+# Establish Micromamba & Conda Environments
+#--------------------------------------------------------------------------------------------------#
+ARG MAMBA_USER_ID=${USER_UID}
+ARG MAMBA_USER_GID=${USER_GID}
+ENV MAMBA_ROOT_PREFIX="/opt/conda"
+# Copy Micromamba binaries from stage 1
 ENV MAMBA_USER=$MAMBA_USER
 ENV MAMBA_ROOT_PREFIX="/opt/conda"
 ENV MAMBA_EXE="/bin/micromamba"
 COPY --from=micromamba "$MAMBA_EXE" "$MAMBA_EXE"
-COPY --from=micromamba /usr/local/bin/_activate_current_env.sh /usr/local/bin/_activate_current_env.sh
-COPY --from=micromamba /usr/local/bin/_dockerfile_shell.sh /usr/local/bin/_dockerfile_shell.sh
-COPY --from=micromamba /usr/local/bin/_entrypoint.sh /usr/local/bin/_entrypoint.sh
-COPY --from=micromamba /usr/local/bin/_dockerfile_initialize_user_accounts.sh /usr/local/bin/_dockerfile_initialize_user_accounts.sh
-COPY --from=micromamba /usr/local/bin/_dockerfile_setup_root_prefix.sh /usr/local/bin/_dockerfile_setup_root_prefix.sh
+COPY --from=micromamba /usr/local/bin/_*.sh /usr/local/bin/
 RUN /usr/local/bin/_dockerfile_initialize_user_accounts.sh && /usr/local/bin/_dockerfile_setup_root_prefix.sh
-#Modify ownership - TMP
-RUN chown -R $MAMBA_USER:$MAMBA_USER /lib
-#extend regex
-RUN [ "/bin/bash", "-c", "shopt -s extglob"]
-USER $MAMBA_USER
-SHELL ["/usr/local/bin/_dockerfile_shell.sh"]
-ENTRYPOINT ["/usr/local/bin/_entrypoint.sh"]
-# Optional: if you want to customize the ENTRYPOINT and have a conda environment activated, then do this:
-#ENTRYPOINT ["/usr/local/bin/_entrypoint.sh", "my_entrypoint_program"]
-# Modify the CMD statement:
-#CMD ["/bin/bash"]
-#----------------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------------------------#
 # Populate with core seqc scripts
-#----------------------------------------------------------------------------------------
-COPY --chown=$MAMBA_USER:$MAMBA_USER BASH_*.sh /usr/bin/
-COPY --chown=$MAMBA_USER:$MAMBA_USER env_*.yml /tmp/
-COPY --chown=$MAMBA_USER:$MAMBA_USER taxa2proc_*_out.txt /tmp/
-#/DB/REPO_tool/kraken/
-#----------------------------------------------------------------------------------------
-# Populate base conda env
-#----------------------------------------------------------------------------------------
-#export environment info: micromamba env export --no-build --name base > test.yml
-RUN micromamba install --yes --name base --file /tmp/env_base.yml && micromamba clean --all --yes && \
-micromamba config append channels conda-forge && \
-micromamba config append channels bioconda && \
-micromamba config remove channels defaults && \
-micromamba config set channel_priority flexible && \
-micromamba create --yes --file /tmp/env_s1_kneaddata.yml && \
-micromamba create --yes --file /tmp/env_s4_kraken.yml && \
-micromamba create --yes --file /tmp/env_util_seqkit.yml && \
-micromamba create --yes --file /tmp/env_util_taxonkit.yml && \
-micromamba create --yes --file /tmp/env_util_enasearch.yml && \
-micromamba create --yes --file /tmp/env_util_mars.yml && \
-micromamba clean --all --yes
-# Move git executables to respective env
-USER root
-RUN [ "/bin/bash", "-c", "mv /lib/kraken2 /opt/conda/envs/env_s4_kraken/lib/" ]
-RUN [ "/bin/bash", "-c", "mv /lib/bracken /opt/conda/envs/env_s4_kraken/lib/" ]
-RUN cd /opt/conda/envs/env_s4_kraken/lib/kraken2/ && ./install_kraken2.sh .
-RUN cd /opt/conda/envs/env_s4_kraken/lib/bracken/ && ./install_bracken.sh .
+#--------------------------------------------------------------------------------------------------#
+COPY --chown=${USER_UID}:${USER_GID} BASH_*.sh /usr/bin/
+COPY --chown=${USER_UID}:${USER_GID} env_*.yml /tmp/
+COPY --chown=${USER_UID}:${USER_GID} taxa2proc_*_out.txt /tmp/
+RUN chown -R ${USER_UID}:${USER_GID} /lib
+RUN chown -R ${USER_UID}:${USER_GID} /tmp
+RUN chown -R ${USER_UID}:${USER_GID} /DB
+#--------------------------------------------------------------------------------------------------#
+# Install Conda environments
+#--------------------------------------------------------------------------------------------------#
+# Clean lock
+RUN micromamba clean --locks
+RUN micromamba install --yes --name base --file /tmp/env_base.yml && \
+    micromamba clean --all --yes && \
+    micromamba config append channels conda-forge && \
+    micromamba config append channels bioconda && \
+    micromamba config remove channels defaults && \
+    micromamba config set channel_priority flexible && \
+    micromamba create --yes --file /tmp/env_s1_kneaddata.yml && \
+    micromamba create --yes --file /tmp/env_s4_kraken.yml && \
+    micromamba create --yes --file /tmp/env_util_seqkit.yml && \
+    micromamba create --yes --file /tmp/env_util_taxonkit.yml && \
+    micromamba create --yes --file /tmp/env_util_enasearch.yml && \
+    micromamba create --yes --file /tmp/env_util_mars.yml && \
+    micromamba clean --all --yes
+# Move Git repositories to their respective environments
+RUN mv /lib/kraken2 /opt/conda/envs/env_s4_kraken/lib/ && \
+    mv /lib/bracken /opt/conda/envs/env_s4_kraken/lib/ && \
+    mv /lib/mars /opt/conda/envs/env_util_mars/lib/
+# Install and configure 
+RUN cd /opt/conda/envs/env_s4_kraken/lib/kraken2/ && ./install_kraken2.sh . && \
+    cd /opt/conda/envs/env_s4_kraken/lib/bracken/ && ./install_bracken.sh .
 RUN [ "/bin/bash", "-c", "mv /opt/conda/envs/env_s4_kraken/lib/kraken2/kraken2{,-build,-inspect} /opt/conda/envs/env_s4_kraken/bin" ]
 RUN [ "/bin/bash", "-c", "mv /opt/conda/envs/env_s4_kraken/lib/bracken/bracken{,-build} /opt/conda/envs/env_s4_kraken/bin" ]
 RUN [ "/bin/bash", "-c", "mv /opt/conda/envs/env_s4_kraken/lib/bracken/src /opt/conda/envs/env_s4_kraken/bin" ]
 RUN [ "/bin/bash", "-c", "mv /opt/conda/envs/env_s4_kraken/lib/bracken/analysis_scripts/combine_bracken_outputs.py /opt/conda/envs/env_s4_kraken/bin" ]
-RUN [ "/bin/bash", "-c", "mv /lib/mars /opt/conda/envs/env_util_mars/lib/" ]
-# Fix for dysfunc build of kneaddata
-RUN [ "/bin/bash", "-c", "rm /opt/conda/envs/env_s1_kneaddata/share/trimmomatic-0.39-2/trimmomatic" ]
-# Fix for OoD script of enasearch
+#--------------------------------------------------------------------------------------------------#
+# Fix for: Kneaddata, ENA Search, regrex extension, permissions, windows file conversion
+#--------------------------------------------------------------------------------------------------#
+USER 0
+RUN [ "/bin/bash", "-c", "rm -f /opt/conda/envs/env_s1_kneaddata/share/trimmomatic-0.39-2/trimmomatic" ]
 RUN sed -i 's/data\/warehouse/portal\/api/' /opt/conda/envs/env_util_enasearch/lib/python2.7/site-packages/enasearch/__init__.py
-#RUN [ "/bin/bash", "-c", "sed -i s/data\/warehouse/portal\/api/ /opt/conda/envs/env_util_enasearch/lib/python2.7/site-packages/enasearch/__init__.py" ]
-# Initialise mamba env
-ARG MAMBA_DOCKERFILE_ACTIVATE=1
-USER root
-# Kraken build fix for linux 
-RUN micromamba install --yes --name env_s4_kraken kraken2 -c bioconda -c conda-forge
-#----------------------------------------------------------------------------------------
-# Post setup root required reconfig
-#----------------------------------------------------------------------------------------
+RUN [ "/bin/bash", "-c", "shopt -s extglob" ]
+# Conversion for stoopid windows compat. TODO: EXTND TO ALL VULN FILES EX SAMPLE_ID
 RUN [ "/bin/bash", "-c", "chmod 777 /usr/bin/BASH_*.sh" ]
-# Conversion for stoopid windows compat.
 RUN [ "/bin/bash", "-c", "find /usr/bin -name BASH_seqc_*.sh -exec dos2unix {} +" ]
-RUN echo "export VEN_SPLASH=1" >>  /root/.bashrc
-RUN echo "BASH_seqc_mama.sh -2" >> /root/.bashrc
+#--------------------------------------------------------------------------------------------------#
+# Initialise log
+#--------------------------------------------------------------------------------------------------#
+RUN printf '%s\nStart of pipeline log -- Docker Initialized@: %s\n%s\n' "${v_logblock0}" "$(date)" "${v_logblock0}" > /tmp/${venv_log_init}
+RUN chown -R ${USER_UID}:${USER_GID} /tmp/${venv_log_init}
+#--------------------------------------------------------------------------------------------------#
+# Set up splash, user, and shell
+#--------------------------------------------------------------------------------------------------#
+RUN printf '%s\n%s' "export VEN_SPLASH=1" "BASH_seqc_mama.sh -2" >> /root/.bashrc
+USER ${MAMBA_USER}
+RUN printf '%s\n%s' "export VEN_SPLASH=1" "BASH_seqc_mama.sh -2" >> /home/${MAMBA_USER}/.bashrc
+SHELL [ "/usr/local/bin/_dockerfile_shell.sh" ]
+ENTRYPOINT [ "/usr/local/bin/_entrypoint.sh" ]
+CMD [ "/bin/bash"]
 #EoB
