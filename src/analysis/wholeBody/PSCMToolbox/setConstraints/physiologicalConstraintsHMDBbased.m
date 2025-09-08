@@ -86,23 +86,24 @@ OrganLists;
 %% calculate GFR = Glomerular filtration rate
 % the filtration fraction should be 20% of the renal plasma flow
 %GlomerularFiltrationRate = IndividualParameters.GlomerularFiltrationRate; % in ml/min
-RenalFiltrationFraction  = 0.2; %20%
-
-% blood flow percentage that Kidney gets
-if strcmp(sex,'male')
-    BK = bloodFlowData{strmatch('Kidney',bloodFlowData(:,1),'exact'),bloodFlowPercCol(1)};
-elseif strcmp(sex,'female')
-    BK = bloodFlowData{strmatch('Kidney',bloodFlowData(:,1),'exact'),bloodFlowPercCol(2)};
-    % BK = bloodFlowData{strmatch('Kidney',bloodFlowData(:,1),'exact'),4};
-end
-try
-BK = str2num(BK(2:end-1));
-catch
-    BK = (BK);
-end
-RenalFlowRate=BK*CardiacOutput*(1-Hematocrit); % k_plasma_organ in ml/min
-% TO UPDATE- if user defined, go with user input
-GlomerularFiltrationRate = RenalFlowRate*RenalFiltrationFraction;% in ml/min
+% RenalFiltrationFraction  = 0.2; %20%
+% 
+% % blood flow percentage that Kidney gets
+% if strcmp(sex,'male')
+%     BK = bloodFlowData{strmatch('Kidney',bloodFlowData(:,1),'exact'),bloodFlowPercCol(1)};
+% elseif strcmp(sex,'female')
+%     BK = bloodFlowData{strmatch('Kidney',bloodFlowData(:,1),'exact'),bloodFlowPercCol(2)};
+%     % BK = bloodFlowData{strmatch('Kidney',bloodFlowData(:,1),'exact'),4};
+% end
+% try
+% BK = str2num(BK(2:end-1));
+% catch
+%     BK = (BK);
+% end
+% RenalFlowRate=BK*CardiacOutput*(1-Hematocrit); % k_plasma_organ in ml/min
+% % TO UPDATE- if user defined, go with user input
+% GlomerularFiltrationRate = RenalFlowRate*RenalFiltrationFraction;% in ml/min
+GlomerularFiltrationRate = IndividualParameters.GlomerularFiltrationRate;
 %% read data
 % read metabolic concentrations from HMDB if no input data are defined
 if ~exist('InputData','var') || length(InputData)==0

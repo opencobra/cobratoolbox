@@ -656,65 +656,47 @@ for s = 1:numModels
             end
             
             
+%             % LEAN BODY MASS
+%             if any(strcmp(lower(dataCurrent.Properties.VariableNames),'lean body mass'))
+%                 idxLBM = find(strcmp(lower(dataCurrent.Properties.VariableNames),'lean body mass'));
+%                 if size(idxLBM, 2)>1
+%                     error('More than one column header in the metadata contains the paramter lean body mass!')
+%                 end
+%                 LBM = cell2mat(dataCurrent{2, idxLBM});
+%                 currentUnit = dataCurrent{1, idxLBM};
+%                 if strcmp(currentUnit, "g")
+%                     LBM = LBM / 1000; % Convert grams to kilograms
+%                 elseif strcmp(currentUnit, "kg")
+%                     % No conversion needed
+%                 else
+%                     error('Lean body mass must be provided in g or kg');
+%                 end
+%                 IndividualParameters.LeanBodyMass = LBM;
+%                 paramSource.LeanBodyMass = 'User defined';
+%             else
+%                 %paramSource.LeanBodyMass = 'Default';
+%             end
             
-            % GLOMERULAR FILTRATION RATE
-            if any(strcmp(lower(dataCurrent.Properties.VariableNames),'glomerular filtration rate')) || any(strcmp(lower(dataCurrent.Properties.VariableNames),'gfr'))
-                idxGFR = find(strcmp(lower(dataCurrent.Properties.VariableNames), 'glomerular filtration rate') | strcmp(lower(dataCurrent.Properties.VariableNames), 'gfr'));
-                if size(idxGFR, 2)>1
-                    error('More than one column header in the metadata contains the paramter glomerular filtration rate!')
-                end
-                GFR = cell2mat(dataCurrent{2, idxGFR});
-                currentUnit = dataCurrent{1, idxGFR};
-                if ~strcmp(currentUnit, "mL/min/1.73m^2") || ~strcmp(currentUnit, "mL/min")
-                    error('Glomerular Filtration rate must be provided in mL/min/1.73m^2');
-                end
-                IndividualParameters.GlomerularFiltrationRate = GFR;
-                paramSource.GlomerularFiltrationRate = 'User defined';
-            else
-                paramSource.GlomerularFiltrationRate = 'Default';
-            end
-            
-            % LEAN BODY MASS
-            if any(strcmp(lower(dataCurrent.Properties.VariableNames),'lean body mass'))
-                idxLBM = find(strcmp(lower(dataCurrent.Properties.VariableNames),'lean body mass'));
-                if size(idxLBM, 2)>1
-                    error('More than one column header in the metadata contains the paramter lean body mass!')
-                end
-                LBM = cell2mat(dataCurrent{2, idxLBM});
-                currentUnit = dataCurrent{1, idxLBM};
-                if strcmp(currentUnit, "g")
-                    LBM = LBM / 1000; % Convert grams to kilograms
-                elseif strcmp(currentUnit, "kg")
-                    % No conversion needed
-                else
-                    error('Lean body mass must be provided in g or kg');
-                end
-                IndividualParameters.LeanBodyMass = LBM;
-                paramSource.LeanBodyMass = 'User defined';
-            else
-                %paramSource.LeanBodyMass = 'Default';
-            end
-            
-            % BODY FAT PERCENTAGE
-            if any(strcmp(lower(dataCurrent.Properties.VariableNames),'body fat'))
-                idxBF = find(strcmp(lower(dataCurrent.Properties.VariableNames),'body fat'));
-                if size(idxBF, 2)>1
-                    error('More than one column header in the metadata contains the paramter body fat!')
-                end
-                BF = cell2mat(dataCurrent{2, idxBF});
-                currentUnit = dataCurrent{1, idxBF};
-                if ~strcmp(currentUnit, '%') && strcmp(currentUnit, 'kg')
-                    BF = (BF /Wt)*100;
-                elseif strcmp(currentUnit, 'g')
-                    BF = (BF/(Wt*1000))*100;
-                elseif isempty(currentUnit)
-                    warning('Body weight (Wt) is in the wrong unit or conversion is not possible.');
-                end
-                IndividualParameters.BodyFat = BF;
-                paramSource.BodyFat = 'User defined';
-            else
-                %paramSource.BodyFat = 'Default';
-            end
+%             % BODY FAT PERCENTAGE
+%             if any(strcmp(lower(dataCurrent.Properties.VariableNames),'body fat'))
+%                 idxBF = find(strcmp(lower(dataCurrent.Properties.VariableNames),'body fat'));
+%                 if size(idxBF, 2)>1
+%                     error('More than one column header in the metadata contains the paramter body fat!')
+%                 end
+%                 BF = cell2mat(dataCurrent{2, idxBF});
+%                 currentUnit = dataCurrent{1, idxBF};
+%                 if ~strcmp(currentUnit, '%') && strcmp(currentUnit, 'kg')
+%                     BF = (BF /Wt)*100;
+%                 elseif strcmp(currentUnit, 'g')
+%                     BF = (BF/(Wt*1000))*100;
+%                 elseif isempty(currentUnit)
+%                     warning('Body weight (Wt) is in the wrong unit or conversion is not possible.');
+%                 end
+%                 IndividualParameters.BodyFat = BF;
+%                 paramSource.BodyFat = 'User defined';
+%             else
+%                 %paramSource.BodyFat = 'Default';
+%             end
             
             clear idxAge idxBF idxBFR idxCn idxCO idxGFR idxHmt idxHR idxHt idxID idxLBM idxSex idxSV idxWt Age Col Cols cParam currentUnit Hmt Ht Numbers Wt
            
@@ -820,8 +802,42 @@ for s = 1:numModels
                     paramSource.CardiacOutput = 'Calculated based on HR and SV (stroke volume estimated based on Bridwell';
                 end
             end
-        else
-            % If using a structure, check sex and load the correct model
+            
+            % GLOMERULAR FILTRATION RATE
+            if any(strcmp(lower(dataCurrent.Properties.VariableNames),'glomerular filtration rate')) || any(strcmp(lower(dataCurrent.Properties.VariableNames),'gfr'))
+                idxGFR = find(strcmp(lower(dataCurrent.Properties.VariableNames), 'glomerular filtration rate') | strcmp(lower(dataCurrent.Properties.VariableNames), 'gfr'));
+                if size(idxGFR, 2)>1
+                    error('More than one column header in the metadata contains the paramter glomerular filtration rate!')
+                end
+                GFR = cell2mat(dataCurrent{2, idxGFR});
+                currentUnit = dataCurrent{1, idxGFR};
+                if strcmp(currentUnit, "mL/min/1.73m^2") || strcmp(currentUnit, "mL/min")
+                    IndividualParameters.GlomerularFiltrationRate = GFR;
+                    paramSource.GlomerularFiltrationRate = 'User defined';
+                else
+                    error('Glomerular Filtration rate must be provided in mL/min/1.73m^2 or mL/min');
+                end
+            else
+                % Calculate GFR
+                % the filtration fraction should be 20% of the renal plasma flow
+                RenalFiltrationFraction  = 0.2; %20%
+                % blood flow percentage that Kidney gets
+                if strcmp(sex,'male')
+                    BK = bloodFlowData{strmatch('Kidney',bloodFlowData(:,1),'exact'),bloodFlowPercCol(1)};
+                elseif strcmp(sex,'female')
+                    BK = bloodFlowData{strmatch('Kidney',bloodFlowData(:,1),'exact'),bloodFlowPercCol(2)};
+                end
+                try
+                    BK = str2num(BK(2:end-1));
+                catch
+                    BK = (BK);
+                end
+                RenalFlowRate=BK*IndividualParameters.CardiacOutput*(1-IndividualParameters.Hematocrit); % k_plasma_organ in ml/min
+                IndividualParameters.GlomerularFiltrationRate = RenalFlowRate*RenalFiltrationFraction;% in ml/min
+                paramSource.GlomerularFiltrationRate = 'Calculated based sex, cardiac output and hematocrit';
+            end % end of adding user provided inputs
+        
+        else  % If using a structure, check sex and load the correct model
             if IndividualParametersP.sex  == "male"
                 WBMcurrent = maleWBM;
             else
@@ -1007,8 +1023,10 @@ for s = 1:numModels
     end 
   
 end % end of forloop for each model
-
-writetable(conflictingBoundsAll, fullfile(resPath, 'conflictingBounds.xlsx'));
+ % If necessary, save
+ if exist('conflictingBoundsAll', 'var')
+     writetable(conflictingBoundsAll, fullfile(resPath, 'conflictingBounds.xlsx'));
+ end
 
 %% Step 8: sanity check
 % REMOVE MODELS WITH CONFLICTING BOUNDS
