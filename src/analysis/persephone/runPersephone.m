@@ -6,6 +6,8 @@ function [progress] = runPersephone(configPath)
 % balance analysis (FBA), and statistical evaluation. 
 %
 %
+% Updated: 2025.07.01 wbarton
+%
 % Usage:
 %     runPersephone(configPath)
 %
@@ -227,6 +229,7 @@ end
 
 % if paths.persWBM.flagPersonalize is still true, personalize models
 if paths.persWBM.flagPersonalise
+
      disp(' > Personalise WBM models.')
     persWBM(...
         paths.General.metadataPath, ...
@@ -238,6 +241,7 @@ if paths.persWBM.flagPersonalise
         'femaleWBM', paths.persWBM.femaleWBMPath, ...
         'maleWBM', paths.persWBM.maleWBMPath);
     
+
     % ensure personalized models are used in HM creation
     part3 = toc;
     progress.personalisation = [true, part3];
