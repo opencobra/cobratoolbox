@@ -54,7 +54,7 @@ function [iWBM, iWBMcontrol_female, iWBMcontrol_male, persParams] = persWBM(meta
 %                              is provided. For x, y, z- unit conversion
 %                              will be performed for all known common units of
 %                              measurement.
-% femaleWBM                   A female WBM (Whole Body Metabolic Model).
+% femaleWBM                   A female WBM (Whole Body Metabolic Model), or path to it.
 %                             for any female subject detailed in the
 %                             metadata, this model will be personalised.
 %                             If no model is provided, either Harvey or Harvetta will be loaded from the COBRA
@@ -62,7 +62,7 @@ function [iWBM, iWBMcontrol_female, iWBMcontrol_male, persParams] = persWBM(meta
 %                             If multiple models are provided, the model ID must
 %                             match the model name provided in the
 %                             physiological data.
-% maleWBM                     A male WBM (Whole Body Metabolic Model).
+% maleWBM                     A male WBM (Whole Body Metabolic Model), or path to it.
 %                             for any male subject detailed in the
 %                             metadata, this model will be personalised.
 % resPath                     Path on which to store personalised model and
@@ -79,6 +79,7 @@ function [iWBM, iWBMcontrol_female, iWBMcontrol_male, persParams] = persWBM(meta
 %                             physiological and metabolomic- this function
 %                             should alway be run and NOT
 %                             persWBMmetabolomics in isolation!
+% Diet                        Diet option: 'EUAverageDiet' (default)
 %
 % OUTPUTS
 %
@@ -106,8 +107,8 @@ addRequired(parser, 'metadata', @(x) ischar(x) || isstring(x) || isstruct(x));
 
 % Add optional parameters
 addParameter(parser, 'persPhysiology',{}, @iscell);
-addParameter(parser, 'femaleWBM', '', @(x) isstruct(x));
-addParameter(parser, 'maleWBM', '', @(x) isstruct(x));
+addParameter(parser, 'femaleWBM', '', @(x) isstruct(x) || ischar(x) || isstring(x));
+addParameter(parser, 'maleWBM',   '', @(x) isstruct(x) || ischar(x) || isstring(x));
 addParameter(parser, 'resPath', pwd, @ischar);
 addParameter(parser, 'persMetabolites',{}, @iscell);
 addParameter(parser, 'Diet', '', @ischar);
@@ -335,8 +336,12 @@ if sexType == "male" || sexType == "mixed"
     if isempty(maleWBM)
         maleWBM = loadPSCMfile('Harvey');
         iWBMcontrol_male = maleWBM;
-    else
+    elseif isstruct(maleWBM)
         iWBMcontrol_male = maleWBM;
+    elseif ischar(maleWBM) || isstring(maleWBM)
+        maleWBM = load(maleWBM);
+    else
+        error("Cannot read input maleWBM")
     end
     if maleControlCreated == 0
         % run control through with no adjustments
@@ -368,8 +373,12 @@ if sexType == "female" || sexType == "mixed"
     if isempty(femaleWBM)
         femaleWBM = loadPSCMfile('Harvetta');
         iWBMcontrol_female = femaleWBM;
-    else
+    elseif isstruct(femaleWBM)
         iWBMcontrol_female = femaleWBM;
+    elseif ischar(femaleWBM) || isstring(femaleWBM)
+        femaleWBM = load(femaleWBM);
+    else 
+        error("Cannot read input femaleWBM")
     end
     if femaleControlCreated == 0
         % run control through with no adjustments
@@ -1013,6 +1022,10 @@ for s = 1:numModels
             persParamsM = [persParamsM; persParamMcurrent];
         end
     end 
+    % Add diet to model
+    factor = 1; % Percentage of the provided diet to be added.
+    iWBM = setDietConstraints(iWBM, Diet, factor);
+
     
     if exist('conflictingBounds', 'var')
         if s == 1 && persParamsMCheck == 0
@@ -1028,12 +1041,12 @@ end % end of forloop for each model
      writetable(conflictingBoundsAll, fullfile(resPath, 'conflictingBounds.xlsx'));
  end
 
-%% Step 8: sanity check
+%% Step 8: Diet and sanity check
 % REMOVE MODELS WITH CONFLICTING BOUNDS
 % infeasModels = unique(conflictingBoundsAll.ID);
 % feasPaths = ~contain(resPath.name, infeasModels)
 % resPathFeas = resPath(feasPaths);
-[dietInfo, dietGrowthStats] = ensureWBMfeasibility(resPath);
+[dietInfo, dietGrowthStats] = ensureWBMfeasibility(resPath, 'Diet', Diet, 'solver', solver);
 
 if any(dietGrowthStats(:, 2) == false)
     disp("All models were found to be feasible on the given diet")
