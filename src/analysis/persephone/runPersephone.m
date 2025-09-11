@@ -7,6 +7,7 @@ function [progress] = runPersephone(configPath)
 %
 %
 % Updated: 2025.07.01 wbarton
+% Updated: 2025.09.09 asheehy
 %
 % Usage:
 %     runPersephone(configPath)
