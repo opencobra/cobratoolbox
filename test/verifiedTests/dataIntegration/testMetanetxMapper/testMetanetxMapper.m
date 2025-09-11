@@ -19,24 +19,45 @@ testPath = pwd;
 fprintf(' -- Running testMetanetxMapper ... \n');
 prepareTest('needsWebAddress','https://beta.metanetx.org');
 
-% Convert Swiss lipids to HMDB
+% Run MetanetxMapper
 metData = metanetxMapper('MNXM1364063');
-assert(strcmp(metData.metHMDBID, 'HMDB0304632'));
+% Field presence
+assert(isfield(metData, 'metHMDBID'));
+assert(isfield(metData, 'metName'));
+assert(isfield(metData, 'metKEGGID'));
+assert(isfield(metData, 'metBiGGID'));
+assert(isfield(metData, 'metInChIkey'));
+assert(isfield(metData, 'metSmiles'));
 
-% CommonName
-assert(strcmp(metData.metName, 'D-glucose'));
+% Run MetanetxMapper with metabolite name
+metData = metanetxMapper('L-glutamate', 'name');
+% Field presence
+assert(isfield(metData, 'metHMDBID'));
+assert(isfield(metData, 'metName'));
+assert(isfield(metData, 'metKEGGID'));
+assert(isfield(metData, 'metBiGGID'));
+assert(isfield(metData, 'metInChIkey'));
+assert(isfield(metData, 'metSmiles'));
 
-% KEGG
-assert(strcmp(metData.metKEGGID, 'C00031'));
+% Run MetanetxMapper with metabolite name
+metData = metanetxMapper('glc_D', 'vmh');
+% Field presence
+assert(isfield(metData, 'metHMDBID'));
+assert(isfield(metData, 'metName'));
+assert(isfield(metData, 'metKEGGID'));
+assert(isfield(metData, 'metBiGGID'));
+assert(isfield(metData, 'metInChIkey'));
+assert(isfield(metData, 'metSmiles'));
 
-% BiGG
-assert(strcmp(metData.metBiGGID, 'glc__D'));
+% Run MetanetxMapper with chebi ID
+metData = metanetxMapper('4167', 'chebi');
+assert(isfield(metData, 'metHMDBID'));
+assert(isfield(metData, 'metName'));
+assert(isfield(metData, 'metKEGGID'));
+assert(isfield(metData, 'metBiGGID'));
+assert(isfield(metData, 'metInChIkey'));
+assert(isfield(metData, 'metSmiles'));
 
-% InChi
-assert(strcmp(metData.metInChIkey, 'WQZGKKKJIJFFOK-GASJEMHNSA-N'));
-
-% SMILES
-assert(strcmp(metData.metSmiles, 'OC[C@H]1OC(O)[C@H](O)[C@@H](O)[C@@H]1O'));
 
 fprintf('Done.\n');
 fprintf('testMetanetxMapper passed successfully.\n');

@@ -468,7 +468,7 @@ modelNames = string(erase(modDir.mat,'.mat'));
 dietGrowthStats = table('Size',[length(modelNames),4],'VariableTypes',{'string','double','double','double'},...
     'VariableNames',{'Model',...
     'Feasible on given diet (true/false)',...
-    'Feasible on any diet (true/false)', ...
+    'Feasible on open diet (true/false)', ...
     'Feasible on updated diet (true/false)'});
 
 % Add model names
@@ -477,7 +477,7 @@ dietGrowthStats.Model = modelNames;
 % Fill table if all models are feasible on the original diet
 if allModelsFeasible == true
     dietGrowthStats.("Feasible on given diet (true/false)") = ones(length(dietGrowthStats.Model),1);
-    dietGrowthStats.("Feasible on any diet (true/false)") = nan(length(dietGrowthStats.Model),1);
+    dietGrowthStats.("Feasible on open diet (true/false)") = nan(length(dietGrowthStats.Model),1);
     dietGrowthStats.("Feasible on updated diet (true/false)") = nan(length(dietGrowthStats.Model),1);
 end
 
@@ -485,9 +485,9 @@ end
 if allModelsFeasible == false && modelsInfeasibleOnAnyDiet == true
     dietGrowthStats.("Feasible on given diet (true/false)") = feasibleOnDiet;
     % Assume if feasible on given diet, feasible on any
-    dietGrowthStats.("Feasible on any diet (true/false)") = feasibleOnDiet;
+    dietGrowthStats.("Feasible on open diet (true/false)") = feasibleOnDiet;
     % Fill in tested model results for any diet
-    dietGrowthStats.("Feasible on any diet (true/false)")(~feasibleOnDiet) = ~feasibleOnAnyDiet;
+    dietGrowthStats.("Feasible on open diet (true/false)")(~feasibleOnDiet) = ~feasibleOnAnyDiet;
     % No updated diet found as all infeasible models were infeasible on any
     % diet
     dietGrowthStats.("Feasible on updated diet (true/false)") = nan(length(dietGrowthStats.Model),1);
@@ -497,9 +497,9 @@ end
 if allModelsFeasible == false && modelsInfeasibleOnAnyDiet == false
     dietGrowthStats.("Feasible on given diet (true/false)") = feasibleOnDiet;
     % Assume if feasible on given diet, feasible on any
-    dietGrowthStats.("Feasible on any diet (true/false)") = feasibleOnDiet;
+    dietGrowthStats.("Feasible on open diet (true/false)") = feasibleOnDiet;
     % Fill in results of infeasible models on any diet
-    dietGrowthStats.("Feasible on any diet (true/false)")(~feasibleOnDiet) = feasibleOnAnyDiet;
+    dietGrowthStats.("Feasible on open diet (true/false)")(~feasibleOnDiet) = feasibleOnAnyDiet;
     
     % Assume if feasible on given diet, feasible on updated diet
     dietGrowthStats.("Feasible on updated diet (true/false)") = feasibleOnDiet;
@@ -511,8 +511,6 @@ end
 writetable(dietGrowthStats,[mWBMPath filesep 'dietGrowthStats.xlsx'], 'Sheet','SummaryFeasibility');
 writetable(dietInfo.updatedDiet,[mWBMPath filesep 'dietGrowthStats.xlsx'],'Sheet','Updated_diet');
 writecell(missingDietComponents,[mWBMPath filesep 'dietGrowthStats.xlsx'],'Sheet','Added_diet_metabolites');
-
-
 end
 
 function convertedModels = checkWbmFormat(paths)

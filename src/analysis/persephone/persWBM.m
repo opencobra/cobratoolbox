@@ -54,7 +54,7 @@ function [iWBM, iWBMcontrol_female, iWBMcontrol_male, persParams] = persWBM(meta
 %                              is provided. For x, y, z- unit conversion
 %                              will be performed for all known common units of
 %                              measurement.
-% femaleWBM                   A female WBM (Whole Body Metabolic Model).
+% femaleWBM                   A female WBM (Whole Body Metabolic Model), or path to it.
 %                             for any female subject detailed in the
 %                             metadata, this model will be personalised.
 %                             If no model is provided, either Harvey or Harvetta will be loaded from the COBRA
@@ -62,7 +62,7 @@ function [iWBM, iWBMcontrol_female, iWBMcontrol_male, persParams] = persWBM(meta
 %                             If multiple models are provided, the model ID must
 %                             match the model name provided in the
 %                             physiological data.
-% maleWBM                     A male WBM (Whole Body Metabolic Model).
+% maleWBM                     A male WBM (Whole Body Metabolic Model), or path to it.
 %                             for any male subject detailed in the
 %                             metadata, this model will be personalised.
 % resPath                     Path on which to store personalised model and
@@ -79,6 +79,7 @@ function [iWBM, iWBMcontrol_female, iWBMcontrol_male, persParams] = persWBM(meta
 %                             physiological and metabolomic- this function
 %                             should alway be run and NOT
 %                             persWBMmetabolomics in isolation!
+% Diet                        Diet option: 'EUAverageDiet' (default)
 %
 % OUTPUTS
 %
@@ -106,8 +107,8 @@ addRequired(parser, 'metadata', @(x) ischar(x) || isstring(x) || isstruct(x));
 
 % Add optional parameters
 addParameter(parser, 'persPhysiology',{}, @iscell);
-addParameter(parser, 'femaleWBM', '', @(x) isstruct(x));
-addParameter(parser, 'maleWBM', '', @(x) isstruct(x));
+addParameter(parser, 'femaleWBM', '', @(x) isstruct(x) || ischar(x) || isstring(x));
+addParameter(parser, 'maleWBM',   '', @(x) isstruct(x) || ischar(x) || isstring(x));
 addParameter(parser, 'resPath', pwd, @ischar);
 addParameter(parser, 'persMetabolites',{}, @iscell);
 addParameter(parser, 'Diet', '', @ischar);
@@ -165,7 +166,7 @@ else
         unprocessedMetadata = strrep(metadata, '_processed.csv', '');
         d = dir([unprocessedMetadata, '*']);
         match = d(endsWith({d.name}, {'.csv', '.xlsx'}, 'IgnoreCase', true));
-        
+
         if isempty(match)
             error('No matching metadata file (.csv or .xlsx) found.')
         end
@@ -183,7 +184,7 @@ else
         
         % Check if metadata table is not empty
         validateattributes(Data, {'table'}, {'nonempty'}, mfilename, 'metadataTable')
-        
+
         % The variable names in the metadata table will be truncated if the names
         % are longer than 64 characters. Read the true variable names and store
         % them in the VariableDescriptions property.
@@ -335,8 +336,12 @@ if sexType == "male" || sexType == "mixed"
     if isempty(maleWBM)
         maleWBM = loadPSCMfile('Harvey');
         iWBMcontrol_male = maleWBM;
-    else
+    elseif isstruct(maleWBM)
         iWBMcontrol_male = maleWBM;
+    elseif ischar(maleWBM) || isstring(maleWBM)
+        maleWBM = load(maleWBM);
+    else
+        error("Cannot read input maleWBM")
     end
     if maleControlCreated == 0
         % run control through with no adjustments
@@ -368,8 +373,12 @@ if sexType == "female" || sexType == "mixed"
     if isempty(femaleWBM)
         femaleWBM = loadPSCMfile('Harvetta');
         iWBMcontrol_female = femaleWBM;
-    else
+    elseif isstruct(femaleWBM)
         iWBMcontrol_female = femaleWBM;
+    elseif ischar(femaleWBM) || isstring(femaleWBM)
+        femaleWBM = load(femaleWBM);
+    else 
+        error("Cannot read input femaleWBM")
     end
     if femaleControlCreated == 0
         % run control through with no adjustments
@@ -429,6 +438,21 @@ if isfile(persParamsFile)
         persParamsCheck = true;
         persParams = readtable(persParamsFile, 'Sheet', 'PhysiologicalParameters');
         fprintf(' > Loaded %d PhysiologicalParameters entries.\n', height(persParams));
+        newNames = { ...
+            'MConUrCreatinineMax', 'MConUrCreatinineMin', 'MConDefaultBc', ...
+            'MConDefaultCSF', 'MConDefaultUrMax', 'MConDefaultUrMin'};
+        oldNames = { ...
+            'Max conc of creatinine in the urine', ...
+            'Min conc of creatinine in the urine', ...
+            'Max conc of a metabolite in the blood plasma', ...
+            'Max conc of a metabolite in the CSF', ...
+            'Max conc of a metabolite in the urine', ...
+            'Min conc of a metabolite in the urine'};
+        
+        for k = 1:numel(oldNames)
+            j = strcmp(persParams.Properties.VariableNames, oldNames{k});
+            if any(j), persParams.Properties.VariableNames{j} = newNames{k}; end
+        end
     else
         persParamsCheck = false;
         warning('Missing sheet: PhysiologicalParameters');
@@ -641,65 +665,47 @@ for s = 1:numModels
             end
             
             
+%             % LEAN BODY MASS
+%             if any(strcmp(lower(dataCurrent.Properties.VariableNames),'lean body mass'))
+%                 idxLBM = find(strcmp(lower(dataCurrent.Properties.VariableNames),'lean body mass'));
+%                 if size(idxLBM, 2)>1
+%                     error('More than one column header in the metadata contains the paramter lean body mass!')
+%                 end
+%                 LBM = cell2mat(dataCurrent{2, idxLBM});
+%                 currentUnit = dataCurrent{1, idxLBM};
+%                 if strcmp(currentUnit, "g")
+%                     LBM = LBM / 1000; % Convert grams to kilograms
+%                 elseif strcmp(currentUnit, "kg")
+%                     % No conversion needed
+%                 else
+%                     error('Lean body mass must be provided in g or kg');
+%                 end
+%                 IndividualParameters.LeanBodyMass = LBM;
+%                 paramSource.LeanBodyMass = 'User defined';
+%             else
+%                 %paramSource.LeanBodyMass = 'Default';
+%             end
             
-            % GLOMERULAR FILTRATION RATE
-            if any(strcmp(lower(dataCurrent.Properties.VariableNames),'glomerular filtration rate')) || any(strcmp(lower(dataCurrent.Properties.VariableNames),'gfr'))
-                idxGFR = find(strcmp(varNamesLower, 'glomerular filtration rate') | strcmp(varNamesLower, 'gfr'));
-                if size(idxGFR, 2)>1
-                    error('More than one column header in the metadata contains the paramter glomerular filtration rate!')
-                end
-                GFR = cell2mat(dataCurrent{2, idxGFR});
-                currentUnit = dataCurrent{1, idxGFR};
-                if ~strcmp(currentUnit, "mL/min/1.73m^2")
-                    error('Glomerular Filtration rate must be provided in mL/min/1.73m^2');
-                end
-                IndividualParameters.GlomerularFiltrationRate = GFR;
-                paramSource.GlomerularFiltrationRate = 'User defined';
-            else
-                paramSource.GlomerularFiltrationRate = 'Default';
-            end
-            
-            % LEAN BODY MASS
-            if any(strcmp(lower(dataCurrent.Properties.VariableNames),'lean body mass'))
-                idxLBM = find(strcmp(lower(dataCurrent.Properties.VariableNames),'lean body mass'));
-                if size(idxLBM, 2)>1
-                    error('More than one column header in the metadata contains the paramter lean body mass!')
-                end
-                LBM = cell2mat(dataCurrent{2, idxLBM});
-                currentUnit = dataCurrent{1, idxLBM};
-                if strcmp(currentUnit, "g")
-                    LBM = LBM / 1000; % Convert grams to kilograms
-                elseif strcmp(currentUnit, "kg")
-                    % No conversion needed
-                else
-                    error('Lean body mass must be provided in g or kg');
-                end
-                IndividualParameters.LeanBodyMass = LBM;
-                paramSource.LeanBodyMass = 'User defined';
-            else
-                %paramSource.LeanBodyMass = 'Default';
-            end
-            
-            % BODY FAT PERCENTAGE
-            if any(strcmp(lower(dataCurrent.Properties.VariableNames),'body fat'))
-                idxBF = find(strcmp(lower(dataCurrent.Properties.VariableNames),'body fat'));
-                if size(idxBF, 2)>1
-                    error('More than one column header in the metadata contains the paramter body fat!')
-                end
-                BF = cell2mat(dataCurrent{2, idxBF});
-                currentUnit = dataCurrent{1, idxBF};
-                if ~strcmp(currentUnit, '%') && strcmp(currentUnit, 'kg')
-                    BF = (BF /Wt)*100;
-                elseif strcmp(currentUnit, 'g')
-                    BF = (BF/(Wt*1000))*100;
-                elseif isempty(currentUnit)
-                    warning('Body weight (Wt) is in the wrong unit or conversion is not possible.');
-                end
-                IndividualParameters.BodyFat = BF;
-                paramSource.BodyFat = 'User defined';
-            else
-                %paramSource.BodyFat = 'Default';
-            end
+%             % BODY FAT PERCENTAGE
+%             if any(strcmp(lower(dataCurrent.Properties.VariableNames),'body fat'))
+%                 idxBF = find(strcmp(lower(dataCurrent.Properties.VariableNames),'body fat'));
+%                 if size(idxBF, 2)>1
+%                     error('More than one column header in the metadata contains the paramter body fat!')
+%                 end
+%                 BF = cell2mat(dataCurrent{2, idxBF});
+%                 currentUnit = dataCurrent{1, idxBF};
+%                 if ~strcmp(currentUnit, '%') && strcmp(currentUnit, 'kg')
+%                     BF = (BF /Wt)*100;
+%                 elseif strcmp(currentUnit, 'g')
+%                     BF = (BF/(Wt*1000))*100;
+%                 elseif isempty(currentUnit)
+%                     warning('Body weight (Wt) is in the wrong unit or conversion is not possible.');
+%                 end
+%                 IndividualParameters.BodyFat = BF;
+%                 paramSource.BodyFat = 'User defined';
+%             else
+%                 %paramSource.BodyFat = 'Default';
+%             end
             
             clear idxAge idxBF idxBFR idxCn idxCO idxGFR idxHmt idxHR idxHt idxID idxLBM idxSex idxSV idxWt Age Col Cols cParam currentUnit Hmt Ht Numbers Wt
            
@@ -805,8 +811,42 @@ for s = 1:numModels
                     paramSource.CardiacOutput = 'Calculated based on HR and SV (stroke volume estimated based on Bridwell';
                 end
             end
-        else
-            % If using a structure, check sex and load the correct model
+            
+            % GLOMERULAR FILTRATION RATE
+            if any(strcmp(lower(dataCurrent.Properties.VariableNames),'glomerular filtration rate')) || any(strcmp(lower(dataCurrent.Properties.VariableNames),'gfr'))
+                idxGFR = find(strcmp(lower(dataCurrent.Properties.VariableNames), 'glomerular filtration rate') | strcmp(lower(dataCurrent.Properties.VariableNames), 'gfr'));
+                if size(idxGFR, 2)>1
+                    error('More than one column header in the metadata contains the paramter glomerular filtration rate!')
+                end
+                GFR = cell2mat(dataCurrent{2, idxGFR});
+                currentUnit = dataCurrent{1, idxGFR};
+                if strcmp(currentUnit, "mL/min/1.73m^2") || strcmp(currentUnit, "mL/min")
+                    IndividualParameters.GlomerularFiltrationRate = GFR;
+                    paramSource.GlomerularFiltrationRate = 'User defined';
+                else
+                    error('Glomerular Filtration rate must be provided in mL/min/1.73m^2 or mL/min');
+                end
+            else
+                % Calculate GFR
+                % the filtration fraction should be 20% of the renal plasma flow
+                RenalFiltrationFraction  = 0.2; %20%
+                % blood flow percentage that Kidney gets
+                if strcmp(sex,'male')
+                    BK = bloodFlowData{strmatch('Kidney',bloodFlowData(:,1),'exact'),bloodFlowPercCol(1)};
+                elseif strcmp(sex,'female')
+                    BK = bloodFlowData{strmatch('Kidney',bloodFlowData(:,1),'exact'),bloodFlowPercCol(2)};
+                end
+                try
+                    BK = str2num(BK(2:end-1));
+                catch
+                    BK = (BK);
+                end
+                RenalFlowRate=BK*IndividualParameters.CardiacOutput*(1-IndividualParameters.Hematocrit); % k_plasma_organ in ml/min
+                IndividualParameters.GlomerularFiltrationRate = RenalFlowRate*RenalFiltrationFraction;% in ml/min
+                paramSource.GlomerularFiltrationRate = 'Calculated based sex, cardiac output and hematocrit';
+            end % end of adding user provided inputs
+        
+        else  % If using a structure, check sex and load the correct model
             if IndividualParametersP.sex  == "male"
                 WBMcurrent = maleWBM;
             else
@@ -877,13 +917,20 @@ for s = 1:numModels
             % Load the default parameters
             standardPhysiolDefaultParameters;
             IndividualParameters.sex = sex;
-            iWBM = WBMcurrent;
+            if sex  == "male"
+                iWBM = maleWBM;
+            else
+                iWBM = femaleWBM;
+            end
             if any(strcmp(lower(Data.Properties.VariableNames), 'id'))
                 idxID = find(strcmp(lower(Data.Properties.VariableNames),'id'));
                 ID = Data{s, idxID};
                 IndividualParameters.ID = ID;
+                iWBM.ID = ID;
             end
             iWBM.SetupInfo.IndividualParameters = IndividualParameters;
+        else 
+            iWBM = WBMcurrent;
         end
         
         % match every metabolite in persMetabolites to the
@@ -908,6 +955,14 @@ for s = 1:numModels
         % Find indices where lower bounds exceed upper bounds
         invalidIdx = find(iWBM.lb > iWBM.ub);
         if ~isempty(invalidIdx)
+            % Collect the data into a table
+            conflictingBounds = table;
+            conflictingBounds.ID      = repmat({ID}, length(invalidIdx), 1);  % repeat ID for each row
+            conflictingBounds.rxns    = iWBM.rxns(invalidIdx);
+            conflictingBounds.rxnName = iWBM.rxnNames(invalidIdx);
+            conflictingBounds.lb      = iWBM.lb(invalidIdx);
+            conflictingBounds.ub      = iWBM.ub(invalidIdx);
+            
             % Initialize a string for the warning message
             warningMsg = 'Metabolomic personalisation has caused invalid bounds for the following reactions:';
             
@@ -946,9 +1001,6 @@ for s = 1:numModels
         fieldsToDelete = {'bloodFlowData', 'OrgansWeightsRefMan', 'OrgansWeights', 'bloodFlowPercCol', 'bloodFlowOrganCol'};
         IndividualParametersN = rmfield(IndividualParametersN, fieldsToDelete);
         persParamCurrent = struct2table(IndividualParametersN);
-        % Insert the type of parameter detail (user input, default,
-        % calculated etc.)% Add a new empty row to persParamCurrent
-        persParamCurrent(end+1, :) = persParamCurrent(1, :);  % Copy structure
         if s == 1 && persParamsCheck == 0
             persParams = persParamCurrent;
         else
@@ -970,12 +1022,31 @@ for s = 1:numModels
             persParamsM = [persParamsM; persParamMcurrent];
         end
     end 
+    % Add diet to model
+    factor = 1; % Percentage of the provided diet to be added.
+    iWBM = setDietConstraints(iWBM, Diet, factor);
+
     
+    if exist('conflictingBounds', 'var')
+        if s == 1 && persParamsMCheck == 0
+            conflictingBoundsAll = conflictingBounds;
+        else
+            conflictingBoundsAll = [conflictingBoundsAll; conflictingBounds];
+        end
+    end 
+  
 end % end of forloop for each model
+ % If necessary, save
+ if exist('conflictingBoundsAll', 'var')
+     writetable(conflictingBoundsAll, fullfile(resPath, 'conflictingBounds.xlsx'));
+ end
 
-
-%% Step 8: sanity check
-[dietInfo, dietGrowthStats] = ensureWBMfeasibility(resPath);
+%% Step 8: Diet and sanity check
+% REMOVE MODELS WITH CONFLICTING BOUNDS
+% infeasModels = unique(conflictingBoundsAll.ID);
+% feasPaths = ~contain(resPath.name, infeasModels)
+% resPathFeas = resPath(feasPaths);
+[dietInfo, dietGrowthStats] = ensureWBMfeasibility(resPath, 'Diet', Diet, 'solver', solver);
 
 if any(dietGrowthStats(:, 2) == false)
     disp("All models were found to be feasible on the given diet")
@@ -986,7 +1057,7 @@ elseif any(dietGrowthStats(:, 4) == false)
     disp("Some models were found that were not feasible on any diet,..." + newline + ...
         "they are listed in the file: dietGrowthStats in the same folder as your iWBMs")
 end
-persParams = {};
+
 if numModels > 0
     clear persParamCurrent persParamMCurrent dataCurrent missing
     if personalisingPhys == 1 && ~metadataStruct
@@ -1017,18 +1088,28 @@ if numModels > 0
         % Check headers match (or reconcile manually if needed)
         % Here, just concatenate assuming same headers
         persParamsC = [paramSourceC; persParamsC(2:end,:)];  % skip second header rows
-        excelFilename = fullfile(resPath, 'persParameters.xlsx');
+        
     end
-    persParams = {};
+    excelFilename = fullfile(resPath, 'persParameters.xlsx');
     %% Save an excel file with a summary of all changes made to all models
     if personalisingPhys == 1 && personalisingMets == 1
         writecell(persParamsC, excelFilename, 'Sheet', 'PhysiologicalParameters');
         writetable(persParamsM, excelFilename, 'Sheet', 'MetabolomicParameters');
-        %persParams =
-    elseif personalisingPhys == 1 && ~metadataStruct 
+    elseif personalisingPhys == 1 && ~metadataStruct
         writecell(persParamsC, excelFilename, 'Sheet', 'PhysiologicalParameters');
     elseif personalisingMets == 1
         writetable(persParamsM, excelFilename, 'Sheet', 'MetabolomicParameters');
     end
+    
+end
+% assign output for persParams
+if exist('persParamsC', 'var') && exist('persParamsM', 'var')
+    persParams = struct('PhysiologicalParams', persParamsC,'MetabolomicParams', persParamsM);
+elseif exist('persParamsC', 'var')
+    persParams = persParamsC;
+elseif exist('persParamsM', 'var')
+    persParams = persParamsM;
+else
+    persParams = {};
 end
 end
