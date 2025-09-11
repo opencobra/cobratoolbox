@@ -1,3 +1,4 @@
+clc
 %% %%% Configuration file %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % This configuration file contains all information needed for running 
@@ -71,11 +72,10 @@ paths.seqC.procKeepSeqC = false;
 paths.seqC.maxMemSeqC = 20;
 
 % Numeric value defining the maximum number of CPU threads allowed.
-paths.seqC.maxCpuSeqC = 14;
+paths.seqC.maxCpuSeqC = round(feature('numCores')*0.8);
 
 % Numeric value defining the maximum number of processes allowed.
-paths.seqC.maxProcSeqC = 14;
-
+paths.seqC.maxProcSeqC = 1;
 % Logical
 paths.seqC.debugSeqC = false;
 
