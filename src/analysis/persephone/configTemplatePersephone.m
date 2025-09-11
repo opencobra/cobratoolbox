@@ -79,8 +79,8 @@ paths.seqC.maxProcSeqC = 14;
 % Logical
 paths.seqC.debugSeqC = false;
 
-%
-paths.seqC.apptainer
+% Logical variable indicating if Apptainer/singularity
+paths.seqC.runApptainer = false;
 
 %% %%% 2. MARS Inputs %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
