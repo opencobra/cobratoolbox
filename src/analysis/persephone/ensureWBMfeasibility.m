@@ -10,8 +10,8 @@ function [dietInfo, dietGrowthStats] = ensureWBMfeasibility(mWBMPath, varargin)
 % collected and the function stops. The user will need to debug the WBMs
 % manually.
 % 3) If all previously infeasible WBMs can grow when all diet reactions are
-% opened,missing diet components are searched using getMissingDietModelHM.
-% If getMissingDietModelHM cannot find a diet after one function call, this
+% opened,missing diet components are searched using getMissingDietPersephone.
+% If getMissingDietPersephone cannot find a diet after one function call, this
 % function is run again until a hard limit of 10 iterations is reached. If
 % this limit is reached, no feasible diet can be found for all models and
 % the user will need to manually debug the infeasible models. If missing
@@ -329,13 +329,13 @@ if allModelsFeasible == false && modelsInfeasibleOnAnyDiet == false
                     % Do not check first for feasibility if no
                     % missingDietComponents have been found.
                     tic
-                    missingDietComponents = getMissingDietModelHM(infeasModelDiet,missingDietComponents,0);
+                    missingDietComponents = getMissingDietPersephone(infeasModelDiet,missingDietComponents,0);
                     toc
                 else
                     % Check for feasibility first if
                     % missingDietComponents have been found before.
                     tic
-                    missingDietComponents = getMissingDietModelHM(infeasModelDiet,missingDietComponents,1);
+                    missingDietComponents = getMissingDietPersephone(infeasModelDiet,missingDietComponents,1);
                     toc
                 end
 
