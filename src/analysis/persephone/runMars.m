@@ -55,6 +55,14 @@ function runMars(readsTablePath, varargin)
 %                           dissimilarity index is calculated. Caution!
 %                           Putting this to true can greatly increase the
 %                           time MARS needs to run. Defaults to false.
+%   compoundedDatabase:     Boolean, indicates if the database reads are
+%                           compounded or not. E.g., if the total number of
+%                           reads for an order o__x is the same as the
+%                           genus g__x. This means the reads assigned to
+%                           g__x are in the number of reads of o__x. This
+%                           requires a different data handling as compared
+%                           where o__x only has reads that could be
+%                           assocated up to that level. Defaults to false.
 %
 % OUTPUTS:
 %   The function does not return variables but writes processed results
@@ -288,6 +296,7 @@ microbiome.Properties.VariableNames(2:end) = cellfun(@(x) x(5:end), microbiome.P
 
 % Split taxonomic data into multiple columns
 taxaToSplit = microbiome.Taxon;
+
 levels = {'Kingdom','Phylum','Class','Order','Family','Genus','Species'};
 levelAbbreviations = ['k','p','c','o','f','g','s'];
 expresFun = @(x) ['(?<=',x,'__)(.*?)(?=\',taxaDelimiter,')']; % Get the taxonomy information of interest
@@ -687,10 +696,10 @@ coverageMappedVsProcessed = mappedReads ./readsProcessed;
 [brayProcessed, pielousProcessed, summaryProcessed] = calculateMetrics(processed, calculateBrayCurtis);
 [brayMapped, pielousMapped, summaryMapped] = calculateMetrics(mapped, calculateBrayCurtis);
 
-% Calculate bacteroidetes / firmicutes ratio
-[bacFirRatioTotal, phylaDistrTotal] = calcBacFirRatio(microbiome, phylum);
-[bacFirRatioProcessed, phylaDistrProcessed] = calcBacFirRatio(processed, phylum);
-[bacFirRatioMapped, phylaDistrMapped] = calcBacFirRatio(mapped, phylum);
+% Calculate Firmicutes / Bacteroidetes ratio
+[firBacRatioTotal, phylaDistrTotal] = calcFirBacRatio(microbiome, phylum);
+[firBacRatioProcessed, phylaDistrProcessed] = calcFirBacRatio(processed, phylum);
+[firBacRatioMapped, phylaDistrMapped] = calcFirBacRatio(mapped, phylum);
 
 % Put the various metrics together in one table
 metrics = [totalReads
@@ -701,9 +710,9 @@ metrics = [totalReads
     pielousTotal
     pielousProcessed
     pielousMapped
-    bacFirRatioTotal
-    bacFirRatioProcessed
-    bacFirRatioMapped];
+    firBacRatioTotal
+    firBacRatioProcessed
+    firBacRatioMapped];
 
 % Create row names
 rowNamesMetric = {'Reads original data'
@@ -714,9 +723,9 @@ rowNamesMetric = {'Reads original data'
     'Pielous eveness origina data'
     'Pielous eveness processed data'
     'Pielous eveness mapped data'
-    'Bacteroidetes / Firmicutes ratio original data'
-    'Bacteroidetes / Firmicutes ratio processed data'
-    'Bacteroidetes / Firmicutes ratio mapped data'
+    'Firmicutes / Bacteroidetes ratio original data'
+    'Firmicutes / Bacteroidetes ratio processed data'
+    'Firmicutes / Bacteroidetes ratio mapped data'
     };
 
 % Transform into table
@@ -800,7 +809,7 @@ linkaxes(axes, 'y');
 
 end
 
-function [fBRatio, phylumDistr] = calcBacFirRatio(data, phylum)
+function [fBRatio, phylumDistr] = calcFirBacRatio(data, phylum)
 
 % Add NaN to phylum as NaN can pop up as a Taxa and we need to account for
 % that otherwise the assignment will not work
