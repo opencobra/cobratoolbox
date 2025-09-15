@@ -249,8 +249,8 @@ fluxMicrobeCorr = array2table(RHO,... % Transform correlation matrix to table
     'VariableNames',fluxesToCorrelate.Properties.VariableNames(2:end)...
     );
 
-%% PART 3: Scale fluxes and produce summary statistics
-disp('PART 3: Rescale flux results and produce summary statistics')
+%% PART 2: Scale fluxes and produce summary statistics
+disp('PART 2: Rescale flux results and produce summary statistics')
 
 % Obtain summary statistics
 fluxes = [metadata fluxes];
@@ -263,8 +263,8 @@ else
     
 end
 
-%% PART 4: Create table with all results
-disp('PART 6: Collect all results')
+%% PART 3: Create table with all results
+disp('PART 3: Collect all results')
 
 tableMeta = {'FBA solver statistics', fbaStats};
 
@@ -272,7 +272,7 @@ tableMeta = {'FBA solver statistics', fbaStats};
 if analyseGF
     tableMeta = [tableMeta; {
     'Scaled fluxes summary statistics'                  , stats.Scaled_flux_summary_statistics; ...
-    'Scaled fluxes with removed reactions'              , stats.Scaled_fluxes, ...
+    'Scaled fluxes with removed reactions'              , stats.Scaled_fluxes; ...
     'Distribution statistics of fluxes across samples'  , stats.Flux_summary_statistics; ...
     'Predicted fluxes'                                  , stats.Fluxes; ...
     'Predicted fluxes with removed reactions'           , stats.Fluxes_removed_reactions}];
@@ -285,7 +285,7 @@ if ~isempty(modelSP)
 end
 
 % Create index table
-tableNames = "Table " + (1:size(tableMeta,1))';
+tableNames = "Sheet " + (1:size(tableMeta,1))';
 indexTable = table(tableNames, string(tableMeta(:,1)), ...
     'VariableNames', {'Table','Descriptions'});
 
@@ -294,11 +294,11 @@ FBA_results = struct;
 FBA_results.Index = indexTable;
 
 for k = 1:size(tableMeta,1)
-    FBA_results.(sprintf("Table_%d",k)) = tableMeta{k,2};
+    FBA_results.(sprintf("Sheet_%d",k)) = tableMeta{k,2};
 end
 
-%% PART 5: Save all results
-disp('PART 7: Save all results to "flux_results.xlsx"')
+%% PART 4: Save all results
+disp('PART 4: Save all results to "flux_results.xlsx"')
 sheetNames = string(fieldnames(FBA_results));
 
 resultPath = [fluxAnalysisPath filesep 'flux_results.xlsx'];

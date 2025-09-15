@@ -641,11 +641,11 @@ end
 
 % Add table number to description
 for i=2:height(allRes)
-    allRes{i,1} = append('Table_', string(i-1),': ',allRes{i,1});
+    allRes{i,1} = append('Sheet_', string(i-1),': ',allRes{i,1});
 end
 
 % Save results table to excel file
-sheetNames = ["Index" append("Table_",string(1:height(allRes)-1))];
+sheetNames = ["Index" append("Sheet_",string(1:height(allRes)-1))];
 resultPath = [statPath filesep 'statistical_results.xlsx'];
 
 % Remove excel file if it already exists to prevent partial overwriting.
