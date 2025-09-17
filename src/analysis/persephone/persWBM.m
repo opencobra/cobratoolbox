@@ -214,8 +214,8 @@ else
 end
 
 
-if ~exist('Diet', 'var') || isempty(Diet)
-    EUAverageDietNew;
+if isempty(Diet)
+    Diet = 'EUAverageDiet';
     disp(' > No valid diet provided, average European diet will be used')
 end
 
