@@ -1,4 +1,4 @@
-function [FBA_results, pathsToFilesForStatistics] = analyseWBMsol(fluxPath,paramFluxProcessing, fluxAnalysisPath)
+function processedFluxResPaths = analyseWBMsol(fluxPath,paramFluxProcessing, fluxAnalysisPath)
 % analyseWBMsol loads the FBA solutions produced in 
 % analyseWBMs.m, prepares the FBA results for further
 % analyses, and produces summary statistics into the flux results. 
@@ -24,7 +24,7 @@ function [FBA_results, pathsToFilesForStatistics] = analyseWBMsol(fluxPath,param
 %       - PART 6: Save all results
 %
 % USAGE:
-%       [FBA_results, pathsToFilesForStatistics] = analyseWBMsol(fluxPath,paramFluxProcessing, fluxAnalysisPath)
+%       processedFluxResPaths = analyseWBMsol(fluxPath,paramFluxProcessing, fluxAnalysisPath)
 %
 % INPUTS:
 % fluxPath         Character array with path to .mat files produced in
@@ -135,47 +135,31 @@ fluxCutoff = paramFluxProcessing.numericalRounding;
 paramFluxProcessing.roundingFactor  = double(regexp(string(num2str(fluxCutoff,'%g')),'.$','match'));
 
 %% PART 1: Load FBA solutions 
-disp('PART 1: Load the flux solutions')
+fprintf("> Loading the FBA solutions... \n")
 
 % Find paths to FBA solutions
 solDir = what(fluxPath);
 solPaths = string(append(solDir.path, filesep, solDir.mat));
 modelNames = string(erase(solDir.mat,'.mat'));
-analyseGF = false; 
-if any(contains(modelNames, 'gfWBM')) || any(contains(modelNames, 'gfiWBM'))
-    analyseGF = true;
-end
-
 
 % Get number of metabolites investigated
-tmpSol = solPaths(~contains(solPaths,'Harv'));
-reactions = load(tmpSol(1)).rxns;
+reactions = load(solPaths(1)).rxns;
 
 % Find duplicate metabolites and remove where needed
 [~,idx] = unique( reactions, 'stable' );
 dupIDX = setdiff(1:numel(reactions),idx);
 reactions(dupIDX)=[];
 
-% Preallocate table for flux results
-fluxes = array2table(nan(length(solPaths),length(reactions)),'VariableNames',reactions,'RowNames',modelNames);
-
-% Preallocate table for solution metadata
-metadata = array2table(string(nan(length(solPaths),2)),'VariableNames',{'ID','Sex'});
-
-% Preallocate tables to store .stat values
-fbaStats = array2table(nan(length(solPaths),length(reactions)),'VariableNames',reactions,'RowNames',modelNames);
-fbaOrigStats = array2table(nan(length(solPaths),length(reactions)),'VariableNames',reactions,'RowNames',modelNames);
-
-% Preallocate cell array to store microbes and shadow prices
-modelSP = cell(length(solPaths),4);
+% Preallocate tables for FBA results
+fluxes = array2table(nan(length(solPaths),length(reactions)),'VariableNames',reactions,'RowNames',modelNames); % Flux results
+metadata = array2table(string(nan(length(solPaths),2)),'VariableNames',{'ID','Sex'}); % Sample metadata from FBA solution
+fbaStats = array2table(nan(length(solPaths),length(reactions)),'VariableNames',reactions,'RowNames',modelNames); % .stat values
 
 % Load results and produce tables for the fluxes
-warning('off')
+%warning('off')
 for i = 1:length(solPaths)
-    % Load relevant field names from FBA solution. Note that the fields:
-    % taxonNames, shadowPriceBIO, and relAbundances are not loaded if the
-    % FBA solution is from a germfree model. 
-    solution = load(solPaths(i),'ID','sex','f','stat','origStat','taxonNames','shadowPriceBIO','relAbundances');
+    % Load relevant field names from FBA solution. 
+    solution = load(solPaths(i),'ID','sex','f','stat');
 
     % Add solution to metadata table
     metadata.ID(i) = erase(string(solution.ID),'.mat');
@@ -184,151 +168,166 @@ for i = 1:length(solPaths)
     % Set flux results to nan if .stat was not equal to one
     solution.f(solution.stat~=1)=nan;
 
-    % Add flux data to table
+    % Remove reaction if it is a duplicate
     solution.f(dupIDX)=[];
 
-    % Round the fluxes bases on the user defined 
-    solution.f = round(solution.f,paramFluxProcessing.roundingFactor);
-
-    % Store fluxes in table
-    fluxes{i,:} = solution.f;
+    % Round the fluxes and store them fluxes in table
+    fluxes{i,:} = round(solution.f,paramFluxProcessing.roundingFactor);
 
     % Add FBA statistics to tables
     fbaStats{i,:} = solution.stat;
-    if any(matches(fieldnames(solution),'origStat'))
-        fbaOrigStats{i,:} = solution.origStat;
-    end
-    
-    % Check if microbiome data is inlcuded in the solution fields
-    if ~contains(solution.ID,'gf')
-       % Add ID for shadow prices
-        modelSP{i,1} = solution.ID;
-
-        % Store species names
-        modelSP{i,2} = solution.taxonNames;
-
-        % Set all shadow prices with absolute values lower than the cutoff to zero.
-        solution.shadowPriceBIO(abs(solution.shadowPriceBIO)<fluxCutoff)=0;
-
-        % Store metabolite species biomass shadow prices
-        modelSP{i,3} = solution.shadowPriceBIO;
-
-        % Add species relative abundances
-        modelSP{i,4} = solution.relAbundances;
-    end
 end
 
-warning('on')
+%warning('on')
 
-% Remove empty rows for the germfree results. Note that this line does not
-% do anything if the FBA solutions did not include microbiome personalised
-% WBMs. 
-modelSP(cellfun(@isempty,modelSP(:,2)),:)=[];
-
-%% PART 2: Correlate fluxes with microbial relative abundances
-% Process flux and relative abundances data 
-% Extract relative abundances
-wbmRelativeAbundances = extractWbmRelativeAbundances(modelSP);
-
-fluxNames  = string(fluxes.Properties.RowNames);
-abundNames = string(wbmRelativeAbundances.Properties.RowNames);
-
-% Extract everything between the first and last underscore
-fluxIDs  = regexprep(fluxNames,  '^.*_(.*?)_.*$', '$1');
-abundIDs = regexprep(abundNames, '^.*_(.*?)_.*$', '$1');
-
-% Now match
-[~, ia, ib] = intersect(fluxIDs, abundIDs, 'stable');
-fluxesToCorrelate = fluxes(ia,:); 
-relAbunToCorrelate = wbmRelativeAbundances(ib,:);
-
-makeAr = @(x) table2array(x(:,2:end)); % Transform table to array
-RHO = corr(makeAr(fluxesToCorrelate),makeAr(relAbunToCorrelate),'type','Spearman','rows','pairwise')'; % Create spearman correlations
-fluxMicrobeCorr = array2table(RHO,... % Transform correlation matrix to table
-    'RowNames', relAbunToCorrelate.Properties.VariableNames(2:end)',...
-    'VariableNames',fluxesToCorrelate.Properties.VariableNames(2:end)...
-    );
 
 %% PART 2: Scale fluxes and produce summary statistics
-disp('PART 2: Rescale flux results and produce summary statistics')
+fprintf("> Processing and analysing the flux results... \n")
 
 % Obtain summary statistics
 fluxes = [metadata fluxes];
 
 % Create statistics for fluxes and prune results
-if analyseGF
-    stats = describeFluxes(fluxes,paramFluxProcessing);
-else
-    stats = [];
+stats = describeFluxes(fluxes,paramFluxProcessing);
+
+% Get fluxes for further analysis
+fluxesPruned = stats.Fluxes_removed_reactions;
+
+% Are the models personalised with gut microbiota?
+microbiomePresent = false;
+if any(contains(modelNames,'mWBM'))
+    microbiomePresent = true;
+end
+
+if microbiomePresent == true
+    %%% Correlate fluxes with microbial relative abundances 
     
+    fprintf("> Extract metagenomic relative abundances from mWBMs... \n")
+    
+    % Redefine paths to the fba results
+    solPathsHM = fullfile(what(solDir.path).path,what(solDir.path).mat);
+    solPathsHM(~contains(solPathsHM,{'_mWBM_','miWBM'},'IgnoreCase',true))=[];
+    
+    % Load relative abundances and taxa from fba solutions
+    relAbunSol = cellfun( @(x) load(x,'ID','taxonNames','relAbundances'), solPathsHM);
+    modelSP = struct2cell(relAbunSol)';
+    
+    % Find all microbial species
+    allSpecies = unique(vertcat(relAbunSol(:).taxonNames));
+    
+    % Find which species in the sample are present
+    
+    % Find the microbial relative abundances from the models
+    relAbun = nan(size(modelSP,1),length(allSpecies));
+    for i = 1:size(modelSP, 1)
+        
+        % Find which species in the sample are present
+        [index1, index2] = ismember(allSpecies, modelSP{i, 2});
+    
+        % Remove zero indices for non-present species in index2
+        index2 = index2(index2 > 0);
+        
+        if ~isempty(index2)
+            % Get the shadow prices for valid species
+            samp_ra = modelSP{i, 3};
+            samp_ra = samp_ra(index2);
+    
+            % Rescale the relative abundances so that they sum up to one
+            % instead of 100. 
+            samp_ra = samp_ra / 100;
+            
+            % Assign the relative abundances to the result array
+            relAbun(i, index1) = samp_ra;
+        end
+    end
+    
+    % Create a table with the microbial relative abundances
+    taxa = erase(allSpecies,{'pan','_biomass[c]'});
+    wbmRelativeAbundances = array2table(relAbun,'RowNames',string(modelSP(:,1)),'VariableNames',taxa);
+
+    % Save microbiome relative abundances
+    fprintf("> Write metagenomic relative abundances from mWBMs to file... \n")
+    WBMmicrobiomePath = fullfile(fluxAnalysisPath,'WBM_relative_abundances.csv');
+    writetable(wbmRelativeAbundances,WBMmicrobiomePath,'WriteRowNames',true)
+    
+    fprintf("> Perform spearman correlations on flux results and relative abundances... \n")
+    % Extract relative abundances and process relative abundance ID names from samples
+    
+    % Process flux data from samples
+    fluxesToCorrelate = stats.Fluxes;
+    fluxesToCorrelate = removevars(fluxesToCorrelate,{'ID','Sex'});
+    
+    % run function on flux and relative abundance sample IDs
+    processRowNames = @(x) erase(x,{'FBA_sol_','mWBM_','miWBM_','iWBM_','_female','_male'}); % Remove ID metadata
+    fluxesToCorrelate.Properties.RowNames = processRowNames(fluxesToCorrelate.Properties.RowNames); 
+    wbmRelativeAbundances.Properties.RowNames = processRowNames(wbmRelativeAbundances.Properties.RowNames);
+    
+    % Ensure identical sample order
+    fluxesToCorrelate = fluxesToCorrelate(wbmRelativeAbundances.Properties.RowNames,:);
+    wbmRelativeAbundances = wbmRelativeAbundances(fluxesToCorrelate.Properties.RowNames,:);
+    
+    RHO = corr(table2array(fluxesToCorrelate),table2array(wbmRelativeAbundances),'type','Spearman','rows','pairwise')'; % Create spearman correlations
+    fluxMicrobeCorr = array2table(RHO,... % Transform correlation matrix to table
+        'RowNames', wbmRelativeAbundances.Properties.VariableNames',...
+        'VariableNames',fluxesToCorrelate.Properties.VariableNames...
+        );
 end
 
-%% PART 3: Create table with all results
-disp('PART 3: Collect all results')
+%% Create table with all results
+disp('Collect all results')
 
-tableMeta = {'FBA solver statistics', fbaStats};
 
-% Predefine table descriptions and corresponding data sources
-if analyseGF
-    tableMeta = [tableMeta; {
-    'Scaled fluxes summary statistics'                  , stats.Scaled_flux_summary_statistics; ...
-    'Scaled fluxes with removed reactions'              , stats.Scaled_fluxes; ...
-    'Distribution statistics of fluxes across samples'  , stats.Flux_summary_statistics; ...
-    'Predicted fluxes'                                  , stats.Fluxes; ...
-    'Predicted fluxes with removed reactions'           , stats.Fluxes_removed_reactions}];
+% Save processed fluxes to file
+fprintf("> Save processed flux results... \n")
+pathToFluxResults = fullfile(fluxAnalysisPath,'processed_fluxes.csv');
+writetable(fluxesPruned,pathToFluxResults)
+
+
+% Check if the flux_results.xlsx already exists and remove if yes
+resultPath = fullfile(fluxAnalysisPath,'flux_results.xlsx');
+if isfile(resultPath); delete(resultPath); end % For script testing
+
+% Save FBA solver statistics
+description = cell(2,1); 
+description{1} = 'FBA solver statistics'; % Header
+description{2} = ''; % Details
+writeSupplement(fbaStats, description, resultPath)
+
+% Summary statistics of flux results
+description = cell(2,1); description{1} = 'Summary statistics of predicted fluxes'; % Header
+description{2} = ''; % Details
+writeSupplement(stats.Flux_summary_statistics, description, resultPath)
+
+% Predicted fluxes
+description = cell(2,1); description{1} = 'Predicted reaction fluxes'; % Header
+description{2} = ''; % Details
+writeSupplement(stats.Fluxes, description, resultPath)
+
+% Predicted reaction fluxes for analysis 
+description = cell(2,1); description{1} = 'Predicted reaction fluxes for analysis'; % Header
+description{2} = ''; % Details
+writeSupplement(stats.Fluxes_removed_reactions, description, resultPath)
+
+% Predicted reaction fluxes for analysis 
+description = cell(2,1); description{1} = 'Predicted scaled reaction fluxes for analysis'; % Header
+description{2} = ''; % Details
+writeSupplement(stats.Scaled_fluxes, description, resultPath)
+
+% Summary statistics of scaled flux results
+description = cell(2,1); description{1} = 'Summary statistics of predicted scaled fluxes for analysis'; % Header
+description{2} = ''; % Details
+writeSupplement(stats.Scaled_flux_summary_statistics, description, resultPath)
+
+if microbiomePresent == true
+
+    % Predicted reaction fluxes for analysis 
+    description = cell(2,1); description{1} = 'Flux-microbe spearman correlations'; % Header
+    description{2} = ''; % Details
+    writeSupplement(fluxMicrobeCorr, description, resultPath)
 end
-
-if ~isempty(modelSP)
-    tableMeta = [tableMeta; {
-        'Microbial taxon relative abundances in WBMs', wbmRelativeAbundances; ...
-        'Flux - taxon relative abundance correlations' , fluxMicrobeCorr}];
-end
-
-% Create index table
-tableNames = "Sheet " + (1:size(tableMeta,1))';
-indexTable = table(tableNames, string(tableMeta(:,1)), ...
-    'VariableNames', {'Table','Descriptions'});
-
-% Assemble results structure
-FBA_results = struct;
-FBA_results.Index = indexTable;
-
-for k = 1:size(tableMeta,1)
-    FBA_results.(sprintf("Sheet_%d",k)) = tableMeta{k,2};
-end
-
-%% PART 4: Save all results
-disp('PART 4: Save all results to "flux_results.xlsx"')
-sheetNames = string(fieldnames(FBA_results));
-
-resultPath = [fluxAnalysisPath filesep 'flux_results.xlsx'];
-% Remove excel file if it already exists to prevent partial overwriting.
-if ~isempty(which(resultPath))
-    delete(resultPath);
-end
-
-% Save results
-for i = 1:length(sheetNames)
-    % Get sheet
-    sheet = FBA_results.(sheetNames(i));
-    % Write to table
-    writetable(sheet,resultPath,'Sheet',sheetNames(i),'WriteRowNames',true,'PreserveFormat',true)
-end
-
-%%% NOTE: This part will be removed once the pipeline is more mature
-pathToFluxResults = [fluxAnalysisPath filesep 'processed_fluxes.csv'];
-writetable(fluxes,pathToFluxResults) 
-
-% Save microbiome relative abundances
-WBMmicrobiomePath = [fluxAnalysisPath filesep 'WBM_relative_abundances.csv'];
-writetable(wbmRelativeAbundances,WBMmicrobiomePath,'WriteRowNames',true)
-
-% Save flux-microbe correlations
-fluxMicrobePath = [fluxAnalysisPath filesep 'microbe_metabolite_R2.csv'];
-writetable(fluxMicrobeCorr,fluxMicrobePath,'WriteRowNames',true)
 
 % Output paths
-pathsToFilesForStatistics = [string(pathToFluxResults); string(WBMmicrobiomePath); string(fluxMicrobePath)];
+processedFluxResPaths = [string(pathToFluxResults); string(WBMmicrobiomePath);string(resultPath)];
 
 end
 
@@ -483,12 +482,7 @@ mWBMs = contains(sexInfo.ID,{'mWBM','miWBM'});
 % Check which WBMs are iWBMs or miWBMs
 iWBMs = contains(sexInfo.ID,'iWBM');
 
-analyseGF = false; 
-if any(contains(fluxes.Properties.RowNames, 'gfWBM')) || any(contains(fluxes.Properties.RowNames, 'gfiWBM'))
-    analyseGF = true;
-end
-
-if any(mWBMs) && ~any(iWBMs) && analyseGF
+if any(mWBMs) && ~any(iWBMs)
 
     % If only the microbiome is personalised - obtain the generic male and
     % female germ-free models and substract that from the male and female
@@ -525,7 +519,7 @@ if ~any(mWBMs) && all(iWBMs)
     scaledFluxes{matches(sexInfo.Sex,'female'),:} = fluxes_rm{matches(sexInfo.Sex,'female'),:} - iWBM_control_female{:,:};
 end
 
-if all(iWBMs) && any(mWBMs) 
+if all(iWBMs) && any(mWBMs)
 
     % If both the microbiome and human are personalised, substract the
     % germfree values from the respective sample flux values.
@@ -671,38 +665,69 @@ stats.("Scaled_fluxes") = scaledFluxes;
 
 end
 
-function relativeAbundances = extractWbmRelativeAbundances(modelSP)
-% Author: Tim Hensen.
-% TO DO TH: Add documentations!
+function writeSupplement(suplTable, description, filePath, suplTable2)
+% Helper function for populating the supplementary materials excel file
 
-% Find the pan species names
-allSpecies = unique(vertcat(modelSP{:,2}));
-
-% Find the microbial relative abundances from the models
-relAbun = nan(size(modelSP,1),length(allSpecies));
-for i = 1:size(modelSP, 1)
-    
-    % Find which species in the sample are present
-    [index1, index2] = ismember(allSpecies, modelSP{i, 2});
-
-    % Remove zero indices for non-present species in index2
-    index2 = index2(index2 > 0);
-    
-    if ~isempty(index2)
-        % Get the shadow prices for valid species
-        samp_ra = modelSP{i, 4};
-        samp_ra = samp_ra(index2);
-
-        % Rescale the relative abundances so that they sum up to one
-        % instead of 100. 
-        samp_ra = samp_ra / 100;
-        
-        % Assign the shadow prices to the result array
-        relAbun(i, index1) = samp_ra;
-    end
+if nargin<4
+    suplTable2 = '';
 end
 
-% Create a table with the microbial relative abundances
-taxa = erase(allSpecies,{'pan','_biomass[c]'});
-relativeAbundances = array2table(relAbun,'RowNames',string(modelSP(:,1)),'VariableNames',taxa);
+% Find the current sheets if the supplementary table file exists
+SM = isfile(filePath);
+if SM == true
+    sheets = sheetnames(filePath); % Find the current sheet names
+    maxSheetNum = max(str2double(erase(sheets,'Sheet_'))); % Find the largest sheet number
+    if ~isnan(maxSheetNum) % Double check
+        sheetNum = char(string(maxSheetNum+1)); % Define the current sheet number as the max + 1
+    else
+        sheetNum = '1'; % Set sheet number to 1
+    end
+else
+    sheetNum = '1'; % Set sheet number to 1
+end
+
+% Create table header:
+sheetName = append('Sheet_',sheetNum); % Process sheet name
+tableHeader = append(sheetName,": ",string(description{1}));
+
+% Add details to table header
+if ~isempty(description{2}) % Only add extra line if a description is given
+    details = append("Description: ",string(description{2}));
+else
+    details = string(description{2});
+end
+
+tableHeader = [tableHeader; details];
+
+
+% Create of update index sheet
+if SM == false
+    tableHeader = ["INDEX"; tableHeader]; % Add Table header if not present already
+end
+
+% Write index table to file, but remove the table details
+writematrix(tableHeader( 1:(end-1) ), filePath,'Sheet','Index','WriteMode','append') 
+
+% Remove Index table header
+tableHeader(matches(tableHeader,"INDEX"))=[];
+
+% Create new sheet for current supplementary table and write table
+% description
+writematrix(tableHeader, filePath,'Sheet',sheetName,'WriteMode','overwritesheet')
+
+% Append supplementary table to excel sheet
+writetable(suplTable,filePath,'Sheet',sheetName,'Range','A3')
+
+if ~isempty(suplTable2)
+    % Place the second table after the second empty column in excel sheet after the main table:
+    colNum = width(suplTable)+3;
+    colLetter = char(colNum + 64); % Convert to letter in alphabet using ASCII codes
+    rangeStart = [colLetter,'4']; % Find excel cell to start
+    
+    % Append the second supplementary table to excel sheet
+    writetable(suplTable2,filePath,'Sheet',sheetName,'Range',rangeStart)
+end
+if 1
+    disp(append('Saved ',sheetName, ' to flux_results.xlsx'))
+end
 end

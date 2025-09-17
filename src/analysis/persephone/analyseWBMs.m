@@ -1,4 +1,4 @@
-function [FBA_results, pathsToFilesForStatistics] = analyseWBMs(mWBMPath, fluxPath, rxnList, varargin)
+function analyseWBMs(mWBMPath, fluxPath, rxnList, varargin)
 % analyseWBMs predicts the optimal fluxes for a list of user-defined
 % reactions (rxnList). All predicted are further described in
 % analyseWBMsol.m.
@@ -114,10 +114,6 @@ function [FBA_results, pathsToFilesForStatistics] = analyseWBMs(mWBMPath, fluxPa
 %                       sample, you can set to false. Default is true. When
 %                       personalisation is skipped, only one germ-free
 %                       model is made for each sex. 
-%
-% OUTPUT
-% results       Structured array with FBA fluxes, solver statistics, and
-%               paths to the flux table and raw flux results
 %
 % .. Author:
 %       - Tim Hensen       May, 2024
@@ -411,12 +407,12 @@ end
 
 % Run flux processing pipeline
 % Make an if statement here for GF/personalised testing
-[FBA_results, pathsToFilesForStatistics] = analyseWBMsol(fluxPath,paramFluxProcessing, fluxAnalysisPath);
+analyseWBMsol(fluxPath,paramFluxProcessing, fluxAnalysisPath);
 
 % slimDownFBAresults prunes FBA solution results obtained in
 % analyseWBMs.m and saves the slimmed down solution results in a
 % new folder. Running this function can save up to 1000X of storage.
-smallFBAsolutionPaths = slimDownFBAresults(fluxPath);
+slimDownFBAresults(fluxPath);
 end
 
 function parsave(fname, data)
