@@ -1,10 +1,7 @@
 function status = runSeqC(...
     repoPathSeqC, outputPathSeqC, fileIDSeqC, ...
     procKeepSeqC, maxMemSeqC, maxCpuSeqC, ...
-    maxProcSeqC, debugSeqC, runApptainer, ...
-    readsTablePath, outputPathMARS, relAbunFilePath, sampleReadCountCutoff, cutoffMars, ...
-    OTUTable, flagLoneSpecies, taxaDelimiter, removeClade, reconstructionDb, ...
-    userDatabase_path, taxaTable ...
+    maxProcSeqC, debugSeqC, runApptainer ...
 )
 %======================================================================================================#
 % Title: SeqC as Flux Pipeline MATLAB Wrapper
@@ -13,7 +10,7 @@ function status = runSeqC(...
 %   matlab script structure: Tim Hensen, runMars.m, 2025.01
 %   assistance and reference from a generative AI model [ChatGPT](https://chatgpt.com/)
 %       clean-up and improved readability
-% Last Modified: 2025.07.07
+% Last Modified: 2025.09.18 - wbarton
 % Part of: Persephone Pipeline
 %
 % Description:
@@ -73,7 +70,7 @@ msgDsize = sprintf('Total size of directory: %.2f GB\nExpected inflation size: %
 %% Initialize Paths
 vdir_init = cd;
 vdir_out_seqc = 'seqc_output';
-vdir_out_mars = fullfile(vdir_out_seqc, 'mars_out');
+vdir_out_mars = fullfile(vdir_out_seqc, 'mars_out'); % Pot. remove
 % Set system to seqc repo
 cd(repoPathSeqC);
 
@@ -81,9 +78,9 @@ cd(repoPathSeqC);
 maxCpuSeqC = num2str(maxCpuSeqC);
 maxMemSeqC = num2str(maxMemSeqC);
 maxProcSeqC = num2str(maxProcSeqC);
-if isnumeric(cutoffMars)
-    cutoffMars = sprintf('%f', cutoffMars);
-end
+%if isnumeric(cutoffMars)
+%    cutoffMars = sprintf('%f', cutoffMars);
+%end
 
 %% Build Docker Options
 % User ID params
@@ -109,31 +106,32 @@ end
 comm_build_opt_hw = sprintf('--build-arg varg_cpu_max=%s --build-arg varg_mem_max=%s --build-arg varg_proc_max=%s', ...
                             maxCpuSeqC, maxMemSeqC, maxProcSeqC);
 % MARS params
-comm_build_opt_mars = sprintf([' --build-arg varg_mars_sample_read_counts_cutoff=%d' ...
-' --build-arg varg_mars_cutoffMARS=%s' ...
-' --build-arg varg_mars_flagLoneSpecies=%s' ...
-' --build-arg varg_mars_taxaSplit="%s"' ...
-' --build-arg varg_mars_removeCladeExtensionsFromTaxa=%s' ...
-' --build-arg varg_mars_whichModelDatabase=%s'], ...
-sampleReadCountCutoff, cutoffMars, ...
-string(flagLoneSpecies), string(taxaDelimiter), string(removeClade), ...
-reconstructionDb);
+%comm_build_opt_mars = sprintf([' --build-arg varg_mars_sample_read_counts_cutoff=%d' ...
+%' --build-arg varg_mars_cutoffMARS=%s' ...
+%' --build-arg varg_mars_flagLoneSpecies=%s' ...
+%' --build-arg varg_mars_taxaSplit="%s"' ...
+%' --build-arg varg_mars_removeCladeExtensionsFromTaxa=%s' ...
+%' --build-arg varg_mars_whichModelDatabase=%s'], ...
+%sampleReadCountCutoff, cutoffMars, ...
+%string(flagLoneSpecies), string(taxaDelimiter), string(removeClade), ...
+%reconstructionDb);
 
 %% Append Optional Build Arguments - MARS
 % exclude if empty
-optionalParams = {OTUTable, readsTablePath, relAbunFilePath, userDatabase_path, taxaTable};
-paramNames = {'varg_mars_OTUTable', 'varg_mars_readsTablePath', 'varg_mars_relAbunFilePath', 'varg_mars_userDatabase_path', 'varg_mars_taxaTable'};
-for vi = 1:length(optionalParams)
-    if ~ismissing(optionalParams{vi})
-        if ~isempty(optionalParams{vi}) && ~strcmpi(optionalParams{vi}, "")
-            comm_build_opt_mars = sprintf('%s --build-arg %s=%s', comm_build_opt_mars, paramNames{vi}, optionalParams{vi});
-        end
-    end
-end
+%optionalParams = {OTUTable, readsTablePath, relAbunFilePath, userDatabase_path, taxaTable};
+%paramNames = {'varg_mars_OTUTable', 'varg_mars_readsTablePath', 'varg_mars_relAbunFilePath', 'varg_mars_userDatabase_path', 'varg_mars_taxaTable'};
+%for vi = 1:length(optionalParams)
+%    if ~ismissing(optionalParams{vi})
+%        if ~isempty(optionalParams{vi}) && ~strcmpi(optionalParams{vi}, "")
+%            comm_build_opt_mars = sprintf('%s --build-arg %s=%s', comm_build_opt_mars, paramNames{vi}, optionalParams{vi});
+%        end
+%    end
+%end
 
 %% Build Docker Image command
-comm_build = sprintf('docker build -t dock_seqc --ulimit nofile=65536:65536 %s %s %s .', comm_build_opt_hw, comm_build_opt_mars, comm_build_opt_UID);
-
+%comm_build = sprintf('docker build -t dock_seqc --ulimit nofile=65536:65536 %s %s %s .', comm_build_opt_hw, comm_build_opt_mars, comm_build_opt_UID);
+#sans mars
+comm_build = sprintf('docker build -t dock_seqc --ulimit nofile=65536:65536 %s %s .', comm_build_opt_hw, comm_build_opt_UID);
 %% Docker run commands
 if vAPTER == 0
     %% Apptainer commands
@@ -172,6 +170,7 @@ elseif strcmp(vOS, 'win')
 end
 
 %% Set Database Assignment Command
+reconstructionDb = 'full_db'; % Default for now - to be user input
 switch reconstructionDb
     case 'AGORA'
         comm_run_db_kb = '"tool_k2_agora"';
@@ -184,6 +183,7 @@ switch reconstructionDb
     otherwise
         comm_run_db_kb = '"tool_k2_agora2apollo"'; % Default case
 end
+% Default host contaminant db
 comm_run_db_kd = '"host_kd_hsapcontam"';
 comm_run_db = sprintf('BASH_seqc_makedb.sh -s %s -s %s', comm_run_db_kd, comm_run_db_kb);
 comm_mama_db = sprintf('-d %s -d %s', comm_run_db_kd, comm_run_db_kb); % to include in main run rather sep DB
