@@ -291,6 +291,7 @@ if isfile(resultPath); delete(resultPath); end % For script testing
 description = cell(2,1); 
 description{1} = 'FBA solver statistics'; % Header
 description{2} = ''; % Details
+fbaStats = addvars(fbaStats, fbaStats.Properties.RowNames, 'Before',1,'NewVariableNames','fileName');
 writeSupplement(fbaStats, description, resultPath)
 
 % Summary statistics of flux results
@@ -308,21 +309,22 @@ description = cell(2,1); description{1} = 'Predicted reaction fluxes for analysi
 description{2} = ''; % Details
 writeSupplement(stats.Fluxes_removed_reactions, description, resultPath)
 
-% Predicted reaction fluxes for analysis 
-description = cell(2,1); description{1} = 'Predicted scaled reaction fluxes for analysis'; % Header
-description{2} = ''; % Details
-writeSupplement(stats.Scaled_fluxes, description, resultPath)
-
 % Summary statistics of scaled flux results
 description = cell(2,1); description{1} = 'Summary statistics of predicted scaled fluxes for analysis'; % Header
 description{2} = ''; % Details
 writeSupplement(stats.Scaled_flux_summary_statistics, description, resultPath)
+
+% Predicted reaction fluxes for analysis 
+description = cell(2,1); description{1} = 'Predicted scaled reaction fluxes for analysis'; % Header
+description{2} = ''; % Details
+writeSupplement(stats.Scaled_fluxes, description, resultPath)
 
 if microbiomePresent == true
 
     % Predicted reaction fluxes for analysis 
     description = cell(2,1); description{1} = 'Flux-microbe spearman correlations'; % Header
     description{2} = ''; % Details
+    fluxMicrobeCorr= addvars(fluxMicrobeCorr, fluxMicrobeCorr.Properties.RowNames, 'Before',1,'NewVariableNames','Microbe');
     writeSupplement(fluxMicrobeCorr, description, resultPath)
 end
 
