@@ -150,12 +150,12 @@ varr_db_gets[$vn]='wget --no-check-certificate https://zenodo.org/records/148847
 varr_db_pack[$vn]="tar -I pigz --transform='s,^kdb_agora_ssp/,kdb_agora/,' -xvf '${varr_db_path[$vn]}'.tar.gz --directory '${varr_db_path[0]}'/REPO_tool/kraken/"
 varr_db_size[$vn]=14
 varr_db_check[$vn]=$(check_db_size "${varr_db_path[$vn]}" "${varr_db_size[$vn]}")
-## agora2 and apollo - 154G pre 69 post - 84G genomes - TODO ADJUST FOR FINAL BUILD 238
+## agora2 and apollo - 154G pre 69 post - 84G genomes - TODO ADJUST FOR FINAL BUILD 238 - 20250919 - 8.6G ~ 1HR
 ((vn++))
 #previous record 14888918
 varr_db_name[$vn]='tool_k2_agora2apollo'
 varr_db_path[$vn]=${varr_db_path[0]}'/REPO_tool/kraken/kdb_a2a'
-varr_db_gets[$vn]='wget --no-check-certificate https://zenodo.org/records/16969998/files/kdb_a2a.tar.gz -O '${varr_db_path[$vn]}'.tar.gz'
+varr_db_gets[$vn]='wget --no-check-certificate https://zenodo.org/records/16969998/files/kdb_a2a_ssp.tar.gz -O '${varr_db_path[$vn]}'.tar.gz'
 varr_db_pack[$vn]="tar -I pigz --transform='s,^kdb_a2a_ssp/,kdb_a2a/,' -xvf '${varr_db_path[$vn]}'.tar.gz --directory '${varr_db_path[0]}'/REPO_tool/kraken/"
 varr_db_size[$vn]=8.6
 varr_db_check[$vn]=$(check_db_size "${varr_db_path[$vn]}" "${varr_db_size[$vn]}")
