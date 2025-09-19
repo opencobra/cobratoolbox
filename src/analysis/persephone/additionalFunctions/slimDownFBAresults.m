@@ -28,7 +28,6 @@ fbaDirData = what(FBAsolutionDir);
 fbaPaths = string(append(FBAsolutionDir, filesep, fbaDirData.mat));
 newFbaPaths = string(append(newFolder, filesep, fbaDirData.mat));
 
-tic
 warning('off')
 for i = 1:length(newFbaPaths)
     disp(strcat("Slim down solution: ", string(i)))
@@ -39,7 +38,6 @@ for i = 1:length(newFbaPaths)
     save(newFbaPaths(i),'-struct', 'solution')
 end
 warning('on')
-toc
 
 % Set output
 smallFBAsolutionPaths = newFbaPaths;

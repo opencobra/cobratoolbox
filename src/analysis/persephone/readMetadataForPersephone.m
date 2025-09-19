@@ -38,7 +38,7 @@ end
 % for this later, so this warning is ignored here.
 warning('off')
 opts = detectImportOptions(metadataPath, 'VariableNamingRule', 'preserve'); 
-opts = setvartype(opts, opts.VariableNames(1), 'string'); 
+opts = setvartype(opts, opts.VariableNames(1), 'string');
 metadataTable = readtable(metadataPath, opts); 
 warning('on')
 

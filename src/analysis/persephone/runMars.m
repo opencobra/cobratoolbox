@@ -512,7 +512,7 @@ removedSamples = levels;
 for j = 1:size(levels,2)
     subDir = strcat(outputPathMars, filesep, 'mapped_forModelling');
 
-    writetable(forMgpipe.(levels{j}).relAbund, strcat(subDir, filesep, 'normalised_forModelling', levels{j}, '.csv'));
+    writetable(forMgpipe.(levels{j}).relAbund, strcat(subDir, filesep, 'mapped_forModelling', levels{j}, '.csv'));
     if ~isempty(forMgpipe.(levels{j}).removedSamples)
         removedSamples(2:size(forMgpipe.(levels{j}).removedSamples,2)+1, j) = forMgpipe.(levels{j}).removedSamples;
     end
@@ -869,7 +869,11 @@ function [bray, pielous, taxonSummary]= calculateMetrics(data, calculateBrayCurt
 bray = zeros(size(data,2), size(data,2));
 
 % Sum all columns for faster caclulation times
-dataSummed = [0,sum(data{:, 2:end})];
+if size(data,1) == 1
+    dataSummed = [0, data{:,2:end}];
+else
+    dataSummed = [0, sum(data{:, 2:end})];
+end
 
 if calculateBrayCurtis
     % Skip first column as that contain taxonomy information
