@@ -929,8 +929,6 @@ for s = 1:numModels
                 iWBM.ID = ID;
             end
             iWBM.SetupInfo.IndividualParameters = IndividualParameters;
-        else 
-            iWBM = WBMcurrent;
         end
         
         % match every metabolite in persMetabolites to the
