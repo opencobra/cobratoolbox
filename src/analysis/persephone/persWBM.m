@@ -832,9 +832,9 @@ for s = 1:numModels
                 RenalFiltrationFraction  = 0.2; %20%
                 % blood flow percentage that Kidney gets
                 if strcmp(sex,'male')
-                    BK = bloodFlowData{strmatch('Kidney',bloodFlowData(:,1),'exact'),bloodFlowPercCol(1)};
+                    BK = IndividualParameters.bloodFlowData{strmatch('Kidney',IndividualParameters.bloodFlowData(:,1),'exact'),IndividualParameters.bloodFlowPercCol(1)};
                 elseif strcmp(sex,'female')
-                    BK = bloodFlowData{strmatch('Kidney',bloodFlowData(:,1),'exact'),bloodFlowPercCol(2)};
+                    BK = IndividualParameters.bloodFlowData{strmatch('Kidney',IndividualParameters.bloodFlowData(:,1),'exact'),IndividualParameters.bloodFlowPercCol(2)};
                 end
                 try
                     BK = str2num(BK(2:end-1));
