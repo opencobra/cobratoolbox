@@ -53,7 +53,7 @@ if size(unique(usdaItems(:,1)),1) ~= size(usdaItems,1)
     usdaItems = [summedDiet{:,1},num2cell(summedDiet{:,3})];
 end
 
-if size(unique(fridaItems(:,1)),1) ~= size(fridaItems,1)
+if size(unique(string(fridaItems(:,1))),1) ~= size(fridaItems,1)
     fprintf('The same food ID has been found in the diet. Adding the consumed weights together');
     summedDiet = groupsummary(cell2table(fridaItems),1,"sum");
     fridaItems = [summedDiet{:,1},num2cell(summedDiet{:,3})];

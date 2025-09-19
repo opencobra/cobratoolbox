@@ -280,7 +280,7 @@ if constrainFoodWBM
         fprintf('Setting food items on WBM for %s\n', string(foodItemsUsed.Properties.VariableNames(end)))
         % Transfort the database ID and database name into the reaction ID
         % format used in the WBMs
-        foodRxns = strcat('Food_EX_', foodItemsUsed.databaseID, '_', foodItemsUsed.databaseUsed);
+        foodRxns = strcat('Food_EX_', string(foodItemsUsed.databaseID), '_', foodItemsUsed.databaseUsed);
 
         % Obtain the diet name
         dietName = foodItemsUsed.Properties.VariableNames(end);
@@ -346,7 +346,7 @@ if constrainFoodWBM
                         warning('Sample ID %s is not found. Ensure that the filenames have underscores _ around the sample ID in the filename of the WBM');
                     else
                         % Load in the model
-                        model2Alter = loadPSCMfile(model2Load, pathToWbms);
+                        model2Alter = loadPSCMfile(char(model2Load), pathToWbms);
     
                         % Find metabolites that should be added
                         mets2Add = findMet2Add2FoodDiet(model2Alter, fluxDiet);

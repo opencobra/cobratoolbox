@@ -100,7 +100,7 @@ disp(strcat("Investigate variable: ",string(response)))
 %%% relative abundances.
 
 % Load and investigate metadata
-[metadata, logfile] = loadAndInvestigateMetadataForStats(metadataPath, response, statPath, logfile);
+[metadata, logfile] = loadAndInvestigateMetadataForStats(metadataPath, response, statPathFull, logfile);
 
 % Load flux data
 fluxes = readDataForStats(pathToProcessedFluxes);
@@ -169,7 +169,7 @@ logfile{end+1} = 'The investigated reactions are annotated by providing reaction
 
 %%% PART 4: Save results as an excel file with an index explaining each
 %%% table.
-results = saveStatisticalResults(logfile,testMicrobiota,annotationCell,fluxStats,microbiotaStats,statPath);
+results = saveStatisticalResults(logfile,testMicrobiota,annotationCell,fluxStats,microbiotaStats,statPathFull);
 %%
 
 %%% PART 5: Visualise the flux results
@@ -234,7 +234,7 @@ if ~isnumeric(metadata.(response))
     heatmap(metadata, 'Sex', response);
     
     % Save figure
-    heatmapPath = fullfile(statPath, 'Case_control_sample_counts.fig');
+    heatmapPath = fullfile(statPath, filesep, 'Case_control_sample_counts.fig');
     savefig(fig, heatmapPath);
     close(fig);
     logfile{end+1} = ['Heatmap saved at: ' heatmapPath];
@@ -621,7 +621,7 @@ fig=figure('Position',[571,171,809,682]);
 createVolcanoPlot(estimates,pValues,names,plotTitle,xTitle,yTitle);
 
 % Save figure
-exportgraphics(fig,[statPathFull, 'volcanoPlot_' formula '.png'])
+exportgraphics(fig,[statPathFull, filesep, 'volcanoPlot_' formula '.png'])
 end
 
 
