@@ -10,7 +10,7 @@ function status = runSeqC(...
 %   matlab script structure: Tim Hensen, runMars.m, 2025.01
 %   assistance and reference from a generative AI model [ChatGPT](https://chatgpt.com/)
 %       clean-up and improved readability
-% Last Modified: 2025.09.18 - wbarton
+% Last Modified: 2025.09.19 - wbarton
 % Part of: Persephone Pipeline
 %
 % Description:
@@ -130,13 +130,13 @@ comm_build_opt_hw = sprintf('--build-arg varg_cpu_max=%s --build-arg varg_mem_ma
 
 %% Build Docker Image command
 %comm_build = sprintf('docker build -t dock_seqc --ulimit nofile=65536:65536 %s %s %s .', comm_build_opt_hw, comm_build_opt_mars, comm_build_opt_UID);
-#sans mars
+%sans mars
 comm_build = sprintf('docker build -t dock_seqc --ulimit nofile=65536:65536 %s %s .', comm_build_opt_hw, comm_build_opt_UID);
 %% Docker run commands
 if vAPTER == 0
     %% Apptainer commands
     % Build from docker image
-    comm_build_apter = 'apptainer build apter_seqc.sif docker-daemon://dock_seqc:latest'
+    comm_build_apter = 'apptainer build apter_seqc.sif docker-daemon://dock_seqc:latest';
 % Run statement
 % cgroups error with resource flags - bypassed by ommision atm
 %    comm_run_core = sprintf('apptainer exec --cwd /home/seqc_user/seqc_project --writable-tmpfs --no-mount tmp --no-home -e --cpus %s --memory %s',maxCpuSeqC,sprintf('%sG',maxMemSeqC));
@@ -255,7 +255,7 @@ end
 
     % Run full SeqC pipeline
     disp(sprintf(' > SeqC Processing Begins...\n%s',msgDsize));
-    sprintf('%s %s',comm_run_main, comm_mama_full)
+    %sprintf('%s %s',comm_run_main, comm_mama_full) % TS - display final command
     [status, cmdout] = system(sprintf('%s %s',comm_run_main, comm_mama_full));
     if status ~= 0, error('SeqC pipeline execution failed:\n%s', cmdout); end
     disp(' > SeqC Processing Ends.');
