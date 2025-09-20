@@ -4,7 +4,7 @@
 # Program by: Wiley Barton - 2022.02.27
 # Modified for conda/docker pipeline - 2024.02.22
 # Version for: PERSEPHONE
-# last update - 2025.08.01
+# last update - 2025.09.20
 # Modified code sources:
 #   https://stackoverflow.com/questions/2043453/executing-multi-line-statements-in-the-one-line-command-line
 # Notes: generate bash files according to user input for the completion of pipeline
@@ -598,7 +598,7 @@ func_ref () {
 	if [[ "${vlog_seqc}" -eq 1 ]];then
 		v_nom='SeqC'
 		v_ver=$(BASH_seqc_mama.sh -v)
-		v_ref=$(printf 'Bram Nap, Tim Hensen, Anna Sheehy, Wiley Barton, Jonas Widder, Ines Thiele, 2025. Persephone: A personalisation and evaluation pipeline for human whole-body metabolic models')
+		v_ref=$(printf 'Bram Nap, Tim Hensen, Anna Sheehy, Wiley Barton, Jonas Widder, Sandeep Chenna, Ines Thiele, 2025. A personalisation and evaluation pipeline for human whole-body metabolic models ')
 		printf '%s\n%s\n\t%s\n' "${v_nom}" "${v_ver}" "${v_ref}"
 	fi
 	if [[ "${vlog_kneaddata}" -eq 1 ]];then

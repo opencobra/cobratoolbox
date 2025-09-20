@@ -1,11 +1,11 @@
 clc
-%% %%% Configuration file %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% Configuration file %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % This configuration file contains all information needed for running 
 % runPersephone.m. This file is loaded by runPersephone(configFilePath) 
 % when calling the function. Please carefully go through this file and make
 % changes to the configurations where needed. Any variable indicated with 
-% *REQUIRED* must be filled in. 
+% *REQUIRED* must be filled in.
 %
 % INDEX:
 % 0.  Set required inputs: For the full pipeline to run you MUST provide a
@@ -19,8 +19,10 @@ clc
 % 5.0 mWBM creation: combine your microbiome models with WBM models 
 % 6.0 Flux analysis: Simulate metabolism in your models, obtain flux values
 % 7.0 Statistical Analysis: Statistically analyse your flux values
-
-%% %%% 0. Set required inputs %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Updated: 2025.09.20 wbarton
+%
+%%%%% 0. Set required inputs %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Full path where you would like your results stored.  *REQUIRED*
 resultPath = ''; 
@@ -43,7 +45,7 @@ paths.General.numWorkersCreation = round(feature('numCores')*0.8);
 % microbiome models, iWBMs, mWBMs and/or miWBMs
 paths.General.numWorkersOptimisation = 1;
 
-%% %%% 1. SeqC Inputs %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% 1. SeqC Inputs %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Additional parameters related to MARS are inherited from the MARS 
 % subsection.
@@ -54,14 +56,14 @@ paths.seqC.flagSeqC = false;
 
 % *REQUIRED*. Full path to the directory where the SeqC repository is 
 % located.
-paths.seqC.repoPathSeqC = '';
+paths.seqC.repoPathSeqC = '~/cobratoolbox/src/analysis/persephone/SeqC_pipeline';
 
 % Full path to the directory where the final output of SeqC is stored.
 paths.seqC.outputPathSeqC = fullfile(resultPath,'ResultSeqC');
 
 % *REQUIRED*. Full path to the file containing sample IDs for FASTQ files 
 % (e.g., sample_id.txt).
-paths.seqC.fileIDSeqC = '';
+paths.seqC.fileIDSeqC = 'sample_id.txt';
 
 % Logical variable indicating if intermediary outputs are retained 
 % (e.g., post-QC FASTQ). False results in only the final MARS output being 
@@ -82,7 +84,7 @@ paths.seqC.debugSeqC = false;
 % Logical variable indicating if Apptainer/singularity
 paths.seqC.runApptainer = false;
 
-%% %%% 2. MARS Inputs %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% 2. MARS Inputs %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Logical variable indicating if taxonomic mapping by MARS 
 % is performed independently of SeqC.
@@ -90,6 +92,7 @@ paths.Mars.flagMars = true;
 
 % *REQUIRED*. Character array variable with path to the microbiome taxonomy 
 % and read abundance file.
+% with seqc: fullfile(resultPath,'ResultSeqC','KB_S_mpa_out_RC.txt');
 paths.Mars.readsTablePath = '';
 
 % Character array variable to the folder where the output of MARS is stored.
@@ -106,7 +109,7 @@ paths.Mars.cutoffMars = 0.000001;
 % String to the file where OTUs are matched to taxonomic assignments.
 % OPTIONAL if the taxonomic assignments are already in the readsTable. 
 % REQUIRED if not.
-paths.Mars.taxaTablePath = string(missing);
+paths.Mars.taxaTablePath = '';
 
 % A boolean to indicate if the genus name is in the name of the species e.g.
 % Prevotella copri. If genus name is in species name, set to false. 
@@ -143,7 +146,8 @@ paths.Mars.calculateBrayCurtis = false;
 % here means that the reads for a specific taxonomic level are taking into 
 % account the taxonomic level above it
 paths.Mars.compoundedDatabase = false;
-%% %%%% 3. MgPipe Inputs %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%% 3. MgPipe Inputs %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Boolean, indicates if Part 3 of the pipeline MgPipe/microbiome model 
 % creation should be run.
@@ -152,8 +156,8 @@ paths.mgPipe.flagMgPipe = true;
 % Path to relative abundance file. Defaults to MARS output, update if not 
 % using MARS.
 paths.mgPipe.relAbunFilePath = fullfile(paths.Mars.outputPathMars,...
-    'renormalized_mapped_forModelling',...
-    'renormalized_mapped_forModelling_species.csv');
+    'mapped_forModelling',...
+    'mapped_forModellingSpecies.csv');
 
 % Assign directory for mgPipe results
 paths.mgPipe.outputPathMgPipe = fullfile(resultPath,'resultMgPipe');
@@ -169,8 +173,7 @@ paths.mgPipe.microbeReconstructionPath = '';
 % microbiome models via fastFVA. OPTIONAL, defaults to false
 paths.mgPipe.computeProfiles = false;
 
-
-%%  %%% 4. WBM personalisation inputs %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% 4. WBM personalisation inputs %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Boolean, indicates if Part 3 of the pipeline: WBM personalisation should 
 % be run. OPTIONAL, defaults to false.
@@ -195,7 +198,7 @@ paths.persWBM.persPhysiology = {};
 % provided
 paths.persWBM.persMetabolites = {};
 
-%% %%% 5. mWBM creation inputs %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% 5. mWBM creation inputs %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Boolean, indicates if Part 4 of the pipeline: mWBM creation and 
 % descriptive statistics should be run. OPTIONAL, defaults to true
@@ -214,7 +217,7 @@ paths.mWBM.usePersonalisedWBM = true;
 % specify path below
 paths.mWBM.alteredWBMPath = paths.persWBM.outputPathPersonalisation;
 
-%% %%% 6. Flux analysis inputs %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% 6. Flux analysis inputs %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Boolean, indicates if Part 6 of the pipeline: FBA should be run.
 paths.fba.flagFBA = true; 
@@ -268,7 +271,8 @@ paths.fba.paramFluxProcessing.numericalRounding = 1.00E-06;
 % abundance data is provided, the same removal cutoff factor will be 
 % applied to the relative abundance data.
 paths.fba.paramFluxProcessing.rxnRemovalCutoff = {'fraction', 0.1};
-%% %%% 7. Statistical Analysis %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%% 7. Statistical Analysis %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Logical variable indicating if a statistical analysis should be run on 
 % the obtained fluxes and relative taxon abundances against a user-defined
@@ -287,3 +291,4 @@ paths.stats.response = {};
 % A character or string array with variables found in the metadata file 
 % that are used as confounders in the statistical analyses.
 paths.stats.confounders = {};
+%EoB

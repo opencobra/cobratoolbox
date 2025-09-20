@@ -10,7 +10,7 @@ function status = runSeqC(...
 %   matlab script structure: Tim Hensen, runMars.m, 2025.01
 %   assistance and reference from a generative AI model [ChatGPT](https://chatgpt.com/)
 %       clean-up and improved readability
-% Last Modified: 2025.09.19 - wbarton
+% Last Modified: 2025.09.20 - wbarton
 % Part of: Persephone Pipeline
 %
 % Description:
@@ -263,11 +263,11 @@ end
     % Move final output
     movefile(fullfile(vdir_out_seqc, '*'), outputPathSeqC);
     % Update mars path
-    vdir_out_mars = fullfile(outputPathSeqC, 'mars_out');
-    if ~strcmp(outputPathSeqC, outputPathMARS)
-        movefile(fullfile(vdir_out_mars, '*'), outputPathMARS);
-        vdir_out_mars = fullfile(outputPathSeqC);
-    end
+    %vdir_out_mars = fullfile(outputPathSeqC, 'mars_out');
+    %if ~strcmp(outputPathSeqC, outputPathMARS)
+    %    movefile(fullfile(vdir_out_mars, '*'), outputPathMARS);
+    %    vdir_out_mars = fullfile(outputPathSeqC);
+    %end
     % Relocate RA file for pipeline catch - resolved in primary persephone function
     %movefile(fullfile(vdir_out_mars, 'renormalized_mapped_forModelling', ['renormalized_mapped_forModelling_species.', outputExtensionMARS]),vdir_out_mars)
 
