@@ -163,7 +163,7 @@ else
         % Locate metadata file allowing for .csv or .xlsx ('_processed'
         % removal relevant only if running this function as part of the
         % Persephone pipeline)
-        unprocessedMetadata = strrep(metadata, '_processed.csv', '');
+        unprocessedMetadata = strrep(metadata, '_processed.xlsx', '');
         d = dir([unprocessedMetadata, '*']);
         match = d(endsWith({d.name}, {'.csv', '.xlsx'}, 'IgnoreCase', true));
 
