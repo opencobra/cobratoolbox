@@ -4,7 +4,7 @@
 # Program by: Wiley Barton - 2022.02.27
 # Modified for conda/docker pipeline - 2024.02.22
 # Version for: PERSEPHONE
-# last update - 2025.08.01
+# last update - 2025.09.20
 # Modified code sources:
 #   https://stackoverflow.com/questions/2043453/executing-multi-line-statements-in-the-one-line-command-line
 # Notes: generate bash files according to user input for the completion of pipeline
@@ -598,7 +598,7 @@ func_ref () {
 	if [[ "${vlog_seqc}" -eq 1 ]];then
 		v_nom='SeqC'
 		v_ver=$(BASH_seqc_mama.sh -v)
-		v_ref=$(printf 'Bram Nap, Tim Hensen, Anna Sheehy, Wiley Barton, Jonas Widder, Ines Thiele, 2025. Persephone: A personalisation and evaluation pipeline for human whole-body metabolic models')
+		v_ref=$(printf 'Bram Nap, Tim Hensen, Anna Sheehy, Wiley Barton, Jonas Widder, Sandeep Chenna, Ines Thiele, 2025. A personalisation and evaluation pipeline for human whole-body metabolic models ')
 		printf '%s\n%s\n\t%s\n' "${v_nom}" "${v_ver}" "${v_ref}"
 	fi
 	if [[ "${vlog_kneaddata}" -eq 1 ]];then
@@ -1582,9 +1582,9 @@ if (( ${vopt_log} ));then
 				mapfile -t v_file_in_good < <( printf '%s\n' "${v_file_in_good[@]/.gzip/}")
 			fi
 			# Check extension
-			vt_L=$( printf '%s\n' "${v_file_in_good[@]}" | grep -o "\..*$" | uniq | wc -l )
+			vt_L=$( printf '%s\n' "${v_file_in_good[@]}" | grep -o "\.[^.]*$" | uniq | wc -l )
 			vt_R='1'
-			vt_ext=$( printf '%s\n' "${v_file_in_good[@]}" | grep -o "\..*$" | uniq )
+			vt_ext=$( printf '%s\n' "${v_file_in_good[@]}" | grep -o "\.[^.]*$" | uniq )
 			if [[ ${vt_L} -gt ${vt_R} ]];then
 				printf 'File extension UNdetermined: %s\n%s\n' "${vt_ext}" "${v_logblock1}" >> ${v_logfile}
 			fi
@@ -1671,6 +1671,10 @@ if (( ${vopt_log} ));then
 		func_log "3" "STATE" "run_status" "PENDING"
 		for vi in "${vopt_step[@]}";do func_log "3" "STATE" $(printf 'step%s' "$vi") "PENDING";done
 		# build status index for sample
+		# adjust for case of single step
+		if [[ ${#vopt_step[@]} -eq 1 ]];then
+			v_start_index=$( printf -- '-%.0s' $( seq 1 $(( ${#vopt_step[@]} - 1 )) ) )
+		fi
 		for vi in "${vopt_step[@]}";do v_start_index=$v_start_index'0';done
 		# set sample index FID__<ID><000> where 0 is pending/error and 1 is complete and - is NA
 		for vi in $( cat ${vopt_name} );do func_log "3" "STATE_FID" $vi "${v_start_index}";done
@@ -1953,9 +1957,6 @@ if (( vrun_s1_kneaddata ));then
 			venv_proc_max="${vt}"
 		fi
 		if [[ ${vopt_com_log} -eq 0 ]];then
-			# Insert as string to be combined and parsed prior to feed in awk - ex: vin_com=$(printf -- '--id v_SAMPLE_UNIQ --reference-db %s v_LINOpigz v_SAMPLE_UNIQ' "${venv_cpu_max}" )
-			#vin_com_subL="${vstat_update}${vin_tidy}";vin_com_subR=$( printf ',va_nID%.0s' {1..3})
-			#vin_com='{ printf " --remove-intermediate-output --reference-db %s --threads %s --processes %s --max-memory %sg --trimmomatic /opt/conda/envs/env_s1_kneaddata/share/trimmomatic --reorder'${vin_com_subL}'","'${vin_path_db[1]}'",'${venv_cpu_max}','${venv_proc_max}','${venv_mem_max}''${vin_com_subR}' }'
 			vin_com=$(printf -- '--remove-intermediate-output --reference-db %s --threads %s --processes %s --max-memory %sg --trimmomatic /opt/conda/envs/env_s1_kneaddata/share/trimmomatic --reorder' "${vin_path_db[1]}" "${venv_cpu_max}" "${venv_proc_max}" "${venv_mem_max}")
 		fi
 		#[[ $( cat ${vstat_name} | wc -l ) -gt 0 ]] && func_mama "${istep}" "${vin_I_dir}" "${vin_I_com}" "${vin_O_dir}" "${vin_O_com}" "${vin_com}" "${vin_head}" "${vin_tail}" "${vin_name}" "${vin_env}" "${vin_pac}" "${v_scrp_job}" "${vopt_dbug}" "${vin_mkdr}" >> ${v_logfile} 2>>${v_dir_err}
@@ -2031,7 +2032,13 @@ if (( vrun_s2_kraken ));then
 		v_scrp_base=${vin_env}'_'${vin_pac}'.sh'
 		printf 'Using software:%s from environment:%s\n' "${vin_pac}" "${vin_env}" >> ${v_logfile}
 		vin_I_com='--paired '${vin_I_dir}'/v_SAMPLE_UNIQ'${vopt_mid[0]}${vopt_mid[1]}${vopt_ext}' '${vin_I_dir}'/v_SAMPLE_UNIQ'${vopt_mid[0]}${vopt_mid[2]}${vopt_ext}
-		vin_O_com='--unclassified-out '${vin_O_dir}'/v_SAMPLE_UNIQ_k2_unclassed#.fastq --classified-out '${vin_O_dir}'/v_SAMPLE_UNIQ_k2_classed#.fastq --output '${vin_O_dir}'/v_SAMPLE_UNIQ_k2_out.txt --report '${vin_O_dir}'/v_SAMPLE_UNIQ_k2_report.txt'
+		if (( ${vopt_keep} ));then
+			# full command - un/class and standard output
+			vin_O_com='--unclassified-out '${vin_O_dir}'/v_SAMPLE_UNIQ_k2_unclassed#.fastq --classified-out '${vin_O_dir}'/v_SAMPLE_UNIQ_k2_classed#.fastq --output '${vin_O_dir}'/v_SAMPLE_UNIQ_k2_out.txt --report '${vin_O_dir}'/v_SAMPLE_UNIQ_k2_report.txt'
+		else
+			# slim command - no un/class or standard output
+			vin_O_com='--output - --report '${vin_O_dir}'/v_SAMPLE_UNIQ_k2_report.txt'
+		fi
 		vin_head=''
 		vin_tail=''
 		vin_conf='0.20'
@@ -2091,7 +2098,7 @@ if (( vrun_s2_kraken ));then
 		vin_head=''
 		vin_tail=''
 		vin_rlen='150'
-		vin_rmin='10' # this is the ufcking min number of reads NOT threads
+		vin_rmin='100' # this is the ufcking min number of reads NOT threads
 		vin_mkdr=0
 		if [[ ${vopt_com_log} -eq 0 ]];then
 			vin_com=$( printf -- '-d %s -t %s -r %s -l S' "${vin_path_db[2]}" "${vin_rmin}" "${vin_rlen}" )
@@ -2132,8 +2139,11 @@ if (( vrun_s2_kraken ));then
 		micromamba run -n env_s4_kraken python /opt/conda/envs/env_s4_kraken/bin/combine_bracken_outputs.py \
 		--files ${varr_kjoin_in[*]} --output ${v_kjoin_out} --names ${v_col_nom} 2>>${v_dir_err}
 		printf 'Generating complete lineage file\n' >> ${v_logfile}
+		# Update for taxonomy change - temp retain k__ in place of d__
 		cat "${v_kjoin_out}" | cut --fields 2 | tail +2 | micromamba run -n env_util_taxonkit \
-		taxonkit reformat -I 1 --add-prefix --data-dir "${v_tdmp%/}" --threads "${venv_cpu_max}" \
+		taxonkit reformat2 -I 1 \
+		-f "k__{domain|acellular root|superkingdom};p__{phylum};c__{class};o__{order};f__{family};g__{genus};s__{species}" \
+		--data-dir "${v_tdmp%/}" --threads "${venv_cpu_max}" \
 		--out-file "${v_kjoin_out/out/taxid}" >> ${v_logfile} 2>>${v_dir_err}
 		# add headers
 		v_k2mpa_out=${v_kjoin_out/out/mpa_out}

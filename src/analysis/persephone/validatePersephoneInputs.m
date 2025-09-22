@@ -48,7 +48,7 @@ validateattributes(paths.General.solver,{'char','string'},{'nonempty'},'solver')
 validatestring(paths.General.solver,{'ibm_cplex','gurobi','tomlab_cplex','mosek'},'solver');
 validateattributes(paths.General.diet,{'char','string','cell'},{'nonempty'},'diet')
 validateattributes(paths.General.metadataPath,{'char','string'},{'nonempty'},'metadataPath')
-  validateattributes(paths.General.numWorkersCreation,{'double','integer'},{'<=',feature('numCores')},'numWorkersCreation')
+validateattributes(paths.General.numWorkersCreation,{'double','integer'},{'<=',feature('numCores')},'numWorkersCreation')
 validateattributes(paths.General.numWorkersOptimisation,{'double','integer'},{'<=',feature('numCores')},'numWorkersOptimisation')
 
 % Validate SeqC variables
@@ -74,7 +74,7 @@ if paths.Mars.flagMars
     validateattributes(paths.Mars.removeClade,{'logical'},{'scalar'},'removeClade')
     validatestring(paths.Mars.reconstructionDb ,{'AGORA2', 'APOLLO', 'full_db', 'user_db'},'reconstructionDb ');
     validateattributes(paths.Mars.userDbPath,{'char','string'},{'scalartext'},'userDbPath')
-    validateattributes(paths.Mars.taxaTable,{'char','string'},{'scalartext'},'taxaTable')
+    validateattributes(paths.Mars.taxaTablePath,{'char','string'},{'scalartext'},'taxaTablePath')
 end
 
 % Validate all inputs for mgPipe

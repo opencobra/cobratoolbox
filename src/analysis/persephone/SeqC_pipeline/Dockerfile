@@ -5,8 +5,8 @@
 # Title: SeqC Pipeline Docker file: create environment for sequencing data processing
 # Program by: Wiley Barton - 2024.02.22
 # Modified for conda/docker pipeline - 2024.02.22
-# Version for Persephone
-# last update - 2025.08.30
+# Version for PERSEPHONE
+# last update - 2025.09.19
 #--------------------------------------------------
 # Modified code sources:
 # umamba merge via: https://micromamba-docker.readthedocs.io/en/latest/advanced_usage.html#adding-micromamba-to-an-existing-docker-image
@@ -198,10 +198,11 @@ RUN /usr/local/bin/_dockerfile_initialize_user_accounts.sh && /usr/local/bin/_do
 #--------------------------------------------------------------------------------------------------#
 COPY --chown=${USER_UID}:${USER_GID} BASH_*.sh /usr/bin/
 COPY --chown=${USER_UID}:${USER_GID} env_*.yml /tmp/
-COPY --chown=${USER_UID}:${USER_GID} taxa2proc_*_out.txt /tmp/
+COPY --chown=${USER_UID}:${USER_GID} taxa2proc_*.txt /tmp/
 RUN chown -R ${USER_UID}:${USER_GID} /lib
 RUN chown -R ${USER_UID}:${USER_GID} /tmp
 RUN chown -R ${USER_UID}:${USER_GID} /DB
+RUN chown -R ${USER_UID}:${USER_GID} /opt
 #--------------------------------------------------------------------------------------------------#
 # Install Conda environments
 #--------------------------------------------------------------------------------------------------#
