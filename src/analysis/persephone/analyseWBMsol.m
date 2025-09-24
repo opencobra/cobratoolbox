@@ -195,7 +195,7 @@ fluxesPruned = stats.Fluxes_removed_reactions;
 
 % Are the models personalised with gut microbiota?
 microbiomePresent = false;
-if any(contains(modelNames,'mWBM')) || any(contains(modelNames, 'miWBM'))
+if any(contains(modelNames, 'mWBM')) || any(contains(modelNames, 'miWBM'))
     microbiomePresent = true;
 end
 
@@ -329,7 +329,11 @@ if microbiomePresent == true
 end
 
 % Output paths
-processedFluxResPaths = [string(pathToFluxResults);string(WBMmicrobiomePath);string(resultPath)];
+if microbiomePresent == true
+    processedFluxResPaths = [string(pathToFluxResults); string(WBMmicrobiomePath);string(resultPath)];
+else
+    processedFluxResPaths = [string(pathToFluxResults); string(resultPath)];
+end
 
 end
 

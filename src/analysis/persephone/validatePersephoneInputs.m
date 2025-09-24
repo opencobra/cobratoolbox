@@ -48,7 +48,7 @@ validateattributes(paths.General.solver,{'char','string'},{'nonempty'},'solver')
 validatestring(paths.General.solver,{'ibm_cplex','gurobi','tomlab_cplex','mosek'},'solver');
 validateattributes(paths.General.diet,{'char','string','cell'},{'nonempty'},'diet')
 validateattributes(paths.General.metadataPath,{'char','string'},{'nonempty'},'metadataPath')
-validateattributes(paths.General.numWorkersCreation,{'double','integer'},{'<=',feature('numCores')},'numWorkersCreation')
+  validateattributes(paths.General.numWorkersCreation,{'double','integer'},{'<=',feature('numCores')},'numWorkersCreation')
 validateattributes(paths.General.numWorkersOptimisation,{'double','integer'},{'<=',feature('numCores')},'numWorkersOptimisation')
 
 % Validate SeqC variables
@@ -74,7 +74,7 @@ if paths.Mars.flagMars
     validateattributes(paths.Mars.removeClade,{'logical'},{'scalar'},'removeClade')
     validatestring(paths.Mars.reconstructionDb ,{'AGORA2', 'APOLLO', 'full_db', 'user_db'},'reconstructionDb ');
     validateattributes(paths.Mars.userDbPath,{'char','string'},{'scalartext'},'userDbPath')
-    validateattributes(paths.Mars.taxaTablePath,{'char','string'},{'scalartext'},'taxaTablePath')
+    validateattributes(paths.Mars.taxaTable,{'char','string'},{'scalartext'},'taxaTable')
 end
 
 % Validate all inputs for mgPipe
@@ -103,6 +103,22 @@ if paths.fba.flagFBA
     validateattributes(paths.fba.outputPathFluxAnalysis,{'char','string'},{'nonempty'},'outputPathFluxAnalysis')
     validateattributes(paths.fba.saveFullRes,{'logical'},{'scalar'},'saveFullRes')
     validateattributes(paths.fba.rxnList,{'cell'},{'nonempty'},'rxnlist')
+    % Check there are no duplicates in the rxnList variable
+    if length(unique(paths.fba.rxnList)) ~= length(paths.fba.rxnList)
+        rxnList = paths.fba.rxnList;
+        % Find unique indexes
+        [~,idx] = unique(rxnList);
+
+        % Remove unique indexes to only obtain the non-unique entries
+        rxnList(idx) = [];
+        
+        % Make the rxnList into a comma seperated string 
+        rxnListStringTmp= [rxnList',[repmat({','},numel(rxnList)-1,1);{[]}]]';
+        rxnListStringDupl = [rxnListStringTmp{:}];
+        % Create error
+        error('Reactions %s are duplicated in rxnList, please remove', rxnListStringDupl);
+    end
+
     % Note, we still need to individually test for each field in
     % .paramFluxProcessing, TH.
     validateattributes(paths.fba.paramFluxProcessing,{'struct'},{'nonempty'},'paramFluxProcessing')    
