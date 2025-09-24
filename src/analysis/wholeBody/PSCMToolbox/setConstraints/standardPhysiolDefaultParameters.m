@@ -20,6 +20,10 @@ elseif strcmp(sex,'female')
     IndividualParameters.Height = 160; % in cm 
     IndividualParameters.sex = 'female'; % alternative female
 end
+
+% Add in age as NaN to ensure various other functions work
+IndividualParameters.Age = NaN;
+
 IndividualParameters.HeartRate = 67; % beats per minute
 IndividualParameters.StrokeVolume = 80; %ml/beat
 %IndividualParameters.StrokeVolume.unit = 'ml/beat';
