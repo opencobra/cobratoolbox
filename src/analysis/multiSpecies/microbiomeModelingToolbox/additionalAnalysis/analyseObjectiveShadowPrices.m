@@ -155,8 +155,12 @@ for s=1:steps:length(modelList)
         % compute the flux balance analysis solution
         FBAsolution = {};
         for k=1:size(objectiveList,1)
-            modelObj = changeObjective(model,objectiveList{k,1});
-            FBAsolution{k,1} = optimizeCbModel(modelObj,osenseStr);
+            if ~isempty(find(strcmp(model.rxns,objectiveList{k,1})))
+                modelObj = changeObjective(model,objectiveList{k,1});
+                FBAsolution{k,1} = optimizeCbModel(modelObj,osenseStr);
+            else
+                FBAsolution{k,1} = {};
+            end
         end
         % save solutions one by one-complete file would be enormous
         parsave([resultsFolder filesep strrep(modelList{i,1},'.mat','') '_solution.mat'],FBAsolution)
