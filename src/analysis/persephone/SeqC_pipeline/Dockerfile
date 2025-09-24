@@ -173,7 +173,8 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
 RUN curl -fsSL -o /bin/datasets https://ftp.ncbi.nlm.nih.gov/pub/datasets/command-line/v2/linux-amd64/datasets && \
     curl -fsSL -o /bin/dataformat https://ftp.ncbi.nlm.nih.gov/pub/datasets/command-line/v2/linux-amd64/dataformat && \
     curl -fsSL -o /bin/edirect https://ftp.ncbi.nlm.nih.gov/entrez/entrezdirect/install-edirect.sh && \
-    chmod +x /bin/datasets /bin/dataformat
+    curl -fsSl -o /usr/bin/time-1.9.tar.gz https://ftp.gnu.org/gnu/time/time-1.9.tar.gz && tar -I pigz -xvf /usr/bin/time-1.9.tar.gz --directory /usr/bin/ && \
+    chmod +x /bin/datasets /bin/dataformat  
 #--------------------------------------------------------------------------------------------------#
 # Clone required Git repositories
 #--------------------------------------------------------------------------------------------------#
@@ -232,6 +233,7 @@ RUN [ "/bin/bash", "-c", "mv /opt/conda/envs/env_s4_kraken/lib/kraken2/kraken2{,
 RUN [ "/bin/bash", "-c", "mv /opt/conda/envs/env_s4_kraken/lib/bracken/bracken{,-build} /opt/conda/envs/env_s4_kraken/bin" ]
 RUN [ "/bin/bash", "-c", "mv /opt/conda/envs/env_s4_kraken/lib/bracken/src /opt/conda/envs/env_s4_kraken/bin" ]
 RUN [ "/bin/bash", "-c", "mv /opt/conda/envs/env_s4_kraken/lib/bracken/analysis_scripts/combine_bracken_outputs.py /opt/conda/envs/env_s4_kraken/bin" ]
+RUN cd /usr/bin/time-1.9 && ./configure --prefix=/usr && make && make install  
 #--------------------------------------------------------------------------------------------------#
 # Fix for: Kneaddata, ENA Search, regrex extension, permissions, windows file conversion
 #--------------------------------------------------------------------------------------------------#
