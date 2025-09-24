@@ -187,6 +187,21 @@ func_log () {
 		#func_log "4" "CRITICAL" "FUNC_MAMA" "something bad happened XO"
 	fi
 }
+func_track_usage() {
+	# usage: func_track_usage ls -lh /DB/REPO_gref
+    local logfile="/home/seqc_user/seqc_project/final_reports/log_usage.txt"
+
+    # Run command with GNU time
+    { /usr/bin/time -v "$@" ; } 2> >(tee -a "$logfile" >&2)
+
+    # Extract relevant metrics
+    local elapsed=$(awk -F: '/Elapsed \(wall clock\) time/ {gsub(/^[ \t]+/, "", $2); print $2}' "$logfile" | tail -1)
+    local cpu_pct=$(awk -F: '/Percent of CPU this job got/ {gsub(/^[ \t]+/, "", $2); print $2}' "$logfile" | tail -1)
+    local mem_kb=$(awk -F: '/Maximum resident set size/ {gsub(/^[ \t]+/, "", $2); print $2}' "$logfile" | tail -1)
+
+    echo -e "Command: $*\nElapsed time: $elapsed\nCPU usage: $cpu_pct\nPeak memory: ${mem_kb} KB" | tee -a "$logfile"
+    echo "----------------------------------------" >> "$logfile"
+} #EoFunc - track_usage
 func_file_find () {
 	# Simple find file<1> in given list of dirs<2> returns first hit
 	#vq_name="$vopt_name"
@@ -490,7 +505,7 @@ bash "${SCRP_RUN}"
 EOF
     # Make executable and run
     chmod +x "$SCRP_JOB"
-    bash "$SCRP_JOB" "${vloc_name}"
+    func_track_usage bash "$SCRP_JOB" "${vloc_name}"
 	# POSTCHECK
 	# TODO
 } # EoFunc - mama2
@@ -669,8 +684,7 @@ func_ref () {
 	fi
 	#eggnog:Carlos P Cantalapiedra, Ana [sic]Hernandez-Plaza, Ivica Letunic, Peer Bork, Jaime Huerta-Cepas, eggNOG-mapper v2: Functional Annotation, Orthology Assignments, and Domain Prediction at the Metagenomic Scale, Molecular Biology and Evolution, Volume 38, Issue 12, December 2021, Pages 5825–5829, https://doi.org/10.1093/molbev/msab293
 	#DEMETER:Heinken A, [sic]Magnusdottir S, Fleming RMT, Thiele I. DEMETER: efficient simultaneous curation of genome-scale reconstructions guided by experimental data and refined gene annotations. Bioinformatics. 2021 Nov 5;37(21):3974-3975. doi: 10.1093/bioinformatics/btab622. PMID: 34473240; PMCID: PMC8570805
-}
-#EoFunc - refs
+} #EoFunc - refs
 func_taxa_map () {
 #map read count via bam to final taxonomy assigned to meta-bin assembles
 #https://www.biostars.org/p/14246/#14264
@@ -883,8 +897,7 @@ func_taxa_map () {
 		fi
 		echo vi:"${v_i}"
 	done
-}
-#EoFunc - taxa_map
+} #EoFunc - taxa_map
 func_demo () {
 	printf 'FUNC_DEMO: DEMO starting\n'
 	v_dir_main_in='/home/seqc_user/seqc_project/step0_data_in'
@@ -1170,8 +1183,7 @@ func_demo () {
 		#EoBLOCK
 		#convert to mars input
 	fi #EoBranch - short read
-}
-#EoFunc - demo
+} #EoFunc - demo
 fi #EoCHECK = 0
 # read options
 if [[ ${v_scrp_check} -eq 1 ]];then
