@@ -6,7 +6,7 @@ function [progress] = runPersephone(configPath)
 % balance analysis (FBA), and statistical evaluation. 
 %
 %
-% Updated: 2025.09.20 wbarton
+% Updated: 2025.07.01 wbarton
 % Updated: 2025.09.09 asheehy
 % Updated: 2025.09.19 bnap
 %
@@ -43,7 +43,7 @@ function [progress] = runPersephone(configPath)
 % and saved to your workspace. It will detail all sections that have been
 % run and how long they took.
 %
-%%%%%%%%%%%%%%%%%%%%% PERSEPHONE INITIALISATION %%%%%%%%%%%%%%%%%%%%%%%%%
+%% %%%%%%%%%%%%%%%%%%% PERSEPHONE INITIALISATION %%%%%%%%%%%%%%%%%%%%%%%%%
 % Start timer
 tic;
 % Load all variables defined in the configPersephone.m
@@ -215,7 +215,7 @@ end
 % if paths.persWBM.flagPersonalize is still true, personalize models
 if paths.persWBM.flagPersonalise
 
-    disp(' > Personalise WBM models.')
+     disp(' > Personalise WBM models.')
     persWBM(...
         paths.General.metadataPath, ...
         'persPhysiology', paths.persWBM.persPhysiology, ...
@@ -273,6 +273,7 @@ if paths.mWBM.flagMWBMCreation
             'numWorkersCreation',paths.General.numWorkersCreation)
     end
 
+
     % Save progress that human-microbiome models have been created.
     part4 = toc;
     progress.mWBMCreation = [true, part4];    
@@ -298,7 +299,13 @@ diary([resultPath filesep 'logFile_FBA.txt'])
 
 % Run FBA's for the models if so specified.
 if paths.fba.flagFBA == 1
-
+    % If only iWBMs are created and solved ensure the correct WBM path is
+    % picked for FBA 
+    if ~paths.mWBM.flagMWBMCreation && isempty(what(paths.mWBM.outputPathMWBM).mat)
+        paths.mWBM.outputPathMWBM = paths.persWBM.outputPathPersonalisation;
+        % As only iWBMs, no gut microbiome and thus no GF models.
+        paths.fba.analyseGF = false;
+    end
     analyseWBMs(paths.mWBM.outputPathMWBM, ...
         paths.fba.outputPathFluxResult, ...
         paths.fba.rxnList,...
@@ -309,6 +316,7 @@ if paths.fba.flagFBA == 1
         'fluxAnalysisPath', paths.fba.outputPathFluxAnalysis,...
         'solver', paths.General.solver,...
         'analyseGF', paths.fba.analyseGF);
+
 
     % Save progress that FBA's have been run
     part5 = toc;

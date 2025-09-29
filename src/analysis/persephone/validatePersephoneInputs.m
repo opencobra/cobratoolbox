@@ -74,7 +74,7 @@ if paths.Mars.flagMars
     validateattributes(paths.Mars.removeClade,{'logical'},{'scalar'},'removeClade')
     validatestring(paths.Mars.reconstructionDb ,{'AGORA2', 'APOLLO', 'full_db', 'user_db'},'reconstructionDb ');
     validateattributes(paths.Mars.userDbPath,{'char','string'},{'scalartext'},'userDbPath')
-    validateattributes(paths.Mars.taxaTable,{'char','string'},{'scalartext'},'taxaTable')
+    validateattributes(paths.Mars.taxaTablePath,{'char','string'},{'scalartext'},'taxaTable')
 end
 
 % Validate all inputs for mgPipe

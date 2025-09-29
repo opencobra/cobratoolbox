@@ -257,7 +257,7 @@ if any(matches(data.Properties.VariableNames,'sex','IgnoreCase',true))
 end
 
 % Process the sample ID names to align with the metadata IDs
-data.ID = erase(data.ID,{'mWBM_','miWBM_','muWBM_','_female','_male'});
+data.ID = erase(data.ID,{'mWBM_','miWBM_','muWBM_','_female','_male', 'iWBM_'});
 end
 
 function dataProcessed = processDataForStats(data)
