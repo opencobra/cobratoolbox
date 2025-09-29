@@ -4,7 +4,7 @@
 # Program by: Wiley Barton - 2022.02.07
 # Modified for conda/docker pipeline - 2024.02.22
 # Version for: PERSEPHONE
-# last update - 2025.09.19
+# last update - 2025.09.28
 # Modified code sources:
 #   check volume size: https://stackoverflow.com/questions/8110530/check-free-disk-space-for-current-partition-in-bash
 #   semi-array in env var: https://unix.stackexchange.com/questions/393091/unable-to-use-an-array-as-environment-variable
@@ -152,12 +152,12 @@ varr_db_size[$vn]=14
 varr_db_check[$vn]=$(check_db_size "${varr_db_path[$vn]}" "${varr_db_size[$vn]}")
 ## agora2 and apollo - 154G pre 69 post - 84G genomes - TODO ADJUST FOR FINAL BUILD 238 - 20250919 - 8.6G ~ 1HR
 ((vn++))
-#previous record 14888918
+#previous record 14888918,16969998
 varr_db_name[$vn]='tool_k2_agora2apollo'
 varr_db_path[$vn]=${varr_db_path[0]}'/REPO_tool/kraken/kdb_a2a'
-varr_db_gets[$vn]='wget --no-check-certificate https://zenodo.org/records/16969998/files/kdb_a2a_ssp.tar.gz -O '${varr_db_path[$vn]}'.tar.gz'
+varr_db_gets[$vn]='wget --no-check-certificate https://zenodo.org/records/17220680/files/kdb_a2a_NR_ssp.tar.gz -O '${varr_db_path[$vn]}'.tar.gz'
 varr_db_pack[$vn]="tar -I pigz --transform='s,^kdb_a2a_ssp/,kdb_a2a/,' -xvf '${varr_db_path[$vn]}'.tar.gz --directory '${varr_db_path[0]}'/REPO_tool/kraken/"
-varr_db_size[$vn]=8.6
+varr_db_size[$vn]=9.5
 varr_db_check[$vn]=$(check_db_size "${varr_db_path[$vn]}" "${varr_db_size[$vn]}")
 ##smol demo - actual size needed
 ((vn++))
