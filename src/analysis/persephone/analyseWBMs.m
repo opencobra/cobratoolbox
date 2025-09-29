@@ -407,7 +407,7 @@ end
 
 % Run flux processing pipeline
 % Make an if statement here for GF/personalised testing
-analyseWBMsol(fluxPath,paramFluxProcessing, fluxAnalysisPath);
+analyseWBMsol(fluxPath,paramFluxProcessing, fluxAnalysisPath, analyseGF);
 
 % slimDownFBAresults prunes FBA solution results obtained in
 % analyseWBMs.m and saves the slimmed down solution results in a

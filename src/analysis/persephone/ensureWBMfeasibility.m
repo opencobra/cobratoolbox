@@ -143,18 +143,18 @@ allModelsFeasible = false;
 if isempty(infeasibleModelPaths)
     disp('All models are feasible on the diet. No dietary alterations are needed.')
     allModelsFeasible = true;
-    dietInfo = 'Not available as all models are feasible';
-    dietGrowthStats = 'Not available as all models are feasible';
-    return;
+    missingDietComponents = cell2table({'No missing diet components found as WBMs were feasible.'});
+    updatedDiet = {'No updated diet required.'};
 end
 
 %% STEP 2: Test if all models are feasible when opening all diet reactions.
 disp('EnsureGrowthOnDiet -- STEP 2: Test if all models are feasible when opening all diet reactions.')
 modelsInfeasibleOnAnyDiet = false;
-if allModelsFeasible == false
 
-    % Test if the infeasible models would be feasible with all dietary inputs given
-    feasibleOnAnyDiet = zeros(length(infeasibleModelPaths),1);
+% Test if the infeasible models would be feasible with all dietary inputs given
+feasibleOnAnyDiet = zeros(length(infeasibleModelPaths),1);
+
+if allModelsFeasible == false
     for i = 1:length(infeasibleModelPaths) % This used to be parfor
 
         % % Load environment variables and set solver
@@ -199,7 +199,7 @@ disp('EnsureGrowthOnDiet -- STEP 3: Test if models are feasible when opening onl
 updatedDietComponents = {};
 % Preallocate array for models that are feasible on an updated diet
 feasibleOnUpdatedDiet = zeros(length(infeasibleModelPaths),1);
-if any(feasibleOnAnyDiet)
+if any(feasibleOnAnyDiet) && ~allModelsFeasible
     for i = 1:length(infeasibleModelPaths)
         if feasibleOnAnyDiet(i)
 
@@ -565,7 +565,7 @@ function model_out = setupWbmOnDiet(model_in, Diet)
 
 % Set diet
 if ~isfield(model_in.SetupInfo, 'dietName')
-    disp('set default diet')
+    % disp('set default diet')
     model_in = setDietConstraints(model_in,Diet, 1);
 end
 

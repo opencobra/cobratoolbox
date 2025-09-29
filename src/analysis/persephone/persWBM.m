@@ -1046,12 +1046,12 @@ end % end of forloop for each model
 % resPathFeas = resPath(feasPaths);
 [dietInfo, dietGrowthStats] = ensureWBMfeasibility(resPath, 'Diet', Diet, 'solver', solver);
 
-if any(dietGrowthStats(:, 2) == false)
+if all(dietGrowthStats{:, 2} == true)
     disp("All models were found to be feasible on the given diet")
-elseif any(dietGrowthStats(:, 3) == false)
+elseif any(dietGrowthStats{:, 3} == false)
     disp("Some models were not feasible on the given and some adjustments" + newline + ...
-        "were made to ensure feasibility, the adjustments are stored in ...:ADD")
-elseif any(dietGrowthStats(:, 4) == false)
+        "were made to ensure feasibility, the adjustments are stored in ...:dietGrowthStats in the same folder as your iWBMs")
+elseif any(dietGrowthStats{:, 4} == false)
     disp("Some models were found that were not feasible on any diet,..." + newline + ...
         "they are listed in the file: dietGrowthStats in the same folder as your iWBMs")
 end

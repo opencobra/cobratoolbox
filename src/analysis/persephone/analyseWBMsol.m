@@ -1,4 +1,4 @@
-function processedFluxResPaths = analyseWBMsol(fluxPath,paramFluxProcessing, fluxAnalysisPath)
+function processedFluxResPaths = analyseWBMsol(fluxPath,paramFluxProcessing, fluxAnalysisPath, analyseGF)
 % analyseWBMsol loads the FBA solutions produced in 
 % analyseWBMs.m, prepares the FBA results for further
 % analyses, and produces summary statistics into the flux results. 
@@ -188,7 +188,7 @@ fprintf("> Processing and analysing the flux results... \n")
 fluxes = [metadata fluxes];
 
 % Create statistics for fluxes and prune results
-stats = describeFluxes(fluxes,paramFluxProcessing);
+stats = describeFluxes(fluxes,paramFluxProcessing, analyseGF);
 
 % Get fluxes for further analysis
 fluxesPruned = stats.Fluxes_removed_reactions;
@@ -309,6 +309,7 @@ description = cell(2,1); description{1} = 'Predicted reaction fluxes for analysi
 description{2} = ''; % Details
 writeSupplement(stats.Fluxes_removed_reactions, description, resultPath)
 
+if analyseGF || ~isempty(stats.Scaled_fluxes)
 % Summary statistics of scaled flux results
 description = cell(2,1); description{1} = 'Summary statistics of predicted scaled fluxes for analysis'; % Header
 description{2} = ''; % Details
@@ -318,6 +319,7 @@ writeSupplement(stats.Scaled_flux_summary_statistics, description, resultPath)
 description = cell(2,1); description{1} = 'Predicted scaled reaction fluxes for analysis'; % Header
 description{2} = ''; % Details
 writeSupplement(stats.Scaled_fluxes, description, resultPath)
+end
 
 if microbiomePresent == true
 
@@ -337,7 +339,7 @@ end
 
 end
 
-function stats = describeFluxes(fluxes,paramFluxProcessing)
+function stats = describeFluxes(fluxes,paramFluxProcessing, analyseGF)
 % This function produces summary statistics on the fluxes, isolates the microbial component of 
 % the obtained fluxes, and saves the flux descriptions to a multi-sheet excel file. 
 %
@@ -481,7 +483,6 @@ fluxes_rm(:,fluxStats.Removed') = [];
 
 % Obtain HM-H fluxes by taking the germfree fluxes and subtracting them
 % from the fluxes obtained in the microbiome-WBM models.
-
 % Check which WBMs are mWBMs
 mWBMs = contains(sexInfo.ID,{'mWBM','miWBM'});
 
@@ -506,24 +507,24 @@ if any(mWBMs) && ~any(iWBMs)
     scaledFluxes{matches(sexInfo.Sex,'female'),:} = fluxes_rm{matches(sexInfo.Sex,'female'),:} - femaleGF{:,:};
 end
 
-if ~any(mWBMs) && all(iWBMs)
+% if ~any(mWBMs) && all(iWBMs)
 
     % If there is no microbiome and only human personalisation, substract
     % the values of Harvey and Harvetta from the respective flux values of
     % the personalised models
 
     % Find fluxes from the unpersonalised models
-    iWBM_control_male = fluxes_rm(contains(sexInfo.ID,'_Control') & contains(sexInfo.Sex,'_male'),:);
-    iWBM_control_female = fluxes_rm(contains(sexInfo.ID,'_Control') & contains(sexInfo.Sex,'_female'),:);
+    % iWBM_control_male = fluxes_rm(contains(sexInfo.ID,'_Control') & contains(sexInfo.Sex,'_male'),:);
+    % iWBM_control_female = fluxes_rm(contains(sexInfo.ID,'_Control') & contains(sexInfo.Sex,'_female'),:);
 
     % Set scaled flux variable
-    scaledFluxes = fluxes_rm;
+    scaledFluxes = table();
 
     % Remove fluxes from unpersonalised host from the fluxes from the
     % personalised hosts. 
-    scaledFluxes{matches(sexInfo.Sex,'male'),:} = fluxes_rm{matches(sexInfo.Sex,'male'),:} - iWBM_control_male{:,:};
-    scaledFluxes{matches(sexInfo.Sex,'female'),:} = fluxes_rm{matches(sexInfo.Sex,'female'),:} - iWBM_control_female{:,:};
-end
+    % scaledFluxes{matches(sexInfo.Sex,'male'),:} = fluxes_rm{matches(sexInfo.Sex,'male'),:} - iWBM_control_male{:,:};
+    % scaledFluxes{matches(sexInfo.Sex,'female'),:} = fluxes_rm{matches(sexInfo.Sex,'female'),:} - iWBM_control_female{:,:};
+% end
 
 if all(iWBMs) && any(mWBMs)
 
@@ -562,15 +563,15 @@ scaledFluxes(~idH,:) = [];
 %%% Obtain summary statistics for the unscaled and scaled fluxes %%%
 
 % Preallocate table for flux contributions from the scaled
-if any(mWBMs) && ~any(iWBMs) % host NOT personalised, microbiome personalised
+if any(mWBMs) && ~any(iWBMs) && analyseGF % host NOT personalised, microbiome personalised
 
     varNames = {'Reaction','Germ-free male','Germ-free female','Mean scaled flux','SD scaled flux','Mean scaled / WBM flux','SD scaled / WBM flux'};
 
-elseif any(iWBMs) && ~any(mWBMs) % host personalised, microbiome NOT personalised
+% elseif any(iWBMs) && ~any(mWBMs) % host personalised, microbiome NOT personalised
 
-    varNames = {'Reaction','Male control','Female control','Mean scaled flux','SD scaled flux','Mean scaled / WBM flux','SD scaled / WBM flux'};
+    % varNames = {'Reaction','Male control','Female control','Mean scaled flux','SD scaled flux','Mean scaled / WBM flux','SD scaled / WBM flux'};
 
-elseif any(iWBMs) && any(mWBMs) % host personalised, microbiome personalised
+elseif any(iWBMs) && any(mWBMs) && analyseGF % host personalised, microbiome personalised
 
     varNames = {'Reaction','Average germ-free male', 'Average germ-free female','Mean scaled flux','SD scaled flux','Mean scaled / WBM flux','SD scaled / WBM flux'};
 
@@ -586,19 +587,19 @@ else
 end
 
 % Populate table 
-if any(mWBMs) && ~any(iWBMs) % host NOT personalised, microbiome personalised
+if any(mWBMs) && ~any(iWBMs) && analyseGF % host NOT personalised, microbiome personalised
 
     % Add GF fluxes to the table
     scaledFluxStats.("Germ-free male") = table2array(fluxes_rm(contains(sexInfo.ID, 'gf') & matches(sexInfo.Sex, 'male'),:))';
     scaledFluxStats.("Germ-free female") = table2array(fluxes_rm(contains(sexInfo.ID, 'gf') & matches(sexInfo.Sex, 'female'),:))';
 
-elseif any(iWBMs) && ~any(mWBMs) % host NOT personalised, microbiome personalised
+% elseif any(iWBMs) && ~any(mWBMs) % host personalised, microbiome NOT personalised
 
     % Add the germfree fluxes
-    scaledFluxStats.("Male control") = table2array(fluxes_rm(contains(sexInfo.ID,'male') & contains(sexInfo.ID,'_Control'),:))';
-    scaledFluxStats.("Female control") = table2array(fluxes_rm(contains(sexInfo.ID,'female') & contains(sexInfo.ID,'_Control'),:))';
+    % scaledFluxStats.("Male control") = table2array(fluxes_rm(contains(sexInfo.ID,'male') & contains(sexInfo.ID,'_Control'),:))';
+    % scaledFluxStats.("Female control") = table2array(fluxes_rm(contains(sexInfo.ID,'female') & contains(sexInfo.ID,'_Control'),:))';
 
-elseif any(iWBMs) && any(mWBMs) % host personalised, microbiome personalised
+elseif any(iWBMs) && any(mWBMs) && analyseGF% host personalised, microbiome personalised
 
     % Calculate the average germfree fluxes
     % Note that if no male or female values are found, i.e., mean([]) a nan
@@ -659,8 +660,9 @@ end
 % Add sex information
 fluxes = [sexInfo(idH,:) fluxes(idH,:)];
 fluxes_rm = [sexInfo(idH,:) fluxes_rm(idH,:)];
+if analyseGF
 scaledFluxes = [sexInfo(idH,:) scaledFluxes];
-
+end
 % Save processed fluxes and statistics
 stats = struct;
 stats.('Flux_summary_statistics') = fluxStats;
