@@ -266,11 +266,16 @@ if microbiomePresent == true
     fluxesToCorrelate = fluxesToCorrelate(wbmRelativeAbundances.Properties.RowNames,:);
     wbmRelativeAbundances = wbmRelativeAbundances(fluxesToCorrelate.Properties.RowNames,:);
     
-    RHO = corr(table2array(fluxesToCorrelate),table2array(wbmRelativeAbundances),'type','Spearman','rows','pairwise')'; % Create spearman correlations
-    fluxMicrobeCorr = array2table(RHO,... % Transform correlation matrix to table
-        'RowNames', wbmRelativeAbundances.Properties.VariableNames',...
-        'VariableNames',fluxesToCorrelate.Properties.VariableNames...
-        );
+    if license('test', 'Statistics_Toolbox')
+        RHO = corr(table2array(fluxesToCorrelate),table2array(wbmRelativeAbundances),'type','Spearman','rows','pairwise')'; % Create spearman correlations
+        fluxMicrobeCorr = array2table(RHO,... % Transform correlation matrix to table
+            'RowNames', wbmRelativeAbundances.Properties.VariableNames',...
+            'VariableNames',fluxesToCorrelate.Properties.VariableNames...
+            );
+    else
+        warning('Statistics Toolbox was not installed, correlation between flux and relative abundance could not be performed');
+        fluxMicrobeCorr = cell2table({'Statistics Toolbox was not installed, correlation between flux and relative abundance could not be performed'});
+    end
 end
 
 %% Create table with all results
@@ -481,6 +486,7 @@ fluxes_rm(:,fluxStats.Removed') = [];
 
 %%% Scale fluxes %%%
 
+
 % Obtain HM-H fluxes by taking the germfree fluxes and subtracting them
 % from the fluxes obtained in the microbiome-WBM models.
 % Check which WBMs are mWBMs
@@ -489,7 +495,9 @@ mWBMs = contains(sexInfo.ID,{'mWBM','miWBM'});
 % Check which WBMs are iWBMs or miWBMs
 iWBMs = contains(sexInfo.ID,'iWBM');
 
-if any(mWBMs) && ~any(iWBMs)
+scaledFluxes = table();
+
+if any(mWBMs) && ~any(iWBMs) && analyseGF
 
     % If only the microbiome is personalised - obtain the generic male and
     % female germ-free models and substract that from the male and female
@@ -507,7 +515,7 @@ if any(mWBMs) && ~any(iWBMs)
     scaledFluxes{matches(sexInfo.Sex,'female'),:} = fluxes_rm{matches(sexInfo.Sex,'female'),:} - femaleGF{:,:};
 end
 
-% if ~any(mWBMs) && all(iWBMs)
+if ~any(mWBMs) && all(iWBMs) && analyseGF
 
     % If there is no microbiome and only human personalisation, substract
     % the values of Harvey and Harvetta from the respective flux values of
@@ -524,9 +532,9 @@ end
     % personalised hosts. 
     % scaledFluxes{matches(sexInfo.Sex,'male'),:} = fluxes_rm{matches(sexInfo.Sex,'male'),:} - iWBM_control_male{:,:};
     % scaledFluxes{matches(sexInfo.Sex,'female'),:} = fluxes_rm{matches(sexInfo.Sex,'female'),:} - iWBM_control_female{:,:};
-% end
+end
 
-if all(iWBMs) && any(mWBMs)
+if all(iWBMs) && any(mWBMs) && analyseGF
 
     % If both the microbiome and human are personalised, substract the
     % germfree values from the respective sample flux values.
@@ -557,8 +565,10 @@ end
 
 % Remove the unpersonalised GF samples
 idH = ~contains(sexInfo.ID, 'gf');
-scaledFluxes(~idH,:) = [];
 
+if ~isempty(scaledFluxes)
+scaledFluxes(~idH,:) = [];
+end
 
 %%% Obtain summary statistics for the unscaled and scaled fluxes %%%
 
@@ -605,8 +615,8 @@ elseif any(iWBMs) && any(mWBMs) && analyseGF% host personalised, microbiome pers
     % Note that if no male or female values are found, i.e., mean([]) a nan
     % will be produced. If only one value is found, e.g., mean(5.1), that
     % number will be produced. 
-    scaledFluxStats.("Average germ-free male") = mean(table2array(fluxes_rm(endsWith(sexInfo.ID, '_GF') & strcmp(sexInfo.Sex, 'male'),:)))';
-    scaledFluxStats.("Average germ-free female") = mean(table2array(fluxes_rm(endsWith(sexInfo.ID, '_GF') & strcmp(sexInfo.Sex, 'female'),:)))';
+    scaledFluxStats.("Average germ-free male") = mean(table2array(fluxes_rm(startsWith(sexInfo.ID, 'gfi') & strcmp(sexInfo.Sex, 'male'),:)))';
+    scaledFluxStats.("Average germ-free female") = mean(table2array(fluxes_rm(startsWith(sexInfo.ID, 'gfi') & strcmp(sexInfo.Sex, 'female'),:)))';
 else
     scaledFluxStats = table();
 end
