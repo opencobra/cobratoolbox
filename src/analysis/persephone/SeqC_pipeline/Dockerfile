@@ -6,7 +6,7 @@
 # Program by: Wiley Barton - 2024.02.22
 # Modified for conda/docker pipeline - 2024.02.22
 # Version for PERSEPHONE
-# last update - 2025.09.19
+# last update - 2025.10.02
 #--------------------------------------------------
 # Modified code sources:
 # umamba merge via: https://micromamba-docker.readthedocs.io/en/latest/advanced_usage.html#adding-micromamba-to-an-existing-docker-image
@@ -174,7 +174,7 @@ RUN curl -fsSL -o /bin/datasets https://ftp.ncbi.nlm.nih.gov/pub/datasets/comman
     curl -fsSL -o /bin/dataformat https://ftp.ncbi.nlm.nih.gov/pub/datasets/command-line/v2/linux-amd64/dataformat && \
     curl -fsSL -o /bin/edirect https://ftp.ncbi.nlm.nih.gov/entrez/entrezdirect/install-edirect.sh && \
     curl -fsSl -o /usr/bin/time-1.9.tar.gz https://ftp.gnu.org/gnu/time/time-1.9.tar.gz && tar -I pigz -xvf /usr/bin/time-1.9.tar.gz --directory /usr/bin/ && \
-    chmod +x /bin/datasets /bin/dataformat  
+    chmod +x /bin/datasets /bin/dataformat /bin/edirect /usr/bin/time-1.9/
 #--------------------------------------------------------------------------------------------------#
 # Clone required Git repositories
 #--------------------------------------------------------------------------------------------------#
