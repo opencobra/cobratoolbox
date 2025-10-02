@@ -19,7 +19,7 @@ function [groupsToPlot, colours] = findPvalCategories(pValues)
 
 % First, the FDR values are calculated from the p-value list using the
 % benjamini-holm method.
-FDRvalues = mafdr(pValues,'BHFDR',true);
+FDRvalues = fdrBHadjustment(pValues);
 
 % Next, the p-value groups are defined. Note that not all groups might be
 % present in the data.
