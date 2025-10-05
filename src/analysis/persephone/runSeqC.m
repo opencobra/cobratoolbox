@@ -10,7 +10,7 @@ function status = runSeqC(...
 %   matlab script structure: Tim Hensen, runMars.m, 2025.01
 %   assistance and reference from a generative AI model [ChatGPT](https://chatgpt.com/)
 %       clean-up and improved readability
-% Last Modified: 2025.09.20 - wbarton
+% Last Modified: 2025.10.02 - wbarton
 % Part of: Persephone Pipeline
 %
 % Description:
@@ -261,7 +261,7 @@ end
     disp(' > SeqC Processing Ends.');
 
     % Move final output
-    movefile(fullfile(vdir_out_seqc, '*'), outputPathSeqC);
+    movefile(fullfile(vdir_out_seqc, '*txt'), outputPathSeqC);
     % Update mars path
     %vdir_out_mars = fullfile(outputPathSeqC, 'mars_out');
     %if ~strcmp(outputPathSeqC, outputPathMARS)
