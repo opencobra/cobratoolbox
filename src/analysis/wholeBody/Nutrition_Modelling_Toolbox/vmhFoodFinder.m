@@ -177,7 +177,7 @@ for i = 1:size(userInput,1)
         % Set the amount of food ingested and add the VMH items to the
         % foods2Check structure with their alias as field name
         
-        toStore(:,4) = {userInput.("WeightEaten (g)")(i)};
+        toStore(:,4) = {userInput.("ReferenceWeight(g)")(i)};
         foods2Check.(translation(i,2)) = toStore;
     else
         % If no VMH food suggestions were already given obtain the keywords
@@ -245,7 +245,7 @@ for i = 1:size(userInput,1)
             % the maximum foods allowed assign them the food ingested from
             % the original food item and save them under their alias in the
             % foods2Check structure
-            totGroupSub(:,4) = {foodInfo.("WeightEaten (g)")};
+            totGroupSub(:,4) = {foodInfo.("ReferenceWeight(g)")};
 
             foods2Check.(translation(i,2)) = totGroupSub;
         else
