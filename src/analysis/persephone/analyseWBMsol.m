@@ -166,7 +166,7 @@ for i = 1:length(solPaths)
     metadata.Sex(i) = string(solution.sex);
 
     % Set flux results to nan if .stat was not equal to one
-    solution.f(solution.stat~=1)=nan;
+    solution.f(solution.stat~=1&solution.stat~=5)=nan;
 
     % Remove reaction if it is a duplicate
     solution.f(dupIDX)=[];
