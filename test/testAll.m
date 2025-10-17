@@ -17,7 +17,7 @@ fprintf('                                                  | \n\n');
 CIenv = false;
 
 % request explicitly from the user to launch test suite locally
-if contains(getenv('HOME'), 'saleh')
+if contains(getenv('HOME'), 'cobratoolbox')
     % Running in CI environment
     fprintf('Running test in cobratoolbox/CI environment\n');
 
