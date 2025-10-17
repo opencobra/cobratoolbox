@@ -87,7 +87,7 @@ if db
         relrows = cellfun(@(x) ischar(x) && ~isempty(x),raw.databaseid);
         relarray = [raw.databaseid(relrows),raw.qualifier(relrows),raw.Model_Field(relrows), raw.referenced_Field(relrows),raw.DBPatterns(relrows),raw.qualifierType(relrows)];
         dbInfo = cell(0,6);
-        for i = 1:size(relarray)
+        for i = 1:height(relarray)
             fieldRef = relarray{i,4}(1:end-1);
             dbs = strsplit(relarray{i,1},';');
             for db = 1:length(dbs)
