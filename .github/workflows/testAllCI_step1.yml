@@ -23,6 +23,15 @@ jobs:
 
       - name: Convert JUnit to CTRF
         run: |
+          if ! command -v npx >/dev/null 2>&1; then
+            echo "❌ 'npx' not found. Please ensure Node.js and npm are installed on this runner."
+            echo "   You can fix this by running:"
+            echo "     sudo apt install -y nodejs npm"
+            echo "   or by adding a Node.js setup step using 'actions/setup-node@v4'."
+            exit 1
+          fi
+
+          echo "✅ Found npx, converting JUnit report to CTRF..."
           npx junit-to-ctrf ./testReport.junit.xml -o ./ctrf/ctrf-report.json
 
       - name: Upload CTRF Artifact
