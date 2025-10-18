@@ -187,7 +187,7 @@ function mw = molweight(varargin)
     mw = zeros(size(r));
     atoms = fields(r);
     
-    for n = 1:size(r(:))
+    for n = 1:numel(r(:))
         for i = 1:length(atoms)
             
             % The following check is needed to avoid add adding NaN in
