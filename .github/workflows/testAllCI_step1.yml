@@ -23,16 +23,24 @@ jobs:
 
       - name: Convert JUnit to CTRF
         run: |
-          if ! command -v npx >/dev/null 2>&1; then
-            echo "❌ 'npx' not found. Please ensure Node.js and npm are installed on this runner."
-            echo "   You can fix this by running:"
-            echo "     sudo apt install -y nodejs npm"
-            echo "   or by adding a Node.js setup step using 'actions/setup-node@v4'."
+          # Check Node.js version (optional guard)
+          MAJOR="$(node -p "process.versions.node.split('.')[0]")"
+          if [ "$MAJOR" -lt 20 ]; then
+            echo "❌ Node.js version too old: $(node -v). Please install Node 20 or newer."
             exit 1
           fi
 
-          echo "✅ Found npx, converting JUnit report to CTRF..."
-          npx junit-to-ctrf ./testReport.junit.xml -o ./ctrf/ctrf-report.json
+          # Print versions for debugging clarity
+          echo "✅ Node version: $(node -v)"
+          echo "✅ npm version:  $(npm -v)"
+
+          # Ensure output directory exists
+          mkdir -p ./ctrf
+
+          # Run conversion (non-interactive and version pinned)
+          echo "Converting JUnit XML to CTRF JSON..."
+          npx --yes junit-to-ctrf@0.0.12 ./testReport.junit.xml -o ./ctrf/ctrf-report.json
+
 
       - name: Upload CTRF Artifact
         uses: actions/upload-artifact@v4
