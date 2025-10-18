@@ -127,7 +127,7 @@ if desc
         fieldDimensions = regexprep(strcat(raw.Xdim(relrows),{' x '},raw.Ydim(relrows)),'^ x $','');
         relarray = [raw.Model_Field(relrows),fieldDimensions,raw.Property_Description(relrows), raw.Field_Description(relrows)];
         dbInfo = cell(size(relarray,1),4);
-        for i = 1:size(relarray)
+        for i = 1:height(relarray)
             dbInfo(i,:) = { relarray{i,1},relarray{i,2},relarray{i,3},relarray{i,4}};
         end
         CBT_DESC_FIELD_PROPS = dbInfo;
