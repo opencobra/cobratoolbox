@@ -66,7 +66,7 @@
     <link rel="top" title="The COBRA Toolbox" href="../../../index.html"/>
         <link rel="up" title="Visualization" href="../index.html"/>
         <link rel="next" title="Efmviz" href="../efmviz/index.html"/>
-        <link rel="prev" title="Convert" href="../convert/index.html"/> 
+        <link rel="prev" title="Upsetplot" href="../upsetPlot/index.html"/> 
 
   
   <script src="../../../_static/js/modernizr.min.js"></script>
@@ -157,17 +157,18 @@
 <li class="toctree-l2"><a class="reference internal" href="../../design/index.html">Design</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../reconstruction/index.html">Reconstruction</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html">Visualization</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../paint4Net/index.html">Paint4net</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../EscherMap/index.html">Eschermap</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../SAMMIM/index.html">Sammim</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../entropicFBA/index.html">Entropicfba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../visualizeEpistasis/index.html">Visualizeepistasis</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../convert/index.html">Convert</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../paint4Net/index.html">Paint4net</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../entropicFBA/index.html">Entropicfba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../upsetPlot/index.html">Upsetplot</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Metaboliccartography</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../efmviz/index.html">Efmviz</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../SAMMIM/index.html">Sammim</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../createMetIntrcNetwork/index.html">Createmetintrcnetwork</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../maps/index.html">Maps</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../cellDesigner/index.html">Celldesigner</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../visualizeEpistasis/index.html">Visualizeepistasis</a></li>
 </ul>
 </li>
 </ul>
@@ -180,6 +181,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../contributors.html">Contributors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../funding.html">Funding</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../plan.html">Development Plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../lifecycle.html">Software Development Life Cycle</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../contact.html">Contact</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../citations.html">Citations</a></li>
 </ul>
@@ -375,6 +377,27 @@ corresponding line widths.</p></li>
 </dd>
 <dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>newMap</strong> – Modified map containing notes from the model</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.visualization.metabolicCartography.changeMapMetIDToName">
+<span class="sig-name descname"><span class="pre">changeMapMetIDToName</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">mapPath</span></em>, <em class="sig-param"><span class="pre">modelPath</span></em>, <em class="sig-param"><span class="pre">outputXMLFile</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/metabolicCartography/changeMapMetIDToName.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.metabolicCartography.changeMapMetIDToName" title="Permalink to this definition">¶</a></dt>
+<dd><p>Replaces VMH metabolite IDs in a CellDesigner map with full names from a COBRA model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">INPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mapPath        - path to CellDesigner XML map file</strong></p></li>
+<li><p><strong>modelPath      - path to COBRA .mat model file</strong></p></li>
+<li><p><strong>outputXMLFile  -</strong> (<em>optional</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>A map with full metabolite names instead of VMH IDs</strong></p></li>
+<li><p><strong>as the specified CellDesigner XML file.</strong></p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -1515,7 +1538,7 @@ If unspecified, all available cores will be used.</p></li>
         <a href="../efmviz/index.html" class="btn btn-default float-right" title="Efmviz" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../convert/index.html" class="btn btn-default" title="Convert" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../upsetPlot/index.html" class="btn btn-default" title="Upsetplot" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
