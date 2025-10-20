@@ -108,6 +108,18 @@ for i = 4:size(toCreateDiet,2)
             metFlux{strcmpi(metFlux(:,1), 'diet_ex_pi[d]'),2} = 14;
         end
     end
+    
+    % If choline is present in less than 5.3 mmol/human/day in the diet it
+    % will be set to 5.3 as per the highest recommended intake for humans (
+    % EFSA Panel on Dietetic Products, Nutrition and Allergies (NDA), 
+    % doi.org/10.2903/j.efsa.2016.4484) to make the WBMs feasible.
+
+    if ~isempty(metFlux(strcmpi(metFlux(:,1), 'diet_ex_chol[d]')))
+        if metFlux{strcmpi(metFlux(:,1), 'diet_ex_chol[d]'),2} <= 5.3
+            metFlux{strcmpi(metFlux(:,1), 'diet_ex_chol[d]'),2} = 5.3;
+
+        end
+    end
 
     % Convert the dietary flux vector to a table
     metFlux = cell2table(metFlux,"VariableNames", [{'VMHID'}; toCreateDiet.Properties.VariableNames(i)]);
@@ -139,7 +151,7 @@ if analyseMacros
     energy = [dietMacroMets{strcmpi(dietMacroMets.Category, 'energy'),2:end}', dietMacroLabel{strcmpi(dietMacroLabel.Category, 'energy'),2:end}'];
 
     % Set the legend labels
-    legendLabel = {'Metabolite-derived Macros', 'Measured Macros'};
+    legendLabel = {'Metabolite-calculated Macros', 'Database Macros'};
 
     % If the original macro composition is provided add as well
     if ~isempty(originalDietMacros)
