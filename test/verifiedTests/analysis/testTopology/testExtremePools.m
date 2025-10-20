@@ -10,6 +10,7 @@
 %     Extreme Pathway Lengths and Reaction Participation in Genome-Scale Metabolic Networks
 %     Jason A. Papin, Nathan D. Price and Bernhard Ø. Palsson
 
+solverPkgs = prepareTest('requiredSoftwares', {'lrs'});
 
 [status, result] = system('which lrs');
 
