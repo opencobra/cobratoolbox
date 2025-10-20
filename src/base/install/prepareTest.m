@@ -288,18 +288,33 @@ end
 % Initialize error messages for missing software
 missingSoftware = {};
 
-% Generalized Software check
-for i = 1:length(requiredSoftwares)
+% Generalised software check with lrs exception
+for i = 1:numel(requiredSoftwares)
     software = requiredSoftwares{i};
-
-    % Depending on the OS, different system commands may be needed
-    % For Linux/Mac, you can generally use `which` or `command -v`
-    % For Windows, `where` can be used to check if software is available
 
     if ispc  % Windows
         [status, ~] = system(['where ' software]);
-    else  % Unix-based (Linux/Mac)
-        [status, ~] = system(['which ' software ' > /dev/null 2>&1']);
+    else      % Unix-like (Linux/macOS)
+        if strcmp(software, 'lrs')
+            % Find all lrs candidates, then ignore the COBRA-bundled path
+            [~, out] = system('which -a lrs 2>/dev/null');
+            paths = strsplit(strtrim(out), newline);
+
+            % Filter out known COBRA toolbox lrs location
+            isCobra = cellfun(@(p) contains(p, '/cobratoolbox/') && ...
+                                      contains(p, '/binary/') && ...
+                                      contains(p, '/bin/lrs/'), paths);
+            paths = paths(~isCobra);
+
+            if isempty(paths) || all(cellfun(@isempty, paths))
+                status = 1;  % nothing valid found
+            else
+                % Optionally verify the first candidate runs
+                [status, ~] = system('which -a lrs 2>/dev/null');
+            end
+        else
+            [status, ~] = system(['which ' software ' > /dev/null 2>&1']);
+        end
     end
 
     if status ~= 0
