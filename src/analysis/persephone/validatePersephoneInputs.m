@@ -51,29 +51,30 @@ validateattributes(paths.General.metadataPath,{'char','string'},{'nonempty'},'me
   validateattributes(paths.General.numWorkersCreation,{'double','integer'},{'<=',feature('numCores')},'numWorkersCreation')
 validateattributes(paths.General.numWorkersOptimisation,{'double','integer'},{'<=',feature('numCores')},'numWorkersOptimisation')
 
-
+% Validate SeqC variables
+if paths.seqC.flagSeqC
+    validateattributes(paths.seqC.repoPathSeqC,{'char','string'},{'nonempty'},'repoPathSeqC')
+    validateattributes(paths.seqC.outputPathSeqC,{'char','string'},{'nonempty'},'outputPathSeqC')
+    validateattributes(paths.seqC.fileIDSeqC,{'char','string'},{'nonempty'},'fileIDSeqC')
+    validateattributes(paths.seqC.procKeepSeqC,{'logical'},{'scalar'},'procKeepSeqC')
+    validateattributes(paths.seqC.maxMemSeqC,{'double','integer'},{'>=',1},'maxMemSeqC')
+    validateattributes(paths.seqC.maxCpuSeqC,{'double','integer'},{'>=',1},'maxCpuSeqC')
+    validateattributes(paths.seqC.maxProcSeqC,{'double','integer'},{'>=',1},'maxProcSeqC')
+    validateattributes(paths.seqC.debugSeqC,{'logical'},{'scalar'},'debugSeqC')
+    validateattributes(paths.seqC.runApptainer,{'logical'},{'scalar'},'runApptainer')
+end
 
 % Validate all variables that are associated with MARS
 if paths.Mars.flagMars
-
-    validateattributes(paths.Mars.marsRepoPath,{'char','string'},{'nonempty'},'marsRepoPath')
-    validateattributes(paths.Mars.pythonPath,{'char','string'},{'nonempty'},'pythonPath')
     validateattributes(paths.Mars.readsTablePath,{'char','string'},{'nonempty'},'readsTablePath')
     validateattributes(paths.Mars.outputPathMars,{'char','string'},{'nonempty'},'outputPathMars')
-    validateattributes(paths.Mars.outputExtensionMars,{'char','string'},{'nonempty'},'outputExtensionMars')
-    validatestring(paths.Mars.outputExtensionMars,{'csv','xls','xlsx','txt'},'outputExtensionMars');
-    validateattributes(paths.Mars.relAbunFilePath,{'char','string'},{'nonempty'},'relAbunFilePath') 
-    validateattributes(paths.Mars.sample_read_counts_cutoff,{'double','integer'},{'>=',1},'sample_read_counts_cutoff')
-    % This validation step needs to be updated to account for variable type
-    % "missing".
-    % validateattributes(paths.Mars.OTUTable,{'string'},{'scalartext'},'OTUTable')
-    validateattributes(paths.Mars.taxaDelimiter ,{'char'},{'scalartext'},'taxaDelimiter')
+    validateattributes(paths.mgPipe.relAbunFilePath,{'char','string'},{'nonempty'},'relAbunFilePath') 
+    validateattributes(paths.Mars.sampleReadCountCutoff,{'double','integer'},{'>=',1},'sample_read_counts_cutoff')
+    validateattributes(paths.Mars.taxaDelimiter ,{'char','string'},{'scalartext'},'taxaDelimiter')
     validateattributes(paths.Mars.removeClade,{'logical'},{'scalar'},'removeClade')
     validatestring(paths.Mars.reconstructionDb ,{'AGORA2', 'APOLLO', 'full_db', 'user_db'},'reconstructionDb ');
-    validateattributes(paths.Mars.userDbPath,{'string'},{'scalartext'},'userDbPath')
-    % This validation step needs to be updated to account for variable type
-    % "missing".
-    % validateattributes(paths.Mars.taxaTable,{'string'},{'scalartext'},'taxaTable')
+    validateattributes(paths.Mars.userDbPath,{'char','string'},{'scalartext'},'userDbPath')
+    validateattributes(paths.Mars.taxaTablePath,{'char','string'},{'scalartext'},'taxaTable')
 end
 
 % Validate all inputs for mgPipe
@@ -102,6 +103,22 @@ if paths.fba.flagFBA
     validateattributes(paths.fba.outputPathFluxAnalysis,{'char','string'},{'nonempty'},'outputPathFluxAnalysis')
     validateattributes(paths.fba.saveFullRes,{'logical'},{'scalar'},'saveFullRes')
     validateattributes(paths.fba.rxnList,{'cell'},{'nonempty'},'rxnlist')
+    % Check there are no duplicates in the rxnList variable
+    if length(unique(paths.fba.rxnList)) ~= length(paths.fba.rxnList)
+        rxnList = paths.fba.rxnList;
+        % Find unique indexes
+        [~,idx] = unique(rxnList);
+
+        % Remove unique indexes to only obtain the non-unique entries
+        rxnList(idx) = [];
+        
+        % Make the rxnList into a comma seperated string 
+        rxnListStringTmp= [rxnList',[repmat({','},numel(rxnList)-1,1);{[]}]]';
+        rxnListStringDupl = [rxnListStringTmp{:}];
+        % Create error
+        error('Reactions %s are duplicated in rxnList, please remove', rxnListStringDupl);
+    end
+
     % Note, we still need to individually test for each field in
     % .paramFluxProcessing, TH.
     validateattributes(paths.fba.paramFluxProcessing,{'struct'},{'nonempty'},'paramFluxProcessing')    
@@ -112,7 +129,6 @@ if paths.stats.flagStatistics
     validateattributes(paths.stats.outputPathStatistics,{'char','string','cell'},{'nonempty'},'outputPathStatistics')
     validateattributes(paths.stats.response,{'char','string','cell'},{'nonempty'},'response')
     validateattributes(paths.stats.confounders,{'char','string','cell'},{''},'confounders')
-    validateattributes(paths.stats.moderationAnalysis,{'logical'},{'scalar'},'moderationAnalysis')
 end
 
 validated = true;

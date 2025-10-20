@@ -69,3 +69,5 @@ close all
 
 cd(oriFolder);
 
+fprintf('Done.\n');
+

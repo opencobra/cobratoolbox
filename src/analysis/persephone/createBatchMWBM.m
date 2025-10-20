@@ -103,7 +103,7 @@ generatedMWBMs = strrep(generatedMWBMs,'_male','');
 % Update list of mWBMs to be created 
 microbiomePaths = microbiomePaths(toCreate);
 
-% Do not create mu(i)WBMs if all already have been created
+% Do not create m(i)WBMs if all already have been created
 createMWBMs = true;
 if isempty(microbiomePaths)
     createMWBMs = false;
@@ -193,11 +193,11 @@ if createMWBMs == true
     end
     
     
-    %%% Step 5b: Generate muiWBMs using iWBMs %%%
+    %%% Step 5b: Generate miWBMs using iWBMs %%%
     
     
-    if useiWBMs == true % Create muiWBMs from iWBMs
-    disp('GenerateMWBMs -- Step 5: Generate muiWBMs using iWBMs')
+    if useiWBMs == true % Create miWBMs from iWBMs
+    disp('GenerateMWBMs -- Step 5: Generate miWBMs using iWBMs')
         % Make sure that each iWBM is paired with their corresponding
         % microbiota model
         iWBMnames = what(wbmDirectory).mat;

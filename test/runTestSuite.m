@@ -76,9 +76,15 @@ for i = 1:numel(testFileNames)
         else
             trace = results(i).Error.getReport();
             tracePerLine = strsplit(trace,'\n');
-            testSuitePosition = find(cellfun(@(x) ~isempty(strfind(x, 'runTestSuite')),tracePerLine));
-            trace = sprintf(strjoin(tracePerLine(1:(testSuitePosition-7)),'\n')); % Remove the testSuiteTrace.
-            fprintf('Reason:\n%s\n',trace);
+            % Prefer the first true stack frame for runTestSuite
+            idx = find(contains(tracePerLine, 'runTestSuite'), 1, 'first');  % scalar or empty
+            if isempty(idx)
+                cutoff = numel(tracePerLine);              % keep the whole trace
+            else
+                cutoff = max(idx - 7, 1);                  % trim a few lines above, never below 1
+            end
+            trace = strjoin(tracePerLine(1:cutoff), '\n');
+            fprintf('Reason:\n%s\n', trace);
         end
     end
     fprintf('\n\n****************************************************\n');

@@ -2,5 +2,4 @@ name: env_util_taxonkit
 channels:
 - bioconda
 dependencies:
-- taxonkit=0.17.0
-
+- taxonkit>=0.20.0

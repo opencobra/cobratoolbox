@@ -1,7 +1,8 @@
-function missingDietComponents = getMissingDietModelHM(modelHM,missingDietComponents,testInitialFeasibility)
+function missingDietComponents = getMissingDietPersephone(inputModel,missingDietComponents,testInitialFeasibility)
 % This function determines missing dietary compounds in host-microbiome
 % WBMs that are infeasible (it assumes that the WBMs and the microbiome
-% models individually are feasible). 
+% models individually are feasible). Alternatively, this function can
+% determine missing dietary compounds in microbiome community models
 % This function first tests whether the model is feasible (which can be
 % skipped by setting testInitialFeasibility = 0), if infeasible, all diet
 % exchange reactions that are not already active will be opened and the
@@ -9,7 +10,7 @@ function missingDietComponents = getMissingDietModelHM(modelHM,missingDietCompon
 % there is no dietary solution (of course it could be that active diet
 % constraints are limited but they will not be tested with this script). 
 % Subsequently, diet exchanges are randomly closed (first in batches of 50,
-% then 10, then 5, then 1). If the modelHM remains feasible this batch as
+% then 10, then 5, then 1). If the inputModel remains feasible this batch as
 % well as all other 0 diet fluxes in the fba solution will be deemed not
 % necessary for feasibility, if infeasible the batch set will be kept and
 % tested for in the next step. when the batch set size is 1, each remaining
@@ -21,82 +22,86 @@ function missingDietComponents = getMissingDietModelHM(modelHM,missingDietCompon
 % missingDietComponents
 %
 % INPUT
-% modelHM                   Host-microbiome model structure
+% inputModel                Host-microbiome or microbiome community model structure
 % missingDietComponents     list of diet exchange reactions that are known
 %                           to be missing or that have been identified in a previous run of this
 %                           function
 % testInitialFeasibility    default 1 
-
+%
 % OUTPUT
 % missingDietComponents     list of missingDietComponents. If
 %                           missingDietComponents was given as an input then this list is a
 %                           combination of the input and the newly discovered missingDietComponents
 %
 % Ines Thiele, Nov 2023
+% Tim Hensen, September 2025. Added support for microbiome community
+% models.
 
 if ~exist('testInitialFeasibility','var')
     testInitialFeasibility = 1;
 end
 
-% not needed anymore 
-% if babyModels == 1 
-% %     missingDietComponents=  {'Diet_EX_sucr[d]'
-% %         'Diet_EX_btn[d]'
-% %         'Diet_EX_ach[d]'
-% %         'Diet_EX_appnn[d]'
-% %         'Diet_EX_5HPET[d]'
-% %         'Diet_EX_melib[d]'
-% %         'Diet_EX_prostge1[d]'
-% %         'Diet_EX_cl[d]'
-% %         'Diet_EX_gd1c_hs[d]' };
-% else
-%     missingDietComponents = [];
-% end
-
-% initial parameterisation of modelHM
-% enforce microbial growth (i.e., microbal fecal excretion)
-
-modelHM.lb(contains(modelHM.rxns,'Excretion_EX_microbiota_LI_biomass[fe]'))=1;
-modelHM.ub(contains(modelHM.rxns,'Excretion_EX_microbiota_LI_biomass[fe]'))=1;
+% Check if the input model is a microbiome or host-microbiome model
+host = matches('Excretion_EX_microbiota_LI_biomass[fe]',inputModel.rxns);
 
 
-modelHM.lb(contains(modelHM.rxns,'Excretion_EX_microbiota_LI_biomass[fe]'))=0.1;
-modelHM.ub(contains(modelHM.rxns,'Excretion_EX_microbiota_LI_biomass[fe]'))=2;
+if host % Parameterise host-microbiome model
+    inputModel.lb(contains(inputModel.rxns,'Excretion_EX_microbiota_LI_biomass[fe]'))=1;
+    inputModel.ub(contains(inputModel.rxns,'Excretion_EX_microbiota_LI_biomass[fe]'))=1;
+    
+    
+    inputModel.lb(contains(inputModel.rxns,'Excretion_EX_microbiota_LI_biomass[fe]'))=0.1;
+    inputModel.ub(contains(inputModel.rxns,'Excretion_EX_microbiota_LI_biomass[fe]'))=2;
+    
+    inputModel.lb(contains(inputModel.rxns,'Excretion_EX_microbiota_LI_biomass[fe]'))=1;
+    inputModel.ub(contains(inputModel.rxns,'Excretion_EX_microbiota_LI_biomass[fe]'))=1;
+    
+    
+    % enforce body weight maintenance
+    inputModel.lb(contains(inputModel.rxns,'Whole'))=1;
+    inputModel.ub(contains(inputModel.rxns,'Whole'))=1;
+end
 
-modelHM.lb(contains(modelHM.rxns,'Excretion_EX_microbiota_LI_biomass[fe]'))=1;
-modelHM.ub(contains(modelHM.rxns,'Excretion_EX_microbiota_LI_biomass[fe]'))=1;
-
-
-% enforce body weight maintenance
-modelHM.lb(contains(modelHM.rxns,'Whole'))=1;
-modelHM.ub(contains(modelHM.rxns,'Whole'))=1;
 % open known missingDietComponents
 if exist('missingDietComponents','var')
-    modelHM.lb(ismember(modelHM.rxns, missingDietComponents))=-10;
-    modelHM.ub(ismember(modelHM.rxns, missingDietComponents))=0;
+    inputModel.lb(ismember(inputModel.rxns, missingDietComponents))=-10;
+    inputModel.ub(ismember(inputModel.rxns, missingDietComponents))=0;
 else
     % if unknown, set to empty vector
     missingDietComponents = '';
 end
-modelHM.osenseStr = 'max';
+
+
+
 % check that model is infeasible
+inputModel.osenseStr = 'max';
 if testInitialFeasibility == 1
-    tic;fba = optimizeWBModel(modelHM);
     toc
-    fba = optimizeWBModel(modelHM);
+    if host
+        fba = optimizeWBModel(inputModel);
+    else
+        fba = optimizeCbModel(inputModel);    
+    end
     toc
 else
     fba.f = NaN; % will be set to infeasible
 end
+
+
 if isnan(fba.f)
     % check if model is feasible if all Diet components are allowed
-    model =modelHM;
+    model =inputModel;
     diet = model.rxns(contains(model.rxns, 'Diet_EX'));
     lb = model.rxns(find(model.lb==0));
     dietlb = intersect(diet, lb);
     model.lb(ismember(model.rxns, dietlb))=-10;
     model.ub(ismember(model.rxns, dietlb))=0;
-    tic;fba = optimizeWBModel(model);
+    tic;
+    if host
+        fba = optimizeWBModel(model);
+    else
+        fba = optimizeCbModel(model);
+    end
     toc
     if ~isnan(fba.f) % model is feasible like this
         
@@ -110,7 +115,7 @@ if isnan(fba.f)
         a = 1;
         maxNum = 50;
         potentialMissing = '';
-        while length(dietlb)>0
+        while ~isempty(dietlb)
             length(dietlb)
             modelTmp = model;
             r = randi([1 length(dietlb)],maxNum,1);
@@ -118,7 +123,12 @@ if isnan(fba.f)
             modelTmp.lb(ismember(modelTmp.rxns,dietlb(r))) = 0;
             modelTmp.ub(ismember(modelTmp.rxns,dietlb(r))) = 0;
             
-            fba = optimizeWBModel(modelTmp);
+            if host
+                fba = optimizeWBModel(modelTmp);
+            else
+                fba = optimizeCbModel(modelTmp);
+            end
+
             if ~isnan(fba.f)
                 
                 nnzf = find(abs(fba.v) <= tol);
@@ -149,7 +159,7 @@ if isnan(fba.f)
         
         potentialMissing = '';
         
-        while length(dietlb)>0
+        while ~isempty(dietlb)
             length(dietlb)
             modelTmp = model;
             r = randi([1 length(dietlb)],maxNum,1);
@@ -157,7 +167,11 @@ if isnan(fba.f)
             modelTmp.lb(ismember(modelTmp.rxns,dietlb(r))) = 0;
             modelTmp.ub(ismember(modelTmp.rxns,dietlb(r))) = 0;
             
-            fba = optimizeWBModel(modelTmp);
+            if host
+                fba = optimizeWBModel(modelTmp);
+            else
+                fba = optimizeCbModel(modelTmp);
+            end
             if ~isnan(fba.f)
                 fba.f
                 nnzf = find(abs(fba.v) <= tol);
@@ -188,7 +202,7 @@ if isnan(fba.f)
         maxNum = 5;
         
         
-        while length(dietlb)>0
+        while ~isempty(dietlb)
             length(dietlb)
             modelTmp = model;
             r = randi([1 length(dietlb)],maxNum,1);
@@ -196,7 +210,11 @@ if isnan(fba.f)
             modelTmp.lb(ismember(modelTmp.rxns,dietlb(r))) = 0;
             modelTmp.ub(ismember(modelTmp.rxns,dietlb(r))) = 0;
             
-            fba = optimizeWBModel(modelTmp);
+            if host
+                fba = optimizeWBModel(modelTmp);
+            else
+                fba = optimizeCbModel(modelTmp);
+            end
             if ~isnan(fba.f)
                 fba.f
                 nnzf = find(abs(fba.v) <= tol);
@@ -223,7 +241,7 @@ if isnan(fba.f)
         potentialMissing4 =potentialMissing;
         potentialMissing = '';
         %dietlb = setdiff(dietlb,potentialMissing3);
-        while length(dietlb)>0
+        while ~isempty(dietlb)
             length(dietlb)
             modelTmp = model;
             r = randi([1 length(dietlb)],maxNum,1);
@@ -231,7 +249,12 @@ if isnan(fba.f)
             modelTmp.lb(ismember(modelTmp.rxns,dietlb(r))) = 0;
             modelTmp.ub(ismember(modelTmp.rxns,dietlb(r))) = 0;
             
-            fba = optimizeWBModel(modelTmp);
+            if host
+                fba = optimizeWBModel(modelTmp);
+            else
+                fba = optimizeCbModel(modelTmp);
+            end
+
             if ~isnan(fba.f)
                 fba.f
                 nnzf = find(abs(fba.v) <= tol);
@@ -251,9 +274,13 @@ if isnan(fba.f)
         
         missingDietComponents =[potentialMissing;missingDietComponents];
         missingDietComponents = unique(missingDietComponents);
-        model =modelHM;
+        model =inputModel;
         model.lb(ismember(model.rxns, missingDietComponents))=-10;
         model.ub(ismember(model.rxns, missingDietComponents))=0;
-        fba = optimizeWBModel(model);
+        if host
+            fba = optimizeWBModel(model);
+        else
+            fba = optimizeCbModel(model);
+        end
     end
 end

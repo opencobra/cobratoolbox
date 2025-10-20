@@ -15,5 +15,6 @@ The COBRA Toolbox
    contributors
    funding
    plan
+   lifecycle
    contact
    citations

@@ -134,7 +134,7 @@ metadata.Sex(matches(metadata.Sex,{'m','male'},'IgnoreCase',true)) = "male";
 % string array instead of one string was produced, the update works as an
 % alternative also for the AD dataset - JW
 updatedMetadataPath = erase(paths.General.metadataPath, [".xlsx", ".csv"]);
-updatedMetadataPath = updatedMetadataPath + "_processed.csv";
+updatedMetadataPath = updatedMetadataPath + "_processed.xlsx";
 
 % Convert updated path to character array
 updatedMetadataPath = char(updatedMetadataPath);

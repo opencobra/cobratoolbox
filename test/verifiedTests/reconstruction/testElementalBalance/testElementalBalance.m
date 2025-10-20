@@ -59,7 +59,7 @@ delete('testElementBalance_warning.txt')
 re = regexp(text, 'formula \=');
 assert(~isempty(re))
 text = text(re:end);
-re = regexp(text, '''U''');
+re = regexp(text, "{'U'}");
 assert(~isempty(re))
 text = text(re:end);
 re = regexp(text, 'comp \=');

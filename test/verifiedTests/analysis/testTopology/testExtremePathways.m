@@ -15,6 +15,8 @@
 
 global CBT_MISSING_REQUIREMENTS_ERROR_ID;
 
+solverPkgs = prepareTest('requiredSoftwares', {'lrs'});
+
 if isempty(strfind(result, '/lrs'))  % Which returns the path with /!
     % This test will be skipped since there are Requirements (LRS) missing.
     error(CBT_MISSING_REQUIREMENTS_ERROR_ID, 'lrs was not properly installed on your system');

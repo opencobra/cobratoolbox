@@ -32,7 +32,7 @@ modelfiles = dir(modeldir);
 modelNames = cell(0);
 models = cell(0);
 %We will use up to 3 model files for the test.
-for i = 1:size(modelfiles)    
+for i = 1:numel(modelfiles)    
      if numel(models) >= 3
         break;
     end

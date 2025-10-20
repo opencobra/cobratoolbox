@@ -100,7 +100,7 @@ disp(strcat("Investigate variable: ",string(response)))
 %%% relative abundances.
 
 % Load and investigate metadata
-[metadata, logfile] = loadAndInvestigateMetadataForStats(metadataPath, response, statPath, logfile);
+[metadata, logfile] = loadAndInvestigateMetadataForStats(metadataPath, response, statPathFull, logfile);
 
 % Load flux data
 fluxes = readDataForStats(pathToProcessedFluxes);
@@ -169,7 +169,7 @@ logfile{end+1} = 'The investigated reactions are annotated by providing reaction
 
 %%% PART 4: Save results as an excel file with an index explaining each
 %%% table.
-results = saveStatisticalResults(logfile,testMicrobiota,annotationCell,fluxStats,microbiotaStats,statPath);
+results = saveStatisticalResults(logfile,testMicrobiota,annotationCell,fluxStats,microbiotaStats,statPathFull);
 %%
 
 %%% PART 5: Visualise the flux results
@@ -234,7 +234,7 @@ if ~isnumeric(metadata.(response))
     heatmap(metadata, 'Sex', response);
     
     % Save figure
-    heatmapPath = fullfile(statPath, 'Case_control_sample_counts.fig');
+    heatmapPath = fullfile(statPath, filesep, 'Case_control_sample_counts.fig');
     savefig(fig, heatmapPath);
     close(fig);
     logfile{end+1} = ['Heatmap saved at: ' heatmapPath];
@@ -257,7 +257,7 @@ if any(matches(data.Properties.VariableNames,'sex','IgnoreCase',true))
 end
 
 % Process the sample ID names to align with the metadata IDs
-data.ID = erase(data.ID,{'mWBM_','miWBM_','muWBM_','_female','_male'});
+data.ID = erase(data.ID,{'mWBM_','miWBM_','muWBM_','_female','_male', 'iWBM_'});
 end
 
 function dataProcessed = processDataForStats(data)
@@ -563,9 +563,11 @@ if logisticRegControlForSex == true
     % Visualise regressions and save result
     resultToVis = string(fieldnames(regRes));
     regressionResults = regRes.(resultToVis(1));    
-    fig = visualiseRegressionFit(regressionResults, response, formula, statPathFull); close(fig)
-    % Add results to table    
-    statResults{rowCount,2} = regRes.(predictor); 
+    if ~contains(resultToVis, 'NotDefined')
+        fig = visualiseRegressionFit(regressionResults, response, formula, statPathFull); close(fig)
+        % Add results to table
+        statResults{rowCount,2} = regRes.(predictor);
+    end
 end
 
 if logisticRegControlForSexAndOtherConfounders == true
@@ -580,13 +582,14 @@ if logisticRegControlForSexAndOtherConfounders == true
     regRes = performRegressions(data,metadata,formula);
     % Visualise regressions and save result
     resultToVis = string(fieldnames(regRes));
-    regressionResults = regRes.(resultToVis(1));
-    fig = visualiseRegressionFit(regressionResults, response, formula, statPathFull); close(fig)
-    % Add results to table
-    statResults{rowCount,2} = regRes.(predictor);
-    if ~isfield(regRes, 'NotDefined')
-        % Visualise regressions and save result
+    if ~contains(resultToVis, 'NotDefined')
+        regressionResults = regRes.(resultToVis(1));
+        fig = visualiseRegressionFit(regressionResults, response, formula, statPathFull); close(fig)
+        % Add results to table
+        statResults{rowCount,2} = regRes.(predictor);
         resultToVis = string(fieldnames(regRes));
+        
+        % Visualise regressions and save result
         regressionResults = regRes.(resultToVis(1));
         fig = visualiseRegressionFit(regressionResults, response, formula, statPathFull); close(fig)
         % Add results to table
@@ -618,7 +621,7 @@ fig=figure('Position',[571,171,809,682]);
 createVolcanoPlot(estimates,pValues,names,plotTitle,xTitle,yTitle);
 
 % Save figure
-exportgraphics(fig,[statPathFull, 'volcanoPlot_' formula '.png'])
+exportgraphics(fig,[statPathFull, filesep, 'volcanoPlot_' formula '.png'])
 end
 
 
@@ -638,11 +641,11 @@ end
 
 % Add table number to description
 for i=2:height(allRes)
-    allRes{i,1} = append('Table_', string(i-1),': ',allRes{i,1});
+    allRes{i,1} = append('Sheet_', string(i-1),': ',allRes{i,1});
 end
 
 % Save results table to excel file
-sheetNames = ["Index" append("Table_",string(1:height(allRes)-1))];
+sheetNames = ["Index" append("Sheet_",string(1:height(allRes)-1))];
 resultPath = [statPath filesep 'statistical_results.xlsx'];
 
 % Remove excel file if it already exists to prevent partial overwriting.

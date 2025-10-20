@@ -1,4 +1,4 @@
-/seqc_proc/{DEPO_demo,DEPO_proc,REPO_host,REPO_tool}/*
+/seqc_proc/{DEPO_demo,DEPO_proc,REPO_gref,REPO_tool}/*
 /seqc_input/*
 /seqc_output/*
 .DS_Store

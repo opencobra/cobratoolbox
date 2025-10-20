@@ -1,4 +1,4 @@
-function setInSilicoDiet(dietToSet, varargin)
+function setInSilicoDiet(dietToSetPath, varargin)
 % Code to set either the dietary flux vector as a diet or the food items
 % themselves on WBMs. The WBMs can either be the default Harvey/Harvetta or
 % custom ones. The models are saved in specific folders and there is
@@ -54,7 +54,7 @@ function setInSilicoDiet(dietToSet, varargin)
 
 % Parse the inputs
 parser = inputParser();
-parser.addRequired('dietToSet', @ischar);
+parser.addRequired('dietToSetPath', @ischar);
 parser.addParameter('metadataPath', '',@ischar);
 parser.addParameter('outputDir', pwd, @ischar);
 parser.addParameter('constrainFoodWBM', false,@islogical);
@@ -64,9 +64,9 @@ parser.addParameter('wbmVersion', '',@ischar);
 parser.addParameter('pathToWbms', '', @ischar);
 parser.addParameter('addStarch', false, @islogical);
 
-parser.parse(dietToSet, varargin{:});
+parser.parse(dietToSetPath, varargin{:});
 
-dietToSet = parser.Results.dietToSet;
+dietToSetPath = parser.Results.dietToSetPath;
 metadataPath = parser.Results.metadataPath;
 outputDir = parser.Results.outputDir;
 constrainFoodWBM = parser.Results.constrainFoodWBM;
@@ -79,48 +79,9 @@ addStarch = parser.Results.addStarch;
 %% Obtaining the metabolite dietary fluxes
 
 % Load in the table
-dietToSet = readtable(dietToSet);
+dietToSet = readtable(dietToSetPath);
 % Calculate the metabolite composition of the diets
-for i = 4:size(dietToSet,2)
-    % Obtain the diet specific values
-    diet2Make = dietToSet(:, [1:3, i]);
-
-    % Calculate the diet flux vector
-    metFlux = getMetaboliteFlux(table2cell(diet2Make(:,[2 4])), 'databaseType',diet2Make.databaseUsed, "addStarch",addStarch);
-
-    % If phosphate is 0 set to 10 mmol/human/day (cite) this is
-    % required as without phosphate (pi) WBMs will not be feasible.
-    % If phosphate is not in the diet, it will be added automatically by
-    % setDietConstraints (Crook, Hally and Panteli, 2001. PMID:11448586)
-    if ~isempty(metFlux(strcmpi(metFlux(:,1), 'diet_ex_pi[d]')))
-        if metFlux{strcmpi(metFlux(:,1), 'diet_ex_pi[d]'),2} <= 0.1
-            metFlux{strcmpi(metFlux(:,1), 'diet_ex_pi[d]'),2} = 10;
-        end
-    end
-    
-    % If choline is present in less than 5.3 mmol/human/day in the diet it
-    % will be set to 5.3 as per the highest recommended intake for humans (
-    % EFSA Panel on Dietetic Products, Nutrition and Allergies (NDA), 
-    % doi.org/10.2903/j.efsa.2016.4484) to make the WBMs feasible.
-
-    if ~isempty(metFlux(strcmpi(metFlux(:,1), 'diet_ex_chol[d]')))
-        if metFlux{strcmpi(metFlux(:,1), 'diet_ex_chol[d]'),2} <= 5.3
-            metFlux{strcmpi(metFlux(:,1), 'diet_ex_chol[d]'),2} = 5.3;
-
-        end
-    end
-
-    % Convert the dietary flux vector to a table
-    metFlux = cell2table(metFlux,"VariableNames", [{'VMHID'}; dietToSet.Properties.VariableNames(i)]);
-    metFlux.(dietToSet.Properties.VariableNames{i}) = string(metFlux.(dietToSet.Properties.VariableNames{i}));
-
-    % Merge tables togehter
-    if i == 4
-        dietFlux = metFlux;
-    else
-        dietFlux = outerjoin(dietFlux, metFlux, "MergeKeys", true, "Keys","VMHID");
-    end
-end
+dietFlux = generateInSilicoDiet(dietToSetPath, 'addStarch', addStarch, 'analyseMacros', false, 'outputDir', outputDir);
 %% Setup and WBM loading
 
 % Initialise the output directories
@@ -280,7 +241,7 @@ if constrainFoodWBM
         fprintf('Setting food items on WBM for %s\n', string(foodItemsUsed.Properties.VariableNames(end)))
         % Transfort the database ID and database name into the reaction ID
         % format used in the WBMs
-        foodRxns = strcat('Food_EX_', foodItemsUsed.databaseID, '_', foodItemsUsed.databaseUsed);
+        foodRxns = strcat('Food_EX_', string(foodItemsUsed.databaseID), '_', foodItemsUsed.databaseUsed);
 
         % Obtain the diet name
         dietName = foodItemsUsed.Properties.VariableNames(end);
@@ -346,7 +307,7 @@ if constrainFoodWBM
                         warning('Sample ID %s is not found. Ensure that the filenames have underscores _ around the sample ID in the filename of the WBM');
                     else
                         % Load in the model
-                        model2Alter = loadPSCMfile(model2Load, pathToWbms);
+                        model2Alter = loadPSCMfile(char(model2Load), pathToWbms);
     
                         % Find metabolites that should be added
                         mets2Add = findMet2Add2FoodDiet(model2Alter, fluxDiet);
