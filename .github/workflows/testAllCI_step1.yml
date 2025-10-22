@@ -17,10 +17,14 @@ jobs:
       - name: Check out merged PR code
         uses: actions/checkout@v4
 
-      - name: Install xvfb
+      - name: Install xvfb (skip if already installed)
         run: |
-          sudo apt-get update
-          sudo apt-get install -y xvfb
+          if ! command -v xvfb-run >/dev/null 2>&1; then
+            apt-get update -y
+            apt-get install -y xvfb
+          else
+            echo "xvfb already installed."
+          fi
 
       - name: Run MATLAB Tests (xvfb headless)
         env:
