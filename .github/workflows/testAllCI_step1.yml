@@ -17,11 +17,18 @@ jobs:
       - name: Check out merged PR code
         uses: actions/checkout@v4
 
-      - name: Run MATLAB Tests (headless)
+      - name: Install xvfb
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y xvfb
+
+      - name: Run MATLAB Tests (xvfb headless)
         env:
           QT_QPA_PLATFORM: offscreen
+          JAVA_AWT_HEADLESS: "1"
         run: |
-          matlab -noFigureWindows -batch "run('initCobraToolbox.m'); set(0,'DefaultFigureVisible','off'); run('test/testAll.m');"
+          xvfb-run -a -s "-screen 0 1280x1024x24" \
+            matlab -noFigureWindows -batch "try; run('initCobraToolbox.m'); set(0,'DefaultFigureVisible','off'); run('test/testAll.m'); catch ME; disp(getReport(ME,'extended')); exit(1); end; exit(0);"
 
       - name: Convert JUnit to CTRF
         run: |
@@ -42,7 +49,6 @@ jobs:
           # Run conversion (non-interactive and version pinned)
           echo "Converting JUnit XML to CTRF JSON..."
           npx --yes junit-to-ctrf@0.0.12 ./testReport.junit.xml -o ./ctrf/ctrf-report.json
-
 
       - name: Upload CTRF Artifact
         uses: actions/upload-artifact@v4
