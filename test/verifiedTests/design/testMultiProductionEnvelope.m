@@ -50,3 +50,4 @@ close all hidden force
 
 % change to old directory
 cd(currentDir);
+fprintf('\nDone\n');
