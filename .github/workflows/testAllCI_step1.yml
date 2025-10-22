@@ -34,6 +34,12 @@ jobs:
           xvfb-run -a -s "-screen 0 1280x1024x24" \
             matlab -noFigureWindows -batch "try; run('initCobraToolbox.m'); set(0,'DefaultFigureVisible','off'); run('test/testAll.m'); catch ME; disp(getReport(ME,'extended')); exit(1); end; exit(0);"
 
+      # New: ensure Node.js is present
+      - name: Set up Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
       - name: Convert JUnit to CTRF
         run: |
           # Check Node.js version (optional guard)
@@ -50,7 +56,7 @@ jobs:
           # Ensure output directory exists
           mkdir -p ./ctrf
 
-          # Run conversion (non-interactive and version pinned)
+          # Run conversion
           echo "Converting JUnit XML to CTRF JSON..."
           npx --yes junit-to-ctrf@0.0.12 ./testReport.junit.xml -o ./ctrf/ctrf-report.json
 
