@@ -1,54 +1,55 @@
 name: cobratoolboxCI (merge, test, and upload)
-
 on:
   pull_request:
-    branches: [develop, master]
+    branches:
+      - develop
+      - master
     types: [opened, synchronize, reopened]
   workflow_dispatch:
-
+    
 permissions:
   contents: read
-
+  
 jobs:
   build:
     runs-on: self-hosted
-    timeout-minutes: 120
-    env:
-      QT_QPA_PLATFORM: offscreen
-      OMP_NUM_THREADS: "1"
-      MKL_NUM_THREADS: "1"
     steps:
       - name: Check out merged PR code
         uses: actions/checkout@v4
 
-      - name: Run MATLAB Tests headless without figures
-        shell: bash
+      - name: Run MATLAB Tests (headless)
+        env:
+          QT_QPA_PLATFORM: offscreen
         run: |
-          matlab -batch "run('initCobraToolbox.m'); set(0,'DefaultFigureVisible','off'); run('test/testAll.m');" -noFigureWindows
-
-      # If your runner does not have Node 20+, install it or fail early
-      - name: Verify Node.js
-        run: |
-          MAJOR="$(node -p "process.versions.node.split('.')[0]")" || MAJOR=0
-          if [ "$MAJOR" -lt 20 ]; then
-            echo "Node.js 20+ required for junit-to-ctrf. Detected: $(node -v || echo none)."
-            exit 1
-          fi
-          echo "✅ Node version: $(node -v)"
-          echo "✅ npm version:  $(npm -v)"
+          matlab -noFigureWindows -batch "run('initCobraToolbox.m'); set(0,'DefaultFigureVisible','off'); run('test/testAll.m');"
 
       - name: Convert JUnit to CTRF
         run: |
+          # Check Node.js version (optional guard)
+          MAJOR="$(node -p "process.versions.node.split('.')[0]")"
+          if [ "$MAJOR" -lt 20 ]; then
+            echo "❌ Node.js version too old: $(node -v). Please install Node 20 or newer."
+            exit 1
+          fi
+
+          # Print versions for debugging clarity
+          echo "✅ Node version: $(node -v)"
+          echo "✅ npm version:  $(npm -v)"
+
+          # Ensure output directory exists
           mkdir -p ./ctrf
+
+          # Run conversion (non-interactive and version pinned)
           echo "Converting JUnit XML to CTRF JSON..."
           npx --yes junit-to-ctrf@0.0.12 ./testReport.junit.xml -o ./ctrf/ctrf-report.json
+
 
       - name: Upload CTRF Artifact
         uses: actions/upload-artifact@v4
         with:
           name: testReport
           path: ./ctrf/ctrf-report.json
-
+          
       - name: Save PR Number
         run: echo "PR_NUMBER=${{ github.event.pull_request.number }}" >> $GITHUB_ENV
 
