@@ -189,7 +189,7 @@ switch solverName
         % 0	Equilibration scaling; default
         % 1	More aggressive scaling
         % https://www.ibm.com/docs/en/icos/12.10.0?topic=parameters-scale-parameter
-        % param.scaind = -1;
+        param.scaind = -1;
 
         % Emphasizes precision in numerically unstable or difficult problems.
         % This parameter lets you specify to CPLEX that it should emphasize precision in
@@ -198,7 +198,7 @@ switch solverName
         % 0   Do not emphasize numerical precision; default
         % 1	Exercise extreme caution in computation
         % https://www.ibm.com/docs/en/icos/12.10.0?topic=parameters-numerical-precision-emphasis
-        % param.emphasis_numerical=1;
+        param.emphasis_numerical=1;
     case 'mosek'
         param.MSK_DPAR_OPTIMIZER_MAX_TIME=param.secondsTimeLimit;
         param.MSK_IPAR_WRITE_DATA_PARAM='MSK_ON';
@@ -275,9 +275,9 @@ switch param.solveWBMmethod
                 %switch over to a validated solver
                 [solverOK, solverInstalled] = changeCobraSolver('tomlab_cplex', solverNameQP{i,2},1,1);
                 if solverOK
-                    fprintf('%s\n',[solverNameQP{i,1} ' has not been validated for use with the PSCM toolbox. Tried to change to tomlab_cplex, but it failed.'])
+                    fprintf('%s\n',[solverName{i,1} ' has not been validated for use with the PSCM toolbox. Tried to change to tomlab_cplex, but it failed.'])
                 else
-                    error([solverNameQP{i,1} ' has not been validated for use with the PSCM toolbox. Tried to change to tomlab_cplex, but it failed.'])
+                    error([solverName{i,1} ' has not been validated for use with the PSCM toolbox. Tried to change to tomlab_cplex, but it failed.'])
                 end
             end
         end
