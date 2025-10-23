@@ -207,6 +207,8 @@ if isfield(param,'solveWBMmethod') && ~isempty(param.solveWBMmethod)
             %nothing to do - done above already
         case 'QP'
             %nothing to do - done above already
+        case 'QPold'
+            %nothing to do - done above already
         case 'QRLP'
             [m,n]=size(optProblem.A);
             optProblem.A = [...

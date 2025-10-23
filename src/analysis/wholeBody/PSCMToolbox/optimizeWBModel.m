@@ -181,7 +181,7 @@ switch solverName
 
     case 'ibm_cplex'
         % https://www.ibm.com/docs/en/icos/12.10.0?topic=infeasibility-coping-ill-conditioned-problem-handling-unscaled-infeasibilities
-        param.minNorm = 0;
+        % param.minNorm = 0;
 
         % Decides how to scale the problem matrix.
         % Value  Meaning
@@ -189,7 +189,7 @@ switch solverName
         % 0	Equilibration scaling; default
         % 1	More aggressive scaling
         % https://www.ibm.com/docs/en/icos/12.10.0?topic=parameters-scale-parameter
-        param.scaind = -1;
+        % param.scaind = -1;
 
         % Emphasizes precision in numerically unstable or difficult problems.
         % This parameter lets you specify to CPLEX that it should emphasize precision in
@@ -198,7 +198,7 @@ switch solverName
         % 0   Do not emphasize numerical precision; default
         % 1	Exercise extreme caution in computation
         % https://www.ibm.com/docs/en/icos/12.10.0?topic=parameters-numerical-precision-emphasis
-        param.emphasis_numerical=1;
+        % param.emphasis_numerical=1;
     case 'mosek'
         param.MSK_DPAR_OPTIMIZER_MAX_TIME=param.secondsTimeLimit;
         param.MSK_IPAR_WRITE_DATA_PARAM='MSK_ON';
@@ -258,26 +258,26 @@ switch param.solveWBMmethod
         noLinearObjective = all(model.c==0);
 
         if noLinearObjective
-            [tmp, solverOK] = getCobraSolver('QP');
-            solverName{1,1} = tmp;
-            solverName{1,2} = 'QP';
+            [tmp, solverOK] = getCobraSolver('QP', 1);
+            solverNameQP{1,1} = tmp;
+            solverNameQP{1,2} = 'QP';
         else
-            [solverName{1,1}, solverOK] = getCobraSolver('LP');
-            solverName{1,2} = 'QP';
-            [solverName{2,1}, solverOK] = getCobraSolver('QP');
-            solverName{2,2} = 'QP';
+            [solverNameQP{1,1}, solverOK] = getCobraSolver('LP', 1);
+            solverNameQP{1,2} = 'QP';
+            [solverNameQP{2,1}, solverOK] = getCobraSolver('QP', 1);
+            solverNameQP{2,2} = 'QP';
         end
 
-        for i = 1:size(solverName,1)
-            if ~any(strcmp(solverName{i,1},validatedSolvers))
+        for i = 1:size(solverNameQP,1)
+            if ~any(strcmp(solverNameQP{i,1},validatedSolvers))
                 fprintf('%s\n','Note that the solvers validated for use with the PSCM toolbox are:')
                 disp(validatedSolvers)
                 %switch over to a validated solver
-                [solverOK, solverInstalled] = changeCobraSolver('tomlab_cplex', solverName{i,2},1,1);
+                [solverOK, solverInstalled] = changeCobraSolver('tomlab_cplex', solverNameQP{i,2},1,1);
                 if solverOK
-                    fprintf('%s\n',[solverName{i,1} ' has not been validated for use with the PSCM toolbox. Tried to change to tomlab_cplex, but it failed.'])
+                    fprintf('%s\n',[solverNameQP{i,1} ' has not been validated for use with the PSCM toolbox. Tried to change to tomlab_cplex, but it failed.'])
                 else
-                    error([solverName{i,1} ' has not been validated for use with the PSCM toolbox. Tried to change to tomlab_cplex, but it failed.'])
+                    error([solverNameQP{i,1} ' has not been validated for use with the PSCM toolbox. Tried to change to tomlab_cplex, but it failed.'])
                 end
             end
         end
