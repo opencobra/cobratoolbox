@@ -275,9 +275,9 @@ switch param.solveWBMmethod
                 %switch over to a validated solver
                 [solverOK, solverInstalled] = changeCobraSolver('tomlab_cplex', solverNameQP{i,2},1,1);
                 if solverOK
-                    fprintf('%s\n',[solverName{i,1} ' has not been validated for use with the PSCM toolbox. Tried to change to tomlab_cplex, but it failed.'])
+                    fprintf('%s\n',[solverNameQP{i,1} ' has not been validated for use with the PSCM toolbox. Tried to change to tomlab_cplex, but it failed.'])
                 else
-                    error([solverName{i,1} ' has not been validated for use with the PSCM toolbox. Tried to change to tomlab_cplex, but it failed.'])
+                    error([solverNameQP{i,1} ' has not been validated for use with the PSCM toolbox. Tried to change to tomlab_cplex, but it failed.'])
                 end
             end
         end
