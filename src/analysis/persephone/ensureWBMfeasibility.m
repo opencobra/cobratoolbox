@@ -10,8 +10,8 @@ function [dietInfo, dietGrowthStats] = ensureWBMfeasibility(mWBMPath, varargin)
 % collected and the function stops. The user will need to debug the WBMs
 % manually.
 % 3) If all previously infeasible WBMs can grow when all diet reactions are
-% opened,missing diet components are searched using getMissingDietModelHM.
-% If getMissingDietModelHM cannot find a diet after one function call, this
+% opened,missing diet components are searched using getMissingDietPersephone.
+% If getMissingDietPersephone cannot find a diet after one function call, this
 % function is run again until a hard limit of 10 iterations is reached. If
 % this limit is reached, no feasible diet can be found for all models and
 % the user will need to manually debug the infeasible models. If missing
@@ -143,18 +143,18 @@ allModelsFeasible = false;
 if isempty(infeasibleModelPaths)
     disp('All models are feasible on the diet. No dietary alterations are needed.')
     allModelsFeasible = true;
-    dietInfo = 'Not available as all models are feasible';
-    dietGrowthStats = 'Not available as all models are feasible';
-    return;
+    missingDietComponents = cell2table({'No missing diet components found as WBMs were feasible.'});
+    updatedDiet = {'No updated diet required.'};
 end
 
 %% STEP 2: Test if all models are feasible when opening all diet reactions.
 disp('EnsureGrowthOnDiet -- STEP 2: Test if all models are feasible when opening all diet reactions.')
 modelsInfeasibleOnAnyDiet = false;
-if allModelsFeasible == false
 
-    % Test if the infeasible models would be feasible with all dietary inputs given
-    feasibleOnAnyDiet = zeros(length(infeasibleModelPaths),1);
+% Test if the infeasible models would be feasible with all dietary inputs given
+feasibleOnAnyDiet = zeros(length(infeasibleModelPaths),1);
+
+if allModelsFeasible == false
     for i = 1:length(infeasibleModelPaths) % This used to be parfor
 
         % % Load environment variables and set solver
@@ -199,7 +199,7 @@ disp('EnsureGrowthOnDiet -- STEP 3: Test if models are feasible when opening onl
 updatedDietComponents = {};
 % Preallocate array for models that are feasible on an updated diet
 feasibleOnUpdatedDiet = zeros(length(infeasibleModelPaths),1);
-if any(feasibleOnAnyDiet)
+if any(feasibleOnAnyDiet) && ~allModelsFeasible
     for i = 1:length(infeasibleModelPaths)
         if feasibleOnAnyDiet(i)
 
@@ -329,13 +329,13 @@ if allModelsFeasible == false && modelsInfeasibleOnAnyDiet == false
                     % Do not check first for feasibility if no
                     % missingDietComponents have been found.
                     tic
-                    missingDietComponents = getMissingDietModelHM(infeasModelDiet,missingDietComponents,0);
+                    missingDietComponents = getMissingDietPersephone(infeasModelDiet,missingDietComponents,0);
                     toc
                 else
                     % Check for feasibility first if
                     % missingDietComponents have been found before.
                     tic
-                    missingDietComponents = getMissingDietModelHM(infeasModelDiet,missingDietComponents,1);
+                    missingDietComponents = getMissingDietPersephone(infeasModelDiet,missingDietComponents,1);
                     toc
                 end
 
@@ -468,7 +468,7 @@ modelNames = string(erase(modDir.mat,'.mat'));
 dietGrowthStats = table('Size',[length(modelNames),4],'VariableTypes',{'string','double','double','double'},...
     'VariableNames',{'Model',...
     'Feasible on given diet (true/false)',...
-    'Feasible on any diet (true/false)', ...
+    'Feasible on open diet (true/false)', ...
     'Feasible on updated diet (true/false)'});
 
 % Add model names
@@ -477,7 +477,7 @@ dietGrowthStats.Model = modelNames;
 % Fill table if all models are feasible on the original diet
 if allModelsFeasible == true
     dietGrowthStats.("Feasible on given diet (true/false)") = ones(length(dietGrowthStats.Model),1);
-    dietGrowthStats.("Feasible on any diet (true/false)") = nan(length(dietGrowthStats.Model),1);
+    dietGrowthStats.("Feasible on open diet (true/false)") = nan(length(dietGrowthStats.Model),1);
     dietGrowthStats.("Feasible on updated diet (true/false)") = nan(length(dietGrowthStats.Model),1);
 end
 
@@ -485,9 +485,9 @@ end
 if allModelsFeasible == false && modelsInfeasibleOnAnyDiet == true
     dietGrowthStats.("Feasible on given diet (true/false)") = feasibleOnDiet;
     % Assume if feasible on given diet, feasible on any
-    dietGrowthStats.("Feasible on any diet (true/false)") = feasibleOnDiet;
+    dietGrowthStats.("Feasible on open diet (true/false)") = feasibleOnDiet;
     % Fill in tested model results for any diet
-    dietGrowthStats.("Feasible on any diet (true/false)")(~feasibleOnDiet) = ~feasibleOnAnyDiet;
+    dietGrowthStats.("Feasible on open diet (true/false)")(~feasibleOnDiet) = ~feasibleOnAnyDiet;
     % No updated diet found as all infeasible models were infeasible on any
     % diet
     dietGrowthStats.("Feasible on updated diet (true/false)") = nan(length(dietGrowthStats.Model),1);
@@ -497,9 +497,9 @@ end
 if allModelsFeasible == false && modelsInfeasibleOnAnyDiet == false
     dietGrowthStats.("Feasible on given diet (true/false)") = feasibleOnDiet;
     % Assume if feasible on given diet, feasible on any
-    dietGrowthStats.("Feasible on any diet (true/false)") = feasibleOnDiet;
+    dietGrowthStats.("Feasible on open diet (true/false)") = feasibleOnDiet;
     % Fill in results of infeasible models on any diet
-    dietGrowthStats.("Feasible on any diet (true/false)")(~feasibleOnDiet) = feasibleOnAnyDiet;
+    dietGrowthStats.("Feasible on open diet (true/false)")(~feasibleOnDiet) = feasibleOnAnyDiet;
     
     % Assume if feasible on given diet, feasible on updated diet
     dietGrowthStats.("Feasible on updated diet (true/false)") = feasibleOnDiet;
@@ -511,8 +511,6 @@ end
 writetable(dietGrowthStats,[mWBMPath filesep 'dietGrowthStats.xlsx'], 'Sheet','SummaryFeasibility');
 writetable(dietInfo.updatedDiet,[mWBMPath filesep 'dietGrowthStats.xlsx'],'Sheet','Updated_diet');
 writecell(missingDietComponents,[mWBMPath filesep 'dietGrowthStats.xlsx'],'Sheet','Added_diet_metabolites');
-
-
 end
 
 function convertedModels = checkWbmFormat(paths)
@@ -567,7 +565,7 @@ function model_out = setupWbmOnDiet(model_in, Diet)
 
 % Set diet
 if ~isfield(model_in.SetupInfo, 'dietName')
-    disp('set default diet')
+    % disp('set default diet')
     model_in = setDietConstraints(model_in,Diet, 1);
 end
 

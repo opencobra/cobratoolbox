@@ -17,7 +17,7 @@ fprintf('                                                  | \n\n');
 CIenv = false;
 
 % request explicitly from the user to launch test suite locally
-if contains(getenv('HOME'), 'saleh')
+if contains(getenv('HOME'), 'cobratoolbox')
     % Running in CI environment
     fprintf('Running test in cobratoolbox/CI environment\n');
 
@@ -317,13 +317,25 @@ try
                 fprintf('%s:\n', resultTable.TestName{failedTests(i)});
                 trace = result(failedTests(i)).Error.getReport();
                 tracePerLine = strsplit(trace, '\n');
-                testSuitePosition = find(cellfun(@(x) contains(x, 'runTestSuite'), tracePerLine));
-                trace = sprintf(strjoin(tracePerLine(1:(testSuitePosition - 7)), '\n'));  % Remove the testSuiteTrace.
+
+                % Find a single index for 'runTestSuite'
+                testSuitePosition = find(cellfun(@(x) contains(x, 'runTestSuite'), tracePerLine), 1, 'first');
+
+                % Choose a safe cutoff
+                if isempty(testSuitePosition)
+                    cutoff = numel(tracePerLine);
+                else
+                    cutoff = max(testSuitePosition - 7, 1);
+                end
+
+                % Keep sprintf to avoid changing behaviour
+                trace = sprintf(strjoin(tracePerLine(1:cutoff), '\n'));  % Remove the testSuiteTrace.
                 fprintf('%s\n', trace);
                 fprintf('------------------------------------------------\n')
             end
             fprintf('\n\n')
         end
+
 
         % restore the original path
         restoredefaultpath;

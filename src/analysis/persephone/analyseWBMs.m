@@ -1,4 +1,4 @@
-function [FBA_results, pathsToFilesForStatistics] = analyseWBMs(mWBMPath, fluxPath, rxnList, varargin)
+function analyseWBMs(mWBMPath, fluxPath, rxnList, varargin)
 % analyseWBMs predicts the optimal fluxes for a list of user-defined
 % reactions (rxnList). All predicted are further described in
 % analyseWBMsol.m.
@@ -101,14 +101,19 @@ function [FBA_results, pathsToFilesForStatistics] = analyseWBMs(mWBMPath, fluxPa
 %                     - paramFluxProcessing.fluxMicrobeCorrelationMetric = 'regression_r2';
 %                     - paramFluxProcessing.fluxMicrobeCorrelationMetric = 'spearman_rho';
 %
-% fluxAnalysisPath:               Character array with path to directory where all
-%                            results will be saved (Default = pwd)
-% Solver:                Validated solvers: 'cplex_direct','ibm_cplex'
-%                        'tomlab_cplex', 'gurobi', 'mosek'
-%
-% OUTPUT
-% results       Structured array with FBA fluxes, solver statistics, and
-%               paths to the flux table and raw flux results
+% fluxAnalysisPath:     Character array with path to directory where all
+%                       results will be saved (Default = pwd)
+% Solver:               Validated solvers: 'cplex_direct','ibm_cplex'
+%                       'tomlab_cplex', 'gurobi', 'mosek'
+% analyseGF:            Boolean indiciating whether or not to investigate
+%                       GF models. In the case of personalisation, a germ
+%                       free iWBM will be created for every sample, this
+%                       can results in long computation times as there are
+%                       double the number of models to solve. If you are
+%                       not interested in solving a germ-free iWBM for each
+%                       sample, you can set to false. Default is true. When
+%                       personalisation is skipped, only one germ-free
+%                       model is made for each sex. 
 %
 % .. Author:
 %       - Tim Hensen       May, 2024
@@ -131,6 +136,7 @@ parser.addParameter('saveFullRes', true, @islogical);
 parser.addParameter('paramFluxProcessing', struct(), @isstruct);
 parser.addParameter('fluxAnalysisPath', [fluxPath, filesep, 'fluxAnalysis'], @ischar);
 parser.addParameter('solver', '', @ischar);
+parser.addParameter('analyseGF', '', @islogical);
 
 % Parse required and optional inputs
 parser.parse(mWBMPath, fluxPath, rxnList, varargin{:});
@@ -145,6 +151,7 @@ saveFullRes = parser.Results.saveFullRes;
 paramFluxProcessing = parser.Results.paramFluxProcessing;
 fluxAnalysisPath = parser.Results.fluxAnalysisPath;
 solver = parser.Results.solver;
+analyseGF = parser.Results.analyseGF;
 
 %%% Step 1: Initialise the CobraToolbox and set solver %%%
 
@@ -176,7 +183,7 @@ microbiomePresent = any(mWBMs);
 iWBMs = contains(modelNames,'iWBM');
 
 % If no iWBMs exist, add germ-free WBMs to investigate
-if ~any(iWBMs) && all(mWBMs)
+if ~any(iWBMs) && all(mWBMs) && analyseGF
 
     % Find all male and female WBMs
     maleWBMs = modelNames(contains(modelNames,'_male'));
@@ -195,7 +202,7 @@ if ~any(iWBMs) && all(mWBMs)
     end
 end
 
-if all(iWBMs)% Add a germfree model for each miWBM
+if all(iWBMs) && analyseGF % Add a germfree model for each miWBM
 
     extraModelNames = strrep(modelNames, 'miWBM', 'gfiWBM');
     modelNames = [modelNames;extraModelNames];
@@ -276,7 +283,7 @@ parfor i = 1:length(hmPaths)
 
     % Create germ-free WBMs if modelnames(i) contains "gf".
     makeGF = false;
-    if contains(modelNames(i),'gfWBM') || contains(modelNames(i),'gfiWBM')
+    if contains(modelNames(i),'gfWBM') || contains(modelNames(i),'gfiWBM')&& analyseGF
         makeGF = true;
     end
 
@@ -350,7 +357,7 @@ parfor i = 1:length(hmPaths)
 
         % Add LP and solver statistics
         solution.solver = FBA.solver;
-        solution.osenseStr = model.osenseStr;
+        solution.osenseStr{1,j} = model.osenseStr;
         solution.stat(1,j)=FBA.stat;
         if isfield(solution, "origStat")
             solution.origStat(1,j)=FBA.origStat;
@@ -400,12 +407,12 @@ end
 
 % Run flux processing pipeline
 % Make an if statement here for GF/personalised testing
-[FBA_results, pathsToFilesForStatistics] = analyseWBMsol(fluxPath,paramFluxProcessing, fluxAnalysisPath);
+analyseWBMsol(fluxPath,paramFluxProcessing, fluxAnalysisPath, analyseGF);
 
 % slimDownFBAresults prunes FBA solution results obtained in
 % analyseWBMs.m and saves the slimmed down solution results in a
 % new folder. Running this function can save up to 1000X of storage.
-smallFBAsolutionPaths = slimDownFBAresults(fluxPath);
+slimDownFBAresults(fluxPath);
 end
 
 function parsave(fname, data)

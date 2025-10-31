@@ -36,15 +36,15 @@ function rxnPrsTable = visualizeNormalizedRxnPresence(mapDir, setColours, numCor
 % width for improved readability of the heatmap. Implemented parallel
 % computing capabilities.
 
-% Default colour and line width scheme if none is provided.
+% Default  batlow colour scheme and line widths, if not user-specified otherwise.
 if nargin < 2 || isempty(setColours)
     setColours = {
-        1, 'c92a2a', 10;     % Red (darkest).
-        0.9, 'ff6b6b', 8;    % Red (medium).
-        0.7, 'ffc9c9', 7;    % Red (lightest).
-        0.5, 'bac8ff', 5;    % Indigo (lightest).
-        0.3, '5c7cfa', 3;    % Indigo (medium).
-        0.1, '364fc7', 2;    % Indigo (darkest).
+        1, 'fbcaf3', 10;     % Cotton candy.
+        0.9, 'f6a077', 8;    
+        0.7, '99882c', 7;    
+        0.5, '3b6d56', 5;    
+        0.3, '103f60', 3;    
+        0.1, '011959', 2;    % Navy blue.
         0, 'D3D3D3', 1       % Light gray (for no presence).
     };
 end

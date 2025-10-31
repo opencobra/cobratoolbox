@@ -17,13 +17,48 @@ jobs:
       - name: Check out merged PR code
         uses: actions/checkout@v4
 
-      - name: Run MATLAB Tests
+      - name: Install xvfb (skip if already installed)
         run: |
-          matlab -batch "run('initCobraToolbox.m'); run('test/testAll.m');"
+          if ! command -v xvfb-run >/dev/null 2>&1; then
+            apt-get update -y
+            apt-get install -y xvfb
+          else
+            echo "xvfb already installed."
+          fi
+
+      - name: Run MATLAB Tests (xvfb headless)
+        env:
+          QT_QPA_PLATFORM: offscreen
+          JAVA_AWT_HEADLESS: "1"
+        run: |
+          xvfb-run -a -s "-screen 0 1280x1024x24" \
+            matlab -noFigureWindows -batch "try; run('initCobraToolbox.m'); set(0,'DefaultFigureVisible','off'); run('test/testAll.m'); catch ME; disp(getReport(ME,'extended')); exit(1); end; exit(0);"
+
+      # New: ensure Node.js is present
+      - name: Set up Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
 
       - name: Convert JUnit to CTRF
         run: |
-          npx junit-to-ctrf ./testReport.junit.xml -o ./ctrf/ctrf-report.json
+          # Check Node.js version (optional guard)
+          MAJOR="$(node -p "process.versions.node.split('.')[0]")"
+          if [ "$MAJOR" -lt 20 ]; then
+            echo "❌ Node.js version too old: $(node -v). Please install Node 20 or newer."
+            exit 1
+          fi
+
+          # Print versions for debugging clarity
+          echo "✅ Node version: $(node -v)"
+          echo "✅ npm version:  $(npm -v)"
+
+          # Ensure output directory exists
+          mkdir -p ./ctrf
+
+          # Run conversion
+          echo "Converting JUnit XML to CTRF JSON..."
+          npx --yes junit-to-ctrf@0.0.12 ./testReport.junit.xml -o ./ctrf/ctrf-report.json
 
       - name: Upload CTRF Artifact
         uses: actions/upload-artifact@v4

@@ -200,8 +200,9 @@ importedRxns= {};
 stopModel = find((MatricesSUX.MatrixPart ==1), 1, 'last');
 for i = 1: size(solInt,2)-1
     [x,y] = find(solInt(:, i+1));
-    for j = 1: size(x)
+    for j = 1: numel(x)
         importedRxns{i, j} = MatricesSUX.rxns(stopModel + x(j));
         MatricesSUX.rxns(stopModel + x(j));
     end
 end
+

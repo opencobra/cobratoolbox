@@ -53,6 +53,8 @@ end
     if loaded == 1 && skip == 0
         fileName = 'diet.txt';
         outputFilePath = fullfile(resPath, fileName);
+        % Remove Diet_ to be applicable for MgPipe diet setting function
+        Diet(:,1) = strrep(Diet(:,1), 'Diet_EX_', 'EX_');
         writecell(Diet, outputFilePath, 'Delimiter', '\t');
     else
         outputFilePath = diet;
