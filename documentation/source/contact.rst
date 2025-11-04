@@ -4,10 +4,13 @@ Contact
 
     <br>
 
-For questions regarding the development of the COBRA Toolbox, please contact the lead developer:
- 
-`Ronan M.T. Fleming`__, 
-__ https://www.universiteitleiden.nl/en/staffmembers/ronan-fleming
-Analytical BioSciences and Metabolomics, 
-Division of Systems Biomedicine and Pharmacology, 
-Leiden University.
+    For questions regarding the development of the COBRA Toolbox, please contact the lead developer:<br>
+
+    <br><br>
+    <a href="https://www.universityofgalway.ie/remedi/who-we-are/principalinvestigators/ronan-fleming/">Ronan M.T. Fleming</a>,<br>
+    School of Medicine, University of Galway, University Rd, Galway, Ireland,<br>
+    Digital Metabolic Twin Centre, University of Galway, Galway, Ireland.<br>
+
+    <br><br>
+
+
