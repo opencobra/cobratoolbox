@@ -52,7 +52,7 @@
 	path = papers
 	url = https://github.com/opencobra/COBRA.papers.git
 	ignore = dirty
-        branch = master
+	branch = master
 [submodule "octave-networks-toolbox"]
 	path = external/analysis/octave-networks-toolbox
 	url = https://github.com/aeolianine/octave-networks-toolbox.git
@@ -82,4 +82,4 @@
 	path = external/visualization/MatGPT
 	url = https://github.com/toshiakit/MatGPT.git
         ignore = dirty
-        branch = main
+	branch = main
