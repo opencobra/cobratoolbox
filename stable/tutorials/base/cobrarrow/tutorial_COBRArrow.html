@@ -1,0 +1,179 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge,IE=9,chrome=1"><meta name="generator" content="MATLAB 2025b"><title>COBRArrow Tutorial</title><style type="text/css">.rtcContent { padding: 30px; } .S0 { margin: 3px 10px 5px 4px; padding: 0px; line-height: 28.8px; min-height: 0px; white-space: pre-wrap; color: rgb(192, 76, 11); font-family: Helvetica, Arial, sans-serif, Helvetica, Arial, sans-serif; font-style: normal; font-size: 24px; font-weight: 400; text-align: left;  }
+.S1 { border-left: 0px none rgb(33, 33, 33); border-right: 0px none rgb(33, 33, 33); border-top: 0px none rgb(33, 33, 33); border-bottom: 0px none rgb(33, 33, 33); border-radius: 0px; padding: 0px; line-height: 15.6px; min-height: 16px; white-space: pre; color: rgb(33, 33, 33); font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 12px;  }
+.S2 { margin: 20px 10px 5px 4px; padding: 0px; line-height: 25px; min-height: 0px; white-space: pre-wrap; color: rgb(33, 33, 33); font-family: Helvetica, Arial, sans-serif, Helvetica, Arial, sans-serif; font-style: normal; font-size: 20px; font-weight: 700; text-align: left;  }
+.S3 { margin: 2px 10px 9px 4px; padding: 0px; line-height: 21px; min-height: 0px; white-space: pre-wrap; color: rgb(33, 33, 33); font-family: Helvetica, Arial, sans-serif, Helvetica, Arial, sans-serif; font-style: normal; font-size: 14px; font-weight: 400; text-align: left;  }
+.CodeBlock { background-color: #F5F5F5; margin: 10px 15px 10px 0; display: inline-block; min-width: 100%; }
+.S4 { border-left: 1px solid rgb(217, 217, 217); border-right: 1px solid rgb(217, 217, 217); border-top: 1px solid rgb(217, 217, 217); border-bottom: 0px none rgb(33, 33, 33); border-radius: 4px 4px 0px 0px; padding: 6px 45px 0px 13px; line-height: 18.004px; min-height: 0px; white-space: nowrap; color: rgb(33, 33, 33); font-family: Menlo, Monaco, Consolas, "Courier New", monospace, Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S5 { border-left: 1px solid rgb(217, 217, 217); border-right: 1px solid rgb(217, 217, 217); border-top: 0px none rgb(33, 33, 33); border-bottom: 0px none rgb(33, 33, 33); border-radius: 0px; padding: 0px 45px 0px 13px; line-height: 18.004px; min-height: 0px; white-space: nowrap; color: rgb(33, 33, 33); font-family: Menlo, Monaco, Consolas, "Courier New", monospace, Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S6 { border-left: 1px solid rgb(217, 217, 217); border-right: 1px solid rgb(217, 217, 217); border-top: 0px none rgb(33, 33, 33); border-bottom: 1px solid rgb(217, 217, 217); border-radius: 0px 0px 4px 4px; padding: 0px 45px 4px 13px; line-height: 18.004px; min-height: 0px; white-space: nowrap; color: rgb(33, 33, 33); font-family: Menlo, Monaco, Consolas, "Courier New", monospace, Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S7 { margin: 3px 10px 5px 4px; padding: 0px; line-height: 25px; min-height: 0px; white-space: pre-wrap; color: rgb(33, 33, 33); font-family: Helvetica, Arial, sans-serif, Helvetica, Arial, sans-serif; font-style: normal; font-size: 20px; font-weight: 700; text-align: left;  }</style></head><body><div class = rtcContent><h1  class = 'S0'><span>COBRArrow Tutorial</span></h1><div class = 'preformatted-plain' style = 'margin: 10px 3px 10px 55px; padding: 10px 10px 10px 5px; '><div  class = 'S1'><span style="white-space: pre"><span >A tutorial for using the COBRArrow MATLAB API.</span></span></div></div><h2  class = 'S2'><span>Author: Yixing Lei</span></h2><h2  class = 'S2'><span>INTRODUCTION</span></h2><div  class = 'S3'><span>COBRArrow is a tool designed to handle large-scale biochemical reaction models through remote procedure calls (RPC). It facilitates the sharing of computational models within COBRA tools across different programming languages and provides efficient optimization services, streamlining the process of sharing and optimizing various models.</span></div><div  class = 'S3'><span>In this tutorial, you will learn how to use COBRArrow MATLAB API to: - Set up the COBRArrow environment - Send models to a remote server - Fetch models from the server - Persist models to a database - Optimize models and retrieve results</span></div><h2  class = 'S2'><span>Step 1: Environment Setup</span></h2><div  class = 'S3'><span>Before you begin, ensure that you have installed the necessary dependencies: - MATLAB with the COBRA Toolbox installed and initialized. - Python: A compatible version of Python as specified by MathWorks Python Compatibility: </span><span> </span><a href = "https://www.mathworks.com/content/dam/mathworks/mathworks-dot-com/support/sysreq/files/python-support.pdf"><span>https://www.mathworks.com/content/dam/mathworks/mathworks-dot-com/support/sysreq/files/python-support.pdf</span></a></div><h2  class = 'S2'><span>Step 2: Setting Up COBRArrow</span></h2><div  class = 'S3'><span>Before running any model, you need to set up COBRArrow in MATLAB. This involves initializing the environment and establishing a connection to the remote server.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% Initialize COBRArrow</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >initCobrarrow();</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'>&nbsp;</div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% Build the service connection</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >client = COBRArrow(</span><span style="color: rgb(167, 9, 245);">'cobrarrow.chatimd.org'</span><span >);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'>&nbsp;</div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% Login to use the service</span></span></div></div><div class="inlineWrapper"><div  class = 'S6'><span style="white-space: pre"><span >client = client.login(</span><span style="color: rgb(167, 9, 245);">'johndoe'</span><span >,</span><span style="color: rgb(167, 9, 245);">'123456'</span><span >);</span></span></div></div></div><h2  class = 'S7'><span>Step 3: Sending and Optimizing a Model</span></h2><div  class = 'S3'><span>COBRArrow allows you to send your biochemical model to a remote server, where you can run optimizations using remote resources, providing a faster and more efficient way of computation.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% Example: Sending a Model</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% First, load your model and send it to the remote server:</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'>&nbsp;</div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% Load the model(we use ecoli_core_model for demonstration purpose)</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >fileName = </span><span style="color: rgb(167, 9, 245);">'ecoli_core_model.mat'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">if </span><span >~exist(</span><span style="color: rgb(167, 9, 245);">'modelOri'</span><span >,</span><span style="color: rgb(167, 9, 245);">'var'</span><span >)</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >    modelOri = readCbModel(fileName);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span style="color: rgb(14, 0, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'>&nbsp;</div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% Send the model to the server</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >schemaName = </span><span style="color: rgb(167, 9, 245);">'ecoli_core'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >client.sendModel(modelOri, schemaName);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'>&nbsp;</div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% schemaName is the unique identifier of the model on the server.</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% If the model with the same schemaName already exists on server, error</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% will be thrown. If you want to overwrite the existing model, set the </span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% toOverwrite flag to ture to the method call. Or you can choose to change</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% the schemaName.</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'>&nbsp;</div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% Send the model to the server with flags for persistence and overwrite</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >toPersist = false;        </span><span style="color: rgb(0, 128, 19);">% Persist the model in the database</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >toOverwrite = true;      </span><span style="color: rgb(0, 128, 19);">% Overwrite the model on the server if it exists</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >client.sendModel(modelOri, schemaName, toPersist, toOverwrite);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'>&nbsp;</div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% or you can just call sendModel method like this:</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >client.sendModel(modelOri, schemaName, false, true);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'>&nbsp;</div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% Example: Optimizing a Model</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% Once the model is on the server, you can run optimization on the server. </span></span></div></div><div class="inlineWrapper"><div  class = 'S5'>&nbsp;</div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% Specify the solver and parameters</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >solver = COBRArrowSolver(</span><span style="color: rgb(167, 9, 245);">'gurobi'</span><span >);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >solver.setParameter(</span><span style="color: rgb(167, 9, 245);">'tol'</span><span >, 1e-9); </span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% Note: currently the remote optimization service hasn't supported </span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% parameter change yet</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'>&nbsp;</div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% Run optimization</span></span></div></div><div class="inlineWrapper"><div  class = 'S6'><span style="white-space: pre"><span >result = client.optimizeModel(schemaName, solver);</span></span></div></div></div><h2  class = 'S7'><span>Additional Methods: Fetching and Persisting Models</span></h2><div  class = 'S3'><span>1. Fetching the Model</span></div><div  class = 'S3'><span>You can fetch a model that was uploaded by other users. The model can be used in COBRA Toolbox for furthur analysis.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre"><span >fetchedModel = client.fetchModel(schemaName);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'>&nbsp;</div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% For example, it can be used to do optimization locally.</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >solution = optimizeCbModel(fetchedModel);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'>&nbsp;</div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% 2. Persisting the Model to a Database</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">%</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% Models sent to the remote server are stored in memory, which facilitates </span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% fast data sharing. However, this data is volatile and may be lost if the </span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% server is abruptly terminated. </span></span></div></div><div class="inlineWrapper"><div  class = 'S5'>&nbsp;</div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% To avoid losing data, it's important to persist the model to a database:</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >client.persistModel(schemaName, true);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'>&nbsp;</div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% 3. Send a field</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">%</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% You can send an individual field to server.</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% For example, the flux result can be sent to server for visualization in </span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% Escher map.</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >fieldName = </span><span style="color: rgb(167, 9, 245);">'flux'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >fieldData = result.flux;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >client.sendField(schemaName, fieldName, fieldData);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'>&nbsp;</div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% If the field is already stored on the server, error will be thrown. You</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% need to set the toOverwrite flag as true to overwrite the data.</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >client.sendField(schemaName, fieldName, fieldData, true);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'>&nbsp;</div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% 4. Fetch a single field.</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">%</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% You can fetch a single field in the model from the server. This provides</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% efficiency and convenience when you only need part of the data in the </span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% model for analysis.</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >fluxResult = client.fetchField(schemaName, fieldName);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'>&nbsp;</div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% 5. Fetch the model for FBA analysis</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% </span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% You can fetch part of the model which includes the fields that are used</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% for doing FBA analysis only.</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >FBAmodel = client.fetchModelForFBAAnalysis(schemaName);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >FBAresult = optimizeCbModel(FBAmodel);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'>&nbsp;</div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% 6. List flight information on the server</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">%</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% The model sent to the server is stored as many flights. Every flight </span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% contains information about how each field is stored on the server. It</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% includes:</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% - descriptor: Unique identifier for the flight.</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% - total_records: Total number of records in the flight.</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% - total_bytes: Total number of bytes in the flight.</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% - endpoints: List of endpoints where the flight can be accessed.</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% - schema: Schema of the flight, including column names and data types.</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% - schema_metadata: Additional metadata associated with the schema, such </span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% as field name, description, dimension of the field and the data type of </span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% the field in matlab.</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'>&nbsp;</div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% List flights in a schema</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >flightsList = client.listAllFlights(schemaName);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'>&nbsp;</div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% List all flights on server</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span >allFlightsList = client.listAllFlights();</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'>&nbsp;</div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span > </span><span style="color: rgb(0, 128, 19);">% 7. Get unique identifier of the flights</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span > </span><span style="color: rgb(0, 128, 19);">%</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span > </span><span style="color: rgb(0, 128, 19);">%  Get unique identifiers of the flights in a schema, so that we can</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span > </span><span style="color: rgb(0, 128, 19);">%  retrieve the flight and get the data.</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span > descriptors = client.getAllDescriptors(schemaName);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'>&nbsp;</div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre"><span > </span><span style="color: rgb(0, 128, 19);">%  Get all unique identifiers of the flights on the server</span></span></div></div><div class="inlineWrapper"><div  class = 'S6'><span style="white-space: pre"><span > allDescriptors = client.getAllDescriptors();</span></span></div></div></div><h2  class = 'S7'><span style=' font-style: italic;'>TROUBLESHOOTING</span></h2><div  class = 'S3'><span>If you encounter issues with sending models or running optimizations, ensure: 1. The COBRA Toolbox and dependencies are correctly installed and configured. 2. The server is accessible and running the necessary services. 3. Python and required package (PyArrow) is correctly installed.</span></div><h2  class = 'S2'><span style=' font-style: italic;'>Acknowledgments</span></h2><div  class = 'S3'><span>1. Currently, the remote optimization service supports solvers including: CPLEX, GLPK, Gurobi. It hasn't supported parameter change yet. 2. Always persist your model to the database to avoid losing your data in case of a service shutdown. 3. The listAllFlights method and getAllDescriptors method can be used for debugging and future extension purposes, they are not involved in general use cases.</span></div>
+<br>
+<!-- 
+##### SOURCE BEGIN #####
+%% COBRArrow Tutorial
+%%
+% 
+%  A tutorial for using the COBRArrow MATLAB API.
+%
+%% Author: Yixing Lei
+%% INTRODUCTION
+% COBRArrow is a tool designed to handle large-scale biochemical reaction models 
+% through remote procedure calls (RPC). It facilitates the sharing of computational 
+% models within COBRA tools across different programming languages and provides 
+% efficient optimization services, streamlining the process of sharing and optimizing 
+% various models.
+% 
+% In this tutorial, you will learn how to use COBRArrow MATLAB API to: - Set 
+% up the COBRArrow environment - Send models to a remote server - Fetch models 
+% from the server - Persist models to a database - Optimize models and retrieve 
+% results
+%% Step 1: Environment Setup
+% Before you begin, ensure that you have installed the necessary dependencies: 
+% - MATLAB with the COBRA Toolbox installed and initialized. - Python: A compatible 
+% version of Python as specified by MathWorks Python Compatibility:  <https://www.mathworks.com/content/dam/mathworks/mathworks-dot-com/support/sysreq/files/python-support.pdf 
+% https://www.mathworks.com/content/dam/mathworks/mathworks-dot-com/support/sysreq/files/python-support.pdf>
+%% Step 2: Setting Up COBRArrow
+% Before running any model, you need to set up COBRArrow in MATLAB. This involves 
+% initializing the environment and establishing a connection to the remote server.
+
+% Initialize COBRArrow
+initCobrarrow();
+
+% Build the service connection
+client = COBRArrow('cobrarrow.chatimd.org');
+
+% Login to use the service
+client = client.login('johndoe','123456');
+%% Step 3: Sending and Optimizing a Model
+% COBRArrow allows you to send your biochemical model to a remote server, where 
+% you can run optimizations using remote resources, providing a faster and more 
+% efficient way of computation.
+
+% Example: Sending a Model
+% First, load your model and send it to the remote server:
+
+% Load the model(we use ecoli_core_model for demonstration purpose)
+fileName = 'ecoli_core_model.mat';
+if ~exist('modelOri','var')
+    modelOri = readCbModel(fileName);
+end
+
+% Send the model to the server
+schemaName = 'ecoli_core';
+client.sendModel(modelOri, schemaName);
+
+% schemaName is the unique identifier of the model on the server.
+% If the model with the same schemaName already exists on server, error
+% will be thrown. If you want to overwrite the existing model, set the 
+% toOverwrite flag to ture to the method call. Or you can choose to change
+% the schemaName.
+
+% Send the model to the server with flags for persistence and overwrite
+toPersist = false;        % Persist the model in the database
+toOverwrite = true;      % Overwrite the model on the server if it exists
+client.sendModel(modelOri, schemaName, toPersist, toOverwrite);
+
+% or you can just call sendModel method like this:
+client.sendModel(modelOri, schemaName, false, true);
+
+% Example: Optimizing a Model
+% Once the model is on the server, you can run optimization on the server. 
+
+% Specify the solver and parameters
+solver = COBRArrowSolver('gurobi');
+solver.setParameter('tol', 1e-9); 
+% Note: currently the remote optimization service hasn't supported 
+% parameter change yet
+
+% Run optimization
+result = client.optimizeModel(schemaName, solver);
+%% Additional Methods: Fetching and Persisting Models
+% 1. Fetching the Model
+% 
+% You can fetch a model that was uploaded by other users. The model can be used 
+% in COBRA Toolbox for furthur analysis.
+
+fetchedModel = client.fetchModel(schemaName);
+
+% For example, it can be used to do optimization locally.
+solution = optimizeCbModel(fetchedModel);
+
+% 2. Persisting the Model to a Database
+%
+% Models sent to the remote server are stored in memory, which facilitates 
+% fast data sharing. However, this data is volatile and may be lost if the 
+% server is abruptly terminated. 
+
+% To avoid losing data, it's important to persist the model to a database:
+client.persistModel(schemaName, true);
+
+% 3. Send a field
+%
+% You can send an individual field to server.
+% For example, the flux result can be sent to server for visualization in 
+% Escher map.
+fieldName = 'flux';
+fieldData = result.flux;
+client.sendField(schemaName, fieldName, fieldData);
+
+% If the field is already stored on the server, error will be thrown. You
+% need to set the toOverwrite flag as true to overwrite the data.
+client.sendField(schemaName, fieldName, fieldData, true);
+
+% 4. Fetch a single field.
+%
+% You can fetch a single field in the model from the server. This provides
+% efficiency and convenience when you only need part of the data in the 
+% model for analysis.
+fluxResult = client.fetchField(schemaName, fieldName);
+
+% 5. Fetch the model for FBA analysis
+% 
+% You can fetch part of the model which includes the fields that are used
+% for doing FBA analysis only.
+FBAmodel = client.fetchModelForFBAAnalysis(schemaName);
+FBAresult = optimizeCbModel(FBAmodel);
+
+% 6. List flight information on the server
+%
+% The model sent to the server is stored as many flights. Every flight 
+% contains information about how each field is stored on the server. It
+% includes:
+% - descriptor: Unique identifier for the flight.
+% - total_records: Total number of records in the flight.
+% - total_bytes: Total number of bytes in the flight.
+% - endpoints: List of endpoints where the flight can be accessed.
+% - schema: Schema of the flight, including column names and data types.
+% - schema_metadata: Additional metadata associated with the schema, such 
+% as field name, description, dimension of the field and the data type of 
+% the field in matlab.
+
+% List flights in a schema
+flightsList = client.listAllFlights(schemaName);
+
+% List all flights on server
+allFlightsList = client.listAllFlights();
+
+ % 7. Get unique identifier of the flights
+ %
+ %  Get unique identifiers of the flights in a schema, so that we can
+ %  retrieve the flight and get the data.
+ descriptors = client.getAllDescriptors(schemaName);
+
+ %  Get all unique identifiers of the flights on the server
+ allDescriptors = client.getAllDescriptors();
+%% _TROUBLESHOOTING_
+% If you encounter issues with sending models or running optimizations, ensure: 
+% 1. The COBRA Toolbox and dependencies are correctly installed and configured. 
+% 2. The server is accessible and running the necessary services. 3. Python and 
+% required package (PyArrow) is correctly installed.
+%% _Acknowledgments_
+% 1. Currently, the remote optimization service supports solvers including: 
+% CPLEX, GLPK, Gurobi. It hasn't supported parameter change yet. 2. Always persist 
+% your model to the database to avoid losing your data in case of a service shutdown. 
+% 3. The listAllFlights method and getAllDescriptors method can be used for debugging 
+% and future extension purposes, they are not involved in general use cases.
+##### SOURCE END #####
+-->
+</div></body></html>
