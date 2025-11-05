@@ -77,7 +77,7 @@
 	path = external/base/io/xlread
 	url = https://github.com/tpfau/xlread
         ignore = dirty
-        branch = master
+	branch = master
 [submodule "external/visualization/MatGPT"]
 	path = external/visualization/MatGPT
 	url = https://github.com/toshiakit/MatGPT.git
