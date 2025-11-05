@@ -1,0 +1,79 @@
+name: Build and publish core docs
+
+on:
+  push:
+    branches:
+      - master
+
+permissions:
+  contents: write
+
+concurrency:
+  group: gh-pages-deploy
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+          cache: 'pip'
+          cache-dependency-path: |
+            documentation/requirements.txt
+
+      - name: Install documentation dependencies
+        working-directory: ./documentation
+        run: |
+          pip install -r requirements.txt
+
+      # Generate dynamic sources used by Sphinx (same as in Update function docs)
+      - name: Generate publications (RST)
+        working-directory: ./documentation/source/sphinxext
+        run: |
+          python GenerateCitationsRST.py
+
+      - name: Update packages for docs
+        working-directory: ./documentation/source
+        run: |
+          python ./sphinxext/copy_files.py
+
+      - name: Generate function module RST files
+        working-directory: ./documentation/source/modules
+        run: |
+          python ./GetRSTfiles.py
+
+      - name: Build documentation (Sphinx)
+        working-directory: ./documentation
+        run: |
+          make html
+
+      # Remove areas published by other workflows to avoid collisions
+      - name: Prune build output to avoid overlaps
+        run: |
+          rm -rf ./documentation/build/html/modules \
+                 ./documentation/build/html/_static \
+                 ./documentation/build/html/Citations \
+                 ./documentation/build/html/tutorials || true
+
+      # Deploy only the remaining site to gh-pages/stable,
+      # preserving folders managed by other workflows
+      - name: Deploy core site to gh-pages/stable (preserve modules/citations/static/tutorials)
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: ./documentation/build/html
+          branch: gh-pages
+          target-folder: stable
+          clean: true
+          clean-exclude: |
+            modules/**
+            _static/**
+            Citations/**
+            tutorials/**
+          commit-message: "Publish core docs (no tutorials/modules/citations/static)"
