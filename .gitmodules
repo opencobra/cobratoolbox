@@ -82,4 +82,4 @@
 	path = external/visualization/MatGPT
 	url = https://github.com/toshiakit/MatGPT.git
         ignore = dirty
-	branch = master
+	branch = main
