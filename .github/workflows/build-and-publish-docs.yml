@@ -1,4 +1,4 @@
-name: Build and publish core docs
+name: Build and publish site (ordered)
 
 on:
   push:
@@ -13,9 +13,9 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  build:
+  core-docs:
+    name: Core docs (no tutorials/modules/citations/static/contributors)
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -24,16 +24,14 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.10'
-          cache: 'pip'
-          cache-dependency-path: |
-            documentation/requirements.txt
+          cache: pip
+          cache-dependency-path: documentation/requirements.txt
 
       - name: Install documentation dependencies
         working-directory: ./documentation
         run: |
           pip install -r requirements.txt
 
-      # Generate dynamic sources used by Sphinx (same as in Update function docs)
       - name: Generate publications (RST)
         working-directory: ./documentation/source/sphinxext
         run: |
@@ -54,19 +52,19 @@ jobs:
         run: |
           make html
 
-      # Remove areas published by other workflows to avoid collisions
+      # prune anything owned by other deploys
       - name: Prune build output to avoid overlaps
         run: |
-          rm -rf ./documentation/build/html/modules \
-                 ./documentation/build/html/_static \
-                 ./documentation/build/html/Citations \
-                 ./documentation/build/html/citations.html \
-                 ./documentation/build/html/contributors.html \
-                 ./documentation/build/html/tutorials || true
+          rm -rf \
+            ./documentation/build/html/modules \
+            ./documentation/build/html/_static \
+            ./documentation/build/html/Citations \
+            ./documentation/build/html/tutorials \
+            ./documentation/build/html/contributors \
+            ./documentation/build/html/contributors.html \
+            ./documentation/build/html/list_contributors.html || true
 
-      # Deploy only the remaining site to gh-pages/stable,
-      # preserving folders managed by other workflows
-      - name: Deploy core site to gh-pages/stable (preserve modules/citations/static/tutorials)
+      - name: Deploy core site to gh-pages/stable (preserve others)
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           folder: ./documentation/build/html
@@ -78,4 +76,117 @@ jobs:
             _static/**
             Citations/**
             tutorials/**
-          commit-message: "Publish core docs (no tutorials/modules/citations/static)"
+            contributors/**
+            contributors.html
+            list_contributors.html
+          commit-message: "Publish core docs (preserve tutorials/modules/citations/static/contributors)"
+
+  function-docs:
+    name: Function modules + citations + static
+    needs: core-docs
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+          cache: pip
+          cache-dependency-path: documentation/requirements.txt
+
+      - name: Install documentation dependencies
+        working-directory: ./documentation
+        run: |
+          pip install -r requirements.txt
+
+      - name: Generate publications rst file
+        working-directory: ./documentation/source/sphinxext
+        run: |
+          python GenerateCitationsRST.py
+
+      - name: Update packages
+        working-directory: ./documentation/source
+        run: |
+          python ./sphinxext/copy_files.py
+
+      - name: Generate functions rst files
+        working-directory: ./documentation/source/modules
+        run: |
+          python ./GetRSTfiles.py
+
+      - name: Generate documentation
+        working-directory: ./documentation
+        run: |
+          make html
+
+      - name: Copy the citations html page (as before)
+        run: |
+          cp ./documentation/build/html/citations.html ./documentation/source/Citations/citations.html || true
+
+      - name: Deploy the function modules
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: ./documentation/build/html/modules
+          branch: gh-pages
+          target-folder: stable/modules
+          commit-message: "update Function Docs (Automatic Workflow)"
+
+      - name: Deploy the citations page
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./documentation/source/Citations
+          publish_branch: gh-pages
+          keep_files: true
+          destination_dir: stable
+          commit_message: "update Function Docs (Automatic Workflow)"
+
+      - name: Deploy the citations static page
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./documentation/build/html/_static
+          publish_branch: gh-pages
+          keep_files: true
+          destination_dir: stable/_static
+          commit_message: "update Function Docs (Automatic Workflow)"
+
+  contributors:
+    name: Contributors page
+    needs: function-docs
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+          cache: pip
+          cache-dependency-path: documentation/source/Contributions/requirements.txt
+
+      - name: Install dependencies
+        working-directory: ./documentation/source/Contributions
+        run: |
+          pip install -r requirements.txt
+
+      - name: Update contributors
+        working-directory: ./documentation/source/Contributions
+        run: |
+          python UpdateContributorsList.py
+
+      - name: Generate HTML file
+        working-directory: ./documentation/source/Contributions
+        run: |
+          python GenerateContributorsHTML.py
+
+      - name: Deploy to gh-pages/stable
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./documentation/source/Contributions/contributors
+          publish_branch: gh-pages
+          keep_files: true
+          destination_dir: stable
+          commit_message: "Update Contributors (Automatic Workflow)"
