@@ -60,6 +60,8 @@ jobs:
           rm -rf ./documentation/build/html/modules \
                  ./documentation/build/html/_static \
                  ./documentation/build/html/Citations \
+                 ./documentation/build/html/citations.html \
+                 ./documentation/build/html/contributors.html \
                  ./documentation/build/html/tutorials || true
 
       # Deploy only the remaining site to gh-pages/stable,
