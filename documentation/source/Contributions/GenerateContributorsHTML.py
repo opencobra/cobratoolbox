@@ -34,6 +34,25 @@ with open("contributorsTemp.html", "r") as f:
 # Parse the HTML using BeautifulSoup
 soup = BeautifulSoup(html_content, "html.parser")
 
+# Find the Contributors section and remove the old contributor data
+# The structure is: <h1>Contributors</h1><br><br><div class="row">...contributor avatars...</div><br><br>
+contributors_section = soup.find("section", id="contributors")
+if contributors_section:
+    contributors_h1 = contributors_section.find("h1", string=lambda text: text and "Contributors" in text and "Current" not in text and "Previous" not in text and "Authors" not in text)
+    if contributors_h1:
+        # Find and remove the div.row that comes after the Contributors h1 and before Principal investigators
+        # This is the old contributors list that we want to replace
+        next_element = contributors_h1.find_next_sibling()
+        while next_element:
+            # Stop when we hit the Principal investigators h1
+            if next_element.name == "h1" and "Principal investigators" in next_element.get_text():
+                break
+            # Remove br tags and the row div
+            next_to_remove = next_element
+            next_element = next_element.find_next_sibling()
+            next_to_remove.decompose()
+        print("✓ Removed old Contributors section content")
+
 # Find the target elements
 target_element1 = soup.find("div", id="current-contributors-list")
 target_element2 = soup.find("div", id="previous-contributors-list")
