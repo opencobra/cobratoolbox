@@ -52,6 +52,14 @@ jobs:
         run: |
           make html
 
+      # NEW: Upload the complete Sphinx build as an artifact for other jobs
+      - name: Upload Sphinx build artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: sphinx-build
+          path: ./documentation/build/html
+          retention-days: 1
+
       # prune anything owned by other deploys
       - name: Prune build output to avoid overlaps
         run: |
@@ -140,7 +148,7 @@ jobs:
           publish_branch: gh-pages
           keep_files: true
           destination_dir: stable
-          commit_message: "update Function Docs (Automatic Workflow)"
+          commit-message: "update Function Docs (Automatic Workflow)"
 
       - name: Deploy the citations static page
         uses: peaceiris/actions-gh-pages@v3
@@ -150,7 +158,7 @@ jobs:
           publish_branch: gh-pages
           keep_files: true
           destination_dir: stable/_static
-          commit_message: "update Function Docs (Automatic Workflow)"
+          commit-message: "update Function Docs (Automatic Workflow)"
 
   contributors:
     name: Contributors page
@@ -158,6 +166,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+
+      # NEW: Download the Sphinx build artifact from core-docs job
+      - name: Download Sphinx build artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: sphinx-build
+          path: ./documentation/build/html
 
       - name: Set up Python 3.10
         uses: actions/setup-python@v5
@@ -170,6 +185,16 @@ jobs:
         working-directory: ./documentation/source/Contributions
         run: |
           pip install -r requirements.txt
+
+      # NEW: Copy the Sphinx-generated contributors.html as the template
+      - name: Update template from Sphinx build
+        run: |
+          if [ -f ./documentation/build/html/contributors.html ]; then
+            cp ./documentation/build/html/contributors.html ./documentation/source/Contributions/contributorsTemp.html
+            echo "✓ Updated contributorsTemp.html from Sphinx build"
+          else
+            echo "⚠ Warning: contributors.html not found in Sphinx build"
+          fi
 
       - name: Update contributors
         working-directory: ./documentation/source/Contributions
@@ -189,4 +214,4 @@ jobs:
           publish_branch: gh-pages
           keep_files: true
           destination_dir: stable
-          commit_message: "Update Contributors (Automatic Workflow)"
+          commit-message: "Update Contributors (Automatic Workflow)"
