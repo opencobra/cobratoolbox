@@ -26,6 +26,7 @@ for i in range(len(df)):
         <p><a href="{github_url}">{username}</a></p>
     </div>
     """
+
 # Read the template HTML file
 with open("contributorsTemp.html", "r") as f:
     html_content = f.read()
@@ -33,18 +34,78 @@ with open("contributorsTemp.html", "r") as f:
 # Parse the HTML using BeautifulSoup
 soup = BeautifulSoup(html_content, "html.parser")
 
-# Find the target element (replace with curr_contri)
+# Find the target elements
 target_element1 = soup.find("div", id="current-contributors-list")
+target_element2 = soup.find("div", id="previous-contributors-list")
 
-# Insert the content inside the target element
+# If markers don't exist (Sphinx-generated template), add them
+if target_element1 is None or target_element2 is None:
+    print("Markers not found. Adding Current and Previous Contributors sections...")
+    
+    # Find the "Authors of the COBRA Toolbox v3.0" heading
+    authors_heading = soup.find("h1", string=lambda text: text and "Authors of the COBRA Toolbox v3.0" in text)
+    
+    if authors_heading:
+        # Create Current Contributors section
+        current_h1 = soup.new_tag("h1")
+        current_h1.string = "Current Contributors"
+        headerlink = soup.new_tag("a", **{"class": "headerlink", "href": "#Current Contributors", "title": "Permalink to this heading"})
+        headerlink.string = "¶"
+        current_h1.append(headerlink)
+        
+        current_br1 = soup.new_tag("br")
+        current_br2 = soup.new_tag("br")
+        current_row = soup.new_tag("div", **{"class": "row"})
+        current_marker = soup.new_tag("div", **{"id": "current-contributors-list"})
+        current_row.append(current_marker)
+        current_br3 = soup.new_tag("br")
+        current_br4 = soup.new_tag("br")
+        
+        # Create Previous Contributors section  
+        previous_h1 = soup.new_tag("h1")
+        previous_h1.string = "Previous Contributors"
+        prev_headerlink = soup.new_tag("a", **{"class": "headerlink", "href": "#Previous Contributors", "title": "Permalink to this heading"})
+        prev_headerlink.string = "¶"
+        previous_h1.append(prev_headerlink)
+        
+        previous_br1 = soup.new_tag("br")
+        previous_br2 = soup.new_tag("br")
+        previous_row = soup.new_tag("div", **{"class": "row"})
+        previous_marker = soup.new_tag("div", **{"id": "previous-contributors-list"})
+        previous_row.append(previous_marker)
+        previous_br3 = soup.new_tag("br")
+        previous_br4 = soup.new_tag("br")
+        
+        # Insert all elements before the "Authors" heading
+        authors_heading.insert_before(current_h1)
+        current_h1.insert_after(current_br1)
+        current_br1.insert_after(current_br2)
+        current_br2.insert_after(current_row)
+        current_row.insert_after(current_br3)
+        current_br3.insert_after(current_br4)
+        
+        current_br4.insert_after(previous_h1)
+        previous_h1.insert_after(previous_br1)
+        previous_br1.insert_after(previous_br2)
+        previous_br2.insert_after(previous_row)
+        previous_row.insert_after(previous_br3)
+        previous_br3.insert_after(previous_br4)
+        
+        # Update references
+        target_element1 = current_marker
+        target_element2 = previous_marker
+        
+        print("✓ Successfully added contributor sections")
+    else:
+        print("ERROR: Could not find 'Authors of the COBRA Toolbox v3.0' heading")
+        exit(1)
+
+# Insert the content inside the target elements
 target_element1.insert_after(curr_contri)
-
-# Find the target element (replace with past_contri)
-target_element2= soup.find("div", id="previous-contributors-list")
-
-# Insert the content inside the target element
 target_element2.insert_after(past_contri)
 
 # Save the modified HTML
 with open("./contributors/contributors.html", "w", encoding="utf-8") as f:
     f.write(html.unescape(soup.prettify()))
+
+print("✓ Generated contributors.html successfully")
