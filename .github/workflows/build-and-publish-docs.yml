@@ -197,6 +197,18 @@ jobs:
             exit 1
           fi
 
+      - name: Debug - Check template structure
+        working-directory: ./documentation/source/Contributions
+        run: |
+          echo "=== Looking for all h1 tags and their context ==="
+          grep -B 2 -A 2 "<h1>" contributorsTemp.html | head -n 50
+          echo ""
+          echo "=== Looking for section with id=contributors ==="
+          grep -n 'id="contributors"' contributorsTemp.html || echo "Not found"
+          echo ""
+          echo "=== Lines 195-350 of template ==="
+          sed -n '195,350p' contributorsTemp.html
+
       - name: Update contributors
         working-directory: ./documentation/source/Contributions
         run: |
