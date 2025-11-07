@@ -210,6 +210,19 @@ jobs:
         run: |
           python UpdateContributorsList.py
 
+      - name: Debug - Check template structure
+        working-directory: ./documentation/source/Contributions
+        run: |
+          echo "=== Checking for markers in contributorsTemp.html ==="
+          grep -n "current-contributors-list" contributorsTemp.html || echo "❌ current-contributors-list NOT FOUND"
+          grep -n "previous-contributors-list" contributorsTemp.html || echo "❌ previous-contributors-list NOT FOUND"
+          echo ""
+          echo "=== Looking for h1 tags ==="
+          grep -n "<h1>" contributorsTemp.html || echo "No h1 tags found"
+          echo ""
+          echo "=== First 100 lines of contributorsTemp.html ==="
+          head -n 100 contributorsTemp.html
+
       - name: Generate HTML file
         working-directory: ./documentation/source/Contributions
         run: |
