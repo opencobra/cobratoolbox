@@ -186,12 +186,21 @@ jobs:
         run: |
           pip install -r requirements.txt
 
-      # NEW: Copy the Sphinx-generated contributors.html as the template
-      - name: Update template from Sphinx build
+      # NEW: Copy the Sphinx-generated contributors.html as the template and add markers
+      - name: Update template from Sphinx build and add markers
         run: |
           if [ -f ./documentation/build/html/contributors.html ]; then
+            # Copy the Sphinx-generated file
             cp ./documentation/build/html/contributors.html ./documentation/source/Contributions/contributorsTemp.html
-            echo "✓ Updated contributorsTemp.html from Sphinx build"
+            
+            # Add markers for the Python script to find insertion points
+            # Add marker after "Current contributors" heading
+            sed -i '/<h1>Current contributors<\/h1>/a <div id="current-contributors-list"></div>' ./documentation/source/Contributions/contributorsTemp.html
+            
+            # Add marker after "Previous contributors" heading  
+            sed -i '/<h1>Previous contributors<\/h1>/a <div id="previous-contributors-list"></div>' ./documentation/source/Contributions/contributorsTemp.html
+            
+            echo "✓ Updated contributorsTemp.html from Sphinx build and added markers"
           else
             echo "⚠ Warning: contributors.html not found in Sphinx build"
           fi
