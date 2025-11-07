@@ -54,7 +54,7 @@ jobs:
 
       # NEW: Upload the complete Sphinx build as an artifact for other jobs
       - name: Upload Sphinx build artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: sphinx-build
           path: ./documentation/build/html
@@ -169,7 +169,7 @@ jobs:
 
       # NEW: Download the Sphinx build artifact from core-docs job
       - name: Download Sphinx build artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: sphinx-build
           path: ./documentation/build/html
