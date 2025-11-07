@@ -34,6 +34,16 @@ with open("contributorsTemp.html", "r") as f:
 # Parse the HTML using BeautifulSoup
 soup = BeautifulSoup(html_content, "html.parser")
 
+# Remove the initial "Contributors" h1 heading if it exists (the one at the very top of the content)
+# This is typically the first h1 inside the section with id="contributors"
+contributors_section = soup.find("section", id="contributors")
+if contributors_section:
+    first_h1 = contributors_section.find("h1", string=lambda text: text and "Contributors" in text and "Current" not in text and "Previous" not in text)
+    if first_h1:
+        # Also remove the headerlink inside it
+        first_h1.decompose()
+        print("✓ Removed initial 'Contributors' heading")
+
 # Find the target elements
 target_element1 = soup.find("div", id="current-contributors-list")
 target_element2 = soup.find("div", id="previous-contributors-list")
@@ -49,7 +59,7 @@ if target_element1 is None or target_element2 is None:
         # Create Current Contributors section
         current_h1 = soup.new_tag("h1")
         current_h1.string = "Current Contributors"
-        headerlink = soup.new_tag("a", **{"class": "headerlink", "href": "#Current Contributors", "title": "Permalink to this heading"})
+        headerlink = soup.new_tag("a", **{"class": "headerlink", "href": "#Current-Contributors", "title": "Permalink to this heading"})
         headerlink.string = "¶"
         current_h1.append(headerlink)
         
@@ -64,7 +74,7 @@ if target_element1 is None or target_element2 is None:
         # Create Previous Contributors section  
         previous_h1 = soup.new_tag("h1")
         previous_h1.string = "Previous Contributors"
-        prev_headerlink = soup.new_tag("a", **{"class": "headerlink", "href": "#Previous Contributors", "title": "Permalink to this heading"})
+        prev_headerlink = soup.new_tag("a", **{"class": "headerlink", "href": "#Previous-Contributors", "title": "Permalink to this heading"})
         prev_headerlink.string = "¶"
         previous_h1.append(prev_headerlink)
         
@@ -76,7 +86,8 @@ if target_element1 is None or target_element2 is None:
         previous_br3 = soup.new_tag("br")
         previous_br4 = soup.new_tag("br")
         
-        # Insert all elements before the "Authors" heading
+        # Insert all elements BEFORE the "Authors" heading
+        # Order will be: Principal investigators -> Current Contributors -> Previous Contributors -> Authors
         authors_heading.insert_before(current_h1)
         current_h1.insert_after(current_br1)
         current_br1.insert_after(current_br2)
@@ -95,7 +106,7 @@ if target_element1 is None or target_element2 is None:
         target_element1 = current_marker
         target_element2 = previous_marker
         
-        print("✓ Successfully added contributor sections")
+        print("✓ Successfully added contributor sections in correct order")
     else:
         print("ERROR: Could not find 'Authors of the COBRA Toolbox v3.0' heading")
         exit(1)
