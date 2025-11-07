@@ -227,4 +227,4 @@ jobs:
           publish_branch: gh-pages
           keep_files: true
           destination_dir: stable
-          commit-message: "Update Contributors (Automatic Workflow)"
+          commit_message: "Update Contributors (Automatic Workflow)"
