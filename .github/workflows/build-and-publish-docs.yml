@@ -87,7 +87,7 @@ jobs:
             contributors/**
             contributors.html
             list_contributors.html
-          commit_message: "Publish core docs (preserve tutorials/modules/citations/static/contributors)"
+          commit-message: "Publish core docs (preserve tutorials/modules/citations/static/contributors)"
 
   function-docs:
     name: Function modules + citations + static
@@ -138,7 +138,7 @@ jobs:
           folder: ./documentation/build/html/modules
           branch: gh-pages
           target-folder: stable/modules
-          commit_message: "update Function Docs (Automatic Workflow)"
+          commit-message: "update Function Docs (Automatic Workflow)"
 
       - name: Deploy the citations page
         uses: peaceiris/actions-gh-pages@v3
