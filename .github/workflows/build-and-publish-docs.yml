@@ -186,72 +186,12 @@ jobs:
         run: |
           pip install -r requirements.txt
 
-      # NEW: Copy the Sphinx-generated contributors.html and add markers using Python
-      - name: Update template from Sphinx build and add markers
-        working-directory: ./documentation/source/Contributions
+      # NEW: Copy the Sphinx-generated contributors.html as template (markers will be added by Python script)
+      - name: Copy Sphinx-generated template
         run: |
-          if [ -f ../../build/html/contributors.html ]; then
-            # Copy the Sphinx-generated file
-            cp ../../build/html/contributors.html contributorsTemp.html
-            
-            # Create Python script to add markers
-            cat > add_markers.py << 'EOF'
-from bs4 import BeautifulSoup
-
-with open("contributorsTemp.html", "r", encoding="utf-8") as f:
-    soup = BeautifulSoup(f.read(), "html.parser")
-
-authors_heading = soup.find("h1", string=lambda text: text and "Authors of the COBRA Toolbox v3.0" in text)
-
-if authors_heading:
-    # Current Contributors section
-    current_h1 = soup.new_tag("h1")
-    current_h1.string = "Current Contributors"
-    headerlink = soup.new_tag("a", **{"class": "headerlink", "href": "#Current Contributors", "title": "Permalink to this heading"})
-    headerlink.string = "¶"
-    current_h1.append(headerlink)
-    
-    current_row = soup.new_tag("div", **{"class": "row"})
-    current_marker = soup.new_tag("div", **{"id": "current-contributors-list"})
-    current_row.append(current_marker)
-    
-    # Previous Contributors section  
-    previous_h1 = soup.new_tag("h1")
-    previous_h1.string = "Previous Contributors"
-    prev_headerlink = soup.new_tag("a", **{"class": "headerlink", "href": "#Previous Contributors", "title": "Permalink to this heading"})
-    prev_headerlink.string = "¶"
-    previous_h1.append(prev_headerlink)
-    
-    previous_row = soup.new_tag("div", **{"class": "row"})
-    previous_marker = soup.new_tag("div", **{"id": "previous-contributors-list"})
-    previous_row.append(previous_marker)
-    
-    # Insert before Authors heading
-    authors_heading.insert_before(current_h1)
-    current_h1.insert_after(soup.new_tag("br"))
-    current_h1.find_next_sibling("br").insert_after(soup.new_tag("br"))
-    current_h1.find_next_sibling("br").find_next_sibling("br").insert_after(current_row)
-    current_row.insert_after(soup.new_tag("br"))
-    current_row.find_next_sibling("br").insert_after(soup.new_tag("br"))
-    
-    current_row.find_next_sibling("br").find_next_sibling("br").insert_after(previous_h1)
-    previous_h1.insert_after(soup.new_tag("br"))
-    previous_h1.find_next_sibling("br").insert_after(soup.new_tag("br"))
-    previous_h1.find_next_sibling("br").find_next_sibling("br").insert_after(previous_row)
-    previous_row.insert_after(soup.new_tag("br"))
-    previous_row.find_next_sibling("br").insert_after(soup.new_tag("br"))
-    
-    with open("contributorsTemp.html", "w", encoding="utf-8") as f:
-        f.write(str(soup))
-    print("✓ Added markers")
-else:
-    print("ERROR: Authors heading not found")
-    exit(1)
-EOF
-            
-            python add_markers.py
-            rm add_markers.py
-            echo "✓ Updated contributorsTemp.html from Sphinx build"
+          if [ -f ./documentation/build/html/contributors.html ]; then
+            cp ./documentation/build/html/contributors.html ./documentation/source/Contributions/contributorsTemp.html
+            echo "✓ Copied Sphinx-generated contributors.html as template"
           else
             echo "⚠ Warning: contributors.html not found in Sphinx build"
             exit 1
