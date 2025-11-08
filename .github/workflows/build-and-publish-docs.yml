@@ -36,6 +36,10 @@ jobs:
         working-directory: ./documentation
         run: |
           make html
+          
+      - name: Remove tutorials from build
+        run: |
+          rm -rf ./documentation/build/html/tutorials
 
       # NEW: Upload the complete Sphinx build as an artifact for other jobs
       - name: Upload Sphinx build artifact
