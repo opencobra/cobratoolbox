@@ -60,33 +60,12 @@ jobs:
           path: ./documentation/build/html
           retention-days: 1
 
-      # prune anything owned by other deploys
-      - name: Prune build output to avoid overlaps
-        run: |
-          rm -rf \
-            ./documentation/build/html/modules \
-            ./documentation/build/html/_static \
-            ./documentation/build/html/Citations \
-            ./documentation/build/html/tutorials \
-            ./documentation/build/html/contributors \
-            ./documentation/build/html/contributors.html \
-            ./documentation/build/html/list_contributors.html || true
-
-      - name: Deploy core site to gh-pages/stable (preserve others)
+      - name: Deploy core site to gh-pages/stable
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           folder: ./documentation/build/html
           branch: gh-pages
           target-folder: stable
-          clean: true
-          clean-exclude: |
-            modules/**
-            _static/**
-            Citations/**
-            tutorials/**
-            contributors/**
-            contributors.html
-            list_contributors.html
           commit-message: "Publish core docs (preserve tutorials/modules/citations/static/contributors)"
 
   function-docs:
