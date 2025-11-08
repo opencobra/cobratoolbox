@@ -52,6 +52,9 @@ if contributors_section:
             next_element = next_element.find_next_sibling()
             next_to_remove.decompose()
         print("✓ Removed old Contributors section content")
+        contributors_h1.decompose()          # remove the original “Contributors” H1
+        contributors_section.unwrap()        # drop the now-empty <section id="contributors">
+
 
 # Find the target elements
 target_element1 = soup.find("div", id="current-contributors-list")
