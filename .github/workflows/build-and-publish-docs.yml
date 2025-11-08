@@ -32,21 +32,6 @@ jobs:
         run: |
           pip install -r requirements.txt
 
-      - name: Generate publications (RST)
-        working-directory: ./documentation/source/sphinxext
-        run: |
-          python GenerateCitationsRST.py
-
-      - name: Update packages for docs
-        working-directory: ./documentation/source
-        run: |
-          python ./sphinxext/copy_files.py
-
-      - name: Generate function module RST files
-        working-directory: ./documentation/source/modules
-        run: |
-          python ./GetRSTfiles.py
-
       - name: Build documentation (Sphinx)
         working-directory: ./documentation
         run: |
@@ -66,7 +51,8 @@ jobs:
           folder: ./documentation/build/html
           branch: gh-pages
           target-folder: stable
-          commit-message: "Publish core docs (preserve tutorials/modules/citations/static/contributors)"
+          clean: false
+          commit-message: "Publish core docs (preserve old docs)"
 
   function-docs:
     name: Function modules + citations + static
