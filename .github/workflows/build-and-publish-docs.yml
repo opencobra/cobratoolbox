@@ -49,6 +49,10 @@ jobs:
           path: ./documentation/build/html
           retention-days: 1
 
+      - name: Remove Sphinx-generated contributors page
+        run: |
+          rm -f ./documentation/build/html/contributors.html
+
       - name: Deploy core site to gh-pages/stable
         uses: JamesIves/github-pages-deploy-action@v4
         with:
