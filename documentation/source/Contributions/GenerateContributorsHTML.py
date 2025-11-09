@@ -26,7 +26,6 @@ for i in range(len(df)):
         <p><a href="{github_url}">{username}</a></p>
     </div>
     """
-
 # Read the template HTML file
 with open("contributorsTemp.html", "r") as f:
     html_content = f.read()
@@ -34,34 +33,21 @@ with open("contributorsTemp.html", "r") as f:
 # Parse the HTML using BeautifulSoup
 soup = BeautifulSoup(html_content, "html.parser")
 
-# Find the Contributors section and remove the old contributor data
-# The structure is: <h1>Contributors</h1><br><br><div class="row">...contributor avatars...</div><br><br>
-contributors_section = soup.find("section", id="contributors")
-if contributors_section:
-    contributors_h1 = contributors_section.find("h1", string=lambda text: text and "Contributors" in text and "Current" not in text and "Previous" not in text and "Authors" not in text)
-    if contributors_h1:
-        # Find and remove the div.row that comes after the Contributors h1 and before Principal investigators
-        # This is the old contributors list that we want to replace
-        next_element = contributors_h1.find_next_sibling()
-        while next_element:
-            # Stop when we hit the Principal investigators h1
-            if next_element.name == "h1" and "Principal investigators" in next_element.get_text():
-                break
-            # Remove br tags and the row div
-            next_to_remove = next_element
-            next_element = next_element.find_next_sibling()
-            next_to_remove.decompose()
-        print("✓ Removed old Contributors section content")
-        contributors_h1.decompose()          # remove the original “Contributors” H1
-        contributors_section.unwrap()        # drop the now-empty <section id="contributors">
-
-
-# Find the target elements
+# Find the target element (replace with curr_contri)
 target_element1 = soup.find("div", id="current-contributors-list")
-target_element2 = soup.find("div", id="previous-contributors-list")
 
-# If markers don't exist (Sphinx-generated template), add them
-if target_element1 is None or target_element2 is None:
+# Insert the content inside the target element
+target_element1.insert_after(curr_contri)
+
+# Find the target element (replace with past_contri)
+target_element2= soup.find("div", id="previous-contributors-list")
+
+# Insert the content inside the target element
+target_element2.insert_after(past_contri)
+
+# Save the modified HTML
+with open("./contributors/contributors.html", "w", encoding="utf-8") as f:
+    f.write(html.unescape(soup.prettify()))if target_element1 is None or target_element2 is None:
     print("Markers not found. Adding Current and Previous Contributors sections...")
     
     # Find the "Authors of the COBRA Toolbox v3.0" heading
