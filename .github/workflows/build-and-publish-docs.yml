@@ -159,28 +159,14 @@ jobs:
         run: |
           pip install -r requirements.txt
 
-      # NEW: Copy the Sphinx-generated contributors.html as template (markers will be added by Python script)
-      - name: Copy Sphinx-generated template
-        run: |
-          if [ -f ./documentation/build/html/contributors.html ]; then
-            cp ./documentation/build/html/contributors.html ./documentation/source/Contributions/contributorsTemp.html
-            echo "✓ Copied Sphinx-generated contributors.html as template"
-          else
-            echo "⚠ Warning: contributors.html not found in Sphinx build"
-            exit 1
-          fi
-
-      - name: Debug - Check template structure
+      - name: Update contributors template sidebar from contents.rst
         working-directory: ./documentation/source/Contributions
         run: |
-          echo "=== Looking for all h1 tags and their context ==="
-          grep -B 2 -A 2 "<h1>" contributorsTemp.html | head -n 50
-          echo ""
-          echo "=== Looking for section with id=contributors ==="
-          grep -n 'id="contributors"' contributorsTemp.html || echo "Not found"
-          echo ""
-          echo "=== Lines 195-350 of template ==="
-          sed -n '195,350p' contributorsTemp.html
+          # UpdateContributorsTemplate.py reads ../contents.rst and edits contributorsTemp.html in-place
+          python UpdateContributorsTemplate.py \
+            --contents ../contents.rst \
+            --input ./contributorsTemp.html \
+            --output ./contributorsTemp.html
 
       - name: Update contributors
         working-directory: ./documentation/source/Contributions
