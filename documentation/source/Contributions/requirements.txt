@@ -3,5 +3,5 @@ pandas
 numpy
 datetime
 python-dateutil
-beautifulsoup4
-
+beautifulsoup4>=4.12
+lxml>=5.1
