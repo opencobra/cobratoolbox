@@ -26,9 +26,9 @@ Development Plan
 
     <br><br>
 
-    <a href="https://www.universiteitleiden.nl/en/staffmembers/ronan-fleming">Ronan M.T. Fleming</a>,
-    Analytical BioSciences and Metabolomics,
-    Division of Systems Biomedicine and Pharmacology,
-    Leiden University.
+    <a href="https://www.universityofgalway.ie/remedi/who-we-are/principalinvestigators/ronan-fleming/">Ronan M.T. Fleming</a>,<br>
+    School of Medicine, University of Galway, University Rd, Galway, Ireland,<br>
+    Digital Metabolic Twin Centre, University of Galway, Galway, Ireland.<br>
+
 
     <br><br>
