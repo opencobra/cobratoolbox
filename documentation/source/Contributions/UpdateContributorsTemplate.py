@@ -14,7 +14,8 @@ def parse_args():
     ap.add_argument("--source", required=True, help="Path to built HTML with the correct sidebar (build/html/index.html)")
     ap.add_argument("--input", required=True, help="Path to contributorsTemp.html to modify")
     ap.add_argument("--output", required=True, help="Path to write the updated HTML (can be same as --input)")
-    ap.add_argument("--current-href", default="contributors.html", help="Href that should be marked as current")
+    ap.add_argument("--current-href", dest="current_href", default="contributors.html",
+                    help="Href that should be marked as current")
     ap.add_argument("--parser", default="html5lib", choices=["html5lib", "lxml", "html.parser"],
                     help="BeautifulSoup parser to use")
     return ap.parse_args()
@@ -31,24 +32,37 @@ def replace_inner_html(target_div, new_inner_html: str, parser: str):
 
 def _remove_class(tag, cls: str):
     classes = tag.get("class", [])
-    if cls in classes:
-        classes = [c for c in classes if c != cls]
-        if classes:
-            tag["class"] = classes
-        elif "class" in tag.attrs:
-            del tag["class"]
-
-def _add_class(tag, cls: str):
-    classes = tag.get("class", [])
-    if cls not in classes:
-        classes.append(cls)
+    if not classes:
+        return
+    classes = [c for c in classes if c != cls]
+    if classes:
         tag["class"] = classes
+    elif "class" in tag.attrs:
+        del tag["class"]
+
+def _add_class_ordered(tag, desired_order: list[str]):
+    """
+    Add classes ensuring the final order matches desired_order first,
+    followed by any other existing classes in their original order.
+    """
+    existing = tag.get("class", [])
+    # Start with desired_order, include only once
+    ordered = []
+    for d in desired_order:
+        if d in existing:
+            ordered.append(d)
+        else:
+            ordered.append(d)
+    # Append the rest, skipping duplicates
+    for c in existing:
+        if c not in ordered:
+            ordered.append(c)
+    tag["class"] = ordered
 
 def href_matches(a_tag, target_href: str) -> bool:
     href = (a_tag.get("href") or "").strip()
     if not href:
         return False
-    # Normalise: allow exact match, or trailing “/contributors.html”
     return href == target_href or href.endswith("/" + target_href)
 
 def retarget_current(menu_div, current_href: str):
@@ -56,39 +70,43 @@ def retarget_current(menu_div, current_href: str):
     Ensure:
       - only the UL containing current_href has class 'current'
       - only the LI for current_href has class 'current'
-      - the A for current_href has class 'current'
+      - the A for current_href has class 'current' and ordered as 'current reference internal'
     """
-    # 1) Remove 'current' from all ULs directly under the menu
+    # Remove 'current' from all top-level ULs
     uls = [ul for ul in menu_div.find_all("ul", recursive=False)]
     for ul in uls:
         _remove_class(ul, "current")
 
-    # 2) Find the LI/A for the target, and remember its parent UL
     target_li = None
     target_ul = None
 
-    # Iterate only first-level items: ul > li.toctree-l1
+    # Scan first-level items only
     for ul in uls:
         for li in ul.find_all("li", class_="toctree-l1", recursive=False):
             a = li.find("a", recursive=True)
-            if a and href_matches(a, current_href):
-                target_li = li
-                target_ul = ul
-            # Clear any stale 'current' classes while we are here
+            # Clear stale 'current' on each pass
             _remove_class(li, "current")
             if a:
                 _remove_class(a, "current")
+            if a and href_matches(a, current_href):
+                target_li = li
+                target_ul = ul
 
-    # 3) If we found the target, set classes appropriately
     if target_ul and target_li:
-        _add_class(target_ul, "current")
-        _add_class(target_li, "current")
+        # Mark UL and LI
+        _add_class_ordered(target_ul, ["current"])
+        _add_class_ordered(target_li, ["current"])
+        # Ensure anchor has 'current reference internal' in that exact order
         a = target_li.find("a", recursive=True)
         if a:
-            _add_class(a, "current")
-    else:
-        # Fallback: if not found, do nothing rather than breaking the menu
-        pass
+            # Guarantee it also has reference and internal if Sphinx added them before
+            existing = a.get("class", [])
+            must_have = ["reference", "internal"]
+            for cls in must_have:
+                if cls not in existing:
+                    existing.append(cls)
+            a["class"] = existing  # set before ordering
+            _add_class_ordered(a, ["current", "reference", "internal"])
 
 def main():
     args = parse_args()
