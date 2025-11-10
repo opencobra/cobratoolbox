@@ -1,19 +1,7 @@
 #!/usr/bin/env python3
 """
 Copy the left sidebar menu from a built Sphinx page (index.html) into
-contributorsTemp.html, replacing only the
-<div class="wy-menu wy-menu-vertical" ...> ... </div> contents.
-
-It then retargets the "current" highlight to a specific href
-(default: contributors.html) so the sidebar shows the Contributors page
-as selected.
-
-Usage:
-  python UpdateContributorsTemplate.py \
-    --source ./documentation/build/html/index.html \
-    --input  ./documentation/source/Contributions/contributorsTemp.html \
-    --output ./documentation/source/Contributions/contributorsTemp.html \
-    --current-href contributors.html
+contributorsTemp.html, then retarget the 'current' menu item to contributors.html.
 """
 
 from __future__ import annotations
@@ -22,14 +10,13 @@ from pathlib import Path
 from bs4 import BeautifulSoup
 
 def parse_args():
-    ap = argparse.ArgumentParser(description="Replace sidebar in contributorsTemp.html using index.html and retarget 'current'.")
-    ap.add_argument("--source", required=True, help="Path to built HTML with the correct sidebar (usually build/html/index.html)")
+    ap = argparse.ArgumentParser(description="Replace sidebar and set 'current' to a target href")
+    ap.add_argument("--source", required=True, help="Path to built HTML with the correct sidebar (build/html/index.html)")
     ap.add_argument("--input", required=True, help="Path to contributorsTemp.html to modify")
     ap.add_argument("--output", required=True, help="Path to write the updated HTML (can be same as --input)")
-    ap.add_argument("--current-href", default="contributors.html",
-                    help="Sidebar href that should be highlighted as current (default: contributors.html)")
+    ap.add_argument("--current-href", default="contributors.html", help="Href that should be marked as current")
     ap.add_argument("--parser", default="html5lib", choices=["html5lib", "lxml", "html.parser"],
-                    help="BeautifulSoup parser to use (default: html5lib)")
+                    help="BeautifulSoup parser to use")
     return ap.parse_args()
 
 def get_menu_div(soup: BeautifulSoup):
@@ -42,52 +29,66 @@ def replace_inner_html(target_div, new_inner_html: str, parser: str):
     for child in list(parents):
         target_div.append(child)
 
-def normalise_href(href: str) -> str:
+def _remove_class(tag, cls: str):
+    classes = tag.get("class", [])
+    if cls in classes:
+        classes = [c for c in classes if c != cls]
+        if classes:
+            tag["class"] = classes
+        elif "class" in tag.attrs:
+            del tag["class"]
+
+def _add_class(tag, cls: str):
+    classes = tag.get("class", [])
+    if cls not in classes:
+        classes.append(cls)
+        tag["class"] = classes
+
+def href_matches(a_tag, target_href: str) -> bool:
+    href = (a_tag.get("href") or "").strip()
     if not href:
-        return ""
-    # Treat "#" as index.html on the home page menu
-    if href.strip() == "#":
-        return "index.html"
-    return href.strip()
+        return False
+    # Normalise: allow exact match, or trailing “/contributors.html”
+    return href == target_href or href.endswith("/" + target_href)
 
-def retarget_current(menu_div, current_href: str = "contributors.html"):
+def retarget_current(menu_div, current_href: str):
     """
-    Remove 'current' from all items/uls and set it on the li whose <a>
-    matches current_href. Also set its parent <ul> to class 'current'.
-    Uses :scope so it works with soupsieve.
+    Ensure:
+      - only the UL containing current_href has class 'current'
+      - only the LI for current_href has class 'current'
+      - the A for current_href has class 'current'
     """
-    wanted = normalise_href(current_href)
+    # 1) Remove 'current' from all ULs directly under the menu
+    uls = [ul for ul in menu_div.find_all("ul", recursive=False)]
+    for ul in uls:
+        _remove_class(ul, "current")
 
-    # 1) Clear all 'current' classes under the menu
-    for ul in menu_div.select(":scope ul"):
-        if "current" in ul.get("class", []):
-            ul["class"] = [c for c in ul.get("class", []) if c != "current"]
-    for li in menu_div.select(":scope li"):
-        if "current" in li.get("class", []):
-            li["class"] = [c for c in li.get("class", []) if c != "current"]
-
-    # 2) Find the li for the target href
+    # 2) Find the LI/A for the target, and remember its parent UL
     target_li = None
-    for a in menu_div.select(":scope a.reference.internal"):
-        if normalise_href(a.get("href", "")) == wanted:
-            target_li = a.find_parent("li")
-            break
+    target_ul = None
 
-    if not target_li:
-        # Nothing to retarget; leave menu as-is
-        return
+    # Iterate only first-level items: ul > li.toctree-l1
+    for ul in uls:
+        for li in ul.find_all("li", class_="toctree-l1", recursive=False):
+            a = li.find("a", recursive=True)
+            if a and href_matches(a, current_href):
+                target_li = li
+                target_ul = ul
+            # Clear any stale 'current' classes while we are here
+            _remove_class(li, "current")
+            if a:
+                _remove_class(a, "current")
 
-    # 3) Mark it as current
-    li_classes = target_li.get("class", [])
-    if "current" not in li_classes:
-        target_li["class"] = li_classes + ["current"]
-
-    # 4) Ensure the immediate parent <ul> is marked current
-    parent_ul = target_li.find_parent("ul")
-    if parent_ul:
-        ul_classes = parent_ul.get("class", [])
-        if "current" not in ul_classes:
-            parent_ul["class"] = ul_classes + ["current"]
+    # 3) If we found the target, set classes appropriately
+    if target_ul and target_li:
+        _add_class(target_ul, "current")
+        _add_class(target_li, "current")
+        a = target_li.find("a", recursive=True)
+        if a:
+            _add_class(a, "current")
+    else:
+        # Fallback: if not found, do nothing rather than breaking the menu
+        pass
 
 def main():
     args = parse_args()
@@ -114,11 +115,11 @@ def main():
     if not tgt_menu:
         raise SystemExit("Could not find sidebar in input HTML: div.wy-menu.wy-menu-vertical")
 
-    # Copy the sidebar HTML from index.html
+    # Copy the menu contents
     new_inner = src_menu.decode_contents()
     replace_inner_html(tgt_menu, new_inner, args.parser)
 
-    # Retarget the "current" highlight to Contributors (or provided href)
+    # Retarget 'current' to contributors.html
     retarget_current(tgt_menu, current_href=args.current_href)
 
     out_path.write_text(str(in_soup), encoding="utf-8")
