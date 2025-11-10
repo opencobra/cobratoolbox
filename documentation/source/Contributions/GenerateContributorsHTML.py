@@ -45,10 +45,14 @@ target_element2= soup.find("div", id="previous-contributors-list")
 # Insert the content inside the target element
 target_element2.insert_after(past_contri)
 
-# Save the modified HTML
-with open("./contributors/contributors.html", "w", encoding="utf-8") as f:
-    f.write(html.unescape(soup.prettify()))if target_element1 is None or target_element2 is None:
+# Check that both markers exist before writing the output
+if target_element1 is None or target_element2 is None:
     print("Markers not found. Adding Current and Previous Contributors sections...")
+else:
+    # Save the modified HTML
+    with open("./contributors/contributors.html", "w", encoding="utf-8") as f:
+        f.write(html.unescape(soup.prettify()))
+
     
     # Find the "Authors of the COBRA Toolbox v3.0" heading
     authors_heading = soup.find("h1", string=lambda text: text and "Authors of the COBRA Toolbox v3.0" in text)
