@@ -159,14 +159,13 @@ jobs:
         run: |
           pip install -r requirements.txt
 
-      - name: Update contributors template sidebar from contents.rst
-        working-directory: ./documentation/source/Contributions
+      - name: Update contributors template sidebar from built index.html
+        working-directory: ./documentation
         run: |
-          # UpdateContributorsTemplate.py reads ../contents.rst and edits contributorsTemp.html in-place
-          python UpdateContributorsTemplate.py \
-            --contents ../contents.rst \
-            --input ./contributorsTemp.html \
-            --output ./contributorsTemp.html
+          python ./source/Contributions/UpdateContributorsTemplate.py \
+            --source ./build/html/index.html \
+            --input  ./source/Contributions/contributorsTemp.html \
+            --output ./source/Contributions/contributorsTemp.html
 
       - name: Update contributors
         working-directory: ./documentation/source/Contributions
