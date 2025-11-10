@@ -1,7 +1,7 @@
 requests
 pandas
 numpy
-datetime
 python-dateutil
 beautifulsoup4>=4.12
 lxml>=5.1
+html5lib>=1.1
