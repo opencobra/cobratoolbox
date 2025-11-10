@@ -163,9 +163,11 @@ jobs:
         working-directory: ./documentation
         run: |
           python ./source/Contributions/UpdateContributorsTemplate.py \
-            --source ./build/html/index.html \
-            --input  ./source/Contributions/contributorsTemp.html \
-            --output ./source/Contributions/contributorsTemp.html
+          --source ./build/html/index.html \
+          --input  ./source/Contributions/contributorsTemp.html \
+          --output ./source/Contributions/contributorsTemp.html \
+          --current-href contributors.html
+
 
       - name: Update contributors
         working-directory: ./documentation/source/Contributions
