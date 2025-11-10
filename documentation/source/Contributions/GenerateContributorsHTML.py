@@ -1,123 +1,75 @@
-# This code uses the AllContributors.csv file to parse the list of current and previous contributors
-# and makes changes to the contributorsTemp.html file and produces contributors.html
+# --- Locate (or create) the target sections, then populate and write once ---
 
-from bs4 import BeautifulSoup
-import pandas as pd
-import html
+# Try to find the marker divs
+current_div = soup.find("div", id="current-contributors-list")
+previous_div = soup.find("div", id="previous-contributors-list")
 
-df = pd.read_csv('AllContributors.csv')
-# Dynamically generating the HTML code
-curr_contri = ""
-past_contri = ""
-for i in range(len(df)):
-  if df.iloc[i]['CurrentContributor']:
-    username, avatar_url, github_url = df.iloc[i]['Contributors'],df.iloc[i]['Avatar_URL'],df.iloc[i]['Github_page']
-    curr_contri += f"""
-    <div class="col-lg-4 col-sm-6 text-center">
-        <a href="{github_url}"><img class="img-circle img-responsive img-center" style="margin: 0 auto;border: 1px solid #dddddd;padding: 5px;" src="{avatar_url}" alt="{username}" width="90px"></a>
-        <p><a href="{github_url}">{username}</a></p>
-    </div>
-    """
-  else:
-    username, avatar_url, github_url = df.iloc[i]['Contributors'],df.iloc[i]['Avatar_URL'],df.iloc[i]['Github_page']
-    past_contri += f"""
-    <div class="col-lg-4 col-sm-6 text-center">
-        <a href="{github_url}"><img class="img-circle img-responsive img-center" style="margin: 0 auto;border: 1px solid #dddddd;padding: 5px;" src="{avatar_url}" alt="{username}" width="90px"></a>
-        <p><a href="{github_url}">{username}</a></p>
-    </div>
-    """
-# Read the template HTML file
-with open("contributorsTemp.html", "r") as f:
-    html_content = f.read()
-
-# Parse the HTML using BeautifulSoup
-soup = BeautifulSoup(html_content, "html.parser")
-
-# Find the target element (replace with curr_contri)
-target_element1 = soup.find("div", id="current-contributors-list")
-
-# Insert the content inside the target element
-target_element1.insert_after(curr_contri)
-
-# Find the target element (replace with past_contri)
-target_element2= soup.find("div", id="previous-contributors-list")
-
-# Insert the content inside the target element
-target_element2.insert_after(past_contri)
-
-# Check that both markers exist before writing the output
-if target_element1 is None or target_element2 is None:
+# If either marker is missing, create the sections just before the "Authors..." heading
+if current_div is None or previous_div is None:
     print("Markers not found. Adding Current and Previous Contributors sections...")
-else:
-    # Save the modified HTML
-    with open("./contributors/contributors.html", "w", encoding="utf-8") as f:
-        f.write(html.unescape(soup.prettify()))
+    authors_heading = soup.find("h1", string=lambda t: t and "Authors of the COBRA Toolbox v3.0" in t)
+    if not authors_heading:
+        raise RuntimeError("Could not find 'Authors of the COBRA Toolbox v3.0' heading")
 
-    
-    # Find the "Authors of the COBRA Toolbox v3.0" heading
-    authors_heading = soup.find("h1", string=lambda text: text and "Authors of the COBRA Toolbox v3.0" in text)
-    
-    if authors_heading:
-        # Create Current Contributors section
-        current_h1 = soup.new_tag("h1")
-        current_h1.string = "Current Contributors"
-        headerlink = soup.new_tag("a", **{"class": "headerlink", "href": "#current-contributors", "title": "Permalink to this heading"})
-        headerlink.string = "¶"
-        current_h1.append(headerlink)
-        
-        current_br1 = soup.new_tag("br")
-        current_br2 = soup.new_tag("br")
-        current_row = soup.new_tag("div", **{"class": "row"})
-        current_marker = soup.new_tag("div", **{"id": "current-contributors-list"})
-        current_row.append(current_marker)
-        current_br3 = soup.new_tag("br")
-        current_br4 = soup.new_tag("br")
-        
-        # Create Previous Contributors section  
-        previous_h1 = soup.new_tag("h1")
-        previous_h1.string = "Previous Contributors"
-        prev_headerlink = soup.new_tag("a", **{"class": "headerlink", "href": "#previous-contributors", "title": "Permalink to this heading"})
-        prev_headerlink.string = "¶"
-        previous_h1.append(prev_headerlink)
-        
-        previous_br1 = soup.new_tag("br")
-        previous_br2 = soup.new_tag("br")
-        previous_row = soup.new_tag("div", **{"class": "row"})
-        previous_marker = soup.new_tag("div", **{"id": "previous-contributors-list"})
-        previous_row.append(previous_marker)
-        previous_br3 = soup.new_tag("br")
-        previous_br4 = soup.new_tag("br")
-        
-        # Insert all elements BEFORE the "Authors" heading
-        # Order will be: Contributors (page title) -> Principal investigators -> Current Contributors -> Previous Contributors -> Authors
-        authors_heading.insert_before(current_h1)
-        current_h1.insert_after(current_br1)
-        current_br1.insert_after(current_br2)
-        current_br2.insert_after(current_row)
-        current_row.insert_after(current_br3)
-        current_br3.insert_after(current_br4)
-        
-        current_br4.insert_after(previous_h1)
-        previous_h1.insert_after(previous_br1)
-        previous_br1.insert_after(previous_br2)
-        previous_br2.insert_after(previous_row)
-        previous_row.insert_after(previous_br3)
-        previous_br3.insert_after(previous_br4)
-        
-        # Update references
-        target_element1 = current_marker
-        target_element2 = previous_marker
-        
-        print("✓ Successfully added contributor sections in correct order")
-    else:
-        print("ERROR: Could not find 'Authors of the COBRA Toolbox v3.0' heading")
-        exit(1)
+    # Current Contributors section
+    current_h1 = soup.new_tag("h1")
+    current_h1.string = "Current Contributors"
+    headerlink = soup.new_tag(
+        "a",
+        **{"class": "headerlink", "href": "#current-contributors", "title": "Permalink to this heading"}
+    )
+    headerlink.string = "¶"
+    current_h1.append(headerlink)
 
-# Insert the content inside the target elements
-target_element1.insert_after(curr_contri)
-target_element2.insert_after(past_contri)
+    current_br1 = soup.new_tag("br")
+    current_br2 = soup.new_tag("br")
+    current_row = soup.new_tag("div", **{"class": "row"})
+    current_div = soup.new_tag("div", id="current-contributors-list")
+    current_row.append(current_div)
+    current_br3 = soup.new_tag("br")
+    current_br4 = soup.new_tag("br")
 
-# Save the modified HTML
+    # Previous Contributors section
+    previous_h1 = soup.new_tag("h1")
+    previous_h1.string = "Previous Contributors"
+    prev_headerlink = soup.new_tag(
+        "a",
+        **{"class": "headerlink", "href": "#previous-contributors", "title": "Permalink to this heading"}
+    )
+    prev_headerlink.string = "¶"
+    previous_h1.append(prev_headerlink)
+
+    previous_br1 = soup.new_tag("br")
+    previous_br2 = soup.new_tag("br")
+    previous_row = soup.new_tag("div", **{"class": "row"})
+    previous_div = soup.new_tag("div", id="previous-contributors-list")
+    previous_row.append(previous_div)
+    previous_br3 = soup.new_tag("br")
+    previous_br4 = soup.new_tag("br")
+
+    # Insert before the Authors heading
+    authors_heading.insert_before(current_h1)
+    current_h1.insert_after(current_br1)
+    current_br1.insert_after(current_br2)
+    current_br2.insert_after(current_row)
+    current_row.insert_after(current_br3)
+    current_br3.insert_after(current_br4)
+
+    current_br4.insert_after(previous_h1)
+    previous_h1.insert_after(previous_br1)
+    previous_br1.insert_after(previous_br2)
+    previous_br2.insert_after(previous_row)
+    previous_row.insert_after(previous_br3)
+    previous_br3.insert_after(previous_br4)
+
+# Populate the marker divs with the generated HTML (replace any existing content)
+current_div.clear()
+current_div.append(BeautifulSoup(curr_contri, "html.parser"))
+
+previous_div.clear()
+previous_div.append(BeautifulSoup(past_contri, "html.parser"))
+
+# Write the final HTML once
 with open("./contributors/contributors.html", "w", encoding="utf-8") as f:
     f.write(html.unescape(soup.prettify()))
 
