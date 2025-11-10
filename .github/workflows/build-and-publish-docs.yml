@@ -13,10 +13,11 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  core-docs:
-    name: Core docs (no tutorials/modules/citations/static/contributors)
+  build-and-publish:
+    name: Build, stage, and publish once
     runs-on: ubuntu-latest
     steps:
+      # ==== core-docs (unchanged order) ====
       - name: Checkout
         uses: actions/checkout@v3
 
@@ -36,47 +37,40 @@ jobs:
         working-directory: ./documentation
         run: |
           make html
-          
+
       - name: Remove tutorials from build
         run: |
           rm -rf ./documentation/build/html/tutorials
 
-      # NEW: Upload the complete Sphinx build as an artifact for other jobs
-      - name: Upload Sphinx build artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: sphinx-build
-          path: ./documentation/build/html
-          retention-days: 1
+      # The artifact was only used to move the Sphinx build across jobs.
+      # With a single job it is no longer needed.
+      - name: (Replaces artifact upload) Ensure staging directory
+        run: |
+          mkdir -p ghpages/stable
 
       - name: Remove Sphinx-generated contributors page
         run: |
           rm -f ./documentation/build/html/contributors.html
 
-      - name: Deploy core site to gh-pages/stable
-        uses: JamesIves/github-pages-deploy-action@v4
-        with:
-          folder: ./documentation/build/html
-          branch: gh-pages
-          target-folder: stable
-          clean: false
-          commit-message: "Publish core docs (preserve old docs)"
+      - name: Stage core site to ghpages/stable
+        run: |
+          rsync -a --delete \
+            ./documentation/build/html/ \
+            ghpages/stable/
 
-  function-docs:
-    name: Function modules + citations + static
-    needs: core-docs
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
+      # ==== function-docs (unchanged order) ====
+      # A second checkout in the same job would reset the workspace, so we keep the step position but no-op it.
+      - name: Checkout (no-op in single job)
+        run: echo "Checkout already performed"
 
-      - name: Set up Python 3.10
+      - name: Set up Python 3.10 (function-docs)
         uses: actions/setup-python@v5
         with:
           python-version: '3.10'
           cache: pip
           cache-dependency-path: documentation/requirements.txt
 
-      - name: Install documentation dependencies
+      - name: Install documentation dependencies (function-docs)
         working-directory: ./documentation
         run: |
           pip install -r requirements.txt
@@ -103,51 +97,30 @@ jobs:
 
       - name: Copy the citations html page (as before)
         run: |
+          mkdir -p ./documentation/source/Citations
           cp ./documentation/build/html/citations.html ./documentation/source/Citations/citations.html || true
 
-      - name: Deploy the function modules
-        uses: JamesIves/github-pages-deploy-action@v4
-        with:
-          folder: ./documentation/build/html/modules
-          branch: gh-pages
-          target-folder: stable/modules
-          commit-message: "update Function Docs (Automatic Workflow)"
+      - name: Stage the function modules
+        run: |
+          mkdir -p ghpages/stable/modules
+          rsync -a ./documentation/build/html/modules/ ghpages/stable/modules/
 
-      - name: Deploy the citations page
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./documentation/source/Citations
-          publish_branch: gh-pages
-          keep_files: true
-          destination_dir: stable
-          commit_message: "update Function Docs (Automatic Workflow)"
+      - name: Stage the citations page
+        run: |
+          mkdir -p ghpages/stable
+          rsync -a ./documentation/source/Citations/ ghpages/stable/
 
-      - name: Deploy the citations static page
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./documentation/build/html/_static
-          publish_branch: gh-pages
-          keep_files: true
-          destination_dir: stable/_static
-          commit_message: "update Function Docs (Automatic Workflow)"
+      - name: Stage the citations static page
+        run: |
+          mkdir -p ghpages/stable/_static
+          rsync -a ./documentation/build/html/_static/ ghpages/stable/_static/
 
-  contributors:
-    name: Contributors page
-    needs: function-docs
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
+      # ==== contributors (unchanged order) ====
+      # Downloading the artifact is unnecessary in a single job. Keep step position but no-op.
+      - name: Download Sphinx build artifact (no-op in single job)
+        run: echo "Artifact not required"
 
-      # NEW: Download the Sphinx build artifact from core-docs job
-      - name: Download Sphinx build artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: sphinx-build
-          path: ./documentation/build/html
-
-      - name: Set up Python 3.10
+      - name: Set up Python 3.10 (contributors)
         uses: actions/setup-python@v5
         with:
           python-version: '3.10'
@@ -168,7 +141,6 @@ jobs:
           --output ./source/Contributions/contributorsTemp.html \
           --current-href contributors.html
 
-
       - name: Update contributors
         working-directory: ./documentation/source/Contributions
         run: |
@@ -179,12 +151,16 @@ jobs:
         run: |
           python GenerateContributorsHTML.py
 
-      - name: Deploy to gh-pages/stable
-        uses: peaceiris/actions-gh-pages@v3
+      - name: Stage contributors page to ghpages/stable
+        run: |
+          mkdir -p ghpages/stable
+          rsync -a ./documentation/source/Contributions/contributors/ ghpages/stable/
+
+      # ==== single deploy ====
+      - name: Deploy staged site to gh-pages (single push)
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./documentation/source/Contributions/contributors
-          publish_branch: gh-pages
-          keep_files: true
-          destination_dir: stable
-          commit_message: "Update Contributors (Automatic Workflow)"
+          folder: ghpages
+          branch: gh-pages
+          clean: false
+          commit-message: "Publish site (single deploy, ordered build)"
