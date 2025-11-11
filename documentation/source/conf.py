@@ -94,9 +94,15 @@ source_encoding = 'utf-8'
 master_doc = 'contents'
 
 # General information about the project.
+from datetime import datetime
+
+current_year = datetime.now().year
+
 project = u'The COBRA Toolbox'
-copyright = u'2017-2025, The COBRA Toolbox developers'
 author = u'The COBRA Toolbox developers'
+copyright = f'2017-{current_year}, {author}'
+
+
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
