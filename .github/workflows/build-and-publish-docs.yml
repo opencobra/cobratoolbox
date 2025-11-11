@@ -58,6 +58,22 @@ jobs:
             ./documentation/build/html/ \
             ghpages/stable/
 
+      # === NEW: bring current gh-pages tutorials into staging so we can edit it ===
+      - name: Checkout gh-pages into temp dir (read-only)
+        uses: actions/checkout@v3
+        with:
+          ref: gh-pages
+          path: ghpages-existing
+
+      - name: Bring existing tutorials into staging (if present)
+        run: |
+          if [ -d ghpages-existing/stable/tutorials ]; then
+            mkdir -p ghpages/stable/tutorials
+            rsync -a ghpages-existing/stable/tutorials/ ghpages/stable/tutorials/
+          else
+            echo "No existing tutorials found on gh-pages; skipping copy."
+          fi
+
       # ==== function-docs (unchanged order) ====
       # A second checkout in the same job would reset the workspace, so we keep the step position but no-op it.
       - name: Checkout (no-op in single job)
@@ -143,16 +159,20 @@ jobs:
           --home-href index.html \
           --parser html5lib
 
-      - name: Update Tutorials sidebar from built index.html
+      - name: Update Tutorials sidebar from built index.html (gh-pages/stable copy)
         working-directory: ./documentation
         run: |
-          python ./source/Contributions/UpdateContributorsTemplate.py \
-          --source ./build/html/index.html \
-          --input ./source/tutorials/index.html \
-          --output ./source/tutorials/index.html \
-          --current-href tutorials/index.html \
-          --home-href index.html \
-          --parser html5lib
+          if [ -f ../ghpages/stable/tutorials/index.html ]; then
+            python ./source/Contributions/UpdateContributorsTemplate.py \
+            --source ./build/html/index.html \
+            --input  ../ghpages/stable/tutorials/index.html \
+            --output ../ghpages/stable/tutorials/index.html \
+            --current-href tutorials/index.html \
+            --home-href index.html \
+            --parser html5lib
+          else
+            echo "No tutorials index found in staging; skipping sidebar update."
+          fi
 
       - name: Update contributors
         working-directory: ./documentation/source/Contributions
