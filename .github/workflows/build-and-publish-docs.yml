@@ -163,16 +163,18 @@ jobs:
         working-directory: ./documentation
         run: |
           if [ -f ../ghpages/stable/tutorials/index.html ]; then
-            python ./source/Contributions/UpdateContributorsTemplate.py \
+          python ./source/Contributions/UpdateContributorsTemplate.py \
             --source ./build/html/index.html \
             --input  ../ghpages/stable/tutorials/index.html \
             --output ../ghpages/stable/tutorials/index.html \
             --current-href tutorials/index.html \
-            --home-href index.html \
+            --home-href ../index.html \
+            --href-prefix ../ \
             --parser html5lib
           else
             echo "No tutorials index found in staging; skipping sidebar update."
           fi
+
 
       - name: Update contributors
         working-directory: ./documentation/source/Contributions
