@@ -139,7 +139,9 @@ jobs:
           --source ./build/html/index.html \
           --input  ./source/Contributions/contributorsTemp.html \
           --output ./source/Contributions/contributorsTemp.html \
-          --current-href contributors.html
+          --current-href contributors.html \
+          --home-href index.html \
+          --parser html5lib
 
       - name: Update contributors
         working-directory: ./documentation/source/Contributions
