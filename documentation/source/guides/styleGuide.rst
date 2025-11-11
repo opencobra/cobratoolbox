@@ -4,7 +4,7 @@ Style guide
 -----------
 
 A comprehensive MATLAB style guide written by Richard Jonson can be
-found [here](http://www.datatool.com/downloads/MatlabStyle2%20book.pdf).
+found `here <https://www.ee.columbia.edu/~marios/matlab/MatlabStyle1p5.pdf>`__.
 
 Code
 ~~~~
