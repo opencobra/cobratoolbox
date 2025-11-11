@@ -11,26 +11,11 @@ Linux Ubuntu
    :widths: 24 12 12 12 12
 
    * - SolverName
-     - R2023b
-     - R2021b
-     - R2020b
-     - R2020a
-   * - IBM CPLEX 20.10
-     - ❌
-     - ❌
-     - ❌
-     - ❌
-   * - IBM CPLEX 12.10
-     - ✅
-     - ✅
-     - ✅
-     - ✅
-   * - IBM CPLEX 12.8
-     - ✅
-     - ✅
-     - ✅
-     - ✅
-   * - GUROBI 9.1.1
+     - R2024a
+     - R2024b
+     - R2025a
+     - R2025b
+   * - GUROBI 12.0
      - ✅
      - ✅
      - ✅
@@ -60,6 +45,11 @@ Linux Ubuntu
      - ✅
      - ✅
      - ✅
+   * - IBM CPLEX
+     - ❌
+     - ❌
+     - ❌
+     - ❌
 
 macOS 10.13+
 ------------
@@ -69,26 +59,11 @@ macOS 10.13+
    :widths: 24 12 12 12 12
 
    * - SolverName
-     - R2021b
-     - R2021a
-     - R2020b
-     - R2020a
-   * - IBM CPLEX 20.10
-     - ❌
-     - ❌
-     - ❌
-     - ❌
-   * - IBM CPLEX 12.10
-     - ✅
-     - ✅
-     - ✅
-     - ✅
-   * - IBM CPLEX 12.8
-     - ✅
-     - ✅
-     - ✅
-     - ✅
-   * - GUROBI 9.1.1
+     - R2024a
+     - R2024b
+     - R2025a
+     - R2025b
+   * - GUROBI 12.0
      - ✅
      - ✅
      - ✅
@@ -118,6 +93,12 @@ macOS 10.13+
      - ✅
      - ✅
      - ✅
+   * - IBM CPLEX
+     - ❌
+     - ❌
+     - ❌
+     - ❌
+
 
 Windows 10
 ----------
@@ -127,26 +108,11 @@ Windows 10
    :widths: 24 12 12 12 12
 
    * - SolverName
-     - R2021b
-     - R2021a
-     - R2020b
-     - R2020a
-   * - IBM CPLEX 20.10
-     - ❌
-     - ❌
-     - ❌
-     - ❌
-   * - IBM CPLEX 12.10
-     - ✅
-     - ✅
-     - ✅
-     - ✅
-   * - IBM CPLEX 12.8
-     - ✅
-     - ✅
-     - ✅
-     - ✅
-   * - GUROBI 9.1.1
+     - R2024a
+     - R2024b
+     - R2025a
+     - R2025b
+   * - GUROBI 12.0
      - ✅
      - ✅
      - ✅
@@ -176,7 +142,14 @@ Windows 10
      - ✅
      - ✅
      - ✅
+   * - IBM CPLEX
+     - ❌
+     - ❌
+     - ❌
+     - ❌
 
+
+** Notice that IBM CPLEX no longer support MATLAB interface. The latest version of MATLAB and CPLEX that are compatible with each other is MATLAB R2019b with IBM ILOG CPLEX Optimization Studio Version 12.10.0.0. Running the COBRA toolbox on a system where IBM Cplex is installed, with any MATLAB later than R2019b is prone to a software conflict and crash.
 
 Legend
 ------
