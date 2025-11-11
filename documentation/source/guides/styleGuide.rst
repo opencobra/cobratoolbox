@@ -132,16 +132,17 @@ Git commit messages
 -  Consider starting the commit message (not the title of the PR) with
    an applicable emoji:
 
-   -  |bug| ``:bug:`` when fixing a bug
-   -  |art| ``:art:`` when improving the format/structure of the code
-   -  |racehorse| ``:racehorse:`` when improving performance
-   -  |memo| ``:memo:`` when writing docs
-   -  |fire| ``:fire:`` when removing code or files
-   -  |white_check_mark| ``:white_check_mark:`` when adding tests
-   -  |penguin| ``:penguin:`` when fixing something on Linux
-   -  |apple| ``:apple:`` when fixing something on macOS
-   -  |computer| ``:computer:`` when fixing something on Windows
-   -  |green_heart| ``:green_heart:`` when fixing the CI build
+   - 🐛 ``:bug:`` when fixing a bug
+   - 🎨 ``:art:`` when improving the format or structure of the code
+   - 🐎 ``:racehorse:`` when improving performance
+   - 📝 ``:memo:`` when writing docs
+   - 🔥 ``:fire:`` when removing code or files
+   - ✅ ``:white_check_mark:`` when adding tests
+   - 🐧 ``:penguin:`` when fixing something on Linux
+   - 🍎 ``:apple:`` when fixing something on macOS
+   - 💻 ``:computer:`` when fixing something on Windows
+   - 💚 ``:green_heart:`` when fixing the CI build
+
 
 
 .. |macos| raw:: html
