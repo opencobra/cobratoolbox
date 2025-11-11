@@ -191,6 +191,13 @@ jobs:
           mkdir -p ghpages/stable
           rsync -a ./documentation/source/Contributions/contributors/ ghpages/stable/
 
+      - name: Update static HTML copyrights (contributors + tutorials)
+        working-directory: ./documentation
+        run: |
+          python ./source/Contributions/UpdateCopyright.py \
+            ../ghpages/stable/contributors.html \
+            ../ghpages/stable/tutorials/index.html || true
+
       # ==== single deploy ====
       - name: Deploy staged site to gh-pages (single push)
         uses: JamesIves/github-pages-deploy-action@v4
