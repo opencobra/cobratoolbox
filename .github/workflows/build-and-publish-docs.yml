@@ -151,7 +151,7 @@ jobs:
       - name: Update contributors template sidebar from built index.html
         working-directory: ./documentation
         run: |
-          python ./source/Contributions/UpdateContributorsTemplate.py \
+          python ./source/Contributions/UpdateSideBar.py \
           --source ./build/html/index.html \
           --input  ./source/Contributions/contributorsTemp.html \
           --output ./source/Contributions/contributorsTemp.html \
@@ -163,7 +163,7 @@ jobs:
         working-directory: ./documentation
         run: |
           if [ -f ../ghpages/stable/tutorials/index.html ]; then
-          python ./source/Contributions/UpdateContributorsTemplate.py \
+          python ./source/Contributions/UpdateSideBar.py \
             --source ./build/html/index.html \
             --input  ../ghpages/stable/tutorials/index.html \
             --output ../ghpages/stable/tutorials/index.html \
