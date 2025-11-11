@@ -1,10 +1,7 @@
 #!/usr/bin/env python3
 """
 Copy the left sidebar menu from a built Sphinx page (index.html) into
-contributorsTemp.html, then retarget the 'current' menu item to contributors.html,
-ensuring exact class ordering:
-- <li> :  ["toctree-l1", "current"]
-- <a>  :  ["current", "reference", "internal"]
+contributorsTemp.html, then retarget the 'current' menu item to contributors.html.
 """
 
 from __future__ import annotations
@@ -18,6 +15,7 @@ def parse_args():
     ap.add_argument("--input", required=True, help="Path to contributorsTemp.html to modify")
     ap.add_argument("--output", required=True, help="Path to write the updated HTML (can be same as --input)")
     ap.add_argument("--current-href", default="contributors.html", help="Href that should be marked as current")
+    ap.add_argument("--home-href", default="index.html", help="Href to use for the Home link in the first UL")
     ap.add_argument("--parser", default="html5lib", choices=["html5lib", "lxml", "html.parser"],
                     help="BeautifulSoup parser to use")
     return ap.parse_args()
@@ -32,93 +30,96 @@ def replace_inner_html(target_div, new_inner_html: str, parser: str):
     for child in list(parents):
         target_div.append(child)
 
+def ensure_home_block(menu_div, home_href: str):
+    """
+    Ensure the first UL (Home block) has class='current' and its link points to home_href.
+    """
+    first_ul = menu_div.find("ul", recursive=False)
+    if not first_ul:
+        return
+    # Make sure the first UL has class 'current'
+    ul_classes = list(first_ul.get("class", []))
+    if "current" not in ul_classes:
+        ul_classes.append("current")
+        first_ul["class"] = ul_classes
+
+    # Fix the Home link to point to home_href (often '#' in index.html)
+    first_li = first_ul.find("li", recursive=False)
+    if first_li:
+        a = first_li.find("a", recursive=True)
+        if a:
+            a["href"] = home_href
+
 def href_matches(a_tag, target_href: str) -> bool:
     href = (a_tag.get("href") or "").strip()
     if not href:
         return False
     return href == target_href or href.endswith("/" + target_href)
 
-def set_exact_classes(tag, ordered_classes: list[str]):
-    """Force exactly this class list (order preserved as provided)."""
-    if ordered_classes:
-        tag["class"] = ordered_classes
-    elif "class" in tag.attrs:
-        del tag["class"]
+def set_exact_classes(tag, classes_in_order):
+    """
+    Overwrite a tag's class attribute with exactly the provided list, preserving order.
+    """
+    tag["class"] = list(classes_in_order)
 
 def retarget_current(menu_div, current_href: str):
     """
-    Make the sidebar show 'current' for the given href, with exact class ordering:
-      - only the UL containing current_href has class 'current'
-      - only the LI for current_href has class 'current', ordered as ['toctree-l1', 'current']
-      - the A for current_href has class 'current reference internal' (in that order)
+    Ensure:
+      - the UL that contains current_href has class 'current'
+      - the LI for current_href has class exactly 'toctree-l1 current' (in that order)
+      - the A for current_href has class exactly 'current reference internal' (in that order)
+      - remove 'current' from other LIs/As
     """
+    # Consider only direct UL children of the menu
+    uls = menu_div.find_all("ul", recursive=False)
 
-    # 1) Get top-level ULs under the menu and strip 'current' from them
-    uls = [ul for ul in menu_div.find_all("ul", recursive=False)]
-    for ul in uls:
-        classes = [c for c in ul.get("class", []) if c != "current"]
-        if classes:
-            ul["class"] = classes
-        elif "class" in ul.attrs:
-            del ul["class"]
-
-    # 2) Walk first-level items to locate the target LI/A, clearing stale 'current'
     target_li = None
     target_ul = None
 
+    # First pass: locate target and clear stale 'current' from all li/a
     for ul in uls:
-        for li in ul.find_all("li", class_="toctree-l1", recursive=False):
+        for li in ul.find_all("li", class_=lambda x: True, recursive=False):
+            # normalise non-target items
+            li_classes = list(li.get("class", []))
+            li_classes = [c for c in li_classes if c != "current"]
+            if "toctree-l1" in li_classes:
+                # keep toctree-l1; remove duplicates
+                li_classes = ["toctree-l1"] + [c for c in li_classes if c != "toctree-l1"]
+            if li_classes:
+                li["class"] = li_classes
+            elif "class" in li.attrs:
+                del li["class"]
+
             a = li.find("a", recursive=True)
-            # Clear stale 'current' on LI while keeping toctree-l1 first
-            set_exact_classes(li, ["toctree-l1"])
             if a:
-                # Normalise any anchor classes to 'reference internal' without 'current'
-                ac = [c for c in a.get("class", []) if c not in ("current",)]
-                # Ensure 'reference' and 'internal' exist (Sphinx RTD style)
-                base = []
-                if "reference" in ac:
-                    base.append("reference")
-                if "internal" in ac:
-                    # ensure 'reference' first then 'internal'
-                    pass
-                # Build base as exactly ['reference', 'internal'] if present in any order
-                want_ref = "reference" in ac
-                want_int = "internal" in ac
-                new_base = []
-                if want_ref:
-                    new_base.append("reference")
-                if want_int:
-                    new_base.append("internal")
-                # If neither present (very unlikely), keep whatever remains
-                set_exact_classes(a, new_base if new_base else ac)
+                a_classes = [c for c in a.get("class", []) if c != "current"]
+                if a_classes:
+                    a["class"] = a_classes
+                elif "class" in a.attrs:
+                    del a["class"]
 
-            if a and href_matches(a, current_href):
-                target_li = li
-                target_ul = ul
+                # Check match for current target
+                if href_matches(a, current_href):
+                    target_li = li
+                    target_ul = ul
 
-    # 3) Apply 'current' to the correct UL, LI and A with exact ordering
-    if target_ul and target_li:
-        # UL: add 'current' (order does not matter on UL but keep it first if present originally)
-        ul_classes = target_ul.get("class", [])
+    # If we found the target, set exact classes (with required order)
+    if target_li and target_ul:
+        # Ensure UL has 'current' (but do not wipe other classes)
+        ul_classes = list(target_ul.get("class", []))
         if "current" not in ul_classes:
-            target_ul["class"] = (ul_classes or []) + ["current"]
+            ul_classes.append("current")
+            target_ul["class"] = ul_classes
 
-        # LI: exactly ['toctree-l1', 'current']
+        # Set LI classes in exact order: 'toctree-l1 current'
         set_exact_classes(target_li, ["toctree-l1", "current"])
 
-        # A: exactly ['current', 'reference', 'internal'] (if the anchor exists)
+        # Set A classes in exact order: 'current reference internal'
         a = target_li.find("a", recursive=True)
         if a:
-            # Determine whether original had 'reference'/'internal' to avoid inventing classes
-            had_ref = "reference" in a.get("class", []) or "reference" in (a.get("class") or [])
-            had_int = "internal" in a.get("class", []) or "internal" in (a.get("class") or [])
-            # Default RTD anchors do have both; enforce desired order regardless
-            ordered = ["current"]
-            if had_ref or True:
-                ordered.append("reference")
-            if had_int or True:
-                ordered.append("internal")
-            set_exact_classes(a, ordered)
+            # Ensure the anchor retains 'reference internal', but with 'current' first
+            # If it doesn't have them yet, add them
+            set_exact_classes(a, ["current", "reference", "internal"])
 
 def main():
     args = parse_args()
@@ -145,13 +146,17 @@ def main():
     if not tgt_menu:
         raise SystemExit("Could not find sidebar in input HTML: div.wy-menu.wy-menu-vertical")
 
-    # Copy the menu contents
+    # Copy the menu contents from source to target
     new_inner = src_menu.decode_contents()
     replace_inner_html(tgt_menu, new_inner, args.parser)
 
-    # Retarget 'current' to the requested page with exact class ordering
+    # Fix first UL (Home block) and its link
+    ensure_home_block(tgt_menu, home_href=args.home_href)
+
+    # Retarget 'current' to the requested page
     retarget_current(tgt_menu, current_href=args.current_href)
 
+    # Write out without prettify to avoid reformatting
     out_path.write_text(str(in_soup), encoding="utf-8")
     print(f"✓ Sidebar updated and 'current' set to {args.current_href}: {out_path}")
 
