@@ -143,6 +143,17 @@ jobs:
           --home-href index.html \
           --parser html5lib
 
+      - name: Update Tutorials sidebar from built index.html
+        working-directory: ./documentation
+        run: |
+          python ./source/Contributions/UpdateContributorsTemplate.py \
+          --source ./build/html/index.html \
+          --input ./source/tutorials/index.html \
+          --output ./source/tutorials/index.html \
+          --current-href tutorials/index.html \
+          --home-href index.html \
+          --parser html5lib
+
       - name: Update contributors
         working-directory: ./documentation/source/Contributions
         run: |
