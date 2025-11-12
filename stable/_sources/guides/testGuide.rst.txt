@@ -342,7 +342,7 @@ What should I do in case my PR failed?
 You can check why your PR failed by clicking on the mark and following
 the respective links. Alternatively, you can see the output of the CI
 for your PR
-`here <https://prince.lcsb.uni.lu/jenkins/job/COBRAToolbox-pr-auto/>`__.
+`here <https://king.nuigalway.ie/jenkins/job/COBRAToolbox-pr-auto/>`__.
 You can then click on the build number. Under ``Console Output``, you
 can see the output of ``test/testAll.m`` with your integrated PR.
 

@@ -6656,3 +6656,122 @@ blockquote {
     text-align: right;
     float: right;
 }
+
+/* restore bullets and numbers on simple Docutils lists */
+.wy-nav-content .rst-content ul.simple {
+  list-style: disc outside;
+  margin-left: 1.5em;
+  padding-left: 0;
+}
+
+.wy-nav-content .rst-content ol.simple {
+  list-style: decimal outside;
+  margin-left: 1.5em;
+  padding-left: 0;
+}
+
+/* optional spacing for list items */
+.wy-nav-content .rst-content ul.simple > li,
+.wy-nav-content .rst-content ol.simple > li {
+  margin: 0.25em 0;
+}
+
+/* override global reset: restore bullets for all content lists */
+.wy-nav-content .rst-content ul,
+.wy-nav-content .rst-content ol {
+  list-style: disc outside !important;
+  margin-left: 1.5em;
+  padding-left: 0;
+}
+
+.wy-nav-content .rst-content ol {
+  list-style-type: decimal !important;
+}
+
+.wy-nav-content .rst-content ul > li,
+.wy-nav-content .rst-content ol > li {
+  margin: 0.25em 0;
+}
+
+/* FIX 1: undo the global reset that killed bullets on <li> */
+.wy-nav-content .rst-content li {
+  list-style: inherit !important;   /* inherit from ul/ol */
+}
+
+/* FIX 2: tighten spacing between items */
+.wy-nav-content .rst-content ul > li,
+.wy-nav-content .rst-content ol > li {
+  margin: 0.25em 0 !important;      /* reduce vertical gaps */
+  line-height: 1.45;                 /* optional: moderate line height */
+}
+
+/* Keep bullets/numbers visible for all content lists (from earlier step) */
+.wy-nav-content .rst-content ul,
+.wy-nav-content .rst-content ol {
+  list-style: disc outside !important;
+  margin-left: 1.5em;
+  padding-left: 0;
+}
+.wy-nav-content .rst-content ol {
+  list-style-type: decimal !important;
+}
+
+/* Optional: nicer nested list styles */
+.wy-nav-content .rst-content ul ul  { list-style-type: circle !important; }
+.wy-nav-content .rst-content ul ul ul { list-style-type: square !important; }
+
+/* Restore bullets and numbers for all lists inside the document body */
+.wy-nav-content .rst-content ul,
+.wy-nav-content .rst-content ol {
+  list-style: disc outside !important;
+  margin-left: 1.5em;
+  padding-left: 0;
+}
+.wy-nav-content .rst-content ol {
+  list-style-type: decimal !important;
+}
+/* Ensure list items inherit list-style and tighten spacing */
+.wy-nav-content .rst-content li {
+  list-style: inherit !important;
+  margin: 0.25em 0 !important;
+}
+
+/* Keep bullets and numbers for ordinary lists */
+.wy-nav-content .rst-content ul,
+.wy-nav-content .rst-content ol {
+  list-style: disc outside;
+  margin-left: 1.5em;
+  padding-left: 0;
+}
+.wy-nav-content .rst-content ol {
+  list-style-type: decimal;
+}
+
+/* Reduce vertical spacing inside list items */
+.wy-nav-content .rst-content ul li > p,
+.wy-nav-content .rst-content ol li > p {
+  margin-top: 0;
+  margin-bottom: 0.25em;
+}
+
+/* Don’t show bullets on lists that only contain images or icons */
+.wy-nav-content .rst-content ul li > img,
+.wy-nav-content .rst-content ul li > a > img,
+.wy-nav-content .rst-content ul li > figure {
+  list-style-type: none;
+  margin-left: 0;
+  padding-left: 0;
+}
+
+/* Do not show bullets for metro tile lists */
+.wy-nav-content .rst-content ul.metro {
+  list-style-type: none !important;
+  margin-left: 0;
+  padding-left: 0;
+}
+
+.wy-nav-content .rst-content ul.metro > li {
+  list-style-type: none !important;
+  margin-left: 0;
+  padding-left: 0;
+}

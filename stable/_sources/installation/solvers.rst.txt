@@ -85,32 +85,43 @@ TOMLAB
 IBM ILOG CPLEX
 ~~~~~~~~~~~~~~
 
-1) Download the ``CPLEX`` installation binary. The limited community
-   edition is
-   `here <https://www.ibm.com/products/ilog-cplex-optimization-studio>`__.
-   CPLEX is free for students (and academics) and further information
-   how to register and download is
-   `here <https://www.ibm.com/developerworks/community/blogs/jfp/entry/CPLEX_Is_Free_For_Students?lang=en>`__.
+N.B. CPLEX is free for students and academics, but only the last version with a matlab interface is 12.10.
 
-2) |macos| |linux| Add ``execute`` permission to binary
+1) Obtain IBMid as academic using a university address
+
+2) Navigate to `here <https://academic.ibm.com/a2mt/downloads/data_science#/>` 
+
+3) Select IBM ILOG CPLEX Optimization Studio
+
+4) Search Text for “CPLEX 12.10”
+
+5) Select HTTP
+
+6) Select box to left of “CC439ML IBM ILOG CPLEX Optimization Studio V12.10 for Linux x86-64 Multilingual”
+
+7) Below, select “I agree”, only then the option to download appears!
+
+8) Select "Download" then download of cplex_studio1210.linux-x86-64.bin should start
+
+9) |macos| |linux| Add ``execute`` permission to binary
 
    .. code-block:: console
 
-      $ chmod +x <cplexbinary>.bin
+      $ chmod +x cplex_studio1210.linux-x86-64.bin
 
-3) |macos| |linux| Run the installer binary as superuser, follow the installation
+10) |macos| |linux| Run the installer binary as superuser, follow the installation
    procedure, and accept the default installation path.
 
    .. code-block:: console
 
-      $ sudo ./<cplexbinary>.bin
+      $ sudo ./cplex_studio1210.linux-x86-64.bin
 
    |windows| Run
-   ``cplex_studio<ver>.win-x86-64.exe`` as an administrator. Follow the
+   ``cplex_studio1210.win-x86-64.exe`` as an administrator. Follow the
    installation instructions and install ``CPLEX`` in
-   ``C:\Program Files\IBM\ILOG\CPLEX_Studio<ver>``.
+   ``C:\Program Files\IBM\ILOG\CPLEX_Studio1210``.
 
-4) |macos| |linux| Set the environment variable by editing your ``~/.bashrc`` file:
+11) |macos| |linux| Set the environment variable by editing your ``~/.bashrc`` file:
 
    .. code-block:: console
 
@@ -123,13 +134,13 @@ IBM ILOG CPLEX
 
    .. code-block:: console
 
-      export ILOG_CPLEX_PATH="/opt/ibm/ILOG/CPLEX_Studio<ver>"
+      export ILOG_CPLEX_PATH="/opt/ibm/ILOG/CPLEX_Studio1210"
 
    On |macos|:
 
    .. code-block:: console
 
-      export ILOG_CPLEX_PATH="/Applications/IBM/ILOG/CPLEX_Studio<ver>"
+      export ILOG_CPLEX_PATH="/Applications/IBM/ILOG/CPLEX_Studio1210"
 
    Reload your ``~/.bashrc``:
 
@@ -137,14 +148,14 @@ IBM ILOG CPLEX
 
       $ source ~/.bashrc
 
-   |windows| |#ff0000| Make sure that you select ``Yes, update the PATH variable.``. You can
+   |windows| |warning| Make sure that you select ``Yes, update the PATH variable.``. You can
    also follow the instructions
    `here <https://www.ibm.com/support/knowledgecenter/SSSA5P_12.6.1/ilog.odms.cplex.help/CPLEX/GettingStarted/topics/set_up/Windows.html>`__.
 
    |windows| |warning| If you installed cplex in a non default folder (or if you are using the community version) please make sure, that you create an environment variable ``ILOG_CPLEX_PATH`` pointing to the directory containing the CPLEX matlab bindings. This can also be done by creating a `startup.m` file as detailed here `here <https://nl.mathworks.com/help/matlab/ref/startup.html>`__.
    In this startup file add the following command:
-   ``setenv('ILOG_CPLEX_PATH','C:\<yourCPLEXPath>\CPLEX_Studio<ver>\cplex\matlab\<arch>')``
-   where ``<yourCPLEXPath>`` is the path to cplex, ``<ver>`` is the installed version and ``<arch>`` is the architecture identifier.
+   ``setenv('ILOG_CPLEX_PATH','C:\<yourCPLEXPath>\CPLEX_Studio1210\cplex\matlab\<arch>')``
+   where ``<yourCPLEXPath>`` is the path to cplex, ``1210`` is the installed version and ``<arch>`` is the architecture identifier.
 
 GUROBI
 ~~~~~~
@@ -183,7 +194,7 @@ GUROBI
 
    .. code-block:: console
 
-      export GUROBI_HOME="/opt/gurobi<ver>"
+      export GUROBI_HOME="/opt/gurobi<ver>/linux64"
       export PATH="${PATH}:${GUROBI_HOME}/bin"
       export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${GUROBI_HOME}/lib"
       export GUROBI_PATH="${GUROBI_HOME}"
@@ -363,47 +374,47 @@ MOSEK
 
 .. |macos| raw:: html
 
-   <img src="https://prince.lcsb.uni.lu/cobratoolbox/img/apple.png" height="20px" width="20px" alt="macOS">
+   <img src="/cobratoolbox/stable/_static/img/apple.png" height="20px" width="20px" alt="macOS">
 
 
 .. |linux| raw:: html
 
-   <img src="https://prince.lcsb.uni.lu/cobratoolbox/img/linux.png" height="20px" width="20px" alt="linux">
+   <img src="/cobratoolbox/stable/_static/img/linux.png" height="20px" width="20px" alt="linux">
 
 
 .. |windows| raw:: html
 
-   <img src="https://prince.lcsb.uni.lu/cobratoolbox/img/windows.png" height="20px" width="20px" alt="windows">
+   <img src="/cobratoolbox/stable/_static/img/windows.png" height="20px" width="20px" alt="windows">
 
 
 .. |warning| raw:: html
 
-   <img src="https://prince.lcsb.uni.lu/cobratoolbox/img/warning.png" height="20px" width="20px" alt="warning">
+   <img src="/cobratoolbox/stable/_static/img/warning.png" height="20px" width="20px" alt="warning">
 
 
 .. |matlab| raw:: html
 
-   <img src="https://prince.lcsb.uni.lu/cobratoolbox/img/matlab.png" height="20px" width="20px" alt="matlab">
+   <img src="/cobratoolbox/stable/_static/img/matlab.png" height="20px" width="20px" alt="matlab">
 
 
 .. |tada| raw:: html
 
-   <img src="https://prince.lcsb.uni.lu/cobratoolbox/img/tada.png" height="20px" width="20px" alt="tada">
+   <img src="/cobratoolbox/stable/_static/img/tada.png" height="20px" width="20px" alt="tada">
 
 
 .. |thumbsup| raw:: html
 
-   <img src="https://prince.lcsb.uni.lu/cobratoolbox/img/thumbsUP.png" height="20px" width="20px" alt="thumbsup">
+   <img src="/cobratoolbox/stable/_static/img/thumbsUP.png" height="20px" width="20px" alt="thumbsup">
 
 
 .. |bulb| raw:: html
 
-   <img src="https://prince.lcsb.uni.lu/cobratoolbox/img/bulb.png" height="20px" width="20px" alt="bulb">
+   <img src="/cobratoolbox/stable/_static/img/bulb.png" height="20px" width="20px" alt="bulb">
 
 
 .. |pencil| raw:: html
 
-   <img src="https://prince.lcsb.uni.lu/cobratoolbox/img/pencil.png" height="20px" width="20px" alt="pencil">
+   <img src="/cobratoolbox/stable/_static/img/pencil.png" height="20px" width="20px" alt="pencil">
 
 
 .. |tutorials| raw:: html

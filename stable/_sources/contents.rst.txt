@@ -14,3 +14,7 @@ The COBRA Toolbox
    faq
    contributors
    funding
+   plan
+   lifecycle
+   contact
+   citations
