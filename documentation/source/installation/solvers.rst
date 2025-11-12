@@ -19,7 +19,7 @@ Platform-specific instructions are marked with
 
 |warning| Most steps require superuser or administrator rights (``sudo``).
 
-|pencil| Make sure that you replace ``<ver>`` with the respective
+✏️ Make sure that you replace ``<ver>`` with the respective
 ``version`` of the installed solver when setting the environment
 variables.
 
@@ -410,11 +410,6 @@ MOSEK
 .. |bulb| raw:: html
 
    <img src="/cobratoolbox/stable/_static/img/bulb.png" height="20px" width="20px" alt="bulb">
-
-
-.. |pencil| raw:: html
-
-   <img src="/cobratoolbox/stable/_static/img/pencil.png" height="20px" width="20px" alt="pencil">
 
 
 .. |tutorials| raw:: html
