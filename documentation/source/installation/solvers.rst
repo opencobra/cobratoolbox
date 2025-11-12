@@ -148,7 +148,7 @@ N.B. CPLEX is free for students and academics, but only the last version with a 
 
       $ source ~/.bashrc
 
-   |windows| |#ff0000| Make sure that you select ``Yes, update the PATH variable.``. You can
+   |windows| |warning| Make sure that you select ``Yes, update the PATH variable.``. You can
    also follow the instructions
    `here <https://www.ibm.com/support/knowledgecenter/SSSA5P_12.6.1/ilog.odms.cplex.help/CPLEX/GettingStarted/topics/set_up/Windows.html>`__.
 
