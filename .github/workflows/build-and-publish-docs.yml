@@ -1,0 +1,208 @@
+name: Build and publish site (ordered)
+
+on:
+  push:
+    branches:
+      - master
+
+permissions:
+  contents: write
+
+concurrency:
+  group: gh-pages-deploy
+  cancel-in-progress: false
+
+jobs:
+  build-and-publish:
+    name: Build, stage, and publish once
+    runs-on: ubuntu-latest
+    steps:
+      # ==== core-docs (unchanged order) ====
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+          cache: pip
+          cache-dependency-path: documentation/requirements.txt
+
+      - name: Install documentation dependencies
+        working-directory: ./documentation
+        run: |
+          pip install -r requirements.txt
+
+      - name: Build documentation (Sphinx)
+        working-directory: ./documentation
+        run: |
+          make html
+
+      - name: Remove tutorials from build
+        run: |
+          rm -rf ./documentation/build/html/tutorials
+
+      # The artifact was only used to move the Sphinx build across jobs.
+      # With a single job it is no longer needed.
+      - name: (Replaces artifact upload) Ensure staging directory
+        run: |
+          mkdir -p ghpages/stable
+
+      - name: Remove Sphinx-generated contributors page
+        run: |
+          rm -f ./documentation/build/html/contributors.html
+
+      - name: Stage core site to ghpages/stable
+        run: |
+          rsync -a --delete \
+            ./documentation/build/html/ \
+            ghpages/stable/
+
+      # === NEW: bring current gh-pages tutorials into staging so we can edit it ===
+      - name: Checkout gh-pages into temp dir (read-only)
+        uses: actions/checkout@v3
+        with:
+          ref: gh-pages
+          path: ghpages-existing
+
+      - name: Bring existing tutorials into staging (if present)
+        run: |
+          if [ -d ghpages-existing/stable/tutorials ]; then
+            mkdir -p ghpages/stable/tutorials
+            rsync -a ghpages-existing/stable/tutorials/ ghpages/stable/tutorials/
+          else
+            echo "No existing tutorials found on gh-pages; skipping copy."
+          fi
+
+      # ==== function-docs (unchanged order) ====
+      # A second checkout in the same job would reset the workspace, so we keep the step position but no-op it.
+      - name: Checkout (no-op in single job)
+        run: echo "Checkout already performed"
+
+      - name: Set up Python 3.10 (function-docs)
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+          cache: pip
+          cache-dependency-path: documentation/requirements.txt
+
+      - name: Install documentation dependencies (function-docs)
+        working-directory: ./documentation
+        run: |
+          pip install -r requirements.txt
+
+      - name: Generate publications rst file
+        working-directory: ./documentation/source/sphinxext
+        run: |
+          python GenerateCitationsRST.py
+
+      - name: Update packages
+        working-directory: ./documentation/source
+        run: |
+          python ./sphinxext/copy_files.py
+
+      - name: Generate functions rst files
+        working-directory: ./documentation/source/modules
+        run: |
+          python ./GetRSTfiles.py
+
+      - name: Generate documentation
+        working-directory: ./documentation
+        run: |
+          make html
+
+      - name: Copy the citations html page (as before)
+        run: |
+          mkdir -p ./documentation/source/Citations
+          cp ./documentation/build/html/citations.html ./documentation/source/Citations/citations.html || true
+
+      - name: Stage the function modules
+        run: |
+          mkdir -p ghpages/stable/modules
+          rsync -a ./documentation/build/html/modules/ ghpages/stable/modules/
+
+      - name: Stage the citations page
+        run: |
+          mkdir -p ghpages/stable
+          rsync -a ./documentation/source/Citations/ ghpages/stable/
+
+      - name: Stage the citations static page
+        run: |
+          mkdir -p ghpages/stable/_static
+          rsync -a ./documentation/build/html/_static/ ghpages/stable/_static/
+
+      # ==== contributors (unchanged order) ====
+      # Downloading the artifact is unnecessary in a single job. Keep step position but no-op.
+      - name: Download Sphinx build artifact (no-op in single job)
+        run: echo "Artifact not required"
+
+      - name: Set up Python 3.10 (contributors)
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+          cache: pip
+          cache-dependency-path: documentation/source/Contributions/requirements.txt
+
+      - name: Install dependencies
+        working-directory: ./documentation/source/Contributions
+        run: |
+          pip install -r requirements.txt
+
+      - name: Update contributors template sidebar from built index.html
+        working-directory: ./documentation
+        run: |
+          python ./source/Contributions/UpdateSideBar.py \
+          --source ./build/html/index.html \
+          --input  ./source/Contributions/contributorsTemp.html \
+          --output ./source/Contributions/contributorsTemp.html \
+          --current-href contributors.html \
+          --home-href index.html \
+          --parser html5lib
+
+      - name: Update Tutorials sidebar from built index.html (gh-pages/stable copy)
+        working-directory: ./documentation
+        run: |
+          if [ -f ../ghpages/stable/tutorials/index.html ]; then
+          python ./source/Contributions/UpdateSideBar.py \
+            --source ./build/html/index.html \
+            --input  ../ghpages/stable/tutorials/index.html \
+            --output ../ghpages/stable/tutorials/index.html \
+            --current-href tutorials/index.html \
+            --home-href ../index.html \
+            --href-prefix ../ \
+            --parser html5lib
+          else
+            echo "No tutorials index found in staging; skipping sidebar update."
+          fi
+
+
+      - name: Update contributors
+        working-directory: ./documentation/source/Contributions
+        run: |
+          python UpdateContributorsList.py
+
+      - name: Generate HTML file
+        working-directory: ./documentation/source/Contributions
+        run: |
+          python GenerateContributorsHTML.py
+
+      - name: Stage contributors page to ghpages/stable
+        run: |
+          mkdir -p ghpages/stable
+          rsync -a ./documentation/source/Contributions/contributors/ ghpages/stable/
+
+      - name: Update static HTML copyrights (contributors + tutorials)
+        working-directory: ./documentation
+        run: |
+          python ./source/Contributions/UpdateCopyright.py \
+            ../ghpages/stable/contributors.html \
+            ../ghpages/stable/tutorials/index.html || true
+
+      # ==== single deploy ====
+      - name: Deploy staged site to gh-pages (single push)
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: ghpages
+          branch: gh-pages
+          clean: false
+          commit-message: "Publish site (single deploy, ordered build)"

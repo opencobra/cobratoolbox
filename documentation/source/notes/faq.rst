@@ -12,6 +12,33 @@ If you need support, please feel free to post your question in our |ImageLink|_.
 
 Installation
 ------------
+Why does my MATLAB crash after running the initCobraToolbox.m script?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+**Short answer:** Your MATLAB is encountering an incompatible IBM CPLEX MATLAB interface. IBM no longer supports the MATLAB connector, and the COBRA initialization script probes every installed solver. When it reaches CPLEX, loading the old MEX interface can crash MATLAB. The last known working combination is **IBM CPLEX 12.10** with **MATLAB R2019b**.
+
+**What is happening**
+
+- `initCobraToolbox.m` checks for and initialises any solvers it finds on your system.  
+- Recent CPLEX releases dropped the MATLAB API; the legacy CPLEX MEX files are binary-version specific.  
+- If an incompatible CPLEX MATLAB interface is on your path, MATLAB can crash as the script probes it.
+
+**How to fix it**
+
+1. **Remove or hide the CPLEX MATLAB interface from the MATLAB path**  
+
+   Temporarily take CPLEX’s MATLAB folders off the path so COBRA will not probe them.
+
+   .. code-block:: matlab
+
+      % Example path, adjust to your installation
+      rmpath(genpath('/opt/ibm/ILOG/CPLEX_Studio/cplex/matlab'));
+      savepath;
+
+2. **Prefer a different solver in COBRA** 
+
+   To run your analyses, you can use a supported solver such as `GUROBI <https://support.gurobi.com/hc/en-us>`__ or `GLPK <https://www.gnu.org/software/glpk/>`__.
 
 How may I remove a legacy installation?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -19,7 +46,7 @@ How may I remove a legacy installation?
 If you have an existing installation of a legacy COBRA Toolbox on your system,
 please remove the installation directory from your MATLAB path.
 
-|warning| The following commands will delete your ``cobratoolbox`` directory and all of its contents
+⚠️ The following commands will delete your ``cobratoolbox`` directory and all of its contents
 
 .. code-block:: matlab
 
@@ -41,7 +68,7 @@ In that case, the easiest is to reinstall (reclone) the COBRA Toolbox or the for
 having backed up the current version.
 
 In case the update fails because of changes in the COBRA Toolbox, please
-contribute your changes first by following the instructions `here <https://opencobra.github.io/cobratoolbox/stable/contributing.html>`.
+contribute your changes first by following the instructions `here <https://opencobra.github.io/cobratoolbox/stable/contributing.html>`__.
 
 In case you do not want to contribute your changes and are familiar with ``git``, you may also type (beware, your changes will be lost!):
 

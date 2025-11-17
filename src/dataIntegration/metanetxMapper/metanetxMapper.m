@@ -1,7 +1,7 @@
 function [metData] = metanetxMapper(metInfo, varargin)
 % This function maps metabolite IDs to each other using Beta MetaNetX database 
 %
-% USAGE:
+% USAGE: 
 %
 %    [metData] = metanetxMapper(metInfo, infoType)
 %
