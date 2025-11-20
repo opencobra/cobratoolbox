@@ -19,7 +19,7 @@ Platform-specific instructions are marked with
 
 |warning| Most steps require superuser or administrator rights (``sudo``).
 
-|pencil| Make sure that you replace ``<ver>`` with the respective
+✏️ Make sure that you replace ``<ver>`` with the respective
 ``version`` of the installed solver when setting the environment
 variables.
 
@@ -148,7 +148,7 @@ N.B. CPLEX is free for students and academics, but only the last version with a 
 
       $ source ~/.bashrc
 
-   |windows| |#ff0000| Make sure that you select ``Yes, update the PATH variable.``. You can
+   |windows| |warning| Make sure that you select ``Yes, update the PATH variable.``. You can
    also follow the instructions
    `here <https://www.ibm.com/support/knowledgecenter/SSSA5P_12.6.1/ilog.odms.cplex.help/CPLEX/GettingStarted/topics/set_up/Windows.html>`__.
 
@@ -410,11 +410,6 @@ MOSEK
 .. |bulb| raw:: html
 
    <img src="/cobratoolbox/stable/_static/img/bulb.png" height="20px" width="20px" alt="bulb">
-
-
-.. |pencil| raw:: html
-
-   <img src="/cobratoolbox/stable/_static/img/pencil.png" height="20px" width="20px" alt="pencil">
 
 
 .. |tutorials| raw:: html

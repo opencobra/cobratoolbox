@@ -20,7 +20,7 @@ Funding
 
        <tr class="noBorder">
        <td class="noBorderImg" width="50%">
-           <div style="align-center;"><a href="https://www.universiteitleiden.nl/en/science/drug-research/systems-pharmacology/analytical-biosciences-and-metabolomics"><img src="/cobratoolbox/stable/_static/img/UniversiteitLeidenLogo.png" alt="logo for Analytical BioSciences and Metabolomics, Division of Systems Biomedicine and Pharmacology, Leiden University" height="128"></a></div>
+           <div style="align-center;"><a href="https://www.universiteitleiden.nl/en/science/drug-research/systems-pharmacology/analytical-biosciences-and-metabolomics"><img src="/cobratoolbox/stable/_static/img/unileidenLogo.png" alt="logo for Analytical BioSciences and Metabolomics, Division of Systems Biomedicine and Pharmacology, Leiden University" height="128"></a></div>
        </td>
        <td class="noBorder" width="50%">
        Analytical BioSciences and Metabolomics, Division of Systems Biomedicine and Pharmacology, Leiden University.
@@ -68,7 +68,7 @@ Funding
     <table width="100%" class="noBorder">
         <tr class="noBorder">
         <td class="noBorderImg" width="60%">
-            <div style="align-center;"><a href="http://openmultimed.net"><img src="/cobratoolbox/stable/_static/img/cost.jpg" alt="European Cooperation in Science and Technology (COST)" height="128"></a></div>
+            <div style="align-center;"><a href="http://openmultimed.net"><img src="/cobratoolbox/stable/_static/img/cost.png" alt="European Cooperation in Science and Technology (COST)" height="128"></a></div>
         </td>
         <td class="noBorder" width="40%">
         This project has received funding from the Open Multiscale Systems Medicine (OpenMultiMed), a COST (European Cooperation in Science and Technology) Action,  under the European Union’s Framework Programme Horizon 2020 research and innovation programme (Grant agreement no. CA15120)”
