@@ -18,8 +18,10 @@ if ~isfield(param, 'MSK_IPAR_LOG')
     % A higher level implies that more information is logged.
     switch param.printLevel
         case 0
+            param.MSK_IPAR_LOG = 0;
             echolev = 0;
         case 1
+            param.MSK_IPAR_LOG = 1;
             echolev = 3;
         case 2
             param.MSK_IPAR_WRITE_DATA_PARAM='MSK_ON';
