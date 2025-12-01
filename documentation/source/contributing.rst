@@ -1,6 +1,6 @@
 How to contribute
 =================
-.. include:: guides/submodulesStructure.rst
+.. include:: guides/howToContribute.rst
 
 Contribute using MATLAB.devTools
 ------------
