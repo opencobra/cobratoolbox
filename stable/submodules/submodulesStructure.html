@@ -1,0 +1,380 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>COBRA Toolbox Submodules Structure &mdash; The COBRA Toolbox</title>
+  
+
+  
+  
+  
+  
+    <link rel="icon" type="image/png" sizes="32x32" href="../_static/img/favicon-32x32.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="16x16" href="../_static/img/favicon-16x16.png">
+  
+  
+  
+    <link rel="manifest" href="../_static/json/manifest.json">
+  
+  
+    <meta name="msapplication-config" content="../_static/browserconfig.xml">
+  
+  <meta name="theme-color" content="#ffffff">
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+  <script src="../_static/js/jquery.easy-autocomplete.min.js" type="text/javascript" ></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+  <link href="../_static/css/easy-autocomplete.min.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/cobra.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../_static/css/cobra.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="The COBRA Toolbox" href="../index.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> The COBRA Toolbox
+          
+
+          
+            <img src="/cobratoolbox/stable/_static/img/logo.png" class="logo" alt="cobratoolbox logo" />
+          
+          </a>
+
+              
+          <h1>The COBRA Toolbox</h1>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" id="simple"/>
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+    <script>
+    	var options = {
+
+		url: "../_static/json/functions.json",
+
+		getValue: "name",
+
+		list: {
+            onKeyEnterEvent: function(item) {
+                    return "_static/../" + item.website_url
+            },
+            maxNumberOfElements: 25,
+			match: {
+					enabled: true,
+			},
+            sort: {
+			    enabled: true
+		    }
+		},
+	template: {
+	    	type: "custom",
+		    method: function(value, item) {
+                return "<span><a href='../_static/../" + item.website_url + "' >" + value + "</a>" + "<a href='../_static/../" + item.website_url + "' ><img src='../_static/link.svg'/></a></span>";
+		    }
+	    },
+		
+		theme: "square"
+
+	};
+
+	$("#simple").easyAutocomplete(options);
+
+
+    </script>
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../index.html">Home</a></li>
+              </ul>
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Using the Toolbox</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/index.html">Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">Submodules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">FAQ</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Contributing</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../plan.html">Development Plan</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Project Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../cite.html">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../citations.html">Citations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../support.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../funding.html">Funding</a></li>
+</ul>
+
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">The COBRA Toolbox</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../contents.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">COBRA Toolbox Submodules Structure</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="https://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <section id="cobra-toolbox-submodules-structure">
+<span id="submodulesstructure"></span><h1>COBRA Toolbox Submodules Structure<a class="headerlink" href="#cobra-toolbox-submodules-structure" title="Permalink to this heading">¶</a></h1>
+<div style="text-align: center;">
+  <img src="/cobratoolbox/stable/_static/img/COBRA_Toolbox_Submodules.png" alt="COBRA Toolbox Submodules Structure" width="60%">
+</div><p>This tutorial explains how the COBRA Toolbox ecosystem of repositories is organised and how you should contribute new material. It is intended for contributors who want to add binaries, models, paper specific code or tutorials that will appear on the COBRA Toolbox website.</p>
+<section id="a-key-point">
+<h2>A key point<a class="headerlink" href="#a-key-point" title="Permalink to this heading">¶</a></h2>
+<p>In order to add a file to any of these repositories, you must add it directly to the corresponding main repository on GitHub (for example <a class="reference external" href="https://github.com/opencobra/COBRA.tutorials">COBRA.tutorials</a>, <a class="reference external" href="https://github.com/opencobra/COBRA.models">COBRA.models</a> and so on), <strong>not</strong> to the <a class="reference external" href="https://github.com/opencobra/cobratoolbox">opencobra/cobratoolbox</a> repository.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">cobratoolbox</span></code> repository only contains submodule pointers. The actual content lives in the external repositories listed below.</p>
+</section>
+</section>
+<section id="overall-repository-layout">
+<h1>Overall repository layout<a class="headerlink" href="#overall-repository-layout" title="Permalink to this heading">¶</a></h1>
+<p>The central codebase is hosted at:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/opencobra/cobratoolbox">https://github.com/opencobra/cobratoolbox</a></p></li>
+</ul>
+<p>This repository contains the core code and the submodule references to external repositories responsible for storing binaries, tutorials, models and paper specific content.</p>
+<p>Submodules:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/opencobra/COBRA.binary">COBRA.binary</a></p></li>
+<li><p><a class="reference external" href="https://github.com/opencobra/COBRA.papers">COBRA.papers</a></p></li>
+<li><p><a class="reference external" href="https://github.com/opencobra/COBRA.tutorials">COBRA.tutorials</a></p></li>
+<li><p><a class="reference external" href="https://github.com/opencobra/COBRA.models">COBRA.models</a></p></li>
+</ul>
+<section id="id3">
+<h2>COBRA.binary<a class="headerlink" href="#id3" title="Permalink to this heading">¶</a></h2>
+<p><strong>Repository:</strong> <a class="reference external" href="https://github.com/opencobra/COBRA.binary">https://github.com/opencobra/COBRA.binary</a></p>
+<p><strong>Purpose:</strong> This repository stores large binary files required by the COBRA Toolbox. Keeping these files here prevents the main repositories from becoming too large.</p>
+<p><strong>Contribution guidelines</strong></p>
+<ul class="simple">
+<li><p>Add all binary assets to <a class="reference external" href="https://github.com/opencobra/COBRA.binary">COBRA.binary</a>.</p></li>
+<li><p>Do not store binary files directly in <a class="reference external" href="https://github.com/opencobra/cobratoolbox">opencobra/cobratoolbox</a>.</p></li>
+</ul>
+</section>
+<section id="id6">
+<h2>COBRA.papers<a class="headerlink" href="#id6" title="Permalink to this heading">¶</a></h2>
+<p><strong>Repository:</strong>  <a class="reference external" href="https://github.com/opencobra/COBRA.papers">https://github.com/opencobra/COBRA.papers</a></p>
+<p><strong>Purpose:</strong> This repository contains folders for published papers in genome-scale modelling. Each folder holds reproduction scripts, workflows and visualisation resources.</p>
+<p><strong>Contribution guidelines</strong></p>
+<ul class="simple">
+<li><p>Add paper specific content to <a class="reference external" href="https://github.com/opencobra/COBRA.papers">COBRA.papers</a>.</p></li>
+<li><p>Do not commit paper folders or code into <a class="reference external" href="https://github.com/opencobra/cobratoolbox">opencobra/cobratoolbox</a>.</p></li>
+</ul>
+</section>
+<section id="id9">
+<h2>COBRA.tutorials<a class="headerlink" href="#id9" title="Permalink to this heading">¶</a></h2>
+<p><strong>Repository:</strong> <a class="reference external" href="https://github.com/opencobra/COBRA.tutorials">https://github.com/opencobra/COBRA.tutorials</a></p>
+<p><strong>Purpose:</strong> This repository stores MATLAB live script tutorials (<code class="docutils literal notranslate"><span class="pre">.mlx</span></code>). A continuous integration pipeline automatically publishes new tutorials to the website:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://opencobra.github.io/cobratoolbox/stable/tutorials/index.html">https://opencobra.github.io/cobratoolbox/stable/tutorials/index.html</a></p></li>
+</ul>
+<p><strong>Contribution guidelines</strong></p>
+<ul class="simple">
+<li><p>Add MLX tutorials directly to <a class="reference external" href="https://github.com/opencobra/COBRA.tutorials">COBRA.tutorials</a>.</p></li>
+<li><p>Do not add tutorial files to the main toolbox.</p></li>
+</ul>
+</section>
+<section id="id11">
+<h2>COBRA.models<a class="headerlink" href="#id11" title="Permalink to this heading">¶</a></h2>
+<p><strong>Repository:</strong> <a class="reference external" href="https://github.com/opencobra/COBRA.models">https://github.com/opencobra/COBRA.models</a></p>
+<p><strong>Purpose:</strong> This repository stores genome scale metabolic models. Using this repository prevents unnecessary growth of the main toolbox.</p>
+<p><strong>Contribution guidelines</strong></p>
+<ul class="simple">
+<li><p>Add models to <a class="reference external" href="https://github.com/opencobra/COBRA.models">COBRA.models</a>.</p></li>
+<li><p>Do not add model files to <a class="reference external" href="https://github.com/opencobra/cobratoolbox">opencobra/cobratoolbox</a>.</p></li>
+</ul>
+</section>
+</section>
+<section id="how-to-contribute-in-practice">
+<h1>How to contribute in practice<a class="headerlink" href="#how-to-contribute-in-practice" title="Permalink to this heading">¶</a></h1>
+<p><strong>Select the correct repository</strong></p>
+<ul class="simple">
+<li><p>Binaries: <a class="reference external" href="https://github.com/opencobra/COBRA.binary">COBRA.binary</a></p></li>
+<li><p>Paper specific content: <a class="reference external" href="https://github.com/opencobra/COBRA.papers">COBRA.papers</a></p></li>
+<li><p>Tutorials (MLX): <a class="reference external" href="https://github.com/opencobra/COBRA.tutorials">COBRA.tutorials</a></p></li>
+<li><p>Models: <a class="reference external" href="https://github.com/opencobra/COBRA.models">COBRA.models</a></p></li>
+</ul>
+<p><strong>Work directly in that repository</strong></p>
+<ul class="simple">
+<li><p>Fork the correct repository (for example <a class="reference external" href="https://github.com/opencobra/COBRA.tutorials">COBRA.tutorials</a>).</p></li>
+<li><p>Clone it locally, create a branch and add your files.</p></li>
+</ul>
+<p><strong>Open a pull request</strong></p>
+<ul class="simple">
+<li><p>Submit your pull request to the correct repository, not to <a class="reference external" href="https://github.com/opencobra/cobratoolbox">opencobra/cobratoolbox</a>.</p></li>
+</ul>
+<p><strong>Submodule pointer updates</strong></p>
+<ul class="simple">
+<li><p>After your contribution is merged, maintainers will update the submodule pointer in the main toolbox.</p></li>
+</ul>
+</section>
+<section id="key-reminders">
+<h1>Key reminders<a class="headerlink" href="#key-reminders" title="Permalink to this heading">¶</a></h1>
+<ul class="simple">
+<li><p>The main toolbox lives at <a class="reference external" href="https://github.com/opencobra/cobratoolbox">opencobra/cobratoolbox</a>.</p></li>
+<li><p>All binaries, models, tutorials and paper specific content must be added to their dedicated repositories.</p></li>
+<li><p>Add files directly to the appropriate main repository, not to the toolbox.</p></li>
+<li><p>Using the correct repository keeps the ecosystem clean, modular and maintainable.</p></li>
+</ul>
+<p>Following these guidelines ensures your work is properly integrated and supports the COBRA community effectively.</p>
+</section>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017-2025, The COBRA Toolbox developers.
+
+    </p>
+  </div>
+  Built with Sphinx using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'2.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+    <script type="text/javascript" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sphinx_highlight.js"></script>
+
+  
+
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TRCMZL1FKK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TRCMZL1FKK');
+  </script>
+    
+</body>
+</html>

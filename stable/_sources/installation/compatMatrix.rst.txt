@@ -1,10 +1,10 @@
 Solver compatibility
-====================
+--------------------
 
 This document summarises tested solver compatibility with the COBRA Toolbox across operating systems and MATLAB releases.
 
 Linux Ubuntu
-------------
+~~~~~~~~~~~~
 
 .. list-table::
    :header-rows: 1
@@ -52,7 +52,7 @@ Linux Ubuntu
      - ❌
 
 macOS 10.13+
-------------
+~~~~~~~~~~~~
 
 .. list-table::
    :header-rows: 1
@@ -101,7 +101,7 @@ macOS 10.13+
 
 
 Windows 10
-----------
+~~~~~~~~~~~~
 
 .. list-table::
    :header-rows: 1
@@ -151,15 +151,13 @@ Windows 10
 
 ** Notice that IBM CPLEX no longer support MATLAB interface. The latest version of MATLAB and CPLEX that are compatible with each other is MATLAB R2019b with IBM ILOG CPLEX Optimization Studio Version 12.10.0.0. Running the COBRA toolbox on a system where IBM Cplex is installed, with any MATLAB later than R2019b is prone to a software conflict and crash.
 
-Legend
-------
+.. rubric:: Legend
 
 - ✅ : compatible with the COBRA Toolbox (tested)
 - ❌ : not compatible with the COBRA Toolbox (tested)
 - ⚠️ : possibly incompatible with the COBRA Toolbox (problems reported)
 
-Notes
------
+.. rubric:: Notes
 
 - Make sure to install the correct Tomlab version for your version of ``macOS``. There is a different Tomlab installer for MATLAB ``R2017a+``.
 - Only **actively** supported interfaces are evaluated for compatibility.

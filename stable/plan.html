@@ -64,8 +64,8 @@
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="index.html"/>
-        <link rel="next" title="Software Development Life Cycle" href="lifecycle.html"/>
-        <link rel="prev" title="Funding" href="funding.html"/> 
+        <link rel="next" title="How to cite" href="cite.html"/>
+        <link rel="prev" title="How to contribute" href="contributing.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -147,21 +147,42 @@
               <ul class="current">
                   <li class="toctree-l1"><a class="reference internal" href="index.html">Home</a></li>
               </ul>
-              <ul class="current">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="installation.html#solver-compatibility">Solver compatibility</a></li>
-<li class="toctree-l1"><a class="reference internal" href="modules/index.html">Functions</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Using the Toolbox</span></p>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="tutorials/index.html">Tutorials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="contributing.html">How to contribute</a></li>
-<li class="toctree-l1"><a class="reference internal" href="cite.html">How to cite</a></li>
-<li class="toctree-l1"><a class="reference internal" href="support.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/index.html">Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="submodules/index.html">Submodules</a></li>
 <li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Contributing</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">How to contribute</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Development Plan</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#software-development-life-cycle">Software Development Life Cycle</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#introduction">Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#development-model">Development Model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#phases">Phases</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#roles-and-responsibilities">Roles and Responsibilities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tools-and-infrastructure">Tools and Infrastructure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#quality-assurance">Quality Assurance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#releases">Releases</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Project Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="cite.html">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="citations.html">Citations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contact.html">Contact</a></li>
 <li class="toctree-l1"><a class="reference internal" href="contributors.html">Contributors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="funding.html">Funding</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Development Plan</a></li>
-<li class="toctree-l1"><a class="reference internal" href="lifecycle.html">Software Development Life Cycle</a></li>
-<li class="toctree-l1"><a class="reference internal" href="contact.html">Contact</a></li>
-<li class="toctree-l1"><a class="reference internal" href="citations.html">Citations</a></li>
 </ul>
 
           
@@ -225,8 +246,70 @@ covered by the contribution guidelines, please contact the lead developer:
 School of Medicine, University of Galway, University Rd, Galway, Ireland,<br>
 Digital Metabolic Twin Centre, University of Galway, Galway, Ireland.<br>
 
-
-<br><br></section>
+<br><br><section id="software-development-life-cycle">
+<span id="sdlc"></span><h2>Software Development Life Cycle<a class="headerlink" href="#software-development-life-cycle" title="Permalink to this heading">¶</a></h2>
+<section id="introduction">
+<h3>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">¶</a></h3>
+<p>The COBRA Toolbox is an open-source MATLAB platform for constraint-based
+modeling of biological networks. It supports optimization methods such
+as Flux Balance Analysis (FBA), gene deletion analysis, thermodynamic
+feasibility studies, and multi-scale modeling. To ensure quality,
+reproducibility, and long-term maintainability, we follow a structured
+Software Development Lifecycle (SDLC).</p>
+</section>
+<section id="development-model">
+<h3>Development Model<a class="headerlink" href="#development-model" title="Permalink to this heading">¶</a></h3>
+<p>We use an <strong>iterative and incremental model</strong> focused on reproducibility
+and scientific validation. Each cycle covers planning, design,
+implementation, testing, release, and maintenance. This allows us to
+integrate new methods, optimize existing functionality, and fix issues
+while keeping the software stable.</p>
+</section>
+<section id="phases">
+<h3>Phases<a class="headerlink" href="#phases" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p><strong>Planning</strong> - Development goals are identified from community feedback, GitHub issues, and the project roadmap.</p></li>
+<li><p><strong>Requirements &amp; Design</strong> - New features are defined with clear acceptance criteria and designed for compatibility with MATLAB and supported solvers.</p></li>
+<li><p><strong>Implementation</strong> - Code is developed in feature branches, documented, and accompanied by tutorials.</p></li>
+<li><p><strong>Testing</strong> - Every contribution is validated by automated tests through our continuous integration (CI) system, with peer review before merging.</p></li>
+<li><p><strong>Release</strong> - Stable versions are periodically published on GitHub. The main branch holds stable releases, while the develop branch contains the latest development work.</p></li>
+<li><p><strong>Maintenance</strong> - Bug fixes, solver updates, and compatibility improvements are applied regularly, with minor releases issued as needed.</p></li>
+</ul>
+</section>
+<section id="roles-and-responsibilities">
+<h3>Roles and Responsibilities<a class="headerlink" href="#roles-and-responsibilities" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p><strong>Maintainers</strong> oversee quality control and approve merges.</p></li>
+<li><p><strong>Contributors</strong> add features, fix bugs, and provide documentation.</p></li>
+<li><p><strong>Community</strong> members submit issues, feature requests, and pull requests.</p></li>
+</ul>
+</section>
+<section id="tools-and-infrastructure">
+<h3>Tools and Infrastructure<a class="headerlink" href="#tools-and-infrastructure" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p><strong>Version control</strong>: GitHub (main and develop branches).</p></li>
+<li><p><strong>Continuous Integration</strong>: Automated test suite (<a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/develop/test/testAll.m">testAll</a>) run on pull requests.</p></li>
+<li><p><strong>Documentation</strong>: MATLAB function help text and tutorials, with HTML tutorials generated automatically.</p></li>
+<li><p><strong>Supported solvers</strong>: GLPK, Gurobi, MOSEK, TOMLAB, with CPLEX support limited to older MATLAB versions.</p></li>
+</ul>
+</section>
+<section id="quality-assurance">
+<h3>Quality Assurance<a class="headerlink" href="#quality-assurance" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>All contributions undergo automated testing and code review.</p></li>
+<li><p>Test results are posted on pull requests before merging.</p></li>
+<li><p>Performance profiling and reproducibility checks are part of the validation process.</p></li>
+</ul>
+</section>
+<section id="releases">
+<h3>Releases<a class="headerlink" href="#releases" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Versions follow <strong>Semantic Versioning</strong> (MAJOR.MINOR.PATCH).</p></li>
+<li><p>Each release includes detailed release notes and updated tutorials.</p></li>
+</ul>
+</section>
+</section>
+</section>
 
 
            </div>
@@ -238,10 +321,10 @@ Digital Metabolic Twin Centre, University of Galway, Galway, Ireland.<br>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="lifecycle.html" class="btn btn-default float-right" title="Software Development Life Cycle" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="cite.html" class="btn btn-default float-right" title="How to cite" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="funding.html" class="btn btn-default" title="Funding" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="contributing.html" class="btn btn-default" title="How to contribute" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

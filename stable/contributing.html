@@ -64,8 +64,8 @@
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="index.html"/>
-        <link rel="next" title="How to cite" href="cite.html"/>
-        <link rel="prev" title="Tutorials" href="tutorials/index.html"/> 
+        <link rel="next" title="Development Plan" href="plan.html"/>
+        <link rel="prev" title="FAQ" href="faq.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -147,12 +147,32 @@
               <ul class="current">
                   <li class="toctree-l1"><a class="reference internal" href="index.html">Home</a></li>
               </ul>
-              <ul class="current">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="installation.html#solver-compatibility">Solver compatibility</a></li>
-<li class="toctree-l1"><a class="reference internal" href="modules/index.html">Functions</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Using the Toolbox</span></p>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/index.html">Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="submodules/index.html">Submodules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Contributing</span></p>
+<ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">How to contribute</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#how-to-contribute-to-the-cobra-toolbox">How to contribute to the COBRA Toolbox</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#overview-of-the-contribution-workflow">1. Overview of the contribution workflow</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fork-the-cobra-toolbox-repository">2. Fork the COBRA Toolbox repository</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#clone-your-fork-locally">3. Clone your fork locally</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#add-your-code-to-the-correct-folder-in-src">4. Add your code to the correct folder in <code class="docutils literal notranslate"><span class="pre">src</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#add-a-test-for-every-new-code-module">5. Add a test for every new code module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#commit-and-push-your-changes">6. Commit and push your changes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#open-a-pull-request">7. Open a pull request</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#address-review-comments">8. Address review comments</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#contribute-using-matlab-devtools">Contribute using MATLAB.devTools</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#guide-for-writing-a-test">Guide for writing a test</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#prepare-the-test-define-requirements">Prepare the test (define requirements)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#test-if-an-output-is-correct">Test if an output is correct</a></li>
@@ -185,15 +205,16 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="plan.html">Development Plan</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Project Information</span></p>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="cite.html">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="citations.html">Citations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="support.html">Support</a></li>
-<li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contact.html">Contact</a></li>
 <li class="toctree-l1"><a class="reference internal" href="contributors.html">Contributors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="funding.html">Funding</a></li>
-<li class="toctree-l1"><a class="reference internal" href="plan.html">Development Plan</a></li>
-<li class="toctree-l1"><a class="reference internal" href="lifecycle.html">Software Development Life Cycle</a></li>
-<li class="toctree-l1"><a class="reference internal" href="contact.html">Contact</a></li>
-<li class="toctree-l1"><a class="reference internal" href="citations.html">Citations</a></li>
 </ul>
 
           
@@ -229,7 +250,229 @@
             
   <section id="how-to-contribute">
 <h1>How to contribute<a class="headerlink" href="#how-to-contribute" title="Permalink to this heading">¶</a></h1>
-<p>👍 🎉 First off, thanks for taking the time to contribute to <a class="reference external" href="https://github.com/opencobra/cobratoolbox">The COBRA Toolbox</a>! 🎉 👍</p>
+<section id="how-to-contribute-to-the-cobra-toolbox">
+<h2>How to contribute to the COBRA Toolbox<a class="headerlink" href="#how-to-contribute-to-the-cobra-toolbox" title="Permalink to this heading">¶</a></h2>
+<p>This guide explains, step by step, how to contribute code to the COBRA Toolbox:
+how to fork the repository, work on your changes locally, place your code in the
+correct folder inside <code class="docutils literal notranslate"><span class="pre">src</span></code>, add tests, and open a pull request (PR).</p>
+<section id="overview-of-the-contribution-workflow">
+<h3>1. Overview of the contribution workflow<a class="headerlink" href="#overview-of-the-contribution-workflow" title="Permalink to this heading">¶</a></h3>
+<p>The typical workflow for contributing is:</p>
+<ol class="arabic simple">
+<li><p>Fork the COBRA Toolbox repository on GitHub.</p></li>
+<li><p>Clone your fork to your local machine.</p></li>
+<li><p>Add your code to the appropriate subfolder of <code class="docutils literal notranslate"><span class="pre">src</span></code>.</p></li>
+<li><p>Add tests for your new code (see <a class="reference internal" href="guides/testGuide.html#testguide"><span class="std std-ref">Guide for writing a test</span></a>).</p></li>
+<li><p>Commit your changes locally.</p></li>
+<li><p>Push your changes to your fork on GitHub.</p></li>
+<li><p>Open a pull request to the <code class="docutils literal notranslate"><span class="pre">develop</span></code> branch of the COBRA Toolbox repository.</p></li>
+<li><p>Address any review comments from the maintainers.</p></li>
+</ol>
+<p>The following sections describe each step in more detail.</p>
+</section>
+<section id="fork-the-cobra-toolbox-repository">
+<h3>2. Fork the COBRA Toolbox repository<a class="headerlink" href="#fork-the-cobra-toolbox-repository" title="Permalink to this heading">¶</a></h3>
+<ol class="arabic simple">
+<li><p>Go to the main COBRA Toolbox repository on GitHub:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/opencobra/cobratoolbox">https://github.com/opencobra/cobratoolbox</a></p></li>
+</ul>
+</li>
+<li><p>In the top right corner, click the <strong>Fork</strong> button.</p></li>
+<li><p>Choose your GitHub account as the destination.</p></li>
+<li><p>GitHub will create a copy of the COBRA Toolbox under your account, for example:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">https://github.com/&lt;your-username&gt;/cobratoolbox</span></code></p></li>
+</ul>
+</li>
+</ol>
+<p>All your changes will be pushed to this fork.</p>
+</section>
+<section id="clone-your-fork-locally">
+<h3>3. Clone your fork locally<a class="headerlink" href="#clone-your-fork-locally" title="Permalink to this heading">¶</a></h3>
+<p>To work on the code, clone your fork to your local machine.</p>
+<ol class="arabic">
+<li><p>Open a terminal.</p></li>
+<li><p>Run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/&lt;your-username&gt;/cobratoolbox.git
+<span class="nb">cd</span><span class="w"> </span>cobratoolbox
+</pre></div>
+</div>
+</li>
+<li><p>Add the original repository as an <code class="docutils literal notranslate"><span class="pre">upstream</span></code> remote so that you can pull in future updates:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>remote<span class="w"> </span>add<span class="w"> </span>upstream<span class="w"> </span>https://github.com/opencobra/cobratoolbox.git
+git<span class="w"> </span>fetch<span class="w"> </span>upstream
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="add-your-code-to-the-correct-folder-in-src">
+<h3>4. Add your code to the correct folder in <code class="docutils literal notranslate"><span class="pre">src</span></code><a class="headerlink" href="#add-your-code-to-the-correct-folder-in-src" title="Permalink to this heading">¶</a></h3>
+<p>All new COBRA Toolbox code should be added under the <code class="docutils literal notranslate"><span class="pre">src</span></code> folder. The main
+subfolders under <code class="docutils literal notranslate"><span class="pre">src</span></code> are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">analysis</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">base</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dataIntegration</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">design</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">reconstruction</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">visualization</span></code></p></li>
+</ul>
+<p>It is recommended to create a <strong>new subfolder</strong> inside the most appropriate
+parent folder for your project. This keeps the toolbox organised and makes it
+easier for others to navigate the code.</p>
+<p>Below is guidance on when to use each folder.</p>
+<p><strong>4.1. src/analysis</strong></p>
+<p>Use <code class="docutils literal notranslate"><span class="pre">analysis</span></code> for methods that analyse existing metabolic models. Examples:</p>
+<ul class="simple">
+<li><p>Flux balance analysis, flux variability analysis, phenotype simulations.</p></li>
+<li><p>Comparison pipelines, performance profiling.</p></li>
+<li><p>Statistical or diagnostic analyses.</p></li>
+</ul>
+<p>Suggested structure:
+<code class="docutils literal notranslate"><span class="pre">src/analysis/myNewAnalysisTool/</span></code></p>
+<p><strong>4.2. src/base</strong></p>
+<p>Use <code class="docutils literal notranslate"><span class="pre">base</span></code> for shared utilities and core methods needed across the toolbox.
+Examples include:</p>
+<ul class="simple">
+<li><p>General-purpose helper functions.</p></li>
+<li><p>IO utilities used by multiple modules.</p></li>
+<li><p>Shared mathematical or solver-related helper functions.</p></li>
+</ul>
+<p>Suggested structure:
+<code class="docutils literal notranslate"><span class="pre">src/base/myUtilityFunctions/</span></code></p>
+<p><strong>4.3. src/dataIntegration</strong></p>
+<p>Use <code class="docutils literal notranslate"><span class="pre">dataIntegration</span></code> for code that integrates omics or experimental data with
+a model. Examples:</p>
+<ul class="simple">
+<li><p>Transcriptomics-, proteomics-, or metabolomics-based integration.</p></li>
+<li><p>Condition-specific model building.</p></li>
+<li><p>Data-driven constraint generation.</p></li>
+</ul>
+<p>Suggested structure:
+<code class="docutils literal notranslate"><span class="pre">src/dataIntegration/myIntegrationPipeline/</span></code></p>
+<p><strong>4.4. src/design</strong></p>
+<p>Use <code class="docutils literal notranslate"><span class="pre">design</span></code> for algorithms that propose modifications or interventions.
+Examples:</p>
+<ul class="simple">
+<li><p>Strain design algorithms.</p></li>
+<li><p>Knockout or overexpression strategies.</p></li>
+<li><p>Intervention ranking, phenotype optimisation.</p></li>
+</ul>
+<p>Suggested structure:
+<code class="docutils literal notranslate"><span class="pre">src/design/myDesignAlgorithm/</span></code></p>
+<p><strong>4.5. src/reconstruction</strong></p>
+<p>Use <code class="docutils literal notranslate"><span class="pre">reconstruction</span></code> for tools that construct, curate or update metabolic
+models. Examples:</p>
+<ul class="simple">
+<li><p>Model reconstruction pipelines.</p></li>
+<li><p>Gap filling algorithms.</p></li>
+<li><p>Model merging and quality control tools.</p></li>
+</ul>
+<p>Suggested structure:
+<code class="docutils literal notranslate"><span class="pre">src/reconstruction/myReconstructionPipeline/</span></code></p>
+<p><strong>4.6. src/visualization</strong></p>
+<p>Use <code class="docutils literal notranslate"><span class="pre">visualization</span></code> for tools that generate plots, diagrams or graphical
+summaries. Examples:</p>
+<ul class="simple">
+<li><p>Flux distribution plots.</p></li>
+<li><p>Network diagrams.</p></li>
+<li><p>Pathway visualisation tools.</p></li>
+</ul>
+<p>Suggested structure:
+<code class="docutils literal notranslate"><span class="pre">src/visualization/myVisualisationTools/</span></code></p>
+</section>
+<section id="add-a-test-for-every-new-code-module">
+<h3>5. Add a test for every new code module<a class="headerlink" href="#add-a-test-for-every-new-code-module" title="Permalink to this heading">¶</a></h3>
+<p>Every contribution must include a corresponding <strong>test</strong>. This ensures that new
+code is validated and remains stable.</p>
+<p>Your test should:</p>
+<ul class="simple">
+<li><p>Cover the main functions of your addition.</p></li>
+<li><p>Run without errors in a clean installation.</p></li>
+<li><p>Include checks for both expected behaviour and edge-case failures when possible.</p></li>
+</ul>
+<p>For more information on writing tests, refer to:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="guides/testGuide.html#testguide"><span class="std std-ref">Guide for writing a test</span></a></p></li>
+</ul>
+</section>
+<section id="commit-and-push-your-changes">
+<h3>6. Commit and push your changes<a class="headerlink" href="#commit-and-push-your-changes" title="Permalink to this heading">¶</a></h3>
+<p>Once your code and tests are ready, commit your work.</p>
+<ol class="arabic">
+<li><p>Check which files have changed:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>status
+</pre></div>
+</div>
+</li>
+<li><p>Stage your new code and tests:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>add<span class="w"> </span>src/<span class="w"> </span>path/to/your/files
+git<span class="w"> </span>add<span class="w"> </span>test/<span class="w"> </span>path/to/your/tests
+</pre></div>
+</div>
+</li>
+<li><p>Commit your changes:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;Add new analysis tool for XYZ with tests&quot;</span>
+</pre></div>
+</div>
+</li>
+<li><p>Push your changes to your fork:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>develop
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="open-a-pull-request">
+<h3>7. Open a pull request<a class="headerlink" href="#open-a-pull-request" title="Permalink to this heading">¶</a></h3>
+<p>Once your changes are pushed, open a pull request on GitHub.</p>
+<ol class="arabic simple">
+<li><p>Visit your fork:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">https://github.com/&lt;your-username&gt;/cobratoolbox</span></code></p></li>
+</ul>
+</li>
+<li><p>Click <strong>Compare &amp; pull request</strong>.</p></li>
+<li><p>Ensure the PR target is:</p>
+<ul class="simple">
+<li><p>Base repository: <code class="docutils literal notranslate"><span class="pre">opencobra/cobratoolbox</span></code></p></li>
+<li><p>Base branch: <code class="docutils literal notranslate"><span class="pre">develop</span></code></p></li>
+<li><p>Head repository: your fork</p></li>
+<li><p>Head branch: <code class="docutils literal notranslate"><span class="pre">develop</span></code> (or whichever branch you pushed to)</p></li>
+</ul>
+</li>
+<li><p>Describe:</p>
+<ul class="simple">
+<li><p>What your contribution does.</p></li>
+<li><p>Where the code lives in <code class="docutils literal notranslate"><span class="pre">src</span></code>.</p></li>
+<li><p>What tests were added.</p></li>
+<li><p>Any notes for reviewers.</p></li>
+</ul>
+</li>
+<li><p>Submit the pull request.</p></li>
+</ol>
+</section>
+<section id="address-review-comments">
+<h3>8. Address review comments<a class="headerlink" href="#address-review-comments" title="Permalink to this heading">¶</a></h3>
+<p>Maintainers may request revisions. This is normal.</p>
+<ol class="arabic">
+<li><p>Make the changes locally.</p></li>
+<li><p>Commit and push them again:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>commit<span class="w"> </span>-am<span class="w"> </span><span class="s2">&quot;Address review comments&quot;</span>
+git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>develop
+</pre></div>
+</div>
+</li>
+</ol>
+<p>Your pull request will update automatically.</p>
+<p>Once approved, it will be merged into the <code class="docutils literal notranslate"><span class="pre">develop</span></code> branch of the COBRA Toolbox.</p>
+</section>
+</section>
+<section id="contribute-using-matlab-devtools">
+<h2>Contribute using MATLAB.devTools<a class="headerlink" href="#contribute-using-matlab-devtools" title="Permalink to this heading">¶</a></h2>
+<p>In order to lower the technological barrier to the use of the popular software development tool git, we have developed MATLAB.devTools, a new user-friendly software extension that enables the submission of new COBRA toolbox functions and tutorials.</p>
 <p align="center">
 <img src="https://cdn.jsdelivr.net/gh/opencobra/MATLAB.devTools@e735bd91310e8ef10fab4d3c21833a85bf4b8159/docs/source/_static/img/logo_devTools.png" height="120px" alt="devTools"/>
 </p><p>You can install the
@@ -266,6 +509,7 @@ this
 or the official <a class="reference external" href="https://help.github.com/articles/creating-a-pull-request/">GitHub
 guide</a>
 come in handy.</p>
+</section>
 <section id="guide-for-writing-a-test">
 <span id="testguide"></span><h2>Guide for writing a test<a class="headerlink" href="#guide-for-writing-a-test" title="Permalink to this heading">¶</a></h2>
 <p>Before starting to write a test on your own, it might be instructive to
@@ -1095,10 +1339,10 @@ problem in an older version of The COBRA Toolbox?</p></li>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="cite.html" class="btn btn-default float-right" title="How to cite" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="plan.html" class="btn btn-default float-right" title="Development Plan" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="tutorials/index.html" class="btn btn-default" title="Tutorials" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="faq.html" class="btn btn-default" title="FAQ" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

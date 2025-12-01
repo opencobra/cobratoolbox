@@ -64,8 +64,8 @@
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="index.html"/>
-        <link rel="next" title="Functions" href="modules/index.html"/>
-        <link rel="prev" title="The COBRA Toolbox" href="contents.html"/> 
+        <link rel="next" title="Tutorials" href="tutorials/index.html"/>
+        <link rel="prev" title="&lt;no title&gt;" href="contents.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -147,7 +147,8 @@
               <ul class="current">
                   <li class="toctree-l1"><a class="reference internal" href="index.html">Home</a></li>
               </ul>
-              <ul class="current">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#system-requirements">System Requirements</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#can-i-check-if-everything-is-properly-set-up-before-i-start">Can I check if everything is properly set up before I start?</a><ul>
@@ -165,14 +166,12 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#download-and-installation">Download and installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#solver-compatibility">Solver compatibility</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#linux-ubuntu">Linux Ubuntu</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#macos-10-13">macOS 10.13+</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#windows-10">Windows 10</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="#solver-compatibility">Solver compatibility</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#linux-ubuntu">Linux Ubuntu</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#macos-10-13">macOS 10.13+</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#windows-10">Windows 10</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#legend">Legend</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#notes">Notes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#binaries-and-compilers">Binaries and Compilers</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#gcc-compiler">gcc compiler</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#gfortran-compiler">gfortran compiler</a></li>
@@ -188,18 +187,27 @@
 <li class="toctree-l2"><a class="reference internal" href="#test-the-installation">Test the installation</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="modules/index.html">Functions</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Using the Toolbox</span></p>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="tutorials/index.html">Tutorials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="contributing.html">How to contribute</a></li>
-<li class="toctree-l1"><a class="reference internal" href="cite.html">How to cite</a></li>
-<li class="toctree-l1"><a class="reference internal" href="support.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/index.html">Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="submodules/index.html">Submodules</a></li>
 <li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Contributing</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plan.html">Development Plan</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Project Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="cite.html">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="citations.html">Citations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contact.html">Contact</a></li>
 <li class="toctree-l1"><a class="reference internal" href="contributors.html">Contributors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="funding.html">Funding</a></li>
-<li class="toctree-l1"><a class="reference internal" href="plan.html">Development Plan</a></li>
-<li class="toctree-l1"><a class="reference internal" href="lifecycle.html">Software Development Life Cycle</a></li>
-<li class="toctree-l1"><a class="reference internal" href="contact.html">Contact</a></li>
-<li class="toctree-l1"><a class="reference internal" href="citations.html">Citations</a></li>
 </ul>
 
           
@@ -325,12 +333,11 @@ Although not recommended, you can download the repository as a <a class="referen
 </li>
 </ol>
 </section>
-</section>
 <section id="solver-compatibility">
-<h1>Solver compatibility<a class="headerlink" href="#solver-compatibility" title="Permalink to this heading">¶</a></h1>
+<h2>Solver compatibility<a class="headerlink" href="#solver-compatibility" title="Permalink to this heading">¶</a></h2>
 <p>This document summarises tested solver compatibility with the COBRA Toolbox across operating systems and MATLAB releases.</p>
 <section id="linux-ubuntu">
-<h2>Linux Ubuntu<a class="headerlink" href="#linux-ubuntu" title="Permalink to this heading">¶</a></h2>
+<h3>Linux Ubuntu<a class="headerlink" href="#linux-ubuntu" title="Permalink to this heading">¶</a></h3>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 33%" />
@@ -394,7 +401,7 @@ Although not recommended, you can download the repository as a <a class="referen
 </table>
 </section>
 <section id="macos-10-13">
-<h2>macOS 10.13+<a class="headerlink" href="#macos-10-13" title="Permalink to this heading">¶</a></h2>
+<h3>macOS 10.13+<a class="headerlink" href="#macos-10-13" title="Permalink to this heading">¶</a></h3>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 33%" />
@@ -458,7 +465,7 @@ Although not recommended, you can download the repository as a <a class="referen
 </table>
 </section>
 <section id="windows-10">
-<h2>Windows 10<a class="headerlink" href="#windows-10" title="Permalink to this heading">¶</a></h2>
+<h3>Windows 10<a class="headerlink" href="#windows-10" title="Permalink to this heading">¶</a></h3>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 33%" />
@@ -521,17 +528,13 @@ Although not recommended, you can download the repository as a <a class="referen
 </tbody>
 </table>
 <p>** Notice that IBM CPLEX no longer support MATLAB interface. The latest version of MATLAB and CPLEX that are compatible with each other is MATLAB R2019b with IBM ILOG CPLEX Optimization Studio Version 12.10.0.0. Running the COBRA toolbox on a system where IBM Cplex is installed, with any MATLAB later than R2019b is prone to a software conflict and crash.</p>
-</section>
-<section id="legend">
-<h2>Legend<a class="headerlink" href="#legend" title="Permalink to this heading">¶</a></h2>
+<p class="rubric">Legend</p>
 <ul class="simple">
 <li><p>✅ : compatible with the COBRA Toolbox (tested)</p></li>
 <li><p>❌ : not compatible with the COBRA Toolbox (tested)</p></li>
 <li><p>⚠️ : possibly incompatible with the COBRA Toolbox (problems reported)</p></li>
 </ul>
-</section>
-<section id="notes">
-<h2>Notes<a class="headerlink" href="#notes" title="Permalink to this heading">¶</a></h2>
+<p class="rubric">Notes</p>
 <ul class="simple">
 <li><p>Make sure to install the correct Tomlab version for your version of <code class="docutils literal notranslate"><span class="pre">macOS</span></code>. There is a different Tomlab installer for MATLAB <code class="docutils literal notranslate"><span class="pre">R2017a+</span></code>.</p></li>
 <li><p>Only <strong>actively</strong> supported interfaces are evaluated for compatibility.</p></li>
@@ -540,6 +543,7 @@ Although not recommended, you can download the repository as a <a class="referen
 <li><p>The interface <code class="docutils literal notranslate"><span class="pre">quadMinos</span></code> bears the same compatibility pattern as <code class="docutils literal notranslate"><span class="pre">dqqMinos</span></code>.</p></li>
 <li><p>The interface <code class="docutils literal notranslate"><span class="pre">lindo_old</span></code> bears the same compatibility pattern as <code class="docutils literal notranslate"><span class="pre">lindo_legacy</span></code>.</p></li>
 </ul>
+</section>
 </section>
 <section id="binaries-and-compilers">
 <h2>Binaries and Compilers<a class="headerlink" href="#binaries-and-compilers" title="Permalink to this heading">¶</a></h2>
@@ -887,10 +891,10 @@ command in your terminal</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="modules/index.html" class="btn btn-default float-right" title="Functions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="tutorials/index.html" class="btn btn-default float-right" title="Tutorials" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="contents.html" class="btn btn-default" title="The COBRA Toolbox" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="contents.html" class="btn btn-default" title="&lt;no title&gt;" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

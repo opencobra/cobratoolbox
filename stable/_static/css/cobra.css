@@ -6775,3 +6775,23 @@ blockquote {
   margin-left: 0;
   padding-left: 0;
 }
+
+/* Professional sidebar caption style for COBRA Toolbox docs */
+.wy-menu-vertical .caption-text {
+    text-transform: none !important;      /* Remove ALL CAPS */
+    font-weight: 600;                     /* Semi-bold (cleaner than full bold) */
+    font-size: 1.1em;                    /* Slightly smaller than headings */
+    color: #1f3d5c;                       /* Deep blue-grey (scientific/navy tone) */
+    padding: 4px 8px 4px 12px;            /* Indent text slightly */
+
+    border-left: 4px solid #4f8cc9;       /* Blue accent bar */
+    margin-top: 12px;                     /* Space from previous block */
+    margin-bottom: 6px;
+}
+
+/* Remove default RTD caption formatting */
+.wy-menu-vertical p.caption {
+    color: inherit !important;
+    margin: 0;
+    padding: 0;
+}

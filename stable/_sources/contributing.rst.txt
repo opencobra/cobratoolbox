@@ -1,6 +1,9 @@
 How to contribute
 =================
+.. include:: guides/howToContribute.rst
 
+Contribute using MATLAB.devTools
+------------
 .. include:: ../../README.rst
    :start-after: begin-how-to-contribute-marker
    :end-before: end-how-to-contribute-marker
