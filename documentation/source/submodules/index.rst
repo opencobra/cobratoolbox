@@ -1,2 +1,4 @@
 Submodules
 ==========
+
+.. include:: /submodulesStructure.rst
