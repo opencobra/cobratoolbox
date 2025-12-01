@@ -24,15 +24,11 @@
 
    <div align="center">
 
-.. image:: https://img.shields.io/github/actions/workflow/status/opencobra/cobratoolbox/UpdateContributors.yml?branch=master&label=Contributors%20Update
-   :target: https://github.com/opencobra/cobratoolbox/actions/workflows/UpdateContributors.yml?query=branch%3Adevelop
-   :alt: Contributors Update workflow status
+.. image:: https://img.shields.io/github/actions/workflow/status/opencobra/cobratoolbox/build-and-publish-docs.yml?branch=master&label=CI%20For%20Website
+   :target: https://github.com/opencobra/cobratoolbox/actions/workflows/build-and-publish-docs.yml
+   :alt: CI for building website
 
-.. image:: https://img.shields.io/github/actions/workflow/status/opencobra/cobratoolbox/UpdateFunctionDocs.yml?branch=master&label=Function%20Docs%20Update
-   :target: https://github.com/opencobra/cobratoolbox/actions/workflows/UpdateFunctionDocs.yml?query=branch%3Adevelop
-   :alt: Function Docs Update workflow status
-
-.. image:: https://img.shields.io/github/actions/workflow/status/opencobra/cobratoolbox/testAllCI_step2.yml?branch=develop&label=CI%20For%20Testing
+.. image:: https://img.shields.io/github/actions/workflow/status/opencobra/cobratoolbox/testAllCI_step2.yml?branch=master&label=CI%20For%20Testing
    :target: https://github.com/opencobra/cobratoolbox/actions/workflows/testAllCI_step2.yml?query=branch%3Adevelop
    :alt: testAllCI Step 2 workflow status
 
