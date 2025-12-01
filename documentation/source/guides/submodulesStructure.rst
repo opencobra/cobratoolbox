@@ -38,18 +38,13 @@ Submodules:
 COBRA.binary
 ~~~~
 
-Repository
-^^^^^^^^^^^^^^^^^^^^^^^
 
-* `https://github.com/opencobra/COBRA.binary <https://github.com/opencobra/COBRA.binary>`_
 
-Purpose
-^^^^^^^^^^^^^^^^^^^^^^^
+**Repository:** `https://github.com/opencobra/COBRA.binary <https://github.com/opencobra/COBRA.binary>`_
 
-This repository stores large binary files required by the COBRA Toolbox. Keeping these files here prevents the main repositories from becoming too large.
+**Purpose:** This repository stores large binary files required by the COBRA Toolbox. Keeping these files here prevents the main repositories from becoming too large.
 
-Contribution guidelines
-^^^^^^^^^^^^^^^^^^^^^^^
+**Contribution guidelines**
 
 * Add all binary assets to `COBRA.binary <https://github.com/opencobra/COBRA.binary>`_.
 * Do not store binary files directly in `opencobra/cobratoolbox <https://github.com/opencobra/cobratoolbox>`_.
@@ -57,18 +52,11 @@ Contribution guidelines
 COBRA.papers
 ~~~~
 
-Repository
-^^^^^^^^^
+**Repository:**  `https://github.com/opencobra/COBRA.papers <https://github.com/opencobra/COBRA.papers>`_
 
-* `https://github.com/opencobra/COBRA.papers <https://github.com/opencobra/COBRA.papers>`_
+**Purpose:** This repository contains folders for published papers in genome-scale modelling. Each folder holds reproduction scripts, workflows and visualisation resources.
 
-Purpose
-^^^^^^^^^
-
-This repository contains folders for published papers in genome-scale modelling. Each folder holds reproduction scripts, workflows and visualisation resources.
-
-Contribution guidelines
-^^^^^^^^^
+**Contribution guidelines**
 
 * Add paper specific content to `COBRA.papers <https://github.com/opencobra/COBRA.papers>`_.
 * Do not commit paper folders or code into `opencobra/cobratoolbox <https://github.com/opencobra/cobratoolbox>`_.
@@ -76,20 +64,13 @@ Contribution guidelines
 COBRA.tutorials
 ~~~~~~~
 
-Repository
-^^^^^^^^^
+**Repository:** `https://github.com/opencobra/COBRA.tutorials <https://github.com/opencobra/COBRA.tutorials>`_
 
-* `https://github.com/opencobra/COBRA.tutorials <https://github.com/opencobra/COBRA.tutorials>`_
-
-Purpose
-^^^^^^^^^
-
-This repository stores MATLAB live script tutorials (``.mlx``). A continuous integration pipeline automatically publishes new tutorials to the website:
+**Purpose:** This repository stores MATLAB live script tutorials (``.mlx``). A continuous integration pipeline automatically publishes new tutorials to the website:
 
 * `https://opencobra.github.io/cobratoolbox/stable/tutorials/index.html <https://opencobra.github.io/cobratoolbox/stable/tutorials/index.html>`_
 
-Contribution guidelines
-^^^^^^^^^
+**Contribution guidelines**
 
 * Add MLX tutorials directly to `COBRA.tutorials <https://github.com/opencobra/COBRA.tutorials>`_.
 * Do not add tutorial files to the main toolbox.
@@ -97,18 +78,11 @@ Contribution guidelines
 COBRA.models
 ~~~~
 
-Repository
-^^^^^^^^^
+**Repository:** `https://github.com/opencobra/COBRA.models <https://github.com/opencobra/COBRA.models>`_
 
-* `https://github.com/opencobra/COBRA.models <https://github.com/opencobra/COBRA.models>`_
+**Purpose:** This repository stores genome scale metabolic models. Using this repository prevents unnecessary growth of the main toolbox.
 
-Purpose
-^^^^^^^^^
-
-This repository stores genome scale metabolic models. Using this repository prevents unnecessary growth of the main toolbox.
-
-Contribution guidelines
-^^^^^^^^^
+**Contribution guidelines**
 
 * Add models to `COBRA.models <https://github.com/opencobra/COBRA.models>`_.
 * Do not add model files to `opencobra/cobratoolbox <https://github.com/opencobra/cobratoolbox>`_.
@@ -116,27 +90,23 @@ Contribution guidelines
 How to contribute in practice
 ~~~~
 
-Select the correct repository
-^^^^^^^^^
+**Select the correct repository**
 
 * Binaries: `COBRA.binary <https://github.com/opencobra/COBRA.binary>`_
 * Paper specific content: `COBRA.papers <https://github.com/opencobra/COBRA.papers>`_
 * Tutorials (MLX): `COBRA.tutorials <https://github.com/opencobra/COBRA.tutorials>`_
 * Models: `COBRA.models <https://github.com/opencobra/COBRA.models>`_
 
-Work directly in that repository
-^^^^^^^^^
+**Work directly in that repository**
 
 * Fork the correct repository (for example `COBRA.tutorials <https://github.com/opencobra/COBRA.tutorials>`_).
 * Clone it locally, create a branch and add your files.
 
-Open a pull request
-^^^^^^^^^
+**Open a pull request**
 
 * Submit your pull request to the correct repository, not to `opencobra/cobratoolbox <https://github.com/opencobra/cobratoolbox>`_.
 
-Submodule pointer updates
-^^^^^^^^^
+**Submodule pointer updates**
 
 * After your contribution is merged, maintainers will update the submodule pointer in the main toolbox.
 
