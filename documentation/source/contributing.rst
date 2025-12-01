@@ -1,5 +1,7 @@
 How to contribute
 =================
+.. include:: guides/submodulesStructure.rst
+
 
 .. include:: ../../README.rst
    :start-after: begin-how-to-contribute-marker
