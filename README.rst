@@ -111,7 +111,7 @@ How to contribute
 
 .. begin-how-to-contribute-marker
 
-👍 🎉 First off, thanks for taking the time to contribute to `The COBRA Toolbox <https://github.com/opencobra/cobratoolbox>`__! 🎉 👍
+First off, thanks for taking the time to contribute to `The COBRA Toolbox <https://github.com/opencobra/cobratoolbox>`__! 🎉 
 
 
 .. raw:: html
