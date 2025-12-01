@@ -111,7 +111,7 @@ How to contribute
 
 .. begin-how-to-contribute-marker
 
-First off, thanks for taking the time to contribute to `The COBRA Toolbox <https://github.com/opencobra/cobratoolbox>`__! 🎉 
+In order to lower the technological barrier to the use of the popular software development tool git, we have developed MATLAB.devTools, a new user-friendly software extension that enables the submission of new COBRA toolbox functions and tutorials. 
 
 
 .. raw:: html
