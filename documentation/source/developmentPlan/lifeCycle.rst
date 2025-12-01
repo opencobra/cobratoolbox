@@ -1,8 +1,9 @@
+.. _SDLC:
 Software Development Life Cycle
-==============================================================
+-----------
 
 Introduction
-----------------
+~~~~
 
 The COBRA Toolbox is an open-source MATLAB platform for constraint-based
 modeling of biological networks. It supports optimization methods such
@@ -12,7 +13,7 @@ reproducibility, and long-term maintainability, we follow a structured
 Software Development Lifecycle (SDLC).
 
 Development Model
-------------------------
+~~~~
 
 We use an **iterative and incremental model** focused on reproducibility
 and scientific validation. Each cycle covers planning, design,
@@ -21,7 +22,7 @@ integrate new methods, optimize existing functionality, and fix issues
 while keeping the software stable.
 
 Phases
---------
+~~~~
 
 * **Planning** \- Development goals are identified from community feedback, GitHub issues, and the project roadmap.
 * **Requirements & Design** \- New features are defined with clear acceptance criteria and designed for compatibility with MATLAB and supported solvers.
@@ -31,14 +32,14 @@ Phases
 * **Maintenance** \- Bug fixes, solver updates, and compatibility improvements are applied regularly, with minor releases issued as needed.
 
 Roles and Responsibilities
---------------------------------
+~~~~
 
 * **Maintainers** oversee quality control and approve merges.
 * **Contributors** add features, fix bugs, and provide documentation.
 * **Community** members submit issues, feature requests, and pull requests.
 
 Tools and Infrastructure
---------------------------------
+~~~~
 
 * **Version control**: GitHub (main and develop branches).
 * **Continuous Integration**: Automated test suite (`testAll <https://github.com/opencobra/cobratoolbox/blob/develop/test/testAll.m>`__) run on pull requests.
@@ -46,14 +47,14 @@ Tools and Infrastructure
 * **Supported solvers**: GLPK, Gurobi, MOSEK, TOMLAB, with CPLEX support limited to older MATLAB versions.
 
 Quality Assurance
-------------------------
+~~~~
 
 * All contributions undergo automated testing and code review.
 * Test results are posted on pull requests before merging.
 * Performance profiling and reproducibility checks are part of the validation process.
 
 Releases
---------
+~~~~
 
 * Versions follow **Semantic Versioning** (MAJOR.MINOR.PATCH).
 * Each release includes detailed release notes and updated tutorials.

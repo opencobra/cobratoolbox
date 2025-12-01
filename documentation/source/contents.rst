@@ -1,20 +1,33 @@
-The COBRA Toolbox
-=================
+.. toctree::
+   :caption: Getting Started
+   :maxdepth: 1
+
+   index
+   installation
 
 .. toctree::
-   :maxdepth: 2
+   :caption: Using the Toolbox
+   :maxdepth: 1
 
-   index.html
-   installation
-   modules/index
    tutorials/index
-   contributing
-   cite
-   support
+   modules/index
+   submodules/index
    faq
+
+.. toctree::
+   :caption: Contributing
+   :maxdepth: 1
+
+   contributing
+   plan
+
+.. toctree::
+   :caption: Project Information
+   :maxdepth: 1
+
+   cite
+   citations
+   support
+   contact
    contributors
    funding
-   plan
-   lifecycle
-   contact
-   citations
