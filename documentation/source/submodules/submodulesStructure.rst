@@ -1,6 +1,6 @@
 .. _submodulesStructure:
 COBRA Toolbox Submodules Ecosystem
------------
+==================
 .. raw:: html
 
    <div style="text-align: center;">
@@ -17,7 +17,7 @@ In order to add a file to any of these repositories, you must add it directly to
 The ``cobratoolbox`` repository only contains submodule pointers. The actual content lives in the external repositories listed below.
 
 Overall repository layout
-~~~~
+---------
 
 Main toolbox repository
 ^^^^^^^^^^^^^^^^^^^^^^^
@@ -88,7 +88,7 @@ COBRA.models
 * Do not add model files to `opencobra/cobratoolbox <https://github.com/opencobra/cobratoolbox>`_.
 
 How to contribute in practice
-~~~~
+------
 
 **Select the correct repository**
 
@@ -111,7 +111,7 @@ How to contribute in practice
 * After your contribution is merged, maintainers will update the submodule pointer in the main toolbox.
 
 Key reminders
-~~~~
+----
 
 * The main toolbox lives at `opencobra/cobratoolbox <https://github.com/opencobra/cobratoolbox>`_.  
 * All binaries, models, tutorials and paper specific content must be added to their dedicated repositories.  
