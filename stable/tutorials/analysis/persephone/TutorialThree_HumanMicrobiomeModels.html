@@ -1,0 +1,326 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge,IE=9,chrome=1"><meta name="generator" content="MATLAB 2025b"><title>Persephone: Creation of human-microbiome whole-body models (mWBMs)</title><style type="text/css">.rtcContent { padding: 30px; } .S0 { margin: 3px 10px 5px 4px; padding: 0px; line-height: 28.8px; min-height: 0px; white-space: pre-wrap; color: rgb(192, 76, 11); font-family: Helvetica, Arial, sans-serif, Helvetica, Arial, sans-serif; font-style: normal; font-size: 24px; font-weight: 400; text-align: left;  }
+.S1 { margin: 2px 10px 9px 4px; padding: 0px; line-height: 21px; min-height: 0px; white-space: pre-wrap; color: rgb(33, 33, 33); font-family: Helvetica, Arial, sans-serif, Helvetica, Arial, sans-serif; font-style: normal; font-size: 14px; font-weight: 400; text-align: left;  }
+.CodeBlock { background-color: #F5F5F5; margin: 10px 15px 10px 0; display: inline-block; min-width: 100%; }
+.S2 { border-left: 1px solid rgb(217, 217, 217); border-right: 1px solid rgb(217, 217, 217); border-top: 1px solid rgb(217, 217, 217); border-bottom: 0px none rgb(33, 33, 33); border-radius: 4px 4px 0px 0px; padding: 6px 45px 0px 13px; line-height: 18.004px; min-height: 0px; white-space: nowrap; color: rgb(33, 33, 33); font-family: Menlo, Monaco, Consolas, "Courier New", monospace, Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S3 { border-left: 1px solid rgb(217, 217, 217); border-right: 1px solid rgb(217, 217, 217); border-top: 0px none rgb(33, 33, 33); border-bottom: 0px none rgb(33, 33, 33); border-radius: 0px; padding: 0px 45px 0px 13px; line-height: 18.004px; min-height: 0px; white-space: nowrap; color: rgb(33, 33, 33); font-family: Menlo, Monaco, Consolas, "Courier New", monospace, Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S4 { border-left: 1px solid rgb(217, 217, 217); border-right: 1px solid rgb(217, 217, 217); border-top: 0px none rgb(33, 33, 33); border-bottom: 1px solid rgb(217, 217, 217); border-radius: 0px 0px 4px 4px; padding: 0px 45px 4px 13px; line-height: 18.004px; min-height: 0px; white-space: nowrap; color: rgb(33, 33, 33); font-family: Menlo, Monaco, Consolas, "Courier New", monospace, Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S5 { margin: 10px 0px 20px; padding-left: 0px; font-family: Helvetica, Arial, sans-serif, Helvetica, Arial, sans-serif; font-size: 14px;  }
+.S6 { margin-left: 56px; line-height: 21px; min-height: 0px; text-align: left; white-space: pre-wrap;  }
+.S7 { margin: 10px 10px 9px 4px; padding: 0px; line-height: 21px; min-height: 0px; white-space: pre-wrap; color: rgb(33, 33, 33); font-family: Helvetica, Arial, sans-serif, Helvetica, Arial, sans-serif; font-style: normal; font-size: 14px; font-weight: 400; text-align: left;  }
+.S8 { margin: 3px 10px 5px 4px; padding: 0px; line-height: 25px; min-height: 0px; white-space: pre-wrap; color: rgb(33, 33, 33); font-family: Helvetica, Arial, sans-serif, Helvetica, Arial, sans-serif; font-style: normal; font-size: 20px; font-weight: 700; text-align: left;  }
+.S9 { border-left: 1px solid rgb(217, 217, 217); border-right: 1px solid rgb(217, 217, 217); border-top: 1px solid rgb(217, 217, 217); border-bottom: 1px solid rgb(217, 217, 217); border-radius: 4px; padding: 6px 45px 4px 13px; line-height: 18.004px; min-height: 0px; white-space: nowrap; color: rgb(33, 33, 33); font-family: Menlo, Monaco, Consolas, "Courier New", monospace, Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px;  }
+.S10 { margin: 15px 10px 5px 4px; padding: 0px; line-height: 28.8px; min-height: 0px; white-space: pre-wrap; color: rgb(192, 76, 11); font-family: Helvetica, Arial, sans-serif, Helvetica, Arial, sans-serif; font-style: normal; font-size: 24px; font-weight: 400; text-align: left;  }</style></head><body><div class = rtcContent><h1  class = 'S0'><span>Persephone: Creation of human-microbiome whole-body models (mWBMs)</span></h1><div  class = 'S1'><span>Bram Nap, Tim Hensen, Anna Sheehy - 07-2024</span></div><div  class = 'S1'><span>In this section we combine the newly created microbiome community models with the previously developed WBMs [4].  We will show the code required to create one mWBM. Later on we will explain which functions to use to generate multiple mWBMs with just one command.</span></div><div  class = 'S1'><span>First we need to load a microbiome model and a WBM model. Here we will load the microbiome model corresponding to sample ID CSM5MCXD and the male WBM.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S2'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% If you have not just run tutorial 1 or 2, or you have cleared your</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% workspace, you will need to run the code below to define your directories</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% again: </span></span></div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span >resultPath = </span><span style="color: rgb(167, 9, 245);">''</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span >paths.General.metadataPath = </span><span style="color: rgb(167, 9, 245);">''</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'>&nbsp;</div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span >paths.seqC.outputPathSeqC = [resultPath, filesep, </span><span style="color: rgb(167, 9, 245);">'resultSeqC'</span><span >];</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span >paths.Mars.outputPathMars = [resultPath, filesep, </span><span style="color: rgb(167, 9, 245);">'resultMars'</span><span >];</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span >paths.mgPipe.outputPathMgPipe = [resultPath, filesep, </span><span style="color: rgb(167, 9, 245);">'resultMgPipe'</span><span >];</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span >paths.persWBM.outputPathPersonalisation = [resultPath, filesep, </span><span style="color: rgb(167, 9, 245);">'personalisedWBMs'</span><span >];</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span >paths.mWBM.outputPathMWBM = [resultPath, filesep, </span><span style="color: rgb(167, 9, 245);">'mWBMmodels'</span><span >];</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span >paths.fba.outputPathFluxResult = [resultPath, filesep, </span><span style="color: rgb(167, 9, 245);">'resultFlux'</span><span >];</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span >paths.fba.outputPathFluxAnalysis = [paths.fba.outputPathFluxResult, filesep, </span><span style="color: rgb(167, 9, 245);">'fluxAnalysis'</span><span >];</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre"><span >paths.stats.outputPathStatistics = [resultPath, filesep, </span><span style="color: rgb(167, 9, 245);">'resultStatistics'</span><span >];</span></span></div></div></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S2'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% Load microbiome model. As we load it into a variable, we also extract the</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% actual model</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span >modelM = load([paths.mgPipe.outputPathMgPipe, filesep, </span><span style="color: rgb(167, 9, 245);">'Diet'</span><span >, filesep, </span><span style="color: rgb(167, 9, 245);">'microbiota_model_diet_CSM5MCXD.mat'</span><span >]).model;</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'>&nbsp;</div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% Load the male WBM model</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre"><span >modelH = loadPSCMfile(</span><span style="color: rgb(167, 9, 245);">'Harvey'</span><span >);</span></span></div></div></div><div  class = 'S1'><span>When combining the WBM with the microbiome model, the [u] section in the microbiome model is change to [luM] which stands for lumen microbiome. Instead of [e] the microbiome now exchanges metabolites with [LuLi] which is the lumen of the large intestine. Reactions are added to ensure metabolites unique to the microbiome model can be taken up from the diet and be excreted in the feces. The function used to combine a microbiome model with a WBM model is called combineHarveyMicrotiota and takes the following inputs</span></div><ul  class = 'S5'><li  class = 'S6'><span>modelH                        Whole-body metabolic model structure</span></li><li  class = 'S6'><span>modelM                        Microbiome model</span></li><li  class = 'S6'><span>couplingConstraint       Coupling constraint for microbiome model </span></li></ul><div  class = 'S1'><span>A coupling constraint in this context connects the metabolic activities of the WBM and microbiome model, ensuring that the exchange of metabolites is balanced and physiologically realistic. The value 400 is often used arbitrarily as a scaling factor to adjust the relative metabolic fluxes between the two systems, accounting for their differences in metabolic capacities. This ensures stability and consistency in the model's simulations.</span></div><div  class = 'S1'><span>Some warning might pop up:</span></div><ul  class = 'S5'><li  class = 'S6'><span> Reaction EX_biomass[c] is not in model</span></li><li  class = 'S6'><span>The inserted Model contains an old style coupling matrix (A). The Matrix will be converted into a Coupling Matrix (C) and fields will be adapted.</span></li></ul><div  class = 'S1'><span>These are expected and can be safely ignored</span></div><div  class = 'S1'><span>Now we can combine the models</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S2'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% Set the coupling constraint to 400</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span >couplingConstraint = 400;</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'>&nbsp;</div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% Combine the microbiome mdoel with harvey</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre"><span >mWBM = combineHarveyMicrotiota(modelH, modelM, couplingConstraint);</span></span></div></div></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S2'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% Add additional fields to the mWBM model for more information</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span >mWBM.sex = </span><span style="color: rgb(167, 9, 245);">"male"</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span >mWBM.version = modelH.version;</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre"><span >mWBM.ID = modelM.name;</span></span></div></div></div><div  class = 'S7'><span>After the mWBM is created, we set the excretion of miciobiome biomass in the feces to 1 feacal exchange/day [1,1]. This is done to ensure that production of microbiome biomass is the same for all models and that the amount of produced microbiome biomass does not influence the simulation results. We change the constraints of the reaction with the changeRxnBounds function which takes the following inputs:</span></div><ul  class = 'S5'><li  class = 'S6'><span>model - A metabolic model, in our case mWBM</span></li><li  class = 'S6'><span>rxnNameList - A cell array of reactions that have to have their bounds changed.A cell array of reaction IDs or a string for a single reaction ID that species which reaction(s) need their bounds altered.</span></li><li  class = 'S6'><span>value - A numeric value that say to which value the bound has to be changed to. Can be one value for all reactions, or one value for each reaction to be changed.</span></li><li  class = 'S6'><span>boundType - A string, indicating which bound has to be changed, u= upper, l= lower, b = both.</span></li></ul><div  class = 'S1'><span>We will set the inputs and change the bounds of the faecal microbiome biomass exchange.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S2'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% The name of the exchange of faecal microbiome biomass</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span >rxnNameList = </span><span style="color: rgb(167, 9, 245);">'Excretion_EX_microbiota_LI_biomass[fe]'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'>&nbsp;</div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% The value of the updated bounds</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span >value = 1;</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'>&nbsp;</div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% Which bounds need to be adjusted, b for both</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span >boundType = </span><span style="color: rgb(167, 9, 245);">'b'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'>&nbsp;</div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% Change the bounds of the microbiome biomass fecal excretion to [1,1]</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre"><span >mWBM = changeRxnBounds(mWBM,rxnNameList, value, boundType);</span></span></div></div></div><div  class = 'S1'><span>Here we also define the diet that we want to use to simulate our human-microbiome models with. The default option is EUAverageDiet but other diet options are HighFiberDiet, HighProteinDiet, UnhealthyDiet and VegetarianDiet. If you want to change the diet use one of the afore-mentioned diet names and set that as the Diet variable istead of 'EUAverageDiet'. Using setDietConstraints we put the diet on the mWBM. The function also adds additional metabolites in small amounts (0.1-1 mmol/day). These extra metabolites are added as they are usually not present in the diet files, either pre-made or designed on vmh.life. The metabolites range from ions to small molecules required to ensure microbiome biomass production. The function takes the following inputs</span></div><ul  class = 'S5'><li  class = 'S6'><span>model - model structure, in our case mWBM</span></li><li  class = 'S6'><span>diet - Diet option: 'EUAverageDiet' (default)</span></li><li  class = 'S6'><span>factor - value between 0 and 1; default is 1, i.e, 100% of the provided diet</span></li></ul><div  class = 'S1'><span>We will define our inputs and set the diet</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S2'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% Set the chosen diet</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span >diet = </span><span style="color: rgb(167, 9, 245);">'EUAverageDiet'</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span >factor = 1;</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre"><span >mWBM = setDietConstraints(mWBM, diet, factor);</span></span></div></div></div><div  class = 'S7'><span>Now we have succesfully created a mWBM. The next step is testing if the mWBM is feasible.</span></div><h2  class = 'S8'><span>Fixing infeasible mWBM</span></h2><div  class = 'S1'><span>Now we will check if our create mWBM is feasible. That means can it produce both microbiome biomass and statisfy the body maintanance reaction. First we will set the bound of faecal exchange of microbiome biomass to 1 faecal exchange/day. This was done earlier in the code, but  sometimes you would already have mWBMs created previously or they are obtained from a different source. It is good practice to always reset the bounds on the microbiome biomass fecal exchange.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S2'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% The name of the exchange of faecal microbiome biomass</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span >rxnNameList = </span><span style="color: rgb(167, 9, 245);">'Excretion_EX_microbiota_LI_biomass[fe]'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'>&nbsp;</div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% The value of the updated bounds</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span >value = 1;</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'>&nbsp;</div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% Which bounds need to be adjusted, b for both</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span >boundType = </span><span style="color: rgb(167, 9, 245);">'b'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'>&nbsp;</div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% Change the bounds of the microbiome biomass fecal excretion to [1,1]</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre"><span >mWBM = changeRxnBounds(mWBM,rxnNameList, value, boundType);</span></span></div></div></div><div  class = 'S1'><span>The same goes for the human body maintanance reaction. We will reset it to one to ensure all models are comparable. More information on the 'Whole_body_objective_rxn' can be found in tutorial 4 FBAandStatistics.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S9'><span style="white-space: pre"><span >mWBM = changeRxnBounds(mWBM, </span><span style="color: rgb(167, 9, 245);">'Whole_body_objective_rxn'</span><span >, 1, </span><span style="color: rgb(167, 9, 245);">'b'</span><span >);</span></span></div></div></div><div  class = 'S1'><span>Now that the bounds have been reset we will set the objective of the model to optimise the faecal microbiome biomass exchange. Using changeObjective we can set the reaction we want to have optimised. </span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S2'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% Set the objective for excretion of microbiome biomass in the feces</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre"><span >mWBM = changeObjective(mWBM,</span><span style="color: rgb(167, 9, 245);">'Excretion_EX_microbiota_LI_biomass[fe]'</span><span >);</span></span></div></div></div><div  class = 'S1'><span>Then we optimise the model with optimizeWBModel. More information on setting objectives and solving models can be found in tutorial 2.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S2'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% Solve the mWBM</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span >solution = optimizeWBModel(mWBM);</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% Print the value of the solution</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre"><span >solution.f</span></span></div></div></div><div  class = 'S1'><span>If the sol.f value is 1, great! That means that the model can produce both enough microbiome biomass and can maitain the body maintanance reaction. To ensure we can use the model again we will also save it. The path to where mWBMs are saved was created in section 1 and saved in the paths variable.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S2'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% Save the model</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre"><span >save([paths.mWBM.outputPathMWBM,filesep,</span><span style="color: rgb(167, 9, 245);">'mWBM_CSM5MCXD_male.mat'</span><span >],</span><span style="color: rgb(167, 9, 245);">'-struct'</span><span >,</span><span style="color: rgb(167, 9, 245);">'mWBM'</span><span >)</span></span></div></div></div><div  class = 'S1'><span>If the output is not 1, it means that the model is unable to create 1 microbiome biomass per day. We will check if the model is able to do it if we open up all dietary reactions. To find all dietary reactions we use the find and contain function to obtain all the reaction indexes that have the prefix Diet_EX_, which indicates dietary exchange reactions. We then use changeRxnBounds to set the lower bound of each dietary exchange reaction to -100000 the unconstrained value used in the WBMs. Then we solve the model again to see if the diet was the problem. The upper bound does not have to be set to 0, as any unused metabolite can pass from the diet to the fecal exchange via various compartments.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S2'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% Find all dietary reactions</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span >idx = contains(mWBM.rxns,</span><span style="color: rgb(167, 9, 245);">'Diet_EX'</span><span >);</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'>&nbsp;</div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% Open all dietary exchange reactions</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span >modelWBMOpen = changeRxnBounds(mWBM, mWBM.rxns(idx),-1000000,</span><span style="color: rgb(167, 9, 245);">'l'</span><span >);</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span >modelWBMOpen.osenseStr = </span><span style="color: rgb(167, 9, 245);">'max'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'>&nbsp;</div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% Solve the model</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span >solOpen = optimizeWBModel(modelWBMOpen);</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'>&nbsp;</div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% Print the solution value</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre"><span >solOpen.f</span></span></div></div></div><div  class = 'S1'><span>If the solOpen.f value gives 1 that means that means that we can solve the infeasibility by adapting the diet. which is coverd directly below. However if solOpen.f is not 1, the chosen diet is not the problem. You can either a) try another diet or b) check the microbiome explained in the next paragraph.</span></div><div  class = 'S1'><span>More often than not the cause of infeasibility is the absence of micronurtients and can be solved by adding the missing compound to the diet with a value of 0.1 mmol/day. To find out which compound needs to be added we use the function </span><span style=' font-style: italic;'>ensureWBMfeasibility.m</span><span>. The function opens up the bounds on all dietary reactions to see if the model can be made feasible through dietary adaptations. If it is solvable with all dietary reactions open, the function will then close random dietary reactions in batches to try and narrow down which reaction is required for feasibility. It will continue to do this untill it has narrowed down a set a essential reactions. </span></div><div  class = 'S1'><span>If one or multiple models are found to require additional dietary components, an updated diet will be propogated to all models on the mWBM path and a file containing the new diet will also be saved.</span></div><div  class = 'S1'><span> If no dietary solution is possible it is good practice to double check that the germ-free (WBM withouth the microbiome) models and the microbiome models are individually feasible with the chosen diet. If the microbiome models are infeasible it might be good to check a) a different diet, b) any irregularities in the present_species file generated from MARS. If a solution cannot be found it is possible to open a issue on the googlegroups for support: </span><a href = "https://groups.google.com/g/cobra-toolbox"><span>https://groups.google.com/g/cobra-toolbox</span></a></div><div  class = 'S1'><span>The function </span><span style=' font-style: italic;'>ensureWBMfeasibility</span><span> takes the following inputs:</span></div><ul  class = 'S5'><li  class = 'S6'><span>WBM - A string containing the path to WBM ormWBM model/s</span></li><li  class = 'S6'><span>Diet - option to define the diet to constrain the models</span></li></ul><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S2'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% Find missing diet component and add to the model</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre"><span >[dietInfo, dietGrowthStats] = ensureWBMfeasibility(paths.mWBM.outputPathMWBM);</span></span></div></div></div><h2  class = 'S8'><span>Creating multiple mWBMs</span></h2><div  class = 'S1'><span>In order to easily generate multiple mWBM models we need a file that matches the sex with the sample IDs. This will determine if the microbiome model created from that sample will be combined with a female (Harvetta) or male (Harvey) WBM. The diet we will use here is the EUAverageDiet. The metadata path, the path to the microbiome models and the path where the mWBMs should be stored were all defined at the beginning of this tutorial.</span></div><div  class = 'S1'><span>The function </span><span style=' font-style: italic;'>createBatchMWBM.m</span><span> will create for all the microbiome models in the microbiome directory a mWBM. Given that the sample IDs matching to the microbiome models have a corresponding sex in the metadata. The code also checks if the any of the mWBMs are infeasible and then runs the </span><span style=' font-style: italic;'>getMissingDietModelHM.m</span><span> function in a loop to ensure all the mWBMs that are created are feasible and all have the same dietary constraints. This allows for proper comparisons of the flux predictions later on. The function </span><span style=' font-style: italic;'>createBatchMWBM.m</span><span> takes the following inputs:</span></div><ul  class = 'S5'><li  class = 'S6'><span style=' font-weight: bold;'>microbiomeDir</span><span> - A string with the path to the directory where the microbiome models are stored, created via MgPipe. Created in section 1</span></li><li  class = 'S6'><span style=' font-weight: bold;'>saveDir</span><span> - A string with the path to the directory where the mWBMs should be stored. Created in section 1.</span></li><li  class = 'S6'><span style=' font-weight: bold;'>metadataPath</span><span> - A string with the path to the metadata file. Defined in section 1.</span></li><li  class = 'S6'><span style=' font-weight: bold;'>diet</span><span> - A string defining which diet should be used. Defaults to EUAverageDiet</span></li><li  class = 'S6'><span style=' font-weight: bold;'>numWorkersCreation</span><span> - Number of parrelel instances create mWBMs. Same value as used for MgPipe in section 3 is recommended. Defaults to 4.</span></li><li  class = 'S6'><span style=' font-weight: bold;'>numWorkersOptimisation</span><span> - Number of parrelel instances used to solve the mWBMs, defaults to 2. If the number of workers is too high, it can cause time-out errors. Reducing the number of workers should resolve that issue.</span></li><li  class = 'S6'><span style=' font-weight: bold;'>checkFeasibility</span><span> -  A boolean to indicate if the function checks if the created mWBMs can grow on the the specified diet if set to true. Defaults to true.</span></li></ul><div  class = 'S1'><span>Now we can set the inputs and run the function.</span></div><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S2'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% choose your solver </span></span></div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span >solver = </span><span style="color: rgb(167, 9, 245);">'gurobi'</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'>&nbsp;</div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% Set the diet</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span >diet = </span><span style="color: rgb(167, 9, 245);">'EUAverageDiet'</span><span >;</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'>&nbsp;</div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% The microbiome path was created already in the beginning of the tutorial</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% and stored in the paths variable.</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span >microbiomeDir = paths.mgPipe.outputPathMgPipe;</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'>&nbsp;</div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% The path where the mWBM models should be stored was already created in the</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% beginning of the tutorial and stored in the paths variable.</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span >mWBMdir = paths.mWBM.outputPathMWBM;</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'>&nbsp;</div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% Set numWorkers if not done so before by removing the % you can alter the</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% value</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span >numWorkersCreation = 1;</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'>&nbsp;</div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% Set checkFeasibility to true</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span >checkFeasibility = true;</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'>&nbsp;</div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span style="color: rgb(0, 128, 19);">% Create multiple mWBM models</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span >createBatchMWBM(microbiomeDir, </span><span style="color: rgb(14, 0, 255);">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span >            mWBMdir, </span><span style="color: rgb(14, 0, 255);">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span >            paths.General.metadataPath,</span><span style="color: rgb(14, 0, 255);">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span >            </span><span style="color: rgb(167, 9, 245);">'solver'</span><span >, solver,</span><span style="color: rgb(14, 0, 255);">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S3'><span style="white-space: pre"><span >            </span><span style="color: rgb(167, 9, 245);">'Diet'</span><span >, diet,</span><span style="color: rgb(14, 0, 255);">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre"><span >            </span><span style="color: rgb(167, 9, 245);">'numWorkersCreation'</span><span >, numWorkersCreation)</span></span></div></div></div><div  class = 'S7'><span>This concludes this tutorial on how to generate mWBMs. Please see the other tutorials on personalising the WBM models, solving mWBMs models and analysing flux results.</span></div><h1  class = 'S10'><span>References (APA style)</span></h1><div  class = 'S1'><span>[4] Thiele, I., Sahoo, S., Heinken, A.,  Hertel, J., Heirendt, L., Aurich, M. K., &amp; Fleming, R. M. (2020).  Personalized whole‐body models integrate metabolism, physiology, and the gut microbiome. </span><span style=' font-style: italic;'>Molecular systems biology</span><span>, </span><span style=' font-style: italic;'>16</span><span>(5), e8982.</span></div>
+<br>
+<!-- 
+##### SOURCE BEGIN #####
+%% Persephone: Creation of human-microbiome whole-body models (mWBMs)
+% Bram Nap, Tim Hensen, Anna Sheehy - 07-2024
+% 
+% In this section we combine the newly created microbiome community models with 
+% the previously developed WBMs [4].  We will show the code required to create 
+% one mWBM. Later on we will explain which functions to use to generate multiple 
+% mWBMs with just one command.
+% 
+% First we need to load a microbiome model and a WBM model. Here we will load 
+% the microbiome model corresponding to sample ID CSM5MCXD and the male WBM.
+
+% If you have not just run tutorial 1 or 2, or you have cleared your
+% workspace, you will need to run the code below to define your directories
+% again: 
+resultPath = '';
+paths.General.metadataPath = '';
+
+paths.seqC.outputPathSeqC = [resultPath, filesep, 'resultSeqC'];
+paths.Mars.outputPathMars = [resultPath, filesep, 'resultMars'];
+paths.mgPipe.outputPathMgPipe = [resultPath, filesep, 'resultMgPipe'];
+paths.persWBM.outputPathPersonalisation = [resultPath, filesep, 'personalisedWBMs'];
+paths.mWBM.outputPathMWBM = [resultPath, filesep, 'mWBMmodels'];
+paths.fba.outputPathFluxResult = [resultPath, filesep, 'resultFlux'];
+paths.fba.outputPathFluxAnalysis = [paths.fba.outputPathFluxResult, filesep, 'fluxAnalysis'];
+paths.stats.outputPathStatistics = [resultPath, filesep, 'resultStatistics'];
+%%
+% Load microbiome model. As we load it into a variable, we also extract the
+% actual model
+modelM = load([paths.mgPipe.outputPathMgPipe, filesep, 'Diet', filesep, 'microbiota_model_diet_CSM5MCXD.mat']).model;
+
+% Load the male WBM model
+modelH = loadPSCMfile('Harvey');
+%% 
+% When combining the WBM with the microbiome model, the [u] section in the microbiome 
+% model is change to [luM] which stands for lumen microbiome. Instead of [e] the 
+% microbiome now exchanges metabolites with [LuLi] which is the lumen of the large 
+% intestine. Reactions are added to ensure metabolites unique to the microbiome 
+% model can be taken up from the diet and be excreted in the feces. The function 
+% used to combine a microbiome model with a WBM model is called combineHarveyMicrotiota 
+% and takes the following inputs
+%% 
+% * modelH                        Whole-body metabolic model structure
+% * modelM                        Microbiome model
+% * couplingConstraint       Coupling constraint for microbiome model 
+%% 
+% A coupling constraint in this context connects the metabolic activities of 
+% the WBM and microbiome model, ensuring that the exchange of metabolites is balanced 
+% and physiologically realistic. The value 400 is often used arbitrarily as a 
+% scaling factor to adjust the relative metabolic fluxes between the two systems, 
+% accounting for their differences in metabolic capacities. This ensures stability 
+% and consistency in the model's simulations.
+% 
+% Some warning might pop up:
+%% 
+% * Reaction EX_biomass[c] is not in model
+% * The inserted Model contains an old style coupling matrix (A). The Matrix 
+% will be converted into a Coupling Matrix (C) and fields will be adapted.
+%% 
+% These are expected and can be safely ignored
+% 
+% Now we can combine the models
+
+% Set the coupling constraint to 400
+couplingConstraint = 400;
+
+% Combine the microbiome mdoel with harvey
+mWBM = combineHarveyMicrotiota(modelH, modelM, couplingConstraint);
+%%
+% Add additional fields to the mWBM model for more information
+mWBM.sex = "male";
+mWBM.version = modelH.version;
+mWBM.ID = modelM.name;
+%% 
+% After the mWBM is created, we set the excretion of miciobiome biomass in the 
+% feces to 1 feacal exchange/day [1,1]. This is done to ensure that production 
+% of microbiome biomass is the same for all models and that the amount of produced 
+% microbiome biomass does not influence the simulation results. We change the 
+% constraints of the reaction with the changeRxnBounds function which takes the 
+% following inputs:
+%% 
+% * model - A metabolic model, in our case mWBM
+% * rxnNameList - A cell array of reactions that have to have their bounds changed.A 
+% cell array of reaction IDs or a string for a single reaction ID that species 
+% which reaction(s) need their bounds altered.
+% * value - A numeric value that say to which value the bound has to be changed 
+% to. Can be one value for all reactions, or one value for each reaction to be 
+% changed.
+% * boundType - A string, indicating which bound has to be changed, u= upper, 
+% l= lower, b = both.
+%% 
+% We will set the inputs and change the bounds of the faecal microbiome biomass 
+% exchange.
+
+% The name of the exchange of faecal microbiome biomass
+rxnNameList = 'Excretion_EX_microbiota_LI_biomass[fe]';
+
+% The value of the updated bounds
+value = 1;
+
+% Which bounds need to be adjusted, b for both
+boundType = 'b';
+
+% Change the bounds of the microbiome biomass fecal excretion to [1,1]
+mWBM = changeRxnBounds(mWBM,rxnNameList, value, boundType);
+%% 
+% Here we also define the diet that we want to use to simulate our human-microbiome 
+% models with. The default option is EUAverageDiet but other diet options are 
+% HighFiberDiet, HighProteinDiet, UnhealthyDiet and VegetarianDiet. If you want 
+% to change the diet use one of the afore-mentioned diet names and set that as 
+% the Diet variable istead of 'EUAverageDiet'. Using setDietConstraints we put 
+% the diet on the mWBM. The function also adds additional metabolites in small 
+% amounts (0.1-1 mmol/day). These extra metabolites are added as they are usually 
+% not present in the diet files, either pre-made or designed on vmh.life. The 
+% metabolites range from ions to small molecules required to ensure microbiome 
+% biomass production. The function takes the following inputs
+%% 
+% * model - model structure, in our case mWBM
+% * diet - Diet option: 'EUAverageDiet' (default)
+% * factor - value between 0 and 1; default is 1, i.e, 100% of the provided 
+% diet
+%% 
+% We will define our inputs and set the diet
+
+% Set the chosen diet
+diet = 'EUAverageDiet'
+factor = 1;
+mWBM = setDietConstraints(mWBM, diet, factor);
+%% 
+% Now we have succesfully created a mWBM. The next step is testing if the mWBM 
+% is feasible.
+%% Fixing infeasible mWBM
+% Now we will check if our create mWBM is feasible. That means can it produce 
+% both microbiome biomass and statisfy the body maintanance reaction. First we 
+% will set the bound of faecal exchange of microbiome biomass to 1 faecal exchange/day. 
+% This was done earlier in the code, but  sometimes you would already have mWBMs 
+% created previously or they are obtained from a different source. It is good 
+% practice to always reset the bounds on the microbiome biomass fecal exchange.
+
+% The name of the exchange of faecal microbiome biomass
+rxnNameList = 'Excretion_EX_microbiota_LI_biomass[fe]';
+
+% The value of the updated bounds
+value = 1;
+
+% Which bounds need to be adjusted, b for both
+boundType = 'b';
+
+% Change the bounds of the microbiome biomass fecal excretion to [1,1]
+mWBM = changeRxnBounds(mWBM,rxnNameList, value, boundType);
+%% 
+% The same goes for the human body maintanance reaction. We will reset it to 
+% one to ensure all models are comparable. More information on the 'Whole_body_objective_rxn' 
+% can be found in tutorial 4 FBAandStatistics.
+
+mWBM = changeRxnBounds(mWBM, 'Whole_body_objective_rxn', 1, 'b');
+%% 
+% Now that the bounds have been reset we will set the objective of the model 
+% to optimise the faecal microbiome biomass exchange. Using changeObjective we 
+% can set the reaction we want to have optimised. 
+
+% Set the objective for excretion of microbiome biomass in the feces
+mWBM = changeObjective(mWBM,'Excretion_EX_microbiota_LI_biomass[fe]');
+%% 
+% Then we optimise the model with optimizeWBModel. More information on setting 
+% objectives and solving models can be found in tutorial 2.
+
+% Solve the mWBM
+solution = optimizeWBModel(mWBM);
+% Print the value of the solution
+solution.f
+%% 
+% If the sol.f value is 1, great! That means that the model can produce both 
+% enough microbiome biomass and can maitain the body maintanance reaction. To 
+% ensure we can use the model again we will also save it. The path to where mWBMs 
+% are saved was created in section 1 and saved in the paths variable.
+
+% Save the model
+save([paths.mWBM.outputPathMWBM,filesep,'mWBM_CSM5MCXD_male.mat'],'-struct','mWBM')
+%% 
+% If the output is not 1, it means that the model is unable to create 1 microbiome 
+% biomass per day. We will check if the model is able to do it if we open up all 
+% dietary reactions. To find all dietary reactions we use the find and contain 
+% function to obtain all the reaction indexes that have the prefix Diet_EX_, which 
+% indicates dietary exchange reactions. We then use changeRxnBounds to set the 
+% lower bound of each dietary exchange reaction to -100000 the unconstrained value 
+% used in the WBMs. Then we solve the model again to see if the diet was the problem. 
+% The upper bound does not have to be set to 0, as any unused metabolite can pass 
+% from the diet to the fecal exchange via various compartments.
+
+% Find all dietary reactions
+idx = contains(mWBM.rxns,'Diet_EX');
+
+% Open all dietary exchange reactions
+modelWBMOpen = changeRxnBounds(mWBM, mWBM.rxns(idx),-1000000,'l');
+modelWBMOpen.osenseStr = 'max';
+
+% Solve the model
+solOpen = optimizeWBModel(modelWBMOpen);
+
+% Print the solution value
+solOpen.f
+%% 
+% If the solOpen.f value gives 1 that means that means that we can solve the 
+% infeasibility by adapting the diet. which is coverd directly below. However 
+% if solOpen.f is not 1, the chosen diet is not the problem. You can either a) 
+% try another diet or b) check the microbiome explained in the next paragraph.
+% 
+% More often than not the cause of infeasibility is the absence of micronurtients 
+% and can be solved by adding the missing compound to the diet with a value of 
+% 0.1 mmol/day. To find out which compound needs to be added we use the function 
+% _ensureWBMfeasibility.m_. The function opens up the bounds on all dietary reactions 
+% to see if the model can be made feasible through dietary adaptations. If it 
+% is solvable with all dietary reactions open, the function will then close random 
+% dietary reactions in batches to try and narrow down which reaction is required 
+% for feasibility. It will continue to do this untill it has narrowed down a set 
+% a essential reactions. 
+% 
+% If one or multiple models are found to require additional dietary components, 
+% an updated diet will be propogated to all models on the mWBM path and a file 
+% containing the new diet will also be saved.
+% 
+% If no dietary solution is possible it is good practice to double check that 
+% the germ-free (WBM withouth the microbiome) models and the microbiome models 
+% are individually feasible with the chosen diet. If the microbiome models are 
+% infeasible it might be good to check a) a different diet, b) any irregularities 
+% in the present_species file generated from MARS. If a solution cannot be found 
+% it is possible to open a issue on the googlegroups for support: <https://groups.google.com/g/cobra-toolbox 
+% https://groups.google.com/g/cobra-toolbox>
+% 
+% The function _ensureWBMfeasibility_ takes the following inputs:
+%% 
+% * WBM - A string containing the path to WBM ormWBM model/s
+% * Diet - option to define the diet to constrain the models
+
+% Find missing diet component and add to the model
+[dietInfo, dietGrowthStats] = ensureWBMfeasibility(paths.mWBM.outputPathMWBM);
+%% Creating multiple mWBMs
+% In order to easily generate multiple mWBM models we need a file that matches 
+% the sex with the sample IDs. This will determine if the microbiome model created 
+% from that sample will be combined with a female (Harvetta) or male (Harvey) 
+% WBM. The diet we will use here is the EUAverageDiet. The metadata path, the 
+% path to the microbiome models and the path where the mWBMs should be stored 
+% were all defined at the beginning of this tutorial.
+% 
+% The function _createBatchMWBM.m_ will create for all the microbiome models 
+% in the microbiome directory a mWBM. Given that the sample IDs matching to the 
+% microbiome models have a corresponding sex in the metadata. The code also checks 
+% if the any of the mWBMs are infeasible and then runs the _getMissingDietModelHM.m_ 
+% function in a loop to ensure all the mWBMs that are created are feasible and 
+% all have the same dietary constraints. This allows for proper comparisons of 
+% the flux predictions later on. The function _createBatchMWBM.m_ takes the following 
+% inputs:
+%% 
+% * *microbiomeDir* - A string with the path to the directory where the microbiome 
+% models are stored, created via MgPipe. Created in section 1
+% * *saveDir* - A string with the path to the directory where the mWBMs should 
+% be stored. Created in section 1.
+% * *metadataPath* - A string with the path to the metadata file. Defined in 
+% section 1.
+% * *diet* - A string defining which diet should be used. Defaults to EUAverageDiet
+% * *numWorkersCreation* - Number of parrelel instances create mWBMs. Same value 
+% as used for MgPipe in section 3 is recommended. Defaults to 4.
+% * *numWorkersOptimisation* - Number of parrelel instances used to solve the 
+% mWBMs, defaults to 2. If the number of workers is too high, it can cause time-out 
+% errors. Reducing the number of workers should resolve that issue.
+% * *checkFeasibility* -  A boolean to indicate if the function checks if the 
+% created mWBMs can grow on the the specified diet if set to true. Defaults to 
+% true.
+%% 
+% Now we can set the inputs and run the function.
+
+% choose your solver 
+solver = 'gurobi'
+
+% Set the diet
+diet = 'EUAverageDiet';
+
+% The microbiome path was created already in the beginning of the tutorial
+% and stored in the paths variable.
+microbiomeDir = paths.mgPipe.outputPathMgPipe;
+
+% The path where the mWBM models should be stored was already created in the
+% beginning of the tutorial and stored in the paths variable.
+mWBMdir = paths.mWBM.outputPathMWBM;
+
+% Set numWorkers if not done so before by removing the % you can alter the
+% value
+numWorkersCreation = 1;
+
+% Set checkFeasibility to true
+checkFeasibility = true;
+
+% Create multiple mWBM models
+createBatchMWBM(microbiomeDir, ...
+            mWBMdir, ...
+            paths.General.metadataPath,...
+            'solver', solver,...
+            'Diet', diet,...
+            'numWorkersCreation', numWorkersCreation)
+%% 
+% This concludes this tutorial on how to generate mWBMs. Please see the other 
+% tutorials on personalising the WBM models, solving mWBMs models and analysing 
+% flux results.
+%% References (APA style)
+% [4] Thiele, I., Sahoo, S., Heinken, A.,  Hertel, J., Heirendt, L., Aurich, 
+% M. K., & Fleming, R. M. (2020).  Personalized whole‐body models integrate metabolism, 
+% physiology, and the gut microbiome. _Molecular systems biology_, _16_(5), e8982.
+##### SOURCE END #####
+-->
+</div></body></html>
