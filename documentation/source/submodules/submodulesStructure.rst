@@ -1,10 +1,10 @@
 .. _submodulesStructure:
-COBRA Toolbox Submodules Ecosystem
+Submodules
 ==================
 .. raw:: html
 
    <div style="text-align: center;">
-     <img src="_static/img/COBRA_Toolbox_Submodules.png" alt="COBRA Toolbox Submodules Structure" width="60%">
+     <img src="/cobratoolbox/stable/_static/img/COBRA_Toolbox_Submodules.png" alt="COBRA Toolbox Submodules Structure" width="60%">
    </div>
 
 This tutorial explains how the COBRA Toolbox ecosystem of repositories is organised and how you should contribute new material. It is intended for contributors who want to add binaries, models, paper specific code or tutorials that will appear on the COBRA Toolbox website.
