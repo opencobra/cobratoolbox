@@ -11,7 +11,7 @@
 
    tutorials/index
    modules/index
-   submodules/submodulesStructure
+   submodules/index
    faq
 
 .. toctree::
