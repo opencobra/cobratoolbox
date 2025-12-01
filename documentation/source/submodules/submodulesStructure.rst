@@ -1,6 +1,6 @@
 .. _submodulesStructure:
-Submodules
-==================
+COBRA Toolbox Submodules Structure
+------------------
 .. raw:: html
 
    <div style="text-align: center;">
