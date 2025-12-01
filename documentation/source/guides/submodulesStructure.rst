@@ -1,5 +1,5 @@
 .. _submodulesStructure:
-COBRA Toolbox Repositories and Contribution Tutorial
+COBRA Toolbox Submodules Ecosystem
 -----------
 .. raw:: html
 
