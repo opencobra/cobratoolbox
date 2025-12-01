@@ -1,8 +1,6 @@
-:orphan:
-.. begin-submodules-marker
-
+.. _submodulesStructure:
 COBRA Toolbox Repositories and Contribution Tutorial
-====================================================
+-----------
 .. raw:: html
 
    <div style="text-align: center;">
