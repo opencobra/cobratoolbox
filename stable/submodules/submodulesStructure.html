@@ -9,7 +9,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>COBRA Toolbox Submodules Structure &mdash; The COBRA Toolbox</title>
+  <title>COBRA Toolbox Submodules Ecosystem &mdash; The COBRA Toolbox</title>
   
 
   
@@ -193,7 +193,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../contents.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">COBRA Toolbox Submodules Structure</li>
+      <li class="breadcrumb-item active">COBRA Toolbox Submodules Ecosystem</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -202,8 +202,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="https://schema.org/Article">
            <div itemprop="articleBody">
             
-  <section id="cobra-toolbox-submodules-structure">
-<span id="submodulesstructure"></span><h1>COBRA Toolbox Submodules Structure<a class="headerlink" href="#cobra-toolbox-submodules-structure" title="Permalink to this heading">¶</a></h1>
+  <section id="cobra-toolbox-submodules-ecosystem">
+<span id="submodulesstructure"></span><h1>COBRA Toolbox Submodules Ecosystem<a class="headerlink" href="#cobra-toolbox-submodules-ecosystem" title="Permalink to this heading">¶</a></h1>
 <div style="text-align: center;">
   <img src="/cobratoolbox/stable/_static/img/COBRA_Toolbox_Submodules.png" alt="COBRA Toolbox Submodules Structure" width="60%">
 </div><p>This tutorial explains how the COBRA Toolbox ecosystem of repositories is organised and how you should contribute new material. It is intended for contributors who want to add binaries, models, paper specific code or tutorials that will appear on the COBRA Toolbox website.</p>
@@ -212,9 +212,10 @@
 <p>In order to add a file to any of these repositories, you must add it directly to the corresponding main repository on GitHub (for example <a class="reference external" href="https://github.com/opencobra/COBRA.tutorials">COBRA.tutorials</a>, <a class="reference external" href="https://github.com/opencobra/COBRA.models">COBRA.models</a> and so on), <strong>not</strong> to the <a class="reference external" href="https://github.com/opencobra/cobratoolbox">opencobra/cobratoolbox</a> repository.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">cobratoolbox</span></code> repository only contains submodule pointers. The actual content lives in the external repositories listed below.</p>
 </section>
-</section>
 <section id="overall-repository-layout">
-<h1>Overall repository layout<a class="headerlink" href="#overall-repository-layout" title="Permalink to this heading">¶</a></h1>
+<h2>Overall repository layout<a class="headerlink" href="#overall-repository-layout" title="Permalink to this heading">¶</a></h2>
+<section id="main-toolbox-repository">
+<h3>Main toolbox repository<a class="headerlink" href="#main-toolbox-repository" title="Permalink to this heading">¶</a></h3>
 <p>The central codebase is hosted at:</p>
 <ul class="simple">
 <li><p><a class="reference external" href="https://github.com/opencobra/cobratoolbox">https://github.com/opencobra/cobratoolbox</a></p></li>
@@ -227,6 +228,8 @@
 <li><p><a class="reference external" href="https://github.com/opencobra/COBRA.tutorials">COBRA.tutorials</a></p></li>
 <li><p><a class="reference external" href="https://github.com/opencobra/COBRA.models">COBRA.models</a></p></li>
 </ul>
+</section>
+</section>
 <section id="id3">
 <h2>COBRA.binary<a class="headerlink" href="#id3" title="Permalink to this heading">¶</a></h2>
 <p><strong>Repository:</strong> <a class="reference external" href="https://github.com/opencobra/COBRA.binary">https://github.com/opencobra/COBRA.binary</a></p>
@@ -270,9 +273,8 @@
 <li><p>Do not add model files to <a class="reference external" href="https://github.com/opencobra/cobratoolbox">opencobra/cobratoolbox</a>.</p></li>
 </ul>
 </section>
-</section>
 <section id="how-to-contribute-in-practice">
-<h1>How to contribute in practice<a class="headerlink" href="#how-to-contribute-in-practice" title="Permalink to this heading">¶</a></h1>
+<h2>How to contribute in practice<a class="headerlink" href="#how-to-contribute-in-practice" title="Permalink to this heading">¶</a></h2>
 <p><strong>Select the correct repository</strong></p>
 <ul class="simple">
 <li><p>Binaries: <a class="reference external" href="https://github.com/opencobra/COBRA.binary">COBRA.binary</a></p></li>
@@ -295,7 +297,7 @@
 </ul>
 </section>
 <section id="key-reminders">
-<h1>Key reminders<a class="headerlink" href="#key-reminders" title="Permalink to this heading">¶</a></h1>
+<h2>Key reminders<a class="headerlink" href="#key-reminders" title="Permalink to this heading">¶</a></h2>
 <ul class="simple">
 <li><p>The main toolbox lives at <a class="reference external" href="https://github.com/opencobra/cobratoolbox">opencobra/cobratoolbox</a>.</p></li>
 <li><p>All binaries, models, tutorials and paper specific content must be added to their dedicated repositories.</p></li>
@@ -303,6 +305,7 @@
 <li><p>Using the correct repository keeps the ecosystem clean, modular and maintainable.</p></li>
 </ul>
 <p>Following these guidelines ensures your work is properly integrated and supports the COBRA community effectively.</p>
+</section>
 </section>
 
 

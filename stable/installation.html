@@ -172,6 +172,12 @@
 <li class="toctree-l3"><a class="reference internal" href="#windows-10">Windows 10</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#id1">Solver compatibility</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id2">Linux Ubuntu</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">macOS 10.13+</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">Windows 10</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#binaries-and-compilers">Binaries and Compilers</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#gcc-compiler">gcc compiler</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#gfortran-compiler">gfortran compiler</a></li>
@@ -338,7 +344,7 @@ Although not recommended, you can download the repository as a <a class="referen
 <p>This document summarises tested solver compatibility with the COBRA Toolbox across operating systems and MATLAB releases.</p>
 <section id="linux-ubuntu">
 <h3>Linux Ubuntu<a class="headerlink" href="#linux-ubuntu" title="Permalink to this heading">¶</a></h3>
-<table class="docutils align-default">
+<div style="text-align: center;"><table class="docutils align-default">
 <colgroup>
 <col style="width: 33%" />
 <col style="width: 17%" />
@@ -399,10 +405,10 @@ Although not recommended, you can download the repository as a <a class="referen
 </tr>
 </tbody>
 </table>
-</section>
+</div></section>
 <section id="macos-10-13">
 <h3>macOS 10.13+<a class="headerlink" href="#macos-10-13" title="Permalink to this heading">¶</a></h3>
-<table class="docutils align-default">
+<div style="text-align: center;"><table class="docutils align-default">
 <colgroup>
 <col style="width: 33%" />
 <col style="width: 17%" />
@@ -463,10 +469,10 @@ Although not recommended, you can download the repository as a <a class="referen
 </tr>
 </tbody>
 </table>
-</section>
+</div></section>
 <section id="windows-10">
 <h3>Windows 10<a class="headerlink" href="#windows-10" title="Permalink to this heading">¶</a></h3>
-<table class="docutils align-default">
+<div style="text-align: center;"><table class="docutils align-default">
 <colgroup>
 <col style="width: 33%" />
 <col style="width: 17%" />
@@ -527,7 +533,219 @@ Although not recommended, you can download the repository as a <a class="referen
 </tr>
 </tbody>
 </table>
-<p>** Notice that IBM CPLEX no longer support MATLAB interface. The latest version of MATLAB and CPLEX that are compatible with each other is MATLAB R2019b with IBM ILOG CPLEX Optimization Studio Version 12.10.0.0. Running the COBRA toolbox on a system where IBM Cplex is installed, with any MATLAB later than R2019b is prone to a software conflict and crash.</p>
+</div><p>** Notice that IBM CPLEX no longer support MATLAB interface. The latest version of MATLAB and CPLEX that are compatible with each other is MATLAB R2019b with IBM ILOG CPLEX Optimization Studio Version 12.10.0.0. Running the COBRA toolbox on a system where IBM Cplex is installed, with any MATLAB later than R2019b is prone to a software conflict and crash.</p>
+<p class="rubric">Legend</p>
+<ul class="simple">
+<li><p>✅ : compatible with the COBRA Toolbox (tested)</p></li>
+<li><p>❌ : not compatible with the COBRA Toolbox (tested)</p></li>
+<li><p>⚠️ : possibly incompatible with the COBRA Toolbox (problems reported)</p></li>
+</ul>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>Make sure to install the correct Tomlab version for your version of <code class="docutils literal notranslate"><span class="pre">macOS</span></code>. There is a different Tomlab installer for MATLAB <code class="docutils literal notranslate"><span class="pre">R2017a+</span></code>.</p></li>
+<li><p>Only <strong>actively</strong> supported interfaces are evaluated for compatibility.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">matlab</span></code> solver interface is compatible with all actively supported MATLAB versions.</p></li>
+<li><p>The interfaces <code class="docutils literal notranslate"><span class="pre">cplex_direct</span></code> and <code class="docutils literal notranslate"><span class="pre">tomlab_snopt</span></code> bear the same compatibility pattern as <code class="docutils literal notranslate"><span class="pre">tomlab_cplex</span></code>.</p></li>
+<li><p>The interface <code class="docutils literal notranslate"><span class="pre">quadMinos</span></code> bears the same compatibility pattern as <code class="docutils literal notranslate"><span class="pre">dqqMinos</span></code>.</p></li>
+<li><p>The interface <code class="docutils literal notranslate"><span class="pre">lindo_old</span></code> bears the same compatibility pattern as <code class="docutils literal notranslate"><span class="pre">lindo_legacy</span></code>.</p></li>
+</ul>
+</section>
+</section>
+<section id="id1">
+<h2>Solver compatibility<a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h2>
+<p>This document summarises tested solver compatibility with the COBRA Toolbox across operating systems and MATLAB releases.</p>
+<section id="id2">
+<h3>Linux Ubuntu<a class="headerlink" href="#id2" title="Permalink to this heading">¶</a></h3>
+<div style="text-align: center;"><table class="docutils align-default">
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 17%" />
+<col style="width: 17%" />
+<col style="width: 17%" />
+<col style="width: 17%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>SolverName</p></th>
+<th class="head"><p>R2024a</p></th>
+<th class="head"><p>R2024b</p></th>
+<th class="head"><p>R2025a</p></th>
+<th class="head"><p>R2025b</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>GUROBI 12.0</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-odd"><td><p>TOMLAB CPLEX 8.6</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-even"><td><p>MOSEK 10.1</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-odd"><td><p>GLPK</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-even"><td><p>DQQ MINOS</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-odd"><td><p>PDCO</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-even"><td><p>IBM CPLEX</p></td>
+<td><p>❌</p></td>
+<td><p>❌</p></td>
+<td><p>❌</p></td>
+<td><p>❌</p></td>
+</tr>
+</tbody>
+</table>
+</div></section>
+<section id="id3">
+<h3>macOS 10.13+<a class="headerlink" href="#id3" title="Permalink to this heading">¶</a></h3>
+<div style="text-align: center;"><table class="docutils align-default">
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 17%" />
+<col style="width: 17%" />
+<col style="width: 17%" />
+<col style="width: 17%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>SolverName</p></th>
+<th class="head"><p>R2024a</p></th>
+<th class="head"><p>R2024b</p></th>
+<th class="head"><p>R2025a</p></th>
+<th class="head"><p>R2025b</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>GUROBI 12.0</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-odd"><td><p>TOMLAB CPLEX 8.6</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-even"><td><p>MOSEK 10.1</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-odd"><td><p>GLPK</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-even"><td><p>DQQ MINOS</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-odd"><td><p>PDCO</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-even"><td><p>IBM CPLEX</p></td>
+<td><p>❌</p></td>
+<td><p>❌</p></td>
+<td><p>❌</p></td>
+<td><p>❌</p></td>
+</tr>
+</tbody>
+</table>
+</div></section>
+<section id="id4">
+<h3>Windows 10<a class="headerlink" href="#id4" title="Permalink to this heading">¶</a></h3>
+<div style="text-align: center;"><table class="docutils align-default">
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 17%" />
+<col style="width: 17%" />
+<col style="width: 17%" />
+<col style="width: 17%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>SolverName</p></th>
+<th class="head"><p>R2024a</p></th>
+<th class="head"><p>R2024b</p></th>
+<th class="head"><p>R2025a</p></th>
+<th class="head"><p>R2025b</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>GUROBI 12.0</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-odd"><td><p>TOMLAB CPLEX 8.6</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-even"><td><p>MOSEK 10.1</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-odd"><td><p>GLPK</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-even"><td><p>DQQ MINOS</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-odd"><td><p>PDCO</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-even"><td><p>IBM CPLEX</p></td>
+<td><p>❌</p></td>
+<td><p>❌</p></td>
+<td><p>❌</p></td>
+<td><p>❌</p></td>
+</tr>
+</tbody>
+</table>
+</div><p>** Notice that IBM CPLEX no longer support MATLAB interface. The latest version of MATLAB and CPLEX that are compatible with each other is MATLAB R2019b with IBM ILOG CPLEX Optimization Studio Version 12.10.0.0. Running the COBRA toolbox on a system where IBM Cplex is installed, with any MATLAB later than R2019b is prone to a software conflict and crash.</p>
 <p class="rubric">Legend</p>
 <ul class="simple">
 <li><p>✅ : compatible with the COBRA Toolbox (tested)</p></li>
