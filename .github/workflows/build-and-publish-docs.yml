@@ -33,6 +33,22 @@ jobs:
         run: |
           pip install -r requirements.txt
 
+      - name: Install updater dependencies
+        working-directory: ./documentation/source/Citations
+        run: |
+          pip install -r requirements.txt
+
+      - name: Update COBRA citation database
+        working-directory: ./documentation/source/Citations
+        run: |
+          python updateCitationsBib.py
+
+      - name: Show number of citations collected
+        working-directory: ./documentation
+        run: |
+          echo "Citations updated. Current line count:"
+          wc -l COBRA.bib || true
+
       - name: Build documentation (Sphinx)
         working-directory: ./documentation
         run: |
