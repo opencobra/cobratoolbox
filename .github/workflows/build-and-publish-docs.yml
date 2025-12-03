@@ -169,6 +169,23 @@ jobs:
             echo "No tutorials index found in staging; skipping sidebar update."
           fi
 
+      - name: Update HOLDER_TEMPLATE sidebar from built index.html
+        working-directory: ./documentation
+        run: |
+          if [ -f ../ghpages/stable/tutorials/HOLDER_TEMPLATE.html ]; then
+            python ./source/Contributions/UpdateSideBar.py \
+              --source ./build/html/index.html \
+              --input  ../ghpages/stable/tutorials/HOLDER_TEMPLATE.html \
+              --output ../ghpages/stable/tutorials/HOLDER_TEMPLATE.html \
+              --current-href tutorials/index.html \
+              --home-href ../index.html \
+              --href-prefix ../ \
+              --parser html5lib
+          else
+            echo "HOLDER_TEMPLATE.html not found in staging; skipping sidebar update."
+          fi
+
+
       - name: Update contributors
         working-directory: ./documentation/source/Contributions
         run: |
