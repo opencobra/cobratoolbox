@@ -193,6 +193,12 @@ debug = 0;
 dummyCounts=zeros(nbadrow,1);
 for k1 = 1:nbadrow  % Loop over all the bad rows (nbadrow) identified in the problem
     i   = badrowInd(k1);  % Get the index of the current bad row from badrowInd(k1)
+    if printLevel > 0
+        stepSize = 1000;
+        if mod(i,stepSize)==0
+            fprintf('progress: %i ...\n',k1/nbadrow);
+        end
+    end
     % if i==22550
     %     disp(i)
     % end

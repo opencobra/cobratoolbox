@@ -103,10 +103,18 @@ for i = 1 : size(list,1)
     % check by abbreviation
     % VMH check using the url
     VMH{i,1} = list{i};
-    url1 = ['https://www.vmh.life/_api/reactions/?abbreviation=' list{i}];
-    url2 = ['https://www.vmh.life/_api/metabolites/?abbreviation=' list{i}];
+   url1 = ['https://www.vmh.life/_api/reactions/?abbreviation=' list{i}];
+  %  url2 = ['https://www.vmh.life/_api/metabolites/?abbreviation=' list{i}];
+  % try new vmh
+    url2 = ['https://vmh2.life/api/public/getMetHandler?id=' list{i}];
+    
     output1 = webread(url1);
-    output2 = webread(url2);
+    try
+        output2 = webread(url2);% fails if abbr does not exist
+    catch
+        output2.results=[];
+    end
+    
     if isempty(output1.results) %% rxn abbr does not exist
         VMH{i,2} = num2str(0);
     else
