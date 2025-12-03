@@ -30,5 +30,6 @@ Development Plan
     School of Medicine, University of Galway, University Rd, Galway, Ireland,<br>
     Digital Metabolic Twin Centre, University of Galway, Galway, Ireland.<br>
 
-
     <br><br>
+
+.. include:: developmentPlan/lifeCycle.rst
