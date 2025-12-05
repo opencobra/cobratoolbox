@@ -16,6 +16,63 @@ In order to add a file to any of these repositories, you must add it directly to
 
 The ``cobratoolbox`` repository only contains submodule pointers. The actual content lives in the external repositories listed below.
 
+Understanding submodules in the COBRA Toolbox
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The COBRA Toolbox repository contains several folders that appear in blue when viewed on GitHub. These are not ordinary folders. Each of them is a *git submodule* that points to a specific commit of an external repository.
+
+.. raw:: html
+
+   <div style="text-align: center;">
+     <img src="/cobratoolbox/stable/_static/img/submodules_in_cobratoolbox.png"
+          alt="Submodules in the COBRA Toolbox as seen on GitHub"
+          width="60%">
+   </div>
+
+How submodules appear
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+In the GitHub file browser, each submodule is shown as a blue folder icon followed by an identifier in the form:
+
+``folderName @ <commitHash>``
+
+The commit hash indicates the exact state of the external repository that the main toolbox is currently referencing. The folder does not contain the actual data. It contains only a pointer to another repository.
+
+For example:
+
+* ``binary @ 43f41b0``  
+* ``papers @ 9ad115e``  
+* ``tutorials @ 94d5b87``  
+
+Each of these links to a different repository in the COBRA ecosystem.
+
+Automatic updates through initCobraToolbox
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+When users run ``initCobraToolbox`` for the first time, the script automatically performs:
+
+``git submodule update --init --remote``
+
+This operation fetches the latest commits from the default branch (master or main) of every submodule. As a result, the local installation is always updated to the most recent versions of:
+
+* COBRA.binary  
+* COBRA.papers  
+* COBRA.tutorials  
+* COBRA.models  
+
+Only maintainers update the submodule pointers inside the main toolbox repository. Contributors should always add content to the external repositories themselves.
+
+Why submodules are used
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Submodules keep the main toolbox lightweight and modular:
+
+* Large binaries live in their own repository.  
+* Tutorials are published independently.  
+* Models and paper specific code are stored externally for clarity and version control.  
+
+This design ensures that each component can evolve independently while allowing the toolbox to reference precise, reproducible versions of all resources.
+
 Overall repository layout
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
