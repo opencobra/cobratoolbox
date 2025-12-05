@@ -423,7 +423,10 @@ Singular fields are explicitly marked as ``scalar``, ``string`` or ``struct``.
      - Sparse or Full Matrix
      - Coupling terms between extra variables and constraints
      - 
------------
+
+.. raw:: html
+
+   <div style="clear: both;"></div>
 
 Model Specific Fields
 ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -441,4 +444,3 @@ Additional fields
 
 Fields beginning with ``met``, ``rxn``, ``comp``, ``protein`` or ``gene`` that are not defined above are treated as annotation fields.  
 Input and output functions will attempt to map these to identifiers in registered databases where possible.
-
