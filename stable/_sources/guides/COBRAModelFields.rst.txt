@@ -11,6 +11,7 @@ The following fields are defined in the COBRA Toolbox. If a field is included in
 The dimensions refer to m (metabolites), n (reactions), g (genes) and c (compartments).  
 Singular fields are explicitly marked as ``scalar``, ``string`` or ``struct``.
 
+.. rst-class:: wide-table
 .. list-table::
    :header-rows: 1
    :align: left
