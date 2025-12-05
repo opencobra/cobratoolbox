@@ -8,6 +8,8 @@ Contribute using MATLAB.devTools
    :start-after: begin-how-to-contribute-marker
    :end-before: end-how-to-contribute-marker
 
+.. include:: guides/COBRAModelFields.rst
+
 .. include:: guides/testGuide.rst
 
 .. include:: guides/documentationGuide.rst

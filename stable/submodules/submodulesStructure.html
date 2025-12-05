@@ -212,6 +212,50 @@
 <p>In order to add a file to any of these repositories, you must add it directly to the corresponding main repository on GitHub (for example <a class="reference external" href="https://github.com/opencobra/COBRA.tutorials">COBRA.tutorials</a>, <a class="reference external" href="https://github.com/opencobra/COBRA.models">COBRA.models</a> and so on), <strong>not</strong> to the <a class="reference external" href="https://github.com/opencobra/cobratoolbox">opencobra/cobratoolbox</a> repository.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">cobratoolbox</span></code> repository only contains submodule pointers. The actual content lives in the external repositories listed below.</p>
 </section>
+<section id="understanding-submodules-in-the-cobra-toolbox">
+<h2>Understanding submodules in the COBRA Toolbox<a class="headerlink" href="#understanding-submodules-in-the-cobra-toolbox" title="Permalink to this heading">¶</a></h2>
+<p>The COBRA Toolbox repository contains several folders that appear in blue when viewed on GitHub. These are not ordinary folders. Each of them is a <em>git submodule</em> that points to a specific commit of an external repository.</p>
+<div style="text-align: center;">
+  <img src="/cobratoolbox/stable/_static/img/submodules_in_cobratoolbox.png"
+       alt="Submodules in the COBRA Toolbox as seen on GitHub"
+       width="60%">
+</div><section id="how-submodules-appear">
+<h3>How submodules appear<a class="headerlink" href="#how-submodules-appear" title="Permalink to this heading">¶</a></h3>
+<p>In the GitHub file browser, each submodule is shown as a blue folder icon followed by an identifier in the form:</p>
+<p><code class="docutils literal notranslate"><span class="pre">folderName</span> <span class="pre">&#64;</span> <span class="pre">&lt;commitHash&gt;</span></code></p>
+<p>The commit hash indicates the exact state of the external repository that the main toolbox is currently referencing. The folder does not contain the actual data. It contains only a pointer to another repository.</p>
+<p>For example:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">binary</span> <span class="pre">&#64;</span> <span class="pre">43f41b0</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">papers</span> <span class="pre">&#64;</span> <span class="pre">9ad115e</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tutorials</span> <span class="pre">&#64;</span> <span class="pre">94d5b87</span></code></p></li>
+</ul>
+<p>Each of these links to a different repository in the COBRA ecosystem.</p>
+</section>
+<section id="automatic-updates-through-initcobratoolbox">
+<h3>Automatic updates through initCobraToolbox<a class="headerlink" href="#automatic-updates-through-initcobratoolbox" title="Permalink to this heading">¶</a></h3>
+<p>When users run <code class="docutils literal notranslate"><span class="pre">initCobraToolbox</span></code> for the first time, the script automatically performs:</p>
+<p><code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">submodule</span> <span class="pre">update</span> <span class="pre">--init</span> <span class="pre">--remote</span></code></p>
+<p>This operation fetches the latest commits from the default branch (master or main) of every submodule. As a result, the local installation is always updated to the most recent versions of:</p>
+<ul class="simple">
+<li><p>COBRA.binary</p></li>
+<li><p>COBRA.papers</p></li>
+<li><p>COBRA.tutorials</p></li>
+<li><p>COBRA.models</p></li>
+</ul>
+<p>Only maintainers update the submodule pointers inside the main toolbox repository. Contributors should always add content to the external repositories themselves.</p>
+</section>
+<section id="why-submodules-are-used">
+<h3>Why submodules are used<a class="headerlink" href="#why-submodules-are-used" title="Permalink to this heading">¶</a></h3>
+<p>Submodules keep the main toolbox lightweight and modular:</p>
+<ul class="simple">
+<li><p>Large binaries live in their own repository.</p></li>
+<li><p>Tutorials are published independently.</p></li>
+<li><p>Models and paper specific code are stored externally for clarity and version control.</p></li>
+</ul>
+<p>This design ensures that each component can evolve independently while allowing the toolbox to reference precise, reproducible versions of all resources.</p>
+</section>
+</section>
 <section id="overall-repository-layout">
 <h2>Overall repository layout<a class="headerlink" href="#overall-repository-layout" title="Permalink to this heading">¶</a></h2>
 <section id="main-toolbox-repository">
