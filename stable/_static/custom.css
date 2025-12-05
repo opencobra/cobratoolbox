@@ -1,0 +1,11 @@
+/* Allow COBRA model field table to scroll horizontally */
+.wide-table {
+    overflow-x: auto;
+    display: block;
+    margin-bottom: 2rem;
+}
+
+.wide-table table {
+    width: 100%;
+    table-layout: auto;
+}
