@@ -1,30 +1,27 @@
-# 🧩 Continuous Integration Guide:
-# build-and-publish-site.yml
+# COBRA Toolbox Documentation CI/CD Workflow Guide
 
-This document explains the structure and logic of the **Build and Publish Site (Ordered)** GitHub Actions workflow.
-It is intended for developers maintaining the COBRA Toolbox documentation CI/CD pipeline.
+This document explains how the **Build and Publish Site** GitHub Actions workflow operates. It is designed for future developers maintaining or extending the documentation pipeline.
 
 ---
 
-## 📘 Overview
+## Overview
 
-The workflow automates building the Sphinx-based documentation, preparing and updating static pages, and publishing the final website to the **`gh-pages`** branch under the `stable/` directory.
+The workflow automatically:
 
-It performs the following major tasks in order:
+1. Builds the Sphinx documentation
+2. Updates dynamic citation data
+3. Preserves previously deployed tutorials
+4. Rebuilds function documentation
+5. Regenerates the contributors page
+6. Updates navigation sidebars in static HTML
+7. Applies copyright updates
+8. Deploys the final `stable/` site to the `gh-pages` branch
 
-1. Builds the core documentation (`make html`)
-2. Removes and replaces dynamic parts (e.g. Contributors page)
-3. Merges and updates external assets like tutorials, modules, citations
-4. Regenerates the contributors list and HTML file
-5. Updates navigation sidebars in static HTML pages
-6. Updates static copyright text
-7. Deploys all finalised files to `gh-pages`
+It runs **every time the `master` branch is pushed**.
 
 ---
 
-## ⚙️ Trigger and Permissions
-
-The workflow runs automatically **on every push to the `master` branch**:
+## Workflow Trigger and Permissions
 
 ```yaml
 on:
@@ -33,161 +30,182 @@ on:
       - master
 ```
 
-It has write permissions to repository contents, allowing deployment to the `gh-pages` branch.
+The workflow uses:
 
 ```yaml
 permissions:
   contents: write
 ```
 
----
+This allows publishing to the `gh-pages` branch.
 
-## 🧱 Job Structure
-
-All tasks are performed in a **single job** (`build-and-publish`) to preserve workspace state and order.
-
-### ✅ 1. Checkout and Setup
-
-* Checks out the current branch.
-* Sets up **Python 3.10** with pip caching for faster runs.
-* Installs dependencies listed in `documentation/requirements.txt`.
-
-### ✅ 2. Core Documentation Build
-
-* Runs `make html` in `documentation/` to build the Sphinx docs.
-* Removes the `tutorials/` directory from the build, since tutorials are handled separately.
-* Removes the auto-generated `contributors.html` to replace it later with a custom one.
-* Copies all generated files to a temporary staging area `ghpages/stable`.
-
-### ✅ 3. Preserve Existing Tutorials
-
-Before overwriting the staging area, the workflow retrieves tutorials already deployed to `gh-pages`:
+Concurrency ensures that only one workflow runs at a time:
 
 ```yaml
-- name: Checkout gh-pages into temp dir (read-only)
-  uses: actions/checkout@v3
-  with:
-    ref: gh-pages
-    path: ghpages-existing
+concurrency:
+  group: gh-pages-deploy
+  cancel-in-progress: false
 ```
 
-If a `stable/tutorials/` directory exists in that branch, it is copied into the staging area.
+---
 
-This ensures tutorials are retained without being rebuilt every time.
+## Job Structure
+
+Everything runs inside a **single job** named `build-and-publish` so that intermediate files remain available across steps.
 
 ---
 
-## 🧠 Documentation Subsections
+## Core Documentation Build
 
-### 📖 Function Documentation
+### 1. Checkout and Python Setup
 
-The workflow regenerates and stages documentation for the MATLAB function modules and citation pages:
+The repository is checked out, Python 3.10 is installed, and documentation dependencies are installed from:
 
-* Runs scripts in `documentation/source/sphinxext/` and `documentation/source/modules/`
-* Generates `.rst` files for modules
-* Builds them with Sphinx (`make html`)
-* Copies relevant HTML pages and static assets to:
+```
+documentation/requirements.txt
+```
 
-  * `ghpages/stable/modules/`
-  * `ghpages/stable/_static/`
-  * `ghpages/stable/Citations/`
+### 2. Citation Database Update
+
+Before building the docs, the workflow updates the COBRA citation database:
+
+* Dependencies loaded from `documentation/source/Citations/requirements.txt`
+* The file `COBRA.bib` is updated using `updateCitationsBib.py`
+
+The workflow prints the number of citations collected for visibility.
+
+### 3. Sphinx Build
+
+The documentation is built using:
+
+```
+make html
+```
+
+The tutorials directory is then removed because tutorials are maintained only on the deployed site:
+
+```
+rm -rf ./documentation/build/html/tutorials
+```
+
+### 4. Stage Output
+
+All generated HTML is staged into a temporary directory:
+
+```
+ghpages/stable/
+```
+
+The auto-generated contributors page is also removed so a custom one can be inserted later.
 
 ---
 
-## 👥 Contributors Section
+## Bringing Forward Existing Tutorials
 
-### Python Dependencies
+Tutorials are not rebuilt each run. Instead, the workflow retrieves any existing tutorials from the previously deployed `gh-pages` branch:
 
-Installed from:
+1. The `gh-pages` branch is checked out into `ghpages-existing/`
+2. If tutorials exist, they are copied into the staging area
+
+This ensures tutorials persist unless intentionally deleted or replaced.
+
+---
+
+## Function Documentation
+
+Function pages and citation `.rst` files are regenerated:
+
+* `GenerateCitationsRST.py` produces formatted citation pages
+* `copy_files.py` moves images and resources
+* `GetRSTfiles.py` rebuilds module-level documentation
+* `make html` regenerates the documentation
+
+The results are staged under:
+
+```
+ghpages/stable/modules/
+ghpages/stable/_static/
+ghpages/stable/Citations/
+```
+
+---
+
+## Contributors Page Generation
+
+### 1. Install Contributor Dependencies
+
+Dependencies are installed from:
 
 ```
 documentation/source/Contributions/requirements.txt
 ```
 
-This includes:
+### 2. Sidebar Updates
+
+The custom static pages must have a sidebar matching the current Sphinx build.
+
+The script `UpdateSideBar.py`:
+
+* Copies sidebar HTML from `build/html/index.html`
+* Inserts it into a static page
+* Marks the correct navigation entry as active
+* Adjusts links when pages live in subfolders
+
+It is applied to:
+
+#### Contributors template
 
 ```
-requests
-pandas
-numpy
-datetime
-python-dateutil
-beautifulsoup4>=4.12
-lxml>=5.1
+source/Contributions/contributorsTemp.html
 ```
 
-### Updating the Sidebar (Navigation Menu)
+#### Tutorials index
 
-The **UpdateSideBar.py** script copies the navigation sidebar from the built `index.html` and injects it into static pages, ensuring consistency with the rest of the site.
-
-#### Contributors Template Sidebar Update
-
-```yaml
-python ./source/Contributions/UpdateSideBar.py \
-  --source ./build/html/index.html \
-  --input  ./source/Contributions/contributorsTemp.html \
-  --output ./source/Contributions/contributorsTemp.html \
-  --current-href contributors.html \
-  --home-href index.html \
-  --parser html5lib
+```
+ghpages/stable/tutorials/index.html
 ```
 
-* `--current-href` marks the active (“current”) page in the sidebar.
-* `--home-href` ensures the first “Home” link points correctly.
-* This produces the final sidebar for the contributors page.
+Uses prefix rebasing (`../`) because the tutorials folder is one level deeper.
 
-#### Tutorials Sidebar Update
+#### HOLDER_TEMPLATE
 
-Since the tutorials live in a subfolder (`stable/tutorials/`), we also **rebase all relative links** using a prefix:
-
-```yaml
-python ./source/Contributions/UpdateSideBar.py \
-  --source ./build/html/index.html \
-  --input  ../ghpages/stable/tutorials/index.html \
-  --output ../ghpages/stable/tutorials/index.html \
-  --current-href tutorials/index.html \
-  --home-href ../index.html \
-  --href-prefix ../ \
-  --parser html5lib
-```
-
-* The `--href-prefix ../` argument ensures links like `modules/index.html` become `../modules/index.html`, maintaining correct navigation from within the subfolder.
+If `HOLDER_TEMPLATE.html` exists inside tutorials, the same update is applied.
 
 ---
 
-## 🧬 Contributor Page Regeneration
+## Contributors Content Generation
 
-After updating the sidebar, two scripts regenerate the content:
+Two scripts generate the final contributors page:
 
-1. `UpdateContributorsList.py`
-   Parses `AllContributors.csv` to update metadata.
+1. `UpdateContributorsList.py` rebuilds the structured contributor list
+2. `GenerateContributorsHTML.py` outputs the finished HTML file into:
 
-2. `GenerateContributorsHTML.py`
-   Creates the final `contributors.html` using updated contributor data and the refreshed sidebar template.
-
-The generated file is then staged under `ghpages/stable/`.
-
----
-
-## © Copyright Updates
-
-An optional step, **UpdateCopyright.py**, is executed to refresh copyright
-footers in contributors and tutorials pages before deployment:
-
-```yaml
-python ./source/Contributions/UpdateCopyright.py \
-  ../ghpages/stable/contributors.html \
-  ../ghpages/stable/tutorials/index.html
+```
+source/Contributions/contributors/
 ```
 
-This ensures the copyright date or version
-matches the latest release.
+This is then staged to:
+
+```
+ghpages/stable/
+```
 
 ---
 
-## 🚀 Deployment
+## Static HTML Copyright Updates
 
-Finally, the pipeline deploys everything under `ghpages/` to the remote `gh-pages` branch:
+The script `UpdateCopyright.py` updates copyright strings in:
+
+* contributors.html
+* tutorials/index.html
+
+This resolves outdated year or version strings.
+
+---
+
+## Deployment
+
+Deployment uses the JamesIves GitHub Pages action:
 
 ```yaml
 uses: JamesIves/github-pages-deploy-action@v4
@@ -195,75 +213,53 @@ with:
   folder: ghpages
   branch: gh-pages
   clean: false
-  commit-message: "Publish site (single deploy, ordered build)"
 ```
 
-The deployment **preserves existing content** (`clean: false`) while replacing any changed files in `stable/`.
+Key notes:
+
+* `clean: false` preserves existing files such as old versions
+* Only the staged site (`ghpages/`) is pushed
 
 ---
 
-## 🧩 Maintenance Tips
+## Maintenance Guidelines
 
-### 1. When to Rebuild
+### Updating Build Dependencies
 
-* Any change in documentation source files (`.rst`, `.py`, templates)
-* Updated `AllContributors.csv`
-* Modified sidebar structure or styling
-* Sphinx theme updates
+Ensure both files are kept in sync:
 
-### 2. Updating Dependencies
+* `documentation/requirements.txt`
+* `documentation/source/Contributions/requirements.txt`
 
-If you update documentation dependencies, also update:
+### Updating SideBar Script
+
+If Sphinx changes its HTML structure, you may need to modify:
 
 ```
-documentation/requirements.txt
-documentation/source/Contributions/requirements.txt
+get_menu_div() selector
 ```
 
-### 3. Sidebar Adjustments
+### Adding New Static Pages
 
-If Sphinx output structure changes (e.g. new `ul` nesting or sidebar div name),
-edit the selector in `UpdateSideBar.py`:
+Use UpdateSideBar.py with appropriate flags:
 
-```python
-def get_menu_div(soup):
-    return soup.select_one("div.wy-menu.wy-menu-vertical")
-```
+* `--current-href`
+* `--home-href`
+* `--href-prefix`
 
-### 4. Tutorials Path Fixes
+### Debugging
 
-If tutorials move, update:
+Common checks:
 
-* The path in the “Update Tutorials sidebar” step
-* The `--href-prefix` argument (e.g. `../../` for deeper nesting)
-
-### 5. Debugging
-
-To inspect failures:
-
-* View workflow logs under “Actions → Build and publish site (ordered)”
-* Re-run with “Enable debug logging” to print out file paths
-* Check if the input and output HTML paths exist before sidebar injection
+* Confirm file paths exist before sidebar update
+* Inspect build output in `documentation/build/html/`
+* Check logs in the Actions tab for missing selectors or paths
 
 ---
 
-## ✅ Summary of Key Python Tools
+## Local Testing
 
-| Script                          | Purpose                                               |
-| ------------------------------- | ----------------------------------------------------- |
-| **UpdateSideBar.py**            | Copies and updates sidebar navigation from built HTML |
-| **UpdateContributorsList.py**   | Updates contributor data from CSV                     |
-| **GenerateContributorsHTML.py** | Generates final contributors.html                     |
-| **UpdateCopyright.py**          | Refreshes copyright metadata                          |
-| **GetRSTfiles.py**              | Auto-generates `.rst` files for module docs           |
-| **GenerateCitationsRST.py**     | Regenerates citations                                 |
-| **copy_files.py**               | Synchronises static resources                         |
-
----
-
-## 💡 Example: Local Testing
-
-You can simulate the CI steps locally:
+You can test the sidebar pipeline locally:
 
 ```bash
 cd documentation
@@ -271,38 +267,35 @@ make html
 
 python ./source/Contributions/UpdateSideBar.py \
   --source ./build/html/index.html \
-  --input  ./source/Contributions/contributorsTemp.html \
+  --input ./source/Contributions/contributorsTemp.html \
   --output ./source/Contributions/contributorsTemp.html \
   --current-href contributors.html \
   --home-href index.html
+```
 
+Then regenerate the contributors:
+
+```bash
 python ./source/Contributions/GenerateContributorsHTML.py
 ```
 
-Then open the generated HTML files under:
+---
 
-```
-documentation/source/Contributions/contributors/
-```
+## Summary of Helper Scripts
+
+| Script                        | Purpose                                |
+| ----------------------------- | -------------------------------------- |
+| `UpdateSideBar.py`            | Inject sidebar and adjust navigation   |
+| `UpdateContributorsList.py`   | Regenerate structured contributor list |
+| `GenerateContributorsHTML.py` | Produce final contributors HTML page   |
+| `UpdateCopyright.py`          | Adjust copyright metadata              |
+| `GetRSTfiles.py`              | Auto-generate module rst files         |
+| `GenerateCitationsRST.py`     | Build citation documentation           |
+| `copy_files.py`               | Copy assets used by documentation      |
+| `updateCitationsBib.py`       | Update citation database (COBRA.bib)   |
 
 ---
 
-### Maintainers
+## Last Updated
 
-If you introduce new static pages under `stable/`, you can reuse **UpdateSideBar.py**
-to inject a consistent sidebar:
-
-```bash
-python UpdateSideBar.py \
-  --source ./build/html/index.html \
-  --input ./path/to/newpage.html \
-  --output ./path/to/newpage.html \
-  --current-href newpage.html \
-  --home-href ../index.html \
-  --href-prefix ../
-```
-
----
-
-**Last updated:** November 2025
-**Maintainer:** COBRA Toolbox Documentation Team
+2025 · COBRA Toolbox Documentation Team
