@@ -86,10 +86,10 @@ if ~exist('param','var')
     param = struct;
 end
 
-if ~isfield(param,'minNorm')
+if ~isfield('param','minNorm')
     param.minNorm = 0;
 end
-if ~isfield(param,'secondsTimeLimit')
+if ~isfield('param','secondsTimeLimit')
     param.secondsTimeLimit = 100;
 end
 if isfield(model,'osenseStr')
