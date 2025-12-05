@@ -423,7 +423,7 @@ Singular fields are explicitly marked as ``scalar``, ``string`` or ``struct``.
      - Sparse or Full Matrix
      - Coupling terms between extra variables and constraints
      - 
-
+-----------
 
 Model Specific Fields
 ~~~~~~~~~~~~~~~~~~~~~~~~
