@@ -426,7 +426,7 @@ Singular fields are explicitly marked as ``scalar``, ``string`` or ``struct``.
 
 .. raw:: html
 
-   <div style="clear: both;"></div>
+   <div style="clear: both; margin-bottom: 2em;"></div>
 
 Model Specific Fields
 ~~~~~~~~~~~~~~~~~~~~~~~~
