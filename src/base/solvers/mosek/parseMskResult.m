@@ -212,8 +212,8 @@ switch accessSolution
                 accessSolution = 'dontAccess';
         end
     otherwise
-        accessSolution = 'dontAccess';
         origStat = -1;
+        accessSolution = 'dontAccess';
 end
 
 if strcmp(accessSolution,'dontAccess')
@@ -224,7 +224,7 @@ if strcmp(accessSolution,'dontAccess')
         case {'DUAL_INFEASIBLE_CER','MSK_SOL_STA_DUAL_INFEAS_CER','MSK_SOL_STA_NEAR_DUAL_INFEAS_CER'}
             stat=2; % Unbounded solution
             origStat = [origStat ' & ' res.rcodestr];
-        case {'UNKNOWN','PRIM_ILLPOSED_CER','PRIMAL_ILLPOSED_CER','DUAL_ILLPOSED_CER','PRIM_FEAS','DUAL_FEAS','PRIM_AND_DUAL_FEAS','DUAL_FEASIBLE'}
+        case {'UNKNOWN','PRIM_ILLPOSED_CER','PRIMAL_ILLPOSED_CER','DUAL_ILLPOSED_CER','PRIM_FEAS','DUAL_FEAS','PRIM_AND_DUAL_FEAS','DUAL_FEASIBLE','MSK_RES_ERR_IN_ARGUMENT'}
             stat=-1; %some other problem
             origStat = [origStat ' & ' res.rcodestr];
         otherwise
@@ -233,8 +233,8 @@ if strcmp(accessSolution,'dontAccess')
             fprintf('%s\n',res.rcode)
             fprintf('%s\n',res.rmsg)
             fprintf('%s\n',res.rcodestr)
-            if strcmp(origStat,'UNKNOWN')
-                origStat = [origStat ' & ' res.rcodestr];
+            if isfield(res,'rcodestr') && ~isempty(res.rcodestr)
+                origStat = res.rcodestr;
             end
     end
 end

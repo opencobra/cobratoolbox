@@ -1,9 +1,3 @@
-% define global paths
-global CBTDIR
-global GUROBI_PATH
-global ILOG_CPLEX_PATH
-global TOMLAB_PATH
-
 c = clock;
 fprintf('\n\n      _____   _____   _____   _____     _____     |\n');
 fprintf('     /  ___| /  _  \\ |  _  \\ |  _  \\   / ___ \\    |   COnstraint-Based Reconstruction and Analysis\n');
@@ -12,6 +6,12 @@ fprintf('     | |     | | | | |  _  { |  _  /  |  ___  |   |\n');
 fprintf('     | |___  | |_| | | |_| | | | \\ \\  | |   | |   |   Test Suite\n');
 fprintf(['     \\_____| \\_____/ |_____/ |_|  \\_\\ |_|   |_|   |\n']);
 fprintf('                                                  | \n\n');
+
+% define global paths
+global CBTDIR
+global GUROBI_PATH
+global ILOG_CPLEX_PATH
+global TOMLAB_PATH
 
 % Define CI boolean
 CIenv = false;

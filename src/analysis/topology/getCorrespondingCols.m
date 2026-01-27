@@ -1,4 +1,4 @@
-function restrictedColBool = getCorrespondingCols(S, rowBool, colBool, mode)
+function restrictedColBool = getCorrespondingCols(A, rowBool, colBool, mode)
 % Returns a boolean vector that is true for a subset of the true cols in
 % `colBool` according to whether the cols 'exclusive', 'inclusive', or
 % 'partial' -ly correspond to true entries in `rowBool`
@@ -6,10 +6,10 @@ function restrictedColBool = getCorrespondingCols(S, rowBool, colBool, mode)
 %
 % USAGE:
 %
-%    restrictedColBool = getCorrespondingCols(S, rowBool, colBool, mode)
+%    restrictedColBool = getCorrespondingCols(A, rowBool, colBool, mode)
 %
 % INPUTS:
-%    S:                    `m x n` stoichiometric matrix
+%    A:                    `m x n` matrix
 %    rowBool:              `m x 1` boolean vector
 %    colBool:              `n x 1` boolean vector
 %    mode:                 'exclusive' or 'inclusive' or 'partial'
@@ -19,7 +19,7 @@ function restrictedColBool = getCorrespondingCols(S, rowBool, colBool, mode)
 %
 % EXAMPLE:
 %
-%    S =
+%    A =
 %        -1     0     0     0     0
 %         2    -3     0     0     0
 %         0     4    -5     0     0
@@ -58,34 +58,34 @@ if ~islogical(colBool)
     error('colBool must be a logical vector')
 end
 
-[mlt,nlt]=size(S);
+[mlt,nlt]=size(A);
 
 if length(rowBool)~=mlt
-    error('length of rowBool must equal size(S,1)')
+    error('length of rowBool must equal size(A,1)')
 end
 
 if length(colBool)~=nlt
-    error('length of rowBool must equal size(S,2)')
+    error('length of rowBool must equal size(A,2)')
 end
 
 restrictedColBool=false(nlt,1);
 switch mode
     case 'exclusive'
         %corresponding reactions exclusively involving certain metabolites
-        restrictedColBool(colBool)=    any(S( rowBool,colBool),1)'...
-                                    & ~any(S(~rowBool,colBool),1)';
+        restrictedColBool(colBool)=    any(A( rowBool,colBool),1)'...
+                                    & ~any(A(~rowBool,colBool),1)';
     case 'inclusive'
         %corresponding reactions involving certain metabolites
-        restrictedColBool(colBool)=any(S( rowBool,colBool),1)';
+        restrictedColBool(colBool)=any(A( rowBool,colBool),1)';
 
     case 'partial'
         %metatbolites exclusively involved in certain reactions
-        restrictedColBool(colBool)=    any(S( rowBool,colBool),1)'...
-                                    & ~any(S(~rowBool,colBool),1)';
+        restrictedColBool(colBool)=    any(A( rowBool,colBool),1)'...
+                                    & ~any(A(~rowBool,colBool),1)';
 
         %corresponding reactions involving certain metabolites
         restricedColBool2=false(nlt,1);
-        restricedColBool2(colBool)=any(S( rowBool,colBool),1)';
+        restricedColBool2(colBool)=any(A( rowBool,colBool),1)';
         %difference
         restrictedColBool= restricedColBool2  & ~restrictedColBool;
     otherwise

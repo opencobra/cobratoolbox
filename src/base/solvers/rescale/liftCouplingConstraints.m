@@ -9,8 +9,9 @@ function [model] = liftCouplingConstraints(model, BIG, printLevel)
 % 
 %
 % Reformulation techniques are described in detail in:
-% `Y. Sun, R. M.T. Fleming, M. A. Saunders, I. Thiele, An Algorithm for Flux
-% Balance Analysis of Multi-scale Biochemical Networks, submitted`.
+% Sun, Y., Fleming, R. M., Thiele, I., & Saunders, M. A. (2013). Robust flux balance analysis of multiscale biochemical reaction networks. BMC Bioinformatics, 14(1). https://doi.org/10.1186/1471-2105-14-240
+% See also tutorial here:
+% https://opencobra.github.io/cobratoolbox/stable/tutorials/tutorial_numCharactWBM.html
 %
 % USAGE:
 %

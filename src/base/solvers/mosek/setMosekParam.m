@@ -18,8 +18,10 @@ if ~isfield(param, 'MSK_IPAR_LOG')
     % A higher level implies that more information is logged.
     switch param.printLevel
         case 0
+            param.MSK_IPAR_LOG = 0;
             echolev = 0;
         case 1
+            param.MSK_IPAR_LOG = 1;
             echolev = 3;
         case 2
             param.MSK_IPAR_WRITE_DATA_PARAM='MSK_ON';
@@ -67,7 +69,7 @@ if ~isfield(param, 'MSK_IPAR_LOG')
         otherwise
             echolev = 0;
     end
-    if echolev == 0 && ~param.debug
+    if echolev == 0 %&& ~param.debug
         param.MSK_IPAR_LOG = 0;
         cmd = ['minimize echo(' int2str(echolev) ')'];
     else
@@ -274,16 +276,16 @@ if isfield(param,'strict')
     end
 end
 
-%backward compatibility
-if isfield(param,'method')
-    if isempty(param.method)
-        param = rmfield(param,'method');
-    else
-        if ~isfield(param,[lower(param.problemType) 'method'])
-            param.([lower(param.problemType) 'method'])=param.method;
-        end
-    end
-end
+% %backward compatibility
+% if isfield(param,'method')
+%     if isempty(param.method)
+%         param = rmfield(param,'method');
+%     else
+%         if ~isfield(param,[lower(param.problemType) 'method'])
+%             param.([lower(param.problemType) 'method'])=param.method;
+%         end
+%     end
+% end
 
 switch param.problemType
     case {'LP'}

@@ -1,4 +1,4 @@
-function [f,u0,c0l,c0u,cl,cu,dcl,dcu,wl,wu,B,b,l_r,u_r,paramOut] = processConcConstraints(model,param)
+function [f,u0,c0l,c0u,cl,cu,dcl,dcu,l_w,u_w,B,b,l_r,u_r,paramOut] = processConcConstraints(model,param)
 %
 % USAGE:
 %   [] = processConcConstraints(model,param)
@@ -43,8 +43,8 @@ function [f,u0,c0l,c0u,cl,cu,dcl,dcu,wl,wu,B,b,l_r,u_r,paramOut] = processConcCo
 % cu:      m x 1    non-negative lower bound on final molecular concentrations
 % dcl:     m x 1    real valued lower bound on difference between final and initial molecular concentrations  
 % dcu:     m x 1    real valued upper bound on difference between final and initial initial molecular concentrations  
-%  wl:     k x 1    lower bound on external net flux 
-%  wu:     k x 1    upper bound on external net flux
+% l_w:     k x 1    lower bound on external net flux 
+% u_w:     k x 1    upper bound on external net flux
 %   B:    `m x k`   External stoichiometric matrix
 %   b:     m x 1    RHS of S*v = b
 % l_r:     m x 1    lower bound on regularisation term in S*v + r = b (default -inf)
@@ -65,7 +65,7 @@ k=nnz(~model.SConsistentRxnBool);
 
 %
 if isfield(model,'b')
-    b=model.b;
+    b = model.b;
 else
     b = zeros(m,1);
 end
@@ -125,8 +125,8 @@ if any(~model.SConsistentRxnBool)
                 error('Option clash between param.externalNetFluxBounds=''original'' and (isfield(model,''dcl'') && any(model.dcl~=0)) || (isfield(model,''dcu'') && any(model.dcu~=0))')
             end
             %
-            wl = model.lb(~model.SConsistentRxnBool);
-            wu = model.ub(~model.SConsistentRxnBool);
+            l_w = model.lb(~model.SConsistentRxnBool);
+            u_w = model.ub(~model.SConsistentRxnBool);
             %force initial and final concentration to be equal
             dcl = zeros(m,1);
             dcu = zeros(m,1);
@@ -136,8 +136,8 @@ if any(~model.SConsistentRxnBool)
                 fprintf('\n%s','Ingnoring the following external reactions: ')
                 printRxnFormula(model,model.rxns(singletonBool & ~model.SConsistentRxnBool))
             end
-            wl = -inf*ones(2*m,1);
-            wu =  inf*ones(2*m,1);
+            l_w = -inf*ones(2*m,1);
+            u_w =  inf*ones(2*m,1);
             %force initial and final concentration to be equal
             dcl = zeros(m,1);
             dcu = zeros(m,1);
@@ -165,16 +165,16 @@ if any(~model.SConsistentRxnBool)
             B = [-speye(m), speye(m)];
         case 'bReplacingB'
             B=B*0;
-            wl =  zeros(k,1);
-            wu =  zeros(k,1);
+            l_w =  zeros(k,1);
+            u_w =  zeros(k,1);
             dcl = zeros(m,1);
             dcu = zeros(m,1);
         case 'none'
             if param.printLevel>0
                 fprintf('%s\n','Using no external net flux bounds.')
             end
-            wl = -ones(k,1)*inf;
-            wu =  ones(k,1)*inf;
+            l_w = -ones(k,1)*inf;
+            u_w =  ones(k,1)*inf;
             %force initial and final concentration to be equal
             dcl = zeros(m,1);
             dcu = zeros(m,1);
@@ -197,19 +197,18 @@ if any(~model.SConsistentRxnBool)
             end
             %eliminate all exchange reactions
             B = B*0;
-            wl = model.lb(~model.SConsistentRxnBool)*0;
-            wu = model.ub(~model.SConsistentRxnBool)*0;
+            l_w = model.lb(~model.SConsistentRxnBool)*0;
+            u_w = model.ub(~model.SConsistentRxnBool)*0;
             l_r = zeros(m,1);
             u_r = zeros(m,1);
         otherwise
             error(['param.externalNetFluxBounds = ' param.externalNetFluxBounds ' is an unrecognised input'])
     end
 else
-    wl = [];
-    wu =  [];
+    l_w = [];
+    u_w =  [];
     dcl = -inf*ones(m,1);
     dcu =  inf*ones(m,1);
-
 end
 
 

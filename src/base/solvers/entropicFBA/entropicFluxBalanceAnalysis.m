@@ -106,7 +106,13 @@ function [solution, modelOut] = entropicFluxBalanceAnalysis(model, param)
 % model.Q        (n + k) x (n + k)    positive semi-definite matrix to minimise (1/2)v'*Q*v
 %
 % model.H        (n + k) x (n + k)    positive semi-definite matrix in objective (1/2)(v-h)'*H*(v-h) to be minimised 
-% model.h        (n + k) x 1          vector in objective (1/2)(v-h)'*H*(v-h) to be minimised
+%                                     set H(j,j) = finite quadratic penalty, for reaction j
+%                                     OR
+%                                     set h(j) = 0 if no  quadratic penalty, for reaction j
+% model.h        (n + k) x 1          h vector in objective (1/2)(v-h)'*H*(v-h) to be minimised
+%                                     set h(j) = finite desired net flux value, for reaction j
+%                                     OR
+%                                     set h(j) = NaN if no desired net flux value exists for reaction j
 %
 % model.SConsistentMetBool: m x 1  boolean indicating  stoichiometrically consistent metabolites
 % model.SConsistentRxnBool: n x 1  boolean indicating  stoichiometrically consistent metabolites
@@ -169,6 +175,11 @@ end
 if ~isfield(param,'solver')
     param.solver='mosek';
 end
+
+% if strcmp(param.solver,'mosek')
+%     %set default mosek parameters for this type of problem
+%     param=mosekParamSetEFBA(param);
+% end
 
 if ~isfield(param,'entropicFBAMethod')
     if isfield(param,'entropicMethod')
@@ -291,6 +302,7 @@ if isfield(model,'C')
     D = model.C(:,~model.SConsistentRxnBool);
 else
     C = [];
+    nConstr = 0;
 end
 
 
@@ -1035,9 +1047,9 @@ switch param.entropicFBAMethod
                         csense(m+n+1:m+n+nConstr,1) = model.dsense;
                     else
                         EPproblem.A  = ...
-                            [N,     -N,    B,  Omk;
-                            In,    -In,  Onk,  Onk;
-                            Ohn,    Ohn,  Ik,  -Ik];
+                            [N,     -N,    B,  Omh;
+                            In,    -In,  Onk,  Onh;
+                            Ohn,    Ohn, Ihk,  -Ih];
                         %    vf      vr    w    dw
                         EPproblem.blc = [model.b;vl;h];
                         EPproblem.buc = [model.b;vu;h];
@@ -1079,6 +1091,9 @@ switch param.entropicFBAMethod
                         EPproblem.Q(n+1:2*n,n+1:2*n)=Qv;
                         Qve = model.Q(~model.SConsistentRxnBool,~model.SConsistentRxnBool);
                         EPproblem.Q(2*n+1:2*n+k,2*n+1:2*n+k)=Qve;
+                    else
+                        Qv = sparse(n,n);
+                        Qve = sparse(k,k);
                     end
                     quadRows  = any(EPproblem.Q,2);
                     quadCols  = any(EPproblem.Q,1)';

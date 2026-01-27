@@ -470,7 +470,16 @@ switch solver
 
         % call minos
         sysCall = [MINOS_PATH filesep 'runfba solveLP ' fname ' lp1'];
-        [status, cmdout] = system(sysCall);
+
+        if 0
+            [status, cmdout] = system(sysCall);
+        else
+            %run the command with LD_LIBRARY_PATH cleared just for that
+            %call, this avoids issues caused by conflict between matlab and
+            %system library versions
+            wrapped = sprintf('env -u LD_LIBRARY_PATH -u LD_PRELOAD %s', sysCall);
+            [status,cmdout] = system(wrapped);
+        end
 
         if contains(cmdout, 'error')
            disp(sysCall);

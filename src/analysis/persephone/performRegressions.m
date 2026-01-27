@@ -182,7 +182,8 @@ if ~isempty(nonEmptyResults)
                 predictorTable.N(i) = mdl.NumObservations;
                 % Add regression estimate
                 if mixedEffectRegression == true
-                    predictorTable{i,{'estimate','SE','tStat','pValue'}} = double(mdl.Coefficients(2,{'Estimate','SE','tStat','pValue'}));
+                    predictorTable{i,{'estimate','SE','tStat','pValue'}} = ...
+                        double(mdl.Coefficients(j, {'Estimate','SE','tStat','pValue'}));
                 else
                     predictorTable{i,{'estimate','SE','tStat','pValue'}} = mdl.Coefficients{j,:};
                 end

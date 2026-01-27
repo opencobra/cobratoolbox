@@ -1,4 +1,4 @@
-function [vl,vu,vel,veu,vfl,vfu,vrl,vru,ci,ce,cf,cr,g, paramOut] = processFluxConstraints(model,param)
+function [vl,vu,l_w,u_w,vfl,vfu,vrl,vru,ci,ce,cf,cr,g, paramOut] = processFluxConstraints(model,param)
 %
 % USAGE:
 %   processFluxConstraints(model)
@@ -36,8 +36,8 @@ function [vl,vu,vel,veu,vfl,vfu,vrl,vru,ci,ce,cf,cr,g, paramOut] = processFluxCo
 % OUTPUTS:
 % vl:       n x 1    lower bound on internal net flux 
 % vu:       n x 1    upper bound on internal net flux
-% vel:      k x 1    lower bound on external net flux 
-% veu:      k x 1    upper bound on external net flux
+% l_w:      k x 1    lower bound on external net flux 
+% u_w:      k x 1    upper bound on external net flux
 % vfl:      n x 1    non-negative lower bound on internal forward flux
 % vfu:      n x 1    non-negative upper bound on internal forward flux
 % vrl:      n x 1    non-negative lower bound on internal reverse flux 
@@ -214,9 +214,106 @@ end
 
 vl = lb(model.SConsistentRxnBool);
 vu = ub(model.SConsistentRxnBool);
+
 %exchange reaction bounds (may be overwritten if conc method is chosen)
-vel = lb(~model.SConsistentRxnBool);
-veu = ub(~model.SConsistentRxnBool);
+l_w = lb(~model.SConsistentRxnBool);
+u_w = ub(~model.SConsistentRxnBool);
+
+if any(~model.SConsistentRxnBool)
+    switch param.externalNetFluxBounds
+        case 'original'
+            if param.printLevel>0
+                fprintf('%s\n','Using existing external net flux bounds without modification.')
+            end
+            if (isfield(model,'dcl') && any(model.dcl~=0)) || (isfield(model,'dcu') && any(model.dcu~=0))
+                error('Option clash between param.externalNetFluxBounds=''original'' and (isfield(model,''dcl'') && any(model.dcl~=0)) || (isfield(model,''dcu'') && any(model.dcu~=0))')
+            end
+            %
+            l_w = model.lb(~model.SConsistentRxnBool);
+            u_w = model.ub(~model.SConsistentRxnBool);
+            %force initial and final concentration to be equal
+            dcl = zeros(m,1);
+            dcu = zeros(m,1);
+        case 'identities'
+            singletonBool = ((model.S~=0)'*ones(m,1))==1;
+            if any(singletonBool(~model.SConsistentRxnBool))
+                fprintf('\n%s','Ingnoring the following external reactions: ')
+                printRxnFormula(model,model.rxns(singletonBool & ~model.SConsistentRxnBool))
+            end
+            l_w = -inf*ones(2*m,1);
+            u_w =  inf*ones(2*m,1);
+            %force initial and final concentration to be equal
+            dcl = zeros(m,1);
+            dcu = zeros(m,1);
+            for j=n+1:n+k
+                if singletonBool(j)
+                    for i = 1:m
+                        if model.S(i,j)~=0
+                            if model.S(i,j)<0
+                                dcl(i) = -model.ub(j);
+                                dcu(i) = -model.lb(j);
+                                cw(i)  = -model.c(j);%TODO check that is correct
+                                cw(i+m)  =  model.c(j);
+                            else
+                                dcl(i) = model.lb(j);
+                                dcu(i) = model.ub(j);
+                                cw(i)  = model.c(j);
+                                cw(i+m)  = -model.c(j);
+                            end
+
+                        end
+                        break
+                    end
+                end
+            end
+            B = [-speye(m), speye(m)];
+        case 'bReplacingB'
+            B=B*0;
+            l_w =  zeros(k,1);
+            u_w =  zeros(k,1);
+            dcl = zeros(m,1);
+            dcu = zeros(m,1);
+        case 'none'
+            if param.printLevel>0
+                fprintf('%s\n','Using no external net flux bounds.')
+            end
+            l_w = -ones(k,1)*inf;
+            u_w =  ones(k,1)*inf;
+            %force initial and final concentration to be equal
+            dcl = zeros(m,1);
+            dcu = zeros(m,1);
+            l_r = zeros(m,1);
+            u_r = zeros(m,1);
+        case 'dxReplacement'
+            %TODO
+            error('revise how net initial and final conc bounds are dealt with')
+            if ~isfield(model,'dcl')
+                %close bounds by default
+                model.dcl = zeros(m,1);
+                dxlB =  -B*model.lb(~model.SConsistentRxnBool);
+                dcl(dxlB~=0)=dxlB(dxlB~=0);
+            end
+            if ~isfield(model,'dcu')
+                %close bounds by default
+                dcu = zeros(m,1);
+                dxuB =  -B*model.ub(~model.SConsistentRxnBool);
+                dcu(dxuB~=0)=dxuB(dxuB~=0);
+            end
+            %eliminate all exchange reactions
+            B = B*0;
+            l_w = model.lb(~model.SConsistentRxnBool)*0;
+            u_w = model.ub(~model.SConsistentRxnBool)*0;
+            l_r = zeros(m,1);
+            u_r = zeros(m,1);
+        otherwise
+            error(['param.externalNetFluxBounds = ' param.externalNetFluxBounds ' is an unrecognised input'])
+    end
+else
+    l_w = [];
+    u_w =  [];
+    dcl = -inf*ones(m,1);
+    dcu =  inf*ones(m,1);
+end
 
 relaxedUnidirectionalUpperBounds = 1;
 %lower bound on forward fluxes
@@ -251,20 +348,28 @@ if any(vfl>0)
         printFluxVector(model,vfl2,1);
     end
 end
-if any(vfl>vfu)
-    bool = vfl>vfu;
-    %print the problematic bounds
-    fprintf('%s%s%s\n','Reaction','vfl','vul')
-    vfl2 = vfl;
-    vfl2(vfl<=vfu)=0;
-    vfl3 = zeros(n+k,1);
-    vfl3(model.SConsistentRxnBool,1)=vfl;
 
-    vfu2 = vfu;
-    vfu2(vfl<=vfu)=0;
-    vfu3 = zeros(n+k,1);
-    vfu3(model.SConsistentRxnBool,1)=vfu;
-    printFluxVector(model,[vfl3,vfu3],1);
+%deal with lower bounds on fluxes that are positive and higher than default
+%upper bound
+bool = vfl>vfu;
+if any(bool)
+    if param.debug
+        vfl2 = vfl;
+        vfl2(~bool)=0;
+        vfu2 = vfu;
+        vfu2(~bool)=0;
+        %print the problematic bounds
+        fprintf('%s%s%s\n','Reaction with vfl > vfu.   ','vfl         ','vfu    Set vfu = vfl + feasTol ')
+        vfl3 = zeros(n+k,1);
+        vfl3(model.SConsistentRxnBool,1)=vfl2;
+        vfu3 = zeros(n+k,1);
+        vfu3(model.SConsistentRxnBool,1)=vfu2;
+        printFluxVector(model,[vfl3,vfu3],1);
+    end
+    vfu(bool)=vfl(bool)+param.feasTol;
+end
+
+if any(vfl>vfu)
     error('lower bound on forward flux is greater than upper bound')
 end
 %lower bounds on reverse fluxes
