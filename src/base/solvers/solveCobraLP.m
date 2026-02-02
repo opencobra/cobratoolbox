@@ -337,11 +337,9 @@ switch solver
         originalDirectory = pwd;
 
         % set the temporary path to the DQQ solver
-        tmpPath = [CBTDIR filesep 'binary' filesep computer('arch') filesep 'bin' filesep 'DQQ'];
+        tmpPath = [CBTDIR filesep 'binary' filesep computer('arch') filesep 'bin' filesep 'quadPrecision' filesep 'doubleQuadQuadFBA'];
         cd(tmpPath);
-        if ~problemTypeParams.debug % if debugging leave the files in case of an error.
-            cleanUp = onCleanup(@() DQQCleanup(tmpPath,originalDirectory));
-        end
+
         % create the
         if ~exist([tmpPath filesep 'MPS'], 'dir')
             mkdir([tmpPath filesep 'MPS'])
@@ -362,8 +360,8 @@ switch solver
             cd(tmpPath);
         end
 
-        % run the DQQ procedure
-        sysCall = ['./run1DQQ ' MPSfilename ' ' tmpPath];
+        % run the DQQ procedure - TODO needs to be fixed
+        sysCall = ['../run1DQQ ' MPSfilename ' ' tmpPath];
         [status, cmdout] = system(sysCall);
         if status ~= 0
             fprintf(['\n', sysCall]);
@@ -439,6 +437,9 @@ switch solver
         origStat = dqqStatMap{[dqqStatMap{:,1}] == sol.inform, 2};
         stat = dqqStatMap{[dqqStatMap{:,1}] == sol.inform, 3};
 
+        if ~problemTypeParams.debug % if debugging leave the files in case of an error.
+            cleanUp = onCleanup(@() DQQCleanup(tmpPath,originalDirectory));
+        end
         % return to original directory
         cd(originalDirectory);
 
@@ -452,24 +453,47 @@ switch solver
         precision = 'double';  % 'single'
 
         % set the name of the model
-        modelName = 'qFBA';
+        modelName = 'FBA';
 
-        % define the data directory
-        dataDirectory = [MINOS_PATH filesep 'data' filesep 'FBA'];
+        % define the data directory relative to the minos executable path
+        cd(MINOS_PATH)
+        cd('..')
+        dataDirectory = [pwd filesep 'data' filesep 'FBA'];
         mkdir(dataDirectory);
 
-        % write out flat file to current folder
+        % write out flat file as .txt representing LP problem to dataDirectory
         [dataDirectory, fname] = writeMinosProblem(LPproblem, precision, modelName, dataDirectory, problemTypeParams.printLevel);
 
-        if ~problemTypeParams.debug % if debugging leave the files in case of an error.
-            cleanUp = onCleanup(@() minosCleanUp(MINOS_PATH,fname,originalDirectory));
+        % change system to quadFBA directory
+        cd('quadFBA');
+
+        if 1
+            %seems it is necessary to call single precision first
+            % call minos
+            sysCall = ['./runfba solveLP ' fname ' lp1'];
+
+            if 0
+                [status, cmdout] = system(sysCall);
+            else
+                %run the command with LD_LIBRARY_PATH cleared just for that
+                %call, this avoids issues caused by conflict between matlab and
+                %system library versions
+                wrapped = sprintf('env -u LD_LIBRARY_PATH -u LD_PRELOAD %s', sysCall);
+                [status,cmdout] = system(wrapped);
+            end
+
+            if contains(lower(cmdout), 'error')
+                disp(sysCall);
+                disp(cmdout);
+                if contains(cmdout,'libgfortran')
+                    disp('quadMinos depends on libgfortran.so.6 so make sure it is accessible on the system path.')
+                end
+                error('Call to runfba failed.');
+            end
         end
 
-        % change system to testFBA directory
-        cd(MINOS_PATH);
-
-        % call minos
-        sysCall = [MINOS_PATH filesep 'runfba solveLP ' fname ' lp1'];
+        % call qminos
+        sysCall = ['./qrunfba qsolveLP ' fname ' lp2'];
 
         if 0
             [status, cmdout] = system(sysCall);
@@ -481,30 +505,18 @@ switch solver
             [status,cmdout] = system(wrapped);
         end
 
-        if contains(cmdout, 'error')
-           disp(sysCall);
-           disp(cmdout);
-           if contains(cmdout,'libgfortran')
-               disp('quadMinos depends on libgfortran.so.3 so make sure it is accessible on the system path.')
-               disp('TODO update to depend on libgfortran.so.5')
-               %sudo apt-get install libgfortran5
-               disp('https://stackoverflow.com/questions/62908955/how-to-install-libgfortran-so-3-on-ubuntu-20-04')
-           end
-           error('Call to runfba failed.');
-        end
-
-        % call qminos
-        sysCall = [MINOS_PATH filesep 'qrunfba qsolveLP ' fname ' lp2'];
-        [status, cmdout] = system(sysCall);
-
-        if contains(cmdout, 'error')
+        if contains(lower(cmdout), 'error')
            disp(sysCall);
            disp(cmdout);
            error('Call to qrunfba failed.');
         end
 
         % read the solution
-        sol = readMinosSolution([MINOS_PATH filesep 'q' fname '.sol']);
+        if 1
+            sol = readMinosSolution([pwd filesep fname '.sol']);
+        else
+            sol = readMinosSolution([pwd filesep 'fort.81']);
+        end
 
         % The optimization problem solved by MINOS is assumed to be
         %        min   osense*s(iobj)
@@ -550,6 +562,10 @@ switch solver
         %     stat = 0; % infeasible
         else
             stat = -1;  % Solution not optimal or solver problem
+        end
+
+        if ~problemTypeParams.debug % if debugging leave the files in case of an error.
+            minosCleanUp(pwd,dataDirectory,modelName);
         end
 
         % return to original directory
@@ -1626,47 +1642,55 @@ end
 function DQQCleanup(tmpPath, originalDirectory)
 % perform cleanup after DQQ.
 try
-% cleanup
-        rmdir([tmpPath filesep 'results'], 's');
-        fortFiles = [4, 9, 10, 11, 12, 13, 60, 81];
-        for k = 1:length(fortFiles)
-            delete([tmpPath filesep 'fort.', num2str(fortFiles(k))]);
-        end
+    % cleanup
+    rmdir([tmpPath filesep 'results'], 's');
+    fortFiles = [4, 9, 10, 11, 12, 13, 60, 81];
+    for k = 1:length(fortFiles)
+        delete([tmpPath filesep 'fort.', num2str(fortFiles(k))]);
+    end
 catch
 end
 try        % remove the temporary .mps model file
-        rmdir([tmpPath filesep 'MPS'], 's')
+    rmdir([tmpPath filesep 'MPS'], 's')
 catch
 end
 cd(originalDirectory);
 end
 
-function minosCleanUp(MINOS_PATH,fname, originalDirectory)
+function minosCleanUp(tmpPath,dataDirectory,modelName)
 % CleanUp after Minos Solver.
 
-fileEnding = {'.sol', '.out', '.newbasis', '.basis', '.finalbasis'};
-addFileName = {'', 'q'};
+% Files to keep
+keepFiles = {'lp1.spc','lp2.spc','qrunfba','runfba'};
 
-% remove temporary data directories
-tmpFileName = [MINOS_PATH filesep 'data'];
+% Get directory listing
+files = dir(tmpPath);
+
+for k = 1:numel(files)
+    name = files(k).name;
+
+    % Skip current and parent directories
+    if strcmp(name,'.') || strcmp(name,'..')
+        continue
+    end
+    
+    fullpath = fullfile(tmpPath, name);
+    % If not in keep list, delete
+    if ~ismember(name, keepFiles)
+        delete(fullpath);       % remove file
+    end
+end
+
+
+% remove temporary data 
+tmpFileName = [dataDirectory filesep modelName  '.txt'];
 try
-    if exist(tmpFileName, 'dir') == 7
-        rmdir(tmpFileName, 's')
+    if exist(tmpFileName, 'file')
+        delete(tmpFileName)
     end
 catch
 end
 
-% remove temporary solver files
-for k = 1:length(fileEnding)
-    for q = 1:length(addFileName)
-        tmpFileName = [MINOS_PATH filesep addFileName{q} fname fileEnding{k}];
-        if exist(tmpFileName, 'file') == 2
-            delete(tmpFileName);
-        end
-    end
-end
-
-cd(originalDirectory);
 end
 
 % function [varargout] = setupOPTIproblem(c,A,b,osense,csense,solver)

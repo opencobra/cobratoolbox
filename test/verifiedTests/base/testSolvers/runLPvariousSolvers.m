@@ -4,7 +4,7 @@ function [solution, all_obj] = runLPvariousSolvers(model, solverPkgs, params)
 % INPUT:
 %
 % model:         COBRA model to test
-% solverPkgs:    list of LP solver packages
+% solverPkgs:    cell array giving a list of LP solver names
 % params:        additional solver parameters
 %
 % OUTPUT:
