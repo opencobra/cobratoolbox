@@ -30,3 +30,23 @@ params.feasTol = getCobraSolverParams('LP','feasTol');
 
 % run LP with various solvers
 [~, all_obj] = runLPvariousSolvers(model, solverPkgs, params);
+
+
+
+% set up QP problem
+QPproblem.F = [8, 1; 1, 8];  % Matrix F in 1/2 * x' * F * x + c' * x
+QPproblem.c = [3, -4]';  % Vector c in 1/2 * x' * F * x + c' * x
+QPproblem.A = [1, 1; 1, -1];  % Constraint matrix
+QPproblem.b = [5, 0]';
+QPproblem.lb = [0, 0]';
+QPproblem.ub = [inf, inf]';
+QPproblem.x0 = [0, 1]';  % starting point
+QPproblem.osense = 1;
+QPproblem.csense = ['L'; 'E'];
+
+ solverOK = changeCobraSolver('dqqMinos', 'QP');
+
+ assert(solverOK==1)
+
+ sol = solveCobraQP(QPproblem)
+
