@@ -116,4 +116,4 @@ switch model.description
 end
 [p, output] = findExtremePool(model);
 
-[B,L] = greedyExtremePoolBasis(model);
+[B,L] = greedyExtremeRayBasis(model);

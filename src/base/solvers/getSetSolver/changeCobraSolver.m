@@ -290,7 +290,7 @@ if ~ENV_VARS.STATUS
 end
 
 % set path to MINOS and DQQ
-MINOS_PATH = [CBTDIR filesep 'binary' filesep computer('arch') filesep 'bin' filesep 'minos'];
+MINOS_PATH = [CBTDIR filesep 'binary' filesep computer('arch') filesep 'bin' filesep 'quadPrecision' filesep 'bin'];
 
 % legacy support for MPS (will be removed in future release)
 if nargin > 0 && strcmpi(solverName, 'mps')

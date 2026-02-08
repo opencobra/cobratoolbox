@@ -1,4 +1,4 @@
-function [isSameModel,differences] = compareModels(modelA,modelB,printLevel)
+function [isSameModel,diffTable,why] = compareModels(modelA,modelB)
 %compares modelA with modelB, looking for differences between the
 %structures
 %
@@ -9,6 +9,13 @@ function [isSameModel,differences] = compareModels(modelA,modelB,printLevel)
 %
 % OUTPUT
 % isSameModel:   true if identical models, false otherwise
+%
+% diffTable:     table listing differences between fields in the input structures, e.g.
+%                   field       modelA        modelB
+%               ___________    ____________    ____
+%               "DrGtPrior"    "1"             "0"
+%               "DrGtPrior"    "quadratic"     "none"
+%
 % differences:   structure listing differences between models
 %               *.reason: gives a text stack of why the difference occurred
 %                         as well as a field
@@ -17,30 +24,47 @@ function [isSameModel,differences] = compareModels(modelA,modelB,printLevel)
 %
 %
 % Note: This function depends on structeq.m and celleq.m
+%
 
-if~exist('printLevel','var')
-    printLevel=1;
-end
 
-differences=[];
-result = 0;
-i=0;
-while result==0
-    [result, why] = structeq(modelA,modelB);
-    if result==0
-        i=i+1;
-        if printLevel>0
-            fprintf('%s\n',why.Reason)
-            fprintf('%s\n',why.Where)
+[isSameModel, why] = structeq(modelA,modelB);
+
+if isSameModel
+    diffTable = [];
+    why = [];
+else
+    % Convert to table
+    diffTable = struct2table(why,'AsArray',1);
+    diffTable = diffTable(:,2:end);
+    diffTable.Properties.VariableNames{1} = 'field';
+    diffTable.Properties.VariableNames{2} = inputname(1);
+    diffTable.Properties.VariableNames{3} = inputname(2);
+    diffTable.field = string(diffTable.field);
+    for j = 1:size(diffTable,1)
+        str = string(diffTable{j,1});
+        %    Find the position of the dot
+        dotPos = strfind(str, '.');
+        if ~isempty(dotPos)
+            str = eraseBetween(str, 1, dotPos);
         end
-        differences(i).reason = why.Reason;
-        differences(i).where = why.Where;
-        %fieldName = strrep(why.Where,'(1)','');
-        fieldName = strtok(why.Where,'(1)');
-        eval(['modelB' fieldName ' = modelA' fieldName ';']);
+        diffTable.field(j) = str;
     end
-end
-isSameModel = i==0;
 
+    % 2. Create a formatting function
+    % If the value is empty, return an empty char array (renders as blank)
+    % If it's a number/string, return it as a char array (renders without quotes)
+    formatter = @(x) char(strjoin(string(x), ', '));
+
+    try
+        % 3. Apply to your columns
+        diffTable.(inputname(1)) = cellfun(formatter, diffTable.(inputname(1)), 'UniformOutput', false);
+        diffTable.(inputname(2)) = cellfun(formatter, diffTable.(inputname(2)), 'UniformOutput', false);
+    catch
+        
+    end
+
+    % 4. Convert 'field' to char as well if you want quotes gone there too
+    diffTable.field = cellstr(diffTable.field);
 end
+
 

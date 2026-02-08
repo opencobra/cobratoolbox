@@ -5,12 +5,13 @@ function [P, vertexBool, N] = extremePools(model, param)
 % INPUT:
 %    model.S  - `m x (n + k)` Stoichiometric matrix
 % OPTIONAL INPUTS:
-%    model.SConsistentRxnBool: n x 1  boolean indicating  stoichiometrically consistent metabolites
-%    model.SIntRxnBool - Boolean of reactions heuristically though to be mass balanced.
-%    model.SIntMetBool - Boolean of metabolites heuristically though to be involved in mass balanced reactions.
+%    model.SConsistentRxnBool: n + k x 1  boolean indicating  n
+%                           stoichiometrically consistent reactions
+%    model.SIntRxnBool: Boolean of reactions heuristically though to be mass balanced.
+%    model.SIntMetBool: Boolean of metabolites heuristically though to be involved in mass balanced reactions.
 %
-%    positivity:           {0, (1)} if `positivity == 1`, then positive orthant base
-%    inequality:           {(0), 1} if `inequality == 1`, then use two inequalities rather than a single equaltiy
+%    param.positivity:           {0, (1)} if `param.positivity == 1`, then positive orthant base
+%    param.inequality:           {(0), 1} if `param.inequality == 1`, then use two inequalities rather than a single equaltiy
 %
 % OUTPUT:
 %   P: p x m matrix of non-negative entries such that P*N = 0. 
@@ -19,6 +20,15 @@ function [P, vertexBool, N] = extremePools(model, param)
 %
 % Author(s) Ronan Fleming
 
+if ~exist('param','var')
+    param = struct();
+end
+if ~isfield(param,'positivity')
+    param.positivity = 1;
+end
+if ~isfield(param,'inequality')
+    param.inequality = 0;
+end
 
 [nMet, nRxn] = size(model.S);
 
@@ -51,21 +61,23 @@ else
     end
 end
 
-if nnz(N - round(N))
+if nnz(N - round(N))~=0
     figure
     spy(N - round(N))
     title('S-round(S)')
     error('Stoichiometric coefficients must be all integers')
 end
 
-try
-    % [rankA, p, q] = getRankLUSOL(N, 1);
-    % N=N(:,q(1:rankA));
-    [rankN, rowPerm, colPerm] = getRankLUSOL(N, 1);
-    N = N(rowPerm(1:rankN), :);  % <-- Removing only rows instead of columns
-    disp('extremePools: row reduction with getRankLUSOL worked.')
-catch
-    disp('extremePools: row reduction with getRankLUSOL did not work, check installation of LUSOL. Proceeding without it.')
+if 0 %TODO - seems wrong to row reduce when looking for left nullspace
+    try
+        % [rankA, p, q] = getRankLUSOL(N, 1);
+        % N=N(:,q(1:rankA));
+        [rankN, rowPerm, colPerm] = getRankLUSOL(N, 1);
+        N = N(rowPerm(1:rankN), :);  % <-- Removing only rows instead of columns
+        disp('extremePools: row reduction with getRankLUSOL worked.')
+    catch
+        disp('extremePools: row reduction with getRankLUSOL did not work, check installation of LUSOL. Proceeding without it.')
+    end
 end
 
 if 0
@@ -77,19 +89,13 @@ if 0
         filename = 'model';
     end
 
-    if exist('positivity', 'var')
-        positivity = 1;
-    end
-    if ~exist('inequality', 'var')
-        inequality = 0;
-    end
     suffix = '';
-    if positivity
+    if param.positivity
         suffix = [suffix 'pos_'];
     else
         suffix = [suffix 'neg_'];
     end
-    if inequality
+    if param.inequality
         suffix = [suffix 'ineq'];
     else
         suffix = [suffix 'eq'];
@@ -119,7 +125,7 @@ if 0
     %            minimise     f'*x
     %            subject to   A*x=(a)
     %                         D*x>=(d)
-    lrsInputHalfspace(N, D, filename, positivity, inequality, a, d, f, sh);
+    lrsInputHalfspace(N, D, filename, param.positivity, param.inequality, a, d, f, sh);
 
     % pause(eps)
     [status, result] = system('which lrs');
@@ -146,12 +152,6 @@ if 0
 else
     if ~exist('param','var')
         param = struct();
-    end
-    if ~isfield(param,'positivity')
-        param.positivity  = 1;
-    end
-    if ~isfield(param,'inequality')
-        param.inequality  = 0;
     end
     if ~isfield(param,'debug')
         param.debug  = 0;
