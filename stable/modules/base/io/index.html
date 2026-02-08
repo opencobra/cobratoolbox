@@ -482,52 +482,6 @@ options to select from.
 </dd></dl>
 
 <dl class="mat function">
-<dt class="sig sig-object mat" id="src.base.io.readMinosSolution">
-<span class="sig-name descname"><span class="pre">readMinosSolution</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">fname</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/io/readMinosSolution.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.io.readMinosSolution" title="Permalink to this definition">¶</a></dt>
-<dd><p>Loads MINOS solution information from file fname.
-The file is created by MINOS with the run-time option
-Report file 81.
-Note that 81 is essential, and the gfortran compiler produces a file
-named fort.81 (which may be renamed by the script used to run MINOS).
-Other compilers may generate different generic names.</p>
-<p>The optimization problem solved by MINOS is assumed to be</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>min   <cite>osense*s(iobj)</cite></p></li>
-<li><p>st    <cite>Ax - s = 0</cite> + bounds on <cite>x</cite> and <cite>s</cite>,</p></li>
-</ul>
-</div></blockquote>
-<p>where <cite>A</cite> has <cite>m</cite> rows and <cite>n</cite> columns.</p>
-<dl class="field-list simple">
-<dt class="field-odd">USAGE<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>sol = readMinosSolution</strong> (<em>fname</em>)</p>
-</dd>
-<dt class="field-even">INPUT<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>fname</strong> – File</p>
-</dd>
-<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>sol</strong> – Structure</p>
-<ul class="simple">
-<li><p>.inform - MINOS exit condition</p></li>
-<li><p>.m - Number of rows in <cite>A</cite></p></li>
-<li><p>.n - Number of columns in <cite>A</cite></p></li>
-<li><p>.osense - osense</p></li>
-<li><p>.objrow - Row of <cite>A</cite> containing a linear objective</p></li>
-<li><p>.obj - Value of MINOS objective (linear + nonlinear)</p></li>
-<li><p>.numinf - Number of infeasibilities in <cite>x</cite> and <cite>s</cite>.</p></li>
-<li><p>.suminf - Sum of infeasibilities in <cite>x</cite> and <cite>s</cite>.</p></li>
-<li><p>.xstate - <cite>n</cite> vector: state of each variable in <cite>x</cite>.</p></li>
-<li><p>.sstate - <cite>m</cite> vector: state of each slack in <cite>s</cite>.</p></li>
-<li><p>.x - <cite>n</cite> vector: value of each variable in <cite>x</cite>.</p></li>
-<li><p>.s - <cite>m</cite> vector: value of each slack in <cite>s</cite>.</p></li>
-<li><p>.rc - <cite>n</cite> vector: reduced gradients for <cite>x</cite>.</p></li>
-<li><p>.y - <cite>m</cite> vector: dual variables for <cite>Ax - s = 0</cite>.</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="mat function">
 <dt class="sig sig-object mat" id="src.base.io.readMixedData">
 <span class="sig-name descname"><span class="pre">readMixedData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">file</span></em>, <em class="sig-param"><span class="pre">n_header</span></em>, <em class="sig-param"><span class="pre">n_labels</span></em>, <em class="sig-param"><span class="pre">delimiter</span></em>, <em class="sig-param"><span class="pre">verbose</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/io/readMixedData.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.io.readMixedData" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read floating point data with row identifiers (text) in the first <cite>n</cite> columns

@@ -493,12 +493,13 @@ model.SConsistentMetBool: m x 1  boolean indicating  stoichiometrically consiste
 model.SConsistentRxnBool: n x 1  boolean indicating  stoichiometrically consistent metabolites
 model.rxns:</p>
 <blockquote>
-<div><p>model.f:       m x 1    strictly positive weight on concentration entropy maximisation (default 1)
+<div><p>model.pp       m x 1    boolean vector indicating the independent columns of [N,b];
+model.f:       m x 1    strictly positive weight on concentration entropy maximisation (default 1)
 model.u0:      m x 1    standard transformed Gibbs energy of formation (default 0)
 model.c0l:     m x 1    non-negative lower bound on initial molecular concentrations
 model.c0u:     m x 1    non-negative upper bound on initial molecular concentrations
-model.cl:      m x 1    non-negative lower bound on final molecular concentrations
-model.cu:      m x 1    non-negative lower bound on final molecular concentrations
+model.l_c:      m x 1    non-negative lower bound on final molecular concentrations
+model.u_c:      m x 1    non-negative lower bound on final molecular concentrations
 model.dcl:     m x 1    real valued lower bound on difference between final and initial molecular concentrations   (default -inf)
 model.dcu:     m x 1    real valued upper bound on difference between final and initial initial molecular concentrations  (default inf)
 model.gasConstant:    8.3144621e-3; % Gas constant in kJ/(K*mol)
@@ -519,8 +520,8 @@ f:       m x 1    strictly positive weight on concentration entropy maximisation
 u0:      m x 1    standard transformed Gibbs energy of formation, divided by RT (default 0)
 c0l:     m x 1    non-negative lower bound on initial molecular concentrations
 c0u:     m x 1    non-negative upper bound on initial molecular concentrations
-cl:      m x 1    non-negative lower bound on final molecular concentrations
-cu:      m x 1    non-negative lower bound on final molecular concentrations
+l_c:      m x 1    non-negative lower bound on final molecular concentrations
+u_c:      m x 1    non-negative lower bound on final molecular concentrations
 dcl:     m x 1    real valued lower bound on difference between final and initial molecular concentrations
 dcu:     m x 1    real valued upper bound on difference between final and initial initial molecular concentrations
 l_w:     k x 1    lower bound on external net flux

@@ -593,6 +593,31 @@ lookupFilePath        Path to the generated lookup file</p>
 </dd></dl>
 
 <dl class="mat function">
+<dt class="sig sig-object mat" id="src.analysis.persephone.additionalFunctions.interrogateWBmodelsQP">
+<span class="sig-name descname"><span class="pre">interrogateWBmodelsQP</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">directory</span></em>, <em class="sig-param"><span class="pre">resPath</span></em>, <em class="sig-param"><span class="pre">solver</span></em>, <em class="sig-param"><span class="pre">param</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/persephone/additionalFunctions/interrogateWBmodelsQP.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.persephone.additionalFunctions.interrogateWBmodelsQP" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performs FBA on a all whole-body models in a folder with the quadratic flux minimisation
+algorithm (QP) and saves the QP FBA results in a separate results folder.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>interrogateWBmodelsQP</strong> (<em>directory,resPath,solver</em>)</p>
+</dd>
+</dl>
+<p>INPUTS
+directory     [char] Path to folder with WBMs
+resPath       [char] Path to location of FBA results
+solver        [char] Solver name, e.g., gurobi.</p>
+<p>OPTIONAL INPUTS:
+param         [struct] FBA parameters. See OptimizeWBModel.m or</p>
+<blockquote>
+<div><p>OptimizeCbModel.m for more information. All FBA parameters are set to
+their defaults except for param.minNorm (1e-6) and secondsTimeLimit (500
+seconds instead of 100 seconds)</p>
+</div></blockquote>
+<p>AUTHOR:
+- Tim Hensen, January 2026.</p>
+</dd></dl>
+
+<dl class="mat function">
 <dt class="sig sig-object mat" id="src.analysis.persephone.additionalFunctions.microbiomeMappingStats">
 <span class="sig-name descname"><span class="pre">microbiomeMappingStats</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">rawPath</span></em>, <em class="sig-param"><span class="pre">marsPath</span></em>, <em class="sig-param"><span class="pre">saveDir</span></em>, <em class="sig-param"><span class="pre">metadataPath</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/persephone/additionalFunctions/microbiomeMappingStats.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.persephone.additionalFunctions.microbiomeMappingStats" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function for obtaining statistics on AGORA2 mapping</p>

@@ -292,8 +292,8 @@
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.analysis.topology.extremeRays.optimalRays.findExtremePool">
-<span class="sig-name descname"><span class="pre">findExtremePool</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">fbaModel</span></em>, <em class="sig-param"><span class="pre">obj</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/topology/extremeRays/optimalRays/findExtremePool.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.topology.extremeRays.optimalRays.findExtremePool" title="Permalink to this definition">¶</a></dt>
-<dd><p>Finds an extreme ray in the left nullspace of the stoichiometric matrix</p>
+<span class="sig-name descname"><span class="pre">findExtremePool</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">obj</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em>, <em class="sig-param"><span class="pre">positive</span></em>, <em class="sig-param"><span class="pre">internal</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/topology/extremeRays/optimalRays/findExtremePool.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.topology.extremeRays.optimalRays.findExtremePool" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds an extreme ray, x, in the left nullspace of the stoichiometric matrix</p>
 <dl class="field-list simple">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[x, output] = findExtremePool</strong> (<em>fbaModel, obj, printLevel</em>)</p>
@@ -314,24 +314,35 @@
 </ul>
 </dd>
 </dl>
+<p>Author: Ronan Fleming,  &amp; 2026</p>
 </dd></dl>
 
 <dl class="mat function">
-<dt class="sig sig-object mat" id="src.analysis.topology.extremeRays.optimalRays.greedyExtremePoolBasis">
-<span class="sig-name descname"><span class="pre">greedyExtremePoolBasis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/topology/extremeRays/optimalRays/greedyExtremePoolBasis.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.topology.extremeRays.optimalRays.greedyExtremePoolBasis" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object mat" id="src.analysis.topology.extremeRays.optimalRays.greedyExtremeRayBasis">
+<span class="sig-name descname"><span class="pre">greedyExtremeRayBasis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">param</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/analysis/topology/extremeRays/optimalRays/greedyExtremeRayBasis.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.analysis.topology.extremeRays.optimalRays.greedyExtremeRayBasis" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computes a non-negative basis for the left nullspace of the stoichiometric
 matrix using optimization to pick random extreme rays, then test a
 posteriori if each is linearly independent from the existing stored
 extreme rays.</p>
 <dl class="field-list simple">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>[B, L] = greedyExtremePoolBasis</strong> (<em>model</em>)</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>[L, Zt] = greedyExtremeRayBasis</strong> (<em>model) &lt;=&gt; [B, L] = greedyExtremeRayBasis(model,’left’</em>)</p></li>
+<li><p><strong>Gives Zpos*N = 0 or Zpos*S = 0</strong></p></li>
+<li><p><strong>Gives Z*N = 0 or Z*S = 0</strong></p></li>
+<li><p><strong>[B, L] = greedyExtremeRayBasis</strong> (<em>model,’right’</em>)</p></li>
+<li><p><strong>Gives N*Zpos = 0 or S*Zpos = 0</strong></p></li>
+<li><p><strong>Gives N*Z = 0 or S*Z = 0</strong></p></li>
+</ul>
 </dd>
 <dt class="field-even">INPUT<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>model</strong> – model structure</p>
+<dd class="field-even"><p><strong>model.S</strong> – m x n + k stoichiometric matrix, where n are internal reactions and k are exchange reactions</p>
 </dd>
 <dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>B, L</strong> – non-negative basus fi the left nullspace</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Zpos</strong> – non-negative linear basis for the left (right) nullspace of N (internal = 1) or S (internal = 0)</p></li>
+<li><p><strong>Z</strong> – linear basis for the left (right) nullspace of N (internal = 1) or S (internal = 0)</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>

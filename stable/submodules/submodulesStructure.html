@@ -343,6 +343,7 @@
 </section>
 <section id="contribute-a-tutorial-of-your-work-to-the-cobra-tutorials">
 <h1>Contribute a tutorial of your work to the <a class="reference external" href="https://github.com/opencobra/COBRA.tutorials">COBRA Tutorials</a>.<a class="headerlink" href="#contribute-a-tutorial-of-your-work-to-the-cobra-tutorials" title="Permalink to this heading">¶</a></h1>
+<p>A template for generating a new tutorial is provided <a class="reference external" href="https://github.com/opencobra/COBRA.tutorials/blob/master/.template/tutorial_template.mlx">here</a>.</p>
 <section id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">¶</a></h2>
 <p>The COBRA.tutorials repository exists to collect and maintain tutorials for developed and published constraint-based genome-scale modelling methods and studies. Its purpose is to provide clear, reproducible instructional material that demonstrates how new algorithms, workflows, and analysis techniques can be applied within the COBRA modelling framework. By centralising these tutorials, the repository supports both new and experienced users in learning, comparing, and adopting state-of-the-art constraint-based modelling approaches.</p>
@@ -364,7 +365,7 @@ tutorials are grouped according to the <code class="docutils literal notranslate
 <ul class="simple">
 <li><p>The interactive version <code class="docutils literal notranslate"><span class="pre">.mlx</span></code> is a MATLAB Live Script format and can be run using <a class="reference external" href="https://nl.mathworks.com/help/matlab/matlab_prog/what-is-a-live-script.html">the MATLAB Live-script editor</a>.</p></li>
 <li><p>The static version <code class="docutils literal notranslate"><span class="pre">.html</span></code> is automatically generated and is accessible on the <a class="reference external" href="https://opencobra.github.io/COBRA.tutorials">tutorial section of the COBRA Toolbox documentation</a>.</p></li>
-<li><p>The <code class="docutils literal notranslate"><span class="pre">.pdf</span></code> version can be downloaded from the same tutorial section. The <code class="docutils literal notranslate"><span class="pre">.m</span></code> version can be opened and run directly in MATLAB, which is particularly useful for building new analysis scripts based on existing tutorials.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">.m</span></code> version can be opened and run directly in MATLAB, which is particularly useful for building new analysis scripts based on existing tutorials.</p></li>
 </ul>
 </section>
 <section id="how-the-continuous-integration-ci-system-works">
@@ -373,9 +374,8 @@ tutorials are grouped according to the <code class="docutils literal notranslate
 When a contributor pushes a new or updated <code class="docutils literal notranslate"><span class="pre">.mlx</span></code> tutorial to the repository:</p>
 <ol class="arabic simple">
 <li><p>The CI pipeline is automatically triggered.</p></li>
-<li><p>The <code class="docutils literal notranslate"><span class="pre">.mlx</span></code> file is converted into three formats:
+<li><p>The <code class="docutils literal notranslate"><span class="pre">.mlx</span></code> file is converted into two formats:
 - <code class="docutils literal notranslate"><span class="pre">.m</span></code> (MATLAB script)
-- <code class="docutils literal notranslate"><span class="pre">.pdf</span></code> (print-ready copy)
 - <code class="docutils literal notranslate"><span class="pre">.html</span></code> (web-friendly version)</p></li>
 <li><p>These generated files are published to the COBRA Toolbox website, making the tutorial immediately accessible to users.</p></li>
 </ol>

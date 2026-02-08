@@ -240,7 +240,7 @@
 </div>
 <span class="target" id="module-src.reconstruction.comparison"></span><dl class="mat function">
 <dt class="sig sig-object mat" id="src.reconstruction.comparison.compareModels">
-<span class="sig-name descname"><span class="pre">compareModels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">modelA</span></em>, <em class="sig-param"><span class="pre">modelB</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/comparison/compareModels.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.comparison.compareModels" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">compareModels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">modelA</span></em>, <em class="sig-param"><span class="pre">modelB</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/comparison/compareModels.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.comparison.compareModels" title="Permalink to this definition">¶</a></dt>
 <dd><p>compares modelA with modelB, looking for differences between the
 structures</p>
 <blockquote>
@@ -249,16 +249,23 @@ modelA:       structure
 modelB:       structure
 printLevel:</p>
 <p>OUTPUT
-isSameModel:   true if identical models, false otherwise
-differences:   structure listing differences between models</p>
-<blockquote>
-<div><dl class="simple">
+isSameModel:   true if identical models, false otherwise</p>
+<dl>
+<dt>diffTable:     table listing differences between fields in the input structures, e.g.</dt><dd><blockquote>
+<div><p>field       modelA        modelB</p>
+</div></blockquote>
+<p>___________    ____________    ____
+“DrGtPrior”    “1”             “0”
+“DrGtPrior”    “quadratic”     “none”</p>
+</dd>
+<dt>differences:   structure listing differences between models</dt><dd><dl class="simple">
 <dt><a href="#id2"><span class="problematic" id="id3">*</span></a>.reason: gives a text stack of why the difference occurred</dt><dd><p>as well as a field</p>
 </dd>
 <dt><a href="#id4"><span class="problematic" id="id5">*</span></a>.where: contains the indices and subfields of the structure</dt><dd><p>where the comparison failed.</p>
 </dd>
 </dl>
-</div></blockquote>
+</dd>
+</dl>
 <p>Note: This function depends on structeq.m and celleq.m</p>
 </div></blockquote>
 </dd></dl>

@@ -208,7 +208,7 @@
 how to fork the repository, work on your changes locally, place your code in the
 correct folder inside <code class="docutils literal notranslate"><span class="pre">src</span></code>, add tests, and open a pull request (PR).</p>
 <section id="overview-of-the-contribution-workflow">
-<h2>1. Overview of the contribution workflow<a class="headerlink" href="#overview-of-the-contribution-workflow" title="Permalink to this heading">¶</a></h2>
+<h2>Overview of the contribution workflow<a class="headerlink" href="#overview-of-the-contribution-workflow" title="Permalink to this heading">¶</a></h2>
 <p>The typical workflow for contributing is:</p>
 <ol class="arabic simple">
 <li><p>Fork the COBRA Toolbox repository on GitHub.</p></li>
@@ -223,7 +223,7 @@ correct folder inside <code class="docutils literal notranslate"><span class="pr
 <p>The following sections describe each step in more detail.</p>
 </section>
 <section id="fork-the-cobra-toolbox-repository">
-<h2>2. Fork the COBRA Toolbox repository<a class="headerlink" href="#fork-the-cobra-toolbox-repository" title="Permalink to this heading">¶</a></h2>
+<h2>1. Fork the COBRA Toolbox repository<a class="headerlink" href="#fork-the-cobra-toolbox-repository" title="Permalink to this heading">¶</a></h2>
 <ol class="arabic simple">
 <li><p>Go to the main COBRA Toolbox repository on GitHub:</p>
 <ul class="simple">
@@ -241,7 +241,7 @@ correct folder inside <code class="docutils literal notranslate"><span class="pr
 <p>All your changes will be pushed to this fork.</p>
 </section>
 <section id="clone-your-fork-locally">
-<h2>3. Clone your fork locally<a class="headerlink" href="#clone-your-fork-locally" title="Permalink to this heading">¶</a></h2>
+<h2>2. Clone your fork locally<a class="headerlink" href="#clone-your-fork-locally" title="Permalink to this heading">¶</a></h2>
 <p>To work on the code, clone your fork to your local machine.</p>
 <ol class="arabic">
 <li><p>Open a terminal.</p></li>
@@ -260,7 +260,7 @@ git<span class="w"> </span>fetch<span class="w"> </span>upstream
 </ol>
 </section>
 <section id="add-your-code-to-the-correct-folder-in-src">
-<h2>4. Add your code to the correct folder in <code class="docutils literal notranslate"><span class="pre">src</span></code><a class="headerlink" href="#add-your-code-to-the-correct-folder-in-src" title="Permalink to this heading">¶</a></h2>
+<h2>3. Add your code to the correct folder in <code class="docutils literal notranslate"><span class="pre">src</span></code><a class="headerlink" href="#add-your-code-to-the-correct-folder-in-src" title="Permalink to this heading">¶</a></h2>
 <p>All new COBRA Toolbox code should be added under the <code class="docutils literal notranslate"><span class="pre">src</span></code> folder. The main
 subfolders under <code class="docutils literal notranslate"><span class="pre">src</span></code> are:</p>
 <ul class="simple">
@@ -275,7 +275,7 @@ subfolders under <code class="docutils literal notranslate"><span class="pre">sr
 parent folder for your project. This keeps the toolbox organised and makes it
 easier for others to navigate the code.</p>
 <p>Below is guidance on when to use each folder.</p>
-<p><strong>4.1. src/analysis</strong></p>
+<p><strong>3.1. src/analysis</strong></p>
 <p>Use <code class="docutils literal notranslate"><span class="pre">analysis</span></code> for methods that analyse existing metabolic models. Examples:</p>
 <ul class="simple">
 <li><p>Flux balance analysis, flux variability analysis, phenotype simulations.</p></li>
@@ -284,7 +284,7 @@ easier for others to navigate the code.</p>
 </ul>
 <p>Suggested structure:
 <code class="docutils literal notranslate"><span class="pre">src/analysis/myNewAnalysisTool/</span></code></p>
-<p><strong>4.2. src/base</strong></p>
+<p><strong>3.2. src/base</strong></p>
 <p>Use <code class="docutils literal notranslate"><span class="pre">base</span></code> for shared utilities and core methods needed across the toolbox.
 Examples include:</p>
 <ul class="simple">
@@ -294,7 +294,7 @@ Examples include:</p>
 </ul>
 <p>Suggested structure:
 <code class="docutils literal notranslate"><span class="pre">src/base/myUtilityFunctions/</span></code></p>
-<p><strong>4.3. src/dataIntegration</strong></p>
+<p><strong>3.3. src/dataIntegration</strong></p>
 <p>Use <code class="docutils literal notranslate"><span class="pre">dataIntegration</span></code> for code that integrates omics or experimental data with
 a model. Examples:</p>
 <ul class="simple">
@@ -304,7 +304,7 @@ a model. Examples:</p>
 </ul>
 <p>Suggested structure:
 <code class="docutils literal notranslate"><span class="pre">src/dataIntegration/myIntegrationPipeline/</span></code></p>
-<p><strong>4.4. src/design</strong></p>
+<p><strong>3.4. src/design</strong></p>
 <p>Use <code class="docutils literal notranslate"><span class="pre">design</span></code> for algorithms that propose modifications or interventions.
 Examples:</p>
 <ul class="simple">
@@ -314,7 +314,7 @@ Examples:</p>
 </ul>
 <p>Suggested structure:
 <code class="docutils literal notranslate"><span class="pre">src/design/myDesignAlgorithm/</span></code></p>
-<p><strong>4.5. src/reconstruction</strong></p>
+<p><strong>3.5. src/reconstruction</strong></p>
 <p>Use <code class="docutils literal notranslate"><span class="pre">reconstruction</span></code> for tools that construct, curate or update metabolic
 models. Examples:</p>
 <ul class="simple">
@@ -324,7 +324,7 @@ models. Examples:</p>
 </ul>
 <p>Suggested structure:
 <code class="docutils literal notranslate"><span class="pre">src/reconstruction/myReconstructionPipeline/</span></code></p>
-<p><strong>4.6. src/visualization</strong></p>
+<p><strong>3.6. src/visualization</strong></p>
 <p>Use <code class="docutils literal notranslate"><span class="pre">visualization</span></code> for tools that generate plots, diagrams or graphical
 summaries. Examples:</p>
 <ul class="simple">
@@ -336,7 +336,7 @@ summaries. Examples:</p>
 <code class="docutils literal notranslate"><span class="pre">src/visualization/myVisualisationTools/</span></code></p>
 </section>
 <section id="add-a-test-for-every-new-code-module">
-<h2>5. Add a test for every new code module<a class="headerlink" href="#add-a-test-for-every-new-code-module" title="Permalink to this heading">¶</a></h2>
+<h2>4. Add a test for every new code module<a class="headerlink" href="#add-a-test-for-every-new-code-module" title="Permalink to this heading">¶</a></h2>
 <p>Every contribution must include a corresponding <strong>test</strong>. This ensures that new
 code is validated and remains stable.</p>
 <p>Your test should:</p>
@@ -351,7 +351,7 @@ code is validated and remains stable.</p>
 </ul>
 </section>
 <section id="commit-and-push-your-changes">
-<h2>6. Commit and push your changes<a class="headerlink" href="#commit-and-push-your-changes" title="Permalink to this heading">¶</a></h2>
+<h2>5. Commit and push your changes<a class="headerlink" href="#commit-and-push-your-changes" title="Permalink to this heading">¶</a></h2>
 <p>Once your code and tests are ready, commit your work.</p>
 <ol class="arabic">
 <li><p>Check which files have changed:</p>
@@ -378,7 +378,7 @@ git<span class="w"> </span>add<span class="w"> </span>test/<span class="w"> </sp
 </ol>
 </section>
 <section id="open-a-pull-request">
-<h2>7. Open a pull request<a class="headerlink" href="#open-a-pull-request" title="Permalink to this heading">¶</a></h2>
+<h2>6. Open a pull request<a class="headerlink" href="#open-a-pull-request" title="Permalink to this heading">¶</a></h2>
 <p>Once your changes are pushed, open a pull request on GitHub.</p>
 <ol class="arabic simple">
 <li><p>Visit your fork:</p>
@@ -407,7 +407,7 @@ git<span class="w"> </span>add<span class="w"> </span>test/<span class="w"> </sp
 </ol>
 </section>
 <section id="address-review-comments">
-<h2>8. Address review comments<a class="headerlink" href="#address-review-comments" title="Permalink to this heading">¶</a></h2>
+<h2>7. Address review comments<a class="headerlink" href="#address-review-comments" title="Permalink to this heading">¶</a></h2>
 <p>Maintainers may request revisions. This is normal.</p>
 <ol class="arabic">
 <li><p>Make the changes locally.</p></li>

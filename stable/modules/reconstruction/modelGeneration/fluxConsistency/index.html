@@ -272,7 +272,11 @@ but <cite>fastcc</cite> from <cite>fastcore</cite> by default</p>
 <li><p>param.modeFlag - {(0),1} 1 = return flux modes</p></li>
 <li><p>param.method - {‘swiftcc’, (‘fastcc’), ‘dc’,’fastB’}</p></li>
 <li><p>param.reduce - {(0),1} 1 = return fluxConsistModel</p></li>
+<li><p>param.signedCyclicFluxConsistency -</p></li>
 </ul>
+<p>{(0),1} 1 = identify reactions that are
+forward flux consistent for a forward
+cycle, or reverse flux consistent for a reverse cycle</p>
 </li>
 <li><p><strong>printLevel</strong> – verbose level</p></li>
 <li><p><strong>model.rev - the 0-1 vector with 1’s corresponding to the reversible reactions</strong> (<em>if using swiftcc</em>)</p></li>
@@ -292,6 +296,59 @@ but <cite>fastcc</cite> from <cite>fastcore</cite> by default</p>
 <li><p>.fluxInConsistentRxnBool</p></li>
 </ul>
 </li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.modelGeneration.fluxConsistency.findSignedCyclicFluxConsistentSubset">
+<span class="sig-name descname"><span class="pre">findSignedCyclicFluxConsistentSubset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">param</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/modelGeneration/fluxConsistency/findSignedCyclicFluxConsistentSubset.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.fluxConsistency.findSignedCyclicFluxConsistentSubset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find the subset of reactions that is signed, cyclically flux consistent
+Reaction j is said to be signed, cyclically flux consistent if</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>there exists a v, such that N*v = 0</p></li>
+</ol>
+</div></blockquote>
+<dl class="simple">
+<dt>and either (2.1) or (2.2) hold, where</dt><dd><p>(2.1) v(j) &gt;= param.epsilon
+(2.2) v(j) &lt;= -param.epsilon</p>
+</dd>
+<dt>and either (3.1) or (3.2) hold, where</dt><dd><p>(3.1) v(k) &gt;= 0, for all k in 1..n, except k = j
+(3.2) v(k) &lt;= 0, for all k in 1..n, except k = j</p>
+</dd>
+</dl>
+<p>where N is an (internal) stoichiometric matrix</p>
+<dl class="field-list">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[signedCyclicFluxConsistentMetBool, signedCyclicFluxConsistentRxnBool, model, fluxConsistModel] = findSignedCyclicFluxConsistentSubset</strong> (<em>model, param</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>model</strong> – structure with field:</p>
+<ul class="simple">
+<li><p>.S - <cite>m</cite> x <cite>n</cite> stoichiometric matrix</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>param</strong> – can contain:
+* param.LPsolver - the LP solver to be used
+* param.epsilon -  minimum nonzero flux, default feasTol*10</p>
+<blockquote>
+<div><p>Note that fastcc is very sensitive to the value of parm.epsilon</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>param.modeFlag - {(0),1} 1 = return flux modes</p></li>
+<li><p>printLevel - verbose level</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>signedCyclicFluxConsistentMetBool</strong> – <cite>m</cite> x 1 boolean vector indicating flux consistent <cite>mets</cite></p></li>
+<li><p><strong>signedCyclicFluxConsistentRxnBool</strong> – <cite>n</cite> x 1 boolean vector indicating flux consistent <cite>rxns</cite></p></li>
+<li><p><strong>model</strong> – structure with fields duplicating the single output arguments:
+* .signedCyclicFluxConsistentMetBool
+* .signedCyclicFluxConsistentRxnBool</p></li>
 </ul>
 </dd>
 </dl>

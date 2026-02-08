@@ -347,11 +347,12 @@ such that</p>
 </dd>
 <dt class="field-even">OPTIONAL INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>model.SConsistentRxnBool</strong> – n x 1  boolean indicating  stoichiometrically consistent metabolites</p></li>
-<li><p><strong>model.SIntRxnBool - Boolean of reactions heuristically though to be mass balanced.</strong></p></li>
-<li><p><strong>model.SIntMetBool - Boolean of metabolites heuristically though to be involved in mass balanced reactions.</strong></p></li>
-<li><p><strong>positivity</strong> – {0, (1)} if <cite>positivity == 1</cite>, then positive orthant base</p></li>
-<li><p><strong>inequality</strong> – {(0), 1} if <cite>inequality == 1</cite>, then use two inequalities rather than a single equaltiy</p></li>
+<li><p><strong>model.SConsistentRxnBool</strong> – n + k x 1  boolean indicating  n
+stoichiometrically consistent reactions</p></li>
+<li><p><strong>model.SIntRxnBool</strong> – Boolean of reactions heuristically though to be mass balanced.</p></li>
+<li><p><strong>model.SIntMetBool</strong> – Boolean of metabolites heuristically though to be involved in mass balanced reactions.</p></li>
+<li><p><strong>param.positivity</strong> – {0, (1)} if <cite>param.positivity == 1</cite>, then positive orthant base</p></li>
+<li><p><strong>param.inequality</strong> – {(0), 1} if <cite>param.inequality == 1</cite>, then use two inequalities rather than a single equaltiy</p></li>
 </ul>
 </dd>
 <dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
