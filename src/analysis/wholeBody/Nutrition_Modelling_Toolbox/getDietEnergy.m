@@ -77,7 +77,12 @@ if strcmp(databaseType, 'metabolites')
         met = strrep(met, 'Diet_EX_','');
         met = strrep(met, '[d]','');
 
-        category = metInfo{strcmp(metInfo(:,1),met),2};
+        energyCatIdx = strcmp(metInfo(:,1), met);
+        if any(energyCatIdx)
+            category = metInfo{energyCatIdx,2};
+        else
+            category = 'Other';
+        end
 
         if strcmp(category, 'Lipids')
             cal = 9; %kcal/g
