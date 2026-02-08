@@ -5,14 +5,14 @@ global CBTDIR
 %Test the requirements
 %useSolversIfAvailable = {'gurobi','quadMinos', 'dqqMinos',};
 %useSolversIfAvailable = {'gurobi','quadMinos'};
-useSolversIfAvailable = {'mosek','quadMinos'};
-useSolversIfAvailable = {'quadMinos'};
+useSolversIfAvailable = {'mosek','quadMinos','dqqMinos'};
+%useSolversIfAvailable = {'quadMinos'};
 excludeSolvers={'pdco'};
        
 solvers = prepareTest('needsLP',true,'useSolversIfAvailable',useSolversIfAvailable,'excludeSolvers',excludeSolvers);
 
 
-solverOK = changeCobraSolver('quadMinos', 'LP')
+solverOK = changeCobraSolver('quadMinos', 'LP');
 
 % test solver packages
 solverPkgs = solvers.LP;

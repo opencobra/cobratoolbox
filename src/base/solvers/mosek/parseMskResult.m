@@ -144,6 +144,8 @@ if isfield(res, 'sol')
         disp('Report this error to the cobra toolbox google group please')
         error('Unrecognised combination of res.sol.bas.prosta & res.sol.itr.solsta, see https://docs.mosek.com/latest/toolbox/accessing-solution.html')
     end
+else
+    origStat = res.rcodestr;
 end
 
 

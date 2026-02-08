@@ -360,9 +360,16 @@ switch solver
             cd(tmpPath);
         end
 
-        % run the DQQ procedure - TODO needs to be fixed
-        sysCall = ['../run1DQQ ' MPSfilename ' ' tmpPath];
-        [status, cmdout] = system(sysCall);
+        sysCall = ['./run1DQQ ' MPSfilename];
+        if 0
+            [status, cmdout] = system(sysCall);
+        else
+            %run the command with LD_LIBRARY_PATH cleared just for that
+            %call, this avoids issues caused by conflict between matlab and
+            %system library versions
+            wrapped = sprintf('env -u LD_LIBRARY_PATH -u LD_PRELOAD %s', sysCall);
+            [status,cmdout] = system(wrapped);
+        end
         if status ~= 0
             fprintf(['\n', sysCall]);
             disp(cmdout)
@@ -370,7 +377,7 @@ switch solver
         end
 
         % read the solution
-        solfname = [tmpPath filesep 'results' filesep MPSfilename '.sol'];
+        solfname = [tmpPath filesep MPSfilename '.sol'];
         sol = readMinosSolution(solfname);
         % The optimization problem solved by MINOS is assumed to be
         %        min   osense*s(iobj)
@@ -392,31 +399,22 @@ switch solver
         %        sol.s               m vector: value of each slack in s.
         %        sol.rc              n vector: reduced gradients for x.
         %        sol.y               m vector: dual variables for Ax - s = 0.
+
         x = sol.x;
-        f = c'* x;
+
+        f = c' * x;
+
         w = sol.rc;
 
-        
-%         %don't take the row corresponding to the objective
-%         if sol.objrow == 1
-%             y = sol.y(2:end);
-%             s = sol.s(2:end);
-%         else
-%             y = sol.y(1:end-1);
-%             s = sol.s(1:end-1);
-%         end
-        %to allow for any row.
-        sol.y(sol.objrow) = [];
-        sol.s(sol.objrow) = [];
-        
-        %writeMPS solves A*x <= 0, so reverse sign of slacks where input 
-        %problem was of the form A*x >= 0
-        bool = csense == 'G';
-        y(bool) = - y(bool);
-        s(bool) = - s(bool);
-        % A*x + s <=> 0 translated to A*x + s = b 
-        s = b - s;
-        
+        %don't take the row corresponding to the objective
+        if sol.objrow == 1
+            y = sol.y(2:end);
+            s = b - sol.s(2:end);
+        else
+            y = sol.y(1:end-1);
+            s = b - sol.s(1:end-1);
+        end
+
         % Translation of DQQ of exit codes from https://github.com/kerrickstaley/lp_solve/blob/master/lp_lib.h
         dqqStatMap = {-5, 'UNKNOWNERROR', -1;
                       -4, 'DATAIGNORED',  -1;
@@ -513,7 +511,7 @@ switch solver
 
         % read the solution
         if 1
-            sol = readMinosSolution([pwd filesep fname '.sol']);
+            sol = readMinosSolution([pwd filesep 'q' fname '.sol']);
         else
             sol = readMinosSolution([pwd filesep 'fort.81']);
         end
@@ -553,16 +551,25 @@ switch solver
             s = b - sol.s(1:end-1);
         end
         
-        % note that status handling may change (see lp_lib.h)
-        if (origStat == 0)
-            stat = 1;  % optimal solution found
-        % elseif (origStat == 3)
-        %     stat = 2; % unbounded
-        % elseif (origStat == 2)
-        %     stat = 0; % infeasible
-        else
-            stat = -1;  % Solution not optimal or solver problem
-        end
+        % Translation of DQQ of exit codes from https://github.com/kerrickstaley/lp_solve/blob/master/lp_lib.h
+        dqqStatMap = {-5, 'UNKNOWNERROR', -1;
+                      -4, 'DATAIGNORED',  -1;
+                      -3, 'NOBFP',        -1;
+                      -2, 'NOMEMORY',     -1;
+                      -1, 'NOTRUN',       -1;
+                       0, 'OPTIMAL',       1;
+                       1, 'SUBOPTIMAL',   -1;
+                       2, 'INFEASIBLE',    0;
+                       3, 'UNBOUNDED',     2;
+                       4, 'DEGENERATE',   -1;
+                       5, 'NUMFAILURE',   -1;
+                       6, 'USERABORT',    -1;
+                       7, 'TIMEOUT',      -1;
+                       8, 'RUNNING',      -1;
+                       9, 'PRESOLVED',    -1};
+        
+        origStat = dqqStatMap{[dqqStatMap{:,1}] == sol.inform, 2};
+        stat = dqqStatMap{[dqqStatMap{:,1}] == sol.inform, 3};
 
         if ~problemTypeParams.debug % if debugging leave the files in case of an error.
             minosCleanUp(pwd,dataDirectory,modelName);
@@ -1587,6 +1594,7 @@ end
              if tmp1 > problemTypeParams.feasTol * 1e2
                  disp(solution.origStat)
                  warning(['[' solver '] Primal optimality condition in solveCobraLP not satisfied, residual = ' num2str(tmp1) ', while feasTol = ' num2str(problemTypeParams.feasTol)])
+                 solution.origStat = [solution.origStat ' WARNING Primal optimality condition in solveCobraLP not satisfied'];
              else
                  if problemTypeParams.printLevel > 0
                      fprintf(['\n > [' solver '] Primal optimality condition in solveCobraLP satisfied.']);
@@ -1606,6 +1614,7 @@ end
                  if ~(length(A)==1 && strcmp(solver,'pdco')) %todo, why does pdco choke on small A?
                     warning(['[' solver '] Dual optimality condition in solveCobraLP not satisfied, residual = ' num2str(tmp2) ', while optTol = ' num2str(problemTypeParams.optTol)])
                  end
+                 solution.origStat = [solution.origStat ' WARNING Dual optimality condition in solveCobraLP not satisfied'];
              else
                  if problemTypeParams.printLevel > 0
                      fprintf(['\n > [' solver '] Dual optimality condition in solveCobraLP satisfied.\n']);
@@ -1644,9 +1653,17 @@ function DQQCleanup(tmpPath, originalDirectory)
 try
     % cleanup
     rmdir([tmpPath filesep 'results'], 's');
-    fortFiles = [4, 9, 10, 11, 12, 13, 60, 81];
-    for k = 1:length(fortFiles)
-        delete([tmpPath filesep 'fort.', num2str(fortFiles(k))]);
+    files = dir(fullfile(tmpPath,'fort.*'));
+    for k = 1:numel(files)
+        if ~files(k).isdir
+            delete(fullfile(tmpPath,files(k).name));
+        end
+    end
+    files = dir(fullfile(tmpPath,'*.sol'));
+    for k = 1:numel(files)
+        if ~files(k).isdir
+            delete(fullfile(tmpPath,files(k).name));
+        end
     end
 catch
 end
