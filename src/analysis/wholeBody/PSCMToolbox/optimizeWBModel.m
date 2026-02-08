@@ -81,15 +81,14 @@ function solution = optimizeWBModel(model, param)
 %                          * ctrs_y - the duals for the constraints from C
 %                          * ctrs_slack - Slacks of the additional constraints
 
-
 if ~exist('param','var')
     param = struct;
 end
 
-if ~isfield(param,'minNorm')
+if ~isfield('param','minNorm')
     param.minNorm = 0;
 end
-if ~isfield(param,'secondsTimeLimit')
+if ~isfield('param','secondsTimeLimit')
     param.secondsTimeLimit = 100;
 end
 if isfield(model,'osenseStr')

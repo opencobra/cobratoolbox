@@ -19,6 +19,10 @@ function [fluxConsistentMetBool, fluxConsistentRxnBool, fluxInConsistentMetBool,
 %                                  * param.modeFlag - {(0),1} 1 = return flux modes
 %                                  * param.method - {'swiftcc', ('fastcc'), 'dc','fastB'}
 %                                  * param.reduce - {(0),1} 1 = return fluxConsistModel
+%                                  * param.signedCyclicFluxConsistency -
+%                                  {(0),1} 1 = identify reactions that are
+%                                  forward flux consistent for a forward
+%                                  cycle, or reverse flux consistent for a reverse cycle 
 %
 %    printLevel:                 verbose level
 %
@@ -99,16 +103,14 @@ switch sol.stat
         end
         
         %speeds up fast cc if one can remove the reactions that have no support in
-        %the right nullspace of S
-        if strcmp(param.method,'null_fastcc')
-            
-            
+        %the right nullspace of S, if b = 0
+        if strcmp(param.method,'null_fastcc') && all(model.b==0)
             %Find the reactions that are flux inconsistent (upto orientation, without bounds)
             %compute the nullspace of the stoichiometric matrix and identify the
             %reactions without support in the nullspace basis
             [Z,rankS]=getNullSpace(model.S,0);
             nullFluxInConsistentRxnBool=~any(Z,2);
-            
+
             if any(nullFluxInConsistentRxnBool)
                 modelOrig=model;
                 nullFluxInConsistentMetBool = getCorrespondingRows(model.S,true(nMet,1),nullFluxInConsistentRxnBool,'exclusive');

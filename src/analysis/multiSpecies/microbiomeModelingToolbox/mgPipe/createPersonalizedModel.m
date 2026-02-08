@@ -88,8 +88,7 @@ if isempty(mapP)
     matStart=0;
     cnt=1;
     for i = 1:length(presBac)
-        % find the indices of where there merged matrices are on the C
-        % matrix
+        % find the indices of where there merged matrices are on the C matrix
         matInd1=[];
         for j=1:size(couplingMatrixRed{i,1},1)
             matInd1(size(matInd1,1)+1,1)=j+matStart;
@@ -99,7 +98,27 @@ if isempty(mapP)
             pruned_model.ctrs{cnt,1}=couplingMatrixRed{i,4}{j,1};
             cnt=cnt+1;
         end
-        matInd2=find(strncmp(pruned_model.rxns,[presBac{i,1} '_'],length(presBac{i,1})+1));%finding indixes of specific reactions
+        thisBac   = presBac{i,1};               
+        rxns      = pruned_model.rxns;
+
+        % start with all reactions for this bacterium prefix
+        mask = strncmp(rxns, [thisBac '_'], length(thisBac)+1);
+
+        % Find "child" bacteria whose names extend this one
+        allBacs   = presBac(:,1);
+        childMask = strncmp(allBacs, [thisBac '_'], length(thisBac)+1);
+        childNames = allBacs(childMask);
+
+        % exclude reactions belonging to any child bacterium
+        for c = 1:numel(childNames)
+            child = childNames{c};
+            maskChild = strncmp(rxns, [child '_'], length(child)+1);
+            mask = mask & ~maskChild;
+        end
+
+        % final indices
+        matInd2 = find(mask);
+        pruned_model.rxns(matInd2)
         % merge the C matrix
         pruned_model.C(matInd1,matInd2) = couplingMatrixRed{i,1};
         

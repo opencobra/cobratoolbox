@@ -107,18 +107,21 @@ for i = 4:size(toCreateDiet,2)
         if metFlux{strcmpi(metFlux(:,1), 'diet_ex_pi[d]'),2} == 0
             metFlux{strcmpi(metFlux(:,1), 'diet_ex_pi[d]'),2} = 14;
         end
+    else
+        metFlux(end+1, 1:2) = {'Diet_EX_pi[d]', 14};
     end
     
     % If choline is present in less than 5.3 mmol/human/day in the diet it
-    % will be set to 5.3 as per the highest recommended intake for humans (
+    % will be set to 5.3mmol/human/day as per the highest recommended intake for humans (
     % EFSA Panel on Dietetic Products, Nutrition and Allergies (NDA), 
     % doi.org/10.2903/j.efsa.2016.4484) to make the WBMs feasible.
 
     if ~isempty(metFlux(strcmpi(metFlux(:,1), 'diet_ex_chol[d]')))
         if metFlux{strcmpi(metFlux(:,1), 'diet_ex_chol[d]'),2} <= 5.3
             metFlux{strcmpi(metFlux(:,1), 'diet_ex_chol[d]'),2} = 5.3;
-
         end
+    else
+        metFlux(end+1, 1:2) = {'Diet_EX_chol[d]', 5.3};
     end
 
     % Convert the dietary flux vector to a table

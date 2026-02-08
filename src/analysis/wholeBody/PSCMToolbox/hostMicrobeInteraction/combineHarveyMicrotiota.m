@@ -14,8 +14,9 @@ function modelHM = combineHarveyMicrotiota(modelH, modelM, couplingConstraint)
 %                       matrix
 %
 % Ines Thiele May 2016
-% replace Ex_AA[u] with an artificial transport reaction [luM] -- > [luLI]
-% updated to new structure we use ([d],[fe],[u]) for microbes - Nov 2017 IT
+% - replace Ex_AA[u] with an artificial transport reaction [luM] -- > [luLI]
+% - updated to new structure we use ([d],[fe],[u]) for microbes - Nov 2017 IT
+% - Updated so that gr-rules, rules, and genes fields are not removed anymore. - Jan 2025, Tim Hensen
 
 %TODO make this code COBRA v3 compatible
 if ~isfield(modelM,'A')
@@ -68,7 +69,7 @@ modelM.S=modelM.A;
 modelMO=modelM;
 
 % check whether the model contains [d] compartment
-if ~isempty(find(~cellfun(@isempty,strfind(modelM.rxns,'[d]'))))
+if ~isempty(find(~cellfun(@isempty,strfind(modelM.rxns,'[d]')), 1))
     % remove exchange reactions
     % Diet exchange: 'EX_met[d]': 'met[d] <=>' and
     % Fecal exchanges: 'EX_met[fe]': 'met[fe] <=>'
@@ -90,7 +91,7 @@ if ~isempty(find(~cellfun(@isempty,strfind(modelM.rxns,'[d]'))))
     % make those reactions reversible
     modelM.mets = regexprep(modelM.mets, '\[d\]','\[luLI\]');
     modelM.mets = regexprep(modelM.mets, '\[u\]','\[luM\]');
-elseif ~isempty(find(~cellfun(@isempty,strfind(modelM.rxns,'[u]')))) % contains only [u] compartment
+elseif ~isempty(find(~cellfun(@isempty,strfind(modelM.rxns,'[u]')), 1)) % contains only [u] compartment
     % convert Ex_met[u] reactions into transport reactions
     [modelM] = createModelNewCompartment(modelM,'u','luLI','large intestinal lumen',-1000,1000,1);
     modelM.rxns = regexprep(modelM.rxns,'\[u\]_\[luLI\]','\[luLI\]_\[luM\]');
@@ -197,12 +198,12 @@ modelHM.Microbiota(1:length(modelH.rxns))=0;
 % to whole-body objective
 modelHM.S(:,strmatch('communityBiomass',modelHM.rxns)) = 100*modelHM.S(:,strmatch('communityBiomass',modelHM.rxns)) ;
 modelHM.A=modelHM.S;
-modelHM = rmfield(modelHM,'rules');
-modelHM = rmfield(modelHM,'grRules');
+%modelHM = rmfield(modelHM,'rules');
+% modelHM = rmfield(modelHM,'grRules');
 modelHM = convertOldStyleModel(modelHM);
-
-for i = 1 : length(modelHM.rxns)
-    modelHM.rules(i,1) = {''};
-end
-
-modelHM.genes = {''};
+% 
+% for i = 1 : length(modelHM.rxns)
+%     modelHM.rules(i,1) = {''};
+% end
+% 
+% modelHM.genes = {''};

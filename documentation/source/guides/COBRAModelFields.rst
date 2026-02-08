@@ -91,8 +91,9 @@ Singular fields are explicitly marked as ``scalar``, ``string`` or ``struct``.
    * - ``model.rules``
      - ``n x 1``
      - Column Cell Array of Strings
-     - Evaluatable GPR rules
-     - 
+     - Evaluatable GPR rules (Can be calculated from model.grRules using `generateRules.m <https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/generateRules.m>`_)
+     - ✓
+
    * - ``model.geneNames``
      - ``g x 1``
      - Column Cell Array of Strings

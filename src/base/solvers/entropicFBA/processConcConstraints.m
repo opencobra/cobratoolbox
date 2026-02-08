@@ -1,4 +1,4 @@
-function [f,u0,c0l,c0u,cl,cu,dcl,dcu,l_w,u_w,B,b,l_r,u_r,paramOut] = processConcConstraints(model,param)
+function [f,u0,c0l,c0u,l_c,u_c,dcl,dcu,l_w,u_w,B,b,l_r,u_r,paramOut] = processConcConstraints(model,param)
 %
 % USAGE:
 %   [] = processConcConstraints(model,param)
@@ -17,12 +17,13 @@ function [f,u0,c0l,c0u,cl,cu,dcl,dcu,l_w,u_w,B,b,l_r,u_r,paramOut] = processConc
 % model.SConsistentRxnBool: n x 1  boolean indicating  stoichiometrically consistent metabolites
 % model.rxns:
 %
+%  model.pp       m x 1    boolean vector indicating the independent columns of [N,b];
 %  model.f:       m x 1    strictly positive weight on concentration entropy maximisation (default 1)
 %  model.u0:      m x 1    standard transformed Gibbs energy of formation (default 0)
 %  model.c0l:     m x 1    non-negative lower bound on initial molecular concentrations
 %  model.c0u:     m x 1    non-negative upper bound on initial molecular concentrations
-%  model.cl:      m x 1    non-negative lower bound on final molecular concentrations
-%  model.cu:      m x 1    non-negative lower bound on final molecular concentrations
+%  model.l_c:      m x 1    non-negative lower bound on final molecular concentrations
+%  model.u_c:      m x 1    non-negative lower bound on final molecular concentrations
 %  model.dcl:     m x 1    real valued lower bound on difference between final and initial molecular concentrations   (default -inf)
 %  model.dcu:     m x 1    real valued upper bound on difference between final and initial initial molecular concentrations  (default inf)
 %  model.gasConstant:    8.3144621e-3; % Gas constant in kJ/(K*mol)
@@ -39,8 +40,8 @@ function [f,u0,c0l,c0u,cl,cu,dcl,dcu,l_w,u_w,B,b,l_r,u_r,paramOut] = processConc
 % u0:      m x 1    standard transformed Gibbs energy of formation, divided by RT (default 0)  
 % c0l:     m x 1    non-negative lower bound on initial molecular concentrations 
 % c0u:     m x 1    non-negative upper bound on initial molecular concentrations
-% cl:      m x 1    non-negative lower bound on final molecular concentrations 
-% cu:      m x 1    non-negative lower bound on final molecular concentrations
+% l_c:      m x 1    non-negative lower bound on final molecular concentrations 
+% u_c:      m x 1    non-negative lower bound on final molecular concentrations
 % dcl:     m x 1    real valued lower bound on difference between final and initial molecular concentrations  
 % dcu:     m x 1    real valued upper bound on difference between final and initial initial molecular concentrations  
 % l_w:     k x 1    lower bound on external net flux 
@@ -63,11 +64,15 @@ B=model.S(:,~model.SConsistentRxnBool); % external stoichiometric matrix
 [m,n]=size(N);
 k=nnz(~model.SConsistentRxnBool);
 
+if ~isfield(model,'pp')
+    model.pp = ones(m,1);
+end
 %
 if isfield(model,'b')
-    b = model.b;
+    %compatible with use of row reduced [model.S(:,model.SConsistentRxnBool), b]
+    b = model.b(model.pp);
 else
-    b = zeros(m,1);
+    b = zeros(nnz(model.pp),1);
 end
 
 %assume units are in mMol
@@ -178,8 +183,8 @@ if any(~model.SConsistentRxnBool)
             %force initial and final concentration to be equal
             dcl = zeros(m,1);
             dcu = zeros(m,1);
-            l_r = zeros(m,1);
-            u_r = zeros(m,1);
+            % l_r = zeros(m,1);
+            % u_r = zeros(m,1);
         case 'dxReplacement'
             %TODO
             error('revise how net initial and final conc bounds are dealt with')
@@ -218,11 +223,11 @@ end
 
 switch param.massBalancePenalty
     case 'quadratic'
-        l_r = -inf*ones(m,1);
-        u_r =  inf*ones(m,1);
+        l_r = -inf*ones(nnz(model.pp),1);
+        u_r =  inf*ones(nnz(model.pp),1);
     case 'none'
-        l_r = zeros(m,1);
-        u_r = zeros(m,1);
+        l_r = zeros(nnz(model.pp),1);
+        u_r = zeros(nnz(model.pp),1);
     otherwise
         error(['param.massBalancePenalty = ' param.massBalancePenalty ' is an unrecognised input'])
 end
@@ -240,22 +245,22 @@ else
     c0u = param.maxConc*ones(m,1);
 end
 
-if isfield(model,'cl') && isfield(model,'cu')
+if isfield(model,'l_c') && isfield(model,'u_c')
     param.concentrationBounds = 'setToGiven';
 end
 
 switch param.concentrationBounds
     case 'none'
-        cl = zeros(m,1);
-        cu = inf*ones(m,1);      
+        l_c = zeros(m,1);
+        u_c = inf*ones(m,1);      
     case 'setToGiven'
-        if isfield(model,'cl') && isfield(model,'cu')
-            cl = model.cl;
-            cu = model.cu;
+        if isfield(model,'l_c') && isfield(model,'u_c')
+            l_c = model.l_c;
+            u_c = model.u_c;
         end
     case 'maximimumFiniteRange'
-        cl = param.minConc*ones(m,1);
-        cu = param.maxConc*ones(m,1);
+        l_c = param.minConc*ones(m,1);
+        u_c = param.maxConc*ones(m,1);
     otherwise
         error('unrecognised option for param.concentrationBounds')
 end
@@ -336,5 +341,9 @@ else
     end
 end
 
+if isfield(model,'pp')
+    %compatible with use of row reduced [model.S(:,model.SConsistentRxnBool), b]
+    B = B(model.pp,:);
+end
 
 paramOut=param;
