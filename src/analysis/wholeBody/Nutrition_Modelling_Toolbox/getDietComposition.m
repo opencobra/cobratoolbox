@@ -219,7 +219,11 @@ Categories={'Vitamins/Minerals/Elements','Carbohydrates','Proteins','Lipids','Ot
 for i=1:length(molMass)
     if strcmp(macroType, 'metabolites')
         molMassInd=find(strcmp(metInfo(:,1),mets{i}));
+        if ~isempty(molMassInd)
         cat=metaboliteCategories{molMassInd};
+        end
+    else
+        cat = 'Other';
     end
 
     switch cat
