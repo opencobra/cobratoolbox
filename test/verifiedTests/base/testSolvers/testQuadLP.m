@@ -71,4 +71,3 @@ fprintf('Done.\n');
 
 % change the directory
 cd(currentDir)
-
