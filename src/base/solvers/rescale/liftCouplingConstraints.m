@@ -312,7 +312,7 @@ for k1 = 1:nbadrow
     ctrs_new(ndum+1:ndum+dum,1) = append(ctrs_new(ndum+1:ndum+dum,1), arrayfun(@num2str, (1:dum)', 'UniformOutput', false), repmat({['_' ctrString]},dum,1));
     evars(ndum+1:ndum+dum,1)    = append(   evars(ndum+1:ndum+dum,1), arrayfun(@num2str, (1:dum)', 'UniformOutput', false), repmat({['_' rxnString]},dum,1));
 
-    ctrs_cuprow{i} = ['LIFT0_' ctrs_cuprow{badrowInd(k1)}]; %Annotate the original coupling constraint identifier with dummy0
+    ctrs_cuprow{badrowInd(k1)} = ['LIFT0_' ctrs_cuprow{badrowInd(k1)}]; %Annotate the original coupling constraint identifier with dummy0
 
     ndum  = ndum+dum;  % Increment the count of dummy variables by dum
 end
