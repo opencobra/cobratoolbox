@@ -75,20 +75,27 @@ if ~exist('printLevel','var')
     printLevel=1;
 end
 
-boolSingleRow = sum(abs(model.C)>0,2)==1;
-boolTripleRow = sum(abs(model.C)>0,2)==3;
-boolBlankRow = sum(abs(model.C)>0,2)==0;
-if any(boolSingleRow) || any(boolTripleRow) || any(boolBlankRow)
-    if printLevel > 0
-        fprintf('%s\n')
-        fprintf('%d %s\n',nnz(boolSingleRow), ' = # rows C(i,:)  with one entry')
-        fprintf('%d %s\n',nnz(boolTripleRow), ' = # rows C(i,:)  with three entries')
-        fprintf('%s\n','Removing any coupling constraints with single')
-        fprintf('%s\n','Replacing any triple-entry coupling constraints with two double entries')
-    end
-    model = homogeniseCouplingConstraints(model);
-    if printLevel > 0
-        fprintf('%s\n')
+bool_sIEC_biomass_reactionIEC01b_trtr = strcmp(model.rxns,'sIEC_biomass_reactionIEC01b_trtr');
+% the following homogeneization step is only required for WBM whose biomass
+% reaction is 'sIEC_biomass_reactionIEC01b_trtr'. For that model,
+% coupling constraints with single-entry were removed and those with
+% 3-entry were replaced by a par of two entries:
+if any(bool_sIEC_biomass_reactionIEC01b_trtr)
+    boolSingleRow = sum(abs(model.C)>0,2)==1;
+    boolTripleRow = sum(abs(model.C)>0,2)==3;
+    boolBlankRow = sum(abs(model.C)>0,2)==0;
+    if any(boolSingleRow) || any(boolTripleRow) || any(boolBlankRow)
+        if printLevel > 0
+            fprintf('%s\n')
+            fprintf('%d %s\n',nnz(boolSingleRow), ' = # rows C(i,:)  with one entry')
+            fprintf('%d %s\n',nnz(boolTripleRow), ' = # rows C(i,:)  with three entries')
+            fprintf('%s\n','Removing any coupling constraints with single')
+            fprintf('%s\n','Replacing any triple-entry coupling constraints with two double entries')
+        end
+        model = homogeniseCouplingConstraints(model);
+        if printLevel > 0
+            fprintf('%s\n')
+        end
     end
 end
 
@@ -130,6 +137,8 @@ if 0
     cuprowBool  = (L|G) & b == 0 & boolPairRow & boolOppositeSignsRow;
 else
     cuprowBool  = (L|G) & b == 0 & boolPairRow;
+    % if a row in C is inequality, rhs is 0 and it has
+    % exackly two coefficients that are different from 0 cuprowBool is 1
 end
 ncuprowBool = ~cuprowBool;
 
@@ -227,7 +236,7 @@ for k1 = 1:nbadrow  % Loop over all the bad rows (nbadrow) identified in the pro
 
     if sgn==-1
         % Create a diagonal block matrix dumblk using sparse diagonal representation.
-        % This matrix has -1 on the diagonal and stp on the superdiagonal, with 'dum' size.
+        % This matrix has 1 on the diagonal and -stp on the superdiagonal, with 'dum' size.
         dumblk = spdiags(sgn*[-ones(dum,1) stp*ones(dum,1)],[0 1],dum,dum);
         if debug
             disp(full(dumblk))
@@ -247,7 +256,7 @@ for k1 = 1:nbadrow  % Loop over all the bad rows (nbadrow) identified in the pro
         end
     else
         % Create a diagonal block matrix dumblk using sparse diagonal representation.
-        % This matrix has -1 on the diagonal and stp on the superdiagonal, with 'dum' size.
+        % This matrix has 1 on the diagonal and -stp on the superdiagonal, with 'dum' size.
         dumblk = spdiags([ones(dum,1) -stp*ones(dum,1)],[0 1],dum,dum);
         if debug
             disp(full(dumblk))
