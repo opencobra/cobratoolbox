@@ -1,4 +1,4 @@
-function [model] = liftCouplingConstraints(model, BIG, printLevel)
+function [model] = liftCouplingConstraints(model, BIG, printLevel, equalities)
 % Reformulates badly-scaled coupling constraints C*v <=> d
 % by lifting them to a better scaled problem in a higher dimension by
 % introducing dummy variables.
@@ -27,6 +27,7 @@ function [model] = liftCouplingConstraints(model, BIG, printLevel)
 % OPTIONAL INPUTS
 %    'BIG'                Value consided a large coefficient. BIG should be set between 1000 and 10000 on double precision machines.
 %    `printLevel`         1 or 0 enables/diables printing respectively.
+%     equalities          true deals with equalities in constraints (default false)
 %
 % OUTPUTS:
 %    model: 
@@ -73,6 +74,10 @@ logbig  = log(BIG);
 
 if ~exist('printLevel','var')
     printLevel=1;
+end
+
+if ~exist('equalities', 'var') || isempty(equalities)
+    equalities = false;
 end
 
 bool_sIEC_biomass_reactionIEC01b_trtr = strcmp(model.rxns,'sIEC_biomass_reactionIEC01b_trtr');
@@ -136,8 +141,8 @@ end
 L       = dsense=='L';
 G       = dsense=='G';
 E       = dsense=='E';
-if any(E)
-    error(['equality dsense at ' int2str(nnz(E)) ' positions'])
+if ~equalities && any(E) % if equalities true equalities are processed
+        error(['equality dsense at ' int2str(nnz(E)) ' positions'])
 end
 
 boolSingleRow = sum(abs(A)>0,2)==1;
@@ -155,9 +160,17 @@ boolPositiveSignsRow = sum(signA,2)==2;
 
 %detect the coupling constraint rows
 if 0
-    cuprowBool  = (L|G) & b == 0 & boolPairRow & boolOppositeSignsRow;
+    if equalities
+        cuprowBool  = (L|G|E) & b == 0 & boolPairRow & boolOppositeSignsRow;
+    else
+        cuprowBool  = (L|G) & b == 0 & boolPairRow & boolOppositeSignsRow;
+    end
 else
-    cuprowBool  = (L|G) & b == 0 & boolPairRow;
+    if equalities
+        cuprowBool  = (L|G|E) & b == 0 & boolPairRow;
+    else
+        cuprowBool  = (L|G) & b == 0 & boolPairRow;
+    end
     % TO REMOVE?
     % % select coupling constraint with only flux variables - no extra
     % % variables:
@@ -204,10 +217,11 @@ end
 
 C       = A(cuprowBool,:);
 ctrs_cuprow = ctrs(cuprowBool);
+cupcon  = dsense(cuprowBool);
 
 rxns = model.rxns;
 [Clifted, dummyCounts, newcon, maxind, maxval, ctrs_cuprow, ...
-    ctrs_new, evars, badrowInd, nbadrow, ndum, cupcon, nEvars] = liftRows(C, dsense, BIG, logbig, printLevel, cuprowBool, ctrs_cuprow, rxns);
+    ctrs_new, evars, badrowInd, nbadrow, ndum, cupcon, nEvars] = liftRows(C, cupcon, BIG, logbig, printLevel, ctrs_cuprow, rxns);
 
 % %% To REMOVE? _ ITS IN FUNCTION
 % [minval,minind] = min(abs(C),[],2); % Added comment: the first min value index
@@ -490,7 +504,7 @@ model.modelID = [modelID '_liftedCouplingConstraints'];
 % remove 'old' fields
 nms = fieldnames(model);
 oldFds = nms(endsWith(nms, '_old'));
-rmfield(model, oldFds)
+rmfield(model, oldFds);
 
 
 %% TODO - find the code that fixes this in the WBM
