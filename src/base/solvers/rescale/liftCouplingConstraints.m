@@ -118,7 +118,6 @@ if isfield(model, 'D') && (~(isempty(model.D)))
     model.evarNames_old = model.evarNames;
     model.d_old = model.d;
     model.dsense_old = model.dsense;
-    model.ctrs_old = model.ctrs;
 end
 
 if isfield(model, 'D') && (~isempty(model.D))
@@ -157,6 +156,46 @@ boolPositiveSignsRow = sum(signA,2)==2;
 % hasD = any(abs(model.D_old)>0, 2);
 % hasOneC = sum(abs(A) > 0, 2)==1;
 % hasOneD = sum(abs(model.D_old) > 0, 2)==1;
+
+% split constraints with more than 2 variables into combinations of
+% constraints with 2 variables 
+A1 = A;
+b1 = b;
+dsense1 = dsense;
+ctrs1 = ctrs;
+split = (sum(abs(A1)>0, 2)>2) & (any(abs(A1)>BIG, 2)) & (b == 0);
+while any(split) % while the are constraints with more than 2 variables that need lifting
+    rowsIdx2Split = find(split);
+    for ri = rowsIdx2Split
+        r = A1(ri, :); % select row to split into other rows, e.g. -v1 -1e6v2 + u2 < 0     
+        [~, bigElIdx] = max(abs(r));
+        allIdx = find(abs(r)>0); 
+        otherIdx = setdiff(allIdx, bigElIdx); % index of all other non-zero elements of that row besides the biggest element 
+        other = r(otherIdx);
+        A1 = [A1, zeros(size(A1, 1), 1)]; % introduce new variable z, for now empty
+        % change original row,
+        % for e.g. above, change to -1e6*v2 + z < 0:
+        A1(ri, :) = zeros(1, size(A1, 2)); % reset original row
+        A1(ri, bigElIdx) = r(bigElIdx); % introduce again the biggest element in original row
+        A1(ri, end) = 1; % add z to original row
+        % add additional row that defines the replacemnt variable z,
+        % in e.g. above z = u2 -v1 <=> z -u2 + v1 = 0:
+        A1(end+1, :) = zeros(1, size(A1, 2));
+        A1(end, end) = 1;
+        A1(end, otherIdx) = -1*other;
+        b1 = [b1; 0];
+        dsense1 = [dsense1; 'E']; % definition of replacement variable is equality 
+        ctrs1 = [ctrs1; {sprintf('%s_split%d', ctrs1{ri}, sum(startsWith(ctrs1, ctrs1{ri})))}];
+        split(ri) = 0; % the current row has been split, so it does not need to be split again in next iteration of while loop
+        newrow = A1(end, :);
+        split(end+1) = (sum(abs(newrow)>0, 2)>2) & (any(abs(newrow)>BIG, 2)) & (b == 0);
+    end
+   end
+A = A1;
+b = b1;
+dsense = dsense1;
+ctrs = ctrs1;
+
 
 %detect the coupling constraint rows
 if 0

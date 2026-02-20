@@ -105,70 +105,7 @@ disp(full([model_lifted.C, model_lifted.D]))
 %        0          -1000              0              1      
 
 %% gecko-style model - with pre-existing D and E fields and some equalities in constraints
-% create toy model with contraints:
-% (1) -1e6*v2 + v3 < 0, with only flux variables to be lifted
-% (2) v1 -v2 -v3 < 0, with more than 2 flux variables (not to belifted)
-% (3) v2 -v3 < 0, with 2 flux variables and no bad element (not to be lifted)
-% (4) -1e6*v1 + u1 = 0,  with 1 flux variable and 1 extra-variable, with a bad element (to be lifted) 
-% (5) u1 + u2 -upool = 0, with extravariables only, equivalente to sum of all enzyme usages in GECKO (not to be lifted)
-% (6) -v3 + u2 = 0, with 1 flux variable and 1 extra-variable, with no bad element (not to be lifted) 
-% (7) -v1 -1e6*v2 + u2 < 0, with more than 2 variables (flux and extra variables) - not to be lifted for now)
-model.S = [1, -1, -1]; % v1 = V2 + v3
-model.rxns = {'v1'; 'v2'; 'v3'};
-model.mets = {'met1'};
-model.csense = 'E';
-model.b = 0;
-model.c = [0; 0; 0]; % fluxes of reactions using enzymes in GECKO-style models is positive (no irreversible rxns)
-model.lb = zeros(3, 1);
-model.ub = 10*ones(numel(model.rxns), 1);
-model.osense = 1; % minimize
-% coupling constraint with flux variables only and to be lifted:
-% -1e6v2 + v3 < 0
-C1 = [0 -1e6 1]; 
-D1 = [0 0 0];
-% coupling constraint with flux variables only and not to be selected for
-% further processing:
-% v1 -v2 -v3 < 0
-C2 = [1 -1 -1]; 
-D2 = [0 0 0];
-% coupling constraint with flux variables only and to be selected for
-% further processing:
-% v2 - v3 < 0
-C3 = [0 1 -1];
-D3 = [0 0 0];
-% coupling constraint with flux variables and extra variables to be lifted:
-% -1e6v1 + u1 = 0
-C4 = [-1e6 0 0]; 
-D4 = [1 0 0];
-% coupling constraint with extra variable only and not to be lifted -
-% equivalent to sum of all enzyme usage variables in GECKO:
-% u1 + u2 - u3 = 0
-C5 = [0 0 0];
-D5 = [1 1 -1];
-% coupling constraint with flux variables and extra variables to be
-% selected for further processing, but not lifted:
-% -v3 + u2 = 0 
-C6 = [0 0 -1];
-D6 = [0 1 0];
-% coupling constraint with flux variables and extra variables not to be
-% selected for further processing (since it has more than 2 variables):
-% -v1 -1e6v2 + u2 < 0
-C7 = [-1 -1e6 0];
-D7 = [0 1 0];
-
-model.C = [C1; C2; C3; C4; C5; C6; C7];
-model.D = [D1; D2; D3; D4; D5; D6; D7];
-model.ctrs = {'flxVarOnly_2beLifted'; 'flxVarOnly_Not2beProcessed'; 'flxVarOnly_2beProcessed'; 'FlxExtrVar_2beLifted'; 'ExtrVarOnly_sumflux'; 'FlxExtrVar_2beProcessed'; 'FlxExtrVar_Not2beProcessed'};
-model.ctrNames = model.ctrs;
-model.d = zeros(numel(model.ctrs), 1);
-model.dsense = [repmat('L', 3, 1); 'E'; repmat('L', 3, 1)];
-model.evars = {'u1'; 'u2'; 'upool'};
-model.evarNames = model.evars;
-model.evarc = [0; 0; 1]; % minimize the enzyme pool
-model.evarlb = zeros(numel(model.evars), 1); % enzyme concentration cannot be negative
-model.evarub = [1e9; 1e3; 1e3];
-model.E = zeros(size(model.S, 1), numel(model.evars));
-
+model = createToyModelWDE();
 % solve before lifting
 param = struct();
 LP0 = buildOptProblemFromModel(model, 'true', struct());
@@ -292,6 +229,16 @@ assert(isequal(model_lifted.evarc, evarc_expt));
 assert(isequal(model_lifted.evars, evars_expt));
 
 assert(isequal(model_lifted.dsense, dsense_expt));
+
+%%  lift constraints with originally more than 2 variables (flux and extra variables)
+% lift constraint (7) -v1 -1e6*v2 + u2 < 0 in GECKO-style model
+BIG = 1e3;
+printLevel = 0;
+model = createToyModelWDE();
+model.ctrs{7} = 'FlxExtrVar_2beLifted';
+
+
+
 
 %revert to normal format
 format short
