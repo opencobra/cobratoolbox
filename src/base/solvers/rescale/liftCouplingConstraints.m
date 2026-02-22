@@ -51,8 +51,9 @@ function [model] = liftCouplingConstraints(model, BIG, printLevel, equalities)
 %       - Michael Saunders, saunders@stanford.edu
 %       - Yuekai Sun, yuekai@stanford.edu, Systems Optimization Lab (SOL), Stanford University
 %       - Ronan Fleming, extended to expand metadata
-%       - Tânia Barata, extended to handle with pre-existing D and E and to split
-%       complex constraints into simpler ones
+%       - Tânia Barata, extended to handle pre-existing D and E and to split
+%         constraints with more than 2 variables and 1 coefficient that needs
+%         lifting
 % ..
 %    VERSION HISTORY:
 %      0.1.0
@@ -62,6 +63,11 @@ function [model] = liftCouplingConstraints(model, BIG, printLevel, equalities)
 %             that yields smaller programs.
 %      0.2.1  c = maxval(k1) was overwriting vector c. Changed to qty = maxval(k1).
 %      0.3    Oct 1st Tailored to WBMs - Ronan Fleming
+%      0.3.1  tailored for models with pre-existing D and E,
+%             and constraints with more than 2 variables and exactly 1
+%             coefficient that needs lifting.
+%             constraints with >2 variables and more than 1 of those
+%             coefficients are not lifted yet.
 
 % Cite 
 % Sun, Y., Fleming, R.M., Thiele, I., Saunders, M. Robust flux balance analysis of multiscale biochemical reaction networks. 
@@ -150,46 +156,112 @@ evarlb = model.evarlb;
 evarub = model.evarub;
 evarc = model.evarc;
 
+%% Constraints with > 2 variables and > 1 coefficient needing lifting  
+% while true
+%     % DO NOT process these rows for now
+%     % TODO: proper lifting for this case
+%         % The current approach fails in last test commented when doing
+%         % assert(all(abs(sol1.full(1:n) - sol0.full(1:n)) < tol));
+%     nvarPerRow = sum(abs(A)>0, 2); % for each row number of variables
+%     nBigPerRow = sum(abs(A)>BIG, 2); % for each row number of coefficents needing to be lift
+% 
+%     % select indeces of rows with with > 2 variables and > 1 coefficient needing lifting 
+%     if equalities
+%         moreVarAndBig = find((nvarPerRow > 2) & (nBigPerRow > 1) & (b==0));
+%     else
+%         moreVarAndBig = find((nvarPerRow > 2) & (nBigPerRow > 1) & (b==0) & (dsense~='E'));
+%     end
+%     if isempty(moreVarAndBig) % if those rows are all processed the while loop breaks
+%         break
+%     end
+% 
+%     % pick one of those rows,
+%     % e.g. -1e6v1 -1e4v2 + 1e4v3 < 0
+%     ri = moreVarAndBig(1);
+%     ctrID = ctrs{ri};
+%     baseId = regexprep(ctrID, '_split\d*$', '');
+% 
+%     % split that row in place, e.g.
+%     % 'splited row 1': -1e6v1 + z < 0
+%     % 'splited row 2': z = -1e4v2 + 1e4v3 <=> z + 1e4v2 - 1e4v3 = 0
+%     [A, evars, evarlb, evarub, evarc, b, dsense, ctrs] = ...
+%         splitRow(A, ri, evars, evarlb, evarub, evarc, b, dsense, ctrs);
+% 
+%     % select for lifting only the split rows with 2 variables
+%     % that need lifting.
+%     % In the e.g. above, only 'splited row 1' has 2 variables.
+%     % * 'splited row 2' needs to be first split in the next loop before
+%     % being lifted, as it has > 2 variables and > 1 coefficient needing lifting
+%     % * rows not derived from the row currently being processed should not be
+%     % lifted
+%     nvarPerRow_afterSplit = sum(abs(A)>0, 2); % A has changed, so it needs to be recompute
+%     nBigPerRow_afterSplit = sum(abs(A)>BIG, 2);
+%     sameCtr = startsWith(ctrs, baseId); % split rows concerning the constraint being currently processed
+%     if equalities
+%         specBool = sameCtr & (nvarPerRow_afterSplit == 2) & (nBigPerRow_afterSplit == 1) & (b==0);
+%     else
+%         specBool = sameCtr & (nvarPerRow_afterSplit == 2) & (nBigPerRow_afterSplit == 1) & (b==0) & (dsense ~= 'E');
+%     end
+%     if any(specBool) % if lift still needs to be done
+%         nonspecBool = ~specBool; % other rows besides the one to be lifted
+%         Cs = A(specBool,:);
+%         ctrsSpec = ctrs(specBool);
+%         specon = dsense(specBool);
+%         % lift the target row
+%         [Clifted, newcon, ctrsSpec, ctrs_new, evarsNew, ndum, ...
+%             specNew, nEvarsNew] = liftRows(Cs, specon, BIG, logbig, ...
+%             printLevel, ctrsSpec, model.rxns);
+% 
+%         % merge lifted row back
+%         A = [[A(nonspecBool,:), zeros(nnz(nonspecBool), nEvarsNew)]; ... 
+%             Clifted];
+%         b = [b(nonspecBool); b(specBool); zeros(ndum,1)];
+%         dsense = [dsense(nonspecBool); specNew; newcon];
+%         ctrs = [ctrs(nonspecBool); ctrsSpec; ctrs_new];
+%         % for e.g. above, constraints become:
+%             % z + 1e4v2 - 1e4v3 = 0, will be split again in next loop
+%             % z -100s1 < 0
+%             % s1 -100s2 < 0
+%             % s2 -100v1 < 0
+% 
+%         % extend evars
+%         evars = [evars; evarsNew];
+%         evarlb = [evarlb; -Inf(nEvarsNew,1)];
+%         evarub = [evarub; Inf(nEvarsNew,1)];
+%         evarc = [evarc; zeros(nEvarsNew,1)];
+%     end
+% end
+
+% for e.g. above, constraints become:
+% z1 -100s1 < 0
+% s1 -100s2 < 0
+% s2 -100v1 < 0
+% z1 + 1e4v2 -1e4v3 = 0
+% z2 -100s3 = 0
+% s2 + 100v2 = 0
+
+%% Constraints with > 2 variables and exactly 1 coefficient needing lifting
+% logic of > 2 variables and > 1 coefficient needing lifting could be applied here,
+% but potentially would be slower, as it splits and lifts for each row
+% individually. here, it splits all rows first.
+% splitted rows are later lifted together with other constraints
+% with exactly 2 variables (=) and 1 coefficient needing lifting.
+
+nvarPerRow = sum(abs(A)>0, 2);
+nBigPerRow = sum(abs(A)>BIG, 2);
+
 if equalities
-    split = (sum(abs(A)>0, 2)>2) & (any(abs(A)>=BIG, 2)) & (b == 0);
+    split = (nvarPerRow>2) & (nBigPerRow == 1) & (b == 0);
 else
-    split = (sum(abs(A)>0, 2)>2) & (any(abs(A)>=BIG, 2)) & (b == 0) & (dsense == 'L' | dsense == 'G');
+    split = (nvarPerRow>2) & (nBigPerRow == 1) & (b == 0) & (dsense ~= 'E');
 end
 
-while any(split) % while the are constraints with more than 2 variables that need lifting
-    rowsIdx2Split = find(split);
-    for ri = rowsIdx2Split
-        r = A(ri, :); % select row to split into other rows, e.g. -v1 -1e6v2 + u2 < 0     
-        [~, bigElIdx] = max(abs(r));
-        allIdx = find(abs(r)>0); 
-        otherIdx = setdiff(allIdx, bigElIdx); % index of all other non-zero elements of that row besides the biggest element 
-        other = r(otherIdx);
-        A = [A, zeros(size(A, 1), 1)]; % introduce new variable z, for now empty
-        evars = [evars; {sprintf('z_%d', sum(startsWith(evars, 'z_')) + 1)}];
-        evarlb = [evarlb; -Inf];
-        evarub = [evarub; Inf];
-        evarc = [evarc; 0];
-        % change original row,
-        % for e.g. above, change to -1e6*v2 + z < 0:
-        A(ri, :) = zeros(1, size(A, 2)); % reset original row
-        A(ri, bigElIdx) = r(bigElIdx); % introduce again the biggest element in original row
-        A(ri, end) = 1; % add z to original row
-        % add additional row that defines the replacemnt variable z,
-        % in e.g. above z = u2 -v1 <=> z -u2 + v1 = 0:
-        A(end+1, :) = zeros(1, size(A, 2));
-        A(end, end) = 1;
-        A(end, otherIdx) = -1*other;
-        b = [b; 0];
-        dsense = [dsense; 'E']; % definition of replacement variable is equality 
-        ctrs = [ctrs; {sprintf('%s_split%d', ctrs{ri}, sum(startsWith(ctrs, ctrs{ri})))}];
-        split(ri) = false; % the current row has been split, so it does not need to be split again in next iteration of while loop
-        newrow = A(end, :);
-        if equalities
-            split(end+1) = (sum(abs(newrow)>0, 2)>2) & (any(abs(newrow)>=BIG, 2)) & (b(end) == 0); 
-        else
-            split(end+1) = (sum(abs(newrow)>0, 2)>2) & (any(abs(newrow)>=BIG, 2)) & (b(end) == 0) & (dsense(end)~='E');
-        end
-    end
+rowsIdx2Split = find(split);
+
+for k = 1:numel(rowsIdx2Split)
+    ri = rowsIdx2Split(k);
+    [A, evars, evarlb, evarub, evarc, b, dsense, ctrs] = ...
+    splitRow(A, ri, evars, evarlb, evarub, evarc, b, dsense, ctrs);
 end
 
 model.evars_preLift = evars; % extra variables from splitting are joined to group of original extra variables to not break code bellow where new evars are considered only the ones created from lifting
@@ -198,6 +270,17 @@ model.evarlb_preLift = evarlb;
 model.evarub_preLift = evarub;
 model.evarc_preLift = evarc;
 
+% for e.g. above, constraints become:
+% z1 -100s1 < 0
+% s1 -100s2 < 0
+% s2 -100v1 < 0
+% 1e4v3 + z3 =0
+% z2 -100s3 = 0
+% s3 + 100v2 = 0
+% z1 -z2 + z3 =0
+% z3 -z2 + z1 = 0
+
+%% Constraints with exactly 2 variables and 1 coefficient needing lifting
 [m,n]  = size(A);  % Get the dimensions of matrix A, with m as the number of rows and n as the number of columns
 % find badly scaled coupling constraints
 L       = dsense=='L';
@@ -215,7 +298,7 @@ signA = sign(A);
 boolOppositeSignsRow = sum(signA,2)==0;
 boolPositiveSignsRow = sum(signA,2)==2;
 
-%detect the coupling constraint rows
+% processes only constraints with 2 variables
 if 0
     if equalities
         cuprowBool  = (L|G|E) & b == 0 & boolPairRow & boolOppositeSignsRow;
@@ -231,7 +314,7 @@ else
 end
 ncuprowBool = (~cuprowBool);
 
-%% Lift coupling constraint rows with exactly 2 variables
+% Lift coupling constraint rows with exactly 2 variables
 if printLevel > 0
     fprintf('\n')
     fprintf('%d %s\n',n, ' = # cols model.C')
@@ -279,6 +362,21 @@ model.evarc = [model.evarc_preLift; zeros(nEvars,1)];
 % model.evars	evars x 1	Column Cell Array of Strings	IDs of the additional variables
 model.evars  = [model.evars_preLift; evars];
 model.evarNames = model.evars;
+
+% for e.g. above, constraints become:
+% z1 -z2 + z3 = 0
+% z1 -100s1 < 0, dummy chain of -1e6v1 + z1, where z1 = -1e4v2 + 1e4v3
+% s1 -100s2 < 0, dummy chain of -1e6v1 + z1, where z1 = -1e4v2 + 1e4v3
+% s2 -100v1 < 0, dummy chain of -1e6v1 + z1, where z1 = -1e4v2 + 1e4v3
+% z3 -100s4 = 0, dummy chain of z3 + 1e4v3, where z3 = z2 -z1
+% z2 -100s3 = 0, dummy chain of 1e4v2 + z2, where z2 = z1 -1e4v3
+% s3 + 100v2 = 0, dummy chain of 1e4v2 + z2, where z2 = z1 -1e4v3
+% s4 + 100v3 = 0, dummy chain of z3 + 1e4v3, where z3 = z2 -z1
+% Note:
+% s1 = 'LIFT1_v1'
+% s2 = 'LIFT2_v1'
+% s3 = 'LIFT1_v2'
+% s4 = 'LIFT1_v3'
 
 model.modelID = [modelID '_liftedCouplingConstraints'];
 
