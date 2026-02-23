@@ -52,7 +52,7 @@ function [model] = liftCouplingConstraints(model, BIG, printLevel, equalities)
 %       - Yuekai Sun, yuekai@stanford.edu, Systems Optimization Lab (SOL), Stanford University
 %       - Ronan Fleming, extended to expand metadata
 %       - Tânia Barata, extended to handle pre-existing D and E and to split
-%         constraints with more than 2 variables and 1 coefficient that needs
+%         constraints with more than 2 variables and 1 or more coefficients that need
 %         lifting
 % ..
 %    VERSION HISTORY:
@@ -66,8 +66,8 @@ function [model] = liftCouplingConstraints(model, BIG, printLevel, equalities)
 %      0.3.1  tailored for models with pre-existing D and E,
 %             and constraints with more than 2 variables and exactly 1
 %             coefficient that needs lifting.
-%             constraints with >2 variables and more than 1 of those
-%             coefficients are not lifted yet.
+%             constraints with >2 variables and 1 or more coefficients
+%             that need lifting
 
 % Cite 
 % Sun, Y., Fleming, R.M., Thiele, I., Saunders, M. Robust flux balance analysis of multiscale biochemical reaction networks. 
@@ -157,80 +157,76 @@ evarub = model.evarub;
 evarc = model.evarc;
 
 %% Constraints with > 2 variables and > 1 coefficient needing lifting  
-% while true
-%     % DO NOT process these rows for now
-%     % TODO: proper lifting for this case
-%         % The current approach fails in last test commented when doing
-%         % assert(all(abs(sol1.full(1:n) - sol0.full(1:n)) < tol));
-%     nvarPerRow = sum(abs(A)>0, 2); % for each row number of variables
-%     nBigPerRow = sum(abs(A)>BIG, 2); % for each row number of coefficents needing to be lift
-% 
-%     % select indeces of rows with with > 2 variables and > 1 coefficient needing lifting 
-%     if equalities
-%         moreVarAndBig = find((nvarPerRow > 2) & (nBigPerRow > 1) & (b==0));
-%     else
-%         moreVarAndBig = find((nvarPerRow > 2) & (nBigPerRow > 1) & (b==0) & (dsense~='E'));
-%     end
-%     if isempty(moreVarAndBig) % if those rows are all processed the while loop breaks
-%         break
-%     end
-% 
-%     % pick one of those rows,
-%     % e.g. -1e6v1 -1e4v2 + 1e4v3 < 0
-%     ri = moreVarAndBig(1);
-%     ctrID = ctrs{ri};
-%     baseId = regexprep(ctrID, '_split\d*$', '');
-% 
-%     % split that row in place, e.g.
-%     % 'splited row 1': -1e6v1 + z < 0
-%     % 'splited row 2': z = -1e4v2 + 1e4v3 <=> z + 1e4v2 - 1e4v3 = 0
-%     [A, evars, evarlb, evarub, evarc, b, dsense, ctrs] = ...
-%         splitRow(A, ri, evars, evarlb, evarub, evarc, b, dsense, ctrs);
-% 
-%     % select for lifting only the split rows with 2 variables
-%     % that need lifting.
-%     % In the e.g. above, only 'splited row 1' has 2 variables.
-%     % * 'splited row 2' needs to be first split in the next loop before
-%     % being lifted, as it has > 2 variables and > 1 coefficient needing lifting
-%     % * rows not derived from the row currently being processed should not be
-%     % lifted
-%     nvarPerRow_afterSplit = sum(abs(A)>0, 2); % A has changed, so it needs to be recompute
-%     nBigPerRow_afterSplit = sum(abs(A)>BIG, 2);
-%     sameCtr = startsWith(ctrs, baseId); % split rows concerning the constraint being currently processed
-%     if equalities
-%         specBool = sameCtr & (nvarPerRow_afterSplit == 2) & (nBigPerRow_afterSplit == 1) & (b==0);
-%     else
-%         specBool = sameCtr & (nvarPerRow_afterSplit == 2) & (nBigPerRow_afterSplit == 1) & (b==0) & (dsense ~= 'E');
-%     end
-%     if any(specBool) % if lift still needs to be done
-%         nonspecBool = ~specBool; % other rows besides the one to be lifted
-%         Cs = A(specBool,:);
-%         ctrsSpec = ctrs(specBool);
-%         specon = dsense(specBool);
-%         % lift the target row
-%         [Clifted, newcon, ctrsSpec, ctrs_new, evarsNew, ndum, ...
-%             specNew, nEvarsNew] = liftRows(Cs, specon, BIG, logbig, ...
-%             printLevel, ctrsSpec, model.rxns);
-% 
-%         % merge lifted row back
-%         A = [[A(nonspecBool,:), zeros(nnz(nonspecBool), nEvarsNew)]; ... 
-%             Clifted];
-%         b = [b(nonspecBool); b(specBool); zeros(ndum,1)];
-%         dsense = [dsense(nonspecBool); specNew; newcon];
-%         ctrs = [ctrs(nonspecBool); ctrsSpec; ctrs_new];
-%         % for e.g. above, constraints become:
-%             % z + 1e4v2 - 1e4v3 = 0, will be split again in next loop
-%             % z -100s1 < 0
-%             % s1 -100s2 < 0
-%             % s2 -100v1 < 0
-% 
-%         % extend evars
-%         evars = [evars; evarsNew];
-%         evarlb = [evarlb; -Inf(nEvarsNew,1)];
-%         evarub = [evarub; Inf(nEvarsNew,1)];
-%         evarc = [evarc; zeros(nEvarsNew,1)];
-%     end
-% end
+while true
+    nvarPerRow = sum(abs(A)>0, 2); % for each row number of variables
+    nBigPerRow = sum(abs(A)>BIG, 2); % for each row number of coefficents needing to be lift
+
+    % select indeces of rows with with > 2 variables and > 1 coefficient needing lifting 
+    if equalities
+        moreVarAndBig = find((nvarPerRow > 2) & (nBigPerRow > 1) & (b==0));
+    else
+        moreVarAndBig = find((nvarPerRow > 2) & (nBigPerRow > 1) & (b==0) & (dsense~='E'));
+    end
+    if isempty(moreVarAndBig) % if those rows are all processed the while loop breaks
+        break
+    end
+
+    % pick one of those rows,
+    % e.g. -1e6v1 -1e4v2 + 1e4v3 < 0
+    ri = moreVarAndBig(1);
+    ctrID = ctrs{ri};
+    baseId = regexprep(ctrID, '_split\d*$', '');
+
+    % split that row in place, e.g.
+    % 'splited row 1': -1e6v1 + z < 0
+    % 'splited row 2': z = -1e4v2 + 1e4v3 <=> z + 1e4v2 - 1e4v3 = 0
+    [A, evars, evarlb, evarub, evarc, b, dsense, ctrs] = ...
+        splitRow(A, ri, evars, evarlb, evarub, evarc, b, dsense, ctrs);
+
+    % select for lifting only the split rows with 2 variables
+    % that need lifting.
+    % In the e.g. above, only 'splited row 1' has 2 variables.
+    % * 'splited row 2' needs to be first split in the next loop before
+    % being lifted, as it has > 2 variables and > 1 coefficient needing lifting
+    % * rows not derived from the row currently being processed should not be
+    % lifted
+    nvarPerRow_afterSplit = sum(abs(A)>0, 2); % A has changed, so it needs to be recompute
+    nBigPerRow_afterSplit = sum(abs(A)>BIG, 2);
+    sameCtr = startsWith(ctrs, baseId); % split rows concerning the constraint being currently processed
+    if equalities
+        specBool = sameCtr & (nvarPerRow_afterSplit == 2) & (nBigPerRow_afterSplit == 1) & (b==0);
+    else
+        specBool = sameCtr & (nvarPerRow_afterSplit == 2) & (nBigPerRow_afterSplit == 1) & (b==0) & (dsense ~= 'E');
+    end
+    if any(specBool) % if lift still needs to be done
+        nonspecBool = ~specBool; % other rows besides the one to be lifted
+        Cs = A(specBool,:);
+        ctrsSpec = ctrs(specBool);
+        specon = dsense(specBool);
+        % lift the target row
+        [Clifted, newcon, ctrsSpec, ctrs_new, evarsNew, ndum, ...
+            specNew, nEvarsNew] = liftRows(Cs, specon, BIG, logbig, ...
+            printLevel, ctrsSpec, model.rxns);
+
+        % merge lifted row back
+        A = [[A(nonspecBool,:), zeros(nnz(nonspecBool), nEvarsNew)]; ... 
+            Clifted];
+        b = [b(nonspecBool); b(specBool); zeros(ndum,1)];
+        dsense = [dsense(nonspecBool); specNew; newcon];
+        ctrs = [ctrs(nonspecBool); ctrsSpec; ctrs_new];
+        % for e.g. above, constraints become:
+            % z + 1e4v2 - 1e4v3 = 0, will be split again in next loop
+            % z -100s1 < 0
+            % s1 -100s2 < 0
+            % s2 -100v1 < 0
+
+        % extend evars
+        evars = [evars; evarsNew];
+        evarlb = [evarlb; -Inf(nEvarsNew,1)];
+        evarub = [evarub; Inf(nEvarsNew,1)];
+        evarc = [evarc; zeros(nEvarsNew,1)];
+    end
+end
 
 % for e.g. above, constraints become:
 % z1 -100s1 < 0
@@ -248,7 +244,7 @@ evarc = model.evarc;
 % with exactly 2 variables (=) and 1 coefficient needing lifting.
 
 nvarPerRow = sum(abs(A)>0, 2);
-nBigPerRow = sum(abs(A)>BIG, 2);
+nBigPerRow = sum(abs(A)>=BIG, 2);
 
 if equalities
     split = (nvarPerRow>2) & (nBigPerRow == 1) & (b == 0);
