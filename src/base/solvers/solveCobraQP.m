@@ -80,6 +80,10 @@ function solution = solveCobraQP(QPproblem, varargin)
 %       - Josh Lerman           04/17/10 changed def. parameters, THREADS, QPMETHOD
 %       - Tim Harrington        05/18/12 Added support for the Gurobi 5.0 solver
 
+
+global CBTDIR % process arguments etc
+global MINOS_PATH
+
 [problemTypeParams,solverParams] = parseSolverParameters('QP',varargin{:}); % get the solver parameters
 
 % set the solver
@@ -116,9 +120,13 @@ if 0
     end
 end
 
-[A,b,F,c,lb,ub,csense,osense] = ...
+if ~isfield(QPproblem, 'modelID')
+    QPproblem.modelID = 'aModelID';
+end
+
+[A,b,F,c,lb,ub,csense,osense,modelID] = ...
     deal(sparse(QPproblem.A),QPproblem.b,QPproblem.F,QPproblem.c,QPproblem.lb,QPproblem.ub,...
-    QPproblem.csense,QPproblem.osense);
+    QPproblem.csense,QPproblem.osense,QPproblem.modelID);
 
 
 %Save Input if selected
@@ -711,9 +719,38 @@ switch solver
         end
         %%
     case 'dqqMinos'
+        if ~isunix
+            error('dqqMinos can only be used on UNIX systems (macOS or Linux).')
+        end
+
+        isEqOnly = all(QPproblem.csense == 'E');
+        isFreeX  = all(isinf(QPproblem.lb) & QPproblem.lb < 0) && all(isinf(QPproblem.ub) & QPproblem.ub > 0);
+
+        if ~(isEqOnly && isFreeX)
+            warning('KKT-as-linear-feasibility is not guaranteed: there are inequalities and/or finite bounds.');
+        end
+
+        Aeq = QPproblem.A(QPproblem.csense=='E',:);
+        F   = QPproblem.F;
+
+        % Only meaningful when equality-only and x is free:
+        if all(QPproblem.csense=='E') && all(isinf(QPproblem.lb) & QPproblem.lb<0) && all(isinf(QPproblem.ub) & QPproblem.ub>0)
+            mE = size(Aeq,1);
+            KKT = [F, Aeq'; Aeq, sparse(mE,mE)];
+
+            % Use rcond for a quick singularity indicator (for small/moderate problems)
+            % For large sparse problems, use a sparse factorization attempt instead.
+            rc = rcond(full(KKT));
+            if rc < 1e-12
+                warning('KKT matrix appears singular/ill-conditioned (rcond=%g). Solution may be non-unique/unstable.', rc);
+            end
+        end
+
+
+
         % find the solution to a QP problem by obtaining a solution to the
         % optimality conditons using the LP solver 'dqqMinos'
-        
+
         %    QPproblem:       Structure containing the following fields describing the QP
         %
         %                       * .A - LHS matrix
@@ -722,132 +759,147 @@ switch solver
         %                       * .c - Objective coeff vector
         %                       * .lb - Lower bound vector
         %                       * .ub - Upper bound vector
-        %                       * .osense - Objective sense for the linear part (-1 max, +1 min)
+        %                       * .osense - linear objective sense (-1 max, +1 min),
+        %                                   it is assumed that the quadratic part
+        %                                   is minimised and the F matrix is
+        %                                   positive semi-definite
         %                       * .csense - Constraint senses, a string containing the constraint sense for
         %                         each row in A ('E', equality, 'G' greater than, 'L' less than).
-        
-        if 1
-            %take care of zero segments of F
-            jlt=size(QPproblem.F,1);
-            boolF=false(jlt,1);
-            for j=1:jlt
-                if any(QPproblem.F(j,:)) || any(QPproblem.F(:,j))
-                    boolF(j)=1;
-                end
+
+        % Validate F has no all-zero rows/cols (your existing restriction)
+        jlt = size(QPproblem.F,1);
+        boolF = false(jlt,1);
+        for j = 1:jlt
+            if any(QPproblem.F(j,:)) || any(QPproblem.F(:,j))
+                boolF(j) = true;
             end
         end
         if ~all(boolF)
             error('dqqMinos not validated for F matrices with zero rows/cols')
         end
-        
-        global CBTDIR %required for dqqMinos
-        if ~isunix
-            error('dqqMinos can only be used on UNIX systems (macOS or Linux).')
+
+        % Indices of constraint types
+        indg = find(QPproblem.csense == 'G');   % Ax >= b  ->  -Ax <= -b
+        maskLG = (QPproblem.csense == 'L') | (QPproblem.csense == 'G');
+
+        [m,n] = size(QPproblem.A);
+
+        % Initialize to keep later code safe
+        slackRows = [];
+        nSlacks   = 0;
+
+        if ~any(maskLG)
+            % No inequality constraints => no explicit slack variables
+            Aeq  = QPproblem.A;
+            beq  = QPproblem.b;
+            lbeq = QPproblem.lb;
+            ubeq = QPproblem.ub;
+            ceq  = QPproblem.c;
+            Feq  = QPproblem.F;
+        else
+            % Rows that get explicit nonnegative slacks (in the exact appended order)
+            slackRows = find(maskLG);
+            nSlacks   = numel(slackRows);
+
+            Aeq = QPproblem.A;
+            beq = QPproblem.b;
+
+            % Flip 'G' rows:  A x >= b  ->  -A x <= -b
+            if ~isempty(indg)
+                Aeq(indg,:) = -Aeq(indg,:);
+                beq(indg,:) = -beq(indg,:);
+            end
+
+            % Add explicit slack variables s >= 0 only for L/G rows: Aeq*x + s = beq
+            % Slack variable j corresponds to row slackRows(j)
+            K   = sparse(slackRows, 1:nSlacks, 1, m, nSlacks);  % m x nSlacks
+            Aeq = [Aeq, K];
+
+            % Augment bounds/objective for explicit slacks
+            lbeq = [QPproblem.lb ; zeros(nSlacks,1)];
+            ubeq = [QPproblem.ub ; inf(nSlacks,1)];
+            ceq  = [QPproblem.c  ; zeros(nSlacks,1)];
+
+            % Augment F to include the explicit slacks (no quadratic term on slacks)
+            Feq  = [QPproblem.F , sparse(n, nSlacks);
+                sparse(nSlacks, n + nSlacks)];
         end
-        
+
+        % Build the linear KKT-like feasibility system:
+        %   Aeq * z              = beq
+        %   Feq * z + Aeq' * y    = -osense*ceq
+        % where z = [x; s_explicit] has length nAeq = n+nSlacks, and y has length mAeq=m.
+        [mAeq, nAeq] = size(Aeq);
+
+        QP_LP          = struct();  % avoid overwriting the input QPproblem
+        QP_LP.A        = [Aeq, sparse(mAeq,mAeq);
+            Feq, Aeq'];
+        QP_LP.b        = [beq; -QPproblem.osense * ceq];
+        QP_LP.c        = sparse(nAeq + mAeq, 1);      % feasibility problem (zero objective)
+        QP_LP.lb       = [lbeq; -inf(mAeq,1)];        % y is free
+        QP_LP.ub       = [ubeq;  inf(mAeq,1)];
+        QP_LP.osense   = 1;
+        QP_LP.csense   = repmat('E', nAeq + mAeq, 1); % all equalities
+
         % save the original directory
         originalDirectory = pwd;
-        
-        % set the temporary path to the DQQ solver
-        tmpPath = [CBTDIR filesep 'binary' filesep computer('arch') filesep 'bin' filesep 'DQQ'];
-        cd(tmpPath);
-        if ~problemTypeParams.debug % if debugging leave the files in case of an error.
-            cleanUp = onCleanup(@() DQQCleanup(tmpPath,originalDirectory));
+
+        tmpPath = [CBTDIR filesep 'binary' filesep computer('arch') filesep 'bin' filesep 'quadPrecision' filesep 'doubleQuadQuadFBA'];
+        if ~exist(tmpPath, 'dir')
+            error('DQQ solver directory not found: %s', tmpPath);
         end
+        cd(tmpPath);
+
         % create the
         if ~exist([tmpPath filesep 'MPS'], 'dir')
             mkdir([tmpPath filesep 'MPS'])
         end
-        
+
         % set the name of the MPS file
         if isfield(solverParams, 'MPSfilename')
             MPSfilename = solverParams.MPSfilename;
         else
-            if isfield(QPproblem, 'modelID')
-                MPSfilename = QPproblem.modelID;
-            else
-                MPSfilename = 'file';
-            end
+            MPSfilename = modelID;
         end
-        
-        %create an LP problem from the optimality conditions to the QP
-        %problem
-        
-        %pdco only works with equality constraints and box constraints so
-        %any other linear constraints need to be reformulated in terms of
-        %slack variables
-        indl = find(csense == 'L'); %  A*x + s =   b
-        indg = find(csense == 'G'); % -A*x + s = - b
-        
-        [m,n]=size(QPproblem.A);
-        if isempty(indl) && isempty(indg)
-            nSlacks = 0;
-            Aeq  =  QPproblem.A;
-            beq  =  QPproblem.b;
-            lbeq =  QPproblem.lb;
-            ubeq =  QPproblem.ub;
-            ceq  =  QPproblem.c;
-            Feq  =  QPproblem.F;
-        else
-            Aeq = QPproblem.A;
-            Aeq(indg,:) = -1*Aeq(indg,:);
-            beq = QPproblem.b;
-            beq(indg,:) = -1*beq(indg,:);
-            K = speye(m);
-            K = K(:,csense == 'L' | csense == 'G');
-            Aeq = [Aeq K];
-            nSlacks = length(indl) + length(indg);
-            lbeq = [QPproblem.lb ; zeros(nSlacks,1)];
-            ubeq = [QPproblem.ub ; inf*ones(nSlacks,1)];
-            ceq  = [QPproblem.c  ; zeros(nSlacks,1)];
-            Feq  = [QPproblem.F , sparse(m, nSlacks);
-                sparse(nSlacks,n + nSlacks)];
-        end
-        
-        %    LPproblem:    Structure containing the following fields describing the LP problem to be solved
-        %
-        %    * .A - LHS matrix
-        %    * .b - RHS vector
-        %    * .c - Objective coeff vector
-        %    * .lb - Lower bound vector
-        %    * .ub - Upper bound vector
-        %    * .osense - Objective sense (max=-1, min=+1)
-        %    * .csense - Constraint senses, a string containting the constraint sense for
-        %                each row in A ('E', equality, 'G' greater than, 'L' less than).
-        
-        [mAeq,nAeq]  = size(Aeq);
-        LPproblem.A =  [Aeq, sparse(mAeq,mAeq);
-            Feq, Aeq'];
-        LPproblem.b = [beq;-1*osense*ceq];
-        LPproblem.c = sparse(nAeq+mAeq,1);
-        
-        
-        
-        LPproblem.lb = [lbeq;-Inf*ones(mAeq,1)];
-        LPproblem.ub = [ubeq; Inf*ones(mAeq,1)];
-        LPproblem.osense = 1; %does not matter as objective is zero
-        LPproblem.csense(1:nAeq+mAeq,1) = 'E';
-        
+
         % write out an .MPS file
         MPSfilename = MPSfilename(1:min(8, length(MPSfilename)));
-        if ~exist([tmpPath filesep 'MPS' filesep MPSfilename '.mps'], 'file')
-            cd([tmpPath filesep 'MPS']);
-            writeLPProblem(LPproblem,'fileName',MPSfilename);
-            cd(tmpPath);
+        cd([tmpPath filesep 'MPS']);
+        writeLPProblem(QP_LP, 'fileName', MPSfilename);
+        cd(tmpPath);
+
+        sysCall = ['./run1DQQ ' MPSfilename];
+
+        %run the command with LD_LIBRARY_PATH cleared just for that
+        %call, this avoids issues caused by conflict between matlab and
+        %system library versions
+        wrapped = sprintf('env -u LD_LIBRARY_PATH -u LD_PRELOAD %s', sysCall);
+        [status,cmdout] = system(wrapped);
+
+        solfname = [tmpPath filesep MPSfilename '.sol'];
+        if ~exist(solfname, 'file')
+            error('Expected solution file not found: %s', solfname);
         end
-        
-        % run the DQQ procedure
-        sysCall = ['./run1DQQ ' MPSfilename ' ' tmpPath];
-        [status, cmdout] = system(sysCall);
+
         if status ~= 0
             fprintf(['\n', sysCall]);
             disp(cmdout)
             error('Call to dqq failed');
         end
-        
+
         % read the solution
-        solfname = [tmpPath filesep 'results' filesep MPSfilename '.sol'];
+        solfname = [tmpPath filesep MPSfilename '.sol'];
         sol = readMinosSolution(solfname);
+
+        expectedN = nAeq + mAeq;
+        if numel(sol.x) < expectedN
+            error('Solution vector too short: numel(sol.x)=%d, expected at least %d', numel(sol.x), expectedN);
+        end
+        if numel(sol.rc) < n
+            error('Reduced-cost vector too short: numel(sol.rc)=%d, expected at least %d', numel(sol.rc), n);
+        end
+
+
         % The optimization problem solved by MINOS is assumed to be
         %        min   osense*s(iobj)
         %        st    Ax - s = 0    + bounds on x and s,
@@ -868,66 +920,104 @@ switch solver
         %        sol.s               m vector: value of each slack in s.
         %        sol.rc              n vector: reduced gradients for x.
         %        sol.y               m vector: dual variables for Ax - s = 0.
-        
-        
-        %         solution.full = x;
-        %         solution.slack = s;
-        %         solution.dual = y;
-        %         solution.rcost = w;
-        
+
+        % After solving and reading "sol":
         x = sol.x(1:n,1);
-        y = - sol.x(n+nSlacks+1:n+nSlacks+m,1);
+
+        % DO NOT guess a sign unless you have a proven convention.
+        % y corresponds to the final mAeq variables in the constructed system.
+        y = sol.x(nAeq + (1:mAeq), 1);
+
+        % Reduced costs for original x variables (as returned by MINOS for the LP)
         w = sol.rc(1:n,1);
-        
-        %         %don't take the row corresponding to the objective
-        %         if sol.objrow == 1
-        %             sol.s = sol.s(2:end);
-        %         else
-        %             sol.s = sol.s(1:end-1);
-        %         end
-        %to allow for any row.
-        sol.s(sol.objrow) = [];
-        
-        if 0
-            %both of these should be zero
-            norm(LPproblem.A*sol.x - sol.s,inf) %minos solves A*x - s = 0
-            norm(LPproblem.b - sol.s,inf) %all equalities
+
+        % Recover the explicit slack values for original constraint rows (only L/G rows)
+        s = sparse(m,1);
+        if nSlacks > 0
+            xSlack = sol.x(n + (1:nSlacks), 1);   % explicit slack variables in appended order
+            s(slackRows) = xSlack;                % map back to original constraint rows
         end
-        
-        if isempty(indl) && isempty(indg)
-            %no slack variables
-            s = sparse(m,1);
-        else
-            s = sparse(m,1);
-            %slack variables correspoding to A*x <= b
-            s(indl)=  sol.x(n+indl);
-            %slack variables correspoding to A*x => b
-            s(indg)= -sol.x(n+indg);
+
+        f = (QPproblem.osense * (QPproblem.c' * x)) + 0.5 * (x' * QPproblem.F * x);
+
+        res = QP_LP.A * sol.x - QP_LP.b;
+        if norm(res, inf) > problemTypeParams.feasTol
+            error('Feasibility check failed: norm(QP_LP.A*sol.x - QP_LP.b, inf) = %g > feasTol = %g', ...
+                norm(res, inf), problemTypeParams.feasTol);
         end
-        
+
+        % MINOS internal Ax - s = 0 (may include objective row)
+        try
+            srow = sol.s;
+            if ~isempty(sol.objrow) && sol.objrow >= 1 && sol.objrow <= numel(srow)
+                srow(sol.objrow) = [];
+            end
+            Ax = QP_LP.A * sol.x;
+            if numel(Ax) == numel(srow)
+                diagErr = norm(Ax - srow, inf);
+            end
+        catch
+        end
+
+
+        tol = problemTypeParams.feasTol;
+
+        Ax = QPproblem.A * x;
+
+        % Inequalities
+        indL = find(QPproblem.csense=='L');
+        indG = find(QPproblem.csense=='G');
+
+        activeL = ~isempty(indL) && any((QPproblem.b(indL) - Ax(indL)) <= tol); % b - Ax close to 0
+        activeG = ~isempty(indG) && any((Ax(indG) - QPproblem.b(indG)) <= tol); % Ax - b close to 0
+
+        % Bounds
+        activeLB = any(isfinite(QPproblem.lb) & (x - QPproblem.lb <= tol));
+        activeUB = any(isfinite(QPproblem.ub) & (QPproblem.ub - x <= tol));
+
+        if activeL || activeG || activeLB || activeUB
+            error(['Complementarity may matter: solution touches an inequality/bound. ', ...
+                'Your current approach is not guaranteed correct in this case.']);
+        end
+
         % Translation of DQQ of exit codes from https://github.com/kerrickstaley/lp_solve/blob/master/lp_lib.h
         dqqStatMap = {-5, 'UNKNOWNERROR', -1;
-            -4, 'DATAIGNORED',  -1;
-            -3, 'NOBFP',        -1;
-            -2, 'NOMEMORY',     -1;
-            -1, 'NOTRUN',       -1;
-            0, 'OPTIMAL',       1;
-            1, 'SUBOPTIMAL',   -1;
-            2, 'INFEASIBLE',    0;
-            3, 'UNBOUNDED',     2;
-            4, 'DEGENERATE',   -1;
-            5, 'NUMFAILURE',   -1;
-            6, 'USERABORT',    -1;
-            7, 'TIMEOUT',      -1;
-            8, 'RUNNING',      -1;
-            9, 'PRESOLVED',    -1};
-        
-        origStat = dqqStatMap{[dqqStatMap{:,1}] == sol.inform, 2};
-        stat = dqqStatMap{[dqqStatMap{:,1}] == sol.inform, 3};
-        
-        % return to original directory
-        cd(originalDirectory);
-        
+                      -4, 'DATAIGNORED',  -1;
+                      -3, 'NOBFP',        -1;
+                      -2, 'NOMEMORY',     -1;
+                      -1, 'NOTRUN',       -1;
+                       0, 'OPTIMAL',       1;
+                       1, 'SUBOPTIMAL',   -1;
+                       2, 'INFEASIBLE',    0;
+                       3, 'UNBOUNDED',     2;
+                       4, 'DEGENERATE',   -1;
+                       5, 'NUMFAILURE',   -1;
+                       6, 'USERABORT',    -1;
+                       7, 'TIMEOUT',      -1;
+                       8, 'RUNNING',      -1;
+                       9, 'PRESOLVED',    -1};
+
+        codes = cell2mat(dqqStatMap(:,1));
+        k = find(codes == sol.inform, 1);
+
+        if isempty(k)
+            origStat = 'UNMAPPED';
+            stat     = -1;
+        else
+            origStat = dqqStatMap{k,2};
+            stat     = dqqStatMap{k,3};
+        end
+
+        originalDirectory = pwd;
+
+        % Ensure we always return to originalDirectory (even on error)
+        cdBack = onCleanup(@() cd(originalDirectory));
+
+        % Optional cleanup of solver scratch (only when not debugging)
+        if ~problemTypeParams.debug
+            cleanUp = onCleanup(@() DQQCleanup(tmpPath, originalDirectory));
+        end
+
     otherwise
         if isempty(solver)
             error('There is no solver for QP problems available');
@@ -1015,7 +1105,7 @@ if solution.stat==1
             solution.objQuadratic = (1/2)*solution.full'*F*solution.full;
             %expect some variability if the norm of the optimal flux vector is large
             %TODO how to scale this
-            if (abs(solution.obj) - abs(f)) > getCobraSolverParams('LP', 'feasTol')*100 && norm(solution.full)<1e2 && ~any(strcmp(solver,{'mosek'}))
+            if (abs(solution.obj) - abs(f)) > problemTypeParams.feasTol*100 && norm(solution.full)<1e2 && ~any(strcmp(solver,{'mosek'}))
                 % TODO - mosek is passing back a slightly different
                 % objective for testSolveCobraQP.m problem 1 - why?
                 warning('solveCobraQP: Objectives do not match. Rescale problem if you rely on the exact value of the optimal objective.')

@@ -2,6 +2,7 @@ function [AA, aa, pp, rankA, p] = rowReduce(A, a, mode, printLevel)
 % Eliminates dependent rows from `A` & `a` where :math:`A x = a`
 %
 % USAGE:
+%    [AA, aa, pp, rankA, p] = rowReduce(A)
 %
 %    [AA, aa, pp, rankA, p] = rowReduce(A, a)
 %

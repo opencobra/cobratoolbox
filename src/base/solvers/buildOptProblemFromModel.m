@@ -1,5 +1,5 @@
 function optProblem = buildOptProblemFromModel(model, verify, param)
-% Builds an COBRA Toolbox LP,QP,RLP,or RQP problem structure from a COBRA Toolbox model structure.
+% Builds a COBRA Toolbox LP,QP,QRLP,or QRQP problem structure from a COBRA Toolbox model structure.
 %
 % LP - linear optimisation
 %.. math::

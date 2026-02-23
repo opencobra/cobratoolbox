@@ -169,6 +169,8 @@ How to contribute in practice
 
 Contribute a tutorial of your work to the `COBRA Tutorials <https://github.com/opencobra/COBRA.tutorials>`__.
 --------------------------------------------------------------------------------------------------------------------
+A template for generating a new tutorial is provided `here <https://github.com/opencobra/COBRA.tutorials/blob/master/.template/tutorial_template.mlx>`__.
+
 Overview
 ~~~~~~~~~~
 The COBRA.tutorials repository exists to collect and maintain tutorials for developed and published constraint-based genome-scale modelling methods and studies. Its purpose is to provide clear, reproducible instructional material that demonstrates how new algorithms, workflows, and analysis techniques can be applied within the COBRA modelling framework. By centralising these tutorials, the repository supports both new and experienced users in learning, comparing, and adopting state-of-the-art constraint-based modelling approaches.
@@ -190,7 +192,7 @@ All tutorials are provided in these formats: ``.mlx``, ``.m``, and ``.html``.
 
 - The interactive version ``.mlx`` is a MATLAB Live Script format and can be run using `the MATLAB Live-script editor <https://nl.mathworks.com/help/matlab/matlab_prog/what-is-a-live-script.html>`__.
 - The static version ``.html`` is automatically generated and is accessible on the `tutorial section of the COBRA Toolbox documentation <https://opencobra.github.io/COBRA.tutorials>`__.
-- The ``.pdf`` version can be downloaded from the same tutorial section. The ``.m`` version can be opened and run directly in MATLAB, which is particularly useful for building new analysis scripts based on existing tutorials.
+- The ``.m`` version can be opened and run directly in MATLAB, which is particularly useful for building new analysis scripts based on existing tutorials.
 
 How the Continuous Integration (CI) System Works
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -199,9 +201,8 @@ The COBRA.tutorials repository uses an automated **continuous integration (CI)**
 When a contributor pushes a new or updated ``.mlx`` tutorial to the repository:
 
 1. The CI pipeline is automatically triggered.  
-2. The ``.mlx`` file is converted into three formats:  
+2. The ``.mlx`` file is converted into two formats:  
    - ``.m`` (MATLAB script)  
-   - ``.pdf`` (print-ready copy)  
    - ``.html`` (web-friendly version)  
 3. These generated files are published to the COBRA Toolbox website, making the tutorial immediately accessible to users.  
 

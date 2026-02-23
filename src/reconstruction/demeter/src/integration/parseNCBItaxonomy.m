@@ -34,7 +34,7 @@ lineage = {
 % type 1
 taxonomy = struct();
 for i = 1:length(lineage)
-    n = regexp(hmtlString, ['ALT="', lineage{i}, '">([^<]+)'], 'tokens');
+    n = regexp(hmtlString, ['(?i)ALT="', lineage{i}, '">([^<]+)'], 'tokens');
     if ~isempty(n)
         n = [n{:}];
         if ~isempty(n{1, 1})
@@ -50,7 +50,7 @@ taxFields = fieldnames(taxonomy);
 if isempty(taxFields)
     taxonomy = struct();
     for i = 1:length(lineage)
-        n = regexp(hmtlString, ['TITLE="', lineage{i}, '">([^<]+)'], 'tokens');
+        n = regexp(hmtlString, ['(?i)TITLE="', lineage{i}, '">([^<]+)'], 'tokens');
         if ~isempty(n)
             n = [n{:}];
             if ~isempty(n{1, 1})

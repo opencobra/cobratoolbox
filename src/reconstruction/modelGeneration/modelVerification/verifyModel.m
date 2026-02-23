@@ -2,7 +2,7 @@ function results = verifyModel(model, varargin)
 % Checks the model for consistency with the COBRA Toolbox
 %
 % A list of fields of a COBRA structure is described in
-% https://github.com/opencobra/cobratoolbox/blob/master/docs/source/notes/COBRAModelFields.md
+% https://github.com/opencobra/cobratoolbox/blob/master/documentation/source/guides/COBRAModelFields.rst
 % and defined computationally in:
 % src/base/io/definitions/COBRA_structure_fields.tab
 %

@@ -5,7 +5,7 @@ This guide explains, step by step, how to contribute code to the COBRA Toolbox:
 how to fork the repository, work on your changes locally, place your code in the
 correct folder inside ``src``, add tests, and open a pull request (PR).
 
-1. Overview of the contribution workflow
+Overview of the contribution workflow
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The typical workflow for contributing is:
@@ -21,7 +21,7 @@ The typical workflow for contributing is:
 
 The following sections describe each step in more detail.
 
-2. Fork the COBRA Toolbox repository
+1. Fork the COBRA Toolbox repository
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 1. Go to the main COBRA Toolbox repository on GitHub:
@@ -36,7 +36,7 @@ The following sections describe each step in more detail.
 
 All your changes will be pushed to this fork.
 
-3. Clone your fork locally
+2. Clone your fork locally
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 To work on the code, clone your fork to your local machine.
@@ -56,7 +56,7 @@ To work on the code, clone your fork to your local machine.
       git remote add upstream https://github.com/opencobra/cobratoolbox.git
       git fetch upstream
 
-4. Add your code to the correct folder in ``src``
+3. Add your code to the correct folder in ``src``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 All new COBRA Toolbox code should be added under the ``src`` folder. The main
@@ -75,7 +75,7 @@ easier for others to navigate the code.
 
 Below is guidance on when to use each folder.
 
-**4.1. src/analysis**
+**3.1. src/analysis**
 
 Use ``analysis`` for methods that analyse existing metabolic models. Examples:
 
@@ -86,7 +86,7 @@ Use ``analysis`` for methods that analyse existing metabolic models. Examples:
 Suggested structure:  
 ``src/analysis/myNewAnalysisTool/``
 
-**4.2. src/base**
+**3.2. src/base**
 
 Use ``base`` for shared utilities and core methods needed across the toolbox.
 Examples include:
@@ -98,7 +98,7 @@ Examples include:
 Suggested structure:  
 ``src/base/myUtilityFunctions/``
 
-**4.3. src/dataIntegration**
+**3.3. src/dataIntegration**
 
 Use ``dataIntegration`` for code that integrates omics or experimental data with
 a model. Examples:
@@ -110,7 +110,7 @@ a model. Examples:
 Suggested structure:  
 ``src/dataIntegration/myIntegrationPipeline/``
 
-**4.4. src/design**
+**3.4. src/design**
 
 Use ``design`` for algorithms that propose modifications or interventions.
 Examples:
@@ -122,7 +122,7 @@ Examples:
 Suggested structure:  
 ``src/design/myDesignAlgorithm/``
 
-**4.5. src/reconstruction**
+**3.5. src/reconstruction**
 
 Use ``reconstruction`` for tools that construct, curate or update metabolic
 models. Examples:
@@ -134,7 +134,7 @@ models. Examples:
 Suggested structure:  
 ``src/reconstruction/myReconstructionPipeline/``
 
-**4.6. src/visualization**
+**3.6. src/visualization**
 
 Use ``visualization`` for tools that generate plots, diagrams or graphical
 summaries. Examples:
@@ -146,7 +146,7 @@ summaries. Examples:
 Suggested structure:  
 ``src/visualization/myVisualisationTools/``
 
-5. Add a test for every new code module
+4. Add a test for every new code module
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Every contribution must include a corresponding **test**. This ensures that new
@@ -162,7 +162,7 @@ For more information on writing tests, refer to:
 
 * :ref:`testGuide`
 
-6. Commit and push your changes
+5. Commit and push your changes
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Once your code and tests are ready, commit your work.
@@ -192,7 +192,7 @@ Once your code and tests are ready, commit your work.
 
       git push origin develop
 
-7. Open a pull request
+6. Open a pull request
 ~~~~~~~~~~~~~~~~~~~~~~
 
 Once your changes are pushed, open a pull request on GitHub.
@@ -218,7 +218,7 @@ Once your changes are pushed, open a pull request on GitHub.
 
 5. Submit the pull request.
 
-8. Address review comments
+7. Address review comments
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Maintainers may request revisions. This is normal.
