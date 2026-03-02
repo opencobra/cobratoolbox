@@ -1,4 +1,5 @@
 name: cobratoolboxCI (merge, test, and upload)
+
 on:
   pull_request:
     branches:
@@ -6,10 +7,10 @@ on:
       - master
     types: [opened, synchronize, reopened]
   workflow_dispatch:
-    
+
 permissions:
   contents: read
-  
+
 jobs:
   build:
     runs-on: self-hosted
@@ -17,24 +18,39 @@ jobs:
       - name: Check out merged PR code
         uses: actions/checkout@v4
 
-      - name: Install xvfb (skip if already installed)
-        run: |
-          if ! command -v xvfb-run >/dev/null 2>&1; then
-            apt-get update -y
-            apt-get install -y xvfb
-          else
-            echo "xvfb already installed."
-          fi
-
-      - name: Run MATLAB Tests (xvfb headless)
+      # MATLAB now runs INSIDE Docker, so we do NOT install xvfb on the host.
+      - name: Run MATLAB Tests in Docker (licensed MAC, xvfb headless)
         env:
           QT_QPA_PLATFORM: offscreen
           JAVA_AWT_HEADLESS: "1"
         run: |
-          xvfb-run -a -s "-screen 0 1280x1024x24" \
-            matlab -noFigureWindows -batch "try; run('initCobraToolbox.m'); set(0,'DefaultFigureVisible','off'); run('test/testAll.m'); catch ME; disp(getReport(ME,'extended')); exit(1); end; exit(0);"
+          set -euo pipefail
 
-      # New: ensure Node.js is present
+          # Confirm image exists (built on the runner as: docker build -t matlab .)
+          sudo docker image inspect matlab >/dev/null
+
+          # Run container with fixed MAC for node-locked MATLAB license
+          sudo docker run --rm \
+            --mac-address="02:42:ac:11:00:02" \
+            --platform linux/amd64 \
+            -u "$(id -u):$(id -g)" \
+            -e QT_QPA_PLATFORM="${QT_QPA_PLATFORM}" \
+            -e JAVA_AWT_HEADLESS="${JAVA_AWT_HEADLESS}" \
+            -v "${GITHUB_WORKSPACE}:/work" \
+            -w /work \
+            --entrypoint bash \
+            matlab \
+            -lc '
+              set -euo pipefail
+
+              # Ensure submodules (if any) are present for this PR checkout
+              git submodule update --init --recursive
+
+              # Run tests headless
+              xvfb-run -a -s "-screen 0 1280x1024x24" \
+                matlab -noFigureWindows -batch "try; run(\"initCobraToolbox.m\"); changeCobraSolver(\"gurobi\",\"all\",0); set(0,\"DefaultFigureVisible\",\"off\"); run(\"test/testAll.m\"); catch ME; disp(getReport(ME,\"extended\")); exit(1); end; exit(0);"
+            '
+
       - name: Set up Node.js 20
         uses: actions/setup-node@v4
         with:
@@ -65,7 +81,7 @@ jobs:
         with:
           name: testReport
           path: ./ctrf/ctrf-report.json
-          
+
       - name: Save PR Number
         run: echo "PR_NUMBER=${{ github.event.pull_request.number }}" >> $GITHUB_ENV
 
