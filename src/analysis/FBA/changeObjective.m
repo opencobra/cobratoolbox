@@ -23,7 +23,7 @@ end
 
 rxnID = findRxnIDs(model,rxns);
 
-model.c = zeros(size(model.c));
+model.c = zeros(size(model.c)); 
 
 if iscell(rxns)
     missingRxns = rxns(rxnID == 0);
@@ -41,3 +41,4 @@ if (isempty(rxnID) | rxnID == 0)
 else
     model.c(rxnID) = objectiveCoeff;
 end
+
