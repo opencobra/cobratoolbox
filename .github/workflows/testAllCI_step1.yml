@@ -13,7 +13,7 @@ jobs:
     runs-on: self-hosted
     steps:
       - name: Cleanup orphaned MATLAB containers
-        run: sudo docker ps -q --filter ancestor=matlab | xargs -r sudo docker rm -f
+        run: docker ps -q --filter ancestor=matlab | xargs -r docker rm -f
         continue-on-error: true
 
       - name: Check out merged PR code
@@ -30,11 +30,10 @@ jobs:
         run: |
           set -euo pipefail
           # Confirm MATLAB image exists
-          sudo docker image inspect matlab >/dev/null
-          sudo docker run --rm \
+          docker image inspect matlab >/dev/null
+          docker run --rm \
             --mac-address="02:42:ac:11:00:02" \
             --platform linux/amd64 \
-            -u "$(id -u):$(id -g)" \
             -e HOME=/tmp \
             -e USER=matlab \
             -e LOGNAME=matlab \
@@ -65,6 +64,10 @@ jobs:
                 end; \
                 exit(0);"
             '
+
+      - name: Fix workspace permissions after Docker run
+        run: sudo chown -R "$(id -u):$(id -g)" "${GITHUB_WORKSPACE}"
+        continue-on-error: true
 
       - name: Set up Node.js 20
         uses: actions/setup-node@v4
