@@ -355,16 +355,12 @@ try
         end
     end
 catch ME
-
     fprintf('exception %s while running test: %s\n', ME.identifier, ME.message);
-
-    % Also clean up temporary files in case of an error.
     removeTempFiles(testDirPath, testDirContent);
-    if ~isempty(strfind(getenv('HOME'), 'jenkins')) || ~isempty(strfind(getenv('USERPROFILE'), 'jenkins'))
-        % only exit on jenkins.
+    if ~isempty(strfind(getenv('HOME'), 'jenkins')) || ~isempty(strfind(getenv('USERPROFILE'), 'jenkins')) ...
+            || strcmp(getenv('COBRA_CI'), '1')
         exit(1);
     else
-        % switch back to the folder we were in and rethrow the error
         cd(origDir);
         rethrow(ME);
     end
@@ -373,10 +369,9 @@ end
 
 % switch back to the original directory
 cd(origDir)
-if contains(getenv('HOME'), 'vmhadmin') || contains(getenv('HOME'), 'jenkins')
-    % Running in CI environment
-    fprintf('Running test in Jenkins/CI environment\n');
-    % explicit 'exit' required for R2018b in non-interactive mode to avoid SEGV near end of test
+if contains(getenv('HOME'), 'vmhadmin') || contains(getenv('HOME'), 'jenkins') ...
+        || strcmp(getenv('COBRA_CI'), '1')
+    fprintf('Running test in CI environment\n');
     exit
 end
 
