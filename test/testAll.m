@@ -16,25 +16,24 @@ global TOMLAB_PATH
 % Define CI boolean
 CIenv = false;
 
-% request explicitly from the user to launch test suite locally
-if contains(getenv('COBRA_CI'), 'cobratoolbox')
-    % Running in CI environment
-    fprintf('Running test in cobratoolbox/CI environment\n');
+% Detect CI environment
+if strcmp(getenv('COBRA_CI'), '1')
+    fprintf('Running test in COBRA CI environment\n');
 
-    % Set CI boolean to true
     CIenv = true;
 
-    % on the CI, always reset the path to make absolutely sure, that we test
-    % the current version
+    % Always reset path in CI
     restoredefaultpath;
+
     launchTestSuite = true;
+
 else
     reply = '';
     while isempty(reply)
         reply = input([' -> Do you want to launch the test suite locally? Time estimate: more than 60 minutes Y/N: '], 's');
     end
 
-    if strcmpi(reply, 'y') || strcmpi(reply, 'yes')
+    if strcmpi(reply,'y') || strcmpi(reply,'yes')
         launchTestSuite = true;
     else
         launchTestSuite = false;
