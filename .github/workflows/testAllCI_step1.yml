@@ -31,16 +31,20 @@ jobs:
           set -euo pipefail
           # Confirm MATLAB image exists
           docker image inspect matlab >/dev/null
+          # Create a writable home dir for MATLAB prefs that uid=1002 can access
+          mkdir -p /tmp/matlab-home/.matlab /tmp/matlab-home/.MathWorks
           docker run --rm \
             --mac-address="02:42:ac:11:00:02" \
             --platform linux/amd64 \
-            -e HOME=/tmp \
+            -u "$(id -u):$(id -g)" \
+            -e HOME=/tmp/matlab-home \
             -e USER=matlab \
             -e LOGNAME=matlab \
             -e COBRA_CI=1 \
             -e QT_QPA_PLATFORM="${QT_QPA_PLATFORM}" \
             -e JAVA_AWT_HEADLESS="${JAVA_AWT_HEADLESS}" \
             -v "${GITHUB_WORKSPACE}:/work" \
+            -v "/tmp/matlab-home:/tmp/matlab-home" \
             -w /work \
             --entrypoint bash \
             matlab \
@@ -50,7 +54,6 @@ jobs:
               id
               echo "HOME=$HOME"
               echo "USER=$USER"
-              mkdir -p /tmp/.matlab /tmp/.MathWorks
               echo "Starting MATLAB tests..."
               xvfb-run -a -s "-screen 0 1280x1024x24" \
                 matlab -noFigureWindows -batch "try; \
@@ -64,10 +67,6 @@ jobs:
                 end; \
                 exit(0);"
             '
-
-      - name: Fix workspace permissions after Docker run
-        run: sudo chown -R "$(id -u):$(id -g)" "${GITHUB_WORKSPACE}"
-        continue-on-error: true
 
       - name: Set up Node.js 20
         uses: actions/setup-node@v4

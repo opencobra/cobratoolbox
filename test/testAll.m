@@ -16,25 +16,24 @@ global TOMLAB_PATH
 % Define CI boolean
 CIenv = false;
 
-% request explicitly from the user to launch test suite locally
-if contains(getenv('HOME'), 'cobratoolbox')
-    % Running in CI environment
-    fprintf('Running test in cobratoolbox/CI environment\n');
+% Detect CI environment
+if strcmp(getenv('COBRA_CI'), '1')
+    fprintf('Running test in COBRA CI environment\n');
 
-    % Set CI boolean to true
     CIenv = true;
 
-    % on the CI, always reset the path to make absolutely sure, that we test
-    % the current version
+    % Always reset path in CI
     restoredefaultpath;
+
     launchTestSuite = true;
+
 else
     reply = '';
     while isempty(reply)
         reply = input([' -> Do you want to launch the test suite locally? Time estimate: more than 60 minutes Y/N: '], 's');
     end
 
-    if strcmpi(reply, 'y') || strcmpi(reply, 'yes')
+    if strcmpi(reply,'y') || strcmpi(reply,'yes')
         launchTestSuite = true;
     else
         launchTestSuite = false;
@@ -356,16 +355,12 @@ try
         end
     end
 catch ME
-
     fprintf('exception %s while running test: %s\n', ME.identifier, ME.message);
-
-    % Also clean up temporary files in case of an error.
     removeTempFiles(testDirPath, testDirContent);
-    if ~isempty(strfind(getenv('HOME'), 'jenkins')) || ~isempty(strfind(getenv('USERPROFILE'), 'jenkins'))
-        % only exit on jenkins.
+    if ~isempty(strfind(getenv('HOME'), 'jenkins')) || ~isempty(strfind(getenv('USERPROFILE'), 'jenkins')) ...
+            || strcmp(getenv('COBRA_CI'), '1')
         exit(1);
     else
-        % switch back to the folder we were in and rethrow the error
         cd(origDir);
         rethrow(ME);
     end
@@ -374,10 +369,9 @@ end
 
 % switch back to the original directory
 cd(origDir)
-if contains(getenv('HOME'), 'vmhadmin') || contains(getenv('HOME'), 'jenkins')
-    % Running in CI environment
-    fprintf('Running test in Jenkins/CI environment\n');
-    % explicit 'exit' required for R2018b in non-interactive mode to avoid SEGV near end of test
+if contains(getenv('HOME'), 'vmhadmin') || contains(getenv('HOME'), 'jenkins') ...
+        || strcmp(getenv('COBRA_CI'), '1')
+    fprintf('Running test in CI environment\n');
     exit
 end
 
