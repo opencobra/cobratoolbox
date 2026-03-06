@@ -17,7 +17,7 @@ global TOMLAB_PATH
 CIenv = false;
 
 % request explicitly from the user to launch test suite locally
-if contains(getenv('HOME'), 'cobratoolbox')
+if contains(getenv('COBRA_CI'), 'cobratoolbox')
     % Running in CI environment
     fprintf('Running test in cobratoolbox/CI environment\n');
 
