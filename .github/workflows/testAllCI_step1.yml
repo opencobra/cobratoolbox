@@ -23,7 +23,7 @@ jobs:
           fetch-depth: 0
 
       - name: Fix workspace permissions for Docker
-        run: chmod o+rwx "${GITHUB_WORKSPACE}"
+        run: chmod -R o+rwx "${GITHUB_WORKSPACE}"
 
       # MATLAB runs inside Docker
       - name: Run MATLAB Tests in Docker (licensed MAC, xvfb headless)
