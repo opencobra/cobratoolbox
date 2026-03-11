@@ -54,6 +54,9 @@ jobs:
               echo "HOME=$HOME"
               echo "USER=$USER"
               mkdir -p /tmp/.matlab /tmp/.MathWorks
+              echo "Configuring git safe directory..."
+              git config --global --add safe.directory /work
+              git config --global --add safe.directory "*"
               echo "Starting MATLAB tests..."
               xvfb-run -a -s "-screen 0 1280x1024x24" \
                 matlab -noFigureWindows -batch "try; \
