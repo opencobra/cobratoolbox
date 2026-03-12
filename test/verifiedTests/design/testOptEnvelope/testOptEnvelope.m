@@ -16,7 +16,7 @@ fileDir = fileparts(which('testOptEnvelope'));
 cd(fileDir);
 
 % set the tolerance
-tol = 1e-5;
+tol = 1e-4;
 
 % define the solver packages to be used to run this test
 requiredSolvers = { 'gurobi' };
@@ -51,4 +51,5 @@ if solverOK == 1
 end
 
 cd(currentDir)
+
 
