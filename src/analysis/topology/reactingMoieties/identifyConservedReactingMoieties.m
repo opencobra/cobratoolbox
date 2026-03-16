@@ -733,7 +733,15 @@ end
 %conserved moiety formula
 moietyFormulae=cell(nIsomorphismClasses,1);
 for i = 1:nIsomorphismClasses
-    elementTable = tabulate(compElements(I2C(i,:)==1)); % elements in moiety i
+    if license('test','Statistics_Toolbox')
+        elementTable = tabulate(compElements(I2C(i,:)==1)); % elements in moiety i
+    else
+        vals = compElements(I2C(i,:)==1);
+        [uniqVals, ~, idx] = unique(vals);
+        counts = accumarray(idx, 1);
+        percent = 100 * counts / numel(vals);
+        elementTable = [uniqVals(:), num2cell(counts), num2cell(percent)];
+    end
     formula='';
     for j=1:size(elementTable,1)
         formula= [formula elementTable{j,1} num2str(elementTable{j,2})];
@@ -1612,9 +1620,27 @@ lb = zeros(n,1);
 ub = ones(n,1);
 intcon = 1:n;
 
-options = optimoptions('intlinprog','Display','off');
-[x_opt, fval] = intlinprog(f, intcon, A, bvec, [], [], lb, ub, options);
+if license('test','Optimization_Toolbox')
+    options = optimoptions('intlinprog','Display','off');
+    [x_opt, fval] = intlinprog(f, intcon, A, bvec, [], [], lb, ub, options);
+else
+    MILPproblem.A      = A;
+    MILPproblem.b      = bvec;
+    MILPproblem.c      = f;
+    MILPproblem.lb     = lb;
+    MILPproblem.ub     = ub;
+    MILPproblem.osense = 1;                       % 1 = minimise
+    MILPproblem.csense = repmat('L', size(bvec)); % A*x <= bvec
 
+    n = numel(f);
+    MILPproblem.vartype = repmat('C', n, 1);
+    MILPproblem.vartype(intcon) = 'I';            % integer variables
+
+    sol = solveCobraMILP(MILPproblem, 'printLevel', 0);
+
+    x_opt = sol.full;
+    fval  = sol.obj;
+end
 selectedReactions = find(x_opt > 0.5);
 
 
