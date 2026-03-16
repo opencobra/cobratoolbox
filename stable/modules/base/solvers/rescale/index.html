@@ -65,8 +65,8 @@
         <link rel="search" title="Search" href="../../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../../index.html"/>
         <link rel="up" title="Solvers" href="../index.html"/>
-        <link rel="next" title="Cplex" href="../cplex/index.html"/>
-        <link rel="prev" title="Gurobi" href="../gurobi/index.html"/> 
+        <link rel="next" title="Nlp" href="../NLP/index.html"/>
+        <link rel="prev" title="Gams" href="../gams/index.html"/> 
 
   
   <script src="../../../../_static/js/modernizr.min.js"></script>
@@ -158,30 +158,31 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">Functions</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Base</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../../paths/index.html">Paths</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../cobrarrow/index.html">Cobrarrow</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../io/index.html">Io</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../codeConsistency/index.html">Codeconsistency</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../utilities/index.html">Utilities</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../install/index.html">Install</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../utilities/index.html">Utilities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../io/index.html">Io</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ci/index.html">Ci</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../index.html">Solvers</a><ul class="current">
-<li class="toctree-l4"><a class="reference internal" href="../mosek/index.html">Mosek</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../varKin/index.html">Varkin</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../init/index.html">Init</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../gurobi/index.html">Gurobi</a></li>
-<li class="toctree-l4 current"><a class="current reference internal" href="#">Rescale</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../cplex/index.html">Cplex</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../gams/index.html">Gams</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../lp_solve/index.html">Lp_solve</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../lindo/index.html">Lindo</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../cardOpt/index.html">Cardopt</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../NLP/index.html">Nlp</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../getSetSolver/index.html">Getsetsolver</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../param/index.html">Param</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../init/index.html">Init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../lp_solve/index.html">Lp_solve</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../cardOpt/index.html">Cardopt</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../gurobi/index.html">Gurobi</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../getSetSolver/index.html">Getsetsolver</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../gams/index.html">Gams</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Rescale</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../NLP/index.html">Nlp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../lindo/index.html">Lindo</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../cplex/index.html">Cplex</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../entropicFBA/index.html">Entropicfba</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../mosek/index.html">Mosek</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../minos/index.html">Minos</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../varKin/index.html">Varkin</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../ci/index.html">Ci</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../cobrarrow/index.html">Cobrarrow</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../paths/index.html">Paths</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../dataIntegration/index.html">Dataintegration</a></li>
@@ -246,7 +247,7 @@
 <span id="id1"></span><h1>Rescale<a class="headerlink" href="#rescale" title="Permalink to this heading">¶</a></h1>
 <span class="target" id="module-src.base.solvers.rescale"></span><dl class="mat function">
 <dt class="sig sig-object mat" id="src.base.solvers.rescale.liftCouplingConstraints">
-<span class="sig-name descname"><span class="pre">liftCouplingConstraints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">BIG</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/rescale/liftCouplingConstraints.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.rescale.liftCouplingConstraints" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">liftCouplingConstraints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">BIG</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em>, <em class="sig-param"><span class="pre">equalities</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/rescale/liftCouplingConstraints.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.rescale.liftCouplingConstraints" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reformulates badly-scaled coupling constraints C*v &lt;=&gt; d
 by lifting them to a better scaled problem in a higher dimension by
 introducing dummy variables.</p>
@@ -270,9 +271,12 @@ See also tutorial here:
 </ul>
 </dd>
 </dl>
-<dl class="simple">
+<dl>
 <dt>OPTIONAL INPUTS</dt><dd><p>‘BIG’                Value consided a large coefficient. BIG should be set between 1000 and 10000 on double precision machines.
 <cite>printLevel</cite>         1 or 0 enables/diables printing respectively.</p>
+<blockquote>
+<div><p>equalities          true means also deals with original constraints containing equalities (default false - only deals with original constraints that are inequalities)</p>
+</div></blockquote>
 </dd>
 </dl>
 <dl class="field-list simple">
@@ -334,6 +338,37 @@ printLevel = 0 silent</p></li>
 </dd></dl>
 
 <dl class="mat function">
+<dt class="sig sig-object mat" id="src.base.solvers.rescale.liftRows">
+<span class="sig-name descname"><span class="pre">liftRows</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">C</span></em>, <em class="sig-param"><span class="pre">cupcon</span></em>, <em class="sig-param"><span class="pre">BIG</span></em>, <em class="sig-param"><span class="pre">logbig</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em>, <em class="sig-param"><span class="pre">ctrs_cuprow</span></em>, <em class="sig-param"><span class="pre">rxns</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/rescale/liftRows.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.rescale.liftRows" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper for liftCouplingConstraints. Implements the lifting</p>
+<dl class="field-list simple">
+<dt class="field-odd">INPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>C           k x n double</strong> – Subset of coupling constraints (2-variable rows to be lifted)</p></li>
+<li><p><strong>cupcon      k x 1 char</strong> – Senses for rows in C (L/G/E)</p></li>
+<li><p><strong>BIG         double</strong> – Threshold for “large” coefficients. TRiggers lifting</p></li>
+<li><p><strong>logbig      double</strong> – log(BIG)</p></li>
+<li><p><strong>printLevel  double</strong> – 0 or 1. If 1 prints extra information</p></li>
+<li><p><strong>ctrs_cuprow k x 1 cell array of chr</strong> – IDs of the selected constraints. Correspnds to rows in C</p></li>
+<li><p><strong>rxns        nRxns x 1 cell array of chr</strong> – model rxn IDs</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>Clifted     k’ x n’ double</strong> – Lifted constraint matrix</p></li>
+<li><p><strong>newcon      ndum x 1 char</strong> – Senses of added dummy constraints</p></li>
+<li><p><strong>ctrs_cuprow k’ x 1 cell array of char</strong> – Updated IDs for original coupling constraints.</p></li>
+<li><p><strong>ctrs_new    ndum x 1 cell array of char</strong> – IDs for dummy constraints</p></li>
+<li><p><strong>evars       nEvars x 1 cell array of char</strong> – IDs of new dummy variables</p></li>
+<li><p><strong>ndum        double</strong> – Total number of dummy constraints rows added</p></li>
+<li><p><strong>cupcon      k’ x 1 char</strong> – Senses for rows in Clifted (L/G/E)</p></li>
+<li><p><strong>nEvars      double</strong> – Total number of dummy variables</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
 <dt class="sig sig-object mat" id="src.base.solvers.rescale.reformulate">
 <span class="sig-name descname"><span class="pre">reformulate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">LPproblem</span></em>, <em class="sig-param"><span class="pre">BIG</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/rescale/reformulate.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.rescale.reformulate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reformulates badly-scaled FBA program
@@ -372,6 +407,48 @@ reformulated problem.</p></li>
 </dl>
 </dd></dl>
 
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.base.solvers.rescale.splitRow">
+<span class="sig-name descname"><span class="pre">splitRow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">A</span></em>, <em class="sig-param"><span class="pre">ri</span></em>, <em class="sig-param"><span class="pre">evars</span></em>, <em class="sig-param"><span class="pre">evarlb</span></em>, <em class="sig-param"><span class="pre">evarub</span></em>, <em class="sig-param"><span class="pre">evarc</span></em>, <em class="sig-param"><span class="pre">b</span></em>, <em class="sig-param"><span class="pre">dsense</span></em>, <em class="sig-param"><span class="pre">ctrs</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/rescale/splitRow.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.rescale.splitRow" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes row ri of the constraint matrix A (e.g. -1e6*v1 -v2 + v3 &lt; 0),
+identifies the coefficient with largest absolute value, and replaces the row by:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>a constraint containing only that largest coefficient and a new variable z
+(e.g. -1e6*v1 + z &lt; 0)</p></li>
+<li><p>an equality constraint defining z as a combination of the remaining
+variables (e.g. z +v2 - v3 = 0)</p></li>
+</ol>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Inputs<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>A        k x n constraint matrix.</strong></p></li>
+<li><p><strong>ri       Index of the row of A to split</strong></p></li>
+<li><p><strong>evars    Cell array of existing extra variable IDs</strong></p></li>
+<li><p><strong>evarlb   Lower bounds of extra variables</strong></p></li>
+<li><p><strong>evarub   Upper bounds of extra variables</strong></p></li>
+<li><p><strong>evarc    Objective coefficients of extra variables</strong></p></li>
+<li><p><strong>b        Right-hand side vector of constraints</strong></p></li>
+<li><p><strong>dsense   Constraint senses</strong> (<em>L,E,G</em>)</p></li>
+<li><p><strong>ctrs     Cell array of constraint IDs</strong></p></li>
+</ul>
+</dd>
+<dt class="field-even">Outputs<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>A        Updated constraint matrix with one extra column and one extra row.</strong></p></li>
+<li><p><strong>evars    Updated extra variable IDs including the new z variable</strong></p></li>
+<li><p><strong>evarlb   Updated lower bounds</strong> (<em>new z has -Inf</em>)</p></li>
+<li><p><strong>evarub   Updated upper bounds</strong> (<em>new z has Inf</em>)</p></li>
+<li><p><strong>evarc    Updated objective coefficients</strong> (<em>new z has 0</em>)</p></li>
+<li><p><strong>b        Updated RHS including 0 for the z-definition equality</strong></p></li>
+<li><p><strong>dsense   Updated senses including ‘E’ for the z-definition equality</strong></p></li>
+<li><p><strong>ctrs     Updated constraint IDs with a _splitN suffix for the new row</strong></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
 
 
@@ -384,10 +461,10 @@ reformulated problem.</p></li>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../cplex/index.html" class="btn btn-default float-right" title="Cplex" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../NLP/index.html" class="btn btn-default float-right" title="Nlp" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../gurobi/index.html" class="btn btn-default" title="Gurobi" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../gams/index.html" class="btn btn-default" title="Gams" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
