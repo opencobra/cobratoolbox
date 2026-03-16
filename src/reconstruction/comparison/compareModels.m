@@ -1,6 +1,6 @@
 function [isSameModel,diffTable,why] = compareModels(modelA,modelB)
 %compares modelA with modelB, looking for differences between the
-%structures. Assumes any pair of NaN are identical.
+%structures
 %
 % INPUT
 % modelA:       structure
@@ -27,9 +27,7 @@ function [isSameModel,diffTable,why] = compareModels(modelA,modelB)
 %
 
 
-funh2string=false;
-ignorenan=true;
-[isSameModel, why] = structeq(modelA,modelB,funh2string, ignorenan);
+[isSameModel, why] = structeq(modelA,modelB);
 
 if isSameModel
     diffTable = [];

@@ -341,15 +341,11 @@ else
 end
 if any(vfl>0)
     if param.printLevel
-        if nnz(vfl>0)>10
-            fprintf('%s\n',['Lower bound on forward flux is positive for ' int2str(nnz(vfl>0)) ' internal reactions'])
-        else
-            fprintf('%s\n','Lower bound on forward flux is positive for the following internal reactions:')
-            vfl2= zeros(n+k,1);
-            vfl2(model.SConsistentRxnBool,1)=vfl;
-            %print the non-zero lower bounds
-            printFluxVector(model,vfl2,1);
-        end
+        fprintf('%s\n','Lower bound on forward flux is positive for the following internal reactions:')
+        vfl2= zeros(n+k,1);
+        vfl2(model.SConsistentRxnBool,1)=vfl;
+        %print the non-zero lower bounds
+        printFluxVector(model,vfl2,1);
     end
 end
 
