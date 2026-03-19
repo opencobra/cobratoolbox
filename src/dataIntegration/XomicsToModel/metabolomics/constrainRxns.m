@@ -784,11 +784,19 @@ switch mode
         % overwrite default flux bound relaxation if
         % weightLower/Upper_flx_default is provided by user
         if exist('weightLower_flx_default', 'var') && ~isempty(weightLower_flx_default)
-            weightLower_flx = repmat(weightLower_flx_default, nRxn, 1);
+            if isscalar(weightLower_flx_default)
+                weightLower_flx = repmat(weightLower_flx_default, nRxn, 1);
+            else
+                weightLower_flx = weightLower_e_default;
+            end
         end
 
         if exist('weightUpper_flx_default', 'var') && ~isempty(weightUpper_flx_default)
-            weightUpper_flx = repmat(weightUpper_flx_default, nRxn, 1);
+            if isscalar(weightLower_flx_default)
+                weightUpper_flx = repmat(weightUpper_flx_default, nRxn, 1);
+            else
+                weightUpper_flx = weightUpper_e_default;
+            end
         end
         
         % overwrite bound relaxation for fluxes with user defined penalties
@@ -807,12 +815,19 @@ switch mode
         % overwrite default extra variable bound relaxation if
         % weightLower/Upper_e_default is provided by user
         if exist('weightLower_e_default', 'var') && ~isempty(weightLower_e_default)
-            weightLower_e = repmat(weightLower_e_default, nExt, 1);
+            if isscalar(weightLower_e)
+                weightLower_e = repmat(weightLower_e_default, nExt, 1);
+            else
+                weightLower_e = weightLower_e_default;
+            end
         end
         if exist('weightUpper_e_default', 'var') && ~isempty(weightUpper_e_default)
-            weightUpper_e = repmat(weightUpper_e_default, nExt, 1);
+            if isscalar(weightUpper_e)
+                weightUpper_e = repmat(weightUpper_e_default, nExt, 1);
+            else
+                weightUpper_e = weightUpper_e_default;
+            end
         end
-        
         % overwrite bound relaxation for extra variables with user defined penalties
         if ismember('penaltyLowerBoundPerturbation', specificData.exoMet.Properties.VariableNames)
             weightLower_e(eIdx(eBool)) = specificData.exoMet.penaltyLowerBoundPerturbation(eIdx(eBool));
