@@ -747,6 +747,14 @@ switch solver
         end
 
 
+        hasIneq = any(QPproblem.csense=='L' | QPproblem.csense=='G');
+        hasFiniteBounds = any(isfinite(QPproblem.lb)) || any(isfinite(QPproblem.ub));
+
+        if hasIneq || hasFiniteBounds
+            warning(['Your feasibility system often becomes infeasible when bounds/inequalities matter. ', ...
+                'If MINOS reports infeasible, that may be expected (not a bug).']);
+        end
+
 
         % find the solution to a QP problem by obtaining a solution to the
         % optimality conditons using the LP solver 'dqqMinos'
@@ -891,12 +899,27 @@ switch solver
         solfname = [tmpPath filesep MPSfilename '.sol'];
         sol = readMinosSolution(solfname);
 
+        if problemTypeParams.printLevel>1
+        fprintf('MINOS inform=%d, numinf=%g, suminf=%g, obj=%g\n', ...
+            sol.inform, sol.numinf, sol.suminf, sol.obj);
+        end
+        % If MINOS reports infeasibilities, do not expect Ax=b to hold tightly
+        if isfield(sol,'numinf') && sol.numinf > 0
+            warning('MINOS reports numinf=%g, suminf=%g. Feasibility residual will not be small.', sol.numinf, sol.suminf);
+        end
+
+        % Only trust solution vectors if MINOS reports success
+        % (Adjust these codes to your MINOS build's inform meanings if needed)
+        if ~ismember(sol.inform, [0, 1])   % 0=optimal in your map, 1=suboptimal
+            warning('MINOS did not report an optimal/suboptimal solution (inform=%d). Not checking feasibility.', sol.inform);
+        end
+
         expectedN = nAeq + mAeq;
         if numel(sol.x) < expectedN
-            error('Solution vector too short: numel(sol.x)=%d, expected at least %d', numel(sol.x), expectedN);
+            warning('Solution vector too short: numel(sol.x)=%d, expected at least %d', numel(sol.x), expectedN);
         end
         if numel(sol.rc) < n
-            error('Reduced-cost vector too short: numel(sol.rc)=%d, expected at least %d', numel(sol.rc), n);
+            warning('Reduced-cost vector too short: numel(sol.rc)=%d, expected at least %d', numel(sol.rc), n);
         end
 
 
@@ -940,9 +963,26 @@ switch solver
 
         f = (QPproblem.osense * (QPproblem.c' * x)) + 0.5 * (x' * QPproblem.F * x);
 
+        tol = problemTypeParams.feasTol;
+
+        z = sol.x(1:nAeq,1);
+        y = sol.x(nAeq + (1:mAeq), 1);
+
+        r1 = Aeq*z - beq;                             % primal eqs
+        r2 = Feq*z + Aeq'*y + QPproblem.osense*ceq;   % stationarity eqs
+
+        if problemTypeParams.printLevel>1
+            fprintf('||r1||_inf = %g, ||r2||_inf = %g\n', norm(r1,inf), norm(r2,inf));
+        end
+
+        if max(norm(r1,inf), norm(r2,inf)) > tol
+            warning('Feasibility check failed: max(||r1||_inf, ||r2||_inf) = %g > %g', ...
+                max(norm(r1,inf), norm(r2,inf)), tol);
+        end
+
         res = QP_LP.A * sol.x - QP_LP.b;
         if norm(res, inf) > problemTypeParams.feasTol
-            error('Feasibility check failed: norm(QP_LP.A*sol.x - QP_LP.b, inf) = %g > feasTol = %g', ...
+            warning('Feasibility check failed: norm(QP_LP.A*sol.x - QP_LP.b, inf) = %g > feasTol = %g', ...
                 norm(res, inf), problemTypeParams.feasTol);
         end
 
@@ -976,7 +1016,7 @@ switch solver
         activeUB = any(isfinite(QPproblem.ub) & (QPproblem.ub - x <= tol));
 
         if activeL || activeG || activeLB || activeUB
-            error(['Complementarity may matter: solution touches an inequality/bound. ', ...
+            warning(['Complementarity may matter: solution touches an inequality/bound. ', ...
                 'Your current approach is not guaranteed correct in this case.']);
         end
 

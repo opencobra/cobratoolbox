@@ -254,7 +254,7 @@ else
         data(:,size(data,2)+1:size(data,2)+2)=growth{f}(:,3:4);
     end
     
-    if size(data,1)>5
+    if size(data,1)>5 & ~all(data(:,1)==0) & ~all(data(:,2)==0)
         figure;
         hold on
         violinplot(data, {'Aerobic','Anaerobic'});
