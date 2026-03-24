@@ -636,7 +636,7 @@ switch mode
         if any(~flxBool & ~eBool)
             notThere = exo.varID(~flxBool & ~eBool);
             nt = sprintf('%s\n', notThere);
-            warning('These exoMet.varID entries neither match model.rxns nor model.evars, and will be ignored: %s', nt)
+            display('These exoMet.varID entries neither match model.rxns nor model.evars, and will be ignored: %s', nt)
         end
         
         rxnsConstrained = exo.varID(flxBool);
@@ -787,15 +787,15 @@ switch mode
             if isscalar(weightLower_flx_default)
                 weightLower_flx = repmat(weightLower_flx_default, nRxn, 1);
             else
-                weightLower_flx = weightLower_e_default;
+                weightLower_flx = weightLower_flx_default;
             end
         end
 
         if exist('weightUpper_flx_default', 'var') && ~isempty(weightUpper_flx_default)
-            if isscalar(weightLower_flx_default)
+            if isscalar(weightUpper_flx_default)
                 weightUpper_flx = repmat(weightUpper_flx_default, nRxn, 1);
             else
-                weightUpper_flx = weightUpper_e_default;
+                weightUpper_flx = weightUpper_flx_default;
             end
         end
         
@@ -809,20 +809,20 @@ switch mode
         
         % default for extra variables bound relaxation, if no
         % weightLower/Upper_e_default is provided, is to not relax
-        weightLower_e = inf * ones(nExt,1);
-        weightUpper_e = inf * ones(nExt,1);
+        weightLower_e = inf*ones(nExt,1);
+        weightUpper_e = inf*ones(nExt,1);
 
         % overwrite default extra variable bound relaxation if
         % weightLower/Upper_e_default is provided by user
         if exist('weightLower_e_default', 'var') && ~isempty(weightLower_e_default)
-            if isscalar(weightLower_e)
+            if isscalar(weightLower_e_default)
                 weightLower_e = repmat(weightLower_e_default, nExt, 1);
             else
                 weightLower_e = weightLower_e_default;
             end
         end
         if exist('weightUpper_e_default', 'var') && ~isempty(weightUpper_e_default)
-            if isscalar(weightUpper_e)
+            if isscalar(weightUpper_e_default)
                 weightUpper_e = repmat(weightUpper_e_default, nExt, 1);
             else
                 weightUpper_e = weightUpper_e_default;
