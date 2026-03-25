@@ -1,6 +1,5 @@
 function [newModel, rxnsConstrained, rxnBoundsCorrected, newSpecificData] = ...
-constrainRxns(model, specificData, param, mode, printLevel, ...
-weightLower_flx_default, weightUpper_flx_default, weightLower_e_default, weightUpper_e_default, weightExpFct)
+constrainRxns(model, specificData, param, mode, printLevel)
 % Function used to apply constraints in the XomicsToModel function
 %
 % USAGE:
@@ -50,23 +49,28 @@ weightLower_flx_default, weightUpper_flx_default, weightLower_e_default, weightU
 %  printLevel:        
 %
 % OPTIONAL INPUTS:
-%  weightLower_flx_default:  User defined penalty applied to lower bounds of all fluxes.
-%                            It overwrites the default penalty.
-%                            It is overwritten for measured fluxes only by specificData.exoMet.penaltyLowerBoundPerturbation
-%                            when available
-%  weightUpper_flx_default:  User defined penalty applied to upper bounds of all fluxes.
-%                            It overwrites the default penalty.
-%                            It is overwritten for measured fluxes only by specificData.exoMet.penaltyUpperBoundPerturbation
-%                            when available
-%  weightLower_e_default:    User defined penalty applied to lower bounds of extra variables.
-%                            It overwrites the default penalty.
-%                            It is overwritten for measured extra variables only by specificData.exoMet.penaltyLowerBoundPerturbation
-%                            when available
-%  weightUpper_e_default:    User defined penalty applied to upper bounds of extra variables.
-%                            It overwrites the default penalty.
-%                            It is overwritten for measured extra variables only by specificData.exoMet.penaltyUpperBoundPerturbation
-%                            when available
-%  weightExpFct:             Factor by which to multiply experimental weights (weightExp_flx ,weightExp_e) in mode 'allConstraints'
+%  param.weightLower_flx_default:  scalar or n x 1 double
+%                                  User defined penalty applied to lower bounds of all fluxes.
+%                                  It overwrites the default penalty.
+%                                  It is overwritten for measured fluxes only by specificData.exoMet.penaltyLowerBoundPerturbation
+%                                  when available
+%  param.weightUpper_flx_default:  scalar or n x 1 double
+%                                  User defined penalty applied to upper bounds of all fluxes.
+%                                  It overwrites the default penalty.
+%                                  It is overwritten for measured fluxes only by specificData.exoMet.penaltyUpperBoundPerturbation
+%                                  when available
+%  param.weightLower_e_default:    scalar or number of extra variables x 1 double.
+%                                  User defined penalty applied to lower bounds of extra variables.
+%                                  It overwrites the default penalty.
+%                                  It is overwritten for measured extra variables only by specificData.exoMet.penaltyLowerBoundPerturbation
+%                                  when available
+%  param.weightUpper_e_default:    scalar or number of extra variables x 1 double.
+%                                  User defined penalty applied to upper bounds of extra variables.
+%                                  It overwrites the default penalty.
+%                                  It is overwritten for measured extra variables only by specificData.exoMet.penaltyUpperBoundPerturbation
+%                                  when available
+%  param.weightExpFct:             scalar.
+%                                  Factor by which to multiply experimental weights (weightExp_flx ,weightExp_e) in mode 'allConstraints'
 %
 % OUTPUTS:
 %  newModel:
@@ -88,6 +92,7 @@ weightLower_flx_default, weightUpper_flx_default, weightLower_e_default, weightU
 %   newSpecificData:    A new structure containing arguments for the
 %                       XomicsToModel function
 %
+% March 2026: extended to deal with extra variables - Tania
 
 if ~exist('printLevel','var')
     printLevel=0;
@@ -675,32 +680,32 @@ switch mode
         switch param.metabolomicWeights
             case 'SD'
                 if isfield(param, 'weightExpFct') && (~isempty(param.weightExpFct))
-                    weightExp_flx(flxIdx(flxBool)) = (1 ./ (1 +  (vSD_flx(flxIdx(flxBool)).^2)))*weightExpFct;
-                    weightExp_e(eIdx(eBool)) = (1 ./ (1 +  (vSD_e(eIdx(eBool)).^2)))*weightExpFct;
+                    weightExp_flx(flxIdx(flxBool)) = (1 ./ (1 +  (vSD_flx(flxIdx(flxBool)).^2)))*param.weightExpFct;
+                    weightExp_e(eIdx(eBool)) = (1 ./ (1 +  (vSD_e(eIdx(eBool)).^2)))*param.weightExpFct;
                 else
                     weightExp_flx(flxIdx(flxBool)) = 1 ./ (1 +  (vSD_flx(flxIdx(flxBool)).^2));
                     weightExp_e(eIdx(eBool)) = 1 ./ (1 +  (vSD_e(eIdx(eBool)).^2));
                 end
             case 'mean'
                 if isfield(param, 'weightExpFct') && (~isempty(param.weightExpFct))
-                    weightExp_flx(flxIdx(flxBool)) = (1 ./ (1 + (vExp_flx(flxIdx(flxBool)).^2)))*weightExpFct;
-                    weightExp_e(eIdx(eBool)) = (1 ./ (1 + (vExp_e(eIdx(eBool)).^2)))*weightExpFct;
+                    weightExp_flx(flxIdx(flxBool)) = (1 ./ (1 + (vExp_flx(flxIdx(flxBool)).^2)))*param.weightExpFct;
+                    weightExp_e(eIdx(eBool)) = (1 ./ (1 + (vExp_e(eIdx(eBool)).^2)))*param.weightExpFct;
                 else
                     weightExp_flx(flxIdx(flxBool)) = 1 ./ (1 + (vExp_flx(flxIdx(flxBool)).^2));
                     weightExp_e(eIdx(eBool)) = 1 ./ (1 + (vExp_e(eIdx(eBool)).^2));
                 end
             case 'RSD'
                 if isfield(param, 'weightExpFct') && (~isempty(param.weightExpFct))
+                    weightExp_flx(flxIdx(flxBool)) = 1 ./ ((vSD_flx(flxIdx(flxBool))./vExp_flx(flxIdx(flxBool))).^2)*param.weightExpFct;
+                    weightExp_e(eIdx(eBool)) = 1 ./ ((vSD_e(eIdx(eBool))./vExp_e(eIdx(eBool))).^2)*param.weightExpFct;
+                else
                     weightExp_flx(flxIdx(flxBool)) = 1 ./ ((vSD_flx(flxIdx(flxBool))./vExp_flx(flxIdx(flxBool))).^2);
                     weightExp_e(eIdx(eBool)) = 1 ./ ((vSD_e(eIdx(eBool))./vExp_e(eIdx(eBool))).^2);
-                else
-                    weightExp_flx(flxIdx(flxBool)) = 1 ./ ((vSD_flx(flxIdx(flxBool))./vExp_flx(flxIdx(flxBool))).^2)*weightExpFct;
-                    weightExp_e(eIdx(eBool)) = 1 ./ ((vSD_e(eIdx(eBool))./vExp_e(eIdx(eBool))).^2)*weightExpFct;
                 end
             otherwise
                 if isfield(param, 'weightExpFct') && (~isempty(param.weightExpFct))
-                    weightExp_flx(flxIdx(flxBool)) = 2*weightExpFct;
-                    weightExp_e(eIdx(eBool)) = 2*weightExpFct;
+                    weightExp_flx(flxIdx(flxBool)) = 2*param.weightExpFct;
+                    weightExp_e(eIdx(eBool)) = 2*param.weightExpFct;
                 else
                     weightExp_flx(flxIdx(flxBool)) = 2;
                     weightExp_e(eIdx(eBool)) = 2;
