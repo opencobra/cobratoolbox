@@ -22,8 +22,10 @@ jobs:
           submodules: recursive
           fetch-depth: 0
 
-      - name: Fix workspace permissions for Docker
-        run: chmod -R o+rwx "${GITHUB_WORKSPACE}"
+      - name: Fix workspace ownership and permissions for Docker
+        run: |
+          sudo chown -R "$(id -u):$(id -g)" "${GITHUB_WORKSPACE}"
+          chmod -R o+rwx "${GITHUB_WORKSPACE}"
 
       # MATLAB runs inside Docker
       - name: Run MATLAB Tests in Docker (licensed MAC, xvfb headless)

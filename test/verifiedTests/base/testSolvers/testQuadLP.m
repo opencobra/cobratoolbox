@@ -1,17 +1,33 @@
-%test quad precision solver
+% The COBRAToolbox: testQuadLP
+%
+% Purpose:
+%     - Testing all available quad precision solvers
+%
+% Authors:
+%     - Ronan Fleming 2026
+%
+
+% save the current path
+currentDir = pwd;
+
+% initialize the test
+fileDir = fileparts(which('testQuadLP'));
+cd(fileDir);
 
 global CBTDIR
 
 %Test the requirements
 %useSolversIfAvailable = {'gurobi','quadMinos', 'dqqMinos',};
 %useSolversIfAvailable = {'gurobi','quadMinos'};
-useSolversIfAvailable = {'mosek','quadMinos','dqqMinos'};
-%useSolversIfAvailable = {'quadMinos'};
+
+requiredSolvers = {'quadMinos','dqqMinos'};
+useSolversIfAvailable = {'mosek'};
 excludeSolvers = {'pdco'};
 requiredSoftwares = {'csh'};
        
-solvers = prepareTest('needsLP',true,'useSolversIfAvailable',useSolversIfAvailable,'excludeSolvers',excludeSolvers, 'requiredSoftwares', requiredSoftwares);
+solvers = prepareTest('needsLP',true,'requiredSolvers',requiredSolvers, 'useSolversIfAvailable',useSolversIfAvailable,'excludeSolvers',excludeSolvers, 'requiredSoftwares', requiredSoftwares);
 
+fprintf('   Testing testQuadLP ... ')
 
 solverOK = changeCobraSolver('quadMinos', 'LP');
 
@@ -49,5 +65,11 @@ QPproblem.csense = ['L'; 'E'];
 
  assert(solverOK==1)
 
- sol = solveCobraQP(QPproblem)
+ sol = solveCobraQP(QPproblem);
 
+
+% output a success message
+fprintf('Done.\n');
+
+% change the directory
+cd(currentDir)
