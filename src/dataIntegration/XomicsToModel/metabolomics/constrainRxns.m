@@ -678,7 +678,7 @@ switch mode
                 % weightExp_e(eIdx(eBool)) = 1 ./ (1 +  (vSD_e(eIdx(eBool)).^2));
                 % TO REMOVE?
                 % % alternatively we could give less weight to allow more relaxation:
-                if exist('weightExpFct', 'var') || ~isempty(weightExpFct)
+                if isfield(param, 'weightExpFct') && (~isempty(param.weightExpFct))
                     weightExp_flx(flxIdx(flxBool)) = (1 ./ (1 +  (vSD_flx(flxIdx(flxBool)).^2)))*weightExpFct;
                     weightExp_e(eIdx(eBool)) = (1 ./ (1 +  (vSD_e(eIdx(eBool)).^2)))*weightExpFct;
                 else
@@ -686,7 +686,7 @@ switch mode
                     weightExp_e(eIdx(eBool)) = 1 ./ (1 +  (vSD_e(eIdx(eBool)).^2));
                 end
             case 'mean'
-                if exist('weightExpFct', 'var') || ~isempty(weightExpFct)
+                if isfield(param, 'weightExpFct') && (~isempty(param.weightExpFct))
                     weightExp_flx(flxIdx(flxBool)) = (1 ./ (1 + (vExp_flx(flxIdx(flxBool)).^2)))*weightExpFct;
                     weightExp_e(eIdx(eBool)) = (1 ./ (1 + (vExp_e(eIdx(eBool)).^2)))*weightExpFct;
                 else
@@ -694,7 +694,7 @@ switch mode
                     weightExp_e(eIdx(eBool)) = 1 ./ (1 + (vExp_e(eIdx(eBool)).^2));
                 end
             case 'RSD'
-                if exist('weightExpFct', 'var') || ~isempty(weightExpFct)
+                if isfield(param, 'weightExpFct') && (~isempty(param.weightExpFct))
                     weightExp_flx(flxIdx(flxBool)) = 1 ./ ((vSD_flx(flxIdx(flxBool))./vExp_flx(flxIdx(flxBool))).^2);
                     weightExp_e(eIdx(eBool)) = 1 ./ ((vSD_e(eIdx(eBool))./vExp_e(eIdx(eBool))).^2);
                 else
@@ -702,7 +702,7 @@ switch mode
                     weightExp_e(eIdx(eBool)) = 1 ./ ((vSD_e(eIdx(eBool))./vExp_e(eIdx(eBool))).^2)*weightExpFct;
                 end
             otherwise
-                if exist('weightExpFct', 'var') || ~isempty(weightExpFct)
+                if isfield(param, 'weightExpFct') && (~isempty(param.weightExpFct))
                     weightExp_flx(flxIdx(flxBool)) = 2*weightExpFct;
                     weightExp_e(eIdx(eBool)) = 2*weightExpFct;
                 else
@@ -770,8 +770,16 @@ switch mode
         else
             % if model does not have fields necessary for default bound
             % relaxation logic, weightLower/Upper_flx = 1
-            if (~exist('weightLower_flx_default', 'var') || isempty(weightLower_flx_default)) ...
-                && (~exist('weightUpper_flx_default', 'var') || isempty(weightUpper_flx_default))
+            % if ~isfield(param, 'weightLower_flx_default')
+            %     weightLower_flx_default = [];
+            % end
+            % if ~isfield(param, 'weightUpper_flx_default')
+            %     weightUpper_flx_default = [];
+            % end
+            hasLowerFlx = isfield(param, 'weightLower_flx_default') && ~isempty(param.weightLower_flx_default);
+            hasUpperFlx = isfield(param, 'weightUpper_flx_default') && ~isempty(param.weightUpper_flx_default);
+
+            if (~hasLowerFlx) && (~hasUpperFlx)
                 warning(['using mode allConstraints, ' ...
                     'and the model lacks SIntRxnBool/SinkRxnBool/DMRxnBool, ' ...
                     'and no weightLower_flx_default/Upper_flx_default are provided.'...
@@ -783,19 +791,19 @@ switch mode
         
         % overwrite default flux bound relaxation if
         % weightLower/Upper_flx_default is provided by user
-        if exist('weightLower_flx_default', 'var') && ~isempty(weightLower_flx_default)
-            if isscalar(weightLower_flx_default)
-                weightLower_flx = repmat(weightLower_flx_default, nRxn, 1);
+        if isfield(param, 'weightLower_flx_default') && (~isempty(param.weightLower_flx_default))
+            if isscalar(param.weightLower_flx_default)
+                weightLower_flx = repmat(param.weightLower_flx_default, nRxn, 1);
             else
-                weightLower_flx = weightLower_flx_default;
+                weightLower_flx = param.weightLower_flx_default;
             end
         end
 
-        if exist('weightUpper_flx_default', 'var') && ~isempty(weightUpper_flx_default)
-            if isscalar(weightUpper_flx_default)
-                weightUpper_flx = repmat(weightUpper_flx_default, nRxn, 1);
+        if isfield(param, 'weightUpper_flx_default') && (~isempty(param.weightUpper_flx_default))
+            if isscalar(param.weightUpper_flx_default)
+                weightUpper_flx = repmat(param.weightUpper_flx_default, nRxn, 1);
             else
-                weightUpper_flx = weightUpper_flx_default;
+                weightUpper_flx = param.weightUpper_flx_default;
             end
         end
         
@@ -814,18 +822,25 @@ switch mode
 
         % overwrite default extra variable bound relaxation if
         % weightLower/Upper_e_default is provided by user
-        if exist('weightLower_e_default', 'var') && ~isempty(weightLower_e_default)
-            if isscalar(weightLower_e_default)
-                weightLower_e = repmat(weightLower_e_default, nExt, 1);
+        
+        % if ~isfield(param, 'weightLower_e_default')
+        %     weightLower_e_default = [];
+        % end
+        % if ~isfield(param, 'weightUpper_e_default')
+        %     weightUpper_e_default = [];
+        % end
+        if isfield(param, 'weightLower_e_default') && (~isempty(param.weightLower_e_default))
+            if isscalar(param.weightLower_e_default)
+                weightLower_e = repmat(param.weightLower_e_default, nExt, 1);
             else
-                weightLower_e = weightLower_e_default;
+                weightLower_e = param.weightLower_e_default;
             end
         end
-        if exist('weightUpper_e_default', 'var') && ~isempty(weightUpper_e_default)
-            if isscalar(weightUpper_e_default)
-                weightUpper_e = repmat(weightUpper_e_default, nExt, 1);
+        if isfield(param, 'weightUpper_e_default') && (~isempty(param.weightUpper_e_default))
+            if isscalar(param.weightUpper_e_default)
+                weightUpper_e = repmat(param.weightUpper_e_default, nExt, 1);
             else
-                weightUpper_e = weightUpper_e_default;
+                weightUpper_e = param.weightUpper_e_default;
             end
         end
         % overwrite bound relaxation for extra variables with user defined penalties
@@ -838,14 +853,15 @@ switch mode
 
         % warn when extra variables exist, but no lower bound default is
         % given
-        if nExt > 0 ...
-            && ((~exist('weightLower_e_default', 'var')) || isempty(weightLower_e_default)) ...
-            && ((~exist('weightUpper_e_default', 'var')) || isempty(weightUpper_e_default))
-            warning(['extra variables exist but no weightLower_e_default/weightUpper_e_default was given. ', ...
-                'extra variable bounds will not be relaxed (weight is Inf), ', ...
-                'except where penalty*BoundPerturbation overwrites'])
+        if nExt > 0
+            hasLower = isfield(param, 'weightLower_e_default') && ~isempty(param.weightLower_e_default);
+            hasUpper = isfield(param, 'weightUpper_e_default') && ~isempty(param.weightUpper_e_default);
+            if ~hasLower && ~hasUpper
+                warning(['extra variables exist but no weightLower_e_default/weightUpper_e_default was given. ', ...
+                    'extra variable bounds will not be relaxed (weight is Inf), ', ...
+                    'except where penalty*BoundPerturbation overwrites'])
+            end
         end
-        
         % Compute the steady state flux vector that minimises the weighted Euclidean
         % norm between experimental and predicted steady state flux vector, plus the weighted
         % Euclidean norm relaxation of the model lower bounds, plus the  weighted Euclidean
