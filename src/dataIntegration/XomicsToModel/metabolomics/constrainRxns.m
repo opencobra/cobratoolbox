@@ -674,10 +674,6 @@ switch mode
         % Penalise the relaxation from the experimental value
         switch param.metabolomicWeights
             case 'SD'
-                % weightExp_flx(flxIdx(flxBool)) = 1 ./ (1 +  (vSD_flx(flxIdx(flxBool)).^2));
-                % weightExp_e(eIdx(eBool)) = 1 ./ (1 +  (vSD_e(eIdx(eBool)).^2));
-                % TO REMOVE?
-                % % alternatively we could give less weight to allow more relaxation:
                 if isfield(param, 'weightExpFct') && (~isempty(param.weightExpFct))
                     weightExp_flx(flxIdx(flxBool)) = (1 ./ (1 +  (vSD_flx(flxIdx(flxBool)).^2)))*weightExpFct;
                     weightExp_e(eIdx(eBool)) = (1 ./ (1 +  (vSD_e(eIdx(eBool)).^2)))*weightExpFct;
@@ -768,14 +764,6 @@ switch mode
                 weightUpper_flx(model.ub==param.TolMaxBoundary & ~model.SIntRxnBool) = eta;
             end
         else
-            % if model does not have fields necessary for default bound
-            % relaxation logic, weightLower/Upper_flx = 1
-            % if ~isfield(param, 'weightLower_flx_default')
-            %     weightLower_flx_default = [];
-            % end
-            % if ~isfield(param, 'weightUpper_flx_default')
-            %     weightUpper_flx_default = [];
-            % end
             hasLowerFlx = isfield(param, 'weightLower_flx_default') && ~isempty(param.weightLower_flx_default);
             hasUpperFlx = isfield(param, 'weightUpper_flx_default') && ~isempty(param.weightUpper_flx_default);
 
@@ -822,13 +810,6 @@ switch mode
 
         % overwrite default extra variable bound relaxation if
         % weightLower/Upper_e_default is provided by user
-        
-        % if ~isfield(param, 'weightLower_e_default')
-        %     weightLower_e_default = [];
-        % end
-        % if ~isfield(param, 'weightUpper_e_default')
-        %     weightUpper_e_default = [];
-        % end
         if isfield(param, 'weightLower_e_default') && (~isempty(param.weightLower_e_default))
             if isscalar(param.weightLower_e_default)
                 weightLower_e = repmat(param.weightLower_e_default, nExt, 1);
