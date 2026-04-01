@@ -52,7 +52,10 @@ refP = [2, 2, 2;
         1, 1, 1;
         1, 1, 1];
 
-assert(all(all(refP(:, [2, 1, 3]) == P)))
+expectedP = refP(:, [2, 1, 3]);
+assert(isequal(expectedP, P), ...
+    'ExtremePathways mismatch (case 1).\nExpected:\n%s\nActual:\n%s', ...
+    mat2str(expectedP), mat2str(P))
 
 positivity = 0;
 inequality = 1;
@@ -69,7 +72,9 @@ refP = [0,  0, 2;
         0,  0, 1;
         0,  0, 1];
 
-assert(all(all(refP == P)))
+assert(isequal(refP, P), ...
+    'ExtremePathways mismatch (case 2).\nExpected:\n%s\nActual:\n%s', ...
+    mat2str(refP), mat2str(P))
 
 % Change the model to have one non integer entry.
 model.S(1, 1) = 0.5;

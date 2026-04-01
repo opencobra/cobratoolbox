@@ -5,6 +5,7 @@
 %
 % Author:
 %     - Ronan Fleming
+%     - Farid Zare:      Added EP solver as a requirement for this test
 %
 % Note:
 %       test is performed on objective as solution can vary between machines, solver version etc..
@@ -19,7 +20,7 @@ fileDir = fileparts(which('testSolveCobraEP'));
 cd(fileDir);
 
 printLevel=0;
-        
+
 % set the tolerance
 tol = 1e-2;
 
@@ -27,12 +28,12 @@ if 1
     % test solver packages
     useIfAvailable = {'tomlab_cplex','ibm_cplex','gurobi'};
     %useIfAvailable = {'pdco'};
-    solverPkgs = prepareTest('needsQP',true,'useSolversIfAvailable', useIfAvailable,'excludeSolvers',{'qpng','dqqMinos','mosek','pdco'});
+    solverPkgs = prepareTest('needsQP',true, 'needsEP', true, 'useSolversIfAvailable', useIfAvailable,'excludeSolvers',{'qpng','dqqMinos','mosek','pdco'});
 else
     % test solver packages
     useIfAvailable = {'pdco'};
     %useIfAvailable = {'tomlab_cplex','ibm_cplex', 'gurobi','qpng','ibm_cplex','mosek','pdco'};
-    solverPkgs = prepareTest('needsQP',true,'useSolversIfAvailable', useIfAvailable);
+    solverPkgs = prepareTest('needsQP',true, 'needsEP', true, useSolversIfAvailable', useIfAvailable);
 end
 
 if 0
@@ -69,7 +70,7 @@ QPproblem2.csense = ['E'; 'E'];
 
 
 QPproblem3.F = [1, 0, 0; 0, 1, 0; 0, 0, 1];  % Matrix F in 1/2 * x' * F * x + c' * x
-QPproblem3.osense = 1; 
+QPproblem3.osense = 1;
 QPproblem3.c = -1*[1, 1, 1]';  %Test solving maximisation of linear part
 QPproblem3.A = [1, -1, 0 ; 0, 1, -1];  % Constraint matrix
 QPproblem3.b = [0, 0]'; % Steady State
@@ -101,14 +102,14 @@ QPproblem5.csense = ['L'; 'E'];
 
 for k = 1:length(solverPkgs.QP)
 
-    
     % change the COBRA solver (LP)
+    solverOK_EP = changeCobraSolver(solverPkgs.EP{1}, 'EP');
     solverOK = changeCobraSolver(solverPkgs.QP{k}, 'QP', 0);
 
-    if solverOK
+    if solverOK && solverOK_EP
 
         fprintf('   Running testSolveCobraQP using %s ... ', solverPkgs.QP{k});
-       fprintf('\n')
+        fprintf('\n')
         QPsolution = solveCobraQP(QPproblem, 'printLevel', printLevel);
 
         if strcmp(solverPkgs.QP{k},'dqqMinos')
@@ -116,11 +117,11 @@ for k = 1:length(solverPkgs.QP)
         end
         % Check QP results with expected answer.
         assert(any(abs(QPsolution.obj + 0.0278)  < tol & abs(QPsolution.full - 0.0556) < [tol; tol]));
-        
-        %Check that solveCobraEP can reproduce the same result
+
+        % Check that solveCobraEP can reproduce the same result
         EPsolution = solveCobraEP(QPproblem);
         assert(any(abs(QPsolution.obj - EPsolution.obj)  < tol & abs(QPsolution.full - EPsolution.full) < [tol; tol]));
-        
+
         if strcmp(solverPkgs.QP{k}, 'ibm_cplex') && isunix
             % Note: On windows, the timelimit parameter has no effect
             % test IBM-Cplex-specific parameters. No good example for testing this. Just test time limit
@@ -128,51 +129,52 @@ for k = 1:length(solverPkgs.QP)
             % no solution because zero time is given and cplex status = 11
             assert(isempty(QPsolution.full) & isnan(QPsolution.obj) & QPsolution.origStat == 11)
         end
-        
+
         QPsolution2 = solveCobraQP(QPproblem2,'printLevel', printLevel);
-        
+
         assert(abs(QPsolution2.obj - 37.5 / 2) < tol); %Objective value
         assert(all( abs(QPsolution2.full - [2.5;-2.5;5]) < tol)); % Flux distribution
-        
+
         %Check that solveCobraEP can reproduce the same result
         EPsolution2 = solveCobraEP(QPproblem2);
         assert(any(abs(QPsolution2.obj - EPsolution2.obj)  < tol))
         assert(any(abs(QPsolution2.full - EPsolution2.full) < tol*ones(size(EPsolution2.full,1),1)));
-        
+
         if 0 %something going wrong with EP here
-        %Test solving maximisation of linear part
-        QPsolution3 = solveCobraQP(QPproblem3,'printLevel', printLevel);
-        assert(all(abs(QPsolution3.full - 1)< tol)); %We optimize for 0.5x^2 not x^2
-        
-        
-        %Check that solveCobraEP can reproduce the same result
-        EPsolution3 = solveCobraEP(QPproblem3);
-        assert(any(abs(QPsolution3.obj - EPsolution3.obj)  < tol))
-        assert(any(abs(QPsolution3.full - EPsolution3.full) < tol*ones(size(EPsolution3.full,1),1)));
+            %Test solving maximisation of linear part
+            QPsolution3 = solveCobraQP(QPproblem3,'printLevel', printLevel);
+            assert(all(abs(QPsolution3.full - 1)< tol)); %We optimize for 0.5x^2 not x^2
+
+
+            %Check that solveCobraEP can reproduce the same result
+            EPsolution3 = solveCobraEP(QPproblem3);
+            assert(any(abs(QPsolution3.obj - EPsolution3.obj)  < tol))
+            assert(any(abs(QPsolution3.full - EPsolution3.full) < tol*ones(size(EPsolution3.full,1),1)));
         end
-        
+
         QPsolution4 = solveCobraQP(QPproblem4,'printLevel', printLevel);
-        
+
         %Check that solveCobraEP can reproduce the same result
         EPsolution4 = solveCobraEP(QPproblem4);
         assert(any(abs(QPsolution4.obj - EPsolution4.obj)  < tol))
         assert(any(abs(QPsolution4.full - EPsolution4.full) < tol*ones(size(EPsolution4.full,1),1)));
-        
+
         %QPsolution4.obj
         %QPsolution4.full
         assert(abs(QPsolution4.obj - 600)< tol);
-        
+
         if 0 %matrix must be positive definite
-        %Test solving maximisation of whole function
-        QPsolution5 = solveCobraQP(QPproblem5,'printLevel', printLevel);
-        %QPsolution5.obj
-        %QPsolution5.full
-        assert(abs(QPsolution5.obj - 2.3065e-09)< tol);
-        
-        %Check that solveCobraEP can reproduce the same result
-        EPsolution5 = solveCobraEP(QPproblem5);
-        assert(any(abs(QPsolution5.obj - EPsolution5.obj)  < tol))
-        assert(any(abs(QPsolution5.full - EPsolution5.full) < tol*ones(size(EPsolution5.full,1),1)));
+            %Test solving maximisation of whole function
+
+            QPsolution5 = solveCobraQP(QPproblem5,'printLevel', printLevel);
+            %QPsolution5.obj
+            %QPsolution5.full
+            assert(abs(QPsolution5.obj - 2.3065e-09)< tol);
+
+            %Check that solveCobraEP can reproduce the same result
+            EPsolution5 = solveCobraEP(QPproblem5);
+            assert(any(abs(QPsolution5.obj - EPsolution5.obj)  < tol))
+            assert(any(abs(QPsolution5.full - EPsolution5.full) < tol*ones(size(EPsolution5.full,1),1)));
         end
     end
 end
