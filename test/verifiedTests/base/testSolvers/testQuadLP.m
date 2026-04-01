@@ -19,11 +19,13 @@ global CBTDIR
 %Test the requirements
 %useSolversIfAvailable = {'gurobi','quadMinos', 'dqqMinos',};
 %useSolversIfAvailable = {'gurobi','quadMinos'};
+
 requiredSolvers = {'quadMinos','dqqMinos'};
 useSolversIfAvailable = {'mosek'};
-excludeSolvers={'pdco'};
+excludeSolvers = {'pdco'};
+requiredSoftwares = {'csh'};
        
-solvers = prepareTest('needsLP',true,'requiredSolvers',requiredSolvers,'useSolversIfAvailable', useSolversIfAvailable, 'excludeSolvers',excludeSolvers);
+solvers = prepareTest('needsLP',true,'requiredSolvers',requiredSolvers, 'useSolversIfAvailable',useSolversIfAvailable,'excludeSolvers',excludeSolvers, 'requiredSoftwares', requiredSoftwares);
 
 fprintf('   Testing testQuadLP ... ')
 
