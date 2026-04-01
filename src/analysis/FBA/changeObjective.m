@@ -39,6 +39,6 @@ end
 if (isempty(rxnID) | rxnID == 0)
     error('Objective reactions not found in model!');
 else
-    model.c(rxnID) = objectiveCoeff;
+    model.c(rxnID) = objectiveCoeff; 
 end
 
