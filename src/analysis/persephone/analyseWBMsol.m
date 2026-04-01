@@ -27,10 +27,9 @@ function processedFluxResPaths = analyseWBMsol(fluxPath,paramFluxProcessing, flu
 %       processedFluxResPaths = analyseWBMsol(fluxPath,paramFluxProcessing, fluxAnalysisPath)
 %
 % INPUTS:
-% fluxPath         Character array with path to .mat files produced in
-%                     optimiseRxnMultipleWBM.m
+% fluxPath            Character array with path to .mat files produced in analyseWBMs.m
 %
-% paramFluxProcessing       Structured array with optional parameters:
+% paramFluxProcessing Structured array with optional parameters:
 %
 %                     .numericalRounding defines how much the predicted flux values are
 %                     rounded. A defined value of 1e-6 means that a flux value of
@@ -189,7 +188,7 @@ fluxes = [metadata fluxes];
 
 % Create statistics for fluxes and prune results
 stats = describeFluxes(fluxes,paramFluxProcessing, analyseGF);
-
+%%
 % Get fluxes for further analysis
 fluxesPruned = stats.Fluxes_removed_reactions;
 
@@ -294,42 +293,42 @@ if isfile(resultPath); delete(resultPath); end % For script testing
 
 % Save FBA solver statistics
 description = cell(2,1); 
-description{1} = 'FBA solver statistics'; % Header
-description{2} = ''; % Details
+description{1} = 'FBA solution optimality statistics'; % Header
+description{2} = '0 - Infeasible problem, 1 - Optimal solution, 2 - Unbounded solution, 3 - Almost optimal solution, -1 - Some other problem (timelimit, numerical problem etc).'; % Details
 fbaStats = addvars(fbaStats, fbaStats.Properties.RowNames, 'Before',1,'NewVariableNames','fileName');
 writeSupplement(fbaStats, description, resultPath)
 
 % Summary statistics of flux results
-description = cell(2,1); description{1} = 'Summary statistics of predicted fluxes'; % Header
+description = cell(2,1); description{1} = 'Sample distribution summary statistics of the predicted fluxes in mmol/person/day'; % Header
 description{2} = ''; % Details
 writeSupplement(stats.Flux_summary_statistics, description, resultPath)
 
 % Predicted fluxes
-description = cell(2,1); description{1} = 'Predicted reaction fluxes'; % Header
+description = cell(2,1); description{1} = 'Table with fluxes in mmol/person/day for each predicted reaction and sample'; % Header
 description{2} = ''; % Details
 writeSupplement(stats.Fluxes, description, resultPath)
 
 % Predicted reaction fluxes for analysis 
-description = cell(2,1); description{1} = 'Predicted reaction fluxes for analysis'; % Header
+description = cell(2,1); description{1} = 'Reaction-filtered flux table with reaction flux predictions in mmol/person/day'; % Header
 description{2} = ''; % Details
 writeSupplement(stats.Fluxes_removed_reactions, description, resultPath)
 
 if analyseGF || ~isempty(stats.Scaled_fluxes)
-% Summary statistics of scaled flux results
-description = cell(2,1); description{1} = 'Summary statistics of predicted scaled fluxes for analysis'; % Header
-description{2} = ''; % Details
-writeSupplement(stats.Scaled_flux_summary_statistics, description, resultPath)
-
-% Predicted reaction fluxes for analysis 
-description = cell(2,1); description{1} = 'Predicted scaled reaction fluxes for analysis'; % Header
-description{2} = ''; % Details
-writeSupplement(stats.Scaled_fluxes, description, resultPath)
+    % Summary statistics of scaled flux results
+    description = cell(2,1); description{1} = 'Summary statistics for the net gut microbiome components of predicted flux values in the microbiome-personalised WBMs'; % Header
+    description{2} = 'The Net Microbiome Flux Component represents the net predicted flux attributable to the gut microbiota. The proportion of the predicted flux attributable to the gut microbiota (relative to the combined host-microbiome model) is denoted by the Net Microbiome-to-Host Flux Contribution Ratio. Both metrics were calculated taking into account the different fluxes between male and female germ-free WBMs.'; % Details
+    writeSupplement(stats.Scaled_flux_summary_statistics, description, resultPath)
+    
+    % Predicted reaction fluxes for analysis 
+    description = cell(2,1); description{1} = 'Net gut microbiome components of predicted fluxes in mmol/person/day'; % Header
+    description{2} = ''; % Details
+    writeSupplement(stats.Scaled_fluxes, description, resultPath)
 end
 
 if microbiomePresent == true
 
     % Predicted reaction fluxes for analysis 
-    description = cell(2,1); description{1} = 'Flux-microbe spearman correlations'; % Header
+    description = cell(2,1); description{1} = 'Flux-microbe Spearman correlations'; % Header
     description{2} = ''; % Details
     fluxMicrobeCorr= addvars(fluxMicrobeCorr, fluxMicrobeCorr.Properties.RowNames, 'Before',1,'NewVariableNames','Microbe');
     writeSupplement(fluxMicrobeCorr, description, resultPath)
@@ -409,19 +408,24 @@ fluxesForStats(contains(fluxesForStats.Properties.RowNames,'sol_gf','IgnoreCase'
 
 % Preallocate table
 fluxesForStatsArray = table2array(fluxesForStats);
-% varNames = {'Reaction','No results','Duplicate fluxes','Duplicate fluxes (%)','Mean','Variance','Standard deviation','Skewness','Kurtosis','KS normality p-value','Removed'};
-varNames = {'Reaction','No results','Unique results','Mean','Variance','Standard deviation','Removed'};
+varNames = {'Reaction ID','No results','Unique results','Removed'};
 
-fluxStats = table('Size',[size(fluxesForStatsArray,2),length(varNames)],'VariableTypes',[{'string'},repmat({'double'},1,length(varNames)-1)],'VariableNames',varNames);
+fluxStats = table('Size',[size(fluxesForStatsArray,2),length(varNames)],'VariableTypes',[{'string'},{'string'},repmat({'double'},1,length(varNames)-2)],'VariableNames',varNames);
 
 % Add reaction names
-fluxStats.Reaction = fluxesForStats.Properties.VariableNames';
+fluxStats.("Reaction ID") = fluxesForStats.Properties.VariableNames';
+
+% Define function for data type processing
+formNum = @(x) arrayfun(@(x) string(sprintf('%.2e', x)), x);
+meanSd = @(x) append(formNum(mean(x,'omitnan')) ," (", formNum(std(x,'omitmissing'))," )")';
+
+% Calculate mean and SD of fluxes
+fluxStats.('Mean (SD)') = meanSd(fluxesForStatsArray);
 
 % Find the number of samples with microbial flux contribution (previously zeros)
 fluxStats.("No results") = sum(isnan(fluxesForStatsArray))';
 
 % Find the number of samples with duplicate microbial contributions (M: unique)
-%fluxStats.("Duplicate fluxes") = arrayfun(@(x) size(fluxesForStatsArray,1) - length(unique(fluxesForStatsArray(:,x))), 1:size(fluxesForStatsArray,2))';
 
 % Find the number of unique flux results per reaction
 for ii = 1:size(fluxesForStatsArray,2)
@@ -430,17 +434,12 @@ for ii = 1:size(fluxesForStatsArray,2)
     fluxStats.("Unique results")(ii) = length(unique(fluxResults));
 end
 
-% Calculate the fraction of duplicate fluxes
-% fluxStats.("Duplicate fluxes (%)") = (fluxStats.("Duplicate fluxes")./(size(fluxesForStatsArray,1)-1)) * 100;
-
-% Calculate mean of fluxes
-fluxStats.Mean = mean(fluxesForStatsArray,'omitnan')';
 
 % Calculate reaction variance
-fluxStats.Variance = var(fluxesForStatsArray,[],1,'omitnan')';
+% fluxStats.Variance = var(fluxesForStatsArray,[],1,'omitnan')';
 
 % Calculate the standard deviation
-fluxStats.("Standard deviation") = std(fluxesForStatsArray,[],1,'omitnan')';
+% fluxStats.("Standard deviation") = std(fluxesForStatsArray,[],1,'omitnan')';
 
 % Get distribution skewness
 % fluxStats.Skewness = skewness(fluxesForStatsArray)';
@@ -567,23 +566,27 @@ end
 idH = ~contains(sexInfo.ID, 'gf');
 
 if ~isempty(scaledFluxes)
-scaledFluxes(~idH,:) = [];
+    scaledFluxes(~idH,:) = [];
 end
 
 %%% Obtain summary statistics for the unscaled and scaled fluxes %%%
 
+% Define summary table variable names if needed
+netMicrobiomeFluxTableVarNames = {'Reaction ID','Germ-free male flux','Germ-free female flux',...
+    'Net Microbiome Flux component, Mean (SD)','Net Microbiome-to-Host Flux Contribution Ratio, Mean (SD)'};
+
 % Preallocate table for flux contributions from the scaled
 if any(mWBMs) && ~any(iWBMs) && analyseGF % host NOT personalised, microbiome personalised
 
-    varNames = {'Reaction','Germ-free male','Germ-free female','Mean scaled flux','SD scaled flux','Mean scaled / WBM flux','SD scaled / WBM flux'};
+    varNames = netMicrobiomeFluxTableVarNames;
 
 % elseif any(iWBMs) && ~any(mWBMs) % host personalised, microbiome NOT personalised
 
-    % varNames = {'Reaction','Male control','Female control','Mean scaled flux','SD scaled flux','Mean scaled / WBM flux','SD scaled / WBM flux'};
+    % varNames = {'Reaction ID','Male control','Female control','Mean scaled flux','SD scaled flux','Mean scaled / WBM flux','SD scaled / WBM flux'};
 
 elseif any(iWBMs) && any(mWBMs) && analyseGF % host personalised, microbiome personalised
-
-    varNames = {'Reaction','Average germ-free male', 'Average germ-free female','Mean scaled flux','SD scaled flux','Mean scaled / WBM flux','SD scaled / WBM flux'};
+    varNames = netMicrobiomeFluxTableVarNames;
+    varNames(2:3) = append(varNames(2:3),', Mean (SD)');
 
 else % host NOTE personalised, microbiome NOT personalised
     varNames = {};
@@ -597,11 +600,12 @@ else
 end
 
 % Populate table 
+getGfFluxFun = @(x,y,z) table2array(x(contains(y.ID, 'gf') & matches(y.Sex, z),:))'; % Define function for extracting the gf fluxes
 if any(mWBMs) && ~any(iWBMs) && analyseGF % host NOT personalised, microbiome personalised
 
     % Add GF fluxes to the table
-    scaledFluxStats.("Germ-free male") = table2array(fluxes_rm(contains(sexInfo.ID, 'gf') & matches(sexInfo.Sex, 'male'),:))';
-    scaledFluxStats.("Germ-free female") = table2array(fluxes_rm(contains(sexInfo.ID, 'gf') & matches(sexInfo.Sex, 'female'),:))';
+    scaledFluxStats.(varNames{2}) = getGfFluxFun(fluxes_rm,sexInfo,'male');% table2array(fluxes_rm(contains(sexInfo.ID, 'gf') & matches(sexInfo.Sex, 'male'),:))';
+    scaledFluxStats.(varNames{3}) = getGfFluxFun(fluxes_rm,sexInfo,'female');%table2array(fluxes_rm(contains(sexInfo.ID, 'gf') & matches(sexInfo.Sex, 'female'),:))';
 
 % elseif any(iWBMs) && ~any(mWBMs) % host personalised, microbiome NOT personalised
 
@@ -615,8 +619,8 @@ elseif any(iWBMs) && any(mWBMs) && analyseGF% host personalised, microbiome pers
     % Note that if no male or female values are found, i.e., mean([]) a nan
     % will be produced. If only one value is found, e.g., mean(5.1), that
     % number will be produced. 
-    scaledFluxStats.("Average germ-free male") = mean(table2array(fluxes_rm(startsWith(sexInfo.ID, 'gfi') & strcmp(sexInfo.Sex, 'male'),:)))';
-    scaledFluxStats.("Average germ-free female") = mean(table2array(fluxes_rm(startsWith(sexInfo.ID, 'gfi') & strcmp(sexInfo.Sex, 'female'),:)))';
+    scaledFluxStats.(varNames{2}) = meanSd(getGfFluxFun(fluxes_rm,sexInfo,'male'));
+    scaledFluxStats.(varNames{3}) = meanSd(getGfFluxFun(fluxes_rm,sexInfo,'female'));
 else
     scaledFluxStats = table();
 end
@@ -633,15 +637,14 @@ if ~isempty(scaledFluxStats) % If either the host, the microbiome, or both are p
     hmFluxes = hmFluxes(ib,:);
 
     % Add reaction names to table
-    scaledFluxStats.Reaction = mFluxes.Properties.VariableNames';
+    scaledFluxStats.("Reaction ID") = mFluxes.Properties.VariableNames';
 
     % Translate tables to arrays
     mFluxes = table2array(mFluxes);
     hmFluxes = table2array(hmFluxes);
 
     % Calculate the mean and SD of the scaled fluxes
-    scaledFluxStats.("Mean scaled flux") = mean(mFluxes,'omitnan')';
-    scaledFluxStats.("SD scaled flux") = std(mFluxes,'omitnan')';
+    scaledFluxStats.(varNames{4}) = meanSd(mFluxes);
 
     % Calculate fractions flux contributed by the personalisation.
     % Convert table to array
@@ -663,8 +666,10 @@ if ~isempty(scaledFluxStats) % If either the host, the microbiome, or both are p
     relFluxDiff(isnan(relFluxDiff))=0;
 
     % Now add the mean and SD per reaction to the table
-    scaledFluxStats.("Mean scaled / WBM flux") = mean(relFluxDiff,'omitnan')';
-    scaledFluxStats.("SD scaled / WBM flux") = std(relFluxDiff,'omitnan')';
+    formNumPerc = @(x) arrayfun(@(x) string(sprintf('%.2f%%',x*100)), x)';
+    meanSdRel = @(x) append(formNumPerc(mean(x,'omitnan')) ," (", formNumPerc(std(x,'omitmissing'))," )");
+
+    scaledFluxStats.(varNames{end}) = meanSdRel(relFluxDiff);
 end
 
 % Add sex information
@@ -694,7 +699,7 @@ end
 SM = isfile(filePath);
 if SM == true
     sheets = sheetnames(filePath); % Find the current sheet names
-    maxSheetNum = max(str2double(erase(sheets,'Sheet_'))); % Find the largest sheet number
+    maxSheetNum = max(str2double(erase(sheets,'Table_'))); % Find the largest sheet number
     if ~isnan(maxSheetNum) % Double check
         sheetNum = char(string(maxSheetNum+1)); % Define the current sheet number as the max + 1
     else
@@ -705,7 +710,7 @@ else
 end
 
 % Create table header:
-sheetName = append('Sheet_',sheetNum); % Process sheet name
+sheetName = append('Table_',sheetNum); % Process sheet name
 tableHeader = append(sheetName,": ",string(description{1}));
 
 % Add details to table header
