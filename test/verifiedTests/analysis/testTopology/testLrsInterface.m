@@ -75,7 +75,9 @@ fileNameOut = lrsRun([modelName '2'], param);
 %read in vertex representation
 [Q2, vertexBool, fileNameOut] = lrsReadRay([modelName '2'],param);
 if 1
-    assert(all((Q - Q2)==0,'all'))
+    assert(isequal(Q, Q2), ...
+        'LrsInterface vertex mismatch (positivity=0).\nSize(Q)=%s, Size(Q2)=%s\nQ:\n%s\nQ2:\n%s', ...
+        mat2str(size(Q)), mat2str(size(Q2)), mat2str(Q), mat2str(Q2))
 end
 
 
@@ -116,7 +118,9 @@ fileNameOut = lrsRun([modelName '2'], param);
 %read in vertex representation
 [Q2, vertexBool, fileNameOut] = lrsReadRay([modelName '2'],param);
 if 1
-    assert(all((Q - Q2)==0,'all'))
+    assert(isequal(Q, Q2), ...
+        'LrsInterface vertex mismatch (positivity=1).\nSize(Q)=%s, Size(Q2)=%s\nQ:\n%s\nQ2:\n%s', ...
+        mat2str(size(Q)), mat2str(size(Q2)), mat2str(Q), mat2str(Q2))
 end
 
 if 1
