@@ -123,6 +123,16 @@ for i = 4:size(toCreateDiet,2)
     else
         metFlux(end+1, 1:2) = {'Diet_EX_chol[d]', 5.3};
     end
+    
+    % Manual investigations discovered that menaquinone 7 intake has to be
+    % at least 0.1 mmol/human/daay for feasibility
+    if ~isempty(metFlux(strcmpi(metFlux(:,1), 'diet_ex_mqn7[d]')))
+        if metFlux{strcmpi(metFlux(:,1), 'diet_ex_mqn7[d]'),2} <= 0.1
+            metFlux{strcmpi(metFlux(:,1), 'diet_ex_mqn7[d]'),2} = 0.1;
+        end
+    else
+        metFlux(end+1, 1:2) = {'Diet_EX_mqn7[d]', 0.1};
+    end
 
     % Convert the dietary flux vector to a table
     metFlux = cell2table(metFlux,"VariableNames", [{'VMHID'}; toCreateDiet.Properties.VariableNames(i)]);
@@ -147,25 +157,25 @@ writetable(dietMacroLabel, strcat(saveDir, filesep, 'macrosAsReported.csv'));
 
 if analyseMacros
     % Extract macro information for the metabolites and the labels
-    lipids = [dietMacroMets{strcmpi(dietMacroMets.Category, 'lipids'),2:end}', dietMacroLabel{strcmpi(dietMacroLabel.Category, 'lipids'),2:end}'];
-    carbohydrates = [dietMacroMets{strcmpi(dietMacroMets.Category, 'carbohydrates'),2:end}', dietMacroLabel{strcmpi(dietMacroLabel.Category, 'carbohydrates'),2:end}'];
-    protein = [dietMacroMets{strcmpi(dietMacroMets.Category, 'proteins'),2:end}', dietMacroLabel{strcmpi(dietMacroLabel.Category, 'proteins'),2:end}'];
-    sugars = [dietMacroMets{strcmpi(dietMacroMets.Category, 'sugar'),2:end}', dietMacroLabel{strcmpi(dietMacroLabel.Category, 'sugar'),2:end}'];
-    energy = [dietMacroMets{strcmpi(dietMacroMets.Category, 'energy'),2:end}', dietMacroLabel{strcmpi(dietMacroLabel.Category, 'energy'),2:end}'];
+    lipids = [dietMacroLabel{strcmpi(dietMacroLabel.Category, 'lipids'),2:end}', dietMacroMets{strcmpi(dietMacroMets.Category, 'lipids'),2:end}'];
+    carbohydrates = [dietMacroLabel{strcmpi(dietMacroLabel.Category, 'carbohydrates'),2:end}', dietMacroMets{strcmpi(dietMacroMets.Category, 'carbohydrates'),2:end}'];
+    protein = [dietMacroLabel{strcmpi(dietMacroLabel.Category, 'proteins'),2:end}', dietMacroMets{strcmpi(dietMacroMets.Category, 'proteins'),2:end}'];
+    sugars = [dietMacroLabel{strcmpi(dietMacroLabel.Category, 'sugar'),2:end}', dietMacroMets{strcmpi(dietMacroMets.Category, 'sugar'),2:end}'];
+    energy = [dietMacroLabel{strcmpi(dietMacroLabel.Category, 'energy'),2:end}', dietMacroMets{strcmpi(dietMacroMets.Category, 'energy'),2:end}'];
 
     % Set the legend labels
-    legendLabel = {'Metabolite-calculated Macros', 'Database Macros'};
+    legendLabel = {'{\it in silico} macros', 'Metabolite coverage'};
 
     % If the original macro composition is provided add as well
     if ~isempty(originalDietMacros)
-        lipids = [lipids, originalDietMacros{strcmpi(originalDietMacros.Macros, 'totallipid(g)'),2:end}'];
-        carbohydrates = [carbohydrates,originalDietMacros{strcmpi(originalDietMacros.Macros, 'totalcarbohydrate(g)'),2:end}'];
-        protein = [protein, originalDietMacros{strcmpi(originalDietMacros.Macros, 'totalprotein(g)'),2:end}'];
-        sugars = [sugars, originalDietMacros{strcmpi(originalDietMacros.Macros, 'totalsugar(g)'),2:end}'];
-        energy = [energy, originalDietMacros{strcmpi(originalDietMacros.Macros, 'totalenergy(kcal)'),2:end}'];
+        lipids = [originalDietMacros{strcmpi(originalDietMacros.Macros, 'totallipid(g)'),2:end}', lipids];
+        carbohydrates = [originalDietMacros{strcmpi(originalDietMacros.Macros, 'totalcarbohydrate(g)'),2:end}', carbohydrates];
+        protein = [originalDietMacros{strcmpi(originalDietMacros.Macros, 'totalprotein(g)'),2:end}', protein];
+        sugars = [originalDietMacros{strcmpi(originalDietMacros.Macros, 'totalsugar(g)'),2:end}', sugars];
+        energy = [originalDietMacros{strcmpi(originalDietMacros.Macros, 'totalenergy(kcal)'),2:end}', energy];
 
         % Add a new label to the legend
-        legendLabel = [legendLabel, {'Original Macros'}];
+        legendLabel = [{'Original macros'}, legendLabel];
     end
 
     % Make figure
@@ -181,27 +191,33 @@ if analyseMacros
     title(ax1, 'Comparison of lipids between the original and in silico diets')
     % Add axis
     ylabel(ax1, 'Lipids (g)')
+    % Add figure label
+    text(0.025,ax1.YAxis.Limits(2)+0.1*ax1.YAxis.Limits(2), 'A)')
 
     ax2 = nexttile;
     bar(categorical(dietMacroLabel.Properties.VariableNames(2:end)), carbohydrates);
     title(ax2, 'Comparison of carbohydrates between the original and in silico diets')
     ylabel(ax2, 'Carbohydrates (g)')
+    text(0.025,ax2.YAxis.Limits(2)+0.2*ax2.YAxis.Limits(2), 'B)')
 
     ax3 = nexttile;
     bar(categorical(dietMacroLabel.Properties.VariableNames(2:end)), protein);
     title(ax3, 'Comparison of protein between the original and in silico diets')
     ylabel(ax3, 'Protein (g)')
+    text(0.025,ax3.YAxis.Limits(2)+0.1*ax3.YAxis.Limits(2), 'C)')
 
     ax4 = nexttile;
     bar(categorical(dietMacroLabel.Properties.VariableNames(2:end)), sugars);
     title(ax4, 'Comparison of sugars between the original and in silico diets')
     ylabel(ax4, 'Sugar (g)')
+    text(0.025,ax4.YAxis.Limits(2)+0.1*ax4.YAxis.Limits(2), 'D)')
 
     ax5 = nexttile;
     bar(categorical(dietMacroLabel.Properties.VariableNames(2:end)), energy);
     title(ax5, 'Comparison of energy between the original and in silico diets')
     ylabel(ax5, 'Energy (kcal)')
-    
+    text(0.025,ax5.YAxis.Limits(2)+0.1*ax5.YAxis.Limits(2), 'E)')
+
     % Add a single legend as it is the same for all plots and adjust the
     % position.
     lgnd = legend(legendLabel, 'Orientation','horizontal');
