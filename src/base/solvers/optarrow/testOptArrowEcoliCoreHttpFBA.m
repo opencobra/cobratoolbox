@@ -5,6 +5,8 @@ function testOptArrowEcoliCoreHttpFBA(endpoint)
 %
 %    testOptArrowEcoliCoreHttpFBA()
 %    testOptArrowEcoliCoreHttpFBA(endpoint)
+%
+% .. Author: - Farid Zare 02/04/2026
 
 if nargin < 1 || isempty(endpoint)
     endpoint = 'http://127.0.0.1:8000/compute';

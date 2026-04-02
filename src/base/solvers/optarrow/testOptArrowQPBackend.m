@@ -4,6 +4,8 @@ function testOptArrowQPBackend()
 % USAGE:
 %
 %    testOptArrowQPBackend()
+%
+% .. Author: - Farid Zare 02/04/2026
 
 repoRoot = fileparts(fileparts(fileparts(fileparts(fileparts(mfilename('fullpath'))))));
 addpath(genpath(repoRoot));

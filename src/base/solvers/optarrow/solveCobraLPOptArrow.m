@@ -18,6 +18,8 @@ function result = solveCobraLPOptArrow(LPproblem, problemTypeParams, solverParam
 % COBRA solver interface. It supports:
 %  - a CLI-backed local Python path
 %  - an HTTP path through the generic OptArrow MATLAB client
+%
+% .. Author: - Farid Zare 02/04/2026
 
 if nargin < 1 || ~isstruct(LPproblem)
     error('solveCobraLPOptArrow requires LPproblem as a struct.');

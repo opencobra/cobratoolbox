@@ -13,6 +13,8 @@ function result = solveCobraQPOptArrow(QPproblem, problemTypeParams, solverParam
 % OUTPUT:
 %    result:              structure with fields compatible with the
 %                         `solveCobraQP` solver dispatch
+%
+% .. Author: - Farid Zare 02/04/2026
 
 if nargin < 1 || ~isstruct(QPproblem)
     error('solveCobraQPOptArrow requires QPproblem as a struct.');
