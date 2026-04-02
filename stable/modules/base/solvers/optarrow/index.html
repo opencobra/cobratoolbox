@@ -9,7 +9,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Param &mdash; The COBRA Toolbox</title>
+  <title>Optarrow &mdash; The COBRA Toolbox</title>
   
 
   
@@ -65,8 +65,8 @@
         <link rel="search" title="Search" href="../../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../../index.html"/>
         <link rel="up" title="Solvers" href="../index.html"/>
-        <link rel="next" title="Entropicfba" href="../entropicFBA/index.html"/>
-        <link rel="prev" title="Init" href="../init/index.html"/> 
+        <link rel="next" title="Varkin" href="../varKin/index.html"/>
+        <link rel="prev" title="Rescale" href="../rescale/index.html"/> 
 
   
   <script src="../../../../_static/js/modernizr.min.js"></script>
@@ -165,7 +165,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../cplex/index.html">Cplex</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../cardOpt/index.html">Cardopt</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../rescale/index.html">Rescale</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../optarrow/index.html">Optarrow</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Optarrow</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../varKin/index.html">Varkin</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../lp_solve/index.html">Lp_solve</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../minos/index.html">Minos</a></li>
@@ -173,7 +173,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../getSetSolver/index.html">Getsetsolver</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../NLP/index.html">Nlp</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../init/index.html">Init</a></li>
-<li class="toctree-l4 current"><a class="current reference internal" href="#">Param</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../param/index.html">Param</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../entropicFBA/index.html">Entropicfba</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../gurobi/index.html">Gurobi</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../lindo/index.html">Lindo</a></li>
@@ -235,7 +235,7 @@
           <li class="breadcrumb-item"><a href="../../../index.html">Functions</a></li>
           <li class="breadcrumb-item"><a href="../../index.html">Base</a></li>
           <li class="breadcrumb-item"><a href="../index.html">Solvers</a></li>
-      <li class="breadcrumb-item active">Param</li>
+      <li class="breadcrumb-item active">Optarrow</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -244,180 +244,103 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="https://schema.org/Article">
            <div itemprop="articleBody">
             
-  <section id="param">
-<span id="id1"></span><h1>Param<a class="headerlink" href="#param" title="Permalink to this heading">¶</a></h1>
-<span class="target" id="module-src.base.solvers.param"></span><dl class="mat function">
-<dt class="sig sig-object mat" id="src.base.solvers.param.changeCobraSolverParams">
-<span class="sig-name descname"><span class="pre">changeCobraSolverParams</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">solverType</span></em>, <em class="sig-param"><span class="pre">paramName</span></em>, <em class="sig-param"><span class="pre">paramValue</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/param/changeCobraSolverParams.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.param.changeCobraSolverParams" title="Permalink to this definition">¶</a></dt>
-<dd><p>Sets global parameters for all Cobra Toolbox optimization solvers</p>
+  <section id="optarrow">
+<span id="id1"></span><h1>Optarrow<a class="headerlink" href="#optarrow" title="Permalink to this heading">¶</a></h1>
+<span class="target" id="module-src.base.solvers.optarrow"></span><dl class="mat function">
+<dt class="sig sig-object mat" id="src.base.solvers.optarrow.solveCobraLPOptArrow">
+<span class="sig-name descname"><span class="pre">solveCobraLPOptArrow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">LPproblem</span></em>, <em class="sig-param"><span class="pre">problemTypeParams</span></em>, <em class="sig-param"><span class="pre">solverParams</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/optarrow/solveCobraLPOptArrow.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.optarrow.solveCobraLPOptArrow" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solve a COBRA LP problem through the OptArrow backend</p>
 <dl class="field-list simple">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>changeOK = changeCobraSolverParams</strong> (<em>solverType, paramName, paramValue</em>)</p>
+<dd class="field-odd"><p><strong>result = solveCobraLPOptArrow</strong> (<em>LPproblem, problemTypeParams, solverParams</em>)</p>
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>solverType</strong> – Solver type, ‘LP’ or ‘MILP’ (opt, default, ‘LP’)</p></li>
-<li><p><strong>paramName</strong> – Parameter name</p></li>
-<li><p><strong>paramValue</strong> – Parameter value</p></li>
+<li><p><strong>LPproblem</strong> – COBRA LP problem structure</p></li>
+<li><p><strong>problemTypeParams</strong> – structure of problem-type parameters</p></li>
+<li><p><strong>solverParams</strong> – structure of solver parameters</p></li>
 </ul>
 </dd>
 <dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>changeOK</strong> – Logical inicator that supplied parameter is allowed (= 1)</p>
+<dd class="field-odd"><p><strong>result</strong> – structure with fields compatible with the
+<cite>solveCobraLP</cite> solver dispatch</p>
 </dd>
 </dl>
-<p>Explanation on parameters:</p>
+<p>This helper keeps the OptArrow integration downstream from the generic
+COBRA solver interface. It supports:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p>printLevel:        Printing level</p>
-<ul>
-<li><p>0 - Silent</p></li>
-<li><p>1 - Warnings and Errors</p></li>
-<li><p>2 - Summary information (Default)</p></li>
-<li><p>3 - More detailed information</p></li>
-<li><p>&gt; 10 - Pause statements, and maximal printing (debug mode)</p></li>
-</ul>
-</li>
-<li><p>primalOnly:        {(0), 1}; 1 = only return the primal vector (lindo solvers)</p></li>
-<li><dl class="simple">
-<dt>saveInput:         Saves LPproblem to filename specified in field.</dt><dd><p>i.e. parameters.saveInput = ‘LPproblem.mat’;</p>
-</dd>
-</dl>
-</li>
-<li><dl class="simple">
-<dt>minNorm:           {(0), scalar , <cite>n x 1</cite> vector}, where <cite>[m, n] = size(S)</cite>;</dt><dd><p>If not zero then, minimise the Euclidean length
-of the solution to the LP problem. minNorm ~1e-6 should be
-high enough for regularisation yet maintain the same value for
-the linear part of the objective. However, this should be
-checked on a case by case basis, by optimization with and
-without regularisation.</p>
-</dd>
-</dl>
-</li>
-<li><p>optTol             Optimality tolerance</p></li>
-<li><p>feasTol            Feasibility tolerance</p></li>
-<li><p>timeLimit:         Global solver time limit</p></li>
-<li><p>intTol:            Integrality tolerance</p></li>
-<li><p>relMipGapTol:      Relative MIP gap tolerance</p></li>
-<li><p>logFile:           Log file (for CPLEX)</p></li>
+<li><p>a CLI-backed local Python path</p></li>
+<li><p>an HTTP path through the generic OptArrow MATLAB client</p></li>
 </ul>
 </div></blockquote>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>The available solver Parameters can be obtained by calling
-getSolverParamsOptionsForType().
-If input argument <cite>minNorm</cite> is not zero, then minimise the Euclidean length
-of the solution to the LP problem. <cite>minNorm ~1e-6</cite> should be
-high enough for regularisation yet maintain the same value for
-the linear part of the objective. However, this should be
-checked on a case by case basis, by optimization with and
-without regularisation.</p>
-</div>
 </dd></dl>
 
 <dl class="mat function">
-<dt class="sig sig-object mat" id="src.base.solvers.param.getCobraSolverParams">
-<span class="sig-name descname"><span class="pre">getCobraSolverParams</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">problemType</span></em>, <em class="sig-param"><span class="pre">paramNames</span></em>, <em class="sig-param"><span class="pre">paramStructure</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/param/getCobraSolverParams.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.param.getCobraSolverParams" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function gets the specified paramStructure in <cite>paramNames</cite> from
-paramStructure, the global cobra parameters variable or default values set within
-this script.</p>
-<p>It will use values with the following priority
-paramStructure &gt; solver type paramStructure &gt; default paramStructure</p>
-<p>The specified paramStructure will be delt to the specified output arguements.
-See examples below.</p>
+<dt class="sig sig-object mat" id="src.base.solvers.optarrow.solveCobraQPOptArrow">
+<span class="sig-name descname"><span class="pre">solveCobraQPOptArrow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">QPproblem</span></em>, <em class="sig-param"><span class="pre">problemTypeParams</span></em>, <em class="sig-param"><span class="pre">solverParams</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/optarrow/solveCobraQPOptArrow.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.optarrow.solveCobraQPOptArrow" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solve a COBRA QP problem through the OptArrow backend</p>
 <dl class="field-list simple">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>varargout = getCobraSolverParams</strong> (<em>problemType, paramNames, paramStructure</em>)</p>
+<dd class="field-odd"><p><strong>result = solveCobraQPOptArrow</strong> (<em>QPproblem, problemTypeParams, solverParams</em>)</p>
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>problemType</strong> – Type of problem solved: ‘LP’, ‘MILP’, ‘QP’, ‘MIQP’, ‘EP’, ‘CLP’</p></li>
-<li><p><strong>paramNames</strong> – Cell array of strings containing parameter names OR one
-parameter name as string</p></li>
+<li><p><strong>QPproblem</strong> – COBRA QP problem structure</p></li>
+<li><p><strong>problemTypeParams</strong> – structure of problem-type parameters</p></li>
+<li><p><strong>solverParams</strong> – structure of solver parameters</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>paramStructure</strong> – Structure with fields pertaining to parameter values that
-should be used in place of global or default paramStructure.
-paramStructure can be set to ‘default’ to use the default
-values set within this script.</p>
-</dd>
-<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>varargout</strong> – Variables which each value corresponding to paramNames
-is output to.
-In addition, if paramStructure is passed as an input, then
-the final output argument is paramStructureOut, with fields
-removed corresponding to paramNames</p>
+<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>result</strong> – structure with fields compatible with the
+<cite>solveCobraQP</cite> solver dispatch</p>
 </dd>
 </dl>
-<p class="rubric">Example</p>
-<p>paramStructure.saveInput = ‘LPproblem.mat’;
-paramStructure.printLevel = 1;
-[printLevel, saveInput] = getCobraSolverParams(‘LP’, {‘printLevel’, ‘saveInput’}, paramStructure);</p>
-<p>%Example using default values
-[printLevel, saveInput] = getCobraSolverParams(‘LP’, {‘printLevel’,’saveInput’}, ‘default’);</p>
 </dd></dl>
 
 <dl class="mat function">
-<dt class="sig sig-object mat" id="src.base.solvers.param.getCobraSolverParamsOptionsForType">
-<span class="sig-name descname"><span class="pre">getCobraSolverParamsOptionsForType</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">problemType</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/param/getCobraSolverParamsOptionsForType.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.param.getCobraSolverParamsOptionsForType" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function returns the parameters that are supported for each specified
-problem type.</p>
+<dt class="sig sig-object mat" id="src.base.solvers.optarrow.testOptArrowBackend">
+<span class="sig-name descname"><span class="pre">testOptArrowBackend</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/optarrow/testOptArrowBackend.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.optarrow.testOptArrowBackend" title="Permalink to this definition">¶</a></dt>
+<dd><p>testOptArrowBackend Minimal MATLAB smoke test for the COBRA OptArrow LP backend.</p>
 <dl class="field-list simple">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>paramNames = getCobraSolverParamsOptionsForType</strong> (<em>problemType</em>)</p>
-</dd>
-<dt class="field-even">INPUT<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>problemType</strong> – One of the problem types available in the COBRA
-Toolbox (‘LP’,’QP’,’EP’,’CLP’,’MILP’,’MIQP’,’NLP’)</p>
-</dd>
-</dl>
-<dl class="simple">
-<dt>OUPTUT:</dt><dd><dl class="simple">
-<dt>paramNames:        Cell array of names of parameters that can be set</dt><dd><p>for each problem type, independent of the specific
-solver being used.</p>
-</dd>
-</dl>
+<dd class="field-odd"><p><strong>testOptArrowBackend()</strong></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="mat function">
-<dt class="sig sig-object mat" id="src.base.solvers.param.mergeCobraParams">
-<span class="sig-name descname"><span class="pre">mergeCobraParams</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">param1</span></em>, <em class="sig-param"><span class="pre">param2</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/param/mergeCobraParams.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.param.mergeCobraParams" title="Permalink to this definition">¶</a></dt>
-<dd><p>Merge the structures with preference to param1 fields over param2 fields</p>
-</dd></dl>
-
-<dl class="mat function">
-<dt class="sig sig-object mat" id="src.base.solvers.param.parseSolverParameters">
-<span class="sig-name descname"><span class="pre">parseSolverParameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">problemType</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/param/parseSolverParameters.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.param.parseSolverParameters" title="Permalink to this definition">¶</a></dt>
-<dd><p>Gets default cobra solver parameters for a problem of type problemType, unless
-overridden by cobra solver parameters provided by varagin either as parameter
-struct, or as parameter/value pairs.</p>
+<dt class="sig sig-object mat" id="src.base.solvers.optarrow.testOptArrowEcoliCoreFBA">
+<span class="sig-name descname"><span class="pre">testOptArrowEcoliCoreFBA</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/optarrow/testOptArrowEcoliCoreFBA.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.optarrow.testOptArrowEcoliCoreFBA" title="Permalink to this definition">¶</a></dt>
+<dd><p>testOptArrowEcoliCoreFBA End-to-end COBRA FBA test on ecoli_core using OptArrow.</p>
 <dl class="field-list simple">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>[param, solverOnlyParams] = parseSolverParameters</strong> (<em>problemType,varargin</em>)</p>
+<dd class="field-odd"><p><strong>testOptArrowEcoliCoreFBA()</strong></p>
 </dd>
-<dt class="field-even">INPUT<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>problemType</strong> – The type of the problem to get parameters for
-(‘LP’,’MILP’,’QP’,’MIQP’,’NLP’,’EP’,’CLP’)</p>
-</dd>
-<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>varargin</strong> – Additional parameters either as parameter struct, or as
-parameter/value pairs. A combination is possible, if
-the parameter struct is either at the beginning or the
-end of the optional input.
-All fields of the struct which are not COBRA parameters
-(see <cite>getCobraParamsOptionsForType</cite>) for this
-problem type will be passed on to the solver in a
-solver specific manner.</p>
-</dd>
-<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>param</strong> – The COBRA Toolbox specific parameters for this problem type given the provided parameters, plus any additional parameters</p></li>
-<li><p><strong>solverOnlyParams</strong> – Structure of parameters that only contains fields that can be passed to a specific solver, e.g., gurobi or mosek.
-For some solvers, it is essential to NOT include any extraneous fields that are outside the solver interface specification,
-otherwise an error will result.</p></li>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.base.solvers.optarrow.testOptArrowEcoliCoreHttpFBA">
+<span class="sig-name descname"><span class="pre">testOptArrowEcoliCoreHttpFBA</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">endpoint</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/optarrow/testOptArrowEcoliCoreHttpFBA.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.optarrow.testOptArrowEcoliCoreHttpFBA" title="Permalink to this definition">¶</a></dt>
+<dd><p>testOptArrowEcoliCoreHttpFBA End-to-end COBRA FBA test on ecoli_core via OptArrow HTTP.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>testOptArrowEcoliCoreHttpFBA()</strong></p></li>
+<li><p><strong>testOptArrowEcoliCoreHttpFBA</strong> (<em>endpoint</em>)</p></li>
 </ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.base.solvers.optarrow.testOptArrowQPBackend">
+<span class="sig-name descname"><span class="pre">testOptArrowQPBackend</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/optarrow/testOptArrowQPBackend.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.optarrow.testOptArrowQPBackend" title="Permalink to this definition">¶</a></dt>
+<dd><p>testOptArrowQPBackend Minimal MATLAB smoke test for the COBRA OptArrow QP backend.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>testOptArrowQPBackend()</strong></p>
 </dd>
 </dl>
 </dd></dl>
@@ -434,10 +357,10 @@ otherwise an error will result.</p></li>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../entropicFBA/index.html" class="btn btn-default float-right" title="Entropicfba" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../varKin/index.html" class="btn btn-default float-right" title="Varkin" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../init/index.html" class="btn btn-default" title="Init" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../rescale/index.html" class="btn btn-default" title="Rescale" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
