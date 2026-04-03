@@ -1,4 +1,5 @@
-function [newModel, rxnsConstrained, rxnBoundsCorrected, newSpecificData] = constrainRxns(model, specificData, param, mode, printLevel)
+function [newModel, rxnsConstrained, rxnBoundsCorrected, newSpecificData] = ...
+constrainRxns(model, specificData, param, mode, printLevel)
 % Function used to apply constraints in the XomicsToModel function
 %
 % USAGE:
@@ -22,6 +23,7 @@ function [newModel, rxnsConstrained, rxnBoundsCorrected, newSpecificData] = cons
 %  specificData.exoMet.mean    k x 1 numeric array of mean measured reaction flux
 %  specificData.exoMet.SD      k x 1 numeric array of standard deviation in measured reaction flux
 %  specificData.essentialAA:
+%  specificData.exoMet.varID
 %
 %  param.TolMinBoundary:
 %
@@ -46,6 +48,30 @@ function [newModel, rxnsConstrained, rxnBoundsCorrected, newSpecificData] = cons
 %                           'exometabolomicConstraints' uses specificData.exoMet
 %  printLevel:        
 %
+% OPTIONAL INPUTS:
+%  param.weightLower_flx_default:  scalar or n x 1 double
+%                                  User defined penalty applied to lower bounds of all fluxes.
+%                                  It overwrites the default penalty.
+%                                  It is overwritten for measured fluxes only by specificData.exoMet.penaltyLowerBoundPerturbation
+%                                  when available
+%  param.weightUpper_flx_default:  scalar or n x 1 double
+%                                  User defined penalty applied to upper bounds of all fluxes.
+%                                  It overwrites the default penalty.
+%                                  It is overwritten for measured fluxes only by specificData.exoMet.penaltyUpperBoundPerturbation
+%                                  when available
+%  param.weightLower_e_default:    scalar or number of extra variables x 1 double.
+%                                  User defined penalty applied to lower bounds of extra variables.
+%                                  It overwrites the default penalty.
+%                                  It is overwritten for measured extra variables only by specificData.exoMet.penaltyLowerBoundPerturbation
+%                                  when available
+%  param.weightUpper_e_default:    scalar or number of extra variables x 1 double.
+%                                  User defined penalty applied to upper bounds of extra variables.
+%                                  It overwrites the default penalty.
+%                                  It is overwritten for measured extra variables only by specificData.exoMet.penaltyUpperBoundPerturbation
+%                                  when available
+%  param.weightExpFct:             scalar.
+%                                  Factor by which to multiply experimental weights (weightExp_flx ,weightExp_e) in mode 'allConstraints'
+%
 % OUTPUTS:
 %  newModel:
 %
@@ -66,6 +92,7 @@ function [newModel, rxnsConstrained, rxnBoundsCorrected, newSpecificData] = cons
 %   newSpecificData:    A new structure containing arguments for the
 %                       XomicsToModel function
 %
+% March 2026: extended to deal with extra variables - Tania
 
 if ~exist('printLevel','var')
     printLevel=0;
@@ -585,6 +612,540 @@ switch mode
         if any(model.lb > model.ub)
             error('lower bounds greater than upper bounds')
         end
+    case 'allConstraints'
+        % apply quadratic relaxation to constraints using flux
+        % variables and/or extra variables (e.g. enzyme-usage variables in
+        % GECKO model)
+        
+        % do not use generic hard constraints
+        constraint = 0;
+
+        % check data
+        exo = specificData.exoMet;
+        necessaryCols = {'varID', 'mean', 'SD'};
+        for i=necessaryCols
+            if ~ismember(i{1}, exo.Properties.VariableNames)
+                error('Expecting specificData.exoMet.%s but it is absent', i{1})
+            end
+        end
+
+        [flxBool, flxIdx] = ismember(exo.varID, model.rxns);
+
+        if isfield(model, 'evars') && ~isempty(model.evars)
+            [eBool, eIdx] = ismember(exo.varID, model.evars);
+        else
+            eBool = false(numel(exo.varID));
+            eIdx = zeros(numel(exo.varID));
+        end
+
+        if any(~flxBool & ~eBool)
+            notThere = exo.varID(~flxBool & ~eBool);
+            nt = sprintf('%s\n', notThere);
+            display('These exoMet.varID entries neither match model.rxns nor model.evars, and will be ignored: %s', nt)
+        end
+        
+        rxnsConstrained = exo.varID(flxBool);
+        extraConstrained = exo.varID(eBool);
+        
+        if length(unique(rxnsConstrained)) ~= length(rxnsConstrained) && printLevel > 0
+            display('There are duplicate rxns entries in the data!')
+        end
+        
+        if length(unique(extraConstrained)) ~= length(extraConstrained) && printLevel > 0
+            display('There are duplicate extra variables entries in the data!')
+        end
+
+        nRxn = numel(model.rxns);
+        nExt = numel(model.evars);
+        
+        % experimenal values for flux
+        vExp_flx = NaN * ones(nRxn,1);
+        vExp_flx(flxIdx(flxBool)) = exo.mean(flxBool); % vector with experimental mean flux (rxns ordered as in the model)
+        
+        vSD_flx = NaN * ones(nRxn,1);
+        vSD_flx(flxIdx(flxBool)) = exo.SD(flxBool); % vector with experimental std (rxns ordered as in the model)
+        
+        % experimental values for extra variables
+        vExp_e = NaN * ones(nExt ,1);
+        vExp_e(eIdx(eBool)) = exo.mean(eBool);
+
+        vSD_e = NaN * ones(nExt, 1);
+        vSD_e(eIdx(eBool)) = exo.SD(eBool);
+        
+        % Set the weight on the Euclidean distance of the predicted steady state
+        % value from the experimental steady state value.
+        weightExp_flx = NaN * ones(nRxn,1); % weights are ignored on the reactions without experimental data
+        weightExp_e = NaN * ones(nExt,1);
+        % Penalise the relaxation from the experimental value
+        switch param.metabolomicWeights
+            case 'SD'
+                if isfield(param, 'weightExpFct') && (~isempty(param.weightExpFct))
+                    weightExp_flx(flxIdx(flxBool)) = (1 ./ (1 +  (vSD_flx(flxIdx(flxBool)).^2)))*param.weightExpFct;
+                    weightExp_e(eIdx(eBool)) = (1 ./ (1 +  (vSD_e(eIdx(eBool)).^2)))*param.weightExpFct;
+                else
+                    weightExp_flx(flxIdx(flxBool)) = 1 ./ (1 +  (vSD_flx(flxIdx(flxBool)).^2));
+                    weightExp_e(eIdx(eBool)) = 1 ./ (1 +  (vSD_e(eIdx(eBool)).^2));
+                end
+            case 'mean'
+                if isfield(param, 'weightExpFct') && (~isempty(param.weightExpFct))
+                    weightExp_flx(flxIdx(flxBool)) = (1 ./ (1 + (vExp_flx(flxIdx(flxBool)).^2)))*param.weightExpFct;
+                    weightExp_e(eIdx(eBool)) = (1 ./ (1 + (vExp_e(eIdx(eBool)).^2)))*param.weightExpFct;
+                else
+                    weightExp_flx(flxIdx(flxBool)) = 1 ./ (1 + (vExp_flx(flxIdx(flxBool)).^2));
+                    weightExp_e(eIdx(eBool)) = 1 ./ (1 + (vExp_e(eIdx(eBool)).^2));
+                end
+            case 'RSD'
+                if isfield(param, 'weightExpFct') && (~isempty(param.weightExpFct))
+                    weightExp_flx(flxIdx(flxBool)) = 1 ./ ((vSD_flx(flxIdx(flxBool))./vExp_flx(flxIdx(flxBool))).^2)*param.weightExpFct;
+                    weightExp_e(eIdx(eBool)) = 1 ./ ((vSD_e(eIdx(eBool))./vExp_e(eIdx(eBool))).^2)*param.weightExpFct;
+                else
+                    weightExp_flx(flxIdx(flxBool)) = 1 ./ ((vSD_flx(flxIdx(flxBool))./vExp_flx(flxIdx(flxBool))).^2);
+                    weightExp_e(eIdx(eBool)) = 1 ./ ((vSD_e(eIdx(eBool))./vExp_e(eIdx(eBool))).^2);
+                end
+            otherwise
+                if isfield(param, 'weightExpFct') && (~isempty(param.weightExpFct))
+                    weightExp_flx(flxIdx(flxBool)) = 2*param.weightExpFct;
+                    weightExp_e(eIdx(eBool)) = 2*param.weightExpFct;
+                else
+                    weightExp_flx(flxIdx(flxBool)) = 2;
+                    weightExp_e(eIdx(eBool)) = 2;
+                end
+            end
+        
+        % default for flux bound relaxation if no
+        % weightLower/Upper_flx_default is provided
+        weightLower_flx = ones(nRxn, 1);
+        weightUpper_flx = ones(nRxn, 1);
+                
+        % does model has fields necessary for relaxation default logic
+        hasDefaultFields = isfield(model,'SIntRxnBool') && isfield(model,'SinkRxnBool') && isfield(model,'DMRxnBool');
+                
+        if hasDefaultFields
+            % Default bound relaxation logic
+
+            % Set the weight on the Euclidean norm of the relaxation to the lower bounds
+            % on the predicted steady state flux vector. Only for allow relaxation for external
+            % reactions. The weight penalty on relaxation of the lower bound should be greater
+            % than that on the experimental flux, and upper bound, if the model lower bound
+            % is considered more reliable than the experimental data and the upper bound.
+            
+            % Do not allow external reaction lower bounds to be changed if it is
+            % not measured in the media
+            weightLower_flx(~model.SIntRxnBool & isnan(weightExp_flx)) = inf;
+            
+            % Do not allow internal reaction lower bounds to be changed
+            weightLower_flx(model.SIntRxnBool) = inf;
+            
+            % Penalise change to sink/demand reactions lower bounds
+            weightLower_flx(model.SinkRxnBool | model.DMRxnBool) = inf;
+
+            % Do not allow lower bound to be relaxed if a metabolite is secreted
+            %weightLower(~model.SIntRxnBool &  vExp > 0) = inf;
+            weightLower_flx(~model.SIntRxnBool &  (vExp_flx-vSD_flx) > 0) = inf;
+            
+            if 0
+                %if any external reactions are at default bounds, allow those to be changed more readily
+                weightLower_flx(model.lb==param.TolMinBoundary & ~model.SIntRxnBool) = eta;
+            end
+
+            % Set the weight on the Euclidean norm of the relaxation to the upper bounds
+            % on the predicted steady state flux vector. Only for allow relaxation for external
+            % reactions. The weight penalty on relaxation of the upper bound should be greater
+            % than that on the experimental flux, and lower bound, if the model upper bound
+            % is considered more reliable than the experimental data and the lower bound.
+            
+            % Do not allow internal reaction bounds to be changed
+            weightUpper_flx(model.SIntRxnBool) = inf;
+            
+            % Penalise change to sink/demand reactions lower bounds
+            weightUpper_flx(model.SinkRxnBool | model.DMRxnBool) = inf;
+                        
+            % Do not allow upper bound to be relaxed if a metabolite is uptaken
+            %weightUpper(~model.SIntRxnBool &  vExp < 0) = inf;
+            weightUpper_flx(~model.SIntRxnBool &  (vExp_flx+vSD_flx) < 0) = inf;
+            
+            if 0
+                % If any external reactions are at default bounds, allow those to be changed more readily
+                weightUpper_flx(model.ub==param.TolMaxBoundary & ~model.SIntRxnBool) = eta;
+            end
+        else
+            hasLowerFlx = isfield(param, 'weightLower_flx_default') && ~isempty(param.weightLower_flx_default);
+            hasUpperFlx = isfield(param, 'weightUpper_flx_default') && ~isempty(param.weightUpper_flx_default);
+
+            if (~hasLowerFlx) && (~hasUpperFlx)
+                warning(['using mode allConstraints, ' ...
+                    'and the model lacks SIntRxnBool/SinkRxnBool/DMRxnBool, ' ...
+                    'and no weightLower_flx_default/Upper_flx_default are provided.'...
+                    'default bound relaxation weights are therefore 1, ' ...
+                    'except where penalty*BoundPerturbation overwrites. ', ...
+                    'to change default use weightLower_flx_default/weightUpper_flx_default']);  
+            end
+        end
+        
+        % overwrite default flux bound relaxation if
+        % weightLower/Upper_flx_default is provided by user
+        if isfield(param, 'weightLower_flx_default') && (~isempty(param.weightLower_flx_default))
+            if isscalar(param.weightLower_flx_default)
+                weightLower_flx = repmat(param.weightLower_flx_default, nRxn, 1);
+            else
+                weightLower_flx = param.weightLower_flx_default;
+            end
+        end
+
+        if isfield(param, 'weightUpper_flx_default') && (~isempty(param.weightUpper_flx_default))
+            if isscalar(param.weightUpper_flx_default)
+                weightUpper_flx = repmat(param.weightUpper_flx_default, nRxn, 1);
+            else
+                weightUpper_flx = param.weightUpper_flx_default;
+            end
+        end
+        
+        % overwrite bound relaxation for fluxes with user defined penalties
+        if ismember('penaltyLowerBoundPerturbation', specificData.exoMet.Properties.VariableNames)
+            weightLower_flx(flxIdx(flxBool)) = specificData.exoMet.penaltyLowerBoundPerturbation(flxIdx(flxBool));
+        end
+        if ismember('penaltyUpperBoundPerturbation', specificData.exoMet.Properties.VariableNames)
+            weightUpper_flx(flxIdx(flxBool)) = specificData.exoMet.penaltyUpperBoundPerturbation(flxIdx(flxBool));
+        end
+        
+        % default for extra variables bound relaxation, if no
+        % weightLower/Upper_e_default is provided, is to not relax
+        weightLower_e = inf*ones(nExt,1);
+        weightUpper_e = inf*ones(nExt,1);
+
+        % overwrite default extra variable bound relaxation if
+        % weightLower/Upper_e_default is provided by user
+        if isfield(param, 'weightLower_e_default') && (~isempty(param.weightLower_e_default))
+            if isscalar(param.weightLower_e_default)
+                weightLower_e = repmat(param.weightLower_e_default, nExt, 1);
+            else
+                weightLower_e = param.weightLower_e_default;
+            end
+        end
+        if isfield(param, 'weightUpper_e_default') && (~isempty(param.weightUpper_e_default))
+            if isscalar(param.weightUpper_e_default)
+                weightUpper_e = repmat(param.weightUpper_e_default, nExt, 1);
+            else
+                weightUpper_e = param.weightUpper_e_default;
+            end
+        end
+        % overwrite bound relaxation for extra variables with user defined penalties
+        if ismember('penaltyLowerBoundPerturbation', specificData.exoMet.Properties.VariableNames)
+            weightLower_e(eIdx(eBool)) = specificData.exoMet.penaltyLowerBoundPerturbation(eIdx(eBool));
+        end
+        if ismember('penaltyUpperBoundPerturbation', specificData.exoMet.Properties.VariableNames)
+            weightUpper_e(eIdx(eBool)) = specificData.exoMet.penaltyUpperBoundPerturbation(eIdx(eBool));
+        end
+
+        % warn when extra variables exist, but no lower bound default is
+        % given
+        if nExt > 0
+            hasLower = isfield(param, 'weightLower_e_default') && ~isempty(param.weightLower_e_default);
+            hasUpper = isfield(param, 'weightUpper_e_default') && ~isempty(param.weightUpper_e_default);
+            if ~hasLower && ~hasUpper
+                warning(['extra variables exist but no weightLower_e_default/weightUpper_e_default was given. ', ...
+                    'extra variable bounds will not be relaxed (weight is Inf), ', ...
+                    'except where penalty*BoundPerturbation overwrites'])
+            end
+        end
+        % Compute the steady state flux vector that minimises the weighted Euclidean
+        % norm between experimental and predicted steady state flux vector, plus the weighted
+        % Euclidean norm relaxation of the model lower bounds, plus the  weighted Euclidean
+        % norm relaxation of the model upper bounds. Also save the relaxed model that
+        % admits such a steady state flux.
+        
+        if isfield(model, 'SIntRxnBool') && ~isempty(model.SIntRxnBool)
+            if ~all(isinf(weightLower_flx(model.SIntRxnBool)))
+                warning('Some internal reaction lower bounds may be relaxed')
+            end
+            if ~all(isinf(weightUpper_flx(model.SIntRxnBool)))
+                warning('Some internal reaction upper bounds may be relaxed')
+            end
+        end
+        
+        %select method(s) of fitting to try
+        if 1
+            %two norm fitting only
+             methods={'two'};
+        else
+            %try a set of methods to fit fluxes
+             methods = {'zero','zeroOne','oneTwo','two'};
+        end
+        
+        %try to fit the bounds to the data
+        for i=1:length(methods)
+            fitParam.method = methods{i};
+            fitParam.printLevel = printLevel;
+            if printLevel > 0
+                fprintf('%s\n',['Fit experimental method: ' methods{i} ' norm.'])
+            end
+            if nExt == 0
+                [v, p, q, dv, obj] = fitExperimentalFlux(model, vExp_flx, weightLower_flx, weightUpper_flx, weightExp_flx, fitParam);
+            elseif nExt > 0
+                modelExtend = model;
+                vExp = [vExp_flx; vExp_e];
+                weightLower = [weightLower_flx; weightLower_e];
+                weightUpper = [weightUpper_flx; weightUpper_e];
+                weightExp = [weightExp_flx; weightExp_e];
+                modelExtend.S = [model.S, model.E];
+                modelExtend.C = [model.C, model.D];
+                modelExtend.c = [model.c; model.evarc];
+                modelExtend.lb = [model.lb; model.evarlb];
+                modelExtend.ub = [model.ub; model.evarub];
+                [v, p, q, dv, obj] = fitExperimentalFlux(modelExtend, vExp, weightLower, weightUpper, weightExp, fitParam);
+            end
+            %  v:          * `n x 1` steady state extended variable vector
+            %  p:          * `n x 1` relaxation of lower bounds
+            %  q:          * `n x 1` relaxation of upper bounds
+            % dv:          * `n x 1` difference between experimental and predicted steady state
+            
+            % split v, p, q, dv back
+            v_flx = v(1:nRxn);
+            p_flx = p(1:nRxn);
+            q_flx = q(1:nRxn);
+            dv_flx = dv(1:nRxn);
+            v_e = v(nRxn+1:end);
+            p_e = p(nRxn+1:end);
+            q_e = q(nRxn+1:end);
+            dv_e = dv(nRxn+1:end);
+
+            %save perturbations, before any zeroing out of small variables
+            p_flxOrig = p_flx;
+            q_flxOrig = q_flx;
+            p_eOrig = p_e;
+            q_eOrig = q_e;
+
+            if 1
+                %zero out small changes to bounds not experimentally measured
+                finiteExpBool_flx =~ isnan(vExp_flx); % has experimental
+                finiteExpBool_e =~ isnan(vExp_e);
+                p_flx(p_flx<param.eta & ~finiteExpBool_flx)=0;
+                q_flx(q_flx<param.eta & ~finiteExpBool_flx)=0;
+                p_e(p_e<param.eta & ~finiteExpBool_e)=0;
+                q_e(q_e<param.eta & ~finiteExpBool_e)=0;
+            else
+                %zero out small changes to bounds of all variables
+                p_flx(p_flx < param.eta) = 0;
+                q_flx(q_flx < param.eta) = 0;
+                p_e(p_e < param.eta) = 0;
+                q_e(q_e < param.eta) = 0;
+            end
+            
+            %create the fitted model
+            modelFitted = model;
+            modelFitted.lb = model.lb - p_flx;
+            modelFitted.ub = model.ub + q_flx;
+            modelFitted.evarlb = model.evarlb - p_e;
+            modelFitted.evarub = model.evarub + q_e;
+
+            % buildOptProblemFromModel takes fields D and E in
+            % consideration
+            LP = buildOptProblemFromModel(modelFitted, 'true', struct());
+            sol = solveCobraLP(LP);
+            
+            if sol.stat == 1
+                fprintf('%\n','Fitted model is feasible.')
+            else
+                %try with the original bound relaxations
+                modelFitted.lb = model.lb - p_flxOrig;
+                modelFitted.ub = model.ub + q_flxOrig;
+                modelFitted.evarlb = model.evarlb - p_eOrig;
+                modelFitted.evarub = model.evarub + q_eOrig;
+                
+                LP = buildOptProblemFromModel(modelFitted, 'true', struct());
+                FBAsolution = solveCobraLP(LP); % buildOptProblemFromModel takes fields D and E in
+                % consideration
+                
+                if FBAsolution.stat == 1
+                    warning('Fitted model is feasible, but only after including small changes to bounds of variables not experimentally measured.')
+                    p_flx = p_flxOrig;
+                    q_flx = q_flxOrig;
+                    p_e = p_eOrig;
+                    q_e = q_eOrig;
+                else
+                    sol
+                    warning('Fitted model is not feasible for FBA yet. Check numerical issues within fitExperimentalFlux.')
+                end
+            end
+            
+            boolExpRxn = false(nRxn,1);
+            boolExpExt = false(nExt,1);
+            boolExpRxn(flxIdx(flxBool))=1;
+            boolExpExt(eIdx(eBool))=1;
+            if printLevel > 0
+                fprintf('\n')
+                fprintf('%s\n',[int2str(nnz(boolExpRxn)) ' measured reaction rates.'])
+                fprintf('%s\n',[int2str(nnz(dv_flx==0 & boolExpRxn)) ' perfectly fit measured reaction rates.'])
+                fprintf('%s\n',[int2str(nnz(dv_flx~=0 & boolExpRxn)) ' imperfectly fit measured reaction rates.'])
+                fprintf('%s\n',[int2str(nnz(boolExpExt)) ' measured extra variables.'])
+                fprintf('%s\n',[int2str(nnz(dv_e==0 & boolExpExt)) ' perfectly fit measured extra variables.'])
+                fprintf('%s\n',[int2str(nnz(dv_e~=0 & boolExpExt)) ' imperfectly fit measured extra variables.'])
+                Tr = table(model.rxns(dv_flx~=0 & boolExpRxn), model.rxnNames(dv_flx~=0 & boolExpRxn),dv_flx(dv_flx~=0 & boolExpRxn),'VariableNames',{'variables','variableNames','deviation from measured mean'});
+                Te = table(model.evars(dv_e~=0 & boolExpExt), model.evarNames(dv_e~=0 & boolExpExt),dv_e(dv_e~=0 & boolExpExt),'VariableNames',{'variables','variableNames','deviation from measured mean'});
+                T = vertcat(Tr, Te);
+                disp(T)
+                fprintf('%s\n',[int2str(nnz(p_flx)) ' reaction lower bounds relaxed.'])
+                if isfield(model, 'SIntRxnBool') && ~isempty(model.SIntRxnBool)
+                    fprintf('%s\n',[int2str(nnz(p_flx & ~model.SIntRxnBool)) ' external reaction lower bounds relaxed.'])
+                    fprintf('%s\n',[int2str(nnz(p_flx~=0 & boolExpRxn~=0 & ~model.SIntRxnBool)) ' measured external metabolite lower bounds relaxed.'])
+                    fprintf('%s\n',[int2str(nnz(p_flx~=0 & boolExpRxn==0 & ~model.SIntRxnBool)) ' unmeasured external metabolite lower bounds relaxed.'])
+                end               
+                fprintf('%s\n',[int2str(nnz(q_flx)) ' reaction upper bounds relaxed.'])
+                if isfield(model, 'SIntRxnBool') && ~isempty(model.SIntRxnBool)
+                    fprintf('%s\n',[int2str(nnz(q_flx & ~model.SIntRxnBool)) ' external reaction upper bounds relaxed.'])
+                    fprintf('%s\n',[int2str(nnz(q_flx~=0 & boolExpRxn~=0 & ~model.SIntRxnBool)) ' measured external metabolite upper bounds relaxed.'])
+                    fprintf('%s\n',[int2str(nnz(q_flx~=0 & boolExpRxn==0 & ~model.SIntRxnBool)) ' unmeasured external metabolite upper bounds relaxed.'])
+                end
+                fprintf('\n')
+            end
+        end
+        
+        % Identify the variables where the bounds are relaxed
+        modelFitted.exometRelaxation.lowerBoundBool = p_flx >= param.eta;
+        modelFitted.exometRelaxation.upperBoundBool = q_flx >= param.eta;
+        modelFitted.exometRelaxation.evarlowerBoundBool = p_e >= param.eta;
+        modelFitted.exometRelaxation.evarupperBoundBool = q_e >= param.eta;
+
+        
+        %% Adjust the bounds based on the standard deviation of the experimental data
+        if 1
+            % set bounds to +/- one standard deviation, except where bounds were relaxed, or
+            % where it would change direction of reaction
+            
+            % Reversible reactions
+            reversibleRxnBool = model.lb < 0 & model.ub > 0;
+            reversibleEvarBool = model.evarlb < 0 & model.evarub > 0;
+            modelFitted.lb(finiteExpBool_flx & ~modelFitted.exometRelaxation.lowerBoundBool & reversibleRxnBool)=...
+                v_flx(finiteExpBool_flx & ~modelFitted.exometRelaxation.lowerBoundBool & reversibleRxnBool) -  vSD_flx(finiteExpBool_flx & ~modelFitted.exometRelaxation.lowerBoundBool & reversibleRxnBool);
+            modelFitted.evarlb(finiteExpBool_e & ~modelFitted.exometRelaxation.evarlowerBoundBool & reversibleEvarBool)=...
+                v_e(finiteExpBool_e & ~modelFitted.exometRelaxation.evarlowerBoundBool & reversibleEvarBool) -  vSD_e(finiteExpBool_e & ~modelFitted.exometRelaxation.evarlowerBoundBool & reversibleEvarBool);
+
+            modelFitted.ub(finiteExpBool_flx & ~modelFitted.exometRelaxation.upperBoundBool & reversibleRxnBool)=...
+                v_flx(finiteExpBool_flx & ~modelFitted.exometRelaxation.upperBoundBool & reversibleRxnBool) + vSD_flx(finiteExpBool_flx & ~modelFitted.exometRelaxation.upperBoundBool & reversibleRxnBool);
+            modelFitted.evarub(finiteExpBool_e & ~modelFitted.exometRelaxation.evarupperBoundBool & reversibleEvarBool)=...
+                v_e(finiteExpBool_e & ~modelFitted.exometRelaxation.evarupperBoundBool & reversibleEvarBool) + vSD_e(finiteExpBool_e & ~modelFitted.exometRelaxation.evarupperBoundBool & reversibleEvarBool);
+            
+            %forward reactions
+            fwdRxnBool = model.lb >= 0 & model.ub ~=0;
+            fwdEvarBool = model.evarlb >= 0 & model.evarub ~=0;
+            modelFitted.lb(finiteExpBool_flx & ~modelFitted.exometRelaxation.lowerBoundBool & fwdRxnBool)=...
+                max(0, v_flx(finiteExpBool_flx & ~modelFitted.exometRelaxation.lowerBoundBool & fwdRxnBool) -  vSD_flx(finiteExpBool_flx & ~modelFitted.exometRelaxation.lowerBoundBool & fwdRxnBool));
+            modelFitted.evarlb(finiteExpBool_e & ~modelFitted.exometRelaxation.evarlowerBoundBool & fwdEvarBool)=...
+                max(0, v_e(finiteExpBool_e & ~modelFitted.exometRelaxation.evarlowerBoundBool & fwdEvarBool) -  vSD_e(finiteExpBool_e & ~modelFitted.exometRelaxation.evarlowerBoundBool & fwdEvarBool));
+
+            modelFitted.ub(finiteExpBool_flx & ~modelFitted.exometRelaxation.upperBoundBool & fwdRxnBool)=...
+                v_flx(finiteExpBool_flx & ~modelFitted.exometRelaxation.upperBoundBool & fwdRxnBool) + vSD_flx(finiteExpBool_flx & ~modelFitted.exometRelaxation.upperBoundBool & fwdRxnBool);
+            modelFitted.evarub(finiteExpBool_e & ~modelFitted.exometRelaxation.evarupperBoundBool & fwdEvarBool)=...
+                v_e(finiteExpBool_e & ~modelFitted.exometRelaxation.evarupperBoundBool & fwdEvarBool) + vSD_e(finiteExpBool_e & ~modelFitted.exometRelaxation.evarupperBoundBool & fwdEvarBool);
+            
+            %reverse reactions
+            revRxnBool = model.ub<=0 & model.lb~=0;
+            revEvarBool = model.evarub<=0 & model.evarlb~=0;
+            modelFitted.lb(finiteExpBool_flx & ~modelFitted.exometRelaxation.lowerBoundBool & revRxnBool)=...
+                v_flx(finiteExpBool_flx & ~modelFitted.exometRelaxation.lowerBoundBool & revRxnBool) -  vSD_flx(finiteExpBool_flx & ~modelFitted.exometRelaxation.lowerBoundBool & revRxnBool);
+            modelFitted.evarlb(finiteExpBool_e & ~modelFitted.exometRelaxation.evarlowerBoundBool & revEvarBool)=...
+                v_e(finiteExpBool_e & ~modelFitted.exometRelaxation.evarlowerBoundBool & revEvarBool) -  vSD_e(finiteExpBool_e & ~modelFitted.exometRelaxation.evarlowerBoundBool & revEvarBool);
+
+            modelFitted.ub(finiteExpBool_flx & ~modelFitted.exometRelaxation.upperBoundBool & revRxnBool)=...
+                min(0, v_flx(finiteExpBool_flx & ~modelFitted.exometRelaxation.upperBoundBool & revRxnBool) + vSD_flx(finiteExpBool_flx & ~modelFitted.exometRelaxation.upperBoundBool & revRxnBool));
+            modelFitted.evarub(finiteExpBool_e & ~modelFitted.exometRelaxation.evarupperBoundBool & revEvarBool)=...
+                min(0, v_e(finiteExpBool_e & ~modelFitted.exometRelaxation.evarupperBoundBool & revEvarBool) + vSD_e(finiteExpBool_e & ~modelFitted.exometRelaxation.evarupperBoundBool & revEvarBool));
+
+        else
+            %set lower bound to match upper bound when upper bound relaxed
+            modelFitted.lb(modelFitted.exometRelaxation.upperBoundBool) = modelFitted.ub(modelFitted.exometRelaxation.upperBoundBool);
+            modelFitted.evarlb(modelFitted.exometRelaxation.evarupperBoundBool) = modelFitted.evarub(modelFitted.exometRelaxation.evarupperBoundBool);
+
+            %set upper bound to match lower bound when lower bound relaxed
+            modelFitted.ub(modelFitted.exometRelaxation.lowerBoundBool) = modelFitted.lb(modelFitted.exometRelaxation.lowerBoundBool);
+            modelFitted.evarub(modelFitted.exometRelaxation.evarlowerBoundBool) = modelFitted.evarlb(modelFitted.exometRelaxation.evarlowerBoundBool);
+
+            %also set the bounds specified by the experimental data, except where
+            %bounds were relaxed
+            modelFitted.lb(finiteExpBool_flx & ~modelFitted.exometRelaxation.lowerBoundBool)=v_flx(finiteExpBool_flx & ~modelFitted.exometRelaxation.lowerBoundBool);
+            modelFitted.evarlb(finiteExpBool_e & ~modelFitted.exometRelaxation.evarlowerBoundBool)=v_e(finiteExpBool_e & ~modelFitted.exometRelaxation.evarlowerBoundBool);
+
+            modelFitted.ub(finiteExpBool_flx & ~modelFitted.exometRelaxation.upperBoundBool)=v_flx(finiteExpBool_flx & ~modelFitted.exometRelaxation.upperBoundBool);
+            modelFitted.evarub(finiteExpBool_e & ~modelFitted.exometRelaxation.evarupperBoundBool)=v_e(finiteExpBool_e & ~modelFitted.exometRelaxation.evarupperBoundBool);
+        end
+        
+        %save the revised bounds in the exoMet structure
+        specificData.exoMet.name(flxBool) = model.rxnNames(flxIdx(flxBool));
+        specificData.exoMet.name(eBool) = model.evarNames(eIdx(eBool));
+        specificData.exoMet.lb(flxBool) = modelFitted.lb(flxIdx(flxBool));
+        specificData.exoMet.lb(eBool) = modelFitted.evarlb(eIdx(eBool));
+        specificData.exoMet.wl(flxBool) = weightLower_flx(flxIdx(flxBool));
+        specificData.exoMet.wl(eBool) = weightLower_e(eIdx(eBool));
+        specificData.exoMet.p(flxBool) = p_flx(flxIdx(flxBool));
+        specificData.exoMet.p(eBool) = p_e(eIdx(eBool));
+        specificData.exoMet.lb_old(flxBool)=  model.lb(flxIdx(flxBool));
+        specificData.exoMet.lb_old(eBool)=  model.evarlb(eIdx(eBool));
+        specificData.exoMet.v(flxBool) = v_flx(flxIdx(flxBool));
+        specificData.exoMet.v(eBool) = v_e(eIdx(eBool));
+        
+        %compute the sign of the model flux
+        specificData.exoMet.sign_v = sign(specificData.exoMet.v);
+        specificData.exoMet.sign_v(abs(specificData.exoMet.v)<param.boundPrecisionLimit)=0;
+        
+        %compute the sign of the experimental flux
+        specificData.exoMet.sign_vExp = sign(specificData.exoMet.mean);
+        
+        %interval formed by mean +/- SD contains zero
+        specificData.exoMet.sign_vExpSD = sign(specificData.exoMet.mean);
+        specificData.exoMet.sign_vExpSD((specificData.exoMet.mean - specificData.exoMet.SD)<0 & (specificData.exoMet.mean + specificData.exoMet.SD)>0)=0;
+        
+        specificData.exoMet.signMatch = double(specificData.exoMet.sign_v == specificData.exoMet.sign_vExp);
+        specificData.exoMet.dv(flxBool) = dv_flx(flxIdx(flxBool));
+        specificData.exoMet.dv(eBool) = dv_e(eIdx(eBool));
+        specificData.exoMet.wexp(flxBool) = weightExp_flx(flxIdx(flxBool));
+        specificData.exoMet.wexp(eBool) = weightExp_e(eIdx(eBool));
+        specificData.exoMet.ub_old(flxBool)=  model.ub(flxIdx(flxBool));
+        specificData.exoMet.ub_old(eBool)=  model.evarub(eIdx(eBool));
+        specificData.exoMet.q(flxBool)=  q_flx(flxIdx(flxBool));
+        specificData.exoMet.q(eBool)=  q_e(eIdx(eBool));
+        specificData.exoMet.wu(flxBool) = weightUpper_flx(flxIdx(flxBool));
+        specificData.exoMet.wu(eBool) = weightUpper_e(eIdx(eBool));
+        specificData.exoMet.ub(flxBool)=  modelFitted.ub(flxIdx(flxBool));
+        specificData.exoMet.ub(eBool)=  modelFitted.evarub(eIdx(eBool));
+        specificData.exoMet.vdv = specificData.exoMet.dv./specificData.exoMet.v;
+        
+        specificData.exoMet.lb(~(flxBool|eBool)) = NaN;
+        specificData.exoMet.wl(~(flxBool|eBool)) = NaN;
+        specificData.exoMet.p(~(flxBool|eBool)) = NaN;
+        specificData.exoMet.lb_old(~(flxBool|eBool)) = NaN;
+        specificData.exoMet.v(~(flxBool|eBool)) = NaN;
+        specificData.exoMet.wexp(~(flxBool|eBool)) = NaN;
+        specificData.exoMet.ub_old(~(flxBool|eBool)) = NaN;
+        specificData.exoMet.q(~(flxBool|eBool)) = NaN;
+        specificData.exoMet.wu(~(flxBool|eBool)) = NaN;
+        specificData.exoMet.ub(~(flxBool|eBool)) = NaN;
+        specificData.exoMet.signMatch(~(flxBool|eBool)) = NaN;
+        
+        specificData.exoMet = sortrows(specificData.exoMet, 'mean', 'ascend');
+        
+        modelFitted.exometRelaxationObj = obj;
+        modelFitted.exometRelaxation.v = v_flx;
+        modelFitted.exometRelaxation.v_extraVariables = v_e;
+        modelFitted.exometRelaxation.p = p_flx;
+        modelFitted.exometRelaxation.p_extraVariables = p_e;
+        modelFitted.exometRelaxation.q = q_flx;
+        modelFitted.exometRelaxation.q_extraVariables = q_e;
+        modelFitted.exometRelaxation.dv = dv_flx;
+        modelFitted.exometRelaxation.dv_extraVariables = dv_e;
+        modelFitted.exometRelaxation.eta = param.eta;
+        modelFitted.exometRelaxation.weightLower = weightLower_flx;
+        modelFitted.exometRelaxation.weightLower_extraVariables = weightLower_e;
+        modelFitted.exometRelaxation.weightUpper = weightUpper_flx;
+        modelFitted.exometRelaxation.weightUpper_extraVariables = weightUpper_e;
+        modelFitted.exometRelaxation.weightExp = weightExp_flx;
+        modelFitted.exometRelaxation.weightExp_extraVariables = weightExp_e;
+                
+        %save the new model
+        model = modelFitted;
+        if any(model.lb > model.ub)
+            error('lower bounds greater than upper bounds')
+        end
+
     otherwise
         error('unrecognised mode')
 end
@@ -721,6 +1282,27 @@ else
     rxnBoundsCorrected = [];
 end
 
+if nExt > 0
+    % Correct bounds of extra variables if outside min and max
+    generous_Minlb_e = find(model.evarlb < param.TolMinBoundary);
+    generous_Minub_e = find(model.evarub < param.TolMinBoundary);
+    generous_Maxlb_e = find(model.evarlb > param.TolMaxBoundary);
+    generous_Maxub_e = find(model.evarub > param.TolMaxBoundary);
+    
+    if ~isempty(generous_Minlb_e)
+        model.evarlb(generous_Minlb_e) = param.TolMinBoundary;
+    end
+    if ~isempty(generous_Minub_e)
+        model.evarub(generous_Minub_e) = param.TolMinBoundary;
+    end
+    if ~isempty(generous_Maxlb_e)
+        model.evarlb(generous_Maxlb_e) = param.TolMaxBoundary;
+    end
+    if ~isempty(generous_Maxub_e)
+        model.evarub(generous_Maxub_e) = param.TolMaxBoundary;
+    end
+end
+
 % Identify reactions where the absolute value of the flux is less than the
 % boundPrecisionLimit
 meagre_lb = find(abs(model.lb) < param.boundPrecisionLimit & abs(model.lb) ~= 0);
@@ -753,8 +1335,25 @@ if ~isempty(belowLimit)
     if printLevel > 0
         printConstraints(modelBefore, -inf, inf, ismember(model.rxns, rxnsWithProblems), model, 0)
     end
-    rxnBoundsCorrected = [rxnBoundsCorrected; rxnsWithProblems];
-    
+    rxnBoundsCorrected = [rxnBoundsCorrected; rxnsWithProblems];    
+end
+
+if nExt > 0
+    % Identify extra variables where the absolute value < boundPrecisionLimit
+    meagre_lb_eIdx = find(abs(model.evarlb) < param.boundPrecisionLimit & abs(model.evarlb) ~= 0);
+    if ~isempty(meagre_lb_eIdx)
+        negIdx = meagre_lb_eIdx(model.evarlb(meagre_lb_eIdx) < 0);
+        posIdx = meagre_lb_eIdx(model.evarlb(meagre_lb_eIdx) > 0);
+        model.evarlb(negIdx)= -param.boundPrecisionLimit;
+        model.evarlb(posIdx) = param.boundPrecisionLimit;
+    end
+    meagre_ub_eIdx = find(abs(model.evarub) < param.boundPrecisionLimit & abs(model.evarub) ~= 0);
+    if ~isempty(meagre_ub_eIdx)
+        negIdx = meagre_ub_eIdx(model.evarub(meagre_ub_eIdx) < 0);
+        posIdx = meagre_ub_eIdx(model.evarub(meagre_ub_eIdx) > 0);
+        model.evarub(negIdx)= -param.boundPrecisionLimit;
+        model.evarub(posIdx) = param.boundPrecisionLimit;
+    end
 end
 
 if any(isnan([model.lb; model.ub]))
