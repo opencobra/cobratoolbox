@@ -296,7 +296,7 @@ switch mode
         end
         
         if ismember('penaltyLowerBoundPerturbation', specificData.exoMet.Properties.VariableNames)
-            weightLower(locb(bool)) = specificData.exoMet.penaltyLowerBoundPerturbation(locb(bool));
+            weightLower(locb(bool)) = specificData.exoMet.penaltyLowerBoundPerturbation(bool);
         end
         
         %%
@@ -324,7 +324,7 @@ switch mode
         weightUpper(~model.SIntRxnBool &  (vExp+vSD) < 0) = inf;
         
         if ismember('penaltyUpperBoundPerturbation', specificData.exoMet.Properties.VariableNames)
-            weightUpper(locb(bool)) = specificData.exoMet.penaltyUpperBoundPerturbation(locb(bool));
+            weightUpper(locb(bool)) = specificData.exoMet.penaltyUpperBoundPerturbation(bool);
         end
         
         % Compute the steady state flux vector that minimises the weighted Euclidean
@@ -640,24 +640,27 @@ switch mode
 
         if any(~flxBool & ~eBool)
             notThere = exo.varID(~flxBool & ~eBool);
-            nt = sprintf('%s\n', notThere);
-            display('These exoMet.varID entries neither match model.rxns nor model.evars, and will be ignored: %s', nt)
+            fprintf('These exoMet.varID entries neither match model.rxns nor model.evars, and will be ignored:\n')
+            fprintf('%s\n', notThere{:});
         end
         
         rxnsConstrained = exo.varID(flxBool);
         extraConstrained = exo.varID(eBool);
         
         if length(unique(rxnsConstrained)) ~= length(rxnsConstrained) && printLevel > 0
-            display('There are duplicate rxns entries in the data!')
+            fprintf('There are duplicate rxns entries in the data!')
         end
         
         if length(unique(extraConstrained)) ~= length(extraConstrained) && printLevel > 0
-            display('There are duplicate extra variables entries in the data!')
+            fprintf('There are duplicate extra variables entries in the data!')
         end
 
         nRxn = numel(model.rxns);
-        nExt = numel(model.evars);
-        
+        if isfield(model, 'evars') && ~isempty(model.evars)
+            nExt = numel(model.evars);
+        else
+            nExt = 0;
+        end
         % experimenal values for flux
         vExp_flx = NaN * ones(nRxn,1);
         vExp_flx(flxIdx(flxBool)) = exo.mean(flxBool); % vector with experimental mean flux (rxns ordered as in the model)
@@ -802,10 +805,10 @@ switch mode
         
         % overwrite bound relaxation for fluxes with user defined penalties
         if ismember('penaltyLowerBoundPerturbation', specificData.exoMet.Properties.VariableNames)
-            weightLower_flx(flxIdx(flxBool)) = specificData.exoMet.penaltyLowerBoundPerturbation(flxIdx(flxBool));
+            weightLower_flx(flxIdx(flxBool)) = specificData.exoMet.penaltyLowerBoundPerturbation(flxBool);
         end
         if ismember('penaltyUpperBoundPerturbation', specificData.exoMet.Properties.VariableNames)
-            weightUpper_flx(flxIdx(flxBool)) = specificData.exoMet.penaltyUpperBoundPerturbation(flxIdx(flxBool));
+            weightUpper_flx(flxIdx(flxBool)) = specificData.exoMet.penaltyUpperBoundPerturbation(flxBool);
         end
         
         % default for extra variables bound relaxation, if no
@@ -831,10 +834,10 @@ switch mode
         end
         % overwrite bound relaxation for extra variables with user defined penalties
         if ismember('penaltyLowerBoundPerturbation', specificData.exoMet.Properties.VariableNames)
-            weightLower_e(eIdx(eBool)) = specificData.exoMet.penaltyLowerBoundPerturbation(eIdx(eBool));
+            weightLower_e(eIdx(eBool)) = specificData.exoMet.penaltyLowerBoundPerturbation(eBool);
         end
         if ismember('penaltyUpperBoundPerturbation', specificData.exoMet.Properties.VariableNames)
-            weightUpper_e(eIdx(eBool)) = specificData.exoMet.penaltyUpperBoundPerturbation(eIdx(eBool));
+            weightUpper_e(eIdx(eBool)) = specificData.exoMet.penaltyUpperBoundPerturbation(eBool);
         end
 
         % warn when extra variables exist, but no lower bound default is
@@ -1282,7 +1285,7 @@ else
     rxnBoundsCorrected = [];
 end
 
-if nExt > 0
+if exist('nExt', 'var') && nExt > 0
     % Correct bounds of extra variables if outside min and max
     generous_Minlb_e = find(model.evarlb < param.TolMinBoundary);
     generous_Minub_e = find(model.evarub < param.TolMinBoundary);
@@ -1338,7 +1341,7 @@ if ~isempty(belowLimit)
     rxnBoundsCorrected = [rxnBoundsCorrected; rxnsWithProblems];    
 end
 
-if nExt > 0
+if  exist('nExt', 'var') && nExt > 0
     % Identify extra variables where the absolute value < boundPrecisionLimit
     meagre_lb_eIdx = find(abs(model.evarlb) < param.boundPrecisionLimit & abs(model.evarlb) ~= 0);
     if ~isempty(meagre_lb_eIdx)
