@@ -114,22 +114,17 @@ function [solution, relaxedModel] = relaxedFBA(model, param)
 % Fleming RMT, Haraldsdottir HS, Le HM, Vuong PT, Hankemeier T, Thiele I. 
 % Cardinality optimisation in constraint-based modelling: Application to human metabolism, 2022 (submitted).  
 
-if isfield(model,'E')
-    issueConfirmationWarning('relaxedFBA ignores additional variables defined in the model (model field .E)!')
-end
-
 feasTol = getCobraSolverParams('LP', 'feasTol');
 
 if ~isfield(model,'S')
     %relax generic LP problem
+    % if no stoichiometric matrix is available, use matrix A as matrix S
     model.S = model.A;
+    % when 'SIntRxnBool' is missing, do not get it from model.d, because 
+    % model.d may be the RHS of coupling constraints, instead default it
+    % to 'true' in all reactions
     if ~isfield(model,'SIntRxnBool')
-        if isfield(model,'d')
-            model.SIntRxnBool = model.d~=0;
-            model = rmfield(model,'d');
-        else
             model.SIntRxnBool = true(size(model.S,2),1);
-        end
     end
     model = rmfield(model,'A');
 end
