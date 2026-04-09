@@ -49,8 +49,17 @@ function [solution, relaxedModel] = relaxedFBA(model, param)
 %                        * {2} = allow to relax bounds on all exchange reactions
 %
 %                      * .steadyStateRelax:
-%                        *    0 = do not allow to relax the steady state constraint S*v = b
+%                        *  0 = do not allow to relax the steady state constraint S*v = b
 %                        *  {1} = allow to relax the steady state constraint S*v = b
+%
+%                      * .extraVarRelax:
+%                        * 0 = do not allow to relax bounds on extra variables
+%                        * 1 = do not allow to relax bounds on extra variables with finite bounds
+%                        * {2} = allow to relax bounds on all extra variables
+%
+%                      * .extraConstraintRelax:
+%                        * 0 = do not allow to relax extra constraints
+%                        * {1} = allow to relax extra constraints
 %
 %                      * .toBeUnblockedReactions - nRxns x 1 vector indicating the reactions to be unblocked
 %                        * toBeUnblockedReactions(i) = 1 : impose v(i) to be positive
@@ -143,6 +152,9 @@ function [solution, relaxedModel] = relaxedFBA(model, param)
 % .. Please cite:
 % Fleming RMT, Haraldsdottir HS, Le HM, Vuong PT, Hankemeier T, Thiele I. 
 % Cardinality optimisation in constraint-based modelling: Application to human metabolism, 2022 (submitted).  
+%
+% - April 2026: expanded to deal with extra variables and constraints (model.C,
+% model.D, model.E) - Tania Barata
 
 feasTol = getCobraSolverParams('LP', 'feasTol');
 
@@ -159,37 +171,59 @@ if ~isfield(model,'S')
     model = rmfield(model,'A');
 end
 
-[nMetsOrig,nRxnsOrig] = size(model.S); %Check inputs
+[nMetsOrig,nRxnsOrig] = size(model.S);
 
-% default params not dependent on model expansion when C and D are present
+% % default params and check inputs
+if ~exist('param','var')
+    param = struct();
+end
+
 if ~isfield(param,'printLevel')
     param.printLevel = 0; %TODO - check this for multiscale models
 end
+
 if ~isfield(param,'relaxedPrintLevel')
     param.relaxedPrintLevel = 0;
 end
+
 if isfield(param,'internalRelax') == 0
     param.internalRelax = 2; %allow all internal reaction bounds to be relaxed
-else
-    if param.internalRelax < 0 || param.internalRelax > 2
+elseif param.internalRelax < 0 || param.internalRelax > 2
         solution.status = -1;
         error('Incorrect input : internalRelax')
-    end
 end
+
 if isfield(param,'exchangeRelax') == 0
     param.exchangeRelax = 2; %allow all exchange reaction bounds to be relaxed
-else
-    if param.exchangeRelax < 0 || param.exchangeRelax > 2
+elseif param.exchangeRelax < 0 || param.exchangeRelax > 2
         solution.status = -1;
         error('Incorrect input : exchangeRelax')
-    end
 end
+
 if isfield(param,'steadyStateRelax') == 0
     param.steadyStateRelax = 1; %allow steady state constraint to be relaxed
 else
     if param.steadyStateRelax < 0 || param.steadyStateRelax > 1
         solution.status = -1;
         error('Incorrect input : steadyStateRelax')
+    end
+end
+
+if isfield(param, 'extraVarRelax') == 0
+    param.extraVarRelax = 2; % by default allow relaxation of extra variables' bounds
+else
+    if param.extraVarRelax < 0 || param.extraVarRelax > 2
+        solution.status = -1;
+        error('Incorrect input : extraVarRelax')
+    end
+end
+
+if isfield(param, 'extraConstraintRelax') == 0
+    param.extraConstraintRelax = 1; % by default allow relaxation of extra constraints
+else
+    if param.extraConstraintRelax < 0 || param.extraConstraintRelax > 1
+        solution.status = -1;
+        error('Incorrect input : extraConstraintRelax')
     end
 end
 
@@ -205,20 +239,21 @@ if isfield(param,'theta') == 0
     param.theta   = 0.1;
 end
 
-% if b is not present default to 0
+if ~isfield(param,'maxRelaxR')
+    param.maxRelaxR = 1/feasTol; %TODO - check this for multiscale models
+end
+
+% % model defaults and checks
 if ~isfield(model, 'b') || isempty(model.b)
     model.b = zeros(nMetsOrig, 1);
 end
-if ~exist('param','var')
-    param = struct();
-end
 
-%make sure C is present if d is present
 if isfield(model,'C') && ~isfield(model,'d')
     error('For the constraints C*v <= d, both must be present')
 end
 
-if isfield(model,'C')
+% check dimensions for C and d
+if isfield(model,'C') 
     [nIneq,nltC]=size(model.C);
     [nIneq2,nltd]=size(model.d);
     if nltC~=nRxnsOrig
@@ -286,7 +321,7 @@ else
     end
 end
 
-% extend for extra variables
+% % defaults for model.C/.D/.E, extra variables and constraints
 hasE = isfield(model, 'E') && ~isempty(model.E);
 hasC = isfield(model, 'C') && ~isempty(model.C);
 hasD = isfield(model, 'D') && ~isempty(model.D);
@@ -295,18 +330,21 @@ if hasE && hasC && (~hasD)
     warning(sprintf(['model.E and model.C are present but model.D is missing.\n' ...
         'model.D will be filled with 0s']))
     model.D = sparse(size(model.C, 1), size(model.E, 2));
+    hasD = true;
 end
 
 if hasD && hasE && (~hasC)
     warning(sprintf(['model.E and model.D are present but model.C is missing.\n' ...
         'model.C will be filled with 0s']))
     model.C = sparse(size(model.D, 1), size(model.S, 2));
+    hasC = true;
 end
 
 if hasC && hasD && (~hasE)
     warning(sprintf(['model.C and model.D are present but model.E is missing.\n' ...
         'model.E will be filled with 0s']))
     model.E = sparse(size(model.S, 1), size(model.D, 2));
+    hasE = true;
 end
 
 if hasD
@@ -325,6 +363,7 @@ else
     nCtrs = 0;
 end
 
+% default of extra variables
 if nEvars > 0
     if ~isfield(model, 'evarlb')
         model.evarlb = -inf*ones(nEvars, 1);
@@ -340,58 +379,79 @@ if nEvars > 0
     end
 end
 
+% default for extra constraints
 if nCtrs > 0
     if ~isfield(model, 'd')
         model.d = zeros(nCtrs, 1);
     end
-    if ~isfield(model, 'dsense')
-        model.dsense = repmat('E', nCtrs, 1);
+    if ~isfield(model,'dsense') % if dsense does not exist defaults to 'L'
+        model.dsense = repmat('L', nCtrs, 1);
     end
     if ~isfield(model, 'ctrs')
         model.ctrs = cellstr(char("ctrs_"+string(1:nCtrs)'));
     end
 end
 
-% expand matrices
-modelOrig = model;
-modelExp = model;
+% % split between internal and external reactions
+if isfield(model,'SIntRxnBool') && length(model.SIntRxnBool)==nRxnsOrig
+    SIntRxnBool = model.SIntRxnBool;
+else
+    if isfield(model,'SConsistentRxnBool') && length(model.SConsistentRxnBool)==nRxnsOrig
+        SIntRxnBool = model.SConsistentRxnBool;
+    else
+        if param.printLevel>0
+            fprintf('%s\n','Computing model.SIntRxnBool heuristically from stoichiometric matrix')
+        end
+        model_Ex = findSExRxnInd(model,nMetsOrig);
+        SIntRxnBool = model_Ex.SIntRxnBool;
+    end
+end
+%it is possible to define external reactions separately, in case this is different from ~SIntRxnBool
+if isfield(model,'SExtRxnBool') && length(model.SExtRxnBool)==nRxnsOrig
+    SExtRxnBool = model.SExtRxnBool;
+else
+    SExtRxnBool = ~SIntRxnBool; 
+end
+
+% expand model - join matrices
+modelOrig = model; % save original model
 if hasE
-    modelExp.S = [model.S, model.E];
+    model.S = [modelOrig.S, modelOrig.E];
 end
 
 if hasD
-    modelExp.C = [model.C, model.D];
+    model.C = [modelOrig.C, modelOrig.D];
 end
 
 if hasC || hasD
-    modelExp.S = [modelExp.S; modelExp.C];
+    model.S = [model.S; model.C];
 end
 
 if hasE || hasD
-    modelExp.lb = [modelExp.lb; modelExp.evarlb];
-    modelExp.ub = [modelExp.ub; modelExp.evarub];
-    modelExp.c = [modelExp.c; modelExp.evarc];
-    modelExp.rxns = [modelExp.rxns; modelExp.evars];
-    if isfield(modelExp, 'rxnNames') && ~isempty(modelExp.rxnNames)...
-            &&  isfield(modelExp, 'evarNames') && ~isempty(modelExp.evarNames)
-        modelExp.rxnNames = [modelExp.rxnNames; modelExp.evarNames];
-        modelExp = rmfield(modelExp, {'evarNames'});
+    model.lb = [modelOrig.lb; modelOrig.evarlb];
+    model.ub = [modelOrig.ub; modelOrig.evarub];
+    model.c = [modelOrig.c; modelOrig.evarc];
+    model.rxns = [modelOrig.rxns; modelOrig.evars];
+    if isfield(modelOrig, 'rxnNames') && ~isempty(modelOrig.rxnNames)...
+            &&  isfield(modelOrig, 'evarNames') && ~isempty(modelOrig.evarNames)
+        model.rxnNames = [modelOrig.rxnNames; modelOrig.evarNames];
+        model = rmfield(model, {'evarNames'});
     end
-    modelExp = rmfield(modelExp, {'evars', 'evarlb', 'evarub', 'evarc', 'E'});
+    model = rmfield(model, {'evars', 'evarlb', 'evarub', 'evarc', 'E'});
 end
 if hasC || hasD
-    modelExp.mets = [modelExp.mets; modelExp.ctrs];
-    if isfield(modelExp, 'metNames') && ~isempty(modelExp.metNames)...
-            &&  isfield(modelExp, 'ctrNames') && ~isempty(modelExp.ctrNames)
-        modelExp.metNames = [modelExp.metNames; modelExp.ctrNames];
-        modelExp = rmfield(modelExp, {'ctrNames'});
+    model.mets = [modelOrig.mets; modelOrig.ctrs];
+    model.csense = [modelOrig.csense; modelOrig.dsense];
+    model.b = [modelOrig.b; modelOrig.d];
+    if isfield(modelOrig, 'metNames') && ~isempty(modelOrig.metNames)...
+            &&  isfield(modelOrig, 'ctrNames') && ~isempty(modelOrig.ctrNames)
+        model.metNames = [modelOrig.metNames; modelOrig.ctrNames];
+        model = rmfield(model, {'ctrNames'});
     end
-    modelExp.csense = [modelExp.csense; modelExp.dsense];
-    modelExp.b = [modelExp.b; modelExp.d];
-    modelExp = rmfield(modelExp, {'ctrs', 'dsense', 'd', 'C', 'D'});
+    model = rmfield(model, {'ctrs', 'dsense', 'd', 'C', 'D'});
 end
-model = modelExp;
 
+% % bounds, .toBeUunblockedReactions default
 [nMets,nRxns] = size(model.S);
 
 if ~isfield(param,'maxUB')
@@ -400,105 +460,139 @@ end
 if ~isfield(param,'minLB')
     param.minLB = min(-max(model.ub),min(model.lb));
 end
-if ~isfield(param,'maxRelaxR')
-    param.maxRelaxR = 1/feasTol; %TODO - check this for multiscale models
-end
 
-if isfield(model,'SIntRxnBool') && length(model.SIntRxnBool)==size(model.S,2)
-    SIntRxnBool = model.SIntRxnBool;
-else
-    if isfield(model,'SConsistentRxnBool') && length(model.SConsistentRxnBool)==size(model.S,2)
-        SIntRxnBool = model.SConsistentRxnBool;
-    else
-        if param.printLevel>0
-            fprintf('%s\n','Computing model.SIntRxnBool heuristically from stoichiometric matrix')
-        end
-        model_Ex = findSExRxnInd(model,size(model.S,1));
-        SIntRxnBool = model_Ex.SIntRxnBool;
-    end
-end
-%it is possible to define external reactions separately, in case this is different from ~SIntRxnBool
-if isfield(model,'SExtRxnBool') && length(model.SExtRxnBool)==size(model.S,2)
-    SExtRxnBool = model.SExtRxnBool;
-else
-    SExtRxnBool = ~SIntRxnBool; 
-end
-
-% default params dependent on model expansion when C and D are present
 if isfield(param,'toBeUnblockedReactions') == 0
     %this constraint is handled directly within relaxFBA_cappedL1
     param.toBeUnblockedReactions = zeros(nRxnsOrig,1);
 end
-if ~isfield(param,'toBeUnblockedEvars') || isempty(param.toBeUnblockedEvars)
-    param.toBeUnblockedEvars = zeros(nEvars, 1);
-end
-if nEvars > 0 % when model was explanded to include extra variables
+
+if nEvars > 0 % when model was expanded to include extra variables
+    if ~isfield(param,'toBeUnblockedEvars') || isempty(param.toBeUnblockedEvars)
+        param.toBeUnblockedEvars = zeros(nEvars, 1);
+    end
     param.toBeUnblockedReactions = [param.toBeUnblockedReactions; param.toBeUnblockedEvars];
 end
 
-if any(model.lb==inf)
-    error('Infinite lower bounds causing infeasibility.')
-end
-
+% % exclude relaxations
+% reaction and metabolites exclusion defaults
 if isfield(param,'excludedReactionLB') == 0
     param.excludedReactionLB = false(nRxnsOrig,1);
-end
-if ~isfield(param,'excludedEvarLB') || isempty(param.excludedEvarLB)
-    param.excludedEvarLB = false(nEvars, 1);
-end
-if nEvars > 0 % when model was explanded to include extra variables
-    param.excludedReactionLB = [param.excludedReactionLB; param.excludedEvarLB];
-end
-
-%TODO properly incorporate inf bounds
-%add a large finite lower bound here
-model.lb(model.lb==-inf) = -1/feasTol;
-%use this to override some other assignment
-excludedReactionLBTmp=param.excludedReactionLB | model.lb==-inf;
-
-if any(model.ub==-inf)
-    error('Negative infinite upper bounds causing infeasibility.')
 end
 
 if isfield(param,'excludedReactionUB') == 0
     param.excludedReactionUB = false(nRxnsOrig,1);
 end
-if ~isfield(param,'excludedEvarUB') || isempty(param.excludedEvarUB)
-    param.excludedEvarUB = false(nEvars, 1);
-end
-if nEvars > 0 % when model was explanded to include extra variables
-    param.excludedReactionUB = [param.excludedReactionUB; param.excludedEvarUB];
-end
-%add a large finite upper bound here
-model.ub(model.ub==inf) = 1/feasTol;
-%use this to override some other assignment
-excludedReactionUBTmp=param.excludedReactionUB | model.ub==inf;
 
 if isfield(param,'excludedReactions') == 0
     param.excludedReactions = false(nRxnsOrig,1);
 end
-if ~isfield(param,'excludedEvars') || isempty(param.excludedEvars)
-    param.excludedEvars = false(nEvars, 1);
-end
-if nEvars > 0 % when model was explanded to include extra variables
-    param.excludedReactions = [param.excludedReactions; param.excludedEvars];
-end
-
-%use this to override all other assignment
-excludedReactionsTmp=param.excludedReactions;
 
 if isfield(param,'excludedMetabolites') == 0
     param.excludedMetabolites = false(nMetsOrig,1);
 end
-if ~isfield(param,'excludedCtrs') || isempty(param.excludedCtrs)
-    param.excludedCtrs = false(nCtrs, 1);
-end
-if nCtrs > 0 % when model was explanded to include extra constraints
-    param.excludedMetabolites = [param.excludedMetabolites; param.excludedCtrs];
+
+% extra variable and constraints exclusion defaults
+if nEvars > 0 % when model was expanded to include extra variables
+    if ~isfield(param,'excludedEvarLB') || isempty(param.excludedEvarLB)
+        param.excludedEvarLB = false(nEvars, 1);
+    end
+    if ~isfield(param,'excludedEvarUB') || isempty(param.excludedEvarUB)
+        param.excludedEvarUB = false(nEvars, 1);
+    end
+    if isfield(param, 'excludedEvars') == 0
+        param.excludedEvars = false(nEvars, 1);
+    end
+else
+    param.excludedEvarLB = false(0, 1);
+    param.excludedEvarUB = false(0, 1);
+    param.excludedEvars = false(0, 1);
 end
 
+if nCtrs > 0
+    if isfield(param,'excludedCtrs') == 0
+        param.excludedCtrs = false(nCtrs, 1); % by default allow all extra constraints to be relaxed
+    end
+else
+    param.excludedCtrs = false(0, 1);
+end
+
+% deal with infinite bounds
+%TODO properly incorporate inf bounds
+if any(model.lb==inf)
+    error('Infinite lower bounds causing infeasibility.')
+end
+if any(model.ub==-inf)
+    error('Negative infinite upper bounds causing infeasibility.')
+end
+
+infLB = (model.lb == -inf);
+infUB = (model.ub ==  inf);
+
+%add a large finite lower bound here
+model.lb(infLB) = -1/feasTol;
+%add a large finite upper bound here
+model.ub(infUB) = 1/feasTol;
+
+% user-defined excludedReactions/Evars in expanded model
+excludedReactionsTmp = [param.excludedReactions; param.excludedEvars];
+%use this to override some other assignment
+excludedReactionLBTmp=param.excludedReactionLB | infLB;
+%use this to override some other assignment
+excludedReactionUBTmp=param.excludedReactionUB | infUB;
 %use this to override any other assignment
 excludedMetabolitesTmp=param.excludedMetabolites;
+
+% overwrite excludedReactions with internalRelax and exchangeRelax
+if param.internalRelax == 0 %Exclude all internal reactions from relaxation
+    param.excludedReactions(SIntRxnBool) = true;
+elseif param.internalRelax == 1 % Exclude internal reactions with finite bounds
+    isFin = ((model.ub(1:nRxnsOrig) < param.maxUB) & (model.lb(1:nRxnsOrig) > param.minLB)) & SIntRxnBool;
+    param.excludedReactions(isFin) = true;
+end
+
+if param.exchangeRelax == 0 %Exclude all exchange reactions from relaxation
+    param.excludedReactions(SExtRxnBool) = true;
+elseif param.exchangeRelax == 1 % Exclude exchange reactions of the type [0,0]
+    is00 = ((model.ub(1:nRxnsOrig) == 0) & (model.lb(1:nRxnsOrig) == 0)) & SExtRxnBool;
+    param.excludedReactions(is00) = true;
+end
+
+% overwrite .excludedMetabolites with .steadyStateRelax
+if param.steadyStateRelax == 0 %Exclude all metabolites
+    param.excludedMetabolites = true(nMetsOrig,1);
+end
+
+% overwrite .excludedEvars with .extraVarRelax
+if nEvars > 0
+    if param.extraVarRelax == 0
+        param.excludedEvars = true(nEvars, 1); % exclude all extra variables from relaxation
+    elseif param.extraVarRelax == 1 % exclude extra variables with finite bounds
+        isFin = (modelOrig.evarub < param.maxUB) & (modelOrig.evarlb > param.minLB);
+        param.excludedEvars(isFin) = true;
+    end
+end
+if nCtrs > 0
+    if param.extraConstraintRelax == 0
+            param.excludedCtrs = true(nCtrs, 1); % do not allow extra constraints
+            % relaxation if .extraConstraintRelax = 0, irrespectively of
+            % .excludedCtrs value
+    end
+end
+
+% add relaxations from .excludedReactions/Evars to .excluded*Lb/UB
+param.excludedReactionLB = param.excludedReactionLB | param.excludedReactions;
+param.excludedReactionUB = param.excludedReactionUB | param.excludedReactions;
+
+if nEvars > 0
+    param.excludedEvarLB = param.excludedEvarLB | param.excludedEvars;
+    param.excludedEvarUB = param.excludedEvarUB | param.excludedEvars;
+end
+
+% adapt .excluded* to expanded model
+param.excludedReactionLB = [param.excludedReactionLB; param.excludedEvarLB];
+param.excludedReactionUB = [param.excludedReactionUB; param.excludedEvarUB];
+param.excludedReactions = [param.excludedReactions; param.excludedEvars];
+param.excludedMetabolites = [param.excludedMetabolites; param.excludedCtrs];
 
 %Old - was maximising the number of active reactions, removed as this
 %interfered with the relaxation unless parameters chosen sensitively
@@ -519,7 +613,7 @@ excludedMetabolitesTmp=param.excludedMetabolites;
 %                      * p - relaxation on lower bound of reactions
 %                      * q - relaxation on upper bound of reactions
 
-
+% % weights for capped-L1
 %set global parameters on zero norm if they do not exist
 if ~isfield(param,'alpha') && ~isfield(param,'alpha0')
     param.alpha = 1; %weight on relaxation of bounds of reactions
@@ -555,21 +649,6 @@ if ~isfield(param,'gamma1')
     param.gamma1 = feasTol;   
 end
 
-%Combine excludedReactions with internalRelax and exchangeRelax
-if param.internalRelax == 0 %Exclude all internal reactions
-    param.excludedReactions(SIntRxnBool) = true;
-elseif param.internalRelax == 1 % Exclude internal reactions with finite bounds
-    index_IntRxnFiniteBound_Bool = ((model.ub < param.maxUB) & (model.lb > param.minLB)) & SIntRxnBool;
-    param.excludedReactions(index_IntRxnFiniteBound_Bool) = true;
-end
-
-if param.exchangeRelax == 0 %Exclude all exchange reactions
-    param.excludedReactions(SExtRxnBool) = true;
-elseif param.exchangeRelax == 1 % Exclude exchange reactions of the type [0,0]
-    index_ExRxn00_Bool = ((model.ub == 0) & (model.lb == 0)) & SExtRxnBool;
-    param.excludedReactions(index_ExRxn00_Bool) = true;
-end
-
 %override
 %param.excludedReactions = param.excludedReactions |
 %excludedReactionsTmp;%Minh
@@ -585,11 +664,6 @@ param.excludedReactionUB(~param.excludedReactionUB & excludedReactionUBTmp)=1;
 param.excludedReactionUB(~param.excludedReactionUB & excludedReactionsTmp)=1;
 param.excludedReactionUB(param.toBeUnblockedReactions~=0)=1;
 param=rmfield(param,'excludedReactions');
-
-%Combine excludedMetabolites with steadyStateRelax
-if param.steadyStateRelax == 0 %Exclude all metabolites
-    param.excludedMetabolites = true(nMets,1);
-end
 
 %override
 param.excludedMetabolites = param.excludedMetabolites | excludedMetabolitesTmp;
