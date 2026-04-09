@@ -516,32 +516,6 @@ else
     param.excludedCtrs = false(0, 1);
 end
 
-% deal with infinite bounds
-%TODO properly incorporate inf bounds
-if any(model.lb==inf)
-    error('Infinite lower bounds causing infeasibility.')
-end
-if any(model.ub==-inf)
-    error('Negative infinite upper bounds causing infeasibility.')
-end
-
-infLB = (model.lb == -inf);
-infUB = (model.ub ==  inf);
-
-%add a large finite lower bound here
-model.lb(infLB) = -1/feasTol;
-%add a large finite upper bound here
-model.ub(infUB) = 1/feasTol;
-
-% user-defined excludedReactions/Evars in expanded model
-excludedReactionsTmp = [param.excludedReactions; param.excludedEvars];
-%use this to override some other assignment
-excludedReactionLBTmp=param.excludedReactionLB | infLB;
-%use this to override some other assignment
-excludedReactionUBTmp=param.excludedReactionUB | infUB;
-%use this to override any other assignment
-excludedMetabolitesTmp=param.excludedMetabolites;
-
 % overwrite excludedReactions with internalRelax and exchangeRelax
 if param.internalRelax == 0 %Exclude all internal reactions from relaxation
     param.excludedReactions(SIntRxnBool) = true;
@@ -593,6 +567,32 @@ param.excludedReactionLB = [param.excludedReactionLB; param.excludedEvarLB];
 param.excludedReactionUB = [param.excludedReactionUB; param.excludedEvarUB];
 param.excludedReactions = [param.excludedReactions; param.excludedEvars];
 param.excludedMetabolites = [param.excludedMetabolites; param.excludedCtrs];
+
+% deal with infinite bounds
+%TODO properly incorporate inf bounds
+if any(model.lb==inf)
+    error('Infinite lower bounds causing infeasibility.')
+end
+if any(model.ub==-inf)
+    error('Negative infinite upper bounds causing infeasibility.')
+end
+
+infLB = (model.lb == -inf);
+infUB = (model.ub ==  inf);
+
+%add a large finite lower bound here
+model.lb(infLB) = -1/feasTol;
+%add a large finite upper bound here
+model.ub(infUB) = 1/feasTol;
+
+% user-defined excludedReactions/Evars in expanded model
+excludedReactionsTmp = param.excludedReactions;
+%use this to override some other assignment
+excludedReactionLBTmp=param.excludedReactionLB | infLB;
+%use this to override some other assignment
+excludedReactionUBTmp=param.excludedReactionUB | infUB;
+%use this to override any other assignment
+excludedMetabolitesTmp=param.excludedMetabolites;
 
 %Old - was maximising the number of active reactions, removed as this
 %interfered with the relaxation unless parameters chosen sensitively
