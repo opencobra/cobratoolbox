@@ -146,7 +146,7 @@ if strcmp(solver,'ibm_cplex')
 end
 
 %clear the problem structure so it does not interfere later
-if ~any(strcmp(solver,{'cplex_direct','dqqMinos'}))
+if ~any(strcmp(solver,{'cplex_direct','dqqMinos','optarrow'}))
     %clear the problem structure so it does not interfere later
     clear QPproblem
 end
@@ -717,6 +717,16 @@ switch solver
         else
             stat = -1; % Solution not optimal or solver problem
         end
+
+    case 'optarrow'
+        optarrowResult = solveCobraQPOptArrow(QPproblem, problemTypeParams, solverParams);
+        x = optarrowResult.x;
+        y = optarrowResult.y;
+        w = optarrowResult.w;
+        s = optarrowResult.s;
+        stat = optarrowResult.stat;
+        origStat = optarrowResult.origStat;
+        qpmethod = optarrowResult.qpmethod;
         %%
     case 'dqqMinos'
         if ~isunix

@@ -2,7 +2,7 @@ function model = changeObjective(model, rxns, objectiveCoeff)
 % Changes the objective function of a constraint-based model
 %
 % USAGE:
-%
+% 
 %    model = changeObjective(model, rxns, objectiveCoeff)
 %
 % INPUTS:
@@ -41,3 +41,4 @@ if (isempty(rxnID) | rxnID == 0)
 else
     model.c(rxnID) = objectiveCoeff;
 end
+
