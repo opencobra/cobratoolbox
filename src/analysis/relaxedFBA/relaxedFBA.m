@@ -738,7 +738,7 @@ else
     % solution.q(1052)
     % ans =
     %   -1.7053e-13
-    if solutionTmp.stat==1 || solutionTmp.stat==3
+    if isfield(solutionTmp, 'stat') && (solutionTmp.stat==1 || solutionTmp.stat==3)
         feasTol = getCobraSolverParams('LP', 'feasTol');
         solutionTmp.p(solutionTmp.p<feasTol) = 0;%lower bound relaxation
         solutionTmp.q(solutionTmp.q<feasTol) = 0;%upper bound relaxation
@@ -811,6 +811,7 @@ else
             error('Relaxed model may not admit a steady state. relaxedFBA failed')
         end
     else
+        solution.stat = 0;
         relaxedModel=[];
     end
 end
