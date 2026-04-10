@@ -11,6 +11,10 @@
 % save the current path
 currentDir = pwd;
 
+% add path to toy gecko model
+dirToy = fileparts(which('createToyGeckoModel'));
+addpath(dirToy);
+
 % initialize the test
 fileDir = fileparts(which('testRelaxedFBA'));
 cd(fileDir);
@@ -31,6 +35,8 @@ modelWithPartiallyClosedExchangers = changeRxnBounds(modelWithPartiallyClosedExc
 modelWithOneFiniteBound = changeRxnBounds(model,model.rxns{3},30,'u');
 modelWithFiniteBounds = changeRxnBounds(modelWithOneFiniteBound,model.rxns{4},30,'u');
 
+%Define Test Model 2: load gecko style model
+[geckoToyMd, ~, ~] = createToyGeckoModel();
 
 for k = 1:numel(solverPkgs.LP)
     changeCobraSolver(solverPkgs.LP{k},'all');
@@ -142,7 +148,29 @@ for k = 1:numel(solverPkgs.LP)
     assert(relaxation.p(4) == 1); %This is the only possible relaxation.
     assert(nnz(relaxation.p) == 1); %And nothing else.
     assert(nnz(relaxation.q) == 0);    
-    
+
+    % test extra variables
+    model = geckoToyMd;
+    model.lb = [0.6; 0.6]; % forces model to become unfeasible: epool = e1 + e2  = 0.6 + 0.6 = 1.2 contradicts epool < 1 (its evarub =1)
+    LP0 = buildOptProblemFromModel(model, true, struct());
+    LPsol0 = solveCobraLP(LP0); % do not use optimizeCbModel as it does not consider extra variables
+    assert(LPsol0.stat ~=1) % assert model is infeasible before
+    param = struct();
+    param.excludedReactions = true(numel(model.rxns), 1); % no relaxation flux bounds
+    param.excludedEvarLB = true(numel(model.evars), 1); % no relaxation on LB of evars (always positive)
+    param.steadyStateRelax = 0; % no relaxation of steady-sate
+    param.extraConstraintRelax = 0; % no relaxation of extra constraint
+    [sol, rlxMd] = relaxedFBA(model, param);
+    LP1 = buildOptProblemFromModel(rlxMd, true, struct());
+    LPsol1 = solveCobraLP(LP1); % do not use optimizeCbModel as it does not consider extra variables
+    assert(LPsol1.stat == 1 | LPsol1.stat == 3) % model is feasible after relaxation
+    assert(nnz(sol.r) == 0) % no relaxation on steady state happened
+    assert(nnz(sol.rCtrs) == 0) % no relaxation of extra constraints happened
+    assert(nnz(sol.p)== 0) % no relaxation on flux lower bounds
+    assert(nnz(sol.q) == 0) % no relaxation on flux upper bounds
+    assert(nnz(sol.pEvar) == 0) % no relaxation on extra variables lower bounds
+    assert(nnz(sol.qEvar) ~= 0) % relaxation on extra variables upper bounds
+    disp(table(model.evars, sol.qEvar, 'VariableNames', {'Evar', 'qEvar'}));
 end
 
 % output a success message
