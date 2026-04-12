@@ -1,9 +1,10 @@
-function [solverOK, solverInstalled] = changeCobraSolver(solverName, problemType, printLevel, validationLevel)
+function [solverOK, solverInstalled] = changeCobraSolver(solverName, problemType, printLevel, validationLevel, solverConfig)
 % Changes the Cobra Toolbox optimization solver(s)
 %
 % USAGE:
 %
 %    [solverOK, solverInstalled] = changeCobraSolver(solverName, problemType, printLevel, validationLevel)
+%    [solverOK, solverInstalled] = changeCobraSolver(solverName, problemType, printLevel, validationLevel, solverConfig)
 %
 % INPUTS:
 %    solverName:           Solver name
@@ -18,11 +19,13 @@ function [solverOK, solverInstalled] = changeCobraSolver(solverName, problemType
 %
 % OPTIONAL INPUT:
 %    validationLevel:      how much validation to use
-%
 %                           *   `-1`: assign only the global variable. Do not assign any path.
 %                           *   `0`: adjust solver paths but don't validate the solver
 %                           *   `1`: validate but remove outputs, silent  (default)
 %                           *   `2`: validate and keep any outputs
+%    solverConfig:         struct with solver-specific configuration to persist
+%                          for the selected problem type. This is currently
+%                          used by the OptArrow integration.
 %
 % OUTPUT:
 %     solverOK:             `true` if solver can be accessed, `false` if not
@@ -196,6 +199,10 @@ if nargin < 3
     printLevel = 1;
 end
 
+if nargin < 5 || ~isstruct(solverConfig)
+    solverConfig = struct();
+end
+
 if ~exist('unchecked' , 'var')
     unchecked = false;
 end
@@ -223,6 +230,7 @@ if validationLevel == -1
         case 'CLP'
             CBT_CLP_SOLVER = solverName;
     end
+    localStoreSolverConfig(solverName, problemType, solverConfig);
     solverOK = NaN;
     return
 end
@@ -338,7 +346,7 @@ if strcmpi(problemType, 'all')
     for i = 1:length(solvedProblems)
         %this looks to be self referential (calling changeCobraSolver in
         %changeCobraSolver)
-        [solverOK,solverInstalled] = changeCobraSolver(solverName, solvedProblems{i}, printLevel,validationLevel);
+        [solverOK,solverInstalled] = changeCobraSolver(solverName, solvedProblems{i}, printLevel,validationLevel,solverConfig);
         if printLevel > 0
             fprintf([' > changeCobraSolver: Solver for ', solvedProblems{i}, ' problems has been set to ', solverName, '.\n']);
         end
@@ -563,6 +571,7 @@ if solverOK
         % if unvalidated, simply set the solver without testing.
         eval(['CBT_', problemType, '_SOLVER = solverName;']);
     end
+    localStoreSolverConfig(solverName, problemType, solverConfig);
 else
     switch solverName
         case 'gurobi'
@@ -572,6 +581,14 @@ else
             fprintf('%s\n',['Could not find installation of ' solverName ', so it cannot be tested'])
     end
 end
+end
+
+function localStoreSolverConfig(solverName, problemType, solverConfig)
+if ~strcmpi(solverName, 'optarrow') || nargin < 3 || ~isstruct(solverConfig) || isempty(fieldnames(solverConfig))
+    return;
+end
+
+setCobraOptArrowConfig(problemType, solverConfig);
 end
 
 function solverOK = checkSolverInstallationFile(solverName, fileName, printLevel)

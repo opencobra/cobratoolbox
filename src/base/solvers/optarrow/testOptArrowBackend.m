@@ -1,42 +1,70 @@
-function testOptArrowBackend()
-% testOptArrowBackend Minimal MATLAB smoke test for the COBRA OptArrow LP backend.
+% The COBRAToolbox: testOptArrowBackend.m
 %
-% USAGE:
+% Purpose:
+%     - Tests the OptArrow LP backend via the Arrow IPC Gateway.
+%       Solves a 2-variable LP and verifies the optimal objective,
+%       primal solution, dual variables, and reduced costs.
 %
-%    testOptArrowBackend()
+% Requirements:
+%     - MATLAB R2023b or later (native Arrow list-array support).
+%     - OptArrow Gateway running (locally or remotely).
+%       Start locally: python src/run_server.py  (from optArrow_mat)
 %
-% .. Author: - Farid Zare 02/04/2026
+% Note:
+%     - Set COBRA_OPTARROW_ENDPOINT to override the default
+%       Gateway URL (http://127.0.0.1:8000/cobra/compute).
+%
+% Author:
+%     - Farid Zare 12/04/2026
 
-repoRoot = fileparts(fileparts(fileparts(fileparts(fileparts(mfilename('fullpath'))))));
-addpath(genpath(repoRoot));
+global CBTDIR
 
-pythonExe = fullfile(repoRoot, '.venv_optarrow_poc', 'bin', 'python');
-if ~exist(pythonExe, 'file')
-    error('Expected proof virtualenv Python at %s', pythonExe);
+% save the current path
+currentDir = pwd;
+
+% initialize the test
+fileDir = fileparts(which('testOptArrowBackend'));
+cd(fileDir);
+
+fprintf('   Testing OptArrow LP via Arrow IPC...\n');
+
+% Resolve endpoint
+endpoint = getenv('COBRA_OPTARROW_ENDPOINT');
+if isempty(endpoint)
+    endpoint = 'http://127.0.0.1:8000/cobra/compute';
 end
 
-LPproblem = struct();
-LPproblem.A = sparse([2 1; 1 2]);
-LPproblem.b = [8; 8];
-LPproblem.c = [3; 4];
-LPproblem.lb = [0; 0];
-LPproblem.ub = [1000; 1000];
+% Verify Gateway is reachable (will error if not)
+checkOptArrowSetup(endpoint, struct('throwOnError', true));
+
+% Configure OptArrow as the active LP solver
+changeCobraOptArrowSolver('HiGHS', 'LP', ...
+    'endpoint',  endpoint, ...
+    'verbosity', 0);
+
+% max 3x + 4y  s.t.  2x + y <= 8,  x + 2y <= 8,  x,y >= 0
+% Optimal: x = y = 8/3, obj = 56/3
+LPproblem.A      = sparse([2 1; 1 2]);
+LPproblem.b      = [8; 8];
+LPproblem.c      = [3; 4];
+LPproblem.lb     = [0; 0];
+LPproblem.ub     = [1000; 1000];
 LPproblem.csense = ['L'; 'L'];
 LPproblem.osense = -1;
 
-solution = solveCobraLP(LPproblem, ...
-    'solver', 'optarrow', ...
-    'pythonExecutable', pythonExe);
+tol = 1e-6;
 
-disp('Objective:')
-disp(solution.obj)
-disp('Primal:')
-disp(solution.full')
-disp('Dual:')
-disp(solution.dual')
-disp('Reduced costs:')
-disp(solution.rcost')
+solution = solveCobraLP(LPproblem);
 
-assert(solution.stat == 1, 'Expected optimal status.')
-assert(abs(solution.obj - 56 / 3) < 1e-8, 'Unexpected objective value.')
-end
+assert(solution.stat == 1, ...
+    'OptArrow LP: expected optimal status (stat=1).');
+assert(abs(solution.obj - 56/3) < tol, ...
+    sprintf('OptArrow LP: unexpected objective %.10f (expected %.10f).', ...
+    solution.obj, 56/3));
+assert(numel(solution.dual)  == 2, 'OptArrow LP: expected 2 dual variables.');
+assert(numel(solution.rcost) == 2, 'OptArrow LP: expected 2 reduced costs.');
+
+fprintf('   OptArrow LP via Arrow IPC: PASSED (obj=%.6f).\n', solution.obj);
+
+% restore the path
+cd(currentDir);

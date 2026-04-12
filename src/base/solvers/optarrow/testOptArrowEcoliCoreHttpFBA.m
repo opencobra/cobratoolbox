@@ -1,50 +1,60 @@
-function testOptArrowEcoliCoreHttpFBA(endpoint)
-% testOptArrowEcoliCoreHttpFBA End-to-end COBRA FBA test on ecoli_core via OptArrow HTTP.
+% The COBRAToolbox: testOptArrowEcoliCoreHttpFBA.m
 %
-% USAGE:
+% Purpose:
+%     - End-to-end FBA test on ecoli_core via a remote OptArrow Gateway.
+%       Identical to testOptArrowEcoliCoreFBA but explicitly uses a
+%       remote endpoint to verify multi-machine deployment.
 %
-%    testOptArrowEcoliCoreHttpFBA()
-%    testOptArrowEcoliCoreHttpFBA(endpoint)
+% Requirements:
+%     - MATLAB R2023b or later.
+%     - OptArrow Gateway running (locally or on a remote host).
 %
-% .. Author: - Farid Zare 02/04/2026
+% Note:
+%     - Set COBRA_OPTARROW_ENDPOINT to specify the Gateway URL.
+%       If not set, defaults to http://127.0.0.1:8000/cobra/compute.
+%
+% Author:
+%     - Farid Zare 12/04/2026
 
-if nargin < 1 || isempty(endpoint)
-    endpoint = 'http://127.0.0.1:8000/compute';
+global CBTDIR
+
+% save the current path
+currentDir = pwd;
+
+% initialize the test
+fileDir = fileparts(which('testOptArrowEcoliCoreHttpFBA'));
+cd(fileDir);
+
+% Resolve endpoint
+endpoint = getenv('COBRA_OPTARROW_ENDPOINT');
+if isempty(endpoint)
+    endpoint = 'http://127.0.0.1:8000/cobra/compute';
 end
 
-repoRoot = fileparts(fileparts(fileparts(fileparts(fileparts(mfilename('fullpath'))))));
-addpath(genpath(repoRoot));
+fprintf('   Testing OptArrow FBA on ecoli_core (endpoint: %s)...\n', endpoint);
 
-pythonExe = fullfile(repoRoot, '.venv_optarrow_poc', 'bin', 'python');
-if ~exist(pythonExe, 'file')
-    error('Expected OptArrow HTTP Python executable not found: %s', pythonExe);
-end
+% Verify Gateway is reachable
+checkOptArrowSetup(endpoint, struct('throwOnError', true));
 
-model = getDistributedModel('ecoli_core_model.mat');
+% Configure OptArrow as the active LP solver
+changeCobraOptArrowSolver('HiGHS', 'LP', ...
+    'endpoint',    endpoint, ...
+    'timeoutSec',  120, ...
+    'verbosity',   0);
 
-solverOK = changeCobraSolver('optarrow', 'LP', 0, -1);
-assert(isnan(solverOK), 'Expected changeCobraSolver(..., -1) to skip validation for optarrow.');
+model    = getDistributedModel('ecoli_core_model.mat');
+solution = optimizeCbModel(model, 'max', 0, true);
 
-param = struct();
-param.endpoint = endpoint;
-param.timeoutSec = 120;
-param.pythonExecutable = pythonExe;
-param.optArrowMatlabRoot = fullfile(fileparts(repoRoot), 'optArrow_mat', 'src', 'matlab');
-param.printLevel = 1;
+tol = 1e-6;
 
-solution = optimizeCbModel(model, 'max', 0, true, param);
-
-disp('OptArrow ecoli_core HTTP FBA result:')
-disp(struct( ...
-    'solver', solution.solver, ...
-    'stat', solution.stat, ...
-    'origStat', solution.origStat, ...
-    'f', solution.f, ...
-    'biomassFlux', solution.v(find(model.c, 1, 'first'))))
-
-assert(solution.stat == 1, 'Expected an optimal FBA solution.');
-assert(abs(solution.f - 0.873921506968427) < 1e-6, ...
-    'Unexpected ecoli_core biomass objective from OptArrow HTTP backend.');
+assert(solution.stat == 1, ...
+    'OptArrow FBA: expected optimal solution (stat=1).');
+assert(abs(solution.f - 0.873921506968427) < tol, ...
+    sprintf('OptArrow FBA: unexpected biomass flux %.10f.', solution.f));
 assert(norm(model.S * solution.v - model.b, inf) < 1e-7, ...
-    'Returned flux vector violates steady-state constraints.');
-end
+    'OptArrow FBA: flux vector violates steady-state constraints.');
+
+fprintf('   OptArrow FBA on ecoli_core: PASSED (f=%.8f).\n', solution.f);
+
+% restore the path
+cd(currentDir);
