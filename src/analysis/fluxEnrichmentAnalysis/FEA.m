@@ -42,7 +42,7 @@ if strcmp(group, 'subSystems') && isfield(model,'subSystems')
 end
 
 % compute frequency of enriched terms
-groups = eval(['model.' group]);
+groups = model.(group);
 if iscell([groups{:}])
    [uniquehSubsystemsA] = unique([groups{:}]);
    presenceindicator = false(numel(uniquehSubsystemsA),numel(model.rxns));
@@ -55,7 +55,7 @@ else
     [uniquehSubsystemsA, ~, K] = unique(groups);
 end
 % fetch group
-enRxns = eval(['model.' group '(rxnSet)']);
+enRxns = model.(group)(rxnSet);
 m = length(uniquehSubsystemsA);
 allSubsystems = zeros(1, m);
 
@@ -72,15 +72,20 @@ else
     [uniquehSubsystems, ~, J] = unique(enRxns);
 end
 
-occ = histc(J, 1:numel(uniquehSubsystems));
-[l, p] = intersect(uniquehSubsystemsA, uniquehSubsystems);
+occ = histcounts(J, 0.5:1:(numel(uniquehSubsystems) + 0.5))'; 
+[~, p] = intersect(uniquehSubsystemsA, uniquehSubsystems);
 allSubsystems(p) = occ;
 
 % compute total number of reactions per group
-nRxns = histc(K, 1:numel(uniquehSubsystemsA));  % the number of reactions per susbsystem
+nRxns = histcounts(K, 0.5:1:(numel(uniquehSubsystemsA) + 0.5))';  % the number of reactions per subsystem
 
-% Compute p-values
-gopvalues = hygepdf(allSubsystems', max(nRxns), max(allSubsystems), nRxns);
+% Compute p-values using upper-tail hypergeometric CDF
+% hygecdf(X, M, K, N): P(x >= X) = 1 - P(x <= X-1)
+%   X = allSubsystems  : successes drawn (reactions from rxnSet in each subsystem)
+%   M = total reactions : population size
+%   K = nRxns           : success states in population (total reactions per subsystem)
+%   N = length(rxnSet)  : number of draws (size of the reaction set)
+gopvalues = 1 - hygecdf(allSubsystems' - 1, length(model.rxns), nRxns, length(rxnSet));
 
 % take out the zeros for one-sided test
 nonZerInd = find(allSubsystems);
@@ -89,7 +94,7 @@ nonZerInd = find(allSubsystems);
 [m, rxnInd] = sort(gopvalues);
 
 % intersect non zero sets with ordered pvalues
-[~, nonZeroInd] = intersect(rxnInd, nonZerInd)
+[~, nonZeroInd] = intersect(rxnInd, nonZerInd);
 orderedPval = rxnInd(sort(nonZeroInd));
 
 % Build result cell
