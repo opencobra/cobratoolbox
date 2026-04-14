@@ -73,7 +73,7 @@ X = sum(cellfun(@(x) any(strcmp(x, testGroup)), groups));
 % Count successes in population (K)
 Kpop = sum(cellfun(@(x) any(strcmp(x, testGroup)), allGroups));
 % Manual upper-tail p-value: P(x >= X)
-expectedPval = 1 - hygecdf(X - 1, M, Kpop, N);
+expectedPval = hygecdf(X - 1, M, Kpop, N, 'upper');
 assert(abs(resultCellFtest{2, 1} - expectedPval) < 1e-10, ...
     'P-value for first group does not match manual hypergeometric calculation');
 
@@ -99,6 +99,11 @@ try
 catch ME
     assert(length(ME.message) > 0)
 end
+
+% check empty rxnSet returns header-only result
+resultCellEmpty = FEA(model, [], 'subSystems');
+assert(size(resultCellEmpty, 1) == 1, 'Empty rxnSet should return header only');
+assert(isequal(resultCellEmpty(1, :), {'P-value', 'Adjusted P-value', 'Group', 'Enriched set size', 'Total set size'}));
 
 % change the directory
 cd(currentDir)

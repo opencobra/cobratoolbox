@@ -28,6 +28,10 @@ end
 if ~isvector(rxnSet)
     error('Please provide the indices of the reactions e.g. 1:10')
 end
+if isempty(rxnSet)
+    resultCell = {'P-value', 'Adjusted P-value', 'Group', 'Enriched set size', 'Total set size'};
+    return;
+end
 if ~ischar(group)
     error('Please provide the group name as string of characters e.g. ''subSystems'' ')
 end
@@ -85,7 +89,7 @@ nRxns = histcounts(K, 0.5:1:(numel(uniquehSubsystemsA) + 0.5))';  % the number o
 %   M = total reactions : population size
 %   K = nRxns           : success states in population (total reactions per subsystem)
 %   N = length(rxnSet)  : number of draws (size of the reaction set)
-gopvalues = 1 - hygecdf(allSubsystems' - 1, length(model.rxns), nRxns, length(rxnSet));
+gopvalues = hygecdf(allSubsystems' - 1, length(model.rxns), nRxns, length(rxnSet), 'upper');
 
 % take out the zeros for one-sided test
 nonZerInd = find(allSubsystems);
