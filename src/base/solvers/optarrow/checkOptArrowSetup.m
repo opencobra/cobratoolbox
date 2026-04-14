@@ -1,9 +1,10 @@
 function report = checkOptArrowSetup(endpoint, opts)
-% checkOptArrowSetup  Verify the OptArrow Gateway is reachable.
+% checkOptArrowSetup  Verify the OptArrow Gateway is reachable and the
+% Arrow IPC serialisation layer is available.
 %
-% Checks that the Gateway is responding and returning valid Arrow IPC data.
-% No Python environment check is performed — MATLAB communicates with the
-% Gateway natively via Apache Arrow.
+% Requires the "MATLAB Interface to Apache Arrow" add-on, which must be
+% built from source (github.com/apache/arrow). If the add-on is not
+% installed, this function reports a hard failure with build instructions.
 %
 % USAGE:
 %
@@ -12,10 +13,7 @@ function report = checkOptArrowSetup(endpoint, opts)
 %   report = checkOptArrowSetup(endpoint, opts)
 %
 % INPUTS:
-%   endpoint   char/string  Gateway URL (default: 'http://127.0.0.1:8000/compute').
-%              For local runs both 'http://127.0.0.1:8000/compute' and
-%              'http://127.0.0.1:8000/cobra/compute' are valid — the former
-%              is the health check target; the latter is the solve endpoint.
+%   endpoint   char/string  Gateway URL (default: 'http://127.0.0.1:8000/cobra/compute').
 %
 %   opts       struct  Optional:
 %                timeoutSec     numeric  Connection timeout (default: 10)
@@ -23,11 +21,12 @@ function report = checkOptArrowSetup(endpoint, opts)
 %
 % OUTPUT:
 %   report   struct
-%              ok           logical
-%              endpoint     char
-%              timeoutSec   double
-%              httpStatus   double   HTTP status code from Gateway (0 if unreachable)
-%              failures     cell     Error messages (empty when ok=true)
+%              ok                logical
+%              endpoint          char
+%              timeoutSec        double
+%              httpStatus        double   HTTP status code (0 if unreachable)
+%              arrowBackend      char     'native' | 'pyarrow'
+%              failures          cell     Error messages (empty when ok=true)
 %
 % Starting the Gateway locally:
 %   cd <optArrow_mat>
@@ -46,25 +45,28 @@ endpoint     = char(string(endpoint));
 timeoutSec   = double(localGetOr(opts, 'timeoutSec', 10));
 throwOnError = logical(localGetOr(opts, 'throwOnError', true));
 
-report           = struct();
-report.ok        = false;
-report.endpoint  = endpoint;
-report.timeoutSec= timeoutSec;
-report.httpStatus= 0;
-report.failures  = {};
+report               = struct();
+report.ok            = false;
+report.endpoint      = endpoint;
+report.timeoutSec    = timeoutSec;
+report.httpStatus    = 0;
+report.arrowBackend  = '';
+report.failures      = {};
 
-% Check MATLAB version
+% Check MATLAB version (version('-release') is available since R2006a)
 try
-    ver = matlabRelease().Release;
-    year = str2double(ver(2:5));
+    ver  = version('-release');   % e.g. '2025a'
+    year = str2double(ver(1:4));
     if year < 2023
         report = localFail(report, sprintf( ...
-            'OptArrow requires MATLAB R2023b or later (detected %s).\n', ver));
+            'OptArrow requires MATLAB R2023b or later (detected R%s).', ver));
     end
 catch
-    % matlabRelease not available on older versions — add a warning only
     warning('OptArrow: could not verify MATLAB version. R2023b or later is required.');
 end
+
+% Check which Arrow IPC serialisation backend is available
+report = localCheckArrowBackend(report);
 
 % Attempt HTTP GET to root — a running Gateway returns 200/404/405
 report = localCheckGateway(report, endpoint, timeoutSec);
@@ -95,15 +97,61 @@ try
     code = report.httpStatus;
     if code == 0 || code >= 500
         report = localFail(report, sprintf( ...
-            'OptArrow Gateway returned HTTP %d from %s.\n' ...
-            'Start the Gateway with:\n  python src/run_server.py', ...
+            ['OptArrow Gateway returned HTTP %d from %s.\n' ...
+             'Start the Gateway with:\n  python src/run_server.py'], ...
             code, endpoint));
     end
 catch ME
     report = localFail(report, sprintf( ...
-        'OptArrow Gateway not reachable at %s.\n' ...
-        'Start it with:\n  python src/run_server.py\n' ...
-        'Error: %s', endpoint, ME.message));
+        ['OptArrow Gateway not reachable at %s.\n' ...
+         'Start it with:\n  python src/run_server.py\n' ...
+         'Error: %s'], endpoint, ME.message));
+end
+end
+
+% -------------------------------------------------------------------------
+function report = localCheckArrowBackend(report)
+% Check whether the native MATLAB Arrow add-on is installed.
+% This is a hard requirement — OptArrow uses native Arrow for all
+% Arrow IPC serialization. There is no Python fallback.
+
+nativeOk = false;
+try
+    arrow.recordBatch(table(int32(1), 'VariableNames', {'x'}));
+    nativeOk = true;
+catch
+end
+
+if nativeOk
+    report.arrowBackend = 'native';
+    fprintf('   Arrow backend: native MATLAB Interface to Apache Arrow.\n');
+else
+    report.arrowBackend = '';
+    report = localFail(report, sprintf([...
+        'The "MATLAB Interface to Apache Arrow" is not installed.\n' ...
+        'This add-on is required and must be built from source:\n\n' ...
+        '  Prerequisites (macOS):\n' ...
+        '    xcode-select --install\n' ...
+        '    brew install cmake\n\n' ...
+        '  Prerequisites (Linux):\n' ...
+        '    sudo apt install -y cmake build-essential\n\n' ...
+        '  Step 1 — Build Arrow C++ (without S3):\n' ...
+        '    git clone https://github.com/apache/arrow.git\n' ...
+        '    cd arrow\n' ...
+        '    cmake -S cpp -B build_cpp \\\n' ...
+        '      -DCMAKE_BUILD_TYPE=Release \\\n' ...
+        '      -DCMAKE_INSTALL_PREFIX=$HOME/arrow_no_s3 \\\n' ...
+        '      -DARROW_S3=OFF -DARROW_WITH_RE2=OFF \\\n' ...
+        '      -DARROW_CSV=ON -DARROW_IPC=ON -DARROW_COMPUTE=ON \\\n' ...
+        '      -DARROW_BUILD_TESTS=OFF -DxsimdSOURCE=BUNDLED\n' ...
+        '    cmake --build build_cpp --config Release --target install\n\n' ...
+        '  Step 2 — Build the MATLAB bindings:\n' ...
+        '    cmake -S matlab -B build_matlab \\\n' ...
+        '      -DArrow_DIR=$HOME/arrow_no_s3/lib/cmake/Arrow \\\n' ...
+        '      -DCMAKE_INSTALL_PREFIX=$HOME/arrow_matlab\n' ...
+        '    cmake --build build_matlab --config Release --target install\n\n' ...
+        '  Step 3 — Verify in MATLAB:\n' ...
+        '    arrow.recordBatch(table(["A";"B"], [1;2]))']));
 end
 end
 

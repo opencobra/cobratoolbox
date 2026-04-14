@@ -1,15 +1,17 @@
-function [model,modelSBML] = readSBML(fileName,defaultBound)
+function [model,modelSBML] = readSBML(fileName,defaultBound,printLevel)
 % Reads in a SBML format model as a COBRA matlab structure
 %
 % USAGE:
 %
 %    model = readSBML(fileName, defaultBound)
+%    model = readSBML(fileName, defaultBound, printLevel)
 %
 % INPUTS:
 %    fileName:          File name for file to read in
 %
 % OPTIONAL INPUTS:
 %    defaultBound:      Maximum bound for model (Default = 1000)
+%    printLevel:        boolean to indicate whether messages are given (default, 0)
 %
 % OUTPUT:
 %    model:             COBRA model structure
@@ -19,6 +21,11 @@ function [model,modelSBML] = readSBML(fileName,defaultBound)
 %       - Ines Thiele 01/27/2010 - I added new field to be read-in from SBML file
 %       - Longfei Mao 23/09/15 - Added support for the FBCv2 format 
 %       - Thomas Pfau May 2017 - Updated to libsbml 5.15
+%       - Farid Zare 14/04/2026 - Added printLevel input and error handling.
+
+if ~exist('printLevel','var')
+    printLevel = 0;
+end
 
 currentDir = pwd;
 [folder,name,extension] = fileparts(fileName);
@@ -220,13 +227,19 @@ oneBool = cellfun(@(x) length(x)==1, model.subSystems);
 cellBool = cellfun(@(x) iscell(x), model.subSystems);
 %if all entries are char, leave them as char
 if all(charBool)
-    fprintf('%s\n','Each model.subSystems{x} is a character array, and this format is retained.');
+    if printLevel > 0
+        fprintf('%s\n','Each model.subSystems{x} is a character array, and this format is retained.');
+    end
 else
     if all(cellBool & oneBool)
-        fprintf('%s\n','One subSystem per reaction, so each model.subSystems{x} is a character array.');
+        if printLevel > 0
+            fprintf('%s\n','One subSystem per reaction, so each model.subSystems{x} is a character array.');
+        end
         model.subSystems = cellfun(@(x) x{1}, model.subSystems,'UniformOutput',0);
     else
-        fprintf('%s\n','Each model.subSystems{x} is a cell array, allowing more than one subSystem per reaction.');
+        if printLevel > 0
+            fprintf('%s\n','Each model.subSystems{x} is a cell array, allowing more than one subSystem per reaction.');
+        end
         model.subSystems(charBool) = cellfun(@(x) {x}, model.subSystems(charBool),'UniformOutput',0);
     end
 end

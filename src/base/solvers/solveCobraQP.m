@@ -719,7 +719,7 @@ switch solver
         end
 
     case 'optarrow'
-        optarrowResult = solveCobraQPOptArrow(QPproblem, problemTypeParams, solverParams);
+        optarrowResult = solveCobraOptArrow('QP', QPproblem, problemTypeParams, solverParams);
         x = optarrowResult.x;
         y = optarrowResult.y;
         w = optarrowResult.w;

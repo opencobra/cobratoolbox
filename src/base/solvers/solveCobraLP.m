@@ -1033,7 +1033,7 @@ switch solver
         end
 
     case 'optarrow'
-        optarrowResult = solveCobraLPOptArrow(LPproblem, problemTypeParams, solverParams);
+        optarrowResult = solveCobraOptArrow('LP', LPproblem, problemTypeParams, solverParams);
         x = optarrowResult.x;
         f = optarrowResult.f;
         w = optarrowResult.w;
