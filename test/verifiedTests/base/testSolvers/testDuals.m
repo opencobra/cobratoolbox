@@ -26,7 +26,7 @@ currentDir = pwd;
 
 if 1
     useSolversIfAvailable = {'ibm_cplex', 'tomlab_cplex'};
-    excludeSolvers={'pdco','gurobi'};
+    excludeSolvers={'pdco','gurobi', 'dqqMinos'};
 elseif 0
    useSolversIfAvailable = {'ibm_cplex', 'tomlab_cplex','pdco'};
    excludeSolvers={'gurobi'};

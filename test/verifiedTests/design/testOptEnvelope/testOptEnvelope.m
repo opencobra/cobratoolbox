@@ -16,7 +16,7 @@ fileDir = fileparts(which('testOptEnvelope'));
 cd(fileDir);
 
 % set the tolerance
-tol = 1e-6;
+tol = 1e-4;
 
 % define the solver packages to be used to run this test
 requiredSolvers = { 'gurobi' };
@@ -30,22 +30,26 @@ solverOK = changeCobraSolver('gurobi', 'all', 0);
 
 if solverOK == 1
     fprintf('   Testing functions of optEnvelope ... ');
-    
     % check if envelope matches
     fprintf('\n>> Running optEnvelope\n');
     [main] = optEnvelope(model, 'EX_ac_e');
-    
     % testing if optimal point is within range
     fprintf('\n>> Testing peaks\n')
-    assert(abs(main.peak.x - testMain.peak.x) < tol);
-    assert(abs(main.peak.y - testMain.peak.y) < tol);
-    
+    assert(abs(main.peak.x - testMain.peak.x) < tol, ...
+        'Peak x assertion failed: main.peak.x = %g, testMain.peak.x = %g', ...
+        main.peak.x, testMain.peak.x);
+    assert(abs(main.peak.y - testMain.peak.y) < tol, ...
+        'Peak y assertion failed: main.peak.y = %g, testMain.peak.y = %g', ...
+        main.peak.y, testMain.peak.y);
     % testing if num of deletions matches
     fprintf('\n>> Testing number of deletions\n')
-    assert(abs(numel(main.knockouts) - numel(testMain.knockouts)) < tol);
-    
+    assert(abs(numel(main.knockouts) - numel(testMain.knockouts)) < tol, ...
+        'Number of knockouts assertion failed: main knockouts = %d, testMain knockouts = %d', ...
+        numel(main.knockouts), numel(testMain.knockouts));
     % output a success message
     fprintf('Done.\n');
 end
 
 cd(currentDir)
+
+

@@ -5,7 +5,7 @@ function [isSameModel,diffTable,why] = compareModels(modelA,modelB)
 % INPUT
 % modelA:       structure
 % modelB:       structure
-% printLevel:    
+% printLevel:
 %
 % OUTPUT
 % isSameModel:   true if identical models, false otherwise

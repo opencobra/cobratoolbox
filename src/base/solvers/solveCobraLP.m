@@ -212,7 +212,7 @@ if strcmp(solver,'ibm_cplex') %debug
     CplexLPproblem = buildCplexProblemFromCOBRAStruct(LPproblem);
 end
 
-if ~any(strcmp(solver,{'cplex_direct','dqqMinos','quadMinos','mps'}))
+if ~any(strcmp(solver,{'cplex_direct','dqqMinos','quadMinos','mps','optarrow'}))
     %clear the problem structure so it does not interfere later
     clear LPproblem
 end
@@ -1009,7 +1009,6 @@ switch solver
                 y(csense == 'G',1) = - y(csense == 'G',1); %change sign
             end
             w = lambda.lower - lambda.upper;
-            
             s = b - A*x;
         elseif (origStat < -1)
             stat = 0; % infeasible
@@ -1032,6 +1031,18 @@ switch solver
         else
             stat = -1;
         end
+
+    case 'optarrow'
+        optarrowResult = solveCobraLPOptArrow(LPproblem, problemTypeParams, solverParams);
+        x = optarrowResult.x;
+        f = optarrowResult.f;
+        w = optarrowResult.w;
+        y = optarrowResult.y;
+        stat = optarrowResult.stat;
+        origStat = optarrowResult.origStat;
+        origStatText = optarrowResult.origStatText;
+        lpmethod = optarrowResult.lpmethod;
+        basis = optarrowResult.basis;
         
     case 'tomlab_cplex'
         %% Tomlab
@@ -1884,4 +1895,3 @@ end
 %     end
 %     opts = optiset(opts,'display',disp,'warnings',warnings);
 % end
-

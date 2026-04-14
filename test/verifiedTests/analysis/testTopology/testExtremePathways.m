@@ -9,6 +9,7 @@
 % Test problem from
 %     Extreme Pathway Lengths and Reaction Participation in Genome-Scale Metabolic Networks
 %     Jason A. Papin, Nathan D. Price and Bernhard Ø. Palsson
+%     Farid Zare 2026/04/02 Improved results comparison
 
 
 [status, result] = system('which lrs');
@@ -34,6 +35,7 @@ currentDir = pwd;
 % initialize the test
 fileDir = fileparts(which('testExtremePathways'));
 cd(fileDir);
+figsBefore = findall(0, 'Type', 'figure');
 model = createExtremePathwayModel();
 
 minimalModel = struct();
@@ -52,7 +54,13 @@ refP = [2, 2, 2;
         1, 1, 1;
         1, 1, 1];
 
-assert(all(all(refP(:, [2, 1, 3]) == P)))
+expectedP = refP(:, [2, 1, 3]);
+expectedPSorted = sortrows(full(expectedP));
+actualPSorted = sortrows(full(P));
+assert(isequal(expectedPSorted, actualPSorted), ...
+    ['ExtremePathways mismatch (case 1).\nExpected:\n%s\nActual:\n%s\n' ...
+     'Sorted(Expected):\n%s\nSorted(Actual):\n%s'], ...
+    mat2str(expectedP), mat2str(P), mat2str(expectedPSorted), mat2str(actualPSorted))
 
 positivity = 0;
 inequality = 1;
@@ -69,7 +77,12 @@ refP = [0,  0, 2;
         0,  0, 1;
         0,  0, 1];
 
-assert(all(all(refP == P)))
+expectedPSorted = sortrows(full(refP));
+actualPSorted = sortrows(full(P));
+assert(isequal(expectedPSorted, actualPSorted), ...
+    ['ExtremePathways mismatch (case 2).\nExpected:\n%s\nActual:\n%s\n' ...
+     'Sorted(Expected):\n%s\nSorted(Actual):\n%s'], ...
+    mat2str(refP), mat2str(P), mat2str(expectedPSorted), mat2str(actualPSorted))
 
 % Change the model to have one non integer entry.
 model.S(1, 1) = 0.5;
@@ -78,6 +91,13 @@ assert(verifyCobraFunctionError('extremePathways','inputs',{model}));
 % delete generated files
 delete('*.ine');
 delete('*.ext');
+
+% close only figures opened during this test
+figsAfter = findall(0, 'Type', 'figure');
+figsToClose = setdiff(figsAfter, figsBefore);
+if ~isempty(figsToClose)
+    close(figsToClose);
+end
 
 % change the directory
 cd(currentDir)

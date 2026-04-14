@@ -498,8 +498,28 @@ switch param.approach
         else
             fprintf('%s','cycleFreeFlux: No quadratically regularised solution found. Relaxing LP version...');
             qp = rmfield(qp,'F');
-            paramRelax.relaxedPrintLevel=1;
-            [solutionRelaxed, relaxedqp] = relaxedFBA(qp,paramRelax);
+            solutionLP = solveCobraLP(qp);
+            if solutionLP.stat==1 || solutionLP.stat==3
+                solution = solutionLP;
+            else
+                paramRelax.relaxedPrintLevel = 1;
+                try
+                    [solutionRelaxed, relaxedqp] = relaxedFBA(qp,paramRelax);
+                    if isfield(solutionRelaxed,'v') && ~isempty(solutionRelaxed.v) && all(isfinite(solutionRelaxed.v))
+                        solution.stat = solutionRelaxed.stat;
+                        solution.full = solutionRelaxed.v;
+                    else
+                        solutionRelaxedLP = solveCobraLP(relaxedqp);
+                        if solutionRelaxedLP.stat==1 || solutionRelaxedLP.stat==3
+                            solution = solutionRelaxedLP;
+                        end
+                    end
+                catch ME
+                    if param.printLevel>0
+                        fprintf('%s %s\n','cycleFreeFlux: relaxedFBA fallback failed:',ME.message);
+                    end
+                end
+            end
             
         end
     case 'lp0'
