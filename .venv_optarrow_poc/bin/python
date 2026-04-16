@@ -1,0 +1,2 @@
+#!/bin/sh
+exec /Users/faridzare/optArrow/.venv/bin/python "$@"

@@ -83,3 +83,6 @@
 	url = https://github.com/toshiakit/MatGPT.git
         ignore = dirty
 	branch = main
+[submodule "external/base/solvers/optArrow"]
+	path = external/base/solvers/optArrow
+	url = git@github.com:optArrow/optArrow.git

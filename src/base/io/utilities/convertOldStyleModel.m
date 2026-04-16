@@ -10,7 +10,7 @@ function model = convertOldStyleModel(model, printLevel, convertOldCoupling)
 %    model:         a COBRA Model (potentially with old field names)
 %
 % OPTIONAL INPUT:
-%    printLevel:            boolean to indicate whether warnings and messages are given (default, 1).
+%    printLevel:            boolean to indicate whether warnings and messages are given (default, 0 = no messages).
 %    convertOldCoupling     boolean to indicate whether to convert model.A
 %                           into model.S and model.C, etc.
 % OUTPUT:
@@ -76,7 +76,7 @@ function model = convertOldStyleModel(model, printLevel, convertOldCoupling)
 % .. Author: - Thomas Pfau May 2017
 warnstate = warning;
 if ~exist('printLevel','var')
-    printLevel = 1;
+    printLevel = 0;
 end
 
 if ~exist('convertOldCoupling','var')
@@ -281,13 +281,19 @@ if isfield(model,'subSystems')
     cellBool = cellfun(@(x) iscell(x), model.subSystems);
     %if all entries are char, leave them as char
     if all(charBool)
-        fprintf('%s\n','Each model.subSystems{x} is a character array, and this format is retained.');
+        if printLevel > 0
+            fprintf('%s\n','Each model.subSystems{x} is a character array, and this format is retained.');
+        end
     else
         if all(cellBool & oneBool)
-            fprintf('%s\n','Each model.subSystems{x} has been changed to a character array.');
+            if printLevel > 0
+                fprintf('%s\n','Each model.subSystems{x} has been changed to a character array.');
+            end
             model.subSystems = cellfun(@(x) x{1}, model.subSystems,'UniformOutput',0);
         else
-            fprintf('%s\n','Each model.subSystems{x} is a cell array, allowing more than one subSystem per reaction.');
+            if printLevel > 0
+                fprintf('%s\n','Each model.subSystems{x} is a cell array, allowing more than one subSystem per reaction.');
+            end
             model.subSystems(charBool) = cellfun(@(x) {x}, model.subSystems(charBool),'UniformOutput',0);
         end
     end
