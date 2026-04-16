@@ -95,6 +95,20 @@ jobs:
           echo "Converting JUnit XML to CTRF JSON..."
           npx --yes junit-to-ctrf@0.0.12 ./testReport.junit.xml -o ./ctrf/ctrf-report.json
 
+      - name: Normalize CTRF Test Names
+        run: |
+          node -e '
+            const fs = require("fs");
+            const path = "./ctrf/ctrf-report.json";
+            const report = JSON.parse(fs.readFileSync(path, "utf8"));
+            for (const test of report.results?.tests || []) {
+              if (typeof test.name === "string") {
+                test.name = test.name.split(": ").pop();
+              }
+            }
+            fs.writeFileSync(path, JSON.stringify(report, null, 2) + "\n");
+          '
+
       - name: Upload CTRF Artifact
         uses: actions/upload-artifact@v4
         with:
