@@ -17,8 +17,9 @@
 %       (default is false) indicating whether to visualize the COBRA model or not.
 %       The main idea of this argument is to ensure possibility to save
 %       time by not visualizing a large COBRA model and get a result faster.
-% radius - a double type variable that can take a value of natural numbers
-%       (1,2,3…n). The argument radius indicates the depth of an analysis
+% radius - a double type variable that can take a value of natural
+% numbers
+%       (1,2,3n). The argument radius indicates the depth of an analysis
 %       of the initial metabolite (the argument metAbbr) and it is tightly 
 %       connected to the optional argument direction. For example, if user 
 %       is interested in the substrates of ethanol, the user can analyse substrates
@@ -40,7 +41,7 @@
 %       are non-zero fluxes. In case of 'prod' (products) the algorithm visualizes 
 %       only those metabolites which are products for the specified reactions in 
 %       the argument rxns but in case of 'both' the algorithm visualizes both
-%       – substrates and products - for the specified reactions in the argument
+%        substrates and products - for the specified reactions in the argument
 %       rxns. For both cases the algorithm is using the same rules regarding to 
 %       calculation of the directions for each reaction as for case of 'sub'.
 %       This argument is essential for the command draw_by_met of the Paint4Net v1.0
