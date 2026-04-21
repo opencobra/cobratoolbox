@@ -1,237 +1,195 @@
+function [involvedRxns,involvedMets,deadEnds,deadRxns]=bio_draw_by_met(model,metAbbr,drawMap,radius,direction,excludeMets,flux,save,closev)
 % bio_draw_by_met.m
 % Script of the Paint4Net to define the scope of visualization by a
 % metabolite
-%
+% USAGE:
 % function [involvedRxns,involvedMets,deadEnds,deadRxns]=bio_draw_by_met(model,metAbbr,drawMap,radius,direction,excludeMets,flux,save,closev)
 %
-% INPUT
+% INPUTS:
 %
 % model - COBRA Toolbox model
 % metAbbr - a cell type variable that can take a value that represents the
 %       abbreviation of a metabolite in the COBRA model. This metabolite is
-%       the start point for visualization. 
+%       the start point for visualization.
 %
-% OPTIONAL INPUT
+% OPTIONAL INPUT:
 %
 % drawMap - a logical type variable that can take value of true or false
 %       (default is false) indicating whether to visualize the COBRA model or not.
-%       The main idea of this argument is to ensure possibility to save
-%       time by not visualizing a large COBRA model and get a result faster.
 % radius - a double type variable that can take a value of natural numbers
-%       (1,2,3n). The argument radius indicates the depth of an analysis
-%       of the initial metabolite (the argument metAbbr) and it is tightly 
-%       connected to the optional argument direction. For example, if user 
-%       is interested in the substrates of ethanol, the user can analyse substrates
-%       step by step starting from the first reactions where the argument radius 
-%       is equal to 1 and moving to the next reactions by increasing the value 
-%       of the argument radius.
+%       (1,2,3n). The argument radius indicates the depth of an analysis
+%       of the initial metabolite.
 % direction - a string type variable that can take value of 'struc', 'sub',
-%       'prod' or 'both' (default is 'struc') indicating a direction for the
-%       algorithm. In case of 'struc' (structure) the algorithm visualizes all
-%       metabolites connected to the specified reactions in the argument rxns.
-%       The key feature of this function is visualization of all specified reactions
-%       not taking in account a steady state fluxes in that way representing the
-%       structure of the COBRA model. In case of 'sub' (substrates) the algorithm
-%       visualizes only those metabolites which are substrates for the specified 
-%       reactions in the argument rxns. This time the algorithm is using a stoichiometric 
-%       matrix and the steady state fluxes to determine direction of each reaction. 
-%       The algorithm is using an assumption that only those fluxes which rates
-%       are smaller than -10-9 mmol*g-1*h-1 or greater than +10-9 mmol*g-1*h-1 
-%       are non-zero fluxes. In case of 'prod' (products) the algorithm visualizes 
-%       only those metabolites which are products for the specified reactions in 
-%       the argument rxns but in case of 'both' the algorithm visualizes both
-%        substrates and products - for the specified reactions in the argument
-%       rxns. For both cases the algorithm is using the same rules regarding to 
-%       calculation of the directions for each reaction as for case of 'sub'.
-%       This argument is essential for the command bio_draw_by_met of the Paint4Net v1.0
-%       because the command bio_draw_by_met is calling out the command bio_draw_by_rxn
-%       and passing the argument direction.
+%       'prod' or 'both' (default is 'struc').
 % excludeMets - a list of metabolites (default is empty) that will be excluded
-%       from the visualization map of the COBRA model in form of the abbreviations
-%       of the metabolites separated by a comma
-%       {'Met_Abbr_1','Met_Abbr_2',...,'Met_Abbr_n'} or a cell type vector 
-%       in the MATLAB workspace that contains the static abbreviations of the
-%       metabolites. The main idea of this argument is to ensure possibility 
-%       to exclude very employed metabolites (e.g., h, h2o, atp, adp, nad etc.)
-%       to avoid unnecessary mesh on the map.
-% flux - a double type Nx1 size vector of fluxes of reactions where N is number 
-%       of reactions (default is vector of x). This vector is calculated during
-%       the optimization of the objective function. Use the command
-%       optimizeCbModel.m.
+%       from the visualization map.
+% flux - a double type Nx1 size vector of fluxes of reactions where N is number
+%       of reactions (default is empty, meaning no flux data provided).
 % save - a boolean type variable that can take value of true or false
 %       (default is false) indicating whether to automatically save visualization as jpeg file or not.
-%       This is usefull for iterative function call with different
-%       input arguments for visualization scope.
 % closev - a boolean type variable that can take value of true or false
 %       (default is false) indicating whether to close the biograph viewer
-%       window or not after the visualization. This is usefull for iterative
-%       function call with different input arguments for visualization
-%       scope.
+%       window or not after the visualization.
 %
 % OUTPUT
 %
-% involvedRxns - a cell type vector that contains a list of the involved
-%       reactions according to the set of input arguments.
-% involvedMets - a cell type vector that contains a list of the involved metabolites
-%       in the specified reactions.
-% deadEnds - a cell type vector that contains a list of the dead end
-%       metabolites in the specified reactions.
+% involvedRxns - a cell type vector that contains a list of the involved reactions.
+% involvedMets - a cell type vector that contains a list of the involved metabolites.
+% deadEnds - a cell type vector that contains a list of the dead end metabolites.
+% deadRxns - a cell type vector that contains a list of dead end reactions.
 %
-% Andrejs Kostromins 04/10/2012 E-mail: andrejs.kostromins@gmail.com
+% ..Author: -Andrejs Kostromins 04/10/2012 E-mail: andrejs.kostromins@gmail.com
 
-function [involvedRxns,involvedMets,deadEnds,deadRxns]=bio_draw_by_met(model,metAbbr,drawMap,radius,direction,excludeMets,flux,save,closev)
+% --- FIX: All nargin defaults moved to top level so they apply regardless
+%     of whether flux was supplied or not. ---
 
-if nargin<3 %if the number of arguments < 3, drawMap=false
-   drawMap=false;
+if nargin < 3
+    drawMap = false;
 end
 
-if nargin<4 %if the number of arguments < 4, radius=1
-    radius=1;
+if nargin < 4
+    radius = 1;
 end
 
-if nargin<7 %if the number of arguments < 7, fill flux vector with x
-    for q=1:length(model.rxns)
-          flux(q)='x';
-    end
+% FIX: direction and excludeMets defaults moved outside the nargin<7 block
+if nargin < 5
+    direction = 'struc';
 end
 
-if nargin<8 %if the number of arguments < 8, save=false
-    save=false;
+if nargin < 6
+    excludeMets{1} = '';
 end
 
-if nargin<9 %if the number of arguments < 8, closev=false
-    closev=false;
+% FIX: Instead of filling flux with ASCII value of 'x' (which caused
+%      numeric/char comparison bugs), use an empty array as the
+%      "no flux provided" sentinel and track it with a logical flag.
+if nargin < 7 || isempty(flux)
+    flux = [];
+    noFlux = true;
+else
+    noFlux = false;
 end
-    
-if radius>0 %if radius > 0
 
-    if ~isempty(flux) %if flux vector is not empty
+if nargin < 8  % FIX: corrected comment index (was labelled <8 twice)
+    save = false;
+end
 
-        if nargin<5 %if the number of arguments < 5, direction='struc'
-            direction='struc';
-        end
+if nargin < 9  % FIX: corrected from erroneous duplicate comment "<8"
+    closev = false;
+end
 
-        if nargin<6 %if the number of arguments < 6, excludeMets{1}=''
-            excludeMets{1}='';
-        end            
-        
-        Rxns=findRxnsFromMets(model,metAbbr); %find reactions around the initial metabolite
+% FIX: Initialise all outputs so MATLAB never errors on undefined outputs
+%      in early-exit branches.
+involvedRxns = 'No rxns';
+involvedMets  = 'No mets';
+deadEnds      = 'No dead ends';
+deadRxns      = 'No dead rxns';
 
-        if length(Rxns)~=0 %if the list is not empty
-            
-            RxnsID=findRxnIDs(model,Rxns); %find reaction IDs in the model
-            metID=findMetIDs(model,metAbbr); %find initial metabolite ID in the model
-            involvedRxns{1}='No rxns'; %declare variable
-            
-            for q=1:length(RxnsID) %cycle through the reaction IDs
-                
-                switch direction %check the value of the variable direction
-                    
-                    case 'sub' %in cace of direction = 'sub'
-                        
-                        %if (the reaction in the S matrix has negative coefficient and the flux is negative or the opposite) and the flux is not equal to x, add to involved reactions 
-                        if (model.S(metID,RxnsID(q))<0 && flux(RxnsID(q))<-1e-9 || model.S(metID,RxnsID(q))>0 && flux(RxnsID(q))>1e-9)&&flux(RxnsID(q))~='x'
-                            
-                           if strcmp(involvedRxns{1},'No rxns')
-                              involvedRxns{1,1}=Rxns{q};            
-                           else
-                              involvedRxns{length(involvedRxns)+1,1}=Rxns{q};
-                           end
-                           
+if radius > 0
+
+    % FIX: noFlux flag replaces the old isempty(flux) check, which would
+    %      have been true for the old char-filled vector too.
+    if ~noFlux || strcmp(direction,'struc')
+
+        Rxns = findRxnsFromMets(model, metAbbr); % find reactions around the initial metabolite
+
+        % FIX: replaced length(Rxns)~=0 with ~isempty(Rxns) (more idiomatic)
+        if ~isempty(Rxns)
+
+            RxnsID = findRxnIDs(model, Rxns);   % find reaction IDs in the model
+            metID  = findMetIDs(model, metAbbr); % find initial metabolite ID in the model
+
+            % FIX: use a logical flag instead of the fragile 'No rxns' sentinel string
+            involvedRxns = {};
+            foundRxns    = false;
+
+            for q = 1:length(RxnsID)
+
+                switch direction
+
+                    case 'sub'
+                        % Add reaction if the metabolite is consumed (substrate)
+                        % FIX: noFlux guard replaces the old flux(i)~='x' char comparison
+                        if ~noFlux && ...
+                           (model.S(metID,RxnsID(q)) < 0 && flux(RxnsID(q)) < -1e-9 || ...
+                            model.S(metID,RxnsID(q)) > 0 && flux(RxnsID(q)) >  1e-9)
+
+                            involvedRxns{end+1,1} = Rxns{q};
+                            foundRxns = true;
                         end
-                        
-                    case 'prod' %in cace of direction = 'prod'
-                        
-                        %if (the reaction in the S matrix has positive coefficient, but the flux is negative or the opposite) and the flux is not equal to x, add to involved reactions
-                        if (model.S(metID,RxnsID(q))>0 && flux(RxnsID(q))<-1e-9 || model.S(metID,RxnsID(q))<0 && flux(RxnsID(q))>1e-9) && flux(RxnsID(q))~='x'
-                            
-                           if strcmp(involvedRxns{1},'No rxns')
-                              involvedRxns{1,1}=Rxns{q};            
-                           else
-                              involvedRxns{length(involvedRxns)+1,1}=Rxns{q};
-                           end
-                           
+
+                    case 'prod'
+                        % Add reaction if the metabolite is produced (product)
+                        if ~noFlux && ...
+                           (model.S(metID,RxnsID(q)) > 0 && flux(RxnsID(q)) < -1e-9 || ...
+                            model.S(metID,RxnsID(q)) < 0 && flux(RxnsID(q)) >  1e-9)
+
+                            involvedRxns{end+1,1} = Rxns{q};
+                            foundRxns = true;
                         end
-                        
-                    case 'both' %in cace of direction = 'both'
-                        
-                        %if (the reaction in the S matrix has nonzero coefficient and the flux is negative or positive) and the flux is not equal to x, add to involved reactions
-                        if (model.S(metID,RxnsID(q))~=0 && (flux(RxnsID(q))<-1e-9 || flux(RxnsID(q))>1e-9))&&flux(RxnsID(q))~='x'
-                            
-                           if strcmp(involvedRxns{1},'No rxns')
-                              involvedRxns{1,1}=Rxns{q};            
-                           else
-                              involvedRxns{length(involvedRxns)+1,1}=Rxns{q};
-                           end
-                           
+
+                    case 'both'
+                        % Add reaction if metabolite participates and flux is non-zero
+                        if ~noFlux && ...
+                           (model.S(metID,RxnsID(q)) ~= 0 && ...
+                           (flux(RxnsID(q)) < -1e-9 || flux(RxnsID(q)) > 1e-9))
+
+                            involvedRxns{end+1,1} = Rxns{q};
+                            foundRxns = true;
                         end
-                        
-                    case 'struc' %in cace of direction = 'struc'
-                        
-                        if model.S(metID,RxnsID(q))~=0 %if the reaction in the S matrix has nonzero coefficient, add to involved reactions
-                            
-                           if strcmp(involvedRxns{1},'No rxns')
-                              involvedRxns{1,1}=Rxns{q};            
-                           else
-                              involvedRxns{length(involvedRxns)+1,1}=Rxns{q};
-                           end
-                           
+
+                    case 'struc'
+                        % Add reaction if stoichiometric coefficient is non-zero (no flux needed)
+                        if model.S(metID,RxnsID(q)) ~= 0
+                            involvedRxns{end+1,1} = Rxns{q};
+                            foundRxns = true;
                         end
-                        
+
+                end % switch
+
+            end % for q
+
+            if foundRxns
+
+                for q = 1:radius-1
+                    involvedRxns = findNearRxns(model, involvedRxns, direction, flux);
                 end
-                
+
+                [involvedMets,deadEnds,deadRxns] = bio_draw_by_rxn(model,involvedRxns,drawMap,direction,metAbbr,excludeMets,flux,save,closev);
+
+            else
+
+                % FIX: deadRxns was never assigned in this branch in the original
+                switch direction
+                    case 'sub'
+                        disp(['According to given fluxes no substrates were found for metabolite ', metAbbr{1}])
+                    case 'prod'
+                        disp(['According to given fluxes no products were found for metabolite ', metAbbr{1}])
+                    case 'both'
+                        disp(['According to given fluxes no substrates and products were found for metabolite ', metAbbr{1}])
+                end
+
+                % Outputs already initialised to 'No ...' defaults above
+
             end
 
-            if ~strcmp(involvedRxns{1},'No rxns') %if the list of involved reactions is not empty
-                
-                for q=1:radius-1 %cycle through the radius-1
-                    involvedRxns=findNearRxns(model,involvedRxns,direction,flux);
-                end  
+        else % metabolite not present in the model
 
-                [involvedMets,deadEnds,deadRxns]=bio_draw_by_rxn(model,involvedRxns,drawMap,direction,metAbbr,excludeMets,flux,save,closev); %call out the command bio_draw_by_rxn with obtained arguments
-                
-            else %if the list of involved reactions is empty
-                
-                switch direction %check the value of the variable direction
-                    
-                    case 'sub' %in cace of direction = 'sub'                    
-                        disp(['According to given fluxes no substrates were found for metabolite ',metAbbr{1}])                    
-                    case 'prod' %in cace of direction = 'prod'                    
-                        disp(['According to given fluxes no products were found for metabolite ',metAbbr{1}])
-                    case 'both' %in cace of direction = 'both'
-                        disp(['According to given fluxes no substrates and products were found for metabolite ',metAbbr{1}])                
-                end            
-                
-                %declare variables
-                deadEnds='No dead ends';
-                involvedRxns='No rxns';
-                involvedMets='No mets';
-                
-            end          
+            disp(strcat(metAbbr, ' is not present in the model'))
+            % Outputs already initialised to 'No ...' defaults above
 
-        else %if the initial metabolite is not present in the model
-            
-            disp(strcat(metAbbr,' is not present in the model'))
-            deadEnds='No dead ends';
-            involvedRxns='No rxns';
-            involvedMets='No mets';
-            
         end
-        
-    else %if flux vector is empty
-        
+
+    else % flux vector is empty (and direction requires flux)
+
         disp('The flux vector is empty')
-        deadEnds='No dead ends';
-        involvedRxns='No rxns';
-        involvedMets='No mets';
-        
+        % Outputs already initialised to 'No ...' defaults above
+
     end
-    
-else %if radius is not > 0
-    
+
+else % radius <= 0
+
     disp('The value of the argument RADIUS must be a natural number, for example, 1,2,3...n')
-    deadEnds='No dead ends';
-    involvedRxns='No rxns';
-    involvedMets='No mets';
-    
-end    
+    % Outputs already initialised to 'No ...' defaults above
+
+end
