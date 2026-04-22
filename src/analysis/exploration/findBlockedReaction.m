@@ -42,12 +42,14 @@ if nargin < 2 || isequal(method, 'FVA')
 else
     % Stage 1: L2 min-norm via solveCobraLPCPLEX to get candidate blocked reactions
     tol = 1e-10;
+    % Preserve original objective for fallback
+    modelOrig = model;
     model.c = zeros(n, 1);
     solution = solveCobraLPCPLEX(model, 0, 0, 0, [], 1e-6);
 
     if solution.stat ~= 1
         warning('L2 solve failed (status %d), falling back to full FVA', solution.stat);
-        blockedReactions = findBlockedReaction(model, 'FVA');
+        blockedReactions = findBlockedReaction(modelOrig, 'FVA');
         return;
     end
 
@@ -55,7 +57,7 @@ else
     candidateRxns = model.rxns(candidateIdx);
 
     if isempty(candidateRxns)
-        blockedReactions = cellstr('');
+        blockedReactions = cell(0, 1);
         return;
     end
 
