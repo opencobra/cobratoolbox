@@ -1,51 +1,56 @@
-% findNearRxns.m
-% Additional script of the Paint4Net to find the neightbor reactions
+function Rxns = findNearRxns(model, Rxns, direction, flux)
+% Finds neighbouring reactions for Paint4Net visualisation.
 %
-% function Rxns=findNearRxns(model,Rxns,direction,flux)
+% USAGE:
 %
-% INPUT
+%    Rxns = findNearRxns(model, Rxns, direction, flux)
 %
-% model - COBRA Toolbox model
-% metAbbr - a cell type variable that can take a value that represents the
-%       abbreviation of a metabolite in the COBRA model. This metabolite is
-%       the start point for visualization. 
-% Rxns - a list of reactions in the COBRA model in the form
-%       {'Rxn_Abbr_1','Rxn_Abbr_2',...,'Rxn_Abbr_n'} or cell type vector from the
-%       MATLAB workcpase.
-% direction - a string type variable that can take value of 'struc', 'sub',
-%       'prod' or 'both' (default is 'struc') indicating a direction for the
-%       algorithm. In case of 'struc' (structure) the algorithm visualizes all
-%       metabolites connected to the specified reactions in the argument rxns.
-%       The key feature of this function is visualization of all specified reactions
-%       not taking in account a steady state fluxes in that way representing the
-%       structure of the COBRA model. In case of 'sub' (substrates) the algorithm
-%       visualizes only those metabolites which are substrates for the specified 
-%       reactions in the argument rxns. This time the algorithm is using a stoichiometric 
-%       matrix and the steady state fluxes to determine direction of each reaction. 
-%       The algorithm is using an assumption that only those fluxes which rates
-%       are smaller than -10-9 mmol*g-1*h-1 or greater than +10-9 mmol*g-1*h-1 
-%       are non-zero fluxes. In case of 'prod' (products) the algorithm visualizes 
-%       only those metabolites which are products for the specified reactions in 
-%       the argument rxns but in case of 'both' the algorithm visualizes both
-%       – substrates and products - for the specified reactions in the argument
-%       rxns. For both cases the algorithm is using the same rules regarding to 
-%       calculation of the directions for each reaction as for case of 'sub'.
-%       This argument is essential for the command draw_by_met of the
-%       Paint4Net v1.2
-%       because the command draw_by_met is calling out the command draw_by_rxn
-%       and passing the argument direction.
-% flux - a double type Nx1 size vector of fluxes of reactions where N is number 
-%       of reactions (default is vector of x). This vector is calculated during
-%       the optimization of the objective function. Use the command
-%       optimizeCbModel.m.
+% INPUTS:
+%    model:        COBRA model structure.
+%    Rxns:         Cell array of reaction abbreviations in the COBRA model, or
+%                  a cell vector from the MATLAB workspace.
 %
-% OUTPUT
+% OPTIONAL INPUTS:
+%    direction:    Direction used by the algorithm. Allowed values are:
 %
-% Rxns - a list of reactions from the COBRA model.
+%                  * 'struc' - Find all metabolites connected to the specified
+%                    reactions, without considering steady-state fluxes. This
+%                    represents the structure of the COBRA model.
 %
-% Andrejs Kostromins 17/02/2012 E-mail: andrejs.kostromins@gmail.com
-
-function Rxns=findNearRxns(model,Rxns,direction,flux)
+%                  * 'sub' - Find metabolites acting as substrates for the
+%                    specified reactions. Reaction direction is inferred from the
+%                    stoichiometric matrix and steady-state fluxes.
+%
+%                  * 'prod' - Find metabolites acting as products for the
+%                    specified reactions. Reaction direction is inferred from the
+%                    stoichiometric matrix and steady-state fluxes.
+%
+%                  * 'both' - Find both substrates and products for the specified
+%                    reactions. Reaction direction is inferred from the
+%                    stoichiometric matrix and steady-state fluxes.
+%
+%                  Default: 'struc'
+%
+%    flux:         `nRxns x 1` vector of reaction fluxes, where `nRxns` is the
+%                  number of reactions in the model. Fluxes are usually obtained
+%                  with `optimizeCbModel`. Flux values smaller than
+%                  `-1e-9 mmol gDW^-1 h^-1` or greater than
+%                  `1e-9 mmol gDW^-1 h^-1` are treated as non-zero.
+%
+%                  Default: vector of zeros.
+%
+% OUTPUT:
+%    Rxns:         Cell array of neighbouring reaction abbreviations from the
+%                  COBRA model.
+%
+% NOTE:
+%    This function is an additional Paint4Net routine. It supports
+%    `draw_by_met`, which calls `draw_by_rxn` and passes the `direction`
+%    argument.
+%
+% .. Author:
+%       - Andrejs Kostromins, 17 Feb 2012, andrejs.kostromins@gmail.com
+%
 
 RxnsIDs=findRxnIDs(model,Rxns); %find reaction IDs in the model
 metIndexes(1)=-1; %declare variable
