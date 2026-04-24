@@ -1,20 +1,20 @@
-% % The COBRAToolbox: testPaint4Net.m
-% %
-% % Purpose:
-% %     - testPaint4Net tests the whether Paint4Net
-% %     is working correctly
-% %
-% % Author:
-% %     - Original file: 
-% %            Andrejs Kostromins, Biosystems Group, Department of Computer
-% %            Systems, Latvia University of Agriculture, Liela iela 2, 
-% %            LV-3001 Jelgava, Latvia. 
-% %            Egils Stalidzans, Institute of Microbiology and 
-% %            Biotechnology, University of Latvia, Jelgavas iela 1, 
-% %            LV-1004, Latvia.
-% %             - Modified for use without BioGraph by:
-% %                 Rui Afonso Tavares & Reinis Muižnieks 2026
-% %
+% The COBRAToolbox: testPaint4Net.m
+%
+% Purpose:
+%     - testPaint4Net tests the whether Paint4Net
+%     is working correctly
+%
+% Author:
+%     - Original file: 
+%            Andrejs Kostromins, Biosystems Group, Department of Computer
+%            Systems, Latvia University of Agriculture, Liela iela 2, 
+%            LV-3001 Jelgava, Latvia. 
+%            Egils Stalidzans, Institute of Microbiology and 
+%            Biotechnology, University of Latvia, Jelgavas iela 1, 
+%            LV-1004, Latvia.
+%             - Modified for use without BioGraph by:
+%                 Rui Afonso Tavares & Reinis Muižnieks 2026
+%
 % save the current path
 
 if ~exist('biograph', 'file')
