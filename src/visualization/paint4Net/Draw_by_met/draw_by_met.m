@@ -1,86 +1,101 @@
-% draw_by_met.m
-% Script of the Paint4Net to define the scope of visualization by a
-% metabolite
+function [involvedRxns, involvedMets, deadEnds, deadRxns] = draw_by_met(model, metAbbr, drawMap, radius, direction, excludeMets, flux, save, closev)
+% Defines the visualisation scope from a starting metabolite.
 %
-% function [involvedRxns,involvedMets,deadEnds,deadRxns]=draw_by_met(model,metAbbr,drawMap,radius,direction,excludeMets,flux,save,closev)
+% USAGE:
 %
-% INPUT
+%    [involvedRxns, involvedMets, deadEnds, deadRxns] = draw_by_met(model, metAbbr, drawMap, radius, direction, excludeMets, flux, save, closev)
 %
-% model - COBRA Toolbox model
-% metAbbr - a cell type variable that can take a value that represents the
-%       abbreviation of a metabolite in the COBRA model. This metabolite is
-%       the start point for visualization. 
+% INPUTS:
+%    model:           COBRA model structure.
+%    metAbbr:         Cell array containing the abbreviation of a metabolite in
+%                     the COBRA model. This metabolite is used as the starting
+%                     point for visualisation.
 %
-% OPTIONAL INPUT
+% OPTIONAL INPUTS:
+%    drawMap:         Logical indicating whether to visualise the COBRA model.
+%                     Set this to `false` to avoid rendering large maps and
+%                     return results faster.
 %
-% drawMap - a logical type variable that can take value of true or false
-%       (default is false) indicating whether to visualize the COBRA model or not.
-%       The main idea of this argument is to ensure possibility to save
-%       time by not visualizing a large COBRA model and get a result faster.
-% radius - a double type variable that can take a value of natural
-% numbers
-%       (1,2,3n). The argument radius indicates the depth of an analysis
-%       of the initial metabolite (the argument metAbbr) and it is tightly 
-%       connected to the optional argument direction. For example, if user 
-%       is interested in the substrates of ethanol, the user can analyse substrates
-%       step by step starting from the first reactions where the argument radius 
-%       is equal to 1 and moving to the next reactions by increasing the value 
-%       of the argument radius.
-% direction - a string type variable that can take value of 'struc', 'sub',
-%       'prod' or 'both' (default is 'struc') indicating a direction for the
-%       algorithm. In case of 'struc' (structure) the algorithm visualizes all
-%       metabolites connected to the specified reactions in the argument rxns.
-%       The key feature of this function is visualization of all specified reactions
-%       not taking in account a steady state fluxes in that way representing the
-%       structure of the COBRA model. In case of 'sub' (substrates) the algorithm
-%       visualizes only those metabolites which are substrates for the specified 
-%       reactions in the argument rxns. This time the algorithm is using a stoichiometric 
-%       matrix and the steady state fluxes to determine direction of each reaction. 
-%       The algorithm is using an assumption that only those fluxes which rates
-%       are smaller than -10-9 mmol*g-1*h-1 or greater than +10-9 mmol*g-1*h-1 
-%       are non-zero fluxes. In case of 'prod' (products) the algorithm visualizes 
-%       only those metabolites which are products for the specified reactions in 
-%       the argument rxns but in case of 'both' the algorithm visualizes both
-%        substrates and products - for the specified reactions in the argument
-%       rxns. For both cases the algorithm is using the same rules regarding to 
-%       calculation of the directions for each reaction as for case of 'sub'.
-%       This argument is essential for the command draw_by_met of the Paint4Net v1.0
-%       because the command draw_by_met is calling out the command draw_by_rxn
-%       and passing the argument direction.
-% excludeMets - a list of metabolites (default is empty) that will be excluded
-%       from the visualization map of the COBRA model in form of the abbreviations
-%       of the metabolites separated by a comma
-%       {'Met_Abbr_1','Met_Abbr_2',...,'Met_Abbr_n'} or a cell type vector 
-%       in the MATLAB workspace that contains the static abbreviations of the
-%       metabolites. The main idea of this argument is to ensure possibility 
-%       to exclude very employed metabolites (e.g., h, h2o, atp, adp, nad etc.)
-%       to avoid unnecessary mesh on the map.
-% flux - a double type Nx1 size vector of fluxes of reactions where N is number 
-%       of reactions (default is vector of x). This vector is calculated during
-%       the optimization of the objective function. Use the command
-%       optimizeCbModel.m.
-% save - a boolean type variable that can take value of true or false
-%       (default is false) indicating whether to automatically save visualization as jpeg file or not.
-%       This is usefull for iterative function call with different
-%       input arguments for visualization scope.
-% closev - a boolean type variable that can take value of true or false
-%       (default is false) indicating whether to close the biograph viewer
-%       window or not after the visualization. This is usefull for iterative
-%       function call with different input arguments for visualization
-%       scope.
+%                     Default: false
 %
-% OUTPUT
+%    radius:          Positive integer defining the search depth from `metAbbr`.
+%                     This option is used with `direction` to expand the
+%                     analysis step by step from the starting metabolite.
 %
-% involvedRxns - a cell type vector that contains a list of the involved
-%       reactions according to the set of input arguments.
-% involvedMets - a cell type vector that contains a list of the involved metabolites
-%       in the specified reactions.
-% deadEnds - a cell type vector that contains a list of the dead end
-%       metabolites in the specified reactions.
+%                     For example, to inspect substrates of ethanol, start with
+%                     `radius = 1`, then increase the radius to include the next
+%                     reaction layers.
 %
-% Andrejs Kostromins 04/10/2012 E-mail: andrejs.kostromins@gmail.com
-
-function [involvedRxns,involvedMets,deadEnds,deadRxns]=draw_by_met(model,metAbbr,drawMap,radius,direction,excludeMets,flux,save,closev)
+%    direction:       Direction used by the algorithm. Allowed values are:
+%
+%                     * 'struc' - Visualise all metabolites connected to the
+%                       specified reactions, without considering steady-state
+%                       fluxes. This represents the structure of the COBRA model.
+%
+%                     * 'sub' - Visualise only metabolites acting as substrates
+%                       for the specified reactions. Reaction direction is
+%                       inferred from the stoichiometric matrix and
+%                       steady-state fluxes.
+%
+%                     * 'prod' - Visualise only metabolites acting as products
+%                       for the specified reactions. Reaction direction is
+%                       inferred from the stoichiometric matrix and
+%                       steady-state fluxes.
+%
+%                     * 'both' - Visualise both substrates and products for the
+%                       specified reactions. Reaction direction is inferred from
+%                       the stoichiometric matrix and steady-state fluxes.
+%
+%                     Default: 'struc'
+%
+%    excludeMets:     Cell array of metabolite abbreviations to exclude from the
+%                     visualisation map, for example:
+%
+%                        {'Met_Abbr_1', 'Met_Abbr_2', ..., 'Met_Abbr_n'}
+%
+%                     This option is useful for excluding highly connected
+%                     metabolites such as `h`, `h2o`, `atp`, `adp`, and `nad`,
+%                     to reduce visual clutter.
+%
+%                     Default: empty
+%
+%    flux:            `nRxns x 1` vector of reaction fluxes, where `nRxns` is
+%                     the number of reactions in the model. Fluxes are usually
+%                     obtained with `optimizeCbModel`. Flux values smaller than
+%                     `-1e-9 mmol gDW^-1 h^-1` or greater than
+%                     `1e-9 mmol gDW^-1 h^-1` are treated as non-zero.
+%
+%                     Default: vector of zeros.
+%
+%    save:            Boolean indicating whether to save the visualisation
+%                     automatically as a JPEG file. This is useful for iterative
+%                     calls with different visualisation scopes.
+%
+%                     Default: false
+%
+%    closev:          Boolean indicating whether to close the biograph viewer
+%                     window after visualisation. This is useful for iterative
+%                     calls with different visualisation scopes.
+%
+%                     Default: false
+%
+% OUTPUTS:
+%    involvedRxns:    Cell array containing the reactions involved according to
+%                     the input arguments.
+%    involvedMets:    Cell array containing the metabolites involved in the
+%                     specified reactions.
+%    deadEnds:        Cell array containing the dead-end metabolites in the
+%                     specified reactions.
+%    deadRxns:        Cell array containing the dead reactions in the specified
+%                     visualisation scope.
+%
+% NOTE:
+%    This function is part of Paint4Net. It defines a reaction and metabolite
+%    visualisation scope around a starting metabolite.
+%
+% .. Author:
+%       - Andrejs Kostromins, 4 Oct 2012, andrejs.kostromins@gmail.com
+%
 
 if nargin<3 %if the number of arguments < 3, drawMap=false
    drawMap=false;
