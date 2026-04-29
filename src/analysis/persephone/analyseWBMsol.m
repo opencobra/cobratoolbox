@@ -27,10 +27,9 @@ function processedFluxResPaths = analyseWBMsol(fluxPath,paramFluxProcessing, flu
 %       processedFluxResPaths = analyseWBMsol(fluxPath,paramFluxProcessing, fluxAnalysisPath)
 %
 % INPUTS:
-% fluxPath         Character array with path to .mat files produced in
-%                     optimiseRxnMultipleWBM.m
+% fluxPath            Character array with path to .mat files produced in analyseWBMs.m
 %
-% paramFluxProcessing       Structured array with optional parameters:
+% paramFluxProcessing Structured array with optional parameters:
 %
 %                     .numericalRounding defines how much the predicted flux values are
 %                     rounded. A defined value of 1e-6 means that a flux value of
@@ -65,38 +64,7 @@ function processedFluxResPaths = analyseWBMsol(fluxPath,paramFluxProcessing, flu
 %                     - paramFluxProcessing.rxnRemovalCutoff = {'count',30};
 %                     
 %                     paramFluxProcessing.rxnRemovalCutoff = {'fraction',0.1};
-%                     RxnEquivalenceThreshold
-%                     .rxnEquivalenceThreshold defines the minimal threshold of when 
-%                     functionally identical flux values are predicted, and are thus part of
-%                     the same linear pathways. The threshold for functional equivalence is
-%                     expressed as the R2 (r-squared) value after performing a simple linear 
-%                     regression between two reactions.  
 %                     
-%                     Default parameterisation: 
-%                     - paramFluxProcessing.rxnEquivalenceThreshold = 0.999;
-%                     
-%                     Example: 
-%                     - paramFluxProcessing.rxnEquivalenceThreshold = 0.999;
-%                     
-%                     paramFluxProcessing.rxnEquivalenceThreshold = 0.999;
-%                     
-%                     .fluxMicrobeCorrelationMetric defines the method for correlating the 
-%                     predicted fluxes with microbial relative abundances. Note that this
-%                     metric is not used if mWBMs are not present. The available correlation
-%                     types are: 
-%                     * regression_r2:  the R2 (r-squared) value from pairwised linear regression on the 
-%                     predicted fluxes against microbial relative abundances.
-%                     * spearman_rho: the correlation coefficient, rho obtained from pairwise
-%                     Spearman nonparametric correlations between predicted fluxes and 
-%                     microbial relative abundances. 
-%                     
-%                     Default parameterisation: 
-%                     - paramFluxProcessing.fluxMicrobeCorrelationMetric = 'regression_r2';
-%                     
-%                     Examples: 
-%                     - paramFluxProcessing.fluxMicrobeCorrelationMetric = 'regression_r2';
-%                     - paramFluxProcessing.fluxMicrobeCorrelationMetric = 'spearman_rho';
-%
 % fluxAnalysisPath             
 %                     Character array with path to directory where all
 %                     results will be saved.
@@ -116,7 +84,6 @@ defaultParams=struct;
 defaultParams.numericalRounding = 1e-6;
 defaultParams.rxnRemovalCutoff = {'fraction', 0.1};
 defaultParams.rxnEquivalenceThreshold = 0.999;
-defaultParams.fluxMicrobeCorrelationMetric = 'spearman_rho';
 
 % Check if all fields in paramFluxProcessing are present. Add fields with
 % default values if one or more fields are not present. 
@@ -189,7 +156,7 @@ fluxes = [metadata fluxes];
 
 % Create statistics for fluxes and prune results
 stats = describeFluxes(fluxes,paramFluxProcessing, analyseGF);
-
+%%
 % Get fluxes for further analysis
 fluxesPruned = stats.Fluxes_removed_reactions;
 
@@ -265,16 +232,63 @@ if microbiomePresent == true
     % Ensure identical sample order
     fluxesToCorrelate = fluxesToCorrelate(wbmRelativeAbundances.Properties.RowNames,:);
     wbmRelativeAbundances = wbmRelativeAbundances(fluxesToCorrelate.Properties.RowNames,:);
+
+    %%
+
     
     if license('test', 'Statistics_Toolbox')
-        RHO = corr(table2array(fluxesToCorrelate),table2array(wbmRelativeAbundances),'type','Spearman','rows','pairwise')'; % Create spearman correlations
-        fluxMicrobeCorr = array2table(RHO,... % Transform correlation matrix to table
-            'RowNames', wbmRelativeAbundances.Properties.VariableNames',...
-            'VariableNames',fluxesToCorrelate.Properties.VariableNames...
-            );
+        % Correlate flux predictions with microbial relative abundances. Then,
+        % create a tall table with reaction, taxon, rho, 95% CI, and the
+        % p-value.
+    
+        % Preallocate empty results table
+        combinedTables = {fluxesToCorrelate,wbmRelativeAbundances};
+        tabVarNames = cellfun(@(x) x.Properties.VariableNames,combinedTables,'un',0); % Get all reaction and microbe names
+        corrTable = array2table(zeros(cellfun(@length,tabVarNames)),"VariableNames",tabVarNames{2});
+        corrTable = addvars(corrTable,tabVarNames{1}','NewVariableNames','Reaction ID','Before',1);
+        corrTable = stack(corrTable,corrTable.Properties.VariableNames(2:end),"NewDataVariableName",'Rho','IndexVariableName','Taxon');
+        corrTable = convertvars(corrTable,["Reaction ID","Taxon"],'string');
+
+        % Get the number of samples in each reation-microbe pair that can
+        % be correlated               
+        getSampSize = @(x,y) sum(~isnan(x) & ~isnan(y)); 
+        nPairs = height(corrTable);
+        corrN = zeros(nPairs,1);
+        for i=1:nPairs
+            corrN(i) = getSampSize(combinedTables{1}.(corrTable.("Reaction ID")(i)) , combinedTables{2}.(corrTable.("Taxon")(i)) );
+        end
+
+        % Add sample sizes and preallocate columns for the correlation
+        % results
+        corrTable = addvars(corrTable,corrN,zeros(nPairs,1),zeros(nPairs,1),zeros(nPairs,1),'NewVariableNames', {'N','2.5%CI', '97.5%CI','P-value'});
+        corrTable = movevars(corrTable,'N','Before','Rho');
+    
+        % Fill empty rows. Needed for identifying the ranks
+        %preparedTables = cellfun(@(x) fillmissing(x,'constant',0),combinedTables,'UniformOutput',false);
+        preparedTables = combinedTables;
+    
+        % Convert matrices to rank for spearman correlations
+        convToRank = @(x) array2table(tiedrank(table2array(x)),'RowNames',x.Properties.RowNames,'VariableNames',x.Properties.VariableNames);
+        rankedTables = cellfun(@(x) convToRank(x), preparedTables,'UniformOutput',false);
+    
+        for i=1:nPairs
+            % Perform pairwise spearman correlations
+            [rho,p,lower,upper] = corrcoef( rankedTables{1}.(corrTable.("Reaction ID")(i)), rankedTables{2}.(corrTable.("Taxon")(i)) , 'Rows','pairwise'); 
+            corrTable{i,{'Rho','2.5%CI', '97.5%CI','P-value'}} = cellfun(@(x) x(1,2), {rho,p,lower,upper}); % Extract rho, 95%CI, and P-value
+        end
+
+        % If no result could be found for the 95% CI or the P-value, make
+        % sure that there result for Rho is also NaN
+        resArray = corrTable{:,{'Rho','2.5%CI', '97.5%CI','P-value'}};
+        resArray(any(isnan(resArray),2),:) = nan;
+        corrTable{:,{'Rho','2.5%CI', '97.5%CI','P-value'}} = resArray;
+
+        % Rename populated results for saving
+        fluxMicrobeCorrTable = corrTable; 
+
     else
         warning('Statistics Toolbox was not installed, correlation between flux and relative abundance could not be performed');
-        fluxMicrobeCorr = cell2table({'Statistics Toolbox was not installed, correlation between flux and relative abundance could not be performed'});
+        fluxMicrobeCorrTable = cell2table({'Statistics Toolbox was not installed, correlation between flux and relative abundance could not be performed'});
     end
 end
 
@@ -294,45 +308,45 @@ if isfile(resultPath); delete(resultPath); end % For script testing
 
 % Save FBA solver statistics
 description = cell(2,1); 
-description{1} = 'FBA solver statistics'; % Header
-description{2} = ''; % Details
+description{1} = 'FBA solution optimality statistics'; % Header
+description{2} = '0 - Infeasible problem, 1 - Optimal solution, 2 - Unbounded solution, 3 - Almost optimal solution, -1 - Some other problem (timelimit, numerical problem etc).'; % Details
 fbaStats = addvars(fbaStats, fbaStats.Properties.RowNames, 'Before',1,'NewVariableNames','fileName');
 writeSupplement(fbaStats, description, resultPath)
 
 % Summary statistics of flux results
-description = cell(2,1); description{1} = 'Summary statistics of predicted fluxes'; % Header
+description = cell(2,1); description{1} = 'Sample distribution summary statistics of the predicted fluxes in mmol/person/day'; % Header
 description{2} = ''; % Details
 writeSupplement(stats.Flux_summary_statistics, description, resultPath)
 
 % Predicted fluxes
-description = cell(2,1); description{1} = 'Predicted reaction fluxes'; % Header
+description = cell(2,1); description{1} = 'Table with fluxes in mmol/person/day for each predicted reaction and sample'; % Header
 description{2} = ''; % Details
 writeSupplement(stats.Fluxes, description, resultPath)
 
 % Predicted reaction fluxes for analysis 
-description = cell(2,1); description{1} = 'Predicted reaction fluxes for analysis'; % Header
+description = cell(2,1); description{1} = 'Reaction-filtered flux table with reaction flux predictions in mmol/person/day'; % Header
 description{2} = ''; % Details
 writeSupplement(stats.Fluxes_removed_reactions, description, resultPath)
 
 if analyseGF || ~isempty(stats.Scaled_fluxes)
-% Summary statistics of scaled flux results
-description = cell(2,1); description{1} = 'Summary statistics of predicted scaled fluxes for analysis'; % Header
-description{2} = ''; % Details
-writeSupplement(stats.Scaled_flux_summary_statistics, description, resultPath)
-
-% Predicted reaction fluxes for analysis 
-description = cell(2,1); description{1} = 'Predicted scaled reaction fluxes for analysis'; % Header
-description{2} = ''; % Details
-writeSupplement(stats.Scaled_fluxes, description, resultPath)
+    % Summary statistics of scaled flux results
+    description = cell(2,1); description{1} = 'Summary statistics for the net gut microbiome components of predicted flux values in the microbiome-personalised WBMs'; % Header
+    description{2} = 'The Net Microbiome Flux Component represents the net predicted flux in mmol/person/day attributable to the gut microbiota. The proportion of the predicted flux attributable to the gut microbiota (relative to the combined host-microbiome model) is denoted by the Net Microbiome-to-Host Flux Contribution Ratio. Both metrics were calculated taking into account the different fluxes between male and female germ-free WBMs.'; % Details
+    writeSupplement(stats.Scaled_flux_summary_statistics, description, resultPath)
+    
+    % Predicted reaction fluxes for analysis 
+    description = cell(2,1); description{1} = 'Net microbiome component of the predicted reaction fluxes in mmol/person/day'; % Header
+    description{2} = ''; % Details
+    writeSupplement(stats.Scaled_fluxes, description, resultPath)
 end
 
 if microbiomePresent == true
 
     % Predicted reaction fluxes for analysis 
-    description = cell(2,1); description{1} = 'Flux-microbe spearman correlations'; % Header
-    description{2} = ''; % Details
-    fluxMicrobeCorr= addvars(fluxMicrobeCorr, fluxMicrobeCorr.Properties.RowNames, 'Before',1,'NewVariableNames','Microbe');
-    writeSupplement(fluxMicrobeCorr, description, resultPath)
+    description = cell(2,1); description{1} = 'Spearman correlation coefficients of predicted reaction fluxes in mmol/person/day and corresponding microbial relative abundances'; % Header
+    description{2} = 'Spearman correlation coefficients for all combintions of the predicted reaction fluxes and microbial relative abundances. Shown are the predicted reaction IDs, microbial taxa names, the number of correlated samples (N), the correlation coefficients (Rho), 95% confidence intervals (CI), and associated P-values. Empty cells indicate that no correlation coefficient could be obtained, which may occur at low sample sizes.'; % Details
+    %fluxMicrobeCorrTable= addvars(fluxMicrobeCorrTable, fluxMicrobeCorrTable.Properties.RowNames, 'Before',1,'NewVariableNames','Microbial taxon / Predicted reaction');
+    writeSupplement(fluxMicrobeCorrTable, description, resultPath)
 end
 
 % Output paths
@@ -376,7 +390,6 @@ function stats = describeFluxes(fluxes,paramFluxProcessing, analyseGF)
 %                               of duplicate flux results between 
 %                               samples expressed in the percentage
 %                               of total samples. Reactions that exceed this threshold will be removed.
-%                               Default value = 100.
 % SD_threshold                  Minimal standard deviation of the fluxes across samples for
 %                               metabolite removal.
 % 
@@ -409,19 +422,24 @@ fluxesForStats(contains(fluxesForStats.Properties.RowNames,'sol_gf','IgnoreCase'
 
 % Preallocate table
 fluxesForStatsArray = table2array(fluxesForStats);
-% varNames = {'Reaction','No results','Duplicate fluxes','Duplicate fluxes (%)','Mean','Variance','Standard deviation','Skewness','Kurtosis','KS normality p-value','Removed'};
-varNames = {'Reaction','No results','Unique results','Mean','Variance','Standard deviation','Removed'};
+varNames = {'Reaction ID','No results','Unique results','Removed'};
 
-fluxStats = table('Size',[size(fluxesForStatsArray,2),length(varNames)],'VariableTypes',[{'string'},repmat({'double'},1,length(varNames)-1)],'VariableNames',varNames);
+fluxStats = table('Size',[size(fluxesForStatsArray,2),length(varNames)],'VariableTypes',[{'string'},{'string'},repmat({'double'},1,length(varNames)-2)],'VariableNames',varNames);
 
 % Add reaction names
-fluxStats.Reaction = fluxesForStats.Properties.VariableNames';
+fluxStats.("Reaction ID") = fluxesForStats.Properties.VariableNames';
+
+% Define function for data type processing
+formNum = @(x) arrayfun(@(x) string(sprintf('%.2e', x)), x);
+meanSd = @(x) append(formNum(mean(x,'omitnan')) ," (", formNum(std(x,'omitmissing'))," )")';
+
+% Calculate mean and SD of fluxes
+fluxStats.('Mean (SD)') = meanSd(fluxesForStatsArray);
 
 % Find the number of samples with microbial flux contribution (previously zeros)
 fluxStats.("No results") = sum(isnan(fluxesForStatsArray))';
 
 % Find the number of samples with duplicate microbial contributions (M: unique)
-%fluxStats.("Duplicate fluxes") = arrayfun(@(x) size(fluxesForStatsArray,1) - length(unique(fluxesForStatsArray(:,x))), 1:size(fluxesForStatsArray,2))';
 
 % Find the number of unique flux results per reaction
 for ii = 1:size(fluxesForStatsArray,2)
@@ -430,17 +448,12 @@ for ii = 1:size(fluxesForStatsArray,2)
     fluxStats.("Unique results")(ii) = length(unique(fluxResults));
 end
 
-% Calculate the fraction of duplicate fluxes
-% fluxStats.("Duplicate fluxes (%)") = (fluxStats.("Duplicate fluxes")./(size(fluxesForStatsArray,1)-1)) * 100;
-
-% Calculate mean of fluxes
-fluxStats.Mean = mean(fluxesForStatsArray,'omitnan')';
 
 % Calculate reaction variance
-fluxStats.Variance = var(fluxesForStatsArray,[],1,'omitnan')';
+% fluxStats.Variance = var(fluxesForStatsArray,[],1,'omitnan')';
 
 % Calculate the standard deviation
-fluxStats.("Standard deviation") = std(fluxesForStatsArray,[],1,'omitnan')';
+% fluxStats.("Standard deviation") = std(fluxesForStatsArray,[],1,'omitnan')';
 
 % Get distribution skewness
 % fluxStats.Skewness = skewness(fluxesForStatsArray)';
@@ -567,23 +580,27 @@ end
 idH = ~contains(sexInfo.ID, 'gf');
 
 if ~isempty(scaledFluxes)
-scaledFluxes(~idH,:) = [];
+    scaledFluxes(~idH,:) = [];
 end
 
 %%% Obtain summary statistics for the unscaled and scaled fluxes %%%
 
+% Define summary table variable names if needed
+netMicrobiomeFluxTableVarNames = {'Reaction ID','Germ-free male flux','Germ-free female flux',...
+    'Net Microbiome Flux component, Mean (SD)'};
+
 % Preallocate table for flux contributions from the scaled
 if any(mWBMs) && ~any(iWBMs) && analyseGF % host NOT personalised, microbiome personalised
 
-    varNames = {'Reaction','Germ-free male','Germ-free female','Mean scaled flux','SD scaled flux','Mean scaled / WBM flux','SD scaled / WBM flux'};
+    varNames = netMicrobiomeFluxTableVarNames;
 
 % elseif any(iWBMs) && ~any(mWBMs) % host personalised, microbiome NOT personalised
 
-    % varNames = {'Reaction','Male control','Female control','Mean scaled flux','SD scaled flux','Mean scaled / WBM flux','SD scaled / WBM flux'};
+    % varNames = {'Reaction ID','Male control','Female control','Mean scaled flux','SD scaled flux','Mean scaled / WBM flux','SD scaled / WBM flux'};
 
 elseif any(iWBMs) && any(mWBMs) && analyseGF % host personalised, microbiome personalised
-
-    varNames = {'Reaction','Average germ-free male', 'Average germ-free female','Mean scaled flux','SD scaled flux','Mean scaled / WBM flux','SD scaled / WBM flux'};
+    varNames = netMicrobiomeFluxTableVarNames;
+    varNames(2:3) = append(varNames(2:3),', Mean (SD)');
 
 else % host NOTE personalised, microbiome NOT personalised
     varNames = {};
@@ -597,11 +614,12 @@ else
 end
 
 % Populate table 
+getGfFluxFun = @(x,y,z) table2array(x(contains(y.ID, 'gf') & matches(y.Sex, z),:))'; % Define function for extracting the gf fluxes
 if any(mWBMs) && ~any(iWBMs) && analyseGF % host NOT personalised, microbiome personalised
 
     % Add GF fluxes to the table
-    scaledFluxStats.("Germ-free male") = table2array(fluxes_rm(contains(sexInfo.ID, 'gf') & matches(sexInfo.Sex, 'male'),:))';
-    scaledFluxStats.("Germ-free female") = table2array(fluxes_rm(contains(sexInfo.ID, 'gf') & matches(sexInfo.Sex, 'female'),:))';
+    scaledFluxStats.(varNames{2}) = getGfFluxFun(fluxes_rm,sexInfo,'male');% table2array(fluxes_rm(contains(sexInfo.ID, 'gf') & matches(sexInfo.Sex, 'male'),:))';
+    scaledFluxStats.(varNames{3}) = getGfFluxFun(fluxes_rm,sexInfo,'female');%table2array(fluxes_rm(contains(sexInfo.ID, 'gf') & matches(sexInfo.Sex, 'female'),:))';
 
 % elseif any(iWBMs) && ~any(mWBMs) % host personalised, microbiome NOT personalised
 
@@ -615,8 +633,8 @@ elseif any(iWBMs) && any(mWBMs) && analyseGF% host personalised, microbiome pers
     % Note that if no male or female values are found, i.e., mean([]) a nan
     % will be produced. If only one value is found, e.g., mean(5.1), that
     % number will be produced. 
-    scaledFluxStats.("Average germ-free male") = mean(table2array(fluxes_rm(startsWith(sexInfo.ID, 'gfi') & strcmp(sexInfo.Sex, 'male'),:)))';
-    scaledFluxStats.("Average germ-free female") = mean(table2array(fluxes_rm(startsWith(sexInfo.ID, 'gfi') & strcmp(sexInfo.Sex, 'female'),:)))';
+    scaledFluxStats.(varNames{2}) = meanSd(getGfFluxFun(fluxes_rm,sexInfo,'male'));
+    scaledFluxStats.(varNames{3}) = meanSd(getGfFluxFun(fluxes_rm,sexInfo,'female'));
 else
     scaledFluxStats = table();
 end
@@ -633,15 +651,14 @@ if ~isempty(scaledFluxStats) % If either the host, the microbiome, or both are p
     hmFluxes = hmFluxes(ib,:);
 
     % Add reaction names to table
-    scaledFluxStats.Reaction = mFluxes.Properties.VariableNames';
+    scaledFluxStats.("Reaction ID") = mFluxes.Properties.VariableNames';
 
     % Translate tables to arrays
     mFluxes = table2array(mFluxes);
     hmFluxes = table2array(hmFluxes);
 
     % Calculate the mean and SD of the scaled fluxes
-    scaledFluxStats.("Mean scaled flux") = mean(mFluxes,'omitnan')';
-    scaledFluxStats.("SD scaled flux") = std(mFluxes,'omitnan')';
+    scaledFluxStats.(varNames{4}) = meanSd(mFluxes);
 
     % Calculate fractions flux contributed by the personalisation.
     % Convert table to array
@@ -663,8 +680,10 @@ if ~isempty(scaledFluxStats) % If either the host, the microbiome, or both are p
     relFluxDiff(isnan(relFluxDiff))=0;
 
     % Now add the mean and SD per reaction to the table
-    scaledFluxStats.("Mean scaled / WBM flux") = mean(relFluxDiff,'omitnan')';
-    scaledFluxStats.("SD scaled / WBM flux") = std(relFluxDiff,'omitnan')';
+    formNumPerc = @(x) arrayfun(@(x) string(sprintf('%.2f%%',x*100)), x)';
+    meanSdRel = @(x) append(formNumPerc(mean(x,'omitnan')) ," (", formNumPerc(std(x,'omitmissing'))," )");
+
+    scaledFluxStats.(varNames{end}) = meanSdRel(relFluxDiff);
 end
 
 % Add sex information
