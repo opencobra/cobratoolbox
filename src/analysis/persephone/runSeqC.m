@@ -10,7 +10,7 @@ function status = runSeqC(...
 %   matlab script structure: Tim Hensen, runMars.m, 2025.01
 %   assistance and reference from a generative AI model [ChatGPT](https://chatgpt.com/)
 %       clean-up and improved readability
-% Last Modified: 2026.04.22 - wbarton
+% Last Modified: 2026.04.29 - wbarton
 % Part of: Persephone Pipeline
 %
 % Description:
@@ -85,13 +85,14 @@ vdir_out_mars = fullfile(vdir_out_seqc, 'mars_out'); % Pot. remove
 cd(repoPathSeqC);
 
 %% Check for pre-existing batch outputs or final outputs
+% quals on taxa profile
 skipSeqCRun = false;
 % Check if files are in holding from the batch script
-if exist(vdir_out_seqc, 'dir') && ~isempty(dir(fullfile(vdir_out_seqc, '*.txt')))
+if exist(vdir_out_seqc, 'dir') && ~isempty(dir(fullfile(vdir_out_seqc, 'KB_S*.txt')))
     disp(' > SeqC outputs found in holding dir. Assuming external batch job completion and skipping pipeline execution.');
     skipSeqCRun = true;
 % Check if they've already been moved and finalized
-elseif exist(outputPathSeqC, 'dir') && ~isempty(dir(fullfile(outputPathSeqC, '*.txt')))
+elseif exist(outputPathSeqC, 'dir') && ~isempty(dir(fullfile(outputPathSeqC, 'KB_S*.txt')))
     disp(' > Final SeqC outputs already exist in designated path. Skipping pipeline execution.');
     skipSeqCRun = true;
 end
@@ -175,8 +176,8 @@ elseif strcmp(vOS, 'win')
 end
 
 %% Set Database Assignment Command
-%reconstructionDb = 'full_db'; % Default for now - to be user input
-reconstructionDb = 'smol_db'; % TEMP TEST
+reconstructionDb = 'full_db'; % Default for now - to be user input
+%reconstructionDb = 'smol_db'; % TEMP TEST
 switch reconstructionDb
     case 'AGORA'
         comm_run_db_kb = '"tool_k2_agora"';
