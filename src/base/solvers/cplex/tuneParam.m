@@ -82,13 +82,17 @@ if ~isfield(LPProblem,'A')
     LPProblem.A=LPProblem.S;
 end
 
-if ~isfield(LPProblem,'csense')
+if ~isfield(LPProblem,'csense') || isempty(LPProblem.csense)
     nMet = size(LPProblem.A, 1);
     if printLevel>0
         fprintf('%s\n','Assuming equality constraints, i.e. S*v=b');
     end
     %assuming equality constraints
     LPProblem.csense(1:nMet,1)='E';
+elseif length(LPProblem.csense) ~= size(LPProblem.A,1)
+    error('tuneParam:csenseSize', ...
+          'length(csense) (%d) does not match size(A,1) (%d).', ...
+          length(LPProblem.csense), size(LPProblem.A,1));
 end
 
 if ~isfield(LPProblem,'osense')
