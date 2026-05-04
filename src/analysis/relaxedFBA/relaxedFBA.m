@@ -437,7 +437,10 @@ if hasE || hasD
         model.rxnNames = [modelOrig.rxnNames; modelOrig.evarNames];
         model = rmfield(model, {'evarNames'});
     end
-    model = rmfield(model, {'evars', 'evarlb', 'evarub', 'evarc', 'E'});
+    model = rmfield(model, {'evars', 'evarlb', 'evarub', 'evarc'});
+    if hasE
+        model = rmfield(model, 'E');
+    end
 end
 if hasC || hasD
     model.mets = [modelOrig.mets; modelOrig.ctrs];
@@ -448,7 +451,13 @@ if hasC || hasD
         model.metNames = [modelOrig.metNames; modelOrig.ctrNames];
         model = rmfield(model, {'ctrNames'});
     end
-    model = rmfield(model, {'ctrs', 'dsense', 'd', 'C', 'D'});
+    model = rmfield(model, {'ctrs', 'dsense', 'd'});
+    if hasD
+        model = rmfield(model, 'D');
+    end
+    if hasC
+        model = rmfield(model, 'C');
+    end
 end
 
 % % deal with infinite bounds
