@@ -437,7 +437,10 @@ if hasE || hasD
         model.rxnNames = [modelOrig.rxnNames; modelOrig.evarNames];
         model = rmfield(model, {'evarNames'});
     end
-    model = rmfield(model, {'evars', 'evarlb', 'evarub', 'evarc', 'E'});
+    model = rmfield(model, {'evars', 'evarlb', 'evarub', 'evarc'});
+    if hasE
+        model = rmfield(model, 'E');
+    end
 end
 if hasC || hasD
     model.mets = [modelOrig.mets; modelOrig.ctrs];
@@ -448,11 +451,31 @@ if hasC || hasD
         model.metNames = [modelOrig.metNames; modelOrig.ctrNames];
         model = rmfield(model, {'ctrNames'});
     end
-    model = rmfield(model, {'ctrs', 'dsense', 'd', 'C', 'D'});
+    model = rmfield(model, {'ctrs', 'dsense', 'd'});
+    if hasD
+        model = rmfield(model, 'D');
+    end
+    if hasC
+        model = rmfield(model, 'C');
+    end
 end
 
-% % bounds, .toBeUunblockedReactions default
-[nMets,nRxns] = size(model.S);
+% % deal with infinite bounds
+%TODO properly incorporate inf bounds
+if any(model.lb==inf)
+    error('Infinite lower bounds causing infeasibility.')
+end
+if any(model.ub==-inf)
+    error('Negative infinite upper bounds causing infeasibility.')
+end
+
+infLB = (model.lb == -inf);
+infUB = (model.ub ==  inf);
+
+%add a large finite lower bound here
+model.lb(infLB) = -1/feasTol;
+%add a large finite upper bound here
+model.ub(infUB) = 1/feasTol;
 
 if ~isfield(param,'maxUB')
     param.maxUB = max(max(model.ub),-min(model.lb));
@@ -460,6 +483,9 @@ end
 if ~isfield(param,'minLB')
     param.minLB = min(-max(model.ub),min(model.lb));
 end
+
+% % bounds, .toBeUunblockedReactions default
+[nMets,nRxns] = size(model.S);
 
 if isfield(param,'toBeUnblockedReactions') == 0
     %this constraint is handled directly within relaxFBA_cappedL1
@@ -567,23 +593,6 @@ param.excludedReactionLB = [param.excludedReactionLB; param.excludedEvarLB];
 param.excludedReactionUB = [param.excludedReactionUB; param.excludedEvarUB];
 param.excludedReactions = [param.excludedReactions; param.excludedEvars];
 param.excludedMetabolites = [param.excludedMetabolites; param.excludedCtrs];
-
-% deal with infinite bounds
-%TODO properly incorporate inf bounds
-if any(model.lb==inf)
-    error('Infinite lower bounds causing infeasibility.')
-end
-if any(model.ub==-inf)
-    error('Negative infinite upper bounds causing infeasibility.')
-end
-
-infLB = (model.lb == -inf);
-infUB = (model.ub ==  inf);
-
-%add a large finite lower bound here
-model.lb(infLB) = -1/feasTol;
-%add a large finite upper bound here
-model.ub(infUB) = 1/feasTol;
 
 % user-defined excludedReactions/Evars in expanded model
 excludedReactionsTmp = param.excludedReactions;
