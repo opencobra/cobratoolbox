@@ -431,7 +431,7 @@ fluxStats.("Reaction ID") = fluxesForStats.Properties.VariableNames';
 
 % Define function for data type processing
 formNum = @(x) arrayfun(@(x) string(sprintf('%.2e', x)), x);
-meanSd = @(x) append(formNum(mean(x,'omitnan')) ," (", formNum(std(x,'omitmissing'))," )")';
+meanSd = @(x) append(formNum(mean(x,'omitnan')) ," (", formNum(std(x,'omitnan'))," )")';
 
 % Calculate mean and SD of fluxes
 fluxStats.('Mean (SD)') = meanSd(fluxesForStatsArray);
@@ -453,7 +453,7 @@ end
 % fluxStats.Variance = var(fluxesForStatsArray,[],1,'omitnan')';
 
 % Calculate the standard deviation
-% fluxStats.("Standard deviation") = std(fluxesForStatsArray,[],1,'omitnan')';
+fluxStats.("Standard deviation") = std(fluxesForStatsArray,[],1,'omitnan')';
 
 % Get distribution skewness
 % fluxStats.Skewness = skewness(fluxesForStatsArray)';
@@ -586,8 +586,7 @@ end
 %%% Obtain summary statistics for the unscaled and scaled fluxes %%%
 
 % Define summary table variable names if needed
-netMicrobiomeFluxTableVarNames = {'Reaction ID','Germ-free male flux','Germ-free female flux',...
-    'Net Microbiome Flux component, Mean (SD)'};
+netMicrobiomeFluxTableVarNames = {'Reaction ID','Germ-free male flux','Germ-free female flux','Net Microbiome Flux component, Mean (SD)'};
 
 % Preallocate table for flux contributions from the scaled
 if any(mWBMs) && ~any(iWBMs) && analyseGF % host NOT personalised, microbiome personalised
@@ -608,7 +607,7 @@ end
 
 % Create table
 if ~isempty(varNames)
-    scaledFluxStats = table('Size',[size(scaledFluxes,2),length(varNames)],'VariableTypes',[{'string'},repmat({'double'},1,length(varNames)-1)],'VariableNames',varNames);
+    scaledFluxStats = table('Size',[size(scaledFluxes,2),length(varNames)],'VariableTypes',{'string','double','double','string'},'VariableNames',varNames);
 else
     scaledFluxStats = table();
 end
@@ -681,7 +680,7 @@ if ~isempty(scaledFluxStats) % If either the host, the microbiome, or both are p
 
     % Now add the mean and SD per reaction to the table
     formNumPerc = @(x) arrayfun(@(x) string(sprintf('%.2f%%',x*100)), x)';
-    meanSdRel = @(x) append(formNumPerc(mean(x,'omitnan')) ," (", formNumPerc(std(x,'omitmissing'))," )");
+    meanSdRel = @(x) append(formNumPerc(mean(x,'omitnan')) ," (", formNumPerc(std(x,'omitnan'))," )");
 
     scaledFluxStats.(varNames{end}) = meanSdRel(relFluxDiff);
 end
