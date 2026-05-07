@@ -50,9 +50,9 @@ for k = 1:length(solverPkgs.LP)
     tok = regexp(arcsHeader, '^\*Arcs\s+(\d+)$', 'tokens', 'once');
     assert(~isempty(tok), 'Expected *Arcs header, got: %s', arcsHeader);
     declaredArcs = str2double(tok{1});
-    actualArcs = numel(lines) - arcsHeaderIdx;
-    assert(declaredArcs == actualArcs, ...
-           'Declared arc count %d != written arcs %d', declaredArcs, actualArcs);
+    nArcs = numel(lines) - arcsHeaderIdx;
+    assert(declaredArcs == nArcs, ...
+           'Declared arc count %d != written arcs %d', declaredArcs, nArcs);
 
     % every arc references valid vertex ids and a positive weight
     nMets = numel(model.mets);
@@ -64,23 +64,54 @@ for k = 1:length(solverPkgs.LP)
         assert(parts(3) > 0, 'arc weight must be positive: %s', lines{i});
     end
 
-    % biomass / objective reactions must not appear as edges. Verify by
-    % ensuring no arc weight equals a biomass-reaction flux.
+    % Validate exclusion by reaction identity, not flux magnitude:
+    % replicate writePajekNet's filtering and build the expected arc
+    % multiset, then compare against the parsed arcs. A pure flux-value
+    % check false-fails when two reactions share the same |v|.
     FBA = solveCobraLP(model);
-    objIdx = find(model.c ~= 0);
-    biomassIdx = find(~cellfun('isempty', regexpi(model.rxns, 'biomass')));
-    excluded = unique([objIdx(:); biomassIdx(:)]);
-    excludedFluxes = abs(FBA.full(excluded));
-    excludedFluxes = excludedFluxes(excludedFluxes > 1e-9);
-    arcWeights = zeros(actualArcs, 1);
-    for i = 1:actualArcs
+    fluxTol = getCobraSolverParams('LP', 'feasTol');
+    rxnIds = lower(model.rxns);
+    isExcluded = ~cellfun('isempty', strfind(rxnIds, 'biomass')) | ...
+                 ~cellfun('isempty', strfind(rxnIds, 'objective')) | ...
+                 (model.c(:) ~= 0);
+
+    expectedArcs = zeros(0, 3);
+    for i = 1:numel(model.rxns)
+        if isExcluded(i) || abs(FBA.full(i)) < fluxTol
+            continue
+        end
+        metPos = find(model.S(:, i) > 0);
+        metNeg = find(model.S(:, i) < 0);
+        if isempty(metPos) || isempty(metNeg)
+            continue
+        end
+        if FBA.full(i) > 0
+            src = metNeg; dst = metPos;
+        else
+            src = metPos; dst = metNeg;
+        end
+        % round-trip the weight through writePajekNet's '%g' format so the
+        % comparison below is exact (default '%g' keeps only 6 sig digits)
+        w = sscanf(sprintf('%g', abs(FBA.full(i))), '%f');
+        [Sg, Dg] = ndgrid(src, dst);
+        expectedArcs = [expectedArcs; ...
+                        [Sg(:), Dg(:), w * ones(numel(Sg), 1)]]; %#ok<AGROW>
+    end
+
+    actualArcs = zeros(nArcs, 3);
+    for i = 1:nArcs
         parts = sscanf(lines{arcsHeaderIdx + i}, '%f');
-        arcWeights(i) = parts(3);
+        actualArcs(i, :) = parts(:)';
     end
-    for w = excludedFluxes(:)'
-        assert(~any(abs(arcWeights - w) < 1e-12), ...
-               'Excluded reaction with flux %g leaked into the graph', w);
-    end
+
+    assert(size(actualArcs, 1) == size(expectedArcs, 1), ...
+           'Arc count %d != expected %d (excluded reactions may have leaked)', ...
+           size(actualArcs, 1), size(expectedArcs, 1));
+
+    actualSorted   = sortrows(actualArcs);
+    expectedSorted = sortrows(expectedArcs);
+    assert(isequal(actualSorted, expectedSorted), ...
+           'Arc list does not match the arcs derived from non-excluded reactions');
 
     delete(outFile);
 
