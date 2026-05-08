@@ -65,7 +65,7 @@
         <link rel="search" title="Search" href="../../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../../index.html"/>
         <link rel="up" title="Paint4net" href="../index.html"/>
-        <link rel="next" title="Sammim" href="../../SAMMIM/index.html"/>
+        <link rel="next" title="Visualizeepistasis" href="../../visualizeEpistasis/index.html"/>
         <link rel="prev" title="Draw_by_met" href="../Draw_by_met/index.html"/> 
 
   
@@ -167,17 +167,18 @@
 <li class="toctree-l4 current"><a class="current reference internal" href="#">Draw_by_rxn</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../SAMMIM/index.html">Sammim</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../visualizeEpistasis/index.html">Visualizeepistasis</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../metabolicCartography/index.html">Metaboliccartography</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../efmviz/index.html">Efmviz</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../maps/index.html">Maps</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../upsetPlot/index.html">Upsetplot</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../EscherMap/index.html">Eschermap</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../createMetIntrcNetwork/index.html">Createmetintrcnetwork</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../paint4net/index.html">Paint4net</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../metabolicCartography/index.html">Metaboliccartography</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../SAMMIM/index.html">Sammim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../maps/index.html">Maps</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../entropicFBA/index.html">Entropicfba</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../convert/index.html">Convert</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../createMetIntrcNetwork/index.html">Createmetintrcnetwork</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../EscherMap/index.html">Eschermap</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../cellDesigner/index.html">Celldesigner</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../convert/index.html">Convert</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../efmviz/index.html">Efmviz</a></li>
 </ul>
 </li>
 </ul>
@@ -236,7 +237,104 @@
             
   <section id="draw-by-rxn">
 <span id="id1"></span><h1>Draw_by_rxn<a class="headerlink" href="#draw-by-rxn" title="Permalink to this heading">¶</a></h1>
-<span class="target" id="module-src.visualization.paint4Net.Draw_by_rxn"></span></section>
+<span class="target" id="module-src.visualization.paint4Net.Draw_by_rxn"></span><dl class="mat function">
+<dt class="sig sig-object mat" id="src.visualization.paint4Net.Draw_by_rxn.draw_by_rxn">
+<span class="sig-name descname"><span class="pre">draw_by_rxn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">rxns</span></em>, <em class="sig-param"><span class="pre">drawMap</span></em>, <em class="sig-param"><span class="pre">direction</span></em>, <em class="sig-param"><span class="pre">initialMet</span></em>, <em class="sig-param"><span class="pre">excludeMets</span></em>, <em class="sig-param"><span class="pre">flux</span></em>, <em class="sig-param"><span class="pre">save</span></em>, <em class="sig-param"><span class="pre">closev</span></em>, <em class="sig-param"><span class="pre">reportDeadEnds</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/paint4Net/Draw_by_rxn/draw_by_rxn.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.paint4Net.Draw_by_rxn.draw_by_rxn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Defines the visualisation scope from a list of reactions.</p>
+<dl class="field-list">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[involvedMets, deadEnds, deadRxns] = draw_by_rxn</strong> (<em>model, rxns, drawMap, direction, initialMet, excludeMets, flux, save, closev, reportDeadEnds</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – COBRA model structure.</p></li>
+<li><p><strong>rxns</strong> – Cell array of reaction abbreviations in the COBRA model,
+or a cell vector from the MATLAB workspace.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul>
+<li><p><strong>drawMap</strong> – Boolean indicating whether to visualise the COBRA model.
+Set this to <cite>false</cite> to avoid rendering large maps and
+return results faster.</p>
+<p>Default: false</p>
+</li>
+<li><p><strong>direction</strong> – Direction used by the algorithm. Allowed values are:</p>
+<ul class="simple">
+<li><p>‘struc’ - Visualise all metabolites connected to the
+specified reactions, without considering steady-state
+fluxes. This represents the structure of the COBRA model.</p></li>
+<li><p>‘sub’ - Visualise only metabolites acting as substrates
+for the specified reactions. Reaction direction is
+inferred from the stoichiometric matrix and
+steady-state fluxes.</p></li>
+<li><p>‘prod’ - Visualise only metabolites acting as products
+for the specified reactions. Reaction direction is
+inferred from the stoichiometric matrix and
+steady-state fluxes.</p></li>
+<li><p>‘both’ - Visualise both substrates and products for the
+specified reactions. Reaction direction is inferred from
+the stoichiometric matrix and steady-state fluxes.</p></li>
+</ul>
+<p>Default: ‘struc’</p>
+</li>
+<li><p><strong>initialMet</strong> – Cell array containing the abbreviation of the initial
+metabolite in the COBRA model. This metabolite is shown
+as a green circle on the map. This option supports
+<cite>draw_by_met</cite>, which calls <cite>draw_by_rxn</cite> and passes
+<cite>initialMet</cite>.</p>
+<p>Default: empty</p>
+</li>
+<li><p><strong>excludeMets</strong> – Cell array of metabolite abbreviations to exclude from the
+visualisation map, for example:</p>
+<blockquote>
+<div><p>{‘Met_Abbr_1’, ‘Met_Abbr_2’, …, ‘Met_Abbr_n’}</p>
+</div></blockquote>
+<p>This option is useful for excluding highly connected
+metabolites such as <cite>h</cite>, <cite>h2o</cite>, <cite>atp</cite>, <cite>adp</cite>, and <cite>nad</cite>,
+to reduce visual clutter.</p>
+<p>Default: empty</p>
+</li>
+<li><p><strong>flux</strong> – <cite>nRxns x 1</cite> vector of reaction fluxes, where <cite>nRxns</cite> is
+the number of reactions in the model. Fluxes are usually
+obtained with <cite>optimizeCbModel</cite>. Flux values smaller than
+<cite>-1e-9 mmol gDW^-1 h^-1</cite> or greater than
+<cite>1e-9 mmol gDW^-1 h^-1</cite> are treated as non-zero.</p>
+<p>Default: vector of zeros.</p>
+</li>
+<li><p><strong>save</strong> – Boolean indicating whether to save the visualisation
+automatically as a JPEG file. This is useful for iterative
+calls with different visualisation scopes.</p>
+<p>Default: false</p>
+</li>
+<li><p><strong>closev</strong> – Boolean indicating whether to close the biograph viewer
+window after visualisation. This is useful for iterative
+calls with different visualisation scopes.</p>
+<p>Default: false</p>
+</li>
+<li><p><strong>reportDeadEnds</strong> – Boolean indicating whether to report dead-end metabolites
+and dead reactions in the specified visualisation scope.</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>involvedMets</strong> – Cell array containing the metabolites involved in the
+specified reactions.</p></li>
+<li><p><strong>deadEnds</strong> – Cell array containing the dead-end metabolites in the
+specified reactions.</p></li>
+<li><p><strong>deadRxns</strong> – Cell array containing the dead reactions in the specified
+visualisation scope.</p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This function is part of Paint4Net. It defines a metabolite visualisation
+scope from a reaction list and supports <cite>draw_by_met</cite>.</p>
+</div>
+</dd></dl>
+
+</section>
 
 
            </div>
@@ -248,7 +346,7 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../../SAMMIM/index.html" class="btn btn-default float-right" title="Sammim" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../../visualizeEpistasis/index.html" class="btn btn-default float-right" title="Visualizeepistasis" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="../Draw_by_met/index.html" class="btn btn-default" title="Draw_by_met" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

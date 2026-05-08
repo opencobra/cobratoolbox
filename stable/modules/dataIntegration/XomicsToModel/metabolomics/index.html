@@ -66,7 +66,7 @@
     <link rel="top" title="The COBRA Toolbox" href="../../../../index.html"/>
         <link rel="up" title="Xomicstomodel" href="../index.html"/>
         <link rel="next" title="Onerxnperactivegene" href="../oneRxnPerActiveGene/index.html"/>
-        <link rel="prev" title="Thermoqp" href="../thermoKernel/thermoQP/index.html"/> 
+        <link rel="prev" title="Preparedata" href="../prepareData/index.html"/> 
 
   
   <script src="../../../../_static/js/modernizr.min.js"></script>
@@ -159,21 +159,21 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../base/index.html">Base</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Dataintegration</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../../metaboAnnotator/index.html">Metaboannotator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../chemoInformatics/index.html">Chemoinformatics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../metabotools/index.html">Metabotools</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../index.html">Xomicstomodel</a><ul class="current">
-<li class="toctree-l4"><a class="reference internal" href="../thermoKernel/index.html">Thermokernel</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../prepareData/index.html">Preparedata</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">Metabolomics</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../oneRxnPerActiveGene/index.html">Onerxnperactivegene</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../prepareData/index.html">Preparedata</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../analysis/index.html">Analysis</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../thermoKernel/index.html">Thermokernel</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../proteomics/index.html">Proteomics</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="../../fluxomics/index.html">Fluxomics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../metabotools/index.html">Metabotools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../metaboAnnotator/index.html">Metaboannotator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../metanetxMapper/index.html">Metanetxmapper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../transcriptomics/index.html">Transcriptomics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../fluxomics/index.html">Fluxomics</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../design/index.html">Design</a></li>
@@ -260,6 +260,7 @@
 <li><p><strong>specificData.exoMet.mean    k x 1 numeric array of mean measured reaction flux</strong></p></li>
 <li><p><strong>specificData.exoMet.SD      k x 1 numeric array of standard deviation in measured reaction flux</strong></p></li>
 <li><p><strong>specificData.essentialAA</strong></p></li>
+<li><p><strong>specificData.exoMet.varID</strong></p></li>
 <li><p><strong>param.TolMinBoundary</strong></p></li>
 <li><p><strong>param.TolMaxBoundary</strong></p></li>
 <li><p><strong>param.boundPrecisionLimit</strong></p></li>
@@ -278,16 +279,42 @@ Default: feasTol*10;</p></li>
 <li><p><strong>printLevel</strong></p></li>
 </ul>
 </dd>
-<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
+<li><p><strong>param.weightLower_flx_default</strong> – scalar or n x 1 double
+User defined penalty applied to lower bounds of all fluxes.
+It overwrites the default penalty.
+It is overwritten for measured fluxes only by specificData.exoMet.penaltyLowerBoundPerturbation
+when available</p></li>
+<li><p><strong>param.weightUpper_flx_default</strong> – scalar or n x 1 double
+User defined penalty applied to upper bounds of all fluxes.
+It overwrites the default penalty.
+It is overwritten for measured fluxes only by specificData.exoMet.penaltyUpperBoundPerturbation
+when available</p></li>
+<li><p><strong>param.weightLower_e_default</strong> – scalar or number of extra variables x 1 double.
+User defined penalty applied to lower bounds of extra variables.
+It overwrites the default penalty.
+It is overwritten for measured extra variables only by specificData.exoMet.penaltyLowerBoundPerturbation
+when available</p></li>
+<li><p><strong>param.weightUpper_e_default</strong> – scalar or number of extra variables x 1 double.
+User defined penalty applied to upper bounds of extra variables.
+It overwrites the default penalty.
+It is overwritten for measured extra variables only by specificData.exoMet.penaltyUpperBoundPerturbation
+when available</p></li>
+<li><p><strong>param.weightExpFct</strong> – scalar.
+Factor by which to multiply experimental weights (weightExp_flx ,weightExp_e) in mode ‘allConstraints’</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
 <li><p><strong>newModel</strong></p></li>
 <li><p><strong>rxnsConstrained</strong></p></li>
 <li><p><strong>rxnBoundsCorrected</strong></p></li>
 <li><p><strong>newSpecificData</strong></p></li>
 </ul>
 </dd>
-<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
-<dd class="field-even"><ul class="simple">
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
 <li><p><strong>newModel</strong> – A cobra model with constraints applied</p></li>
 <li><p><strong>rxnsConstrained</strong> – List of the reactions constrained</p></li>
 <li><p><strong>rxnBoundsCorrected</strong> – list of reactions whose restrictions should have
@@ -298,6 +325,7 @@ XomicsToModel function</p></li>
 </ul>
 </dd>
 </dl>
+<p>March 2026: extended to deal with extra variables - Tania</p>
 </dd></dl>
 
 <dl class="mat function">
@@ -840,7 +868,7 @@ perturbations specified in the cleanedData)</p></li>
         <a href="../oneRxnPerActiveGene/index.html" class="btn btn-default float-right" title="Onerxnperactivegene" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../thermoKernel/thermoQP/index.html" class="btn btn-default" title="Thermoqp" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../prepareData/index.html" class="btn btn-default" title="Preparedata" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

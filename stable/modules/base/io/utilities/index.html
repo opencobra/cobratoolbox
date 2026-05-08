@@ -66,7 +66,7 @@
     <link rel="top" title="The COBRA Toolbox" href="../../../../index.html"/>
         <link rel="up" title="Io" href="../index.html"/>
         <link rel="next" title="Sbml" href="SBML/index.html"/>
-        <link rel="prev" title="Io" href="../index.html"/> 
+        <link rel="prev" title="Old" href="../old/index.html"/> 
 
   
   <script src="../../../../_static/js/modernizr.min.js"></script>
@@ -158,26 +158,26 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">Functions</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Base</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../../utilities/index.html">Utilities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ci/index.html">Ci</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../paths/index.html">Paths</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../codeConsistency/index.html">Codeconsistency</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../index.html">Io</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../definitions/index.html">Definitions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../newt/index.html">Newt</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../python/index.html">Python</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../BiGG/index.html">Bigg</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../old/index.html">Old</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">Utilities</a><ul>
 <li class="toctree-l5"><a class="reference internal" href="SBML/index.html">Sbml</a></li>
 </ul>
 </li>
-<li class="toctree-l4"><a class="reference internal" href="../BiGG/index.html">Bigg</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../json/index.html">Json</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../python/index.html">Python</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../newt/index.html">Newt</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../KEGG/index.html">Kegg</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../old/index.html">Old</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../definitions/index.html">Definitions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../json/index.html">Json</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../paths/index.html">Paths</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../solvers/index.html">Solvers</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../ci/index.html">Ci</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../codeConsistency/index.html">Codeconsistency</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../cobrarrow/index.html">Cobrarrow</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../utilities/index.html">Utilities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../solvers/index.html">Solvers</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../install/index.html">Install</a></li>
 </ul>
 </li>
@@ -1209,25 +1209,33 @@ problems on linear spaces - www.4ti2.de</p>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.base.io.utilities.writePajekNet">
-<span class="sig-name descname"><span class="pre">writePajekNet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/io/utilities/writePajekNet.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.io.utilities.writePajekNet" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">writePajekNet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">fluxTol</span></em>, <em class="sig-param"><span class="pre">fileName</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/io/utilities/writePajekNet.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.io.utilities.writePajekNet" title="Permalink to this definition">¶</a></dt>
 <dd><p>Builds a metabolite centric directed graph from a COBRA model
-and outputs a graph in a .net format ready
-to use for most graph analysis software e.g. Pajek, it does one fba to
-set the link width equal to reaction fluxes.</p>
+and outputs a graph in Pajek <cite>.net</cite> format ready to use for most graph
+analysis software (e.g. Pajek). One FBA is solved to set the arc width
+equal to the reaction flux.</p>
 <dl class="field-list simple">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>writePajekNet</strong> (<em>model</em>)</p>
+<dd class="field-odd"><p><strong>writePajekNet</strong> (<em>model, fluxTol, fileName</em>)</p>
 </dd>
 <dt class="field-even">INPUT<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>model</strong> – a COBRA structured model</p>
 </dd>
-<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>.net</strong> – file containing the graph</p>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fluxTol</strong> – absolute flux threshold below which a reaction is
+considered inactive and excluded from the graph
+(default: solver <cite>feasTol</cite> from <cite>getCobraSolverParams</cite>)</p></li>
+<li><p><strong>fileName</strong> – name of the output <cite>.net</cite> file (default: ‘COBRAmodel.net’)</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUT<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>.net</strong> – directed Pajek file (uses <cite>*Arcs</cite>) containing the graph</p>
 </dd>
 </dl>
-<p>Ex: <cite>A + B -&gt; C</cite> (hypergraph) with <cite>v = 0</cite> =&gt; no output (empty line)</p>
-<p>if <cite>v &gt; 0</cite> then it becomes <cite>A -&gt; C</cite>; <cite>B -&gt; C</cite> (graph),</p>
-<p>if <cite>v &lt; 0</cite> then the order is reversed</p>
+<p>Ex: <cite>A + B -&gt; C</cite> (hypergraph) with <cite>|v| &lt; fluxTol</cite> =&gt; no output,
+if <cite>v &gt; 0</cite> then it becomes <cite>A -&gt; C</cite>; <cite>B -&gt; C</cite> (graph),
+if <cite>v &lt; 0</cite> then the order is reversed.</p>
 </dd></dl>
 
 <dl class="mat function">
@@ -1358,7 +1366,7 @@ Abbreviations need to overlap with use in Reaction List</p>
         <a href="SBML/index.html" class="btn btn-default float-right" title="Sbml" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../index.html" class="btn btn-default" title="Io" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../old/index.html" class="btn btn-default" title="Old" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
