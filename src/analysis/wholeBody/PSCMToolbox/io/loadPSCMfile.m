@@ -69,10 +69,15 @@ if isempty(which(nameOfWBM))
     % Find .mat files that can be loaded in prespecified directory
     if ~isempty(searchDirectory)
         availableWBMs = what(searchDirectory).mat;
-        disp('The specified file could not be found in the directory. The following WBMs are avaialble in the specified directory:')
-        disp(availableWBMs)
+        if ~any(strcmp(availableWBMs, nameOfWBM))
+            disp('The specified file could not be found in the directory. The following WBMs are avaialble in the specified directory:')
+            disp(availableWBMs)
+        else
+            nameOfWBM = strcat(searchDirectory, filesep, nameOfWBM);
+        end
+    else
+    error('File cannot be found. Please check if the WBM name is spelled correctly or that the search directory is given as second input variable')
     end
-    error('File cannot be found. Please check if the name is spelled correctly and if the folder is include in the path variable.')
 end
 
 % Legacy support for loading 1.01 versions of WBMs

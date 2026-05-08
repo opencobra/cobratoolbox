@@ -42,7 +42,7 @@ if ~isfield(LPProblem,'A')
 end
 
 if ~isfield(LPProblem,'csense')
-    nMet=size(LPProblem.A);
+    nMet=size(LPProblem.A,1);
     if printLevel>0
         fprintf('%s\n','Assuming equality constraints, i.e. S*v=b');
     end

@@ -12,15 +12,17 @@ function optimParam = tuneParam(LPProblem,contFunctName,timelimit,nrepeat,printL
 %
 % INPUT:
 %         LPProblem:     MILP as COBRA LP problem structure
-%         contFunctName: Parameters structure containing the name and value.
-%                        A set of routine parameters will be added by the solver
-%                        but won't be reported.
-%         timelimit:     default is 10000 second
-%         nrepeat:       number of row/column permutation of the original
-%                        problem, reports robust results.
-%                        sets the CPX_PARAM_TUNINGREPEAT parameter
-%                        High values of nrepeat would require consequent
-%                        memory and swap.
+%         contFunctName: Parameters structure containing the name and value,
+%                        OR the name of a function that returns such a
+%                        structure (e.g. 'CPLEXParamSet'), OR [] for
+%                        defaults. A set of routine parameters will be added
+%                        by the solver but won't be reported.
+%
+% OPTIONAL INPUTS:
+%         timelimit:     CPX_PARAM_TUNINGTILIM in seconds (default: 10000)
+%         nrepeat:       CPX_PARAM_TUNINGREPEAT, number of row/column
+%                        permutations of the original problem (default: 1).
+%                        High values require consequent memory and swap.
 %         printLevel:    0/(1)/2/3
 %
 % OUTPUT:
@@ -29,38 +31,49 @@ function optimParam = tuneParam(LPProblem,contFunctName,timelimit,nrepeat,printL
 %
 % .. Author: Marouen Ben Guebila 24/07/2017
 
-if ~changeCobraSolver('ibm_cplex')
-    error('This function requires IBM ILOG CPLEX');
+% Validate that ibm_cplex is available without permanently changing the
+% user's configured LP solver.
+global CBT_LP_SOLVER
+prevLPSolver = CBT_LP_SOLVER;
+cplexAvailable = changeCobraSolver('ibm_cplex', 'LP', 0);
+if ~isempty(prevLPSolver) && ~strcmp(prevLPSolver, 'ibm_cplex')
+    changeCobraSolver(prevLPSolver, 'LP', 0);
+end
+if ~cplexAvailable
+    error('tuneParam:noCplex', 'This function requires IBM ILOG CPLEX');
 end
 
-if ~exist('printLevel','var')
+if ~exist('printLevel','var') || isempty(printLevel)
     printLevel = 1;
 end
 
-if exist('timelimit','var')
-    contFunctName.tune.timelimit = timelimit;
-end
-if exist('nrepeat','var')
-    contFunctName.tune.repeat = nrepeat;
-end
-if exist('printLevel','var')
-    contFunctName.tune.display = printLevel;
-end
-
-
-%read parameters
-if isstruct(contFunctName)
-    cpxControl=contFunctName;
-else
-    if ~isempty(contFunctName)
-        %calls a user specified function to create a CPLEX control structure
-        %specific to the users problem. A TEMPLATE for one such function is
-        %CPLEXParamSet
-        cpxControl=eval(contFunctName);
-    else
-        cpxControl=[];
+% Resolve contFunctName into a struct BEFORE attempting to assign tune.* fields.
+if nargin < 2 || isempty(contFunctName)
+    cpxControl = struct();
+elseif isstruct(contFunctName)
+    cpxControl = contFunctName;
+elseif ischar(contFunctName) || isstring(contFunctName)
+    %calls a user specified function to create a CPLEX control structure
+    %specific to the users problem. A TEMPLATE for one such function is
+    %CPLEXParamSet
+    cpxControl = eval(char(contFunctName));
+    if ~isstruct(cpxControl)
+        error('tuneParam:badControl', ...
+              '%s did not return a parameter struct.', char(contFunctName));
     end
+else
+    error('tuneParam:badControl', ...
+          'contFunctName must be a struct, function name, or empty.');
 end
+
+% Apply tuning overrides on the resolved struct.
+if exist('timelimit','var') && ~isempty(timelimit)
+    cpxControl.tune.timelimit = timelimit;
+end
+if exist('nrepeat','var') && ~isempty(nrepeat)
+    cpxControl.tune.repeat = nrepeat;
+end
+cpxControl.tune.display = printLevel;
 
 if ~isfield(LPProblem,'A')
     if ~isfield(LPProblem,'S')
@@ -69,13 +82,17 @@ if ~isfield(LPProblem,'A')
     LPProblem.A=LPProblem.S;
 end
 
-if ~isfield(LPProblem,'csense')
-    nMet=size(LPProblem.A);
+if ~isfield(LPProblem,'csense') || isempty(LPProblem.csense)
+    nMet = size(LPProblem.A, 1);
     if printLevel>0
         fprintf('%s\n','Assuming equality constraints, i.e. S*v=b');
     end
     %assuming equality constraints
     LPProblem.csense(1:nMet,1)='E';
+elseif length(LPProblem.csense) ~= size(LPProblem.A,1)
+    error('tuneParam:csenseSize', ...
+          'length(csense) (%d) does not match size(A,1) (%d).', ...
+          length(LPProblem.csense), size(LPProblem.A,1));
 end
 
 if ~isfield(LPProblem,'osense')
@@ -104,6 +121,9 @@ c=full(c*osense);
 b=full(b);
 
 %complex ibm ilog cplex interface
+nRows = size(LPProblem.A, 1);
+b_L = -inf(nRows, 1);
+b_U =  inf(nRows, 1);
 if ~isempty(csense)
     %set up constant vectors for CPLEX
     b_L(csense == 'E',1) = b(csense == 'E');
@@ -118,7 +138,10 @@ end
 try
     ILOGcplex = Cplex('fba');
 catch ME
-    error('CPLEX not installed or licence server not up')
+    err = MException('tuneParam:cplexInit', ...
+                    'CPLEX not installed or licence server not up');
+    err = addCause(err, ME);
+    throw(err);
 end
 
 ILOGcplex.Model.sense = 'minimize';
@@ -133,21 +156,38 @@ ILOGcplex.Model.rhs   = b_U;
 
 %loop through parameters
 ILOGcplex = setCplexParam(ILOGcplex, cpxControl, 1);
-optimParam=cpxControl;
+optimParam = cpxControl;
 
 %Call parameter tuner
 if ~ILOGcplex.tuneParam()
-    fprintf('Optimal parameters found. \n');
-    [paramList, paramPath] = getParamList(cpxControl, 1);
-     for i=1:length(paramPath)
-         try
-             eval(['optimParam.' paramPath{i} '=ILOGcplex.Param.' paramPath{i} '.Cur;']);
-         catch ME
-             fprintf(['Parameter ' paramPath{i} ' was not found. \n']);
-         end
-     end
+    if printLevel > 0
+        fprintf('Optimal parameters found. \n');
+    end
+    [~, paramPath] = getParamList(cpxControl, 1);
+    for i = 1:length(paramPath)
+        try
+            optimParam = setfield_path(optimParam, paramPath{i}, ...
+                getfield_path(ILOGcplex.Param, [paramPath{i} '.Cur']));
+        catch
+            if printLevel > 0
+                fprintf(['Parameter ' paramPath{i} ' was not found. \n']);
+            end
+        end
+    end
 else
-    fprintf('Optimisation failed. \n')
+    warning('tuneParam:tuneFailed', 'CPLEX parameter tuning failed.');
 end
 
+end
+
+function s = setfield_path(s, dotted, value)
+% Assign value into a nested struct using a dotted path (no eval).
+parts = strsplit(dotted, '.');
+s = setfield(s, parts{:}, value);
+end
+
+function v = getfield_path(s, dotted)
+% Read a value from a nested struct using a dotted path (no eval).
+parts = strsplit(dotted, '.');
+v = getfield(s, parts{:});
 end

@@ -1,0 +1,266 @@
+Bootstrap: docker
+From: ubuntu:{{ OS_VERSION }}
+Stage: build
+#==================================================================================================#
+# Title: SeqC Pipeline Apptainer definition file: create environment for sequencing data processing
+# Program by: Wiley Barton - 2024.02.22
+# Modified for apptainer - 2026.03.11
+# Version for: Persephone
+# last update - 2026.04.23
+#--------------------------------------------------
+# Build:
+#   apptainer build --fakeroot --bind="$TMPDIR:/tmp" apter_seqc.sif Apptainer.def
+# Run:
+#   apptainer run apter_seqc.sif
+#   apptainer shell apter_seqc.sif
+# Bind mounts (map host directories into container):
+#   apptainer run -B /path/to/input:/home/seqc_user/seqc_project/step0_data_in apter_seqc.sif
+# With environment variables:
+#   apptainer run --env VAR=value apter_seqc.sif
+# With env file:
+#   apptainer run --env-file .env apter_seqc.sif
+#==================================================================================================#
+%labels
+    Author Wiley Barton
+    Version 1.0.2
+    Description SeqC_AS_Flux Pipeline - Sequencing Data Processing
+    Maintainer wiley.barton@universityofgalway.ie
+%help
+    SeqC Pipeline Apptainer Container
+    ==================================
+    A comprehensive bioinformatics pipeline for metagenomic binning and analysis.    
+    USAGE:
+        # Run analysis
+        apptainer run apter_seqc.sif
+        
+        # Execute command
+        apptainer exec --cwd /home/seqc_user/seqc_project --writable-tmpfs --no-mount tmp --no-home -e apter_seqc.sif BASH_seqc_mama.sh -h
+
+        # Interactive shell
+        apptainer shell apter_seqc.sif
+        
+        # With input/output binding
+        --mount type=bind,"src=/comma,dir",dst=/mnt \
+        apptainer run --no-home -B /data/input:/home/seqc_user/seqc_project/step0_data_in \\
+                          -B /data/output:/home/seqc_user/seqc_project/final_reports \\
+                          apter_seqc.sif
+%arguments
+    OS_VERSION=24.04
+    varg_cpu_max=8
+    varg_mem_max=16
+    varg_proc_max=2
+%setup
+# host system commands
+%files
+# Copy scripts and environment files into container
+    BASH_*.sh /usr/bin/
+    env_*.yml /opt/conda/setup/
+    #taxa2proc_* /tmp/
+%environment
+# Set environment variables for container runtime
+    export venv_seqcusr=seqc_user
+    export venv_proj=seqc_project
+    export venv_cpu_max={{ varg_cpu_max }}
+    export venv_proc_max={{ varg_proc_max }}
+    export venv_mem_max={{ varg_mem_max }}
+    # Runtime variables (can still be overridden by host environment)
+    export v_dir_work=/home/seqc_user/seqc_project
+    export venv_dir_db=/DB
+    export venv_dir_work=/home/seqc_user/seqc_project
+    export venv_dir_in=/home/seqc_user/seqc_project/step0_data_in
+    export venv_dir_out=/home/seqc_user/seqc_project/final_reports
+    export venv_dir_proc=/DB/DEPO_proc
+    export venv_dir_log=/DB/DEPO_proc/logs
+    export v_logblock0='#=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-'
+    export v_logblock1='#------------------------------------------------------------------'
+    export v_logblock2='#---------------------------------'
+    export venv_log_init=log_seqc_project.txt
+    
+    # MARS environment variables (can be overridden at runtime)
+    export venv_mars_readsTablePath=${SEQC_MARS_READS_TABLE:-}
+    export venv_mars_outputExtensionMARS=${SEQC_MARS_OUTPUT_EXT:-csv}
+    export venv_mars_relAbunFilePath=${SEQC_MARS_REL_ABUN:-}
+    export venv_mars_sample_read_counts_cutoff=${SEQC_MARS_READ_CUTOFF:-1}
+    export venv_mars_cutoffMARS=${SEQC_MARS_CUTOFF:-0.000001}
+    export venv_mars_OTUTable=${SEQC_MARS_OTU_TABLE:-}
+    export venv_mars_flagLoneSpecies=${SEQC_MARS_LONE_SPECIES:-False}
+    export venv_mars_taxaSplit=${SEQC_MARS_TAXA_SPLIT:-;}
+    export venv_mars_removeCladeExtensionsFromTaxa=${SEQC_MARS_REMOVE_CLADE:-True}
+    export venv_mars_whichModelDatabase=${SEQC_MARS_MODEL_DB:-full_db}
+    export venv_mars_userDatabase_path=${SEQC_MARS_USER_DB:-}
+    export venv_mars_taxaTable=${SEQC_MARS_TAXA_TABLE:-}
+    # Conda/Micromamba
+    export MAMBA_ROOT_PREFIX=/opt/conda
+    export MAMBA_EXE=/bin/micromamba
+%post
+    # Persist build-time arguments into the container environment
+    #echo "export venv_cpu_max=${varg_cpu_max}" >> /environment
+    #echo "export venv_proc_max=${varg_proc_max}" >> /environment
+    #echo "export venv_mem_max=${varg_mem_max}" >> /environment
+
+    set -e
+    export DEBIAN_FRONTEND=noninteractive
+    export MAMBA_ROOT_PREFIX=/opt/conda
+    export PIP_NO_CACHE_DIR=1
+
+    # Workaround for systemd group creation failure on HPC (Puhti)
+    # Creating these manually using 'echo' avoids the 'Device or resource busy' rename error
+    grep -q "^systemd-journal:" /etc/group || echo "systemd-journal:x:999:" >> /etc/group
+    grep -q "^systemd-network:" /etc/group || echo "systemd-network:x:998:" >> /etc/group
+    grep -q "^systemd-network:" /etc/passwd || echo "systemd-network:x:998:998:systemd Network Management:/nonexistent:/usr/sbin/nologin" >> /etc/passwd
+
+    # Prevent services from starting during build
+    echo '#!/bin/sh' > /usr/sbin/policy-rc.d
+    echo 'exit 101' >> /usr/sbin/policy-rc.d
+    chmod +x /usr/sbin/policy-rc.d
+    
+    # DBus workaround
+    mkdir -p /var/lib/dbus
+    dbus-uuidgen --ensure 2>/dev/null || true
+    grep -q "^messagebus:" /etc/group || echo "messagebus:x:106:" >> /etc/group
+    grep -q "^messagebus:" /etc/passwd || echo "messagebus:x:102:106:System Message Bus:/nonexistent:/usr/sbin/nologin" >> /etc/passwd
+
+    # Setup directories
+    mkdir -p /opt/conda/setup
+    
+    # Update system
+    apt-get update
+    apt-get install -y --no-install-recommends \
+        apt-transport-https \
+        bc \
+        build-essential \
+        ca-certificates \
+        curl \
+        datamash \
+        dos2unix \
+        gawk \
+        git \
+        jq \
+        less \
+        lftp \
+        libz-dev \
+        parallel \
+        pigz \
+        pip \
+        pkg-config \
+        pv \
+        unzip \
+        vim-tiny \
+        wget \
+        xz-utils \
+        zip
+    apt-get clean
+    rm -rf /var/lib/apt/lists/*
+    # Create user and directories
+    USER_UID=1000
+    USER_GID=1000
+    MAMBA_USER=seqc_user
+    
+    groupadd --gid $USER_GID $MAMBA_USER 2>/dev/null || true
+    useradd --uid $USER_UID --gid $USER_GID --create-home $MAMBA_USER 2>/dev/null || true
+    usermod -aG sudo $MAMBA_USER 2>/dev/null || true
+    echo "$MAMBA_USER ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers 2>/dev/null || true
+    
+    # Create directories
+    venv_dir_work=/home/seqc_user/seqc_project
+    venv_dir_db=/DB
+    mkdir -p $venv_dir_work
+    mkdir -p $venv_dir_db/{REPO_gref/{t2p,ref_genome,host/{hsap,hsap_contam,mmus,btau}/bowtie2},REPO_tool/{checkm2,humann,kraken,mmseqs2,ncbi_NR,smash},DEPO_demo/{tmp,camisim/AGORA_smol/{genomes,run_params}},DEPO_proc/{logs,tmp}}
+    mkdir -p $venv_dir_work/{final_reports,scrp_job,scrp_run,step0_data_in}
+    
+    chown -R $USER_UID:$USER_GID $venv_dir_db $venv_dir_work
+    
+    # Download and install Micromamba
+    mkdir -p /opt/conda/bin
+    curl -Ls https://micro.mamba.pm/api/micromamba/linux-64/latest | tar -xvj bin/micromamba
+    mv bin/micromamba /opt/conda/bin/micromamba
+    ln -s /opt/conda/bin/micromamba /bin/micromamba
+    
+    # Initialize conda
+    /bin/micromamba shell init -s bash -r /opt/conda
+    
+    # Download tools from source
+    curl -fsSL -o /bin/datasets https://ftp.ncbi.nlm.nih.gov/pub/datasets/command-line/v2/linux-amd64/datasets
+    curl -fsSL -o /bin/dataformat https://ftp.ncbi.nlm.nih.gov/pub/datasets/command-line/v2/linux-amd64/dataformat
+    curl -fsSL -o /bin/edirect https://ftp.ncbi.nlm.nih.gov/entrez/entrezdirect/install-edirect.sh
+    curl -fsSL -o /bin/repaq https://opengene.org/repaq/repaq
+    curl -fsSL -o /usr/bin/time-1.9.tar.gz https://ftp.gnu.org/gnu/time/time-1.9.tar.gz
+    
+    tar -I pigz -xf /usr/bin/time-1.9.tar.gz --directory /usr/bin/
+    chmod a+x /bin/datasets /bin/dataformat /bin/edirect /bin/repaq /usr/bin/time-1.9
+    
+    # Clone repositories
+    git clone --depth=1 --branch master https://github.com/ThieleLAB/mars-pipeline.git /lib/mars
+    
+    # Configure micromamba channels
+    /bin/micromamba clean --locks
+    /bin/micromamba config append channels conda-forge
+    /bin/micromamba config append channels bioconda
+    /bin/micromamba config remove channels defaults || true
+    /bin/micromamba config set channel_priority flexible
+    
+    # Pre-cache common pip dependencies
+    pip install --no-cache-dir --quiet numpy scipy scikit-learn python-dotenv 2>/dev/null || true
+    
+    # Create all pipeline stage environments
+    /bin/micromamba install --yes --name base --file /opt/conda/setup/env_base.yml
+    /bin/micromamba create --yes --file /opt/conda/setup/env_s1_kneaddata.yml
+    /bin/micromamba create --yes --file /opt/conda/setup/env_s4_kraken.yml
+    /bin/micromamba create --yes --file /opt/conda/setup/env_util_seqkit.yml
+    /bin/micromamba create --yes --file /opt/conda/setup/env_util_taxonkit.yml
+    /bin/micromamba create --yes --file /opt/conda/setup/env_util_enasearch.yml
+    /bin/micromamba create --yes --file /opt/conda/setup/env_util_mars.yml
+    /bin/micromamba clean --all --yes
+    
+    # Build GNU time utility
+    cd /usr/bin/time-1.9
+    ./configure --prefix=/usr
+    make
+    make install
+    cd /
+    rm -rf /usr/bin/time-1.9 /usr/bin/time-1.9.tar.gz
+
+    # Move mars into its environment
+    mkdir -p /opt/conda/envs/env_util_mars/lib
+    mv /lib/mars /opt/conda/envs/env_util_mars/lib/
+    chown -R $USER_UID:$USER_GID /opt/conda/envs/env_util_mars/lib/mars
+    
+    # Fixes for Kneaddata and ENA Search
+    rm -f /opt/conda/envs/env_s1_kneaddata/share/trimmomatic-0.39-2/trimmomatic \
+          /opt/conda/envs/env_s1_kneaddata/share/trimmomatic-0.40-0/trimmomatic
+    sed -i 's/data\/warehouse/portal\/api/' /opt/conda/envs/env_util_enasearch/lib/python2.7/site-packages/enasearch/__init__.py
+    
+    # Permissions and line endings
+    chmod 755 /usr/bin/BASH_*.sh
+    find /usr/bin -name "BASH_seqc_*.sh" -exec dos2unix {} +
+    
+    # Initialize log
+    printf '%s\nStart of pipeline log -- Apptainer Initialized@: %s\n%s\n' \
+        "$v_logblock0" "$(date)" "$v_logblock0" > /tmp/log_seqc_project.txt
+    chown $USER_UID:$USER_GID /tmp/log_seqc_project.txt 2>/dev/null || true
+    
+    # Setup shell environment
+    echo "export VEN_SPLASH=1" > /etc/profile.d/seqc.sh
+    echo "BASH_seqc_mama.sh -2" >> /root/.bashrc
+%startscript
+    # Script to execute when container starts
+    exec /bin/bash -l "$@"
+%runscript
+    # Default command when running container
+    exec /bin/bash -l "$@"
+%test
+    # Tests to verify container works
+    echo "Testing SeqC Pipeline Container"
+    echo "=================================="
+    # Test basic commands
+    echo "Testing micromamba..."
+    /bin/micromamba --version
+    # Test conda environments
+    echo "Testing conda environments..."
+    /bin/micromamba list -n base | grep -q python && echo "Base environment OK"
+    # Test directories
+    echo "Testing directories..."
+    test -d /DB/DEPO_proc && echo "/DB/DEPO_proc exists"
+    test -d /home/seqc_user/seqc_project && echo "Work directory exists"
+    echo "Container ready for use!"
+# EoB

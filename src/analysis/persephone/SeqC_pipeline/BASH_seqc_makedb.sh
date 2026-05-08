@@ -4,7 +4,7 @@
 # Program by: Wiley Barton - 2022.02.07
 # Modified for conda/docker pipeline - 2024.02.22
 # Version for: PERSEPHONE
-# last update - 2025.09.28
+# last update - 2026.04.23
 # Modified code sources:
 #   check volume size: https://stackoverflow.com/questions/8110530/check-free-disk-space-for-current-partition-in-bash
 #   semi-array in env var: https://unix.stackexchange.com/questions/393091/unable-to-use-an-array-as-environment-variable
@@ -82,7 +82,7 @@ varr_db_gets[$vn]='wget --no-check-certificate http://huttenhower.sph.harvard.ed
 varr_db_pack[$vn]=${varr_db_pack[0]}${varr_db_path[$vn]}'/hsap_hg37_contam.tar.gz'' --directory '${varr_db_path[$vn]}
 # check - if size > 1 then assume preexisting
 # TODO - set to compression size as min threshold
-varr_db_size[$vn]=7.4
+varr_db_size[$vn]=3.9
 varr_db_check[$vn]=$(check_db_size "${varr_db_path[$vn]}" "${varr_db_size[$vn]}")
 # host - ncbi-bt2 - btau - 3.7G ~ 30min w/ 6 threads
 ((vn++))
@@ -466,359 +466,358 @@ if [ $v_mkdb -eq 1 ];then
     echo "FUNC_MAKE: Checking if DB creation makes sense"
     if [[ $v_vol_free -gt $v_vol_used ]];then
         echo "FUNC_MAKE: More disk space is available than needed... noice"
-        printf 'FUNC_MAKE: varr_db_name: %s\n' "${varr_db_name[@]}"
-        for vi in ${!varr_db_name[@]};do
-            if [[ $vi -ge 1 ]];then
-                printf 'FUNC_MAKE: Working on DB for: %s\n' "${varr_db_name[vi]}"
-                #printf 'vi@:%s\tvarr_db_name:%s\tvarr_db_path:%s\tvarr_db_gets:%s\tvarr_db_pack:%s\t' "${vi}" "${varr_db_name[$vi]}" "${varr_db_path[$vi]}" "${varr_db_gets[$vi]}" "${varr_db_pack[$vi]}"
-                if [ ${varr_db_name[$vi]} = 'host_kd_hsapcontam' ];then
-                # check pass if force = 1 or check = 0
-                    if (( ${v_force} )) || (( ! ${varr_db_check[$vi]} ));then
-                        #add log output to include location and size,7.48G  6.92MB/s    in 10m 7s
-                        #3736219777/3736219777
-                        echo "FUNC_MAKE: Making host decontamination DB: Hsap with contam (kneaddata)"
-                        #if [[ ! $( find "${varr_db_path[$vi]}"/* 2> /dev/null | wc -l ) -gt 6 ]];then
-                            eval ${varr_db_gets[$vi]}
-                            eval ${varr_db_pack[$vi]}
-                            echo "FUNC_MAKE: DB content @: "${varr_db_path[$vi]}
-                        #fi
-                    else
-                        printf 'FUNC_MAKE: Pre-existing Content present for DB: %s\n' "${varr_db_name[vi]}"
-                    fi
-                fi
-                if [ ${varr_db_name[$vi]} = 'host_kd_btau_BLOCK' ];then
-                    #add log output to include location and size,3.48G  6.92MB/s    in 10m 7s
-                    if (( ${v_force} )) || (( ! ${varr_db_check[$vi]} ));then
-                        echo "FUNC_MAKE: Making host decontamination DB: Btau (kneaddata)"
+    else
+        echo "FUNC_MAKE: WARNING: LESS disk space is available than needed... not noice"
+        printf 'FUNC_MAKEDB_DBUG(LINE%s): Vol FREE:%s\tVol USED:%s (if selected resources are pulled)\n' "${LINENO}" "${v_vol_free}" "${v_vol_used}"
+    fi
+    printf 'FUNC_MAKE: varr_db_name: %s\n' "${varr_db_name[@]}"
+    for vi in ${!varr_db_name[@]};do
+        if [[ $vi -ge 1 ]];then
+            printf 'FUNC_MAKE: Working on DB for: %s\n' "${varr_db_name[vi]}"
+            #printf 'vi@:%s\tvarr_db_name:%s\tvarr_db_path:%s\tvarr_db_gets:%s\tvarr_db_pack:%s\t' "${vi}" "${varr_db_name[$vi]}" "${varr_db_path[$vi]}" "${varr_db_gets[$vi]}" "${varr_db_pack[$vi]}"
+            if [ ${varr_db_name[$vi]} = 'host_kd_hsapcontam' ];then
+            # check pass if force = 1 or check = 0
+                if (( ! ${varr_db_check[$vi]} )) || (( $v_force ));then
+                    #add log output to include location and size,7.48G  6.92MB/s    in 10m 7s
+                    #3736219777/3736219777
+                    echo "FUNC_MAKE: Making host decontamination DB: Hsap with contam (kneaddata)"
+                    #if [[ ! $( find "${varr_db_path[$vi]}"/* 2> /dev/null | wc -l ) -gt 6 ]];then
                         eval ${varr_db_gets[$vi]}
                         eval ${varr_db_pack[$vi]}
                         echo "FUNC_MAKE: DB content @: "${varr_db_path[$vi]}
-                    else
-                        printf 'FUNC_MAKE: Pre-existing Content present for DB: %s\n' "${varr_db_name[vi]}"
-                    fi
-                fi
-                if [ ${varr_db_name[$vi]} = 'host_kd_mmus_BLOCK' ];then
-                    #add log output to include location and size,3.48G  6.92MB/s    in 10m 7s
-                    if (( ${v_force} )) || (( ! ${varr_db_check[$vi]} ));then
-                        echo "FUNC_MAKE: Making host decontamination DB: Mmus (kneaddata)"
-                        eval ${varr_db_gets[$vi]}
-                        eval ${varr_db_pack[$vi]}
-                        echo "FUNC_MAKE: DB content @: "${varr_db_path[$vi]}   
-                    else
-                        printf 'FUNC_MAKE: Pre-existing Content present for DB: %s\n' "${varr_db_name[vi]}"
-                    fi
-                fi
-                if [ ${varr_db_name[$vi]} = 'tool_cm2_dmnd' ];then
-                    if (( ${v_force} )) || (( ! ${varr_db_check[$vi]} ));then
-                        #add log output to include location and size,2.9G  6.92MB/s    in 10m 7s
-                        #checkm db continuation from dockerfile
-                        # and set the database location manually: checkm2 database --setdblocation ${varr_db_path[4]}/CheckM2_database/uniref100.KO.1.dmnd
-                        echo "FUNC_MAKE: Making genome QC DB (checkm2)"
-                        eval ${varr_db_gets[$vi]}
-                        eval ${varr_db_pack[$vi]}
-                        micromamba run -n env_s3_checkm2 checkm2 database --setdblocation ${varr_db_path[$vi]}/CheckM2_database/uniref100.KO.1.dmnd
-                        echo "FUNC_MAKE: DB content @: "${varr_db_path[$vi]}"/CheckM2_database"
-                    else
-                        printf 'FUNC_MAKE: Pre-existing Content present for DB: %s\n' "${varr_db_name[vi]}"
-                    fi
-                fi
-                if [ ${varr_db_name[$vi]} = 'tool_ncbi_taxd' ];then
-                    #add log output to include location and size,3.48G  6.92MB/s    in 10m 7s
-                    if (( ${v_force} )) || (( ! ${varr_db_check[$vi]} ));then
-                        echo "FUNC_MAKE: Making reference DB: taxdump (ncbi)"
-                        eval ${varr_db_gets[$vi]}
-                        eval ${varr_db_pack[$vi]}
-                        echo "FUNC_MAKE: DB content @: "${varr_db_path[$vi]}
-                    else
-                        printf 'FUNC_MAKE: Pre-existing Content present for DB: %s\n' "${varr_db_name[vi]}"
-                    fi
-                fi
-                if [ ${varr_db_name[$vi]} = 'tool_k2_std8' ];then
-                    #add log output to include location and size,3.48G  6.92MB/s    in 10m 7s
-                    if (( ${v_force} )) || (( ! ${varr_db_check[$vi]} ));then
-                        echo "FUNC_MAKE: Making reference DB: standard plus protozoa and fungi (kraken2)"
-                        func_check "${varr_db_path[$vi]}"'/kdb_std8'
-                        eval ${varr_db_gets[$vi]}
-                        eval ${varr_db_pack[$vi]}
-                        echo "FUNC_MAKE: DB content @: "${varr_db_path[$vi]}
-                        #make bracken - optimise param approach
-                        vKEX='/opt/conda/envs/env_s4_kraken/bin/'
-                        vKMER=35
-                        vREAD=150
-                        vDBNAME="${varr_db_path[$vi]}"'/kdb_std8'
-                        #add to path, find better approach
-                        export PATH="/opt/conda/envs/env_s4_kraken/lib/bracken/src:$PATH"
-                        time micromamba run -n env_s4_kraken bracken-build \
-                        -d ${vDBNAME} -t ${venv_cpu_max} -k ${vKMER} -l ${vREAD}
-                        #-x ${vKEX} -d ${vDBNAME} -t ${venv_cpu_max} -k ${vKMER} -l ${vREAD}
-                    else
-                        printf 'FUNC_MAKE: Pre-existing Content present for DB: %s\n' "${varr_db_name[vi]}"
-                    fi
-                fi
-                if [ ${varr_db_name[$vi]} = 'tool_k2_demo' ];then
-                    #add log output to include location and size,3.48G  6.92MB/s    in 10m 7s
-                    if (( ${v_force} )) || (( ! ${varr_db_check[$vi]} ));then
-                        echo "FUNC_MAKE: Making reference DB: smol demo DB (kraken2)"
-                        #eval ${varr_db_gets[$vi]}
-                        #eval ${varr_db_pack[$vi]}
-                        # check for core kdmp
-                        v_kdmp=/DB/REPO_tool/kraken/taxonomy/
-                        vmk1=0
-                        vmk2=0
-                        #ncbi taxdmp
-                        if [[ ! $( find "${v_kdmp}" -name '*.dmp' 2> /dev/null | wc -l ) -gt 0 ]];then
-                            printf 'Kraken dmp missing @ %s\n' "${v_kdmp}"
-                            vmk1=1
-                            if [[ ! -d "${v_kdmp}" ]];then
-                                echo "FUNC_MAKE: making kraken dmp dir."
-                                mkdir -p "${v_kdmp}"
-                            fi
-                        fi
-                        #ncbi acc2taxid
-                        if [[ ! $( find "${v_kdmp}" -name '*.accession2taxid.gz' 2> /dev/null | wc -l ) -gt 0 ]];then
-                            printf 'FUNC_MAKE: Kraken accession2taxid missing @ %s\n' "${v_kdmp}"
-                            vmk2=1
-                            if [[ ! -d "${v_kdmp}" ]];then
-                                echo "FUNC_MAKE: making kraken dmp dir."
-                                mkdir -p "${v_kdmp}"
-                            fi
-                        fi
-                        if (( ${vmk2} ));then
-                            printf 'FUNC_MAKE: Kraken accession2taxid DL @ %s\n' "${v_kdmp}"
-                            vDIRpre=$(pwd)
-                            cd "${v_kdmp}"
-                            wget --no-check-certificate https://ftp.ncbi.nlm.nih.gov/pub/taxonomy/accession2taxid/nucl_gb.accession2taxid.gz \
-                            -O "${v_kdmp}"nucl_gb.accession2taxid.gz
-                            wget --no-check-certificate https://ftp.ncbi.nlm.nih.gov/pub/taxonomy/accession2taxid/nucl_wgs.accession2taxid.gz \
-                            -O "${v_kdmp}"nucl_wgs.accession2taxid.gz
-                            gunzip "${v_kdmp}"*accession2taxid.gz
-                            cd "${vDIRpre}"
-                        fi
-                        if (( ${vmk1} ));then
-                            vDIRpre=$(pwd)
-                            cd "${v_kdmp}"
-                            wget --no-check-certificate https://ftp.ncbi.nlm.nih.gov/pub/taxonomy/taxdump.tar.gz \
-                            -O "${v_kdmp}"taxdump.tar.gz
-                            tar zxf taxdump.tar.gz
-                            cd "${vDIRpre}"
-                        fi
-                        #check for db dir
-                        v_kdmp=/DB/REPO_tool/kraken/taxonomy/
-                        vDBNAME='/DB/REPO_tool/kraken/kdb_demo'
-                        vKMER=35
-                        vREAD=150
-                        #venv_cpu_max=12
-                        if [[ ! -d "${vDBNAME}" ]];then
-                            printf '%s missing, DB dir will be created\n' "${vDBNAME}"
-                            mkdir -p "${vDBNAME}"
-                            #check for preexisting taxdump and nucl_gb/wgs content
-                            if [[ $( find "${v_kdmp}" -name '*.dmp' 2> /dev/null | wc -l ) -gt 0 ]];then
-                                printf 'Kraken dmp found @ %s and symlinked\n' "${v_kdmp}"
-                                ln -s ${v_kdmp} ${vDBNAME}
-                            fi
-                        fi
-                        #check for simulation genomes
-                        v_kdmp='/DB/DEPO_demo/demo/camisim/AGORA_smol/genomes/*/ncbi_dataset/data/GC{A,F}_*/GC{A,F}_*_genomic.fna'
-                        if [[ $( eval find "${v_kdmp}" 2> /dev/null | wc -l ) -gt 0 ]];then
-                            for taxa_in in $( eval find "${v_kdmp}" 2> /dev/null );do
-                                printf 'FUNC_MAKE: Adding genome to kraken DB:\n%s\n' "${taxa_in}"
-                                micromamba run -n env_s4_kraken kraken2-build --threads ${venv_cpu_max} --add-to-library "${taxa_in}" --db ${vDBNAME}
-                            done
-                        fi
-                        if [[ ! $( eval find "${v_kdmp}" 2> /dev/null | wc -l ) -gt 0 ]];then
-                            #do something to build if fail in demo
-                            printf 'FUNC_MAKE: Missing genomes for kraken DB'
-                        fi
-                        #build db
-                        # incorporate --clean to reduce disk use
-                        time micromamba run -n env_s4_kraken kraken2-build --threads ${venv_cpu_max} --build --db ${vDBNAME}
-                        # build bracken database file
-                        #vKMER=35
-                        #vREAD=150
-                        time micromamba run -n env_s4_kraken bracken-build \
-                        -d ${vDBNAME} -t ${venv_cpu_max} -k ${vKMER} -l ${vREAD}
-                        echo "FUNC_MAKE: DB content @: "${varr_db_path[$vi]}
-                    else
-                        printf 'FUNC_MAKE: Pre-existing Content present for DB: %s\n' "${varr_db_name[vi]}"
-                    fi
-                fi
-                #EoDEMO
-                #if [ ${varr_db_name[$vi]} = 'tool_k2_apollo' ] || [ ${varr_db_name[$vi]} = 'tool_k2_agora' ];then fi
-                if [ ${varr_db_name[$vi]} = 'tool_k2_apollo' ];then
-                    if (( ${v_force} )) || (( ! ${varr_db_check[$vi]} ));then
-                        #/DB/REPO_tool/kraken/taxonomy/nucl_ 2.26G  9.88MB/s    in 7m 50s
-                        #/DB/REPO_tool/kraken/taxonomy/nucl_ 4.82G  5.88MB/s    in 10m 45s
-                        #combine apollo and agora etc into this section for efficiency
-                        #add log output to include location and size,3.48G  6.92MB/s    in 10m 7s
-                        #REQ of preexisting ncbi nr taxonomy
-                        echo "FUNC_MAKE: Making reference DB: APOLLO taxa (kraken2)"
-                        # First attempt to DL premade DB
-                        eval ${varr_db_gets[$vi]}
-                        eval ${varr_db_pack[$vi]}
-                        # Remove tar
-                        rm ${varr_db_path[$vi]}'.tar.gz'
-                        if [[ $( find "${varr_db_path[$vi]}" 2> /dev/null | wc -l ) -eq 0 ]];then
-                        # taxa @ species from 'combined_taxonomy_info_withAGORA2'
-                        #   results in 610 keeps and 969 drops!
-                        #   non spp entries! eg Bacteroidetes oral      976
-                        # build taxa list with taxonkit
-                        # ToDo link to updated list of taxa/tids to bypass manual
-                        #    add check for redun with dl genomes and/or -A for datasets download
-                        #    store premade db somewhere for direct pull
-                        #    incorp to function structure
-                        #imperf approach ex. Bacteroidales nov. ERR2221200   185298  Bacteroidales str. KB12
-                        # CRIT 20240717 NCBI-krak broken @ https://github.com/DerrickWood/kraken2/issues/852
-                        #rsync error: error in socket IO (code 10) at clientserver.c(139) [Receiver=3.3.0]
-                        #standard approach - busted 20240718
-                        #micromamba run -n env_s4_kraken kraken2-build --threads 24 --download-taxonomy --db ${vin_DBNAME} --use-ftp
-                        vin_DBNAME='/DB/REPO_tool/kraken/kdb_apollo'
-                        # taxonkit t12 @ 10    | @ 20         | @ 100        | @ 1865
-                        #real    1m5.703s  real  1m9.925s  real    1m10.376s 1m8.238s
-                        #user    1m18.589s user  1m21.169s user    1m21.109s 1m28.250s
-                        #sys     0m6.014s  sys   0m8.056s  sys     0m8.761s  0m6.468s
-                        vin_file_in='/DB/REPO_tool/kraken/t2p/taxa2proc_apollo.txt'
-                        vin_file_out='/DB/REPO_tool/kraken/t2p/taxa2proc_apollo_out.txt'
-                        vin_dir_k2_genm='/DB/REPO_tool/kraken/genomes/apollo'
-                        vin_KMER=35
-                        vin_READ=150
-                        func_makedb_krak ${vin_file_in} ${vin_file_out} ${vin_DBNAME} ${vin_dir_k2_genm} ${vin_KMER} ${vin_READ}
-                        #micromamba run -n env_s4_kraken kraken2-inspect --db ${vDBNAME} | less -S
-                        fi
-                        echo "FUNC_MAKE: DB content @: "${varr_db_path[$vi]}
-                    else
-                        printf 'FUNC_MAKE: Pre-existing Content present for DB: %s\n' "${varr_db_name[vi]}"
-                    fi
-                fi
-                if [ ${varr_db_name[$vi]} = 'tool_k2_agora' ];then
-                    #add log output to include location and size,3.48G  6.92MB/s    in 10m 7s
-                    if (( ${v_force} )) || (( ! ${varr_db_check[$vi]} ));then
-                        echo "FUNC_MAKE: Making reference DB: AGORA taxa (kraken2)"
-                        # First attempt to DL premade DB
-                        eval ${varr_db_gets[$vi]}
-                        eval ${varr_db_pack[$vi]}
-                        # Remove tar
-                        rm ${varr_db_path[$vi]}'.tar.gz'
-                        if [[ $( find "${varr_db_path[$vi]}" 2> /dev/null | wc -l ) -eq 0 ]];then
-                        #build taxa list for agora2
-                        v_file_pull='/DB/REPO_tool/kraken/t2p/taxa2proc_agora_raw.txt'
-                        v_file_proc='/DB/REPO_tool/kraken/t2p/taxa2proc_agora_awk.txt'
-                        v_file_out='/DB/REPO_tool/kraken/t2p/taxa2proc_agora_out.txt'
-                        v_file_fail='/DB/REPO_tool/kraken/t2p/taxa2proc_agora_fail.txt'
-                        # bypass if final out is present
-                        if [[ -f "${v_file_out}" ]];then
-                            v_file_proc="${v_file_out}"
-                        else
-                            ##pull list of taxa for agora2 - https://superuser.com/questions/642555/how-can-i-view-all-files-in-a-websites-directory?newreg=d78fd16672e14931adf176961b9e991f
-                            lftp -e "cls -1 > ${v_file_pull}; exit" \
-                            "https://www.vmh.life/files/reconstructions/AGORA2/version2.01/sbml_files/individual_reconstructions/"
-                            ##parse to pull input for DB refinement
-                            awk 'BEGIN {FS="\t";OFS=FS} {if(NR >= 0){print $1}}' ${v_file_pull} | \
-                            awk -F '.xml' '{print gensub(/_/," ","g",$1)}' > ${v_file_proc}
-                            #quoted lines: awk -F '.xml' '{print "\""gensub(/_/," ","g",$1)"\""}' > ${v_file_proc}
-                            mapfile -t v_id_in < <( cat ${v_file_proc} )
-                        fi
-                        vin_file_in="${v_file_proc}"
-                        vin_file_out='/DB/REPO_tool/kraken/t2p/taxa2proc_agora_out.txt'
-                        vin_DBNAME='/DB/REPO_tool/kraken/kdb_agora'
-                        vin_dir_k2_genm='/DB/REPO_tool/kraken/genomes/agora'
-                        vin_KMER=35
-                        vin_READ=150
-                        #real    4m8.255s
-                        #user    182m51.315s
-                        #sys     1m44.437s
-                        func_makedb_krak ${vin_file_in} ${vin_file_out} ${vin_DBNAME} ${vin_dir_k2_genm} ${vin_KMER} ${vin_READ}
-                        fi
-                        echo "FUNC_MAKE: DB content @: "${varr_db_path[$vi]}
-                    else
-                        printf 'FUNC_MAKE: Pre-existing Content present for DB: %s\n' "${varr_db_name[vi]}"
-                    fi
-                fi
-                if [ ${varr_db_name[$vi]} = 'tool_k2_agora2apollo' ];then
-                    #add log output to include location and size,3.48G  6.92MB/s    in 10m 7s
-                    if (( ${v_force} )) || (( ! ${varr_db_check[$vi]} ));then
-                        echo "FUNC_MAKE: Making reference DB: AGORA2+APOLLO taxa (kraken2)"
-                        # First attempt to DL premade DB
-                        eval ${varr_db_gets[$vi]}
-                        eval ${varr_db_pack[$vi]}
-                        # Remove tar
-                        rm ${varr_db_path[$vi]}'.tar.gz'
-                        if [[ $( find "${varr_db_path[$vi]}" 2> /dev/null | wc -l ) -eq 0 ]];then
-                        #pull from mama demo - build taxa list for agora2
-                        v_file_pull='/DB/REPO_tool/kraken/t2p/taxa2proc_a2a_raw.txt'
-                        v_file_proc='/DB/REPO_tool/kraken/t2p/taxa2proc_a2a_awk.txt'
-                        v_file_out='/DB/REPO_tool/kraken/t2p/taxa2proc_a2a_out.txt'
-                        v_file_fail='/DB/REPO_tool/kraken/t2p/taxa2proc_a2a_fail.txt'
-                        # bypass if final out is present
-                        if [[ -f "${v_file_out}" ]];then
-                            v_file_proc="${v_file_out}"
-                        else
-                            lftp -e "cls -1 > ${v_file_pull}; exit" \
-                            "https://www.vmh.life/files/reconstructions/AGORA2/version2.01/sbml_files/individual_reconstructions/"
-                            ##parse to pull input for DB refinement
-                            awk 'BEGIN {FS="\t";OFS=FS} {if(NR >= 0){print $1}}' ${v_file_pull} | \
-                            awk -F '.xml' '{print gensub(/_/," ","g",$1)}' > ${v_file_proc}
-                            #quoted lines: awk -F '.xml' '{print "\""gensub(/_/," ","g",$1)"\""}' > ${v_file_proc}
-                            mapfile -t v_id_in < <( cat ${v_file_proc} )
-                        fi
-                        vin_file_in="${v_file_proc}"
-                        vin_file_out='/DB/REPO_tool/kraken/t2p/taxa2proc_a2a_out.txt'
-                        vin_DBNAME='/DB/REPO_tool/kraken/kdb_a2a'
-                        vin_dir_k2_genm='/DB/REPO_tool/kraken/genomes/a2a'
-                        vin_KMER=35
-                        vin_READ=150
-                        #real    4m8.255s
-                        #user    182m51.315s
-                        #sys     1m44.437s
-                        func_makedb_krak ${vin_file_in} ${vin_file_out} ${vin_DBNAME} ${vin_dir_k2_genm} ${vin_KMER} ${vin_READ}
-                        fi
-                        echo "FUNC_MAKE: DB content @: "${varr_db_path[$vi]}
-                    else
-                        printf 'FUNC_MAKE: Pre-existing Content present for DB: %s\n' "${varr_db_name[vi]}"
-                    fi
-                fi
-                if [ ${varr_db_name[$vi]} = 'tool_mmseq_agora' ];then
-                #throws error: /usr/bin/BASH_seqc_makedb.sh: line 755: [: =: unary operator expected
-                    #still needs proper config, depends on preexisting primary mmseq DB and config
-                    #add log output to include location and size,3.48G  6.92MB/s    in 10m 7s
-                    if (( ${v_force} )) || (( ! ${varr_db_check[$vi]} ));then
-                        echo "FUNC_MAKE: Making reference DB: AGORA taxa (mmseq2)"
-                        v_file_pull='/DB/REPO_tool/kraken/t2p/taxa2proc_agora_raw.txt'
-                        v_file_proc='/DB/REPO_tool/kraken/t2p/taxa2proc_agora_awk.txt'
-                        v_file_out='/DB/REPO_tool/kraken/t2p/taxa2proc_agora_out.txt'
-                        v_file_fail='/DB/REPO_tool/kraken/t2p/taxa2proc_agora_fail.txt'
-                        ##pull list of taxa for agora2 - https://superuser.com/questions/642555/how-can-i-view-all-files-in-a-websites-directory?newreg=d78fd16672e14931adf176961b9e991f
-                        lftp -e "cls -1 > ${v_file_pull}; exit" "https://www.vmh.life/files/reconstructions/AGORA2/version2.01/sbml_files/individual_reconstructions/"
-                        ##parse to pull input for DB refinement
-                        awk 'BEGIN {FS="\t";OFS=FS} {if(NR >= 0){print $1}}' ${v_file_pull} | \
-                        awk -F '.xml' '{print "\""gensub(/_/," ","g",$1)"\""}' > ${v_file_proc}
-                        mapfile -t v_id_in < <( cat ${v_file_proc} )
-                        printf 'datasets summary taxonomy taxon %s --report ids_only --as-json-lines | dataformat tsv taxonomy --template tax-summary | cut --fields 1,2' "${v_id_in[*]}" > "${v_file_out}"
-                        #datasets summary taxonomy taxon "Abiotrophia defectiva ATCC 49176" --report ids_only --as-json-lines | dataformat tsv taxonomy --template tax-summary | cut --fields 1,2
-                        v_id_mmseq=$( bash "${v_file_out}" 2> "${v_file_fail}" | tail -n +2 | cut --fields 2 )
-                        #mapfile -t v_id_mmseq < <( bash /DB/DEPO_demo/demo/v_id_out 2> /DB/DEPO_demo/demo/v_id_fail | tail -n +2 | cut --fields 2 )
-                        #datasets download genome taxon ${v_id_ncbi} --assembly-level complete --assembly-source RefSeq --assembly-version latest --filename 
-                        #testing mars/ant https://www.johndcook.com/blog/2022/08/16/python-pickle/
-                        ##micromamba env create --name py_test python=3.8 -c conda-forge
-                        ##git clone -b master https://github.com/ThieleLab/mars-pipeline.git /DB/DEPO_demo/demo/mars_ant
-                        ##ant_pik_out = pickle.load(open("/DB/DEPO_demo/demo/mars_ant/ANT/agora2_species.pkl", "rb"))
-                        ##with open("ant_pik_out.txt","a") as f: pprint.pprint(ant_pik_out, stream=f)
-                        ##subset
-                        micromamba run -n env_s4_mmseqs2 mmseqs filtertaxseqdb /DB/DEPO_demo/mmseqs_proc/ncbi_NR \
-                        /DB/DEPO_demo/mmseqs_proc/ncbi_NR_AGORA2_240610_TEST --taxon-list ${v_id_mmseq// /,}
-                        eval ${varr_db_gets[$vi]}
-                        eval ${varr_db_pack[$vi]}
-                        echo "FUNC_MAKE: DB content @: "${varr_db_path[$vi]}
-                    else
-                        printf 'FUNC_MAKE: Pre-existing Content present for DB: %s\n' "${varr_db_name[vi]}"
-                    fi
+                    #fi
+                else
+                    printf 'FUNC_MAKE: Pre-existing Content present for DB: %s\n' "${varr_db_name[vi]}"
                 fi
             fi
-        done
-    else
-    echo "FUNC_MAKE: LESS disk space is available than needed... not noice"
-    printf 'FUNC_MAKEDB_DBUG(LINE%s): Vol FREE:%s\tVol USED:%s (if selected resources are pulled)\n' "${LINENO}" "${v_vol_free}" "${v_vol_used}"
-    exit 1
-    fi
+            if [ ${varr_db_name[$vi]} = 'host_kd_btau_BLOCK' ];then
+                #add log output to include location and size,3.48G  6.92MB/s    in 10m 7s
+                if (( ! ${varr_db_check[$vi]} )) || (( $v_force ));then
+                    echo "FUNC_MAKE: Making host decontamination DB: Btau (kneaddata)"
+                    eval ${varr_db_gets[$vi]}
+                    eval ${varr_db_pack[$vi]}
+                    echo "FUNC_MAKE: DB content @: "${varr_db_path[$vi]}
+                else
+                    printf 'FUNC_MAKE: Pre-existing Content present for DB: %s\n' "${varr_db_name[vi]}"
+                fi
+            fi
+            if [ ${varr_db_name[$vi]} = 'host_kd_mmus_BLOCK' ];then
+                #add log output to include location and size,3.48G  6.92MB/s    in 10m 7s
+                if (( ! ${varr_db_check[$vi]} )) || (( $v_force ));then
+                    echo "FUNC_MAKE: Making host decontamination DB: Mmus (kneaddata)"
+                    eval ${varr_db_gets[$vi]}
+                    eval ${varr_db_pack[$vi]}
+                    echo "FUNC_MAKE: DB content @: "${varr_db_path[$vi]}   
+                else
+                    printf 'FUNC_MAKE: Pre-existing Content present for DB: %s\n' "${varr_db_name[vi]}"
+                fi
+            fi
+            if [ ${varr_db_name[$vi]} = 'tool_cm2_dmnd' ];then
+                if (( ! ${varr_db_check[$vi]} )) || (( $v_force ));then
+                    #add log output to include location and size,2.9G  6.92MB/s    in 10m 7s
+                    #checkm db continuation from dockerfile
+                    # and set the database location manually: checkm2 database --setdblocation ${varr_db_path[4]}/CheckM2_database/uniref100.KO.1.dmnd
+                    echo "FUNC_MAKE: Making genome QC DB (checkm2)"
+                    eval ${varr_db_gets[$vi]}
+                    eval ${varr_db_pack[$vi]}
+                    micromamba run -n env_s3_checkm2 checkm2 database --setdblocation ${varr_db_path[$vi]}/CheckM2_database/uniref100.KO.1.dmnd
+                    echo "FUNC_MAKE: DB content @: "${varr_db_path[$vi]}"/CheckM2_database"
+                else
+                    printf 'FUNC_MAKE: Pre-existing Content present for DB: %s\n' "${varr_db_name[vi]}"
+                fi
+            fi
+            if [ ${varr_db_name[$vi]} = 'tool_ncbi_taxd' ];then
+                #add log output to include location and size,3.48G  6.92MB/s    in 10m 7s
+                if (( ! ${varr_db_check[$vi]} )) || (( $v_force ));then
+                    echo "FUNC_MAKE: Making reference DB: taxdump (ncbi)"
+                    eval ${varr_db_gets[$vi]}
+                    eval ${varr_db_pack[$vi]}
+                    echo "FUNC_MAKE: DB content @: "${varr_db_path[$vi]}
+                else
+                    printf 'FUNC_MAKE: Pre-existing Content present for DB: %s\n' "${varr_db_name[vi]}"
+                fi
+            fi
+            if [ ${varr_db_name[$vi]} = 'tool_k2_std8' ];then
+                #add log output to include location and size,3.48G  6.92MB/s    in 10m 7s
+                if (( ! ${varr_db_check[$vi]} )) || (( $v_force ));then
+                    echo "FUNC_MAKE: Making reference DB: standard plus protozoa and fungi (kraken2)"
+                    func_check "${varr_db_path[$vi]}"'/kdb_std8'
+                    eval ${varr_db_gets[$vi]}
+                    eval ${varr_db_pack[$vi]}
+                    echo "FUNC_MAKE: DB content @: "${varr_db_path[$vi]}
+                    #make bracken - optimise param approach
+                    vKEX='/opt/conda/envs/env_s4_kraken/bin/'
+                    vKMER=35
+                    vREAD=150
+                    vDBNAME="${varr_db_path[$vi]}"'/kdb_std8'
+                    #add to path, find better approach
+                    export PATH="/opt/conda/envs/env_s4_kraken/lib/bracken/src:$PATH"
+                    time micromamba run -n env_s4_kraken bracken-build \
+                    -d ${vDBNAME} -t ${venv_cpu_max} -k ${vKMER} -l ${vREAD}
+                    #-x ${vKEX} -d ${vDBNAME} -t ${venv_cpu_max} -k ${vKMER} -l ${vREAD}
+                else
+                    printf 'FUNC_MAKE: Pre-existing Content present for DB: %s\n' "${varr_db_name[vi]}"
+                fi
+            fi
+            if [ ${varr_db_name[$vi]} = 'tool_k2_demo' ];then
+                #add log output to include location and size,3.48G  6.92MB/s    in 10m 7s
+                if (( ! ${varr_db_check[$vi]} )) || (( $v_force ));then
+                    echo "FUNC_MAKE: Making reference DB: smol demo DB (kraken2)"
+                    #eval ${varr_db_gets[$vi]}
+                    #eval ${varr_db_pack[$vi]}
+                    # check for core kdmp
+                    v_kdmp=/DB/REPO_tool/kraken/taxonomy/
+                    vmk1=0
+                    vmk2=0
+                    #ncbi taxdmp
+                    if [[ ! $( find "${v_kdmp}" -name '*.dmp' 2> /dev/null | wc -l ) -gt 0 ]];then
+                        printf 'Kraken dmp missing @ %s\n' "${v_kdmp}"
+                        vmk1=1
+                        if [[ ! -d "${v_kdmp}" ]];then
+                            echo "FUNC_MAKE: making kraken dmp dir."
+                            mkdir -p "${v_kdmp}"
+                        fi
+                    fi
+                    #ncbi acc2taxid
+                    if [[ ! $( find "${v_kdmp}" -name '*.accession2taxid.gz' 2> /dev/null | wc -l ) -gt 0 ]];then
+                        printf 'FUNC_MAKE: Kraken accession2taxid missing @ %s\n' "${v_kdmp}"
+                        vmk2=1
+                        if [[ ! -d "${v_kdmp}" ]];then
+                            echo "FUNC_MAKE: making kraken dmp dir."
+                            mkdir -p "${v_kdmp}"
+                        fi
+                    fi
+                    if (( ${vmk2} ));then
+                        printf 'FUNC_MAKE: Kraken accession2taxid DL @ %s\n' "${v_kdmp}"
+                        vDIRpre=$(pwd)
+                        cd "${v_kdmp}"
+                        wget --no-check-certificate https://ftp.ncbi.nlm.nih.gov/pub/taxonomy/accession2taxid/nucl_gb.accession2taxid.gz \
+                        -O "${v_kdmp}"nucl_gb.accession2taxid.gz
+                        wget --no-check-certificate https://ftp.ncbi.nlm.nih.gov/pub/taxonomy/accession2taxid/nucl_wgs.accession2taxid.gz \
+                        -O "${v_kdmp}"nucl_wgs.accession2taxid.gz
+                        gunzip "${v_kdmp}"*accession2taxid.gz
+                        cd "${vDIRpre}"
+                    fi
+                    if (( ${vmk1} ));then
+                        vDIRpre=$(pwd)
+                        cd "${v_kdmp}"
+                        wget --no-check-certificate https://ftp.ncbi.nlm.nih.gov/pub/taxonomy/taxdump.tar.gz \
+                        -O "${v_kdmp}"taxdump.tar.gz
+                        tar zxf taxdump.tar.gz
+                        cd "${vDIRpre}"
+                    fi
+                    #check for db dir
+                    v_kdmp=/DB/REPO_tool/kraken/taxonomy/
+                    vDBNAME='/DB/REPO_tool/kraken/kdb_demo'
+                    vKMER=35
+                    vREAD=150
+                    #venv_cpu_max=12
+                    if [[ ! -d "${vDBNAME}" ]];then
+                        printf '%s missing, DB dir will be created\n' "${vDBNAME}"
+                        mkdir -p "${vDBNAME}"
+                        #check for preexisting taxdump and nucl_gb/wgs content
+                        if [[ $( find "${v_kdmp}" -name '*.dmp' 2> /dev/null | wc -l ) -gt 0 ]];then
+                            printf 'Kraken dmp found @ %s and symlinked\n' "${v_kdmp}"
+                            ln -s ${v_kdmp} ${vDBNAME}
+                        fi
+                    fi
+                    #check for simulation genomes
+                    v_kdmp='/DB/DEPO_demo/demo/camisim/AGORA_smol/genomes/*/ncbi_dataset/data/GC{A,F}_*/GC{A,F}_*_genomic.fna'
+                    if [[ $( eval find "${v_kdmp}" 2> /dev/null | wc -l ) -gt 0 ]];then
+                        for taxa_in in $( eval find "${v_kdmp}" 2> /dev/null );do
+                            printf 'FUNC_MAKE: Adding genome to kraken DB:\n%s\n' "${taxa_in}"
+                            micromamba run -n env_s4_kraken kraken2-build --threads ${venv_cpu_max} --add-to-library "${taxa_in}" --db ${vDBNAME}
+                        done
+                    fi
+                    if [[ ! $( eval find "${v_kdmp}" 2> /dev/null | wc -l ) -gt 0 ]];then
+                        #do something to build if fail in demo
+                        printf 'FUNC_MAKE: Missing genomes for kraken DB'
+                    fi
+                    #build db
+                    # incorporate --clean to reduce disk use
+                    time micromamba run -n env_s4_kraken kraken2-build --threads ${venv_cpu_max} --build --db ${vDBNAME}
+                    # build bracken database file
+                    #vKMER=35
+                    #vREAD=150
+                    time micromamba run -n env_s4_kraken bracken-build \
+                    -d ${vDBNAME} -t ${venv_cpu_max} -k ${vKMER} -l ${vREAD}
+                    echo "FUNC_MAKE: DB content @: "${varr_db_path[$vi]}
+                else
+                    printf 'FUNC_MAKE: Pre-existing Content present for DB: %s\n' "${varr_db_name[vi]}"
+                fi
+            fi
+            #EoDEMO
+            #if [ ${varr_db_name[$vi]} = 'tool_k2_apollo' ] || [ ${varr_db_name[$vi]} = 'tool_k2_agora' ];then fi
+            if [ ${varr_db_name[$vi]} = 'tool_k2_apollo' ];then
+                if (( ! ${varr_db_check[$vi]} )) || (( $v_force ));then
+                    #/DB/REPO_tool/kraken/taxonomy/nucl_ 2.26G  9.88MB/s    in 7m 50s
+                    #/DB/REPO_tool/kraken/taxonomy/nucl_ 4.82G  5.88MB/s    in 10m 45s
+                    #combine apollo and agora etc into this section for efficiency
+                    #add log output to include location and size,3.48G  6.92MB/s    in 10m 7s
+                    #REQ of preexisting ncbi nr taxonomy
+                    echo "FUNC_MAKE: Making reference DB: APOLLO taxa (kraken2)"
+                    # First attempt to DL premade DB
+                    eval ${varr_db_gets[$vi]}
+                    eval ${varr_db_pack[$vi]}
+                    # Remove tar
+                    rm ${varr_db_path[$vi]}'.tar.gz'
+                    if [[ $( find "${varr_db_path[$vi]}" 2> /dev/null | wc -l ) -eq 0 ]];then
+                    # taxa @ species from 'combined_taxonomy_info_withAGORA2'
+                    #   results in 610 keeps and 969 drops!
+                    #   non spp entries! eg Bacteroidetes oral      976
+                    # build taxa list with taxonkit
+                    # ToDo link to updated list of taxa/tids to bypass manual
+                    #    add check for redun with dl genomes and/or -A for datasets download
+                    #    store premade db somewhere for direct pull
+                    #    incorp to function structure
+                    #imperf approach ex. Bacteroidales nov. ERR2221200   185298  Bacteroidales str. KB12
+                    # CRIT 20240717 NCBI-krak broken @ https://github.com/DerrickWood/kraken2/issues/852
+                    #rsync error: error in socket IO (code 10) at clientserver.c(139) [Receiver=3.3.0]
+                    #standard approach - busted 20240718
+                    #micromamba run -n env_s4_kraken kraken2-build --threads 24 --download-taxonomy --db ${vin_DBNAME} --use-ftp
+                    vin_DBNAME='/DB/REPO_tool/kraken/kdb_apollo'
+                    # taxonkit t12 @ 10    | @ 20         | @ 100        | @ 1865
+                    #real    1m5.703s  real  1m9.925s  real    1m10.376s 1m8.238s
+                    #user    1m18.589s user  1m21.169s user    1m21.109s 1m28.250s
+                    #sys     0m6.014s  sys   0m8.056s  sys     0m8.761s  0m6.468s
+                    vin_file_in='/DB/REPO_tool/kraken/t2p/taxa2proc_apollo.txt'
+                    vin_file_out='/DB/REPO_tool/kraken/t2p/taxa2proc_apollo_out.txt'
+                    vin_dir_k2_genm='/DB/REPO_tool/kraken/genomes/apollo'
+                    vin_KMER=35
+                    vin_READ=150
+                    func_makedb_krak ${vin_file_in} ${vin_file_out} ${vin_DBNAME} ${vin_dir_k2_genm} ${vin_KMER} ${vin_READ}
+                    #micromamba run -n env_s4_kraken kraken2-inspect --db ${vDBNAME} | less -S
+                    fi
+                    echo "FUNC_MAKE: DB content @: "${varr_db_path[$vi]}
+                else
+                    printf 'FUNC_MAKE: Pre-existing Content present for DB: %s\n' "${varr_db_name[vi]}"
+                fi
+            fi
+            if [ ${varr_db_name[$vi]} = 'tool_k2_agora' ];then
+                #add log output to include location and size,3.48G  6.92MB/s    in 10m 7s
+                if (( ! ${varr_db_check[$vi]} )) || (( $v_force ));then
+                    echo "FUNC_MAKE: Making reference DB: AGORA taxa (kraken2)"
+                    # First attempt to DL premade DB
+                    eval ${varr_db_gets[$vi]}
+                    eval ${varr_db_pack[$vi]}
+                    # Remove tar
+                    rm ${varr_db_path[$vi]}'.tar.gz'
+                    if [[ $( find "${varr_db_path[$vi]}" 2> /dev/null | wc -l ) -eq 0 ]];then
+                    #build taxa list for agora2
+                    v_file_pull='/DB/REPO_tool/kraken/t2p/taxa2proc_agora_raw.txt'
+                    v_file_proc='/DB/REPO_tool/kraken/t2p/taxa2proc_agora_awk.txt'
+                    v_file_out='/DB/REPO_tool/kraken/t2p/taxa2proc_agora_out.txt'
+                    v_file_fail='/DB/REPO_tool/kraken/t2p/taxa2proc_agora_fail.txt'
+                    # bypass if final out is present
+                    if [[ -f "${v_file_out}" ]];then
+                        v_file_proc="${v_file_out}"
+                    else
+                        ##pull list of taxa for agora2 - https://superuser.com/questions/642555/how-can-i-view-all-files-in-a-websites-directory?newreg=d78fd16672e14931adf176961b9e991f
+                        lftp -e "cls -1 > ${v_file_pull}; exit" \
+                        "https://www.vmh.life/files/reconstructions/AGORA2/version2.01/sbml_files/individual_reconstructions/"
+                        ##parse to pull input for DB refinement
+                        awk 'BEGIN {FS="\t";OFS=FS} {if(NR >= 0){print $1}}' ${v_file_pull} | \
+                        awk -F '.xml' '{print gensub(/_/," ","g",$1)}' > ${v_file_proc}
+                        #quoted lines: awk -F '.xml' '{print "\""gensub(/_/," ","g",$1)"\""}' > ${v_file_proc}
+                        mapfile -t v_id_in < <( cat ${v_file_proc} )
+                    fi
+                    vin_file_in="${v_file_proc}"
+                    vin_file_out='/DB/REPO_tool/kraken/t2p/taxa2proc_agora_out.txt'
+                    vin_DBNAME='/DB/REPO_tool/kraken/kdb_agora'
+                    vin_dir_k2_genm='/DB/REPO_tool/kraken/genomes/agora'
+                    vin_KMER=35
+                    vin_READ=150
+                    #real    4m8.255s
+                    #user    182m51.315s
+                    #sys     1m44.437s
+                    func_makedb_krak ${vin_file_in} ${vin_file_out} ${vin_DBNAME} ${vin_dir_k2_genm} ${vin_KMER} ${vin_READ}
+                    fi
+                    echo "FUNC_MAKE: DB content @: "${varr_db_path[$vi]}
+                else
+                    printf 'FUNC_MAKE: Pre-existing Content present for DB: %s\n' "${varr_db_name[vi]}"
+                fi
+            fi
+            if [ ${varr_db_name[$vi]} = 'tool_k2_agora2apollo' ];then
+                #add log output to include location and size,3.48G  6.92MB/s    in 10m 7s
+                if (( ! ${varr_db_check[$vi]} )) || (( $v_force ));then
+                    echo "FUNC_MAKE: Making reference DB: AGORA2+APOLLO taxa (kraken2)"
+                    # First attempt to DL premade DB
+                    eval ${varr_db_gets[$vi]}
+                    eval ${varr_db_pack[$vi]}
+                    # Remove tar
+                    rm ${varr_db_path[$vi]}'.tar.gz'
+                    if [[ $( find "${varr_db_path[$vi]}" 2> /dev/null | wc -l ) -eq 0 ]];then
+                    #pull from mama demo - build taxa list for agora2
+                    v_file_pull='/DB/REPO_tool/kraken/t2p/taxa2proc_a2a_raw.txt'
+                    v_file_proc='/DB/REPO_tool/kraken/t2p/taxa2proc_a2a_awk.txt'
+                    v_file_out='/DB/REPO_tool/kraken/t2p/taxa2proc_a2a_out.txt'
+                    v_file_fail='/DB/REPO_tool/kraken/t2p/taxa2proc_a2a_fail.txt'
+                    # bypass if final out is present
+                    if [[ -f "${v_file_out}" ]];then
+                        v_file_proc="${v_file_out}"
+                    else
+                        lftp -e "cls -1 > ${v_file_pull}; exit" \
+                        "https://www.vmh.life/files/reconstructions/AGORA2/version2.01/sbml_files/individual_reconstructions/"
+                        ##parse to pull input for DB refinement
+                        awk 'BEGIN {FS="\t";OFS=FS} {if(NR >= 0){print $1}}' ${v_file_pull} | \
+                        awk -F '.xml' '{print gensub(/_/," ","g",$1)}' > ${v_file_proc}
+                        #quoted lines: awk -F '.xml' '{print "\""gensub(/_/," ","g",$1)"\""}' > ${v_file_proc}
+                        mapfile -t v_id_in < <( cat ${v_file_proc} )
+                    fi
+                    vin_file_in="${v_file_proc}"
+                    vin_file_out='/DB/REPO_tool/kraken/t2p/taxa2proc_a2a_out.txt'
+                    vin_DBNAME='/DB/REPO_tool/kraken/kdb_a2a'
+                    vin_dir_k2_genm='/DB/REPO_tool/kraken/genomes/a2a'
+                    vin_KMER=35
+                    vin_READ=150
+                    #real    4m8.255s
+                    #user    182m51.315s
+                    #sys     1m44.437s
+                    func_makedb_krak ${vin_file_in} ${vin_file_out} ${vin_DBNAME} ${vin_dir_k2_genm} ${vin_KMER} ${vin_READ}
+                    fi
+                    echo "FUNC_MAKE: DB content @: "${varr_db_path[$vi]}
+                else
+                    printf 'FUNC_MAKE: Pre-existing Content present for DB: %s\n' "${varr_db_name[vi]}"
+                fi
+            fi
+            if [ ${varr_db_name[$vi]} = 'tool_mmseq_agora' ];then
+            #throws error: /usr/bin/BASH_seqc_makedb.sh: line 755: [: =: unary operator expected
+                #still needs proper config, depends on preexisting primary mmseq DB and config
+                #add log output to include location and size,3.48G  6.92MB/s    in 10m 7s
+                if (( ! ${varr_db_check[$vi]} )) || (( $v_force ));then
+                    echo "FUNC_MAKE: Making reference DB: AGORA taxa (mmseq2)"
+                    v_file_pull='/DB/REPO_tool/kraken/t2p/taxa2proc_agora_raw.txt'
+                    v_file_proc='/DB/REPO_tool/kraken/t2p/taxa2proc_agora_awk.txt'
+                    v_file_out='/DB/REPO_tool/kraken/t2p/taxa2proc_agora_out.txt'
+                    v_file_fail='/DB/REPO_tool/kraken/t2p/taxa2proc_agora_fail.txt'
+                    ##pull list of taxa for agora2 - https://superuser.com/questions/642555/how-can-i-view-all-files-in-a-websites-directory?newreg=d78fd16672e14931adf176961b9e991f
+                    lftp -e "cls -1 > ${v_file_pull}; exit" "https://www.vmh.life/files/reconstructions/AGORA2/version2.01/sbml_files/individual_reconstructions/"
+                    ##parse to pull input for DB refinement
+                    awk 'BEGIN {FS="\t";OFS=FS} {if(NR >= 0){print $1}}' ${v_file_pull} | \
+                    awk -F '.xml' '{print "\""gensub(/_/," ","g",$1)"\""}' > ${v_file_proc}
+                    mapfile -t v_id_in < <( cat ${v_file_proc} )
+                    printf 'datasets summary taxonomy taxon %s --report ids_only --as-json-lines | dataformat tsv taxonomy --template tax-summary | cut --fields 1,2' "${v_id_in[*]}" > "${v_file_out}"
+                    #datasets summary taxonomy taxon "Abiotrophia defectiva ATCC 49176" --report ids_only --as-json-lines | dataformat tsv taxonomy --template tax-summary | cut --fields 1,2
+                    v_id_mmseq=$( bash "${v_file_out}" 2> "${v_file_fail}" | tail -n +2 | cut --fields 2 )
+                    #mapfile -t v_id_mmseq < <( bash /DB/DEPO_demo/demo/v_id_out 2> /DB/DEPO_demo/demo/v_id_fail | tail -n +2 | cut --fields 2 )
+                    #datasets download genome taxon ${v_id_ncbi} --assembly-level complete --assembly-source RefSeq --assembly-version latest --filename 
+                    #testing mars/ant https://www.johndcook.com/blog/2022/08/16/python-pickle/
+                    ##micromamba env create --name py_test python=3.8 -c conda-forge
+                    ##git clone -b master https://github.com/ThieleLab/mars-pipeline.git /DB/DEPO_demo/demo/mars_ant
+                    ##ant_pik_out = pickle.load(open("/DB/DEPO_demo/demo/mars_ant/ANT/agora2_species.pkl", "rb"))
+                    ##with open("ant_pik_out.txt","a") as f: pprint.pprint(ant_pik_out, stream=f)
+                    ##subset
+                    micromamba run -n env_s4_mmseqs2 mmseqs filtertaxseqdb /DB/DEPO_demo/mmseqs_proc/ncbi_NR \
+                    /DB/DEPO_demo/mmseqs_proc/ncbi_NR_AGORA2_240610_TEST --taxon-list ${v_id_mmseq// /,}
+                    eval ${varr_db_gets[$vi]}
+                    eval ${varr_db_pack[$vi]}
+                    echo "FUNC_MAKE: DB content @: "${varr_db_path[$vi]}
+                else
+                    printf 'FUNC_MAKE: Pre-existing Content present for DB: %s\n' "${varr_db_name[vi]}"
+                fi
+            fi
+        fi
+    done
 else
     echo "FUNC_MAKE: This function was not cleared to make the DBs"
     exit 1
