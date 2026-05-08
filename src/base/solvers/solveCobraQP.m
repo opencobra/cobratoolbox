@@ -727,6 +727,7 @@ switch solver
         stat = optarrowResult.stat;
         origStat = optarrowResult.origStat;
         qpmethod = optarrowResult.qpmethod;
+        solver = optarrowResult.solver;
         %%
     case 'dqqMinos'
         if ~isunix

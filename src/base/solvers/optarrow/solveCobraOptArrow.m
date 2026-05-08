@@ -81,6 +81,8 @@ end
 % =========================================================================
 function result = localBuildResult(problemType, response, cfg)
 result = struct();
+methodLabel         = localMethodLabel(cfg);
+solverLabel         = localSolverLabel(cfg);
 result.x            = localCol(localGet(response, 'solution', []));
 result.w            = localCol(localGet(response, 'rcost', []));
 result.y            = localCol(localGet(response, 'dual', []));
@@ -90,16 +92,35 @@ result.origStat     = localGet(response, 'status', '');
 result.origStatText = localGet(response, 'status', '');
 result.raw          = response;
 result.optarrowConfig = cfg;
+result.solver       = solverLabel;
 
 if strcmpi(problemType, 'LP')
     result.full     = result.x;
     result.obj      = localGet(response, 'obj_val', NaN);
     result.f        = result.obj;
-    result.lpmethod = localGet(response, 'method', 'optarrow');
+    result.lpmethod = methodLabel;
     result.basis    = [];
 elseif strcmpi(problemType, 'QP')
     result.full     = result.x;
-    result.qpmethod = localGet(response, 'method', 'optarrow');
+    result.qpmethod = methodLabel;
+end
+end
+
+function label = localSolverLabel(cfg)
+if isfield(cfg, 'engine') && ~isempty(cfg.engine)
+    engineName = lower(regexprep(char(string(cfg.engine)), '\s+', '_'));
+    label = ['optarrow_' engineName];
+else
+    label = 'optarrow';
+end
+end
+
+function label = localMethodLabel(cfg)
+if isfield(cfg, 'backendSolver') && ~isempty(cfg.backendSolver)
+    solverName = lower(regexprep(char(string(cfg.backendSolver)), '\s+', '_'));
+    label = ['optarrow_' solverName];
+else
+    label = 'optarrow';
 end
 end
 

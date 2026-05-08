@@ -1043,6 +1043,7 @@ switch solver
         origStatText = optarrowResult.origStatText;
         lpmethod = optarrowResult.lpmethod;
         basis = optarrowResult.basis;
+        solver = optarrowResult.solver;
         
     case 'tomlab_cplex'
         %% Tomlab
