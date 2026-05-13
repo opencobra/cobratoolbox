@@ -4,48 +4,9 @@ function [result, why] = structeq(structA, structB, funh2string, ignorenan)
 % subfields. This function requires companion function CELLEQ to compare
 % two cell arrays.
 %
-% USAGE:
-%
-% structeq(struct1, struct2)
-%       Performs a comparison and returns true if all the subfields and
-%       properties of the structures are identical. It will fail if
-%       subfields include function handles or other objects which don't
-%       have a defined eq method.
-%
-% [iseq, info] = structeq(struct1, struct2)
-%       This syntax returns a logical iseq and a second output info which
-%       is a structure that contains a field "Reason" which gives you a
-%       text stack of why the difference occurred as well as a field
-%       "Where" which contains the indices and subfields of the structure
-%       where the comparison failed. If iseq is true, info contains empty
-%       strings in its fields.
-%
-% [...] = structeq(struct1, struct2, funh2string, ignorenan)
-%       Illustrates an alternate syntax for the function with additional
-%       input arguments. See the help for CELLEQ for more information on the
-%       meaning of the arguments
-%
-% METHOD:
-% 1. Compare sizes of struct arrays
-% 2. Compare numbers of fields
-% 3. Compare field names of the arrays
-% 4. For every element of the struct arrays, convert the field values into
-% a cell array and do a cell array comparison recursively (this can result
-% in multiple recursive calls to CELLEQ and STRUCTEQ)
-%
-% EXAMPLE:
-% % Compare two handle graphics hierarchies
-% figure;
-% g = surf(peaks(50));
-% rotate3d
-% hg1 = handle2struct(gcf);
-% set(g,'XDataMode', 'manual');
-% hg2 = handle2struct(gcf);
-%
-% structeq(hg1, hg2)
-% [iseq, info] = structeq(hg1, hg2)
-% [iseq, info] = structeq(hg1, hg2, true)
-
+% Additional behaviour in this version:
+% - records dimensions of differing fields in why.ASize and why.BSize
+% - explicitly reports field-size mismatches before value comparisons
 
 if nargin < 3
     funh2string = false;
@@ -56,174 +17,195 @@ end
 
 result = true;
 
-why = struct('Reason','','Where','','A','','B','');
+% Predefine output structure with consistent fields.
+why = struct('Reason','','Where','','A',[],'B',[],'ASize',"",'BSize',"");
 
+% -------------------------------------------------------------
+% Compare sizes of the top-level struct arrays
+% -------------------------------------------------------------
 if any(size(structA) ~= size(structB))
     result = false;
-    why = struct('Reason','Sizes are different',Where,'');
+    why = struct( ...
+        'Reason','Sizes of the struct arrays are different', ...
+        'Where','', ...
+        'A',[], ...
+        'B',[], ...
+        'ASize', sizeVec2str(size(structA)), ...
+        'BSize', sizeVec2str(size(structB)));
     return
 end
 
 fieldsA = fieldnames(structA);
 fieldsB = fieldnames(structB);
 
-nDifferences=0;
+nDifferences = 0;
 
-if 0
-    % Check field lengths
-    if length(fieldsA) ~= length(fieldsB)
-        result = false;
-        why = struct('Reason','Number of fields are different','Where','');
-        return
+% -------------------------------------------------------------
+% Compare field name sets
+% -------------------------------------------------------------
+uniqueToA = sort(setdiff(fieldsA, fieldsB));
+uniqueToB = sort(setdiff(fieldsB, fieldsA));
+
+if ~isempty(uniqueToA) || ~isempty(uniqueToB)
+    result = false;
+
+    % Fields present only in structA
+    for j = 1:numel(uniqueToA)
+        fld = uniqueToA{j};
+
+        nDifferences = nDifferences + 1;
+        why(nDifferences).Reason = 'Field names are different';
+        why(nDifferences).Where  = fld;
+        why(nDifferences).A      = structA(1).(fld);
+        why(nDifferences).B      = [];
+        why(nDifferences).ASize  = valueSize2str(structA(1).(fld));
+        why(nDifferences).BSize  = '';
     end
-else
-    % cleaner that joins with a newline instead of a comma
-    % newline is a built-in MATLAB function for \n
-    stacker = @(x) string(strjoin(string(x), newline));
 
-    % Find unique fields for each struct
-    uniqueToA = sort(setdiff(fieldsA, fieldsB));
-    uniqueToB = sort(setdiff(fieldsB, fieldsA));
-    % If there is any mismatch in the field names
-    if ~isempty(uniqueToA) || ~isempty(uniqueToB)
+    % Fields present only in structB
+    for j = 1:numel(uniqueToB)
+        fld = uniqueToB{j};
 
-        for j=1:max(length(uniqueToA))
-            nDifferences = nDifferences + 1;
-            result = false;
-            why(nDifferences).Reason = 'Field names are different';
-            why(nDifferences).Where  = uniqueToA{j};
-            % Attempt to convert string back to a number
-            numVal = str2double(structA(1).(uniqueToA{j}));
-            if isnan(numVal)
-                why(nDifferences).A = structA(1).(uniqueToA{j});
-                why(nDifferences).B = '';
-            else
-                why(nDifferences).A = numVal;
-                why(nDifferences).B = NaN;
-            end
-        end
-
-        for j=1:max(length(uniqueToB))
-            nDifferences = nDifferences + 1;
-            result = false;
-            why(nDifferences).Reason = 'Field names are different';
-            why(nDifferences).Where  = uniqueToB{j};
-            % Attempt to convert string back to a number
-            numVal = str2double(structB(1).(uniqueToB{j}));
-            if isnan(numVal)
-                why(nDifferences).B = structB(1).(uniqueToB{j});
-                why(nDifferences).A = '';
-            else
-                why(nDifferences).B = numVal;
-                why(nDifferences).A = NaN;
-            end
-
-        end
+        nDifferences = nDifferences + 1;
+        why(nDifferences).Reason = 'Field names are different';
+        why(nDifferences).Where  = fld;
+        why(nDifferences).A      = [];
+        why(nDifferences).B      = structB(1).(fld);
+        why(nDifferences).ASize  = '';
+        why(nDifferences).BSize  = valueSize2str(structB(1).(fld));
     end
 end
 
-% Find fields that exist in both structures
+% -------------------------------------------------------------
+% Compare fields present in both structures
+% -------------------------------------------------------------
 commonFields = intersect(fieldsA, fieldsB);
 
 for i = 1:numel(structA)
-    if numel(structA)==1
-        for j=1:length(commonFields)
-            if isstruct(structA(i).(commonFields{j}))
-                props1 = struct2cell(structA(i).(commonFields{j}));
-                props2 = struct2cell(structB(i).(commonFields{j}));
-            else
-                props1 = {structA(i).(commonFields{j})};
-                props2 = {structB(i).(commonFields{j})};
+    if numel(structA) == 1
+        % Compare field by field for scalar structs.
+        for j = 1:numel(commonFields)
+            fld = commonFields{j};
+
+            valA = structA(i).(fld);
+            valB = structB(i).(fld);
+
+            % First explicitly report a size mismatch at this field.
+            if ~isequal(size(valA), size(valB))
+                nDifferences = nDifferences + 1;
+                result = false;
+
+                why(nDifferences).Reason = 'Field sizes are different';
+                why(nDifferences).Where  = fld;
+                why(nDifferences).A      = valA;
+                why(nDifferences).B      = valB;
+                why(nDifferences).ASize  = valueSize2str(valA);
+                why(nDifferences).BSize  = valueSize2str(valB);
+
+                % Skip deeper comparison for this field once the sizes
+                % already differ.
+                continue
             end
-            [resultn, subwhy] = celleq(props1,props2,funh2string,ignorenan);
+
+            % Use the existing recursive logic for equal-sized fields.
+            if isstruct(valA)
+                props1 = struct2cell(valA);
+                props2 = struct2cell(valB);
+            else
+                props1 = {valA};
+                props2 = {valB};
+            end
+
+            [resultn, subwhy] = celleq(props1, props2, funh2string, ignorenan);
             resultn = all(resultn);
+
             if ~resultn
                 nDifferences = nDifferences + 1;
-                result = resultn;
-                %str2double(regexp(subwhy.Where,'{([0-9]+)}','tokens','once'));
-                % why = struct('Reason',sprintf('Properties are different <- %s',subwhy.Reason),'Where',where);
-                why(nDifferences).Reason = sprintf('Properties are different <- %s',subwhy.Reason);
-                why(nDifferences).Where = commonFields{j}; %sprintf('(%d).%s%s',i,fields1{fieldidx},subwhy.Where(2:end));
-                try
-                    props1 = string(props1);
-                    % Attempt to convert string back to a number
-                    numVal = str2double(props1);
-                    if 1 || isnan(numVal)
-                        why(nDifferences).A = props1;
-                    else
-                        why(nDifferences).A = numVal;
-                    end
+                result = false;
 
-                    props2 = string(props2);
-                    % Attempt to convert string back to a number
-                    numVal = str2double(props2);
-                    if 1 || isnan(numVal)
-                        why(nDifferences).B = props2;
-                    else
-                        why(nDifferences).B = numVal;
-                    end
-                catch
-                    why(nDifferences).A = props1;
-                    why(nDifferences).B = props2;
-                end
+                why(nDifferences).Reason = sprintf('Properties are different <- %s', subwhy.Reason);
+                why(nDifferences).Where  = fld;
+                why(nDifferences).A      = valA;
+                why(nDifferences).B      = valB;
+                why(nDifferences).ASize  = valueSize2str(valA);
+                why(nDifferences).BSize  = valueSize2str(valB);
             end
         end
+
     else
+        % Compare each element of a nonscalar struct array.
         props1 = struct2cell(structA(i));
         props2 = struct2cell(structB(i));
-        [result, subwhy] = celleq(props1,props2,funh2string,ignorenan);
-        result = all(result);
-        if ~result
-            [fieldidx, subwhy.Where] = strtok(subwhy.Where, '}');
-            fieldidx = str2double(fieldidx(2:end));
-            %str2double(regexp(subwhy.Where,'{([0-9]+)}','tokens','once'));
-            where = sprintf('(%d).%s%s',i,fieldsA{fieldidx},subwhy.Where(2:end));
-            why = struct('Reason',sprintf('Properties are different <- %s',subwhy.Reason),'Where',where);
-            return
+
+        [resultn, subwhy] = celleq(props1, props2, funh2string, ignorenan);
+        resultn = all(resultn);
+
+        if ~resultn
+            result = false;
+
+            % Recover the field index from CELLEQ's report, if possible.
+            try
+                [fieldidx, restWhere] = strtok(subwhy.Where, '}');
+                fieldidx = str2double(fieldidx(2:end));
+                where = sprintf('(%d).%s%s', i, fieldsA{fieldidx}, restWhere(2:end));
+                valA = structA(i).(fieldsA{fieldidx});
+                valB = structB(i).(fieldsA{fieldidx});
+            catch
+                where = sprintf('(%d)', i);
+                valA = structA(i);
+                valB = structB(i);
+            end
+
+            nDifferences = nDifferences + 1;
+            why(nDifferences).Reason = sprintf('Properties are different <- %s', subwhy.Reason);
+            why(nDifferences).Where  = where;
+            why(nDifferences).A      = valA;
+            why(nDifferences).B      = valB;
+            why(nDifferences).ASize  = valueSize2str(valA);
+            why(nDifferences).BSize  = valueSize2str(valB);
         end
     end
-
 end
 
+% If no differences were accumulated, clear the placeholder entry.
+if result
+    why = struct('Reason','','Where','','A',[],'B',[],'ASize',"",'BSize',"");
+end
 end
 
-function s = any2str(x)
+function s = valueSize2str(x)
+% Return size of a MATLAB value as a compact string like "5x7" or "1x1".
 
-    if isstring(x)
-        s = x;
+    s = sizeVec2str(size(x));
+end
 
-    elseif ischar(x)
-        s = string(x);
+function s = sizeVec2str(sz)
+% Convert a size vector into a compact string like "5x7x3".
 
-    elseif isnumeric(x) || islogical(x)
-        if isscalar(x)
-            s = string(x);
-        else
-            s = string(mat2str(x));
-        end
+    if isempty(sz)
+        s = "";
+        return
+    end
 
-    elseif istable(x)
-        s = string(formattedDisplayText(x));
+    s = join(string(sz), "x");
+    s = s(1);
+end
 
-    elseif isstruct(x)
-        s = string(jsonencode(x,'PrettyPrint',true));
+function out = formatTableColumn(in)
+% Convert a table column of arbitrary MATLAB values into a cell array of
+% character vectors for readable display.
 
-    elseif iscell(x)
+    if ~iscell(in)
+        in = num2cell(in);
+    end
+
+    out = cell(size(in));
+    for k = 1:numel(in)
         try
-            s = string(formattedDisplayText(x));
+            out{k} = char(any2str(in{k}));
         catch
-            s = string(evalc("disp(x)"));
-        end
-
-    elseif isa(x,'datetime') || isa(x,'duration')
-        s = string(x);
-
-    else
-        % fallback for arbitrary classes / objects
-        try
-            s = string(x);
-        catch
-            s = string(evalc("disp(x)"));
+            out{k} = evalc('disp(in{k})');
+            out{k} = strtrim(out{k});
         end
     end
 end
