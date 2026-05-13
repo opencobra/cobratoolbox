@@ -4,6 +4,9 @@ function [cmd,mosekParam] = setMosekParam(param)
 % mosekParam
 
 
+if ~isfield(param,'debug')
+    param.debug=0;
+end
 %tests if solver correctly interfaced and licence running
 if param.printLevel>1 || param.debug
     [~, res] = mosekopt('symbcon');
