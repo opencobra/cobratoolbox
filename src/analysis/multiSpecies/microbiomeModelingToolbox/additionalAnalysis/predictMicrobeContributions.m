@@ -79,6 +79,7 @@ modelList=modelList';
 % remove everything that is not a model
 modelList(find(strcmp(modelList,'.')),:)=[];
 modelList(find(strcmp(modelList,'..')),:)=[];
+modelList(find(strcmp(modelList,'.DS_Store')),:)=[];
 modelList(~any(contains(modelList(:,1),{'.mat','.sbml','.xml'})),:)=[];
 
 if size(modelList,1) ==0
@@ -277,7 +278,7 @@ fluxSpans(1,2:end)=strrep(fluxSpans(1,2:end),'microbiota_model_diet_','');
 cnt=1;
 delArray=[];
 for j=2:size(fluxSpans,1)
-    if abs(sum(str2double(fluxSpans(j,2:end)))) < tol
+    if abs(sum(cell2mat(fluxSpans(j,2:end)))) < tol
         delArray(cnt,1)=j;
         cnt=cnt+1;
     end
