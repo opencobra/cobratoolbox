@@ -1,7 +1,7 @@
 % The COBRAToolbox: testOptArrowEcoliCoreFBA.m
 %
 % Purpose:
-%     - End-to-end FBA test on ecoli_core via the OptArrow Arrow IPC Gateway.
+%     - End-to-end FBA test on ecoli_core via the OptArrow Gateway.
 %       Verifies biomass objective value and steady-state feasibility.
 %
 % Requirements:
@@ -25,7 +25,7 @@ currentDir = pwd;
 fileDir = fileparts(which('testOptArrowEcoliCoreFBA'));
 cd(fileDir);
 
-fprintf('   Testing OptArrow FBA on ecoli_core via Arrow IPC...\n');
+fprintf('   Testing OptArrow FBA on ecoli_core via OptArrow Gateway...\n');
 
 % Resolve endpoint
 endpoint = getenv('COBRA_OPTARROW_ENDPOINT');
@@ -34,17 +34,19 @@ if isempty(endpoint)
 end
 
 % Verify Gateway is reachable
-checkOptArrowSetup(endpoint, struct('throwOnError', true));
+report = checkOptArrowSetup(endpoint, struct('throwOnError', true));
 
 % Configure OptArrow as the active LP solver
-changeCobraOptArrowSolver('Gurobi', 'LP', ...
-    'endpoint',  endpoint, ...
-    'verbosity', 0);
-
-% changeCobraOptArrowSolver('HiGHS', 'LP', ...
-%     'engine', 'python', ...
-%     'endpoint', endpoint, ...
-%     'verbosity', 0);
+if isfield(report, 'arrowBackend') && strcmp(report.arrowBackend, 'json')
+    changeCobraOptArrowSolver('HiGHS', 'LP', ...
+        'engine', 'python', ...
+        'endpoint', endpoint, ...
+        'verbosity', 0);
+else
+    changeCobraOptArrowSolver('Gurobi', 'LP', 'engine', 'julia', ...
+        'endpoint',  endpoint, ...
+        'verbosity', 0);
+end
 
 
 model    = getDistributedModel('ecoli_core_model.mat');

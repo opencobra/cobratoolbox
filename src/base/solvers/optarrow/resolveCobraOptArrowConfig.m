@@ -35,7 +35,10 @@ cfg.backendSolverType = upper(char(string(localFirst(solverParams, ...
     {'backendSolverType', 'solverType', 'solver_type'}, problemType))));
 cfg.backendOptions   = localFirstStruct(solverParams, {'backendOptions', 'solverParams', 'solver_params'});
 cfg.timeoutSec       = localFirst(solverParams, {'timeoutSec'}, 120);
-cfg.transport        = localFirst(solverParams, {'transport'}, 'arrow');
+cfg.transport        = lower(char(string(localFirst(solverParams, {'transport'}, 'auto'))));
+if ~ismember(cfg.transport, {'auto', 'arrow', 'json'})
+    error('resolveCobraOptArrowConfig: transport must be one of: auto, arrow, json.');
+end
 
 % Endpoint is optional; its presence switches to HTTP path.
 endpoint = localFirst(solverParams, {'endpoint'}, '');

@@ -1,10 +1,10 @@
 function report = checkOptArrowSetup(endpoint, opts)
-% checkOptArrowSetup  Verify the OptArrow Gateway is reachable and the
-% Arrow IPC serialisation layer is available.
+% checkOptArrowSetup  Verify the OptArrow Gateway is reachable and select the
+% available MATLAB transport.
 %
-% Requires the "MATLAB Interface to Apache Arrow" add-on, which must be
-% built from source (github.com/apache/arrow). If the add-on is not
-% installed, this function reports a hard failure with build instructions.
+% Native Arrow IPC is preferred. If the "MATLAB Interface to Apache Arrow"
+% add-on is not available or is not compatible with the MATLAB runtime, the
+% OptArrow MATLAB client can fall back to the Gateway JSON route.
 %
 % USAGE:
 %
@@ -111,47 +111,33 @@ end
 
 % -------------------------------------------------------------------------
 function report = localCheckArrowBackend(report)
-% Check whether the native MATLAB Arrow add-on is installed.
-% This is a hard requirement — OptArrow uses native Arrow for all
-% Arrow IPC serialization. There is no Python fallback.
+% Check whether the native MATLAB Arrow add-on is installed. JSON is used as a
+% compatibility fallback when native Arrow is not available.
 
 nativeOk = false;
+hasArrow = (exist('arrow.recordBatch', 'file') == 2);
+if ~hasArrow
+    report.arrowBackend = 'json';
+    fprintf('   Arrow backend: JSON fallback.\n');
+    return;
+end
 try
     arrow.recordBatch(table(int32(1), 'VariableNames', {'x'}));
     nativeOk = true;
-catch
+catch ME
+    if contains(ME.message, 'GLIBCXX') || contains(ME.message, 'libstdc++')
+        report.arrowBackend = 'json';
+        fprintf('   Arrow backend: JSON fallback.\n');
+        return;
+    end
 end
 
 if nativeOk
     report.arrowBackend = 'native';
     fprintf('   Arrow backend: native MATLAB Interface to Apache Arrow.\n');
 else
-    report.arrowBackend = '';
-    report = localFail(report, sprintf([...
-        'The "MATLAB Interface to Apache Arrow" is not installed.\n' ...
-        'This add-on is required and must be built from source:\n\n' ...
-        '  Prerequisites (macOS):\n' ...
-        '    xcode-select --install\n' ...
-        '    brew install cmake\n\n' ...
-        '  Prerequisites (Linux):\n' ...
-        '    sudo apt install -y cmake build-essential\n\n' ...
-        '  Step 1 — Build Arrow C++ (without S3):\n' ...
-        '    git clone https://github.com/apache/arrow.git\n' ...
-        '    cd arrow\n' ...
-        '    cmake -S cpp -B build_cpp \\\n' ...
-        '      -DCMAKE_BUILD_TYPE=Release \\\n' ...
-        '      -DCMAKE_INSTALL_PREFIX=$HOME/arrow_no_s3 \\\n' ...
-        '      -DARROW_S3=OFF -DARROW_WITH_RE2=OFF \\\n' ...
-        '      -DARROW_CSV=ON -DARROW_IPC=ON -DARROW_COMPUTE=ON \\\n' ...
-        '      -DARROW_BUILD_TESTS=OFF -DxsimdSOURCE=BUNDLED\n' ...
-        '    cmake --build build_cpp --config Release --target install\n\n' ...
-        '  Step 2 — Build the MATLAB bindings:\n' ...
-        '    cmake -S matlab -B build_matlab \\\n' ...
-        '      -DArrow_DIR=$HOME/arrow_no_s3/lib/cmake/Arrow \\\n' ...
-        '      -DCMAKE_INSTALL_PREFIX=$HOME/arrow_matlab\n' ...
-        '    cmake --build build_matlab --config Release --target install\n\n' ...
-        '  Step 3 — Verify in MATLAB:\n' ...
-        '    arrow.recordBatch(table(["A";"B"], [1;2]))']));
+    report.arrowBackend = 'json';
+    fprintf('   Arrow backend: JSON fallback.\n');
 end
 end
 

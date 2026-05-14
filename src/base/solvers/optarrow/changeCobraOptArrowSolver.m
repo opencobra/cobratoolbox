@@ -42,6 +42,7 @@ function cfg = changeCobraOptArrowSolver(solverName, problemType, varargin)
 %   'endpoint'       char/string  Gateway URL.
 %                                 Default: 'http://127.0.0.1:8000/cobra/compute'
 %   'timeoutSec'     numeric      HTTP timeout in seconds (default: 120)
+%   'transport'      char/string  'auto' (default) | 'arrow' | 'json'
 %   'backendOptions' struct       Solver-specific options (passed to backend)
 %   'timeLimit'      numeric      Solve time limit in seconds
 %   'verbosity'      numeric      0=silent, 1=normal (default: 1)
@@ -76,6 +77,7 @@ p.CaseSensitive = false;
 addParameter(p, 'engine',         'python');
 addParameter(p, 'endpoint',       'http://127.0.0.1:8000/cobra/compute');
 addParameter(p, 'timeoutSec',     120);
+addParameter(p, 'transport',      'auto');
 addParameter(p, 'backendOptions', struct());
 addParameter(p, 'timeLimit',      []);
 addParameter(p, 'verbosity',      1);
@@ -90,7 +92,11 @@ cfg.backendSolver  = char(string(solverName));
 cfg.engine         = char(string(opts.engine));
 cfg.endpoint       = char(string(opts.endpoint));
 cfg.timeoutSec     = opts.timeoutSec;
+cfg.transport      = lower(char(string(opts.transport)));
 cfg.backendOptions = opts.backendOptions;
+if ~ismember(cfg.transport, {'auto', 'arrow', 'json'})
+    error('changeCobraOptArrowSolver: transport must be one of: auto, arrow, json.');
+end
 if ~isempty(opts.timeLimit)
     cfg.timeLimit = opts.timeLimit;
 end
