@@ -115,7 +115,7 @@ function report = localCheckArrowBackend(report)
 % compatibility fallback when native Arrow is not available.
 
 nativeOk = false;
-hasArrow = (exist('arrow.recordBatch', 'file') == 2);
+hasArrow = ~isempty(which('arrow.recordBatch'));
 if ~hasArrow
     report.arrowBackend = 'json';
     fprintf('   Arrow backend: JSON fallback.\n');
