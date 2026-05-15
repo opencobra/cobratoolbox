@@ -34,7 +34,7 @@ if isempty(endpoint)
 end
 
 % Verify Gateway is reachable
-checkOptArrowSetup(endpoint, struct('throwOnError', true));
+optarrow.checkSetup(endpoint, struct('throwOnError', true));
 
 % Configure OptArrow as the active QP solver
 changeCobraOptArrowSolver('HiGHS', 'QP', ...

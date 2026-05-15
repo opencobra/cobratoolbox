@@ -35,7 +35,7 @@ if isempty(endpoint)
 end
 
 % Verify Gateway is reachable (will error if not)
-checkOptArrowSetup(endpoint, struct('throwOnError', true));
+optarrow.checkSetup(endpoint, struct('throwOnError', true));
 
 % Configure OptArrow as the active LP solver
 changeCobraOptArrowSolver('HiGHS', 'LP', ...

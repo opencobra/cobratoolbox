@@ -34,7 +34,7 @@ end
 fprintf('   Testing OptArrow FBA on ecoli_core (endpoint: %s)...\n', endpoint);
 
 % Verify Gateway is reachable
-checkOptArrowSetup(endpoint, struct('throwOnError', true));
+optarrow.checkSetup(endpoint, struct('throwOnError', true));
 
 % Configure OptArrow as the active LP solver
 changeCobraOptArrowSolver('HiGHS', 'LP', ...
