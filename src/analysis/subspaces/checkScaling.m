@@ -89,7 +89,7 @@ function [precisionEstimate, solverRecommendation, scalingProperties] = checkSca
 
     if exist('matrixA','var')
         switch matrixA
-            case S
+            case 'S'
                 if isfield(model,'b')
                     A = [model.S, model.b];
                     matrixA = 'Sb';
@@ -97,7 +97,7 @@ function [precisionEstimate, solverRecommendation, scalingProperties] = checkSca
                     A = model.S;
                     matrixA = 'S';
                 end
-            case C
+            case 'C'
                 if isfield(model,'d')
                     A = [model.C, model.d];
                     matrixA = 'Cd';
@@ -105,10 +105,39 @@ function [precisionEstimate, solverRecommendation, scalingProperties] = checkSca
                     A = model.C;
                     matrixA = 'C';
                 end
-            case A
-                if isfield(model,'C') & isfield(model,'d')
+            case 'D'
+                if isfield(model, 'd')
+                    A = [model.D, model.d];
+                    matrixA = 'Dd';
+                else
+                    A = model.D;
+                    matrixA = 'D';
+                end
+            case 'E'
+                if isfield(model, 'b')
+                    A = [model.E, model.b];
+                    matrixA = 'Eb';
+                else
+                    A = model.E;
+                    matrixA = 'E';
+                end
+            case 'CD'
+                if isfield(model, 'd')
+                    A = [model.C, model.D, model.d];
+                    matrixA = 'CDd';
+                else
+                    A = [model.C, model.D];
+                    matrixA = 'CD';
+                end
+            case 'A'
+                if isfield(model,'C') && isfield(model,'d')
                     A = [model.S, model.b;model.C,model.d];
                     matrixA = 'SbCd';
+                    if isfield(model, 'D') && isfield(model, 'E')
+                        A = [model.S, model.E, model.b;
+                            model.C, model.D, model.d];
+                        matrixA = 'SEbCDd';
+                    end
                 else
                     if isfield(model,'b')
                         A = [model.S, model.b];
@@ -119,12 +148,17 @@ function [precisionEstimate, solverRecommendation, scalingProperties] = checkSca
                     end
                 end
         end
-    else
+    else % if no var matrixA exists
         % assume constraint matrix is S if no A provided.
         if ~isfield(model, 'A') && isfield(model, 'S')
-            if isfield(model,'C') & isfield(model,'d')
+            if isfield(model,'C') && isfield(model,'d')
                 A = [model.S, model.b;model.C,model.d];
                 matrixA = 'SbCd';
+                if isfield(model, 'D') && isfield(model, 'E')
+                    A = [model.S, model.E, model.b;
+                        model.C, model.D, model.d];
+                    matrixA = 'SEbCDd';
+                end
             else
                 if isfield(model,'b')
                     A = [model.S, model.b];

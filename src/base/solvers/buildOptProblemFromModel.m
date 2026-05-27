@@ -103,6 +103,12 @@ if isfield(model,'csense')
     end
 end
 
+% to prevent situation where osense is 1 and osenseStr is not defined that
+% there is maximization by default:
+[osenseStr, osense] = getObjectiveSense(model);
+model.osenseStr = osenseStr;
+model.osense = osense;
+
 %backward compatibility with old formulation of coupling constraints
 
 %Build some fields, if they don't exist
@@ -110,7 +116,6 @@ modelFields = fieldnames(model);
 basicFields = {'b','csense','osenseStr'};
 rowFields = {'C','d','dsense'};
 columnFields = {'E','evarlb','evarub','evarc','D'};
-
 
 basicFieldsToBuild = setdiff(basicFields,modelFields);
 rowFieldsToBuild = setdiff(rowFields,modelFields);
@@ -279,7 +284,8 @@ if isfield(param,'solveWBMmethod') && ~isempty(param.solveWBMmethod)
     end
 end
 
-[~,optProblem.osense] = getObjectiveSense(model);
+% [~,optProblem.osense] = getObjectiveSense(model);
+optProblem.osense = osense;
 
 if isfield(param,'debug') && param.debug
     switch param.solver

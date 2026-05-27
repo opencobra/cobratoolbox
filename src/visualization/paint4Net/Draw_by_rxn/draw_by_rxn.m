@@ -1,104 +1,125 @@
-% draw_by_rxn.m
-% Script of the Paint4Net to declare the scope of visualization by a list of
-% reactions.
+function [involvedMets, deadEnds, deadRxns] = draw_by_rxn(model, rxns, drawMap, direction, initialMet, excludeMets, flux, save, closev, reportDeadEnds)
+% Defines the visualisation scope from a list of reactions.
 %
-% function [involvedMets,deadEnds,deadRxns]=draw_by_rxn(model,rxns,drawMap,direction,initialMet,excludeMets,flux,save,closev)
+% USAGE:
 %
-% INPUT
+%    [involvedMets, deadEnds, deadRxns] = draw_by_rxn(model, rxns, drawMap, direction, initialMet, excludeMets, flux, save, closev, reportDeadEnds)
 %
-% model - COBRA Toolbox model
-% rxns - a list of reactions in the COBRA model in the form
-%       {'Rxn_Abbr_1','Rxn_Abbr_2',...,'Rxn_Abbr_n'} or cell type vector from the
-%       MATLAB workcpase.
+% INPUTS:
+%    model:            COBRA model structure.
+%    rxns:             Cell array of reaction abbreviations in the COBRA model,
+%                      or a cell vector from the MATLAB workspace.
 %
-% OPTIONAL INPUT
+% OPTIONAL INPUTS:
+%    drawMap:          Boolean indicating whether to visualise the COBRA model.
+%                      Set this to `false` to avoid rendering large maps and
+%                      return results faster.
 %
-% drawMap - a boolean type variable that can take value of true or false
-%       (default is false) indicating whether to visualize the COBRA model or not.
-%       The main idea of this argument is to ensure possibility to save
-%       time by not visualizing a large COBRA model and get a result faster.
-% direction - a string type variable that can take value of 'struc', 'sub',
-%       'prod' or 'both' (default is 'struc') indicating a direction for the
-%       algorithm. In case of 'struc' (structure) the algorithm visualizes all
-%       metabolites connected to the specified reactions in the argument rxns.
-%       The key feature of this function is visualization of all specified reactions
-%       not taking in account a steady state fluxes in that way representing the
-%       structure of the COBRA model. In case of 'sub' (substrates) the algorithm
-%       visualizes only those metabolites which are substrates for the specified 
-%       reactions in the argument rxns. This time the algorithm is using a stoichiometric 
-%       matrix and the steady state fluxes to determine direction of each reaction. 
-%       The algorithm is using an assumption that only those fluxes which rates
-%       are smaller than -10-9 mmol*g-1*h-1 or greater than +10-9 mmol*g-1*h-1 
-%       are non-zero fluxes. In case of 'prod' (products) the algorithm visualizes 
-%       only those metabolites which are products for the specified reactions in 
-%       the argument rxns but in case of 'both' the algorithm visualizes both
-%       � substrates and products - for the specified reactions in the argument
-%       rxns. For both cases the algorithm is using the same rules regarding to 
-%       calculation of the directions for each reaction as for case of 'sub'.
-%       This argument is essential for the command draw_by_met of the Paint4Net v1.0
-%       because the command draw_by_met is calling out the command draw_by_rxn
-%       and passing the argument direction.
-% initialMet - a cell type variable that can take a value that represents
-%       the abbreviation of a metabolite in the COBRA model (default is
-%       empty). This metabolite is represented as green ellipse on the map
-%       and this feature is essential for the command draw_by_met because 
-%       the command draw_by_met is calling out the command draw_by_rxn and 
-%       passing the argument initialMet.
-% excludeMets - a list of metabolites (default is empty) that will be excluded
-%       from the visualization map of the COBRA model in form of the abbreviations
-%       of the metabolites separated by a comma
-%       {'Met_Abbr_1','Met_Abbr_2',...,'Met_Abbr_n'} or a cell type vector 
-%       in the MATLAB workspace that contains the static abbreviations of the
-%       metabolites. The main idea of this argument is to ensure possibility 
-%       to exclude very employed metabolites (e.g., h, h2o, atp, adp, nad etc.)
-%       to avoid unnecessary mesh on the map.
-% flux - a double type Nx1 size vector of fluxes of reactions where N is number 
-%       of reactions (default is vector of x). This vector is calculated during
-%       the optimization of the objective function. Use the command
-%       optimizeCbModel.m.
-% save - a boolean type variable that can take value of true or false
-%       (default is false) indicating whether to automatically save visualization as jpeg file or not.
-%       This is usefull for iterative function call with different
-%       input arguments for visualization scope.
-% closev - a boolean type variable that can take value of true or false
-%       (default is false) indicating whether to close the biograph viewer
-%       window or not after the visualization. This is usefull for iterative
-%       function call with different input arguments for visualization
-%       scope.
+%                      Default: false
 %
-% OUTPUT
+%    direction:        Direction used by the algorithm. Allowed values are:
 %
-% involvedMets - a cell type vector that contains a list of the involved metabolites
-%       in the specified reactions. 
-% deadEnds - a cell type vector that contains a list of the dead end
-%       metabolites in the specified reactions.
-% deadRxns - a cell type vector that contains a list of the dead reactions
-%        in the specified visualization scope.
+%                      * 'struc' - Visualise all metabolites connected to the
+%                        specified reactions, without considering steady-state
+%                        fluxes. This represents the structure of the COBRA model.
 %
-% Andrejs Kostromins 03/10/2012 E-mail: andrejs.kostromins@gmail.com
+%                      * 'sub' - Visualise only metabolites acting as substrates
+%                        for the specified reactions. Reaction direction is
+%                        inferred from the stoichiometric matrix and
+%                        steady-state fluxes.
+%
+%                      * 'prod' - Visualise only metabolites acting as products
+%                        for the specified reactions. Reaction direction is
+%                        inferred from the stoichiometric matrix and
+%                        steady-state fluxes.
+%
+%                      * 'both' - Visualise both substrates and products for the
+%                        specified reactions. Reaction direction is inferred from
+%                        the stoichiometric matrix and steady-state fluxes.
+%
+%                      Default: 'struc'
+%
+%    initialMet:       Cell array containing the abbreviation of the initial
+%                      metabolite in the COBRA model. This metabolite is shown
+%                      as a green circle on the map. This option supports
+%                      `draw_by_met`, which calls `draw_by_rxn` and passes
+%                      `initialMet`.
+%
+%                      Default: empty
+%
+%    excludeMets:      Cell array of metabolite abbreviations to exclude from the
+%                      visualisation map, for example:
+%
+%                         {'Met_Abbr_1', 'Met_Abbr_2', ..., 'Met_Abbr_n'}
+%
+%                      This option is useful for excluding highly connected
+%                      metabolites such as `h`, `h2o`, `atp`, `adp`, and `nad`,
+%                      to reduce visual clutter.
+%
+%                      Default: empty
+%
+%    flux:             `nRxns x 1` vector of reaction fluxes, where `nRxns` is
+%                      the number of reactions in the model. Fluxes are usually
+%                      obtained with `optimizeCbModel`. Flux values smaller than
+%                      `-1e-9 mmol gDW^-1 h^-1` or greater than
+%                      `1e-9 mmol gDW^-1 h^-1` are treated as non-zero.
+%
+%                      Default: vector of zeros.
+%
+%    save:             Boolean indicating whether to save the visualisation
+%                      automatically as a JPEG file. This is useful for iterative
+%                      calls with different visualisation scopes.
+%
+%                      Default: false
+%
+%    closev:           Boolean indicating whether to close the biograph viewer
+%                      window after visualisation. This is useful for iterative
+%                      calls with different visualisation scopes.
+%
+%                      Default: false
+%
+%    reportDeadEnds:   Boolean indicating whether to report dead-end metabolites
+%                      and dead reactions in the specified visualisation scope.
+%
+% OUTPUTS:
+%    involvedMets:     Cell array containing the metabolites involved in the
+%                      specified reactions.
+%    deadEnds:         Cell array containing the dead-end metabolites in the
+%                      specified reactions.
+%    deadRxns:         Cell array containing the dead reactions in the specified
+%                      visualisation scope.
+%
+% NOTE:
+%    This function is part of Paint4Net. It defines a metabolite visualisation
+%    scope from a reaction list and supports `draw_by_met`.
+%
+% .. Author:
+%       - Andrejs Kostromins, 3 Oct 2012, andrejs.kostromins@gmail.com
+%
 
-function [involvedMets,deadEnds,deadRxns]=draw_by_rxn(model,rxns,drawMap,direction,initialMet,excludeMets,flux,save,closev,reportDeadEnds)
+% Initialize output variables with default values
+involvedMets = {};
+deadEnds = {};
+deadRxns = {};
 
 
-  if nargin<7 %if the number of arguments < 7, fill flux vector with x
-        for v=1:length(model.rxns)
-            flux(v)='x';
-        end
-  end
-    
+if nargin<7 %if the number of arguments < 7, use default flux vector of zeros
+    flux = zeros(length(model.rxns), 1); % Default to zero flux
+ end
+
   if nargin<8 %if the number of arguments < 8, save=false
         save=false;
-    end
+  end
     if nargin<9
         closev=false; %if the number of arguments < 9, closev=false
     end
 if  nargin<10
     reportDeadEnds = 0; % no deadends are returns
-    deadEnds =[];
-    deadRxns =[];
+    deadEnds = {};
+    deadRxns = {};
 end
 
-if ~isempty(flux) %if flux vector is not empty
+if ~isempty(flux) && isnumeric(flux) %if flux vector is not empty and contains numeric values
     Start_time2=clock;
     Start_time=clock;
          
@@ -113,6 +134,10 @@ if ~isempty(flux) %if flux vector is not empty
         direction='struc';
     end
 
+    if nargin<5 %if the number of arguments < 5, initialMet{1}=''
+        initialMet{1}='';
+    end
+    
     if nargin<6 %if the number of arguments < 6, excludeMets{1}=''
         excludeMets{1}='';
     end
@@ -146,7 +171,7 @@ if ~isempty(flux) %if flux vector is not empty
         RxIDs=findRxnIDs(model,rxns); %find reaction IDs in the model
         
         %declare variables
-        involvedMets='';
+        involvedMets={};
         mets_index=1;    
 
         for y=1:length(model.mets) %cycle through the metabolites in the model
@@ -288,7 +313,7 @@ if ~isempty(flux) %if flux vector is not empty
             
         end
        
-        if nargin>5 && ~strcmp(initialMet{1},'') %if the number of arguments > 5 and the argument initialMet is not empty
+        if nargin>4 && ~isempty(initialMet) && ~strcmp(initialMet{1},'') %if the number of arguments > 4 and the argument initialMet is not empty
             
             if ~ismember(initialMet{1},involvedMets) %if initialMet is not already in the list of involved metabolites, add initalMet to the list of involved metabolotes
                 involvedMets{length(involvedMets)+1,1}=initialMet{1};
@@ -297,7 +322,6 @@ if ~isempty(flux) %if flux vector is not empty
         end
 
         MetIDs=findMetIDs(model,involvedMets); %find metabolite IDs in the model
-    
         for x=1:length(RxIDs) %cycle through the reaction IDs
             
             for y=1:length(MetIDs) %cycle through the metabolite IDs
@@ -317,16 +341,16 @@ if ~isempty(flux) %if flux vector is not empty
                 elseif model.S(MetIDs(y),RxIDs(x))>0 && flux(RxIDs(x))<-1e-9 %if the metabolite in the S matrix has positive coefficient, but the flux is negative, add not-native direction entry into conectivity matrix
                     matrix(length(MetIDs)+x,y)=0;
                     matrix(y,length(MetIDs)+x)=1;                     
-                elseif model.S(MetIDs(y),RxIDs(x))<0 && model.ub(RxIDs(x))>1e-9%if there is no flux and the metabolite in the S matrix has negative coefficient, and u.bound >0, add native direction entry into conectivity matrix
+                elseif model.S(MetIDs(y),RxIDs(x))<0 && abs(flux(RxIDs(x))) <= 1e-9 && model.ub(RxIDs(x))>1e-9%if there is no significant flux and the metabolite in the S matrix has negative coefficient, and u.bound >0, add native direction entry into conectivity matrix
                     matrix(y,x+length(MetIDs))=1;
                     matrix(x+length(MetIDs),y)=0;
-                elseif model.S(MetIDs(y),RxIDs(x))<0 && model.ub(RxIDs(x))==0&& model.lb(RxIDs(x))<-1e-9%if there is no flux and the metabolite in the S matrix has negative coefficient, and u.bound=0, but l.bound<0, add non-native direction entry into conectivity matrix
+                elseif model.S(MetIDs(y),RxIDs(x))<0 && abs(flux(RxIDs(x))) <= 1e-9 && model.ub(RxIDs(x))==0&& model.lb(RxIDs(x))<-1e-9%if there is no significant flux and the metabolite in the S matrix has negative coefficient, and u.bound=0, but l.bound<0, add non-native direction entry into conectivity matrix
                     matrix(length(MetIDs)+x,y)=1;
                     matrix(y,length(MetIDs)+x)=0;
-                elseif model.S(MetIDs(y),RxIDs(x))>0 && model.ub(RxIDs(x))>1e-9%if there is no flux and the metabolite in the S matrix has positive coefficient, and u.bound >0, add native direction entry into conectivity matrix
+                elseif model.S(MetIDs(y),RxIDs(x))>0 && abs(flux(RxIDs(x))) <= 1e-9 && model.ub(RxIDs(x))>1e-9%if there is no significant flux and the metabolite in the S matrix has positive coefficient, and u.bound >0, add native direction entry into conectivity matrix
                     matrix(length(MetIDs)+x,y)=1;
                     matrix(y,length(MetIDs)+x)=0;  
-                elseif model.S(MetIDs(y),RxIDs(x))>0 && model.ub(RxIDs(x))==0&& model.lb(RxIDs(x))<-1e-9%if there is no flux and the metabolite in the S matrix has positive coefficient, and u.bound=0, but l.bound<0, add non-native direction entry into conectivity matrix
+                elseif model.S(MetIDs(y),RxIDs(x))>0 && abs(flux(RxIDs(x))) <= 1e-9 && model.ub(RxIDs(x))==0&& model.lb(RxIDs(x))<-1e-9%if there is no significant flux and the metabolite in the S matrix has positive coefficient, and u.bound=0, but l.bound<0, add non-native direction entry into conectivity matrix
                     matrix(y,x+length(MetIDs))=1;
                     matrix(x+length(MetIDs),y)=0;
                 end
@@ -395,7 +419,7 @@ if ~isempty(flux) %if flux vector is not empty
         end   
 
         if DeadMetsID(1)==-1 %if no dead ends
-            deadEnds='No dead ends';
+            deadEnds = {};
         end
         
         DeadRxnsID(1)=-1;%declare variable
@@ -422,11 +446,11 @@ if ~isempty(flux) %if flux vector is not empty
             
             ids=involvedMets;
 
-            if nargin>5 && ~strcmp(initialMet{1},'') %if the number of arguments > 5 and the argument initialMet is not empty
+            if nargin>4 && ~isempty(initialMet) && ~strcmp(initialMet{1},''); %if the number of arguments > 4 and the argument initialMet is not empty
                 
-                for v=1:length(ids) %cycle through the node ids
+                for v=1:length(ids); %cycle through the node ids
                     
-                    if strcmp(initialMet,ids{v})
+                    if strcmp(initialMet,ids{v});
                         initialMetID=v; %get the initial met ID
                     end
                     
@@ -434,182 +458,162 @@ if ~isempty(flux) %if flux vector is not empty
                 
             end
 
-            for v=1:length(RxIDs) %cycle through the reaction ids
-                ids{length(ids)+1}=strcat(model.rxns{RxIDs(v)},' (',num2str(flux(RxIDs(v))),')'); %node id=reaction abbr+flux rate           
+            for v=1:length(RxIDs); %cycle through the reaction ids
+                ids{length(ids)+1}=strcat(model.rxns{RxIDs(v)},' (',num2str(flux(RxIDs(v))),')'); %node id=reaction abbr+flux rate
+                flux_rate{length(ids)+1} = (flux(RxIDs(v)));
                 RxnsNodesIDs(v)=length(ids); %get all reaction nodes IDs
             end
 
             ids=ids';      
 
-            map = biograph(matrix,ids,'ShowTextInNodes','ID','LayoutType', 'hierarchical') %create a biograph object EdgeType/ 'LayoutType', 'evuilibrium'
-            
-            for m=1:length(involvedMets) %cycle through the involved mets
-                
-                for n=1:length(model.mets) %cycle through the mets in the model
-                    
-                    if strcmp(involvedMets{m},model.mets{n}) %if particular metabolite has been found in the model
-                        
-                        try %try to set label=metabolite name
-                            set(map.nodes(m), 'Label', strcat('Name: ',model.metNames{n}))                           
-                        catch info
-                        end
-                        
-                        try %try to set description=metabolite charged formula                                                   
-                            set(map.nodes(m), 'Description', strcat('Charged formula: ',model.metFormulas{n}))
-                        catch info
-                        end
-                        
-                    end
-                    
-                end
-                
-            end
-            
-            for m=1:length(RxIDs) %cycle through the reaction IDs
-                
-                for n=1:length(model.rxns) %cycle through the reactions in the model
-                    
-                    if strcmp(model.rxns{RxIDs(m)},model.rxns{n}) %if particular reaction has been found in the model
-                        
-                        try %try to set label=reaction name
-                            set(map.nodes(length(involvedMets)+m), 'Label', strcat('Name: ',model.rxnNames{n}))
-                        catch info
-                        end
-                        
-                        try %try to set description=reaction evuation 
-                            strtmp=printRxnFormula(model,model.rxns{RxIDs(m)},false);                    
-                            set(map.nodes(length(involvedMets)+m), 'Description', strcat('Reaction: ',strtmp{1},' lb=',num2str(model.lb(RxIDs(m))),' ub=',num2str(model.ub(RxIDs(m)))))
-                        catch info
-                        end
-                        
-                    end
-                    
-                end
-                
-            end
-    
-            max_flux=max(abs(flux)); %get max absolute flux value from the input vector
+            % Convert adjacency matrix to digraph
+            G = digraph(matrix);
 
-            for p=length(MetsNodesIDs)+1:length(ids) %cycle through the nodes IDs starting from the first reaction node
-                
-                if flux(RxIDs(p-length(MetsNodesIDs)))>1e-9 && flux(RxIDs(p-length(MetsNodesIDs)))~='x' %if flux is positive and not evual to x                    
-                    edges1 = getedgesbynodeid(map,ids(p),[]); %get all source edges connected to particular reaction node 
-                    edges2 = getedgesbynodeid(map,[],ids(p)); %get all sink edges connected to particular reaction node  
-                    tot_edges=[edges1;edges2]; %concatenate edges                    
-                    set(tot_edges,'LineColor',[0 1 0]); %set green color to found edges
-                    set(tot_edges,'LineWidth',abs(7*(flux(RxIDs(p-length(MetsNodesIDs))))/max_flux)); %set thichness of edge proportional to max flux 
-                elseif flux(RxIDs(p-length(MetsNodesIDs)))<-1e-9 && flux(RxIDs(p-length(MetsNodesIDs)))~='x' %if flux is negative and not evual to x 
-                    edges1 = getedgesbynodeid(map,ids(p),[]); %get all source edges connected to particular reaction node
-                    edges2 = getedgesbynodeid(map,[],ids(p)); %get all sink edges connected to particular reaction node                 
-                    tot_edges=[edges1;edges2]; %concatenate edges 
-                    set(tot_edges,'LineColor',[0 0 1]); %set green color to found edges
-                    set(tot_edges,'LineWidth',abs(7*(flux(RxIDs(p-length(MetsNodesIDs))))/max_flux)); %set thichness of edge proportional to max flux               
-                end
-            end  
+            % Set default node names
+            nodeNames = ids; % Default node names from ids
+            G.Nodes.Name = nodeNames(:);
             
-            
-               h=view(map); %generate layout  
-               set(h.nodes(RxnsNodesIDs),'Color',[241/255,176/255,102/255]); %set color to reaction nodes
-               set(h.nodes(MetsNodesIDs),'Shape','ellipse'); %set shape of ellipse to metabolite nodes
-                                     
-                  
-             for v=1:length(DeadRxnsID2)
-                 for z=length(involvedMets)+1:length(ids)
-                    tmpR=[];
-                    for q=1:length(ids{z})
-                        if ~strcmp(ids{z}(q),' ')
-                            tmpR=[tmpR ids{z}(q)];
-                        else
-                            break
+            % Initialize compact NodeLabel with default IDs (similar to original biograph)
+            for i = 1:length(ids)
+                G.Nodes.NodeLabel{i} = ids{i};
+            end
+
+            % Customize nodes based on involvedMets - use shorter labels
+            for m = 1:length(involvedMets)
+                for n = 1:length(model.mets)
+                    if strcmp(involvedMets{m}, model.mets{n})
+                        try
+                            if isfield(model, 'metNames') && length(model.metNames) >= n && ~isempty(model.metNames{n})
+                                % Use just the metabolite name, not "Name: ..."
+                                metName = model.mets{n};
+                                metNameLong = model.metNames{n};
+                                metFormula = model.metFormulas{n};
+                                if length(metName) > 15  % Truncate long names
+                                    metName = [metName(1:12) '...'];
+                                end
+                                G.Nodes.Name{m} = ['Metabolite Names: ' , metNameLong, ' Formula: ', metFormula];
+                                G.Nodes.NodeLabel{m} = metName;
+                            end
+                        catch
+                            % Keep default label if error occurs
+                        end
+                        try
+                            if isfield(model, 'metFormulas') && length(model.metFormulas) >= n && ~isempty(model.metFormulas{n})
+                                G.Nodes.Description{m} = strcat('Charged formula: ', newline, model.metFormulas{n});
+                            end
+                        catch
+                            % Handle errors silently
                         end
                     end
-                      if strcmp(DeadRxnsID2{v},tmpR)
-                             if DeadRxnsID(1)==-1
-                                 DeadRxnsID(1)=z;     
-                                 break
-                             else
-                                  DeadRxnsID(length(DeadRxnsID)+1)=z;     
-                                  break
-                             end
-                      end
                 end
-             end   
+            end
 
-            if DeadMetsID(1)~=-1 %if dead end mets exist
-                set(h.nodes(DeadMetsID),'Color',[1 0 0]); %set red color to dead end metabolite nodes
-            end           
-            
-            ExRxnsID=-1;%declare variable
-            
-            for q=length(MetsNodesIDs)+1:size(matrix,2) %cycle through the nodes IDs starting from the first reaction node
-                
-                if sum(matrix(q,:)) + sum(matrix(:,q))<2 %if sum of edges to one reactio node is less then 2, then it could be exchange reaction
-                    
-                    if ExRxnsID(1)==-1
-                        ExRxnsID(1)=q;
-                    else
-                        ExRxnsID(length(ExRxnsID)+1)=q;
+            % Customize reaction nodes - use shorter labels
+            for m = 1:length(RxIDs)
+                for n = 1:length(model.rxns)
+                    if strcmp(model.rxns{RxIDs(m)}, model.rxns{n})
+                        try
+                            if isfield(model, 'rxnNames') && length(model.rxnNames) >= n && ~isempty(model.rxnNames{n});
+                                % Use just the reaction name, not "Name: ..."
+                                rxnName = model.rxns{n};
+                                rxnNameLong = model.rxnNames{n};
+                                RxnFormula = printRxnFormula(model,model.rxns{n});
+                                if length(rxnName) > 15  % Truncate long names
+                                    rxnName = [rxnName(1:12) '...'];
+                                end
+                                G.Nodes.Name{length(involvedMets) + m} = ['Reaction: ', rxnNameLong];
+                                G.Nodes.NodeLabel{length(involvedMets) + m} = [rxnName, disp(flux(m))];
+                            end
+                        catch
+                            % Keep default label if error occurs
+                        end
+                        try
+                            strtmp = printRxnFormula(model, model.rxns{RxIDs(m)}, false);
+                            G.Nodes.Description{length(involvedMets) + m} = ...
+                                strcat('Reaction: ', strtmp{1}, ' lb=', num2str(model.lb(RxIDs(m))), ' ub=', num2str(model.ub(RxIDs(m))));
+                        catch
+                            % Handle errors silently
+                        end
                     end
-                    
                 end
+            end
+
+            % Visualize the graph with custom labels and smaller font
+            h = plot(G, 'Layout', 'layered', 'NodeLabel', G.Nodes.NodeLabel, 'NodeFontSize', 8); % Use smaller font size
+            h.EdgeColor = [0.5, 0.5, 0.5]; % Default edge color
+
+            % Adjust edge properties based on flux
+            max_flux = max(abs(flux));
+            if max_flux == 0
+               %max_flux = 1; % Avoid division by zero
+            end
+            % for 
+            %     q = 1:length(RxIDs)
+            %     ids{length(ids)+1}=strcat(model.rxns{RxIDs(q)},' (',num2str(flux(RxIDs(q))),')'); %node id=reaction abbr+flux rate
+            %     flux_rate{length(ids)+1} = (flux(RxIDs(q)))
                 
+                % disp('THIS IS q = 1:length(RxIDs)');
+                % disp(q);
+            for p = length(MetsNodesIDs) + 1:length(ids);
+                [oeid,onid] = outedges(G, p);
+                [ieid,inid] = inedges(G, p);
+                eid = [oeid;ieid];
+                flux_value = flux(RxIDs(p - length(MetsNodesIDs)));
+                if flux_value > 1e-9;
+                    % Positive flux: Green edges
+                    highlight(h, 'Edges', eid, 'LineWidth', abs(7 * (flux_value / max_flux)), 'EdgeColor', 'green', 'EdgeLabelColor', 'green' , 'ArrowSize', 17)%, ArrowPosition=0.5);
+                elseif flux_value < -1e-9;
+                    % Negative flux: Blue edges
+                    highlight(h, 'Edges', eid, 'LineWidth', abs(7 * (flux_value / max_flux)), 'EdgeColor', 'blue', 'EdgeLabelColor', 'blue' , 'ArrowSize', 17)%, ArrowPosition=0.5);
+                end
+            end
+            % Highlight specific nodes (reactions, metabolites, etc.)
+            highlight(h, RxnsNodesIDs, 'Marker', 'square', 'NodeColor', [241/255, 176/255, 102/255]); % Reaction nodes AS STARTS W/ 'Marker', 'hexagram',
+            highlight(h, MetsNodesIDs, 'Marker', 'o', 'NodeColor', [0.8, 0.8, 1.0]); % Metabolite nodes - light blue
+            disp('Metabolite nodes - light blue: Reaction nodes - Orange')
+            
+            % Adjust node sizes to be more manageable
+            h.MarkerSize = 8; % Smaller nodes
+            h.NodeFontSize = 8; % Smaller font
+            h.NodeFontAngle = "italic"
+            
+            % Add highlighting for dead ends and special metabolites
+            if DeadMetsID(1) ~= -1
+                highlight(h, DeadMetsID, 'NodeColor', [1, 0, 0]); % Red for dead ends
             end
             
-            if ExRxnsID(1)~=-1 %if exchange reactions exist
-                set(h.nodes(ExRxnsID),'Color',[173/255, 1, 47/255]); %set red color to exchange reaction nodes                
+            % Highlight initial metabolite if specified
+            if nargin > 4 && ~isempty(initialMet) && ~strcmp(initialMet{1}, '') %&& exist('initialMetID', 'var') <-Removed this, was causing errors
+                highlight(h, initialMetID, 'NodeColor', '#47a81d')%, MarkerSize==10); % Green for initial metabolite
             end
-   
-            if nargin>5 && ~strcmp(initialMet{1},'') %if the number of arguments > 5 and the argument initialMet is not empty
-                set(h.nodes(initialMetID),'Color',[0 1 0]); %set green color to initial met node          
-            end            
-        
-            if DeadRxnsID(1)~=-1 %if dead reactions exist
-                set(h.nodes(DeadRxnsID),'Color',[1 0 0]); %set red color to dead reaction nodes
+
+            % Save graph visualization if needed
+            if strcmp(save, 'true')
+                saveas(gcf, strcat('graph_', datestr(now, 'yyyymmdd_HHMMSS'), '.jpg'));
             end
-            
-            if ExRxnsID(1)~=-1 %if exchange reactions exist                
-                set(h.nodes(ExRxnsID),'Shape','diamond'); %set shape of ellipse to metabolite nodes
+
+            % Close visualization if specified
+            if strcmp(closev, 'true')
+                close(gcf);
             end
-            
-            if strcmp(save,'true') %if save=true
-                f = get(h.hgAxes, 'Parent');
-                clock_tmp=clock;        
-                print(f, '-djpeg', strcat(num2str(clock_tmp(1)),'_',num2str(clock_tmp(2)),'_',num2str(clock_tmp(3)),'_',num2str(clock_tmp(4)),'_',num2str(clock_tmp(5)),'_',num2str(clock_tmp(6)),'.jpg'));
-        
-            end
-            
-            if strcmp(closev,'true') %if closev=true
-                child_handles = allchild(0);
-                names = get(child_handles,'Name');
-                k = find(strncmp('Biograph Viewer', names, 15));
-                close(child_handles(k))
-            end
-            
-        end   
+        end
 
     else %if in the input list was at least one unexisting reaction in the model
         
         disp('The following reactions are not present in the model:')
-        not_present=not_present_rxns'
-        involvedMets='No involved mets';
-        deadEnds='No dead ends';
+        not_present_rxns(~strcmp(not_present_rxns, '0'))
+        involvedMets = {};
+        deadEnds = {};
+        deadRxns = {};
         
     end
     
-    %print end and total time for task
-    End_time=clock;
-         Total_time=End_time-Start_time2;
-         End_time=strcat(num2str(End_time(1)),'_',num2str(End_time(2)),'_',num2str(End_time(3)),'_',num2str(End_time(4)),'_',num2str(End_time(5)),'_',num2str(End_time(6)))
-        Total_time=strcat(num2str(Total_time(1)),'_',num2str(Total_time(2)),'_',num2str(Total_time(3)),'_',num2str(Total_time(4)),'_',num2str(Total_time(5)),'_',num2str(Total_time(6)))
-else %if flux vector is empty
+else %if flux vector is empty or contains non-numeric values
     
-        disp('The flux vector is empty')
-        involvedMets='No involved mets';
-        deadEnds='No dead ends';
-        End_time=clock;
-         Total_time=End_time-Start_time2;
-         End_time=strcat(num2str(End_time(1)),'_',num2str(End_time(2)),'_',num2str(End_time(3)),'_',num2str(End_time(4)),'_',num2str(End_time(5)),'_',num2str(End_time(6)))
-        Total_time=strcat(num2str(Total_time(1)),'_',num2str(Total_time(2)),'_',num2str(Total_time(3)),'_',num2str(Total_time(4)),'_',num2str(Total_time(5)),'_',num2str(Total_time(6)))
+    disp('The flux vector is empty or contains non-numeric values')
+    involvedMets = {};
+    deadEnds = {};
+    deadRxns = {};
         
 end
 end

@@ -58,13 +58,17 @@ for k = 1:length(solverPkgs)
         end
 
         if strcmp(solverPkgs{k}, 'tomlab_cplex')
-            % using 2-norm min
+            % using L2 preprocessing + targeted FVA
             blockedReactions = findBlockedReaction(model, 'L2');
 
-            % asert individual reaction names
-            for i = 1:length(ecoli_blckd_rxn)
-                assert(strcmp(ecoli_blckd_rxn{i}, blockedReactions{i}));
-            end
+            % L2+FVA must return the exact same set as full FVA
+            assert(length(blockedReactions) == length(ecoli_blckd_rxn), ...
+                'L2: expected %d blocked reactions, got %d', ...
+                length(ecoli_blckd_rxn), length(blockedReactions));
+
+            assert(isempty(setdiff(ecoli_blckd_rxn, blockedReactions)) && ...
+                   isempty(setdiff(blockedReactions, ecoli_blckd_rxn)), ...
+                'L2: blocked reaction sets do not match');
         end
     end
 

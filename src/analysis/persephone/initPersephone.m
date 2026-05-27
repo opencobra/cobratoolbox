@@ -139,6 +139,13 @@ updatedMetadataPath = updatedMetadataPath + "_processed.xlsx";
 % Convert updated path to character array
 updatedMetadataPath = char(updatedMetadataPath);
 
+% Throw an error if paths.mgPipe.computeProfiles = true and there are less
+% than 5 samples.
+if paths.mgPipe.computeProfiles == true && numel(unique(metadata.ID))<5
+    msg = 'You have turned on the computeProfiles parameter in mgPipe (paths.mgPipe.computeProfiles). However, you have very few samples. An error is likely to occur in the mgSimResCollect function. Specifically, when producing a PCoA plot to generate microbiome community FVA results. Please set paths.mgPipe.computeProfiles = false to continue. FVA results will be generated on the microbiome community models when setting paths.mgPipe.computeProfiles = false. Turning off the computeProfiles parameters will cause no summary statistics to be generated anymore, thus avoiding the error.';
+    error(msg)
+end
+
 % Save updated file
 writetable(metadata,updatedMetadataPath);
 disp(strcat("> The processed metadata file is saved in :", string(updatedMetadataPath)))
