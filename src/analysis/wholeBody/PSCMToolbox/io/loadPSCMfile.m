@@ -65,18 +65,20 @@ if ~contains(nameOfWBM,'.mat')
 end
 
 % Check if fileName can be found
-if ~isfile(nameOfWBM) || isempty(which(nameOfWBM))
-    % Find .mat files that can be loaded in prespecified directory
-    if ~isempty(searchDirectory)
-        availableWBMs = what(searchDirectory).mat;
-        if ~any(strcmp(availableWBMs, nameOfWBM))
-            disp('The specified file could not be found in the directory. The following WBMs are avaialble in the specified directory:')
-            disp(availableWBMs)
+if isempty(which(nameOfWBM))
+    if ~isfile(nameOfWBM)
+        % Find .mat files that can be loaded in prespecified directory
+        if ~isempty(searchDirectory)
+            availableWBMs = what(searchDirectory).mat;
+            if ~any(strcmp(availableWBMs, nameOfWBM))
+                disp('The specified file could not be found in the directory. The following WBMs are avaialble in the specified directory:')
+                disp(availableWBMs)
+            else
+                nameOfWBM = strcat(searchDirectory, filesep, nameOfWBM);
+            end
         else
-            nameOfWBM = strcat(searchDirectory, filesep, nameOfWBM);
+        error('File cannot be found. Please check if the WBM name is spelled correctly or that the search directory is given as second input variable')
         end
-    else
-    error('File cannot be found. Please check if the WBM name is spelled correctly or that the search directory is given as second input variable')
     end
 end
 
