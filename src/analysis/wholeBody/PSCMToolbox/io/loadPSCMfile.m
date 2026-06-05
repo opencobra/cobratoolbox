@@ -65,7 +65,7 @@ if ~contains(nameOfWBM,'.mat')
 end
 
 % Check if fileName can be found
-if ~isfile(nameOfWBM)
+if ~isfile(nameOfWBM) || isempty(which(nameOfWBM))
     % Find .mat files that can be loaded in prespecified directory
     if ~isempty(searchDirectory)
         availableWBMs = what(searchDirectory).mat;
