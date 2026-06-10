@@ -584,65 +584,69 @@ if ENV_VARS.printLevel
     fprintf(' Done.\n');
 elseif agentMode
     % set default solvers silently; no validation, no path save
+    % EP/CLP/NLP are set directly to avoid test-solve output from changeCobraSolver
+    % (SOLVERS flags already marked working above; machine assumed configured)
     changeCobraSolver('glpk', 'LP', 0);
     changeCobraSolver('glpk', 'MILP', 0);
     changeCobraSolver('pdco', 'QP', 0);
-    changeCobraSolver('mosek', 'EP', 0);
-    changeCobraSolver('mosek', 'CLP', 0);
-    changeCobraSolver('matlab', 'NLP', 0);
+    CBT_EP_SOLVER = 'mosek';
+    CBT_CLP_SOLVER = 'mosek';
+    CBT_NLP_SOLVER = 'matlab';
 end
 
-% fill the summary table
-solverTypeInstalled = zeros(length(OPT_PROB_TYPES), 1);
-solverStatus = -1 * ones(length(supportedSolversNames), length(OPT_PROB_TYPES) + 1);
-catList = cell(length(supportedSolversNames), 1);
-for i = 1:length(supportedSolversNames)
-    types = SOLVERS.(supportedSolversNames{i}).type;
-    catList{i} = SOLVERS.(supportedSolversNames{i}).categ;
-    for j = 1:length(types)
-        if 1 %set to 1 to debug a new solver
-            if strcmp(supportedSolversNames{i},'mosek') && strcmp(types{j},'CLP')
-                pause(0.1)
+if ~agentMode
+    % fill the summary table
+    solverTypeInstalled = zeros(length(OPT_PROB_TYPES), 1);
+    solverStatus = -1 * ones(length(supportedSolversNames), length(OPT_PROB_TYPES) + 1);
+    catList = cell(length(supportedSolversNames), 1);
+    for i = 1:length(supportedSolversNames)
+        types = SOLVERS.(supportedSolversNames{i}).type;
+        catList{i} = SOLVERS.(supportedSolversNames{i}).categ;
+        for j = 1:length(types)
+            if 1 %set to 1 to debug a new solver
+                if strcmp(supportedSolversNames{i},'mosek') && strcmp(types{j},'CLP')
+                    pause(0.1)
+                end
             end
-        end
-        k = find(ismember(OPT_PROB_TYPES, types{j}));
-        if SOLVERS.(supportedSolversNames{i}).installed
-            solverStatus(i, k + 1) = 1;
-            solverTypeInstalled(k) = solverTypeInstalled(k) + 1;
+            k = find(ismember(OPT_PROB_TYPES, types{j}));
+            if SOLVERS.(supportedSolversNames{i}).installed
+                solverStatus(i, k + 1) = 1;
+                solverTypeInstalled(k) = solverTypeInstalled(k) + 1;
 
-            % set the default MIQP solver based on the solvers that are installed
-            if strcmp(supportedSolversNames{i},'gurobi') && strcmp(types{j},'LP')
-                changeCobraSolver('gurobi', 'LP', 0);
-                changeCobraSolver('gurobi', 'MILP', 0);
-                changeCobraSolver('gurobi', 'LP', 0);
-                changeCobraSolver('gurobi', 'QP', 0);
+                % set the default MIQP solver based on the solvers that are installed
+                if strcmp(supportedSolversNames{i},'gurobi') && strcmp(types{j},'LP')
+                    changeCobraSolver('gurobi', 'LP', 0);
+                    changeCobraSolver('gurobi', 'MILP', 0);
+                    changeCobraSolver('gurobi', 'LP', 0);
+                    changeCobraSolver('gurobi', 'QP', 0);
+                end
+                if strcmp(supportedSolversNames{i},'mosek') && strcmp(types{j},'EP')
+                    changeCobraSolver(supportedSolversNames{i}, types{j}, 0);
+                end
+                if strcmp(supportedSolversNames{i},'mosek') && strcmp(types{j},'CLP')
+                    changeCobraSolver(supportedSolversNames{i}, types{j}, 0);
+                end
+            else
+                solverStatus(i, k + 1) = 0;
             end
-            if strcmp(supportedSolversNames{i},'mosek') && strcmp(types{j},'EP')
-                changeCobraSolver(supportedSolversNames{i}, types{j}, 0);
-            end
-            if strcmp(supportedSolversNames{i},'mosek') && strcmp(types{j},'CLP')
-                changeCobraSolver(supportedSolversNames{i}, types{j}, 0);
-            end
-        else
-            solverStatus(i, k + 1) = 0;
         end
     end
-end
 
-catList{end + 1} = '----------';
-catList{end + 1} = '-';
+    catList{end + 1} = '----------';
+    catList{end + 1} = '-';
 
-rowNames = [supportedSolversNames; '----------'; 'Total'];
+    rowNames = [supportedSolversNames; '----------'; 'Total'];
 
-solverStatus(end + 1, :) = ones(1, length(OPT_PROB_TYPES) + 1);
-solverStatus(end + 1, 2:end) = solverTypeInstalled';
+    solverStatus(end + 1, :) = ones(1, length(OPT_PROB_TYPES) + 1);
+    solverStatus(end + 1, 2:end) = solverTypeInstalled';
 
-statusTable = {};
-for k = 1:length(OPT_PROB_TYPES)
-    statusTable{k} = cellstr(num2str(solverStatus(:, k+1)));
-    for p = 1:length(solverStatus(:, k+1))
-        if strcmp(statusTable{k}(p), '-1')
-            statusTable{k}(p) = {'-'};
+    statusTable = {};
+    for k = 1:length(OPT_PROB_TYPES)
+        statusTable{k} = cellstr(num2str(solverStatus(:, k+1)));
+        for p = 1:length(solverStatus(:, k+1))
+            if strcmp(statusTable{k}(p), '-1')
+                statusTable{k}(p) = {'-'};
+            end
         end
     end
 end
@@ -702,37 +706,39 @@ if ENV_VARS.printLevel
     fprintf('\n + Legend: - = not applicable, 0 = solver not compatible or not installed, 1 = solver installed.\n\n\n')
 end
 
-% provide clear instructions and summary
-for i = 1:length(OPT_PROB_TYPES)
-    if sum(solverStatus(:, i + 1) == 1) == 0
-        if ENV_VARS.printLevel
-            fprintf(' > You cannot solve %s problems. Consider installing an %s solver.\n', char(OPT_PROB_TYPES(i)), char(OPT_PROB_TYPES(i)));
-        end
-    else
-        if ENV_VARS.printLevel
-            fprintf(' > You can solve %s problems using: ', char(OPT_PROB_TYPES(i)));
-        end
-        k = 1;
-        for j = 1:length(catSolverNames.(OPT_PROB_TYPES{i}))
-            if SOLVERS.(catSolverNames.(OPT_PROB_TYPES{i}){j}).working
-                if k == 1
-                    msg = '''%s'' ';
-                else
-                    msg = '- ''%s'' ';
+% provide clear instructions and summary (uses solverStatus; skipped in agent mode)
+if ~agentMode
+    for i = 1:length(OPT_PROB_TYPES)
+        if sum(solverStatus(:, i + 1) == 1) == 0
+            if ENV_VARS.printLevel
+                fprintf(' > You cannot solve %s problems. Consider installing an %s solver.\n', char(OPT_PROB_TYPES(i)), char(OPT_PROB_TYPES(i)));
+            end
+        else
+            if ENV_VARS.printLevel
+                fprintf(' > You can solve %s problems using: ', char(OPT_PROB_TYPES(i)));
+            end
+            k = 1;
+            for j = 1:length(catSolverNames.(OPT_PROB_TYPES{i}))
+                if SOLVERS.(catSolverNames.(OPT_PROB_TYPES{i}){j}).working
+                    if k == 1
+                        msg = '''%s'' ';
+                    else
+                        msg = '- ''%s'' ';
+                    end
+                    if ENV_VARS.printLevel
+                        fprintf(msg, catSolverNames.(OPT_PROB_TYPES{i}){j});
+                    end
+                    k = k + 1;
                 end
-                if ENV_VARS.printLevel
-                    fprintf(msg, catSolverNames.(OPT_PROB_TYPES{i}){j});
-                end
-                k = k + 1;
+            end
+            if ENV_VARS.printLevel
+                fprintf('\n');
             end
         end
-        if ENV_VARS.printLevel
-            fprintf('\n');
-        end
     end
-end
-if ENV_VARS.printLevel
-    fprintf('\n');
+    if ENV_VARS.printLevel
+        fprintf('\n');
+    end
 end
 
 % use Gurobi (if installed) as the default solver for LP, QP and MILP problems
@@ -760,14 +766,16 @@ end
 % set up the COBRA System path
 addCOBRABinaryPathToSystemPath();
 
-%remove /new thermo folders from path
-%TODO resolve issues with new file versions
-aPath = which('initVonBertalanffy');
-basePath = strrep(aPath,['vonBertalanffy' filesep 'initVonBertalanffy.m'],'');
-addpath(genpath(basePath))
-folderPattern=[filesep 'new'];
-method = 'remove';
-editCobraToolboxPath(basePath,folderPattern,method)
+%remove /new thermo folders from path (skipped in agent mode: paths assumed clean)
+if ~agentMode
+    %TODO resolve issues with new file versions
+    aPath = which('initVonBertalanffy');
+    basePath = strrep(aPath,['vonBertalanffy' filesep 'initVonBertalanffy.m'],'');
+    addpath(genpath(basePath))
+    folderPattern=[filesep 'new'];
+    method = 'remove';
+    editCobraToolboxPath(basePath,folderPattern,method)
+end
 
 if exist([CBTDIR filesep 'binary' filesep 'glnxa64' filesep 'lib_old'],'dir')
     warning('off', 'MATLAB:rmpath:DirNotFound');
