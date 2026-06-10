@@ -151,11 +151,13 @@ if ~isempty(optionalSettings) && isfield(optionalSettings, 'medium')
 elseif isempty(optionalSettings)
     mediumConstrainedModel = consistentModel; 
     warning('No optional settings detected.')
+    uptMediumRxns = '';
 
 % Case where optional settings exist but no medium is defined
 else
     mediumConstrainedModel = consistentModel;
     warning('No given medium.')
+    uptMediumRxns = '';
 end
 
 %% Mapping the reactions to the model
@@ -217,8 +219,10 @@ if any(strcmp(consistentMediumConstrainedModel.rxns, biomassReactionName))
     fbaResults = optimizeCbModel(consistentMediumConstrainedModel, 'max', 'zero');
 
     % If FBA returns a valid value, the medium supports growth
-    if ~isempty(fbaResults.f) && ~isnan(fbaResults.f)
-        disp(['Model still contains ' biomassReactionName ' after application of medium constraints, and FBA result is not null.' newline 'Medium is sufficient. Continuing with fastcore.']);
+    if (~isempty(fbaResults.f) && ~isnan(fbaResults.f) && fbaResults.f >= 1e-4)
+        if isfield(optionalSettings, 'medium')
+            disp(['Model still contains ' biomassReactionName ' after application of medium constraints, and FBA result is not null.' newline 'Medium is sufficient. Continuing with fastcore.']);
+        end
         needMediumFilling = false;
     else
         % Biomass present but no flux, medium is insufficient
