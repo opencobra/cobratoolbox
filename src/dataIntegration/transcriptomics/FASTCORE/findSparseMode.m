@@ -1,10 +1,10 @@
-function [Supp, basis] = findSparseMode(J, P, singleton, model, LPproblem, epsilon, basis)
+function [Supp, basis] = findSparseMode(J, P, singleton, model, LPproblem, epsilon, adaptiveScalingFlag, basis, nonPen)
 % Finds a mode that contains as many reactions from J and as few from P.
 % Returns its support, or [] if no reaction from J can get flux above epsilon
 %
 % USAGE:
 %
-%    Supp = findSparseMode(J, P, singleton, model, LPproblem, epsilon)
+%    Supp = findSparseMode(J, P, singleton, model, LPproblem, epsilon, adaptiveScaling, basis, nonPen)
 %
 % INPUTS:
 %    J:           Indicies of irreversible reactions
@@ -15,13 +15,17 @@ function [Supp, basis] = findSparseMode(J, P, singleton, model, LPproblem, epsil
 %    epsilon:     Parameter (default: getCobraSolverParams('LP', 'feasTol')*100; see `Vlassis et al` for more details)
 %
 % OPTIONAL INPUT:
+%    adaptiveScalingFlag: scaling choice for LP10
 %    basis:       Basis
+%    nonPen:      indexes of unpenalized reactions
 %
 % OUTPUTS:
 %    Supp:        Support or [] if no reaction from `J` can get flux above epsilon
 %    basis:       Basis
 %
 % .. Authors: - Nikos Vlassis, Maria Pires Pacheco, Thomas Sauter, 2013 LCSB / LSRU, University of Luxembourg
+%             - Maria Pires Pacheco and Thomas Sauter, 2024, University of Luxembourg, addition of an unpenalized set nonPen
+%             - Vanille Lejal, 2025, University of Luxembourg, addind adaptive scaling flag
 
 Supp = [];
 if isempty(J)
@@ -34,6 +38,17 @@ end
 
 if ~exist('epsilon','var')
     epsilon = getCobraSolverParams('LP', 'feasTol')*100;
+end
+
+if isempty(adaptiveScalingFlag)
+    adaptiveScalingFlag = 0;
+    fprintf('%s\n',"Adaptive scaling is off, fixed scaling factor of 1e4 will be used.");
+else
+    assert(ismember(adaptiveScalingFlag, [0, 1]), 'adaptiveScalingFlag must be 0 or 1');
+end
+
+if isempty(nonPen)
+    nonPen = [];
 end
 
 %find a flux vector of maximum cardinality
@@ -52,5 +67,6 @@ end
 
 %find a flux vector that maintains the activity of any active irreversible core reaction
 %(K) yet minimises the activity of any non-core reaction(P).
-v = LP10( K, P, v, LPproblem, epsilon );
+v = LP10(K, P, v, LPproblem, epsilon, adaptiveScalingFlag, nonPen);
 Supp = find(abs(v) >= 0.99*epsilon);
+
