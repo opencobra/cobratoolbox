@@ -1,4 +1,4 @@
-function initCobraToolbox(updateToolbox)
+function initCobraToolbox(updateToolbox, mode)
 %      _____   _____   _____   _____     _____     |
 %     /  ___| /  _  \ |  _  \ |  _  \   / ___ \    |   COnstraint-Based Reconstruction and Analysis
 %     | |     | | | | | |_| | | |_| |  | |___| |   |   The COBRA Toolbox verson 3.*
@@ -10,7 +10,29 @@ function initCobraToolbox(updateToolbox)
 %     initCobraToolbox Initialize COnstraint-Based Reconstruction and Analysis Toolbox
 %
 %     Defines default solvers and paths, tests SBML io functionality.
-%     Function only needs to be called once per installation. Saves paths afer script terminates.
+%     Function only needs to be called once per installation. Saves paths after script terminates.
+%
+%     USAGE:
+%         initCobraToolbox()
+%         initCobraToolbox(updateToolbox)
+%         initCobraToolbox(updateToolbox, mode)
+%
+%     OPTIONAL INPUTS:
+%         updateToolbox (logical, default true): check for toolbox updates.
+%         mode (char, default 'default'): initialisation mode.
+%             'default' - full initialisation: checks git, updates submodules,
+%                         validates all solvers, saves the MATLAB path.
+%             'agent'   - fast initialisation for automated/agent use on an
+%                         already-initialised machine. Assumes solvers, paths,
+%                         network and submodules are already correctly configured.
+%                         Skips git operations, network checks, solver probing,
+%                         path saving and toolbox updates. Does NOT modify
+%                         global git configuration. Runs silently except for a
+%                         single summary line (time, timestamp).
+%
+%     EXAMPLES:
+%         initCobraToolbox(false)             % standard init, no update check
+%         initCobraToolbox(false, 'agent')    % fast agent-mode init
 %
 %     In addition add either of the following into startup.m (generally in MATLAB_DIRECTORY/toolbox/local/startup.m)
 %
@@ -44,6 +66,21 @@ global CBT_MISSING_REQUIREMENTS_ERROR_ID;
 if ~exist('updateToolbox','var')
     updateToolbox = true;
 end
+
+if ~exist('mode', 'var') || isempty(mode)
+    mode = 'default';
+end
+if ~(ischar(mode) || isstring(mode))
+    error('initCobraToolbox:invalidMode', ...
+        'mode must be a char or string. Accepted values: ''default'', ''agent''.');
+end
+mode = char(mode);
+if ~any(strcmpi(mode, {'default', 'agent'}))
+    error('initCobraToolbox:invalidMode', ...
+        'Unrecognised mode ''%s''. Accepted values: ''default'', ''agent''.', mode);
+end
+agentMode = strcmpi(mode, 'agent');
+
 % define a base version of gitBash that is tested
 gitBashVersion = '2.13.3';
 
@@ -63,6 +100,12 @@ SOLVERS = {};
 
 % declare that the environment variables have not yet been configured
 ENV_VARS.STATUS = 0;
+
+% in agent mode: suppress output and time the initialisation
+if agentMode
+    ENV_VARS.printLevel = 0;
+    agentModeStartTime = tic;
+end
 
 % initialize the paths
 if exist('GUROBI_PATH', 'var') ~= 1
@@ -117,12 +160,17 @@ end
 addpath(genpath([CBTDIR filesep 'src' filesep 'base' filesep 'install']));
 
 % check if git is installed
-[installedGit, versionGit] = checkGit();
-
-% set the depth flag if the version of git is higher than 2.10.0
-depthFlag = '';
-if installedGit && versionGit > 2100
-    depthFlag = '--depth=1';
+if ~agentMode
+    [installedGit, versionGit] = checkGit();
+    depthFlag = '';
+    if installedGit && versionGit > 2100
+        depthFlag = '--depth=1';
+    end
+else
+    % in agent mode skip git checks; installedGit=false suppresses all git-dependent blocks
+    installedGit = false;
+    versionGit = 0;
+    depthFlag = '';
 end
 
 % change to the root of The COBRA Tooolbox
@@ -186,7 +234,13 @@ if installedGit
 end
 
 % check curl
-[status_curl, result_curl] = checkCurlAndRemote(false);
+if ~agentMode
+    [status_curl, result_curl] = checkCurlAndRemote(false);
+else
+    % in agent mode skip all network checks
+    status_curl = -1;
+    result_curl = '';
+end
 
 submoduleWarning=0;
 if installedGit
@@ -286,7 +340,9 @@ if installedGit
     dirContent = getFilesInDir('type','all');
 else
     %warning('Git is not installed so the submodules could not be populated.%s\n','Some of the dependencies of the cobra toolbox are not satisfied.%s\n','Trying to proceed without submodules!%s\n')
-    fprintf('%s\n','Git not installed, proceeding without initialising submodules.')
+    if ~agentMode
+        fprintf('%s\n','Git not installed, proceeding without initialising submodules.')
+    end
 end
 
 
@@ -387,6 +443,8 @@ if ENV_VARS.printLevel
     configEnvVars(1);
     fprintf('   Done.\n');
     fprintf(' > Checking available solvers and solver interfaces ...');
+elseif agentMode
+    configEnvVars(0);
 end
 
 % define categories of solvers: LP, MILP, QP, MIQP, NLP
@@ -469,23 +527,41 @@ end
 supportedSolversNames = setdiff(supportedSolversNames,{'cplex_direct','ibm_cplex','cplexlp','tomlab_cplex'});
 
 % check the installation of the solver - except cplex
-for i = 1:length(supportedSolversNames)
-    if 0 %set to 1 to debug a new solver
-        disp(supportedSolversNames{i})
-        if strcmp(supportedSolversNames{i},'quadMinos') 
+if ~agentMode
+    for i = 1:length(supportedSolversNames)
+        if 0 %set to 1 to debug a new solver
             disp(supportedSolversNames{i})
+            if strcmp(supportedSolversNames{i},'quadMinos')
+                disp(supportedSolversNames{i})
+            end
+        end
+        %We will validate all solvers in init. After this, all solvers are
+        %checked, whether they actually work and the SOLVERS field is set.
+        [solverOK,solverInstalled] = changeCobraSolver(supportedSolversNames{i},SOLVERS.(supportedSolversNames{i}).type{1},0, 1);
+        if strcmp(supportedSolversNames{i},'gurobi') && 0%use fordebugging
+            disp(supportedSolversNames{i});
+        end
+        if solverOK
+            SOLVERS.(supportedSolversNames{i}).working = true;
+        end
+        SOLVERS.(supportedSolversNames{i}).installed = solverInstalled;
+    end
+else
+    % in agent mode skip solver probing; mark expected defaults installed/working
+    % without network or file-system validation (machine assumed already set up).
+    % changeCobraSolver with validate=0 requires installed=true to set globals.
+    for agentSolver = {'glpk', 'pdco', 'mosek', 'matlab'}
+        sname = agentSolver{1};
+        if isfield(SOLVERS, sname)
+            SOLVERS.(sname).installed = true;
+            SOLVERS.(sname).working = true;
         end
     end
-    %We will validate all solvers in init. After this, all solvers are
-    %checked, whether they actually work and the SOLVERS field is set.
-    [solverOK,solverInstalled] = changeCobraSolver(supportedSolversNames{i},SOLVERS.(supportedSolversNames{i}).type{1},0, 1);
-    if strcmp(supportedSolversNames{i},'gurobi') && 0%use fordebugging
-        disp(supportedSolversNames{i});
+    % honour gurobi if its MEX interface is already on the path (local check only)
+    if ~isempty(which('gurobi'))
+        SOLVERS.gurobi.installed = true;
+        SOLVERS.gurobi.working = true;
     end
-    if solverOK
-        SOLVERS.(supportedSolversNames{i}).working = true;
-    end
-    SOLVERS.(supportedSolversNames{i}).installed = solverInstalled;
 end
 
 if ENV_VARS.printLevel
@@ -506,6 +582,14 @@ if ENV_VARS.printLevel
         varName = horzcat(['CBT_', OPT_PROB_TYPES{k}, '_SOLVER']);
     end
     fprintf(' Done.\n');
+elseif agentMode
+    % set default solvers silently; no validation, no path save
+    changeCobraSolver('glpk', 'LP', 0);
+    changeCobraSolver('glpk', 'MILP', 0);
+    changeCobraSolver('pdco', 'QP', 0);
+    changeCobraSolver('mosek', 'EP', 0);
+    changeCobraSolver('mosek', 'CLP', 0);
+    changeCobraSolver('matlab', 'NLP', 0);
 end
 
 % fill the summary table
@@ -567,32 +651,34 @@ end
 path(originalUserPath);
 addpath(originalUserPath);
 
-% saves the current path
-try
-    if ENV_VARS.printLevel
-        fprintf(' > Saving the MATLAB path ...');
-    end
-    if ispc || ismac
-        savepath;
+% saves the current path (skipped in agent mode: path assumed already saved)
+if ~agentMode
+    try
         if ENV_VARS.printLevel
-            fprintf(' Done.\n');
-            fprintf('   - The MATLAB path was saved in the default location.\n');
+            fprintf(' > Saving the MATLAB path ...');
         end
-    else
-        [~, values] = fileattrib(which('pathdef.m'));
-        if values.UserWrite
-            savepath
+        if ispc || ismac
+            savepath;
+            if ENV_VARS.printLevel
+                fprintf(' Done.\n');
+                fprintf('   - The MATLAB path was saved in the default location.\n');
+            end
         else
-            savepath(defaultSavePathLocation);
+            [~, values] = fileattrib(which('pathdef.m'));
+            if values.UserWrite
+                savepath
+            else
+                savepath(defaultSavePathLocation);
+            end
+            if ENV_VARS.printLevel
+                fprintf(' Done.\n');
+                fprintf(['   - The MATLAB path was saved as ', defaultSavePathLocation, '.\n']);
+            end
         end
+    catch
         if ENV_VARS.printLevel
-            fprintf(' Done.\n');
-            fprintf(['   - The MATLAB path was saved as ', defaultSavePathLocation, '.\n']);
+            fprintf(' > The MATLAB path could not be saved.');
         end
-    end
-catch
-    if ENV_VARS.printLevel
-        fprintf(' > The MATLAB path could not be saved.');
     end
 end
 
@@ -652,11 +738,11 @@ end
 % use Gurobi (if installed) as the default solver for LP, QP and MILP problems
 changeCobraSolver('gurobi', 'ALL', 0);
 
-% check if a new update exists
-if installedGit && ENV_VARS.printLevel && status_curl == 0 && contains(result_curl, ' 200') && updateToolbox
+% check if a new update exists (skipped in agent mode)
+if ~agentMode && installedGit && ENV_VARS.printLevel && status_curl == 0 && contains(result_curl, ' 200') && updateToolbox
     updateCobraToolbox(true); % only check
 else
-    if ~updateToolbox && ENV_VARS.printLevel
+    if ~agentMode && ~updateToolbox && ENV_VARS.printLevel
         fprintf('> Checking for available updates ... skipped\n')
     end
 end
@@ -699,6 +785,12 @@ end
 
 if submoduleWarning
     warning('Local changes have been made to submodules\n%s\n%s\n%s','Local changes have been stashed. See ***Local changes ... above for details.','Such changes should ideally be made to separate forks.', 'See, e.g., https://github.com/opencobra/COBRA.tutorials#contribute-a-new-tutorial-or-modify-an-existing-tutorial')
+end
+
+% in agent mode print a single completion summary line (time + timestamp)
+if agentMode
+    fprintf('initCobraToolbox(agent): OK — %.1f s — %s\n', toc(agentModeStartTime), ...
+        char(datetime('now', 'TimeZone', 'local', 'Format', 'yyyy-MM-dd''T''HH:mm:ssXXX')));
 end
 
 % clear all temporary variables
