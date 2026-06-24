@@ -65,7 +65,7 @@ arguments
     biomassReactionName char
     consensusProportion (1,1) double {mustBeGreaterThan(consensusProportion,0), mustBeLessThanOrEqual(consensusProportion,1)} = 0.9
     epsilon (1,1) double = 1e-4
-    optionalSettings (1,1) struct = struct()
+    optionalSettings (1,1) struct {validateOptionalSettings} = struct()
     fillingMediumFlag (1,1) double {mustBeMember(fillingMediumFlag, [0 1])} = 1
     adaptiveScalingFlag (1,1) double {mustBeMember(adaptiveScalingFlag, [0 1])} = 0
 end
@@ -84,12 +84,17 @@ end
 % optionalSettings.func needs to be a column vector 1xn and not a row
 % vector - turn it around otherwise
 if isfield(optionalSettings, 'func')
-    if size(optionalSettings.func, 2) == 1 & size(optionalSettings.func, 1) > 1
+    if size(optionalSettings.func, 2) == 1 && size(optionalSettings.func, 1) > 1
         optionalSettings.func = optionalSettings.func';
     end
     functionKeep = optionalSettings.func;
+    if ~any(strcmp(functionKeep, biomassReactionName))
+        functionKeep{end+1} = biomassReactionName;
+        fprintf('The reaction %s has been added to the set of reactions that will be forced to carry a flux (.func reactions).\n', biomassReactionName);
+    end
 else
-    functionKeep = biomassReactionName;
+    functionKeep = {biomassReactionName};
+    fprintf('The reaction %s has been added to the set of reactions that will be forced to carry a flux (.func reactions).\n', biomassReactionName);
 end
 
 %% Saving the original model
@@ -182,18 +187,14 @@ modelTransRxns = findTransRxns(mediumConstrainedModel);
 coreWithoutTrans = setdiff(initialCore, TransIDs); % we remove transporters from the core
 fprintf("Number of core reactions (after mapping, transporters removed, without .func reactions): %d\n", numel(coreWithoutTrans));
 
-if ~isempty(functionKeep)
-    foundFunctionKeep = find(ismember(mediumConstrainedModel.rxns, functionKeep)); %reactions to keep
-    if isempty(foundFunctionKeep)
-        warning('No reactions from .func set were found in the model.')
-    elseif numel(foundFunctionKeep) ~= numel(functionKeep)
-        warning('Part of the reactions from .func set were not found in the model.')
-    end
-    % Adding .func reactions to the core
-    completedCore = union(coreWithoutTrans, foundFunctionKeep);
-else
-    completedCore = coreWithoutTrans;
+% Adding .func reactions to the core
+foundFunctionKeep = find(ismember(mediumConstrainedModel.rxns, functionKeep)); %reactions to keep
+if isempty(foundFunctionKeep)
+    warning('No reactions from .func set were found in the model.')
+elseif numel(foundFunctionKeep) ~= numel(functionKeep)
+    warning('Part of the reactions from .func set were not found in the model.')
 end
+completedCore = union(coreWithoutTrans, foundFunctionKeep);
 
 % Get the names of the core reactions
 rxnNamesCompletedCore = mediumConstrainedModel.rxns(completedCore);
@@ -237,7 +238,7 @@ end
 
 %% In case medium if not sufficient
 % Checking if all the uptake rxns associated with the medium are in.
-if needMediumFilling
+if needMediumFilling && ~isempty(optionalSettings) && isfield(optionalSettings, 'medium')
     [~, uptRxnsAfterMediumBool] = findExcRxns(consistentMediumConstrainedModel);
     uptRxnsAfterMedium = consistentMediumConstrainedModel.rxns(uptRxnsAfterMediumBool);
     notPresentUptMediumRxns = setdiff(uptMediumRxns, uptRxnsAfterMedium);
@@ -283,7 +284,7 @@ if fillingMediumFlag == 1 && needMediumFilling || functionKeepFlag
         [~, uptRxnsCtxtSpeModelBool] = findExcRxns(contextSpecificModel);
         uptRxnsCtxtSpeModel = contextSpecificModel.rxns(uptRxnsCtxtSpeModelBool);
         notPresentUptMediumRxnsSpe = setdiff(uptMediumRxns, uptRxnsCtxtSpeModel); % missing uptake reactions associated with the medium
-        if ~isempty(notPresentUptMediumRxnsSpe)
+        if ~isempty(notPresentUptMediumRxnsSpe) && ~isempty(optionalSettings) && isfield(optionalSettings, 'medium')
             disp(['The inclusion of the following uptake reactions: ' newline strjoin(notPresentUptMediumRxnsSpe, newline) newline 'will not be penalized to fill the model as they are initially associated with medium metabolites.']);
         end
     else
@@ -309,7 +310,7 @@ if fillingMediumFlag == 1 && needMediumFilling || functionKeepFlag
 end
 
 %% Uptakes that do not come from the medium
-if isfield(optionalSettings, 'medium')
+if isfield(optionalSettings, 'medium') && ~isempty(optionalSettings.medium)
     [~, uptRxnsBoolSpe] = findExcRxns(contextSpecificModel);
     uptRxnsSpe = contextSpecificModel.rxns(uptRxnsBoolSpe);
     additionalMedium = setdiff(uptRxnsSpe, uptMediumRxns); % uptake reactions added to complete the medium
@@ -376,4 +377,18 @@ end
         error('The objective function that you defined (%s) is not part of your input model, choose a different objective function.', biomassReactionName)
     end
 
+end
+
+function validateOptionalSettings(optSettings)
+    accepted = {'func', 'medium', 'notMediumConstrained'};
+    actual = fieldnames(optSettings);
+    extra = setdiff(actual, accepted);
+    if ~isempty(extra)
+        error("Not accepted fields in optionalSettings: %s", strjoin(extra, ", "));
+    end
+    for i = 1:numel(accepted)
+        if isfield(optSettings, accepted{i}) && ~iscell(optSettings.(accepted{i}))
+            error('optSettings.%s must be a cell array.', accepted{i});
+        end
+    end
 end
