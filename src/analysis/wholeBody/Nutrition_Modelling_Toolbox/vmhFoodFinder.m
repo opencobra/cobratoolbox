@@ -382,7 +382,7 @@ if ~isempty(colourChangeIdx)
 end
 end
 
-function keyWordsSplit = splitKeyWord(keyWords, adjust)
+function finalSplitKeys = splitKeyWord(keyWords, adjust)
 % Function to split items based on ;
 %
 % Usage:
@@ -417,7 +417,14 @@ else
     keyWordsSplit = strrep(keyWordsSplit, ' ;', ';');
 end
 % Split the keywords on ;
-keyWordsSplit = split(keyWordsSplit, ';');
-
-keyWordsSplit(cellfun(@isempty, keyWordsSplit)) = [];
+finalSplitKeys = {};
+for i = 1:size(keyWordsSplit,1)
+    if contains(keyWordsSplit(i), ';')
+        splitKeys = split(keyWordsSplit(i), ';');
+        finalSplitKeys = [finalSplitKeys;splitKeys];
+    else
+        finalSplitKeys = [finalSplitKeys;keyWordsSplit(i)];
+    end
+end
+finalSplitKeys(cellfun(@isempty, keyWordsSplit)) = [];
 end
