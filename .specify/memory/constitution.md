@@ -1,5 +1,30 @@
 <!--
 Sync Impact Report
+Version change: 1.1.0 -> 1.2.0
+Modified principles:
+- X. Documentation Single-Sourcing And No Instruction Leakage (reframed around the
+  repository as the single/primary source of truth and the website as a generated
+  artefact: the openCOBRA documentation site is built from documentation/source/ via
+  Sphinx `make html` and published to the gh-pages branch. Canonical guide content is
+  now cited at its repo path — documentation/source/guides/*.rst and
+  documentation/source/contributing.rst — not at a live URL. Added the requirement
+  that the spec-driven development process itself (constitution + workflow) is
+  documented in the repo AND published to the website, generated from the repo, so
+  human readers can learn how the repo is developed and how to instruct an LLM.)
+Modified sections:
+- Scientific Computing Constraints (guide references repointed to repo paths; the
+  website is described as generated output; the unified model-field spec
+  (documentation/source/guides/COBRAModelFields.rst) and the issue guide
+  (documentation/source/guides/issueGuide.rst) added).
+Rationale for MINOR bump: materially expanded compliance requirement in Principle X
+(publish-the-process mandate; repo-as-source-of-truth) and repointed references; no
+principle removed or redefined.
+Companion artefact: documentation/source/guides/specDrivenDevelopment.rst — the
+human-readable, website-published explanation of this process, included from
+documentation/source/contributing.rst so it renders in the generated site.
+-->
+<!--
+Sync Impact Report
 Version change: 1.0.0 -> 1.1.0
 Modified principles:
 - III. Testing, Reproducibility, And Continuous Integration (added openCOBRA
@@ -472,58 +497,83 @@ existing community layout is respected.
 
 ### X. Documentation Single-Sourcing And No Instruction Leakage
 
-Documentation and instructions MUST be single-sourced: every rule, convention, or
-piece of guidance has exactly one canonical home, and other files point to it rather
-than restating it. Duplicated prose drifts out of sync and creates ambiguity about
-which copy governs.
+The repository is the single, primary source of truth. The openCOBRA documentation
+website (https://opencobra.github.io/cobratoolbox/) is a GENERATED artefact: it is
+built from `documentation/source/` with Sphinx (`make html`) and published to the
+`gh-pages` branch by `.github/workflows/build-and-publish-docs.yml`. No rule,
+convention, or guidance may be canonical only on the website; every published page
+MUST be regenerable from a repo source. Documentation and instructions MUST be
+single-sourced: every rule has exactly one canonical home in the repo, and other
+files point to it rather than restating it. Duplicated prose drifts out of sync and
+creates ambiguity about which copy governs.
 
 * This constitution is the single canonical source for how to work in this
   repository. Project-authored agent-instruction files — notably `CLAUDE.md` and
   `AGENTS.md` — MUST be thin pointers to this constitution and the Spec Kit workflow.
   They MUST NOT restate, summarise at length, or fork the principles; a brief
   orientation plus links is the allowed content.
-* Established openCOBRA conventions (model-field spec, style guide, documentation
-  guide, test guide) remain canonical in their published location; this constitution
-  binds to them by reference (Principles III, VII, IX) and MUST NOT copy their text.
-* Agent- or LLM-specific instructions MUST NOT leak into general repository
-  documentation — `README.rst`, files under `documentation/`, `DevelopersDocumentation/`,
+* Established openCOBRA conventions are canonical in the repo, not on the live site:
+  the unified model-field specification (`documentation/source/guides/COBRAModelFields.rst`),
+  style guide (`.../styleGuide.rst`), documentation guide (`.../documentationGuide.rst`),
+  test guide (`.../testGuide.rst`), issue guide (`.../issueGuide.rst`), and the
+  contribution overview (`documentation/source/contributing.rst`,
+  `.../guides/howToContribute.rst`). This constitution binds to those repo sources by
+  reference (Principles III, VII, IX) and MUST NOT copy their text; the website is the
+  rendered view of them.
+* The development process is itself published documentation. The spec-driven,
+  LLM-assisted workflow — this constitution and a human-readable overview of it — MUST
+  be documented in the repo AND surfaced on the generated website, so human readers can
+  understand how the repo is developed and how to instruct an LLM (Claude, Codex, or
+  another agent) to develop a new feature. The companion source page is
+  `documentation/source/guides/specDrivenDevelopment.rst`, included into
+  `documentation/source/contributing.rst` so it renders in the site; the constitution
+  remains the authoritative rules and that page is an explanatory pointer to it, not a
+  fork of it.
+* Agent- or LLM-specific *instructions* MUST NOT leak into general repository
+  documentation — `README.rst`, files under `documentation/` or `DevelopersDocumentation/`,
   `tutorials/`, or function help headers. Those artifacts are for humans and the
-  documentation build and MUST remain agent-neutral. Guidance meant for automated
-  agents belongs in the constitution (canonical) or the per-agent Spec Kit surfaces.
+  documentation build and MUST remain agent-neutral. *Describing* the development
+  process for human readers (as the companion page does) is expected and is distinct
+  from embedding operational agent instructions in human docs.
 * Exemption: the per-agent Spec Kit command and skill mirrors under `.claude/` and
   `.agents/` necessarily carry the same operational content across agents. They are
   generated machinery maintained by the Spec Kit tooling (`/speckit-*` workflows),
   not hand-maintained project documentation, and are exempt from the single-file
   rule — but they still MUST NOT contradict this constitution.
 
-When two documents disagree, the canonical source controls and the derivative copy
-is the defect to fix. Changes to canonical rules go through the owning workflow
-(`/speckit-constitution` for this file; the openCOBRA guides for their conventions),
-never by editing a pointer file.
+When two documents disagree, the canonical repo source controls and the derivative
+copy (including any built website page) is the defect to fix. Changes to canonical
+rules go through the owning workflow (`/speckit-constitution` for this file; the
+openCOBRA guide sources for their conventions), never by editing a pointer file or a
+generated page.
 
-Rationale: single-sourcing prevents the classic failure where `CLAUDE.md`,
-`AGENTS.md`, and a README slowly disagree about the rules, and it keeps human-facing
-documentation free of agent-specific instructions that would confuse contributors
-and the documentation generator.
+Rationale: treating the repo as the source of truth and the website as generated
+output prevents the classic failures where `CLAUDE.md`, `AGENTS.md`, and a README
+slowly disagree, or where the live site diverges from the code. Publishing the
+development process closes the loop: contributors who can read how features are
+specified and gated can write better instructions for the LLM that implements them.
 
 ## Scientific Computing Constraints
 
 Implementation plans MUST cite the stable references that govern their feature where
-those exist. The canonical openCOBRA contribution references — binding by reference
-under Principles III, VII, IX, and X — are:
+those exist. These references are canonical in the repository; the openCOBRA website
+is the rendered view of them (Principle X). The canonical contribution references —
+binding by reference under Principles III, VII, IX, and X — are, by repo path under
+`documentation/source/`:
 
-* the contribution overview and unified model-field specification:
-  https://opencobra.github.io/cobratoolbox/stable/contributing.html and the
-  documentation root https://opencobra.github.io/cobratoolbox/;
-* the style guide: https://opencobra.github.io/cobratoolbox/docs/styleGuide.html;
-* the documentation/header guide:
-  https://opencobra.github.io/cobratoolbox/docs/documentationGuide.html;
-* the test guide and test template:
-  https://opencobra.github.io/cobratoolbox/docs/testGuide.html and
-  https://opencobra.github.io/cobratoolbox/docs/testTemplate.html;
-* `.github/CONTRIBUTING.md` (which links the above);
-* the solver-interface sources under `src/base/solvers/` and the test harness
-  (`test/testAll.m`, `test/verifiedTests/`) with CI configuration.
+* the contribution overview: `contributing.rst` and `guides/howToContribute.rst`;
+* the unified model-field specification: `guides/COBRAModelFields.rst`;
+* the MATLAB style guide: `guides/styleGuide.rst`;
+* the documentation/header guide: `guides/documentationGuide.rst`;
+* the test guide and template: `guides/testGuide.rst` and `guides/testTemplate.m`;
+* the issue-reporting guide: `guides/issueGuide.rst`;
+* the human-readable spec-driven development overview: `guides/specDrivenDevelopment.rst`;
+* `.github/CONTRIBUTING.md` (which links the above), the solver-interface sources
+  under `src/base/solvers/`, and the test harness (`test/testAll.m`,
+  `test/verifiedTests/`) with CI configuration.
+
+The published site at https://opencobra.github.io/cobratoolbox/ is generated from
+these sources and MUST NOT be treated as an independent source of truth.
 
 The supported MATLAB baseline is R2024b or newer, and CI runs MATLAB headless
 (`matlab -batch`) on Linux inside Docker (with a display provided by Xvfb and, where
@@ -635,4 +685,4 @@ Versioning follows semantic versioning:
 When a feature conflicts with the constitution, the constitution controls unless the
 feature first amends it through this governance process.
 
-**Version**: 1.1.0 | **Ratified**: 2026-07-12 | **Last Amended**: 2026-07-12
+**Version**: 1.2.0 | **Ratified**: 2026-07-12 | **Last Amended**: 2026-07-12
