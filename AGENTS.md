@@ -2,6 +2,31 @@
 
 Guidelines for automated code review agents (Codex, AI reviewers, and bots) contributing to the COBRA Toolbox repository.
 
+## Spec-Driven Development (governing workflow)
+
+This repository is developed under Spec Kit. The single source of truth for how to work here
+is `.specify/memory/constitution.md`; read it before implementing. `CLAUDE.md` carries the
+same governance summary for Claude. These rules take precedence over the review-oriented
+guidance below.
+
+Do not edit source, tests, or build files from an ordinary natural-language request. The
+default route for any non-trivial change is the Spec Kit phase order:
+
+```text
+constitution → specify → clarify (if ambiguous) → plan → tasks → analyze (if available) → implement
+```
+
+Implementation edits are permitted only after the active feature has approved `spec.md`,
+`plan.md`, and `tasks.md` and the user explicitly invokes `/speckit-implement` (Principle VI).
+The only bypass is the exact phrase
+`DIRECT IMPLEMENTATION OVERRIDE: bypass Spec Kit for this change.` Each implementation run
+records a receipt under `specs/<feature>/agent-runs/<UTC>-<name>/implementation-receipt.md`.
+The `human-loop`, `git`, and `agent-context` extensions are installed (`.specify/extensions.yml`).
+
+Read-only paths (never edited as feature work): `external/`, `deprecated/`, `binary/`, and any
+`old/`/`archive/` directory. Goal for this fork: a polyglot (MATLAB + Python + Julia) COBRA
+Toolbox; Principle VIII governs cross-language fidelity.
+
 ## Repository Overview
 
 The COBRA Toolbox is a MATLAB-based software package for constraint-based modelling of biological networks.
