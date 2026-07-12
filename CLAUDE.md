@@ -5,49 +5,30 @@ the active feature's `plan.md` once one exists.
 <!-- SPECKIT END -->
 
 <!-- Hand-maintained; keep OUTSIDE the SPECKIT markers (Spec Kit rewrites that block). -->
-## Governance
+# Claude instructions
 
-Behavioral rules live in `.specify/memory/constitution.md` — the **single source of truth**
-for how to work in this repo. Do not duplicate or override its rules here; change behavior
-via `/speckit-constitution`, not by editing CLAUDE.md. Read the constitution before
-implementing. Load-bearing rules that apply on **every** turn (spec-driven or not):
+This file is a pointer, not a rulebook. Per constitution Principle X
+(single-sourcing, no instruction leakage), the rules are NOT duplicated here.
 
-- **Principle VI (strict implementation gate):** no edits to source, tests, or build files
-  outside an explicit `/speckit-implement` after the feature has approved `spec.md`,
-  `plan.md`, and `tasks.md`. An ordinary "fix this / add this" request is a request to
-  enter the Spec Kit workflow, not authorization to edit code. The only bypass is the exact
-  phrase `DIRECT IMPLEMENTATION OVERRIDE: bypass Spec Kit for this change.` Spec Kit
-  artifacts under `specs/<feature>/` are not "source" and may be written during preparation.
-- **Principle II (backward compatibility):** public function signatures, COBRA model
-  structure fields, and the `solveCobra*`/`changeCobraSolver` solver-interface contract stay
-  backward-compatible unless a spec explicitly approves a documented break. Deprecate into
-  `deprecated/` rather than delete; new optional arguments default to historical behavior.
-- **Principle III (testing/CI):** every behavioral change ships with a test under
-  `test/verifiedTests/<category>/` that runs via `test/testAll.m` and the CI pipelines
-  (`testAllCI_*`, `.artenolis.yml`, `codecov.yml`). Justify numerical tolerances; skip
-  gracefully when a required commercial solver is absent.
-- **Principle VII (MATLAB standards):** no warning-suppressing `evalc`, keep warnings
-  visible, propagate `ME.stack` in try/catch, prefer `exist`/`isempty` over `nargin` for new
-  optional args, and carry the openCOBRA help-header convention on new functions.
-- **Principle IX (file placement):** respect the existing layout — source in `src/`, tests in
-  `test/`, docs in `documentation/`, third-party in `external/` (read-only), Spec Kit
-  artifacts in `specs/<feature>/`. Do not accumulate scratch or generated files at the root.
-- **Implementation-receipt ledger:** every implementation run records a receipt under
-  `specs/<feature>/agent-runs/<UTC>-<name>/implementation-receipt.md`.
+**Read `.specify/memory/constitution.md` before doing anything.** It is the single
+source of truth for how to work in this repository and it is agent-neutral —
+`AGENTS.md` (for Codex and other agents) points to the same constitution.
 
-## Project
+Essentials it defines, so you know what you are bound by:
 
-Local fork of https://github.com/rmtfleming/cobratoolbox (upstream
-https://github.com/opencobra/cobratoolbox), documented at
-https://opencobra.github.io/cobratoolbox/stable/. Goal: evolve the toolbox toward a polyglot
-(MATLAB + Python + Julia) version with additional capabilities, under spec-driven development
-(Principle VIII governs cross-language fidelity). Initialize with `initCobraToolbox`.
+- **The gate (Principle VI):** do not edit source, tests, or build files from an
+  ordinary request. Any non-trivial change goes through Spec Kit
+  (`constitution → specify → clarify → plan → tasks → analyze → implement`), and
+  code is edited only after an approved `spec.md`/`plan.md`/`tasks.md` and an
+  explicit `/speckit-implement`. Sole bypass: the exact phrase
+  `DIRECT IMPLEMENTATION OVERRIDE: bypass Spec Kit for this change.`
+- Backward compatibility, testing/CI, solver abstraction, MATLAB standards,
+  openCOBRA contribution conventions, polyglot fidelity, file placement, and the
+  implementation-receipt ledger are all defined there.
 
-## Spec Kit workflow (with human loop)
-
-Phase order for any non-trivial change:
-`constitution → specify → clarify (if ambiguous) → plan → tasks → analyze (if available) → implement`.
-Commands: `/speckit-constitution`, `/speckit-specify`, `/speckit-clarify`, `/speckit-plan`,
-`/speckit-tasks`, `/speckit-analyze`, `/speckit-implement`, plus `/speckit-checklist`,
-`/speckit-human-loop`, and `/speckit-taskstoissues`. The `human-loop` and `git`/`agent-context`
-extensions are installed (see `.specify/extensions.yml`).
+Change behaviour via `/speckit-constitution`, never by editing this file. The
+`human-loop`, `git`, and `agent-context` extensions are installed
+(`.specify/extensions.yml`). Project context: local fork of
+https://github.com/rmtfleming/cobratoolbox (upstream
+https://github.com/opencobra/cobratoolbox), evolving toward a polyglot
+(MATLAB + Python + Julia) toolbox; initialize with `initCobraToolbox`.

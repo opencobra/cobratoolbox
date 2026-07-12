@@ -1,5 +1,42 @@
 <!--
 Sync Impact Report
+Version change: 1.0.0 -> 1.1.0
+Modified principles:
+- III. Testing, Reproducibility, And Continuous Integration (added openCOBRA
+  test-guide conventions: prepareTest requirement declaration, assert-with-
+  tolerance, input/output arity coverage, solution-feasibility checks, printLevel
+  output control — bound by reference to the canonical test guide).
+- VII. MATLAB Coding Standards And Agent Skill Discovery (added VII-G: openCOBRA
+  Contribution Conventions — agents follow the same style guide, documentation/
+  header-keyword format, and naming conventions as human contributors).
+- IX. Repository File Organization And Artifact Placement (added the "new code goes
+  in a new subfolder under the correct src/<domain>" rule and the PR-to-develop
+  target from the contribution workflow).
+Added principles:
+- X. Documentation Single-Sourcing And No Instruction Leakage (each rule has one
+  canonical home; project-authored agent-instruction files point to the constitution
+  rather than restate it; agent/LLM instructions do not leak into general repository
+  docs; per-agent Spec Kit command/skill mirrors are exempt generated machinery).
+Modified sections:
+- Scientific Computing Constraints (now cites the openCOBRA style, test, test-
+  template, and documentation guides as the canonical contribution references).
+- Development Workflow And Quality Gates (added Git commit-message conventions from
+  the contribution guide).
+Rationale for MINOR bump: one new principle plus materially expanded compliance
+requirements in three principles; no principle removed or redefined.
+Agent-agnostic note: this fork supports multiple Spec Kit agents (Claude via
+`.claude/`, Codex and others via `.agents/`). All principles are agent-neutral;
+`AGENTS.md` is the agent-neutral instruction file and `CLAUDE.md` is the Claude
+surface — both are thin pointers to this constitution per Principle X.
+Templates and runtime guidance:
+- reviewed: .specify/templates/plan-template.md, spec-template.md, tasks-template.md
+  (Constitution Check bullets remain applicable).
+Follow-up TODOs:
+- Consider a dedicated docs/agent-contribution-notes.md only if the by-reference
+  binding below proves insufficient in review (avoid duplicating the online guide).
+-->
+<!--
+Sync Impact Report
 Version change: (VK constitution replaced) -> 1.0.0
 Provenance: Spec Kit scaffolding imported from the variationalKinetics project.
 The variational-kinetics-specific constitution (MOSEK exponential-cone numerics,
@@ -19,15 +56,6 @@ Principles (initial ratification):
 Supporting sections: Scientific Computing Constraints; Development Workflow And
 Quality Gates; Implementation Receipt Ledger; Agent And Review Workflow;
 Governance.
-Templates and runtime guidance:
-- reviewed: .specify/templates/plan-template.md, spec-template.md, tasks-template.md
-  (Constitution Check bullets remain applicable; no COBRA-specific edit required at
-  ratification — revisit if a principle materially changes).
-Follow-up TODOs:
-- Consider adding docs/repository-layout.md and docs/matlab-coding-standards.md as
-  dedicated reference documents if the summaries below prove insufficient in review.
-- Register a `matlab-best-practices` skill once suitable content is identified
-  (Principle VII-F).
 -->
 
 # COBRA Toolbox Constitution
@@ -38,6 +66,11 @@ constitution governs how the toolbox — and this fork's evolution toward a
 polyglot (MATLAB + Python + Julia) version with additional capabilities — is
 developed under a spec-driven workflow. It is the single source of truth for how
 to work in this repository and supersedes conflicting local habits.
+
+It is agent-neutral: it binds every Spec Kit-compatible agent equally (for example
+Claude via `.claude/`, Codex and others via `.agents/`) as well as human
+contributors. Automated agents follow the same openCOBRA contribution conventions
+as human contributors, with the additional discipline of the Spec Kit gate.
 
 ## Core Principles
 
@@ -62,10 +95,10 @@ specifications, and diagnostics:
   (fluxes `v`, reduced costs `w`, shadow prices `y`);
 * feasibility and optimality status versus a returned candidate point.
 
-Public model fields MUST remain consistent with the openCOBRA model schema
-documented at https://opencobra.github.io/cobratoolbox/. New mathematical objects
-introduced in comments, specifications, or documentation MUST state their domain
-and dimensions; matrix–vector notation is preferred.
+Public model fields MUST remain consistent with the openCOBRA unified model-field
+specification documented at https://opencobra.github.io/cobratoolbox/. New
+mathematical objects introduced in comments, specifications, or documentation MUST
+state their domain and dimensions; matrix–vector notation is preferred.
 
 Rationale: the COBRA Toolbox is scientific software used across the metabolic
 modelling community. A change that silently alters the stoichiometry, bounds,
@@ -100,21 +133,29 @@ Silent interface drift breaks user pipelines and invalidates prior results.
 
 Every behavioural change MUST include the narrowest practical automated test
 before it is considered complete, integrated into the existing harness rather than
-a bespoke one.
+a bespoke one. This principle adopts the openCOBRA test guide (cited in Scientific
+Computing Constraints) as its binding detail; the rules below are the load-bearing
+subset that agents most often need.
 
 * New or changed behaviour MUST be covered by a test under
   `test/verifiedTests/<category>/` that runs within `test/testAll.m` and the CI
   pipelines (GitHub Actions `testAllCI_*`, `.artenolis.yml`, and `codecov.yml`
-  coverage).
-* Tests MUST call `initCobraToolbox` as the suite requires, use `assert`-based
-  checks, and use `verifyCobraFunctionError` (or equivalent) for expected-failure
-  paths.
-* Numerical tests MUST use tolerances justified by the problem scale and solver
-  precision. Exact floating-point equality MUST NOT be required unless the
-  quantity is discrete, symbolic, or deliberately rounded.
-* Solver-dependent tests MUST state which solver(s) they target and MUST degrade
-  gracefully (skip with a clear message) when a required commercial solver is
-  unavailable, rather than failing spuriously.
+  coverage). Every new code module ships with a corresponding test.
+* Tests MUST declare their requirements with `prepareTest` (for example
+  `solvers = prepareTest('needsLP', true)`, `requireOneSolverOf`,
+  `requiredSolvers`, `requiredToolboxes`, `needsUnix`/`needsWindows`/`needsMac`)
+  so they skip gracefully when a required solver, toolbox, or OS is unavailable
+  rather than failing spuriously.
+* Tests MUST use `assert`-based checks; equality asserts are for integer/discrete
+  values only, and floating-point comparisons MUST use a justified tolerance
+  (for example `tol = 1e-9; assert(abs(a - b) < tol)`). Use
+  `verifyCobraFunctionError` (or equivalent) for expected-failure paths.
+* Where a function has optional inputs/outputs, tests SHOULD cover the meaningful
+  input/output arities, and optimization tests MUST verify that a returned solution
+  actually satisfies the imposed constraints — not merely that a call returned.
+* Tests MUST keep console output minimal (gated behind `verbose`/`printLevel`),
+  avoid internet access and GUI interaction, and fix random seeds so they are
+  reproducible and CI-friendly (headless Linux/Docker).
 
 Where a full automated test is not yet practical, a documented reproducibility
 check (a script plus expected output/trace and the reason automation is deferred)
@@ -124,7 +165,8 @@ yet verified.
 
 Rationale: a single successful run is not evidence. The toolbox needs reproducible
 CI-backed evidence that the intended behaviour changed for the intended reason and
-that nothing else regressed.
+that nothing else regressed. Declaring requirements via `prepareTest` is what keeps
+the community's heterogeneous solver installations green.
 
 ### IV. Solver Abstraction, Numerical Integrity, And Performance
 
@@ -133,14 +175,18 @@ Changes MUST preserve that abstraction and MUST NOT bind analysis code to a sing
 solver's idioms.
 
 * New solver support or solver-facing changes MUST go through the
-  `solveCobra*`/`buildOptProblemFromModel` layer and MUST map solver-native
-  statuses onto the toolbox's canonical `.stat` semantics, preserving `.origStat`.
+  `solveCobra*`/`buildOptProblemFromModel` layer, MUST remain compatible with
+  `changeCobraSolver`, and MUST map solver-native statuses onto the toolbox's
+  canonical `.stat` semantics, preserving `.origStat`. Analysis code MUST avoid
+  solver-specific assumptions and remain solver-independent where possible.
 * Performance improvements MUST preserve numerical meaning first. Optimisations
   MUST NOT suppress warnings, remove material diagnostics, skip verification, or
   silently substitute a different algorithmic or solver path.
 * Performance is a standing objective strictly subordinate to correctness. A
   performance change MUST NOT degrade returned solution quality — objective value,
-  feasibility, primal/dual values, or status semantics.
+  feasibility, primal/dual values, or status semantics. Genome-scale models have
+  thousands of reactions and metabolites: prefer sparse matrices and vectorised
+  operations, and avoid repeated solver calls inside loops.
 * For each external solver or library a feature invokes, the plan or a Phase-0
   research note MUST enumerate the relevant configuration surface (options,
   tolerances, and defaults) and cross-check the defaults against the structural
@@ -211,8 +257,9 @@ active feature`. A request that merely describes what should be implemented is n
 sufficient.
 
 These requirements are agent-neutral: they apply identically whichever agent or
-model is in use. Where a rule names an agent-specific command, directory, or
-response label, the equivalent artifact for the active agent satisfies the rule.
+model is in use (Claude, Codex, or another Spec Kit-compatible agent). Where a rule
+names an agent-specific command, directory, or response label, the equivalent
+artifact for the active agent satisfies the rule.
 
 Planning-only prompts MUST stop before code edits. If the user asks for a prompt,
 plan, design, explanation, debugging advice, research, or Spec Kit planning, the
@@ -258,9 +305,8 @@ implementation traceability a non-negotiable safety property.
 ### VII. MATLAB Coding Standards And Agent Skill Discovery
 
 All MATLAB code written or modified in this repository MUST comply with the
-following mandatory rules, in addition to the existing openCOBRA style conventions
-in `.github/CONTRIBUTING.md` and `DevelopersDocumentation/`. These rules apply to
-every agent, contributor, and automated workflow.
+following mandatory rules, which apply to every agent, contributor, and automated
+workflow.
 
 #### VII-A. evalc Suppression Prohibition
 
@@ -306,25 +352,50 @@ incidentally.
 
 #### VII-E. Function Documentation And Provenance
 
-New or substantially revised functions MUST carry the openCOBRA help header
-convention: a one-line purpose, `USAGE`, `INPUTS`, `OPTIONAL INPUTS`, `OUTPUTS`, and
-an `Authors::`/provenance line, consistent with surrounding code and the toolbox's
-Sphinx documentation build. Documentation MUST be updated in the same change as the
-behaviour it describes.
+New or substantially revised functions MUST carry the openCOBRA help header so the
+Sphinx documentation generator can parse it. The header is the commented block
+between the signature and the first line of code, and MUST use the keyword blocks
+`USAGE:`, `INPUTS:`/`INPUT:`, `OPTIONAL INPUTS:`, `OUTPUTS:`/`OUTPUT:`, `EXAMPLE:`,
+`NOTE:`, and `Author:` as applicable. Formatting rules that the generator enforces
+(and that agents therefore MUST follow): one space after `%`; argument lines
+indented four spaces after `%` with a colon after each argument name; one empty
+line before/after each keyword and one empty comment line before the function body;
+lines beginning `% ..` are ignored by the generator. The function signature MUST be
+spaced canonically, for example
+`function [a, b] = someFunction(in1, in2)`. Documentation MUST be updated in the
+same change as the behaviour it describes.
 
 #### VII-F. MATLAB Best-Practice Skill Discovery
 
 Before writing or significantly revising MATLAB code, the implementing agent MUST
 (1) search for a registered skill covering MATLAB coding conventions or linting and
 apply it if present; (2) if none exists, perform a targeted search of authoritative
-MATLAB best-practice sources (MathWorks documentation, MATLAB Style Guidelines),
-summarise the applicable rules, and propose adding a project skill. Agents MUST NOT
-assume that general software-engineering practice translates directly to MATLAB's
-conventions around vectorisation, pre-allocation, handle classes, and function
-scoping.
+MATLAB best-practice sources (MathWorks documentation, the MATLAB Style Guidelines
+cited in the openCOBRA style guide), summarise the applicable rules, and propose
+adding a project skill. Agents MUST NOT assume that general software-engineering
+practice translates directly to MATLAB's conventions around vectorisation,
+pre-allocation, handle classes, and function scoping, and MUST NOT propose
+Python-style refactors of MATLAB code.
 
-Rationale: MATLAB has a language-specific defect corpus. Codifying it as a project
-skill makes it accessible to all agents and eliminates repeated rediscovery.
+#### VII-G. openCOBRA Contribution Conventions
+
+Agents and human contributors follow the same openCOBRA contribution conventions;
+the canonical statement is the style, documentation, and test guides cited in
+Scientific Computing Constraints, and it is binding by reference rather than
+restated in full here. The load-bearing conventions are: descriptive `camelCase`
+names with a verb–noun structure for functions and an `is`/`Is` prefix for booleans;
+spaces around operators and after commas; `if singleCondition` without parentheses;
+platform-independent paths using `filesep` and `pwd` (never absolute paths encoded
+in a function); sanity checks that raise a `warning` or `error` on unexpected
+state; and output kept minimal and gated behind `verbose`/`printLevel`. Where these
+conventions and a MATLAB best-practice skill (VII-F) disagree, the openCOBRA guide
+controls for this repository.
+
+Rationale: MATLAB has a language-specific defect corpus and the openCOBRA project
+has an established, documentation-generator-coupled convention set. Binding agents
+to the same conventions as human contributors keeps the codebase uniform and keeps
+the automatic documentation build green, without duplicating the guide's text
+(Principle X).
 
 ### VIII. Polyglot Interoperability And Cross-Language Fidelity
 
@@ -360,9 +431,13 @@ explicit repository-layout feature.
 
 The binding role map for this repository is:
 
-* `src/` — toolbox source code, organised by domain (`base/`, `analysis/`,
-  `reconstruction/`, `dataIntegration/`, `design/`, `visualization/`, …). Source
-  only; generated artifacts MUST NOT be committed here.
+* `src/` — toolbox source code, organised by domain: `analysis/` (methods that
+  analyse existing models), `base/` (shared utilities, IO, solver helpers),
+  `dataIntegration/` (omics/experimental-data integration), `design/` (strain-design
+  and intervention algorithms), `reconstruction/` (model construction/curation), and
+  `visualization/` (plots, diagrams). New code SHOULD be added as a **new subfolder**
+  under the most appropriate domain (for example `src/analysis/myNewAnalysisTool/`).
+  Source only; generated artifacts MUST NOT be committed here.
 * `test/` — the test suite: `test/verifiedTests/<category>/test*.m`, run via
   `test/testAll.m` and the CI harness. Small test fixtures/models live with the
   tests that consume them (or under `test/models/`).
@@ -375,7 +450,8 @@ The binding role map for this repository is:
 * `papers/` — paper-associated code and data.
 * `deprecated/` — retired code kept for backward compatibility; read-only, not the
   place to start new work.
-* `.specify/` and `.claude/` — Spec Kit machinery, agent commands, and skills.
+* `.specify/` — Spec Kit machinery (templates, scripts, extensions, memory);
+  `.claude/` and `.agents/` — per-agent Spec Kit command/skill surfaces.
 * `specs/<NNN-feature-name>/` — per-feature Spec Kit artifacts (`spec.md`,
   `plan.md`, `tasks.md`, research/analysis, and `agent-runs/` receipts).
 * repository root — project-level metadata and configuration only (for example
@@ -383,27 +459,76 @@ The binding role map for this repository is:
   `.gitignore`, CI configs). One-off scratch files and generated output MUST NOT
   accumulate at the root.
 
-When creating or relocating a file, its destination MUST be chosen by role:
-toolbox source → `src/` in the correct domain; test or fixture → `test/`;
-new-language source → its language subtree with its own manifest; tutorial →
-`tutorials/`; documentation source → `documentation/`; third-party code →
+Contributions target the `develop` branch of the upstream repository via pull
+request. When creating or relocating a file, its destination MUST be chosen by role:
+toolbox source → a subfolder under the correct `src/<domain>/`; test or fixture →
+`test/`; new-language source → its language subtree with its own manifest; tutorial
+→ `tutorials/`; documentation source → `documentation/`; third-party code →
 `external/`; retired code → `deprecated/`; Spec Kit artifact → `specs/<feature>/`.
 
 Rationale: a large, widely-used toolbox stays reviewable only when source, tests,
 docs, vendored code, and generated artifacts remain cleanly separated and the
 existing community layout is respected.
 
+### X. Documentation Single-Sourcing And No Instruction Leakage
+
+Documentation and instructions MUST be single-sourced: every rule, convention, or
+piece of guidance has exactly one canonical home, and other files point to it rather
+than restating it. Duplicated prose drifts out of sync and creates ambiguity about
+which copy governs.
+
+* This constitution is the single canonical source for how to work in this
+  repository. Project-authored agent-instruction files — notably `CLAUDE.md` and
+  `AGENTS.md` — MUST be thin pointers to this constitution and the Spec Kit workflow.
+  They MUST NOT restate, summarise at length, or fork the principles; a brief
+  orientation plus links is the allowed content.
+* Established openCOBRA conventions (model-field spec, style guide, documentation
+  guide, test guide) remain canonical in their published location; this constitution
+  binds to them by reference (Principles III, VII, IX) and MUST NOT copy their text.
+* Agent- or LLM-specific instructions MUST NOT leak into general repository
+  documentation — `README.rst`, files under `documentation/`, `DevelopersDocumentation/`,
+  `tutorials/`, or function help headers. Those artifacts are for humans and the
+  documentation build and MUST remain agent-neutral. Guidance meant for automated
+  agents belongs in the constitution (canonical) or the per-agent Spec Kit surfaces.
+* Exemption: the per-agent Spec Kit command and skill mirrors under `.claude/` and
+  `.agents/` necessarily carry the same operational content across agents. They are
+  generated machinery maintained by the Spec Kit tooling (`/speckit-*` workflows),
+  not hand-maintained project documentation, and are exempt from the single-file
+  rule — but they still MUST NOT contradict this constitution.
+
+When two documents disagree, the canonical source controls and the derivative copy
+is the defect to fix. Changes to canonical rules go through the owning workflow
+(`/speckit-constitution` for this file; the openCOBRA guides for their conventions),
+never by editing a pointer file.
+
+Rationale: single-sourcing prevents the classic failure where `CLAUDE.md`,
+`AGENTS.md`, and a README slowly disagree about the rules, and it keeps human-facing
+documentation free of agent-specific instructions that would confuse contributors
+and the documentation generator.
+
 ## Scientific Computing Constraints
 
 Implementation plans MUST cite the stable references that govern their feature where
-those exist, for example:
+those exist. The canonical openCOBRA contribution references — binding by reference
+under Principles III, VII, IX, and X — are:
 
-* the openCOBRA documentation and model schema at
-  https://opencobra.github.io/cobratoolbox/;
-* `.github/CONTRIBUTING.md` and `DevelopersDocumentation/` for contribution and
-  style conventions;
-* the solver-interface sources under `src/base/solvers/`;
-* the test harness (`test/testAll.m`, `test/verifiedTests/`) and CI configuration.
+* the contribution overview and unified model-field specification:
+  https://opencobra.github.io/cobratoolbox/stable/contributing.html and the
+  documentation root https://opencobra.github.io/cobratoolbox/;
+* the style guide: https://opencobra.github.io/cobratoolbox/docs/styleGuide.html;
+* the documentation/header guide:
+  https://opencobra.github.io/cobratoolbox/docs/documentationGuide.html;
+* the test guide and test template:
+  https://opencobra.github.io/cobratoolbox/docs/testGuide.html and
+  https://opencobra.github.io/cobratoolbox/docs/testTemplate.html;
+* `.github/CONTRIBUTING.md` (which links the above);
+* the solver-interface sources under `src/base/solvers/` and the test harness
+  (`test/testAll.m`, `test/verifiedTests/`) with CI configuration.
+
+The supported MATLAB baseline is R2024b or newer, and CI runs MATLAB headless
+(`matlab -batch`) on Linux inside Docker (with a display provided by Xvfb and, where
+available, Gurobi). Code MUST run headless and MUST NOT depend on GUI-only functions
+or OS-specific absolute paths.
 
 Feature specifications MUST define success criteria measurable in the project
 domain — for example feasibility/optimality preserved, reproducible solver status
@@ -417,22 +542,30 @@ directly.
 Before implementation, the plan MUST pass a Constitution Check documenting:
 
 * scientific/model-correctness boundaries;
-* required tests or reproducibility checks and how they run in CI;
+* required tests or reproducibility checks and how they run in CI (including the
+  `prepareTest` requirement declarations, per Principle III);
 * backward-compatibility impact on public interfaces, model fields, or solver
   behaviour (and explicit approval for any break);
 * solver-abstraction and numerical-integrity constraints, including the
   configuration-surface audit for any external solver;
 * cross-language fidelity expectations where applicable;
-* file-placement decisions under Principle IX.
+* file-placement decisions under Principle IX and single-sourcing under Principle X.
 
 Any violation MUST be listed in Complexity Tracking with a reason and the rejected
 simpler alternative. Tasks MUST be ordered so tests are created before or with the
 behaviour they verify, and each user story or slice MUST be independently testable.
 
+Git commit messages follow the openCOBRA convention: present tense ("Add feature",
+not "Added feature"); first line 72 characters or fewer; reference issues and pull
+requests where relevant; include `[documentation]` in the message when only
+documentation changes. The Spec Kit `git` extension may automate commits at phase
+boundaries; its messages MUST still respect this convention.
+
 Code review MUST confirm that public interfaces remain compatible or the break is
 approved; model, solver, and status semantics remain correct or are deliberately
 changed and documented; tests and CI pass; performance changes do not hide
-numerical failure; and generated output stays out of source directories.
+numerical failure; generated output stays out of source directories; and no rule is
+duplicated across documentation files (Principle X).
 
 A numerical or solver change is not complete until the relevant execution path has
 been inspected and the narrowest practical verification has passed, or the remaining
@@ -467,14 +600,18 @@ does not fit the five categories.
 ## Agent And Review Workflow
 
 Reasoning-focused review and coding-focused implementation are complementary,
-regardless of which agent or model performs each role.
+regardless of which agent or model performs each role. This workflow is
+agent-agnostic: the same expectations apply to Claude, Codex, or any other Spec
+Kit-compatible agent, and to human reviewers.
 
 Review SHOULD cover algorithm and model interpretation, solver-status semantics,
-interface-compatibility judgement, and diagnostic design. Implementation agents
-SHOULD apply patches, run tests, update files, produce diffs, check syntax, and
-report changed files and test outcomes. Implementation agents MUST NOT be asked to
-make broad algorithmic or interface changes without a specification stating the
-intent, affected execution paths, expected results, and verification plan.
+interface-compatibility judgement, and diagnostic design, prioritising scientific
+correctness, solver compatibility, test coverage, numerical stability, and
+performance for large models over stylistic concerns. Implementation agents SHOULD
+apply patches, run tests, update files, produce diffs, check syntax, and report
+changed files and test outcomes. Implementation agents MUST NOT be asked to make
+broad algorithmic or interface changes without a specification stating the intent,
+affected execution paths, expected results, and verification plan.
 
 ## Governance
 
@@ -498,4 +635,4 @@ Versioning follows semantic versioning:
 When a feature conflicts with the constitution, the constitution controls unless the
 feature first amends it through this governance process.
 
-**Version**: 1.0.0 | **Ratified**: 2026-07-12 | **Last Amended**: 2026-07-12
+**Version**: 1.1.0 | **Ratified**: 2026-07-12 | **Last Amended**: 2026-07-12
