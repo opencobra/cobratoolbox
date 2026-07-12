@@ -1,5 +1,3 @@
-.. _specDrivenDevelopment:
-
 Spec-driven development with an LLM
 -----------------------------------
 
