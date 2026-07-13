@@ -41,6 +41,8 @@
 |---|---|---|---|
 | 2026-07-13 | Gate 1 | Continue to planning | Full scope retained (coverage wiring + skip gate + full backfill); proceed to plan/tasks/analyze |
 | 2026-07-13 | Gate 2 | Approve full feature | Intent + scope recorded (all tasks T001–T022). Per Principle VI, NOT yet authorized to edit — awaiting explicit /speckit-implement. |
+| 2026-07-13 | (impl) | /speckit-implement invoked | Constitution Principle VI authorization given; Bundle 3 executed T001–T022. |
+| 2026-07-13 | Gate 3 | Calibrate skip baseline first | Ran full local suite (260 tests, 49 skipped); set maxSkipped=60 with headroom; recalibrate on first CI run (T020). Feature complete; awaiting final accept/close vs PR vs follow-up. |
 
 ## Approved Implementation Scope
 - Approved: intent yes (Gate 2, full feature) — edits NOT yet authorized (needs explicit /speckit-implement per Principle VI)
