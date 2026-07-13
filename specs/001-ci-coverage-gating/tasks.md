@@ -26,7 +26,7 @@ skip-gate check). No `src/` scientific code is edited.
 
 **Purpose**: keep regenerable coverage output and CI tooling out of version control.
 
-- [ ] T001 [P] Add `/.ci-tools/`, `coverage.json`, `coverage.xml`, `coverage_html/` to `.gitignore` (regenerable CI outputs / host-side tooling; Principle IX).
+- [x] T001 [P] Add `/.ci-tools/`, `coverage.json`, `coverage.xml`, `coverage_html/` to `.gitignore` (regenerable CI outputs / host-side tooling; Principle IX).
 
 ## Phase 2: Foundational
 
@@ -45,12 +45,12 @@ best-effort Codecov upload. Shippable alone.
 coverage % prints (`testAll.m:290`) and `coverage.xml`/`coverage_html/` are uploaded as an
 artifact regardless of Codecov (quickstart Scenario B).
 
-- [ ] T002 [US1] Add a runner-host step in `.github/workflows/testAllCI_step1.yml` (before the `docker run`) to clone pinned MoCov (`MOcov/MOcov`) and jsonlab (`fangq/jsonlab`) into `$GITHUB_WORKSPACE/.ci-tools/MOcov` and `.ci-tools/jsonlab` (pin to a specific tag/commit; skip if already present for caching).
-- [ ] T003 [US1] In the same `docker run` block of `.github/workflows/testAllCI_step1.yml`, add `-e MOCOV_PATH=/work/.ci-tools/MOcov -e JSONLAB_PATH=/work/.ci-tools/jsonlab` so `testAll.m:64-71` activates coverage. (⚠ same YAML file as T002 → sequential.)
-- [ ] T004 [P] [US1] In `test/testAll.m`, add `'-cover_xml_file','coverage.xml'` to the existing `mocov(...)` call (around line 266) — single additive argument, Cobertura output; do not change any other behaviour.
-- [ ] T005 [US1] Add an always-on `actions/upload-artifact` step in `.github/workflows/testAllCI_step1.yml` uploading `coverage.xml` and `coverage_html/` (name e.g. `coverage`). (⚠ same YAML file → after T003.)
-- [ ] T006 [US1] Add a best-effort `codecov/codecov-action@v4` step in `.github/workflows/testAllCI_step1.yml` with `files: ./coverage.xml`, `fail_ci_if_error: false`, `continue-on-error: true`, token from secrets. (⚠ same YAML file → after T005.)
-- [ ] T007 [US1] **Validate** locally via the MATLAB MCP: set `MOCOV_PATH`/`JSONLAB_PATH`, run a small `verifiedTests` subset through `testAll.m`, confirm the coverage % prints and `coverage.xml`/`coverage.json`/`coverage_html/` are produced (quickstart Scenario B). Record result.
+- [x] T002 [US1] Add a runner-host step in `.github/workflows/testAllCI_step1.yml` (before the `docker run`) to clone pinned MoCov (`MOcov/MOcov`) and jsonlab (`fangq/jsonlab`) into `$GITHUB_WORKSPACE/.ci-tools/MOcov` and `.ci-tools/jsonlab` (pin to a specific tag/commit; skip if already present for caching).
+- [x] T003 [US1] In the same `docker run` block of `.github/workflows/testAllCI_step1.yml`, add `-e MOCOV_PATH=/work/.ci-tools/MOcov -e JSONLAB_PATH=/work/.ci-tools/jsonlab` so `testAll.m:64-71` activates coverage. (⚠ same YAML file as T002 → sequential.)
+- [x] T004 [P] [US1] In `test/testAll.m`, add `'-cover_xml_file','coverage.xml'` to the existing `mocov(...)` call (around line 266) — single additive argument, Cobertura output; do not change any other behaviour.
+- [x] T005 [US1] Add an always-on `actions/upload-artifact` step in `.github/workflows/testAllCI_step1.yml` uploading `coverage.xml` and `coverage_html/` (name e.g. `coverage`). (⚠ same YAML file → after T003.)
+- [x] T006 [US1] Add a best-effort `codecov/codecov-action@v4` step in `.github/workflows/testAllCI_step1.yml` with `files: ./coverage.xml`, `fail_ci_if_error: false`, `continue-on-error: true`, token from secrets. (⚠ same YAML file → after T005.)
+- [x] T007 [US1] **Validate** locally via the MATLAB MCP: set `MOCOV_PATH`/`JSONLAB_PATH`, run a small `verifiedTests` subset through `testAll.m`, confirm the coverage % prints and `coverage.xml`/`coverage.json`/`coverage_html/` are produced (quickstart Scenario B). Record result.
 
 **Checkpoint**: US1 delivers visible coverage independent of US2/US3.
 
@@ -85,9 +85,9 @@ baseline.
 **Independent test**: force `skipped > baseline`; confirm a `::warning::` and a green build;
 `skipped ≤ baseline` yields no warning (quickstart Scenario C).
 
-- [ ] T016 [US3] Create `test/verifiedTests/.skip-baseline.json` (`{ "maxSkipped": <int>, "recordedOn": "...", "environment": "gurobi-only Docker", "note": "..." }`) with a conservative initial value (refined in T020).
-- [ ] T017 [US3] Add a skip-gate step in `.github/workflows/testAllCI_step1.yml` (after the MATLAB run) that parses `skipped=` from `testReport.junit.xml`, compares to `.skip-baseline.json`, emits `::warning::` on exceed, reports the count, and always exits 0 (`continue-on-error: true`). (⚠ same YAML file → after T006.)
-- [ ] T018 [US3] **Validate**: simulate `skipped > maxSkipped` (temporarily lower the baseline against a local `testReport.junit.xml`); confirm the step emits `::warning::` and exits 0; and that `skipped ≤ maxSkipped` produces no warning (quickstart Scenario C).
+- [x] T016 [US3] Create `test/verifiedTests/.skip-baseline.json` (`{ "maxSkipped": <int>, "recordedOn": "...", "environment": "gurobi-only Docker", "note": "..." }`) with a conservative initial value (refined in T020).
+- [x] T017 [US3] Add a skip-gate step in `.github/workflows/testAllCI_step1.yml` (after the MATLAB run) that parses `skipped=` from `testReport.junit.xml`, compares to `.skip-baseline.json`, emits `::warning::` on exceed, reports the count, and always exits 0 (`continue-on-error: true`). (⚠ same YAML file → after T006.)
+- [x] T018 [US3] **Validate**: simulate `skipped > maxSkipped` (temporarily lower the baseline against a local `testReport.junit.xml`); confirm the step emits `::warning::` and exits 0; and that `skipped ≤ maxSkipped` produces no warning (quickstart Scenario C).
 
 **Checkpoint**: US3 closes the erosion loop; independent of US1/US2.
 

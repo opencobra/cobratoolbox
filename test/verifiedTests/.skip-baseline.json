@@ -1,0 +1,6 @@
+{
+  "maxSkipped": 260,
+  "recordedOn": "2026-07-13",
+  "environment": "COBRA CI: MATLAB headless in Docker, gurobi + open-source solvers only",
+  "note": "Conservative initial ceiling (= total test count) so the flag/warn gate does not fire until a real baseline is recorded from the first instrumented CI run (task T020). Raise/lower deliberately when the CI solver/toolbox set intentionally changes; the gate only WARNS, never fails the build (feature 001-ci-coverage-gating, FR-008)."
+}

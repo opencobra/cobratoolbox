@@ -261,33 +261,47 @@ try
 
         % count the number of covered lines of code
         if COVERAGE
-            % write coverage based on profile('info')
-            fprintf('Running MoCov ... \n')
-            mocov('-cover', 'src', ...
-                '-profile_info', ...
-                '-cover_json_file', 'coverage.json', ...
-                '-cover_html_dir', 'coverage_html', ...
-                '-cover_method', 'profile', ...
-                '-verbose');
+            % Coverage is best-effort: a failure of the coverage tooling MUST be
+            % surfaced explicitly but MUST NOT fail the (already reported) pass/fail
+            % run. See feature 001-ci-coverage-gating (FR-004).
+            try
+                % write coverage based on profile('info'); also emit Cobertura XML
+                % (coverage.xml) so CI can upload it as an artifact and to Codecov.
+                fprintf('Running MoCov ... \n')
+                mocov('-cover', 'src', ...
+                    '-profile_info', ...
+                    '-cover_json_file', 'coverage.json', ...
+                    '-cover_xml_file', 'coverage.xml', ...
+                    '-cover_html_dir', 'coverage_html', ...
+                    '-cover_method', 'profile', ...
+                    '-verbose');
 
-            % load the coverage file
-            data = loadjson('coverage.json', 'SimplifyCell', 1);
+                % load the coverage file
+                data = loadjson('coverage.json', 'SimplifyCell', 1);
 
-            sf = data.source_files;
-            clFiles = zeros(length(sf), 1);
-            tlFiles = zeros(length(sf), 1);
+                sf = data.source_files;
+                clFiles = zeros(length(sf), 1);
+                tlFiles = zeros(length(sf), 1);
 
-            for i = 1:length(sf)
-                clFiles(i) = nnz(sf(i).coverage);
-                tlFiles(i) = length(sf(i).coverage);
+                for i = 1:length(sf)
+                    clFiles(i) = nnz(sf(i).coverage);
+                    tlFiles(i) = length(sf(i).coverage);
+                end
+
+                % average the values for each file
+                cl = sum(clFiles);
+                tl = sum(tlFiles);
+
+                % print out the coverage
+                fprintf('Covered Lines: %i, Total Lines: %i, Coverage: %f%%.\n', cl, tl, cl / tl * 100);
+            catch ME_cov
+                if ~isempty(ME_cov.stack)
+                    fprintf(2, '::warning:: Coverage measurement failed: %s (%s line %d)\n', ...
+                        ME_cov.message, ME_cov.stack(1).file, ME_cov.stack(1).line);
+                else
+                    fprintf(2, '::warning:: Coverage measurement failed: %s\n', ME_cov.message);
+                end
             end
-
-            % average the values for each file
-            cl = sum(clFiles);
-            tl = sum(tlFiles);
-
-            % print out the coverage
-            fprintf('Covered Lines: %i, Total Lines: %i, Coverage: %f%%.\n', cl, tl, cl / tl * 100);
         end
 
         % print out a summary table

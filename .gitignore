@@ -180,3 +180,12 @@ external/Smith-Decomposition/
 external/gaimc/
 external/lusol/
 external/pdco/
+
+# read-only architecture research output (not committed; enforces Principle IX)
+analysis/
+
+# CI coverage tooling and regenerable coverage output (feature 001-ci-coverage-gating)
+.ci-tools/
+coverage.json
+coverage.xml
+coverage_html/
