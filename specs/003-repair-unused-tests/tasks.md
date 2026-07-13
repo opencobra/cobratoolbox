@@ -10,6 +10,17 @@ weakened (FR-002).
 **Organization**: by user story — US1 code-bug fixes that yield passes (P1, MVP);
 US2 requirement broadenings (P2); US3 clean-skips + env-install + stray removal (P3).
 
+## Implementation status (2026-07-13) — see audit/results.md, audit/out-of-scope.md
+
+Done & verified: T002 (testGenerateFieldDescriptionFile → PASS), T009 (testdynamicRFBA
+error→SKIP), T010 (testChangeIBMCplexParams hardened), T012 (test_myfunction removed),
+T011 (lrs trio → PASS with bundled binary on PATH; install surfaced), T008/T013 (testMOMA
+& testIsCompatible verified PASS; testSampleCbModelRHMC clean SKIP), T014/T015 (results +
+static check). **Reverted, no-weakening rule**: T003 (testFVA — solver-specific reference),
+T006 (testComputeMetFormulae — cplex TimeLimit assertion), T005/T007 (testMoomin/testMgPipe
+broadenings unvalidatable: mosek-MILP not working / PCT absent). T017 receipt written.
+SC-005 whole-suite coverage confirmed in CI.
+
 ## Path Conventions
 
 MATLAB test files under `test/verifiedTests/**`; one stray file at `test/`.

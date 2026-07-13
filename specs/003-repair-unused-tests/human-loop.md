@@ -1,10 +1,10 @@
 # Human Loop State
 
 ## Current State
-- Status: Bundle 2 complete — awaiting Gate 2 (implementation approval)
+- Status: Bundle 3 complete — awaiting Gate 3 (closeout)
 - Active feature directory: specs/003-repair-unused-tests
-- Last completed bundle: Bundle 2 (plan/tasks/analyze)
-- Source code modified by this workflow: no
+- Last completed bundle: Bundle 3 (implementation via /speckit-implement)
+- Source code modified by this workflow: yes (3 tests edited + 1 removed; verified)
 
 ## Core Command Ledger
 - constitution:   checked (v1.2.0; reconciliation applied — implement gate + receipt ledger)
@@ -14,6 +14,7 @@
 - plan:           invoked (plan.md, research.md w/ per-test triage, quickstart.md)
 - tasks:          invoked (tasks.md T001–T017)
 - analyze:        invoked (0 critical, 100% FR coverage; 2 low risks)
+- implement:      invoked via /speckit-implement (receipt written; some tasks reverted per no-weakening rule)
 - plan:           pending
 - tasks:          pending
 - analyze:        pending
@@ -43,8 +44,9 @@
   feature 001/002 code. lrs install is a user-run system action, not a repo edit.
 
 ## Pointers
-- Implementation receipt(s): (none yet — agent-runs/ per constitution)
-- Implementation review: specs/003-repair-unused-tests/implementation-review.md (not yet written)
+- Implementation receipt(s): specs/003-repair-unused-tests/agent-runs/20260713T193850Z-repair-unused-tests/implementation-receipt.md
+- Implementation review: specs/003-repair-unused-tests/implementation-review.md
+- Results: audit/results.md · Out-of-scope: audit/out-of-scope.md · Env feasibility: research.md
 
 ## Open Risks and Ambiguities
 - DoD metric: pass-count vs measured line-coverage increase (clarify Q1).
