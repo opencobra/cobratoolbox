@@ -22,6 +22,9 @@ oriFolder = pwd;
 test_folder = fileparts(which('testGrowthExpMatch.m'));
 cd(test_folder);
 
+% require LP and MILP solvers; skip gracefully if none is available
+prepareTest('needsLP', true, 'needsMILP', true);
+
 %load Model
 model = getDistributedModel('ecoli_core_model.mat');
 

@@ -18,6 +18,9 @@ currentDir = pwd;
 fileDir = fileparts(which('testSurfNet'));
 cd(fileDir);
 
+% require an LP solver; skip gracefully if none is available
+prepareTest('needsLP', true);
+
 fprintf(' -- Running testSurfNet ... ');
 
 model = getDistributedModel('ecoli_core_model.mat');

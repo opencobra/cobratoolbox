@@ -17,6 +17,9 @@
 
 global CBTDIR SOLVERS OPT_PROB_TYPES ENV_VARS
 
+% Test 2 hard-asserts mosek is selectable; require it and skip gracefully if absent
+prepareTest('requiredSolvers', {'mosek'});
+
 fprintf('Testing initCobraToolbox agent mode ...\n');
 
 % -------------------------------------------------------------------------

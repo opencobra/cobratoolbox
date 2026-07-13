@@ -1,0 +1,37 @@
+schema_version: "1.0"
+
+extension:
+  id: human-loop
+  name: "Human Loop Orchestrator (Claude)"
+  version: "0.2.0"
+  description: "Bundle the core Spec Kit commands behind three sparse human gates, tailored to Claude/Cowork and subordinate to the project constitution."
+  author: local
+  repository: https://example.invalid/local/human-loop-claude
+  license: MIT
+
+requires:
+  speckit_version: ">=0.2.0"
+  commands:
+    - speckit.constitution
+    - speckit.specify
+    - speckit.clarify
+    - speckit.checklist
+    - speckit.plan
+    - speckit.tasks
+    - speckit.analyze
+    - speckit.implement
+
+provides:
+  commands:
+    - name: speckit.human-loop
+      file: commands/speckit.human-loop.md
+      description: "Run bundled core Spec Kit phases with sparse human gates and explicit, constitution-compliant approval before implementation."
+
+# This orchestrator intentionally registers NO before_/after_ hooks. It is invoked
+# explicitly by the user and calls the core commands itself; wiring it into phase
+# hooks would cause recursive invocation. Per-phase hooks (e.g. git auto-commit)
+# from other extensions still fire on the embedded core commands.
+tags:
+  - workflow
+  - human-in-the-loop
+  - spec-driven

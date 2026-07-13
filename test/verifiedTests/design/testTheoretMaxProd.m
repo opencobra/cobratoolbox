@@ -13,6 +13,9 @@ currentDir = pwd;
 fileDir = fileparts(which('testTheoretMaxProd'));
 cd(fileDir);
 
+% require an LP solver; skip gracefully if none is available
+prepareTest('needsLP', true);
+
 % test variables
 model = getDistributedModel('ecoli_core_model.mat');
 

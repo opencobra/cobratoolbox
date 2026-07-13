@@ -24,6 +24,9 @@ currentDir = pwd;
 fileDir = fileparts(which('testSimulatePairwiseInteractions'));
 cd(fileDir);
 
+% require an LP solver; skip gracefully if none is available
+prepareTest('needsLP', true);
+
 % if the pairedModelInfo file does not exist yet, build the models first
 if ~exist('pairedModelInfo', 'var')
     modelList={

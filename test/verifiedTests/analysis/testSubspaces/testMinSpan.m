@@ -17,6 +17,9 @@ currentDir = pwd;
 fileDir = fileparts(which('testMinSpan'));
 cd(fileDir);
 
+% detMinSpan only runs with Gurobi; skip gracefully if it is unavailable
+prepareTest('requiredSolvers', {'gurobi'});
+
 % load the model
 model = getDistributedModel('ecoli_core_model.mat');
 
