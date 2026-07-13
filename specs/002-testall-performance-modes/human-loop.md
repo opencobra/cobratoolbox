@@ -1,9 +1,9 @@
 # Human Loop State
 
 ## Current State
-- Status: Bundle 3 complete — awaiting Gate 3 (closeout)
+- Status: CLOSED — Gate 3 accepted (2026-07-13)
 - Active feature directory: specs/002-testall-performance-modes
-- Last completed bundle: Bundle 3 (implementation via /speckit-implement)
+- Last completed bundle: Bundle 4 (verification & closeout)
 - Source code modified by this workflow: yes (2 new + 7 edited files; verified)
 
 ## Core Command Ledger
@@ -22,6 +22,9 @@
 | 2026-07-13 | Pre-flight override gate | "Route through Spec Kit" | No direct edit of test/testAll.m; profiling option + speedup folded into this Spec Kit feature |
 | 2026-07-13 | Clarify Q1 (CI mode) | "Full in CI, fast local" | FR-012 added; CI keeps 001 coverage-gate baseline |
 | 2026-07-13 | Clarify Q2 (coverage tol) | "≤5 pp absolute drop" | FR-003 / SC-002 set to ≤5 percentage-point drop |
+| 2026-07-13 | Gate 2 (approval) | "Approve all tasks" | T001–T020 approved; C1 tradeoff accepted |
+| 2026-07-13 | (constitution gate) | "/speckit-implement" | edits authorized; Bundle 3 ran |
+| 2026-07-13 | Gate 3 (closeout) | "Accept and close" | feature 002 closed; deferrals documented; not merged/pushed |
 
 ## Approved Implementation Scope
 - Approved: intent yes (Gate 2 = "Approve all tasks", 2026-07-13); edits still gated on explicit /speckit-implement
