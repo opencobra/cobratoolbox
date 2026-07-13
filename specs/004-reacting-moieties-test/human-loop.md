@@ -1,9 +1,9 @@
 # Human Loop State
 
 ## Current State
-- Status: Bundle 3 complete — awaiting Gate 3 (closeout)
+- Status: CLOSED — Gate 3 accepted (2026-07-13); merged to develop and pushed
 - Active feature directory: specs/004-reacting-moieties-test
-- Last completed bundle: Bundle 3 (implementation via /speckit-implement)
+- Last completed bundle: Bundle 4 (verification & closeout)
 - Source code modified by this workflow: yes (1 new test + fixture + .gitignore anchor; verified)
 
 ## Core Command Ledger
@@ -21,6 +21,9 @@
 |---|---|---|---|
 | 2026-07-13 | Direction | "Repair vonBertalanffy first" then reversed | vonB blocked by commercial ChemAxon; user redirected to create test from the 1 clean tutorial |
 | 2026-07-13 | (origin) | "go ahead and create test(s)" | routed through Spec Kit as feature 004 |
+| 2026-07-13 | Gate 2 | "Approve all tasks" | T001–T006 approved |
+| 2026-07-13 | (constitution gate) | "/speckit-implement" | edits authorized; Bundle 3 ran |
+| 2026-07-13 | Gate 3 | "Accept, merge & push" | 004 closed; merged to develop and pushed |
 
 ## Approved Implementation Scope
 - Approved: intent yes (Gate 2 = "Approve all tasks", 2026-07-13); edits gated on explicit /speckit-implement
