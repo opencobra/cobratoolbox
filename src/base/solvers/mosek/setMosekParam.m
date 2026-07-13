@@ -1,386 +1,745 @@
-function [cmd,mosekParam] = setMosekParam(param)
-% set mosek parameters from param fields
-% strip any non mosek compatible fields from param and return it as
-% mosekParam
+function [cmd, mosekParam] = setMosekParam(param)
+% setMosekParam
+%
+% Single-file source of truth for MOSEK parameter materialisation.
+%
+% This function deliberately does not call external helper files to set,
+% strip, normalise, or otherwise manipulate MOSEK parameters.  All helper
+% functions used below are local functions in this same file.
+%
+% Supported profiles:
+%
+%   'default'
+%       True MOSEK default profile.  No MSK_* parameters are passed except
+%       those needed to enforce the requested print policy.
+%
+%   'manual'
+%       Pass caller-supplied MSK_* fields through, after applying the print
+%       policy and stripping non-MOSEK fields.
+%
+%   'cobra'
+%   'cobraNoPresolve'
+%   'cobraVerbose'
+%   'cobraNoPresolveVerbose'
+%       Backward-compatible COBRA-style profiles.
+%
+%   'SCLP_default'
+%       True MOSEK default profile for solveSCLP inner solves.
+%
+%   'SCLP_normalPresolve'
+%   'SCLP_noPresolve'
+%   'SCLP_verbose'
+%   'SCLP_noPresolveVerbose'
+%       solveSCLP-specific ordinary conic profiles.
+%
+%   'SCLP_startTight'
+%   'SCLP_startTightNoPresolve'
+%       solveSCLP-specific tight profiles for initial centring and
+%       centred-start raw repair.  These inherit the ordinary SCLP profile
+%       first, then override only accuracy-related parameters.
+%
+% Print policy:
+%
+%   The line
+%
+%       param.printLevel = param.printLevel - 1;
+%
+%   is intentional.  It prevents inner MOSEK solve traces from appearing
+%   during ordinary use of solveSCLP inside higher-level algorithms.
+%
+%   Effective behaviour:
+%
+%       solveSCLP printLevel = 0  -> MOSEK silent
+%       solveSCLP printLevel = 1  -> MOSEK silent
+%       solveSCLP printLevel = 2  -> MOSEK default printing
+%       solveSCLP printLevel > 2  -> verbose-profile MOSEK logs may print
+%
+% Output:
+%
+%   cmd
+%       MOSEK command string, usually 'minimize echo(0)' or 'minimize'.
+%
+%   mosekParam
+%       Structure containing only MSK_* fields.
 
+if nargin < 1 || isempty(param)
+    param = struct();
+end
 
-%tests if solver correctly interfaced and licence running
-if param.printLevel>1 || param.debug
-    [~, res] = mosekopt('symbcon');
+% -------------------------------------------------------------------------
+% Intentional one-level reduction in MOSEK print level.
+%
+% This is required because solveSCLP itself prints the outer trace.  The
+% inner MOSEK solve should usually be quieter than solveSCLP.
+% -------------------------------------------------------------------------
+if ~isfield(param, 'printLevel') || isempty(param.printLevel)
+    param.printLevel = 0;
 else
-    [~, res] = mosekopt('symbcon echo(0)');
+    param.printLevel = param.printLevel - 1;
 end
 
-% only set the print level if not already set via param structure
-if ~isfield(param, 'MSK_IPAR_LOG')
-    % Controls the amount of log information.
-    % The value 0 implies that all log information is suppressed.
-    % A higher level implies that more information is logged.
-    switch param.printLevel
-        case 0
-            param.MSK_IPAR_LOG = 0;
-            echolev = 0;
-        case 1
-            param.MSK_IPAR_LOG = 1;
-            echolev = 3;
-        case 2
-            param.MSK_IPAR_WRITE_DATA_PARAM='MSK_ON';
-            param.MSK_IPAR_LOG_INTPNT = 1;
-            param.MSK_IPAR_LOG_SIM = 1;
-            %MSK_IPAR_LOG_PRESOLVE
-            % Description:Controls amount of output printed by the presolve procedure. A higher level implies that more information is logged.
-            % Possible Values:Any number between 0 and +inf.
-            % Default value:1
-            param.MSK_IPAR_LOG_PRESOLVE=10;
+if ~isfield(param, 'debug') || isempty(param.debug)
+    param.debug = 0;
+end
 
-            %MSK_IPAR_LOG_INTPNT
-            % Controls amount of output printed printed by the interior-point optimizer.
-            %A higher level implies that more information is logged.
-            % Possible Values: Any number between 0 and +inf.
-            % Default value: 4
-            if ~isfield(param,'MSK_IPAR_LOG_INTPNT')
-                param.MSK_IPAR_LOG_INTPNT=5;
-            end
+if ~isfield(param, 'problemType') || isempty(param.problemType)
+    param.problemType = 'CLP';
+end
 
-            %infesibility report
-            % MSK_IPAR_INFEAS_REPORT_AUTO
-            %Controls the amount of information presented in an infeasibility report.
-            % Possible Values:
-            %     MSK_ON
-            %         Switch the option on.
-            %     MSK_OFF
-            %         Switch the option off.
-            % Default value:
-            %     MSK_OFF
-            if ~isfield(param,'MSK_IPAR_INFEAS_REPORT_AUTO')
-                param.MSK_IPAR_INFEAS_REPORT_AUTO='MSK_ON';
-            end
+profile = normaliseMosekParamProfile(param);
+cmd = buildMosekCommandFromPrintLevel(param.printLevel);
 
-            % MSK_IPAR_INFEAS_REPORT_LEVEL
-            % Controls the amount of information presented in an infeasibility report. Higher values imply more information.
-            % Possible Values:Any number between 0 and +inf.
-            % Default value: 1
-            %Higher values imply more information.
-            if ~isfield(param,'MSK_IPAR_INFEAS_REPORT_LEVEL')
-                param.MSK_IPAR_INFEAS_REPORT_LEVEL=1;
-            end
+switch profile
 
-            echolev = 3;
-        otherwise
-            echolev = 0;
-    end
-    if echolev == 0 %&& ~param.debug
-        param.MSK_IPAR_LOG = 0;
-        cmd = ['minimize echo(' int2str(echolev) ')'];
-    else
-        cmd = 'minimize';
-    end
+    case 'default'
+        % True MOSEK default mode.  Remove all caller-created MSK_* fields.
+        mosekParam = removeMosekParameterFields(param);
+
+    case 'manual'
+        % Manual means: keep caller-supplied MSK_* fields, but do not derive
+        % any COBRA or solveSCLP defaults.
+        mosekParam = param;
+
+    case {'cobra', ...
+          'cobraNoPresolve', ...
+          'cobraVerbose', ...
+          'cobraNoPresolveVerbose'}
+
+        % Backward-compatible COBRA/MOSEK parameter portfolio.
+        mosekParam = applyCobraMosekPortfolio(param, profile);
+
+    case 'SCLP_default'
+        % True MOSEK default mode for solveSCLP.
+        %
+        % This intentionally does not inherit the ordinary SCLP profile.
+        % It asks MOSEK to use its own defaults, apart from print-policy
+        % fields added later if needed.
+        mosekParam = removeMosekParameterFields(param);
+
+    case {'SCLP_normalPresolve', ...
+          'SCLP_noPresolve', ...
+          'SCLP_verbose', ...
+          'SCLP_noPresolveVerbose'}
+
+        % Ordinary solveSCLP conic profiles.
+        mosekParam = applySCLPMosekPortfolio(param, profile);
+
+    case 'SCLP_startTight'
+        % Tight profile for initial centring and centred-start raw repair.
+        %
+        % Important:
+        %   Start from the ordinary solveSCLP normal-presolve profile.  This
+        %   ensures that the tight profile inherits solve form, regularisation,
+        %   time limit, presolve/data tolerances, and other SCLP settings.
+        %   Then override only the accuracy-related parameters.
+        mosekParam = applySCLPMosekPortfolio(param, 'SCLP_normalPresolve');
+
+        mosekParam.MSK_DPAR_INTPNT_CO_TOL_PFEAS    = 1e-10;
+        mosekParam.MSK_DPAR_INTPNT_CO_TOL_DFEAS    = 1e-10;
+        mosekParam.MSK_DPAR_INTPNT_CO_TOL_REL_GAP  = 1e-10;
+        mosekParam.MSK_DPAR_INTPNT_CO_TOL_MU_RED   = 1e-10;
+        mosekParam.MSK_DPAR_INTPNT_CO_TOL_NEAR_REL = 10;
+
+        mosekParam.MSK_IPAR_INTPNT_MAX_ITERATIONS = 200;
+        mosekParam.MSK_IPAR_PRESOLVE_USE = 'MSK_PRESOLVE_MODE_FREE';
+
+    case 'SCLP_startTightNoPresolve'
+        % Tight profile for initial centring and centred-start raw repair,
+        % with presolve disabled.
+        %
+        % Important:
+        %   Start from the ordinary solveSCLP no-presolve profile so this
+        %   profile inherits the same SCLP defaults as SCLP_noPresolve.
+        mosekParam = applySCLPMosekPortfolio(param, 'SCLP_noPresolve');
+
+        mosekParam.MSK_DPAR_INTPNT_CO_TOL_PFEAS    = 1e-10;
+        mosekParam.MSK_DPAR_INTPNT_CO_TOL_DFEAS    = 1e-10;
+        mosekParam.MSK_DPAR_INTPNT_CO_TOL_REL_GAP  = 1e-10;
+        mosekParam.MSK_DPAR_INTPNT_CO_TOL_MU_RED   = 1e-10;
+        mosekParam.MSK_DPAR_INTPNT_CO_TOL_NEAR_REL = 10;
+
+        mosekParam.MSK_IPAR_INTPNT_MAX_ITERATIONS = 200;
+        mosekParam.MSK_IPAR_PRESOLVE_USE = 'MSK_PRESOLVE_MODE_OFF';
+
+    otherwise
+        error('setMosekParam:badProfile', ...
+            'Unsupported param.mosekParam profile: %s', profile);
+end
+
+% Apply the print policy after the selected profile has materialised its
+% ordinary MOSEK parameters.  This is deliberately last so that printLevel
+% can override even verbose profiles.
+mosekParam = applyMosekPrintPolicy(mosekParam, param.printLevel);
+
+% Return only actual MOSEK parameters.  This local function replaces any
+% external mosekParamStrip dependency.
+mosekParam = localMosekParamStrip(mosekParam);
+
 end
 
 
-if ~isfield(param, 'MSK_DPAR_OPTIMIZER_MAX_TIME') && isfield(param,'timelimit')
-    % MSK_DPAR_OPTIMIZER_MAX_TIME
-    % Maximum amount of time the optimizer is allowed to spent on the optimization. A negative number means infinity.
-    % Default
-    % -1.0
-    % Accepted
-    % [-inf; +inf]
-    % Example
-    % param.MSK_DPAR_OPTIMIZER_MAX_TIME = -1.0
-    % Groups
-    % Termination criteria
+function profile = normaliseMosekParamProfile(param)
+% normaliseMosekParamProfile
+%
+% Return the requested profile as a scalar character vector.
+
+if ~isfield(param, 'mosekParam') || isempty(param.mosekParam)
+    profile = 'cobra';
+else
+    profile = char(string(param.mosekParam));
+end
+
+profile = strtrim(profile);
+
+if isempty(profile)
+    profile = 'cobra';
+end
+end
+
+
+function cmd = buildMosekCommandFromPrintLevel(printLevel)
+% buildMosekCommandFromPrintLevel
+%
+% Build the MOSEK command string using only the effective MOSEK print level.
+
+if printLevel <= 0
+    cmd = 'minimize echo(0)';
+else
+    cmd = 'minimize';
+end
+end
+
+
+function param = applyMosekPrintPolicy(param, printLevel)
+% applyMosekPrintPolicy
+%
+% Enforce the single print policy after a profile has been materialised.
+%
+%   printLevel <= 0:
+%       Force MOSEK silence.
+%
+%   printLevel == 1:
+%       Use MOSEK default printing.  Remove explicit log fields.
+%
+%   printLevel > 1:
+%       Keep profile-specific log fields.
+
+if printLevel <= 0
+
+    % Force MOSEK logging off.  Use both the command echo(0) and explicit
+    % log fields to avoid accidental output from verbose profiles.
+    param.MSK_IPAR_LOG = 0;
+    param.MSK_IPAR_LOG_INTPNT = 0;
+    param.MSK_IPAR_LOG_SIM = 0;
+    param.MSK_IPAR_LOG_PRESOLVE = 0;
+    param.MSK_IPAR_LOG_FEAS_REPAIR = 0;
+
+    % Avoid infeasibility-report printing in silent mode.
+    param.MSK_IPAR_INFEAS_REPORT_AUTO = 'MSK_OFF';
+
+    % Remove fields that request extra output, while keeping the explicit
+    % silence fields above.
+    param = removeFieldsIfPresent(param, { ...
+        'MSK_IPAR_INFEAS_REPORT_LEVEL', ...
+        'MSK_IPAR_WRITE_DATA_PARAM'});
+
+elseif printLevel == 1
+
+    % Let MOSEK use default printing.  Do not let a profile explicitly
+    % increase or suppress logging.
+    param = removeFieldsIfPresent(param, { ...
+        'MSK_IPAR_LOG', ...
+        'MSK_IPAR_LOG_INTPNT', ...
+        'MSK_IPAR_LOG_SIM', ...
+        'MSK_IPAR_LOG_PRESOLVE', ...
+        'MSK_IPAR_LOG_FEAS_REPAIR', ...
+        'MSK_IPAR_INFEAS_REPORT_AUTO', ...
+        'MSK_IPAR_INFEAS_REPORT_LEVEL', ...
+        'MSK_IPAR_WRITE_DATA_PARAM'});
+
+else
+    % printLevel > 1:
+    % Keep whatever log fields the selected profile materialised.
+end
+end
+
+
+function param = applyCobraMosekPortfolio(param, profile)
+% applyCobraMosekPortfolio
+%
+% Backward-compatible COBRA-style MOSEK parameter portfolio.
+%
+% This local function intentionally uses the same profile names as the
+% previous implementation.  It derives MSK_* fields from commonly used COBRA
+% and solveSCLP fields, but it does not rely on any external helper files.
+
+% -------------------------------------------------------------------------
+% Verbose logging requested by COBRA verbose profiles.
+% The final print policy may still remove these fields.
+% -------------------------------------------------------------------------
+if any(strcmp(profile, {'cobraVerbose', 'cobraNoPresolveVerbose'}))
+    param.MSK_IPAR_LOG = 10;
+    param.MSK_IPAR_LOG_INTPNT = 10;
+    param.MSK_IPAR_LOG_SIM = 10;
+    param.MSK_IPAR_LOG_PRESOLVE = 10;
+    param.MSK_IPAR_INFEAS_REPORT_AUTO = 'MSK_ON';
+    param.MSK_IPAR_INFEAS_REPORT_LEVEL = 1;
+end
+
+% -------------------------------------------------------------------------
+% Time limit.
+% -------------------------------------------------------------------------
+if ~isfield(param, 'MSK_DPAR_OPTIMIZER_MAX_TIME') && ...
+        isfield(param, 'timelimit') && ~isempty(param.timelimit)
     param.MSK_DPAR_OPTIMIZER_MAX_TIME = param.timelimit;
 end
 
-
-
-if ~isfield(param, 'MSK_DPAR_INTPNT_TOL_PFEAS')
-    % Primal feasibility tolerance used by the interior-point optimizer for linear problems.
-    % Default
-    % 1.0e-8
-    % Accepted
-    % [0.0; 1.0]
-    % Example
-    % param.MSK_DPAR_INTPNT_TOL_PFEAS = 1.0e-8
-    % Groups
-    % Interior-point method, Termination criteria
-    param.MSK_DPAR_INTPNT_TOL_PFEAS=param.feasTol;
+% -------------------------------------------------------------------------
+% Generic primal, dual, and barrier tolerances.
+% -------------------------------------------------------------------------
+if isfield(param, 'mosekInnerTol') && ~isempty(param.mosekInnerTol)
+    primalTol = scalarOrDefault(param.mosekInnerTol, 1e-8);
+else
+    primalTol = getScalarFieldOrDefault(param, 'feasTol', 1e-8);
 end
 
+if isfield(param, 'mosekInnerTol') && ~isempty(param.mosekInnerTol)
+    dualTol = scalarOrDefault(param.mosekInnerTol, primalTol);
+else
+    dualTol = getScalarFieldOrDefault(param, 'optTol', primalTol);
+end
 
-if ~isfield(param,'MSK_DPAR_INTPNT_QO_TOL_PFEAS')
-    % Primal feasibility tolerance used by the interior-point optimizer for quadratic problems.
-    % Default
-    % 1.0e-8
-    % Accepted
-    % [0.0; 1.0]
-    % Example
-    % param.MSK_DPAR_INTPNT_QO_TOL_PFEAS = 1.0e-8
-    % See also
-    % MSK_DPAR_INTPNT_QO_TOL_NEAR_REL
-    % Groups
-    % Interior-point method, Termination criteria
-    param.MSK_DPAR_INTPNT_QO_TOL_PFEAS=param.feasTol;
+if isfield(param, 'mosekInnerMuTol') && ~isempty(param.mosekInnerMuTol)
+    muTol = scalarOrDefault(param.mosekInnerMuTol, primalTol * 1e-2);
+else
+    muTol = primalTol * 1e-2;
+end
+
+if ~isfield(param, 'MSK_DPAR_INTPNT_TOL_PFEAS')
+    param.MSK_DPAR_INTPNT_TOL_PFEAS = primalTol;
+end
+
+if ~isfield(param, 'MSK_DPAR_INTPNT_QO_TOL_PFEAS')
+    param.MSK_DPAR_INTPNT_QO_TOL_PFEAS = primalTol;
 end
 
 if ~isfield(param, 'MSK_DPAR_INTPNT_CO_TOL_PFEAS')
-    % Primal feasibility tolerance used by the interior-point optimizer for conic problems.
-    % Default
-    % 1.0e-8
-    % Accepted
-    % [0.0; 1.0]
-    % Example
-    % param.MSK_DPAR_INTPNT_CO_TOL_PFEAS = 1.0e-8
-    % See also
-    % MSK_DPAR_INTPNT_CO_TOL_NEAR_REL
-    % Groups
-    % Interior-point method, Termination criteria, Conic interior-point method
-    param.MSK_DPAR_INTPNT_CO_TOL_PFEAS=param.feasTol;
+    param.MSK_DPAR_INTPNT_CO_TOL_PFEAS = primalTol;
 end
 
 if ~isfield(param, 'MSK_DPAR_INTPNT_TOL_DFEAS')
-    % MSK_DPAR_INTPNT_TOL_DFEAS
-    % Dual feasibility tolerance used by the interior-point optimizer for linear problems.
-    % Default
-    % 1.0e-8
-    % Accepted
-    % [0.0; 1.0]
-    % Example
-    % param.MSK_DPAR_INTPNT_TOL_DFEAS = 1.0e-8
-    % Groups
-    % Interior-point method, Termination criteria
-    param.MSK_DPAR_INTPNT_TOL_DFEAS=param.optTol;
+    param.MSK_DPAR_INTPNT_TOL_DFEAS = dualTol;
 end
 
 if ~isfield(param, 'MSK_DPAR_INTPNT_QO_TOL_DFEAS')
-    % Dual feasibility tolerance used by the interior-point optimizer for quadratic problems.
-    % Default
-    % 1.0e-8
-    % Accepted
-    % [0.0; 1.0]
-    % Example
-    % param.MSK_DPAR_INTPNT_QO_TOL_DFEAS = 1.0e-8
-    % See also
-    % MSK_DPAR_INTPNT_QO_TOL_NEAR_REL
-    % Groups
-    % Interior-point method, Termination criteria
-    param.MSK_DPAR_INTPNT_QO_TOL_DFEAS=param.optTol;
+    param.MSK_DPAR_INTPNT_QO_TOL_DFEAS = dualTol;
 end
 
 if ~isfield(param, 'MSK_DPAR_INTPNT_CO_TOL_DFEAS')
-    % Dual feasibility tolerance used by the interior-point optimizer for linear problems.
-    % Default
-    % 1.0e-8
-    % Accepted
-    % [0.0; 1.0]
-    % Example
-    % param.MSK_DPAR_INTPNT_TOL_DFEAS = 1.0e-8
-    % Groups
-    % Interior-point method, Termination criteria
-    param.MSK_DPAR_INTPNT_CO_TOL_DFEAS=param.optTol;
+    param.MSK_DPAR_INTPNT_CO_TOL_DFEAS = dualTol;
 end
 
-if isfield(param,'lifted') && param.lifted==1
-    % Controls the maximum amount of fill-in that can be created by one pivot in the elimination phase of the presolve.
-    % A negative value means the parameter value is selected automatically.
-    % Default-1
-    % Accepted [-inf; +inf]
-    % Example param.MSK_IPAR_PRESOLVE_ELIMINATOR_MAX_FILL = -1
-    if ~isfield(param,'MSK_IPAR_PRESOLVE_ELIMINATOR_MAX_NUM_TRIES')
+if ~isfield(param, 'MSK_DPAR_INTPNT_CO_TOL_REL_GAP')
+    param.MSK_DPAR_INTPNT_CO_TOL_REL_GAP = primalTol;
+end
+
+if ~isfield(param, 'MSK_DPAR_INTPNT_CO_TOL_MU_RED')
+    param.MSK_DPAR_INTPNT_CO_TOL_MU_RED = muTol;
+end
+
+% -------------------------------------------------------------------------
+% Solve form.
+% -------------------------------------------------------------------------
+if ~isfield(param, 'MSK_IPAR_INTPNT_SOLVE_FORM')
+    param.MSK_IPAR_INTPNT_SOLVE_FORM = ...
+        getTextFieldOrDefault(param, 'mosekSolveForm', 'MSK_SOLVE_PRIMAL');
+end
+
+% -------------------------------------------------------------------------
+% Presolve profile.
+% -------------------------------------------------------------------------
+if any(strcmp(profile, {'cobraNoPresolve', 'cobraNoPresolveVerbose'}))
+    param.MSK_IPAR_PRESOLVE_USE = 'MSK_PRESOLVE_MODE_OFF';
+elseif ~isfield(param, 'MSK_IPAR_PRESOLVE_USE')
+    param.MSK_IPAR_PRESOLVE_USE = ...
+        getTextFieldOrDefault(param, 'mosekPresolveUse', 'MSK_PRESOLVE_MODE_FREE');
+end
+
+% -------------------------------------------------------------------------
+% Presolve and data tolerances.
+% -------------------------------------------------------------------------
+if ~isfield(param, 'MSK_DPAR_PRESOLVE_TOL_PRIMAL_INFEAS_PERTURBATION')
+    param.MSK_DPAR_PRESOLVE_TOL_PRIMAL_INFEAS_PERTURBATION = ...
+        getScalarFieldOrDefault(param, 'mosekPrimalInfeasPerturbationTol', 0);
+end
+
+if ~isfield(param, 'MSK_DPAR_PRESOLVE_TOL_X')
+    param.MSK_DPAR_PRESOLVE_TOL_X = ...
+        getScalarFieldOrDefault(param, 'mosekPresolveTolX', ...
+        100 * getScalarFieldOrDefault(param, 'numTol', 1e-12));
+end
+
+if ~isfield(param, 'MSK_DPAR_PRESOLVE_TOL_S')
+    param.MSK_DPAR_PRESOLVE_TOL_S = ...
+        getScalarFieldOrDefault(param, 'mosekPresolveTolS', ...
+        100 * getScalarFieldOrDefault(param, 'numTol', 1e-12));
+end
+
+if ~isfield(param, 'MSK_DPAR_DATA_TOL_X')
+    param.MSK_DPAR_DATA_TOL_X = ...
+        getScalarFieldOrDefault(param, 'mosekDataTolX', ...
+        getScalarFieldOrDefault(param, 'numTol', 1e-12));
+end
+
+if ~isfield(param, 'MSK_DPAR_INTPNT_CO_TOL_NEAR_REL')
+    param.MSK_DPAR_INTPNT_CO_TOL_NEAR_REL = ...
+        getScalarFieldOrDefault(param, 'mosekNearRel', 1.0);
+end
+
+% -------------------------------------------------------------------------
+% Historical COBRA special cases.
+% -------------------------------------------------------------------------
+if isfield(param, 'lifted') && isequal(double(param.lifted), 1)
+    if ~isfield(param, 'MSK_IPAR_PRESOLVE_ELIMINATOR_MAX_NUM_TRIES')
         param.MSK_IPAR_PRESOLVE_ELIMINATOR_MAX_NUM_TRIES = 0;
     end
 end
 
-%turn on multiscale if infeasibilities after unscaling
-if isfield(param,'multiscale') && param.multiscale==1 && param.lifted==0
-    % Controls whether whether a new experimental linear dependency checker is employed.
-    % Default
-    % "OFF"
-    % Accepted
-    % "ON", "OFF"
-    % Example
-    % param.MSK_IPAR_PRESOLVE_LINDEP_NEW = 'MSK_OFF'
-    if ~isfield(param,'MSK_IPAR_PRESOLVE_LINDEP_NEW')
+if isfield(param, 'multiscale') && isequal(double(param.multiscale), 1) && ...
+        (~isfield(param, 'lifted') || isequal(double(param.lifted), 0))
+
+    if ~isfield(param, 'MSK_IPAR_PRESOLVE_LINDEP_NEW')
         param.MSK_IPAR_PRESOLVE_LINDEP_NEW = 'MSK_OFF';
     end
-    
-    % MSK_IPAR_INTPNT_SCALING
-    % Controls how the problem is scaled before the interior-point optimizer is used.
-    % Default
-    % "FREE"
-    % Accepted
-    % "FREE", "NONE"
-    % param..MSK_IPAR_INTPNT_SCALING = 'MSK_SCALING_FREE';
-    if ~isfield(param,'MSK_IPAR_INTPNT_SCALING')
-        param.MSK_IPAR_INTPNT_SCALING='MSK_SCALING_NONE';
+
+    if ~isfield(param, 'MSK_IPAR_INTPNT_SCALING')
+        param.MSK_IPAR_INTPNT_SCALING = 'MSK_SCALING_NONE';
     end
-    % MSK_IPAR_SIM_SCALING
-    % Controls how much effort is used in scaling the problem before a simplex optimizer is used.
-    % Default
-    % "FREE"
-    % Accepted
-    % "FREE", "NONE"
-    % Example
-    % param.MSK_IPAR_SIM_SCALING = 'MSK_SCALING_FREE'
-    if ~isfield(param,'MSK_IPAR_SIM_SCALING')
-        param.MSK_IPAR_SIM_SCALING='MSK_SCALING_NONE';
+
+    if ~isfield(param, 'MSK_IPAR_SIM_SCALING')
+        param.MSK_IPAR_SIM_SCALING = 'MSK_SCALING_NONE';
     end
 end
 
-if isfield(param,'debug') && param.debug==1
-    % https://docs.mosek.com/latest/rmosek/debugging-infeas.html
-    % Controls whether an infeasibility report is automatically produced after the optimization if the problem is primal or dual infeasible.
-    param.MSK_IPAR_INFEAS_REPORT_AUTO='MSK_ON';
+% Debug may request infeasibility reporting.  The final print policy can
+% still remove this field.
+if isfield(param, 'debug') && isequal(double(param.debug), 1)
+    param.MSK_IPAR_INFEAS_REPORT_AUTO = 'MSK_ON';
 end
 
-if isfield(param,'strict')
-    % MSK_IPAR_BI_IGNORE_MAX_ITER
-    % If the parameter MSK_IPAR_INTPNT_BASIS has the value MSK_BI_NO_ERROR and
-    % the interior-point optimizer has terminated due to maximum number of
-    % iterations, then basis identification is performed if this parameter has
-    % the value MSK_ON.
-    % Possible Values:
-    %     MSK_ON        Switch the option on.
-    %     MSK_OFF       Switch the option off.
-    % Default value:
-    %     MSK_OFF
-    if ~isfield(param,'MSK_IPAR_BI_IGNORE_MAX_ITER')
-        param.MSK_IPAR_BI_IGNORE_MAX_ITER='MSK_OFF';
+if isfield(param, 'strict') && ~isempty(param.strict)
+    if ~isfield(param, 'MSK_IPAR_BI_IGNORE_MAX_ITER')
+        param.MSK_IPAR_BI_IGNORE_MAX_ITER = 'MSK_OFF';
     end
 
-    %%%%%%%%%%% Solution Approach
-    % MSK_IPAR_INTPNT_SOLVE_FORM
-    % Controls whether the primal or the dual problem is solved.
-    % Possible Values:
-    %     MSK_SOLVE_PRIMAL
-    %         The optimizer should solve the primal problem.
-    %     MSK_SOLVE_DUAL
-    %         The optimizer should solve the dual problem.
-    %     MSK_SOLVE_FREE
-    %         The optimizer is free to solve either the primal or the dual problem.
-    % Default value:MSK_SOLVE_FREE
-    if ~isfield(param,'MSK_IPAR_INTPNT_SOLVE_FORM')
-        param.MSK_IPAR_INTPNT_SOLVE_FORM='MSK_SOLVE_FREE';
-        %param.MSK_IPAR_INTPNT_SOLVE_FORM='MSK_SOLVE_PRIMAL';
+    if ~isfield(param, 'MSK_IPAR_INTPNT_SOLVE_FORM')
+        param.MSK_IPAR_INTPNT_SOLVE_FORM = 'MSK_SOLVE_FREE';
     end
 
-    %%%%%%% Infeasibility
-    % MSK_DPAR_INTPNT_TOL_INFEAS
-    % Controls when the optimizer declares the model primal or dual infeasible.
-    % A small number means the optimizer gets more conservative about declaring the model infeasible.
-    % Possible Values:Any number between 0.0 and 1.0.
-    % Default value: 1.0e-8
-    if ~isfield(param,'MSK_DPAR_INTPNT_TOL_INFEAS')
-        % param.MSK_DPAR_INTPNT_TOL_INFEAS=1e-10;
-        param.MSK_DPAR_INTPNT_TOL_INFEAS=1e-8;
+    if ~isfield(param, 'MSK_DPAR_INTPNT_TOL_INFEAS')
+        param.MSK_DPAR_INTPNT_TOL_INFEAS = 1e-8;
     end
 end
 
-% %backward compatibility
-% if isfield(param,'method')
-%     if isempty(param.method)
-%         param = rmfield(param,'method');
-%     else
-%         if ~isfield(param,[lower(param.problemType) 'method'])
-%             param.([lower(param.problemType) 'method'])=param.method;
-%         end
-%     end
-% end
+% Apply LP/QP/CLP/EP optimizer choices.
+param = applyProblemTypeOptimizerPortfolio(param);
 
-switch param.problemType
-    case {'LP'}
-        if isfield(param,'lpmethod')
-            if contains(param.lpmethod,'MSK_OPTIMIZER_')
-                param.MSK_IPAR_OPTIMIZER=param.lpmethod;
-            else
-                param.MSK_IPAR_OPTIMIZER=['MSK_OPTIMIZER_' param.lpmethod];
-            end
-        end
-    case {'QP'}
-        if isfield(param,'qpmethod')
-            if contains(param.qpmethod,'MSK_OPTIMIZER_')
-                param.MSK_IPAR_OPTIMIZER=param.qpmethod;
-            else
-                param.MSK_IPAR_OPTIMIZER=['MSK_OPTIMIZER_' param.qpmethod];
-            end
-        end
-    case {'CLP'}
-        if isfield(param,'clpmethod')
-            if contains(param.qpmethod,'MSK_OPTIMIZER_')
-                param.MSK_IPAR_OPTIMIZER=param.clpmethod;
-            else
-                param.MSK_IPAR_OPTIMIZER=['MSK_OPTIMIZER_' param.clpmethod];
-            end
-        end
-
-        % MSK_IPAR_INTPNT_REGULARIZATION_USE
-        % Description:Controls whether regularization is allowed.
-        % Possible Values: MSK_ON    Switch the option on.
-        %                  MSK_OFF   Switch the option off.
-        % Default value:   MSK_ON
-        if ~isfield(param,'MSK_IPAR_INTPNT_REGULARIZATION_USE')
-            param.MSK_IPAR_INTPNT_REGULARIZATION_USE='MSK_ON';
-        end
-
-    case {'EP'}
-        if isfield(param,'epmethod')
-            if contains(param.epmethod,'MSK_OPTIMIZER_')
-                param.MSK_IPAR_OPTIMIZER=param.epmethod;
-            else
-                param.MSK_IPAR_OPTIMIZER=['MSK_OPTIMIZER_' param.epmethod];
-            end
-        end
-        % MSK_IPAR_INTPNT_REGULARIZATION_USE
-        % Description:Controls whether regularization is allowed.
-        % Possible Values: MSK_ON    Switch the option on.
-        %                  MSK_OFF   Switch the option off.
-        % Default value:   MSK_ON
-        if ~isfield(param,'MSK_IPAR_INTPNT_REGULARIZATION_USE')
-            param.MSK_IPAR_INTPNT_REGULARIZATION_USE='MSK_ON';
-        end
-
-
-
-        % MSK_IPAR_INTPNT_MAX_ITERATIONS
-        % Controls the maximum number of iterations allowed in the interior-point optimizer.
-        % Possible Values:Any number between 0 and +inf.
-        % Default value: 400
-        if ~isfield(param,'MSK_IPAR_INTPNT_MAX_ITERATIONS')
-            param.MSK_IPAR_INTPNT_MAX_ITERATIONS=400;
-        end
-
-        %%%%%%%%%%%%% NONLINEAR SOLVER INTEGER PARAM %%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-    case {'VK'}
-
-        % MSK_IPAR_SIM_SCALING_METHOD
-        % Controls how the problem is scaled before a simplex optimizer is used.
-        % Default
-        % "POW2"
-        % Accepted
-        % "POW2", "FREE"
-        % Example
-        % param.MSK_IPAR_SIM_SCALING_METHOD = 'MSK_SCALING_METHOD_POW2'
-        % param.MSK_IPAR_SIM_SCALING_METHOD='MSK_SCALING_METHOD_FREE';
-end
-
-
-if ~isfield(param,'MSK_IPAR_LOG_FEAS_REPAIR') && isfield(param,'repairInfeasibility')
-    % MSK_IPAR_LOG_FEAS_REPAIR
-    % Controls the amount of output printed when performing feasibility repair. A value higher than one means extensive logging.
-    % Default
-    % 1
-    % Accepted
-    % [0; +inf]
-    % Example
-    % MSK_putintparam(task, MSK_IPAR_LOG_FEAS_REPAIR, 1)
-    % Groups
-    % Output information, Logging
+% Historical feasibility-repair logging field.
+if ~isfield(param, 'MSK_IPAR_LOG_FEAS_REPAIR') && ...
+        isfield(param, 'repairInfeasibility') && ...
+        ~isempty(param.repairInfeasibility)
     param.MSK_IPAR_LOG_FEAS_REPAIR = param.repairInfeasibility;
 end
+end
 
-% Remove outer function specific parameters to avoid crashing solver interfaces
-mosekParam = mosekParamStrip(param);
-if 0
-    disp(mosekParam)
+
+function param = applySCLPMosekPortfolio(param, profile)
+% applySCLPMosekPortfolio
+%
+% Materialise solveSCLP-owned MOSEK parameter profiles.
+%
+% This is the ordinary SCLP profile used by CA/BCA/BCQCA/WQCA/QCA/LQCA
+% inner solves and inherited by the tight start profiles.
+
+if ~isfield(param, 'timelimit') || isempty(param.timelimit)
+    param.timelimit = 600;
+end
+
+if ~isfield(param, 'innerMosekTolFactor') || isempty(param.innerMosekTolFactor)
+    param.innerMosekTolFactor = 1e-3;
+end
+
+if ~isfield(param, 'innerMosekTolFloorFactor') || isempty(param.innerMosekTolFloorFactor)
+    param.innerMosekTolFloorFactor = 10;
+end
+
+if ~isfield(param, 'innerMosekMuTolFactor') || isempty(param.innerMosekMuTolFactor)
+    param.innerMosekMuTolFactor = 1e-5;
+end
+
+if ~isfield(param, 'innerMosekMuTolFloorFactor') || isempty(param.innerMosekMuTolFloorFactor)
+    param.innerMosekMuTolFloorFactor = 1;
+end
+
+innerTol = max( ...
+    param.innerMosekTolFactor * param.feasTol, ...
+    param.innerMosekTolFloorFactor * param.numTol);
+
+innerMuTol = max( ...
+    param.innerMosekMuTolFactor * param.feasTol, ...
+    param.innerMosekMuTolFloorFactor * param.numTol);
+
+% Interior-point solve form and conic tolerances.
+param.MSK_IPAR_INTPNT_SOLVE_FORM = 'MSK_SOLVE_PRIMAL';
+
+param.MSK_DPAR_INTPNT_CO_TOL_PFEAS   = innerTol;
+param.MSK_DPAR_INTPNT_CO_TOL_DFEAS   = innerTol;
+param.MSK_DPAR_INTPNT_CO_TOL_REL_GAP = innerTol;
+param.MSK_DPAR_INTPNT_CO_TOL_MU_RED  = innerMuTol;
+
+% Presolve profile.
+switch profile
+    case {'SCLP_normalPresolve', 'SCLP_verbose'}
+        param.MSK_IPAR_PRESOLVE_USE = 'MSK_PRESOLVE_MODE_FREE';
+
+    case {'SCLP_noPresolve', 'SCLP_noPresolveVerbose'}
+        param.MSK_IPAR_PRESOLVE_USE = 'MSK_PRESOLVE_MODE_OFF';
+
+    otherwise
+        error('setMosekParam:badSCLPProfile', ...
+            'Unsupported SCLP MOSEK profile: %s', profile);
+end
+
+% Presolve and data tolerances are numerical interpretation tolerances, not
+% model feasibility targets.
+if ~isfield(param, 'mosekPresolveTolXFactor') || isempty(param.mosekPresolveTolXFactor)
+    param.mosekPresolveTolXFactor = 100;
+end
+
+if ~isfield(param, 'mosekPresolveTolSFactor') || isempty(param.mosekPresolveTolSFactor)
+    param.mosekPresolveTolSFactor = 100;
+end
+
+if ~isfield(param, 'mosekDataTolXFactor') || isempty(param.mosekDataTolXFactor)
+    param.mosekDataTolXFactor = 1;
+end
+
+param.MSK_DPAR_PRESOLVE_TOL_PRIMAL_INFEAS_PERTURBATION = 0;
+param.MSK_DPAR_PRESOLVE_TOL_X = ...
+    param.mosekPresolveTolXFactor * param.numTol;
+param.MSK_DPAR_PRESOLVE_TOL_S = ...
+    param.mosekPresolveTolSFactor * param.numTol;
+param.MSK_DPAR_DATA_TOL_X = ...
+    param.mosekDataTolXFactor * param.numTol;
+param.MSK_DPAR_INTPNT_CO_TOL_NEAR_REL = 1.0;
+
+% Verbose SCLP profiles request MOSEK logs.  The final print policy may
+% still remove them.
+if any(strcmp(profile, {'SCLP_verbose', 'SCLP_noPresolveVerbose'}))
+    param.MSK_IPAR_LOG = 10;
+    param.MSK_IPAR_LOG_INTPNT = 10;
+    param.MSK_IPAR_LOG_SIM = 10;
+    param.MSK_IPAR_LOG_PRESOLVE = 10;
+end
+
+% Time limit.
+if ~isfield(param, 'MSK_DPAR_OPTIMIZER_MAX_TIME') && ...
+        isfield(param, 'timelimit') && ~isempty(param.timelimit)
+    param.MSK_DPAR_OPTIMIZER_MAX_TIME = param.timelimit;
+end
+
+% Regularisation for solveSCLP conic subproblems.
+if ~isfield(param, 'MSK_IPAR_INTPNT_REGULARIZATION_USE')
+    param.MSK_IPAR_INTPNT_REGULARIZATION_USE = 'MSK_ON';
+end
+
+% Apply any problemType-specific optimizer choice only if the caller set it.
+% This keeps SCLP behaviour compatible with the broader COBRA interface.
+param = applyProblemTypeOptimizerPortfolio(param);
+end
+
+
+function param = applyProblemTypeOptimizerPortfolio(param)
+% applyProblemTypeOptimizerPortfolio
+%
+% Apply historical problemType-dependent optimiser selections.
+
+problemType = upper(char(string(param.problemType)));
+
+switch problemType
+
+    case 'LP'
+        if isfield(param, 'lpmethod') && ~isempty(param.lpmethod)
+            param.MSK_IPAR_OPTIMIZER = normaliseMosekOptimizerName(param.lpmethod);
+        end
+
+    case 'QP'
+        if isfield(param, 'qpmethod') && ~isempty(param.qpmethod)
+            param.MSK_IPAR_OPTIMIZER = normaliseMosekOptimizerName(param.qpmethod);
+        end
+
+    case 'CLP'
+        if isfield(param, 'clpmethod') && ~isempty(param.clpmethod)
+            param.MSK_IPAR_OPTIMIZER = normaliseMosekOptimizerName(param.clpmethod);
+        end
+
+        if ~isfield(param, 'MSK_IPAR_INTPNT_REGULARIZATION_USE')
+            param.MSK_IPAR_INTPNT_REGULARIZATION_USE = 'MSK_ON';
+        end
+
+    case 'EP'
+        if isfield(param, 'epmethod') && ~isempty(param.epmethod)
+            param.MSK_IPAR_OPTIMIZER = normaliseMosekOptimizerName(param.epmethod);
+        end
+
+        if ~isfield(param, 'MSK_IPAR_INTPNT_REGULARIZATION_USE')
+            param.MSK_IPAR_INTPNT_REGULARIZATION_USE = 'MSK_ON';
+        end
+
+        if ~isfield(param, 'MSK_IPAR_INTPNT_MAX_ITERATIONS')
+            param.MSK_IPAR_INTPNT_MAX_ITERATIONS = 400;
+        end
+
+    case 'VK'
+        % Reserved for VK-specific choices.  No action.
+
+    otherwise
+        % Preserve compatibility with callers using unrecognised problemType
+        % values.  Do nothing.
+end
+end
+
+
+function name = normaliseMosekOptimizerName(value)
+% normaliseMosekOptimizerName
+%
+% Accept either 'INTPNT' or 'MSK_OPTIMIZER_INTPNT'-style input.
+
+name = char(string(value));
+name = strtrim(name);
+
+if isempty(name)
+    name = 'MSK_OPTIMIZER_INTPNT';
+    return
+end
+
+if ~contains(name, 'MSK_OPTIMIZER_')
+    name = ['MSK_OPTIMIZER_' name];
+end
+end
+
+
+function paramOut = removeMosekParameterFields(paramIn)
+% removeMosekParameterFields
+%
+% Remove every actual MOSEK parameter field from a structure.
+%
+% This is required for true default mode because a MOSEK parameter is
+% default only when it is not supplied.
+
+paramOut = paramIn;
+fields = fieldnames(paramOut);
+
+for i = 1:numel(fields)
+    name = fields{i};
+
+    if strncmp(name, 'MSK_', 4)
+        paramOut = rmfield(paramOut, name);
+    end
+end
+end
+
+
+function paramOut = localMosekParamStrip(paramIn)
+% localMosekParamStrip
+%
+% Return a structure containing only actual MOSEK parameter fields.
+%
+% This local function replaces any dependency on an external mosekParamStrip
+% helper file.
+
+paramOut = struct();
+
+if ~isstruct(paramIn)
+    return
+end
+
+fields = fieldnames(paramIn);
+
+for i = 1:numel(fields)
+    name = fields{i};
+
+    if strncmp(name, 'MSK_', 4)
+        value = paramIn.(name);
+
+        % Avoid passing empty values to MOSEK.
+        if ~isempty(value)
+            paramOut.(name) = value;
+        end
+    end
+end
+end
+
+
+function param = removeFieldsIfPresent(param, fieldsToRemove)
+% removeFieldsIfPresent
+%
+% Remove a list of fields from a structure if they exist.
+
+for i = 1:numel(fieldsToRemove)
+    if isfield(param, fieldsToRemove{i})
+        param = rmfield(param, fieldsToRemove{i});
+    end
+end
+end
+
+
+function value = getScalarFieldOrDefault(s, fieldName, defaultValue)
+% getScalarFieldOrDefault
+%
+% Return s.(fieldName) when it is a finite scalar numeric value; otherwise
+% return defaultValue.
+
+value = defaultValue;
+
+if isstruct(s) && isfield(s, fieldName) && ~isempty(s.(fieldName))
+    value = scalarOrDefault(s.(fieldName), defaultValue);
+end
+end
+
+
+function value = scalarOrDefault(candidate, defaultValue)
+% scalarOrDefault
+%
+% Convert a candidate value to a finite scalar double if possible.
+
+value = defaultValue;
+
+if isnumeric(candidate) || islogical(candidate)
+    candidate = full(candidate);
+    candidate = double(candidate(1));
+
+    if isfinite(candidate)
+        value = candidate;
+    end
+end
+end
+
+
+function value = getTextFieldOrDefault(s, fieldName, defaultValue)
+% getTextFieldOrDefault
+%
+% Return s.(fieldName) as nonempty character text when present; otherwise
+% return defaultValue.
+
+value = defaultValue;
+
+if isstruct(s) && isfield(s, fieldName) && ~isempty(s.(fieldName))
+    candidate = char(string(s.(fieldName)));
+    candidate = strtrim(candidate);
+
+    if ~isempty(candidate)
+        value = candidate;
+    end
+end
 end

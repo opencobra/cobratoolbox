@@ -1,46 +1,55 @@
 function [stat,origStat,x,y,yl,yu,z,zl,zu,s,basis,pobjval,dobjval] = parseMskResult(res)
-%parse the res structure returned from mosek
-% INPUTS:
-%  res:        mosek results structure returned by mosekopt
+% parseMskResult
 %
-% OPTIONAL INPUTS
-%  prob:        mosek problem structure passed to mosekopt
-%  solverOnlyParams:      Additional parameters provided which are not part
-%                     of the COBRA parameters and are assumed to be part
-%                     of direct solver input structs. For some solvers, it
-%                     is essential to not include any extraneous fields that are 
-%                     outside the solver interface specification.
-%  printLevel:  
+% Parse the res structure returned by mosekopt.
 %
-% OUTPUTS:
-%  stat - Solver status in standardized form:
-%   * 0 - Infeasible problem
-%   * 1 - Optimal solution
-%   * 2 - Unbounded solution
-%   * 3 - Almost optimal solution
-%   * -1 - Some other problem (timelimit, numerical problem etc)
-%  origStat: solver status
-%  x:   primal variable vector         
-%  y:   dual variable vector to linear constraints (yl - yu)
-%  yl:  dual variable vector to lower bound on linear constraints
-%  yu:  dual variable vector to upper bound on linear constraints
-%  z:   dual variable vector to box constraints (zl - zu)        
-%  zl:  dual variable vector to lower bounds       
-%  zu:  dual variable vector to upper bounds         
-%  k:   dual variable vector to affine conic constraints
-%  basis  basis returned by mosekopt
-%  pobjval: primal objective value returned by modekopt
-%  dobjval: dual objective value returned by modekopt
+% Solver status convention:
+%   stat =  0   primal infeasible certificate
+%   stat =  1   strict optimal solution
+%   stat =  2   dual infeasible certificate, interpreted upstream as unbounded
+%   stat =  3   near optimal / almost optimal solution
+%   stat = -1   unknown, numerical issue, time limit, or unrecognised status
 %
-% EXAMPLE:
-%  [~,res]=mosekopt('minimize',prob); 
+% Important conic-solver convention:
 %
-% NOTE:
+%   For conic problems with affine conic constraints, prefer the
+%   interior-point solution res.sol.itr whenever it is available and has an
+%   optimal or near-optimal solution status.
 %
-% Author(s): Ronan Fleming
+%   A basis solution, res.sol.bas, is mainly relevant for linear problems.
+%   It should not override a valid interior-point solution for conic
+%   subproblems.
+%
+% Dual sign convention returned by this parser:
+%
+%   y  = yl - yu
+%   z  = zu - zl
+%
+% where
+%
+%   yl = lower linear-row multiplier
+%   yu = upper linear-row multiplier
+%   zl = lower variable-bound multiplier
+%   zu = upper variable-bound multiplier
+%
+% With this convention, stationarity is naturally checked as
+%
+%   c - A'*y + z - F'*s = 0
+%
+% or equivalently
+%
+%   c - A'*(yl - yu) + (zu - zl) - F'*s = 0.
+%
+% This parser deliberately maps NEAR_OPTIMAL to stat = 3, not stat = 1.
+% The caller can decide whether a near-optimal solution is acceptable, but
+% solveSCLP should not silently accept it as a fully accurate inner solve.
 
-% initialise variables
-stat =[];
+% -------------------------------------------------------------------------
+% Initialise outputs.
+% -------------------------------------------------------------------------
+stat = -1;
+origStat = 'NO_SOLUTION_STATUS';
+
 x = [];
 y = [];
 yl = [];
@@ -50,180 +59,288 @@ zl = [];
 zu = [];
 s = [];
 basis = [];
-pobjval =[];
-dobjval =[];
 
+pobjval = [];
+dobjval = [];
 
-% prosta (string) – Problem status (prosta).
-% prosta
-% Problem status keys
-% 
-% "MSK_PRO_STA_UNKNOWN"
-% Unknown problem status.
-% 
-% "MSK_PRO_STA_PRIM_AND_DUAL_FEAS"
-% The problem is primal and dual feasible.
-% 
-% "MSK_PRO_STA_PRIM_FEAS"
-% The problem is primal feasible.
-% 
-% "MSK_PRO_STA_DUAL_FEAS"
-% The problem is dual feasible.
-% 
-% "MSK_PRO_STA_PRIM_INFEAS"
-% The problem is primal infeasible.
-% 
-% "MSK_PRO_STA_DUAL_INFEAS"
-% The problem is dual infeasible.
-% 
-% "MSK_PRO_STA_PRIM_AND_DUAL_INFEAS"
-% The problem is primal and dual infeasible.
-% 
-% "MSK_PRO_STA_ILL_POSED"
-% The problem is ill-posed. For example, it may be primal and dual feasible but have a positive duality gap.
-% 
-% "MSK_PRO_STA_PRIM_INFEAS_OR_UNBOUNDED"
-% The problem is either primal infeasible or unbounded. This may occur for mixed-integer problems.
-
-% solsta (string) – Solution status (solsta).
-% Solution status keys
-% 
-% "MSK_SOL_STA_UNKNOWN"
-% Status of the solution is unknown.
-% 
-% "MSK_SOL_STA_OPTIMAL"
-% The solution is optimal.
-% 
-% "MSK_SOL_STA_PRIM_FEAS"
-% The solution is primal feasible.
-% 
-% "MSK_SOL_STA_DUAL_FEAS"
-% The solution is dual feasible.
-% 
-% "MSK_SOL_STA_PRIM_AND_DUAL_FEAS"
-% The solution is both primal and dual feasible.
-% 
-% "MSK_SOL_STA_PRIM_INFEAS_CER"
-% The solution is a certificate of primal infeasibility.
-% 
-% "MSK_SOL_STA_DUAL_INFEAS_CER"
-% The solution is a certificate of dual infeasibility.
-% 
-% "MSK_SOL_STA_PRIM_ILLPOSED_CER"
-% The solution is a certificate that the primal problem is illposed.
-% 
-% "MSK_SOL_STA_DUAL_ILLPOSED_CER"
-% The solution is a certificate that the dual problem is illposed.
-% 
-% "MSK_SOL_STA_INTEGER_OPTIMAL"
-% The primal solution is integer optimal.
-
-% https://docs.mosek.com/latest/toolbox/accessing-solution.html
-accessSolution='';
-if isfield(res, 'sol')
-    if isfield(res.sol,'itr') && isfield(res.sol,'bas')
-        if  any(strcmp(res.sol.bas.solsta,{'OPTIMAL','MSK_SOL_STA_OPTIMAL','MSK_SOL_STA_NEAR_OPTIMAL'})) && any(strcmp(res.sol.itr.solsta,{'UNKNOWN'}))
-            accessSolution = 'bas';
-        elseif any(strcmp(res.sol.itr.solsta,{'OPTIMAL','MSK_SOL_STA_OPTIMAL','MSK_SOL_STA_NEAR_OPTIMAL'})) && any(strcmp(res.sol.bas.solsta,{'UNKNOWN'}))
-            accessSolution = 'itr';
-        elseif any(strcmp(res.sol.itr.solsta,{'OPTIMAL'})) && any(strcmp(res.sol.bas.solsta,{'OPTIMAL','MSK_SOL_STA_OPTIMAL','MSK_SOL_STA_NEAR_OPTIMAL'}))
-            accessSolution = 'itr';
-        elseif any(strcmp(res.sol.bas.solsta,{'OPTIMAL'})) && any(strcmp(res.sol.itr.solsta,{'OPTIMAL','MSK_SOL_STA_OPTIMAL','MSK_SOL_STA_NEAR_OPTIMAL'}))
-            accessSolution = 'bas';
-        else
-            origStat = res.sol.itr.solsta;
-            accessSolution = 'dontAccess';
-        end
-    elseif isfield(res.sol,'itr') && ~isfield(res.sol,'bas')
-        accessSolution = 'itr';
-    elseif ~isfield(res.sol,'itr') && isfield(res.sol,'bas')
-        accessSolution = 'bas';
-    elseif ~isfield(res.sol,'itr') && ~isfield(res.sol,'bas')
-        error('TODO encode parse of mixed integer optimiser solution')
+% -------------------------------------------------------------------------
+% If MOSEK did not return a solution structure, return the response code.
+% -------------------------------------------------------------------------
+if ~isfield(res, 'sol')
+    if isfield(res,'rcodestr') && ~isempty(res.rcodestr)
+        origStat = res.rcodestr;
     else
-        disp('Report this error to the cobra toolbox google group please')
-        error('Unrecognised combination of res.sol.bas.prosta & res.sol.itr.solsta, see https://docs.mosek.com/latest/toolbox/accessing-solution.html')
+        origStat = 'NO_RES_SOL_FIELD';
     end
+    return
+end
+
+% -------------------------------------------------------------------------
+% Choose which MOSEK solution to access.
+%
+% Rule:
+%   1. Prefer res.sol.itr if it is strictly optimal or near optimal.
+%   2. Use res.sol.bas only if no usable interior-point solution exists.
+%   3. If neither is usable, report the most informative status and do not
+%      fabricate x, y, z, or s.
+% -------------------------------------------------------------------------
+hasItr = isfield(res.sol,'itr');
+hasBas = isfield(res.sol,'bas');
+
+itrSolSta = getMosekSolStaLocal(res, 'itr');
+basSolSta = getMosekSolStaLocal(res, 'bas');
+
+accessSolution = 'dontAccess';
+
+if hasItr && isUsableOptimalStatusLocal(itrSolSta)
+    accessSolution = 'itr';
+elseif hasBas && isUsableOptimalStatusLocal(basSolSta)
+    accessSolution = 'bas';
+elseif hasItr
+    % For conic solvers, the interior-point status is usually the most
+    % informative failure status.
+    origStat = itrSolSta;
+elseif hasBas
+    origStat = basSolSta;
 else
-    origStat = res.rcodestr;
+    origStat = 'NO_ITR_OR_BAS_SOLUTION';
 end
 
-
-%access either the interior point or basis solution
+% -------------------------------------------------------------------------
+% Access the selected solution.
+% -------------------------------------------------------------------------
 switch accessSolution
+
     case 'itr'
-        origStat = res.sol.itr.solsta;
-        if contains(origStat,'OPTIMAL')
-            x=res.sol.itr.xx; % primal solution.
-            y=res.sol.itr.y; % dual variable to blc <= A*x <= buc
-            yl = res.sol.itr.slc;
-            yu = res.sol.itr.suc;
-            z=res.sol.itr.slx-res.sol.itr.sux; %dual to blx <= x   <= bux
-            zl=res.sol.itr.slx;  %dual to blx <= x
-            zu=res.sol.itr.sux; %dual to   x <= bux
-            if isfield(res.sol.itr,'doty')
-                % Dual variables to affine conic constraints
-                s = res.sol.itr.doty;
-            end
-            pobjval = res.sol.itr.pobjval;
-            dobjval = res.sol.itr.dobjval;
-        end
+        sol = res.sol.itr;
+        origStat = itrSolSta;
+
+        % Primal solution.
+        x = getMosekVectorFieldLocal(sol, 'xx');
+
+        % Linear-row duals. MOSEK may provide y directly, but computing it
+        % from slc and suc keeps the sign convention explicit.
+        yl = getMosekVectorFieldLocal(sol, 'slc');
+        yu = getMosekVectorFieldLocal(sol, 'suc');
+        y  = yl - yu;
+
+        % Variable-bound duals.
+        zl = getMosekVectorFieldLocal(sol, 'slx');
+        zu = getMosekVectorFieldLocal(sol, 'sux');
+
+        % Use z = zu - zl, matching solveSCLP and errorCLP.
+        z = zu - zl;
+
+        % Dual variables to affine conic constraints.
+        % For MOSEK affine conic constraints, the interior-point field is
+        % normally doty.
+        s = getMosekVectorFieldLocal(sol, 'doty');
+
+        pobjval = getMosekScalarFieldLocal(sol, 'pobjval');
+        dobjval = getMosekScalarFieldLocal(sol, 'dobjval');
+
     case 'bas'
-        origStat = res.sol.bas.solsta;
-        if contains(origStat,'OPTIMAL')
-            x=res.sol.bas.xx; % primal solution.
-            y=res.sol.bas.y; % dual variable to blc <= A*x <= buc
-            yl = res.sol.bas.slc; %assuming this exists
-            yu = res.sol.bas.suc;
-            z=res.sol.bas.slx-res.sol.bas.sux; %dual to blx <= x   <= bux
-            zl=res.sol.bas.slx;  %dual to blx <= x
-            zu=res.sol.bas.sux; %dual to   x <= bux
-            if isfield(res.sol.bas,'s')
-                % Dual variables to affine conic constraints
-                s = res.sol.bas.s;
-            end
+        sol = res.sol.bas;
+        origStat = basSolSta;
 
-            %https://docs.mosek.com/10.0/toolbox/advanced-hotstart.html
-            basis.skc = res.sol.bas.skc;
-            basis.skx = res.sol.bas.skx;
-            basis.xc = res.sol.bas.xc;
-            basis.xx = res.sol.bas.xx;
-            pobjval = res.sol.bas.pobjval;
-            dobjval = res.sol.bas.dobjval;
+        % Basis solutions should only be used when no usable interior-point
+        % solution exists. This branch is mainly for nonconic linear models.
+        x = getMosekVectorFieldLocal(sol, 'xx');
+
+        yl = getMosekVectorFieldLocal(sol, 'slc');
+        yu = getMosekVectorFieldLocal(sol, 'suc');
+        y  = yl - yu;
+
+        zl = getMosekVectorFieldLocal(sol, 'slx');
+        zu = getMosekVectorFieldLocal(sol, 'sux');
+        z  = zu - zl;
+
+        % Basis solution fields for affine conic duals are not always
+        % present. Try doty first, then s as a defensive fallback.
+        s = getMosekVectorFieldLocal(sol, 'doty');
+        if isempty(s)
+            s = getMosekVectorFieldLocal(sol, 's');
         end
+
+        % Basis-status fields are useful for hot-starting linear problems.
+        if isfield(sol,'skc'), basis.skc = sol.skc; end
+        if isfield(sol,'skx'), basis.skx = sol.skx; end
+        if isfield(sol,'xc'),  basis.xc  = sol.xc;  end
+        if isfield(sol,'xx'),  basis.xx  = sol.xx;  end
+
+        pobjval = getMosekScalarFieldLocal(sol, 'pobjval');
+        dobjval = getMosekScalarFieldLocal(sol, 'dobjval');
+
+    case 'dontAccess'
+        % Leave primal-dual vectors empty. This is important for infeasibility
+        % certificates: certificate vectors should not be mistaken for primal
+        % feasible points.
+end
+
+% -------------------------------------------------------------------------
+% Convert MOSEK solution status into the standard COBRA-style status flag.
+% -------------------------------------------------------------------------
+if isStrictOptimalStatusLocal(origStat)
+    stat = 1;
+
+elseif isNearOptimalStatusLocal(origStat)
+    % Near optimal is intentionally not stat = 1.
+    % This prevents solveSCLP from silently accepting an inner point that
+    % may only satisfy relaxed feasibility/optimality tolerances.
+    stat = 3;
+
+elseif isPrimalInfeasibleCertificateLocal(origStat)
+    stat = 0;
+
+elseif isDualInfeasibleCertificateLocal(origStat)
+    stat = 2;
+
+else
+    stat = -1;
+end
+
+% -------------------------------------------------------------------------
+% Append the MOSEK response code for traceability.
+% -------------------------------------------------------------------------
+if isfield(res,'rcodestr') && ~isempty(res.rcodestr)
+    origStat = [origStat ' & ' res.rcodestr];
+end
+
 end
 
 
-%                       * 0 - Infeasible problem
-%                       * 1 - Optimal solution
-%                       * 2 - Unbounded solution
-%                       * 3 - Almost optimal solution
-%                       * -1 - Some other problem (timelimit, numerical problem etc)
-%                     * .origStat:         Original status returned by the specific solver
-switch origStat
-    case {'PRIMAL_INFEASIBLE_CER','MSK_SOL_STA_PRIM_INFEAS_CER','MSK_SOL_STA_NEAR_PRIM_INFEAS_CER'}
-        stat=0; % infeasible
-        origStat = [origStat ' & ' res.rcodestr];
-    case {'OPTIMAL','MSK_SOL_STA_OPTIMAL','MSK_SOL_STA_NEAR_OPTIMAL'}
-        stat=1;
-        origStat = [origStat ' & ' res.rcodestr];
-    case {'DUAL_INFEASIBLE_CER','MSK_SOL_STA_DUAL_INFEAS_CER','MSK_SOL_STA_NEAR_DUAL_INFEAS_CER'}
-        stat=2; % Unbounded solution
-        origStat = [origStat ' & ' res.rcodestr];
-    case {'UNKNOWN','PRIM_ILLPOSED_CER','PRIMAL_ILLPOSED_CER','DUAL_ILLPOSED_CER','PRIM_FEAS','DUAL_FEAS','PRIM_AND_DUAL_FEAS','DUAL_FEASIBLE','MSK_RES_ERR_IN_ARGUMENT'}
-        stat=-1; %some other problem
-        origStat = [origStat ' & ' res.rcodestr];
-    otherwise
-        warning(['Unrecognised res.sol.bas.solsta or res.sol.itr.solsta: ' origStat])
-        stat=-1; %some other problem
-        fprintf('%s\n',res.rcode)
-        fprintf('%s\n',res.rmsg)
-        fprintf('%s\n',res.rcodestr)
-        if isfield(res,'rcodestr') && ~isempty(res.rcodestr)
-            origStat = res.rcodestr;
-        end
+function solsta = getMosekSolStaLocal(res, whichSol)
+% getMosekSolStaLocal
+%
+% Safely extract res.sol.<whichSol>.solsta.
+
+solsta = 'NO_SOLSTA';
+
+if ~isfield(res,'sol') || ~isfield(res.sol,whichSol)
+    return
+end
+
+sol = res.sol.(whichSol);
+
+if isfield(sol,'solsta') && ~isempty(sol.solsta)
+    solsta = char(string(sol.solsta));
+end
+
 end
 
 
+function tf = isUsableOptimalStatusLocal(solsta)
+% isUsableOptimalStatusLocal
+%
+% A usable solution is one for which MOSEK returned a primal-dual point.
+% The caller still distinguishes strict optimal from near optimal later.
 
-% https://themosekblog.blogspot.com/2014/06/what-if-solver-stall.html
+tf = isStrictOptimalStatusLocal(solsta) || isNearOptimalStatusLocal(solsta);
+
+end
+
+
+function tf = isStrictOptimalStatusLocal(solsta)
+% isStrictOptimalStatusLocal
+%
+% Strict optimality statuses.
+
+solsta = char(string(solsta));
+
+tf = any(strcmp(solsta, { ...
+    'OPTIMAL', ...
+    'MSK_SOL_STA_OPTIMAL', ...
+    'INTEGER_OPTIMAL', ...
+    'MSK_SOL_STA_INTEGER_OPTIMAL'}));
+
+end
+
+
+function tf = isNearOptimalStatusLocal(solsta)
+% isNearOptimalStatusLocal
+%
+% Near optimality statuses. These should not be treated as strict optimality.
+
+solsta = char(string(solsta));
+
+tf = any(strcmp(solsta, { ...
+    'NEAR_OPTIMAL', ...
+    'MSK_SOL_STA_NEAR_OPTIMAL'}));
+
+end
+
+
+function tf = isPrimalInfeasibleCertificateLocal(solsta)
+% isPrimalInfeasibleCertificateLocal
+%
+% Primal infeasibility certificate statuses.
+
+solsta = char(string(solsta));
+
+tf = any(strcmp(solsta, { ...
+    'PRIMAL_INFEASIBLE_CER', ...
+    'PRIM_INFEAS_CER', ...
+    'MSK_SOL_STA_PRIM_INFEAS_CER', ...
+    'MSK_SOL_STA_NEAR_PRIM_INFEAS_CER'}));
+
+end
+
+
+function tf = isDualInfeasibleCertificateLocal(solsta)
+% isDualInfeasibleCertificateLocal
+%
+% Dual infeasibility certificate statuses.
+
+solsta = char(string(solsta));
+
+tf = any(strcmp(solsta, { ...
+    'DUAL_INFEASIBLE_CER', ...
+    'DUAL_INFEAS_CER', ...
+    'MSK_SOL_STA_DUAL_INFEAS_CER', ...
+    'MSK_SOL_STA_NEAR_DUAL_INFEAS_CER'}));
+
+end
+
+
+function v = getMosekVectorFieldLocal(sol, fieldName)
+% getMosekVectorFieldLocal
+%
+% Return a dense column vector if the field exists. Return [] otherwise.
+
+v = [];
+
+if ~isfield(sol, fieldName) || isempty(sol.(fieldName))
+    return
+end
+
+v = sol.(fieldName);
+
+if issparse(v)
+    v = full(v);
+end
+
+v = double(v(:));
+
+end
+
+
+function a = getMosekScalarFieldLocal(sol, fieldName)
+% getMosekScalarFieldLocal
+%
+% Return a scalar field if it exists. Return [] otherwise.
+
+a = [];
+
+if ~isfield(sol, fieldName) || isempty(sol.(fieldName))
+    return
+end
+
+a = sol.(fieldName);
+
+if isnumeric(a) && isscalar(a)
+    a = double(a);
+else
+    a = [];
+end
+
+end

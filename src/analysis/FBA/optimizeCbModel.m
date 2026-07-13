@@ -431,6 +431,11 @@ end
 
 % build the optimization problem
 optProblem = buildOptProblemFromModel(model,verify,param);
+
+if isfield(model,'basis')
+   optProblem.basis = model.basis;
+end
+
 % save the original size of the problem
 [~,nTotalVars] = size(optProblem.A); % nTotalVars needed even if optProblem not used for an LP
 

@@ -1,4 +1,4 @@
-function [newDietModel,pointsModel,roiFlux,pointsModelSln,menuChanges, macroChanges, roiChanges] = nutritionAlgorithmWBMnew(model,obj,objMinMax,rois,roisMinMax,options)
+function [newDietModel,pointsModel,roiFlux,pointsModelSln,menuChanges, macroChanges, roiChanges] = nutritionAlgorithmWBM(model,obj,objMinMax,rois,roisMinMax,options)
 % Identifies the minimal changes to a diet necessary to get a desired
 % change in one or more reactions of interest. One may enter a metabolite
 % of the pointsModel instead of a reaction and the algorithm will optimize the
