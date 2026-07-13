@@ -1,10 +1,10 @@
 # Human Loop State
 
 ## Current State
-- Status: Bundle 1+2 complete — awaiting Gate 2 (implementation approval)
+- Status: Bundle 3 complete — awaiting Gate 3 (closeout)
 - Active feature directory: specs/004-reacting-moieties-test
-- Last completed bundle: Bundle 2 (plan/tasks)
-- Source code modified by this workflow: no
+- Last completed bundle: Bundle 3 (implementation via /speckit-implement)
+- Source code modified by this workflow: yes (1 new test + fixture + .gitignore anchor; verified)
 
 ## Core Command Ledger
 - constitution:   checked (v1.2.0; implement gate + receipt reconciliation applied)
@@ -14,7 +14,7 @@
 - plan:           authored (plan.md) — grounded in the verified tutorial run
 - tasks:          authored (tasks.md T001–T006)
 - analyze:        inline (single additive test; 0 blocking issues; see review)
-- implement:      not started (blocked on Gate 2 + explicit /speckit-implement)
+- implement:      invoked via /speckit-implement (test passes both modes; receipt written)
 
 ## Human Decisions
 | Date (UTC) | Gate | Option chosen | Consequence |
@@ -33,8 +33,9 @@
 - Files not allowed: any src/** function under test, the tutorials submodule, other tests
 
 ## Pointers
-- Implementation receipt(s): (none yet — agent-runs/ per constitution)
+- Implementation receipt(s): specs/004-reacting-moieties-test/agent-runs/20260713T231645Z-reacting-moieties-test/implementation-receipt.md
 - Implementation review: specs/004-reacting-moieties-test/implementation-review.md
+- Deviation: .gitignore analysis/ -> /analysis/ (unblocked committing tests under test/verifiedTests/analysis/)
 
 ## Open Risks and Ambiguities
 - The exact prepareTest requirement (LP solver vs none) is confirmed in T001 during impl.

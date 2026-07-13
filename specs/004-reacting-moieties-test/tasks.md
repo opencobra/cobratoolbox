@@ -2,6 +2,14 @@
 
 **Input**: spec.md, plan.md. **Tests**: this feature IS a test; validated by running it.
 
+## Implementation status (2026-07-13) — DONE
+
+All tasks complete. T001 (workflow run: needs MILP; reference values captured), T002
+(rxnFiles fixture copied), T003/T004 (test written with genuine assertions incl. L*N=0),
+T005 (passes fast 13.3s / full 7.3s; 0 figure windows), T006 (checkcode clean bar the
+by-design global warning; receipt written; tutorialDerived staging committed). Deviation:
+`.gitignore` `analysis/`→`/analysis/` (see receipt).
+
 ## Phase 1: Prep (read-only during implementation)
 
 - [ ] T001 Run the tutorial workflow on the 3-reaction subnetwork in a scratch context to determine (a) the true `prepareTest` requirement (does the minimum-set-cover step need an LP solver, or none?), (b) how `buildAtomAndBondTransitionMultigraph` resolves the atom-mapped `rxnFiles`, and (c) which `rxnFiles` the 3 reactions {r0317, ACONTm, r0426} actually need — so a minimal fixture can be copied.
