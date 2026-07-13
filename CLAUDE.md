@@ -1,9 +1,10 @@
 <!-- SPECKIT START -->
-Active Spec Kit feature: **002-testall-performance-modes** — fast-by-default,
-coverage-preserving test-suite mode with a documented revert to full mode, plus an
-opt-in profiling report. Plan: `specs/002-testall-performance-modes/plan.md` (spec,
-research, data-model, contracts, quickstart alongside it). Status: planned;
-implementation is gated on an explicit `/speckit-implement`.
+Active Spec Kit feature: **003-repair-unused-tests** — identify and repair
+non-contributing tests (code-bug failures, over-strict requirement skips,
+environment-dependent errors, a stray test) to enlarge coverage without weakening
+assertions. Plan: `specs/003-repair-unused-tests/plan.md` (spec, research, quickstart
+alongside it). Status: planned; implementation is gated on an explicit
+`/speckit-implement`.
 <!-- SPECKIT END -->
 
 <!-- Hand-maintained; keep OUTSIDE the SPECKIT markers (Spec Kit rewrites that block). -->

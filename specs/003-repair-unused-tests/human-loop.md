@@ -1,9 +1,9 @@
 # Human Loop State
 
 ## Current State
-- Status: Bundle 1 complete — awaiting Gate 1
+- Status: Bundle 2 complete — awaiting Gate 2 (implementation approval)
 - Active feature directory: specs/003-repair-unused-tests
-- Last completed bundle: Bundle 1 (requirements)
+- Last completed bundle: Bundle 2 (plan/tasks/analyze)
 - Source code modified by this workflow: no
 
 ## Core Command Ledger
@@ -11,6 +11,9 @@
 - specify:        invoked (spec.md + checklists/requirements.md)
 - clarify:        invoked (2 clarifications integrated; both markers resolved)
 - checklist:      satisfied by requirements.md (all items pass)
+- plan:           invoked (plan.md, research.md w/ per-test triage, quickstart.md)
+- tasks:          invoked (tasks.md T001–T017)
+- analyze:        invoked (0 critical, 100% FR coverage; 2 low risks)
 - plan:           pending
 - tasks:          pending
 - analyze:        pending
