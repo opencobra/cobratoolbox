@@ -68,9 +68,10 @@ None (0 critical).
 
 ## Human Approval
 
-- Approved: no
-- Approved option:
-- Approved tasks/scope:
+- Approved: intent yes (edits still gated on explicit implement invocation)
+- Approved option: "Approve all tasks" (Gate 2)
+- Approved tasks/scope: T001–T020 (full scope); C1 fast-default tradeoff accepted
 - Required implementation invocation per constitution: explicit `/speckit-implement`
   (or the exact override phrase) — a Gate 2 menu pick alone does not authorize edits.
-- Date (UTC):
+  **Awaiting this invocation before any source edit.**
+- Date (UTC): 2026-07-13

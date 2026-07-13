@@ -24,12 +24,28 @@
 | 2026-07-13 | Clarify Q2 (coverage tol) | "≤5 pp absolute drop" | FR-003 / SC-002 set to ≤5 percentage-point drop |
 
 ## Approved Implementation Scope
-- Approved: no
-- Scope: (undecided — set at Gate 2)
-- Tasks approved:
-- Tasks deferred:
+- Approved: intent yes (Gate 2 = "Approve all tasks", 2026-07-13); edits still gated on explicit /speckit-implement
+- Scope: all — T001–T020 (US1 fast mode, US2 full-mode fidelity + docs, US3 profiling report)
+- Tasks approved: T001–T020
+- Tasks deferred: none
+- C1 tradeoff (fast default): accepted at Gate 2 (mitigated by CI=full, ≤5 pp, revert)
 - Files allowed:
-- Files not allowed: (all source/tests/build until Gate 2 + implement invocation)
+  - src/base/install/getCobraTestMode.m (new)
+  - src/base/install/prepareTest.m
+  - test/testAll.m
+  - test/verifiedTests/base/testInstall/testGetCobraTestMode.m (new)
+  - test/verifiedTests/analysis/testSampling/testGpSampler.m
+  - test/verifiedTests/analysis/testMultiSpeciesModelling/testSimulatePairwiseInteractions.m
+  - test/verifiedTests/analysis/testMultiSpeciesModelling/testJoinModelsPairwiseFromList.m
+  - test/verifiedTests/base/testIO/testReadSBML.m
+  - test/verifiedTests/base/testIO/testWriteSBML.m
+  - test/verifiedTests/reconstruction/testModelGeneration/testTest4HumanFctExt.m
+  - test/verifiedTests/design/testMultiProductionEnvelopeInorg.m
+  - test/verifiedTests/reconstruction/testModelBorgifier/testModelBorgifier.m
+  - .gitignore
+  - documentation/source/** (contributor note)
+- Files not allowed: solver internals, src/ algorithm/analysis code, expected-result
+  .mat fixtures, any other test's assertions/expected values
 
 ## Pointers
 - Implementation receipt(s): (none yet — will live under agent-runs/ per constitution)
