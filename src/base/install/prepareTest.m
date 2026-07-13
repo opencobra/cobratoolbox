@@ -139,6 +139,17 @@ needsWebRead = parser.Results.needsWebRead;
 useMinimalNumberOfSolvers = parser.Results.useMinimalNumberOfSolvers;
 runtype = getenv('CI_RUNTYPE');
 
+% Feature 002 (testAll performance modes): in fast mode (the default outside CI)
+% return a single representative solver per class unless the test explicitly
+% requests multiple solvers via requiredSolvers/useSolversIfAvailable (i.e.
+% tests whose purpose is cross-solver agreement). Full mode, CI, and explicit
+% multi-solver requests are unchanged. See specs/002-testall-performance-modes.
+if strcmp(getCobraTestMode(), 'fast') ...
+        && isempty(parser.Results.requiredSolvers) ...
+        && isempty(parser.Results.useSolversIfAvailable)
+    useMinimalNumberOfSolvers = true;
+end
+
 minimalMatlabSolverVersion = parser.Results.minimalMatlabSolverVersion;
 requiredSoftwares = parser.Results.requiredSoftwares;
 

@@ -189,3 +189,6 @@ analysis/
 coverage.json
 coverage.xml
 coverage_html/
+
+# regenerable testAll profiling report artifacts (feature 002-testall-performance-modes)
+test/performance/
