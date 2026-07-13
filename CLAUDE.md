@@ -1,7 +1,8 @@
 <!-- SPECKIT START -->
-No active Spec Kit feature. Start a new one with `/speckit-specify` (it will scaffold
-`specs/<NNN-feature-name>/` and set it active). Spec Kit rewrites this block to point at
-the active feature's `plan.md` once one exists.
+Active Spec Kit feature: **001-ci-coverage-gating** — measure test coverage in CI and gate
+silent test-suite erosion (addresses architecture weakness W8). Plan:
+`specs/001-ci-coverage-gating/plan.md` (spec, research, data-model, contracts, quickstart
+alongside it). Status: planned; implementation is gated on an explicit `/speckit-implement`.
 <!-- SPECKIT END -->
 
 <!-- Hand-maintained; keep OUTSIDE the SPECKIT markers (Spec Kit rewrites that block). -->

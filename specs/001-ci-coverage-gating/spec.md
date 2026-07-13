@@ -62,8 +62,8 @@ solver, MATLAB toolbox, operating system, or external binary. Tests that genuine
 resource are reported as **skipped** (not failed), so the pass/fail signal reflects real
 defects rather than environment gaps.
 
-**Why this priority**: Roughly 82% of tests do not declare their requirements, so they
-hard-fail when a resource is absent. Because CI installs only one commercial solver, this
+**Why this priority**: Roughly 65% of tests (169 of 260) do not declare their requirements, so
+they hard-fail when a resource is absent. Because CI installs only one commercial solver, this
 produces false reds and masks true regressions. Gating tests makes the red/green signal
 trustworthy and is a prerequisite for the coverage number in US1 to be interpretable.
 

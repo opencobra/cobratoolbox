@@ -1,9 +1,9 @@
 # Human Loop State
 
 ## Current State
-- Status: Bundle 1 complete; awaiting Gate 1 decision
+- Status: Bundle 2 complete; awaiting Gate 2 decision
 - Active feature directory: specs/001-ci-coverage-gating
-- Last completed bundle: Bundle 1 (requirements preparation)
+- Last completed bundle: Bundle 2 (implementation preparation)
 - Source code modified by this workflow: no
 
 ## Core Command Ledger
@@ -11,10 +11,16 @@
 - specify:        invoked (spec.md + checklists/requirements.md written; validation passed)
 - clarify:        invoked (3 questions asked+answered; Clarifications session 2026-07-13 added)
 - checklist:      invoked (checklists/ci-coverage.md, 29 requirements-quality items)
-- plan:           n/a (Bundle 2)
-- tasks:          n/a (Bundle 2)
-- analyze:        n/a (Bundle 2)
-- implement:      n/a (Bundle 3, gated)
+- plan:           invoked (plan.md Constitution Check PASS; research/data-model/contracts/quickstart; CLAUDE.md SPECKIT block repointed)
+- tasks:          invoked (tasks.md, 22 tasks across US1/US2/US3 + polish)
+- analyze:        invoked (100% FR/US→task coverage; 1 HIGH inconsistency found+corrected: gated 91 / ungated 169, not 48/212)
+- implement:      n/a (Bundle 3, gated on explicit /speckit-implement)
+
+## Analyze correction (2026-07-13)
+- The "48 gated / 212 ungated / 82%" figures were an undercounting `rg -l prepareTest` artifact.
+- Verified true: 260 total, 91 gated (35%), 169 ungated (65%). Corrected in spec/plan/research/tasks.
+- Per-category ungated (authoritative): base 51, analysis 42, reconstruction 38, visualization 17,
+  dataIntegration 12, design 9 = 169.
 
 ## Clarify outcomes (Session 2026-07-13)
 - Coverage destination: self-contained artifact ALWAYS + Codecov best-effort (never blocks build)
@@ -24,7 +30,7 @@
 ## Human Decisions
 | Date (UTC) | Gate | Option chosen | Consequence |
 |---|---|---|---|
-| (pending) | Gate 1 | — | — |
+| 2026-07-13 | Gate 1 | Continue to planning | Full scope retained (coverage wiring + skip gate + full ~200-test backfill); proceed to plan/tasks/analyze |
 
 ## Approved Implementation Scope
 - Approved: no
