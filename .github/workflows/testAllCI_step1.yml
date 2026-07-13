@@ -145,7 +145,9 @@ jobs:
             echo "::warning:: ${report} not found; cannot evaluate the skip-count gate."
             exit 0
           fi
-          skipped=$(grep -oE '<testsuite[^>]*skipped="[0-9]+"' "$report" | grep -oE '[0-9]+' | head -1)
+          # Extract the skipped= attribute value only (present solely on <testsuite>);
+          # grep the attribute directly so we never pick up tests=/failures=/errors=.
+          skipped=$(grep -oE 'skipped="[0-9]+"' "$report" | grep -oE '[0-9]+' | head -1)
           skipped=${skipped:-0}
           maxSkipped=$(grep -oE '"maxSkipped"[[:space:]]*:[[:space:]]*[0-9]+' "$baseline" 2>/dev/null | grep -oE '[0-9]+' | head -1)
           maxSkipped=${maxSkipped:-0}
