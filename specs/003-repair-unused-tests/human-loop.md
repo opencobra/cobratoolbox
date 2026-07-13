@@ -1,9 +1,9 @@
 # Human Loop State
 
 ## Current State
-- Status: Bundle 3 complete — awaiting Gate 3 (closeout)
+- Status: CLOSED — Gate 3 accepted (2026-07-13); merged to develop and pushed
 - Active feature directory: specs/003-repair-unused-tests
-- Last completed bundle: Bundle 3 (implementation via /speckit-implement)
+- Last completed bundle: Bundle 4 (verification & closeout)
 - Source code modified by this workflow: yes (3 tests edited + 1 removed; verified)
 
 ## Core Command Ledger
@@ -26,6 +26,9 @@
 | 2026-07-13 | (origin) | route repair through Spec Kit | discovery done read-only; repairs gated |
 | 2026-07-13 | Clarify Q1 (DoD) | "Pass-count + accounted-for" | FR-008/SC-005: local pass-count DoD; coverage confirmed in CI |
 | 2026-07-13 | Clarify Q2 (scope) | "Also attempt env-dependent" | FR-009/FR-011: widest scope incl. installing free deps |
+| 2026-07-13 | Gate 2 (approval) | "Approve all tasks" | T001–T017 approved |
+| 2026-07-13 | (constitution gate) | "/speckit-implement" | edits authorized; Bundle 3 ran |
+| 2026-07-13 | Gate 3 (closeout) | "Accept, merge & push" | 003 closed; merged to develop and pushed to origin |
 
 ## Approved Implementation Scope
 - Approved: intent yes (Gate 2 = "Approve all tasks", 2026-07-13); edits gated on explicit /speckit-implement
