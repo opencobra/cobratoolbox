@@ -65,11 +65,26 @@ Commits on the branch: `cddaea549` (spec), `5dd07ac62` (plan/tasks/analysis), `4
   run requires MoCov (not installed on this host) → validated by design + CI wiring; a CI run on
   a PR to `develop` will produce the coverage %/artifact (SC-001).
 
+## Calibration (Gate 3) & a parser bug found during it
+
+- A **full local suite run** (`COBRA_CI=1 matlab -batch "run('test/testAll.m')"`, ~42 min,
+  260 tests) reported **49 skipped**, 5 failed, 5 errored on this host (mosek/glpk/pdco working,
+  gurobi not working). The 5 failures/5 errors are pre-existing environment issues (absent
+  solvers/toolboxes), not caused by the additive guards — a guarded test runs its assertions
+  identically when its requirement is met.
+- `test/verifiedTests/.skip-baseline.json` `maxSkipped` set to **60** (measured 49 + ~22%
+  headroom), documented; the CI environment differs (gurobi working, likely no mosek/cplex), so
+  first-CI-run recalibration (T020) remains authoritative. Gate is warn-only.
+- **Skip-gate parser bug found and fixed during calibration**: the CI step extracted the first
+  integer of the `<testsuite …>` line (`tests=`, e.g. 235) instead of `skipped=` (e.g. 28). Now
+  greps the `skipped="N"` attribute directly; re-validated (extracts 28; warns at baseline 20,
+  silent at 28/40). Committed separately.
+
 ## Unresolved issues
 
-- **Skip baseline is provisional** (`maxSkipped: 260`, a never-fires ceiling chosen so the gate
-  does not destabilize CI on first rollout). Calibrate to the real value from the first
-  instrumented CI run (T020; documented in the JSON `note`).
+- **Skip baseline reflects the local environment** (`maxSkipped: 60` from a 49-skip local run);
+  recalibrate to the CI value on the first PR-to-`develop` run (T020; documented in the JSON
+  `note`). The gate only warns, so an early over/under-estimate is low-risk.
 - **MoCov/jsonlab pinning**: the CI provisioning step currently clones the default branch of
   each; pin to a verified tag/commit for full reproducibility (TODO noted in the workflow).
 - **Codecov token**: if this fork's CI has no `CODECOV_TOKEN`, the always-on coverage artifact is

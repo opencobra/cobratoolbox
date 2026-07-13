@@ -1,6 +1,7 @@
 {
-  "maxSkipped": 260,
+  "maxSkipped": 60,
   "recordedOn": "2026-07-13",
-  "environment": "COBRA CI: MATLAB headless in Docker, gurobi + open-source solvers only",
-  "note": "Conservative initial ceiling (= total test count) so the flag/warn gate does not fire until a real baseline is recorded from the first instrumented CI run (task T020). Raise/lower deliberately when the CI solver/toolbox set intentionally changes; the gate only WARNS, never fails the build (feature 001-ci-coverage-gating, FR-008)."
+  "environment": "COBRA CI: MATLAB headless in Docker, gurobi + open-source solvers",
+  "measuredLocally": 49,
+  "note": "A full local run (260 tests, mosek/glpk/pdco working, gurobi not working) reported 49 skipped after the prepareTest backfill. maxSkipped is set to 60 (~22% headroom) because the CI environment differs (gurobi working, likely no mosek/cplex/tomlab), so its skip profile will not match this host. The gate only WARNS (never fails). RECALIBRATE this value from the first instrumented CI run on a PR to develop (task T020); raise/lower deliberately when the CI solver/toolbox set intentionally changes."
 }
