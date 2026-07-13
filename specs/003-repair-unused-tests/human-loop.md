@@ -27,9 +27,20 @@
 | 2026-07-13 | Clarify Q2 (scope) | "Also attempt env-dependent" | FR-009/FR-011: widest scope incl. installing free deps |
 
 ## Approved Implementation Scope
-- Approved: no
-- Scope: (undecided — set at Gate 2)
-- Files not allowed: (all source/tests until Gate 2 + implement invocation)
+- Approved: intent yes (Gate 2 = "Approve all tasks", 2026-07-13); edits gated on explicit /speckit-implement
+- Scope: all — T001–T017 (US1 code-bug fixes; US2 requirement broadenings; US3 clean-skips/lrs/stray)
+- Files allowed (test-only):
+  - test/verifiedTests/base/testIO/testUtilities/testGenerateFieldDescriptionFile.m
+  - test/verifiedTests/analysis/testFVA/testFVA.m
+  - test/verifiedTests/dataIntegration/testMOOMIN/testMoomin.m
+  - test/verifiedTests/reconstruction/testComputeMetFormulae/testComputeMetFormulae.m
+  - test/verifiedTests/analysis/testMultiSpeciesModelling/testMgPipe.m
+  - test/verifiedTests/analysis/testrFBA/testdynamicRFBA.m
+  - test/verifiedTests/base/testSolvers/testChangeIBMCplexParams.m
+  - test/test_myfunction.m (remove)
+- Files not allowed: any src/** function under test (isCompatible.m, TwoSidedBarrier.m,
+  sampleCbModel.m, generateFieldDescriptionFile.m, etc.), expected-result .mat fixtures,
+  feature 001/002 code. lrs install is a user-run system action, not a repo edit.
 
 ## Pointers
 - Implementation receipt(s): (none yet — agent-runs/ per constitution)
