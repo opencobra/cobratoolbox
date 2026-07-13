@@ -23,8 +23,14 @@
 | 2026-07-13 | (origin) | "go ahead and create test(s)" | routed through Spec Kit as feature 004 |
 
 ## Approved Implementation Scope
-- Approved: no (set at Gate 2)
-- Files not allowed (until Gate 2 + implement invocation): all source/tests
+- Approved: intent yes (Gate 2 = "Approve all tasks", 2026-07-13); edits gated on explicit /speckit-implement
+- Scope: all — T001–T006
+- Files allowed:
+  - test/verifiedTests/analysis/testReactingMoieties/testConservedReactingMoieties.m (new)
+  - test/verifiedTests/analysis/testReactingMoieties/data/rxnFiles/** (new fixture)
+  - test/verifiedTests/analysis/testReactingMoieties/refData_reactingMoieties.mat (new, if needed)
+  - commit of the existing test/tutorialDerived/ analysis staging (research)
+- Files not allowed: any src/** function under test, the tutorials submodule, other tests
 
 ## Pointers
 - Implementation receipt(s): (none yet — agent-runs/ per constitution)
