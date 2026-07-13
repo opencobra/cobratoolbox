@@ -1,9 +1,9 @@
 # Human Loop State
 
 ## Current State
-- Status: Bundle 1 complete — awaiting Gate 1
+- Status: Bundle 2 complete — awaiting Gate 2 (implementation approval)
 - Active feature directory: specs/002-testall-performance-modes
-- Last completed bundle: Bundle 1 (requirements preparation)
+- Last completed bundle: Bundle 2 (implementation preparation)
 - Source code modified by this workflow: no
 
 ## Core Command Ledger
@@ -11,10 +11,10 @@
 - specify:        invoked (spec.md + checklists/requirements.md written)
 - clarify:        invoked (2 clarifications integrated; both markers resolved)
 - checklist:      satisfied by requirements.md quality checklist (all items pass); custom checklist optional
-- plan:           pending
-- tasks:          pending
-- analyze:        pending
-- implement:      not started (blocked on Gate 2 + explicit implement invocation)
+- plan:           invoked (plan.md, research.md, data-model.md, contracts/, quickstart.md)
+- tasks:          invoked (tasks.md T001–T020)
+- analyze:        invoked (0 critical, 1 high disclosed tradeoff, 4 low; 100% coverage)
+- implement:      not started (blocked on Gate 2 + explicit /speckit-implement)
 
 ## Human Decisions
 | Date (UTC) | Gate | Option chosen | Consequence |
@@ -33,7 +33,7 @@
 
 ## Pointers
 - Implementation receipt(s): (none yet — will live under agent-runs/ per constitution)
-- Implementation review: specs/002-testall-performance-modes/implementation-review.md (not yet written)
+- Implementation review: specs/002-testall-performance-modes/implementation-review.md (written; awaiting Gate 2)
 
 ## Open Risks and Ambiguities
 - CI default mode (fast vs full) vs the 001-ci-coverage-gating coverage gate — clarify Q.

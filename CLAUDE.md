@@ -1,8 +1,9 @@
 <!-- SPECKIT START -->
-Active Spec Kit feature: **001-ci-coverage-gating** — measure test coverage in CI and gate
-silent test-suite erosion (addresses architecture weakness W8). Plan:
-`specs/001-ci-coverage-gating/plan.md` (spec, research, data-model, contracts, quickstart
-alongside it). Status: planned; implementation is gated on an explicit `/speckit-implement`.
+Active Spec Kit feature: **002-testall-performance-modes** — fast-by-default,
+coverage-preserving test-suite mode with a documented revert to full mode, plus an
+opt-in profiling report. Plan: `specs/002-testall-performance-modes/plan.md` (spec,
+research, data-model, contracts, quickstart alongside it). Status: planned;
+implementation is gated on an explicit `/speckit-implement`.
 <!-- SPECKIT END -->
 
 <!-- Hand-maintained; keep OUTSIDE the SPECKIT markers (Spec Kit rewrites that block). -->
