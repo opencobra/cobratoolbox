@@ -1,10 +1,9 @@
 <!-- SPECKIT START -->
-Active Spec Kit feature: **003-repair-unused-tests** — identify and repair
-non-contributing tests (code-bug failures, over-strict requirement skips,
-environment-dependent errors, a stray test) to enlarge coverage without weakening
-assertions. Plan: `specs/003-repair-unused-tests/plan.md` (spec, research, quickstart
-alongside it). Status: planned; implementation is gated on an explicit
-`/speckit-implement`.
+Active Spec Kit feature: **004-reacting-moieties-test** — repurpose the verified
+conserved-and-reacting-moieties tutorial into a verifiedTests test covering seven
+untested moiety functions and asserting the L*N=0 conservation invariant (figures
+generated but not displayed). Plan: `specs/004-reacting-moieties-test/plan.md`.
+Status: planned; implementation is gated on an explicit `/speckit-implement`.
 <!-- SPECKIT END -->
 
 <!-- Hand-maintained; keep OUTSIDE the SPECKIT markers (Spec Kit rewrites that block). -->
