@@ -65,8 +65,8 @@
         <link rel="search" title="Search" href="../../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../../index.html"/>
         <link rel="up" title="Transcriptomics" href="../index.html"/>
-        <link rel="next" title="Preprocessing" href="../preprocessing/index.html"/>
-        <link rel="prev" title="Transcriptomics" href="../index.html"/> 
+        <link rel="next" title="Moomin" href="../MOOMIN/index.html"/>
+        <link rel="prev" title="Gimme" href="../GIMME/index.html"/> 
 
   
   <script src="../../../../_static/js/modernizr.min.js"></script>
@@ -160,23 +160,24 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../base/index.html">Base</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Dataintegration</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="../../chemoInformatics/index.html">Chemoinformatics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../XomicsToModel/index.html">Xomicstomodel</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../fluxomics/index.html">Fluxomics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../metabotools/index.html">Metabotools</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../metaboAnnotator/index.html">Metaboannotator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../metanetxMapper/index.html">Metanetxmapper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../XomicsToModel/index.html">Xomicstomodel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../metaboAnnotator/index.html">Metaboannotator</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../index.html">Transcriptomics</a><ul class="current">
-<li class="toctree-l4 current"><a class="current reference internal" href="#">Fastcore</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../preprocessing/index.html">Preprocessing</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../INIT/index.html">Init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../rFASTCORMICS/index.html">Rfastcormics</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../MBA/index.html">Mba</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../GIMME/index.html">Gimme</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../iMAT/index.html">Imat</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Fastcore</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../MOOMIN/index.html">Moomin</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../SWIFTCORE/index.html">Swiftcore</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../eFlux/index.html">Eflux</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../iMAT/index.html">Imat</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../INIT/index.html">Init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../SWIFTCORE/index.html">Swiftcore</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../preprocessing/index.html">Preprocessing</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="../../metabotools/index.html">Metabotools</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../design/index.html">Design</a></li>
@@ -240,13 +241,13 @@
 <span id="id1"></span><h1>Fastcore<a class="headerlink" href="#fastcore" title="Permalink to this heading">¶</a></h1>
 <span class="target" id="module-src.dataIntegration.transcriptomics.FASTCORE"></span><dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.transcriptomics.FASTCORE.LP10">
-<span class="sig-name descname"><span class="pre">LP10</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">K</span></em>, <em class="sig-param"><span class="pre">P</span></em>, <em class="sig-param"><span class="pre">v</span></em>, <em class="sig-param"><span class="pre">LPproblem</span></em>, <em class="sig-param"><span class="pre">epsilon</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/transcriptomics/FASTCORE/LP10.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.transcriptomics.FASTCORE.LP10" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">LP10</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">K</span></em>, <em class="sig-param"><span class="pre">P</span></em>, <em class="sig-param"><span class="pre">v</span></em>, <em class="sig-param"><span class="pre">LPproblem</span></em>, <em class="sig-param"><span class="pre">epsilon</span></em>, <em class="sig-param"><span class="pre">adaptiveScalingFlag</span></em>, <em class="sig-param"><span class="pre">nonPen</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/transcriptomics/FASTCORE/LP10.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.transcriptomics.FASTCORE.LP10" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds a flux vector that maintains the activity of any active irreversible
 core reaction (K) yet minimises the activity of any non-core reaction (P).
 Implementation of LP-10 for input sets K, P (see FASTCORE paper)</p>
 <dl class="field-list simple">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>V = LP10</strong> (<em>K, P, v, epsilon</em>)</p>
+<dd class="field-odd"><p><strong>V = LP10</strong> (<em>K, P, v, epsilon, adaptiveScalingFlag, nonPen</em>)</p>
 </dd>
 </dl>
 </dd></dl>
@@ -377,7 +378,7 @@ consistency, where -1 means flux consistent in reverse direction only</p></li>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.transcriptomics.FASTCORE.fastcore">
-<span class="sig-name descname"><span class="pre">fastcore</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">coreRxnInd</span></em>, <em class="sig-param"><span class="pre">epsilon</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/transcriptomics/FASTCORE/fastcore.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.transcriptomics.FASTCORE.fastcore" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">fastcore</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">coreRxnInd</span></em>, <em class="sig-param"><span class="pre">epsilon</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em>, <em class="sig-param"><span class="pre">adaptiveScalingFlag</span></em>, <em class="sig-param"><span class="pre">nonPen</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/transcriptomics/FASTCORE/fastcore.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.transcriptomics.FASTCORE.fastcore" title="Permalink to this definition">¶</a></dt>
 <dd><p>Use the FASTCORE algorithm (‘Vlassis et al, 2014’) to extract a context
 specific model. FASTCORE algorithm defines one set of core
 reactions that is guaranteed to be active in the extracted model and find
@@ -405,6 +406,8 @@ the minimum of reactions possible to support the core.</p>
 <li><p><strong>epsilon</strong> – smallest flux value that is considered nonzero
 (default getCobraSolverParams(‘LP’, ‘feasTol’)*100)</p></li>
 <li><p><strong>printLevel</strong> – 0 = silent, 1 = summary, 2 = debug (default - 0)</p></li>
+<li><p><strong>adaptiveScalingFlag  0 = adaptive scaling is off</strong> (<em>default</em>) – is on (recommended for ill scaled models)</p></li>
+<li><p><strong>nonPen               list of reactions whose addition to the model is not be penalized</strong></p></li>
 </ul>
 </dd>
 <dt class="field-even">OUTPUT<span class="colon">:</span></dt>
@@ -421,12 +424,12 @@ e1003424.’</p>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.transcriptomics.FASTCORE.findSparseMode">
-<span class="sig-name descname"><span class="pre">findSparseMode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">J</span></em>, <em class="sig-param"><span class="pre">P</span></em>, <em class="sig-param"><span class="pre">singleton</span></em>, <em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">LPproblem</span></em>, <em class="sig-param"><span class="pre">epsilon</span></em>, <em class="sig-param"><span class="pre">basis</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/transcriptomics/FASTCORE/findSparseMode.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.transcriptomics.FASTCORE.findSparseMode" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">findSparseMode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">J</span></em>, <em class="sig-param"><span class="pre">P</span></em>, <em class="sig-param"><span class="pre">singleton</span></em>, <em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">LPproblem</span></em>, <em class="sig-param"><span class="pre">epsilon</span></em>, <em class="sig-param"><span class="pre">adaptiveScalingFlag</span></em>, <em class="sig-param"><span class="pre">basis</span></em>, <em class="sig-param"><span class="pre">nonPen</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/transcriptomics/FASTCORE/findSparseMode.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.transcriptomics.FASTCORE.findSparseMode" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds a mode that contains as many reactions from J and as few from P.
 Returns its support, or [] if no reaction from J can get flux above epsilon</p>
 <dl class="field-list simple">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>Supp = findSparseMode</strong> (<em>J, P, singleton, model, LPproblem, epsilon</em>)</p>
+<dd class="field-odd"><p><strong>Supp = findSparseMode</strong> (<em>J, P, singleton, model, LPproblem, epsilon, adaptiveScaling, basis, nonPen</em>)</p>
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
@@ -439,7 +442,11 @@ Returns its support, or [] if no reaction from J can get flux above epsilon</p>
 </ul>
 </dd>
 <dt class="field-odd">OPTIONAL INPUT<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>basis</strong> – Basis</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>adaptiveScalingFlag</strong> – scaling choice for LP10</p></li>
+<li><p><strong>basis</strong> – Basis</p></li>
+<li><p><strong>nonPen</strong> – indexes of unpenalized reactions</p></li>
+</ul>
 </dd>
 <dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
@@ -491,10 +498,10 @@ al., 2013, PLoS Comp Biol.</cite></p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../preprocessing/index.html" class="btn btn-default float-right" title="Preprocessing" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../MOOMIN/index.html" class="btn btn-default float-right" title="Moomin" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../index.html" class="btn btn-default" title="Transcriptomics" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../GIMME/index.html" class="btn btn-default" title="Gimme" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
