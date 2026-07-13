@@ -1,10 +1,19 @@
 # Human Loop State
 
 ## Current State
-- Status: Bundle 2 complete; awaiting Gate 2 decision
+- Status: Bundle 3 (implementation) complete; awaiting Gate 3 (closeout)
 - Active feature directory: specs/001-ci-coverage-gating
-- Last completed bundle: Bundle 2 (implementation preparation)
-- Source code modified by this workflow: no
+- Last completed bundle: Bundle 3 (approved implementation via /speckit-implement)
+- Source code modified by this workflow: yes (CI config + test harness + test metadata only; NO src/ scientific code)
+
+## Implementation result (Bundle 3)
+- US1 coverage: testAllCI_step1.yml provisions MoCov+jsonlab, sets env vars, uploads coverage
+  artifact + best-effort Codecov; testAll.m emits Cobertura coverage.xml with a guarded block.
+- US2 backfill: 169 ungated tests audited -> 34 gained a prepareTest guard, 135 none-needed.
+  Additions-only; assertions unchanged. Live-validated: guard skips when solver absent
+  (requiredSolvers{gurobi} -> COBRA:RequirementsNotMet), runs when present; one test run end-to-end.
+- US3 skip gate: .skip-baseline.json + CI warn-only gate (validated warn + normal paths).
+- Receipt: specs/001-ci-coverage-gating/agent-runs/20260713T014957Z-ci-coverage-gating/implementation-receipt.md
 
 ## Core Command Ledger
 - constitution:   checked (read .specify/memory/constitution.md v1.2.0; not regenerated)
@@ -45,7 +54,7 @@
   deprecated/, external/, binary/, solver-status semantics; test/runTestSuite.m; testAllCI_step2.yml
 
 ## Pointers
-- Implementation receipt(s): (none yet; will live under specs/001-ci-coverage-gating/agent-runs/<UTC>-<name>/implementation-receipt.md per constitution)
+- Implementation receipt: specs/001-ci-coverage-gating/agent-runs/20260713T014957Z-ci-coverage-gating/implementation-receipt.md
 - Implementation review: specs/001-ci-coverage-gating/implementation-review.md (Bundle 2)
 
 ## Deferred hooks (this workflow's commit policy)

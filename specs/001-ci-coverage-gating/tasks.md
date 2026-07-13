@@ -64,14 +64,14 @@ resources produce skips, not errors.
 **Independent test**: run the suite without a given commercial solver; confirm dependent tests
 are Skipped (raising `COBRA:RequirementsNotMet`), 0 reported as errors (quickstart Scenario A).
 
-- [ ] T008 [US2] Create `specs/001-ci-coverage-gating/audit/backfill-audit.csv` (header: `testPath,category,detectedSignals,declarationAdded,noneNeeded,notes`) and populate first-pass signals with a grep helper over the 169 ungated tests (solveCobra*/optimizeCbModel/entropicFBA/named solvers/toolboxes/OS/webread/binaries). Blocks T009–T014.
-- [ ] T009 [P] [US2] Backfill `prepareTest` declarations into the **51** ungated tests under `test/verifiedTests/base/**` per `contracts/prepareTest-declaration.md`; keep assertions unchanged; record each per-test outcome (incl. `noneNeeded`) in `backfill-audit.csv`.
-- [ ] T010 [P] [US2] Backfill the **42** ungated tests under `test/verifiedTests/analysis/**` (same rules + audit record).
-- [ ] T011 [P] [US2] Backfill the **38** ungated tests under `test/verifiedTests/reconstruction/**` (same rules + audit record).
-- [ ] T012 [P] [US2] Backfill the **17** ungated tests under `test/verifiedTests/visualization/**` (same rules + audit record).
-- [ ] T013 [P] [US2] Backfill the **12** ungated tests under `test/verifiedTests/dataIntegration/**` (same rules + audit record).
-- [ ] T014 [P] [US2] Backfill the **9** ungated tests under `test/verifiedTests/design/**` (same rules + audit record).
-- [ ] T015 [US2] **Validate** via the MATLAB MCP: pick a sample backfilled test per category; confirm it is Skipped (`COBRA:RequirementsNotMet`) when its resource is absent (host lacks most solvers/toolboxes) and runs/passes unchanged when present (quickstart Scenario A). Confirm the audit CSV accounts for all 169 tests.
+- [x] T008 [US2] Create `specs/001-ci-coverage-gating/audit/backfill-audit.csv` (header: `testPath,category,detectedSignals,declarationAdded,noneNeeded,notes`) and populate first-pass signals with a grep helper over the 169 ungated tests (solveCobra*/optimizeCbModel/entropicFBA/named solvers/toolboxes/OS/webread/binaries). Blocks T009–T014.
+- [x] T009 [P] [US2] Backfill `prepareTest` declarations into the **51** ungated tests under `test/verifiedTests/base/**` per `contracts/prepareTest-declaration.md`; keep assertions unchanged; record each per-test outcome (incl. `noneNeeded`) in `backfill-audit.csv`.
+- [x] T010 [P] [US2] Backfill the **42** ungated tests under `test/verifiedTests/analysis/**` (same rules + audit record).
+- [x] T011 [P] [US2] Backfill the **38** ungated tests under `test/verifiedTests/reconstruction/**` (same rules + audit record).
+- [x] T012 [P] [US2] Backfill the **17** ungated tests under `test/verifiedTests/visualization/**` (same rules + audit record).
+- [x] T013 [P] [US2] Backfill the **12** ungated tests under `test/verifiedTests/dataIntegration/**` (same rules + audit record).
+- [x] T014 [P] [US2] Backfill the **9** ungated tests under `test/verifiedTests/design/**` (same rules + audit record).
+- [x] T015 [US2] **Validate** via the MATLAB MCP: pick a sample backfilled test per category; confirm it is Skipped (`COBRA:RequirementsNotMet`) when its resource is absent (host lacks most solvers/toolboxes) and runs/passes unchanged when present (quickstart Scenario A). Confirm the audit CSV accounts for all 169 tests.
 
 **Checkpoint**: US2 makes the red/green signal trustworthy; independent of US1/US3.
 
@@ -95,10 +95,10 @@ baseline.
 
 ## Phase 6: Polish & Cross-Cutting
 
-- [ ] T019 Run the full quickstart (Scenarios A, B, C) end-to-end and record outcomes for the implementation receipt.
-- [ ] T020 Set `test/verifiedTests/.skip-baseline.json` `maxSkipped` from the first instrumented CI run's actual skipped count (or a documented conservative current count).
-- [ ] T021 Confirm no regression: CTRF pass/fail report still produced (FR-009/SC-004); `git diff --stat` touches ONLY `.github/workflows/`, `test/testAll.m`, `test/verifiedTests/**`, `.gitignore`, and `specs/001-ci-coverage-gating/**` — no `src/` scientific code.
-- [ ] T022 Finalize `backfill-audit.csv` (all 169 accounted for), update `human-loop.md`, and write the implementation receipt under `specs/001-ci-coverage-gating/agent-runs/<UTC>-<name>/implementation-receipt.md`.
+- [x] T019 Run the full quickstart (Scenarios A, B, C) end-to-end and record outcomes for the implementation receipt.
+- [x] T020 Set `test/verifiedTests/.skip-baseline.json` `maxSkipped` from the first instrumented CI run's actual skipped count (or a documented conservative current count).
+- [x] T021 Confirm no regression: CTRF pass/fail report still produced (FR-009/SC-004); `git diff --stat` touches ONLY `.github/workflows/`, `test/testAll.m`, `test/verifiedTests/**`, `.gitignore`, and `specs/001-ci-coverage-gating/**` — no `src/` scientific code.
+- [x] T022 Finalize `backfill-audit.csv` (all 169 accounted for), update `human-loop.md`, and write the implementation receipt under `specs/001-ci-coverage-gating/agent-runs/<UTC>-<name>/implementation-receipt.md`.
 
 ---
 

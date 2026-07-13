@@ -25,6 +25,9 @@ currentDir = pwd;
 % Thus, C, D, and L are dead ends, and C is also an exchanged metabolite
 % and should thus be detected by removeExternalMets set to true.
 
+% require an LP solver; skip gracefully if none is available
+prepareTest('needsLP', true);
+
 fileDir = fileparts(which('testDetectDeadEnds'));
 cd(fileDir);
 

@@ -15,6 +15,9 @@ currentDir = pwd;
 fileDir = fileparts(which('testDynamicFBA'));
 cd(fileDir);
 
+% require an LP solver; skip gracefully if none is available
+prepareTest('needsLP', true);
+
 model = getDistributedModel('ecoli_core_model.mat');
 
 load('testData_dynamicFBA.mat');

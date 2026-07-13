@@ -18,6 +18,9 @@ currentDir = pwd;
 fileDir = fileparts(which('testFindExtremePathway'));
 cd(fileDir);
 
+% require an LP solver; skip gracefully if none is available
+prepareTest('needsLP', true);
+
 model.S = [1, 0, 0, 0,-1,-1,-1, 0, 0, 0
            0, 1, 0, 0, 1, 0, 0,-1,-1, 0
            0, 0, 0, 0, 0, 1, 0, 1, 0,-1

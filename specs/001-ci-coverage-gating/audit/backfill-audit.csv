@@ -1,170 +1,170 @@
-testPath,category,signals,proposedDeclaration,noneNeeded
-"test/verifiedTests/base/testBuildGrRules/testBuildGrRules.m",base,"no-signal","(none)",yes
-"test/verifiedTests/base/testCardOpt/testSparseLP.m",base,"changeSolver;cplex","prepareTest('needsLP', true, 'requiredSolvers', {'ibm_cplex'})",no
-"test/verifiedTests/base/testInstall/testAddKeyToKnownHosts.m",base,"ispc-note","(none)",yes
-"test/verifiedTests/base/testInstall/testInitCobraToolboxAgentMode.m",base,"changeSolver;mosek","prepareTest('needsLP', true, 'requiredSolvers', {'mosek'})",no
-"test/verifiedTests/base/testIO/testConvertCNAModelToCbModel.m",base,"no-signal","(none)",yes
-"test/verifiedTests/base/testIO/testConvertCobraToSBML.m",base,"no-signal","(none)",yes
-"test/verifiedTests/base/testIO/testConvertModelToEX.m",base,"no-signal","(none)",yes
-"test/verifiedTests/base/testIO/testIsValidJSON/testIsValidJSON.m",base,"no-signal","(none)",yes
-"test/verifiedTests/base/testIO/testKEGG/testTransformModel2KEGG.m",base,"no-signal","(none)",yes
-"test/verifiedTests/base/testIO/testReadWriteCbModel.m",base,"LP","prepareTest('needsLP', true)",no
-"test/verifiedTests/base/testIO/testSbmlTestModelToMat.m",base,"no-signal","(none)",yes
-"test/verifiedTests/base/testIO/testUtilities/testGenerateFieldDescriptionFile.m",base,"no-signal","(none)",yes
-"test/verifiedTests/base/testIO/testUtilities/testGetDatabaseMappings.m",base,"no-signal","(none)",yes
-"test/verifiedTests/base/testIO/testUtilities/testGetDefaultCompartments.m",base,"no-signal","(none)",yes
-"test/verifiedTests/base/testIO/testUtilities/testGetDefaultCompartmentSymbols.m",base,"no-signal","(none)",yes
-"test/verifiedTests/base/testIO/testUtilities/testLoadIdentifiedModel.m",base,"no-signal","(none)",yes
-"test/verifiedTests/base/testIO/testUtilities/testOutputHypergraph.m",base,"no-signal","(none)",yes
-"test/verifiedTests/base/testIO/testUtilities/testOutputNetworkOmix.m",base,"no-signal","(none)",yes
-"test/verifiedTests/base/testIO/testUtilities/testPlanariseModel.m",base,"no-signal","(none)",yes
-"test/verifiedTests/base/testIO/testUtilities/testRestrictModelsToFields.m",base,"no-signal","(none)",yes
-"test/verifiedTests/base/testIO/testUtilities/testWriteCytoscapeEdgeAttributeTable.m",base,"no-signal","(none)",yes
-"test/verifiedTests/base/testIO/testWriteCbModel.m",base,"LP","prepareTest('needsLP', true)",no
-"test/verifiedTests/base/testIO/testWriteMinosProblem.m",base,"no-signal","(none)",yes
-"test/verifiedTests/base/testIO/testWriteSBML.m",base,"parallelTB","prepareTest('requiredToolboxes', {'distrib_computing_toolbox'})",no
-"test/verifiedTests/base/testLifting/testLiftCouplingConstraints.m",base,"LP","prepareTest('needsLP', true)",no
-"test/verifiedTests/base/testLifting/testLiftModel.m",base,"LP;cplex","prepareTest('needsLP', true, 'requiredSolvers', {'ibm_cplex'})",no
-"test/verifiedTests/base/testLifting/testReformulate.m",base,"no-signal","(none)",yes
-"test/verifiedTests/base/testMPS/testMPS.m",base,"LP;MILP","prepareTest('needsLP', true, 'needsMILP', true)",no
-"test/verifiedTests/base/testOutputNetworkCytoscape/testOutputNetworkCytoscape.m",base,"no-signal","(none)",yes
-"test/verifiedTests/base/testParseCobraVarargin/testParseCobraVarargin.m",base,"no-signal","(none)",yes
-"test/verifiedTests/base/testRemoveGeneVersions/testRemoveGeneVersions.m",base,"no-signal","(none)",yes
-"test/verifiedTests/base/testSolvers/testChangeCobraSolver.m",base,"changeSolver","prepareTest('needsLP', true)",no
-"test/verifiedTests/base/testSolvers/testDualRCostDefinition.m",base,"LP;cplex;mosek","prepareTest('needsLP', true, 'requiredSolvers', {'ibm_cplex', 'mosek'})",no
-"test/verifiedTests/base/testSolvers/testVerifyCobraProblem.m",base,"no-signal","(none)",yes
-"test/verifiedTests/base/testTools/testCalcGroupStats.m",base,"no-signal","(none)",yes
-"test/verifiedTests/base/testTools/testCheckCobraModelUnique.m",base,"no-signal","(none)",yes
-"test/verifiedTests/base/testTools/testColumnVector.m",base,"no-signal","(none)",yes
-"test/verifiedTests/base/testTools/testGenerateSystemConfigReport.m",base,"no-signal","(none)",yes
-"test/verifiedTests/base/testTools/testJaccardIndex.m",base,"no-signal","(none)",yes
-"test/verifiedTests/base/testTools/testMergeModelFieldPositions.m",base,"no-signal","(none)",yes
-"test/verifiedTests/base/testTools/testParseBoolean.m",base,"no-signal","(none)",yes
-"test/verifiedTests/base/testTools/testPrintLabeledData.m",base,"no-signal","(none)",yes
-"test/verifiedTests/base/testTools/testPrintMatrix.m",base,"no-signal","(none)",yes
-"test/verifiedTests/base/testTools/testReadMixedData.m",base,"no-signal","(none)",yes
-"test/verifiedTests/base/testTools/testReporterMets.m",base,"no-signal","(none)",yes
-"test/verifiedTests/base/testTools/testSelMatrix.m",base,"no-signal","(none)",yes
-"test/verifiedTests/base/testTools/testShowprogress.m",base,"no-signal","(none)",yes
-"test/verifiedTests/base/testTools/testSplitString.m",base,"no-signal","(none)",yes
-"test/verifiedTests/base/testTools/testTranslateList.m",base,"no-signal","(none)",yes
-"test/verifiedTests/base/testTools/testUnionCell.m",base,"no-signal","(none)",yes
-"test/verifiedTests/base/testXls2Model/testXls2Model.m",base,"no-signal","(none)",yes
-"test/verifiedTests/analysis/testCorrespondingRowsCols/testCorrespondingRowsCols.m",analysis,"no-signal","(none)",yes
-"test/verifiedTests/analysis/testDeletionStudy/testDeletionStudy.m",analysis,"changeSolver;cplex","prepareTest('needsLP', true, 'requiredSolvers', {'ibm_cplex'})",no
-"test/verifiedTests/analysis/testDynamicFBA/testDynamicFBA.m",analysis,"changeSolver;cplex","prepareTest('needsLP', true, 'requiredSolvers', {'ibm_cplex'})",no
-"test/verifiedTests/analysis/testEnumerateOptimal/testenumOptimalSols.m",analysis,"changeSolver;cplex","prepareTest('needsLP', true, 'requiredSolvers', {'ibm_cplex'})",no
-"test/verifiedTests/analysis/testExploration/testFindMetsFromRxns.m",analysis,"no-signal","(none)",yes
-"test/verifiedTests/analysis/testExploration/testFindRxnsFromGenes.m",analysis,"no-signal","(none)",yes
-"test/verifiedTests/analysis/testExploration/testFindRxnsFromMets.m",analysis,"no-signal","(none)",yes
-"test/verifiedTests/analysis/testExploration/testFindSubSystemsFromGenes.m",analysis,"no-signal","(none)",yes
-"test/verifiedTests/analysis/testExploration/testGetModelSizes.m",analysis,"no-signal","(none)",yes
-"test/verifiedTests/analysis/testExploration/testSearchModel.m",analysis,"no-signal","(none)",yes
-"test/verifiedTests/analysis/testFBA/testFBA.m",analysis,"LP;cplex;mosek","prepareTest('needsLP', true, 'requiredSolvers', {'ibm_cplex', 'mosek'})",no
-"test/verifiedTests/analysis/testFindBlockedReaction/testFindBlockedReaction.m",analysis,"changeSolver;cplex;parallelTB","prepareTest('needsLP', true, 'requiredSolvers', {'ibm_cplex'}, 'requiredToolboxes', {'distrib_computing_toolbox'})",no
-"test/verifiedTests/analysis/testFindRxnsFromSubSystem/testFindRxnsFromSubSystem.m",analysis,"no-signal","(none)",yes
-"test/verifiedTests/analysis/testGetModelSubSystems/testGetModelSubSystems.m",analysis,"no-signal","(none)",yes
-"test/verifiedTests/analysis/testHillFormula/testHillFormula.m",analysis,"no-signal","(none)",yes
-"test/verifiedTests/analysis/testIsReactionInSubSystem/testIsReactionInSubSystem.m",analysis,"no-signal","(none)",yes
-"test/verifiedTests/analysis/testKLdistance/testKLDis.m",analysis,"no-signal","(none)",yes
-"test/verifiedTests/analysis/testMDFBA/testMDFBA.m",analysis,"LP;cplex","prepareTest('needsLP', true, 'requiredSolvers', {'ibm_cplex'})",no
-"test/verifiedTests/analysis/testMultiSpeciesModelling/testCoupleRxnList2Rxn.m",analysis,"LP;cplex","prepareTest('needsLP', true, 'requiredSolvers', {'ibm_cplex'})",no
-"test/verifiedTests/analysis/testMultiSpeciesModelling/testCreateMultipleSpeciesModel.m",analysis,"LP;cplex","prepareTest('needsLP', true, 'requiredSolvers', {'ibm_cplex'})",no
-"test/verifiedTests/analysis/testMultiSpeciesModelling/testJoinModelsPairwiseFromList.m",analysis,"no-signal","(none)",yes
-"test/verifiedTests/analysis/testMultiSpeciesModelling/testSimulatePairwiseInteractions.m",analysis,"changeSolver;cplex","prepareTest('needsLP', true, 'requiredSolvers', {'ibm_cplex'})",no
-"test/verifiedTests/analysis/testMultiSpeciesModelling/testTranslateMetagenome2AGORA.m",analysis,"ispc-note","(none)",yes
-"test/verifiedTests/analysis/testpFBA/testpFBA.m",analysis,"LP;cplex;parallelTB","prepareTest('needsLP', true, 'requiredSolvers', {'ibm_cplex'}, 'requiredToolboxes', {'distrib_computing_toolbox'})",no
-"test/verifiedTests/analysis/testPrint/testPrintConstraints.m",analysis,"no-signal","(none)",yes
-"test/verifiedTests/analysis/testPrint/testPrintFluxVector.m",analysis,"no-signal","(none)",yes
-"test/verifiedTests/analysis/testPrint/testPrintGPRForRxns.m",analysis,"no-signal","(none)",yes
-"test/verifiedTests/analysis/testPrint/testPrintRxnFormula.m",analysis,"no-signal","(none)",yes
-"test/verifiedTests/analysis/testPrint/testPrintUptakeBound.m",analysis,"no-signal","(none)",yes
-"test/verifiedTests/analysis/testPrint/testSurfNet.m",analysis,"LP","prepareTest('needsLP', true)",no
-"test/verifiedTests/analysis/testrFBA/testOptimizeRegModel.m",analysis,"changeSolver;cplex","prepareTest('needsLP', true, 'requiredSolvers', {'ibm_cplex'})",no
-"test/verifiedTests/analysis/testrFBA/testSolveBooleanRegModel.m",analysis,"changeSolver;cplex","prepareTest('needsLP', true, 'requiredSolvers', {'ibm_cplex'})",no
-"test/verifiedTests/analysis/testRobustnessAnalysis/testRobustnessAnalysis.m",analysis,"no-signal","(none)",yes
-"test/verifiedTests/analysis/testSampling/testGpSampler.m",analysis,"changeSolver;cplex","prepareTest('needsLP', true, 'requiredSolvers', {'ibm_cplex'})",no
-"test/verifiedTests/analysis/testSubspaces/testDetermineSignMatrix.m",analysis,"no-signal","(none)",yes
-"test/verifiedTests/analysis/testSubspaces/testMinSpan.m",analysis,"LP;parallelTB","prepareTest('needsLP', true, 'requiredToolboxes', {'distrib_computing_toolbox'})",no
-"test/verifiedTests/analysis/testSubspaces/testScaleSMatrix.m",analysis,"no-signal","(none)",yes
-"test/verifiedTests/analysis/testSubspaces/testSubspaces.m",analysis,"no-signal","(none)",yes
-"test/verifiedTests/analysis/testThermo/testAddLoopLawConstraints.m",analysis,"MILP;cplex","prepareTest('needsMILP', true, 'requiredSolvers', {'ibm_cplex'})",no
-"test/verifiedTests/analysis/testTopology/testConvertHypergraphToBipartiteGraph/testConvertHypergraph2BipartiteGraph.m",analysis,"no-signal","(none)",yes
-"test/verifiedTests/analysis/testTopology/testFindExtremePathway.m",analysis,"changeSolver","prepareTest('needsLP', true)",no
-"test/verifiedTests/analysis/testTopology/testMatrixCoherence.m",analysis,"no-signal","(none)",yes
-"test/verifiedTests/reconstruction/testBuildRxnSubSystem/testBuildRxn2subSystem.m",reconstruction,"no-signal","(none)",yes
-"test/verifiedTests/reconstruction/testComputeMetFormulae/testGetMolecularMass.m",reconstruction,"no-signal","(none)",yes
-"test/verifiedTests/reconstruction/testConstraintModifications/testConstraintModifciation.m",reconstruction,"no-signal","(none)",yes
-"test/verifiedTests/reconstruction/testCreateXMatrix.m",reconstruction,"no-signal","(none)",yes
-"test/verifiedTests/reconstruction/testDetectDeadEnds/testDetectDeadEnds.m",reconstruction,"changeSolver;cplex","prepareTest('needsLP', true, 'requiredSolvers', {'ibm_cplex'})",no
-"test/verifiedTests/reconstruction/testElementalBalance/testElementalBalance.m",reconstruction,"no-signal","(none)",yes
-"test/verifiedTests/reconstruction/testElementalComposition/testElementalComposition.m",reconstruction,"no-signal","(none)",yes
-"test/verifiedTests/reconstruction/testFastLeakTest/testFastLeakTest.m",reconstruction,"changeSolver;cplex","prepareTest('needsLP', true, 'requiredSolvers', {'ibm_cplex'})",no
-"test/verifiedTests/reconstruction/testGapFind/testGapFind.m",reconstruction,"changeSolver;cplex","prepareTest('needsLP', true, 'requiredSolvers', {'ibm_cplex'})",no
-"test/verifiedTests/reconstruction/testGPRLogic/testGPRLogic.m",reconstruction,"no-signal","(none)",yes
-"test/verifiedTests/reconstruction/testGrowthExpMatch/testGrowthExpMatch.m",reconstruction,"changeSolver","prepareTest('needsLP', true)",no
-"test/verifiedTests/reconstruction/testInChI/testInchi.m",reconstruction,"no-signal","(none)",yes
-"test/verifiedTests/reconstruction/testLegacy/testModelManipulationOri.m",reconstruction,"no-signal","(none)",yes
-"test/verifiedTests/reconstruction/testMassChargeBalance/testMassChargeBalance.m",reconstruction,"no-signal","(none)",yes
-"test/verifiedTests/reconstruction/testModelBorgifier/testModelBorgifier.m",reconstruction,"no-signal","(none)",yes
-"test/verifiedTests/reconstruction/testModelGeneration/testVerifyModel.m",reconstruction,"no-signal","(none)",yes
-"test/verifiedTests/reconstruction/testModelManipulation/testBatchAddition.m",reconstruction,"no-signal","(none)",yes
-"test/verifiedTests/reconstruction/testModelManipulation/testChangeObjective.m",reconstruction,"no-signal","(none)",yes
-"test/verifiedTests/reconstruction/testModelManipulation/testChangeRxnBounds.m",reconstruction,"no-signal","(none)",yes
-"test/verifiedTests/reconstruction/testModelManipulation/testCheckObjective.m",reconstruction,"no-signal","(none)",yes
-"test/verifiedTests/reconstruction/testModelManipulation/testDynamicModelFieldModification.m",reconstruction,"no-signal","(none)",yes
-"test/verifiedTests/reconstruction/testModelManipulation/testExtractMetModel.m",reconstruction,"no-signal","(none)",yes
-"test/verifiedTests/reconstruction/testModelManipulation/testGenerateRules.m",reconstruction,"no-signal","(none)",yes
-"test/verifiedTests/reconstruction/testModelManipulation/testMergeTwoModels.m",reconstruction,"no-signal","(none)",yes
-"test/verifiedTests/reconstruction/testModelManipulation/testMIRIAMAnnotation.m",reconstruction,"no-signal","(none)",yes
-"test/verifiedTests/reconstruction/testModelManipulation/testRemoveDuplicateRxn.m",reconstruction,"no-signal","(none)",yes
-"test/verifiedTests/reconstruction/testModelManipulation/testSubSystemModification.m",reconstruction,"no-signal","(none)",yes
-"test/verifiedTests/reconstruction/testModelManipulation/testUpdateGenes.m",reconstruction,"no-signal","(none)",yes
-"test/verifiedTests/reconstruction/testRBioNet/testGetGeneList.m",reconstruction,"no-signal","(none)",yes
-"test/verifiedTests/reconstruction/testRBioNet/testGPR2Genes.m",reconstruction,"no-signal","(none)",yes
-"test/verifiedTests/reconstruction/testRBioNet/testLegalRxnFormula.m",reconstruction,"no-signal","(none)",yes
-"test/verifiedTests/reconstruction/testRBioNet/testLoadReaction.m",reconstruction,"no-signal","(none)",yes
-"test/verifiedTests/reconstruction/testRBioNet/testMets2str.m",reconstruction,"no-signal","(none)",yes
-"test/verifiedTests/reconstruction/testRBioNet/testModel2data.m",reconstruction,"no-signal","(none)",yes
-"test/verifiedTests/reconstruction/testRBioNet/testNeighborRxn2data.m",reconstruction,"no-signal","(none)",yes
-"test/verifiedTests/reconstruction/testRBioNet/testRBioNetSaveLoad.m",reconstruction,"no-signal","(none)",yes
-"test/verifiedTests/reconstruction/testRBioNet/testReactionEq.m",reconstruction,"no-signal","(none)",yes
-"test/verifiedTests/reconstruction/testRBioNet/testSimilarity.m",reconstruction,"no-signal","(none)",yes
-"test/verifiedTests/dataIntegration/testChemoInformatics/testDeleteProtons.m",dataIntegration,"no-signal","(none)",yes
-"test/verifiedTests/dataIntegration/testConstrainRxns/testConstrainRxns.m",dataIntegration,"LP","prepareTest('needsLP', true)",no
-"test/verifiedTests/dataIntegration/testMetaboTools/testCalculateLODs.m",dataIntegration,"no-signal","(none)",yes
-"test/verifiedTests/dataIntegration/testMetaboTools/testComputeFluxSplits.m",dataIntegration,"LP;cplex","prepareTest('needsLP', true, 'requiredSolvers', {'ibm_cplex'})",no
-"test/verifiedTests/dataIntegration/testMetaboTools/testConc2Rate.m",dataIntegration,"no-signal","(none)",yes
-"test/verifiedTests/dataIntegration/testMetaboTools/testFluxSplits.m",dataIntegration,"changeSolver;cplex","prepareTest('needsLP', true, 'requiredSolvers', {'ibm_cplex'})",no
-"test/verifiedTests/dataIntegration/testMetaboTools/testPruneModel.m",dataIntegration,"no-signal","(none)",yes
-"test/verifiedTests/dataIntegration/testMetaboTools/testSetConstraintsOnBiomassReaction.m",dataIntegration,"no-signal","(none)",yes
-"test/verifiedTests/dataIntegration/testMetaboTools/testSetMediumConstraints.m",dataIntegration,"no-signal","(none)",yes
-"test/verifiedTests/dataIntegration/testMolecularMass/testMolecularMass.m",dataIntegration,"no-signal","(none)",yes
-"test/verifiedTests/dataIntegration/testMOOMIN/testWriteMoominOutput.m",dataIntegration,"no-signal","(none)",yes
-"test/verifiedTests/dataIntegration/testPreprocessing/testPreprocessing.m",dataIntegration,"no-signal","(none)",yes
-"test/verifiedTests/design/testGDLS/testGDLS.m",design,"changeSolver","prepareTest('needsLP', true)",no
-"test/verifiedTests/design/testMultiProductionEnvelopeInorg.m",design,"no-signal","(none)",yes
-"test/verifiedTests/design/testMultiProductionEnvelope.m",design,"no-signal","(none)",yes
-"test/verifiedTests/design/testOptForce/testExportSetToGAMS.m",design,"no-signal","(none)",yes
-"test/verifiedTests/design/testOptKnock/testOptKnock.m",design,"changeSolver;cplex","prepareTest('needsLP', true, 'requiredSolvers', {'ibm_cplex'})",no
-"test/verifiedTests/design/testProductionEnvelope.m",design,"no-signal","(none)",yes
-"test/verifiedTests/design/testSimpleOptKnock.m",design,"no-signal","(none)",yes
-"test/verifiedTests/design/testSingleProductionEnvelope.m",design,"no-signal","(none)",yes
-"test/verifiedTests/design/testTheoretMaxProd.m",design,"LP","prepareTest('needsLP', true)",no
-"test/verifiedTests/visualization/testCreateMetIntrcNetwork/testCreateMetIntrcNetwork.m",visualization,"no-signal","(none)",yes
-"test/verifiedTests/visualization/testEFMviz/testEfmEnrichmentAnalysis.m",visualization,"no-signal","(none)",yes
-"test/verifiedTests/visualization/testEFMviz/testEfmFilter.m",visualization,"no-signal","(none)",yes
-"test/verifiedTests/visualization/testEFMviz/testEfmImport.m",visualization,"no-signal","(none)",yes
-"test/verifiedTests/visualization/testEFMviz/testEfmSubmodelExtractionAsSBML.m",visualization,"no-signal","(none)",yes
-"test/verifiedTests/visualization/testEFMviz/testEfmSubsystemsExtraction.m",visualization,"no-signal","(none)",yes
-"test/verifiedTests/visualization/testEFMviz/testEfmYieldAnalysis.m",visualization,"no-signal","(none)",yes
-"test/verifiedTests/visualization/testMaps/testMaps.m",visualization,"LP","prepareTest('needsLP', true)",no
-"test/verifiedTests/visualization/testMetabolicCartography/testCD/testCD.m",visualization,"no-signal","(none)",yes
-"test/verifiedTests/visualization/testPaint4Net/testPaint4Net_bio_draw_by_met.m",visualization,"no-signal","(none)",yes
-"test/verifiedTests/visualization/testPaint4Net/testPaint4Net_bio_draw_by_rxn.m",visualization,"no-signal","(none)",yes
-"test/verifiedTests/visualization/testPaint4Net/testPaint4Net_draw_by_met.m",visualization,"no-signal","(none)",yes
-"test/verifiedTests/visualization/testPaint4Net/testPaint4Net_draw_by_rxn.m",visualization,"no-signal","(none)",yes
-"test/verifiedTests/visualization/testReconMap/testPrintInRecon3Dmap.m",visualization,"no-signal","(none)",yes
-"test/verifiedTests/visualization/testVisualizeEpistasis/testConvertGene2PathwayInteractions.m",visualization,"no-signal","(none)",yes
-"test/verifiedTests/visualization/testVisualizeEpistasis/testFindSubsystemOfGenes.m",visualization,"no-signal","(none)",yes
-"test/verifiedTests/visualization/testVisualizeEpistasis/testVisualizeEpistasis.m",visualization,"no-signal","(none)",yes
+testPath,category,declaration,noneNeeded
+"test/verifiedTests/base/testBuildGrRules/testBuildGrRules.m",base,"(none needed)",yes
+"test/verifiedTests/base/testCardOpt/testSparseLP.m",base,"prepareTest('needsLP', true)",no
+"test/verifiedTests/base/testInstall/testAddKeyToKnownHosts.m",base,"(none needed)",yes
+"test/verifiedTests/base/testInstall/testInitCobraToolboxAgentMode.m",base,"prepareTest('requiredSolvers', {'mosek'})",no
+"test/verifiedTests/base/testIO/testConvertCNAModelToCbModel.m",base,"(none needed)",yes
+"test/verifiedTests/base/testIO/testConvertCobraToSBML.m",base,"(none needed)",yes
+"test/verifiedTests/base/testIO/testConvertModelToEX.m",base,"(none needed)",yes
+"test/verifiedTests/base/testIO/testIsValidJSON/testIsValidJSON.m",base,"(none needed)",yes
+"test/verifiedTests/base/testIO/testKEGG/testTransformModel2KEGG.m",base,"(none needed)",yes
+"test/verifiedTests/base/testIO/testReadWriteCbModel.m",base,"(none needed)",yes
+"test/verifiedTests/base/testIO/testSbmlTestModelToMat.m",base,"(none needed)",yes
+"test/verifiedTests/base/testIO/testUtilities/testGenerateFieldDescriptionFile.m",base,"(none needed)",yes
+"test/verifiedTests/base/testIO/testUtilities/testGetDatabaseMappings.m",base,"(none needed)",yes
+"test/verifiedTests/base/testIO/testUtilities/testGetDefaultCompartments.m",base,"(none needed)",yes
+"test/verifiedTests/base/testIO/testUtilities/testGetDefaultCompartmentSymbols.m",base,"(none needed)",yes
+"test/verifiedTests/base/testIO/testUtilities/testLoadIdentifiedModel.m",base,"(none needed)",yes
+"test/verifiedTests/base/testIO/testUtilities/testOutputHypergraph.m",base,"(none needed)",yes
+"test/verifiedTests/base/testIO/testUtilities/testOutputNetworkOmix.m",base,"(none needed)",yes
+"test/verifiedTests/base/testIO/testUtilities/testPlanariseModel.m",base,"(none needed)",yes
+"test/verifiedTests/base/testIO/testUtilities/testRestrictModelsToFields.m",base,"(none needed)",yes
+"test/verifiedTests/base/testIO/testUtilities/testWriteCytoscapeEdgeAttributeTable.m",base,"(none needed)",yes
+"test/verifiedTests/base/testIO/testWriteCbModel.m",base,"(none needed)",yes
+"test/verifiedTests/base/testIO/testWriteMinosProblem.m",base,"(none needed)",yes
+"test/verifiedTests/base/testIO/testWriteSBML.m",base,"(none needed)",yes
+"test/verifiedTests/base/testLifting/testLiftCouplingConstraints.m",base,"prepareTest('needsLP', true)",no
+"test/verifiedTests/base/testLifting/testLiftModel.m",base,"prepareTest('needsLP', true)",no
+"test/verifiedTests/base/testLifting/testReformulate.m",base,"(none needed)",yes
+"test/verifiedTests/base/testMPS/testMPS.m",base,"(none needed)",yes
+"test/verifiedTests/base/testOutputNetworkCytoscape/testOutputNetworkCytoscape.m",base,"(none needed)",yes
+"test/verifiedTests/base/testParseCobraVarargin/testParseCobraVarargin.m",base,"(none needed)",yes
+"test/verifiedTests/base/testRemoveGeneVersions/testRemoveGeneVersions.m",base,"(none needed)",yes
+"test/verifiedTests/base/testSolvers/testChangeCobraSolver.m",base,"prepareTest('needsLP', true)",no
+"test/verifiedTests/base/testSolvers/testDualRCostDefinition.m",base,"prepareTest('needsLP', true)",no
+"test/verifiedTests/base/testSolvers/testVerifyCobraProblem.m",base,"(none needed)",yes
+"test/verifiedTests/base/testTools/testCalcGroupStats.m",base,"(none needed)",yes
+"test/verifiedTests/base/testTools/testCheckCobraModelUnique.m",base,"(none needed)",yes
+"test/verifiedTests/base/testTools/testColumnVector.m",base,"(none needed)",yes
+"test/verifiedTests/base/testTools/testGenerateSystemConfigReport.m",base,"(none needed)",yes
+"test/verifiedTests/base/testTools/testJaccardIndex.m",base,"(none needed)",yes
+"test/verifiedTests/base/testTools/testMergeModelFieldPositions.m",base,"(none needed)",yes
+"test/verifiedTests/base/testTools/testParseBoolean.m",base,"(none needed)",yes
+"test/verifiedTests/base/testTools/testPrintLabeledData.m",base,"(none needed)",yes
+"test/verifiedTests/base/testTools/testPrintMatrix.m",base,"(none needed)",yes
+"test/verifiedTests/base/testTools/testReadMixedData.m",base,"(none needed)",yes
+"test/verifiedTests/base/testTools/testReporterMets.m",base,"(none needed)",yes
+"test/verifiedTests/base/testTools/testSelMatrix.m",base,"(none needed)",yes
+"test/verifiedTests/base/testTools/testShowprogress.m",base,"(none needed)",yes
+"test/verifiedTests/base/testTools/testSplitString.m",base,"(none needed)",yes
+"test/verifiedTests/base/testTools/testTranslateList.m",base,"(none needed)",yes
+"test/verifiedTests/base/testTools/testUnionCell.m",base,"(none needed)",yes
+"test/verifiedTests/base/testXls2Model/testXls2Model.m",base,"(none needed)",yes
+"test/verifiedTests/analysis/testCorrespondingRowsCols/testCorrespondingRowsCols.m",analysis,"(none needed)",yes
+"test/verifiedTests/analysis/testDeletionStudy/testDeletionStudy.m",analysis,"prepareTest('needsLP', true)",no
+"test/verifiedTests/analysis/testDynamicFBA/testDynamicFBA.m",analysis,"prepareTest('needsLP', true)",no
+"test/verifiedTests/analysis/testEnumerateOptimal/testenumOptimalSols.m",analysis,"prepareTest('needsLP', true, 'needsMILP', true)",no
+"test/verifiedTests/analysis/testExploration/testFindMetsFromRxns.m",analysis,"(none needed)",yes
+"test/verifiedTests/analysis/testExploration/testFindRxnsFromGenes.m",analysis,"(none needed)",yes
+"test/verifiedTests/analysis/testExploration/testFindRxnsFromMets.m",analysis,"(none needed)",yes
+"test/verifiedTests/analysis/testExploration/testFindSubSystemsFromGenes.m",analysis,"(none needed)",yes
+"test/verifiedTests/analysis/testExploration/testGetModelSizes.m",analysis,"(none needed)",yes
+"test/verifiedTests/analysis/testExploration/testSearchModel.m",analysis,"(none needed)",yes
+"test/verifiedTests/analysis/testFBA/testFBA.m",analysis,"prepareTest('needsLP', true)",no
+"test/verifiedTests/analysis/testFindBlockedReaction/testFindBlockedReaction.m",analysis,"prepareTest('needsLP', true)",no
+"test/verifiedTests/analysis/testFindRxnsFromSubSystem/testFindRxnsFromSubSystem.m",analysis,"(none needed)",yes
+"test/verifiedTests/analysis/testGetModelSubSystems/testGetModelSubSystems.m",analysis,"(none needed)",yes
+"test/verifiedTests/analysis/testHillFormula/testHillFormula.m",analysis,"(none needed)",yes
+"test/verifiedTests/analysis/testIsReactionInSubSystem/testIsReactionInSubSystem.m",analysis,"(none needed)",yes
+"test/verifiedTests/analysis/testKLdistance/testKLDis.m",analysis,"(none needed)",yes
+"test/verifiedTests/analysis/testMDFBA/testMDFBA.m",analysis,"prepareTest('needsLP', true, 'needsMILP', true)",no
+"test/verifiedTests/analysis/testMultiSpeciesModelling/testCoupleRxnList2Rxn.m",analysis,"prepareTest('needsLP', true)",no
+"test/verifiedTests/analysis/testMultiSpeciesModelling/testCreateMultipleSpeciesModel.m",analysis,"prepareTest('needsLP', true)",no
+"test/verifiedTests/analysis/testMultiSpeciesModelling/testJoinModelsPairwiseFromList.m",analysis,"(none needed)",yes
+"test/verifiedTests/analysis/testMultiSpeciesModelling/testSimulatePairwiseInteractions.m",analysis,"prepareTest('needsLP', true)",no
+"test/verifiedTests/analysis/testMultiSpeciesModelling/testTranslateMetagenome2AGORA.m",analysis,"(none needed)",yes
+"test/verifiedTests/analysis/testpFBA/testpFBA.m",analysis,"prepareTest('needsLP', true)",no
+"test/verifiedTests/analysis/testPrint/testPrintConstraints.m",analysis,"(none needed)",yes
+"test/verifiedTests/analysis/testPrint/testPrintFluxVector.m",analysis,"(none needed)",yes
+"test/verifiedTests/analysis/testPrint/testPrintGPRForRxns.m",analysis,"(none needed)",yes
+"test/verifiedTests/analysis/testPrint/testPrintRxnFormula.m",analysis,"(none needed)",yes
+"test/verifiedTests/analysis/testPrint/testPrintUptakeBound.m",analysis,"(none needed)",yes
+"test/verifiedTests/analysis/testPrint/testSurfNet.m",analysis,"prepareTest('needsLP', true)",no
+"test/verifiedTests/analysis/testrFBA/testOptimizeRegModel.m",analysis,"prepareTest('needsLP', true, 'needsQP', true)",no
+"test/verifiedTests/analysis/testrFBA/testSolveBooleanRegModel.m",analysis,"prepareTest('needsLP', true)",no
+"test/verifiedTests/analysis/testRobustnessAnalysis/testRobustnessAnalysis.m",analysis,"(none needed)",yes
+"test/verifiedTests/analysis/testSampling/testGpSampler.m",analysis,"prepareTest('needsLP', true)",no
+"test/verifiedTests/analysis/testSubspaces/testDetermineSignMatrix.m",analysis,"(none needed)",yes
+"test/verifiedTests/analysis/testSubspaces/testMinSpan.m",analysis,"prepareTest('requiredSolvers', {'gurobi'})",no
+"test/verifiedTests/analysis/testSubspaces/testScaleSMatrix.m",analysis,"(none needed)",yes
+"test/verifiedTests/analysis/testSubspaces/testSubspaces.m",analysis,"(none needed)",yes
+"test/verifiedTests/analysis/testThermo/testAddLoopLawConstraints.m",analysis,"prepareTest('needsMILP', true)",no
+"test/verifiedTests/analysis/testTopology/testConvertHypergraphToBipartiteGraph/testConvertHypergraph2BipartiteGraph.m",analysis,"(none needed)",yes
+"test/verifiedTests/analysis/testTopology/testFindExtremePathway.m",analysis,"prepareTest('needsLP', true)",no
+"test/verifiedTests/analysis/testTopology/testMatrixCoherence.m",analysis,"(none needed)",yes
+"test/verifiedTests/reconstruction/testBuildRxnSubSystem/testBuildRxn2subSystem.m",reconstruction,"(none needed)",yes
+"test/verifiedTests/reconstruction/testComputeMetFormulae/testGetMolecularMass.m",reconstruction,"(none needed)",yes
+"test/verifiedTests/reconstruction/testConstraintModifications/testConstraintModifciation.m",reconstruction,"(none needed)",yes
+"test/verifiedTests/reconstruction/testCreateXMatrix.m",reconstruction,"(none needed)",yes
+"test/verifiedTests/reconstruction/testDetectDeadEnds/testDetectDeadEnds.m",reconstruction,"prepareTest('needsLP', true)",no
+"test/verifiedTests/reconstruction/testElementalBalance/testElementalBalance.m",reconstruction,"(none needed)",yes
+"test/verifiedTests/reconstruction/testElementalComposition/testElementalComposition.m",reconstruction,"(none needed)",yes
+"test/verifiedTests/reconstruction/testFastLeakTest/testFastLeakTest.m",reconstruction,"prepareTest('needsLP', true)",no
+"test/verifiedTests/reconstruction/testGapFind/testGapFind.m",reconstruction,"prepareTest('needsMILP', true)",no
+"test/verifiedTests/reconstruction/testGPRLogic/testGPRLogic.m",reconstruction,"(none needed)",yes
+"test/verifiedTests/reconstruction/testGrowthExpMatch/testGrowthExpMatch.m",reconstruction,"prepareTest('needsLP', true, 'needsMILP', true)",no
+"test/verifiedTests/reconstruction/testInChI/testInchi.m",reconstruction,"(none needed)",yes
+"test/verifiedTests/reconstruction/testLegacy/testModelManipulationOri.m",reconstruction,"(none needed)",yes
+"test/verifiedTests/reconstruction/testMassChargeBalance/testMassChargeBalance.m",reconstruction,"(none needed)",yes
+"test/verifiedTests/reconstruction/testModelBorgifier/testModelBorgifier.m",reconstruction,"(none needed)",yes
+"test/verifiedTests/reconstruction/testModelGeneration/testVerifyModel.m",reconstruction,"(none needed)",yes
+"test/verifiedTests/reconstruction/testModelManipulation/testBatchAddition.m",reconstruction,"(none needed)",yes
+"test/verifiedTests/reconstruction/testModelManipulation/testChangeObjective.m",reconstruction,"(none needed)",yes
+"test/verifiedTests/reconstruction/testModelManipulation/testChangeRxnBounds.m",reconstruction,"(none needed)",yes
+"test/verifiedTests/reconstruction/testModelManipulation/testCheckObjective.m",reconstruction,"(none needed)",yes
+"test/verifiedTests/reconstruction/testModelManipulation/testDynamicModelFieldModification.m",reconstruction,"(none needed)",yes
+"test/verifiedTests/reconstruction/testModelManipulation/testExtractMetModel.m",reconstruction,"(none needed)",yes
+"test/verifiedTests/reconstruction/testModelManipulation/testGenerateRules.m",reconstruction,"(none needed)",yes
+"test/verifiedTests/reconstruction/testModelManipulation/testMergeTwoModels.m",reconstruction,"(none needed)",yes
+"test/verifiedTests/reconstruction/testModelManipulation/testMIRIAMAnnotation.m",reconstruction,"(none needed)",yes
+"test/verifiedTests/reconstruction/testModelManipulation/testRemoveDuplicateRxn.m",reconstruction,"(none needed)",yes
+"test/verifiedTests/reconstruction/testModelManipulation/testSubSystemModification.m",reconstruction,"(none needed)",yes
+"test/verifiedTests/reconstruction/testModelManipulation/testUpdateGenes.m",reconstruction,"(none needed)",yes
+"test/verifiedTests/reconstruction/testRBioNet/testGetGeneList.m",reconstruction,"(none needed)",yes
+"test/verifiedTests/reconstruction/testRBioNet/testGPR2Genes.m",reconstruction,"(none needed)",yes
+"test/verifiedTests/reconstruction/testRBioNet/testLegalRxnFormula.m",reconstruction,"(none needed)",yes
+"test/verifiedTests/reconstruction/testRBioNet/testLoadReaction.m",reconstruction,"(none needed)",yes
+"test/verifiedTests/reconstruction/testRBioNet/testMets2str.m",reconstruction,"(none needed)",yes
+"test/verifiedTests/reconstruction/testRBioNet/testModel2data.m",reconstruction,"(none needed)",yes
+"test/verifiedTests/reconstruction/testRBioNet/testNeighborRxn2data.m",reconstruction,"(none needed)",yes
+"test/verifiedTests/reconstruction/testRBioNet/testRBioNetSaveLoad.m",reconstruction,"(none needed)",yes
+"test/verifiedTests/reconstruction/testRBioNet/testReactionEq.m",reconstruction,"(none needed)",yes
+"test/verifiedTests/reconstruction/testRBioNet/testSimilarity.m",reconstruction,"(none needed)",yes
+"test/verifiedTests/dataIntegration/testChemoInformatics/testDeleteProtons.m",dataIntegration,"(none needed)",yes
+"test/verifiedTests/dataIntegration/testConstrainRxns/testConstrainRxns.m",dataIntegration,"prepareTest('needsLP', true, 'needsQP', true)",no
+"test/verifiedTests/dataIntegration/testMetaboTools/testCalculateLODs.m",dataIntegration,"(none needed)",yes
+"test/verifiedTests/dataIntegration/testMetaboTools/testComputeFluxSplits.m",dataIntegration,"prepareTest('needsLP', true)",no
+"test/verifiedTests/dataIntegration/testMetaboTools/testConc2Rate.m",dataIntegration,"(none needed)",yes
+"test/verifiedTests/dataIntegration/testMetaboTools/testFluxSplits.m",dataIntegration,"prepareTest('needsLP', true, 'needsQP', true)",no
+"test/verifiedTests/dataIntegration/testMetaboTools/testPruneModel.m",dataIntegration,"(none needed)",yes
+"test/verifiedTests/dataIntegration/testMetaboTools/testSetConstraintsOnBiomassReaction.m",dataIntegration,"(none needed)",yes
+"test/verifiedTests/dataIntegration/testMetaboTools/testSetMediumConstraints.m",dataIntegration,"(none needed)",yes
+"test/verifiedTests/dataIntegration/testMolecularMass/testMolecularMass.m",dataIntegration,"(none needed)",yes
+"test/verifiedTests/dataIntegration/testMOOMIN/testWriteMoominOutput.m",dataIntegration,"(none needed)",yes
+"test/verifiedTests/dataIntegration/testPreprocessing/testPreprocessing.m",dataIntegration,"(none needed)",yes
+"test/verifiedTests/design/testGDLS/testGDLS.m",design,"prepareTest('needsMILP', true)",no
+"test/verifiedTests/design/testMultiProductionEnvelopeInorg.m",design,"(none needed)",yes
+"test/verifiedTests/design/testMultiProductionEnvelope.m",design,"(none needed)",yes
+"test/verifiedTests/design/testOptForce/testExportSetToGAMS.m",design,"(none needed)",yes
+"test/verifiedTests/design/testOptKnock/testOptKnock.m",design,"prepareTest('needsLP', true, 'needsMILP', true)",no
+"test/verifiedTests/design/testProductionEnvelope.m",design,"(none needed)",yes
+"test/verifiedTests/design/testSimpleOptKnock.m",design,"(none needed)",yes
+"test/verifiedTests/design/testSingleProductionEnvelope.m",design,"(none needed)",yes
+"test/verifiedTests/design/testTheoretMaxProd.m",design,"prepareTest('needsLP', true)",no
+"test/verifiedTests/visualization/testCreateMetIntrcNetwork/testCreateMetIntrcNetwork.m",visualization,"(none needed)",yes
+"test/verifiedTests/visualization/testEFMviz/testEfmEnrichmentAnalysis.m",visualization,"(none needed)",yes
+"test/verifiedTests/visualization/testEFMviz/testEfmFilter.m",visualization,"(none needed)",yes
+"test/verifiedTests/visualization/testEFMviz/testEfmImport.m",visualization,"(none needed)",yes
+"test/verifiedTests/visualization/testEFMviz/testEfmSubmodelExtractionAsSBML.m",visualization,"(none needed)",yes
+"test/verifiedTests/visualization/testEFMviz/testEfmSubsystemsExtraction.m",visualization,"(none needed)",yes
+"test/verifiedTests/visualization/testEFMviz/testEfmYieldAnalysis.m",visualization,"(none needed)",yes
+"test/verifiedTests/visualization/testMaps/testMaps.m",visualization,"prepareTest('needsLP', true)",no
+"test/verifiedTests/visualization/testMetabolicCartography/testCD/testCD.m",visualization,"(none needed)",yes
+"test/verifiedTests/visualization/testPaint4Net/testPaint4Net_bio_draw_by_met.m",visualization,"(none needed)",yes
+"test/verifiedTests/visualization/testPaint4Net/testPaint4Net_bio_draw_by_rxn.m",visualization,"(none needed)",yes
+"test/verifiedTests/visualization/testPaint4Net/testPaint4Net_draw_by_met.m",visualization,"(none needed)",yes
+"test/verifiedTests/visualization/testPaint4Net/testPaint4Net_draw_by_rxn.m",visualization,"(none needed)",yes
+"test/verifiedTests/visualization/testReconMap/testPrintInRecon3Dmap.m",visualization,"(none needed)",yes
+"test/verifiedTests/visualization/testVisualizeEpistasis/testConvertGene2PathwayInteractions.m",visualization,"(none needed)",yes
+"test/verifiedTests/visualization/testVisualizeEpistasis/testFindSubsystemOfGenes.m",visualization,"(none needed)",yes
+"test/verifiedTests/visualization/testVisualizeEpistasis/testVisualizeEpistasis.m",visualization,"(none needed)",yes

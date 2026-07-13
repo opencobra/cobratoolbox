@@ -17,6 +17,9 @@ fileDir = fileparts(which('testComputeFluxSplits'));
 cd(fileDir);
 global CBTDIR
 
+% require an LP solver; skip gracefully if none is available
+prepareTest('needsLP', true);
+
 % define the solver packages to be used to run this test
 solverPkgs = {'gurobi', 'tomlab_cplex', 'glpk'};
 

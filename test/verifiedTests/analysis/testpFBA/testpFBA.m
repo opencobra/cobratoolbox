@@ -20,6 +20,9 @@ currentDir = pwd;
 fileDir = fileparts(which('testpFBA'));
 cd(fileDir);
 
+% require an LP solver; skip gracefully if none is available
+prepareTest('needsLP', true);
+
 %tolerance
 tol = 1e-8;
 

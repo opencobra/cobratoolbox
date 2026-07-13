@@ -21,6 +21,9 @@ currentDir = pwd;
 fileDir = fileparts(which('testDeletionStudy'));
 cd(fileDir);
 
+% require an LP solver; skip gracefully if none is available
+prepareTest('needsLP', true);
+
 tol = 1e-6;
 
 %load model

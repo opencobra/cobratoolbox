@@ -17,6 +17,9 @@ currentDir = pwd;
 fileDir = fileparts(which('testFluxSplits'));
 cd(fileDir);
 
+% require LP and QP solvers; skip gracefully if none is available
+prepareTest('needsLP', true, 'needsQP', true);
+
 % define a toy model with single internal loop
 model.mets = {'A'; 'B'; 'C'};
 model.rxns = {'R1'; 'R2'; 'R3'; 'U'; 'S'};
