@@ -83,9 +83,9 @@ None. The one HIGH analyze finding (miscount) was corrected before this review.
 
 ## Human Approval
 
-- Approved: no
-- Approved option: (pending Gate 2)
-- Approved tasks/scope: (pending)
+- Approved: intent recorded (Gate 2) — source edits NOT yet authorized
+- Approved option: **Approve full feature** (all tasks T001–T022)
+- Approved tasks/scope: T001–T022 (US1 coverage, US2 169-test backfill, US3 skip gate, polish)
 - Required implementation invocation per constitution: an explicit `/speckit-implement` (Principle
-  VI). A Gate 2 menu choice alone does NOT authorize source edits.
-- Date (UTC): (pending)
+  VI). A Gate 2 menu choice alone does NOT authorize source edits. **Awaiting** that invocation.
+- Date (UTC): 2026-07-13

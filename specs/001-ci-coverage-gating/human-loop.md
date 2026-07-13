@@ -30,15 +30,19 @@
 ## Human Decisions
 | Date (UTC) | Gate | Option chosen | Consequence |
 |---|---|---|---|
-| 2026-07-13 | Gate 1 | Continue to planning | Full scope retained (coverage wiring + skip gate + full ~200-test backfill); proceed to plan/tasks/analyze |
+| 2026-07-13 | Gate 1 | Continue to planning | Full scope retained (coverage wiring + skip gate + full backfill); proceed to plan/tasks/analyze |
+| 2026-07-13 | Gate 2 | Approve full feature | Intent + scope recorded (all tasks T001–T022). Per Principle VI, NOT yet authorized to edit — awaiting explicit /speckit-implement. |
 
 ## Approved Implementation Scope
-- Approved: no
-- Scope: (undecided)
-- Tasks approved: —
-- Tasks deferred: —
-- Files allowed: —
-- Files not allowed: src/ scientific code, model schema, solver dispatch (no behaviour change)
+- Approved: intent yes (Gate 2, full feature) — edits NOT yet authorized (needs explicit /speckit-implement per Principle VI)
+- Scope: all (T001–T022)
+- Tasks approved: T001–T022 (US1 coverage, US2 169-test backfill, US3 skip gate, polish)
+- Tasks deferred: none
+- Files allowed: .github/workflows/testAllCI_step1.yml; test/testAll.m (one additive mocov arg);
+  test/verifiedTests/**/test*.m (add prepareTest only); test/verifiedTests/.skip-baseline.json (new);
+  .gitignore; specs/001-ci-coverage-gating/audit/backfill-audit.csv (new)
+- Files not allowed: any src/ scientific code, COBRA model schema, src/base/solvers/** dispatch,
+  deprecated/, external/, binary/, solver-status semantics; test/runTestSuite.m; testAllCI_step2.yml
 
 ## Pointers
 - Implementation receipt(s): (none yet; will live under specs/001-ci-coverage-gating/agent-runs/<UTC>-<name>/implementation-receipt.md per constitution)
