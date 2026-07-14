@@ -1,7 +1,9 @@
 # Human Loop State
 
 ## Current State
-- Status: Bundle 4 complete — awaiting Gate 3 (closeout)
+- Status: CLOSED — Gate 3 "Accept & close" (2026-07-14). Feature complete on branch
+  006-xomicstomodel-test (HEAD 9668cb4b7); NOT merged to develop (merge deferred to an
+  explicit later step, per the chosen conservative closeout).
 - Active feature directory: specs/006-xomicstomodel-test
 - Last completed bundle: Bundle 4 (verification + closeout prep)
 - Source code modified by this workflow: yes (2 new tests + omics fixtures; both pass full mode, skip fast)
@@ -35,6 +37,8 @@
 | Date (UTC) | Gate | Option chosen | Consequence |
 |---|---|---|---|
 | 2026-07-14 | (origin) | "speckit the XomicsToModel test" | feature 006 started; iDopaNeuro drivers ruled out (private paths) |
+| 2026-07-14 | Gate 2 | "Approve all tasks" | T001–T008 authorized; edits gated on explicit /speckit-implement |
+| 2026-07-14 | Gate 3 | "Accept & close" | feature complete on branch; not merged to develop (deferred to explicit later step) |
 
 ## Approved Implementation Scope
 - Approved: intent yes (Gate 2 = "Approve all tasks", 2026-07-14); edits gated on explicit /speckit-implement
