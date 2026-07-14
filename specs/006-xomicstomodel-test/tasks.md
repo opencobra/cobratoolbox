@@ -2,6 +2,15 @@
 
 **Input**: spec.md, plan.md. **Tests**: the two new tests are the deliverable; validated by running them in full mode.
 
+## Implementation status (2026-07-14) — DONE (both extractors viable)
+
+Both extractors converged (T001 fastCore 572s → 1375×2222/1235 genes; T002 thermoKernel
+563s → 1393×2232/1231 genes; both feasible). T003 fixtures copied. T004/T005 both tests
+written. T006 verified: both PASS in full mode (fastCore 553s, thermoKernel 550s) and both
+SKIP in fast mode. T007 checkcode clean (by-design globals only); no src change. T008 receipt
+written under agent-runs/. Assertions: feasible model + size within 5% + ≥85% of 334 core
+reactions retained.
+
 ## Phase 1: Viability & references (must precede writing assertions)
 
 - [ ] T001 Run `XomicsToModel` with `fastCore` to COMPLETION once (generous bounded `matlab -batch`, e.g. ≤30 min) on the shipped model + omics data; record runtime and capture reference facts (extracted model size, `optimizeCbModel` stat/objective, a set of expected core reactions). If it does not complete within the cap, DEFER the fastCore test and document.
