@@ -197,3 +197,9 @@ test/performance/
 # local Python virtualenv for the docs build (regenerable; deps in documentation/requirements.txt)
 documentation/.venv/
 .venv/
+
+# regenerable igemRNA post-optimization test outputs (written by src/analysis/igemRNA/* during their
+# tests, which mkdir the dir and rewrite the .xls each run, then read it back; Principle IX)
+test/verifiedTests/analysis/testCalculateFluxShifts/resultsPostOptimization/fluxShifts/
+test/verifiedTests/analysis/testFilterNonFluxReactions/resultsPostOptimization/nonFluxReactions/
+test/verifiedTests/analysis/testFilterRateLimittingReactions/resultsPostOptimization/rateLimittingReactions/
