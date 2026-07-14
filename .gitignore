@@ -198,8 +198,11 @@ test/performance/
 documentation/.venv/
 .venv/
 
-# regenerable igemRNA post-optimization test outputs (written by src/analysis/igemRNA/* during their
-# tests, which mkdir the dir and rewrite the .xls each run, then read it back; Principle IX)
+# regenerable igemRNA post-optimization test outputs (rewritten by src/analysis/igemRNA/* each run;
+# not committed, per Principle IX). fluxShifts/ and rateLimittingReactions/ are written and read back
+# by their tests. nonFluxReactionsnonFluxReactionsWT.xls is a stray flat output caused by a missing
+# filesep in filterNonFluxReactions.m:84 — it is written but never read; the test reads the committed
+# fixture nonFluxReactions/nonFluxReactionsWT.xls, which stays tracked.
 test/verifiedTests/analysis/testCalculateFluxShifts/resultsPostOptimization/fluxShifts/
-test/verifiedTests/analysis/testFilterNonFluxReactions/resultsPostOptimization/nonFluxReactions/
+test/verifiedTests/analysis/testFilterNonFluxReactions/resultsPostOptimization/nonFluxReactionsnonFluxReactionsWT.xls
 test/verifiedTests/analysis/testFilterRateLimittingReactions/resultsPostOptimization/rateLimittingReactions/
