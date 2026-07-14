@@ -1,10 +1,22 @@
 # Human Loop State
 
 ## Current State
-- Status: Bundle 3 complete — awaiting Gate 3 (closeout)
+- Status: Bundle 4 complete — awaiting Gate 3 (closeout)
 - Active feature directory: specs/006-xomicstomodel-test
-- Last completed bundle: Bundle 3 (implementation via /speckit-implement)
+- Last completed bundle: Bundle 4 (verification + closeout prep)
 - Source code modified by this workflow: yes (2 new tests + omics fixtures; both pass full mode, skip fast)
+
+## Bundle 4 — verification summary
+- Commit: 8ef748f22 (amended once to remove briefly-committed debug artifacts).
+- Diff: test-only + fixtures + receipt + spec docs; NO src/**, NO submodule change.
+  Test dir committed tree = 2 tests + data/{bibliomicData.xlsx, exometabolomicData.txt,
+  transcriptomicData.txt} only; no *.mat debug files tracked anywhere; working tree clean.
+- Tests: testXomicsToModel_fastCore PASS full mode (last re-verify 570s), SKIP fast;
+  testXomicsToModel_thermoKernel PASS full mode (550s), SKIP fast. checkcode clean bar
+  by-design global warnings.
+- Deviation recorded: XomicsToModel writes numbered *.debug_prior_to_*.mat checkpoints to cwd;
+  first commit accidentally captured two. Fixed by param.debug=false + temp-dir isolation in
+  both tests; re-verified fastCore leaves debugInTestDir=0/debugInRoot=0. No src change needed.
 
 ## Core Command Ledger
 - constitution:   checked (v1.2.0; implement gate + receipt reconciliation applied)
