@@ -1,9 +1,9 @@
 <!-- SPECKIT START -->
-Active Spec Kit feature: **004-reacting-moieties-test** — repurpose the verified
-conserved-and-reacting-moieties tutorial into a verifiedTests test covering seven
-untested moiety functions and asserting the L*N=0 conservation invariant (figures
-generated but not displayed). Plan: `specs/004-reacting-moieties-test/plan.md`.
-Status: planned; implementation is gated on an explicit `/speckit-implement`.
+Active Spec Kit feature: **006-xomicstomodel-test** — two full-mode-only tests that
+drive XomicsToModel (with fastCore and thermoKernel) on shipped data, covering both
+untested functions, quarantined to full mode because the run is heavyweight. Plan:
+`specs/006-xomicstomodel-test/plan.md`. Status: planned; implementation is gated on an
+explicit `/speckit-implement`. (005 MetaboRePort was deferred — specs/005…/findings.md.)
 <!-- SPECKIT END -->
 
 <!-- Hand-maintained; keep OUTSIDE the SPECKIT markers (Spec Kit rewrites that block). -->
