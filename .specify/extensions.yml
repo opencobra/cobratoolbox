@@ -1,6 +1,7 @@
 installed:
 - agent-context
 - git
+- human-loop
 settings:
   auto_execute_hooks: true
 hooks:

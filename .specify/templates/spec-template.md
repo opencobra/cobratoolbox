@@ -8,6 +8,17 @@
 
 **Input**: User description: "$ARGUMENTS"
 
+<!--
+  CHARACTERIZATION MODE (optional): if this feature back-fills a test for an
+  EXISTING untested function (see Constitution Principle III, "Characterization:
+  Legacy Back-Fill Mode"), fill the "Existing Contract" section (below, after
+  Requirements) to capture CURRENT behaviour — existing inputs, outputs,
+  invariants, tolerances — instead of net-new requirements. The Functional
+  Requirements then describe the test's assertions of that existing contract, not
+  new capabilities. Delete this block and the "Existing Contract" section for
+  greenfield work. Do not restate the Principle III clause here — reference it.
+-->
+
 ## User Scenarios & Testing *(mandatory)*
 
 <!--
@@ -110,6 +121,20 @@
 - **[Entity 1]**: [What it represents, key attributes without implementation]
 - **[Entity 2]**: [What it represents, relationships to other entities]
 
+## Existing Contract *(characterization mode only — delete for greenfield features)*
+
+<!--
+  Fill ONLY when this feature back-fills a test for an existing untested function
+  (Constitution Principle III, "Characterization: Legacy Back-Fill Mode"). Capture
+  CURRENT behaviour, not new requirements.
+-->
+
+- **Function(s) under test**: src/<domain>/<function>
+- **Current inputs / arities**: [existing signature and optional-argument behaviour]
+- **Current outputs**: [returned values, fields, or files produced]
+- **Invariants & expected results**: [with justified tolerances; fixed seed if stochastic]
+- **Coverage gap**: [why it is currently untested — from CI coverage, e.g. features 001/007]
+
 ## Success Criteria *(mandatory)*
 
 <!--
@@ -142,3 +167,19 @@
 - [Assumption about scope boundaries, e.g., "Mobile support is out of scope for v1"]
 - [Assumption about data/environment, e.g., "Existing authentication system will be reused"]
 - [Dependency on existing system/service, e.g., "Requires access to the existing user profile API"]
+
+## Traceability
+
+<!--
+  ACTION REQUIRED: one row per acceptance criterion. Map each criterion to the test
+  that discharges it and to the src/<domain>/ function under test. Every acceptance
+  criterion appears exactly once; no orphan rows (no test without a criterion).
+
+  NO-SOURCE CONVENTION: for a documentation/tooling feature that exercises no source
+  function, name the artifact or check that discharges the criterion in the last
+  column and write "— (no source function)" in the test column where none applies.
+-->
+
+| Acceptance criterion | Discharging test | src/<domain>/ function under test |
+|----------------------|------------------|-----------------------------------|
+| [US1 / FR-00X] | [testName under test/verifiedTests/<category>/] | [src/<domain>/<function>] |
