@@ -193,3 +193,7 @@ coverage_html/
 
 # regenerable testAll profiling report artifacts (feature 002-testall-performance-modes)
 test/performance/
+
+# local Python virtualenv for the docs build (regenerable; deps in documentation/requirements.txt)
+documentation/.venv/
+.venv/
