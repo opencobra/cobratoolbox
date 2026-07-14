@@ -733,7 +733,7 @@ end
 %conserved moiety formula
 moietyFormulae=cell(nIsomorphismClasses,1);
 for i = 1:nIsomorphismClasses
-    if license('test','Statistics_Toolbox')
+    if exist('tabulate','file')==2
         elementTable = tabulate(compElements(I2C(i,:)==1)); % elements in moiety i
     else
         vals = compElements(I2C(i,:)==1);
