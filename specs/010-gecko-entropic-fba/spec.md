@@ -27,7 +27,7 @@ current behaviour first (regression-safety), then add a GECKO test."
 ### Session 2026-07-15
 
 - Q: CQ1 — When `E`/`D` are present, auto-relax the stoichiometric/flux-consistency check or gate it behind a param? → A: **Auto-relax, scoped to enzyme reactions.** Presence of `E`/`D` is the activation signal; the consistency check is automatically skipped ONLY for the enzyme-as-substrate reactions (not a blanket skip), matching the AdaptGECKO reference. No new param.
-- Q: CQ2 — Do the entropy weights (`g`/`f`) apply to the enzyme-usage (`E`/evar) variables, or are those linear-only? → A: **Apply entropy weights to the enzyme variables too** (full entropic treatment, not linear-only). The `g`/`f` weighting extends to the `E`/evar columns — enzyme-usage variables carry an entropy term, not just linear bounds/objective. This affects the entropic formulation and how the assembled problem is handed to `solveCobraEP`.
+- Q: CQ2 — Do the entropy weights (`g`/`f`) apply to the enzyme-usage (`E`/evar) variables? → A (REVISED 2026-07-16, supersedes the initial answer): **Linear-only by DEFAULT; entropy is an OPTION, not the default.** There is currently no scientific justification for maximising the entropy of the `E`/`D` (enzyme-usage) variables, so the enzyme columns are treated as **linear** additional variables by default (`EPproblem.d = 0` for them). An entropy term on the enzyme columns is available **opt-in** via `param.enzymeEntropyWeight > 0` (experimental — the enzyme-dual correctness of the entropy path is not yet validated against a well-conditioned reference model; the entropic interior-point methods are ill-conditioned on tiny fixtures). *(Initial answer was "apply entropy to enzyme variables too"; revised because the maximisation lacks a scientific basis as a default.)*
 - Q: CQ3 — Test-fixture strategy? → A: **Minimal committed fixture in CI; liver-GECKO full-mode-only** (cf. feature 006). A tiny committed enzyme-constrained model runs in routine CI; heavyweight liver-GECKO runs (external `.yml`) are gated to full test mode.
 
 ## User Scenarios & Testing *(mandatory)*
@@ -135,9 +135,10 @@ feasible solution (or a documented, explicit limitation), with canonical `.stat`
   path, same numerical results, same outputs).
 - **FR-003**: When present, the function MUST fold the `[S E; C D]` block and the evar bounds
   (`evarlb`/`evarub`) and objective (`evarc`) into the entropic problem handed to `solveCobraEP`, so
-  the returned solution includes enzyme-usage variables and their duals. The entropy weights
-  (`g`/`f`) MUST extend to the enzyme-usage variables (full entropic treatment per CQ2) — the `E`/evar
-  columns carry an entropy term, not linear-only.
+  the returned solution includes enzyme-usage variables and their duals. The enzyme-usage columns are
+  treated as LINEAR additional variables by default (no entropy term — CQ2 revised: no scientific
+  basis for maximising their entropy); an entropy term on them is available opt-in via
+  `param.enzymeEntropyWeight > 0` (experimental, not the default).
 - **FR-003a**: When `E`/`D` are present, the stoichiometric/flux-consistency check MUST be
   auto-relaxed scoped to the enzyme-as-substrate reactions only (driven by field presence, not a new
   param), leaving the check intact for all other reactions (CQ1).

@@ -311,6 +311,19 @@ end
 % folded into the entropic problem below (fluxes method) via prepareEnzymeConstrainedEP. Absent =>
 % the function behaves exactly as before.
 hasEnzymes = isfield(model,'E') && ~isempty(model.E) && size(model.E,2) > 0;
+% entropy weight applied to the enzyme-usage columns. CQ2 asked for an entropy term on the
+% enzyme variables; that path is implemented but not yet verified for DUAL correctness against a
+% well-conditioned reference model (the entropic interior-point methods are poorly conditioned on
+% tiny fixtures), so it is opt-in via param.enzymeEntropyWeight and DEFAULTS TO 0 (linear-only
+% enzymes), which is the verified, regression-safe behaviour. Set param.enzymeEntropyWeight > 0 to
+% enable the (experimental) maximum-entropy enzyme distribution.
+if hasEnzymes
+    if isfield(param,'enzymeEntropyWeight') && ~isempty(param.enzymeEntropyWeight)
+        enzymeEntropyWeight = param.enzymeEntropyWeight;
+    else
+        enzymeEntropyWeight = 0;
+    end
+end
 
 
 if isfield(model,'H')
@@ -905,7 +918,7 @@ switch param.entropicFBAMethod
                 % feature 010-gecko-entropic-fba: fold optional enzyme-constrained (GECKO)
                 % column variables (E/evar*/D). Linear-only here (enzyme d = 0).
                 if hasEnzymes
-                    [EPproblem, nEvar] = prepareEnzymeConstrainedEP(EPproblem, model, m, n, nConstr, 0);
+                    [EPproblem, nEvar] = prepareEnzymeConstrainedEP(EPproblem, model, m, n, nConstr, enzymeEntropyWeight);
                 end
 
                 solution = solveCobraEP(EPproblem,param);
@@ -1175,7 +1188,7 @@ switch param.entropicFBAMethod
                 % column variables (E/evar*/D). Linear-only here (enzyme d = 0); the entropy
                 % weight on enzyme columns is added separately once the cone reindexing is in place.
                 if hasEnzymes
-                    [EPproblem, nEvar] = prepareEnzymeConstrainedEP(EPproblem, model, m, n, nConstr, 0);
+                    [EPproblem, nEvar] = prepareEnzymeConstrainedEP(EPproblem, model, m, n, nConstr, enzymeEntropyWeight);
                 end
                 expConeBool = EPproblem.d~=0;
                 nExpCone  = nnz(expConeBool);

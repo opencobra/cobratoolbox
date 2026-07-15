@@ -57,11 +57,11 @@ signature; the AdaptGECKO fork (reference only); `fluxConc`/`fluxConcNorm` enzym
   `[S E; C D]` block and append `evarlb/evarub`→`lb/ub`, `evarc`→`c` (mosek + pdco assembly points);
   apply the consistency auto-relax scoped to enzyme reactions (CQ1/FR-003a). **Enzymes LINEAR first**
   (`d=0`) to isolate the fold-in from the reindexing risk. Re-run T004 → non-GECKO unchanged.
-- [ ] T008 [US1] Add entropy on enzyme columns (CQ2/FR-003): set enzyme `EPproblem.d>0`; update the
+- [X] T008 [US1] Add entropy on enzyme columns (CQ2/FR-003): set enzyme `EPproblem.d>0`; update the
   post-solve unpacking + cone-dual reindexing (`nExpCone`, `Fty_K`, `auxPrimal`/`coneF`/`auxRcost`
   offsets) per backend so enzyme primal+duals extract correctly; keep enzyme columns strictly positive
   (log domain); add enzyme fields to the solution struct. Re-run T004 after → non-GECKO STILL unchanged.
-- [ ] T009 [US1] Confirm (git diff + T004 green) the default (no-`E`) path is byte-for-byte preserved
+- [X] T009 [US1] Confirm (git diff + T004 green) the default (no-`E`) path is byte-for-byte preserved
   through both T007 and T008 (FR-002/010).
 
 ## Phase 5: User Story 1/3 - GECKO test, both backends
@@ -74,7 +74,7 @@ signature; the AdaptGECKO fork (reference only); `fluxConc`/`fluxConcNorm` enzym
 
 ## Phase 6: Polish & Cross-Cutting Concerns
 
-- [ ] T012 `check_matlab_code` on `entropicFluxBalanceAnalysis.m` (NEW flags only — pre-existing flags
+- [X] T012 `check_matlab_code` on `entropicFluxBalanceAnalysis.m` (NEW flags only — pre-existing flags
   in the 1795-line function are out of scope) and `prepareEnzymeConstrainedEP.m` (clean).
 - [ ] T013 Run `quickstart.md` V1–V6; confirm existing entropic-FBA tests still pass; diff confined to
   `entropicFBA/**` + `test/verifiedTests/**` + `specs/010-...`; `grep -rl AdaptGECKO src/` → nothing.
