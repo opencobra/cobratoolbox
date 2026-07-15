@@ -65,6 +65,29 @@ switch upper(problemType)
                     'mapSolverStatus: no LP status map for solver ''%s''.', solver);
         end
 
+    case 'QP'
+        switch solver
+
+            case {'tomlab_cplex', 'tomlab_cplex_tomRun', 'ibm_cplex'}
+                % CPLEX-family QP solution status (see solveCobraQP)
+                origStatText = '';
+                if origStat == 1
+                    stat = 1;   % optimal
+                elseif origStat == 3
+                    stat = 0;   % infeasible
+                elseif origStat == 2 || origStat == 4
+                    stat = 2;   % unbounded
+                elseif origStat == 5 || origStat == 6
+                    stat = 3;   % solution exists but not proven optimal / numerical
+                else
+                    stat = -1;  % no optimal solution (other)
+                end
+
+            otherwise
+                error('COBRA:mapSolverStatus:unmappedSolver', ...
+                    'mapSolverStatus: no QP status map for solver ''%s''.', solver);
+        end
+
     otherwise
         error('COBRA:mapSolverStatus:unmappedProblemType', ...
             'mapSolverStatus: no status map for problemType ''%s''.', problemType);

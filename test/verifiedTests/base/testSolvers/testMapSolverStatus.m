@@ -47,6 +47,23 @@ end
 [statLower, ~] = mapSolverStatus('dqqMinos', 'lp', 0);
 assert(statLower == 1);
 
+% CPLEX-family QP status map, transcribed from solveCobraQP.m: {origStat, stat}
+qpCplex = {1,  1;    % optimal
+           2,  2;    % unbounded
+           3,  0;    % infeasible
+           4,  2;    % unbounded
+           5,  3;    % numerical / not proven optimal
+           6,  3;    % numerical / not proven optimal
+           0, -1;    % other
+          10, -1;    % other (>= 10)
+          99, -1};   % other
+for solverName = {'tomlab_cplex', 'tomlab_cplex_tomRun', 'ibm_cplex'}
+    for i = 1:size(qpCplex, 1)
+        stat = mapSolverStatus(solverName{1}, 'QP', qpCplex{i, 1});
+        assert(stat == qpCplex{i, 2});
+    end
+end
+
 % fail loud (no silent status) on an unmapped solver or problem type
 errored = false;
 try

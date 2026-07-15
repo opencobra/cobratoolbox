@@ -96,7 +96,7 @@ deliberate perturbation (quickstart V1).
 - [ ] T010 [US2] Reroute `src/base/solvers/solveCobraLP.m` status-map sites (dqqStatMap :419 & :555,
   lp_solve :661, gurobi block) through `mapSolverStatus`; leave mosek/glpk/lindo/`.origStat`
   mutation untouched. Re-run T004–T006 + T009 via MCP; confirm `.stat`/`.origStat` identical.
-- [ ] T011 [US2] Reroute `src/base/solvers/solveCobraQP.m` (cplex-family block ×3 :218/:268/:325,
+- [X] T011 [US2] Reroute `src/base/solvers/solveCobraQP.m` (cplex-family block ×3 :218/:268/:325,
   qpng :375). Re-run the net + T009 via MCP; confirm identical.
 - [ ] T012 [US2] Reroute `src/base/solvers/solveCobraMILP.m` (cplex ×3 :209/:302/:469, gurobi :274,
   glpk :149). Re-run the net + T009 via MCP; confirm identical.
