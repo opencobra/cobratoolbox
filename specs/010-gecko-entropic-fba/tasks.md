@@ -30,7 +30,7 @@ signature; the AdaptGECKO fork (reference only); `fluxConc`/`fluxConcNorm` enzym
 
 ## Phase 2: Foundational (Blocking Prerequisites)
 
-- [ ] T002 Build a MINIMAL committed enzyme-constrained fixture (tiny model with `E`/`evarlb`/`evarub`/
+- [X] T002 Build a MINIMAL committed enzyme-constrained fixture (tiny model with `E`/`evarlb`/`evarub`/
   `evarc`/`D` in the `buildOptProblemFromModel` shape) beside its test under `test/verifiedTests/`;
   document its expected feasible solution. (Optionally derive via `gecko2CobraSplit` semantics; commit
   a tiny result, not a heavy model.)
@@ -50,10 +50,10 @@ signature; the AdaptGECKO fork (reference only); `fluxConc`/`fluxConcNorm` enzym
 
 ## Phase 4: User Story 1 - GECKO fold-in (Priority: P1) — gated on T005
 
-- [ ] T006 [US1] Create `src/base/solvers/entropicFBA/prepareEnzymeConstrainedEP.m`: detect + validate
+- [X] T006 [US1] Create `src/base/solvers/entropicFBA/prepareEnzymeConstrainedEP.m`: detect + validate
   `E`/`evar*`/`D` dimensions vs `S`/`C` (error with `ME.stack` on mismatch/partial), return the enzyme
   block (columns, bounds, objective, entropy-`d` entries). openCOBRA header, camelCase, no `nargin`.
-- [ ] T007 [US1] Edit `entropicFluxBalanceAnalysis.m` (`fluxes`): behind field detection, fold the
+- [X] T007 [US1] Edit `entropicFluxBalanceAnalysis.m` (`fluxes`): behind field detection, fold the
   `[S E; C D]` block and append `evarlb/evarub`→`lb/ub`, `evarc`→`c` (mosek + pdco assembly points);
   apply the consistency auto-relax scoped to enzyme reactions (CQ1/FR-003a). **Enzymes LINEAR first**
   (`d=0`) to isolate the fold-in from the reindexing risk. Re-run T004 → non-GECKO unchanged.
@@ -66,11 +66,11 @@ signature; the AdaptGECKO fork (reference only); `fluxConc`/`fluxConcNorm` enzym
 
 ## Phase 5: User Story 1/3 - GECKO test, both backends
 
-- [ ] T010 [US1] [US3] Write `test/verifiedTests/.../testEntropicFBAgecko/testEntropicFBAgecko.m`: solve
+- [X] T010 [US1] [US3] Write `test/verifiedTests/.../testEntropicFBAgecko/testEntropicFBAgecko.m`: solve
   the minimal fixture through the GECKO path under mosek AND pdco; assert feasibility, `[S E; C D]` +
   `evarlb/evarub` satisfaction, `evarc` objective contribution, entropy on enzyme columns, canonical
   `.stat`/`.origStat`. Run via MCP; document any mosek/pdco difference (research R6), don't degrade.
-- [ ] T011 [US1] Dimension-mismatch/partial-field error test (FR-004): assert a clear error with stack.
+- [X] T011 [US1] Dimension-mismatch/partial-field error test (FR-004): assert a clear error with stack.
 
 ## Phase 6: Polish & Cross-Cutting Concerns
 
