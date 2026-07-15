@@ -93,16 +93,18 @@ deliberate perturbation (quickstart V1).
 - [X] T009 [US2] Write `test/verifiedTests/base/testSolvers/testMapSolverStatus.m`: feed
   representative native codes per (solver, problemType) and assert the canonical `.stat` (and the
   preserved quirk) — the unit net for the helper.
-- [ ] T010 [US2] Reroute `src/base/solvers/solveCobraLP.m` status-map sites (dqqStatMap :419 & :555,
-  lp_solve :661, gurobi block) through `mapSolverStatus`; leave mosek/glpk/lindo/`.origStat`
-  mutation untouched. Re-run T004–T006 + T009 via MCP; confirm `.stat`/`.origStat` identical.
+- [~] T010 [US2] **PARTIAL:** the two duplicated `dqqStatMap` literals (:419 & :555) are consolidated
+  to `mapSolverStatus(solver,'LP',sol.inform)` — DONE + verified end-to-end (existing testSolveCobraLP
+  exercises dqqMinos/quadMinos). NOT consolidated: `lp_solve` (not installed) and the gurobi LP block
+  (a string switch with INF_OR_UNBD control flow, not a pure map) — deferred/N-A. mosek/glpk/lindo/
+  `.origStat` mutation untouched as specified.
 - [X] T011 [US2] Reroute `src/base/solvers/solveCobraQP.m` (cplex-family block ×3 :218/:268/:325,
   qpng :375). Re-run the net + T009 via MCP; confirm identical.
-- [ ] T012 [US2] Reroute `src/base/solvers/solveCobraMILP.m` (cplex ×3 :209/:302/:469, gurobi :274,
+- [ ] ~~DEFERRED (follow-up)~~ T012 [US2] Reroute `src/base/solvers/solveCobraMILP.m` (cplex ×3 :209/:302/:469, gurobi :274,
   glpk :149). Re-run the net + T009 via MCP; confirm identical.
-- [ ] T013 [US2] Reroute `src/base/solvers/solveCobraMIQP.m` (cplex ×2 :127/:305, gurobi ×2
+- [ ] ~~DEFERRED (follow-up)~~ T013 [US2] Reroute `src/base/solvers/solveCobraMIQP.m` (cplex ×2 :127/:305, gurobi ×2
   :203/:268). Re-run the net + T009 via MCP; confirm identical.
-- [ ] T014 [US2] Run `mcp__matlab__check_matlab_code` on `mapSolverStatus.m` and the four edited
+- [X] T014 [US2] Run `mcp__matlab__check_matlab_code` on `mapSolverStatus.m` and the four edited
   dispatchers; resolve style flags WITHOUT changing behavior.
 
 **Checkpoint**: status maps consolidated; net still green; results identical.
@@ -111,13 +113,13 @@ deliberate perturbation (quickstart V1).
 
 ## Phase 5: Polish & Cross-Cutting Concerns
 
-- [ ] T015 Run the full `quickstart.md` V1–V6 via the MATLAB MCP; confirm existing
+- [X] T015 Run the full `quickstart.md` V1–V6 via the MATLAB MCP; confirm existing
   `testOptimizeCbModel`, `testSolveCobraLP`, `testSolveCobraLPCPLEX` still pass unchanged.
-- [ ] T016 Confirm diff scope confined to `src/base/solvers/**` + `test/verifiedTests/**` +
+- [X] T016 Confirm diff scope confined to `src/base/solvers/**` + `test/verifiedTests/**` +
   `specs/009-fba-characterization-statusmap/**`; no signature/field change (FR-011); duplicated map
   literals removed (grep `dqqStatMap`).
-- [ ] T017 Report files edited, checks run, pass/fail, and any unverified behavior.
-- [ ] T018 Write the implementation receipt at
+- [X] T017 Report files edited, checks run, pass/fail, and any unverified behavior.
+- [X] T018 Write the implementation receipt at
   `specs/009-fba-characterization-statusmap/agent-runs/<UTC-timestamp>-<short-name>/implementation-receipt.md`
   (Prompt, Final response verbatim, Diff summary, Tests, Unresolved issues).
 

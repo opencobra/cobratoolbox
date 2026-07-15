@@ -1,8 +1,13 @@
 # Human Loop State
 
 ## Current State
-- Status: Bundle 3 PARTIAL increment COMMITTED (Part 1 net + :911 fix + dqq consolidation); Part 2
-  QP/MILP/MIQP consolidation PAUSED by user decision. Not pushed.
+- Status: CLOSED OUT at dqq (LP) + cplex (QP) consolidations (user chose "stop Part 2 at dqq+QP").
+  MILP/MIQP consolidation DEFERRED to a follow-up feature. Regression green. Not pushed. Awaiting Gate 3.
+- Commits (local): 88deff65c (Part 1 net + :911 fix + dqq), 10de820d2 (QP consolidation), + closeout.
+- Closeout regression: testSolveCobraLP 3/3 (incl. dqqMinos/quadMinos end-to-end through mapSolverStatus),
+  testOptimizeCbModel 1/1 — no regression from the solveCobraLP/QP edits.
+- Receipts: agent-runs/20260715T152500Z-... (Part 1+dqq) and 20260715T173257Z-part2-qp-closeout.
+- Follow-up: MILP/MIQP status-map consolidation (heterogeneous; needs cplex/tomlab or a MILP/MIQP net).
 - Active feature directory: specs/009-fba-characterization-statusmap
 - Last completed: Part 1 (T001–T007 + T007b) + Part 2 T008/T009/T010-dqq; receipt written.
 - Source modified: solveCobraLP.m (:911 fix + dqq consolidation) + new mapSolverStatus.m + 4 new tests.
@@ -10,6 +15,17 @@
 - MATLAB MCP: reachable (R2026a); all delivered tests green; check_matlab_code(mapSolverStatus) clean.
 - Receipt: agent-runs/20260715T152500Z-fba-characterization-statusmap/implementation-receipt.md
 - To resume: T010 remainder + T011 (QP) + T012 (MILP) + T013 (MIQP) + T014 + T015–T016, then Gate 3.
+
+## Resume 2 (Part 2 continued)
+- T011 (QP) DONE + COMMITTED 10de820d2: CPLEX-family QP if-block (triplicated across tomlab_cplex,
+  tomlab_cplex_tomRun, ibm_cplex) consolidated to mapSolverStatus(solver,'QP',origStat); QP branch
+  added to helper + exhaustive QP unit-test assertions. Verified: unit test green, net green,
+  check_matlab_code clean.
+- Prior commit 88deff65c: Part 1 net + :911 fix + dqq LP consolidation.
+- REMAINING: T012 (MILP) + T013 (MIQP) — ASSESSED as materially harder/lower-verifiability:
+  MILP/MIQP cplex blocks are NON-identical variants (some add ||stat==1/2/3), plus separate gurobi
+  + glpk blocks and the 106||106 quirk; NO MILP/MIQP net + solvers not installed => unit-test-only.
+  Checkpoint taken before proceeding.
 
 ## Core Command Ledger
 - constitution:   checked (v1.3.0; not regenerated)
