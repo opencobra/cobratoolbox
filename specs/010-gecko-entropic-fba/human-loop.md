@@ -1,17 +1,19 @@
 # Human Loop State
 
 ## Current State
-- Status: Implement Part 1 done — characterization net (US2, T001/T003/T004/T005) GREEN + committed.
-  GECKO fold-in (US1: T002, T006-T011) + polish PAUSED at the pre-fold-in checkpoint (highest-risk work).
-- MATLAB MCP: reachable (R2026a); testCharacterizeEntropicFBA green on ecoli_core under mosek + pdco.
-- Receipt: agent-runs/20260715T212225Z-characterization-net/implementation-receipt.md
-- Source modified: NONE yet (net is test-only). entropicFluxBalanceAnalysis.m UNCHANGED.
-- To resume: T002 (minimal GECKO fixture) → T006 (helper) → T007 (linear fold-in) → T008 (entropy+reindex)
-  → T010 (GECKO test both backends) → polish. F1/F2 risks stand.
-- (Superseded) Status: Gate 2 approved (all tasks); AWAITING explicit /speckit-implement before any edit
+- Status: Bundle 3 (implement) COMPLETE — all 15 tasks green. Bundle 4 verification done; AWAITING Gate 3.
+- MATLAB MCP: reachable (R2026a). testCharacterizeEntropicFBA + testEntropicFBAgecko both GREEN under
+  mosek + pdco. Legacy testEntropicFluxBalanceAnalysis (Recon3D) passes on the non-GECKO path (its own
+  pre-existing undefined-`k` bug worked around with k=1; file untouched by 010, recorded to memory).
+- Receipts: agent-runs/20260715T212225Z-characterization-net/ (Part 1) +
+  agent-runs/20260716T000000Z-gecko-fold-in/ (Part 2, this run).
+- Source modified: entropicFluxBalanceAnalysis.m (+52/-3, all guarded by hasEnzymes; no-E path unchanged)
+  + NEW prepareEnzymeConstrainedEP.m. No AdaptGECKO fork shipped in src/.
+- KEY DECISION (overrides initial CQ2): enzyme columns are LINEAR by default; entropy is opt-in via
+  param.enzymeEntropyWeight > 0 (experimental). No scientific basis to maximise enzyme entropy by default.
 - Active feature directory: specs/010-gecko-entropic-fba
-- Last completed bundle: Bundle 2 (plan + tasks + analyze); implementation-review.md written
-- Source code modified by this workflow: no
+- Last completed bundle: Bundle 3 (implementation) + Bundle 4 (verification)
+- Source code modified by this workflow: yes (additive; Principle-II-safe)
 
 ## Core Command Ledger
 - constitution:   checked (v1.3.0; not regenerated)
@@ -21,7 +23,7 @@
 - plan:           invoked (research harvest via subagent; plan/research/data-model/quickstart)
 - tasks:          authored (15 tasks, 6 phases, T005 hard gate: net green before GECKO fold-in)
 - analyze:        invoked (0 blocking; F1/F2 should-fix on the entropy-on-enzymes formulation)
-- implement:      pending (gated on explicit /speckit-implement per Principle VI; edits core src/ + test/)
+- implement:      invoked (/speckit-implement; all 15 tasks done — net + linear fold-in + entropy opt-in)
 
 ## Key research finding
 - The AdaptGECKO fork is a PARTIAL reference only: it represents enzymes as external reactions (no
@@ -52,6 +54,8 @@
 |---|---|---|---|
 | 2026-07-15 | Gate 1 | Continue to plan | Proceed to Bundle 2 (plan + tasks + analyze); no source edits |
 | 2026-07-15 | Gate 2 | Approve all tasks (T001–T015) | Scope approved; implementation gated on explicit /speckit-implement (Principle VI) |
+| 2026-07-15 | Checkpoint | Full fold-in now (accept the risk) | After net committed, proceed to the highest-risk GECKO fold-in |
+| 2026-07-16 | Correction | Enzyme entropy: option, not default | No scientific basis to maximise E/D entropy → linear default, param.enzymeEntropyWeight opt-in (revised CQ2) |
 
 ## Approved Implementation Scope
 - Approved: intent yes (Gate 2, 2026-07-15); edits pending explicit /speckit-implement
@@ -61,8 +65,20 @@
 - Files not allowed: any public-interface/field change; solveCobraEP signature; W-unrelated cleanup
 
 ## Pointers
-- Implementation receipt(s): (none yet)
-- Implementation review: specs/010-gecko-entropic-fba/implementation-review.md (pending)
+- Implementation receipt(s): agent-runs/20260715T212225Z-characterization-net/implementation-receipt.md
+  (Part 1) + agent-runs/20260716T000000Z-gecko-fold-in/implementation-receipt.md (Part 2)
+- Implementation review: specs/010-gecko-entropic-fba/implementation-review.md
+
+## Bundle 4 verification (2026-07-16)
+- Diff scope confined to src/base/solvers/entropicFBA/**, test/verifiedTests/**, specs/010/** (+ .specify/feature.json). ✓
+- No AdaptGECKO* fork shipped in src/. ✓  Signature of entropicFluxBalanceAnalysis unchanged. ✓
+- testCharacterizeEntropicFBA — PASS (mosek + pdco); non-GECKO ||v|| within 1% of baseline. ✓
+- testEntropicFBAgecko — PASS (mosek + pdco): feasible, binding (v_R2==kcat*e), dimension-error. ✓
+- Legacy testEntropicFluxBalanceAnalysis (Recon3D) — PASS on non-GECKO path (k=1 workaround). ✓
+- check_matlab_code — only pre-existing flags; no NEW flags at edit sites; helper clean. ✓
+- Commits on branch: cd8c1f53e (net) + 95c9f85f5 (linear fold-in) + ca42ec095 (entropy opt-in). Not pushed.
+- Follow-ups → memory: entropicfba-infeasible-message-bug, testentropicfba-undefined-k-bug,
+  entropy-dual validation on full-mode liver-GECKO (deferred).
 
 ## Open Risks and Ambiguities
 - CQ2 (entropy on enzyme variables) is the more involved formulation; Phase-0 must determine how the

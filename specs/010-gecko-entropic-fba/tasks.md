@@ -76,10 +76,10 @@ signature; the AdaptGECKO fork (reference only); `fluxConc`/`fluxConcNorm` enzym
 
 - [X] T012 `check_matlab_code` on `entropicFluxBalanceAnalysis.m` (NEW flags only — pre-existing flags
   in the 1795-line function are out of scope) and `prepareEnzymeConstrainedEP.m` (clean).
-- [ ] T013 Run `quickstart.md` V1–V6; confirm existing entropic-FBA tests still pass; diff confined to
+- [X] T013 Run `quickstart.md` V1–V6; confirm existing entropic-FBA tests still pass; diff confined to
   `entropicFBA/**` + `test/verifiedTests/**` + `specs/010-...`; `grep -rl AdaptGECKO src/` → nothing.
-- [ ] T014 Report files edited, checks run, pass/fail, unverified behaviour.
-- [ ] T015 Write the implementation receipt under
+- [X] T014 Report files edited, checks run, pass/fail, unverified behaviour.
+- [X] T015 Write the implementation receipt under
   `specs/010-gecko-entropic-fba/agent-runs/<UTC-timestamp>-<short-name>/implementation-receipt.md`.
 
 ---
