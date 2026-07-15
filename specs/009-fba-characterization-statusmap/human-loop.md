@@ -53,7 +53,14 @@
 ## Human Decisions
 | Date (UTC) | Gate | Option chosen | Consequence |
 |---|---|---|---|
-| 2026-07-15 | Gate 1 | Continue to plan | Proceed to Bundle 2 (plan + tasks + analyze); no source edits |
+| 2026-07-15 | Gate 1 | Continue to plan | Proceed to Bundle 2; no source edits |
+| 2026-07-15 | clarify | Both Part 1 + Part 2 in 009 | Scope = net + refactor, Part 2 gated on Part 1 green |
+| 2026-07-15 | (implement) | Explicit /speckit-implement | Authorized src/test edits (Principle VI) |
+| 2026-07-15 | :911 bug | Fix now, folded into 009 | FR-013 one-line fix; net's first catch |
+| 2026-07-15 | T007 gate | Continue to Part 2 now | Part 1 green; start mapSolverStatus refactor |
+| 2026-07-15 | checkpoint | Commit increment, pause rest | Banked Part 1 + dqq (88deff65c) |
+| 2026-07-15 | MILP/MIQP | Stop Part 2 at dqq+QP; close out | QP committed (10de820d2); MILP/MIQP deferred |
+| 2026-07-15 | Gate 3 | Accept & close 009 | Feature complete at agreed scope; 3 commits, local only |
 
 ## Approved Implementation Scope
 - Approved: no
