@@ -415,25 +415,8 @@ switch solver
             s = b - sol.s(1:end-1);
         end
 
-        % Translation of DQQ of exit codes from https://github.com/kerrickstaley/lp_solve/blob/master/lp_lib.h
-        dqqStatMap = {-5, 'UNKNOWNERROR', -1;
-                      -4, 'DATAIGNORED',  -1;
-                      -3, 'NOBFP',        -1;
-                      -2, 'NOMEMORY',     -1;
-                      -1, 'NOTRUN',       -1;
-                       0, 'OPTIMAL',       1;
-                       1, 'SUBOPTIMAL',   -1;
-                       2, 'INFEASIBLE',    0;
-                       3, 'UNBOUNDED',     2;
-                       4, 'DEGENERATE',   -1;
-                       5, 'NUMFAILURE',   -1;
-                       6, 'USERABORT',    -1;
-                       7, 'TIMEOUT',      -1;
-                       8, 'RUNNING',      -1;
-                       9, 'PRESOLVED',    -1};
-        
-        origStat = dqqStatMap{[dqqStatMap{:,1}] == sol.inform, 2};
-        stat = dqqStatMap{[dqqStatMap{:,1}] == sol.inform, 3};
+        % native-to-canonical status translation is consolidated in mapSolverStatus
+        [stat, origStat] = mapSolverStatus(solver, 'LP', sol.inform);
 
         if ~problemTypeParams.debug % if debugging leave the files in case of an error.
             cleanUp = onCleanup(@() DQQCleanup(tmpPath,originalDirectory));
@@ -551,25 +534,8 @@ switch solver
             s = b - sol.s(1:end-1);
         end
         
-        % Translation of DQQ of exit codes from https://github.com/kerrickstaley/lp_solve/blob/master/lp_lib.h
-        dqqStatMap = {-5, 'UNKNOWNERROR', -1;
-                      -4, 'DATAIGNORED',  -1;
-                      -3, 'NOBFP',        -1;
-                      -2, 'NOMEMORY',     -1;
-                      -1, 'NOTRUN',       -1;
-                       0, 'OPTIMAL',       1;
-                       1, 'SUBOPTIMAL',   -1;
-                       2, 'INFEASIBLE',    0;
-                       3, 'UNBOUNDED',     2;
-                       4, 'DEGENERATE',   -1;
-                       5, 'NUMFAILURE',   -1;
-                       6, 'USERABORT',    -1;
-                       7, 'TIMEOUT',      -1;
-                       8, 'RUNNING',      -1;
-                       9, 'PRESOLVED',    -1};
-        
-        origStat = dqqStatMap{[dqqStatMap{:,1}] == sol.inform, 2};
-        stat = dqqStatMap{[dqqStatMap{:,1}] == sol.inform, 3};
+        % native-to-canonical status translation is consolidated in mapSolverStatus
+        [stat, origStat] = mapSolverStatus(solver, 'LP', sol.inform);
 
         if ~problemTypeParams.debug % if debugging leave the files in case of an error.
             minosCleanUp(pwd,dataDirectory,modelName);
@@ -908,7 +874,7 @@ switch solver
                 % we simply remove the objective and solve again.
                 % if the status becomes 'OPTIMAL', it is unbounded, otherwise it is infeasible.
                 gurobiLP.obj(:) = 0;
-                resultgurobi = gurobi(gurobiLP,param);
+                resultgurobi = gurobi(gurobiLP,gurobiParam);
                 if strcmp(resultgurobi.status,'OPTIMAL')
                     stat = 2;
                 else
