@@ -1700,12 +1700,19 @@ switch solution.stat
         %solution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, param)
         param.debug=1;
         solution_optimizeCbModel = optimizeCbModel(model,'min',[],1,param);
+        % message must be defined for every optimizeCbModel status, not only 0/1,
+        % so an infeasible EP returns a clean stat=0 with a populated message rather
+        % than erroring on an undefined variable (e.g. when optimizeCbModel returns -1
+        % or 2 on an enzyme-constrained model)
+        message = ['entropicFluxBalanceAnalysis: EPproblem is not feasible; optimizeCbModel returned status ' int2str(solution_optimizeCbModel.stat) '.'];
         switch solution_optimizeCbModel.stat
             case 0
                 message = 'entropicFluxBalanceAnalysis: EPproblem is not feasible, because LP part of model is not feasible according to optimizeCbModel.';
                 warning(message)
             case 1
                 message ='entropicFluxBalanceAnalysis: EPproblem is not feasible, but LP part of model is feasible according to optimizeCbModel.';
+                warning(message)
+            otherwise
                 warning(message)
         end
         if isfield(solution,'messages')
