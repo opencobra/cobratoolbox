@@ -305,6 +305,26 @@ else
     nConstr = 0;
 end
 
+% optional enzyme-constrained (GECKO) column variables (feature 010-gecko-entropic-fba):
+% model.E (enzyme columns in metabolite rows), model.D (enzyme columns in coupling rows),
+% model.evarlb/evarub/evarc. Detected by a non-empty E with >=1 column; when present they are
+% folded into the entropic problem below (fluxes method) via prepareEnzymeConstrainedEP. Absent =>
+% the function behaves exactly as before.
+hasEnzymes = isfield(model,'E') && ~isempty(model.E) && size(model.E,2) > 0;
+% entropy weight applied to the enzyme-usage columns. CQ2 asked for an entropy term on the
+% enzyme variables; that path is implemented but not yet verified for DUAL correctness against a
+% well-conditioned reference model (the entropic interior-point methods are poorly conditioned on
+% tiny fixtures), so it is opt-in via param.enzymeEntropyWeight and DEFAULTS TO 0 (linear-only
+% enzymes), which is the verified, regression-safe behaviour. Set param.enzymeEntropyWeight > 0 to
+% enable the (experimental) maximum-entropy enzyme distribution.
+if hasEnzymes
+    if isfield(param,'enzymeEntropyWeight') && ~isempty(param.enzymeEntropyWeight)
+        enzymeEntropyWeight = param.enzymeEntropyWeight;
+    else
+        enzymeEntropyWeight = 0;
+    end
+end
+
 
 if isfield(model,'H')
     Hi = model.H(:,model.SConsistentRxnBool);
@@ -895,11 +915,25 @@ switch param.entropicFBAMethod
                 %variables for entropy maximisation
                 EPproblem.d=zeros(size(EPproblem.A,2),1);
                 EPproblem.d(1:2*n)=[g;g];
-                
+                % feature 010-gecko-entropic-fba: fold optional enzyme-constrained (GECKO)
+                % column variables (E/evar*/D). Linear-only here (enzyme d = 0).
+                if hasEnzymes
+                    [EPproblem, nEvar] = prepareEnzymeConstrainedEP(EPproblem, model, m, n, nConstr, enzymeEntropyWeight);
+                end
+
                 solution = solveCobraEP(EPproblem,param);
                 if 0
                     save('infeasibleEPproblem.mat','EPproblem','model')
                     return
+                end
+
+                % feature 010-gecko-entropic-fba: enzyme-usage variables are the last nEvar
+                % columns of the primal; expose them (and their reduced costs) on the solution.
+                if hasEnzymes && solution.stat == 1 && isfield(solution,'full')
+                    solution.e = solution.full(end-nEvar+1:end);
+                    if isfield(solution,'rcost')
+                        solution.z_e = solution.rcost(end-nEvar+1:end);
+                    end
                 end
                 
                 switch solution.stat
@@ -1150,6 +1184,12 @@ switch param.entropicFBAMethod
                 %variables for entropy maximisation
                 EPproblem.d=zeros(size(EPproblem.A,2),1);
                 EPproblem.d(1:2*n)=[g;g];
+                % feature 010-gecko-entropic-fba: fold optional enzyme-constrained (GECKO)
+                % column variables (E/evar*/D). Linear-only here (enzyme d = 0); the entropy
+                % weight on enzyme columns is added separately once the cone reindexing is in place.
+                if hasEnzymes
+                    [EPproblem, nEvar] = prepareEnzymeConstrainedEP(EPproblem, model, m, n, nConstr, enzymeEntropyWeight);
+                end
                 expConeBool = EPproblem.d~=0;
                 nExpCone  = nnz(expConeBool);
                 
@@ -1158,7 +1198,15 @@ switch param.entropicFBAMethod
                 solveCobraEPparam.printLevel=solveCobraEPparam.printLevel-1;
                 solution = solveCobraEP(EPproblem,solveCobraEPparam);
 
-                
+                % feature 010-gecko-entropic-fba: enzyme-usage variables are the last nEvar
+                % columns of the primal; expose them (and their reduced costs) on the solution.
+                if hasEnzymes && solution.stat == 1 && isfield(solution,'full')
+                    solution.e = solution.full(end-nEvar+1:end);
+                    if isfield(solution,'rcost')
+                        solution.z_e = solution.rcost(end-nEvar+1:end);
+                    end
+                end
+
                 switch solution.stat
                     case 1
                         % Primal variables
