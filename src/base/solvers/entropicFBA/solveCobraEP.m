@@ -1057,9 +1057,22 @@ switch sol.stat
         end
         
         %gradient may differ depending on the solver
-        res2 = grad  + Aty + sol.rcost;
+        %
+        % KKT stationarity residual (dual optimality condition). mosek returns the
+        % reduced costs as z = zu - zl (parseMskResult), stored as sol.rcost = -z,
+        % whereas the stationarity condition c - A'*y + (zu - zl) - F'*s = 0 uses +z.
+        % Adding +sol.rcost (= -z) therefore mis-signs the reduced-cost term for mosek,
+        % inflating the residual by 2*z (~1.45 on the enzyme toy, ~1187 on the
+        % characterization model) even though the primal is optimal. pdco returns rcost
+        % with the opposite sign convention, for which +sol.rcost is correct.
+        switch param.solver
+            case 'mosek'
+                res2 = grad + Aty - sol.rcost;
+            otherwise
+                res2 = grad + Aty + sol.rcost;
+        end
         tmp2 = norm(res2, inf);
-        
+
         if 0
             optTol = param.optTol * 1e2;
         else

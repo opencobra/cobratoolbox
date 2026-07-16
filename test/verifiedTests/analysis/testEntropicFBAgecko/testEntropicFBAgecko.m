@@ -33,6 +33,7 @@ for k = 1:numel(backends)
     % --- FEASIBLE: enzyme abundant enough (eMax=3 => v_R2 <= 6, forced R2 >= 2) ---
     fprintf('   GECKO entropic FBA feasible case with %s ... ', backend);
     model = buildEnzymeToy(3, kcat);
+    lastwarn('');                                                      % clear (only reads; does not suppress, VII-B)
     solution = entropicFluxBalanceAnalysis(model, param);
     assert(solution.stat == 1);                                        % feasible/optimal
     assert(isfield(solution, 'e'));                                    % enzyme variable returned
@@ -40,19 +41,42 @@ for k = 1:numel(backends)
     assert(solution.v(2) - kcat * solution.e <= tol);                  % enzyme coupling v_R2 <= kcat*e
     assert(norm(model.S * solution.v - model.b) < 1e-4);               % steady-state mass balance
     assert(solution.v(2) >= 2 - 1e-4);                                 % forced flux present
+    assertNoDualWarning(backend);                                      % FR-006: dual residual within optTol
     fprintf('Done.\n');
 
     % --- ENZYME-LIMITED (tight but feasible): eMax=1 => v_R2 <= kcat = 2, forced R2 >= 2 ---
     % the enzyme constraint binds exactly (v_R2 == kcat*e), proving it actively determines
-    % the solution (not merely present). A strictly-infeasible enzyme case is not asserted here
-    % because it exercises a pre-existing infeasibility-diagnostic path in solveCobraEP that is
-    % out of this feature's scope.
+    % the solution (not merely present). The strictly-infeasible enzyme case is asserted below
+    % (feature 011 hardens the infeasibility-diagnostic path that feature 010 left out of scope).
     fprintf('   GECKO entropic FBA enzyme-limited (binding) case with %s ... ', backend);
     modelTight = buildEnzymeToy(1, kcat);
+    lastwarn('');
     solTight = entropicFluxBalanceAnalysis(modelTight, param);
     assert(solTight.stat == 1);
     assert(abs(solTight.v(2) - kcat * solTight.e) < 1e-4);            % enzyme constraint is ACTIVE (binds)
     assert(abs(solTight.e - 1) < 1e-3 && abs(solTight.v(2) - 2) < 1e-3);   % fully-utilised enzyme at the forced flux
+    assertNoDualWarning(backend);                                      % FR-006: dual residual within optTol
+    fprintf('Done.\n');
+end
+
+% FR-001/002/003 (feature 011): a strictly-infeasible enzyme-constrained EP (enzyme cap below the
+% forced flux) must return a clean stat=0 with a populated message, not crash on an undefined
+% `message` (entropicFluxBalanceAnalysis) or a mosek err_argument_dimension in the debug
+% infeasibility diagnostic. Asserted under mosek only: pdco does not detect this infeasibility
+% (it returns stat=1 with a primal-residual warning), a separate pre-existing pdco limitation.
+if exist('mosekopt', 'file')
+    fprintf('   GECKO entropic FBA strictly-infeasible (enzyme cap) case with mosek ... ');
+    modelInfeas = buildEnzymeToy(0.5, kcat);           % eMax=0.5 => v_R2 <= 1 < 2 (forced) => infeasible
+    errored = false;
+    try
+        solInfeas = entropicFluxBalanceAnalysis(modelInfeas, struct('solver', 'mosek', 'printLevel', 0));
+    catch ME
+        errored = true;
+        fprintf('\n   unexpected error: %s (%s line %d)\n', ME.message, ME.stack(1).name, ME.stack(1).line);
+    end
+    assert(~errored);                                                   % no undefined-message / err_argument_dimension crash
+    assert(solInfeas.stat == 0);                                        % clean infeasible status
+    assert(isfield(solInfeas, 'messages') && ~isempty(solInfeas.messages));   % informative message populated
     fprintf('Done.\n');
 end
 
@@ -70,6 +94,17 @@ assert(errored);
 % change the directory back
 cd(currentDir);
 
+
+function assertNoDualWarning(backend)
+    % feature 011 (FR-006): after the reduced-cost sign fix in solveCobraEP, the mosek
+    % dual-optimality (KKT stationarity) residual is within optTol, so no
+    % "Dual optimality condition ... not satisfied" warning is emitted. Reads the last
+    % warning only; it does not suppress any warning (warnings stay visible, Principle VII-B).
+    if strcmp(backend, 'mosek')
+        assert(isempty(regexp(lastwarn, 'Dual\s+optimality condition in solveCobraEP not satisfied', 'once')), ...
+            'unexpected mosek dual-optimality warning: KKT stationarity residual exceeds optTol');
+    end
+end
 
 function model = buildEnzymeToy(eMax, kcat)
     % Minimal enzyme-constrained fixture:
@@ -97,4 +132,8 @@ function model = buildEnzymeToy(eMax, kcat)
     model.evarub = eMax;
     model.evarc = 0;
     model.evars = {'e_R2'};
+    % name the coupling constraint so the mosek debug-path constraint-name array
+    % (buildOptProblemFromModel names.con = [mets; ctrs]) matches the [S E; C D] row
+    % count; without ctrs it is sized from mets only and mosek raises err_argument_dimension
+    model.ctrs = {'enzymeCap'};
 end
