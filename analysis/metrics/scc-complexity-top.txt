@@ -1,0 +1,55 @@
+───────────────────────────────────────────────────────────────────────────────
+Language            Files       Lines    Blanks  Comments       Code Complexity
+───────────────────────────────────────────────────────────────────────────────
+MATLAB              1,572     297,400    27,199    80,847    189,354     25,843
+───────────────────────────────────────────────────────────────────────────────
+~olbox/Test4HumanFctExtv5.m     7,719       185       735      6,799      1,044
+~eration/test4HumanFctExt.m     8,379       236       762      7,381        466
+~icsToModel/XomicsToModel.m     2,290       242       486      1,562        325
+~dy/PSCMToolbox/runIEM_HH.m     2,830       210       195      2,425        290
+~seLP/optimizeCardinality.m     1,174       110       217        847        159
+~ase/solvers/solveCobraLP.m     1,897       155       770        972        158
+~tabolomics/constrainRxns.m     1,369       166       284        919        156
+~/thermoFBA/cycleFreeFlux.m     1,074       155       134        785        145
+~lysis/persephone/persWBM.m     1,113        96       300        717        140
+~CardThermo/optCardThermo.m     1,572       220       318      1,034        139
+~ionDirectionalityiAF1260.m     1,114        90       320        704        130
+~hermoKernel/thermoKernel.m       866       106       191        569        124
+~is/relaxedFBA/relaxedFBA.m       826        76       237        513        123
+~d/optimizeCardinalityOld.m     1,004       105       197        702        123
+~/reports/compareVersions.m       879        40        93        746        121
+~icalConstraintsHMDBbased.m     1,062        73       354        635        120
+~ConstraintsHMDBbasedTEMP.m     1,029        69       336        624        119
+~rceGAMS/optForceWithGAMS.m     1,082        68       266        748        117
+~ropicFluxBalanceAnalysis.m     1,795       148       361      1,286        113
+~ysis/FBA/optimizeCbModel.m     1,044        62       345        637        107
+~ysis/FVA/fastFVA/fastFVA.m       781       105       184        492        107
+~ndStoichConsistentSubset.m       856        80       224        552        105
+~broutines/SteadyComPOAgr.m       772        16       131        625        102
+~ConstraintsHMDBbased_old.m       969        74       316        579        102
+~broutines/SteadyComCplex.m     1,137        29       259        849        100
+~nes/SteadyComSubroutines.m       587        19       162        406         99
+~w_by_rxn/bio_draw_by_rxn.m       633       145       104        384         98
+~ermoConsistentFluxSubset.m       659        78       132        449         98
+~ysis/FVA/fluxVariability.m       802        62       200        540         97
+~olvers/cplex/cplexStatus.m       262        25       127        110         94
+~/Draw_by_rxn/draw_by_rxn.m       619       124       133        362         93
+~design/optForce/optForce.m     1,106        62       261        783         91
+~entropicFBA/solveCobraEP.m     1,111       110       294        707         90
+~vers/mosek/setMosekParam.m       745       143       208        394         89
+~cies/SteadyCom/SteadyCom.m       950        28       246        676         89
+~onservedReactingMoieties.m     1,685       179       483      1,023         86
+~/individualizedLabReport.m       552        41       100        411         86
+~broutines/SteadyComFVAgr.m       579        19       120        440         85
+~ase/solvers/solveCobraQP.m     1,227       114       275        838         85
+~makeModelPropertiesTable.m       492        12        34        446         85
+~/analysis/metUtilisation.m       726        81       115        530         83
+src/base/io/readCbModel.m         629        53       192        384         82
+~lance/computeMetFormulae.m     1,003        23       161        819         77
+~mics/metabolomicsTomodel.m       590        58       134        398         77
+~ysis/sparseFBA/sparseFBA.m       530        41       134        355         74
+~generateChemicalDatabase.m       982        79       182        721         73
+~s/subspaces/checkScaling.m       413        34        88        291         72
+~ex/solveCobraLPCPLEXcard.m       805        63       217        525         71
+~/modelPredictiveCapacity.m       713        67       160        486         71
+~ifier/reactionCompareGUI.m       928       135       198        595         70

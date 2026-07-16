@@ -1,0 +1,90 @@
+# Sub-package file counts per src/ domain (.m files)
+# generated 543f005c6
+
+## src/analysis  (total 605 .m files)
+   132  thermo/
+    78  wholeBody/
+    66  topology/
+    55  exploration/
+    51  multiSpecies/
+    50  sampling/
+    50  persephone/
+    23  subspaces/
+    16  igemRNA/
+     9  rMTA/
+     8  deletion/
+     6  rumba/
+     6  gMCS/
+     6  FVA/
+     6  FBA/
+     5  nutritionAlgorithm/
+     4  robustnessAnalysis/
+     4  QFCA/
+     4  coupling/
+     3  rFBA/
+     3  relaxedFBA/
+     2  sparseFBA/
+     2  ROOM/
+     2  MOMA/
+     2  mdFBA/
+     2  KLdistance/
+     1  uFBA/
+     1  transport/
+     1  percentileCalc/
+     1  parsimoniousFBA/
+     1  ICONGEMs/
+     1  geometricFBA/
+     1  fluxEnrichmentAnalysis/
+     1  findMIIS/
+     1  fastForest/
+     1  dynamicFBA/
+
+## src/base  (total 238 .m files)
+   102  solvers/
+    74  io/
+    23  utilities/
+    14  install/
+     3  cobrarrow/
+     2  paths/
+     1  codeConsistency/
+     1  ci/
+
+## src/dataIntegration  (total 248 .m files)
+    72  metaboAnnotator/
+    45  transcriptomics/
+    35  fluxomics/
+    34  XomicsToModel/
+    30  metabotools/
+    29  chemoInformatics/
+     1  metanetxMapper/
+
+## src/design  (total 60 .m files)
+    13  TrimGdel/
+    11  optForce/
+    10  optForceGAMS/
+     6  optEnvelope/
+
+## src/reconstruction  (total 316 .m files)
+    95  demeter/
+    68  refinement/
+    49  modelGeneration/
+    40  rBioNet/
+    40  comparison/
+    13  fastGapFill/
+     7  metaboRePort/
+     2  growthExpMatch/
+
+## src/visualization  (total 110 .m files)
+    49  metabolicCartography/
+    23  cellDesigner/
+     7  maps/
+     7  efmviz/
+     6  SAMMIM/
+     3  visualizeEpistasis/
+     3  paint4Net/
+     3  paint4net/
+     3  entropicFBA/
+     2  EscherMap/
+     2  createMetIntrcNetwork/
+     1  upsetPlot/
+     1  convert/

@@ -183,7 +183,7 @@ external/pdco/
 
 # read-only architecture research output (not committed; enforces Principle IX)
 # anchored to the repo root so it does NOT also ignore test/verifiedTests/analysis/
-/analysis/
+#/analysis/
 
 # CI coverage tooling and regenerable coverage output (feature 001-ci-coverage-gating)
 .ci-tools/
