@@ -34,6 +34,13 @@ function [modelOut,nTotalAtomTransitions,nTotalBondTransitions ] = checkABRXNFil
 %nTotalBondTransitions: The total number of bond transitions in a rxn
 % .. Authors: - Ronan M. T. Fleming, 2022. 
 %             -  Hadjar Rahou 2022 (Bond section)
+%             - [Jack McGoldrick], 2026: fixed internalRxnBool never being
+%               computed (was aliased to RXNBool) via findRXNFilesPlain;
+%               fixed an undefined-variable reference (RXNfileName) in
+%               the elemental-conservation warning; added error context
+%               around RXN file reads. Not a licensing swap:
+%               findRXNFiles/findRXNFilesPlain are core COBRA functions,
+%               not proprietary-toolbox calls.
 
 fprintf('Checking quality of RXN files...\n');
 
@@ -53,8 +60,11 @@ if length(unique(model.rxns))~=nRxns
 end
 
 %[metRXNBool,RXNBool,internalRxnBool] = findRXNFiles(model,RXNFileDir);
-[metRXNBool,RXNBool] = findRXNFiles(model,RXNFileDir);
-internalRxnBool = RXNBool; % fallback
+% NOTE: findRXNFiles is a core COBRA function, not a proprietary-toolbox
+% call, so this is a bug fix rather than a licensing swap: the original
+% two-line call below never actually computed internalRxnBool, it just
+% aliased it to RXNBool. findRXNFilesPlain computes it properly.
+[metRXNBool,RXNBool,internalRxnBool] = findRXNFilesPlain(model,RXNFileDir);
 
 %preallocate outputs
 RXNParsedBool = NaN*ones(nRxns,1);
@@ -81,7 +91,18 @@ for i = 1:nRxns
         if checkDecompartmentaliseRXN==1
             % Read atom mapping from RXNfile to test if it is decompartmentalised
             %[atomMets,metEls, metNrs, atomTransitionNrs,isSubstrate,instances] = readRXNFile(model.rxns{1},RXNFileDir);
-            [atoms,bonds] = readABRXNFile(model.rxns{i},RXNFileDir);
+            try
+                fprintf('Reading RXN file for reaction %d/%d: %s\n', ...
+                    i, numel(model.rxns), model.rxns{i});
+
+                [atoms,bonds] = readABRXNFile(model.rxns{i}, RXNFileDir);
+
+            catch ME
+                fprintf('\nFailed while reading reaction %d/%d: %s\n', ...
+                    i, numel(model.rxns), model.rxns{i});
+
+                rethrow(ME)
+            end
             atomMets=atoms.mets;
             metEls=atoms.elements;
             metNrs=atoms.metNrs;
@@ -219,7 +240,19 @@ for i = 1:nRxns
                 RXNMatchingElementBool(i)=1;
             else
                 RXNMatchingElementBool(i)=0;
-                fprintf('%s%s%s%s%u%s\n',RXNfileName,' ',rxnFormula,' contains ', nnz(~matchingElementBool), ' atom transitions violating elemental conservation.');
+
+                % NOTE: original code referenced an undefined variable
+                % `RXNfileName` here, and a possibly-stale `rxnFormula`
+                % cell from an earlier, conditionally-executed branch —
+                % this would error whenever this branch actually ran.
+                rxnFormula = printRxnFormula(model, 'rxnAbbrList', rxn, 'printFlag', 0);
+
+                if iscell(rxnFormula)
+                    rxnFormula = rxnFormula{1};
+                end
+
+                fprintf('%s %s contains %u atom transitions violating elemental conservation.\n', ...
+                    rxn, rxnFormula, nnz(~matchingElementBool));
             end
             %calculate the total number of atom transitions
             nTotalAtomTransitions  = nTotalAtomTransitions + nAtomTransitions;
