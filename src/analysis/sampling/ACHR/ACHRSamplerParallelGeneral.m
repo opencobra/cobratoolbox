@@ -6,7 +6,14 @@ function [sampleStruct] = ACHRSamplerParallelGeneral(sampleStruct, nLoops, steps
 %    sampleStruct = ACHRSamplerParallelGeneral(sampleStruct, nLoops, stepsPerPoint, maxtime, proc, fdirectory)
 %
 % INPUTS:
-%    sampleStruct:     Sampling structure
+%    sampleStruct:     Sampling structure, with fields:
+%
+%                        * .warmupPts - warmup points used to seed the sampler
+%                        * .points - current set of sample points (continued from
+%                          a previous run when present)
+%                        * .internal - internal preprocessing data (bounds,
+%                          constraint matrices, fixed reactions, null-space basis)
+%                        * .steps - cumulative number of sampler steps taken
 %    nLoops:           Number of iterations
 %    stepsPerPoint:    Number of sampler steps per point saved
 %    maxtime:          Amount of time to spend on calculation (in seconds)

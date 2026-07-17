@@ -6,7 +6,9 @@ function writeReactionListThermo(model, FileName, start, stop)
 %    writeReactionListThermo(model, FileName, start, stop)
 %
 % INPUT:
-%    model:       model structure
+%    model:       model structure with field:
+%
+%                   * .rxns - `n x 1` cell array of reaction identifiers
 %    FileName:    Name of output file
 %
 % OPTIONAL INPUTS:

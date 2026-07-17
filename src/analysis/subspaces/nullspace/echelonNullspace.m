@@ -16,6 +16,8 @@ function [L0, I, P, L, p] = echelonNullspace(S, side, tol)
 %                   default no greater than 1e-12
 %
 % OUTPUTS:
+%    L:             the echelon-form nullspace, `L = [-L0, I] P`
+%
 %    if side == left
 %    L0:            `(m-r) x r` matrix which forms the non-trivial part of the
 %                    left nullspace in echelon form i.e. :math:`[-L0\ I] P S = 0`.

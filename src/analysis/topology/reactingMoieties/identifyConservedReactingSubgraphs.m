@@ -1,29 +1,35 @@
 function [brokenBondsTable, formedBondsTable, CAG, RAG, CBG, RBG] = identifyConservedReactingSubgraphs(model, dATM, dBTM)
-% IDENTIFYCONSERVEDREACTINGSUBGRAPHS Identifies conserved and reacting bond and atom subgraphs.
-%
-% Inputs:
-%   - dBTM: Bond transition multigraph.
-%   - dATM: Atom transition multigraph.
-%   - model: model containing reactions of interest.
-%
-% Outputs:
-%   - CBG: Conserved bond subgraph.
-%   - RBG: Reacting bond subgraph.
-%   - CAG: Conserved atom subgraph.
-%   - RAG: Reacting atom subgraph.
-%   - brokenBondsTable: a table of the broken bonds in the model.
-%   - formedBondsTable: a table of the formed bonds in the model.
+% Identifies conserved and reacting bond and atom subgraphs
 %
 % This function identifies conserved and reacting bond subgraphs from the
 % bond transition multigraph and conserved and reacting atom subgraphs from
 % the atom transition multigraph based on the provided submodel.
 %
-% Usage:
-%   [brokenBondsTable, formedBondsTable, CAG, RAG, CBG, RBG] =
-%   identifyConservedReactingSubgraphs(model, dATM, dBTM);
+% USAGE:
 %
+%    [brokenBondsTable, formedBondsTable, CAG, RAG, CBG, RBG] = identifyConservedReactingSubgraphs(model, dATM, dBTM)
 %
-% Author: Hadjar Rahou, 2023
+% INPUTS:
+%    model:              model structure containing the reactions of interest, with field:
+%
+%                          * .rxns - `n x 1` cell array of reaction identifiers
+%    dATM:               atom transition multigraph (MATLAB digraph) with field:
+%
+%                          * .Nodes - node table with an `AtomIndex` column
+%    dBTM:               bond transition multigraph (MATLAB digraph) with fields:
+%
+%                          * .Edges - edge table with `HeadMet` and `TailMet` columns
+%                          * .Nodes - node table with `mets` and `BondIndex` columns
+%
+% OUTPUTS:
+%    brokenBondsTable:    table of the broken bonds in the model
+%    formedBondsTable:    table of the formed bonds in the model
+%    CAG:                conserved atom subgraph
+%    RAG:                reacting atom subgraph
+%    CBG:                conserved bond subgraph
+%    RBG:                reacting bond subgraph
+%
+% .. Author: - Hadjar Rahou, 2023
 %
 % Check if all inputs are defined
     if nargin ~= 3

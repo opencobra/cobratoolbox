@@ -2,14 +2,18 @@ function drawSecPot(dietPath, rxnmax, startMet, levels, cutoff)
 % Draws part of the community structure when maximized with the given
 % reaction
 %
+% USAGE:
+%
+%    drawSecPot(dietPath, rxnmax, startMet, levels, cutoff)
+%
 % INPUTS:
-%	dietPath          char with path of the model
-%   rxnmax            char with name of the rxn that gets maximized with fastFVA
-%   startMet          char with starting metabolite for visualizing
-%   levels            number with levels that are connected to the starting
-%                     metabolite
-%   cutoff            number of fluxes that are considered for drawing,
-%                     only fluxes>abs(cutoff) are considered
+%    dietPath:      char with path of the model
+%    rxnmax:        char with name of the rxn that gets maximized with fastFVA
+%    startMet:      char with starting metabolite for visualizing
+%    levels:        number with levels that are connected to the starting
+%                   metabolite
+%    cutoff:        number of fluxes that are considered for drawing,
+%                   only fluxes>abs(cutoff) are considered
 
 global CBT_LP_SOLVER
 if isempty(CBT_LP_SOLVER)

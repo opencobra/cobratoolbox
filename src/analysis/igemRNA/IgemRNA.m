@@ -1,3 +1,10 @@
+% IgemRNA - Launch the IgemRNA graphical user interface.
+%
+% This script opens the main IgemRNA dialog from which the transcriptomics-based
+% context-specific model creation and post-optimization analysis workflows are
+% configured and run. It first declares the global state shared across the GUI
+% callbacks and then opens the dialog window.
+
 global trGroup
 global transcriptomicsDataSamples
 global modelGroup

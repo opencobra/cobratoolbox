@@ -1,5 +1,8 @@
-%seed = 1;
-%rng(seed);
+% Sanity-check script: draw samples from a rounded polytope and map them back
+% to the original space to check the bounds and equality constraints
+%
+% seed = 1;
+% rng(seed);
 
 % load polyoptes
 P = model;

@@ -8,11 +8,14 @@ function [model, hasEffect, constrRxnNames, deletedGenes] = deleteModelGenes(mod
 %
 % INPUT:
 %    model:             COBRA model with the appropriate constrains for a
-%                       particular condition
+%                       particular condition, with the fields:
+%
+%                         * .genes - `g x 1` cell array of gene identifiers
+%                         * .rules - `n x 1` cell array of gene-reaction rules in rule (index) form
 %
 % OPTIONAL INPUTS:
 %    geneList:          List of genes to be deleted (Default =  all genes in model)
-%    downRegFraction:   Fraction of the original bounds that the reactions
+%    downRegFraction:    Fraction of the original bounds that the reactions
 %                       corresponding to downregulated genes will be assigned
 %                       (Default = 0 corresponding to a full deletion)
 %

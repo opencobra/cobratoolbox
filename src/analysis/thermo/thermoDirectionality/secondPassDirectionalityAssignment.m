@@ -11,13 +11,17 @@ function [model, solutionThermoRecon, solutionRecon, model1] = secondPassDirecti
 %    [model, solutionThermoRecon, solutionRecon, model1] = secondPassDirectionalityAssignment(model)
 %
 % INPUTS:
-%    model:
+%    model:    structure with fields:
+%
+%                * .description - model identifier used to select the organism-specific
+%                  manual curation branch (e.g. 'iAF1260')
 %
 % OUTPUTS:
-%    model:
-%    solutionThermoRecon:
-%    solutionRecon:
-%    model1:
+%    model:                  manually curated model with thermodynamically
+%                            adjusted reaction directionality
+%    solutionThermoRecon:    FBA solution using thermodynamic directions
+%    solutionRecon:          FBA solution using reconstruction directions
+%    model1:                 intermediate model returned during assignment
 %
 % NOTE:
 %

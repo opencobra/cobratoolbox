@@ -1,13 +1,25 @@
 function moietyGraph = createMoietyGraph(model, BG, arm)
-% CreateMoietyGraph generates a graph representation of moieties in a metabolic network.
+% Generates a graph representation of moiety cycles in a metabolic network
 %
-% Input:
-%   - model: A structure containing information about the metabolic submodel.
-%   - BG: A graph representing the metabolic network.
-%   - arm: An atomically resolved model as a matlab structure
-%          from identyConservedMoieties function.
-% Output:
-%   - moietyGraph: Graph representation of moiety cycles in a metabolic network.
+% USAGE:
+%
+%    moietyGraph = createMoietyGraph(model, BG, arm)
+%
+% INPUTS:
+%    model:        COBRA model structure of the metabolic submodel, with field:
+%
+%                    * .mets - `m x 1` cell array of metabolite identifiers
+%    BG:           bond graph of the metabolic network, a MATLAB graph with field:
+%
+%                    * .Nodes - node table with a `mets` column identifying the metabolite of each node
+%    arm:          atomically resolved model structure from identifyConservedReactingMoieties, with fields:
+%
+%                    * .L - matrix mapping isomorphism classes to metabolites
+%                    * .MTG - moiety transition graph (MATLAB graph)
+%
+% OUTPUT:
+%    moietyGraph:    graph representation of moiety cycles in the metabolic network
+%
 % .. Author: - Hadjar Rahou, 2023
 
 

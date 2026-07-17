@@ -1,11 +1,34 @@
-function [solution,sparseRxnBool] = findSparsePathway(model,rxnPenalty,param)
-%input a cobra model and find a sparse pathway given penalties on certain
-%reactions being active rxnPenalty(j)>0 and incentives on certain reactions
-%being active rxnPenalty(j)<0 and indifferent to the activity of other
-%reactions rxnPenalty(j)==0
+function [solution, sparseRxnBool] = findSparsePathway(model, rxnPenalty, param)
+% Find a sparse pathway in a COBRA model by penalising or incentivising the
+% activity of individual reactions and minimising the resulting cardinality
+%
+% Reactions with `rxnPenalty(j) > 0` are penalised when active, reactions with
+% `rxnPenalty(j) < 0` are incentivised when active, and reactions with
+% `rxnPenalty(j) == 0` are indifferent to activity.
+%
+% USAGE:
+%
+%    [solution, sparseRxnBool] = findSparsePathway(model, rxnPenalty, param)
+%
+% INPUTS:
+%    model:            COBRA model structure passed to `buildOptProblemFromModel`
+%
+% OPTIONAL INPUTS:
+%    rxnPenalty:       `n x 1` vector of per-reaction penalties (default `ones(n, 1)`);
+%                      positive penalises activity, negative incentivises it, zero is neutral
+%    param:            parameter structure with fields:
+%
+%                        * .printLevel - verbosity level (default 1)
+%                        * .theta - starting parameter of the Capped-L1 approximation
+%
+% OUTPUTS:
+%    solution:         solution structure with fields:
+%
+%                        * .v - `n x 1` sparse flux vector
+%                        * .stat - solver status of the cardinality optimisation
+%    sparseRxnBool:    `n x 1` logical, true for reactions active in the sparse solution
+%
 
-
-%build LP problem
 problem = buildOptProblemFromModel(model);
 [m,n]=size(problem.A);
 

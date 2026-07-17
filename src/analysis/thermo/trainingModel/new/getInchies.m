@@ -1,4 +1,31 @@
 function inchies = getInchies(target_cids, use_cache)
+% Retrieve InChI strings for a set of KEGG compounds using OpenBabel
+%
+% Loads cached InChIs when available, otherwise obtains the MOL file for each
+% KEGG compound and converts it to standard, stereo, stereo+charge and
+% nonstandard InChI strings with OpenBabel, caching the result.
+%
+% USAGE:
+%
+%    inchies = getInchies(target_cids, use_cache)
+%
+% INPUTS:
+%    target_cids:    numeric vector of KEGG compound identifiers to retrieve
+%
+% OPTIONAL INPUT:
+%    use_cache:      logical, when true (default) load previously cached InChIs
+%                    from disk instead of recomputing them
+%
+% OUTPUTS:
+%    inchies:        structure of InChI strings with fields:
+%
+%                      * .cids - KEGG compound identifiers
+%                      * .std_inchi - standard InChI
+%                      * .std_inchi_stereo - standard InChI with stereochemistry
+%                      * .std_inchi_stereo_charge - standard InChI with stereochemistry and charge
+%                      * .nstd_inchi - nonstandard InChI
+%
+
 if nargin < 2
     use_cache = true;
 end

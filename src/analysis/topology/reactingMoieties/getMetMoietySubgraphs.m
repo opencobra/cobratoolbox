@@ -1,30 +1,33 @@
-function [MG,moietyMG,moietyInstanceG] = getMetMoietySubgraphs(model,BG,arm)
-% GETSUBGRAPHS Extract moieties and metabolite subgraphs from a given model.
+function [MG, moietyMG, moietyInstanceG] = getMetMoietySubgraphs(model, BG, arm)
+% Extract metabolite, moiety, and moiety-instance subgraphs from the bond graph of a model
 %
-% Inputs:
-%   - model: A metabolic model structure (COBRA Toolbox model).
-%   - dATM: An atom transitions multigraph.
-%   - dBTM: A bond transitions multigraph.
-%   - BG: A bipartite graph representing the metabolic network.
-%   - arm: An atomically resolved model as a matlab structure
-%          from identyConservedMoieties function.
+% USAGE:
 %
-% Outputs:
-%   
-%   - MG: Cell array of metabolite graphs.
-%   - moietyMG: Cell array of moieties subgraphs.
-%   - moietyInstanceG: Cell array of moiety instance subgraphs.
-% Example usage:
-%   [GCMoieties, GMets, GCMoietyInstances] = getMetMoietySubgraphs(model, dATM, dBTM, BG, arm);
+%    [MG, moietyMG, moietyInstanceG] = getMetMoietySubgraphs(model, BG, arm)
 %
-% This function takes a metabolic model, atom and bond transition graphs,
-% a bipartite graph representing the metabolic network, and the stoichiometric
-% matrix. It then extracts moieties and metabolite subgraphs and
-% returns them as cell arrays.
-% .. Authors: - Hadjar Rahou, 2023.
+% INPUTS:
+%    model:            COBRA model structure, with field:
+%
+%                        * .mets - `m x 1` cell array of metabolite identifiers
+%    BG:               bipartite bond graph of the metabolic network, a MATLAB graph with field:
+%
+%                        * .Nodes - node table with a `mets` column identifying the metabolite of each node
+%    arm:              atomically resolved model structure from identifyConservedReactingMoieties, with fields:
+%
+%                        * .L - matrix mapping isomorphism classes to metabolites (its row count is the number of moiety classes)
+%                        * .I2A - matrix mapping each isomorphism class to one or more atoms
+%                        * .ATG - atom transition graph (MATLAB graph)
+%                        * .MTG - moiety transition graph (MATLAB graph)
+%
+% OUTPUTS:
+%    MG:               cell array of metabolite subgraphs
+%    moietyMG:         cell array of moiety subgraphs
+%    moietyInstanceG:    cell array of moiety instance subgraphs
+%
+% .. Author: - Hadjar Rahou, 2023
 
 
-%Create a moiety subgraph
+% Create a moiety subgraph
 n=size(arm.L,1);
 Moiety = cell(n, 1);
 moietyMG = cell(n, 1);

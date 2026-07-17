@@ -14,8 +14,12 @@ function model = fastSetupCreator(exMets, microbeNames, host)
 % Host uptake/secretion lumen: 'Host_IEX_met[c]tr': 'Host_met[c] <=> met[u]'
 % Host exchange body fluids: 'Host_EX_met(e)b': 'Host_met[b] <=>'
 %
+% USAGE:
+%
+%    model = fastSetupCreator(exMets, microbeNames, host)
+%
 % INPUTS:
-%   exMets:               cell array with all unique extracellular 
+%    exMets:              cell array with all unique extracellular
 %                         metabolites contained in the models
 %    microbeNames:        nx1 cell array of n unique strings that represent
 %                         each microbe model. Reactions and metabolites of
@@ -24,7 +28,10 @@ function model = fastSetupCreator(exMets, microbeNames, host)
 %                         will be named 'Ecoli_RxnAbbr' and metabolites
 %                         'Ecoli_MetAbbr[c]').
 %    host:                Host COBRA model structure, can be left empty if
-%                         there is no host model
+%                         there is no host model, with fields:
+%
+%                           * .mets - metabolite identifiers
+%                           * .rxns - reaction identifiers
 %
 % OUTPUT:
 %    model:               COBRA model structure with all models combined

@@ -12,13 +12,20 @@ function [n, edges, lambda] = plotActivityCoefficients(modelT)
 % INPUT:
 %    modelT:    structure with fields:
 %
-%                 * model.met(i).lambda - activity coefficient
-%                 * model.temp - temperature
+%                 * .S - `m x n` stoichiometric matrix
+%                 * .mets - `m x 1` cell array of metabolite identifiers
+%                 * .metNames - `m x 1` cell array of metabolite names
+%                 * .temp - temperature
+%                 * .gasConstant - gas constant
+%                 * .met - `m x 1` structure array of metabolite species data, with fields:
+%
+%                     * .lambda - activity coefficients of the metabolite species
+%                     * .aveZi - average charge of the metabolite
 %
 % OUTPUTS:
-%    n:
-%    edges:
-%    lambda:
+%    n:         histogram counts of activity coefficients per bin
+%    edges:     bin edges used for the activity-coefficient histogram
+%    lambda:    activity coefficients of the metabolite species
 %
 % .. Author: - Ronan M. T. Fleming
 

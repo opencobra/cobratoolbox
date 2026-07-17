@@ -7,7 +7,9 @@ function [v_res, solution] = MTA_MIQP(OptimizationModel, KOrxn, varargin)
 %    [v_res, success, unsuccess] = MTA_MIQP (OptimizationModel, KOrxn, numWorkers, timeLimit, printLevel)
 %
 % INPUT:
-%    OptimizationModel:    Cplex Model struct
+%    OptimizationModel:    Cplex Model struct with fields:
+%
+%                            * .idx_variables - indices of the problem variables (v, y_plus_F, y_minus_F, y_plus_B, y_minus_B)
 %    KOrxn:                perturbation in the model (reactions)
 %    numWorkers:           number of threads used by Cplex.
 %    FORCE_CPLEX:          1 to force CPLEX solver, 0 (default) for COBRA
@@ -16,7 +18,7 @@ function [v_res, solution] = MTA_MIQP(OptimizationModel, KOrxn, varargin)
 %                          screen, 0 otherwise. Default: 1.
 %
 % OUTPUTS:
-%    Vout:                 Solution flux of MIQP formulation for each case
+%    v_res:                Solution flux of MIQP formulation for each case
 %    solution:             Cplex solution struct
 %
 % .. Authors:

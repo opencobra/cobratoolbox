@@ -1,27 +1,29 @@
-function [training_data, mappingScore] = prepareTrainingData(model,printLevel,params)
-% given a standard COBRA model, add thermodynamic data to it using
-% the Component Contribution method
+function [training_data, mappingScore] = prepareTrainingData(model, printLevel, params)
+% Given a standard COBRA model, add thermodynamic data to it using the Component Contribution method
 %
-% INPUTS
-% model
-% 
-% 
-% OPTIONAL INPUTS
-% params.use_cached_kegg_inchis
-% params.use_model_pKas_by_default
-% params.uf                          maximum uncertainty
+% Loads the training data, retrieves InChIs and pKa values for the training
+% compounds, balances the training reactions, builds the group incidence matrix
+% against the model, and applies the reverse Legendre transform.
 %
-% 
+% USAGE:
+%
+%    [training_data, mappingScore] = prepareTrainingData(model, printLevel, params)
+%
+% INPUTS:
+%    model:            COBRA model structure
+%
+% OPTIONAL INPUTS:
+%    printLevel:       verbose level (default: 0)
+%    params:           structure of parameters. Fields used:
+%
+%                        * .use_cached_kegg_inchis - logical, use cached KEGG InChIs
+%                        * .use_model_pKas_by_default - logical, prefer model pKa data
+%
 % OUTPUTS:
-% model 
-% .DfG0                 m x 1 array of component contribution estimated
-%                       standard Gibbs energies of formation.
-% .covf                 m x m estimated covariance matrix for standard
-%                       Gibbs energies of formation.
-% .uf                   m x 1 array of uncertainty in estimated standard
-%                       Gibbs energies of formation. uf will be large for
-%                       metabolites that are not covered by component
-%                       contributions.
+%    training_data:    training-data structure with thermodynamic data and the
+%                      group incidence matrix
+%    mappingScore:     score of the mapping between the model and the training
+%                      data compounds
 
 if ~exist('printLevel','var')
     printLevel = 0;

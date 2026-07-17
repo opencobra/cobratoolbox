@@ -16,7 +16,11 @@ function [ParetoFrontier, fluxSolutions, minFluxes, maxFluxes] = computeParetoOp
 %     [ParetoFrontier,fluxSolutions,minFluxes,maxFluxes] = computeParetoOptimality(model,rxn1,rxn2,dinc,FVAflag)
 %
 % INPUTS:
-%     model:            COBRA metabolic reconstruction
+%     model:            COBRA metabolic reconstruction with fields:
+%
+%                         * .rxns - reaction identifiers, used to locate `rxn1` and `rxn2`
+%                         * .osenseStr - objective sense string, set to 'max'/'min' internally
+%                         * .osense - scalar objective sense, set to -1 (maximise) internally
 %     rxn1:             Reaction ID of the first reaction to be optimized
 %     rxn2:             Reaction ID of the second reaction to be optimized
 %
@@ -27,7 +31,7 @@ function [ParetoFrontier, fluxSolutions, minFluxes, maxFluxes] = computeParetoOp
 %                       step.
 %
 % OUTPUTS:
-%     ParetoFrontier:   Lists the objective values for both reactions next to
+%     ParetoFrontier:    Lists the objective values for both reactions next to
 %                       the interval step. Column 1:the interval step. Column 2
 %                       and 3: the flux values of rxn1 in and rxn2,
 %                       respectively, at the interval step.

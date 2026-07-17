@@ -1,25 +1,46 @@
 function model = configureSetupThermoModelInputs(model, T, compartments, ph, is, chi, concMinDefault, concMaxDefault, confidenceLevel)
-% Configures inputs to `setupThermoModel` (sets defaults etc.). All optional inputs are empty by default.
+% Configure inputs to `setupThermoModel` (set defaults etc.)
+%
+% All optional inputs are empty by default. Metabolite, reaction and
+% compartment identifiers are normalised, missing compartment assignments are
+% derived, temperature, compartment-specific pH/ionic-strength/electrical
+% potential and metabolite concentration bounds are set, and a confidence
+% level is assigned.
 %
 % USAGE:
 %
 %    model = configureSetupThermoModelInputs(model, T, compartments, ph, is, chi, concMinDefault, concMaxDefault, confidenceLevel)
 %
 % INPUT:
-%    model:
+%    model:              COBRA model structure. Fields used or configured:
+%
+%                          * .S - `m x n` stoichiometric matrix
+%                          * .mets - `m x 1` metabolite identifiers
+%                          * .rxns - `n x 1` reaction identifiers
+%                          * .metFormulas - `m x 1` metabolite formulas
+%                          * .metCharges - `m x 1` metabolite charges
+%                          * .metCompartments - `m x 1` compartment assignments
+%                          * .compartments - `c x 1` compartment identifiers
+%                          * .T - temperature in Kelvin
+%                          * .ph - `c x 1` compartment specific pH values
+%                          * .is - `c x 1` compartment specific ionic strengths
+%                          * .chi - `c x 1` compartment specific electrical potentials
+%                          * .concMin - `m x 1` lower bounds on metabolite concentrations
+%                          * .concMax - `m x 1` upper bounds on metabolite concentrations
+%                          * .confidenceLevel - confidence level for directionality assignment
 %
 % OPTIONAL INPUTS:
-%    T:
-%    compartments:
-%    ph:
-%    is:
-%    chi:
-%    concMinDefault:
-%    concMaxDefault:
-%    confidenceLevel:
+%    T:                  temperature in Kelvin (default: 298.15)
+%    compartments:       `c x 1` array of compartment identifiers
+%    ph:                 `c x 1` array of compartment specific pH values
+%    is:                 `c x 1` array of compartment specific ionic strengths in mol/L
+%    chi:                `c x 1` array of compartment specific electrical potentials in mV
+%    concMinDefault:     default lower bound on metabolite concentrations in mol/L
+%    concMaxDefault:     default upper bound on metabolite concentrations in mol/L
+%    confidenceLevel:    confidence level for reaction directionality (default: 0.95)
 %
 % OUTPUT:
-%    model:
+%    model:              the model structure with the fields above configured
 
 if ~isfield(model,'metCompartments')
     model.metCompartments = [];

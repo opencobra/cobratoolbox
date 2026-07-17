@@ -1,4 +1,7 @@
-%install;
+% Demo: exercise the AdaptiveChol solver on a netlib LP and compare its
+% high-precision solves against MATLAB's Cholesky factorisation
+%
+% install;
 
 load('..\mat\LPnetlib\lp_agg.mat')
 

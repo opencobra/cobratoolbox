@@ -1,4 +1,4 @@
-function OptimizationModel = buildMTAproblemFromModel(model,rxnFBS,Vref,varargin)
+function OptimizationModel = buildMTAproblemFromModel(model, rxnFBS, Vref, varargin)
 % Returns the COBRA Optimization model needed to perform the MTA
 %
 % USAGE:
@@ -6,7 +6,13 @@ function OptimizationModel = buildMTAproblemFromModel(model,rxnFBS,Vref,varargin
 %       OptimizationModel = buildMTAproblemFromModel(model,rxnFBS,Vref,alpha,epsilon)
 %
 % INPUT:
-%    model:                 Metabolic model (COBRA format)
+%    model:                 Metabolic model (COBRA format) with fields:
+%
+%                              * .S - stoichiometric matrix
+%                              * .mets - metabolite identifiers
+%                              * .rxns - reaction identifiers
+%                              * .lb - lower flux bounds
+%                              * .ub - upper flux bounds
 %    rxnFBS:                Forward, Backward and Unchanged (+1;0;-1) values
 %                           corresponding to each reaction.
 %    Vref:                  Reference flux of the source state.

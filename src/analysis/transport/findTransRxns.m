@@ -7,7 +7,11 @@ function [transRxns, nonTransRxns, transRxnsBool] = findTransRxns(model, inclExc
 %    [transRxns, nonTransRxns, transRxnsBool] = findTransRxns(model, inclExc, rxnInds, inclObjAsExc, irrevFlag)
 %
 % INPUT:
-%    model:            COBRA model structure
+%    model:            COBRA model structure with fields:
+%
+%                        * .S - `m x n` stoichiometric matrix
+%                        * .mets - `m x 1` cell array of metabolite identifiers
+%                        * .rxns - `n x 1` cell array of reaction identifiers
 %
 % OPTIONAL INPUT:
 %    inclExc:          includes exchange reactions as transport = true

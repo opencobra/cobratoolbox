@@ -1,3 +1,5 @@
+% Compute summary statistics for the microbe-to-metabolite flux mapping and
+% write them to the statistics results directory
 % INPUT: saveDirStats
 saveDirStats = [rootDir filesep 'results' filesep 'statistics'];
 %saveDirStats = '';

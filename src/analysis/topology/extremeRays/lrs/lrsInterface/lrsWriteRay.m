@@ -1,4 +1,4 @@
-function [fileNameOut, extension] = lrsWriteRay(Q,modelName,vertexBool,param)
+function [fileNameOut, extension] = lrsWriteRay(Q, modelName, vertexBool, param)
 % Outputs a file for lrs to convert an V-representation (vertex / ray) of a
 % polyhedron to a H-representation (half-space) via facet enumeration
 %
@@ -20,20 +20,28 @@ function [fileNameOut, extension] = lrsWriteRay(Q,modelName,vertexBool,param)
 %     The coefficients can be entered as integers or rationals in the format x/y. 
 %     An input line can be specified as a ray and then included in the linearity option (see below).
 %
-% INPUT
-% Q             m x n integer matrix where each row is a variable and each column is a vertex or ray
-% modelName     string giving the prefix of the *.ext file that will contain the vertex representation
-%               It is assumed the file is pwd/*.ine, otherwise provide the full path.
+% USAGE:
 %
-% OPTIONAL INPUT
-% vertexBool         n x 1 Boolean vector indicating which columns of Q are vertices
-%                    By default, all columns of Q are assumed to be rays.
+%    [fileNameOut, extension] = lrsWriteRay(Q, modelName, vertexBool, param)
 %
-% param:             parameter structure with the following fields:
-%    *.positivity:    if equals to 1, then positive orthant base
-%    *.inequality:    if equals to 1, then represent as two inequalities rather than a single equality
-%    *.shellScript:   if equals to 1, then lrs is run through a bash script
-%    *.redund         if equals to 0, then remove redundant linear equalities 
+% INPUTS:
+%    Q:             `m x n` integer matrix where each row is a variable and each column is a vertex or ray
+%    modelName:     string giving the prefix of the *.ext file that will contain the vertex representation.
+%                   It is assumed the file is `pwd/*.ext`, otherwise provide the full path
+%
+% OPTIONAL INPUTS:
+%    vertexBool:    `n x 1` boolean vector indicating which columns of `Q` are vertices (by default all columns are assumed to be rays)
+%    param:         parameter structure with the following fields:
+%
+%                     * .positivity - {0, 1} if 1, then positive orthant base
+%                     * .inequality - {0, 1} if 1, then represent as two inequalities rather than a single equality
+%                     * .shellScript - {0, 1} if 1, then lrs is run through a bash script
+%                     * .facetEnumeration - {0, 1} if 1, run facet enumeration, otherwise vertex enumeration
+%                     * .redund - {0, 1} if 0, then remove redundant linear equalities
+%
+% OUTPUTS:
+%    fileNameOut:    full path to the generated lrs `.ext` (V-representation) file
+%    extension:     file extension used for the generated file (`.ext`)
 
 % Ronan Fleming 2021
 

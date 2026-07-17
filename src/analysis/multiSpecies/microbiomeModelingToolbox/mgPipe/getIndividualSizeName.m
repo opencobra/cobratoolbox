@@ -1,4 +1,4 @@
-function [sampNames, organisms] = getIndividualSizeName(abunFilePath,modPath)
+function [sampNames, organisms] = getIndividualSizeName(abunFilePath, modPath)
 % This function automatically detects organisms, names and number of individuals present
 % in the study.
 %
@@ -7,12 +7,12 @@ function [sampNames, organisms] = getIndividualSizeName(abunFilePath,modPath)
 %   [sampNames, organisms] = getIndividualSizeName(abunFilePath,modPath)
 %
 % INPUTS:
-%   abunFilePath:      char with path and name of file from which to retrieve information
-%   modPath:           char with path of directory where models are stored
+%    abunFilePath:      char with path and name of file from which to retrieve information
+%    modPath:           char with path of directory where models are stored
 %
 % OUTPUTS:
-%   sampNames:         nx1 cell array cell array with names of individuals in the study
-%   organisms:         nx1 cell array cell array with names of organisms in the study
+%    sampNames:         nx1 cell array cell array with names of individuals in the study
+%    organisms:         nx1 cell array cell array with names of organisms in the study
 %
 % .. Author: Federico Baldini 2017-2018
 %            Almut Heinken, 03/2021: simplified inputs

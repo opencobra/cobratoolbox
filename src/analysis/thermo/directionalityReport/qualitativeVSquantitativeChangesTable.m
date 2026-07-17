@@ -1,4 +1,4 @@
-%Example of a script that can be used to set up different thermodynamic models depending on the pH temp etc
+% Example of a script that can be used to set up different thermodynamic models depending on the pH temp etc
 
 % [modelT,directions]=setupThermoModel(model,metAbbrAlbertyAbbr,metGroupCont,Alberty2006,temp,cpHa,ppHa,epHa,isCyto,isExt,biomassRxnAbbr,Ecoli_symphID_rxnAbbr,Legendre,useKeqData,nStdDevGroupCont,figures)
 

@@ -1,105 +1,52 @@
 function [iWBM, iWBMcontrol_female, iWBMcontrol_male, persParams] = persWBM(metadata, varargin)
+% Create physiologically personalised whole-body models (WBMs) from metadata
 %
-% This function takes a table of physiological parameters for an individual or multiple individuals
-% (listed in inputs) and adjusts the paramteres of a provided WBM or Harvey/Harvetta to
-% create a personalised WBM
+% Takes physiological parameters for one or several individuals and adjusts
+% the parameters of a provided WBM (or of Harvey/Harvetta) to create a
+% personalised WBM. Physiological parameters are computed from whatever data
+% are available (e.g. cardiac output is used directly if given, otherwise
+% derived from stroke volume). Details of every calculation are stored in the
+% personalised model output and in the accompanying Excel file.
 %
-% The calculation of physiological parameteres will be performed based on
-% the available data e.g., if the user provides Cardiac output, this given
-% value is assigned, if the user provides stroked volume and no CO, CO is
-% calculated based on SV. If neither values are provided, CO will be
-% calculated based on XXX. All details of parameter calculation are
-% detailed in the personalised model output and in the excel file provided
-% by this function.
+% USAGE:
 %
-% INPUTS
+%    [iWBM, iWBMcontrol_female, iWBMcontrol_male, persParams] = persWBM(metadata, varargin)
 %
-% REQUIRED:
-% metadata                     Can be a struct (for personalising one model)
-%                              or a path to an excel file (for batch
-%                              personalisation). If it is a structure, it
-%                              should follow the format of the individualised
-%                              parameters struct obtained from running:
-%                              > sex = "male";
-%                              OR
-%                              > sex = "female";
-%                              AND
-%                              > standardPhysiolDefaultParameters;
+% INPUT:
+%    metadata:    physiological parameters, either as a struct (to personalise
+%                 one model) or a path to an Excel file (batch personalisation).
+%                 When a struct, field used:
+%
+%                   * .sex - string, "male" or "female"
+%
+% OPTIONAL INPUTS (name-value pairs in varargin):
+%    persPhysiology:    cell array of the non-metabolite parameters in the
+%                       metadata to personalise the model with (default {})
+%    femaleWBM:         a female WBM, or a path to it; if empty Harvetta is
+%                       loaded (default '')
+%    maleWBM:           a male WBM, or a path to it; if empty Harvey is loaded
+%                       (default '')
+%    resPath:           path in which to store the personalised model and
+%                       outputs (default the current directory)
+%    persMetabolites:   cell array of metabolites to also personalise from
+%                       metabolomic data; if empty this step is skipped
+%                       (default {})
+%    Diet:              diet option (default 'EUAverageDiet')
+%    solver:            LP solver to use (default '')
+%
+% OUTPUTS:
+%    iWBM:                  personalised model with updated physiological
+%                           parameters (described in
+%                           `model.IndividualisedParameters`)
+%    iWBMcontrol_female:    unpersonalised control WBM for female subjects
+%                           (a copy of the supplied model or of Harvetta)
+%    iWBMcontrol_male:      unpersonalised control WBM for male subjects
+%                           (a copy of the supplied model or of Harvey)
+%    persParams:            details of the updated parameters and how they were
+%                           calculated (also written to an Excel file)
+%
+% .. Author: - Anna Sheehy, November 2024
 
-%                              There must be a field with sex in the struct
-%                              which is a string containing "male" or
-%                              "female"
-%                              For batch personalisation using an excel
-%                              file, a list with a minimum of three column
-%                              and option for additional columns for each
-%                              individual for which a model should be created:
-%
-%                              |"ID"              |"Sex"    |"CardiacOutput"|
-%                              ----------------------------------------------
-%                              |"unit"           |""        | "mg/dL"       |
-%                              |"Individual1"    |"male"    |5345           |
-%                              |"Individual2"    |"female"  |5360           |
-%
-%
-% OPTIONAL:
-% persPhysiology               A list of all non-metabolite paramters in the
-%                              metadata that you would like the models to be personalised with.
-%                              Parameters that can be personalised include:
-%                              Organ weight(g), modelID, body weight(kg), height(cm),
-%                              sex, heart rate(), stroke volume(), cardiac
-%                              output(), hematocrit(), creatinine(), blood flow
-%                              rate(), glomerular filtration rate(), blood flow
-%                              for each organ()
-%                              *for each the default unit used by the model
-%                              is provided. For x, y, z- unit conversion
-%                              will be performed for all known common units of
-%                              measurement.
-% femaleWBM                   A female WBM (Whole Body Metabolic Model), or path to it.
-%                             for any female subject detailed in the
-%                             metadata, this model will be personalised.
-%                             If no model is provided, either Harvey or Harvetta will be loaded from the COBRA
-%                             toolbox, depending on sex in provided physiological data.
-%                             If multiple models are provided, the model ID must
-%                             match the model name provided in the
-%                             physiological data.
-% maleWBM                     A male WBM (Whole Body Metabolic Model), or path to it.
-%                             for any male subject detailed in the
-%                             metadata, this model will be personalised.
-% resPath                     Path on which to store personalised model and
-%                             other outputs.
-%                             Default = current directory
-% persMetabolites             Option to also personalise the metabolite constraints
-%                             in the model based on metabolomic data
-%                             (Default = skip). If not empty, the user must
-%                             provide a list of metabolites (which should correspond
-%                             to column headers in the metadata) that they
-%                             would like to personalise the model for.
-%                             ** This function can also be run in isolation
-%                             but if a user wants to personalise both
-%                             physiological and metabolomic- this function
-%                             should alway be run and NOT
-%                             persWBMmetabolomics in isolation!
-% Diet                        Diet option: 'EUAverageDiet' (default)
-%
-% OUTPUTS
-%
-% iWBM                        Model with updated physiological paramteres
-%                             (stored as "persModelName.mat"). All updated
-%                             paramteres are described in
-%                             model.IndividualisedParameters
-% controlWBM(s)               This is a WBM with no personalised
-%                             adjustments. When a WBM or multiple WBMs have
-%                             been given as inputs, the controlWBMs are
-%                             exact copies of those. When Harvey or
-%                             Harvetta are used, controlWBM is copies of
-%                             Harvey/Harvetta.
-% persParameters              Excel file with details of the updated
-%                             parameter and how it was calculated
-%
-%
-% author: Anna Sheehy November 2024
-%% Step 1: Read in the available data, check all data is valid
-% Define the input parser
 parser = inputParser();
 
 % Add required inputs

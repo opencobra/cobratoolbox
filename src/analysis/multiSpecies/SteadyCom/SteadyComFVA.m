@@ -11,39 +11,39 @@ function [minFlux, maxFlux, minFD, maxFD, GRvector, result, LP] = SteadyComFVA(m
 %    modelCom:     A community COBRA model structure with the following fields (created using `createMultipleSpeciesModel`)
 %                  (the first 5 fields are required, at least one of the last two is needed. Can be obtained using `getMultiSpecisModelId`):
 %
-%                    * S - Stoichiometric matrix
-%                    * b - Right hand side
-%                    * c - Objective coefficients
-%                    * lb - Lower bounds
-%                    * ub - Upper bounds
-%                    * infoCom - structure containing community reaction info
-%                    * indCom - the index structure corresponding to `infoCom`
+%                    * .S - Stoichiometric matrix
+%                    * .b - Right hand side
+%                    * .c - Objective coefficients
+%                    * .lb - Lower bounds
+%                    * .ub - Upper bounds
+%                    * .infoCom - structure containing community reaction info
+%                    * .indCom - the index structure corresponding to `infoCom`
 %
 % OPTIONAL INPUTS:
 %    options:    struct with the following possible fields:
 %
-%                  * optGRpercent - A vector of percentages. Perform FVA at these percents of max. growth rate (Default = [99.99])
-%                  * optBMpercent - Only consider solutions that yield at least a certain percentage of the optimal biomass (Default = 99.99)
-%                  * rxnNameList - List of reactions (index row vector or subset of `*.rxns`) for which FVA is performed.
+%                  * .optGRpercent - A vector of percentages. Perform FVA at these percents of max. growth rate (Default = [99.99])
+%                  * .optBMpercent - Only consider solutions that yield at least a certain percentage of the optimal biomass (Default = 99.99)
+%                  * .rxnNameList - List of reactions (index row vector or subset of `*.rxns`) for which FVA is performed.
 %                    (Default = biomass reaction of each species)
 %                    Or a :math:`(N_{rxns} + N_{organism}) x K` matrix for FVA of `K` linear combinations of fluxes and/or abundances
 %                    e.g., `[1; -2; 0]` for finding the max/min of :math:`1 v_1 - 2 v_2 + 0 v_3`
-%                  * rxnFluxList - List of reactions (index vector or subset of `*.rxns`) whose fluxes are
+%                  * .rxnFluxList - List of reactions (index vector or subset of `*.rxns`) whose fluxes are
 %                    also returned along with the FVA result of each entry in `rxnNameList`
 %                    (Default = biomass reaction of each species)
-%                  * GRmax - maximum growth rate of the model (default to be found `SteadyCom.m`)
+%                  * .GRmax - maximum growth rate of the model (default to be found `SteadyCom.m`)
 %                    (the two parameters below are usually determined by solving the problem during the program.
 %                    Provide them only if you want to constrain the total biomass to a particular value)
-%                  * BMmaxLB - lower bound for the total biomass (default 1)
-%                  * BMmaxUB - upper bound for the total biomass (other parameters below)
-%                  * saveFVA - If non-empty, become the filename to save the FVA results
+%                  * .BMmaxLB - lower bound for the total biomass (default 1)
+%                  * .BMmaxUB - upper bound for the total biomass (other parameters below)
+%                  * .saveFVA - If non-empty, become the filename to save the FVA results
 %                    (default empty, not saving)
-%                  * saveFre - save frequency. Save every `(#rxns for FVA) * saveFre` (default 0.1)
-%                  * threads - for parallelization: > 1 for explicitly stating the no. of threads used,
+%                  * .saveFre - save frequency. Save every `(#rxns for FVA) * saveFre` (default 0.1)
+%                  * .threads - for parallelization: > 1 for explicitly stating the no. of threads used,
 %                    0 or -1 for using all available threads. Default 1.
 %                    (Requires Matlab parallel toolbox)
-%                  * verbFlag - Verbose output. 1 to have waitbar, >1 to have stepwise output (default 3)
-%                  * loadModel - (`ibm_cplex` only) String of filename to be loaded. If non-empty, load the cplex
+%                  * .verbFlag - Verbose output. 1 to have waitbar, >1 to have stepwise output (default 3)
+%                  * .loadModel - (`ibm_cplex` only) String of filename to be loaded. If non-empty, load the cplex
 %                    model ('loadModel.mps'), basis ('loadModel.bas') and parameters ('loadModel.prm').
 %                    (May add also other parameters in `SteadyCom` for calculating the maximum growth rate.)
 %
@@ -59,7 +59,7 @@ function [minFlux, maxFlux, minFD, maxFD, GRvector, result, LP] = SteadyComFVA(m
 %                corresponding to minimizing each reaction in `options.rxnNameList`
 %    maxFD:      :math:`rxnFluxList * rxnNameList` matrix containing the fluxes in `options.rxnFluxList`
 %                corresponding to maximizing each reaction in `options.rxnNameList`
-%    GRvector:   a vector of growth rates at which FVA has been performed
+%    GRvector:    a vector of growth rates at which FVA has been performed
 %    result:     result structure from `SteadyCom`
 %    LP:         `LP` problem structure (`Cplex LP` object for `ibm_cplex`)
 

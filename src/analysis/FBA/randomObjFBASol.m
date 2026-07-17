@@ -3,10 +3,15 @@ function x0 = randomObjFBASol(model, initArgs)
 %
 % USAGE:
 %
-%    x0 = randomObjSol(model, initArgs)
+%    x0 = randomObjFBASol(model, initArgs)
 %
 % INPUTS:
-%    model:        COBRA model structure
+%    model:        COBRA model structure with the fields:
+%
+%                    * .c - `n x 1` linear objective coefficient vector
+%                    * .lb - `n x 1` lower flux bounds
+%                    * .rxns - `n x 1` cell array of reaction identifiers
+%
 %    initArgs:     Cell array containing the following data:
 %
 %                    1.  osenseStr - Maximize ('max') / minimize ('min')

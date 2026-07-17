@@ -1,30 +1,43 @@
-function [OrganCompendium,TableCSources] = getOrgansFromHarvey(modelWBM,runTestsOnly,OrganCompendium, printLevel)
-% This function cuts the organs from the whole-body metabolic model. Note that the different
-% biofluid compartments are retained but all constraints on the exchange and transport reactions are overwritten
-% Once the organs are extracted, the function runs the sanity check on each
-% organ. This step can be also done independently by setting runTestsOnly
-% to 1. In this case,  the OrganCompendium must be provided as input.
-% The function also loads Recon 3* so that the test results can be compared
-% with the organ test results.
+function [OrganCompendium, TableCSources] = getOrgansFromHarvey(modelWBM, runTestsOnly, OrganCompendium, printLevel)
+% Extract the individual organs from a whole-body metabolic model
 %
-% [OrganCompendium,TableCSources] = getOrgansFromHarvey(modelWBM, runTestsOnly, OrganCompendium)
+% This function cuts the organs from the whole-body metabolic model. The
+% different biofluid compartments are retained, but all constraints on the
+% exchange and transport reactions are overwritten. Once the organs are
+% extracted, the function runs a sanity check on each organ; this step can
+% also be done independently by setting runTestsOnly to 1, in which case the
+% OrganCompendium must be provided as input. The function also loads Recon3*
+% so that the test results can be compared with the organ test results. The
+% organ compendium for each sex is saved as OrganAtlas_Harvetta.mat and
+% OrganAtlas_Harvey.mat along with the test results.
 %
-% INPUT
-% modelWBM                  model structure of whole-body metabolic model
-% runTestsOnly
+% USAGE:
 %
-% OUTPUT
-% OrganCompendium           Structure containing the individal organs as
-%                           well as the basic tests that this organ passed
-% TableCSources             Overview table of ATP yield per carbon source
-%                           under aerobic and anaerobic conditions for each organ in the model
-%                           structrure
+%    [OrganCompendium, TableCSources] = getOrgansFromHarvey(modelWBM, runTestsOnly, OrganCompendium, printLevel)
 %
-% The organ compendium for each sex will be saved as
-% OrganAtlas_Harvetta.mat and OrganAtlas_Harvey.mat along with the test
-% results.
+% INPUTS:
+%    modelWBM:          Whole-body metabolic model, with fields:
 %
-% Ines Thiele, 2017 - 2019
+%                         * .sex - 'male' or 'female'
+%                         * .S - stoichiometric matrix
+%                         * .A - constraint matrix (stoichiometry plus coupling constraints)
+%                         * .mets - metabolite identifiers
+%    runTestsOnly:      If 1, only run the organ tests (requires OrganCompendium as
+%                       input); default 0
+%    OrganCompendium:    Previously extracted organ compendium (used when runTestsOnly
+%                       is 1), with fields:
+%
+%                         * .sex - 'male' or 'female'
+%                         * .Recon3DHarvey - Recon3D reference model used to compare organ tests
+%    printLevel:        Verbosity level (default 0)
+%
+% OUTPUTS:
+%    OrganCompendium:    Structure containing the individual organs and the basic
+%                       tests that each organ passed
+%    TableCSources:     Overview table of ATP yield per carbon source under aerobic
+%                       and anaerobic conditions for each organ in the model
+%
+% .. Author: - Ines Thiele, 2017-2019
 
 global resultsPath
 resultsPath = which('MethodSection3.mlx');

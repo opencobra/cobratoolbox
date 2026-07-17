@@ -6,10 +6,18 @@ function [model, directions] = directionalityStats(model, directions, cumNormPro
 %    [model, directions] = directionalityStats(model, directions, cumNormProbCutoff, printLevel)
 %
 % INPUTS:
-%    model:                 a structue of boolean vectors with different directionality
-%                           assignments where some vectors contain subsets of others with field:
+%    model:                 COBRA model structure with fields:
 %
-%                             * .directions
+%                             * .S - `m x n` stoichiometric matrix
+%                             * .lb - `n x 1` lower flux bounds
+%                             * .ub - `n x 1` upper flux bounds
+%                             * .lb_reconThermo - `n x 1` reconstruction lower bounds tightened by thermodynamics
+%                             * .ub_reconThermo - `n x 1` reconstruction upper bounds tightened by thermodynamics
+%                             * .SIntRxnBool - `n x 1` boolean, true for internal reactions
+%                             * .DrGtMin - `n x 1` lower bound on transformed reaction Gibbs energy
+%                             * .DrGtMax - `n x 1` upper bound on transformed reaction Gibbs energy
+%                             * .DrGt0Min - `n x 1` lower bound on standard transformed reaction Gibbs energy
+%                             * .DrGt0Max - `n x 1` upper bound on standard transformed reaction Gibbs energy
 %
 %    directions:            structure with field:
 %
@@ -38,9 +46,12 @@ function [model, directions] = directionalityStats(model, directions, cumNormPro
 %                           0 to silent,
 %                           1 to print out to command window
 %
-% OUTPUT:
+% OUTPUTS:
+%    model:                 the input COBRA model structure, returned unchanged
 %    directions:            a structue of boolean vectors with different directionality
 %                           assignments where some vectors contain subsets of others
+%
+%                             * .cumNormProbCutoff - probability cutoff used for directionality assignment
 %
 %                           qualtiative -> quantiative changed reaction directions
 %

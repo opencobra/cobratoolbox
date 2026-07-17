@@ -1,38 +1,53 @@
 function model = estimateDrGt0(model, confidenceLevel)
-% Estimates bounds on transformed Gibbs energies for metabolites and
-% reactions in model.
+% Estimate bounds on transformed Gibbs energies for metabolites and reactions in a model
+%
+% Computes standard and standard transformed reaction Gibbs energies from the
+% metabolite estimates, adds the multicompartmental (pH and electrical
+% potential) contributions for transport reactions, and derives lower and upper
+% bounds and a mean estimate.
 %
 % USAGE:
 %
 %    model = estimateDrGt0(model, confidenceLevel)
 %
 % INPUT:
-%    model:              Model structure with following fields:
+%    model:              model structure with the following fields:
 %
-%                          * .S - `m x n` stoichiometric matrix.
-%                          * .mets - `m x 1` array of metabolite identifiers.
-%                          * .metFormulas - `m x 1` cell array of metabolite formulas. Formulas for protons should be H.
-%                          * .T - Temperature in Kelvin.
-%                          * .DfGt0 - Standard transformed Gibbs energies of formation in kJ/mol.
-%                          * .DrGt0_Uncertainty Uncertainty in standard transformed reaction Gibbs energies kJ/mol.
-%                          * .ph - `c x 1` array of compartment specific pH values.
-%                          * .chi `c x 1` array of compartment specific electricalpotential values in mV.
-%                          * .concMin - `m x 1` array of lower bounds on metabolite concentrations in mol/L.
-%                          * .concMax - `m x 1` array of upper bounds on metabolite concentrations in mol/L.
+%                          * .S - `m x n` stoichiometric matrix
+%                          * .mets - `m x 1` metabolite identifiers
+%                          * .metFormulas - `m x 1` metabolite formulas (protons should be H)
+%                          * .metCharges - `m x 1` metabolite charges
+%                          * .metCompartments - `m x 1` compartment assignments
+%                          * .compartments - `c x 1` compartment identifiers
+%                          * .T - temperature in Kelvin
+%                          * .ph - `c x 1` compartment specific pH values
+%                          * .chi - `c x 1` compartment specific electrical potential values in mV
+%                          * .concMin - `m x 1` lower bounds on metabolite concentrations in mol/L
+%                          * .concMax - `m x 1` upper bounds on metabolite concentrations in mol/L
+%                          * .DfG0 - `m x 1` standard Gibbs energies of formation
+%                          * .DfGt0 - `m x 1` standard transformed Gibbs energies of formation
+%                          * .DfGtMin - `m x 1` lower bounds on transformed Gibbs energies of formation
+%                          * .DfGtMax - `m x 1` upper bounds on transformed Gibbs energies of formation
+%                          * .SIntRxnBool - `n x 1` true for internal reactions
+%                          * .DrG0_Uncertainty - `n x 1` uncertainty in standard reaction Gibbs energies
+%                          * .DrGt0_Uncertainty - `n x 1` uncertainty in standard transformed reaction Gibbs energies
 %
 % OPTIONAL INPUT:
-%    confidenceLevel:    {0.50, 0.70, (0.95), 0.99}. Confidence level for DGft0
-%                        and DrGt0 interval estimates. Default is 0.95,
-%                        corresponding to 95% confidence intervals.
+%    confidenceLevel:    {0.50, 0.70, (0.95), 0.99}. Confidence level for
+%                        `DfGt0` and `DrGt0` interval estimates. Default is
+%                        0.95, corresponding to 95% confidence intervals.
 %
 % OUTPUT:
-%    model:              Model structure with following fields added:
+%    model:              the model structure with the following fields added:
 %
-%                          * .DrGt0 - `n x 1` array of standard transformed reaction Gibbs
-%                            energies in kJ/mol.
-%                          * .ur - `n x 1` array of uncertainties in `DrGt0`.
-%                          * .DrGtMin - Lower bounds on transformed reaction Gibbs energies in kJ/mol.
-%                          * .DrGtMax - Upper bounds on transformed reaction Gibbs energies in kJ/mol.
+%                          * .DrG0 - `n x 1` standard reaction Gibbs energies in kJ/mol
+%                          * .DrGt0 - `n x 1` standard transformed reaction Gibbs energies in kJ/mol
+%                          * .transportRxnBool - `n x 1` true for transport reactions
+%                          * .DrGt0Min - `n x 1` lower bounds on standard transformed reaction Gibbs energies
+%                          * .DrGt0Max - `n x 1` upper bounds on standard transformed reaction Gibbs energies
+%                          * .DrGtMin - `n x 1` lower bounds on transformed reaction Gibbs energies in kJ/mol
+%                          * .DrGtMax - `n x 1` upper bounds on transformed reaction Gibbs energies in kJ/mol
+%                          * .DrGtMean - `n x 1` mean transformed reaction Gibbs energies in kJ/mol
 %
 % .. Author: - Hulda SH, Nov. 2012
 

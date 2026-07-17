@@ -1,29 +1,37 @@
 function [model] = adjustWholeBodyRxnCoeff(model, listOrgan, listCoeff)
-% [model] = adjustWholeBodyRxnCoeff(model, listOrgan, listCoeff)
+% Adjust the stoichiometric coefficients of the whole-body maintenance reaction
 %
 % This function adjusts the coefficients of the whole-body biomass
-% maintenance (WBM) reaction. The WBM reaction contains each organ present
-% in the whole-body metabolic reconstructions. For each organ, the
-% stoichiometric coefficients represent the fractional weight contribution
-% of the respective organ to the whole body weight. These coefficients can
-% be updated to reflect individual specific body contributions. E.g., in
-% obese individuals the ratio of muscle and adipose tissue is different
-% than in a normal BMI individual. Hence, they can be updated with this
-% function.
+% maintenance (WBM) reaction. The WBM reaction contains each organ present in
+% the whole-body metabolic reconstruction. For each organ, the stoichiometric
+% coefficients represent the fractional weight contribution of the respective
+% organ to the whole body weight. These coefficients can be updated to reflect
+% individual-specific body contributions; e.g. in obese individuals the ratio
+% of muscle and adipose tissue differs from that of a normal-BMI individual.
 %
-% INPUT
-% model         whole-body metabolic model
-% listOrgan     List of organs, whose stoichiometric coefficient should be
-%               updated
-% listCoeff     List of coefficients that replace current ones in the WBM
-%               reaction (order must match the order of organs in
-%               ListOrgan)
+% USAGE:
 %
-% OUTPUT
-% model         whole-body metabolic model with adjusted stoichiometric
-%               coefficients in the whole-body metabolic model
+%    [model] = adjustWholeBodyRxnCoeff(model, listOrgan, listCoeff)
 %
-% Ines Thiele, 2012 - 2020
+% INPUTS:
+%    model:         Whole-body metabolic model with fields:
+%
+%                     * .rxns - reaction identifiers
+%                     * .S - stoichiometric matrix
+%                     * .A - constraint matrix (stoichiometry plus coupling
+%                       constraints); created from `.S` if absent
+%                     * .mets - metabolite identifiers
+%    listOrgan:     List of organs whose stoichiometric coefficient should be
+%                   updated
+%    listCoeff:     List of coefficients that replace the current ones in the
+%                   WBM reaction (order must match the order of organs in
+%                   `listOrgan`)
+%
+% OUTPUT:
+%    model:         Whole-body metabolic model with adjusted stoichiometric
+%                   coefficients in the whole-body maintenance reaction
+%
+% .. Author: - Ines Thiele, 2012-2020
 
 wholeBodyRxn = 'Whole_body_objective_rxn';
 wholeBodyRxnID = find(ismember( model.rxns, wholeBodyRxn));

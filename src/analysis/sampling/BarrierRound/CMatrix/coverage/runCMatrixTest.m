@@ -1,3 +1,5 @@
+% Run the CMatrixTest suite with text output and code-coverage reporting
+% for the ddouble and AdaptiveChol sources
 import matlab.unittest.TestSuite
 import matlab.unittest.TestRunner
 import matlab.unittest.plugins.CodeCoveragePlugin

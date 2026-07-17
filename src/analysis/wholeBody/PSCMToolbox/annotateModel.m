@@ -1,22 +1,55 @@
-function model = annotateModel(model, annotateRxns, annotateMets,modelID,modelName,modelAnnotation)
-% This function annotates a model with VMH reaction and metabolite
-% identifiers.
+function model = annotateModel(model, annotateRxns, annotateMets, modelID, modelName, modelAnnotation)
+% Annotate a model with VMH reaction and metabolite identifiers
 %
-% function model = annotateModel(model, annotateRxns,annotateMets)
+% Annotates a model with VMH reaction and metabolite identifiers by reading
+% the VMH reaction and metabolite tables and populating the corresponding
+% annotation fields.
 %
-% INPUT
-% model         Model structure
-% annotateRxns  default: 1
-% annotateMets  default: 1
+% USAGE:
 %
-% Optional:
-% modelID       ID of model
-% modelName     model Name
+%    model = annotateModel(model, annotateRxns, annotateMets, modelID, modelName, modelAnnotation)
 %
-% OUTPUT
-% model         Updated model structure
+% INPUTS:
+%    model:              Model structure with fields:
 %
-% Ines Thiele October 2019
+%                        * .rxns - reaction identifiers
+%                        * .mets - metabolite identifiers
+%                        * .modelID - model identifier
+%                        * .modelName - model name
+%                        * .modelAnnotation - model annotation string
+%                        * .rxnECNumbers - EC numbers for reactions
+%                        * .rxnMetaNetXID - MetaNetX reaction identifiers
+%                        * .rxnKEGGID - KEGG reaction identifiers
+%                        * .rxnSBOTerms - SBO terms for reactions
+%                        * .rxnSEEDID - SEED reaction identifiers
+%                        * .metNames - metabolite names
+%                        * .metFormulas - metabolite elemental formulas
+%                        * .metCharges - metabolite charges
+%                        * .metChEBIID - ChEBI identifiers
+%                        * .metHMDBID - HMDB identifiers
+%                        * .metInChIString - InChI strings
+%                        * .metKEGGID - KEGG metabolite identifiers
+%                        * .metSmiles - SMILES strings
+%                        * .metMetaNetXID - MetaNetX metabolite identifiers
+%                        * .metPubChemID - PubChem identifiers
+%                        * .metBiGGID - BiGG metabolite identifiers
+%                        * .metBioCycID - BioCyc metabolite identifiers
+%                        * .metSEEDID - SEED metabolite identifiers
+%                        * .metSBOTerms - SBO terms for metabolites
+%                        * .metChemSpider - ChemSpider identifiers
+%                        * .metInchiKey - InChIKey identifiers
+%    annotateRxns:       If 1 (default), annotate reactions
+%    annotateMets:       If 1 (default), annotate metabolites
+%
+% OPTIONAL INPUTS:
+%    modelID:            Identifier to assign to `model.modelID`
+%    modelName:          Name to assign to `model.modelName`
+%    modelAnnotation:    Annotation string to assign to `model.modelAnnotation`
+%
+% OUTPUT:
+%    model:              Updated model structure with populated VMH annotation fields
+%
+% .. Author: - Ines Thiele, October 2019
 
 if ~exist('annotateRxns','var')
     annotateRxns = 1;

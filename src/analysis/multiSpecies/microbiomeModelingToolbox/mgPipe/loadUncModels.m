@@ -6,13 +6,13 @@ function models = loadUncModels(modPath, organisms, objre, printLevel)
 %   models = loadUncModels(modPath, organisms, objre)
 %
 % INPUTS:
-%   organisms:           nx1 cell array cell array with names of organisms in the study
-%   modPath:             char with path of directory where models are stored
-%   objre:               char with reaction name of objective function of organisms
-%   printLevel:          Verbose level (default: printLevel = 1)
+%    organisms:           nx1 cell array cell array with names of organisms in the study
+%    modPath:             char with path of directory where models are stored
+%    objre:               char with reaction name of objective function of organisms
+%    printLevel:          Verbose level (default: printLevel = 1)
 %
 % OUTPUT:
-%   models:              nx1 cell array cell array with models of organisms in the study
+%    models:              nx1 cell array cell array with models of organisms in the study
 %
 % .. Author: Federico Baldini 2017-2018
 

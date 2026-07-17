@@ -1,47 +1,42 @@
 function results = performStatsPersephone(statPath, pathToProcessedFluxes, metadataPath, response, varargin)
-% The performStatistics function is part of the PSCM toolbox. This
-% function performs regression analyses on processed fluxes and gut
-% microbiome relative abundance data in large cohort studies. This function needs a 
-% minimal sample size of 50 samples. This function performs different
-% statistical analyses depending on the user defined inputs.
+% Perform regression or non-parametric statistics on processed fluxes and abundances
 %
-% If the response variable is binary and no confounders are given,
-% wilcoxon tests will be performed for the fluxes and microbiome
-% abundances.
-% If the response variable is binary and confounders are given, multiple
-% logistic regressions will be performed. 
-% If the response variable is continuous and no confounders are given,
-% simple linear regressions will be performed. 
-% If the response variable is continuous and confounders are given,
-% multiple linear regressions will be performed.  
-% 
-% The fluxes are z-transformed before statistical testing. The microbiome
-% relative abundances are log transformed before testing. 
-% If a moderator variable is given and a regression is
-% performed, a moderation analysis on the moderator with the predictor will be performed. 
+% Runs statistical analyses on processed flux and gut-microbiome relative
+% abundance data for large cohorts (minimum ~50 samples). The analysis depends
+% on the inputs: binary response without confounders uses Wilcoxon tests,
+% binary response with confounders uses logistic regression, continuous
+% response without confounders uses simple linear regression, and continuous
+% response with confounders uses multiple linear regression. Fluxes are
+% z-transformed and relative abundances log-transformed before testing.
 %
 % USAGE:
-%    performStatistics(statPath, pathToProcessedFluxes, pathToWbmRelAbundances, metadataPath, response, confounders, moderator, microbeCutoff,threshold)
-% 
-% INPUT
-% statPath                          Path (character array) to working directory
-% pathToProcessedFluxes                 Path to processed flux data
-% pathToWbmRelAbundances                  Path to microbial relative abundances 
-% metadataPath                      Path to metadata file
-% response                          Name of response variables (char or string)
 %
-% OPTIONAL INPUTS
-% confounders                       Cell array with the names of confounding variables to
-%                                   be included. Default = empty.
-% microbeCutoff                     Cutoff threshold for the number of samples a
-%                                   microbe needs to present to be analysed. Default = 0.1. (10%)
+%    results = performStatsPersephone(statPath, pathToProcessedFluxes, metadataPath, response, varargin)
 %
-% .. Author:
-%       - Tim Hensen       July, 2024
-%       - Jonas Widder     November, 2024 (integrated moderation analysis)
-%       NOTE: To be finalised at a later stage.
+% INPUTS:
+%    statPath:                 path (character array) to the working directory
+%    pathToProcessedFluxes:    path to the processed flux data
+%    metadataPath:             path to the metadata file
+%    response:                 char/string, name of the response variable
+%
+% OPTIONAL INPUTS (name-value pairs in varargin):
+%    pathToWbmRelAbundances:        path to the microbial relative abundances
+%                                   (default [])
+%    confounders:                   cell array with the names of confounding
+%                                   variables to include (default '')
+%    microbeCutoff:                 minimal fraction of samples in which a
+%                                   microbe must be present to be analysed
+%                                   (default 0.1)
+%    alternativevolcanoPlotTitle:   char/string, alternative title for the
+%                                   volcano plot (default '')
+%
+% OUTPUT:
+%    results:    structure with the statistical result tables produced for the
+%                fluxes and relative abundances
+%
+% .. Author: - Tim Hensen, July 2024
+%            - Jonas Widder, November 2024 (integrated moderation analysis)
 
-% Define default parameters if not defined
 parser = inputParser();
 parser.addRequired('statPath', @ischar);
 parser.addRequired('pathToProcessedFluxes',  @(x) ischar(x) | isstring(x));

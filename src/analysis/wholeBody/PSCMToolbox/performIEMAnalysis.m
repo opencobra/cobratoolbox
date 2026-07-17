@@ -1,46 +1,37 @@
-function [IEMSolutions,IEMTable,missingMetAll] = performIEMAnalysis(model,geneMarkerList,compartment,urine,minRxnsFluxHealthy, causal, reverseDirObj, fractionKO,minBiomarker,fixIEMlb, LPSolver)
-% This function performs the IEMAnalysis from a list of genes, testing for
+function [IEMSolutions, IEMTable, missingMetAll] = performIEMAnalysis(model, geneMarkerList, compartment, urine, minRxnsFluxHealthy, causal, reverseDirObj, fractionKO, minBiomarker, fixIEMlb, LPSolver)
+% Perform inborn-error-of-metabolism (IEM) analysis from a list of genes
+%
+% This function performs the IEM analysis from a list of genes, testing for
 % the defined biomarker metabolites in one or more biofluid compartments.
 %
-% INPUT
-% model                 WBM model structure
-% geneMarkerList        Cell array containing the geneMarkerLists and
-%                       the biomarkers to be tested for
-%                       e.g.,
-%                       geneMarkerListMarkerList = {
-%                             '5053.1' 'trp_L;actyr;phe_L;tyr_L'
-%                             '249.1' '3pg;cholp;glyc3p;ethamp'
-%                             };
-% compartment           List of biofluid compartments that the biomarkers
-%                       appear in and should be tested for
-% urine                 Indicate whether you want to test for the urine
-%                       excretion of the biomarker metabolite as well. Default = true
-% minRxnsFluxHealthy    Min flux value(s) through the IEMRxns (Default: 0.75
-%                       corresponding to 75%)
-% reverseDirObj         The function maximizes the objective flux by
-%                       default. If set to 1, the function also checks the minimization problem.
-% fractionKO            By default, a complete knowckout of BiomarkerRxnsthe IEM
-%                       reactions is computed but it is possible to set a fraction (default = 1
-%                       for 100% knockout)
-% minBiomarker          Minimization through biomarker reaction (default = 0)
-% fixIEMlb              fix IEM to lb = ub
-%                       =(1-fractionKO)*solution.v(find(model.c)) (default = 0, i.e., lb =0,
-%                       while ub = (1-fractionKO)*solution.v(find(model.c))
-% LPSolver              Define LPSolver ('ILOGcomplex' - default;
-%                       'tomlab_cplex')
-% causal                if causal == 1 get only genes that would lead to loss of function of the
-%                       associated reactions, otw get all associated reactions
-%                       (default)
+% USAGE:
 %
-% OUTPUT
-% IEMSolutions      Structure containing the predictions for each gene.
-%                   Metabolites that are not occurring in a biofluid, will have a 'NA' in the
-%                   corresponding fields
-% IEMTable          Cell array containing the predictions for each gene (same
-%                   content as in IEMSolutions
-% missingMetAll     Metabolites not appearing in a biolfuid
+%    [IEMSolutions, IEMTable, missingMetAll] = performIEMAnalysis(model, geneMarkerList, compartment, urine, minRxnsFluxHealthy, causal, reverseDirObj, fractionKO, minBiomarker, fixIEMlb, LPSolver)
 %
-% Ines Thiele - 2020-2021
+% INPUTS:
+%    model:                Whole-body metabolic model, with fields:
+%
+%                            * .modelID - model identifier
+%    geneMarkerList:       Cell array of gene marker lists and the biomarkers to test for
+%    compartment:          List of biofluid compartments in which the biomarkers appear
+%    urine:                Also test for urine excretion of the biomarker metabolite (default true)
+%    minRxnsFluxHealthy:    Minimum flux value(s) through the IEMRxns (default 0.75)
+%    causal:               If 1, use only genes whose loss causes loss of function of the
+%                          associated reactions; otherwise use all associated reactions (default)
+%    reverseDirObj:        The function maximises the objective flux by default; if set to
+%                          1, it also checks the minimisation problem
+%    fractionKO:           Fraction of knockout applied to the IEM reactions (default 1)
+%    minBiomarker:         Minimise through the biomarker reaction (default 0)
+%    fixIEMlb:             Fix the IEM reaction lb = ub (default 0)
+%    LPSolver:             LP solver to use ('ILOGcomplex' default, 'tomlab_cplex')
+%
+% OUTPUTS:
+%    IEMSolutions:         Structure of predictions for each gene ('NA' where a metabolite
+%                          does not occur in a biofluid)
+%    IEMTable:             Cell array of predictions for each gene (same content as IEMSolutions)
+%    missingMetAll:        Metabolites not appearing in a biofluid
+%
+% .. Author: - Ines Thiele, 2020-2021
 
 if ~exist('compartment','var')
     compartment = {'[bc]'};

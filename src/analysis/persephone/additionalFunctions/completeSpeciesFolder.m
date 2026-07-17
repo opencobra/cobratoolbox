@@ -6,11 +6,11 @@ function completeSpeciesFolder(agoraPath, panPath)
 %
 % USAGE:
 %
-%   completeSpeciesFolder(strainPath, panSpeciesPath)
+%    completeSpeciesFolder(agoraPath, panPath)
 %
 % INPUTS:
-%    strainPath     Path to folder with strain reconstructions
-%    panSpeciesPath Path to folder with pan species models
+%    agoraPath:    path to the folder with strain reconstructions
+%    panPath:      path to the folder with pan species models
 %
 % .. Author
 %       - Tim Hensen: 03/2024

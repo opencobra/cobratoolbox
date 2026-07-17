@@ -1,3 +1,10 @@
+% Configuration template for the Persephone pipeline
+%
+% Fill in the required and optional variables in this script and pass its
+% path to runPersephone. Running the script builds the `paths` structure that
+% the pipeline (initPersephone, validatePersephoneInputs, runPersephone)
+% consumes.
+%
 clc
 %%%%% Configuration file %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

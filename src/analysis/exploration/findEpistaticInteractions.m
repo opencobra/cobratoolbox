@@ -7,7 +7,10 @@ function [interactions, epistaticEffect] = findEpistaticInteractions(model, doub
 %    [interactions, epistaticEffect] = findEpistaticInteractions(model, doubleDeletionFitness, lethalFlag, minEffect)
 %
 % INPUTS:
-%    model:                    COBRA model structure
+%    model:                    COBRA model structure with fields:
+%
+%                                * .genes - gene identifiers
+%
 %    doubleDeletionFitness:    A matrix of fitness (or growth rate) values for
 %                              each of the double deletion strains. The diagonal
 %                              of this matrix contains the single deletion fitness values.
