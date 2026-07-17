@@ -47,6 +47,7 @@ Three concerns discovered during feature 010-gecko-entropic-fba (merged on devel
 | 2026-07-16 | Clarify (US3) | Pursue the fix | Bundle 3 drives the mosek dual residual below optTol (deeper cone-dual reconstruction changes allowed), characterize-and-tolerate only if a correct fix is infeasible |
 | 2026-07-16 | Gate 1 | Continue to plan/tasks/analyze | Proceed to Bundle 2 (plan + tasks + analyze + implementation-review.md); no source edits; stop at Gate 2 |
 | 2026-07-16 | Gate 2 | Approve all (T001–T019) | Scope approved (intent); implementation still gated on an explicit /speckit-implement (Principle VI) before any edit |
+| 2026-07-17 | Gate 3 | Accept, close, and commit | Feature accepted; changes committed on branch 011-entropicfba-dual-fixes (openCOBRA-convention message); ready for review/PR to develop |
 
 ## Approved Implementation Scope
 - Approved: intent yes (Gate 2, 2026-07-16); edits pending explicit /speckit-implement (Principle VI)
