@@ -18,6 +18,21 @@ jobs:
         run: docker ps -q --filter ancestor=matlab | xargs -r docker rm -f
         continue-on-error: true
 
+      # The MATLAB test step below runs in Docker as root and writes regenerable outputs
+      # (e.g. test/verifiedTests/analysis/testCalculateFluxShifts/resultsPostOptimization/)
+      # into the mounted workspace, owned by root. On the NEXT run, actions/checkout's
+      # git-clean runs as the runner user and cannot unlink those root-owned files (EACCES),
+      # so "Check out merged PR code" exits 1 before any test runs. Because checkout precedes
+      # the existing chown steps, one leftover deadlocks CI permanently. Reclaim ownership
+      # BEFORE checkout so git-clean can proceed; also auto-heals an already-stuck runner.
+      # No-op on a fresh runner (guarded on an existing workspace).
+      - name: Reclaim self-hosted workspace ownership (pre-checkout)
+        run: |
+          if [ -n "${GITHUB_WORKSPACE}" ] && [ -d "${GITHUB_WORKSPACE}" ]; then
+            sudo chown -R "$(id -u):$(id -g)" "${GITHUB_WORKSPACE}" || true
+          fi
+        continue-on-error: true
+
       - name: Check out merged PR code
         uses: actions/checkout@v6
         with:
@@ -102,7 +117,11 @@ jobs:
                 exit(0);"
             '
 
+      # Run even if the Docker test step failed, so a failed run still hands the
+      # workspace back to the runner user instead of leaking root-owned files that
+      # would deadlock the next checkout.
       - name: Fix workspace permissions after Docker run
+        if: always()
         run: sudo chown -R "$(id -u):$(id -g)" "${GITHUB_WORKSPACE}"
         continue-on-error: true
 
