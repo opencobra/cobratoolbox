@@ -69,9 +69,10 @@ None. F1 is a Gate-2 decision (scope of the data sub-slice), not a blocker for P
 
 ## Human Approval
 
-- Approved: no
-- Approved option: (pending Gate 2)
-- Approved tasks/scope: (pending)
+- Approved: yes
+- Approved option: "Approve P1+P2+3a, defer data" (Gate 2)
+- Approved tasks/scope: T001–T019, T024–T027 (SAMMI + Perl+GAMS + orphans/generated/tutorial);
+  deferred T020–T023 (static-data sub-slice + `data/` constitution amendment).
 - Required implementation invocation per constitution: explicit `/speckit-implement` (Principle VI) —
-  a Gate 2 menu choice alone does not authorize edits.
-- Date (UTC): (pending)
+  a Gate 2 menu choice alone does not authorize edits. Awaiting that invocation.
+- Date (UTC): 2026-07-17

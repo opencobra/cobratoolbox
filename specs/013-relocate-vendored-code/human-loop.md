@@ -1,9 +1,9 @@
 # Human Loop State
 
 ## Current State
-- Status: Bundle 2 complete; awaiting Gate 2 decision
+- Status: Gate 2 approved (scope: P1+P2+3a, data sub-slice deferred); awaiting explicit /speckit-implement to begin Bundle 3
 - Active feature directory: specs/013-relocate-vendored-code
-- Last completed bundle: Bundle 2 (implementation preparation)
+- Last completed bundle: Bundle 2 (implementation preparation), committed 9e060f115
 - Source code modified by this workflow: no
 
 ## Core Command Ledger
@@ -22,14 +22,16 @@
 | 2026-07-17 | Pre-spec scoping (AskUserQuestion) | Two features; W9 full cleanup; hybrid layering direction | 013 = W9 relocation (this feature); 014 = base layering inversion (separate, later) |
 | 2026-07-17 | Clarify (AskUserQuestion) | Static data -> dedicated resource path; taxa2proc excluded; orphans -> deprecated/ | Encoded into spec.md Clarifications/FRs |
 | 2026-07-17 | Gate 1 | Continue to Bundle 2 | Proceed to plan -> tasks -> analyze -> implementation-review; stop at Gate 2 |
+| 2026-07-17 | Gate 2 | Approve P1+P2+3a; defer data sub-slice | Authorize T001-T019 + T024-T027 on explicit /speckit-implement; T020-T023 (data/ + constitution amendment) deferred to a follow-up |
 
 ## Approved Implementation Scope
-- Approved: no
-- Scope: (pending Gate 2)
-- Tasks approved: —
-- Tasks deferred: —
-- Files allowed: — (no source edits before Gate 2 + explicit /speckit-implement)
-- Files not allowed: all src/tests/build until approved
+- Approved: yes (Gate 2, 2026-07-17) — pending the explicit /speckit-implement invocation before any edit
+- Scope: slice — P1 (SAMMI) + P2 (Perl+GAMS) + P3 sub-slice 3a (orphans/generated/tutorial)
+- Tasks approved: T001–T019, T024–T027
+- Tasks deferred: T020–T023 (gated static-data sub-slice + the companion data/ constitution amendment)
+- Files allowed (edit): src/visualization/SAMMIM/sammi.m; src/dataIntegration/fluxomics/c13solver/generateIsotopomerSolver.m; src/design/optForceGAMS/{optForceWithGAMS,findMustLWithGAMS,findMustLLWithGAMS,findMustUWithGAMS,findMustULWithGAMS,findMustUUWithGAMS}.m; src/base/solvers/gams/getAvailableGAMSSolvers.m; .gitignore; analysis/WEAKNESSES.md; analysis/ARCHITECTURE.md
+- Files allowed (move/delete per manifest): SAMMI JS/CSS/HTML -> external/; c13solver/*.pl -> external/; optForceGAMS/*.gms + licememo.gms -> external/; orphans -> deprecated/; tutorial_eFBA.mlx -> tutorials/; delete wang/cache/*.mat + generated SAMMI HTML
+- Files NOT allowed: .specify/memory/constitution.md; NIST .txt + .xlsx data files and their loaders (parse_Atomic_Weights...m etc.); taxa2proc_*.txt; anything not in the data-model manifest
 
 ## Pointers
 - Spec: specs/013-relocate-vendored-code/spec.md
