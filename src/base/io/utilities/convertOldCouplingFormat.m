@@ -1,21 +1,33 @@
 function model = convertOldCouplingFormat(model, printLevel)
-%Converts an old style model implementation of coupling constraints to a
-%new style
+% Converts an old style model implementation of coupling constraints to a
+% new style
+%
+% USAGE:
+%
+%    model = convertOldCouplingFormat(model, printLevel)
 %
 % INPUT:
-%    model:     model with model.A but without model.d   
-% 
+%    model:     model with model.A but without model.d, with fields:
+%
+%                * .A - legacy combined stoichiometric/coupling matrix
+%                * .S - stoichiometric matrix
+%                * .mets - metabolite identifiers (used to detect `slack_`
+%                  rows moved from `.A` to `.C`)
+%                * .b - right hand side vector, `nMets x 1`
+%                * .csense - constraint sense vector, `nMets x 1`
+%
 % OPTIONAL INPUT:
 %    printLevel:    The verbosity level (0 (default) no messages >=1 warnings)
 % OUTPUT:
 %    model:     A COBRA model structure with the following fields
 %
 %                * `.S` - The stoichiometric matrix
-%                * `.c` - Objective coeff vector
-%                * `.lb` - Lower bound vector
-%                * `.ub` - Upper bound vector              
+%                * `.mets`: metabolite identifiers, with any moved
+%                  `slack_` rows removed
 %                  * `.b`: accumulation/depletion vector (default 0 for each metabolite).
+%                  * `.csense`: constraint sense vector
 %                  * `.C`: the Constraint matrix;
+%                  * `.ctrs`: the constraint (row) identifiers for `.C`;
 %                  * `.d`: the right hand side vector for C;
 %                  * `.dsense`: the constraint sense vector;
 

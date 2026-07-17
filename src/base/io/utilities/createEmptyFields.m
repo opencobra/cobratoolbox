@@ -1,9 +1,9 @@
-function model = createEmptyFields(model,fieldNames, fieldDefinitions)
+function model = createEmptyFields(model, fieldNames, fieldDefinitions)
 % Create the specified model field with its default values. Works only for
 % fields defined in the toolbox if fieldDefinitions are not supplied.
 %
 % USAGE:
-%    model = createEmptyFields(model,fieldName, fieldDefinitions)
+%    model = createEmptyFields(model, fieldNames, fieldDefinitions)
 %
 % INPUTS:
 %
@@ -20,8 +20,7 @@ function model = createEmptyFields(model,fieldNames, fieldDefinitions)
 %    model:                 The original model struct with the specified
 %                           field added.
 %
-% Author:
-%    Thomas Pfau Nov 2017
+% .. Author: - Thomas Pfau Nov 2017
 
 if ischar(fieldNames)
     fieldNames = {fieldNames};

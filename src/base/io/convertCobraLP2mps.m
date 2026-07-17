@@ -7,7 +7,7 @@ function OK = convertCobraLP2mps(LPProblem, name)
 %    OK = convertCobraLP2mps(LPProblem, name)
 %
 % INPUT:
-%    LPproblem:    Structure containing the following fields describing the LP problem to be solved
+%    LPProblem:    Structure containing the following fields describing the LP problem to be solved
 %
 %                    * .A - LHS matrix
 %                    * .b - RHS vector

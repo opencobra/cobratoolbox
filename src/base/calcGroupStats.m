@@ -24,7 +24,9 @@ function [groupStat, groupList, groupCnt, zScore] = calcGroupStats(data, groups,
 % OUTPUTS:
 %    groupStat:     Matrix of group statistic values for each group and variable
 %    groupList:     List of group identifiers considered
-%    groupCount:    Number of individuals in a group
+%    groupCnt:      Number of individuals in each group
+%    zScore:        Z-score of each group's statistic relative to randomized
+%                   group draws (populated only when randStat is true)
 
 [nItems, nSets] = size(data);
 

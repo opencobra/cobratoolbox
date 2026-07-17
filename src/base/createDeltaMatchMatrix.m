@@ -7,7 +7,8 @@ function A = createDeltaMatchMatrix(set1, set2)
 %    A = createDeltaMatchMatrix(set1, set2)
 %
 % INPUTS:
-%    set1, set2:    input sets
+%    set1:      First input set (e.g. reaction indices) to be matched
+%    set2:      Second input set matched against set1
 %
 % OUTPUT:
 %    A:             flux difference matrix

@@ -11,7 +11,7 @@ function regModel = readBooleanRegModel(metModel, fileName)
 % OPTIONAL INPUT:
 %    fileName:    file name
 %
-% OUTPUTS
+% OUTPUTS:
 %    regModel:    model containing the following fields:
 %
 %                   * .mets - Metabolite rules:

@@ -1,23 +1,22 @@
-function [ convertedstr ] = convertSBMLID( str, toSBML )
-%CONVERTSBMLID converts the given str to a valid SBML ID 
+function [convertedstr] = convertSBMLID(str, toSBML)
+% Converts the given str to a valid SBML ID
+%
 % USAGE:
 %
-%       convertedstr = convertSBMLID(str,toSBML)
+%    convertedstr = convertSBMLID(str, toSBML)
 %
-% INPUT:
+% INPUTS:
+%    str:           The string to convert
 %
-%       str:        The String to convert
-%
-% OPTIONAL INPUT:
-%       toSBML:     Whether to convert to SBML format (or undo a
-%                   conversion) (default true, ie convert to SBML)
+% OPTIONAL INPUTS:
+%    toSBML:        Whether to convert to SBML format (or undo a
+%                   conversion) (default true, i.e. convert to SBML)
 %
 % OUTPUT:
+%    convertedstr:    The converted string
 %
-%       convertedstr:   The converted String.
-%    
 % .. Authors:
-%       - Thomas Pfau May 2017 
+%       - Thomas Pfau, May 2017
 
 if ~exist('toSBML','var')
     toSBML = true;

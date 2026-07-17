@@ -6,10 +6,17 @@ function [modelOut] = removeGeneVersions(model)
 %           modelOut = removeGeneVersions(model)
 %
 % INPUTS:
-%   model - COBRA model structure with fields 'genes' and 'grRules'
+%    model:    COBRA model structure with fields:
+%
+%                * .genes - `g x 1` cell array of gene identifiers
+%                  (possibly versioned, e.g. `857.1`)
+%                * .grRules - `n x 1` cell array of gene-reaction rules
+%                  referencing `.genes`
 %
 % OUTPUTS:
-%   modelOut - Updated model with gene versions removed.
+%    modelOut:    Updated model with gene versions stripped from `.genes`
+%                 and `.grRules`, duplicate genes removed, and `.rules` /
+%                 `.rxnGeneMat` regenerated accordingly.
 %
 % EXAMPLE:
 %   - Gene versions are removed:    

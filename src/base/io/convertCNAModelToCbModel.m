@@ -9,7 +9,7 @@ function model = convertCNAModelToCbModel(cnaModel, printLevel)
 % INPUT:
 %
 %    cnaModel:     CNA mass-flow project structure
-%    printLevel:   verbose level (default: 1)
+%    printLevel:    verbose level (default: 1)
 %
 % OUTPUT:
 %

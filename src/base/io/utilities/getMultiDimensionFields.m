@@ -1,9 +1,9 @@
-function [fieldNames,firstDim,secondDim] = getMultiDimensionFields(fieldDefinitions)
+function [fieldNames, firstDim, secondDim] = getMultiDimensionFields(fieldDefinitions)
 % Get those fields which have multiple dimensions depending on another
 % field from the definitions
 %
 % USAGE:
-%    [fieldNames,firstDim,secondDim] = getMultiDimensionFields(fieldDefinitions)
+%    [fieldNames, firstDim, secondDim] = getMultiDimensionFields(fieldDefinitions)
 %
 % INPUT:
 %    fieldDefinitions:      Field Definitilons as obtained from
