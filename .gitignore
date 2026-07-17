@@ -212,3 +212,7 @@ test/verifiedTests/analysis/testFilterRateLimittingReactions/resultsPostOptimiza
 # must not be committed back into src/. testSammi writes its transient output to the test dir.
 src/visualization/SAMMIM/*.html
 test/verifiedTests/visualization/testSammi/sammi_test_output.html
+
+# regenerable group-contribution fragmentation cache (feature 013). autoFragment writes these
+# .mat caches on demand; they must not be committed into src/.
+src/analysis/thermo/groupContribution/wang/cache/

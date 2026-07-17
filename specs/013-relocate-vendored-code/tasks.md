@@ -71,9 +71,9 @@ loader returns the identical table; tutorial opens from `tutorials/`.
 
 ### Sub-slice 3a — sanctioned moves (no new convention; may proceed immediately)
 
-- [ ] T017 [US3] `git mv` orphan `src/base/io/python/tmp/*` to `deprecated/_io_python_tmp/`.
-- [ ] T018 [US3] Delete committed cache `src/analysis/thermo/groupContribution/wang/cache/autoFragment_*.mat`; add `**/groupContribution/wang/cache/` to `.gitignore`.
-- [ ] T019 [P] [US3] `git mv` `src/visualization/entropicFBA/tutorial_eFBA.mlx` to `tutorials/analysis/` (confirm subdir).
+- [X] T017 [US3] `git mv` orphan `src/base/io/python/tmp/*` to `deprecated/_io_python_tmp/`.
+- [X] T018 [US3] Delete committed cache `src/analysis/thermo/groupContribution/wang/cache/autoFragment_*.mat`; add `**/groupContribution/wang/cache/` to `.gitignore`.
+- [ ] T019 [P] [US3] BLOCKED/DEFERRED: `tutorials/` is a git **submodule**, so `tutorial_eFBA.mlx` cannot be moved into it from the parent repo — it needs a commit inside the submodule plus a submodule-pointer bump (cross-repo). Left in `src/visualization/entropicFBA/` pending a decision; see the implementation receipt.
 
 ### Sub-slice 3b — static data (GATED on the `data/` constitution amendment)
 
