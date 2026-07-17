@@ -206,3 +206,9 @@ documentation/.venv/
 test/verifiedTests/analysis/testCalculateFluxShifts/resultsPostOptimization/fluxShifts/
 test/verifiedTests/analysis/testFilterNonFluxReactions/resultsPostOptimization/nonFluxReactionsnonFluxReactionsWT.xls
 test/verifiedTests/analysis/testFilterRateLimittingReactions/resultsPostOptimization/rateLimittingReactions/
+
+# regenerable SAMMI web-app output (feature 013). sammi.m writes generated HTML at runtime;
+# the vendored template + JS/CSS now live under external/visualization/SAMMIM/. These outputs
+# must not be committed back into src/. testSammi writes its transient output to the test dir.
+src/visualization/SAMMIM/*.html
+test/verifiedTests/visualization/testSammi/sammi_test_output.html

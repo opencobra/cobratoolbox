@@ -18,13 +18,13 @@ tutorial), each independently implementable and testable.
 
 ## Phase 1: Setup
 
-- [ ] T001 Create the run directory `specs/013-relocate-vendored-code/agent-runs/<UTC>-relocate-vendored-code/` with a `baseline.md` skeleton (no source edit).
-- [ ] T002 Verify the path-resolution foundation: confirm how `initCobraToolbox` adds `external/` to the MATLAB path (selective per-dependency per research D1) and that `CBTDIR = fileparts(which('initCobraToolbox'))` resolves the toolbox root; record findings in `baseline.md`.
+- [X] T001 Create the run directory `specs/013-relocate-vendored-code/agent-runs/<UTC>-relocate-vendored-code/` with a `baseline.md` skeleton (no source edit).
+- [X] T002 Verify the path-resolution foundation: confirm how `initCobraToolbox` adds `external/` to the MATLAB path (selective per-dependency per research D1) and that `CBTDIR = fileparts(which('initCobraToolbox'))` resolves the toolbox root; record findings in `baseline.md`.
 
 ## Phase 2: Foundational (blocking prerequisites for all stories)
 
-- [ ] T003 Capture the per-domain **test baseline** via MATLAB MCP (`run_matlab_test_file`) for visualization/SAMMI, dataIntegration/fluxomics c13, design/optForce, dataIntegration/chemoInformatics molecularWeight, analysis/thermo groupContribution; record pass/skip/fail counts (absent `perl`/`gams` → skip is baseline) in `baseline.md`.
-- [ ] T004 Re-grep every candidate orphan (`src/base/io/python/tmp/*`, `src/visualization/SAMMIM/demo.json`, `c13solver/validator.pl`) for inbound references across the repo; record confirmation that each is unreferenced before any move (FR-005 / edge case).
+- [X] T003 Capture the per-domain **test baseline** via MATLAB MCP (`run_matlab_test_file`) for visualization/SAMMI, dataIntegration/fluxomics c13, design/optForce, dataIntegration/chemoInformatics molecularWeight, analysis/thermo groupContribution; record pass/skip/fail counts (absent `perl`/`gams` → skip is baseline) in `baseline.md`.
+- [X] T004 Re-grep every candidate orphan (`src/base/io/python/tmp/*`, `src/visualization/SAMMIM/demo.json`, `c13solver/validator.pl`) for inbound references across the repo; record confirmation that each is unreferenced before any move (FR-005 / edge case).
 
 **Checkpoint**: baseline recorded and orphans confirmed — user-story slices can begin.
 
@@ -36,12 +36,12 @@ tutorial), each independently implementable and testable.
 **Independent test**: `src/visualization/SAMMIM/` holds only `.m` + `README`; `sammi(model)` writes+opens
 HTML whose local script srcs resolve to the `external/` copy; `sammi.m` signature unchanged.
 
-- [ ] T005 [US1] `git mv` SAMMI vendored assets (`helpfunctions.js`, `uploaddownload.js`, `simulationfunctions.js`, `sammi.css`, `index.html`) from `src/visualization/SAMMIM/` to `external/visualization/SAMMIM/`.
-- [ ] T006 [US1] `git mv` dead `src/visualization/SAMMIM/demo.json` to `deprecated/_SAMMIM_demo/`.
-- [ ] T007 [US1] Delete committed generated HTML `src/visualization/SAMMIM/{index_load.html,index_load2.html,sammi_test_output.html}`.
-- [ ] T008 [US1] Edit `src/visualization/SAMMIM/sammi.m`: resolve the template dir via `CBTDIR` (replace the `which('sammi')`-based `sfolder` used for the `fileread` template read at ~L112); rewrite the generated HTML local `<script src>` to CBTDIR-absolute paths; **preserve the default output location and the function signature**.
-- [ ] T009 [US1] Add generated-SAMMI-HTML patterns to `.gitignore` (e.g. `src/visualization/SAMMIM/index_load*.html`, `**/sammi_test_output.html`).
-- [ ] T010 [US1] Verify: `check_matlab_code('src/visualization/SAMMIM/sammi.m')`; run the SAMMI/visualization suite + `sammi` smoke; compare to baseline (SC-004); confirm no `sammi.m` signature change (SC-006) and no web-app assets remain under `src/` (SC-001).
+- [X] T005 [US1] `git mv` SAMMI vendored assets (`helpfunctions.js`, `uploaddownload.js`, `simulationfunctions.js`, `sammi.css`, `index.html`) from `src/visualization/SAMMIM/` to `external/visualization/SAMMIM/`.
+- [X] T006 [US1] `git mv` dead `src/visualization/SAMMIM/demo.json` to `deprecated/_SAMMIM_demo/`.
+- [X] T007 [US1] Delete committed generated HTML `src/visualization/SAMMIM/{index_load.html,index_load2.html,sammi_test_output.html}`.
+- [X] T008 [US1] Edit `src/visualization/SAMMIM/sammi.m`: resolve the template dir via `CBTDIR` (replace the `which('sammi')`-based `sfolder` used for the `fileread` template read at ~L112); rewrite the generated HTML local `<script src>` to CBTDIR-absolute paths; **preserve the default output location and the function signature**.
+- [X] T009 [US1] Add generated-SAMMI-HTML patterns to `.gitignore` (e.g. `src/visualization/SAMMIM/index_load*.html`, `**/sammi_test_output.html`).
+- [X] T010 [US1] Verify: `check_matlab_code('src/visualization/SAMMIM/sammi.m')`; run the SAMMI/visualization suite + `sammi` smoke; compare to baseline (SC-004); confirm no `sammi.m` signature change (SC-006) and no web-app assets remain under `src/` (SC-001).
 
 **Checkpoint**: MVP complete — the headline GPLv3 offender is out of `src/` with SAMMI still working.
 

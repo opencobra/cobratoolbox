@@ -107,9 +107,19 @@ if nargin < 5 || ~isfield(options,'jscode')
     options.jscode = '';
 end
 
-%Read in index
-sfolder = regexprep(which('sammi'),'sammi.m$','');
-html = fileread([sfolder 'index.html']);
+%Read in index. The SAMMI web-app template and its assets are vendored under
+%external/visualization/SAMMIM/ (relocated out of src/); resolve them from the
+%toolbox root rather than beside this wrapper.
+sfolder = regexprep(which('sammi'),'sammi.m$','');   % SAMMI wrapper dir (default output location)
+sammiExternal = [fileparts(which('initCobraToolbox')) filesep 'external' filesep 'visualization' filesep 'SAMMIM' filesep];
+html = fileread([sammiExternal 'index.html']);
+%Point the template's local asset references at the relocated external/ copy so the
+%generated HTML resolves them regardless of where the output file is written.
+localAssets = {'sammi.css','helpfunctions.js','uploaddownload.js','simulationfunctions.js'};
+for iAsset = 1:numel(localAssets)
+    html = strrep(html, ['''' localAssets{iAsset} ''''], ['''' sammiExternal localAssets{iAsset} '''']);
+    html = strrep(html, ['"' localAssets{iAsset} '"'], ['"' sammiExternal localAssets{iAsset} '"']);
+end
 
 %Define options
 if isstruct(parser)
