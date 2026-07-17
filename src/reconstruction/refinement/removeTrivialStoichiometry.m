@@ -6,7 +6,9 @@ function modelOut = removeTrivialStoichiometry(model)
 %    modelOut=removeTrivialStoichiometry(model)
 %
 % INPUT:
-%    model:       Model with metabolites and reactions to remove
+%    model:       Model with metabolites and reactions to remove, with field:
+%
+%                   * .S - `m x n` stoichiometric matrix
 %
 % OUTPUT:
 %    modelOut:    Obtained model with removed metabolites and reactions

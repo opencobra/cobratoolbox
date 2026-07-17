@@ -5,7 +5,23 @@ function model = changeCOBRAConstraints(model, constraintID, varargin)
 %    model = changeCOBRAConstraints(model, constraintID, varargin)
 %
 % INPUTS:
-%    model:             model structure
+%    model:             COBRA model structure with fields:
+%
+%                         * .S - `m x n` stoichiometric matrix, read to size
+%                           the reaction block
+%                         * .ctrs - constraint identifiers, used to resolve
+%                           `constraintID`
+%                         * .evars - additional (non-reaction) variables,
+%                           checked to size the extra-variable block
+%                         * .C - `ctrs x n` constraint coefficient matrix on
+%                           the reactions (updated)
+%                         * .D - `ctrs x evars` coupling matrix between
+%                           constraints and additional variables (read and updated)
+%                         * .d - constraint right hand side values (updated)
+%                         * .dsense - constraint senses ('L', 'G', 'E'),
+%                           updated per constraint
+%                         * .ctrNames - descriptive constraint names,
+%                           created if absent then updated
 %    constraintID:      The ID of the constraint (or the index in the
 %                       ctrs field) 
 % 
@@ -28,7 +44,7 @@ function model = changeCOBRAConstraints(model, constraintID, varargin)
 %    If c is provided, the whole constraint coefficients will be reset and
 %    existing coefficients will be removed!
 %
-% Author: Thomas Pfau, Oct 2018
+% .. Author: - Thomas Pfau, Oct 2018
 
 
 parser = inputParser();

@@ -1,4 +1,4 @@
-function [translatedRxns]=propagateKBaseMetTranslationToRxns(toTranslatePath)
+function [translatedRxns] = propagateKBaseMetTranslationToRxns(toTranslatePath)
 % This functions replaced already translated metabolites in reactions with
 % KBase/Model SEED nomenclature that are not yet translated. The function
 % creates an output fit for the ReconstructionTool interface in rBioNet
@@ -7,22 +7,23 @@ function [translatedRxns]=propagateKBaseMetTranslationToRxns(toTranslatePath)
 %
 % USAGE:
 %
-%   [translatedRxns]=propagateKBaseMetTranslationToRxns(toTranslatePath)
+%    [translatedRxns] = propagateKBaseMetTranslationToRxns(toTranslatePath)
 %
 % INPUT:
-%   toTranslatePath           String containing the path to xlsx, csv, or 
-%                             txt file with reaction IDs in KBase/ModelSEED
-%                             nomenclature to translate (e.g., rxn00001)
+%    toTranslatePath:          String containing the path to xlsx, csv, or
+%                              txt file with reaction IDs in KBase/ModelSEED
+%                              nomenclature to translate (e.g., rxn00001)
 %
 % OUTPUTS:
-%   translatedRxns            Table with reactions with already translated
-%                             metabolite IDs replaced that can serve as 
-%                             input for rBioNet to check if the reactions
-%                             already exist in the VMH database.
+%    translatedRxns:           Table with reactions with already translated
+%                              metabolite IDs replaced that can serve as
+%                              input for rBioNet to check if the reactions
+%                              already exist in the VMH database.
 %
-% .. Author: Almut Heinken, 06/2020
+% .. Author: - Almut Heinken, 06/2020
 
 % read in the reactions to translate
+
 toTranslate=readInputTableForPipeline(toTranslatePath);
 
 % remove already translated reactions

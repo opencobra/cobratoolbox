@@ -1,4 +1,4 @@
-function [model,condGF,targetGF,relaxGF] = runGapfillingFunctions(model,objectiveFunction,biomassReaction,osenseStr,database,curateDefMedia)
+function [model, condGF, targetGF, relaxGF] = runGapfillingFunctions(model, objectiveFunction, biomassReaction, osenseStr, database, curateDefMedia)
 % This function runs a set of gapfillling functions on a reconstruction to
 % refined as part of the DEMETER pipeline. Reactions are filled in to
 % enable flux through an objective function, e.g., the biomass objective
@@ -6,32 +6,37 @@ function [model,condGF,targetGF,relaxGF] = runGapfillingFunctions(model,objectiv
 %
 % USAGE:
 %
-%   [model,condGF,targetGF,relaxGF] = runGapfillingFunctions(model,objectiveFunction,biomassReaction,osenseStr,database)
+%    [model, condGF, targetGF, relaxGF] = runGapfillingFunctions(model, objectiveFunction, biomassReaction, osenseStr, database, curateDefMedia)
 %
-% INPUTS
-% model:               COBRA model structure
-% objectiveFunction    Reaction ID of the objective function for which flux
-%                      will be enabled through gapfilling
-% biomassReaction:     Reaction ID of the biomass objective function that
-%                      will be restored afterwards (if objectiveFunction is 
-%                      not biomassReaction)
-% osenseStr:           Maximize ('max')/minimize ('min') linear part of the 
-%                      objective
-% database:            rBioNet reaction database containing min. 3 columns:
-%                      Column 1: reaction abbreviation, Column 2: reaction
-%                      name, Column 3: reaction formula.
-% OPTIONAL INPUT
-% curateDefMedia:      boolean indicating that growth on defined medium is
-%                      being curated (default=false)
+% INPUTS:
+%    model:                 COBRA model structure with fields:
 %
-% OUTPUT
-% model:               COBRA model structure
-% condGF               Reactions added based on conditions (recognizing
-%                      certain patterns of reactions)
-% targetGF             Reactions added based on targeted gapfilling 
-%                      (specific metabolites that could not be produced)
-% relaxGF              Reactions added based on relaxFBA (lowest level of
-%                      confidence)
+%                             * .rxns - `n x 1` reaction identifiers
+%                             * .lb - `n x 1` lower bounds
+%
+%    objectiveFunction:     Reaction ID of the objective function for which
+%                           flux will be enabled through gapfilling
+%    biomassReaction:       Reaction ID of the biomass objective function that
+%                           will be restored afterwards (if objectiveFunction
+%                           is not biomassReaction)
+%    osenseStr:             Maximize ('max')/minimize ('min') linear part of
+%                           the objective
+%    database:              rBioNet reaction database containing min. 3
+%                           columns: Column 1: reaction abbreviation, Column
+%                           2: reaction name, Column 3: reaction formula.
+%
+% OPTIONAL INPUTS:
+%    curateDefMedia:        boolean indicating that growth on defined medium
+%                           is being curated (default: false)
+%
+% OUTPUTS:
+%    model:                 COBRA model structure
+%    condGF:                Reactions added based on conditions (recognizing
+%                           certain patterns of reactions)
+%    targetGF:              Reactions added based on targeted gapfilling
+%                           (specific metabolites that could not be produced)
+%    relaxGF:               Reactions added based on relaxFBA (lowest level
+%                           of confidence)
 %
 % .. Author:
 %       - Almut Heinken, 2016-2020

@@ -6,19 +6,36 @@ function MatricesSUX = generateSUXMatrix(model, dictionary, KEGGFilename, KEGGBl
 %    MatricesSUX = generateSUXMatrix(model, dictionary, KEGGFilename, KEGGBlackList, compartment, addModel)
 %
 % INPUTS:
-%    model:          model structure
-%    dictionary:     disctionary used to transform KEGG model
+%    model:            COBRA model structure, with fields:
+%
+%                        * .mets - `m x 1` metabolite identifiers
+%                        * .rxns - `n x 1` reaction identifiers
+%                        * .lb - `n x 1` lower flux bounds (used to count
+%                          reversible reactions)
+%                        * .subSystems - `n x 1` reaction subsystem annotations
+%                        * .RxnSubsystem - set internally from `.subSystems`
+%                          before merging with the universal database and
+%                          exchange/transport matrices; not required as input
+%    dictionary:       Dictionary used to transform the KEGG model
 %
 % OPTIONAL INPUTS:
-%    KEGGID:         List of KEGGIDs for compounds
-%    KEGGFilename:   File name containing KEGG database
-%    KEGGBlackList:  Contains black list, default = {}
-%    compartment:    [c] --> transport from cytoplasm [c] to extracellulat space
-%                    [e] (default), [p] creates transport from [c] to [p] and from [p] to [c],
-%                    if '' - no exchange reactions/transport will be added to the matrix.
-%    addModel:       model structure, containing an additional matrix or model
-%                    that should be combined with SUX matrix.% Note that the naming of metabolites in this matrix has to be identical to
-%                    model naming. Also, the list should be unique.
+%    KEGGFilename:     File name containing KEGG database
+%    KEGGBlackList:    Contains black list, default = {}
+%    compartment:      [c] --> transport from cytoplasm [c] to extracellulat space
+%                      [e] (default), [p] creates transport from [c] to [p] and
+%                      from [p] to [c], if '' - no exchange reactions/transport
+%                      will be added to the matrix.
+%    addModel:         model structure, containing an additional matrix or
+%                      model that should be combined with SUX matrix. Note
+%                      that the naming of metabolites in this matrix has to be
+%                      identical to model naming. Also, the list should be unique.
+%
+% OUTPUT:
+%    MatricesSUX:      Combined `SUX` matrix structure (`S`, `U`, `X`),
+%                      converted to an irreversible model, with `.MatrixPart`
+%                      indicating the origin of each reaction (1 - model
+%                      reactions, 2 - KEGG reactions, 3 - exchange/transport
+%                      reactions)
 %
 %  .. Author: - IT, 11-10-07
 

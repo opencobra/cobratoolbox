@@ -2,24 +2,31 @@ function [outputFile, outputSummary, onlyInNewModel, onlyInPreviousModel] = comp
 % Compares the test functions in a previous and a new version of AGORA and writes a report of the differences in a .tex file. Writes a PDF
 % using pdf2latex.
 %
-% INPUT
-% modelPrevious       COBRA model structure of older model to compare
-% modelNew            COBRA model structure of newer model to compare
-% microbeID           Microbe ID in carbon source data file
-% reportFolder        Path to folder where report documents should be written
-%                     (e.g., 'C:\Reports')
+% USAGE:
 %
-% OPTIONAL INPUT
-% ncbiID              Organism NCBI ID
+%    [outputFile, outputSummary, onlyInNewModel, onlyInPreviousModel] = compareVersions(previousFolder, newFolder, reportFolder, microbeID, ncbiID)
 %
-% OUTPUT
-% outputFile          Name of the output file with report
-% outputSummary       Summary of results in matfile format
-% onlyInNewModel      Reactions/metabolites/genes only in new model
-% onlyInPreviousModel Reactions/metabolites/genes only in previous model
+% INPUTS:
+%    previousFolder:         Folder with COBRA models of the previous
+%                            reconstruction version to compare, each saved
+%                            as a file named after its microbeID
+%    newFolder:              Folder with COBRA models of the new
+%                            reconstruction version to compare, each saved
+%                            as a file named after its microbeID
+%    reportFolder:           Path to folder where report documents should
+%                            be written (e.g., 'C:\Reports')
+%    microbeID:              Microbe ID in carbon source data file
 %
+% OPTIONAL INPUTS:
+%    ncbiID:                 Organism NCBI ID
 %
-% Almut Heinken, Dec 2017, adapted from script reportPDF
+% OUTPUTS:
+%    outputFile:             Name of the output file with report
+%    outputSummary:          Summary of results in matfile format
+%    onlyInNewModel:         Reactions/metabolites/genes only in new model
+%    onlyInPreviousModel:    Reactions/metabolites/genes only in previous model
+%
+% .. Author: - Almut Heinken, Dec 2017, adapted from script reportPDF
 
 % switch directory to create the LaTex file
 currentDir = pwd;

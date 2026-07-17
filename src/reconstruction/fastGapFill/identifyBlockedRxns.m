@@ -8,7 +8,10 @@ function [consistModel, BlockedRxns] = identifyBlockedRxns(model, epsilon)
 %    [consistModel, BlockedRxns] = identifyBlockedRxns(model, epsilon)
 %
 % INPUTS:
-%    model:           Model structure
+%    model:           Model structure, with field:
+%
+%                       * .rxns - `n x 1` reaction identifiers, used to
+%                         determine the consistent/inconsistent reaction sets
 %    epsilon:         Parameter (default: getCobraSolverParams('LP', 'feasTol')*100; see Vlassis et al for more details)
 %
 % OUTPUT:

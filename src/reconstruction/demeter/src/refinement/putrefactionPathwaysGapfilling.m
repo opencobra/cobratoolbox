@@ -1,23 +1,28 @@
-function [model,rxnsAdded]=putrefactionPathwaysGapfilling(model,microbeID,database)
-% This function adds exchange, transport and biosynthesis reactions for 
+function [model, rxnsAdded] = putrefactionPathwaysGapfilling(model, microbeID, database)
+% This function adds exchange, transport and biosynthesis reactions for
 % putrefaction pathways according to data collected from Ref. PMID:29163445
 % as part of the DEMETER pipeline.
 %
 % USAGE:
 %
-%    [model,rxnsAdded]=putrefactionPathwaysGapfilling(model,microbeID,database)
+%    [model, rxnsAdded] = putrefactionPathwaysGapfilling(model, microbeID, database)
 %
-% INPUTS
-% model:             COBRA model structure
-% microbeID:         ID of the reconstructed microbe that serves as the
-%                    reconstruction name and to identify it in input tables
-% database:          rBioNet reaction database containing min. 3 columns:
-%                    Column 1: reaction abbreviation, Column 2: reaction
-%                    name, Column 3: reaction formula.
+% INPUTS:
+%    model:             COBRA model structure with fields:
 %
-% OUTPUTS
-% model:             COBRA model structure with added pathways if applies
-% rxnsAdded:         Reactions added based on experimental data
+%                          * .rxns - reaction identifiers
+%    microbeID:         ID of the reconstructed microbe that serves as the
+%                       reconstruction name and to identify it in input tables
+%    database:          rBioNet reaction database with fields:
+%
+%                          * .reactions - cell array with min. 3 columns: column 1
+%                            reaction abbreviation, column 2 reaction name,
+%                            column 3 reaction formula
+%
+% OUTPUTS:
+%    model:             COBRA model structure with added putrefaction pathway
+%                       reactions, if applicable
+%    rxnsAdded:         Reactions added based on experimental data
 %
 % .. Author:
 %       - Almut Heinken, 2019-2020

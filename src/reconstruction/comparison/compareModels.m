@@ -1,20 +1,23 @@
-function [isSameModel,diffTable,why] = compareModels(modelA,modelB)
-% compares modelA with modelB, looking for differences between the
+function [isSameModel, diffTable, why] = compareModels(modelA, modelB)
+% Compares modelA with modelB, looking for differences between the
 % structures. Assumes any pair of NaN are identical.
 %
-% INPUT
-% modelA:       structure
-% modelB:       structure
+% USAGE:
 %
-% OUTPUT
-% isSameModel:  true if identical models, false otherwise
+%    [isSameModel, diffTable, why] = compareModels(modelA, modelB)
 %
-% diffTable:    table listing differences between fields in the input
-%               structures, including dimensions when they differ
+% INPUTS:
+%    modelA:    structure (e.g. a COBRA model) to compare
+%    modelB:    structure (e.g. a COBRA model) to compare against modelA
 %
-% why:          structure listing differences between models
+% OUTPUTS:
+%    isSameModel:    true if identical models, false otherwise
+%    diffTable:      table listing differences between fields in the input
+%                    structures, including dimensions when they differ
+%    why:            structure listing differences between models
 %
-% Note: This function depends on structeq.m and celleq.m
+% NOTE:
+%    This function depends on structeq.m and celleq.m
 
 funh2string = false;
 ignorenan = true;

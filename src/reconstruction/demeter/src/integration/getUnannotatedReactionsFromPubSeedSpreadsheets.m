@@ -1,4 +1,4 @@
-function unannotatedRxns = getUnannotatedReactionsFromPubSeedSpreadsheets(infoFilePath,inputDataFolder,spreadsheetFolder)
+function unannotatedRxns = getUnannotatedReactionsFromPubSeedSpreadsheets(infoFilePath, inputDataFolder, spreadsheetFolder)
 % Part of the DEMETER pipeline. Prepares input file for the refinement
 % based on comparative genomics analyses.
 % Gets all the reactions that were not found in the respective organism
@@ -6,21 +6,28 @@ function unannotatedRxns = getUnannotatedReactionsFromPubSeedSpreadsheets(infoFi
 % reconstructions.
 %
 % USAGE:
-%   unannotatedRxns = getUnannotatedReactionsFromPubSeedSpreadsheets(infoFilePath,inputDataFolder,spreadsheetFolder)
 %
-% INPUTS
-% infoFilePath          File with information on reconstructions to refine
-% inputDataFolder       Folder to save propagated data to (default: folder 
-%                       in current path called "InputData")                
-% spreadsheetFolder     Folder with comparative genomics data retrieved 
-%                       from PubSEED in spreadsheet format if available. 
-%                       For an example of the required format, see 
-%                       cobratoolbox/papers/2021_demeter/exampleSpreadsheets.
+%    unannotatedRxns = getUnannotatedReactionsFromPubSeedSpreadsheets(infoFilePath, inputDataFolder, spreadsheetFolder)
+%
+% INPUTS:
+%    infoFilePath:          File with information on reconstructions to refine
+%    inputDataFolder:       Folder to save propagated data to (default: folder
+%                           in current path called "InputData")
+%    spreadsheetFolder:     Folder with comparative genomics data retrieved
+%                           from PubSEED in spreadsheet format if available.
+%                           For an example of the required format, see
+%                           cobratoolbox/papers/2021_demeter/exampleSpreadsheets.
+%
+% OUTPUT:
+%    unannotatedRxns:       Cell array of organism ID, reaction ID pairs for
+%                           reactions not found through comparative genomics
+%                           that are removed from the draft reconstructions
 %
 % .. Authors:
 %       - Almut Heinken, 06/2020
 
 % get PubSEED IDs of new organisms to reconstruct
+
 infoFile = readInputTableForPipeline(infoFilePath);
 
 % load reactions

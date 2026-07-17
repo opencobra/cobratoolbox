@@ -1,19 +1,19 @@
-function printReconstructionContent(modelFolder,propertiesFolder,reconVersion,numWorkers)
+function printReconstructionContent(modelFolder, propertiesFolder, reconVersion, numWorkers)
 % This function creates text files containing all reactions and metabolites
 % in the reconstruction resource.
 %
-% USAGE
-%   printReconstructionContent(modelFolder,propertiesFolder,reconVersion,numWorkers)
+% USAGE:
 %
-% INPUTS
-% modelFolder         Folder with reconstructions to be printed
-% propertiesFolder    Folder where the computed stochiometric and flux
-%                     consistencies will be stored
-% reconVersion        Name assigned to the reconstruction resource
-% numWorkers          Number of workers in parallel pool
+%    printReconstructionContent(modelFolder, propertiesFolder, reconVersion, numWorkers)
 %
-%   - AUTHOR
-%   Almut Heinken, 07/2020
+% INPUTS:
+%    modelFolder:         Folder with reconstructions to be printed
+%    propertiesFolder:    Folder where the computed stochiometric and flux
+%                         consistencies will be stored
+%    reconVersion:        Name assigned to the reconstruction resource
+%    numWorkers:          Number of workers in parallel pool
+%
+% .. Author: - Almut Heinken, 07/2020
 
 global CBT_LP_SOLVER
 if isempty(CBT_LP_SOLVER)

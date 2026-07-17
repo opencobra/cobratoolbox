@@ -1,26 +1,28 @@
-function mappedMedia = mapMediumData2AGORA(strainGrowth,inputMedia)
-% This function extracts experimentally determined growth of species on 
-% multiple media and converts the in silico minimal medium the strain can 
-% grow on into an input fit for DEMETER. The input data was retrieved from 
+function mappedMedia = mapMediumData2AGORA(strainGrowth, inputMedia)
+% This function extracts experimentally determined growth of species on
+% multiple media and converts the in silico minimal medium the strain can
+% grow on into an input fit for DEMETER. The input data was retrieved from
 % Tramontano et al., Nat Microbiol 2019 (PMID: 29556107).
 %
-% USAGE
-%       mappedMedia = mapMediumData2AGORA(strainGrowth,inputMedia)
+% USAGE:
 %
-% INPUTS
-% strainGrowth          Growth of strains on the different media reported  
-%                       by Tramontano et al.  
-% inputMedia            Growth media tested by Tramontano et al. converted
-%                       into a computationally readable format
+%    mappedMedia = mapMediumData2AGORA(strainGrowth, inputMedia)
 %
-% OUTPUT
-% mappedMedia           Data from Tramontano et al. converted into a format
-%                       that can be added to GrowthRequirementsTable
+% INPUTS:
+%    strainGrowth:         Growth of strains on the different media reported
+%                          by Tramontano et al.
+%    inputMedia:           Growth media tested by Tramontano et al. converted
+%                          into a computationally readable format
+%
+% OUTPUT:
+%    mappedMedia:          Data from Tramontano et al. converted into a format
+%                          that can be added to GrowthRequirementsTable
 %
 % .. Author:
 %       - Almut Heinken, 03/2020
 
 % delete organisms that did not grow on any medium
+
 rmStrain=[];
 cnt=1;
 for i=2:size(strainGrowth,1)

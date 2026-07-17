@@ -1,12 +1,18 @@
-function model = updateFieldOrderForType(model,type,newOrder)
-% Reorder the fields associated with the provided type to the new order. 
+function model = updateFieldOrderForType(model, type, newOrder)
+% Reorder the fields associated with the provided type to the new order.
+%
 % USAGE:
-%     matchingFields = updateFieldOrderForType(model, type, newOrder)
+%
+%    model = updateFieldOrderForType(model, type, newOrder)
 %
 % INPUTS:
+%    model:              the model to update, with fields:
 %
-%    model:              the model to update
-%    type:               the Type of field to update one of 
+%                          * .genes - `g x 1` gene identifiers (read if
+%                            `type` is `genes`, to size the reorder loop)
+%                          * .rules - `n x 1` evaluatable GPR rules,
+%                            remapped if `type` is `genes`
+%    type:               the Type of field to update one of
 %                        ('rxns','mets','comps','genes')
 %    newOrder:           The new Order. must be of the same size as the
 %                        requested model.(type) field.
