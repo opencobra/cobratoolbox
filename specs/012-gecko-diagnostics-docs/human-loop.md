@@ -64,6 +64,8 @@ infeasible-crash / legacy-test / mosek dual-residual defects — both merged to 
 | 2026-07-17 | 012 Clarify | All 3 to recommended defaults | Enzyme-KKT analytic+verify; ALL blocks in scope; residual-assertion + characterization |
 | 2026-07-17 | 012 Gate 1 | Continue to plan/tasks/analyze | Proceed to Bundle 2 (plan + tasks + analyze); no source edits; stop at Gate 2 |
 | 2026-07-17 | 012 Gate 2 | Approve all tasks (T001–T015) | Scope approved (intent); implementation still gated on an explicit /speckit-implement (Principle VI) before any edit |
+| 2026-07-17 | /speckit-implement | Explicit implement invocation | Bundle 3 authorized; all 15 tasks implemented + verified |
+| 2026-07-17 | 012 Gate 3 | Merge to develop & push | 012 merged to develop (1dd2d6890) and pushed |
 
 ## Approved Implementation Scope
 - Approved: intent yes (Gate 2, 2026-07-17); edits pending explicit /speckit-implement (Principle VI)
