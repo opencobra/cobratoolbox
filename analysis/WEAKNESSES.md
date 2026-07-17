@@ -151,6 +151,19 @@ Constitution anchors are cited per item (Principles II, III, IV, V, VII, VIII, I
   and violates the layout that keeps source reviewable.
 - **Candidate feature:** *Relocate vendored assets to `external/` (or fetch-on-demand) and
   static data to a resource path, leaving only thin MATLAB wrappers in `src/`.*
+- **Status (feature `013-relocate-vendored-code`, 2026-07-17): substantially resolved.** Vendored
+  non-MATLAB code moved to `external/` — SAMMI JS/CSS/HTML, the Perl 13C solver (`c13solver/*.pl`), and
+  the GAMS models (`optForceGAMS/*.gms` + `licememo.gms`) — with thin MATLAB wrappers kept in `src/` and
+  re-anchored on `CBTDIR = fileparts(which('initCobraToolbox'))` (because `external/` is not wholesale on
+  the MATLAB path). Orphan Python scratch (`base/io/python/tmp/`) → `deprecated/`. The "dead" SAMMI
+  `demo.json` was actually a live `testSammi` fixture → moved to the test dir. Committed generated
+  artifacts (SAMMI output HTML, `wang/cache/*.mat`) removed and gitignored. ~45k lines removed from
+  `src/`. **Deferred:** the NIST table + large `.xlsx` → a new top-level `data/` role (gated on a
+  companion `/speckit-constitution` amendment, since IX v1.3.0 defines no `data/` role);
+  `taxa2proc_*.txt` (out of scope, left in place). The `tutorial_eFBA.mlx` was found to be a
+  **superseded copy** of the maintained entropicFBA tutorials already in the `tutorials/` submodule
+  (public opencobra/COBRA.tutorials) → moved to `deprecated/` rather than duplicated upstream, so `src/`
+  is now clear of all targeted vendored/generated/tutorial blobs.
 
 ### W10 — Embedded research applications inside the library tree
 - **Severity:** Medium. (Constitution IX; V.)

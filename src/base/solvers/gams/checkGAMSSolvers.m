@@ -39,7 +39,8 @@ if isempty(gamsPath)
 end
 
 %verify that licememo.gms in the path of the system
-licememoFullPath = which('licememo.gms');
+% licememo.gms is vendored under external/ (relocated out of src/); resolve by absolute path.
+licememoFullPath = [fileparts(which('initCobraToolbox')) filesep 'external' filesep 'base' filesep 'solvers' filesep 'gams' filesep 'licememo.gms'];
 if isempty(licememoFullPath)
     error('licememo.gms in not in MATLAB path.');
 end

@@ -85,15 +85,18 @@ xdir = strrep(xdir, 'generateIsotopomerSolver.m', ''); % get only directory
 %export(isotopomer,'file','C:\UserSVN\isotopomer\solver\Isotopomer_Text.txt');
 export(isotopomer,'file',strcat(xdir,'IsotopomerModel.txt'),'WriteVarNames',false);
 
-cd(xdir);
+cd(xdir);   % writable working dir holding IsotopomerModel.txt and the generated slvr*.m files
+% The Perl 13C solver scripts are vendored under external/ (relocated out of src/); invoke them
+% by absolute path so they still read/write IsotopomerModel.txt and slvr*.m in this working dir.
+pldir = [fileparts(which('initCobraToolbox')) filesep 'external' filesep 'dataIntegration' filesep 'fluxomics' filesep 'c13solver' filesep];
 display('generating EMU method')
-perl generatorEMU.pl;
+perl([pldir 'generatorEMU.pl']);
 display('generating CUMOMER method')
-perl generatorCumomer.pl;
+perl([pldir 'generatorCumomer.pl']);
 display('optimizing EMU method')
-perl optimizerEMU.pl;
+perl([pldir 'optimizerEMU.pl']);
 display('optimizing CUMOMER method')
-perl optimizerCumomer.pl;
+perl([pldir 'optimizerCumomer.pl']);
 
 cd(oriFolder); % restore working directory
 
