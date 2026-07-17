@@ -1,25 +1,27 @@
 # Human Loop State
 
 ## Current State
-- Status: Bundle 1 (requirements preparation) in progress
+- Status: Bundle 2 complete; awaiting Gate 2 decision
 - Active feature directory: specs/013-relocate-vendored-code
-- Last completed bundle: Bundle 0 (detection)
+- Last completed bundle: Bundle 2 (implementation preparation)
 - Source code modified by this workflow: no
 
 ## Core Command Ledger
 - constitution:   checked (v1.3.0 present; implementation gated on explicit /speckit-implement)
 - specify:        invoked (spec.md written, requirements.md checklist all-pass)
-- clarify:        pending
-- checklist:      pending
-- plan:           n/a (Bundle 2)
-- tasks:          n/a (Bundle 2)
-- analyze:        n/a (Bundle 2)
-- implement:      n/a (Bundle 3, gated)
+- clarify:        invoked (Session 2026-07-17, 3 answers encoded)
+- checklist:      invoked (relocation-safety.md, 27 requirement-quality items)
+- plan:           invoked (research.md D1-D9, data-model.md manifest, quickstart.md, plan.md; PASS with 1 tracked item)
+- tasks:          invoked (tasks.md, 27 tasks, 6 phases, MVP=US1)
+- analyze:        invoked (100% coverage; 0 CRITICAL, 1 HIGH governance gate, 2 MEDIUM, 2 LOW)
+- implement:      n/a (Bundle 3, gated on Gate 2 + explicit /speckit-implement)
 
 ## Human Decisions
 | Date (UTC) | Gate | Option chosen | Consequence |
 |---|---|---|---|
 | 2026-07-17 | Pre-spec scoping (AskUserQuestion) | Two features; W9 full cleanup; hybrid layering direction | 013 = W9 relocation (this feature); 014 = base layering inversion (separate, later) |
+| 2026-07-17 | Clarify (AskUserQuestion) | Static data -> dedicated resource path; taxa2proc excluded; orphans -> deprecated/ | Encoded into spec.md Clarifications/FRs |
+| 2026-07-17 | Gate 1 | Continue to Bundle 2 | Proceed to plan -> tasks -> analyze -> implementation-review; stop at Gate 2 |
 
 ## Approved Implementation Scope
 - Approved: no

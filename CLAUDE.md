@@ -1,13 +1,12 @@
 <!-- SPECKIT START -->
-Active Spec Kit feature: **none** — no feature is currently in progress. The
-entropic-FBA series 010 (optional GECKO/enzyme support), 011 (infeasible/dual/test
-hardening), and 012 (GECKO header docs + enzyme-aware KKT/thermo diagnostics) are all
-merged to `develop` and pushed. A comments-only follow-up documenting the
-GECKO-compatible mathematical formulation in the `entropicFluxBalanceAnalysis.m` header
-(commit `47c3a127c`) landed via an explicit direct-implementation override; see
-`specs/012-gecko-diagnostics-docs/human-loop.md` (Post-closeout addendum). Start the next
-change through Spec Kit (`constitution → specify → clarify → plan → tasks → analyze →
-implement`); source edits remain gated on an explicit `/speckit-implement`.
+Active Spec Kit feature: **013-relocate-vendored-code** — relocate vendored third-party
+code and static data blobs out of `src/` (weakness W9), leaving thin MATLAB wrappers.
+Plan: `specs/013-relocate-vendored-code/plan.md` (spec + clarify + plan done; three
+slices P1 SAMMI / P2 Perl+GAMS / P3 data-orphans-tutorial). Behavior-preserving,
+CBTDIR-anchored resolution. Status: planned; awaiting `/speckit-tasks` then Gate 2. One
+tracked item: the static-data `data/` destination needs a companion `/speckit-constitution`
+amendment. The base layering inversion (W4-base) is a separate later feature (014). Source
+edits remain gated on an explicit `/speckit-implement`.
 <!-- SPECKIT END -->
 
 <!-- Hand-maintained; keep OUTSIDE the SPECKIT markers (Spec Kit rewrites that block). -->
