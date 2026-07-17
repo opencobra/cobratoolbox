@@ -529,7 +529,7 @@ if loop % if k = kMin:k
                             %extract reactions in set i.
                             rxns = uels2_m1(m1_full(strcmp(num2str(i), uels1_m1) == 1,:) > 0.99)';
                             optForceSet_i(cont + 1:cont + length(rxns)) = rxns;
-                            %extract positions for reactions in model.rxn.
+                            %extract positions for reactions in model.rxns.
                             pos = cell2mat(arrayfun(@(x)find(strcmp(x, model.rxns)), rxns, 'UniformOutput', false))';
                             pos_optForceSet_i(cont + 1:cont + length(rxns)) = pos;
                             %extract type of regulations for reactions.
@@ -895,7 +895,7 @@ else % if k = fixed number
                         %extract reactions in set i.
                         rxns = uels2_m1(m1_full(strcmp(num2str(i), uels1_m1) == 1,:) > 0.99)';
                         optForceSet_i(cont + 1:cont + length(rxns)) = rxns;
-                        %extract positions for reactions in model.rxn.
+                        %extract positions for reactions in model.rxns.
                         pos = cell2mat(arrayfun(@(x)find(strcmp(x, model.rxns)), rxns, 'UniformOutput', false))';
                         pos_optForceSet_i(cont + 1:cont + length(rxns)) = pos;
                         %extract type of regulations for reactions.
