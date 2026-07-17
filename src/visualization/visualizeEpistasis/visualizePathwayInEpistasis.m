@@ -13,12 +13,12 @@ function [both, pos, neg] = visualizePathwayInEpistasis(Nall, radius, pathwayNam
 %     [both,pos,neg]=visualizePathwayInEpistasis(Nall,radius,pathwayNames)
 %
 % INPUT:
-%     Nall:          a structure representing the epistatic interaction networks:
-%                    Nall.pos: a square matrix representing number of positive interactions shared by any two pathways.
-%                    Nall.neg: a square matrix representing number of negative interactions shared by any two pathways.
-%     radius:        radius of the generic circles for clock diagram.
-%     pathwayNames:  subSystem names corresponding to matrices in Nall
-%                    structure
+%     Nall:            a structure representing the epistatic interaction networks:
+%                      Nall.pos: a square matrix representing number of positive interactions shared by any two pathways.
+%                      Nall.neg: a square matrix representing number of negative interactions shared by any two pathways.
+%     radius:          radius of the generic circles for clock diagram.
+%     pathwayNames:    subSystem names corresponding to matrices in Nall
+%                      structure
 %
 % OUTPUT:
 %     both:          contains both positive and negative interactions

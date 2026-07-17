@@ -1,15 +1,17 @@
 function outputFormatOK = changeCbMapOutput(outputFormat)
-%changeCbMapOutput sets the output format for drawCbMap. Displays
-%outputFormat if no inputs provided.
+% changeCbMapOutput sets the output format for drawCbMap. Displays
+% outputFormat if no inputs provided.
 %
-% outputFormatOK = changeCbMapOutput(outputFormat)
+% USAGE:
 %
-%OPTIONAL INPUT
-% outputFormat      drawCbMap render format
-%                   {'svg', 'matlab', 'java'} (java not implemented)
-%OUTPUT
-% outputFormatOK    True if output format set properly, else false.
+%    outputFormatOK = changeCbMapOutput(outputFormat)
 %
+% OPTIONAL INPUT:
+%    outputFormat:      drawCbMap render format
+%                       {'svg', 'matlab', 'java'} (java not implemented)
+%
+% OUTPUT:
+%    outputFormatOK:    True if output format set properly, else false.
 %
 
 global CB_MAP_OUTPUT

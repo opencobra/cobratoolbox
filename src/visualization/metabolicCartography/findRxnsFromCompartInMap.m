@@ -4,10 +4,12 @@ function [rxns, id] = findRxnsFromCompartInMap(map, compartment)
 %
 % USAGE:
 %
-%    [rxns, id] = findRxnFromCompartMap(map, Compartment)
+%    [rxns, id] = findRxnsFromCompartInMap(map, compartment)
 %
 % INPUTS:
-%    map:               Map from CellDesigner parsed to matlab format
+%    map:               Map from CellDesigner parsed to matlab format, with fields:
+%
+%                          * .rxnName - Cell array of reaction names
 %    compartment:       Compartment of interest (e.g.: '[m]','[n]','[e]',etc.)
 %
 % OUTPUTS:

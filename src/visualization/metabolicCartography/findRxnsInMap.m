@@ -3,10 +3,12 @@ function [rxnID, rxnIDref] = findRxnsInMap(map, rxnList)
 %
 % USAGE:
 %
-%    [rxnID, rxnIDref] = findRxnIDs(map, rxnList)
+%    [rxnID, rxnIDref] = findRxnsInMap(map, rxnList)
 %
 % INPUTS:
-%    map:           Map from CellDesigner parsed to MATLAB format
+%    map:           Map from CellDesigner parsed to MATLAB format, with fields:
+%
+%                     * .rxnName - Cell array of reaction names
 %    rxnList:       List of reaction names
 %
 % OUTPUTS:

@@ -1,30 +1,41 @@
-function [xmlStructOut,mapOut,rxnNotInMap] = removeMapReactions(xmlStruct,map,rxnRemoveList,printLevel)
-%removes a list of reactions from a cell designer map, also removes
-%correspinding species and species aliases if necessary
+function [xmlStructOut, mapOut, rxnNotInMap] = removeMapReactions(xmlStruct, map, rxnRemoveList, printLevel)
+% Removes a list of reactions from a CellDesigner map, also removing
+% corresponding species and species aliases if necessary.
 %
-% INPUT
-%   xmlStruct:      Structure obtained from the "xml2struct" function.
-%                   To be kept for the conversion back to an XML file
-%                   of the structure.
+% USAGE:
 %
-%   map:            Matlab structure of the map containing all the
-%                   relevant fields usable for checking and correction.
+%    [xmlStructOut, mapOut, rxnNotInMap] = removeMapReactions(xmlStruct, map, rxnRemoveList, printLevel)
 %
-%   rxnRemoveList:  Cell array of reaction abbreviation to be removed
+% INPUTS:
+%    xmlStruct:         Structure obtained from the `xml2struct` function.
+%                       To be kept for the conversion back to an XML file
+%                       of the structure.
+%    map:               Matlab structure of the map containing all the
+%                       relevant fields usable for checking and
+%                       correction, with fields:
 %
-%   printLevel:     {0,(1)}
+%                         * .rxnName - Cell array of reaction names
+%                         * .sID - Stoichiometric matrix with rows =
+%                           speciesID and columns = reactionsID
+%                         * .sAlias - Stoichiometric matrix with rows =
+%                           speciesAlias and columns = reactionsID
+%                         * .idAlias - Logical matrix with rows = speciesID
+%                           and columns = speciesAlias
+%    rxnRemoveList:     Cell array of reaction abbreviation to be removed
 %
-% OUTPUT
-%   xmlStructOut:   Structure for the conversion back to an XML file
-%                   of the structure.
+% OPTIONAL INPUTS:
+%    printLevel:        {0,(1)}
 %
-%   mapOut:         Matlab structure of the smaller map containing all the
-%                   relevant fields usable for checking and correction.
+% OUTPUTS:
+%    xmlStructOut:      Structure for the conversion back to an XML file
+%                       of the structure.
+%    mapOut:            Matlab structure of the smaller map containing all
+%                       the relevant fields usable for checking and
+%                       correction.
+%    rxnNotInMap:       Boolean vector the length of `rxnRemoveList`
+%                       indicating reactions that could not be found in the map
 %
-% rxnNotInMap: boolean vector the length of rxnRemoveList
-%                        indicating reactions that could not be found in the map
-%
-% Ronan Fleming 2020
+% .. Author: - Ronan Fleming, 2020
 
 if ~exist('printLevel','var')
     printLevel = 1;

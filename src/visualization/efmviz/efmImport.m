@@ -2,8 +2,8 @@ function [EFMRxns, EFMFluxes] = efmImport(EFMfileLocation, EFMFileName, EFMFluxf
 % This function reads the file containing all EFMs
 %
 % USAGE:
-%    [EFMRxns, EFMFluxes] = importEFMs(EFMfileLocation, EFMFileName, EFMFluxfileLocation, EFMFluxFileName);
-%    
+%    [EFMRxns, EFMFluxes] = efmImport(EFMfileLocation, EFMFileName, EFMFluxfileLocation, EFMFluxFileName);
+%
 % INPUTS:
 %    EFMfileLocation:    location of the file containing all EFMs
 %    EFMFileName:        name of the file containing all EFMs <name.txt>
@@ -23,9 +23,9 @@ function [EFMRxns, EFMFluxes] = efmImport(EFMfileLocation, EFMFileName, EFMFluxf
 %                  otherwise
 %
 % EXAMPLE:
-%    EFMRxns = importEFMs('C;/Analysis/', 'testEFMs.txt'); 
-%    EFMRxns = importEFMs('', 'test.txt'); % when the file is in the current directory
-%    [EFMRxns, EFMFluxes] = importEFMs('C;/Analysis/', 'testEFMs.txt', 'C;/Analysis/', 'testFluxes.txt'); ; % with optional inputs
+%    EFMRxns = efmImport('C;/Analysis/', 'testEFMs.txt');
+%    EFMRxns = efmImport('', 'test.txt'); % when the file is in the current directory
+%    [EFMRxns, EFMFluxes] = efmImport('C;/Analysis/', 'testEFMs.txt', 'C;/Analysis/', 'testFluxes.txt'); ; % with optional inputs
 %
 % .. Author: Last modified: Chaitra Sarathy, 1 Oct 2019
 

@@ -1,22 +1,90 @@
 function [xmlStruct, map] = transformFullXML2Map(fileName)
 % Create a MATLAB structure from a given XML file.
-% The XML file is first parsed through the "xml2struct" function and
+% The XML file is first parsed through the `xml2struct` function and
 % then transformed into a structure. The content of this structure can be
-% found in the [description document](https://github.com/opencobra/cobratoolbox/blob/master/docs/source/notes/fullMATLABStructure.md)
+% found in the description document
+% `documentation/source/notes/MapPPIStructure.md`
 %
 % USAGE:
 %
-%   [xmlStruct, map] = transformFullXML2Map(fileName)
+%    [xmlStruct, map] = transformFullXML2Map(fileName)
 %
 % INPUT:
-%   fileName:       Path to the XML file.
+%    fileName:      Path to the XML file
 %
 % OUTPUTS:
-%   xmlStruct:      Structure obtained from the "xml2struct" function.
-%                   To be kept for the conversion back to an XML file
-%                   of the structure.
-%   map:            Matlab structure of the map containing all the
-%                   relevant fields usable for checking and correction.
+%    xmlStruct:     Structure obtained from the `xml2struct` function, kept
+%                   for the conversion back to an XML file of the structure.
+%                   Fields used:
+%
+%                     * .sbml - top-level SBML tree parsed from `fileName`; the
+%                       molecule, complex, included-species, species, reaction,
+%                       and compartment fields of `map` below are all extracted
+%                       from this tree
+%    map:           MATLAB structure of the protein-protein-interaction (PPI)
+%                   map (see `documentation/source/notes/MapPPIStructure.md`)
+%                   containing all the relevant fields usable for checking and
+%                   correction. Note: the stoichiometric/alias matrices
+%                   (`.sID`, `.sAlias`, `.idAlias`) are not built by this
+%                   function for PPI maps:
+%
+%                     * .molAlias - alias of each molecule (no duplicates)
+%                     * .molID - ID of each molecule (duplicates)
+%                     * .molCompartAlias - compartment alias of each molecule
+%                       (empty if no info)
+%                     * .molXPos - X position of each molecule
+%                     * .molYPos - Y position of each molecule
+%                     * .molWidth - width of each molecule
+%                     * .molHeight - height of each molecule
+%                     * .molColor - colour of each molecule (HTML code)
+%                     * .complexAlias - alias of each complex (no duplicates)
+%                     * .complexID - ID of each complex (duplicates)
+%                     * .complexCompartAlias - compartment alias of each complex
+%                       (empty if no info)
+%                     * .complexXPos - X position of each complex
+%                     * .complexYPos - Y position of each complex
+%                     * .complexWidth - width of each complex
+%                     * .complexHeight - height of each complex
+%                     * .complexColor - colour of each complex (HTML code)
+%                     * .specIncID - ID of each included species (no duplicates)
+%                     * .specIncName - name of each included species
+%                     * .specIncCplxID - complex ID reference of each included species
+%                     * .specIncType - type of each included species
+%                     * .specIncNotes - notes of each included species (empty if no info)
+%                     * .specID - ID of each species (no duplicates)
+%                     * .specMetaID - metaID of each species
+%                     * .specName - name of each species
+%                     * .specType - type of each species (SIMPLE_MOLECULE/ION/PROTEIN...)
+%                     * .specNotes - notes of each species (empty if no info)
+%                     * .rxnID - ID of each reaction (no duplicates)
+%                     * .rxnMetaID - metaID of each reaction
+%                     * .rxnName - name of each reaction
+%                     * .rxnType - type of each reaction
+%                     * .rxnReversibility - reversibility of each reaction (`'false'`/`'true'`)
+%                     * .rxnBaseReactantAlias - alias of the base reactant(s)
+%                     * .rxnBaseReactantID - ID of the base reactant(s)
+%                     * .rxnBaseProductAlias - alias of the base product(s)
+%                     * .rxnBaseProductID - ID of the base product(s)
+%                     * .rxnReactantAlias - alias of reactant(s) (empty if not present)
+%                     * .rxnReactantID - ID of reactant(s) (empty if not present)
+%                     * .rxnReactantLineType - type of the reactant's reaction line
+%                     * .rxnReactantLineColor - colour of the reactant's reaction line
+%                     * .rxnReactantLineWidth - width of the reactant's reaction line
+%                     * .rxnProductAlias - alias of product(s) (empty if not present)
+%                     * .rxnProductID - ID of product(s) (empty if not present)
+%                     * .rxnProductLineType - type of the product's reaction line
+%                     * .rxnProductLineColor - colour of the product's reaction line
+%                     * .rxnProductLineWidth - width of the product's reaction line
+%                     * .rxnModAlias - alias of modifier metabolite(s) of each reaction
+%                     * .rxnModID - ID of modifier metabolite(s) of each reaction
+%                     * .rxnModType - type of the modification by the metabolite
+%                     * .rxnModColor - colour of the modification line
+%                     * .rxnModWidth - width of the modification line
+%                     * .rxnColor - colour of the main reaction (HTML code)
+%                     * .rxnWidth - width of the main reaction
+%                     * .rxnNotes - notes of each reaction (empty if no info)
+%                     * .compartAlias - alias of each compartment (empty if no info)
+%                     * .compartName - name of each compartment (empty if no info)
 %
 % .. Author: - N.Sompairac - Institut Curie, Paris, 24/07/2017
 

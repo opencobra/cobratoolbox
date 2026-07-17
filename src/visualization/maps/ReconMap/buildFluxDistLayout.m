@@ -1,4 +1,4 @@
-function [serverResponse] = buildFluxDistLayout( minerva, model, solution, identifier, hexColour, maxThickness, content)
+function [serverResponse] = buildFluxDistLayout(minerva, model, solution, identifier, hexColour, maxThickness, content)
 % Builds a layout for MINERVA from a flux distribution. If a dictionary
 % of identifiers is not provided it is assumed that the map and the COBRA
 % model's nomenclature is coherent. Sends the layout to the remote MINERVA
@@ -6,17 +6,27 @@ function [serverResponse] = buildFluxDistLayout( minerva, model, solution, ident
 %
 % USAGE:
 %
-%    [serverResponse] = buildFluxDistLayout( minerva, model, solution, identifier, hexColour, thickness, content)
+%    [serverResponse] = buildFluxDistLayout(minerva, model, solution, identifier, hexColour, maxThickness, content)
 %
 % INPUTS:
-%    minerva:           Struct with the information of minerva instance:
-%                       address, login, password and model (map)
-%    model:             COBRA model structure
-%    solution.v:        optimizeCb solution structure with a flux vector
+%    minerva:           Struct with the information of the MINERVA instance,
+%                       with fields:
+%
+%                         * .map - name of the target MINERVA map
+%                         * .login - MINERVA username
+%                         * .password - MINERVA password
+%                         * .googleLicenseConsent - true if the user agreed
+%                           to the Google Maps terms of use
+%    model:             COBRA model structure with fields:
+%
+%                         * .rxns - `n x 1` cell array of reaction identifiers
+%    solution:          optimizeCbModel solution structure with fields:
+%
+%                         * .v - `n x 1` flux vector
 %    identifier:        Name for the layout in MINERVA
 %
 % OPTIONAL INPUT:
-%    hexColour          colour of overlay (hex color format)
+%    hexColour:         colour of overlay (hex color format)
 %                       e.g. '#009933' corresponds to http://www.color-hex.com/color/009933
 %                       If you want to make a color gradient, you can input
 %                       an array of 2 or 3 colors like ["#ff0000", "#6617B5", "#0000ff"]

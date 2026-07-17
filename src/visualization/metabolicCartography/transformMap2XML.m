@@ -1,20 +1,62 @@
 function transformMap2XML(xmlStruct, map, fileName)
 % Creates a new XML file from the information contained in the map
-% structure. Uses the function "struct2xml" to transform a matlab
-% structure into an XML text format.
+% structure. Uses the function `struct2xml` to transform a MATLAB
+% structure into an XML text format
 %
 % USAGE:
 %
-%   transformMap2XML(xmlStruct, map, fileName)
+%    transformMap2XML(xmlStruct, map, fileName)
 %
 % INPUTS:
-%   xmlStruct:      XML structure obtained from the function
-%                   "xml2struct". Used by the function "struct2xml"
-%                   to obtain the XML file.
-%   map:            Matlab structure of the map with the relevant
-%                   information. This information is then transfered to
-%                   the xmlStruct for the conversion.
-%   fileName:       Path and name of the new XML file.
+%    xmlStruct:     XML structure obtained from the function `xml2struct` (see
+%                   `transformXML2Map`). Used by the function `struct2xml` to
+%                   obtain the XML file. Fields used:
+%
+%                     * .sbml - top-level SBML tree, updated in place with the
+%                       information transferred from `map` before being written
+%    map:           MATLAB structure of the map (see `transformXML2Map`,
+%                   `documentation/source/notes/MapStructure.md`) with the
+%                   relevant information; this information is then transferred
+%                   to the `xmlStruct` for the conversion. Fields used:
+%
+%                     * .molAlias - alias of each molecule (no duplicates)
+%                     * .molID - ID of each molecule (duplicates)
+%                     * .molCompartAlias - compartment alias of each molecule
+%                       (empty if no info)
+%                     * .molXPos - X position of each molecule
+%                     * .molYPos - Y position of each molecule
+%                     * .molWidth - width of each molecule
+%                     * .molHeight - height of each molecule
+%                     * .molColor - colour of each molecule (HTML code)
+%                     * .specID - ID of each species (no duplicates)
+%                     * .specMetaID - metaID of each species
+%                     * .specName - name of each species
+%                     * .specType - type of each species (SIMPLE_MOLECULE/ION/PROTEIN...)
+%                     * .specNotes - notes of each species (empty if no info)
+%                     * .rxnID - ID of each reaction (no duplicates)
+%                     * .rxnMetaID - metaID of each reaction
+%                     * .rxnName - name of each reaction
+%                     * .rxnType - type of each reaction
+%                     * .rxnReversibility - reversibility of each reaction (`'false'`/`'true'`)
+%                     * .rxnBaseReactantAlias - alias of the base reactant(s)
+%                     * .rxnBaseReactantID - ID of the base reactant(s)
+%                     * .rxnBaseProductAlias - alias of the base product(s)
+%                     * .rxnBaseProductID - ID of the base product(s)
+%                     * .rxnReactantAlias - alias of reactant(s) (empty if not present)
+%                     * .rxnReactantID - ID of reactant(s) (empty if not present)
+%                     * .rxnColor - colour of the main reaction (HTML code)
+%                     * .rxnWidth - width of the main reaction
+%                     * .rxnProductAlias - alias of product(s) (empty if not present)
+%                     * .rxnProductID - ID of product(s) (empty if not present)
+%                     * .rxnModAlias - alias of modifier metabolite(s) of each reaction
+%                     * .rxnModID - ID of modifier metabolite(s) of each reaction
+%                     * .rxnModType - type of the modification by the metabolite
+%                     * .rxnModColor - colour of the modification line
+%                     * .rxnModWidth - width of the modification line
+%                     * .rxnNotes - notes of each reaction (empty if no info)
+%                     * .compartAlias - alias of each compartment (empty if no info)
+%                     * .compartName - name of each compartment (empty if no info)
+%    fileName:      Path and name of the new XML file
 %
 % .. Author: - N.Sompairac - Institut Curie, Paris, 24/07/2017
 

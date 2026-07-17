@@ -1,13 +1,15 @@
-function [] = generateSubsystemLayouts( minerva, cobra_model, color )
+function [] = generateSubsystemLayouts(minerva, cobra_model, color)
 % Generates subsystem layouts
 %
 % USAGE:
 %
-%    generateSubsystemLayouts( minerva, cobra_model, color )
+%    generateSubsystemLayouts(minerva, cobra_model, color)
 %
 % INPUTS:
-%    minerva:           Struct with the information of minerva instance:
-%                       address, login, password and model (map)
+%    minerva:           Struct with the information of the MINERVA instance,
+%                       with fields:
+%
+%                         * .login - MINERVA username
 %    cobra_model:       COBRA model structure
 %    color:             Color
 

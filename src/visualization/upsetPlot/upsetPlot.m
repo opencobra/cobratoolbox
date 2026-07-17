@@ -1,64 +1,73 @@
 function [hFig, axI, axS, axL] = upsetPlot(DataOrSets, setName, varargin)
-% upsetPlot - Generate an UpSet plot
+% Generates an UpSet plot, a visualisation of set intersections
 %
-% An UpSet plot is a visualisation technique for exploring set intersections.
-% It is an alternative to Venn diagrams, especially suited for larger numbers
-% of sets. The plot shows:
-%   • Horizontal bars representing the size of each set
-%   • Vertical bars representing the size of intersections between sets
-%   • A matrix of dots and connecting lines below the bars, indicating which
-%     sets are involved in each intersection
+% An UpSet plot is an alternative to Venn diagrams, especially suited for
+% larger numbers of sets. The plot shows:
 %
-% Usage:
-%   upsetPlot(Data, setName)
-%   upsetPlot(Sets, setName)
-%   upsetPlot(..., 'bar1Color', [r g b], 'bar2Color', cmap, 'lineColor', [r g b])
-%   upsetPlot(..., 'includeSingletons', true|false)
-%   upsetPlot(..., 'Parent', figHandle)
+%    * Horizontal bars representing the size of each set
+%    * Vertical bars representing the size of intersections between sets
+%    * A matrix of dots and connecting lines below the bars, indicating
+%      which sets are involved in each intersection
 %
-% Inputs:
-%   Data     - logical (N x M) matrix, rows = elements, columns = sets
-%              OR
-%   Sets     - 1 x M cell array of vectors (raw sets of elements). The
-%              function will internally build the membership matrix.
+% USAGE:
 %
-%   setName  - 1 x M cell array of set names
+%    [hFig, axI, axS, axL] = upsetPlot(DataOrSets, setName, varargin)
 %
-% Optional name-value pairs:
-%   'bar1Color'         - colour(s) for intersection bars (default teal gradient)
-%   'bar2Color'         - colour(s) for set size bars (default blue gradient)
-%   'lineColor'         - colour for connection lines (default grey)
-%   'includeSingletons' - whether to include single-set intersections in the
-%                         top bars. Default false, which excludes them.
-%   'Parent'            - parent figure to draw into. If provided, the plot
-%                         is created in this figure. The function clears it.
+% INPUTS:
+%    DataOrSets:    Either a logical `N x M` matrix (`Data`, rows = elements,
+%                   columns = sets), or a `1 x M` cell array of vectors
+%                   (`Sets`, raw sets of elements). When a cell array is
+%                   given, the function internally builds the membership
+%                   matrix.
+%    setName:       `1 x M` cell array of set names.
 %
-% Outputs:
-%   hFig - handle to the created figure
-%   axI  - intersection axes (top bars)
-%   axS  - set size axes (left bars)
-%   axL  - links matrix axes (dots and lines)
+% OPTIONAL INPUTS:
+%    varargin:      Optional name-value argument pairs:
 %
-% Example 1 (binary matrix, whole-figure saving):
-%   rng(5)
-%   setName = {'RB1','PIK3R1','EGFR','TP53','PTEN'};
-%   Data = rand([200,5]) > .85;
-%   [h, axI] = upsetPlot(Data, setName);    % excludes singletons by default
-%   savefig(h, 'upset_matrix.fig')          % save MATLAB figure
-%   print(h, '-dpdf', 'upset_matrix.pdf')   % export to PDF
-%   exportgraphics(axI, 'upset_intersections.png')  % export just top bars
+%                     * bar1Color - colour(s) for intersection bars (default
+%                       teal gradient)
+%                     * bar2Color - colour(s) for set size bars (default
+%                       blue gradient)
+%                     * lineColor - colour for connection lines (default
+%                       grey)
+%                     * includeSingletons - logical, whether to include
+%                       single-set intersections in the top bars (default
+%                       `false`, which excludes them)
+%                     * Parent - parent figure to draw into; if provided,
+%                       the plot is created in (and the figure cleared for)
+%                       this figure
 %
-% Example 2 (raw sets, provide parent to avoid Live Editor clean-up):
-%   A = [1 2 5]; B = [2 3]; C = [1 4 5];
-%   f = figure('Color','w');                                % parent from base workspace
-%   [h, axI, axS, axL] = upsetPlot({A,B,C}, {'A','B','C'}, 'includeSingletons', true, 'Parent', f);
-%   exportgraphics(axS, 'upset_set_sizes.png');             % left bars only
-%   saveas(h, 'upset_whole.png');                           % whole figure
+% OUTPUTS:
+%    hFig:          Handle to the created figure.
+%    axI:           Intersection axes (top bars).
+%    axS:           Set size axes (left bars).
+%    axL:           Links matrix axes (dots and lines).
 %
-% Author: based on slandarer's demo (2023)
-% Ref: https://www.mathworks.com/matlabcentral/fileexchange/123695-upset-plot
+% EXAMPLE:
+%
+%    % Example 1 (binary matrix, whole-figure saving):
+%    rng(5)
+%    setName = {'RB1','PIK3R1','EGFR','TP53','PTEN'};
+%    Data = rand([200,5]) > .85;
+%    [h, axI] = upsetPlot(Data, setName);    % excludes singletons by default
+%    savefig(h, 'upset_matrix.fig')          % save MATLAB figure
+%    print(h, '-dpdf', 'upset_matrix.pdf')   % export to PDF
+%    exportgraphics(axI, 'upset_intersections.png')  % export just top bars
+%
+%    % Example 2 (raw sets, provide parent to avoid Live Editor clean-up):
+%    A = [1 2 5]; B = [2 3]; C = [1 4 5];
+%    f = figure('Color','w');                                % parent from base workspace
+%    [h, axI, axS, axL] = upsetPlot({A,B,C}, {'A','B','C'}, 'includeSingletons', true, 'Parent', f);
+%    exportgraphics(axS, 'upset_set_sizes.png');             % left bars only
+%    saveas(h, 'upset_whole.png');                           % whole figure
+%
+% NOTE:
+%    Ref: https://www.mathworks.com/matlabcentral/fileexchange/123695-upset-plot
+%
+% .. Author: - based on slandarer's demo (2023)
 
 %% Convert raw sets to membership matrix if needed
+
 if iscell(DataOrSets)
     % collect universe of elements
     allElements = unique([DataOrSets{:}]);

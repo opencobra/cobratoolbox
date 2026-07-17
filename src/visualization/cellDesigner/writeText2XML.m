@@ -9,7 +9,7 @@ function writeText2XML(text, fname_out)
 % INPUTS:
 %    text:          A matlab variable contains the lines of the variable to be
 %                   written to a XML file.
-%    fanme_out:     The name of the output XML file name.
+%    fname_out:     The name of the output XML file name.
 %
 % .. Author: - Longfei Mao Oct/2014
 

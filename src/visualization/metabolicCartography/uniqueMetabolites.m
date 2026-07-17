@@ -1,12 +1,15 @@
 function uniqueMets = uniqueMetabolites(model)
-% uniqueMetabolites - Identifies unique metabolites by ignoring compartment tags
+% Identifies unique metabolites by ignoring compartment tags
 %
 % USAGE:
 %
 %    uniqueMets = uniqueMetabolites(model)
 %
 % INPUT:
-%    model:         COBRA model structure containing metabolites in model.mets
+%    model:         COBRA model structure with fields:
+%
+%                     * .mets - `m x 1` cell array of metabolite identifiers
+%                       (e.g. `metabolite[c]`)
 %
 % OUTPUT:
 %    uniqueMets:    Cell array of unique metabolite names, excluding compartment tags
@@ -14,7 +17,6 @@ function uniqueMets = uniqueMetabolites(model)
 % .. Authors:
 %    Cyrille Thinnes, University of Galway, 25/10/2024
 
-% Extract metabolites
 mets = model.mets;
 
 % Remove compartment tags, e.g., 'metabolite[c]' -> 'metabolite'
