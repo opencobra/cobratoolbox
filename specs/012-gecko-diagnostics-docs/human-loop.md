@@ -16,6 +16,23 @@
 - Receipt: agent-runs/20260717T000000Z-gecko-diagnostics-docs/implementation-receipt.md (+ baseline.md)
 - check_matlab_code: 34 flags (all pre-existing, no new); new test clean. Deviations in receipt.
 
+## Post-closeout addendum (2026-07-17, direct-implementation override)
+- After 012 merged, a follow-up prompt asked that the entropicFluxBalanceAnalysis.m header ALSO carry
+  the GECKO-compatible MATHEMATICAL FORMULATION (not just the field docs US1 added). 012's US1 had
+  documented the enzyme fields (model.E/D/evarlb/evarub/evarc/evars, param.enzymeEntropyWeight,
+  solution.e/z_e) but the top `minimize ... subject to ... optimality` block was still the non-enzyme
+  problem.
+- Implemented OUTSIDE Spec Kit via the exact Principle-VI override phrase (trivial, comments-only,
+  local doc correction). Commit `47c3a127c` on develop (pushed): a 32-line comment block after the base
+  formulation extending it to the enzyme case — objective `+ evarc'*e` (+ optional
+  `ge.*e'*(log(e)-1)` when param.enzymeEntropyWeight>0), `E*e`/`D*e` in the mass-balance/coupling rows,
+  `evarlb <= e <= evarub : z_e`, and the enzyme KKT stationarity `|| evarc + E'*y_N + D'*y_C + z_e ||_inf`
+  (+z_e both backends, matching the runtime diagnostics and prepareEnzymeConstrainedEP fold-in). Reduces
+  exactly to the base formulation when model.E is absent.
+- Validation: diff proven comments-only (zero executable change); check_matlab_code adds no new flags
+  (34 pre-existing); testEntropicFBAgeckoDiagnostics passes on mosek + pdco. No Spec Kit backfill
+  required (trivial local correction); recorded here for audit completeness.
+
 ## Core Command Ledger
 - constitution:   checked (v1.3.0; not regenerated)
 - specify:        invoked (spec.md + checklists/requirements.md 16/16 pass, no NEEDS CLARIFICATION)

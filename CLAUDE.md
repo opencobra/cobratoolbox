@@ -1,10 +1,13 @@
 <!-- SPECKIT START -->
-Active Spec Kit feature: **011-entropicfba-dual-fixes** — fix two latent entropic-FBA
-defects (undefined `message` crash on an infeasible enzyme-constrained EP; undefined `k`
-in `testEntropicFluxBalanceAnalysis`) and pursue a fix for the mosek GECKO dual-optimality
-residual (report it in reduced coordinates like pdco), all surfaced during 010. Plan:
-`specs/011-entropicfba-dual-fixes/plan.md`. Status: planned; implementation is gated on an
-explicit `/speckit-implement`.
+Active Spec Kit feature: **none** — no feature is currently in progress. The
+entropic-FBA series 010 (optional GECKO/enzyme support), 011 (infeasible/dual/test
+hardening), and 012 (GECKO header docs + enzyme-aware KKT/thermo diagnostics) are all
+merged to `develop` and pushed. A comments-only follow-up documenting the
+GECKO-compatible mathematical formulation in the `entropicFluxBalanceAnalysis.m` header
+(commit `47c3a127c`) landed via an explicit direct-implementation override; see
+`specs/012-gecko-diagnostics-docs/human-loop.md` (Post-closeout addendum). Start the next
+change through Spec Kit (`constitution → specify → clarify → plan → tasks → analyze →
+implement`); source edits remain gated on an explicit `/speckit-implement`.
 <!-- SPECKIT END -->
 
 <!-- Hand-maintained; keep OUTSIDE the SPECKIT markers (Spec Kit rewrites that block). -->
