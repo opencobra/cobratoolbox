@@ -33,9 +33,12 @@ R2026a: `check_matlab_code` clean of new issues on every edited wrapper; live sm
 template + `demo.json` fixture resolve and `sammi` writes output, and `perl` locates+executes the
 relocated `generatorEMU.pl`.
 
-**Deferred (not done):** T019 tutorial move (`tutorials/` is a git submodule — needs a submodule
-commit); sub-slice 3b static data → `data/` (needs a `/speckit-constitution` amendment adding the
-`data/` role); `taxa2proc_*.txt` (out of scope).
+**T019 tutorial (revised at closeout):** `tutorial_eFBA.mlx` was a superseded copy of the entropicFBA
+tutorials already maintained in the `tutorials/` submodule (public opencobra/COBRA.tutorials), so it was
+moved to `deprecated/` rather than duplicated upstream. `src/` is now clear of all targeted artifacts.
+
+**Still deferred:** sub-slice 3b static data → `data/` (needs a `/speckit-constitution` amendment adding
+the `data/` role); `taxa2proc_*.txt` (out of scope).
 
 ## Diff summary
 

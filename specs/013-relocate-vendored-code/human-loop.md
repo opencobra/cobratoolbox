@@ -1,10 +1,10 @@
 # Human Loop State
 
 ## Current State
-- Status: Bundle 3 implemented (P1+P2+P3a; T019 tutorial and 3b data deferred); awaiting Gate 3 closeout
+- Status: Gate 3 closeout — 013 delivered (P1+P2+P3a incl. T019); only 3b (data/) deferred; branch ready for merge
 - Active feature directory: specs/013-relocate-vendored-code
-- Last completed bundle: Bundle 3 (approved implementation) — commits 3280fc7d0 (P1), e4e425373 (P2), 26c6bf664 (P3a)
-- Source code modified by this workflow: yes (wrappers re-anchored on CBTDIR; vendored assets relocated)
+- Last completed bundle: Bundle 4 (verification & closeout) — 8 commits, latest 0511a4c94 (T019)
+- Source code modified by this workflow: yes (10 wrappers re-anchored on CBTDIR; vendored assets relocated); src/ now clear of all targeted artifacts
 
 ## Core Command Ledger
 - constitution:   checked (v1.3.0 present; implementation gated on explicit /speckit-implement)
