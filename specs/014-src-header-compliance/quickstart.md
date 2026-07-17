@@ -65,7 +65,7 @@ code's usage — and NOT the entire model schema, only the used fields.
 ```bash
 # per changed file (and across the whole feature branch), executable lines are unchanged
 git diff --stat develop..HEAD -- 'src/**/*.m'          # shows churn
-tools/check-comments-only.sh develop HEAD               # (feature helper) exits non-zero
+test/verifiedTests/documentation/checkCommentsOnly.sh develop HEAD               # (feature helper) exits non-zero
                                                         # if any non-comment line changed
 ```
 

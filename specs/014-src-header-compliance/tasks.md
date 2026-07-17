@@ -44,7 +44,7 @@ domain and exits non-zero iff any in-scope error-severity violation exists; iden
 - [ ] T003 [US1] Implement `test/verifiedTests/documentation/checkFunctionHeaders.m`: parse one `.m` file's primary-function header and return a list of `Violation` structs for every rule in `contracts/header-rules.md` (H-EMPTY, H-DESC, H-PCT, H-USAGE, H-OUT, H-IN, H-NV, H-ARGFMT, H-FIELD, H-FIELDUSE, H-BODYGAP, H-SIG, H-AUTHOR). Classify function vs script vs excluded-vendored (data-model.md). Pure base MATLAB (`fileread`/`regexp`), no solver/internet/GUI.
 - [ ] T004 [US1] Implement `test/verifiedTests/documentation/testHeaderCompliance.m` (`matlab.unittest`): scan all in-scope `src/*.m` via `checkFunctionHeaders`, assert zero error-severity violations, support a `('report'[, scopePath])` mode returning a `ComplianceReport` and a folder-scoped mode for per-unit self-verification (quickstart Scenarios 1–3).
 - [ ] T005 [US1] Confirm `test/testAll.m` discovers `test/verifiedTests/documentation/` and the gate runs headless under `matlab -batch`; record the run. Do not weaken any existing test.
-- [ ] T006 [US1] Implement the behaviour-preservation verifier `tools/check-comments-only.sh <baseRef> <headRef>`: for every changed `src/*.m`, compare the sequence of non-comment/non-blank lines pre/post and exit non-zero on any executable-line delta (research R5, SC-005).
+- [ ] T006 [US1] Implement the behaviour-preservation verifier `test/verifiedTests/documentation/checkCommentsOnly.sh <baseRef> <headRef>`: for every changed `src/*.m`, compare the sequence of non-comment/non-blank lines pre/post and exit non-zero on any executable-line delta (research R5, SC-005).
 - [ ] T007 [US1] Run the checker over `src/` and write the **authoritative** baseline (per-rule, per-domain counts) to `specs/014-src-header-compliance/reports/baseline.md`, superseding the preliminary heuristic snapshot (FR-002, SC-006).
 
 **Checkpoint**: US1 done — checker + CI gate green on the (still non-compliant) tree only in
@@ -66,7 +66,7 @@ signature-whitespace only.
 2. Apply the full rule catalog in `contracts/header-rules.md`, interrogating the code for inputs,
    outputs, name-value params, and used struct fields.
 3. Self-verify: `testHeaderCompliance('report', '<folder>')` → 0 error-severity violations.
-4. Confirm comments-only: `tools/check-comments-only.sh` clean for the folder's files.
+4. Confirm comments-only: `test/verifiedTests/documentation/checkCommentsOnly.sh` clean for the folder's files.
 5. Do NOT touch excluded-vendored files or any non-comment line.
 
 **Independent test**: `testHeaderCompliance('report','<folder>')` reports 0 error-severity
@@ -336,7 +336,7 @@ violations and a spot check shows each input/output/used-field documented.
 ## Phase 4: Verification & Closeout
 
 - [ ] T249 Run the full gate: `testHeaderCompliance` over all `src/` → **0** error-severity in-scope violations (SC-001, SC-002, SC-003).
-- [ ] T250 Run `tools/check-comments-only.sh develop HEAD` across the branch → **no** executable-line changes in any `src/*.m` (SC-005, FR-008).
+- [ ] T250 Run `test/verifiedTests/documentation/checkCommentsOnly.sh develop HEAD` across the branch → **no** executable-line changes in any `src/*.m` (SC-005, FR-008).
 - [ ] T251 Secondary oracle: run the Sphinx parse (`cd documentation && make html`) → no header-format/signature-parse errors attributable to audited functions (SC-004).
 - [ ] T252 Regenerate the post-remediation `ComplianceReport` and record per-domain before/after counts in `specs/014-src-header-compliance/reports/post-remediation.md` (SC-006).
 - [ ] T253 Confirm `test/testAll.m` (incl. the new gate) passes headless; write the implementation receipt under `specs/014-src-header-compliance/agent-runs/<UTC>-<run>/implementation-receipt.md` (constitution Implementation Receipt Ledger).

@@ -124,7 +124,8 @@ specs/014-src-header-compliance/
 test/verifiedTests/documentation/          # NEW — the checker + CI gate
 ├── testHeaderCompliance.m                 # matlab.unittest test = standing CI gate
 ├── checkFunctionHeaders.m                 # rule engine: parse a header, return violations
-└── headerComplianceExclusions.m           # returns the vendored/excluded path globs
+├── headerComplianceExclusions.m           # returns the vendored/excluded path globs
+└── checkCommentsOnly.sh                    # behaviour-preservation verifier (comments-only diff)
 
 src/analysis/**/*.m                         # header-comment remediation (in place)
 src/base/**/*.m                             # header-comment remediation (in place)
