@@ -8,6 +8,15 @@
 
 **Input**: User description: "Go through every .m file in src and check that the header comments comply with the COBRA Toolbox style guide, so it is compatible with the auto generation of website information by the CI on each function. Every input and output should be explained in at least one separate line in the header. If an input is a MATLAB structure, every one of the fields should also be explained; if they are not, interrogate the code to understand what they should be and improve the header. Parallelise the implementation with the agent-assign pipeline."
 
+## Clarifications
+
+### Session 2026-07-17
+
+- Q: For a struct-typed input/output, which fields must the header document? → A: Only the fields the function actually reads or writes (not the entire struct type's schema). The central model-field schema remains single-sourced in `documentation/source/guides/COBRAModelFields.rst`.
+- Q: How should clearly third-party/vendored subtrees under `src/` be handled? → A: Exclude them (read-only) from this feature and file a separate follow-up feature to remediate vendored docs deliberately, coordinated with the W9 relocation work (feature 013).
+- Q: What should become of the header-compliance checker after this feature? → A: Deliver it as a standing CI gate that fails future changes which regress in-scope `src/` headers (wired into the test/CI harness), not merely a one-shot tool.
+- Q: How aggressively should the agent-assign pipeline run across the 1578 files / 243 leaf folders? → A: Full fan-out — assign and execute all six domains in one pipeline run.
+
 ## User Scenarios & Testing *(mandatory)*
 
 A COBRA Toolbox contributor edits a function under `src/` and relies on the
@@ -172,7 +181,14 @@ description matches how the code uses it.
   necessary, signature-whitespace changes.
 - **FR-009**: Third-party/vendored subtrees under `src/` and non-primary
   (local/sub)function headers MUST be excluded from the coverage rules and MUST NOT be
-  edited; the checker MUST report the excluded set explicitly.
+  edited; the checker MUST report the excluded set explicitly. Remediation of vendored
+  headers is deferred to a separate follow-up feature coordinated with the W9
+  relocation work (feature 013); this feature only enumerates and excludes them.
+- **FR-013**: The header-compliance checker MUST be delivered as a standing CI gate —
+  integrated into the test/CI harness so that a future change regressing an in-scope
+  `src/` header (missing/malformed `USAGE`/`INPUT`/`OUTPUT`, undocumented used field,
+  or formatting error) causes the check to fail — not merely a one-shot verification
+  tool. The gate MUST run headless in CI and MUST NOT require solvers, internet, or GUI.
 - **FR-010**: Script files (no function signature) MUST be held only to the
   description and `%`-spacing rules, not the `USAGE`/`INPUT`/`OUTPUT` keyword rules.
 - **FR-011**: The work MUST be decomposable into independent per-leaf-folder units
@@ -215,6 +231,10 @@ description matches how the code uses it.
   by an automated diff check across every changed file.
 - **SC-006**: Per-domain before/after compliance counts are recorded for all six
   domains, showing the movement from the baseline to zero in-scope violations.
+- **SC-007**: The checker is wired into the CI harness as an enforcing gate: an
+  intentionally malformed header in an in-scope file causes the CI check to fail, and
+  the clean post-remediation tree passes it — both demonstrated headless with no
+  solver/internet/GUI dependency.
 
 ## Assumptions
 
@@ -229,11 +249,15 @@ description matches how the code uses it.
   but not gated.
 - Vendored third-party subtrees under `src/` are identified from provenance markers
   (upstream author/licence headers, known package folders) and treated as read-only;
-  the exact excluded set is enumerated and recorded during planning/checker setup.
+  the exact excluded set is enumerated and recorded during planning/checker setup, and
+  their remediation is deferred to a separate follow-up feature (per Clarifications).
+- The struct-field bar is "fields the function reads or writes", not the entire struct
+  schema; the full COBRA model schema stays single-sourced in `COBRAModelFields.rst`.
 - Where a struct field's meaning is genuinely underdetermined by the code, an honest
   best-effort description grounded in usage is acceptable; fabrication is not.
-- The remediation is parallelised by leaf folder via the agent-assign pipeline; each
-  spawned agent is bound by this constitution and confined to its assigned folder.
+- The remediation is parallelised by leaf folder via the agent-assign pipeline with a
+  full fan-out across all six domains in one run (per Clarifications); each spawned
+  agent is bound by this constitution and confined to its assigned folder.
 - The MATLAB baseline (R2024b+) and headless-CI constraints are unaffected because no
   executable code changes.
 

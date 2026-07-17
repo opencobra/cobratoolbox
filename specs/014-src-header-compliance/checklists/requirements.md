@@ -35,9 +35,9 @@
   unspecified (a checker "capability" is required by FR-001, not a language). The
   choice of checker technology (MATLAB vs. a scripting language) is a `/speckit-plan`
   concern, not a spec concern.
-- Two scope boundaries carry mild residual ambiguity that `/speckit-clarify` should
-  confirm rather than block on: (a) the exact enumerated set of vendored/read-only
-  `src/` subtrees to exclude (FR-009), and (b) whether the checker is integrated as a
-  standing CI gate or run as a one-shot verification tool for this feature. Reasonable
-  defaults are recorded in Assumptions; neither blocks planning.
+- Resolved by the 2026-07-17 clarify session (see spec `## Clarifications`): struct-
+  field scope = fields the function uses; vendored subtrees = excluded, deferred to a
+  follow-up feature; checker = standing CI gate; execution = full fan-out across all
+  six domains. The exact enumerated vendored exclusion set is a planning/checker-setup
+  detail (FR-009) that does not block the spec.
 - Items marked incomplete require spec updates before `/speckit-clarify` or `/speckit-plan`.
