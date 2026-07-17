@@ -335,11 +335,11 @@ violations and a spot check shows each input/output/used-field documented.
 
 ## Phase 4: Verification & Closeout
 
-- [ ] T249 Run the full gate: `testHeaderCompliance` over all `src/` → **0** error-severity in-scope violations (SC-001, SC-002, SC-003).
-- [ ] T250 Run `test/verifiedTests/documentation/checkCommentsOnly.sh develop HEAD` across the branch → **no** executable-line changes in any `src/*.m` (SC-005, FR-008).
-- [ ] T251 Secondary oracle: run the Sphinx parse (`cd documentation && make html`) → no header-format/signature-parse errors attributable to audited functions (SC-004).
-- [ ] T252 Regenerate the post-remediation `ComplianceReport` and record per-domain before/after counts in `specs/014-src-header-compliance/reports/post-remediation.md` (SC-006).
-- [ ] T253 Confirm `test/testAll.m` (incl. the new gate) passes headless; write the implementation receipt under `specs/014-src-header-compliance/agent-runs/<UTC>-<run>/implementation-receipt.md` (constitution Implementation Receipt Ledger).
+- [X] T249 Run the full gate: `testHeaderCompliance` over all `src/` → **0** error-severity in-scope violations (SC-001, SC-002, SC-003).
+- [X] T250 Run `test/verifiedTests/documentation/checkCommentsOnly.sh develop HEAD` across the branch → **no** executable-line changes in any `src/*.m` (SC-005, FR-008).
+- [X] T251 Secondary oracle: run the Sphinx parse (`cd documentation && make html`) → no header-format/signature-parse errors attributable to audited functions (SC-004).
+- [X] T252 Regenerate the post-remediation `ComplianceReport` and record per-domain before/after counts in `specs/014-src-header-compliance/reports/post-remediation.md` (SC-006).
+- [X] T253 Confirm `test/testAll.m` (incl. the new gate) passes headless; write the implementation receipt under `specs/014-src-header-compliance/agent-runs/<UTC>-<run>/implementation-receipt.md` (constitution Implementation Receipt Ledger).
 
 ---
 

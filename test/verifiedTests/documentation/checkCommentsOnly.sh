@@ -23,11 +23,18 @@ fi
 BASE="$1"
 HEAD="$2"
 
-# Strip pure-comment lines (^ optional ws then %) and blank lines, then remove ALL
-# whitespace, yielding the whitespace-insensitive executable-line signature of a file.
+# Strip pure-comment lines (^ optional ws then %), join MATLAB `...` line
+# continuations, drop blank lines, then remove ALL whitespace, yielding the
+# whitespace-insensitive executable-token signature of a file. Joining `...`
+# continuations first means a behaviour-preserving reflow of a multi-line
+# statement (e.g. an H-SIG signature rewrite that moves the `...` breaks) is not
+# mistaken for an executable-line change, while any real token add/remove/reorder
+# still shows up in the joined signature.
 code_signature() {
     # reads file content on stdin
-    grep -vE '^[[:space:]]*%' | grep -vE '^[[:space:]]*$' | tr -d '[:space:]'
+    grep -vE '^[[:space:]]*%' \
+        | awk '{ i = index($0, "..."); if (i > 0) printf "%s ", substr($0, 1, i - 1); else print $0 }' \
+        | grep -vE '^[[:space:]]*$' | tr -d '[:space:]'
 }
 
 changed=$(git diff --name-only "$BASE" "$HEAD" -- 'src/**/*.m' 'src/*.m' | sort -u || true)
