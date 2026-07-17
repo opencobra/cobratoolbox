@@ -41,7 +41,7 @@
 - Implementation review: specs/013-relocate-vendored-code/implementation-review.md (Bundle 2)
 
 ## Open Risks and Ambiguities
-- DEFERRED T019: tutorial_eFBA.mlx -> tutorials/ blocked (tutorials/ is a git submodule; needs a submodule commit + pointer bump). Tutorial left in src/.
+- RESOLVED T019: tutorial_eFBA.mlx was a superseded copy of the maintained entropicFBA tutorials already in the tutorials/ submodule -> moved to deprecated/ (not duplicated into public opencobra/COBRA.tutorials). src/ now clear of all targeted artifacts.
 - DEFERRED 3b: static data -> data/ needs a companion /speckit-constitution amendment adding the data/ role (not yet in IX v1.3.0).
 - Deviation: demo.json was a live testSammi fixture (not dead) -> moved to the test dir + testSammi.m updated (user-approved), not deprecated/.
 - Companion edit: checkGAMSSolvers.m fixed alongside getAvailableGAMSSolvers.m (both resolve licememo.gms).

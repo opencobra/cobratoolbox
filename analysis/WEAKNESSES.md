@@ -160,8 +160,10 @@ Constitution anchors are cited per item (Principles II, III, IV, V, VII, VIII, I
   artifacts (SAMMI output HTML, `wang/cache/*.mat`) removed and gitignored. ~45k lines removed from
   `src/`. **Deferred:** the NIST table + large `.xlsx` → a new top-level `data/` role (gated on a
   companion `/speckit-constitution` amendment, since IX v1.3.0 defines no `data/` role);
-  `tutorial_eFBA.mlx` → `tutorials/` (that directory is a **git submodule**, so the move needs a
-  submodule commit + pointer bump); `taxa2proc_*.txt` (out of scope, left in place).
+  `taxa2proc_*.txt` (out of scope, left in place). The `tutorial_eFBA.mlx` was found to be a
+  **superseded copy** of the maintained entropicFBA tutorials already in the `tutorials/` submodule
+  (public opencobra/COBRA.tutorials) → moved to `deprecated/` rather than duplicated upstream, so `src/`
+  is now clear of all targeted vendored/generated/tutorial blobs.
 
 ### W10 — Embedded research applications inside the library tree
 - **Severity:** Medium. (Constitution IX; V.)

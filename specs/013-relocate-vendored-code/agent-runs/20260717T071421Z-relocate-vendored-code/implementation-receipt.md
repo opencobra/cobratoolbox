@@ -74,9 +74,10 @@ Feature commits: `3280fc7d0` (P1), `e4e425373` (P2), `26c6bf664` (P3a). 40 files
 
 ## Unresolved issues
 
-1. **T019 tutorial move (`tutorial_eFBA.mlx` → `tutorials/`)** — `tutorials/` is a git submodule; the
-   move needs a commit inside the submodule + a pointer bump. Left in `src/visualization/entropicFBA/`.
-   Decision needed.
+1. **T019 tutorial — RESOLVED.** `tutorials/` is a git submodule already hosting the maintained
+   entropicFBA tutorials; `tutorial_eFBA.mlx` was a superseded copy → moved to
+   `deprecated/_entropicFBA_tutorial_superseded/` (not duplicated into the public submodule). `src/`
+   is now clear of all targeted artifacts.
 2. **Sub-slice 3b static data (`data/`)** — deferred at Gate 2; requires a `/speckit-constitution`
    amendment adding the `data/` role before the NIST/`.xlsx` moves.
 3. **`taxa2proc_*.txt`** — out of scope (Clarifications).

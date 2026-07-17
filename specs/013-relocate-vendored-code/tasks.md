@@ -73,7 +73,7 @@ loader returns the identical table; tutorial opens from `tutorials/`.
 
 - [X] T017 [US3] `git mv` orphan `src/base/io/python/tmp/*` to `deprecated/_io_python_tmp/`.
 - [X] T018 [US3] Delete committed cache `src/analysis/thermo/groupContribution/wang/cache/autoFragment_*.mat`; add `**/groupContribution/wang/cache/` to `.gitignore`.
-- [ ] T019 [P] [US3] BLOCKED/DEFERRED: `tutorials/` is a git **submodule**, so `tutorial_eFBA.mlx` cannot be moved into it from the parent repo — it needs a commit inside the submodule plus a submodule-pointer bump (cross-repo). Left in `src/visualization/entropicFBA/` pending a decision; see the implementation receipt.
+- [X] T019 [P] [US3] RESOLVED (revised): `tutorials/` is a git submodule (public opencobra/COBRA.tutorials) that **already hosts** the maintained entropicFBA tutorials; `src/visualization/entropicFBA/tutorial_eFBA.mlx` is a **superseded copy** (≈ the submodule's current `...Tradeoffs.mlx`, older, unreferenced). Moved to `deprecated/_entropicFBA_tutorial_superseded/` in the fork rather than duplicated into the public submodule [user-approved].
 
 ### Sub-slice 3b — static data (GATED on the `data/` constitution amendment)
 
