@@ -25,7 +25,10 @@ Essentials it defines, so you know what you are bound by:
   ordinary request. Any non-trivial change goes through Spec Kit
   (`constitution → specify → clarify → plan → tasks → analyze → implement`), and
   code is edited only after an approved `spec.md`/`plan.md`/`tasks.md` and an
-  explicit `/speckit-implement`. Sole bypass: the exact phrase
+  explicit implementation command — `/speckit-implement`, or the agent-assign
+  pipeline (`/speckit-agent-assign-assign` -> `/speckit-agent-assign-validate` ->
+  `/speckit-agent-assign-execute`, run in series; same `tasks.md`, same gate). Sole
+  bypass: the exact phrase
   `DIRECT IMPLEMENTATION OVERRIDE: bypass Spec Kit for this change.`
 - Backward compatibility, testing/CI, solver abstraction, MATLAB standards,
   openCOBRA contribution conventions, polyglot fidelity, file placement, and the
