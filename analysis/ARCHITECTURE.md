@@ -326,6 +326,9 @@ cycles, the same inversion, and the same leaves.
   solver in `dataIntegration/fluxomics/c13solver/*.pl`, GAMS models in
   `design/optForceGAMS/*.gms`, scratch Python + a Jupyter notebook in `base/io/python/tmp/`,
   and large `.mat`/`.mlx`/`.xls`/`.txt` data blobs.
+  *(Resolved in feature `013-relocate-vendored-code`: SAMMI/Perl/GAMS relocated to `external/` with
+  CBTDIR-anchored wrappers; scratch → `deprecated/`; generated caches removed + gitignored. The static
+  `data/` path and the `.mlx` tutorial move are deferred — see `WEAKNESSES.md` W9.)*
 
 ---
 

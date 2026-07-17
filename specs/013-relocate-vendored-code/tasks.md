@@ -37,7 +37,7 @@ tutorial), each independently implementable and testable.
 HTML whose local script srcs resolve to the `external/` copy; `sammi.m` signature unchanged.
 
 - [X] T005 [US1] `git mv` SAMMI vendored assets (`helpfunctions.js`, `uploaddownload.js`, `simulationfunctions.js`, `sammi.css`, `index.html`) from `src/visualization/SAMMIM/` to `external/visualization/SAMMIM/`.
-- [X] T006 [US1] `git mv` dead `src/visualization/SAMMIM/demo.json` to `deprecated/_SAMMIM_demo/`.
+- [X] T006 [US1] `git mv` `src/visualization/SAMMIM/demo.json` — found to be a **live `testSammi` fixture**, so moved to `test/verifiedTests/visualization/testSammi/demo.json` (not `deprecated/`) and `testSammi.m:222` updated to `fullfile(fileDir,'demo.json')` [user-approved deviation].
 - [X] T007 [US1] Delete committed generated HTML `src/visualization/SAMMIM/{index_load.html,index_load2.html,sammi_test_output.html}`.
 - [X] T008 [US1] Edit `src/visualization/SAMMIM/sammi.m`: resolve the template dir via `CBTDIR` (replace the `which('sammi')`-based `sfolder` used for the `fileread` template read at ~L112); rewrite the generated HTML local `<script src>` to CBTDIR-absolute paths; **preserve the default output location and the function signature**.
 - [X] T009 [US1] Add generated-SAMMI-HTML patterns to `.gitignore` (e.g. `src/visualization/SAMMIM/index_load*.html`, `**/sammi_test_output.html`).
@@ -86,10 +86,10 @@ loader returns the identical table; tutorial opens from `tutorials/`.
 
 ## Phase 6: Polish & Cross-Cutting
 
-- [ ] T024 Update `analysis/WEAKNESSES.md` (W9) and `analysis/ARCHITECTURE.md` §7 to mark W9 resolved (Principle X single-sourcing); note any part deferred (e.g. taxa2proc, gated data slice).
-- [ ] T025 Measure `src/` size reduction and confirm figures against `analysis/metrics/scc-complexity-top.txt` (SC-005).
-- [ ] T026 Final full check: `git status` shows no committed generated artifacts (SC-002); `git diff src/**/*.m` shows only path-resolution edits (SC-006); all touched suites match baseline (SC-004).
-- [ ] T027 Write the implementation receipt at `specs/013-relocate-vendored-code/agent-runs/<UTC>-relocate-vendored-code/implementation-receipt.md` (Prompt / Final response / Diff summary / Tests / Unresolved issues).
+- [X] T024 Update `analysis/WEAKNESSES.md` (W9) and `analysis/ARCHITECTURE.md` §7 to mark W9 resolved (Principle X single-sourcing); note any part deferred (e.g. taxa2proc, gated data slice).
+- [X] T025 Measure `src/` size reduction and confirm figures against `analysis/metrics/scc-complexity-top.txt` (SC-005).
+- [X] T026 Final full check: `git status` shows no committed generated artifacts (SC-002); `git diff src/**/*.m` shows only path-resolution edits (SC-006); all touched suites match baseline (SC-004).
+- [X] T027 Write the implementation receipt at `specs/013-relocate-vendored-code/agent-runs/<UTC>-relocate-vendored-code/implementation-receipt.md` (Prompt / Final response / Diff summary / Tests / Unresolved issues).
 
 ---
 

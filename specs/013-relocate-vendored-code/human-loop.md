@@ -1,10 +1,10 @@
 # Human Loop State
 
 ## Current State
-- Status: Gate 2 approved (scope: P1+P2+3a, data sub-slice deferred); awaiting explicit /speckit-implement to begin Bundle 3
+- Status: Bundle 3 implemented (P1+P2+P3a; T019 tutorial and 3b data deferred); awaiting Gate 3 closeout
 - Active feature directory: specs/013-relocate-vendored-code
-- Last completed bundle: Bundle 2 (implementation preparation), committed 9e060f115
-- Source code modified by this workflow: no
+- Last completed bundle: Bundle 3 (approved implementation) — commits 3280fc7d0 (P1), e4e425373 (P2), 26c6bf664 (P3a)
+- Source code modified by this workflow: yes (wrappers re-anchored on CBTDIR; vendored assets relocated)
 
 ## Core Command Ledger
 - constitution:   checked (v1.3.0 present; implementation gated on explicit /speckit-implement)
@@ -14,7 +14,7 @@
 - plan:           invoked (research.md D1-D9, data-model.md manifest, quickstart.md, plan.md; PASS with 1 tracked item)
 - tasks:          invoked (tasks.md, 27 tasks, 6 phases, MVP=US1)
 - analyze:        invoked (100% coverage; 0 CRITICAL, 1 HIGH governance gate, 2 MEDIUM, 2 LOW)
-- implement:      n/a (Bundle 3, gated on Gate 2 + explicit /speckit-implement)
+- implement:      invoked (/speckit-implement) — P1+P2+P3a delivered; T019+3b deferred
 
 ## Human Decisions
 | Date (UTC) | Gate | Option chosen | Consequence |
@@ -37,11 +37,13 @@
 - Spec: specs/013-relocate-vendored-code/spec.md
 - Requirements checklist: specs/013-relocate-vendored-code/checklists/requirements.md
 - Pre-spec design note: ~/.claude/plans/specify-a-fix-to-happy-squirrel.md (covers 013 + planned 014)
-- Implementation receipt(s): (none yet — will live under agent-runs/<UTC>-<name>/implementation-receipt.md)
+- Implementation receipt: specs/013-relocate-vendored-code/agent-runs/20260717T071421Z-relocate-vendored-code/implementation-receipt.md (+ baseline.md)
 - Implementation review: specs/013-relocate-vendored-code/implementation-review.md (Bundle 2)
 
 ## Open Risks and Ambiguities
-- Static-data destination convention (external/ vs dedicated resource path) — for /speckit-clarify.
-- taxa2proc_{a2a,agora}_out.txt: regenerated output vs input fixture — for /speckit-clarify; no deletion until resolved.
-- initCobraToolbox coverage of external/ on the MATLAB path — verify early in implementation; loaders hardened regardless.
-- entropicFluxBalanceAnalysis active development is in feature 014 scope, not here.
+- DEFERRED T019: tutorial_eFBA.mlx -> tutorials/ blocked (tutorials/ is a git submodule; needs a submodule commit + pointer bump). Tutorial left in src/.
+- DEFERRED 3b: static data -> data/ needs a companion /speckit-constitution amendment adding the data/ role (not yet in IX v1.3.0).
+- Deviation: demo.json was a live testSammi fixture (not dead) -> moved to the test dir + testSammi.m updated (user-approved), not deprecated/.
+- Companion edit: checkGAMSSolvers.m fixed alongside getAvailableGAMSSolvers.m (both resolve licememo.gms).
+- Working-tree noise (not 013): externally-installed agent-assign extension modified constitution.md/AGENTS.md/CLAUDE.md/extensions and added agent-assign skills — excluded from all 013 commits.
+- taxa2proc_{a2a,agora}_out.txt: out of scope (left in place).
