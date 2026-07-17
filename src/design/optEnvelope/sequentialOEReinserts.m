@@ -1,45 +1,58 @@
 function [mainKnockouts, finalMidKnockouts] = sequentialOEReinserts(modelOld, data, K, toDel, minP, midPoints, numTries, timeLimit)
-% This function is going through inactive reactions sequentially and
-% reinserting them one by one to get best possible set of knockouts while
-% retaining optimal envelope. With numTries parameter this can be done
-% multiple times by randomizing list of inactive reactions
+% sequentialOEReinserts reinserts reactions one by one to minimise knockouts
+%
+% Goes through the inactive reactions sequentially and reinserts them one by
+% one to obtain the best possible set of knockouts while retaining the
+% optimal envelope. With the numTries parameter this can be repeated several
+% times by randomizing the list of inactive reactions.
 %
 % USAGE:
-%   [mainKnockouts, finalMidKnockouts] = sequentialOEReinserts(modelOld, data, K, toDel, minP, midPoints, numTries, timeLimit)
+%
+%    [mainKnockouts, finalMidKnockouts] = sequentialOEReinserts(modelOld, data, K, toDel, minP, midPoints, numTries, timeLimit)
 %
 % INPUTS:
-%   modelOld            COBRA model structure in irreversible form [struct]
-%   data                Struct with information about:
-%                           * mainModel     model for main envelope [struct]
-%                           * mainActive    List of active reactions for main envelope [cell array]
-%                           * models        models for all mid envelopes [struct]
-%                           * active        Lists for active reactions for mid envelopes [cell array]
-%   K                   List of reactions that cannot be selected for knockout (reaction IDs) [double array]
-%   toDel               Variable that shows what to delete:
-%                           0: reactions
-%                           1: genes
-%                           2: enzymes
-%   minP                Struct with information about:
-%                       	* bioID         ID of biomass [double]
-%                       	* proID         ID of desired product [double]
-%   midPoints           Number of middle points to calculate mid envelopes for [double]
-%   numTries            Number of iterations for randomizing indexes of inactive reactions [double]
-%   timeLimit           Time limit for gurobi optimization (in seconds) [double]
+%    modelOld:             COBRA model structure in irreversible form with fields:
+%
+%                            * .rxns - Reaction identifiers
+%                            * .lb - Lower bounds
+%                            * .ub - Upper bounds
+%    data:                 Struct with the fields:
+%
+%                            * .mainActive - List of active reactions for the
+%                              main envelope [cell array]
+%                            * .mainModel - Model for the main envelope [struct]
+%                            * .active - Lists of active reactions for mid
+%                              envelopes [cell array]
+%                            * .models - Models for all mid envelopes [struct]
+%    K:                    List of reactions that cannot be selected for
+%                          knockout (reaction IDs) [double array]
+%    toDel:                Numeric flag for what to delete: 0 = reactions,
+%                          1 = genes, 2 = enzymes
+%    minP:                 Struct with the fields:
+%
+%                            * .bioID - Reaction ID of biomass [double]
+%                            * .proID - Reaction ID of desired product [double]
+%    midPoints:            Number of middle points to calculate mid envelopes
+%                          for [double]
+%    numTries:             Number of iterations for randomizing the indexes of
+%                          inactive reactions [double]
+%    timeLimit:            Time limit for the solver in seconds [double]
 %
 % OUTPUTS:
-%   mainKnockouts       List of reactions that when removed gives optimal envelope
-%   finalMidKnockouts   List of reactions that when removed gives optimal
-%                       envelopes for middle envelopes
+%    mainKnockouts:        List of reactions that, when removed, give the
+%                          optimal envelope [cell array]
+%    finalMidKnockouts:    List of reactions that, when removed, give the
+%                          optimal envelopes for the middle envelopes [cell array]
 %
 % EXAMPLE:
-%   [mainKnockouts, finalMidKnockouts] = sequentialOEReinserts(model, data, K, 0, minP, 10, 10, 60)
 %
-% AUTHORS:
-%   created by Kristaps Berzins 31/10/2022
+%    [mainKnockouts, finalMidKnockouts] = sequentialOEReinserts(model, data, K, 0, minP, 10, 10, 60)
 %
-% NOTES:
-%   This function is not designed for stand-alone use. Should be used by
-%   using optEnvelope.m
+% NOTE:
+%    This function is not designed for stand-alone use. It should be used
+%    through optEnvelope.m.
+%
+% .. Author: - Kristaps Berzins, 31/10/2022, created
 
 switch toDel
     case 0  %Reactions
