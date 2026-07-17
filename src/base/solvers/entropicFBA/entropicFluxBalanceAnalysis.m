@@ -60,6 +60,38 @@ function [solution, modelOut] = entropicFluxBalanceAnalysis(model, param)
 % || log(vr/vf) = N'*(u0 + log(x) + z_x) ||_inf
 % where z_x is the dual variable to the bounds on concentration x.
 %
+% Optional enzyme-constrained (GECKO/ecModel) extension
+% -----------------------------------------------------
+% When the enzyme-usage column variables are present (model.E, and optionally
+% model.D, with bounds model.evarlb/evarub and linear objective coefficients
+% model.evarc; see the field documentation below), nEvar additional variables e
+% are appended AFTER all flux/concentration columns, matching the
+% buildOptProblemFromModel [S E; C D] block ordering: model.E occupies the
+% metabolite (N) rows and model.D the coupling (C) rows. The problem above then
+% extends to
+%
+% minimize    (all terms as above)
+% vf,vr,w,x,x0,e     + evarc'*e
+%                    + ge.*e'*(log(e) -1)
+%
+% where ge = param.enzymeEntropyWeight (default 0 => the enzyme columns are
+% LINEAR additional variables and the entropy term drops out; a positive ge adds
+% an experimental entropy term on the enzyme columns).
+%
+% subject to      N*(vf - vr) - x + x0 + E*e  <=> b   : y_N
+%                 C*(vf - vr)           + D*e  <=> d   : y_C
+%                             evarlb <= e <= evarub    : z_e
+%
+% with the additional enzyme Biochemical optimality condition
+%  || evarc + E'*y_N + D'*y_C + z_e ||_inf
+%
+% where z_e is the reduced cost of the enzyme-usage variables (dual to the
+% evarlb <= e <= evarub bounds), returned as solution.z_e, and e is returned as
+% solution.e. The +z_e sign matches the reduced-cost convention of both the mosek
+% and pdco backends (the same sign as the external-reaction condition
+% || ce + B'*y_N + z_ve ||_inf). When the enzyme fields are absent (model.E
+% empty) the formulation reduces exactly to the one above.
+%
 % USAGE:
 %
 %    [solution, modelOut] = entropicFluxBalanceAnalysis(model,param)
