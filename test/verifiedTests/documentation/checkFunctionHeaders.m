@@ -291,9 +291,15 @@ function [violations, classification] = checkFunctionHeaders(filePath)
         end
     end
 
-    % Body text (used for H-NV and H-FIELDUSE static interrogation).
+    % Body text (used for H-NV and H-FIELDUSE static interrogation). Strip
+    % comments per line first: a `name.field` mention inside a comment (e.g. an
+    % illustrative "% see model.field" or a "model.rxn" typo in a comment) is
+    % NOT a real field read and must not force documentation of a phantom field.
+    % Stripping at % may truncate a rare in-string %, causing under-detection
+    % only (precision over recall), never a false positive.
     if firstBodyIdx > 0
-        bodyText = strjoin(lines(firstBodyIdx:end), newline);
+        bodyCode = regexprep(lines(firstBodyIdx:end), '%.*$', '');
+        bodyText = strjoin(bodyCode, newline);
     else
         bodyText = '';
     end
@@ -506,11 +512,16 @@ end
 function kw = keywordOf(line)
 % Return the canonical keyword block name for a header line, or '' if none
     kw = '';
-    tok = regexp(line, '^\s*%\s*(OPTIONAL\s+)?([A-Za-z]+)\s*:', 'tokens', 'once');
+    % A keyword line is a block header (e.g. "% INPUTS:") at low indent, NOT a
+    % 4-space-indented argument line whose name happens to equal a keyword (e.g.
+    % an output literally named "inputs" documented as "%    inputs:  ..."). The
+    % guide writes block keywords with <=3 spaces after %, and argument lines
+    % with 4; constraining the post-% indent to <=3 spaces separates the two.
+    tok = regexp(line, '^\s*%( {0,3})(OPTIONAL\s+)?([A-Za-z]+)\s*:', 'tokens', 'once');
     if isempty(tok)
         return;
     end
-    word = upper(tok{2});
+    word = upper(tok{3});
     switch word
         case 'USAGE'
             kw = 'USAGE';

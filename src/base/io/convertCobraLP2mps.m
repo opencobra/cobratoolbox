@@ -10,6 +10,8 @@ function OK = convertCobraLP2mps(LPProblem, name)
 %    LPProblem:    Structure containing the following fields describing the LP problem to be solved
 %
 %                    * .A - LHS matrix
+%                    * .S - (optional) stoichiometric matrix, used as `.A`
+%                      if `.A` is not provided
 %                    * .b - RHS vector
 %                    * .c - Objective coeff vector
 %                    * .lb - Lower bound vector

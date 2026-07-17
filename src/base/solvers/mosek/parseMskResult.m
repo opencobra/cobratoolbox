@@ -1,52 +1,68 @@
-function [stat,origStat,x,y,yl,yu,z,zl,zu,s,basis,pobjval,dobjval] = parseMskResult(res)
-% parseMskResult
+function [stat, origStat, x, y, yl, yu, z, zl, zu, s, basis, pobjval, dobjval] = parseMskResult(res)
+% Parse the res structure returned by mosekopt into a COBRA-style solver
+% status and primal/dual solution vectors
 %
-% Parse the res structure returned by mosekopt.
+% For conic problems with affine conic constraints, the interior-point
+% solution `res.sol.itr` is preferred whenever it is available and has an
+% optimal or near-optimal solution status. The basis solution,
+% `res.sol.bas`, is mainly relevant for linear problems and does not
+% override a valid interior-point solution for conic subproblems.
 %
-% Solver status convention:
-%   stat =  0   primal infeasible certificate
-%   stat =  1   strict optimal solution
-%   stat =  2   dual infeasible certificate, interpreted upstream as unbounded
-%   stat =  3   near optimal / almost optimal solution
-%   stat = -1   unknown, numerical issue, time limit, or unrecognised status
-%
-% Important conic-solver convention:
-%
-%   For conic problems with affine conic constraints, prefer the
-%   interior-point solution res.sol.itr whenever it is available and has an
-%   optimal or near-optimal solution status.
-%
-%   A basis solution, res.sol.bas, is mainly relevant for linear problems.
-%   It should not override a valid interior-point solution for conic
-%   subproblems.
-%
-% Dual sign convention returned by this parser:
-%
-%   y  = yl - yu
-%   z  = zu - zl
-%
-% where
-%
-%   yl = lower linear-row multiplier
-%   yu = upper linear-row multiplier
-%   zl = lower variable-bound multiplier
-%   zu = upper variable-bound multiplier
-%
-% With this convention, stationarity is naturally checked as
-%
-%   c - A'*y + z - F'*s = 0
-%
-% or equivalently
-%
-%   c - A'*(yl - yu) + (zu - zl) - F'*s = 0.
-%
-% This parser deliberately maps NEAR_OPTIMAL to stat = 3, not stat = 1.
+% This parser deliberately maps NEAR_OPTIMAL to `stat = 3`, not `stat = 1`.
 % The caller can decide whether a near-optimal solution is acceptable, but
 % solveSCLP should not silently accept it as a fully accurate inner solve.
+%
+% USAGE:
+%
+%    [stat, origStat, x, y, yl, yu, z, zl, zu, s, basis, pobjval, dobjval] = parseMskResult(res)
+%
+% INPUTS:
+%    res:           Result structure returned by `mosekopt`, with fields:
+%
+%                     * .sol - structure of MOSEK sub-solutions, expected to
+%                       contain an interior-point sub-solution `.itr` and/or
+%                       a basis sub-solution `.bas`, each in turn carrying
+%                       `solsta`, `xx`, `slc`, `suc`, `slx`, `sux`, `doty`,
+%                       `s`, `skc`, `skx`, `xc`, `pobjval`, and `dobjval`
+%                     * .rcodestr - MOSEK response-code string, appended to
+%                       `origStat` for traceability when present
+%
+% OUTPUTS:
+%    stat:          COBRA-style solver status flag:
+%
+%                     * 0  - primal infeasible certificate
+%                     * 1  - strict optimal solution
+%                     * 2  - dual infeasible certificate, interpreted
+%                       upstream as unbounded
+%                     * 3  - near optimal / almost optimal solution
+%                     * -1 - unknown, numerical issue, time limit, or
+%                       unrecognised status
+%    origStat:      Original MOSEK solution-status string (`solsta`), with
+%                   `res.rcodestr` appended after `' & '` when present
+%    x:             Primal solution vector
+%    y:             Linear-row dual vector, computed as `yl - yu`
+%    yl:            Lower linear-row multiplier
+%    yu:            Upper linear-row multiplier
+%    z:             Variable-bound dual vector, computed as `zu - zl`
+%    zl:            Lower variable-bound multiplier
+%    zu:            Upper variable-bound multiplier
+%    s:             Dual variables to the affine conic constraints
+%    basis:         Structure of basis-status fields for hot-starting linear
+%                   problems, populated only when the basis solution is
+%                   used, with fields:
+%
+%                     * .skc - constraint status keys
+%                     * .skx - variable status keys
+%                     * .xc - constraint activity levels
+%                     * .xx - primal variable values
+%    pobjval:       Primal objective value
+%    dobjval:       Dual objective value
+%
+% NOTE:
+%    With the dual sign convention above, stationarity is naturally checked
+%    as `c - A'*y + z - F'*s = 0`, equivalently
+%    `c - A'*(yl - yu) + (zu - zl) - F'*s = 0`.
 
-% -------------------------------------------------------------------------
-% Initialise outputs.
-% -------------------------------------------------------------------------
 stat = -1;
 origStat = 'NO_SOLUTION_STATUS';
 

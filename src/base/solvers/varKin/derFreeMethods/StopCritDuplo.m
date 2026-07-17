@@ -1,14 +1,14 @@
-function [StopFlag, Status] = StopCritDuplo(nfxk,Niter, Nmap, T, MaxNumIter, MaxNumMapEval, TimeLimit, epsilon, Stopping_Crit)
+function [StopFlag, Status] = StopCritDuplo(nfxk, Niter, Nmap, T, MaxNumIter, MaxNumMapEval, TimeLimit, epsilon, Stopping_Crit)
 % Function checking that one of the stopping criteria
 % holds to terminate LLM and GLM. It perepares the status determining why
 % the algorithm is stopped.
 %
 % USAGE:
 %
-%    [StopFlag, Status] = StopCritDuplo(nfxk,Niter, Nmap, T, MaxNumIter, MaxNumMapEval, TimeLimit, epsilon, Stopping_Crit)
+%    [StopFlag, Status] = StopCritDuplo(nfxk, Niter, Nmap, T, MaxNumIter, MaxNumMapEval, TimeLimit, epsilon, Stopping_Crit)
 %
 % INPUTS:
-%    nhxk:             the norm 2 of `h(xk)`
+%    nfxk:             the norm 2 of `h(xk)`
 %    Niter:            the number of iterations
 %    Nmap:             the number of mapping calls
 %    T:                the running time

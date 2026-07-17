@@ -99,13 +99,13 @@ function [solution, modelOut] = entropicFluxBalanceAnalysis(model, param)
 % INPUT:
 %    model:             (the following fields are required - others can be supplied)
 %
-%          * S  - `m x (n + k)` Stoichiometric matrix
-%          * c  - `(n + k) x 1` Linear objective coefficients, split into
+%          * .S  - `m x (n + k)` Stoichiometric matrix
+%          * .c  - `(n + k) x 1` Linear objective coefficients, split into
 %                               internal and external as follows:
 %                  ci:   n x 1  linear objective coefficients corresponding to internal net fluxes
 %                  ce:   k x 1  linear objective coefficients corresponding to internal net fluxes
-%          * lb - `(n + k) x 1` Lower bounds on net flux
-%          * ub - `(n + k) x 1` Upper bounds on net flux
+%          * .lb - `(n + k) x 1` Lower bounds on net flux
+%          * .ub - `(n + k) x 1` Upper bounds on net flux
 %
 % OPTIONAL INPUTS:
 % model.osenseStr: Maximize ('max')/minimize ('min') (opt, default = 'max') linear part of the objective. 
@@ -161,9 +161,14 @@ function [solution, modelOut] = entropicFluxBalanceAnalysis(model, param)
 % model.evarc:   nEvar x 1   linear objective coefficients on the enzyme-usage variables
 % model.evars:   nEvar x 1   cell array of enzyme-usage variable names
 %
+%    param:             optional parameter structure controlling the solver and
+%                       algorithm, with fields:
+%
 %  param.solver:                    {('pdco'),'mosek'}
 %  param.entropicFBAMethod:                    {('fluxes'),'fluxConc')} maximise entropy of fluxes or also concentrations
 %  param.printLevel:                {(0),1}
+%  param.debug:                     (default false) boolean flag reserved for internal debugging branches
+%  param.entropicMethod:            legacy input name for param.entropicFBAMethod, retained for backward compatibility
 %  param.enzymeEntropyWeight:       (default 0) scalar or nEvar x 1 weight on the entropy of the
 %                                   enzyme-usage variables (the model.E/model.D columns). 0 => the
 %                                   enzyme columns are LINEAR additional variables (default); a positive
@@ -188,32 +193,33 @@ function [solution, modelOut] = entropicFluxBalanceAnalysis(model, param)
 %
 %
 % OUTPUTS:
-% solution: solution structure with the following fields
+%    solution:          solution structure, with fields:
 %
-%           *.v:   n x 1 double net flux
-%           *.vf:  n x 1 double unidirectional forward internal reaction flux
-%           *.vr:  n x 1 double unidirectional reverse internal reaction flux
-%           *.vt:  scalar total internal reaction flux sum(vf + vr)
-%           *.y_N: m × 1 double dual variable to steady state constraints
-%           *.y_C: z × 1 double dual variable to coupling constraints
-%           *.z_v: (n + k) x 1 double dual variable to box constraints on net flux
-%           *.z_vf: n x 1 double dual variable to box constraints on forward flux
-%           *.z_vr: n x 1 double dual variable to box constraints on reverse flux
-%           *.time: solve time
-%           *.stat: COBRA toolbox standard solution status
-%           *.origStat: solution status as provided by the solver
-%           *.e:   nEvar x 1 double enzyme-usage variable values (only when model.E is present)
-%           *.z_e: nEvar x 1 double reduced cost of the enzyme-usage variables (only when model.E is present)
+%             * .v - n x 1 double net flux
+%             * .vf - n x 1 double unidirectional forward internal reaction flux
+%             * .vr - n x 1 double unidirectional reverse internal reaction flux
+%             * .vt - scalar total internal reaction flux sum(vf + vr)
+%             * .y_N - m x 1 double dual variable to steady state constraints
+%             * .y_C - z x 1 double dual variable to coupling constraints
+%             * .z_v - (n + k) x 1 double dual variable to box constraints on net flux
+%             * .z_vf - n x 1 double dual variable to box constraints on forward flux
+%             * .z_vr - n x 1 double dual variable to box constraints on reverse flux
+%             * .time - solve time
+%             * .stat - COBRA toolbox standard solution status
+%             * .origStat - solution status as provided by the solver
+%             * .e - nEvar x 1 double enzyme-usage variable values (only when model.E is present)
+%             * .z_e - nEvar x 1 double reduced cost of the enzyme-usage variables (only when model.E is present)
 %
-%  modelOut: solved model with optional input fields populated by defaults, if they were not provided
-%                                   
+%    modelOut:          solved model with optional input fields populated by defaults, if they were not provided
+%
 % EXAMPLE:
 %
 % NOTE:
 %
-% Author(s): Ronan M.T. Fleming 2021
-    
+% .. Author: - Ronan M.T. Fleming, 2021
+
 %%
+
 if ~exist('param','var')
     param = struct();
 end

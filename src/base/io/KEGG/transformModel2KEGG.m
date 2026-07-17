@@ -1,4 +1,4 @@
-function modelKEGG = transformModel2KEGG(model,Dictionary)
+function modelKEGG = transformModel2KEGG(model, Dictionary)
 % Replaces `model.mets` with `model.metKEGGID`. If no KEGGID
 % defined, the empty cell will be replaced with metabolite abreviation.
 %

@@ -5,9 +5,9 @@ function solvers = getAvailableSolversByType()
 %    solvers = getAvailableSolversByType()
 %
 % OUTPUT:
-%    solvers:   struct containing one field per Problem type listing all
-%               solvers installed on the system for that problem type.
-%               Also contains an ALL field indicating all available solvers
+%    solvers:       struct containing one field per Problem type listing all
+%                   solvers installed on the system for that problem type.
+%                   Also contains an ALL field indicating all available solvers
 %
 
 global OPT_PROB_TYPES

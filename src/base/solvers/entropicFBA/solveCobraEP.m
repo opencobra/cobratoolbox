@@ -60,6 +60,14 @@ function sol = solveCobraEP(EPproblem, varargin)
 %                            Used for normalised entropy maximisation.
 %
 %                     * .Q - positive semidefinite matrix for quadratic part of objective (see above)
+%                     * .F - backward-compatible alias for `.Q` (the naming used by
+%                            `solveCobraQP`); copied to `.Q` and removed if `.Q` is absent
+%                     * .sumFluxes - upper bound(s) on the auxiliary sum-of-flux conic
+%                            variable(s) passed to mosek (default: `[]`, i.e. no bound)
+%                     * .sumConc - upper bound(s) on the auxiliary sum-of-concentration
+%                            conic variable(s) passed to mosek (default: `[]`)
+%                     * .sumConc0 - upper bound(s) on the auxiliary sum-of-initial-
+%                            concentration conic variable(s) passed to mosek (default: `[]`)
 %
 %    varargin:      Additional parameters either as parameter struct, or as
 %                   parameter/value pairs. A combination is possible, if
@@ -93,20 +101,20 @@ function sol = solveCobraEP(EPproblem, varargin)
 %
 % OUTPUT:
 %    sol:      Structure containing the following fields describing a LP sol:
-%                     *.obj:          Objective value
-%                     *.objLinear      osense*c'*x;
-%                     *.objEntropy     d.*x'*(log(x) -1);
-%                     *.objQuadratic   (1/2)*x'*Q*x;
-%                     *.v:  n+k ×1 double
-%                     *.vf: n × 1 double
-%                     *.vr: n × 1 double
-%                     *.vt: 1'*vt + 1'*vr
-%                     *.y_N: m x 1 double   dual sol to constraints :math: `A*x ('E' | 'G' | 'L') b`
-%                     *.z_dx: 0
-%                     *.z_vf: n × 1 double    dual sol to :math:`lb <= vr <= ub`
-%                     *.z_vr: n × 1 double    dual sol to :math:`lb <= vf <= ub`
-%                     *.z_vi: n × 1 double    dual sol to :math:`lb <= v <= ub`
-%                     *.z_v: n + k × 1 double dual sol to :math:`lb <= w <= ub`
+%                     * .obj:          Objective value
+%                     * .objLinear      osense*c'*x;
+%                     * .objEntropy     d.*x'*(log(x) -1);
+%                     * .objQuadratic   (1/2)*x'*Q*x;
+%                     * .v:  n+k x1 double
+%                     * .vf: n x 1 double
+%                     * .vr: n x 1 double
+%                     * .vt: 1'*vt + 1'*vr
+%                     * .y_N: m x 1 double   dual sol to constraints :math: `A*x ('E' | 'G' | 'L') b`
+%                     * .z_dx: 0
+%                     * .z_vf: n x 1 double    dual sol to :math:`lb <= vr <= ub`
+%                     * .z_vr: n x 1 double    dual sol to :math:`lb <= vf <= ub`
+%                     * .z_vi: n x 1 double    dual sol to :math:`lb <= v <= ub`
+%                     * .z_v: n + k x 1 double dual sol to :math:`lb <= w <= ub`
 %                     * .stat:         Solver status in standardized form
 %                       * 0 - Infeasible problem
 %                       * 1 - Optimal sol
@@ -133,7 +141,7 @@ function sol = solveCobraEP(EPproblem, varargin)
 % EXAMPLE:
 %
 %
-% Author(s): Ronan M.T. Fleming, 2024
+% .. Author: - Ronan M.T. Fleming, 2024
 
 
 [problemTypeParams, solverParams] = parseSolverParameters('EP', varargin{:});

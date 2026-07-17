@@ -38,8 +38,8 @@ function [EPproblem, nEvar] = prepareEnzymeConstrainedEP(EPproblem, model, m, n,
 %    `.d` entries are 0), so `nnz(.d)` and the exponential-cone count are
 %    unchanged.
 %
-% Author:
-%    - Generated for feature 010-gecko-entropic-fba, 2026-07-15.
+% .. Author:
+%       - Generated for feature 010-gecko-entropic-fba, 2026-07-15.
 
 if ~exist('enzymeEntropyWeight', 'var') || isempty(enzymeEntropyWeight)
     enzymeEntropyWeight = 0;

@@ -1,63 +1,133 @@
-function [f,u0,c0l,c0u,l_c,u_c,dcl,dcu,l_w,u_w,B,b,l_r,u_r,paramOut] = processConcConstraints(model,param)
+function [f, u0, c0l, c0u, l_c, u_c, dcl, dcu, l_w, u_w, B, b, l_r, u_r, paramOut] = processConcConstraints(model, param)
+% Derives the concentration-related bounds, weights, and external
+% stoichiometry used to build an entropic flux balance analysis (EFBA)
+% concentration subproblem from a COBRA model and EFBA parameter structure
 %
 % USAGE:
-%   [] = processConcConstraints(model,param)
+%
+%    [f, u0, c0l, c0u, l_c, u_c, dcl, dcu, l_w, u_w, B, b, l_r, u_r, paramOut] = processConcConstraints(model, param)
 %
 % INPUTS:
-%    model: (the following fields are required - others can be supplied)
+%    model:         COBRA model structure with the following required
+%                   fields:
 %
-%          * S  - `m x (n + k)` Stoichiometric matrix
-%          * c  - `(n + k) x 1` Linear objective coefficients
-%          * lb - `(n + k) x 1` Lower bounds on net flux
-%          * ub - `(n + k) x 1` Upper bounds on net flux
+%                     * .S - `m x (n + k)` stoichiometric matrix, where `n`
+%                       is the number of stoichiometrically consistent
+%                       (internal) reactions and `k` is the number of
+%                       stoichiometrically inconsistent (external) reactions
+%                     * .c - `(n + k) x 1` linear objective coefficients
+%                     * .lb - `(n + k) x 1` lower bounds on net flux
+%                     * .ub - `(n + k) x 1` upper bounds on net flux
+%                     * .SConsistentRxnBool - `(n + k) x 1` boolean
+%                       indicating the stoichiometrically consistent
+%                       (internal) reactions
 %
+%                   and the following optional fields:
 %
-% OPTIONAL INPUTS
-% model.SConsistentMetBool: m x 1  boolean indicating  stoichiometrically consistent metabolites
-% model.SConsistentRxnBool: n x 1  boolean indicating  stoichiometrically consistent metabolites
-% model.rxns:
+%                     * .rxns - `(n + k) x 1` cell array of reaction
+%                       identifiers, used only to report inconsistent
+%                       reactions
+%                     * .pp - `m x 1` boolean vector indicating the
+%                       independent rows of `[N, b]` (default: all rows);
+%                       also used to restrict `b`, `B`, `l_r`, and `u_r` to
+%                       the independent rows
+%                     * .b - `m x 1` right hand side of `N*v = b` (default:
+%                       0)
+%                     * .f - `m x 1` strictly positive weight on
+%                       concentration entropy maximisation, or `'rand'`,
+%                       `'one'`, or `'two'` (default `'one'`)
+%                     * .u0 - `m x 1` standard transformed Gibbs energy of
+%                       formation, or `'rand'`, `'one'`, or `'zero'`
+%                       (default `'zero'`)
+%                     * .c0l - `m x 1` non-negative lower bound on initial
+%                       molecular concentrations (default 0)
+%                     * .c0u - `m x 1` non-negative upper bound on initial
+%                       molecular concentrations (default `param.maxConc`)
+%                     * .l_c - `m x 1` non-negative lower bound on final
+%                       molecular concentrations
+%                     * .u_c - `m x 1` non-negative upper bound on final
+%                       molecular concentrations
+%                     * .dcl - `m x 1` real valued lower bound on the
+%                       difference between final and initial molecular
+%                       concentrations (default -inf)
+%                     * .dcu - `m x 1` real valued upper bound on the
+%                       difference between final and initial molecular
+%                       concentrations (default inf)
+%                     * .gasConstant - gas constant in kJ/(K*mol) (default
+%                       8.3144621e-3)
+%                     * .T - scalar temperature; takes precedence over
+%                       `.temperature` if both are present
+%                     * .temperature - scalar temperature in Kelvin
+%                       (default 310.15)
 %
-%  model.pp       m x 1    boolean vector indicating the independent columns of [N,b];
-%  model.f:       m x 1    strictly positive weight on concentration entropy maximisation (default 1)
-%  model.u0:      m x 1    standard transformed Gibbs energy of formation (default 0)
-%  model.c0l:     m x 1    non-negative lower bound on initial molecular concentrations
-%  model.c0u:     m x 1    non-negative upper bound on initial molecular concentrations
-%  model.l_c:      m x 1    non-negative lower bound on final molecular concentrations
-%  model.u_c:      m x 1    non-negative lower bound on final molecular concentrations
-%  model.dcl:     m x 1    real valued lower bound on difference between final and initial molecular concentrations   (default -inf)
-%  model.dcu:     m x 1    real valued upper bound on difference between final and initial initial molecular concentrations  (default inf)
-%  model.gasConstant:    8.3144621e-3; % Gas constant in kJ/(K*mol)
-%  model.temperature:              scalar temperature (default 310.15 Kelvin)
-% param.concentrationBounds: {('none')} whether to set bounds on concentration or not
-%  param.maxConc: (1e4) maximim micromolar concentration allowed
-%  param.minConc: (1e-4) minimum micromolar concentration allowed
-%  param.externalNetFluxBounds:   ('original') =  
-%                                 'dxReplacement' = when model.dcl or model.dcu is provided then they set the upper and lower bounds on metabolite exchange
-%  param.printLevel:
+%    param:         Structure with the following optional fields:
+%
+%                     * .concUnit - concentration unit conversion factor
+%                       (default `10-3`, i.e. assumes concentrations are in
+%                       mMol)
+%                     * .concentrationBounds - `{('none')}` whether/how to
+%                       set bounds on final concentration: `'none'`
+%                       (`l_c = 0`, `u_c = inf`), `'setToGiven'` (use
+%                       `model.l_c`/`model.u_c`, selected automatically
+%                       when both are present), or `'maximimumFiniteRange'`
+%                       (use `param.minConc`/`param.maxConc`)
+%                     * .maxConc - (1e4) maximum micromolar concentration
+%                       allowed
+%                     * .minConc - (1e-4) minimum micromolar concentration
+%                       allowed
+%                     * .externalNetFluxBounds - `('original')` how to set
+%                       the bounds on external net flux and the
+%                       initial/final concentration difference:
+%                       `'original'` (use `model.lb`/`model.ub`
+%                       unmodified), `'identities'`, `'bReplacingB'`,
+%                       `'none'`, or `'dxReplacement'` (when `model.dcl` or
+%                       `model.dcu` is provided, use them to set the
+%                       exchange bounds); defaults to `'dxReplacement'` if
+%                       `model.dcl` or `model.dcu` is present, else
+%                       `'original'`
+%                     * .printLevel - verbose level, used to print
+%                       diagnostic messages about the option chosen for
+%                       `.externalNetFluxBounds`
+%                     * .qpMassBalance - backward-compatible alias; copied
+%                       to `.massBalancePenalty` if `.massBalancePenalty`
+%                       is absent
+%                     * .strictMassBalance - if present, its logical
+%                       negation overwrites `.qpMassBalance`
+%                     * .massBalancePenalty - `('none')` penalty applied to
+%                       the mass-balance regularisation term: `'quadratic'`
+%                       (`l_r`/`u_r` unbounded) or `'none'` (`l_r = u_r = 0`)
 %
 % OUTPUTS:
-% f:       m x 1    strictly positive weight on concentration entropy maximisation (default 1)
-% u0:      m x 1    standard transformed Gibbs energy of formation, divided by RT (default 0)  
-% c0l:     m x 1    non-negative lower bound on initial molecular concentrations 
-% c0u:     m x 1    non-negative upper bound on initial molecular concentrations
-% l_c:      m x 1    non-negative lower bound on final molecular concentrations 
-% u_c:      m x 1    non-negative lower bound on final molecular concentrations
-% dcl:     m x 1    real valued lower bound on difference between final and initial molecular concentrations  
-% dcu:     m x 1    real valued upper bound on difference between final and initial initial molecular concentrations  
-% l_w:     k x 1    lower bound on external net flux 
-% u_w:     k x 1    upper bound on external net flux
-%   B:    `m x k`   External stoichiometric matrix
-%   b:     m x 1    RHS of S*v = b
-% l_r:     m x 1    lower bound on regularisation term in S*v + r = b (default -inf)
-% u_r:     m x 1    upper bound on regularisation term in S*v + r = b (default  inf)
-% paramOut  return param structure to capture any param set internally
-
+%    f:             `m x 1` strictly positive weight on concentration
+%                   entropy maximisation
+%    u0:            `m x 1` standard transformed Gibbs energy of formation,
+%                   divided by `gasConstant*temperature` if both are given
+%    c0l:           `m x 1` non-negative lower bound on initial molecular
+%                   concentrations
+%    c0u:           `m x 1` non-negative upper bound on initial molecular
+%                   concentrations
+%    l_c:           `m x 1` non-negative lower bound on final molecular
+%                   concentrations
+%    u_c:           `m x 1` non-negative upper bound on final molecular
+%                   concentrations
+%    dcl:           `m x 1` real valued lower bound on the difference
+%                   between final and initial molecular concentrations
+%    dcu:           `m x 1` real valued upper bound on the difference
+%                   between final and initial molecular concentrations
+%    l_w:           `k x 1` lower bound on external net flux
+%    u_w:           `k x 1` upper bound on external net flux
+%    B:             `m x k` external stoichiometric matrix (rows
+%                   restricted to `model.pp` when present)
+%    b:             right hand side of `N*v = b` (rows restricted to
+%                   `model.pp` when present)
+%    l_r:           lower bound on the regularisation term in
+%                   `N*v + r = b` (default -inf)
+%    u_r:           upper bound on the regularisation term in
+%                   `N*v + r = b` (default inf)
+%    paramOut:      `param` structure, returned to capture any fields set
+%                   internally (e.g. defaulted fields)
 %
-% EXAMPLE:
-%
-% NOTE:
-%
-% Author(s): Ronan Fleming
+% .. Author(s): Ronan Fleming
 
 N=model.S(:,model.SConsistentRxnBool);  % internal stoichiometric matrix
 B=model.S(:,~model.SConsistentRxnBool); % external stoichiometric matrix

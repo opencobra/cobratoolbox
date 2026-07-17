@@ -1,4 +1,6 @@
 function [fxk, gfxk] = Rate_function1(opt, varargin)
+% Evaluates the nonlinear rate function `f(xk)` and its gradient at a point `xk`
+%
 % USAGE:
 %
 %    [fxk, gfxk] = Rate_function1(opt, varargin)
@@ -8,13 +10,12 @@ function [fxk, gfxk] = Rate_function1(opt, varargin)
 %    opt:     structure includes required parameters;
 %
 %               * .FR - concatenation of forward and reverse stoichiometric matrix
-%               * .A - Reduced forward stoichiometric matrix
-%               * .B - Reduced reverse stoichiometric matrix
+%               * .FR_RF - concatenation `[F-R, R-F]` of the forward-reverse and reverse-forward stoichiometric differences
 %               * .k - initial kinetic
 %
 % OUTPUTS:
-%    hxk:     the vector `h(xk)`
-%    ghxk:    gradient of `h` at `xk`
+%    fxk:     the vector `f(xk)`
+%    gfxk:    gradient of `f` at `xk`
 
 if nargin ~= 2
     error('The number of input arguments is not valid');
