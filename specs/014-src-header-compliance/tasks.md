@@ -28,7 +28,7 @@ each per-folder task carries the `[US2]` label and also discharges US3 for its f
 
 ## Phase 1: Setup
 
-- [ ] T001 Create the test category directory `test/verifiedTests/documentation/` (holds the checker, exclusions helper, and CI-gate test).
+- [X] T001 Create the test category directory `test/verifiedTests/documentation/` (holds the checker, exclusions helper, and CI-gate test).
 
 ---
 
@@ -40,12 +40,12 @@ CI on any in-scope error-severity violation (SC-001, SC-007).
 **Independent test**: run `testHeaderCompliance('report')`; it enumerates violations by file/rule/
 domain and exits non-zero iff any in-scope error-severity violation exists; identical on re-run.
 
-- [ ] T002 [US1] Implement `test/verifiedTests/documentation/headerComplianceExclusions.m` returning the vendored/read-only exclusion globs and the file-level licence-guard predicate per research R2 (`src/reconstruction/rBioNet/**`, `src/reconstruction/comparison/modelBorgifier/**`, plus any file whose header carries an explicit software licence). MATLAB standards VII-A..G.
-- [ ] T003 [US1] Implement `test/verifiedTests/documentation/checkFunctionHeaders.m`: parse one `.m` file's primary-function header and return a list of `Violation` structs for every rule in `contracts/header-rules.md` (H-EMPTY, H-DESC, H-PCT, H-USAGE, H-OUT, H-IN, H-NV, H-ARGFMT, H-FIELD, H-FIELDUSE, H-BODYGAP, H-SIG, H-AUTHOR). Classify function vs script vs excluded-vendored (data-model.md). Pure base MATLAB (`fileread`/`regexp`), no solver/internet/GUI.
-- [ ] T004 [US1] Implement `test/verifiedTests/documentation/testHeaderCompliance.m` (`matlab.unittest`): scan all in-scope `src/*.m` via `checkFunctionHeaders`, assert zero error-severity violations, support a `('report'[, scopePath])` mode returning a `ComplianceReport` and a folder-scoped mode for per-unit self-verification (quickstart Scenarios 1–3).
-- [ ] T005 [US1] Confirm `test/testAll.m` discovers `test/verifiedTests/documentation/` and the gate runs headless under `matlab -batch`; record the run. Do not weaken any existing test.
-- [ ] T006 [US1] Implement the behaviour-preservation verifier `test/verifiedTests/documentation/checkCommentsOnly.sh <baseRef> <headRef>`: for every changed `src/*.m`, compare the sequence of non-comment/non-blank lines pre/post and exit non-zero on any executable-line delta (research R5, SC-005).
-- [ ] T007 [US1] Run the checker over `src/` and write the **authoritative** baseline (per-rule, per-domain counts) to `specs/014-src-header-compliance/reports/baseline.md`, superseding the preliminary heuristic snapshot (FR-002, SC-006).
+- [X] T002 [US1] Implement `test/verifiedTests/documentation/headerComplianceExclusions.m` returning the vendored/read-only exclusion globs and the file-level licence-guard predicate per research R2 (`src/reconstruction/rBioNet/**`, `src/reconstruction/comparison/modelBorgifier/**`, plus any file whose header carries an explicit software licence). MATLAB standards VII-A..G.
+- [X] T003 [US1] Implement `test/verifiedTests/documentation/checkFunctionHeaders.m`: parse one `.m` file's primary-function header and return a list of `Violation` structs for every rule in `contracts/header-rules.md` (H-EMPTY, H-DESC, H-PCT, H-USAGE, H-OUT, H-IN, H-NV, H-ARGFMT, H-FIELD, H-FIELDUSE, H-BODYGAP, H-SIG, H-AUTHOR). Classify function vs script vs excluded-vendored (data-model.md). Pure base MATLAB (`fileread`/`regexp`), no solver/internet/GUI.
+- [X] T004 [US1] Implement `test/verifiedTests/documentation/testHeaderCompliance.m` (`matlab.unittest`): scan all in-scope `src/*.m` via `checkFunctionHeaders`, assert zero error-severity violations, support a `('report'[, scopePath])` mode returning a `ComplianceReport` and a folder-scoped mode for per-unit self-verification (quickstart Scenarios 1–3).
+- [X] T005 [US1] Confirm `test/testAll.m` discovers `test/verifiedTests/documentation/` and the gate runs headless under `matlab -batch`; record the run. Do not weaken any existing test.
+- [X] T006 [US1] Implement the behaviour-preservation verifier `test/verifiedTests/documentation/checkCommentsOnly.sh <baseRef> <headRef>`: for every changed `src/*.m`, compare the sequence of non-comment/non-blank lines pre/post and exit non-zero on any executable-line delta (research R5, SC-005).
+- [X] T007 [US1] Run the checker over `src/` and write the **authoritative** baseline (per-rule, per-domain counts) to `specs/014-src-header-compliance/reports/baseline.md`, superseding the preliminary heuristic snapshot (FR-002, SC-006).
 
 **Checkpoint**: US1 done — checker + CI gate green on the (still non-compliant) tree only in
 `report` mode; authoritative baseline committed. Remediation may now fan out.
