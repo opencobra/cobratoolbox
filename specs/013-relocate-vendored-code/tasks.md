@@ -54,12 +54,12 @@ still invoke them.
 **Independent test**: no `.pl`/`.gms` under `src/`; wrappers build CBTDIR-anchored paths; behavior with
 `perl`/`gams` present matches baseline, and absence matches baseline (not a regression).
 
-- [ ] T011 [US2] `git mv` `src/dataIntegration/fluxomics/c13solver/*.pl` (5 files) to `external/dataIntegration/fluxomics/c13solver/`.
-- [ ] T012 [US2] Edit `src/dataIntegration/fluxomics/c13solver/generateIsotopomerSolver.m`: invoke `perl <CBTDIR-abs .pl>` from a writable working directory (replace `cd(xdir)` + bare `perl generatorEMU.pl` at ~L88–96); keep `IsotopomerModel.txt` I/O in a writable cwd.
-- [ ] T013 [P] [US2] `git mv` `src/design/optForceGAMS/*.gms` (6) to `external/design/optForceGAMS/` and `src/base/solvers/gams/licememo.gms` to `external/base/solvers/gams/`.
-- [ ] T014 [US2] Edit `src/design/optForceGAMS/optForceWithGAMS.m` and `findMust{L,LL,U,UL,UU}WithGAMS.m`: reference each `.gms` model by CBTDIR-absolute path in the `system('gams …')` invocation (invocation args otherwise unchanged).
-- [ ] T015 [US2] Edit `src/base/solvers/gams/getAvailableGAMSSolvers.m`: resolve `licememo.gms` via `CBTDIR` (replace `which('licememo.gms')` at ~L37).
-- [ ] T016 [US2] Verify: `check_matlab_code` on all edited wrappers; run c13 + optForce suites (or confirm clean skip when `perl`/`gams` absent); compare to baseline; confirm no signature changes and no `.pl`/`.gms` under `src/`.
+- [X] T011 [US2] `git mv` `src/dataIntegration/fluxomics/c13solver/*.pl` (5 files) to `external/dataIntegration/fluxomics/c13solver/`.
+- [X] T012 [US2] Edit `src/dataIntegration/fluxomics/c13solver/generateIsotopomerSolver.m`: invoke `perl <CBTDIR-abs .pl>` from a writable working directory (replace `cd(xdir)` + bare `perl generatorEMU.pl` at ~L88–96); keep `IsotopomerModel.txt` I/O in a writable cwd.
+- [X] T013 [P] [US2] `git mv` `src/design/optForceGAMS/*.gms` (6) to `external/design/optForceGAMS/` and `src/base/solvers/gams/licememo.gms` to `external/base/solvers/gams/`.
+- [X] T014 [US2] Edit `src/design/optForceGAMS/optForceWithGAMS.m` and `findMust{L,LL,U,UL,UU}WithGAMS.m`: reference each `.gms` model by CBTDIR-absolute path in the `system('gams …')` invocation (invocation args otherwise unchanged).
+- [X] T015 [US2] Edit `src/base/solvers/gams/getAvailableGAMSSolvers.m`: resolve `licememo.gms` via `CBTDIR` (replace `which('licememo.gms')` at ~L37).
+- [X] T016 [US2] Verify: `check_matlab_code` on all edited wrappers; run c13 + optForce suites (or confirm clean skip when `perl`/`gams` absent); compare to baseline; confirm no signature changes and no `.pl`/`.gms` under `src/`.
 
 ---
 

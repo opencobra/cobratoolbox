@@ -284,7 +284,8 @@ if isempty(gamsPath); error('OptForce: GAMS is not installed in your system. Ple
 %name of the function to solve optForce in GAMS
 optForceFunction = 'optForce.gms';
 %path of that function
-pathOFG = which(optForceFunction);
+% optForce.gms is vendored under external/ (relocated out of src/); resolve by absolute path.
+pathOFG = [fileparts(which('initCobraToolbox')) filesep 'external' filesep 'design' filesep 'optForceGAMS' filesep optForceFunction];
 %current path
 workingPath = pwd;
 %go to the path associate to the ID for this run.
