@@ -1,4 +1,4 @@
-function [mapped_exchanges, minMax, mapped_uptake, mapped_secretion] = checkExchangeProfiles(samples, path ,nmets)
+function [mapped_exchanges, minMax, mapped_uptake, mapped_secretion] = checkExchangeProfiles(samples, path, nmets)
 % The Function generates a summary of the number of uptake exchanges
 % and secretion exchanges per samples.
 %

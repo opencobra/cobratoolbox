@@ -1,23 +1,21 @@
 function [metabolite_structure] = queryExposomeExplorer(metabolite_structure)
+% Search the Exposome Explorer website (http://exposome-explorer.iarc.fr) by
+% metabolite name and add the matched Exposome Explorer identifier to the
+% metabolite structure for metabolites that lack a LipidMaps id.
 %
-% the function will search for metabolite names
-% http://exposome-explorer.iarc.fr/search?utf8=%E2%9C%93&query=2-aminophenol+sulfate&button=
+% USAGE:
 %
+%    [metabolite_structure] = queryExposomeExplorer(metabolite_structure)
 %
-% INPUT
-% metabolite_structure  metabolite structure
-% startSearch           specify where the search should start in the
-%                       metabolite structure. Must be numeric (optional, default: all metabolites
-%                       in the structure will be search for)
-% endSearch             specify where the search should end in the
-%                       metabolite structure. Must be numeric (optional, default: all metabolites
-%                       in the structure will be search for)
+% INPUT:
+%    metabolite_structure:    metabolite structure whose fields are VMH
+%                             metabolite IDs, each holding `metNames` and
+%                             `lipidmaps` fields
 %
-% OUTPUT
-% metabolite_structure  updated metabolite structure
+% OUTPUT:
+%    metabolite_structure:    updated metabolite structure
 %
-%
-% Ines Thiele, 09/2021
+% .. Author: - Ines Thiele, 09/2021
 
 
 Mets = fieldnames(metabolite_structure);

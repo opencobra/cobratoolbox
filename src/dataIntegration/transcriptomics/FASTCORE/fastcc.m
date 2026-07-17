@@ -1,39 +1,32 @@
-function [A,orientation,V] = fastcc(model,epsilon,printLevel,modeFlag,method)
+function [A, orientation, V] = fastcc(model, epsilon, printLevel, modeFlag, method)
 % The FASTCC algorithm for testing the consistency of a stoichiometric model.
-% Output A is the consistent part of the model [A,V] = fastcc(model, epsilon, printLevel)
+% Output A is the consistent part of the model.
 %
 % USAGE:
 %
-%    [A, modelFlipped, V] = fastcc(model, epsilon, printLevel, modeFlag, method)
+%    [A, orientation, V] = fastcc(model, epsilon, printLevel, modeFlag, method)
 %
 % INPUTS:
 %    model:         cobra model structure containing the fields:
 %
-%                     * S - `m` x `n` stoichiometric matrix
-%                     * lb - `n` x 1 flux lower bound
-%                     * ub - `n` x 1 flux uppper bound
-%                     * rxns - `n` x 1 cell array of reaction abbreviations
+%                     * .S - `m x n` stoichiometric matrix
+%                     * .lb - `n x 1` flux lower bound
+%                     * .ub - `n x 1` flux upper bound
+%                     * .rxns - `n x 1` cell array of reaction abbreviations
+%                     * .csense - `m x 1` character array of constraint senses in {L,E,G} (optional; defaults to E)
+%                     * .C - `k x n` left hand side of `C*v <= d` (optional coupling constraints)
 %
 % OPTIONAL INPUTS:
-%    model:
-%                     * b - `m x 1` change in concentration with time
-%                     * csense - `m x 1` character array with entries in {L,E,G}
-%                     * C - `k x n` Left hand side of C*v <= d
-%                     * d - `k x n` Right hand side of C*v <= d
-%                     * dsense - `k x 1` character array with entries in {L,E,G}
-%
 %    epsilon:       smallest flux that is considered nonzero
 %    printLevel:    0 = silent, 1 = summary, 2 = debug
-%
-% OPTIONAL INPUTS:
-%    modeFlag:      {(0),1}; 1=return matrix of modes V
+%    modeFlag:      {(0), 1}; 1 = return matrix of modes V
 %    method:        'original' - default or 'nonconvex'
 %
 % OUTPUTS:
 %    A:             indices of flux consistent reactions in model
-%    orientation:   `n` x 1 vector indicating the orientation of flux
-%                           consistency, where -1 means flux consistent in reverse direction only 
-%    V:             `n` x `k` matrix such that `S(:,A) * V(:,A) = 0 and |V(:,A)|' * 1 > 0`
+%    orientation:    `n x 1` vector indicating the orientation of flux
+%                   consistency, where -1 means flux consistent in reverse direction only
+%    V:             `n x k` matrix such that `S(:,A) * V(:,A) = 0 and |V(:,A)|' * 1 > 0`
 %
 % .. Authors:
 %       - Nikos Vlassis, Maria Pires Pacheco, Thomas Sauter, 2013 LCSB / LSRU, University of Luxembourg

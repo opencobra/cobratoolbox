@@ -1,7 +1,32 @@
-function [metabolite_structure,IDsAdded] = parseEPA4VMH(metabolite_structure,startSearch,endSearch)
-% search EPA  - comptox
-% using casRegistry
-% or using inchiKey
+function [metabolite_structure, IDsAdded] = parseEPA4VMH(metabolite_structure, startSearch, endSearch)
+% Search the EPA CompTox dashboard for each metabolite (using the CAS registry
+% number or, failing that, the InChIKey) and add the matched EPA identifier
+% (`epa_id`) to the metabolite structure.
+%
+% USAGE:
+%
+%    [metabolite_structure, IDsAdded] = parseEPA4VMH(metabolite_structure, startSearch, endSearch)
+%
+% INPUT:
+%    metabolite_structure:    metabolite structure whose fields are VMH
+%                             metabolite IDs, each holding `casRegistry` and
+%                             `inchiKey` fields
+%
+% OPTIONAL INPUTS:
+%    startSearch:             numeric index of where the search should start in
+%                             the metabolite structure (default: 1)
+%    endSearch:               numeric index of where the search should end in
+%                             the metabolite structure (default: last metabolite)
+%
+% OUTPUTS:
+%    metabolite_structure:    metabolite structure updated with the matched EPA
+%                             identifier
+%    IDsAdded:                cell array logging the added identifiers, with the
+%                             metabolite field name, the annotation type
+%                             (`epa_id`), and the assigned identifier per row
+%
+% .. Author: - Ines Thiele
+
 annotationSource = 'EPA website';
 annotationType = 'automatic';
 

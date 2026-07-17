@@ -1,22 +1,31 @@
-function [metabolite_structure,IDAdded] = addInfoFromMolFiles(metabolite_structure,folderName,startSearch,endSearch)
-% This function creates inchiStrings, smiles, and inchiKeys from provided mol files,
-% in the case that these fields are empty (NaN) in the structure.
+function [metabolite_structure, IDAdded] = addInfoFromMolFiles(metabolite_structure, folderName, startSearch, endSearch)
+% Creates inchiStrings, smiles, and inchiKeys from provided mol files
 %
-% INPUT
-% metabolite_structure  metabolite structure
-% folderName            name of folder that contains the mol structures
-% startSearch           specify where the search should start in the
-%                       metabolite structure. Must be numeric (optional, default: all metabolites
-%                       in the structure will be search for)
-% endSearch             specify where the search should end in the
-%                       metabolite structure. Must be numeric (optional, default: all metabolites
-%                       in the structure will be search for)
+% Creates inchiStrings, smiles, and inchiKeys from provided mol files, in the
+% case that these fields are empty (NaN) in the metabolite structure.
 %
-% OUTPUT
-% metabolite_structure  Updated metabolite structure
+% USAGE:
 %
+%    [metabolite_structure, IDAdded] = addInfoFromMolFiles(metabolite_structure, folderName, startSearch, endSearch)
 %
-% Ines Thiele, 09/2021
+% INPUTS:
+%    metabolite_structure:    metabolite structure
+%
+% OPTIONAL INPUTS:
+%    folderName:              name of the folder that contains the mol files
+%                             (default: 'ctf-main/mets/molFiles')
+%    startSearch:             numeric index where the search should start in
+%                             the metabolite structure (default: 1, all
+%                             metabolites in the structure are searched)
+%    endSearch:               numeric index where the search should end in the
+%                             metabolite structure (default: number of
+%                             metabolites in the structure)
+%
+% OUTPUTS:
+%    metabolite_structure:    updated metabolite structure
+%    IDAdded:                 list of IDs (inchiString, inchiKey, smiles) added
+%
+% .. Author: - Ines Thiele, 09/2021
 
 
 F = fieldnames(metabolite_structure);

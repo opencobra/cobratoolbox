@@ -6,34 +6,34 @@ function [tissueModel, coreRxnBool, coreMetBool, coreCtrsBool] = fastcore(model,
 %
 % USAGE:
 %
-%    tissueModel = fastcore(model, coreRxnInd)
+%    [tissueModel, coreRxnBool, coreMetBool, coreCtrsBool] = fastcore(model, coreRxnInd, epsilon, printLevel, adaptiveScalingFlag, nonPen)
 %
 % INPUTS:
-%    model:             (the following fields are required - others can be supplied)
-%                         * S  - `m x 1` Stoichiometric matrix
-%                         * lb - `n x 1` Lower bounds
-%                         * ub - `n x 1` Upper bounds
-%                         * rxns   - `n x 1` cell array of reaction abbreviations
+%    model:                  COBRA model structure with the required fields:
 %
-%   coreRxnInd:          indices of reactions in cobra model that are part of the
-%                        core set of reactions (called 'C' in 'Vlassis et al,
-%                        2014')
+%                              * .S - `m x n` stoichiometric matrix
+%                              * .lb - `n x 1` lower bounds
+%                              * .ub - `n x 1` upper bounds
+%                              * .rxns - `n x 1` cell array of reaction abbreviations
+%                              * .mets - `m x 1` cell array of metabolite abbreviations
+%                              * .ctrs - coupling-constraint identifiers (optional)
+%    coreRxnInd:             indices of reactions in cobra model that are part of the
+%                            core set of reactions (called 'C' in 'Vlassis et al, 2014')
 %
 % OPTIONAL INPUTS:
-%   epsilon:             smallest flux value that is considered nonzero
-%                        (default getCobraSolverParams('LP', 'feasTol')*100)
-%   printLevel:          0 = silent, 1 = summary, 2 = debug (default - 0)
-%   adaptiveScalingFlag  0 = adaptive scaling is off (default), 1 = adaptive scaling
-%                        is on (recommended for ill scaled models)
-%   nonPen               list of reactions whose addition to the model is not be penalized
+%    epsilon:                smallest flux value that is considered nonzero
+%                            (default getCobraSolverParams('LP', 'feasTol')*100)
+%    printLevel:             0 = silent, 1 = summary, 2 = debug (default - 0)
+%    adaptiveScalingFlag:    0 = adaptive scaling is off (default), 1 = adaptive scaling
+%                            is on (recommended for ill scaled models)
+%    nonPen:                 list of reactions whose addition to the model is not penalized
 %
+% OUTPUTS:
+%    tissueModel:            extracted context-specific model
+%    coreRxnBool:            `n x 1` boolean vector indicating core reactions
+%    coreMetBool:            boolean vector indicating metabolites retained in tissueModel
+%    coreCtrsBool:           boolean vector indicating coupling constraints retained in tissueModel
 %
-% OUTPUT:
-%
-%   tissueModel:         extracted model
-%
-%   coreRxnBool:         n x 1 boolean vector indicating core reactions
-% 
 % 'Vlassis, Pacheco, Sauter (2014). Fast reconstruction of compact
 % context-specific metbolic network models. PLoS Comput. Biol. 10,
 % e1003424.'

@@ -5,10 +5,10 @@ function [molCollectionReport, newMolFilesDir] = obtainMetStructures(model, metL
 %
 % USAGE:
 %
-% molCollectionReport = obtainMetStructures(model, mets, sources, standardisationApproach)
+%    [molCollectionReport, newMolFilesDir] = obtainMetStructures(model, metList, outputDir, sources)
 %
 % INPUTS:
-%    model: COBRA model with following fields:
+%    model:    COBRA model with following fields:
 %
 %        * .S - The m x n stoichiometric matrix for the metabolic network.
 %        * .mets - An m x 1 array of metabolite identifiers.
@@ -23,9 +23,9 @@ function [molCollectionReport, newMolFilesDir] = obtainMetStructures(model, metL
 %        * .metLipidmassID - An m x 1 array of metabolite identifiers.
 %
 % OPTIONAL INPUTS:
-%    mets: List of metabolites to be download (Default: All)
-%    outputDir: Directory that will contain the obtained metabolite structures.
-%    sources: Sources where the MOL files will be obtained (Default: all).
+%    metList:    List of metabolites to be downloaded (Default: All)
+%    outputDir:    Directory that will contain the obtained metabolite structures.
+%    sources:    Sources where the MOL files will be obtained (Default: all).
 %             The sources supported are:
 %
 %        1.- 'inchi' (requires openBabel)
@@ -38,7 +38,7 @@ function [molCollectionReport, newMolFilesDir] = obtainMetStructures(model, metL
 %        8.- 'lipidmass' (https://www.lipidmaps.org/)
 %
 % OUTPUTS:
-%    molCollectionReport: Report of the obtained MDL MOL files
+%    molCollectionReport:    Report of the obtained MDL MOL files
 % 
 %        * .metList - List of metabolites to be download
 %        * .sources -﻿list of sources of metabolite structures
@@ -50,7 +50,7 @@ function [molCollectionReport, newMolFilesDir] = obtainMetStructures(model, metL
 %        * .idsToCheck -﻿Id source from which no molecular structures could 
 %               be obtained due to a webTimeout, conversion error, or 
 %               inconsistent id.
-%    newMolFilesDir: directory where new mol files were written, subdirectories for each source.
+%    newMolFilesDir:    directory where new mol files were written, subdirectories for each source.
 
 if nargin < 2 || isempty(metList)
     metList = unique(regexprep(model.mets, '(\[\w\])', ''));

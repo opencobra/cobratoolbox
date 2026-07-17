@@ -1,30 +1,49 @@
-function [metabolite_structure,rBioNet_existance,VMH_existance] = list2MetaboliteStructure(fileName,molFileDirectory,metList,fileNameOutput,metabolite_structure_rBioNet,customMetAbbrList)
-% This function reads in an xlsx file and converts it into a
-% metabolite_structure. The minimum requirement is that the VMH ID are
-% present in one column of the table.
+function [metabolite_structure, rBioNet_existance, VMH_existance] = list2MetaboliteStructure(fileName, molFileDirectory, metList, fileNameOutput, metabolite_structure_rBioNet, customMetAbbrList)
+% Reads a metabolite list or xlsx file and converts it into a metabolite structure
 %
-% INPUT
-% fileName              Name of the xlsx file
-% molFileDirectoryIn    Location where to locate the mol files obtained from ctf and new mol files will be added.
-% metList
-% fileNameOutput
+% Reads an xlsx file (or a metabolite list) and converts it into a metabolite
+% structure, then annotates the metabolites from multiple resources. The
+% minimum requirement is that the VMH IDs are present in one column of the
+% table.
 %
-% OUTPUT
-% metabolite_structure  metabolite structure containing the metabolites
-%                       with VMH ID listed in the xlsx file
-% rBioNet_existance     This array indicates whether the query abbr exist
-%                       already in rBioNet (online and the growing internal
-%                       database) (col 1: assigned initial VMHId, col 2: Id
-%                       exists as rxn abbr, col 3: Id exists as met abbr,
-%                       col 4: VMHId - if not empty this abbr was used in
-%                       the metabolite structure instead of the one given
-%                       in col 1.
-% VMH_existance         This array indicates whether the query abbr exist
-%                       already in the VMH (online) (col 1: assigned initial VMHId, col 2: Id
-%                       exists as rxn abbr, col 3: Id exists as met abbr).
+% USAGE:
 %
+%    [metabolite_structure, rBioNet_existance, VMH_existance] = list2MetaboliteStructure(fileName, molFileDirectory, metList, fileNameOutput, metabolite_structure_rBioNet, customMetAbbrList)
 %
-% Ines Thiele, 09/2021
+% INPUTS:
+%    fileName:                        name of the xlsx file to read in
+%    molFileDirectory:                location where the mol files obtained from
+%                                     ctf are located and where new mol files
+%                                     are added
+%
+% OPTIONAL INPUTS:
+%    metList:                         metabolite list used instead of an xlsx
+%                                     file; must have a header row and be tab
+%                                     delimited
+%    fileNameOutput:                  file name under which the metabolite
+%                                     structure is saved
+%                                     (default: 'collectedMetStruct.mat')
+%    metabolite_structure_rBioNet:    rBioNet metabolite structure; loaded from
+%                                     met_strc_rBioNet_new if not provided
+%    customMetAbbrList:               list of metabolite abbreviations against
+%                                     which uniqueness is also checked
+%
+% OUTPUTS:
+%    metabolite_structure:            metabolite structure containing the
+%                                     metabolites with VMH ID listed in the file
+%    rBioNet_existance:               indicates whether the query abbreviation
+%                                     already exists in rBioNet (col 1: assigned
+%                                     initial VMHId, col 2: exists as reaction
+%                                     abbr, col 3: exists as metabolite abbr,
+%                                     col 4: VMHId used instead of col 1 if not
+%                                     empty)
+%    VMH_existance:                   indicates whether the query abbreviation
+%                                     already exists in the VMH online (col 1:
+%                                     assigned initial VMHId, col 2: exists as
+%                                     reaction abbr, col 3: exists as metabolite
+%                                     abbr)
+%
+% .. Author: - Ines Thiele, 09/2021
 
 if ~exist('fileNameOutput','var') || isempty(fileNameOutput)
     fileNameOutput = ['collectedMetStruct' '.mat'];

@@ -41,7 +41,7 @@ function [Masses, knownMasses, unknownElements, Ematrix, elements] = getMolecula
 %                         isotopeAbundance{i, 2} = Mass_Number;
 %                         isotopeAbundance{i, 3} = abundance;
 %                         (where sum of abundances of all isotopes of an element must be one)
-%    generalFormula       * (false) to support formulae containing only biological elements.
+%    generalFormula:      * (false) to support formulae containing only biological elements.
 %                           Return Masses = 0 if a formula contains none of these elements.
 %                           (C, O, P, N, S, H, Mg, Na, K, Cl, Ca, Zn, Fe, Cu, Mo, I)
 %                         * true to support formulae with brackets, decimal places and any chemical elements
@@ -52,10 +52,10 @@ function [Masses, knownMasses, unknownElements, Ematrix, elements] = getMolecula
 % OUTPUT:
 %    Masses:              molecular mass(es) in (gram/Mol)
 %    (the below are non-empty only if general = true)
-%    knownWeights:        MWs for the part whose MW is computable ofr each of the formulae
+%    knownMasses:         MWs for the part whose MW is computable ofr each of the formulae
 %    unknownElements:     cell arrary of elements without known atomic weights that appear in the formulae
 %    Ematrix:             elemental composition matrix (#formulae x #elements)
-%    element:             cell array of elements corresponding to the columns of Ematrix
+%    elements:            cell array of elements corresponding to the columns of Ematrix
 %
 % EXAMPLE:
 %

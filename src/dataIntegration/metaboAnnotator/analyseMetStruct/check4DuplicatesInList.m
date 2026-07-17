@@ -1,14 +1,18 @@
 function [listDuplicates] = check4DuplicatesInList(list)
-% This function checks for duplicate entries in a list.
+% Checks for duplicate entries in a list
 %
-% INPUT
-% list              List of e.g. metabolite abbr
+% USAGE:
 %
-% OUTPUT
-% listDuplicates    List of duplicated entries. Second (or more) occurance
-%                   of the duplicate is provided.
+%    [listDuplicates] = check4DuplicatesInList(list)
 %
-% Ines Thiele, 09/2021
+% INPUT:
+%    list:              list of entries, e.g. metabolite abbreviations
+%
+% OUTPUT:
+%    listDuplicates:    list of duplicated entries; the second (or later)
+%                       occurrence of each duplicate is provided
+%
+% .. Author: - Ines Thiele, 09/2021
 
 listDuplicates = [];
 cnt = 1;

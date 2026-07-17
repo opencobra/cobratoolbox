@@ -7,13 +7,17 @@ function plotThermoKernelWeights(metWeights, rxnWeights, thermoModelMetBool, the
 % If thermoModelMetBool and thermoModelRxnBool are also provided, it also plots the weigths 
 % for the incentivised metabolites and reactions that were omitted from the output model
 %
-% IPUTS
-%   metWeights:  - `m x 1` real valued vector weight on metabolites 
-%   rxnWeights:  - `n x 1` real valued vector weight on reactions
+% USAGE:
 %
-% OPTIONAL INPUTS
-%   thermoModelMetBool:   `m` x 1 boolean vector of thermodynamically consistent `mets` in input model
-%   thermoModelRxnBool:   `n` x 1 boolean vector of thermodynamically consistent `rxns` in input model
+%    plotThermoKernelWeights(metWeights, rxnWeights, thermoModelMetBool, thermoModelRxnBool)
+%
+% INPUTS:
+%    metWeights:    `m x 1` real-valued vector of weights on metabolites
+%    rxnWeights:    `n x 1` real-valued vector of weights on reactions
+%
+% OPTIONAL INPUTS:
+%    thermoModelMetBool:    `m x 1` boolean vector of thermodynamically consistent metabolites in the input model
+%    thermoModelRxnBool:    `n x 1` boolean vector of thermodynamically consistent reactions in the input model
 %
 %
 % Ronan Fleming

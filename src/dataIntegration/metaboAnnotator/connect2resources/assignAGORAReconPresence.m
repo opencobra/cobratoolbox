@@ -1,15 +1,25 @@
 function [metabolite_structure] = assignAGORAReconPresence(metabolite_structure, reaction)
-% this function assigns whether a metabolite occurs in AGORA_X and ReconX
+% Assign whether each metabolite (or reaction) occurs in AGORA2 and in Recon3D
+% by flagging the matched entries with `.Agora2` and `.Recon3D` fields.
 %
-% INPUT
-% metabolite_structure  metabolite structure
-% reaction              default: false (0). Set to true (1) if input is a reaction
-%                       structure
-% OUTPUT
-% metabolite_structure  Updated metabolite structure
+% USAGE:
 %
+%    [metabolite_structure] = assignAGORAReconPresence(metabolite_structure, reaction)
 %
-% Ines Thiele, 09/2021
+% INPUTS:
+%    metabolite_structure:    metabolite structure whose fields are VMH
+%                             metabolite (or reaction) IDs
+%
+% OPTIONAL INPUT:
+%    reaction:                default: false (0). Set to true (1) if the input
+%                             is a reaction structure
+%
+% OUTPUT:
+%    metabolite_structure:    metabolite structure updated with the AGORA2 and
+%                             Recon3D presence flags
+%
+% .. Author: - Ines Thiele, 09/2021
+
 if ~exist('reaction','var')
     reaction =0;
 end

@@ -1,16 +1,26 @@
-function [metabolite_structure,IDsAdded] = getSeed2Kegg(metabolite_structure)
-% This function parses the file: ftp://ftp.kbase.us/assets/KBase_Reference_Data/Biochemistry/compounds.xls
-% first column contains seed ID, 5th col contains Kegg ID. This file is
-% provided in /data/ as 'compounds.xlsx'
+function [metabolite_structure, IDsAdded] = getSeed2Kegg(metabolite_structure)
+% Add KEGG identifiers to the metabolite structure by mapping from the SEED id.
+% The mapping parses the KBase file
+% ftp://ftp.kbase.us/assets/KBase_Reference_Data/Biochemistry/compounds.xls
+% (first column: seed ID, 5th column: KEGG ID), provided in /data/ as
+% 'compounds.xlsx'.
 %
-% INPUT
-% metabolite_structure  metabolite structure
+% USAGE:
 %
-% OUTPUT
-% metabolite_structure  Updated metabolite structure
+%    [metabolite_structure, IDsAdded] = getSeed2Kegg(metabolite_structure)
 %
+% INPUT:
+%    metabolite_structure:    metabolite structure whose fields are VMH
+%                             metabolite IDs, each holding a `seed` field
 %
-% Ines Thiele, 2020-2021
+% OUTPUTS:
+%    metabolite_structure:    metabolite structure updated with the matched
+%                             KEGG identifiers
+%    IDsAdded:                cell array logging the added identifiers, with the
+%                             metabolite field name, the annotation type
+%                             (`keggId`), and the assigned identifier per row
+%
+% .. Author: - Ines Thiele, 2020-2021
 
 annotationSource = 'Seed mapping to Kegg';
 annotationType = 'automatic';

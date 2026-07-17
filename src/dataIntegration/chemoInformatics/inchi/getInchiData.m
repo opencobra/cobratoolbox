@@ -12,7 +12,7 @@ function inchiLayersDetail = getInchiData(inchi)
 %    inchi:             String with the InChI to classify
 %
 % OUTPUTS:
-%    detailLevelInchi:  Struct file with the following fields:
+%    inchiLayersDetail:    Struct file with the following fields:
 %
 %       * .layers              - Number of layers in the InChI.
 %       * .mainLayer           - Number of layers in the InChI.

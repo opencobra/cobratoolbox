@@ -9,9 +9,14 @@ function generateIsotopomerSolver(model, inputMet, experiment, FVAflag)
 %    generateIsotopomerSolver(model, inputMet, experiment, FVAflag)
 %
 % INPUTS:
-%    model:         model structure with .isotopomer filed
+%    model:         model structure with fields:
+%
+%                     * .isotopomer - cell array of isotopomer mapping strings, one per reaction
+%                     * .rxns - `n x 1` cell array of reaction identifiers
 %    inputMet:      input metabolites
-%    experiment:    structure
+%    experiment:    experiment structure with field:
+%
+%                     * .fragments - structure of measured metabolite fragments, one field per fragment
 %    FVAflag:       default = false, if true then additinoal operations involving fluxVariability involved
 %
 % Prints a file to /isotopomer/solver/ directory

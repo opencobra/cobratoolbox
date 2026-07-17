@@ -7,11 +7,14 @@ function metTable = metaboliteStructuresTable(metDir, saveDir)
 %    metTable = metaboliteStructuresTable(metDir, saveDir)
 %
 % INPUT:
-%    metDir:  String with the directory containing mol files
+%    metDir:    String with the directory containing mol files
 %
 % OPTIONAL INPUTS:
-%    saveDir: String with the directory where the table format will be
+%    saveDir:    String with the directory where the table format will be
 %             saved. If is empty, the format is not saved.
+%
+% OUTPUTS:
+%    metTable:    Table of metabolite structure representations (SMILES, InChI and InChIKey)
 
 if nargin < 2 || isempty(saveDir)
     toSave = false;

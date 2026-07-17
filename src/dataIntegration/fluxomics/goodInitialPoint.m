@@ -7,7 +7,10 @@ function [out] = goodInitialPoint(model, n)
 %    [out] = goodInitialPoint(model, n)
 %
 % INPUTS:
-%    model:    model structure
+%    model:    model structure, with fields:
+%
+%                * .lb - `n x 1` lower flux bounds (sets the number of variables)
+%                * .c - objective coefficient vector, overwritten internally to probe each reaction
 %    n:        number, default = 1
 %
 % OUTPUT:

@@ -4,21 +4,51 @@ function [dummyModel, coreRxnAbbr] = createDummyModel(model, activeEntrezGeneID,
 % corresponding dummy reaction. This enables one to require that at least
 % one reaction corresponding to a gene is active, rather than all genes
 %
-% INPUT:
-% model:             	COBRA model with various fields, including:
-% model.S:              m x n stoichiometric matrix
+% USAGE:
 %
-% activeEntrezGeneID:   k x 1 cell array of EntrezGeneID's, each in the format of model.genes{i}
+%    [dummyModel, coreRxnAbbr] = createDummyModel(model, activeEntrezGeneID, TolMaxBoundary, modelExtractionAlgorithm, coreRxnAbbr, fluxEpsilon)
 %
-% OPTIONAL INPUT:
-% TolMaxBoundary:       scalar number giving the default reaction upper and lower bounds magnitude
-% modelExtractionAlgorithm: {('thermoKernel'),'fastCore'} if 'fastCore' it runs a flux consistency check first
-% fluxEpsilon:         Minimum non-zero flux value accepted for tolerance (Default: Primal feasibility tolerance X 10).
+% INPUTS:
+%    model:    COBRA model with the following fields:
 %
-% OUTPUT:
-% dummyModel:                COBRA model with dummy metabolites or reactions
-% dummyModel.dummyMetBool:  m x 1 boolean vector indicating dummy metabolites i.e. contains(model.mets,'dummy_Met_');
-% dummyModel.dummyRxnBool:  n x 1 boolean vector indicating dummy reactions  i.e. contains(model.rxns,'dummy_Rxn_');
+%                * .S - `m x n` stoichiometric matrix
+%                * .b - `m x 1` accumulation (right hand side of S*v = b)
+%                * .c - `n x 1` linear objective coefficient vector
+%                * .lb - `n x 1` lower flux bounds
+%                * .ub - `n x 1` upper flux bounds
+%                * .csense - `m x 1` constraint sense for each metabolite
+%                * .mets - `m x 1` metabolite identifiers
+%                * .rxns - `n x 1` reaction identifiers
+%                * .rxnNames - `n x 1` reaction names
+%                * .genes - `g x 1` gene identifiers
+%                * .rules - `n x 1` gene-reaction association rules
+%                * .rxnGeneMat - `n x g` reaction-gene mapping matrix
+%                * .subSystems - `n x 1` reaction subsystems
+%                * .C - coupling constraint matrix
+%                * .ctrs - coupling constraint identifiers
+%                * .SIntRxnBool - `n x 1` boolean, true for internal reactions
+%                * .SConsistentRxnBool - `n x 1` boolean, stoichiometrically consistent reactions
+%                * .SConsistentMetBool - `m x 1` boolean, stoichiometrically consistent metabolites
+%                * .fluxConsistentRxnBool - `n x 1` boolean, flux consistent reactions
+%                * .thermoFluxConsistentRxnBool - `n x 1` boolean, thermodynamically flux consistent reactions
+%                * .dummyMetBool - `m x 1` boolean, true for dummy metabolites
+%                * .dummyRxnBool - `n x 1` boolean, true for dummy reactions
+%
+%    activeEntrezGeneID:    `k x 1` cell array of EntrezGeneID's, each in the format of model.genes{i}
+%
+% OPTIONAL INPUTS:
+%    TolMaxBoundary:    scalar giving the default reaction upper and lower bound magnitude
+%    modelExtractionAlgorithm:    {('thermoKernel'), 'fastCore'} if 'fastCore' it runs a flux consistency check first
+%    coreRxnAbbr:    core reaction identifiers to retain
+%    fluxEpsilon:    Minimum non-zero flux value accepted for tolerance (Default: Primal feasibility tolerance x 10)
+%
+% OUTPUTS:
+%    dummyModel:    COBRA model with dummy metabolites and reactions added, including:
+%
+%                     * .dummyMetBool - `m x 1` boolean vector indicating dummy metabolites
+%                     * .dummyRxnBool - `n x 1` boolean vector indicating dummy reactions
+%
+%    coreRxnAbbr:    updated core reaction identifiers
 
 % Ines Thiele & Ronan Fleming
 
