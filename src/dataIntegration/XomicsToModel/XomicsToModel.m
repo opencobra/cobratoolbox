@@ -316,6 +316,20 @@ end
 if ~isfield(param, 'activeOverInactive')
     param.activeOverInactive = 0;
 end
+% Backward compatibility: the parameter was renamed tissueSpecificSolver ->
+% modelExtractionAlgorithm (commit f9cfde976, 2024-02) with no alias, which
+% silently made legacy callers that still pass tissueSpecificSolver (e.g.
+% COBRA.papers/2023_iDopaNeuro, the XomicsToModel tutorial and tests) default to
+% thermoKernel instead of the requested algorithm. Honour the old name here.
+if isfield(param, 'tissueSpecificSolver') && ~isfield(param, 'modelExtractionAlgorithm')
+    param.modelExtractionAlgorithm = param.tissueSpecificSolver;
+    if iscell(param.modelExtractionAlgorithm) && isscalar(param.modelExtractionAlgorithm)
+        param.modelExtractionAlgorithm = param.modelExtractionAlgorithm{1};
+    end
+    warning('XomicsToModel:deprecatedParam', ...
+        ['param.tissueSpecificSolver is deprecated; use param.modelExtractionAlgorithm ' ...
+         '(mapped the supplied value to select the extraction algorithm).']);
+end
 if isfield(param, 'modelExtractionAlgorithm')
     if ~any(ismember(param.modelExtractionAlgorithm,{'thermoKernel','fastCore'}))
         error(['Unrecognised param.modelExtractionAlgorithm =' param.modelExtractionAlgorithm])
