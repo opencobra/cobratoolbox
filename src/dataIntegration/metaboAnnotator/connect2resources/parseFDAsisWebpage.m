@@ -1,5 +1,31 @@
-function [metabolite_structure,IDsAdded] = parseFDAsisWebpage(metabolite_structure,startSearch,endSearch)
-% uses unii IDs to parse
+function [metabolite_structure, IDsAdded] = parseFDAsisWebpage(metabolite_structure, startSearch, endSearch)
+% Parse the FDA Substance Registration System (FDAsis) website for each
+% metabolite that has a UNII id and retrieve cross-referenced identifiers (e.g.
+% the PubChem id), adding them to the metabolite structure.
+%
+% USAGE:
+%
+%    [metabolite_structure, IDsAdded] = parseFDAsisWebpage(metabolite_structure, startSearch, endSearch)
+%
+% INPUT:
+%    metabolite_structure:    metabolite structure whose fields are VMH
+%                             metabolite IDs, each holding `VMHId` and `unii`
+%                             fields
+%
+% OPTIONAL INPUTS:
+%    startSearch:             numeric index of where the search should start in
+%                             the metabolite structure (default: 1)
+%    endSearch:               numeric index of where the search should end in
+%                             the metabolite structure (default: last metabolite)
+%
+% OUTPUTS:
+%    metabolite_structure:    metabolite structure updated with the retrieved
+%                             identifiers
+%    IDsAdded:                cell array logging the added identifiers, with the
+%                             metabolite field name, the identifier type, and
+%                             the assigned identifier per row
+%
+% .. Author: - Ines Thiele
 
 annotationSource = 'FDAsis website';
 annotationType = 'automatic';

@@ -1,17 +1,21 @@
-function [hmdb,multipleHits]  = retrievePotHitsHMDB(met)
-% This function connects to HMDB can searches the metabolite name. The
-% first 10 hits will be looked at and the metabolite name will be search
-% for in traditional name, IUPAC name, synonyms, and common name. If one or
-% more hits are found, the HMDB Ids will be returned.
+function [hmdb, multipleHits] = retrievePotHitsHMDB(met)
+% Connect to HMDB and search for the metabolite name. The first 10 hits are
+% examined and the metabolite name is searched for in the traditional name,
+% IUPAC name, synonyms and common name. If one or more hits are found, the HMDB
+% ids are returned.
 %
-% INPUT
-% met   Metabolite name
+% USAGE:
 %
-% OUTPUT
-% hmdb          One or more HMDB id's. If empty, no hmdb ID could be found.
-% multipleHits  This variable indicates whether there are multiple hits.
+%    [hmdb, multipleHits] = retrievePotHitsHMDB(met)
 %
-% Ines Thiele, 09/2021
+% INPUT:
+%    met:             metabolite name
+%
+% OUTPUTS:
+%    hmdb:            one or more HMDB ids; empty if no HMDB id could be found
+%    multipleHits:    indicates whether there are multiple hits
+%
+% .. Author: - Ines Thiele, 09/2021
 
 hmdb = '';
 % make name fit for internet

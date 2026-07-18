@@ -1,29 +1,33 @@
-function [GraphObj]=createMetIntrcNetwork(model,metAbbr,varargin)
+function [GraphObj] = createMetIntrcNetwork(model, metAbbr, varargin)
 % Create directed metabolite-metabolite interaction network using given metabolites and the model.
 % The produced network consists of given metabolites and its first neighbours.
 % Colour and width of edges will be adjusted based on flux values If fluxes of the model are given.
 % Another metabolite-metabolite interaction network will be generated if the node is clicked;
 %
-% Left click :Generate sub-metabolite-metabolite interaction network from the created figure. 
-%            This functionality was added for better looking at the created network 
+% Left click :Generate sub-metabolite-metabolite interaction network from the created figure.
+%            This functionality was added for better looking at the created network
 %            and showing flux values on edges lines.
 %
 % Right click :Generate metabolite-metabolite interaction network from model. This
 %             functionality was added for creating metabolite-metabolite network using
 %             clicked metabolite and model.
-% The produced figure by right and left click on the main figure also 
+% The produced figure by right and left click on the main figure also
 % has same property with the main figure, and it is clickable too.
-%                   
-% Note : If the fluxes are not given, irreversible COBRA model structure should use for 
+%
+% Note : If the fluxes are not given, irreversible COBRA model structure should use for
 %        representing reversible reactions. See convertToIrreversible function at github page of cobratoolbox
 %        https://opencobra.github.io/cobratoolbox/stable/modules/reconstruction/refinement/
 % USAGE:
 %
-%    [GraphObj]=createMetIntrcNetwork(model,metAbbr,varargin)
+%    [GraphObj] = createMetIntrcNetwork(model, metAbbr, varargin)
 %
 % INPUTS:
 %
-%    model:             COBRA model structure
+%    model:             COBRA model structure with fields:
+%
+%                         * .rxns - `n x 1` cell array of reaction identifiers
+%                         * .mets - `m x 1` cell array of metabolite identifiers
+%                         * .S - `m x n` stoichiometric matrix
 %    metAbbr:           List of metabolite abbreviation as a cell array
 %
 % OPTIONAL INPUT:

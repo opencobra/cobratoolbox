@@ -1,37 +1,39 @@
 function variable = loadPSCMfile(fileName, searchDirectory)
-% Loads a .mat file into the workspace, given a nickname or a full filename.
-% If a nickname is given, i.e., "Harvey", "Harvetta", or Recon3D (legacy feature), the latest
-% available version in the cobratoolbox is loaded. By specifiying the
-% searchDirectory variable, .mat files are only searched in the given user defined 
-% directory. By default, all files within the MATLAB path variable are
-% searched. If the full filename is given, the exact specified file is loaded. 
+% Load a .mat file into the workspace, given a nickname or a full filename
+%
+% If a nickname is given, i.e. "Harvey", "Harvetta", or "Recon3D" (legacy
+% feature), the latest available version in the COBRA Toolbox is loaded. By
+% specifying `searchDirectory`, .mat files are only searched in that user
+% defined directory; by default all files on the MATLAB path are searched. If
+% the full filename is given, the exact specified file is loaded.
 %
 % USAGE:
-%       variable = loadPSCMfile(fileName, searchDirectory)
+%
+%    variable = loadPSCMfile(fileName, searchDirectory)
 %
 % INPUTS:
-% fileName:             Nickname of .mat file to load or full name of .mat file to load
+%    fileName:            Nickname of the .mat file to load, or the full name
+%                         of the .mat file to load
 %
-% OPTIONAL INPUTS
-% searchDirectory:      User specified directory with .mat file to load. 
+% OPTIONAL INPUTS:
+%    searchDirectory:     User specified directory with the .mat file to load
 %
 % OUTPUT:
-% variable:             Matlab variable returned
+%    variable:            MATLAB variable returned (the loaded model)
 %
-% EXAMPLE: 
-%               % Giving only WBM nickname loads the latest available WBM:
-%               male = loadPSCMfile('Harvey');
-%               % Giving the exact name of the .mat file loads the exact
-%               specified mode:
-%               female = loadPSCMfile('Harvetta_1_03d'); 
-%               % Also specifiying the search directory loads the .mat file
-%               within that directory:
-%               male = loadPSCMfile('Harvetta','MYDIRECTORY')
+% EXAMPLE:
 %
-% AUTHORS:
-%   - Ines Thiele, 2020
-%   - Tim Hensen, July 2024: Removed hardcoding of WBMs names and added
-%   option for searching a user defined directories.
+%    % Giving only a WBM nickname loads the latest available WBM:
+%    male = loadPSCMfile('Harvey');
+%    % Giving the exact name of the .mat file loads that exact file:
+%    female = loadPSCMfile('Harvetta_1_03d');
+%    % Also specifying the search directory loads the .mat file within it:
+%    male = loadPSCMfile('Harvetta', 'MYDIRECTORY')
+%
+% .. Authors:
+% ..    - Ines Thiele, 2020
+% ..    - Tim Hensen, July 2024: Removed hardcoding of WBM names and added
+% ..      option for searching a user defined directory.
 
 if ~ischar(fileName)
     error('fileName must be a character array')

@@ -6,9 +6,11 @@ function OK = writeLPProblem(LPProblem, varargin)
 %    OK = writeLPProblem(LPProblem, varargin)
 %
 % INPUT:
-%    LPproblem:    Structure containing the following fields describing the LP problem to be solved
+%    LPProblem:    Structure containing the following fields describing the LP problem to be solved
 %
 %                    * .A - LHS matrix
+%                    * .S - (optional) stoichiometric matrix, used as `.A`
+%                      if `.A` is not provided
 %                    * .b - RHS vector
 %                    * .c - Objective coeff vector
 %                    * .lb - Lower bound vector
@@ -16,6 +18,10 @@ function OK = writeLPProblem(LPProblem, varargin)
 %                    * .osense - Objective sense (max=-1, min=+1)
 %                    * .csense - Constraint senses, a string containting the constraint sense for
 %                      each row in A ('E', equality, 'G' greater than, 'L' less than).
+%                    * .vartype - (optional) variable types ('C' continuous,
+%                      'I' integer, 'B' binary), used to build the integer/
+%                      binary index lists passed to the MPS writer
+%                    * .x0 - (optional) initial solution vector
 %
 % OPTIONAL INPUT
 %    varargin:     a list of parameter/value pairs with the following parameters:

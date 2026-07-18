@@ -7,8 +7,9 @@ function [] = isotopomerViewer(mdv1, mdv2, names)
 %    isotopomerViewer(mdv1, mdv2, names)
 %
 % INPUTS:
-%    mdv1, mdv2:    structures
-%    names:         names in the plot
+%    mdv1:     first isotopomer distribution array (rows = isotopomers, columns = samples)
+%    mdv2:     second isotopomer distribution array (rows = isotopomers, columns = samples)
+%    names:    names in the plot
 
 bins = round(sqrt(size(mdv1,2)));
 

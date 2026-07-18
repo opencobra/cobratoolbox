@@ -1,19 +1,21 @@
 function [metabolite_structure] = VMH2Seed(metabolite_structure)
-% read in Metabolon to VMH mapping which has been done in parts manually
-% and cross checked from two sides independently. Currently, we have 400
-% metabolites mapped.
-% information missing in the current rBioNet flat files will be substituted
-% with this information.
-% I will also read in the Metabolon ID. (CHEM_ID in this input file).
+% Read a VMH-to-SEED metabolite translation table and add the matched SEED
+% identifiers to the metabolite structure. Existing SEED entries may be
+% overwritten.
 %
-% INPUT
-% metabolite_structure  metabolite structure
+% USAGE:
 %
-% OUTPUT
-% metabolite_structure  Updated metabolite structure
+%    [metabolite_structure] = VMH2Seed(metabolite_structure)
 %
+% INPUT:
+%    metabolite_structure:    metabolite structure whose fields are VMH
+%                             metabolite IDs, each holding annotation fields
 %
-% Ines Thiele, 09/2021
+% OUTPUT:
+%    metabolite_structure:    metabolite structure updated with the matched
+%                             SEED identifiers
+%
+% .. Author: - Ines Thiele, 09/2021
 
 
 fileName = 'MetaboliteTranslationTable.xlsx';

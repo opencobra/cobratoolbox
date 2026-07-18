@@ -3,14 +3,17 @@ function [newmap] = defaultColorCD(map)
 %
 % USAGE:
 %
-%   [newmap] = defaultColorCD(map);
+%    [newmap] = defaultColorCD(map);
 %
 % INPUT:
-%   map:        file from CellDesigner parsed to matlab format
+%    map:        File from CellDesigner parsed to MATLAB format, with
+%                fields used here:
+%
+%                  * .rxnName - Cell array of reaction names
 %
 % OUTPUT:
-%   newmap:     MATLAB structure of map with all rxn lines as default
-%               color and areaWidth
+%    newmap:     MATLAB structure of map with all rxn lines as default
+%                color and areaWidth
 %
 % .. Authors:
 %       - A.Danielsdottir 17/07/2017 LCSB. Belval. Luxembourg

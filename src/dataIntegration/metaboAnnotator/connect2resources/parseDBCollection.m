@@ -1,21 +1,28 @@
-function [metabolite_structure] = parseDBCollection(metabolite_structure,startSearch,endSearch)
-% This function takes substantial time. Also note that order matters,
-% hence, some resources are parsed twice
+function [metabolite_structure] = parseDBCollection(metabolite_structure, startSearch, endSearch)
+% Collect metabolite identifiers from a series of online resources (BridgeDB,
+% HMDB, Wikipedia, KEGG, ChEBI, DrugBank, UniChem, MetaNetX, Fiehn lab, BiGG,
+% CHOmine, EPA, FDAsis and ChemIDPlus) and add them to the metabolite structure.
+% This function takes substantial time; note that order matters, so some
+% resources are parsed twice.
 %
-% INPUT
-% metabolite_structure  metabolite structure
-% startSearch           specify where the search should start in the
-%                       metabolite structure. Must be numeric (optional, default: all metabolites
-%                       in the structure will be search for)
-% endSearch             specify where the search should end in the
-%                       metabolite structure. Must be numeric (optional, default: all metabolites
-%                       in the structure will be search for)
+% USAGE:
 %
-% OUTPUT
-% metabolite_structure  Updated metabolite structure
+%    [metabolite_structure] = parseDBCollection(metabolite_structure, startSearch, endSearch)
 %
+% INPUT:
+%    metabolite_structure:    metabolite structure whose fields are VMH
+%                             metabolite IDs
 %
-% Ines Thiele, 09/2021
+% OPTIONAL INPUTS:
+%    startSearch:             numeric index of where the search should start in
+%                             the metabolite structure (default: 1)
+%    endSearch:               numeric index of where the search should end in
+%                             the metabolite structure (default: last metabolite)
+%
+% OUTPUT:
+%    metabolite_structure:    updated metabolite structure
+%
+% .. Author: - Ines Thiele, 09/2021
 
 if ~exist('startSearch','var')
     startSearch = 1;

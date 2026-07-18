@@ -1,3 +1,11 @@
+% Annotate the metabolite structure with identifiers parsed from HMDB. HMDB
+% IDs already present are written to a file, parsed offline, and the returned
+% cross-references (SMILES, InChIString, InChIKey, KEGG, BioCyc, ChEBI,
+% FooDB, DrugBank, ChemSpider, PubChem) are added; missing HMDB IDs are then
+% inferred from the other identifiers.
+%
+% .. Author: - Ines Thiele
+
 metabolite_structureOri = metabolite_structure;
 [IDs,IDcount3,Table] = getStats(metabolite_structure);
 VMH_col = 1;

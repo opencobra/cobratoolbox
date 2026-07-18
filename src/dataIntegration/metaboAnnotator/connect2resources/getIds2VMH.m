@@ -1,11 +1,26 @@
-function [metabolite_structure,IDsAdded] = getIds2VMH(metabolite_structure)
-
-
-% map Seed metabolites
-% file obtained from https://www.pnas.org/highwire/filestream/616377/field_highwire_adjunct_files/0/pnas.1401329111.sd01.xlsx
-% for PMID 24927599
-% when getting the biggId's the script is checking whether the id's are
-% still valid by testing the weblink. Only valid bigg id's will be added
+function [metabolite_structure, IDsAdded] = getIds2VMH(metabolite_structure)
+% Map SEED, KEGG, BioCyc and BiGG metabolite identifiers onto the metabolite
+% structure using the published cross-reference table for PMID 24927599 (file
+% obtained from https://www.pnas.org/highwire/filestream/616377/field_highwire_adjunct_files/0/pnas.1401329111.sd01.xlsx).
+% When adding BiGG identifiers, the script checks that the id is still valid
+% by testing its web link; only valid BiGG ids are added.
+%
+% USAGE:
+%
+%    [metabolite_structure, IDsAdded] = getIds2VMH(metabolite_structure)
+%
+% INPUT:
+%    metabolite_structure:    metabolite structure whose fields are VMH
+%                             metabolite IDs, each holding identifier fields
+%
+% OUTPUTS:
+%    metabolite_structure:    metabolite structure updated with the mapped
+%                             identifiers
+%    IDsAdded:                cell array logging the added identifiers, with the
+%                             metabolite field name, the identifier type, and
+%                             the assigned identifier per row
+%
+% .. Author: - Ines Thiele
 
 [NUM,TXT,RAW]=xlsread('pnas.1401329111.sd01.xlsx','Compounds');
 annotationSource = 'Based on PMID 24927599 mapping';

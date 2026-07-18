@@ -1,3 +1,5 @@
+% Two-sided logarithmic barrier for the box domain {lb <= x <= ub}:
+% phi(x) = - sum log(x - lb) - sum log(ub - x)
 classdef TwoSidedBarrier < handle
     % The log barrier for the domain {lu <= x <= ub}:
     % 	phi(x) = - sum log(x - lb) - sum log(ub - x).

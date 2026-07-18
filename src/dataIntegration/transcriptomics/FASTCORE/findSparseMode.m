@@ -9,13 +9,13 @@ function [Supp, basis] = findSparseMode(J, P, singleton, model, LPproblem, epsil
 % INPUTS:
 %    J:           Indicies of irreversible reactions
 %    P:           Reactions
-%    singleton:   Takes only first instance from `J`, else takes whole `J`
+%    singleton:    Takes only first instance from `J`, else takes whole `J`
 %    model:       Model structure (for reference)
-%    LPproblem:   LPproblem structure
+%    LPproblem:    LPproblem structure
 %    epsilon:     Parameter (default: getCobraSolverParams('LP', 'feasTol')*100; see `Vlassis et al` for more details)
 %
 % OPTIONAL INPUT:
-%    adaptiveScalingFlag: scaling choice for LP10
+%    adaptiveScalingFlag:    scaling choice for LP10
 %    basis:       Basis
 %    nonPen:      indexes of unpenalized reactions
 %

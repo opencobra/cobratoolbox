@@ -33,7 +33,7 @@ function [arm, moietyFormulae, reacting] = identifyConservedReactingMoieties(mod
 %                    * .mets - An `m x 1` array of metabolite identifiers. Should match metabolite identifiers in rxnfiles.
 %                    * .rxns - An `n x 1` array of reaction identifiers. Should match `rxnfile` names in `rxnFileDir`.
 %
-%    BG    : Bond graph / molecular graph input describing intra-metabolite bonds.
+%    BG:           Bond graph / molecular graph input describing intra-metabolite bonds.
 %           Must be consistent with the atom set in dATM (same atoms / indices).
 %    dATM:          Directed atom transition multigraph, obtained from buildAtomTransitionMultigraph.m
 %                   A MATLAB digraph structure with the following tables and variables:
@@ -54,11 +54,15 @@ function [arm, moietyFormulae, reacting] = identifyConservedReactingMoieties(mod
 %                   * .Edges.TailAtomIndex - tail Nodes.AtomIndex
 %
 % OPTIONAL INPUTS:
-% options:       Structure with following fields:
+%    options:    Structure with following fields:
 %                * .sanityChecks {(0),1} true if additional sanity checks
 %                on computations, but substantially more computation time
 %
 % OUTPUTS:
+%    arm:               atomically resolved model as a matlab structure (fields detailed below)
+%    moietyFormulae:    `nIsomorphismClasses x 1` cell array of conserved-moiety chemical formulae in Hill notation
+%    reacting:          structure of reacting-moiety results derived from `BG` and `dATM`
+%
 % arm            atomically resolved model as a matlab structure with the following fields:
 %
 % arm.MRH:                    Directed metabolic reaction hypergraph, i.e. standard COBRA model, with additional fields:

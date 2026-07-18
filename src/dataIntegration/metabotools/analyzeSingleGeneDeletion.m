@@ -9,7 +9,7 @@ function [genes, ResultsAllCellLines, OverViewResults] = analyzeSingleGeneDeleti
 %    [genes, ResultsAllCellLines, OverViewResults] = analyzeSingleGeneDeletion(ResultsAllCellLines, path, samples, cutoff, OverViewResults)
 %
 % INPUTS:
-%      ResultsAllCellLines:  Structure containing the models (the two models can be the same or pruned and starting model) of the format
+%      ResultsAllCellLines:    Structure containing the models (the two models can be the same or pruned and starting model) of the format
 %
 %                               * ResultsAllCellLines.samples.modelMin
 %                               * ResultsAllCellLines.samples.modelPruned
@@ -27,7 +27,7 @@ function [genes, ResultsAllCellLines, OverViewResults] = analyzeSingleGeneDeleti
 %      genes:                Table that lists unique gene, category, number
 %                            of 'no effect', number of 'KO', number of 'partial effect', and
 %                            number of models where the gene is absent 'gene absent'
-%      ResultsAllCellLines:  Updated structure ResultsAllCellLines.sample.singleGeneDeletion
+%      ResultsAllCellLines:    Updated structure ResultsAllCellLines.sample.singleGeneDeletion
 %
 % OPTIONAL OUTPUTS:
 %      OverViewResults:      Updated overview

@@ -14,7 +14,7 @@ function varargout = getCobraSolverParams(problemType, paramNames, paramStructur
 %    varargout = getCobraSolverParams(problemType, paramNames, paramStructure)
 %
 % INPUTS:
-%    problemType:   Type of problem solved: 'LP', 'MILP', 'QP', 'MIQP', 'EP', 'CLP'
+%    problemType:    Type of problem solved: 'LP', 'MILP', 'QP', 'MIQP', 'EP', 'CLP'
 %    paramNames:    Cell array of strings containing parameter names OR one
 %                   parameter name as string
 %
@@ -86,7 +86,7 @@ end
 % changeCobraSolverParams('EP', 'optTol', 1e-12);
 
 %These default tolerances are based on the default values for the Gurobi LP solver
-%https://www.gurobi.com/documentation/9.0/refman/paramStructure.html
+%https://www.gurobi.com/documentation/9.0/refman/parameters.html
 valDef.feasTol = 1e-6; % (primal) feasibility tolerance
 valDef.optTol = 1e-6;  % (dual) optimality tolerance
 

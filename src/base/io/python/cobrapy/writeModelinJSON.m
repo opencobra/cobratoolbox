@@ -1,31 +1,35 @@
-function [success,pymodel] = writeModelinJSON(model,COBRApyPath)
-%write out a model in JSON format using COBRApy
+function [success, pymodel] = writeModelinJSON(model, COBRApyPath)
+% Write out a model in JSON format using COBRApy
 %
-% INPUT
-% model
+% USAGE:
 %
-% OPTIONAL INPUT
-% dGPredictorPath   path to the folder containg a git clone of https://github.com/maranasgroup/dGPredictor
-%                   path must be the full absolute path without ~/
-% cacheName         fileName of cache to load (if it exists) or save to (if it does not exist)
+%    [success, pymodel] = writeModelinJSON(model, COBRApyPath)
 %
-% OUTPUT
-% success = 1,0
+% INPUTS:
+%    model:          COBRA model structure, or a char path to an existing
+%                     SBML file
 %
-% EXTERNAL DEPENDENCIES
-% Python, see:
-% [pyEnvironment,pySearchPath]=initPythonEnvironment(environmentName,reset)
+% OPTIONAL INPUTS:
+%    COBRApyPath:    Path to the folder containing a git clone of COBRApy
+%                     (https://github.com/opencobra/cobrapy); must be the
+%                     full absolute path without `~/`
 %
-% rdkit, e.g., installed in an Anaconda environment
-% https://www.rdkit.org
-% https://www.rdkit.org/docs/Install.html#introduction-to-anaconda
+% OUTPUTS:
+%    success:        1 if the model was successfully read into COBRApy, 0
+%                     (or unset) otherwise
+%    pymodel:        COBRApy model object read from the SBML file
 %
-% COBRApy
-% https://github.com/opencobra/cobrapy
-% Install COBRApy using this command in a terminal:
-% conda install -c bioconda cobra
-
-% Author Ronan M.T. Fleming 2021
+% NOTE:
+%
+%    External dependencies:
+%
+%      * Python, see `initPythonEnvironment`
+%      * rdkit, e.g., installed in an Anaconda environment
+%        (https://www.rdkit.org)
+%      * COBRApy (https://github.com/opencobra/cobrapy), installed with:
+%        `conda install -c bioconda cobra`
+%
+% .. Author: - Ronan M.T. Fleming, 2021
 
 if ~exist('dGPredictorPath','var') || isempty(dGPredictorPath)
     %must be the full absolute path without ~/

@@ -7,7 +7,10 @@ function [val] = optGeneFitnessTilt(rxn_vector_matrix, model, targetRxn, rxnList
 %
 % INPUTS:
 %    rxn_vector_matrix:    reactions vectors in a matrix
-%    model:                model structure
+%    model:                COBRA model structure. Fields used directly:
+%
+%                            * .rxns - `n x 1` reaction identifiers
+%                            * .rxnGeneMat - reaction-by-gene mapping matrix (built if absent when `isGeneList` is true)
 %    targetRxn:            target reactions
 %    rxnListInput:         list of reactions
 %    isGeneList:           bolean checking if it is a gene list

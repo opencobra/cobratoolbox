@@ -21,8 +21,8 @@ function [summary, status] = metDatabaseStatus(model, metDir)
 %    metDir:    Directory of the metabolite database (MDL MOL files)
 %
 % OUTPUTS:
-%    summary:	 Summary of the metabolite database and the identifiers.
-%    status:	 Table with the status of each metabolite in the database.
+%    summary:     Summary of the metabolite database and the identifiers.
+%    status:      Table with the status of each metabolite in the database.
 
 mets = regexprep(model.mets, '(\[\w\])', '');
 [umets, ic] = unique(mets);

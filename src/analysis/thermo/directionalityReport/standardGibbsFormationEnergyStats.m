@@ -6,13 +6,16 @@ function [nKeq, nGC, nNone] = standardGibbsFormationEnergyStats(modelT, figures)
 %    [nKeq, nGC, nNone] = standardGibbsFormationEnergyStats(modelT, figures)
 %
 % INPUTS:
-%    modelT:
-%    figures:
+%    modelT:    thermodynamically constrained model structure with fields:
+%
+%                 * .S - `m x n` stoichiometric matrix
+%                 * .mets - `m x 1` cell array of metabolite identifiers
+%    figures:    if non-zero, generate the summary pie chart
 %
 % OUTPUTS:
-%    nKeq:
-%    nGC:
-%    nNone:
+%    nKeq:      number of metabolites with standard Gibbs energy from Keq data
+%    nGC:       number of metabolites with standard Gibbs energy from group contribution
+%    nNone:     number of metabolites with no standard Gibbs energy estimate
 %
 % .. Author: - Ronan M.T. Fleming
 

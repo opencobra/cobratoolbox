@@ -1,12 +1,18 @@
 function BIG = createBIGraph(BG)
-% CREATEBMGRAPH Creates a multigraph (BMGraph) where each bond instance 
-% (e.g., in double bonds) is represented as a separate edge.
+% Creates a multigraph (BIG) where each bond instance (e.g. in double bonds)
+% is represented as a separate edge, preserving all node and edge properties
+%
+% USAGE:
+%
+%    BIG = createBIGraph(BG)
 %
 % INPUT:
-%   BG - The original graph containing nodes and edges with properties.
+%    BG:     the original bond graph, a MATLAB graph with field:
+%
+%              * .Nodes - node table with an `Element` column (the energy node has `Element` = `'E'`)
 %
 % OUTPUT:
-%   BIG - Bond instance graph with duplicate edges for each bond type, preserving all properties.
+%    BIG:    bond instance graph (digraph) with duplicate edges for each bond type, preserving all properties
 
     % Remove energy node from the original graph (assuming energy node has 'Element' named 'E')
     energyNodeId = find(ismember(BG.Nodes.Element, 'E'));

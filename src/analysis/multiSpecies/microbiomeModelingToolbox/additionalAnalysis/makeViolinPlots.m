@@ -4,24 +4,28 @@ function makeViolinPlots(sampleData, sampleInformation, varargin)
 % available sample stratification information. If no sample information is
 % available, then single violins are created.
 %
-% REQUIRED INPUTS
-% sampleData           Table with input data to analyze (e.g., fluxes) with
-%                      computed features as rows and sample IDs as columns
+% USAGE:
 %
-% OPTIONAL INPUTS
-% sampleInformation    Table with information on analyzed samples including
-%                      group classification with sample IDs as rows
-% stratification       Column header containing the desired group
-%                      classification in sampleInformation table. If not
-%                      provided, the second column will be used.
-% plotType             Type of plot to be created: violin plot (default) or
-%                      boxplot. Allowed entries: "ViolinPlot","Boxplot"
-% plottedFeature       Name of the feature to plot that will be displayed
-%                      as the plot title (e.g., 'Flux"es')
-% unit                 Unit of the plotted data that will be displayed as
-%                      the y axis label (e.g., mmol/person/day)
+%    makeViolinPlots(sampleData, sampleInformation, varargin)
 %
-% AUTHOR
+% INPUTS:
+%    sampleData:           Table with input data to analyze (e.g., fluxes) with
+%                          computed features as rows and sample IDs as columns
+%
+% OPTIONAL INPUTS:
+%    sampleInformation:    Table with information on analyzed samples including
+%                          group classification with sample IDs as rows
+%    stratification:       Column header containing the desired group
+%                          classification in sampleInformation table. If not
+%                          provided, the second column will be used.
+%    plotType:             Type of plot to be created: violin plot (default) or
+%                          boxplot. Allowed entries: "ViolinPlot","Boxplot"
+%    plottedFeature:       Name of the feature to plot that will be displayed
+%                          as the plot title (e.g., 'Flux"es')
+%    unit:                 Unit of the plotted data that will be displayed as
+%                          the y axis label (e.g., mmol/person/day)
+%
+% .. Author:
 %       - Almut Heinken, 12/2020
 
 parser = inputParser();

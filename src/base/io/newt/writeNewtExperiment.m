@@ -1,17 +1,57 @@
-function writeNewtExperiment(model,metData,metSampleNames,fileName,param)
-%writes out an experimental data file for an model exported to SBML and
-%imported into newteditor
-
-% version\t1.0
-% name\tsample experiment data
-% description\tAdenoid Cystic Carcinoma 2014 vs 2019
-% color\t0\t#FFFFFF\t100\t#FF0000
-% gene\t2014\t2019
-% RB1\t36\t12
-% TP53\t36\t72
-% CDKN2A\t0\t14
-% MDM2\t0\t5
-% CCNE\t0\t7
+function writeNewtExperiment(model, metData, metSampleNames, fileName, param)
+% Writes out an experimental data file for a model exported to SBML and
+% imported into newteditor
+%
+% USAGE:
+%
+%    writeNewtExperiment(model, metData, metSampleNames, fileName, param)
+%
+% INPUTS:
+%    model:             COBRA model structure with fields:
+%
+%                         * .S - `m x n` stoichiometric matrix
+%                         * .mets - `m x 1` array of metabolite identifiers
+%                         * .metNames - `m x 1` array of metabolite names
+%                         * .modelID - (optional) model identifier, used as
+%                           the default experiment name
+%                         * .description - (optional) model description,
+%                           used as the default experiment description
+%    metData:           `m x nSamples` matrix of metabolite data to write,
+%                        where `m` equals `size(model.S, 1)`
+%
+% OPTIONAL INPUTS:
+%    metSampleNames:    Cell array (or single string) of sample names, one
+%                        per column of `metData` (default: `exp1`, `exp2`, ...)
+%    fileName:          Path of the newt experiment data file to write
+%                        (default: `newtExpData.txt` in the current folder)
+%    param:             Structure with fields:
+%
+%                         * .version - version string written to the file
+%                           header (default: current timestamp)
+%                         * .name - experiment name (default:
+%                           `model.modelID` if present, otherwise `aModel`)
+%                         * .description - experiment description (default:
+%                           `model.description` if present, otherwise
+%                           `aDescription`)
+%                         * .color - structure with fields `.minValue`,
+%                           `.minColor`, `.zeroValue`, `.zeroColor`,
+%                           `.maxValue`, `.maxColor` defining the color scale
+%                           (default: red-to-blue scale)
+%
+% EXAMPLE:
+%
+%    % excerpt of the tab-delimited experiment data file format written by
+%    % this function
+%    version    1.0
+%    name    sample experiment data
+%    description    Adenoid Cystic Carcinoma 2014 vs 2019
+%    color    0    #FFFFFF    100    #FF0000
+%    gene    2014    2019
+%    RB1    36    12
+%    TP53    36    72
+%    CDKN2A    0    14
+%    MDM2    0    5
+%    CCNE    0    7
 
 [nNodes,nSamples]=size(metData);
 [nMets,nRxns]=size(model.S);

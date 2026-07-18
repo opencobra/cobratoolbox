@@ -8,7 +8,10 @@ function [consistModel, consistMatricesSUX, BlockedRxns] = prepareFastGapFill(mo
 %    [consistModel, consistMatricesSUX, BlockedRxns] = prepareFastGapFill(model, listCompartments, epsilon, filename, dictionary_file, blackList)
 %
 % INPUTS:
-%    model:                 Model structure
+%    model:                 Model structure, with field:
+%
+%                             * .mets - `m x 1` metabolite identifiers (used to
+%                               derive the default `listCompartments`)
 %    listCompartments:      List of intracellular compartments in the model
 %                            (optional input, default compartments to be considered: '[c]','[m]','[l]','[g]','[r]','[x]','[n]')
 %    epsilon:                Parameter for fastCore (optional input, default:

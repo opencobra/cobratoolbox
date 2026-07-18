@@ -7,7 +7,11 @@ function [groups, orphans, R, C] = connectedComponents(model, type, figures, fil
 %    [groups, orphans, R, C] = connectedComponents(model, type, figures)
 %
 % INPUT:
-%    model:
+%    model:      COBRA model structure with fields:
+%
+%                  * .S - `m x n` stoichiometric matrix
+%                  * .SIntRxnBool - `n x 1` true for internal (non-exchange) reactions
+%                  * .rxns - `n x 1` reaction abbreviations
 %
 % OPTIONAL INPUTS:
 %    type:       {('allComponents'), 'largestComponent'}

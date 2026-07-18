@@ -8,17 +8,22 @@ function [MILPproblem, loopInfo] = addLoopLawConstraints(LPproblem, model, rxnIn
 % INPUTS:
 %    LPproblem:      Structure containing the following fields:
 %
-%                      * A - LHS matrix
-%                      * b - RHS vector
-%                      * c - Objective coeff vector
-%                      * lb - Lower bound vector
-%                      * ub - Upper bound vector
-%                      * osense - Objective sense (-1 max, +1 min)
-%                      * csense - Constraint senses, a string containting the constraint sense for
+%                      * .A - LHS matrix
+%                      * .b - RHS vector
+%                      * .c - Objective coeff vector
+%                      * .lb - Lower bound vector
+%                      * .ub - Upper bound vector
+%                      * .osense - Objective sense (-1 max, +1 min)
+%                      * .csense - Constraint senses, a string containting the constraint sense for
 %                        each row in A ('E', equality, 'G' greater than, 'L' less than).
-%                      * F - (optional) If `*QP` problem
-%                      * vartype - (optional) if `MI*P` problem
-%    model:          The model for which the loops should be removed
+%                      * .F - (optional) If `*QP` problem
+%                      * .vartype - (optional) if `MI*P` problem
+%    model:          The model for which the loops should be removed, with fields:
+%
+%                      * .S - `m x n` stoichiometric matrix
+%                      * .lb - `n x 1` lower flux bounds
+%                      * .ub - `n x 1` upper flux bounds
+%                      * .SIntRxnBool - `n x 1` boolean of internal reactions
 %
 % OPTIONAL INPUT:
 %    rxnIndex:       The index of variables in LPproblem corresponding to fluxes. Default = `[1:n]`
@@ -26,14 +31,29 @@ function [MILPproblem, loopInfo] = addLoopLawConstraints(LPproblem, model, rxnIn
 %                    * 1 - Two variables for each reaction af, ar
 %                    * 2 - One variable for each reaction af (default)
 %    reduce_vars:    Eliminates additional integer variables.  Should be faster in all cases but in practice may not be for some weird reason (default : true).
-%    loopInfo:       Structure containing at least a field named 'method', 
-%                    for the method chosen to build loop constraints whose value can be:
-%                    * 'original': use the original nullspace for internal reactions (Schellenberger et al., 2009)
-%                    * 'fastSNP' : use the minimal feasible nullspace found by Fast-SNP (Saa and Nielson, 2016)
-%                    * 'LLC-NS'  : (default): use the minimal feasible nullspace found by solving a MILP (Chan et al., 2017)
-%                    * 'LLC-EFM' : find whether reactions in cycles are connected by EFMs or not 
-%                                  for faster localized loopless constraints (Chan et al., 2017)
-%                    Can contain other fields for LLC preprocessing which might be updated during this function
+%    loopInfo:       Structure containing at least a field named 'method',
+%                    for the method chosen to build loop constraints, with fields:
+%
+%                      * .method - method used to build loop constraints; one of:
+%                        'original' (original nullspace for internal reactions,
+%                        Schellenberger et al., 2009), 'fastSNP' (minimal feasible
+%                        nullspace found by Fast-SNP, Saa and Nielson, 2016), 'LLC-NS'
+%                        (default; minimal feasible nullspace found by solving a MILP,
+%                        Chan et al., 2017) or 'LLC-EFM' (reactions in cycles connected
+%                        by EFMs for faster localized loopless constraints, Chan et al., 2017)
+%                      * .printLevel - verbosity control
+%                      * .N - nullspace matrix for the internal reactions
+%                      * .isInternal - `n x 1` logical, true for internal reactions
+%                      * .rxnInLoops - reactions participating in loops
+%                      * .conComp - connected components of the internal-reaction nullspace
+%                      * .useRxnLink - logical, true when `.rxnLink` is used
+%                      * .rxnLink - reaction linkage matrix derived from EFMs
+%                      * .con - structure of constraint index ranges (`.vU`, `.vL`, `.gU`, `.gL`)
+%                      * .var - structure of variable index ranges (`.z`, `.g`)
+%                      * .rxnInLoopIds - `n x 1` ids of the reactions in loops
+%                      * .Mv - big-M value for flux constraints
+%                      * .Mg - big-M value for energy-variable constraints
+%                      * .BDg - default bound for energy variables
 %
 % OUTPUT:
 %    MILPproblem:    Problem structure containing the following fields describing an MILP problem:

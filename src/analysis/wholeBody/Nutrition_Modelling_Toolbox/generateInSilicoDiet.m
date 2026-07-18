@@ -1,46 +1,53 @@
 function [dietFlux] = generateInSilicoDiet(toCreateDiet, varargin)
-% Code to take the input and creates a in silico diet. It calculates the
-% metabolite flux vector that can be set as dietary constraints on the
-% WBMs. Additionaly it calculates the macros from the metabolite flux
-% vector and retrieves the macros as reported for the various food items.
-% This way a comparison can be made to see how much of measured metabolites
-% reflect the reported macros. If the macros for the original diets are
-% given, they are taken along in the comparison. A calculation on the % of
-% how much carbohydrates/lipids/proteins are contributing to the total
-% energy of the diet.
-% Usage:
-%   [dietFlux] = generateInSilicoDiet(toCreateDiet, varargin)
-% Inputs:
-%   toCreateDiet:       Path to the file with the diets that need to be
-%                       created. consist of column "originalName" where the
-%                       orignal food names are set. "databaseID" the ID of
-%                       the fooditem in their database. "databaseUsed"
-%                       which database was used to find that database
-%                       alternative. Each column after is a diet where the
-%                       values in gram show the food items consumed for
-%                       each diet.   
-% Optional input:
-%   outputDir:          Path to the directory where the results should be
-%                       stored. Defaults to ''.
-%   originalDietMacros: Path to the file with the original macros for each
-%                       diet. Should contain the rows lipids,
-%                       carbohydrate, protein and energy. Defaults to ''.
-%   analyseMacros:      Boolean, indicates if analysis on macros should be
-%                       performed. Defaults to true.
-%   addStarch:          Boolean, indicates if additional starch should be
-%                       added based on the reported macros. Defaults to
-%                       false.
-% Output:
-%  dietFlux:            Table, contains the dietary flux in mmol/person/day
-%                       for each diet and the dietary reactions that have
-%                       to be set.
-% Example:
-%   [vmhFood] = calculateFoodScore(originalFood, 'outputDir', outputDir)
-% Note:
-%   The tutorial folder on the COBRA toolbox provides various template
-%   files with the structure of how the data should be formatted. Please
-%   look there for guidance.
-% .. Author - Bram Nap, 04-2025
+% Build an in silico diet from an input file and compute its metabolite flux
+% vector for use as dietary constraints on whole-body models (WBMs)
+%
+% Macros are additionally computed from the metabolite flux vector and
+% retrieved as reported for the food items, so the fraction of the reported
+% macros captured by the measured metabolites can be compared. When the
+% original diet macros are provided they are included in the comparison,
+% together with the percentage of the total energy contributed by
+% carbohydrates, lipids and proteins.
+%
+% USAGE:
+%
+%    [dietFlux] = generateInSilicoDiet(toCreateDiet, varargin)
+%
+% INPUTS:
+%    toCreateDiet:          Path to the file (read with readtable) describing
+%                           the diets to create. The table has the columns
+%                           "originalName" (original food names), "databaseID"
+%                           (food item ID in its database) and "databaseUsed"
+%                           (which database the alternative was found in); each
+%                           subsequent column is a diet whose values (in grams)
+%                           give the amount of each food item consumed. The
+%                           table `.Properties.VariableNames` are used as the
+%                           diet names
+%
+% OPTIONAL INPUTS:
+%    varargin:              Name-value pairs:
+%
+%                             * outputDir - path to the directory where the
+%                               results are stored (default: current directory)
+%                             * originalDietMacros - path to the file with the
+%                               original macros for each diet; should contain
+%                               rows for lipids, carbohydrate, protein and
+%                               energy (default '')
+%                             * analyseMacros - boolean, whether the macro
+%                               analysis is performed (default true)
+%                             * addStarch - boolean, whether additional starch
+%                               is added based on the reported macros
+%                               (default false)
+%
+% OUTPUT:
+%    dietFlux:              Table with the dietary flux (mmol/person/day) for
+%                           each diet and the dietary reactions to be set
+%
+% NOTE:
+%    The tutorial folder in the COBRA Toolbox provides template files showing
+%    how the data should be formatted; see there for guidance.
+%
+% .. Author: - Bram Nap, 04-2025
 
 
 % Parse the inputs

@@ -1,4 +1,4 @@
-%test autofragmentation using dGPredictor
+% test autofragmentation using dGPredictor
 inchi='InChI=1/C9H19NO2S2/c10-7-14-6-5-8(13)3-1-2-4-9(11)12/h8,13H,1-7,10H2,(H,11,12)/f/h11H';
 radius=1;
 dGPredictorPath='/home/rfleming/work/sbgCloud/code/dGPredictor';%must be absolute path to the dGPredictor github repo, i.e. no ~/

@@ -1,4 +1,4 @@
-function [Zpos, Z] = greedyExtremeRayBasis(model,param)
+function [Zpos, Z] = greedyExtremeRayBasis(model, param)
 % Computes a non-negative basis for the left nullspace of the stoichiometric
 % matrix using optimization to pick random extreme rays, then test a
 % posteriori if each is linearly independent from the existing stored
@@ -16,11 +16,24 @@ function [Zpos, Z] = greedyExtremeRayBasis(model,param)
 %
 %
 % INPUT:
-%    model.S:    m x n + k stoichiometric matrix, where n are internal reactions and k are exchange reactions
+%    model:      COBRA model structure with fields:
+%
+%                  * .S - `m x (n + k)` stoichiometric matrix, where `n` are internal reactions and `k` are exchange reactions
+%                  * .SConsistentRxnBool - `n x 1` boolean of stoichiometrically consistent reactions (used when `param.internalStoichiometriMatrixLeftNullspace` is true)
+%
+% OPTIONAL INPUT:
+%    param:      structure of optional parameters:
+%
+%                  * .printLevel - verbosity level (default = 1)
+%                  * .leftRight - `'left'` or `'right'` nullspace to compute (default = `'left'`)
+%                  * .internalStoichiometriMatrixLeftNullspace - if true, restrict `model.S` to `model.SConsistentRxnBool` (default = 0)
+%                  * .maxTime - time budget in seconds (default = 100)
+%                  * .maxNewBasisTime - time budget in seconds before timing out the basis search (default = 10000)
+%                  * .feasTol - feasibility tolerance for accepting a computed ray (default = 1e-6)
 %
 % OUTPUTS:
-%    Zpos : non-negative linear basis for the left (right) nullspace of N (internal = 1) or S (internal = 0)
-%    Z    : linear basis for the left (right) nullspace of N (internal = 1) or S (internal = 0)
+%    Zpos:       non-negative linear basis for the left (right) nullspace of N (internal = 1) or S (internal = 0)
+%    Z:          linear basis for the left (right) nullspace of N (internal = 1) or S (internal = 0)
 
 if ~exist('param','var')
     param = struct();

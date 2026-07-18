@@ -1,46 +1,43 @@
 function [initialised, statToolboxInstalled, updatedMetadataPath] = initPersephone(resultPath, paths)
-% Initializes the Persephone pipeline by:
-%     - Checking for MATLAB toolbox dependencies.
-%     - Processing and validating the metadata file.
-%     - Cross-referencing metadata with microbiome data (if provided).
-%     - Setting up directory structures for Persephone results.
+% Initialise the Persephone pipeline: check toolboxes, metadata, and folders
+%
+% Checks for the required MATLAB toolbox dependencies, reads and validates the
+% metadata file (harmonising the ID and Sex columns), writes a processed
+% metadata file, and creates the output directory structure used by the
+% pipeline.
 %
 % USAGE:
-%   [initialised, paths, statToolboxInstalled] = initPersephone(resultPath, metadataPath, readsTablePath)
+%
+%    [initialised, statToolboxInstalled, updatedMetadataPath] = initPersephone(resultPath, paths)
 %
 % INPUTS:
-%   resultPath        - (char) Path to the main results directory where output folders will be created.
-%   metadataPath     - (char) Path to the metadata file (.csv or .xlsx). Must include sample IDs and sex information.
-%   readsTablePath   - (char) Optional. Path to the microbiome reads table. If not provided, metadata will not be cross-referenced with microbiome data.
+%    resultPath:    char/string, path to the main results directory
+%    paths:         structure with the Persephone configuration. Fields used:
+%
+%                     * .General - general settings; `.metadataPath` gives the
+%                       metadata file
+%                     * .mgPipe - mgPipe settings (`.computeProfiles`,
+%                       `.outputPathMgPipe`)
+%                     * .seqC - SeqC output settings (`.outputPathSeqC`)
+%                     * .Mars - MARS output settings (`.outputPathMars`)
+%                     * .persWBM - personalisation output settings
+%                       (`.outputPathPersonalisation`)
+%                     * .mWBM - host-microbiome output settings
+%                       (`.outputPathMWBM`)
+%                     * .fba - flux output settings (`.outputPathFluxResult`,
+%                       `.outputPathFluxAnalysis`)
+%                     * .stats - statistics output settings
+%                       (`.outputPathStatistics`)
 %
 % OUTPUTS:
-%   initialised           - (logical) True if initialization was successful.
-%   paths             - (struct) Structure containing paths to created result directories.
-%   statToolboxInstalled  - (logical) True if the Statistics and Machine Learning Toolbox is installed.
-%   updatedMetadataPath   - (char) Character array containing path to the update metadata file.
+%    initialised:            logical, true if initialisation was successful
+%    statToolboxInstalled:    logical, true if the Statistics and Machine
+%                            Learning Toolbox is installed and licensed
+%    updatedMetadataPath:    char, path to the processed metadata file
 %
-% REQUIREMENTS:
-%   - MATLAB R2020b or newer.
-%   - Parallel Computing Toolbox (mandatory).
-%   - Statistics and Machine Learning Toolbox (recommended for analysis).
-%
-% NOTES:
-%   - Metadata must contain a column of sample IDs and a column of sex information.
-%   - Metadata and reads table will be synchronized to ensure consistent samples across analyses.
-%   - Any discrepancies in variable naming (e.g., "ID", "Sex") are automatically resolved.
-%   - Processed metadata is saved to an updated file.
-%
-% EXAMPLE:
-%   resultPath = './results';
-%   metadataPath = './data/metadata.csv';
-%   readsTablePath = './data/readsTable.csv';
-%   [initialised, paths, statToolboxInstalled] = initPersephone(resultPath, metadataPath, readsTablePath);
-%
-% AUTHOR:
-%  - Tim Hensen, January 2025
-%  - Bram Nap, July 2024: Automatic creation of output folders
+% .. Author: - Tim Hensen, January 2025
+%            - Bram Nap, July 2024 (automatic creation of output folders)
 
-% Check the validity of inputs using arguments
 arguments
     % resultPath must be a non-empty char or string
     resultPath (1, :) {mustBeNonempty, mustBeText}

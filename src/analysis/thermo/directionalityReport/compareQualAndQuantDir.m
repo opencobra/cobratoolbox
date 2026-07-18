@@ -1,4 +1,25 @@
-function A=compareQualAndQuantDir(model)
+function A = compareQualAndQuantDir(model)
+% Cross-tabulate qualitative versus quantitative reaction directionality
+%
+% Builds a 4-by-4 cell contingency table counting reactions by their
+% qualitative (`model.qualDir`) and quantitative (`model.quantDir`)
+% directionality assignments (forward, reversible, reverse).
+%
+% USAGE:
+%
+%    A = compareQualAndQuantDir(model)
+%
+% INPUT:
+%    model:    structure with fields:
+%
+%                * .qualDir - `n x 1` qualitative directionality assignment (1 forward, 0 reversible, -1 reverse)
+%                * .quantDir - `n x 1` quantitative directionality assignment (1 forward, 0 reversible, -1 reverse)
+%
+% OUTPUT:
+%    A:        `4 x 4` cell array cross-tabulating qualitative (rows) versus
+%              quantitative (columns) directionality counts, with row and
+%              column labels in the first column and row
+%
 
 qual=model.qualDir;
 quant=model.quantDir;

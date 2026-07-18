@@ -6,8 +6,8 @@ function parsave(fname, data)
 %    parsave(fname, data)
 %
 % INPUTS:
-%   fname:   name of file
-%   data:    name of variable
+%    fname:    name of file
+%    data:     name of variable
 %
 
 % need to use v7.3 switch for very large variables

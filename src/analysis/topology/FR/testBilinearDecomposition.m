@@ -1,3 +1,7 @@
+% Test bilinearDecomposition on a selection of small and loaded stoichiometric
+% matrices S: build S from the chosen test case, factorise it as S = A*B*C, and
+% report the row and column sizes of S and of the returned factors A, B and C.
+
 testS=10;
 switch testS
     case 3

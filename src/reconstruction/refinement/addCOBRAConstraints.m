@@ -2,12 +2,28 @@ function model = addCOBRAConstraints(model, idList, d, varargin)
 % Add a constraint to the model in the form c1 * v(id1) + c2 * v(id2) * ... cj * v(idj) dsense d
 % where c is a vector with coefficients for each element in idList
 % (default 1 for each reaction), dsense is one of lower than ('L', default), greater than
-% ('G'), or equal ('E'), and d is a value. 
+% ('G'), or equal ('E'), and d is a value.
+%
 % USAGE:
+%
 %    model = addCOBRAConstraints(model, idList, d, varargin)
 %
 % INPUTS:
-%    model:         model structure
+%    model:         model structure with fields:
+%
+%                     * .rxns - `n x 1` reaction identifiers, used to
+%                       resolve `idList` entries and to size the reaction
+%                       block of a new constraint row
+%                     * .ctrs - `ctrs x 1` constraint identifiers (created
+%                       if absent, checked for duplicates otherwise)
+%                     * .C - `ctrs x n` constraint coefficient matrix
+%                       (created if absent)
+%                     * .E - `m x evars` extra variable matrix, read only
+%                       to determine whether additional-variable
+%                       constraint coefficients (`.D`) need to be built
+%                     * .D - `ctrs x evars` coupling matrix between extra
+%                       variables and constraints (read and extended
+%                       when `.E` is present)
 %    idList:        cell array of ids either from either the rxns, or the
 %                   evars vectors. Can also be a a double vector of indices (in which
 %                   case indices in evars have to be set off by
@@ -15,6 +31,7 @@ function model = addCOBRAConstraints(model, idList, d, varargin)
 %    d:             The right hand side of the C*v <= d constraint (or a
 %                   vector, for multiple simultaneous addition;
 %
+% OPTIONAL INPUTS:
 %    varargin:
 %                   * c:                the coefficients to use with one entry per
 %                                       reaction of a constraint for multiple constraints, a matrix
@@ -23,7 +40,7 @@ function model = addCOBRAConstraints(model, idList, d, varargin)
 %                                       'G': >=, 'E': =), or a vector for multiple constraints
 %                                       (default: ('L'))
 %                   * ConstraintID:     the Name of the constraint. by
-%                                       (default: 'ConstraintXYZ' with XYZ being the initial 
+%                                       (default: 'ConstraintXYZ' with XYZ being the initial
 %                                       position in the ctrs vector)
 %                                       or a cell array of Strings for
 %                                       multiple Constraints
@@ -31,16 +48,17 @@ function model = addCOBRAConstraints(model, idList, d, varargin)
 %                                       exists, and if it does, don't add it (default: false)
 %
 % OUTPUT:
-%    modelConstrained:      The constrained model containing the added
-%                           constraints in the respective fields:
-%                            * `.C` - The constraint matrix containing coefficients for reactions
-%                            * `.ctrs` - The constraint IDs
-%                            * `.dsense` - The constraint senses
-%                            * `.d` the constraint right hand side values
-%                            *  Optional: `D`, the matrix conatining coefficients for additional variables.
-%                           
+%    model:      The constrained model containing the added
+%                constraints in the respective fields:
+%
+%                 * .C - The constraint matrix containing coefficients for reactions
+%                 * .ctrs - The constraint IDs
+%                 * .dsense - The constraint senses
+%                 * .d - the constraint right hand side values
+%                 * .D - Optional: the matrix containing coefficients for additional variables
 %
 % EXAMPLE:
+%
 %    Add a constraint that leads to EX_glc and EX_fru not carrying a
 %    combined flux higher than 5
 %    model = addCOBRAConstraints(model, {'EX_glc','EX_fru'}, 5)
@@ -58,7 +76,7 @@ function model = addCOBRAConstraints(model, idList, d, varargin)
 %    `dsense` the sense (lower -'L' , equal - 'E' or greater than - 'G') of the constraint.
 %    `ctrs` stores unique IDs for the constraints.
 %
-% Author: Thomas Pfau, Nov 2017
+% .. Author: - Thomas Pfau, Nov 2017
 
 if ischar(idList) %This is an individual element.
     idList = {idList};

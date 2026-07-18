@@ -8,7 +8,7 @@ function [solution, LPProblem] = solveCobraLPCPLEXcard(LPProblem, printLevel, ba
 %    solveCobraLPCPLEXcard(LPProblem, printLevel, basisReuse, conflictResolve, contFunctName, minNorm, theNorm)
 %
 % INPUT:
-%    model:              structure with mandatory and optional fields:
+%    LPProblem:          structure with mandatory and optional fields:
 %
 %                          * .A or .S: - `m x n` LHS matrix
 %                          * .b - `m x 1` RHS vector
@@ -18,10 +18,15 @@ function [solution, LPProblem] = solveCobraLPCPLEXcard(LPProblem, printLevel, ba
 %                          * .osense - scalar Objective sense (-1 max, +1 min)
 %                          * .rxns - (optional) cell array of reaction abbreviations (necessary for
 %                            making a readable confilict resolution file).
+%                          * .mets - (optional) cell array of metabolite abbreviations (necessary for
+%                            making a readable confilict resolution file).
 %                          * .csense - (optional) Constraint senses, a string containting the constraint sense for
 %                            each row in `A` ('E', equality, 'G' greater than, 'L' less than).
 %                          * .LPBasis - (optional) Basis from previous solution of similar LP problem.
 %                            See `basisReuse`
+%                          * .reversibleModel - (optional) 0 if the model has been split into forward/reverse
+%                            reactions (irreversible), used to determine the sign of the cardinality-approximation
+%                            objective; any other value is treated as a reversible model
 %
 % OPTIONAL INPUTS:
 %    printLevel:         Printing level in the CPLEX m-file and CPLEX C-interface.

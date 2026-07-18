@@ -3,19 +3,26 @@ function [printMatrix, printMet] = printUptakeBoundCom(model, SpFlag, metFlag)
 %
 % USAGE:
 %
-%    rxnIDs = printUptakeBoundCom(model, SpFlag, metFlag)
+%    [printMatrix, printMet] = printUptakeBoundCom(model, SpFlag, metFlag)
 %
 % INPUT:
-%    model:    the community model with field `.infoCom` or `.indCom` indicating the indicies of
-%              community exchange reactions/metabolites. Can be obtained from `getMultiSpeciesModelId.m`
+%    model:        the community COBRA model, with fields:
+%
+%                    * .infoCom - struct of community exchange reaction/metabolite names,
+%                      obtained from `getMultiSpeciesModelId`
+%                    * .indCom - struct of the corresponding community exchange indices
+%                    * .mets - metabolite identifiers
+%                    * .metNames - metabolite names (used when `metFlag` is true)
+%                    * .lb - lower flux bounds
+%                    * .ub - upper flux bounds
 %
 % OPTIONAL INPUTS:
-%    SpFlag:   true to show individual uptake rates though community uptake is not allowed (default false)
-%    metFlag:  true to print with `model.metNames` (default false) 
+%    SpFlag:       true to show individual uptake rates though community uptake is not allowed (default false)
+%    metFlag:      true to print with `model.metNames` (default false)
 %
 % OUTPUTS:
-%    printMatrix: matrix of the uptake bounds being printed
-%    printMet:    column of metabolites whose uptake bounds are printed
+%    printMatrix:    matrix of the uptake bounds being printed
+%    printMet:       column of metabolites whose uptake bounds are printed
 
 if nargin < 2 || isempty(SpFlag)
     SpFlag = false;

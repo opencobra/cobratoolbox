@@ -1,12 +1,16 @@
 <!-- SPECKIT START -->
-Active Spec Kit feature: **013-relocate-vendored-code** — relocate vendored third-party
-code and static data blobs out of `src/` (weakness W9), leaving thin MATLAB wrappers.
-Plan: `specs/013-relocate-vendored-code/plan.md` (spec + clarify + plan done; three
-slices P1 SAMMI / P2 Perl+GAMS / P3 data-orphans-tutorial). Behavior-preserving,
-CBTDIR-anchored resolution. Status: planned; awaiting `/speckit-tasks` then Gate 2. One
-tracked item: the static-data `data/` destination needs a companion `/speckit-constitution`
-amendment. The base layering inversion (W4-base) is a separate later feature (014). Source
-edits remain gated on an explicit `/speckit-implement`.
+Active Spec Kit feature: **014-src-header-compliance** — behaviour-preserving audit +
+remediation of function header comments in every in-scope `src/*.m` file for openCOBRA
+documentation-guide (Principle VII-E) compliance, so the CI Sphinx build
+(`sphinxcontrib-matlabdomain==0.18.0`) generates complete pages. Plan:
+`specs/014-src-header-compliance/plan.md` (spec + clarify + plan done). Deliverables: a
+standing MATLAB CI-gate checker under `test/verifiedTests/documentation/` and per-leaf-
+folder header remediation, full fan-out across all six domains via the agent-assign
+pipeline. Struct fields documented = only those the function uses; vendored subtrees
+(rBioNet, modelBorgifier) excluded and deferred to a follow-up feature. Status: planned;
+awaiting `/speckit-tasks` then the assign → validate → execute pipeline. Source edits
+remain gated on an explicit implementation command. NOTE: this feature took number 014;
+the previously-earmarked W4-base (base layering inversion) is now the next free number.
 <!-- SPECKIT END -->
 
 <!-- Hand-maintained; keep OUTSIDE the SPECKIT markers (Spec Kit rewrites that block). -->

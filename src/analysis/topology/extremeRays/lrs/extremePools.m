@@ -1,24 +1,32 @@
 function [P, vertexBool, N] = extremePools(model, param)
-% Calculates the extreme pools of a stoichiometric model using the vertex / facet enumeration package
-% such that 
+% Calculates the extreme pools of a stoichiometric model using the vertex /
+% facet enumeration package lrs
 %
-% INPUT:
-%    model.S  - `m x (n + k)` Stoichiometric matrix
-% OPTIONAL INPUTS:
-%    model.SConsistentRxnBool: n + k x 1  boolean indicating  n
-%                           stoichiometrically consistent reactions
-%    model.SIntRxnBool: Boolean of reactions heuristically though to be mass balanced.
-%    model.SIntMetBool: Boolean of metabolites heuristically though to be involved in mass balanced reactions.
+% USAGE:
 %
-%    param.positivity:           {0, (1)} if `param.positivity == 1`, then positive orthant base
-%    param.inequality:           {(0), 1} if `param.inequality == 1`, then use two inequalities rather than a single equaltiy
+%    [P, vertexBool, N] = extremePools(model, param)
 %
-% OUTPUT:
-%   P: p x m matrix of non-negative entries such that P*N = 0. 
-%   vertexBool         n x 1 Boolean vector indicating which columns of P are vertices
-%   N: m x n stoichiometric matrix used such that P*N.
+% INPUTS:
+%    model:    COBRA model structure with fields:
 %
-% Author(s) Ronan Fleming
+%                * .S - `m x (n + k)` stoichiometric matrix
+%                * .SConsistentRxnBool - (optional) `(n + k) x 1` boolean indicating the `n` stoichiometrically consistent reactions
+%                * .SIntRxnBool - (optional) boolean of reactions heuristically thought to be mass balanced
+%                * .SIntMetBool - (optional) boolean of metabolites heuristically thought to be involved in mass balanced reactions
+%                * .description - (optional) string used to name the lrs files
+%    param:    (optional) parameter structure with fields:
+%
+%                * .positivity - {0, (1)} if `param.positivity == 1`, then positive orthant base
+%                * .inequality - {(0), 1} if `param.inequality == 1`, then use two inequalities rather than a single equality
+%                * .debug - {(0), 1} if `param.debug == 0`, delete the generated lrs files
+%                * .facetEnumeration - {(0), 1} 0 for vertex enumeration
+%
+% OUTPUTS:
+%    P:             `p x m` matrix of non-negative entries such that `P*N = 0`
+%    vertexBool:    `n x 1` boolean vector indicating which columns of `P` are vertices
+%    N:             `m x n` stoichiometric matrix used such that `P*N = 0`
+%
+% .. Author: - Ronan Fleming
 
 if ~exist('param','var')
     param = struct();

@@ -12,8 +12,15 @@ function [rxnBool, nSpecies] = singleMetaboliteSpeciesReaction(model)
 % INPUT:
 %    model:    structure with fields:
 %
-%                * .S
-%                * .met(m).mf - mole fraction of each species
+%                * .S - `m x n` stoichiometric matrix
+%                * .SExRxnInd - indices of external (exchange/demand/sink) reactions
+%                * .rxns - `n x 1` cell array of reaction identifiers
+%                * .met(m).mf - mole fraction of each species of metabolite `m`
+%
+% OUTPUTS:
+%    rxnBool:     `n x 1` logical, true for reactions where each reactant is a
+%                 single metabolite species
+%    nSpecies:    `m x 1` vector with the number of species of each metabolite
 %
 % .. Author: - Ronan M.T. Fleming
 

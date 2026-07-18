@@ -1,18 +1,27 @@
 function [solverName, solverOK] = getCobraSolver(solverType, validate)
 % Gets the current solver name given a solver type
 %
-% INPUTS:
-%    solverType:           Solver type, `LP`, `MILP`, `QP`, `MIQP` (opt, default
-%                          `LP`, `all`).  'all' attempts to change all applicable
-%                          solvers to solverName.  This is purely a shorthand
-%                          convenience.
-% validate
-% 
+% USAGE:
+%
+%    [solverName, solverOK] = getCobraSolver(solverType, validate)
+%
+% INPUT:
+%    solverType:        Solver type, `LP`, `MILP`, `QP`, `MIQP` (opt, default
+%                       `LP`, `all`).  'all' attempts to change all applicable
+%                       solvers to solverName.  This is purely a shorthand
+%                       convenience.
+%
+% OPTIONAL INPUT:
+%    validate:          `true` to validate that the solver can be accessed,
+%                       via `changeCobraSolver` (and re-validated verbosely
+%                       if the first attempt fails); `false` to skip
+%                       validation (default: `false`, and `solverOK` is then
+%                       returned as `NaN`)
+%
 % OUTPUT:
-%    solverName:           Solver name
-%    solverOK:             `true` if solver can be accessed, `false` if not
-%    solverInstalled:      `true` if the solver is installed (not
-%                           necessarily working)
+%    solverName:        Solver name
+%    solverOK:          `true` if solver can be accessed, `false` if not,
+%                       `NaN` if `validate` was not requested
 
 if ~exist('validate','var')
     validate = 0;

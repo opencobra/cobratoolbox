@@ -1,4 +1,4 @@
-function [x, resNE, k, info] = cgls(Aname ,shift, b, m, n, kmax, tol, prnt)
+function [x, resNE, k, info] = cgls(Aname, shift, b, m, n, kmax, tol, prnt)
 % Solves a symmetric system
 %
 % :math:`(A^T A + shift I)x = A^T b` or :math:`N x = A^T b`,
@@ -23,7 +23,8 @@ function [x, resNE, k, info] = cgls(Aname ,shift, b, m, n, kmax, tol, prnt)
 %    Aname:    name of file
 %    shift:    if 0 then `cgls` is Hestenes and Stiefel's specialized form
 %    b:        used in the formulas in description
-%    m, n:     dimensions of the matrix
+%    m:        number of rows of the matrix `A`
+%    n:        number of columns of the matrix `A`
 %    kmax:     maximum number of iterations.
 %    tol:      desired relative residual size, :math:`norm(rNE)/norm(A^T b)`,
 %              where :math:`rNE = A^T b - N x`.

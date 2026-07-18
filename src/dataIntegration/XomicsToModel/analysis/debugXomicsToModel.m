@@ -5,27 +5,32 @@ function debugXomicsToModel(genericModel, directory, modelGenerationReport, core
 %
 % USAGE:
 %
-%    debugXomicsToModel(model, directory, contextSpecificData)
+%    debugXomicsToModel(genericModel, directory, modelGenerationReport, coreData)
 %
 % INPUT:
-%    genericModel:     The generic input COBRA model used in XomicsToModel
+%    genericModel:     The generic input COBRA model used in XomicsToModel, with fields:
 %
-%       * .S - Stoichiometric matrix
-%       * .mets - Metabolite ID vector
-%       * .rxns - Reaction ID vector
-%       * .lb - Lower bound vector
-%       * .ub - Upper bound vector
-%       * .genes - Upper bound vector
+%                        * .genes - gene identifiers (Entrez IDs)
+%                        * .rxns - `n x 1` reaction identifiers
+%                        * .mets - `m x 1` metabolite identifiers
+%                        * .lb - `n x 1` lower flux bounds
+%                        * .c - `n x 1` linear objective coefficient vector
 %
-%   directory:  Folder where the debug files are located
-
-%   coreData: List of metabolites, reactions and genes to examine
-%   in order to determine whether or not they were removed during the
-%   XomicToModel process:
+%    directory:    Folder where the debug files are located
+%    modelGenerationReport:    Report struct produced by XomicsToModel; when
+%                              non-empty its fields provide the core lists to examine:
 %
-%       * .genes - List of Entrez gene IDs to check
-%       * .rxns - List of reactions IDs to check
-%       * .mets - List of metabolites IDs to check
+%                                * .coreRxnAbbr0 - core reaction identifiers
+%                                * .coreMetAbbr0 - core metabolite identifiers
+%                                * .activeEntrezGeneID0 - active gene identifiers (Entrez IDs)
+%
+%    coreData:    List of metabolites, reactions and genes to examine in order to
+%                 determine whether or not they were removed during the
+%                 XomicsToModel process:
+%
+%                   * .genes - List of Entrez gene IDs to check
+%                   * .rxns - List of reactions IDs to check
+%                   * .mets - List of metabolites IDs to check
 %
 
 if isempty(modelGenerationReport)

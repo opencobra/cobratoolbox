@@ -9,8 +9,18 @@ function [finalVectors] = detMinSpan(model, params, vectors)
 % for more details. This algorithm has only been tested and requires Gurobi
 % as MILP solver.
 %
+% USAGE:
+%
+%    finalVectors = detMinSpan(model, params, vectors)
+%
 % INPUTS:
-%    model:             COBRA model structure (requires S, lb, ub)
+%    model:             COBRA model structure with fields:
+%
+%                         * .S - `m x n` stoichiometric matrix
+%                         * .lb - `n x 1` lower flux bounds
+%                         * .ub - `n x 1` upper flux bounds
+%                         * .rxns - `n x 1` cell array of reaction abbreviations
+%
 %                       Note: MinSpan calculations are done w/o biomass
 %                       reaction and all reactions must be able to carry a
 %                       flux = 0 for the trivial solution to be feasible.
@@ -31,6 +41,8 @@ function [finalVectors] = detMinSpan(model, params, vectors)
 %                       * .saveIntV - Save intermediate vectors in order to restart from
 %                       latest iteration (Default = 0)
 %                       * .cores - Number of cores to use (Default = 1)
+%                       * .nullAlg - algorithm for the nullspace computation:
+%                       'matlab' (default) or 'lusol'
 %
 %    vectors:           Set of intermediate MinSpan vectors that may
 %                       have not yet reached convergence, allowing to

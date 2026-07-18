@@ -1,31 +1,40 @@
-function [Bout,LIBkey,LOCAkey] = mapAontoB(Akey,Bkey,Ain,Bin,printLevel)
+function [Bout, LIBkey, LOCAkey] = mapAontoB(Akey, Bkey, Ain, Bin, printLevel)
 % Maps the data from Ain onto Bin by matching keys from Akey onto Bkey
 % If Akey is not unique, it maps the lowest absolute index in Akey to the
 % corresponding Bkey, but gives a warning, unless printLevel=0;
 %
 % USAGE:
-%   [Bout,LIBkey,LOCAkey] = mapAontoB(Akey,Bkey,Ain,Bin)
+%
+%    [Bout, LIBkey, LOCAkey] = mapAontoB(Akey, Bkey, Ain, Bin, printLevel)
 %
 % INPUTS:
-%  Akey: m x 1 primary key in array or table Ain                    
-%  Bkey: n x 1 primary key in array or table Bin 
-%  Ain: m x z array or table 
+%    Akey:          m x 1 primary key in array or table `Ain`
+%    Bkey:          n x 1 primary key in array or table `Bin`
+%    Ain:           m x z array or table. When `Ain` is a `table`, fields
+%                   used are:
+%
+%                     * .Properties - table metadata; `Properties.VariableNames`
+%                       is used to build `Bout`, and `Properties.Description`
+%                       is copied to the output table
 %
 % OPTIONAL INPUTS:
-%  Bin: n x y array or table, which is created starting from Bkey if Bin is not provided.
-%
-%  Ain.Properties.VariableNames: required if Ain is a table
+%    Bin:           n x y array or table, which is created starting from
+%                   `Bkey` if `Bin` is not provided.
+%    printLevel:    verbosity of the non-unique-`Akey` warning (default = 1;
+%                   0 suppresses the warning)
 %
 % OUTPUTS:
-%  Bout:  n x y array or table, which is created starting from Bkey if Bin is not provided.
-%  LIBkey:  n x 1 array of the same size as B containing true where the elements of B are in A and false otherwise. Output from [LIBkey,LOCAkey] = ismember(Bkey,Akey);         
-%  LOCAkey: n x 1 array containing the lowest absolute index in A for each element in B which is a member of A and 0 if there is no such index.Output from [LIBkey,LOCAkey] = ismember(Bkey,Akey);          
+%    Bout:          n x y array or table, which is created starting from
+%                   `Bkey` if `Bin` is not provided.
+%    LIBkey:        n x 1 array of the same size as `Bkey` containing true
+%                   where the elements of `Bkey` are in `Akey` and false
+%                   otherwise. Output from `[LIBkey, LOCAkey] = ismember(Bkey, Akey)`.
+%    LOCAkey:       n x 1 array containing the lowest absolute index in
+%                   `Akey` for each element in `Bkey` which is a member of
+%                   `Akey`, and 0 if there is no such index. Output from
+%                   `[LIBkey, LOCAkey] = ismember(Bkey, Akey)`.
 %
-% EXAMPLE:
-%
-% NOTE:
-%
-% Author(s):
+% .. Author:
 
 if ~exist('printLevel','var')
     printLevel=1;

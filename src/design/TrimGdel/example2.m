@@ -1,10 +1,16 @@
 function [outputArg1, outputArg2] = example2()
-% example2 calculates the gene deletion strategy for growth coupling
-% for biotin in iML1515.
-% 
+% example2 computes a gene-deletion strategy for growth-coupled
+% production of biotin (btn_c) in the iML1515 model, using TrimGdel.
+%
 % USAGE:
 %
-%     function [] = example2()
+%    [outputArg1, outputArg2] = example2()
+%
+% OUTPUTS:
+%    outputArg1:    unused; declared by the function signature but never
+%                   assigned (placeholder from the function template)
+%    outputArg2:    unused; declared by the function signature but never
+%                   assigned (placeholder from the function template)
 %
 % .. Author:    - Takeyuki Tamura, Mar 06, 2025
 %

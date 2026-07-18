@@ -9,7 +9,12 @@ function [minFlux, maxFlux, Vmin, Vmax] = fluxVariability(model, varargin)
 %    [...] = fluxVariability(model, ..., paramStruct)
 %
 % INPUT:
-%    model:            COBRA model structure
+%    model:            COBRA model structure with the fields:
+%
+%                        * .S - `m x n` stoichiometric matrix
+%                        * .b - `m x 1` right-hand side of `S*v = b`
+%                        * .c - `n x 1` linear objective coefficient vector
+%                        * .rxns - `n x 1` cell array of reaction identifiers
 %
 % OPTIONAL INPUTS:
 %   (support name-value argument inputs or a single [function + solver] parameter structure input)

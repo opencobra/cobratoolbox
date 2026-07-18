@@ -1,22 +1,33 @@
-function [refinedModel,summary] = performDataDrivenRefinement(model, microbeID, biomassReaction, database, inputDataFolder,summary)
+function [refinedModel, summary] = performDataDrivenRefinement(model, microbeID, biomassReaction, database, inputDataFolder, summary)
 % This function is part of the DEMETER pipeline and performs data-driven
 % refinement of a genome-scale reconstruction based on available
 % species-specific experimental data.
 %
-% USAGE
-%      [model,summary] = performDataDrivenRefinement(model, microbeID, biomassReaction, database, inputDataFolder,summary)
+% USAGE:
 %
-% INPUTS
-% model             COBRA model structure to refine
-% microbeID         ID of the reconstructed microbe that serves as the
-%                   reconstruction name and to identify it in input tables
-% inputDataFolder   Folder with input tables with experimental data and
-%                   databases that inform the refinement process
-% summary           Structure with information on performed refinement
+%    [refinedModel, summary] = performDataDrivenRefinement(model, microbeID, biomassReaction, database, inputDataFolder, summary)
 %
-% OUTPUT
-% refinedModel      Refined COBRA model structure
-% summary           Structure with information on performed refinement
+% INPUTS:
+%    model:              COBRA model structure to refine, with fields:
+%
+%                          * .rxns - Reaction identifiers
+%    microbeID:          ID of the reconstructed microbe that serves as the
+%                        reconstruction name and to identify it in input tables
+%    biomassReaction:    Biomass reaction abbreviation
+%    database:           Structure containing the reaction and metabolite
+%                        database, with fields:
+%
+%                          * .metabolites - cell array of metabolite data
+%                            (abbreviation, name, ...)
+%    inputDataFolder:    Folder with input tables with experimental data and
+%                        databases that inform the refinement process
+%    summary:            Structure with information on refinement performed
+%                        so far, extended in place with one field per
+%                        refinement step run by this function
+%
+% OUTPUTS:
+%    refinedModel:       Refined COBRA model structure
+%    summary:            Structure with information on performed refinement
 %
 % .. Authors:
 %       - Almut Heinken and Stefania Magnusdottir, 2016-2021
@@ -25,6 +36,7 @@ function [refinedModel,summary] = performDataDrivenRefinement(model, microbeID, 
 % Based on the fermentation pathway data for the microbe (table prepared above),
 % add and remove reactions as defined in the following script.
 % Perform fermentation pathway gap fill:
+
 [model, addedRxns, removedRxns] = fermentationPathwayGapfill(model, microbeID, database, inputDataFolder);
 summary.('addedRxns_fermentation') = addedRxns;
 summary.('removedRxns_fermentation') = removedRxns;

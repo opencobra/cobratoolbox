@@ -3,7 +3,7 @@ function [atoms, bonds] = readABRXNFile(rxnfileName, rxnfileDirectory, options)
 %
 % USAGE:
 %
-%    [atoms, bonds] = readRXNFile(rxnfileName, rxnfileDirectory)
+%    [atoms, bonds] = readABRXNFile(rxnfileName, rxnfileDirectory, options)
 %
 % INPUT:
 %    rxnfileName:         The file name.
@@ -11,6 +11,9 @@ function [atoms, bonds] = readABRXNFile(rxnfileName, rxnfileDirectory, options)
 % OPTIONAL INPUT:
 %    rxnfileDirectory:    Path to directory containing the rxnfile. Defaults
 %                         to current directory.
+%    options:             structure of options, with field:
+%
+%                           * .readBonds - if true, also read and return the bond table (default = 1)
 %
 % OUTPUTS:
 %    atoms:               Table of atom information, with `p` rows, one for each atom. 

@@ -3,13 +3,23 @@ function coupledRxnReport = printCouplingConstraints(model, printLevel)
 %
 % USAGE:
 %
-%    printConstraints(model)
+%    coupledRxnReport = printCouplingConstraints(model, printLevel)
 %
 % INPUTS:
-%    model:       COBRA model structure
-%    printLevel:  Printing the constraints: rxn1 + rxn2 + rxn3 - rxn4 >= d
+%    model:       COBRA model structure with fields:
+%
+%                   * .C - `ctrs x n` additional (coupling) constraints matrix
+%                   * .ctrs - `ctrs x 1` constraint identifiers
+%                   * .d - `ctrs x 1` right-hand side values for the constraints
+%                   * .dsense - `ctrs x 1` constraint senses
+%                   * .rxns - `n x 1` reaction identifiers
+%
+%    printLevel:    Printing the constraints: rxn1 + rxn2 + rxn3 - rxn4 >= d
 %                 if printLevel>0, and the formula for the reactions if
 %                 printLevel>1 (Default = 0).
+%
+% OUTPUT:
+%    coupledRxnReport:    summary report of the reaction flux coupling constraints
 
 if nargin < 2 || isempty(printLevel)
     printLevel = 0;

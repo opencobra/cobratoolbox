@@ -6,7 +6,11 @@ function [grRatio, grRateKO, grRateWT, hasEffect, delRxns, fluxSolution] = singl
 %    [grRatio, grRateKO, grRateWT, hasEffect, delRxns, fluxSolution] = singleGeneDeletion(model, method, geneList, verbFlag)
 %
 % INPUT:
-%    model:           COBRA model structure including gene-reaction associations
+%    model:           COBRA model structure including gene-reaction associations,
+%                     with the fields:
+%
+%                       * .genes - `g x 1` cell array of gene identifiers
+%                       * .rxns - `n x 1` cell array of reaction identifiers
 %
 % OPTIONAL INPUTS:
 %    method:          Either 'FBA', 'MOMA' or 'lMOMA' (Default = 'FBA')

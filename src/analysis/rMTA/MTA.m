@@ -16,7 +16,10 @@ function [TSscore, deletedGenes, Vres] = MTA(model, rxnFBS, Vref, varargin)
 %    [TSscore,deletedGenes,Vout] = MTA(model, rxnFBS, Vref, alpha, epsilon, varargin)
 %
 % INPUTS:
-%    model:               Metabolic model structure (COBRA Toolbox format).
+%    model:               Metabolic model structure (COBRA Toolbox format) with fields:
+%
+%                            * .rxns - reaction identifiers
+%                            * .lb - lower flux bounds
 %    rxnFBS:              Array that contains the desired change: Forward,
 %                         Backward and Unchanged (+1;0;-1). This is calculated
 %                         from the rules and differential expression analysis.

@@ -1,25 +1,32 @@
 function [Jsl, Jdl, Jtl] = tripleSL(model, cutoff, eliList, atpm)
-%%  [slist_id,dlist_id,tlist_id]=tripleSL(model,cutoff,eliList,atpm)
-% INPUT
-% model (the following fields are required - others can be supplied)
-%   S            Stoichiometric matrix
-%   b            Right hand side = dx/dt
-%   c            Objective coefficients
-%   lb           Lower bounds
-%   ub           Upper bounds
-%   rxns         Reaction Names
-% OPTIONAL
-% cutoff         cutoff percentage value for lethality.Default is 0.01.
-% eliList        List of reactions to be ignored for lethality
-% analysis : Exchange Reactions, ATPM etc.
-% is true.
-% atpm           ATPM Reaction Id in model.rxns if other than 'ATPM'
-% OUTPUT
-% Jsl        Indices of single lethal reactions identified
-% Jdl        Indices of double lethal reactions identified
-% Jtl        Indices of triple lethal reactions identified
-% Aditya Pratapa       7/1/14.
-%%
+% Identify single, double and triple lethal reactions in a metabolic model (Fast-SL)
+%
+% USAGE:
+%
+%    [Jsl, Jdl, Jtl] = tripleSL(model, cutoff, eliList, atpm)
+%
+% INPUT:
+%    model:      COBRA model structure (the following fields are required):
+%
+%                  * .S - Stoichiometric matrix
+%                  * .b - Right hand side = dx/dt
+%                  * .c - Objective coefficients
+%                  * .lb - Lower bounds
+%                  * .ub - Upper bounds
+%                  * .rxns - Reaction names
+%
+% OPTIONAL INPUTS:
+%    cutoff:     cutoff percentage value for lethality (default is 0.01)
+%    eliList:    List of reactions to be ignored for lethality analysis
+%                (e.g. exchange reactions, ATPM)
+%    atpm:       ATPM reaction id in model.rxns if other than 'ATPM'
+%
+% OUTPUTS:
+%    Jsl:        Indices of single lethal reactions identified
+%    Jdl:        Indices of double lethal reactions identified
+%    Jtl:        Indices of triple lethal reactions identified
+%
+% .. Author: - Aditya Pratapa, 7/1/14
 
 if exist('cutoff', 'var')
     if isempty(cutoff)

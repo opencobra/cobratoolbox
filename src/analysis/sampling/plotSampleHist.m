@@ -16,11 +16,14 @@ function plotSampleHist(rxnNames, samples, models, nBins, perScreen, modelNames,
 %    nBins:        Number of bins to be used
 %    perScreen:    Number of reactions to show per screen.  Either a number or [nY, nX] vector.
 %                  (press 'enter' to advance screens)
-%    modelNames:   Cell array containing the name of the models (used for the
-%                  plot's legend).
-%    add2Plot:     Struct array with additional data to show more
-%                  detaled information (real measuremets, FVA resuts, statistics
-%                  results, etc).
+%    modelNames:    Cell array containing the name of the models (used for the
+%                   plot's legend).
+%    add2Plot:      Struct array with additional data to show more detailed
+%                   information (real measurements, FVA results, statistics
+%                   results, etc.), with fields:
+%
+%                     * .line - x-axis position at which to draw a marker line
+%                     * .label - text label drawn next to the marker line
 %
 % EXAMPLE:
 %

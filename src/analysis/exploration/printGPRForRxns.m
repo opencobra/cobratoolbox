@@ -1,11 +1,17 @@
-function gprs = printGPRForRxns(model,rxnIDs, printLevel)
+function gprs = printGPRForRxns(model, rxnIDs, printLevel)
 % Print the GPRs (in textual format) for the given RxnIDs
 % USAGE:
 %
 %    gprs = printGPRForRxns(model,rxnID)
 %
 % INPUTS:
-%    model:             The model to retrieve the GPR rules from
+%    model:             The model to retrieve the GPR rules from, with fields:
+%
+%                         * .rxns - `n x 1` reaction identifiers
+%                         * .genes - gene identifiers
+%                         * .rules - `n x 1` evaluatable gene-reaction association rules
+%                         * .grRules - `n x 1` readable gene-reaction association rules
+%
 %    rxnIDs:            The reaction IDs to obtain the GPR rules for
 %
 % OPTIONAL INPUTS:

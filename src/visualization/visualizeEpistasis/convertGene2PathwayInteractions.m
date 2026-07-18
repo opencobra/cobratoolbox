@@ -7,14 +7,14 @@ function [neg, zer, nd, pos] = convertGene2PathwayInteractions(E, epSys, uSys)
 %     [neg,zer,nd,pos] = convertGene2PathwayInteractions(E,epSys,uSys)
 %
 % INPUT:
-%    E:     A square epistatic interaction matrix (or genes or reactions)
-%    epSys: Subsystems belonging to the gene at that index (a second
-%           order cell array) Each cell array may contain one or more
-%           subsystems.
-%           e.g. for first gene or reaction in E:
-%           epCmpt{1,1} = {'Glycolysis';'TCA cycle'}
-%    uSys:  Unique Subsystems in the epCmpt (use this arguments if
-%           interested in interactions between selected subsystems in the epSys)
+%    E:        A square epistatic interaction matrix (or genes or reactions)
+%    epSys:    Subsystems belonging to the gene at that index (a second
+%              order cell array) Each cell array may contain one or more
+%              subsystems.
+%              e.g. for first gene or reaction in E:
+%              epCmpt{1,1} = {'Glycolysis';'TCA cycle'}
+%    uSys:     Unique Subsystems in the epCmpt (use this arguments if
+%              interested in interactions between selected subsystems in the epSys)
 %
 % OUTPUTS:
 %    neg:            matrix of number of aggravating (negative) pathway-pair interactions

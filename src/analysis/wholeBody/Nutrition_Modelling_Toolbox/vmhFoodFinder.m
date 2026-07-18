@@ -1,48 +1,44 @@
 function [scoredFoods, fluxValues] = vmhFoodFinder(templateFilePath, varargin)
-% Finding VMH food alternatives to original food items based on key words
-% or pre-selected VMH food items.
+% Find VMH food alternatives to original food items based on keywords or
+% pre-selected VMH food items
 %
-% Usage:
-%   [output, fluxValues] = vmhFoodFinder(templateFilePath, varargin)
+% USAGE:
 %
-% Inputs:
-%   templateFilePath:   Path to the filled in template file
+%    [scoredFoods, fluxValues] = vmhFoodFinder(templateFilePath, varargin)
 %
-% Optional Inputs:
-%   searchType:         Method of searching keywords in the food database.
-%                       Either iterative or cumulative. Defaults to
-%                       iterative
-%   addStarch:          Boolean indicating if additional starch should be
-%                       added based on the VMH food macros. Defaults to
-%                       false
-%   databaseType:       Character, which database should be used either
-%                       'usda' for USDA FoodData database or 'frida' for
-%                       the Danish food institute database. Can be 'mixed'
-%                       if both databases should be used.
-%   maxItems:           Numeric, value indicating what the max amount of
-%                       VMH food alternatives will be analysed for macros.
-%                       Defaults to 50
-%   outputDir:          Path to where the output file will be stored.
-%                       Defaults to [pwd filesep 'NT_Result']
-%   foodSources2Use:    Cell of strings, dictates which food sources from
-%                       the USDA database will be used to find food items.
-%                       Defaults to {'sr_legacy_food'; 'foundation_food';
-%                       'survey_fndds_food'};
+% INPUTS:
+%    templateFilePath:    Path to the filled-in template file
 %
-% Output:
-%   scoredFoods:        A structure where each field is a fooditem and
-%                       contains a table with the macro values of the
-%                       original food items and the VMH alternatives. The
-%                       score calculate based on similarity witht the
-%                       original food item is present as well.
-%   fluxValues:         A structure where each field is a fooditem
-%                       containing the calculated flux vector based on the
-%                       amount eaten
+% OPTIONAL INPUTS:
+%    varargin:            Name-value pairs:
 %
-% Example:
-%   [output, fluxValues] = vmhFoodFinder(templateFilePath, 'addStarch', true)
+%                           * searchType - method of searching the keywords in
+%                             the food database, either 'iterative' or
+%                             'cumulative' (default 'iterative')
+%                           * addStarch - boolean indicating if additional
+%                             starch is added based on the VMH food macros
+%                             (default false)
+%                           * databaseType - char selecting the database:
+%                             'usda' (USDA FoodData), 'frida' (Danish food
+%                             institute) or 'mixed' for both (default 'mixed')
+%                           * maxItems - numeric, maximum number of VMH food
+%                             alternatives analysed for macros (default 50)
+%                           * outputDir - path where the output files are
+%                             stored (default [pwd filesep 'NT_Result'])
+%                           * foodSources2Use - cell array of strings
+%                             selecting which USDA food sources are used to
+%                             find food items (default {'sr_legacy_food';
+%                             'foundation_food'; 'survey_fndds_food'})
 %
-% .. Author - Bram Nap, 05-2024
+% OUTPUTS:
+%    scoredFoods:         Structure with one field per food item, each holding
+%                         a table with the macro values of the original food
+%                         items and the VMH alternatives, together with the
+%                         similarity score relative to the original food item
+%    fluxValues:          Structure with one field per food item, each holding
+%                         the calculated flux vector based on the amount eaten
+%
+% .. Author: - Bram Nap, 05-2024
 
 % Parse the inputs
 parser = inputParser();

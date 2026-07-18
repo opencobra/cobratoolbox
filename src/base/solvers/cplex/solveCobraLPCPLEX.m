@@ -12,12 +12,15 @@ function [solution, LPProblem, ILOGcplex] = solveCobraLPCPLEX(LPProblem, printLe
 %    LPProblem:          Structure containing the following fields describing the LP problem to be solved
 %
 %                          * .A - LHS matrix
+%                          * .S - stoichiometric matrix, used if `.A` is absent
 %                          * .b - RHS vector
 %                          * .c - Objective coeff vector
 %                          * .lb - Lower bound vector
 %                          * .ub - Upper bound vector
 %                          * .osense - Objective sense (-1 maximise (default), +1 minimise)
 %                          * .rxns - (optional) cell array of reaction abbreviations (necessary for
+%                            making a readable confilict resolution file).
+%                          * .mets - (optional) cell array of metabolite abbreviations (necessary for
 %                            making a readable confilict resolution file).
 %                          * .csense - (optional) Constraint senses, a string containting the constraint sense for
 %                            each row in `A` ('E', equality, 'G' greater than, 'L' less than).
@@ -92,7 +95,7 @@ function [solution, LPProblem, ILOGcplex] = solveCobraLPCPLEX(LPProblem, printLe
 %
 %                          * .LPBasis:            When input `basisReuse = 1`, we return a basis for reuse in the next LP
 %
-%   ILOGcplex            Class Cplex for the optimisation problem
+%    ILOGcplex:          Class Cplex for the optimisation problem
 
 %   ILOGcplex.Conflict 
 % Fields:

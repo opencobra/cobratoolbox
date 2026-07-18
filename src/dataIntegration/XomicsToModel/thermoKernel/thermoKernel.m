@@ -6,13 +6,17 @@ function [thermoModel, thermoModelMetBool, thermoModelRxnBool] = thermoKernel(mo
 % a set of present and absent metabolites (presentAbsentMet), and
 % a set of penalties on presence/absence of metabolites (metWeights).
 %
+% USAGE:
+%
+%    [thermoModel, thermoModelMetBool, thermoModelRxnBool] = thermoKernel(model, activeInactiveRxn, rxnWeights, presentAbsentMet, metWeights, param)
+%
 % INPUT:
 %    model:             (the following fields are required - others can be supplied)
 %
-%                         * S  - `m x n` Stoichiometric matrix
-%                         * c  - `n x 1` Linear objective coefficients
-%                         * lb - `n x 1` Lower bounds
-%                         * ub - `n x 1` Upper bounds
+%                         * .S - `m x n` Stoichiometric matrix
+%                         * .c - `n x 1` Linear objective coefficients
+%                         * .lb - `n x 1` Lower bounds
+%                         * .ub - `n x 1` Upper bounds
 %
 % OPTIONAL INPUTS:
 %    model:             (optional fields)
@@ -26,11 +30,33 @@ function [thermoModel, thermoModelMetBool, thermoModelRxnBool] = thermoKernel(mo
 %                    Larger values increase the incentive to find a flux vector to be thermodynamically feasibile in each iteration of optCardThermo 
 %                    and decrease the incentive to search the steady state solution space for a flux vector that results in certain reactions and
 %                    metabolites to be active and present, respectively.
+%          * .mets - `m x 1` metabolite identifiers
+%          * .rxns - `n x 1` reaction identifiers
+%          * .SIntMetBool - `m x 1` boolean, true for internal metabolites
+%          * .SIntRxnBool - `n x 1` boolean, true for internal reactions
+%          * .SConsistentMetBool - `m x 1` boolean, stoichiometrically consistent metabolites
+%          * .SConsistentRxnBool - `n x 1` boolean, stoichiometrically consistent reactions
+%          * .fluxConsistentMetBool - `m x 1` boolean, flux consistent metabolites
+%          * .fluxConsistentRxnBool - `n x 1` boolean, flux consistent reactions
+%          * .metRemoveBool - `m x 1` boolean, metabolites removed during extraction
+%          * .rxnRemoveBool - `n x 1` boolean, reactions removed during extraction
+%          * .forcedIntRxnBool - `n x 1` boolean, internal reactions forced to carry non-zero flux
+%          * .g0 - `n x 1` reaction weights used internally (derived from rxnWeights)
+%          * .h0 - `m x 1` metabolite weights used internally (derived from metWeights)
+%          * .lambda0 - internal cardinality-optimisation weight parameter
+%          * .lambda1 - internal cardinality-optimisation weight parameter
+%          * .delta0 - internal cardinality-optimisation weight parameter
+%          * .delta1 - internal cardinality-optimisation weight parameter
+%          * .alpha1 - internal cardinality-optimisation weight parameter
+%          * .activeRxn - `n x 1` boolean, reactions required to be active
+%          * .inactiveRxn - `n x 1` boolean, reactions required to be inactive
+%          * .presentMet - `m x 1` boolean, metabolites required to be present
+%          * .absentMet - `m x 1` boolean, metabolites required to be absent
 %
-%    activeInactiveRxn: - `n x 1` with entries {1,-1, 0} depending on whether a reaction must be active, inactive, or unspecified respectively.
+%    activeInactiveRxn:    `n x 1` with entries {1, -1, 0} depending on whether a reaction must be active, inactive, or unspecified respectively.
 %    rxnWeights:        - `n x 1` real valued penalties on zero norm of reaction flux, negative to promote a reaction to be active, positive 
 %                                 to promote a reaction to be inactive and zero to be indifferent to activity or inactivity  
-%    presentAbsentMet:  - `m x 1` with entries {1,-1, 0} depending on whether a metabolite must be present, absent, or unspecified respectively.
+%    presentAbsentMet:    `m x 1` with entries {1, -1, 0} depending on whether a metabolite must be present, absent, or unspecified respectively.
 %    metWeights:        - `m x 1` real valued penalties on zero norm of metabolite "activity", negative to promote a metabolite to be present, positive 
 %                                 to promote a metabolite to be absent and zero to be indifferent to presence or absence 
 %
@@ -55,11 +81,15 @@ function [thermoModel, thermoModelMetBool, thermoModelRxnBool] = thermoKernel(mo
 %                   * .formulation - mathematical formulation of thermoKernel algorithm (Default is 'pqzwrs'. Do not change unless expert user.)
 %                   * .plotThermoKernelStats {(0),1} generates a figure with confusion matrices comparing anticipated vs actual metabolites and reactions in the extracted model
 %                   * .plotThermoKernelWeights {(0),1} generates a figure displaying the weights given to actual and anticipated but omitted metabolites and reactions in the extracted model
+%                   * .iterationMethod - method used to iterate reaction/metabolite selection (Default: 'greedyAdd')
+%                   * .saveModelSFC - {(0),1} save the model at each stoichiometric/flux-consistency step
+%                   * .nMax - maximal number of inner iterations (Default value = 40)
+%                   * .findThermoConsistentFluxSubset - {(0),1} find the largest thermodynamically flux consistent subset before extraction
     
 % OUTPUTS:
-%   thermoModel:           thermodynamically consistent model extracted from input model
-%   thermoModelMetBool:   `m` x 1 boolean vector of thermodynamically consistent `mets` in input model
-%   thermoModelRxnBool:   `n` x 1 boolean vector of thermodynamically consistent `rxns` in input model
+%    thermoModel:    thermodynamically consistent model extracted from input model
+%    thermoModelMetBool:    `m x 1` boolean vector of thermodynamically consistent metabolites in input model
+%    thermoModelRxnBool:    `n x 1` boolean vector of thermodynamically consistent reactions in input model
  
 % .. Author: - Ronan Fleming 2021
 

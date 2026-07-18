@@ -11,7 +11,9 @@ function tissueModel = MBA(model, medium_set, high_set, tol)
 %    tissueModel = MBA(model, medium_set, high_set)
 %
 % INPUTS:
-%    model:          input model (COBRA model structure)
+%    model:          input model (COBRA model structure) with field:
+%
+%                      * .rxns - cell array of reaction abbreviations
 %    medium_set:     list of reactions with medium confidence
 %    high_set:       list of reactions with high confidence
 %

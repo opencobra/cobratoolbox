@@ -1,18 +1,20 @@
 function gapfilledGenomeAnnotation = gapfillRefinedGenomeReactions(genomeAnnotation)
-% Part of the DEMETER pipelinbe. Adds reactions needed to connect pathways 
+% Part of the DEMETER pipelinbe. Adds reactions needed to connect pathways
 % introduced based on comparative genomic analyses.comparative genomics.
 %
 % USAGE:
-%   gapfilledGenomeAnnotation = gapfillRefinedGenomeReactions(genomeAnnotation)
 %
-% INPUT
-% genomeAnnotation              Text file with genome annotations that had 
-%                               been retrieved through the function
-%                               writeReactionsFromPubSeedSpreadsheets
-% OUTPUT
-% gapfilledGenomeAnnotation     Text file with genome annotations that have
-%                               been gap-filled to enable flux through 
-%                               reactions added based on genome annotations
+%    gapfilledGenomeAnnotation = gapfillRefinedGenomeReactions(genomeAnnotation)
+%
+% INPUT:
+%    genomeAnnotation:              Text file with genome annotations that had
+%                                   been retrieved through the function
+%                                   writeReactionsFromPubSeedSpreadsheets
+%
+% OUTPUT:
+%    gapfilledGenomeAnnotation:     Text file with genome annotations that have
+%                                   been gap-filled to enable flux through
+%                                   reactions added based on genome annotations
 %
 % .. Author:
 %       - Almut Heinken, 06/2020

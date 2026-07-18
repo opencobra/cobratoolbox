@@ -1,16 +1,22 @@
-function [metabolite_structure,IDsAdded] = generateInchiKeysSmilesFromInchiStrings(metabolite_structure)
-% This function searches the metabolite structure for instances where the
-% inchiKey/smiles are missing but the inchiString is available and generates the
-% inchiKey/smiles using openBable.
+function [metabolite_structure, IDsAdded] = generateInchiKeysSmilesFromInchiStrings(metabolite_structure)
+% Generates missing InChI keys and SMILES strings from available InChI strings
 %
-% INPUT
-% metabolite_structure  metabolite structure
+% Searches the metabolite structure for entries where the InChI key or SMILES
+% string is missing but the InChI string is available, and generates the
+% InChI key/SMILES using Open Babel (obabel).
 %
-% OUTPUT
-% metabolite_structure  updated metabolite structure
-% IDsAdded              added inchiKeys/smiles
+% USAGE:
 %
-% Ines Thiele 01/2021
+%    [metabolite_structure, IDsAdded] = generateInchiKeysSmilesFromInchiStrings(metabolite_structure)
+%
+% INPUTS:
+%    metabolite_structure:    Metabolite structure
+%
+% OUTPUTS:
+%    metabolite_structure:    Updated metabolite structure
+%    IDsAdded:                List of added InChI keys/SMILES strings
+%
+% .. Author: - Ines Thiele 01/2021
 
 annotationSource = 'InchiString (metabolite_structure, obabel)';
 annotationType = 'automatic';

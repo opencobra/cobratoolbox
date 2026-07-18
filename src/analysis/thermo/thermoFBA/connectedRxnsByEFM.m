@@ -8,15 +8,17 @@ function rxnLink = connectedRxnsByEFM(model, conComp, rxnInLoops, printLevel)
 %    rxnLink = connectedRxnsByEFM(model, conComp, rxnInLoops)
 %
 % INPUTS:
-%    model:      COBRA model
+%    model:      COBRA model with field:
+%
+%                  * .S - `m x n` stoichiometric matrix
 %    conComp:    reactions connected in the minimal nullspace for internal cycles, computed by `connectedRxnsInNullSpace`
-%    rxnInLoops: n-by-2 logical matrix where n = # of rxns in the model
+%    rxnInLoops:    n-by-2 logical matrix where n = # of rxns in the model
 %                rxnInLoops(k, 1) = true => forward direction of the k-th reaction in internal cycles
 %                rxnInLoops(k, 2) = true => reverse direction of the k-th reaction in internal cycles
 %                Returned by `findMinNull.m`
 %
 % OPTIONAL INPUT:
-%    printLevel: true to show messages when the linkage matrix cannot be computed
+%    printLevel:    true to show messages when the linkage matrix cannot be computed
 %
 % OUTPUT:
 %    rxnLink:    n-by-n matrix. rxnLink(i, j) = 1 => reactions i and j are connected 

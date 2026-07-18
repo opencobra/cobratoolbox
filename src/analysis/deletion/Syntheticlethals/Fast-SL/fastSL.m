@@ -1,24 +1,37 @@
-function [synthetic_lethals, synthetic_double_lethals, synthetic_triple_lethals] = fastSL(model,cutoff,order,eliList,atpm)                                  
-%% fastSL(model,cutoff,order,eliList,atpm)
+function [synthetic_lethals, synthetic_double_lethals, synthetic_triple_lethals] = fastSL(model, cutoff, order, eliList, atpm)                                  
+% Identify synthetic lethal reactions (single, double and triple) via Fast-SL
+%
 % Requires the openCOBRA toolbox
 % http://opencobra.sourceforge.net/openCOBRA/Welcome.html
-% 
-% Authors: Aditya Pratapa, Shankar Balachandran and Karthik Raman
-% 
-% INPUT
-% model (the following fields are required - others can be supplied)       
-%   S            Stoichiometric matrix
-%   b            Right hand side = dx/dt
-%   c            Objective coefficients
-%   lb           Lower bounds
-%   ub           Upper bounds
-%   rxns         Reaction Names
-% OPTIONAL
-% cutoff         cutoff percentage value for lethality.Default is 0.01.
-% order          Order of SLs required.Default order is 2. Max value 3.
-% eliList        List of reactions to be ignored for lethality
-% analysis:Exchange Reactions, ATPM etc.
-% atpm           ATPM Reaction Id in model.rxns if other than 'ATPM'
+%
+% USAGE:
+%
+%    [synthetic_lethals, synthetic_double_lethals, synthetic_triple_lethals] = fastSL(model, cutoff, order, eliList, atpm)
+%
+% INPUT:
+%    model:      COBRA model structure (the following fields are required):
+%
+%                  * .S - Stoichiometric matrix
+%                  * .b - Right hand side = dx/dt
+%                  * .c - Objective coefficients
+%                  * .lb - Lower bounds
+%                  * .ub - Upper bounds
+%                  * .rxns - Reaction names
+%                  * .description - model description string, used to name the output .mat file
+%
+% OPTIONAL INPUTS:
+%    cutoff:     cutoff percentage value for lethality (default is 0.01)
+%    order:      Order of SLs required (default order is 2, max value 3)
+%    eliList:    List of reactions to be ignored for lethality analysis
+%                (e.g. exchange reactions, ATPM)
+%    atpm:       ATPM reaction id in model.rxns if other than 'ATPM'
+%
+% OUTPUTS:
+%    synthetic_lethals:           Indices/names of single lethal reactions identified
+%    synthetic_double_lethals:    Indices/names of double lethal reactions identified
+%    synthetic_triple_lethals:    Indices/names of triple lethal reactions identified
+%
+% .. Authors: - Aditya Pratapa, Shankar Balachandran and Karthik Raman
 
 % initCobraToolbox
 if exist('cutoff', 'var')

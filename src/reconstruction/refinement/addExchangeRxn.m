@@ -3,21 +3,29 @@ function [newModel, AddedExchRxn] = addExchangeRxn(model, metList, lb, ub)
 %
 % USAGE:
 %
-%    newModel = addExchangeRxn(model, metList, lb, ub)
+%    [newModel, AddedExchRxn] = addExchangeRxn(model, metList, lb, ub)
 %
 % INPUTS:
-%    model:       Cobra model structure
+%    model:       Cobra model structure with fields:
+%
+%                   * .mets - `m x 1` metabolite identifiers, used to find
+%                     entries of `metList` missing from the model
+%                   * .lb - `n x 1` reaction lower bounds, used to build
+%                     the default lower bound when `lb` is not supplied
+%                   * .ub - `n x 1` reaction upper bounds, used to build
+%                     the default upper bound when `ub` is not supplied
 %    metList:     List of metabolites
 %
 % OPTIONAL INPUTS:
 %    lb:          Array of lower bounds
 %    ub:          Array of upper bounds
 %
-% OUTPUT:
-%    newModel:    COBRA model with added exchange reactions
+% OUTPUTS:
+%    newModel:        COBRA model with added exchange reactions
+%    AddedExchRxn:    List of exchange reaction identifiers that were added
 %
 % .. Author: - Ines Thiele 02/2009
-%            - Thomas Pfau, June 2018 - Change to use addMultipleReactions  
+%            - Thomas Pfau, June 2018 - Change to use addMultipleReactions
 
 if ~iscell(metList) 
     if ischar(metList)

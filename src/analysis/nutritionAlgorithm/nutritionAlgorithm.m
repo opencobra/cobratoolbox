@@ -1,4 +1,4 @@
-function [newDietModel,pointsModel,roiFlux,pointsModelSln,menuChanges,detailedAnalysis] = nutritionAlgorithm(model,rois,roisMinMax,options)
+function [newDietModel, pointsModel, roiFlux, pointsModelSln, menuChanges, detailedAnalysis] = nutritionAlgorithm(model, rois, roisMinMax, options)
 % This algorithm identifies the minimal changes to a diet necessary to get
 % a desired change in one or more reactions of interest (rois). If a 
 % metabolite is entered instead of a reaction, the algorithm will optimize 
@@ -6,24 +6,27 @@ function [newDietModel,pointsModel,roiFlux,pointsModelSln,menuChanges,detailedAn
 % of interest. For a walkthrough of the algorithm, see NutritionAlgorithmWalkthrough.mlx
 % To cite the algorithm, please cite Weston and Thiele, 2022 and the COBRA
 % Toolbox as specified on opencobra.github.io/cobratoolbox/stable/cite.html
+%
 % USAGE:
 %
-%    [newDietModel,pointsModel,roiFlux,pointsModelSln,menuChanges,detailedAnalysis] = nutritionAlgorithm(model,rois,roisMinMax,options)
+%    [newDietModel, pointsModel, roiFlux, pointsModelSln, menuChanges, detailedAnalysis] = nutritionAlgorithm(model, rois, roisMinMax, options)
 %
 % INPUTS:
 %    model:          COBRA model structure with minimal fields:
-%                      * .S
-%                      * .c
-%                      * .ub
-%                      * .lb
-%                      * .mets  
-%                      * .rxns  
-%   rois:          cell array of all reactions of interest
-%   roisMinMax:    cell array of 'min'/'max' entries for rois
+%
+%                      * .S - stoichiometric matrix
+%                      * .c - objective coefficients
+%                      * .ub - upper flux bounds
+%                      * .lb - lower flux bounds
+%                      * .mets - metabolite identifiers
+%                      * .rxns - reaction identifiers
+%                      * .osenseStr - objective sense ('max' or 'min')
+%    rois:           cell array of all reactions of interest
+%    roisMinMax:     cell array of 'min'/'max' entries for rois
 %
 % OPTIONAL INPUTS:
-%   options:  Structure containing the optional specifications:
-%   
+%    options:    Structure containing the optional specifications:
+%
 %       * .display: display results "off" or "on"?
 %
 %       * .roiWeights:   a vector of weights for each reaction of interest
@@ -64,22 +67,17 @@ function [newDietModel,pointsModel,roiFlux,pointsModelSln,menuChanges,detailedAn
 %       reaction on the original diet
 %
 %
-% OUTPUT:
-%    newDietModel:   An copy of the input model with updated diet
-%                    reaction bounds to reflect recomended dietary changes
-%
-%   pointsModel:     The resulting model that is used to identify
-%                    recomended dietary changes. It includes points
-%                    reactions and food added/removed reactions.
-%
-%   roiFlux:         Returns the flux values for each roi in the points sln
-%
-%   pointsModelSln:  Returns the entire points solution to pointsModel
-%
-%   menuChanges:     Summarizes the recommended dietary changes
-%
-%   detailedAnalysis: Provides solutions for each simulation conducted in
-%                     the detailed analysis
+% OUTPUTS:
+%    newDietModel:        a copy of the input model with updated diet
+%                         reaction bounds to reflect recomended dietary changes
+%    pointsModel:         the resulting model that is used to identify
+%                         recomended dietary changes. It includes points
+%                         reactions and food added/removed reactions.
+%    roiFlux:             the flux values for each roi in the points solution
+%    pointsModelSln:      the entire points solution to pointsModel
+%    menuChanges:         summarizes the recommended dietary changes
+%    detailedAnalysis:    solutions for each simulation conducted in the
+%                         detailed analysis
 %
 % .. Authors: - Bronson R. Weston   2022
 

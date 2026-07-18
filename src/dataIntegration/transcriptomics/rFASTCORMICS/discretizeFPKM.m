@@ -1,25 +1,29 @@
-function [discretized, scaledExpression] = discretizeFPKM(fpkm, colnames, figflag, pathFigures,fileFormat)
-%   The function discretizes gene expression data (FPKM values) into three categories:
-%   expressed, not expressed, and unknown, based on a zFPKM transformation and
-%   half-Gaussian density fitting.
+function [discretized, scaledExpression] = discretizeFPKM(fpkm, colnames, figflag, pathFigures, fileFormat)
+% Discretize gene expression data (FPKM values) into three categories,
+% expressed, not expressed, and unknown, based on a zFPKM transformation
+% and half-Gaussian density fitting
 %
 % USAGE:
 %
-%   [discretized, scaledExpression] = discretizeFPKM(fpkm, colnames, figflag, pathFigures)
+%    [discretized, scaledExpression] = discretizeFPKM(fpkm, colnames, figflag, pathFigures, fileFormat)
 %
 % INPUTS:
-%   fpkm:              m x n matrix or table of FPKM expression values (genes x samples)
-%   colnames:          1 x n cell array of sample names
-%   figflag:           optional, flag to plot and save figures (default: 0)
-%   pathFigures:       optional, path to save figures (default: current folder)
-%   fileFormat:        optional, file format you want to store the figure as
+%    fpkm:               `m x n` matrix or table of FPKM expression values (genes x samples)
+%    colnames:           `1 x n` cell array of sample names
+%
+% OPTIONAL INPUTS:
+%    figflag:            flag to plot and save figures (default: 0)
+%    pathFigures:        path to save the figures (default: current folder)
+%    fileFormat:         file format used to store the figures (default: '.png')
 %
 % OUTPUTS:
-%   discretized:       m x n matrix of discretized values
-%                      *  1 : expressed
-%                      *  0 : unknown
-%                      * -1 : not expressed
-%   scaledExpression:  scaled data after zFPKM transformation
+%    discretized:        `m x n` matrix of discretized values:
+%
+%                          * 1 - expressed
+%                          * 0 - unknown
+%                          * -1 - not expressed
+%
+%    scaledExpression:    scaled data after the zFPKM transformation
 %
 % .. Authors:
 %       - Maria Pires Pacheco, 2016, University of Luxembourg

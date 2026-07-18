@@ -1,12 +1,30 @@
 function o = logBarrierRound(problem)
-%Input: a structure P with the following fields
-%  .Aeq
-%  .beq
-%  .lb
-%  .ub
-% describing the polytope {Aeq x = beq, lb <= x <= ub}
-%Output:
-% o - problem structure
+% Round a polytope in log-barrier coordinates for sampling
+%
+% Normalizes and rounds the polytope {Aeq x = beq, lb <= x <= ub} using a
+% log-barrier linear program and returns the rounded polytope together with the
+% affine transformation needed to recover samples in the original space
+%
+% USAGE:
+%
+%    o = logBarrierRound(problem)
+%
+% INPUT:
+%    problem:    Structure describing the polytope {Aeq x = beq, lb <= x <= ub},
+%                with fields:
+%
+%                  * .Aeq - equality constraint matrix
+%                  * .beq - equality right-hand side
+%                  * .lb - lower bounds
+%                  * .ub - upper bounds
+%
+% OUTPUT:
+%    o:          Problem structure with fields:
+%
+%                  * .P - rounded polytope struct with feasible point (fields
+%                    .A, .b, .lb, .ub, .x)
+%                  * .T - affine transformation used to recover samples in the
+%                    original space (fields .x0, .idx, .scale)
 
 A = problem.Aeq; b = problem.beq; 
 lb = problem.lb; ub = problem.ub;

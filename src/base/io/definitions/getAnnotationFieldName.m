@@ -1,12 +1,12 @@
-function [fieldNames,dbIDs,relations] = getAnnotationFieldName(annotatedField,database,annotationQualifier, qualifierSelection, invertSelection)
+function [fieldNames, dbIDs, relations] = getAnnotationFieldName(annotatedField, database, annotationQualifier, qualifierSelection, invertSelection)
 % Get the cobra field corresponding to the given database for the annotion
 % Qualifier and the given annotated field.
 %
 % USAGE:
-%    fieldName = getAnnotationFieldName(annotatedField,database,annotationQualifier)
+%    [fieldNames, dbIDs, relations] = getAnnotationFieldName(annotatedField, database, annotationQualifier, qualifierSelection, invertSelection)
 %
 % INPUTS:
-%    annotationField:            The base field that is being annotated
+%    annotatedField:             The base field that is being annotated
 %                                (e.g. 'rxn', 'model', 'comp', ...)
 %    database:                   The database names of the annotation. (e.g.
 %                                kegg)

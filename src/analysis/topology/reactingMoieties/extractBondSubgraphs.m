@@ -1,14 +1,19 @@
 function [bondSubgraphs, BMG] = extractBondSubgraphs(BIG, ATG)
-% EXTRACTBONDSUBGRAPHS Extracts subgraphs of bonds and their mappings.
+% Extract subgraphs of bonds and their mappings from a bond instance graph
+%
+% USAGE:
+%
+%    [bondSubgraphs, BMG] = extractBondSubgraphs(BIG, ATG)
 %
 % INPUTS:
-%   BIG - Bond Instance Graph: The full weighted bond graph containing all bonds and weights.
-%   ATG - Atom Graph: Represents atoms as nodes and their bonds as edges.
-%   atoms2component - Array mapping each atom to a specific component or group.
+%    BIG:    bond instance graph, the full weighted bond graph containing all bonds and weights
+%    ATG:    atom transition graph, representing atoms as nodes and their bonds as edges, with field:
+%
+%              * .Nodes - node table with `AtomIndex` and `Component` columns
 %
 % OUTPUTS:
-%   bondSubgraphs - Cell array where each entry represents a subgraph of connected bonds.
-%   BMG - Cell array of Bond Mapping Graphs (BMG), representing isolated sets of mapped bonds.
+%    bondSubgraphs:    cell array where each entry represents a subgraph of connected bonds
+%    BMG:              cell array of bond mapping graphs, representing isolated sets of mapped bonds
 
 % Initialize cell array to store all combined subgraphs
 bondSubgraphs = {};  % Contains subgraphs of connected bonds

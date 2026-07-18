@@ -1,16 +1,22 @@
 function [map2] = unifyMetabolicMapCD(map)
-% Unify colours in a metabolic map as a standard. Reaction will be grey
-% and Metabolites will be White.
+% Unify colours in a metabolic map as a standard. Reactions will be grey
+% and metabolites will be white.
 %
 % USAGE:
 %
-%   [map2] = unifyMetabolicMapCD(map)
+%    [map2] = unifyMetabolicMapCD(map)
 %
 % INPUT:
-%   map:    MATLAB structure of CellDesigner map
+%    map:       MATLAB structure of a CellDesigner map (see `transformXML2Map`).
+%               Fields used:
+%
+%                 * .rxnName - reaction names; length sets the reaction loop bound
+%                 * .molColor - molecule colours; length sets the molecule loop bound
 %
 % OUTPUT:
-%   map2:   Map with grey reactions colour, width 1 and white nodes colour.
+%    map2:      `map` with every `.rxnColor` set to `'FFDCDCDC'` (grey), every
+%               `.rxnWidth` set to `1`, and every `.molColor` set to `'FFFFFFFF'`
+%               (white)
 %
 % .. Authors: - J.Modamio LCSB, Belval, Luxembourg. 19.08.2017
 

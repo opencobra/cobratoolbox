@@ -22,6 +22,7 @@ function [solversToUse] = prepareTest(varargin)
 %                   - `needsMIQP`: Whether a MIQP solver is required (default: false)
 %                   - `needsNLP`: Whether a NLP solver is required (default: false)
 %                   - `needsEP`: Whether a EP solver is required (default: false)
+%                   - `needsCLP`: Whether a CLP solver is required (default: false)
 %                   - `needsUnix`: Whether the test only works on a Unix system (macOS or Linux) (default: false)
 %                   - `needsWindows`: Whether the test only works on a Windows system (default: false)
 %                   - `needsMac`: Whether the test only works on a Mac system (default: false)
@@ -32,7 +33,7 @@ function [solversToUse] = prepareTest(varargin)
 %
 % OUTPUTS:
 %
-%    solversToUse:  A struct with one field per solver type listing
+%    solversToUse:    A struct with one field per solver type listing
 %                   the solvers to use for that type of problem in a cell array.
 %                   If neither of the 'useIfAvailable' nor the 'reqSolvers'
 %                   parameter is provided, only at most one solver

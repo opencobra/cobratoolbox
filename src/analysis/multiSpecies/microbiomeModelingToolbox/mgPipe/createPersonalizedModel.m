@@ -10,22 +10,22 @@ function [createdModels] = createPersonalizedModel(abundance, resPath, model, sa
 %    [createdModels] = createPersonalizedModel(abundance, resPath, model, sampNames, orglist, host, hostBiomassRxn, hostBiomassRxnFlux)
 %
 % INPUTS:
-%   abundance:          table with abundance information
-%   resPath:            char with path of directory where results are saved
-%   model:              model in COBRA model structure format
-%   sampNames:          cell array with names of individuals in the study
-%   orglist:            cell array with names of organisms in the study
-%   couplingMatrix:     cell array containing pre-created coupling matrices for
-%                       each organism to be joined (created by
-%                       buildModelStorage function)
-%   host:               Contains the host model if path to host model was
-%                       defined. Otherwise empty.
-%   hostBiomassRxn:     char with name of biomass reaction in host (default: empty)
-%   hostBiomassRxnFlux: double with the desired upper bound on flux through the host
-%                       biomass reaction (default: 1)
+%    abundance:          table with abundance information
+%    resPath:            char with path of directory where results are saved
+%    model:              model in COBRA model structure format
+%    sampNames:          cell array with names of individuals in the study
+%    orglist:            cell array with names of organisms in the study
+%    couplingMatrix:     cell array containing pre-created coupling matrices for
+%                        each organism to be joined (created by
+%                        buildModelStorage function)
+%    host:               Contains the host model if path to host model was
+%                        defined. Otherwise empty.
+%    hostBiomassRxn:     char with name of biomass reaction in host (default: empty)
+%    hostBiomassRxnFlux:     double with the desired upper bound on flux through the host
+%                        biomass reaction (default: 1)
 %
 % OUTPUT:
-%   createdModels:      created personalized models
+%    createdModels:      created personalized models
 %
 % .. Author: Federico Baldini 2017-2018
 %            Almut Heinken, 05/2021: changed to creating coupling matrix by

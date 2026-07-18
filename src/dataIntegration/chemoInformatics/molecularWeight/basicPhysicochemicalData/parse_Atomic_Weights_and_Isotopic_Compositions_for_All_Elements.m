@@ -3,7 +3,7 @@ function [atomicWeights] = parse_Atomic_Weights_and_Isotopic_Compositions_for_Al
 %
 % USAGE:
 %
-%    [atomicWeights] = parse_Atomic_Weights_and_Isotopic_Compositions_for_All_Elements
+%    [atomicWeights] = parse_Atomic_Weights_and_Isotopic_Compositions_for_All_Elements()
 %
 % OUTPUT:
 %    atomicWeights:    atomic weights of the isotopes

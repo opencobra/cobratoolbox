@@ -6,8 +6,15 @@ function validJunctionMets = findMetabolicJunctions(model, nRxnsJnc)
 %    validJunctionMets = findMetabolicJunctions(model, nRxnsJnc)
 %
 % INPUTS:
-%    model:                COBRA model structure
-%    nRxnJnc:              Number of reactions to be considered a junction
+%    model:                COBRA model structure with fields:
+%
+%                            * .S - `m x n` stoichiometric matrix
+%                            * .c - `n x 1` linear objective coefficients
+%                            * .rxns - `n x 1` reaction identifiers
+%                            * .mets - `m x 1` metabolite identifiers
+%                            * .rxnGeneMat - `n x g` reaction-gene incidence matrix
+%
+%    nRxnsJnc:             Number of reactions to be considered a junction
 %
 % OUTPUT:
 %    validJunctionMets:    List of junction metabolites

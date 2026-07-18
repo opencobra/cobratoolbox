@@ -1,43 +1,34 @@
 function [grRules] = calculateGR(model, gvalue)
-% calculateGR is a function of gDel_minRN that reads
-% a COBRA model and a 0-1 assignment for genes and outputs whether
-% each reaction is repressed or not.
+% calculateGR is a submodule of gDel_minRN that reads a COBRA model and a
+% 0/1 assignment for the genes and determines, for each reaction, whether it
+% is repressed under that gene-deletion assignment.
 %
 % USAGE:
 %
-%    function [grRules] = calculateGR(model, gvalue)
+%    [grRules] = calculateGR(model, gvalue)
 %
 % INPUTS:
-%    model:    COBRA model structure containing the following required fields to perform gDel_minRN.
+%    model:    COBRA model structure with the fields:
 %
-%        *.rxns:       Rxns in the model
-%        *.mets:       Metabolites in the model
-%        *.genes:      Genes in the model
-%        *.grRules:    Gene-protein-reaction relations in the model
-%        *.S:          Stoichiometric matrix (sparse)
-%        *.b:          RHS of Sv = b (usually zeros)
-%        *.c:          Objective coefficients
-%        *.lb:         Lower bounds for fluxes
-%        *.ub:         Upper bounds for fluxes
-%        *.rev:        Reversibility of fluxes
+%                * .rxns - reaction identifiers (n x 1 cell array)
+%                * .genes - gene identifiers (g x 1 cell array)
+%                * .grRules - gene-protein-reaction association rules (n x 1 cell array)
 %
-%    gvalue:    The first column is the list of genes in the original model.
-%               The second column contains a 0/1 vector indicating which genes should be deleted.
-%                   0: indicates genes to be deleted.
-%                   1: indecates genes to be remained.
+%    gvalue:    gene-deletion assignment. Column 1 lists the genes of the
+%              original model; column 2 is a 0/1 vector (0 = gene deleted,
+%              1 = gene retained)
 %
 % OUTPUT:
-%    grRules:    The first column is the list of GPR-rules. If a reaction does
-%                not have a GPR-rule, it is represented as 1.
-%                In the second columun, each gene is converted to 0 or 1 based
-%                on the given 0-1 assignment, with AND converted to * and OR
-%                converted to +.
-%                The third comumn contains the calculation results from the
-%                second column.
-%                The fourth column is 0 if the third column is 0 and 1 if it is
-%                greater. If it is 0, the reaction is repressed; if it is 1, it
-%                is not repressed.
-% 
+%    grRules:    cell array describing, per reaction, whether it is repressed:
+%
+%                * column 1 - the GPR rule of the reaction (1 if the reaction
+%                  has no GPR rule)
+%                * column 2 - the GPR rule with each gene replaced by its 0/1
+%                  value and AND/OR replaced by * / +
+%                * column 3 - the numeric result of evaluating column 2
+%                * column 4 - 1 if column 3 is greater than 0 (reaction active),
+%                  0 if column 3 is 0 (reaction repressed), -1 if there is no rule
+%
 % .. Author:    - Takeyuki Tamura, Mar 06, 2025
 %
 

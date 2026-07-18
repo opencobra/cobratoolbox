@@ -1,21 +1,33 @@
-function model=modelMetabolitesToSDF(model,InChI)
-% write out an SDF which is effectively a set of mol files concatenated 
-% in a flat file with extra data headers
+function model = modelMetabolitesToSDF(model, InChI)
+% Write out an SDF which is effectively a set of mol files concatenated in a flat
+% file with extra data headers
 %
 % SDF format spec http://www.symyx.com/downloads/public/ctfile/ctfile.jsp
 %
-% INPUT
-% model     model structure
+% USAGE:
 %
-% OPTIONAL INPUT
-% InChI     m x 2 cell array of InChI strings for each metabolite 
-%           InChI{i,1} is a metabolite abbreviation (no compartment)
-%           InChi{i,2} is a metabolite InChI string
+%    model = modelMetabolitesToSDF(model, InChI)
 %
-% OPTIONAL OUTPUT
-% model.mets(m).InChI           InChI mapped to model if provided as imput
-% model.met(m).formulaInChI     Chemical formula as given in InChI
-% Ronan M.T. Fleming
+% INPUT:
+%    model:    COBRA model structure with fields:
+%
+%                * .S - `m x n` stoichiometric matrix
+%                * .mets - `m x 1` cell array of metabolite identifiers
+%                * .met - struct array of per-metabolite data with subfields `.InChI`, `.formula`, `.formulaInChI` and `.charge`
+%                * .metNames - `m x 1` cell array of metabolite names
+%                * .description - model description, used to name the output SDF file
+%
+% OPTIONAL INPUT:
+%    InChI:    `m x 2` cell array of InChI strings for each metabolite;
+%              `InChI{i, 1}` is a metabolite abbreviation (no compartment) and
+%              `InChI{i, 2}` is the metabolite InChI string
+%
+% OUTPUT:
+%    model:    the input model with, for each metabolite, the added subfields
+%              `.met(m).InChI` (InChI mapped to the model, NaN if none) and
+%              `.met(m).formulaInChI` (chemical formula parsed from the InChI)
+%
+% .. Author: - Ronan M.T. Fleming
 
 compartments=[];
 biomassRxnAbbr=[];

@@ -1,28 +1,27 @@
-function [databases,ids,qualifiers] = getDataBases(Ressources,qualifier)
-%getDataBases extracts database and correspdoning id from a ressource string in an sbml
+function [databases, ids, qualifiers] = getDataBases(Ressources, qualifier)
+% Extracts database and corresponding id from a resource string in an SBML
+%
 % USAGE:
 %
-%       [databases,ids,qualifiers] = getDataBases(Ressource,qualifier)
+%    [databases, ids, qualifiers] = getDataBases(Ressources, qualifier)
 %
-% INPUT:
+% INPUTS:
+%    Ressources:    The resource string(s) as a cell array
+%    qualifier:     The bio-qualifier of the resource
 %
-%    Ressources:    The Ressource String(s) as a cell array
-%    qualifier:     The bio-qualifier of the ressource
-%
-% OUTPUT:
-%
-%    databases:    The databases of the ressources
-%    ids:          The identifiers of the ressource strings
-%    qualifier:    The bio-qualifiers associated (the same as the input)
+% OUTPUTS:
+%    databases:     The databases of the resources
+%    ids:           The identifiers of the resource strings
+%    qualifiers:    The bio-qualifiers associated (the same as the input)
 %
 % .. Authors:
-%       - Thomas Pfau May 2017
+%       - Thomas Pfau, May 2017
 %
 % NOTE:
-%  Currently two different schemes are accepted:
-%  urn:miriam:DatabaeID:EntryID
-%  https://identifiers.org/databaseid/EntryID
-%  The correctness of the entries is NOT checked!
+%    Currently two different schemes are accepted:
+%    urn:miriam:DatabaeID:EntryID
+%    https://identifiers.org/databaseid/EntryID
+%    The correctness of the entries is NOT checked!
 
 try
     %Try to parse identifiers.org ids. if this doesn't work leave them

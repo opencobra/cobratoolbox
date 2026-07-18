@@ -18,6 +18,10 @@ function [statusOK, invalidConstraints, invalidVars, objective] = verifyCobraPro
 %                             * .F - quadratic objective (optional, only used for QP, MIQP problems)
 %                             * .vartype - vector of 'C', 'I', 'B' for 'continuous', 'integer', 'binary'
 %                               variables (optional, only used for MILP, MIQP problems).
+%                             * .dsense - (optional) vector of 'E', 'L', 'G' constraint
+%                               senses for any additional rows beyond `.csense`; if
+%                               present, `length(.csense) + length(.dsense)` must equal
+%                               the number of rows in `.A`
 %
 % OPTIONAL INPUT:
 %    x:                     Vector. Function will determine if `x` satisfies `XPproblem`

@@ -1,14 +1,23 @@
 function v = checkThermodynamicConsistency(model, q)
+% Check the thermodynamic consistency of the optimal flux of a model
+%
 % USAGE:
 %
 %    v = checkThermodynamicConsistency(model, q)
 %
 % INPUTS:
-%    model:
-%    q:
+%    model:    COBRA model structure with fields:
+%
+%                * .S - `m x n` stoichiometric matrix
+%                * .b - `m x 1` right hand side vector
+%                * .c - `n x 1` objective coefficient vector
+%                * .lb - `n x 1` lower flux bounds
+%                * .ub - `n x 1` upper flux bounds
+%    q:        optional `n x 1` weighting vector forming the diagonal weighting
+%              matrix `Q`; defaults to the identity
 %
 % OUTPUT:
-%    v:
+%    v:        `n x 1` vector `S' * y` used to assess thermodynamic consistency
 
 S=model.S;
 [m,n]=size(S);

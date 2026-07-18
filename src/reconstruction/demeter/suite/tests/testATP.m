@@ -1,19 +1,25 @@
 function [atpFluxAerobic, atpFluxAnaerobic] = testATP(model)
 % Tests flux through the ATP demand reaction (DM_atp_c_) on a complex
 % medium-constrained model, both aerobic and anaerobic.
-% USAGE
-%         [atpFluxAerobic, atpFluxAnaerobic] = testATP(model)
 %
-% INPUT
-% model             COBRA model structure
+% USAGE:
 %
-% OUTPUT
-% atpFluxAerobic    Numeric vector showing the flux through the ATP demand
-%                   reaction under aerobic conditions (mmol/gDW/h).
-% atpFluxAnaerobic  Numeric vector showing the flux through the ATP demand
-%                   reaction under anaerobic conditions (mmol/gDW/h)
+%    [atpFluxAerobic, atpFluxAnaerobic] = testATP(model)
 %
-% Stefania Magnusdottir, Nov 2017
+% INPUTS:
+%    model:             COBRA model structure with fields:
+%
+%                         * .rxns - Reaction identifiers
+%                         * .mets - Metabolite identifiers
+%                         * .S - `m x n` stoichiometric matrix
+%
+% OUTPUTS:
+%    atpFluxAerobic:    Numeric vector showing the flux through the ATP demand
+%                       reaction under aerobic conditions (mmol/gDW/h).
+%    atpFluxAnaerobic:    Numeric vector showing the flux through the ATP demand
+%                       reaction under anaerobic conditions (mmol/gDW/h)
+%
+% .. Author: - Stefania Magnusdottir, Nov 2017
 
 fprintf('Testing flux through the ATP demand reaction\n')
 

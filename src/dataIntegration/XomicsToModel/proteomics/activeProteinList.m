@@ -1,23 +1,25 @@
 function [activeProteins, inactiveProteins] = activeProteinList(proteomicsEx, proteomicsGenes, treshold, printLevel)
+% Split a list of proteins into active and inactive sets using an expression threshold
 %
 % USAGE:
-%   [activeProteins, inactiveProteins] = activeProteinList(proteomicsEx, proteomicsGenes, treshold, printLevel)
+%
+%    [activeProteins, inactiveProteins] = activeProteinList(proteomicsEx, proteomicsGenes, treshold, printLevel)
 %
 % INPUTS:
-%  proteomicsEx:
-%  proteomicsGenes:
-%  treshold: 
-%  printLevel:
+%    proteomicsEx:    logarithmic mean proteomic expression value for each protein
+%    proteomicsGenes:    gene identifiers corresponding to each expression value
+%    treshold:    expression threshold used to classify a protein as active
+%    printLevel:    set greater than 2 to plot a histogram of the expression values
 %
 % OUTPUTS:
-%  activeProteins:
-%  inactiveProteins:
+%    activeProteins:    genes whose expression is at or above the threshold
+%    inactiveProteins:    genes classified as inactive
 %
 % EXAMPLE:
 %
 % NOTE:
 %
-% Author(s): Aga W
+% .. Author(s): Aga W
 
 if printLevel>2
     figure()

@@ -7,14 +7,28 @@ function [model1, model2] = normalizePoints(model1, model2, NormalizePointsParam
 %    [model1, model2] = normalizePoints(model1, model2, NormalizePointsParam, LoopRxnsToIgnore)
 %
 % INPUTS:
-%    model1:                   Model sampled under first condition
-%    model2:                   Model sampled under second condition
-%    NormalizePointsOption:    Option to normalize sample points to (1) the
+%    model1:                   Model sampled under the first condition, with fields:
+%
+%                                * .rxns - reaction identifiers
+%                                * .rxnGeneMat - `nRxns x nGenes` reaction-to-gene
+%                                  mapping (rebuilt if absent)
+%                                * .points - `nRxns x nPoints` matrix of sampled
+%                                  flux values
+%    model2:                   Model sampled under the second condition, with fields:
+%
+%                                * .rxns - reaction identifiers
+%                                * .rxnGeneMat - `nRxns x nGenes` reaction-to-gene
+%                                  mapping (rebuilt if absent)
+%                                * .points - `nRxns x nPoints` matrix of sampled
+%                                  flux values (scaled by the model1/model2 ratio)
+%                                * .ub - `nRxns x 1` upper flux bounds (scaled)
+%                                * .lb - `nRxns x 1` lower flux bounds (scaled)
+%    NormalizePointsParam:     Option to normalize sample points to (1) the
 %                              same median of magnitude of flux through all
 %                              non-loop gene-associated reactions, or (2) the
-%                              optimal growth rate. (default = 1)
-%    LoopRxnsToIgnore:         list of rxns associated with loop within the model,
-%                              default- reaction loops defined usinf FVA
+%                              optimal growth rate (default = 1)
+%    LoopRxnsToIgnore:         List of rxns associated with loops within the model
+%                              (default = reaction loops defined using FVA)
 %
 % OUTPUTS:
 %    model1:                   Normalized sampled model under first condition

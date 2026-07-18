@@ -1,4 +1,7 @@
 function [vout, rout] = fitC13Data(v0, expdata, model, majorIterationLimit)
+% Fits one or more initial flux vectors to C13 experimental data by
+% minimizing the data-fit error with a nonlinear solver subject to the
+% model's linear constraints
 %
 % USAGE:
 %
@@ -10,7 +13,10 @@ function [vout, rout] = fitC13Data(v0, expdata, model, majorIterationLimit)
 %                            `vout` will also have this size.
 %    expdata:                either a data structure or a cell array of structures, in
 %                            which case it is assumed that you wan to fit the sum of the scores
-%    model:                  model structure
+%    model:                  model structure, with fields:
+%
+%                              * .S - `m x n` stoichiometric matrix
+%                              * .N - basis of the null space of `S` (`= null(S)`; computed if absent)
 %
 % OPTIONAL INPUT:
 %    majorIterationLimit:    max number of iterations solver is allowed to take. Default = 1000

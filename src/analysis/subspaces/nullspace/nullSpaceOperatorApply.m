@@ -11,6 +11,23 @@ function W = nullSpaceOperatorApply(nullS, V)
 % such that :math:`S Z = 0` and then computing :math:`W = Z V`.
 % The aim is to obtain `W` without forming `Z` explicitly.
 %
+% USAGE:
+%
+%    W = nullSpaceOperatorApply(nullS, V)
+%
+% INPUTS:
+%    nullS:    structure from `nullSpaceOperator(S)` for an `m x n` sparse
+%              matrix `S` (:math:`m < n`), with fields:
+%
+%                * .Cinv - column scaling applied to `S`
+%                * .L - strictly triangular factor `L`
+%                * .p - column permutation for `S`
+%                * .rank - rank of `S`
+%    V:        `(n-r) x k` sparse matrix to multiply
+%
+% OUTPUTS:
+%    W:        `n x k` sparse matrix such that `S W = 0`
+%
 % .. 16 May 2008: (MAS) First version of nullspaceLUSOLapply.m.
 %    See nullspaceLUSOLtest.m for testing.
 % .. 20 Jan 2015: Ronan Fleming - Updated to use Nick Henderson's 64 bit LUSOL interface

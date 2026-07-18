@@ -4,10 +4,12 @@ function [mets, id] = findMetsFromCompartInMap(map, compartment)
 %
 % USAGE:
 %
-%    [mets, id] = findMetFromCompartMap(map, Compartment)
+%    [mets, id] = findMetsFromCompartInMap(map, compartment)
 %
 % INPUTS:
-%    map:               Map from CellDesigner parsed to matlab format
+%    map:               Map from CellDesigner parsed to matlab format, with fields:
+%
+%                          * .specName - Cell array of metabolite (species) names
 %    compartment:       Compartment of interest (e.g.: '[m]','[n]','[e]',etc.)
 %
 % OUTPUTS:

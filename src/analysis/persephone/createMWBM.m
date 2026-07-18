@@ -1,23 +1,42 @@
-function  modelHM = createMWBM(microbiota_model, WBM_model, Diet, saveDir)
-% This function creates personalised host-microbiome WBM models by joining
-% microbiome community models with unpersonalised WBM models. The models
-% are parameterised on a predefined diet.
+function modelHM = createMWBM(microbiota_model, WBM_model, Diet, saveDir)
+% Create a personalised host-microbiome WBM by joining a microbiome and a WBM model
 %
-% Example: modelHM = createMWBM(microbiota_model, WBM_model, 'EUAverageDiet')
+% Combines a microbiome community model with an (un)personalised whole-body
+% metabolic model, parameterises the joined model on a predefined diet, adds
+% setup and microbiota-composition information, sets the whole-body objective,
+% and (optionally) saves the model to disk.
 %
-% INPUTS
-% microbiota model:             Microbiome community model created by the
-%                               microbiome modelling toolbox.
-% WBM_model:                    Harvey or Harvetta whole-body metabolic
-%                               model
-% Diet                          Diet option: 'EUAverageDiet' (default)
+% USAGE:
 %
-% Output
-% modelHM:                      Personalised host-microbiome WBM model
+%    modelHM = createMWBM(microbiota_model, WBM_model, Diet, saveDir)
 %
-% Authors:  Tim Hensen, Bronson Weston, 2022
-%           Tim Hensen, expanded WBM parameterisation July 2024
-%           Tim Hensen, improved mWBM annotation November 2024
+% INPUTS:
+%    microbiota_model:    microbiome community model created by the microbiome
+%                         modelling toolbox. Field used:
+%
+%                           * .name - identifier used to build the model ID
+%    WBM_model:           Harvey or Harvetta whole-body metabolic model. Fields
+%                         used:
+%
+%                           * .sex - sex of the model ('male' or 'female')
+%                           * .SetupInfo - setup information copied into the
+%                             host-microbiome model
+%                           * .version - WBM version, stored in the setup info
+%                           * .modelAnnotation - model annotation, stored in
+%                             the setup info
+%    Diet:                diet option to constrain the model, e.g.
+%                         'EUAverageDiet' (default)
+%
+% OPTIONAL INPUT:
+%    saveDir:    char/string, directory to save the model in; if empty the
+%                model is not written to disk (default '')
+%
+% OUTPUT:
+%    modelHM:    personalised host-microbiome WBM model
+%
+% .. Author: - Tim Hensen, Bronson Weston, 2022
+%            - Tim Hensen, expanded WBM parameterisation July 2024
+%            - Tim Hensen, improved mWBM annotation November 2024
 
 if nargin < 4
     saveDir = '';

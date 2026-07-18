@@ -1,30 +1,41 @@
-function [model,addAnnRxns,updateGPRCnt]=refineGenomeAnnotation(model,microbeID,database,inputDataFolder)
+function [model, addAnnRxns, updateGPRCnt] = refineGenomeAnnotation(model, microbeID, database, inputDataFolder)
 % Part of the DEMETER pipeline. Refines a reconstruction based on
 % comparative genomics data retrieved from PubSEED spreadsheets. Adds
 % reactions linked to genes that were found in the respective organisms
 % based on manual comparative genomic analyses. If the reaction is already
 % present, the gene-protein-reaction association (GPR) is updated.
 %
-% USAGE
-%       [model,addAnnRxns,updateGPRCnt]=refineGenomeAnnotation(model,microbeID,database,inputDataFolder)
+% USAGE:
 %
+%    [model, addAnnRxns, updateGPRCnt] = refineGenomeAnnotation(model, microbeID, database, inputDataFolder)
 %
-% INPUTS
-% model:               COBRA model structure
-% microbeID:           ID of the reconstructed microbe that serves as the
-%                      reconstruction name and to identify it in input tables
-% database:            rBioNet reaction database containing min. 3 columns:
-%                      Column 1: reaction abbreviation, Column 2: reaction
-%                      name, Column 3: reaction formula.
-% inputDataFolder:     Folder with experimental data and database files to 
-%                      load
+% INPUTS:
+%    model:               COBRA model structure with fields:
 %
-% OUTPUTS
-% model:               COBRA model structure
-% addAnnRxns:          Reactions newly added based on comparative genomics
-%                      data
-% updateGPRCnt:        Reactions for which GPRs were updated based on 
-%                      comparative genomics data 
+%                            * .rxns - reaction identifiers
+%                            * .grRules - gene-protein-reaction rules
+%                            * .comments - free-text comment for the reaction
+%                            * .citations - literature citation for the reaction
+%                            * .rxnECNumbers - EC numbers
+%                            * .rxnKEGGID - KEGG reaction identifiers
+%                            * .rxnConfidenceScores - reaction confidence scores
+%    microbeID:           ID of the reconstructed microbe that serves as the
+%                         reconstruction name and to identify it in input tables
+%    database:            rBioNet reaction database with fields:
+%
+%                            * .reactions - cell array with min. 3 columns: column 1
+%                              reaction abbreviation, column 2 reaction name,
+%                              column 3 reaction formula
+%    inputDataFolder:     Folder with experimental data and database files to
+%                         load
+%
+% OUTPUTS:
+%    model:               COBRA model structure, refined based on comparative
+%                         genomics data if applicable
+%    addAnnRxns:          Reactions newly added based on comparative genomics
+%                         data
+%    updateGPRCnt:        Reactions for which GPRs were updated based on
+%                         comparative genomics data
 %
 % .. Authors:
 %       - Almut Heinken, 06/2020

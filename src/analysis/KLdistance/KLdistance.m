@@ -3,7 +3,7 @@ function dist = KLdistance(data1, data2, num_iter, parameters)
 % distributions then runs a certain number of iterations where the labels
 % are randomised and the KLD is calculated. Then, the distribution of the
 % Disergences is plotted.
-
+%
 % USAGE:
 %
 %    dist = KLdistance(data1, data2, num_iter, parameters);
@@ -13,7 +13,7 @@ function dist = KLdistance(data1, data2, num_iter, parameters)
 %                   of a certain parameter for one of the populations (e.g. controls)
 %     data2:        same as data1 for the population to compare
 %     num_iter:     number of randomisations
-%     parameters:   a cell array of strings containing the name of each
+%     parameters:    a cell array of strings containing the name of each
 %                   parameter
 %
 % OUTPUTS:

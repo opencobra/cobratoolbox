@@ -1,11 +1,18 @@
 function lookupFilePath = generatePanDatabase(inputDir)
-% Create lookup file for checking which reactions and metabolites are
-% present in which AGORA2 models
+% Create a lookup file recording which reactions and metabolites are present
+% in which AGORA2 models
 %
-% OUTPUT
-% lookupFilePath        Path to the generated lookup file
+% USAGE:
 %
-% Authors:  Tim Hensen, 2024
+%    lookupFilePath = generatePanDatabase(inputDir)
+%
+% INPUT:
+%    inputDir:          directory with the AGORA2 models (default: 'AGORA2')
+%
+% OUTPUT:
+%    lookupFilePath:    path to the generated lookup file
+%
+% .. Author: - Tim Hensen, 2024
 
 % Step 1: Find paths to all agora2 models
 if isempty(inputDir)

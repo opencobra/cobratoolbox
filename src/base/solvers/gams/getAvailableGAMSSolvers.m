@@ -4,27 +4,24 @@ function [summaryTable, booleanTable, problemTypes, solvers] = getAvailableGAMSS
 %
 % USAGE:
 %
-%         [summaryTable, booleanTable, problemTypes, solvers] = getAvailableGAMSSolvers
+%    [summaryTable, booleanTable, problemTypes, solvers] = getAvailableGAMSSolvers()
 %
 % OUTPUTS:
-%    summaryTable    Type: cell array
-%                    Description: matrix summarizing which problem can be
-%                    solved by which solver. A "yes" in position (i,j)
-%                    means that the GAMS solver "j" is available in your
-%                    system to solve a problem of type "i". Please note
-%                    that headers are included in this summaryTable, so the
-%                    first column and the first row have labels for solvers
-%                    and problem types, respectively.
-%    booleanTable    Type: double matrix
-%                    Description: matrix summarizing which problem can be
-%                    solved by which solver. A "1" in position (i,j) means
-%                    that the GAMS solver "j" is available in your system
-%                    to solve a problem of type "i"
-%    problemTypes    Type: cell array of strings
-%                    Description: list of problem types that can be solved
-%                    in GAMS. E.g: LP, MIP, etc
-%    solvers         Type: cell array of strings
-%                    Description: list of solvers available in GAMS
+%    summaryTable:      cell array matrix summarizing which problem can be
+%                       solved by which solver. A "yes" in position (i,j)
+%                       means that the GAMS solver "j" is available in your
+%                       system to solve a problem of type "i". Please note
+%                       that headers are included in this summaryTable, so
+%                       the first column and the first row have labels for
+%                       the solvers and problem types, respectively.
+%    booleanTable:      double matrix summarizing which problem can be
+%                       solved by which solver. A "1" in position (i,j)
+%                       means that the GAMS solver "j" is available in your
+%                       system to solve a problem of type "i"
+%    problemTypes:      cell array of strings listing the problem types
+%                       that can be solved in GAMS, e.g. LP, MIP, etc.
+%    solvers:           cell array of strings listing the solvers
+%                       available in GAMS
 %
 % .. Author: - Sebastiian Mendoza, May 30th 2017, Center for Mathematical Modeling, University of Chile, snmendoz@uc.cl
 

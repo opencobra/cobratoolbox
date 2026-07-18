@@ -1,5 +1,29 @@
-function [keggkeggRxn] = getkeggRxnFromKegg(metabolite_structure,  metabolite_structure_rBioNet, metsField)
-%get reaction from kegg
+function [keggkeggRxn] = getkeggRxnFromKegg(metabolite_structure, metabolite_structure_rBioNet, metsField)
+% Retrieve, for the KEGG-annotated metabolites in the structure, the associated
+% KEGG reactions from the KEGG website and collect for each reaction its KEGG
+% ID, name, definition, equation, VMH abbreviation and name, EC number and the
+% associated human gene and KEGG ontology term.
+%
+% USAGE:
+%
+%    [keggkeggRxn] = getkeggRxnFromKegg(metabolite_structure, metabolite_structure_rBioNet, metsField)
+%
+% INPUT:
+%    metabolite_structure:            metabolite structure whose fields are VMH
+%                                     metabolite IDs, each holding a `keggId` field
+%
+% OPTIONAL INPUTS:
+%    metabolite_structure_rBioNet:    rBioNet-derived metabolite structure used to
+%                                     map KEGG ids back to VMH ids (default: loaded
+%                                     from met_strc_rBioNet)
+%    metsField:                       list of metabolite field names to process
+%                                     (default: all fields of metabolite_structure)
+%
+% OUTPUT:
+%    keggkeggRxn:                    cell array of the KEGG reactions retrieved
+%                                    for the input metabolites
+%
+% .. Author: - Ines Thiele
 
 if ~exist('metabolite_structure_rBioNet','var')
     load met_strc_rBioNet;

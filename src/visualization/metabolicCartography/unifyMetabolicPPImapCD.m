@@ -1,17 +1,29 @@
 function [map2] = unifyMetabolicPPImapCD(map)
 % Unify a metabolic and protein-protein interaction map as a standard.
-% Reaction will be grey and Metabolites/Complexes will be White.
+% Reactions will be grey and metabolites/complexes will be white.
 %
 % USAGE:
 %
-%   [map2] = unifyMetabolicPPImapCD(map)
+%    [map2] = unifyMetabolicPPImapCD(map)
 %
 % INPUT:
-%   map:    MATLAB structure of CellDesigner map
+%    map:       MATLAB structure of a CellDesigner PPI map (see `transformFullXML2Map`).
+%               Fields used:
+%
+%                 * .rxnName - reaction names; length sets the reaction loop bound
+%                 * .molColor - molecule colours; length sets the molecule loop bound
+%                 * .complexColor - complex colours; length sets the complex loop bound
+%                 * .rxnProductLineColor - product-side secondary-link colours
+%                 * .rxnProductLineWidth - product-side secondary-link widths
+%                 * .rxnReactantLineColor - reactant-side secondary-link colours
+%                 * .rxnReactantLineWidth - reactant-side secondary-link widths
 %
 % OUTPUT:
-%   map2:   Map with grey reactions colour, width 1 and white nodes colour.
-%           Change colour complex to white
+%    map2:      `map` with every `.rxnColor` set to `'FFDCDCDC'` (grey), every
+%               `.rxnWidth` set to `1`, every `.molColor` and `.complexColor` set to
+%               `'FFFFFFFF'` (white), and every non-empty `.rxnProductLineColor` /
+%               `.rxnReactantLineColor` entry set to `'FFDCDCDC'` with the
+%               corresponding `.rxnProductLineWidth` / `.rxnReactantLineWidth` set to `1`
 %
 % .. Authors:
 %       - J.Modamio LCSB, Belval, Luxembourg. 19.08.2017 LCSB. Belval. Luxembourg

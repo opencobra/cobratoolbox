@@ -10,7 +10,7 @@ function [cleanedData, metToKeepSummary] = metsToKeep(dataOrg, metRep, calRelErr
 %   [cleanedData, metToKeepSummary] = metsToKeep(dataOrg, metRep, calRelErr, param)
 %
 % INPUTS:
-%  dataOrg:     A table with original metabolomics data in a long format 
+%    dataOrg:     A table with original metabolomics data in a long format
 %               with information about measured samples, compounds, 
 %               retention times (RT), area(s), concentrations, etc. 
 %               the following column is required for the analysis:
@@ -18,7 +18,7 @@ function [cleanedData, metToKeepSummary] = metsToKeep(dataOrg, metRep, calRelErr
 %                     * .compound - compound (metabolite names) identical
 %                                   to the names used in the metRep and 
 %                                   calRE variables       
-%  metRep:      A table with quality information based on the dataOrg 
+%    metRep:      A table with quality information based on the dataOrg
 %               in a long format (output from mzQuality tool).
 %               The following columns are required for the analysis:
 %
@@ -29,7 +29,7 @@ function [cleanedData, metToKeepSummary] = metsToKeep(dataOrg, metRep, calRelErr
 %                                  relative standard deviation of the 
 %                                  repeated measurement of a (quality) 
 %                                  sample (per batch) per metabolite         
-%  calRelErr:   A table with quality information about the relative 
+%    calRelErr:    A table with quality information about the relative
 %               error (RE) of the concentration estimation of the 
 %               calibration line samples based on the dataOrg 
 %               in a long format with information about measured samples, 
@@ -43,20 +43,22 @@ function [cleanedData, metToKeepSummary] = metsToKeep(dataOrg, metRep, calRelErr
 %                     * .RE* - a columns specifying the relative error of 
 %                              the concentration estimation of the
 %                              calibration line samples
-%  param.tresholdRSDqc: the treshold value for the relative SD of the repeated 
+%    param:    a structure with fields:
+%
+%                * .tresholdRSDqc - the treshold value for the relative SD of the repeated
 %                       measurement of sample (default = 25 (%); based on 
 %                       the based on the "Guidelines and considerations for 
 %                       the use of system suitability and quality control 
 %                       samples in mass spectrometry assays applied in 
 %                       untargeted clinical metabolomic studies")
-%  param.tresholdCalRE: the treshold value for the relative error of the 
+%                * .tresholdCalRE - the treshold value for the relative error of the
 %                       concentration estimation of the calibration line 
 %                       samples (default = 25 (%)
 %
 % OUTPUTS:
-%  cleanedData:         table in the same format as dataOrg without the 
+%    cleanedData:         table in the same format as dataOrg without the
 %                       metabolites of low quality (above set tresholds)
-%  metToKeepSummary:    table in the same format as metRep variable with an
+%    metToKeepSummary:    table in the same format as metRep variable with an
 %                       added columns: 
 %                     
 %                     * .keep -     specifies whether a metabolite is to be 

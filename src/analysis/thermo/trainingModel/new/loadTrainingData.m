@@ -1,27 +1,37 @@
 function trainingModel = loadTrainingData(param)
-% Generates the structure that contains all the training data needed for
-% Component Contribution.
+% Generate the structure that contains all the training data needed for Component Contribution
+%
+% Reads the TECRDB (NIST), formation-energy and redox-potential data files,
+% assembles a stoichiometric matrix over the union of compounds, and returns a
+% training-data structure. Some problematic TECRDB reactions are removed.
 %
 % USAGE:
 %
-%    trainingModel = loadTrainingData(formation_weight)
+%    trainingModel = loadTrainingData(param)
 %
-% INPUT:
-%    formation_weight:    the relative weight to give the formation energies (Alberty's data)
-%                         compared to the reaction measurements (TECRDB)
+% OPTIONAL INPUT:
+%    param:               structure of parameters. Field used by this function:
+%
+%                           * .formation_weight - relative weight given to the
+%                             formation energies (Alberty's data) compared to
+%                             the reaction measurements (TECRDB); default 1
 %
 % OUTPUT:
-%    trainingModel:       structure with data for Component Contribution
-%                         *.S   `m x n` stoichiometric matrix of training data
-%                         *.cids: `m x 1` compound ids
-%                         *.dG0_prime: `n x 1`
-%                         *.T:  `n x 1`
-%                         *.I:  `n x 1`
-%                         *.pH:  `n x 1`
-%                         *.pMg:  `n x 1`
-%                         *.weights:  `n x 1`
-%                         *.balance:  `n x 1`
-%                         *.cids_that_dont_decompose: k x 1 ids of compounds that do not decompose
+%    trainingModel:       structure with data for Component Contribution:
+%
+%                           * .S - `m x n` stoichiometric matrix of training data
+%                           * .cids - `m x 1` compound ids
+%                           * .dG0_prime - `n x 1` standard transformed reaction Gibbs energies
+%                           * .T - `n x 1` temperatures
+%                           * .I - `n x 1` ionic strengths
+%                           * .pH - `n x 1` pH values
+%                           * .pMg - `n x 1` pMg values
+%                           * .weights - `n x 1` reaction weights
+%                           * .balance - `n x 1` true where the reaction is balanced
+%                           * .rxns - `n x 1` reaction abbreviations
+%                           * .lb - `n x 1` lower bounds
+%                           * .ub - `n x 1` upper bounds
+%                           * .cids_that_dont_decompose - `k x 1` ids of compounds that do not decompose
 
 if ~exist('param','var')
     formation_weight = 1;

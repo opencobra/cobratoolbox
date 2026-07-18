@@ -1,8 +1,33 @@
-function [R1_missing,R2_missing,R12_bounds,R12_bounds_mismatch] = compareBounds2Models(model1,model2)
-% This function compares the bounds between two models
+function [R1_missing, R2_missing, R12_bounds, R12_bounds_mismatch] = compareBounds2Models(model1, model2)
+% Compare the reaction bounds between two models
 %
+% Finds the reactions shared by two models and compares their lower and upper
+% bounds, reporting reactions missing from either model and reactions whose
+% bounds match or mismatch.
 %
+% USAGE:
 %
+%    [R1_missing, R2_missing, R12_bounds, R12_bounds_mismatch] = compareBounds2Models(model1, model2)
+%
+% INPUTS:
+%    model1:                COBRA model structure with fields:
+%
+%                             * .rxns - reaction identifiers
+%                             * .lb - lower bounds
+%                             * .ub - upper bounds
+%    model2:                COBRA model structure with fields:
+%
+%                             * .rxns - reaction identifiers
+%                             * .lb - lower bounds
+%                             * .ub - upper bounds
+%
+% OUTPUTS:
+%    R1_missing:             Reactions absent from `model1` (present in `model2`)
+%    R2_missing:             Reactions absent from `model2` (present in `model1`)
+%    R12_bounds:             Cell array of shared reactions whose lower/upper bound
+%                            is identical in both models, with the bound values
+%    R12_bounds_mismatch:    Cell array of shared reactions whose lower/upper bound
+%                            differs between the two models, with the bound values
 
 
 % find the overlapping set of reaction between the two models

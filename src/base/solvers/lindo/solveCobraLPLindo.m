@@ -16,7 +16,7 @@ function [obj, x, y, w, s, solStatus] = solveCobraLPLindo(A, b, c, csense, lb, u
 %    ub:                Upper bound vector
 %    osense:            Objective sense
 %    primalOnlyFlag:    Get the primal soln only
-%    oldAPIFLag:        should be true if Lindo API <2.0 is used and false for newer versions of the API
+%    oldAPIFlag:        should be true if Lindo API <2.0 is used and false for newer versions of the API
 %    verbLevel:         verbose level
 %    method:            default = 0, chooses the algorithm
 %

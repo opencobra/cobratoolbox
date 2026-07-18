@@ -1,16 +1,18 @@
-function microbeID=adaptDraftModelID(modelIDIn)
+function microbeID = adaptDraftModelID(modelIDIn)
 % This function adapts the name of the draft reconstruction entered into
 % the pipeline into a suitable curated reconstruction ID.
 %
-% USAGE: microbeID = adaptKBaseModelID(modelIDIn)
+% USAGE:
 %
-% INPUT
-% modelIDIn     name of the KBase draft reconstruction file to refine
+%    microbeID = adaptDraftModelID(modelIDIn)
 %
-% OUTPUT
-% microbeID     name of the resulting refined reconstruction
+% INPUT:
+%    modelIDIn:    name of the KBase draft reconstruction file to refine
 %
-% AUTHOR: Almut Heinken, 06/2020.
+% OUTPUT:
+%    microbeID:    name of the resulting refined reconstruction
+%
+% .. Author: - Almut Heinken, 06/2020
 
 microbeID=modelIDIn;
 microbeID=strrep(microbeID,'.fbamodel.sbml','');

@@ -1,10 +1,21 @@
 function [inv_A, r, P_R, P_N] = invertProjection(A, epsilon)
 % invert a general matrix A using the pseudoinverse
-% return values are:
-%     inv_A - the pseudoinverse of A
-%     r     - the rank of A
-%     P_R   - the projection matrix onto the range(A)
-%     P_N   - the projection matrix onto the null(A')
+%
+% USAGE:
+%
+%    [inv_A, r, P_R, P_N] = invertProjection(A, epsilon)
+%
+% INPUT:
+%    A:         matrix to be inverted
+%
+% OPTIONAL INPUT:
+%    epsilon:       singular-value tolerance for the numerical rank (default 1e-10)
+%
+% OUTPUTS:
+%    inv_A:     the pseudoinverse of A
+%    r:         the rank of A
+%    P_R:       the projection matrix onto the range(A)
+%    P_N:       the projection matrix onto the null(A')
 
 if nargin < 2
     epsilon = 1e-10;

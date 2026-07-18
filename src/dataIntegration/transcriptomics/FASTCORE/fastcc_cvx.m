@@ -1,4 +1,23 @@
 function A = fastcc_cvx(model, epsilon)
+% The FASTCC algorithm for testing the consistency of a stoichiometric model,
+% solving the underlying LPs with the CVX modelling framework.
+%
+% USAGE:
+%
+%    A = fastcc_cvx(model, epsilon)
+%
+% INPUTS:
+%    model:      cobra model structure containing the fields:
+%
+%                  * .S - `m x n` stoichiometric matrix
+%                  * .lb - `n x 1` flux lower bounds
+%                  * .ub - `n x 1` flux upper bounds
+%                  * .rxns - `n x 1` cell array of reaction abbreviations
+%    epsilon:    smallest flux value that is considered nonzero
+%
+% OUTPUT:
+%    A:          indices of the flux consistent reactions in the model
+%
 
 tic
 N = (1:numel(model.rxns));
