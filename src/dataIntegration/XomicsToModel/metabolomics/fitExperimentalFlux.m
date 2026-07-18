@@ -314,30 +314,63 @@ end
 param.printLevel = param.printLevel - 1;
 
 feasTol = getCobraSolverParams('LP', 'feasTol');
-if isempty(prob.F)
-    solCard = optimizeCardinality(prob, param);
-    sol.stat = solCard.stat;
-    sol.full = solCard.xyz;
-else
-    paramQP=param;
-    %remove certain parameters that interfere with some solvers
-    paramQP = rmfield(paramQP, 'method');
-    paramQP.feasTol = feasTol / 10;
-    paramQP.optTol = feasTol / 10;
-    sol = solveCobraQP(prob, paramQP);
+% The fit is first solved with a tightened tolerance (feasTol/10). That tightening
+% can make some solvers report infeasibility even when the fit is solvable (seen
+% only in CI, not locally); sol.full then comes back empty/short and the indexing
+% below would abort with "Index in position 1 exceeds array bounds". Solve robustly:
+% attempt 1 reproduces the previous solve exactly (so the feasible case is
+% unchanged), and if it does not return a usable solution, retry with progressively
+% relaxed feasibility/optimality tolerances.
+needLen = 3 * nRxn + nVexp;
+relaxTols = [NaN, feasTol, feasTol * 10];   % NaN => the original per-solver tolerance
+sol = struct('stat', -1, 'full', []);
+for tolIdx = 1:numel(relaxTols)
+    if isempty(prob.F)
+        paramSolve = param;
+        if ~isnan(relaxTols(tolIdx))
+            paramSolve.feasTol = relaxTols(tolIdx);
+            paramSolve.optTol = relaxTols(tolIdx);
+        end
+        solCard = optimizeCardinality(prob, paramSolve);
+        sol.stat = solCard.stat;
+        sol.full = solCard.xyz;
+    else
+        paramQP = param;
+        %remove certain parameters that interfere with some solvers
+        paramQP = rmfield(paramQP, 'method');
+        if isnan(relaxTols(tolIdx))
+            paramQP.feasTol = feasTol / 10;
+            paramQP.optTol = feasTol / 10;
+        else
+            paramQP.feasTol = relaxTols(tolIdx);
+            paramQP.optTol = relaxTols(tolIdx);
+        end
+        sol = solveCobraQP(prob, paramQP);
+    end
+    if sol.stat == 1 && numel(sol.full) >= needLen
+        break
+    end
+    if tolIdx < numel(relaxTols)
+        warning('fitExperimentalFlux: fit returned stat=%d; retrying with a relaxed feasibility tolerance.', sol.stat);
+    end
 end
 
 %zero out relaxations smaller than feasibility tolerance
 bool = abs(sol.full) < feasTol & sol.full ~= 0;
 sol.full(bool) = 0;
 
-if sol.stat ~= 1
+if sol.stat ~= 1 || numel(sol.full) < needLen
     sol
     if sol.stat == 3
         warning('fitExperimentalFlux sol.stat == 3.')
     else
         warning('Model does not seem relaxable to fit experimental data. Check numerical issues.')
     end
+    error('fitExperimentalFlux:infeasibleFit', ...
+        ['The experimental-flux fit did not return a usable solution (stat=%d, ' ...
+         'numel(sol.full)=%d, need >= %d) even after relaxing the feasibility ' ...
+         'tolerance. Check the exometabolomic data and solver numerics.'], ...
+        sol.stat, numel(sol.full), needLen);
 end
 
 v = sol.full(1:nRxn, 1);
