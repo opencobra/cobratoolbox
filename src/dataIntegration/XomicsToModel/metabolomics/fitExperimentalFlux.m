@@ -314,13 +314,16 @@ end
 param.printLevel = param.printLevel - 1;
 
 feasTol = getCobraSolverParams('LP', 'feasTol');
-% The fit is first solved with a tightened tolerance (feasTol/10). That tightening
-% can make some solvers report infeasibility even when the fit is solvable (seen
-% only in CI, not locally); sol.full then comes back empty/short and the indexing
-% below would abort with "Index in position 1 exceeds array bounds". Solve robustly:
-% attempt 1 reproduces the previous solve exactly (so the feasible case is
-% unchanged), and if it does not return a usable solution, retry with progressively
-% relaxed feasibility/optimality tolerances.
+% The base model is FBA-feasible here, but gurobi can return a spurious
+% UNBOUNDED / INF_OR_UNBD verdict on this exometabolomic fit QP under some
+% environments (observed in CI, not locally); sol.full then comes back empty and
+% the indexing below would abort with "Index in position 1 exceeds array bounds".
+% Fix the gurobi ambiguity at the solve (dual reductions and presolve off, higher
+% numerical focus) so it returns a definite OPTIMAL status. As a secondary net,
+% retry with relaxed tolerances if a usable solution is still not returned;
+% attempt 1 otherwise reproduces the previous solve, so the working case is
+% unchanged. A clear error (below) replaces the cryptic array-bounds as a backstop.
+global CBT_QP_SOLVER
 needLen = 3 * nRxn + nVexp;
 relaxTols = [NaN, feasTol, feasTol * 10];   % NaN => the original per-solver tolerance
 sol = struct('stat', -1, 'full', []);
@@ -344,6 +347,13 @@ for tolIdx = 1:numel(relaxTols)
         else
             paramQP.feasTol = relaxTols(tolIdx);
             paramQP.optTol = relaxTols(tolIdx);
+        end
+        % gurobi-specific: force a definite optimality verdict instead of a
+        % spurious UNBOUNDED / INF_OR_UNBD one on this ill-conditioned fit QP.
+        if strcmp(CBT_QP_SOLVER, 'gurobi')
+            paramQP.DualReductions = 0;
+            paramQP.Presolve = 0;
+            paramQP.NumericFocus = 3;
         end
         sol = solveCobraQP(prob, paramQP);
     end
