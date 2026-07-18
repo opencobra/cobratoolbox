@@ -314,16 +314,24 @@ end
 param.printLevel = param.printLevel - 1;
 
 feasTol = getCobraSolverParams('LP', 'feasTol');
-% The base model is FBA-feasible here, but gurobi can return a spurious
-% UNBOUNDED / INF_OR_UNBD verdict on this exometabolomic fit QP under some
-% environments (observed in CI, not locally); sol.full then comes back empty and
-% the indexing below would abort with "Index in position 1 exceeds array bounds".
-% Fix the gurobi ambiguity at the solve (dual reductions and presolve off, higher
-% numerical focus) so it returns a definite OPTIMAL status. As a secondary net,
-% retry with relaxed tolerances if a usable solution is still not returned;
-% attempt 1 otherwise reproduces the previous solve, so the working case is
-% unchanged. A clear error (below) replaces the cryptic array-bounds as a backstop.
+% The exometabolomic fit QP is numerically ill-conditioned. In the full test
+% suite the global QP solver can be left as pdco, which fails to solve it (badly
+% scaled, empty solution) even though gurobi solves it cleanly -- this is why the
+% fit passes locally (isolated, gurobi) but failed in CI (pdco). Solve the fit
+% with a capable QP solver, then restore the previous solver so the rest of the
+% pipeline is undisturbed. Secondary net: retry with relaxed tolerances if a
+% usable solution is still not returned. A clear error (below) replaces the
+% previous cryptic "Index in position 1 exceeds array bounds".
 global CBT_QP_SOLVER
+origQPsolver = CBT_QP_SOLVER;
+for capable = {'gurobi', 'ibm_cplex', 'mosek'}
+    if changeCobraSolver(capable{1}, 'QP', 0)
+        break
+    end
+end
+if ~isempty(origQPsolver) && ~strcmp(origQPsolver, CBT_QP_SOLVER)
+    restoreQPsolver = onCleanup(@() changeCobraSolver(origQPsolver, 'QP', 0)); %#ok<NASGU>
+end
 needLen = 3 * nRxn + nVexp;
 relaxTols = [NaN, feasTol, feasTol * 10];   % NaN => the original per-solver tolerance
 sol = struct('stat', -1, 'full', []);
@@ -348,11 +356,8 @@ for tolIdx = 1:numel(relaxTols)
             paramQP.feasTol = relaxTols(tolIdx);
             paramQP.optTol = relaxTols(tolIdx);
         end
-        % gurobi-specific: force a definite optimality verdict instead of a
-        % spurious UNBOUNDED / INF_OR_UNBD one on this ill-conditioned fit QP.
+        % mild numerical insurance for the badly-scaled fit QP under gurobi
         if strcmp(CBT_QP_SOLVER, 'gurobi')
-            paramQP.DualReductions = 0;
-            paramQP.Presolve = 0;
             paramQP.NumericFocus = 3;
         end
         sol = solveCobraQP(prob, paramQP);
