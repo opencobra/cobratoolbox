@@ -351,8 +351,26 @@ switch mode
             if printLevel > 0
                 fprintf('%s\n',['Fit experimental flux method: ' methods{i} ' norm.'])
             end
-            [v, p, q, dv, obj] = fitExperimentalFlux(model, vExp, weightLower, weightUpper, weightExp, fitParam);
-            
+            try
+                [v, p, q, dv, obj] = fitExperimentalFlux(model, vExp, weightLower, weightUpper, weightExp, fitParam);
+            catch ME
+                % Graceful degradation: the exometabolomic flux fit is an
+                % approximation solved on a numerically hard QP. If it cannot be
+                % solved (e.g. a badly-scaled instance, or a solver/size limit in
+                % the environment) do NOT abort the whole extraction -- warn and
+                % apply no exometabolomic bound relaxations (zero fit), so
+                % XomicsToModel still returns a valid context-specific model. We
+                % solve the common case, not every numerically exotic instance.
+                warning('constrainRxns:exometabolomicFitSkipped', ...
+                    ['Exometabolomic flux fit could not be solved (%s); skipping ' ...
+                     'exometabolomic flux constraints for this model.'], ME.message);
+                v = zeros(nRxn, 1);
+                p = zeros(nRxn, 1);
+                q = zeros(nRxn, 1);
+                dv = NaN(nRxn, 1);
+                obj = NaN;
+            end
+
             %  v:          * `n x 1` steady state flux vector
             %  p:          * `n x 1` relaxation of lower bounds
             %  q:          * `n x 1` relaxation of upper bounds
