@@ -218,17 +218,8 @@ switch solver
         %       4 (S,B) Model has been proved either infeasible or unbounded
         %       5 (S,B) Optimal solution is available, but with infeasibilities after unscaling
         %       6 (S,B) Solution is available, but not proved optimal, due to numeric difficulties
-        if origStat == 1
-            stat = 1; % Optimal
-        elseif origStat == 3
-            stat = 0; % Infeasible
-        elseif origStat == 2 || origStat == 4
-            stat = 2; % Unbounded
-        elseif origStat == 5 || origStat == 6 %origStat == 6  is 'Solution is available, but not proved optimal, due to numeric difficulties'
-            stat = 3; % Solution exists, but either scaling problems or not proven to be optimal
-        else %(origStat >= 10)
-            stat = -1; % No optimal solution found (time or other limits reached, other infeasibility problems)
-        end
+        % CPLEX-family QP status translation is consolidated in mapSolverStatus
+        stat = mapSolverStatus(solver, 'QP', origStat);
         solution.nInfeas = ninf;
         solution.sumInfeas = sinf;
         
@@ -268,17 +259,8 @@ switch solver
         %       4 (S,B) Model has been proved either infeasible or unbounded
         %       5 (S,B) Optimal solution is available, but with infeasibilities after unscaling
         %       6 (S,B) Solution is available, but not proved optimal, due to numeric difficulties
-        if origStat == 1
-            stat = 1; % Optimal
-        elseif origStat == 3
-            stat = 0; % Infeasible
-        elseif origStat == 2 || origStat == 4
-            stat = 2; % Unbounded
-        elseif origStat == 5 || origStat == 6 %origStat == 6  is 'Solution is available, but not proved optimal, due to numeric difficulties'
-            stat = 3; % Solution exists, but either scaling problems or not proven to be optimal
-        else %(origStat >= 10)
-            stat = -1; % No optimal solution found (time or other limits reached, other infeasibility problems)
-        end
+        % CPLEX-family QP status translation is consolidated in mapSolverStatus
+        stat = mapSolverStatus(solver, 'QP', origStat);
         
         %debugging
         if problemTypeParams.printLevel>2
@@ -325,17 +307,8 @@ switch solver
         origStat = Result.status;
         % See detailed table of result codes in
         % https://www.ibm.com/support/knowledgecenter/SSSA5P_12.6.3/ilog.odms.cplex.help/refcallablelibrary/macros/Solution_status_codes.html
-        if origStat == 1
-            stat = 1; % Optimal
-        elseif origStat == 3
-            stat = 0; % Infeasible
-        elseif origStat == 2 || origStat == 4
-            stat = 2; % Unbounded
-        elseif origStat == 5 || origStat == 6 %origStat == 6  is 'Solution is available, but not proved optimal, due to numeric difficulties'
-            stat = 3; % Solution exists, but either scaling problems or not proven to be optimal
-        else %(origStat >= 10)
-            stat = -1; % No optimal solution found (time or other limits reached, other infeasibility problems)
-        end  
+        % CPLEX-family QP status translation is consolidated in mapSolverStatus
+        stat = mapSolverStatus(solver, 'QP', origStat);
         origStat = cplexProblem.Solution.statusstring;
 
         %Update Tolerance According to actual setting
