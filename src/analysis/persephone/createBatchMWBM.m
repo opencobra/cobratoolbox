@@ -1,44 +1,52 @@
 function [modelStats, summaryStats, dietInfo, dietGrowthStats] = createBatchMWBM(mgpipePath, mWBMPath, metadataPath, varargin)
-% This function creates personalised host-microbiome WBM models (mWBMs) by joining
-% microbiome community models with unpersonalised WBM models in a 
-% sex-specific manner. The models are parameterised on a predefined diet.
+% Create a batch of personalised host-microbiome WBM models (mWBMs)
+%
+% Joins microbiome community models with unpersonalised WBM models in a
+% sex-specific manner, parameterises them on a predefined diet, optionally
+% checks their feasibility, and reports summary statistics on the generated
+% models.
 %
 % USAGE:
-%       [modelStats, summaryStats, dietInfo, dietGrowthStats] = createBatchMWBM(mgpipePath, mWBMPath, metadataPath)
 %
-% INPUTS
-% mgpipePath:                   Path to microbiome community models created by the
-%                               microbiome modelling toolbox.
-% mWBMPath                      Path to directory where the HM models are
-%                               saved
+%    [modelStats, summaryStats, dietInfo, dietGrowthStats] = createBatchMWBM(mgpipePath, mWBMPath, metadataPath, varargin)
 %
-% OPTIONAL INPUTS
-% Diet                          Diet option: 'EUAverageDiet' (default)
-% numWorkersCreation                    Number of cores used for parallelisation.
-%                               Default = 4.
-% checkFeasibility              Flag (true/false) to run the
-%                               ensureHMfeasibility.m function and check if 
-%                               the generated models can grow on the diet. 
-%                               Default = true.
-% wbmDirectory                  Path to directory with user defined WBMs.
-%                               This function supports one user adapted male and one user adapted female
-%                               WBM or personalised germ free WBMs for each sample with a microbiome
-%                               community model. Default is empty. If wbmDirectory is empty,
-%                               Harvey/Harvetta version 1.04c are used.
+% INPUTS:
+%    mgpipePath:      path to the microbiome community models created by the
+%                     microbiome modelling toolbox
+%    mWBMPath:        path to the directory where the host-microbiome models
+%                     are saved
+%    metadataPath:    path to the metadata file with sample IDs and sex
 %
-% OUTPUTS
-% modelStats                    Table with summary statistics on the generated WBMs:
-%                               gender, number of reactions, metabolites,constrainsts, 
-%                               and taxa.
-% summaryStats                  Table with the mean and SD of the model
-%                               statistics in the modelStats variable.
-% dietInfo                      Table with diet growth information.
-%                               models can grow on the given diet. 
-% dietGrowthStats               Table with statistics on 
+% OPTIONAL INPUTS (name-value pairs in varargin):
+%    Diet:                          diet option (default 'EUAverageDiet')
+%    numWorkersCreation:            number of cores used for model creation
+%                                   (default 4)
+%    numWorkersOptimisation:        number of cores used for optimisation
+%                                   (default 2)
+%    checkFeasibility:              logical, run ensureWBMfeasibility to check
+%                                   that the models grow on the diet
+%                                   (default true)
+%    wbmDirectory:                  path to a directory with user-defined WBMs;
+%                                   if empty Harvey/Harvetta are used
+%                                   (default '')
+%    solver:                        LP solver to use (default 'gurobi')
+%    maleUnpersonalisedWBMpath:     male base WBM to use
+%                                   (default 'Harvey_1_03d')
+%    femaleUnpersonalisedWBMpath:   female base WBM to use
+%                                   (default 'Harvetta_1_03d')
 %
-% Authors:  Tim Hensen, 2023, 2024
+% OUTPUTS:
+%    modelStats:         table with per-model summary statistics (sex, number
+%                        of reactions, metabolites, constraints, and taxa)
+%    summaryStats:       table with the mean and standard deviation of the
+%                        statistics in modelStats
+%    dietInfo:           diet growth information returned by ensureWBMfeasibility
+%                        (empty when the feasibility check is skipped)
+%    dietGrowthStats:    statistics on which models could grow on the given
+%                        diet (empty when the feasibility check is skipped)
+%
+% .. Author: - Tim Hensen, 2023, 2024
 
-% Define default parameters if not defined
 parser = inputParser();
 parser.addRequired('mgpipePath', @ischar);
 parser.addRequired('mWBMPath', @ischar);

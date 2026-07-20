@@ -1,7 +1,11 @@
-function [MaxNumIter, MaxNumMapEval, TimeLimit, epsilon, alpha, beta, lambda_bar, rho,kin, flag_line_search, flag_x_error, flag_psi_error, flag_time, Stopping_Crit] = InitialBDCA(options)
+function [MaxNumIter, MaxNumMapEval, TimeLimit, epsilon, alpha, beta, lambda_bar, rho, kin, flag_line_search, flag_x_error, flag_psi_error, flag_time, Stopping_Crit] = InitialBDCA(options)
 % `InitialBDCA` is a function for initializing the parameters of BDCA and
 % DCA. If some parameters specified by the user `InitialDuplo` uses these
 % parameters. Otherwise, the default values will be used.
+%
+% USAGE:
+%
+%    [MaxNumIter, MaxNumMapEval, TimeLimit, epsilon, alpha, beta, lambda_bar, rho, kin, flag_line_search, flag_x_error, flag_psi_error, flag_time, Stopping_Crit] = InitialBDCA(options)
 %
 % INPUTS:
 %    options:           structure including the parameteres of scheme
@@ -34,11 +38,12 @@ function [MaxNumIter, MaxNumMapEval, TimeLimit, epsilon, alpha, beta, lambda_bar
 %    MaxNumMapEval:     maximum number of function evaluations
 %    TimeLimit:         maximum running time
 %    epsilon:           accuracy parameter
-%    x_opt:             optimizer
-%    psi_opt:           optimum
 %    alpha:             constant for the line search
 %    beta:              backtracking constant
 %    lambda_bar:        starting step-size for the line search
+%    rho:               strong convexity parameter
+%    kin:               kinetic parameter in :math:`R^{2n}`
+%    flag_line_search:    "Armijo" or "Quadratic_interpolation"
 %    flag_x_error:      1: saves :math:`x_{error}`, 0: do not saves :math:`x_{error}` (default)
 %    flag_psi_error:    1: saves :math:`\psi_{error}`, 0: do not saves :math:`\psi_{error}` (default)
 %    flag_time:         1: saves :math:`\psi_{error}`, 0: do not saves :math:`\psi_{error}` (default)

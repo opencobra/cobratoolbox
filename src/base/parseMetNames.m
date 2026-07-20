@@ -19,6 +19,7 @@ function [baseMetNames, compSymbols, uniqueMetNames, uniqueCompSymbols] = parseM
 %
 % .. Author: - Markus Herrgard 10/4/06
 %            - Thomas Pfau Speedup and cleanup Oct 2017
+
 if ~iscell(metNames)
     metNames = {metNames};
 end

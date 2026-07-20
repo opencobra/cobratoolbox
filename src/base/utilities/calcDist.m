@@ -1,14 +1,15 @@
-function d = calcDist(searchString,databaseString)
+function d = calcDist(searchString, databaseString)
 % Calculate a Distance between the searchString and the database string.
 % a perfect match will return a distance of 0.
-% The distance is a modified levenshtein edit distance. 
+% The distance is a modified levenshtein edit distance.
 % leading or trailing elements in the search string have a cost of 0.8
 % leading or trailing elements in the database String have a cost of 0.1
 % Uppercase <-> lower case edits have a cost of 0.05
 % All other edit operations have a cost of 1
 %
-% USAGE: 
-%    d = calcDist(searchString,databaseString)
+% USAGE:
+%
+%    d = calcDist(searchString, databaseString)
 %
 % INPUTS:
 %    searchString:      The string that is used as a query
@@ -18,6 +19,7 @@ function d = calcDist(searchString,databaseString)
 % OUTPUT:
 %    d:                 A Distance between the searchString and the
 %                       databaseString.
+%
 % NOTE:
 %    This function is not a metric i.e. calcDist(a,b) ~= calcDist(b,a) !
 %

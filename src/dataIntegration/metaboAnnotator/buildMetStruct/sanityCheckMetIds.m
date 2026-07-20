@@ -1,5 +1,27 @@
-function [metabolite_structure,errorFlag] = sanityCheckMetIds(metabolite_structure,removeErrors)
-% perform basic sanity checks
+function [metabolite_structure, errorFlag] = sanityCheckMetIds(metabolite_structure, removeErrors)
+% Performs basic sanity checks on the identifiers in a metabolite structure
+%
+% Performs basic sanity checks on the metabolite structure, e.g. that numeric
+% identifiers are numeric and that database identifiers follow the expected
+% format. Optionally, entries that fail a check are removed.
+%
+% USAGE:
+%
+%    [metabolite_structure, errorFlag] = sanityCheckMetIds(metabolite_structure, removeErrors)
+%
+% INPUT:
+%    metabolite_structure:    metabolite structure
+%
+% OPTIONAL INPUT:
+%    removeErrors:            if true, remove entries that fail a sanity check
+%                             (default: 0)
+%
+% OUTPUTS:
+%    metabolite_structure:    updated metabolite structure
+%    errorFlag:               list of entries that failed a sanity check, with
+%                             the reason for each failure
+%
+% .. Author: - Ines Thiele
 
 if ~exist('removeErrors', 'var')
     removeErrors = 0;

@@ -4,10 +4,14 @@ function bilevelMILPproblem = createBilevelMILPproblem(model, cLinear, cInteger,
 %
 % USAGE:
 %
-%    bilevelMILPproblem = createBilevelMILPProblem(model, cLinear, cInteger, selRxns, selRxnMatch, constrOpt, measOpt, options, selPrevSol);
+%    bilevelMILPproblem = createBilevelMILPproblem(model, cLinear, cInteger, selRxns, selRxnMatch, constrOpt, measOpt, options, selPrevSol);
 %
 % INPUTS:
-%    model:                 Model in irreversible format
+%    model:                 COBRA model in irreversible format. Fields used directly:
+%
+%                             * .S - `m x n` stoichiometric (equality-constraint) matrix
+%                             * .c - `n x 1` inner-problem objective coefficients
+%                             * .ub - `n x 1` upper bounds for the inner problem
 %    cLinear:               Objective for linear part of the MILP problem (i.e. for fluxes)
 %    cInteger:              Objective for integer part of the MILP problem
 %    selRxns:               Reactions that participate in the integer part (e.g. ones
@@ -15,33 +19,33 @@ function bilevelMILPproblem = createBilevelMILPproblem(model, cLinear, cInteger,
 %    selRxnMatch:           Matching of the forward and reverse parts
 %    constrOpt:             Constraint options
 %
-%                             *  rxnInd
-%                             *  values
-%                             *  sense
+%                             * .rxnInd - indices of the constrained reactions
+%                             * .values - values for the constrained reactions
+%                             * .sense - constraint senses for the constrained reactions (G/E/L)
 %    measOpt:               Measured flux options
 %
-%                             *  rxnSel
-%                             *  values
-%                             *  weights
+%                             * .rxnSel - selector for the measured reactions
+%                             * .values - values for the measured fluxes
+%                             * .weights - weights for the measured fluxes
 %    options:               General options
 %
-%                             *  vMax - Maximal/minimal value for cont variables
-%                             *  numDel - Number of deletions
-%                             *  numDelSense - # of `ko` <=/=/>= K (L/E/G)
+%                             * .vMax - Maximal/minimal value for cont variables
+%                             * .numDel - Number of deletions
+%                             * .numDelSense - # of `ko` <=/=/>= K (L/E/G)
 %    selPrevSol:            Previous solutions (optional)
 %
 % OUTPUTS:
 %    bilevelMILPproblem:    struct with:
 %
-%                             *  A - LHS matrix
-%                             *  b - RHS
-%                             *  c - Objective
-%                             *  csense - Constraint types
-%                             *  lb - Lower bounds
-%                             *  ub - Upper bounds
-%                             *  vartype - Variable types
-%                             *  contSolInd - Allows selecting the continuous solution (i.e. fluxes)
-%                             *  intsSolInd - Allows selecting the integer solution (i.e. what reactions are used)
+%                             * .A - LHS matrix
+%                             * .b - RHS
+%                             * .c - Objective
+%                             * .csense - Constraint types
+%                             * .lb - Lower bounds
+%                             * .ub - Upper bounds
+%                             * .vartype - Variable types
+%                             * .contSolInd - Allows selecting the continuous solution (i.e. fluxes)
+%                             * .intSolInd - Allows selecting the integer solution (i.e. what reactions are used)
 %
 % .. Author: - Markus Herrgard 5/27/05
 %

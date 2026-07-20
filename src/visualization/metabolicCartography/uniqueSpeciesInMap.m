@@ -1,23 +1,26 @@
 function uniqueSpecies = uniqueSpeciesInMap(mapMicroMap)
-% uniqueSpeciesInMap - Identifies unique metabolites and other species in a CellDesigner map structure
+% Identifies unique metabolites and other species in a CellDesigner map structure
 %
 % USAGE:
 %
 %    uniqueSpecies = uniqueSpeciesInMap(mapMicroMap)
 %
 % INPUT:
-%    mapMicroMap:    Structure containing species from a CellDesigner map
-%                    mapMicroMap.specName contains species names
+%    mapMicroMap:      MATLAB structure of a CellDesigner map (see `transformXML2Map`).
+%                      Fields used:
+%
+%                        * .specName - species names, split into metabolites (names
+%                          containing a `[...]` compartment tag) and non-metabolites
 %
 % OUTPUT:
-%    uniqueSpecies:  Structure with fields:
-%                    - mets: Unique metabolites (names without compartment tags)
-%                    - nonMets: Unique non-metabolite species
+%    uniqueSpecies:    Structure with fields:
+%
+%                        * .mets - unique metabolite names, with compartment tags removed
+%                        * .nonMets - unique non-metabolite species names
 %
 % .. Authors:
 %       Cyrille Thinnes, University of Galway, 25/10/2024
 
-% Extract species names
 specNames = mapMicroMap.specName;
 
 % Identify metabolites with compartment tags

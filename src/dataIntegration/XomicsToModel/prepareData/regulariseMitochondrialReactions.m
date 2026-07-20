@@ -1,8 +1,31 @@
 function [modelOut, options, problemRxnList, fixedRxnList] = regulariseMitochondrialReactions(model, options, printLevel)
-%replace the metabolite h[i] with h[c] and remove the rection
-%Htmi	h[i] 	->	h[m] 
-
-% Ronan Fleming
+% Replace the metabolite h[i] with h[c] and remove the reaction Htmi (h[i] -> h[m])
+%
+% USAGE:
+%
+%    [modelOut, options, problemRxnList, fixedRxnList] = regulariseMitochondrialReactions(model, options, printLevel)
+%
+% INPUTS:
+%    model:    COBRA model with fields:
+%
+%                * .S - `m x n` stoichiometric matrix
+%                * .mets - `m x 1` metabolite identifiers
+%                * .rxns - `n x 1` reaction identifiers
+%
+%    options:    structure of context-specific data, with fields:
+%
+%                  * .activeReactions - reactions known to be active (updated when a problem reaction is renamed)
+%                  * .rxns2constrain - table of custom reaction constraints (updated when a problem reaction is renamed)
+%
+%    printLevel:    set greater than zero to print the old and new reaction formulas
+%
+% OUTPUTS:
+%    modelOut:    the input model with h[i] replaced by h[c] in the affected reactions
+%    options:    the input options structure with reaction identifiers updated
+%    problemRxnList:    reactions that contained the metabolite h[i]
+%    fixedRxnList:    the renamed replacement reactions
+%
+% .. Author: - Ronan Fleming
 problemRxnList = model.rxns(model.S(contains(model.mets, 'h[i]'), :) ~= 0);
 
 problemRxnList = setdiff(problemRxnList, 'Htmi');

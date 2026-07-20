@@ -15,9 +15,12 @@ below is defined there — do not restate or fork it.
   ordinary request. Any non-trivial change goes through Spec Kit
   (`constitution → specify → clarify → plan → tasks → analyze → implement`); code is
   edited only after an approved `spec.md`/`plan.md`/`tasks.md` and an explicit
-  implementation command (`/speckit-implement` for Claude, `$speckit-implement` /
-  the `.agents/skills/speckit-implement` surface for Codex). Sole bypass: the exact
-  phrase `DIRECT IMPLEMENTATION OVERRIDE: bypass Spec Kit for this change.`
+  implementation command — either the core implementer (`/speckit-implement` for
+  Claude, `$speckit-implement` / the `.agents/skills/speckit-implement` surface for
+  Codex) or the agent-assign pipeline (`/speckit-agent-assign-assign` ->
+  `/speckit-agent-assign-validate` -> `/speckit-agent-assign-execute`, run in series),
+  both running the same `tasks.md` under the same gate. Sole bypass: the exact phrase
+  `DIRECT IMPLEMENTATION OVERRIDE: bypass Spec Kit for this change.`
 - **Also defined in the constitution:** scientific/model correctness, backward
   compatibility of public interfaces and model fields, testing via `prepareTest` +
   `test/verifiedTests` and CI, solver abstraction (`changeCobraSolver`/`solveCobra*`),

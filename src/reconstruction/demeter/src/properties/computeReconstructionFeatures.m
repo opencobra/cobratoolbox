@@ -1,21 +1,21 @@
-function computeReconstructionFeatures(translDraftsFolder,refinedFolder,propertiesFolder,reconVersion,numWorkers)
-% This function prints a comparison of basic reconstruction features of 
-% the draft and refined reconstructions for the refined reconstruction 
+function computeReconstructionFeatures(translDraftsFolder, refinedFolder, propertiesFolder, reconVersion, numWorkers)
+% This function prints a comparison of basic reconstruction features of
+% the draft and refined reconstructions for the refined reconstruction
 % resource.
 %
-% USAGE
-%   computeReconstructionFeatures(translDraftsFolder,refinedFolder,propertiesFolder,reconVersion,numWorkers)
+% USAGE:
 %
-% INPUTS
-% translDraftsFolder    Folder with translated draft reconstructions
-% refinedFolder         Folder with refined reconstructions to be analyzed
-% propertiesFolder      Folder where the computed stochiometric and flux
-%                       consistencies will be stored
-% reconVersion          Name assigned to the reconstruction resource
-% numWorkers            Number of workers in parallel pool
+%    computeReconstructionFeatures(translDraftsFolder, refinedFolder, propertiesFolder, reconVersion, numWorkers)
 %
-%   - AUTHOR
-%   Almut Heinken, 07/2020
+% INPUTS:
+%    translDraftsFolder:    Folder with translated draft reconstructions
+%    refinedFolder:         Folder with refined reconstructions to be analyzed
+%    propertiesFolder:      Folder where the computed stochiometric and flux
+%                           consistencies will be stored
+%    reconVersion:          Name assigned to the reconstruction resource
+%    numWorkers:            Number of workers in parallel pool
+%
+% .. Author: - Almut Heinken, 07/2020
 
 if ~isempty(translDraftsFolder)
 toCompare={

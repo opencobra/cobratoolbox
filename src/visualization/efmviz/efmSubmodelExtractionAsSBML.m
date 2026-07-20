@@ -2,11 +2,14 @@ function modelEFM = efmSubmodelExtractionAsSBML(model, rxnsForSubmodel, outputFi
 % This function takes an input array containing reaction indices (in an EFM) and extracts as a sub-model (SBML file) which can be visualised in Cytoscape
 %
 % USAGE:
-%    modelEFM = extractSBMLFromEFM(model, data, outputFileName); % without optional inputs
-%    modelEFM = extractSBMLFromEFM(model, data, outputFileName, remFlag, ubiquitousMets); % with optional inputs
-%    
+%    modelEFM = efmSubmodelExtractionAsSBML(model, rxnsForSubmodel, outputFileName); % without optional inputs
+%    modelEFM = efmSubmodelExtractionAsSBML(model, rxnsForSubmodel, outputFileName, remFlag, ubiquitousMets); % with optional inputs
+%
 % INPUTS:
-%    model:              COBRA model that was used for EFM calculation
+%    model:              COBRA model that was used for EFM calculation, with fields:
+%
+%                          * .rxns - `n x 1` cell array of reaction identifiers
+%                          * .mets - `m x 1` cell array of metabolite identifiers
 %    rxnsForSubmodel:    array of reaction indices (such as those in an EFM)
 %    outputFileName:     file name of the output sbml file e.g., <name>.xml
 %
@@ -20,8 +23,8 @@ function modelEFM = efmSubmodelExtractionAsSBML(model, rxnsForSubmodel, outputFi
 %    modelEFM:    submodel containing reactions, metabolites and genes in the EFM of interest
 %
 % EXAMPLE:
-%    data = [1 2 3 4 5]; % select first 5 reactions 
-%    modelEFM = extractSBMLFromEFM(model, data) ;
+%    rxnsForSubmodel = [1 2 3 4 5]; % select first 5 reactions
+%    modelEFM = efmSubmodelExtractionAsSBML(model, rxnsForSubmodel, outputFileName);
 %
 % .. Author: Last modified: Chaitra Sarathy, 1 Oct 2019
 

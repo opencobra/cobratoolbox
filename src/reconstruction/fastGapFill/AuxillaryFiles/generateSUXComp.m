@@ -1,4 +1,4 @@
-function MatricesSUX =generateSUXComp(model, dictionary, KEGGFilename, KEGGBlackList, listCompartments, KEGGMatrixLoad)
+function MatricesSUX = generateSUXComp(model, dictionary, KEGGFilename, KEGGBlackList, listCompartments, KEGGMatrixLoad)
 % Creates the matrices for gap filling for compartmentalized metabolic models (`S`) such
 % that the universal database (`U`, e.g., KEGG) is placed in each compartment
 % specified and reversible transport reactions (`X`) are added for each compound present in
@@ -7,10 +7,16 @@ function MatricesSUX =generateSUXComp(model, dictionary, KEGGFilename, KEGGBlack
 %
 % USAGE:
 %
-%    MatricesSUX =generateSUXComp(model, dictionary, KEGGFilename, KEGGBlackList, listCompartments)
+%    MatricesSUX = generateSUXComp(model, dictionary, KEGGFilename, KEGGBlackList, listCompartments, KEGGMatrixLoad)
 %
 % INPUTS:
-%    model:               Model structure
+%    model:               Model structure, with fields:
+%
+%                           * .mets - `m x 1` metabolite identifiers
+%                           * .subSystems - `n x 1` reaction subsystem annotations
+%                           * .RxnSubsystem - set internally from `.subSystems`
+%                             before merging with the universal database and
+%                             exchange/transport matrices; not required as input
 %    dictionary:          List of universal database IDs and their counterpart in the model (e.g.,
 %                         `KEGG_dictionary.xls`)
 %    KEGGFilename:        File name containing the universal database (e.g., KEGG - `reaction.lst`)
@@ -18,7 +24,7 @@ function MatricesSUX =generateSUXComp(model, dictionary, KEGGFilename, KEGGBlack
 %                         (e.g., `KEGG`)
 %    listCompartments:    List of intracellular compartments in the model
 %                         (optional input, default compartments to be considered: '[c]' ,'[m]', '[l]', '[g]', '[r]', '[x]', '[n]')
-%    KEGGMatrixLoad       load precomputed KEGG matrix (default: 0)
+%    KEGGMatrixLoad:      load precomputed KEGG matrix (default: 0)
 % OUTPUT:
 %    MatricesSUX:         SUX matrix
 %

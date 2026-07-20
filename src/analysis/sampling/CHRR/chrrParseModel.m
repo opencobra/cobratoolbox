@@ -1,9 +1,9 @@
-function [P,model] = chrrParseModel(model)
+function [P, model] = chrrParseModel(model)
 % Parse a COBRA model into the right format for the CHRR sampler
 %
 % USAGE:
 %
-%      [P,model] = chrrParseModel(model);
+%      [P, model] = chrrParseModel(model);
 %
 % We are trying to sample uniformly at random from the points v that satisfy:
 %
@@ -15,6 +15,7 @@ function [P,model] = chrrParseModel(model)
 %    model:    COBRA model structure with fields:
 %
 %               * .S - The `m x n` stoichiometric matrix
+%               * .b - `m x 1` right hand side of the mass balance `S v = b`
 %               * .lb - `n x 1` lower bounds on fluxes
 %               * .ub - `n x 1` upper bounds on fluxes
 %
@@ -30,6 +31,8 @@ function [P,model] = chrrParseModel(model)
 %               * .b_eq - Right hand side of equality constraints (`model.b`)
 %               * .A - Inequality constraint matrix (`[I_n 0; 0 -I_n]`)
 %               * .b - Right hand side of inequality constraints (`[lb; -ub]`)
+%    model:    the input COBRA model, with any `G`-sense `C`/`d` constraints
+%              converted to `<=` form
 %
 % .. Authors:
 %       - Ben Cousins and Hulda Haraldsdóttir, 10/2016

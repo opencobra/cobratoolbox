@@ -1,3 +1,6 @@
+% Driver script that exercises thermoQP on the E. coli core model, setting up
+% the objective and stoichiometric-consistency information before solving.
+
 if 0
     load('ecoli_core_model.mat');
     %objective

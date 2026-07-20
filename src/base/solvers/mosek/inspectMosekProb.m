@@ -1,17 +1,33 @@
 function report = inspectMosekProb(prob)
-% inspectMosekProb
-% Numerical and structural inspection of a MOSEK problem struct.
+% Numerical and structural inspection of a MOSEK problem struct
 %
-% Expected fields may include:
-%   a, blc, buc, c, blx, bux, f, g, accs
+% USAGE:
 %
-% Output:
-%   report.fieldStats   : table of per-field numerical statistics
-%   report.sizeStats    : table of shape / sparsity information
-%   report.problemChecks: struct of higher-level consistency checks
+%    report = inspectMosekProb(prob)
 %
-% Example:
-%   report = inspectMosekProb(prob);
+% INPUTS:
+%    prob:      MOSEK problem structure with fields:
+%
+%                 * .a   - linear constraint matrix
+%                 * .blc - lower linear constraint bounds
+%                 * .buc - upper linear constraint bounds
+%                 * .c   - objective vector
+%                 * .blx - lower variable bounds
+%                 * .bux - upper variable bounds
+%                 * .f   - affine conic constraint matrix
+%                 * .g   - affine conic constraint offset
+%
+% OUTPUTS:
+%    report:    Structure with fields:
+%
+%                 * .fieldStats    - table of per-field numerical statistics
+%                 * .sizeStats     - table of shape/sparsity information for
+%                   the matrix fields `a` and `f`
+%                 * .problemChecks - struct of higher-level consistency checks
+%
+% EXAMPLE:
+%
+%    report = inspectMosekProb(prob);
 
 fields = fieldnames(prob);
 

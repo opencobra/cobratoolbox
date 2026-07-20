@@ -4,11 +4,15 @@ function [listRxns] = findRxnsPerTypeInMap(map, rxnType)
 %
 % USAGE:
 %
-%    [listRxns] = findTransRxns(map, rxnType) 
+%    [listRxns] = findRxnsPerTypeInMap(map, rxnType)
 %
 % INPUTS:
-%    map:           Map from CellDesigner parsed to MATLAB format
-%    rxnType:       Reaction type as a String 
+%    map:           Map from CellDesigner parsed to MATLAB format, with fields:
+%
+%                     * .rxnType - Cell array of reaction type strings
+%                       (e.g. `TRANSPORT`, `STATE_TRANSITION`)
+%                     * .rxnName - Cell array of reaction names
+%    rxnType:       Reaction type as a string
 %
 % OUTPUT:
 %    listRxns:      List of reactions indexes (1st column) and

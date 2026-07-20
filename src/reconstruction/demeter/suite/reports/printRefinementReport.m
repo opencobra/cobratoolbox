@@ -1,20 +1,19 @@
-function curationReport = printRefinementReport(testResultsFolder,reconVersion)
+function curationReport = printRefinementReport(testResultsFolder, reconVersion)
 % This function prints a report of the results of the DEMETER test suite
 % ran on the reconstructs refined in the present project.
 %
 % USAGE:
 %
-%    curationReport = printRefinementReport(testResultsFolder,reconVersion)
+%    curationReport = printRefinementReport(testResultsFolder, reconVersion)
 %
-% INPUTS
-% testResultsFolder         Folder where the test results are saved
-% reconVersion              Name of the refined reconstruction project
+% INPUTS:
+%    testResultsFolder:    Folder where the test results are saved
+%    reconVersion:         Name of the refined reconstruction project
 %
-% OUTPUT
-% curationReport            Summary of results of QC/QA tests
+% OUTPUTS:
+%    curationReport:       Summary of results of QC/QA tests
 %
-% .. Author:
-%       - Almut Heinken, 06/2020
+% .. Author: - Almut Heinken, 06/2020
 
 tol=0.000001;
 

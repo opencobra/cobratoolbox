@@ -3,16 +3,25 @@ function [model, deletedSEEDRxns] = deleteSeedGapfilledReactions(model, biomassR
 % SEED pipeline that are no longer needed after the reconstruction was
 % refined.
 %
-% INPUT
-% model             COBRA model structure
-% biomassReaction   Biomass reaction abbreviation
+% USAGE:
 %
-% OUTPUT
-% model             COBRA model structure
-% deletedSEEDRxns   deleted gapfilled reactions
+%    [model, deletedSEEDRxns] = deleteSeedGapfilledReactions(model, biomassReaction)
+%
+% INPUTS:
+%    model:              COBRA model structure with fields:
+%
+%                           * .rxns - reaction identifiers
+%                           * .grRules - gene-protein-reaction rules, used to
+%                             identify reactions gap-filled by the SEED pipeline
+%    biomassReaction:    Biomass reaction abbreviation
+%
+% OUTPUTS:
+%    model:              COBRA model structure with the no-longer-needed
+%                        SEED gap-filled reactions removed
+%    deletedSEEDRxns:    List of deleted gapfilled reactions
 %
 % .. Authors:
-% Almut Heinken and Stefania Magnusdottir, 2016-2019
+%       - Almut Heinken and Stefania Magnusdottir, 2016-2019
 
 global CBT_LP_SOLVER
 if isempty(CBT_LP_SOLVER)

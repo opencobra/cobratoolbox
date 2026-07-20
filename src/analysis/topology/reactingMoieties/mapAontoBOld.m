@@ -1,7 +1,28 @@
-function Bout = mapAontoBOld(Akey,Bkey,Ain,Bin)
+function Bout = mapAontoBOld(Akey, Bkey, Ain, Bin)
+% Map the values in `Ain` (keyed by `Akey`) onto the ordering of `Bkey`
+%
+% For each element of `Bkey` that is a member of `Akey`, the corresponding
+% value of `Ain` is placed at the matching position of the output. `ismember`
+% returns `LIBkey` (true where `Bkey` is in `Akey`) and `LOCAkey` (the lowest
+% index in `Akey` of each matched element of `Bkey`, 0 otherwise).
+%
+% USAGE:
+%
+%    Bout = mapAontoBOld(Akey, Bkey, Ain, Bin)
+%
+% INPUTS:
+%    Akey:    array of source keys
+%    Bkey:    array of target keys defining the ordering of the output
+%    Ain:     array of values corresponding to `Akey` (cell, double, logical or int64)
+%
+% OPTIONAL INPUT:
+%    Bin:     pre-existing output array to fill in; if omitted, an empty array
+%             of the same class as `Ain` and the size of `Bkey` is created
+%
+% OUTPUT:
+%    Bout:    array the size of `Bkey`, with values of `Ain` mapped onto the
+%             positions where `Bkey` is a member of `Akey`
 
-%LIBkey: an array of the same size as Bkey containing true where the elements of B are in A and false otherwise.
-%LOCAkey: an array LOCB containing the lowest absolute index in Akey for each element in Bkey which is a member of Akey and 0 if there is no such index.
 [LIBkey,LOCAkey] = ismember(Bkey,Akey);
 
 if exist('Bin','var')

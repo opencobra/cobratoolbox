@@ -7,7 +7,7 @@ function [installedVersion, installedVersionNum] = getGitBashVersion()
 %
 % OUTPUT:
 %    installedVersion:      String of installed version of gitBash in the form `2.13.2`
-%    installedVersionNum:   Integer of `installedVersion`, e.g. `2132`
+%    installedVersionNum:    Integer of `installedVersion`, e.g. `2132`
 %
 
     global gitBashVersion

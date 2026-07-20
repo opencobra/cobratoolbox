@@ -14,7 +14,7 @@ fileDir = fileparts(which('testGpSampler'));
 cd(fileDir);
 
 % require an LP solver; skip gracefully if none is available
-prepareTest('needsLP', true);
+solvers = prepareTest('needsLP', true);
 
 % load the model
 model = getDistributedModel('ecoli_core_model.mat');
@@ -24,6 +24,13 @@ samplePoints = [5, 190];
 
 % define the solver packages to be used to run this test
 solverPkgs = {'gurobi', 'tomlab_cplex', 'glpk'};
+
+% Feature 002: gpSampler assertions are solver-independent, so in fast mode
+% validate on a single representative (default) LP solver instead of looping
+% over every installed solver. Full mode keeps the complete cross-solver loop.
+if getCobraTestMode('isFast')
+    solverPkgs = solvers.LP;
+end
 
 for k = 1:length(solverPkgs)
 

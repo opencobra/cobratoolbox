@@ -1,6 +1,30 @@
-function [metabolite_structure_rBioNet] = createrBioNetStructure(metabolite_structure_rBioNet,start,stop)
-% for the moment rBioNet will serve as universal database, but I will
-% update this
+function [metabolite_structure_rBioNet] = createrBioNetStructure(metabolite_structure_rBioNet, start, stop)
+% Builds and annotates the rBioNet-derived universal metabolite structure
+%
+% Builds the rBioNet metabolite structure and annotates each metabolite from
+% multiple offline and online resources. For the moment rBioNet serves as the
+% universal database.
+%
+% USAGE:
+%
+%    [metabolite_structure_rBioNet] = createrBioNetStructure(metabolite_structure_rBioNet, start, stop)
+%
+% OPTIONAL INPUTS:
+%    metabolite_structure_rBioNet:    rBioNet metabolite structure; built from
+%                                     the downloaded rBioNet database if not
+%                                     provided
+%    start:                           numeric index where the annotation should
+%                                     start in the metabolite structure
+%                                     (default: 1)
+%    stop:                            numeric index where the annotation should
+%                                     end in the metabolite structure (default:
+%                                     number of metabolites in the structure)
+%
+% OUTPUT:
+%    metabolite_structure_rBioNet:    updated rBioNet metabolite structure
+%
+% .. Author: - Ines Thiele
+
 warning off;
 mkdir('data/');
 currentPath = pwd;

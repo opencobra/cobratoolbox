@@ -1,20 +1,22 @@
-function [a0,a1,Rsqr,Residuals] = linearRegression(x,y)
-% This function calculates the linear regression in the form of y = a0 + a1*x
-% 
-% function [a0,a1,Rsqr,Residuals] = linearRegression(x,y)
+function [a0, a1, Rsqr, Residuals] = linearRegression(x, y)
+% Calculate the linear regression y = a0 + a1*x
 %
-% INPUT
-% x             Values for the explanatory variable x in y = a0 + a1*x
-% y             Values for the dependent variable y in y = a0 + a1*x
+% USAGE:
 %
-% OUTPUT
-% a0            Intercept
-% a1            Slope of the line
-% Rsqr          Square of the correlation coefficient
-% Residuals     Regression residuals, provides an objective measure of the
-%               goodness of fit of the linear regression equation
-% 
-% Ines Thiele 2018
+%    [a0, a1, Rsqr, Residuals] = linearRegression(x, y)
+%
+% INPUTS:
+%    x:           Values for the explanatory variable x in y = a0 + a1*x
+%    y:           Values for the dependent variable y in y = a0 + a1*x
+%
+% OUTPUTS:
+%    a0:          Intercept
+%    a1:          Slope of the line
+%    Rsqr:        Square of the correlation coefficient
+%    Residuals:    Regression residuals (an objective measure of the goodness of
+%                 fit of the linear regression equation)
+%
+% .. Author: - Ines Thiele, 2018
 
 
 % 

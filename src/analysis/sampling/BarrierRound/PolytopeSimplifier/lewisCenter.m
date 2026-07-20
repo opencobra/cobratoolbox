@@ -1,22 +1,38 @@
 function [x, info] = lewisCenter(f, x, opts)
-% x = LewisCenter(f, opts, x)
-% compute the analytic center for the domain {Ax=b} intersect the domain of f
-% 
-% Input:
-%    f - a ConvexProgram
-%    x - a feasible initial point
-%    opts - a structure for options with the following properties (optional)
-%       MaxIter - maximum number of iterations
-%       Output - maximum number of iterations
-%       CentralityTol, FeasibilityTol - stop the following are satisfied
-%           ||(A' * lambda - grad f(x)) / sqrt(hess)||_inf < CentralityTol
-%           ||A x - b||_inf < FeasibilityTol
-%       p - the parameter for lp Lewis weight
-%       JLDim - the number of dimensions used in estimating leverage score
-% 
-% Output:
-%  x - It outputs the analytic center of f
-%  info - a structure containing centrality, feasibility and iter.
+% Compute the Lewis-weight center of the domain {Ax = b} intersected with the domain of f
+%
+% USAGE:
+%
+%    [x, info] = lewisCenter(f, x, opts)
+%
+% INPUTS:
+%    f:          a `ConvexProgram` object describing the feasible domain, with fields:
+%
+%                  * .A - constraint matrix of the equality system `A x = b`
+%                  * .b - right-hand side of the equality system `A x = b`
+%                  * .solver - linear-system solver object (factorize/solve/leverageScore)
+%                  * .feasible - logical flag, set false on numerical failure
+%                  * .barrier - self-concordant barrier for the domain
+%                  * .c - linear objective coefficient vector (may be empty)
+%                  * .df - handle to the gradient of the nonlinear objective (may be empty)
+%                  * .scale - scaling applied to the exported gradient of the objective
+%                  * .idx - index mapping into the exported (original) space
+%                  * .scale2 - scaling applied to the exported Hessian of the objective
+%    x:          a feasible initial point (required)
+%
+% OPTIONAL INPUTS:
+%    opts:       structure of options with fields:
+%
+%                  * .MaxIter - maximum number of iterations
+%                  * .Output - handle used to print progress (e.g. `@disp`)
+%                  * .CentralityTol - centrality stopping tolerance on the scaled residual
+%                  * .FeasibilityTol - feasibility stopping tolerance on `||A x - b||_inf`
+%                  * .JLDim - number of dimensions used to estimate the leverage score
+%                  * .p - exponent parameter for the lp Lewis weight
+%
+% OUTPUTS:
+%    x:          the Lewis-weight center of `f`, or empty on numerical failure
+%    info:       structure with fields centrality, feasibility, iter and hess
 
 defaultOpts = struct('MaxIter', 100, 'Output', @disp, 'CentralityTol', 0.1, 'FeasibilityTol', 1e-12, 'JLDim', 10, 'p', 4);
 if nargin >= 3

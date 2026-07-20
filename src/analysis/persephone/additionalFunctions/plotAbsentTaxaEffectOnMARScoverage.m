@@ -4,19 +4,29 @@ function plotAbsentTaxaEffectOnMARScoverage(mars_preprocessedInput, absentTaxa_a
 % to the microbiome community model would have in terms of read coverage, 
 % starting from the most abundant taxa.
 %
+% USAGE:
+%
+%    plotAbsentTaxaEffectOnMARScoverage(mars_preprocessedInput, absentTaxa_abundanceMetrics, readCounts, results_path, varargin)
+%
 % INPUTS:
-%   mars_preprocessedInput:         [table] MARS output "preprocessed_input" which
-%                                   contains read counts per pre-mapped taxa.
-%   absentTaxa_abundanceMetrics:    [table] MARS output listing all
-%                                   unmapped taxa together with summary statistics on their relative
-%                                   abundance across samples (mean relative abundance is of importance for
-%                                   the function).
-%   readCounts:                     [table] Original data table containing
-%                                   read counts per taxa.
-%   results_path:                   [string] Directory path, where results should be stored (figure).
-%   numAbsentTaxaToInvestigate:     [numerical] Number of unmapped taxa
-%                                   whose effect should be tested for & plotted. 
-%                                   Optional, defaults to the full list of all unmapped taxa.
+%    mars_preprocessedInput:         [table] MARS "preprocessed_input" output with read
+%                                    counts per pre-mapped taxon:
+%
+%                                      * .Taxon - taxon identifiers
+%    absentTaxa_abundanceMetrics:    [table] MARS output listing all unmapped taxa with
+%                                    summary statistics on their relative abundance across
+%                                    samples (mean relative abundance is used):
+%
+%                                      * .Taxon - taxon identifiers
+%    readCounts:                     [table] original data table with read counts per taxon
+%    results_path:                   [string] directory path where results are stored (figure)
+%
+% OPTIONAL INPUTS:
+%    varargin:                       parameter name/value pairs:
+%
+%                                      * numAbsentTaxaToInvestigate - [numeric] number of
+%                                        unmapped taxa whose effect is tested and plotted
+%                                        (default: full list of unmapped taxa)
 %
 % Authors:
 %   - Jonas Widder, 11/2024 & 01/2025

@@ -6,9 +6,9 @@ function [FluxCorrelations, PValues, TaxonomyInfo] = correlateFluxWithTaxonAbund
 % The function should be used after running mgPipe to identify correlations
 % between the computed metabolic profiles and specific taxa in the samples.
 %
-% USAGE
+% USAGE:
 %
-%     [FluxCorrelations, PValues, TaxonomyInfo] = correlateFluxWithTaxonAbundance(abundancePath, fluxPath, taxonomy, corrMethod)
+%     [FluxCorrelations, PValues, TaxonomyInfo] = correlateFluxWithTaxonAbundance(abundancePath, fluxPath, infoFilePath, corrMethod)
 %
 % INPUTS:
 %    abundancePath:     Path to the .csv file with the abundance data.
@@ -26,7 +26,7 @@ function [FluxCorrelations, PValues, TaxonomyInfo] = correlateFluxWithTaxonAbund
 %                       'Kendall', 'Spearman'.
 %
 % OUTPUTS:
-%     FluxCorrelations: Structure with correlations between fluxes for each
+%     FluxCorrelations:    Structure with correlations between fluxes for each
 %                       reaction and abundances on taxon levels
 %     PValues:          p-values corresponding to each calculated
 %                       correlation

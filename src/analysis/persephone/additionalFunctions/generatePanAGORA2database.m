@@ -1,11 +1,15 @@
 function lookupFilePath = generatePanAGORA2database()
-% Create lookup file for checking which reactions and metabolites are
-% present in which AGORA2 strains
+% Create a lookup file recording which reactions and metabolites are present
+% in which AGORA2 strains
 %
-% OUTPUT
-% lookupFilePath        Path to the generated lookup file
+% USAGE:
 %
-% Authors:  Tim Hensen, 2024
+%    lookupFilePath = generatePanAGORA2database()
+%
+% OUTPUT:
+%    lookupFilePath:    path to the generated lookup file
+%
+% .. Author: - Tim Hensen, 2024
 
 % Step 1: Find paths to all agora2 strains
 inputDir = 'C:\Users\mspg\Documents\parkinson_recreated\ApolloAgora2panSpecies';

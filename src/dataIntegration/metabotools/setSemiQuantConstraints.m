@@ -10,8 +10,16 @@ function [modelA_QUANT, modelB_QUANT] = setSemiQuantConstraints(modelA, modelB, 
 %    [modelA_QUANT, modelB_QUANT] = setSemiQuantConstraints(modelA, modelB, cond1_upt_higher, cond2_upt_higher, cond2_secr_higher, cond1_secr_higher)
 %
 % INPUTS:
-%    modelA:                      model constrained according to condition 1
-%    modelB:                      model constrained according to condition 2
+%    modelA:                      model constrained according to condition 1, with fields:
+%
+%                                   * .rxns - reaction identifiers
+%                                   * .lb - lower flux bounds
+%                                   * .ub - upper flux bounds
+%    modelB:                      model constrained according to condition 2, with fields:
+%
+%                                   * .rxns - reaction identifiers
+%                                   * .lb - lower flux bounds
+%                                   * .ub - upper flux bounds
 %    cond1_upt_higher:            Exchange reactions and relative differences with higher uptake in condition 1 compared to condition 2
 %    cond2_upt_higher:            Exchange reactions and relative differences with higher uptake in condition 2 compared to condition 1
 %    cond2_secr_higher:           Exchange reactions and relative differences with higher secretion in condition 2 compared to condition 1

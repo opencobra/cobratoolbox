@@ -1,75 +1,56 @@
 function [gvalue, GR, PR, size1, size2, size3, success] = TrimGdel(model, targetMet, maxLoop, PRLB, GRLB)
-% TrimGdel appropriately considers GPR rules and determines 
-% a minimal gene deletion strategies to achieve growth-coupled production 
-% for a given target metabolite and a genome-scale model.
-% even in the worst-case analysis (ensures the weak-growth-coupled production).
-%
-% Gurobi is required for this version. 
-% The CPLEX version is available on https://github.com/MetNetComp/TrimGdel
+% TrimGdel computes a minimal gene-deletion strategy that achieves
+% growth-coupled production of a target metabolite for a genome-scale
+% model, appropriately accounting for gene-protein-reaction (GPR) rules.
+% The strategy is guaranteed even in the worst case (weak growth-coupled
+% production). Gurobi is required for this version; a CPLEX version is
+% available at https://github.com/MetNetComp/TrimGdel.
 %
 % USAGE:
 %
-%    function [gvalue, GR, PR, size1, size2, size3, success] 
-%                      = TrimGdel(model, targetMet, maxLoop, PRLB, GRLB)
+%    [gvalue, GR, PR, size1, size2, size3, success] = TrimGdel(model, targetMet, maxLoop, PRLB, GRLB)
 %
 % INPUTS:
-%    model:    COBRA model structure containing the following required fields to perform gDel_minRN.
-%
-%        *.rxns:       Rxns in the model
-%        *.mets:       Metabolites in the model
-%        *.genes:      Genes in the model
-%        *.grRules:    Gene-protein-reaction relations in the model
-%        *.S:          Stoichiometric matrix (sparse)
-%        *.b:          RHS of Sv = b (usually zeros)
-%        *.c:          Objective coefficients
-%        *.lb:         Lower bounds for fluxes
-%        *.ub:         Upper bounds for fluxes
-%        *.rev:        Reversibility of fluxes
-%
-%    targetMet:    target metabolites    (e.g.,  'btn_c')
-%    maxLoop:      the maximum number of iterations in gDel_minRN
-%    PRLB:         the minimum required production rates of the target metabolites
-%                  when gDel-minRN searches the gene deletion
-%                  strategy candidates. 
-%                  (But it is not ensured to achieve this minimum required value
-%                  when GR is maximized withoug PRLB.)
-%    GRLB:         the minimum required growth rate 
-%                  when gDel-minRN searches the gene deletion
-%                  strategy candidates. 
+%    model:        COBRA model structure. TrimGdel passes the whole model to
+%                  its subroutines gDel_minRN (Step 1) and step2and3 (Steps 2
+%                  and 3), which require the reaction, metabolite, gene,
+%                  GPR-rule, stoichiometry, objective and flux-bound fields.
+%    targetMet:    target metabolite identifier (e.g. 'btn_c')
+%    maxLoop:      maximum number of iterations performed in gDel_minRN
+%    PRLB:         minimum required production rate of the target metabolite
+%                  used while gDel_minRN searches for gene-deletion strategy
+%                  candidates (not guaranteed once GR is maximized without PRLB)
+%    GRLB:         minimum required growth rate used while gDel_minRN searches
+%                  for gene-deletion strategy candidates
 %
 % OUTPUTS:
-%    gvalue:     a small gene deletion strategy (obtained by TrimGdel).
-%                The first column is the list of genes.
-%                The second column is a 0/1 vector indicating which genes should be deleted.
-%                    0: indicates genes to be deleted.
-%                    1: indecates genes to be remained.
-%    GR:         the maximum growth rate when the obtained gene deletion
-%                strategy represented by gvalue is applied.
-%    PR:         the minimum production rate of the target metabolite under 
-%                the maximization of the growth rate when the obtained gene deletion
-%                strategy represented by gvalue is applied.
-%    size1:      the number of gene deletions after Step1.
-%    size2:      the number of gene deletions after Step2.
-%    size3:      the number of gene deletions after Step3.
-%    success:    indicates whether TrimGdel obained an appropriate gene
-%                deletion strategy. (1:success, 0:failure)
+%    gvalue:       the resulting small gene-deletion strategy. Column 1 lists
+%                  the genes; column 2 is a 0/1 vector (0 = gene deleted,
+%                  1 = gene retained)
+%    GR:           the maximum growth rate when the strategy in gvalue is applied
+%    PR:           the minimum production rate of the target metabolite under
+%                  growth-rate maximization when the strategy in gvalue is applied
+%    size1:        the number of gene deletions after Step 1
+%    size2:        the number of gene deletions after Step 2
+%    size3:        the number of gene deletions after Step 3
+%    success:      whether an appropriate gene-deletion strategy was obtained
+%                  (1 = success, 0 = failure)
 %
 % NOTE:
 %
-%    T. Tamura, "Trimming Gene Deletion Strategies for Growth-Coupled 
-%    Production in Constraint-Based Metabolic Networks: TrimGdel," 
+%    T. Tamura, "Trimming Gene Deletion Strategies for Growth-Coupled
+%    Production in Constraint-Based Metabolic Networks: TrimGdel,"
 %    in IEEE/ACM Transactions on Computational Biology and Bioinformatics,
 %    vol. 20, no. 2, pp. 1540-1549, 2023.
 %
-%    Comprehensive computational results are accumulated in MetNetComp
-%    database.
-%    https://metnetcomp.github.io/database1/indexFiles/index.html
+%    Comprehensive computational results are accumulated in the MetNetComp
+%    database: https://metnetcomp.github.io/database1/indexFiles/index.html
 %
-%    T. Tamura, "MetNetComp: Database for Minimal and Maximal Gene-Deletion Strategies 
-%    for Growth-Coupled Production of Genome-Scale Metabolic Networks," 
-%    in IEEE/ACM Transactions on Computational Biology and Bioinformatics, 
-%    vol. 20, no. 6, pp. 3748-3758, 2023, 
-% 
+%    T. Tamura, "MetNetComp: Database for Minimal and Maximal Gene-Deletion
+%    Strategies for Growth-Coupled Production of Genome-Scale Metabolic
+%    Networks," in IEEE/ACM Transactions on Computational Biology and
+%    Bioinformatics, vol. 20, no. 6, pp. 3748-3758, 2023.
+%
 % .. Author:    - Takeyuki Tamura, Mar 06, 2025
 %
 

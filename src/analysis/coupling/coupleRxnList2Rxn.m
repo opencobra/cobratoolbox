@@ -20,7 +20,10 @@ function [modelCoupled] = coupleRxnList2Rxn(model, rxnList, rxnC, c, u)
 %    [modelCoupled] = coupleRxnList2Rxn(model, rxnList, rxnC, c, u)
 %
 % INPUTS:
-%    model:           model structure
+%    model:           model structure with the field:
+%
+%                       * .rxns - `n x 1` cell array of reaction identifiers
+%
 %    rxnList:         array of reaction names
 %    rxnC:            reaction that should be coupled with each reaction in the
 %                     reaction list

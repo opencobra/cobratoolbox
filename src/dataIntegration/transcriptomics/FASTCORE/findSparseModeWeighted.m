@@ -1,4 +1,4 @@
-function Supp = findSparseModeWeighted( J, P, singleton, model, LPproblem, weights, epsilon )
+function Supp = findSparseModeWeighted(J, P, singleton, model, LPproblem, weights, epsilon)
 % Finds a mode that contains as many reactions from J and as few from P.
 % Returns its support, or [] if no reaction from J can get flux above epsilon.
 % Based on: `The FASTCORE algorithm for context-specific metabolic network reconstruction.
@@ -7,14 +7,14 @@ function Supp = findSparseModeWeighted( J, P, singleton, model, LPproblem, weigh
 %
 % USAGE:
 %
-%    Supp = findSparseMode( J, P, singleton, model, epsilon )
+%    Supp = findSparseModeWeighted(J, P, singleton, model, LPproblem, weights, epsilon)
 %
 % INPUTS:
 %    J:           Indicies of irreversible reactions
 %    P:           Reactions
-%    singleton:   Takes only first instance from J, else takes whole J
+%    singleton:    Takes only first instance from J, else takes whole J
 %    model:       Model structure
-%    LPproblem:   The LP problem for the model structure
+%    LPproblem:    The LP problem for the model structure
 %    weights:     The weights associated with the reactions.
 %    epsilon:     Parameter (default: getCobraSolverParams('LP', 'feasTol')*100; see Vlassis et al for more details)
 %

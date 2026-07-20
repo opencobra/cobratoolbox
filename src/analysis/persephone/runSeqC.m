@@ -1,41 +1,34 @@
-function status = runSeqC(...
-    repoPathSeqC, outputPathSeqC, fileIDSeqC, ...
+function status = runSeqC(repoPathSeqC, outputPathSeqC, fileIDSeqC, ...
     procKeepSeqC, maxMemSeqC, maxCpuSeqC, ...
-    maxProcSeqC, debugSeqC, runApptainer ...
-)
-%======================================================================================================#
-% Title: SeqC as Flux Pipeline MATLAB Wrapper
-% Author: Wiley Barton
-% Modified code sources:
-%   matlab script structure: Tim Hensen, runMars.m, 2025.01
-%   assistance and reference from a generative AI model [ChatGPT](https://chatgpt.com/)
-%       clean-up and improved readability
-% Last Modified: 2026.04.29 - wbarton
-% Part of: Persephone Pipeline
+    maxProcSeqC, debugSeqC, runApptainer)
+% Build and run the SeqC pipeline from MATLAB as a wrapper around its container
 %
-% Description:
-%   This function builds and runs the SeqC Docker image from a MATLAB environment.
-%   It ensures necessary databases exist and coordinates execution with the MARS pipeline.
+% Builds and runs the SeqC Docker (or Apptainer) image from a MATLAB
+% environment, ensures the necessary databases exist, and coordinates
+% execution with the MARS pipeline. Requires Docker (and, optionally,
+% Apptainer) to be installed and on the system path.
 %
-% Inputs:
-%   - repoPathSeqC (char) : Path to the SeqC repository
-%   - outputPathSeqC (char) : Path for SeqC output
-%   - fileIDSeqC (char) : Unique identifier for file processing
-%   - procKeepSeqC (logical) : Keep all files (true/false)
-%   - maxMemSeqC (int) : Maximum memory allocation for SeqC
-%   - maxCpuSeqC (int) : Maximum CPU allocation for SeqC
-%   - maxProcSeqC (int) : Maximum processes for SeqC
-%   - debugSeqC (logical) : Enable debug mode (true/false)
-%   - runApptainer (logical) : Enable apptainer wrapping (true/false)
-%   ...
+% USAGE:
 %
-% Dependencies:
-%   - MATLAB
-%   - Docker installed and accessible in the system path
-% Optional:
-%   - Apptainer (formerly Singularity) installed and accessible in the system path (tested for version 1.3.6-1.el8)
-%======================================================================================================#
-%% Determine Operating System
+%    status = runSeqC(repoPathSeqC, outputPathSeqC, fileIDSeqC, procKeepSeqC, maxMemSeqC, maxCpuSeqC, maxProcSeqC, debugSeqC, runApptainer)
+%
+% INPUTS:
+%    repoPathSeqC:      char, path to the SeqC repository
+%    outputPathSeqC:    char, path for the SeqC output
+%    fileIDSeqC:        char, unique identifier for file processing
+%    procKeepSeqC:      logical, keep all intermediate files (true/false)
+%    maxMemSeqC:        integer, maximum memory allocation for SeqC
+%    maxCpuSeqC:        integer, maximum CPU allocation for SeqC
+%    maxProcSeqC:       integer, maximum number of processes for SeqC
+%    debugSeqC:         logical, enable debug mode (true/false)
+%    runApptainer:      logical, wrap execution with Apptainer (true/false)
+%
+% OUTPUT:
+%    status:    double, 0 if SeqC completed successfully, 1 otherwise
+%
+% .. Author: - Wiley Barton, last modified 2026.04.29
+%            - based on the runMars.m script structure (Tim Hensen, 2025.01)
+
 if ismac
     vOS = 'mac';
     setenv('PATH', [getenv('PATH') ':/usr/local/bin']); % Ensure Docker is found

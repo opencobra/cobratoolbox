@@ -1,15 +1,39 @@
-function trainingModel = reverseTransformTrainingData(trainingModel, use_model_pKas_by_default,model)
-% Calculate the reverse transform for all reactions in trainingModel.
+function trainingModel = reverseTransformTrainingData(trainingModel, use_model_pKas_by_default, model)
+% Calculate the reverse Legendre transform for all reactions in the training model
 %
-% INPUT
-% trainingModel
+% Applies the reverse Legendre transform to convert the standard transformed
+% reaction Gibbs energies (`.DrGt0`) into standard reaction Gibbs energies
+% (`.DrG0`), using either the model or the training-data pseudoisomer/pKa data.
 %
-% OPTIONAL INPUT
-% use_model_pKas_by_default
-% model
+% USAGE:
 %
-% OUTPUT
-% trainingModel.DrG0:                        n x 1 standard Gibbs energy
+%    trainingModel = reverseTransformTrainingData(trainingModel, use_model_pKas_by_default, model)
+%
+% INPUTS:
+%    trainingModel:                training-data structure. Fields used:
+%
+%                                    * .S - `m x n` stoichiometric matrix of training reactions
+%                                    * .cids - `m x 1` compound ids
+%                                    * .I - `n x 1` ionic strengths (NaN entries default to 0.25 M)
+%                                    * .pMg - `n x 1` pMg values (NaN entries default to 14)
+%                                    * .T - `n x 1` temperatures
+%                                    * .pH - `n x 1` pH values
+%                                    * .kegg_pKa - structure array of KEGG pKa/pseudoisomer data
+%                                    * .pseudoisomers - structure array of pseudoisomer data per compound
+%                                    * .Model2TrainingMap - map from model to training-data compound indices
+%                                    * .DrGt0 - `n x 1` standard transformed reaction Gibbs energy
+%
+% OPTIONAL INPUTS:
+%    use_model_pKas_by_default:    logical, when true use the model pseudoisomer
+%                                  data in preference to the training data (default: 0)
+%    model:                        COBRA model structure. Field used:
+%
+%                                    * .pseudoisomers - structure array of model pseudoisomer data
+%
+% OUTPUTS:
+%    trainingModel:                the training model with an added field:
+%
+%                                    * .DrG0 - `n x 1` standard reaction Gibbs energy
 
 
 if ~exist('use_model_pKas_by_default','var')

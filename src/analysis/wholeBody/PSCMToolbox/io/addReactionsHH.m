@@ -1,26 +1,36 @@
-function [model] = addReactionsHH(model, rxnAbbrs,rxnNames, reactions, gprs, subSystems,couplingFactor,rxnNotes,rxnReferences)
-% This function add reaction(s) to the whole-body metabolic model,
-% including the required coupling constraint.
-% This function is based on model = addReaction(model,'newRxn1','A -> B + 2 C')
+function [model] = addReactionsHH(model, rxnAbbrs, rxnNames, reactions, gprs, subSystems, couplingFactor, rxnNotes, rxnReferences)
+% Add reaction(s) to the whole-body metabolic model with coupling constraints
 %
-% [model] = addReactionsHH(model, rxnAbbrs,rxnNames, reactions, gprs, subSystems,couplingFactor)
+% This function adds reaction(s) to the whole-body metabolic model, including
+% the required coupling constraint. It is based on
+% model = addReaction(model, 'newRxn1', 'A -> B + 2 C').
 %
-% INPUT
-% model             Model structure
-% rxnAbbrs          List of reaction abbreviation(s) to be added
-% rxnNames          List of reaction names
-% reactions         List of reaction formula {'A -> B + 2 C'}
-% gprs              List of grRules
-% subSystems        List of subSystems
-% couplingFactor    Coupling factor to be added, default 20000
-% rxnNotes          List of notes for the reactions (optional)
-% rxnReferences     List of references for the reactions (optional)
+% USAGE:
 %
-% OUTPUT
-% model             Updated model structure
+%    [model] = addReactionsHH(model, rxnAbbrs, rxnNames, reactions, gprs, subSystems, couplingFactor, rxnNotes, rxnReferences)
 %
-% Ines Thiele 2018
-% IT - added gpr rules to be properly taken into account
+% INPUTS:
+%    model:            Whole-body metabolic model, with fields:
+%
+%                        * .rxns - reaction identifiers
+%                        * .S - stoichiometric matrix
+%                        * .A - constraint matrix (stoichiometry plus coupling constraints)
+%                        * .subSystems - subsystem annotations
+%    rxnAbbrs:         List of reaction abbreviation(s) to add
+%    rxnNames:         List of reaction names
+%    reactions:        List of reaction formulae, e.g. {'A -> B + 2 C'}
+%    gprs:             List of gene-protein-reaction rules
+%    subSystems:       List of subsystems
+%    couplingFactor:    Coupling factor to add (default 20000)
+%    rxnNotes:         List of notes for the reactions (optional)
+%    rxnReferences:    List of references for the reactions (optional)
+%
+% OUTPUT:
+%    model:            Updated model structure
+%
+% .. Authors:
+% ..    - Ines Thiele, 2018
+% ..    - IT, added GPR rules to be properly taken into account
 
 
 if ~exist('couplingFactor','var') || ~isempty(couplingFactor)

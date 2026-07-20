@@ -2,39 +2,34 @@ function [Clifted, newcon, ctrs_cuprow, ...
     ctrs_new, evars, ndum, cupcon, nEvars] = liftRows(C, cupcon, BIG, logbig, printLevel, ctrs_cuprow, rxns)   
     % Helper for liftCouplingConstraints. Implements the lifting
     %
+    % USAGE:
+    %
+    %    [Clifted, newcon, ctrs_cuprow, ctrs_new, evars, ndum, cupcon, nEvars] = liftRows(C, cupcon, BIG, logbig, printLevel, ctrs_cuprow, rxns)
+    %
     % INPUTS:
-    %   C           k x n double
-    %               Subset of coupling constraints (2-variable rows to be lifted)
-    %   cupcon      k x 1 char       
-    %               Senses for rows in C (L/G/E)
-    %   BIG         double
-    %               Threshold for "large" coefficients. TRiggers lifting
-    %   logbig      double
-    %               log(BIG)
-    %   printLevel  double
-    %               0 or 1. If 1 prints extra information
-    %   ctrs_cuprow k x 1 cell array of chr
-    %               IDs of the selected constraints. Correspnds to rows in C
-    %   rxns        nRxns x 1 cell array of chr
-    %               model rxn IDs
+    %    C:             `k x n` double, subset of coupling constraints
+    %                   (2-variable rows to be lifted)
+    %    cupcon:        `k x 1` char, senses for rows in `C` (L/G/E)
+    %    BIG:           double, threshold for "large" coefficients; triggers
+    %                   lifting
+    %    logbig:        double, `log(BIG)`
+    %    printLevel:    double, 0 or 1; if 1 prints extra information
+    %    ctrs_cuprow:    `k x 1` cell array of char, IDs of the selected
+    %                    constraints, corresponds to rows in `C`
+    %    rxns:          `nRxns x 1` cell array of char, model reaction IDs
     %
     % OUTPUTS:
-    %   Clifted     k' x n' double
-    %               Lifted constraint matrix
-    %   newcon      ndum x 1 char
-    %               Senses of added dummy constraints
-    %   ctrs_cuprow k' x 1 cell array of char
-    %               Updated IDs for original coupling constraints.
-    %   ctrs_new    ndum x 1 cell array of char
-    %               IDs for dummy constraints
-    %   evars       nEvars x 1 cell array of char
-    %               IDs of new dummy variables
-    %   ndum        double
-    %               Total number of dummy constraints rows added
-    %   cupcon      k' x 1 char
-    %               Senses for rows in Clifted (L/G/E)
-    %   nEvars      double
-    %               Total number of dummy variables
+    %    Clifted:       `k' x n'` double, lifted constraint matrix
+    %    newcon:        `ndum x 1` char, senses of added dummy constraints
+    %    ctrs_cuprow:    `k' x 1` cell array of char, updated IDs for original
+    %                    coupling constraints
+    %    ctrs_new:      `ndum x 1` cell array of char, IDs for dummy
+    %                   constraints
+    %    evars:         `nEvars x 1` cell array of char, IDs of new dummy
+    %                   variables
+    %    ndum:          double, total number of dummy constraint rows added
+    %    cupcon:        `k' x 1` char, senses for rows in `Clifted` (L/G/E)
+    %    nEvars:        double, total number of dummy variables
 
     [~,minind] = min(abs(C),[],2);
     [maxval,maxind] = max(abs(C),[],2);

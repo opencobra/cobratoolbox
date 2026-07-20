@@ -1,76 +1,41 @@
 function [iWBM, iWBMcontrol, personalisationOverview] = persWBMetabolomics(sex, metabolomicParams, varargin)
+% Create metabolomically personalised whole-body models (WBMs) from metabolite data
 %
+% Takes metabolomic parameters for one or several individuals and adjusts the
+% metabolite constraints of a provided WBM (or of Harvey/Harvetta) to create a
+% personalised WBM. When supplied as a table, the sample and metabolite names
+% are read from `metabolomicParams.Properties.VariableNames`.
 %
-% This function takes a table of metabolomic parameters for an individual or multiple individuals
-% (listed in inputs) and adjusts the paramteres of a provided WBM or Harvey/Harvetta to
-% create a personalised WBM
+% USAGE:
 %
-% The calculation of metabolomic parameteres will be performed based on
-% the available data 
+%    [iWBM, iWBMcontrol, personalisationOverview] = persWBMetabolomics(sex, metabolomicParams, varargin)
 %
-% INPUTS
+% INPUTS:
+%    sex:                 string, sex of the subject(s) ("male" or "female")
+%    metabolomicParams:    metabolomic parameters as a cell array, a table, or a
+%                         path to an Excel file. Each column holds the
+%                         metabolite concentrations for one individual, with
+%                         the compartment and unit given in the leading rows
 %
-% REQUIRED:
-% metabolomicParamters         Can be a cell array or a table or a path to an
-%                              excel file. In any case, this should contain
-%                              a list with a minimum of three columns and option
-%                              for additional columns for each individual for which a model should be created:
+% OPTIONAL INPUTS (name-value pairs in varargin):
+%    iWBM:           an already physiologically personalised WBM to further
+%                    personalise (default '')
+%    iWBMcontrol:    a control WBM to carry through unchanged (default '')
+%    resPath:        path in which to store the personalised model and outputs
+%                    (default the current directory)
+%    Diet:           diet in the form of a text file or named `.mat` file from
+%                    the COBRA toolbox (default 'EUAverageDietNew')
 %
-%                              |"ID"              |"glucose"    |"HC0192"  |
-%                              ----------------------------------------------
-%                              |"compartment"    |"blood"       |"urine"   |
-%                              |"unit"           |"mg/dL"       | "mg/dL"  |                
-%                              |"Individual1"    |180           |50        |
-%                              |"Individual2"    |150           |66        |
+% OUTPUTS:
+%    iWBM:                       model with updated metabolite constraints
+%                                (updated parameters described in
+%                                `model.IndividualisedParameters`)
+%    iWBMcontrol:                control WBM with no personalised adjustments
+%    personalisationOverview:    table summarising, per individual and biofluid,
+%                                the metabolite min/max concentrations applied
 %
-%
-%                              Sex must be provided for each model. The compartment must be specified and must be
-%                              one of the following: csf, u, blParameters that can be personalised include:
-%                              All of those metabolites which are found in
-%                              the
-%                              *for each the default unit used by the model
-%                              is provided. For x, y, z- unit conversion
-%                              will be performed for all known common units of
-%                              measurement.
-%
-%
-% OPTIONAL:
-% WBM/(s)                     User can provide a WBM (Whole Body Metabolic Model) or a path to multiple models.
-%                             If no model is provided, either Harvey or Harvetta will be loaded from the COBRA
-%                             toolbox, depending on sex in provided physiological data.
-%                             If multiple models are provided, the model ID must
-%                             match the model name provided in the physiological data.
-% resPath                     Path on which to store personalised model and
-%                             other outputs.
-%                             Default = current directory
-% Diet                        Diet in the form of text file or named .mat
-%                             file from the COBRA toolbox (default =
-%                             EUAverageDiet)
-%                             ** This function can also be run in isolation
-%                             but if a user wants to personalise both
-%                             physiological and metabolomic- this function
-%                             should alway be run and NOT
-%                             persWBMmetabolomics in isolation!
-%
-% OUTPUTS
-%
-% iWBM                        Model with updated physiological paramteres
-%                             (stored as "persModelName.mat"). All updated
-%                             paramteres are described in
-%                             model.IndividualisedParameters
-% controlWBM                  This is a WBM with no personalised
-%                             adjustments. When a WBM or multiple WBMs have
-%                             been given as inputs, the controlWBMs are
-%                             exact copies of those. When Harvey or
-%                             Harvetta are used, controlWBM is copies of
-%                             Harvey/Harvetta.
-% persParameters              Excel file with details of the updated
-%                             parameter and how it was calculated
-%
-%
-% author: Anna Sheehy November 2024
-%% Step One: Read in the available data, check all data is valid
-% Define the input parser
+% .. Author: - Anna Sheehy, November 2024
+
 parser = inputParser();
 
 % Add required inputs (based on your description)

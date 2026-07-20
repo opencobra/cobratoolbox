@@ -1,4 +1,4 @@
-function results = checkPresentFields(fieldProperties,model, results)
+function results = checkPresentFields(fieldProperties, model, results)
 % Check the model fields for consistency with the given fieldProperties and
 % update the results struct.
 % The desired properties of each field are described here:
@@ -7,13 +7,15 @@ function results = checkPresentFields(fieldProperties,model, results)
 %
 % USAGE:
 %
-%    results = checkPresentFields(fieldProperties,model, results)
+%    results = checkPresentFields(fieldProperties, model, results)
 %
 % INPUT:
-%    fieldProperties:  field properties as obtained by
+%    fieldProperties:    field properties as obtained by
 %                      getDefinedFieldProperties
 %    model:            a structure that represents the COBRA model.
-%    results:          the results structure for this test
+%    results:          the results structure for this test, with field:
+%
+%                        * .Errors - struct of accumulated error information (created if absent)
 %
 % OUTPUT:
 %

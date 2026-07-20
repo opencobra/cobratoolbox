@@ -1,28 +1,32 @@
-function [model,rmUnannRxns]=removeUnannotatedReactions(model,microbeID,biomassReaction,growsOnDefinedMedium,inputDataFolder)
+function [model, rmUnannRxns] = removeUnannotatedReactions(model, microbeID, biomassReaction, growsOnDefinedMedium, inputDataFolder)
 % Part of the DEMETER pipeline. Refines a reconstruction based on
 % comparative genomics data retrieved from PubSEED spreadsheets. Removes
 % reactions that were present in the reconstruction before refinement but
 % that are not annotated in the organism according to manually performed
 % comparative genomic analyses.
 %
-% USAGE
-%       [model,rmUnannRxns]=removeUnannotatedReactions(model,microbeID,biomassReaction,growsOnDefinedMedium,inputDataFolder)
+% USAGE:
 %
+%    [model, rmUnannRxns] = removeUnannotatedReactions(model, microbeID, biomassReaction, growsOnDefinedMedium, inputDataFolder)
 %
-% INPUTS
-% model:                    COBRA model structure
-% microbeID:                ID of the reconstructed microbe that serves as 
-%                           the reconstruction name and to identify it in
-%                           input tables
-% definedMediumGrowthOK:    If 1, defined medium is available for the
-%                           organism and the model can grow on it
-% inputDataFolder:          Folder with experimental data and database 
-%                           files to load
+% INPUTS:
+%    model:                   COBRA model structure with fields:
 %
-% OUTPUTS
-% model:                    COBRA model structure
-% rmUnannRxns:              Removed reactions based on comparative genomics
-%                           data
+%                               * .rxns - Reaction identifiers
+%    microbeID:               ID of the reconstructed microbe that serves as
+%                             the reconstruction name and to identify it in
+%                             input tables
+%    biomassReaction:         Biomass reaction abbreviation
+%    growsOnDefinedMedium:    If 1, defined medium is available for the
+%                             organism and the model can grow on it
+%    inputDataFolder:         Folder with experimental data and database
+%                             files to load
+%
+% OUTPUTS:
+%    model:                   COBRA model structure with unannotated
+%                             reactions removed
+%    rmUnannRxns:             Removed reactions based on comparative genomics
+%                             data
 %
 % .. Authors:
 %       - Almut Heinken, 06/2020

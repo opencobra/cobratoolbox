@@ -38,12 +38,25 @@ function solution = optimizeCardinality(problem, param)
 %                   * .delta0 - global parameter on maximise `||y||_0`
 %                   * .delta1 - global parameter on minimise `||y||_1
 %                   * .alpha1 - global parameter on minimise `||z||_1
+%                   * .lambda - shorthand for `.lambda0` (mutually exclusive with
+%                     `.lambda0`/`.lambda1`); when given, `.lambda0` is set to
+%                     `problem.lambda` and `.lambda1` is set to `feasTol` (Default `.lambda` = 1 if none of `.lambda`, `.lambda0`, `.lambda1` are given)
+%                   * .delta - shorthand for `.delta0` (mutually exclusive with
+%                     `.delta0`/`.delta1`); when given, `.delta0` is set to
+%                     `problem.delta` and `.delta1` is set to `feasTol` (Default `.delta` = 1 if none of `.delta`, `.delta0`, `.delta1` are given)
+%                   * .complementaritykBool - `size(A,2) x 2` matrix identifying, for each
+%                     complementarity pair, the two `x`-indices (columns) that are linked;
+%                     required together with `.complementaritydBool`
+%                   * .complementaritydBool - `size(A,2) x 1` vector identifying, for each
+%                     complementarity pair, the corresponding `y`-index whose value should
+%                     equal the sum of the two linked `x`-values; required together with
+%                     `.complementaritykBool`
 %
 %    param:      Parameters structure:
 %                   * .printLevel - greater than zero to recieve more output
 %                   * .nbMaxIteration - stopping criteria - number maximal of iteration (Default value = 100)
 %                   * .epsilon - stopping criteria - (Default value = feasTol)
-%                   * .theta - starting parameter of the approximation (Default value = 0.5) 
+%                   * .theta - starting parameter of the approximation (Default value = 0.5)
 %                              For a sufficiently large parameter, the Capped-L1 approximate problem
 %                              and the original cardinality optimisation
 %                              problem are have the same set of optimal
@@ -54,7 +67,24 @@ function solution = optimizeCardinality(problem, param)
 %                              multiple times gives fifferent solutions. If
 %                              som try reducing theta to e.g. 0.1
 %                   * .thetaMultiplier - at each iteration: theta = theta*thetaMultiplier
+%                   * .thetaMax - maximum value of `theta`, above which `theta` is no
+%                     longer increased (Default value = 250)
 %                   * .eta - Smallest value considered non-zero (Default value feasTol)
+%                   * .warmStartMethod - method used to compute the starting point
+%                     `(x,y,z)` for the DCA loop; one of `'inverseTheta'`, `'original'`,
+%                     `'0'`, `'l1'`, `'l2'`, `'random'` (Default value = 'random')
+%                   * .condenseW - if `true`, omit the auxiliary `w` variable for
+%                     `x`-entries already constrained to be non-negative (Default value = 1)
+%                   * .condenseT - if `true`, omit the auxiliary `t` variable for
+%                     `y`-entries whose absolute value is already constrained to be less
+%                     than `1/theta` (Default value = 1)
+%                   * .regularizeOuter - if `true`, regularise the outer-loop cardinality
+%                     objective with the weighted one-norm of the cardinality-optimised
+%                     variables (Default value = 0 if `param` is omitted, 1 if `param` is
+%                     given without this field)
+%                   * .checkFeasibility - if `true`, solve the initial sub-problem once
+%                     before the DCA loop begins to check and report whether it is
+%                     feasible (Default value = 0)
 
 %
 % OUTPUT:

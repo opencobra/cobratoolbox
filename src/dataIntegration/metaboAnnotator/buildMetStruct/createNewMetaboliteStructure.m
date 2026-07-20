@@ -1,4 +1,4 @@
-function [metabolite_structure] =createNewMetaboliteStructure(input,source,metabolite_structure_rBioNet,metab,rxnDB)
+function [metabolite_structure] = createNewMetaboliteStructure(input, source, metabolite_structure_rBioNet, metab, rxnDB)
 % This function creates a metabolite structure using the provided input. If
 % no VMHId is provided in the header of the input, then VMHId are
 % generated.
@@ -8,7 +8,7 @@ function [metabolite_structure] =createNewMetaboliteStructure(input,source,metab
 %    [metabolite_structure] = createNewMetaboliteStructure(input,source,metabolite_structure_rBioNet,metab,rxnDB)
 % 
 % INPUT:
-%    Input:                             Cell array containing the metabolites
+%    input:                             Cell array containing the metabolites
 %                                       The information provided must be as follows:
 %                                       metList={
 %                                       'VMH ID' 'metabolite_name' 'HMDB' 'inchistring' 'neutral_formula' 'charged_formula' 'charge'
@@ -18,8 +18,10 @@ function [metabolite_structure] =createNewMetaboliteStructure(input,source,metab
 %                                       (e.g., 'Manually assembled by IT')
 %    metabolite_structure_rBioNet:      (optional and only necessary if the
 %                                       input has no VMHId)
-%    metab:
-%    rxnDB:
+%    metab:                             rBioNet metabolite database (as stored
+%                                       in `metab.mat`); loaded from disk if not
+%                                       provided
+%    rxnDB:                             rBioNet reaction database
 %
 % OUTPUT:
 %    metabolite_structure:              metabolite structure
@@ -28,7 +30,7 @@ function [metabolite_structure] =createNewMetaboliteStructure(input,source,metab
 %    -Ines Thiele,    09/2021
 %    -Farid Zare      20/11/2023       Documentation is enhanced. One line is added to generate a MATLAB valid variable name
 
-%load rbionet data
+% load rbionet data
 rBioNetPath =  fileparts(which('tutorial_MetaboAnnotator'));
 if exist([rBioNetPath filesep 'cache' filesep 'metab.mat'],'file')
     load([rBioNetPath filesep 'cache' filesep 'metab.mat']);

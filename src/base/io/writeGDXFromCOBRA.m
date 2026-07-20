@@ -7,7 +7,13 @@ function [helpText] = writeGDXFromCOBRA(cobraStruct, varargin)
 %    [helpText] = writeGDXFromCOBRA(cobraStruct,...)
 %
 % INPUTS:
-%    cobraStruct:  Model Structure  
+%    cobraStruct:    Model Structure with fields:
+%
+%                      * .S - Stoichiometric matrix
+%                      * .mets - Metabolite identifiers
+%                      * .rxns - Reaction identifiers
+%                      * .lb - Lower bounds
+%                      * .ub - Upper bounds
 %
 % OPTIONAL INPUTS: 
 %    FileName:      Name for the generated .gdx file (date and time based name by default)

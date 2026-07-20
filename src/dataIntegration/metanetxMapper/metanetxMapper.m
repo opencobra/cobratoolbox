@@ -15,7 +15,7 @@ function [metData] = metanetxMapper(metInfo, varargin)
 %    or 'chebi' respectively as the identifier type for more accurate respond
 %
 % OUTPUT:
-%    metData: A structure variable including fields of metabolite Identifiers: 
+%    metData:    A structure variable including fields of metabolite Identifiers: 
 %           -metName:            Common Name
 %           -metMetaNetXID:      MetaNetX ID
 %           -metVMHID:           VMH Symbol

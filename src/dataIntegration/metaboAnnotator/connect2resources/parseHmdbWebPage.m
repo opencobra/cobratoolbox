@@ -1,4 +1,37 @@
-function [metabolite_structure,IDsAdded,IDsMismatch,InchiKeyList,InchiStringList ] = parseHmdbWebPage(metabolite_structure,startSearch,endSearch,printInchis)
+function [metabolite_structure, IDsAdded, IDsMismatch, InchiKeyList, InchiStringList] = parseHmdbWebPage(metabolite_structure, startSearch, endSearch, printInchis)
+% Parse the HMDB website for each metabolite that has an HMDB id and retrieve
+% the cross-referenced identifiers and properties (e.g. ChemSpider, FooDB,
+% Wikipedia, PubChem, ChEBI, KEGG, InChIKey, InChIString, molecular weights,
+% IUPAC name, description, BioCyc, CAS registry and more), adding them to the
+% metabolite structure. Mismatches with existing ids are reported in IDsMismatch.
+%
+% USAGE:
+%
+%    [metabolite_structure, IDsAdded, IDsMismatch, InchiKeyList, InchiStringList] = parseHmdbWebPage(metabolite_structure, startSearch, endSearch, printInchis)
+%
+% INPUT:
+%    metabolite_structure:    metabolite structure whose fields are VMH
+%                             metabolite IDs, each holding a `hmdb` field
+%
+% OPTIONAL INPUTS:
+%    startSearch:             numeric index of where the search should start in
+%                             the metabolite structure (default: 1)
+%    endSearch:               numeric index of where the search should end in
+%                             the metabolite structure (default: last metabolite)
+%    printInchis:             if true, return the InChIKey and InChIString lists
+%                             (default: 0)
+%
+% OUTPUTS:
+%    metabolite_structure:    metabolite structure updated with the retrieved
+%                             identifiers
+%    IDsAdded:                cell array logging the added identifiers, with the
+%                             metabolite field name, the identifier type, and
+%                             the assigned identifier per row
+%    IDsMismatch:             list of mismatching IDs between the structure and HMDB
+%    InchiKeyList:            list of the retrieved InChIKeys
+%    InchiStringList:         list of the retrieved InChIStrings
+%
+% .. Author: - Ines Thiele
 
 if ~exist('printInchis','var')
     printInchis = 0; % default setting is not to print the InchiKeyList,InchiStringList 

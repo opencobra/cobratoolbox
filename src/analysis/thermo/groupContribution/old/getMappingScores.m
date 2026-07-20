@@ -1,8 +1,24 @@
 function mappingScore = getMappingScores(model, training_data)
-% finds the best mapping between the model compounds and the training data (KEGG) compounds
-% INPUTS
+% Find the best mapping between the model compounds and the training data (KEGG) compounds
 %
-% OUTPUTS
+% USAGE:
+%
+%    mappingScore = getMappingScores(model, training_data)
+%
+% INPUTS:
+%    model:            test COBRA model structure with fields:
+%
+%                        * .mets - `m x 1` cell array of metabolite identifiers
+%                        * .inchi - structure of InChI strings, with fields `.standard`, `.standardWithStereo` and `.standardWithStereoAndCharge`
+%    training_data:    training data structure with fields:
+%
+%                        * .cids - compound identifiers of the training data
+%                        * .std_inchi - standard InChI of the training compounds
+%                        * .std_inchi_stereo - standard InChI with stereochemistry
+%                        * .std_inchi_stereo_charge - standard InChI with stereochemistry and charge
+%
+% OUTPUT:
+%    mappingScore:     `nMet x nTrainingMet` sparse matrix of mapping scores between model and training compounds
 %
 FIXED_MAPPING_TSV_FNAME = 'data/fixed_mappings.tsv';
 if ~exist(FIXED_MAPPING_TSV_FNAME, 'file')

@@ -1,5 +1,18 @@
 function DQQCleanup(tmpPath, originalDirectory)
-% perform cleanup after DQQ.
+% Performs cleanup after solving with the DQQ solver, removing temporary
+% solver output and returning to the original working directory
+%
+% USAGE:
+%
+%    DQQCleanup(tmpPath, originalDirectory)
+%
+% INPUTS:
+%    tmpPath:               path to the temporary folder containing the
+%                           `results` and `MPS` subfolders, and the
+%                           `fort.*`/`*.sol` output files, to be deleted
+%    originalDirectory:     folder to `cd` back into once cleanup is
+%                           complete
+
 try
     % cleanup
     rmdir([tmpPath filesep 'results'], 's');

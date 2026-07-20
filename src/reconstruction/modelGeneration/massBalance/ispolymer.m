@@ -7,6 +7,9 @@ function res = ispolymer(formula)
 %
 % INPUT:
 %    formula:    formula to be checked
+%
+% OUTPUT:
+%    res:        true if the formula corresponds to a polymer, false otherwise
 
 list = {'X','R','FULLR','FULLR2','FULLR3'};
 hasP=zeros(length(list),1);

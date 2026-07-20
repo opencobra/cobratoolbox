@@ -1,47 +1,49 @@
-function pseudoisomers = estimate_pKa(mets,inchi,npKas,takeMajorTaut)
+function pseudoisomers = estimate_pKa(mets, inchi, npKas, takeMajorTaut)
 % Estimates pKa values with ChemAxon's Calculator plugins and determines
 % all physiologically relevant pseudoisomers.
 %
-% pseudoisomers = estimate_pKa(mets,inchi,npKas,takeMajorTaut)
+% USAGE:
 %
-% INPUTS
-% mets              m x 1 array of metabolite identifiers.
-% inchi             m x 1 array of InChI strings for metabolites in mets.
+%    pseudoisomers = estimate_pKa(mets, inchi, npKas, takeMajorTaut)
 %
-% OPTIONAL INPUTS
-% npKas             Maximum number of acidic and basic pKa values to
-%                   estimate for each metabolite. Default is 20.
-% takeMajorTaut     {1, (0)}. If 1, pKa values are estimated for the major
-%                   tautomer at pH 7. If 0 (default), they are estimated
-%                   for the given tautomer.
+% INPUTS:
+%    mets:             `m x 1` array of metabolite identifiers.
+%    inchi:            `m x 1` array of InChI strings for metabolites in mets.
+%                      Each InChI is written to a temporary `inchi.inchi` file
+%                      passed to cxcalc.
 %
-% OUTPUTS
-% pseudoisomers     m x 1 structure array where each element has the fields
-%                   listed below. All fields are empty for metabolites
-%                   where no InChI is given. Fields:
-% .success          Logical one (true) for metabolites where an InChI was
-%                   given.
-% .met              Metabolite identifier from mets without compartment
-%                   abbreviation.
-% .pKas             p x p matrix where element (i,j) is the pKa value for
-%                   the acid-base equilibrium between pseudoisomers i and
-%                   j.
-% .zs               p x 1 array of pseudoisomer charges.
-% .nHs              p x 1 array of number of hydrogen atoms in each
-%                   pseudoisomer's chemical formula.
-% .majorMSpH7       p x 1 logical array. True for the most abundant
-%                   pseudoisomer at pH 7.
+% OPTIONAL INPUTS:
+%    npKas:            Maximum number of acidic and basic pKa values to
+%                      estimate for each metabolite. Default is 20.
+%    takeMajorTaut:    {1, (0)}. If 1, pKa values are estimated for the major
+%                      tautomer at pH 7. If 0 (default), they are estimated
+%                      for the given tautomer.
 %
-% REQUIRES
-% cxcalc            ChemAxon's Calculator plugin, with licence
-% cxcalc is part of Marvin Beans, available by academic licence from
-% ChemAxon
-% https://www.chemaxon.com/download/marvin-suite/#mbeans
-% https://docs.chemaxon.com/display/docs/Installation+MS#InstallationMS-MarvinBeansforJava
-% https://docs.chemaxon.com/display/CALCPLUGS/cxcalc+command+line+tool
-% https://docs.chemaxon.com/display/docs/Installation+MS#InstallationMS-Linux/SolarisLinux/Solaris
-
-% Hulda SH, Nov. 2012, Ronan Fleming 2016
+% OUTPUT:
+%    pseudoisomers:    `m x 1` structure array where each element has the fields
+%                      listed below. All fields are empty for metabolites
+%                      where no InChI is given. Fields:
+%
+%                        * .success - Logical one (true) for metabolites where an InChI was given.
+%                        * .met - Metabolite identifier from mets without compartment abbreviation.
+%                        * .pKas - `p x p` matrix where element `(i, j)` is the pKa value for
+%                          the acid-base equilibrium between pseudoisomers `i` and `j`.
+%                        * .zs - `p x 1` array of pseudoisomer charges.
+%                        * .nHs - `p x 1` array of number of hydrogen atoms in each
+%                          pseudoisomer's chemical formula.
+%                        * .majorMSpH7 - `p x 1` logical array. True for the most abundant
+%                          pseudoisomer at pH 7.
+%
+% NOTE:
+%    Requires cxcalc, ChemAxon's Calculator plugin (with licence), part of
+%    Marvin Beans, available by academic licence from ChemAxon:
+%
+%      * https://www.chemaxon.com/download/marvin-suite/#mbeans
+%      * https://docs.chemaxon.com/display/docs/Installation+MS#InstallationMS-MarvinBeansforJava
+%      * https://docs.chemaxon.com/display/CALCPLUGS/cxcalc+command+line+tool
+%      * https://docs.chemaxon.com/display/docs/Installation+MS#InstallationMS-Linux/SolarisLinux/Solaris
+%
+% .. Author: - Hulda SH, Nov. 2012, Ronan Fleming 2016
 
 
 

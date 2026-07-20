@@ -7,8 +7,17 @@ function [solutionDel, solutionWT, totalFluxDiff, solStatus] = MOMA(modelWT, mod
 %    [solutionDel, solutionWT, totalFluxDiff, solStatus] = MOMA(modelWT, modelDel, osenseStr, verbFlag, minNorm)
 %
 % INPUTS:
-%    modelWT:          Wild type model
-%    modelDel:         Deletion strain model
+%    modelWT:          Wild type model with the fields:
+%
+%                        * .S - `m x n` stoichiometric matrix
+%                        * .rxns - `n x 1` cell array of reaction identifiers
+%                        * .osenseStr - objective sense stored on the model, 'max' or 'min'
+%
+%    modelDel:         Deletion strain model with the fields:
+%
+%                        * .S - `m x n` stoichiometric matrix
+%                        * .rxns - `n x 1` cell array of reaction identifiers
+%                        * .c - `n x 1` linear objective coefficient vector
 %
 % OPTIONAL INPUTS:
 %    osenseStr:        Maximize ('max') / minimize ('min') (Default = 'max')
@@ -19,7 +28,7 @@ function [solutionDel, solutionWT, totalFluxDiff, solStatus] = MOMA(modelWT, mod
 %                      i.e. 1e-6  is the default, which minimises the Euclidean Norm of the
 %                           subject to atainment of the optimal FBA
 %                           objective as an additional constraint.
-
+%
 %    minNorm:      Work with minimum 1-norm flux distribution for the FBA
 %                      problem (Default = false)
 %

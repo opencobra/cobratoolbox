@@ -1,15 +1,22 @@
-function [OrganListLong,OrganListOnly] = findMetinOrgan(WBModel,metabolite)
-
-% find all organs in which a metabolite participates
+function [OrganListLong, OrganListOnly] = findMetinOrgan(WBModel, metabolite)
+% Find all organs in which a metabolite participates
 %
-% INPUT
-% WBmodel       whole body metabolic model
-% metabolite    abbrevition of the metabolite to be looked up
+% USAGE:
 %
-% OUTPUT
-% OrganList     List of organs that the metabolite occurs in
+%    [OrganListLong, OrganListOnly] = findMetinOrgan(WBModel, metabolite)
 %
-% Ines Thiele, July 2020
+% INPUTS:
+%    WBModel:         Whole-body metabolic model, with fields:
+%
+%                       * .mets - metabolite identifiers
+%    metabolite:      Abbreviation of the metabolite to be looked up
+%
+% OUTPUTS:
+%    OrganListLong:    Metabolite identifiers (with organ prefix) in which the
+%                     metabolite participates
+%    OrganListOnly:    Unique list of organs in which the metabolite occurs
+%
+% .. Author: - Ines Thiele, July 2020
 
 metList = WBModel.mets;
 OrganListLong= WBModel.mets(find(~cellfun(@isempty,strfind(WBModel.mets,strcat('_',metabolite)))));

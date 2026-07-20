@@ -1,22 +1,59 @@
-function [cplexProblem,logFile,logToFile] = setCplexParametersForProblem(cplexProblem, problemTypeParams, solverParams, problemType)
+function [cplexProblem, logFile, logToFile] = setCplexParametersForProblem(cplexProblem, problemTypeParams, solverParams, problemType)
 % Set the parameters for a specific problem from the COBRA Parameter
 % structure and a solver specific parameter structure (latter has
 % precedence). The cobra parameters structure contains fields as specified in
 % `getCobraSolverParamsOptionsForType`, while solverParams needs to
 % contain a structure compatible with `setCplexParam`.
+%
 % USAGE:
-%    cplexProblem = setCplexParametersForProblem(cplexProblem, problemTypeParams, solverParams, ProblemType)
+%
+%    [cplexProblem, logFile, logToFile] = setCplexParametersForProblem(cplexProblem, problemTypeParams, solverParams, problemType)
 %
 % INPUTS:
-%    cplexProblem:      the Cplex() object to set the parameters
-%    problemTypeParams:  problem type parameters as defined in getCobraSolverParamsOptionsForType
-%    solverParams:      the solver specific parameter structure has to be compatible with `setCplexParam`
-%    problemType:       The type of Problem ('LP','MILP','QP','MIQP').
+%    cplexProblem:         the Cplex() object to set the parameters on, with fields:
 %
-% see https://www.ibm.com/docs/en/icos/12.10.0?topic=cplex-list-parameters
-% see  https://www.ibm.com/docs/en/icos/12.10.0
+%                            * .setDefault - method resetting all CPLEX parameters to their defaults
+%                            * .Param - CPLEX parameter tree (e.g. `.Param.simplex.tolerances.feasibility.Cur`) that this function sets
+%                            * .DisplayFunc - function handle controlling CPLEX log display; suppressed when `problemTypeParams.printLevel` is 0, or redirected to `logFile`
+%    problemTypeParams:    problem type parameters as defined in `getCobraSolverParamsOptionsForType`, with fields:
+%
+%                            * .printLevel - verbosity level; `0` suppresses CPLEX log output
+%                            * .logFile - `1` to print to the command window, `0`/empty for no logging, otherwise a file name to log to
+%                            * .feasTol - feasibility tolerance, applied to `simplex.tolerances.feasibility` and `network.tolerances.feasibility`
+%                            * .optTol - optimality tolerance, applied to `simplex.tolerances.optimality` and `network.tolerances.optimality`
+%                            * .relMipGapTol - relative MIP gap tolerance (`MILP`/`MIQP` only)
+%                            * .intTol - integrality tolerance (`MILP`/`MIQP` only)
+%                            * .absMipGapTol - absolute MIP gap tolerance (`MILP`/`MIQP` only)
+%                            * .timeLimit - CPLEX time limit in seconds (`MILP`/`MIQP` only)
+%                            * .method - LP/QP algorithm selector used when `problemType` is `MIQP` (numeric legacy
+%                              code, or `'AUTOMATIC'`/`'PRIMAL'`/`'DUAL'`/`'NETWORK'`/`'BARRIER'`/`'SIFTING'`/`'CONCURRENT'`)
+%    solverParams:         the solver specific parameter structure, compatible with `setCplexParam`, with optional fields:
+%
+%                            * .qpmethod - QP algorithm selector (numeric, or `'AUTOMATIC'`/`'PRIMAL'`/`'DUAL'`/
+%                              `'NETWORK'`/`'BARRIER'`/`'CONCURRENT'`), used when `problemType` is `'QP'`
+%                            * .lpmethod - LP algorithm selector (numeric, or `'AUTOMATIC'`/`'PRIMAL'`/`'DUAL'`/
+%                              `'NETWORK'`/`'BARRIER'`/`'SIFTING'`/`'CONCURRENT'`), used when `problemType` is `'LP'`
+%                            * .multiscale - currently dead code (guarded out); when present, its value is read but never applied
+%                            * .scaind - matrix scaling parameter, applied to `read.scale.Cur`
+%                            * .timelimit - CPLEX time limit in seconds, applied to `timelimit.Cur`
+%                            * .secondsTimeLimit - time limit in seconds, multiplied by 5 and applied to `timelimit.Cur`
+%                            * .emphasis_numerical - numerical precision emphasis, applied to `emphasis.numerical.Cur`
+%                            * .markowitz - Markowitz pivot tolerance, applied to `simplex.tolerances.markowitz.Cur`
+%    problemType:          The type of Problem ('LP','MILP','QP','MIQP').
+%
+% OUTPUTS:
+%    cplexProblem:         the Cplex() object with the resolved parameters set
+%    logFile:              the resolved log file identifier: `0` if not logging,
+%                          `1` for command window output, or an open file identifier
+%    logToFile:            true if CPLEX output is being redirected to a file, false otherwise
+%
+% NOTE:
+%    See https://www.ibm.com/docs/en/icos/12.10.0?topic=cplex-list-parameters
+%    and https://www.ibm.com/docs/en/icos/12.10.0 for the full CPLEX parameter reference.
+%
 
-%set the default parameters so we can see what they are
+% set the default parameters so we can see what they are
+
 cplexProblem.setDefault;
 
 %TODO ? add these 
@@ -47,7 +84,7 @@ end
 
 if isscalar(problemTypeParams.logFile)
     if problemTypeParams.logFile == 1
-        % allow print to command window by setting solverParams.logFile == 1
+        % allow printing to the command window when problemTypeParams.logFile == 1
         logFile = problemTypeParams.logFile;
         logToFile = false;
         cplexProblem.DisplayFunc = @(x) redirect(1,x);

@@ -1,10 +1,38 @@
 function [substratesMass, productsMass] = calculateReactionMasses(model)
 % This function calculates mass related to each reaction, products mass and
-% substrates mass,using the left null space of stochiometric matrix,
-% useful to unbiased flux through reactions with massive
-% metabolites in entropicFBA
+% substrates mass, using the left null space of the stoichiometric matrix,
+% useful to unbias flux through reactions with massive metabolites in
+% entropicFBA
+%
+% USAGE:
+%
+%    [substratesMass, productsMass] = calculateReactionMasses(model)
+%
+% INPUTS:
+%    model:             COBRA model structure with fields:
+%
+%                         * .mets - `m x 1` cell array of metabolite identifiers
+%                         * .rxns - `n x 1` cell array of reaction identifiers
+%                         * .S - `m x n` stoichiometric matrix
+%                         * .SConsistentMetBool - `m x 1` logical, true for
+%                           stoichiometrically consistent metabolites
+%                         * .SConsistentRxnBool - `n x 1` logical, true for
+%                           stoichiometrically consistent reactions
+%                         * .metFormulas - `m x 1` cell array of metabolite
+%                           chemical formulas (added from a reference model
+%                           if not already present)
+%                         * .rxnFormulas - (optional) `n x 1` cell array of
+%                           reaction formulas, used when present to report
+%                           mass-imbalanced reactions
+%
+% OUTPUTS:
+%    substratesMass:    `n x 1` vector, total substrate mass of each
+%                       stoichiometrically consistent reaction
+%    productsMass:      `n x 1` vector, total product mass of each
+%                       stoichiometrically consistent reaction
+%
+% .. Author: - Samira Ranjbar, 2024
 
-% Author: Samira Ranjbar 2024
 %% % Check if metFormula field is provied in the model, if not add it using model0(Recon3DModel_301_xomics_input)
 
 if ~isfield(model,'metFormulas')

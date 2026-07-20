@@ -1,38 +1,33 @@
 function training_data = prepareTrainingData(model, printLevel, params)
-% Given a standard COBRA model, adds thermodynamic data to it using
-% the Component Contribution method
+% Given a standard COBRA model, add thermodynamic data to it using the Component Contribution method
+%
+% Loads the training data, retrieves InChIs and pKa values for the training
+% compounds, balances the training reactions, builds the group incidence matrix
+% against the model, and applies the reverse Legendre transform.
 %
 % USAGE:
 %
 %    training_data = prepareTrainingData(model, printLevel, params)
 %
 % INPUT:
-%    model:                            COBRA structure
+%    model:            COBRA model structure
 %
 % OPTIONAL INPUTS:
-%    printLevel:                       verbose level, default = 0
-%    params.use_cached_kegg_inchis:
-%    params.use_model_pKas_by_default:
-%    params.uf:                        maximum uncertainty
+%    printLevel:       verbose level (default: 0)
+%    params:           structure of parameters. Fields used:
 %
+%                        * .use_cached_kegg_inchis - logical, use cached KEGG InChIs
+%                        * .use_model_pKas_by_default - logical, prefer model pKa data
 %
 % OUTPUTS:
-%    trainingData:      structure with the following fields:
+%    training_data:    training-data structure with thermodynamic data and the
+%                      group incidence matrix, with fields such as:
 %
-%                         * .S - the stoichiometric matrix of measured reactions
-%                         * .G - the group incidence matrix
-%                         * .dG0 - the observation vector (standard Gibbs energy of reactions)
-%                         * .weights - the weight vector for each reaction in `S`
-%                         * .Model2TrainingMap
-
-
-%                                        * .DfG0 - `m x 1` array of component contribution estimated
-%                                          standard Gibbs energies of formation.
-%                                        * .covf - `m x m` estimated covariance matrix for standard
-%                                          Gibbs energies of formation.
-%                                        * .uf - `m x 1` array of uncertainty in estimated standard
-%                                          Gibbs energies of formation. uf will be large for
-%                                          metabolites that are not covered by component contributions.
+%                        * .S - the stoichiometric matrix of measured reactions
+%                        * .G - the group incidence matrix
+%                        * .dG0 - the observation vector (standard Gibbs energy of reactions)
+%                        * .weights - the weight vector for each reaction in `S`
+%                        * .Model2TrainingMap - map from model to training-data compounds
 
 if ~exist('printLevel','var')
     printLevel = 0;

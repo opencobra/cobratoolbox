@@ -1,19 +1,24 @@
 function [foodMenu] = extractDietFromModel(model)
-%This function analysis an VMH model and extracts the diet based on the
-%lower bound constraints.
+% Analyse a VMH whole-body model and extract the diet based on the lower
+% bound constraints of the food and dietary exchange reactions
 %
 % USAGE:
-%   [foodMenu] = extractDietFromModel(model)
+%
+%    [foodMenu] = extractDietFromModel(model)
+%
 % INPUT:
-%   model:     A human model (WBM)
+%    model:       A human whole-body model (WBM), with fields:
+%
+%                   * .rxns - reaction identifiers
+%                   * .lb - lower flux bounds
+%
 % OUTPUT:
-%   foodMenu:   A nx2 cell array containing n dietary metabolites and their
-%               corresponding flux
-% Authors:
-%       Bronson R. Weston, 2022
+%    foodMenu:    An n x 2 cell array containing n dietary metabolites and
+%                 their corresponding flux
+%
+% .. Author: - Bronson R. Weston, 2022
 
-
-%Identify food reactions
+% Identify food reactions
 foodRxns=find(contains(model.rxns,'Food_EX_'));
 foodRxns=foodRxns(model.lb(foodRxns)<0);
 

@@ -182,10 +182,37 @@ external/lusol/
 external/pdco/
 
 # read-only architecture research output (not committed; enforces Principle IX)
-analysis/
+# anchored to the repo root so it does NOT also ignore test/verifiedTests/analysis/
+#/analysis/
 
 # CI coverage tooling and regenerable coverage output (feature 001-ci-coverage-gating)
 .ci-tools/
 coverage.json
 coverage.xml
 coverage_html/
+
+# regenerable testAll profiling report artifacts (feature 002-testall-performance-modes)
+test/performance/
+
+# local Python virtualenv for the docs build (regenerable; deps in documentation/requirements.txt)
+documentation/.venv/
+.venv/
+
+# regenerable igemRNA post-optimization test outputs (rewritten by src/analysis/igemRNA/* each run;
+# not committed, per Principle IX). fluxShifts/ and rateLimittingReactions/ are written and read back
+# by their tests. nonFluxReactionsnonFluxReactionsWT.xls is a stray flat output caused by a missing
+# filesep in filterNonFluxReactions.m:84 — it is written but never read; the test reads the committed
+# fixture nonFluxReactions/nonFluxReactionsWT.xls, which stays tracked.
+test/verifiedTests/analysis/testCalculateFluxShifts/resultsPostOptimization/fluxShifts/
+test/verifiedTests/analysis/testFilterNonFluxReactions/resultsPostOptimization/nonFluxReactionsnonFluxReactionsWT.xls
+test/verifiedTests/analysis/testFilterRateLimittingReactions/resultsPostOptimization/rateLimittingReactions/
+
+# regenerable SAMMI web-app output (feature 013). sammi.m writes generated HTML at runtime;
+# the vendored template + JS/CSS now live under external/visualization/SAMMIM/. These outputs
+# must not be committed back into src/. testSammi writes its transient output to the test dir.
+src/visualization/SAMMIM/*.html
+test/verifiedTests/visualization/testSammi/sammi_test_output.html
+
+# regenerable group-contribution fragmentation cache (feature 013). autoFragment writes these
+# .mat caches on demand; they must not be committed into src/.
+src/analysis/thermo/groupContribution/wang/cache/

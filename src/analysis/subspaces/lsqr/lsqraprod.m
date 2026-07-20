@@ -3,6 +3,21 @@ function y = lsqraprod(mode, m, n, x, iw, rw)
 % if `mode = 2`, `lsqraprod` computes :math:`y = A^T x`
 % for some matrix `A`.
 %
+% USAGE:
+%
+%    y = lsqraprod(mode, m, n, x, iw, rw)
+%
+% INPUTS:
+%    mode:    1 to compute `y = A x`, 2 to compute `y = A^T x`
+%    m:       number of rows of the example matrix `A`
+%    n:       number of columns of the example matrix `A`
+%    x:       vector the product is applied to
+%    iw:      integer work array (unused in this example)
+%    rw:      real work array (unused in this example)
+%
+% OUTPUTS:
+%    y:       the product `A x` (mode 1) or `A^T x` (mode 2)
+%
 % This is a simple example for testing  LSQR.
 % It uses the leading `m n` submatrix from:
 %

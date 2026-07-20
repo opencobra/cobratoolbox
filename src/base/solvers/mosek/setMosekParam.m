@@ -1,16 +1,14 @@
 function [cmd, mosekParam] = setMosekParam(param)
-% setMosekParam
-%
-% Single-file source of truth for MOSEK parameter materialisation.
+% Single-file source of truth for MOSEK parameter materialisation
 %
 % This function deliberately does not call external helper files to set,
-% strip, normalise, or otherwise manipulate MOSEK parameters.  All helper
+% strip, normalise, or otherwise manipulate MOSEK parameters. All helper
 % functions used below are local functions in this same file.
 %
-% Supported profiles:
+% Supported profiles (`param.mosekParam`):
 %
 %   'default'
-%       True MOSEK default profile.  No MSK_* parameters are passed except
+%       True MOSEK default profile. No MSK_* parameters are passed except
 %       those needed to enforce the requested print policy.
 %
 %   'manual'
@@ -35,17 +33,14 @@ function [cmd, mosekParam] = setMosekParam(param)
 %   'SCLP_startTight'
 %   'SCLP_startTightNoPresolve'
 %       solveSCLP-specific tight profiles for initial centring and
-%       centred-start raw repair.  These inherit the ordinary SCLP profile
+%       centred-start raw repair. These inherit the ordinary SCLP profile
 %       first, then override only accuracy-related parameters.
 %
 % Print policy:
 %
-%   The line
-%
-%       param.printLevel = param.printLevel - 1;
-%
-%   is intentional.  It prevents inner MOSEK solve traces from appearing
-%   during ordinary use of solveSCLP inside higher-level algorithms.
+%   The line `param.printLevel = param.printLevel - 1;` is intentional. It
+%   prevents inner MOSEK solve traces from appearing during ordinary use of
+%   solveSCLP inside higher-level algorithms.
 %
 %   Effective behaviour:
 %
@@ -54,13 +49,129 @@ function [cmd, mosekParam] = setMosekParam(param)
 %       solveSCLP printLevel = 2  -> MOSEK default printing
 %       solveSCLP printLevel > 2  -> verbose-profile MOSEK logs may print
 %
-% Output:
+% USAGE:
 %
-%   cmd
-%       MOSEK command string, usually 'minimize echo(0)' or 'minimize'.
+%    [cmd, mosekParam] = setMosekParam(param)
 %
-%   mosekParam
-%       Structure containing only MSK_* fields.
+% INPUTS:
+%    param:         Structure of COBRA/solveSCLP-style solver parameters.
+%                   All fields are optional; absent fields fall back to the
+%                   defaults noted below. Fields read or written:
+%
+%                     * .printLevel - COBRA print level (default 0);
+%                       reduced by 1 before it drives the MOSEK print policy
+%                     * .debug - debug flag (default 0); when 1, requests
+%                       MOSEK infeasibility reporting in the `cobra*` profiles
+%                     * .problemType - COBRA problem type, e.g. `'LP'`,
+%                       `'QP'`, `'CLP'`, `'EP'`, `'VK'` (default `'CLP'`);
+%                       selects the optimizer choice below
+%                     * .mosekParam - name of the requested profile listed
+%                       above (default `'cobra'`)
+%                     * .timelimit - COBRA-style solve time limit in
+%                       seconds; copied to `.MSK_DPAR_OPTIMIZER_MAX_TIME`
+%                       when the latter is not already supplied (SCLP
+%                       profiles default it to 600 when absent)
+%                     * .mosekInnerTol - overrides the MOSEK primal
+%                       interior-point tolerance directly (and the dual
+%                       tolerance too, unless `.mosekInnerMuTol` is given)
+%                     * .feasTol - COBRA feasibility tolerance, used as the
+%                       MOSEK primal tolerance default when
+%                       `.mosekInnerTol` is absent (also scales the
+%                       solveSCLP inner tolerances)
+%                     * .optTol - COBRA optimality tolerance, used as the
+%                       MOSEK dual tolerance default when `.mosekInnerTol`
+%                       is absent
+%                     * .mosekInnerMuTol - overrides the MOSEK
+%                       complementarity (mu) tolerance directly
+%                     * .mosekSolveForm - overrides the default
+%                       `MSK_IPAR_INTPNT_SOLVE_FORM` value
+%                       (`'MSK_SOLVE_PRIMAL'`)
+%                     * .mosekPresolveUse - overrides the default
+%                       `MSK_IPAR_PRESOLVE_USE` value
+%                       (`'MSK_PRESOLVE_MODE_FREE'`)
+%                     * .mosekPrimalInfeasPerturbationTol - overrides the
+%                       default
+%                       `MSK_DPAR_PRESOLVE_TOL_PRIMAL_INFEAS_PERTURBATION`
+%                       value (0)
+%                     * .mosekPresolveTolX - overrides the default
+%                       `MSK_DPAR_PRESOLVE_TOL_X` value
+%                     * .mosekPresolveTolS - overrides the default
+%                       `MSK_DPAR_PRESOLVE_TOL_S` value
+%                     * .mosekDataTolX - overrides the default
+%                       `MSK_DPAR_DATA_TOL_X` value
+%                     * .numTol - COBRA numerical tolerance, the basis
+%                       (times 100 or 1) for the presolve/data tolerance
+%                       defaults above
+%                     * .mosekNearRel - overrides the default
+%                       `MSK_DPAR_INTPNT_CO_TOL_NEAR_REL` value (1.0)
+%                     * .lifted - when 1, disables the MOSEK eliminator
+%                       retry (`MSK_IPAR_PRESOLVE_ELIMINATOR_MAX_NUM_TRIES`
+%                       set to 0) unless already supplied
+%                     * .multiscale - when 1 and `.lifted` is 0/absent,
+%                       turns off MOSEK's own scaling
+%                       (`MSK_IPAR_PRESOLVE_LINDEP_NEW`,
+%                       `MSK_IPAR_INTPNT_SCALING`, `MSK_IPAR_SIM_SCALING`)
+%                       unless already supplied
+%                     * .strict - when non-empty, requests a stricter
+%                       solve: disables the basis-identification iteration
+%                       limit, forces a free solve form, and tightens the
+%                       infeasibility tolerance, unless the corresponding
+%                       `MSK_*` fields are already supplied
+%                     * .repairInfeasibility - when non-empty, copied to
+%                       `MSK_IPAR_LOG_FEAS_REPAIR` unless already supplied
+%                     * .lpmethod, .qpmethod, .clpmethod, .epmethod -
+%                       COBRA solver-method selectors, normalised and
+%                       copied to `MSK_IPAR_OPTIMIZER` when `.problemType`
+%                       is respectively `'LP'`, `'QP'`, `'CLP'`, or `'EP'`
+%                     * .innerMosekTolFactor, .innerMosekTolFloorFactor,
+%                       .innerMosekMuTolFactor, .innerMosekMuTolFloorFactor -
+%                       factors (defaults `1e-3`, `10`, `1e-5`, `1`) that
+%                       scale `.feasTol`/`.numTol` into the solveSCLP inner
+%                       interior-point/complementarity tolerances
+%                     * .mosekPresolveTolXFactor, .mosekPresolveTolSFactor,
+%                       .mosekDataTolXFactor - factors (defaults `100`,
+%                       `100`, `1`) that scale `.numTol` into the solveSCLP
+%                       presolve and data tolerances
+%                     * caller-supplied `MSK_*` fields, honoured as-is
+%                       wherever the profile logic above checks for them
+%                       first, rather than being overridden:
+%                       `.MSK_DPAR_OPTIMIZER_MAX_TIME`,
+%                       `.MSK_DPAR_INTPNT_TOL_PFEAS`,
+%                       `.MSK_DPAR_INTPNT_QO_TOL_PFEAS`,
+%                       `.MSK_DPAR_INTPNT_CO_TOL_PFEAS`,
+%                       `.MSK_DPAR_INTPNT_TOL_DFEAS`,
+%                       `.MSK_DPAR_INTPNT_QO_TOL_DFEAS`,
+%                       `.MSK_DPAR_INTPNT_CO_TOL_DFEAS`,
+%                       `.MSK_DPAR_INTPNT_CO_TOL_REL_GAP`,
+%                       `.MSK_DPAR_INTPNT_CO_TOL_MU_RED`,
+%                       `.MSK_IPAR_INTPNT_SOLVE_FORM`,
+%                       `.MSK_IPAR_PRESOLVE_USE`,
+%                       `.MSK_DPAR_PRESOLVE_TOL_PRIMAL_INFEAS_PERTURBATION`,
+%                       `.MSK_DPAR_PRESOLVE_TOL_X`,
+%                       `.MSK_DPAR_PRESOLVE_TOL_S`,
+%                       `.MSK_DPAR_DATA_TOL_X`,
+%                       `.MSK_DPAR_INTPNT_CO_TOL_NEAR_REL`,
+%                       `.MSK_IPAR_PRESOLVE_ELIMINATOR_MAX_NUM_TRIES`,
+%                       `.MSK_IPAR_PRESOLVE_LINDEP_NEW`,
+%                       `.MSK_IPAR_INTPNT_SCALING`, `.MSK_IPAR_SIM_SCALING`,
+%                       `.MSK_IPAR_BI_IGNORE_MAX_ITER`,
+%                       `.MSK_DPAR_INTPNT_TOL_INFEAS`,
+%                       `.MSK_IPAR_LOG_FEAS_REPAIR`, `.MSK_IPAR_LOG`,
+%                       `.MSK_IPAR_LOG_INTPNT`, `.MSK_IPAR_LOG_SIM`,
+%                       `.MSK_IPAR_LOG_PRESOLVE`,
+%                       `.MSK_IPAR_INFEAS_REPORT_AUTO`,
+%                       `.MSK_IPAR_INFEAS_REPORT_LEVEL`,
+%                       `.MSK_IPAR_INTPNT_REGULARIZATION_USE`, and
+%                       `.MSK_IPAR_OPTIMIZER`;
+%                       `.MSK_IPAR_INTPNT_MAX_ITERATIONS` is additionally
+%                       set to 400 for the `EP` problem type unless already
+%                       supplied
+%
+% OUTPUTS:
+%    cmd:           MOSEK command string, usually `'minimize echo(0)'` or
+%                   `'minimize'`
+%    mosekParam:    Structure containing only `MSK_*` fields, ready to be
+%                   passed to `mosekopt`
 
 if nargin < 1 || isempty(param)
     param = struct();

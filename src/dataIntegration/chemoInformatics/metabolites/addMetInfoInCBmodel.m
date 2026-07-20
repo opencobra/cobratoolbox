@@ -12,15 +12,15 @@ function [newModel, hasEffect] = addMetInfoInCBmodel(model, inputData, replace)
 %                       * .S - The m x n stoichiometric matrix for the
 %                              metabolic network.
 %                       * .mets - An m x 1 array of metabolite identifiers.
-%    inputData: 
+%    inputData:     External file (path) or struct with the metabolite data to integrate
 %
 % OPTIONAL INPUTS:
 %    replace:       If the new ID should replace an existing ID, this 
 %                   logical value indicates so (default: false).
 %
 % OUTPUTS:   
-%  newModel:      COBRA model with updated identifiersCOBRA model with the identifiers updated.
-%  hasEffect: 
+%    newModel:      COBRA model with the metabolite identifiers updated.
+%    hasEffect:     true if the model was modified by the integration, false otherwise
 
 if ~exist('replace','var')
     replace = false;

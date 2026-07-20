@@ -1,4 +1,4 @@
-function [modelUpdated,modelPruned,Ex_Rxns] = pruneModel(model,minGrowth, biomassRxn)
+function [modelUpdated, modelPruned, Ex_Rxns] = pruneModel(model, minGrowth, biomassRxn)
 % This function prunes a model to its most compact subnetwork given some model
 % constraints and a minimal growth rate by identifying and removing all blocked reactions.
 %
@@ -7,14 +7,16 @@ function [modelUpdated,modelPruned,Ex_Rxns] = pruneModel(model,minGrowth, biomas
 %    [modelUpdated, modelPruned, Ex_Rxns] = pruneModel(model, minGrowth, biomassRxn)
 %
 % INPUTS:
-%    model:         model structure
+%    model:         COBRA model structure with field:
+%
+%                     * .rxns - reaction identifiers
 %    minGrowth:     minimal Growth rate to be set on biomass reaction
 %    biomassRxn:    biomass reaction name (default: 'biomass_reaction2')
 %
 % OUTPUTS:
-%    modelUpdated:  same as input model but constraints on blocked reactions
+%    modelUpdated:    same as input model but constraints on blocked reactions
 %                   are set to be 0
-%    modelPruned:   pruned model, where all blocked reactions are removed
+%    modelPruned:    pruned model, where all blocked reactions are removed
 %                   (attention this seems to cause issues with GPRs)
 %    Ex_Rxns:       List of exchange reactions in pruned model
 %

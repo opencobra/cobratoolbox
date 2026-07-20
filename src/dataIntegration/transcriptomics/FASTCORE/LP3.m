@@ -3,10 +3,30 @@ function [v, basis] = LP3(J, model, LPproblem, basis)
 %
 % USAGE:
 %
-%    [v, basis] = LP3(J, model, basis)
+%    [v, basis] = LP3(J, model, LPproblem, basis)
 %
-
-% .. Authors
+% INPUTS:
+%    J:            indices of reactions whose flux is maximised in the objective
+%    model:        COBRA model structure with fields:
+%
+%                    * .S - `m x n` stoichiometric matrix
+%                    * .ub - `n x 1` upper flux bounds
+%    LPproblem:    LP problem structure derived from the model with fields:
+%
+%                    * .A - constraint (stoichiometric) matrix
+%                    * .b - right hand side vector for `A*v = b`
+%                    * .lb - lower bounds on the variables
+%                    * .ub - upper bounds on the variables
+%                    * .csense - constraint sense character array ({L, E, G})
+%
+% OPTIONAL INPUT:
+%    basis:        basis to warm-start the LP solve
+%
+% OUTPUTS:
+%    v:            optimal steady state flux vector
+%    basis:        basis returned by the LP solver
+%
+% .. Authors:
 %       - Nikos Vlassis, Maria Pires Pacheco, Thomas Sauter, 2013 LCSB / LSRU, University of Luxembourg
 %       - Ronan Fleming      02/12/14 solveCobraLP compatible
 %       - 2020 Ronan Fleming, Cv<=d compatible

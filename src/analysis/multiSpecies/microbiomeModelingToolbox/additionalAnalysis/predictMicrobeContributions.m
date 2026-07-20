@@ -1,14 +1,16 @@
-function [minFluxes,maxFluxes,fluxSpans] = predictMicrobeContributions(modPath, varargin)
+function [minFluxes, maxFluxes, fluxSpans] = predictMicrobeContributions(modPath, varargin)
 % Predicts the minimal and maximal fluxes through internal exchange
 % reactions in microbes in a list of microbiome community models for a list
 % of metabolites. This allows for the prediction of the individual
 % contribution of each microbe to total metabolite uptake and secretion by
 % the community.
 %
-% [minFluxes,maxFluxes,fluxSpans] = predictMicrobeContributions(modPath, varargin)
+% USAGE:
+%
+%    [minFluxes, maxFluxes, fluxSpans] = predictMicrobeContributions(modPath, varargin)
 %
 % INPUTS:
-%    modPath            char with path of directory where models are stored
+%    modPath:           char with path of directory where models are stored
 %
 % OPTIONAL INPUTS:
 %    metList            List of VMH IDs for metabolites to analyze

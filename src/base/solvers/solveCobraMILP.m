@@ -21,6 +21,24 @@ function solution = solveCobraMILP(MILPproblem, varargin)
 %                         each row in A ('E', equality, 'G' greater than, 'L' less than).
 %                       * .vartype - Variable types ('C' continuous, 'I' integer, 'B' binary)
 %                       * .x0 - Initial solution
+%                       * .b_L - (optional) lower bounds for the constraints, used
+%                         instead of `.csense`/`.b` by the `tomlab_cplex` solver
+%                         interface if `.csense` is empty
+%                       * .b_U - (optional) upper bounds for the constraints, used
+%                         instead of `.csense`/`.b` by the `tomlab_cplex` solver
+%                         interface if `.csense` is empty
+%                       * .intSolInd - (optional) indices of the integer solution
+%                         components, used by the `tomlab_cplex` callback to report
+%                         intermediate solutions (default: `[]`)
+%                       * .contSolInd - (optional) indices of the continuous solution
+%                         components, used by the `tomlab_cplex` callback to report
+%                         intermediate solutions (default: `[]`)
+%
+% NOTE:
+%    For the `gurobi` solver interface, this function also builds
+%    `MILPproblem.vtype`, `.modelsense`, `.rhs`, and `.sense` (Gurobi-native
+%    aliases of `.vartype`, `.osense`, `.b`, and `.csense`), and `.start`
+%    (set to `x0` when non-empty).
 %
 % Optional parameters can be entered using parameters structure or as
 % parameter followed by parameter value: i.e. ,'printLevel', 3)

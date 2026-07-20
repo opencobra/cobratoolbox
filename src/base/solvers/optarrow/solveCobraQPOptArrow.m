@@ -6,13 +6,45 @@ function result = solveCobraQPOptArrow(QPproblem, problemTypeParams, solverParam
 %    result = solveCobraQPOptArrow(QPproblem, problemTypeParams, solverParams)
 %
 % INPUTS:
-%    QPproblem:           COBRA QP problem structure
-%    problemTypeParams:   structure of problem-type parameters
-%    solverParams:        structure of solver parameters
+%    QPproblem:            COBRA QP problem structure with fields:
+%
+%                            * .F - `n x n` positive semidefinite matrix for
+%                              the quadratic objective term
+%                            * .c - `n x 1` linear objective coefficient vector
+%                            * .lb - `n x 1` lower bound vector for `lb <= x`
+%                            * .ub - `n x 1` upper bound vector for `x <= ub`
+%                            * .A - (optional) `m x n` linear constraint matrix
+%                            * .b - (optional) `m x 1` right hand side
+%                              vector for constraint `A*x = b`, used when
+%                              `.A` is present
+%                            * .csense - (optional) `m x 1` character array
+%                              of constraint senses, one for each row in `A`
+%                            * .osense - (optional) scalar objective sense
+%                              (-1 = maximise, 1 = minimise; default 1)
+%    problemTypeParams:    Structure of problem-type parameters (currently
+%                          unused by this backend, accepted for interface
+%                          compatibility with `solveCobraQP`)
+%    solverParams:         Structure of solver parameters, with fields:
+%
+%                            * .pythonExecutable, .python_executable,
+%                              .optarrowPython - (optional) path to the
+%                              Python executable used to run the OptArrow
+%                              CLI; stripped from the parameters sent to
+%                              the CLI
 %
 % OUTPUT:
-%    result:              structure with fields compatible with the
-%                         `solveCobraQP` solver dispatch
+%    result:               Structure with fields compatible with the
+%                          `solveCobraQP` solver dispatch:
+%
+%                            * .x - primal solution vector
+%                            * .w - reduced costs
+%                            * .y - dual values
+%                            * .s - slack values
+%                            * .stat - COBRA-style solver status
+%                            * .origStat - original OptArrow/backend status
+%                            * .origStatText - original status text
+%                            * .qpmethod - name/identifier of the method used
+%                            * .raw - raw response returned by the backend
 
 if nargin < 1 || ~isstruct(QPproblem)
     error('solveCobraQPOptArrow requires QPproblem as a struct.');

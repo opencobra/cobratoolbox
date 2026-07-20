@@ -33,7 +33,7 @@ function [dATM, metAtomMappedBool, rxnAtomMappedBool, M2Ai, Ti2R] = buildAtomTra
 %
 % USAGE:
 %
-%    [dATM, metAtomMappedBool, rxnAtomMappedBool, M2Ai, Ti2R] = buildAtomTransitionNetwork(model, rxnfileDir, options)
+%    [dATM, metAtomMappedBool, rxnAtomMappedBool, M2Ai, Ti2R] = buildAtomTransitionMultigraph_old(model, rxnfileDir, options)
 %
 % INPUTS:
 %    model:         Directed stoichiometric hypergraph
@@ -54,8 +54,9 @@ function [dATM, metAtomMappedBool, rxnAtomMappedBool, M2Ai, Ti2R] = buildAtomTra
 %                        then rxnfileDir = ~/fork-ctf/rxns/atomMapped        
 % 
 %    options: 
-%                   *.directed - transition split into two oppositely
+%                   * .directed - transition split into two oppositely
 %                                directed edges for reversible reactions
+%                   * .sanityChecks - perform checks on creation of the atom transition multigraph
 % OUTPUT:
 %    dATM:          Directed atom transition multigraph as a MATLAB digraph structure with the following tables:
 %
@@ -76,10 +77,10 @@ function [dATM, metAtomMappedBool, rxnAtomMappedBool, M2Ai, Ti2R] = buildAtomTra
 %                   * .EdgeTable.HeadAtomIndex - head Nodes.AtomIndex
 %                   * .EdgeTable.TailAtomIndex - tail Nodes.AtomIndex
 %
-% metAtomMappedBool `m x 1` boolean vector indicating atom mapped metabolites
-% rxnAtomMappedBool `n x 1` boolean vector indicating atom mapped reactions
-% M2Ai              `m` x `a` matrix mapping each metabolite to an atom in the directed atom transition multigraph 
-% Ti2R              `t` x `n` matrix mapping each directed atom transition instance to a mapped reaction
+%    metAtomMappedBool:    `m x 1` boolean vector indicating atom mapped metabolites
+%    rxnAtomMappedBool:    `n x 1` boolean vector indicating atom mapped reactions
+%    M2Ai:                 `m` x `a` matrix mapping each metabolite to an atom in the directed atom transition multigraph
+%    Ti2R:                 `t` x `n` matrix mapping each directed atom transition instance to a mapped reaction
 
 
 % .. Authors: - Hulda S. Haraldsdóttir and Ronan M. T. Fleming, June 2015

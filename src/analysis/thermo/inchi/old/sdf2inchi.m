@@ -1,24 +1,23 @@
-function [inchi,metList] = sdf2inchi(sdfFileName,options)
-% Converts metabolite structures in an SDF to a cell array of InChI
-% strings with OpenBabel.
-% 
-% [inchi,metList] = sdf2inchi(sdfFileName,options)
-% 
-% INPUTS
-% sdfFileName   Path to SDF file.
-% 
-% OPTIONAL INPUTS
-% options       Write options for InChI strings. See InChI documentation
-%               for details. If no options are specified the function will
-%               output standard InChI.
-% 
-% OUTPUTS
-% inchi         Cell array of InChI strings for metabolites in the SDF file.
-% metList       Cell array of metabolite identifiers (first line of each
-%               molfile in SDF). Will be empty unless write option t is
-%               used (i.e., options >= '-xt').
-% 
-% Hulda SH, Nov. 2012
+function [inchi, metList] = sdf2inchi(sdfFileName, options)
+% Convert metabolite structures in an SDF to a cell array of InChI strings with OpenBabel
+%
+% USAGE:
+%
+%    [inchi, metList] = sdf2inchi(sdfFileName, options)
+%
+% INPUT:
+%    sdfFileName:    path to the SDF file
+%
+% OPTIONAL INPUT:
+%    options:        write options for the InChI strings (see the InChI
+%                    documentation); if omitted, standard InChI is written
+%
+% OUTPUTS:
+%    inchi:          cell array of InChI strings for the metabolites in the SDF
+%    metList:        cell array of metabolite identifiers (first line of each molfile
+%                    in the SDF); empty unless the write option `t` is used (`-xt`)
+%
+% .. Author: - Hulda SH, Nov. 2012
 
 % Check inputs
 if ~strcmp(sdfFileName(end-3:end),'.sdf')

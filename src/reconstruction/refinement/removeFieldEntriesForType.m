@@ -1,11 +1,19 @@
 function model = removeFieldEntriesForType(model, indicesToRemove, type, fieldSize, varargin)
 % Remove field entries at the specified indices from all fields associated
 % with the given type
+%
 % USAGE:
-%    model = removeFieldEntriesForType(model, indicesToRemove, type, varargin)
+%
+%    model = removeFieldEntriesForType(model, indicesToRemove, type, fieldSize, varargin)
 %
 % INPUTS:
-%    model:              the model to update
+%    model:              the model to update, with fields:
+%
+%                          * .rules - `n x 1` evaluatable GPR rules, updated
+%                            when `type` is `genes`
+%                          * .genes - `g x 1` gene identifiers, read to map
+%                            removed gene positions to gene names when
+%                            `type` is `genes`
 %    indicesToRemove:    indices which should be removed (either a logical array or double indices)
 %    type:               the Type of field to update. one of
 %                        ('rxns','mets','comps','genes','ctrs','evars','rxnName','specName','molAlias')
@@ -19,7 +27,7 @@ function model = removeFieldEntriesForType(model, indicesToRemove, type, fieldSi
 %                           adjusted but kept how they are.
 %
 % OUTPUT:
-%    modelNew:           the model in which all fields associated with the
+%    model:              the model in which all fields associated with the
 %                        given type have the entries indicated removed. The
 %                        initial check is for the size of the field, if
 %                        multiple base fields have the same size, it is
@@ -28,11 +36,14 @@ function model = removeFieldEntriesForType(model, indicesToRemove, type, fieldSi
 %                        adapted along with fields which are specified in the
 %                        Model FieldDefinitions.
 %
+% NOTE:
+%
+%    `rxnName`, `specName`, and `molAlias` refer to a map field, see
+%    https://github.com/opencobra/cobratoolbox/blob/master/docs/source/notes/simpleMATLABStructure.md
+%
 % .. Authors:
 %      - Thomas Pfau June 2017, adapted to merge all fields.
 
-%rxnName, specName, molAlias, refer to a map field
-%https://github.com/opencobra/cobratoolbox/blob/master/docs/source/notes/simpleMATLABStructure.md
 PossibleTypes = {'rxns','mets','comps','genes','ctrs','evars','rxnName','specName','molAlias'};
 
 

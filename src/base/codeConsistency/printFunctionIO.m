@@ -1,61 +1,32 @@
-function [inputs,outputs] = printFunctionIO(functionName,derivedInputNames,printLevel)
-% list the inputs and outputs of a function
-% e.g., when a function takes a structure as inputs
+function [inputs, outputs] = printFunctionIO(functionName, derivedInputNames, printLevel)
+% Lists the input and output variables (including struct fields) referenced
+% inside a target function's source code, e.g., when a function takes a
+% structure as an input.
 %
-% It does not list outputs of nested functions, for that, see:
-% displayRequiredFunctions(fullFileName)
+% It does not list outputs of nested functions; for that, see
+% displayRequiredFunctions(fullFileName).
 %
-% INPUTS:
-%  functionName:        name of the function to print io for
+% USAGE:
+%
+%    [inputs, outputs] = printFunctionIO(functionName, derivedInputNames, printLevel)
 %
 % OPTIONAL INPUTS:
-%  derivedInputNames:   name of a variable derived from an input variable
-%                       or a cell array of variable names
-%  printLevel:          if >0 then print to terminal (default 1)
+%    functionName:         Name of the function to print io for (default: `solveCobraLP.m`)
+%    derivedInputNames:    Name of a variable derived from an input variable,
+%                          or a cell array of such variable names (default: `{}`)
+%    printLevel:           If > 0 then print to terminal (default: 1)
 %
 % OUTPUTS:
-%  inputs: 
-%  outputs:
-%
-% NOTE:
-%
-% Author(s): Ronan Fleming
-
-% EXAMPLE:
-%   [inputs,outputs] = printFunctionInputsAndOutputs('solveCobraLP',{},1);
-%
-% Returns the following:
-% INPUTS:
-%  LPproblem.A:
-%  LPproblem.S:
-%  LPproblem.csense:
-%  LPproblem.b:
-%  LPproblem.osense:
-%  LPproblem.modelID:
-%  LPproblem.c:
-%  LPproblem.lb:
-%  LPproblem.ub:
-%  LPproblem.basis:
-%  LPproblem.LPBasis:
-%  varargin:      
-%
-% OUTPUTS:
-%  solution.basis:
-%  solution.solver:
-%  solution.algorithm:
-%  solution.slack:
-%  solution.obj:
-%  solution.rcost:
-%  solution.dual:
-%  solution.stat:
-%  solution.origStat:
-%  solution.origStatText:
+%    inputs:     Cell array of input variable/field names found in the target
+%                function's source code
+%    outputs:    Cell array of output variable/field names found in the target
+%                function's source code
 %
 % EXAMPLE:
 %
-% NOTE:
+%    [inputs, outputs] = printFunctionIO('solveCobraLP', {}, 1);
 %
-% Author(s):
+% .. Author: - Ronan Fleming
 
 if ~exist('functionName','var')
     functionName = 'solveCobraLP.m';
@@ -113,7 +84,7 @@ for i=1:length(inputNames)
                 inputs{n,1} = strtrim([inputNames{i} extractedField{k}]);
                 %disp(inputs{n,1})
                 n=n+1;
-                
+
                 %one level deeper
                 pat2 = pattern((sprintf(inputNames{i}))) + extractedField{k} + '.' + patternStr;
                 outputInds2 = find(contains(C,pat2));
@@ -127,7 +98,7 @@ for i=1:length(inputNames)
                         end
                     end
                 end
-                
+
             end
         end
     end
@@ -145,7 +116,7 @@ if ~isempty(indL) && ~isempty(indR)
 else
     %oinly one output
     %     'function solution = solveCobraLP(LPproblem, varargin)'
-    pat = pattern('function') + whitespacePattern + patternStr + whitespacePattern + pattern('='); 
+    pat = pattern('function') + whitespacePattern + patternStr + whitespacePattern + pattern('=');
     outputNames = extract(C{1},pat);
     outputNames = strrep(outputNames,'function','');
     outputNames = strrep(outputNames,'=','');
@@ -170,10 +141,10 @@ else
                 end
                 extractedField = extract(extractedText,'.' + patternStr);
                 for k=1:length(extractedField)
-                    
+
                     outputs{n,1} = strtrim([outputNames{i} extractedField{k}]);
                     n=n+1;
-                    
+
                     %one level deeper
                     pat2 = pattern((sprintf(outputNames{i}))) + extractedField{k} + '.' + patternStr;
                     outputInds2 = find(contains(C,pat2));
@@ -219,7 +190,7 @@ if printLevel>0
     fprintf('%s\n','% NOTE:');
     fprintf('%s\n','%');
     fprintf('%s\n','% Author(s):');
-end    
+end
 
 end
 

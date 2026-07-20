@@ -6,9 +6,15 @@ function metaboliteMassBalancePlot(model, metAbbr, solution, N)
 %    metaboliteMassBalancePlot(model, metAbbr, solution, N)
 %
 % INPUTS:
-%    model:       COBRA model structure
+%    model:       COBRA model structure with fields:
+%
+%                   * .S - `m x n` stoichiometric matrix
+%                   * .mets - `m x 1` cell array of metabolite identifiers
+%                   * .rxns - `n x 1` cell array of reaction identifiers
 %    metAbbr:     metabolite abbreviation
-%    solution:    `solveCobraLP` output of a solution to FBA problem
+%    solution:    `solveCobraLP` output of a solution to FBA problem, with field:
+%
+%                   * .full - full flux vector of the solution
 %    N:           Number of reactions to include for production/consumption
 %
 % .. Author: - Ronan M.T. Fleming

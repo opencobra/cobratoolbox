@@ -1,30 +1,43 @@
-function [xmlStructOut,map,specNotInMap] = removeMapMol(xmlStruct,map,molRemoveList,printLevel)
-%removes a list of molecules (species alias) from a cell designer map, also removes
-%corresponding reaction if necessary
+function [xmlStructOut, map, specNotInMap] = removeMapMol(xmlStruct, map, molRemoveList, printLevel)
+% Removes a list of molecules (species alias) from a CellDesigner map, also
+% removing the corresponding reaction if necessary.
 %
-% INPUT
-%   xmlStruct:      Structure obtained from the "xml2struct" function.
-%                   To be kept for the conversion back to an XML file
-%                   of the structure.
+% USAGE:
 %
-%   map:            Matlab structure of the map containing all the
-%                   relevant fields usable for checking and correction.
+%    [xmlStructOut, map, specNotInMap] = removeMapMol(xmlStruct, map, molRemoveList, printLevel)
 %
-%   molRemoveList:  Cell array of molecule abbreviation to be removed
+% INPUTS:
+%    xmlStruct:         Structure obtained from the `xml2struct` function.
+%                       To be kept for the conversion back to an XML file
+%                       of the structure.
+%    map:               Matlab structure of the map containing all the
+%                       relevant fields usable for checking and
+%                       correction, with fields:
 %
-%   printLevel:     {0,(1)}
+%                         * .molAlias - Cell array of molecule alias IDs
+%                         * .rxnName - Cell array of reaction names
+%                         * .specName - Cell array of metabolite (species) names
+%                         * .sID - Stoichiometric matrix with rows =
+%                           speciesID and columns = reactionsID
+%                         * .sAlias - Stoichiometric matrix with rows =
+%                           moleculeAlias and columns = reactionsID
+%                         * .idAlias - Logical matrix with rows = speciesID
+%                           and columns = speciesAlias
+%    molRemoveList:     Cell array of molecule abbreviation to be removed
 %
-% OUTPUT
-%   xmlStructOut:   Structure for the conversion back to an XML file
-%                   of the structure.
+% OPTIONAL INPUTS:
+%    printLevel:        {0,(1)}
 %
-%   mapOut:         Matlab structure of the smaller map containing all the
-%                   relevant fields usable for checking and correction.
+% OUTPUTS:
+%    xmlStructOut:      Structure for the conversion back to an XML file
+%                       of the structure.
+%    map:               Matlab structure of the smaller map containing all
+%                       the relevant fields usable for checking and
+%                       correction.
+%    specNotInMap:      Boolean vector the length of `molRemoveList`
+%                       indicating species that could not be found in the map
 %
-% specNotInMap:    boolean vector the length of molRemoveList
-%                  indicating species that could not be found in the map
-%
-% Ronan Fleming 2020
+% .. Author: - Ronan Fleming, 2020
 
 if ~exist('printLevel','var')
     printLevel = 1;

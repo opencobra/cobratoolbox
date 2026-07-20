@@ -13,8 +13,11 @@ function [priorityKeq, numNonKeqMet] = priorityKeqMeasurement(modelT)
 % INPUT:
 %    modelT:         structure with fields:
 %
-%                      * .S
-%                      * .met(m).dGft0Source
+%                      * .S - `m x n` stoichiometric matrix
+%                      * .mets - `m x 1` cell array of metabolite identifiers
+%                      * .rxns - `n x 1` cell array of reaction identifiers
+%                      * .SIntRxnBool - `n x 1` boolean, true for internal reactions
+%                      * .met(m).dGft0Source - origin of the standard Gibbs energy of formation for each metabolite
 %
 % OUTPUTS:
 %    priorityKeq:    structure indicating which reactions to measure Keq:
@@ -26,7 +29,7 @@ function [priorityKeq, numNonKeqMet] = priorityKeqMeasurement(modelT)
 %                      * priorityKeq{p, 5} - met name
 %                      * priorityKeq{p, 5} - number of reactions the same metabolite appears in
 %                        this give options for which reaction to measure
-%    numNonKeqMet:   number of metabolites without data at each iteration
+%    numNonKeqMet:    number of metabolites without data at each iteration
 %
 % .. Author: - Ronan M.T. Fleming
 

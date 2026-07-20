@@ -5,8 +5,10 @@ function [N, resInfo] = fastSNP(model, varargin)
 % USAGE:
 %    N = fastSNP(model, 'name', 'value', ...)
 %
-% INPUTS
-%    model:             COBRA model
+% INPUTS:
+%    model:             COBRA model with field:
+%
+%                         * .S - `m x n` stoichiometric matrix
 %
 % OPTIONAL INPUTS:
 %    parameters:        solver-specific parameter structure or name-value pair argument for solverCobraLP
@@ -14,13 +16,14 @@ function [N, resInfo] = fastSNP(model, varargin)
 % OUTPUT:
 %    N:                 a minimal feasible basis generating all internal cycles
 %    resInfo:           structure containing the following used parameters/information:
-%                       *.iter:      number of iterations
-%                       *.iterTime:  time for each iteration
-%                       *.weight:    the random weight vector used for finding new basis vector
-%                       *.M:         the bound for minimum/maximum flux 
-%                       *.feasTol:   feasibility tolerance for checking solution feasibility
-%                       *.tol0:      tolerance for zeros in the basis vector
-%                       *.epsilon:   tolerance for a new basis vector not
+%
+%                         * .iter - number of iterations
+%                         * .iterTime - time for each iteration
+%                         * .weight - the random weight vector used for finding new basis vector
+%                         * .M - the bound for minimum/maximum flux
+%                         * .feasTol - feasibility tolerance for checking solution feasibility
+%                         * .tol0 - tolerance for zeros in the basis vector
+%                         * .epsilon - tolerance for a new basis vector not
 %                                    lying in the projection of the current null-space,
 %                                    i.e. w'(I - P)v >= epsilon or w'(I - P)v <= -epsilon
 %

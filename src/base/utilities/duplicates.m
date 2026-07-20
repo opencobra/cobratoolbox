@@ -1,41 +1,48 @@
-function [M,duplicateBool,C,IA,IC] = duplicates(A)
+function [M, duplicateBool, C, IA, IC] = duplicates(A)
 % create a map M between the first instance (row) and other instances (cols)
 % of an equivalent set using [C,IA,IC]=unique(A,'rows','stable');
 %
-% INPUT
-% A         m x n array (compatible with unique.m)
+% USAGE:
 %
-% OUTPUT
-% M         m x m array where M(i,j) = 1 if the first instance of i has a
-%           duplicate j,  and M(i,j) = 0 otherwise.
-% C         unique first instances in the same order that they appear in A
-% IA        C = A(IA,:)
-% IC        A = C(IC,:)
+%    [M, duplicateBool, C, IA, IC] = duplicates(A)
 %
-% USAGE
-% A=['a';'a';'b';'c';'d';'d';'b';'b';'e'];
-% 
-% M =
-%      0     1     0     0     0     0     0     0     0
-%      0     0     0     0     0     0     0     0     0
-%      0     0     0     0     0     0     1     1     0
-%      0     0     0     0     0     0     0     0     0
-%      0     0     0     0     0     1     0     0     0
-%      0     0     0     0     0     0     0     0     0
-%      0     0     0     0     0     0     0     0     0
-%      0     0     0     0     0     0     0     0     0
-%      0     0     0     0     0     0     0     0     0
+% INPUTS:
+%    A:                m x n array (compatible with `unique`)
 %
-% duplicateBool = 
-%    0
-%    1
-%    0
-%    0
-%    0
-%    1
-%    1
-%    1
-%    0
+% OUTPUTS:
+%    M:                m x m array where `M(i, j) = 1` if the first
+%                      instance of `i` has a duplicate `j`, and
+%                      `M(i, j) = 0` otherwise.
+%    duplicateBool:    m x 1 boolean, true for each row of `A` that is a
+%                      duplicate of an earlier row.
+%    C:                unique first instances in the same order that they
+%                      appear in `A`
+%    IA:               `C = A(IA, :)`
+%    IC:               `A = C(IC, :)`
+%
+% EXAMPLE:
+%
+%    A = ['a';'a';'b';'c';'d';'d';'b';'b';'e'];
+%    % M =
+%    %      0     1     0     0     0     0     0     0     0
+%    %      0     0     0     0     0     0     0     0     0
+%    %      0     0     0     0     0     0     1     1     0
+%    %      0     0     0     0     0     0     0     0     0
+%    %      0     0     0     0     0     1     0     0     0
+%    %      0     0     0     0     0     0     0     0     0
+%    %      0     0     0     0     0     0     0     0     0
+%    %      0     0     0     0     0     0     0     0     0
+%    %      0     0     0     0     0     0     0     0     0
+%    % duplicateBool =
+%    %    0
+%    %    1
+%    %    0
+%    %    0
+%    %    0
+%    %    1
+%    %    1
+%    %    1
+%    %    0
 
 N=size(A,1);
 

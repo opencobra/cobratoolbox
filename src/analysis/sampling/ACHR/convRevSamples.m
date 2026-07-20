@@ -7,7 +7,12 @@ function [model, samples] = convRevSamples(model, samples)
 %    [model, samples] = convRevSamples(model, samples)
 %
 % INPUT:
-%    model:      Constraint-based model
+%    model:      Constraint-based model, with fields:
+%
+%                  * .rxns - reaction identifiers (reverse-only reactions renamed)
+%                  * .lb - lower flux bounds
+%                  * .ub - upper flux bounds
+%                  * .S - stoichiometric matrix
 %
 % OPTIONAL INPUT:
 %    samples:    Sample set

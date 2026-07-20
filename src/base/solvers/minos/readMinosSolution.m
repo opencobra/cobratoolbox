@@ -17,10 +17,10 @@ function sol = readMinosSolution(fname)
 %    sol = readMinosSolution(fname)
 %
 % INPUT:
-%    fname: File
+%    fname:     File
 %
 % OUTPUT:
-%    sol:   Structure
+%    sol:       Structure
 %
 %             * .inform - MINOS exit condition
 %             * .m - Number of rows in `A`

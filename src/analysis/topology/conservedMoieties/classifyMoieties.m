@@ -3,22 +3,20 @@ function [types, isSecondary] = classifyMoieties(L, S)
 %
 % USAGE:
 %
-%    types = classifyMoieties(L, S)
+%    [types, isSecondary] = classifyMoieties(L, S)
 %
 % INPUTS:
 %    L:        The `r` x `m` moiety matrix with moiety vectors as columns.
 %    S:        The `m` x `n` total stoichiometric matrix.
 %
-% OUTPUT:
-%    types:    an `r` x `1` cell array of with one of the following moiety classifications
-%              'Internal' moiety that is also conserved in the open network
-%              'Transitive' moiety that is only found in primary metabolites
-%              'Integrative' moiety that is not conserved in the open
-%               network and found in both primary and secondary metabolites.
-%
-%
-% isSecondary  `m x 1` Boolean vector indicating secondary metabolites
-%                      (containing at least one internal conserved moiety')
+% OUTPUTS:
+%    types:          an `r x 1` cell array with one of the following moiety classifications:
+%                    'Internal' moiety that is also conserved in the open network
+%                    'Transitive' moiety that is only found in primary metabolites
+%                    'Integrative' moiety that is not conserved in the open
+%                    network and found in both primary and secondary metabolites.
+%    isSecondary:    `m x 1` Boolean vector indicating secondary metabolites
+%                    (containing at least one internal conserved moiety)
 %
 % .. Author: - Hulda S. Haraldsdóttir, June 2015
 %              Ronan Fleming, Oct 2020

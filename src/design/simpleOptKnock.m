@@ -7,7 +7,11 @@ function [wtRes, delRes] = simpleOptKnock(model, targetRxn, deletions, geneDelFl
 %    [wtRes, delRes] = simpleOptKnock(model, targetRxn, deletions, geneDelFlag, minGrowth, doubleDelFlag)
 %
 % INPUTS:
-%    model:            COBRA model structure
+%    model:            COBRA model structure. Fields used directly:
+%
+%                        * .rxns - `n x 1` reaction identifiers
+%                        * .c - `n x 1` linear objective coefficients (identifies the biomass reaction)
+%                        * .rxnGeneMat - reaction-by-gene mapping matrix (built if absent)
 %    targetRxn:        Target metabolite production reaction
 %
 % OPTIONAL INPUTS:

@@ -10,7 +10,18 @@ function [model, affectedRxns, originalGPRs, deletedReactions] = removeGenesFrom
 %
 % INPUT:
 %    model:               COBRA model with the appropriate constrains for a
-%                         particular condition
+%                         particular condition, with fields:
+%
+%                           * .genes - `g x 1` gene identifiers
+%                           * .rules - `n x 1` evaluatable GPR rules, updated
+%                             to remove the deleted genes
+%                           * .rxns - `n x 1` reaction identifiers (read if
+%                             `keepReactions` is false)
+%                           * .grRules - `n x 1` readable GPR rules, updated
+%                             if present
+%                           * .rxnGeneMat - `n x g` reaction-gene incidence
+%                             matrix, used to find affected reactions if
+%                             present
 %    geneList:            List of genes to be deleted as cell array, or a
 %                         single gene as char
 %

@@ -1,4 +1,4 @@
-function sbmlModel = writeSBML(model,fileName,compSymbolList,compNameList)
+function sbmlModel = writeSBML(model, fileName, compSymbolList, compNameList)
 % Exports a COBRA structure into an SBML FBCv2 file. A SBMLFBCv2 file  a file is written to the current Matlab path.
 %
 % USAGE:
@@ -6,7 +6,35 @@ function sbmlModel = writeSBML(model,fileName,compSymbolList,compNameList)
 %    sbmlModel = writeSBML(model, fileName, compSymbolList, compNameList)
 %
 % INPUTS:
-%    model:             COBRA model structure
+%    model:             COBRA model structure, with fields:
+%
+%                         * .mets - `m x 1` metabolite identifiers
+%                         * .rxns - `n x 1` reaction identifiers
+%                         * .genes - `g x 1` gene identifiers
+%                         * .S - `m x n` stoichiometric matrix
+%                         * .lb - `n x 1` lower bounds
+%                         * .ub - `n x 1` upper bounds
+%                         * .c - `n x 1` linear objective coefficients
+%                         * .rules - `n x 1` evaluatable GPR rules
+%                         * .osenseStr - objective sense, `'max'` or `'min'` (optional, default: `'max'`)
+%                         * .comps - `c x 1` compartment symbols (optional, derived from `compSymbolList` or defaults if absent)
+%                         * .compNames - `c x 1` compartment names (optional, falls back to `.comps` or defaults if absent)
+%                         * .modelName - descriptive name of the model (optional)
+%                         * .modelID - short identifier of the model (optional)
+%                         * .description - general description of the model, written to the SBML `metaid` (optional)
+%                         * .modelAnnotation - free-text annotation string(s) written into the exported SBML `<model>` notes (optional)
+%                         * .metNames - `m x 1` metabolite names (optional)
+%                         * .metFormulas - `m x 1` elemental formulas (optional)
+%                         * .metCharges - `m x 1` metabolite charges (optional)
+%                         * .metSBOTerms - `m x 1` SBO terms for metabolites (optional)
+%                         * .metNotes - `m x 1` notes for metabolites (optional)
+%                         * .geneNames - `g x 1` gene names (optional)
+%                         * .proteins - `g x 1` proteins associated with genes (optional)
+%                         * .subSystems - `n x 1` subsystem annotations (optional)
+%                         * .rxnConfidenceScores - `n x 1` reaction confidence scores (optional)
+%                         * .rxnNotes - `n x 1` notes on reactions (optional)
+%                         * .rxnNames - `n x 1` reaction names (optional)
+%                         * .rxnSBOTerms - `n x 1` SBO terms for reactions (optional)
 %    fileName:          File name for output file
 %
 % OPTIONAL INPUTS:

@@ -7,13 +7,17 @@ function smallFBAsolutionPaths = slimDownFBAresults(FBAsolutionDir)
 % 'speciesBIO','shadowPriceBIO', and 'relAbundances'. Then, the solutions
 % are saved to the new paths.
 %
-% INPUT
-% FBAsolutionDir            Character array with path to FBA solutions.
+% USAGE:
 %
-% OUTPUT
-% smallFBAsolutionPaths     Path to slimmed down FBA results
+%    smallFBAsolutionPaths = slimDownFBAresults(FBAsolutionDir)
 %
-% AUTHOR: Tim Hensen, October 2024
+% INPUT:
+%    FBAsolutionDir:          character array with the path to the FBA solutions
+%
+% OUTPUT:
+%    smallFBAsolutionPaths:    paths to the slimmed-down FBA results
+%
+% .. Author: - Tim Hensen, October 2024
 
 % Create new folder name
 newFolder = [FBAsolutionDir '_SLIM'];

@@ -1,14 +1,27 @@
-function [metabolite_structure,IDsSuggested] = verifyInchiString(metabolite_structure)
-%% function [metabolite_structure] = verifyInchiString(metabolite_structure)
-% This function verifies whether the inchiString and the formula/charge
-% match for the entries in the metabolite_structure. If the inchiString is
-% neutral but the chargedFormula is not neutral, only a note to the
-% inchiString_source will be added. If the inchiString does not match or
-% represents a different charge (not neutral and not overlapping with the
-% metabolite charge), the inchiString will be removed from the
-% metabolite_structure and added to a IDsSuggested list.
+function [metabolite_structure, IDsSuggested] = verifyInchiString(metabolite_structure)
+% Verifies that the inchiString and the formula/charge match for each metabolite
 %
-% Ines Thiele 2020/2021
+% Verifies whether the inchiString and the formula/charge match for the
+% entries in the metabolite structure. If the inchiString is neutral but the
+% chargedFormula is not neutral, only a note is added to the inchiString
+% source. If the inchiString does not match, or represents a different charge
+% (not neutral and not overlapping with the metabolite charge), the
+% inchiString is removed from the metabolite structure and added to an
+% IDsSuggested list.
+%
+% USAGE:
+%
+%    [metabolite_structure, IDsSuggested] = verifyInchiString(metabolite_structure)
+%
+% INPUT:
+%    metabolite_structure:    metabolite structure
+%
+% OUTPUTS:
+%    metabolite_structure:    updated metabolite structure
+%    IDsSuggested:            list of inchiStrings removed and suggested for
+%                             review
+%
+% .. Author: - Ines Thiele, 2020/2021
 
 verificationType0 = 'not verified';
 verificationType1 = 'verified by formula and charge comparison';

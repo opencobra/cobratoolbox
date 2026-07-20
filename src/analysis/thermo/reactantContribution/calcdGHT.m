@@ -26,6 +26,7 @@ function [dGf0, dHf0, mf, aveHbound, aveZi, lambda, gpfnsp] = calcdGHT(dGzero, d
 %    chi:            electrical potential
 %    Legendre:       {(1), 0} Legendre Transformation for specifc pHr?
 %    LegendreCHI:    {(1), 0} Legendre Transformation for specifc electrical potential?
+%    printLevel:     verbosity control; if > 0, prints diagnostic output. Default is 0.
 %
 % OUTPUT:
 %    dGf0:           reactant standard transformed Gibbs energy of formation

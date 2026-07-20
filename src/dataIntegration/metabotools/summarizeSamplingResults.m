@@ -1,4 +1,4 @@
-function [stats, statsR] = summarizeSamplingResults(modelA,modelB,path,nFiles,pointsPerFile,starting_model,dataGenes,show_rxns,fonts,hist_per_page,bin,fileNameA,fileNameB)
+function [stats, statsR] = summarizeSamplingResults(modelA, modelB, path, nFiles, pointsPerFile, starting_model, dataGenes, show_rxns, fonts, hist_per_page, bin, fileNameA, fileNameB)
 % The function summarizes the sampling results of the two models `modelA` and
 % `modelB`. Subsequently, it returnes medians from the two models' sampling,
 % FVA results for the respective reaction, simple test results (`stats`).
@@ -13,12 +13,18 @@ function [stats, statsR] = summarizeSamplingResults(modelA,modelB,path,nFiles,po
 %    [stats, statsR] = summarizeSamplingResults(modelA, modelB, path, nFiles, pointsPerFile, starting_model, dataGenes, show_rxns, fonts, hist_per_page, bin, fileNameA, fileNameB)
 %
 % INPUTS:
-%    modelA:                     Sampled modelA (condition 1)
-%    modelB:                     Sampled modelB (condition 2)
+%    modelA:                     Sampled modelA (condition 1), with field:
+%
+%                                  * .rxns - reaction identifiers
+%    modelB:                     Sampled modelB (condition 2), with field:
+%
+%                                  * .rxns - reaction identifiers
 %    path:                       Path to sampling output files
 %    nFiles:                     Number of files saved, e.g., 20;
-%    pointsPerFilePoints:        Points saved per file, e.g., 5000;
-%    starting_model:             Original metabolic model (Recon)
+%    pointsPerFile:              Points saved per file, e.g., 5000;
+%    starting_model:             Original metabolic model (Recon), with field:
+%
+%                                  * .genes - cell array of gene identifiers
 %    dataGenes:                  Gene set, whose associated reactions should be emphasized by color, e.g., alternatively spliced or differentially expressed genes
 %
 % OPTIONAL INPUTS:

@@ -9,7 +9,8 @@ function [rxnEC, rxnReference] = parseSBMLAnnotationFieldRxn(annotationField)
 %    annotationField:       annotation filed of an SBML fileBase
 %
 % OUTPUTS:
-%    rxnEC,rxnReference:    only one of them is not empty depending on `annotationField`
+%    rxnEC:             the EC number found in `annotationField` (empty if absent)
+%    rxnReference:      the PubMed reference(s) found in `annotationField` (empty if absent)
 %
 % .. Author: - Uri David Akavia 3-Nov-2016
 

@@ -4,7 +4,7 @@ function cnaModel = convertCbModelToCNAModel(model, printLevel)
 %
 % USAGE:
 %
-%    cnaModel = convertCNAModelToCbModel(model, printLevel)
+%    cnaModel = convertCbModelToCNAModel(model, printLevel)
 %
 % INPUT:
 %

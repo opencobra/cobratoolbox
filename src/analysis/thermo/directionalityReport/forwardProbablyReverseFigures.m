@@ -15,6 +15,17 @@ function forwardProbablyReverseFigures(model, miliMolarStandard)
 %                  * .forwardReversible_bydGt0RHS
 %                  * .forwardReversible_byConc_positive_fixed_DrG0
 %                  * .forwardReversible_byConc_positive_uncertain_DrG0
+%                * .S - `m x n` stoichiometric matrix
+%                * .dGt0Min - `n x 1` lower bound on standard transformed reaction Gibbs energy
+%                * .dGt0Max - `n x 1` upper bound on standard transformed reaction Gibbs energy
+%                * .dGtMin - `n x 1` lower bound on transformed reaction Gibbs energy
+%                * .dGtMax - `n x 1` upper bound on transformed reaction Gibbs energy
+%                * .DrGt0Min - `n x 1` lower bound on standard transformed reaction Gibbs energy
+%                * .DrGt0Max - `n x 1` upper bound on standard transformed reaction Gibbs energy
+%                * .DrGt0Mean - `n x 1` mean standard transformed reaction Gibbs energy
+%                * .DrGtMin - `n x 1` lower bound on transformed reaction Gibbs energy
+%                * .DrGtMax - `n x 1` upper bound on transformed reaction Gibbs energy
+%                * .DrGtMean - `n x 1` mean transformed reaction Gibbs energy
 %    miliMolarStandard:
 %
 % .. Author: - Ronan M.T. Fleming

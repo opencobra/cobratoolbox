@@ -1,44 +1,55 @@
 function combinedModel = createGroupIncidenceMatrix(model, trainingModel, param)
+% Build a combined group (fragment) incidence matrix for a test model and the
+% training model, as used by the component contribution method
 %
 % USAGE:
 %
-%    trainingModel = createGroupIncidenceMatrix(model, trainingModel)
+%    combinedModel = createGroupIncidenceMatrix(model, trainingModel, param)
 %
 % INPUTS:
-% model:
-% model.mets                                m x 1 metabolite ids
-% model.inchi.nonstandard                   m x 1 cell array of nonstandard InChI
+%    model:            test COBRA model structure with fields:
 %
-% trainingModel:
-% trainingModel.S:                          p x n stoichiometric matrix of training data
-% trainingModel.mets                        p x 1 metabolite abbreviations
-% trainingModel.rxns                        n x 1 reaction abbreviations
-% trainingModel.metKEGGID:                  p x 1 cell array of metabolite KEGGID
-% trainingModel.inchi.nonstandard:          p x 1 cell array of nonstandard InChI
-% trainingModel.mappingScore
+%                        * .mets - `m x 1` cell array of metabolite identifiers
+%                        * .inchi - structure whose `.nonstandard` field is an `m x 1` cell array of nonstandard InChI
+%    trainingModel:    training data model structure with fields:
+%
+%                        * .S - `p x n` stoichiometric matrix of the training data
+%                        * .mets - `p x 1` metabolite abbreviations
+%                        * .rxns - `n x 1` reaction abbreviations
+%                        * .metKEGGID - `p x 1` cell array of metabolite KEGG IDs
+%                        * .inchi - structure whose `.nonstandard` field is a `p x 1` cell array of nonstandard InChI
+%                        * .cids_that_dont_decompose - KEGG compound IDs that do not decompose (manual fragmentation)
+%                        * .groups - `g x 1` cell array of group definitions (written)
+%                        * .G - `p x g` group incidence matrix (written)
+%                        * .groupDecomposableBool - `p x 1` boolean of group-decomposable metabolites (written)
+%                        * .trainingMetBool - `p x 1` boolean flagging training metabolites (written)
+%                        * .testMetBool - `p x 1` boolean flagging test metabolites (written)
 %
 % OPTIONAL INPUT:
-% trainingModel.cids_that_dont_decompose    cid of kegg compounds that are not decomposable with param.fragmentationMethod='manual';
-% 
+%    param:            structure of parameters with fields:
+%
+%                        * .printLevel - verbosity level (default 0)
+%                        * .fragmentationMethod - 'abinito' (default) or 'manual'
+%                        * .modelCache - cache filename for the test-model fragmentation
+%                        * .radius - number of bonds around each central atom (default 1)
+%                        * .dGPredictorPath - absolute path to a clone of dGPredictor
+%                        * .canonicalise - boolean, canonicalise SMILES fragments (default 0)
+%
 % OUTPUT:
-% combinedModel:
-% combinedModel.S:                          k x n stoichiometric matrix of training padded with zero rows for metabolites exclusive to test data
-% combinedModel.drG0:                       n x 1 experimental standard reaction Gibbs energy
-% combinedModel.drG0_prime:                 n x 1 experimental standard transformed reaction Gibbs energy
-% combinedModel.T:                          n x 1 temperature
-% combinedModel.I:                          n x 1 ionic strength
-% combinedModel.pH:                         n x 1 pH
-% combinedModel.pMg:                        n x 1 pMg
-% combinedModel.G:                          k x g group incidence matrix
-% combinedModel.groups:                     g x 1 cell array of group definitions
-% combinedModel.trainingMetBool             k x 1 boolean indicating training metabolites in G
-% combinedModel.testMetBool                 k x 1 boolean indicating test metabolites in G
-% combinedModel.groupDecomposableBool:      k x 1 boolean indicating metabolites with group decomposition
-% combinedModel.inchiBool                   k x 1 boolean indicating metabolites with inchi
-% combinedModel.test2CombinedModelMap:      m x 1 mapping of model.mets to combinedModel.mets
-
-% combinedModel.cids_that_dont_decompose:   z x 1 ids of compounds that do not decomopose
-
+%    combinedModel:    combined model structure (training padded with test-only
+%                      metabolites), with fields including:
+%
+%                        * .S - `k x n` stoichiometric matrix
+%                        * .G - `k x g` group incidence matrix
+%                        * .groups - `g x 1` cell array of group definitions
+%                        * .mets - `k x 1` cell array of metabolite identifiers
+%                        * .rxns - `n x 1` reaction abbreviations
+%                        * .inchi - structure whose `.nonstandard` field is a `k x 1` cell array of nonstandard InChI
+%                        * .groupDecomposableBool - `k x 1` boolean of group-decomposable metabolites
+%                        * .inchiBool - `k x 1` boolean of metabolites with an InChI
+%                        * .trainingMetBool - `k x 1` boolean flagging training metabolites
+%                        * .testMetBool - `k x 1` boolean flagging test metabolites
+%                        * .test2CombinedModelMap - `m x 1` mapping of `model.mets` to `combinedModel.mets`
 %
 
 if isempty(model)

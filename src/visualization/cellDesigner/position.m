@@ -1,4 +1,4 @@
-function [string,p_st,p_ed]=position(str_long,str_ID)
+function [string, p_st, p_ed] = position(str_long, str_ID)
 % Retrieve the value of an attribute (`str_ID`) in the line (`str_long`) of the
 % XML file and identify the starting and ending indices of the value in the
 % attribute line of the XML file.

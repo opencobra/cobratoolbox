@@ -38,7 +38,7 @@ function [PR, PN, PC, PL] = subspaceProjector(A, printLevel, sub_space)
 %    [PR, PN, PC, PL] = subspaceProjector(model, printLevel, sub_space)
 %
 % INPUT:
-%    A          `m x n` matrix
+%    A:         `m x n` matrix
 %
 % OPTIONAL INPUTS:
 %    printLevel:          {(1), 0}, 1 = print diagnostics, 0 = silent
@@ -52,8 +52,10 @@ function [PR, PN, PC, PL] = subspaceProjector(A, printLevel, sub_space)
 %                           * 'L' left nullspace
 %
 % OUTPUTS:
-%    [PR, PN, PC, PL]:    matrices for projection onto the row, null, 
-%                         column and left nullspace of A, respectively
+%    PR:    matrix for projection onto the row space of A
+%    PN:    matrix for projection onto the nullspace of A
+%    PC:    matrix for projection onto the column space of A
+%    PL:    matrix for projection onto the left nullspace of A
 %
 % .. Author:
 %       - 10 July 2009 : Ronan Fleming. First Version.

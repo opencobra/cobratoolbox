@@ -1,17 +1,17 @@
-function rankFeaturesByIncidence(propertiesFolder,reconVersion)
+function rankFeaturesByIncidence(propertiesFolder, reconVersion)
 % This function counts the incidence of a number of features in the refined
 % reconstruction resource and ranks them from most to least common.
 %
-% USAGE
-%   rankFeaturesByIncidence(curatedFolder,propertiesFolder,reconVersion)
+% USAGE:
 %
-% INPUTS
-% propertiesFolder      Folder where the analyzed features are stored and
-%                       the results will be stored (default: current folder)
-% reconVersion          Name assigned to the reconstruction resource
+%    rankFeaturesByIncidence(propertiesFolder, reconVersion)
 %
-%   - AUTHOR
-%   Almut Heinken, 07/2020
+% INPUTS:
+%    propertiesFolder:    Folder where the analyzed features are stored and
+%                         the results will be stored (default: current folder)
+%    reconVersion:        Name assigned to the reconstruction resource
+%
+% .. Author: - Almut Heinken, 07/2020
 
 tol=0.0000001;
 analyzedFiles={

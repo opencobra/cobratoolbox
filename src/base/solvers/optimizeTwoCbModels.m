@@ -10,11 +10,13 @@ function [solution1, solution2, totalFluxDiff] = optimizeTwoCbModels(model1, mod
 %    model1:           The first COBRA model
 %    model2:           The second COBRA model, where both models have mandatory fields:
 %
-%                        * S - Stoichiometric matrix
-%                        * b - Right hand side = 0
-%                        * c - Objective coefficients
-%                        * lb - Lower bounds
-%                        * ub - Upper bounds
+%                        * .S - Stoichiometric matrix
+%                        * .b - Right hand side = 0
+%                        * .c - Objective coefficients
+%                        * .lb - Lower bounds
+%                        * .ub - Upper bounds
+%                        * .rxns - Reaction identifiers, used to match the
+%                          common reaction set between `model1` and `model2`
 %
 % OPTIONAL INPUTS:
 %    osenseStr:        Maximize ('max')/minimize ('min') (Default = 'max')

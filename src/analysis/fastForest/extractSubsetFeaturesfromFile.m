@@ -1,18 +1,22 @@
 function extractSubsetFeaturesfromFile(fileName, featureList)
-% This function takes a tab delimited file of features (colums) and samples
+% This function takes a tab delimited file of features (columns) and samples
 % (rows) as input and extracts a desired subset of features and their
 % corresponding value for each sample.
 %
-% INPUT
-% fileName      file name
-% featureList   list of features (must be overlapping with the feature
-%               names given in the first row of the file)
+% USAGE:
 %
-% OUTPUT
-% an output file will be written containing only the subset - the data will
-% be comma separated
+%    extractSubsetFeaturesfromFile(fileName, featureList)
 %
-% Ines Thiele, July '22
+% INPUTS:
+%    fileName:       name of the tab-delimited input file
+%    featureList:    list of features (must be overlapping with the feature
+%                    names given in the first row of the file)
+%
+% OUTPUT:
+%    A file named `<fileName>_subset.txt` is written containing only the
+%    requested subset; the data will be comma separated
+%
+% .. Author: - Ines Thiele, July '22
 
 
 clear keep colW tline rows fid

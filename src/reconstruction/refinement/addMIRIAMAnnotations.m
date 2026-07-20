@@ -1,12 +1,13 @@
 function model = addMIRIAMAnnotations(model, elementIDs, databases, ids, varargin)
 % Add a MIRIAM style annotation to the model
-% 
-% USAGE: 
-%    model = addMIRIAMAnnotation(model, elementID, database, id, ...)
+%
+% USAGE:
+%
+%    model = addMIRIAMAnnotations(model, elementIDs, databases, ids, varargin)
 %
 % INPUTS:
 %    model:         A COBRA Style model struct
-%    elementID:     The element IDs to annotate (either a single ID as a 
+%    elementIDs:    The element IDs to annotate (either a single ID as a
 %                   char array, or a cell array of model IDs. Must be
 %                   present in one of the basic fields of the model.
 %    databases:     The databases for which annotations are added. Either a
@@ -27,7 +28,8 @@ function model = addMIRIAMAnnotations(model, elementIDs, databases, ids, varargi
 %                    * annotationTypes - The type of the annotation. either 'bio' or 'model'. Default('bio')
 %                    * annotationQualifiers - The qualifier of the annotation ( see http://co.mbine.org/standards/qualifiers ) for possible qualifiers (Default: 'is') 
 %                    * replaceAnnotation - Replace existing annotations with those supplied now (Default: false)
-%                    * printLevel - How much output to produce - 0, silent ; 1, verbose - (Default: 0) 
+%                    * printLevel - How much output to produce - 0, silent ; 1, verbose - (Default: 0)
+%
 % OUTPUT:
 %    model:         The COBRA model with the added annotations
 

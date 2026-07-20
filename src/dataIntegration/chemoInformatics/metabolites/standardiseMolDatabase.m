@@ -7,17 +7,17 @@ function standardisationReport = standardiseMolDatabase(molDir, metList, standar
 %
 % USAGE:
 %
-% [standardised, nonStandardised, InChIs, SMILES] = standardiseMolDatabase(molDir, standardisedDir, standardiseMolFiles)
+%    standardisationReport = standardiseMolDatabase(molDir, metList, standardisedDir, standardisationApproach)
 %
 % INPUTS:
-%    molDir:	Path to directory that contain the MDL MOL files
+%    molDir:    Path to directory that contain the MDL MOL files
 %                          to be standardised.
 %
 % OPTIONAL INPUTS:
-%    metList: 1 x n lest of metabolites to standardise
-%    standardisedDir: Path to directory that will contain the standardised 
+%    metList:    1 x n list of metabolites to standardise
+%    standardisedDir:    Path to directory that will contain the standardised
 %           MDL MOL files (default: current directory).
-%    standardisationApproach: String contianing the type of standarization 
+%    standardisationApproach:    String contianing the type of standarization
 %           for the moldecules (default: 'explicitH' if openBabel is 
 %           installed, otherwise 'basic')
 %
@@ -27,7 +27,7 @@ function standardisationReport = standardiseMolDatabase(molDir, metList, standar
 %           'basic' - Updating the header.
 %
 % OUTPUTS:
-%    standardisationReport: Struct array with the standarization report:
+%    standardisationReport:    Struct array with the standarization report:
 %
 %           * .standardised: list of standardised metabolite structures
 %           * .nonStandardised: list of metabolite structures that were not

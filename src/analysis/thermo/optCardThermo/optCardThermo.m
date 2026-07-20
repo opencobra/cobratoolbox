@@ -1,4 +1,4 @@
-function solution = optCardThermo(model,param)
+function solution = optCardThermo(model, param)
 % Finds a thermodynamically feasible net flux biased toward presence/absence of metabolites
 % and activity/inactivity of certain reactions by solving the following optimisation
 % problem
@@ -20,13 +20,17 @@ function solution = optCardThermo(model,param)
 %            R : = max(N,0)
 %
 %
-% INPUT:
-%    model:             (the following fields are required - others can be supplied)
+% USAGE:
 %
-%                         * S  - `m x n` Stoichiometric matrix
-%                         * c  - `n x 1` Linear objective coefficients
-%                         * lb - `n x 1` Lower bounds on reaction rate
-%                         * ub - `n x 1` Upper bounds on reaction rate
+%    solution = optCardThermo(model, param)
+%
+% INPUT:
+%    model:             COBRA model structure. Required fields:
+%
+%                         * .S - `m x n` stoichiometric matrix
+%                         * .c - `n x 1` linear objective coefficients
+%                         * .lb - `n x 1` lower bounds on reaction rate
+%                         * .ub - `n x 1` upper bounds on reaction rate
 % OPTIONAL INPUTS:
 %    model:             (optional fields)
 %          * .SConsistentRxnBool - 'm x 1' boolean vector indicating stoichiometrically consistent reactions
@@ -55,6 +59,15 @@ function solution = optCardThermo(model,param)
 %          * .delta0  - trade-off parameter on maximise `||y||_0`
 %          * .delta1  - trade-off parameter on minimise `||y||_1'
 %          * .beta    - trade-off parameter on minimise `||p||_1' + `||q||_1', increase to incentivise thermodynamic feasibility
+%          * .alpha1 - global weight on the one-norm of the cardinality-free variables
+%          * .lbr - `m x 1` lower bounds on the rate of production by internal reactions
+%          * .SConsistentMetBool - `m x 1` boolean of stoichiometrically consistent metabolites
+%          * .SIntMetBool - `m x 1` boolean of internal metabolites (from findSExRxnInd)
+%          * .SIntRxnBool - `n x 1` boolean of internal reactions (from findSExRxnInd)
+%          * .fluxConsistentMetBool - `m x 1` boolean of flux consistent metabolites (computed if absent)
+%          * .fluxConsistentRxnBool - `n x 1` boolean of flux consistent reactions (computed if absent)
+%          * .thermoFluxConsistentRxnBool - `n x 1` boolean of thermodynamically flux consistent reactions
+%          * .dummyMetBool - `m x 1` boolean of dummy metabolites
 
 %    param:      Parameters structure:
 %                   * .printLevel - greater than zero to recieve more output
@@ -65,7 +78,13 @@ function solution = optCardThermo(model,param)
 %                   * .theta - parameter of the approximation (Default value = 2)
 %                              For a sufficiently large theta, the Capped-L1 approximate problem
 %                              and the original cardinality optimisation problem are have the same set of optimal solutions
-%                   *.acceptRepairedFlux -for cycleFreeFlux, 0 = do not accept reparied flux, 1 = accept the repaired flux vector. 
+%                   * .acceptRepairedFlux - for cycleFreeFlux, 0 = do not accept the repaired flux (default), 1 = accept the repaired flux vector
+%                   * .formulation - cardinality formulation used (e.g. 'pqzw', 'pqzwrs')
+%                   * .regularizeOuter - boolean, regularise the outer problem (default 0)
+%                   * .debug - boolean, save intermediate data for debugging (default 0)
+%                   * .relaxBounds - boolean, allow bounds to be relaxed when repairing an infeasible flux (default 0)
+%                   * .rpos - boolean, require nonnegative production/consumption approximation (default 0)
+%                   * .SConsistentMethod - method to find the stoichiometrically consistent subset ('findSExRxnInd' or 'findStoichConsistentSubset')
 %
 %
 % OUTPUT:

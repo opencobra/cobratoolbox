@@ -1,4 +1,4 @@
-function [L, N, Lzero, Nzero, Pl, Pn,iR, dR, iC, dC, rankS] = conservationAnalysis(model, massBalanced, printLevel, tol)
+function [L, N, Lzero, Nzero, Pl, Pn, iR, dR, iC, dC, rankS] = conservationAnalysis(model, massBalanced, printLevel, tol)
 % Returns the left and right nullspaces of a given stoichiometric matrix in echelon form.
 %
 % i.e. :math:`L S = 0` where :math:`[-Lzero I] Pl^T S = 0`;
@@ -38,10 +38,15 @@ function [L, N, Lzero, Nzero, Pl, Pn,iR, dR, iC, dC, rankS] = conservationAnalys
 % OUTPUTS:
 %    L:                       Echelon form Left nullspace of `S`
 %    N:                       Echelon form Right nullspace of `S`
+%    Lzero:                   reduced left nullspace block, with `L = [-Lzero, I]`
+%    Nzero:                   reduced right nullspace block, with `N = [-Nzero; I]`
+%    Pl:                      row (metabolite) permutation from the QR factorisation of `S'`
+%    Pn:                      column (reaction) permutation from the QR factorisation of `S`
 %    iR:                      Boolean index of Independent rows
 %    dR:                      Boolean index of Dependent rows
 %    iC:                      Boolean index of Independent columns
 %    dC:                      Boolean index of Dependent columns
+%    rankS:                   rank of the stoichiometric matrix `S`
 %
 % See: `Conservation analysis of large biochemical networks
 % Ravishankar Rao Vallabhajosyula , Vijay Chickarmane and Herbert M. Sauro`

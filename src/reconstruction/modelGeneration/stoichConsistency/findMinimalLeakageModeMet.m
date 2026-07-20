@@ -27,6 +27,7 @@ function [minLeakMetBool, minLeakRxnBool, minSiphonMetBool, minSiphonRxnBool, le
 %                          * .ub - Upper bounds
 %                          * .SConsistentMetBool - `m` x 1 boolean vector indicating consistent mets
 %                          * .SConsistentRxnBool - `m` x 1 boolean vector indicating consistent rxns
+%                          * .mets - `m` x 1 cell array of metabolite identifiers, used when reporting leakage modes
 %    metBool:            `m` x 1 boolean vector of metabolites to test for leakage
 %
 % OPTIONAL INPUTS:
@@ -42,10 +43,10 @@ function [minLeakMetBool, minLeakRxnBool, minSiphonMetBool, minSiphonRxnBool, le
 %    printLevel:         {(0), 1}
 %
 % OUTPUTS:
-%    minleakRxnBool:        `m` x 1 boolean of metabolites in a positive leakage mode
-%    minleakRxnBool:        `n` x 1 boolean of reactions exclusively involved in a positive leakage mode
-%    minsiphonMetBool:      `m` x 1 boolean of metabolites in a negative leakage mode
-%    imnsiphonRxnBool:      `n` x 1 boolean of reactions exclusively involved in a negative leakage mode
+%    minLeakMetBool:        `m` x 1 boolean of metabolites in a positive leakage mode
+%    minLeakRxnBool:        `n` x 1 boolean of reactions exclusively involved in a positive leakage mode
+%    minSiphonMetBool:      `m` x 1 boolean of metabolites in a negative leakage mode
+%    minSiphonRxnBool:      `n` x 1 boolean of reactions exclusively involved in a negative leakage mode
 %    leakY:              `m` x 1 boolean of metabolites in a positive leakage mode
 %    siphonY:            `m` x 1 boolean of metabolites in a negative siphon mode
 %    statp:              status (positive leakage modes)

@@ -1,36 +1,48 @@
-function [metabolite_structure] = createNewMetEntryFromArray(metInput,source,populate,molFileDirectory,metab_rBioNet_online,rxn_rBioNet_online,metabolite_structure_rBioNet)
-%[metabolite_structure, VMH_existance,rBioNet_existance] = createNewMetEntryFromArray(metInput,source,populate,molFileDirectory)
-% This function takes a list of metabolites (as specified below) and 1.
-% checks whether the metabolite abbr are new to VMH and/or rBioNet (both as
-% in the online versions). Then, it obtained the inchi string from the
-% provided HMDB as well as the mol file. Using, ChemAxonn it determine the
-% most abundant pseudoisomer at ph 7. Then, it uses BridgeDB to obtain
-% further ID's.
+function [metabolite_structure] = createNewMetEntryFromArray(metInput, source, populate, molFileDirectory, metab_rBioNet_online, rxn_rBioNet_online, metabolite_structure_rBioNet)
+% Creates and populates a metabolite structure from a list of metabolites
 %
-% INPUT
-% metInput              Cell array containing the metabolites
-%                       The information provided must be as follows:
-%                       metList={
-%                       'VMH ID' 'metabolite_name' 'HMDB' 'inchistring' 'neutral_formula' 'charged_formula' 'charge'
-%                       'cot' 'Cotinine' 'HMDB0001046'  '' '' '' ''
-%                       'coto' 'Cotinine n-oxide' 'HMDB0001411'  '' '' '' ''
-% source                source of the information contained in metArray
-%                       (e.g., 'Manually assembled by IT')
-% populate              Populate new metabolite information based on the
-%                       provided HMDB Id's. If no HMDB Id's are provided, please use other
-%                       functions in the metaboAnnotator for population.
-%                       (Default:true; false).
-% molFileDirectory      Specify directory where the mol files should be
-%                       deposited. (Default: 'current path'/molFiles).
+% Takes a list of metabolites (as specified below) and (1) checks whether the
+% metabolite abbreviations are new to the VMH and/or rBioNet (in the online
+% versions), then obtains the inchiString from the provided HMDB IDs and mol
+% files, determines the most abundant pseudoisomer at pH 7, and uses BridgeDB
+% to obtain further identifiers.
 %
-% OUTPUT
-% updatedMetList        updated metList
-% VMH_existance         Lists whether the abbreviation exists in VMH (online),
-%                       as a reaction (2nd entry) or as a metabolite (3rd entry)
-% rBioNet_existance     Lists whether the abbreviation exists in rBioNet (as deposited in cobra toolbox online),
-%                       as a reaction (2nd entry) or as a metabolite (3rd entry)
+% USAGE:
 %
-% Ines Thiele, 09/2021
+%    [metabolite_structure] = createNewMetEntryFromArray(metInput, source, populate, molFileDirectory, metab_rBioNet_online, rxn_rBioNet_online, metabolite_structure_rBioNet)
+%
+% INPUTS:
+%    metInput:                        cell array (or table) containing the
+%                                     metabolites. The information provided must
+%                                     be as follows:
+%                                     metList = {
+%                                     'VMH ID' 'metabolite_name' 'HMDB' 'inchistring' 'neutral_formula' 'charged_formula' 'charge'
+%                                     'cot' 'Cotinine' 'HMDB0001046'  '' '' '' ''
+%                                     'coto' 'Cotinine n-oxide' 'HMDB0001411'  '' '' '' ''
+%                                     If a table is provided, its
+%                                     `.Properties.VariableNames` are used as the
+%                                     column headers.
+%    source:                          source of the information contained in the
+%                                     input (e.g. 'Manually assembled by IT')
+%
+% OPTIONAL INPUTS:
+%    populate:                        populate new metabolite information based
+%                                     on the provided HMDB IDs; 'true' or 'false'
+%                                     (default: 'true')
+%    molFileDirectory:                directory where the mol files are deposited
+%                                     (default: 'current path'/molFiles)
+%    metab_rBioNet_online:            rBioNet metabolite database; loaded from
+%                                     disk if not provided
+%    rxn_rBioNet_online:              rBioNet reaction database; loaded from disk
+%                                     if not provided
+%    metabolite_structure_rBioNet:    rBioNet metabolite structure; loaded from
+%                                     met_strc_rBioNet if not provided
+%
+% OUTPUT:
+%    metabolite_structure:            metabolite structure containing the new
+%                                     metabolites
+%
+% .. Author: - Ines Thiele, 09/2021
 
 if ~exist('populate','var')
     populate = 'true';

@@ -5,19 +5,21 @@ function newFormula = editChemicalFormula(metFormula, addOrRemove)
 %
 % USAGE:
 %
-%    [metFormula] = cobraFormulaToChemFormula(metReconFormula)
+%    newFormula = editChemicalFormula(metFormula, addOrRemove)
 %
 % INPUTS:
-%    metReconFormula:   An n x 1 array of metabolite Recon formulas
+%    metFormula:        A char array with the chemical formula of a metabolite
+%
 % OPTIONAL INPUTS:
 %    addOrRemove:          A struct array containing:
-%                           *.elements - element to edit
-%                           *.times - vector indicated the times the
+%
+%                           * .elements - element to edit
+%                           * .times - vector indicated the times the
 %                                     element will be deleted (negative) or 
 %                                     added (positive)
 %
 % OUTPUTS:
-%    newFormula:	A chemical formula for a metabolite
+%    newFormula:    A chemical formula for a metabolite
 
 if nargin < 2 || isempty(addOrRemove)
     addOrRemove = [];

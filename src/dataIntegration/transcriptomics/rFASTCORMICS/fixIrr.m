@@ -1,19 +1,25 @@
 function [model] = fixIrr(model)
-% The function converts irreversible backwards reactions into irreversible forward reactions
+% Convert irreversible backward reactions into irreversible forward reactions
 %
 % USAGE:
 %
-%   [model] = fixIrr(model)
+%    [model] = fixIrr(model)
 %
 % INPUTS:
-%   model:             (the following fields are required - others can be supplied)
-%                      * S  - `m x 1` Stoichiometric matrix
-%                      * lb - `n x 1` Lower bounds
-%                      * ub - `n x 1` Upper bounds
-%                      * rxns   - `n x 1` cell array of reaction abbreviations
+%    model:             COBRA model structure with the following fields:
 %
-% OUTPUT:                 
-%   model:             model with corrected reversibilties
+%                         * .S - `m x n` stoichiometric matrix
+%                         * .lb - `n x 1` lower flux bounds
+%                         * .ub - `n x 1` upper flux bounds
+%                         * .rxns - `n x 1` cell array of reaction abbreviations
+%
+% OUTPUTS:
+%    model:             model with corrected reversibilities, with fields:
+%
+%                         * .rev - `n x 1` reaction reversibility indicator (1 reversible, 0 irreversible)
+%                         * .lb - updated `n x 1` lower flux bounds
+%                         * .ub - updated `n x 1` upper flux bounds
+%                         * .S - stoichiometric matrix with backward reactions flipped to forward
 %
 % .. Authors:
 %       - Maria Pires Pacheco, Thomas Sauter, 2016, University of Luxembourg

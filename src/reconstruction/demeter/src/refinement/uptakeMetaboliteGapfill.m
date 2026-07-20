@@ -1,25 +1,27 @@
-function [model,uptakeRxnsAdded] = uptakeMetaboliteGapfill(model,microbeID, database, inputDataFolder)
-% This function adds exchange, transport and biosynthesis reactions for 
+function [model, uptakeRxnsAdded] = uptakeMetaboliteGapfill(model, microbeID, database, inputDataFolder)
+% This function adds exchange, transport and biosynthesis reactions for
 % experimentally shown consumed metabolites according to data collected for
 % the DEMETER pipeline.
 %
 % USAGE:
 %
-%   [model,uptakeRxnsAdded] = uptakeMetaboliteGapfill(model,microbeID, database, inputDataFolder)
+%    [model, uptakeRxnsAdded] = uptakeMetaboliteGapfill(model, microbeID, database, inputDataFolder)
 %
-% INPUTS
-% model:             COBRA model structure
-% microbeID:         ID of the reconstructed microbe that serves as the
-%                    reconstruction name and to identify it in input tables
-% database:          rBioNet reaction database containing min. 3 columns:
-%                    Column 1: reaction abbreviation, Column 2: reaction
-%                    name, Column 3: reaction formula.
-% inputDataFolder:   Folder with input tables with experimental data
-%                    and databases that inform the refinement process
+% INPUTS:
+%    model:    COBRA model structure with fields:
 %
-% OUTPUTS
-% model:             COBRA model structure with added pathways if applies
-% uptakeRxnsAdded:   Reactions added based on experimental data
+%                * .rxns - Reaction identifiers, used to determine which uptake reactions are already present
+%    microbeID:    ID of the reconstructed microbe that serves as the
+%                  reconstruction name and to identify it in input tables
+%    database:    rBioNet reaction database with fields:
+%
+%                   * .reactions - Cell array with reaction abbreviation (column 1), name (column 2), and formula (column 3)
+%    inputDataFolder:    Folder with input tables with experimental data
+%                        and databases that inform the refinement process
+%
+% OUTPUTS:
+%    model:    COBRA model structure with added pathways if applies
+%    uptakeRxnsAdded:    Reactions added based on experimental data
 %
 % .. Author:
 %       - Almut Heinken, 2019-2020

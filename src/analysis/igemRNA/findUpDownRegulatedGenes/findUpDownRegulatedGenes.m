@@ -7,12 +7,12 @@ function result = findUpDownRegulatedGenes(source, target, trDataPath)
 %   result = findUpDownRegulatedGenes(source, target, trDataPath)
 %
 % INPUTS:
-%   source:                 source transcriptomics sheet name 1×1 char cell array
-%   target:                 target transcriptomics sheet name 1×1 char cell array
-%   trDataPath:             transcriptomics data file full name and location
+%    source:                 source transcriptomics sheet name 1×1 char cell array
+%    target:                 target transcriptomics sheet name 1×1 char cell array
+%    trDataPath:             transcriptomics data file full name and location
 %
 % OUTPUTS:
-%	result:                 cell array ix4, where i = gene count, and columns include 
+%    result:                 cell array ix4, where i = gene count, and columns include 
 %                           geneId, source dataset expression value, target dataset 
 %                           expression value and comparison result ('Up', 'Down', 'Equal')
 % .. Authors:

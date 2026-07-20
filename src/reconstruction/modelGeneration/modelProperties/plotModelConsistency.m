@@ -1,23 +1,27 @@
-function plotModelConsistency(modelResults,modelMetaData,schematicFlag,nRows,nCols,resultsDirectory,figureFileName,resultsFileName)
-%plots stoichoiometric and flux consistency figures, given a modelResults
-%structure or by loading the modelResults structure from a specified
-%location
+function plotModelConsistency(modelResults, modelMetaData, schematicFlag, nRows, nCols, resultsDirectory, figureFileName, resultsFileName)
+% Plots stoichiometric and flux consistency figures, given a modelResults
+% structure or by loading the modelResults structure from a specified
+% location
 %
-%INPUT
-% modelResults          output of checkModelProperties.m
-% modelMetaData         Cell array, where each row is metadata for one model
-%                       with five columns: species, modelID, fileName, PMID, doi.
-% schematicFlag         top corner plot illustrating the different colours
-% nRows                 number of rows in the subplot
-% nCols                 number of rows in the subplot (nRows*nCols >= length(modelResults)
+% USAGE:
 %
-%OPTIONAL INPUT
-% resultsDirectory      directory where output of checkModelProperties.m has been saved
-%                       same directory where the figure will be saved
-% figureFileName        filename of the figure (without the directory)
-% resultsFileName       filename where output of checkModelProperties.m has been saved
+%    plotModelConsistency(modelResults, modelMetaData, schematicFlag, nRows, nCols, resultsDirectory, figureFileName, resultsFileName)
+%
+% INPUT:
+%    modelResults:        output of `checkModelProperties`
+%    modelMetaData:       Cell array, where each row is metadata for one model
+%                         with five columns: species, modelID, fileName, PMID, doi.
+%    schematicFlag:       top corner plot illustrating the different colours
+%    nRows:               number of rows in the subplot
+%    nCols:               number of rows in the subplot (nRows*nCols >= length(modelResults))
+%
+% OPTIONAL INPUTS:
+%    resultsDirectory:    directory where output of `checkModelProperties` has been saved,
+%                         same directory where the figure will be saved
+%    figureFileName:      filename of the figure (without the directory)
+%    resultsFileName:     filename where output of `checkModelProperties` has been saved
 
-%number of rows and columns of the figure
+% number of rows and columns of the figure
 if ~exist('nRows','var')
     nRows=6;
 end

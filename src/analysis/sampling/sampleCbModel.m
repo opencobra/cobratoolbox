@@ -1,4 +1,4 @@
-function [modelSampling,samples,volume] = sampleCbModel(model, sampleFile, samplerName, options, modelSampling)
+function [modelSampling, samples, volume] = sampleCbModel(model, sampleFile, samplerName, options, modelSampling)
 % Samples the solution-space of a constraint-based model
 %
 % USAGE:
@@ -6,11 +6,16 @@ function [modelSampling,samples,volume] = sampleCbModel(model, sampleFile, sampl
 %    [modelSampling, samples] = sampleCbModel(model, sampleFile, samplerName, options, modelSampling)
 %
 % INPUTS:
-%    model:           COBRA model structure with fields
+%    model:           COBRA model structure with fields:
+%
 %                        * .S - Stoichiometric matrix
 %                        * .b - Right hand side vector
+%                        * .c - 'n x 1' linear objective coefficients (used as the
+%                          bias vector for CHRR_EXP sampling)
 %                        * .lb - 'n x 1' vector: Lower bounds
 %                        * .ub - 'n x 1' vector: Upper bounds
+%                        * .rxns - 'n x 1' reaction identifiers (renamed while
+%                          preparing the ACHR model)
 %                        * .C - 'k x n' matrix of additional inequality constraints
 %                        * .d - 'k x 1' rhs of the above constraints
 %                        * .dsense - 'k x 1' the sense of the above constraints ('L' or 'G')
@@ -18,9 +23,10 @@ function [modelSampling,samples,volume] = sampleCbModel(model, sampleFile, sampl
 %                        * .vCov - 'n x 1' vector: the diagonal for the covariance for Gaussian sampling  (RHMC only)
 %
 % OPTIONAL INPUTS:
-%    sampleFile:    File names for sampling output files (only implemented for ACHR)
-%    samplerName:   {('CHRR'), 'ACHR', 'RHMC'} Name of the sampler to be used to
-%                   sample the solution.
+%    sampleFile:    File name stem for the sampling output `.mat` files (only
+%                   implemented for ACHR)
+%    samplerName:     {('CHRR'), 'ACHR', 'RHMC'} Name of the sampler to be used to
+%                     sample the solution.
 %    options:       Options for sampling and pre/postprocessing (default values
 %                   in parenthesis).
 %
@@ -34,12 +40,21 @@ function [modelSampling,samples,volume] = sampleCbModel(model, sampleFile, sampl
 %                     * .toRound - Option to round the model before sampling (true). CHRR only.
 %                     * .lambda - the bias vector for exponential sampling. CHRR_EXP only.
 %                     * .nWorkers - Number of parallel workers. RHMC only.
-%    modelSampling: From a previous round of sampling the same
-%                   model. Input to avoid repeated preprocessing.
+%                     * .useFastFVA - Use fastFVA during preprocessing (false). CHRR only.
+%                     * .optPercentage - Optimality percentage for the FVA bounds (100). CHRR only.
+%                     * .eps - Target relative error for the volume estimate (0.15). MFE only.
+%    modelSampling:    From a previous round of sampling the same model. Input to
+%                      avoid repeated preprocessing, with fields (RHMC only):
+%
+%                       * .problem - polytope problem struct reused across runs
+%                       * .samples - sample buffer on the returned sampler object
+%                         (cleared to empty on output)
 %
 % OUTPUTS:
 %    modelSampling:    Cleaned up model used in sampling
 %    samples:          `n x numSamples` matrix of flux vectors
+%    volume:           Estimated polytope volume when samplerName is 'MFE';
+%                      otherwise a message string describing how to estimate it
 %
 % EXAMPLES:
 %    %1) Sample a model called 'superModel' using default settings and save the

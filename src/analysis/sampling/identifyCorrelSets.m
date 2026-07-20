@@ -3,10 +3,12 @@ function [setsSorted, setNoSorted, setSize] = identifyCorrelSets(model, sample, 
 %
 % USAGE:
 %
-%    [sets, setNumber, setSize] =  identifyCorrelSets(model, sample, corrThr, R)
+%    [setsSorted, setNoSorted, setSize] = identifyCorrelSets(model, sample, corrThr, R)
 %
 % INPUTS:
-%    model:        COBRA model structure
+%    model:        COBRA model structure, with fields:
+%
+%                    * .rxns - reaction identifiers
 %    sample:       Sample to be used to identify correlated sets
 %
 % OPTIONAL INPUTS:
@@ -14,10 +16,10 @@ function [setsSorted, setNoSorted, setSize] = identifyCorrelSets(model, sample, 
 %    R:            Correlation coefficient
 %
 % OUTPUTS:
-%    sets:         Sorted cell array of sets (largest first)
-%    setNumber:    List of set numbers for each reaction in model (0 indicates
-%                  that there is no set)
-%    setSize:      List of set sizes
+%    setsSorted:     Sorted cell array of sets (largest first)
+%    setNoSorted:    List of set numbers for each reaction in model (0 indicates
+%                    that there is no set)
+%    setSize:        List of set sizes
 %
 % .. Author: - Markus Herrgard 9/15/06
 

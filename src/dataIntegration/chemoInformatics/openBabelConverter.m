@@ -10,12 +10,15 @@ function newFormat = openBabelConverter(origFormat, outputFormat, saveFileDir)
 % INPUT:
 %    origFormat:    Original chemoinformatic format. Chemical tables such
 %                   as MDL MOL or MDL RXN must be provided as files
-%    outputFormat:  The format to be converted. Formats supported: smiles,
+%    outputFormat:    The format to be converted. Formats supported: smiles,
 %                   mol, inchi, inchikey, rxn and rinchi.
 %
 % OPTIONAL INPUTS:
-%    saveFileDir:	String with the directory where the new format will be
+%    saveFileDir:    String with the directory where the new format will be
 %                   saved. If is empty, the format is not saved.
+%
+% OUTPUTS:
+%    newFormat:     The molecule or reaction converted to the requested output format
 %
 % EXAMPLE:
 %

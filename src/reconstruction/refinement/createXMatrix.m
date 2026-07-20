@@ -18,8 +18,8 @@ function ExchangeRxnMatrix = createXMatrix(compoundsIn, transport, compartment)
 %                         the compartment, from the compartment to the external compartment 
 %                         and an exchanger in the external compartment.
 % OUTPUT:
-%   ExchangeRxnMatrix:    model containing all exchange reactions for all
-%                         compounds in compoundsIn
+%    ExchangeRxnMatrix:    model containing all exchange reactions for all
+%                          compounds in compoundsIn
 %
 % .. Author: - IT 11-10-07
 %    Modifications TP October 2017

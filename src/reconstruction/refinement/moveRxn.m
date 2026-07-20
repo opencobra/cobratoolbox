@@ -8,7 +8,10 @@ function [model] = moveRxn(model, startspot, endspot)
 %    [model] = moveRxn(model, startspot, endspot)
 %
 % INPUTS:
-%    model:        COBRA model structure
+%    model:        COBRA model structure with field:
+%
+%                    * .rxns - `n x 1` reaction identifiers, used to size
+%                      and locate all reaction-indexed fields that are moved
 %    startspot:    The reaction number to move
 %    endspot:      The spot where the reaction is moving to
 %

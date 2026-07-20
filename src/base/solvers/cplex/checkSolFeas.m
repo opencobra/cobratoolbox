@@ -6,9 +6,26 @@ function varargout = checkSolFeas(LP, sol, maxInfeas, tol, internal)
 %    [infeas, sol] = checkSolFeas(LP, sol, maxInfeas, tol)
 %
 % INPUTS:
-%    LP:           COBRA model or `LP` structure, or a IBM-ILOG CPLEX class
+%    LP:           COBRA model or `LP` structure, or a IBM-ILOG CPLEX class, with fields:
+%
+%                    * .A - `m x n` LHS matrix (COBRA `LP` structure), used if `.S` is absent
+%                    * .S - `m x n` stoichiometric matrix (COBRA model), used if `.A` is absent
+%                    * .b - RHS vector, used if `.rhs` is absent
+%                    * .rhs - RHS vector (gurobi-style `LP` structure), takes precedence over `.b`
+%                    * .csense - constraint senses (COBRA `LP`/model), used if `.sense` is absent
+%                    * .sense - constraint senses (gurobi-style `LP` structure), takes precedence over `.csense`
+%                    * .lb - lower bounds, used when present to compute bound infeasibility
+%                    * .ub - upper bounds, used when present to compute bound infeasibility
+%                    * .Model - `Cplex` object `Model` property, with fields `.A`, `.lhs`, `.rhs`,
+%                      `.lb`, `.ub`, and optionally `.indicator`; used only when `LP` is a `Cplex` object
+%                    * .Solution - `Cplex` object `Solution` property; `.Solution.x` is used as `sol`
+%                      when the `sol` input is not supplied; used only when `LP` is a `Cplex` object
 %    sol:          solution structure or columns of solution vectors. If `LP` is a
 %                  CPLEX class with. Solution property `sol` can be omitted or empty.
+%                  If a structure, with fields:
+%
+%                    * .full - full solution vector, read if present
+%                    * .x - solution vector, read if `.full` is absent
 %
 % OPTIONAL INPUTS:
 %    maxInfeas:    if true (defaulted), `infeas` = maximum infeasiblity
@@ -20,11 +37,18 @@ function varargout = checkSolFeas(LP, sol, maxInfeas, tol, internal)
 %                    * `.ind` for infeasibility of indicator constraints. = -Inf if an indicator is not active. (CPLEX class only)
 %    tol:          feasibility tolerance (defaulted at the Cobra solver `feasTol` value).
 %                  For determining if the input solution is indeed feasible. Used only if the input solution is a structure.
+%    internal:     true if this call is an internal recursive call (used to batch large
+%                  solution matrices `mSize` columns at a time). Reserved for internal
+%                  use only; callers should not set this (default false)
 %
-% OUTPUT:
-%    infeas:       maximum infeasibility (`maxInfeas = true`) or struct of vectors of infeasibility (`maxInfeas = false`)
-%    sol:          solution structure. Only available if the input solution is a structure.
-%                  If :math:`infeas \leq tol`, `sol.stat = 1`. Otherwise no change.
+% OUTPUTS:
+%    varargout:    variable-length output list:
+%
+%                    * infeas - maximum infeasibility (`maxInfeas = true`) or struct of
+%                      vectors of infeasibility (`maxInfeas = false`)
+%                    * sol - solution structure, returned only when the input `sol` was
+%                      itself a structure. If :math:`infeas \leq tol`, `sol.stat = 1`.
+%                      Otherwise no change.
 
 if nargin < 3 || isempty(maxInfeas)
     maxInfeas = true;

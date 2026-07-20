@@ -8,7 +8,11 @@ function tissueModel = iMAT(model, expressionRxns, threshold_lb, threshold_ub, t
 %    tissueModel = iMAT(model, expressionRxns, threshold_lb, threshold_ub)
 %
 % INPUTS:
-%    model:             input model (COBRA model structure)
+%    model:             input model (COBRA model structure) with fields:
+%
+%                         * .S - `m x n` stoichiometric matrix
+%                         * .lb - `n x 1` lower flux bounds
+%                         * .ub - `n x 1` upper flux bounds
 %    expressionRxns:    reaction expression, expression data corresponding to model.rxns.
 %                       Note : If no gene-expression data are
 %                       available for the reactions, set the

@@ -1,31 +1,34 @@
 function [term, ng, nt, nr, nko, reactionKO, reactionKO2term] = readGeneRules(model)
-% readGeneRules is a function of gDel_minRN that reads
-% gene-protein-reaction relations and outputs the necessary
-% information for the MILP formalization 
+% readGeneRules is a submodule of gDel_minRN that reads the
+% gene-protein-reaction (GPR) relations and produces the information needed
+% to formulate the mixed-integer linear program (MILP).
 %
 % USAGE:
-%    function [term, ng, nt, nr, nko, reactionKO, reactionKO2term] = readGeneRules(model)
 %
-% INPUTS:
-%    model:    COBRA model structure containing the following required fields to perform gDel_minRN.
+%    [term, ng, nt, nr, nko, reactionKO, reactionKO2term] = readGeneRules(model)
 %
-%        *.rxns:       Rxns in the model
-%        *.mets:       Metabolites in the model
-%        *.genes:      Genes in the model
-%        *.grRules:    Gene-protein-reaction relations in the model
-%        *.S:          Stoichiometric matrix (sparse)
-%        *.b:          RHS of Sv = b (usually zeros)
-%        *.c:          Objective coefficients
-%        *.lb:         Lower bounds for fluxes
-%        *.ub:         Upper bounds for fluxes
-%        *.rev:        Reversibility of fluxes
+% INPUT:
+%    model:    COBRA model structure with the fields:
+%
+%                * .rxns - reaction identifiers (n x 1 cell array)
+%                * .genes - gene identifiers (g x 1 cell array)
+%                * .grRules - gene-protein-reaction association rules (n x 1 cell array)
 %
 % OUTPUTS:
-%    term:    the list of Boolean functions extracted from the gene-protein-reaction relations
-%    ng:      the number of genes
-%    nt:      the number of internal terms
-%    nr:      the number of reactions
-%    nko:     the number of repressible reactions
+%    term:               struct array of Boolean-function terms extracted from
+%                        the GPR rules, with the fields:
+%
+%                          * .output - output variable name of the term
+%                          * .function - Boolean operator ('and', 'or', 'equal')
+%                          * .input - input variable name(s) of the term
+%
+%    ng:                 number of genes
+%    nt:                 number of internal terms
+%    nr:                 number of reactions
+%    nko:                number of repressible reactions
+%    reactionKO:         number of reaction-repression (knockout) terms identified
+%    reactionKO2term:    map from a reaction index to the index of its
+%                        corresponding term in term
 %
 % .. Author:    - Takeyuki Tamura, Mar 06, 2025
 %

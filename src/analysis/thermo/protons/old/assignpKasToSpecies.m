@@ -1,50 +1,48 @@
-function [speciespKas,includedMets] = assignpKasToSpecies(mets,neutralMolfileDir,msDistrDir,pKaDir)
-
+function [speciespKas, includedMets] = assignpKasToSpecies(mets, neutralMolfileDir, msDistrDir, pKaDir)
 % Use each metabolite's InChI and ChemAxon's cxcalc (calculator plugin) to
-% get pKas(I=0), charges and numbers of protons for all microspecies
+% get `pKas(I = 0)`, charges and numbers of protons for all microspecies
 % present at pH 5-9.
 %
-% [speciespKas,includedMets] = assignpKasToSpecies(mets,neutralMolfileDir,msDistrDir,pKaDir)
+% USAGE:
 %
-% INPUTS
-% mets                  Cell array of metabolite ID. Current implementation
-%                       assumes ID are formatted as BiGG_ID[Compartment];
-%                       e.g., atp[c] for ATP in cytosol.
-% neutralMolfileDir     Path to directory containing molfiles for neutral
-%                       metabolites. Molfiles must be named with the
-%                       metabolite ID in mets; e.g., atp.mol.
-% msDistrDir            Path to directory containing metabolite species
-%                       distributions at pH 5, 6, 7, 8 and 9. Species
-%                       distributions are created with the ChemAxon
-%                       calculator plugin. Names of SD files containing
-%                       species distributions should be formatted as
-%                       metID_msdistr_pHA.sdf; e.g., atp_msdistr_pH5.sdf.
-% pKaDir                Path to directory containing pKa estimates for
-%                       metabolites. pKas are estimated with the ChemAxon
-%                       calculator plugin. Names of text files containing
-%                       pKa estimates should be formatted as
-%                       metID_pkas.txt; e.g., atp_pkas.txt.
+%    [speciespKas, includedMets] = assignpKasToSpecies(mets, neutralMolfileDir, msDistrDir, pKaDir)
 %
-% OUTPUTS
-% speciespKas       Structure containing the following fields for each
-%                   metabolite:
-% .inchis           n x 1 cell array with a species-specific InChI string
-%                   for each species. inchis(1) = InChI for species 1 etc.
-%                   NOTE: Species 1 is the species with the fewest hydrogen
-%                   atoms etc.
-% .formulas         n x 1 cell array with species-specific chemical
-%                   formulas.
-% .zs               n x 1 vector containing the charge on each species.
-% .nHs              n x 1 vector containing the number of hydrogen atoms in
-%                   each species.
-% .majorMSpH7       n x 1 boolean vector with a logical 1 in the row for
-%                   the major microspecies at pH 7 according to ChemAxon.
-% .abundanceAtpH7   n x 1 vector with species percentage abundance at pH 7.
-% .pKas             n x n matrix where element i,j is the pKa for the
-%                   acid-base equilibrium between species i and j.
-% includedMets      Cell array of metabolite ID for those metabolites that
-%                   were included in speciespKas. Should include all
-%                   metabolites that had molfiles in neutralMolfileDir.
+% INPUTS:
+%    mets:                 Cell array of metabolite ID. Current implementation
+%                          assumes ID are formatted as `BiGG_ID[Compartment]`;
+%                          e.g., 'atp[c]' for ATP in cytosol.
+%    neutralMolfileDir:    Path to directory containing molfiles for neutral
+%                          metabolites. Molfiles must be named with the
+%                          metabolite ID in mets; e.g., `atp.mol`.
+%    msDistrDir:           Path to directory containing metabolite species
+%                          distributions at pH 5, 6, 7, 8 and 9. Species
+%                          distributions are created with the ChemAxon
+%                          calculator plugin. Names of SD files containing
+%                          species distributions should be formatted as
+%                          `metID_msdistr_pHA.sdf`; e.g., `atp_msdistr_pH5.sdf`.
+%    pKaDir:               Path to directory containing pKa estimates for
+%                          metabolites. pKas are estimated with the ChemAxon
+%                          calculator plugin. Names of text files containing
+%                          pKa estimates should be formatted as
+%                          `metID_pkas.txt`; e.g., `atp_pkas.txt`.
+%
+% OUTPUTS:
+%    speciespKas:          Structure containing the following fields for each metabolite:
+%
+%                            * .inchis - `n x 1` cell array with a species-specific InChI string
+%                              for each species. `inchis(1) = InChI` for species 1 etc.
+%                              Note that species 1 is the species with the fewest hydrogen atoms etc.
+%                            * .formulas - `n x 1` cell array with species-specific chemical formulas.
+%                            * .zs - `n x 1` vector containing the charge on each species.
+%                            * .nHs - `n x 1` vector containing the number of hydrogen atoms in each species.
+%                            * .majorMSpH7 - `n x 1` boolean vector with a logical 1 in the row for
+%                              the major microspecies at pH 7 according to ChemAxon.
+%                            * .abundanceAtpH7 - `n x 1` vector with species percentage abundance at pH 7.
+%                            * .pKas - `n x n` matrix where element `i, j` is the pKa for the
+%                              acid-base equilibrium between species `i` and `j`.
+%    includedMets:         Cell array of metabolite ID for those metabolites that were included
+%                          in speciespKas. Should include all metabolites that had molfiles in
+%                          `neutralMolfileDir`.
 
 phs = 5:9; % Physiological pH range
 

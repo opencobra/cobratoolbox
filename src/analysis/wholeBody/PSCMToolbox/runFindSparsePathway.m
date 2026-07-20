@@ -1,7 +1,28 @@
-function [tablePathwayRxns] = runFindSparsePathway(model,modelType,start,stop,via,CandidateSubSystem,specificMetabolites2Ignore);
-% This function takes in a model (either metabolic model or a whole-body
-% model), a start metabolite, and a stop metabolite and finds a shortest
-% pathway
+function [tablePathwayRxns] = runFindSparsePathway(model, modelType, start, stop, via, CandidateSubSystem, specificMetabolites2Ignore);
+% Find a sparse (shortest) pathway between two metabolites
+%
+% This function takes in a model (either a metabolic model or a whole-body
+% model), a start metabolite, and a stop metabolite, and finds a shortest
+% (sparse) pathway between them.
+%
+% USAGE:
+%
+%    [tablePathwayRxns] = runFindSparsePathway(model, modelType, start, stop, via, CandidateSubSystem, specificMetabolites2Ignore)
+%
+% INPUTS:
+%    model:                   Metabolic model or whole-body model, with fields:
+%
+%                               * .sex - 'male' or 'female' (whole-body models)
+%    modelType:               'WBM' for a whole-body model, otherwise a metabolic model
+%    start:                   Start metabolite abbreviation
+%    stop:                    Stop metabolite abbreviation
+%    via:                     Reaction(s) through which flux is enforced (routing constraint)
+%    CandidateSubSystem:      Candidate subsystem(s) to consider for the pathway search
+%    specificMetabolites2Ignore:    Additional metabolites to ignore during the search
+%
+% OUTPUT:
+%    tablePathwayRxns:        Table of pathway reaction abbreviations and formulae
+%
 ignoreMetabolites = {'atp','h','coa','pi','h2o','o2','nh4','h2o2','nadph','nadh','nadp','nad','adp','udp','na1','hco3',...
     'ppi', 'imp','xmp','amp','ppa','fad','fadh2','oh1','co2','gmp','so4','pap','paps','mg2','zn2',...
     'cl','ca2','cu2','adpcbl','fe3','vitd3','i','caro','mn2','fe2','avite1','btn','ascb_L','phyQ','pnto_R','pydx','k'};

@@ -1,0 +1,62 @@
+# COBRA Toolbox src/ cross-domain coupling — canonical matrix
+# Method: function-name->domain map (one primary fn per .m file; 6 name sets are disjoint,
+# verified 0 overlap). For each ordered pair (caller->callee), reference-count = summed
+# identifier-token frequency of callee-owned names in caller .m files; distinct = #distinct
+# callee functions referenced. Generic English/domain false positives removed (compartment,
+# position, blocked, duplicates, similarity, core, demo, adjust, Node, conda, unbalanced),
+# each verified via real `name(` call counts vs bare mentions.
+
+## Reference-count matrix (caller row -> callee col)
+caller\callee    base  analysis  reconstr  dataInt  design  visualiz   ROWsum
+base               -      49        28        3       0        8          88
+analysis          724     -       888        58       0       11        1681
+reconstruction    364   1672        -        44       1        1        2082
+dataIntegration   182    348      129         -       0        0         659
+design             71    218        7         1       -        0         297
+visualization      26     67       22         4       0        -         119
+COLsum           1367   2354     1074       110       1       20
+
+## Distinct-callee-functions matrix
+caller\callee    base  analysis  reconstr  dataInt  design  visualiz   ROWsum
+base               -      18        10        2       0        1          31
+analysis          49       -       51        15       0        4         119
+reconstruction    43      35        -        13       1        1          93
+dataIntegration   22      32       25         -       0        0          79
+design             9      12        5         1       -        0          27
+visualization      7      14        6         2       0        -          29
+COLsum           130     111       97        33       1        6
+
+## Most-depended-upon: base by BREADTH (130 distinct fns); analysis by VOLUME (2354 refs,
+## driven by reconstruction->analysis = 1672).
+
+## Cycles (both directions heavy):
+##   analysis <-> reconstruction : 888 / 1672  (strongest cycle)
+##   analysis <-> dataIntegration: 58  / 348
+##   reconstruction <-> dataInt  : 44  / 129
+##   analysis <-> visualization  : 11  / 67
+## Layering inversion (foundation base calls UP):
+##   base -> analysis 49 : base/solvers/optimizeTwoCbModels.m, entropicFBA/entropicFluxBalanceAnalysis.m, NLP/optimizeCbModelNLP.m call optimizeCbModel
+##   base -> reconstruction 28 : io/readCbModel.m, io/writeCbModel.m, solvers/buildOptProblemFromModel.m call verifyModel
+
+## God-module fan-in (distinct src files referencing each; real call sites in parens)
+optimizeCbModel        analysis        90  (940 call sites)
+printRxnFormula        analysis        62
+changeRxnBounds        analysis        57
+changeObjective        analysis        54
+columnVector           base            53
+getCobraSolverParams   base            51
+removeRxns             reconstruction  50
+solveCobraLP           base            41
+readInputTableForPipeline reconstruction 41
+addReaction            reconstruction  41
+findRxnIDs             analysis        28
+readCbModel            base            27
+changeCobraSolver      base            23
+verifyModel            reconstruction  22
+showprogress           base            20
+
+## Sinks: design (fan-in 1) and visualization (fan-in ~6-20) are true leaves.
+
+## NOTE: An independent main-agent computation using a different metric (distinct names
+## len>=5 minus a 33-word stoplist) produced the same qualitative structure (same cycles,
+## same base inversion, same leaves); see coupling-corroboration.txt.

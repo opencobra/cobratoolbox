@@ -5,19 +5,18 @@ function keyAdded = addKeyToKnownHosts(siteName)
 %
 % USAGE:
 %
-%   keyAdded = addKeyToKnownHosts()
+%    keyAdded = addKeyToKnownHosts(siteName)
 %
-% INPUT:
-%   siteName:   Name of the site for which the public key shall be added
-%               (default: `github.com`)
+% OPTIONAL INPUT:
+%    siteName:    Name of the site for which the public key shall be added
+%                 (default: `github.com`)
 %
 % OUTPUT:
-%   keyAdded:   Boolean (true if key has been added successfully or exists)
+%    keyAdded:    Boolean (true if key has been added successfully or exists)
 %
 % .. Author:
 %      - Laurent Heirendt
 
-    % set the default site name
     if ~exist('siteName', 'var')
         siteName = 'github.com';
     end

@@ -7,7 +7,10 @@ function [biomassValues, targetValues] = multiProductionEnvelopeInorg(model, del
 %    [biomassValues, targetValues] = multiProductionEnvelopeInorg(model, deletions, biomassRxn, geneDelFlag, nPts, plotAllFlag, plotTools)
 %
 % INPUT:
-%    model:            COBRA model structure
+%    model:            COBRA model structure. Fields used directly:
+%
+%                        * .c - `n x 1` linear objective coefficients (identifies the biomass reaction)
+%                        * .rxns - `n x 1` reaction identifiers
 %
 % OPTIONAL INPUT:
 %    deletions:        List of reaction or gene deletions (empty if wild type)

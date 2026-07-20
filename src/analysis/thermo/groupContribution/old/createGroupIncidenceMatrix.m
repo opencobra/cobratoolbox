@@ -1,10 +1,30 @@
 function [training_data, mappingScore] = createGroupIncidenceMatrix(model, training_data)
-% Initialize G matrix, and then use the python script "inchi2gv.py" to decompose each of the 
-% compounds that has an InChI and save the decomposition as a row in the G matrix.
+% Initialise the group incidence matrix `G`, then decompose each compound with an
+% InChI into a group-contribution vector using the python script "inchi2gv.py"
 %
-% INPUTS
+% USAGE:
 %
-% OUTPUTS
+%    [training_data, mappingScore] = createGroupIncidenceMatrix(model, training_data)
+%
+% INPUTS:
+%    model:            test COBRA model structure with fields:
+%
+%                        * .mets - `m x 1` cell array of metabolite identifiers
+%                        * .inchi - structure whose `.nonstandard` field is an `m x 1` cell array of nonstandard InChI
+%    training_data:    training data structure with fields:
+%
+%                        * .cids - compound identifiers of the training data
+%                        * .nstd_inchi - cell array of nonstandard InChI for the training compounds
+%                        * .cids_that_dont_decompose - compound IDs that cannot be group-decomposed
+%                        * .groups - cell array of group definitions (written)
+%                        * .G - group incidence matrix (written)
+%                        * .has_gv - boolean flagging compounds with a group vector (written)
+%                        * .S - stoichiometric matrix (a zero row is appended per test-only metabolite)
+%                        * .Model2TrainingMap - mapping of `model.mets` to training compounds (written)
+%
+% OUTPUTS:
+%    training_data:    the input structure updated with the fields above
+%    mappingScore:     `nMet x nTrainingMet` sparse matrix of mapping scores between model and training compounds
 %
 
 % get the scores for the mappings of compounds (reflecting the certainty in the mapping)

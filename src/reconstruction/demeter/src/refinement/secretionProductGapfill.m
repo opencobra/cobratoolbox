@@ -1,30 +1,35 @@
-function [model,secretionRxnsAdded] = secretionProductGapfill(model,microbeID,database,inputDataFolder)
-% This function adds exchange, transport and biosynthesis reactions for 
+function [model, secretionRxnsAdded] = secretionProductGapfill(model, microbeID, database, inputDataFolder)
+% This function adds exchange, transport and biosynthesis reactions for
 % experimentally shown secreted metabolites according to data collected for
 % the DEMETER pipeline.
 %
 % USAGE:
 %
-%   [model,secretionRxnsAdded] = secretionProductGapfill(model,microbeID,database,inputDataFolder)
+%    [model, secretionRxnsAdded] = secretionProductGapfill(model, microbeID, database, inputDataFolder)
 %
-% INPUTS
-% model:                COBRA model structure
-% microbeID:            ID of the reconstructed microbe that serves as the
-%                       reconstruction name and to identify it in input tables
-% database:             rBioNet reaction database containing min. 3 columns:
-%                       Column 1: reaction abbreviation, Column 2: reaction
-%                       name, Column 3: reaction formula.
-% inputDataFolder:      Folder with input tables with experimental data
-%                       and databases that inform the refinement process
+% INPUTS:
+%    model:                COBRA model structure with fields:
 %
-% OUTPUTS
-% model:                COBRA model structure with added pathways if applies
-% secretionRxnsAdded:   Reactions added based on experimental data
+%                           * .rxns - Reaction identifiers
+%    microbeID:            ID of the reconstructed microbe that serves as the
+%                          reconstruction name and to identify it in input tables
+%    database:             rBioNet reaction database structure with fields:
+%
+%                           * .reactions - Cell array with reaction abbreviation
+%                             (column 1), reaction name (column 2), and reaction
+%                             formula (column 3)
+%    inputDataFolder:      Folder with input tables with experimental data
+%                          and databases that inform the refinement process
+%
+% OUTPUTS:
+%    model:                COBRA model structure with added pathways if applies
+%    secretionRxnsAdded:    Reactions added based on experimental data
 %
 % .. Author:
 %       - Almut Heinken, 2019-2020
 %       - Bronson R. Weston, 2022, introduced global additional secretion
-%       reactions
+%         reactions
+
 global additionalSecretionRxns
 
 % structure of lists of reactions to add per secretion product

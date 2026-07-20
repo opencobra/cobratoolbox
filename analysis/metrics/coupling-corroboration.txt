@@ -1,0 +1,40 @@
+# Independent corroboration metrics (grep-based, main-agent verified)
+# Complements the coupling agent's adjacency matrix.
+
+## Solver-abstraction leaks — files OUTSIDE src/base/solvers naming a solver
+cplex        : 19 files
+Cplex(class) : 19 files
+gurobi       : 23 files
+mosek        :  6 files
+tomlab       :  1 file
+glpk         :  4 files
+ibm_cplex    : 15 files
+DISTINCT files outside base/solvers naming any major solver: 39
+(solver-spine agent counted ~26 as production leaks after excluding tests/deprecated/papers)
+
+Representative leak sites:
+  src/analysis/uFBA/buildUFBAmodel.m           -> hardcodes changeCobraSolver('gurobi',...) x7
+  src/analysis/QFCA/directionallyCoupled.m:42  -> gurobi(model, params) directly
+  src/analysis/ICONGEMs/ICONGEMs.m:277         -> gurobi(model2, params) directly
+  src/analysis/multiSpecies/SteadyCom/*        -> Cplex() objects (CPLEX-only island)
+  src/design/TrimGdel/*                        -> gurobi() (Gurobi-only island)
+  src/dataIntegration/transcriptomics/SWIFTCORE/core.m -> strcmp(solver,'gurobi')/'cplex' branch
+
+## Circular dependency: analysis <-> reconstruction (bidirectional, heavy)
+analysis -> reconstruction:
+  addReaction    : 14 files      removeRxns   : 14 files
+  addMetabolite  :  8 files      verifyModel  :  5 files
+  createModel    :  4 files      addExchangeRxn: 4 files
+reconstruction -> analysis:
+  optimizeCbModel: 31 files      printRxnFormula: 33 files
+  fluxVariability: 11 files      fastcc        :  7 files
+  findRxnsFromMets: 7 files
+
+## Fan-in of core "god-contract" functions (dependent domains)
+dataIntegration -> analysis::optimizeCbModel : 19 files
+design          -> analysis::optimizeCbModel : 20 files
+
+## Legacy boundary
+external/ : 62M   binary/ : 246M (submodule)   deprecated/ : 51M, 74 .m files
+deprecated/ IS on the runtime path (initCobraToolbox.m:351) -> 2 shadow collisions
+  changeCbMapOutput, testFluxConsistency (exist in both src/ and deprecated/)

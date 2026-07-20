@@ -5,7 +5,7 @@ function [speciespKas, includedMets] = assignpKasToSpecies(mets, neutralMolfileD
 %
 % USAGE:
 %
-%    [metList, noMolMetList] = mol2sdf(mets, molfileDir, sdfFileName, includeRs)
+%    [speciespKas, includedMets] = assignpKasToSpecies(mets, neutralMolfileDir, msDistrDir, pKaDir)
 %
 % INPUTS:
 %    mets:                 Cell array of metabolite ID. Current implementation
@@ -26,9 +26,10 @@ function [speciespKas, includedMets] = assignpKasToSpecies(mets, neutralMolfileD
 %                          pKa estimates should be formatted as
 %                          `metID_pkas.txt`; e.g., `atp_pkas.txt`.
 %
-% OUTPUT:
+% OUTPUTS:
 %    speciespKas:          Structure containing the following fields for each metabolite:
 %
+%                            * .abbreviation - metabolite identifier without compartment abbreviation.
 %                            * .inchis - `n x 1` cell array with a species-specific InChI string
 %                              for each species. `inchis(1) = InChI` for species 1 etc.
 %                              Note that species 1 is the species with the fewest hydrogen atoms etc.
@@ -40,8 +41,9 @@ function [speciespKas, includedMets] = assignpKasToSpecies(mets, neutralMolfileD
 %                            * .abundanceAtpH7 - `n x 1` vector with species percentage abundance at pH 7.
 %                            * .pKas - `n x n` matrix where element `i, j` is the pKa for the
 %                              acid-base equilibrium between species `i` and `j`.
-%                            * includedMets - Cell array of metabolite ID for those metabolites that
-%                              were included in speciespKas. Should include all metabolites that had molfiles in `neutralMolfileDir`.
+%    includedMets:         Cell array of metabolite ID for those metabolites that were included
+%                          in speciespKas. Should include all metabolites that had molfiles in
+%                          `neutralMolfileDir`.
 
 phs = 5:9; % Physiological pH range
 

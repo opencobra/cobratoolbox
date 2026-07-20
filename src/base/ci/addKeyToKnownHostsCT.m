@@ -5,14 +5,14 @@ function keyAdded = addKeyToKnownHostsCT(hostName)
 %
 % USAGE:
 %
-%   keyAdded = addKeyToKnownHosts(hostName)
+%    keyAdded = addKeyToKnownHostsCT(hostName)
 %
 % OPTIONAL INPUT:
-%   hostName:       Name of the host. If not provided or empty or ' ' then 
-%                   it checks for the host: github.com
+%    hostName:       Name of the host. If not provided or empty or ' ' then
+%                    it checks for the host: github.com
 %
 % OUTPUT:
-%   keyAdded:       Boolean (true if key has been added successfully or exists)
+%    keyAdded:       Boolean (true if key has been added successfully or exists)
 %
 % .. Author:
 %      - Laurent Heirendt

@@ -1,32 +1,33 @@
 function [mapping] = mapExpressionToModel(model, data, dico, rownames, processTranscripts)
-% The mapExpressionToModel function map the expression to a model following
-% the GPR rules (Pacheco et al,2019)
+% Map the expression data to a model following the GPR rules
+% (Pacheco et al., 2019)
 %
 % USAGE:
 %
-%   [mapping] = mapExpressionToModel(model, data, dico, rownames, processTranscripts)
+%    [mapping] = mapExpressionToModel(model, data, dico, rownames, processTranscripts)
 %
 % INPUTS:
-%   model:                 (the following fields are required - others can be supplied)
-%                          * S  - `m x 1` Stoichiometric matrix
-%                          * lb - `n x 1` Lower bounds
-%                          * ub - `n x 1` Upper bounds
-%                          * rxns   - `n x 1` cell array of reaction abbreviations
+%    model:                 COBRA model structure with the following fields:
 %
-%   data:                  expression or dicretized values for the samples, size(expression,1) =
-%                          lenghth(gene IDs size(expression,2) = number of
-%                          samples
-%   dico:                  table which contains corresponding gene identifier information. Needed
-%                          to map the rownames to the genes in the model. Can
-%                          contain multiple columns, with different identifiers.
-%   rownames:              cell array with the gene IDs
-% 
+%                             * .rxns - `n x 1` cell array of reaction abbreviations
+%                             * .genes - cell array of gene identifiers
+%                             * .rules - cell array of GPR rules in `x(i)` logical form
+%
+%    data:                  expression or discretized values for the samples, size(data, 1) is the
+%                           number of gene IDs and size(data, 2) is the number of samples
+%    dico:                  table with corresponding gene identifier information, used to map the
+%                           gene IDs to the genes in the model; can contain multiple columns with
+%                           different identifiers
+%    rownames:              cell array with the gene IDs
+%
 % OPTIONAL INPUTS:
-%   processTranscripts:    0 for inactive (default), 1 for active - if active, 
-%                          consider gene names of the model without any numbers after a "."
+%    processTranscripts:    0 for inactive (default), 1 for active - if active, consider gene names
+%                           of the model without any numbers after a "."
+%
 % OUTPUTS:
-%   mapping                matrix containing the expression values that were mapped to the reactions acoording to the GPR rules
-%                          size(mapping,1) is equal to the number of reactions and size(mapping,2) is equal to size(data,2)
+%    mapping:               matrix of the expression values mapped to the reactions according to the
+%                           GPR rules, size(mapping, 1) equals the number of reactions and
+%                           size(mapping, 2) equals size(data, 2)
 %
 % .. Authors:
 %       - Maria Pires Pacheco, Thomas Sauter, 2016, University of Luxembourg, modified by Tamara Bintener

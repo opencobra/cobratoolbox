@@ -14,9 +14,11 @@ function warmupPts = createHRWarmup(model, nPoints, verbFlag, bias, nPointsCheck
 %    verbFlag:     Verbose flag (Default = false)
 %    bias:         Structure with fields:
 %
-%                    * method - Biasing distribution: 'uniform', 'normal'
-%                    * index - The reaction indexes which to bias (`nBias` total)
-%                    * param - `nBias x 2` matrix of parameters (for uniform it's min max, for normal it's `mu`, `sigma`).
+%                    * .method - Biasing distribution: 'uniform', 'normal'
+%                    * .index - The reaction indexes which to bias (`nBias` total)
+%                    * .param - `nBias x 2` matrix of parameters (for uniform it's min max, for normal it's `mu`, `sigma`).
+%    nPointsCheck:    Check that the minimum number of warmup points
+%                     (`2 * nRxns`) is used (Default = true)
 %
 % OUTPUT:
 %    warmupPts:    Set of warmup points

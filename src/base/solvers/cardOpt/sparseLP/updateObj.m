@@ -1,13 +1,21 @@
-function c = updateObj(x,theta,pNeg,pPos,epsilonP,alpha,approximation)
+function c = updateObj(x, theta, pNeg, pPos, epsilonP, alpha, approximation)
 % Update the linear objective - variables (x,t)
 %
-% c = updateObj(x,theta,pNeg,pPos,epsilonP,alpha,approximation);
-% 
+% USAGE:
+%
+%    c = updateObj(x, theta, pNeg, pPos, epsilonP, alpha, approximation)
+%
 % INPUTS:
-%   x:              current solution vector
-%   theta, pNeg, pPos, epsilonP, alpha:
-%                   parameters of the approximations
-%   approximation:  appoximation type of zero-norm. Available approximations:
+%    x:              Current solution vector
+%    theta:          Approximation steepness/scale parameter (used by all
+%                    approximations except `l1`)
+%    pNeg:           Exponent parameter for the `lp-` approximation
+%                    (`L_p` norm with `p < 0`)
+%    pPos:           Exponent parameter for the `lp+` approximation
+%                    (`L_p` norm with `0 < p < 1`)
+%    epsilonP:       Smoothing offset parameter for the `lp+` approximation
+%    alpha:          Shape parameter for the `cappedL1` and `SCAD` approximations
+%    approximation:    Approximation type of the zero-norm. Available approximations:
 %
 %                        * 'cappedL1' : Capped-L1 norm
 %                        * 'exp'      : Exponential function
@@ -16,12 +24,13 @@ function c = updateObj(x,theta,pNeg,pPos,epsilonP,alpha,approximation)
 %                        * 'lp-'      : `L_p` norm with `p < 0`
 %                        * 'lp+'      : `L_p` norm with `0 < p < 1`
 %                        * 'l1'       : L1 norm
-% 
-% OUTPUT:
-%   c:    New objective function
 %
-% % .. Author: - Hoai Minh Le,	20/10/2015
-%              Ronan Fleming,    2017
+% OUTPUT:
+%    c:    New objective function
+%
+% .. Authors:
+%       - Hoai Minh Le, 20/10/2015
+%       - Ronan Fleming, 2017
 
 n = length(x);
 

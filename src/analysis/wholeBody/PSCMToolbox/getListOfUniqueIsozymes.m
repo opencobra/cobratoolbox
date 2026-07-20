@@ -1,12 +1,20 @@
 function listIsozymes = getListOfUniqueIsozymes(model)
-% this function gets a (preliminary list of unique isozymes for a given
-% model or reconstruction
+% Get a preliminary list of unique isozymes for a given model
 %
-% INPUT
-% model     model structure
+% This function gets a preliminary list of unique isozymes for a given model
+% or reconstruction by inspecting the gene-protein-reaction rules.
 %
-% OUTPUT
-% listIsozymes  list of isozymes
+% USAGE:
+%
+%    listIsozymes = getListOfUniqueIsozymes(model)
+%
+% INPUT:
+%    model:     Model or reconstruction structure, with fields:
+%
+%                 * .genes - gene identifiers
+%
+% OUTPUT:
+%    listIsozymes:    Preliminary list of unique isozymes for the model
 
 
 grR = {};

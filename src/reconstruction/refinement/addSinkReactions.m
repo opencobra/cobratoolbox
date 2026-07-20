@@ -3,10 +3,20 @@ function [model, rxnsInModel] = addSinkReactions(model, metabolites, lb, ub)
 %
 % USAGE:
 %
-%    [model] = addSinkReactions(model, metabolites, lb, ub)
+%    [model, rxnsInModel] = addSinkReactions(model, metabolites, lb, ub)
 %
 % INPUTS:
-%    model:          COBRA model structure
+%    model:          COBRA model structure with fields:
+%
+%                      * .mets - `m x 1` metabolite identifiers, checked
+%                        against `metabolites`
+%                      * .lb - `n x 1` reaction lower bounds, used to build
+%                        the default lower bound when `lb` is not supplied
+%                      * .ub - `n x 1` reaction upper bounds, used to build
+%                        the default upper bound when `ub` is not supplied
+%                      * .rxns - `n x 1` reaction identifiers, used to
+%                        locate the newly added sink reaction when setting
+%                        its name
 %    metabolites:    Cell array of metabolite abreviations as they appear in `model.mets`
 %
 % OPTIONAL INPUTS:

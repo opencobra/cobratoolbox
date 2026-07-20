@@ -1,4 +1,4 @@
-function [A,b,csense] = lrsReadHalfspace(modelName,param)
+function [A, b, csense] = lrsReadHalfspace(modelName, param)
 % Read in a halfspace representation (*.ine) of a polytope derived from lrs
 % See http://cgm.cs.mcgill.ca/~avis/C/lrslib/USERGUIDE.html#file
 %     H-representation,
@@ -18,12 +18,20 @@ function [A,b,csense] = lrsReadHalfspace(modelName,param)
 %     The coefficients can be entered as integers or rationals in the format x/y. To distinguish an equation a linearity option must be supplied before the begin line (see below).
 %
 %
-% INPUT
-% modelName     string giving the prefix of a *.ine file
-%               It is assumed the file is pwd/*.ine, otherwise provide the 
-%               full path
+% USAGE:
 %
-% OUTPUT
+%    [A, b, csense] = lrsReadHalfspace(modelName, param)
+%
+% INPUTS:
+%    modelName:    string giving the prefix of a *.ine file. It is assumed the
+%                  file is `pwd/*.ine`, otherwise provide the full path
+%    param:        parameter structure with fields:
+%
+%                    * .redund - {0, (1)} whether the `_noR` (no-redundancy) suffix is appended to `modelName`
+%                    * .inequality - {0, 1} selects the equality (`_eq`) or inequality (`_ineq`) file suffix
+%                    * .positivity - {0, 1} selects the positive (`_pos`) or negative (`_neg`) file suffix
+%
+% OUTPUT:
 %    A:             m x n left hand side matrix of linear system:math:`A x <=> (b)`
 %    b:             m x 1 right hand side vector of linear system :math:`A x <=> (b)`
 %    csense:        m x 1 character array of constraint senses, one for each row in A

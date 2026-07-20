@@ -1,52 +1,65 @@
-function [thermoFluxConsistentMetBool,thermoFluxConsistentRxnBool,model,thermoConsistModel] = findThermoConsistentFluxSubset(model, param, removeMetBool, removeRxnBool)
+function [thermoFluxConsistentMetBool, thermoFluxConsistentRxnBool, model, thermoConsistModel] = findThermoConsistentFluxSubset(model, param, removeMetBool, removeRxnBool)
 % Find the thermodynamically flux consistent subset of an input model,
 % optionally after removing certain metabolites and reactions
 %
-% INPUT
-% model:                   structure with field:
-%                          * .S - `m` x `n` stoichiometric matrix
-%                          * .lb - `n x 1` Lower bounds
-%                          * .ub - `n x 1` Upper bounds
+% USAGE:
 %
-% OPTIONAL INPUT
-% param
-% param.epsilon:                smallest flux that is considered nonzero
-% param.printLevel:             print level
-% model.SConsistentMetBool 
-% model.SConsistentRxnBool
-% model.fluxConsistentMetBool   flux consistent metabolites
-% model.fluxConsistentRxnBool   flux consistent reactions
+%    [thermoFluxConsistentMetBool, thermoFluxConsistentRxnBool, model, thermoConsistModel] = findThermoConsistentFluxSubset(model, param, removeMetBool, removeRxnBool)
 %
+% INPUTS:
+%    model:         structure with fields:
 %
-% removeMetBool:                m x 1 logical index of metabolites to
-%                               remove before computing the thermodynamically
-%                               consistent subset
-% removeRxnBool                 n x 1 logical index of reactions to
-%                               remove before computing the thermodynamically
-%                               consistent subset
+%                     * .S - `m x n` stoichiometric matrix
+%                     * .lb - `n x 1` lower flux bounds
+%                     * .ub - `n x 1` upper flux bounds
+%                     * .b - `m x 1` right hand side of `S*v = b`
+%                     * .E - additional net-flux constraint matrix; if present the function raises an error (not yet supported)
+%                     * .mets - `m x 1` cell array of metabolite identifiers
+%                     * .rxns - `n x 1` cell array of reaction identifiers
+%                     * .SConsistentMetBool - `m x 1` boolean, stoichiometrically consistent metabolites
+%                     * .SConsistentRxnBool - `n x 1` boolean, stoichiometrically consistent reactions
+%                     * .SIntMetBool - `m x 1` boolean, internal metabolites
+%                     * .SIntRxnBool - `n x 1` boolean, internal reactions
+%                     * .fluxConsistentMetBool - `m x 1` boolean, flux consistent metabolites
+%                     * .fluxConsistentRxnBool - `n x 1` boolean, flux consistent reactions
 %
-% ADVANCED OPTIONAL INPUT (Do not play with these parameters unless you know what you are doing)
-% param.iterationMethod:        method to iteratively enlarge the thermodynamically consistent subset
+% OPTIONAL INPUTS:
+%    param:         structure of parameters:
 %
-% param.formulation:            mathematical formulation of inner iteration
-% param.relaxBounds:      Relax bounds that don't include zero. Default is false.
-% param.nMax
+%                     * .epsilon - smallest flux considered nonzero (default solver feasTol)
+%                     * .printLevel - print level
+%                     * .formulation - mathematical formulation of the inner iteration (default 'pqzw')
+%                     * .iterationMethod - method to iteratively enlarge the thermodynamically consistent subset (default 'random')
+%                     * .secondaryRemoval - also remove stoichiometrically or flux inconsistent parts (default 1)
+%                     * .nMax - maximum number of iterations (default 60)
+%                     * .relaxBounds - relax bounds that do not include zero (default false)
+%                     * .acceptRepairedFlux - accept a repaired flux vector (set from relaxBounds)
+%                     * .debug - debug flag (default 0)
+%    removeMetBool:    `m x 1` logical index of metabolites to remove before computing
+%                      the thermodynamically consistent subset
+%    removeRxnBool:    `n x 1` logical index of reactions to remove before computing
+%                      the thermodynamically consistent subset
 %
-% OUTPUT
-% thermoFluxConsistentMetBool    m x 1 boolean vector indicating thermodynamically flux consistent mets
-% thermoFluxConsistentRxnBool    n x 1 boolean vector indicating thermodynamically flux consistent rxns
+% OUTPUTS:
+%    thermoFluxConsistentMetBool:    `m x 1` boolean, thermodynamically flux consistent metabolites
+%    thermoFluxConsistentRxnBool:    `n x 1` boolean, thermodynamically flux consistent reactions
+%    model:                          input model with the following fields added:
 %
-% model                          input model with the following fields added
-%                                *.thermoFluxConsistentMetBool m x 1 boolean vector indicating thermodynamically flux consistent mets
-%                                *.thermoFluxConsistentRxnBool n x 1 boolean vector indicating thermodynamically flux consistent rxns
-%                                *.thermoFwdFluxConsistentRxnBool n x 1 boolean vector indicating forward thermodynamically flux consistent rxns
-%                                *.thermoRevFluxConsistentRxnBool n x 1 boolean vector indicating reverse thermodynamically flux consistent rxns
-%
-% thermoConsistModel            subset of the input model that is thermodynamically consistent
+%                                      * .thermoFluxConsistentMetBool - `m x 1` boolean, thermodynamically flux consistent metabolites
+%                                      * .thermoFluxConsistentRxnBool - `n x 1` boolean, thermodynamically flux consistent reactions
+%                                      * .thermoFwdFluxConsistentRxnBool - `n x 1` boolean, forward thermodynamically flux consistent reactions
+%                                      * .thermoRevFluxConsistentRxnBool - `n x 1` boolean, reverse thermodynamically flux consistent reactions
+%                                      * .forcedIntRxnBool - `n x 1` boolean, internal reactions forced to be unidirectional
+%                                      * .delta0 - weight on the zero-norm term in the cardinality optimisation
+%                                      * .delta1 - weight on the one-norm term in the cardinality optimisation
+%                                      * .alpha1 - weight parameter in the cardinality optimisation
+%                                      * .beta - weight parameter in the cardinality optimisation
+%                                      * .g0 - weight parameter in the cardinality optimisation
+%    thermoConsistModel:             subset of the input model that is thermodynamically consistent
 %
 % EXAMPLES:
-% See COBRA.papers/2022_cardOpt/driver_testFindThermoFluxConsistency.mlx
-%     COBRA.tutorials/analysis/vonBertalanffy/findThermoConsistentFluxSubset/tutorial_findThermoConsistentFluxSubset.mlx
+%    % See COBRA.papers/2022_cardOpt/driver_testFindThermoFluxConsistency.mlx
+%    %     COBRA.tutorials/analysis/vonBertalanffy/findThermoConsistentFluxSubset/tutorial_findThermoConsistentFluxSubset.mlx
 
 % .. Author: - Ronan Fleming 2022
 % .. Please cite:

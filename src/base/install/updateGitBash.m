@@ -6,7 +6,7 @@ function updateGitBash(fetchAndCheckOnly)
 %     updateGitBash(fetchAndCheckOnly)
 %
 % INPUT:
-%     fetchAndCheckOnly: if set to `true`, gitBash is not updated, but only a check is made (default: `false`)
+%     fetchAndCheckOnly:    if set to `true`, gitBash is not updated, but only a check is made (default: `false`)
 %
 
     global CBTDIR

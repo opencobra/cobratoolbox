@@ -1,4 +1,4 @@
-function optimParam = tuneParam(LPProblem,contFunctName,timelimit,nrepeat,printLevel)
+function optimParam = tuneParam(LPProblem, contFunctName, timelimit, nrepeat, printLevel)
 % Optimizes cplex parameters to make model resolution faster.
 % Particularly interetsing for large-scale MILP models and repeated runs of
 % optimisation.
@@ -11,28 +11,38 @@ function optimParam = tuneParam(LPProblem,contFunctName,timelimit,nrepeat,printL
 %    optimalParameters = tuneParam(LPProblem,contFunctName,timelimit,nrepeat,printLevel);
 %
 % INPUT:
-%         LPProblem:     MILP as COBRA LP problem structure
-%         contFunctName: Parameters structure containing the name and value,
-%                        OR the name of a function that returns such a
-%                        structure (e.g. 'CPLEXParamSet'), OR [] for
-%                        defaults. A set of routine parameters will be added
-%                        by the solver but won't be reported.
+%         LPProblem:         MILP as COBRA LP problem structure, with fields:
+%
+%                              * .A or .S - `m x n` LHS/stoichiometric matrix
+%                              * .b - RHS vector
+%                              * .c - Objective coefficient vector
+%                              * .lb - Lower bound vector
+%                              * .ub - Upper bound vector
+%                              * .osense - Objective sense (-1 max, +1 min)
+%                              * .csense - Constraint senses, a string containing the constraint sense for
+%                                each row in `A` ('E', equality, 'G' greater than, 'L' less than)
+%         contFunctName:     Parameters structure containing the name and value,
+%                            OR the name of a function that returns such a
+%                            structure (e.g. 'CPLEXParamSet'), OR [] for
+%                            defaults. A set of routine parameters will be added
+%                            by the solver but won't be reported.
 %
 % OPTIONAL INPUTS:
-%         timelimit:     CPX_PARAM_TUNINGTILIM in seconds (default: 10000)
-%         nrepeat:       CPX_PARAM_TUNINGREPEAT, number of row/column
-%                        permutations of the original problem (default: 1).
-%                        High values require consequent memory and swap.
-%         printLevel:    0/(1)/2/3
+%         timelimit:         CPX_PARAM_TUNINGTILIM in seconds (default: 10000)
+%         nrepeat:           CPX_PARAM_TUNINGREPEAT, number of row/column
+%                            permutations of the original problem (default: 1).
+%                            High values require consequent memory and swap.
+%         printLevel:        0/(1)/2/3
 %
 % OUTPUT:
-%         optimParam: structure of optimal parameter values directly usable as
-%                     contFunctName argument in solveCobraLP function
+%         optimParam:        structure of optimal parameter values directly usable as
+%                            contFunctName argument in solveCobraLP function
 %
 % .. Author: Marouen Ben Guebila 24/07/2017
 
 % Validate that ibm_cplex is available without permanently changing the
 % user's configured LP solver.
+
 global CBT_LP_SOLVER
 prevLPSolver = CBT_LP_SOLVER;
 cplexAvailable = changeCobraSolver('ibm_cplex', 'LP', 0);

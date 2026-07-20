@@ -1,4 +1,4 @@
-function [modelLOD] = setQualitativeConstraints(model,cond_uptake,cond_uptake_LODs, cond_secretion,cond_secretion_LODs,cellConc,t,cellWeight,ambiguous_metabolites,basisMedium)
+function [modelLOD] = setQualitativeConstraints(model, cond_uptake, cond_uptake_LODs, cond_secretion, cond_secretion_LODs, cellConc, t, cellWeight, ambiguous_metabolites, basisMedium)
 % This function sets qualitative constraints (by enforcing minimal uptake or secretion based on individual detection limits), e.g., based on the uptake and secretion
 % profile of metabolites measured through mass-spectrometry. Uptake is only possible if the lower bound has been set to a value >0 using `setMediumConstraints`
 % The minimal allowable uptake and secretion flux is defined by enforcing uptake at or above the limit of detection (mass-spectrometry). If these values are not available, a very small value, e.g., 1.0E-06 can be used. Note that this
@@ -10,7 +10,9 @@ function [modelLOD] = setQualitativeConstraints(model,cond_uptake,cond_uptake_LO
 %    [modelLOD] = setQualitativeConstraints(model, cond_uptake, cond_uptake_LODs, cond_secretion, cond_secretion_LODs, cellConc, t, cellWeight, ambiguous_metabolites, basisMedium)
 %
 % INPUTS:
-%    model:                   Metabolic model (Recon), with set constraints (output of `setMediumConstraints`)
+%    model:                   Metabolic model (Recon), with set constraints (output of `setMediumConstraints`), with field:
+%
+%                               * .rxns - reaction identifiers
 %    cond_uptake:             Vector of exchanges of metabolites consumed by the cells in the experiment
 %    cond_uptake_LODs:        Vector of detection limits (LOD in Mm) for the compounds and in the experiment
 %    cond_secretion:          Vector of metabolite exchanges consumed by the cells in the experiment
@@ -18,7 +20,7 @@ function [modelLOD] = setQualitativeConstraints(model,cond_uptake,cond_uptake_LO
 %    cellConc:                Cell concentration (cells per 1 ml)
 %    t:                       Time in hours
 %    cellWeight:              gDW per cell
-%    ambiguous_metabolites:   Since all exchanges, except the ones specified in `uptake` and `secretion` are closed in `modelLOD`, this input
+%    ambiguous_metabolites:    Since all exchanges, except the ones specified in `uptake` and `secretion` are closed in `modelLOD`, this input
 %                             variable allows to specify metabolite exchanges that should remain open. 
 %                             Thus, if these exchanges are open in the starting model they can be uptaken
 %                             or secreted by the `modelLOD`, e.g., `ambiguous_metabolites`

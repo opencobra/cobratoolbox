@@ -1,24 +1,25 @@
-function producetSNEPlots(propertiesFolder,infoFilePath,reconVersion,customFeatures)
+function producetSNEPlots(propertiesFolder, infoFilePath, reconVersion, customFeatures)
 % This function plots reaction presence and uptake and secretion potential
 % by taxon with t-SNE.
 %
-% USAGE
-%   producetSNEPlots(propertiesFolder,infoFilePath,reconVersion)
+% USAGE:
 %
-% INPUTS
-% propertiesFolder      Folder where the reaction presences and uptake and
-%                       secretion potential to be analyzed are stored
-%                       (default: current folder)
-% infoFilePath          Path to spreadsheet with taxonomical information of
-%                       the refined strains
-% reconVersion          Name assigned to the reconstruction resource
-% OPTIONAL INPUT
-% customFeatures        Features other than taxonomy to cluster microbes
-%                       by. Need to be a table header in the file with
-%                       information on reconstructions.
+%    producetSNEPlots(propertiesFolder, infoFilePath, reconVersion, customFeatures)
 %
-%   - AUTHOR
-%   Almut Heinken, 06/2020
+% INPUTS:
+%    propertiesFolder:    Folder where the reaction presences and uptake and
+%                         secretion potential to be analyzed are stored
+%                         (default: current folder)
+%    infoFilePath:        Path to spreadsheet with taxonomical information of
+%                         the refined strains
+%    reconVersion:        Name assigned to the reconstruction resource
+%
+% OPTIONAL INPUTS:
+%    customFeatures:      Features other than taxonomy to cluster microbes
+%                         by. Need to be a table header in the file with
+%                         information on reconstructions.
+%
+% .. Author: - Almut Heinken, 06/2020
 
 % euclidean should work for most
 distance='euclidean';

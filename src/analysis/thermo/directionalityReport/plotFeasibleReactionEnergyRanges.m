@@ -7,7 +7,11 @@ function plotFeasibleReactionEnergyRanges(modelT)
 %    plotFeasibleReactionEnergyRanges(modelT)
 %
 % INPUT:
-%    modelT:
+%    modelT:    thermodynamically constrained model structure with fields:
+%
+%                 * .rxns - `n x 1` cell array of reaction identifiers
+%                 * .DrGtMin - `n x 1` lower bound on transformed reaction Gibbs energy
+%                 * .DrGtMax - `n x 1` upper bound on transformed reaction Gibbs energy
 
 nRxn = size(modelT.rxns,2);
 

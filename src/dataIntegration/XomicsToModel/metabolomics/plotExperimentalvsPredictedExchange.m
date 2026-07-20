@@ -1,49 +1,63 @@
 function plotExperimentalvsPredictedExchange(measuredFluxes, predictedFluxes, otherFluxes, extraFluxes, param)
-% plot a comparison of experimental and predicted exchange reaction rates
+% Plot a comparison of experimental and predicted exchange reaction rates
 %
-% INPUT
-% measuredFluxes:   table with the fluxes obtained from exometabolomics experiments with the following variables 
-%           * .rxns:    k x 1 cell array of reaction identifiers
-%           * .mean:    k x 1 double of measured mean flux
-%           * .SD:      k x 1 double standard deviation of the measured flux
-%           * .labels:  k x 1 cell array of labels to display on y axis
-%           * .Properties.Description: string describing the data, used in plot legend
+% USAGE:
 %
-% predictedFluxes:   table with the following variables
-%           * .rxns:    k x 1 cell array of reaction identifiers
-%           * .v:       k x 1 double of predicted mean flux
-%           * .lb:      k x 1 double lower bound on reaction flux
-%           * .ub:      k x 1 double upper bound on reaction flux
-%           * .labels:  k x 1 cell array of labels to display on y axis
-%           * .Properties.Description: string describing the data, used in plot legend
+%    plotExperimentalvsPredictedExchange(measuredFluxes, predictedFluxes, otherFluxes, extraFluxes, param)
 %
-% OPTIONAL INPUT
-% otherFluxes:  table with the following variables
-%           * .rxns:    k x 1 cell array of reaction identifiers
-%           * .Properties.Description: sring describing the data, used in plot legend
-%           * .labels:  k x 1 cell array of labels to display on y axis
-%   and
-%           * .mean:    k x 1 double of measured mean flux
-%           * .SD:      k x 1 double standard deviation of the measured flux
+% INPUTS:
+%    measuredFluxes:    table with the fluxes obtained from exometabolomics experiments, with variables:
 %
-%   or 
-%           * .v:       k x 1 double of predicted mean flux
-%           * .lb:      k x 1 double lower bound on reaction flux
-%           * .ub:      k x 1 double upper bound on reaction flux
+%                         * .rxns - `k x 1` cell array of reaction identifiers
+%                         * .mean - `k x 1` double of measured mean flux
+%                         * .SD - `k x 1` double standard deviation of the measured flux
+%                         * .metNames - `k x 1` metabolite names, used as labels when present
+%                         * .labels - `k x 1` cell array of labels to display on y axis
+%                         * .Properties - table metadata; .Properties.Description is used in the plot legend
+%                         * .zerobool - computed boolean, measured flux is statistically zero (mean +/- SD spans 0)
+%                         * .posbool - computed boolean, measured flux is positive (secretion)
+%                         * .negbool - computed boolean, measured flux is negative (uptake)
+%                         * .uptakeProbability - computed probability that the reaction is an uptake
+%                         * .toRankOrder - computed key used to rank reactions on the plot
 %
+%    predictedFluxes:    table with the predicted fluxes, with variables:
 %
-% param: paramters structure with the following fields
-%           * .measuredFluxes  {(1),0} set to zero to not display experimental fluxes
+%                          * .rxns - `k x 1` cell array of reaction identifiers
+%                          * .v - `k x 1` double of predicted mean flux
+%                          * .lb - `k x 1` double lower bound on reaction flux
+%                          * .ub - `k x 1` double upper bound on reaction flux
+%                          * .labels - `k x 1` cell array of labels to display on y axis
+%                          * .Properties - table metadata; .Properties.Description is used in the plot legend
+%                          * .zerobool - computed boolean, predicted flux is zero
+%                          * .posbool - computed boolean, predicted flux is positive (secretion)
+%                          * .negbool - computed boolean, predicted flux is negative (uptake)
+%                          * .uptakeProbability - computed probability that the reaction is an uptake
 %
-%           * .labelType determines which y axes lables to display
-%                       'metabolitePlatform' = platform left and metabolite name right
-%                       'metabolite'         = metabolite only right  (default)
-%                       'platform'           = platform only left
-%           * .expOrder {(1),0} 
-%                       1  = order reactions by value of experimental flux
-%                       0  = order reactions by value of predicted flux (predictedFluxes) for each reaction corresponding to an experimental flux
-%           * .saveFigures = 1 saves figure as .fig and .png to current directory 
-%           * .plotTitle: title of the plot
+% OPTIONAL INPUTS:
+%    otherFluxes:    table with the same variables as predictedFluxes or measuredFluxes:
+%
+%                      * .rxns - `k x 1` cell array of reaction identifiers
+%                      * .Properties - table metadata; .Properties.Description is used in the plot legend
+%                      * .mean - `k x 1` double of measured mean flux (if provided)
+%                      * .SD - `k x 1` double standard deviation (if provided)
+%                      * .v - `k x 1` double of predicted mean flux (if provided)
+%                      * .lb - `k x 1` double lower bound on reaction flux (if provided)
+%                      * .ub - `k x 1` double upper bound on reaction flux (if provided)
+%
+%    extraFluxes:    an additional table with the same variables as otherFluxes
+%    param:    parameters structure with the following fields:
+%
+%                * .measuredFluxes - {(1), 0} set to zero to not display experimental fluxes
+%                * .labelType - determines which y axis labels to display:
+%                  'metabolitePlatform' = platform left and metabolite name right,
+%                  'metabolite' = metabolite only right (default), 'platform' = platform only left
+%                * .expOrder - {(1), 0} 1 = order reactions by experimental flux, 0 = order by predicted flux
+%                * .saveFigures - set to 1 to save the figure as .fig and .png to the current directory
+%                * .plotTitle - title of the plot
+%                * .measuredBounds - Logical, plot error bars on the measured fluxes
+%                * .predictedBounds - Logical, plot bounds on the predicted fluxes
+%                * .otherBounds - Logical, plot bounds on otherFluxes
+%                * .extraBounds - Logical, plot bounds on extraFluxes
 
 
 if exist('measuredFluxes','var')
