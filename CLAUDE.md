@@ -1,16 +1,5 @@
 <!-- SPECKIT START -->
-Active Spec Kit feature: **014-src-header-compliance** — behaviour-preserving audit +
-remediation of function header comments in every in-scope `src/*.m` file for openCOBRA
-documentation-guide (Principle VII-E) compliance, so the CI Sphinx build
-(`sphinxcontrib-matlabdomain==0.18.0`) generates complete pages. Plan:
-`specs/014-src-header-compliance/plan.md` (spec + clarify + plan done). Deliverables: a
-standing MATLAB CI-gate checker under `test/verifiedTests/documentation/` and per-leaf-
-folder header remediation, full fan-out across all six domains via the agent-assign
-pipeline. Struct fields documented = only those the function uses; vendored subtrees
-(rBioNet, modelBorgifier) excluded and deferred to a follow-up feature. Status: planned;
-awaiting `/speckit-tasks` then the assign → validate → execute pipeline. Source edits
-remain gated on an explicit implementation command. NOTE: this feature took number 014;
-the previously-earmarked W4-base (base layering inversion) is now the next free number.
+No active Spec Kit feature.
 <!-- SPECKIT END -->
 
 <!-- Hand-maintained; keep OUTSIDE the SPECKIT markers (Spec Kit rewrites that block). -->
