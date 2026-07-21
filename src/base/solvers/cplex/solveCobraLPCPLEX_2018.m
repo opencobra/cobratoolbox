@@ -12,12 +12,15 @@ function [solution, LPProblem] = solveCobraLPCPLEX(LPProblem, printLevel, basisR
 %    LPProblem:          Structure containing the following fields describing the LP problem to be solved
 %
 %                          * .A - LHS matrix
+%                          * .S - stoichiometric matrix, used if `.A` is absent
 %                          * .b - RHS vector
 %                          * .c - Objective coeff vector
 %                          * .lb - Lower bound vector
 %                          * .ub - Upper bound vector
 %                          * .osense - Objective sense (-1 max, +1 min)
 %                          * .rxns - (optional) cell array of reaction abbreviations (necessary for
+%                            making a readable confilict resolution file).
+%                          * .mets - (optional) cell array of metabolite abbreviations (necessary for
 %                            making a readable confilict resolution file).
 %                          * .csense - (optional) Constraint senses, a string containting the constraint sense for
 %                            each row in `A` ('E', equality, 'G' greater than, 'L' less than).

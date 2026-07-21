@@ -4,19 +4,21 @@ function fileNameOut = lrsRun(modelName, param)
 %
 % USAGE:
 %
-%     fileNameOut = runLrs(modelName, positivity, inequality, shellScript)
+%    fileNameOut = lrsRun(modelName, param)
 %
 % INPUTS:
 %    modelName:      name of the file to give as input to lrs
 %
-%    param:         parameter structure with the following fields:
-%    *.positivity:    if equals to 1, then positive orthant base
-%    *.inequality:    if equals to 1, then represent as two inequalities rather than a single equality
-%    *.shellScript:   if equals to 1, then lrs is run through a bash script
-%    *.redund         if equals to 0, then remove redundant linear equalities 
+%    param:          parameter structure with the following fields:
 %
-% OUTPTS
-% fileNameOut       full path to output file
+%                      * .positivity - {0, 1} if 1, then positive orthant base
+%                      * .inequality - {0, 1} if 1, then represent as two inequalities rather than a single equality
+%                      * .shellScript - {0, 1} if 1, then lrs is run through a bash script
+%                      * .facetEnumeration - {0, 1} if 1, run facet enumeration, otherwise vertex enumeration
+%                      * .redund - {0, 1} if 0, then remove redundant linear equalities
+%
+% OUTPUTS:
+%    fileNameOut:    full path to the output file produced by lrs
 
 % Ronan Fleming 2021
 

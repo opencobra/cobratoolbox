@@ -1,13 +1,27 @@
-function [groupM,inchiM] = regulariseGroupIncidenceMatrix(combinedModel,printLevel)
-% within the combinedModel analyse the similar metabolites (having the same group decomposition vector) and the duplicates (also the same InChI)
+function [groupM, inchiM] = regulariseGroupIncidenceMatrix(combinedModel, printLevel)
+% Identify similar and duplicate metabolites in the combined model, comparing
+% group-decomposition vectors and InChI, to regularise the group incidence matrix
 %
-% INPUT
-% combinedModel
-% printLevel
+% USAGE:
 %
-% OUTPUT
-% groupM   nMet xnTrainingMet x nTrainingMet logical matrix, true if metabolite is a duplicate
-% inchiM   nTrainingMet x nModelMet logical matrix, true if metabolite is a duplicate
+%    [groupM, inchiM] = regulariseGroupIncidenceMatrix(combinedModel, printLevel)
+%
+% INPUT:
+%    combinedModel:    combined model structure with fields:
+%
+%                        * .G - `k x g` group incidence matrix
+%                        * .inchi - structure whose `.nonstandard` field is a `k x 1` cell array of nonstandard InChI
+%                        * .inchiBool - `k x 1` boolean of metabolites with an InChI
+%                        * .trainingMetBool - `k x 1` boolean flagging training metabolites
+%                        * .testMetBool - `k x 1` boolean flagging test metabolites
+%                        * .mets - `k x 1` cell array of metabolite identifiers
+%
+% OPTIONAL INPUT:
+%    printLevel:       verbosity level (default 0)
+%
+% OUTPUTS:
+%    groupM:           `nMet x nMet` logical matrix, true where two metabolites share a group decomposition
+%    inchiM:           `nMet x nMet` logical matrix, true where two metabolites share an InChI
 
 if~exist('printLevel','var')
     printLevel=0;

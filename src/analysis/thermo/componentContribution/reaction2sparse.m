@@ -1,4 +1,24 @@
 function res = reaction2sparse(s)
+% Convert a KEGG-style reaction formula string into a sparse stoichiometric vector
+%
+% Parses a reaction string of the form `a C00001 + C00002 = C00003`, where
+% each `Cddddd` is a KEGG compound identifier with an optional integer
+% coefficient, and returns the net stoichiometric coefficients indexed by
+% compound id (negative for substrates on the left, positive for products on
+% the right).
+%
+% USAGE:
+%
+%    res = reaction2sparse(s)
+%
+% INPUT:
+%    s:      char, KEGG-style reaction formula (e.g. `2 C00001 + C00002 = C00003`)
+%
+% OUTPUT:
+%    res:    sparse row vector of net stoichiometric coefficients indexed by
+%            KEGG compound id (CID)
+%
+
 tmp = regexp(s, '\s*=\s*', 'split');
 left = regexp(tmp{1}, '\s*\+\s*', 'split');
 right = regexp(tmp{2}, '\s*\+\s*', 'split');

@@ -6,11 +6,11 @@ function mapP = detectOutput(resPath, objNam)
 %   mapP = detectOutput(resPath, objNam)
 %
 % INPUTS:
-%   resPath:    char with path of directory where results are saved
-%   objNam:     char with name of object to find in the results folder
+%    resPath:    char with path of directory where results are saved
+%    objNam:     char with name of object to find in the results folder
 %
 % OUTPUTS:
-%   mapP:       double indicating if object was found in the result folder
+%    mapP:       double indicating if object was found in the result folder
 %
 % .. Author: Federico Baldini 2017-2018
 

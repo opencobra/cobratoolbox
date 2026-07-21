@@ -1,55 +1,54 @@
 function model = estimateDfGt0(model, confidenceLevel)
-% Estimates standard transformed Gibbs energies of formation for metabolites
+% Estimate standard transformed Gibbs energies of formation for metabolites
+%
+% Sets a default temperature and gas constant if absent, normalises compartment
+% identifiers, then applies a Legendre transform per metabolite pseudoisomer
+% group to obtain transformed Gibbs energies of formation and their bounds.
 %
 % USAGE:
 %
 %    model = estimateDfGt0(model, confidenceLevel)
 %
 % INPUT:
-%    model:              Model structure with following fields:
+%    model:              model structure with the following fields:
 %
-%                          * .S - `m x n` stoichiometric matrix.
-%                          * .mets - `m x 1` array of metabolite identifiers.
-%                          * .metFormulas - `m x 1` cell array of metabolite formulas. Formulas
-%                            for protons should be H.
-%                          * .metCharges - `m x 1` array of metabolite charges.
-%                          * .T - Temperature in Kelvin.
-%                          * .cellCompartments - `c x 1` array of cell compartment identifiers.
-%                          * .ph - `c x 1` array of compartment specific pH values.
-%                          * .is - `c x 1` array of compartment specific ionic strength
-%                            values in mol/L.
-%                          * .chi - `c x 1` array of compartment specific electrical
-%                            potential values in mV.
-%                          * .metCompartments - `m x 1` cell array of compartment assignments for
-%                            metabolites in `model.mets`. Compartment identifiers
-%                            should be the same as in model.compartments.
-%                          * .DfG0 - `m x 1` array of standard Gibbs energies of formation.
-%                          * .pKa - `m x 1` structure array with metabolite pKa values.
-%                          * .DfG0_Uncertainty - `m x 1` array of uncertainty in estimated standard
-%                            Gibbs energies of formation. Will be large for
-%                            metabolites that are not covered by component contributions.
+%                          * .S - `m x n` stoichiometric matrix
+%                          * .mets - `m x 1` metabolite identifiers
+%                          * .metFormulas - `m x 1` metabolite formulas (protons should be H)
+%                          * .T - temperature in Kelvin (default 310.15 if absent)
+%                          * .gasConstant - gas constant in kJ/(K*mol) (set if absent)
+%                          * .compartments - `c x 1` compartment identifiers
+%                          * .metCompartments - `m x 1` compartment assignments for the metabolites
+%                          * .ph - `c x 1` compartment specific pH values
+%                          * .is - `c x 1` compartment specific ionic strengths in mol/L
+%                          * .chi - `c x 1` compartment specific electrical potentials in mV
+%                          * .DfG0 - `m x 1` standard Gibbs energies of formation
+%                          * .DfH0 - `m x 1` standard enthalpies of formation (optional)
+%                          * .concMin - `m x 1` lower bounds on metabolite concentrations in mol/L
+%                          * .concMax - `m x 1` upper bounds on metabolite concentrations in mol/L
+%                          * .DfG0_Uncertainty - `m x 1` uncertainty in standard Gibbs energies of formation
+%                          * .SIntRxnBool - `n x 1` true for internal reactions
 %
 % OPTIONAL INPUT:
-%    confidenceLevel:    {0.50, 0.70, (0.95), 0.99}. Confidence level for `DGft0`
-%                        and `DrGt0` interval estimates. Default is 0.95,
-%                        corresponding to 95% confidence intervals.
-%
-%                          * .DfH0 - `m x 1` array of standard Enthalpies of formation.
-%
+%    confidenceLevel:    {0.50, 0.70, (0.95), 0.99}. Confidence level for
+%                        `DfGt0` and `DrGt0` interval estimates. Default is
+%                        0.95, corresponding to 95% confidence intervals.
 %
 % OUTPUT:
-%    model:              Model structure with following fields added:
+%    model:              the model structure with the following fields added:
 %
-%                          * .DfG0_pseudoisomers - Four column matrix with pseudoisomer standard Gibbs
-%                            energies of formation in kJ/mol.
-%
-%                            * Column 1. Row index of pseudoisomer group in `model.S`.
-%                            * Column 2. Standard Gibbs energy of formation.
-%                            * Column 3. Number of hydrogen atoms.
-%                            * Column 4. Charge.
-%                          * .DfGt0 - Standard transformed Gibbs energies of formation in kJ/mol.
-%                          * .DfGtMin - Lower bounds on transformed Gibbs energies of formation in kJ/mol.
-%                          * .DfGtMax - Upper bounds on transformed Gibbs energies of formation in kJ/mol.
+%                          * .DfG0_pseudoisomers - four column matrix of pseudoisomer
+%                            standard Gibbs energies of formation (metabolite index,
+%                            standard Gibbs energy, number of hydrogen atoms, charge)
+%                          * .DfGt0 - `m x 1` standard transformed Gibbs energies of formation in kJ/mol
+%                          * .DfHt0 - `m x 1` standard transformed enthalpies of formation in kJ/mol
+%                          * .aveHbound - `m x 1` average number of bound hydrogen ions
+%                          * .aveZi - `m x 1` average charge
+%                          * .DfGt0Min - `m x 1` lower bounds on standard transformed Gibbs energies of formation
+%                          * .DfGt0Max - `m x 1` upper bounds on standard transformed Gibbs energies of formation
+%                          * .DfGtMin - `m x 1` lower bounds on transformed Gibbs energies of formation in kJ/mol
+%                          * .DfGtMax - `m x 1` upper bounds on transformed Gibbs energies of formation in kJ/mol
+%                          * .DfGtMean - `m x 1` mean transformed Gibbs energies of formation in kJ/mol
 %
 % .. Authors:
 %       - Elad Noor, Nov. 2012

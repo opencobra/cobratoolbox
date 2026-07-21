@@ -1,34 +1,34 @@
-function statResults = runStatisticsOnModerationAnalysisResults(data,metadata,formula,regressionResults,moderationThreshold_usePValue,moderationThreshold,saveDir)
+function statResults = runStatisticsOnModerationAnalysisResults(data, metadata, formula, regressionResults, moderationThreshold_usePValue, moderationThreshold, saveDir)
 % Filters regression results from moderation analysis for significantly
 % correlating metabolites fluxes/bacterial taxa. Then stratifies the filtered
 % flux/rel. abundances data for the moderator & performs new statistical analysis 
 % on the stratified data.
 % Notes: The moderator needs to be categorical.
 %
+% USAGE:
+%
+%    statResults = runStatisticsOnModerationAnalysisResults(data, metadata, formula, regressionResults, moderationThreshold_usePValue, moderationThreshold, saveDir)
+%
 % INPUTS:
-%   data:                           [Table] Processed flux/relative abundances data.
-%   metadata:                       [Table] Metadata containing ID & pot. additional variables 
-%                                   (confounders, moderators)
-%   formula:                        [String] Regression formula in Wilkinson notation.
-%   regressionResults:              [Struct] Structure containing tables for flux &
-%                                   rel. abundances regression results.
-%   moderationThreshold_usePValue:  [Boolean] Cutoff threshold being either
-%                                   FDR or pValue.
-%                                   Default = true.
-%   moderationThreshold:            [Numerical] Cutoff threshold for maximal FDR value from
-%                                   moderation analysis a metabolite/bacterial taxa needs to
-%                                   pass that it will be included in subsequent 
-%                                   analysis of stratified fluxes/taxa.
-%                                   Default = 0.05 (5%).
-%   saveDir:                        [Character array] Path to working directory.
+%    data:                           [table] processed flux/relative-abundance data
+%    metadata:                       [table] metadata containing ID and possible
+%                                    additional variables (confounders, moderators)
+%    formula:                        [string] regression formula in Wilkinson notation
+%    regressionResults:              [struct] structure containing tables for flux and
+%                                    relative-abundance regression results
+%    moderationThreshold_usePValue:    [boolean] whether the cutoff threshold is the pValue
+%                                    (true) or the FDR (false) (default: true)
+%    moderationThreshold:            [numeric] cutoff threshold for the maximal FDR value a
+%                                    metabolite/taxon must pass to be included in the
+%                                    stratified analysis (default: 0.05)
+%    saveDir:                        [char] path to the working directory
 %
 % OUTPUT:
-%   statResults:                    [Struct] Structure containing tables for
-%                                   regression results for moderator stratified data
-%                                   of significant hits from initial from moderation 
-%                                   analysis regressions.
-%                                   Will be empty, if regression does not contain Flux
-%                                   or relative abundance.
+%    statResults:                    [struct] structure containing tables of regression
+%                                    results for the moderator-stratified data of the
+%                                    significant hits from the initial moderation
+%                                    regressions; empty if the regression contains no flux
+%                                    or relative-abundance results
 %
 % AUTHOR:
 %   Jonas Widder, 11/2024

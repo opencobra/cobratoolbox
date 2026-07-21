@@ -1,4 +1,4 @@
-function [newDietModel,pointsModel,roiFlux,pointsModelSln,menuChanges, macroChanges, roiChanges] = nutritionAlgorithmWBM(model,obj,objMinMax,rois,roisMinMax,options)
+function [newDietModel, pointsModel, roiFlux, pointsModelSln, menuChanges, macroChanges, roiChanges] = nutritionAlgorithmWBM(model, obj, objMinMax, rois, roisMinMax, options)
 % Identifies the minimal changes to a diet necessary to get a desired
 % change in one or more reactions of interest. One may enter a metabolite
 % of the pointsModel instead of a reaction and the algorithm will optimize the
@@ -12,24 +12,21 @@ function [newDietModel,pointsModel,roiFlux,pointsModelSln,menuChanges, macroChan
 %     Example: [newDietModel,pointsModel,roiFlux,pointsModelSln,itemsRemoved,itemsAdded] = nutritionAlgorithmWBM(WBmodel,'Whole_body_objective_rxn','max',{},{})
 %
 % INPUTS:
-%    pointsModel:          COBRA pointsModel structure with the fields:
-%                      * .S
-%                      * .b
-%                      * .ub
-%                      * .ub
-%                      * .mets  (required if pointsModel.SIntRxnBool absent)
-%                      * .rxns  (required if pointsModel.SIntRxnBool absent)
+%    model:          COBRA whole-body model, with fields:
 %
-%   obj:           organism's objective function
-%
-%   objMinMax:     minimize ('min') or maximize ('max') objective function
-%
-%   rois:          cell array of all reactions of interest
-%
-%   roisMinMax:    cell array of 'min'/'max' entries for rois
+%                      * .rxns - reaction identifiers
+%                      * .mets - metabolite identifiers
+%                      * .S - stoichiometric matrix
+%                      * .lb - lower flux bounds
+%                      * .ub - upper flux bounds
+%                      * .osenseStr - objective sense (set internally)
+%    obj:            Organism's objective function (reaction name)
+%    objMinMax:      Minimize ('min') or maximize ('max') the objective
+%    rois:           Cell array of all reactions of interest
+%    roisMinMax:     Cell array of 'min'/'max' entries for the rois
 %
 % OPTIONAL INPUTS:
-%   options:  Structure containing the optional specifications:
+%    options:        Structure containing the optional specifications:
 %
 %       * .foodOrMets:  dictates if the algorithm adds individual
 %       metabolites to the diet or food items. Default is food items.
@@ -48,7 +45,19 @@ function [newDietModel,pointsModel,roiFlux,pointsModelSln,menuChanges, macroChan
 %       * .initObjSln: provide an initial solution for the objective
 %       function. Output from optimizeWBmodel.
 %
-%       * .caloricRange: 1x2 vector defining boundries for diet calories
+%       * .caloricRange: 1x2 vector defining the bounds for the diet calories
+%
+%       * .carbohydrateRange: 1x2 vector defining the bounds for the diet
+%       carbohydrate content
+%
+%       * .lipidRange: 1x2 vector defining the bounds for the diet lipid
+%       content
+%
+%       * .proteinRange: 1x2 vector defining the bounds for the diet protein
+%       content
+%
+%       * .sugarsRange: 1x2 vector defining the bounds for the diet sugar
+%       content
 %
 %       * .slnType: Specify if solution should be 'Detailed' or 'Quick'.
 %                   Default setting is 'Detailed'
@@ -79,14 +88,20 @@ function [newDietModel,pointsModel,roiFlux,pointsModelSln,menuChanges, macroChan
 %       Allows for optimizing the price of a diet, but only if enough
 %       information is available.
 % 
-% OUTPUT:
-%   newDietModel
-%   pointsModel
-%   roiFlux
-%   pointsModelSln
-%   menuChanges
-%   macroChanges
-%   roiChanges
+% OUTPUTS:
+%    newDietModel:     The input model with diet reaction bounds updated to
+%                      reflect the recommended dietary changes
+%    pointsModel:      The points-tracking model built to compute the optimal
+%                      dietary changes
+%    roiFlux:          Flux solutions of the reactions of interest under the
+%                      new diet
+%    pointsModelSln:     Solution structure returned by optimizing pointsModel
+%    menuChanges:      Table of the food items (or metabolites) added to or
+%                      removed from the diet
+%    macroChanges:     Table comparing the original and new macronutrient
+%                      values of the diet
+%    roiChanges:       Table of the original and new flux ranges for each
+%                      reaction of interest
 %
 % .. Authors: - Bronson R. Weston   2021-2022
 %             - Bram Nap 04-2025 Enabled food item calculations with the 

@@ -1,14 +1,23 @@
-function [IDs,IDcount,Table] = getStatsMetStruct(metabolite_structure)
+function [IDs, IDcount, Table] = getStatsMetStruct(metabolite_structure)
+% Computes statistics on the identifiers stored in a metabolite structure
 %
-% INPUT
-% metabolite_structure  Metabolite structure
+% Collects the identifier field names present in the metabolite structure,
+% counts how many metabolites carry each identifier, and assembles a table of
+% the identifiers per metabolite.
 %
-% OUTPUT
-% IDs                   List of ID names
-% IDcount               Count per ID
-% Table                 Table listing IDs per reaction
+% USAGE:
 %
-% Ines Thiele, 09/2021
+%    [IDs, IDcount, Table] = getStatsMetStruct(metabolite_structure)
+%
+% INPUT:
+%    metabolite_structure:    metabolite structure
+%
+% OUTPUTS:
+%    IDs:                     list of identifier (field) names
+%    IDcount:                 count of metabolites carrying each identifier
+%    Table:                   table listing the identifiers per metabolite
+%
+% .. Author: - Ines Thiele, 09/2021
 
 Mets = fieldnames(metabolite_structure);
 IDs = fieldnames(metabolite_structure.(Mets{1}));

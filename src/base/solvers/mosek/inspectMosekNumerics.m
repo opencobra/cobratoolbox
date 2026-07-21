@@ -48,8 +48,8 @@ function report = inspectMosekNumerics(prob)
 % EXAMPLE:
 %    report = inspectMosekNumerics(prob);
 %
-% Author:
-%    Ronan Fleming / ChatGPT
+% .. Author:
+%       - Ronan Fleming / ChatGPT
 %
 % NOTE:
 %    Intended for diagnostic inspection of MOSEK-style problem data.

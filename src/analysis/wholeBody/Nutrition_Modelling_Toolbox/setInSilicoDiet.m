@@ -1,55 +1,58 @@
 function setInSilicoDiet(dietToSetPath, varargin)
-% Code to set either the dietary flux vector as a diet or the food items
-% themselves on WBMs. The WBMs can either be the default Harvey/Harvetta or
-% custom ones. The models are saved in specific folders and there is
-% possibility to test the feasibility on the given diets for these models.
+% Set either the dietary flux vector or the food items themselves as a diet
+% on whole-body models (WBMs)
 %
-% Usage:
-%   setInSilicoDiet(dietToSet, varargin)
-% Inputs:
-%   dietToSet:          Path to the file with the diets that need to be
-%                       created. consist of column "originalName" where the
-%                       orignal food names are set. "foodName" the name of
-%                       the database alternatives. "databaseID" the ID of
-%                       the fooditem in their database. "databaseUsed"
-%                       which database was used to find that database
-%                       alternative. Each column after is a diet where the
-%                       values in gram show the food items consumed for
-%                       each diet.   
-% Optional input:
-%   metadataPath:       Path to the metadata file path. Should contain the
-%                       columns "ID", "sex" and "Diet". Defaults to ''.
-%   outputDir:          Path to the directory where the results should be
-%                       stored. Defaults to ''.
-%   constrainFoodWBM:   Boolean, indicates if food item exchange reactions
-%                       and food item breakdown reactions should be added
-%                       to the WBMs. The grams of food item consumed are
-%                       then used as exchange flux of the food items. This
-%                       should only be used to make queries on the
-%                       composition of food items on the diet as the models
-%                       become bulky. Works well with the nutrition
-%                       algorithm. Defaults to false.
-%   constrainFluxWBM:   Boolean, indicates if the the diet flux vector
-%                       should be set on the WBMs.  Defaults to true.
-%   checkFeasibility:   Boolean, indicates if WBMs should be checked for
-%                       feasibility. Defaults to true.
-%   wbmVersion:         The version of a specific WBM to use. Do not start
-%                       with '_'. Defaults to '' and thus latest version is
-%                       loaded.
-%   pathToWbms:         If non standard Harvey Harvetta models are used
-%                       indicate where they are stored. If there is a
-%                       changed general female and male model ensure that
-%                       _male and _female are present in the filename.
-%                       Otherwise ensure that sample ID is present in the
-%                       name that corresponds with the metadata.
+% The WBMs can be the default Harvey/Harvetta models or custom ones. The
+% resulting models are saved in dedicated folders and their feasibility on
+% the given diets can optionally be tested.
 %
-% Example:
-%   setInSilicoDiet(dietToSet, 'checkFeasibility', false)
-% Note:
-%   The tutorial folder on the COBRA toolbox provides various template
-%   files with the structure of how the data should be formatted. Please
-%   look there for guidance.
-% .. Author - Bram Nap, 04-2025
+% USAGE:
+%
+%    setInSilicoDiet(dietToSetPath, varargin)
+%
+% INPUTS:
+%    dietToSetPath:       Path to the file with the diets to create. It has
+%                         the columns "originalName" (original food names),
+%                         "foodName" (name of the database alternatives),
+%                         "databaseID" (food item ID in its database) and
+%                         "databaseUsed" (which database the alternative was
+%                         found in); each subsequent column is a diet whose
+%                         values (in grams) give the amount of each food item
+%                         consumed
+%
+% OPTIONAL INPUTS:
+%    varargin:            Name-value pairs:
+%
+%                           * metadataPath - path to the metadata file; should
+%                             contain the columns "ID", "sex" and "Diet"
+%                             (default '')
+%                           * outputDir - path to the directory where the
+%                             results are stored (default: current directory)
+%                           * constrainFoodWBM - boolean; if true food item
+%                             exchange and breakdown reactions are added to the
+%                             WBMs and the grams consumed are used as exchange
+%                             flux (default false)
+%                           * constrainFluxWBM - boolean; if true the dietary
+%                             flux vector is set on the WBMs (default true)
+%                           * checkFeasibility - boolean; if true the WBMs are
+%                             checked for feasibility (default true)
+%                           * wbmVersion - version of a specific WBM to use; do
+%                             not start with '_'. Defaults to '' so the latest
+%                             version is loaded
+%                           * pathToWbms - directory of non-standard
+%                             Harvey/Harvetta models; changed general female
+%                             and male models must contain _male and _female in
+%                             the filename, otherwise the sample ID matching
+%                             the metadata must be present (default '')
+%                           * addStarch - boolean, whether additional starch is
+%                             added when generating the in silico diet
+%                             (default false)
+%
+% NOTE:
+%    The tutorial folder in the COBRA Toolbox provides template files showing
+%    how the data should be formatted; see there for guidance.
+%
+% .. Author: - Bram Nap, 04-2025
 
 
 % Parse the inputs

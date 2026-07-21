@@ -5,7 +5,12 @@ function printFluxVector(model, fluxData, nonZeroFlag, excFlag, sortCol, fileNam
 %    printFluxVector(model, fluxData, nonZeroFlag, excFlag, sortCol, fileName, headerRow, formulaFlag, gprFlag)
 %
 % INPUTS:
-%    model:          COBRA model structure
+%    model:          COBRA model structure with fields:
+%
+%                      * .rxns - `n x 1` reaction identifiers
+%                      * .S - `m x n` stoichiometric matrix
+%                      * .grRules - `n x 1` readable gene-reaction association rules
+%
 %    fluxData:       n x k Data matrix/vector (for example, solution.v)
 %
 % OPTIONAL INPUTS:

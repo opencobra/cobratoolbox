@@ -1,4 +1,4 @@
-function [modelMin,AddedExchange] = findMinCardModel(model,Ex_Rxns)
+function [modelMin, AddedExchange] = findMinCardModel(model, Ex_Rxns)
 % Function to find the minimal cardinality model.
 %
 % USAGE:
@@ -10,7 +10,7 @@ function [modelMin,AddedExchange] = findMinCardModel(model,Ex_Rxns)
 %
 % OUTPUTS:
 %    modelMin:       Updated model with new reaction bounds
-%    AddedExchange:  Vector of exchanged reactions
+%    AddedExchange:    Vector of exchanged reactions
 %
 % .. Authors:
 %       - Ines Thiele 2014

@@ -10,6 +10,10 @@ function model = dGfzeroGroupContToBiochemical(model, Legendre)
 % INPUT:
 %    model:       structure with fields:
 %
+%                   * model.S - `m x n` stoichiometric matrix
+%                   * model.metGroupCont - structure array of group contribution data
+%                     per metabolite (fields `.abbreviation`, `.delta_G_formation`,
+%                     `.delta_G_formation_uncertainty`)
 %                   * model.mets{m}
 %                   * model.metCharges(m)
 %                   * model.metFormulas{m}
@@ -28,6 +32,7 @@ function model = dGfzeroGroupContToBiochemical(model, Legendre)
 % OUTPUT:
 %    model:       structure with fields:
 %
+%                   * model.Legendre - Legendre transform flag used (as passed in `Legendre`)
 %                   * model.NaNdfG0GCMetBool - `m x 1` boolean vector with 1 when no group contribution data is available for a metabolite
 %                   * model.dfG0GroupCont(m) - group contribution estimate (kJ mol^-1)
 %                   * model.dfG0GroupContUncertainty(m) - error on group contribution estimate (kJ mol^-1)

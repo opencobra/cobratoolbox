@@ -5,9 +5,26 @@ function V = LP10(K, P, v, LPproblem, epsilon, adaptiveScalingFlag, nonPen)
 %
 % USAGE:
 %
-%    V = LP10(K, P, v, epsilon, adaptiveScalingFlag, nonPen)
+%    V = LP10(K, P, v, LPproblem, epsilon, adaptiveScalingFlag, nonPen)
 %
-
+% INPUTS:
+%    K:                      indices of active irreversible core reactions to keep active
+%    P:                      indices of non-core reactions whose activity is minimised
+%    v:                      flux vector from the preceding LP7 solve, used to set core bounds
+%    LPproblem:              LP problem structure derived from the model with fields:
+%
+%                              * .A - constraint (stoichiometric) matrix
+%                              * .b - right hand side vector for `A*v = b`
+%                              * .lb - lower bounds on the variables
+%                              * .ub - upper bounds on the variables
+%                              * .csense - constraint sense character array ({L, E, G})
+%    epsilon:                smallest flux value that is considered nonzero
+%    adaptiveScalingFlag:    0 = fixed scaling factor of 1e4, 1 = adaptive scaling
+%    nonPen:                 indices of reactions that are not penalized in the objective
+%
+% OUTPUT:
+%    V:                      flux vector minimising the activity of the non-core reactions
+%
 % .. Authors: -  Nikos Vlassis, Maria Pires Pacheco, Thomas Sauter, 2013, LCSB / LSRU, University of Luxembourg
 %             - 2019/04/08: Agnieszka Wegrzyn - updated the function to work with models with coupling constraints
 %             - 2020 Ronan Fleming - adaptive scaling prototype

@@ -1,8 +1,20 @@
-function x = lsqrtest( m, n, damp )
+function x = lsqrtest(m, n, damp)
 % If :math:`m = n` and :math:`damp = 0`, this sets up a system :math:`A x = b`
 % and calls `lsqr.m` to solve it.  Otherwise, the usual
 % least-squares or damped least-squares problem is solved.
 % `lsqraprod.m` defines the `m` x `n` matrix `A`.
+%
+% USAGE:
+%
+%    x = lsqrtest(m, n, damp)
+%
+% INPUTS:
+%    m:       number of rows of the test matrix `A`
+%    n:       number of columns of the test matrix `A`
+%    damp:    damping parameter (0 for the plain system `A x = b`)
+%
+% OUTPUTS:
+%    x:       the LSQR solution vector
 %
 % .. Authors:
 %       - 11 Apr 1996: First version for distribution with lsqr.m. Michael Saunders, Dept of EESOR, Stanford University.

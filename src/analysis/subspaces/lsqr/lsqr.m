@@ -1,4 +1,4 @@
-function [x, istop, itn, r1norm, r2norm, anorm, acond, arnorm, xnorm, var, cov, userout] = lsqr( m, n, aprodname, b, damp, atol, btol, conlim, itnlim, show, covindex, userstop)
+function [x, istop, itn, r1norm, r2norm, anorm, acond, arnorm, xnorm, var, cov, userout] = lsqr(m, n, aprodname, b, damp, atol, btol, conlim, itnlim, show, covindex, userstop)
 % LSQR solves  :math:`A x = b`  or  :math:`min ||b - A x||_2`  if :math:`damp = 0`,
 % or :math:`min ||(b) - (A) x||` otherwise.
 % :math:`||(0) (damp\ I)||2`
@@ -12,10 +12,13 @@ function [x, istop, itn, r1norm, r2norm, anorm, acond, arnorm, xnorm, var, cov, 
 %    [x, istop, itn, r1norm, r2norm, anorm, acond, arnorm, xnorm, var, cov, userout] = lsqr( m, n, aprodname, b, damp, atol, btol, conlim, itnlim, show, covindex, userstop)
 %
 % INPUTS:
-%    m,n:           dimensions of the matrix
+%    m:             number of rows of the matrix `A`
+%    n:             number of columns of the matrix `A`
 %    aprodname:     function handle
 %    b:             from :math:`A x = b`
-%    atol, btol:    are stopping tolerances. If both are 1.0e-9 (say),
+%    damp:          damping parameter; solves the damped least-squares problem when nonzero
+%    atol:          stopping tolerance on the residual (used together with `btol`)
+%    btol:          stopping tolerance. If `atol = btol = 1.0e-9` (say),
 %                   the final residual norm should be accurate to about 9 digits.
 %                   (The final `x` will usually have fewer correct digits,
 %                   depending on `cond(A)` and the size of damp.)

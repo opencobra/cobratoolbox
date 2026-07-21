@@ -5,21 +5,21 @@ function [metAbbr, uniqueMetAbbrs] = getMetAbbr(mets)
 %
 % USAGE:
 %
-%    [metAbbr, uniqueMetAbbrs] = getMetComp(mets)
+%    [metAbbr, uniqueMetAbbrs] = getMetAbbr(mets)
 %
 % INPUT:
-%    metAbbr:               char array with a single metabolite abbreviation
-%                           or 
-%                           `m x 1` cell array of metabolite abbreviations 
-%                           
-% OUTPUTS:
-%    compartments:          char array with a single compartment identifier
-%                           or 
-%                           `m x 1` cell array of compartment identifiers
+%    mets:                  char array with a single metabolite abbreviation
+%                           (with compartment, e.g. `metAbbr[c]`), or
+%                           `m x 1` cell array of such metabolite abbreviations
 %
-%    uniqueCompartments:    char array with a single compartment identifier
+% OUTPUTS:
+%    metAbbr:               char array with a single metabolite abbreviation
+%                           (compartment symbol removed), or
+%                           `m x 1` cell array of metabolite abbreviations
+%
+%    uniqueMetAbbrs:        char array with a single metabolite abbreviation
 %                           or
-%                           cell array of unique compartment identifiers
+%                           cell array of unique metabolite abbreviations
 %
 % .. Author:
 %       - Ronan M.T. Fleming

@@ -33,7 +33,7 @@ function [dATM, metAtomMappedBool, rxnAtomMappedBool, M2Ai, Ti2R] = buildAtomTra
 %
 % USAGE:
 %
-%    [dATM, metAtomMappedBool, rxnAtomMappedBool, M2Ai, Ti2R] = buildAtomTransitionNetwork(model, RXNFileDir, options)
+%    [dATM, metAtomMappedBool, rxnAtomMappedBool, M2Ai, Ti2R] = buildAtomTransitionMultigraph(model, RXNFileDir, options)
 %
 % INPUTS:
 %    model:         Directed stoichiometric hypergraph
@@ -51,8 +51,12 @@ function [dATM, metAtomMappedBool, rxnAtomMappedBool, M2Ai, Ti2R] = buildAtomTra
 %                   for internal reactions in `S`. File names should
 %                   correspond to reaction identifiers in input `rxns`.
 %                   e.g. git clone https://github.com/opencobra/ctf ~/fork-ctf
-%                        then RXNFileDir = ~/fork-ctf/rxns/atomMapped        
-% 
+%                        then RXNFileDir = ~/fork-ctf/rxns/atomMapped
+%
+%    options:       structure of optional parameters, with field:
+%
+%                     * .sanityChecks - logical, if `true` (default) run internal consistency checks
+%
 %
 % OUTPUT:
 %    dATM:          Directed atom transition multigraph as a MATLAB digraph structure with the following tables:
@@ -73,10 +77,10 @@ function [dATM, metAtomMappedBool, rxnAtomMappedBool, M2Ai, Ti2R] = buildAtomTra
 %                   * .EdgeTable.HeadAtomIndex - head Nodes.AtomIndex
 %                   * .EdgeTable.TailAtomIndex - tail Nodes.AtomIndex
 %
-% metRXNBool:       `m x 1` boolean vector indicating atom mapped metabolites
-% rxnRXNBool:       `n x 1` boolean vector indicating atom mapped reactions
-% M2Ai              `m` x `a` matrix mapping each metabolite to an atom in the directed atom transition multigraph 
-% Ti2R              `t` x `n` matrix mapping each directed atom transition instance to a mapped reaction
+%    metAtomMappedBool:    `m x 1` boolean vector indicating atom mapped metabolites
+%    rxnAtomMappedBool:    `n x 1` boolean vector indicating atom mapped reactions
+%    M2Ai:                 `m` x `a` matrix mapping each metabolite to an atom in the directed atom transition multigraph
+%    Ti2R:                 `t` x `n` matrix mapping each directed atom transition instance to a mapped reaction
 %
 % The internal stoichiometric matrix may be decomposition into
 % N = (M2Ai*M2Ai)^(-1)*M2Ai*Ti*Ti2R;

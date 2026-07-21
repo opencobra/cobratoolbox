@@ -9,7 +9,12 @@ function writePajekNet(model, fluxTol, fileName)
 %    writePajekNet(model, fluxTol, fileName)
 %
 % INPUT:
-%    model:       a COBRA structured model
+%    model:       a COBRA structured model, with fields:
+%
+%                   * .mets - `m x 1` metabolite identifiers
+%                   * .rxns - `n x 1` reaction identifiers
+%                   * .S - `m x n` stoichiometric matrix
+%                   * .c - `n x 1` linear objective coefficients, used to identify the objective reaction(s) to exclude
 %
 % OPTIONAL INPUTS:
 %    fluxTol:     absolute flux threshold below which a reaction is

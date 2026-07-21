@@ -1,24 +1,41 @@
-function plotyy_eFBA(model,objective, C_max, N, d)
-% This function plot entropicFBA in a plotyy way
-%  Flux through objective function (solution.v)) as a function of C_value on axis1 and
-%  and non- linear/ linear/ part of objective function as a function od C_value on axis2
-%  The maximum value of objective function is also plot through FBA
-% inputs: 
-%           model : a metabolic model that contain required fields to
-%                   perform entropicFluxBalanceAnalysis
-%           C_max : An estimation for the maximum value of C_value ( for
-%                   larger number the variables do not change)
-%           N     : The number of C_value (since the model my be infeasible for some value of C 
-%                   the plotted figure will have fewer numbers in x axis
-%           d     : a value to set axis in a way that the whole plot is visible 
+function plotyy_eFBA(model, objective, C_max, N, d)
+% This function plots entropicFBA in a plotyy way:
+% flux through the objective function (solution.v) as a function of C_value
+% on axis 1, and the non-linear/linear part of the objective function as a
+% function of C_value on axis 2. The maximum value of the objective function
+% is also plotted, obtained through FBA.
+%
+% USAGE:
+%
+%    plotyy_eFBA(model, objective, C_max, N, d)
+%
+% INPUTS:
+%    model:        a metabolic model that contains the required fields to
+%                  perform entropicFluxBalanceAnalysis, with fields:
+%
+%                    * .c - `n x 1` linear objective coefficient vector
+%                    * .rxns - `n x 1` cell array of reaction identifiers
+%    objective:    char, the name of the reaction whose flux is plotted
+%                  (as it appears in `model.rxns`)
+%    C_max:        an estimation for the maximum value of C_value (for a
+%                  larger number the variables do not change)
+%    N:            the number of C_value points to sample (since the model
+%                  may be infeasible for some values of C, the plotted
+%                  figure will have fewer numbers on the x axis)
+%    d:            a value to set the axis in a way that the whole plot is
+%                  visible
+%
+% NOTE:
+%    If you cannot see the green plot (related to FBAsolution.v) increase `d`.
+%
+% EXAMPLE:
+%
+%    plotyy_eFBA(model, 'biomass reaction', 1500, 100, 10)
+%
+% .. Author: - Samira Ranjbar
 
-%           Note: if you can not see the green plot(related to FBAsolution.v increase
-%                   d)
- 
-% example : plotyy_eFBA(model,'biomass reaction' , 1500, 100)
-
-%  BY Samira Ranjbar
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 initCobraToolbox
 model = changeObjective(model,objective);
 FBAsolution = optimizeCbModel(model,'max');

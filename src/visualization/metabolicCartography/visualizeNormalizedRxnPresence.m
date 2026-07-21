@@ -1,42 +1,49 @@
 function rxnPrsTable = visualizeNormalizedRxnPresence(mapDir, setColours, numCores)
-% Function that takes reconstruction visualizations in CellDesigner XML format and extracts
+% Takes reconstruction visualizations in CellDesigner XML format and extracts
 % reactions with a specific colour that indicates the reaction presence.
 % Reaction presence is then stored in a table as 0 or 1 (absent or present). Each
 % column represents an individual map. The reaction presence of all maps are then
 % summed to obtain a total count of reaction presence over all the maps.
 % The reaction presence is then normalized over the total amount of maps
-% used, colors and line widths are assigned based on the fraction value, 
-% and the newly coloured map is saved in the directory with the XML files 
+% used, colors and line widths are assigned based on the fraction value,
+% and the newly coloured map is saved in the directory with the XML files
 % used to create it. Parallelization is used if the Parallel Computing Toolbox
 % is available.
 %
-% Usage:
-%   rxnPrsTable = visualiseNormalisedRxnPresence(mapDir, setColours, numCores)
+% USAGE:
 %
-% Required inputs:
-%   mapDir:     The directory with the XML files to be used.
+%    rxnPrsTable = visualizeNormalizedRxnPresence(mapDir, setColours, numCores)
 %
-% Optional inputs:
-%   setColours: Cell array that defines the colour and line width scheme 
-%               based on normalised reaction presence. Each row of setColours
-%               should contain [fraction, colour, line width]. For example:
-%               {1, 'c92a2a', 10; 0.9, 'ff6b6b', 8; ...}.
-%               If not provided, a default set of colours and widths will be used.
-%   numCores:   (Optional) If the Parallel Computing Toolbox is available, this
-%               specifies the number of cores to use for parallel processing.
-%               If not provided, all available cores will be used.
+% INPUTS:
+%    mapDir:        The directory (char, path) with the XML files to be used.
+%                   Internally reassigned to the `dir` listing of that path, so
+%                   the fields below refer to that listing:
 %
-% Output:
-%   rxnPrsTable: Table with for each map the reaction presence.
+%                     * .name - file name of each directory entry, filtered to
+%                       the `.xml` files
+%                     * .folder - folder of the directory entries, used to
+%                       build the full path to each map file
 %
-% Authors:
-% .. Bram Nap. University of Galway, Ireland, 27/09/2024.
-% .. modified by Cyrille C. Thinnes. University of Galway, Ireland,
-% 27/09/2024. Reduced the color range and added taking account of rxn line
-% width for improved readability of the heatmap. Implemented parallel
-% computing capabilities.
+% OPTIONAL INPUTS:
+%    setColours:    Cell array that defines the colour and line width scheme
+%                   based on normalised reaction presence. Each row of setColours
+%                   should contain `{fraction, colour, line width}`. For example:
+%                   `{1, 'c92a2a', 10; 0.9, 'ff6b6b', 8; ...}`.
+%                   If not provided, a default set of colours and widths will be used.
+%    numCores:      If the Parallel Computing Toolbox is available, this
+%                   specifies the number of cores to use for parallel processing.
+%                   If not provided, all available cores will be used.
+%
+% OUTPUT:
+%    rxnPrsTable:    Table with, for each map, the reaction presence
+%
+% .. Authors:
+%       - Bram Nap. University of Galway, Ireland, 27/09/2024.
+%       - modified by Cyrille C. Thinnes. University of Galway, Ireland,
+%         27/09/2024. Reduced the color range and added taking account of rxn
+%         line width for improved readability of the heatmap. Implemented
+%         parallel computing capabilities.
 
-% Default  batlow colour scheme and line widths, if not user-specified otherwise.
 if nargin < 2 || isempty(setColours)
     setColours = {
         1, 'fbcaf3', 10;     % Cotton candy.

@@ -1,4 +1,29 @@
 function [A, b_L, b_U, model] = defineLinearConstraints(model, method)
+% Builds the linear constraint set (in null-space or flux coordinates) used
+% when fitting or bounding C13 flux vectors, after iteratively fixing the
+% direction of reactions that are forced away from zero
+%
+% USAGE:
+%
+%    [A, b_L, b_U, model] = defineLinearConstraints(model, method)
+%
+% INPUTS:
+%    model:     model structure, with fields:
+%
+%                 * .S - `m x n` stoichiometric matrix
+%                 * .N - basis of the null space of `S` (used as the constraint matrix when `method` is 1)
+%                 * .lb - `n x 1` lower flux bounds
+%                 * .ub - `n x 1` upper flux bounds
+%                 * .mets - `m x 1` array of metabolite identifiers
+%
+% OPTIONAL INPUT:
+%    method:    1 uses the null-space basis `N` as the constraint matrix (default), 2 uses `S`
+%
+% OUTPUTS:
+%    A:         constraint matrix (rows with negligible norm removed)
+%    b_L:       lower bounds on the constraints
+%    b_U:       upper bounds on the constraints
+%    model:     the input model structure, returned unchanged
 
 fOffset = 1e-4;
 

@@ -120,7 +120,33 @@
 % Copyright (c) 1999-2007 by Tomlab Optimization Inc., $Release: 11.0.0$
 % Written July 8, 1999.      Last modified Dec 13, 2007.
 
-function [ExitText,ExitFlag] = cplexStatus(Inform)
+function [ExitText, ExitFlag] = cplexStatus(Inform)
+% Analyzes the CPLEX output Inform code and returns the CPLEX solution status
+% message in `ExitText` and the TOMLAB exit flag in `ExitFlag`
+%
+% USAGE:
+%
+%    [ExitText, ExitFlag] = cplexStatus(Inform)
+%
+% INPUT:
+%    Inform:      Integer status number from a CPLEX run (`S` = Simplex,
+%                 `B` = Barrier); see the Inform-to-message table in the
+%                 comment block above this function for the full mapping
+%                 of values to their meaning
+%
+% OUTPUTS:
+%    ExitText:    CPLEX solution status message
+%    ExitFlag:    Exit status, TOMLAB standard:
+%
+%                   * 0 - Successful
+%                   * 1 - Time/iterations limit exceeded
+%                   * 2 - Unbounded
+%                   * 4 - Infeasible
+%                   * 10 - Input errors
+%                   * 11 - Memory errors
+%                   * -1 - Other Inform values
+%
+% .. Author: - Kenneth Holmstrom, Tomlab Optimization Inc. (see attribution above)
 
 if nargin < 1
     error('cplexStatus needs the Inform value as input');

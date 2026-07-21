@@ -7,8 +7,8 @@ function status = removeTempFiles(directory, oldcontent, varargin)
 %    status = removeTempFiles(directory, oldcontent, varargin)
 %
 % INPUT:
-%    directory: The directory which should be checked for changing files.
-%    content:   Absolute file names of the original conten in a cell array.
+%    directory:     The directory which should be checked for changing files.
+%    oldcontent:    Absolute file names of the original content in a cell array.
 %
 % OPTIONAL INPUT:
 %    varargin:  Additional options as `ParameterName`, value

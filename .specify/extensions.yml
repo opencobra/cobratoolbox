@@ -1,6 +1,8 @@
 installed:
+- agent-assign
 - agent-context
 - git
+- human-loop
 settings:
   auto_execute_hooks: true
 hooks:
@@ -129,6 +131,13 @@ hooks:
     optional: true
     prompt: Commit task changes?
     description: Auto-commit after task generation
+    condition: null
+  - extension: agent-assign
+    command: speckit.agent-assign.assign
+    enabled: true
+    optional: true
+    prompt: Assign agents to the generated tasks?
+    description: Automatically assign specialized agents to tasks after generation
     condition: null
   after_implement:
   - extension: git

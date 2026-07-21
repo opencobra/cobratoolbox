@@ -7,14 +7,18 @@ function model = mapKEGGID2Model(model, Dictionary)
 %     model = mapKEGGID2Model(model, Dictionary)
 %
 % INPUTS:
-%    model:         COBRA model structure
+%    model:         COBRA model structure with fields:
+%
+%                     * .mets - `m x 1` column cell array of metabolite identifiers
 %    Dictionary:    consists of:
 %
 %                     * CompAbr = Dictionary(:, 1): List of compounds abreviation (non-compartelized)
 %                     * KEGGID = Dictionary(:, 2): List of KEGGIDs for compounds in `CompAbr`
 %
 % OUTPUT:
-%    model:         KEGG model structure
+%    model:         KEGG model structure with added field:
+%
+%                     * .metKEGGID - `m x 1` column cell array of KEGG metabolite identifiers, one per entry in `model.mets`
 %
 % .. Author: - 11-09-07 IT
 

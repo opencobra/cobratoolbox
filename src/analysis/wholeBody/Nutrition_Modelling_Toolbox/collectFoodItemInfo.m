@@ -1,39 +1,40 @@
 function [allFluxes, allMacros] = collectFoodItemInfo(foods2Check, foodNames, varargin)
-% Function that collects the macros and flux values for VMH food
-% suggestions found in vmhFoodFinder
+% Collect the macro and flux values for the VMH food suggestions found by
+% vmhFoodFinder
 %
-% Usage: 
-%   [allFluxes, allMacros] = collectFoodItemInfo(foods2Check, varargin)
-% 
-% Inputs:
-%   foods2Check:        Structure where each field for a food item contains
-%                       a table with in column 1 suggested VMH food items
-%                       and in column 2 the amount of food eaten
-% 
-% Optional inputs
-%   addStarch:          Boolean indicating if additional starch should be
-%                       added based on the VMH food macros. Defaults to
-%                       false
-%   macroType:          Character, stating if macros should be calculated
-%                       from 'metabolites' calculated flux vectors or from 
-%                       'usda' the USDA FoodData database. Defaults to
-%                       'metabolites'
-%   databaseType:       Character, which database should be used currently
-%                       only USDA 2024 compatibility for USDA FoodData 
-%                       database. Defaults to usda
+% USAGE:
 %
-% Outputs:
-%   allFluxes:          Structure where each field is a food item
-%                       containing an table with flux values for each
-%                       suggested VMH food item
-%   allMacros:          Structure where each field is a food item
-%                       containing an table with macros for each
-%                       suggested VMH food item
-% 
-% Usage:
-%   [allFluxes, allMacros] = collectFoodItemInfo(foods2Check, foodNames, "addStarch", true)
-% 
-% .. Author - Bram Nap, 05-2024
+%    [allFluxes, allMacros] = collectFoodItemInfo(foods2Check, foodNames, varargin)
+%
+% INPUTS:
+%    foods2Check:     Structure with one field per original food item, each
+%                     holding a table whose first column lists the suggested
+%                     VMH food items and whose second column holds the amount
+%                     of food eaten
+%    foodNames:       Names of the original food items associated with the
+%                     fields of foods2Check (passed to the input parser)
+%
+% OPTIONAL INPUTS:
+%    varargin:        Name-value pairs:
+%
+%                       * addStarch - boolean indicating if additional starch
+%                         should be added based on the VMH food macros
+%                         (default false)
+%                       * macroType - char selecting how macros are computed:
+%                         'metabolites' from the calculated flux vectors or
+%                         'usda' from the USDA FoodData database
+%                         (default 'metabolites')
+%                       * databaseType - char selecting which database is
+%                         used; currently only 'usda' (USDA FoodData) is
+%                         supported (default 'usda')
+%
+% OUTPUTS:
+%    allFluxes:       Structure with one field per food item, each holding a
+%                     table of flux values for every suggested VMH food item
+%    allMacros:       Structure with one field per food item, each holding a
+%                     table of macros for every suggested VMH food item
+%
+% .. Author: - Bram Nap, 05-2024
 
 % Parse inputs
 parser = inputParser();

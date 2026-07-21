@@ -1,8 +1,28 @@
 function [exOrgaRxns, ExOrgaInd] = findOrganicExRxns(model, biomassReaction, functionToKeep)
-% (c) Maria Pires Pacheco 2015
-% Close all the exchange reactions which are carbon sources except the
-% biomass reaction, the reactions that are supplying the medium or those
-% that are in the functionToKeep input
+% Identify the exchange reactions that are carbon sources, excluding the
+% biomass reaction, the reactions supplying the medium, and the reactions
+% listed in the functionToKeep input
+%
+% USAGE:
+%
+%    [exOrgaRxns, ExOrgaInd] = findOrganicExRxns(model, biomassReaction, functionToKeep)
+%
+% INPUTS:
+%    model:               COBRA model structure with the following fields:
+%
+%                           * .S - `m x n` stoichiometric matrix
+%                           * .rxns - `n x 1` cell array of reaction identifiers
+%                           * .mets - `m x 1` cell array of metabolite identifiers
+%                           * .metFormulas - `m x 1` cell array of metabolite chemical formulas
+%
+%    biomassReaction:     reaction identifier of the biomass reaction to exclude from constraining
+%    functionToKeep:      cell array of reaction identifiers to keep unconstrained
+%
+% OUTPUTS:
+%    exOrgaRxns:          cell array of the candidate exchange reaction identifiers (biomass and functionToKeep reactions excluded)
+%    ExOrgaInd:           indices of the organic exchange reactions among the candidates
+%
+% .. Author: - Maria Pires Pacheco, 2015
 
 exchangeMets = []; % exchange metabolites
 exRxnsInd = find(sum(abs(model.S), 1) == 1); 

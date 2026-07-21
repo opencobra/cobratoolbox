@@ -1,19 +1,25 @@
 function [model, metsUnmapped, rxnsUpdated] = mediaConstraints(model, uptakeRates, uptakeInChi, uptakeNames)
-    %this function finds the highest uptake rate for each metabolite in the
-    %uptakeRatesTable and sets this value as a lower boudary in the
-    %exchange reaction for that metabolite. If maximum uptake rate is higer
-    %than 0 (metabolite is only secreted by the cells) then lower boundary
-    %is set to 0
+    % Find the highest uptake rate for each metabolite in the uptake data and set
+    % it as a lower bound on the exchange reaction for that metabolite. If the
+    % maximum uptake rate is higher than 0 (the metabolite is only secreted by the
+    % cells) then the lower bound is set to 0
     %
-    % Inputs:
-    %   model - Cobra model
-    %   uptakesRatesTable - Table consisting of 'Chemical_Name', 'InChICode',
-    %                       and numeric columns with the experimental data 
-    %                       (uptake/secretion rates in mmol/gDW/h )
-    % Output:
-    %   model -  Cobra model with constrained uptake rates
+    % USAGE:
     %
-    % 20190617 Agnieszka Wegrzyn
+    %    [model, metsUnmapped, rxnsUpdated] = mediaConstraints(model, uptakeRates, uptakeInChi, uptakeNames)
+    %
+    % INPUTS:
+    %    model:    COBRA model
+    %    uptakeRates:    numeric uptake/secretion rates (mmol/gDW/h) for each measured metabolite
+    %    uptakeInChi:    InChI codes identifying the measured metabolites
+    %    uptakeNames:    chemical names of the measured metabolites
+    %
+    % OUTPUTS:
+    %    model:    COBRA model with constrained uptake rates
+    %    metsUnmapped:    metabolites that could not be mapped to the model
+    %    rxnsUpdated:    exchange reactions whose bounds were updated
+    %
+    % .. Author: - 20190617 Agnieszka Wegrzyn
     
     model_temp = model;
     mediaInformation = uptakeInChi;

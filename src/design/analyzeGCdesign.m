@@ -7,7 +7,10 @@ function [improvedRxns, intermediateSlns] = analyzeGCdesign(modelRed, selectedRx
 %    [improvedRxns, intermediateSlns] = analyzeGCdesign(modelRed, selectedRxns, target, deletions, maxKOs, objFunction, delPenalty, intermediateSlns)
 %
 % INPUTS:
-%    modelRed:          reduced model
+%    modelRed:          reduced COBRA model structure. Fields used directly:
+%
+%                         * .c - `n x 1` linear objective coefficients (identifies the biomass reaction)
+%                         * .rxns - `n x 1` reaction identifiers
 %    selectedRxns:      selected reaction list from the reduced model
 %    target:            exchange `rxn` to optimize
 %    deletions:         initial set of `KO` `rxns` (must have at least 1 `rxn`)
@@ -25,11 +28,11 @@ function [improvedRxns, intermediateSlns] = analyzeGCdesign(modelRed, selectedRx
 %                       7.  `obj = maxRate*(delPenalty^numDels)*(slope^(-1))` (GC_yield with KO penalty)
 %                       8.  `obj = growth*maxRate*(delPenalty^numDels)*(slope^(-1))`  (GC_SSP with KO penalty)
 %    delPenalty:        penalty on extra `rxn` deletions (Default = .99)
-%    intermediateSlns:  Previous set of solutions (Default = deletions)
+%    intermediateSlns:      Previous set of solutions (Default = deletions)
 %
 % OUTPUTS:
 %    improvedRxns:      the `KO` `rxns` for an improved strain
-%    intermediateSlns:  all the sets of best `KO` `rxns` that are picked before the
+%    intermediateSlns:      all the sets of best `KO` `rxns` that are picked before the
 %                       final set is reached
 % .. Authors:
 %       - Jeff Orth  7/25/07

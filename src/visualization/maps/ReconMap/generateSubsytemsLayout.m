@@ -1,16 +1,27 @@
-function [ response ] = generateSubsytemsLayout(minerva, cobra_model, subsystem, color)
+function [response] = generateSubsytemsLayout(minerva, cobra_model, subsystem, color)
   % Generates subsystem layouts
   %
   % USAGE:
   %
-  %    generateSubsytemsLayout(minerva, cobra_model, subsystem, color)
+  %    [response] = generateSubsytemsLayout(minerva, cobra_model, subsystem, color)
   %
   % INPUTS:
-  %    minerva:           Struct with the information of minerva instance:
-  %                       address, login, password and model (map)
-  %    cobra_model:       COBRA model structure
+  %    minerva:           Struct with the information of the MINERVA instance,
+  %                       with fields:
+  %
+  %                         * .map - name of the target MINERVA map
+  %                         * .login - MINERVA username
+  %                         * .password - MINERVA password
+  %                         * .googleLicenseConsent - true if the user agreed
+  %                           to the Google Maps terms of use
+  %    cobra_model:       COBRA model structure with fields:
+  %
+  %                         * .rxns - `n x 1` cell array of reaction identifiers
   %    subsystem:         Subsystem
   %    color:             Color
+  %
+  % OUTPUT:
+  %    response:          Response of the MINERVA server
 
     if nargin < 4
         color = '#009933';

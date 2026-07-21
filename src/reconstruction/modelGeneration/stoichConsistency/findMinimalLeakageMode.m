@@ -22,6 +22,7 @@ function [Vp, Yp, statp, Vn, Yn, statn] = findMinimalLeakageMode(model, metBool,
 %                          * .ub - Upper bounds
 %                          * .SConsistentMetBool - `m` x 1 boolean vector indicating consistent mets
 %                          * .SConsistentRxnBool - `m` x 1 boolean vector indicating consistent rxns
+%                          * .mets - `m` x 1 cell array of metabolite identifiers, used when reporting leakage modes
 %
 % OPTIONAL INPUTS:
 %    metBool:            `m` x 1 boolean vector of metabolites to test for leakage
@@ -32,7 +33,7 @@ function [Vp, Yp, statp, Vn, Yn, statn] = findMinimalLeakageMode(model, metBool,
 %    epsilon:            getCobraSolverParams('LP', 'feasTol')*100, smallest nonzero reaction flux in leakage mode
 %    printLevel:         {(0), 1}
 %
-% OUTPUTS
+% OUTPUTS:
 %    Vp:                 `n` x 1 vector (positive leakage modes)
 %    Yp:                 `m` x 1 vector (positive leakage modes)
 %    statp:              status (positive leakage modes)

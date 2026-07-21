@@ -6,7 +6,11 @@ function compModel = extractCompModel(model, compSymbol, intOnlyFlag, updateGene
 %    compModel = extractCompModel(model, compSymbol, intOnlyFlag)
 %
 % INPUTS:
-%    model:          COBRA model structure
+%    model:          COBRA model structure with fields:
+%
+%                      * .mets - `m x 1` cell array of metabolite identifiers
+%                      * .S - `m x n` stoichiometric matrix
+%                      * .rxns - `n x 1` cell array of reaction identifiers
 %    compSymbol:     Compartment symbol
 %
 % OPTIONAL INPUT:

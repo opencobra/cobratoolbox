@@ -3,10 +3,10 @@ function [model, nonphysicalMetBool, pKaErrorMetBool] = addPseudoisomersToModel(
 %
 % USAGE:
 %
-%    model = setupComponentContribution(model, molFileDir, cid, printLevel)
+%    [model, nonphysicalMetBool, pKaErrorMetBool] = addPseudoisomersToModel(model, printLevel)
 %
-% INPUT:
-%    model          Model structure with following fields:
+% INPUTS:
+%    model:         Model structure with following fields:
 %                     * .mets - `m x 1` array of metabolite identifiers.
 %                     * .metFormulas - `m x 1` cell array of metabolite formulas. Formulas for
 %                       protons should be H, and formulas for water should be H2O.
@@ -24,46 +24,35 @@ function [model, nonphysicalMetBool, pKaErrorMetBool] = addPseudoisomersToModel(
 %                   * .inchi.standardWithStereo: m x 1 cell array of standard inchi with stereo
 %                   * .inchi.standardWithStereoAndCharge: m x 1 cell array of standard inchi with stereo and charge
 %                   * .inchi.nonstandard: m x 1 cell array of non-standard inchi
+%
+%    printLevel:    verbosity control; if > 0 prints progress, if > 1 lists
+%                   metabolites whose formula hydrogen count matches no species
 %                   
-% OPUTPUT
-% model.pseudoisomer  `m x 1` structure array where each element has the fields
-%                     listed below. All fields are empty for metabolites
-%                     where no InChI is given. Fields:
-%                        * .success - Logical one (true) for metabolites where an InChI was given.
-%                        * .pKas - `p x p` matrix where element `(i, j)` is the pKa value for
-%                          the acid-base equilibrium between pseudoisomers `i` and `j`.
-%                        * .zs - `p x 1` array of pseudoisomer charges.
-%                        * .nHs - `p x 1` array of number of hydrogen atoms in each
-%                          pseudoisomer's chemical formula.
-%                        * .majorMSpH7 - `p x 1` logical array. True for the most abundant
-%                          pseudoisomer at pH 7.
-%                       *.mf
-%                       *.lambda
-%                       *.gpfnsp
+% OUTPUTS:
+%    model:                    input model with an added field:
 %
-% pKaErrorMets     
-
-
-%Example
-% success: 1
-% pKas: [9×9 double]
-% zs: [0 1 2 3 4 5 6 7 8]
-% nHs: [45 46 47 48 49 50 51 52 53]
-% majorMSpH7: [9×1 logical]
-% mf: [9×1 double]
-% lambda: [9×1 double]
-% gpfnsp: [9×1 double]
-        
+%                                * .pseudoisomers - `m x 1` structure array (one element per
+%                                  metabolite) of acid-base pseudoisomers; fields are empty for
+%                                  metabolites with no InChI. Each element has fields:
 %
-% Written output - MetStructures.sdf - An SDF containing all structures input to the
-% component contribution method for estimation of standard Gibbs energies.
+%                                    * .success - true where an InChI was available
+%                                    * .pKas - `p x p` matrix; element `(i, j)` is the pKa of the
+%                                      acid-base equilibrium between pseudoisomers `i` and `j`
+%                                    * .zs - `p x 1` pseudoisomer charges
+%                                    * .nHs - `p x 1` number of hydrogen atoms per pseudoisomer
+%                                    * .majorMSpH7 - `p x 1` logical, true for the most abundant
+%                                      pseudoisomer at pH 7
+%    nonphysicalMetBool:       `m x 1` logical, true for metabolites whose formula hydrogen
+%                              count matches none of the estimated pseudoisomer species
+%    pKaErrorMetBool:          `m x 1` logical, true for metabolites where pKa estimation failed
+% NOTE:
+%    Writes MetStructures.sdf, an SDF containing all structures input to the
+%    component contribution method for estimation of standard Gibbs energies.
 %
 % .. Author:
 %       - Ronan M. T. Fleming, Sept. 2012, Version 1.0
 %       - Hulda S. H., Dec. 2012, Version 2.0
 
-
-%test if call to cxcalc is installed
 [status,result] = system('cxcalc');
 if status ~= 0
     if status==127

@@ -284,7 +284,8 @@ if isempty(gamsPath); error('OptForce: GAMS is not installed in your system. Ple
 %name of the function to solve optForce in GAMS
 optForceFunction = 'optForce.gms';
 %path of that function
-pathOFG = which(optForceFunction);
+% optForce.gms is vendored under external/ (relocated out of src/); resolve by absolute path.
+pathOFG = [fileparts(which('initCobraToolbox')) filesep 'external' filesep 'design' filesep 'optForceGAMS' filesep optForceFunction];
 %current path
 workingPath = pwd;
 %go to the path associate to the ID for this run.
@@ -528,7 +529,7 @@ if loop % if k = kMin:k
                             %extract reactions in set i.
                             rxns = uels2_m1(m1_full(strcmp(num2str(i), uels1_m1) == 1,:) > 0.99)';
                             optForceSet_i(cont + 1:cont + length(rxns)) = rxns;
-                            %extract positions for reactions in model.rxn.
+                            %extract positions for reactions in model.rxns.
                             pos = cell2mat(arrayfun(@(x)find(strcmp(x, model.rxns)), rxns, 'UniformOutput', false))';
                             pos_optForceSet_i(cont + 1:cont + length(rxns)) = pos;
                             %extract type of regulations for reactions.
@@ -894,7 +895,7 @@ else % if k = fixed number
                         %extract reactions in set i.
                         rxns = uels2_m1(m1_full(strcmp(num2str(i), uels1_m1) == 1,:) > 0.99)';
                         optForceSet_i(cont + 1:cont + length(rxns)) = rxns;
-                        %extract positions for reactions in model.rxn.
+                        %extract positions for reactions in model.rxns.
                         pos = cell2mat(arrayfun(@(x)find(strcmp(x, model.rxns)), rxns, 'UniformOutput', false))';
                         pos_optForceSet_i(cont + 1:cont + length(rxns)) = pos;
                         %extract type of regulations for reactions.

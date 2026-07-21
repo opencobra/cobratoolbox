@@ -1,22 +1,28 @@
-function [model]  = addSubSystemsToReactions(model,reactions,subSystems)
+function [model]  = addSubSystemsToReactions(model, reactions, subSystems)
 % Adds the subSystems to the specified reactions
 %
 % USAGE:
 %
-%    [model]  = addSubSystemToReaction(model,reaction,subSystem)
+%    [model]  = addSubSystemsToReactions(model, reactions, subSystems)
 %
 % INPUT:
-%    model:                 A COBRA model struct with at least rxns and
-%                           subSystems fields
+%    model:                 A COBRA model struct with fields:
+%
+%                             * .rxns - `n x 1` reaction identifiers, used
+%                               to resolve `reactions` when it is given as
+%                               name(s) rather than positions
+%                             * .subSystems - `n x 1` subsystem
+%                               annotations, created if absent and
+%                               extended with the new subsystem(s)
 %    reactions:             Either a string identifying a reaction, or a
 %                           cell array of strings identifying multiple
 %                           reactions, or a double vector or boolean vector
 %                           identifying positions.
 %    subSystems:            A String identifying a subsystem, or a cell
-%                           array of strings to add multiple subSystems.
+%                           array of strings to add multiple subsystems.
 %                           An empty string will be filtered. All
-%                           subSystems will be added to all identified
-%                           reactions.
+%                           supplied subsystems will be added to all
+%                           identified reactions.
 %
 % OUTPUT:
 %    model:                 The model with the subSystems added to the
@@ -24,11 +30,10 @@ function [model]  = addSubSystemsToReactions(model,reactions,subSystems)
 %
 % EXAMPLE:
 %
-%    % Add TCA to a set of reactions   
+%    % Add TCA to a set of reactions
 %    [model]  = addSubSystemsToReactions(model,{'ACONTa';'ACONTb';'AKGDH';'CS';'FUM';'ICDHyr';'MDH';'SUCOAS'},'TCA')
 %    % Add Glycolysis/Gluconeogenesis to a the reaction 18 of the model
 %    [model]  = addSubSystemsToReactions(model,18,{'Glycolysis','Gluconeogenesis'})
-%    
 %
 % .. Author: - Thomas Pfau Nov 2017
 

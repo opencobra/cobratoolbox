@@ -1,9 +1,80 @@
 function gurobiParam = setGurobiParam(param)
-%  The params struct contains Gurobi parameters. A full list may be
-%  found on the Parameter page of the reference manual:
-%  https://www.gurobi.com/documentation/current/refman/parameter_descriptions.html
-%  Parameters must be in TimeLimit not timelimit or timeLimit format, see
-%  below for full list that are eligible to be passed to the solver.
+% Converts a COBRA-style solver parameter structure into a Gurobi-compatible
+% parameter structure, translating COBRA parameter names to their Gurobi
+% equivalents and filtering to only the fields Gurobi recognises
+%
+% The param struct contains Gurobi parameters. A full list may be
+% found on the Parameter page of the reference manual:
+% https://www.gurobi.com/documentation/current/refman/parameter_descriptions.html
+% Parameters must be in TimeLimit not timelimit or timeLimit format, see
+% below for full list that are eligible to be passed to the solver.
+%
+% USAGE:
+%
+%    gurobiParam = setGurobiParam(param)
+%
+% INPUT:
+%    param:             Structure with COBRA-style and/or Gurobi-style
+%                       solver parameters, with fields (all optional):
+%
+%                         * .timelimit - alias for `.TimeLimit`, copied to
+%                           `.TimeLimit` if `.TimeLimit` is absent
+%                         * .TimeLimit - Gurobi time limit in seconds
+%                         * .multiscale - if 1, disables Gurobi scaling by
+%                           setting `.ScaleFlag` to 0
+%                         * .ScaleFlag - Gurobi scaling flag, set to 0 when
+%                           `.multiscale == 1`
+%                         * .lifted - if 1, sets `.Aggregate` to 1 and
+%                           `.Presolve` to 0 (suitable for a lifted/ill-scaled
+%                           model)
+%                         * .Aggregate - Gurobi presolve aggregation level,
+%                           set to 1 when `.lifted == 1`
+%                         * .Presolve - Gurobi presolve level (-1 automatic,
+%                           0 off, 1 conservative, 2 aggressive), set to 0
+%                           when `.lifted == 1`
+%                         * .method - backward-compatible algorithm selector;
+%                           if present and non-empty, its value is copied to
+%                           `.([lower(problemType) 'method'])` unless that
+%                           field already exists
+%                         * .problemType - COBRA problem type string (e.g.
+%                           `'LP'`, `'QP'`), combined with `.method` to build
+%                           the `lpmethod`/`qpmethod` field name
+%                         * .lpmethod - COBRA-style LP algorithm name
+%                           (`'AUTOMATIC'`, `'PRIMAL'`, `'DUAL'`,
+%                           `'BARRIER'`, `'CONCURRENT'`,
+%                           `'DETERMINISTIC_CONCURRENT'`), translated to the
+%                           numeric Gurobi `.Method`
+%                         * .qpmethod - COBRA-style QP algorithm name
+%                           (`'AUTOMATIC'`, `'PRIMAL'`, `'DUAL'`,
+%                           `'BARRIER'`), translated to the numeric Gurobi
+%                           `.Method`
+%                         * .Method - Gurobi algorithm used to solve
+%                           continuous models (-1 automatic, 0 primal
+%                           simplex, 1 dual simplex, 2 barrier, 3
+%                           concurrent, 4 deterministic concurrent)
+%                         * .printLevel - COBRA print level, used to set
+%                           `.OutputFlag` and `.DisplayInterval` when they
+%                           are not already present (both are set silent in
+%                           the current implementation, regardless of level)
+%                         * .OutputFlag - Gurobi console output flag
+%                         * .DisplayInterval - Gurobi console display
+%                           interval in seconds
+%                         * .FeasibilityTol - Gurobi primal feasibility
+%                           tolerance, set from `.feasTol` if not already
+%                           present
+%                         * .feasTol - COBRA-style primal feasibility
+%                           tolerance, source value for `.FeasibilityTol`
+%                         * .OptimalityTol - Gurobi dual feasibility
+%                           tolerance, set from `.optTol` if not already
+%                           present
+%                         * .optTol - COBRA-style dual feasibility
+%                           tolerance, source value for `.OptimalityTol`
+%
+% OUTPUT:
+%    gurobiParam:       Structure containing only the fields recognised by
+%                       the Gurobi `gurobi.m` interface (the permitted
+%                       parameter list), translated from the COBRA-style
+%                       names in `param`
 
 if isfield(param,'timelimit')
     param.TimeLimit=param.timelimit;

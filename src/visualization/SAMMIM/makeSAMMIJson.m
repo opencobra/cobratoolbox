@@ -1,4 +1,27 @@
 function jsonstr = makeSAMMIJson(model)
+% Converts a COBRA model into the JSON string format used by the SAMMI
+% front-end to render a metabolic map
+%
+% Any additional field of `model` whose size matches `.mets` is included as
+% a per-metabolite JSON annotation, and any field whose size matches
+% `.rxns` is included as a per-reaction JSON annotation
+%
+% USAGE:
+%
+%    jsonstr = makeSAMMIJson(model)
+%
+% INPUT:
+%    model:      COBRA model structure with fields:
+%
+%                  * .mets - `m x 1` cell array of metabolite identifiers
+%                  * .rxns - `n x 1` cell array of reaction identifiers
+%                  * .S - `m x n` stoichiometric matrix
+%
+% OUTPUT:
+%    jsonstr:    Character array with the SAMMI JSON representation of
+%                `model`, of the form
+%                `{"metabolites":[...],"reactions":[...]}`
+
     if isrow(model.mets); model.mets = model.mets'; end
     if isrow(model.rxns); model.rxns = model.rxns'; end
     %Get fields

@@ -1,4 +1,38 @@
 function training_data = reverseTransformTrainingData(model, training_data, use_model_pKas_by_default)
+% Calculate the reverse Legendre transform for all reactions in the training data
+%
+% Applies the reverse Legendre transform to convert the standard transformed
+% reaction Gibbs energies (`.dG0_prime`) into standard reaction Gibbs energies
+% (`.dG0`), using either the model or the training-data pseudoisomer/pKa data.
+%
+% USAGE:
+%
+%    training_data = reverseTransformTrainingData(model, training_data, use_model_pKas_by_default)
+%
+% INPUTS:
+%    model:                        COBRA model structure. Field used:
+%
+%                                    * .pseudoisomers - structure array of model pseudoisomer data
+%
+%    training_data:                training-data structure. Fields used:
+%
+%                                    * .S - `m x n` stoichiometric matrix of training reactions
+%                                    * .cids - `m x 1` compound ids
+%                                    * .I - `n x 1` ionic strengths (NaN entries default to 0.25 M)
+%                                    * .pMg - `n x 1` pMg values (NaN entries default to 14)
+%                                    * .T - `n x 1` temperatures
+%                                    * .pH - `n x 1` pH values
+%                                    * .kegg_pKa - structure array of KEGG pKa/pseudoisomer data
+%                                    * .Model2TrainingMap - map from model to training-data compound indices
+%                                    * .dG0_prime - `n x 1` standard transformed reaction Gibbs energy
+%
+%    use_model_pKas_by_default:    logical, when true use the model pseudoisomer
+%                                  data in preference to the training data
+%
+% OUTPUTS:
+%    training_data:                the training data with an added field:
+%
+%                                    * .dG0 - `n x 1` standard reaction Gibbs energy
 
 R = 8.31e-3; % kJ/mol/K
 

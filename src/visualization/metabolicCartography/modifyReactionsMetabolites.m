@@ -6,24 +6,24 @@ function [mapStruct] = modifyReactionsMetabolites(map, rxnList, metList, newColo
 %
 % USAGE:
 %
-%   [mapStruct] = modifyReactionsMetabolites(map, rxnList, metList, newColor, newAreaWidth)
+%    [mapStruct] = modifyReactionsMetabolites(map, rxnList, metList, newColor, newAreaWidth)
 %
 % INPUTS:
-%   map:            Matlab structure of the map obtained from the
-%                   function "transformXML2Map".
-%   rxnList:        List of reaction names as a string array
-%   metList:        List of metabolite names as a string array
-%   newColor:       Color chosen for reaction lines and metabolites
-%                   given as a string with the corresponding real name.
-%                   Possible names can be found in the function
-%                   "createColorsMap.m".
-%   newAreaWidth:   Width size for the reaction lines. Can be given as
-%                   a string or a double.
+%    map:            Matlab structure of the map obtained from the
+%                    function "transformXML2Map".
+%    rxnList:        List of reaction names as a string array
+%    metList:        List of metabolite names as a string array
+%    newColor:       Color chosen for reaction lines and metabolites
+%                    given as a string with the corresponding real name.
+%                    Possible names can be found in the function
+%                    "createColorsMap.m".
+%    newAreaWidth:    Width size for the reaction lines. Can be given as
+%                    a string or a double.
 %
 % OUTPUT:
-%   mapStruct:      Updated map structure with the changed areaWidth and
-%                   color of the reactions and their corresponding
-%                   metabolites.
+%    mapStruct:      Updated map structure with the changed areaWidth and
+%                    color of the reactions and their corresponding
+%                    metabolites.
 %
 % .. Author: - N.Sompairac - Institut Curie, Paris, 25/07/2017
 

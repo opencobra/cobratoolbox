@@ -1,23 +1,23 @@
-function computeInternalMetaboliteProduction(modelFolder,propertiesFolder,reconVersion,metList,numWorkers)
+function computeInternalMetaboliteProduction(modelFolder, propertiesFolder, reconVersion, metList, numWorkers)
 % This function extracts all metabolites that could be produced internally
 % by at least one refined reconstruction in the tested reconstruction
 % resource. Disregards whether the metabolite can be transported.
 %
-% USAGE
-%   computeInternalMetaboliteProduction(modelFolder,propertiesFolder,reconVersion,numWorkers)
+% USAGE:
 %
-% INPUTS
-% modelFolder           Folder with reconstructions to be analyzed
-% propertiesFolder      Folder where the retrieved uptake and secretion
-%                       potential will be stored (default: current folder)
-% reconVersion          Name assigned to the reconstruction resource
-%                       (default: "Reconstructions")
-% metList               List of VMH IDs of metabolites to analyze (default:
-%                       all metabolites in reconstruction resource)
-% numWorkers            Number of workers in parallel pool (default: 0)
+%    computeInternalMetaboliteProduction(modelFolder, propertiesFolder, reconVersion, metList, numWorkers)
 %
-%   - AUTHORS
-%   Almut Heinken, 11/2020
+% INPUTS:
+%    modelFolder:         Folder with reconstructions to be analyzed
+%    propertiesFolder:    Folder where the retrieved uptake and secretion
+%                         potential will be stored (default: current folder)
+%    reconVersion:        Name assigned to the reconstruction resource
+%                         (default: "Reconstructions")
+%    metList:             List of VMH IDs of metabolites to analyze (default:
+%                         all metabolites in reconstruction resource)
+%    numWorkers:          Number of workers in parallel pool (default: 0)
+%
+% .. Author: - Almut Heinken, 11/2020
 
 dInfo = dir(modelFolder);
 modelList={dInfo.name};

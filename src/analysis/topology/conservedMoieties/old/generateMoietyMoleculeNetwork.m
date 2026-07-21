@@ -1,5 +1,29 @@
-function MMN = generateMoietyMoleculeNetwork(model,L,moietyFormulae,mbool)
-%Generate a structure to represent a network that associates moieties to molecules
+function MMN = generateMoietyMoleculeNetwork(model, L, moietyFormulae, mbool)
+% Generate a structure to represent a network that associates moieties to molecules
+%
+% USAGE:
+%
+%    MMN = generateMoietyMoleculeNetwork(model, L, moietyFormulae, mbool)
+%
+% INPUTS:
+%    model:             COBRA model structure with fields:
+%
+%                         * .S - `m x n` stoichiometric matrix
+%                         * .mets - `m x 1` cell array of metabolite identifiers
+%                         * .metFormulas - `m x 1` cell array of metabolite chemical formulae
+%    L:                 `nMoieties x nMappedMet` matrix mapping moieties to the mapped metabolites
+%    moietyFormulae:    `nMoieties x 1` cell array of moiety chemical formulae
+%
+% OPTIONAL INPUT:
+%    mbool:             `m x 1` boolean vector indicating the metabolites mapped by the columns of `L`
+%                       (defaults to all metabolites when the sizes of `L` and `model.S` are consistent)
+%
+% OUTPUT:
+%    MMN:               moiety-molecule network structure with fields:
+%
+%                         * .L - the (possibly transposed) moiety-to-metabolite matrix
+%                         * .moi - table of moiety properties (`Name`, `Formula`, `Mass`, `NumMolecules`)
+%                         * .mol - table of molecule properties (`Name`, `Mets`, `Formula`, `Mass`, `NumMoieties`)
 
 [nMet,~]=size(model.S);
 [nMoieties, nMappedMet] = size(L);

@@ -1,0 +1,51 @@
+// COBRA Toolbox src/ cross-domain coupling graph
+// Node = src/ domain. Directed edge caller -> callee.
+// Edge label = reference-count (summed identifier-token frequency of callee-owned
+// function names appearing in the caller domain), false positives removed and verified
+// against real `name(` call-site counts. Data: analysis/metrics/coupling-matrix.txt.
+// penwidth ~ log(weight). RED edges = layering violations / cycles.
+digraph cobra_domain_coupling {
+  rankdir=LR;
+  labelloc="t";
+  label="COBRA Toolbox src/ cross-domain coupling (edge label = caller->callee reference count)";
+  node [shape=box, style="rounded,filled", fontname="Helvetica", fontsize=12, color="#333333"];
+  edge [fontname="Helvetica", fontsize=9, color="#555555"];
+
+  base            [fillcolor="#F2C14E", fontcolor="#000000", penwidth=2,
+                   label="base\n238 .m · fan-in 130 fns (widest)\nsolvers · io · utilities"];
+  analysis        [fillcolor="#9FD8CB",
+                   label="analysis\n604 .m · most-referenced (2354 refs)\nFBA/FVA/sampling/thermo"];
+  reconstruction  [fillcolor="#A8C7E6",
+                   label="reconstruction\n316 .m · most outgoing (2082 refs)\nrefinement/verify/demeter"];
+  dataIntegration [fillcolor="#C9B3E0", label="dataIntegration\n248 .m\nXomics/omics"];
+  design          [fillcolor="#E6B8A2", label="design\n60 .m · pure leaf (fan-in 1)"];
+  visualization   [fillcolor="#D6D6D6", label="visualization\n110 .m · near-leaf (fan-in 20)"];
+
+  // downward dependencies toward the foundation / hubs
+  analysis        -> base           [label="724", penwidth=6.03, color="#666666"];
+  reconstruction  -> base           [label="364", penwidth=5.47, color="#666666"];
+  dataIntegration -> base           [label="182", penwidth=4.89, color="#888888"];
+  dataIntegration -> reconstruction [label="129", penwidth=4.61, color="#888888"];
+  design          -> base           [label="71",  penwidth=4.12, color="#888888"];
+  design          -> analysis       [label="218", penwidth=5.04, color="#888888"];
+  design          -> reconstruction [label="7",   penwidth=2.21, color="#AAAAAA"];
+  visualization   -> base           [label="26",  penwidth=3.29, color="#AAAAAA"];
+  visualization   -> analysis       [label="67",  penwidth=4.07, color="#888888"];
+  visualization   -> reconstruction [label="22",  penwidth=3.15, color="#AAAAAA"];
+  visualization   -> dataIntegration[label="4",   penwidth=1.74, color="#AAAAAA"];
+  analysis        -> dataIntegration[label="58",  penwidth=3.95, color="#888888"];
+
+  // RED: analysis <-> reconstruction — strongest cycle in the codebase
+  analysis        -> reconstruction [label="888",  penwidth=6.20, color="#C1121F"];
+  reconstruction  -> analysis       [label="1672", penwidth=6.72, color="#C1121F"];
+
+  // RED: dataIntegration <-> analysis cycle
+  dataIntegration -> analysis       [label="348",  penwidth=5.43, color="#C1121F"];
+
+  // RED: layering inversion — foundation 'base' calls UP into higher domains
+  base            -> analysis       [label="49 (up! optimizeTwoCbModels, entropicFBA, NLP)", penwidth=3.81, color="#C1121F", fontcolor="#C1121F"];
+  base            -> reconstruction [label="28 (up! readCbModel/writeCbModel call verifyModel)", penwidth=3.35, color="#C1121F", fontcolor="#C1121F"];
+  base            -> dataIntegration[label="3",  penwidth=1.51, color="#AAAAAA"];
+  base            -> visualization  [label="8",  penwidth=2.32, color="#AAAAAA"];
+  reconstruction  -> dataIntegration[label="44", penwidth=3.72, color="#AAAAAA"];
+}

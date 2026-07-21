@@ -1,26 +1,36 @@
 % add annotations
-function [metabolite_structure] = addAnnotations(metabolite_structure,RAW,annotationSource,annotationType,annotationVerification)
-%% function [metabolite_structure] = addAnnotations(metabolite_structure,RAW,annotationSource,annotationType)
-% This function adds annotations (fields) to the metabolite_structure. It
-% is generally used to populate the metabolite_structure with new
-% metabolites from an xlsx sheet (RAW).
-% 
-% INPUT 
-% metabolite_structure  	metabolite structure
-% RAW                       data read in using the function xlsread, e.g.,
-%                           [NUM,TXT,RAW]=xlsread('MetaboliteTranslationTable.xlsx');
-%                           Note that the xlsx sheet has to have certain
-%                           headers to be correctly read in.
-% annotationSource          define annotation source (to track where the
-%                           information came from, e.g., 'Recon3D'). If not
-%                           specified, 'unknown' will be added
-% annotation Type           type of annotation, e.g., 'automatic' (Default), 'manual'
-% annotationVerification    verification of annotation, e.g., 'not verified' (Default), 'verified by curator', 'verified based on inchiKeys'
+function [metabolite_structure] = addAnnotations(metabolite_structure, RAW, annotationSource, annotationType, annotationVerification)
+% Adds annotations (fields) to the metabolite structure from an xlsx table
 %
-% OUTPUT
-% metabolite_structure      updated metabolite structure 
-% 
-% Ines Thiele 2020/2021
+% Adds annotations (fields) to the metabolite structure. It is generally used
+% to populate the metabolite structure with new metabolites read from an xlsx
+% sheet (`RAW`).
+%
+% USAGE:
+%
+%    [metabolite_structure] = addAnnotations(metabolite_structure, RAW, annotationSource, annotationType, annotationVerification)
+%
+% INPUTS:
+%    metabolite_structure:      metabolite structure
+%    RAW:                       data read in using the function `xlsread`, e.g.
+%                               [NUM, TXT, RAW] = xlsread('MetaboliteTranslationTable.xlsx');
+%                               the xlsx sheet must have specific headers to be
+%                               read in correctly
+%
+% OPTIONAL INPUTS:
+%    annotationSource:          annotation source, tracking where the
+%                               information came from, e.g. 'Recon3D'
+%                               (default: 'unknown')
+%    annotationType:            type of annotation, e.g. 'manual'
+%                               (default: 'automatic')
+%    annotationVerification:    verification of annotation, e.g.
+%                               'verified by curator', 'verified based on
+%                               inchiKeys' (default: 'not verified')
+%
+% OUTPUTS:
+%    metabolite_structure:      updated metabolite structure
+%
+% .. Author: - Ines Thiele, 2020/2021
 
 
 if ~exist('annotationSource','var')

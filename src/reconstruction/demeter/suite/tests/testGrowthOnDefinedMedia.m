@@ -1,27 +1,35 @@
-function [growsOnDefinedMedium,constrainedModel,growthOnKnownCarbonSources] = testGrowthOnDefinedMedia(model, microbeID, biomassReaction, inputDataFolder)
+function [growsOnDefinedMedium, constrainedModel, growthOnKnownCarbonSources] = testGrowthOnDefinedMedia(model, microbeID, biomassReaction, inputDataFolder)
 % Tests growth on a minimal medium retrieved from the experimental data on
 % growth requirements. The output is the calculated growth rates.
 % If the model can grow on the defined medium, a minimal medium is also
 % computed and the list of essential exchanges as well as a model
 % constrained with these exchanges are returned.
 %
-% INPUT
-% model                         COBRA model structure
-% microbeID                     Microbe ID in data file
-% biomassReaction               String listing the biomass reaction
-% inputDataFolder               Folder with experimental data and database files
-%                               to load
+% USAGE:
 %
-% OUTPUT
-% growsOnDefinedMedium          Bool if growth on defined medium yes or no
-% constrainedModel              Model constrained with essential exchanges (anaerobic)
-% growthOnKnownCarbonSources    Aerobic and anaerobic growth on known
-%                               carbon sources for the organism
+%    [growsOnDefinedMedium, constrainedModel, growthOnKnownCarbonSources] = testGrowthOnDefinedMedia(model, microbeID, biomassReaction, inputDataFolder)
 %
-% Almut Heinken, November 2018
+% INPUTS:
+%    model:                         COBRA model structure with fields:
+%
+%                                     * .rxns - Reaction identifiers
+%                                     * .lb - Reaction lower bounds
+%    microbeID:                     Microbe ID in data file
+%    biomassReaction:               String listing the biomass reaction
+%    inputDataFolder:               Folder with experimental data and database files
+%                                   to load
+%
+% OUTPUTS:
+%    growsOnDefinedMedium:          Bool if growth on defined medium yes or no
+%    constrainedModel:              Model constrained with essential exchanges (anaerobic)
+%    growthOnKnownCarbonSources:    Aerobic and anaerobic growth on known
+%                                   carbon sources for the organism
+%
+% .. Author: - Almut Heinken, November 2018
 
 % Test if model can grow
 % set "unlimited" constraints
+
 model = changeRxnBounds(model, model.rxns(strncmp('EX_', model.rxns, 3)), -1000, 'l');
 model = changeRxnBounds(model, model.rxns(strncmp('EX_', model.rxns, 3)), 1000, 'u');
 

@@ -1,24 +1,33 @@
 function fullP = fullification(o)
-%Input: a structure o with the following fields
-%  .P: struct for a polytope with fields describing the polytope {Ax = b, lb <= x <= ub}
-%        .A
-%        .b
-%        .lb
-%        .ub
-%        .x
-%  .T: struct for affine transformation used to go back to original space by x0(idx) + scale.*samples
-%        .x0
-%        .idx
-%        .scale
+% Convert a rounded equality-form polytope into full-dimensional inequality form
 %
-%Output: a structure fullP with the following fields, describing {Ax <= b}
-%  .A
-%  .b
-%  .x
-%  .N - used to go back to original space
-%  .p_shift - used to go back to original space
-%  .x0
-%  .idx
+% Converts a polytope described by {Ax = b, lb <= x <= ub} into an equivalent
+% full-dimensional polytope {Ax <= b} together with the affine map needed to
+% recover samples in the original space
+%
+% USAGE:
+%
+%    fullP = fullification(o)
+%
+% INPUT:
+%    o:        Structure with fields:
+%
+%                * .P - polytope struct {Ax = b, lb <= x <= ub} with fields
+%                  .A, .b, .lb, .ub, .x
+%                * .T - affine-transformation struct with fields .x0, .idx,
+%                  .scale, mapping back to the original space by
+%                  x0(idx) + scale .* samples
+%
+% OUTPUT:
+%    fullP:    Structure describing {Ax <= b}, with fields:
+%
+%                * .A - inequality constraint matrix
+%                * .b - inequality right-hand side
+%                * .x - feasible interior point
+%                * .N - null-space basis used to return to the original space
+%                * .p_shift - shift used to return to the original space
+%                * .x0 - offset of the original-space affine map
+%                * .idx - indices of the recovered variables
 
 Aeq = o.P.A;
 %beq = o.P.b;

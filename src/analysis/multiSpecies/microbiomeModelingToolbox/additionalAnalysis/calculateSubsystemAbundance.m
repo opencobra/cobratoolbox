@@ -7,14 +7,15 @@ function subsystemAbundance = calculateSubsystemAbundance(reactionAbundancePath)
 %
 % USAGE: subsystemAbundance = calculateSubsystemAbundance(reactionAbundancePath)
 %
-% INPUT
-% reactionAbundancePath     Path to spreadsheet or text file with
-%                           calculated reaction abundances for one or more 
-%                           microbiome models
-% OUTPUT
-% subsystemAbundance        Table with calculated subsystem abundances
-% 
-% AUTHOR
+% INPUT:
+%    reactionAbundancePath:    Path to spreadsheet or text file with
+%                              calculated reaction abundances for one or more
+%                              microbiome models
+%
+% OUTPUT:
+%    subsystemAbundance:       Table with calculated subsystem abundances
+%
+% .. Author:
 %       - Almut Heinken, 08/2020
 
 % load database

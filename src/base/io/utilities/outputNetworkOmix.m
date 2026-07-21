@@ -7,7 +7,14 @@ function outputNetworkOmix(model, rxnBool)
 %    outputNetworkOmix(model, rxnBool)
 %
 % INPUT:
-%    model:      COBRA model structure
+%    model:      COBRA model structure with fields:
+%
+%                  * .S - `met` x `rxn` stoichiometric matrix, used to size
+%                    `rxnBool` and to identify each reaction's participants
+%                  * .rxns - reaction identifiers
+%                  * .description - (optional) char, or struct with a
+%                    `.name` field (as produced by rBioNet), used to name
+%                    the output file
 %
 % OPTIONAL INPUT:
 %    rxnBool:    boolean vector with 1 for each reaction to be exported

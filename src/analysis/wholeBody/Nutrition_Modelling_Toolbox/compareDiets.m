@@ -1,34 +1,34 @@
 function [fluxChanges, uniqueDiet1, uniqueDiet2] = compareDiets(diet1, diet2, one2Two)
-% Calculates the changes in metabolite flux composition between two diets.
-% It also calculates unique metabolites in each diets. It defaults to
-% calculating the differences in diet2 from diet1
+% Calculate the changes in metabolite flux composition between two diets and
+% the metabolites unique to each diet
 %
-% [fluxChanges, uniqueDiet1, uniqueDiet2] = compareDiets(diet1,diet2,one2Two)
+% By default the differences in diet2 relative to diet1 are calculated.
 %
-% Example: compareDiets(diet1,diet2,false)
+% USAGE:
+%
+%    [fluxChanges, uniqueDiet1, uniqueDiet2] = compareDiets(diet1, diet2, one2Two)
 %
 % INPUTS:
-%   diet1:         A cell array with the first column the metabolite
-%                  identifiers and the second with flux values as doubles
-%                  or strings
-%   diet2:         A cell array with the first column the metabolite
-%                  identifiers and the second with flux values as doubles
-%                  or strings
+%    diet1:          Cell array with the metabolite identifiers in the first
+%                    column and flux values (doubles or strings) in the second
+%    diet2:          Cell array with the metabolite identifiers in the first
+%                    column and flux values (doubles or strings) in the second
+%
 % OPTIONAL INPUTS:
-%   one2Two:       true(0) or false(1) to state if the default of 
-%                  calculating the differences in diet2 from diet1 should 
-%                  be used. If false(0) differences in diet1 from diet2 
-%                  will be calculated.    
+%    one2Two:        true(1) or false(0) selecting the comparison direction.
+%                    When true (default) the differences in diet2 relative to
+%                    diet1 are calculated; when false the differences in diet1
+%                    relative to diet2 are calculated
 %
-% OUTPUT:
-%    fluxChanges:  Cell array with the first column the metabolite
-%                  identifier and the second column the changed flux value
-%    uniqueDiet1:  Cell array with unique metabolites in diet1 compared to
-%                  diet2
-%    uniqueDiet2:  Cell array with unique metabolites in diet2 compared to
-%                  diet1
+% OUTPUTS:
+%    fluxChanges:    Cell array with the metabolite identifier in the first
+%                    column and the changed flux value in the second
+%    uniqueDiet1:    Cell array of metabolites unique to diet1 compared to
+%                    diet2
+%    uniqueDiet2:    Cell array of metabolites unique to diet2 compared to
+%                    diet1
 %
-% .. Authors: - Bram Nap - June 2022 
+% .. Author: - Bram Nap, June 2022
 
 if isempty(one2Two)
     one2Two=true;

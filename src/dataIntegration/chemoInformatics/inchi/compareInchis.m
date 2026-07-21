@@ -10,14 +10,14 @@ function comparisonTable = compareInchis(model, inchis, met)
 %
 % INPUT:
 %    model:     COBRA model
-%                   *.mets - 1xm list of metabolite IDs
-%                   *.metFormulas - 1xm list of metabolite Formulas
-%                   *.metCharges - 1xm list of metabolite charges
+%                   * .mets - 1xm list of metabolite IDs
+%                   * .metFormulas - 1xm list of metabolite Formulas
+%                   * .metCharges - 1xm list of metabolite charges
 %    inchis:    List of InChIs to compare
 %    met:       Metabolite ID in the model
 %
 % OUTPUTS:
-%    comparisonTable: Table containing the information used for each InChI
+%    comparisonTable:    Table containing the information used for each InChI
 %
 
 if isrow(inchis)

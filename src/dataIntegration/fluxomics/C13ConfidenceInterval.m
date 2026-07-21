@@ -1,5 +1,7 @@
 function [vs, output, v0] = C13ConfidenceInterval(v0, expdata, model, max_score, directions, majorIterationLimit)
-%
+% Computes confidence intervals for C13 metabolic fluxes by minimizing and
+% maximizing each flux (or flux ratio) subject to the experimental data-fit
+% error staying below `max_score`
 %
 % USAGE:
 %
@@ -8,8 +10,11 @@ function [vs, output, v0] = C13ConfidenceInterval(v0, expdata, model, max_score,
 % INPUTS:
 %    v0:                     set of flux vectors to be used as initial guesses.  They may be valid or not.
 %    expdata:                experimental data
-%    model:                  the standard model. Additional field .N (= null(S)) should also
-%                            be provided. This is a basis of the flux space.
+%    model:                  the standard model, with fields:
+%
+%                              * .S - `m x n` stoichiometric matrix
+%                              * .N - basis of the null space of `S` (`= null(S)`, a basis of the flux space; computed if absent)
+%                              * .lb - `n x 1` lower flux bounds
 %    max_score:              maximum allowable data fit error
 %
 % OPTIONAL INPUTS:

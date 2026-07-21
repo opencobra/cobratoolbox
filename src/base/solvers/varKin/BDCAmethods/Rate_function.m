@@ -1,4 +1,7 @@
 function fxk = Rate_function(opt, varargin)
+% Computes the rate function `h(xk)` for the current point, given the
+% forward/reverse stoichiometric matrices and kinetic parameter in `opt`
+%
 % USAGE:
 %
 %    fxk = Rate_function(opt, varargin)
@@ -8,12 +11,11 @@ function fxk = Rate_function(opt, varargin)
 %    opt:    structure includes required parameters:
 %
 %              * .FR - concatenation of forward and reverse stoichiometric matrix
-%              * .A - Reduced forward stoichiometric matrix
-%              * .B - Reduced reverse stoichiometric matrix
+%              * .FR_RF - `FR - RF`, difference of forward-reverse and reverse-forward concatenations
 %              * .k - initial kinetic
 %
 % OUTPUT:
-%    fxk:
+%    fxk:    the vector `h(xk)`
 %
 % .. hxk       % the vector h(xk)
 % .. ghxk      % gradient of h at xk

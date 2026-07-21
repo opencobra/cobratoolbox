@@ -1,4 +1,4 @@
-function [FBA_Rxns_KO,ListResults] = checkEffectRxnKO(samples_to_test,fill,Genes_to_test,samples,ResultsAllCellLines)
+function [FBA_Rxns_KO, ListResults] = checkEffectRxnKO(samples_to_test, fill, Genes_to_test, samples, ResultsAllCellLines)
 % This function checks the effect of constraining reactions associated 
 % with a single or set of genes on the ability of the model to satisfy
 % an objective.
@@ -8,7 +8,7 @@ function [FBA_Rxns_KO,ListResults] = checkEffectRxnKO(samples_to_test,fill,Genes
 %    [FBA_Rxns_KO, ListResults] = checkEffectRxnKO(samples_to_test, fill, Genes_to_test, samples, ResultsAllCellLines)
 %
 % INPUTS:
-%      ResultsAllCellLines:   uses `modelMin`
+%      ResultsAllCellLines:    uses `modelMin`
 %      samples:               Name of samples
 %      samples_to_test:       Name of samples that should be tested (can be samples if all should be tested)
 %      fill:                  Identifier if the `rxns` is not in the model (e.g.,100, num('NAN'))

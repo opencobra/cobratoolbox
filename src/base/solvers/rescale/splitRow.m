@@ -1,31 +1,39 @@
 function [A, evars, evarlb, evarub, evarc, b, dsense, ctrs] = splitRow(A, ri, evars, evarlb, evarub, evarc, b, dsense, ctrs)
-    %   Takes row ri of the constraint matrix A (e.g. -1e6*v1 -v2 + v3 < 0),
-    %   identifies the coefficient with largest absolute value, and replaces the row by:
-    %     1) a constraint containing only that largest coefficient and a new variable z
-    %        (e.g. -1e6*v1 + z < 0)
-    %     2) an equality constraint defining z as a combination of the remaining
-    %        variables (e.g. z +v2 - v3 = 0)
+    % Takes row ri of the constraint matrix A (e.g. -1e6*v1 -v2 + v3 < 0),
+    % identifies the coefficient with largest absolute value, and replaces the row by:
+    %   1) a constraint containing only that largest coefficient and a new variable z
+    %      (e.g. -1e6*v1 + z < 0)
+    %   2) an equality constraint defining z as a combination of the remaining
+    %      variables (e.g. z +v2 - v3 = 0)
     %
-    %   Inputs:
-    %     A        k x n constraint matrix.
-    %     ri       Index of the row of A to split
-    %     evars    Cell array of existing extra variable IDs
-    %     evarlb   Lower bounds of extra variables
-    %     evarub   Upper bounds of extra variables
-    %     evarc    Objective coefficients of extra variables
-    %     b        Right-hand side vector of constraints
-    %     dsense   Constraint senses (L,E,G)
-    %     ctrs     Cell array of constraint IDs
+    % USAGE:
     %
-    %   Outputs:
-    %     A        Updated constraint matrix with one extra column and one extra row.
-    %     evars    Updated extra variable IDs including the new z variable
-    %     evarlb   Updated lower bounds (new z has -Inf)
-    %     evarub   Updated upper bounds (new z has Inf)
-    %     evarc    Updated objective coefficients (new z has 0)
-    %     b        Updated RHS including 0 for the z-definition equality
-    %     dsense   Updated senses including 'E' for the z-definition equality
-    %     ctrs     Updated constraint IDs with a _splitN suffix for the new row
+    %    [A, evars, evarlb, evarub, evarc, b, dsense, ctrs] = splitRow(A, ri, evars, evarlb, evarub, evarc, b, dsense, ctrs)
+    %
+    % INPUTS:
+    %    A:             `k x n` constraint matrix
+    %    ri:            index of the row of `A` to split
+    %    evars:         cell array of existing extra variable IDs
+    %    evarlb:        lower bounds of extra variables
+    %    evarub:        upper bounds of extra variables
+    %    evarc:         objective coefficients of extra variables
+    %    b:             right-hand side vector of constraints
+    %    dsense:        constraint senses (L,E,G)
+    %    ctrs:          cell array of constraint IDs
+    %
+    % OUTPUTS:
+    %    A:             updated constraint matrix with one extra column and
+    %                   one extra row
+    %    evars:         updated extra variable IDs including the new z
+    %                   variable
+    %    evarlb:        updated lower bounds (new z has -Inf)
+    %    evarub:        updated upper bounds (new z has Inf)
+    %    evarc:         updated objective coefficients (new z has 0)
+    %    b:             updated RHS including 0 for the z-definition equality
+    %    dsense:        updated senses including 'E' for the z-definition
+    %                   equality
+    %    ctrs:          updated constraint IDs with a _splitN suffix for the
+    %                   new row
 
     r = A(ri, :); % select row to split into other rows, e.g. -v1 -1e6v2 + u2 < 0     
     [~, bigElIdx] = max(abs(r));

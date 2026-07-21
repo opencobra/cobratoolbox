@@ -8,40 +8,40 @@ function [sol, result, LP, LPminNorm, indLP] = SteadyCom(modelCom, options, vara
 %    modelCom:       A community COBRA model structure with the following fields (created using `createMultipleSpeciesModel`)
 %                    (the first 5 fields are required, at least one of the last two is needed. Can be obtained using `getMultiSpecisModelId`):
 %
-%                      * S - Stoichiometric matrix
-%                      * b - Right hand side
-%                      * c - Objective coefficients
-%                      * lb - Lower bounds
-%                      * ub - Upper bounds
-%                      * infoCom - structure containing community reaction info
-%                      * indCom - the index structure corresponding to `infoCom`
+%                      * .S - Stoichiometric matrix
+%                      * .b - Right hand side
+%                      * .c - Objective coefficients
+%                      * .lb - Lower bounds
+%                      * .ub - Upper bounds
+%                      * .infoCom - structure containing community reaction info
+%                      * .indCom - the index structure corresponding to `infoCom`
 %
 % OPTIONAL INPUTS:
 %    options:        struct with the following possible fields:
 %                    (for constraining individual growth rates and biomass amounts, default []):
 %
-%                      * GRfx - Fixed growth rate for organisms apart from the community
+%                      * .GRfx - Fixed growth rate for organisms apart from the community
 %                        (:math:`N_{organisms} * 1` vector, NaN for unfixed growth rate,
 %                        or [#organisms | value]) e.g. to fix organisms 2, 3
 %                        at growth rate 0.1, `GRfx = [2, 0.1; 3, 0.1];`
-%                      * BMcon - Biomass constraint matrix :math:`(\sum (a_{ij} * X_j) </=/> b_i)`
+%                      * .BMcon - Biomass constraint matrix :math:`(\sum (a_{ij} * X_j) </=/> b_i)`
 %                        (given as :math:`K * N_{organisms}` matrix for `K` constraints)
 %                        e.g. [0 1 1 0] for :math:`X_2 + X_3` in a 4-organisms model
-%                      * BMrhs - RHS for BMcon, `K x 1` vector for `K` constraints
-%                      * BMcsense - Sense of the constraint, 'L', 'E', 'G' for <=, =, >=
+%                      * .BMrhs - RHS for BMcon, `K x 1` vector for `K` constraints
+%                      * .BMcsense - Sense of the constraint, 'L', 'E', 'G' for <=, =, >=
 %                        (for general constraints on e.g. total carbon uptake, molecular crowding, default [])
-%                      * MC - :math:`K * (N_{rxns}+N_{organisms})` coefficient matrix, for `K` additional constraints
-%                      * MCmode - :math:`K * (N_{rxns}+N_{organisms})` matrix , with number 0 ~ 3
+%                      * .MC - :math:`K * (N_{rxns}+N_{organisms})` coefficient matrix, for `K` additional constraints
+%                      * .MCmode - :math:`K * (N_{rxns}+N_{organisms})` matrix , with number 0 ~ 3
 %
 %                        * 0: original variable
 %                        * 1: positive part of the variable
 %                        * 2: negative part of the variable
 %                        * 3: absolute value of the variable
-%                      * MCrhs - RHS of the constraints (default all zeros if .MC is given)
-%                      * MClhs - LHS of the constraints (default -inf if .MC is given)
+%                      * .MCrhs - RHS of the constraints (default all zeros if .MC is given)
+%                      * .MClhs - LHS of the constraints (default -inf if .MC is given)
 %                        (parameters in the iterative algorithm, [default value])
-%                      * GRguess [0.2] - Initial guess of the growth rate.
-%                      * feasCrit [1] - Criteria for feasibility, 1 or 2:
+%                      * .GRguess [0.2] - Initial guess of the growth rate.
+%                      * .feasCrit [1] - Criteria for feasibility, 1 or 2:
 %                        The algorithm tests iteratively at a given growth rate
 %                        whether a feasible solution can be found.
 %
@@ -55,31 +55,31 @@ function [sol, result, LP, LPminNorm, indLP] = SteadyCom(modelCom, options, vara
 %                             i.e. :math:`\sum X * gr \geq BMtol * BMref * GR0`
 %                             where `BMref` is the maximum biomass at a small growth rate `GR0`
 %                             and `BMtol` is a fraction ranging from 0 to 1
-%                      * algorithm [1] - Algorithm to find the maximum growth rate
+%                      * .algorithm [1] - Algorithm to find the maximum growth rate
 %
 %                          1. `Fzero` after finding `grLB` and `grUB` with simple guessing [:math:`gr^T = gr * \sum X / \sum X^T`]
 %                          2. Simple guessing with minimum one percent step size
 %                          3. Bisection method
-%                      * BMweight [1] - Minimum total biomass for feasibility. Used only if `feasCrit = 1`.
+%                      * .BMweight [1] - Minimum total biomass for feasibility. Used only if `feasCrit = 1`.
 %                        Set BMweight to a close-to-zero value to compute the wash-out dilution rate.
-%                      * GR0 [0.001] - A small growth rate to obtain a reference value for maximum total biomass production.
+%                      * .GR0 [0.001] - A small growth rate to obtain a reference value for maximum total biomass production.
 %                        Used only if `feasCrit = 2` or `solveGR0 = true`
-%                      * BMtol [0.8] - Fractional tolerance for biomass production to check
+%                      * .BMtol [0.8] - Fractional tolerance for biomass production to check
 %                        feasibility. Used only if `feasCrit = 2`
-%                      * solveGR0[false] - true to solve the model at a low growth rate `GR0` first to test feasibility
-%                      * GRtol [1e-6] - Precision for the growth rate found (:math:`grUB - grLB < GRtol`)
-%                      * BMtolAbs [1e-5] - Absolute tolerance for positivity of biomass
-%                      * maxIter (1e3) - maximum nummber of iteration
+%                      * .solveGR0[false] - true to solve the model at a low growth rate `GR0` first to test feasibility
+%                      * .GRtol [1e-6] - Precision for the growth rate found (:math:`grUB - grLB < GRtol`)
+%                      * .BMtolAbs [1e-5] - Absolute tolerance for positivity of biomass
+%                      * .maxIter (1e3) - maximum nummber of iteration
 %                        (parameters in the optimization model, [default value])
-%                      * minNorm [0] - 0: No `minNorm`. 1: min sum of absolution flux of the final solution.
-%                      * BMgdw [all 1s] - The gram dry weight per mmol of the biomass reaction of
+%                      * .minNorm [0] - 0: No `minNorm`. 1: min sum of absolution flux of the final solution.
+%                      * .BMgdw [all 1s] - The gram dry weight per mmol of the biomass reaction of
 %                        each organism. Maybe used to scale the biomass reactions between organisms.
-%                      * BMobj [all 1s] - Objective coefficient for the biomass of each organism
+%                      * .BMobj [all 1s] - Objective coefficient for the biomass of each organism
 %                        when doing the maximization at each step.
 %                        (other parameters)
-%                      * verbFlag  [3]  - Print level. 0, 1, 2, 3 for silence, one log per 10, 5 (default) or 1 iteration respectively
-%                      * LPonly [false] - Return the initial LP at zero growth rate only. Calculate nothing.
-%                      * saveModel ['']  String, if non-empty, save the LP structure.
+%                      * .verbFlag  [3]  - Print level. 0, 1, 2, 3 for silence, one log per 10, 5 (default) or 1 iteration respectively
+%                      * .LPonly [false] - Return the initial LP at zero growth rate only. Calculate nothing.
+%                      * .saveModel ['']  String, if non-empty, save the LP structure.
 %
 %    parameter:      structure for solver-specific parameters.
 %                    'param1', value1, ...:  name-value pairs for `solveCobraLP` parameters. See `solveCobraLP` for details
@@ -106,6 +106,9 @@ function [sol, result, LP, LPminNorm, indLP] = SteadyCom(modelCom, options, vara
 %                        * infeasible: infeasible model, even with maintenance requirement only
 %                        * LPonly: return the LP structure only. No optimization performed (only if options.LPonly = true)
 %                        * xxx (minNorm L1-norm): in result.flux the sum of absolute fluxes is minimized. 'xxx' is one of the status above.
+%    LP:            `LP` problem structure at the maximum growth rate (`Cplex LP` object for `ibm_cplex`)
+%    LPminNorm:     LP problem structure used for the minimal-norm (L1) flux minimization step
+%    indLP:         index structure locating variables/constraints within the LP problem
 
 if isfield(modelCom,'C') || isfield(modelCom,'E')
     issueConfirmationWarning('SteadyCom does not handle the additional constraints and variables defined in the model structure (fields .C and .E.)\n It will only use the stoichiometry provided.');

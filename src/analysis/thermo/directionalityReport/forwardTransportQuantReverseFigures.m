@@ -12,10 +12,17 @@ function forwardTransportQuantReverseFigures(model)
 % INPUT:
 %    model:    structure with fields:
 %
-%                * .transportRxnBool
-%                * .dGt0Min
-%                * .dGt0Max
-%                * .directions.forwardReversible
+%                * .S - `m x n` stoichiometric matrix
+%                * .rxns - `n x 1` cell array of reaction identifiers
+%                * .rxnNames - `n x 1` cell array of reaction names
+%                * .DrGtMin - `n x 1` lower bound on transformed reaction Gibbs energy
+%                * .DrGtMax - `n x 1` upper bound on transformed reaction Gibbs energy
+%                * .DrGtMean - `n x 1` mean transformed reaction Gibbs energy
+%                * .DrGt0Min - `n x 1` lower bound on standard transformed reaction Gibbs energy
+%                * .DrGt0Max - `n x 1` upper bound on standard transformed reaction Gibbs energy
+%                * .DrGt0Mean - `n x 1` mean standard transformed reaction Gibbs energy
+%                * .DrdGtMin - `n x 1` lower bound on transformed reaction Gibbs energy (as referenced in the code)
+%                * .directions - structure of directionality-assignment vectors, including `.forwardReversible`
 %
 % .. Author: - Ronan M.T. Fleming
 

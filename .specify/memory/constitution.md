@@ -1,5 +1,70 @@
 <!--
 Sync Impact Report
+Version change: 1.3.0 -> 1.4.0
+Modified principles:
+- VI. Strict Spec-Driven Development Gate — the implementation phase now recognizes TWO
+  sanctioned, equivalent implementation paths: the core Spec Kit implementer
+  (`/speckit-implement`) and the agent-assign pipeline (`speckit.agent-assign`), which
+  runs its three commands in series — `/speckit-agent-assign-assign` (scan agents, write
+  agent-assignments.yml) -> `/speckit-agent-assign-validate` (read-only completeness and
+  existence check) -> `/speckit-agent-assign-execute` (spawn the assigned agent per task).
+  Both paths carry identical gate prerequisites (approved spec.md/plan.md/tasks.md). The
+  pipeline's steps MUST run in order and `execute` MUST NOT begin while `validate` reports
+  unassigned tasks or missing agents. Selecting the pipeline grants no relief from the
+  gate, and every subagent `execute` spawns is itself bound by this constitution and
+  confined to its assigned task and the feature scope (Principles V, IX).
+Modified sections:
+- Implementation Receipt Ledger — one implementation receipt is mandatory for the run
+  regardless of which path is used; when the run delegates to per-task subagents (the
+  pipeline's execute step), a single receipt covers the whole run (its Diff summary
+  aggregates every file changed across subagents; its Final response is the orchestrating
+  command's final response).
+Added sections: none. Removed sections: none.
+Templates requiring updates:
+- ✅ .specify/templates/plan-template.md, tasks-template.md, spec-template.md — reviewed;
+  none hardcode the implementation command, so Constitution Check bullets remain valid
+  with no change required.
+Runtime guidance updated:
+- ✅ CLAUDE.md and AGENTS.md — the Principle VI gate summary now names both sanctioned
+  implementation paths (thin-pointer accuracy fix; no principle restated, Principle X).
+Rationale for MINOR bump: a new sanctioned implementation path (the assign -> validate ->
+execute pipeline) plus its guardrails is a materially expanded compliance allowance within
+an existing principle; no principle was removed or redefined and no existing approved plan
+is invalidated (plans targeting `/speckit-implement` remain valid).
+Supersedes an uncommitted draft of this same 1.4.0 amendment that had named only the
+`execute` step; this report reflects the full three-step pipeline that was requested.
+Enabled by: the agent-assign spec-kit extension (v1.1.0) installed under
+.specify/extensions/agent-assign/, providing speckit.agent-assign.assign / .validate /
+.execute.
+-->
+<!--
+Sync Impact Report
+Version change: 1.2.0 -> 1.3.0
+Modified principles:
+- III. Testing, Reproducibility, And Continuous Integration (added sub-clause
+  III-Characterization: Legacy Back-Fill Mode — sanctions the retro-spec pattern of
+  bringing an untested legacy function under test by documenting its EXISTING
+  contract and writing a characterization test, without changing the function under
+  test. This is the single canonical description of the pattern used by hand in
+  features 004 and 006.)
+Added sections: none (one sub-clause within an existing principle).
+Removed sections: none.
+Templates requiring updates:
+- ✅ .specify/templates/spec-template.md — now carries an in-template Characterization
+  Mode guidance block plus an optional "Existing Contract" section that REFERENCE this
+  clause (added by feature 008-sdd-workflow-grafts; single-sourced, not restated).
+- ✅ .specify/templates/checklist-template.md — standing "Completion Integrity" item
+  added by feature 008 (independent of this clause; no conflict).
+- ✅ .specify/templates/plan-template.md, tasks-template.md — reviewed; Constitution
+  Check bullets remain applicable; no change required by this clause.
+Rationale for MINOR bump: a new materially-expanded compliance requirement (a
+sanctioned characterization mode) within an existing principle; no principle removed
+or redefined.
+Companion feature: specs/008-sdd-workflow-grafts/ (data-model.md E2 = wording sketch;
+research.md R2 = placement rationale).
+-->
+<!--
+Sync Impact Report
 Version change: 1.1.0 -> 1.2.0
 Modified principles:
 - X. Documentation Single-Sourcing And No Instruction Leakage (reframed around the
@@ -188,6 +253,21 @@ is the minimum acceptable substitute. After implementation the contributor MUST
 report files changed, checks run, tests passed, tests failed, and behaviours not
 yet verified.
 
+#### III-Characterization: Legacy Back-Fill Mode
+
+An untested legacy function surfaced by CI coverage MAY be brought under test with a
+CHARACTERIZATION feature. The pattern is: (1) select the untested `src/<domain>/`
+function from coverage; (2) document its EXISTING contract — current inputs, outputs,
+invariants, and tolerances — rather than proposing new behaviour; (3) write the
+narrowest characterization test that pins that existing behaviour, fixing the random
+seed and using a justified tolerance wherever output is solver- or randomness-
+dependent, integrated into `test/testAll.m` and the CI pipelines. A characterization
+feature MUST NOT change the function under test: if it exposes a defect, fixing that
+defect is a separate, spec-driven change (Principle VI). This clause is the single
+canonical description of the pattern (features 004 and 006 are prior instances); the
+`spec-template.md` Characterization Mode block references this clause and MUST NOT
+restate it (Principle X).
+
 Rationale: a single successful run is not evidence. The toolbox needs reproducible
 CI-backed evidence that the intended behaviour changed for the intended reason and
 that nothing else regressed. Declaring requirements via `prepareTest` is what keeps
@@ -275,11 +355,33 @@ analysis artifacts, and no unresolved blockers that would make implementation
 speculative.
 
 Implementation files may be modified only when the user explicitly invokes the
-implementation phase with the agent's implementation command (for example
-`/speckit.implement`, `/speckit-implement`, or `$speckit-implement`), or a direct
+implementation phase with a sanctioned implementation command, or a direct
 instruction that explicitly says: `Run the Spec Kit implementation phase for the
 active feature`. A request that merely describes what should be implemented is not
-sufficient.
+sufficient. Two implementation paths are sanctioned and equivalent under this
+gate:
+
+* the core implementer — `/speckit.implement`, `/speckit-implement`, or
+  `$speckit-implement` — which executes the feature's `tasks.md` inline in the
+  current context;
+* the agent-assign pipeline — `speckit.agent-assign`, run as its three commands in
+  series: `/speckit-agent-assign-assign` (scan available agents and write
+  `agent-assignments.yml`), then `/speckit-agent-assign-validate` (read-only check
+  that every task is assigned and every assigned agent exists), then
+  `/speckit-agent-assign-execute` (execute the same `tasks.md` by spawning, per task,
+  the assigned specialized agent). The dotted forms `speckit.agent-assign.assign`,
+  `.validate`, and `.execute` are equivalent.
+
+Selecting the agent-assign pipeline grants no relief from this principle. Its three
+steps MUST run in order — assign, then validate, then execute — and `execute` MUST NOT
+begin while `validate` reports unassigned tasks or missing agents. The pipeline carries
+the identical prerequisites stated above (approved `spec.md`, `plan.md`, `tasks.md`);
+the `assign` step derives `agent-assignments.yml` from the current `tasks.md`. Every
+subagent `execute` spawns is bound by this constitution — this principle is
+agent-neutral — and each MUST stay within its assigned task and MUST NOT edit
+read-only, `deprecated/`, `external/`, or vendored paths outside the feature scope
+(Principles V and IX). Whichever path is used, the implementation receipt remains
+mandatory for the run as a whole (see Implementation Receipt Ledger).
 
 These requirements are agent-neutral: they apply identically whichever agent or
 model is in use (Claude, Codex, or another Spec Kit-compatible agent). Where a rule
@@ -623,15 +725,21 @@ gap is explicitly stated.
 
 ### Implementation Receipt Ledger
 
-Every Spec Kit implementation run MUST write an implementation receipt under the
-resolved active feature directory at:
+Every Spec Kit implementation run — whether performed inline by `/speckit-implement`
+or by the agent-assign pipeline's execute step (`/speckit-agent-assign-execute`)
+spawning per-task subagents — MUST write one implementation receipt for the run under
+the resolved active feature directory at:
 
 ```text
 <FEATURE_DIR>/agent-runs/<UTC-timestamp>-<short-task-or-run-name>/implementation-receipt.md
 ```
 
 The directory name `agent-runs/` is agent-neutral. Implementation is not complete
-until that receipt exists. The receipt MUST record only the standard categories:
+until that receipt exists. When the run delegates tasks to subagents (the agent-assign
+pipeline's execute step), one receipt still covers the whole run: its `Diff summary` MUST aggregate
+every file changed across all subagents, and its `Final response` section MUST be the
+orchestrating command's final user-facing response. The receipt MUST record only the
+standard categories:
 
 * Prompt
 * Final response
@@ -685,4 +793,4 @@ Versioning follows semantic versioning:
 When a feature conflicts with the constitution, the constitution controls unless the
 feature first amends it through this governance process.
 
-**Version**: 1.2.0 | **Ratified**: 2026-07-12 | **Last Amended**: 2026-07-12
+**Version**: 1.4.0 | **Ratified**: 2026-07-12 | **Last Amended**: 2026-07-17

@@ -14,6 +14,7 @@ function directionalityStatsFigures(directions, resultsBaseFileName, saveFigures
 %                     * directions.forwardRecon
 %                     * directions.reverseRecon
 %                     * directions.reversibleRecon
+%                     * directions.equilibriumRecon
 %
 %                   qualitatively assigned directions using thermo in preference to
 %                   qualitative assignments but using qualitative assignments where
@@ -23,6 +24,7 @@ function directionalityStatsFigures(directions, resultsBaseFileName, saveFigures
 %                     * directions.reverseThermo
 %                     * directions.reversibleThermo
 %                     * directions.uncertainThermo
+%                     * directions.equilibriumThermo
 %
 %                   qualtiative -> quantiative changed reaction directions
 %

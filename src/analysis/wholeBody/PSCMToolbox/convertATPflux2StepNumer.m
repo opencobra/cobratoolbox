@@ -1,22 +1,27 @@
-function [Energy_kJ,Energy_kcal,Meter,StepNumber] = convertATPflux2StepNumber(ATP_hydrolysis_flux, sex, weight, height)
-% This function converts an ATP hydrolysis flux (e.g., Muscle_DM_atp_c_
-% into distance walked and step number). See below for assumptions and
-% calculation details
+function [Energy_kJ, Energy_kcal, Meter, StepNumber] = convertATPflux2StepNumber(ATP_hydrolysis_flux, sex, weight, height)
+% Convert an ATP hydrolysis flux into distance walked and step number
 %
-% function [Energy_kJ,Energy_kcal,Meter,StepNumber] = convertATPflux2StepNumber(ATP_hydrolysis_flux, sex, weight, height)
-% INPUT
-% ATP_hydrolysis_flux   Flux value through the Muscle_DM_atp_c_ reaction
-% sex                'male' or 'female'
-% weight                in kg
-% height                in cm
+% This function converts an ATP hydrolysis flux (e.g. through
+% Muscle_DM_atp_c_) into distance walked and step number. See the body for
+% the assumptions and calculation details.
 %
-% OUTPUT
-% Energy_kJ             Energy value in kJ corresponding to the Flux value through the Muscle_DM_atp_c_ reaction
-% Energy_kcal           Energy value in kcal corresponding to the Flux value through the Muscle_DM_atp_c_ reaction
-% Meter                 Corresponding meter of walking that can be achieved
-% StepNumber            Corresponding step number that can be achieved
-% 
-% Ines Thiele 01/2018
+% USAGE:
+%
+%    [Energy_kJ, Energy_kcal, Meter, StepNumber] = convertATPflux2StepNumber(ATP_hydrolysis_flux, sex, weight, height)
+%
+% INPUTS:
+%    ATP_hydrolysis_flux:    Flux value through the Muscle_DM_atp_c_ reaction (mmol/person/day)
+%    sex:                  'male' or 'female'
+%    weight:               body weight in kg
+%    height:               body height in cm
+%
+% OUTPUTS:
+%    Energy_kJ:            Energy (kJ) corresponding to the ATP hydrolysis flux
+%    Energy_kcal:          Energy (kcal) corresponding to the ATP hydrolysis flux
+%    Meter:                Corresponding distance walked (m) that can be achieved
+%    StepNumber:           Corresponding number of steps that can be achieved
+%
+% .. Author: - Ines Thiele, 01/2018
 
 % energy cost of walking (1 step)
 % gross energy cost of 3 J/kg/m - taken from https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4879834/

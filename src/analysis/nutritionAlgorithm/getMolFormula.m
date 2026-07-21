@@ -1,27 +1,26 @@
-function [molStr,molTable] = getMolFormula(model,metabolite)
-% getMolFormula takes a metabolite in a specified model and returns the 
-% molecular formula. 
-
+function [molStr, molTable] = getMolFormula(model, metabolite)
+% Takes a metabolite in a specified model and returns its molecular formula.
+%
 % USAGE:
 %
-%    [molStr,molTable] = getMolFormula(model,'glu[c]')
+%    [molStr, molTable] = getMolFormula(model, metabolite)
 %
 % INPUTS:
 %    model:          COBRA model structure with minimal fields:
-%                      * .mets 
-%                      * .metFormulas
-%   metabolite:       a specified metabolite with in the model 
 %
-% OUTPUT:
-%   molStr:  the molecular formula for the specified metabolite
+%                      * .mets - metabolite identifiers
+%                      * .metFormulas - elemental formulas
+%    metabolite:     a metabolite identifier present in the model
 %
-%   molTable: A cellular array containing the breakdown of the metabolite
-%             by element
+% OUTPUTS:
+%    molStr:         the molecular formula for the specified metabolite
+%    molTable:       a cell array containing the breakdown of the metabolite
+%                    by element
 %
 % .. Authors: - Bronson R. Weston   2022
 
 
-%Get the molStr from metFormulas
+% Get the molStr from metFormulas
 ind=find(strcmp(model.mets,metabolite));
 if isempty(ind)
     error('Invalid input metabolite!')

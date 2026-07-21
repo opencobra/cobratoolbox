@@ -3,14 +3,18 @@ function runMars(readsTablePath, varargin)
 % data and maps microbial species on a microbial reconstruction database,
 % such as AGORA2 and APOLLO.
 %
+% USAGE:
+%
+%    runMars(readsTablePath, varargin)
+%
 % INPUTS:
-%   readsTablePath:         String; path to the reads abundance file. If
+%    readsTablePath:        String; path to the reads abundance file. If
 %                           taxonomic assignment is not present in this
 %                           file, provide taxonomy in taxaTablePath.
 %   cutoffMars:             Numeric; value under which individual taxa
 %                           relative abundances are considered to be zero.
 %                           Optional, defaults to 1e-6
-%   flagLongSpecies:        Boolean; indicates if the genus name is in the 
+%   flagLoneSpecies:        Boolean; indicates if the genus name is in the
 %                           name of the species. E.g., if the species name
 %                           is Prevotella copri, set to false. If the 
 %                           species name is copri set to true. Optional,

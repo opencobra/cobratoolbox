@@ -1,4 +1,4 @@
-function [translatedMets]=translateKBaseToVMHMets(toTranslatePath)
+function [translatedMets] = translateKBaseToVMHMets(toTranslatePath)
 % This functions translates metabolites inKBase/Model SEED nomenclature
 % that are not yet translated to VMH nomenclature based on names/InCHi keys.
 % It is recommended the resulting translated is verified through manual
@@ -6,20 +6,21 @@ function [translatedMets]=translateKBaseToVMHMets(toTranslatePath)
 %
 % USAGE:
 %
-%   [translatedMets]=translateKBaseToVMHMets(toTranslatePath)
+%    [translatedMets] = translateKBaseToVMHMets(toTranslatePath)
 %
 % INPUT:
-%   toTranslatePath         String containing the path to xlsx, csv, or 
-%                           txt file with metabolite IDs in KBase/ModelSEED
-%                           nomenclature to translate (e.g., cpd00001)
+%    toTranslatePath:        String containing the path to xlsx, csv, or
+%                            txt file with metabolite IDs in KBase/ModelSEED
+%                            nomenclature to translate (e.g., cpd00001)
 %
 % OUTPUTS:
-%   translatedMets          Table with KBase metabolite IDs that could be
-%                           matched to VMH metabolite IDs
+%    translatedMets:         Table with KBase metabolite IDs that could be
+%                            matched to VMH metabolite IDs
 %
-% .. Author: Almut Heinken, 01/2021
+% .. Author: - Almut Heinken, 01/2021
 
 % read in the metabolites to translate
+
 toTranslateMets = readInputTableForPipeline(toTranslatePath);
 
 % remove already translated metabolites

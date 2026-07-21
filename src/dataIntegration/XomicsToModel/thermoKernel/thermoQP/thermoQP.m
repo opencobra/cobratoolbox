@@ -1,39 +1,52 @@
-function sol = thermoQP(model,q,param)
+function sol = thermoQP(model, q, param)
 % Compute an approximately thermodynamically feasible flux by minimising
 % the Euclidean norm, weighted by the conductances provided in q.
 %
-% INPUT:
-%    model:             (the following fields are required - others can be supplied)
+% USAGE:
 %
-%                         * S  - `m x 1` Stoichiometric matrix
-%                         * c  - `n x 1` Linear objective coefficients
-%                         * lb - `n x 1` Lower bounds
-%                         * ub - `n x 1` Upper bounds
+%    sol = thermoQP(model, q, param)
 %
-%    q:                   `n x 1` vector of reaction conductances
+% INPUTS:
+%    model:    COBRA model with the following required fields (others can be supplied):
+%
+%                * .S - `m x n` stoichiometric matrix
+%                * .c - `n x 1` linear objective coefficients
+%                * .lb - `n x 1` lower bounds
+%                * .ub - `n x 1` upper bounds
+%                * .b - `m x 1` accumulation (right hand side of S*v = b)
+%                * .osense - objective sense as a number (-1 maximise, +1 minimise)
+%                * .osenseStr - objective sense as a string ('max' or 'min'; default 'max')
+%                * .SConsistentRxnBool - `n x 1` boolean, stoichiometrically consistent reactions
+%                * .SIntRxnBool - `n x 1` boolean, true for internal reactions
+%
+%    q:    `n x 1` vector of reaction conductances
 %
 % OPTIONAL INPUTS:
-%    model:             
-%                         * dxdt - `m x 1` change in concentration with time
-%                         * csense - `m x 1` character array with entries in {L,E,G} 
-%                           (The code is backward compatible with an m + k x 1 csense vector,
-%                           where k is the number of coupling constraints)
+%    model:    the following optional fields are also used:
 %
-%                         * C - `k x n` Left hand side of C*v <= d
-%                         * d - `k x n` Right hand side of C*v <= d
-%                         * dsense - `k x 1` character array with entries in {L,E,G}
+%                * .dxdt - `m x 1` change in concentration with time
+%                * .csense - `m x 1` character array with entries in {L,E,G}
+%                  (backward compatible with an m + k x 1 csense vector, where k is
+%                  the number of coupling constraints)
+%                * .C - `k x n` left hand side of C*v <= d
+%                * .d - `k x 1` right hand side of C*v <= d
+%                * .dsense - `k x 1` character array with entries in {L,E,G}
 %
-%    osenseStr:         Maximize ('max')/minimize ('min') (opt, default = 'max')
+%    param:    a structure containing the parameters for the function:
+%
+%                * .printLevel - verbose level controlling printed output
+%                * .fbaOptimal - if true, first solve an FBA to define the external flux
+%                * .param - nested parameter sub-structure read by the function (e.g. .param.printLevel)
 %
 % OUTPUT:
-%    sol:       sol object:
+%    sol:    solution object with fields:
 %
-%                          * f - Objective value
-%                          * v - Reaction rates (Optimal primal variable, legacy FBAsolution.x)
-%                          * y - Dual
-%                          * w - Reduced costs
-%                          * s - Slacks (tbc)
-%                          * stat - Solver status in standardized form:
+%                * .f - objective value
+%                * .v - reaction rates (optimal primal variable, legacy FBAsolution.x)
+%                * .y - dual variables
+%                * .w - reduced costs
+%                * .s - slacks
+%                * .stat - solver status in standardized form
 
 % size of the stoichiometric matrix
 [nMets,nRxns] = size(model.S);

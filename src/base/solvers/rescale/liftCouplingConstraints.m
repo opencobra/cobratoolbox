@@ -5,8 +5,6 @@ function [model] = liftCouplingConstraints(model, BIG, printLevel, equalities)
 %
 % Assumes `C` does not contain very small entries and transforms constraints
 % containing very large entries (entries larger than BIG).
-%  
-% 
 %
 % Reformulation techniques are described in detail in:
 % Sun, Y., Fleming, R. M., Thiele, I., & Saunders, M. A. (2013). Robust flux balance analysis of multiscale biochemical reaction networks. BMC Bioinformatics, 14(1). https://doi.org/10.1186/1471-2105-14-240
@@ -15,37 +13,85 @@ function [model] = liftCouplingConstraints(model, BIG, printLevel, equalities)
 %
 % USAGE:
 %
-%    [LPproblem] = reformulate(model, BIG, printLevel)
+%    model = liftCouplingConstraints(model, BIG, printLevel, equalities)
 %
 % INPUTS:
-%    model: 
-%                         * C - `k x n` Left hand side of C*v <= d
-%                         * d - `k x 1` Right hand side of C*v <= d
-%                         * ctrs `k x 1` Cell Array of Strings giving IDs of the coupling constraints
-%                         * dsense - `k x 1` character array with entries in {L,E,G}
+%    model:         COBRA model structure with coupling constraints, with
+%                   fields used:
 %
-% OPTIONAL INPUTS
-%    'BIG'                Value consided a large coefficient. BIG should be set between 1000 and 10000 on double precision machines.
-%    `printLevel`         1 or 0 enables/diables printing respectively.
-%     equalities          true means also deals with original constraints containing equalities (default false - only deals with original constraints that are inequalities)
+%                     * .S - `m x n` stoichiometric matrix (used only for a
+%                       consistency check)
+%                     * .rxns - `n x 1` cell array of reaction identifiers
+%                     * .C - `k x n` coupling constraint matrix, left hand
+%                       side of C*v {<=,=,>=} d
+%                     * .d - `k x 1` right hand side of the coupling
+%                       constraints
+%                     * .dsense - `k x 1` char array of coupling constraint
+%                       senses in {L,E,G}
+%                     * .ctrs - `k x 1` cell array of coupling constraint IDs
+%                     * .D - `k x evars` matrix coupling additional
+%                       variables to the coupling constraints (if present)
+%                     * .E - `m x evars` matrix of additional, non-metabolic
+%                       variables (if present)
+%                     * .evars - `evars x 1` cell array of IDs of additional
+%                       variables (if present)
+%                     * .evarlb - `evars x 1` lower bounds of additional
+%                       variables (if present)
+%                     * .evarub - `evars x 1` upper bounds of additional
+%                       variables (if present)
+%                     * .evarc - `evars x 1` objective coefficients of
+%                       additional variables (if present)
+%                     * .evarNames - `evars x 1` cell array of names of
+%                       additional variables (if present)
+%                     * .modelID - identifier of the model, used to derive
+%                       the lifted model ID
+%                     * .subSystems - `n x 1` subsystem assignment(s) for
+%                       each reaction
+%
+% OPTIONAL INPUTS:
+%    BIG:           value considered a large coefficient. `BIG` should be
+%                   set between 1000 and 10000 on double precision machines
+%                   (default = 1000)
+%    printLevel:    1 or 0 enables/disables printing respectively
+%                   (default = 1)
+%    equalities:    true means also deals with original constraints
+%                   containing equalities (default false - only deals with
+%                   original constraints that are inequalities)
 %
 % OUTPUTS:
-%    model: 
-%                         * E	            m x evars	Sparse or Full Matrix of Double	Matrix of additional, non metabolic variables (e.g. Enzyme capacity variables)
-%                         * evarlb	    evars x 1	    Column Vector of Doubles	Lower bounds of the additional variables
-%                         * evarub	    evars x 1	    Column Vector of Doubles	Upper bounds of the additional variables
-%                         * evarc	    evars x 1	    Column Vector of Doubles	Objective coefficient of the additional variables
-%                         * evars	    evars x 1	    Column Cell Array of Strings	IDs of the additional variables
-%                         * evarNames	evars x 1	    Column Cell Array of Strings	Names of the additional variables
-%                         * C	         ctrs x n	    Sparse or Full Matrix of Double	Matrix of additional Constraints (e.g. Coupling Constraints)
-%                         * ctrs	     ctrs x 1	    Column Cell Array of Strings	IDs of the additional Constraints
-%                         * ctrNames	 ctrs x 1	    Column Cell Array of Strings	Names of the of the additional Constraints
-%                         * d	         ctrs x 1	    Column Vector of Doubles	Right hand side values of the additional Constraints
-%                         * dsense	     ctrs x 1	    Column Vector of Chars	Senses of the additional Constraints
-%                         * D	        ctrs x evars	Sparse or Full Matrix of Double	Matrix to store elements that contain interactions between additional Constraints and additional Variables.
-%   
-%    The linear optimisation problem derived from this model is then of the form
-%                          [S, E; C, D]*x  {L,E,G}  [b;d]       
+%    model:         the input model with badly-scaled coupling constraints
+%                   lifted, with fields:
+%
+%                     * .C - updated `k' x n` coupling constraint matrix
+%                       after lifting
+%                     * .D - updated matrix coupling additional variables to
+%                       the coupling constraints
+%                     * .E - updated matrix of additional, non-metabolic
+%                       variables
+%                     * .d - updated right hand side of the coupling
+%                       constraints
+%                     * .dsense - updated senses of the coupling constraints
+%                     * .ctrs - updated IDs of the coupling constraints
+%                     * .evars - updated IDs of additional variables
+%                       (original plus any created by lifting)
+%                     * .evarlb - updated lower bounds of additional
+%                       variables
+%                     * .evarub - updated upper bounds of additional
+%                       variables
+%                     * .evarc - updated objective coefficients of
+%                       additional variables
+%                     * .evarNames - updated names of additional variables
+%                     * .modelID - model identifier suffixed with
+%                       `_liftedCouplingConstraints`
+%                     * .C_old, .d_old, .ctrs_old, .dsense_old, .D_old,
+%                       .E_old, .evarlb_old, .evarub_old, .evarc_old,
+%                       .evars_old, .evarNames_old - working copies of the
+%                       pre-lift constraint data, saved then removed before
+%                       the function returns
+%                     * .evarc_preLift, .evarlb_preLift, .evarub_preLift,
+%                       .evarNames_preLift, .evars_preLift - additional
+%                       variable data carried over from row-splitting, prior
+%                       to variables created by lifting
 %
 % .. Authors:
 %       - Michael Saunders, saunders@stanford.edu

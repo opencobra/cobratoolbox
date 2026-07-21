@@ -1,24 +1,26 @@
 function [model] = constrainModelOnMedium(model, mediumMets, notMediumConstrained, biomassReaction, functionToKeep)
-% The function constrains a metabolic model based on a defined medium by
-% restricting exchange reactions, while preserving essential functions.
+% Constrain a metabolic model based on a defined medium by restricting the
+% exchange reactions, while preserving essential functions
 %
 % USAGE:
 %
-%   [model] = constrainModelOnMedium(model, mediumMets, notMediumConstrained, biomassReaction, functionToKeep)
+%    [model] = constrainModelOnMedium(model, mediumMets, notMediumConstrained, biomassReaction, functionToKeep)
 %
 % INPUTS:
-%   model:                  (the following fields are required - others can be supplied)
-%                           * S   - m x n Stoichiometric matrix
-%                           * lb  - n x 1 Lower bounds
-%                           * ub  - n x 1 Upper bounds
-%                           * rxns - n x 1 cell array of reaction identifiers
-%   mediumMets:             cell array of metabolites defining the growth medium
-%   notMediumConstrained:   optional list of reactions/metabolites that should not be constrained
-%   biomassReaction:        string specifying the biomass reaction to preserve
-%   functionToKeep:         list of reactions that must remain active
+%    model:                   COBRA model structure with the following fields:
 %
-% OUTPUT:
-%   model:                  constrained metabolic model
+%                               * .S - `m x n` stoichiometric matrix
+%                               * .lb - `n x 1` lower flux bounds
+%                               * .ub - `n x 1` upper flux bounds
+%                               * .rxns - `n x 1` cell array of reaction identifiers
+%
+%    mediumMets:              cell array of metabolites defining the growth medium
+%    notMediumConstrained:    list of reactions that should not be constrained by the medium
+%    biomassReaction:         reaction identifier of the biomass reaction to preserve
+%    functionToKeep:          list of reactions that must remain active
+%
+% OUTPUTS:
+%    model:                   constrained metabolic model
 %
 % .. Authors:
 %       - Maria Pires Pacheco, University of Luxembourg, 2015

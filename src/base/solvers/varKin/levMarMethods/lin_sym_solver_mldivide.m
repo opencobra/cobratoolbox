@@ -6,9 +6,8 @@ function dk = lin_sym_solver_mldivide(Hk, grad)
 %   dk = lin_sym_solver_mldivide(Hk, grad)
 %
 % INPUTS:
-%    ghxk:    gradient of `h` at `xk`
+%    Hk:      the (Gauss-Newton) Hessian approximation matrix
 %    grad:    gradient of the merit function at `xk`
-%    muk:     the parameter `muk`
 %
 % OUTPUT:
 %    dk:      the solution of the linear system

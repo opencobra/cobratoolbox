@@ -1,10 +1,16 @@
 function [outputArg1, outputArg2] = exampl4()
-% example4 calculates the gene deletion strategy for growth coupling
-% for pantothenate in iML1515.
-% 
+% example4 computes a gene-deletion strategy for growth-coupled
+% production of pantothenate (pnto__R_c) in the iML1515 model, using TrimGdel.
+%
 % USAGE:
 %
-%     function [] = example4()
+%    [outputArg1, outputArg2] = exampl4()
+%
+% OUTPUTS:
+%    outputArg1:    unused; declared by the function signature but never
+%                   assigned (placeholder from the function template)
+%    outputArg2:    unused; declared by the function signature but never
+%                   assigned (placeholder from the function template)
 %
 % .. Author:    - Takeyuki Tamura, Mar 06, 2025
 %

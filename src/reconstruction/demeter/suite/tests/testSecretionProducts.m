@@ -7,28 +7,36 @@ function [TruePositives, FalseNegatives] = testSecretionProducts(model, microbeI
 % Based on literature search of reported secretion-secreting probiotics
 % performed 11/2017
 %
-% INPUT
-% model             COBRA model structure
-% microbeID         Microbe ID in secretion secretion data file
-% biomassReaction   Biomass objective functions (low flux through BOF
-%                   required in analysis)
-% database          Structure containing rBioNet reaction and metabolite
-%                   database
-% inputDataFolder   Folder with experimental data and database files
-%                   to load
+% USAGE:
 %
-% OUTPUT
-% TruePositives     Cell array of strings listing all secretions
-%                   (exchange reactions) that can be secreted by the model
-%                   and in in vitro data.
-% FalseNegatives    Cell array of strings listing all secretions
-%                   (exchange reactions) that cannot be secreted by the model
-%                   but should be secreted according to in vitro data.
+%    [TruePositives, FalseNegatives] = testSecretionProducts(model, microbeID, biomassReaction, database, inputDataFolder)
+%
+% INPUTS:
+%    model:             COBRA model structure with fields:
+%
+%                         * .rxns - Reaction identifiers
+%    microbeID:         Microbe ID in secretion secretion data file
+%    biomassReaction:     Biomass objective functions (low flux through BOF
+%                       required in analysis)
+%    database:          Structure containing rBioNet reaction and metabolite
+%                       database with fields:
+%
+%                         * .metabolites - Metabolite database, column 1
+%                           VMH IDs, column 2 metabolite names
+%    inputDataFolder:     Folder with experimental data and database files
+%                       to load
+%
+% OUTPUTS:
+%    TruePositives:     Cell array of strings listing all secretions
+%                       (exchange reactions) that can be secreted by the model
+%                       and in in vitro data.
+%    FalseNegatives:    Cell array of strings listing all secretions
+%                       (exchange reactions) that cannot be secreted by the model
+%                       but should be secreted according to in vitro data.
 %
 % .. Author:
-%      Almut Heinken, August 2019
-%                     March  2022 - changed code to string-matching to make
-%                     it more robust
+%       - Almut Heinken, August 2019
+%       - March 2022, changed code to string-matching to make it more robust
 
 global CBT_LP_SOLVER additionalSecretionRxns
 if isempty(CBT_LP_SOLVER)

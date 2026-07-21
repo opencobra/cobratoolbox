@@ -1,9 +1,38 @@
-function [result_tab, error_code, nb_warm_start, z]=SparseLP_old(c,polyhedron, zeps, max_warm_start)
-
+function [result_tab, error_code, nb_warm_start, z] = SparseLP_old(c, polyhedron, zeps, max_warm_start)
 % Compute the sparsest solution of a linear program (LP)
-% min c'x
-% s.t.  Sx=b
-%       lb <= x <= ub
+%
+% .. math::
+%
+%    min ~& c^T x \\
+%    s.t. ~& S x = b \\
+%         ~& lb \leq x \leq ub
+%
+% USAGE:
+%
+%    [result_tab, error_code, nb_warm_start, z] = SparseLP_old(c, polyhedron, zeps, max_warm_start)
+%
+% INPUTS:
+%    c:                  `n x 1` linear objective coefficient vector
+%    polyhedron:         Structure describing the feasible polyhedron, with fields:
+%
+%                          * .Aeq - equality constraint matrix (`Aeq*x = beq`)
+%                          * .beq - equality constraint right hand side vector
+%                          * .Ain - inequality constraint matrix (`Ain*x <= bin`)
+%                          * .bin - inequality constraint right hand side vector
+%                          * .lb - lower bound vector
+%                          * .ub - upper bound vector
+%    zeps:               Precision threshold below which a value is
+%                         considered to be zero
+%    max_warm_start:      Maximum number of warm starts allowed for the
+%                         sparsity-seeking (Theta L0) iterations
+%
+% OUTPUTS:
+%    result_tab:         Vector of the number of nonzeros achieved at each
+%                         stage (initial LP solution, L1-norm solution, and
+%                         each successive warm-started L0 iteration)
+%    error_code:         0 - success; 1 - the initial LP is unbounded/infeasible
+%    nb_warm_start:      Number of warm-start (Theta L0) iterations performed
+%    z:                  `n x 1` sparsest solution vector found
 %
 
  n=size(c,1);error_code=0;

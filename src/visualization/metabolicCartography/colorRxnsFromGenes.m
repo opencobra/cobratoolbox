@@ -4,20 +4,34 @@ function [newmap] = colorRxnsFromGenes(map, model, entrezList, color, areaWidth)
 %
 % USAGE:
 %
-%   [newmap] = colorRxnsFromGenes(map, model, entrezList, color, areaWidth);
+%    [newmap] = colorRxnsFromGenes(map, model, entrezList, color, areaWidth)
 %
 % INPUTS:
-%   map:            map from CellDesigner parsed to MATLAB format
-%   model:          COBRA model
-%   entrezList:     List of genes, given as entrezIDs.
+%    map:            map from CellDesigner parsed to MATLAB format, with
+%                    fields:
+%
+%                      * .rxnName - cell array of reaction names
+%                      * .rxnReactantLineColor - (optional field) cell array of per-reactant line colours
+%                      * .rxnReactantLineWidth - (optional field) cell array of per-reactant line widths
+%                      * .rxnProductLineColor - (optional field) cell array of per-product line colours
+%                      * .rxnProductLineWidth - (optional field) cell array of per-product line widths
+%    model:          COBRA model, with fields:
+%
+%                      * .genes - `g x 1` cell array of gene identifiers (Entrez IDs)
+%                      * .rxns - `n x 1` cell array of reaction identifiers
+%                      * .rxnGeneMat - (built if absent via `buildRxnGeneMat`) `n x g` reaction-gene incidence matrix
+%    entrezList:     List of genes, given as entrezIDs.
 %
 % OPTIONAL INPUTS:
-%   color:          Preferred color, as written in function
-%                   'createColorsMap'. (default: 'RED')
-%   areaWidth:      Preferred areaWidth of lines. (default: 8)
+%    color:          Preferred color, as written in function
+%                    `createColorsMap`. (default: 'RED')
+%    areaWidth:      Preferred areaWidth of lines. (default: 8)
 %
 % OUTPUT:
-%   newmap          MATLAB structure of new map with default look
+%    newmap:         MATLAB structure of new map with fields updated:
+%
+%                      * .rxnColor - cell array of reaction colours
+%                      * .rxnWidth - cell array of reaction line widths
 %
 % .. Authors:
 %       - A.Danielsdottir 01/08/2017

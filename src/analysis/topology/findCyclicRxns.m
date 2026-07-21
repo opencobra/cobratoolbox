@@ -7,7 +7,10 @@ function [cyclicRxnBool, rankS] = findCyclicRxns(model, printLevel)
 %    [cyclicRxnBool, rankS] = findCyclicRxns(model, printLevel)
 %
 % INPUT:
-%    model:            model structure
+%    model:            COBRA model structure with field:
+%
+%                        * .S - `m x n` stoichiometric matrix
+%
 %    printLevel:       verbose level
 %
 % OUTPUTS:

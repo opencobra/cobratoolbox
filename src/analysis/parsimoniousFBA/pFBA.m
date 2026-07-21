@@ -6,17 +6,24 @@ function [GeneClasses, RxnClasses, modelIrrevFM, MinimizedFlux] = pFBA(model, va
 %
 % USAGE:
 %
-%    [GeneClasses RxnClasses modelIrrevFM] = pFBA(model, varargin)
+%    [GeneClasses, RxnClasses, modelIrrevFM, MinimizedFlux] = pFBA(model, varargin)
 %
 % INPUTS:
-%    model            COBRA model
-%    varargin:        including:
+%    model:           COBRA model structure with fields:
+%
+%                       * .rxns - `n x 1` reaction identifiers
+%                       * .genes - `g x 1` gene identifiers
+%                       * .c - `n x 1` objective coefficients
+%                       * .lb - `n x 1` lower flux bounds
+%                       * .rxnGeneMat - `n x g` reaction-gene incidence matrix
+%    varargin:        parameter name / value pairs:
 %
 %                       * 'geneoption' - 0 = minimize the sum of all fluxes in the network,
 %                         1 = only minimize the sum of the flux through
 %                         gene-associated fluxes (default),
 %                         2 = only minimize the sum of the flux through
 %                         non-gene-associated fluxes
+%                       * 'tol' - tolerance below which a flux is treated as zero (default 1e-6)
 %                       * 'map' - map structure from readCbMap.m (no map written if empty)
 %                       * 'mapoutname' - File Name for map
 %                       * 'skipclass' - 1 = Don't classify genes and reactions. Only return
@@ -25,19 +32,21 @@ function [GeneClasses, RxnClasses, modelIrrevFM, MinimizedFlux] = pFBA(model, va
 %
 % OUTPUTS:
 %    GeneClasses:     Structure with fields for each gene class
-%    RxnsClasses:     Structure with fields for each reaction class
+%    RxnClasses:      Structure with fields for each reaction class
 %    modelIrrevFM:    Irreversible model used for minimizing flux with
 %                     the minimum flux set as a flux upper bound
-%    MinimizedFlux    minimized flux
+%    MinimizedFlux:    minimized flux
 %
-% Note on maps: Red (6) = Essential reactions, Orange (5) = pFBA optima
-% reaction, Yellow (4) = ELE reactions, Green (3) = MLE reactions,
-% blue (2) = zero flux reactions, purple (1) = blocked reactions,
-% black (0) = not classified
+% NOTE:
+%
+%    Note on maps: Red (6) = Essential reactions, Orange (5) = pFBA optima
+%    reaction, Yellow (4) = ELE reactions, Green (3) = MLE reactions,
+%    blue (2) = zero flux reactions, purple (1) = blocked reactions,
+%    black (0) = not classified
 %
 % EXAMPLE:
 %
-%    [GeneClasses RxnClasses modelIrrevFM] = pFBA(model, 'geneoption',0, 'tol',1e-7)
+%    [GeneClasses, RxnClasses, modelIrrevFM] = pFBA(model, 'geneoption', 0, 'tol', 1e-7)
 %
 % .. Authors:
 %       - by Nathan Lewis Aug 25, 2010

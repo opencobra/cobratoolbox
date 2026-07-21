@@ -1,22 +1,33 @@
-function [model,oxGapfillRxns,anaerGrowthOK] = anaerobicGrowthGapfill(model, biomassReaction, database)
+function [model, oxGapfillRxns, anaerGrowthOK] = anaerobicGrowthGapfill(model, biomassReaction, database)
 % Tests if the input microbe model can grow anaerobically and gap-fills
 % by adding anaerobic co-factor utilizing reactions.
 %
-% USAGE
-%       [model,oxGapfillRxns,anaerGrowthOK] = anaerobicGrowthGapfill(model, biomassReaction, database)
+% USAGE:
 %
-% INPUT
-% model             COBRA model structure
-% biomassReaction   Biomass reaction abbreviation
-% database          rBioNet reaction database containing min. 3 columns:
-%                   Column 1: reaction abbreviation, Column 2: reaction
-%                   name, Column 3: reaction formula.
+%    [model, oxGapfillRxns, anaerGrowthOK] = anaerobicGrowthGapfill(model, biomassReaction, database)
 %
-% OUTPUT
-% model             COBRA model structure
+% INPUTS:
+%    model:             COBRA model structure with fields:
+%
+%                          * .rxns - reaction identifiers
+%                          * .mets - metabolite identifiers
+%                          * .lb - lower flux bounds
+%    biomassReaction:    Biomass reaction abbreviation
+%    database:          rBioNet reaction database with fields:
+%
+%                          * .reactions - cell array with min. 3 columns: column 1
+%                            reaction abbreviation, column 2 reaction name,
+%                            column 3 reaction formula
+%
+% OUTPUTS:
+%    model:             COBRA model structure, gap-filled with the reactions
+%                       needed for anaerobic growth if applicable
+%    oxGapfillRxns:     List of reactions added to enable anaerobic growth
+%    anaerGrowthOK:     Boolean indicating whether the model could be
+%                       gap-filled to grow anaerobically (1) or not (0)
 %
 % .. Authors:
-% Almut Heinken and Stefania Magnusdottir, 2016-2019
+%       - Almut Heinken and Stefania Magnusdottir, 2016-2019
 
 tol = 1e-6;
 model_old=model;

@@ -61,13 +61,16 @@ Before Bundle 0, read `.specify/memory/constitution.md` if present and obey it.
 This skill is explicitly subordinate to it. In particular:
 
 - **Implementation gate.** If the constitution restricts implementation to an
-  explicit invocation (for example, only `/speckit-implement`, `$speckit-implement`,
-  or a stated exact phrase authorizes edits), then **a Gate 2 menu choice is not
-  sufficient by itself**. Gate 2 records the human's intent and approved scope;
-  the skill then proceeds to implementation **only via the constitution's required
-  invocation**. If the user picked "approve" in the gate but the constitution
-  needs an explicit implement invocation, ask the user to confirm with that exact
-  invocation before any edit.
+  explicit invocation, then **a Gate 2 menu choice is not sufficient by itself**.
+  As of constitution v1.4.0 two implementation invocations are sanctioned and
+  equivalent: the core implementer (`/speckit-implement`, `$speckit-implement`) and
+  the agent-assign pipeline (`/speckit-agent-assign-assign` ->
+  `/speckit-agent-assign-validate` -> `/speckit-agent-assign-execute`, run in series);
+  a stated exact override phrase is the only other authorization. Gate 2 records the
+  human's intent and approved scope; the skill then proceeds to implementation **only
+  via one of the constitution's required invocations**. If the user picked "approve"
+  in the gate but the constitution needs an explicit implement invocation, ask the
+  user which path to use and to confirm with that exact invocation before any edit.
 - **Run record / receipt.** If the constitution mandates an implementation-receipt
   ledger at a specific path (for example
   `<FEATURE_DIR>/agent-runs/<UTC-timestamp>-<short-name>/implementation-receipt.md`),
@@ -249,8 +252,11 @@ Options:
 - Run an independent review (subagent) before deciding.
 
 Only "approve all" or "approve a slice" can authorize edits — **and only then via
-the constitution's required implementation invocation** (see reconciliation).
-Record the approved scope in both `human-loop.md` and `implementation-review.md`.
+one of the constitution's required implementation invocations** (see reconciliation).
+When approving, also capture which implementation path the human wants: the core
+implementer (`speckit-implement`) or the agent-assign pipeline (assign -> validate ->
+execute). Record the approved scope **and the chosen path** in both `human-loop.md`
+and `implementation-review.md`.
 
 ## Bundle 3: approved implementation
 
@@ -259,8 +265,13 @@ approval; the approved scope is "all" or a named slice; and the user has supplie
 the constitution's required implementation invocation if one is mandated.
 
 1. Mirror the approved `tasks.md` entries into the task list.
-2. Invoke `speckit-implement`, constrained to the approved scope. Do not edit
-   source directly and do not bypass `speckit-implement`.
+2. Run the approved implementation path, constrained to the approved scope:
+   - **Core implementer:** invoke `speckit-implement`.
+   - **Agent-assign pipeline:** invoke `speckit-agent-assign-assign`, then
+     `speckit-agent-assign-validate` (it MUST pass — no unassigned tasks or missing
+     agents), then `speckit-agent-assign-execute`. Every spawned subagent stays within
+     the approved scope and the constitution's read-only-path rules.
+   Do not edit source directly and do not bypass the chosen path.
 3. Follow task order/dependencies from `tasks.md`. Stay inside the approved files;
    if a change outside scope is genuinely required to keep tests meaningful, record
    it as a deviation rather than silently expanding scope.
@@ -270,7 +281,9 @@ the constitution's required implementation invocation if one is mandated.
 6. Write the constitutional **implementation receipt** at its mandated path with the
    required sections (Prompt, Final response, Diff summary, Tests, Unresolved
    issues). The `Final response` must be the actual final user-facing completion
-   text, not a paraphrase. Point `human-loop.md` at the receipt.
+   text, not a paraphrase. If the agent-assign pipeline ran, a single receipt covers
+   the whole run and its `Diff summary` aggregates every file changed across all
+   spawned subagents. Point `human-loop.md` at the receipt.
 
 ## Bundle 4: verification and closeout
 

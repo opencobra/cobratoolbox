@@ -7,7 +7,14 @@ function writeCytoscapeEdgeAttributeTable(model, C, B, N, replicateMetBool, file
 %    writeCytoscapeEdgeAttributeTable(model, C, B, N, replicateMetBool, filename)
 %
 % INPUTS:
-%    model:               structure with obligatory field .S - `met` x `reaction`
+%    model:               structure with fields:
+%
+%                            * .S - `met` x `reaction` stoichiometric matrix
+%                            * .SIntRxnBool - `n x 1` boolean of internal (non-exchange) reactions (optional, default: all `true`)
+%                            * .rxns - `n x 1` reaction identifiers
+%                            * .mets - `m x 1` metabolite identifiers
+%                            * .lb - `n x 1` lower bounds, used to determine reaction directionality
+%                            * .description - general description of the model, used to derive a default output filename (optional)
 %    C:                   `reaction` x `attribute` cell array
 %    B:                   `reaction` x `attribute` Boolean matrix
 %    N:                   `reaction` x `attribute` numeric array

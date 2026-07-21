@@ -1,4 +1,4 @@
-function [modelMedium,basisMedium] = setMediumConstraints(model, set_inf, current_inf, medium_composition, met_Conc_mM, cellConc, t, cellWeight, mediumCompounds, mediumCompounds_lb, customizedConstraints, customizedConstraints_ub, customizedConstraints_lb, close_exchanges)
+function [modelMedium, basisMedium] = setMediumConstraints(model, set_inf, current_inf, medium_composition, met_Conc_mM, cellConc, t, cellWeight, mediumCompounds, mediumCompounds_lb, customizedConstraints, customizedConstraints_ub, customizedConstraints_lb, close_exchanges)
 % Calculates and sets constraints according to fresh medium composition in mM. Is based on the function `Conc2Rate`. Returns a model with constraints.
 %
 % USAGE:
@@ -6,7 +6,11 @@ function [modelMedium,basisMedium] = setMediumConstraints(model, set_inf, curren
 %    [modelMedium, basisMedium] = setMediumConstraints(model, set_inf, current_inf, medium_composition, met_Conc_mM, cellConc, t, cellWeight, mediumCompounds, mediumCompounds_lb, customizedConstraints, customizedConstraints_ub, customizedConstraints_lb, close_exchanges)
 %
 % INPUTS:
-%    model:                     Metabolic model (Recon)
+%    model:                     Metabolic model (Recon) with fields:
+%
+%                                 * .rxns - reaction identifiers
+%                                 * .lb - lower flux bounds
+%                                 * .ub - upper flux bounds
 %    current_inf:               Models can have differently defined infinite constraints, e.g., 500
 %    set_inf:                   New value for infinite constraints, e.g., 1000
 %    medium_composition:        Vector of exchange reactions of metabolites in the cell medium, e.g., RPMI medium
@@ -20,8 +24,8 @@ function [modelMedium,basisMedium] = setMediumConstraints(model, set_inf, curren
 %
 % OPTIONAL INPUTS:
 %    customizedConstraints:     If additional constraints should be set apart from the basic medium and medium composition, e.g. `EX_o2(e)`
-%    customizedConstraints_lb:  Vecor of lower bounds to be set (mmol/gDW/hr), must be of same length as customizedConstraints
-%    customizedConstraints_ub:  Vecor of upper bounds to be set (mmol/gDW/hr), must be of same length as customizedConstraints
+%    customizedConstraints_lb:    Vecor of lower bounds to be set (mmol/gDW/hr), must be of same length as customizedConstraints
+%    customizedConstraints_ub:    Vecor of upper bounds to be set (mmol/gDW/hr), must be of same length as customizedConstraints
 %    close_exchanges:           If exchange reactions except those specified should be closed (Default = 1) 1= close exchanges, 0=no
 %
 % OUTPUTS:

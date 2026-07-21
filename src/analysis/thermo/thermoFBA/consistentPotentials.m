@@ -11,9 +11,11 @@ function y0 = consistentPotentials(model, printLevel)
 % INPUTS:
 %    model:         structure with fields:
 %
-%                     * .S
-%                     * .lb
-%                     * .ub
+%                     * .S - `m x n` stoichiometric matrix
+%                     * .lb - `n x 1` lower flux bounds
+%                     * .ub - `n x 1` upper flux bounds
+%                     * .rxns - `n x 1` cell array of reaction identifiers
+%                     * .SIntRxnBool - `n x 1` boolean of internal reactions
 %    printLevel:    verbose level
 %
 % OUTPUT:

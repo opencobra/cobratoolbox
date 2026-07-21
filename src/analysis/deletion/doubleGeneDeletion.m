@@ -6,7 +6,10 @@ function [grRatioDble, grRateKO, grRateWT] = doubleGeneDeletion(model, method, g
 %    [grRatioDble, grRateKO, grRateWT] = doubleGeneDeletion(model, method, geneList1, geneList2, printLevel)
 %
 % INPUT:
-%    model:          COBRA model structure
+%    model:          COBRA model structure with the fields:
+%
+%                      * .genes - `g x 1` cell array of gene identifiers
+%                      * .rules - `n x 1` cell array of gene-reaction rules in rule (index) form
 %
 % OPTIONAL INPUTS:
 %    method:         Either 'FBA' (default), 'MOMA' or 'lMOMA'

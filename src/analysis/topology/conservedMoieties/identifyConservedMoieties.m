@@ -59,7 +59,8 @@ function [arm, moietyFormulae] = identifyConservedMoieties(model, dATM, options)
 %                not licensed on this machine.
 %
 % OUTPUTS:
-% arm            atomically resolved model as a matlab structure with the following fields:
+%    moietyFormulae:    `nIsomorphismClasses x 1` cell array of moiety chemical formulae (Hill notation), one per isomorphism class
+%    arm:            atomically resolved model as a matlab structure with the following fields:
 %
 % arm.MRH:                    Directed metabolic reaction hypergraph, i.e. standard COBRA model, with additional fields:
 % arm.MRH.metAtomMappedBool:  `m x 1` boolean vector indicating atom mapped metabolites

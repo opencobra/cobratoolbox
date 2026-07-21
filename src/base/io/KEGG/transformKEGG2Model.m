@@ -3,14 +3,16 @@ function model = transformKEGG2Model(modelKEGG, dictionary)
 %
 % USAGE:
 %
-%    model = mapMetName2KEGGID(model, Dictionary)
+%    model = transformKEGG2Model(modelKEGG, dictionary)
 %
 % INPUTS:
-%    model:         KEGG model structure
-%    Dictionary:    consists of:
+%    modelKEGG:     KEGG model structure
 %
-%                     * CompAbr = Dictionary(:, 1): List of compounds abreviation (non-compartelized)
-%                     * KEGGID = Dictionary(:, 2): List of KEGGIDs for compounds in `CompAbr`
+% OPTIONAL INPUTS:
+%    dictionary:    consists of:
+%
+%                     * CompAbr = dictionary(:, 1): List of compounds abreviation (non-compartelized)
+%                     * KEGGID = dictionary(:, 2): List of KEGGIDs for compounds in `CompAbr`
 %
 % OUTPUT:
 %    model:         COBRA model structure

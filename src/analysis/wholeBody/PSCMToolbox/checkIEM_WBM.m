@@ -1,33 +1,42 @@
- function [IEMSol] = checkIEM_WBM(model,IEMRxns, BiomarkerRxns,minRxnsFluxHealthy, reverseDirObj, fractionKO,minBiomarker,fixIEMlb, LPSolver)
-% This function performs the inborn error of metabolism simulations by
-% deleting (or reducing) the flux through reaction(s) affected by a gene
-% defect and optimized the flux through a defined set of biomarker
-% reactions.
+function [IEMSol] = checkIEM_WBM(model, IEMRxns, BiomarkerRxns, minRxnsFluxHealthy, reverseDirObj, fractionKO, minBiomarker, fixIEMlb, LPSolver)
+% Perform inborn-error-of-metabolism (IEM) simulations on a whole-body model
 %
-% function [IEMSol] = checkIEM_WBM(model,IEMRxns, BiomarkerRxns,minRxnsFluxHealthy, reverseDirObj, fractionKO,minBiomarker,fixIEMlb)
-%
-% INPUT
-% model                 whole-body metabolic reconstruction or Recon3Dmodel
-% IEMRxns               Reaction(s) affected by the inborn error of
-%                       metabolism
-% minRxnsFluxHealthy    min flux value(s) through the IEMRxns
-% reverseDirObj         the function maximizes the objective flux by
-%                       default. If set to 1, the function also checks the minimization problem.
-% fractionKO            By default, a complete knowckout of BiomarkerRxnsthe IEM
-%                       reactions is computed but it is possible to set a fraction (default = 1
-%                       for 100% knockout)
-% minBiomarker          Minimization through biomarker reaction (default = 0)
-% fixIEMlb              fix IEM to lb = ub
-%                       =(1-fractionKO)*solution.v(find(model.c)) (default = 0, i.e., lb =0,
-%                       while ub = (1-fractionKO)*solution.v(find(model.c))
-% LPSolver              Define LPSolver ('ILOGcomplex' - default;
-%                       'tomlab_cplex')
-%
-% OUTPUT
-% IEMSol                Predicted biomarker fluxes and comparison with the
-%                       reported biomarkers
+% This function performs inborn error of metabolism simulations by deleting
+% (or reducing) the flux through the reaction(s) affected by a gene defect and
+% optimising the flux through a defined set of biomarker reactions.
 %
 % USAGE:
+%
+%    [IEMSol] = checkIEM_WBM(model, IEMRxns, BiomarkerRxns, minRxnsFluxHealthy, reverseDirObj, fractionKO, minBiomarker, fixIEMlb, LPSolver)
+%
+% INPUTS:
+%    model:                Whole-body metabolic reconstruction or Recon3D model, with fields:
+%
+%                            * .A - constraint matrix (stoichiometry plus coupling constraints)
+%                            * .S - stoichiometric matrix
+%                            * .C - additional coupling-constraint matrix
+%                            * .rxns - reaction identifiers
+%                            * .c - objective coefficients
+%                            * .osense - objective sense (-1 maximise, +1 minimise)
+%                            * .osenseStr - objective sense ('max' or 'min')
+%    IEMRxns:              Reaction(s) affected by the inborn error of metabolism
+%    BiomarkerRxns:        Biomarker reactions and their reported direction of change
+%    minRxnsFluxHealthy:    Minimum flux value(s) through the IEMRxns
+%    reverseDirObj:        The function maximises the objective flux by default; if
+%                          set to 1, it also checks the minimisation problem
+%    fractionKO:           Fraction of knockout applied to the IEM reactions (default 1
+%                          for 100% knockout)
+%    minBiomarker:         Minimise through the biomarker reaction (default 0)
+%    fixIEMlb:             Fix the IEM reaction lb = ub (default 0, i.e. lb = 0 while
+%                          ub = (1-fractionKO)*solution.v(find(model.c)))
+%    LPSolver:             LP solver to use ('ILOGcomplex' default, 'tomlab_cplex')
+%
+% OUTPUTS:
+%    IEMSol:               Predicted biomarker fluxes and comparison with the reported
+%                          biomarkers
+%
+% EXAMPLE:
+%
 % Exampe of preparation of a set of inputs to checkIEM_WBM
 %     R = {'_2OXOADPTm';'_2AMADPTm';'_r0879'};
 %     RxnsAll2 = '';
@@ -71,9 +80,10 @@
 %     {'Healthy:EX_adpoh[u]'       }    {'-1.6985e-10'}    {'Disease - Reported:Increas…'}
 %     {'Disease:EX_adpoh[u]'       }    {'3.7368'     }    {'Disease - Reported:Increas…'}
 %
-% 2018 - Ines Thiele
-% 2019 - Ines Thiele, included more options (minBiomarker,fixIEMlb,LPSolver)
-% 2021 - Ines Thiele, Tests only for biomarker if the reaction exists in the WBM model
+% .. Authors:
+% ..    - 2018 Ines Thiele
+% ..    - 2019 Ines Thiele, included more options (minBiomarker, fixIEMlb, LPSolver)
+% ..    - 2021 Ines Thiele, tests only for biomarker if the reaction exists in the WBM model
 
 if ~exist('minRxnsFluxHealthy','var')
     minRxnsFluxHealthy = 0.75;

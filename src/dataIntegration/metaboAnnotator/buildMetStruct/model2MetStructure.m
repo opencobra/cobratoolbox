@@ -1,27 +1,41 @@
-function [metabolite_structure,tableMappingOverview,TableIDs] = model2MetStructure(filename,filetype,outputFileName, metabolite_structure_rBioNet)
-% This function populates metabolites present in a model structure with
-% metabolite identifiers, using the MetaboAnnotator.
+function [metabolite_structure, tableMappingOverview, TableIDs] = model2MetStructure(filename, filetype, outputFileName, metabolite_structure_rBioNet)
+% Populates the metabolites of a COBRA model with metabolite identifiers
 %
-% INPUT
-% filename                      Name of the metabolic reconstruction
-% filetype                      Filetype of the metabolic reconstruction to be loaded. Valid
-%                               input arguments are:'SBML', 'SimPheny','SimPhenyPlus', 'SimPhenyText',
-%                               'Matlab', 'BiGG', 'BiGGSBML' or 'Excel' (Default = 'Matlab'), see
-%                               readCbModel.m for more details.
-% outputFileName                File name under which the metabolite structure
-%                               and any other information will be saved.
-% metabolite_structure_rBioNet 
+% Populates the metabolites present in a model structure with metabolite
+% identifiers, using the MetaboAnnotator.
 %
-% OUTPUT
-% metabolite_structure          metabolite structure containing retrieved metabolite
-%                               identifiers for each metabolite in the
-%                               metabolic reconstruction
-% tableMappingOverview          Table listing the IDs and their count
-%                               before and after running the function
-% TableIDs                      Table containing the individual IDs. Same
-%                               content as in metabolite_structure
+% USAGE:
 %
-% Ines Thiele, 2020/2021
+%    [metabolite_structure, tableMappingOverview, TableIDs] = model2MetStructure(filename, filetype, outputFileName, metabolite_structure_rBioNet)
+%
+% INPUTS:
+%    filename:                        name of the metabolic reconstruction to
+%                                     load
+%    filetype:                        filetype of the metabolic reconstruction;
+%                                     valid arguments are 'SBML', 'SimPheny',
+%                                     'SimPhenyPlus', 'SimPhenyText', 'Matlab',
+%                                     'BiGG', 'BiGGSBML' or 'Excel'
+%                                     (default: 'Matlab'); see `readCbModel` for
+%                                     details
+%
+% OPTIONAL INPUTS:
+%    outputFileName:                  file name under which the metabolite
+%                                     structure and other information are saved
+%    metabolite_structure_rBioNet:    rBioNet metabolite structure; loaded from
+%                                     met_strc_rBioNet_new if not provided
+%
+% OUTPUTS:
+%    metabolite_structure:            metabolite structure containing retrieved
+%                                     identifiers for each metabolite in the
+%                                     reconstruction
+%    tableMappingOverview:            table listing the identifiers and their
+%                                     counts before and after running the
+%                                     function
+%    TableIDs:                        table containing the individual
+%                                     identifiers, same content as in
+%                                     metabolite_structure
+%
+% .. Author: - Ines Thiele, 2020/2021
 
 % load precomputed rBioNetStructure
 if ~exist('metabolite_structure_rBioNet','var')

@@ -5,7 +5,12 @@ function model = changeCOBRAVariable(model, variableID, varargin)
 %    model = changeCOBRAVariable(model, variableID, varargin)
 %
 % INPUTS:
-%    model:             model structure
+%    model:             COBRA model structure with fields:
+%
+%                         * .evars - additional (non-reaction) variable
+%                           identifiers, used to resolve `variableID`; the
+%                           matching `evar<Property>` fields (e.g. evarlb,
+%                           evarub, evarc) are updated in place
 %    variableID:        The ID of the variable (or the index in the
 %                       evars field) 
 % 
@@ -19,7 +24,7 @@ function model = changeCOBRAVariable(model, variableID, varargin)
 % OUTPUT:
 %    model:         model with modified variable
 %
-% Author: Thomas Pfau, Oct 2018
+% .. Author: - Thomas Pfau, Oct 2018
 
 
 parser = inputParser();

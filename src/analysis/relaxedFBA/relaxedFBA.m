@@ -22,7 +22,7 @@ function [solution, relaxedModel] = relaxedFBA(model, param)
 %    model:          COBRA model structure with the fields:
 %                      * .S
 %                      * .b
-%                      * .ub
+%                      * .lb
 %                      * .ub
 %                      * .mets  (required if model.SIntRxnBool absent)
 %                      * .rxns  (required if model.SIntRxnBool absent)
@@ -34,6 +34,17 @@ function [solution, relaxedModel] = relaxedFBA(model, param)
 %                      * .d
 %                      * .dsense
 %                      * .SIntRxnBool
+%                      * .c - linear objective coefficients
+%                      * .A - constraint matrix used in place of .S for a generic LP problem
+%                      * .rxnNames - reaction descriptions
+%                      * .metNames - metabolite descriptions
+%                      * .SConsistentRxnBool - boolean, true for stoichiometrically consistent reactions
+%                      * .SExtRxnBool - boolean, true for external reactions
+%                      * .evars - extra variable identifiers
+%                      * .evarlb - lower bounds on extra variables
+%                      * .evarub - upper bounds on extra variables
+%                      * .evarc - objective coefficients on extra variables
+%                      * .ctrs - additional constraint identifiers
 %
 %
 %    param:    Structure optionally containing the relaxation parameters:
@@ -109,9 +120,17 @@ function [solution, relaxedModel] = relaxedFBA(model, param)
 %                        * excludedCtrs(i) = false : allow to relax steady state constraint on extra constraints i (default)
 %                        * excludedCtrs(i) = true : do not allow to relax steady state constraint on extra constraints i
 %
-%                      * .lamda - weighting on relaxation of relaxation on steady state constraints S*v = b
+%                      * .lambda - weighting on relaxation of relaxation on steady state constraints S*v = b
 %                      * .alpha - weighting on relaxation of reaction bounds
 %                      * .gamma - weighting on zero norm of fluxes
+%                      * .alpha0 - zero-norm weight on relaxation of reaction bounds
+%                      * .alpha1 - one-norm weight on relaxation of reaction bounds
+%                      * .lambda0 - zero-norm weight on relaxation of steady state constraints
+%                      * .lambda1 - one-norm weight on relaxation of steady state constraints
+%                      * .gamma0 - zero-norm weight on the reaction rate
+%                      * .gamma1 - one-norm weight on the reaction rate
+%                      * .maxUB - maximum finite upper bound used when relaxing bounds
+%                      * .minLB - minimum finite lower bound used when relaxing bounds
 %
 %                     * .nbMaxIteration - stopping criteria - number maximal of iteration (Default value = 100)
 %                     * .epsilon - stopping criteria - (Default value = 1e-6)
@@ -146,9 +165,9 @@ function [solution, relaxedModel] = relaxedFBA(model, param)
 %                      variables
 %                      * rCtrs - relaxation on steady state of extra constraints
 %
-% relaxedModel       model structure that admits a flux balance solution
+%    relaxedModel:    model structure that admits a flux balance solution
 %
-% Authors: - Hoai Minh Le, Ronan Fleming
+% .. Authors: - Hoai Minh Le, Ronan Fleming
 % .. Please cite:
 % Fleming RMT, Haraldsdottir HS, Le HM, Vuong PT, Hankemeier T, Thiele I. 
 % Cardinality optimisation in constraint-based modelling: Application to human metabolism, 2022 (submitted).  

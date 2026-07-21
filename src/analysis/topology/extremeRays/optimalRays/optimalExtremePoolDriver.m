@@ -1,3 +1,5 @@
+% Driver script that builds several small and genome-scale test models and
+% computes their extreme pools and a non-negative extreme ray basis
 clear
 % Script to test extremePathways.m
 

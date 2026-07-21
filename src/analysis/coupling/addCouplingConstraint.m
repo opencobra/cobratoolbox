@@ -4,7 +4,7 @@ function modelConstrained = addCouplingConstraint(model, rxnList, c, d, ineqSens
 %
 % USAGE:
 %
-%    modelConstrained = constrainRxnListAboveBound(model, rxnList, c, d, ineqSense)
+%    modelConstrained = addCouplingConstraint(model, rxnList, c, d, ineqSense)
 %
 % INPUTS:
 %    model:               model structure

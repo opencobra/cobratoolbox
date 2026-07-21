@@ -1,19 +1,25 @@
-function [growthOnMinimalMedium,essentialExchanges,modelPruned] = predictGrowthRequirements(model)
+function [growthOnMinimalMedium, essentialExchanges, modelPruned] = predictGrowthRequirements(model)
 % Predicts growth requirements for a genome-scale reconstruction.
 % The list of predicted essential exchanges as well as a model
 % constrained with these exchanges are returned.
 %
-% INPUT
-% model                  COBRA model structure
-% biomassReaction        String listing the biomass reaction
+% USAGE:
 %
-% OUTPUT
-% growthOnMinimalMedium  Bool if growth on defined medium yes or no
-% essentialExchanges     Exchanges that need to be open to enable growth
-% constrainedModel       Model constrained with predicted essential
-%                        exchanges
+%    [growthOnMinimalMedium, essentialExchanges, modelPruned] = predictGrowthRequirements(model)
 %
-% Almut Heinken, November 2020
+% INPUTS:
+%    model:                    COBRA model structure with fields:
+%
+%                                * .rxns - Reaction identifiers
+%                                * .lb - Lower bounds on reaction fluxes
+%
+% OUTPUTS:
+%    growthOnMinimalMedium:    Bool if growth on defined medium yes or no
+%    essentialExchanges:       Exchanges that need to be open to enable growth
+%    modelPruned:              Model constrained with predicted essential
+%                              exchanges
+%
+% .. Author: - Almut Heinken, November 2020
 
 tol=1e-6;
 

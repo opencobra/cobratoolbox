@@ -10,8 +10,16 @@ function [output] = scoreC13Fit(flux, expdata, model, namesset, method)
 %
 % INPUTS:
 %    flux:        flux vector
-%    expdata:     experimental data structure
-%    model:       model structure
+%    expdata:     experimental data structure with fields:
+%
+%                   * .std2 - measurement standard deviation used to normalise the error
+%                   * .fragments - structure of measured metabolite fragments, one field per fragment
+%                   * .input - substrate label distribution in cumomer format (used by method 1)
+%                   * .inputfrag - substrate label distribution in EMU/fragment format (used by method 2)
+%    model:       model structure with fields:
+%
+%                   * .lb - `n x 1` lower flux bounds (used to test whether `flux` is a full flux vector)
+%                   * .N - basis of the null space of `S`, mapping alpha coordinates back to fluxes
 %    namesset:    set of names
 %    method:      method 1 = cumomer, method 2 = CMU
 %

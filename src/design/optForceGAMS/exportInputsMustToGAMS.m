@@ -15,8 +15,6 @@ function [] = exportInputsMustToGAMS(model, minFluxesW, maxFluxesW, constrOpt, i
 %                         * .rxns - Reaction IDs in the model
 %                         * .mets - Metabolite IDs in the model
 %                         * .S -    Stoichiometric matrix (sparse)
-%                         * .b -    RHS of `Sv = b` (usually zeros)
-%                         * .c -    Objective coefficients
 %                         * .lb -   Lower bounds for fluxes
 %                         * .ub -   Upper bounds for fluxes
 %    minFluxesW:        (double array of size `n_rxns x 1`) minimum fluxes

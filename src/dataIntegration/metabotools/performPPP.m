@@ -1,4 +1,4 @@
-function [ResultsAllCellLines] = performPPP(ResultsAllCellLines,mets,step_size,samples,step_num,direct)
+function [ResultsAllCellLines] = performPPP(ResultsAllCellLines, mets, step_size, samples, step_num, direct)
 % This function performs the a phase plane analysis. The analysis starts from zero and proceed `step_num*step_size` in the specified direction and for two exchanges.
 % the results of the analysis will be saved into `ResultsAllCellLines`.
 %

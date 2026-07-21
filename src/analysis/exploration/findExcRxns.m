@@ -6,7 +6,11 @@ function [selExc, selUpt] = findExcRxns(model, inclObjFlag, irrevFlag)
 %    [selExc, selUpt] = findExcRxns(model, inclObjFlag, irrevFlag)
 %
 % INPUT:
-%    model:          COBRA model structure
+%    model:          COBRA model structure with fields:
+%
+%                      * .S - `m x n` stoichiometric matrix
+%                      * .c - `n x 1` linear objective coefficients
+%                      * .lb - `n x 1` lower bounds on reaction fluxes
 %
 % OPTIONAL INPUTS:
 %    inclObjFlag:    Include objective `rxns` in the exchange rxn set (1) or not (0)

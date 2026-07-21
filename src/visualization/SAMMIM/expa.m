@@ -1,47 +1,83 @@
-function [model, fullmodel] = expa(model,varargin)
-% function [model fullmodel] = expaths(model,print)
-% 
-% This function finds the extreme pathways of a stoichiometric model
-% according to the algorithm by Schilling, Letscher and Palsson:
-% 
-% Schilling, C. H., Letscher, D. & Palsson, B. O. Theory for the systemic 
-% definition of metabolic pathways and their use in interpreting metabolic 
-% function from a pathway-oriented perspective. Journal of theoretical 
-% biology 203, 229–48 (2000). 
-% 
+function [model, fullmodel] = expa(model, varargin)
+% Computes the extreme pathways of a stoichiometric model according to
+% the algorithm by Schilling, Letscher and Palsson:
+%
+% Schilling, C. H., Letscher, D. & Palsson, B. O. Theory for the systemic
+% definition of metabolic pathways and their use in interpreting
+% metabolic function from a pathway-oriented perspective. Journal of
+% theoretical biology 203, 229-48 (2000).
+%
 % This algorithm is defined in appendix B of the citation above. Steps of
-% the algorithm and relevant excerpts from the paper are quoted as comments
-% throuhghout the code
-% 
-% INPUT:
-% model - model is inputed in the format used with the COBRA toolbox.
-% Minimum required fields are
-%   S - stoichiometric coefficient matrix
-%   lb - lower bound for reactions
-%   ub - upper bound for reactions
-%   rev - reversibility flag for each reaction in the model. Freely
-%       exchanged metabolites (From exchange reactions) are not determined to
-%       be so through their reversibility flag, but through non-zero upper and
-%       lower bounds. Inputs have a zero upper bound and outputs have a zero
-%       lower bound
-%   c - objective function
-%   rxns - reaction names
-% 
-% OPTIONAL INPUT
-% Print - If this input is given and is 1, 'y' or 'Y' the function prints
-% the progress of the algorithm.
-% 
-% OUTPUTS
-% fullmodel - decomposed model of original model inputed. Reversible
-%   reactions get decomposed into two forward reactions. All fields mentioned
-%   above get adjusted, as well as rules,rxnGeneMat,grRules,subSystems,
-%   confidenceScores,rxnReferences,rxnECNumbers,rxnNotes,rxnNames. These are
-%   commonly used COBRA fields. most importantly, a matrix P is added as a
-%   field and corresponds to the extreme pathways.
-% model - the model outputted matches the original model inputed. This is a
-%   collapsed version of the 'fullmodel' output, where the reversible
-%   reactions that had been decomposed are combined again. The extreme
-%   pathways are combined as absolute value.
+% the algorithm and relevant excerpts from the paper are quoted as
+% comments throughout the code.
+%
+% USAGE:
+%
+%    [model, fullmodel] = expa(model, varargin)
+%
+% INPUTS:
+%    model:           Model in the format used with the COBRA Toolbox.
+%                     Minimum required fields:
+%
+%                       * .S - Stoichiometric coefficient matrix
+%                       * .lb - Lower bound for reactions
+%                       * .ub - Upper bound for reactions
+%                       * .rev - Reversibility flag for each reaction.
+%                         Freely exchanged metabolites (from exchange
+%                         reactions) are not determined to be so through
+%                         their reversibility flag, but through
+%                         non-zero upper and lower bounds. Inputs have a
+%                         zero upper bound and outputs have a zero lower
+%                         bound
+%                       * .c - Objective function
+%                       * .rxns - Reaction names
+%                       * .mets - Metabolite identifiers (used to count
+%                         metabolites that lack an unconstrained
+%                         exchange flux)
+%                       * .fluxtype - (assigned internally) `x`
+%                         (exchange) or `i` (internal) flux type
+%                         computed for each reaction
+%                       * .rules - (optional) reordered/pruned to match
+%                         the decomposed reaction list, if present
+%                       * .rxnGeneMat - (optional) reordered/pruned to
+%                         match the decomposed reaction list, if present
+%                       * .grRules - (optional) reordered/pruned to
+%                         match the decomposed reaction list, if present
+%                       * .subSystems - (optional) reordered/pruned to
+%                         match the decomposed reaction list, if present
+%                       * .confidenceScores - (optional) reordered/
+%                         pruned to match the decomposed reaction list,
+%                         if present
+%                       * .rxnReferences - (optional) reordered/pruned
+%                         to match the decomposed reaction list, if
+%                         present
+%                       * .rxnECNumbers - (optional) reordered/pruned
+%                         to match the decomposed reaction list, if
+%                         present
+%                       * .rxnNotes - (optional) reordered/pruned to
+%                         match the decomposed reaction list, if present
+%                       * .rxnNames - (optional) reordered/pruned to
+%                         match the decomposed reaction list, if present
+%                       * .P - (added by this function) matrix of
+%                         extreme pathways
+%
+% OPTIONAL INPUTS:
+%    varargin:        varargin{1} (`print`) - If given and equal to
+%                     `1`, `y`, or `Y`, the function prints the
+%                     progress of the algorithm
+%
+% OUTPUTS:
+%    fullmodel:       Decomposed model of the original model input.
+%                     Reversible reactions get decomposed into two
+%                     forward reactions. All fields mentioned above get
+%                     adjusted, and a matrix `P`, corresponding to the
+%                     extreme pathways, is added as a field
+%    model:           The model output matches the original model
+%                     input. This is a collapsed version of the
+%                     `fullmodel` output, where the reversible
+%                     reactions that had been decomposed are combined
+%                     again. The extreme pathways (field `P`) are
+%                     combined as absolute value
 
 if nargin > 1 && (varargin{1} == 'y' || varargin{1} == 'Y' || varargin{1} == 1)
     print = 1;

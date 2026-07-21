@@ -8,11 +8,11 @@ function dist = KLDis(P, Q)
 %    dist = KLDis(P, Q)
 %
 % INPUTS:
-%    P =  n x nbins
-%    Q =  1 x nbins or n x nbins(one to one)
+%    P:       `n x nbins`, first probability distribution
+%    Q:       `1 x nbins` or `n x nbins` (one to one), second probability distribution
 %
 % OUTPUTS:
-%    dist = n x 1
+%    dist:    `n x 1` Kullback-Leibler distance for each row
 %
 % .. Author:
 %       - Nima Razavi

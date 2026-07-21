@@ -1,13 +1,18 @@
 function fout = showprogress(x, whichbar)
 % showprogress shows waitbars
 %
+% USAGE:
+%
+%    fout = showprogress(x, whichbar)
+%
 % INPUTS:
-%   x:           percentage in integer (e.g.: 1 = 1%, 40 = 40%, etc.)
-%   whichbar:    caption
-%   varagin:     see waitbar header for explanation
+%    x:           percentage in integer (e.g.: 1 = 1%, 40 = 40%, etc.)
+%
+% OPTIONAL INPUTS:
+%    whichbar:    caption passed to the underlying waitbar/textprogressbar
 %
 % OUTPUT:
-%   fout:        handle output from waitbar() (WAITBAR_TYPE = 1)
+%    fout:        handle output from waitbar() (WAITBAR_TYPE = 1)
 %
 % .. Author:
 %        - Lemmer El Assal (Feb 2017)

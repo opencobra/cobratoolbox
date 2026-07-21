@@ -1,8 +1,34 @@
-function [metabolite_structure,IDsAdded] = parseBiggID4VMH(metabolite_structure,startSearch,endSearch,grebMoreIDs)
-% the problem is that by chance Bigg and VMH could have the same ID but for
-% different metabolites -- I do not do any additional checks right now
-% which is dangerous (hence I do not greb more ID's by default)
-
+function [metabolite_structure, IDsAdded] = parseBiggID4VMH(metabolite_structure, startSearch, endSearch, grebMoreIDs)
+% Guess the BiGG identifier of each metabolite from its VMH id by testing the
+% BiGG website, and add it when a valid page exists. Note that a BiGG and a VMH
+% id may coincide by chance for different metabolites; no further check is done,
+% so additional ids are not retrieved by default.
+%
+% USAGE:
+%
+%    [metabolite_structure, IDsAdded] = parseBiggID4VMH(metabolite_structure, startSearch, endSearch, grebMoreIDs)
+%
+% INPUT:
+%    metabolite_structure:    metabolite structure whose fields are VMH
+%                             metabolite IDs, each holding a `VMHId` field
+%
+% OPTIONAL INPUTS:
+%    startSearch:             numeric index of where the search should start in
+%                             the metabolite structure (default: 1)
+%    endSearch:               numeric index of where the search should end in
+%                             the metabolite structure (default: last metabolite)
+%    grebMoreIDs:             if true (1), also retrieve additional identifiers
+%                             (InChIKey, HMDB, MetaNetX, KEGG, BioCyc, Reactome,
+%                             ChEBI) from the BiGG page (default: 0)
+%
+% OUTPUTS:
+%    metabolite_structure:    metabolite structure updated with the matched BiGG
+%                             identifier and any additional identifiers
+%    IDsAdded:                cell array logging the added identifiers, with the
+%                             metabolite field name, the identifier type, and
+%                             the assigned identifier per row
+%
+% .. Author: - Ines Thiele
 
 if ~exist('grebMoreIDs','var')
     grebMoreIDs = 0;

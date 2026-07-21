@@ -1,17 +1,43 @@
-function [model] = populateModelMetStr(model, metabolite_structure,replaceAllHits)
-% This function populates the model structure with information contained in
-% the metabolite structure
+function [model] = populateModelMetStr(model, metabolite_structure, replaceAllHits)
+% Populates a COBRA model with information from the metabolite structure
 %
-% INPUT
-% model                     model structure
-% metabolite_structure      metabolite structure
-% replaceAllHits            replace existing entries (defaul: false)
+% Populates the model structure with the metabolite information contained in
+% the metabolite structure, mapping metabolite-structure fields onto the
+% corresponding COBRA model metabolite annotation fields.
 %
-% OUTPUT
-% model                     updated model structure
+% USAGE:
 %
+%    [model] = populateModelMetStr(model, metabolite_structure, replaceAllHits)
 %
-% Ines Thiele 10/2021
+% INPUTS:
+%    model:                   COBRA model structure with the fields:
+%
+%                               * .mets - metabolite identifiers, matched
+%                                 against the metabolite structure
+%                               * .metSBOTerms - SBO term per metabolite
+%                               * .metChEBIID - ChEBI identifiers
+%                               * .metPubChemID - PubChem identifiers
+%                               * .metKEGGID - KEGG identifiers
+%                               * .metHMDBID - HMDB identifiers
+%                               * .metSEEDID - SEED identifiers
+%                               * .metInchiKey - InChIKey per metabolite
+%                               * .metReactomeID - Reactome identifiers
+%                               * .metMetaNetXID - MetaNetX identifiers
+%                               * .metBioCycID - BioCyc identifiers
+%                               * .metBiGGID - BiGG identifiers
+%                               * .metInchiString - InChI string per metabolite
+%                               * .metLIPIDMAPSID - LIPID MAPS identifiers
+%                               * .metSmile - SMILES string per metabolite
+%    metabolite_structure:    metabolite structure
+%
+% OPTIONAL INPUT:
+%    replaceAllHits:          replace existing entries (default: false)
+%
+% OUTPUT:
+%    model:                   updated model structure
+%
+% .. Author: - Ines Thiele, 10/2021
+
 if ~exist('replaceAllHits','var')
     replaceAllHits = 0;
 end

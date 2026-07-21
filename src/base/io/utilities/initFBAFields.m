@@ -1,10 +1,10 @@
-function [ model ] = initFBAFields( model, printLevel )
+function [model] = initFBAFields(model, printLevel)
 % This function initializes all fields in a model that are required for
 % downstream FBA analysis. It does so if and only if a Stoichiometric
-% matrix S is provided. 
+% matrix S is provided.
 %
 % USAGE:
-%    model = convertOldStyleModel(model, printLevel)
+%    model = initFBAFields(model, printLevel)
 %
 % INPUT:
 %    model:         a COBRA Model structure with at least the model.S field.

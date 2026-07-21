@@ -3,7 +3,20 @@ function V = LP10cvx(K, P, model, epsilon)
 %
 % USAGE:
 %
-%    V = LP9cvx(K, P, model, epsilon)
+%    V = LP10cvx(K, P, model, epsilon)
+%
+% INPUTS:
+%    K:          indices of active core reactions to keep active
+%    P:          indices of non-core reactions whose activity is minimised
+%    model:      COBRA model structure with fields:
+%
+%                  * .S - `m x n` stoichiometric matrix
+%                  * .lb - `n x 1` lower flux bounds
+%                  * .ub - `n x 1` upper flux bounds
+%    epsilon:    smallest flux value that is considered nonzero
+%
+% OUTPUT:
+%    V:          flux vector minimising the activity of the non-core reactions
 %
 % .. Authors: - Nikos Vlassis, Maria Pires Pacheco, Thomas Sauter, 2013 LCSB / LSRU, University of Luxembourg
 

@@ -7,13 +7,17 @@ function rxnFBS = diffexprs2rxnFBS(model, diff_exprs, Vref, varargin)
 %    rxnFBS = diffexprs2rxnFBS(model, diff_exprs, Vref, 'SeparateTranscript', '', 'logFC', 0, 'pval',0.05)
 %
 % INPUT:
-%    model:             The COBRA Model structure
+%    model:             The COBRA Model structure with fields:
+%
+%                          * .genes - gene identifiers
+%                          * .grRules - gene-reaction association rules
 %    diff_exprs:        MATLAB Table including the information of the
-%                       differentially expressed genes.
-%                       Required columns (with theses names):
-%                           - gene ( ID of gene, same as in the meabolic model)
-%                           - logFC (SOURCE VS TARGET)
-%                           - pval (p-value or adjusted-p-value)
+%                       differentially expressed genes, with columns:
+%
+%                           * .gene - ID of gene, same as in the metabolic model
+%                           * .logFC - log2 fold change (SOURCE VS TARGET)
+%                           * .pval - p-value or adjusted-p-value
+%                           * .transcript - transcript ID (added when SeparateTranscript is set)
 %    Vref:              Reference flux of the model
 %
 % OPTIONAL INPUTS:

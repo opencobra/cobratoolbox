@@ -1,26 +1,30 @@
-function [metabolite_structure] = getMissingHMDBMolForm(metabolite_structure,molFileDirectory,retrievePotHMDB,startSearch,endSearch)
-% This function uses getMolFileFromHMDB.m to obtain mol files for those
-% metabolite structure entries that have hmdb id's specified. It also has
-% the option find novel hmdb entries by querying hmdb for the metabolite
-% names. Only perfect matches are considered. See retrievePotHitsHMDB.m for
-% more details.
+function [metabolite_structure] = getMissingHMDBMolForm(metabolite_structure, molFileDirectory, retrievePotHMDB, startSearch, endSearch)
+% Obtains mol files for metabolite structure entries that have HMDB IDs
 %
-% INPUT
-% metabolite_structure  metabolite structure
-% molFileDirectory      directory where mol files should be stored
-% retrievePotHMDB       default: true (attention: this could be time
-%                       consuming)
-% startSearch           specify where the search should start in the
-%                       metabolite structure. Must be numeric (optional, default: all metabolites
-%                       in the structure will be search for)
-% endSearch             specify where the search should end in the
-%                       metabolite structure. Must be numeric (optional, default: all metabolites
-%                       in the structure will be search for)
+% Uses getMolFileFromHMDB.m to obtain mol files for entries with HMDB IDs, and
+% can optionally search HMDB by metabolite name to find new HMDB entries (only
+% perfect matches are considered). See retrievePotHitsHMDB.m for more details.
 %
-% OUTPUT
-% metabolite_structure  updated metabolite structure
+% USAGE:
 %
-% Ines Thiele 09/21
+%    [metabolite_structure] = getMissingHMDBMolForm(metabolite_structure, molFileDirectory, retrievePotHMDB, startSearch, endSearch)
+%
+% INPUTS:
+%    metabolite_structure:    Metabolite structure
+%    molFileDirectory:        Directory where the mol files should be stored
+%
+% OPTIONAL INPUTS:
+%    retrievePotHMDB:         If 1 (default), also query HMDB by metabolite name
+%                             to find new HMDB entries (this can be time consuming)
+%    startSearch:             Numeric index where the search starts in the
+%                             metabolite structure (default: 1)
+%    endSearch:               Numeric index where the search ends in the
+%                             metabolite structure (default: all metabolites)
+%
+% OUTPUTS:
+%    metabolite_structure:    Updated metabolite structure
+%
+% .. Author: - Ines Thiele 09/21
 
 if ~exist('retrievePotHMDB','var')
     retrievePotHMDB = 1;

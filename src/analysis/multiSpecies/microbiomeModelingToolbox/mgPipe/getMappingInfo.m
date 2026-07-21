@@ -4,30 +4,32 @@ function [reac, exMets, micRea, binOrg, patOrg, reacPat, reacNumb, reacSet, reac
 %
 % USAGE:
 %
-%    [reac, exMets, micRea, binOrg, patOrg, reacPat, reacNumb, reacSet, reacTab, reacAbun, reacNumber] = getMappingInfo(modPath, organisms, abunFilePath, patNumb)
+%    [reac, exMets, micRea, binOrg, patOrg, reacPat, reacNumb, reacSet, reacTab, reacAbun, reacNumber] = getMappingInfo(modPath, organisms, abunFilePath)
 %
 % INPUTS:
-%   organisms:         nx1 cell array cell array with names of organisms in the study
-%   modPath:           char with path of directory where models are stored
-%   abunFilePath:      char with path and name of file from which to retrieve abundance information
-%   patNumb:           number of individuals in the study
+%    organisms:         nx1 cell array cell array with names of organisms in the study
+%    modPath:           char with path of directory where models are stored
+%    abunFilePath:      char with path and name of file from which to retrieve abundance information
 %
 % OUTPUTS:
-%   reac:              cell array with all the unique set of reactions
-%                      contained in the models
-%   exMets:            cell array with all unique extracellular metabolites
-%                      contained in the models
-%   micRea:            binary matrix assessing presence of set of unique
-%                      reactions for each of the microbes
-%   binOrg:            binary matrix assessing presence of specific strains in
-%                      different individuals
-%   reacPat:           matrix with number of reactions per individual
-%                      (organism resolved)
-%   reacSet:           matrix with names of reactions of each individual
-%   reacTab:           char with names of individuals in the study
-%   reacAbun:          binary matrix with presence/absence of reaction per
-%                      individual: to compare different individuals
-%   reacNumber:        number of unique reactions of each individual
+%    reac:              cell array with all the unique set of reactions
+%                       contained in the models
+%    exMets:            cell array with all unique extracellular metabolites
+%                       contained in the models
+%    micRea:            binary matrix assessing presence of set of unique
+%                       reactions for each of the microbes
+%    binOrg:            binary matrix assessing presence of specific strains in
+%                       different individuals
+%    patOrg:            vector with the number of organisms present in each
+%                       individual
+%    reacPat:           matrix with number of reactions per individual
+%                       (organism resolved)
+%    reacNumb:          number of reactions in each microbe model
+%    reacSet:           matrix with names of reactions of each individual
+%    reacTab:           char with names of individuals in the study
+%    reacAbun:          binary matrix with presence/absence of reaction per
+%                       individual: to compare different individuals
+%    reacNumber:        number of unique reactions of each individual
 %
 % .. Author: Federico Baldini 2017-2018
 

@@ -6,7 +6,12 @@ function [rxnInLoops, N, loopInfo] = findMinNull(model, formulation, varargin)
 %    [rxnInLoops, N, loopInfo] = findMinNull(model, formulation, parameters)
 %
 % INPUT:
-%    model:               COBRA model structure
+%    model:               COBRA model structure with fields:
+%
+%                           * .S - `m x n` stoichiometric matrix
+%                           * .rxns - `n x 1` cell array of reaction identifiers
+%                           * .lb - `n x 1` lower flux bounds
+%                           * .ub - `n x 1` upper flux bounds
 %
 % OPTIONAL INPUTS:
 %    formulation:         1: solve the MILP problem for a minimal null-space basis 
@@ -22,14 +27,15 @@ function [rxnInLoops, N, loopInfo] = findMinNull(model, formulation, varargin)
 %                         rxnInLoops(j, 2) = true => forward direction of rxn j in loops
 %    N:                   Minimal feasible null-space matrix for internal cycles
 %    loopInfo:            structure containing the following parameters/information:
-%                         *.M:          the bound for minimum/maximum flux 
-%                         *.minFlux:    minimum flux required for a reaction to be active
-%                         *.ignoreRxns: rxns with small coefficients that are prechecked 
-%                                       before solving the MILP to avoid numerical issues
-%                         *.nsTime:      wall time for finding the null-space
-%                         *.nsCPU:      CPU time for finding the null-space
-%                         *.loopPreprocessCPU:  CPU time for finding the directions of reactions participating in loops
-%                         *.loopPreprocessTime: wall time for finding the directions of reactions participating in loops
+%
+%                           * .M - the bound for minimum/maximum flux
+%                           * .minFlux - minimum flux required for a reaction to be active
+%                           * .ignoreRxns - rxns with small coefficients that are prechecked
+%                             before solving the MILP to avoid numerical issues
+%                           * .nsTime - wall time for finding the null-space
+%                           * .nsCPU - CPU time for finding the null-space
+%                           * .loopPreprocessCPU - CPU time for finding the directions of reactions participating in loops
+%                           * .loopPreprocessTime - wall time for finding the directions of reactions participating in loops
 
 if nargin < 2 || isempty(formulation)
 	formulation = 1;

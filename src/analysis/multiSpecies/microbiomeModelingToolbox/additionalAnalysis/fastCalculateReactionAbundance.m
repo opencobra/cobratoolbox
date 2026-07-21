@@ -1,13 +1,13 @@
-function [ReactionAbundance,ReactionPresence] = fastCalculateReactionAbundance(abundancePath, modelPath, rxnsList, numWorkers)
+function [ReactionAbundance, ReactionPresence] = fastCalculateReactionAbundance(abundancePath, modelPath, rxnsList, numWorkers)
 % Part of the Microbiome Modeling Toolbox. This function calculates and
 % plots the total abundance of reactions of interest in a given microbiome
 % sample based on the strain-level composition.
 % Reaction presence or absence in each strain is derived from the reaction content
 % of the respective AGORA model.
 %
-% USAGE
+% USAGE:
 %
-%    ReactionAbundance = fastCalculateReactionAbundance(abundancePath, modelPath, rxnsList, numWorkers)
+%    [ReactionAbundance, ReactionPresence] = fastCalculateReactionAbundance(abundancePath, modelPath, rxnsList, numWorkers)
 %
 % INPUTS:
 %    abundancePath:          Path to the .csv file with the abundance data.
@@ -23,7 +23,7 @@ function [ReactionAbundance,ReactionPresence] = fastCalculateReactionAbundance(a
 %                            all reactions are computed.
 %
 % OUTPUT:
-%    ReactionAbundance       Table with total abundance for each microbiome
+%    ReactionAbundance:      Table with total abundance for each microbiome
 %                            and reaction
 %    ReactionPresence:       Table with absolute reaction presence for
 %                            all reactions in all microbiome samples

@@ -1,28 +1,56 @@
-function [rebuiltModel] = rebuildModel(model,database,biomassReaction)
-%
-% Rebuilds a genome-scale reconstruction with Virtual Metabolic Human (VMH) 
+function [rebuiltModel] = rebuildModel(model, database, biomassReaction)
+% Rebuilds a genome-scale reconstruction with Virtual Metabolic Human (VMH)
 % metabolic and reaction nomenclature while ensuring quality control through
 % rBioNet.
 %
-% USAGE
-% [rebuiltModel] = rebuildModel(model,database)
+% USAGE:
 %
-% INPUT
-%    model            COBRA model structure
-%    database         Structure containing rBioNet reaction and metabolite
-%                     database
-% OPTIONAL INPUT
-%    biomassReaction  Biomass reaction abbreviation (if needs to be 
-%                     specified, otherwise, will be inferred automatically)
-% 
-% OUTPUT
-%    rebuiltModel  Quality-controlled COBRA model structure
+%    [rebuiltModel] = rebuildModel(model, database, biomassReaction)
 %
-% .. Authors
+% INPUTS:
+%    model:              COBRA model structure with fields:
+%
+%                          * .rxns - Reaction identifiers
+%                          * .rxnNames - Reaction names
+%                          * .grRules - Readable gene protein reaction rules
+%                          * .subSystems - Subsystem annotations
+%                          * .lb - Lower bounds
+%                          * .ub - Upper bounds
+%                          * .formulas - Reaction formula strings
+%                          * .citations - Literature citation(s) associated
+%                            with each reaction
+%                          * .comments - Free-text comment associated with
+%                            each reaction
+%                          * .rxnECNumbers - EC numbers
+%                          * .rxnKEGGID - KEGG reaction identifiers
+%                          * .rxnConfidenceScores - Reaction confidence scores
+%                          * .metPubChemID - PubChem identifiers
+%                          * .metChEBIID - ChEBI identifiers
+%                          * .metKEGGID - KEGG metabolite identifiers
+%                          * .description - provenance sub-structure
+%                            populated with `.author` and `.date` by this
+%                            function
+%    database:           Structure containing rBioNet reaction and
+%                        metabolite database, with fields:
+%
+%                          * .reactions - cell array of reaction data
+%                            (abbreviation, name, reaction formula,
+%                            reversibility flag, ..., subsystem)
+%
+% OPTIONAL INPUTS:
+%    biomassReaction:    Biomass reaction abbreviation (if needs to be
+%                        specified, otherwise, will be inferred
+%                        automatically)
+%
+% OUTPUTS:
+%    rebuiltModel:       Quality-controlled COBRA model structure
+%
+% .. Authors:
 %       - Stefania Magnusdottir, 2016
 %       - Almut Heinken, 12/2018: adapted to function.
+%
+% .. to account for older versions of AGORA
 
-% to account for older versions of AGORA
 toReplace={'EX_4hpro(e)','EX_4hpro_LT(e)';'EX_indprp(e)','EX_ind3ppa(e)';'INDPRPt2r','IND3PPAt2r';'EX_adpcbl(e','EX_adocbl(e';'H202D','H2O2D'};
 
 for i=1:size(toReplace,1)

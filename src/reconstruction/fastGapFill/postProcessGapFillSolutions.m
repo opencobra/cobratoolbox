@@ -13,8 +13,19 @@ function [AddedRxnsExtended] = postProcessGapFillSolutions(AddedRxns, model, Blo
 %    [AddedRxnsExtended] = postProcessGapFillSolutions(AddedRxns, model, BlockedRxns, IdentifyPW)
 %
 % INPUTS:
-%    AddedRxns:            Output from `fastGapFill.m`
+%    AddedRxns:            Output from `fastGapFill.m`, with fields:
+%
+%                            * .rxns - `k x 1` identifiers of the added reactions
+%                            * .rxnFormula - `k x 1` reaction formulas of the
+%                              added reactions
 %    model:                Model structure. Original model given as input into `prepareFastGapFill`
+%    BlockedRxns:          Structure of previously blocked reactions, to be
+%                          obtained from `prepareFastGapFill`, with fields:
+%
+%                            * .solvableRxns - Identifiers of the previously
+%                              blocked reactions solved by gap filling
+%                            * .solvableFormula - Reaction formulas
+%                              corresponding to `.solvableRxns`
 %    IdentifyPW:           Optional: identifies reactions that are need from
 %                          consistent model and added reactions to have flux through previously
 %                          blocked reaction, default: false
@@ -22,7 +33,18 @@ function [AddedRxnsExtended] = postProcessGapFillSolutions(AddedRxns, model, Blo
 % OUTPUT:
 %    AddedRxnsExtended:    Structure containing the information present in
 %                          `AddedRxns` along with the statistics and if desired pathways containing
-%                          the flux vectors.
+%                          the flux vectors, with additional fields:
+%
+%                            * .subSystem - Assigned reaction category (e.g.
+%                              'Metabolic reaction', transport, or exchange)
+%                              for each entry in `.rxns`
+%                            * .Stats - Counts of metabolic/transport/exchange
+%                              solutions found (`.metabolicSol`, `.transportSol`,
+%                              `.exchangeSol`)
+%                            * .solvableRxnsSol - (if `IdentifyPW`) per solved
+%                              blocked reaction, the flux vector solution
+%                            * .Problem - (if `IdentifyPW`) reactions for which
+%                              no flux-carrying solution could be identified
 %
 % .. Author: - Ines Thiele, June 2013, http://thielelab.eu
 

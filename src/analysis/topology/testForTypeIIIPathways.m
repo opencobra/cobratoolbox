@@ -7,7 +7,13 @@ function testForTypeIIIPathways(model, ListExch, filename)
 %    testForTypeIIIPathways(model, ListExch, filename)
 %
 % INPUTS:
-%    model:       COBRA model structure
+%    model:       COBRA model structure with fields:
+%
+%                   * .lb - `n x 1` lower flux bounds
+%                   * .ub - `n x 1` upper flux bounds
+%                   * .c - `n x 1` linear objective coefficients
+%                   * .rxns - `n x 1` reaction abbreviations
+%
 %    ListExch:    List of position of exchange reactions in `S` matrix
 %    filename:    name of the file
 %

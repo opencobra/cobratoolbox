@@ -11,6 +11,14 @@ function [u1, u2] = projectSVD(U1, u)
 %
 %    [u1, u2] = projectSVD(U1, u)
 %
+% INPUTS:
+%    U1:    matrix with orthonormal columns, so that `U1 U1^T` is a projector
+%    u:     vector to be projected
+%
+% OUTPUTS:
+%    u1:    projection of `u` onto the range of `U1` (`U1 U1^T u`)
+%    u2:    projection of `u` onto the orthogonal complement (`u - u1`)
+%
 % EXAMPLE:
 %
 %    [U1, D1, V1, r] = subspaceSVD(S);

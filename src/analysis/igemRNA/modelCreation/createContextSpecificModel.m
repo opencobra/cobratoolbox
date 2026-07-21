@@ -4,28 +4,29 @@ function model = createContextSpecificModel(modelPath, trDataPath, mediumDataPat
 %
 % USAGE:
 %
-%   model = deleteInactiveGenes(model, trData, trDataPath, thApproach, lowerTh, upperTh, sheetIndex, growthNotAffectingGeneDel, percentile)
+%    model = createContextSpecificModel(modelPath, trDataPath, mediumDataPath, growthNotAffectingGeneDel, meetMinimumReq, thApproach, lowerTh, upperTh, objective, gmAndOperation, gmOrOperation, constrAll, excludeBiomassEq, biomassId, percentile)
 %
 % INPUTS:
-%   modelPath:                     char full model filename                      
-%   trDataPath:                    char full transcriptomics data filename                      
-%   mediumDataPath:                char full medium data filename                        
-%   growthNotAffectingGeneDel:     double (1 or 0) check if grRatio equals 1
-%                                  after gene deletion compared to wildtype 
-%   thApproach:                    double thresholding approach index (1-GT1, 2-LT1, 3-LT2) 
-%   lowerTh:                       double lower global threshold value
-%   upperTh:                       double upper global threshold value (required for LT2) 
-%   objective:                     char 
-%   gmAndOperation:                char (MIN, GM)
-%   gmOrOperation:                 char (MAX, SUM)
-%   constrAll:                     double (1 or 0)
-%   excludeBiomassEq:              double (1 or 0) 
-%   biomassId:                     char 
-%   percentile:                    double (1 or 0) bool option to convert
-%                                  thresholds to percentile value 
+%    modelPath:                    char full model filename
+%    trDataPath:                   char full transcriptomics data filename
+%    mediumDataPath:               char full medium data filename
+%    growthNotAffectingGeneDel:    double (1 or 0) check if grRatio equals 1
+%                                  after gene deletion compared to wildtype
+%    meetMinimumReq:               double (1 or 0) whether the extracted model must meet minimum requirements
+%    thApproach:                   double thresholding approach index (1-GT1, 2-LT1, 3-LT2)
+%    lowerTh:                      double lower global threshold value
+%    upperTh:                      double upper global threshold value (required for LT2)
+%    objective:                    char
+%    gmAndOperation:               char (MIN, GM)
+%    gmOrOperation:                char (MAX, SUM)
+%    constrAll:                    double (1 or 0)
+%    excludeBiomassEq:             double (1 or 0)
+%    biomassId:                    char
+%    percentile:                   double (1 or 0) bool option to convert
+%                                  thresholds to percentile value
 %
 % OUTPUTS:
-%	model:                      extracted model
+%    model:                        extracted model
 %
 % .. Authors:
 %       - Kristina Grausa 05/16/2022

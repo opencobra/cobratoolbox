@@ -7,7 +7,10 @@ function [type, maxGrowth, maxProd, minProd] = analyzeOptKnock(model, deletions,
 %    [type, maxGrowth, maxProd, minProd] = analyzeOptKnock(model, deletions, target, biomassRxn, geneDelFlag)
 %
 % INPUTS:
-%    model:          COBRA model structure
+%    model:          COBRA model structure. Fields used directly:
+%
+%                       * .rxns - `n x 1` reaction identifiers
+%                       * .c - `n x 1` linear objective coefficients (identifies the biomass reaction)
 %    deletions:      list of reaction or gene deletions (empty if wild type)
 %    target:         the exchange reaction for the `OptKnock` target metabolite
 %

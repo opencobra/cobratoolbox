@@ -5,13 +5,17 @@ function [missingMets, presentMets, coupledMets, missingCofs, presentCofs] = bio
 %    [missingMets, presentMets, coupledMets, missingCofs, presentCofs] = biomassPrecursorCheck(model, checkCoupling, checkConservedQuantities)
 %
 % INPUT:
-%    model:             COBRA model structure
+%    model:             COBRA model structure with fields:
+%
+%                         * .S - `m x n` stoichiometric matrix
+%                         * .c - `n x 1` linear objective coefficients
+%                         * .mets - `m x 1` metabolite identifiers
 %
 % OPTIONAL INPUT:
 %    checkCoupling:     Test, whether some compounds can only be produced
 %                       if there is a sink for other biomass precursors
 %                       (Default: false)
-%    checkConservedQuantities:  true to check whether the cofactor pairs containing conserved moieties 
+%    checkConservedQuantities:    true to check whether the cofactor pairs containing conserved moieties
 %                               (defined by the network structure) can be synthesized 
 %                               (e.g., ATP, NAD, NADPH, ACCOA, AA-charged tRNA, fatty acyl-ACP). 
 %                               They will otherwise be identified as missingMets (Default: false)

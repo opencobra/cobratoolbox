@@ -1,5 +1,4 @@
 function objectiveAbbr = checkObjective(model)
-warning('checkObjective will be depreciated because the function name is a misnomer, please use printObjective instead')
 % Prints out the Stoichiometric Coefficients for each
 % Metabolite, with the name of the objective
 %
@@ -8,7 +7,12 @@ warning('checkObjective will be depreciated because the function name is a misno
 %    objectiveAbbr = checkObjective(model)
 %
 % INPUT:
-%    model:            COBRA model structure
+%    model:            COBRA model structure with fields:
+%
+%                        * .c - `n` x 1 objective coefficient vector
+%                        * .rxns - `n` x 1 cell array of reaction identifiers
+%                        * .S - `m` x `n` stoichiometric matrix
+%                        * .mets - `m` x 1 cell array of metabolite identifiers
 %
 % OUTPUT:
 %    objectiveAbbr:    Objective reaction abbreviation
@@ -17,6 +21,8 @@ warning('checkObjective will be depreciated because the function name is a misno
 %       - Ronan Fleming 22/10/2008
 %       - Thomas Pfau 15/12/2015 - Made the function compatible with sparse S matrices
 %       - Laurent Heirendt March 2017 - Compatibility with large models and conversion to table
+
+warning('checkObjective will be depreciated because the function name is a misnomer, please use printObjective instead')
 
 objRxnInd = find(model.c ~= 0);
 objectiveAbbr = model.rxns(objRxnInd);

@@ -1,43 +1,38 @@
-function mapFormatConversion(fileNameIn,inputFormat,outputFormat)
-%convert one map format into another using external tools
+function mapFormatConversion(fileNameIn, inputFormat, outputFormat)
+% Convert one metabolic map format into another using external tools
 %
-% Conversion between SBGN-ML, SBML, CellDesigner_SBML, GPML  uses:
-% https://minerva.pages.uni.lu/doc/api/15.1/converter/
-% Cite:
-% Closing the gap between formats for storing layout information in systems biology
-% David Hoksza, Piotr Gawron, Marek Ostaszewski, Jan Hasenauer, Reinhard Schneider
-% Briefings in Bioinformatics, Volume 21, Issue 4, July 2020, Pages 1249–1260, https://doi.org/10.1093/bib/bbz067
-
-% Conversion between json and others uses:
-% https://draeger-lab.github.io/EscherConverter/
-% wget https://github.com/draeger-lab/EscherConverter/releases/download/v1.2.1/EscherConverter-1.2.1.jar
-% java -jar -Xms8G -Xmx8G -Duser.language=en /home/rfleming/work/sbgCloud/code/escher/EscherConverter.jar --help
-% Cite:
-% Andreas Dräger, Devesh Khandelwal, Maria Heitmeier
-% https://github.com/draeger-lab/EscherConverter
+% Conversion between SBGN-ML, SBML, CellDesigner_SBML, GPML uses the MINERVA
+% converter API (https://minerva.pages.uni.lu/doc/api/15.1/converter/).
+% Conversion between json and the other formats uses EscherConverter
+% (https://draeger-lab.github.io/EscherConverter/).
 %
-%INPUT
-% fileName name of input file, assumed to be current directory if full
-% directory is not provided
+% USAGE:
 %
-% inputFormat: char specifing any of the following output formats
-%   SBGN-ML             
-%   SBML                
-%   CellDesigner_SBML   
-%   GPML                
-% 
-% outputFormat: char specifing any of the following output formats
-%   SBGN-ML             
-%   SBML                
-%   CellDesigner_SBML   
-%   GPML
-%   json
+%    mapFormatConversion(fileNameIn, inputFormat, outputFormat)
 %
-% USAGE EXAMPLE
-% fileName= 'iDopa_fol.sbgn';
-% inputFormat='SBGN-ML';
-% outputFormat='json';
-% mapFormatConversion(fileName,inputFormat,outputFormat)
+% INPUTS:
+%    fileNameIn:        char, name of the input file; assumed to be in the
+%                       current directory if a full path is not provided
+%    inputFormat:       char, specifying the input format; one of
+%                       `SBGN-ML`, `SBML`, `CellDesigner_SBML`, `GPML`
+%    outputFormat:      char, specifying the output format; one of
+%                       `SBGN-ML`, `SBML`, `CellDesigner_SBML`, `GPML`, `json`
+%
+% EXAMPLE:
+%
+%    fileNameIn = 'iDopa_fol.sbgn';
+%    inputFormat = 'SBGN-ML';
+%    outputFormat = 'json';
+%    mapFormatConversion(fileNameIn, inputFormat, outputFormat)
+%
+% NOTE:
+%    Please cite:
+%    Closing the gap between formats for storing layout information in
+%    systems biology. David Hoksza, Piotr Gawron, Marek Ostaszewski, Jan
+%    Hasenauer, Reinhard Schneider. Briefings in Bioinformatics, Volume 21,
+%    Issue 4, July 2020, Pages 1249-1260, https://doi.org/10.1093/bib/bbz067
+%    Andreas Draeger, Devesh Khandelwal, Maria Heitmeier,
+%    https://github.com/draeger-lab/EscherConverter
 
 [FILEPATH,NAME,EXTIN]=fileparts(fileNameIn);
 

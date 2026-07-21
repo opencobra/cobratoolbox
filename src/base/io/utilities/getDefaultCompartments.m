@@ -1,13 +1,16 @@
-function [ compSymbolList, compNameList  ] = getDefaultCompartments( )
-%GETDEFAULTCOMPARTMENTS returns the default compartment Symbols and default Compartments 
+function [compSymbolList, compNameList] = getDefaultCompartments()
+% GETDEFAULTCOMPARTMENTS returns the default compartment Symbols and default Compartments
 %
-%   USAGE:  [ compSymbolList, compNameList  ] = getDefaultCompartments( )
+% USAGE:
+%
+%    [compSymbolList, compNameList] = getDefaultCompartments()
 %
 % OUTPUT:
-%    compSymbolList:       Default symbols of compartments 
+%    compSymbolList:       Default symbols of compartments
 %    compNameList:         Names of the default compartments.
 %
-% .. Authors: Thomas Pfau May 2017
+% .. Authors: - Thomas Pfau May 2017
+
     compSymbolList = {'c','m','v','x','e','t','g','r','n','p','l','u'};
     compNameList = {'Cytoplasm','Mitochondrion','Vacuole','Peroxisome','Extracellular','Pool','Golgi','Endoplasmic_reticulum','Nucleus','Periplasm','Lysosome','Unknown'};
 

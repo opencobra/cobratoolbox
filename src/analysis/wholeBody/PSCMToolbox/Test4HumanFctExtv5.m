@@ -1,28 +1,45 @@
-function [TestSolution,TestSolutionName,TestedRxns,PercTestedRxns] = Test4HumanFctExtv4(model,test,optionSinks)
-%% function [TestSolution,TestSolutionName] = Test4HumanFct(model,test)
-% This functions test for the ~460 human functions -  I removed duplicates
+function [TestSolution, TestSolutionName, TestedRxns, PercTestedRxns] = Test4HumanFctExtv4(model, test, optionSinks)
+% Test a model for the ~460 human metabolic functions
 %
-% INPUT
-% model             model structure (Recon1, with desired in silico
-%                   condition)
-% test              possible statements: Recon1, IECori, IEC, all (default)
-%                   (choose IECori if you intend to test the IEC model OR a model that
-%                   contains lumen ('u') as compartment otw choose IEC);
-%                   all check for Recon1 and IEC
-% option            if true = set sink reactions to 0 (default, leave unchanged).
-%                   Note that all lb's of exchanges and demands will be set to 0
+% Tests a model for the ~460 human metabolic functions (duplicates removed).
+% For each function an FBA problem is solved and the optimal objective value
+% is recorded.
 %
-% OUTPUT
-% TestSolution      array containing the optimal value for the different
-%                   tests
-% TestSolutionName  array containing the names  for the different tests
+% USAGE:
 %
-% Ines Thiele, 09/05/09
-% MKA, 03/04/12 some of the reaction names have changed in newer versions of Recon1
-% and Recon2. Comment setup til line 146 if using an old version.
-% MKA, 24/05/12 finds correct EX_reactions and changes these to zero
-% IT, 07/20/12 added tests for sIEC model
-% IT 2017 more tests added
+%    [TestSolution, TestSolutionName, TestedRxns, PercTestedRxns] = Test4HumanFctExtv4(model, test, optionSinks)
+%
+% INPUTS:
+%    model:              Model structure (Recon1, with the desired in silico
+%                        condition), with fields:
+%
+%                          * .rxns - reaction identifiers
+%                          * .mets - metabolite identifiers
+%                          * .c - objective coefficients
+%    test:               Which test set to run: `Recon1`, `IECori`, `IEC`, or
+%                        `all` (default). Choose `IECori` to test the IEC model
+%                        or a model that contains lumen ('u') as a compartment,
+%                        otherwise choose `IEC`; `all` checks Recon1 and IEC
+%    optionSinks:        If true, set sink reactions to 0 (default false, leave
+%                        unchanged). Note that all lower bounds of exchanges and
+%                        demands will be set to 0
+%
+% OUTPUTS:
+%    TestSolution:        Array containing the optimal objective value for the
+%                         different tests
+%    TestSolutionName:    Array containing the names for the different tests
+%    TestedRxns:          Reactions of the original model that were active in
+%                         at least one test
+%    PercTestedRxns:      Percentage of the original model reactions that were
+%                         tested
+%
+% .. Authors:
+% ..    - Ines Thiele, 09/05/09
+% ..    - MKA, 03/04/12 some reaction names changed in newer versions of
+% ..      Recon1 and Recon2. Comment setup until line 146 if using an old version.
+% ..    - MKA, 24/05/12 finds correct EX_ reactions and changes these to zero
+% ..    - IT, 07/20/12 added tests for sIEC model
+% ..    - IT, 2017 more tests added
 
 %%
 if nargin<2

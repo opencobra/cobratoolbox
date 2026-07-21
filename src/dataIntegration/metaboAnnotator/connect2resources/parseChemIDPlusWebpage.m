@@ -1,5 +1,29 @@
-function [metabolite_structure,IDsAdded] = parseChemIDPlusWebpage(metabolite_structure,startSearch,endSearch)
-% uses unii IDs to parse
+function [metabolite_structure, IDsAdded] = parseChemIDPlusWebpage(metabolite_structure, startSearch, endSearch)
+% Retrieve identifiers from the ChemIDPlus website for each metabolite. UNII ids
+% are looked up from the metabolite InChIKey and added to the structure.
+%
+% USAGE:
+%
+%    [metabolite_structure, IDsAdded] = parseChemIDPlusWebpage(metabolite_structure, startSearch, endSearch)
+%
+% INPUT:
+%    metabolite_structure:    metabolite structure whose fields are VMH
+%                             metabolite IDs, each holding a `inchiKey` field
+%
+% OPTIONAL INPUTS:
+%    startSearch:             numeric index of where the search should start in
+%                             the metabolite structure (default: 1)
+%    endSearch:               numeric index of where the search should end in
+%                             the metabolite structure (default: last metabolite)
+%
+% OUTPUTS:
+%    metabolite_structure:    metabolite structure updated with the retrieved
+%                             identifiers
+%    IDsAdded:                cell array logging the added identifiers, with the
+%                             metabolite field name, the identifier type, and
+%                             the assigned identifier per row
+%
+% .. Author: - Ines Thiele
 
 annotationSource = 'ChemIDPlus website';
 annotationType = 'automatic';

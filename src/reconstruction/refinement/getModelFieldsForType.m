@@ -1,12 +1,14 @@
-function [matchingFields,dimensions] = getModelFieldsForType(model, type, varargin)
+function [matchingFields, dimensions] = getModelFieldsForType(model, type, varargin)
 % Get the fields in the model which are associated with the given type.
+%
 % USAGE:
+%
 %     matchingFields = getModelFieldsForType(model, type, varargin)
 %
 % INPUTS:
 %
 %    model:              the model to update
-%    type:               the Type of field to update one of 
+%    type:               the Type of field to update one of
 %                        ('rxns','mets','comps','genes','ctrs','evars','rxnName','specName')
 %
 % OPTIONAL INPUTS:
@@ -15,10 +17,10 @@ function [matchingFields,dimensions] = getModelFieldsForType(model, type, vararg
 %                     - 'fieldSize', the original size of the field (if
 %                       mets was already adjusted, this size will be used
 %                       to determine matching fields.
-%   
+%
 % OUTPUT:
 %
-%    matchingfields:   A cell array of fields associated with the
+%    matchingFields:    A cell array of fields associated with the
 %                      given type. The initial check is for the size of the field, if
 %                      multiple base fields have the same size, it is
 %                      assumed, that fields named e.g. rxnXYZ are
@@ -28,13 +30,14 @@ function [matchingFields,dimensions] = getModelFieldsForType(model, type, vararg
 %    dimensions:       The dimension associated with the given type in the
 %                      given field. matchingField(X) is matching to type in
 %                      dimenion(X)
-% .. Authors: 
-%                   - Thomas Pfau June 2017, adapted to merge all fields.
+%
+% NOTE:
+%    rxnName and specName refer to a map field; see
+%    https://github.com/opencobra/cobratoolbox/blob/master/docs/source/notes/simpleMATLABStructure.md
+%
+% .. Authors:
+%       - Thomas Pfau June 2017, adapted to merge all fields.
 
-
-
-%rxnName, specName, refer to a map field
-%https://github.com/opencobra/cobratoolbox/blob/master/docs/source/notes/simpleMATLABStructure.md
 PossibleTypes = {'rxns','mets','comps','genes','evars','ctrs','rxnName','specName','molAlias'};
 
 parser = inputParser();

@@ -1,24 +1,24 @@
-function combineFluxResults(directory1,directory2,resultdirectory,set_regexp)
+function combineFluxResults(directory1, directory2, resultdirectory, set_regexp)
 % This function merges & prunes the FBA solutions between two runs of the 
 % optimiseRxnMultipleWBMs.m function. Reaction fluxes, FBA statistics, & 
 % shadow prices get therefore concatenated. Note that in case the sample 
 % filenames differ from the standard, the regular expression needs to be adapted.
 %
 % USAGE:
-%       [dietInfo, dietGrowthStats] = ensureHMfeasibility(hmDirectory, Diet)
 %
-% INPUTS
-% directory1            [char array] Directory to flux solutions from the first run
-% directory2            [char array] Directory to flux solutions from the second run
-% resultdirectory       [char array] Directory to empty folder where the combined fluxes
-%                       will be saved. 
+%    combineFluxResults(directory1, directory2, resultdirectory, set_regexp)
 %
-% OPTIONAL INPUT
-% set_regexp            [char array] Specifying alternative regular expression in case
-%                       the sample filenames are different from their style 
-%                       than the standard optimiseRxnMultipleWBMs.m output.
+% INPUTS:
+%    directory1:         [char array] directory to flux solutions from the first run
+%    directory2:         [char array] directory to flux solutions from the second run
+%    resultdirectory:    [char array] directory to the empty folder where the combined
+%                        fluxes will be saved
 %
-% Authors:  
+% OPTIONAL INPUTS:
+%    set_regexp:         [char array] alternative regular expression for when the sample
+%                        filenames differ from the standard optimiseRxnMultipleWBMs.m output
+%
+% .. Authors:
 %   - Tim Hensen, 2024
 %   - modified by Jonas Widder, 10/2024 & 11/2024 (function can now also merge dirs
 %     with unequal number of samples + added set_regexp option)

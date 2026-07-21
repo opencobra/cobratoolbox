@@ -1,44 +1,54 @@
-function [involvedRxns,involvedMets,deadEnds,deadRxns]=bio_draw_by_met(model,metAbbr,drawMap,radius,direction,excludeMets,flux,save,closev)
-% bio_draw_by_met.m
-% Script of the Paint4Net to define the scope of visualization by a
-% metabolite
+function [involvedRxns, involvedMets, deadEnds, deadRxns] = bio_draw_by_met(model, metAbbr, drawMap, radius, direction, excludeMets, flux, save, closev)
+% Defines the visualisation scope from a starting metabolite (Paint4Net).
+%
 % USAGE:
-% function [involvedRxns,involvedMets,deadEnds,deadRxns]=bio_draw_by_met(model,metAbbr,drawMap,radius,direction,excludeMets,flux,save,closev)
+%
+%    [involvedRxns, involvedMets, deadEnds, deadRxns] = bio_draw_by_met(model, metAbbr, drawMap, radius, direction, excludeMets, flux, save, closev)
 %
 % INPUTS:
+%    model:          COBRA model structure with fields:
 %
-% model - COBRA Toolbox model
-% metAbbr - a cell type variable that can take a value that represents the
-%       abbreviation of a metabolite in the COBRA model. This metabolite is
-%       the start point for visualization.
+%                      * .S - `m x n` stoichiometric matrix
+%    metAbbr:        Cell array containing the abbreviation of a metabolite in
+%                    the COBRA model. This metabolite is the starting point
+%                    for visualisation.
 %
-% OPTIONAL INPUT:
+% OPTIONAL INPUTS:
+%    drawMap:        Logical indicating whether to visualise the COBRA model.
 %
-% drawMap - a logical type variable that can take value of true or false
-%       (default is false) indicating whether to visualize the COBRA model or not.
-% radius - a double type variable that can take a value of natural numbers
-%       (1,2,3n). The argument radius indicates the depth of an analysis
-%       of the initial metabolite.
-% direction - a string type variable that can take value of 'struc', 'sub',
-%       'prod' or 'both' (default is 'struc').
-% excludeMets - a list of metabolites (default is empty) that will be excluded
-%       from the visualization map.
-% flux - a double type Nx1 size vector of fluxes of reactions where N is number
-%       of reactions (default is empty, meaning no flux data provided).
-% save - a boolean type variable that can take value of true or false
-%       (default is false) indicating whether to automatically save visualization as jpeg file or not.
-% closev - a boolean type variable that can take value of true or false
-%       (default is false) indicating whether to close the biograph viewer
-%       window or not after the visualization.
+%                    Default: false
+%    radius:         Positive integer (1, 2, 3, ...) defining the search depth
+%                    from `metAbbr`.
 %
-% OUTPUT
+%                    Default: 1
+%    direction:      Direction used by the algorithm. Allowed values are
+%                    `struc`, `sub`, `prod`, or `both`.
 %
-% involvedRxns - a cell type vector that contains a list of the involved reactions.
-% involvedMets - a cell type vector that contains a list of the involved metabolites.
-% deadEnds - a cell type vector that contains a list of the dead end metabolites.
-% deadRxns - a cell type vector that contains a list of dead end reactions.
+%                    Default: 'struc'
+%    excludeMets:    Cell array of metabolite abbreviations to exclude from the
+%                    visualisation map.
 %
-% ..Author: -Andrejs Kostromins 04/10/2012 E-mail: andrejs.kostromins@gmail.com
+%                    Default: empty
+%    flux:           `nRxns x 1` vector of reaction fluxes, where `nRxns` is
+%                    the number of reactions in the model.
+%
+%                    Default: empty (no flux data provided)
+%    save:           Boolean indicating whether to save the visualisation
+%                    automatically as a JPEG file.
+%
+%                    Default: false
+%    closev:         Boolean indicating whether to close the biograph viewer
+%                    window after visualisation.
+%
+%                    Default: false
+%
+% OUTPUTS:
+%    involvedRxns:    Cell array containing the list of involved reactions.
+%    involvedMets:    Cell array containing the list of involved metabolites.
+%    deadEnds:       Cell array containing the list of dead-end metabolites.
+%    deadRxns:       Cell array containing the list of dead-end reactions.
+%
+% .. Author: - Andrejs Kostromins, 04/10/2012, andrejs.kostromins@gmail.com
 
 % --- FIX: All nargin defaults moved to top level so they apply regardless
 %     of whether flux was supplied or not. ---
