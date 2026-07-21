@@ -290,16 +290,19 @@ end
 if ~isempty(strmatch('Excretion_EX_microbiota_LI_biomass[fe]',modelHM.rxns,'exact'))
     %%fecal microbiota
     modelHM = changeObjective(modelHM, 'Excretion_EX_microbiota_LI_biomass[fe]');
-    tic;[solutionHM,LPProblem]=solveCobraLPCPLEX(modelHM,1,0,0,[],0,'tomlab_cplex');toc
+    % Route through the COBRA LP abstraction so this module honours
+    % changeCobraSolver; feasibility and the reported status now use the
+    % canonical solution.stat (feature 015-solver-spine-hardening).
+    tic;solutionHM=solveCobraLP(modelHM);toc
     Results{cnt,1}='Excretion_EX_microbiota_LI_biomass[fe]';
-    if solutionHM.origStat ~= -1 % problem is feasible
+    if solutionHM.stat == 1 || solutionHM.stat == 3 % problem is feasible
         Results{cnt,2}=num2str(solutionHM.full(find(modelHM.c)));
         ResultsSol(:,cnt)=solutionHM.full;
-        ResultsStats(:,cnt)=solutionHM.origStat;
+        ResultsStats(:,cnt)=solutionHM.stat;
     else
         Results{cnt,2}='NaN';
         ResultsSol(:,cnt)=[];
-        ResultsStats(:,cnt)=solutionHM.origStat;
+        ResultsStats(:,cnt)=solutionHM.stat;
     end
     cnt = cnt +1;
     % set faecal secretion constraint
@@ -314,31 +317,31 @@ else
 end
 %%Test flux through Whole_body_objective_rxn
 modelHM = changeObjective(modelHM, 'Whole_body_objective_rxn');
-tic;[solutionHM,LPProblem]=solveCobraLPCPLEX(modelHM,1,0,0,[],0,LPSolver);toc
+tic;solutionHM=solveCobraLP(modelHM);toc
 Results{cnt,1}='Whole_body_objective_rxn(max)';
-if solutionHM.origStat ~= -1 % problem is feasible
+if solutionHM.stat == 1 || solutionHM.stat == 3 % problem is feasible
     Results{cnt,2}=num2str(solutionHM.full(find(modelHM.c)));
     ResultsSol(:,cnt)=solutionHM.full;
-    ResultsStats(:,cnt)=solutionHM.origStat;
+    ResultsStats(:,cnt)=solutionHM.stat;
 else
     Results{cnt,2}='NaN';
     ResultsSol(:,cnt)=[];
-    ResultsStats(:,cnt)=solutionHM.origStat;
+    ResultsStats(:,cnt)=solutionHM.stat;
 end
 cnt = cnt +1;
 LPProblem=modelHM;
 
 LPProblem.osense = 1; % minimization
-tic;[solutionHM,LPProblem]=solveCobraLPCPLEX(LPProblem,1,0,0,[],0,LPSolver);toc
+tic;solutionHM=solveCobraLP(LPProblem);toc
 Results{cnt,1}='Whole_body_objective_rxn(min)';
-if solutionHM.origStat ~= -1 % problem is feasible
+if solutionHM.stat == 1 || solutionHM.stat == 3 % problem is feasible
     Results{cnt,2}=num2str(solutionHM.full(find(LPProblem.c)));
     ResultsSol(:,cnt)=solutionHM.full;
-    ResultsStats(:,cnt)=solutionHM.origStat;
+    ResultsStats(:,cnt)=solutionHM.stat;
 else
     Results{cnt,2}='NaN';
     ResultsSol(:,cnt)=[];
-    ResultsStats(:,cnt)=solutionHM.origStat;
+    ResultsStats(:,cnt)=solutionHM.stat;
 end
 cnt = cnt +1;
 
@@ -352,16 +355,16 @@ for i = 1 : length(RxnMax)
     if ~isempty(strmatch(RxnMax{i},LPProblem.rxns,'exact'))
         LPProblemMin = changeObjective(LPProblem,RxnMax{i});
         LPProblemMin.osense = -1;
-        tic;[solutionHM,LPProblemMin]=solveCobraLPCPLEX(LPProblemMin,1,1,0,[],0,LPSolver);toc
+        tic;solutionHM=solveCobraLP(LPProblemMin);toc
         Results{cnt,1}=RxnMax{i};
-        if solutionHM.origStat ~= -1 % problem is feasible
+        if solutionHM.stat == 1 || solutionHM.stat == 3 % problem is feasible
             Results{cnt,2}=num2str(solutionHM.full(find(LPProblemMin.c)));
             ResultsSol(:,cnt)=solutionHM.full;
-            ResultsStats(:,cnt)=solutionHM.origStat;
+            ResultsStats(:,cnt)=solutionHM.stat;
         else
             Results{cnt,2}='NaN';
             ResultsSol(:,cnt)=[];
-            ResultsStats(:,cnt)=solutionHM.origStat;
+            ResultsStats(:,cnt)=solutionHM.stat;
         end
         cnt = cnt +1;
     end
@@ -372,16 +375,16 @@ for i = 1 : length(RxnMin)
     if ~isempty(strmatch(RxnMin{i},LPProblem.rxns,'exact'))
         LPProblemMin = changeObjective(LPProblem,RxnMin{i});
         LPProblemMin.osense = 1;
-        tic;[solutionHM,LPProblemMin]=solveCobraLPCPLEX(LPProblemMin,1,1,0,[],0,LPSolver);toc
+        tic;solutionHM=solveCobraLP(LPProblemMin);toc
         Results{cnt,1}=RxnMin{i};
-        if solutionHM.origStat ~= -1 % problem is feasible
+        if solutionHM.stat == 1 || solutionHM.stat == 3 % problem is feasible
             Results{cnt,2}=num2str(solutionHM.full(find(LPProblemMin.c)));
             ResultsSol(:,cnt)=solutionHM.full;
-            ResultsStats(:,cnt)=solutionHM.origStat;
+            ResultsStats(:,cnt)=solutionHM.stat;
         else
             Results{cnt,2}='NaN';
             ResultsSol(:,cnt)=[];
-            ResultsStats(:,cnt)=solutionHM.origStat;
+            ResultsStats(:,cnt)=solutionHM.stat;
         end
         cnt = cnt +1;
     end

@@ -1624,27 +1624,25 @@ lb = zeros(n,1);
 ub = ones(n,1);
 intcon = 1:n;
 
-if license('test','Optimization_Toolbox')
-    options = optimoptions('intlinprog','Display','off');
-    [x_opt, fval] = intlinprog(f, intcon, A, bvec, [], [], lb, ub, options);
-else
-    MILPproblem.A      = A;
-    MILPproblem.b      = bvec;
-    MILPproblem.c      = f;
-    MILPproblem.lb     = lb;
-    MILPproblem.ub     = ub;
-    MILPproblem.osense = 1;                       % 1 = minimise
-    MILPproblem.csense = repmat('L', size(bvec)); % A*x <= bvec
+% Route the minimum set-cover MILP through the COBRA solver abstraction so
+% this module honours changeCobraSolver (feature 015-solver-spine-hardening);
+% the former Optimization-Toolbox intlinprog fast path is removed.
+MILPproblem.A      = A;
+MILPproblem.b      = bvec;
+MILPproblem.c      = f;
+MILPproblem.lb     = lb;
+MILPproblem.ub     = ub;
+MILPproblem.osense = 1;                       % 1 = minimise
+MILPproblem.csense = repmat('L', size(bvec)); % A*x <= bvec
 
-    n = numel(f);
-    MILPproblem.vartype = repmat('C', n, 1);
-    MILPproblem.vartype(intcon) = 'I';            % integer variables
+n = numel(f);
+MILPproblem.vartype = repmat('C', n, 1);
+MILPproblem.vartype(intcon) = 'I';            % integer variables
 
-    sol = solveCobraMILP(MILPproblem, 'printLevel', 0);
+sol = solveCobraMILP(MILPproblem, 'printLevel', 0);
 
-    x_opt = sol.full;
-    fval  = sol.obj;
-end
+x_opt = sol.full;
+fval  = sol.obj;
 selectedReactions = find(x_opt > 0.5);
 
 

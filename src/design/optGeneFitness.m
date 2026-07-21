@@ -63,12 +63,10 @@ for i = 1:popsize
     % find growthrate;
 %     slnKO = optimizeCbModel(modelKO);
 %     growthrate1 = slnKO.f; %max growth rate.
-    if exist('LPBasis', 'var')
-        modelKO.LPBasis = LPBasis;
-    end
-
-    [slnKO, LPOUT] = solveCobraLPCPLEX(modelKO, 0,1);
-    LPBasis = LPOUT.LPBasis;
+    % Route through the COBRA LP abstraction so this honours changeCobraSolver
+    % (feature 015-solver-spine-hardening). The CPLEX basis warm-start reuse is
+    % dropped: it only accelerated convergence and does not change the solution.
+    slnKO = solveCobraLP(modelKO);
     growthrate = slnKO.obj;
 
 
@@ -99,12 +97,7 @@ for i = 1:popsize
 %     slnKOsetGR = optimizeCbModel(modelKOsetGR);
 %     minProdAtSetGR1 = -slnKOsetGR.f;  % This should be a negative value b/c of the minimization setup, so -1 is necessary.
 
-    if exist('LPBasis2', 'var')
-        modelKOsetGR.LPBasis = LPBasis2;
-    end
-
-    [slnKOsetGR, LPOUT2] = solveCobraLPCPLEX(modelKOsetGR, 0,1);
-    LPBasis2 = LPOUT2.LPBasis;
+    slnKOsetGR = solveCobraLP(modelKOsetGR);
     minProdAtSetGR = -slnKOsetGR.obj;
 
 

@@ -30,8 +30,7 @@ function [param, solverOnlyParams] = parseSolverParameters(problemType, varargin
 cobraSolverParameters = getCobraSolverParamsOptionsForType(problemType); % build the default Parameter Structure
 
 % set the solver Type
-eval(['global CBT_' problemType '_SOLVER;'])
-eval(['defaultSolver = CBT_' problemType '_SOLVER;']);
+defaultSolver = CobraSolverState.getSolver(problemType);
 
 % initialize the solver variables
 solverVars = cell(numel(cobraSolverParameters),1);

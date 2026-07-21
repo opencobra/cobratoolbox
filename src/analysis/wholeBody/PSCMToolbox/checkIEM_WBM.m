@@ -109,41 +109,27 @@ if ~exist('LPSolver','var')
 end
 %[solverOK, solverInstalled] = changeCobraSolver(LPSolver, 'LP');
 
-global useSolveCobraLPCPLEX
-%
+% Route through the COBRA solver abstraction (optimizeWBModel) so this module
+% honours changeCobraSolver; the former solveCobraLPCPLEX fast path is removed
+% (feature 015-solver-spine-hardening).
 cnt = 1;
 tol = 1e-6;
 
-if useSolveCobraLPCPLEX
-    [r,c] = size(model.A);
-    % dummy rxn obj
-    model.A(r+1,c+1) = -1;
-    for i = 1 : length(IEMRxns)
-        model.A(r+1,strmatch(IEMRxns{i},model.rxns,'exact')) = 1;
-    end
-    model.b(r+1) = 0;
-    model.csense(r+1)='E';
-    model.lb(c+1)=-100000;
-    model.ub(c+1)=100000;
-    model.c = zeros(size(model.A,2),1);
-    model.c(c+1) = 1;
-else
-    [r,c] = size(model.S);
-    % dummy rxn obj
-    model.S(r+1,c+1) = -1;
-    for i = 1 : length(IEMRxns)
-        model.S(r+1,strmatch(IEMRxns{i},model.rxns,'exact')) = 1;
-    end
-    model.b(r+1) = 0;
-    model.csense(r+1)='E';
-    model.lb(c+1)=-100000;
-    model.ub(c+1)=100000;
-    model.c = zeros(size(model.S,2),1);
-    model.c(c+1) = 1;
-    if isfield(model,'C')
-        %pad coupling constraints
-        model.C = [model.C, sparse(size(model.C,1),1)];
-    end
+[r,c] = size(model.S);
+% dummy rxn obj
+model.S(r+1,c+1) = -1;
+for i = 1 : length(IEMRxns)
+    model.S(r+1,strmatch(IEMRxns{i},model.rxns,'exact')) = 1;
+end
+model.b(r+1) = 0;
+model.csense(r+1)='E';
+model.lb(c+1)=-100000;
+model.ub(c+1)=100000;
+model.c = zeros(size(model.S,2),1);
+model.c(c+1) = 1;
+if isfield(model,'C')
+    %pad coupling constraints
+    model.C = [model.C, sparse(size(model.C,1),1)];
 end
 
 if reverseDirObj ==  1 % minimize obj
@@ -154,13 +140,8 @@ end
 
 % maximize joint objective in healthy model
 tic;
-if useSolveCobraLPCPLEX
-    [solution,~]=solveCobraLPCPLEX(model,1,0,0,[],0,'ILOGcomplex');
-    solution.v=solution.full;
-else
-    model.osenseStr='max';
-    solution = optimizeWBModel(model);
-end
+model.osenseStr='max';
+solution = optimizeWBModel(model);
 timeTaken=toc;
 IEMSol{cnt,1} = 'IEM Rxns All obj - Healthy';
 
@@ -198,13 +179,8 @@ if solution.stat == 1 || solution.stat == 3 %only proceed if the wild type was o
             modelIEM.lb(ismember(modelIEM.rxns,IEMRxns))=0;
         end
         tic;
-        if useSolveCobraLPCPLEX
-            [solution,~]=solveCobraLPCPLEX(modelIEM,1,0,0,[],0,'ILOGcomplex');
-            solution.v=solution.full;
-        else
-            %note model.osense set above ~line 135
-            solution = optimizeWBModel(modelIEM);
-        end
+        %note model.osense set above ~line 135
+        solution = optimizeWBModel(modelIEM);
         timeTaken=toc;
         IEMSol{cnt,1} = 'IEM Rxns All obj - Disease';
         
@@ -236,12 +212,7 @@ if solution.stat == 1 || solution.stat == 3 %only proceed if the wild type was o
             modelIEM = changeObjective(modelIEM,'Whole_body_objective_rxn');
             modelIEM.osense = -1;
             tic;
-            if useSolveCobraLPCPLEX
-                [solution,~]=solveCobraLPCPLEX(modelIEM,1,0,0,[],0,'ILOGcomplex');
-                solution.v=solution.full;
-            else
-                solution = optimizeWBModel(modelIEM);
-            end
+            solution = optimizeWBModel(modelIEM);
             timeTaken=toc;
             IEMSol{cnt,1} = 'WB obj - Disease';
             if solution.stat == 1 || solution.stat == 3
@@ -272,20 +243,14 @@ if solution.stat == 1 || solution.stat == 3 %only proceed if the wild type was o
                         model.osenseStr = 'max';
                         model.osense = -1;
                         tic;
-                        if useSolveCobraLPCPLEX
-                            [solution,~]=solveCobraLPCPLEX(model,1,0,0,[],0,'ILOGcomplex');
-                            solution.v=solution.full;
-                        else
+                        solution = optimizeWBModel(model);
+                        if solution.origStat == 3 % in the case that the solution is returned infeasible, which can happen due to numerical difficulties of the solver, remove some more digits from the constrain. This does not change the solution. Note if the function went until here the model itself is feasible as only the objective function is changed from the previous simulation.
+                            model.lb(c+1)=1000;
                             solution = optimizeWBModel(model);
-                            if solution.origStat == 3 % in the case that the solution is returned infeasible, which can happen due to numerical difficulties of the cplex solver, remove some more digits from the constrain. This does not change the solution. Note if the function went until here the model itself is feasible as only the objective function is changed from the previous simulation.
-                                model.lb(c+1)=1000;
+                            if solution.origStat == 3
+                                model.lb(c+1)=10;
                                 solution = optimizeWBModel(model);
-                                if solution.origStat == 3 % in the case that the solution is returned infeasible, which can happen due to numerical difficulties of the cplex solver, remove some more digits from the constrain. This does not change the solution. Note if the function went until here the model itself is feasible as only the objective function is changed from the previous simulation.
-                                    model.lb(c+1)=10;
-                                    solution = optimizeWBModel(model);
-                                end
                             end
-                            
                         end
                         timeTaken=toc;
                         IEMSol{cnt,1} = strcat('Healthy:',BiomarkerRxns{i,1});
@@ -305,12 +270,7 @@ if solution.stat == 1 || solution.stat == 3 %only proceed if the wild type was o
                             model.osense = 1;
                             model.osenseStr = 'min';
                             tic;
-                            if useSolveCobraLPCPLEX
-                                [solution,~]=solveCobraLPCPLEX(model,1,0,0,[],0,'ILOGcomplex');
-                                solution.v=solution.full;
-                            else
-                                solution = optimizeWBModel(model);
-                            end
+                            solution = optimizeWBModel(model);
                             timeTaken=toc;
                             if solution.stat == 1 || solution.stat == 3
                                 f = solution.v(model.c~=0);
@@ -329,18 +289,13 @@ if solution.stat == 1 || solution.stat == 3 %only proceed if the wild type was o
                         modelIEM = changeObjective(modelIEM,BiomarkerRxns{i,1});
                         modelIEM.osense = -1;
                         tic;
-                        if useSolveCobraLPCPLEX
-                            [solution,~]=solveCobraLPCPLEX(modelIEM,1,0,0,[],0,'ILOGcomplex');
-                            solution.v=solution.full;
-                        else
+                        solution = optimizeWBModel(modelIEM);
+                        if solution.origStat == 3 % in the case that the solution is returned infeasible, which can happen due to numerical difficulties of the solver, remove some more digits from the constrain. This does not change the solution. Note if the function went until here the model itself is feasible as only the objective function is changed from the previous simulation.
+                            modelIEM.lb(c+1)=1000;
                             solution = optimizeWBModel(modelIEM);
-                            if solution.origStat == 3 % in the case that the solution is returned infeasible, which can happen due to numerical difficulties of the cplex solver, remove some more digits from the constrain. This does not change the solution. Note if the function went until here the model itself is feasible as only the objective function is changed from the previous simulation.
-                                modelIEM.lb(c+1)=1000;
+                            if solution.origStat == 3
+                                modelIEM.lb(c+1)=10;
                                 solution = optimizeWBModel(modelIEM);
-                                if solution.origStat == 3 % in the case that the solution is returned infeasible, which can happen due to numerical difficulties of the cplex solver, remove some more digits from the constrain. This does not change the solution. Note if the function went until here the model itself is feasible as only the objective function is changed from the previous simulation.
-                                    modelIEM.lb(c+1)=10;
-                                    solution = optimizeWBModel(modelIEM);
-                                end
                             end
                         end
                         timeTaken=toc;
@@ -360,12 +315,7 @@ if solution.stat == 1 || solution.stat == 3 %only proceed if the wild type was o
                             % min of biomarker
                             modelIEM.osense = 1;
                             tic;
-                            if useSolveCobraLPCPLEX
-                                [solution,~]=solveCobraLPCPLEX(modelIEM,1,0,0,[],0,'ILOGcomplex');
-                                solution.v=solution.full;
-                            else
-                                solution = optimizeWBModel(modelIEM);
-                            end
+                            solution = optimizeWBModel(modelIEM);
                             timeTaken=toc;
                             if solution.stat == 1 || solution.stat == 3
                                 f = solution.v(modelIEM.c~=0);

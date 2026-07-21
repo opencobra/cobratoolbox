@@ -39,7 +39,11 @@ function MIIS = findMIIS(LPProblem, printLevel)
 % .. Author: - Marouen Ben Guebila - 24/07/2017
 
 if ~changeCobraSolver('ibm_cplex','LP',0)
-    error('This function requires IBM ILOG CPLEX');
+    % Solver island (feature 015-solver-spine-hardening): findMIIS relies on the
+    % CPLEX conflict refiner / IIS (refineConflict()), which the COBRA solver
+    % abstraction cannot currently carry. Fail identified; no fallback.
+    error('COBRA:findMIIS:requiresCplex', ...
+        'findMIIS requires IBM CPLEX (conflict refiner / IIS via refineConflict()) — install/license CPLEX. No fallback is available.');
 end
 
 if (nargin < 2)

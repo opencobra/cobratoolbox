@@ -19,7 +19,6 @@ function [val] = optGeneFitnessTilt(rxn_vector_matrix, model, targetRxn, rxnList
 %    val:                  fitness value
 
 global MaxKnockOuts
-global CBT_LP_SOLVER
 %size(rxn_vector_matrix)
 
 %rxnGeneMat is a required field for this function, so if it does not exist,
@@ -63,26 +62,16 @@ for i = 1:popsize
     % augment BOF (tilt)
     [modelKO] = augmentBOF(modelKO, targetRxn, .001);
     
-    % find growthrate
-    if exist('LPBasis', 'var')
-        modelKO.LPBasis = LPBasis;
-    end
-    
-    if ~isempty(CBT_LP_SOLVER) && strcmp(CBT_LP_SOLVER,'cplex')
-        [solKO, LPOUT] = solveCobraLPCPLEX(modelKO, 0,1);
-        LPBasis = LPOUT.LPBasis;
-        growthrate = solKO.obj;
-        [~,tar_loc] = ismember(targetRxn,modelKO.rxns);
-        minProdAtSetGR = solKO.full(tar_loc);
+    % find growthrate via the COBRA LP abstraction (optimizeCbModel already
+    % honours changeCobraSolver); the former raw solveCobraLPCPLEX fast path is
+    % removed (feature 015-solver-spine-hardening).
+    solKO = optimizeCbModel(modelKO);
+    if isempty(solKO.x)
+        continue;
     else
-        solKO = optimizeCbModel(modelKO);
-        if isempty(solKO.x)
-            continue;
-        else
-            growthrate = solKO.f;
-            [~,tar_loc] = ismember(targetRxn,modelKO.rxns);
-            minProdAtSetGR = solKO.x(tar_loc);
-        end
+        growthrate = solKO.f;
+        [~,tar_loc] = ismember(targetRxn,modelKO.rxns);
+        minProdAtSetGR = solKO.x(tar_loc);
     end
     
     % check to ensure that GR is above a certain value

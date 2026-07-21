@@ -117,36 +117,29 @@ valDef.NUMERICALEMPHASIS = 1;
 
 switch problemType
     case 'LP'
-        global CBT_LP_PARAMS
-        parametersGlobal = CBT_LP_PARAMS;
+        parametersGlobal = CobraSolverState.getParams('LP');
     case 'QP'
-        global CBT_QP_PARAMS
-        parametersGlobal = CBT_QP_PARAMS;
+        parametersGlobal = CobraSolverState.getParams('QP');
     case 'MILP'
-        global CBT_MILP_PARAMS
-        parametersGlobal = CBT_MILP_PARAMS;
+        parametersGlobal = CobraSolverState.getParams('MILP');
     case 'EP'
-        global CBT_EP_PARAMS
-        parametersGlobal = CBT_EP_PARAMS;
+        parametersGlobal = CobraSolverState.getParams('EP');
         valDef.feasTol = 1e-6; % (primal) feasibility tolerance
         valDef.optTol = 1e-6;  % (dual) optimality tolerance
         valDef.solver='mosek';
-        
+
     case 'CLP'
         % This is never used elsewhere except for parameter setting loop
         % for backward compatibility
-        global CBT_CLP_PARAMS
-        parametersGlobal = CBT_CLP_PARAMS;
+        parametersGlobal = CobraSolverState.getParams('CLP');
 
         valDef.feasTol = 1e-6; % (primal) feasibility tolerance
         valDef.optTol = 1e-6;  % (dual) optimality tolerance
         valDef.solver='mosek';
     case 'MIQP'
-        global CBT_MIQP_PARAMS
-        parametersGlobal = CBT_MIQP_PARAMS;
+        parametersGlobal = CobraSolverState.getParams('MIQP');
     case 'NLP'
-        global CBT_NLP_PARAMS
-        parametersGlobal = CBT_NLP_PARAMS;
+        parametersGlobal = CobraSolverState.getParams('NLP');
     otherwise
         display('Unrecognized solver type')
         return;

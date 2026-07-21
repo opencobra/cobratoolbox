@@ -32,9 +32,9 @@ if ~exist('LPSolver','var')
     LPSolver = 'tomlab_cplex';
 end
 
-global useSolveCobraLPCPLEX
-useSolveCobraLPCPLEX
-
+% Route through the COBRA solver abstraction (optimizeWBModel) so this module
+% honours changeCobraSolver; the former solveCobraLPCPLEX fast path is removed
+% (feature 015-solver-spine-hardening).
 [solverOK, solverInstalled] = changeCobraSolver(LPSolver, 'LP');
 
 % reset the bounds on the whole-body objective
@@ -55,14 +55,7 @@ for i  = 1 : length(OrgansListShort)
     O = strmatch(OrgansListShort{i},ObjectiveComponents);
     R = find(ismember(modelOrganEss.rxns,'Whole_body_objective_rxn'));
     M = find(ismember(modelOrganEss.mets,strcat(ObjectiveComponents{O},'_dummy_objective')));
-    if useSolveCobraLPCPLEX 
-        if ~isfield(modelOrganEss,'A')
-            error('model.A missing')
-        end
-        modelOrganEss.A(M,R)=0; % no requirement of this objective part in OF
-    else
-        modelOrganEss.S(M,R)=0; % no requirement of this objective part in OF
-    end
+    modelOrganEss.S(M,R)=0; % no requirement of this objective part in OF
     modelOrganEss = changeObjective(modelOrganEss,'Whole_body_objective_rxn');
     % set all reaction bounds in this organ to 0
     R1 = strmatch(OrgansListShort{i},modelOrganEss.rxns);
@@ -71,32 +64,18 @@ for i  = 1 : length(OrgansListShort)
     % maximize the whole-body reaction
     modelOrganEss.osenseStr = 'max';
     tic;
-    if useSolveCobraLPCPLEX
-        [FBA,~]=solveCobraLPCPLEX(modelOrganEss,1,0,0,[],0,LPSolver);
-        FBA.f=FBA.obj;
-        FBA.v=FBA.full;
-    else
-        FBA = optimizeWBModel(modelOrganEss);
-    end
+    FBA = optimizeWBModel(modelOrganEss);
     timeTaken = toc;
     fprintf('%u%s%s%s%f\n',timeTaken,' sec. ',OrgansListShort{i},' obj = ',FBA.f)
     ResultsOrganEss(i,1)=OrgansListShort(i);
     
-    if useSolveCobraLPCPLEX
-        feasible = FBA.origStat == 1 || FBA.origStat == 5;
-    else
-        feasible = FBA.stat == 1;
-    end
+    feasible = FBA.stat == 1;
     if feasible
         ResultsOrganEss{i,2}=num2str(FBA.v(modelOrganEss.c~=0)); % max
         if 0 % also compute the minimal possible flux through the objective
             modelOrganEss.osenseStr = 'min';
             tic;
-            if useSolveCobraLPCPLEX
-                [FBA,LPProblem]=solveCobraLPCPLEX(modelOrganEss,1,0,0,[],0,LPSolver);
-            else
-                FBA = optimizeWBModel(modelOrganEss);
-            end
+            FBA = optimizeWBModel(modelOrganEss);
             timeTaken = toc;
             ResultsOrganEss{i,3}=num2str(FBA.v(modelOrganEss.c)~=0);%min
         end

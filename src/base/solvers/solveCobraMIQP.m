@@ -74,6 +74,30 @@ function solution = solveCobraMIQP(MIQPproblem, varargin)
 %       - Tim Harrington 05/18/12 Added support for the Gurobi 5.0 solver
 
 
+% --- optional explicit solver state (feature 015-solver-spine-hardening, US3) ---
+% When a CobraSolverState snapshot is supplied as the name-value pair
+% 'cobraSolverState', its selection and parameters are installed into the
+% CBT_*_SOLVER / CBT_*_PARAMS globals for the duration of this solve and
+% restored on exit, so the solve is sourced from that explicit state rather
+% than the ambient globals (identical precedence: caller varargin > state >
+% defaults). Absent (default) => today's globals-driven behaviour. Detected by
+% a varargin scan and gated with exist/isempty, not nargin (constitution VII-D).
+explicitSolverState = [];
+keepStateArg = true(size(varargin));
+for stateArgIndex = 1:numel(varargin) - 1
+    if ischar(varargin{stateArgIndex}) && strcmpi(varargin{stateArgIndex}, 'cobraSolverState')
+        explicitSolverState = varargin{stateArgIndex + 1};
+        keepStateArg([stateArgIndex, stateArgIndex + 1]) = false;
+    end
+end
+varargin = varargin(keepStateArg);
+if exist('explicitSolverState', 'var') && ~isempty(explicitSolverState)
+    savedSolverState = CobraSolverState.get();
+    restoreSolverState = onCleanup(@() CobraSolverState.restore(savedSolverState));
+    CobraSolverState.restore(explicitSolverState);
+end
+% -------------------------------------------------------------------------------
+
 [cobraParams,solverParams] = parseSolverParameters('MIQP',varargin{:}); % get the solver parameters
 
 solver = cobraParams.solver;
@@ -133,21 +157,8 @@ switch solver
         x = Result.x_k;
         f = osense*Result.f_k;
         stat = Result.Inform;
-        if (stat == 1 ||stat == 101 || stat == 102)
-            solStat = 1; % Optimal
-        elseif (stat == 3 || stat == 4)
-            solStat = 0; % Infeasible
-        elseif (stat == 103)
-            solStat = 0; % Integer Infeasible
-        elseif (stat == 2 || stat == 118 || stat == 119)
-            solStat = 2; % Unbounded
-        elseif (stat == 106 || stat == 108 || stat == 110 || stat == 112 || stat == 114 || stat == 117)
-            solStat = -1; % No integer solution exists
-        elseif (stat >= 10)
-            solStat = -1; % No optimal solution found (time or other limits reached, other infeasibility problems)
-        else
-            solStat = 3; % Solution exists, but either scaling problems or not proven to be optimal
-        end
+        % native-to-canonical status translation is consolidated in mapSolverStatus
+        solStat = mapSolverStatus('tomlab_cplex', 'MIQP', stat);
             %%
     case 'gurobi_mex'
         % Free academic licenses for the Gurobi solver can be obtained from
@@ -208,18 +219,10 @@ switch solver
     	c = double(c);
         [x,f,origStat,output,y] = gurobi_mex(c,osense,sparse(A),b, ...
                                              csense,lb,ub,vartype,opts);
-        if origStat==2
-           stat = 1; % Optimal solutuion found
-        elseif origStat==3
-           stat = 0; % Infeasible
-        elseif origStat==5
-           stat = 2; % Unbounded
-        elseif origStat==4
-           stat = 0; % Gurobi reports infeasible *or* unbounded
-        else
-           stat = -1; % Solution not optimal or solver problem
-        end
-        solStat = stat;
+        % native-to-canonical status translation is consolidated in mapSolverStatus
+        solStat = mapSolverStatus('gurobi_mex', 'MIQP', origStat);
+        % keep the native code in stat so it is stored as solution.origStat
+        stat = origStat;
         
         
     case 'gurobi'
@@ -270,24 +273,19 @@ switch solver
         MIQPproblem.modelsense = MIQPproblem.osense;
         [MIQPproblem.A,MIQPproblem.rhs,MIQPproblem.obj,MIQPproblem.sense] = deal(sparse(MIQPproblem.A),MIQPproblem.b,MIQPproblem.c,MIQPproblem.csense);
         resultgurobi = gurobi(MIQPproblem,params);
-        solStat = resultgurobi.status;
-        
-        if strcmp(resultgurobi.status,'OPTIMAL')
-           stat = 1; % Optimal solution found
+        % Bug A fix: keep the native status string in stat (stored as
+        % solution.origStat) and the numeric canonical status in solStat (stored
+        % as solution.stat); these were previously swapped.
+        stat = resultgurobi.status;
+        % native-to-canonical status translation is consolidated in mapSolverStatus
+        solStat = mapSolverStatus('gurobi', 'MIQP', resultgurobi.status);
 
+        if strcmp(resultgurobi.status,'OPTIMAL')
            if exist('resultgurobi.pi')
                [x,f,y] = deal(resultgurobi.x,resultgurobi.objval,resultgurobi.pi);
            else
                [x,f] = deal(resultgurobi.x,resultgurobi.objval);
            end
-        elseif strcmp(resultgurobi.status,'INFEASIBLE')
-           stat = 0; % Infeasible
-        elseif strcmp(resultgurobi.status,'UNBOUNDED')
-           stat = 2; % Unbounded
-        elseif strcmp(resultgurobi.status,'INF_OR_UNBD')
-           stat = 0; % Gurobi reports infeasible *or* unbounded
-        else
-           stat = -1; % Solution not optimal or solver problem
         end
         %%
    case 'ibm_cplex'
@@ -310,19 +308,12 @@ switch solver
 
         % Get results
         stat = Result.status;
-        if (stat == 101 || stat == 102 || stat == 1)
-            solStat = 1; % Opt integer within tolerance
+        % native-to-canonical status translation is consolidated in mapSolverStatus
+        solStat = mapSolverStatus('ibm_cplex', 'MIQP', stat);
+        if solStat == 1
             % Return solution if problem is feasible, bounded and optimal
             x = Result.x;
             f = osense*Result.objval;
-        elseif (stat == 103 || stat == 3)
-            solStat = 0; % Integer infeas
-        elseif (stat == 118 || stat == 119 || stat == 2)
-            solStat = 2; % Unbounded
-        elseif (stat == 106 || stat == 106 || stat == 108 || stat == 110 || stat == 112 || stat == 114 || stat == 117)
-            solStat = -1; % No integer solution exists
-        else
-            solStat = 3; % Other problem, but integer solution exists
         end
         if exist([pwd filesep 'clone1.log'],'file')
             delete('clone1.log')

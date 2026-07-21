@@ -99,6 +99,30 @@ function solution = solveCobraMILP(MILPproblem, varargin)
 %       - Thomas Pfau (12/11/2015) Added support for ibm_cplex (the IBM Matlab
 %       interface) to the solvers.
 
+% --- optional explicit solver state (feature 015-solver-spine-hardening, US3) ---
+% When a CobraSolverState snapshot is supplied as the name-value pair
+% 'cobraSolverState', its selection and parameters are installed into the
+% CBT_*_SOLVER / CBT_*_PARAMS globals for the duration of this solve and
+% restored on exit, so the solve is sourced from that explicit state rather
+% than the ambient globals (identical precedence: caller varargin > state >
+% defaults). Absent (default) => today's globals-driven behaviour. Detected by
+% a varargin scan and gated with exist/isempty, not nargin (constitution VII-D).
+explicitSolverState = [];
+keepStateArg = true(size(varargin));
+for stateArgIndex = 1:numel(varargin) - 1
+    if ischar(varargin{stateArgIndex}) && strcmpi(varargin{stateArgIndex}, 'cobraSolverState')
+        explicitSolverState = varargin{stateArgIndex + 1};
+        keepStateArg([stateArgIndex, stateArgIndex + 1]) = false;
+    end
+end
+varargin = varargin(keepStateArg);
+if exist('explicitSolverState', 'var') && ~isempty(explicitSolverState)
+    savedSolverState = CobraSolverState.get();
+    restoreSolverState = onCleanup(@() CobraSolverState.restore(savedSolverState));
+    CobraSolverState.restore(explicitSolverState);
+end
+% -------------------------------------------------------------------------------
+
 [cobraParams,solverParams] = parseSolverParameters('MILP',varargin{:}); % get the solver parameters
 
 solver = cobraParams.solver;
@@ -164,24 +188,8 @@ switch solver
         % Solve problem
         [x, f, stat, extra] = glpk(c, A, b, lb, ub, csense, vartype, osense, solverParams);
         % Handle solution status reports
-        if (stat == 5)
-            solStat = 1;  % optimal
-        elseif(stat == 6)
-            solStat = 2;  % unbounded
-        elseif(stat == 4)
-            solStat = 0;  % infeasible
-
-        elseif(stat == 171)
-            solStat = 1;  % Opt integer within tolerance
-        elseif(stat == 173)
-            solStat = 0;  % Integer infeas
-        elseif(stat == 184)
-            solStat = 2;  % Unbounded
-        elseif(stat == 172)
-            solStat = 3;  % Other problem, but integer solution exists
-        else
-            solStat = -1;  % No integer solution exists
-        end
+        % native-to-canonical status translation is consolidated in mapSolverStatus
+        solStat = mapSolverStatus('glpk', 'MILP', stat);
 
     case 'cplex_direct'
         %% cplex_direct
@@ -224,17 +232,8 @@ switch solver
 
         Inform = solution.origStat;
         stat = Inform;
-        if (stat == 101 || stat == 102)
-            solStat = 1;  % Opt integer within tolerance
-        elseif(stat == 103)
-            solStat = 0;  % Integer infeas
-        elseif(stat == 118 || stat == 119)
-            solStat = 2;  % Unbounded
-        elseif(stat == 106 || stat == 106 || stat == 108 || stat == 110 || stat == 112 || stat == 114 || stat == 117)
-            solStat = -1;  % No integer solution exists
-        else
-            solStat = 3;  % Other problem, but integer solution exists
-        end
+        % native-to-canonical status translation is consolidated in mapSolverStatus
+        solStat = mapSolverStatus('cplex_direct', 'MILP', stat);
 
     case 'gurobi_mex'
         % Free academic licenses for the Gurobi solver can be obtained from
@@ -289,17 +288,8 @@ switch solver
         c = double(c);
         [x,f,stat,output] = gurobi_mex(c,osense,sparse(A),b, ...
             csense,lb,ub,vartype,opts);
-        if stat == 2
-            solStat = 1; % Optimal solutuion found
-        elseif stat == 3
-            solStat = 0; % Infeasible
-        elseif stat == 5
-            solStat = 2; % Unbounded
-        elseif stat == 4
-            solStat = 0; % Gurobi reports infeasible *or* unbounded
-        else
-            solStat = -1; % Solution not optimal or solver problem
-        end
+        % native-to-canonical status translation is consolidated in mapSolverStatus
+        solStat = mapSolverStatus('gurobi_mex', 'MILP', stat);
 
     case 'ibm_cplex'
         % Free academic licenses for the IBM CPLEX solver can be obtained from
@@ -317,19 +307,12 @@ switch solver
 
         % Get results
         stat = Result.status;
-        if (stat == 101 || stat == 102 || stat == 1)
-            solStat = 1; % Opt integer within tolerance
+        % native-to-canonical status translation is consolidated in mapSolverStatus
+        solStat = mapSolverStatus('ibm_cplex', 'MILP', stat);
+        if solStat == 1
             % Return solution if problem is feasible, bounded and optimal
             x = Result.x;
             f = Result.objval;
-        elseif (stat == 103 || stat == 3)
-            solStat = 0; % Integer infeas
-        elseif (stat == 118 || stat == 119 || stat == 2)
-            solStat = 2; % Unbounded
-        elseif (stat == 106 || stat == 106 || stat == 108 || stat == 110 || stat == 112 || stat == 114 || stat == 117)
-            solStat = -1; % No integer solution exists
-        else
-            solStat = 3; % Other problem, but integer solution exists
         end
         if exist([pwd filesep 'clone1.log'],'file')
             delete('clone1.log')
@@ -396,17 +379,11 @@ switch solver
         resultgurobi = gurobi(MILPproblem,params);
 
         stat = resultgurobi.status;
+        % native-to-canonical status translation is consolidated in mapSolverStatus
+        solStat = mapSolverStatus('gurobi', 'MILP', stat);
         if strcmp(resultgurobi.status,'OPTIMAL')
-            solStat = 1; % Optimal solution found
             [x,f] = deal(resultgurobi.x,resultgurobi.objval);
-        elseif strcmp(resultgurobi.status,'INFEASIBLE')
-            solStat = 0; % Infeasible
-        elseif strcmp(resultgurobi.status,'UNBOUNDED')
-            solStat = 2; % Unbounded
-        elseif strcmp(resultgurobi.status,'INF_OR_UNBD')
-            solStat = 0; % Gurobi reports infeasible *or* unbounded
         elseif strcmp(resultgurobi.status,'TIME_LIMIT')
-            solStat = 3; % Time limit reached
             warning('Time limit reached, solution might not be optimal (gurobi)')
             try
                 [x,f] = deal(resultgurobi.x,resultgurobi.objval);
@@ -414,8 +391,6 @@ switch solver
                 %x and f could not be assigned, as there is no solution
                 %yet
             end
-        else
-            solStat = -1; % Solution not optimal or solver problem
         end
 
     case 'tomlab_cplex'
@@ -484,17 +459,8 @@ switch solver
         x = Result.x_k;
         f = osense*Result.f_k;
         stat = Result.Inform;
-        if (stat == 101 || stat == 102)
-            solStat = 1; % Opt integer within tolerance
-        elseif (stat == 103)
-            solStat = 0; % Integer infeas
-        elseif (stat == 118 || stat == 119)
-            solStat = 2; % Unbounded
-        elseif (stat == 106 || stat == 106 || stat == 108 || stat == 110 || stat == 112 || stat == 114 || stat == 117)
-            solStat = -1; % No integer solution exists
-        else
-            solStat = 3; % Other problem, but integer solution exists
-        end
+        % native-to-canonical status translation is consolidated in mapSolverStatus
+        solStat = mapSolverStatus('tomlab_cplex', 'MILP', stat);
     case 'mps'
         fprintf(' > The interface to ''mps'' from solveCobraMILP will not be supported anymore.\n -> Use >> writeCbModel(model, ''mps'');\n');
         % temporary legacy support

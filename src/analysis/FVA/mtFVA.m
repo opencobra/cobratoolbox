@@ -35,6 +35,15 @@ function [minFlux, maxFlux] = mtFVA(LPproblem, rxnsIdx, cpxControl)
 global ILOG_CPLEX_PATH
 global CBTDIR
 global CBT_LP_PARAMS;
+global SOLVERS
+
+% Solver island (feature 015-solver-spine-hardening): mtFVA runs a compiled
+% CPLEX Java multi-thread FVA (CplexFVA) and has no fallback. Fail identified
+% when IBM CPLEX is not installed/licensed.
+if isempty(ILOG_CPLEX_PATH) || isempty(SOLVERS) || ~isfield(SOLVERS, 'ibm_cplex') || ~SOLVERS.ibm_cplex.installed
+    error('COBRA:mtFVA:requiresCplex', ...
+        'mtFVA requires IBM CPLEX (Java multi-thread FVA via CplexFVA) — install/license CPLEX. No fallback is available.');
+end
 
 [cplex_root, arch]= fileparts(ILOG_CPLEX_PATH);
 cplex_root= fileparts(cplex_root);

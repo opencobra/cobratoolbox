@@ -40,7 +40,6 @@ parse(p, OptimizationModel, KOrxn, varargin{:});
 numWorkers = p.Results.numWorkers;
 timeLimit = p.Results.timeLimit;
 printLevel = max(p.Results.printLevel, 0);
-FORCE_CPLEX = p.Results.FORCE_CPLEX;
 
 %Indexation of variables
 v = OptimizationModel.idx_variables.v;
@@ -50,99 +49,38 @@ y_plus_B = OptimizationModel.idx_variables.y_plus_B;
 y_minus_B = OptimizationModel.idx_variables.y_minus_B;
 OptimizationModel = rmfield(OptimizationModel,'idx_variables');
 
-% Temporal way: use ibm_cplex if installed until MIQP API for COBRA is
-% implemented
-global SOLVERS;
-global CBT_MIQP_SOLVER
-if FORCE_CPLEX || (SOLVERS.ibm_cplex.installed && strcmp(CBT_MIQP_SOLVER,'ibm_cplex'))
-    % Generate CPLEX model
-    cplex = Cplex('MIQP');
-    CplexModel = OptimizationModel;
-    
-    b_L(CplexModel.csense == 'E') = CplexModel.b(CplexModel.csense == 'E');
-    b_U(CplexModel.csense == 'E') = CplexModel.b(CplexModel.csense == 'E');
-    b_L(CplexModel.csense == 'G') = CplexModel.b(CplexModel.csense == 'G');
-    b_U(CplexModel.csense == 'G') = inf;
-    b_L(CplexModel.csense == 'L') = -inf;
-    b_U(CplexModel.csense == 'L') = CplexModel.b(CplexModel.csense == 'L');
-    CplexModel.rhs = b_U;
-    CplexModel.lhs = b_L;
-    CplexModel.Q = CplexModel.F;
-    CplexModel.obj = CplexModel.c;
-    CplexModel.ctype = CplexModel.vartype;
-    CplexModel.sense = 'minimize';
-    
-    cplex.Model = CplexModel;
-    % include the knock-out reactions
-    cplex.Model.lb(KOrxn) = 0;
-    cplex.Model.ub(KOrxn) = 0;
-    
-    % Cplex Parameter
-    if numWorkers>0
-        cplex.Param.threads.Cur = numWorkers;
-    end
-    if printLevel <=1
-        cplex.Param.output.clonelog.Cur = 0;
-        cplex.DisplayFunc = [];
-    elseif printLevel <=2
-        cplex.Param.output.clonelog.Cur = 0;
-    end
-    if timeLimit < 1e75
-        cplex.Param.timelimit.Cur = timeLimit;
-    end
-    %reduce the tolerance
-    cplex.Param.mip.tolerances.mipgap.Cur = 1e-5;
-    % cplex.Param.mip.tolerances.absmipgap.Cur = 1e-8;
-    % cplex.Param.threads.Cur = 16;
-    
-    % SOLVE the CPLEX problem if not singular
+% Route the MIQP through the COBRA solver abstraction so rMTA honours
+% changeCobraSolver (feature 015-solver-spine-hardening). The former raw
+% ibm_cplex fast path is now reached through the abstraction itself via
+% changeCobraSolver('MIQP', 'ibm_cplex'); the FORCE_CPLEX input is retained
+% for backward compatibility but no longer bypasses solveCobraMIQP.
+
+% Generate OptimizationModel for this iteration
+MIQPproblem = OptimizationModel;
+% include the knock-out reactions
+MIQPproblem.lb(KOrxn) = 0;
+MIQPproblem.ub(KOrxn) = 0;
+
+% Solver Parameter
+if timeLimit > 1e75
+    timeLimit = 1e75;
+end
+
+% SOLVE the MIQP problem
+solution = solveCobraMIQP(MIQPproblem, ...
+    'timeLimit',timeLimit, 'relMipGapTol',  1e-5, ...
+    'printLevel', max(printLevel-1,0), 'logFile', 0,...
+    'threads',numWorkers);
+
+if isnumeric(solution.stat) && solution.stat == 1
+    v_res = solution.full(v);
+elseif ischar(solution.stat) && strcmp(solution.stat, 'OPTIMAL')
+    v_res = solution.full(v);
+else
+    % Use of try for different outputs of COBRA MIQP solver
     try
-        cplex.solve();
+        v_res = solution.full(v);
     catch
         v_res = zeros(length(v),1);
-        return
     end
-    
-    if cplex.Solution.status ~= 103
-        v_res = cplex.Solution.x(v);
-        solution = cplex.Solution;
-    else
-        v_res = zeros(length(v),1);
-        solution = nan;
-    end
-    
-    % clear the cplex object
-    delete(cplex)
-    clear cplex
-else
-    % Generate OptimizationModel for this iteration
-    MIQPproblem = OptimizationModel;
-    % include the knock-out reactions
-    MIQPproblem.lb(KOrxn) = 0;
-    MIQPproblem.ub(KOrxn) = 0;
-    
-    % Solver Parameter
-    if timeLimit > 1e75
-        timeLimit = 1e75;
-    end
-    
-    % SOLVE the MIQP problem
-    solution = solveCobraMIQP(MIQPproblem, ...
-        'timeLimit',timeLimit, 'relMipGapTol',  1e-5, ...
-        'printLevel', max(printLevel-1,0), 'logFile', 0,...
-        'threads',numWorkers);
-    
-    if isnumeric(solution.stat) && solution.stat == 1
-        v_res = solution.full(v);
-    elseif ischar(solution.stat) && strcmp(solution.stat, 'OPTIMAL')
-        v_res = solution.full(v);
-    else
-        % Use of try for different outputs of COBRA MIQP solver
-        try
-            v_res = solution.full(v);
-        catch
-            v_res = zeros(length(v),1);
-        end
-    end
-    
 end

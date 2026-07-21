@@ -26,8 +26,6 @@ function flux = core(model, blocked, weights, solver)
 %       - Mojtaba Tefagh, Stephen P. Boyd, 2019, Stanford University
 %       - Adaption to not ignore the general cobra solver by Thomas Pfau.
 
-global CBT_LP_SOLVER
-solver = CBT_LP_SOLVER;
 S = model.S;
 rev = model.rev;
 [m, n] = size(S);
@@ -56,59 +54,23 @@ problem.ub(blocked == 1) = model.ub(blocked == 1);
 problem.ub = [problem.ub; Inf(k+l, 1)];
 
 
-if strcmp(solver, 'gurobi') % gurobi
-    params.outputflag = 0;
-    result = gurobi(problem, params);
-    if strcmp(result.status, 'OPTIMAL')
-        flux = result.x(1:n);
-    else
-        warning('Optimization was stopped with status %s\n', result.status);
-    end
-elseif strcmp(solver, 'linprog') % linprog
-    problem.f = problem.obj;
-    problem.Aineq = -problem.A(m+1:m+2*k, :);
-    problem.bineq = problem.rhs(m+1:m+2*k);
-    problem.Aeq = problem.A(1:m, :);
-    problem.beq = problem.rhs(1:m);
-    problem.lb = problem.lb;
-    problem.ub = problem.ub;
-    problem.solver = 'linprog';
-    problem.options = optimset('Display', 'off');
-    [result.x, result.objval, result.status, ~] = linprog(problem);
-    if result.status == 1
-        flux = result.x(1:n);
-    else
-        warning('Optimization was stopped with status %d\n', result.status);
-    end
-elseif strcmp(solver, 'cplex') % cplex
-    problem.f = problem.obj;
-    problem.Aineq = -problem.A(m+1:m+2*k, :);
-    problem.bineq = problem.rhs(m+1:m+2*k);
-    problem.Aeq = problem.A(1:m, :);
-    problem.beq = problem.rhs(1:m);
-    problem.lb = problem.lb;
-    problem.ub = problem.ub;
-    [result.x, result.objval, result.status] = cplexlp(problem);
-    if result.status == 1
-        flux = result.x(1:n);
-    else
-        warning('Optimization was stopped with status %d\n', result.status);
-    end
-else % COBRA
-    problem.b = problem.rhs;
-    problem.c = problem.obj;
-    problem.osense = 1;
-    problem.sense(problem.sense == '=') = 'E';
-    problem.sense(problem.sense == '>') = 'G';
-    problem.csense = problem.sense;
-    solution = solveCobraLP(problem, 'solver', solver);
-    result.x = solution.full;
-    result.objval = solution.obj;
-    result.status = solution.stat;
-    if result.status == 1
-        flux = result.x(1:n);
-    else
-        warning('Optimization was stopped with status %d\n', result.status);
-    end
+% Route the LP through the COBRA solver abstraction so swiftcore honours
+% changeCobraSolver (feature 015-solver-spine-hardening). The problem was
+% assembled above in Gurobi-style fields; translate them to the solveCobraLP
+% interface (b/c/osense/csense) and solve with the configured LP solver.
+problem.b = problem.rhs;
+problem.c = problem.obj;
+problem.osense = 1;   % minimise, matching the former gurobi/linprog paths
+problem.sense(problem.sense == '=') = 'E';
+problem.sense(problem.sense == '>') = 'G';
+problem.csense = problem.sense;
+solution = solveCobraLP(problem);
+result.x = solution.full;
+result.objval = solution.obj;
+result.status = solution.stat;
+if result.status == 1
+    flux = result.x(1:n);
+else
+    warning('Optimization was stopped with status %d\n', result.status);
 end
 end

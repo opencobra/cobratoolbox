@@ -1,5 +1,6 @@
 <!-- SPECKIT START -->
-No active Spec Kit feature.
+Active Spec Kit feature: 015-solver-spine-hardening
+Plan: specs/015-solver-spine-hardening/plan.md
 <!-- SPECKIT END -->
 
 <!-- Hand-maintained; keep OUTSIDE the SPECKIT markers (Spec Kit rewrites that block). -->

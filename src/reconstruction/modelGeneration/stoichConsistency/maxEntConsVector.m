@@ -15,6 +15,16 @@ function  [m, bool] = maxEntConsVector(SInt, printLevel)
 %    bool:          is 1 if `m > 0`
 %
 
+% Solver island (feature 015-solver-spine-hardening): the maximum-entropy
+% conservation vector is a general convex *nonlinear* objective solved with
+% pdco, which the LP/QP/MILP/MIQP abstractions cannot carry. Fail identified
+% when pdco is not installed; no fallback.
+global SOLVERS
+if isempty(SOLVERS) || ~isfield(SOLVERS, 'pdco') || ~SOLVERS.pdco.installed
+    error('COBRA:maxEntConsVector:requiresPdco', ...
+        'maxEntConsVector requires the pdco solver (general convex nonlinear / maximum-entropy objective) — install pdco. No fallback is available.');
+end
+
 [mlt,nlt]=size(SInt);
 
 d1=1e-4;
