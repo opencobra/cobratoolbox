@@ -47,10 +47,16 @@ function [arm, moietyFormulae] = identifyConservedMoieties(model, dATM, options)
 %                   * .Edges.TailAtomIndex - tail Nodes.AtomIndex
 %
 % OPTIONAL INPUTS:
-%    options:      Structure with the following fields:
-%
-%                    * .sanityChecks - {(0), 1} true if additional sanity checks
-%                      on computations, but substantially more computation time
+% options:       Structure with following fields:
+%                * .sanityChecks {(0),1} true if additional sanity checks
+%                on computations, but substantially more computation time
+%                * .useOpenSourceMoietyTools {(1),0} true (default) to use
+%                the open-source-only implementation (tabulatePlain)
+%                instead of the proprietary Statistics_Toolbox function
+%                tabulate. Set to false to prefer tabulate() for backward
+%                compatibility; automatically falls back to
+%                tabulatePlain (with a warning) if Statistics_Toolbox is
+%                not licensed on this machine.
 %
 % OUTPUTS:
 %    moietyFormulae:    `nIsomorphismClasses x 1` cell array of moiety chemical formulae (Hill notation), one per isomorphism class
@@ -147,6 +153,11 @@ function [arm, moietyFormulae] = identifyConservedMoieties(model, dATM, options)
 %               as described in Ghaderi et al. Decompose stoichiometic
 %               matrix into its underlying moiety transition matrix
 %               (unpublished).
+%             - [Jack McGoldrick], 2026: replaced the proprietary
+%               Statistics_Toolbox call (tabulate) with an open-source
+%               equivalent (tabulatePlain), gated by the new
+%               options.useOpenSourceMoietyTools flag for backward
+%               compatibility.
 %
 % Ghaderi, S., Haraldsdóttir, H.S., Ahookhosh, M., Arreckx, S., and Fleming, R.M.T. (2020).
 % Structural conserved moiety splitting of a stoichiometric matrix. Journal of Theoretical Biology 499, 110276.
@@ -159,6 +170,19 @@ if ~isfield(options,'sanityChecks')
     options.sanityChecks=1;
 end
 sanityChecks = options.sanityChecks;
+
+if ~isfield(options,'useOpenSourceMoietyTools')
+    % Default true: use the open-source-only implementation (tabulatePlain)
+    % rather than the proprietary Statistics_Toolbox function tabulate.
+    % Note: unlike identifyConservedReactingMoieties.m, this function
+    % previously had no fallback at all and would error outright on a
+    % machine without Statistics_Toolbox licensed. Set this to false to
+    % prefer tabulate() for backward compatibility; falls back
+    % automatically (with a warning) to tabulatePlain if
+    % Statistics_Toolbox is not actually licensed on this machine.
+    options.useOpenSourceMoietyTools = true;
+end
+useOpenSourceMoietyTools = options.useOpenSourceMoietyTools;
 
 bool = contains(model.mets,'#');
 if any(bool)
@@ -697,7 +721,15 @@ end
 %conserved moiety formula
 moietyFormulae=cell(nIsomorphismClasses,1);
 for i = 1:nIsomorphismClasses
-    elementTable = tabulate(compElements(I2C(i,:)==1)); % elements in moiety i
+    if useOpenSourceMoietyTools
+        elementTable = tabulatePlain(compElements(I2C(i,:)==1)); % elements in moiety i
+    elseif license('test','Statistics_Toolbox')
+        elementTable = tabulate(compElements(I2C(i,:)==1)); % elements in moiety i
+    else
+        warning('identifyConservedMoieties:noStatsToolbox', ...
+            'Statistics_Toolbox not licensed; falling back to tabulatePlain despite options.useOpenSourceMoietyTools=false.');
+        elementTable = tabulatePlain(compElements(I2C(i,:)==1));
+    end
     formula='';
     for j=1:size(elementTable,1)
         formula= [formula elementTable{j,1} num2str(elementTable{j,2})];
@@ -884,7 +916,11 @@ if sanityChecks
     for j=1:nMoieties
         if 0
             fprintf('%s\n',moietyFormulae{moiety2isomorphismClass(j)})
-            tabulate(ATG.Nodes.Element(Mo2A(j,:)~=0))
+            if useOpenSourceMoietyTools
+                tabulatePlain(ATG.Nodes.Element(Mo2A(j,:)~=0))
+            else
+                tabulate(ATG.Nodes.Element(Mo2A(j,:)~=0))
+            end
         end
         moietyMetIndices=atoms2mets(Mo2A(j,:)~=0);
         

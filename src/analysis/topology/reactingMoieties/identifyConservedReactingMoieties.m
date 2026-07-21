@@ -57,6 +57,15 @@ function [arm, moietyFormulae, reacting] = identifyConservedReactingMoieties(mod
 %    options:    Structure with following fields:
 %                * .sanityChecks {(0),1} true if additional sanity checks
 %                on computations, but substantially more computation time
+%                * .useOpenSourceMoietyTools {(1),0} true (default) to use
+%                open-source-only implementations (tabulatePlain,
+%                minimumSetCoverPlain) instead of proprietary MATLAB
+%                toolbox functions (Statistics_Toolbox's tabulate,
+%                Optimization_Toolbox's intlinprog). Set to false to
+%                prefer the licensed-toolbox implementations for backward
+%                compatibility; automatically falls back to the
+%                open-source path (with a warning) if the required
+%                toolbox is not licensed on this machine.
 %
 % OUTPUTS:
 %    arm:               atomically resolved model as a matlab structure (fields detailed below)
@@ -160,6 +169,12 @@ function [arm, moietyFormulae, reacting] = identifyConservedReactingMoieties(mod
 %               matrix into its underlying moiety transition matrix
 %               (unpublished).
 %             - Hadjar Rahou, 2025: bond graph integration and reacting moiety extraction.
+%             - [Jack McGoldrick], 2026: replaced proprietary Statistics_Toolbox/
+%               Optimization_Toolbox calls (tabulate, intlinprog) with
+%               open-source-only equivalents (tabulatePlain,
+%               minimumSetCoverPlain), gated by the new
+%               options.useOpenSourceMoietyTools flag for backward
+%               compatibility.
 %
 % Ghaderi, S., Haraldsdóttir, H.S., Ahookhosh, M., Arreckx, S., and Fleming, R.M.T. (2020).
 % Structural conserved moiety splitting of a stoichiometric matrix. Journal of Theoretical Biology 499, 110276.
@@ -175,6 +190,18 @@ if ~isfield(options,'sanityChecks')
     options.sanityChecks=1;
 end
 sanityChecks = options.sanityChecks;
+
+if ~isfield(options,'useOpenSourceMoietyTools')
+    % Default true: use open-source-only implementations (tabulatePlain,
+    % minimumSetCoverPlain) rather than proprietary MATLAB toolbox
+    % functions (Statistics_Toolbox's tabulate, Optimization_Toolbox's
+    % intlinprog). Set to false to prefer the licensed-toolbox
+    % implementations for backward compatibility; this falls back
+    % automatically (with a warning) to the open-source path if the
+    % required toolbox is not actually licensed on this machine.
+    options.useOpenSourceMoietyTools = true;
+end
+useOpenSourceMoietyTools = options.useOpenSourceMoietyTools;
 
 bool = contains(model.mets,'#');
 if any(bool)
@@ -737,14 +764,14 @@ end
 %conserved moiety formula
 moietyFormulae=cell(nIsomorphismClasses,1);
 for i = 1:nIsomorphismClasses
-    if exist('tabulate','file')==2
+    if useOpenSourceMoietyTools
+        elementTable = tabulatePlain(compElements(I2C(i,:)==1)); % elements in moiety i
+    elseif license('test','Statistics_Toolbox')
         elementTable = tabulate(compElements(I2C(i,:)==1)); % elements in moiety i
     else
-        vals = compElements(I2C(i,:)==1);
-        [uniqVals, ~, idx] = unique(vals);
-        counts = accumarray(idx, 1);
-        percent = 100 * counts / numel(vals);
-        elementTable = [uniqVals(:), num2cell(counts), num2cell(percent)];
+        warning('identifyConservedReactingMoieties:noStatsToolbox', ...
+            'Statistics_Toolbox not licensed; falling back to tabulatePlain despite options.useOpenSourceMoietyTools=false.');
+        elementTable = tabulatePlain(compElements(I2C(i,:)==1));
     end
     formula='';
     for j=1:size(elementTable,1)
@@ -1052,7 +1079,11 @@ if sanityChecks
     for j=1:nMoieties
         if 0
             fprintf('%s\n',moietyFormulae{moiety2isomorphismClass(j)})
-            tabulate(ATG.Nodes.Element(Mo2A(j,:)~=0))
+            if useOpenSourceMoietyTools
+                tabulatePlain(ATG.Nodes.Element(Mo2A(j,:)~=0))
+            else
+                tabulate(ATG.Nodes.Element(Mo2A(j,:)~=0))
+            end
         end
         moietyMetIndices=atoms2mets(Mo2A(j,:)~=0);
         
@@ -1610,8 +1641,6 @@ end
 %% -------------------------------------------------------------
 %% STEP 4 — Minimum Set Cover (minimal reactions covering all reacting bonds)
 %% -------------------------------------------------------------
-
-[m, n] = size(CRB2R);
 
 activeBonds = any(CRB2R, 2);
 CRB2R_active = CRB2R(activeBonds, :);
