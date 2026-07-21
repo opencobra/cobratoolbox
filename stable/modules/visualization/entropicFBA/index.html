@@ -65,8 +65,8 @@
         <link rel="search" title="Search" href="../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../index.html"/>
         <link rel="up" title="Visualization" href="../index.html"/>
-        <link rel="next" title="Visualizeepistasis" href="../visualizeEpistasis/index.html"/>
-        <link rel="prev" title="Celldesigner" href="../cellDesigner/index.html"/> 
+        <link rel="next" title="Upsetplot" href="../upsetPlot/index.html"/>
+        <link rel="prev" title="Sammim" href="../SAMMIM/index.html"/> 
 
   
   <script src="../../../_static/js/modernizr.min.js"></script>
@@ -162,19 +162,19 @@
 <li class="toctree-l2"><a class="reference internal" href="../../design/index.html">Design</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../reconstruction/index.html">Reconstruction</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html">Visualization</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../paint4net/index.html">Paint4net</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../efmviz/index.html">Efmviz</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../SAMMIM/index.html">Sammim</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../convert/index.html">Convert</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../cellDesigner/index.html">Celldesigner</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Entropicfba</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../visualizeEpistasis/index.html">Visualizeepistasis</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../upsetPlot/index.html">Upsetplot</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../createMetIntrcNetwork/index.html">Createmetintrcnetwork</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../maps/index.html">Maps</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../metabolicCartography/index.html">Metaboliccartography</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../EscherMap/index.html">Eschermap</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../paint4Net/index.html">Paint4net</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../paint4net/index.html">Paint4net</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../metabolicCartography/index.html">Metaboliccartography</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cellDesigner/index.html">Celldesigner</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../maps/index.html">Maps</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../SAMMIM/index.html">Sammim</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Entropicfba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../upsetPlot/index.html">Upsetplot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../convert/index.html">Convert</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../visualizeEpistasis/index.html">Visualizeepistasis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../EscherMap/index.html">Eschermap</a></li>
 </ul>
 </li>
 </ul>
@@ -235,43 +235,123 @@
 <span class="target" id="module-src.visualization.entropicFBA"></span><dl class="mat function">
 <dt class="sig sig-object mat" id="src.visualization.entropicFBA.calculateGeneWeight">
 <span class="sig-name descname"><span class="pre">calculateGeneWeight</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">Transcriptomic</span></em>, <em class="sig-param"><span class="pre">Threshold</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/entropicFBA/calculateGeneWeight.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.entropicFBA.calculateGeneWeight" title="Permalink to this definition">¶</a></dt>
-<dd><p>Inputs:
-model              - A COBRA model with mandatory fields: grRules and SConsistentRxnBool.
-Transcriptomic     - A table with entrezID and geneExpression values.
-Threshold          - Threshold for transcriptomic data.</p>
+<dd><p>Calculate a per-reaction gene expression weight for use with entropicFBA</p>
+<p>geneWeight is a value that can be used in entropicFBA to assign a weight
+that corresponds to the gene expression value to internal reactions. If you
+want to use this value for this purpose, use the following formula:
+cr = cf = -log(geneWeight + 1e-8) + 1 - ci/g
+Default values: g = 2, ci = 0</p>
+<p>The algorithm is explained here: <a class="reference external" href="https://doi.org/10.1016/j.isci.2023.106201">https://doi.org/10.1016/j.isci.2023.106201</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>geneWeight = calculateGeneWeight</strong> (<em>model, Transcriptomic, Threshold</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – COBRA model structure with fields:</p>
+<ul>
+<li><p>.grRules - <cite>n x 1</cite> cell array of gene-reaction rules</p></li>
+<li><p>.SConsistentRxnBool - <cite>n x 1</cite> logical, true for
+stoichiometrically consistent reactions</p></li>
+</ul>
+</li>
+<li><p><strong>Transcriptomic</strong> – table with a gene expression value column and field:</p>
+<ul>
+<li><p>.entrezID - Entrez gene identifiers</p></li>
+</ul>
+</li>
+<li><p><strong>Threshold</strong> – double, threshold below which a gene expression
+value is treated as zero</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>geneWeight</strong> – <cite>n x 1</cite> vector of gene-expression-derived weights,
+one per stoichiometrically consistent reaction</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.visualization.entropicFBA.calculateReactionMasses">
 <span class="sig-name descname"><span class="pre">calculateReactionMasses</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/entropicFBA/calculateReactionMasses.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.entropicFBA.calculateReactionMasses" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function calculates mass related to each reaction, products mass and
-substrates mass,using the left null space of stochiometric matrix,
-useful to unbiased flux through reactions with massive
-metabolites in entropicFBA</p>
+substrates mass, using the left null space of the stoichiometric matrix,
+useful to unbias flux through reactions with massive metabolites in
+entropicFBA</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[substratesMass, productsMass] = calculateReactionMasses</strong> (<em>model</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>model</strong> – COBRA model structure with fields:</p>
+<ul class="simple">
+<li><p>.mets - <cite>m x 1</cite> cell array of metabolite identifiers</p></li>
+<li><p>.rxns - <cite>n x 1</cite> cell array of reaction identifiers</p></li>
+<li><p>.S - <cite>m x n</cite> stoichiometric matrix</p></li>
+<li><p>.SConsistentMetBool - <cite>m x 1</cite> logical, true for
+stoichiometrically consistent metabolites</p></li>
+<li><p>.SConsistentRxnBool - <cite>n x 1</cite> logical, true for
+stoichiometrically consistent reactions</p></li>
+<li><p>.metFormulas - <cite>m x 1</cite> cell array of metabolite
+chemical formulas (added from a reference model
+if not already present)</p></li>
+<li><p>.rxnFormulas - (optional) <cite>n x 1</cite> cell array of
+reaction formulas, used when present to report
+mass-imbalanced reactions</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>substratesMass</strong> – <cite>n x 1</cite> vector, total substrate mass of each
+stoichiometrically consistent reaction</p></li>
+<li><p><strong>productsMass</strong> – <cite>n x 1</cite> vector, total product mass of each
+stoichiometrically consistent reaction</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.visualization.entropicFBA.plotyy_eFBA">
 <span class="sig-name descname"><span class="pre">plotyy_eFBA</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">objective</span></em>, <em class="sig-param"><span class="pre">C_max</span></em>, <em class="sig-param"><span class="pre">N</span></em>, <em class="sig-param"><span class="pre">d</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/entropicFBA/plotyy_eFBA.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.entropicFBA.plotyy_eFBA" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="simple">
-<dt>This function plot entropicFBA in a plotyy way</dt><dd><p>Flux through objective function (solution.v)) as a function of C_value on axis1 and
-and non- linear/ linear/ part of objective function as a function od C_value on axis2
-The maximum value of objective function is also plot through FBA</p>
+<dd><p>This function plots entropicFBA in a plotyy way:
+flux through the objective function (solution.v) as a function of C_value
+on axis 1, and the non-linear/linear part of the objective function as a
+function of C_value on axis 2. The maximum value of the objective function
+is also plotted, obtained through FBA.</p>
+<dl class="field-list">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>plotyy_eFBA</strong> (<em>model, objective, C_max, N, d</em>)</p>
 </dd>
-</dl>
-<dl class="field-list simple">
-<dt class="field-odd">Inputs<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>model</strong> – a metabolic model that contain required fields to
-perform entropicFluxBalanceAnalysis</p></li>
-<li><p><strong>C_max</strong> – An estimation for the maximum value of C_value ( for
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul>
+<li><p><strong>model</strong> – a metabolic model that contains the required fields to
+perform entropicFluxBalanceAnalysis, with fields:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>.c - <cite>n x 1</cite> linear objective coefficient vector</p></li>
+<li><p>.rxns - <cite>n x 1</cite> cell array of reaction identifiers</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><strong>objective</strong> – char, the name of the reaction whose flux is plotted
+(as it appears in <cite>model.rxns</cite>)</p></li>
+<li><p><strong>C_max</strong> – an estimation for the maximum value of C_value (for a
 larger number the variables do not change)</p></li>
-<li><p><strong>N</strong> – The number of C_value (since the model my be infeasible for some value of C
-the plotted figure will have fewer numbers in x axis</p></li>
-<li><p><strong>d</strong> – a value to set axis in a way that the whole plot is visible</p></li>
+<li><p><strong>N</strong> – the number of C_value points to sample (since the model
+may be infeasible for some values of C, the plotted
+figure will have fewer numbers on the x axis)</p></li>
+<li><p><strong>d</strong> – a value to set the axis in a way that the whole plot is
+visible</p></li>
 </ul>
 </dd>
 </dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you cannot see the green plot (related to FBAsolution.v) increase <cite>d</cite>.</p>
+</div>
+<p class="rubric">Example</p>
+<p>plotyy_eFBA(model, ‘biomass reaction’, 1500, 100, 10)</p>
 </dd></dl>
 
 </section>
@@ -286,10 +366,10 @@ the plotted figure will have fewer numbers in x axis</p></li>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../visualizeEpistasis/index.html" class="btn btn-default float-right" title="Visualizeepistasis" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../upsetPlot/index.html" class="btn btn-default float-right" title="Upsetplot" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../cellDesigner/index.html" class="btn btn-default" title="Celldesigner" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../SAMMIM/index.html" class="btn btn-default" title="Sammim" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

@@ -65,8 +65,8 @@
         <link rel="search" title="Search" href="../../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../../index.html"/>
         <link rel="up" title="Metaboannotator" href="../index.html"/>
-        <link rel="next" title="Transcriptomics" href="../../transcriptomics/index.html"/>
-        <link rel="prev" title="Generatemetinfo" href="../generateMetInfo/index.html"/> 
+        <link rel="next" title="Generatemetinfo" href="../generateMetInfo/index.html"/>
+        <link rel="prev" title="Analysemetstruct" href="../analyseMetStruct/index.html"/> 
 
   
   <script src="../../../../_static/js/modernizr.min.js"></script>
@@ -159,20 +159,20 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../base/index.html">Base</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Dataintegration</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../../chemoInformatics/index.html">Chemoinformatics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../fluxomics/index.html">Fluxomics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../metabotools/index.html">Metabotools</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../metanetxMapper/index.html">Metanetxmapper</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../XomicsToModel/index.html">Xomicstomodel</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../index.html">Metaboannotator</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="../analyseMetStruct/index.html">Analysemetstruct</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Molfilefinder</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../generateMetInfo/index.html">Generatemetinfo</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../connect2resources/index.html">Connect2resources</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../buildMetStruct/index.html">Buildmetstruct</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../generateMetInfo/index.html">Generatemetinfo</a></li>
-<li class="toctree-l4 current"><a class="current reference internal" href="#">Molfilefinder</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="../../XomicsToModel/index.html">Xomicstomodel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chemoInformatics/index.html">Chemoinformatics</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../transcriptomics/index.html">Transcriptomics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../metabotools/index.html">Metabotools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../fluxomics/index.html">Fluxomics</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../design/index.html">Design</a></li>
@@ -237,98 +237,125 @@
 <span class="target" id="module-src.dataIntegration.metaboAnnotator.molFileFinder"></span><dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.metaboAnnotator.molFileFinder.getMissingDrugMolForm">
 <span class="sig-name descname"><span class="pre">getMissingDrugMolForm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">metabolite_structure</span></em>, <em class="sig-param"><span class="pre">molFileDirectory</span></em>, <em class="sig-param"><span class="pre">startSearch</span></em>, <em class="sig-param"><span class="pre">endSearch</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metaboAnnotator/molFileFinder/getMissingDrugMolForm.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metaboAnnotator.molFileFinder.getMissingDrugMolForm" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function trys to retrieve mol files from drug bank using drugbank
-id’s. It relies on getMolFileFromDrugbank.m.</p>
-<p>INPUT
-metabolite_structure  metabolite structure
-molFileDirectory      directory where mol files should be stored
-startSearch           specify where the search should start in the</p>
-<blockquote>
-<div><p>metabolite structure. Must be numeric (optional, default: all metabolites
-in the structure will be search for)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>endSearch             specify where the search should end in the</dt><dd><p>metabolite structure. Must be numeric (optional, default: all metabolites
-in the structure will be search for)</p>
+<dd><p>Retrieves mol files from DrugBank using DrugBank IDs</p>
+<p>It relies on getMolFileFromDrugbank.m and updates the metabolite structure to
+record which entries have an associated mol file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[metabolite_structure] = getMissingDrugMolForm</strong> (<em>metabolite_structure, molFileDirectory, startSearch, endSearch</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>metabolite_structure</strong> – Metabolite structure</p></li>
+<li><p><strong>molFileDirectory</strong> – Directory where the mol files should be stored</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>startSearch</strong> – Numeric index where the search starts in the
+metabolite structure (default: 1)</p></li>
+<li><p><strong>endSearch</strong> – Numeric index where the search ends in the
+metabolite structure (default: all metabolites)</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>metabolite_structure</strong> – Updated metabolite structure</p>
 </dd>
 </dl>
-<p>OUTPUT
-metabolite_structure  updated metabolite structure</p>
-<p>Ines Thiele 09/21</p>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.metaboAnnotator.molFileFinder.getMissingHMDBMolForm">
 <span class="sig-name descname"><span class="pre">getMissingHMDBMolForm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">metabolite_structure</span></em>, <em class="sig-param"><span class="pre">molFileDirectory</span></em>, <em class="sig-param"><span class="pre">retrievePotHMDB</span></em>, <em class="sig-param"><span class="pre">startSearch</span></em>, <em class="sig-param"><span class="pre">endSearch</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metaboAnnotator/molFileFinder/getMissingHMDBMolForm.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metaboAnnotator.molFileFinder.getMissingHMDBMolForm" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function uses getMolFileFromHMDB.m to obtain mol files for those
-metabolite structure entries that have hmdb id’s specified. It also has
-the option find novel hmdb entries by querying hmdb for the metabolite
-names. Only perfect matches are considered. See retrievePotHitsHMDB.m for
-more details.</p>
-<p>INPUT
-metabolite_structure  metabolite structure
-molFileDirectory      directory where mol files should be stored
-retrievePotHMDB       default: true (attention: this could be time</p>
-<blockquote>
-<div><p>consuming)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>startSearch           specify where the search should start in the</dt><dd><p>metabolite structure. Must be numeric (optional, default: all metabolites
-in the structure will be search for)</p>
+<dd><p>Obtains mol files for metabolite structure entries that have HMDB IDs</p>
+<p>Uses getMolFileFromHMDB.m to obtain mol files for entries with HMDB IDs, and
+can optionally search HMDB by metabolite name to find new HMDB entries (only
+perfect matches are considered). See retrievePotHitsHMDB.m for more details.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[metabolite_structure] = getMissingHMDBMolForm</strong> (<em>metabolite_structure, molFileDirectory, retrievePotHMDB, startSearch, endSearch</em>)</p>
 </dd>
-<dt>endSearch             specify where the search should end in the</dt><dd><p>metabolite structure. Must be numeric (optional, default: all metabolites
-in the structure will be search for)</p>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>metabolite_structure</strong> – Metabolite structure</p></li>
+<li><p><strong>molFileDirectory</strong> – Directory where the mol files should be stored</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>retrievePotHMDB</strong> – If 1 (default), also query HMDB by metabolite name
+to find new HMDB entries (this can be time consuming)</p></li>
+<li><p><strong>startSearch</strong> – Numeric index where the search starts in the
+metabolite structure (default: 1)</p></li>
+<li><p><strong>endSearch</strong> – Numeric index where the search ends in the
+metabolite structure (default: all metabolites)</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>metabolite_structure</strong> – Updated metabolite structure</p>
 </dd>
 </dl>
-<p>OUTPUT
-metabolite_structure  updated metabolite structure</p>
-<p>Ines Thiele 09/21</p>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.metaboAnnotator.molFileFinder.getMolFileFromDrugbank">
 <span class="sig-name descname"><span class="pre">getMolFileFromDrugbank</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">metAbbr</span></em>, <em class="sig-param"><span class="pre">drugbank</span></em>, <em class="sig-param"><span class="pre">directory</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metaboAnnotator/molFileFinder/getMolFileFromDrugbank.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metaboAnnotator.molFileFinder.getMolFileFromDrugbank" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function connects to drugbank and retrieves the mol file, which will be
-saved in the specified directory under the given metAbbr name</p>
-<p>INPUT
-metAbbr       Metabolite abbreviation
-drugbank      Drugbank ID
-directory     Full path where the mol files should be saved (without</p>
-<blockquote>
-<div><p>final /)</p>
-</div></blockquote>
-<p>Ines Thiele, 09/2021</p>
+<dd><p>Connects to DrugBank and retrieves the mol file for a metabolite</p>
+<p>The retrieved mol file is saved in the specified directory under the given
+metAbbr name. Two DrugBank endpoints are tried, for metabolites and for small
+molecule drugs respectively:
+<a class="reference external" href="https://go.drugbank.com/structures/metabolites/DBMET01243.mol">https://go.drugbank.com/structures/metabolites/DBMET01243.mol</a>
+<a class="reference external" href="https://go.drugbank.com/structures/small_molecule_drugs/DB05478.mol">https://go.drugbank.com/structures/small_molecule_drugs/DB05478.mol</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[outFile] = getMolFileFromDrugbank</strong> (<em>metAbbr, drugbank, directory</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>metAbbr</strong> – Metabolite abbreviation</p></li>
+<li><p><strong>drugbank</strong> – DrugBank ID</p></li>
+<li><p><strong>directory</strong> – Full path where the mol files should be saved (without final /)</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>outFile</strong> – Full path to the saved mol file, or ‘’ if retrieval failed</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.metaboAnnotator.molFileFinder.getMolFilesMultipleSources">
 <span class="sig-name descname"><span class="pre">getMolFilesMultipleSources</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">metabolite_structure</span></em>, <em class="sig-param"><span class="pre">molFileDirectory</span></em>, <em class="sig-param"><span class="pre">startSearch</span></em>, <em class="sig-param"><span class="pre">endSearch</span></em>, <em class="sig-param"><span class="pre">source</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metaboAnnotator/molFileFinder/getMolFilesMultipleSources.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metaboAnnotator.molFileFinder.getMolFilesMultipleSources" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function obtains mol files from differnt resources. For details
-please check ‘obtainMetStructures.m’.</p>
-<p>INPUT
-metabolite_structure  metabolite structure
-molFileDirectory      Folder where mol files should be deposited
-startSearch           specify where the search should start in the</p>
-<blockquote>
-<div><p>metabolite structure. Must be numeric (optional, default: all metabolites
-in the structure will be search for)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>endSearch             specify where the search should end in the</dt><dd><p>metabolite structure. Must be numeric (optional, default: all metabolites
-in the structure will be search for)</p>
+<dd><p>Obtains mol files from different resources for a metabolite structure</p>
+<p>For details please check obtainMetStructures.m.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[metabolite_structure, molCollectionReport] = getMolFilesMultipleSources</strong> (<em>metabolite_structure, molFileDirectory, startSearch, endSearch, source</em>)</p>
 </dd>
-<dt>source                specify where you want to obtain the mol file from</dt><dd><p>(default: all resources), options:
-1.- ‘inchi’ (requires openBabel)
-2.- ‘smiles’ (requires openBabel)
-3.- ‘kegg’ (<a class="reference external" href="https://www.genome.jp/">https://www.genome.jp/</a>)
-4.- ‘hmdb’ (<a class="reference external" href="https://hmdb.ca/">https://hmdb.ca/</a>)
-5.- ‘pubchem’ (<a class="reference external" href="https://pubchem.ncbi.nlm.nih.gov/">https://pubchem.ncbi.nlm.nih.gov/</a>)
-6.- ‘chebi’ (<a class="reference external" href="https://www.ebi.ac.uk/">https://www.ebi.ac.uk/</a>)</p>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>metabolite_structure</strong> – Metabolite structure</p></li>
+<li><p><strong>molFileDirectory</strong> – Folder where the mol files should be deposited</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>startSearch</strong> – Numeric index where the search starts in the
+metabolite structure (default: 1)</p></li>
+<li><p><strong>endSearch</strong> – Numeric index where the search ends in the
+metabolite structure (default: all metabolites)</p></li>
+<li><p><strong>source</strong> – Resource to obtain the mol file from (default:
+all resources): ‘inchi’ or ‘smiles’ (require Open
+Babel), ‘kegg’, ‘hmdb’, ‘pubchem’, or ‘chebi’</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>metabolite_structure</strong> – Updated metabolite structure</p></li>
+<li><p><strong>molCollectionReport</strong> – Report of the mol file collection process</p></li>
+</ul>
 </dd>
 </dl>
-<p>OUTPUT
-metabolite_structure  updated metabolite_structure</p>
-<p>Ines Thiele, 09/2021</p>
 </dd></dl>
 
 </section>
@@ -343,10 +370,10 @@ metabolite_structure  updated metabolite_structure</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../../transcriptomics/index.html" class="btn btn-default float-right" title="Transcriptomics" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../generateMetInfo/index.html" class="btn btn-default float-right" title="Generatemetinfo" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../generateMetInfo/index.html" class="btn btn-default" title="Generatemetinfo" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../analyseMetStruct/index.html" class="btn btn-default" title="Analysemetstruct" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

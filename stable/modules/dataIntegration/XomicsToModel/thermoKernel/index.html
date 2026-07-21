@@ -66,7 +66,7 @@
     <link rel="top" title="The COBRA Toolbox" href="../../../../index.html"/>
         <link rel="up" title="Xomicstomodel" href="../index.html"/>
         <link rel="next" title="Thermoqp" href="thermoQP/index.html"/>
-        <link rel="prev" title="Xomicstomodel" href="../index.html"/> 
+        <link rel="prev" title="Analysis" href="../analysis/index.html"/> 
 
   
   <script src="../../../../_static/js/modernizr.min.js"></script>
@@ -159,24 +159,24 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../base/index.html">Base</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Dataintegration</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../../chemoInformatics/index.html">Chemoinformatics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../fluxomics/index.html">Fluxomics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../metabotools/index.html">Metabotools</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../metanetxMapper/index.html">Metanetxmapper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../metaboAnnotator/index.html">Metaboannotator</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../index.html">Xomicstomodel</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../metabolomics/index.html">Metabolomics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../proteomics/index.html">Proteomics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../prepareData/index.html">Preparedata</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../oneRxnPerActiveGene/index.html">Onerxnperactivegene</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../analysis/index.html">Analysis</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">Thermokernel</a><ul>
 <li class="toctree-l5"><a class="reference internal" href="thermoQP/index.html">Thermoqp</a></li>
 </ul>
 </li>
-<li class="toctree-l4"><a class="reference internal" href="../proteomics/index.html">Proteomics</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../analysis/index.html">Analysis</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../prepareData/index.html">Preparedata</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../oneRxnPerActiveGene/index.html">Onerxnperactivegene</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../metabolomics/index.html">Metabolomics</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../metaboAnnotator/index.html">Metaboannotator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chemoInformatics/index.html">Chemoinformatics</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../transcriptomics/index.html">Transcriptomics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../metabotools/index.html">Metabotools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../fluxomics/index.html">Fluxomics</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../design/index.html">Design</a></li>
@@ -244,27 +244,90 @@
 </ul>
 </div>
 <span class="target" id="module-src.dataIntegration.XomicsToModel.thermoKernel"></span><dl class="mat function">
-<dt class="sig sig-object mat" id="src.dataIntegration.XomicsToModel.thermoKernel.plotThermoKernelStats">
-<span class="sig-name descname"><span class="pre">plotThermoKernelStats</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">activeInactiveRxn</span></em>, <em class="sig-param"><span class="pre">rxnWeights</span></em>, <em class="sig-param"><span class="pre">thermoModelRxnBool</span></em>, <em class="sig-param"><span class="pre">presentAbsentMet</span></em>, <em class="sig-param"><span class="pre">metWeights</span></em>, <em class="sig-param"><span class="pre">thermoModelMetBool</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/XomicsToModel/thermoKernel/plotThermoKernelStats.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.XomicsToModel.thermoKernel.plotThermoKernelStats" title="Permalink to this definition">¶</a></dt>
-<dd><p>plots confusion matrices for active/inactive reactions and present/absent
-metabolites</p>
-<blockquote>
-<div><dl>
-<dt>INPUTS</dt><dd><p>activeInactiveRxn: - <cite>n x 1</cite>  with entries {1,-1, 0} depending on whether a reaction must be active, inactive, or unspecified respectively.
-rxnWeights:        - <cite>n x 1</cite>  real valued penalties on zero norm of reaction flux, negative to promote a reaction to be active, positive</p>
-<blockquote>
-<div><p>to promote a reaction to be inactive and zero to be indifferent to activity or inactivity</p>
-</div></blockquote>
-<p>thermoModelMetBool:   <cite>m</cite> x 1 boolean vector of thermodynamically consistent <cite>mets</cite> in input model</p>
-<p>presentAbsentMet:  - <cite>m x 1</cite>  with entries {1,-1, 0} depending on whether a metabolite must be present, absent, or unspecified respectively.
-metWeights:        - <cite>m x 1</cite>  real valued penalties on zero norm of metabolite “activity”, negative to promote a metabolite to be present, positive</p>
-<blockquote>
-<div><p>to promote a metabolite to be absent and zero to be indifferent to presence or absence</p>
-</div></blockquote>
-<p>thermoModelRxnBool: - <cite>n</cite> x 1 boolean vector of thermodynamically consistent <cite>rxns</cite> in input model</p>
+<dt class="sig sig-object mat" id="src.dataIntegration.XomicsToModel.thermoKernel.extractSemiSteadyStateModel">
+<span class="sig-name descname"><span class="pre">extractSemiSteadyStateModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">rxnWeights</span></em>, <em class="sig-param"><span class="pre">metWeights</span></em>, <em class="sig-param"><span class="pre">param</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/XomicsToModel/thermoKernel/extractSemiSteadyStateModel.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.XomicsToModel.thermoKernel.extractSemiSteadyStateModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extract a semi-steady-state thermodynamically consistent submodel by keeping only
+the metabolites with a non-zero, non-NaN weight, then calling thermoKernel</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[thermoModel, thermoModelMetBool, thermoModelRxnBool] = extractSemiSteadyStateModel</strong> (<em>model, rxnWeights, metWeights, param</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – COBRA model with fields:</p>
+<ul>
+<li><p>.S - <cite>m x n</cite> stoichiometric matrix</p></li>
+<li><p>.b - <cite>m x 1</cite> accumulation (right hand side of S*v = b)</p></li>
+<li><p>.csense - <cite>m x 1</cite> constraint sense for each metabolite</p></li>
+<li><p>.mets - <cite>m x 1</cite> metabolite identifiers</p></li>
+<li><p>.SConsistentMetBool - <cite>m x 1</cite> boolean, stoichiometrically consistent metabolites</p></li>
+<li><p>.fluxConsistentMetBool - <cite>m x 1</cite> boolean, flux consistent metabolites</p></li>
+</ul>
+</li>
+<li><p><strong>rxnWeights</strong> – <cite>n x 1</cite> real-valued penalties on reactions (negative promotes active, positive promotes inactive)</p></li>
+<li><p><strong>metWeights</strong> – <cite>m x 1</cite> real-valued penalties on metabolites (negative promotes present, positive promotes absent); metabolites with a zero or NaN weight are dropped</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUT<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>param</strong> – a structure of parameters passed through to thermoKernel</p>
+</dd>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>thermoModel</strong> – the extracted semi-steady-state COBRA submodel</p></li>
+<li><p><strong>thermoModelMetBool</strong> – <cite>m x 1</cite> boolean, true for metabolites retained in thermoModel</p></li>
+<li><p><strong>thermoModelRxnBool</strong> – <cite>n x 1</cite> boolean, true for reactions retained in thermoModel</p></li>
+</ul>
 </dd>
 </dl>
-</div></blockquote>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.dataIntegration.XomicsToModel.thermoKernel.plotThermoKernelExtractStats">
+<span class="sig-name descname"><span class="pre">plotThermoKernelExtractStats</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">activeInactiveRxn</span></em>, <em class="sig-param"><span class="pre">rxnWeights</span></em>, <em class="sig-param"><span class="pre">presentAbsentMet</span></em>, <em class="sig-param"><span class="pre">metWeights</span></em>, <em class="sig-param"><span class="pre">thermoModelMetBool</span></em>, <em class="sig-param"><span class="pre">thermoModelRxnBool</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/XomicsToModel/thermoKernel/plotThermoKernelExtractStats.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.XomicsToModel.thermoKernel.plotThermoKernelExtractStats" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot statistics comparing reaction and metabolite weights against the
+thermodynamic submodel extracted by thermoKernel</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>plotThermoModelExtractStats</strong> (<em>model, activeInactiveRxn, rxnWeights, presentAbsentMet, metWeights, thermoModelMetBool, thermoModelRxnBool</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – COBRA model with field:</p>
+<ul>
+<li><p>.h0 - metabolite weights used by thermoKernel</p></li>
+</ul>
+</li>
+<li><p><strong>activeInactiveRxn</strong> – <cite>n x 1</cite> with entries {1, -1, 0} for reactions that must be active, inactive, or unspecified</p></li>
+<li><p><strong>rxnWeights</strong> – <cite>n x 1</cite> real-valued penalties on reactions</p></li>
+<li><p><strong>presentAbsentMet</strong> – <cite>m x 1</cite> with entries {1, -1, 0} for metabolites that must be present, absent, or unspecified</p></li>
+<li><p><strong>metWeights</strong> – <cite>m x 1</cite> real-valued penalties on metabolites</p></li>
+<li><p><strong>thermoModelMetBool</strong> – <cite>m x 1</cite> boolean, true for metabolites retained in the extracted model</p></li>
+<li><p><strong>thermoModelRxnBool</strong> – <cite>n x 1</cite> boolean, true for reactions retained in the extracted model</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.dataIntegration.XomicsToModel.thermoKernel.plotThermoKernelStats">
+<span class="sig-name descname"><span class="pre">plotThermoKernelStats</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">activeInactiveRxn</span></em>, <em class="sig-param"><span class="pre">rxnWeights</span></em>, <em class="sig-param"><span class="pre">thermoModelRxnBool</span></em>, <em class="sig-param"><span class="pre">presentAbsentMet</span></em>, <em class="sig-param"><span class="pre">metWeights</span></em>, <em class="sig-param"><span class="pre">thermoModelMetBool</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/XomicsToModel/thermoKernel/plotThermoKernelStats.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.XomicsToModel.thermoKernel.plotThermoKernelStats" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot confusion matrices for active/inactive reactions and present/absent
+metabolites</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>plotThermoKernelStats</strong> (<em>activeInactiveRxn, rxnWeights, thermoModelRxnBool, presentAbsentMet, metWeights, thermoModelMetBool</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>activeInactiveRxn</strong> – <cite>n x 1</cite> with entries {1, -1, 0} for reactions that must be active, inactive, or unspecified</p></li>
+<li><p><strong>rxnWeights</strong> – <cite>n x 1</cite> real-valued penalties on reaction flux (negative promotes active, positive promotes inactive)</p></li>
+<li><p><strong>thermoModelRxnBool</strong> – <cite>n x 1</cite> boolean vector of thermodynamically consistent reactions in the input model</p></li>
+<li><p><strong>presentAbsentMet</strong> – <cite>m x 1</cite> with entries {1, -1, 0} for metabolites that must be present, absent, or unspecified</p></li>
+<li><p><strong>metWeights</strong> – <cite>m x 1</cite> real-valued penalties on metabolite activity (negative promotes present, positive promotes absent)</p></li>
+<li><p><strong>thermoModelMetBool</strong> – <cite>m x 1</cite> boolean vector of thermodynamically consistent metabolites in the input model</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="mat function">
@@ -278,12 +341,21 @@ metWeights:        - <cite>m x 1</cite>  real valued penalties on zero norm of m
 <p>+ve weight = disincentive</p>
 <p>If thermoModelMetBool and thermoModelRxnBool are also provided, it also plots the weigths
 for the incentivised metabolites and reactions that were omitted from the output model</p>
-<dl class="simple">
-<dt>IPUTS</dt><dd><p>metWeights:  - <cite>m x 1</cite> real valued vector weight on metabolites
-rxnWeights:  - <cite>n x 1</cite> real valued vector weight on reactions</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>plotThermoKernelWeights</strong> (<em>metWeights, rxnWeights, thermoModelMetBool, thermoModelRxnBool</em>)</p>
 </dd>
-<dt>OPTIONAL INPUTS</dt><dd><p>thermoModelMetBool:   <cite>m</cite> x 1 boolean vector of thermodynamically consistent <cite>mets</cite> in input model
-thermoModelRxnBool:   <cite>n</cite> x 1 boolean vector of thermodynamically consistent <cite>rxns</cite> in input model</p>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>metWeights</strong> – <cite>m x 1</cite> real-valued vector of weights on metabolites</p></li>
+<li><p><strong>rxnWeights</strong> – <cite>n x 1</cite> real-valued vector of weights on reactions</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>thermoModelMetBool</strong> – <cite>m x 1</cite> boolean vector of thermodynamically consistent metabolites in the input model</p></li>
+<li><p><strong>thermoModelRxnBool</strong> – <cite>n x 1</cite> boolean vector of thermodynamically consistent reactions in the input model</p></li>
+</ul>
 </dd>
 </dl>
 <p>Ronan Fleming</p>
@@ -299,17 +371,20 @@ a set of penalties on activity/inactivity of reactions (rxnWeights),
 a set of present and absent metabolites (presentAbsentMet), and
 a set of penalties on presence/absence of metabolites (metWeights).</p>
 <dl class="field-list">
-<dt class="field-odd">INPUT<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>model</strong> – (the following fields are required - others can be supplied)</p>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[thermoModel, thermoModelMetBool, thermoModelRxnBool] = thermoKernel</strong> (<em>model, activeInactiveRxn, rxnWeights, presentAbsentMet, metWeights, param</em>)</p>
+</dd>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>model</strong> – (the following fields are required - others can be supplied)</p>
 <ul class="simple">
-<li><p>S  - <cite>m x n</cite> Stoichiometric matrix</p></li>
-<li><p>c  - <cite>n x 1</cite> Linear objective coefficients</p></li>
-<li><p>lb - <cite>n x 1</cite> Lower bounds</p></li>
-<li><p>ub - <cite>n x 1</cite> Upper bounds</p></li>
+<li><p>.S - <cite>m x n</cite> Stoichiometric matrix</p></li>
+<li><p>.c - <cite>n x 1</cite> Linear objective coefficients</p></li>
+<li><p>.lb - <cite>n x 1</cite> Lower bounds</p></li>
+<li><p>.ub - <cite>n x 1</cite> Upper bounds</p></li>
 </ul>
 </dd>
-<dt class="field-even">OPTIONAL INPUTS<span class="colon">:</span></dt>
-<dd class="field-even"><ul>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul>
 <li><p><strong>model</strong> – (optional fields)
 * .b - <cite>m x 1</cite> change in concentration with time
 * .csense - <cite>m x 1</cite> character array with entries in {L,E,G}
@@ -323,23 +398,39 @@ a set of penalties on presence/absence of metabolites (metWeights).</p>
 and decrease the incentive to search the steady state solution space for a flux vector that results in certain reactions and
 metabolites to be active and present, respectively.</p>
 </div></blockquote>
-</li>
-<li><p><strong>activeInactiveRxn</strong> –</p>
 <ul class="simple">
-<li><p><cite>n x 1</cite> with entries {1,-1, 0} depending on whether a reaction must be active, inactive, or unspecified respectively.</p></li>
+<li><p>.mets - <cite>m x 1</cite> metabolite identifiers</p></li>
+<li><p>.rxns - <cite>n x 1</cite> reaction identifiers</p></li>
+<li><p>.SIntMetBool - <cite>m x 1</cite> boolean, true for internal metabolites</p></li>
+<li><p>.SIntRxnBool - <cite>n x 1</cite> boolean, true for internal reactions</p></li>
+<li><p>.SConsistentMetBool - <cite>m x 1</cite> boolean, stoichiometrically consistent metabolites</p></li>
+<li><p>.SConsistentRxnBool - <cite>n x 1</cite> boolean, stoichiometrically consistent reactions</p></li>
+<li><p>.fluxConsistentMetBool - <cite>m x 1</cite> boolean, flux consistent metabolites</p></li>
+<li><p>.fluxConsistentRxnBool - <cite>n x 1</cite> boolean, flux consistent reactions</p></li>
+<li><p>.metRemoveBool - <cite>m x 1</cite> boolean, metabolites removed during extraction</p></li>
+<li><p>.rxnRemoveBool - <cite>n x 1</cite> boolean, reactions removed during extraction</p></li>
+<li><p>.forcedIntRxnBool - <cite>n x 1</cite> boolean, internal reactions forced to carry non-zero flux</p></li>
+<li><p>.g0 - <cite>n x 1</cite> reaction weights used internally (derived from rxnWeights)</p></li>
+<li><p>.h0 - <cite>m x 1</cite> metabolite weights used internally (derived from metWeights)</p></li>
+<li><p>.lambda0 - internal cardinality-optimisation weight parameter</p></li>
+<li><p>.lambda1 - internal cardinality-optimisation weight parameter</p></li>
+<li><p>.delta0 - internal cardinality-optimisation weight parameter</p></li>
+<li><p>.delta1 - internal cardinality-optimisation weight parameter</p></li>
+<li><p>.alpha1 - internal cardinality-optimisation weight parameter</p></li>
+<li><p>.activeRxn - <cite>n x 1</cite> boolean, reactions required to be active</p></li>
+<li><p>.inactiveRxn - <cite>n x 1</cite> boolean, reactions required to be inactive</p></li>
+<li><p>.presentMet - <cite>m x 1</cite> boolean, metabolites required to be present</p></li>
+<li><p>.absentMet - <cite>m x 1</cite> boolean, metabolites required to be absent</p></li>
 </ul>
 </li>
+<li><p><strong>activeInactiveRxn</strong> – <cite>n x 1</cite> with entries {1, -1, 0} depending on whether a reaction must be active, inactive, or unspecified respectively.</p></li>
 <li><p><strong>rxnWeights</strong> –</p>
 <ul class="simple">
 <li><p><cite>n x 1</cite> real valued penalties on zero norm of reaction flux, negative to promote a reaction to be active, positive</p></li>
 </ul>
 <p>to promote a reaction to be inactive and zero to be indifferent to activity or inactivity</p>
 </li>
-<li><p><strong>presentAbsentMet</strong> –</p>
-<ul class="simple">
-<li><p><cite>m x 1</cite> with entries {1,-1, 0} depending on whether a metabolite must be present, absent, or unspecified respectively.</p></li>
-</ul>
-</li>
+<li><p><strong>presentAbsentMet</strong> – <cite>m x 1</cite> with entries {1, -1, 0} depending on whether a metabolite must be present, absent, or unspecified respectively.</p></li>
 <li><p><strong>metWeights</strong> –</p>
 <ul class="simple">
 <li><p><cite>m x 1</cite> real valued penalties on zero norm of metabolite “activity”, negative to promote a metabolite to be present, positive</p></li>
@@ -379,6 +470,10 @@ metWeights  = metWeights./sum(abs(metWeights));</p>
 <li><p>.formulation - mathematical formulation of thermoKernel algorithm (Default is ‘pqzwrs’. Do not change unless expert user.)</p></li>
 <li><p>.plotThermoKernelStats {(0),1} generates a figure with confusion matrices comparing anticipated vs actual metabolites and reactions in the extracted model</p></li>
 <li><p>.plotThermoKernelWeights {(0),1} generates a figure displaying the weights given to actual and anticipated but omitted metabolites and reactions in the extracted model</p></li>
+<li><p>.iterationMethod - method used to iterate reaction/metabolite selection (Default: ‘greedyAdd’)</p></li>
+<li><p>.saveModelSFC - {(0),1} save the model at each stoichiometric/flux-consistency step</p></li>
+<li><p>.nMax - maximal number of inner iterations (Default value = 40)</p></li>
+<li><p>.findThermoConsistentFluxSubset - {(0),1} find the largest thermodynamically flux consistent subset before extraction</p></li>
 </ul>
 </li>
 </ul>
@@ -401,7 +496,7 @@ metWeights  = metWeights./sum(abs(metWeights));</p>
         <a href="thermoQP/index.html" class="btn btn-default float-right" title="Thermoqp" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../index.html" class="btn btn-default" title="Xomicstomodel" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../analysis/index.html" class="btn btn-default" title="Analysis" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

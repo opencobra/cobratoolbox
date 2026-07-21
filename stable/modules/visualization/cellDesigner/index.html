@@ -65,8 +65,8 @@
         <link rel="search" title="Search" href="../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../index.html"/>
         <link rel="up" title="Visualization" href="../index.html"/>
-        <link rel="next" title="Entropicfba" href="../entropicFBA/index.html"/>
-        <link rel="prev" title="Convert" href="../convert/index.html"/> 
+        <link rel="next" title="Maps" href="../maps/index.html"/>
+        <link rel="prev" title="Metaboliccartography" href="../metabolicCartography/index.html"/> 
 
   
   <script src="../../../_static/js/modernizr.min.js"></script>
@@ -162,19 +162,19 @@
 <li class="toctree-l2"><a class="reference internal" href="../../design/index.html">Design</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../reconstruction/index.html">Reconstruction</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html">Visualization</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../paint4net/index.html">Paint4net</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../efmviz/index.html">Efmviz</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../SAMMIM/index.html">Sammim</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../convert/index.html">Convert</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Celldesigner</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../entropicFBA/index.html">Entropicfba</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../visualizeEpistasis/index.html">Visualizeepistasis</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../upsetPlot/index.html">Upsetplot</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../createMetIntrcNetwork/index.html">Createmetintrcnetwork</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../maps/index.html">Maps</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../metabolicCartography/index.html">Metaboliccartography</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../EscherMap/index.html">Eschermap</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../paint4Net/index.html">Paint4net</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../paint4net/index.html">Paint4net</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../metabolicCartography/index.html">Metaboliccartography</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Celldesigner</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../maps/index.html">Maps</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../SAMMIM/index.html">Sammim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../entropicFBA/index.html">Entropicfba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../upsetPlot/index.html">Upsetplot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../convert/index.html">Convert</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../visualizeEpistasis/index.html">Visualizeepistasis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../EscherMap/index.html">Eschermap</a></li>
 </ul>
 </li>
 </ul>
@@ -235,7 +235,11 @@
 <span class="target" id="module-src.visualization.cellDesigner"></span><dl class="mat script">
 <dt class="sig sig-object mat" id="src.visualization.cellDesigner.ColorMet">
 <span class="sig-name descname"><span class="pre">ColorMet</span></span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/cellDesigner/ColorMet.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.cellDesigner.ColorMet" title="Permalink to this definition">¶</a></dt>
-<dd><p>reaction</p>
+<dd><p>Builds per-reaction metabolite-species and colour-code lists (<cite>list_M_species</cite>,
+<cite>list_R</cite>, <cite>list_R_M</cite>, <cite>list_P</cite>, <cite>list_P_M</cite>, <cite>list_C_R</cite>, <cite>list_C_P</cite>) used to
+highlight <cite>CellDesigner</cite> nodes, from workspace variables <cite>list_M</cite>,
+<cite>parsed_fatty_acid_new</cite>, <cite>num</cite>, <cite>list_nodes</cite>, <cite>baseR</cite>, <cite>baseP</cite>, <cite>baseC_R</cite>,
+and <cite>baseC_P</cite> produced by <cite>colourNode</cite>/<cite>colourAll</cite>-style scripts.</p>
 </dd></dl>
 
 <dl class="mat function">
@@ -244,18 +248,27 @@
 <dd><p>Retrieves omics data from a COBRA model structure and add them to a
 <cite>CellDesginer</cite> XML file; The omics data will be shown as texts in
 <cite>CellDesigner</cite> or <cite>ReconMap</cite> online.</p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[var] = addAnnotation</strong> (<em>fname, fname_out, infix, model, infix_type</em>)</p>
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
-<dd class="field-even"><ul class="simple">
+<dd class="field-even"><ul>
 <li><p><strong>fname</strong> – an XML file to be modified to include annotations</p></li>
-<li><p><strong>fanme_out</strong> – the name of the output XML file</p></li>
+<li><p><strong>fname_out</strong> – the name of the output XML file</p></li>
 <li><p><strong>infix</strong> – The metabolite/reaction IDs to be used to retrieve omics data
 in the COBRA model structure.</p></li>
 <li><p><strong>model</strong> – a COBRA model structure that contains the annotations which
-can be retrieved by using the infix as the index value.</p></li>
+can be retrieved by using the infix as the index value,
+with fields:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>.S - The <cite>m</cite> x <cite>n</cite> stoichiometric matrix</p></li>
+<li><p>.rxns - <cite>n x 1</cite> cell array of reaction identifiers</p></li>
+<li><p>.mets - <cite>m x 1</cite> cell array of metabolite identifiers</p></li>
+</ul>
+</div></blockquote>
+</li>
 </ul>
 </dd>
 <dt class="field-odd">OPTIONAL INPUT<span class="colon">:</span></dt>
@@ -295,10 +308,15 @@ highlighted, whereas the second column saves a list of
 html Colours.</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
+<dt class="field-odd">OPTIONAL INPUT<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>colorScheme</strong> – Index (1-5) of the built-in colour palette used to
+generate the highlight colours (default: 2)</p>
+</dd>
+<dt class="field-even">OUTPUT<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
 <li><p><strong>ref</strong> – An updated parsed <cite>CellDesigner</cite> model structure</p></li>
-<li><p><strong>listRxnColour</strong></p></li>
+<li><p><strong>listRxnColour</strong> – A list of <cite>{reactionID, colourCode}</cite> pairs that were
+newly assigned a highlight colour</p></li>
 </ul>
 </dd>
 </dl>
@@ -316,8 +334,13 @@ from COBRA functions</p>
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>model</strong> – A COBRA model structure</p></li>
-<li><p><strong>FBAresult</strong> – FBA results of a COBRA simulation by the
+<li><p><strong>model</strong> – A COBRA model structure with fields:</p>
+<ul>
+<li><p>.rxns - <cite>n x 1</cite> cell array of reaction identifiers</p></li>
+<li><p>.rxnNames - <cite>n x 1</cite> cell array of reaction names</p></li>
+</ul>
+</li>
+<li><p><strong>FBA_result</strong> – FBA results of a COBRA simulation by the
 <cite>optimizeCbModel</cite> function</p></li>
 <li><p><strong>parsed</strong> – The CD model structure outputed by the <cite>parseCD</cite>
 function</p></li>
@@ -349,18 +372,27 @@ information about the width of reaction links</p></li>
 is retrieved from a COBRA model structure using Metabolite/Reaction IDs as
 the name of entry. The omics data will be shown as texts hyperlinking to
 external databases in <cite>CellDesigner</cite> or <cite>ReconMap</cite> online.</p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[fname_out, var] = addMiriam</strong> (<em>fname, fname_out, infix, model, infix_type, list, miriam_path</em>)</p>
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
-<dd class="field-even"><ul class="simple">
+<dd class="field-even"><ul>
 <li><p><strong>fname</strong> – An XML file to be modified to include annotations.</p></li>
 <li><p><strong>fname_out</strong> – The name of an output XML file.</p></li>
 <li><p><strong>infix</strong> – A list of metabolite/reaction IDs to be used to retrieve omics data
 in the COBRA model structure.</p></li>
 <li><p><strong>model</strong> – a COBRA model structure contains the annotations that can be
-retrieved by using the infix as the index value.</p></li>
+retrieved by using the infix as the index value, with
+fields:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>.S - The <cite>m</cite> x <cite>n</cite> stoichiometric matrix</p></li>
+<li><p>.rxns - <cite>n x 1</cite> cell array of reaction identifiers</p></li>
+<li><p>.mets - <cite>m x 1</cite> cell array of metabolite identifiers</p></li>
+</ul>
+</div></blockquote>
+</li>
 <li><p><strong>list</strong> – Column 1 stores a list of the fieldnames of the COBRA model
 strucutres that contains MIRIAM information; Column 2 stores
 a list of MIRIAM types corresponding to each field; column 3
@@ -398,13 +430,22 @@ var:             the content of the modified XML file with annotations</p>
 <span class="sig-name descname"><span class="pre">cmpMet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">parsed</span></em>, <em class="sig-param"><span class="pre">model</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/cellDesigner/cmpMet.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.cellDesigner.cmpMet" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compares metabolites in a parsed <cite>CellDesigner</cite> model structure (imported by
 ‘parseCD’) and a COBRA model Matlab structure.</p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[results] = cmpMet</strong> (<em>parsed, model</em>)</p>
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>parsed</strong> – A parsed model structure generated by <cite>parseCD</cite> function.</p></li>
+<dd class="field-even"><ul>
+<li><p><strong>parsed</strong> – A parsed model structure generated by <cite>parseCD</cite> function,
+with fields:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>.r_info - the per-property parsed representation
+produced by <cite>parseCD</cite> (used here via its <cite>.species</cite>
+sub-field)</p></li>
+</ul>
+</div></blockquote>
+</li>
 <li><p><strong>model</strong> – A COBRA model Matlab structure.</p></li>
 </ul>
 </dd>
@@ -428,21 +469,28 @@ the reference model that are NOT included in the test model.</p></li>
 <dt class="sig sig-object mat" id="src.visualization.cellDesigner.cmpRxn">
 <span class="sig-name descname"><span class="pre">cmpRxn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">parsed</span></em>, <em class="sig-param"><span class="pre">model</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/cellDesigner/cmpRxn.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.cellDesigner.cmpRxn" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compare reactions in a parsed <cite>CellDesigner</cite> model structure (imported by <cite>parseCD</cite>) and a COBRA model Matlab structure.</p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[results] = cmpRxn</strong> (<em>parsed, model</em>)</p>
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>parsed</strong> – A parsed model structure generated by <cite>parseCD</cite> function.</p></li>
+<dd class="field-even"><ul>
+<li><p><strong>parsed</strong> – A parsed model structure generated by <cite>parseCD</cite> function,
+with fields:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>.r_info - the per-property parsed representation
+produced by <cite>parseCD</cite> (used here via its <cite>.ID</cite>
+sub-field)</p></li>
+</ul>
+</div></blockquote>
+</li>
 <li><p><strong>model</strong> – A COBRA model Matlab structure.</p></li>
 </ul>
 </dd>
-</dl>
-<dl>
-<dt>OUTPUTS</dt><dd><p>results:    Consist of four fields</p>
-<blockquote>
-<div><ul class="simple">
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>results</strong> – Consist of four fields</p>
+<ul class="simple">
 <li><p>listOfFound - A list of reactions in the test
 model that are present in the
 reference COBRA model.</p></li>
@@ -457,7 +505,6 @@ each rections stored in the sub field of <cite>rxns_mets</cite></p></li>
 the reference model that are
 NOT included in the test model.</p></li>
 </ul>
-</div></blockquote>
 </dd>
 </dl>
 <p class="rubric">Example</p>
@@ -468,16 +515,25 @@ NOT included in the test model.</p></li>
 <dt class="sig sig-object mat" id="src.visualization.cellDesigner.colourAll">
 <span class="sig-name descname"><span class="pre">colourAll</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">fname</span></em>, <em class="sig-param"><span class="pre">parsed</span></em>, <em class="sig-param"><span class="pre">fname_out</span></em>, <em class="sig-param"><span class="pre">new_colour</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/cellDesigner/colourAll.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.cellDesigner.colourAll" title="Permalink to this definition">¶</a></dt>
 <dd><p>Change the colours of all metabolite nodes to a specific colour.</p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[mainText_new, keyText, numText] = colourAll</strong> (<em>fname, parsed, fname_out, new_colour</em>)</p>
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
-<dd class="field-even"><ul class="simple">
+<dd class="field-even"><ul>
 <li><p><strong>fname</strong> – An XML file that needs to be modified to change the colour
 of all metabolite nodes</p></li>
-<li><p><strong>fanme_out</strong> – The name of the output XML file</p></li>
-<li><p><strong>parsed</strong> – A parsed model structure generated by <cite>parseCD</cite> function</p></li>
+<li><p><strong>fname_out</strong> – The name of the output XML file</p></li>
+<li><p><strong>parsed</strong> – A parsed model structure generated by <cite>parseCD</cite> function,
+with fields:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>.r_info - the per-property parsed representation
+produced by <cite>parseCD</cite> (used here via its <cite>.ID</cite>
+sub-field)</p></li>
+</ul>
+</div></blockquote>
+</li>
 <li><p><strong>new_colour</strong> – a colour hex code such as ‘5bcdb8’ or ‘#5bcdb8’. A list of
 reaction IDs that need to be highilighted by
 changing the colour attributes of the reaciton links in the
@@ -509,14 +565,24 @@ a=’a’</p>
 <dt class="sig sig-object mat" id="src.visualization.cellDesigner.colourNode">
 <span class="sig-name descname"><span class="pre">colourNode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">parsed</span></em>, <em class="sig-param"><span class="pre">fname_out</span></em>, <em class="sig-param"><span class="pre">list_Rxn</span></em>, <em class="sig-param"><span class="pre">list_Met</span></em>, <em class="sig-param"><span class="pre">list_Colour_Met</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/cellDesigner/colourNode.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.cellDesigner.colourNode" title="Permalink to this definition">¶</a></dt>
 <dd><p>Changes the colours of metabolite nodes</p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[parsed_updated, mainText_new, final_list] = colourNode</strong> (<em>parsed, fname_out, list_Rxn, list_Met, list_Colour_Met</em>)</p>
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
-<dd class="field-even"><ul class="simple">
+<dd class="field-even"><ul>
 <li><p><strong>fname_out</strong> – The name of the output XML file</p></li>
-<li><p><strong>parsed</strong> – A parsed model structure generated by <cite>parseCD</cite> function</p></li>
+<li><p><strong>parsed</strong> – A parsed model structure generated by <cite>parseCD</cite> function,
+with fields:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>.r_info - the per-property parsed representation
+produced by <cite>parseCD</cite> (used here via its <cite>.ID</cite>,
+<cite>.baseReactant</cite>, <cite>.baseProduct</cite>, <cite>.reactant</cite>, and
+<cite>.product</cite> sub-fields)</p></li>
+</ul>
+</div></blockquote>
+</li>
 <li><p><strong>list_Rxn</strong> – A list of reaction IDs that need to be highilighted by
 changing the colour attributes of the reaciton links in
 the <cite>CellDesigner</cite> model. The first column stores a list of
@@ -532,7 +598,7 @@ whereas the second column stores a list of html Colours.</p></li>
 </dd>
 </dl>
 <dl class="simple">
-<dt>OPTIONAL OUTPUT:</dt><dd><p>parsed_updated:   An updated parsed model structure.
+<dt>OPTIONAL OUTPUT:</dt><dd><p>parsed_updated:    An updated parsed model structure.
 mainText_new:     The lines of the new XML file.
 final_list:       A list of the metabolite nodes whose colour attributes are modified.</p>
 </dd>
@@ -546,14 +612,23 @@ final_list:       A list of the metabolite nodes whose colour attributes are mod
 <span class="sig-name descname"><span class="pre">colourNodeWhite</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">parsed</span></em>, <em class="sig-param"><span class="pre">fname_out</span></em>, <em class="sig-param"><span class="pre">list</span></em>, <em class="sig-param"><span class="pre">list_Met</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/cellDesigner/colourNodeWhite.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.cellDesigner.colourNodeWhite" title="Permalink to this definition">¶</a></dt>
 <dd><p>Highlights the metabolite nodes using the same colour scheme as in
 <cite>addColour</cite> function while changing the colours of rest nodes to white</p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[parsed_update, mainText_new, final_list] = colourNodeWhite</strong> (<em>parsed, fname_out, list, list_Met</em>)</p>
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>fanme_out</strong> – The name of the output XML file</p></li>
-<li><p><strong>parsed</strong> – A parsed model structure generated by <cite>parseCD</cite> function</p></li>
+<dd class="field-even"><ul>
+<li><p><strong>fname_out</strong> – The name of the output XML file</p></li>
+<li><p><strong>parsed</strong> – A parsed model structure generated by <cite>parseCD</cite> function,
+with fields:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>.r_info - the per-property parsed representation
+produced by <cite>parseCD</cite> (used here via its <cite>.ID</cite>
+sub-field)</p></li>
+</ul>
+</div></blockquote>
+</li>
 <li><p><strong>list</strong> – A list of reaction IDs that need to be highilighted by
 changing the colour attributes of the reaciton links in
 the <cite>CellDesigner</cite> model. The first column stores a list of
@@ -566,7 +641,7 @@ whereas the second column stores a list of Html Colours.</p></li>
 </dd>
 </dl>
 <dl>
-<dt>OPTIONAL OUTPUTS:</dt><dd><p>parsed_updated:   An updated parsed model structure.
+<dt>OPTIONAL OUTPUTS:</dt><dd><p>parsed_update:    An updated parsed model structure.
 mainText_new:     The lines of the new XML file.
 final_list:       A list of the metabolite nodes whose colour attributes</p>
 <blockquote>
@@ -583,13 +658,22 @@ final_list:       A list of the metabolite nodes whose colour attributes</p>
 <span class="sig-name descname"><span class="pre">correctMetName</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">parsed</span></em>, <em class="sig-param"><span class="pre">cmpM_results</span></em>, <em class="sig-param"><span class="pre">listR</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/cellDesigner/correctMetName.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.cellDesigner.correctMetName" title="Permalink to this definition">¶</a></dt>
 <dd><p>Correct the inconsistent species name in the test model (identified by
 the <cite>cmpM</cite> function) according to a reference list of species names.</p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[parsed_updated] = correctMetName</strong> (<em>parsed, cmpM_results, listR</em>)</p>
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>parsed</strong> – A parsed CD model structure generated by <cite>parseCD</cite> function.</p></li>
+<dd class="field-even"><ul>
+<li><p><strong>parsed</strong> – A parsed CD model structure generated by <cite>parseCD</cite>
+function, with fields:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>.r_info - the per-property parsed representation
+produced by <cite>parseCD</cite> (used here via its
+<cite>.species</cite> sub-field)</p></li>
+</ul>
+</div></blockquote>
+</li>
 <li><p><strong>cmpM_results</strong> – the output of the <cite>cmpM</cite> function. A list of species names
 that are present in the reference model (A COBRA model
 structure, but not in the test model (the parsed model
@@ -609,7 +693,10 @@ the incorrect names (as listed in <cite>listN</cite>)</p></li>
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.visualization.cellDesigner.intergrate">
 <span class="sig-name descname"><span class="pre">intergrate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">fname</span></em>, <em class="sig-param"><span class="pre">fname_out</span></em>, <em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">FBAsolution</span></em>, <em class="sig-param"><span class="pre">listRxn</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/cellDesigner/intergrate.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.cellDesigner.intergrate" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
+<dd><p>Chains parsing, flux overlay, and XML writing for a <cite>CellDesigner</cite> map:
+parses <cite>fname</cite>, overlays the FBA flux distribution from <cite>FBAsolution</cite> onto
+the parsed CD structure, and writes the annotated result to <cite>fname_out</cite>.</p>
+<dl class="field-list simple">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>intergrate</strong> (<em>fname, fname_out, model, FBAsolution, listRxn</em>)</p>
 </dd>
@@ -646,12 +733,12 @@ by property (namely, ID, width, colour, etc.)</p>
 <dd class="field-odd"><p><strong>[annotation] = parseCD</strong> (<em>fname</em>)</p>
 </dd>
 <dt class="field-even">INPUT<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>fanme</strong> – A CellDesigner XML file</p>
+<dd class="field-even"><p><strong>fname</strong> – A CellDesigner XML file</p>
 </dd>
 <dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>annotation</strong> – The first type of the parsed model structure</p>
 <ul class="simple">
-<li><p>annotation.r_info - The second type of the parsed model structure</p></li>
+<li><p>.r_info - The second type of the parsed model structure</p></li>
 </ul>
 </dd>
 </dl>
@@ -691,14 +778,21 @@ attribute line of the XML file.</p>
 <dd><p>Convert the a type of the parsed model structure (orgnised by reaction)
 into the other type of the parsed model structure (organised by property
 (namely, ID, width, colour, etc.)</p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[r_info] = readCD</strong> (<em>parsed</em>)</p>
 </dd>
 <dt class="field-even">INPUT<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>parsed</strong> – the first type of the parsed model structure outputed by
 <cite>parseCD</cite> function (more user-friendely to modify speicfic
-graphic properties for specific reactions)</p>
+graphic properties for specific reactions), with fields:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>.r_info - the second (per-property) parsed
+representation produced by <cite>parseCD</cite> (used here via
+its <cite>.species</cite> sub-field)</p></li>
+</ul>
+</div></blockquote>
 </dd>
 <dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>r_info</strong> – the second type of the parsed model structure (similar to a
@@ -711,14 +805,23 @@ COBRA Matlab structure).</p>
 <dt class="sig sig-object mat" id="src.visualization.cellDesigner.repairXML">
 <span class="sig-name descname"><span class="pre">repairXML</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">parsed</span></em>, <em class="sig-param"><span class="pre">fname_out</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/cellDesigner/repairXML.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.cellDesigner.repairXML" title="Permalink to this definition">¶</a></dt>
 <dd><p>Write the corrected CD model structure to an XML file</p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[annotedText] = repairXML</strong> (<em>parsed, fname_out</em>)</p>
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>parsed</strong> – A parsed model structure generated by ‘parseCD’function.</p></li>
-<li><p><strong>fanme_out</strong> – The name of the output XML file.</p></li>
+<dd class="field-even"><ul>
+<li><p><strong>parsed</strong> – A parsed model structure generated by ‘parseCD’function,
+with fields:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>.r_info - the per-property parsed representation
+produced by <cite>parseCD</cite> (used here via its
+<cite>.XMLtext</cite> sub-field)</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><strong>fname_out</strong> – The name of the output XML file.</p></li>
 </ul>
 </dd>
 <dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
@@ -734,13 +837,22 @@ COBRA Matlab structure).</p>
 <span class="sig-name descname"><span class="pre">retrieveMet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">parsed</span></em>, <em class="sig-param"><span class="pre">lkup</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/cellDesigner/retrieveMet.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.cellDesigner.retrieveMet" title="Permalink to this definition">¶</a></dt>
 <dd><p>Retrieve all the identifiers for a metabolite in the parsed CD model
 structure; there could be multiple identifiers for a metabolite.</p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[identifier] = retrieveMet</strong> (<em>parsed, lkup</em>)</p>
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>parsed</strong> – A parsed model structure generated by <cite>parseCD</cite> function.</p></li>
+<dd class="field-even"><ul>
+<li><p><strong>parsed</strong> – A parsed model structure generated by <cite>parseCD</cite> function,
+with fields:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>.r_info - the per-property parsed representation
+produced by <cite>parseCD</cite> (used here via its <cite>.species</cite>
+sub-field)</p></li>
+</ul>
+</div></blockquote>
+</li>
 <li><p><strong>lkup</strong> – A species name</p></li>
 </ul>
 </dd>
@@ -754,14 +866,23 @@ structure; there could be multiple identifiers for a metabolite.</p>
 <dt class="sig sig-object mat" id="src.visualization.cellDesigner.updateCD">
 <span class="sig-name descname"><span class="pre">updateCD</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">text</span></em>, <em class="sig-param"><span class="pre">parsed</span></em>, <em class="sig-param"><span class="pre">note</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/cellDesigner/updateCD.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.cellDesigner.updateCD" title="Permalink to this definition">¶</a></dt>
 <dd><p>Correct(Update) the species name according to a reference list of the names.</p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[results] = updateCD</strong> (<em>text, parsed, note</em>)</p>
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
-<dd class="field-even"><ul class="simple">
+<dd class="field-even"><ul>
 <li><p><strong>text</strong> – A matlab variable that saves the lines of the XML file.</p></li>
-<li><p><strong>parsed</strong> – A parsed CD model structure generated by <cite>parseCD</cite> function.</p></li>
+<li><p><strong>parsed</strong> – A parsed CD model structure generated by <cite>parseCD</cite>
+function, with fields:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>.r_info - the per-property parsed representation
+produced by <cite>parseCD</cite> (used here via its
+<cite>.species</cite> sub-field)</p></li>
+</ul>
+</div></blockquote>
+</li>
 </ul>
 </dd>
 <dt class="field-odd">OPTIONAL INPUT<span class="colon">:</span></dt>
@@ -770,12 +891,16 @@ Record the column number of the species that are to be
 replaced with a new name.</p>
 </dd>
 <dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>text</strong> – The corrected lines of the XML file.</p></li>
-<li><p><strong>number</strong> – The number of the line.</p></li>
-<li><p><strong>changdStrLines</strong> – The changed line of text.</p></li>
-<li><p><strong>col</strong> – Record the column number of the species that is to be
-replaced with a new species name.</p></li>
+<dd class="field-even"><p><strong>results</strong> – Structure with fields:</p>
+<ul class="simple">
+<li><p>.text - The corrected lines of the XML file.</p></li>
+<li><p>.number - The line number(s) in <cite>text</cite> where a
+species/name replacement was found.</p></li>
+<li><p>.changedStrLines - The changed line of text for
+each replacement made.</p></li>
+<li><p>.col - Record of the column number of the species
+that is replaced with a new species name (only
+populated when <cite>note</cite> is <cite>‘true’</cite>).</p></li>
 </ul>
 </dd>
 </dl>
@@ -787,15 +912,23 @@ replaced with a new species name.</p></li>
 <dt class="sig sig-object mat" id="src.visualization.cellDesigner.writeCD">
 <span class="sig-name descname"><span class="pre">writeCD</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">parsed</span></em>, <em class="sig-param"><span class="pre">fname_out</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/cellDesigner/writeCD.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.cellDesigner.writeCD" title="Permalink to this definition">¶</a></dt>
 <dd><p>Write the parsed CD model structure to a CD-compatible XML file.</p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>[parsed_update, annotedText] = writeCD</strong> (<em>fname, parsed, fname_out</em>)</p>
+<dd class="field-odd"><p><strong>[parsed_update, annotedText] = writeCD</strong> (<em>parsed, fname_out</em>)</p>
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>fname</strong> – The original XML file</p></li>
-<li><p><strong>parsed</strong> – A parsed model structure generated by <cite>parseCD</cite> function.</p></li>
-<li><p><strong>fanme_out</strong> – The name of the output XML file.</p></li>
+<dd class="field-even"><ul>
+<li><p><strong>parsed</strong> – A parsed model structure generated by <cite>parseCD</cite>
+function, with fields:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>.r_info - the per-property parsed representation
+produced by <cite>parseCD</cite> (used here via its
+<cite>.XMLtext</cite> sub-field)</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><strong>fname_out</strong> – The name of the output XML file.</p></li>
 </ul>
 </dd>
 <dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
@@ -806,7 +939,7 @@ replaced with a new species name.</p></li>
 </dd>
 </dl>
 <p class="rubric">Example</p>
-<p>aaa = writeXML(‘PD_140620_1.xml’, parsePD,’text.html’)</p>
+<p>aaa = writeCD(parsePD, ‘text.html’)</p>
 </dd></dl>
 
 <dl class="mat function">
@@ -824,7 +957,7 @@ contains a list of reaction names,whereas the second
 column contains a corresponding list of the colours (Hex
 triplet, e.g.,
 <a class="reference external" href="https://closedxml.codeplex.com/wikipage?title=Excel%20Indexed%20Colors">https://closedxml.codeplex.com/wikipage?title=Excel%20Indexed%20Colors</a>)</p></li>
-<li><p><strong>fanme_out</strong> – The name of the output text file name.</p></li>
+<li><p><strong>fname_out</strong> – The name of the output text file name.</p></li>
 </ul>
 </dd>
 </dl>
@@ -847,7 +980,7 @@ CD package functions to a XML file.</p>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>text</strong> – A matlab variable contains the lines of the variable to be
 written to a XML file.</p></li>
-<li><p><strong>fanme_out</strong> – The name of the output XML file name.</p></li>
+<li><p><strong>fname_out</strong> – The name of the output XML file name.</p></li>
 </ul>
 </dd>
 </dl>
@@ -865,7 +998,7 @@ written to a XML file.</p></li>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>fname</strong> – The original XML file</p></li>
 <li><p><strong>parsed</strong> – A parsed model structure generated by <cite>parseCD</cite> function.</p></li>
-<li><p><strong>fanme_out</strong> – The name of the output XML file.</p></li>
+<li><p><strong>fname_out</strong> – The name of the output XML file.</p></li>
 </ul>
 </dd>
 <dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
@@ -888,10 +1021,10 @@ written to a XML file.</p></li>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../entropicFBA/index.html" class="btn btn-default float-right" title="Entropicfba" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../maps/index.html" class="btn btn-default float-right" title="Maps" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../convert/index.html" class="btn btn-default" title="Convert" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../metabolicCartography/index.html" class="btn btn-default" title="Metaboliccartography" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

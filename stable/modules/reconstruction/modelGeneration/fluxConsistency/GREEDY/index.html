@@ -161,9 +161,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../dataIntegration/index.html">Dataintegration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../design/index.html">Design</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../../index.html">Reconstruction</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../../../comparison/index.html">Comparison</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../fastGapFill/index.html">Fastgapfill</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../growthExpMatch/index.html">Growthexpmatch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../refinement/index.html">Refinement</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../rBioNet/index.html">Rbionet</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../../index.html">Modelgeneration</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="../../massBalance/index.html">Massbalance</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../modelProperties/index.html">Modelproperties</a></li>
@@ -172,14 +171,15 @@
 <li class="toctree-l5"><a class="reference internal" href="../DCA/index.html">Dca</a></li>
 </ul>
 </li>
-<li class="toctree-l4"><a class="reference internal" href="../../modelVerification/index.html">Modelverification</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../stoichConsistency/index.html">Stoichconsistency</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../modelVerification/index.html">Modelverification</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../../rBioNet/index.html">Rbionet</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../demeter/index.html">Demeter</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../refinement/index.html">Refinement</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../metaboRePort/index.html">Metaboreport</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../fastGapFill/index.html">Fastgapfill</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../growthExpMatch/index.html">Growthexpmatch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../comparison/index.html">Comparison</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../demeter/index.html">Demeter</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../visualization/index.html">Visualization</a></li>
@@ -246,11 +246,16 @@
 <dd><p>Tries to test for flux consistent reactions in one solve</p>
 <dl class="field-list simple">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>[fluxConsistent, sol]=checkFluxConsistency</strong> (<em>model, epsilon</em>)</p>
+<dd class="field-odd"><p><strong>[fluxConsistent, sol] = checkFluxConsistency</strong> (<em>model, epsilon</em>)</p>
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>model</strong> – cobra model structure</p></li>
+<li><p><strong>model</strong> – cobra model structure with fields:</p>
+<ul>
+<li><p>.S - <cite>m x n</cite> stoichiometric matrix</p></li>
+<li><p>.b - <cite>m x 1</cite> right hand side vector</p></li>
+</ul>
+</li>
 <li><p><strong>epsilon</strong> – flux threshold</p></li>
 </ul>
 </dd>
@@ -266,7 +271,8 @@
 <dl class="mat script">
 <dt class="sig sig-object mat" id="src.reconstruction.modelGeneration.fluxConsistency.GREEDY.testFluxConsistency">
 <span class="sig-name descname"><span class="pre">testFluxConsistency</span></span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/modelGeneration/fluxConsistency/GREEDY/testFluxConsistency.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.fluxConsistency.GREEDY.testFluxConsistency" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Test script to check flux consistency in one LP; does not work yet.</p>
+</dd></dl>
 
 </section>
 

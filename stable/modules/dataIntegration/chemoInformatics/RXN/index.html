@@ -66,7 +66,7 @@
     <link rel="top" title="The COBRA Toolbox" href="../../../../index.html"/>
         <link rel="up" title="Chemoinformatics" href="../index.html"/>
         <link rel="next" title="Old" href="old/index.html"/>
-        <link rel="prev" title="Metabolites" href="../metabolites/index.html"/> 
+        <link rel="prev" title="Basicphysicochemicaldata" href="../molecularWeight/basicPhysicochemicalData/index.html"/> 
 
   
   <script src="../../../../_static/js/modernizr.min.js"></script>
@@ -159,23 +159,23 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../base/index.html">Base</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Dataintegration</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../../metabotools/index.html">Metabotools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../metanetxMapper/index.html">Metanetxmapper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../metaboAnnotator/index.html">Metaboannotator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../XomicsToModel/index.html">Xomicstomodel</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../index.html">Chemoinformatics</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="../metabolites/index.html">Metabolites</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../molecularWeight/index.html">Molecularweight</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">Rxn</a><ul>
 <li class="toctree-l5"><a class="reference internal" href="old/index.html">Old</a></li>
 </ul>
 </li>
-<li class="toctree-l4"><a class="reference internal" href="../inchi/index.html">Inchi</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../reactions/index.html">Reactions</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../molecularWeight/index.html">Molecularweight</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../inchi/index.html">Inchi</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../fluxomics/index.html">Fluxomics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../metanetxMapper/index.html">Metanetxmapper</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../XomicsToModel/index.html">Xomicstomodel</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../metaboAnnotator/index.html">Metaboannotator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../transcriptomics/index.html">Transcriptomics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../metabotools/index.html">Metabotools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../fluxomics/index.html">Fluxomics</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../design/index.html">Design</a></li>
@@ -247,8 +247,11 @@
 <span class="sig-name descname"><span class="pre">checkRXNFiles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">RXNFileDir</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/chemoInformatics/RXN/checkRXNFiles.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.chemoInformatics.RXN.checkRXNFiles" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks whether the set of RXN files coresponding to a model have the consistent stoichiometry and are elementally balanced</p>
 <dl class="field-list">
-<dt class="field-odd">INPUTS<span class="colon">:</span></dt>
-<dd class="field-odd"><ul>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[modelOut, nTotalAtomTransitions] = checkRXNFiles</strong> (<em>model, RXNFileDir</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul>
 <li><p><strong>model</strong> – Directed stoichiometric hypergraph
 Represented by a matlab structure with following fields:</p>
 <blockquote>
@@ -273,44 +276,57 @@ e.g. git clone <a class="reference external" href="https://github.com/opencobra/
 </li>
 </ul>
 </dd>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>modelOut</strong> – The input model returned with the RXN-file quality-check results added as fields:</p>
+<ul>
+<li><p>.metRXNBool - <cite>m</cite> x 1 vector, true if metabolite identified in at least one RXN file</p></li>
+<li><p>.RXNBool - <cite>n</cite> x 1 boolean vector, true if RXN file exists</p></li>
+<li><p>.RXNParsedBool - <cite>n</cite> x 1 boolean vector, true if RXN file could be parsed</p></li>
+<li><p>.RXNAtomsConservedBool - <cite>n</cite> x 1 boolean vector, true if atoms in RXN file are conserved</p></li>
+<li><p>.RXNStoichiometryMatchBool - <cite>n</cite> x 1 boolean vector, true if RXN stoichiometry matches model.S stoichiometry</p></li>
+<li><p>.RXNStoichiometryMatchUptoProtonsBool - <cite>n</cite> x 1 boolean vector, true if RXN stoichiometry matches model.S stoichiometry when ignoring protons</p></li>
+<li><p>.RXNSubstrateTransitionNumbersOrdered - <cite>n</cite> x 1 boolean vector, true if RXN file with substrate transition numbers ordered 1:q</p></li>
+<li><p>.RXNProductTransitionNumbersOrdered - <cite>n</cite> x 1 boolean vector, true if RXN file with product transition numbers ordered 1:q</p></li>
+<li><p>.RXNTransitionNumbersMatching - <cite>n</cite> x 1 boolean vector, true if RXN file with matching numbering of atoms between substrates and products</p></li>
+<li><p>.RXNMatchingElementBool - <cite>n</cite> x 1 boolean vector, true if RXN file with matching elements between substrates and products</p></li>
+</ul>
+</li>
+<li><p><strong>nTotalAtomTransitions</strong> – total number of atom transitions across all atom mapped RXN files</p></li>
+</ul>
+</dd>
 </dl>
-<p>OUTPUT:
-metRXNBool: <cite>m</cite> x 1 vector, true if metabolite identified in at least one RXN file
-RXNBool: <cite>n</cite> x 1 boolean vector, true if RXN file exists
-RXNParsedBool: <cite>n</cite> x 1 boolean vector, true if RXN file could be parsed
-RXNAtomsConservedBool: <cite>n</cite> x 1 boolean vector, true if atoms in RXN file are conserved
-RXNStoichiometryMatchBool:  <cite>n</cite> x 1 boolean vector, true if RXN stoichiometry matches model.S stoichiometry
-RXNStoichiometryMatchUptoProtonsBool:   <cite>n</cite> x 1 boolean vector, true if RXN stoichiometry matches model.S stoichiometry when ingnoring protons.
-RXNSubstrateTransitionNumbersOrdered:   <cite>n</cite> x 1 boolean vector, true if RXN file with substrate transition numbers ordered 1:q.
-RXNProductTransitionNumbersOrdered:   <cite>n</cite> x 1 boolean vector, true if RXN file with product transition numbers ordered 1:q.
-RXNTransitionNumbersMatching:    <cite>n</cite> x 1 boolean vector, true if RXN file with matching numbering of atoms between substrates and products.
-RXNMatchingElementBool:     <cite>n</cite> x 1 boolean vector, true if RXN file with matching elements between substrates and products.</p>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.chemoInformatics.RXN.findRXNFiles">
 <span class="sig-name descname"><span class="pre">findRXNFiles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">rxnfileDir</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/chemoInformatics/RXN/findRXNFiles.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.chemoInformatics.RXN.findRXNFiles" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
+<dd><p>Identify the model metabolites and reactions that have a corresponding atom mapped RXN file</p>
+<dl class="field-list simple">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>[metRXNBool,rxnRXNBool] = findRXNFiles</strong> (<em>model,rxnfileDir</em>)</p>
+<dd class="field-odd"><p><strong>[metRXNBool, rxnRXNBool, internalRxnBool] = findRXNFiles</strong> (<em>model, rxnfileDir</em>)</p>
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>model.rxns</strong></p></li>
-<li><p><strong>model.SConsistentRxnBool</strong></p></li>
-<li><p><strong>model.S</strong></p></li>
-<li><p><strong>rxnfileDir</strong> – path to directory containing atom mapped reactions
-One .RXN file per reaction with each filename matching to model.rxns{i}</p></li>
+<li><p><strong>model</strong> – COBRA model structure with the fields:</p>
+<ul>
+<li><p>.rxns - <cite>n</cite> x 1 array of reaction identifiers</p></li>
+<li><p>.S - <cite>m</cite> x <cite>n</cite> stoichiometric matrix</p></li>
+<li><p>.SConsistentRxnBool - <cite>n</cite> x 1 boolean vector, true for stoichiometrically consistent reactions (used if present)</p></li>
+<li><p>.SIntRxnBool - <cite>n</cite> x 1 boolean vector, true for internal reactions (used when .SConsistentRxnBool is absent)</p></li>
+</ul>
+</li>
+<li><p><strong>rxnfileDir</strong> – path to directory containing atom mapped reactions. One .RXN file per reaction with each filename matching to model.rxns{i}</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>metRXNBool</strong> – <cite>m x 1</cite> boolean vector true for metabolites in atom mapped reactions</p></li>
+<li><p><strong>rxnRXNBool</strong> – <cite>n x 1</cite> boolean vector true for atom mapped reactions</p></li>
+<li><p><strong>internalRxnBool</strong> – <cite>n x 1</cite> boolean vector true for reactions considered internal</p></li>
 </ul>
 </dd>
 </dl>
-<p>OUTPUTS:
-metRXNBool:  <cite>m x 1</cite> boolean vector true for metabolites in atom mapped reactions
-rxnRXNBool:  <cite>n x 1</cite> boolean vector true for atom mapped reactions
-internalRxnBool: :  <cite>n x 1</cite> boolean vector true for reactions considered internal</p>
-<p>EXAMPLE:</p>
-<p>NOTE:</p>
-<p>Author(s): Ronan M.T. Fleming, 2022</p>
 </dd></dl>
 
 <dl class="mat function">
@@ -388,7 +404,7 @@ be saved. Defaults to current directory.</p></li>
         <a href="old/index.html" class="btn btn-default float-right" title="Old" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../metabolites/index.html" class="btn btn-default" title="Metabolites" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../molecularWeight/basicPhysicochemicalData/index.html" class="btn btn-default" title="Basicphysicochemicaldata" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

@@ -65,8 +65,8 @@
         <link rel="search" title="Search" href="../../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../../index.html"/>
         <link rel="up" title="Solvers" href="../index.html"/>
-        <link rel="next" title="Varkin" href="../varKin/index.html"/>
-        <link rel="prev" title="Smoothconcave" href="../cardOpt/smoothConcave/index.html"/> 
+        <link rel="next" title="Cplex" href="../cplex/index.html"/>
+        <link rel="prev" title="Levmarmethods" href="../varKin/levMarMethods/index.html"/> 
 
   
   <script src="../../../../_static/js/modernizr.min.js"></script>
@@ -159,31 +159,31 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Base</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="../../utilities/index.html">Utilities</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../paths/index.html">Paths</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../ci/index.html">Ci</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../codeConsistency/index.html">Codeconsistency</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../io/index.html">Io</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../install/index.html">Install</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../index.html">Solvers</a><ul class="current">
-<li class="toctree-l4"><a class="reference internal" href="../NLP/index.html">Nlp</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../param/index.html">Param</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../minos/index.html">Minos</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../init/index.html">Init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../NLP/index.html">Nlp</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../gurobi/index.html">Gurobi</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../minos/index.html">Minos</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../optarrow/index.html">Optarrow</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../lindo/index.html">Lindo</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../entropicFBA/index.html">Entropicfba</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../cplex/index.html">Cplex</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../rescale/index.html">Rescale</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../cardOpt/index.html">Cardopt</a></li>
-<li class="toctree-l4 current"><a class="current reference internal" href="#">Mosek</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../varKin/index.html">Varkin</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../getSetSolver/index.html">Getsetsolver</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../gams/index.html">Gams</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../init/index.html">Init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../cardOpt/index.html">Cardopt</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../entropicFBA/index.html">Entropicfba</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../lp_solve/index.html">Lp_solve</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../varKin/index.html">Varkin</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Mosek</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../cplex/index.html">Cplex</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../getSetSolver/index.html">Getsetsolver</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="../../ci/index.html">Ci</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../paths/index.html">Paths</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../cobrarrow/index.html">Cobrarrow</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../install/index.html">Install</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../dataIntegration/index.html">Dataintegration</a></li>
@@ -296,10 +296,6 @@ It uses a fast path that assumes data are finite and only falls back
 to explicit finite filtering if non-finite values are detected.</p>
 <p class="rubric">Example</p>
 <p>report = inspectMosekNumerics(prob);</p>
-<dl class="simple">
-<dt>Author:</dt><dd><p>Ronan Fleming / ChatGPT</p>
-</dd>
-</dl>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Intended for diagnostic inspection of MOSEK-style problem data.</p>
@@ -309,17 +305,31 @@ to explicit finite filtering if non-finite values are detected.</p>
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.base.solvers.mosek.inspectMosekProb">
 <span class="sig-name descname"><span class="pre">inspectMosekProb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">prob</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/mosek/inspectMosekProb.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.mosek.inspectMosekProb" title="Permalink to this definition">¶</a></dt>
-<dd><p>Numerical and structural inspection of a MOSEK problem struct.</p>
-<dl class="simple">
-<dt>Expected fields may include:</dt><dd><p>a, blc, buc, c, blx, bux, f, g, accs</p>
-</dd>
-</dl>
+<dd><p>Numerical and structural inspection of a MOSEK problem struct</p>
 <dl class="field-list simple">
-<dt class="field-odd">Output<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>report.fieldStats</strong> – table of per-field numerical statistics</p></li>
-<li><p><strong>report.sizeStats</strong> – table of shape / sparsity information</p></li>
-<li><p><strong>report.problemChecks</strong> – struct of higher-level consistency checks</p></li>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>report = inspectMosekProb</strong> (<em>prob</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>prob</strong> – MOSEK problem structure with fields:</p>
+<ul class="simple">
+<li><p>.a   - linear constraint matrix</p></li>
+<li><p>.blc - lower linear constraint bounds</p></li>
+<li><p>.buc - upper linear constraint bounds</p></li>
+<li><p>.c   - objective vector</p></li>
+<li><p>.blx - lower variable bounds</p></li>
+<li><p>.bux - upper variable bounds</p></li>
+<li><p>.f   - affine conic constraint matrix</p></li>
+<li><p>.g   - affine conic constraint offset</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>report</strong> – Structure with fields:</p>
+<ul class="simple">
+<li><p>.fieldStats    - table of per-field numerical statistics</p></li>
+<li><p>.sizeStats     - table of shape/sparsity information for
+the matrix fields <cite>a</cite> and <cite>f</cite></p></li>
+<li><p>.problemChecks - struct of higher-level consistency checks</p></li>
 </ul>
 </dd>
 </dl>
@@ -330,66 +340,118 @@ to explicit finite filtering if non-finite values are detected.</p>
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.base.solvers.mosek.mosekParamStrip">
 <span class="sig-name descname"><span class="pre">mosekParamStrip</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">solverParams</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/mosek/mosekParamStrip.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.mosek.mosekParamStrip" title="Permalink to this definition">¶</a></dt>
-<dd><p>Remove non-modek parameters to avoid crashing solver interface</p>
+<dd><p>Remove non-MOSEK parameters to avoid crashing the MOSEK solver interface</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>solverParams = mosekParamStrip</strong> (<em>solverParams</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>solverParams</strong> – Solver parameter structure with fields:</p>
+<ul class="simple">
+<li><p>.timelimit - (optional) COBRA-style time limit in
+seconds; copied to <cite>.MSK_DPAR_OPTIMIZER_MAX_TIME</cite>
+before non-MOSEK fields are stripped</p></li>
+<li><p>.MSK_DPAR_OPTIMIZER_MAX_TIME - (optional) MOSEK
+native time-limit parameter, set from <cite>.timelimit</cite>
+when the latter is present</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>solverParams</strong> – Copy of the input structure retaining only fields
+whose name contains the substring <cite>MSK_</cite>, i.e. only
+recognised MOSEK-native parameters remain</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.base.solvers.mosek.parseMskResult">
 <span class="sig-name descname"><span class="pre">parseMskResult</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">res</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/mosek/parseMskResult.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.mosek.parseMskResult" title="Permalink to this definition">¶</a></dt>
-<dd><p>Parse the res structure returned by mosekopt.</p>
-<dl class="simple">
-<dt>Solver status convention:</dt><dd><p>stat =  0   primal infeasible certificate
-stat =  1   strict optimal solution
-stat =  2   dual infeasible certificate, interpreted upstream as unbounded
-stat =  3   near optimal / almost optimal solution
-stat = -1   unknown, numerical issue, time limit, or unrecognised status</p>
-</dd>
-</dl>
-<p>Important conic-solver convention:</p>
-<blockquote>
-<div><p>For conic problems with affine conic constraints, prefer the
-interior-point solution res.sol.itr whenever it is available and has an
-optimal or near-optimal solution status.</p>
-<p>A basis solution, res.sol.bas, is mainly relevant for linear problems.
-It should not override a valid interior-point solution for conic
-subproblems.</p>
-</div></blockquote>
-<p>Dual sign convention returned by this parser:</p>
-<blockquote>
-<div><p>y  = yl - yu
-z  = zu - zl</p>
-</div></blockquote>
-<p>where</p>
-<blockquote>
-<div><p>yl = lower linear-row multiplier
-yu = upper linear-row multiplier
-zl = lower variable-bound multiplier
-zu = upper variable-bound multiplier</p>
-</div></blockquote>
-<p>With this convention, stationarity is naturally checked as</p>
-<blockquote>
-<div><p>c - A’<a href="#id2"><span class="problematic" id="id3">*</span></a>y + z - F’<a href="#id4"><span class="problematic" id="id5">*</span></a>s = 0</p>
-</div></blockquote>
-<p>or equivalently</p>
-<blockquote>
-<div><p>c - A’<a href="#id6"><span class="problematic" id="id7">*</span></a>(yl - yu) + (zu - zl) - F’<a href="#id8"><span class="problematic" id="id9">*</span></a>s = 0.</p>
-</div></blockquote>
-<p>This parser deliberately maps NEAR_OPTIMAL to stat = 3, not stat = 1.
+<dd><p>Parse the res structure returned by mosekopt into a COBRA-style solver
+status and primal/dual solution vectors</p>
+<p>For conic problems with affine conic constraints, the interior-point
+solution <cite>res.sol.itr</cite> is preferred whenever it is available and has an
+optimal or near-optimal solution status. The basis solution,
+<cite>res.sol.bas</cite>, is mainly relevant for linear problems and does not
+override a valid interior-point solution for conic subproblems.</p>
+<p>This parser deliberately maps NEAR_OPTIMAL to <cite>stat = 3</cite>, not <cite>stat = 1</cite>.
 The caller can decide whether a near-optimal solution is acceptable, but
 solveSCLP should not silently accept it as a fully accurate inner solve.</p>
+<dl class="field-list">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[stat, origStat, x, y, yl, yu, z, zl, zu, s, basis, pobjval, dobjval] = parseMskResult</strong> (<em>res</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>res</strong> – Result structure returned by <cite>mosekopt</cite>, with fields:</p>
+<ul class="simple">
+<li><p>.sol - structure of MOSEK sub-solutions, expected to
+contain an interior-point sub-solution <cite>.itr</cite> and/or
+a basis sub-solution <cite>.bas</cite>, each in turn carrying
+<cite>solsta</cite>, <cite>xx</cite>, <cite>slc</cite>, <cite>suc</cite>, <cite>slx</cite>, <cite>sux</cite>, <cite>doty</cite>,
+<cite>s</cite>, <cite>skc</cite>, <cite>skx</cite>, <cite>xc</cite>, <cite>pobjval</cite>, and <cite>dobjval</cite></p></li>
+<li><p>.rcodestr - MOSEK response-code string, appended to
+<cite>origStat</cite> for traceability when present</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul>
+<li><p><strong>stat</strong> – COBRA-style solver status flag:</p>
+<ul class="simple">
+<li><p>0  - primal infeasible certificate</p></li>
+<li><p>1  - strict optimal solution</p></li>
+<li><p>2  - dual infeasible certificate, interpreted
+upstream as unbounded</p></li>
+<li><p>3  - near optimal / almost optimal solution</p></li>
+<li><p>-1 - unknown, numerical issue, time limit, or
+unrecognised status</p></li>
+</ul>
+</li>
+<li><p><strong>origStat</strong> – Original MOSEK solution-status string (<cite>solsta</cite>), with
+<cite>res.rcodestr</cite> appended after <cite>‘ &amp; ‘</cite> when present</p></li>
+<li><p><strong>x</strong> – Primal solution vector</p></li>
+<li><p><strong>y</strong> – Linear-row dual vector, computed as <cite>yl - yu</cite></p></li>
+<li><p><strong>yl</strong> – Lower linear-row multiplier</p></li>
+<li><p><strong>yu</strong> – Upper linear-row multiplier</p></li>
+<li><p><strong>z</strong> – Variable-bound dual vector, computed as <cite>zu - zl</cite></p></li>
+<li><p><strong>zl</strong> – Lower variable-bound multiplier</p></li>
+<li><p><strong>zu</strong> – Upper variable-bound multiplier</p></li>
+<li><p><strong>s</strong> – Dual variables to the affine conic constraints</p></li>
+<li><p><strong>basis</strong> – Structure of basis-status fields for hot-starting linear
+problems, populated only when the basis solution is
+used, with fields:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>.skc - constraint status keys</p></li>
+<li><p>.skx - variable status keys</p></li>
+<li><p>.xc - constraint activity levels</p></li>
+<li><p>.xx - primal variable values</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><strong>pobjval</strong> – Primal objective value</p></li>
+<li><p><strong>dobjval</strong> – Dual objective value</p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>With the dual sign convention above, stationarity is naturally checked
+as <cite>c - A’*y + z - F’*s = 0</cite>, equivalently
+<cite>c - A’*(yl - yu) + (zu - zl) - F’*s = 0</cite>.</p>
+</div>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.base.solvers.mosek.setMosekParam">
 <span class="sig-name descname"><span class="pre">setMosekParam</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">param</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/mosek/setMosekParam.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.mosek.setMosekParam" title="Permalink to this definition">¶</a></dt>
-<dd><p>Single-file source of truth for MOSEK parameter materialisation.</p>
+<dd><p>Single-file source of truth for MOSEK parameter materialisation</p>
 <p>This function deliberately does not call external helper files to set,
-strip, normalise, or otherwise manipulate MOSEK parameters.  All helper
+strip, normalise, or otherwise manipulate MOSEK parameters. All helper
 functions used below are local functions in this same file.</p>
-<p>Supported profiles:</p>
+<p>Supported profiles (<cite>param.mosekParam</cite>):</p>
 <blockquote>
 <div><dl class="simple">
-<dt>‘default’</dt><dd><p>True MOSEK default profile.  No MSK_* parameters are passed except
+<dt>‘default’</dt><dd><p>True MOSEK default profile. No MSK_* parameters are passed except
 those needed to enforce the requested print policy.</p>
 </dd>
 <dt>‘manual’</dt><dd><p>Pass caller-supplied MSK_* fields through, after applying the print
@@ -418,18 +480,15 @@ policy and stripping non-MOSEK fields.</p>
 ‘SCLP_startTightNoPresolve’</p>
 <blockquote>
 <div><p>solveSCLP-specific tight profiles for initial centring and
-centred-start raw repair.  These inherit the ordinary SCLP profile
+centred-start raw repair. These inherit the ordinary SCLP profile
 first, then override only accuracy-related parameters.</p>
 </div></blockquote>
 </div></blockquote>
 <p>Print policy:</p>
 <blockquote>
-<div><p>The line</p>
-<blockquote>
-<div><p>param.printLevel = param.printLevel - 1;</p>
-</div></blockquote>
-<p>is intentional.  It prevents inner MOSEK solve traces from appearing
-during ordinary use of solveSCLP inside higher-level algorithms.</p>
+<div><p>The line <cite>param.printLevel = param.printLevel - 1;</cite> is intentional. It
+prevents inner MOSEK solve traces from appearing during ordinary use of
+solveSCLP inside higher-level algorithms.</p>
 <p>Effective behaviour:</p>
 <blockquote>
 <div><p>solveSCLP printLevel = 0  -&gt; MOSEK silent
@@ -438,11 +497,133 @@ solveSCLP printLevel = 2  -&gt; MOSEK default printing
 solveSCLP printLevel &gt; 2  -&gt; verbose-profile MOSEK logs may print</p>
 </div></blockquote>
 </div></blockquote>
-<dl class="field-list simple">
-<dt class="field-odd">Output<span class="colon">:</span></dt>
+<dl class="field-list">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[cmd, mosekParam] = setMosekParam</strong> (<em>param</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>param</strong> – Structure of COBRA/solveSCLP-style solver parameters.
+All fields are optional; absent fields fall back to the
+defaults noted below. Fields read or written:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>.printLevel - COBRA print level (default 0);
+reduced by 1 before it drives the MOSEK print policy</p></li>
+<li><p>.debug - debug flag (default 0); when 1, requests
+MOSEK infeasibility reporting in the <cite>cobra*</cite> profiles</p></li>
+<li><p>.problemType - COBRA problem type, e.g. <cite>‘LP’</cite>,
+<cite>‘QP’</cite>, <cite>‘CLP’</cite>, <cite>‘EP’</cite>, <cite>‘VK’</cite> (default <cite>‘CLP’</cite>);
+selects the optimizer choice below</p></li>
+<li><p>.mosekParam - name of the requested profile listed
+above (default <cite>‘cobra’</cite>)</p></li>
+<li><p>.timelimit - COBRA-style solve time limit in
+seconds; copied to <cite>.MSK_DPAR_OPTIMIZER_MAX_TIME</cite>
+when the latter is not already supplied (SCLP
+profiles default it to 600 when absent)</p></li>
+<li><p>.mosekInnerTol - overrides the MOSEK primal
+interior-point tolerance directly (and the dual
+tolerance too, unless <cite>.mosekInnerMuTol</cite> is given)</p></li>
+<li><p>.feasTol - COBRA feasibility tolerance, used as the
+MOSEK primal tolerance default when
+<cite>.mosekInnerTol</cite> is absent (also scales the
+solveSCLP inner tolerances)</p></li>
+<li><p>.optTol - COBRA optimality tolerance, used as the
+MOSEK dual tolerance default when <cite>.mosekInnerTol</cite>
+is absent</p></li>
+<li><p>.mosekInnerMuTol - overrides the MOSEK
+complementarity (mu) tolerance directly</p></li>
+<li><p>.mosekSolveForm - overrides the default
+<cite>MSK_IPAR_INTPNT_SOLVE_FORM</cite> value
+(<cite>‘MSK_SOLVE_PRIMAL’</cite>)</p></li>
+<li><p>.mosekPresolveUse - overrides the default
+<cite>MSK_IPAR_PRESOLVE_USE</cite> value
+(<cite>‘MSK_PRESOLVE_MODE_FREE’</cite>)</p></li>
+<li><p>.mosekPrimalInfeasPerturbationTol - overrides the
+default
+<cite>MSK_DPAR_PRESOLVE_TOL_PRIMAL_INFEAS_PERTURBATION</cite>
+value (0)</p></li>
+<li><p>.mosekPresolveTolX - overrides the default
+<cite>MSK_DPAR_PRESOLVE_TOL_X</cite> value</p></li>
+<li><p>.mosekPresolveTolS - overrides the default
+<cite>MSK_DPAR_PRESOLVE_TOL_S</cite> value</p></li>
+<li><p>.mosekDataTolX - overrides the default
+<cite>MSK_DPAR_DATA_TOL_X</cite> value</p></li>
+<li><p>.numTol - COBRA numerical tolerance, the basis
+(times 100 or 1) for the presolve/data tolerance
+defaults above</p></li>
+<li><p>.mosekNearRel - overrides the default
+<cite>MSK_DPAR_INTPNT_CO_TOL_NEAR_REL</cite> value (1.0)</p></li>
+<li><p>.lifted - when 1, disables the MOSEK eliminator
+retry (<cite>MSK_IPAR_PRESOLVE_ELIMINATOR_MAX_NUM_TRIES</cite>
+set to 0) unless already supplied</p></li>
+<li><p>.multiscale - when 1 and <cite>.lifted</cite> is 0/absent,
+turns off MOSEK’s own scaling
+(<cite>MSK_IPAR_PRESOLVE_LINDEP_NEW</cite>,
+<cite>MSK_IPAR_INTPNT_SCALING</cite>, <cite>MSK_IPAR_SIM_SCALING</cite>)
+unless already supplied</p></li>
+<li><p>.strict - when non-empty, requests a stricter
+solve: disables the basis-identification iteration
+limit, forces a free solve form, and tightens the
+infeasibility tolerance, unless the corresponding
+<cite>MSK_*</cite> fields are already supplied</p></li>
+<li><p>.repairInfeasibility - when non-empty, copied to
+<cite>MSK_IPAR_LOG_FEAS_REPAIR</cite> unless already supplied</p></li>
+<li><p>.lpmethod, .qpmethod, .clpmethod, .epmethod -
+COBRA solver-method selectors, normalised and
+copied to <cite>MSK_IPAR_OPTIMIZER</cite> when <cite>.problemType</cite>
+is respectively <cite>‘LP’</cite>, <cite>‘QP’</cite>, <cite>‘CLP’</cite>, or <cite>‘EP’</cite></p></li>
+<li><p>.innerMosekTolFactor, .innerMosekTolFloorFactor,
+.innerMosekMuTolFactor, .innerMosekMuTolFloorFactor -
+factors (defaults <cite>1e-3</cite>, <cite>10</cite>, <cite>1e-5</cite>, <cite>1</cite>) that
+scale <cite>.feasTol</cite>/<cite>.numTol</cite> into the solveSCLP inner
+interior-point/complementarity tolerances</p></li>
+<li><p>.mosekPresolveTolXFactor, .mosekPresolveTolSFactor,
+.mosekDataTolXFactor - factors (defaults <cite>100</cite>,
+<cite>100</cite>, <cite>1</cite>) that scale <cite>.numTol</cite> into the solveSCLP
+presolve and data tolerances</p></li>
+<li><p>caller-supplied <cite>MSK_*</cite> fields, honoured as-is
+wherever the profile logic above checks for them
+first, rather than being overridden:
+<cite>.MSK_DPAR_OPTIMIZER_MAX_TIME</cite>,
+<cite>.MSK_DPAR_INTPNT_TOL_PFEAS</cite>,
+<cite>.MSK_DPAR_INTPNT_QO_TOL_PFEAS</cite>,
+<cite>.MSK_DPAR_INTPNT_CO_TOL_PFEAS</cite>,
+<cite>.MSK_DPAR_INTPNT_TOL_DFEAS</cite>,
+<cite>.MSK_DPAR_INTPNT_QO_TOL_DFEAS</cite>,
+<cite>.MSK_DPAR_INTPNT_CO_TOL_DFEAS</cite>,
+<cite>.MSK_DPAR_INTPNT_CO_TOL_REL_GAP</cite>,
+<cite>.MSK_DPAR_INTPNT_CO_TOL_MU_RED</cite>,
+<cite>.MSK_IPAR_INTPNT_SOLVE_FORM</cite>,
+<cite>.MSK_IPAR_PRESOLVE_USE</cite>,
+<cite>.MSK_DPAR_PRESOLVE_TOL_PRIMAL_INFEAS_PERTURBATION</cite>,
+<cite>.MSK_DPAR_PRESOLVE_TOL_X</cite>,
+<cite>.MSK_DPAR_PRESOLVE_TOL_S</cite>,
+<cite>.MSK_DPAR_DATA_TOL_X</cite>,
+<cite>.MSK_DPAR_INTPNT_CO_TOL_NEAR_REL</cite>,
+<cite>.MSK_IPAR_PRESOLVE_ELIMINATOR_MAX_NUM_TRIES</cite>,
+<cite>.MSK_IPAR_PRESOLVE_LINDEP_NEW</cite>,
+<cite>.MSK_IPAR_INTPNT_SCALING</cite>, <cite>.MSK_IPAR_SIM_SCALING</cite>,
+<cite>.MSK_IPAR_BI_IGNORE_MAX_ITER</cite>,
+<cite>.MSK_DPAR_INTPNT_TOL_INFEAS</cite>,
+<cite>.MSK_IPAR_LOG_FEAS_REPAIR</cite>, <cite>.MSK_IPAR_LOG</cite>,
+<cite>.MSK_IPAR_LOG_INTPNT</cite>, <cite>.MSK_IPAR_LOG_SIM</cite>,
+<cite>.MSK_IPAR_LOG_PRESOLVE</cite>,
+<cite>.MSK_IPAR_INFEAS_REPORT_AUTO</cite>,
+<cite>.MSK_IPAR_INFEAS_REPORT_LEVEL</cite>,
+<cite>.MSK_IPAR_INTPNT_REGULARIZATION_USE</cite>, and
+<cite>.MSK_IPAR_OPTIMIZER</cite>;
+<cite>.MSK_IPAR_INTPNT_MAX_ITERATIONS</cite> is additionally
+set to 400 for the <cite>EP</cite> problem type unless already
+supplied</p></li>
+</ul>
+</div></blockquote>
+</dd>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>cmd</strong> – MOSEK command string, usually ‘minimize echo(0)’ or ‘minimize’.</p></li>
-<li><p><strong>mosekParam</strong> – Structure containing only MSK_* fields.</p></li>
+<li><p><strong>cmd</strong> – MOSEK command string, usually <cite>‘minimize echo(0)’</cite> or
+<cite>‘minimize’</cite></p></li>
+<li><p><strong>mosekParam</strong> – Structure containing only <cite>MSK_*</cite> fields, ready to be
+passed to <cite>mosekopt</cite></p></li>
 </ul>
 </dd>
 </dl>
@@ -460,10 +641,10 @@ solveSCLP printLevel &gt; 2  -&gt; verbose-profile MOSEK logs may print</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../varKin/index.html" class="btn btn-default float-right" title="Varkin" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../cplex/index.html" class="btn btn-default float-right" title="Cplex" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../cardOpt/smoothConcave/index.html" class="btn btn-default" title="Smoothconcave" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../varKin/levMarMethods/index.html" class="btn btn-default" title="Levmarmethods" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

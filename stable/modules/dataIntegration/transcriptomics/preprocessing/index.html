@@ -65,8 +65,8 @@
         <link rel="search" title="Search" href="../../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../../index.html"/>
         <link rel="up" title="Transcriptomics" href="../index.html"/>
-        <link rel="next" title="Metabotools" href="../../metabotools/index.html"/>
-        <link rel="prev" title="Swiftcore" href="../SWIFTCORE/index.html"/> 
+        <link rel="next" title="Swiftcore" href="../SWIFTCORE/index.html"/>
+        <link rel="prev" title="Fastcore" href="../FASTCORE/index.html"/> 
 
   
   <script src="../../../../_static/js/modernizr.min.js"></script>
@@ -159,25 +159,25 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../base/index.html">Base</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Dataintegration</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../../chemoInformatics/index.html">Chemoinformatics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../fluxomics/index.html">Fluxomics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../metabotools/index.html">Metabotools</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../metanetxMapper/index.html">Metanetxmapper</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../XomicsToModel/index.html">Xomicstomodel</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../metaboAnnotator/index.html">Metaboannotator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../XomicsToModel/index.html">Xomicstomodel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chemoInformatics/index.html">Chemoinformatics</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../index.html">Transcriptomics</a><ul class="current">
-<li class="toctree-l4"><a class="reference internal" href="../rFASTCORMICS/index.html">Rfastcormics</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../MBA/index.html">Mba</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../GIMME/index.html">Gimme</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../FASTCORE/index.html">Fastcore</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../MOOMIN/index.html">Moomin</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../eFlux/index.html">Eflux</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../iMAT/index.html">Imat</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../INIT/index.html">Init</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../SWIFTCORE/index.html">Swiftcore</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GIMME/index.html">Gimme</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../MOOMIN/index.html">Moomin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../MBA/index.html">Mba</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../iMAT/index.html">Imat</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../FASTCORE/index.html">Fastcore</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">Preprocessing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../SWIFTCORE/index.html">Swiftcore</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../rFASTCORMICS/index.html">Rfastcormics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../eFlux/index.html">Eflux</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../metabotools/index.html">Metabotools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../fluxomics/index.html">Fluxomics</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../design/index.html">Design</a></li>
@@ -246,10 +246,15 @@
 the model extraction methods</p>
 <dl class="field-list simple">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>parsedGPR = GPRparser</strong> (<em>model</em>)</p>
+<dd class="field-odd"><p><strong>parsedGPR = GPRparser</strong> (<em>model, getCNFSets</em>)</p>
 </dd>
 <dt class="field-even">INPUT<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>model</strong> – cobra model structure</p>
+<dd class="field-even"><p><strong>model</strong> – cobra model structure with fields:</p>
+<ul class="simple">
+<li><p>.rxns - <cite>n x 1</cite> cell array of reaction abbreviations</p></li>
+<li><p>.rules - <cite>n x 1</cite> cell array of gene-reaction rules in rule form</p></li>
+<li><p>.genes - <cite>g x 1</cite> cell array of gene identifiers</p></li>
+</ul>
 </dd>
 <dt class="field-odd">OPTIONAL INPUT<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>getCNFSets</strong> – whether to get the CNF sets (true) or DNF sets (false).
@@ -261,7 +266,6 @@ CNF sets represent the possible subunits of a complex.
 <dd class="field-even"><p><strong>parsedGPR</strong> – cell matrix containing parsed GPR rule</p>
 </dd>
 </dl>
-<p>AUTHORS: Thomas Pfau &amp; Anne Richelle, May 2017</p>
 </dd></dl>
 
 <dl class="mat function">
@@ -326,24 +330,22 @@ the model</p>
 </ul>
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
-<dd class="field-even"><ul class="simple">
-<li><dl class="simple">
-<dt><strong>model                   model strusture</strong></dt><dd><ul>
-<li><p><strong>expressionData          mRNA expression data structure</strong></p></li>
-</ul>
-</dd>
-</dl>
-</li>
-</ul>
+<dd class="field-even"><ul>
+<li><p><strong>model</strong> – model structure</p></li>
+<li><p><strong>expressionData</strong> – mRNA expression data structure
+.gene                    cell array containing GeneIDs in the same</p>
+<blockquote>
+<div><p>format as model.genes</p>
+</div></blockquote>
 <dl class="simple">
-<dt>.gene                    cell array containing GeneIDs in the same</dt><dd><p>format as model.genes</p>
-</dd>
 <dt>.value                  Vector containing corresponding expression</dt><dd><p>value (FPKM/RPKM)</p>
 </dd>
 <dt>.sig:               [optional field] Vector containing significance values of</dt><dd><p>expression corresponding to expression values in
 expressionData.value (ex. p-values)</p>
 </dd>
 </dl>
+</li>
+</ul>
 </dd>
 <dt class="field-odd">OPTIONAL INPUT<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>minSum</strong> – instead of using min and max, use min for AND and Sum
@@ -361,7 +363,7 @@ reaction</p></li>
 </dd>
 </dl>
 <dl class="simple">
-<dt>OPTIONAL OUTPUTS:</dt><dd><p>signifRxns:              significance of reaction expression, corresponding to model.rxns.</p>
+<dt>OPTIONAL OUTPUTS:</dt><dd><p>signifRxns:             significance of reaction expression, corresponding to model.rxns.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -430,10 +432,10 @@ be given a value of 0.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../../metabotools/index.html" class="btn btn-default float-right" title="Metabotools" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../SWIFTCORE/index.html" class="btn btn-default float-right" title="Swiftcore" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../SWIFTCORE/index.html" class="btn btn-default" title="Swiftcore" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../FASTCORE/index.html" class="btn btn-default" title="Fastcore" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

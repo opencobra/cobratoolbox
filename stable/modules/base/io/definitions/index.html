@@ -65,8 +65,8 @@
         <link rel="search" title="Search" href="../../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../../index.html"/>
         <link rel="up" title="Io" href="../index.html"/>
-        <link rel="next" title="Install" href="../../install/index.html"/>
-        <link rel="prev" title="Old" href="../old/index.html"/> 
+        <link rel="next" title="Old" href="../old/index.html"/>
+        <link rel="prev" title="Sbml" href="../utilities/SBML/index.html"/> 
 
   
   <script src="../../../../_static/js/modernizr.min.js"></script>
@@ -159,23 +159,23 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Base</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="../../utilities/index.html">Utilities</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../paths/index.html">Paths</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../ci/index.html">Ci</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../codeConsistency/index.html">Codeconsistency</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../index.html">Io</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../json/index.html">Json</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../utilities/index.html">Utilities</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Definitions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../old/index.html">Old</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../BiGG/index.html">Bigg</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../newt/index.html">Newt</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../utilities/index.html">Utilities</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../python/index.html">Python</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../KEGG/index.html">Kegg</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../json/index.html">Json</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../old/index.html">Old</a></li>
-<li class="toctree-l4 current"><a class="current reference internal" href="#">Definitions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../python/index.html">Python</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../install/index.html">Install</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../solvers/index.html">Solvers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ci/index.html">Ci</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../paths/index.html">Paths</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../cobrarrow/index.html">Cobrarrow</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../install/index.html">Install</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../dataIntegration/index.html">Dataintegration</a></li>
@@ -267,11 +267,11 @@ array of all data listed in the column.</p>
 Qualifier and the given annotated field.</p>
 <dl class="field-list simple">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>fieldName = getAnnotationFieldName</strong> (<em>annotatedField,database,annotationQualifier</em>)</p>
+<dd class="field-odd"><p><strong>[fieldNames, dbIDs, relations] = getAnnotationFieldName</strong> (<em>annotatedField, database, annotationQualifier, qualifierSelection, invertSelection</em>)</p>
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>annotationField</strong> – The base field that is being annotated
+<li><p><strong>annotatedField</strong> – The base field that is being annotated
 (e.g. ‘rxn’, ‘model’, ‘comp’, …)</p></li>
 <li><p><strong>database</strong> – The database names of the annotation. (e.g.
 kegg)</p></li>
@@ -304,14 +304,13 @@ multiple tpes separated by ‘;’</p></li>
 <span class="sig-name descname"><span class="pre">getRegisteredDatabases</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/io/definitions/getRegisteredDatabases.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.io.definitions.getRegisteredDatabases" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get all databases registered with identifiers.org along with their
 pattern and and prefix data.</p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>identifiersDBs = getRegisteredDatabases()</strong></p>
 </dd>
-</dl>
-<dl>
-<dt>OUPUTS:</dt><dd><dl>
-<dt>identifiersDBs:        A Struct with data on each database registered</dt><dd><p>with identifiers.org (needs web access).
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>identifiersDBs</strong> – A Struct with data on each database registered
+with identifiers.org (needs web access).
 The struct will have the following fields:</p>
 <blockquote>
 <div><ul class="simple">
@@ -320,8 +319,6 @@ The struct will have the following fields:</p>
 <li><p>.prefix:     The prefix of the db on identifiers.org</p></li>
 </ul>
 </div></blockquote>
-</dd>
-</dl>
 </dd>
 </dl>
 </dd></dl>
@@ -338,10 +335,10 @@ The struct will have the following fields:</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../../install/index.html" class="btn btn-default float-right" title="Install" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../old/index.html" class="btn btn-default float-right" title="Old" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../old/index.html" class="btn btn-default" title="Old" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../utilities/SBML/index.html" class="btn btn-default" title="Sbml" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

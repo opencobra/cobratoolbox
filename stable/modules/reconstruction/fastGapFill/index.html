@@ -66,7 +66,7 @@
     <link rel="top" title="The COBRA Toolbox" href="../../../index.html"/>
         <link rel="up" title="Reconstruction" href="../index.html"/>
         <link rel="next" title="Auxillaryfiles" href="AuxillaryFiles/index.html"/>
-        <link rel="prev" title="Gui" href="../comparison/modelBorgifier/gui/index.html"/> 
+        <link rel="prev" title="Other" href="../metaboRePort/other/index.html"/> 
 
   
   <script src="../../../_static/js/modernizr.min.js"></script>
@@ -161,17 +161,17 @@
 <li class="toctree-l2"><a class="reference internal" href="../../dataIntegration/index.html">Dataintegration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../design/index.html">Design</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html">Reconstruction</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../comparison/index.html">Comparison</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../refinement/index.html">Refinement</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../rBioNet/index.html">Rbionet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../modelGeneration/index.html">Modelgeneration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../metaboRePort/index.html">Metaboreport</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Fastgapfill</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="AuxillaryFiles/index.html">Auxillaryfiles</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../growthExpMatch/index.html">Growthexpmatch</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../modelGeneration/index.html">Modelgeneration</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../rBioNet/index.html">Rbionet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../comparison/index.html">Comparison</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../demeter/index.html">Demeter</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../refinement/index.html">Refinement</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../metaboRePort/index.html">Metaboreport</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../visualization/index.html">Visualization</a></li>
@@ -246,23 +246,44 @@ well as the output from <cite>prepareFastGapFill</cite>.</p>
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul>
-<li><p><strong>consistMatricesSUX</strong> – To be obtained from <cite>prepareFastGapFill</cite></p></li>
+<li><p><strong>consistMatricesSUX</strong> – Flux consistent <cite>SUX</cite> matrix to be obtained from
+<cite>prepareFastGapFill</cite>, with fields:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>.rxns - <cite>n x 1</cite> reaction identifiers of the <cite>SUX</cite> matrix</p></li>
+<li><p>.C1 - Indices of the core (flux consistent model
+plus solvable blocked) reactions in <cite>consistMatricesSUX</cite></p></li>
+<li><p>.weights - <cite>n x 1</cite> reaction weight vector assigned by
+<cite>assignRxnWeights</cite> from <cite>weights</cite> and <cite>weightsPerReaction</cite></p></li>
+</ul>
+</div></blockquote>
+</li>
 <li><p><strong>epsilon</strong> – Parameter for <cite>fastCore</cite> (optional input, default: getCobraSolverParams(‘LP’, ‘feasTol’)*100).
 Please refer to Vlassis et al. to get more details on this parameter.</p></li>
 <li><p><strong>weights</strong> – Weight structure that permits to add weights to
 non-core reactions (it is recommended to use values other than 0 and 1, with lower weight
-corresponding to higher priority.
-Format:</p>
+corresponding to higher priority, with fields:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p>weights.MetabolicRxns = 10; % Universal database metabolic reactions</p></li>
-<li><p>weights.ExchangeRxns = 10; % Exchange reactions</p></li>
-<li><p>weights.TransportRxns = 10; % Transport reactions</p></li>
+<li><p>.MetabolicRxns - Weight for universal database
+metabolic reactions (default: 10)</p></li>
+<li><p>.ExchangeRxns - Weight for exchange reactions (default: 10)</p></li>
+<li><p>.TransportRxns - Weight for transport reactions (default: 10)</p></li>
 </ul>
 </div></blockquote>
 <p>Optional input. Default: weigth of 10 for all non-core reactions.</p>
 </li>
-<li><p><strong>weightsPerReaction</strong> – Weights per reaction</p></li>
+<li><p><strong>weightsPerReaction</strong> – Optional input. Individual per-reaction weights,
+with fields:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>.rxns - Cell array of reaction identifiers to
+assign individual weights to (default: empty)</p></li>
+<li><p>.weights - Weights corresponding to <cite>.rxns</cite>, in
+the same order (default: empty)</p></li>
+</ul>
+</div></blockquote>
+</li>
 </ul>
 </dd>
 <dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
@@ -281,27 +302,43 @@ Format:</p>
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>model</strong> – model structure</p></li>
-<li><p><strong>dictionary</strong> – disctionary used to transform KEGG model</p></li>
+<li><p><strong>model</strong> – COBRA model structure, with fields:</p>
+<ul>
+<li><p>.mets - <cite>m x 1</cite> metabolite identifiers</p></li>
+<li><p>.rxns - <cite>n x 1</cite> reaction identifiers</p></li>
+<li><p>.lb - <cite>n x 1</cite> lower flux bounds (used to count
+reversible reactions)</p></li>
+<li><p>.subSystems - <cite>n x 1</cite> reaction subsystem annotations</p></li>
+<li><p>.RxnSubsystem - set internally from <cite>.subSystems</cite>
+before merging with the universal database and
+exchange/transport matrices; not required as input</p></li>
+</ul>
+</li>
+<li><p><strong>dictionary</strong> – Dictionary used to transform the KEGG model</p></li>
 </ul>
 </dd>
 <dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><dl class="simple">
-<dt><strong>KEGGID</strong> – List of KEGGIDs for compounds</dt><dd><ul>
 <li><p><strong>KEGGFilename</strong> – File name containing KEGG database</p></li>
 <li><p><strong>KEGGBlackList</strong> – Contains black list, default = {}</p></li>
 <li><p><strong>compartment</strong> – [c] –&gt; transport from cytoplasm [c] to extracellulat space
-[e] (default), [p] creates transport from [c] to [p] and from [p] to [c],
-if ‘’ - no exchange reactions/transport will be added to the matrix.</p></li>
-<li><p><strong>addModel</strong> – model structure, containing an additional matrix or model
-that should be combined with SUX matrix.% Note that the naming of metabolites in this matrix has to be identical to
-model naming. Also, the list should be unique.</p></li>
+[e] (default), [p] creates transport from [c] to [p] and
+from [p] to [c], if ‘’ - no exchange reactions/transport
+will be added to the matrix.</p></li>
+<li><p><strong>addModel</strong> – model structure, containing an additional matrix or
+model that should be combined with SUX matrix. Note
+that the naming of metabolites in this matrix has to be
+identical to model naming. Also, the list should be unique.</p></li>
 </ul>
 </dd>
+<dt class="field-even">OUTPUT<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>MatricesSUX</strong> – Combined <cite>SUX</cite> matrix structure (<cite>S</cite>, <cite>U</cite>, <cite>X</cite>),</dt><dd><p>converted to an irreversible model, with <cite>.MatrixPart</cite>
+indicating the origin of each reaction (1 - model
+reactions, 2 - KEGG reactions, 3 - exchange/transport
+reactions)</p>
+</dd>
 </dl>
-</li>
-</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -318,7 +355,12 @@ al., 2013, PLoS Comp Biol.`</cite></p>
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>model</strong> – Model structure</p></li>
+<li><p><strong>model</strong> – Model structure, with field:</p>
+<ul>
+<li><p>.rxns - <cite>n x 1</cite> reaction identifiers, used to
+determine the consistent/inconsistent reaction sets</p></li>
+</ul>
+</li>
 <li><p><strong>epsilon</strong> – Parameter (default: getCobraSolverParams(‘LP’, ‘feasTol’)*100; see Vlassis et al for more details)</p></li>
 </ul>
 </dd>
@@ -343,14 +385,31 @@ provides basic statistics for the solution. One can use the option
 such that the flux through this reaction is maximized while the sum of
 all fluxes is minimized. This analysis can be helpful to put the solution
 reactions into the network context.</p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[AddedRxnsExtended] = postProcessGapFillSolutions</strong> (<em>AddedRxns, model, BlockedRxns, IdentifyPW</em>)</p>
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>AddedRxns</strong> – Output from <cite>fastGapFill.m</cite></p></li>
+<dd class="field-even"><ul>
+<li><p><strong>AddedRxns</strong> – Output from <cite>fastGapFill.m</cite>, with fields:</p>
+<ul class="simple">
+<li><p>.rxns - <cite>k x 1</cite> identifiers of the added reactions</p></li>
+<li><p>.rxnFormula - <cite>k x 1</cite> reaction formulas of the
+added reactions</p></li>
+</ul>
+</li>
 <li><p><strong>model</strong> – Model structure. Original model given as input into <cite>prepareFastGapFill</cite></p></li>
+<li><p><strong>BlockedRxns</strong> – Structure of previously blocked reactions, to be
+obtained from <cite>prepareFastGapFill</cite>, with fields:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>.solvableRxns - Identifiers of the previously
+blocked reactions solved by gap filling</p></li>
+<li><p>.solvableFormula - Reaction formulas
+corresponding to <cite>.solvableRxns</cite></p></li>
+</ul>
+</div></blockquote>
+</li>
 <li><p><strong>IdentifyPW</strong> – Optional: identifies reactions that are need from
 consistent model and added reactions to have flux through previously
 blocked reaction, default: false</p></li>
@@ -359,7 +418,21 @@ blocked reaction, default: false</p></li>
 <dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>AddedRxnsExtended</strong> – Structure containing the information present in
 <cite>AddedRxns</cite> along with the statistics and if desired pathways containing
-the flux vectors.</p>
+the flux vectors, with additional fields:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>.subSystem - Assigned reaction category (e.g.
+‘Metabolic reaction’, transport, or exchange)
+for each entry in <cite>.rxns</cite></p></li>
+<li><p>.Stats - Counts of metabolic/transport/exchange
+solutions found (<cite>.metabolicSol</cite>, <cite>.transportSol</cite>,
+<cite>.exchangeSol</cite>)</p></li>
+<li><p>.solvableRxnsSol - (if <cite>IdentifyPW</cite>) per solved
+blocked reaction, the flux vector solution</p></li>
+<li><p>.Problem - (if <cite>IdentifyPW</cite>) reactions for which
+no flux-carrying solution could be identified</p></li>
+</ul>
+</div></blockquote>
 </dd>
 </dl>
 </dd></dl>
@@ -376,7 +449,12 @@ This function is based on the fastCORE algorithm (<cite>Vlassis et al., 2013</ci
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>model</strong> – Model structure</p></li>
+<li><p><strong>model</strong> – Model structure, with field:</p>
+<ul>
+<li><p>.mets - <cite>m x 1</cite> metabolite identifiers (used to
+derive the default <cite>listCompartments</cite>)</p></li>
+</ul>
+</li>
 <li><p><strong>listCompartments</strong> – List of intracellular compartments in the model
 (optional input, default compartments to be considered: ‘[c]’,’[m]’,’[l]’,’[g]’,’[r]’,’[x]’,’[n]’)</p></li>
 <li><p><strong>epsilon</strong> – Parameter for fastCore (optional input, default:
@@ -429,15 +507,20 @@ if running without a weight file.</p>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>swift</strong> – Boolean specifying whether to run swiftGapFill or
 fastGapFill (default: false)</p></li>
-<li><p><strong>modelFileIn</strong> – File containing model, either .mat or .xml
-(default: ‘examples/iAF1260.mat’)</p></li>
-<li><p><strong>dbFileIn</strong> – File containing universal database
-(default: ‘AuxillaryFiles/reaction.lst’)</p></li>
-<li><p><strong>dictionaryFileIn</strong> – File containing db metabolite IDs and model
+<li><p><strong>modelFile</strong> – File containing model, either .mat or .xml
+(default: ‘examples/iAF1260.mat’, relative to
+this function’s own folder)</p></li>
+<li><p><strong>dbFile</strong> – File containing universal database
+(default: ‘AuxillaryFiles/reaction.lst’, relative
+to this function’s own folder)</p></li>
+<li><p><strong>dictionaryFile</strong> – File containing db metabolite IDs and model
 counterparts, either .xls or .tsv
-(default: ‘AuxillaryFiles/KEGG_dictionary.xls’)</p></li>
-<li><p><strong>workspaceFileIn</strong> – File for storing <cite>prepareFastGapFill</cite> results
-(default: ‘examples/defaultWorkspace.mat’)</p></li>
+(default: ‘AuxillaryFiles/KEGG_dictionary.xls’,
+relative to this function’s own folder)</p></li>
+<li><p><strong>prepareFGFResults</strong> – File for storing/loading <cite>prepareFastGapFill</cite>
+results (default:
+‘tutorials/reconstruction/fastGapFill/example/prepareFGFResultsDefault.mat’,
+relative to <cite>CBTDIR</cite>)</p></li>
 <li><p><strong>weightsPerRxnFile</strong> – File containing individual weights for reactions
 (default: ‘examples/sampleWeights.tsv’)</p></li>
 <li><p><strong>forceRerun</strong> – Boolean specifying whether to rerun
@@ -469,29 +552,53 @@ the default is set within <cite>prepareGapFill</cite>
 <dd class="field-odd"><p><strong>[reconstruction, AddedRxns] = swiftGapFill</strong> (<em>consistMatricesSUX, tol, weights, weightsPerReaction</em>)</p>
 </dd>
 <dt class="field-even">INPUT<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>consistMatricesSUX</strong> – To be obtained from <cite>prepareFastGapFill</cite></p>
+<dd class="field-even"><p><strong>consistMatricesSUX</strong> – Flux consistent <cite>SUX</cite> matrix to be obtained from
+<cite>prepareFastGapFill</cite>, with fields:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>.rxns - <cite>n x 1</cite> reaction identifiers of the <cite>SUX</cite> matrix</p></li>
+<li><p>.C1 - Indices of the core (flux consistent model
+plus solvable blocked) reactions in <cite>consistMatricesSUX</cite></p></li>
+<li><p>.weights - <cite>n x 1</cite> reaction weight vector assigned by
+<cite>assignRxnWeights</cite> from <cite>weights</cite> and <cite>weightsPerReaction</cite></p></li>
+</ul>
+</div></blockquote>
 </dd>
 <dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><ul>
 <li><p><strong>tol</strong> – Parameter for <cite>swiftcore</cite> (default: 1e-10).</p></li>
 <li><p><strong>weights</strong> – Weight structure that permits to add weights to non-core reactions
 It is recommended to use values other than 0 and 1, with lower weight
-corresponding to higher priority.
-Format:</p>
+corresponding to higher priority, with fields:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p>weights.MetabolicRxns = 10; % Universal database metabolic reactions</p></li>
-<li><p>weights.ExchangeRxns = 10; % Exchange reactions</p></li>
-<li><p>weights.TransportRxns = 10; % Transport reactions</p></li>
+<li><p>.MetabolicRxns - Weight for universal database
+metabolic reactions (default: 10)</p></li>
+<li><p>.ExchangeRxns - Weight for exchange reactions (default: 10)</p></li>
+<li><p>.TransportRxns - Weight for transport reactions (default: 10)</p></li>
 </ul>
 </div></blockquote>
 <p>Default: weigth of 10 for all non-core reactions.</p>
 </li>
-<li><p><strong>weightsPerReaction</strong> – Weights per reaction</p></li>
+<li><p><strong>weightsPerReaction</strong> – Optional input. Individual per-reaction weights,
+with fields:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>.rxns - Cell array of reaction identifiers to
+assign individual weights to (default: empty)</p></li>
+<li><p>.weights - Weights corresponding to <cite>.rxns</cite>, in
+the same order (default: empty)</p></li>
+</ul>
+</div></blockquote>
+</li>
 </ul>
 </dd>
-<dt class="field-even">OUTPUT<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>AddedRxns</strong> – Reactions that have been added from <cite>UX</cite> matrix to <cite>S</cite></p>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>reconstruction</strong> – The flux consistent metabolic network structure
+reconstructed from the core reactions by <cite>swiftcore</cite></p></li>
+<li><p><strong>AddedRxns</strong> – Reactions that have been added from <cite>UX</cite> matrix to <cite>S</cite></p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -511,7 +618,7 @@ Format:</p>
         <a href="AuxillaryFiles/index.html" class="btn btn-default float-right" title="Auxillaryfiles" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../comparison/modelBorgifier/gui/index.html" class="btn btn-default" title="Gui" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../metaboRePort/other/index.html" class="btn btn-default" title="Other" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

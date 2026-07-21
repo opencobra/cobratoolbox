@@ -65,8 +65,8 @@
         <link rel="search" title="Search" href="../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../index.html"/>
         <link rel="up" title="Visualization" href="../index.html"/>
-        <link rel="next" title="Paint4net" href="../paint4Net/index.html"/>
-        <link rel="prev" title="Metaboliccartography" href="../metabolicCartography/index.html"/> 
+        <link rel="next" title="Submodules" href="../../../submodules/index.html"/>
+        <link rel="prev" title="Visualizeepistasis" href="../visualizeEpistasis/index.html"/> 
 
   
   <script src="../../../_static/js/modernizr.min.js"></script>
@@ -162,19 +162,19 @@
 <li class="toctree-l2"><a class="reference internal" href="../../design/index.html">Design</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../reconstruction/index.html">Reconstruction</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html">Visualization</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../paint4net/index.html">Paint4net</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../efmviz/index.html">Efmviz</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../SAMMIM/index.html">Sammim</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../convert/index.html">Convert</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../cellDesigner/index.html">Celldesigner</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../entropicFBA/index.html">Entropicfba</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../visualizeEpistasis/index.html">Visualizeepistasis</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../upsetPlot/index.html">Upsetplot</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../createMetIntrcNetwork/index.html">Createmetintrcnetwork</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../maps/index.html">Maps</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../metabolicCartography/index.html">Metaboliccartography</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Eschermap</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../paint4Net/index.html">Paint4net</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../paint4net/index.html">Paint4net</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../metabolicCartography/index.html">Metaboliccartography</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cellDesigner/index.html">Celldesigner</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../maps/index.html">Maps</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../SAMMIM/index.html">Sammim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../entropicFBA/index.html">Entropicfba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../upsetPlot/index.html">Upsetplot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../convert/index.html">Convert</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../visualizeEpistasis/index.html">Visualizeepistasis</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Eschermap</a></li>
 </ul>
 </li>
 </ul>
@@ -235,18 +235,67 @@
 <span class="target" id="module-src.visualization.EscherMap"></span><dl class="mat function">
 <dt class="sig sig-object mat" id="src.visualization.EscherMap.flux2json">
 <span class="sig-name descname"><span class="pre">flux2json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">FBAtype</span></em>, <em class="sig-param"><span class="pre">outputFolder</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/EscherMap/flux2json.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.EscherMap.flux2json" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function print predicted fluxes to a json file used
-for escher map. The json file generated here could be directly used in EshcerMap <a class="reference external" href="https://escher.github.io/#/">https://escher.github.io/#/</a>
-to visualise the flux distribution</p>
+<dd><p>Writes a model’s predicted flux distribution to a json file for use with
+EscherMap (<a class="reference external" href="https://escher.github.io/#/">https://escher.github.io/#/</a>) to visualise the flux
+distribution</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>flux2json</strong> (<em>model, FBAtype, outputFolder</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>model</strong> – COBRA model structure with fields:</p>
+<ul class="simple">
+<li><p>.rxns - <cite>n x 1</cite> cell array of reaction identifiers</p></li>
+<li><p>.rxnNames - <cite>n x 1</cite> cell array of reaction names</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>FBAtype</strong> – ‘FBA’ to solve with <cite>optimizeCbModel</cite>, or ‘EFBA’ to
+solve with <cite>entropicFluxBalanceAnalysis</cite></p></li>
+<li><p><strong>outputFolder</strong> – Folder in which the <cite>data.json</cite> output file is
+written</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUT<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>A `data.json` file with the reaction fluxes is written to</strong></p></li>
+<li><p><strong>`outputFolder`</strong></p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.visualization.EscherMap.model2escher">
 <span class="sig-name descname"><span class="pre">model2escher</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/EscherMap/model2escher.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.EscherMap.model2escher" title="Permalink to this definition">¶</a></dt>
-<dd><p>this function prepare the model to draw escher map</p>
-<p>EscherMap only accept model in Json format. Some reaction IDs in Recon3D
-are started with number,which generating issue when converted into Json
-file. The function here add ‘<a href="#id2"><span class="problematic" id="id3">A_</span></a>’ to the reaction IDs starting with number</p>
+<dd><p>Prepares a model to draw an EscherMap</p>
+<p>EscherMap only accepts a model in json format. Some reaction IDs in
+Recon3D start with a number, which causes an issue when converted into
+json. This function adds ‘<a href="#id2"><span class="problematic" id="id3">A_</span></a>’ to reaction IDs starting with a number,
+and replaces the compartment brackets in metabolite IDs with an
+underscore (e.g. <cite>atp[c]</cite> becomes <cite>atp_c</cite>)</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>model = model2escher</strong> (<em>model</em>)</p>
+</dd>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>model</strong> – COBRA model structure with fields:</p>
+<ul class="simple">
+<li><p>.rxns - <cite>n x 1</cite> cell array of reaction identifiers</p></li>
+<li><p>.mets - <cite>m x 1</cite> cell array of metabolite identifiers</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>model</strong> – COBRA model structure with fields:</p>
+<ul class="simple">
+<li><p>.rxns - reaction identifiers, prefixed with <cite>A_</cite> where
+the original identifier started with a digit</p></li>
+<li><p>.mets - metabolite identifiers with compartment
+brackets replaced by an underscore</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 </section>
@@ -261,10 +310,10 @@ file. The function here add ‘<a href="#id2"><span class="problematic" id="id3"
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../paint4Net/index.html" class="btn btn-default float-right" title="Paint4net" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../../../submodules/index.html" class="btn btn-default float-right" title="Submodules" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../metabolicCartography/index.html" class="btn btn-default" title="Metaboliccartography" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../visualizeEpistasis/index.html" class="btn btn-default" title="Visualizeepistasis" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

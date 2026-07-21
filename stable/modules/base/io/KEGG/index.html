@@ -65,8 +65,8 @@
         <link rel="search" title="Search" href="../../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../../index.html"/>
         <link rel="up" title="Io" href="../index.html"/>
-        <link rel="next" title="Json" href="../json/index.html"/>
-        <link rel="prev" title="Pypath" href="../python/pyPath/index.html"/> 
+        <link rel="next" title="Python" href="../python/index.html"/>
+        <link rel="prev" title="Newt" href="../newt/index.html"/> 
 
   
   <script src="../../../../_static/js/modernizr.min.js"></script>
@@ -159,23 +159,23 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Base</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="../../utilities/index.html">Utilities</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../paths/index.html">Paths</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../ci/index.html">Ci</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../codeConsistency/index.html">Codeconsistency</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../index.html">Io</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../json/index.html">Json</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../utilities/index.html">Utilities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../definitions/index.html">Definitions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../old/index.html">Old</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../BiGG/index.html">Bigg</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../newt/index.html">Newt</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../utilities/index.html">Utilities</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../python/index.html">Python</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">Kegg</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../json/index.html">Json</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../old/index.html">Old</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../definitions/index.html">Definitions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../python/index.html">Python</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../install/index.html">Install</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../solvers/index.html">Solvers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ci/index.html">Ci</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../paths/index.html">Paths</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../cobrarrow/index.html">Cobrarrow</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../install/index.html">Install</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../dataIntegration/index.html">Dataintegration</a></li>
@@ -269,7 +269,11 @@ and connects with the model metabolite the corresponding KEGGID</p>
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>model</strong> – COBRA model structure</p></li>
+<li><p><strong>model</strong> – COBRA model structure with fields:</p>
+<ul>
+<li><p>.mets - <cite>m x 1</cite> column cell array of metabolite identifiers</p></li>
+</ul>
+</li>
 <li><p><strong>Dictionary</strong> – consists of:</p>
 <ul>
 <li><p>CompAbr = Dictionary(:, 1): List of compounds abreviation (non-compartelized)</p></li>
@@ -279,7 +283,10 @@ and connects with the model metabolite the corresponding KEGGID</p>
 </ul>
 </dd>
 <dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>model</strong> – KEGG model structure</p>
+<dd class="field-odd"><p><strong>model</strong> – KEGG model structure with added field:</p>
+<ul class="simple">
+<li><p>.metKEGGID - <cite>m x 1</cite> column cell array of KEGG metabolite identifiers, one per entry in <cite>model.mets</cite></p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -294,7 +301,11 @@ and connects with the model metabolite the corresponding KEGGID</p>
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>model</strong> – KEGG model structure</p></li>
+<li><p><strong>model</strong> – KEGG model structure with fields:</p>
+<ul>
+<li><p>.mets - <cite>m x 1</cite> column cell array of metabolite identifiers</p></li>
+</ul>
+</li>
 <li><p><strong>Dictionary</strong> – consists of:</p>
 <ul>
 <li><p>CompAbr = Dictionary(:, 1): List of compounds abreviation (non-compartelized)</p></li>
@@ -304,7 +315,11 @@ and connects with the model metabolite the corresponding KEGGID</p>
 </ul>
 </dd>
 <dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>model</strong> – COBRA model structure</p>
+<dd class="field-odd"><p><strong>model</strong> – COBRA model structure with added fields:</p>
+<ul class="simple">
+<li><p>.metKEGGID - set equal to the input <cite>model.mets</cite> (unchanged)</p></li>
+<li><p>.metsAbr - <cite>m x 1</cite> column cell array of metabolite abbreviations matched via <cite>Dictionary</cite>, empty where no match is found</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -315,21 +330,20 @@ and connects with the model metabolite the corresponding KEGGID</p>
 <dd><p>Translates the metabolites from KEGG to cobra model names.</p>
 <dl class="field-list simple">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>model = mapMetName2KEGGID</strong> (<em>model, Dictionary</em>)</p>
+<dd class="field-odd"><p><strong>model = transformKEGG2Model</strong> (<em>modelKEGG, dictionary</em>)</p>
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>model</strong> – KEGG model structure</p></li>
-<li><p><strong>Dictionary</strong> – consists of:</p>
-<ul>
-<li><p>CompAbr = Dictionary(:, 1): List of compounds abreviation (non-compartelized)</p></li>
-<li><p>KEGGID = Dictionary(:, 2): List of KEGGIDs for compounds in <cite>CompAbr</cite></p></li>
-</ul>
-</li>
+<dd class="field-even"><p><strong>modelKEGG</strong> – KEGG model structure</p>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>dictionary</strong> – consists of:</p>
+<ul class="simple">
+<li><p>CompAbr = dictionary(:, 1): List of compounds abreviation (non-compartelized)</p></li>
+<li><p>KEGGID = dictionary(:, 2): List of KEGGIDs for compounds in <cite>CompAbr</cite></p></li>
 </ul>
 </dd>
-<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>model</strong> – COBRA model structure</p>
+<dt class="field-even">OUTPUT<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>model</strong> – COBRA model structure</p>
 </dd>
 </dl>
 </dd></dl>
@@ -372,10 +386,10 @@ defined, the empty cell will be replaced with metabolite abreviation.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../json/index.html" class="btn btn-default float-right" title="Json" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../python/index.html" class="btn btn-default float-right" title="Python" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../python/pyPath/index.html" class="btn btn-default" title="Pypath" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../newt/index.html" class="btn btn-default" title="Newt" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

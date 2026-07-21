@@ -65,8 +65,8 @@
         <link rel="search" title="Search" href="../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../index.html"/>
         <link rel="up" title="Dataintegration" href="../index.html"/>
-        <link rel="next" title="Design" href="../../design/index.html"/>
-        <link rel="prev" title="Preprocessing" href="../transcriptomics/preprocessing/index.html"/> 
+        <link rel="next" title="Metanetxmapper" href="../metanetxMapper/index.html"/>
+        <link rel="prev" title="Dataintegration" href="../index.html"/> 
 
   
   <script src="../../../_static/js/modernizr.min.js"></script>
@@ -159,13 +159,13 @@
 <li class="toctree-l2"><a class="reference internal" href="../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../base/index.html">Base</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html">Dataintegration</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../chemoInformatics/index.html">Chemoinformatics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../fluxomics/index.html">Fluxomics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../metanetxMapper/index.html">Metanetxmapper</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../XomicsToModel/index.html">Xomicstomodel</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../metaboAnnotator/index.html">Metaboannotator</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../transcriptomics/index.html">Transcriptomics</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Metabotools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../metanetxMapper/index.html">Metanetxmapper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../metaboAnnotator/index.html">Metaboannotator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../XomicsToModel/index.html">Xomicstomodel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../chemoInformatics/index.html">Chemoinformatics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../transcriptomics/index.html">Transcriptomics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../fluxomics/index.html">Fluxomics</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../design/index.html">Design</a></li>
@@ -541,7 +541,9 @@ Depends on fastFVA, fluxVariability analysis</p>
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.metabotools.findOptExchRxns">
 <span class="sig-name descname"><span class="pre">findOptExchRxns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">Ex_Rxns</span></em>, <em class="sig-param"><span class="pre">parFVA</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metabotools/findOptExchRxns.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metabotools.findOptExchRxns" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
+<dd><p>Identify exchange reactions whose direction (uptake or secretion) is not
+obligate, based on flux variability analysis of the supplied exchange reactions</p>
+<dl class="field-list simple">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[OptExchRxns] = findOptExchRxns</strong> (<em>model, Ex_Rxns, parFVA</em>)</p>
 </dd>
@@ -549,11 +551,13 @@ Depends on fastFVA, fluxVariability analysis</p>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>model</strong> – Metabolic model</p></li>
 <li><p><strong>Ex_Rxns</strong> – Vector of exchange reactions for FVA</p></li>
-<li><p><strong>fastFVA</strong> – use FastFVA (default=0)</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>OptExchRxns</strong></p>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>parFVA</strong> – Use parallelization of the flux variability analysis (default = 0)</p>
+</dd>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>OptExchRxns</strong> – Exchange reactions that are neither obligate uptake nor obligate secretion</p>
 </dd>
 </dl>
 </dd></dl>
@@ -569,19 +573,23 @@ reactions given the model and the applied constraints. It returns the resulting 
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>model</strong> – model structure</p></li>
+<li><p><strong>model</strong> – COBRA model structure with fields:</p>
+<ul>
+<li><p>.rxns - reaction identifiers</p></li>
+<li><p>.lb - lower flux bounds</p></li>
+</ul>
+</li>
 <li><p><strong>minGrowth</strong> – minimal Growth rate to be set on biomass reaction</p></li>
 <li><p><strong>biomassRxn</strong> – biomass reaction name (default: ‘biomass_reaction2’)</p></li>
 <li><p><strong>prune</strong> – optional: to prune the model based on exchange reactions
 (default: 1)</p></li>
 <li><p><strong>fastFVA</strong> – optional: to use fastFVA instead of fluxvariability for
 computing FVA results (default: 0)</p></li>
-<li><p><strong>medium</strong> – (default: {})</p></li>
 </ul>
 </dd>
 <dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>modelUpdated</strong> – same as input model but constraints on blocked reactions
+<li><p><strong>modelMin</strong> – same as input model but constraints on blocked reactions
 are set to be 0</p></li>
 <li><p><strong>modelPruned</strong> – pruned model, where all blocked reactions are removed
 (attention this seems to cause issues with GPRs)</p></li>
@@ -604,7 +612,6 @@ performPPP for all sample models.</p>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>ResultsAllCellLines</strong> – Result structure</p></li>
 <li><p><strong>mets</strong> – Metabolites that were tested in the phase plane analysis</p></li>
-<li><p><strong>step_size</strong> – Step size of each metabololite tested</p></li>
 <li><p><strong>path</strong> – Path where output is saved</p></li>
 <li><p><strong>samples</strong> – Names of conditions</p></li>
 <li><p><strong>label</strong> – Defining label of X-axis, y-axis and z-axis, e.g., {<cite>Glucose uptake (fmol/cell/hr)</cite>; <cite>Oxygen uptake
@@ -629,7 +636,11 @@ See the supplemental tutorial of <em>DOI:10.1371/journal.pone.0049978 (Aurich an
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>model</strong> – Metabolic model (e.g., Recon)</p></li>
+<li><p><strong>model</strong> – Metabolic model (e.g., Recon) with field:</p>
+<ul>
+<li><p>.genes - cell array of gene identifiers</p></li>
+</ul>
+</li>
 <li><p><strong>dataGenes</strong> – Vector of absent genes. Follow the supplemental tutorial of <em>DOI: 10.1371/journal.pone.0049978 (Aurich and Thiele, PloS One, 2012)</em> for the generation of P/A calls, e.g., <cite>Absent_genes</cite> = [535;1548];</p></li>
 </ul>
 </dd>
@@ -676,6 +687,7 @@ function <cite>predictFluxSplits</cite>.</p>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>ResultsAllCellLines</strong> – structure containing samples and models for the samples, e.g.,  <cite>ResultsAllCellLines.UACC_257.modelPruned</cite></p></li>
 <li><p><strong>samples</strong> – conditions or cell lines, e.g., UACC_257</p></li>
+<li><p><strong>model</strong> – Reference metabolic model from which the union and intersect sub-networks are extracted</p></li>
 </ul>
 </dd>
 <dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
@@ -724,10 +736,13 @@ function <cite>generateCompactExchModel</cite> called by the function <cite>setQ
 <dd><p>Analysis of the metabolite connectivity of a metabolic model</p>
 <dl class="field-list simple">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>[MetConn, RxnLength] = NetworkTopology</strong> (<em>model</em>)</p>
+<dd class="field-odd"><p><strong>[MetConn, RxnLength] = networkTopology</strong> (<em>model</em>)</p>
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>model</strong> – Model structure</p>
+<dd class="field-even"><p><strong>model</strong> – COBRA model structure with field:</p>
+<ul class="simple">
+<li><p>.S - stoichiometric matrix</p></li>
+</ul>
 </dd>
 <dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -778,7 +793,7 @@ multiple COBRA toolbox functions</p>
 <li><p><strong>warmupn</strong> – Number of warm-up points</p></li>
 <li><p><strong>fileName</strong> – Name for output files</p></li>
 <li><p><strong>nFiles</strong> – Number of files saved</p></li>
-<li><p><strong>pointsPerFilePoints</strong> – Points saved per file</p></li>
+<li><p><strong>pointsPerFile</strong> – Points saved per file</p></li>
 <li><p><strong>stepsPerPoint</strong> – Steps skipped between two saved points, in order to increase mixing</p></li>
 <li><p><strong>fileBaseNo</strong> – Counter for the numbering of the output files, e.g., 0 to start with 1;</p></li>
 <li><p><strong>maxTime</strong> – Maximal running time after which the analysis should be terminated, e.g., 3600000;</p></li>
@@ -801,7 +816,11 @@ consumed) based all reactions producing (or consuming) the metabolite</p>
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>model</strong> – Generic model, e.g., <cite>modelMedium</cite></p></li>
+<li><p><strong>model</strong> – Generic model, e.g., <cite>modelMedium</cite>, with field:</p>
+<ul>
+<li><p>.rxns - reaction identifiers</p></li>
+</ul>
+</li>
 <li><p><strong>obj</strong> – objective function, e.g., biomass or ATPM</p></li>
 <li><p><strong>met2test</strong> – e.g., <cite>atp[c]</cite>. Mind that the metabolites are produced in multiple compartments.</p></li>
 <li><p><strong>samples</strong> – Name of conditions as in <cite>ResultsAllCellLines</cite></p></li>
@@ -912,7 +931,11 @@ constraints and a minimal growth rate by identifying and removing all blocked re
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>model</strong> – model structure</p></li>
+<li><p><strong>model</strong> – COBRA model structure with field:</p>
+<ul>
+<li><p>.rxns - reaction identifiers</p></li>
+</ul>
+</li>
 <li><p><strong>minGrowth</strong> – minimal Growth rate to be set on biomass reaction</p></li>
 <li><p><strong>biomassRxn</strong> – biomass reaction name (default: ‘biomass_reaction2’)</p></li>
 </ul>
@@ -961,7 +984,13 @@ are set to be 0</p></li>
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>model</strong> – Metabolic model (Recon)</p></li>
+<li><p><strong>model</strong> – Metabolic model (Recon) with fields:</p>
+<ul>
+<li><p>.rxns - reaction identifiers</p></li>
+<li><p>.lb - lower flux bounds</p></li>
+<li><p>.ub - upper flux bounds</p></li>
+</ul>
+</li>
 <li><p><strong>current_inf</strong> – Models can have differently defined infinite constraints, e.g., 500</p></li>
 <li><p><strong>set_inf</strong> – New value for infinite constraints, e.g., 1000</p></li>
 <li><p><strong>medium_composition</strong> – Vector of exchange reactions of metabolites in the cell medium, e.g., RPMI medium</p></li>
@@ -1006,7 +1035,11 @@ be used (e.g., 0.00001). Note that the value has to be above the threshold later
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>model</strong> – Metabolic model (Recon), with set constraints (output of <cite>setMediumConstraints</cite>)</p></li>
+<li><p><strong>model</strong> – Metabolic model (Recon), with set constraints (output of <cite>setMediumConstraints</cite>), with field:</p>
+<ul>
+<li><p>.rxns - reaction identifiers</p></li>
+</ul>
+</li>
 <li><p><strong>cond_uptake</strong> – Vector of exchanges of metabolites consumed by the cells in the experiment</p></li>
 <li><p><strong>cond_uptake_LODs</strong> – Vector of detection limits (LOD in Mm) for the compounds and in the experiment</p></li>
 <li><p><strong>cond_secretion</strong> – Vector of metabolite exchanges consumed by the cells in the experiment</p></li>
@@ -1037,7 +1070,7 @@ in “MetaboTools: A Comprehensive Toolbox for Analysis of Genome-Scale Metaboli
 of quantitative extracellular metabolomic data into the network context.” (Data Sheet 3.pdf)</p>
 <dl class="field-list simple">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>[ResultsAllCellLines, OverViewResults] = setQuantConstraints</strong> (<em>model, samples, tol, minGrowth, obj, no_secretion, no_uptake, medium, addExtraExch, addExtraExch_value, path, epsilon</em>)</p>
+<dd class="field-odd"><p><strong>[ResultsAllCellLines, OverViewResults] = setQuantConstraints</strong> (<em>model, samples, tol, minGrowth, obj, no_secretion, no_uptake, medium, addExtraExch, addExtraExch_value, path</em>)</p>
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
@@ -1085,8 +1118,20 @@ difference of signal intensities obtained from two samples. The prerequisite for
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>modelA</strong> – model constrained according to condition 1</p></li>
-<li><p><strong>modelB</strong> – model constrained according to condition 2</p></li>
+<li><p><strong>modelA</strong> – model constrained according to condition 1, with fields:</p>
+<ul>
+<li><p>.rxns - reaction identifiers</p></li>
+<li><p>.lb - lower flux bounds</p></li>
+<li><p>.ub - upper flux bounds</p></li>
+</ul>
+</li>
+<li><p><strong>modelB</strong> – model constrained according to condition 2, with fields:</p>
+<ul>
+<li><p>.rxns - reaction identifiers</p></li>
+<li><p>.lb - lower flux bounds</p></li>
+<li><p>.ub - upper flux bounds</p></li>
+</ul>
+</li>
 <li><p><strong>cond1_upt_higher</strong> – Exchange reactions and relative differences with higher uptake in condition 1 compared to condition 2</p></li>
 <li><p><strong>cond2_upt_higher</strong> – Exchange reactions and relative differences with higher uptake in condition 2 compared to condition 1</p></li>
 <li><p><strong>cond2_secr_higher</strong> – Exchange reactions and relative differences with higher secretion in condition 2 compared to condition 1</p></li>
@@ -1151,12 +1196,24 @@ analysis, and simplify the identification of interesting histograms.</p>
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>modelA</strong> – Sampled modelA (condition 1)</p></li>
-<li><p><strong>modelB</strong> – Sampled modelB (condition 2)</p></li>
+<li><p><strong>modelA</strong> – Sampled modelA (condition 1), with field:</p>
+<ul>
+<li><p>.rxns - reaction identifiers</p></li>
+</ul>
+</li>
+<li><p><strong>modelB</strong> – Sampled modelB (condition 2), with field:</p>
+<ul>
+<li><p>.rxns - reaction identifiers</p></li>
+</ul>
+</li>
 <li><p><strong>path</strong> – Path to sampling output files</p></li>
 <li><p><strong>nFiles</strong> – Number of files saved, e.g., 20;</p></li>
-<li><p><strong>pointsPerFilePoints</strong> – Points saved per file, e.g., 5000;</p></li>
-<li><p><strong>starting_model</strong> – Original metabolic model (Recon)</p></li>
+<li><p><strong>pointsPerFile</strong> – Points saved per file, e.g., 5000;</p></li>
+<li><p><strong>starting_model</strong> – Original metabolic model (Recon), with field:</p>
+<ul>
+<li><p>.genes - cell array of gene identifiers</p></li>
+</ul>
+</li>
 <li><p><strong>dataGenes</strong> – Gene set, whose associated reactions should be emphasized by color, e.g., alternatively spliced or differentially expressed genes</p></li>
 </ul>
 </dd>
@@ -1193,10 +1250,10 @@ variability analysis / <cite>fastFVA</cite></p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../../design/index.html" class="btn btn-default float-right" title="Design" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../metanetxMapper/index.html" class="btn btn-default float-right" title="Metanetxmapper" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../transcriptomics/preprocessing/index.html" class="btn btn-default" title="Preprocessing" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../index.html" class="btn btn-default" title="Dataintegration" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

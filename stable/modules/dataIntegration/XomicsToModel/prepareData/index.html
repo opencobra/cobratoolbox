@@ -66,7 +66,7 @@
     <link rel="top" title="The COBRA Toolbox" href="../../../../index.html"/>
         <link rel="up" title="Xomicstomodel" href="../index.html"/>
         <link rel="next" title="Onerxnperactivegene" href="../oneRxnPerActiveGene/index.html"/>
-        <link rel="prev" title="Analysis" href="../analysis/index.html"/> 
+        <link rel="prev" title="Proteomics" href="../proteomics/index.html"/> 
 
   
   <script src="../../../../_static/js/modernizr.min.js"></script>
@@ -159,21 +159,21 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../base/index.html">Base</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Dataintegration</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../../chemoInformatics/index.html">Chemoinformatics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../fluxomics/index.html">Fluxomics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../metabotools/index.html">Metabotools</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../metanetxMapper/index.html">Metanetxmapper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../metaboAnnotator/index.html">Metaboannotator</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../index.html">Xomicstomodel</a><ul class="current">
-<li class="toctree-l4"><a class="reference internal" href="../thermoKernel/index.html">Thermokernel</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../metabolomics/index.html">Metabolomics</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../proteomics/index.html">Proteomics</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../analysis/index.html">Analysis</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">Preparedata</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../oneRxnPerActiveGene/index.html">Onerxnperactivegene</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../metabolomics/index.html">Metabolomics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../analysis/index.html">Analysis</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../thermoKernel/index.html">Thermokernel</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../metaboAnnotator/index.html">Metaboannotator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chemoInformatics/index.html">Chemoinformatics</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../transcriptomics/index.html">Transcriptomics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../metabotools/index.html">Metabotools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../fluxomics/index.html">Fluxomics</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../design/index.html">Design</a></li>
@@ -251,16 +251,26 @@ following rows represent the data on them.</p>
 </dd>
 <dt class="field-odd">OPTIONAL INPUT<span class="colon">:</span></dt>
 <dd class="field-odd"><ul>
-<li><p><strong>setMinActiveFlux  {0}, 1 - change the LB of forced</strong> – active reactions based on the (primal) feasibility
-tolerance (feasTol*100)</p></li>
-<li><dl class="simple">
-<dt><strong>setMaxActiveFlux  {0}, 1 - change the UB of forced</strong> –                  active reactions based on the (primal) feasibility</dt><dd><p>tolerance (based on param.TolMaxBoundary, feasTol*1e9 if not provided)</p>
-</dd>
-<dt>specificData:         Structure containing the optional variables to</dt><dd><p>generate a context-specific omics model</p>
-</dd>
-</dl>
-<p>TolMaxBoundary:  The reaction boundary’s maximum value (Default: feasTol*1e9).</p>
+<li><p><strong>setMinActiveFlux</strong> – {0}, 1 - change the LB of forced active reactions based on
+the (primal) feasibility tolerance (feasTol*100)</p></li>
+<li><p><strong>setMaxActiveFlux</strong> – {0}, 1 - change the UB of forced active reactions based on
+the (primal) feasibility tolerance (based on param.TolMaxBoundary, feasTol*1e9 if not provided)</p></li>
+<li><p><strong>specificData</strong> – Structure containing the optional variables to generate a
+context-specific omics model, with fields:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>.inputData - location or table of the input omics data</p></li>
+<li><p>.activeGenes - genes known to be active</p></li>
+<li><p>.activeReactions - reactions known to be active</p></li>
+<li><p>.inactiveGenes - genes known to be inactive</p></li>
+<li><p>.rxns2add - table of reactions to add to the model</p></li>
+<li><p>.rxns2constrain - table of custom reaction constraints</p></li>
+<li><p>.cellCultureData - cell-culture measurements</p></li>
+<li><p>.mediaData - table of fresh-media constraints</p></li>
+</ul>
+</div></blockquote>
 </li>
+<li><p><strong>TolMaxBoundary</strong> – The reaction boundary’s maximum value (Default: feasTol*1e9).</p></li>
 </ul>
 </dd>
 <dt class="field-even">OUTPUT<span class="colon">:</span></dt>
@@ -273,8 +283,38 @@ generate a context-specific omics model</p>
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.XomicsToModel.prepareData.regulariseMitochondrialReactions">
 <span class="sig-name descname"><span class="pre">regulariseMitochondrialReactions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">options</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/XomicsToModel/prepareData/regulariseMitochondrialReactions.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.XomicsToModel.prepareData.regulariseMitochondrialReactions" title="Permalink to this definition">¶</a></dt>
-<dd><p>replace the metabolite h[i] with h[c] and remove the rection
-Htmi    h[i]    -&gt;      h[m]</p>
+<dd><p>Replace the metabolite h[i] with h[c] and remove the reaction Htmi (h[i] -&gt; h[m])</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[modelOut, options, problemRxnList, fixedRxnList] = regulariseMitochondrialReactions</strong> (<em>model, options, printLevel</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – COBRA model with fields:</p>
+<ul>
+<li><p>.S - <cite>m x n</cite> stoichiometric matrix</p></li>
+<li><p>.mets - <cite>m x 1</cite> metabolite identifiers</p></li>
+<li><p>.rxns - <cite>n x 1</cite> reaction identifiers</p></li>
+</ul>
+</li>
+<li><p><strong>options</strong> – structure of context-specific data, with fields:</p>
+<ul>
+<li><p>.activeReactions - reactions known to be active (updated when a problem reaction is renamed)</p></li>
+<li><p>.rxns2constrain - table of custom reaction constraints (updated when a problem reaction is renamed)</p></li>
+</ul>
+</li>
+<li><p><strong>printLevel</strong> – set greater than zero to print the old and new reaction formulas</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>modelOut</strong> – the input model with h[i] replaced by h[c] in the affected reactions</p></li>
+<li><p><strong>options</strong> – the input options structure with reaction identifiers updated</p></li>
+<li><p><strong>problemRxnList</strong> – reactions that contained the metabolite h[i]</p></li>
+<li><p><strong>fixedRxnList</strong> – the renamed replacement reactions</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 </section>
@@ -292,7 +332,7 @@ Htmi    h[i]    -&gt;      h[m]</p>
         <a href="../oneRxnPerActiveGene/index.html" class="btn btn-default float-right" title="Onerxnperactivegene" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../analysis/index.html" class="btn btn-default" title="Analysis" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../proteomics/index.html" class="btn btn-default" title="Proteomics" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

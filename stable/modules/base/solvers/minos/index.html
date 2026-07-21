@@ -65,8 +65,8 @@
         <link rel="search" title="Search" href="../../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../../index.html"/>
         <link rel="up" title="Solvers" href="../index.html"/>
-        <link rel="next" title="Init" href="../init/index.html"/>
-        <link rel="prev" title="Param" href="../param/index.html"/> 
+        <link rel="next" title="Optarrow" href="../optarrow/index.html"/>
+        <link rel="prev" title="Gurobi" href="../gurobi/index.html"/> 
 
   
   <script src="../../../../_static/js/modernizr.min.js"></script>
@@ -159,31 +159,31 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Base</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="../../utilities/index.html">Utilities</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../paths/index.html">Paths</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../ci/index.html">Ci</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../codeConsistency/index.html">Codeconsistency</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../io/index.html">Io</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../install/index.html">Install</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../index.html">Solvers</a><ul class="current">
-<li class="toctree-l4"><a class="reference internal" href="../NLP/index.html">Nlp</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../param/index.html">Param</a></li>
-<li class="toctree-l4 current"><a class="current reference internal" href="#">Minos</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../init/index.html">Init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../NLP/index.html">Nlp</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../gurobi/index.html">Gurobi</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Minos</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../optarrow/index.html">Optarrow</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../lindo/index.html">Lindo</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../entropicFBA/index.html">Entropicfba</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../cplex/index.html">Cplex</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../rescale/index.html">Rescale</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../cardOpt/index.html">Cardopt</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../mosek/index.html">Mosek</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../varKin/index.html">Varkin</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../getSetSolver/index.html">Getsetsolver</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../gams/index.html">Gams</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../init/index.html">Init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../cardOpt/index.html">Cardopt</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../entropicFBA/index.html">Entropicfba</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../lp_solve/index.html">Lp_solve</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../varKin/index.html">Varkin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../mosek/index.html">Mosek</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../cplex/index.html">Cplex</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../getSetSolver/index.html">Getsetsolver</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="../../ci/index.html">Ci</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../paths/index.html">Paths</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../cobrarrow/index.html">Cobrarrow</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../install/index.html">Install</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../dataIntegration/index.html">Dataintegration</a></li>
@@ -249,13 +249,47 @@
 <span class="target" id="module-src.base.solvers.minos"></span><dl class="mat function">
 <dt class="sig sig-object mat" id="src.base.solvers.minos.DQQCleanup">
 <span class="sig-name descname"><span class="pre">DQQCleanup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">tmpPath</span></em>, <em class="sig-param"><span class="pre">originalDirectory</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/minos/DQQCleanup.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.minos.DQQCleanup" title="Permalink to this definition">¶</a></dt>
-<dd><p>perform cleanup after DQQ.</p>
+<dd><p>Performs cleanup after solving with the DQQ solver, removing temporary
+solver output and returning to the original working directory</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>DQQCleanup</strong> (<em>tmpPath, originalDirectory</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>tmpPath</strong> – path to the temporary folder containing the
+<cite>results</cite> and <cite>MPS</cite> subfolders, and the
+<cite>fort.*</cite>/<cite>*.sol</cite> output files, to be deleted</p></li>
+<li><p><strong>originalDirectory</strong> – folder to <cite>cd</cite> back into once cleanup is
+complete</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.base.solvers.minos.minosCleanUp">
 <span class="sig-name descname"><span class="pre">minosCleanUp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">tmpPath</span></em>, <em class="sig-param"><span class="pre">dataDirectory</span></em>, <em class="sig-param"><span class="pre">modelName</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/minos/minosCleanUp.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.minos.minosCleanUp" title="Permalink to this definition">¶</a></dt>
-<dd><p>CleanUp after Minos Solver.</p>
+<dd><p>Cleans up after the MINOS solver by deleting temporary run files from
+<cite>tmpPath</cite> (other than the spec/run files to keep) and removing the
+temporary data file for the given model</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>minosCleanUp</strong> (<em>tmpPath, dataDirectory, modelName</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>tmpPath</strong> – path to the temporary MINOS working folder to
+clean; every file not in the keep list
+(<cite>lp1.spc</cite>, <cite>lp2.spc</cite>, <cite>qrunfba</cite>, <cite>runfba</cite>) is
+deleted</p></li>
+<li><p><strong>dataDirectory</strong> – path to the folder containing the temporary model
+data file to delete</p></li>
+<li><p><strong>modelName</strong> – name of the model, used to build the temporary
+data file name <cite>&lt;modelName&gt;.txt</cite> in <cite>dataDirectory</cite></p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="mat function">
@@ -316,10 +350,10 @@ Other compilers may generate different generic names.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../init/index.html" class="btn btn-default float-right" title="Init" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../optarrow/index.html" class="btn btn-default float-right" title="Optarrow" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../param/index.html" class="btn btn-default" title="Param" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../gurobi/index.html" class="btn btn-default" title="Gurobi" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

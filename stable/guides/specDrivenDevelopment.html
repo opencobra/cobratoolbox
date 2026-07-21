@@ -1,0 +1,384 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Spec-driven development with an LLM &mdash; The COBRA Toolbox</title>
+  
+
+  
+  
+  
+  
+    <link rel="icon" type="image/png" sizes="32x32" href="../_static/img/favicon-32x32.png">
+  
+  
+    <link rel="icon" type="image/png" sizes="16x16" href="../_static/img/favicon-16x16.png">
+  
+  
+  
+    <link rel="manifest" href="../_static/json/manifest.json">
+  
+  
+    <meta name="msapplication-config" content="../_static/browserconfig.xml">
+  
+  <meta name="theme-color" content="#ffffff">
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+  <script src="../_static/js/jquery.easy-autocomplete.min.js" type="text/javascript" ></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+  <link href="../_static/css/easy-autocomplete.min.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/cobra.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../_static/css/cobra.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="The COBRA Toolbox" href="../index.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> The COBRA Toolbox
+          
+
+          
+            <img src="/cobratoolbox/stable/_static/img/logo.png" class="logo" alt="cobratoolbox logo" />
+          
+          </a>
+
+              
+          <h1>The COBRA Toolbox</h1>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" id="simple"/>
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+    <script>
+    	var options = {
+
+		url: "../_static/json/functions.json",
+
+		getValue: "name",
+
+		list: {
+            onKeyEnterEvent: function(item) {
+                    return "_static/../" + item.website_url
+            },
+            maxNumberOfElements: 25,
+			match: {
+					enabled: true,
+			},
+            sort: {
+			    enabled: true
+		    }
+		},
+	template: {
+	    	type: "custom",
+		    method: function(value, item) {
+                return "<span><a href='../_static/../" + item.website_url + "' >" + value + "</a>" + "<a href='../_static/../" + item.website_url + "' ><img src='../_static/link.svg'/></a></span>";
+		    }
+	    },
+		
+		theme: "square"
+
+	};
+
+	$("#simple").easyAutocomplete(options);
+
+
+    </script>
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../index.html">Home</a></li>
+              </ul>
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Using the Toolbox</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/index.html">Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../submodules/index.html">Submodules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">FAQ</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Contributing</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../plan.html">Development Plan</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Project Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../cite.html">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../citations.html">Citations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../support.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../funding.html">Funding</a></li>
+</ul>
+
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">The COBRA Toolbox</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../contents.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Spec-driven development with an LLM</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="https://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <section id="spec-driven-development-with-an-llm">
+<h1>Spec-driven development with an LLM<a class="headerlink" href="#spec-driven-development-with-an-llm" title="Permalink to this heading">¶</a></h1>
+<p>The COBRA Toolbox is developed with the help of AI coding agents (for example
+Claude and Codex) under a <strong>spec-driven</strong> workflow managed by
+<a class="reference external" href="https://github.com/github/spec-kit">Spec Kit</a>. This page explains, for human
+contributors, how that process works and how to instruct an LLM to develop a new
+feature. It is a companion to the traditional <em>How to contribute</em> workflow above, not a
+replacement: code still lands via a pull request to <code class="docutils literal notranslate"><span class="pre">develop</span></code> with tests.</p>
+<section id="why-spec-driven">
+<h2>Why spec-driven<a class="headerlink" href="#why-spec-driven" title="Permalink to this heading">¶</a></h2>
+<p>An LLM can change a lot of code very quickly. In a widely-used scientific library
+that is a risk: a silent change to stoichiometry, a solver status, or a public
+function signature is a defect even if the code still runs. Spec-driven development
+puts a reviewable <strong>specification, plan, and task list</strong> in front of every
+non-trivial change, so the intent is agreed before any code is written and every edit
+is auditable back to a requirement.</p>
+<p>The source of truth is the repository, not the website. The rules the agents follow
+live in <code class="docutils literal notranslate"><span class="pre">.specify/memory/constitution.md</span></code> (the project <em>constitution</em>), and this
+documentation site is generated from <code class="docutils literal notranslate"><span class="pre">documentation/source/</span></code> — so what you read here
+is always a rendered view of what is in the repo.</p>
+</section>
+<section id="the-constitution">
+<h2>The constitution<a class="headerlink" href="#the-constitution" title="Permalink to this heading">¶</a></h2>
+<p>The constitution is the single, agent-neutral source of truth for how to work in the
+repository. It binds AI agents and human contributors to the same openCOBRA
+conventions (the <a class="reference internal" href="styleGuide.html#styleguide"><span class="std std-ref">Style guide</span></a>, the documentation guide, the <a class="reference internal" href="testGuide.html#testguide"><span class="std std-ref">Guide for writing a test</span></a>, and
+the model-field specification) and adds the discipline needed for LLM-assisted work:
+scientific and numerical correctness, backward compatibility of public interfaces and
+model fields, solver abstraction, testing via <code class="docutils literal notranslate"><span class="pre">prepareTest</span></code> and
+<code class="docutils literal notranslate"><span class="pre">test/verifiedTests</span></code>, polyglot (MATLAB + Python + Julia) fidelity, file placement,
+and single-sourced documentation.</p>
+<p>Read it before instructing an agent: <code class="docutils literal notranslate"><span class="pre">.specify/memory/constitution.md</span></code>.</p>
+</section>
+<section id="the-workflow">
+<h2>The workflow<a class="headerlink" href="#the-workflow" title="Permalink to this heading">¶</a></h2>
+<p>Any non-trivial change proceeds through an explicit sequence of phases. Each phase
+produces an artefact under <code class="docutils literal notranslate"><span class="pre">specs/&lt;NNN-feature-name&gt;/</span></code> that you can read and approve
+before the next phase begins:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>constitution   the rules (already ratified; amended only deliberately)
+specify        spec.md   — what and why, with measurable success criteria
+clarify        resolve ambiguities in the spec (if needed)
+plan           plan.md   — how, checked against the constitution
+tasks          tasks.md  — an ordered, independently testable task list
+analyze        cross-check spec/plan/tasks for consistency (if available)
+implement      edit code — only now, and only after the above are approved
+</pre></div>
+</div>
+<p>The human stays in the loop: you review and approve the spec, the plan, and the task
+list before implementation, and you review the resulting pull request as usual.</p>
+</section>
+<section id="the-implementation-gate">
+<h2>The implementation gate<a class="headerlink" href="#the-implementation-gate" title="Permalink to this heading">¶</a></h2>
+<p>The most important rule (constitution Principle VI) is that <strong>an ordinary request does
+not authorise code changes</strong>. Asking an agent to “fix this” or “add that” is treated
+as a request to <em>enter</em> the workflow — to draft or update a spec — not as permission to
+edit source, tests, or build files. Implementation happens only after <code class="docutils literal notranslate"><span class="pre">spec.md</span></code>,
+<code class="docutils literal notranslate"><span class="pre">plan.md</span></code>, and <code class="docutils literal notranslate"><span class="pre">tasks.md</span></code> exist and are approved, and you explicitly invoke the
+implementation phase.</p>
+<p>There is a single, deliberate escape hatch for a genuinely trivial fix, which you type
+verbatim:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>DIRECT IMPLEMENTATION OVERRIDE: bypass Spec Kit for this change.
+</pre></div>
+</div>
+<p>Without that exact phrase, the agent will stop and tell you which phase to run next.</p>
+</section>
+<section id="how-to-instruct-an-llm-to-develop-a-feature">
+<h2>How to instruct an LLM to develop a feature<a class="headerlink" href="#how-to-instruct-an-llm-to-develop-a-feature" title="Permalink to this heading">¶</a></h2>
+<ol class="arabic simple">
+<li><p>Describe the feature in plain language — the scientific goal, the functions or
+models involved, and how you would know it works (the success criteria matter most).</p></li>
+<li><p>Ask the agent to run the specification phase (<code class="docutils literal notranslate"><span class="pre">/speckit-specify</span></code> in Claude; the
+equivalent <code class="docutils literal notranslate"><span class="pre">speckit-specify</span></code> surface in Codex). Review the generated <code class="docutils literal notranslate"><span class="pre">spec.md</span></code>
+and answer any clarification questions.</p></li>
+<li><p>Ask for the plan (<code class="docutils literal notranslate"><span class="pre">/speckit-plan</span></code>) and then the tasks (<code class="docutils literal notranslate"><span class="pre">/speckit-tasks</span></code>). Read
+them. This is where you catch a wrong assumption cheaply, before any code exists.</p></li>
+<li><p>When you are satisfied, invoke implementation (<code class="docutils literal notranslate"><span class="pre">/speckit-implement</span></code>). The agent
+edits code, runs tests, and records an implementation receipt under
+<code class="docutils literal notranslate"><span class="pre">specs/&lt;feature&gt;/agent-runs/</span></code>.</p></li>
+<li><p>Review the pull request against <code class="docutils literal notranslate"><span class="pre">develop</span></code> as you would any contribution: tests,
+backward compatibility, solver independence, and numerical correctness.</p></li>
+</ol>
+<p>A good instinct is to spend your effort on the spec and the plan. A clear specification
+is a better lever on the outcome than detailed instructions during implementation.</p>
+</section>
+<section id="agent-agnostic">
+<h2>Agent-agnostic<a class="headerlink" href="#agent-agnostic" title="Permalink to this heading">¶</a></h2>
+<p>The workflow does not depend on any single AI product. The constitution and the
+<code class="docutils literal notranslate"><span class="pre">specs/</span></code> artefacts are agent-neutral; each agent has its own command surface
+(<code class="docutils literal notranslate"><span class="pre">.claude/</span></code> for Claude, <code class="docutils literal notranslate"><span class="pre">.agents/</span></code> for Codex and others) that maps to the same
+phases. A contributor may use whichever agent they prefer, and the resulting specs,
+plans, tasks, and receipts read the same way.</p>
+</section>
+<section id="where-the-artefacts-live">
+<h2>Where the artefacts live<a class="headerlink" href="#where-the-artefacts-live" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">.specify/memory/constitution.md</span></code> — the rules (source of truth).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.specify/</span></code> — Spec Kit templates, scripts, and the <code class="docutils literal notranslate"><span class="pre">git</span></code>, <code class="docutils literal notranslate"><span class="pre">agent-context</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">human-loop</span></code> extensions.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.claude/</span></code> and <code class="docutils literal notranslate"><span class="pre">.agents/</span></code> — the per-agent command and skill surfaces.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">specs/&lt;NNN-feature-name&gt;/</span></code> — the spec, plan, tasks, analysis, and implementation
+receipts for each feature.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CLAUDE.md</span></code> and <code class="docutils literal notranslate"><span class="pre">AGENTS.md</span></code> — thin pointers that direct an agent to the
+constitution.</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017-2026, The COBRA Toolbox developers.
+
+    </p>
+  </div>
+  Built with Sphinx using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'2.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+    <script type="text/javascript" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sphinx_highlight.js"></script>
+
+  
+
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TRCMZL1FKK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TRCMZL1FKK');
+  </script>
+    
+</body>
+</html>

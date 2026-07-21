@@ -65,8 +65,8 @@
         <link rel="search" title="Search" href="../../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../../index.html"/>
         <link rel="up" title="Io" href="../index.html"/>
-        <link rel="next" title="Old" href="../old/index.html"/>
-        <link rel="prev" title="Kegg" href="../KEGG/index.html"/> 
+        <link rel="next" title="Utilities" href="../utilities/index.html"/>
+        <link rel="prev" title="Io" href="../index.html"/> 
 
   
   <script src="../../../../_static/js/modernizr.min.js"></script>
@@ -159,23 +159,23 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Base</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="../../utilities/index.html">Utilities</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../paths/index.html">Paths</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../ci/index.html">Ci</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../codeConsistency/index.html">Codeconsistency</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../index.html">Io</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Json</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../utilities/index.html">Utilities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../definitions/index.html">Definitions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../old/index.html">Old</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../BiGG/index.html">Bigg</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../newt/index.html">Newt</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../utilities/index.html">Utilities</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../python/index.html">Python</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../KEGG/index.html">Kegg</a></li>
-<li class="toctree-l4 current"><a class="current reference internal" href="#">Json</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../old/index.html">Old</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../definitions/index.html">Definitions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../python/index.html">Python</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../install/index.html">Install</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../solvers/index.html">Solvers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ci/index.html">Ci</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../paths/index.html">Paths</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../cobrarrow/index.html">Cobrarrow</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../install/index.html">Install</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../dataIntegration/index.html">Dataintegration</a></li>
@@ -267,12 +267,43 @@ JSON files can be validated by isValidJSON function or online tools like
 <a class="reference external" href="https://jsonlint.com/">https://jsonlint.com/</a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>model2JSON</strong> (<em>model,fileName</em>)</p>
+<dd class="field-odd"><p><strong>model2JSON</strong> (<em>model, fileName</em>)</p>
 </dd>
-</dl>
-<dl class="simple">
-<dt>INPUT</dt><dd><p>model:     model structure
-fileName:  name of file including extension .json</p>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – model structure with fields:</p>
+<ul>
+<li><p>.mets - <cite>m x 1</cite> cell array of metabolite identifiers</p></li>
+<li><p>.metNames - <cite>m x 1</cite> cell array of metabolite names</p></li>
+<li><p>.rxns - <cite>n x 1</cite> cell array of reaction identifiers</p></li>
+<li><p>.rxnNames - <cite>n x 1</cite> cell array of reaction names</p></li>
+<li><p>.lb - <cite>n x 1</cite> vector of reaction lower bounds</p></li>
+<li><p>.ub - <cite>n x 1</cite> vector of reaction upper bounds</p></li>
+<li><p>.grRules - <cite>n x 1</cite> cell array of gene-reaction rules</p></li>
+<li><p>.subSystems - <cite>n x 1</cite> cell array of subsystem assignments for each reaction</p></li>
+<li><p>.genes - <cite>g x 1</cite> cell array of gene identifiers</p></li>
+<li><p>.modelID - (optional) short model identifier</p></li>
+<li><p>.modelAnnotation - (optional) cell array of model annotation entries; the second element is written as the model version</p></li>
+<li><p>.metCharges - (optional) <cite>m x 1</cite> vector of metabolite charges</p></li>
+<li><p>.metFormulas - (optional) <cite>m x 1</cite> cell array of elemental formulas</p></li>
+<li><p>.metBiGGID - (optional) <cite>m x 1</cite> cell array of BiGG metabolite identifiers</p></li>
+<li><p>.metBioCycID - (optional) <cite>m x 1</cite> cell array of BioCyc metabolite identifiers</p></li>
+<li><p>.metChEBIID - (optional) <cite>m x 1</cite> cell array of ChEBI identifiers</p></li>
+<li><p>.metHMDBID - (optional) <cite>m x 1</cite> cell array of HMDB identifiers</p></li>
+<li><p>.metInchiKey - (optional) <cite>m x 1</cite> cell array of InChI key strings</p></li>
+<li><p>.metKEGGID - (optional) <cite>m x 1</cite> cell array of KEGG metabolite identifiers</p></li>
+<li><p>.metMetaNetXID - (optional) <cite>m x 1</cite> cell array of MetaNetX metabolite identifiers</p></li>
+<li><p>.metReactomeID - (optional) <cite>m x 1</cite> cell array of Reactome metabolite identifiers</p></li>
+<li><p>.metSabiork - (optional) <cite>m x 1</cite> cell array of SABIO-RK metabolite identifiers</p></li>
+<li><p>.metSBOTerms - (optional) <cite>m x 1</cite> cell array of SBO terms for metabolites</p></li>
+<li><p>.metSEEDID - (optional) <cite>m x 1</cite> cell array of SEED metabolite identifiers</p></li>
+<li><p>.rxnMetaNetXID - (optional) <cite>n x 1</cite> cell array of MetaNetX reaction identifiers</p></li>
+<li><p>.rxnSBOTerms - (optional) <cite>n x 1</cite> cell array of SBO terms for reactions</p></li>
+<li><p>.geneSBOTerms - (optional) <cite>g x 1</cite> cell array of SBO terms for genes</p></li>
+</ul>
+</li>
+<li><p><strong>fileName</strong> – name of file including extension .json</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -289,10 +320,10 @@ fileName:  name of file including extension .json</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../old/index.html" class="btn btn-default float-right" title="Old" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../utilities/index.html" class="btn btn-default float-right" title="Utilities" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../KEGG/index.html" class="btn btn-default" title="Kegg" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../index.html" class="btn btn-default" title="Io" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

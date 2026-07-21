@@ -66,7 +66,7 @@
     <link rel="top" title="The COBRA Toolbox" href="../../../index.html"/>
         <link rel="up" title="Dataintegration" href="../index.html"/>
         <link rel="next" title="Metabolites" href="metabolites/index.html"/>
-        <link rel="prev" title="Dataintegration" href="../index.html"/> 
+        <link rel="prev" title="Thermoqp" href="../XomicsToModel/thermoKernel/thermoQP/index.html"/> 
 
   
   <script src="../../../_static/js/modernizr.min.js"></script>
@@ -159,20 +159,20 @@
 <li class="toctree-l2"><a class="reference internal" href="../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../base/index.html">Base</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html">Dataintegration</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../metabotools/index.html">Metabotools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../metanetxMapper/index.html">Metanetxmapper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../metaboAnnotator/index.html">Metaboannotator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../XomicsToModel/index.html">Xomicstomodel</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Chemoinformatics</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="metabolites/index.html">Metabolites</a></li>
-<li class="toctree-l4"><a class="reference internal" href="RXN/index.html">Rxn</a></li>
-<li class="toctree-l4"><a class="reference internal" href="inchi/index.html">Inchi</a></li>
-<li class="toctree-l4"><a class="reference internal" href="reactions/index.html">Reactions</a></li>
 <li class="toctree-l4"><a class="reference internal" href="molecularWeight/index.html">Molecularweight</a></li>
+<li class="toctree-l4"><a class="reference internal" href="RXN/index.html">Rxn</a></li>
+<li class="toctree-l4"><a class="reference internal" href="reactions/index.html">Reactions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="inchi/index.html">Inchi</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../fluxomics/index.html">Fluxomics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../metanetxMapper/index.html">Metanetxmapper</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../XomicsToModel/index.html">Xomicstomodel</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../metaboAnnotator/index.html">Metaboannotator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../transcriptomics/index.html">Transcriptomics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../metabotools/index.html">Metabotools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../fluxomics/index.html">Fluxomics</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../design/index.html">Design</a></li>
@@ -236,16 +236,16 @@
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="metabolites/index.html">Metabolites</a></li>
-<li class="toctree-l1"><a class="reference internal" href="RXN/index.html">Rxn</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="RXN/old/index.html">Old</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="inchi/index.html">Inchi</a></li>
-<li class="toctree-l1"><a class="reference internal" href="reactions/index.html">Reactions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="molecularWeight/index.html">Molecularweight</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="molecularWeight/basicPhysicochemicalData/index.html">Basicphysicochemicaldata</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="RXN/index.html">Rxn</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="RXN/old/index.html">Old</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="reactions/index.html">Reactions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="inchi/index.html">Inchi</a></li>
 </ul>
 </div>
 <span class="target" id="module-src.dataIntegration.chemoInformatics"></span><dl class="mat function">
@@ -278,14 +278,17 @@ A := incidence(dATM);</p>
 </dl>
 <p>so we have the atomic decomposition M2Ai*M2Ai’<a href="#id2"><span class="problematic" id="id3">*</span></a>N = M2Ai*A*Ti2R</p>
 <dl class="field-list simple">
-<dt class="field-odd">INPUTS<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>model</strong> – COBRA model with following fields:
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[modelOut, arm, report] = atomicallyResolveModel</strong> (<em>model, param</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>model</strong> – COBRA model with following fields:
 * .S - The m x n stoichiometric matrix for the metabolic network.
 * .rxns - An n x 1 array of reaction identifiers.
 * .mets - An m x 1 array of metabolite identifiers.</p>
 </dd>
-<dt class="field-even">OPTIONAL INPUTS<span class="colon">:</span></dt>
-<dd class="field-even"><ul class="simple">
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
 <li><p><strong>model</strong> – COBRA model with following fields:
 * .metFormulas - An m x 1 array of metabolite chemical formulas.
 * .metinchi - An m x 1 array of metabolite identifiers.
@@ -298,6 +301,9 @@ A := incidence(dATM);</p>
 <ul>
 <li><p>.printlevel: Verbose level</p></li>
 <li><p>.debug: Logical value used to determine whether or not the results  of different points in the function will be saved for debugging (default: empty).</p></li>
+<li><p>.ctfDir - path to the local ctf repository with reference MOL files and atom mapped reactions (default: ‘~/work/sbgCloud/code/fork-ctf’)</p></li>
+<li><p>.ctfRxnAtomMappedDir - directory of reference atom mapped RXN files, derived from .ctfDir</p></li>
+<li><p>.ctfMetMolFileDir - directory of reference metabolite MOL files, derived from .ctfDir</p></li>
 <li><dl class="simple">
 <dt>.resultsDir: directory where the results should be saved (default: current directory)</dt><dd><p>resultsDir/atomMapping containing the RXN files with atom mappings</p>
 </dd>
@@ -311,7 +317,7 @@ A := incidence(dATM);</p>
 <dl>
 <dt>molecular structure file options</dt><dd><ul>
 <li><p>.metaboliteIDcrossMapping: True to cross map metabolite IDs using <a class="reference external" href="https://github.com/opencobra/ctf/metaboliteIDcrossMapping.txt">https://github.com/opencobra/ctf/metaboliteIDcrossMapping.txt</a></p></li>
-<li><p>.replace:     True if the new ID should replace an existing ID (default: FALSE).</p></li>
+<li><p>.replaceMetID - True if a new metabolite ID should replace an existing ID (default: FALSE).</p></li>
 <li><dl>
 <dt>.standardisationApproach: String containing the type of standardisation of molecule MOL files</dt><dd><blockquote>
 <div><p>(default: ‘explicitH’ if openBabel is  installed, otherwise default: ‘basic’):</p>
@@ -336,22 +342,24 @@ A := incidence(dATM);</p>
 </ul>
 </dd>
 <dt>atom transition multigraph options</dt><dd><ul class="simple">
+<li><p>.buildAtomTransitionMultigraph - true to build the corresponding atom transition multigraph (default: true)</p></li>
 <li><p>.directed - transition split into two oppositely directed edges for reversible reactions, default: false</p></li>
 <li><p>.param.sanityChecks - perform checks on creation of atom transition multigraph, default: true.</p></li>
 </ul>
 </dd>
 </dl>
-<p>OUTPUTS:
-modelOut: A new model with the additional fields</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>.comparison:</p></li>
-<li><p>.standardisation:</p></li>
-<li><p>.bondsBF: Number of bonds broken and formed in each reaction, if param.bonds = true.</p></li>
-<li><p>.bondsE:  Estimated bond enthalpies for each metabolic reaction, if param.bonds = true.</p></li>
+<dl class="field-list simple">
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>modelOut</strong> – A new model with the additional fields
+* .comparison:
+* .standardisation:
+* .bondsBF: Number of bonds broken and formed in each reaction, if param.bonds = true.
+* .bondsE:  Estimated bond enthalpies for each metabolic reaction, if param.bonds = true.</p></li>
+<li><p><strong>arm</strong> – An atomically resolved model as a matlab structure with the following fields:</p></li>
 </ul>
-</div></blockquote>
-<p>arm:      An atomically resolved model as a matlab structure with the following fields:</p>
+</dd>
+</dl>
 <p>arm.MRH:        Standard COBRA model (Directed Metabolic Hypergraph), with additional fields:
 arm.MRH.metAtomMappedBool:  <cite>m x 1</cite> boolean vector indicating atom mapped metabolites
 arm.MRH.rxnAtomMappedBool:  <cite>n x 1</cite> boolean vector indicating atom mapped reactions
@@ -383,13 +391,27 @@ arm.Ti2R:              <cite>t</cite> x <cite>n</cite> matrix mapping one or mor
 <p>The internal stoichiometric matrix may be decomposition into</p>
 <p>N = (M2Ai*M2Ai)^(-1)*M2Ai*Ti*Ti2R;</p>
 <p>where Ti = incidence(dATM), is incidence matrix of directed atom transition multigraph.</p>
-<p>report:     A report of the database generation process</p>
+<blockquote>
+<div><p>report:     A report of the database generation process</p>
+</div></blockquote>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.chemoInformatics.checkChemoinformaticDependencies">
 <span class="sig-name descname"><span class="pre">checkChemoinformaticDependencies</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/chemoInformatics/checkChemoinformaticDependencies.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.chemoInformatics.checkChemoinformaticDependencies" title="Permalink to this definition">¶</a></dt>
-<dd><p>check chemoinformatic dependencies</p>
+<dd><p>Check the external chemoinformatic dependencies (ChemAxon cxcalc, openBabel and Java)</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[cxcalcInstalled, oBabelInstalled, javaInstalled] = checkChemoinformaticDependencies()</strong></p>
+</dd>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>cxcalcInstalled</strong> – true if the ChemAxon <cite>cxcalc</cite> command is available on the system path</p></li>
+<li><p><strong>oBabelInstalled</strong> – true if the openBabel <cite>obabel</cite> command is available on the system path</p></li>
+<li><p><strong>javaInstalled</strong> – true if Java is available on the system path</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="mat function">
@@ -398,18 +420,18 @@ arm.Ti2R:              <cite>t</cite> x <cite>n</cite> matrix mapping one or mor
 <dd><p>Function to delete the protons in the metabolic network</p>
 <dl class="field-list simple">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>newModel = deleteProtons</strong> (<em>model</em>)</p>
+<dd class="field-odd"><p><strong>modelNew = deleteProtons</strong> (<em>model</em>)</p>
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>model</strong> – COBRA model.</p>
 </dd>
 <dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>newModel</strong> – COBRA model without protons nor protons trasport
+<dd class="field-odd"><p><strong>modelNew</strong> – COBRA model without protons nor protons trasport
 reactions.</p>
 </dd>
 </dl>
 <p class="rubric">Example</p>
-<p>newModel = deleteProtons(model)</p>
+<p>modelNew = deleteProtons(model)</p>
 </dd></dl>
 
 <dl class="mat function">
@@ -418,21 +440,24 @@ reactions.</p>
 <dd><p>Removes non-chemical characters from the chemical formula and replaces
 them with a R group. Produces a chemical formula from a string of atoms.
 Removes or add atoms in the formula.</p>
-<dl class="field-list">
+<dl class="field-list simple">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>[metFormula] = cobraFormulaToChemFormula</strong> (<em>metReconFormula</em>)</p>
+<dd class="field-odd"><p><strong>newFormula = editChemicalFormula</strong> (<em>metFormula, addOrRemove</em>)</p>
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>metReconFormula</strong> – An n x 1 array of metabolite Recon formulas</p>
+<dd class="field-even"><p><strong>metFormula</strong> – A char array with the chemical formula of a metabolite</p>
 </dd>
 <dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>addOrRemove</strong> – A struct array containing:
-<a href="#id4"><span class="problematic" id="id5">*</span></a>.elements - element to edit
-<a href="#id6"><span class="problematic" id="id7">*</span></a>.times - vector indicated the times the</p>
-<blockquote>
-<div><p>element will be deleted (negative) or
+<dd class="field-odd"><p><strong>addOrRemove</strong> – A struct array containing:</p>
+<ul class="simple">
+<li><p>.elements - element to edit</p></li>
+<li><dl class="simple">
+<dt>.times - vector indicated the times the</dt><dd><p>element will be deleted (negative) or
 added (positive)</p>
-</div></blockquote>
+</dd>
+</dl>
+</li>
+</ul>
 </dd>
 <dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>newFormula</strong> – A chemical formula for a metabolite</p>
@@ -461,8 +486,10 @@ with an MDL RXN file.</p>
 <ul class="simple">
 <li><p>.S - The m x n stoichiometric matrix for the metabolic network.</p></li>
 <li><p>.rxns - An n x 1 array of reaction identifiers.</p></li>
+<li><p>.rxnNames - An n x 1 array of reaction names.</p></li>
+<li><p>.SIntRxnBool - An n x 1 boolean vector, true for internal (non-exchange) reactions.</p></li>
 <li><p>.mets - An m x 1 array of metabolite identifiers.</p></li>
-<li><p>.metFormulas - An m x 1 array of metabolite chemical formulas.</p></li>
+<li><p>.metFormulas - An m x 1 array of metabolite chemical formulas; a printLevel message reports these as model.met Formulas.</p></li>
 <li><p>.metinchi - An m x 1 array of metabolite identifiers.</p></li>
 <li><p>.metsmiles - An m x 1 array of metabolite identifiers.</p></li>
 <li><p>.metKEGG - An m x 1 array of metabolite identifiers.</p></li>
@@ -497,6 +524,7 @@ installed, otherwise default: ‘basic’):</p>
 </li>
 <li><p>.atomMapping: Logic value to decide on atom mapping. If false, it will generate only unmapped MDL RXN files (default: TRUE).</p></li>
 <li><p>.bonds: Logic value to decide on computing bond enthalpy and bonds broken and formed (default: TRUE) (only if atomMapping = 1);</p></li>
+<li><p>.replaceExistingAtomMappings: Logic value to recompute existing atom mapping data (default: FALSE).</p></li>
 <li><dl class="simple">
 <dt>.adjustToModelpH: Logic value used to determine whether a molecule’s</dt><dd><p>pH must be adjusted in accordance with the COBRA model.
 TRUE, requires MarvinSuite).</p>
@@ -519,23 +547,19 @@ debugging (default: empty).</p>
 </li>
 </ul>
 </dd>
-</dl>
-<p>OUTPUTS:
-modelOut: A new model with the following additional fields</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>.metAtomMappedBool:  <cite>m x 1</cite> boolean vector indicating atom mapped metabolites</p></li>
-<li><p>.rxnAtomMappedBool:  <cite>n x 1</cite> boolean vector indicating atom mapped reactions</p></li>
-<li><p>.comparison:</p></li>
-<li><p>.standardisation:</p></li>
-<li><p>.bondsBF: Number of bonds broken and formed in each reaction, if options.bonds = true.</p></li>
-<li><p>.bondsE:  Estimated bond enthalpies for each metabolic reaction, if options.bonds = true.</p></li>
-</ul>
-</div></blockquote>
-<p>report:     Struct array containing a diary of the database generation process</p>
-<blockquote>
-<div><dl>
-<dt><a href="#id8"><span class="problematic" id="id9">*</span></a>.molCollectionReport: Struct array containing information on the</dt><dd><dl>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul>
+<li><p><strong>modelOut</strong> – A new model with the following additional fields
+* .metAtomMappedBool:  <cite>m x 1</cite> boolean vector indicating atom mapped metabolites
+* .rxnAtomMappedBool:  <cite>n x 1</cite> boolean vector indicating atom mapped reactions
+* .comparison:
+* .standardisation:
+* .bondsBF: Number of bonds broken and formed in each reaction, if options.bonds = true.
+* .bondsE:  Estimated bond enthalpies for each metabolic reaction, if options.bonds = true.</p></li>
+<li><p><strong>report</strong> – Struct array containing a diary of the database generation process</p>
+<ul>
+<li><dl>
+<dt>.molCollectionReport: Struct array containing information on the</dt><dd><dl>
 <dt>metabolite structures each of the model’s sources.</dt><dd><blockquote>
 <div><p>-.metList: List of the metabolites in the model.
 -.sources: Sources from which the metabolic structures</p>
@@ -553,7 +577,9 @@ modelOut: A new model with the following additional fields</p>
 <div><p>obtained.</p>
 </div></blockquote>
 </div></blockquote>
-<p><a href="#id10"><span class="problematic" id="id11">*</span></a>.sourcesComparison: Struct array containing information on the</p>
+<ul class="simple">
+<li><p>.sourcesComparison: Struct array containing information on the</p></li>
+</ul>
 </dd>
 <dt>metabolite structures comparison.</dt><dd><p>-.mets: List of the metabolites in the model with structure.
 -.sources: Sources from which the metabolic structures</p>
@@ -577,12 +603,21 @@ with the highest score.</p>
 </dd>
 </dl>
 </dd>
-<dt><a href="#id12"><span class="problematic" id="id13">*</span></a>.adjustedpHTable: table indicating whether or not the highest</dt><dd><p>scoring metabolite required pH adjustment and identifying
+</dl>
+</li>
+<li><dl class="simple">
+<dt>.adjustedpHTable: table indicating whether or not the highest</dt><dd><p>scoring metabolite required pH adjustment and identifying
 metabolites for which the pH could not be adjusted.</p>
 </dd>
-<dt><a href="#id14"><span class="problematic" id="id15">*</span></a>.standardisationReport: Table with InChIKeys, InChIs and</dt><dd><p>SMILES for the highest scoring metabolites.</p>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>.standardisationReport: Table with InChIKeys, InChIs and</dt><dd><p>SMILES for the highest scoring metabolites.</p>
 </dd>
-<dt><a href="#id16"><span class="problematic" id="id17">*</span></a>.reactionsReport: Struct array containing information about the</dt><dd><blockquote>
+</dl>
+</li>
+<li><dl>
+<dt>.reactionsReport: Struct array containing information about the</dt><dd><blockquote>
 <div><p>atom-mapped reactions.</p>
 </div></blockquote>
 <dl class="simple">
@@ -614,10 +649,18 @@ since another structure was missing.</p>
 </dd>
 </dl>
 </dd>
-<dt><a href="#id18"><span class="problematic" id="id19">*</span></a>.bondsData: A table containing the bonds broken and formed, the</dt><dd><p>enthalpy change, and the substrate mass per atom-mapped reaction.</p>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>.bondsData: A table containing the bonds broken and formed, the</dt><dd><p>enthalpy change, and the substrate mass per atom-mapped reaction.</p>
 </dd>
 </dl>
-</div></blockquote>
+</li>
+</ul>
+</li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="mat function">
@@ -641,6 +684,9 @@ mol, inchi, inchikey, rxn and rinchi.</p></li>
 <dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>saveFileDir</strong> – String with the directory where the new format will be
 saved. If is empty, the format is not saved.</p>
+</dd>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>newFormat</strong> – The molecule or reaction converted to the requested output format</p>
 </dd>
 </dl>
 <p class="rubric">Example</p>
@@ -673,7 +719,7 @@ newFormat = openBabelConverter(origFormat, outputFormat);</p>
         <a href="metabolites/index.html" class="btn btn-default float-right" title="Metabolites" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../index.html" class="btn btn-default" title="Dataintegration" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../XomicsToModel/thermoKernel/thermoQP/index.html" class="btn btn-default" title="Thermoqp" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

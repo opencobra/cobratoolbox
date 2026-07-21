@@ -65,7 +65,7 @@
         <link rel="search" title="Search" href="../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../index.html"/>
         <link rel="up" title="Reconstruction" href="../index.html"/>
-        <link rel="next" title="Modelgeneration" href="../modelGeneration/index.html"/>
+        <link rel="next" title="Comparison" href="../comparison/index.html"/>
         <link rel="prev" title="Auxillaryfiles" href="../fastGapFill/AuxillaryFiles/index.html"/> 
 
   
@@ -161,14 +161,14 @@
 <li class="toctree-l2"><a class="reference internal" href="../../dataIntegration/index.html">Dataintegration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../design/index.html">Design</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html">Reconstruction</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../comparison/index.html">Comparison</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../refinement/index.html">Refinement</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../rBioNet/index.html">Rbionet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../modelGeneration/index.html">Modelgeneration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../metaboRePort/index.html">Metaboreport</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../fastGapFill/index.html">Fastgapfill</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Growthexpmatch</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../modelGeneration/index.html">Modelgeneration</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../rBioNet/index.html">Rbionet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../comparison/index.html">Comparison</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../demeter/index.html">Demeter</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../refinement/index.html">Refinement</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../metaboRePort/index.html">Metaboreport</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../visualization/index.html">Visualization</a></li>
@@ -258,6 +258,8 @@ flux of that particular reaction) (Default = GEMLog.txt)</p></li>
 <li><p><strong>threshold</strong> – threshold number for biomass reaction; model is considered
 to be growing when the flux of the biomass reaction is
 above threshold. (Default = 0.05)</p></li>
+<li><p><strong>KEGGBlackList</strong> – List of excluded reactions from the Kegg universal
+database (Default = {}, i.e. no reactions excluded)</p></li>
 </ul>
 </dd>
 <dt class="field-even">OUTPUT<span class="colon">:</span></dt>
@@ -287,16 +289,24 @@ generateSUXMatrix(model, dictionary, KEGGFilename, compartment)</cite></p></li>
 <dt class="sig sig-object mat" id="src.reconstruction.growthExpMatch.printSolutionGEM">
 <span class="sig-name descname"><span class="pre">printSolutionGEM</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">MatricesSUX</span></em>, <em class="sig-param"><span class="pre">solution</span></em>, <em class="sig-param"><span class="pre">logFile</span></em>, <em class="sig-param"><span class="pre">itNum</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/growthExpMatch/printSolutionGEM.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.growthExpMatch.printSolutionGEM" title="Permalink to this definition">¶</a></dt>
 <dd><p>Displays the solution for <cite>growthExpMatch</cite> iterations</p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>printSolutionGEM</strong> (<em>MatricesSUX, solution, logFile, itNum</em>)</p>
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
-<dd class="field-even"><ul class="simple">
+<dd class="field-even"><ul>
 <li><p><strong>MatricesSUX</strong> – SUX Matrix</p></li>
-<li><p><strong>solution</strong> – MILP solution that consists of the continuous solution, integer
-solution, objective value, stat, full solution, and
-imported reactions</p></li>
+<li><p><strong>solution</strong> – MILP solution structure that consists of the continuous
+solution, integer solution, objective value, stat, full
+solution, and imported reactions, with fields:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>.cont - Continuous solution vector (one entry per
+reaction in <cite>MatricesSUX</cite>)</p></li>
+<li><p>.obj - Objective value of the MILP solution</p></li>
+</ul>
+</div></blockquote>
+</li>
 <li><p><strong>logFile</strong> – solution is printed in this file (name of reaction added and
 flux of that particular reaction) (Default = GEMLog.txt)</p></li>
 <li><p><strong>itNum</strong> – number of iterations</p></li>
@@ -317,7 +327,7 @@ flux of that particular reaction) (Default = GEMLog.txt)</p></li>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../modelGeneration/index.html" class="btn btn-default float-right" title="Modelgeneration" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../comparison/index.html" class="btn btn-default float-right" title="Comparison" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="../fastGapFill/AuxillaryFiles/index.html" class="btn btn-default" title="Auxillaryfiles" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

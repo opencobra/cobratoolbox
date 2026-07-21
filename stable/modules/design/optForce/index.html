@@ -255,7 +255,7 @@ the following fields:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p>.rxnList - Reaction list (cell array)</p></li>
-<li><p>.values - Values for constrained reactions (double array)</p></li>
+<li><p>.rxnValues - Values for constrained reactions (double array)</p></li>
 <li><p>.rxnBoundType - Type of bound (char array)
 (‘b’: both bounds; ‘l’: lower bound; ‘u’: upper bound)
 E.g.: <cite>constrW = struct(‘rxnList’, {{‘R75’; ‘EX_suc’}}, ‘rxnValues’, [0; 155.55], ‘rxnBoundType’, [‘b’; ‘b’]);</cite></p></li>
@@ -268,7 +268,7 @@ fields:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p>.rxnList - Reaction list (cell array)</p></li>
-<li><p>.values - Values for constrained reactions
+<li><p>.rxnValues - Values for constrained reactions
 (double array)</p></li>
 <li><p>.rxnBoundType - Type of bound (char array)
 (‘b’: both bounds; ‘l’: lower bound; ‘u’: upper bound)
@@ -319,7 +319,7 @@ reaction in the mutant must be specified in the structure solution (third
 input).</p>
 <dl class="field-list">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>[maxGrowthRate, minTarget, maxTarget] = analyzeOptForceSol</strong> (<em>model, targetRxn, solution, relax, tol</em>)</p>
+<dd class="field-odd"><p><strong>[maxGrowthRate, minTarget, maxTarget] = analyzeOptForceSol</strong> (<em>model, targetRxn, biomassRxn, solution, relax, tol</em>)</p>
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul>
@@ -339,6 +339,9 @@ the following fields:</p>
 </li>
 <li><p><strong>targetRxn</strong> – (string) Reaction identifier for target reaction
 E.g.: <cite>targetRxn = ‘EX_suc’</cite></p></li>
+<li><p><strong>biomassRxn</strong> – (string) Reaction identifier for the biomass
+reaction; used to set the growth objective of
+the mutant strain when maximising the growth rate</p></li>
 <li><p><strong>solution</strong> – (structure) Structure containing information about the inverventions.
 E.g.: <cite>solution = struct(‘reactions’, …
 {{‘R21’; ‘R24’}}, ‘flux’, [10; 0])</cite>
@@ -572,10 +575,10 @@ reaction in the model for wild-type strain.
 This can be obtained by</p></li>
 </ul>
 </dd>
-</dl>
-<dl>
-<dt>OPTIONAL INPUTS</dt><dd><dl>
-<dt>constrOpt:                  (structure) structure containing</dt><dd><p>additional contraints. Include here only
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul>
+<li><p><strong>constrOpt</strong> – (structure) structure containing
+additional contraints. Include here only
 reactions whose flux is fixed, i.e.,
 reactions whose lower and upper bounds have
 the same value. Do not include here
@@ -592,84 +595,85 @@ reactions (double array)
 E.g.: <cite>struct(‘rxnList’, {{‘EX_gluc’, ‘R75’, ‘EX_suc’}}, ‘values’, [-100, 0, 155.5]’);</cite></p></li>
 </ul>
 </div></blockquote>
-</dd>
-<dt>excludedRxns:               (cell array) Reactions to be excluded to</dt><dd><p>the <cite>MustLL</cite> set. This could be used to avoid
+</li>
+<li><p><strong>excludedRxns</strong> – (cell array) Reactions to be excluded to
+the <cite>MustLL</cite> set. This could be used to avoid
 finding transporters or exchange reactions
 in the set.
-Default: empty.</p>
+Default: empty.</p></li>
+<li><p><strong>runID</strong> – (string) ID for identifying this run.
+Default: [‘run’ date hour].</p></li>
+<li><p><strong>outputFolder</strong> – (string) name for folder in which results
+will be stored.
+Default: ‘OutputsFindMustLL’.</p></li>
+<li><p><strong>outputFileName</strong> – (string) name for files in which results
+will be stored.
+Default: ‘MustLLSet’.</p></li>
+<li><p><strong>printExcel</strong> – (double) boolean to describe wheter data
+must be printed in an excel file or not.
+Default: 1</p></li>
+<li><p><strong>printText</strong> – (double) boolean to describe wheter data
+must be printed in an plaint text file or not.
+Default: 1</p></li>
+<li><p><strong>printReport</strong> – (double) 1 to generate a report in a plain
+text file. 0 otherwise.
+Default: 1</p></li>
+<li><p><strong>keepInputs</strong> – (double) 1 to save inputs to run
+<cite>findMustLL.m</cite>, 0 otherwise.
+Default: 1</p></li>
+<li><p><strong>printLevel</strong> – (double) 1 to print results in console.
+0 otherwise.
+Default: 0</p></li>
+</ul>
 </dd>
-<dt>runID:                      (string) ID for identifying this run.</dt><dd><p>Default: [‘run’ date hour].</p>
-</dd>
-<dt>outputFolder:               (string) name for folder in which results</dt><dd><p>will be stored.
-Default: ‘OutputsFindMustLL’.</p>
-</dd>
-<dt>outputFileName:             (string) name for files in which results</dt><dd><p>will be stored.
-Default: ‘MustLLSet’.</p>
-</dd>
-<dt>printExcel:                 (double) boolean to describe wheter data</dt><dd><p>must be printed in an excel file or not.
-Default: 1</p>
-</dd>
-<dt>printText:                  (double) boolean to describe wheter data</dt><dd><p>must be printed in an plaint text file or not.
-Default: 1</p>
-</dd>
-<dt>printReport:                (double) 1 to generate a report in a plain</dt><dd><p>text file. 0 otherwise.
-Default: 1</p>
-</dd>
-<dt>keepInputs:                 (double) 1 to save inputs to run</dt><dd><p><cite>findMustLL.m</cite>, 0 otherwise.
-Default: 1</p>
-</dd>
-<dt>printLevel:                 (double) 1 to print results in console.</dt><dd><p>0 otherwise.
-Default: 0</p>
-</dd>
-</dl>
-</dd>
-<dt>OUTPUTS</dt><dd><dl class="simple">
-<dt>mustLL:                     (cell array) Size: number of sets found X 2</dt><dd><p>cell array containing the
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>mustLL</strong> – (cell array) Size: number of sets found X 2
+cell array containing the
 reactions IDs which belong to the <cite>MustLL</cite>
 set. Each row contain a couple of
-reactions.</p>
-</dd>
-<dt>posMustLL:                  (double array) Size: number of sets found X 2</dt><dd><p>double array containing the
+reactions.</p></li>
+<li><p><strong>posMustLL</strong> – (double array) Size: number of sets found X 2
+double array containing the
 positions of each reaction in <cite>mustLL</cite> with
-regard to <cite>model.rxns</cite></p>
-</dd>
-<dt>mustLL_linear:              (cell array) Size: number of unique reactions found X 1</dt><dd><p>cell array containing the
+regard to <cite>model.rxns</cite></p></li>
+<li><p><strong>mustLL_linear</strong> – (cell array) Size: number of unique reactions found X 1
+cell array containing the
 unique reactions ID which belong to the
-<cite>MustLL</cite> Set</p>
-</dd>
-<dt>pos_mustLL_linear:          (double array) Size: number of unique reactions found X 1</dt><dd><p>double array containing
+<cite>MustLL</cite> Set</p></li>
+<li><p><strong>pos_mustLL_linear</strong> – (double array) Size: number of unique reactions found X 1
+double array containing
 positions for reactions in <cite>mustLL_linear</cite>.
-with regard to <cite>model.rxns</cite></p>
-</dd>
-<dt>outputFileName.xls:         File containing one column array</dt><dd><p>with identifiers for reactions in <cite>MustLL</cite>. This
+with regard to <cite>model.rxns</cite></p></li>
+<li><p><strong>outputFileName.xls</strong> – File containing one column array
+with identifiers for reactions in <cite>MustLL</cite>. This
 file will only be generated if the user entered
 <cite>printExcel = 1</cite>. Note that the user can choose
 the name of this file entering the input
-<cite>outputFileName = ‘PutYourOwnFileNameHere’;</cite></p>
-</dd>
-<dt>outputFileName.txt:         File containing one column array</dt><dd><p>with identifiers for reactions in <cite>MustLL</cite>. This
+<cite>outputFileName = ‘PutYourOwnFileNameHere’;</cite></p></li>
+<li><p><strong>outputFileName.txt</strong> – File containing one column array
+with identifiers for reactions in <cite>MustLL</cite>. This
 file will only be generated if the user entered
 <cite>printText = 1</cite>. Note that the user can choose
 the name of this file entering the input
-<cite>outputFileName = ‘PutYourOwnFileNameHere’;</cite></p>
-</dd>
-<dt>outputFileName_Info.xls:    File containing one column array.</dt><dd><p>In each row the user will find a couple of
+<cite>outputFileName = ‘PutYourOwnFileNameHere’;</cite></p></li>
+<li><p><strong>outputFileName_Info.xls</strong> – File containing one column array.
+In each row the user will find a couple of
 reactions. Each couple of reaction was found in
 one iteration of <cite>FindMustLL.gms</cite>. This file will
 only be generated if the user entered
 <cite>printExcel = 1</cite>. Note that the user can choose
 the name of this file entering the input
-<cite>outputFileName = ‘PutYourOwnFileNameHere’;</cite></p>
-</dd>
-<dt>outputFileName_Info.txt:    File containing one column array.</dt><dd><p>In each row the user will find a couple of
+<cite>outputFileName = ‘PutYourOwnFileNameHere’;</cite></p></li>
+<li><p><strong>outputFileName_Info.txt</strong> – File containing one column array.
+In each row the user will find a couple of
 reactions. Each couple of reaction was found in
 one iteration of <cite>FindMustLL.gms</cite>. This file will
 only be generated if the user entered
 <cite>printText = 1</cite>. Note that the user can choose
 the name of this file entering the input
-<cite>outputFileName = ‘PutYourOwnFileNameHere’;</cite></p>
-</dd>
-</dl>
+<cite>outputFileName = ‘PutYourOwnFileNameHere’;</cite></p></li>
+</ul>
 </dd>
 </dl>
 <div class="admonition note">
@@ -872,10 +876,10 @@ reaction in the model for wild-type strain.
 This can be obtained by</p></li>
 </ul>
 </dd>
-</dl>
-<dl>
-<dt>OPTIONAL INPUTS</dt><dd><dl>
-<dt>constrOpt:                  (structure) structure containing</dt><dd><p>additional contraints. Include here only
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul>
+<li><p><strong>constrOpt</strong> – (structure) structure containing
+additional contraints. Include here only
 reactions whose flux is fixed, i.e.,
 reactions whose lower and upper bounds have
 the same value. Do not include here
@@ -892,83 +896,84 @@ reactions (double array)
 E.g.: <cite>struct(‘rxnList’, {{‘EX_gluc’, ‘R75’, ‘EX_suc’}}, ‘values’, [-100, 0, 155.5]’);</cite></p></li>
 </ul>
 </div></blockquote>
-</dd>
-<dt>excludedRxns:               (cell array) Reactions to be excluded to</dt><dd><p>the <cite>MustUL</cite> set. This could be used to avoid
+</li>
+<li><p><strong>excludedRxns</strong> – (cell array) Reactions to be excluded to
+the <cite>MustUL</cite> set. This could be used to avoid
 finding transporters or exchange reactions
 in the set.
-Default: empty.</p>
+Default: empty.</p></li>
+<li><p><strong>runID</strong> – (string) ID for identifying this run.
+Default: [‘run’ date hour].</p></li>
+<li><p><strong>outputFolder</strong> – (string) name for folder in which results
+will be stored.
+Default: ‘OutputsFindMustUL’.</p></li>
+<li><p><strong>outputFileName</strong> – (string) name for files in which results
+will be stored.
+Default: ‘MustULSet’.</p></li>
+<li><p><strong>printExcel</strong> – (double) boolean to describe wheter data
+must be printed in an excel file or not.
+Default: 1</p></li>
+<li><p><strong>printText</strong> – (double) boolean to describe wheter data
+must be printed in an plaint text file or not.
+Default: 1</p></li>
+<li><p><strong>printReport</strong> – (double) 1 to generate a report in a plain
+text file. 0 otherwise.
+Default: 1</p></li>
+<li><p><strong>keepInputs</strong> – (double) 1 to save inputs to run
+<cite>findMustUL.m</cite>, 0 otherwise.
+Default: 1</p></li>
+<li><p><strong>printLevel</strong> – (double) 1 to print results in console.
+0 otherwise.
+Default: 0</p></li>
+</ul>
 </dd>
-<dt>runID:                      (string) ID for identifying this run.</dt><dd><p>Default: [‘run’ date hour].</p>
-</dd>
-<dt>outputFolder:               (string) name for folder in which results</dt><dd><p>will be stored.
-Default: ‘OutputsFindMustUL’.</p>
-</dd>
-<dt>outputFileName:             (string) name for files in which results</dt><dd><p>will be stored.
-Default: ‘MustULSet’.</p>
-</dd>
-<dt>printExcel:                 (double) boolean to describe wheter data</dt><dd><p>must be printed in an excel file or not.
-Default: 1</p>
-</dd>
-<dt>printText:                  (double) boolean to describe wheter data</dt><dd><p>must be printed in an plaint text file or not.
-Default: 1</p>
-</dd>
-<dt>printReport:                (double) 1 to generate a report in a plain</dt><dd><p>text file. 0 otherwise.
-Default: 1</p>
-</dd>
-<dt>keepInputs:                 (double) 1 to save inputs to run</dt><dd><p><cite>findMustUL.m</cite>, 0 otherwise.
-Default: 1</p>
-</dd>
-<dt>printLevel:                 (double) 1 to print results in console.</dt><dd><p>0 otherwise.
-Default: 0</p>
-</dd>
-</dl>
-</dd>
-<dt>OUTPUTS</dt><dd><dl class="simple">
-<dt>mustUL:                     (cell array) Size: number of sets found X 2</dt><dd><p>cell array containing the
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>mustUL</strong> – (cell array) Size: number of sets found X 2
+cell array containing the
 reactions IDs which belong to the <cite>MustUL</cite>
 set. Each row contain a couple of
-reactions.</p>
-</dd>
-<dt>posMustUL:                  (double array) Size: number of sets found X 2</dt><dd><p>double array containing the
+reactions.</p></li>
+<li><p><strong>posMustUL</strong> – (double array) Size: number of sets found X 2
+double array containing the
 positions of each reaction in mustUL with
-regard to <cite>model.rxns</cite></p>
-</dd>
-<dt>mustUL_linear:              (cell array) Size: number of unique reactions found X 1</dt><dd><p>cell array containing the
-unique reactions ID which belong to the <cite>MustUL</cite> Set</p>
-</dd>
-<dt>pos_mustUL_linear:          (double array) Size: number of unique reactions found X 1</dt><dd><p>double array containing
+regard to <cite>model.rxns</cite></p></li>
+<li><p><strong>mustUL_linear</strong> – (cell array) Size: number of unique reactions found X 1
+cell array containing the
+unique reactions ID which belong to the <cite>MustUL</cite> Set</p></li>
+<li><p><strong>pos_mustUL_linear</strong> – (double array) Size: number of unique reactions found X 1
+double array containing
 positions for reactions in <cite>mustUL_linear</cite>.
-with regard to <cite>model.rxns</cite></p>
-</dd>
-<dt>outputFileName.xls:         File containing one column array</dt><dd><p>with identifiers for reactions in <cite>MustUL</cite>. This
+with regard to <cite>model.rxns</cite></p></li>
+<li><p><strong>outputFileName.xls</strong> – File containing one column array
+with identifiers for reactions in <cite>MustUL</cite>. This
 file will only be generated if the user entered
 <cite>printExcel = 1</cite>. Note that the user can choose
 the name of this file entering the input
-<cite>outputFileName = ‘PutYourOwnFileNameHere’;</cite></p>
-</dd>
-<dt>outputFileName.txt:         File containing one column array</dt><dd><p>with identifiers for reactions in MustUL. This
+<cite>outputFileName = ‘PutYourOwnFileNameHere’;</cite></p></li>
+<li><p><strong>outputFileName.txt</strong> – File containing one column array
+with identifiers for reactions in MustUL. This
 file will only be generated if the user entered
 <cite>printText = 1</cite>. Note that the user can choose
 the name of this file entering the input
-<cite>outputFileName = ‘PutYourOwnFileNameHere’;</cite></p>
-</dd>
-<dt>outputFileName_Info.xls:    File containing one column array.</dt><dd><p>In each row the user will find a couple of
+<cite>outputFileName = ‘PutYourOwnFileNameHere’;</cite></p></li>
+<li><p><strong>outputFileName_Info.xls</strong> – File containing one column array.
+In each row the user will find a couple of
 reactions. Each couple of reaction was found in
 one iteration of <cite>FindMustUL.gms</cite>. This file will
 only be generated if the user entered
 <cite>printExcel = 1</cite>. Note that the user can choose
 the name of this file entering the input
-<cite>outputFileName = ‘PutYourOwnFileNameHere’;</cite></p>
-</dd>
-<dt>outputFileName_Info.txt:    File containing one column array.</dt><dd><p>In each row the user will find a couple of
+<cite>outputFileName = ‘PutYourOwnFileNameHere’;</cite></p></li>
+<li><p><strong>outputFileName_Info.txt</strong> – File containing one column array.
+In each row the user will find a couple of
 reactions. Each couple of reaction was found in
 one iteration of <cite>FindMustUL.gms</cite>. This file will
 only be generated if the user entered
 <cite>printText = 1</cite>. Note that the user can choose
 the name of this file entering the input
-<cite>outputFileName = ‘PutYourOwnFileNameHere’;</cite></p>
-</dd>
-</dl>
+<cite>outputFileName = ‘PutYourOwnFileNameHere’;</cite></p></li>
+</ul>
 </dd>
 </dl>
 <div class="admonition note">
@@ -1021,10 +1026,10 @@ reaction in the model for wild-type strain.
 This can be obtained by</p></li>
 </ul>
 </dd>
-</dl>
-<dl>
-<dt>OPTIONAL INPUTS</dt><dd><dl>
-<dt>constrOpt:                  (structure) structure containing</dt><dd><p>additional contraints. Include here only
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul>
+<li><p><strong>constrOpt</strong> – (structure) structure containing
+additional contraints. Include here only
 reactions whose flux is fixed, i.e.,
 reactions whose lower and upper bounds have
 the same value. Do not include here
@@ -1041,84 +1046,85 @@ reactions (double array)
 E.g.: <cite>struct(‘rxnList’, {{‘EX_gluc’, ‘R75’, ‘EX_suc’}}, ‘values’, [-100, 0, 155.5]’);</cite></p></li>
 </ul>
 </div></blockquote>
-</dd>
-<dt>excludedRxns:               (cell array) Reactions to be excluded to</dt><dd><p>the <cite>MustUU</cite> set. This could be used to avoid
+</li>
+<li><p><strong>excludedRxns</strong> – (cell array) Reactions to be excluded to
+the <cite>MustUU</cite> set. This could be used to avoid
 finding transporters or exchange reactions
 in the set.
-Default: empty.</p>
+Default: empty.</p></li>
+<li><p><strong>runID</strong> – (string) ID for identifying this run.
+Default: [‘run’ date hour].</p></li>
+<li><p><strong>outputFolder</strong> – (string) name for folder in which results
+will be stored.
+Default: ‘OutputsFindMustUU’.</p></li>
+<li><p><strong>outputFileName</strong> – (string) name for files in which results
+will be stored.
+Default: ‘MustUUSet’.</p></li>
+<li><p><strong>printExcel</strong> – (double) boolean to describe wheter data
+must be printed in an excel file or not.
+Default: 1</p></li>
+<li><p><strong>printText</strong> – (double) boolean to describe wheter data
+must be printed in an plaint text file or not.
+Default: 1</p></li>
+<li><p><strong>printReport</strong> – (double) 1 to generate a report in a plain
+text file. 0 otherwise.
+Default: 1</p></li>
+<li><p><strong>keepInputs</strong> – (double) 1 to save inputs to run
+<cite>findMustUU.m</cite>, 0 otherwise.
+Default: 1</p></li>
+<li><p><strong>printLevel</strong> – (double) 1 to print results in console.
+0 otherwise.
+Default: 0</p></li>
+</ul>
 </dd>
-<dt>runID:                      (string) ID for identifying this run.</dt><dd><p>Default: [‘run’ date hour].</p>
-</dd>
-<dt>outputFolder:               (string) name for folder in which results</dt><dd><p>will be stored.
-Default: ‘OutputsFindMustUU’.</p>
-</dd>
-<dt>outputFileName:             (string) name for files in which results</dt><dd><p>will be stored.
-Default: ‘MustUUSet’.</p>
-</dd>
-<dt>printExcel:                 (double) boolean to describe wheter data</dt><dd><p>must be printed in an excel file or not.
-Default: 1</p>
-</dd>
-<dt>printText:                  (double) boolean to describe wheter data</dt><dd><p>must be printed in an plaint text file or not.
-Default: 1</p>
-</dd>
-<dt>printReport:                (double) 1 to generate a report in a plain</dt><dd><p>text file. 0 otherwise.
-Default: 1</p>
-</dd>
-<dt>keepInputs:                 (double) 1 to save inputs to run</dt><dd><p><cite>findMustUU.m</cite>, 0 otherwise.
-Default: 1</p>
-</dd>
-<dt>printLevel:                 (double) 1 to print results in console.</dt><dd><p>0 otherwise.
-Default: 0</p>
-</dd>
-</dl>
-</dd>
-<dt>OUTPUTS</dt><dd><dl class="simple">
-<dt>mustUU:                     (cell array) Size: number of sets found X 2</dt><dd><p>cell array containing the
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>mustUU</strong> – (cell array) Size: number of sets found X 2
+cell array containing the
 reactions IDs which belong to the <cite>MustUU</cite>
 set. Each row contain a couple of
-reactions.</p>
-</dd>
-<dt>posMustUU:                  (double array) Size: number of sets found X 2</dt><dd><p>double array containing the
+reactions.</p></li>
+<li><p><strong>posMustUU</strong> – (double array) Size: number of sets found X 2
+double array containing the
 positions of each reaction in <cite>mustUU</cite> with
-regard to <cite>model.rxns</cite></p>
-</dd>
-<dt>mustUU_linear:              (cell array) Size: number of unique reactions found X 1</dt><dd><p>Cell array containing the
+regard to <cite>model.rxns</cite></p></li>
+<li><p><strong>mustUU_linear</strong> – (cell array) Size: number of unique reactions found X 1
+Cell array containing the
 unique reactions ID which belong to the
-<cite>MustUU</cite> Set</p>
-</dd>
-<dt>pos_mustUU_linear:          (double array) Size: number of unique reactions found X 1</dt><dd><p>double array containing
+<cite>MustUU</cite> Set</p></li>
+<li><p><strong>pos_mustUU_linear</strong> – (double array) Size: number of unique reactions found X 1
+double array containing
 positions for reactions in <cite>mustUU_linear</cite>.
-with regard to <cite>model.rxns</cite></p>
-</dd>
-<dt>outputFileName.xls:         File containing one column array</dt><dd><p>with identifiers for reactions in <cite>MustUU</cite>. This
+with regard to <cite>model.rxns</cite></p></li>
+<li><p><strong>outputFileName.xls</strong> – File containing one column array
+with identifiers for reactions in <cite>MustUU</cite>. This
 file will only be generated if the user entered
 <cite>printExcel = 1</cite>. Note that the user can choose
 the name of this file entering the input
-<cite>outputFileName = ‘PutYourOwnFileNameHere’;</cite></p>
-</dd>
-<dt>outputFileName.txt:         File containing one column array</dt><dd><p>with identifiers for reactions in <cite>MustUU</cite>. This
+<cite>outputFileName = ‘PutYourOwnFileNameHere’;</cite></p></li>
+<li><p><strong>outputFileName.txt</strong> – File containing one column array
+with identifiers for reactions in <cite>MustUU</cite>. This
 file will only be generated if the user entered
 <cite>printText = 1</cite>. Note that the user can choose
 the name of this file entering the input
-<cite>outputFileName = ‘PutYourOwnFileNameHere’;</cite></p>
-</dd>
-<dt>outputFileName_Info.xls:    File containing one column array.</dt><dd><p>In each row the user will find a couple of
+<cite>outputFileName = ‘PutYourOwnFileNameHere’;</cite></p></li>
+<li><p><strong>outputFileName_Info.xls</strong> – File containing one column array.
+In each row the user will find a couple of
 reactions. Each couple of reaction was found in
 one iteration of <cite>FindMustUU.gms</cite>. This file will
 only be generated if the user entered
 <cite>printExcel = 1</cite>. Note that the user can choose
 the name of this file entering the input
-<cite>outputFileName = ‘PutYourOwnFileNameHere’;</cite></p>
-</dd>
-<dt>outputFileName_Info.txt:    File containing one column array.</dt><dd><p>In each row the user will find a couple of
+<cite>outputFileName = ‘PutYourOwnFileNameHere’;</cite></p></li>
+<li><p><strong>outputFileName_Info.txt</strong> – File containing one column array.
+In each row the user will find a couple of
 reactions. Each couple of reaction was found in
 one iteration of <cite>FindMustUU.gms</cite>. This file will
 only be generated if the user entered
 <cite>printText = 1</cite>. Note that the user can choose
 the name of this file entering the input
-<cite>outputFileName = ‘PutYourOwnFileNameHere’;</cite></p>
-</dd>
-</dl>
+<cite>outputFileName = ‘PutYourOwnFileNameHere’;</cite></p></li>
+</ul>
 </dd>
 </dl>
 <div class="admonition note">
@@ -1141,7 +1147,7 @@ bilevel mixed integer linear programming problem to find sets of
 interventions that lead to an increased production of a particular target</p>
 <dl class="field-list">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>[optForceSets, posOptForceSets, typeRegOptForceSets, fluxOptForceSets] = optForce</strong> (<em>model, targetRxn, mustU, mustL, minFluxesW, maxFluxesW, minFluxesM, maxFluxesM, k, varargin</em>)</p>
+<dd class="field-odd"><p><strong>[optForceSets, posOptForceSets, typeRegOptForceSets, fluxOptForceSets] = optForce</strong> (<em>model, targetRxn, biomassRxn, mustU, mustL, minFluxesW, maxFluxesW, minFluxesM, maxFluxesM, varargin</em>)</p>
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul>
@@ -1165,6 +1171,9 @@ For E.g., if the production of succionate is
 desired to be increased, ‘EX_suc’ should be
 chosen as the target reaction.
 E.g.: <cite>targetRxn = ‘EX_suc’;</cite></p></li>
+<li><p><strong>biomassRxn</strong> – (string) ID of the biomass reaction; used to
+set the growth objective when analysing the
+optForce solution</p></li>
 <li><p><strong>mustU</strong> – (cell array) List of reactions in the <cite>MustU</cite> set
 This input can be obtained by running the
 script <cite>findMustU.m</cite>.
@@ -1535,14 +1544,14 @@ function will be stored</p></li>
 <dd><p>This function saves all the inputs needed to run functions to find second
 order Must Sets (<cite>MustUU</cite>, <cite>MustLL</cite> and <cite>MustUL</cite>) The inputs will be stored in
 inputFolder.</p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>saveInputsOptForce</strong> (<em>model, targetRxn, mustU, mustL, minFluxesW, maxFluxesW, minFluxesM, maxFluxesM, k, nSets, constrOpt, excludedURxns, excludedLRxns, excludedKRxns, inputFolder</em>)</p>
 </dd>
-</dl>
-<dl>
-<dt>INPUTS</dt><dd><dl>
-<dt>model:             (structure) COBRA metabolic model with at least</dt><dd><p>the following fields:</p>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul>
+<li><p><strong>model</strong> – (structure) COBRA metabolic model with at least
+the following fields:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p>.rxns - Reaction IDs in the model</p></li>
@@ -1554,30 +1563,40 @@ inputFolder.</p>
 <li><p>.ub -   Upper bounds for fluxes</p></li>
 </ul>
 </div></blockquote>
-</dd>
-<dt>minFluxesW:        (double array) of size <cite>n_rxns x 1</cite></dt><dd><p>Minimum fluxes for each
+</li>
+<li><p><strong>targetRxn</strong> – (string) target reaction whose production is
+intended to be increased</p></li>
+<li><p><strong>mustU</strong> – (cell array) reactions that belong to the <cite>MustU</cite>
+set</p></li>
+<li><p><strong>mustL</strong> – (cell array) reactions that belong to the <cite>MustL</cite>
+set</p></li>
+<li><p><strong>minFluxesW</strong> – (double array) of size <cite>n_rxns x 1</cite>
+Minimum fluxes for each
 reaction in the model for wild-type strain.
 This can be obtained by running the
 function <cite>FVAOptForce</cite>.
-E.g.: <cite>minFluxesW = [-90; -56];</cite></p>
-</dd>
-<dt>maxFluxesW:        (double array) of size <cite>n_rxns x 1</cite></dt><dd><p>Maximum fluxes for each
+E.g.: <cite>minFluxesW = [-90; -56];</cite></p></li>
+<li><p><strong>maxFluxesW</strong> – (double array) of size <cite>n_rxns x 1</cite>
+Maximum fluxes for each
 reaction in the model for wild-type strain.
 This can be obtained by running the
-function <cite>FVAOptForce</cite>.</p>
-</dd>
-<dt>minFluxesM:        (double array) of size <cite>n_rxns x 1</cite></dt><dd><p>Minimum fluxes for each
+function <cite>FVAOptForce</cite>.</p></li>
+<li><p><strong>minFluxesM</strong> – (double array) of size <cite>n_rxns x 1</cite>
+Minimum fluxes for each
 reaction in the model for mutant strain.
 This can be obtained by running the
 function <cite>FVAOptForce</cite>.
-E.g.: <cite>minFluxesW = [-90; -56];</cite></p>
-</dd>
-<dt>maxFluxesM:        (double array) of size <cite>n_rxns x 1</cite></dt><dd><p>Maximum fluxes for each
+E.g.: <cite>minFluxesW = [-90; -56];</cite></p></li>
+<li><p><strong>maxFluxesM</strong> – (double array) of size <cite>n_rxns x 1</cite>
+Maximum fluxes for each
 reaction in the model for mutant strain.
 This can be obtained by running the
-function <cite>FVAOptForce</cite>.</p>
-</dd>
-<dt>constrOpt:         (structure) structure containing</dt><dd><p>additional contraints. Include here only
+function <cite>FVAOptForce</cite>.</p></li>
+<li><p><strong>k</strong> – (double) number of reactions in the <cite>optForce</cite> set</p></li>
+<li><p><strong>nSets</strong> – (double) maximum number of sets to be found by
+<cite>optForce</cite></p></li>
+<li><p><strong>constrOpt</strong> – (structure) structure containing
+additional contraints. Include here only
 reactions whose flux is fixed, i.e.,
 reactions whose lower and upper bounds have
 the same value. Do not include here
@@ -1594,22 +1613,20 @@ reactions (double array)
 E.g.: <cite>struct(‘rxnList’, {{‘EX_gluc’, ‘R75’, ‘EX_suc’}}, ‘values’, [-100, 0, 155.5]’);</cite></p></li>
 </ul>
 </div></blockquote>
-</dd>
-<dt>excludedURxns:     (cell array) Reactions to be excluded from</dt><dd><p>upregulations. This could be used to avoid finding
-transporters or exchange reactions in the set</p>
-</dd>
-<dt>excludedLRxns:     (cell array) Reactions to be excluded from</dt><dd><p>downregulations. This could be used to avoid
+</li>
+<li><p><strong>excludedURxns</strong> – (cell array) Reactions to be excluded from
+upregulations. This could be used to avoid finding
+transporters or exchange reactions in the set</p></li>
+<li><p><strong>excludedLRxns</strong> – (cell array) Reactions to be excluded from
+downregulations. This could be used to avoid
 finding transporters or exchange reactions in the
-set</p>
+set</p></li>
+<li><p><strong>excludedKRxns</strong> – (cell array) Reactions to be excluded from
+knockouts This could be used to avoid finding
+transporters or exchange reactions in the set</p></li>
+<li><p><strong>inputFolder</strong> – (string) Folder where inputs for GAMS function will be stored</p></li>
+</ul>
 </dd>
-<dt>excludedKRxns:     (cell array) Reactions to be excluded from</dt><dd><p>knockouts This could be used to avoid finding
-transporters or exchange reactions in the set</p>
-</dd>
-</dl>
-<p>inputFolder:       (string) Folder where inputs for GAMS function will be stored</p>
-</dd>
-</dl>
-<dl class="field-list simple">
 <dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>model.mat</strong> – File containing the model</p></li>

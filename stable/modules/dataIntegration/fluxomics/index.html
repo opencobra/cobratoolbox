@@ -66,7 +66,7 @@
     <link rel="top" title="The COBRA Toolbox" href="../../../index.html"/>
         <link rel="up" title="Dataintegration" href="../index.html"/>
         <link rel="next" title="C13solver" href="c13solver/index.html"/>
-        <link rel="prev" title="Basicphysicochemicaldata" href="../chemoInformatics/molecularWeight/basicPhysicochemicalData/index.html"/> 
+        <link rel="prev" title="Eflux" href="../transcriptomics/eFlux/index.html"/> 
 
   
   <script src="../../../_static/js/modernizr.min.js"></script>
@@ -159,17 +159,17 @@
 <li class="toctree-l2"><a class="reference internal" href="../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../base/index.html">Base</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html">Dataintegration</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../metabotools/index.html">Metabotools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../metanetxMapper/index.html">Metanetxmapper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../metaboAnnotator/index.html">Metaboannotator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../XomicsToModel/index.html">Xomicstomodel</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../chemoInformatics/index.html">Chemoinformatics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../transcriptomics/index.html">Transcriptomics</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Fluxomics</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="c13solver/index.html">C13solver</a></li>
 <li class="toctree-l4"><a class="reference internal" href="atomTransition/index.html">Atomtransition</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../metanetxMapper/index.html">Metanetxmapper</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../XomicsToModel/index.html">Xomicstomodel</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../metaboAnnotator/index.html">Metaboannotator</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../transcriptomics/index.html">Transcriptomics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../metabotools/index.html">Metabotools</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../design/index.html">Design</a></li>
@@ -242,7 +242,10 @@
 <span class="target" id="module-src.dataIntegration.fluxomics"></span><dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.fluxomics.C13ConfidenceInterval">
 <span class="sig-name descname"><span class="pre">C13ConfidenceInterval</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">v0</span></em>, <em class="sig-param"><span class="pre">expdata</span></em>, <em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">max_score</span></em>, <em class="sig-param"><span class="pre">directions</span></em>, <em class="sig-param"><span class="pre">majorIterationLimit</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/fluxomics/C13ConfidenceInterval.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.C13ConfidenceInterval" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
+<dd><p>Computes confidence intervals for C13 metabolic fluxes by minimizing and
+maximizing each flux (or flux ratio) subject to the experimental data-fit
+error staying below <cite>max_score</cite></p>
+<dl class="field-list simple">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[vs, output, v0] = C13ConfidenceInterval</strong> (<em>v0, expdata, model, max_score, directions, majorIterationLimit</em>)</p>
 </dd>
@@ -250,8 +253,13 @@
 <dd class="field-even"><ul class="simple">
 <li><p><strong>v0</strong> – set of flux vectors to be used as initial guesses.  They may be valid or not.</p></li>
 <li><p><strong>expdata</strong> – experimental data</p></li>
-<li><p><strong>model</strong> – the standard model. Additional field .N (= null(S)) should also
-be provided. This is a basis of the flux space.</p></li>
+<li><p><strong>model</strong> – the standard model, with fields:</p>
+<ul>
+<li><p>.S - <cite>m x n</cite> stoichiometric matrix</p></li>
+<li><p>.N - basis of the null space of <cite>S</cite> (<cite>= null(S)</cite>, a basis of the flux space; computed if absent)</p></li>
+<li><p>.lb - <cite>n x 1</cite> lower flux bounds</p></li>
+</ul>
+</li>
 <li><p><strong>max_score</strong> – maximum allowable data fit error</p></li>
 </ul>
 </dd>
@@ -268,6 +276,34 @@ reaction strings  aka.  {‘GPK’, ‘PGL’}.  Ratios are possible with this i
 <li><p><strong>output</strong> – structure</p></li>
 <li><p><strong>v0</strong> – as in input</p></li>
 </ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.dataIntegration.fluxomics.calcMDVfromSamp">
+<span class="sig-name descname"><span class="pre">calcMDVfromSamp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">glc</span></em>, <em class="sig-param"><span class="pre">points</span></em>, <em class="sig-param"><span class="pre">experiment</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/fluxomics/calcMDVfromSamp.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.calcMDVfromSamp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a set of sampled flux points into mass-distribution vectors (MDVs)
+by solving the EMU network for each point and collecting the results</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[output] = calcMDVfromSamp</strong> (<em>glc, points, experiment</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>glc</strong> – substrate (glucose) label distribution; if empty, <cite>experiment.inputfrag</cite> is used</p></li>
+<li><p><strong>points</strong> – <cite>#fluxes x #samples</cite> array of sampled flux vectors, one per column</p></li>
+<li><p><strong>experiment</strong> – experiment structure controlling which fragments are collected, with fields:</p>
+<ul>
+<li><p>.inputfrag - default substrate label distribution used when <cite>glc</cite> is empty</p></li>
+<li><p>.fragments - structure of measured metabolite fragments, one field per fragment</p></li>
+<li><p>.input - substrate label distribution stored on the output as <cite>xglc</cite></p></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>output</strong> – structure of MDV results, with fields <cite>mdv</cite>, <cite>names</cite>, <cite>ave</cite>, <cite>stdev</cite> (and <cite>xglc</cite> when <cite>experiment</cite> is supplied)</p>
 </dd>
 </dl>
 </dd></dl>
@@ -345,14 +381,21 @@ solved from each point contained in their respective samples <cite>sampX</cite><
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[totalz, zscore] = compareTwoMDVs</strong> (<em>mdv1, mdv2</em>)</p>
 </dd>
-<dt class="field-even">INPUT<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>mdv1, mdv2</strong> – contains fields:</p>
-<ul class="simple">
-<li><p>mdv - the calculated mdv distribution converted from the idv
-solved from each point contained in their respective samples <cite>sampX</cite></p></li>
-<li><p>names - the names of the metabolites</p></li>
-<li><p>ave - the average of each mdv element across all of the points</p></li>
-<li><p>stdev - the standard dev for each mdv element across all points</p></li>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>mdv1</strong> – first MDV set to compare, with fields:</p>
+<ul>
+<li><p>.names - the names of the metabolites</p></li>
+<li><p>.ave - the average of each mdv element across all of the points</p></li>
+<li><p>.stdev - the standard deviation for each mdv element across all points</p></li>
+</ul>
+</li>
+<li><p><strong>mdv2</strong> – second MDV set to compare, with fields:</p>
+<ul>
+<li><p>.ave - the average of each mdv element across all of the points</p></li>
+<li><p>.stdev - the standard deviation for each mdv element across all points</p></li>
+</ul>
+</li>
 </ul>
 </dd>
 <dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
@@ -370,13 +413,22 @@ solved from each point contained in their respective samples <cite>sampX</cite><
 <dd><p>Compare the 2 sets of samples</p>
 <dl class="field-list simple">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>[totalz, zscore, mdvs] = compareMultSamp</strong> (<em>xglc, model, samps, measuredMetabolites</em>)</p>
+<dd class="field-odd"><p><strong>[totalz, zscore, mdv1, mdv2] = compareTwoSamp</strong> (<em>xglc, model, samp1, samp2, measuredMetabolites</em>)</p>
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>xglc</strong> – sugar distribution, a random sugar distribution is calculated if empty</p></li>
 <li><p><strong>model</strong> – model structure, expects <cite>model.rxns</cite> to contain a list of rxn names</p></li>
-<li><p><strong>samp1, samp2</strong> – samples, expects <cite>samp1</cite> and <cite>samp2</cite> to have a field named points containing an array of sampled points</p></li>
+<li><p><strong>samp1</strong> – first flux sample, with field:</p>
+<ul>
+<li><p>.points - array of sampled flux points (one column per sample)</p></li>
+</ul>
+</li>
+<li><p><strong>samp2</strong> – second flux sample, with field:</p>
+<ul>
+<li><p>.points - array of sampled flux points (one column per sample)</p></li>
+</ul>
+</li>
 </ul>
 </dd>
 <dt class="field-odd">OPTIONAL INPUT<span class="colon">:</span></dt>
@@ -386,15 +438,49 @@ solved from each point contained in their respective samples <cite>sampX</cite><
 <dd class="field-even"><ul class="simple">
 <li><p><strong>totalz</strong> – sum of all zscores</p></li>
 <li><p><strong>zscore</strong> – calculated difference for each mdv element distributed across all the points</p></li>
-<li><p><strong>mdv1, mdv2</strong> – contains fields:</p>
+<li><p><strong>mdv1</strong> – MDVs for <cite>samp1</cite>, with fields:</p>
 <ul>
-<li><p>mdv - the calculated mdv distribution converted from the idv
-solved from each point contained in their respective samples <cite>sampX</cite></p></li>
-<li><p>names - the names of the metabolites</p></li>
-<li><p>ave - the average of each mdv element across all of the points</p></li>
-<li><p>stdev - the standard dev for each mdv element across all points</p></li>
+<li><p>.mdv - the calculated mdv distribution converted from the idv solved from each sampled point</p></li>
+<li><p>.names - the names of the metabolites</p></li>
+<li><p>.ave - the average of each mdv element across all of the points</p></li>
+<li><p>.stdev - the standard deviation for each mdv element across all points</p></li>
 </ul>
 </li>
+<li><p><strong>mdv2</strong> – MDVs for <cite>samp2</cite>, with the same fields as <cite>mdv1</cite></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.dataIntegration.fluxomics.defineLinearConstraints">
+<span class="sig-name descname"><span class="pre">defineLinearConstraints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">method</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/fluxomics/defineLinearConstraints.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.defineLinearConstraints" title="Permalink to this definition">¶</a></dt>
+<dd><p>Builds the linear constraint set (in null-space or flux coordinates) used
+when fitting or bounding C13 flux vectors, after iteratively fixing the
+direction of reactions that are forced away from zero</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[A, b_L, b_U, model] = defineLinearConstraints</strong> (<em>model, method</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>model</strong> – model structure, with fields:</p>
+<ul class="simple">
+<li><p>.S - <cite>m x n</cite> stoichiometric matrix</p></li>
+<li><p>.N - basis of the null space of <cite>S</cite> (used as the constraint matrix when <cite>method</cite> is 1)</p></li>
+<li><p>.lb - <cite>n x 1</cite> lower flux bounds</p></li>
+<li><p>.ub - <cite>n x 1</cite> upper flux bounds</p></li>
+<li><p>.mets - <cite>m x 1</cite> array of metabolite identifiers</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUT<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>method</strong> – 1 uses the null-space basis <cite>N</cite> as the constraint matrix (default), 2 uses <cite>S</cite></p>
+</dd>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>A</strong> – constraint matrix (rows with negligible norm removed)</p></li>
+<li><p><strong>b_L</strong> – lower bounds on the constraints</p></li>
+<li><p><strong>b_U</strong> – upper bounds on the constraints</p></li>
+<li><p><strong>model</strong> – the input model structure, returned unchanged</p></li>
 </ul>
 </dd>
 </dl>
@@ -403,7 +489,10 @@ solved from each point contained in their respective samples <cite>sampX</cite><
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.fluxomics.fitC13Data">
 <span class="sig-name descname"><span class="pre">fitC13Data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">v0</span></em>, <em class="sig-param"><span class="pre">expdata</span></em>, <em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">majorIterationLimit</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/fluxomics/fitC13Data.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.fitC13Data" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
+<dd><p>Fits one or more initial flux vectors to C13 experimental data by
+minimizing the data-fit error with a nonlinear solver subject to the
+model’s linear constraints</p>
+<dl class="field-list simple">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[vout, rout] = fitC13Data</strong> (<em>v0, expdata, model, majorIterationLimit</em>)</p>
 </dd>
@@ -414,7 +503,12 @@ if <cite>v0</cite> is a matrix then it is assumed to be a multiple start situati
 <cite>vout</cite> will also have this size.</p></li>
 <li><p><strong>expdata</strong> – either a data structure or a cell array of structures, in
 which case it is assumed that you wan to fit the sum of the scores</p></li>
-<li><p><strong>model</strong> – model structure</p></li>
+<li><p><strong>model</strong> – model structure, with fields:</p>
+<ul>
+<li><p>.S - <cite>m x n</cite> stoichiometric matrix</p></li>
+<li><p>.N - basis of the null space of <cite>S</cite> (<cite>= null(S)</cite>; computed if absent)</p></li>
+</ul>
+</li>
 </ul>
 </dd>
 <dt class="field-odd">OPTIONAL INPUT<span class="colon">:</span></dt>
@@ -424,6 +518,38 @@ which case it is assumed that you wan to fit the sum of the scores</p></li>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>vout</strong> – reflects size of <cite>v0</cite>, result of NLPsolution</p></li>
 <li><p><strong>rout</strong> – cell, result of NLPsolution</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.dataIntegration.fluxomics.generateRandomSample">
+<span class="sig-name descname"><span class="pre">generateRandomSample</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">n</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/fluxomics/generateRandomSample.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.generateRandomSample" title="Permalink to this definition">¶</a></dt>
+<dd><p>Draws a near-uniform random sample of flux vectors from the solution space
+of a model using the general-purpose sampler, warming up from interior
+points until the mixed fraction is small enough</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[output] = generateRandomSample</strong> (<em>model, n</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – model structure, with fields:</p>
+<ul>
+<li><p>.S - <cite>m x n</cite> stoichiometric matrix</p></li>
+<li><p>.lb - <cite>n x 1</cite> lower flux bounds</p></li>
+<li><p>.ub - <cite>n x 1</cite> upper flux bounds</p></li>
+</ul>
+</li>
+<li><p><strong>n</strong> – number of warm-up points to generate, default = 5000</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>output</strong> – structure with fields:</p>
+<ul class="simple">
+<li><p>.point - array of sampled flux points (one column per sample)</p></li>
+<li><p>.mf - final mixed fraction reported by the sampler</p></li>
 </ul>
 </dd>
 </dl>
@@ -504,12 +630,44 @@ takes linear combinations of them so that all points are in the interior.</p>
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>model</strong> – model structure</p></li>
+<li><p><strong>model</strong> – model structure, with fields:</p>
+<ul>
+<li><p>.lb - <cite>n x 1</cite> lower flux bounds (sets the number of variables)</p></li>
+<li><p>.c - objective coefficient vector, overwritten internally to probe each reaction</p></li>
+</ul>
+</li>
 <li><p><strong>n</strong> – number, default = 1</p></li>
 </ul>
 </dd>
 <dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>out</strong> – random points with linear combinations</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.dataIntegration.fluxomics.gradtest">
+<span class="sig-name descname"><span class="pre">gradtest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">v</span></em>, <em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">expdata</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/fluxomics/gradtest.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.gradtest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Diagnostic that checks the finite-difference gradient of the C13 data-fit
+error by evaluating <cite>errorComputation2_grad</cite> over a range of step sizes
+and plotting each gradient component against the step size</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[out] = gradtest</strong> (<em>v, model, expdata</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>v</strong> – flux vector, converted to null-space (alpha) coordinates via <cite>model.N</cite></p></li>
+<li><p><strong>model</strong> – model structure, with field:</p>
+<ul>
+<li><p>.N - basis of the null space of <cite>S</cite>, mapping fluxes to alpha coordinates</p></li>
+</ul>
+</li>
+<li><p><strong>expdata</strong> – experimental data structure passed through to the gradient evaluation</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>out</strong> – declared output; the function is a plotting diagnostic and does not assign it</p>
 </dd>
 </dl>
 </dd></dl>
@@ -525,7 +683,8 @@ between <cite>mdv1</cite> and <cite>mdv2</cite>. No output.</p>
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>mdv1, mdv2</strong> – structures</p></li>
+<li><p><strong>mdv1</strong> – first isotopomer distribution array (rows = isotopomers, columns = samples)</p></li>
+<li><p><strong>mdv2</strong> – second isotopomer distribution array (rows = isotopomers, columns = samples)</p></li>
 <li><p><strong>names</strong> – names in the plot</p></li>
 </ul>
 </dd>
@@ -562,39 +721,26 @@ resulting <cite>mdvs</cite> to provide a z-score.</p>
 <dd class="field-odd"><p><strong>[experiment] = runHiLoExp</strong> (<em>experiment</em>)</p>
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>experiment</strong> – contains:</p>
+<dd class="field-even"><p><strong>experiment</strong> – structure describing the experiment, with fields:</p>
 <ul class="simple">
-<li><p>model with fields:</p>
-<ul>
-<li><p>S = the stoichiometric matrix</p></li>
-<li><p>rxns = array of reaction names, corresponding the <cite>S</cite></p></li>
-<li><p>c = optimization target 1, or -1</p></li>
-<li><p>ub,lb = upper and lower bounds of reactions</p></li>
-</ul>
-</li>
-<li><p>points = a <cite>#fluxes</cite> X <cite>#samples</cite> (~2000) array of the solution space
-if missing or empty, will generate a sample</p></li>
-<li><p>glcs = an array of sugars in isotopomer format, each column a separate sugar.
-Should not be in MDV format.  Conversion is done automatically.
-will default to generate 1 random sugar if set to []</p></li>
-<li><p>targets = an array of cells with string for the reaction to
-split on the solution space, defaults to ‘PGL’</p></li>
-<li><p>thresholds = <cite>#targets</cite> X 1 array of thresholds</p></li>
-<li><p>metabolites = an optional parameter fed to <cite>calcMDVfromSamp.m</cite>
-which only calculates the MDVs for the metabolites listed in this
-array.  e.g - optionally, metabolites can also be a structure of fragments</p></li>
-<li><p>hilo = a <cite>#targets</cite> X <cite>#samples</cite> array of 0/1’s, 0 id’s the sample of
-fluxes as the lo side and 1 id’s the sample for the hi side.
-<cite>hilo</cite> will only be calculated/recalculated if it’s missing or
-if the targets have been replaced using the param list</p></li>
-<li><p>mdvs = structure of <cite>mdv</cite> results:</p>
-<ul>
-<li><p>(name) = name of the run = <cite>t + glc#</cite> e.g. t1, t2, glc# refers to the glc in the glcs array.</p></li>
-</ul>
-</li>
+<li><p>.model - COBRA model structure (must contain <cite>S</cite>, <cite>rxns</cite>, <cite>c</cite>, <cite>lb</cite>, <cite>ub</cite>)</p></li>
+<li><p>.points - <cite>#fluxes x #samples</cite> array of the sampled solution space; a sample is generated if missing or empty</p></li>
+<li><p>.mfrac - mixed fraction reported by the sampler (set when a sample is generated)</p></li>
+<li><p>.metabolites - optional parameter fed to <cite>calcMDVfromSamp.m</cite>; restricts which MDVs are calculated (may also be a structure of fragments)</p></li>
+<li><p>.glcs - array of sugars in isotopomer (not MDV) format, one column per sugar; a random sugar is generated if empty</p></li>
+<li><p>.glcsnames - cell array of human-readable sugar-mixture names, derived from <cite>glcs</cite></p></li>
+<li><p>.hilo - <cite>#targets x #samples</cite> array of 0/1 flags splitting each sample into the lo (0) and hi (1) side</p></li>
+<li><p>.mdvs - structure of <cite>mdv</cite> results, one field per sugar (<cite>t1</cite>, <cite>t2</cite>, …); must be emptied by the user to force regeneration</p></li>
+<li><p>.zscores - <cite>#targets x #glcs</cite> array of z-scores from each run</p></li>
+<li><p>.rscores - <cite>#targets x #glcs</cite> array of ridge scores from each run</p></li>
+<li><p>.kscores - <cite>#targets x #glcs</cite> array of KS scores from each run</p></li>
 </ul>
 </dd>
+<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>experiment</strong> – the experiment array.</p>
+</dd>
 </dl>
+<p>This code will loop through one experiment per sugar, per target</p>
 </dd></dl>
 
 <dl class="mat function">
@@ -603,7 +749,7 @@ if the targets have been replaced using the param list</p></li>
 <dd><p>Calculates KS score</p>
 <dl class="field-list simple">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>[out] = score_ridge</strong> (<em>mdv, hilo, lambda, crossval</em>)</p>
+<dd class="field-odd"><p><strong>[out] = score_KS</strong> (<em>mdv, hilo, lambda</em>)</p>
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
@@ -662,7 +808,7 @@ down the computation, default is no.</p></li>
         <a href="c13solver/index.html" class="btn btn-default float-right" title="C13solver" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../chemoInformatics/molecularWeight/basicPhysicochemicalData/index.html" class="btn btn-default" title="Basicphysicochemicaldata" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../transcriptomics/eFlux/index.html" class="btn btn-default" title="Eflux" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

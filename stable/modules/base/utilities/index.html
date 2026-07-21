@@ -65,7 +65,7 @@
         <link rel="search" title="Search" href="../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../index.html"/>
         <link rel="up" title="Base" href="../index.html"/>
-        <link rel="next" title="Paths" href="../paths/index.html"/>
+        <link rel="next" title="Codeconsistency" href="../codeConsistency/index.html"/>
         <link rel="prev" title="Base" href="../index.html"/> 
 
   
@@ -159,13 +159,13 @@
 <li class="toctree-l2"><a class="reference internal" href="../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html">Base</a><ul class="current">
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Utilities</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../paths/index.html">Paths</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../ci/index.html">Ci</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../codeConsistency/index.html">Codeconsistency</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../io/index.html">Io</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../install/index.html">Install</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../solvers/index.html">Solvers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ci/index.html">Ci</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../paths/index.html">Paths</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../cobrarrow/index.html">Cobrarrow</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../install/index.html">Install</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../dataIntegration/index.html">Dataintegration</a></li>
@@ -234,7 +234,7 @@
 data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>result = applyToNonNan</strong> (<em>data,func</em>)</p>
+<dd class="field-odd"><p><strong>result = applyToNonNan</strong> (<em>data, func</em>)</p>
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
@@ -263,7 +263,7 @@ Uppercase &lt;-&gt; lower case edits have a cost of 0.05
 All other edit operations have a cost of 1</p>
 <dl class="field-list simple">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>d = calcDist</strong> (<em>searchString,databaseString</em>)</p>
+<dd class="field-odd"><p><strong>d = calcDist</strong> (<em>searchString, databaseString</em>)</p>
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
@@ -339,12 +339,28 @@ Also sorts the unique elements in descending order</p>
 <dt class="sig sig-object mat" id="src.base.utilities.dispMatrix">
 <span class="sig-name descname"><span class="pre">dispMatrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">A</span></em>, <em class="sig-param"><span class="pre">mode</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/utilities/dispMatrix.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.utilities.dispMatrix" title="Permalink to this definition">¶</a></dt>
 <dd><p>display a matrix A in a tight format</p>
-<p>INPUT
-A     m x n matrix
-mode  ‘Z’ integers (default)</p>
-<blockquote>
-<div><p>‘N’ natural number</p>
-</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>dispMatrix</strong> (<em>A, mode</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>A</strong> – m x n matrix</p>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>mode</strong> – format used to display <cite>A</cite> (char, default = ‘Z’):</p>
+<ul class="simple">
+<li><p>‘disp’     - display <cite>A</cite> using <cite>disp</cite></p></li>
+<li><p>‘N’        - one space-separated natural number per entry</p></li>
+<li><p>‘Z’        - integers, right-aligned to a common width</p></li>
+<li><p>‘nonzeroZ’ - same as <cite>‘Z’</cite>, after removing all-zero rows/columns</p></li>
+<li><p>‘nonzeroN’ - same as <cite>‘N’</cite>, after removing all-zero rows/columns</p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Adapted from <a class="reference external" href="https://stackoverflow.com/questions/7919004/tightening-the-display-of-matrices-in-matlab">https://stackoverflow.com/questions/7919004/tightening-the-display-of-matrices-in-matlab</a></p>
+</div>
 </dd></dl>
 
 <dl class="mat function">
@@ -352,50 +368,61 @@ mode  ‘Z’ integers (default)</p>
 <span class="sig-name descname"><span class="pre">duplicates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">A</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/utilities/duplicates.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.utilities.duplicates" title="Permalink to this definition">¶</a></dt>
 <dd><p>create a map M between the first instance (row) and other instances (cols)
 of an equivalent set using [C,IA,IC]=unique(A,’rows’,’stable’);</p>
-<p>INPUT
-A         m x n array (compatible with unique.m)</p>
-<p>OUTPUT
-M         m x m array where M(i,j) = 1 if the first instance of i has a</p>
-<blockquote>
-<div><p>duplicate j,  and M(i,j) = 0 otherwise.</p>
-</div></blockquote>
-<p>C         unique first instances in the same order that they appear in A
-IA        C = A(IA,:)
-IC        A = C(IC,:)</p>
-<p>USAGE
-A=[‘a’;’a’;’b’;’c’;’d’;’d’;’b’;’b’;’e’];</p>
-<dl class="simple">
-<dt>M =</dt><dd><p>0     1     0     0     0     0     0     0     0
-0     0     0     0     0     0     0     0     0
-0     0     0     0     0     0     1     1     0
-0     0     0     0     0     0     0     0     0
-0     0     0     0     0     1     0     0     0
-0     0     0     0     0     0     0     0     0
-0     0     0     0     0     0     0     0     0
-0     0     0     0     0     0     0     0     0
-0     0     0     0     0     0     0     0     0</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[M, duplicateBool, C, IA, IC] = duplicates</strong> (<em>A</em>)</p>
 </dd>
-<dt>duplicateBool =</dt><dd><p>0
-1
-0
-0
-0
-1
-1
-1
-0</p>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>A</strong> – m x n array (compatible with <cite>unique</cite>)</p>
+</dd>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>M</strong> – m x m array where <cite>M(i, j) = 1</cite> if the first
+instance of <cite>i</cite> has a duplicate <cite>j</cite>, and
+<cite>M(i, j) = 0</cite> otherwise.</p></li>
+<li><p><strong>duplicateBool</strong> – m x 1 boolean, true for each row of <cite>A</cite> that is a
+duplicate of an earlier row.</p></li>
+<li><p><strong>C</strong> – unique first instances in the same order that they
+appear in <cite>A</cite></p></li>
+<li><p><strong>IA</strong> – <cite>C = A(IA, :)</cite></p></li>
+<li><p><strong>IC</strong> – <cite>A = C(IC, :)</cite></p></li>
+</ul>
 </dd>
 </dl>
+<p class="rubric">Example</p>
+<p>A = [‘a’;’a’;’b’;’c’;’d’;’d’;’b’;’b’;’e’];
+% M =
+%      0     1     0     0     0     0     0     0     0
+%      0     0     0     0     0     0     0     0     0
+%      0     0     0     0     0     0     1     1     0
+%      0     0     0     0     0     0     0     0     0
+%      0     0     0     0     0     1     0     0     0
+%      0     0     0     0     0     0     0     0     0
+%      0     0     0     0     0     0     0     0     0
+%      0     0     0     0     0     0     0     0     0
+%      0     0     0     0     0     0     0     0     0
+% duplicateBool =
+%    0
+%    1
+%    0
+%    0
+%    0
+%    1
+%    1
+%    1
+%    0</p>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.base.utilities.extendIndicesInDimenion">
 <span class="sig-name descname"><span class="pre">extendIndicesInDimenion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">input</span></em>, <em class="sig-param"><span class="pre">dimension</span></em>, <em class="sig-param"><span class="pre">value</span></em>, <em class="sig-param"><span class="pre">sizeIncrease</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/utilities/extendIndicesInDimenion.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.utilities.extendIndicesInDimenion" title="Permalink to this definition">¶</a></dt>
-<dd><p>Remove the indices in a specified field in the given dimension
-:USAGE: <strong>added = extendIndicesInDimenion</strong> (<em>input,dimension,indices</em>)</p>
+<dd><p>Extend a specified dimension of the given array by appending values</p>
 <dl class="field-list simple">
-<dt class="field-odd">INPUTS<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>added = extendIndicesInDimenion</strong> (<em>input, dimension, value, sizeIncrease</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
 <li><p><strong>input</strong> – The input matrix or array</p></li>
 <li><p><strong>dimension</strong> – The dimension in which to add values for the given
 indices</p></li>
@@ -403,14 +430,42 @@ indices</p></li>
 <li><p><strong>sizeIncrease</strong> – How many entries to add.</p></li>
 </ul>
 </dd>
-<dt class="field-even">OUTPUT<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>added</strong> – The Array/Matrix with the given indices set to the
+<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>added</strong> – The Array/Matrix with the given indices set to the
 default values.</p>
 </dd>
 </dl>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Based on <a class="reference external" href="https://stackoverflow.com/questions/22537326/on-shape-agnostic-slicing-of-ndarrays">https://stackoverflow.com/questions/22537326/on-shape-agnostic-slicing-of-ndarrays</a></p>
+</div>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.base.utilities.generateStructFunction">
+<span class="sig-name descname"><span class="pre">generateStructFunction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">S</span></em>, <em class="sig-param"><span class="pre">structName</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/utilities/generateStructFunction.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.utilities.generateStructFunction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a <cite>.m</cite> script that reconstructs the numeric/char-valued fields of a struct</p>
+<p>Writes a file named <cite>&lt;structName&gt;_init.m</cite> containing one assignment
+statement per field of <cite>S</cite> that is numeric or char, so that running the
+generated file recreates those field values under the variable name
+<cite>structName</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>generateStructFunction</strong> (<em>S, structName</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>S</strong> – struct whose numeric and char fields are written out</p></li>
+<li><p><strong>structName</strong> – char, the variable name used in the generated
+assignment statements and the base name of the
+generated <cite>&lt;structName&gt;_init.m</cite> file</p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Fields of <cite>S</cite> that are neither numeric nor char (e.g. cell, struct)
+are silently skipped.</p>
 </div>
 </dd></dl>
 
@@ -447,13 +502,17 @@ default values.</p>
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.base.utilities.getEnvironment">
 <span class="sig-name descname"><span class="pre">getEnvironment</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/utilities/getEnvironment.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.utilities.getEnvironment" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get all values of current globals in a struct.
-:USAGE: <strong>environment = getEnvironment()</strong></p>
+<dd><p>Get all values of current globals in a struct.</p>
 <dl class="field-list simple">
-<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>environment</strong> – a struct with two fields
-* .globals - contains all global values
-* .path - contains the current path</p>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>environment = getEnvironment()</strong></p>
+</dd>
+<dt class="field-even">OUTPUT<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>environment</strong> – a struct with two fields</p>
+<ul class="simple">
+<li><p>.globals - contains all global values</p></li>
+<li><p>.path - contains the current path</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -479,11 +538,13 @@ default values.</p>
 <dt class="sig sig-object mat" id="src.base.utilities.issueConfirmationWarning">
 <span class="sig-name descname"><span class="pre">issueConfirmationWarning</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">message</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/utilities/issueConfirmationWarning.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.utilities.issueConfirmationWarning" title="Permalink to this definition">¶</a></dt>
 <dd><p>Issues a warning, which and blocks execution until confirmation by the
-user.
-:USAGE: <strong>issueConfirmationWarning</strong> (<em>message</em>)</p>
+user.</p>
 <dl class="field-list simple">
-<dt class="field-odd">INPUTS<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>message</strong> – The message to be displayed</p>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>issueConfirmationWarning</strong> (<em>message</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>message</strong> – The message to be displayed</p>
 </dd>
 </dl>
 </dd></dl>
@@ -491,7 +552,36 @@ user.
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.base.utilities.isvar">
 <span class="sig-name descname"><span class="pre">isvar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">T</span></em>, <em class="sig-param"><span class="pre">varName</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/utilities/isvar.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.utilities.isvar" title="Permalink to this definition">¶</a></dt>
-<dd><p>checks if varName is a column of table T</p>
+<dd><p>Check if <cite>varName</cite> is a field of struct <cite>T</cite>, or a column (variable) of
+table <cite>T</cite></p>
+<dl class="field-list">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[tf, bool, ind] = isvar</strong> (<em>T, varName</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul>
+<li><p><strong>T</strong> – struct, or table to search. When <cite>T</cite> is a table, fields
+used are:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>.Properties - table metadata; <cite>Properties.VariableNames</cite>
+is read to test membership of <cite>varName</cite></p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><strong>varName</strong> – char, the field/variable name to look for</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tf</strong> – true if <cite>varName</cite> is present in <cite>T</cite></p></li>
+<li><p><strong>bool</strong> – logical (vector for a table, scalar for a struct)
+indicating which entries of <cite>T</cite> match <cite>varName</cite></p></li>
+<li><p><strong>ind</strong> – index of the match (1 for a struct; the column index/indices
+for a table)</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="mat function">
@@ -500,51 +590,67 @@ user.
 <dd><p>Maps the data from Ain onto Bin by matching keys from Akey onto Bkey
 If Akey is not unique, it maps the lowest absolute index in Akey to the
 corresponding Bkey, but gives a warning, unless printLevel=0;</p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>[Bout,LIBkey,LOCAkey] = mapAontoB</strong> (<em>Akey,Bkey,Ain,Bin</em>)</p>
+<dd class="field-odd"><p><strong>[Bout, LIBkey, LOCAkey] = mapAontoB</strong> (<em>Akey, Bkey, Ain, Bin, printLevel</em>)</p>
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>Akey</strong> – m x 1 primary key in array or table Ain</p></li>
-<li><p><strong>Bkey</strong> – n x 1 primary key in array or table Bin</p></li>
-<li><p><strong>Ain</strong> – m x z array or table</p></li>
+<dd class="field-even"><ul>
+<li><p><strong>Akey</strong> – m x 1 primary key in array or table <cite>Ain</cite></p></li>
+<li><p><strong>Bkey</strong> – n x 1 primary key in array or table <cite>Bin</cite></p></li>
+<li><p><strong>Ain</strong> – m x z array or table. When <cite>Ain</cite> is a <cite>table</cite>, fields
+used are:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>.Properties - table metadata; <cite>Properties.VariableNames</cite>
+is used to build <cite>Bout</cite>, and <cite>Properties.Description</cite>
+is copied to the output table</p></li>
+</ul>
+</div></blockquote>
+</li>
 </ul>
 </dd>
 <dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>Bin</strong> – n x y array or table, which is created starting from Bkey if Bin is not provided.</p></li>
-<li><p><strong>Ain.Properties.VariableNames</strong> – required if Ain is a table</p></li>
+<li><p><strong>Bin</strong> – n x y array or table, which is created starting from
+<cite>Bkey</cite> if <cite>Bin</cite> is not provided.</p></li>
+<li><p><strong>printLevel</strong> – verbosity of the non-unique-<cite>Akey</cite> warning (default = 1;
+0 suppresses the warning)</p></li>
 </ul>
 </dd>
 <dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>Bout</strong> – n x y array or table, which is created starting from Bkey if Bin is not provided.</p></li>
-<li><p><strong>LIBkey</strong> – n x 1 array of the same size as B containing true where the elements of B are in A and false otherwise. Output from [LIBkey,LOCAkey] = ismember(Bkey,Akey);</p></li>
-<li><p><strong>LOCAkey</strong> – n x 1 array containing the lowest absolute index in A for each element in B which is a member of A and 0 if there is no such index.Output from [LIBkey,LOCAkey] = ismember(Bkey,Akey);</p></li>
+<li><p><strong>Bout</strong> – n x y array or table, which is created starting from
+<cite>Bkey</cite> if <cite>Bin</cite> is not provided.</p></li>
+<li><p><strong>LIBkey</strong> – n x 1 array of the same size as <cite>Bkey</cite> containing true
+where the elements of <cite>Bkey</cite> are in <cite>Akey</cite> and false
+otherwise. Output from <cite>[LIBkey, LOCAkey] = ismember(Bkey, Akey)</cite>.</p></li>
+<li><p><strong>LOCAkey</strong> – n x 1 array containing the lowest absolute index in
+<cite>Akey</cite> for each element in <cite>Bkey</cite> which is a member of
+<cite>Akey</cite>, and 0 if there is no such index. Output from
+<cite>[LIBkey, LOCAkey] = ismember(Bkey, Akey)</cite>.</p></li>
 </ul>
 </dd>
 </dl>
-<p>EXAMPLE:</p>
-<p>NOTE:</p>
-<p>Author(s):</p>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.base.utilities.removeIndicesInDimenion">
 <span class="sig-name descname"><span class="pre">removeIndicesInDimenion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">input</span></em>, <em class="sig-param"><span class="pre">dimension</span></em>, <em class="sig-param"><span class="pre">indices</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/utilities/removeIndicesInDimenion.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.utilities.removeIndicesInDimenion" title="Permalink to this definition">¶</a></dt>
-<dd><p>Remove the indices in a specified field in the given dimension
-:USAGE: <strong>removed = removeIndicesInDimenion</strong> (<em>input, dimension, indices</em>)</p>
+<dd><p>Remove the indices in a specified field in the given dimension</p>
 <dl class="field-list simple">
-<dt class="field-odd">INPUTS<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>removed = removeIndicesInDimenion</strong> (<em>input, dimension, indices</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
 <li><p><strong>input</strong> – The input matrix or array</p></li>
 <li><p><strong>dimension</strong> – The dimension from which to remove the indices</p></li>
 <li><p><strong>indices</strong> – The indices to remove</p></li>
 </ul>
 </dd>
-<dt class="field-even">OUTPUT<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>removed</strong> – The array/matrix with the given indices removed.</p>
+<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>removed</strong> – The array/matrix with the given indices removed.</p>
 </dd>
 </dl>
 <div class="admonition note">
@@ -556,7 +662,19 @@ corresponding Bkey, but gives a warning, unless printLevel=0;</p>
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.base.utilities.removeZeroRowsCols">
 <span class="sig-name descname"><span class="pre">removeZeroRowsCols</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">A</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/utilities/removeZeroRowsCols.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.utilities.removeZeroRowsCols" title="Permalink to this definition">¶</a></dt>
-<dd><p>removes all zero rows and columns from a matrix</p>
+<dd><p>Removes all zero rows and columns from a matrix</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>A = removeZeroRowsCols</strong> (<em>A</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>A</strong> – m x n matrix</p>
+</dd>
+<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>A</strong> – <cite>A</cite> with all zero rows removed, followed by all zero columns
+removed</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="mat function">
@@ -586,7 +704,7 @@ variables not present will be deleted.
 <dd><p>Safely set a global Variable to a specific value.</p>
 <dl class="field-list simple">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>setGlobal</strong> (<em>globalName,globalValue</em>)</p>
+<dd class="field-odd"><p><strong>setGlobal</strong> (<em>globalName, globalValue</em>)</p>
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
@@ -602,12 +720,14 @@ variables not present will be deleted.
 <span class="sig-name descname"><span class="pre">showprogress</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">x</span></em>, <em class="sig-param"><span class="pre">whichbar</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/utilities/showprogress.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.utilities.showprogress" title="Permalink to this definition">¶</a></dt>
 <dd><p>showprogress shows waitbars</p>
 <dl class="field-list simple">
-<dt class="field-odd">INPUTS<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>x</strong> – percentage in integer (e.g.: 1 = 1%, 40 = 40%, etc.)</p></li>
-<li><p><strong>whichbar</strong> – caption</p></li>
-<li><p><strong>varagin</strong> – see waitbar header for explanation</p></li>
-</ul>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>fout = showprogress</strong> (<em>x, whichbar</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>x</strong> – percentage in integer (e.g.: 1 = 1%, 40 = 40%, etc.)</p>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>whichbar</strong> – caption passed to the underlying waitbar/textprogressbar</p>
 </dd>
 <dt class="field-even">OUTPUT<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>fout</strong> – handle output from waitbar() (WAITBAR_TYPE = 1)</p>
@@ -643,7 +763,7 @@ variables not present will be deleted.
 <dd><p>Update the struct in origStruct with the data from updateStruct</p>
 <dl class="field-list simple">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>updatedStruct = updateStruct</strong> (<em>origStruct,updateStruct</em>)</p>
+<dd class="field-odd"><p><strong>updatedStruct = updateStructData</strong> (<em>origStruct, updateStruct</em>)</p>
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
@@ -670,7 +790,7 @@ updated by the info from updateStruct</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../paths/index.html" class="btn btn-default float-right" title="Paths" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../codeConsistency/index.html" class="btn btn-default float-right" title="Codeconsistency" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="../index.html" class="btn btn-default" title="Base" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

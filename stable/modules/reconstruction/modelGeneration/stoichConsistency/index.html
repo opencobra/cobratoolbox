@@ -65,8 +65,8 @@
         <link rel="search" title="Search" href="../../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../../index.html"/>
         <link rel="up" title="Modelgeneration" href="../index.html"/>
-        <link rel="next" title="Rbionet" href="../../rBioNet/index.html"/>
-        <link rel="prev" title="Modelverification" href="../modelVerification/index.html"/> 
+        <link rel="next" title="Modelverification" href="../modelVerification/index.html"/>
+        <link rel="prev" title="Dca" href="../fluxConsistency/DCA/index.html"/> 
 
   
   <script src="../../../../_static/js/modernizr.min.js"></script>
@@ -161,21 +161,21 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../dataIntegration/index.html">Dataintegration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../design/index.html">Design</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Reconstruction</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../../comparison/index.html">Comparison</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../fastGapFill/index.html">Fastgapfill</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../growthExpMatch/index.html">Growthexpmatch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../refinement/index.html">Refinement</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../rBioNet/index.html">Rbionet</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../index.html">Modelgeneration</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="../massBalance/index.html">Massbalance</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../modelProperties/index.html">Modelproperties</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../fluxConsistency/index.html">Fluxconsistency</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../modelVerification/index.html">Modelverification</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">Stoichconsistency</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../modelVerification/index.html">Modelverification</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../rBioNet/index.html">Rbionet</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../demeter/index.html">Demeter</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../refinement/index.html">Refinement</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../metaboRePort/index.html">Metaboreport</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../fastGapFill/index.html">Fastgapfill</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../growthExpMatch/index.html">Growthexpmatch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../comparison/index.html">Comparison</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../demeter/index.html">Demeter</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../visualization/index.html">Visualization</a></li>
@@ -338,6 +338,7 @@ set to zero.</p>
 <li><p>.ub - Upper bounds</p></li>
 <li><p>.SConsistentMetBool - <cite>m</cite> x 1 boolean vector indicating consistent mets</p></li>
 <li><p>.SConsistentRxnBool - <cite>m</cite> x 1 boolean vector indicating consistent rxns</p></li>
+<li><p>.metFormulas - <cite>m</cite> x 1 cell array of metabolite chemical formulas, used to compute molecular mass for the leak/siphon plots</p></li>
 </ul>
 </dd>
 <dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
@@ -356,6 +357,7 @@ set to zero.</p>
 <li><p>param.eta - (<cite>feasTol*100</cite>), smallest nonzero mass leak/siphon</p></li>
 <li><p>param.theta - (0.5) parameter of capped l1 approximation</p></li>
 <li><p>param.method - {(‘quasiConcave’), ‘dc’} method of approximation</p></li>
+<li><p>param.interface - {(‘optimizeCardinality’), ‘optimizeCardinalityOld’} which cardinality-optimisation solver interface to call for the semipositive (<cite>dc</cite> method) leak problem</p></li>
 </ul>
 </li>
 <li><p><strong>printLevel</strong> – {(0), 1, 2 = debug}</p></li>
@@ -363,7 +365,7 @@ set to zero.</p>
 </dd>
 <dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>leakRxnBool</strong> – <cite>m</cite> x 1 boolean of metabolites in a positive leakage mode</p></li>
+<li><p><strong>leakMetBool</strong> – <cite>m</cite> x 1 boolean of metabolites in a positive leakage mode</p></li>
 <li><p><strong>leakRxnBool</strong> – <cite>n</cite> x 1 boolean of reactions exclusively involved in a positive leakage mode</p></li>
 <li><p><strong>siphonMetBool</strong> – <cite>m</cite> x 1 boolean of metabolites in a negative leakage mode</p></li>
 <li><p><strong>siphonRxnBool</strong> – <cite>n</cite> x 1 boolean of reactions exclusively involved in a negative leakage mode</p></li>
@@ -414,6 +416,7 @@ or <span class="math notranslate nohighlight">\(y \leq 0\)</span> (seminegative 
 <li><p>.ub - Upper bounds</p></li>
 <li><p>.SConsistentMetBool - <cite>m</cite> x 1 boolean vector indicating consistent mets</p></li>
 <li><p>.SConsistentRxnBool - <cite>m</cite> x 1 boolean vector indicating consistent rxns</p></li>
+<li><p>.mets - <cite>m</cite> x 1 cell array of metabolite identifiers, used when reporting leakage modes</p></li>
 </ul>
 </dd>
 <dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
@@ -429,30 +432,29 @@ or <span class="math notranslate nohighlight">\(y \leq 0\)</span> (seminegative 
 <li><p><strong>printLevel</strong> – {(0), 1}</p></li>
 </ul>
 </dd>
-</dl>
-<dl>
-<dt>OUTPUTS</dt><dd><p>Vp:                 <cite>n</cite> x 1 vector (positive leakage modes)
-Yp:                 <cite>m</cite> x 1 vector (positive leakage modes)
-statp:              status (positive leakage modes)</p>
-<blockquote>
-<div><ul class="simple">
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>Vp</strong> – <cite>n</cite> x 1 vector (positive leakage modes)</p></li>
+<li><p><strong>Yp</strong> – <cite>m</cite> x 1 vector (positive leakage modes)</p></li>
+<li><p><strong>statp</strong> – status (positive leakage modes)</p>
+<ul>
 <li><p>1 =  Solution found</p></li>
 <li><p>2 =  Unbounded</p></li>
 <li><p>0 =  Infeasible</p></li>
 <li><p>-1 =  Invalid input</p></li>
 </ul>
-</div></blockquote>
-<p>Vn:                 <cite>n</cite> x 1 vector (negative leakage modes)
-Yn:                 <cite>m</cite> x 1 vector (negative leakage modes)
-statn:              status (negative leakage modes)</p>
-<blockquote>
-<div><ul class="simple">
+</li>
+<li><p><strong>Vn</strong> – <cite>n</cite> x 1 vector (negative leakage modes)</p></li>
+<li><p><strong>Yn</strong> – <cite>m</cite> x 1 vector (negative leakage modes)</p></li>
+<li><p><strong>statn</strong> – status (negative leakage modes)</p>
+<ul>
 <li><p>1 =  Solution found</p></li>
 <li><p>2 =  Unbounded</p></li>
 <li><p>0 =  Infeasible</p></li>
 <li><p>-1 =  Invalid input</p></li>
 </ul>
-</div></blockquote>
+</li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -488,6 +490,7 @@ or <span class="math notranslate nohighlight">\(y(metBool) \leq 1\)</span> (semi
 <li><p>.ub - Upper bounds</p></li>
 <li><p>.SConsistentMetBool - <cite>m</cite> x 1 boolean vector indicating consistent mets</p></li>
 <li><p>.SConsistentRxnBool - <cite>m</cite> x 1 boolean vector indicating consistent rxns</p></li>
+<li><p>.mets - <cite>m</cite> x 1 cell array of metabolite identifiers, used when reporting leakage modes</p></li>
 </ul>
 </li>
 <li><p><strong>metBool</strong> – <cite>m</cite> x 1 boolean vector of metabolites to test for leakage</p></li>
@@ -513,10 +516,10 @@ or <span class="math notranslate nohighlight">\(y(metBool) \leq 1\)</span> (semi
 </dd>
 <dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>minleakRxnBool</strong> – <cite>m</cite> x 1 boolean of metabolites in a positive leakage mode</p></li>
-<li><p><strong>minleakRxnBool</strong> – <cite>n</cite> x 1 boolean of reactions exclusively involved in a positive leakage mode</p></li>
-<li><p><strong>minsiphonMetBool</strong> – <cite>m</cite> x 1 boolean of metabolites in a negative leakage mode</p></li>
-<li><p><strong>imnsiphonRxnBool</strong> – <cite>n</cite> x 1 boolean of reactions exclusively involved in a negative leakage mode</p></li>
+<li><p><strong>minLeakMetBool</strong> – <cite>m</cite> x 1 boolean of metabolites in a positive leakage mode</p></li>
+<li><p><strong>minLeakRxnBool</strong> – <cite>n</cite> x 1 boolean of reactions exclusively involved in a positive leakage mode</p></li>
+<li><p><strong>minSiphonMetBool</strong> – <cite>m</cite> x 1 boolean of metabolites in a negative leakage mode</p></li>
+<li><p><strong>minSiphonRxnBool</strong> – <cite>n</cite> x 1 boolean of reactions exclusively involved in a negative leakage mode</p></li>
 <li><p><strong>leakY</strong> – <cite>m</cite> x 1 boolean of metabolites in a positive leakage mode</p></li>
 <li><p><strong>siphonY</strong> – <cite>m</cite> x 1 boolean of metabolites in a negative siphon mode</p></li>
 <li><p><strong>statp</strong> – status (positive leakage modes)</p>
@@ -574,6 +577,8 @@ s.t. ~&amp; Sv - y = 0, \</p>
 <li><p>.ub - Upper bounds</p></li>
 <li><p>.SConsistentMetBool - <cite>m</cite> x 1 boolean vector indicating consistent mets</p></li>
 <li><p>.SConsistentRxnBool - <cite>m</cite> x 1 boolean vector indicating consistent rxns</p></li>
+<li><p>.SIntRxnBool - <cite>n</cite> x 1 boolean of reactions heuristically thought to be mass balanced</p></li>
+<li><p>.rxns - <cite>n</cite> x 1 cell array of reaction identifiers, used when reporting leakage modes</p></li>
 </ul>
 </li>
 <li><p><strong>rxnBool</strong> – <cite>n</cite> x 1 boolean vector of reactions to test for leakage</p></li>
@@ -599,7 +604,7 @@ s.t. ~&amp; Sv - y = 0, \</p>
 </dd>
 <dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>minLeakMetBool       `m` x 1 boolean of metabolites in a positive leakage mode</strong></p></li>
+<li><p><strong>minLeakMetBool</strong> – <cite>m</cite> x 1 boolean of metabolites in a positive leakage mode</p></li>
 <li><p><strong>minLeakRxnBool</strong> – <cite>n</cite> x 1 boolean of reactions exclusively involved in a positive leakage mode</p></li>
 <li><p><strong>minSiphonMetBool</strong> – <cite>m</cite> x 1 boolean of metabolites in a negative leakage mode</p></li>
 <li><p><strong>minSiphonRxnBool</strong> – <cite>n</cite> x 1 boolean of reactions exclusively involved in a negative leakage mode</p></li>
@@ -639,11 +644,12 @@ an iterative cardinality optimisation approach</p>
 <dd class="field-even"><p><strong>model</strong> – structure with:</p>
 <ul class="simple">
 <li><p>.S - <cite>m</cite> x <cite>n</cite> stoichiometric matrix</p></li>
+<li><p>.SIntRxnBool - <cite>n</cite> x 1 boolean of reactions heuristically thought to be mass balanced</p></li>
+<li><p>.mets - <cite>m</cite> x 1 cell array of metabolite identifiers</p></li>
 </ul>
 </dd>
 <dt class="field-odd">OPTIONAL INPUT<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>model.SIntRxnBool              n x 1 boolean of reactions heuristically though to be mass balanced</strong></p></li>
 <li><p><strong>massBalanceCheck</strong> – {0, (1)} mass and charge balance can be checked by looking at formulas
 * 0 = heuristic detection of exchange reactions (using
 <cite>findSExRxnInd</cite>) will be use to warm start algorithmic part
@@ -657,30 +663,38 @@ reactions to a file</p></li>
 <li><p><strong>epsilon</strong> – (<cite>feasTol*10</cite>) min nonzero mass, 1/epsilon = max mass</p></li>
 </ul>
 </dd>
+<dt class="field-even">OUTPUT<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>SConsistentMetBool</strong> – m x 1 boolean vector indicating stoichiometrically consistent mets</p></li>
+<li><p><strong>SConsistentRxnBool</strong> – n x 1 boolean vector indicating stoichiometrically consistent rxns</p></li>
+<li><p><strong>SInConsistentMetBool</strong> – m x 1 boolean vector indicating stoichiometrically inconsistent mets</p></li>
+<li><p><strong>SInConsistentRxnBool</strong> – n x 1 boolean vector indicating stoichiometrically inconsistent rxns</p></li>
+<li><p><strong>unknownSConsistencyMetBool</strong> – m x 1 boolean vector indicating unknown consistent mets (all zeros when algorithm converged perfectly!)</p></li>
+<li><p><strong>unknownSConsistencyRxnBool</strong> – n x 1 boolean vector indicating unknown consistent rxns (all zeros when algorithm converged perfectly!)</p></li>
+<li><p><strong>model</strong> – structure with fields added or updated by this function:</p>
+<ul>
+<li><p>.balancedRxnBool - <cite>n</cite> x 1 boolean vector indicating reactions that are elementally balanced (added when <cite>massBalanceCheck</cite> is enabled)</p></li>
+<li><p>.balancedMetBool - <cite>m</cite> x 1 boolean vector indicating metabolites appearing only in elementally balanced reactions (added when <cite>massBalanceCheck</cite> is enabled)</p></li>
+<li><p>.Elements - list of chemical elements considered during the mass and charge balance check (added when <cite>massBalanceCheck</cite> is enabled)</p></li>
+<li><p>.missingFormulaeBool - <cite>m</cite> x 1 boolean vector indicating metabolites with a missing or unrecognised <cite>metFormulas</cite> entry (added when <cite>massBalanceCheck</cite> is enabled)</p></li>
+<li><p>.SConsistentMetBool - m x 1 boolean vector indicating consistent mets</p></li>
+<li><p>.SConsistentRxnBool - n x 1 boolean vector indicating consistent rxns</p></li>
+<li><p>.SInConsistentMetBool - m x 1 boolean vector indicating inconsistent mets</p></li>
+<li><p>.SInConsistentRxnBool - n x 1 boolean vector indicating inconsistent rxns</p></li>
+<li><p>.metUnknownInconsistentRemoveBool - m x 1 boolean vector indicating removed mets</p></li>
+<li><p>.rxnUnknownInconsistentRemoveBool - n x 1 boolean vector indicating removed rxns</p></li>
+<li><p>.unknownSConsistencyMetBool - m x 1 boolean vector indicating unknown consistent mets (all zeros when algorithm converged perfectly!)</p></li>
+<li><p>.unknownSConsistencyRxnBool - n x 1 boolean vector indicating unknown consistent rxns (all zeros when algorithm converged perfectly!)</p></li>
+<li><p>.SIntMetBool - m x 1 boolean of metabolites heuristically though to be involved in mass balanced reactions</p></li>
+<li><p>.SIntRxnBool - n x 1 boolean of reactions heuristically though to be mass balanced</p></li>
+<li><p>.metRemoveBool - m x 1 boolean vector of metabolites removed to form stoichConsistModel</p></li>
+<li><p>.rxnRemoveBool - n x 1 boolean vector of reactions removed to form stoichConsistModel</p></li>
+</ul>
+</li>
+<li><p><strong>stoichConsistModel</strong> – model with stoichiometrically inconsistent heuristically internal reactions removed and any stoichiometrically inconsistent metabolites removed.</p></li>
+</ul>
+</dd>
 </dl>
-<p>OUTPUT:
-SConsistentMetBool            m x 1 boolean vector indicating stoichiometrically consistent mets
-SConsistentRxnBool            n x 1 boolean vector indicating stoichiometrically consistent rxns
-SInConsistentMetBool          m x 1 boolean vector indicating stoichiometrically inconsistent mets
-SInConsistentRxnBool          n x 1 boolean vector indicating stoichiometrically inconsistent rxns
-unknownSConsistencyMetBool    m x 1 boolean vector indicating unknown consistent mets (all zeros when algorithm converged perfectly!)
-unknownSConsistencyRxnBool    n x 1 boolean vector indicating unknown consistent rxns (all zeros when algorithm converged perfectly!)
-model</p>
-<blockquote>
-<div><p>.SConsistentMetBool                 m x 1 boolean vector indicating consistent mets
-.SConsistentRxnBool                 n x 1 boolean vector indicating consistent rxns
-.SInConsistentMetBool               m x 1 boolean vector indicating inconsistent mets
-.SInConsistentRxnBool               n x 1 boolean vector indicating inconsistent rxns
-.metUnknownInconsistentRemoveBool   m x 1 boolean vector indicating removed mets
-.rxnUnknownInconsistentRemoveBool   n x 1 boolean vector indicating removed rxns
-.unknownSConsistencyMetBool         m x 1 boolean vector indicating unknown consistent mets (all zeros when algorithm converged perfectly!)
-.unknownSConsistencyRxnBool         n x 1 boolean vector indicating unknown consistent rxns (all zeros when algorithm converged perfectly!)
-.SIntMetBool                        m x 1 boolean of metabolites heuristically though to be involved in mass balanced reactions
-.SIntRxnBool                        n x 1 boolean of reactions heuristically though to be mass balanced
-.metRemoveBool                      m x 1 boolean vector of metabolites removed to form stoichConsistModel
-.rxnRemoveBool                      n x 1 boolean vector of reactions removed to form stoichConsistModel</p>
-</div></blockquote>
-<p>stoichConsistModel          model with stoichiometrically inconsistent heuristically internal reactions removed and any stoichiometrically inconsistent metabolites removed.</p>
 </dd></dl>
 
 <dl class="mat function">
@@ -704,7 +718,12 @@ s.t. ~&amp; Sv + s = 0, \\
 <li><p>.ub - Upper bounds</p></li>
 </ul>
 </li>
-<li><p><strong>params</strong> – structure with fields</p></li>
+<li><p><strong>params</strong> – structure with fields:</p>
+<ul>
+<li><p>.epsilon - threshold on <cite>|v|</cite> above which a reaction flux is
+considered inconsistent (used to derive <cite>SConsistentRxnBool</cite>)</p></li>
+</ul>
+</li>
 <li><p><strong>printLevel</strong> – verbose level</p></li>
 </ul>
 </dd>
@@ -773,6 +792,7 @@ answer as optimizeCardinality.</p>
 <li><p>.zeta - Stopping criteria - threshold (Default value 1e-6)</p></li>
 <li><p>.theta - Parameter of capped <cite>l1</cite> approximation (Default value 0.5)</p></li>
 <li><p>.method - {‘quasiConcave’, (‘optimizeCardinality’)}</p></li>
+<li><p>.printLevel - Verbose level (Default value 0)</p></li>
 </ul>
 </dd>
 <dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
@@ -801,7 +821,9 @@ answer as optimizeCardinality.</p>
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.reconstruction.modelGeneration.stoichConsistency.maxEntConsVector">
 <span class="sig-name descname"><span class="pre">maxEntConsVector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">SInt</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/modelGeneration/stoichConsistency/maxEntConsVector.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.stoichConsistency.maxEntConsVector" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
+<dd><p>Computes the maximum entropy conservation vector <cite>m</cite> of a stoichiometric
+matrix by solving a primal-dual barrier problem with <cite>pdco</cite>.</p>
+<dl class="field-list simple">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[m, bool] = maxEntConsVector</strong> (<em>SInt, printLevel</em>)</p>
 </dd>
@@ -840,9 +862,10 @@ s.t. ~&amp; x + S^T z = 0 \\
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>param</strong> – structure with:</p>
 <ul>
-<li><p>param.epsilon - (getCobraSolverParams(‘LP’, ‘feasTol’)*100) 1/epsilon is the largest flux expected</p></li>
-<li><p>param.eta - (<cite>feasTol</cite> * 100), cutoff for mass leak/siphon</p></li>
-<li><p>param.nonRelaxBool - (false(n, 1)), <cite>n</cite> x 1 boolean vector for reactions not to relax</p></li>
+<li><p>.epsilon - (getCobraSolverParams(‘LP’, ‘feasTol’)*100) 1/epsilon is the largest flux expected</p></li>
+<li><p>.eta - (<cite>feasTol</cite> * 100), cutoff for mass leak/siphon</p></li>
+<li><p>.nonRelaxBool - (false(n, 1)), <cite>n</cite> x 1 boolean vector for reactions not to relax</p></li>
+<li><p>.checkConsistency - whether to check the stoichiometric consistency of the network prior to relaxation</p></li>
 </ul>
 </li>
 <li><p><strong>printLevel</strong> – verbose level</p></li>
@@ -900,7 +923,14 @@ s.t. ~&amp; x + S^T y = 0 \\
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>model</strong> – model structure</p></li>
+<li><p><strong>model</strong> – model structure with fields:</p>
+<ul>
+<li><p>.SIntMetBool - <cite>m</cite> x 1 boolean of metabolites heuristically thought to be involved in mass balanced reactions</p></li>
+<li><p>.mets - <cite>m</cite> x 1 cell array of metabolite identifiers</p></li>
+<li><p>.metNames - <cite>m</cite> x 1 cell array of metabolite names</p></li>
+<li><p>.rxns - <cite>n</cite> x 1 cell array of reaction identifiers</p></li>
+</ul>
+</li>
 <li><p><strong>minMetBool</strong> – boolean of metabolites in a positive leakage mode</p></li>
 <li><p><strong>minRxnBool</strong> – boolean of reactions exclusively involved in a positive leakage mode</p></li>
 <li><p><strong>y</strong> – contains <cite>minMetBool</cite></p></li>
@@ -923,10 +953,10 @@ s.t. ~&amp; x + S^T y = 0 \\
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../../rBioNet/index.html" class="btn btn-default float-right" title="Rbionet" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../modelVerification/index.html" class="btn btn-default float-right" title="Modelverification" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../modelVerification/index.html" class="btn btn-default" title="Modelverification" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../fluxConsistency/DCA/index.html" class="btn btn-default" title="Dca" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

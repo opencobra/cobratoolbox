@@ -65,8 +65,8 @@
         <link rel="search" title="Search" href="../../../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../../../index.html"/>
         <link rel="up" title="Suite" href="../index.html"/>
-        <link rel="next" title="Reports" href="../reports/index.html"/>
-        <link rel="prev" title="Suite" href="../index.html"/> 
+        <link rel="next" title="Visualization" href="../../../../visualization/index.html"/>
+        <link rel="prev" title="Reports" href="../reports/index.html"/> 
 
   
   <script src="../../../../../_static/js/modernizr.min.js"></script>
@@ -161,22 +161,22 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../dataIntegration/index.html">Dataintegration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../design/index.html">Design</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../../index.html">Reconstruction</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../../../comparison/index.html">Comparison</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../refinement/index.html">Refinement</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../rBioNet/index.html">Rbionet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modelGeneration/index.html">Modelgeneration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../metaboRePort/index.html">Metaboreport</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../fastGapFill/index.html">Fastgapfill</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../growthExpMatch/index.html">Growthexpmatch</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../modelGeneration/index.html">Modelgeneration</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../rBioNet/index.html">Rbionet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../comparison/index.html">Comparison</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../../index.html">Demeter</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="../../src/index.html">Src</a></li>
 <li class="toctree-l4 current"><a class="reference internal" href="../index.html">Suite</a><ul class="current">
-<li class="toctree-l5 current"><a class="current reference internal" href="#">Tests</a></li>
 <li class="toctree-l5"><a class="reference internal" href="../reports/index.html">Reports</a></li>
+<li class="toctree-l5 current"><a class="current reference internal" href="#">Tests</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../../refinement/index.html">Refinement</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../metaboRePort/index.html">Metaboreport</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../visualization/index.html">Visualization</a></li>
@@ -245,21 +245,20 @@ control/quality assurance tests on a batch of reconstructions and saves
 the results for each reconstruction in the input folder.</p>
 <dl class="field-list simple">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>batchTestAllReconstructionFunctions</strong> (<em>modelFolder,testResultsFolder,inputDataFolder,reconVersion, numWorkers</em>)</p>
+<dd class="field-odd"><p><strong>batchTestAllReconstructionFunctions</strong> (<em>modelFolder, testResultsFolder, inputDataFolder, reconVersion, numWorkers</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>modelFolder</strong> – Folder with COBRA models (draft or refined
+reconstructions) to analyze</p></li>
+<li><p><strong>testResultsFolder</strong> – Folder where the test results should be saved</p></li>
+<li><p><strong>inputDataFolder</strong> – Folder with experimental data and database
+files to load</p></li>
+<li><p><strong>reconVersion</strong> – Name of the refined reconstruction resource</p></li>
+<li><p><strong>numWorkers</strong> – Number of workers in parallel pool</p></li>
+</ul>
 </dd>
 </dl>
-<p>INPUTS
-modelFolder           Folder with COBRA models (draft or refined</p>
-<blockquote>
-<div><p>reconstructions) to analyze</p>
-</div></blockquote>
-<p>testResultsFolder     Folder where the test results should be saved
-inputDataFolder       Folder with experimental data and database files</p>
-<blockquote>
-<div><p>to load</p>
-</div></blockquote>
-<p>reconVersion          Name of the refined reconstruction resource
-numWorkers            Number of workers in parallel pool</p>
 </dd></dl>
 
 <dl class="mat function">
@@ -270,29 +269,38 @@ reports whether ATP production is feasible. Optionally, draft
 reconstructions can be included.</p>
 <dl class="field-list simple">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>[tooHighATP,ATP_fluxes] = plotATPTestResults</strong> (<em>refinedFolder, reconVersion, varargin</em>)</p>
+<dd class="field-odd"><p><strong>[tooHighATP, ATP_fluxes] = plotATPTestResults</strong> (<em>refinedFolder, reconVersion, varargin</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>refinedFolder</strong> – Folder with refined COBRA models generated by
+the refinement pipeline</p></li>
+<li><p><strong>reconVersion</strong> – Name of the refined reconstruction resource</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>varargin</strong> – Optional name-value arguments:</p>
+<ul class="simple">
+<li><p>testResultsFolder - Folder where the test
+results should be saved (default: current
+folder, subfolder <cite>TestResults</cite>)</p></li>
+<li><p>numWorkers - Number of workers in parallel
+pool (default: 0)</p></li>
+<li><p>translatedDraftsFolder - Folder with
+translated draft COBRA models generated by
+the KBase pipeline to analyze (will only
+be analyzed if the folder is provided,
+default: ‘’)</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>tooHighATP</strong> – List of IDs for refined reconstructions that
+produce too much ATP on complex medium</p></li>
+<li><p><strong>ATP_fluxes</strong> – Computed ATP production fluxes for each model</p></li>
+</ul>
 </dd>
 </dl>
-<p>REQUIRED INPUTS
-refinedFolder             Folder with refined COBRA models generated by</p>
-<blockquote>
-<div><p>the refinement pipeline</p>
-</div></blockquote>
-<p>reconVersion              Name of the refined reconstruction resource</p>
-<p>OPTIONAL INPUTS
-testResultsFolder         Folder where the test results should be saved
-numWorkers                Number of workers in parallel pool (default: 0)
-translatedDraftsFolder    Folder with  translated draft COBRA models</p>
-<blockquote>
-<div><p>generated by KBase pipeline to analyze (will
-only be analyzed if folder is provided)</p>
-</div></blockquote>
-<p>OUTPUT
-tooHighATP                List of IDs for refined reconstructions that</p>
-<blockquote>
-<div><p>produce too much ATP on complex medium</p>
-</div></blockquote>
-<p>ATP_fluxes                 Computed ATP production fluxes for each model</p>
 </dd></dl>
 
 <dl class="mat function">
@@ -303,35 +311,55 @@ reports whether any reconstructions are incapable of biomass production.
 Optionally, draft reconstructions can be included.</p>
 <dl class="field-list simple">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>[notGrowing,Biomass_fluxes] = plotBiomassTestResults</strong> (<em>refinedFolder, reconVersion, varargin</em>)</p>
+<dd class="field-odd"><p><strong>[notGrowing, Biomass_fluxes] = plotBiomassTestResults</strong> (<em>refinedFolder, reconVersion, varargin</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>refinedFolder</strong> – Folder with refined COBRA models generated by
+the refinement pipeline</p></li>
+<li><p><strong>reconVersion</strong> – Name of the refined reconstruction resource</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>varargin</strong> – Optional name-value arguments:</p>
+<ul class="simple">
+<li><p>testResultsFolder - Folder where the test
+results should be saved (default: current
+folder, subfolder <cite>TestResults</cite>)</p></li>
+<li><p>numWorkers - Number of workers in parallel
+pool (default: 0)</p></li>
+<li><p>translatedDraftsFolder - Folder with
+translated draft COBRA models generated by
+the KBase pipeline to analyze (will only
+be analyzed if the folder is provided,
+default: ‘’)</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>notGrowing</strong> – List of IDs for refined reconstructions that
+cannot produce biomass on at least one condition</p></li>
+<li><p><strong>Biomass_fluxes</strong> – Computed biomass production fluxes for each model</p></li>
+</ul>
 </dd>
 </dl>
-<p>REQUIRED INPUTS
-refinedFolder             Folder with refined COBRA models generated by</p>
-<blockquote>
-<div><p>the refinement pipeline</p>
-</div></blockquote>
-<p>reconVersion              Name of the refined reconstruction resource</p>
-<p>OPTIONAL INPUTS
-testResultsFolder         Folder where the test results should be saved
-numWorkers                Number of workers in parallel pool (default: 0)
-translatedDraftsFolder    Folder with  translated draft COBRA models</p>
-<blockquote>
-<div><p>generated by KBase pipeline to analyze (will
-only be analyzed if folder is provided)</p>
-</div></blockquote>
-<p>OUTPUT
-notGrowing                List of IDs for refined reconstructions that</p>
-<blockquote>
-<div><p>cannot produce biomass on at least one condition</p>
-</div></blockquote>
-<p>Biomass_fluxes             Computed biomass production fluxes for each model</p>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.reconstruction.demeter.suite.tests.plotTestSuiteResults">
 <span class="sig-name descname"><span class="pre">plotTestSuiteResults</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">testResultsFolder</span></em>, <em class="sig-param"><span class="pre">reconVersion</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/suite/tests/plotTestSuiteResults.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.suite.tests.plotTestSuiteResults" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function prints and summarizes the results of testAllReconstructionFunctions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>plotTestSuiteResults</strong> (<em>testResultsFolder, reconVersion</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>testResultsFolder</strong> – Folder where the test results were saved</p></li>
+<li><p><strong>reconVersion</strong> – Name of the refined reconstruction resource</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="mat function">
@@ -341,33 +369,45 @@ notGrowing                List of IDs for refined reconstructions that</p>
 that should be refined through DEMETER.</p>
 <dl class="field-list simple">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>[testResultsFolder,curationReport] = runTestSuiteTools</strong> (<em>refinedFolder, infoFilePath, inputDataFolder, reconVersion, varargin</em>)</p>
+<dd class="field-odd"><p><strong>[testResultsFolder, curationReport] = runTestSuiteTools</strong> (<em>refinedFolder, infoFilePath, inputDataFolder, reconVersion, varargin</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>refinedFolder</strong> – Folder with refined COBRA models generated by the
+refinement pipeline</p></li>
+<li><p><strong>infoFilePath</strong> – File with information on reconstructions to refine</p></li>
+<li><p><strong>inputDataFolder</strong> – Folder with experimental data and database
+files to load</p></li>
+<li><p><strong>reconVersion</strong> – Name of the refined reconstruction resource</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>varargin</strong> – Optional name-value arguments:</p>
+<ul class="simple">
+<li><p>testResultsFolder - Folder where the test
+results are saved (default: current
+folder, subfolder <cite>TestResults</cite>)</p></li>
+<li><p>numWorkers - Number of workers in parallel
+pool (default: 2)</p></li>
+<li><p>createReports - Boolean defining if a
+report for each reconstruction should be
+created (default: false)</p></li>
+<li><p>reportsFolder - Folder where reports
+should be saved (default: ‘’)</p></li>
+<li><p>translatedDraftsFolder - Folder with
+translated draft COBRA models generated by
+the KBase pipeline to analyze (will only
+be analyzed if the folder is provided,
+default: ‘’)</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>testResultsFolder</strong> – Folder where the test results are saved</p></li>
+<li><p><strong>curationReport</strong> – Summary of results of QA/QC tests</p></li>
+</ul>
 </dd>
 </dl>
-<p>REQUIRED INPUTS
-refinedFolder             Folder with refined COBRA models generated by the</p>
-<blockquote>
-<div><p>refinement pipeline</p>
-</div></blockquote>
-<p>infoFilePath              File with information on reconstructions to refine
-inputDataFolder           Folder with experimental data and database files to
-reconVersion              Name of the refined reconstruction resource</p>
-<p>OPTIONAL INPUTS
-testResultsFolder         Folder where the test results are saved
-numWorkers                Number of workers in parallel pool (default: 2)
-createReports             Boolean defining if a report for each</p>
-<blockquote>
-<div><p>reconstruction should be created (default: false).</p>
-</div></blockquote>
-<p>reportsFolder             Folder where reports should be saved
-translatedDraftsFolder    Folder with  translated draft COBRA models generated by KBase</p>
-<blockquote>
-<div><p>pipeline to analyze (will only be analyzed if
-folder is provided)</p>
-</div></blockquote>
-<p>OUTPUTS
-testResultsFolder         Folder where the test results are saved
-curationReport            Summary of results of QA/QC tests</p>
 </dd></dl>
 
 <dl class="mat function">
@@ -379,41 +419,52 @@ control/quality assurance tests on a model.</p>
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>testResults = runTestsOnModel</strong> (<em>model, microbeID, inputDataFolder</em>)</p>
 </dd>
-</dl>
-<p>INPUTS
-modelFolder           Folder with COBRA models (draft or refined</p>
-<blockquote>
-<div><p>reconstructions) to analyze</p>
-</div></blockquote>
-<dl class="simple">
-<dt>inputDataFolder       Folder with experimental data and database files</dt><dd><p>to load</p>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – COBRA model structure with fields:</p>
+<ul>
+<li><p>.rxns - Reaction identifiers</p></li>
+<li><p>.lb - Reaction lower bounds</p></li>
+</ul>
+</li>
+<li><p><strong>microbeID</strong> – Microbe ID (used to label the test results)</p></li>
+<li><p><strong>inputDataFolder</strong> – Folder with experimental data and database
+files to load</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>testResults</strong> – Structure with results of the test run, one
+field per QA/QC test</p>
 </dd>
 </dl>
-<p>OUTPUT
-testResults           Structure with results of the test run</p>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.reconstruction.demeter.suite.tests.testATP">
 <span class="sig-name descname"><span class="pre">testATP</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/suite/tests/testATP.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.suite.tests.testATP" title="Permalink to this definition">¶</a></dt>
 <dd><p>Tests flux through the ATP demand reaction (<a href="#id2"><span class="problematic" id="id3">DM_atp_c_</span></a>) on a complex
-medium-constrained model, both aerobic and anaerobic.
-USAGE</p>
-<blockquote>
-<div><p>[atpFluxAerobic, atpFluxAnaerobic] = testATP(model)</p>
-</div></blockquote>
-<p>INPUT
-model             COBRA model structure</p>
-<p>OUTPUT
-atpFluxAerobic    Numeric vector showing the flux through the ATP demand</p>
-<blockquote>
-<div><p>reaction under aerobic conditions (mmol/gDW/h).</p>
-</div></blockquote>
-<dl class="simple">
-<dt>atpFluxAnaerobic  Numeric vector showing the flux through the ATP demand</dt><dd><p>reaction under anaerobic conditions (mmol/gDW/h)</p>
+medium-constrained model, both aerobic and anaerobic.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[atpFluxAerobic, atpFluxAnaerobic] = testATP</strong> (<em>model</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>model</strong> – COBRA model structure with fields:</p>
+<ul class="simple">
+<li><p>.rxns - Reaction identifiers</p></li>
+<li><p>.mets - Metabolite identifiers</p></li>
+<li><p>.S - <cite>m x n</cite> stoichiometric matrix</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>atpFluxAerobic</strong> – Numeric vector showing the flux through the ATP demand
+reaction under aerobic conditions (mmol/gDW/h).</p></li>
+<li><p><strong>atpFluxAnaerobic</strong> – Numeric vector showing the flux through the ATP demand
+reaction under anaerobic conditions (mmol/gDW/h)</p></li>
+</ul>
 </dd>
 </dl>
-<p>Stefania Magnusdottir, Nov 2017</p>
 </dd></dl>
 
 <dl class="mat function">
@@ -424,24 +475,43 @@ that can carry flux in the model and should carry flux according to
 data (true positives) and those AromaticAA pathway end reactions that
 cannot carry flux in the model but should be secreted according to in
 vitro data (false negatives).</p>
-<p>INPUT
-model             COBRA model structure
-microbeID         Microbe ID in carbon source data file
-biomassReaction   Biomass objective functions (low flux through BOF</p>
+<dl class="field-list">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[TruePositives, FalseNegatives] = testAromaticAADegradation</strong> (<em>model, microbeID, biomassReaction, database</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul>
+<li><p><strong>model</strong> – COBRA model structure with fields:</p>
+<ul class="simple">
+<li><p>.rxns - Reaction identifiers</p></li>
+</ul>
+</li>
+<li><p><strong>microbeID</strong> – Microbe ID in carbon source data file</p></li>
+<li><p><strong>biomassReaction</strong> – Biomass objective functions (low flux through BOF
+required in analysis)</p></li>
+<li><p><strong>database</strong> – Structure containing rBioNet reaction and metabolite
+database with fields:</p>
 <blockquote>
-<div><p>required in analysis)</p>
+<div><ul class="simple">
+<li><p>.metabolites - Metabolite database, column 1
+VMH IDs, column 2 metabolite names</p></li>
+</ul>
 </div></blockquote>
-<dl class="simple">
-<dt>database          Structure containing rBioNet reaction and metabolite</dt><dd><p>database</p>
+</li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>TruePositives</strong> – Cell array of strings listing all aromatic amino acid
+degradation products that can be secreted by the
+model and in comparative genomic data.</p></li>
+<li><p><strong>FalseNegatives</strong> – Cell array of strings listing all aromatic amino acid
+degradation products that cannot be secreted by the
+model but should be secreted according to comparative
+genomic data.</p></li>
+</ul>
 </dd>
 </dl>
-<p>OUTPUT
-TruePositives     Cell array of strings listing all aromatic amino acid
-degradation products
-that can be secreted by the model and in comnparative genomic data.
-FalseNegatives    Cell array of strings listing all aromatic amino acid
-degradation products
-that cannot be secreted by the model but should be secreted according to comparative genomic data.</p>
 </dd></dl>
 
 <dl class="mat function">
@@ -452,26 +522,40 @@ that can be secreted by the model and should be secreted according to
 data (true positives) and those bile acid metabolites that cannot be secreted by
 the model but should be secreted according to in vitro data (false
 negatives).</p>
-<p>INPUT
-model             COBRA model structure
-microbeID         Microbe ID in data file
-biomassReaction   Biomass objective functions (low flux through BOF</p>
-<blockquote>
-<div><p>required in analysis)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>database          Structure containing rBioNet reaction and metabolite</dt><dd><p>database</p>
+<dl class="field-list">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[TruePositives, FalseNegatives] = testBileAcidBiosynthesis</strong> (<em>model, microbeID, biomassReaction, database</em>)</p>
 </dd>
-</dl>
-<p>OUTPUT
-TruePositives     Cell array of strings listing all bile acid products</p>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul>
+<li><p><strong>model</strong> – COBRA model structure with fields:</p>
+<ul class="simple">
+<li><p>.rxns - Reaction identifiers</p></li>
+</ul>
+</li>
+<li><p><strong>microbeID</strong> – Microbe ID in data file</p></li>
+<li><p><strong>biomassReaction</strong> – Biomass objective functions (low flux through BOF
+required in analysis)</p></li>
+<li><p><strong>database</strong> – Structure containing rBioNet reaction and metabolite
+database with fields:</p>
 <blockquote>
-<div><p>(exchange reactions) that can be secreted by the model
-and in in vitro data.</p>
+<div><ul class="simple">
+<li><p>.metabolites - Metabolite database, column 1
+VMH IDs, column 2 metabolite names</p></li>
+</ul>
 </div></blockquote>
-<dl class="simple">
-<dt>FalseNegatives    Cell array of strings listing all bile acid products</dt><dd><p>(exchange reactions) that cannot be secreted by the model
-but should be secreted according to in vitro data.</p>
+</li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>TruePositives</strong> – Cell array of strings listing all bile acid products
+(exchange reactions) that can be secreted by the model
+and in in vitro data.</p></li>
+<li><p><strong>FalseNegatives</strong> – Cell array of strings listing all bile acid products
+(exchange reactions) that cannot be secreted by the model
+but should be secreted according to in vitro data.</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -484,28 +568,42 @@ that can be taken up by the model and should be taken up according to
 data (true positives) and those carbon sources that cannot be taken up by
 the model but should be taken up according to in vitro data (false
 negatives).</p>
-<p>INPUT
-model             COBRA model structure
-microbeID         Microbe ID in carbon source data file
-biomassReaction   Biomass objective functions (low flux through BOF</p>
-<blockquote>
-<div><p>required in analysis)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>database          Structure containing rBioNet reaction and metabolite</dt><dd><p>database</p>
+<dl class="field-list">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[TruePositives, FalseNegatives] = testCarbonSources</strong> (<em>model, microbeID, biomassReaction, database, inputDataFolder</em>)</p>
 </dd>
-<dt>inputDataFolder   Folder with experimental data and database files</dt><dd><p>to load</p>
-</dd>
-</dl>
-<p>OUTPUT
-TruePositives     Cell array of strings listing all carbon sources</p>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul>
+<li><p><strong>model</strong> – COBRA model structure with fields:</p>
+<ul class="simple">
+<li><p>.rxns - Reaction identifiers</p></li>
+</ul>
+</li>
+<li><p><strong>microbeID</strong> – Microbe ID in carbon source data file</p></li>
+<li><p><strong>biomassReaction</strong> – Biomass objective functions (low flux through BOF
+required in analysis)</p></li>
+<li><p><strong>database</strong> – Structure containing rBioNet reaction and metabolite
+database with fields:</p>
 <blockquote>
-<div><p>(exchange reactions) that can be taken up by the model
-and in in vitro data.</p>
+<div><ul class="simple">
+<li><p>.metabolites - Metabolite database, column 1
+VMH IDs, column 2 metabolite names</p></li>
+</ul>
 </div></blockquote>
-<dl class="simple">
-<dt>FalseNegatives    Cell array of strings listing all carbon sources</dt><dd><p>(exchange reactions) that cannot be taken up by the model
-but should be taken up according to in vitro data.</p>
+</li>
+<li><p><strong>inputDataFolder</strong> – Folder with experimental data and database files
+to load</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>TruePositives</strong> – Cell array of strings listing all carbon sources
+(exchange reactions) that can be taken up by the model
+and in in vitro data.</p></li>
+<li><p><strong>FalseNegatives</strong> – Cell array of strings listing all carbon sources
+(exchange reactions) that cannot be taken up by the model
+but should be taken up according to in vitro data.</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -518,26 +616,41 @@ that can be taken up and/or secreted by the model and should be secreted accordi
 data (true positives) and those bile acid metabolites that cannot be secreted by
 the model but should be secreted according to in vitro data (false
 negatives).</p>
-<p>INPUT
-model             COBRA model structure
-microbeID         Microbe ID in carbon source data file
-biomassReaction   Biomass objective functions (low flux through BOF</p>
-<blockquote>
-<div><p>required in analysis)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>database          Structure containing rBioNet reaction and metabolite</dt><dd><p>database</p>
+<dl class="field-list">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[TruePositives, FalseNegatives] = testDrugMetabolism</strong> (<em>model, microbeID, biomassReaction, database</em>)</p>
 </dd>
-</dl>
-<p>OUTPUT
-TruePositives     Cell array of strings listing all drug metabolites</p>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul>
+<li><p><strong>model</strong> – COBRA model structure with fields:</p>
+<ul class="simple">
+<li><p>.rxns - Reaction identifiers</p></li>
+</ul>
+</li>
+<li><p><strong>microbeID</strong> – Microbe ID in carbon source data file</p></li>
+<li><p><strong>biomassReaction</strong> – Biomass objective functions (low flux through BOF
+required in analysis)</p></li>
+<li><p><strong>database</strong> – Structure containing rBioNet reaction and metabolite
+database with fields:</p>
 <blockquote>
-<div><p>(exchange reactions) that can be taken up and/or secreted by the model
-and in in vitro data.</p>
+<div><ul class="simple">
+<li><p>.metabolites - Metabolite database, column 1
+VMH IDs, column 2 metabolite names</p></li>
+</ul>
 </div></blockquote>
-<dl class="simple">
-<dt>FalseNegatives    Cell array of strings listing all drug metabolites</dt><dd><p>(exchange reactions) that cannot be taken up and/or secreted by the model
-but should be secreted according to in vitro data.</p>
+</li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>TruePositives</strong> – Cell array of strings listing all drug metabolites
+(exchange reactions) that can be taken up and/or
+secreted by the model and in in vitro data.</p></li>
+<li><p><strong>FalseNegatives</strong> – Cell array of strings listing all drug metabolites
+(exchange reactions) that cannot be taken up and/or
+secreted by the model but should be secreted
+according to in vitro data.</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -550,28 +663,42 @@ that can be secreted by the model and should be secreted according to
 data (true positives) and those fermentation products that cannot be secreted by
 the model but should be secreted according to in vitro data (false
 negatives).</p>
-<p>INPUT
-model             COBRA model structure
-microbeID         Microbe ID in carbon source data file
-biomassReaction   Biomass objective functions (low flux through BOF</p>
-<blockquote>
-<div><p>required in analysis)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>database          Structure containing rBioNet reaction and metabolite</dt><dd><p>database</p>
+<dl class="field-list">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[TruePositives, FalseNegatives] = testFermentationProducts</strong> (<em>model, microbeID, biomassReaction, database, inputDataFolder</em>)</p>
 </dd>
-<dt>inputDataFolder   Folder with experimental data and database files</dt><dd><p>to load</p>
-</dd>
-</dl>
-<p>OUTPUT
-TruePositives     Cell array of strings listing all fermentation products</p>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul>
+<li><p><strong>model</strong> – COBRA model structure with fields:</p>
+<ul class="simple">
+<li><p>.rxns - Reaction identifiers</p></li>
+</ul>
+</li>
+<li><p><strong>microbeID</strong> – Microbe ID in carbon source data file</p></li>
+<li><p><strong>biomassReaction</strong> – Biomass objective functions (low flux through BOF
+required in analysis)</p></li>
+<li><p><strong>database</strong> – Structure containing rBioNet reaction and metabolite
+database with fields:</p>
 <blockquote>
-<div><p>(exchange reactions) that can be secreted by the model
-and in in vitro data.</p>
+<div><ul class="simple">
+<li><p>.metabolites - Metabolite database, column 1
+VMH IDs, column 2 metabolite names</p></li>
+</ul>
 </div></blockquote>
-<dl class="simple">
-<dt>FalseNegatives    Cell array of strings listing all fermentation products</dt><dd><p>(exchange reactions) that cannot be secreted by the model
-but should be secreted according to in vitro data.</p>
+</li>
+<li><p><strong>inputDataFolder</strong> – Folder with experimental data and database files
+to load</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>TruePositives</strong> – Cell array of strings listing all fermentation products
+(exchange reactions) that can be secreted by the model
+and in in vitro data.</p></li>
+<li><p><strong>FalseNegatives</strong> – Cell array of strings listing all fermentation products
+(exchange reactions) that cannot be secreted by the model
+but should be secreted according to in vitro data.</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -580,14 +707,22 @@ but should be secreted according to in vitro data.</p>
 <dt class="sig sig-object mat" id="src.reconstruction.demeter.suite.tests.testGeneRules">
 <span class="sig-name descname"><span class="pre">testGeneRules</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/suite/tests/testGeneRules.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.suite.tests.testGeneRules" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds gene rules that have an incorrect nomenclature.</p>
-<p>INPUT
-model             COBRA model structure</p>
-<p>OUTPUT
-incorrectGeneRules       Cell array listing entries in model.rules that</p>
-<blockquote>
-<div><p>have incorrect nomenclature.</p>
-</div></blockquote>
-<p>Almut Heinken, Oct 2019</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>incorrectGeneRules = testGeneRules</strong> (<em>model</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>model</strong> – COBRA model structure with fields:</p>
+<ul class="simple">
+<li><p>.rules - Gene-protein-reaction rules in
+computable form</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>incorrectGeneRules</strong> – Cell array listing entries in model.rules that
+have incorrect nomenclature.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="mat function">
@@ -596,31 +731,37 @@ incorrectGeneRules       Cell array listing entries in model.rules that</p>
 <dd><p>Tests growth, both on unlimited media and complex medium, both aerobic and
 anaerobic conditions. In anaerobic conditions, both oxygen uptake
 (exchange reaction) and cytosolic oxygen-utilizing reactions are blocked.</p>
-<dl class="simple">
-<dt>USAGE</dt><dd><p>[AerobicGrowth, AnaerobicGrowth] = testGrowth(model, biomassReaction)</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[AerobicGrowth, AnaerobicGrowth] = testGrowth</strong> (<em>model, biomassReaction</em>)</p>
 </dd>
-</dl>
-<p>INPUT
-model             COBRA model structure
-biomassReaction   String listing the biomass reaction</p>
-<p>OUTPUT
-AerobicGrowth     Numeric vector showing the flux through the biomass</p>
-<blockquote>
-<div><p>reaction (aerobic conditions):
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – COBRA model structure with fields:</p>
+<ul>
+<li><p>.rxns - Reaction identifiers</p></li>
+</ul>
+</li>
+<li><p><strong>biomassReaction</strong> – String listing the biomass reaction</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>AerobicGrowth</strong> – Numeric vector showing the flux through the biomass
+reaction (aerobic conditions):
 Column 1: “unlimited” media (all exchanges to -1000
 mmol/gDW/h)
 Column 2: complex medium as defined in
-InputFilesComplexMedium.txt</p>
-</div></blockquote>
-<dl class="simple">
-<dt>AnaerobicGrowth   Numeric vector showing the flux through the biomass</dt><dd><p>reaction (anaerobic conditions):
+InputFilesComplexMedium.txt</p></li>
+<li><p><strong>AnaerobicGrowth</strong> – Numeric vector showing the flux through the biomass
+reaction (anaerobic conditions):
 Column 1: “unlimited” media (all exchanges to -1000
 mmol/gDW/h)
 Column 2: complex medium as defined in
-InputFilesComplexMedium.txt</p>
+InputFilesComplexMedium.txt</p></li>
+</ul>
 </dd>
 </dl>
-<p>Stefania Magnusdottir, Nov 2017</p>
 </dd></dl>
 
 <dl class="mat function">
@@ -631,22 +772,33 @@ growth requirements. The output is the calculated growth rates.
 If the model can grow on the defined medium, a minimal medium is also
 computed and the list of essential exchanges as well as a model
 constrained with these exchanges are returned.</p>
-<p>INPUT
-model                         COBRA model structure
-microbeID                     Microbe ID in data file
-biomassReaction               String listing the biomass reaction
-inputDataFolder               Folder with experimental data and database files</p>
-<blockquote>
-<div><p>to load</p>
-</div></blockquote>
-<p>OUTPUT
-growsOnDefinedMedium          Bool if growth on defined medium yes or no
-constrainedModel              Model constrained with essential exchanges (anaerobic)
-growthOnKnownCarbonSources    Aerobic and anaerobic growth on known</p>
-<blockquote>
-<div><p>carbon sources for the organism</p>
-</div></blockquote>
-<p>Almut Heinken, November 2018</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[growsOnDefinedMedium, constrainedModel, growthOnKnownCarbonSources] = testGrowthOnDefinedMedia</strong> (<em>model, microbeID, biomassReaction, inputDataFolder</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – COBRA model structure with fields:</p>
+<ul>
+<li><p>.rxns - Reaction identifiers</p></li>
+<li><p>.lb - Reaction lower bounds</p></li>
+</ul>
+</li>
+<li><p><strong>microbeID</strong> – Microbe ID in data file</p></li>
+<li><p><strong>biomassReaction</strong> – String listing the biomass reaction</p></li>
+<li><p><strong>inputDataFolder</strong> – Folder with experimental data and database files
+to load</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>growsOnDefinedMedium</strong> – Bool if growth on defined medium yes or no</p></li>
+<li><p><strong>constrainedModel</strong> – Model constrained with essential exchanges (anaerobic)</p></li>
+<li><p><strong>growthOnKnownCarbonSources</strong> – Aerobic and anaerobic growth on known
+carbon sources for the organism</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="mat function">
@@ -654,13 +806,18 @@ growthOnKnownCarbonSources    Aerobic and anaerobic growth on known</p>
 <span class="sig-name descname"><span class="pre">testInputFiles</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/suite/tests/testInputFiles.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.suite.tests.testInputFiles" title="Permalink to this definition">¶</a></dt>
 <dd><p>Tests if the names of all reconstructed microbes are present in the input
 files for the AGORA2 pipeline.</p>
-<p>OUTPUT
-modelIDsMissingInTable       AGORA2 reconstruction IDs missing in the table
-incorrectIDsInTable          Reconstruction IDs in the table not</p>
-<blockquote>
-<div><p>corresponding to any reconstruction</p>
-</div></blockquote>
-<p>Almut Heinken, 09/2019</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[modelIDsMissingInTable, incorrectIDsInTable] = testInputFiles()</strong></p>
+</dd>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>modelIDsMissingInTable</strong> – AGORA2 reconstruction IDs missing in the table</p></li>
+<li><p><strong>incorrectIDsInTable</strong> – Reconstruction IDs in the table not
+corresponding to any reconstruction</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="mat function">
@@ -668,14 +825,22 @@ incorrectIDsInTable          Reconstruction IDs in the table not</p>
 <span class="sig-name descname"><span class="pre">testLeakingMetabolites</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/suite/tests/testLeakingMetabolites.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.suite.tests.testLeakingMetabolites" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds metabolites that can be produced when no metabolites enter the
 model (produced from nothing).</p>
-<p>INPUT
-model             COBRA model structure</p>
-<p>OUTPUT
-leakingMets       Cell array listing any metabolites that can be be</p>
-<blockquote>
-<div><p>produced from nothing.</p>
-</div></blockquote>
-<p>Stefania Magnusdottir, Nov 2017</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>leakingMets = testLeakingMetabolites</strong> (<em>model</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>model</strong> – COBRA model structure with fields:</p>
+<ul class="simple">
+<li><p>.lb - Reaction lower bounds</p></li>
+<li><p>.rxns - Reaction identifiers</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>leakingMets</strong> – Cell array listing any metabolites that can be be
+produced from nothing.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="mat function">
@@ -689,28 +854,42 @@ negatives).
 Based on literature search of reported vitamin-secreting probiotics
 performed 11/2017, and a compendium of uptake and uptake products
 (PMID:28585563)</p>
-<p>INPUT
-model             COBRA model structure
-microbeID         Microbe ID in uptake product data file
-biomassReaction   Biomass objective functions (low flux through BOF</p>
-<blockquote>
-<div><p>required in analysis)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>database          Structure containing rBioNet reaction and metabolite</dt><dd><p>database</p>
+<dl class="field-list">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[TruePositives, FalseNegatives] = testMetaboliteUptake</strong> (<em>model, microbeID, biomassReaction, database, inputDataFolder</em>)</p>
 </dd>
-<dt>inputDataFolder   Folder with experimental data and database files</dt><dd><p>to load</p>
-</dd>
-</dl>
-<p>OUTPUT
-TruePositives     Cell array of strings listing all metabolites</p>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul>
+<li><p><strong>model</strong> – COBRA model structure with fields:</p>
+<ul class="simple">
+<li><p>.rxns - Reaction identifiers</p></li>
+</ul>
+</li>
+<li><p><strong>microbeID</strong> – Microbe ID in uptake product data file</p></li>
+<li><p><strong>biomassReaction</strong> – Biomass objective functions (low flux through BOF
+required in analysis)</p></li>
+<li><p><strong>database</strong> – Structure containing rBioNet reaction and metabolite
+database with fields:</p>
 <blockquote>
-<div><p>(exchange reactions) that can be taken up by the model
-and in in vitro data.</p>
+<div><ul class="simple">
+<li><p>.metabolites - Metabolite database, column 1
+VMH IDs, column 2 metabolite names</p></li>
+</ul>
 </div></blockquote>
-<dl class="simple">
-<dt>FalseNegatives    Cell array of strings listing all metabolites</dt><dd><p>(exchange reactions) that cannot be taken up by the model
-but should be taken up according to in vitro data.</p>
+</li>
+<li><p><strong>inputDataFolder</strong> – Folder with experimental data and database files
+to load</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>TruePositives</strong> – Cell array of strings listing all metabolites
+(exchange reactions) that can be taken up by the model
+and in in vitro data.</p></li>
+<li><p><strong>FalseNegatives</strong> – Cell array of strings listing all metabolites
+(exchange reactions) that cannot be taken up by the model
+but should be taken up according to in vitro data.</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -723,36 +902,48 @@ and charge imbalanced reactions. Reports the mass and/or charge imblanced
 reactions along with reaction formulas and imblanced elements. Reports
 metabolites involved in mass or charge imblanced reactions along with
 their formulas and charges.</p>
-<p>INPUT
-model                 COBRA model structure
-excludeExchanges      Exclude exchange reactions when reporting imbalanced</p>
-<blockquote>
-<div><p>reactions (default: true).</p>
-</div></blockquote>
-<p>OPTIONAL INPUT
-biomassReaction       Model biomass reaction (will be excluded from</p>
-<blockquote>
-<div><p>report if provided)</p>
-</div></blockquote>
-<p>OUTPUT
-massImbalancedRxns    Cell array listing (col 1) all mass imbalanced</p>
-<blockquote>
-<div><p>reactions in the model, (col 2) the reaction
-formulas, and (col 3) the imbalanced elements.</p>
-</div></blockquote>
-<dl class="simple">
-<dt>chargeImbalancedRxns  Cell array listing (col 1) all charge imbalanced</dt><dd><p>reactions in the model, (col 2) the reaction
-formulas, and (col 3) the imblanced elements.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[massImbalancedRxns, chargeImbalancedRxns, imbalancedRxnMets, metsMissingFormulas] = testModelMassChargeBalance</strong> (<em>model, excludeExchanges, biomassReaction</em>)</p>
 </dd>
-<dt>imbalancedRxnMets     Cell array listing (col 1) all metabolites involved</dt><dd><p>in any mass or charge imblanced reaction, (col 2)
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – COBRA model structure with fields:</p>
+<ul>
+<li><p>.rxns - Reaction identifiers</p></li>
+<li><p>.mets - Metabolite identifiers</p></li>
+<li><p>.metNames - Metabolite names</p></li>
+<li><p>.S - <cite>m x n</cite> stoichiometric matrix</p></li>
+<li><p>.metFormulas - Metabolite chemical formulas</p></li>
+<li><p>.metCharges - Metabolite charges</p></li>
+</ul>
+</li>
+<li><p><strong>excludeExchanges</strong> – Exclude exchange reactions when reporting imbalanced
+reactions (default: true).</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>biomassReaction</strong> – Model biomass reaction (will be excluded from
+report if provided)</p>
+</dd>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>massImbalancedRxns</strong> – Cell array listing (col 1) all mass imbalanced
+reactions in the model, (col 2) the reaction
+formulas, and (col 3) the imbalanced elements.</p></li>
+<li><p><strong>chargeImbalancedRxns</strong> – Cell array listing (col 1) all charge imbalanced
+reactions in the model, (col 2) the reaction
+formulas, and (col 3) the imblanced elements.</p></li>
+<li><p><strong>imbalancedRxnMets</strong> – Cell array listing (col 1) all metabolites involved
+in any mass or charge imblanced reaction, (col 2)
 the metabolite name, (col 3) the metabolite
-formula, and (col 4) the metabolite charge.</p>
-</dd>
-<dt>metsMissingFormulas   Cell array listing (col 1) all metabolites that do</dt><dd><p>not have metabolite formulas and (col 2) the
-metabolite names.</p>
+formula, and (col 4) the metabolite charge.</p></li>
+<li><p><strong>metsMissingFormulas</strong> – Cell array listing (col 1) all metabolites that do
+not have metabolite formulas and (col 2) the
+metabolite names.</p></li>
+</ul>
 </dd>
 </dl>
-<p>Stefania Magnusdottir, Oct 2017</p>
 </dd></dl>
 
 <dl class="mat function">
@@ -763,23 +954,41 @@ that can carry flux in the model and should carry flux according to
 data (true positives) and those putrefaction pathway end reactions that
 cannot carry flux in the model but should be secreted according to in
 vitro data (false negatives).</p>
-<p>INPUT
-model             COBRA model structure
-microbeID         Microbe ID in carbon source data file
-biomassReaction   Biomass objective functions (low flux through BOF</p>
+<dl class="field-list">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[TruePositives, FalseNegatives] = testPutrefactionPathways</strong> (<em>model, microbeID, biomassReaction, database</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul>
+<li><p><strong>model</strong> – COBRA model structure with fields:</p>
+<ul class="simple">
+<li><p>.rxns - Reaction identifiers</p></li>
+</ul>
+</li>
+<li><p><strong>microbeID</strong> – Microbe ID in carbon source data file</p></li>
+<li><p><strong>biomassReaction</strong> – Biomass objective functions (low flux through BOF
+required in analysis)</p></li>
+<li><p><strong>database</strong> – Structure containing rBioNet reaction and metabolite
+database with fields:</p>
 <blockquote>
-<div><p>required in analysis)</p>
+<div><ul class="simple">
+<li><p>.metabolites - Metabolite database, column 1
+VMH IDs, column 2 metabolite names</p></li>
+</ul>
 </div></blockquote>
-<dl class="simple">
-<dt>database          Structure containing rBioNet reaction and metabolite</dt><dd><p>database</p>
+</li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>TruePositives</strong> – Cell array of strings listing all putrefaction reactions
+that can carry flux in the model and in in vitro data.</p></li>
+<li><p><strong>FalseNegatives</strong> – Cell array of strings listing all putrefaction reactions
+that cannot carry flux in the model but should carry
+flux according to in vitro data.</p></li>
+</ul>
 </dd>
 </dl>
-<p>OUTPUT
-TruePositives     Cell array of strings listing all putrefaction reactions
-that can carry flux in the model and in in vitro data.
-FalseNegatives    Cell array of strings listing all putrefaction reactions
-that cannot carry flux in the model but should carry flux according to in
-vitro data.</p>
 </dd></dl>
 
 <dl class="mat function">
@@ -787,24 +996,28 @@ vitro data.</p>
 <span class="sig-name descname"><span class="pre">testRefinedReactions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">microbeID</span></em>, <em class="sig-param"><span class="pre">BlockedRxns</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/suite/tests/testRefinedReactions.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.suite.tests.testRefinedReactions" title="Permalink to this definition">¶</a></dt>
 <dd><p>Tests if reactions that were added through the refinement of gene
 annotations in the reconstructed organism can carry flux.</p>
-<p>INPUT
-microbeID         Microbe ID in data file with refined genome annotations
-BlockedRxns       Reactions in the COBRA model that cannot carry flux:</p>
-<blockquote>
-<div><p>output of identifyBlockedRxns function</p>
-</div></blockquote>
-<p>OUTPUT
-RefinedReactionsCarryingFlux     Reactions that were added through</p>
-<blockquote>
-<div><p>refinement of the genome annotations
-and can carry flux</p>
-</div></blockquote>
-<dl class="simple">
-<dt>BlockedRefinedReactions          Reactions that were added through</dt><dd><p>refinement of the genome annotations
-and cannot carry flux</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[RefinedReactionsCarryingFlux, BlockedRefinedReactions] = testRefinedReactions</strong> (<em>microbeID, BlockedRxns</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>microbeID</strong> – Microbe ID in data file with refined genome annotations</p></li>
+<li><p><strong>BlockedRxns</strong> – Reactions in the COBRA model that cannot carry flux:
+output of identifyBlockedRxns function</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>RefinedReactionsCarryingFlux</strong> – Reactions that were added through
+refinement of the genome annotations
+and can carry flux</p></li>
+<li><p><strong>BlockedRefinedReactions</strong> – Reactions that were added through
+refinement of the genome annotations
+and cannot carry flux</p></li>
+</ul>
 </dd>
 </dl>
-<p>Almut Heinken, Nov 2019</p>
 </dd></dl>
 
 <dl class="mat function">
@@ -817,28 +1030,42 @@ the model but should be secreted according to in vitro data (false
 negatives).
 Based on literature search of reported secretion-secreting probiotics
 performed 11/2017</p>
-<p>INPUT
-model             COBRA model structure
-microbeID         Microbe ID in secretion secretion data file
-biomassReaction   Biomass objective functions (low flux through BOF</p>
-<blockquote>
-<div><p>required in analysis)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>database          Structure containing rBioNet reaction and metabolite</dt><dd><p>database</p>
+<dl class="field-list">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[TruePositives, FalseNegatives] = testSecretionProducts</strong> (<em>model, microbeID, biomassReaction, database, inputDataFolder</em>)</p>
 </dd>
-<dt>inputDataFolder   Folder with experimental data and database files</dt><dd><p>to load</p>
-</dd>
-</dl>
-<p>OUTPUT
-TruePositives     Cell array of strings listing all secretions</p>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul>
+<li><p><strong>model</strong> – COBRA model structure with fields:</p>
+<ul class="simple">
+<li><p>.rxns - Reaction identifiers</p></li>
+</ul>
+</li>
+<li><p><strong>microbeID</strong> – Microbe ID in secretion secretion data file</p></li>
+<li><p><strong>biomassReaction</strong> – Biomass objective functions (low flux through BOF
+required in analysis)</p></li>
+<li><p><strong>database</strong> – Structure containing rBioNet reaction and metabolite
+database with fields:</p>
 <blockquote>
-<div><p>(exchange reactions) that can be secreted by the model
-and in in vitro data.</p>
+<div><ul class="simple">
+<li><p>.metabolites - Metabolite database, column 1
+VMH IDs, column 2 metabolite names</p></li>
+</ul>
 </div></blockquote>
-<dl class="simple">
-<dt>FalseNegatives    Cell array of strings listing all secretions</dt><dd><p>(exchange reactions) that cannot be secreted by the model
-but should be secreted according to in vitro data.</p>
+</li>
+<li><p><strong>inputDataFolder</strong> – Folder with experimental data and database files
+to load</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>TruePositives</strong> – Cell array of strings listing all secretions
+(exchange reactions) that can be secreted by the model
+and in in vitro data.</p></li>
+<li><p><strong>FalseNegatives</strong> – Cell array of strings listing all secretions
+(exchange reactions) that cannot be secreted by the model
+but should be secreted according to in vitro data.</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -851,16 +1078,19 @@ compartments in the refined reconstructions. Appropriate compartments
 include [c], [e], and [p].</p>
 <dl class="field-list simple">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>[incorrectRxns,incorrectMets] = validateCompartments</strong> (<em>model</em>)</p>
+<dd class="field-odd"><p><strong>[incorrectRxns, incorrectMets] = validateCompartments</strong> (<em>model</em>)</p>
 </dd>
-</dl>
-<p>INPUTS
-model             COBRA model structure</p>
-<p>OUTPUTS</p>
-<p>incorrectRxns     Reactions including metabolites in inappropriate compartments
-incorrectMets     Metabolites located in inappropriate compartments</p>
-<dl class="simple">
-<dt>AUTHOR:</dt><dd><p>Almut Heinken, 10/2020</p>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>model</strong> – COBRA model structure with fields:</p>
+<ul class="simple">
+<li><p>.mets - Metabolite identifiers</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>incorrectRxns</strong> – Reactions including metabolites in inappropriate compartments</p></li>
+<li><p><strong>incorrectMets</strong> – Metabolites located in inappropriate compartments</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -877,10 +1107,10 @@ incorrectMets     Metabolites located in inappropriate compartments</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../reports/index.html" class="btn btn-default float-right" title="Reports" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../../../../visualization/index.html" class="btn btn-default float-right" title="Visualization" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../index.html" class="btn btn-default" title="Suite" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../reports/index.html" class="btn btn-default" title="Reports" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

@@ -65,8 +65,8 @@
         <link rel="search" title="Search" href="../../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../../index.html"/>
         <link rel="up" title="Xomicstomodel" href="../index.html"/>
-        <link rel="next" title="Analysis" href="../analysis/index.html"/>
-        <link rel="prev" title="Thermoqp" href="../thermoKernel/thermoQP/index.html"/> 
+        <link rel="next" title="Preparedata" href="../prepareData/index.html"/>
+        <link rel="prev" title="Metabolomics" href="../metabolomics/index.html"/> 
 
   
   <script src="../../../../_static/js/modernizr.min.js"></script>
@@ -159,21 +159,21 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../base/index.html">Base</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Dataintegration</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../../chemoInformatics/index.html">Chemoinformatics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../fluxomics/index.html">Fluxomics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../metabotools/index.html">Metabotools</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../metanetxMapper/index.html">Metanetxmapper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../metaboAnnotator/index.html">Metaboannotator</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../index.html">Xomicstomodel</a><ul class="current">
-<li class="toctree-l4"><a class="reference internal" href="../thermoKernel/index.html">Thermokernel</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../metabolomics/index.html">Metabolomics</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">Proteomics</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../analysis/index.html">Analysis</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../prepareData/index.html">Preparedata</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../oneRxnPerActiveGene/index.html">Onerxnperactivegene</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../metabolomics/index.html">Metabolomics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../analysis/index.html">Analysis</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../thermoKernel/index.html">Thermokernel</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../metaboAnnotator/index.html">Metaboannotator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chemoInformatics/index.html">Chemoinformatics</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../transcriptomics/index.html">Transcriptomics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../metabotools/index.html">Metabotools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../fluxomics/index.html">Fluxomics</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../design/index.html">Design</a></li>
@@ -238,28 +238,28 @@
 <span class="target" id="module-src.dataIntegration.XomicsToModel.proteomics"></span><dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.XomicsToModel.proteomics.activeProteinList">
 <span class="sig-name descname"><span class="pre">activeProteinList</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">proteomicsEx</span></em>, <em class="sig-param"><span class="pre">proteomicsGenes</span></em>, <em class="sig-param"><span class="pre">treshold</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/XomicsToModel/proteomics/activeProteinList.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.XomicsToModel.proteomics.activeProteinList" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
+<dd><p>Split a list of proteins into active and inactive sets using an expression threshold</p>
+<dl class="field-list simple">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[activeProteins, inactiveProteins] = activeProteinList</strong> (<em>proteomicsEx, proteomicsGenes, treshold, printLevel</em>)</p>
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>proteomicsEx</strong></p></li>
-<li><p><strong>proteomicsGenes</strong></p></li>
-<li><p><strong>treshold</strong></p></li>
-<li><p><strong>printLevel</strong></p></li>
+<li><p><strong>proteomicsEx</strong> – logarithmic mean proteomic expression value for each protein</p></li>
+<li><p><strong>proteomicsGenes</strong> – gene identifiers corresponding to each expression value</p></li>
+<li><p><strong>treshold</strong> – expression threshold used to classify a protein as active</p></li>
+<li><p><strong>printLevel</strong> – set greater than 2 to plot a histogram of the expression values</p></li>
 </ul>
 </dd>
 <dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>activeProteins</strong></p></li>
-<li><p><strong>inactiveProteins</strong></p></li>
+<li><p><strong>activeProteins</strong> – genes whose expression is at or above the threshold</p></li>
+<li><p><strong>inactiveProteins</strong> – genes classified as inactive</p></li>
 </ul>
 </dd>
 </dl>
 <p>EXAMPLE:</p>
 <p>NOTE:</p>
-<p>Author(s): Aga W</p>
 </dd></dl>
 
 </section>
@@ -274,10 +274,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../analysis/index.html" class="btn btn-default float-right" title="Analysis" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../prepareData/index.html" class="btn btn-default float-right" title="Preparedata" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../thermoKernel/thermoQP/index.html" class="btn btn-default" title="Thermoqp" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../metabolomics/index.html" class="btn btn-default" title="Metabolomics" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

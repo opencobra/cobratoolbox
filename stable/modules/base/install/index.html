@@ -65,8 +65,8 @@
         <link rel="search" title="Search" href="../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../index.html"/>
         <link rel="up" title="Base" href="../index.html"/>
-        <link rel="next" title="Solvers" href="../solvers/index.html"/>
-        <link rel="prev" title="Definitions" href="../io/definitions/index.html"/> 
+        <link rel="next" title="Dataintegration" href="../../dataIntegration/index.html"/>
+        <link rel="prev" title="Cobrarrow" href="../cobrarrow/index.html"/> 
 
   
   <script src="../../../_static/js/modernizr.min.js"></script>
@@ -159,13 +159,13 @@
 <li class="toctree-l2"><a class="reference internal" href="../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html">Base</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="../utilities/index.html">Utilities</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../paths/index.html">Paths</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../ci/index.html">Ci</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../codeConsistency/index.html">Codeconsistency</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../io/index.html">Io</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Install</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../solvers/index.html">Solvers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ci/index.html">Ci</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../paths/index.html">Paths</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../cobrarrow/index.html">Cobrarrow</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Install</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../dataIntegration/index.html">Dataintegration</a></li>
@@ -258,9 +258,9 @@ If the public key of the <cite>site.ext</cite> does not exist,
 adds the public key to the known hosts</p>
 <dl class="field-list simple">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>keyAdded = addKeyToKnownHosts()</strong></p>
+<dd class="field-odd"><p><strong>keyAdded = addKeyToKnownHosts</strong> (<em>siteName</em>)</p>
 </dd>
-<dt class="field-even">INPUT<span class="colon">:</span></dt>
+<dt class="field-even">OPTIONAL INPUT<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>siteName</strong> – Name of the site for which the public key shall be added
 (default: <cite>github.com</cite>)</p>
 </dd>
@@ -285,6 +285,54 @@ adds the public key to the known hosts</p>
 <dd class="field-odd"><p><strong>status</strong> – Boolean if CellNetAnalyzer is installed properly</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.base.install.getCobraTestMode">
+<span class="sig-name descname"><span class="pre">getCobraTestMode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">query</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/install/getCobraTestMode.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.install.getCobraTestMode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resolve the effective COBRA test-suite execution mode.</p>
+<p>The COBRA Toolbox test suite runs in one of two modes:</p>
+<blockquote>
+<div><dl class="simple">
+<dt>‘fast’ (default) - reduces redundant work (per-test loops over every</dt><dd><p>installed solver when the assertions are solver
+independent, large-model re-parsing, dead waits,
+duplicated model builds) while preserving essentially
+the same code coverage.</p>
+</dd>
+<dt>‘full’           - runs the complete, slower suite exactly as before this</dt><dd><p>feature (no fast-mode trimming). Continuous integration
+always runs in this mode so the coverage gate keeps its
+thorough baseline.</p>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mode = getCobraTestMode()</strong></p></li>
+<li><p><strong>tf   = getCobraTestMode</strong> (<em>‘isFast’</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">OPTIONAL INPUT<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>query</strong> – if ‘isFast’, return a logical that is true when the effective
+mode is ‘fast’. Any other value returns the mode string.</p>
+</dd>
+<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>result</strong> – the mode string ‘fast’ or ‘full’, or (for ‘isFast’) a logical.</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<dl class="simple">
+<dt>Resolution order (highest precedence first):</dt><dd><ol class="arabic simple">
+<li><p>the CI environment (<cite>COBRA_CI == ‘1’</cite>) always resolves to ‘full’;</p></li>
+<li><p>the global variable <cite>CBT_TEST_MODE</cite>, if set to ‘fast’/’full’;</p></li>
+<li><p>the environment variable <cite>COBRA_TEST_MODE</cite>, if set to ‘fast’/’full’;</p></li>
+<li><p>otherwise the default, ‘fast’.</p></li>
+</ol>
+</dd>
+</dl>
+<p>Any set value other than ‘fast’/’full’ raises COBRA:testMode:invalid.</p>
+</div>
 </dd></dl>
 
 <dl class="mat function">
@@ -367,7 +415,7 @@ This function can only be run on Windows, and throws an error when run on a UNIX
 <dl class="field-list simple">
 <dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>ignorePatterns</strong> – A cell array of regexp patterns indicating files
+<li><p><strong>ignorepatterns</strong> – A cell array of regexp patterns indicating files
 which are not to be listed</p></li>
 <li><p><strong>filterpatterns</strong> – A cell array of regexp patterns identifying those
 files which should be returned after ignoring.</p></li>
@@ -424,12 +472,16 @@ This function can only be run on Windows, and throws an error when run on a UNIX
 <dd class="field-odd"><p><strong>portableGitSetup</strong> (<em>gitBashVersion, removeFlag</em>)</p>
 </dd>
 <dt class="field-even">INPUT<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>removeFlag</strong> – Flag to remove old versions from the path or not</p>
-<ul class="simple">
+<dd class="field-even"><ul class="simple">
+<li><p><strong>gitBashVersion</strong> – Version of gitBash to install, e.g. <cite>2.13.2</cite></p></li>
+<li><p><strong>removeFlag</strong> – Flag to remove old versions from the path or not</p>
+<ul>
 <li><p>0: install, don’t remove anything</p></li>
 <li><p>1: install, remove paths in registry</p></li>
 <li><p>2: don’t install gitBash, remove .exe file and paths in registry</p></li>
 <li><p>3: don’t install gitBash, remove everything including unpacked archives (to be implemented)</p></li>
+</ul>
+</li>
 </ul>
 </dd>
 </dl>
@@ -461,6 +513,7 @@ COBRA:RequirementsNotMet error is thrown.</p>
 <li><p><cite>needsMIQP</cite>: Whether a MIQP solver is required (default: false)</p></li>
 <li><p><cite>needsNLP</cite>: Whether a NLP solver is required (default: false)</p></li>
 <li><p><cite>needsEP</cite>: Whether a EP solver is required (default: false)</p></li>
+<li><p><cite>needsCLP</cite>: Whether a CLP solver is required (default: false)</p></li>
 <li><p><cite>needsUnix</cite>: Whether the test only works on a Unix system (macOS or Linux) (default: false)</p></li>
 <li><p><cite>needsWindows</cite>: Whether the test only works on a Windows system (default: false)</p></li>
 <li><p><cite>needsMac</cite>: Whether the test only works on a Mac system (default: false)</p></li>
@@ -535,7 +588,7 @@ mentioned in the COBRA .gitignore file.</p>
 <dt class="field-even">INPUT<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>directory</strong> – The directory which should be checked for changing files.</p></li>
-<li><p><strong>content</strong> – Absolute file names of the original conten in a cell array.</p></li>
+<li><p><strong>oldcontent</strong> – Absolute file names of the original content in a cell array.</p></li>
 </ul>
 </dd>
 <dt class="field-odd">OPTIONAL INPUT<span class="colon">:</span></dt>
@@ -596,10 +649,10 @@ This function can only be run on Windows, and throws an error when run on a UNIX
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../solvers/index.html" class="btn btn-default float-right" title="Solvers" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../../dataIntegration/index.html" class="btn btn-default float-right" title="Dataintegration" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../io/definitions/index.html" class="btn btn-default" title="Definitions" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../cobrarrow/index.html" class="btn btn-default" title="Cobrarrow" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

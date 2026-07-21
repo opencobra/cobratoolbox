@@ -65,8 +65,8 @@
         <link rel="search" title="Search" href="../../../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../../../index.html"/>
         <link rel="up" title="Src" href="../index.html"/>
-        <link rel="next" title="Refinement" href="../refinement/index.html"/>
-        <link rel="prev" title="Debugging" href="../debugging/index.html"/> 
+        <link rel="next" title="Suite" href="../../suite/index.html"/>
+        <link rel="prev" title="Properties" href="../properties/index.html"/> 
 
   
   <script src="../../../../../_static/js/modernizr.min.js"></script>
@@ -161,24 +161,24 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../dataIntegration/index.html">Dataintegration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../design/index.html">Design</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../../index.html">Reconstruction</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../../../comparison/index.html">Comparison</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../refinement/index.html">Refinement</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../rBioNet/index.html">Rbionet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modelGeneration/index.html">Modelgeneration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../metaboRePort/index.html">Metaboreport</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../fastGapFill/index.html">Fastgapfill</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../growthExpMatch/index.html">Growthexpmatch</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../modelGeneration/index.html">Modelgeneration</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../rBioNet/index.html">Rbionet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../comparison/index.html">Comparison</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../../index.html">Demeter</a><ul class="current">
 <li class="toctree-l4 current"><a class="reference internal" href="../index.html">Src</a><ul class="current">
-<li class="toctree-l5"><a class="reference internal" href="../properties/index.html">Properties</a></li>
-<li class="toctree-l5"><a class="reference internal" href="../debugging/index.html">Debugging</a></li>
-<li class="toctree-l5 current"><a class="current reference internal" href="#">Integration</a></li>
 <li class="toctree-l5"><a class="reference internal" href="../refinement/index.html">Refinement</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../debugging/index.html">Debugging</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../properties/index.html">Properties</a></li>
+<li class="toctree-l5 current"><a class="current reference internal" href="#">Integration</a></li>
 </ul>
 </li>
 <li class="toctree-l4"><a class="reference internal" href="../../suite/index.html">Suite</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../../refinement/index.html">Refinement</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../metaboRePort/index.html">Metaboreport</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../visualization/index.html">Visualization</a></li>
@@ -244,12 +244,17 @@
 <span class="sig-name descname"><span class="pre">adaptDraftModelID</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">modelIDIn</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/src/integration/adaptDraftModelID.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.src.integration.adaptDraftModelID" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function adapts the name of the draft reconstruction entered into
 the pipeline into a suitable curated reconstruction ID.</p>
-<p>USAGE: microbeID = adaptKBaseModelID(modelIDIn)</p>
-<p>INPUT
-modelIDIn     name of the KBase draft reconstruction file to refine</p>
-<p>OUTPUT
-microbeID     name of the resulting refined reconstruction</p>
-<p>AUTHOR: Almut Heinken, 06/2020.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>microbeID = adaptDraftModelID</strong> (<em>modelIDIn</em>)</p>
+</dd>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>modelIDIn</strong> – name of the KBase draft reconstruction file to refine</p>
+</dd>
+<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>microbeID</strong> – name of the resulting refined reconstruction</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="mat function">
@@ -261,21 +266,24 @@ strains in the reconstruction resource that were not yet present in the
 input file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>[checkedData,addedStrains,removedStrains,duplicateStrains] = checkInputData</strong> (<em>inputData,strainInformation</em>)</p>
+<dd class="field-odd"><p><strong>[checkedData, addedStrains, removedStrains, duplicateStrains] = checkInputData</strong> (<em>inputData, strainInformation</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>inputData</strong> – Table with experimental data to check</p></li>
+<li><p><strong>strainInformation</strong> – Table with list on all strains to reconstruct</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>checkedData</strong> – Corrected table with experimental data to check</p></li>
+<li><p><strong>addedStrains</strong> – Strains that were missing from inputData</p></li>
+<li><p><strong>removedStrains</strong> – Strains that were in inputData but are not present
+in strainInformation</p></li>
+<li><p><strong>duplicateStrains</strong> – Strains that were in inputData more than once</p></li>
+</ul>
 </dd>
 </dl>
-<p>INPUT
-inputData:            Table with experimental data to check
-strainInformation:    Table with list on all strains to reconstruct</p>
-<p>OUTPUT
-checkedData:          Corrected table with experimental data to check
-addedStrains:         Strains that were missing from inputData
-removedStrains:       Strains that were in inputData but are not present</p>
-<blockquote>
-<div><p>in strainInformation</p>
-</div></blockquote>
-<p>duplicateStrains:     Strains that were in inputData more than once</p>
-<p>AUTHOR: Almut Heinken, 06/2020</p>
 </dd></dl>
 
 <dl class="mat function">
@@ -289,21 +297,20 @@ corresponding to each taxonomy ID can be provided to serve as strain
 identifiers.</p>
 <dl class="field-list simple">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>createInfoFileDEMETER</strong> (<em>taxIDs</em>)</p>
+<dd class="field-odd"><p><strong>infoFile = createInfoFileDEMETER</strong> (<em>taxIDs, strainNames</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>taxIDs</strong> – Vector or cell array of numerics that represent valid NCBI
+Taxonomy IDs.</p>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>strainNames</strong> – List of custom gene names to be used a model IDs</p>
+</dd>
+<dt class="field-even">OUTPUT<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>infoFile</strong> – Table with taxonomic information, gram staining, and
+oxygen requirement for each strain</p>
 </dd>
 </dl>
-<p>REQUIRED INPUT
-taxIDs         Vector or cell array of numerics that represent valid NCBI</p>
-<blockquote>
-<div><p>Taxonomy IDs.</p>
-</div></blockquote>
-<p>OPTIONAL INPUT
-% strainNames  List of custom gene names to be used a model IDs</p>
-<p>OUTPUT
-infoFile       Table with taxonomic information, gram staining, and</p>
-<blockquote>
-<div><p>oxygen requirement for each strain</p>
-</div></blockquote>
 </dd></dl>
 
 <dl class="mat function">
@@ -331,19 +338,17 @@ introduced based on comparative genomic analyses.comparative genomics.</p>
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>gapfilledGenomeAnnotation = gapfillRefinedGenomeReactions</strong> (<em>genomeAnnotation</em>)</p>
 </dd>
-</dl>
-<p>INPUT
-genomeAnnotation              Text file with genome annotations that had</p>
-<blockquote>
-<div><p>been retrieved through the function
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>genomeAnnotation</strong> – Text file with genome annotations that had
+been retrieved through the function
 writeReactionsFromPubSeedSpreadsheets</p>
-</div></blockquote>
-<p>OUTPUT
-gapfilledGenomeAnnotation     Text file with genome annotations that have</p>
-<blockquote>
-<div><p>been gap-filled to enable flux through
+</dd>
+<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>gapfilledGenomeAnnotation</strong> – Text file with genome annotations that have
+been gap-filled to enable flux through
 reactions added based on genome annotations</p>
-</div></blockquote>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="mat function">
@@ -363,19 +368,21 @@ the file with curation status information will be saved as a file called
 curationStatus.txt in the inputDataFolder.</p>
 <dl class="field-list simple">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>curationStatus = getCurationStatus</strong> (<em>infoFilePath,inputDataFolder,getComparativeGenomics</em>)</p>
+<dd class="field-odd"><p><strong>curationStatus = getCurationStatus</strong> (<em>infoFilePath, inputDataFolder, getComparativeGenomics</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>infoFilePath</strong> – File with information on reconstructions to refine</p></li>
+<li><p><strong>inputDataFolder</strong> – Folder with experimental data and database files to</p></li>
+<li><p><strong>getComparativeGenomics</strong> – Boolean indicating whether PubSEED spreadsheets
+with information on the reconstructed strains are
+available</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>curationStatus</strong> – Table with curation status of each model</p>
 </dd>
 </dl>
-<p>INPUTS
-infoFilePath:             File with information on reconstructions to refine
-inputDataFolder:          Folder with experimental data and database files to
-getComparativeGenomics:   Boolean indicating whether PubSEED spreadsheets</p>
-<blockquote>
-<div><p>with information on the reconstructed strains are
-available</p>
-</div></blockquote>
-<p>OUTPUT
-curationStatus:           Table with curation status of each model</p>
 </dd></dl>
 
 <dl class="mat function">
@@ -388,19 +395,23 @@ through comparative genomics to remove them from the draft
 reconstructions.</p>
 <dl class="field-list simple">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>unannotatedRxns = getUnannotatedReactionsFromPubSeedSpreadsheets</strong> (<em>infoFilePath,inputDataFolder,spreadsheetFolder</em>)</p>
+<dd class="field-odd"><p><strong>unannotatedRxns = getUnannotatedReactionsFromPubSeedSpreadsheets</strong> (<em>infoFilePath, inputDataFolder, spreadsheetFolder</em>)</p>
 </dd>
-</dl>
-<p>INPUTS
-infoFilePath          File with information on reconstructions to refine
-inputDataFolder       Folder to save propagated data to (default: folder</p>
-<blockquote>
-<div><p>in current path called “InputData”)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>spreadsheetFolder     Folder with comparative genomics data retrieved</dt><dd><p>from PubSEED in spreadsheet format if available.
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>infoFilePath</strong> – File with information on reconstructions to refine</p></li>
+<li><p><strong>inputDataFolder</strong> – Folder to save propagated data to (default: folder
+in current path called “InputData”)</p></li>
+<li><p><strong>spreadsheetFolder</strong> – Folder with comparative genomics data retrieved
+from PubSEED in spreadsheet format if available.
 For an example of the required format, see
-cobratoolbox/papers/2021_demeter/exampleSpreadsheets.</p>
+cobratoolbox/papers/2021_demeter/exampleSpreadsheets.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>unannotatedRxns</strong> – Cell array of organism ID, reaction ID pairs for
+reactions not found through comparative genomics
+that are removed from the draft reconstructions</p>
 </dd>
 </dl>
 </dd></dl>
@@ -412,11 +423,16 @@ cobratoolbox/papers/2021_demeter/exampleSpreadsheets.</p>
 Virtual Metabolic Human (<a class="reference external" href="https://www.vmh.life/">https://www.vmh.life/</a>) nomenclature.</p>
 <dl class="field-list simple">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>database=loadVMHDatabase</strong></p>
+<dd class="field-odd"><p><strong>database = loadVMHDatabase()</strong></p>
+</dd>
+<dt class="field-even">OUTPUT<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>database</strong> – Structure with reaction and metabolite database</p>
+<ul class="simple">
+<li><p>.metabolites - Cell array, the VMH metabolite database</p></li>
+<li><p>.reactions - Cell array, the VMH reaction database</p></li>
+</ul>
 </dd>
 </dl>
-<p>OUTPUT
-database  Structure with reaction and metabolite database</p>
 </dd></dl>
 
 <dl class="mat function">
@@ -429,22 +445,20 @@ IDs, which will then allow matching translated reactions to reactions
 that already exist in the VMH (Virtual Metabolic Human) database.</p>
 <dl class="field-list simple">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>[sameReactions,similarReactions] = mapKBaseToVMHReactions</strong> (<em>translatedRxns</em>)</p>
+<dd class="field-odd"><p><strong>[sameReactions, similarReactions] = mapKBaseToVMHReactions</strong> (<em>translatedRxns</em>)</p>
 </dd>
-</dl>
-<p>INPUTS
-translatedRxns:       Table with untranslated KBase reactions but</p>
-<blockquote>
-<div><p>translated metabolite IDs</p>
-</div></blockquote>
-<p>OUTPUT
-sameReactions:        Table with translated KBase reactions that already</p>
-<blockquote>
-<div><p>exist in the VMH database with corresponding IDs</p>
-</div></blockquote>
-<dl class="simple">
-<dt>similarReactions:     Table with translated KBase reactions for which a</dt><dd><p>reaction with the same formula but irreversible in
-VMH and reversible in KBase (or vice versa) exists</p>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>translatedRxns</strong> – Table with untranslated KBase reactions but
+translated metabolite IDs</p>
+</dd>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sameReactions</strong> – Table with translated KBase reactions that already
+exist in the VMH database with corresponding IDs</p></li>
+<li><p><strong>similarReactions</strong> – Table with translated KBase reactions for which a
+reaction with the same formula but irreversible in
+VMH and reversible in KBase (or vice versa) exists</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -456,35 +470,52 @@ VMH and reversible in KBase (or vice versa) exists</p>
 multiple media and converts the in silico minimal medium the strain can
 grow on into an input fit for DEMETER. The input data was retrieved from
 Tramontano et al., Nat Microbiol 2019 (PMID: 29556107).</p>
-<dl class="simple">
-<dt>USAGE</dt><dd><p>mappedMedia = mapMediumData2AGORA(strainGrowth,inputMedia)</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>mappedMedia = mapMediumData2AGORA</strong> (<em>strainGrowth, inputMedia</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>strainGrowth</strong> – Growth of strains on the different media reported
+by Tramontano et al.</p></li>
+<li><p><strong>inputMedia</strong> – Growth media tested by Tramontano et al. converted
+into a computationally readable format</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>mappedMedia</strong> – Data from Tramontano et al. converted into a format
+that can be added to GrowthRequirementsTable</p>
 </dd>
 </dl>
-<p>INPUTS
-strainGrowth          Growth of strains on the different media reported</p>
-<blockquote>
-<div><p>by Tramontano et al.</p>
-</div></blockquote>
-<dl class="simple">
-<dt>inputMedia            Growth media tested by Tramontano et al. converted</dt><dd><p>into a computationally readable format</p>
-</dd>
-</dl>
-<p>OUTPUT
-mappedMedia           Data from Tramontano et al. converted into a format</p>
-<blockquote>
-<div><p>that can be added to GrowthRequirementsTable</p>
-</div></blockquote>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.reconstruction.demeter.src.integration.parseNCBItaxonomy">
 <span class="sig-name descname"><span class="pre">parseNCBItaxonomy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">NCBI</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/src/integration/parseNCBItaxonomy.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.src.integration.parseNCBItaxonomy" title="Permalink to this definition">¶</a></dt>
 <dd><p>Grabs taxonomic lineage from NCBI using the NCBI ID</p>
-<p>INPUT
-NCBI          NCBI ID (e.g., 511145)</p>
-<p>OUTPUT
-taxonomy      structure containing the taxonomic lineage</p>
-<p>Stefania Magnusdottir, Nov 2017</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>taxonomy = parseNCBItaxonomy</strong> (<em>NCBI</em>)</p>
+</dd>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>NCBI</strong> – NCBI ID (e.g., 511145)</p>
+</dd>
+<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>taxonomy</strong> – Structure containing the taxonomic lineage</p>
+<ul class="simple">
+<li><p>.superkingdom - Superkingdom of the organism</p></li>
+<li><p>.kingdom - Kingdom of the organism</p></li>
+<li><p>.phylum - Phylum of the organism</p></li>
+<li><p>.class - Class of the organism</p></li>
+<li><p>.order - Order of the organism</p></li>
+<li><p>.family - Family of the organism</p></li>
+<li><p>.genus - Genus of the organism</p></li>
+<li><p>.species - Species of the organism</p></li>
+<li><p>.strain - Strain identifier parsed from the NCBI
+taxonomy browser page title</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="mat function">
@@ -497,29 +528,28 @@ in PubSEED spreadsheet format if available. It is recommended to check the
 propagated data manually afterwards.</p>
 <dl class="field-list simple">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>[adaptedInfoFilePath,inputDataFolder] = prepareInputData</strong> (<em>infoFilePath,varargin</em>)</p>
+<dd class="field-odd"><p><strong>[adaptedInfoFilePath, inputDataFolder] = prepareInputData</strong> (<em>infoFilePath, varargin</em>)</p>
 </dd>
-</dl>
-<p>REQUIRED INPUT
-infoFilePath          File with information on reconstructions to refine
-OPTIONAL INPUTS
-inputDataFolder       Folder to save propagated data to (default: folder</p>
-<blockquote>
-<div><p>in current path called “InputData”)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>spreadsheetFolder     Folder with comparative genomics data retrieved</dt><dd><p>from PubSEED in spreadsheet format if available.
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>infoFilePath</strong> – File with information on reconstructions to refine</p>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>inputDataFolder</strong> – Folder to save propagated data to (default: folder
+in current path called “InputData”)</p></li>
+<li><p><strong>spreadsheetFolder</strong> – Folder with comparative genomics data retrieved
+from PubSEED in spreadsheet format if available.
 For an example of the required format, see
-cobratoolbox/papers/2021_demeter/exampleSpreadsheets.</p>
+cobratoolbox/papers/2021_demeter/exampleSpreadsheets.</p></li>
+</ul>
 </dd>
-</dl>
-<p>OUTPUTS
-adaptedInfoFilePath   Path to file with taxonomic information adapted</p>
-<blockquote>
-<div><p>with gram staining information</p>
-</div></blockquote>
-<dl class="simple">
-<dt>inputDataFolder       Folder to save propagated data to (default: folder</dt><dd><p>in current path called “InputData”)</p>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>adaptedInfoFilePath</strong> – Path to file with taxonomic information adapted
+with gram staining information</p></li>
+<li><p><strong>inputDataFolder</strong> – Folder to save propagated data to (default: folder
+in current path called “InputData”)</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -530,16 +560,19 @@ adaptedInfoFilePath   Path to file with taxonomic information adapted</p>
 <dd><p>This function prints the adapted names of the draft reconstruction
 entered into DEMETER. The adapted names need to be present in the
 MicrobeID column of the file with taxonomic information exactly as
-written in the output refinedModelIDs.</p>
-<p>USAGE: refinedModelIDs = printRefinedModelIDs(draftFolder)</p>
-<p>INPUT
-draftFolder            Folder with draft COBRA models generated by</p>
-<blockquote>
-<div><p>KBase pipeline to analyze</p>
-</div></blockquote>
-<p>OUTPUT
-refinedModelIDs        Names of the refined models generated by DEMETER</p>
-<p>AUTHOR: Almut Heinken, 01/2021.</p>
+written in the output draftModelIDs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>draftModelIDs = printRefinedModelIDs</strong> (<em>draftFolder</em>)</p>
+</dd>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>draftFolder</strong> – Folder with draft COBRA models generated by
+KBase pipeline to analyze</p>
+</dd>
+<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>draftModelIDs</strong> – Names of the refined models generated by DEMETER</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="mat function">
@@ -552,14 +585,16 @@ that can be used to check if the reactions already exist in the VMH
 database.</p>
 <dl class="field-list simple">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>[translatedRxns]=propagateKBaseMetTranslationToRxns</strong> (<em>toTranslatePath</em>)</p>
+<dd class="field-odd"><p><strong>[translatedRxns] = propagateKBaseMetTranslationToRxns</strong> (<em>toTranslatePath</em>)</p>
 </dd>
 <dt class="field-even">INPUT<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>toTranslatePath           String containing the path to xlsx, csv, or</strong> – txt file with reaction IDs in KBase/ModelSEED
+<dd class="field-even"><p><strong>toTranslatePath</strong> – String containing the path to xlsx, csv, or
+txt file with reaction IDs in KBase/ModelSEED
 nomenclature to translate (e.g., rxn00001)</p>
 </dd>
 <dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>translatedRxns            Table with reactions with already translated</strong> – metabolite IDs replaced that can serve as
+<dd class="field-odd"><p><strong>translatedRxns</strong> – Table with reactions with already translated
+metabolite IDs replaced that can serve as
 input for rBioNet to check if the reactions
 already exist in the VMH database.</p>
 </dd>
@@ -576,14 +611,14 @@ the version of MATLAB.</p>
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>formattedTable = readInputTableForPipeline</strong> (<em>tablePath</em>)</p>
 </dd>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>tablePath</strong> – Path to file with the table to read in text or
+table format</p>
+</dd>
+<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>formattedTable</strong> – Table in cell array format</p>
+</dd>
 </dl>
-<p>INPUT
-tablePath             Path to file with the table to read in text or</p>
-<blockquote>
-<div><p>table format</p>
-</div></blockquote>
-<p>OUTPUT
-formattedTable        Table in cell array format</p>
 </dd></dl>
 
 <dl class="mat function">
@@ -595,14 +630,16 @@ It is recommended the resulting translated is verified through manual
 inspection.</p>
 <dl class="field-list simple">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>[translatedMets]=translateKBaseToVMHMets</strong> (<em>toTranslatePath</em>)</p>
+<dd class="field-odd"><p><strong>[translatedMets] = translateKBaseToVMHMets</strong> (<em>toTranslatePath</em>)</p>
 </dd>
 <dt class="field-even">INPUT<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>toTranslatePath         String containing the path to xlsx, csv, or</strong> – txt file with metabolite IDs in KBase/ModelSEED
+<dd class="field-even"><p><strong>toTranslatePath</strong> – String containing the path to xlsx, csv, or
+txt file with metabolite IDs in KBase/ModelSEED
 nomenclature to translate (e.g., cpd00001)</p>
 </dd>
 <dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>translatedMets          Table with KBase metabolite IDs that could be</strong> – matched to VMH metabolite IDs</p>
+<dd class="field-odd"><p><strong>translatedMets</strong> – Table with KBase metabolite IDs that could be
+matched to VMH metabolite IDs</p>
 </dd>
 </dl>
 </dd></dl>
@@ -614,16 +651,16 @@ nomenclature to translate (e.g., cpd00001)</p>
 and saves an updated table with the most recent taxonomic assignments.</p>
 <dl class="field-list simple">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>updateAGORATaxonomyFile</strong> (<em>version</em>)</p>
+<dd class="field-odd"><p><strong>infoFile = updateAGORATaxonomyFile</strong> (<em>version</em>)</p>
+</dd>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>version</strong> – Version of AGORA for which the information table should
+be updated (allowed inputs: ‘AGORA’,’AGORA2’)</p>
+</dd>
+<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>infoFile</strong> – Updated table with up to date taxonomic information</p>
 </dd>
 </dl>
-<p>REQUIRED INPUT
-version          Version of AGORA for which the information table should</p>
-<blockquote>
-<div><p>be updated (allowed inputs: ‘AGORA’,’AGORA2’)</p>
-</div></blockquote>
-<p>OUTPUT
-infoFile       Updated table with up to date taxonomic information</p>
 </dd></dl>
 
 <dl class="mat function">
@@ -633,19 +670,18 @@ infoFile       Updated table with up to date taxonomic information</p>
 Write reaction spreadsheets from InReactions and PubSEED spreadsheets.</p>
 <dl class="field-list simple">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>writeReactionsFromPubSeedSpreadsheets</strong> (<em>infoFilePath,inputDataFolder,spreadsheetFolder</em>)</p>
+<dd class="field-odd"><p><strong>writeReactionsFromPubSeedSpreadsheets</strong> (<em>infoFilePath, inputDataFolder, spreadsheetFolder</em>)</p>
 </dd>
-</dl>
-<p>INPUTS
-infoFilePath          File with information on reconstructions to refine
-inputDataFolder       Folder to save propagated data to (default: folder</p>
-<blockquote>
-<div><p>in current path called “InputData”)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>spreadsheetFolder     Folder with comparative genomics data retrieved</dt><dd><p>from PubSEED in spreadsheet format if available.
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>infoFilePath</strong> – File with information on reconstructions to refine</p></li>
+<li><p><strong>inputDataFolder</strong> – Folder to save propagated data to (default: folder
+in current path called “InputData”)</p></li>
+<li><p><strong>spreadsheetFolder</strong> – Folder with comparative genomics data retrieved
+from PubSEED in spreadsheet format if available.
 For an example of the required format, see
-cobratoolbox/papers/2021_demeter/exampleSpreadsheets.</p>
+cobratoolbox/papers/2021_demeter/exampleSpreadsheets.</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -662,10 +698,10 @@ cobratoolbox/papers/2021_demeter/exampleSpreadsheets.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../refinement/index.html" class="btn btn-default float-right" title="Refinement" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../../suite/index.html" class="btn btn-default float-right" title="Suite" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../debugging/index.html" class="btn btn-default" title="Debugging" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../properties/index.html" class="btn btn-default" title="Properties" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

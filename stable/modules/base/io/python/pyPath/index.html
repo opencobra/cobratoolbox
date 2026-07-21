@@ -65,8 +65,8 @@
         <link rel="search" title="Search" href="../../../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../../../index.html"/>
         <link rel="up" title="Python" href="../index.html"/>
-        <link rel="next" title="Kegg" href="../../KEGG/index.html"/>
-        <link rel="prev" title="Cobrapy" href="../cobrapy/index.html"/> 
+        <link rel="next" title="Condalab" href="../condalab/index.html"/>
+        <link rel="prev" title="Python" href="../index.html"/> 
 
   
   <script src="../../../../../_static/js/modernizr.min.js"></script>
@@ -159,29 +159,28 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../../index.html">Base</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="../../../utilities/index.html">Utilities</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../paths/index.html">Paths</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../ci/index.html">Ci</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../codeConsistency/index.html">Codeconsistency</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../../index.html">Io</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../../json/index.html">Json</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../utilities/index.html">Utilities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../definitions/index.html">Definitions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../old/index.html">Old</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../BiGG/index.html">Bigg</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../newt/index.html">Newt</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../utilities/index.html">Utilities</a></li>
-<li class="toctree-l4 current"><a class="reference internal" href="../index.html">Python</a><ul class="current">
-<li class="toctree-l5"><a class="reference internal" href="../condalab/index.html">Condalab</a></li>
-<li class="toctree-l5"><a class="reference internal" href="../tmp/index.html">Tmp</a></li>
-<li class="toctree-l5"><a class="reference internal" href="../cobrapy/index.html">Cobrapy</a></li>
-<li class="toctree-l5 current"><a class="current reference internal" href="#">Pypath</a></li>
-</ul>
-</li>
 <li class="toctree-l4"><a class="reference internal" href="../../KEGG/index.html">Kegg</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../json/index.html">Json</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../old/index.html">Old</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../definitions/index.html">Definitions</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="../index.html">Python</a><ul class="current">
+<li class="toctree-l5 current"><a class="current reference internal" href="#">Pypath</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../condalab/index.html">Condalab</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../cobrapy/index.html">Cobrapy</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../../install/index.html">Install</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="../../../solvers/index.html">Solvers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../ci/index.html">Ci</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../paths/index.html">Paths</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../cobrarrow/index.html">Cobrarrow</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../install/index.html">Install</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../dataIntegration/index.html">Dataintegration</a></li>
@@ -248,7 +247,15 @@
 <span class="target" id="module-src.base.io.python.pyPath"></span><dl class="mat function">
 <dt class="sig sig-object mat" id="src.base.io.python.pyPath.get_py_path">
 <span class="sig-name descname"><span class="pre">get_py_path</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/io/python/pyPath/get_py_path.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.io.python.pyPath.get_py_path" title="Permalink to this definition">¶</a></dt>
-<dd><p>Function to return the current python search path as a cell array of strings</p>
+<dd><p>Return the current python search path as a cell array of strings</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>current_py_path = get_py_path()</strong></p>
+</dd>
+<dt class="field-even">OUTPUT<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>current_py_path</strong> – Cell array of strings, the current Python search path</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="mat function">
@@ -282,29 +289,33 @@ are disclaimed.</p>
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.base.io.python.pyPath.py_rmpath">
 <span class="sig-name descname"><span class="pre">py_rmpath</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">directory</span></em>, <em class="sig-param"><span class="pre">MATLAB_too</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/io/python/pyPath/py_rmpath.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.io.python.pyPath.py_rmpath" title="Permalink to this definition">¶</a></dt>
-<dd><p>Add directory to import search path for the instance of
-the Python interpreter currently controlled by MATLAB</p>
-<dl>
-<dt>EXAMPLE USAGE</dt><dd><p>&gt;&gt; py_rmpath(‘C:DocumentsERPResults’)</p>
+<dd><p>Remove directory from the import search path for the instance of the
+Python interpreter currently controlled by MATLAB</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>new_py_path = py_rmpath</strong> (<em>directory, MATLAB_too</em>)</p>
 </dd>
-<dt>REQUIRED INPUTS</dt><dd><p>directory      - Directory to remove from the Python import search path
-MATLAB_too     - If true (or 1), directory will also be added to the</p>
-<blockquote>
-<div><p>MATLAB path. {default: false}</p>
-</div></blockquote>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>directory</strong> – Directory to remove from the Python import search path</p></li>
+<li><p><strong>MATLAB_too</strong> – If true (or 1), directory will also be removed from the
+MATLAB path (default: false)</p></li>
+</ul>
 </dd>
-<dt>OPTIONAL OUTPUT</dt><dd><dl class="simple">
-<dt>new_py_path    - a cell array of the directories on the updated</dt><dd><p>Python path; to get this output without updating the
-Python path, use an empty string as the input:
-py_path = py_addpath(‘’)</p>
+<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>new_py_path</strong> – Cell array of the directories on the updated Python
+path; to get this output without updating the Python
+path, use an empty string as the input:
+<cite>new_py_path = py_rmpath(‘’)</cite></p>
 </dd>
 </dl>
-</dd>
-</dl>
-<p>VERSION DATE: 13 April 2021
-AUTHOR: Ronan Fleming, based on py_addpath by Eric Fields</p>
-<p>NOTE: This function is provided “as is” and any express or implied warranties
-are disclaimed.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This function is provided “as is” and any express or implied
+warranties are disclaimed. This code is free and open source software
+made available under the 3-clause BSD license.</p>
+</div>
+<p>check input</p>
 </dd></dl>
 
 </section>
@@ -319,10 +330,10 @@ are disclaimed.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../../KEGG/index.html" class="btn btn-default float-right" title="Kegg" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../condalab/index.html" class="btn btn-default float-right" title="Condalab" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../cobrapy/index.html" class="btn btn-default" title="Cobrapy" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../index.html" class="btn btn-default" title="Python" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

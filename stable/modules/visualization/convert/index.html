@@ -65,8 +65,8 @@
         <link rel="search" title="Search" href="../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../index.html"/>
         <link rel="up" title="Visualization" href="../index.html"/>
-        <link rel="next" title="Celldesigner" href="../cellDesigner/index.html"/>
-        <link rel="prev" title="Sammim" href="../SAMMIM/index.html"/> 
+        <link rel="next" title="Visualizeepistasis" href="../visualizeEpistasis/index.html"/>
+        <link rel="prev" title="Upsetplot" href="../upsetPlot/index.html"/> 
 
   
   <script src="../../../_static/js/modernizr.min.js"></script>
@@ -162,19 +162,19 @@
 <li class="toctree-l2"><a class="reference internal" href="../../design/index.html">Design</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../reconstruction/index.html">Reconstruction</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html">Visualization</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../paint4net/index.html">Paint4net</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../efmviz/index.html">Efmviz</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../SAMMIM/index.html">Sammim</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Convert</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../cellDesigner/index.html">Celldesigner</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../entropicFBA/index.html">Entropicfba</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../visualizeEpistasis/index.html">Visualizeepistasis</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../upsetPlot/index.html">Upsetplot</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../createMetIntrcNetwork/index.html">Createmetintrcnetwork</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../maps/index.html">Maps</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../metabolicCartography/index.html">Metaboliccartography</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../EscherMap/index.html">Eschermap</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../paint4Net/index.html">Paint4net</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../paint4net/index.html">Paint4net</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../metabolicCartography/index.html">Metaboliccartography</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cellDesigner/index.html">Celldesigner</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../maps/index.html">Maps</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../SAMMIM/index.html">Sammim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../entropicFBA/index.html">Entropicfba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../upsetPlot/index.html">Upsetplot</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Convert</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../visualizeEpistasis/index.html">Visualizeepistasis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../EscherMap/index.html">Eschermap</a></li>
 </ul>
 </li>
 </ul>
@@ -235,13 +235,41 @@
 <span class="target" id="module-src.visualization.convert"></span><dl class="mat function">
 <dt class="sig sig-object mat" id="src.visualization.convert.mapFormatConversion">
 <span class="sig-name descname"><span class="pre">mapFormatConversion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">fileNameIn</span></em>, <em class="sig-param"><span class="pre">inputFormat</span></em>, <em class="sig-param"><span class="pre">outputFormat</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/convert/mapFormatConversion.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.convert.mapFormatConversion" title="Permalink to this definition">¶</a></dt>
-<dd><p>convert one map format into another using external tools</p>
-<p>Conversion between SBGN-ML, SBML, CellDesigner_SBML, GPML  uses:
-<a class="reference external" href="https://minerva.pages.uni.lu/doc/api/15.1/converter/">https://minerva.pages.uni.lu/doc/api/15.1/converter/</a>
-Cite:
-Closing the gap between formats for storing layout information in systems biology
-David Hoksza, Piotr Gawron, Marek Ostaszewski, Jan Hasenauer, Reinhard Schneider
-Briefings in Bioinformatics, Volume 21, Issue 4, July 2020, Pages 1249–1260, <a class="reference external" href="https://doi.org/10.1093/bib/bbz067">https://doi.org/10.1093/bib/bbz067</a></p>
+<dd><p>Convert one metabolic map format into another using external tools</p>
+<p>Conversion between SBGN-ML, SBML, CellDesigner_SBML, GPML uses the MINERVA
+converter API (<a class="reference external" href="https://minerva.pages.uni.lu/doc/api/15.1/converter/">https://minerva.pages.uni.lu/doc/api/15.1/converter/</a>).
+Conversion between json and the other formats uses EscherConverter
+(<a class="reference external" href="https://draeger-lab.github.io/EscherConverter/">https://draeger-lab.github.io/EscherConverter/</a>).</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>mapFormatConversion</strong> (<em>fileNameIn, inputFormat, outputFormat</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>fileNameIn</strong> – char, name of the input file; assumed to be in the
+current directory if a full path is not provided</p></li>
+<li><p><strong>inputFormat</strong> – char, specifying the input format; one of
+<cite>SBGN-ML</cite>, <cite>SBML</cite>, <cite>CellDesigner_SBML</cite>, <cite>GPML</cite></p></li>
+<li><p><strong>outputFormat</strong> – char, specifying the output format; one of
+<cite>SBGN-ML</cite>, <cite>SBML</cite>, <cite>CellDesigner_SBML</cite>, <cite>GPML</cite>, <cite>json</cite></p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>fileNameIn = ‘iDopa_fol.sbgn’;
+inputFormat = ‘SBGN-ML’;
+outputFormat = ‘json’;
+mapFormatConversion(fileNameIn, inputFormat, outputFormat)</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Please cite:
+Closing the gap between formats for storing layout information in
+systems biology. David Hoksza, Piotr Gawron, Marek Ostaszewski, Jan
+Hasenauer, Reinhard Schneider. Briefings in Bioinformatics, Volume 21,
+Issue 4, July 2020, Pages 1249-1260, <a class="reference external" href="https://doi.org/10.1093/bib/bbz067">https://doi.org/10.1093/bib/bbz067</a>
+Andreas Draeger, Devesh Khandelwal, Maria Heitmeier,
+<a class="reference external" href="https://github.com/draeger-lab/EscherConverter">https://github.com/draeger-lab/EscherConverter</a></p>
+</div>
 </dd></dl>
 
 </section>
@@ -256,10 +284,10 @@ Briefings in Bioinformatics, Volume 21, Issue 4, July 2020, Pages 1249–1260, <
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../cellDesigner/index.html" class="btn btn-default float-right" title="Celldesigner" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../visualizeEpistasis/index.html" class="btn btn-default float-right" title="Visualizeepistasis" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../SAMMIM/index.html" class="btn btn-default" title="Sammim" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../upsetPlot/index.html" class="btn btn-default" title="Upsetplot" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

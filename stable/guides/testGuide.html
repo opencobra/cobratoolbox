@@ -533,6 +533,49 @@ practice!</strong>:</p>
 </pre></div>
 </div>
 </section>
+<section id="test-execution-modes-fast-default-and-full">
+<h2>Test execution modes: fast (default) and full<a class="headerlink" href="#test-execution-modes-fast-default-and-full" title="Permalink to this heading">¶</a></h2>
+<p>The test suite runs in one of two modes, resolved by <code class="docutils literal notranslate"><span class="pre">getCobraTestMode</span></code>:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">fast</span></code> <strong>(the default)</strong> reduces redundant work — chiefly per-test loops over
+every installed solver when the assertions are solver-independent — while
+preserving essentially the same code coverage (within 5 percentage points of
+full-mode line coverage). This makes local <code class="docutils literal notranslate"><span class="pre">testAll</span></code> runs substantially faster.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">full</span></code> runs the complete, slower suite exactly as before this feature (no
+fast-mode trimming), for release validation or solver-regression investigation.</p></li>
+</ul>
+<p><strong>Backward compatibility note.</strong> Fast is the new default, so a plain <code class="docutils literal notranslate"><span class="pre">testAll</span></code> run
+now does less redundant work than before. The <em>same tests</em> run; only redundant
+repetition (e.g. re-validating a solver-independent result across every installed
+solver) is skipped. To restore the previous, complete behaviour, select full mode.</p>
+<p>Selecting the mode:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% force the complete suite for this shell</span>
+<span class="nb">setenv</span><span class="p">(</span><span class="s">&#39;COBRA_TEST_MODE&#39;</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;full&#39;</span><span class="p">);</span><span class="w">   </span><span class="c">% or &#39;fast&#39;</span>
+
+<span class="c">% or, within MATLAB, via the global</span>
+<span class="k">global</span><span class="w"> </span><span class="n">CBT_TEST_MODE</span><span class="p">;</span><span class="w"> </span><span class="n">CBT_TEST_MODE</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&#39;full&#39;</span><span class="p">;</span>
+</pre></div>
+</div>
+<p><strong>Continuous integration always runs full mode</strong> (<code class="docutils literal notranslate"><span class="pre">COBRA_CI=1</span></code> forces <code class="docutils literal notranslate"><span class="pre">full</span></code>),
+so the coverage gate keeps its complete-suite baseline regardless of the local
+default.</p>
+<p>When writing a test whose <em>purpose</em> is cross-solver agreement, request the solvers
+explicitly with <code class="docutils literal notranslate"><span class="pre">prepareTest('requiredSolvers',</span> <span class="pre">{...})</span></code> or
+<code class="docutils literal notranslate"><span class="pre">prepareTest('useSolversIfAvailable',</span> <span class="pre">{...})</span></code>; such tests keep looping over all
+requested solvers in both modes.</p>
+</section>
+<section id="profiling-report">
+<h2>Profiling report<a class="headerlink" href="#profiling-report" title="Permalink to this heading">¶</a></h2>
+<p>To see where suite time goes, enable the opt-in profiling report (off by default):</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">setenv</span><span class="p">(</span><span class="s">&#39;COBRA_PERF&#39;</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;1&#39;</span><span class="p">);</span><span class="w">   </span><span class="c">% then run testAll</span>
+</pre></div>
+</div>
+<p>It writes a ranked per-test timing table (<code class="docutils literal notranslate"><span class="pre">test/performance/testTiming.csv</span></code>) and a
+MATLAB profiler hotspot report (<code class="docutils literal notranslate"><span class="pre">test/performance/html/</span></code>), and prints the slowest
+tests and hottest functions. It never changes any test’s pass/fail outcome and is
+independent of the fast/full mode. The <code class="docutils literal notranslate"><span class="pre">test/performance/</span></code> directory is
+git-ignored (regenerable output).</p>
+</section>
 </section>
 
 

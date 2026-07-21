@@ -65,8 +65,8 @@
         <link rel="search" title="Search" href="../../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../../index.html"/>
         <link rel="up" title="Chemoinformatics" href="../index.html"/>
-        <link rel="next" title="Molecularweight" href="../molecularWeight/index.html"/>
-        <link rel="prev" title="Inchi" href="../inchi/index.html"/> 
+        <link rel="next" title="Inchi" href="../inchi/index.html"/>
+        <link rel="prev" title="Old" href="../RXN/old/index.html"/> 
 
   
   <script src="../../../../_static/js/modernizr.min.js"></script>
@@ -159,20 +159,20 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../base/index.html">Base</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Dataintegration</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../../metabotools/index.html">Metabotools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../metanetxMapper/index.html">Metanetxmapper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../metaboAnnotator/index.html">Metaboannotator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../XomicsToModel/index.html">Xomicstomodel</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../index.html">Chemoinformatics</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="../metabolites/index.html">Metabolites</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../RXN/index.html">Rxn</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../inchi/index.html">Inchi</a></li>
-<li class="toctree-l4 current"><a class="current reference internal" href="#">Reactions</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../molecularWeight/index.html">Molecularweight</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../RXN/index.html">Rxn</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Reactions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../inchi/index.html">Inchi</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../fluxomics/index.html">Fluxomics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../metanetxMapper/index.html">Metanetxmapper</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../XomicsToModel/index.html">Xomicstomodel</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../metaboAnnotator/index.html">Metaboannotator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../transcriptomics/index.html">Transcriptomics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../metabotools/index.html">Metabotools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../fluxomics/index.html">Fluxomics</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../design/index.html">Design</a></li>
@@ -254,16 +254,18 @@ in a metabolic network based on atom mapping data.</p>
 </li>
 </ul>
 </li>
-<li><p><strong>rxnList    List of reactions from which the enthalpy change</strong> – will be computed.</p></li>
-<li><p><strong>rxnDir     Directory of with the RXN files.</strong></p></li>
-<li><p><strong>printLevel Print figure with the relation of mass vs bondsBF bondsE</strong></p></li>
+<li><p><strong>rxnList</strong> – List of reactions from which the enthalpy change
+will be computed.</p></li>
+<li><p><strong>rxnDir</strong> – Directory of with the RXN files.</p></li>
+<li><p><strong>printLevel</strong> – Print figure with the relation of mass vs bondsBF bondsE</p></li>
 </ul>
 </dd>
 <dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>bondsBF       An n x 1 vector with the number of bonds broken and</strong> – formed. External or pasive transpor reactions are equal
+<li><p><strong>bondsBrokenAndFormed</strong> – An n x 1 vector with the number of bonds broken and
+formed. External or pasive transpor reactions are equal
 to 0; missing and unbalanced reactions are NaN.</p></li>
-<li><p><strong>substrateMass Total mass of the substrates</strong></p></li>
+<li><p><strong>substrateMass</strong> – Total mass of the substrates</p></li>
 </ul>
 </dd>
 </dl>
@@ -295,16 +297,18 @@ Educ., 42, 502 (1965)</p>
 </li>
 </ul>
 </li>
-<li><p><strong>rxnList    List of reactions from which the number of broken and</strong> – formed bonds will be computed.</p></li>
-<li><p><strong>rxnDir     Directory of with the RXN files.</strong></p></li>
-<li><p><strong>printLevel Print figure with the relation of mass vs bondsBF bondsE</strong></p></li>
+<li><p><strong>rxnList</strong> – List of reactions from which the number of broken and
+formed bonds will be computed.</p></li>
+<li><p><strong>rxnDir</strong> – Directory of with the RXN files.</p></li>
+<li><p><strong>printLevel</strong> – Print figure with the relation of mass vs bondsBF bondsE</p></li>
 </ul>
 </dd>
 <dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>enthalpyChange      An n x 1 vector with the bond enthalpies in kJ/mol.</strong> – External or pasive transpor reactions are equal to 0;
+<li><p><strong>enthalpyChange</strong> – An n x 1 vector with the bond enthalpies in kJ/mol.
+External or pasive transpor reactions are equal to 0;
 missing and unbalanced reactions are NaN.</p></li>
-<li><p><strong>substrateMass Total mass of the substrates</strong></p></li>
+<li><p><strong>substrateMass</strong> – Total mass of the substrates</p></li>
 </ul>
 </dd>
 </dl>
@@ -320,7 +324,7 @@ function can remove all protons from the model and represent the
 reactions as a hydrogen suppressed chemical graph.</p>
 <dl class="field-list simple">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>standardisedRxns = obtainAtomMappingsRDT</strong> (<em>model, molFileDir, rxnResultsDir, rxnsToAM, hMapping, maxTime, standariseRxn</em>)</p>
+<dd class="field-odd"><p><strong>atomMappingReport = obtainAtomMappingsRDT</strong> (<em>model, molFileDir, rxnResultsDir, rxnsToAM, hMapping, writeRXNonly, replaceExistingAtomMappings</em>)</p>
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
@@ -394,7 +398,7 @@ standardisedRxns = obtainAtomMappingsRDT(model, molFileDir, pwd, 1800, standaris
 <dd><p>Reassign the atom mapping numbers to be ascending in the RXN file V2000</p>
 <dl class="field-list simple">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>ascendingRxnFile = acsendingAtomMaps</strong> (<em>rxnFile</em>)</p>
+<dd class="field-odd"><p><strong>ascendingRxnFile = sortAtomMappingIndexes</strong> (<em>rxnFile</em>)</p>
 </dd>
 <dt class="field-even">INPUT<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>rxnFile</strong> – MDL RXN file</p>
@@ -417,10 +421,10 @@ standardisedRxns = obtainAtomMappingsRDT(model, molFileDir, pwd, 1800, standaris
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../molecularWeight/index.html" class="btn btn-default float-right" title="Molecularweight" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../inchi/index.html" class="btn btn-default float-right" title="Inchi" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../inchi/index.html" class="btn btn-default" title="Inchi" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../RXN/old/index.html" class="btn btn-default" title="Old" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

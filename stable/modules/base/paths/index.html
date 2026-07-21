@@ -65,8 +65,8 @@
         <link rel="search" title="Search" href="../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../index.html"/>
         <link rel="up" title="Base" href="../index.html"/>
-        <link rel="next" title="Ci" href="../ci/index.html"/>
-        <link rel="prev" title="Utilities" href="../utilities/index.html"/> 
+        <link rel="next" title="Cobrarrow" href="../cobrarrow/index.html"/>
+        <link rel="prev" title="Ci" href="../ci/index.html"/> 
 
   
   <script src="../../../_static/js/modernizr.min.js"></script>
@@ -159,13 +159,13 @@
 <li class="toctree-l2"><a class="reference internal" href="../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html">Base</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="../utilities/index.html">Utilities</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Paths</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../ci/index.html">Ci</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../codeConsistency/index.html">Codeconsistency</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../io/index.html">Io</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../install/index.html">Install</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../solvers/index.html">Solvers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ci/index.html">Ci</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Paths</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../cobrarrow/index.html">Cobrarrow</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../install/index.html">Install</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../dataIntegration/index.html">Dataintegration</a></li>
@@ -230,24 +230,55 @@
 <span class="target" id="module-src.base.paths"></span><dl class="mat function">
 <dt class="sig sig-object mat" id="src.base.paths.comparePaths">
 <span class="sig-name descname"><span class="pre">comparePaths</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">NAME</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/paths/comparePaths.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.paths.comparePaths" title="Permalink to this definition">¶</a></dt>
-<dd><p>compare the system and matlab paths for a given NAME environment variable</p>
-<p>INPUT
-NAME          environment variable, e.g., PATH or LD_LIBRARY_PATH
-printLevel</p>
-<p>OUTPUT
-common                cell array
-system_not_matlab
-matlab_not_system</p>
-<p>USAGE example
-[common,system_not_matlab,matlab_not_system] = comparePaths(‘LD_LIBRARY_PATH’,1);</p>
+<dd><p>Compares the system and MATLAB paths for a given NAME environment variable</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[common, system_not_matlab, matlab_not_system] = comparePaths</strong> (<em>NAME, printLevel</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>NAME</strong> – environment variable, e.g., <cite>PATH</cite> or
+<cite>LD_LIBRARY_PATH</cite>, or the special value <cite>PYTHON</cite>
+to compare the MATLAB and system python paths</p></li>
+<li><p><strong>printLevel</strong> – verbosity level; <cite>&gt; 0</cite> prints the summary of
+entries unique to system or MATLAB, <cite>&gt; 1</cite> also
+prints the full path lists</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>common</strong> – cell array of path entries common to system and MATLAB</p></li>
+<li><p><strong>system_not_matlab</strong> – cell array of path entries in the system but not MATLAB</p></li>
+<li><p><strong>matlab_not_system</strong> – cell array of path entries in MATLAB but not the system</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>[common, system_not_matlab, matlab_not_system] = comparePaths(‘LD_LIBRARY_PATH’, 1);</p>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.base.paths.editCobraToolboxPath">
 <span class="sig-name descname"><span class="pre">editCobraToolboxPath</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">basePath</span></em>, <em class="sig-param"><span class="pre">folderPattern</span></em>, <em class="sig-param"><span class="pre">method</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/paths/editCobraToolboxPath.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.paths.editCobraToolboxPath" title="Permalink to this definition">¶</a></dt>
-<dd><p>recursively finds all the folders within a given basePath that contains a
-given folderPattern and either adds or removes that folder from the matlab
+<dd><p>Recursively finds all the folders within a given basePath that contain a
+given folderPattern and either adds or removes that folder from the MATLAB
 path</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>editCobraToolboxPath</strong> (<em>basePath, folderPattern, method</em>)</p>
+</dd>
+<dt class="field-even">OPTIONAL INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>basePath</strong> – the base folder to search recursively (default: the
+folder containing <cite>initVonBertalanffy</cite>)</p></li>
+<li><p><strong>folderPattern</strong> – the substring a folder path must contain to be
+added to or removed from the MATLAB path (default:
+<cite>[filesep ‘new’]</cite>)</p></li>
+<li><p><strong>method</strong> – <cite>‘add’</cite> to add matching folders to the MATLAB path,
+<cite>‘remove’</cite> to remove them (default: <cite>‘remove’</cite>)</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 </section>
@@ -262,10 +293,10 @@ path</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../ci/index.html" class="btn btn-default float-right" title="Ci" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../cobrarrow/index.html" class="btn btn-default float-right" title="Cobrarrow" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../utilities/index.html" class="btn btn-default" title="Utilities" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../ci/index.html" class="btn btn-default" title="Ci" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

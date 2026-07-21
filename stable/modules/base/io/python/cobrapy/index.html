@@ -65,8 +65,8 @@
         <link rel="search" title="Search" href="../../../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../../../index.html"/>
         <link rel="up" title="Python" href="../index.html"/>
-        <link rel="next" title="Pypath" href="../pyPath/index.html"/>
-        <link rel="prev" title="Tmp" href="../tmp/index.html"/> 
+        <link rel="next" title="Solvers" href="../../../solvers/index.html"/>
+        <link rel="prev" title="Condalab" href="../condalab/index.html"/> 
 
   
   <script src="../../../../../_static/js/modernizr.min.js"></script>
@@ -159,29 +159,28 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../../index.html">Base</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="../../../utilities/index.html">Utilities</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../paths/index.html">Paths</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../ci/index.html">Ci</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../codeConsistency/index.html">Codeconsistency</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../../index.html">Io</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../../json/index.html">Json</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../utilities/index.html">Utilities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../definitions/index.html">Definitions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../old/index.html">Old</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../BiGG/index.html">Bigg</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../newt/index.html">Newt</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../utilities/index.html">Utilities</a></li>
-<li class="toctree-l4 current"><a class="reference internal" href="../index.html">Python</a><ul class="current">
-<li class="toctree-l5"><a class="reference internal" href="../condalab/index.html">Condalab</a></li>
-<li class="toctree-l5"><a class="reference internal" href="../tmp/index.html">Tmp</a></li>
-<li class="toctree-l5 current"><a class="current reference internal" href="#">Cobrapy</a></li>
-<li class="toctree-l5"><a class="reference internal" href="../pyPath/index.html">Pypath</a></li>
-</ul>
-</li>
 <li class="toctree-l4"><a class="reference internal" href="../../KEGG/index.html">Kegg</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../json/index.html">Json</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../old/index.html">Old</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../definitions/index.html">Definitions</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="../index.html">Python</a><ul class="current">
+<li class="toctree-l5"><a class="reference internal" href="../pyPath/index.html">Pypath</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../condalab/index.html">Condalab</a></li>
+<li class="toctree-l5 current"><a class="current reference internal" href="#">Cobrapy</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../../install/index.html">Install</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="../../../solvers/index.html">Solvers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../ci/index.html">Ci</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../paths/index.html">Paths</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../cobrarrow/index.html">Cobrarrow</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../install/index.html">Install</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../dataIntegration/index.html">Dataintegration</a></li>
@@ -248,34 +247,48 @@
 <span class="target" id="module-src.base.io.python.cobrapy"></span><dl class="mat script">
 <dt class="sig sig-object mat" id="src.base.io.python.cobrapy.test_writeModelinJSON">
 <span class="sig-name descname"><span class="pre">test_writeModelinJSON</span></span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/io/python/cobrapy/test_writeModelinJSON.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.io.python.cobrapy.test_writeModelinJSON" title="Permalink to this definition">¶</a></dt>
-<dd><p>test writing out a model in SBML with COBRA Toolbox, then reading it in
+<dd><p>Test writing out a model in SBML with COBRA Toolbox, then reading it in
 with COBRApy, then writing it out in JSON with COBRApy.</p>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.base.io.python.cobrapy.writeModelinJSON">
 <span class="sig-name descname"><span class="pre">writeModelinJSON</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">COBRApyPath</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/io/python/cobrapy/writeModelinJSON.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.io.python.cobrapy.writeModelinJSON" title="Permalink to this definition">¶</a></dt>
-<dd><p>write out a model in JSON format using COBRApy</p>
-<p>INPUT
-model</p>
-<p>OPTIONAL INPUT
-dGPredictorPath   path to the folder containg a git clone of <a class="reference external" href="https://github.com/maranasgroup/dGPredictor">https://github.com/maranasgroup/dGPredictor</a></p>
+<dd><p>Write out a model in JSON format using COBRApy</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[success, pymodel] = writeModelinJSON</strong> (<em>model, COBRApyPath</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>model</strong> – COBRA model structure, or a char path to an existing
+SBML file</p>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>COBRApyPath</strong> – Path to the folder containing a git clone of COBRApy
+(<a class="reference external" href="https://github.com/opencobra/cobrapy">https://github.com/opencobra/cobrapy</a>); must be the
+full absolute path without <cite>~/</cite></p>
+</dd>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>success</strong> – 1 if the model was successfully read into COBRApy, 0
+(or unset) otherwise</p></li>
+<li><p><strong>pymodel</strong> – COBRApy model object read from the SBML file</p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>External dependencies:</p>
 <blockquote>
-<div><p>path must be the full absolute path without ~/</p>
+<div><ul class="simple">
+<li><p>Python, see <cite>initPythonEnvironment</cite></p></li>
+<li><p>rdkit, e.g., installed in an Anaconda environment
+(<a class="reference external" href="https://www.rdkit.org">https://www.rdkit.org</a>)</p></li>
+<li><p>COBRApy (<a class="reference external" href="https://github.com/opencobra/cobrapy">https://github.com/opencobra/cobrapy</a>), installed with:
+<cite>conda install -c bioconda cobra</cite></p></li>
+</ul>
 </div></blockquote>
-<p>cacheName         fileName of cache to load (if it exists) or save to (if it does not exist)</p>
-<p>OUTPUT
-success = 1,0</p>
-<p>EXTERNAL DEPENDENCIES
-Python, see:
-[pyEnvironment,pySearchPath]=initPythonEnvironment(environmentName,reset)</p>
-<p>rdkit, e.g., installed in an Anaconda environment
-<a class="reference external" href="https://www.rdkit.org">https://www.rdkit.org</a>
-<a class="reference external" href="https://www.rdkit.org/docs/Install.html#introduction-to-anaconda">https://www.rdkit.org/docs/Install.html#introduction-to-anaconda</a></p>
-<p>COBRApy
-<a class="reference external" href="https://github.com/opencobra/cobrapy">https://github.com/opencobra/cobrapy</a>
-Install COBRApy using this command in a terminal:
-conda install -c bioconda cobra</p>
+</div>
 </dd></dl>
 
 </section>
@@ -290,10 +303,10 @@ conda install -c bioconda cobra</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../pyPath/index.html" class="btn btn-default float-right" title="Pypath" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../../../solvers/index.html" class="btn btn-default float-right" title="Solvers" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../tmp/index.html" class="btn btn-default" title="Tmp" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../condalab/index.html" class="btn btn-default" title="Condalab" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

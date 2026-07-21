@@ -66,7 +66,7 @@
     <link rel="top" title="The COBRA Toolbox" href="../../../../../index.html"/>
         <link rel="up" title="Varkin" href="../index.html"/>
         <link rel="next" title="Levmarmethods" href="../levMarMethods/index.html"/>
-        <link rel="prev" title="Varkin" href="../index.html"/> 
+        <link rel="prev" title="Bdcamethods" href="../BDCAmethods/index.html"/> 
 
   
   <script src="../../../../../_static/js/modernizr.min.js"></script>
@@ -159,36 +159,36 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../../index.html">Base</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="../../../utilities/index.html">Utilities</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../paths/index.html">Paths</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../ci/index.html">Ci</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../codeConsistency/index.html">Codeconsistency</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../io/index.html">Io</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../install/index.html">Install</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../../index.html">Solvers</a><ul class="current">
-<li class="toctree-l4"><a class="reference internal" href="../../NLP/index.html">Nlp</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../param/index.html">Param</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../minos/index.html">Minos</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../init/index.html">Init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../NLP/index.html">Nlp</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../gurobi/index.html">Gurobi</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../minos/index.html">Minos</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../optarrow/index.html">Optarrow</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../lindo/index.html">Lindo</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../entropicFBA/index.html">Entropicfba</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../cplex/index.html">Cplex</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../rescale/index.html">Rescale</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../gams/index.html">Gams</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../init/index.html">Init</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../cardOpt/index.html">Cardopt</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../mosek/index.html">Mosek</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../entropicFBA/index.html">Entropicfba</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../lp_solve/index.html">Lp_solve</a></li>
 <li class="toctree-l4 current"><a class="reference internal" href="../index.html">Varkin</a><ul class="current">
+<li class="toctree-l5"><a class="reference internal" href="../BDCAmethods/index.html">Bdcamethods</a></li>
 <li class="toctree-l5 current"><a class="current reference internal" href="#">Derfreemethods</a></li>
 <li class="toctree-l5"><a class="reference internal" href="../levMarMethods/index.html">Levmarmethods</a></li>
-<li class="toctree-l5"><a class="reference internal" href="../BDCAmethods/index.html">Bdcamethods</a></li>
 </ul>
 </li>
+<li class="toctree-l4"><a class="reference internal" href="../../mosek/index.html">Mosek</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../cplex/index.html">Cplex</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../getSetSolver/index.html">Getsetsolver</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../gams/index.html">Gams</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../lp_solve/index.html">Lp_solve</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="../../../ci/index.html">Ci</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../paths/index.html">Paths</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../cobrarrow/index.html">Cobrarrow</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../install/index.html">Install</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../dataIntegration/index.html">Dataintegration</a></li>
@@ -483,10 +483,13 @@ Otherwise, the default values will be used.</p>
 <li><p><strong>MaxNumMapEval</strong> – maximum number of function evaluations</p></li>
 <li><p><strong>TimeLimit</strong> – maximum running time</p></li>
 <li><p><strong>epsilon</strong> – accuracy parameter</p></li>
-<li><p><strong>x_opt</strong> – optimizer</p></li>
-<li><p><strong>psi_opt</strong> – optimum</p></li>
 <li><p><strong>alpha</strong> – a constant</p></li>
 <li><p><strong>beta</strong> – a constant</p></li>
+<li><p><strong>sigma</strong> – strong duplomonotone parameter</p></li>
+<li><p><strong>l</strong> – Lipschitz continuity constant of <cite>f</cite></p></li>
+<li><p><strong>tauBar</strong> – a constant for determining the step-size</p></li>
+<li><p><strong>lambda_min</strong> – lower bound of the step-size</p></li>
+<li><p><strong>lambda_max</strong> – upper bound of the step-size</p></li>
 <li><p><strong>flag_x_error</strong> – 1: saves <span class="math notranslate nohighlight">\(x_{error}\)</span>, 0: do not saves <span class="math notranslate nohighlight">\(x_{error}\)</span> (default)</p></li>
 <li><p><strong>flag_psi_error</strong> – 1: saves <span class="math notranslate nohighlight">\(\psi_{error}\)</span>, 0: do not saves <span class="math notranslate nohighlight">\(\psi_{error}\)</span> (default)</p></li>
 <li><p><strong>flag_time</strong> – 1: saves <span class="math notranslate nohighlight">\(\psi_{error}\)</span>, 0: do not saves <span class="math notranslate nohighlight">\(\psi_{error}\)</span> (default)</p></li>
@@ -499,9 +502,11 @@ Otherwise, the default values will be used.</p>
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.base.solvers.varKin.derFreeMethods.Rate_function">
 <span class="sig-name descname"><span class="pre">Rate_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">opt</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/varKin/derFreeMethods/Rate_function.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.varKin.derFreeMethods.Rate_function" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
+<dd><p>Computes the rate function <cite>f(xk)</cite> for the current point, given the
+forward/reverse stoichiometric matrices and kinetic parameter in <cite>opt</cite></p>
+<dl class="field-list simple">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>Rate_function</strong> (<em>opt, varargin</em>)</p>
+<dd class="field-odd"><p><strong>fxk = Rate_function</strong> (<em>opt, varargin</em>)</p>
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
@@ -509,8 +514,7 @@ Otherwise, the default values will be used.</p>
 <li><p><strong>opt</strong> – structure includes required parameters;</p>
 <ul>
 <li><p>.FR - concatenation of forward and reverse stoichiometric matrix</p></li>
-<li><p>.A - Reduced forward stoichiometric matrix</p></li>
-<li><p>.B - Reduced reverse stoichiometric matrix</p></li>
+<li><p>.FR_RF - <cite>FR - RF</cite>, difference of forward-reverse and reverse-forward concatenations</p></li>
 <li><p>.k - initial kinetic</p></li>
 </ul>
 </li>
@@ -530,11 +534,11 @@ holds to terminate LLM and GLM. It perepares the status determining why
 the algorithm is stopped.</p>
 <dl class="field-list simple">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>[StopFlag, Status] = StopCritDuplo</strong> (<em>nfxk,Niter, Nmap, T, MaxNumIter, MaxNumMapEval, TimeLimit, epsilon, Stopping_Crit</em>)</p>
+<dd class="field-odd"><p><strong>[StopFlag, Status] = StopCritDuplo</strong> (<em>nfxk, Niter, Nmap, T, MaxNumIter, MaxNumMapEval, TimeLimit, epsilon, Stopping_Crit</em>)</p>
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>nhxk</strong> – the norm 2 of <cite>h(xk)</cite></p></li>
+<li><p><strong>nfxk</strong> – the norm 2 of <cite>h(xk)</cite></p></li>
 <li><p><strong>Niter</strong> – the number of iterations</p></li>
 <li><p><strong>Nmap</strong> – the number of mapping calls</p></li>
 <li><p><strong>T</strong> – the running time</p></li>
@@ -577,7 +581,7 @@ the algorithm is stopped.</p>
         <a href="../levMarMethods/index.html" class="btn btn-default float-right" title="Levmarmethods" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../index.html" class="btn btn-default" title="Varkin" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../BDCAmethods/index.html" class="btn btn-default" title="Bdcamethods" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

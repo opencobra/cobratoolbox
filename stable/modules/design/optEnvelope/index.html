@@ -226,266 +226,378 @@
 <span class="target" id="module-src.design.optEnvelope"></span><dl class="mat function">
 <dt class="sig sig-object mat" id="src.design.optEnvelope.addEnv">
 <span class="sig-name descname"><span class="pre">addEnv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">origModel</span></em>, <em class="sig-param"><span class="pre">biomass</span></em>, <em class="sig-param"><span class="pre">desiredProduct</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/design/optEnvelope/addEnv.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.design.optEnvelope.addEnv" title="Permalink to this definition">¶</a></dt>
-<dd><p>addEnv adds envelope to figure
-Algorithm is able to knock out genes as well as reactions to produce
-production envelope</p>
+<dd><p>addEnv adds a production envelope to the current figure</p>
+<p>Adds a production envelope (with optional knockouts) to the active figure.
+The algorithm is able to knock out genes as well as reactions to produce
+the production envelope.</p>
 <dl class="field-list simple">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>line = addEnv</strong> (<em>origModel, biomass, desiredProduct, ‘KnockOuts’, knockouts, ‘colour’, colour, ‘prodMol’, prodMol, ‘subUptake’, subUptake, ‘molarSum’, molarSum</em>)</p>
+<dd class="field-odd"><p><strong>line = addEnv</strong> (<em>origModel, biomass, desiredProduct, varargin</em>)</p>
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>origModel         COBRA model structure [struct]</strong></p></li>
-<li><p><strong>biomass           Reaction name of biomass [char]</strong></p></li>
-<li><p><strong>desiredProduct    Reaction name of desired product [char]</strong></p></li>
+<li><p><strong>origModel</strong> – COBRA model structure with fields:</p>
+<ul>
+<li><p>.S - Stoichiometric matrix</p></li>
+<li><p>.rxns - Reaction identifiers</p></li>
+<li><p>.mets - Metabolite identifiers</p></li>
+<li><p>.lb - Lower bounds</p></li>
+<li><p>.ub - Upper bounds</p></li>
+<li><p>.b - Right hand side values for metabolite constraints</p></li>
+<li><p>.c - Objective coefficients</p></li>
+</ul>
+</li>
+<li><p><strong>biomass</strong> – Reaction name of biomass [char]</p></li>
+<li><p><strong>desiredProduct</strong> – Reaction name of desired product [char]</p></li>
 </ul>
 </dd>
 <dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>KnockOuts</strong> (<em>opt</em>) – {})</p></li>
-<li><p><strong>colour</strong> (<em>opt</em>) – ‘r’ (red))</p></li>
-<li><p><strong>prodMol</strong> (<em>opt</em>)</p></li>
-<li><p><strong>subUptake</strong> (<em>opt</em>)</p></li>
-<li><p><strong>molarSum</strong> (<em>opt</em>)</p></li>
+<li><p><strong>KnockOuts</strong> – List of knockouts (reaction or gene IDs) for the
+production envelope [cell array] (default: {})</p></li>
+<li><p><strong>colour</strong> – Colour of the plotted line (any valid MATLAB colour)
+(default: ‘r’)</p></li>
+<li><p><strong>prodMol</strong> – Molar mass of the target product for a yield plot
+[double] (default: [])</p></li>
+<li><p><strong>subUptake</strong> – Uptake of substrate for a yield plot [double]
+(default: 10)</p></li>
+<li><p><strong>molarSum</strong> – Molar mass of substrate for a yield plot [double]
+(default: 180)</p></li>
 </ul>
 </dd>
-</dl>
-<dl class="simple">
-<dt>OUTPUTS</dt><dd><p>line              Line data for plot function</p>
-</dd>
-<dt>NOTES</dt><dd><p>Sometimes last point of envelope drops to zero (might be rounding error)
-but this function connects last points of lines so the graph creates
-continuous line.
-This algorithm only adds graph. It does not change labels.</p>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>line</strong> – Line object returned by <cite>plot</cite> for the maximum edge
+of the envelope</p>
 </dd>
 </dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Sometimes the last point of the envelope drops to zero (possibly a
+rounding error); this function connects the last points of the lines so
+the graph forms a continuous line. This algorithm only adds the graph;
+it does not change labels.</p>
+</div>
 <p class="rubric">Example</p>
-<p>line = addEnv(model, ‘BIOMASS_Ecoli’, ‘EX_ac_e’, {‘GHMT2r’,’GND’,’SUCCt2r’,’SUCD4’,’AKGt2r’,’GLUt2r’}, ‘m’)</p>
-<p class="rubric">AUTHORS</p>
-<p>Created by Kristaps Berzins    31/10/2022
-Modified by Kristaps Berzins   30/09/2024</p>
+<p>line = addEnv(model, ‘BIOMASS_Ecoli’, ‘EX_ac_e’, {‘GHMT2r’, ‘GND’}, ‘m’)</p>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.design.optEnvelope.milpOEReinserts">
 <span class="sig-name descname"><span class="pre">milpOEReinserts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">data</span></em>, <em class="sig-param"><span class="pre">K</span></em>, <em class="sig-param"><span class="pre">minP</span></em>, <em class="sig-param"><span class="pre">numKO</span></em>, <em class="sig-param"><span class="pre">toDel</span></em>, <em class="sig-param"><span class="pre">timeLimit</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/design/optEnvelope/milpOEReinserts.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.design.optEnvelope.milpOEReinserts" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function is creating and calculating MILP to get certain amount
-of knockouts to achieve best production envelope</p>
+<dd><p>milpOEReinserts finds a set of knockouts using a MILP</p>
+<p>Creates and solves a MILP to find a given number of knockouts that
+achieve the best possible production envelope.</p>
 <dl class="field-list simple">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[knockouts] = milpOEReinserts</strong> (<em>model, data, K, minP, numKO, toDel, timeLimit, printLevel</em>)</p>
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>model       COBRA model structure in irreversible form [struct]</strong></p></li>
-<li><p><strong>data        Struct with information about</strong> –</p>
+<li><p><strong>model</strong> – COBRA model structure in irreversible form with fields:</p>
 <ul>
-<li><p>mainActive    List of active reactions for main envelope [cell array]</p></li>
+<li><p>.rxns - Reaction identifiers</p></li>
+<li><p>.S - Stoichiometric matrix</p></li>
+<li><p>.lb - Lower bounds</p></li>
+<li><p>.ub - Upper bounds</p></li>
+<li><p>.c - Objective coefficients</p></li>
+<li><p>.C_chemical - objective coefficient vector marking the
+desired product, set internally by this function</p></li>
 </ul>
 </li>
-<li><p><strong>K           List of reactions that cannot be selected for knockout</strong> (<em>reaction IDs</em>)</p></li>
-<li><p><strong>minP        Struct with information about biomass and desired product.</strong> –</p>
+<li><p><strong>data</strong> – Struct with the field:</p>
 <ul>
-<li><dl class="simple">
-<dt>bioID         ID of biomass [double]</dt><dd><ul>
-<li><p>proID         ID of desired product[double]</p></li>
-</ul>
-</dd>
-</dl>
-</li>
+<li><p>.mainActive - List of active reactions for the main
+envelope [cell array]</p></li>
 </ul>
 </li>
-<li><p><strong>numKO       Number of knockouts to achieve [double]</strong></p></li>
+<li><p><strong>K</strong> – List of reactions that cannot be selected for knockout
+(reaction IDs) [double array]</p></li>
+<li><p><strong>minP</strong> – Struct with the fields:</p>
+<ul>
+<li><p>.bioID - Reaction ID of biomass [double]</p></li>
+<li><p>.proID - Reaction ID of desired product [double]</p></li>
+</ul>
+</li>
+<li><p><strong>numKO</strong> – Number of knockouts to achieve [double]</p></li>
 </ul>
 </dd>
 <dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>toDel       Numeric variable that shows what to delete</strong> – 0: reactions
-1: genes
-2: enzymes</p></li>
-<li><p><strong>timeLimit   Time limit for gurobi optimization</strong> (<em>in seconds</em>)</p></li>
-<li><p><strong>printLevel  Print level for gurobi optimization [double]</strong></p></li>
+<li><p><strong>toDel</strong> – Numeric flag for what to delete: 0 = reactions,
+1 = genes, 2 = enzymes (default: 0)</p></li>
+<li><p><strong>timeLimit</strong> – Time limit for the MILP solver in seconds [double]
+(default: inf)</p></li>
+<li><p><strong>printLevel</strong> – Print level for the MILP solver [double] (default: 0)</p></li>
 </ul>
 </dd>
 <dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>knockouts   List of reactions that when removed gives optimal envelope</strong></p>
+<dd class="field-even"><p><strong>knockouts</strong> – List of reactions that, when removed, give the optimal
+envelope [cell array]</p>
 </dd>
 </dl>
-<p class="rubric">AUTHORS</p>
-<p>created by Kristaps Berzins 31/10/2022</p>
-<p class="rubric">Notes</p>
-<p>This function is not designed for stand-alone use. Should be used by
-using optEnvelope.m with set numKO parameter</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This function is not designed for stand-alone use. It should be used
+through optEnvelope.m with the numKO parameter set.</p>
+</div>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.design.optEnvelope.minActiveRxns">
 <span class="sig-name descname"><span class="pre">minActiveRxns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">matchRev</span></em>, <em class="sig-param"><span class="pre">K</span></em>, <em class="sig-param"><span class="pre">minP</span></em>, <em class="sig-param"><span class="pre">toDel</span></em>, <em class="sig-param"><span class="pre">timeLimit</span></em>, <em class="sig-param"><span class="pre">midPoints</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/design/optEnvelope/minActiveRxns.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.design.optEnvelope.minActiveRxns" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function finds a set of minimum number of reactions needed to be active at
-a specific point on production envelope for best possible production
-envelope</p>
+<dd><p>minActiveRxns finds the minimum set of active reactions for an envelope</p>
+<p>Finds a minimum-size set of reactions that must be active at a specific
+point on the production envelope to obtain the best possible production
+envelope.</p>
 <dl class="field-list simple">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>[data]=minActiveRxns</strong> (<em>model, matchRev, K, minP, toDel, timeLimit, midPoints, printLevel</em>)</p>
+<dd class="field-odd"><p><strong>[data] = minActiveRxns</strong> (<em>model, matchRev, K, minP, toDel, timeLimit, midPoints, printLevel</em>)</p>
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>model         COBRA model structure in irreversible form [struct]</strong></p></li>
-<li><p><strong>matchRev      Matching of forward and backward reactions of a reversible</strong> – reaction [double array]</p></li>
-<li><p><strong>K             List of reactions that cannot be selected for knockout</strong> (<em>reaction IDs</em>)</p></li>
-<li><p><strong>minP          Struct with information about biomass and desired product.</strong> –</p>
+<li><p><strong>model</strong> – COBRA model structure in irreversible form with fields:</p>
 <ul>
-<li><p>bioID         ID of biomass [double]</p></li>
-<li><p>bioMin        1% of max value of biomass in wild-type [double]</p></li>
-<li><p>bioMax        max value of biomass in wild-type [double]</p></li>
-<li><p>proID         ID of desired product[double]</p></li>
-<li><p>proMin        1% of max value of desired product in wild-type [double]</p></li>
-<li><p>proMax        max value of desired product in wild-type [double]</p></li>
+<li><p>.S - Stoichiometric matrix</p></li>
+<li><p>.rxns - Reaction identifiers</p></li>
+<li><p>.b - Right hand side values for metabolite constraints</p></li>
+<li><p>.lb - Lower bounds</p></li>
+<li><p>.ub - Upper bounds</p></li>
+<li><p>.genes - Gene identifiers</p></li>
+<li><p>.rxnGeneMat - Reaction-gene incidence matrix</p></li>
 </ul>
 </li>
-<li><p><strong>toDel         Numeric variable that shows what to delete</strong> – 0: reactions
-1: genes
-2: enzymes</p></li>
-<li><p><strong>timeLimit     Time limit for gurobi optimization</strong> (<em>in seconds</em>)</p></li>
-<li><p><strong>midPoints     Number of mid points to calculate active reactions for (default</strong> – 0) [double]</p></li>
-<li><p><strong>printLevel    Print level for gurobi optimization (default</strong> – 0) [double]</p></li>
+<li><p><strong>matchRev</strong> – Matching of forward and backward reactions of a
+reversible reaction [double array]</p></li>
+<li><p><strong>K</strong> – List of reactions that cannot be selected for knockout
+(reaction IDs) [double array]</p></li>
+<li><p><strong>minP</strong> – Struct with the fields:</p>
+<ul>
+<li><p>.bioID - Reaction ID of biomass [double]</p></li>
+<li><p>.bioMin - 1% of the max biomass in the wild-type [double]</p></li>
+<li><p>.proID - Reaction ID of desired product [double]</p></li>
+<li><p>.proMin - 1% of the max desired product in the wild-type [double]</p></li>
+<li><p>.proMax - Max desired product in the wild-type [double]</p></li>
+</ul>
+</li>
 </ul>
 </dd>
-<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>data          Struct with information about</strong> –</p>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>toDel</strong> – Numeric flag for what to delete: 0 = reactions,
+1 = genes, 2 = enzymes (default: 0)</p></li>
+<li><p><strong>timeLimit</strong> – Time limit for the MILP solver in seconds [double]
+(default: inf)</p></li>
+<li><p><strong>midPoints</strong> – Number of mid points to calculate active reactions for
+[double] (default: 0)</p></li>
+<li><p><strong>printLevel</strong> – Print level for the MILP solver [double] (default: 0)</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>data</strong> – Struct with the fields:</p>
 <ul class="simple">
-<li><p>pro           Minimal product for best envelope</p></li>
-<li><p>bio           Maximum biomass for best envelope</p></li>
-<li><p>results       results of MILP</p></li>
-<li><p>mainModel     model for main envelope</p></li>
-<li><p>mainActive    List of active reactions for main envelope</p></li>
-<li><p>models        models for all mid envelopes</p></li>
-<li><p>active        Lists for active reactions for mid envelopes</p></li>
+<li><p>.pro - Minimal product for the best envelope</p></li>
+<li><p>.bio - Maximum biomass for the best envelope</p></li>
+<li><p>.results - Results of the MILP for each point</p></li>
+<li><p>.mainModel - Model for the main envelope</p></li>
+<li><p>.mainActive - List of active reactions for the main envelope</p></li>
+<li><p>.models - Models for all mid envelopes</p></li>
+<li><p>.active - Lists of active reactions for mid envelopes</p></li>
 </ul>
 </dd>
 </dl>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>This function is designed to be used with optEnvelope and was not
-designed as stand-alone function.</p>
+designed as a stand-alone function.</p>
 </div>
-<p class="rubric">AUTHORS</p>
-<p>created by    Ehsan Motamedian        09/02/2022
-modified by   Kristaps Berzins        31/10/2022
-modified by   Kristaps Berzins        30/10/2024     Added calculation of active reactions for middle points</p>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.design.optEnvelope.optEnvelope">
 <span class="sig-name descname"><span class="pre">optEnvelope</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">desiredProduct</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/design/optEnvelope/optEnvelope.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.design.optEnvelope.optEnvelope" title="Permalink to this definition">¶</a></dt>
-<dd><p>optEnvelope uses MILP to find minimum active reactions and then finds
-smallest set of reactions in the pool of inactive reactions that offers same production envelope.
-Algorith provides multiple ways to reinsert reactions - sequential, MILP, GA(under construction)</p>
+<dd><p>optEnvelope finds a minimal set of knockouts for a production envelope</p>
+<p>Uses a MILP to find the minimum set of active reactions and then finds the
+smallest set of reactions in the pool of inactive reactions that offers the
+same production envelope. The algorithm provides multiple ways to reinsert
+reactions: sequential, MILP and GA (under construction).</p>
 <dl class="field-list simple">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>[main, mid] = optEnvelope</strong> (<em>model, desiredProduct, ‘protectedRxns’, protectedRxns, ‘numTries’, numTries, ‘numKO’, numKO, ‘prodMol’, prodMol, ‘midPoints’, midPoints, ‘timeLimit’, timeLimit, ‘printLevel’, printLevel, ‘drawEnvelope’, drawEnvelope</em>)</p>
+<dd class="field-odd"><p><strong>[main, mid] = optEnvelope</strong> (<em>model, desiredProduct, varargin</em>)</p>
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>model              COBRA model structure [struct]</strong></p></li>
-<li><p><strong>desiredProduct     Reaction name of desired product [char]</strong></p></li>
+<li><p><strong>model</strong> – COBRA model structure with fields:</p>
+<ul>
+<li><p>.S - Stoichiometric matrix</p></li>
+<li><p>.rxns - Reaction identifiers</p></li>
+<li><p>.mets - Metabolite identifiers</p></li>
+<li><p>.lb - Lower bounds</p></li>
+<li><p>.ub - Upper bounds</p></li>
+<li><p>.b - Right hand side values for metabolite constraints</p></li>
+<li><p>.c - Objective coefficients</p></li>
+<li><p>.grRules - Readable gene-protein-reaction rules</p></li>
+<li><p>.metNames - Metabolite names</p></li>
+<li><p>.metFormulas - Elemental formulas</p></li>
+</ul>
+</li>
+<li><p><strong>desiredProduct</strong> – Reaction name of desired product [char]</p></li>
 </ul>
 </dd>
 <dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>protectedRxns</strong> (<em>opt) Aditional reactions to ignore (must be in irreversible form</em>) – {})</p></li>
-<li><p><strong>numTries</strong> (<em>opt</em>) – [])</p></li>
-<li><p><strong>numKO</strong> (<em>opt) Number of reactions to remove for final result (triggers MILP for reaction reinsertion</em>) – [])</p></li>
-<li><p><strong>prodMol</strong> (<em>opt) Molar mass of product for yield plot (g/mol</em>) – [])</p></li>
-<li><p><strong>midPoints</strong> (<em>opt</em>) – 0)</p></li>
-<li><p><strong>timeLimit</strong> (<em>opt) Time limit for gurobi optimization in seconds (also limits time for numTries</em>) – inf)</p></li>
-<li><p><strong>printLevel</strong> (<em>opt</em>) – 0)</p></li>
-<li><p><strong>drawEnvelope</strong> (<em>opt</em>) – true)</p></li>
-<li><p><strong>delGenes</strong> (<em>unfinished function</em>)</p></li>
-<li><p><strong>delEnzymes</strong> (<em>unfinished function</em>)</p></li>
-<li><p><strong>GAon</strong> (<em>unfinished function</em>)</p></li>
+<dd class="field-odd"><p><strong>varargin</strong> – Parameters given as parameter name / value pairs:</p>
+<ul class="simple">
+<li><p>protectedRxns - Additional reactions to ignore
+(must be in irreversible form) [cell array] (default: {})</p></li>
+<li><p>numTries - Iterations for finding the best set of
+deletions [double] (default: [])</p></li>
+<li><p>numKO - Number of reactions to remove for the final
+result (triggers MILP reinsertion) [double] (default: [])</p></li>
+<li><p>prodMol - Molar mass of product for a yield plot
+(g/mol) [double] (default: [])</p></li>
+<li><p>midPoints - Number of points to check along the
+edge for the best envelope [double] (default: 0)</p></li>
+<li><p>timeLimit - Time limit for the solver in seconds
+(also limits numTries) [double] (default: inf)</p></li>
+<li><p>printLevel - Print level for the solver [double]
+(default: 0)</p></li>
+<li><p>drawEnvelope - Whether the algorithm should draw
+envelopes [logical] (default: true)</p></li>
+<li><p>delGenes - Delete genes (unfinished) [logical]
+(default: false)</p></li>
+<li><p>delEnzymes - Delete enzymes (unfinished) [logical]
+(default: false)</p></li>
+<li><p>GAon - Use genetic algorithm (unfinished) [logical]
+(default: false)</p></li>
 </ul>
 </dd>
 <dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>main               Structure that contains information about reactions to remove for optimal envelope</strong> – Information about most probable point</p></li>
-<li><p><strong>mid                Structure that contains information about reactions to remove for midpoint envelopes</strong> – Information about most probable points for midpoint envelopes</p></li>
-<li><p><strong>EXAMPLE</strong> – [mainKnockouts, midKnockouts] = optEnvelope(model, ‘EX_ac_e’, ‘timeLimit’, 600, ‘protectedRxns’, {‘H2Ot_f’,’H2Ot_b’}, ‘midPoints’, 15);</p></li>
+<li><p><strong>main</strong> – Struct with information about the reactions to remove
+for the optimal envelope and its most probable point
+(fields .knockouts and .peak)</p></li>
+<li><p><strong>mid</strong> – Struct with information about the reactions to remove
+for the midpoint envelopes and their most probable
+points (fields .midKnockoutsTable and .peak)</p></li>
 </ul>
 </dd>
 </dl>
-<dl class="simple">
-<dt>NOTES</dt><dd><p>It should be mentioned that a figure (desired product versus biomass)
-including plots for wild-type and opt enveople is presented after
-running optEnvelope
-Mid Envelopes currently work only for sequential (default) reinsertions</p>
-</dd>
-</dl>
-<p class="rubric">AUTHORS</p>
-<p>created by  Ehsan Motamedian     02/09/2022
-modified by Kristaps Berzins     06/12/2022
-modified by Ehsan Motamedian     25/01/2023 switch to middle points was added
-modified by Kristaps Berzins     30/09/2024 improved algorightms, fixed bugs, added functionality</p>
+<p class="rubric">Example</p>
+<p>[mainKnockouts, midKnockouts] = optEnvelope(model, ‘EX_ac_e’, ‘timeLimit’, 600, ‘midPoints’, 15)</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>A figure (desired product versus biomass) including plots for the
+wild-type and the opt envelope is presented after running optEnvelope.
+Mid envelopes currently work only for sequential (default) reinsertions.</p>
+</div>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.design.optEnvelope.seperateTransposeJoinOE">
 <span class="sig-name descname"><span class="pre">seperateTransposeJoinOE</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">A</span></em>, <em class="sig-param"><span class="pre">Ay</span></em>, <em class="sig-param"><span class="pre">B</span></em>, <em class="sig-param"><span class="pre">C</span></em>, <em class="sig-param"><span class="pre">ySize</span></em>, <em class="sig-param"><span class="pre">yMax</span></em>, <em class="sig-param"><span class="pre">aSizeCol</span></em>, <em class="sig-param"><span class="pre">highNum</span></em>, <em class="sig-param"><span class="pre">zSize</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/design/optEnvelope/seperateTransposeJoinOE.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.design.optEnvelope.seperateTransposeJoinOE" title="Permalink to this definition">¶</a></dt>
-<dd><p>Function to transpose and join arrays for milpOEReinserts.m function</p>
-<p>Author(s): Kristaps Berzins</p>
+<dd><p>seperateTransposeJoinOE transposes and joins arrays for a MILP</p>
+<p>Helper for milpOEReinserts.m that transposes and joins the constraint
+arrays needed to build the dual MILP used for reaction reinsertion.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[A_w, Ay_w, B_w, C_w, lb_w, ub_w, wSize] = seperateTransposeJoinOE</strong> (<em>A, Ay, B, C, ySize, yMax, aSizeCol, highNum, zSize</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>A</strong> – Constraint matrix to transpose and join [matrix]</p></li>
+<li><p><strong>Ay</strong> – Constraint matrix associated with the y (knockout)
+variables [matrix]</p></li>
+<li><p><strong>B</strong> – Right hand side vector of the constraints [double array]</p></li>
+<li><p><strong>C</strong> – Objective coefficient vector [double array]</p></li>
+<li><p><strong>ySize</strong> – Number of y (knockout) variables [double]</p></li>
+<li><p><strong>yMax</strong> – Upper bound for the y variables [double]</p></li>
+<li><p><strong>aSizeCol</strong> – Number of columns of A [double]</p></li>
+<li><p><strong>highNum</strong> – Large finite number used as a big-M bound [double]</p></li>
+<li><p><strong>zSize</strong> – Number of z (auxiliary) variables [double]</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>A_w</strong> – Transposed and joined constraint matrix [matrix]</p></li>
+<li><p><strong>Ay_w</strong> – Joined matrix for the y variables [matrix]</p></li>
+<li><p><strong>B_w</strong> – Joined right hand side vector [double array]</p></li>
+<li><p><strong>C_w</strong> – Joined objective coefficient vector [double array]</p></li>
+<li><p><strong>lb_w</strong> – Lower bounds for the joined problem [double array]</p></li>
+<li><p><strong>ub_w</strong> – Upper bounds for the joined problem [double array]</p></li>
+<li><p><strong>wSize</strong> – Number of w (dual) variables [double]</p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This function is not designed for stand-alone use. It is used by
+milpOEReinserts.m.</p>
+</div>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.design.optEnvelope.sequentialOEReinserts">
 <span class="sig-name descname"><span class="pre">sequentialOEReinserts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">modelOld</span></em>, <em class="sig-param"><span class="pre">data</span></em>, <em class="sig-param"><span class="pre">K</span></em>, <em class="sig-param"><span class="pre">toDel</span></em>, <em class="sig-param"><span class="pre">minP</span></em>, <em class="sig-param"><span class="pre">midPoints</span></em>, <em class="sig-param"><span class="pre">numTries</span></em>, <em class="sig-param"><span class="pre">timeLimit</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/design/optEnvelope/sequentialOEReinserts.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.design.optEnvelope.sequentialOEReinserts" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function is going through inactive reactions sequentially and
-reinserting them one by one to get best possible set of knockouts while
-retaining optimal envelope. With numTries parameter this can be done
-multiple times by randomizing list of inactive reactions</p>
+<dd><p>sequentialOEReinserts reinserts reactions one by one to minimise knockouts</p>
+<p>Goes through the inactive reactions sequentially and reinserts them one by
+one to obtain the best possible set of knockouts while retaining the
+optimal envelope. With the numTries parameter this can be repeated several
+times by randomizing the list of inactive reactions.</p>
 <dl class="field-list simple">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[mainKnockouts, finalMidKnockouts] = sequentialOEReinserts</strong> (<em>modelOld, data, K, toDel, minP, midPoints, numTries, timeLimit</em>)</p>
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>modelOld            COBRA model structure in irreversible form [struct]</strong></p></li>
-<li><p><strong>data                Struct with information about</strong> –</p>
+<li><p><strong>modelOld</strong> – COBRA model structure in irreversible form with fields:</p>
 <ul>
-<li><p>mainModel     model for main envelope [struct]</p></li>
-<li><p>mainActive    List of active reactions for main envelope [cell array]</p></li>
-<li><p>models        models for all mid envelopes [struct]</p></li>
-<li><p>active        Lists for active reactions for mid envelopes [cell array]</p></li>
+<li><p>.rxns - Reaction identifiers</p></li>
+<li><p>.lb - Lower bounds</p></li>
+<li><p>.ub - Upper bounds</p></li>
 </ul>
 </li>
-<li><p><strong>K                   List of reactions that cannot be selected for knockout</strong> (<em>reaction IDs</em>)</p></li>
-<li><p><strong>toDel               Variable that shows what to delete</strong> – 0: reactions
-1: genes
-2: enzymes</p></li>
-<li><p><strong>minP                Struct with information about</strong> –</p>
+<li><p><strong>data</strong> – Struct with the fields:</p>
 <ul>
-<li><p>bioID         ID of biomass [double]</p></li>
-<li><p>proID         ID of desired product [double]</p></li>
+<li><p>.mainActive - List of active reactions for the
+main envelope [cell array]</p></li>
+<li><p>.mainModel - Model for the main envelope [struct]</p></li>
+<li><p>.active - Lists of active reactions for mid
+envelopes [cell array]</p></li>
+<li><p>.models - Models for all mid envelopes [struct]</p></li>
 </ul>
 </li>
-<li><p><strong>midPoints           Number of middle points to calculate mid envelopes for [double]</strong></p></li>
-<li><p><strong>numTries            Number of iterations for randomizing indexes of inactive reactions [double]</strong></p></li>
-<li><p><strong>timeLimit           Time limit for gurobi optimization</strong> (<em>in seconds</em>)</p></li>
+<li><p><strong>K</strong> – List of reactions that cannot be selected for
+knockout (reaction IDs) [double array]</p></li>
+<li><p><strong>toDel</strong> – Numeric flag for what to delete: 0 = reactions,
+1 = genes, 2 = enzymes</p></li>
+<li><p><strong>minP</strong> – Struct with the fields:</p>
+<ul>
+<li><p>.bioID - Reaction ID of biomass [double]</p></li>
+<li><p>.proID - Reaction ID of desired product [double]</p></li>
+</ul>
+</li>
+<li><p><strong>midPoints</strong> – Number of middle points to calculate mid envelopes
+for [double]</p></li>
+<li><p><strong>numTries</strong> – Number of iterations for randomizing the indexes of
+inactive reactions [double]</p></li>
+<li><p><strong>timeLimit</strong> – Time limit for the solver in seconds [double]</p></li>
 </ul>
 </dd>
 <dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>mainKnockouts       List of reactions that when removed gives optimal envelope</strong></p></li>
-<li><p><strong>finalMidKnockouts   List of reactions that when removed gives optimal</strong> – envelopes for middle envelopes</p></li>
+<li><p><strong>mainKnockouts</strong> – List of reactions that, when removed, give the
+optimal envelope [cell array]</p></li>
+<li><p><strong>finalMidKnockouts</strong> – List of reactions that, when removed, give the
+optimal envelopes for the middle envelopes [cell array]</p></li>
 </ul>
 </dd>
 </dl>
 <p class="rubric">Example</p>
 <p>[mainKnockouts, finalMidKnockouts] = sequentialOEReinserts(model, data, K, 0, minP, 10, 10, 60)</p>
-<p class="rubric">AUTHORS</p>
-<p>created by Kristaps Berzins 31/10/2022</p>
-<p class="rubric">Notes</p>
-<p>This function is not designed for stand-alone use. Should be used by
-using optEnvelope.m</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This function is not designed for stand-alone use. It should be used
+through optEnvelope.m.</p>
+</div>
 </dd></dl>
 
 </section>

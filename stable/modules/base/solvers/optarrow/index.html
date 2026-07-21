@@ -66,7 +66,7 @@
     <link rel="top" title="The COBRA Toolbox" href="../../../../index.html"/>
         <link rel="up" title="Solvers" href="../index.html"/>
         <link rel="next" title="Lindo" href="../lindo/index.html"/>
-        <link rel="prev" title="Gurobi" href="../gurobi/index.html"/> 
+        <link rel="prev" title="Minos" href="../minos/index.html"/> 
 
   
   <script src="../../../../_static/js/modernizr.min.js"></script>
@@ -159,31 +159,31 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Base</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="../../utilities/index.html">Utilities</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../paths/index.html">Paths</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../ci/index.html">Ci</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../codeConsistency/index.html">Codeconsistency</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../io/index.html">Io</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../install/index.html">Install</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../index.html">Solvers</a><ul class="current">
-<li class="toctree-l4"><a class="reference internal" href="../NLP/index.html">Nlp</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../param/index.html">Param</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../minos/index.html">Minos</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../init/index.html">Init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../NLP/index.html">Nlp</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../gurobi/index.html">Gurobi</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../minos/index.html">Minos</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">Optarrow</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../lindo/index.html">Lindo</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../entropicFBA/index.html">Entropicfba</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../cplex/index.html">Cplex</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../rescale/index.html">Rescale</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../cardOpt/index.html">Cardopt</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../mosek/index.html">Mosek</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../varKin/index.html">Varkin</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../getSetSolver/index.html">Getsetsolver</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../gams/index.html">Gams</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../init/index.html">Init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../cardOpt/index.html">Cardopt</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../entropicFBA/index.html">Entropicfba</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../lp_solve/index.html">Lp_solve</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../varKin/index.html">Varkin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../mosek/index.html">Mosek</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../cplex/index.html">Cplex</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../getSetSolver/index.html">Getsetsolver</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="../../ci/index.html">Ci</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../paths/index.html">Paths</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../cobrarrow/index.html">Cobrarrow</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../install/index.html">Install</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../dataIntegration/index.html">Dataintegration</a></li>
@@ -250,22 +250,6 @@
 <dt class="sig sig-object mat" id="src.base.solvers.optarrow.solveCobraLPOptArrow">
 <span class="sig-name descname"><span class="pre">solveCobraLPOptArrow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">LPproblem</span></em>, <em class="sig-param"><span class="pre">problemTypeParams</span></em>, <em class="sig-param"><span class="pre">solverParams</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/optarrow/solveCobraLPOptArrow.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.optarrow.solveCobraLPOptArrow" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solve a COBRA LP problem through the OptArrow backend</p>
-<dl class="field-list simple">
-<dt class="field-odd">USAGE<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>result = solveCobraLPOptArrow</strong> (<em>LPproblem, problemTypeParams, solverParams</em>)</p>
-</dd>
-<dt class="field-even">INPUTS<span class="colon">:</span></dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>LPproblem</strong> – COBRA LP problem structure</p></li>
-<li><p><strong>problemTypeParams</strong> – structure of problem-type parameters</p></li>
-<li><p><strong>solverParams</strong> – structure of solver parameters</p></li>
-</ul>
-</dd>
-<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>result</strong> – structure with fields compatible with the
-<cite>solveCobraLP</cite> solver dispatch</p>
-</dd>
-</dl>
 <p>This helper keeps the OptArrow integration downstream from the generic
 COBRA solver interface. It supports:</p>
 <blockquote>
@@ -274,26 +258,133 @@ COBRA solver interface. It supports:</p>
 <li><p>an HTTP path through the generic OptArrow MATLAB client</p></li>
 </ul>
 </div></blockquote>
+<dl class="field-list">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>result = solveCobraLPOptArrow</strong> (<em>LPproblem, problemTypeParams, solverParams</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>LPproblem</strong> – COBRA LP problem structure with fields:</p>
+<ul>
+<li><p>.A - <cite>m x n</cite> linear constraint matrix (used
+when present, otherwise <cite>.S</cite> is used instead)</p></li>
+<li><p>.S - (optional) <cite>m x n</cite> stoichiometric matrix,
+used as <cite>.A</cite> when <cite>.A</cite> is absent</p></li>
+<li><p>.b - (optional) <cite>m x 1</cite> right hand side vector
+for constraint <cite>A*x = b</cite> (default all zero)</p></li>
+<li><p>.c - <cite>n x 1</cite> linear objective coefficient vector</p></li>
+<li><p>.lb - (optional) <cite>n x 1</cite> lower bound vector for
+<cite>lb &lt;= x</cite> (default all zero)</p></li>
+<li><p>.ub - (optional) <cite>n x 1</cite> upper bound vector for
+<cite>x &lt;= ub</cite> (default all <cite>1e6</cite>)</p></li>
+<li><p>.csense - (optional) <cite>m x 1</cite> character array of
+constraint senses, one for each row in <cite>A</cite>
+(default all <cite>‘E’</cite>)</p></li>
+<li><p>.osense - (optional) scalar objective sense
+(-1 = maximise, 1 = minimise; default -1)</p></li>
+</ul>
+</li>
+<li><p><strong>problemTypeParams</strong> – Structure of problem-type parameters with fields:</p>
+<ul>
+<li><p>.printLevel - verbosity level; the OptArrow
+status is printed to the command window when
+<cite>printLevel &gt; 1</cite></p></li>
+</ul>
+</li>
+<li><p><strong>solverParams</strong> – Structure of solver parameters with fields:</p>
+<ul>
+<li><p>.endpoint - (optional) HTTP endpoint URL; when
+present, the request is routed through the
+OptArrow HTTP client instead of the CLI path</p></li>
+<li><p>.timeoutSec - (optional) HTTP request timeout
+in seconds (default 120), used only on the
+HTTP path</p></li>
+<li><p>.optArrowMatlabRoot - (optional) path to the
+OptArrow MATLAB client sources, added to the
+MATLAB path on the HTTP path</p></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>result</strong> – Structure with fields compatible with the
+<cite>solveCobraLP</cite> solver dispatch:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>.x - primal solution vector</p></li>
+<li><p>.f - objective value</p></li>
+<li><p>.w - reduced costs</p></li>
+<li><p>.y - dual values</p></li>
+<li><p>.stat - COBRA-style solver status</p></li>
+<li><p>.origStat - original OptArrow/backend status</p></li>
+<li><p>.origStatText - original status text</p></li>
+<li><p>.lpmethod - name/identifier of the method used</p></li>
+<li><p>.basis - warm-start basis (currently always
+empty for this backend)</p></li>
+<li><p>.raw - raw response returned by the backend</p></li>
+</ul>
+</div></blockquote>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.base.solvers.optarrow.solveCobraQPOptArrow">
 <span class="sig-name descname"><span class="pre">solveCobraQPOptArrow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">QPproblem</span></em>, <em class="sig-param"><span class="pre">problemTypeParams</span></em>, <em class="sig-param"><span class="pre">solverParams</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/optarrow/solveCobraQPOptArrow.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.optarrow.solveCobraQPOptArrow" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solve a COBRA QP problem through the OptArrow backend</p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>result = solveCobraQPOptArrow</strong> (<em>QPproblem, problemTypeParams, solverParams</em>)</p>
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>QPproblem</strong> – COBRA QP problem structure</p></li>
-<li><p><strong>problemTypeParams</strong> – structure of problem-type parameters</p></li>
-<li><p><strong>solverParams</strong> – structure of solver parameters</p></li>
+<li><p><strong>QPproblem</strong> – COBRA QP problem structure with fields:</p>
+<ul>
+<li><p>.F - <cite>n x n</cite> positive semidefinite matrix for
+the quadratic objective term</p></li>
+<li><p>.c - <cite>n x 1</cite> linear objective coefficient vector</p></li>
+<li><p>.lb - <cite>n x 1</cite> lower bound vector for <cite>lb &lt;= x</cite></p></li>
+<li><p>.ub - <cite>n x 1</cite> upper bound vector for <cite>x &lt;= ub</cite></p></li>
+<li><p>.A - (optional) <cite>m x n</cite> linear constraint matrix</p></li>
+<li><p>.b - (optional) <cite>m x 1</cite> right hand side
+vector for constraint <cite>A*x = b</cite>, used when
+<cite>.A</cite> is present</p></li>
+<li><p>.csense - (optional) <cite>m x 1</cite> character array
+of constraint senses, one for each row in <cite>A</cite></p></li>
+<li><p>.osense - (optional) scalar objective sense
+(-1 = maximise, 1 = minimise; default 1)</p></li>
+</ul>
+</li>
+<li><p><strong>problemTypeParams</strong> – Structure of problem-type parameters (currently
+unused by this backend, accepted for interface
+compatibility with <cite>solveCobraQP</cite>)</p></li>
+<li><p><strong>solverParams</strong> – Structure of solver parameters, with fields:</p>
+<ul>
+<li><p>.pythonExecutable, .python_executable,
+.optarrowPython - (optional) path to the
+Python executable used to run the OptArrow
+CLI; stripped from the parameters sent to
+the CLI</p></li>
+</ul>
+</li>
 </ul>
 </dd>
 <dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>result</strong> – structure with fields compatible with the
-<cite>solveCobraQP</cite> solver dispatch</p>
+<dd class="field-odd"><p><strong>result</strong> – Structure with fields compatible with the
+<cite>solveCobraQP</cite> solver dispatch:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>.x - primal solution vector</p></li>
+<li><p>.w - reduced costs</p></li>
+<li><p>.y - dual values</p></li>
+<li><p>.s - slack values</p></li>
+<li><p>.stat - COBRA-style solver status</p></li>
+<li><p>.origStat - original OptArrow/backend status</p></li>
+<li><p>.origStatText - original status text</p></li>
+<li><p>.qpmethod - name/identifier of the method used</p></li>
+<li><p>.raw - raw response returned by the backend</p></li>
+</ul>
+</div></blockquote>
 </dd>
 </dl>
 </dd></dl>
@@ -323,13 +414,17 @@ COBRA solver interface. It supports:</p>
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.base.solvers.optarrow.testOptArrowEcoliCoreHttpFBA">
 <span class="sig-name descname"><span class="pre">testOptArrowEcoliCoreHttpFBA</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">endpoint</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/optarrow/testOptArrowEcoliCoreHttpFBA.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.optarrow.testOptArrowEcoliCoreHttpFBA" title="Permalink to this definition">¶</a></dt>
-<dd><p>testOptArrowEcoliCoreHttpFBA End-to-end COBRA FBA test on ecoli_core via OptArrow HTTP.</p>
+<dd><p>End-to-end COBRA FBA test on ecoli_core via OptArrow HTTP</p>
 <dl class="field-list simple">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>testOptArrowEcoliCoreHttpFBA()</strong></p></li>
 <li><p><strong>testOptArrowEcoliCoreHttpFBA</strong> (<em>endpoint</em>)</p></li>
 </ul>
+</dd>
+<dt class="field-even">OPTIONAL INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>endpoint</strong> – HTTP endpoint URL for the OptArrow compute service
+(default: <cite>‘http://127.0.0.1:8000/compute’</cite>)</p>
 </dd>
 </dl>
 </dd></dl>
@@ -360,7 +455,7 @@ COBRA solver interface. It supports:</p>
         <a href="../lindo/index.html" class="btn btn-default float-right" title="Lindo" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../gurobi/index.html" class="btn btn-default" title="Gurobi" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../minos/index.html" class="btn btn-default" title="Minos" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

@@ -65,8 +65,8 @@
         <link rel="search" title="Search" href="../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../index.html"/>
         <link rel="up" title="Visualization" href="../index.html"/>
-        <link rel="next" title="Convert" href="../convert/index.html"/>
-        <link rel="prev" title="Efmviz" href="../efmviz/index.html"/> 
+        <link rel="next" title="Entropicfba" href="../entropicFBA/index.html"/>
+        <link rel="prev" title="Reconmap" href="../maps/ReconMap/index.html"/> 
 
   
   <script src="../../../_static/js/modernizr.min.js"></script>
@@ -162,19 +162,19 @@
 <li class="toctree-l2"><a class="reference internal" href="../../design/index.html">Design</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../reconstruction/index.html">Reconstruction</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html">Visualization</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../paint4net/index.html">Paint4net</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../efmviz/index.html">Efmviz</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Sammim</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../convert/index.html">Convert</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../cellDesigner/index.html">Celldesigner</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../entropicFBA/index.html">Entropicfba</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../visualizeEpistasis/index.html">Visualizeepistasis</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../upsetPlot/index.html">Upsetplot</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../createMetIntrcNetwork/index.html">Createmetintrcnetwork</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../maps/index.html">Maps</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../metabolicCartography/index.html">Metaboliccartography</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../EscherMap/index.html">Eschermap</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../paint4Net/index.html">Paint4net</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../paint4net/index.html">Paint4net</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../metabolicCartography/index.html">Metaboliccartography</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cellDesigner/index.html">Celldesigner</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../maps/index.html">Maps</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Sammim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../entropicFBA/index.html">Entropicfba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../upsetPlot/index.html">Upsetplot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../convert/index.html">Convert</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../visualizeEpistasis/index.html">Visualizeepistasis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../EscherMap/index.html">Eschermap</a></li>
 </ul>
 </li>
 </ul>
@@ -235,49 +235,170 @@
 <span class="target" id="module-src.visualization.SAMMIM"></span><dl class="mat function">
 <dt class="sig sig-object mat" id="src.visualization.SAMMIM.expa">
 <span class="sig-name descname"><span class="pre">expa</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/SAMMIM/expa.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.SAMMIM.expa" title="Permalink to this definition">¶</a></dt>
-<dd><p>function [model fullmodel] = expaths(model,print)</p>
-<p>This function finds the extreme pathways of a stoichiometric model
-according to the algorithm by Schilling, Letscher and Palsson:</p>
+<dd><p>Computes the extreme pathways of a stoichiometric model according to
+the algorithm by Schilling, Letscher and Palsson:</p>
 <p>Schilling, C. H., Letscher, D. &amp; Palsson, B. O. Theory for the systemic
-definition of metabolic pathways and their use in interpreting metabolic
-function from a pathway-oriented perspective. Journal of theoretical
-biology 203, 229–48 (2000).</p>
+definition of metabolic pathways and their use in interpreting
+metabolic function from a pathway-oriented perspective. Journal of
+theoretical biology 203, 229-48 (2000).</p>
 <p>This algorithm is defined in appendix B of the citation above. Steps of
-the algorithm and relevant excerpts from the paper are quoted as comments
-throuhghout the code</p>
-<p>INPUT:
-model - model is inputed in the format used with the COBRA toolbox.
-Minimum required fields are</p>
+the algorithm and relevant excerpts from the paper are quoted as
+comments throughout the code.</p>
+<dl class="field-list">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[model, fullmodel] = expa</strong> (<em>model, varargin</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>model</strong> – Model in the format used with the COBRA Toolbox.
+Minimum required fields:</p>
 <blockquote>
-<div><p>S - stoichiometric coefficient matrix
-lb - lower bound for reactions
-ub - upper bound for reactions
-rev - reversibility flag for each reaction in the model. Freely</p>
-<blockquote>
-<div><p>exchanged metabolites (From exchange reactions) are not determined to
-be so through their reversibility flag, but through non-zero upper and
-lower bounds. Inputs have a zero upper bound and outputs have a zero
-lower bound</p>
+<div><ul class="simple">
+<li><p>.S - Stoichiometric coefficient matrix</p></li>
+<li><p>.lb - Lower bound for reactions</p></li>
+<li><p>.ub - Upper bound for reactions</p></li>
+<li><p>.rev - Reversibility flag for each reaction.
+Freely exchanged metabolites (from exchange
+reactions) are not determined to be so through
+their reversibility flag, but through
+non-zero upper and lower bounds. Inputs have a
+zero upper bound and outputs have a zero lower
+bound</p></li>
+<li><p>.c - Objective function</p></li>
+<li><p>.rxns - Reaction names</p></li>
+<li><p>.mets - Metabolite identifiers (used to count
+metabolites that lack an unconstrained
+exchange flux)</p></li>
+<li><p>.fluxtype - (assigned internally) <cite>x</cite>
+(exchange) or <cite>i</cite> (internal) flux type
+computed for each reaction</p></li>
+<li><p>.rules - (optional) reordered/pruned to match
+the decomposed reaction list, if present</p></li>
+<li><p>.rxnGeneMat - (optional) reordered/pruned to
+match the decomposed reaction list, if present</p></li>
+<li><p>.grRules - (optional) reordered/pruned to
+match the decomposed reaction list, if present</p></li>
+<li><p>.subSystems - (optional) reordered/pruned to
+match the decomposed reaction list, if present</p></li>
+<li><p>.confidenceScores - (optional) reordered/
+pruned to match the decomposed reaction list,
+if present</p></li>
+<li><p>.rxnReferences - (optional) reordered/pruned
+to match the decomposed reaction list, if
+present</p></li>
+<li><p>.rxnECNumbers - (optional) reordered/pruned
+to match the decomposed reaction list, if
+present</p></li>
+<li><p>.rxnNotes - (optional) reordered/pruned to
+match the decomposed reaction list, if present</p></li>
+<li><p>.rxnNames - (optional) reordered/pruned to
+match the decomposed reaction list, if present</p></li>
+<li><p>.P - (added by this function) matrix of
+extreme pathways</p></li>
+</ul>
 </div></blockquote>
-<p>c - objective function
-rxns - reaction names</p>
-</div></blockquote>
-<p>OPTIONAL INPUT
-Print - If this input is given and is 1, ‘y’ or ‘Y’ the function prints
-the progress of the algorithm.</p>
-<p>OUTPUTS
-fullmodel - decomposed model of original model inputed. Reversible</p>
-<blockquote>
-<div><p>reactions get decomposed into two forward reactions. All fields mentioned
-above get adjusted, as well as rules,rxnGeneMat,grRules,subSystems,
-confidenceScores,rxnReferences,rxnECNumbers,rxnNotes,rxnNames. These are
-commonly used COBRA fields. most importantly, a matrix P is added as a
-field and corresponds to the extreme pathways.</p>
-</div></blockquote>
-<dl class="simple">
-<dt>model - the model outputted matches the original model inputed. This is a</dt><dd><p>collapsed version of the ‘fullmodel’ output, where the reversible
-reactions that had been decomposed are combined again. The extreme
-pathways are combined as absolute value.</p>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>varargin</strong> – varargin{1} (<cite>print</cite>) - If given and equal to
+<cite>1</cite>, <cite>y</cite>, or <cite>Y</cite>, the function prints the
+progress of the algorithm</p>
+</dd>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>fullmodel</strong> – Decomposed model of the original model input.
+Reversible reactions get decomposed into two
+forward reactions. All fields mentioned above get
+adjusted, and a matrix <cite>P</cite>, corresponding to the
+extreme pathways, is added as a field</p></li>
+<li><p><strong>model</strong> – The model output matches the original model
+input. This is a collapsed version of the
+<cite>fullmodel</cite> output, where the reversible
+reactions that had been decomposed are combined
+again. The extreme pathways (field <cite>P</cite>) are
+combined as absolute value</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.visualization.SAMMIM.makeSAMMIJson">
+<span class="sig-name descname"><span class="pre">makeSAMMIJson</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/SAMMIM/makeSAMMIJson.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.SAMMIM.makeSAMMIJson" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a COBRA model into the JSON string format used by the SAMMI
+front-end to render a metabolic map</p>
+<p>Any additional field of <cite>model</cite> whose size matches <cite>.mets</cite> is included as
+a per-metabolite JSON annotation, and any field whose size matches
+<cite>.rxns</cite> is included as a per-reaction JSON annotation</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>jsonstr = makeSAMMIJson</strong> (<em>model</em>)</p>
+</dd>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>model</strong> – COBRA model structure with fields:</p>
+<ul class="simple">
+<li><p>.mets - <cite>m x 1</cite> cell array of metabolite identifiers</p></li>
+<li><p>.rxns - <cite>n x 1</cite> cell array of reaction identifiers</p></li>
+<li><p>.S - <cite>m x n</cite> stoichiometric matrix</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>jsonstr</strong> – Character array with the SAMMI JSON representation of
+<cite>model</cite>, of the form
+<cite>{“metabolites”:[…],”reactions”:[…]}</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.visualization.SAMMIM.makeSAMMIdataString">
+<span class="sig-name descname"><span class="pre">makeSAMMIdataString</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">tbl</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/SAMMIM/makeSAMMIdataString.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.SAMMIM.makeSAMMIdataString" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a data table into the array-string format used by the SAMMI
+front-end to receive flux, concentration, or width data</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>tblstring = makeSAMMIdataString</strong> (<em>tbl</em>)</p>
+</dd>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>tbl</strong> – MATLAB table with fields:</p>
+<ul class="simple">
+<li><p>.Properties.VariableNames - condition names, one
+column of numeric data per condition</p></li>
+<li><p>.Properties.RowNames - reaction or metabolite
+identifiers, one per row</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>tblstring</strong> – Character array encoding <cite>tbl</cite> as the nested array
+string <cite>[[headers],[rowName,val1,val2,…],…]</cite> used
+by the SAMMI front-end</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.visualization.SAMMIM.makeSAMMIparseVector">
+<span class="sig-name descname"><span class="pre">makeSAMMIparseVector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">dat</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/SAMMIM/makeSAMMIparseVector.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.SAMMIM.makeSAMMIparseVector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a struct array describing SAMMI subgraphs into the array-string
+format used by the SAMMI front-end to filter the model into subgraphs</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>parsevec = makeSAMMIparseVector</strong> (<em>dat</em>)</p>
+</dd>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>dat</strong> – Struct array, one element per subgraph, with fields:</p>
+<ul class="simple">
+<li><p>.name - name of the subgraph</p></li>
+<li><p>.rxns - cell array of reaction identifiers included
+in the subgraph</p></li>
+<li><p>.flux - optional numeric vector, one value per
+reaction in <cite>.rxns</cite>, mapped as reaction color; if
+<cite>dat</cite> has a <cite>flux</cite> field, empty entries are filled
+with <cite>NaN</cite></p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>parsevec</strong> – Character array encoding <cite>dat</cite> as the nested array
+string <cite>[[name,[rxn,flux],…],…]</cite> used by the SAMMI
+front-end</p>
 </dd>
 </dl>
 </dd></dl>
@@ -291,17 +412,17 @@ Documentation at: <a class="reference external" href="https://sammim.readthedocs
 <dt>Citation: Schultz, A., &amp; Akbani, R. (2019). SAMMI: A Semi-Automated</dt><dd><p>Tool for the Visualization of Metabolic Networks. Bioinformatics.</p>
 </dd>
 </dl>
-<p>USAGE:
-openSAMMI(htmlName)</p>
 <dl class="field-list simple">
-<dt class="field-odd">OPTIONAL INPUT<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>htmlName</strong> – Name of the html file previously written using the sammi</p></li>
-<li><p><strong>function. If left blank will print all available models.</strong></p></li>
-</ul>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>openSammi</strong> (<em>htmlName</em>)</p>
 </dd>
-<dt class="field-even">OUTPUT<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>No MATLAB output, opens the visualization in a new browser tab.</strong></p>
+<dt class="field-even">OPTIONAL INPUT<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>htmlName</strong> – Name of the html file previously written using the
+<cite>sammi</cite> function. If left blank, prints the names of all
+available models instead of opening one.</p>
+</dd>
+<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>No MATLAB output, opens the visualization in a new browser tab.</strong></p>
 </dd>
 </dl>
 </dd></dl>
@@ -311,73 +432,104 @@ openSAMMI(htmlName)</p>
 <span class="sig-name descname"><span class="pre">sammi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">parser</span></em>, <em class="sig-param"><span class="pre">data</span></em>, <em class="sig-param"><span class="pre">secondaries</span></em>, <em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/SAMMIM/sammi.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.SAMMIM.sammi" title="Permalink to this definition">¶</a></dt>
 <dd><p>Visualize the given model, set of reactions, and/or data using SAMMI.
 Documentation at: <a class="reference external" href="https://sammim.readthedocs.io/en/latest/index.html">https://sammim.readthedocs.io/en/latest/index.html</a></p>
-<dl class="simple">
-<dt>Citation: Schultz, A., &amp; Akbani, R. (2019). SAMMI: A Semi-Automated</dt><dd><p>Tool for the Visualization of Metabolic Networks. Bioinformatics.</p>
-</dd>
-</dl>
-<p>USAGE:
-sammi(model,parser,data,secondaries,options)</p>
+<p>Citation: Schultz, A., &amp; Akbani, R. (2019). SAMMI: A Semi-Automated
+Tool for the Visualization of Metabolic Networks. Bioinformatics.</p>
 <dl class="field-list">
-<dt class="field-odd">INPUT<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>model</strong> – COBRA model to be visualized</p>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>sammi</strong> (<em>model, parser, data, secondaries, options</em>)</p>
 </dd>
-<dt class="field-even">OPTIONAL INPUTS<span class="colon">:</span></dt>
-<dd class="field-even"><ul>
-<li><p><strong>parser</strong> – How the model is to be parsed. There are four possible</p></li>
-<li><p><strong>options for this parameter. Default empty array.</strong> – <a href="#id2"><span class="problematic" id="id3">*</span></a>empty array: If this parameter is an empty arrray, all reaction
-in the model will be loaded in a single map. Not advisable for
-large maps.
-<a href="#id4"><span class="problematic" id="id5">*</span></a>string: If this parameter is a characters array there are two
-options. Either the parameter defines the path to a SAMMI map (JSON
-file downloaded from a previous instance of SAMMI), in which case
-the given map will be used, or the parameter defines a field in the
-model struct, in which case this field will be used to parse the
-model into subgraphs.
-<a href="#id6"><span class="problematic" id="id7">*</span></a>cell array: If this parameter is a cell array, it should be a cell
-array of strings containing reaction IDs. Only these reactions will
-be included in a single SAMMI map.
-<a href="#id8"><span class="problematic" id="id9">*</span></a>struct: If this model is a struct of length n, the model will be
-parsed into n subgraphs. Each element of the struct should contain
-two fields plus an additional optional one:</p>
-<blockquote>
-<div><p>name: Name of the subgraph.
-rxns: Reactions to be included in the subgraph.
-flux: Optional field. Data to be mapped as reaction color.</p>
-</div></blockquote>
-</li>
-<li><p><strong>data</strong> – Data to be mapped onto the model. Struct of length n. Defaults</p></li>
-<li><p><strong>to an empty array where no data is mapped. Element of the struct should</strong></p></li>
-<li><p><strong>contain two fields</strong> – type: A cell array of two strings. The firt string should be
-either ‘rxns’, ‘mets’, or ‘links’ indicating which type of data
-is to be mapped. The second string should be either ‘color’ or
-‘size’, indicating how the data is to  be mapped. ‘links’ only
-work with ‘size’, since link color is the same as the one of
-the reaction it is assciated with.
-data: a table object. VariableNames will be translated into
-condition names, and RowNames should be reaction IDs for ‘rxns’
-and ‘links’ data, and metabolite IDs for ‘mets’ data. NaN values
-will not be mapped.</p></li>
-<li><p><strong>secondaries</strong> – Cell array of strings of regular expressions. All</p></li>
-<li><p><strong>metabolites, in all subgraphs, matching any of the regular expressions</strong></p></li>
-<li><p><strong>will be shelved. Default to empty array where no metabolites are</strong></p></li>
-<li><p><strong>shelved.</strong></p></li>
-<li><p><strong>options</strong> – Struct with the following fields:
-htmlName: Name of the html file to be written and opened for the
-visualization. Defaults to ‘index_load’. Change this options to
-write to a different html file that will not be overwritten by the
-default option.
-load: Load the html file in a new tab upon writing the file.
-Default to true. If you would not like a new tab to open, set
-this parameter to false and refresh a previously opened window. To
-open a new window without re-running SAMMI use the openSammi
-function.
-jscode: String. Defaults to empty string. Additional JavaScript
-code to run after loading the map. Can be any code to modify the
-loaded map.</p></li>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>model</strong> – COBRA model to be visualized. Fields used:</p>
+<ul class="simple">
+<li><p>.rxns - reaction identifiers</p></li>
+<li><p>.subSystems - subsystem assigned to each
+reaction; read when <cite>parser</cite> names a model
+field used to split the model into subgraphs</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>No MATLAB output. Opens a browser window with the SAMMI visualization.</strong></p>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul>
+<li><p><strong>parser</strong> – How the model is to be parsed. Default empty
+array. One of four forms:</p>
+<blockquote>
+<div><ul>
+<li><p>Empty array - all reactions in the model are
+loaded in a single map. Not advisable for
+large maps.</p></li>
+<li><p>Char array - either the path to a SAMMI map
+(JSON file downloaded from a previous
+instance of SAMMI), in which case the given
+map is used, or the name of a field in the
+model struct, in which case that field is
+used to parse the model into subgraphs.</p></li>
+<li><p>Cell array - a cell array of reaction ID
+strings; only these reactions are included
+in a single SAMMI map.</p></li>
+<li><p>Struct array of length <cite>n</cite> - the model is
+parsed into <cite>n</cite> subgraphs. Each element
+should contain two required fields plus one
+optional field:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>.name - name of the subgraph</p></li>
+<li><p>.rxns - reactions to be included in the
+subgraph</p></li>
+<li><p>.flux - optional; data to be mapped as
+reaction color</p></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><strong>data</strong> – Data to be mapped onto the model. Struct of
+length <cite>n</cite>. Defaults to an empty array where no
+data is mapped. Each element should contain two
+fields:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>.type - a cell array of two strings; the
+first is <cite>rxns</cite>, <cite>mets</cite>, or <cite>links</cite>,
+indicating which type of data is mapped, and
+the second is <cite>color</cite> or <cite>size</cite>, indicating
+how the data is mapped (<cite>links</cite> only
+supports <cite>size</cite>, since link color follows
+the associated reaction)</p></li>
+<li><p>.data - a table object; <cite>VariableNames</cite> are
+translated into condition names, and
+<cite>RowNames</cite> should be reaction IDs for
+<cite>rxns</cite>/<cite>links</cite> data and metabolite IDs for
+<cite>mets</cite> data. <cite>NaN</cite> values are not mapped</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><strong>secondaries</strong> – Cell array of regular-expression strings. All
+metabolites, in all subgraphs, matching any of
+the regular expressions are shelved. Defaults to
+an empty array where no metabolites are shelved.</p></li>
+<li><p><strong>options</strong> – Struct with the following fields:</p>
+<ul class="simple">
+<li><p>.htmlName - name of the html file to be
+written and opened for the visualization.
+Defaults to <cite>index_load</cite>. Change this field
+to write to a different html file that will
+not be overwritten by the default option</p></li>
+<li><p>.load - load the html file in a new tab upon
+writing the file. Defaults to true. If a new
+tab should not open, set this field to false
+and refresh a previously opened window; use
+the <cite>openSammi</cite> function to open a new
+window without re-running <cite>sammi</cite></p></li>
+<li><p>.jscode - string, defaults to an empty
+string. Additional JavaScript code to run
+after loading the map. Can be any code to
+modify the loaded map</p></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUT<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>No MATLAB output. Opens a browser window with the SAMMI visualization.</strong></p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
@@ -413,10 +565,10 @@ sammi(model,’subSystems’,data,secondaries)</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../convert/index.html" class="btn btn-default float-right" title="Convert" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../entropicFBA/index.html" class="btn btn-default float-right" title="Entropicfba" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../efmviz/index.html" class="btn btn-default" title="Efmviz" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../maps/ReconMap/index.html" class="btn btn-default" title="Reconmap" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

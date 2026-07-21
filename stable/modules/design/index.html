@@ -66,7 +66,7 @@
     <link rel="top" title="The COBRA Toolbox" href="../../index.html"/>
         <link rel="up" title="Functions" href="../index.html"/>
         <link rel="next" title="Trimgdel" href="TrimGdel/index.html"/>
-        <link rel="prev" title="Metabotools" href="../dataIntegration/metabotools/index.html"/> 
+        <link rel="prev" title="Atn" href="../dataIntegration/fluxomics/atomTransition/ATN/index.html"/> 
 
   
   <script src="../../_static/js/modernizr.min.js"></script>
@@ -262,12 +262,27 @@
 designs with greater in silico production of desired metabolites.</p>
 <dl class="field-list">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>[gdlsSolution, bilevelMILPProblem, gdlsSolutionStructs] = GDLS</strong> (<em>model, varargin</em>)</p>
+<dd class="field-odd"><p><strong>[gdlsSolution, bilevelMILPProblem, gdlsSolutionStructs] = GDLS</strong> (<em>model, targetRxns, varargin</em>)</p>
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>model</strong> – Cobra model structure</p></li>
-<li><p><strong>targetRxn</strong> – Reaction(s) to be maximized (Cell array of strings)</p></li>
+<li><p><strong>model</strong> – COBRA model structure. Fields used directly:</p>
+<ul>
+<li><p>.S - <cite>m x n</cite> stoichiometric matrix</p></li>
+<li><p>.c - <cite>n x 1</cite> linear objective coefficients</p></li>
+<li><p>.lb - <cite>n x 1</cite> lower flux bounds</p></li>
+<li><p>.ub - <cite>n x 1</cite> upper flux bounds</p></li>
+<li><p>.rxns - <cite>n x 1</cite> reaction identifiers</p></li>
+<li><p>.genes - gene identifiers (used when <cite>koType</cite> is <cite>genes</cite>)</p></li>
+<li><p>.grRules - gene-reaction rule strings (used when <cite>koType</cite> is <cite>geneSets</cite>)</p></li>
+<li><p>.rxnGeneMat - reaction-by-gene mapping matrix (used when <cite>koType</cite> is <cite>genes</cite>)</p></li>
+<li><p>.koCost - optional per-knockout cost vector (used when <cite>koCost</cite> is not passed as an option)</p></li>
+<li><p>.selRxnMatrix - selection matrix mapping knockout candidates to reactions (set internally)</p></li>
+<li><p>.rxnsPresent - indicator vector of reactions currently present (set internally)</p></li>
+<li><p>.x0 - initial point for the inner flux-balance problem (set internally)</p></li>
+</ul>
+</li>
+<li><p><strong>targetRxns</strong> – Reaction(s) to be maximized (cell array of reaction identifiers)</p></li>
 </ul>
 </dd>
 <dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
@@ -291,7 +306,9 @@ parameter, parameter value. List of optional parameters:</p>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>gdlsSolution</strong> – GDLS solution structure (similar to <cite>OptKnock</cite> <cite>sol</cite> struct)</p></li>
 <li><p><strong>bilevelMILPProblem</strong> – Problem structure used in computation</p></li>
-<li><p><strong>gdlsSolutionStructs</strong></p></li>
+<li><p><strong>gdlsSolutionStructs</strong> – per-iteration solution structs, keyed by iteration and
+search path, each holding the <cite>solBiomass</cite>, <cite>solSynMin</cite>,
+and <cite>solSynMax</cite> flux-balance solutions</p></li>
 </ul>
 </dd>
 </dl>
@@ -357,21 +374,20 @@ stoichiometric model</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>options</strong> – <cite>OptKnock</cite> options</p>
 <ul>
-<li><p><cite>targetRxn</cite> - Target flux to be maximized</p></li>
-<li><p><cite>numDel</cite> - # of deletions allowed (Default: 5)</p></li>
-<li><p><cite>numDelSense</cite> - Direction of # of deletions constraint (G/E/L)
+<li><p>.targetRxn - Target flux to be maximized</p></li>
+<li><p>.numDel - # of deletions allowed (Default: 5)</p></li>
+<li><p>.numDelSense - Direction of # of deletions constraint (G/E/L)
 (Default: L)</p></li>
-<li><p><cite>vMax</cite> - Max flux (Default: 1000)</p></li>
-<li><p><cite>solveOptKnock</cite> - Solve problem within Matlab (Default: true)</p></li>
-<li><p><cite>createGams</cite> - Create GAMS input file</p></li>
-<li><p><cite>gamsFile</cite> - GAMS input file name</p></li>
+<li><p>.vMax - Max flux (Default: 1000)</p></li>
+<li><p>.solveOptKnock - Solve problem within Matlab (Default: true)</p></li>
+<li><p>.initSolution - optional initial integer (knockout) solution</p></li>
 </ul>
 </li>
 <li><p><strong>constrOpt</strong> – Explicitly constrained reaction options</p>
 <ul>
-<li><p><cite>rxnList</cite> - Reaction list</p></li>
-<li><p><cite>values</cite> - Values for constrained reactions</p></li>
-<li><p><cite>sense</cite> - Constraint senses for constrained reactions (G/E/L)</p></li>
+<li><p>.rxnInd - indices of the constrained reactions</p></li>
+<li><p>.values - values for the constrained reactions</p></li>
+<li><p>.sense - constraint senses for the constrained reactions (G/E/L)</p></li>
 </ul>
 </li>
 <li><p><strong>prevSolutions</strong> – Previous solutions</p></li>
@@ -407,7 +423,12 @@ should get closer to local maxima.  Must have num <cite>KOs</cite> &gt; 1.</p>
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>modelRed</strong> – reduced model</p></li>
+<li><p><strong>modelRed</strong> – reduced COBRA model structure. Fields used directly:</p>
+<ul>
+<li><p>.c - <cite>n x 1</cite> linear objective coefficients (identifies the biomass reaction)</p></li>
+<li><p>.rxns - <cite>n x 1</cite> reaction identifiers</p></li>
+</ul>
+</li>
 <li><p><strong>selectedRxns</strong> – selected reaction list from the reduced model</p></li>
 <li><p><strong>target</strong> – exchange <cite>rxn</cite> to optimize</p></li>
 <li><p><strong>deletions</strong> – initial set of <cite>KO</cite> <cite>rxns</cite> (must have at least 1 <cite>rxn</cite>)</p></li>
@@ -453,7 +474,12 @@ or not and what the maximum growth and production rates are</p>
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>model</strong> – COBRA model structure</p></li>
+<li><p><strong>model</strong> – COBRA model structure. Fields used directly:</p>
+<ul>
+<li><p>.rxns - <cite>n x 1</cite> reaction identifiers</p></li>
+<li><p>.c - <cite>n x 1</cite> linear objective coefficients (identifies the biomass reaction)</p></li>
+</ul>
+</li>
 <li><p><strong>deletions</strong> – list of reaction or gene deletions (empty if wild type)</p></li>
 <li><p><strong>target</strong> – the exchange reaction for the <cite>OptKnock</cite> target metabolite</p></li>
 </ul>
@@ -550,11 +576,17 @@ besides the exchange reaction and the OM transport reaction</p></li>
 and outer problem objective functions</p>
 <dl class="field-list simple">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>bilevelMILPproblem = createBilevelMILPProblem</strong> (<em>model, cLinear, cInteger, selRxns, selRxnMatch, constrOpt, measOpt, options, selPrevSol</em>)</p>
+<dd class="field-odd"><p><strong>bilevelMILPproblem = createBilevelMILPproblem</strong> (<em>model, cLinear, cInteger, selRxns, selRxnMatch, constrOpt, measOpt, options, selPrevSol</em>)</p>
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>model</strong> – Model in irreversible format</p></li>
+<li><p><strong>model</strong> – COBRA model in irreversible format. Fields used directly:</p>
+<ul>
+<li><p>.S - <cite>m x n</cite> stoichiometric (equality-constraint) matrix</p></li>
+<li><p>.c - <cite>n x 1</cite> inner-problem objective coefficients</p></li>
+<li><p>.ub - <cite>n x 1</cite> upper bounds for the inner problem</p></li>
+</ul>
+</li>
 <li><p><strong>cLinear</strong> – Objective for linear part of the MILP problem (i.e. for fluxes)</p></li>
 <li><p><strong>cInteger</strong> – Objective for integer part of the MILP problem</p></li>
 <li><p><strong>selRxns</strong> – Reactions that participate in the integer part (e.g. ones
@@ -562,23 +594,23 @@ that can be deleted) (in the form [0 0 1 0 0 1 0 1 1 0 1])</p></li>
 <li><p><strong>selRxnMatch</strong> – Matching of the forward and reverse parts</p></li>
 <li><p><strong>constrOpt</strong> – Constraint options</p>
 <ul>
-<li><p>rxnInd</p></li>
-<li><p>values</p></li>
-<li><p>sense</p></li>
+<li><p>.rxnInd - indices of the constrained reactions</p></li>
+<li><p>.values - values for the constrained reactions</p></li>
+<li><p>.sense - constraint senses for the constrained reactions (G/E/L)</p></li>
 </ul>
 </li>
 <li><p><strong>measOpt</strong> – Measured flux options</p>
 <ul>
-<li><p>rxnSel</p></li>
-<li><p>values</p></li>
-<li><p>weights</p></li>
+<li><p>.rxnSel - selector for the measured reactions</p></li>
+<li><p>.values - values for the measured fluxes</p></li>
+<li><p>.weights - weights for the measured fluxes</p></li>
 </ul>
 </li>
 <li><p><strong>options</strong> – General options</p>
 <ul>
-<li><p>vMax - Maximal/minimal value for cont variables</p></li>
-<li><p>numDel - Number of deletions</p></li>
-<li><p>numDelSense - # of <cite>ko</cite> &lt;=/=/&gt;= K (L/E/G)</p></li>
+<li><p>.vMax - Maximal/minimal value for cont variables</p></li>
+<li><p>.numDel - Number of deletions</p></li>
+<li><p>.numDelSense - # of <cite>ko</cite> &lt;=/=/&gt;= K (L/E/G)</p></li>
 </ul>
 </li>
 <li><p><strong>selPrevSol</strong> – Previous solutions (optional)</p></li>
@@ -587,15 +619,15 @@ that can be deleted) (in the form [0 0 1 0 0 1 0 1 1 0 1])</p></li>
 <dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>bilevelMILPproblem</strong> – struct with:</p>
 <ul class="simple">
-<li><p>A - LHS matrix</p></li>
-<li><p>b - RHS</p></li>
-<li><p>c - Objective</p></li>
-<li><p>csense - Constraint types</p></li>
-<li><p>lb - Lower bounds</p></li>
-<li><p>ub - Upper bounds</p></li>
-<li><p>vartype - Variable types</p></li>
-<li><p>contSolInd - Allows selecting the continuous solution (i.e. fluxes)</p></li>
-<li><p>intsSolInd - Allows selecting the integer solution (i.e. what reactions are used)</p></li>
+<li><p>.A - LHS matrix</p></li>
+<li><p>.b - RHS</p></li>
+<li><p>.c - Objective</p></li>
+<li><p>.csense - Constraint types</p></li>
+<li><p>.lb - Lower bounds</p></li>
+<li><p>.ub - Upper bounds</p></li>
+<li><p>.vartype - Variable types</p></li>
+<li><p>.contSolInd - Allows selecting the continuous solution (i.e. fluxes)</p></li>
+<li><p>.intSolInd - Allows selecting the integer solution (i.e. what reactions are used)</p></li>
 </ul>
 </dd>
 </dl>
@@ -648,7 +680,12 @@ every product (excreted metabolites with 1 or more Carbons)</p>
 <dd class="field-odd"><p><strong>[biomassValues, targetValues] = multiProductionEnvelope</strong> (<em>model, deletions, biomassRxn, geneDelFlag, nPts, plotTools</em>)</p>
 </dd>
 <dt class="field-even">INPUT<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>model</strong> – COBRA model structure</p>
+<dd class="field-even"><p><strong>model</strong> – COBRA model structure. Fields used directly:</p>
+<ul class="simple">
+<li><p>.c - <cite>n x 1</cite> linear objective coefficients (identifies the biomass reaction)</p></li>
+<li><p>.rxns - <cite>n x 1</cite> reaction identifiers</p></li>
+<li><p>.lb - <cite>n x 1</cite> lower flux bounds</p></li>
+</ul>
 </dd>
 <dt class="field-odd">OPTIONAL INPUT<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -657,7 +694,6 @@ every product (excreted metabolites with 1 or more Carbons)</p>
 <li><p><strong>biomassRxn</strong> – Biomass <cite>rxn</cite> name (Default = whatever is defined in model)</p></li>
 <li><p><strong>geneDelFlag</strong> – Perform gene and not reaction deletions (Default = false)</p></li>
 <li><p><strong>nPts</strong> – Number of points in the plot (Default = 20)</p></li>
-<li><p><strong>plotTools</strong> – boolean (default = false) - add tools for editing the figure and its properties</p></li>
 <li><p><strong>plotAllFlag</strong> – plot all envelopes, even ones that are not growth
 coupled (Default = false)</p></li>
 <li><p><strong>plotTools</strong> – boolean (default = false) - add tools for editing the figure and its properties</p></li>
@@ -686,7 +722,11 @@ for every product, including inorganic compounds</p>
 <dd class="field-odd"><p><strong>[biomassValues, targetValues] = multiProductionEnvelopeInorg</strong> (<em>model, deletions, biomassRxn, geneDelFlag, nPts, plotAllFlag, plotTools</em>)</p>
 </dd>
 <dt class="field-even">INPUT<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>model</strong> – COBRA model structure</p>
+<dd class="field-even"><p><strong>model</strong> – COBRA model structure. Fields used directly:</p>
+<ul class="simple">
+<li><p>.c - <cite>n x 1</cite> linear objective coefficients (identifies the biomass reaction)</p></li>
+<li><p>.rxns - <cite>n x 1</cite> reaction identifiers</p></li>
+</ul>
 </dd>
 <dt class="field-odd">OPTIONAL INPUT<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -719,7 +759,18 @@ for every product, including inorganic compounds</p>
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>model</strong> – Model of reconstruction</p></li>
+<li><p><strong>model</strong> – COBRA model structure. Fields used directly:</p>
+<ul>
+<li><p>.S - <cite>m x n</cite> stoichiometric matrix</p></li>
+<li><p>.rxns - <cite>n x 1</cite> reaction identifiers</p></li>
+<li><p>.mets - <cite>m x 1</cite> metabolite identifiers</p></li>
+<li><p>.lb - <cite>n x 1</cite> lower flux bounds</p></li>
+<li><p>.ub - <cite>n x 1</cite> upper flux bounds</p></li>
+<li><p>.b - <cite>m x 1</cite> right-hand side of <cite>S*v = b</cite></p></li>
+<li><p>.c - <cite>n x 1</cite> linear objective coefficients</p></li>
+<li><p>.genes - gene identifiers (used to decide whether the list is genes or reactions)</p></li>
+</ul>
+</li>
 <li><p><strong>targetRxn</strong> – (char) String name of reaction which is to
 be maximized</p></li>
 <li><p><strong>substrateRxn</strong> – (char) Substrate reactions</p></li>
@@ -786,7 +837,12 @@ you left off.</p></li>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>rxn_vector_matrix</strong> – reactions vectors in a matrix</p></li>
-<li><p><strong>model</strong> – model structure</p></li>
+<li><p><strong>model</strong> – COBRA model structure. Fields used directly:</p>
+<ul>
+<li><p>.rxns - <cite>n x 1</cite> reaction identifiers</p></li>
+<li><p>.rxnGeneMat - reaction-by-gene mapping matrix (built if absent when <cite>isGeneList</cite> is true)</p></li>
+</ul>
+</li>
 <li><p><strong>targetRxn</strong> – target reactions</p></li>
 <li><p><strong>rxnListInput</strong> – list of reactions</p></li>
 <li><p><strong>isGeneList</strong> – bolean checking if it is a gene list</p></li>
@@ -809,7 +865,12 @@ you left off.</p></li>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>rxn_vector_matrix</strong> – reactions vectors in a matrix</p></li>
-<li><p><strong>model</strong> – model structure</p></li>
+<li><p><strong>model</strong> – COBRA model structure. Fields used directly:</p>
+<ul>
+<li><p>.rxns - <cite>n x 1</cite> reaction identifiers</p></li>
+<li><p>.rxnGeneMat - reaction-by-gene mapping matrix (built if absent when <cite>isGeneList</cite> is true)</p></li>
+</ul>
+</li>
 <li><p><strong>targetRxn</strong> – target reactions</p></li>
 <li><p><strong>rxnListInput</strong> – list of reactions</p></li>
 <li><p><strong>isGeneList</strong> – bolean checking if it is a gene list</p></li>
@@ -891,7 +952,13 @@ growth-coupled metabolite production</p>
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>model</strong> – COBRA model structure</p></li>
+<li><p><strong>model</strong> – COBRA model structure. Fields used directly:</p>
+<ul>
+<li><p>.rxns - <cite>n x 1</cite> reaction identifiers</p></li>
+<li><p>.c - <cite>n x 1</cite> linear objective coefficients (identifies the biomass reaction)</p></li>
+<li><p>.rxnGeneMat - reaction-by-gene mapping matrix (built if absent)</p></li>
+</ul>
+</li>
 <li><p><strong>targetRxn</strong> – Target metabolite production reaction</p></li>
 </ul>
 </dd>
@@ -969,11 +1036,12 @@ Default = product</p></li>
 Default = ‘Results’</p></li>
 </ul>
 </dd>
-</dl>
-<dl class="simple">
-<dt>OUTPUTS;</dt><dd><p>x:               x axis for the curves
-y1:              y results for the first curve - ‘Minimum Wild-type’
-y2:              y results for the second curve - ‘Maximum Wild-type’</p>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>x</strong> – x axis for the curves</p></li>
+<li><p><strong>y1</strong> – y results for the first curve - ‘Minimum Wild-type’</p></li>
+<li><p><strong>y2</strong> – y results for the second curve - ‘Maximum Wild-type’</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -1012,11 +1080,18 @@ y2:              y results for the second curve - ‘Maximum Wild-type’</p>
 <dd><p>Determines the max theoretical output for each exchange reaction</p>
 <dl class="field-list simple">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>[ExRxns, MaxTheoOut]= theoreticalMaxProduction</strong> (<em>model, inputrxn, criterion, normalize, rxns</em>)</p>
+<dd class="field-odd"><p><strong>[ExRxns, MaxTheoOut] = theoretMaxProd</strong> (<em>model, inputrxn, criterion, normalize, rxns</em>)</p>
 </dd>
 <dt class="field-even">INPUT<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>model</strong> – model structure</p></li>
+<li><p><strong>model</strong> – COBRA model structure. Fields used directly:</p>
+<ul>
+<li><p>.S - <cite>m x n</cite> stoichiometric matrix</p></li>
+<li><p>.c - <cite>n x 1</cite> linear objective coefficients</p></li>
+<li><p>.rxns - <cite>n x 1</cite> reaction identifiers</p></li>
+<li><p>.mets - <cite>m x 1</cite> metabolite identifiers</p></li>
+</ul>
+</li>
 <li><p><strong>inputrxn</strong> – the input reaction (‘EX_glu(e)’, etc.)</p></li>
 </ul>
 </dd>
@@ -1038,7 +1113,7 @@ in molecular weight (Default = false)</p></li>
 <dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>ExRxns</strong> – Vector of exchange reactions</p></li>
-<li><p><strong>MaxThroOut</strong> – The max theoretical output for each exchange reaction</p></li>
+<li><p><strong>MaxTheoOut</strong> – The max theoretical output for each exchange reaction</p></li>
 </ul>
 </dd>
 </dl>
@@ -1059,7 +1134,7 @@ in molecular weight (Default = false)</p></li>
         <a href="TrimGdel/index.html" class="btn btn-default float-right" title="Trimgdel" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../dataIntegration/metabotools/index.html" class="btn btn-default" title="Metabotools" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../dataIntegration/fluxomics/atomTransition/ATN/index.html" class="btn btn-default" title="Atn" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

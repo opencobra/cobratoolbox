@@ -65,8 +65,8 @@
         <link rel="search" title="Search" href="../../../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../../../index.html"/>
         <link rel="up" title="Suite" href="../index.html"/>
-        <link rel="next" title="Refinement" href="../../../refinement/index.html"/>
-        <link rel="prev" title="Tests" href="../tests/index.html"/> 
+        <link rel="next" title="Tests" href="../tests/index.html"/>
+        <link rel="prev" title="Suite" href="../index.html"/> 
 
   
   <script src="../../../../../_static/js/modernizr.min.js"></script>
@@ -161,22 +161,22 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../dataIntegration/index.html">Dataintegration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../design/index.html">Design</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../../index.html">Reconstruction</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../../../comparison/index.html">Comparison</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../refinement/index.html">Refinement</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../rBioNet/index.html">Rbionet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modelGeneration/index.html">Modelgeneration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../metaboRePort/index.html">Metaboreport</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../fastGapFill/index.html">Fastgapfill</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../growthExpMatch/index.html">Growthexpmatch</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../modelGeneration/index.html">Modelgeneration</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../rBioNet/index.html">Rbionet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../comparison/index.html">Comparison</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../../index.html">Demeter</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="../../src/index.html">Src</a></li>
 <li class="toctree-l4 current"><a class="reference internal" href="../index.html">Suite</a><ul class="current">
-<li class="toctree-l5"><a class="reference internal" href="../tests/index.html">Tests</a></li>
 <li class="toctree-l5 current"><a class="current reference internal" href="#">Reports</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../tests/index.html">Tests</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../../refinement/index.html">Refinement</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../metaboRePort/index.html">Metaboreport</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../visualization/index.html">Visualization</a></li>
@@ -242,22 +242,35 @@
 <span class="sig-name descname"><span class="pre">compareVersions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">previousFolder</span></em>, <em class="sig-param"><span class="pre">newFolder</span></em>, <em class="sig-param"><span class="pre">reportFolder</span></em>, <em class="sig-param"><span class="pre">microbeID</span></em>, <em class="sig-param"><span class="pre">ncbiID</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/suite/reports/compareVersions.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.suite.reports.compareVersions" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compares the test functions in a previous and a new version of AGORA and writes a report of the differences in a .tex file. Writes a PDF
 using pdf2latex.</p>
-<p>INPUT
-modelPrevious       COBRA model structure of older model to compare
-modelNew            COBRA model structure of newer model to compare
-microbeID           Microbe ID in carbon source data file
-reportFolder        Path to folder where report documents should be written</p>
-<blockquote>
-<div><p>(e.g., ‘C:Reports’)</p>
-</div></blockquote>
-<p>OPTIONAL INPUT
-ncbiID              Organism NCBI ID</p>
-<p>OUTPUT
-outputFile          Name of the output file with report
-outputSummary       Summary of results in matfile format
-onlyInNewModel      Reactions/metabolites/genes only in new model
-onlyInPreviousModel Reactions/metabolites/genes only in previous model</p>
-<p>Almut Heinken, Dec 2017, adapted from script reportPDF</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[outputFile, outputSummary, onlyInNewModel, onlyInPreviousModel] = compareVersions</strong> (<em>previousFolder, newFolder, reportFolder, microbeID, ncbiID</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>previousFolder</strong> – Folder with COBRA models of the previous
+reconstruction version to compare, each saved
+as a file named after its microbeID</p></li>
+<li><p><strong>newFolder</strong> – Folder with COBRA models of the new
+reconstruction version to compare, each saved
+as a file named after its microbeID</p></li>
+<li><p><strong>reportFolder</strong> – Path to folder where report documents should
+be written (e.g., ‘C:Reports’)</p></li>
+<li><p><strong>microbeID</strong> – Microbe ID in carbon source data file</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ncbiID</strong> – Organism NCBI ID</p>
+</dd>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>outputFile</strong> – Name of the output file with report</p></li>
+<li><p><strong>outputSummary</strong> – Summary of results in matfile format</p></li>
+<li><p><strong>onlyInNewModel</strong> – Reactions/metabolites/genes only in new model</p></li>
+<li><p><strong>onlyInPreviousModel</strong> – Reactions/metabolites/genes only in previous model</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="mat function">
@@ -267,14 +280,18 @@ onlyInPreviousModel Reactions/metabolites/genes only in previous model</p>
 ran on the reconstructs refined in the present project.</p>
 <dl class="field-list simple">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>curationReport = printRefinementReport</strong> (<em>testResultsFolder,reconVersion</em>)</p>
+<dd class="field-odd"><p><strong>curationReport = printRefinementReport</strong> (<em>testResultsFolder, reconVersion</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>testResultsFolder</strong> – Folder where the test results are saved</p></li>
+<li><p><strong>reconVersion</strong> – Name of the refined reconstruction project</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>curationReport</strong> – Summary of results of QC/QA tests</p>
 </dd>
 </dl>
-<p>INPUTS
-testResultsFolder         Folder where the test results are saved
-reconVersion              Name of the refined reconstruction project</p>
-<p>OUTPUT
-curationReport            Summary of results of QC/QA tests</p>
 </dd></dl>
 
 <dl class="mat function">
@@ -284,24 +301,34 @@ curationReport            Summary of results of QC/QA tests</p>
 using pdf2latex.
 Requires a LaTex installation, e.g. MiKTex (<a class="reference external" href="https://miktex.org/download">https://miktex.org/download</a>)
 and pdftex (<a class="reference external" href="https://ctan.org/pkg/pdftex">https://ctan.org/pkg/pdftex</a>).</p>
-<p>INPUT
-model             COBRA model structure
-microbeID         Microbe ID in carbon source data file
-biomassReaction   Model biomass reaction
-inputDataFolder   Folder with experimental data and database files</p>
-<blockquote>
-<div><p>to load</p>
-</div></blockquote>
-<dl class="simple">
-<dt>reportFolder      Path to folder where report documents should be written</dt><dd><p>(e.g., ‘C:Reports’)</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>outputFile = reportPDF</strong> (<em>model, microbeID, biomassReaction, inputDataFolder, reportFolder, ncbiID</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – COBRA model structure with fields:</p>
+<ul>
+<li><p>.rxns - Reaction identifiers</p></li>
+<li><p>.mets - Metabolite identifiers</p></li>
+<li><p>.genes - Gene identifiers</p></li>
+</ul>
+</li>
+<li><p><strong>microbeID</strong> – Microbe ID in carbon source data file</p></li>
+<li><p><strong>biomassReaction</strong> – Model biomass reaction</p></li>
+<li><p><strong>inputDataFolder</strong> – Folder with experimental data and database files
+to load</p></li>
+<li><p><strong>reportFolder</strong> – Path to folder where report documents should be written
+(e.g., ‘C:Reports’)</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ncbiID</strong> – Organism NCBI ID</p>
+</dd>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>outputFile</strong> – Name of the output file with report</p>
 </dd>
 </dl>
-<p>OPTIONAL INPUT
-ncbiID            Organism NCBI ID</p>
-<p>OUTPUT
-outputFile        Name of the output file with report</p>
-<p>Stefania Magnusdottir, Nov 2017
-Almut Heinken, Sep 2018-adapted nomenclature</p>
 </dd></dl>
 
 </section>
@@ -316,10 +343,10 @@ Almut Heinken, Sep 2018-adapted nomenclature</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../../../refinement/index.html" class="btn btn-default float-right" title="Refinement" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../tests/index.html" class="btn btn-default float-right" title="Tests" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../tests/index.html" class="btn btn-default" title="Tests" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../index.html" class="btn btn-default" title="Suite" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

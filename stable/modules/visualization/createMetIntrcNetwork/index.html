@@ -65,8 +65,8 @@
         <link rel="search" title="Search" href="../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../index.html"/>
         <link rel="up" title="Visualization" href="../index.html"/>
-        <link rel="next" title="Maps" href="../maps/index.html"/>
-        <link rel="prev" title="Upsetplot" href="../upsetPlot/index.html"/> 
+        <link rel="next" title="Paint4net" href="../paint4Net/index.html"/>
+        <link rel="prev" title="Efmviz" href="../efmviz/index.html"/> 
 
   
   <script src="../../../_static/js/modernizr.min.js"></script>
@@ -162,19 +162,19 @@
 <li class="toctree-l2"><a class="reference internal" href="../../design/index.html">Design</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../reconstruction/index.html">Reconstruction</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html">Visualization</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../paint4net/index.html">Paint4net</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../efmviz/index.html">Efmviz</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../SAMMIM/index.html">Sammim</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../convert/index.html">Convert</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../cellDesigner/index.html">Celldesigner</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../entropicFBA/index.html">Entropicfba</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../visualizeEpistasis/index.html">Visualizeepistasis</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../upsetPlot/index.html">Upsetplot</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Createmetintrcnetwork</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../maps/index.html">Maps</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../metabolicCartography/index.html">Metaboliccartography</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../EscherMap/index.html">Eschermap</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../paint4Net/index.html">Paint4net</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../paint4net/index.html">Paint4net</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../metabolicCartography/index.html">Metaboliccartography</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cellDesigner/index.html">Celldesigner</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../maps/index.html">Maps</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../SAMMIM/index.html">Sammim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../entropicFBA/index.html">Entropicfba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../upsetPlot/index.html">Upsetplot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../convert/index.html">Convert</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../visualizeEpistasis/index.html">Visualizeepistasis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../EscherMap/index.html">Eschermap</a></li>
 </ul>
 </li>
 </ul>
@@ -256,11 +256,17 @@ has same property with the main figure, and it is clickable too.</p>
 </dl>
 <dl class="field-list simple">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>[GraphObj]=createMetIntrcNetwork</strong> (<em>model,metAbbr,varargin</em>)</p>
+<dd class="field-odd"><p><strong>[GraphObj] = createMetIntrcNetwork</strong> (<em>model, metAbbr, varargin</em>)</p>
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>model</strong> – COBRA model structure</p></li>
+<li><p><strong>model</strong> – COBRA model structure with fields:</p>
+<ul>
+<li><p>.rxns - <cite>n x 1</cite> cell array of reaction identifiers</p></li>
+<li><p>.mets - <cite>m x 1</cite> cell array of metabolite identifiers</p></li>
+<li><p>.S - <cite>m x n</cite> stoichiometric matrix</p></li>
+</ul>
+</li>
 <li><p><strong>metAbbr</strong> – List of metabolite abbreviation as a cell array</p></li>
 </ul>
 </dd>
@@ -317,7 +323,7 @@ and higher than 50 degree.</p>
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.visualization.createMetIntrcNetwork.hit_node">
 <span class="sig-name descname"><span class="pre">hit_node</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/createMetIntrcNetwork/hit_node.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.createMetIntrcNetwork.hit_node" title="Permalink to this definition">¶</a></dt>
-<dd><p>Function for generating Another metabolite-metabolite interaction network
+<dd><p>Function for generating another metabolite-metabolite interaction network
 if the node is clicked in the figure that produced by createMetIntrcNetwork.
 Right click and left click has different properties.
 Left click :Generate sub-metabolite-metabolite network from the created figure,</p>
@@ -332,6 +338,53 @@ clicked metabolite and model.</p>
 </dl>
 <p>The produced figure from main figure also has same property with main
 figure, and it is clickable too.</p>
+<dl class="field-list">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>hit_node</strong> (<em>varargin</em>)</p>
+</dd>
+<dt class="field-even">OPTIONAL INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>varargin</strong> – This function is installed as the <cite>ButtonDownFcn</cite> callback
+on the text objects created by <cite>createMetIntrcNetwork</cite>, so
+MATLAB invokes it with the standard <cite>(source, eventData)</cite>
+pair followed by the extra arguments bound at
+registration time:</p>
+<ul>
+<li><p>varargin{1} - source object (<cite>text</cite> graphics handle);
+<cite>.Parent.Parent</cite> is the figure and <cite>.String</cite> is the
+clicked metabolite name</p></li>
+<li><p>varargin{2} - event data (unused)</p></li>
+<li><p>varargin{3} - adjacency matrix of the current network</p></li>
+<li><p>varargin{4} - cell array of metabolite names for
+<cite>varargin{3}</cite></p></li>
+<li><p>varargin{5} - model:      COBRA model structure with fields:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>.rxns - <cite>n x 1</cite> cell array of reaction identifiers</p></li>
+<li><p>.mets - <cite>m x 1</cite> cell array of metabolite identifiers</p></li>
+<li><p>.S - <cite>m x n</cite> stoichiometric matrix</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>varargin{6} - fluxes vector</p></li>
+<li><p>varargin{7} - excludedMets, cell array of metabolite
+abbreviations to exclude</p></li>
+<li><p>varargin{8} - Graphtitle, char, base title for the figure</p></li>
+<li><p>varargin{9} - nodecolour, colour for nodes (RGB triplet)</p></li>
+<li><p>varargin{10} - Hnodecolour, colour for highlighted nodes</p></li>
+<li><p>varargin{11} - fcont, logical/numeric flag: true if
+fluxes were supplied to <cite>createMetIntrcNetwork</cite></p></li>
+<li><p>varargin{12} - scaleMin, minimum value for colorbar scaling</p></li>
+<li><p>varargin{13} - scaleMax, maximum value for colorbar scaling</p></li>
+<li><p>varargin{14} - nodeSize, size of nodes</p></li>
+<li><p>varargin{15} - HnodeSize, highlighted node size</p></li>
+<li><p>varargin{16} - arrowSize, arrow size</p></li>
+<li><p>varargin{17} - threshold, edge weight threshold below
+which edges are removed</p></li>
+<li><p>varargin{18} - excNodesWithDeg, <cite>[minimum degree
+maximum degree]</cite> node-degree exclusion range</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 </section>
@@ -346,10 +399,10 @@ figure, and it is clickable too.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../maps/index.html" class="btn btn-default float-right" title="Maps" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../paint4Net/index.html" class="btn btn-default float-right" title="Paint4net" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../upsetPlot/index.html" class="btn btn-default" title="Upsetplot" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../efmviz/index.html" class="btn btn-default" title="Efmviz" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

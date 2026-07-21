@@ -161,21 +161,21 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../dataIntegration/index.html">Dataintegration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../design/index.html">Design</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Reconstruction</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../../comparison/index.html">Comparison</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../fastGapFill/index.html">Fastgapfill</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../growthExpMatch/index.html">Growthexpmatch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../refinement/index.html">Refinement</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../rBioNet/index.html">Rbionet</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../index.html">Modelgeneration</a><ul class="current">
 <li class="toctree-l4 current"><a class="current reference internal" href="#">Massbalance</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../modelProperties/index.html">Modelproperties</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../fluxConsistency/index.html">Fluxconsistency</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../modelVerification/index.html">Modelverification</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../stoichConsistency/index.html">Stoichconsistency</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../modelVerification/index.html">Modelverification</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../rBioNet/index.html">Rbionet</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../demeter/index.html">Demeter</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../refinement/index.html">Refinement</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../metaboRePort/index.html">Metaboreport</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../fastGapFill/index.html">Fastgapfill</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../growthExpMatch/index.html">Growthexpmatch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../comparison/index.html">Comparison</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../demeter/index.html">Demeter</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../visualization/index.html">Visualization</a></li>
@@ -242,14 +242,15 @@
 Note that exchange reactions are not elementally balanced.</p>
 <dl class="field-list">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>[dE ,E, missingFormulaeBool] = checkBalance</strong> (<em>model, element, printLevel, fileName, missingFormulaeBool</em>)</p>
+<dd class="field-odd"><p><strong>[dE, E, missingFormulaeBool] = checkBalance</strong> (<em>model, element, printLevel, fileName, missingFormulaeBool</em>)</p>
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>model</strong> – COBRA model structure:</p>
 <ul>
 <li><p>.S - Stoichiometric matrix</p></li>
-<li><p>.metForumlas - Metabolite formulas</p></li>
+<li><p>.mets - Metabolite identifiers</p></li>
+<li><p>.metFormulas - Metabolite formulas</p></li>
 </ul>
 </li>
 <li><p><strong>element</strong> – Abbreviation of element e.g. C or Mg</p></li>
@@ -286,7 +287,12 @@ If <cite>isnan(dE(n))</cite> then the reaction involves a metabolite without a f
 <dd class="field-odd"><p><strong>[dbBool, noDocMets] = checkFormulaValidty</strong> (<em>model</em>)</p>
 </dd>
 <dt class="field-even">INPUT<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>model</strong> – Model structure array</p>
+<dd class="field-even"><p><strong>model</strong> – COBRA model structure with fields:</p>
+<ul class="simple">
+<li><p>.S - Stoichiometric matrix</p></li>
+<li><p>.mets - Metabolite identifiers</p></li>
+<li><p>.metFormulas - Metabolite formulas</p></li>
+</ul>
 </dd>
 <dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -316,9 +322,11 @@ species involved is missing a chemical formula.</p>
 <dd class="field-even"><p><strong>model</strong> – COBRA model structure:</p>
 <ul class="simple">
 <li><p>.S - <cite>m</cite> x <cite>n</cite> stoichiometric matrix</p></li>
-<li><p>.metForumlas - <cite>m</cite> x 1 cell array of metabolite formulas</p></li>
+<li><p>.mets - <cite>m</cite> x 1 cell array of metabolite identifiers</p></li>
+<li><p>.metFormulas - <cite>m</cite> x 1 cell array of metabolite formulas</p></li>
 <li><p>.metCharges - <cite>m</cite> x 1 double array of charges</p></li>
-<li><p>model.SIntRxnBool - Boolean of reactions heuristically though to be mass balanced. (optional)</p></li>
+<li><p>.rxns - <cite>n</cite> x 1 cell array of reaction identifiers (generated internally if absent)</p></li>
+<li><p>.SIntRxnBool - Boolean of reactions heuristically though to be mass balanced. (optional)</p></li>
 </ul>
 </dd>
 <dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
@@ -378,7 +386,7 @@ metFormulas{i}  the chemical formula of the metabolite</p>
 <dd><p>Computes elemental matrix</p>
 <dl class="field-list simple">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>[Ematrix, element] = computeElementalMatrix</strong> (<em>model, metList, warnings, generalFormula</em>)</p>
+<dd class="field-odd"><p><strong>[Ematrix, elements] = computeElementalMatrix</strong> (<em>model, metList, warnings, generalFormula</em>)</p>
 </dd>
 <dt class="field-even">INPUT<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>model</strong> – COBRA model structure (must define <cite>.mets</cite> and <cite>.metFormulas</cite>)</p>
@@ -428,7 +436,17 @@ Metabolites that may have adjustable stoichiometries (e.g., H+, H2O) can be supp
 </ul>
 </dd>
 <dt class="field-even">INPUT<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>model</strong> – COBRA model</p>
+<dd class="field-even"><p><strong>model</strong> – COBRA model structure with fields:</p>
+<ul class="simple">
+<li><p>.S - Stoichiometric matrix</p></li>
+<li><p>.mets - Metabolite identifiers</p></li>
+<li><p>.metFormulas - Metabolite formulas</p></li>
+<li><p>.rxns - Reaction identifiers</p></li>
+<li><p>.lb - Lower reaction flux bounds</p></li>
+<li><p>.ub - Upper reaction flux bounds</p></li>
+<li><p>.metCharge - Metabolite charges (written when found from formula, non-standard field name as used in the code)</p></li>
+<li><p>.metCharges - Metabolite charges (written when found from formula)</p></li>
+</ul>
 </dd>
 </dl>
 <dl>
@@ -519,6 +537,8 @@ by some ‘metFill’ and are optimized in the same round.</p>
 </ul>
 </li>
 <li><p><strong>LP</strong> – LP problem structure for solveCobraLP (#components x 1)</p></li>
+<li><p><strong>varargout</strong> – Additional output(s) beyond <cite>solInfo</cite>: <cite>LP</cite>, the LP problem
+structure(s) for <cite>solveCobraLP</cite> (#components x 1)</p></li>
 </ul>
 </dd>
 </dl>
@@ -530,7 +550,7 @@ by some ‘metFill’ and are optimized in the same round.</p>
 <dd><p>Convert the elemental composition matrix into chemical formulae</p>
 <dl class="field-list simple">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>metForm = elementalMatrixToFormulae</strong> (<em>elements, Ematrix, dMax</em>)</p>
+<dd class="field-odd"><p><strong>metForm = elementalMatrixToFormulae</strong> (<em>Ematrix, elements, dMax</em>)</p>
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
@@ -541,8 +561,10 @@ by some ‘metFill’ and are optimized in the same round.</p>
 <dt class="field-odd">OPTIONAL INPUT<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>dMax</strong> – the maximum number of decimal places for the stoichiometry (default 12)</p>
 </dd>
+<dt class="field-even">OUTPUT<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>metForm</strong> – cell array of chemical formulae for the <cite>M</cite> metabolites in <cite>Ematrix</cite></p>
+</dd>
 </dl>
-<p>Siu Hung Joshua Chan Nov 2016</p>
 </dd></dl>
 
 <dl class="mat function">
@@ -557,25 +579,31 @@ Sink reactions</p>
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>model = findSExRxnInd</strong> (<em>model, nRealMet, printLevel</em>)</p>
 </dd>
-</dl>
-<p>model.SIntRxnBool         Boolean of reactions heuristically though to be mass balanced.</p>
-<dl class="field-list simple">
-<dt class="field-odd">INPUT<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>model</strong> – structure with:</p>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>model</strong> – COBRA model structure with fields:</p>
 <ul class="simple">
-<li><p>S - m x n stoichiometric matrix</p></li>
+<li><p>.S - <cite>m</cite> x <cite>n</cite> stoichiometric matrix</p></li>
+<li><p>.mets - metabolite identifiers</p></li>
+<li><p>.rxns - reaction identifiers</p></li>
+<li><p>.c - <cite>n</cite> x 1 linear objective coefficient vector (created as zeros if absent)</p></li>
+<li><p>.sex - whole-body model organ/sex identifier (optional; if present, organ prefixes are stripped from <cite>.rxns</cite> before the exchange-reaction heuristics)</p></li>
+<li><p>.subSystems - reaction subsystem annotation (optional, used for HMR-style exchange-reaction heuristics)</p></li>
+<li><p>.rxnComps - reaction compartment annotation (optional, used together with <cite>.subSystems</cite>)</p></li>
 </ul>
 </dd>
-<dt class="field-even">OPTIONAL INPUT<span class="colon">:</span></dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>model</strong> – structure with:
-* model.biomassRxnAbbr - abbreviation of biomass reaction</p></li>
+<dt class="field-odd">OPTIONAL INPUT<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model</strong> – COBRA model structure with the optional field:</p>
+<ul>
+<li><p>.biomassRxnAbbr - abbreviation of biomass reaction</p></li>
+</ul>
+</li>
 <li><p><strong>nRealMet</strong> – specified in case extra rows in <cite>S</cite> which dont correspond to metabolties</p></li>
 <li><p><strong>printLevel</strong> – verbose level</p></li>
 </ul>
 </dd>
-<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>model</strong> – structure with:</p>
+<dt class="field-even">OUTPUT<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>model</strong> – structure with:</p>
 <ul class="simple">
 <li><p>.SIntRxnBool - Boolean of reactions heuristically though to be mass balanced.</p></li>
 <li><p>.SIntMetBool - Boolean of metabolites heuristically though to be involved in mass balanced reactions.</p></li>
@@ -596,14 +624,20 @@ Sink reactions</p>
 <span class="sig-name descname"><span class="pre">getElementalComposition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">formulae</span></em>, <em class="sig-param"><span class="pre">elements</span></em>, <em class="sig-param"><span class="pre">chargeInFormula</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/modelGeneration/massBalance/getElementalComposition.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.massBalance.getElementalComposition" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the complete elemental composition matrix. It supports formulae with
 generic elements, parentheses and decimal places</p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[Ematrix, elements] = getElementalComposition</strong> (<em>formulae, elements, chargeInFormula</em>)</p>
 </dd>
 <dt class="field-even">INPUT<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>formulae</strong> – cell array of strings of chemical formulae. Can contain any generic elements starting
 with a capital letter followed by lowercase letters or ‘_’, followed by a non-negative number.
-Also support ‘()’, ‘[]’, ‘{}’. E.g. {‘H2O’; ‘[H2O]2(CuSO4)Generic_element0.5’}</p>
+Also support ‘()’, ‘[]’, ‘{}’. E.g. {‘H2O’; ‘[H2O]2(CuSO4)Generic_element0.5’}
+Alternatively, a COBRA model structure with field:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>.metFormulas - cell array of metabolite formulas, used in place of <cite>formulae</cite> when provided</p></li>
+</ul>
+</div></blockquote>
 </dd>
 <dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -640,6 +674,9 @@ Ematrix = [ 2,   1,    0,   0,   0;</p>
 </dd>
 <dt class="field-even">INPUT<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>formula</strong> – formula to be checked</p>
+</dd>
+<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>res</strong> – true if the formula corresponds to a polymer, false otherwise</p>
 </dd>
 </dl>
 </dd></dl>
@@ -690,6 +727,9 @@ species of metabolite defined by the reconstrution.</p>
 <ul class="simple">
 <li><p>model.S - stoichiometric matrix</p></li>
 <li><p>model.mets - metabolites</p></li>
+<li><p>model.rxns - reaction identifiers</p></li>
+<li><p>model.compartments - list of compartment identifiers</p></li>
+<li><p>model.metCompartments - compartment identifier for each metabolite</p></li>
 <li><p>model.SIntRxnBool - Boolean of internal reactions</p></li>
 <li><p>model.aveHbound - average number of bound hydrogen ions</p></li>
 <li><p>model.metFormulas - average number of bound hydrogen ions</p></li>
@@ -723,6 +763,30 @@ corresponds to a reactant at specific pH.</p></li>
 <dd><p>Update the molecular formulae to make sure that they are consistent with
 model metadata, and expressed in Hill notation, with the exception that
 all R groups are replaced with the letter A</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[model, regularisedFormulae, rGroupFormulae] = regulariseModelFormulae</strong> (<em>model</em>)</p>
+</dd>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>model</strong> – COBRA model structure with fields:</p>
+<ul class="simple">
+<li><p>.mets - metabolite identifiers</p></li>
+<li><p>.metFormulas - metabolite chemical formulas</p></li>
+<li><p>.metInChIString - InChI strings for metabolites (optional; used to regularise formulae when present)</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model</strong> – COBRA model structure with the updated field:</p>
+<ul>
+<li><p>.metFormulas - metabolite formulas in Hill notation, with R groups replaced by ‘A’</p></li>
+</ul>
+</li>
+<li><p><strong>regularisedFormulae</strong> – <cite>nMet</cite> x 1 boolean vector indicating metabolites whose formula was replaced by an InChI-derived formula</p></li>
+<li><p><strong>rGroupFormulae</strong> – <cite>nMet</cite> x 1 boolean vector indicating metabolites whose formula contained an R-group token replaced by ‘A’</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 </section>

@@ -159,17 +159,17 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../base/index.html">Base</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Dataintegration</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../../metabotools/index.html">Metabotools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../metanetxMapper/index.html">Metanetxmapper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../metaboAnnotator/index.html">Metaboannotator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../XomicsToModel/index.html">Xomicstomodel</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../chemoInformatics/index.html">Chemoinformatics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../transcriptomics/index.html">Transcriptomics</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../index.html">Fluxomics</a><ul class="current">
 <li class="toctree-l4 current"><a class="current reference internal" href="#">C13solver</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../atomTransition/index.html">Atomtransition</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../metanetxMapper/index.html">Metanetxmapper</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../XomicsToModel/index.html">Xomicstomodel</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../metaboAnnotator/index.html">Metaboannotator</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../transcriptomics/index.html">Transcriptomics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../metabotools/index.html">Metabotools</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../design/index.html">Design</a></li>
@@ -273,6 +273,56 @@ Employs memoization.</p>
 </dd></dl>
 
 <dl class="mat function">
+<dt class="sig sig-object mat" id="src.dataIntegration.fluxomics.c13solver.errorComputation2">
+<span class="sig-name descname"><span class="pre">errorComputation2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">x</span></em>, <em class="sig-param"><span class="pre">Prob</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/fluxomics/c13solver/errorComputation2.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.c13solver.errorComputation2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the total C13 data-fit error (objective value) for a set of
+fluxes given the experimental data and model carried in <cite>Prob</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[out] = errorComputation2</strong> (<em>x, Prob</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>x</strong> – flux vector (in null-space / alpha coordinates) at which the error is evaluated</p></li>
+<li><p><strong>Prob</strong> – problem structure supplied by the solver, with field:</p>
+<ul>
+<li><p>.user - structure of user data; <cite>.user.expdata</cite> (experimental data) and <cite>.user.model</cite> (model structure) are read here</p></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>out</strong> – scalar C13 data-fit error; when <cite>.user.objective</cite> is set, the penalised linear objective is returned instead</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.dataIntegration.fluxomics.c13solver.errorComputation2_grad">
+<span class="sig-name descname"><span class="pre">errorComputation2_grad</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">x</span></em>, <em class="sig-param"><span class="pre">Prob</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/fluxomics/c13solver/errorComputation2_grad.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.c13solver.errorComputation2_grad" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the finite-difference gradient of the C13 data-fit error
+(<cite>errorComputation2</cite>) with respect to the fluxes <cite>x</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[out] = errorComputation2_grad</strong> (<em>x, Prob</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>x</strong> – flux vector (in null-space / alpha coordinates) at which the gradient is evaluated</p></li>
+<li><p><strong>Prob</strong> – problem structure supplied by the solver, with field:</p>
+<ul>
+<li><p>.user - structure of user data; <cite>.user.model</cite> and, when present, <cite>.user.diff_interval</cite> and <cite>.user.useparfor</cite> are read here</p></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>out</strong> – gradient vector of the C13 data-fit error, same size as <cite>x</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.fluxomics.c13solver.generateIsotopomerSolver">
 <span class="sig-name descname"><span class="pre">generateIsotopomerSolver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">inputMet</span></em>, <em class="sig-param"><span class="pre">experiment</span></em>, <em class="sig-param"><span class="pre">FVAflag</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/fluxomics/c13solver/generateIsotopomerSolver.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.c13solver.generateIsotopomerSolver" title="Permalink to this definition">¶</a></dt>
 <dd><p>Prints a file which looks like BiosyntheticMappingFile except that it has the
@@ -285,9 +335,18 @@ take care of that.</p>
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>model</strong> – model structure with .isotopomer filed</p></li>
+<li><p><strong>model</strong> – model structure with fields:</p>
+<ul>
+<li><p>.isotopomer - cell array of isotopomer mapping strings, one per reaction</p></li>
+<li><p>.rxns - <cite>n x 1</cite> cell array of reaction identifiers</p></li>
+</ul>
+</li>
 <li><p><strong>inputMet</strong> – input metabolites</p></li>
-<li><p><strong>experiment</strong> – structure</p></li>
+<li><p><strong>experiment</strong> – experiment structure with field:</p>
+<ul>
+<li><p>.fragments - structure of measured metabolite fragments, one field per fragment</p></li>
+</ul>
+</li>
 <li><p><strong>FVAflag</strong> – default = false, if true then additinoal operations involving fluxVariability involved</p></li>
 </ul>
 </dd>
@@ -356,6 +415,56 @@ take care of that.</p>
 </dd></dl>
 
 <dl class="mat function">
+<dt class="sig sig-object mat" id="src.dataIntegration.fluxomics.c13solver.ratioScore">
+<span class="sig-name descname"><span class="pre">ratioScore</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">x</span></em>, <em class="sig-param"><span class="pre">Prob</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/fluxomics/c13solver/ratioScore.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.c13solver.ratioScore" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes a flux-ratio objective <cite>(ration’*x)/(ratiod’*x)</cite> used when
+computing confidence intervals on flux ratios</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[out] = ratioScore</strong> (<em>x, Prob</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>x</strong> – flux vector (in null-space / alpha coordinates)</p></li>
+<li><p><strong>Prob</strong> – problem structure supplied by the solver, with field:</p>
+<ul>
+<li><p>.user - structure of user data; <cite>.user.ration</cite> (numerator coefficients) and <cite>.user.ratiod</cite> (denominator coefficients) are read here</p></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>out</strong> – scalar value of the flux ratio at <cite>x</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.dataIntegration.fluxomics.c13solver.ratioScore_grad">
+<span class="sig-name descname"><span class="pre">ratioScore_grad</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">x</span></em>, <em class="sig-param"><span class="pre">Prob</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/fluxomics/c13solver/ratioScore_grad.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.c13solver.ratioScore_grad" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the analytical gradient of the flux-ratio objective evaluated by
+<cite>ratioScore</cite>, with respect to the fluxes <cite>x</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[out] = ratioScore_grad</strong> (<em>x, Prob</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>x</strong> – flux vector (in null-space / alpha coordinates)</p></li>
+<li><p><strong>Prob</strong> – problem structure supplied by the solver, with field:</p>
+<ul>
+<li><p>.user - structure of user data; <cite>.user.ration</cite> (numerator coefficients) and <cite>.user.ratiod</cite> (denominator coefficients) are read here</p></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>out</strong> – gradient vector of the flux ratio at <cite>x</cite>, same size as <cite>x</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.fluxomics.c13solver.scoreC13Fit">
 <span class="sig-name descname"><span class="pre">scoreC13Fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">flux</span></em>, <em class="sig-param"><span class="pre">expdata</span></em>, <em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">namesset</span></em>, <em class="sig-param"><span class="pre">method</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/fluxomics/c13solver/scoreC13Fit.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.c13solver.scoreC13Fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function (1) computes the theoretical mdv distribution vector for
@@ -369,8 +478,20 @@ experimental <cite>mdv</cite> vectors.</p>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>flux</strong> – flux vector</p></li>
-<li><p><strong>expdata</strong> – experimental data structure</p></li>
-<li><p><strong>model</strong> – model structure</p></li>
+<li><p><strong>expdata</strong> – experimental data structure with fields:</p>
+<ul>
+<li><p>.std2 - measurement standard deviation used to normalise the error</p></li>
+<li><p>.fragments - structure of measured metabolite fragments, one field per fragment</p></li>
+<li><p>.input - substrate label distribution in cumomer format (used by method 1)</p></li>
+<li><p>.inputfrag - substrate label distribution in EMU/fragment format (used by method 2)</p></li>
+</ul>
+</li>
+<li><p><strong>model</strong> – model structure with fields:</p>
+<ul>
+<li><p>.lb - <cite>n x 1</cite> lower flux bounds (used to test whether <cite>flux</cite> is a full flux vector)</p></li>
+<li><p>.N - basis of the null space of <cite>S</cite>, mapping alpha coordinates back to fluxes</p></li>
+</ul>
+</li>
 <li><p><strong>namesset</strong> – set of names</p></li>
 <li><p><strong>method</strong> – method 1 = cumomer, method 2 = CMU</p></li>
 </ul>
@@ -401,6 +522,28 @@ expdata - experimental data structure</p>
 </dl>
 </div></blockquote>
 <p>glc_cdv is a sugar distribution in cumomer format (see idv2cdv).</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.dataIntegration.fluxomics.c13solver.solveLin">
+<span class="sig-name descname"><span class="pre">solveLin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">A</span></em>, <em class="sig-param"><span class="pre">B</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/fluxomics/c13solver/solveLin.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.fluxomics.c13solver.solveLin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solves the linear system <cite>A*x = B</cite> restricted to the connected block of
+variables reachable from the non-zero entries of <cite>B</cite>, leaving the
+remaining variables at zero</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[x] = solveLin</strong> (<em>A, B</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>A</strong> – square coefficient matrix of the linear system</p></li>
+<li><p><strong>B</strong> – right-hand side; a single column is solved directly, while for multiple columns the columns <cite>2:end</cite> are solved and the first column is set so that each row of <cite>x</cite> sums to 1</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>x</strong> – solution the same size as <cite>B</cite>; entries outside the connected block are left at zero</p>
+</dd>
+</dl>
 </dd></dl>
 
 </section>

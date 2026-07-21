@@ -66,7 +66,7 @@
     <link rel="top" title="The COBRA Toolbox" href="../../../../index.html"/>
         <link rel="up" title="Chemoinformatics" href="../index.html"/>
         <link rel="next" title="Basicphysicochemicaldata" href="basicPhysicochemicalData/index.html"/>
-        <link rel="prev" title="Reactions" href="../reactions/index.html"/> 
+        <link rel="prev" title="Metabolites" href="../metabolites/index.html"/> 
 
   
   <script src="../../../../_static/js/modernizr.min.js"></script>
@@ -159,23 +159,23 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../base/index.html">Base</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Dataintegration</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../../metabotools/index.html">Metabotools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../metanetxMapper/index.html">Metanetxmapper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../metaboAnnotator/index.html">Metaboannotator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../XomicsToModel/index.html">Xomicstomodel</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../index.html">Chemoinformatics</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="../metabolites/index.html">Metabolites</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../RXN/index.html">Rxn</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../inchi/index.html">Inchi</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../reactions/index.html">Reactions</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">Molecularweight</a><ul>
 <li class="toctree-l5"><a class="reference internal" href="basicPhysicochemicalData/index.html">Basicphysicochemicaldata</a></li>
 </ul>
 </li>
+<li class="toctree-l4"><a class="reference internal" href="../RXN/index.html">Rxn</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../reactions/index.html">Reactions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../inchi/index.html">Inchi</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../fluxomics/index.html">Fluxomics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../metanetxMapper/index.html">Metanetxmapper</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../XomicsToModel/index.html">Xomicstomodel</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../metaboAnnotator/index.html">Metaboannotator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../transcriptomics/index.html">Transcriptomics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../metabotools/index.html">Metabotools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../fluxomics/index.html">Fluxomics</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../design/index.html">Design</a></li>
@@ -297,7 +297,7 @@ isotopeAbundance{i, 3} = abundance;
 <li><p><cite>m</cite> x <cite>e</cite> matrix if genericFormula = true given <cite>e</cite> elements in the chemical formulae</p></li>
 </ul>
 </li>
-<li><p><strong>element</strong> – cell array of elements corresponding to the columns of Ematrix</p></li>
+<li><p><strong>elements</strong> – cell array of elements corresponding to the columns of Ematrix</p></li>
 <li><p><strong>(knownWeights and unknownElements are non-empty only if genericFormula = true)</strong></p></li>
 <li><p><strong>knownWeights</strong> – MWs for the part whose MW is computable ofr each of the formulae</p></li>
 <li><p><strong>unknownElements</strong> – cell arrary of elements without known atomic weights that appear in the formulae</p></li>
@@ -344,11 +344,11 @@ isotopeAbundance{i, 2} = Mass_Number;
 isotopeAbundance{i, 3} = abundance;
 (where sum of abundances of all isotopes of an element must be one)</p>
 </li>
-<li><dl class="simple">
-<dt><strong>generalFormula       *</strong> (<em>false</em>) –   Return Masses = 0 if a formula contains none of these elements.</dt><dd><p>(C, O, P, N, S, H, Mg, Na, K, Cl, Ca, Zn, Fe, Cu, Mo, I)</p>
-</dd>
-</dl>
+<li><p><strong>generalFormula</strong> –</p>
 <ul class="simple">
+<li><p>(false) to support formulae containing only biological elements.
+Return Masses = 0 if a formula contains none of these elements.
+(C, O, P, N, S, H, Mg, Na, K, Cl, Ca, Zn, Fe, Cu, Mo, I)</p></li>
 <li><p>true to support formulae with brackets, decimal places and any chemical elements
 including undefined groups (e.g., ‘([H2O]2(CuSO4))2Generic_element0.5’).
 Return Masses = NaN for any formulae with chemical elements of unknown weights
@@ -361,10 +361,10 @@ except the reserved formula ‘Mass0’ for denoting truly massless metabolites 
 <dd class="field-even"><ul class="simple">
 <li><p><strong>Masses</strong> – molecular mass(es) in (gram/Mol)</p></li>
 <li><p><strong>(the below are non-empty only if general = true)</strong></p></li>
-<li><p><strong>knownWeights</strong> – MWs for the part whose MW is computable ofr each of the formulae</p></li>
+<li><p><strong>knownMasses</strong> – MWs for the part whose MW is computable ofr each of the formulae</p></li>
 <li><p><strong>unknownElements</strong> – cell arrary of elements without known atomic weights that appear in the formulae</p></li>
 <li><p><strong>Ematrix</strong> – elemental composition matrix (#formulae x #elements)</p></li>
-<li><p><strong>element</strong> – cell array of elements corresponding to the columns of Ematrix</p></li>
+<li><p><strong>elements</strong> – cell array of elements corresponding to the columns of Ematrix</p></li>
 </ul>
 </dd>
 </dl>
@@ -410,7 +410,7 @@ with mass spec machines.</p>
         <a href="basicPhysicochemicalData/index.html" class="btn btn-default float-right" title="Basicphysicochemicaldata" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../reactions/index.html" class="btn btn-default" title="Reactions" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../metabolites/index.html" class="btn btn-default" title="Metabolites" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

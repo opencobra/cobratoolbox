@@ -65,7 +65,7 @@
         <link rel="search" title="Search" href="../../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../../index.html"/>
         <link rel="up" title="Metaboreport" href="../index.html"/>
-        <link rel="next" title="Visualization" href="../../../visualization/index.html"/>
+        <link rel="next" title="Fastgapfill" href="../../fastGapFill/index.html"/>
         <link rel="prev" title="Metaboreport" href="../index.html"/> 
 
   
@@ -161,17 +161,17 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../dataIntegration/index.html">Dataintegration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../design/index.html">Design</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Reconstruction</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../../comparison/index.html">Comparison</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../fastGapFill/index.html">Fastgapfill</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../growthExpMatch/index.html">Growthexpmatch</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../modelGeneration/index.html">Modelgeneration</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../rBioNet/index.html">Rbionet</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../demeter/index.html">Demeter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../refinement/index.html">Refinement</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../rBioNet/index.html">Rbionet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modelGeneration/index.html">Modelgeneration</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../index.html">Metaboreport</a><ul class="current">
 <li class="toctree-l4 current"><a class="current reference internal" href="#">Other</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="../../fastGapFill/index.html">Fastgapfill</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../growthExpMatch/index.html">Growthexpmatch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../comparison/index.html">Comparison</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../demeter/index.html">Demeter</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../visualization/index.html">Visualization</a></li>
@@ -234,31 +234,45 @@
 <span class="target" id="module-src.reconstruction.metaboRePort.other"></span><dl class="mat function">
 <dt class="sig sig-object mat" id="src.reconstruction.metaboRePort.other.populateModelwithRxnIDs">
 <span class="sig-name descname"><span class="pre">populateModelwithRxnIDs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/metaboRePort/other/populateModelwithRxnIDs.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.metaboRePort.other.populateModelwithRxnIDs" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="simple">
-<dt>allowed COBRA fields can be found here</dt><dd><p>fileName = which(‘COBRA_structure_fields.tab’);
-[raw] = descFileRead(fileName);</p>
+<dd><p>Populates a COBRA model with reaction cross-reference identifiers looked
+up from a local VMH reaction list spreadsheet and, for <cite>rxnSEEDID</cite>, from a
+DEMETER seed-to-VMH translation table.</p>
+<dl class="field-list">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[modelUpdated] = populateModelwithRxnIDs</strong> (<em>model</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>model</strong> – COBRA model structure</p>
+</dd>
+<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>modelUpdated</strong> – COBRA model structure with the following reaction ID
+fields populated (overwritten where already present):</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>.rxnECNumbers - EC number(s) for the reaction</p></li>
+<li><p>.rxnKEGGID - KEGG reaction identifier</p></li>
+<li><p>.rxnMetaNetXID - MetaNetX reaction identifier</p></li>
+<li><p>.rxnSEEDID - ModelSEED reaction identifier</p></li>
+<li><p>.rxnRheaID - Rhea reaction identifier</p></li>
+<li><p>.rxnBRENDAID - BRENDA reaction identifier (same
+value as <cite>.rxnECNumbers</cite>)</p></li>
+</ul>
+</div></blockquote>
 </dd>
 </dl>
-<p>raw.Model_Field</p>
-<dl class="simple">
-<dt>‘rxnGeneMat         ‘</dt><dd><p>‘rxnConfidenceScores’
-‘rxnNames           ‘
-‘rxnNotes           ‘
-‘rxnECNumbers       ‘
-‘rxnReferences      ‘
-‘rxnKEGGID          ‘
-‘rxnKEGGPathways    ‘
-‘rxnMetaNetXID      ‘
-‘rxnBRENDAID        ‘
-‘rxnBioCycID        ‘
-‘rxnReactomeID      ‘
-‘rxnSABIORKID       ‘
-‘rxnSEEDID          ‘
-‘rxnRheaID          ‘
-‘rxnBiGGID          ‘
-‘rxnSBOTerms        ‘</p>
-</dd>
-</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Allowed COBRA fields can be found here:</p>
+<blockquote>
+<div><p>fileName = which(‘COBRA_structure_fields.tab’);
+[raw] = descFileRead(fileName);
+raw.Model_Field</p>
+</div></blockquote>
+<p>Reaction ID fields include: rxnGeneMat, rxnConfidenceScores, rxnNames,
+rxnNotes, rxnECNumbers, rxnReferences, rxnKEGGID, rxnKEGGPathways,
+rxnMetaNetXID, rxnBRENDAID, rxnBioCycID, rxnReactomeID, rxnSABIORKID,
+rxnSEEDID, rxnRheaID, rxnBiGGID, rxnSBOTerms</p>
+</div>
 </dd></dl>
 
 </section>
@@ -273,7 +287,7 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../../../visualization/index.html" class="btn btn-default float-right" title="Visualization" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../../fastGapFill/index.html" class="btn btn-default float-right" title="Fastgapfill" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="../index.html" class="btn btn-default" title="Metaboreport" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

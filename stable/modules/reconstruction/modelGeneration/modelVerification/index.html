@@ -65,8 +65,8 @@
         <link rel="search" title="Search" href="../../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../../index.html"/>
         <link rel="up" title="Modelgeneration" href="../index.html"/>
-        <link rel="next" title="Stoichconsistency" href="../stoichConsistency/index.html"/>
-        <link rel="prev" title="Dca" href="../fluxConsistency/DCA/index.html"/> 
+        <link rel="next" title="Metaboreport" href="../../metaboRePort/index.html"/>
+        <link rel="prev" title="Stoichconsistency" href="../stoichConsistency/index.html"/> 
 
   
   <script src="../../../../_static/js/modernizr.min.js"></script>
@@ -161,21 +161,21 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../dataIntegration/index.html">Dataintegration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../design/index.html">Design</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Reconstruction</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../../comparison/index.html">Comparison</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../fastGapFill/index.html">Fastgapfill</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../growthExpMatch/index.html">Growthexpmatch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../refinement/index.html">Refinement</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../rBioNet/index.html">Rbionet</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../index.html">Modelgeneration</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="../massBalance/index.html">Massbalance</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../modelProperties/index.html">Modelproperties</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../fluxConsistency/index.html">Fluxconsistency</a></li>
-<li class="toctree-l4 current"><a class="current reference internal" href="#">Modelverification</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../stoichConsistency/index.html">Stoichconsistency</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Modelverification</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../rBioNet/index.html">Rbionet</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../demeter/index.html">Demeter</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../refinement/index.html">Refinement</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../metaboRePort/index.html">Metaboreport</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../fastGapFill/index.html">Fastgapfill</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../growthExpMatch/index.html">Growthexpmatch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../comparison/index.html">Comparison</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../demeter/index.html">Demeter</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../visualization/index.html">Visualization</a></li>
@@ -241,12 +241,17 @@
 <dd><p>Checks the model for validity of database identifiers</p>
 <dl class="field-list simple">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>results = checkDatabaseIDs</strong> (<em>model,results</em>)</p>
+<dd class="field-odd"><p><strong>results = checkDatabaseIDs</strong> (<em>model, results</em>)</p>
 </dd>
 <dt class="field-even">INPUT<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>model</strong> – a structure that represents the COBRA model.</p></li>
-<li><p><strong>results</strong> – the results structure for this test</p></li>
+<li><p><strong>results</strong> – the results structure for this test, with optional field:</p>
+<ul>
+<li><p>.checkDatabaseIDs - struct of invalid database IDs found
+by a previous call to this function (created if absent)</p></li>
+</ul>
+</li>
 </ul>
 </dd>
 <dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
@@ -265,14 +270,18 @@ The desired properties of each field are described here:
 And computationally defined here: ‘COBRA_structure_fields.tab’</p>
 <dl class="field-list simple">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>results = checkPresentFields</strong> (<em>fieldProperties,model, results</em>)</p>
+<dd class="field-odd"><p><strong>results = checkPresentFields</strong> (<em>fieldProperties, model, results</em>)</p>
 </dd>
 <dt class="field-even">INPUT<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>fieldProperties</strong> – field properties as obtained by
 getDefinedFieldProperties</p></li>
 <li><p><strong>model</strong> – a structure that represents the COBRA model.</p></li>
-<li><p><strong>results</strong> – the results structure for this test</p></li>
+<li><p><strong>results</strong> – the results structure for this test, with field:</p>
+<ul>
+<li><p>.Errors - struct of accumulated error information (created if absent)</p></li>
+</ul>
+</li>
 </ul>
 </dd>
 <dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
@@ -294,7 +303,15 @@ src/base/io/definitions/COBRA_structure_fields.tab</p>
 <dd class="field-odd"><p><strong>results = verifyModel</strong> (<em>model, varargin</em>)</p>
 </dd>
 <dt class="field-even">INPUT<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>model</strong> – a structure that represents the COBRA model.</p>
+<dd class="field-even"><p><strong>model</strong> – a structure that represents the COBRA model, with fields:</p>
+<ul class="simple">
+<li><p>.rxns - reaction identifiers (read when checking flux consistency)</p></li>
+<li><p>.mets - metabolite identifiers (read when checking dead-end metabolites)</p></li>
+<li><p>.metCharges - metabolite charges (read, or created as NaN if absent, when checking mass or charge balance)</p></li>
+<li><p>.metFormulas - metabolite chemical formulas (read, or created as empty if absent, when checking mass balance)</p></li>
+<li><p>.fieldProperties - custom field property definitions (optional; used in place of the
+built-in defined field properties for an additional structural check, if present)</p></li>
+</ul>
 </dd>
 <dt class="field-odd">OPTIONAL INPUT<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>varargin</strong> – varargin describes the additional checks (except the
@@ -364,10 +381,10 @@ results = verifyModel(model,’simpleCheck’, true,’requiredFields’,{‘S,�
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../stoichConsistency/index.html" class="btn btn-default float-right" title="Stoichconsistency" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../../metaboRePort/index.html" class="btn btn-default float-right" title="Metaboreport" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../fluxConsistency/DCA/index.html" class="btn btn-default" title="Dca" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../stoichConsistency/index.html" class="btn btn-default" title="Stoichconsistency" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

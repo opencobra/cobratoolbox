@@ -65,8 +65,8 @@
         <link rel="search" title="Search" href="../../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../../index.html"/>
         <link rel="up" title="Solvers" href="../index.html"/>
-        <link rel="next" title="Rescale" href="../rescale/index.html"/>
-        <link rel="prev" title="Entropicfba" href="../entropicFBA/index.html"/> 
+        <link rel="next" title="Getsetsolver" href="../getSetSolver/index.html"/>
+        <link rel="prev" title="Mosek" href="../mosek/index.html"/> 
 
   
   <script src="../../../../_static/js/modernizr.min.js"></script>
@@ -159,31 +159,31 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Base</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="../../utilities/index.html">Utilities</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../paths/index.html">Paths</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../ci/index.html">Ci</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../codeConsistency/index.html">Codeconsistency</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../io/index.html">Io</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../install/index.html">Install</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../index.html">Solvers</a><ul class="current">
-<li class="toctree-l4"><a class="reference internal" href="../NLP/index.html">Nlp</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../param/index.html">Param</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../minos/index.html">Minos</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../init/index.html">Init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../NLP/index.html">Nlp</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../gurobi/index.html">Gurobi</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../minos/index.html">Minos</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../optarrow/index.html">Optarrow</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../lindo/index.html">Lindo</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../entropicFBA/index.html">Entropicfba</a></li>
-<li class="toctree-l4 current"><a class="current reference internal" href="#">Cplex</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../rescale/index.html">Rescale</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../cardOpt/index.html">Cardopt</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../mosek/index.html">Mosek</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../varKin/index.html">Varkin</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../getSetSolver/index.html">Getsetsolver</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../gams/index.html">Gams</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../init/index.html">Init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../cardOpt/index.html">Cardopt</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../entropicFBA/index.html">Entropicfba</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../lp_solve/index.html">Lp_solve</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../varKin/index.html">Varkin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../mosek/index.html">Mosek</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Cplex</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../getSetSolver/index.html">Getsetsolver</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="../../ci/index.html">Ci</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../paths/index.html">Paths</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../cobrarrow/index.html">Cobrarrow</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../install/index.html">Install</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../dataIntegration/index.html">Dataintegration</a></li>
@@ -280,30 +280,40 @@ CPLEX control parameter <cite>cpxControl.LPMETHOD</cite></p>
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.base.solvers.cplex.buildCplexProblemFromCOBRAStruct">
 <span class="sig-name descname"><span class="pre">buildCplexProblemFromCOBRAStruct</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">Problem</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/cplex/buildCplexProblemFromCOBRAStruct.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.cplex.buildCplexProblemFromCOBRAStruct" title="Permalink to this definition">¶</a></dt>
-<dd><p>Build a cplex object from the given LP problem in COBRA Format
-:USAGE: <strong>cplexProblem = buildCplexProblemFromCOBRAStruct</strong> (<em>LPproblem</em>)</p>
+<dd><p>Build a cplex object from the given LP problem in COBRA Format</p>
 <dl class="field-list">
-<dt class="field-odd">INPUT<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>LPproblem</strong> –</p>
-<dl class="simple">
-<dt>A COBRA style Problem with the following fields:</dt><dd><ul class="simple">
-<li><p>.A - The equality and in equality matrix</p></li>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>cplexProblem = buildCplexProblemFromCOBRAStruct</strong> (<em>Problem</em>)</p>
+</dd>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>Problem</strong> –</p>
+<p>A COBRA style Problem with the following fields:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>.A - The equality and inequality matrix</p></li>
 <li><p>.b - The right hand side values of the constraints</p></li>
 <li><p>.ub - the upper bounds of the variables</p></li>
 <li><p>.lb - the lower bounds of the variables</p></li>
 <li><p>.osense - The objective sense (-1 for max, 1 for min)</p></li>
 <li><p>.c - the objective coefficient vector for the linear part</p></li>
 </ul>
-</dd>
-<dt>OPTIONAL:</dt><dd><ul class="simple">
-<li><p>.F - The objective coefficient matrix for the quadratic part.</p></li>
-<li><p>.varType - The variable types for mixed integer problems (‘I’, integer, ‘C’, continous,’B’ binary)</p></li>
-<li><p>.b_L - left hand sides of the constraints (will only be used if csense is empty)</p></li>
+</div></blockquote>
+<p>OPTIONAL:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>.F - The objective coefficient matrix for the quadratic part</p></li>
+<li><p>.vartype - The variable types for mixed integer problems (‘I’, integer, ‘C’, continuous, ‘B’ binary)</p></li>
+<li><p>.b_L - left hand sides of the constraints (used if <cite>.csense</cite> does not resolve them)</p></li>
+<li><p>.b_U - right hand sides of the constraints (used together with <cite>.b_L</cite>)</p></li>
 <li><p>.csense - The constraint senses, Default assumption is all ‘E’</p></li>
-<li><p>.x0 - Basis to use</p></li>
+<li><p>.basis - CPLEX advanced-start basis to use</p></li>
+<li><p>.x0 - starting point to use if <cite>.basis</cite> is absent</p></li>
 </ul>
+</div></blockquote>
 </dd>
-</dl>
+<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>cplexProblem</strong> – The <cite>Cplex()</cite> object built from <cite>Problem</cite>, with <cite>.Model</cite> (and,
+when a starting point is supplied, <cite>.Start</cite>) populated</p>
 </dd>
 </dl>
 </dd></dl>
@@ -317,10 +327,33 @@ CPLEX control parameter <cite>cpxControl.LPMETHOD</cite></p>
 <dd class="field-odd"><p><strong>[infeas, sol] = checkSolFeas</strong> (<em>LP, sol, maxInfeas, tol</em>)</p>
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>LP</strong> – COBRA model or <cite>LP</cite> structure, or a IBM-ILOG CPLEX class</p></li>
+<dd class="field-even"><ul>
+<li><p><strong>LP</strong> – COBRA model or <cite>LP</cite> structure, or a IBM-ILOG CPLEX class, with fields:</p>
+<ul class="simple">
+<li><p>.A - <cite>m x n</cite> LHS matrix (COBRA <cite>LP</cite> structure), used if <cite>.S</cite> is absent</p></li>
+<li><p>.S - <cite>m x n</cite> stoichiometric matrix (COBRA model), used if <cite>.A</cite> is absent</p></li>
+<li><p>.b - RHS vector, used if <cite>.rhs</cite> is absent</p></li>
+<li><p>.rhs - RHS vector (gurobi-style <cite>LP</cite> structure), takes precedence over <cite>.b</cite></p></li>
+<li><p>.csense - constraint senses (COBRA <cite>LP</cite>/model), used if <cite>.sense</cite> is absent</p></li>
+<li><p>.sense - constraint senses (gurobi-style <cite>LP</cite> structure), takes precedence over <cite>.csense</cite></p></li>
+<li><p>.lb - lower bounds, used when present to compute bound infeasibility</p></li>
+<li><p>.ub - upper bounds, used when present to compute bound infeasibility</p></li>
+<li><p>.Model - <cite>Cplex</cite> object <cite>Model</cite> property, with fields <cite>.A</cite>, <cite>.lhs</cite>, <cite>.rhs</cite>,
+<cite>.lb</cite>, <cite>.ub</cite>, and optionally <cite>.indicator</cite>; used only when <cite>LP</cite> is a <cite>Cplex</cite> object</p></li>
+<li><p>.Solution - <cite>Cplex</cite> object <cite>Solution</cite> property; <cite>.Solution.x</cite> is used as <cite>sol</cite>
+when the <cite>sol</cite> input is not supplied; used only when <cite>LP</cite> is a <cite>Cplex</cite> object</p></li>
+</ul>
+</li>
 <li><p><strong>sol</strong> – solution structure or columns of solution vectors. If <cite>LP</cite> is a
-CPLEX class with. Solution property <cite>sol</cite> can be omitted or empty.</p></li>
+CPLEX class with. Solution property <cite>sol</cite> can be omitted or empty.
+If a structure, with fields:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>.full - full solution vector, read if present</p></li>
+<li><p>.x - solution vector, read if <cite>.full</cite> is absent</p></li>
+</ul>
+</div></blockquote>
+</li>
 </ul>
 </dd>
 <dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
@@ -338,13 +371,53 @@ if false, <cite>infeas</cite> = struct of vectors of infeasibility with the foll
 </li>
 <li><p><strong>tol</strong> – feasibility tolerance (defaulted at the Cobra solver <cite>feasTol</cite> value).
 For determining if the input solution is indeed feasible. Used only if the input solution is a structure.</p></li>
+<li><p><strong>internal</strong> – true if this call is an internal recursive call (used to batch large
+solution matrices <cite>mSize</cite> columns at a time). Reserved for internal
+use only; callers should not set this (default false)</p></li>
 </ul>
 </dd>
-<dt class="field-even">OUTPUT<span class="colon">:</span></dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>infeas</strong> – maximum infeasibility (<cite>maxInfeas = true</cite>) or struct of vectors of infeasibility (<cite>maxInfeas = false</cite>)</p></li>
-<li><p><strong>sol</strong> – solution structure. Only available if the input solution is a structure.
-If <span class="math notranslate nohighlight">\(infeas \leq tol\)</span>, <cite>sol.stat = 1</cite>. Otherwise no change.</p></li>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>varargout</strong> – variable-length output list:</p>
+<ul class="simple">
+<li><p>infeas - maximum infeasibility (<cite>maxInfeas = true</cite>) or struct of
+vectors of infeasibility (<cite>maxInfeas = false</cite>)</p></li>
+<li><p>sol - solution structure, returned only when the input <cite>sol</cite> was
+itself a structure. If <span class="math notranslate nohighlight">\(infeas \leq tol\)</span>, <cite>sol.stat = 1</cite>.
+Otherwise no change.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.base.solvers.cplex.cplexStatus">
+<span class="sig-name descname"><span class="pre">cplexStatus</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">Inform</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/cplex/cplexStatus.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.cplex.cplexStatus" title="Permalink to this definition">¶</a></dt>
+<dd><p>Analyzes the CPLEX output Inform code and returns the CPLEX solution status
+message in <cite>ExitText</cite> and the TOMLAB exit flag in <cite>ExitFlag</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[ExitText, ExitFlag] = cplexStatus</strong> (<em>Inform</em>)</p>
+</dd>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>Inform</strong> – Integer status number from a CPLEX run (<cite>S</cite> = Simplex,
+<cite>B</cite> = Barrier); see the Inform-to-message table in the
+comment block above this function for the full mapping
+of values to their meaning</p>
+</dd>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ExitText</strong> – CPLEX solution status message</p></li>
+<li><p><strong>ExitFlag</strong> – Exit status, TOMLAB standard:</p>
+<ul>
+<li><p>0 - Successful</p></li>
+<li><p>1 - Time/iterations limit exceeded</p></li>
+<li><p>2 - Unbounded</p></li>
+<li><p>4 - Infeasible</p></li>
+<li><p>10 - Input errors</p></li>
+<li><p>11 - Memory errors</p></li>
+<li><p>-1 - Other Inform values</p></li>
+</ul>
+</li>
 </ul>
 </dd>
 </dl>
@@ -399,6 +472,10 @@ be necessary if directly modifying the Cplex.Param structure.
 <li><p><strong>verbFlag</strong> – true to show which parameter input is problematic if any (optional, default true)</p></li>
 </ul>
 </dd>
+<dt class="field-even">OUTPUT<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>LP</strong> – the input IBM-ILOG Cplex object, with every uniquely
+identifiable parameter in <cite>solverParams</cite> set on <cite>LP.Param</cite></p>
+</dd>
 </dl>
 </dd></dl>
 
@@ -409,20 +486,65 @@ be necessary if directly modifying the Cplex.Param structure.
 structure and a solver specific parameter structure (latter has
 precedence). The cobra parameters structure contains fields as specified in
 <cite>getCobraSolverParamsOptionsForType</cite>, while solverParams needs to
-contain a structure compatible with <cite>setCplexParam</cite>.
-:USAGE: <strong>cplexProblem = setCplexParametersForProblem</strong> (<em>cplexProblem, problemTypeParams, solverParams, ProblemType</em>)</p>
+contain a structure compatible with <cite>setCplexParam</cite>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">INPUTS<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>cplexProblem</strong> – the Cplex() object to set the parameters</p></li>
-<li><p><strong>problemTypeParams</strong> – problem type parameters as defined in getCobraSolverParamsOptionsForType</p></li>
-<li><p><strong>solverParams</strong> – the solver specific parameter structure has to be compatible with <cite>setCplexParam</cite></p></li>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[cplexProblem, logFile, logToFile] = setCplexParametersForProblem</strong> (<em>cplexProblem, problemTypeParams, solverParams, problemType</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>cplexProblem</strong> – the Cplex() object to set the parameters on, with fields:</p>
+<ul>
+<li><p>.setDefault - method resetting all CPLEX parameters to their defaults</p></li>
+<li><p>.Param - CPLEX parameter tree (e.g. <cite>.Param.simplex.tolerances.feasibility.Cur</cite>) that this function sets</p></li>
+<li><p>.DisplayFunc - function handle controlling CPLEX log display; suppressed when <cite>problemTypeParams.printLevel</cite> is 0, or redirected to <cite>logFile</cite></p></li>
+</ul>
+</li>
+<li><p><strong>problemTypeParams</strong> – problem type parameters as defined in <cite>getCobraSolverParamsOptionsForType</cite>, with fields:</p>
+<ul>
+<li><p>.printLevel - verbosity level; <cite>0</cite> suppresses CPLEX log output</p></li>
+<li><p>.logFile - <cite>1</cite> to print to the command window, <cite>0</cite>/empty for no logging, otherwise a file name to log to</p></li>
+<li><p>.feasTol - feasibility tolerance, applied to <cite>simplex.tolerances.feasibility</cite> and <cite>network.tolerances.feasibility</cite></p></li>
+<li><p>.optTol - optimality tolerance, applied to <cite>simplex.tolerances.optimality</cite> and <cite>network.tolerances.optimality</cite></p></li>
+<li><p>.relMipGapTol - relative MIP gap tolerance (<cite>MILP</cite>/<cite>MIQP</cite> only)</p></li>
+<li><p>.intTol - integrality tolerance (<cite>MILP</cite>/<cite>MIQP</cite> only)</p></li>
+<li><p>.absMipGapTol - absolute MIP gap tolerance (<cite>MILP</cite>/<cite>MIQP</cite> only)</p></li>
+<li><p>.timeLimit - CPLEX time limit in seconds (<cite>MILP</cite>/<cite>MIQP</cite> only)</p></li>
+<li><p>.method - LP/QP algorithm selector used when <cite>problemType</cite> is <cite>MIQP</cite> (numeric legacy
+code, or <cite>‘AUTOMATIC’</cite>/<cite>’PRIMAL’</cite>/<cite>’DUAL’</cite>/<cite>’NETWORK’</cite>/<cite>’BARRIER’</cite>/<cite>’SIFTING’</cite>/<cite>’CONCURRENT’</cite>)</p></li>
+</ul>
+</li>
+<li><p><strong>solverParams</strong> – the solver specific parameter structure, compatible with <cite>setCplexParam</cite>, with optional fields:</p>
+<ul>
+<li><p>.qpmethod - QP algorithm selector (numeric, or <cite>‘AUTOMATIC’</cite>/<cite>’PRIMAL’</cite>/<cite>’DUAL’</cite>/
+<cite>‘NETWORK’</cite>/<cite>’BARRIER’</cite>/<cite>’CONCURRENT’</cite>), used when <cite>problemType</cite> is <cite>‘QP’</cite></p></li>
+<li><p>.lpmethod - LP algorithm selector (numeric, or <cite>‘AUTOMATIC’</cite>/<cite>’PRIMAL’</cite>/<cite>’DUAL’</cite>/
+<cite>‘NETWORK’</cite>/<cite>’BARRIER’</cite>/<cite>’SIFTING’</cite>/<cite>’CONCURRENT’</cite>), used when <cite>problemType</cite> is <cite>‘LP’</cite></p></li>
+<li><p>.multiscale - currently dead code (guarded out); when present, its value is read but never applied</p></li>
+<li><p>.scaind - matrix scaling parameter, applied to <cite>read.scale.Cur</cite></p></li>
+<li><p>.timelimit - CPLEX time limit in seconds, applied to <cite>timelimit.Cur</cite></p></li>
+<li><p>.secondsTimeLimit - time limit in seconds, multiplied by 5 and applied to <cite>timelimit.Cur</cite></p></li>
+<li><p>.emphasis_numerical - numerical precision emphasis, applied to <cite>emphasis.numerical.Cur</cite></p></li>
+<li><p>.markowitz - Markowitz pivot tolerance, applied to <cite>simplex.tolerances.markowitz.Cur</cite></p></li>
+</ul>
+</li>
 <li><p><strong>problemType</strong> – The type of Problem (‘LP’,’MILP’,’QP’,’MIQP’).</p></li>
 </ul>
 </dd>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cplexProblem</strong> – the Cplex() object with the resolved parameters set</p></li>
+<li><p><strong>logFile</strong> – the resolved log file identifier: <cite>0</cite> if not logging,
+<cite>1</cite> for command window output, or an open file identifier</p></li>
+<li><p><strong>logToFile</strong> – true if CPLEX output is being redirected to a file, false otherwise</p></li>
+</ul>
+</dd>
 </dl>
-<p>see <a class="reference external" href="https://www.ibm.com/docs/en/icos/12.10.0?topic=cplex-list-parameters">https://www.ibm.com/docs/en/icos/12.10.0?topic=cplex-list-parameters</a>
-see  <a class="reference external" href="https://www.ibm.com/docs/en/icos/12.10.0">https://www.ibm.com/docs/en/icos/12.10.0</a></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>See <a class="reference external" href="https://www.ibm.com/docs/en/icos/12.10.0?topic=cplex-list-parameters">https://www.ibm.com/docs/en/icos/12.10.0?topic=cplex-list-parameters</a>
+and <a class="reference external" href="https://www.ibm.com/docs/en/icos/12.10.0">https://www.ibm.com/docs/en/icos/12.10.0</a> for the full CPLEX parameter reference.</p>
+</div>
 </dd></dl>
 
 <dl class="mat function">
@@ -443,6 +565,8 @@ see  <a class="reference external" href="https://www.ibm.com/docs/en/icos/12.10.
 <li><p>.ub - <cite>n x 1</cite> Upper bound vector</p></li>
 <li><p>.osense - scalar Objective sense (-1 max, +1 min)</p></li>
 <li><p>.rxns - (optional) cell array of reaction abbreviations (necessary for
+making a readable confilict resolution file).</p></li>
+<li><p>.mets - (optional) cell array of metabolite abbreviations (necessary for
 making a readable confilict resolution file).</p></li>
 <li><p>.csense - (optional) Constraint senses, a string containting the constraint sense for
 each row in <cite>A</cite> (‘E’, equality, ‘G’ greater than, ‘L’ less than).</p></li>
@@ -540,12 +664,15 @@ preference to the one written by ILOG.</p>
 <dd class="field-even"><p><strong>LPProblem</strong> – Structure containing the following fields describing the LP problem to be solved</p>
 <ul class="simple">
 <li><p>.A - LHS matrix</p></li>
+<li><p>.S - stoichiometric matrix, used if <cite>.A</cite> is absent</p></li>
 <li><p>.b - RHS vector</p></li>
 <li><p>.c - Objective coeff vector</p></li>
 <li><p>.lb - Lower bound vector</p></li>
 <li><p>.ub - Upper bound vector</p></li>
 <li><p>.osense - Objective sense (-1 maximise (default), +1 minimise)</p></li>
 <li><p>.rxns - (optional) cell array of reaction abbreviations (necessary for
+making a readable confilict resolution file).</p></li>
+<li><p>.mets - (optional) cell array of metabolite abbreviations (necessary for
 making a readable confilict resolution file).</p></li>
 <li><p>.csense - (optional) Constraint senses, a string containting the constraint sense for
 each row in <cite>A</cite> (‘E’, equality, ‘G’ greater than, ‘L’ less than).</p></li>
@@ -633,15 +760,13 @@ Default is the <cite>tomlab_cplex</cite> interface</p></li>
 </dd>
 </dl>
 <dl>
-<dt>OPTIONAL OUTPUT:</dt><dd><blockquote>
-<div><p>LPProblem:          with field:</p>
+<dt>OPTIONAL OUTPUT:</dt><dd><p>LPProblem:          with field:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p>.LPBasis:            When input <cite>basisReuse = 1</cite>, we return a basis for reuse in the next LP</p></li>
 </ul>
 </div></blockquote>
-</div></blockquote>
-<p>ILOGcplex            Class Cplex for the optimisation problem</p>
+<p>ILOGcplex:          Class Cplex for the optimisation problem</p>
 </dd>
 </dl>
 </dd></dl>
@@ -660,12 +785,15 @@ preference to the one written by ILOG.</p>
 <dd class="field-even"><p><strong>LPProblem</strong> – Structure containing the following fields describing the LP problem to be solved</p>
 <ul class="simple">
 <li><p>.A - LHS matrix</p></li>
+<li><p>.S - stoichiometric matrix, used if <cite>.A</cite> is absent</p></li>
 <li><p>.b - RHS vector</p></li>
 <li><p>.c - Objective coeff vector</p></li>
 <li><p>.lb - Lower bound vector</p></li>
 <li><p>.ub - Upper bound vector</p></li>
 <li><p>.osense - Objective sense (-1 max, +1 min)</p></li>
 <li><p>.rxns - (optional) cell array of reaction abbreviations (necessary for
+making a readable confilict resolution file).</p></li>
+<li><p>.mets - (optional) cell array of metabolite abbreviations (necessary for
 making a readable confilict resolution file).</p></li>
 <li><p>.csense - (optional) Constraint senses, a string containting the constraint sense for
 each row in <cite>A</cite> (‘E’, equality, ‘G’ greater than, ‘L’ less than).</p></li>
@@ -774,7 +902,7 @@ preference to the one written by ILOG.</p>
 <dd class="field-odd"><p><strong>solveCobraLPCPLEXcard</strong> (<em>LPProblem, printLevel, basisReuse, conflictResolve, contFunctName, minNorm, theNorm</em>)</p>
 </dd>
 <dt class="field-even">INPUT<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>model</strong> – structure with mandatory and optional fields:</p>
+<dd class="field-even"><p><strong>LPProblem</strong> – structure with mandatory and optional fields:</p>
 <ul class="simple">
 <li><p>.A or .S: - <cite>m x n</cite> LHS matrix</p></li>
 <li><p>.b - <cite>m x 1</cite> RHS vector</p></li>
@@ -784,10 +912,15 @@ preference to the one written by ILOG.</p>
 <li><p>.osense - scalar Objective sense (-1 max, +1 min)</p></li>
 <li><p>.rxns - (optional) cell array of reaction abbreviations (necessary for
 making a readable confilict resolution file).</p></li>
+<li><p>.mets - (optional) cell array of metabolite abbreviations (necessary for
+making a readable confilict resolution file).</p></li>
 <li><p>.csense - (optional) Constraint senses, a string containting the constraint sense for
 each row in <cite>A</cite> (‘E’, equality, ‘G’ greater than, ‘L’ less than).</p></li>
 <li><p>.LPBasis - (optional) Basis from previous solution of similar LP problem.
 See <cite>basisReuse</cite></p></li>
+<li><p>.reversibleModel - (optional) 0 if the model has been split into forward/reverse
+reactions (irreversible), used to determine the sign of the cardinality-approximation
+objective; any other value is treated as a reversible model</p></li>
 </ul>
 </dd>
 <dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
@@ -880,7 +1013,18 @@ parameters for feasbile models. It requires IBM ILOG cplex (for now).</p>
 </dd>
 <dt class="field-even">INPUT<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>LPProblem</strong> – MILP as COBRA LP problem structure</p></li>
+<li><p><strong>LPProblem</strong> – MILP as COBRA LP problem structure, with fields:</p>
+<ul>
+<li><p>.A or .S - <cite>m x n</cite> LHS/stoichiometric matrix</p></li>
+<li><p>.b - RHS vector</p></li>
+<li><p>.c - Objective coefficient vector</p></li>
+<li><p>.lb - Lower bound vector</p></li>
+<li><p>.ub - Upper bound vector</p></li>
+<li><p>.osense - Objective sense (-1 max, +1 min)</p></li>
+<li><p>.csense - Constraint senses, a string containing the constraint sense for
+each row in <cite>A</cite> (‘E’, equality, ‘G’ greater than, ‘L’ less than)</p></li>
+</ul>
+</li>
 <li><p><strong>contFunctName</strong> – Parameters structure containing the name and value,
 OR the name of a function that returns such a
 structure (e.g. ‘CPLEXParamSet’), OR [] for
@@ -913,27 +1057,33 @@ optimisation.
 While, it won’t optimize memory space nor model constraints for numerical
 infeasibilities, tuneParam will provide the optimal set of solver
 parameters for feasbile models. It requires IBM ILOG cplex (for now).</p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>optimalParameters = tuneParam</strong> (<em>model,contFunctName,1000,1000,0</em>)</p>
+<dd class="field-odd"><p><strong>optimParam = tuneParamForModel</strong> (<em>model, contFunctName, timelimit, nrepeat, printLevel</em>)</p>
 </dd>
 <dt class="field-even">INPUT<span class="colon">:</span></dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>model</strong> – A COBRA model struct.</p></li>
-<li><p><strong>contFunctName</strong> – Parameters structure containing the name and value.
+<dd class="field-even"><p><strong>model</strong> – A COBRA model struct.</p>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>varargin</strong> – forwarded, in order, to <cite>tuneParam</cite> after converting
+<cite>model</cite> to an LP problem:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>contFunctName - Parameters structure containing the name and value.
 A set of routine parameters will be added by the solver
 but won’t be reported.</p></li>
-<li><p><strong>timelimit</strong> – default is 10000 second</p></li>
-<li><p><strong>nrepeat</strong> – number of row/column permutation of the original
+<li><p>timelimit - default is 10000 second</p></li>
+<li><p>nrepeat - number of row/column permutation of the original
 problem, reports robust results.
 sets the CPX_PARAM_TUNINGREPEAT parameter
 High values of nrepeat would require consequent
 memory and swap.</p></li>
-<li><p><strong>printLevel</strong> – 0/1/2/3</p></li>
+<li><p>printLevel - 0/1/2/3</p></li>
 </ul>
+</div></blockquote>
 </dd>
-<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>optimParam</strong> – structure of optimal parameter values directly usable as
+<dt class="field-even">OUTPUT<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>optimParam</strong> – structure of optimal parameter values directly usable as
 contFunctName argument in solveCobraLP function</p>
 </dd>
 </dl>
@@ -956,10 +1106,10 @@ using a Cobra model structure converted to a LP problem.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../rescale/index.html" class="btn btn-default float-right" title="Rescale" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../getSetSolver/index.html" class="btn btn-default float-right" title="Getsetsolver" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../entropicFBA/index.html" class="btn btn-default" title="Entropicfba" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../mosek/index.html" class="btn btn-default" title="Mosek" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

@@ -66,7 +66,7 @@
     <link rel="top" title="The COBRA Toolbox" href="../../../index.html"/>
         <link rel="up" title="Base" href="../index.html"/>
         <link rel="next" title="Io" href="../io/index.html"/>
-        <link rel="prev" title="Ci" href="../ci/index.html"/> 
+        <link rel="prev" title="Utilities" href="../utilities/index.html"/> 
 
   
   <script src="../../../_static/js/modernizr.min.js"></script>
@@ -159,13 +159,13 @@
 <li class="toctree-l2"><a class="reference internal" href="../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html">Base</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="../utilities/index.html">Utilities</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../paths/index.html">Paths</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../ci/index.html">Ci</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Codeconsistency</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../io/index.html">Io</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../install/index.html">Install</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../solvers/index.html">Solvers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ci/index.html">Ci</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../paths/index.html">Paths</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../cobrarrow/index.html">Cobrarrow</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../install/index.html">Install</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../dataIntegration/index.html">Dataintegration</a></li>
@@ -230,30 +230,34 @@
 <span class="target" id="module-src.base.codeConsistency"></span><dl class="mat function">
 <dt class="sig sig-object mat" id="src.base.codeConsistency.printFunctionIO">
 <span class="sig-name descname"><span class="pre">printFunctionIO</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">functionName</span></em>, <em class="sig-param"><span class="pre">derivedInputNames</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/codeConsistency/printFunctionIO.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.codeConsistency.printFunctionIO" title="Permalink to this definition">¶</a></dt>
-<dd><p>list the inputs and outputs of a function
-e.g., when a function takes a structure as inputs</p>
-<p>It does not list outputs of nested functions, for that, see:
-displayRequiredFunctions(fullFileName)</p>
+<dd><p>Lists the input and output variables (including struct fields) referenced
+inside a target function’s source code, e.g., when a function takes a
+structure as an input.</p>
+<p>It does not list outputs of nested functions; for that, see
+displayRequiredFunctions(fullFileName).</p>
 <dl class="field-list simple">
-<dt class="field-odd">INPUTS<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>functionName</strong> – name of the function to print io for</p>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[inputs, outputs] = printFunctionIO</strong> (<em>functionName, derivedInputNames, printLevel</em>)</p>
 </dd>
 <dt class="field-even">OPTIONAL INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>derivedInputNames</strong> – name of a variable derived from an input variable
-or a cell array of variable names</p></li>
-<li><p><strong>printLevel</strong> – if &gt;0 then print to terminal (default 1)</p></li>
+<li><p><strong>functionName</strong> – Name of the function to print io for (default: <cite>solveCobraLP.m</cite>)</p></li>
+<li><p><strong>derivedInputNames</strong> – Name of a variable derived from an input variable,
+or a cell array of such variable names (default: <cite>{}</cite>)</p></li>
+<li><p><strong>printLevel</strong> – If &gt; 0 then print to terminal (default: 1)</p></li>
 </ul>
 </dd>
 <dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>inputs</strong></p></li>
-<li><p><strong>outputs</strong></p></li>
+<li><p><strong>inputs</strong> – Cell array of input variable/field names found in the target
+function’s source code</p></li>
+<li><p><strong>outputs</strong> – Cell array of output variable/field names found in the target
+function’s source code</p></li>
 </ul>
 </dd>
 </dl>
-<p>NOTE:</p>
-<p>Author(s): Ronan Fleming</p>
+<p class="rubric">Example</p>
+<p>[inputs, outputs] = printFunctionIO(‘solveCobraLP’, {}, 1);</p>
 </dd></dl>
 
 </section>
@@ -271,7 +275,7 @@ or a cell array of variable names</p></li>
         <a href="../io/index.html" class="btn btn-default float-right" title="Io" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../ci/index.html" class="btn btn-default" title="Ci" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../utilities/index.html" class="btn btn-default" title="Utilities" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

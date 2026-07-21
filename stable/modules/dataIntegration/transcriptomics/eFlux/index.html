@@ -65,8 +65,8 @@
         <link rel="search" title="Search" href="../../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../../index.html"/>
         <link rel="up" title="Transcriptomics" href="../index.html"/>
-        <link rel="next" title="Imat" href="../iMAT/index.html"/>
-        <link rel="prev" title="Moomin" href="../MOOMIN/index.html"/> 
+        <link rel="next" title="Fluxomics" href="../../fluxomics/index.html"/>
+        <link rel="prev" title="Rfastcormics" href="../rFASTCORMICS/index.html"/> 
 
   
   <script src="../../../../_static/js/modernizr.min.js"></script>
@@ -159,25 +159,25 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../base/index.html">Base</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Dataintegration</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../../chemoInformatics/index.html">Chemoinformatics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../fluxomics/index.html">Fluxomics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../metabotools/index.html">Metabotools</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../metanetxMapper/index.html">Metanetxmapper</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../XomicsToModel/index.html">Xomicstomodel</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../metaboAnnotator/index.html">Metaboannotator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../XomicsToModel/index.html">Xomicstomodel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chemoInformatics/index.html">Chemoinformatics</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../index.html">Transcriptomics</a><ul class="current">
-<li class="toctree-l4"><a class="reference internal" href="../rFASTCORMICS/index.html">Rfastcormics</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../MBA/index.html">Mba</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../GIMME/index.html">Gimme</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../FASTCORE/index.html">Fastcore</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../MOOMIN/index.html">Moomin</a></li>
-<li class="toctree-l4 current"><a class="current reference internal" href="#">Eflux</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../iMAT/index.html">Imat</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../INIT/index.html">Init</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../SWIFTCORE/index.html">Swiftcore</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GIMME/index.html">Gimme</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../MOOMIN/index.html">Moomin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../MBA/index.html">Mba</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../iMAT/index.html">Imat</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../FASTCORE/index.html">Fastcore</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../preprocessing/index.html">Preprocessing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../SWIFTCORE/index.html">Swiftcore</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../rFASTCORMICS/index.html">Rfastcormics</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Eflux</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../metabotools/index.html">Metabotools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../fluxomics/index.html">Fluxomics</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../design/index.html">Design</a></li>
@@ -246,36 +246,43 @@
 Interpreting Expression Data with Metabolic Flux Models: Predicting Mycobacterium tuberculosis Mycolic Acid Production
 Colijn C, Brandes A, Zucker J, Lun DS, Weiner B, et al. (2009)
 PLOS Computational Biology 5(8): e1000489. <a class="reference external" href="https://doi.org/10.1371/journal.pcbi.1000489">https://doi.org/10.1371/journal.pcbi.1000489</a></p>
-<dl class="field-list">
+<dl class="field-list simple">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>constraintModel = eFlux</strong> (<em>model,expression</em>)</p>
+<dd class="field-odd"><p><strong>constraintModel = applyEFluxConstraints</strong> (<em>model, expression, varargin</em>)</p>
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
-<dd class="field-even"><ul>
-<li><p><strong>model</strong> – The model to Constrain.</p></li>
-<li><p><strong>expression</strong> – struct with two fields required and one optional field:
-* .target       - the names of the target (rxns or genes)
-* .value        - the value for the target. Positive values</p>
-<blockquote>
-<div><p>for all constraint reactions, negative
-values for unconstraint reactions.</p>
-</div></blockquote>
-<ul class="simple">
-<li><dl class="simple">
-<dt>.preprocessed - Indicator whether the provided</dt><dd><p>targets are genes (false), or reactions (true)
-Default: false</p>
-</dd>
-</dl>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – COBRA model structure with fields:</p>
+<ul>
+<li><p>.rxns - reaction identifiers, used to map targets and to name flexibility variables</p></li>
+<li><p>.lb - lower flux bounds, reset and rescaled from the expression</p></li>
+<li><p>.ub - upper flux bounds, reset and rescaled from the expression</p></li>
+</ul>
 </li>
+<li><p><strong>expression</strong> – struct with two fields required and one optional field:</p>
+<ul>
+<li><p>.target - the names of the target (rxns or genes)</p></li>
+<li><p>.value - the value for the target. Positive values
+for all constraint reactions, negative
+values for unconstraint reactions.</p></li>
+<li><p>.preprocessed - Indicator whether the provided
+targets are genes (false), or reactions (true).
+Default: false</p></li>
 </ul>
 </li>
 </ul>
 </dd>
 <dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>varargin</strong> – Parameters given as struct or parameter/value pairs:
-* minSum:           Switch for the processing of Genetic data. If false, ORs in the GPR will be treated as min. If true(default), ORs will be treated as addition.
-* softBounds:       Whether to use soft bounds for the infered constraints or to add flexibility variables (default: false).
-* weightFactor:     The weight factor for soft bounds (default: 1)</p>
+<dd class="field-odd"><p><strong>varargin</strong> – Parameters given as struct or parameter/value pairs:</p>
+<ul class="simple">
+<li><p>minSum - Switch for the processing of Genetic data. If false, ORs in the GPR will be treated as min. If true (default), ORs will be treated as addition.</p></li>
+<li><p>softBounds - Whether to use soft bounds for the infered constraints or to add flexibility variables (default: false).</p></li>
+<li><p>weightFactor - The weight factor for soft bounds (default: 1)</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>constraintModel</strong> – the input model with flux bounds constrained
+according to the expression data</p>
 </dd>
 </dl>
 <div class="admonition note">
@@ -283,12 +290,6 @@ Default: false</p>
 <p>All Flux bounds will be reset by this function, i.e. any enforced
 fluxes (like ATP Maintenance) will be removed!</p>
 </div>
-<dl class="simple">
-<dt>..Authors</dt><dd><ul class="simple">
-<li><p>Thomas Pfau</p></li>
-</ul>
-</dd>
-</dl>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Implementation of the EFlux algorithm as described in:
@@ -312,7 +313,13 @@ PLOS Computational Biology 5(8): e1000489. <a class="reference external" href="h
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>model</strong> – The COBRA model struct to use</p></li>
+<li><p><strong>model</strong> – The COBRA model struct to use, with fields:</p>
+<ul>
+<li><p>.lb - lower flux bounds (reset when enforcing bounds are present)</p></li>
+<li><p>.ub - upper flux bounds (reset when enforcing bounds are present)</p></li>
+<li><p>.rxns - reaction identifiers</p></li>
+</ul>
+</li>
 <li><p><strong>controlExpression</strong> – struct for the control expression with two fields required and one optional field:
 * .target       - the names of the target (rxns or genes)
 * .value        - the value for the target. Positive values for all constraint reactions, negative values for unconstraint reactions.
@@ -364,9 +371,18 @@ for that described in the above paper after array normalization.</p>
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>model</strong> – The COBRA model struct for the checked expression struct.</p></li>
-<li><p><strong>expression</strong> – The expression struct (fields: value, target,
-preprocessed)</p></li>
+<li><p><strong>model</strong> – The COBRA model struct for the checked expression struct, with field:</p>
+<ul>
+<li><p>.genes - gene identifiers; all genes must be assigned when the targets are genes</p></li>
+</ul>
+</li>
+<li><p><strong>expression</strong> – The expression struct to verify, with fields:</p>
+<ul>
+<li><p>.value - values for each target</p></li>
+<li><p>.target - names of the targets (reactions or genes)</p></li>
+<li><p>.preprocessed - whether targets are reactions (true) or genes (false)</p></li>
+</ul>
+</li>
 </ul>
 </dd>
 <dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
@@ -387,10 +403,10 @@ preprocessed)</p></li>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../iMAT/index.html" class="btn btn-default float-right" title="Imat" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../../fluxomics/index.html" class="btn btn-default float-right" title="Fluxomics" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../MOOMIN/index.html" class="btn btn-default" title="Moomin" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../rFASTCORMICS/index.html" class="btn btn-default" title="Rfastcormics" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

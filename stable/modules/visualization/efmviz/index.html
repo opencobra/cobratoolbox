@@ -65,8 +65,8 @@
         <link rel="search" title="Search" href="../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../index.html"/>
         <link rel="up" title="Visualization" href="../index.html"/>
-        <link rel="next" title="Sammim" href="../SAMMIM/index.html"/>
-        <link rel="prev" title="Paint4net sample pack" href="../paint4net/Paint4Net%20sample%20pack/index.html"/> 
+        <link rel="next" title="Createmetintrcnetwork" href="../createMetIntrcNetwork/index.html"/>
+        <link rel="prev" title="Visualization" href="../index.html"/> 
 
   
   <script src="../../../_static/js/modernizr.min.js"></script>
@@ -162,19 +162,19 @@
 <li class="toctree-l2"><a class="reference internal" href="../../design/index.html">Design</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../reconstruction/index.html">Reconstruction</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html">Visualization</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../paint4net/index.html">Paint4net</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Efmviz</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../SAMMIM/index.html">Sammim</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../convert/index.html">Convert</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../cellDesigner/index.html">Celldesigner</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../entropicFBA/index.html">Entropicfba</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../visualizeEpistasis/index.html">Visualizeepistasis</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../upsetPlot/index.html">Upsetplot</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../createMetIntrcNetwork/index.html">Createmetintrcnetwork</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../maps/index.html">Maps</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../metabolicCartography/index.html">Metaboliccartography</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../EscherMap/index.html">Eschermap</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../paint4Net/index.html">Paint4net</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../paint4net/index.html">Paint4net</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../metabolicCartography/index.html">Metaboliccartography</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cellDesigner/index.html">Celldesigner</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../maps/index.html">Maps</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../SAMMIM/index.html">Sammim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../entropicFBA/index.html">Entropicfba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../upsetPlot/index.html">Upsetplot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../convert/index.html">Convert</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../visualizeEpistasis/index.html">Visualizeepistasis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../EscherMap/index.html">Eschermap</a></li>
 </ul>
 </li>
 </ul>
@@ -238,32 +238,42 @@
 <dd><p>This function extracts all the reactions present in a certain percentage of EFMs</p>
 <dl class="field-list">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>[selectedRxns,  rxnDistribution] = efmBackboneExtraction</strong> (<em>EFMRxns, percentage</em>)</p>
+<dd class="field-odd"><p><strong>[selectedRxns, rxnDistribution] = efmBackboneExtraction</strong> (<em>EFMRxns, percentage</em>)</p>
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>efmData</strong> – matlab array containing reactions in EFMs (each row is an EFM and every entry indicates the reaction IDs in the EFM)</p></li>
-<li><p><strong>percentage</strong> – a number indicating the cut off percentage. The reactions which are present in &gt;= ‘percentage’ number of EFMs will be returned as output. ex. ‘80’</p></li>
+<li><p><strong>EFMRxns</strong> – matlab array containing reactions in EFMs (each row is
+an EFM and every entry indicates the reaction IDs in the EFM)</p></li>
+<li><p><strong>percentage</strong> – a number indicating the cut off percentage. The reactions
+which are present in &gt;= ‘percentage’ number of EFMs will
+be returned as output. ex. ‘80’</p></li>
 </ul>
 </dd>
 <dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><ul>
-<li><p><strong>selectedRxns</strong> – table of reactions which are present in &gt;= ‘percentage’ number of EFMs.
-The columns in the table are:</p>
+<li><p><strong>selectedRxns</strong> – table of reactions which are present in &gt;= ‘percentage’
+number of EFMs. The columns in the table are:</p>
 <blockquote>
-<div><p>rxnID - reaction ID
-numEFMOccurrence - the number of EFMs the reaction occurs in
-efmOccPercentage - percentage of EFMs the reaction occurs in. Calculated as: efmOccPercentage = numEFMOccurrence/&lt;totalNumberOfEFMs&gt; * 100</p>
+<div><ul class="simple">
+<li><p>rxnID - reaction ID</p></li>
+<li><p>numEFMOccurrence - the number of EFMs the reaction occurs in</p></li>
+<li><p>efmOccPercentage - percentage of EFMs the reaction
+occurs in. Calculated as: efmOccPercentage =
+numEFMOccurrence/&lt;totalNumberOfEFMs&gt; * 100</p></li>
+</ul>
 </div></blockquote>
 </li>
-<li><p><strong>rxnDistribution</strong> –</p>
-<dl class="simple">
-<dt>table of all reactions which are present in the input set of EFMs.</dt><dd><p>The columns in the table are:</p>
-</dd>
-<dt>`         rxnID - reaction ID</dt><dd><p>numEFMOccurrence - the number of EFMs the reaction occurs in
-efmOccPercentage - percentage of EFMs the reaction occurs in. Calculated as: efmOccPercentage = numEFMOccurrence/&lt;totalNumberOfEFMs&gt; * 100</p>
-</dd>
-</dl>
+<li><p><strong>rxnDistribution</strong> – table of all reactions which are present in the input
+set of EFMs. The columns in the table are:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>rxnID - reaction ID</p></li>
+<li><p>numEFMOccurrence - the number of EFMs the reaction occurs in</p></li>
+<li><p>efmOccPercentage - percentage of EFMs the reaction
+occurs in. Calculated as: efmOccPercentage =
+numEFMOccurrence/&lt;totalNumberOfEFMs&gt; * 100</p></li>
+</ul>
+</div></blockquote>
 </li>
 </ul>
 </dd>
@@ -291,7 +301,11 @@ A three-column (space-separated) file: &lt;reaction ID&gt; &lt;fold change&gt; &
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul>
 <li><p><strong>EFMRxns</strong> – matlab array containing reactions in EFMs (each row is an EFM and every entry indicates the reaction IDs in the EFM)</p></li>
-<li><p><strong>model</strong> – COBRA model structure</p></li>
+<li><p><strong>model</strong> – COBRA model structure with fields:</p>
+<ul class="simple">
+<li><p>.rxns - <cite>n x 1</cite> cell array of reaction identifiers</p></li>
+</ul>
+</li>
 <li><p><strong>exprData</strong> – mRNA expression data structure
 .gene                    cell array containing GeneIDs in the same</p>
 <blockquote>
@@ -325,7 +339,7 @@ AND and Sum for OR</p>
 interest</p>
 <dl class="field-list simple">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>filteredEFMs = filterEFMs</strong> (<em>EFMRxns, roi</em>)</p>
+<dd class="field-odd"><p><strong>[filteredEFMs, row] = efmFilter</strong> (<em>EFMRxns, roi</em>)</p>
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
@@ -342,7 +356,7 @@ interest</p>
 </dd>
 </dl>
 <p class="rubric">Example</p>
-<p>filteredEFMs = filterEFMs(efmData, 729); % 729 is the ID for acetate release reaction in the iAF1260 model</p>
+<p>filteredEFMs = efmFilter(EFMRxns, 729); % 729 is the ID for acetate release reaction in the iAF1260 model</p>
 </dd></dl>
 
 <dl class="mat function">
@@ -351,7 +365,7 @@ interest</p>
 <dd><p>This function reads the file containing all EFMs</p>
 <dl class="field-list simple">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>[EFMRxns, EFMFluxes] = importEFMs</strong> (<em>EFMfileLocation, EFMFileName, EFMFluxfileLocation, EFMFluxFileName</em>)</p>
+<dd class="field-odd"><p><strong>[EFMRxns, EFMFluxes] = efmImport</strong> (<em>EFMfileLocation, EFMFileName, EFMFluxfileLocation, EFMFluxFileName</em>)</p>
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
@@ -380,9 +394,9 @@ otherwise</p>
 </dd>
 </dl>
 <p class="rubric">Example</p>
-<p>EFMRxns = importEFMs(‘C;/Analysis/’, ‘testEFMs.txt’);
-EFMRxns = importEFMs(‘’, ‘test.txt’); % when the file is in the current directory
-[EFMRxns, EFMFluxes] = importEFMs(‘C;/Analysis/’, ‘testEFMs.txt’, ‘C;/Analysis/’, ‘testFluxes.txt’); ; % with optional inputs</p>
+<p>EFMRxns = efmImport(‘C;/Analysis/’, ‘testEFMs.txt’);
+EFMRxns = efmImport(‘’, ‘test.txt’); % when the file is in the current directory
+[EFMRxns, EFMFluxes] = efmImport(‘C;/Analysis/’, ‘testEFMs.txt’, ‘C;/Analysis/’, ‘testFluxes.txt’); ; % with optional inputs</p>
 </dd></dl>
 
 <dl class="mat function">
@@ -392,13 +406,18 @@ EFMRxns = importEFMs(‘’, ‘test.txt’); % when the file is in the current 
 <dl class="field-list simple">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>modelEFM = extractSBMLFromEFM</strong> (<em>model, data, outputFileName</em>)</p></li>
-<li><p><strong>modelEFM = extractSBMLFromEFM</strong> (<em>model, data, outputFileName, remFlag, ubiquitousMets</em>)</p></li>
+<li><p><strong>modelEFM = efmSubmodelExtractionAsSBML</strong> (<em>model, rxnsForSubmodel, outputFileName</em>)</p></li>
+<li><p><strong>modelEFM = efmSubmodelExtractionAsSBML</strong> (<em>model, rxnsForSubmodel, outputFileName, remFlag, ubiquitousMets</em>)</p></li>
 </ul>
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>model</strong> – COBRA model that was used for EFM calculation</p></li>
+<li><p><strong>model</strong> – COBRA model that was used for EFM calculation, with fields:</p>
+<ul>
+<li><p>.rxns - <cite>n x 1</cite> cell array of reaction identifiers</p></li>
+<li><p>.mets - <cite>m x 1</cite> cell array of metabolite identifiers</p></li>
+</ul>
+</li>
 <li><p><strong>rxnsForSubmodel</strong> – array of reaction indices (such as those in an EFM)</p></li>
 <li><p><strong>outputFileName</strong> – file name of the output sbml file e.g., &lt;name&gt;.xml</p></li>
 </ul>
@@ -416,8 +435,8 @@ ubiquitousMets = {‘h’;’h2’;’fe3’;’fe2’;’h2o’;’na1’;’at
 </dd>
 </dl>
 <p class="rubric">Example</p>
-<p>data = [1 2 3 4 5]; % select first 5 reactions
-modelEFM = extractSBMLFromEFM(model, data) ;</p>
+<p>rxnsForSubmodel = [1 2 3 4 5]; % select first 5 reactions
+modelEFM = efmSubmodelExtractionAsSBML(model, rxnsForSubmodel, outputFileName);</p>
 </dd></dl>
 
 <dl class="mat function">
@@ -430,19 +449,28 @@ modelEFM = extractSBMLFromEFM(model, data) ;</p>
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>model</strong> – COBRA model that was used for EFM calculation</p></li>
+<li><p><strong>model</strong> – COBRA model that was used for EFM calculation, with fields:</p>
+<ul>
+<li><p>.subSystems - <cite>m x 1</cite> cell array of subsystem name(s) per reaction</p></li>
+</ul>
+</li>
 <li><p><strong>EFMRxns</strong> – matlab array containing reactions in EFMs (as returned by the function efmImport)</p></li>
 </ul>
 </dd>
 <dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>subsysSummary</strong></p></li>
-<li><p><strong>uniqSubsys</strong></p></li>
-<li><p><strong>countSubPerEFM</strong></p></li>
+<li><p><strong>subsysSummary</strong> – table (from <cite>tabulate</cite>) of the unique subsystems
+present in the input EFMs, sorted by descending
+occurrence count, with columns for subsystem name,
+count, and percentage</p></li>
+<li><p><strong>uniqSubsys</strong> – cell array of unique, non-empty subsystem names
+found among the reactions in the input EFMs</p></li>
+<li><p><strong>countSubPerEFM</strong> – <cite>numel(uniqSubsys) x size(EFMRxns, 1)</cite> matrix; each
+entry is the number of reactions belonging to that
+subsystem in the corresponding EFM</p></li>
 </ul>
 </dd>
 </dl>
-<p>EXAMPLE:</p>
 </dd></dl>
 
 <dl class="mat function">
@@ -451,7 +479,7 @@ modelEFM = extractSBMLFromEFM(model, data) ;</p>
 <dd><p>This function performs yield analysis on the input set of EFMs</p>
 <dl class="field-list simple">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>EFMyield = EFMYieldAnalysis</strong> (<em>fluxData, uptkRxnID, relRxnID</em>)</p>
+<dd class="field-odd"><p><strong>EFMyield = efmYieldAnalysis</strong> (<em>EFMFluxes, uptkRxnID, relRxnID</em>)</p>
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
@@ -465,7 +493,7 @@ modelEFM = extractSBMLFromEFM(model, data) ;</p>
 </dd>
 </dl>
 <p class="rubric">Example</p>
-<p>EFMyield = EFMYieldAnalysis(EFMFluxes, 729, 889); % 729 is the ID for acetate release reaction in the iAF1260 model</p>
+<p>EFMyield = efmYieldAnalysis(EFMFluxes, 729, 889); % 729 is the ID for acetate release reaction in the iAF1260 model</p>
 </dd></dl>
 
 </section>
@@ -480,10 +508,10 @@ modelEFM = extractSBMLFromEFM(model, data) ;</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../SAMMIM/index.html" class="btn btn-default float-right" title="Sammim" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../createMetIntrcNetwork/index.html" class="btn btn-default float-right" title="Createmetintrcnetwork" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../paint4net/Paint4Net%20sample%20pack/index.html" class="btn btn-default" title="Paint4net sample pack" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../index.html" class="btn btn-default" title="Visualization" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

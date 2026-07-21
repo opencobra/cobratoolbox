@@ -65,7 +65,7 @@
         <link rel="search" title="Search" href="../../../../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../../../../index.html"/>
         <link rel="up" title="Sparselp" href="../index.html"/>
-        <link rel="next" title="Smoothconcave" href="../../smoothConcave/index.html"/>
+        <link rel="next" title="Entropicfba" href="../../../entropicFBA/index.html"/>
         <link rel="prev" title="Sparselp" href="../index.html"/> 
 
   
@@ -159,38 +159,38 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../../../index.html">Base</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="../../../../utilities/index.html">Utilities</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../../paths/index.html">Paths</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../../ci/index.html">Ci</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../codeConsistency/index.html">Codeconsistency</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../io/index.html">Io</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../../install/index.html">Install</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../../../index.html">Solvers</a><ul class="current">
-<li class="toctree-l4"><a class="reference internal" href="../../../NLP/index.html">Nlp</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../param/index.html">Param</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../minos/index.html">Minos</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../init/index.html">Init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../NLP/index.html">Nlp</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../gurobi/index.html">Gurobi</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../minos/index.html">Minos</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../optarrow/index.html">Optarrow</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../lindo/index.html">Lindo</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../entropicFBA/index.html">Entropicfba</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../cplex/index.html">Cplex</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../rescale/index.html">Rescale</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../gams/index.html">Gams</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../init/index.html">Init</a></li>
 <li class="toctree-l4 current"><a class="reference internal" href="../../index.html">Cardopt</a><ul class="current">
+<li class="toctree-l5"><a class="reference internal" href="../../smoothConcave/index.html">Smoothconcave</a></li>
 <li class="toctree-l5 current"><a class="reference internal" href="../index.html">Sparselp</a><ul class="current">
 <li class="toctree-l6 current"><a class="current reference internal" href="#">Old</a></li>
 </ul>
 </li>
-<li class="toctree-l5"><a class="reference internal" href="../../smoothConcave/index.html">Smoothconcave</a></li>
 </ul>
 </li>
-<li class="toctree-l4"><a class="reference internal" href="../../../mosek/index.html">Mosek</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../varKin/index.html">Varkin</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../getSetSolver/index.html">Getsetsolver</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../gams/index.html">Gams</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../entropicFBA/index.html">Entropicfba</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../lp_solve/index.html">Lp_solve</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../varKin/index.html">Varkin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../mosek/index.html">Mosek</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../cplex/index.html">Cplex</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../getSetSolver/index.html">Getsetsolver</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../ci/index.html">Ci</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../paths/index.html">Paths</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../cobrarrow/index.html">Cobrarrow</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../install/index.html">Install</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../dataIntegration/index.html">Dataintegration</a></li>
@@ -267,7 +267,7 @@ s.t. <span class="math notranslate nohighlight">\(A*(x, y, z) &lt;= b\)</span>
 <span class="math notranslate nohighlight">\(x in R^p, y in R^q, z in R^r\)</span></p>
 <dl class="field-list">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>solution = optimizeCardinality</strong> (<em>problem, param</em>)</p>
+<dd class="field-odd"><p><strong>solution = optimizeCardinalityOld</strong> (<em>problem, param</em>)</p>
 </dd>
 <dt class="field-even">INPUT<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>problem</strong> – Structure containing the following fields describing the problem:</p>
@@ -293,7 +293,26 @@ each row in <cite>A</cite> (‘E’, equality, ‘G’ greater than, ‘L’ les
 * .lambda0 - trade-off parameter on minimise <cite>||x||_0</cite>
 * .lambda1 - trade-off parameter on minimise <cite>||x||_1</cite>
 * .delta0 - trade-off parameter on maximise <cite>||y||_0</cite>
-* .delta1 - trade-off parameter on minimise <a href="#id4"><span class="problematic" id="id5">`</span></a>||y||_1</p></li>
+* .delta1 - trade-off parameter on minimise <cite>||y||_1
+* .lambda - shorthand for `.lambda0</cite> (mutually exclusive with</p>
+<blockquote>
+<div><p><cite>.lambda0</cite>/<cite>.lambda1</cite>); when given, <cite>.lambda0</cite> is set to
+<cite>problem.lambda</cite> and <cite>.lambda1</cite> is set to <cite>lambda0/10</cite> (Default
+<cite>.lambda</cite> = 1 if none of <cite>.lambda</cite>, <cite>.lambda0</cite>, <cite>.lambda1</cite> are given)</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>.delta - shorthand for <cite>.delta0</cite> (mutually exclusive with
+<cite>.delta0</cite>/<cite>.delta1</cite>); when given, <cite>.delta0</cite> is set to
+<cite>problem.delta</cite> and <cite>.delta1</cite> is set to <cite>delta0/10</cite> (Default
+<cite>.delta</cite> = 0 if none of <cite>.delta</cite>, <cite>.delta0</cite>, <cite>.delta1</cite> are given)</p></li>
+<li><p>.complementarityindk - <cite>size(A,2) x 2</cite> matrix identifying, for each
+complementarity pair, the two <cite>x</cite>-indices (columns) that are linked;
+required together with <cite>.complementarityindd</cite></p></li>
+<li><p>.complementarityindd - <cite>size(A,2) x 1</cite> vector identifying, for each
+complementarity pair, the corresponding <cite>y</cite>-index; required together
+with <cite>.complementarityindk</cite></p></li>
+</ul>
+</li>
 <li><p><strong>param</strong> – Parameters structure:
 * .printLevel - greater than zero to recieve more output
 * .nbMaxIteration - stopping criteria - number maximal of iteration (Default value = 100)
@@ -306,6 +325,17 @@ and the original cardinality optimisation problem are have the same set of optim
 <ul class="simple">
 <li><p>.thetaMultiplier - at each iteration: theta = theta*thetaMultiplier</p></li>
 <li><p>.eta - Smallest value considered non-zero (Default value feasTol*1000)</p></li>
+<li><p>.warmStartMethod - method used to compute the starting point
+<cite>(x,y,z)</cite> for the DCA loop; one of <cite>‘inverseTheta’</cite>, <cite>‘original’</cite>,
+<cite>‘0’</cite>, <cite>‘l1’</cite>, <cite>‘l2’</cite>, <cite>‘random’</cite> (Default value = ‘random’)</p></li>
+<li><p>.condenseW - if <cite>true</cite>, omit the auxiliary <cite>w</cite> variable for
+<cite>x</cite>-entries already constrained to be non-negative (Default value = 1)</p></li>
+<li><p>.condenseT - if <cite>true</cite>, omit the auxiliary <cite>t</cite> variable for
+<cite>y</cite>-entries whose absolute value is already constrained to be less
+than <cite>1/theta</cite> (Default value = 1)</p></li>
+<li><p>.testFeasibility - if <cite>true</cite>, solve the initial sub-problem once
+before the DCA loop begins to check and report whether it is
+feasible (Default value = 0)</p></li>
 </ul>
 </li>
 </ul>
@@ -358,7 +388,7 @@ s.t. :math:`A*(x, y, z) &lt;= b\)</span>
 <li><p>.csense - <cite>s x 1</cite> Constraint senses, a string containting the constraint sense for
 each row in <cite>A</cite> (‘E’, equality, ‘G’ greater than, ‘L’ less than).</p></li>
 <li><p>.lb - <cite>(p+q+r) x 1</cite> Lower bound vector</p></li>
-<li><p>.ub - <a href="#id6"><span class="problematic" id="id7">``</span></a>(p+q+r) x 1` Upper bound vector</p></li>
+<li><p>.ub - <a href="#id4"><span class="problematic" id="id5">``</span></a>(p+q+r) x 1` Upper bound vector</p></li>
 </ul>
 </dd>
 <dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
@@ -415,7 +445,7 @@ s.t. <span class="math notranslate nohighlight">\(A*(x, y, z) &lt;= b\)</span>
 <li><p>.csense - <cite>s x 1</cite> Constraint senses, a string containting the constraint sense for
 each row in <cite>A</cite> (‘E’, equality, ‘G’ greater than, ‘L’ less than).</p></li>
 <li><p>.lb - <cite>(p+q+r) x 1</cite> Lower bound vector</p></li>
-<li><p>.ub - <a href="#id8"><span class="problematic" id="id9">``</span></a>(p+q+r) x 1` Upper bound vector</p></li>
+<li><p>.ub - <a href="#id6"><span class="problematic" id="id7">``</span></a>(p+q+r) x 1` Upper bound vector</p></li>
 </ul>
 </dd>
 <dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
@@ -450,7 +480,7 @@ each row in <cite>A</cite> (‘E’, equality, ‘G’ greater than, ‘L’ les
 <span class="sig-name descname"><span class="pre">optimizeCardinality_weighted_Minh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">problem</span></em>, <em class="sig-param"><span class="pre">params</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/cardOpt/sparseLP/old/optimizeCardinality_weighted_Minh.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.cardOpt.sparseLP.old.optimizeCardinality_weighted_Minh" title="Permalink to this definition">¶</a></dt>
 <dd><p>DC programming for solving the cardinality optimization problem
 The <cite>l0</cite> norm is approximated by capped-<cite>l1</cite> function.
-:math:<a href="#id10"><span class="problematic" id="id11">`</span></a>min c’(x, y, z) + lambda_0*||k.*x||_0 - delta_0*||d.*y||_0</p>
+:math:<a href="#id8"><span class="problematic" id="id9">`</span></a>min c’(x, y, z) + lambda_0*||k.*x||_0 - delta_0*||d.*y||_0</p>
 <blockquote>
 <div><ul class="simple">
 <li><p>lambda_1*||x||_1 + delta_1*||y||_1`</p></li>
@@ -470,10 +500,10 @@ The <cite>l0</cite> norm is approximated by capped-<cite>l1</cite> function.
 <li><p>.q - size of vector <cite>y</cite></p></li>
 <li><p>.r - size of vector <cite>z</cite></p></li>
 <li><p>.c - <cite>(p+q+r) x 1</cite> linear objective function vector</p></li>
-<li><p>.lambda_0 - trade-off parameter of <cite>||x||_0</cite></p></li>
-<li><p>.delta_0 - trade-off parameter of <cite>||y||_0</cite></p></li>
-<li><p>.lambda_1 - trade-off parameter of <cite>||x||_1</cite></p></li>
-<li><p>.delta_1 - trade-off parameter of <cite>||y||_1</cite></p></li>
+<li><p>.lambda0 - trade-off parameter of <cite>||x||_0</cite> (Default value = 1)</p></li>
+<li><p>.delta0 - trade-off parameter of <cite>||y||_0</cite> (Default value = 1)</p></li>
+<li><p>.lambda1 - trade-off parameter of <cite>||x||_1</cite> (Default value = 1)</p></li>
+<li><p>.delta1 - trade-off parameter of <cite>||y||_1</cite> (Default value = 1)</p></li>
 <li><p>.k - <cite>p x 1</cite> strictly possitive weight vector of <cite>x</cite></p></li>
 <li><p>.d - <cite>q x 1</cite> strictly possitive weight vector of <cite>y</cite></p></li>
 <li><p>.A - <cite>s x (p+q+r)</cite> LHS matrix</p></li>
@@ -481,7 +511,7 @@ The <cite>l0</cite> norm is approximated by capped-<cite>l1</cite> function.
 <li><p>.csense - <cite>s x 1</cite> Constraint senses, a string containting the constraint sense for
 each row in <cite>A</cite> (‘E’, equality, ‘G’ greater than, ‘L’ less than).</p></li>
 <li><p>.lb - <cite>(p+q+r) x 1</cite> Lower bound vector</p></li>
-<li><p>.ub - <a href="#id12"><span class="problematic" id="id13">``</span></a>(p+q+r) x 1` Upper bound vector</p></li>
+<li><p>.ub - <a href="#id10"><span class="problematic" id="id11">``</span></a>(p+q+r) x 1` Upper bound vector</p></li>
 </ul>
 </dd>
 <dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
@@ -523,7 +553,7 @@ each row in <cite>A</cite> (‘E’, equality, ‘G’ greater than, ‘L’ les
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../../smoothConcave/index.html" class="btn btn-default float-right" title="Smoothconcave" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../../../entropicFBA/index.html" class="btn btn-default float-right" title="Entropicfba" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="../index.html" class="btn btn-default" title="Sparselp" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

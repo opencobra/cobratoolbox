@@ -65,7 +65,7 @@
         <link rel="search" title="Search" href="../../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../../index.html"/>
         <link rel="up" title="Metaboannotator" href="../index.html"/>
-        <link rel="next" title="Connect2resources" href="../connect2resources/index.html"/>
+        <link rel="next" title="Molfilefinder" href="../molFileFinder/index.html"/>
         <link rel="prev" title="Metaboannotator" href="../index.html"/> 
 
   
@@ -159,20 +159,20 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../base/index.html">Base</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Dataintegration</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../../chemoInformatics/index.html">Chemoinformatics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../fluxomics/index.html">Fluxomics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../metabotools/index.html">Metabotools</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../metanetxMapper/index.html">Metanetxmapper</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../XomicsToModel/index.html">Xomicstomodel</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../index.html">Metaboannotator</a><ul class="current">
 <li class="toctree-l4 current"><a class="current reference internal" href="#">Analysemetstruct</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../molFileFinder/index.html">Molfilefinder</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../generateMetInfo/index.html">Generatemetinfo</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../connect2resources/index.html">Connect2resources</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../buildMetStruct/index.html">Buildmetstruct</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../generateMetInfo/index.html">Generatemetinfo</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../molFileFinder/index.html">Molfilefinder</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="../../XomicsToModel/index.html">Xomicstomodel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chemoInformatics/index.html">Chemoinformatics</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../transcriptomics/index.html">Transcriptomics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../metabotools/index.html">Metabotools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../fluxomics/index.html">Fluxomics</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../design/index.html">Design</a></li>
@@ -237,96 +237,136 @@
 <span class="target" id="module-src.dataIntegration.metaboAnnotator.analyseMetStruct"></span><dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.metaboAnnotator.analyseMetStruct.acceptIDsSuggested">
 <span class="sig-name descname"><span class="pre">acceptIDsSuggested</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">metabolite_structure</span></em>, <em class="sig-param"><span class="pre">IDsSuggested</span></em>, <em class="sig-param"><span class="pre">annotationSource</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metaboAnnotator/analyseMetStruct/acceptIDsSuggested.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metaboAnnotator.analyseMetStruct.acceptIDsSuggested" title="Permalink to this definition">¶</a></dt>
-<dd><p>function [metabolite_structure,IDsAdded] = acceptIDsSuggested(metabolite_structure,IDsSuggested)
-This function accepts suggested IDs as provided in the list IDsSuggested
-and adds them to the metabolite_structure. Note each row in IDsSuggested that shall be
-accepted must have an entry in the 6th column specifying that the entry
-in the 2nd column shall be accepted for the metabolite in the 1st column.
-Note that at this stage the annotation/curation level will be raised to
-curated, so it is imperative that each row and suggested ID will be carefully evaluated before being accepted.</p>
-<p>INPUT
-metabolite_structure  metabolite structure
-IDsSuggested          list of suggested IDs, each row to be accepted</p>
-<blockquote>
-<div><p>must have ‘accepted’ in the 6th column</p>
-</div></blockquote>
-<p>annotationSource      source of annotation, e.g. ‘curator (name)’
-OUTPUT
-metabolite_structure  updated metabolite structure
-IDsAdded              List of added IDs</p>
-<p>Ines Thiele, 01/2021</p>
+<dd><p>Accepts suggested metabolite IDs and adds them to the metabolite structure</p>
+<p>Accepts suggested IDs as provided in the list <cite>IDsSuggested</cite> and adds them
+to the metabolite structure. Each row in <cite>IDsSuggested</cite> to be accepted must
+have an entry in the 6th column specifying that the entry in the 2nd column
+shall be accepted for the metabolite in the 1st column. At this stage the
+annotation/curation level is raised to curated, so each row and suggested ID
+should be carefully evaluated before being accepted.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[metabolite_structure, IDsAdded] = acceptIDsSuggested</strong> (<em>metabolite_structure, IDsSuggested, annotationSource</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>metabolite_structure</strong> – metabolite structure</p></li>
+<li><p><strong>IDsSuggested</strong> – list of suggested IDs; each row to be accepted
+must have ‘accepted’ in the 6th column</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUT<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>annotationSource</strong> – source of annotation, e.g. ‘curator (name)’
+(default: ‘curator (IT)’)</p>
+</dd>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>metabolite_structure</strong> – updated metabolite structure</p></li>
+<li><p><strong>IDsAdded</strong> – list of added IDs</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.metaboAnnotator.analyseMetStruct.addAnnotations">
 <span class="sig-name descname"><span class="pre">addAnnotations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">metabolite_structure</span></em>, <em class="sig-param"><span class="pre">RAW</span></em>, <em class="sig-param"><span class="pre">annotationSource</span></em>, <em class="sig-param"><span class="pre">annotationType</span></em>, <em class="sig-param"><span class="pre">annotationVerification</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metaboAnnotator/analyseMetStruct/addAnnotations.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metaboAnnotator.analyseMetStruct.addAnnotations" title="Permalink to this definition">¶</a></dt>
-<dd><p>function [metabolite_structure] = addAnnotations(metabolite_structure,RAW,annotationSource,annotationType)
-This function adds annotations (fields) to the metabolite_structure. It
-is generally used to populate the metabolite_structure with new
-metabolites from an xlsx sheet (RAW).</p>
-<p>INPUT
-metabolite_structure   metabolite structure
-RAW                       data read in using the function xlsread, e.g.,</p>
-<blockquote>
-<div><p>[NUM,TXT,RAW]=xlsread(‘MetaboliteTranslationTable.xlsx’);
-Note that the xlsx sheet has to have certain
-headers to be correctly read in.</p>
-</div></blockquote>
-<dl class="simple">
-<dt>annotationSource          define annotation source (to track where the</dt><dd><p>information came from, e.g., ‘Recon3D’). If not
-specified, ‘unknown’ will be added</p>
+<dd><p>Adds annotations (fields) to the metabolite structure from an xlsx table</p>
+<p>Adds annotations (fields) to the metabolite structure. It is generally used
+to populate the metabolite structure with new metabolites read from an xlsx
+sheet (<cite>RAW</cite>).</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[metabolite_structure] = addAnnotations</strong> (<em>metabolite_structure, RAW, annotationSource, annotationType, annotationVerification</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>metabolite_structure</strong> – metabolite structure</p></li>
+<li><p><strong>RAW</strong> – data read in using the function <cite>xlsread</cite>, e.g.
+[NUM, TXT, RAW] = xlsread(‘MetaboliteTranslationTable.xlsx’);
+the xlsx sheet must have specific headers to be
+read in correctly</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>annotationSource</strong> – annotation source, tracking where the
+information came from, e.g. ‘Recon3D’
+(default: ‘unknown’)</p></li>
+<li><p><strong>annotationType</strong> – type of annotation, e.g. ‘manual’
+(default: ‘automatic’)</p></li>
+<li><p><strong>annotationVerification</strong> – verification of annotation, e.g.
+‘verified by curator’, ‘verified based on
+inchiKeys’ (default: ‘not verified’)</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>metabolite_structure</strong> – updated metabolite structure</p>
 </dd>
 </dl>
-<p>annotation Type           type of annotation, e.g., ‘automatic’ (Default), ‘manual’
-annotationVerification    verification of annotation, e.g., ‘not verified’ (Default), ‘verified by curator’, ‘verified based on inchiKeys’</p>
-<p>OUTPUT
-metabolite_structure      updated metabolite structure</p>
-<p>Ines Thiele 2020/2021</p>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.metaboAnnotator.analyseMetStruct.addInfoFromMolFiles">
 <span class="sig-name descname"><span class="pre">addInfoFromMolFiles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">metabolite_structure</span></em>, <em class="sig-param"><span class="pre">folderName</span></em>, <em class="sig-param"><span class="pre">startSearch</span></em>, <em class="sig-param"><span class="pre">endSearch</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metaboAnnotator/analyseMetStruct/addInfoFromMolFiles.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metaboAnnotator.analyseMetStruct.addInfoFromMolFiles" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function creates inchiStrings, smiles, and inchiKeys from provided mol files,
-in the case that these fields are empty (NaN) in the structure.</p>
-<p>INPUT
-metabolite_structure  metabolite structure
-folderName            name of folder that contains the mol structures
-startSearch           specify where the search should start in the</p>
-<blockquote>
-<div><p>metabolite structure. Must be numeric (optional, default: all metabolites
-in the structure will be search for)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>endSearch             specify where the search should end in the</dt><dd><p>metabolite structure. Must be numeric (optional, default: all metabolites
-in the structure will be search for)</p>
+<dd><p>Creates inchiStrings, smiles, and inchiKeys from provided mol files</p>
+<p>Creates inchiStrings, smiles, and inchiKeys from provided mol files, in the
+case that these fields are empty (NaN) in the metabolite structure.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[metabolite_structure, IDAdded] = addInfoFromMolFiles</strong> (<em>metabolite_structure, folderName, startSearch, endSearch</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>metabolite_structure</strong> – metabolite structure</p>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>folderName</strong> – name of the folder that contains the mol files
+(default: ‘ctf-main/mets/molFiles’)</p></li>
+<li><p><strong>startSearch</strong> – numeric index where the search should start in
+the metabolite structure (default: 1, all
+metabolites in the structure are searched)</p></li>
+<li><p><strong>endSearch</strong> – numeric index where the search should end in the
+metabolite structure (default: number of
+metabolites in the structure)</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>metabolite_structure</strong> – updated metabolite structure</p></li>
+<li><p><strong>IDAdded</strong> – list of IDs (inchiString, inchiKey, smiles) added</p></li>
+</ul>
 </dd>
 </dl>
-<p>OUTPUT
-metabolite_structure  Updated metabolite structure</p>
-<p>Ines Thiele, 09/2021</p>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.metaboAnnotator.analyseMetStruct.addMetFormulaCharge">
 <span class="sig-name descname"><span class="pre">addMetFormulaCharge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">metabolite_structure</span></em>, <em class="sig-param"><span class="pre">startSearch</span></em>, <em class="sig-param"><span class="pre">endSearch</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metaboAnnotator/analyseMetStruct/addMetFormulaCharge.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metaboAnnotator.analyseMetStruct.addMetFormulaCharge" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function uses getInchiString2ChargedFormula.m to calculate charge
-and neutral formula.</p>
-<p>INPUT
-metabolite_structure  metabolite structure
-startSearch           specify where the search should start in the</p>
-<blockquote>
-<div><p>metabolite structure. Must be numeric (optional, default: all metabolites
-in the structure will be search for)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>endSearch             specify where the search should end in the</dt><dd><p>metabolite structure. Must be numeric (optional, default: all metabolites
-in the structure will be search for)</p>
+<dd><p>Calculates charged formula and neutral formula from the inchiString</p>
+<p>Uses <cite>getInchiString2ChargedFormula</cite> to calculate the charge and the
+neutral formula for each metabolite in the metabolite structure.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[metabolite_structure] = addMetFormulaCharge</strong> (<em>metabolite_structure, startSearch, endSearch</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>metabolite_structure</strong> – metabolite structure</p>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>startSearch</strong> – numeric index where the search should start in
+the metabolite structure (default: 1, all
+metabolites in the structure are searched)</p></li>
+<li><p><strong>endSearch</strong> – numeric index where the search should end in the
+metabolite structure (default: number of
+metabolites in the structure)</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>metabolite_structure</strong> – updated metabolite structure</p>
 </dd>
 </dl>
-<p>OUTPUT
-metabolite_structure  updated metabolite structure</p>
-<p>Ines Thiele 09/21</p>
 </dd></dl>
 
 <dl class="mat script">
@@ -338,49 +378,96 @@ metabolite_structure  updated metabolite structure</p>
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.metaboAnnotator.analyseMetStruct.check4DuplicatesInList">
 <span class="sig-name descname"><span class="pre">check4DuplicatesInList</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">list</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metaboAnnotator/analyseMetStruct/check4DuplicatesInList.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metaboAnnotator.analyseMetStruct.check4DuplicatesInList" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function checks for duplicate entries in a list.</p>
-<p>INPUT
-list              List of e.g. metabolite abbr</p>
-<p>OUTPUT
-listDuplicates    List of duplicated entries. Second (or more) occurance</p>
-<blockquote>
-<div><p>of the duplicate is provided.</p>
-</div></blockquote>
-<p>Ines Thiele, 09/2021</p>
+<dd><p>Checks for duplicate entries in a list</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[listDuplicates] = check4DuplicatesInList</strong> (<em>list</em>)</p>
+</dd>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>list</strong> – list of entries, e.g. metabolite abbreviations</p>
+</dd>
+<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>listDuplicates</strong> – list of duplicated entries; the second (or later)
+occurrence of each duplicate is provided</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.metaboAnnotator.analyseMetStruct.checkAbbrExists">
 <span class="sig-name descname"><span class="pre">checkAbbrExists</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">list</span></em>, <em class="sig-param"><span class="pre">metab_rBioNet_online</span></em>, <em class="sig-param"><span class="pre">rxn_rBioNet_online</span></em>, <em class="sig-param"><span class="pre">metabolite_structure_rBioNet</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metaboAnnotator/analyseMetStruct/checkAbbrExists.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metaboAnnotator.analyseMetStruct.checkAbbrExists" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function checks whether the abbreviations in the list exist already
-in the VMH or the most recent rBioNetDB either as reaction or metabolite
-abbr</p>
-<p>INPUT
-list                          List of abbreviations (either metabolite or reactions);</p>
-<blockquote>
-<div><p>Alternatively a metabolite structure can be given as input and more
-fields are compared</p>
-</div></blockquote>
-<p>metab_rBioNet_online
-rxn_rBioNet_online
-metabolite_structure_rBioNet</p>
-<p>OUTPUT
-VMH_existance                 Lists whether the abbreviation exists in VMH (online),</p>
-<blockquote>
-<div><p>as a reaction (2nd entry) or as a metabolite (3rd entry)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>rBioNet_existance             Lists whether the abbreviation exists in rBioNet (as deposited in cobra toolbox online),</dt><dd><p>as a reaction (2nd entry) or as a metabolite (3rd entry)</p>
+<dd><p>Checks whether abbreviations already exist in the VMH or rBioNet database</p>
+<p>Checks whether the abbreviations in <cite>list</cite> already exist in the VMH or the
+most recent rBioNet database, either as a reaction or as a metabolite
+abbreviation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[VMH_existance, rBioNet_existance, metab_rBioNet_online, rxn_rBioNet_online, metabolite_structure_rBioNet] = checkAbbrExists</strong> (<em>list, metab_rBioNet_online, rxn_rBioNet_online, metabolite_structure_rBioNet</em>)</p>
+</dd>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>list</strong> – list of abbreviations (metabolites or
+reactions); alternatively a metabolite
+structure, in which case additional
+database fields are also compared</p>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>metab_rBioNet_online</strong> – rBioNet metabolite database; loaded from
+the online rBioNet database if not provided</p></li>
+<li><p><strong>rxn_rBioNet_online</strong> – rBioNet reaction database; loaded from the
+online rBioNet database if not provided</p></li>
+<li><p><strong>metabolite_structure_rBioNet</strong> – rBioNet metabolite structure; loaded from
+met_strc_rBioNet if not provided</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>VMH_existance</strong> – indicates whether each abbreviation exists
+in the VMH (online), as a reaction (2nd
+entry) or as a metabolite (3rd entry)</p></li>
+<li><p><strong>rBioNet_existance</strong> – indicates whether each abbreviation exists
+in rBioNet (as deposited in the COBRA
+Toolbox online), as a reaction (2nd entry)
+or as a metabolite (3rd entry)</p></li>
+<li><p><strong>metab_rBioNet_online</strong> – rBioNet metabolite database used</p></li>
+<li><p><strong>rxn_rBioNet_online</strong> – rBioNet reaction database used</p></li>
+<li><p><strong>metabolite_structure_rBioNet</strong> – rBioNet metabolite structure used</p></li>
+</ul>
 </dd>
 </dl>
-<p>Ines Thiele 09/2021</p>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.metaboAnnotator.analyseMetStruct.checkLinkValidity">
 <span class="sig-name descname"><span class="pre">checkLinkValidity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">metabolite_structure</span></em>, <em class="sig-param"><span class="pre">startSearch</span></em>, <em class="sig-param"><span class="pre">endSearch</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metaboAnnotator/analyseMetStruct/checkLinkValidity.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metaboAnnotator.analyseMetStruct.checkLinkValidity" title="Permalink to this definition">¶</a></dt>
-<dd><p>the aim of this script is go take each of the id’s collected and test
-whether</p>
+<dd><p>Checks the validity of collected metabolite identifier hyperlinks</p>
+<p>Takes each of the collected metabolite identifiers (currently HMDB IDs) and
+tests whether the identifier still resolves. Identifiers whose links are
+dead or have been revoked are removed from the metabolite structure.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[metabolite_structure, removed] = checkLinkValidity</strong> (<em>metabolite_structure, startSearch, endSearch</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>metabolite_structure</strong> – metabolite structure</p>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>startSearch</strong> – numeric index where the search should start in
+the metabolite structure (default: 1)</p></li>
+<li><p><strong>endSearch</strong> – numeric index where the search should end in the
+metabolite structure (default: number of
+metabolites in the structure)</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>metabolite_structure</strong> – updated metabolite structure with invalid
+identifiers removed</p></li>
+<li><p><strong>removed</strong> – list of identifiers that were removed</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="mat script">
@@ -392,37 +479,58 @@ whether</p>
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.metaboAnnotator.analyseMetStruct.getIDfromMetStructure">
 <span class="sig-name descname"><span class="pre">getIDfromMetStructure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">metabolite_structure</span></em>, <em class="sig-param"><span class="pre">idName</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metaboAnnotator/analyseMetStruct/getIDfromMetStructure.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metaboAnnotator.analyseMetStruct.getIDfromMetStructure" title="Permalink to this definition">¶</a></dt>
-<dd><p>INPUT
-metabolite_structure      Structure containg metabolite related informations
-and ID’s
-idName                    Name of the ID as used in the metabolite structure</p>
-<blockquote>
-<div><p>to be retrieved (e.g., ‘pubChemId’)</p>
-</div></blockquote>
-<p>OUTPUT
-VMH2IDmappingAll          Mapping of all VMH metabolites present in the</p>
-<blockquote>
-<div><p>metabolite structure (including NaNs)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>VMH2IDmappingPresent      Mapping of all VMH metabolites present in the</dt><dd><p>metabolite structure (excluding NaNs)</p>
+<dd><p>Retrieves a specified identifier for all metabolites in a metabolite structure</p>
+<p>Retrieves the requested identifier (<cite>idName</cite>) for every metabolite in the
+metabolite structure and returns the VMH-to-identifier mappings, split into
+all metabolites, those with a present identifier, and those with a missing
+(NaN) identifier.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[VMH2IDmappingAll, VMH2IDmappingPresent, VMH2IDmappingMissing] = getIDfromMetStructure</strong> (<em>metabolite_structure, idName</em>)</p>
 </dd>
-<dt>VMH2IDmappingMissing      Abbreviations of metabolites that are NaN’s in the</dt><dd><p>metabolite structure</p>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>metabolite_structure</strong> – metabolite structure containing metabolite-related
+information and identifiers</p></li>
+<li><p><strong>idName</strong> – name of the identifier, as used in the metabolite
+structure, to be retrieved (e.g. ‘pubChemId’)</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>VMH2IDmappingAll</strong> – mapping of all VMH metabolites present in the
+metabolite structure (including NaNs)</p></li>
+<li><p><strong>VMH2IDmappingPresent</strong> – mapping of all VMH metabolites present in the
+metabolite structure (excluding NaNs)</p></li>
+<li><p><strong>VMH2IDmappingMissing</strong> – abbreviations of metabolites whose identifier is
+NaN in the metabolite structure</p></li>
+</ul>
 </dd>
 </dl>
-<p>IT, Aug 2020</p>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.metaboAnnotator.analyseMetStruct.getStatsMetStruct">
 <span class="sig-name descname"><span class="pre">getStatsMetStruct</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">metabolite_structure</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metaboAnnotator/analyseMetStruct/getStatsMetStruct.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metaboAnnotator.analyseMetStruct.getStatsMetStruct" title="Permalink to this definition">¶</a></dt>
-<dd><p>INPUT
-metabolite_structure  Metabolite structure</p>
-<p>OUTPUT
-IDs                   List of ID names
-IDcount               Count per ID
-Table                 Table listing IDs per reaction</p>
-<p>Ines Thiele, 09/2021</p>
+<dd><p>Computes statistics on the identifiers stored in a metabolite structure</p>
+<p>Collects the identifier field names present in the metabolite structure,
+counts how many metabolites carry each identifier, and assembles a table of
+the identifiers per metabolite.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[IDs, IDcount, Table] = getStatsMetStruct</strong> (<em>metabolite_structure</em>)</p>
+</dd>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>metabolite_structure</strong> – metabolite structure</p>
+</dd>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>IDs</strong> – list of identifier (field) names</p></li>
+<li><p><strong>IDcount</strong> – count of metabolites carrying each identifier</p></li>
+<li><p><strong>Table</strong> – table listing the identifiers per metabolite</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="mat script">
@@ -434,46 +542,83 @@ Table                 Table listing IDs per reaction</p>
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.metaboAnnotator.analyseMetStruct.list2MetaboliteStructure">
 <span class="sig-name descname"><span class="pre">list2MetaboliteStructure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">fileName</span></em>, <em class="sig-param"><span class="pre">molFileDirectory</span></em>, <em class="sig-param"><span class="pre">metList</span></em>, <em class="sig-param"><span class="pre">fileNameOutput</span></em>, <em class="sig-param"><span class="pre">metabolite_structure_rBioNet</span></em>, <em class="sig-param"><span class="pre">customMetAbbrList</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metaboAnnotator/analyseMetStruct/list2MetaboliteStructure.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metaboAnnotator.analyseMetStruct.list2MetaboliteStructure" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function reads in an xlsx file and converts it into a
-metabolite_structure. The minimum requirement is that the VMH ID are
-present in one column of the table.</p>
-<p>INPUT
-fileName              Name of the xlsx file
-molFileDirectoryIn    Location where to locate the mol files obtained from ctf and new mol files will be added.
-metList
-fileNameOutput</p>
-<p>OUTPUT
-metabolite_structure  metabolite structure containing the metabolites</p>
-<blockquote>
-<div><p>with VMH ID listed in the xlsx file</p>
-</div></blockquote>
-<dl class="simple">
-<dt>rBioNet_existance     This array indicates whether the query abbr exist</dt><dd><p>already in rBioNet (online and the growing internal
-database) (col 1: assigned initial VMHId, col 2: Id
-exists as rxn abbr, col 3: Id exists as met abbr,
-col 4: VMHId - if not empty this abbr was used in
-the metabolite structure instead of the one given
-in col 1.</p>
+<dd><p>Reads a metabolite list or xlsx file and converts it into a metabolite structure</p>
+<p>Reads an xlsx file (or a metabolite list) and converts it into a metabolite
+structure, then annotates the metabolites from multiple resources. The
+minimum requirement is that the VMH IDs are present in one column of the
+table.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[metabolite_structure, rBioNet_existance, VMH_existance] = list2MetaboliteStructure</strong> (<em>fileName, molFileDirectory, metList, fileNameOutput, metabolite_structure_rBioNet, customMetAbbrList</em>)</p>
 </dd>
-<dt>VMH_existance         This array indicates whether the query abbr exist</dt><dd><p>already in the VMH (online) (col 1: assigned initial VMHId, col 2: Id
-exists as rxn abbr, col 3: Id exists as met abbr).</p>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>fileName</strong> – name of the xlsx file to read in</p></li>
+<li><p><strong>molFileDirectory</strong> – location where the mol files obtained from
+ctf are located and where new mol files
+are added</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>metList</strong> – metabolite list used instead of an xlsx
+file; must have a header row and be tab
+delimited</p></li>
+<li><p><strong>fileNameOutput</strong> – file name under which the metabolite
+structure is saved
+(default: ‘collectedMetStruct.mat’)</p></li>
+<li><p><strong>metabolite_structure_rBioNet</strong> – rBioNet metabolite structure; loaded from
+met_strc_rBioNet_new if not provided</p></li>
+<li><p><strong>customMetAbbrList</strong> – list of metabolite abbreviations against
+which uniqueness is also checked</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>metabolite_structure</strong> – metabolite structure containing the
+metabolites with VMH ID listed in the file</p></li>
+<li><p><strong>rBioNet_existance</strong> – indicates whether the query abbreviation
+already exists in rBioNet (col 1: assigned
+initial VMHId, col 2: exists as reaction
+abbr, col 3: exists as metabolite abbr,
+col 4: VMHId used instead of col 1 if not
+empty)</p></li>
+<li><p><strong>VMH_existance</strong> – indicates whether the query abbreviation
+already exists in the VMH online (col 1:
+assigned initial VMHId, col 2: exists as
+reaction abbr, col 3: exists as metabolite
+abbr)</p></li>
+</ul>
 </dd>
 </dl>
-<p>Ines Thiele, 09/2021</p>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.metaboAnnotator.analyseMetStruct.verifyInchiString">
 <span class="sig-name descname"><span class="pre">verifyInchiString</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">metabolite_structure</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metaboAnnotator/analyseMetStruct/verifyInchiString.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metaboAnnotator.analyseMetStruct.verifyInchiString" title="Permalink to this definition">¶</a></dt>
-<dd><p>function [metabolite_structure] = verifyInchiString(metabolite_structure)
-This function verifies whether the inchiString and the formula/charge
-match for the entries in the metabolite_structure. If the inchiString is
-neutral but the chargedFormula is not neutral, only a note to the
-inchiString_source will be added. If the inchiString does not match or
-represents a different charge (not neutral and not overlapping with the
-metabolite charge), the inchiString will be removed from the
-metabolite_structure and added to a IDsSuggested list.</p>
-<p>Ines Thiele 2020/2021</p>
+<dd><p>Verifies that the inchiString and the formula/charge match for each metabolite</p>
+<p>Verifies whether the inchiString and the formula/charge match for the
+entries in the metabolite structure. If the inchiString is neutral but the
+chargedFormula is not neutral, only a note is added to the inchiString
+source. If the inchiString does not match, or represents a different charge
+(not neutral and not overlapping with the metabolite charge), the
+inchiString is removed from the metabolite structure and added to an
+IDsSuggested list.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[metabolite_structure, IDsSuggested] = verifyInchiString</strong> (<em>metabolite_structure</em>)</p>
+</dd>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>metabolite_structure</strong> – metabolite structure</p>
+</dd>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>metabolite_structure</strong> – updated metabolite structure</p></li>
+<li><p><strong>IDsSuggested</strong> – list of inchiStrings removed and suggested for
+review</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 </section>
@@ -488,7 +633,7 @@ metabolite_structure and added to a IDsSuggested list.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../connect2resources/index.html" class="btn btn-default float-right" title="Connect2resources" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../molFileFinder/index.html" class="btn btn-default float-right" title="Molfilefinder" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="../index.html" class="btn btn-default" title="Metaboannotator" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

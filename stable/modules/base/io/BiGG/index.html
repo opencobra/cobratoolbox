@@ -66,7 +66,7 @@
     <link rel="top" title="The COBRA Toolbox" href="../../../../index.html"/>
         <link rel="up" title="Io" href="../index.html"/>
         <link rel="next" title="Newt" href="../newt/index.html"/>
-        <link rel="prev" title="Io" href="../index.html"/> 
+        <link rel="prev" title="Old" href="../old/index.html"/> 
 
   
   <script src="../../../../_static/js/modernizr.min.js"></script>
@@ -159,23 +159,23 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Base</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="../../utilities/index.html">Utilities</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../paths/index.html">Paths</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../ci/index.html">Ci</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../codeConsistency/index.html">Codeconsistency</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../index.html">Io</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../json/index.html">Json</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../utilities/index.html">Utilities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../definitions/index.html">Definitions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../old/index.html">Old</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">Bigg</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../newt/index.html">Newt</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../utilities/index.html">Utilities</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../python/index.html">Python</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../KEGG/index.html">Kegg</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../json/index.html">Json</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../old/index.html">Old</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../definitions/index.html">Definitions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../python/index.html">Python</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../install/index.html">Install</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../solvers/index.html">Solvers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ci/index.html">Ci</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../paths/index.html">Paths</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../cobrarrow/index.html">Cobrarrow</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../install/index.html">Install</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../dataIntegration/index.html">Dataintegration</a></li>
@@ -255,10 +255,11 @@
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.base.io.BiGG.loadBiGGModel">
 <span class="sig-name descname"><span class="pre">loadBiGGModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model_ids</span></em>, <em class="sig-param"><span class="pre">format</span></em>, <em class="sig-param"><span class="pre">multichoice</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/io/BiGG/loadBiGGModel.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.io.BiGG.loadBiGGModel" title="Permalink to this definition">¶</a></dt>
-<dd><p>Reads from url <a class="reference external" href="http://bigg.ucsd.edu/api/v2/models">http://bigg.ucsd.edu/api/v2/models</a></p>
+<dd><p>Downloads and loads one or more models from the BiGG database
+(<a class="reference external" href="http://bigg.ucsd.edu/api/v2/models">http://bigg.ucsd.edu/api/v2/models</a>)</p>
 <dl class="field-list simple">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>model = listBiGGModel</strong> (<em>model_ids</em>)</p>
+<dd class="field-odd"><p><strong>varargout = loadBiGGModel</strong> (<em>model_ids, format, multichoice</em>)</p>
 </dd>
 <dt class="field-even">OPTIONAL INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
@@ -312,7 +313,7 @@ struct.</p>
         <a href="../newt/index.html" class="btn btn-default float-right" title="Newt" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../index.html" class="btn btn-default" title="Io" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../old/index.html" class="btn btn-default" title="Old" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

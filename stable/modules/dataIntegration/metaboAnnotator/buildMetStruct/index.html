@@ -65,7 +65,7 @@
         <link rel="search" title="Search" href="../../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../../index.html"/>
         <link rel="up" title="Metaboannotator" href="../index.html"/>
-        <link rel="next" title="Generatemetinfo" href="../generateMetInfo/index.html"/>
+        <link rel="next" title="Xomicstomodel" href="../../XomicsToModel/index.html"/>
         <link rel="prev" title="Connect2resources" href="../connect2resources/index.html"/> 
 
   
@@ -159,20 +159,20 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../base/index.html">Base</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Dataintegration</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../../chemoInformatics/index.html">Chemoinformatics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../fluxomics/index.html">Fluxomics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../metabotools/index.html">Metabotools</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../metanetxMapper/index.html">Metanetxmapper</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../XomicsToModel/index.html">Xomicstomodel</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../index.html">Metaboannotator</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="../analyseMetStruct/index.html">Analysemetstruct</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../molFileFinder/index.html">Molfilefinder</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../generateMetInfo/index.html">Generatemetinfo</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../connect2resources/index.html">Connect2resources</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">Buildmetstruct</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../generateMetInfo/index.html">Generatemetinfo</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../molFileFinder/index.html">Molfilefinder</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="../../XomicsToModel/index.html">Xomicstomodel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chemoInformatics/index.html">Chemoinformatics</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../transcriptomics/index.html">Transcriptomics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../metabotools/index.html">Metabotools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../fluxomics/index.html">Fluxomics</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../design/index.html">Design</a></li>
@@ -237,83 +237,131 @@
 <span class="target" id="module-src.dataIntegration.metaboAnnotator.buildMetStruct"></span><dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.metaboAnnotator.buildMetStruct.addField2MetStructure">
 <span class="sig-name descname"><span class="pre">addField2MetStructure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">metabolite_structure</span></em>, <em class="sig-param"><span class="pre">metField</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metaboAnnotator/buildMetStruct/addField2MetStructure.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metaboAnnotator.buildMetStruct.addField2MetStructure" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function adds fields to the metabolite_structure as defined in
-metaboliteStructureFieldNames.m. Please note that this function does not
-populate the fields with new data.</p>
-<p>INPUT
-metabolite_structure  Metabolite structure
-metField                   specify metabolite (optional)</p>
-<p>OUTPUT
-metabolite_structure  Updated metabolite structure</p>
-<p>Ines Thiele 2020/2021</p>
+<dd><p>Adds the standard metabolite structure fields to each metabolite entry</p>
+<p>Adds fields to the metabolite structure as defined in
+<cite>metaboliteStructureFieldNames</cite>. Note that this function does not populate
+the fields with new data; missing fields are added and set to NaN.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>metabolite_structure = addField2MetStructure</strong> (<em>metabolite_structure, metField</em>)</p>
+</dd>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>metabolite_structure</strong> – metabolite structure</p>
+</dd>
+<dt class="field-odd">OPTIONAL INPUT<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>metField</strong> – specify a single metabolite (field name) whose
+fields should be added (default: all metabolites)</p>
+</dd>
+<dt class="field-even">OUTPUT<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>metabolite_structure</strong> – updated metabolite structure</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.metaboAnnotator.buildMetStruct.cleanUpMetabolite_structure">
 <span class="sig-name descname"><span class="pre">cleanUpMetabolite_structure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">metabolite_structure</span></em>, <em class="sig-param"><span class="pre">startSearch</span></em>, <em class="sig-param"><span class="pre">endSearch</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metaboAnnotator/buildMetStruct/cleanUpMetabolite_structure.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metaboAnnotator.buildMetStruct.cleanUpMetabolite_structure" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function aims at removing the most commonly occuring issues with the
-data obtained from different resources.</p>
-<p>INPUT
-metabolite_structure  Metabolite structure</p>
-<p>OUTPUT
-metabolite_structure  Updated metabolite structure</p>
-<p>IT Oct 2020</p>
+<dd><p>Removes the most commonly occurring issues in collected metabolite data</p>
+<p>Removes the most commonly occurring issues with the metabolite data obtained
+from different resources, e.g. spaces in identifiers, wrong number formats,
+and misspellings of the inchiString prefix.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[metabolite_structure] = cleanUpMetabolite_structure</strong> (<em>metabolite_structure, startSearch, endSearch</em>)</p>
+</dd>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>metabolite_structure</strong> – metabolite structure</p>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>startSearch</strong> – numeric index where the clean-up should start in
+the metabolite structure (default: 1)</p></li>
+<li><p><strong>endSearch</strong> – numeric index where the clean-up should end in the
+metabolite structure (default: number of
+metabolites in the structure)</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUT<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>metabolite_structure</strong> – updated metabolite structure</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.metaboAnnotator.buildMetStruct.convertModel2Metstructure">
 <span class="sig-name descname"><span class="pre">convertModel2Metstructure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metaboAnnotator/buildMetStruct/convertModel2Metstructure.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metaboAnnotator.buildMetStruct.convertModel2Metstructure" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function converts the metabolite information present in a metabolic
-reconstruction (contained in a model structure) into a metabolite
-structure to make the reconstruction amenable to the metaboAnnotator
-extension.</p>
-<p>INPUT
-model                 model structure</p>
-<p>OUTPUT
-metabolite_structure  metabolite structure</p>
-<p>Ines Thiele, 2020/2021</p>
+<dd><p>Converts the metabolite information of a COBRA model into a metabolite structure</p>
+<p>Converts the metabolite information present in a metabolic reconstruction
+(contained in a model structure) into a metabolite structure, to make the
+reconstruction amenable to the metaboAnnotator extension.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[metabolite_structure] = convertModel2Metstructure</strong> (<em>model</em>)</p>
+</dd>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>model</strong> – COBRA model structure with the fields:</p>
+<ul class="simple">
+<li><p>.mets - metabolite identifiers, converted into
+the metabolite structure entries</p></li>
+<li><p>.modelID - model identifier, recorded as the
+annotation source for the retrieved fields</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>metabolite_structure</strong> – metabolite structure</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.metaboAnnotator.buildMetStruct.createNewMetEntryFromArray">
 <span class="sig-name descname"><span class="pre">createNewMetEntryFromArray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">metInput</span></em>, <em class="sig-param"><span class="pre">source</span></em>, <em class="sig-param"><span class="pre">populate</span></em>, <em class="sig-param"><span class="pre">molFileDirectory</span></em>, <em class="sig-param"><span class="pre">metab_rBioNet_online</span></em>, <em class="sig-param"><span class="pre">rxn_rBioNet_online</span></em>, <em class="sig-param"><span class="pre">metabolite_structure_rBioNet</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metaboAnnotator/buildMetStruct/createNewMetEntryFromArray.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metaboAnnotator.buildMetStruct.createNewMetEntryFromArray" title="Permalink to this definition">¶</a></dt>
-<dd><p>[metabolite_structure, VMH_existance,rBioNet_existance] = createNewMetEntryFromArray(metInput,source,populate,molFileDirectory)
-This function takes a list of metabolites (as specified below) and 1.
-checks whether the metabolite abbr are new to VMH and/or rBioNet (both as
-in the online versions). Then, it obtained the inchi string from the
-provided HMDB as well as the mol file. Using, ChemAxonn it determine the
-most abundant pseudoisomer at ph 7. Then, it uses BridgeDB to obtain
-further ID’s.</p>
-<p>INPUT
-metInput              Cell array containing the metabolites</p>
-<blockquote>
-<div><p>The information provided must be as follows:
-metList={
+<dd><p>Creates and populates a metabolite structure from a list of metabolites</p>
+<p>Takes a list of metabolites (as specified below) and (1) checks whether the
+metabolite abbreviations are new to the VMH and/or rBioNet (in the online
+versions), then obtains the inchiString from the provided HMDB IDs and mol
+files, determines the most abundant pseudoisomer at pH 7, and uses BridgeDB
+to obtain further identifiers.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[metabolite_structure] = createNewMetEntryFromArray</strong> (<em>metInput, source, populate, molFileDirectory, metab_rBioNet_online, rxn_rBioNet_online, metabolite_structure_rBioNet</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>metInput</strong> – cell array (or table) containing the
+metabolites. The information provided must
+be as follows:
+metList = {
 ‘VMH ID’ ‘metabolite_name’ ‘HMDB’ ‘inchistring’ ‘neutral_formula’ ‘charged_formula’ ‘charge’
 ‘cot’ ‘Cotinine’ ‘HMDB0001046’  ‘’ ‘’ ‘’ ‘’
-‘coto’ ‘Cotinine n-oxide’ ‘HMDB0001411’  ‘’ ‘’ ‘’ ‘’</p>
-</div></blockquote>
-<dl class="simple">
-<dt>source                source of the information contained in metArray</dt><dd><p>(e.g., ‘Manually assembled by IT’)</p>
+‘coto’ ‘Cotinine n-oxide’ ‘HMDB0001411’  ‘’ ‘’ ‘’ ‘’
+If a table is provided, its
+<cite>.Properties.VariableNames</cite> are used as the
+column headers.</p></li>
+<li><p><strong>source</strong> – source of the information contained in the
+input (e.g. ‘Manually assembled by IT’)</p></li>
+</ul>
 </dd>
-<dt>populate              Populate new metabolite information based on the</dt><dd><p>provided HMDB Id’s. If no HMDB Id’s are provided, please use other
-functions in the metaboAnnotator for population.
-(Default:true; false).</p>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>populate</strong> – populate new metabolite information based
+on the provided HMDB IDs; ‘true’ or ‘false’
+(default: ‘true’)</p></li>
+<li><p><strong>molFileDirectory</strong> – directory where the mol files are deposited
+(default: ‘current path’/molFiles)</p></li>
+<li><p><strong>metab_rBioNet_online</strong> – rBioNet metabolite database; loaded from
+disk if not provided</p></li>
+<li><p><strong>rxn_rBioNet_online</strong> – rBioNet reaction database; loaded from disk
+if not provided</p></li>
+<li><p><strong>metabolite_structure_rBioNet</strong> – rBioNet metabolite structure; loaded from
+met_strc_rBioNet if not provided</p></li>
+</ul>
 </dd>
-<dt>molFileDirectory      Specify directory where the mol files should be</dt><dd><p>deposited. (Default: ‘current path’/molFiles).</p>
+<dt class="field-even">OUTPUT<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>metabolite_structure</strong> – metabolite structure containing the new
+metabolites</p>
 </dd>
 </dl>
-<p>OUTPUT
-updatedMetList        updated metList
-VMH_existance         Lists whether the abbreviation exists in VMH (online),</p>
-<blockquote>
-<div><p>as a reaction (2nd entry) or as a metabolite (3rd entry)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>rBioNet_existance     Lists whether the abbreviation exists in rBioNet (as deposited in cobra toolbox online),</dt><dd><p>as a reaction (2nd entry) or as a metabolite (3rd entry)</p>
-</dd>
-</dl>
-<p>Ines Thiele, 09/2021</p>
 </dd></dl>
 
 <dl class="mat function">
@@ -328,7 +376,7 @@ generated.</p>
 </div></blockquote>
 <dl>
 <dt>INPUT:</dt><dd><dl class="simple">
-<dt>Input:                             Cell array containing the metabolites</dt><dd><p>The information provided must be as follows:
+<dt>input:                             Cell array containing the metabolites</dt><dd><p>The information provided must be as follows:
 metList={
 ‘VMH ID’ ‘metabolite_name’ ‘HMDB’ ‘inchistring’ ‘neutral_formula’ ‘charged_formula’ ‘charge’
 ‘cot’ ‘Cotinine’ ‘HMDB0001046’  ‘’ ‘’ ‘’ ‘’
@@ -338,9 +386,11 @@ metList={
 </dd>
 <dt>metabolite_structure_rBioNet:      (optional and only necessary if the</dt><dd><p>input has no VMHId)</p>
 </dd>
+<dt>metab:                             rBioNet metabolite database (as stored</dt><dd><p>in <cite>metab.mat</cite>); loaded from disk if not
+provided</p>
+</dd>
 </dl>
-<p>metab:
-rxnDB:</p>
+<p>rxnDB:                             rBioNet reaction database</p>
 </dd>
 <dt>OUTPUT:</dt><dd><p>metabolite_structure:              metabolite structure</p>
 </dd>
@@ -352,35 +402,64 @@ rxnDB:</p>
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.metaboAnnotator.buildMetStruct.createrBioNetStructure">
 <span class="sig-name descname"><span class="pre">createrBioNetStructure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">metabolite_structure_rBioNet</span></em>, <em class="sig-param"><span class="pre">start</span></em>, <em class="sig-param"><span class="pre">stop</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metaboAnnotator/buildMetStruct/createrBioNetStructure.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metaboAnnotator.buildMetStruct.createrBioNetStructure" title="Permalink to this definition">¶</a></dt>
-<dd><p>for the moment rBioNet will serve as universal database, but I will
-update this</p>
+<dd><p>Builds and annotates the rBioNet-derived universal metabolite structure</p>
+<p>Builds the rBioNet metabolite structure and annotates each metabolite from
+multiple offline and online resources. For the moment rBioNet serves as the
+universal database.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[metabolite_structure_rBioNet] = createrBioNetStructure</strong> (<em>metabolite_structure_rBioNet, start, stop</em>)</p>
+</dd>
+<dt class="field-even">OPTIONAL INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>metabolite_structure_rBioNet</strong> – rBioNet metabolite structure; built from
+the downloaded rBioNet database if not
+provided</p></li>
+<li><p><strong>start</strong> – numeric index where the annotation should
+start in the metabolite structure
+(default: 1)</p></li>
+<li><p><strong>stop</strong> – numeric index where the annotation should
+end in the metabolite structure (default:
+number of metabolites in the structure)</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>metabolite_structure_rBioNet</strong> – updated rBioNet metabolite structure</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.metaboAnnotator.buildMetStruct.generateVMHMetAbbr">
 <span class="sig-name descname"><span class="pre">generateVMHMetAbbr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">met</span></em>, <em class="sig-param"><span class="pre">metabolite_structure_rBioNet</span></em>, <em class="sig-param"><span class="pre">metab</span></em>, <em class="sig-param"><span class="pre">rxnDB</span></em>, <em class="sig-param"><span class="pre">customMetAbbrList</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metaboAnnotator/buildMetStruct/generateVMHMetAbbr.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metaboAnnotator.buildMetStruct.generateVMHMetAbbr" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function generates VMH ID’s based on a metabolites based on
-predefined rules, as we would generally do it manually</p>
-<p>INPUT
-met                           Metabolite name or list of names
-metabolite_structure_rBioNet  To save time provide rBioNet either as</p>
-<blockquote>
-<div><ol class="arabic simple">
-<li><p>string to mat file to load, e.g.,: /path/to/metabolite_structure_rBioNet.mat</p></li>
-<li><p>structure already in memory: metabolite_structure_rBioNet</p></li>
-</ol>
-</div></blockquote>
-<dl class="simple">
-<dt>metab                         To save time provide rBioNet (as</dt><dd><p>metab.mat file)</p>
+<dd><p>Generates VMH metabolite abbreviations based on predefined naming rules</p>
+<p>Generates VMH IDs for one or more metabolites based on predefined rules, as
+would generally be done manually from a metabolite name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[VMHId] = generateVMHMetAbbr</strong> (<em>met, metabolite_structure_rBioNet, metab, rxnDB, customMetAbbrList</em>)</p>
 </dd>
-<dt>rxnDB                         To save time provide rBioNet (as</dt><dd><p>rxn.mat file)</p>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>met</strong> – metabolite name or list of names</p>
 </dd>
-<dt>customMetaboliteList          List of metabolite abbr against which</dt><dd><p>uniqueness should also be checked</p>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>metabolite_structure_rBioNet</strong> – rBioNet metabolite structure, provided to
+save time, either as a path to the mat
+file to load or as a structure already in
+memory</p></li>
+<li><p><strong>metab</strong> – rBioNet metabolite database (as stored in
+<cite>metab.mat</cite>), provided to save time</p></li>
+<li><p><strong>rxnDB</strong> – rBioNet reaction database (as stored in
+rxn.mat), provided to save time</p></li>
+<li><p><strong>customMetAbbrList</strong> – list of metabolite abbreviations against
+which uniqueness is also checked</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUT<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>VMHId</strong> – new VMH ID or list of IDs</p>
 </dd>
 </dl>
-<p>OUTPUT
-VMHId                         New VMH ID or list of IDs</p>
-<p>Ines Thiele, 09/2021</p>
 </dd></dl>
 
 <dl class="mat script">
@@ -394,78 +473,181 @@ metabolite_structure</p>
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.metaboAnnotator.buildMetStruct.model2MetStructure">
 <span class="sig-name descname"><span class="pre">model2MetStructure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">filename</span></em>, <em class="sig-param"><span class="pre">filetype</span></em>, <em class="sig-param"><span class="pre">outputFileName</span></em>, <em class="sig-param"><span class="pre">metabolite_structure_rBioNet</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metaboAnnotator/buildMetStruct/model2MetStructure.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metaboAnnotator.buildMetStruct.model2MetStructure" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function populates metabolites present in a model structure with
-metabolite identifiers, using the MetaboAnnotator.</p>
-<p>INPUT
-filename                      Name of the metabolic reconstruction
-filetype                      Filetype of the metabolic reconstruction to be loaded. Valid</p>
-<blockquote>
-<div><p>input arguments are:’SBML’, ‘SimPheny’,’SimPhenyPlus’, ‘SimPhenyText’,
-‘Matlab’, ‘BiGG’, ‘BiGGSBML’ or ‘Excel’ (Default = ‘Matlab’), see
-readCbModel.m for more details.</p>
-</div></blockquote>
-<dl class="simple">
-<dt>outputFileName                File name under which the metabolite structure</dt><dd><p>and any other information will be saved.</p>
+<dd><p>Populates the metabolites of a COBRA model with metabolite identifiers</p>
+<p>Populates the metabolites present in a model structure with metabolite
+identifiers, using the MetaboAnnotator.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[metabolite_structure, tableMappingOverview, TableIDs] = model2MetStructure</strong> (<em>filename, filetype, outputFileName, metabolite_structure_rBioNet</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>filename</strong> – name of the metabolic reconstruction to
+load</p></li>
+<li><p><strong>filetype</strong> – filetype of the metabolic reconstruction;
+valid arguments are ‘SBML’, ‘SimPheny’,
+‘SimPhenyPlus’, ‘SimPhenyText’, ‘Matlab’,
+‘BiGG’, ‘BiGGSBML’ or ‘Excel’
+(default: ‘Matlab’); see <cite>readCbModel</cite> for
+details</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>outputFileName</strong> – file name under which the metabolite
+structure and other information are saved</p></li>
+<li><p><strong>metabolite_structure_rBioNet</strong> – rBioNet metabolite structure; loaded from
+met_strc_rBioNet_new if not provided</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>metabolite_structure</strong> – metabolite structure containing retrieved
+identifiers for each metabolite in the
+reconstruction</p></li>
+<li><p><strong>tableMappingOverview</strong> – table listing the identifiers and their
+counts before and after running the
+function</p></li>
+<li><p><strong>TableIDs</strong> – table containing the individual
+identifiers, same content as in
+metabolite_structure</p></li>
+</ul>
 </dd>
 </dl>
-<p>metabolite_structure_rBioNet</p>
-<p>OUTPUT
-metabolite_structure          metabolite structure containing retrieved metabolite</p>
-<blockquote>
-<div><p>identifiers for each metabolite in the
-metabolic reconstruction</p>
-</div></blockquote>
-<dl class="simple">
-<dt>tableMappingOverview          Table listing the IDs and their count</dt><dd><p>before and after running the function</p>
-</dd>
-<dt>TableIDs                      Table containing the individual IDs. Same</dt><dd><p>content as in metabolite_structure</p>
-</dd>
-</dl>
-<p>Ines Thiele, 2020/2021</p>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.metaboAnnotator.buildMetStruct.populateModelMetStr">
 <span class="sig-name descname"><span class="pre">populateModelMetStr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">metabolite_structure</span></em>, <em class="sig-param"><span class="pre">replaceAllHits</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metaboAnnotator/buildMetStruct/populateModelMetStr.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metaboAnnotator.buildMetStruct.populateModelMetStr" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function populates the model structure with information contained in
-the metabolite structure</p>
-<p>INPUT
-model                     model structure
-metabolite_structure      metabolite structure
-replaceAllHits            replace existing entries (defaul: false)</p>
-<p>OUTPUT
-model                     updated model structure</p>
-<p>Ines Thiele 10/2021</p>
+<dd><p>Populates a COBRA model with information from the metabolite structure</p>
+<p>Populates the model structure with the metabolite information contained in
+the metabolite structure, mapping metabolite-structure fields onto the
+corresponding COBRA model metabolite annotation fields.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[model] = populateModelMetStr</strong> (<em>model, metabolite_structure, replaceAllHits</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – COBRA model structure with the fields:</p>
+<ul>
+<li><p>.mets - metabolite identifiers, matched
+against the metabolite structure</p></li>
+<li><p>.metSBOTerms - SBO term per metabolite</p></li>
+<li><p>.metChEBIID - ChEBI identifiers</p></li>
+<li><p>.metPubChemID - PubChem identifiers</p></li>
+<li><p>.metKEGGID - KEGG identifiers</p></li>
+<li><p>.metHMDBID - HMDB identifiers</p></li>
+<li><p>.metSEEDID - SEED identifiers</p></li>
+<li><p>.metInchiKey - InChIKey per metabolite</p></li>
+<li><p>.metReactomeID - Reactome identifiers</p></li>
+<li><p>.metMetaNetXID - MetaNetX identifiers</p></li>
+<li><p>.metBioCycID - BioCyc identifiers</p></li>
+<li><p>.metBiGGID - BiGG identifiers</p></li>
+<li><p>.metInchiString - InChI string per metabolite</p></li>
+<li><p>.metLIPIDMAPSID - LIPID MAPS identifiers</p></li>
+<li><p>.metSmile - SMILES string per metabolite</p></li>
+</ul>
+</li>
+<li><p><strong>metabolite_structure</strong> – metabolite structure</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUT<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>replaceAllHits</strong> – replace existing entries (default: false)</p>
+</dd>
+<dt class="field-even">OUTPUT<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>model</strong> – updated model structure</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.metaboAnnotator.buildMetStruct.removeSmilesInchiKey">
 <span class="sig-name descname"><span class="pre">removeSmilesInchiKey</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">metabolite_structure</span></em>, <em class="sig-param"><span class="pre">removeInchiKey</span></em>, <em class="sig-param"><span class="pre">removeSmiles</span></em>, <em class="sig-param"><span class="pre">generateSmiles</span></em>, <em class="sig-param"><span class="pre">generateInchiKey</span></em>, <em class="sig-param"><span class="pre">generateMolFile</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metaboAnnotator/buildMetStruct/removeSmilesInchiKey.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metaboAnnotator.buildMetStruct.removeSmilesInchiKey" title="Permalink to this definition">¶</a></dt>
-<dd><p>this function removes all smiles and InchiKeys from fields if InchiString
-exists. This is done to reduce cummulative errors. The next step will be
-to compute smiles and InchiKeys from InchiString - for this use
-[result] = convertInchiString2format(inchiString,format)</p>
+<dd><p>Removes (and optionally regenerates) smiles and inchiKeys in a metabolite structure</p>
+<p>Removes all smiles and inchiKeys from fields where an inchiString exists, to
+reduce cumulative errors. Optionally, smiles and inchiKeys are recomputed
+from the inchiString using <cite>convertInchiString2format</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[metabolite_structure, IDsAdded] = removeSmilesInchiKey</strong> (<em>metabolite_structure, removeInchiKey, removeSmiles, generateSmiles, generateInchiKey, generateMolFile</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>metabolite_structure</strong> – metabolite structure</p></li>
+<li><p><strong>removeInchiKey</strong> – if true, remove the inchiKey where an inchiString
+exists</p></li>
+<li><p><strong>removeSmiles</strong> – if true, remove the smiles where an inchiString
+exists</p></li>
+<li><p><strong>generateSmiles</strong> – if true, recompute the smiles from the inchiString</p></li>
+<li><p><strong>generateInchiKey</strong> – if true, recompute the inchiKey from the
+inchiString</p></li>
+<li><p><strong>generateMolFile</strong> – flag intended to generate a mol file for the
+metabolite (declared but not used in the current
+implementation)</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>metabolite_structure</strong> – updated metabolite structure</p></li>
+<li><p><strong>IDsAdded</strong> – list of smiles and inchiKeys that were added</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.metaboAnnotator.buildMetStruct.replaceVMHIds">
 <span class="sig-name descname"><span class="pre">replaceVMHIds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">metabolite_structure</span></em>, <em class="sig-param"><span class="pre">reaction_structure</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metaboAnnotator/buildMetStruct/replaceVMHIds.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metaboAnnotator.buildMetStruct.replaceVMHIds" title="Permalink to this definition">¶</a></dt>
-<dd><p>add, remove, or replace errors present in the metabolite annotation
-all mentions in this file are manually done and will result in the
-removal or replacement of the entries.</p>
-<p>INPUT
-metabolite_structure  metabolite structure
-reaction_structure    reaction structure (not done yet)</p>
-<p>OUTPUT
-metabolite_structure  updated metabolite structure
-reaction_structure    updated reaction structure (not done yet)</p>
-<p>Ines Thiele 2020/2021</p>
+<dd><p>Adds, removes, or replaces manually curated errors in metabolite annotations</p>
+<p>Adds, removes, or replaces errors present in the metabolite annotation. All
+mentions in this file are curated manually and result in the removal or
+replacement of the corresponding entries.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[metabolite_structure, reaction_structure] = replaceVMHIds</strong> (<em>metabolite_structure, reaction_structure</em>)</p>
+</dd>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>metabolite_structure</strong> – metabolite structure</p>
+</dd>
+<dt class="field-odd">OPTIONAL INPUT<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>reaction_structure</strong> – reaction structure (not implemented yet)</p>
+</dd>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>metabolite_structure</strong> – updated metabolite structure</p></li>
+<li><p><strong>reaction_structure</strong> – updated reaction structure (not implemented yet)</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.metaboAnnotator.buildMetStruct.sanityCheckMetIds">
 <span class="sig-name descname"><span class="pre">sanityCheckMetIds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">metabolite_structure</span></em>, <em class="sig-param"><span class="pre">removeErrors</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metaboAnnotator/buildMetStruct/sanityCheckMetIds.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metaboAnnotator.buildMetStruct.sanityCheckMetIds" title="Permalink to this definition">¶</a></dt>
-<dd><p>perform basic sanity checks</p>
+<dd><p>Performs basic sanity checks on the identifiers in a metabolite structure</p>
+<p>Performs basic sanity checks on the metabolite structure, e.g. that numeric
+identifiers are numeric and that database identifiers follow the expected
+format. Optionally, entries that fail a check are removed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[metabolite_structure, errorFlag] = sanityCheckMetIds</strong> (<em>metabolite_structure, removeErrors</em>)</p>
+</dd>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>metabolite_structure</strong> – metabolite structure</p>
+</dd>
+<dt class="field-odd">OPTIONAL INPUT<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>removeErrors</strong> – if true, remove entries that fail a sanity check
+(default: 0)</p>
+</dd>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>metabolite_structure</strong> – updated metabolite structure</p></li>
+<li><p><strong>errorFlag</strong> – list of entries that failed a sanity check, with
+the reason for each failure</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="mat script">
@@ -492,7 +674,7 @@ this table translates metabolite structure fields and COBRA model fields</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../generateMetInfo/index.html" class="btn btn-default float-right" title="Generatemetinfo" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../../XomicsToModel/index.html" class="btn btn-default float-right" title="Xomicstomodel" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="../connect2resources/index.html" class="btn btn-default" title="Connect2resources" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

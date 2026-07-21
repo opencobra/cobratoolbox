@@ -161,21 +161,21 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../dataIntegration/index.html">Dataintegration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../design/index.html">Design</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Reconstruction</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../../comparison/index.html">Comparison</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../fastGapFill/index.html">Fastgapfill</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../growthExpMatch/index.html">Growthexpmatch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../refinement/index.html">Refinement</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../rBioNet/index.html">Rbionet</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../index.html">Modelgeneration</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="../massBalance/index.html">Massbalance</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">Modelproperties</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../fluxConsistency/index.html">Fluxconsistency</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../modelVerification/index.html">Modelverification</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../stoichConsistency/index.html">Stoichconsistency</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../modelVerification/index.html">Modelverification</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../rBioNet/index.html">Rbionet</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../demeter/index.html">Demeter</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../refinement/index.html">Refinement</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../metaboRePort/index.html">Metaboreport</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../fastGapFill/index.html">Fastgapfill</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../growthExpMatch/index.html">Growthexpmatch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../comparison/index.html">Comparison</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../demeter/index.html">Demeter</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../visualization/index.html">Visualization</a></li>
@@ -238,72 +238,111 @@
 <span class="target" id="module-src.reconstruction.modelGeneration.modelProperties"></span><dl class="mat function">
 <dt class="sig sig-object mat" id="src.reconstruction.modelGeneration.modelProperties.checkModelProperties">
 <span class="sig-name descname"><span class="pre">checkModelProperties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/modelGeneration/modelProperties/checkModelProperties.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.modelProperties.checkModelProperties" title="Permalink to this definition">¶</a></dt>
-<dd><dl>
-<dt>calculates various generic properties of a model, not specific to any</dt><dd><p>biochemistry</p>
+<dd><p>calculates various generic properties of a model, not specific to any
+biochemistry</p>
+<dl class="field-list">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>model = checkModelProperties</strong> (<em>model, printLevel</em>)</p>
 </dd>
-<dt>INPUT</dt><dd><p>model
-printLevel</p>
-</dd>
-<dt>OUTPUT</dt><dd><p>model.SIntMetBool                        m x 1 boolean of metabolites heuristically though to be involved in mass balanced reactions
-model.SIntRxnBool                        n x 1 boolean of reactions heuristically though to be mass balanced
-model.SConsistentMetBool                 m x 1 boolean vector indicating consistent mets
-model.SConsistentRxnBool                 n x 1 boolean vector indicating consistent rxns
-model.SInConsistentMetBool               m x 1 boolean vector indicating inconsistent mets
-model.SInConsistentRxnBool               n x 1 boolean vector indicating inconsistent rxns
-model.metUnknownInconsistentRemoveBool   m x 1 boolean vector indicating removed mets
-model.rxnUnknownInconsistentRemoveBool   n x 1 boolean vector indicating removed rxns
-model.unknownSConsistencyMetBool         m x 1 boolean vector indicating unknown consistent mets (all zeros when algorithm converged perfectly!)
-model.unknownSConsistencyRxnBool         n x 1 boolean vector indicating unknown consistent rxns (all zeros when algorithm converged perfectly!)
-model.leakMetBool         m x 1 boolean of metabolites in a positive leakage mode
-model.leakRxnBool         n x 1 boolean of reactions exclusively involved in a positive leakage mode
-model.siphonMetBool       m x 1 boolean of metabolites in a negative leakage mode
-model.siphonRxnBool       n x 1 boolean of reactions exclusively involved in a negative leakage mode
-model.fluxConsistentMetBool:      <cite>m</cite> x 1 boolean vector indicating flux consistent <cite>mets</cite>
-model.fluxConsistentRxnBool:      <cite>n</cite> x 1 boolean vector indicating flux consistent <cite>rxns</cite>
-model.fluxInConsistentMetBool:    <cite>m</cite> x 1 boolean vector indicating flux inconsistent <cite>mets</cite>
-model.fluxInConsistentRxnBool:    <cite>n</cite> x 1 boolean vector indicating flux inconsistent <cite>rxns</cite>
-model.thermoFluxConsistentMetBool m x 1 boolean vector indicating thermodynamically flux consistent mets
-model.thermoFluxConsistentRxnBool n x 1 boolean vector indicating thermodynamically flux consistent rxns
-model.thermoFwdFluxConsistentRxnBool n x 1 boolean vector indicating forward thermodynamically flux consistent rxns
-model.thermoRevFluxConsistentRxnBool n x 1 boolean vector indicating reverse thermodynamically flux consistent rxns</p>
-<p>model.rankFR                    rank of [F R], when using only FRrows
-model.rankFRV                   rank of [F;R], when using only FRVcols
-model.rankFRvanilla             rank of [F R], when using all rows
-model.rankFRVvanilla            rank of [F;R], when using all cols
-model.FRrows              m x 1 boolean of rows of [F R] that are nonzero,</p>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>model</strong> –</p>
+<p>COBRA model structure with at least the fields:</p>
 <blockquote>
-<div><p>unique upto positive scaling and part of the
-maximal conservation vector</p>
+<div><ul class="simple">
+<li><p>.S - <cite>m</cite> x <cite>n</cite> stoichiometric matrix</p></li>
+<li><p>.mets - <cite>m</cite> x 1 cell array of metabolite identifiers</p></li>
+<li><p>.rxns - <cite>n</cite> x 1 cell array of reaction identifiers</p></li>
+<li><p>.lb - <cite>n</cite> x 1 lower bounds on reaction flux</p></li>
+<li><p>.ub - <cite>n</cite> x 1 upper bounds on reaction flux</p></li>
+</ul>
 </div></blockquote>
-<dl class="simple">
-<dt>model.FRVcols             n x 1 boolean of cols of [F;R] that are nonzero,</dt><dd><p>unique upto positive scaling and part of the
-maximal conservation vector</p>
-</dd>
-</dl>
-<p>model.FRirows             m x 1 boolean of rows of [F R] that are independent
-model.FRdrows             m x 1 boolean of rows of [F R] that are dependent
-model.FRwrows             m x 1 boolean of independent rows of [F R] that</p>
+<p>Read and reused if already present, otherwise computed and
+added to the output <cite>model</cite> (see OUTPUT below):</p>
 <blockquote>
-<div><p>have dependent rows amongst model.FRdrows</p>
+<div><ul class="simple">
+<li><p>.SIntRxnBool - <cite>n</cite> x 1 boolean of reactions heuristically thought to be internal (non-exchange) reactions</p></li>
+<li><p>.SIntMetBool - <cite>m</cite> x 1 boolean of metabolites heuristically thought to be involved only in internal reactions</p></li>
+<li><p>.fluxConsistentMetBool - <cite>m</cite> x 1 boolean vector indicating flux consistent <cite>mets</cite></p></li>
+<li><p>.fluxConsistentRxnBool - <cite>n</cite> x 1 boolean vector indicating flux consistent <cite>rxns</cite></p></li>
+</ul>
 </div></blockquote>
-<p>model.FRVdcols            n x 1 boolean of cols of [F;R]that are dependent
-model.FRnonZeroBool       m x 1 boolean vector indicating metabolites involved</p>
+<p>Only read (and, if so, overwritten) within the coefficient
+scaling branch, which is disabled by default:</p>
 <blockquote>
-<div><p>in at least one internal reaction</p>
+<div><ul class="simple">
+<li><p>.b - <cite>m</cite> x 1 right hand side vector of <cite>S*v = b</cite></p></li>
+<li><p>.c - <cite>n</cite> x 1 linear objective coefficient vector</p></li>
+</ul>
 </div></blockquote>
-<dl class="simple">
-<dt>model.FRuniqueBool        m x 1 boolean vector indicating metabolites with</dt><dd><p>reaction stoichiometry unique upto scalar multiplication</p>
 </dd>
-<dt>model.SIntRxnBool         n x 1 boolean vector indicating the non exchange</dt><dd><p>reactions</p>
+<dt class="field-odd">OPTIONAL INPUT<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>printLevel</strong> – verbose level, silent if 0 (default 1)</p>
 </dd>
-<dt>model.FRVnonZeroBool      n x 1 boolean vector indicating non exchange reactions</dt><dd><p>with at least one metabolite involved</p>
-</dd>
-<dt>model.FRVuniqueBool       n x 1 boolean vector indicating non exchange reactions</dt><dd><p>with stoichiometry unique upto scalar multiplication</p>
-</dd>
-</dl>
-<p>model.connectedRowsFRBool     m x 1 boolean vector indicating metabolites in connected rows of [F,R]
-model.connectedRowsFRVBool    n x 1 boolean vector indicating complexes in connected columns of [F;R]
-model.V                   S*V=0, 1’<a href="#id2"><span class="problematic" id="id3">*</span></a><a href="#id4"><span class="problematic" id="id5">|V|</span></a>&gt;1 for all flux consistent reactions</p>
+<dt class="field-even">OUTPUT<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>model</strong> – the input <cite>model</cite>, augmented with the following fields:</p>
+<ul class="simple">
+<li><p>.rankFRvanilla - rank of <cite>[F R]</cite>, when using all rows and cols (<cite>F</cite>/<cite>R</cite> are the negative/positive parts of <cite>model.S</cite>)</p></li>
+<li><p>.rankFRVvanilla - rank of <cite>[F;R]</cite>, when using all rows and cols</p></li>
+<li><p>.SIntRxnBool - <cite>n</cite> x 1 boolean of reactions heuristically thought to be internal (non-exchange) reactions</p></li>
+<li><p>.SIntMetBool - <cite>m</cite> x 1 boolean of metabolites heuristically thought to be involved only in internal reactions</p></li>
+<li><p>.SIntRxnBool_findSExRxnInd - <cite>n</cite> x 1 copy of <cite>.SIntRxnBool</cite> as first returned by <cite>findSExRxnInd</cite>, kept for
+comparison against any later stoichiometric-consistency-based refinement of <cite>.SIntRxnBool</cite></p></li>
+<li><p>.leakMetBool - <cite>m</cite> x 1 boolean of metabolites in a positive leakage mode</p></li>
+<li><p>.leakRxnBool - <cite>n</cite> x 1 boolean of reactions exclusively involved in a positive leakage mode</p></li>
+<li><p>.siphonMetBool - <cite>m</cite> x 1 boolean of metabolites in a negative leakage mode</p></li>
+<li><p>.siphonRxnBool - <cite>n</cite> x 1 boolean of reactions exclusively involved in a negative leakage mode</p></li>
+<li><p>.SConsistentMetBool - <cite>m</cite> x 1 boolean vector indicating stoichiometrically consistent <cite>mets</cite></p></li>
+<li><p>.SConsistentRxnBool - <cite>n</cite> x 1 boolean vector indicating stoichiometrically consistent <cite>rxns</cite></p></li>
+<li><p>.SInConsistentMetBool - <cite>m</cite> x 1 boolean vector indicating stoichiometrically inconsistent <cite>mets</cite></p></li>
+<li><p>.SInConsistentRxnBool - <cite>n</cite> x 1 boolean vector indicating stoichiometrically inconsistent <cite>rxns</cite></p></li>
+<li><p>.fluxConsistentMetBool - <cite>m</cite> x 1 boolean vector indicating flux consistent <cite>mets</cite></p></li>
+<li><p>.fluxConsistentRxnBool - <cite>n</cite> x 1 boolean vector indicating flux consistent <cite>rxns</cite></p></li>
+<li><p>.thermoFluxConsistentMetBool - <cite>m</cite> x 1 boolean vector indicating thermodynamically flux consistent <cite>mets</cite></p></li>
+<li><p>.thermoFluxConsistentRxnBool - <cite>n</cite> x 1 boolean vector indicating thermodynamically flux consistent <cite>rxns</cite></p></li>
+<li><p>.thermoFwdFluxConsistentRxnBool - <cite>n</cite> x 1 boolean vector indicating forward thermodynamically flux consistent <cite>rxns</cite></p></li>
+<li><p>.thermoRevFluxConsistentRxnBool - <cite>n</cite> x 1 boolean vector indicating reverse thermodynamically flux consistent <cite>rxns</cite></p></li>
+<li><p>.FRrows - <cite>m</cite> x 1 boolean of rows of <cite>[F R]</cite> that are nonzero, unique upto positive scaling and
+part of the maximal conservation vector, selecting the subset of <cite>mets</cite> used for rank analysis</p></li>
+<li><p>.FRVcols - <cite>n</cite> x 1 boolean of cols of <cite>[F;R]</cite> that are nonzero, unique upto positive scaling and
+part of the maximal conservation vector, selecting the subset of <cite>rxns</cite> used for rank analysis</p></li>
+<li><p>.FRnonZeroRowBool1 - <cite>m</cite> x 1 boolean of rows of <cite>[F,R]</cite> that are nonzero, on the first (<cite>checkTrivial</cite>) pass</p></li>
+<li><p>.FRnonZeroColBool1 - <cite>n</cite> x 1 boolean of cols of <cite>[F;R]</cite> that are nonzero, on the first (<cite>checkTrivial</cite>) pass</p></li>
+<li><p>.FRuniqueRowBool - <cite>m</cite> x 1 boolean of rows of <cite>[F,R]</cite> that are unique upto scalar multiplication</p></li>
+<li><p>.FRuniqueColBool - <cite>n</cite> x 1 boolean of cols of <cite>[F;R]</cite> that are unique upto scalar multiplication</p></li>
+<li><p>.FRnonZeroRowBool - <cite>m</cite> x 1 boolean of rows of <cite>[F,R]</cite> that are nonzero, for the final subset of <cite>mets</cite>/<cite>rxns</cite></p></li>
+<li><p>.FRnonZeroColBool - <cite>n</cite> x 1 boolean of cols of <cite>[F;R]</cite> that are nonzero, for the final subset of <cite>mets</cite>/<cite>rxns</cite></p></li>
+<li><p>.largestConnectedRowsFRBool - <cite>m</cite> x 1 boolean, currently set to true for all <cite>mets</cite> (connectedness test bypassed)</p></li>
+<li><p>.largestConnectedColsFRVBool - <cite>n</cite> x 1 boolean, currently set to true for all <cite>rxns</cite> (connectedness test bypassed)</p></li>
+<li><p>.Fr - the forward half of <cite>model.S</cite>, restricted to <cite>.FRrows</cite> and <cite>.FRVcols</cite></p></li>
+<li><p>.Rr - the reverse half of <cite>model.S</cite>, restricted to <cite>.FRrows</cite> and <cite>.FRVcols</cite></p></li>
+<li><p>.Fc - same restricted forward half of <cite>model.S</cite> as <cite>.Fr</cite>, used for the column-rank computation</p></li>
+<li><p>.Rc - same restricted reverse half of <cite>model.S</cite> as <cite>.Rr</cite>, used for the column-rank computation</p></li>
+<li><p>.rankFR - rank of <cite>[Fr Rr]</cite>, i.e. <cite>[F R]</cite> restricted to <cite>.FRrows</cite></p></li>
+<li><p>.rankFRV - rank of <cite>[Fc;Rc]</cite>, i.e. <cite>[F;R]</cite> restricted to <cite>.FRVcols</cite></p></li>
+<li><p>.FRp - row permutation returned by <cite>getRankLUSOL</cite> for <cite>[Fr Rr]</cite></p></li>
+<li><p>.FRq - column permutation returned by <cite>getRankLUSOL</cite> for <cite>[Fr Rr]</cite></p></li>
+<li><p>.FRVp - row permutation returned by <cite>getRankLUSOL</cite> for <cite>[Fc;Rc]</cite></p></li>
+<li><p>.FRVq - column permutation returned by <cite>getRankLUSOL</cite> for <cite>[Fc;Rc]</cite></p></li>
+<li><p>.FRirows - <cite>m</cite> x 1 boolean of rows of <cite>[Fr Rr]</cite> that are independent</p></li>
+<li><p>.FRdrows - <cite>m</cite> x 1 boolean of rows of <cite>[Fr Rr]</cite> that are dependent</p></li>
+<li><p>.FRVicols - <cite>n</cite> x 1 boolean of cols of <cite>[Fc;Rc]</cite> that are independent</p></li>
+<li><p>.FRVdcols - <cite>n</cite> x 1 boolean of cols of <cite>[Fc;Rc]</cite> that are dependent</p></li>
+<li><p>.FRrowRankDeficiency - number of dependent rows of <cite>[Fr Rr]</cite> (<cite>nnz(.FRrows) - .rankFR</cite>)</p></li>
+<li><p>.FRcolRankDeficiency - number of dependent cols of <cite>[Fc;Rc]</cite> (<cite>nnz(.FRVcols) - .rankFRV</cite>)</p></li>
+<li><p>.FRW - (only if <cite>.FRrowRankDeficiency &gt; 0</cite>) sparse matrix expressing each dependent row of <cite>[F R]</cite>
+as a linear combination of the independent rows</p></li>
+<li><p>.FRwrows - <cite>m</cite> x 1 boolean (only if <cite>.FRrowRankDeficiency &gt; 0</cite>) of independent rows that other rows
+amongst <cite>.FRdrows</cite> depend on</p></li>
+<li><p>.FRVW - (only if <cite>.FRcolRankDeficiency &gt; 0</cite>) sparse matrix expressing each dependent col of <cite>[F;R]</cite>
+as a linear combination of the independent cols</p></li>
+<li><p>.FRVwcols - <cite>n</cite> x 1 boolean (only if <cite>.FRcolRankDeficiency &gt; 0</cite>) of independent cols that other cols depend on</p></li>
+<li><p>.Frb - forward half of the bilinear decomposition of <cite>Fr - Rr</cite> (only set if the <cite>if 0</cite> debug branch is enabled)</p></li>
+<li><p>.Rrb - reverse half of the bilinear decomposition of <cite>Fr - Rr</cite> (only set if the <cite>if 0</cite> debug branch is enabled)</p></li>
+<li><p>.rankBilinearFrRr - rank of <cite>[Frb Rrb]</cite> (only set if the <cite>if 0</cite> debug branch is enabled)</p></li>
+<li><p>.rankS - rank of <cite>model.S</cite></p></li>
+<li><p>.maxSij - maximum magnitude stoichiometric coefficient in <cite>model.S</cite></p></li>
+<li><p>.minSij - minimum nonzero magnitude stoichiometric coefficient in <cite>model.S</cite></p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -311,19 +350,32 @@ model.V                   S*V=0, 1’<a href="#id2"><span class="problematic" id
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.reconstruction.modelGeneration.modelProperties.makeModelPropertiesTable">
 <span class="sig-name descname"><span class="pre">makeModelPropertiesTable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">modelResults</span></em>, <em class="sig-param"><span class="pre">modelMetaData</span></em>, <em class="sig-param"><span class="pre">resultsDirectory</span></em>, <em class="sig-param"><span class="pre">resultsFileName</span></em>, <em class="sig-param"><span class="pre">tableFilename</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/modelGeneration/modelProperties/makeModelPropertiesTable.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.modelProperties.makeModelPropertiesTable" title="Permalink to this definition">¶</a></dt>
-<dd><p>makes a table of model property results</p>
-<dl>
-<dt>INPUT</dt><dd><p>modelResults             output of checkModelProperties</p>
+<dd><p>Makes a table of model property results</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[modelResultsTable, modelResults] = makeModelPropertiesTable</strong> (<em>modelResults, modelMetaData, resultsDirectory, resultsFileName, tableFilename</em>)</p>
 </dd>
-<dt>OPTIONAL INPUT</dt><dd><dl class="simple">
-<dt>modelMetaData         Cell array, where each row is metadata for one model</dt><dd><p>with five columns: species, modelID, fileName, PMID, doi.
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>modelResults</strong> – output of <cite>checkModelProperties</cite></p>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>modelMetaData</strong> – Cell array, where each row is metadata for one model
+with five columns: species, modelID, fileName, PMID, doi.
 See function modelMetaData=modelCitations() for
 example. Table columns ordered by order of rows in
-modelMetaData.</p>
+modelMetaData.</p></li>
+<li><p><strong>resultsDirectory</strong> – directory where output of <cite>checkModelProperties</cite> has been saved</p></li>
+<li><p><strong>resultsFileName</strong> – filename where output of <cite>checkModelProperties</cite> has been saved</p></li>
+<li><p><strong>tableFilename</strong> – If provided, the table of results is written out
+to a csv file, with specified filename</p></li>
+</ul>
 </dd>
-</dl>
-<p>resultsDirectory      directory where output of checkModelProperties has been saved
-filename              filename where output of checkModelProperties has been saved</p>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>modelResultsTable</strong> – table displaying the results of <cite>checkModelProperties</cite></p></li>
+<li><p><strong>modelResults</strong> – output of <cite>checkModelProperties</cite></p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -331,25 +383,30 @@ filename              filename where output of checkModelProperties has been sav
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.reconstruction.modelGeneration.modelProperties.plotModelConsistency">
 <span class="sig-name descname"><span class="pre">plotModelConsistency</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">modelResults</span></em>, <em class="sig-param"><span class="pre">modelMetaData</span></em>, <em class="sig-param"><span class="pre">schematicFlag</span></em>, <em class="sig-param"><span class="pre">nRows</span></em>, <em class="sig-param"><span class="pre">nCols</span></em>, <em class="sig-param"><span class="pre">resultsDirectory</span></em>, <em class="sig-param"><span class="pre">figureFileName</span></em>, <em class="sig-param"><span class="pre">resultsFileName</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/modelGeneration/modelProperties/plotModelConsistency.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.modelProperties.plotModelConsistency" title="Permalink to this definition">¶</a></dt>
-<dd><p>plots stoichoiometric and flux consistency figures, given a modelResults
+<dd><p>Plots stoichiometric and flux consistency figures, given a modelResults
 structure or by loading the modelResults structure from a specified
 location</p>
-<dl>
-<dt>INPUT</dt><dd><p>modelResults          output of checkModelProperties.m
-modelMetaData         Cell array, where each row is metadata for one model</p>
-<blockquote>
-<div><p>with five columns: species, modelID, fileName, PMID, doi.</p>
-</div></blockquote>
-<p>schematicFlag         top corner plot illustrating the different colours
-nRows                 number of rows in the subplot
-nCols                 number of rows in the subplot (nRows*nCols &gt;= length(modelResults)</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>plotModelConsistency</strong> (<em>modelResults, modelMetaData, schematicFlag, nRows, nCols, resultsDirectory, figureFileName, resultsFileName</em>)</p>
 </dd>
-<dt>OPTIONAL INPUT</dt><dd><dl class="simple">
-<dt>resultsDirectory      directory where output of checkModelProperties.m has been saved</dt><dd><p>same directory where the figure will be saved</p>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>modelResults</strong> – output of <cite>checkModelProperties</cite></p></li>
+<li><p><strong>modelMetaData</strong> – Cell array, where each row is metadata for one model
+with five columns: species, modelID, fileName, PMID, doi.</p></li>
+<li><p><strong>schematicFlag</strong> – top corner plot illustrating the different colours</p></li>
+<li><p><strong>nRows</strong> – number of rows in the subplot</p></li>
+<li><p><strong>nCols</strong> – number of rows in the subplot (nRows*nCols &gt;= length(modelResults))</p></li>
+</ul>
 </dd>
-</dl>
-<p>figureFileName        filename of the figure (without the directory)
-resultsFileName       filename where output of checkModelProperties.m has been saved</p>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>resultsDirectory</strong> – directory where output of <cite>checkModelProperties</cite> has been saved,
+same directory where the figure will be saved</p></li>
+<li><p><strong>figureFileName</strong> – filename of the figure (without the directory)</p></li>
+<li><p><strong>resultsFileName</strong> – filename where output of <cite>checkModelProperties</cite> has been saved</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -357,14 +414,34 @@ resultsFileName       filename where output of checkModelProperties.m has been s
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.reconstruction.modelGeneration.modelProperties.printBiomass">
 <span class="sig-name descname"><span class="pre">printBiomass</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">BiomassNumber</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/modelGeneration/modelProperties/printBiomass.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.modelGeneration.modelProperties.printBiomass" title="Permalink to this definition">¶</a></dt>
-<dd><p>function printBiomass(model,BiomassNumber)</p>
-<p>this</p>
-<p>model             model structure
-BiomassNumber     reaction number of biomass reaction (or any other</p>
-<blockquote>
-<div><p>reaction)</p>
-</div></blockquote>
-<p>Ines Thiele May 2008</p>
+<dd><p>Prints the metabolites and their stoichiometric coefficients that
+participate in a given reaction (typically the biomass reaction) and
+returns them as well</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[Component, Fraction] = printBiomass</strong> (<em>model, BiomassNumber</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – COBRA model structure with fields:</p>
+<ul>
+<li><p>.S - <cite>m</cite> x <cite>n</cite> stoichiometric matrix (used if <cite>.A</cite> is absent)</p></li>
+<li><p>.A - stoichiometric/coupling matrix, used in place of <cite>.S</cite> when present</p></li>
+<li><p>.mets - <cite>m</cite> x 1 cell array of metabolite identifiers</p></li>
+</ul>
+</li>
+<li><p><strong>BiomassNumber</strong> – column index of the biomass reaction (or any other
+reaction) in <cite>model.S</cite></p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Component</strong> – cell array of metabolite identifiers with a nonzero
+coefficient in reaction <cite>BiomassNumber</cite></p></li>
+<li><p><strong>Fraction</strong> – stoichiometric coefficients of <cite>Component</cite> in reaction <cite>BiomassNumber</cite></p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 </section>

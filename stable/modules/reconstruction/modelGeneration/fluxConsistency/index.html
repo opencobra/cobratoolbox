@@ -161,9 +161,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../dataIntegration/index.html">Dataintegration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../design/index.html">Design</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Reconstruction</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../../comparison/index.html">Comparison</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../fastGapFill/index.html">Fastgapfill</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../growthExpMatch/index.html">Growthexpmatch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../refinement/index.html">Refinement</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../rBioNet/index.html">Rbionet</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../index.html">Modelgeneration</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="../massBalance/index.html">Massbalance</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../modelProperties/index.html">Modelproperties</a></li>
@@ -172,14 +171,15 @@
 <li class="toctree-l5"><a class="reference internal" href="DCA/index.html">Dca</a></li>
 </ul>
 </li>
-<li class="toctree-l4"><a class="reference internal" href="../modelVerification/index.html">Modelverification</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../stoichConsistency/index.html">Stoichconsistency</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../modelVerification/index.html">Modelverification</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../rBioNet/index.html">Rbionet</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../demeter/index.html">Demeter</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../refinement/index.html">Refinement</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../metaboRePort/index.html">Metaboreport</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../fastGapFill/index.html">Fastgapfill</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../growthExpMatch/index.html">Growthexpmatch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../comparison/index.html">Comparison</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../demeter/index.html">Demeter</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../visualization/index.html">Visualization</a></li>
@@ -255,9 +255,17 @@ but <cite>fastcc</cite> from <cite>fastcore</cite> by default</p>
 <dd class="field-odd"><p><strong>[fluxConsistentMetBool, fluxConsistentRxnBool, fluxInConsistentMetBool, fluxInConsistentRxnBool, model] = findFluxConsistentSubset</strong> (<em>model, param, printLevel</em>)</p>
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>model</strong> – structure with field:</p>
+<dd class="field-even"><p><strong>model</strong> – structure with fields:</p>
 <ul class="simple">
 <li><p>.S - <cite>m</cite> x <cite>n</cite> stoichiometric matrix</p></li>
+<li><p>.mets - <cite>m</cite> x 1 cell array of metabolite identifiers</p></li>
+<li><p>.b - <cite>m</cite> x 1 right hand side values for metabolite constraints</p></li>
+<li><p>.csense - <cite>m</cite> x 1 constraint senses (<cite>‘E’</cite>, <cite>‘L’</cite>, <cite>‘G’</cite>)</p></li>
+<li><p>.rxns - <cite>n</cite> x 1 cell array of reaction identifiers</p></li>
+<li><p>.lb - <cite>n</cite> x 1 lower bounds on fluxes</p></li>
+<li><p>.ub - <cite>n</cite> x 1 upper bounds on fluxes</p></li>
+<li><p>.c - <cite>n</cite> x 1 objective coefficients</p></li>
+<li><p>.rev - the 0-1 vector with 1’s corresponding to the reversible reactions (if using swiftcc)</p></li>
 </ul>
 </dd>
 <dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
@@ -276,10 +284,10 @@ but <cite>fastcc</cite> from <cite>fastcore</cite> by default</p>
 </ul>
 <p>{(0),1} 1 = identify reactions that are
 forward flux consistent for a forward
-cycle, or reverse flux consistent for a reverse cycle</p>
+cycle, or reverse flux consistent for a reverse cycle
+* param.printLevel - verbose level (used if the <cite>printLevel</cite> argument is not given)</p>
 </li>
 <li><p><strong>printLevel</strong> – verbose level</p></li>
-<li><p><strong>model.rev - the 0-1 vector with 1’s corresponding to the reversible reactions</strong> (<em>if using swiftcc</em>)</p></li>
 </ul>
 </dd>
 <dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
@@ -296,6 +304,9 @@ cycle, or reverse flux consistent for a reverse cycle</p>
 <li><p>.fluxInConsistentRxnBool</p></li>
 </ul>
 </li>
+<li><p><strong>fluxConsistModel</strong> – COBRA model structure containing only the flux consistent
+reactions (and their metabolites), or the unmodified <cite>model</cite>
+if all reactions are already flux consistent</p></li>
 </ul>
 </dd>
 </dl>
@@ -322,12 +333,17 @@ Reaction j is said to be signed, cyclically flux consistent if</p>
 <p>where N is an (internal) stoichiometric matrix</p>
 <dl class="field-list">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>[signedCyclicFluxConsistentMetBool, signedCyclicFluxConsistentRxnBool, model, fluxConsistModel] = findSignedCyclicFluxConsistentSubset</strong> (<em>model, param</em>)</p>
+<dd class="field-odd"><p><strong>[signedCyclicFluxConsistentMetBool, signedCyclicFluxConsistentRxnBool, modelOut, fluxConsistModel] = findSignedCyclicFluxConsistentSubset</strong> (<em>model, param</em>)</p>
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>model</strong> – structure with field:</p>
+<dd class="field-even"><p><strong>model</strong> – structure with fields:</p>
 <ul class="simple">
 <li><p>.S - <cite>m</cite> x <cite>n</cite> stoichiometric matrix</p></li>
+<li><p>.SConsistentRxnBool - <cite>n</cite> x 1 boolean vector indicating
+stoichiometrically consistent reactions (used when <cite>param.internal</cite> is true)</p></li>
+<li><p>.b - <cite>m</cite> x 1 right hand side values for metabolite constraints</p></li>
+<li><p>.c - <cite>n</cite> x 1 objective coefficients (set to zero internally)</p></li>
+<li><p>.osenseStr - objective sense string (set internally to <cite>‘min’</cite>)</p></li>
 </ul>
 </dd>
 <dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
@@ -339,16 +355,27 @@ Reaction j is said to be signed, cyclically flux consistent if</p>
 </div></blockquote>
 <ul class="simple">
 <li><p>param.modeFlag - {(0),1} 1 = return flux modes</p></li>
-<li><p>printLevel - verbose level</p></li>
+<li><p>param.internal - {(1), 0} 1 = restrict computation to internal
+(stoichiometrically) consistent reactions only</p></li>
+<li><p>param.nullspaceBasis - {(1), 0} 1 = use the nullspace basis of
+<cite>.S</cite> to skip reactions with no support in the nullspace</p></li>
+<li><p>param.method - method used to test signed cyclic flux
+consistency (default <cite>‘2LP’</cite>, the only method currently implemented)</p></li>
+<li><p>param.testModelFeasibility - {(0), 1} 1 = test the feasibility
+of the input model with <cite>optimizeCbModel</cite> before proceeding
+(default 0, assume feasible)</p></li>
+<li><p>param.printLevel - verbose level</p></li>
 </ul>
 </dd>
 <dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>signedCyclicFluxConsistentMetBool</strong> – <cite>m</cite> x 1 boolean vector indicating flux consistent <cite>mets</cite></p></li>
 <li><p><strong>signedCyclicFluxConsistentRxnBool</strong> – <cite>n</cite> x 1 boolean vector indicating flux consistent <cite>rxns</cite></p></li>
-<li><p><strong>model</strong> – structure with fields duplicating the single output arguments:
+<li><p><strong>modelOut</strong> – structure with fields duplicating the single output arguments:
 * .signedCyclicFluxConsistentMetBool
 * .signedCyclicFluxConsistentRxnBool</p></li>
+<li><p><strong>fluxConsistModel</strong> – COBRA model structure; currently always equal to the input
+<cite>model</cite> (the reaction-removal step is disabled in this function)</p></li>
 </ul>
 </dd>
 </dl>

@@ -65,8 +65,8 @@
         <link rel="search" title="Search" href="../../../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../../../index.html"/>
         <link rel="up" title="Src" href="../index.html"/>
-        <link rel="next" title="Integration" href="../integration/index.html"/>
-        <link rel="prev" title="Properties" href="../properties/index.html"/> 
+        <link rel="next" title="Properties" href="../properties/index.html"/>
+        <link rel="prev" title="Refinement" href="../refinement/index.html"/> 
 
   
   <script src="../../../../../_static/js/modernizr.min.js"></script>
@@ -161,24 +161,24 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../dataIntegration/index.html">Dataintegration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../design/index.html">Design</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../../index.html">Reconstruction</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../../../comparison/index.html">Comparison</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../refinement/index.html">Refinement</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../rBioNet/index.html">Rbionet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modelGeneration/index.html">Modelgeneration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../metaboRePort/index.html">Metaboreport</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../fastGapFill/index.html">Fastgapfill</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../growthExpMatch/index.html">Growthexpmatch</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../modelGeneration/index.html">Modelgeneration</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../rBioNet/index.html">Rbionet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../comparison/index.html">Comparison</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../../index.html">Demeter</a><ul class="current">
 <li class="toctree-l4 current"><a class="reference internal" href="../index.html">Src</a><ul class="current">
-<li class="toctree-l5"><a class="reference internal" href="../properties/index.html">Properties</a></li>
-<li class="toctree-l5 current"><a class="current reference internal" href="#">Debugging</a></li>
-<li class="toctree-l5"><a class="reference internal" href="../integration/index.html">Integration</a></li>
 <li class="toctree-l5"><a class="reference internal" href="../refinement/index.html">Refinement</a></li>
+<li class="toctree-l5 current"><a class="current reference internal" href="#">Debugging</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../properties/index.html">Properties</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../integration/index.html">Integration</a></li>
 </ul>
 </li>
 <li class="toctree-l4"><a class="reference internal" href="../../suite/index.html">Suite</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../../refinement/index.html">Refinement</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../metaboRePort/index.html">Metaboreport</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../visualization/index.html">Visualization</a></li>
@@ -249,19 +249,34 @@ reactions that restore grow and allow the production of biomass
 precursors in a realisitc manner. All solutions were identified
 through manual inspection. Any new solutions identified for reaction
 combinations not yet encountered by DEMETER may be added.</p>
-<dl class="simple">
-<dt>USAGE</dt><dd><p>[model] = conditionSpecificGapFilling(model,database)</p>
+<dl class="field-list">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[model] = conditionSpecificGapFilling</strong> (<em>model, database</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul>
+<li><p><strong>model</strong> – COBRA model structure with fields:</p>
+<ul class="simple">
+<li><p>.rxns - <cite>n x 1</cite> reaction identifiers</p></li>
+</ul>
+</li>
+<li><p><strong>database</strong> – rBioNet reaction database containing min. 3 columns:
+Column 1: reaction abbreviation, Column 2: reaction
+name, Column 3: reaction formula, with fields:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>.reactions - cell array of reaction abbreviations
+(column 1) and reaction formulas (column 3)</p></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>model</strong> – COBRA model structure with condition-specific
+gap-filling reactions added</p>
 </dd>
 </dl>
-<p>INPUT
-model             COBRA model structure
-database          rBioNet reaction database containing min. 3 columns:</p>
-<blockquote>
-<div><p>Column 1: reaction abbreviation, Column 2: reaction
-name, Column 3: reaction formula.</p>
-</div></blockquote>
-<p>OUTPUT
-model             COBRA model structure</p>
 </dd></dl>
 
 <dl class="mat function">
@@ -271,25 +286,45 @@ model             COBRA model structure</p>
 coupling constraints, which is required for the Microbiome Modeling
 Toolbox, renders the model unable to grow. This can be fixed by adding
 certain reactions that were identiifed through manual testing.</p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>[model,addedCouplingRxns] = debugCouplingConstraints</strong> (<em>model,biomassReaction,database</em>)</p>
+<dd class="field-odd"><p><strong>[model, addedCouplingRxns] = debugCouplingConstraints</strong> (<em>model, biomassReaction, database</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul>
+<li><p><strong>model</strong> – COBRA model structure with fields:</p>
+<ul class="simple">
+<li><p>.rxns - <cite>n x 1</cite> reaction identifiers</p></li>
+<li><p>.comments - <cite>n x 1</cite> cell array of free-text
+comments for each reaction</p></li>
+<li><p>.rxnConfidenceScores - <cite>n x 1</cite> reaction
+confidence scores</p></li>
+</ul>
+</li>
+<li><p><strong>biomassReaction</strong> – Reaction ID of the biomass objective function</p></li>
+<li><p><strong>database</strong> – rBioNet reaction database containing min. 3
+columns: Column 1: reaction abbreviation, Column
+2: reaction name, Column 3: reaction formula,
+with fields:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>.reactions - cell array of reaction
+abbreviations (column 1) and reaction
+formulas (column 3)</p></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model</strong> – COBRA model structure with coupling-constraint
+gap-filling reactions added</p></li>
+<li><p><strong>addedCouplingRxns</strong> – Reactions added to enable growth with coupling
+constraints</p></li>
+</ul>
 </dd>
 </dl>
-<p>INPUTS
-model:               COBRA model structure
-biomassReaction:     Reaction ID of the biomass objective function
-database:            rBioNet reaction database containing min. 3 columns:</p>
-<blockquote>
-<div><p>Column 1: reaction abbreviation, Column 2: reaction
-name, Column 3: reaction formula.</p>
-</div></blockquote>
-<p>OUTPUT
-model:               COBRA model structure
-addedCouplingRxns:   Reactions added to enable growth with coupling</p>
-<blockquote>
-<div><p>constraints</p>
-</div></blockquote>
 </dd></dl>
 
 <dl class="mat function">
@@ -302,30 +337,39 @@ and anaerobically, and whether or not unrealistically high ATP is
 produced on a complex medium.</p>
 <dl class="field-list simple">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>[revisedModel,gapfilledReactions,replacedReactions]=debugModel</strong> (<em>model,testResults,inputDataFolder,infoFilePath,microbeID,biomassReaction</em>)</p>
+<dd class="field-odd"><p><strong>[revisedModel, gapfilledReactions, replacedReactions] = debugModel</strong> (<em>model, testResults, inputDataFolder, infoFilePath, microbeID, biomassReaction</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – COBRA model structure with fields:</p>
+<ul>
+<li><p>.rxns - <cite>n x 1</cite> reaction identifiers</p></li>
+<li><p>.grRules - <cite>n x 1</cite> gene-protein-reaction
+rules</p></li>
+<li><p>.comments - <cite>n x 1</cite> cell array of free-text
+comments for each reaction</p></li>
+</ul>
+</li>
+<li><p><strong>testResults</strong> – Structure with results of test run; one field
+per test, accessed dynamically by field name</p></li>
+<li><p><strong>inputDataFolder</strong> – Folder with input tables with experimental data
+and databases that inform the refinement process</p></li>
+<li><p><strong>infoFilePath</strong> – File with information on reconstructions to refine</p></li>
+<li><p><strong>microbeID</strong> – ID of the reconstructed microbe that serves as
+the reconstruction name and to identify it in
+input tables</p></li>
+<li><p><strong>biomassReaction</strong> – Reaction ID of the biomass objective function</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>revisedModel</strong> – Gapfilled COBRA model structure</p></li>
+<li><p><strong>gapfilledReactions</strong> – Reactions gapfilled to enable flux</p></li>
+<li><p><strong>replacedReactions</strong> – Reactions replaced because they were causing
+futile cycles</p></li>
+</ul>
 </dd>
 </dl>
-<p>INPUTS
-model:                 COBRA model structure
-testResults:           Structure with results of test run
-inputDataFolder:       Folder with input tables with experimental data</p>
-<blockquote>
-<div><p>and databases that inform the refinement process</p>
-</div></blockquote>
-<p>infoFilePath           File with information on reconstructions to refine
-microbeID:             ID of the reconstructed microbe that serves as</p>
-<blockquote>
-<div><p>the reconstruction name and to identify it in
-input tables</p>
-</div></blockquote>
-<p>biomassReaction:       Reaction ID of the biomass objective function</p>
-<p>OUTPUT
-revisedModel:          Gapfilled COBRA model structure
-gapfilledReactions:    Reactions gapfilled to enable flux
-replacedReactions:     Reactions replaced because they were causing</p>
-<blockquote>
-<div><p>futile cycles</p>
-</div></blockquote>
 </dd></dl>
 
 <dl class="mat function">
@@ -333,16 +377,24 @@ replacedReactions:     Reactions replaced because they were causing</p>
 <span class="sig-name descname"><span class="pre">findFutileCycle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">cut</span></em>, <em class="sig-param"><span class="pre">closedModel</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/demeter/src/debugging/findFutileCycle.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.demeter.src.debugging.findFutileCycle" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function attempts to find reactions involved in the atp-driving
 futile cycle</p>
-<p>INPUT
-model         model structure
-cut           cutoff value for reactions to be displayed
-closedModel   if 1 the model will be closed otw the applied medium</p>
-<blockquote>
-<div><p>constraints count (DEFAULT:1);</p>
-</div></blockquote>
-<p>OUTPUT
-T         Table of reactions potentially involved</p>
-<p>Ines Thiele 03/2022</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>T = findFutileCycle</strong> (<em>model, cut, closedModel</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>model</strong> – COBRA model structure</p>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cut</strong> – cutoff value for reactions to be displayed</p></li>
+<li><p><strong>closedModel</strong> – if 1 the model will be closed otw the applied medium
+constraints count (default: 1)</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>T</strong> – Table of reactions potentially involved</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="mat function">
@@ -358,17 +410,24 @@ removeFutileCycles. It is requested that identified solutions are
 submitted as a pull request.</p>
 <dl class="field-list simple">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>[gapfilledReactions,replacedReactions,revisedModel]=debugModel</strong> (<em>model,testResultsFolder, inputDataFolder,reconVersion,microbeID,biomassReaction</em>)</p>
+<dd class="field-odd"><p><strong>[futileCycleReactions, FutileCyclesTest] = identifyFutileCycles</strong> (<em>model</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>model</strong> – COBRA model structure with fields:</p>
+<ul class="simple">
+<li><p>.rxns - <cite>n x 1</cite> reaction identifiers</p></li>
+<li><p>.lb - <cite>n x 1</cite> lower bounds</p></li>
+<li><p>.ub - <cite>n x 1</cite> upper bounds</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>futileCycleReactions</strong> – Reactions that are involved in futile cycles and
+need to be constrained</p></li>
+<li><p><strong>FutileCyclesTest</strong> – Computed fluxes for ATP production</p></li>
+</ul>
 </dd>
 </dl>
-<p>INPUT
-model:                   COBRA model structure</p>
-<p>OUTPUT
-futileCycleReactions:    Reactions that are involved in futile cycles and</p>
-<blockquote>
-<div><p>need to be constrained</p>
-</div></blockquote>
-<p>FutileCyclesTest         Computed fluxes for ATP production</p>
 </dd></dl>
 
 <dl class="mat function">
@@ -379,33 +438,62 @@ infeasible directions and causing futile cycles that result in
 unrealistically high ATP production. All solutions were identified
 through manual inspection. Any new solutions identified for reaction
 combinations not yet encountered by DEMETER may be added.</p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>[model, deletedRxns, addedRxns, gfRxns] = removeFutileCycles</strong> (<em>model, biomassReaction, database,unionRxns,constrainedModel</em>)</p>
+<dd class="field-odd"><p><strong>[model, deletedRxns, addedRxns, gfRxns] = removeFutileCycles</strong> (<em>model, biomassReaction, database, unionRxns, constrainedModel</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul>
+<li><p><strong>model</strong> – COBRA model structure with fields:</p>
+<ul class="simple">
+<li><p>.rxns - <cite>n x 1</cite> reaction identifiers</p></li>
+<li><p>.mets - <cite>m x 1</cite> metabolite identifiers</p></li>
+<li><p>.lb - <cite>n x 1</cite> lower bounds</p></li>
+<li><p>.grRules - <cite>n x 1</cite> gene-protein-reaction
+rules</p></li>
+<li><p>.comments - <cite>n x 1</cite> cell array of free-text
+comments for each reaction</p></li>
+<li><p>.rxnConfidenceScores - <cite>n x 1</cite> reaction
+confidence scores</p></li>
+</ul>
+</li>
+<li><p><strong>biomassReaction</strong> – Reaction ID of the biomass objective function</p></li>
+<li><p><strong>database</strong> – rBioNet reaction database containing min. 3
+columns: Column 1: reaction abbreviation,
+Column 2: reaction name, Column 3: reaction
+formula, with fields:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>.reactions - cell array of reaction
+abbreviations (column 1) and reaction
+formulas (column 3)</p></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>unionRxns</strong> – Union of reactions from  multiple
+reconstructions (only for debugging
+multi-species models)</p></li>
+<li><p><strong>constrainedModel</strong> – COBRA model constrained with defined medium
+(for certain steps of DEMETER)</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – COBRA model structure with futile cycles
+removed</p></li>
+<li><p><strong>deletedRxns</strong> – Deleted reactions that were causing futile
+cycles</p></li>
+<li><p><strong>addedRxns</strong> – Added irreversible versions of the deleted
+reactions</p></li>
+<li><p><strong>gfRxns</strong> – Additional gap-filled reactions needed to
+enable growth. Low confidence score.</p></li>
+</ul>
 </dd>
 </dl>
-<p>INPUTS
-model:               COBRA model structure
-biomassReaction:     Reaction ID of the biomass objective function
-database:            rBioNet reaction database containing min. 3 columns:</p>
-<blockquote>
-<div><p>Column 1: reaction abbreviation, Column 2: reaction
-name, Column 3: reaction formula.</p>
-</div></blockquote>
-<dl class="simple">
-<dt>unionRxns:           Union of reactions from  multiple reconstructions</dt><dd><p>(only for debugging multi-species models)</p>
-</dd>
-<dt>constrainedModels:   COBRA model constrained with defined medium (for</dt><dd><p>certain steps of DEMETER)</p>
-</dd>
-</dl>
-<p>OUTPUT
-model:               COBRA model structure
-deletedRxns:         Deleted reactions that were causing futile cycles
-addedRxns:           Added irreversible versions of the deleted reactions
-gfRxns:              Additional gap-filled reactions needed to enable</p>
-<blockquote>
-<div><p>growth. Low confidence score.</p>
-</div></blockquote>
 </dd></dl>
 
 <dl class="mat function">
@@ -416,35 +504,41 @@ reconstructions produced by the DEMETER pipeline. Tests are performed
 whether or not the models can produce biomass aerobically and
 anaerobically, and whether or not unrealistically high ATP is produced
 on the complex medium.</p>
-<dl class="simple">
-<dt>USAGE</dt><dd><p>[debuggingReport, fixedModels, failedModels]=runDebuggingTools(refinedFolder,testResultsFolder,inputDataFolder,infoFilePath,reconVersion,varargin)</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[debuggingReport, fixedModels, failedModels] = runDebuggingTools</strong> (<em>refinedFolder, testResultsFolder, inputDataFolder, infoFilePath, reconVersion, varargin</em>)</p>
 </dd>
-</dl>
-<p>INPUTS
-refinedFolder          Folder with refined COBRA models generated by</p>
-<blockquote>
-<div><p>the refinement pipeline</p>
-</div></blockquote>
-<p>testResultsFolder      Folder where the test results are saved
-inputDataFolder        Folder with experimental data and database files
-infoFilePath           File with information on reconstructions to refine
-reconVersion           Name of the refined reconstruction resource</p>
-<p>OPTIONAL INPUTS
-numWorkers             Number of workers in parallel pool (default: 2)
-translatedDraftsFolder Folder with  translated draft COBRA models</p>
-<blockquote>
-<div><p>generated by KBase pipeline to analyze (will only
-be re-analyzed if folder is provided)</p>
-</div></blockquote>
-<p>OUTPUT
-debuggingReport         Report of changes that where made to debug the</p>
-<blockquote>
-<div><p>models, if any</p>
-</div></blockquote>
-<dl class="simple">
-<dt>fixedModels             IDs of models that passed tests after additional</dt><dd><p>gap-filling</p>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>refinedFolder</strong> – Folder with refined COBRA models generated by
+the refinement pipeline</p></li>
+<li><p><strong>testResultsFolder</strong> – Folder where the test results are saved</p></li>
+<li><p><strong>inputDataFolder</strong> – Folder with experimental data and database files</p></li>
+<li><p><strong>infoFilePath</strong> – File with information on reconstructions to refine</p></li>
+<li><p><strong>reconVersion</strong> – Name of the refined reconstruction resource</p></li>
+</ul>
 </dd>
-<dt>failedModels            IDs of models that still do not pass one or more</dt><dd><p>tests</p>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>varargin</strong> – Optional name-value arguments:</p>
+<ul class="simple">
+<li><p>numWorkers - Number of workers in parallel
+pool (default: 2)</p></li>
+<li><p>translatedDraftsFolder - Folder with
+translated draft COBRA models generated by
+KBase pipeline to analyze (will only be
+re-analyzed if folder is provided)
+(default: ‘’)</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>debuggingReport</strong> – Report of changes that where made to debug the
+models, if any</p></li>
+<li><p><strong>fixedModels</strong> – IDs of models that passed tests after additional
+gap-filling</p></li>
+<li><p><strong>failedModels</strong> – IDs of models that still do not pass one or more
+tests</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -458,40 +552,42 @@ enable flux through an objective function, e.g., the biomass objective
 function.</p>
 <dl class="field-list simple">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>[model,condGF,targetGF,relaxGF] = runGapfillingFunctions</strong> (<em>model,objectiveFunction,biomassReaction,osenseStr,database</em>)</p>
+<dd class="field-odd"><p><strong>[model, condGF, targetGF, relaxGF] = runGapfillingFunctions</strong> (<em>model, objectiveFunction, biomassReaction, osenseStr, database, curateDefMedia</em>)</p>
 </dd>
-</dl>
-<p>INPUTS
-model:               COBRA model structure
-objectiveFunction    Reaction ID of the objective function for which flux</p>
-<blockquote>
-<div><p>will be enabled through gapfilling</p>
-</div></blockquote>
-<dl class="simple">
-<dt>biomassReaction:     Reaction ID of the biomass objective function that</dt><dd><p>will be restored afterwards (if objectiveFunction is
-not biomassReaction)</p>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – COBRA model structure with fields:</p>
+<ul>
+<li><p>.rxns - <cite>n x 1</cite> reaction identifiers</p></li>
+<li><p>.lb - <cite>n x 1</cite> lower bounds</p></li>
+</ul>
+</li>
+<li><p><strong>objectiveFunction</strong> – Reaction ID of the objective function for which
+flux will be enabled through gapfilling</p></li>
+<li><p><strong>biomassReaction</strong> – Reaction ID of the biomass objective function that
+will be restored afterwards (if objectiveFunction
+is not biomassReaction)</p></li>
+<li><p><strong>osenseStr</strong> – Maximize (‘max’)/minimize (‘min’) linear part of
+the objective</p></li>
+<li><p><strong>database</strong> – rBioNet reaction database containing min. 3
+columns: Column 1: reaction abbreviation, Column
+2: reaction name, Column 3: reaction formula.</p></li>
+</ul>
 </dd>
-<dt>osenseStr:           Maximize (‘max’)/minimize (‘min’) linear part of the</dt><dd><p>objective</p>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>curateDefMedia</strong> – boolean indicating that growth on defined medium
+is being curated (default: false)</p>
 </dd>
-<dt>database:            rBioNet reaction database containing min. 3 columns:</dt><dd><p>Column 1: reaction abbreviation, Column 2: reaction
-name, Column 3: reaction formula.</p>
-</dd>
-</dl>
-<p>OPTIONAL INPUT
-curateDefMedia:      boolean indicating that growth on defined medium is</p>
-<blockquote>
-<div><p>being curated (default=false)</p>
-</div></blockquote>
-<p>OUTPUT
-model:               COBRA model structure
-condGF               Reactions added based on conditions (recognizing</p>
-<blockquote>
-<div><p>certain patterns of reactions)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>targetGF             Reactions added based on targeted gapfilling</dt><dd><p>(specific metabolites that could not be produced)</p>
-</dd>
-<dt>relaxGF              Reactions added based on relaxFBA (lowest level of</dt><dd><p>confidence)</p>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – COBRA model structure</p></li>
+<li><p><strong>condGF</strong> – Reactions added based on conditions (recognizing
+certain patterns of reactions)</p></li>
+<li><p><strong>targetGF</strong> – Reactions added based on targeted gapfilling
+(specific metabolites that could not be produced)</p></li>
+<li><p><strong>relaxGF</strong> – Reactions added based on relaxFBA (lowest level
+of confidence)</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -503,24 +599,37 @@ condGF               Reactions added based on conditions (recognizing</p>
 suite to conform with experimental data and/or to enable growth.
 Metabolites are identified that would enable flux and reactions are
 gapfilled based on that.</p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>model = targetedGapFilling</strong> (<em>model,osenseStr,database</em>)</p>
+<dd class="field-odd"><p><strong>model = targetedGapFilling</strong> (<em>model, osenseStr, database</em>)</p>
 </dd>
-</dl>
-<p>INPUTS
-model:              COBRA model structure
-osenseStr:          Maximize (‘max’)/minimize (‘min’)linear part of the</p>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul>
+<li><p><strong>model</strong> – COBRA model structure with fields:</p>
+<ul class="simple">
+<li><p>.rxns - <cite>n x 1</cite> reaction identifiers</p></li>
+<li><p>.grRules - <cite>n x 1</cite> gene-protein-reaction rules</p></li>
+</ul>
+</li>
+<li><p><strong>osenseStr</strong> – Maximize (‘max’)/minimize (‘min’)linear part of the
+objective.</p></li>
+<li><p><strong>database</strong> – rBioNet reaction database containing min. 3 columns:
+Column 1: reaction abbreviation, Column 2: reaction
+name, Column 3: reaction formula, with fields:</p>
 <blockquote>
-<div><p>objective.</p>
+<div><ul class="simple">
+<li><p>.reactions - cell array of reaction
+abbreviations (column 1), names (column 2),
+formulas (column 3), and subsystems (column 11)</p></li>
+</ul>
 </div></blockquote>
-<dl class="simple">
-<dt>database:           rBioNet reaction database containing min. 3 columns:</dt><dd><p>Column 1: reaction abbreviation, Column 2: reaction
-name, Column 3: reaction formula.</p>
+</li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>model</strong> – Gapfilled COBRA model structure</p>
 </dd>
 </dl>
-<p>OUTPUT
-model:               Gapfilled COBRA model structure</p>
 </dd></dl>
 
 <dl class="mat function">
@@ -530,31 +639,52 @@ model:               Gapfilled COBRA model structure</p>
 reaction from the complete reaction database through the use of
 relaxedFBA that could enable flux through the objective function. This
 function will be performed only if targeted gap-filling failed.</p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>[model,addedRxns] = untargetedGapFilling</strong> (<em>model,osenseStr,database</em>)</p>
+<dd class="field-odd"><p><strong>[model, addedRxns] = untargetedGapFilling</strong> (<em>model, osenseStr, database, excludeDMs, excludeSinks, excludeExchanges</em>)</p>
 </dd>
-</dl>
-<p>INPUTS
-model:              COBRA model structure
-osenseStr:          Maximize (‘max’)/minimize (‘min’)linear part of the</p>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul>
+<li><p><strong>model</strong> – COBRA model structure with fields:</p>
+<ul class="simple">
+<li><p>.rxns - <cite>n x 1</cite> reaction identifiers</p></li>
+<li><p>.c - <cite>n x 1</cite> objective coefficients</p></li>
+<li><p>.lb - <cite>n x 1</cite> lower bounds</p></li>
+<li><p>.ub - <cite>n x 1</cite> upper bounds</p></li>
+</ul>
+</li>
+<li><p><strong>osenseStr</strong> – Maximize (‘max’)/minimize (‘min’)linear part of the
+objective.</p></li>
+<li><p><strong>database</strong> – rBioNet reaction database containing min. 3 columns:
+Column 1: reaction abbreviation, Column 2: reaction
+name, Column 3: reaction formula, with fields:</p>
 <blockquote>
-<div><p>objective.</p>
+<div><ul class="simple">
+<li><p>.reactions - cell array of reaction
+abbreviations (column 1) and reaction
+formulas (column 3)</p></li>
+</ul>
 </div></blockquote>
-<dl class="simple">
-<dt>database:           rBioNet reaction database containing min. 3 columns:</dt><dd><p>Column 1: reaction abbreviation, Column 2: reaction
-name, Column 3: reaction formula.</p>
+</li>
+</ul>
 </dd>
-<dt>excludeDMs          boolean indicating if demand reactions should be</dt><dd><p>excluded from gap-filling reactions (default: true)</p>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>excludeDMs</strong> – boolean indicating if demand reactions should be
+excluded from gap-filling reactions (default: true)</p></li>
+<li><p><strong>excludeSinks</strong> – boolean indicating if sink reactions should be
+excluded from gap-filling reactions (default: true)</p></li>
+<li><p><strong>excludeExchanges</strong> – boolean indicating if exchanges reactions should be
+excluded from gap-filling reactions (default: false)</p></li>
+</ul>
 </dd>
-<dt>excludeSinks        boolean indicating if sink reactions should be</dt><dd><p>excluded from gap-filling reactions (default: true)</p>
-</dd>
-<dt>excludeExchanges    boolean indicating if exchanges reactions should be</dt><dd><p>excluded from gap-filling reactions (default: false)</p>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – Gapfilled COBRA model structure</p></li>
+<li><p><strong>addedRxns</strong> – Added gapfilled reactions</p></li>
+</ul>
 </dd>
 </dl>
-<p>OUTPUT
-model:              Gapfilled COBRA model structure
-addedRxns:          Added gapfilled reactions</p>
 </dd></dl>
 
 <dl class="mat function">
@@ -563,16 +693,34 @@ addedRxns:          Added gapfilled reactions</p>
 <dd><p>Part of the DEMETER pipeline. Checks whether reactions that were added
 by the gapfilling steps performed in DEMETER are required for biomass
 production. Reactions that are no longer needed are removed.</p>
-<dl class="simple">
-<dt>USAGE</dt><dd><p>model = verifyGapfilledReactions(model,osenseStr)</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[model, condGF, targetGF, relaxGF] = verifyGapfilledReactions</strong> (<em>model, osenseStr</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – COBRA model structure with fields:</p>
+<ul>
+<li><p>.rxns - <cite>n x 1</cite> reaction identifiers</p></li>
+<li><p>.grRules - <cite>n x 1</cite> gene-protein-reaction rules</p></li>
+</ul>
+</li>
+<li><p><strong>osenseStr</strong> – Maximize (‘max’)/minimize (‘min’) linear part of the
+objective</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model</strong> – COBRA model structure</p></li>
+<li><p><strong>condGF</strong> – Reactions added based on conditions (recognizing
+certain patterns of reactions)</p></li>
+<li><p><strong>targetGF</strong> – Reactions added based on tagrted gapfilling (specific
+metabolites that could not be produced)</p></li>
+<li><p><strong>relaxGF</strong> – Reactions added based on relaxFBA (lowest level of
+confidence)</p></li>
+</ul>
 </dd>
 </dl>
-<p>INPUT
-model             COBRA model structure
-osenseStr:        Maximize (‘max’)/minimize (‘min’) linear part of the</p>
-<blockquote>
-<div><p>objective</p>
-</div></blockquote>
 </dd></dl>
 
 </section>
@@ -587,10 +735,10 @@ osenseStr:        Maximize (‘max’)/minimize (‘min’) linear part of the</
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../integration/index.html" class="btn btn-default float-right" title="Integration" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../properties/index.html" class="btn btn-default float-right" title="Properties" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../properties/index.html" class="btn btn-default" title="Properties" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../refinement/index.html" class="btn btn-default" title="Refinement" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

@@ -65,8 +65,8 @@
         <link rel="search" title="Search" href="../../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../../index.html"/>
         <link rel="up" title="Solvers" href="../index.html"/>
-        <link rel="next" title="Cardopt" href="../cardOpt/index.html"/>
-        <link rel="prev" title="Cplex" href="../cplex/index.html"/> 
+        <link rel="next" title="Gams" href="../gams/index.html"/>
+        <link rel="prev" title="Lindo" href="../lindo/index.html"/> 
 
   
   <script src="../../../../_static/js/modernizr.min.js"></script>
@@ -159,31 +159,31 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Base</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="../../utilities/index.html">Utilities</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../paths/index.html">Paths</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../ci/index.html">Ci</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../codeConsistency/index.html">Codeconsistency</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../io/index.html">Io</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../install/index.html">Install</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../index.html">Solvers</a><ul class="current">
-<li class="toctree-l4"><a class="reference internal" href="../NLP/index.html">Nlp</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../param/index.html">Param</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../minos/index.html">Minos</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../init/index.html">Init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../NLP/index.html">Nlp</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../gurobi/index.html">Gurobi</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../minos/index.html">Minos</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../optarrow/index.html">Optarrow</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../lindo/index.html">Lindo</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../entropicFBA/index.html">Entropicfba</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../cplex/index.html">Cplex</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">Rescale</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../cardOpt/index.html">Cardopt</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../mosek/index.html">Mosek</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../varKin/index.html">Varkin</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../getSetSolver/index.html">Getsetsolver</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../gams/index.html">Gams</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../init/index.html">Init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../cardOpt/index.html">Cardopt</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../entropicFBA/index.html">Entropicfba</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../lp_solve/index.html">Lp_solve</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../varKin/index.html">Varkin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../mosek/index.html">Mosek</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../cplex/index.html">Cplex</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../getSetSolver/index.html">Getsetsolver</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="../../ci/index.html">Ci</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../paths/index.html">Paths</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../cobrarrow/index.html">Cobrarrow</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../install/index.html">Install</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../dataIntegration/index.html">Dataintegration</a></li>
@@ -258,49 +258,95 @@ containing very large entries (entries larger than BIG).</p>
 Sun, Y., Fleming, R. M., Thiele, I., &amp; Saunders, M. A. (2013). Robust flux balance analysis of multiscale biochemical reaction networks. BMC Bioinformatics, 14(1). <a class="reference external" href="https://doi.org/10.1186/1471-2105-14-240">https://doi.org/10.1186/1471-2105-14-240</a>
 See also tutorial here:
 <a class="reference external" href="https://opencobra.github.io/cobratoolbox/stable/tutorials/tutorial_numCharactWBM.html">https://opencobra.github.io/cobratoolbox/stable/tutorials/tutorial_numCharactWBM.html</a></p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>[LPproblem] = reformulate</strong> (<em>model, BIG, printLevel</em>)</p>
+<dd class="field-odd"><p><strong>model = liftCouplingConstraints</strong> (<em>model, BIG, printLevel, equalities</em>)</p>
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>model</strong> –</p>
-<ul class="simple">
-<li><p>C - <cite>k x n</cite> Left hand side of C*v &lt;= d</p></li>
-<li><p>d - <cite>k x 1</cite> Right hand side of C*v &lt;= d</p></li>
-<li><p>ctrs <cite>k x 1</cite> Cell Array of Strings giving IDs of the coupling constraints</p></li>
-<li><p>dsense - <cite>k x 1</cite> character array with entries in {L,E,G}</p></li>
-</ul>
-</dd>
-</dl>
-<dl>
-<dt>OPTIONAL INPUTS</dt><dd><p>‘BIG’                Value consided a large coefficient. BIG should be set between 1000 and 10000 on double precision machines.
-<cite>printLevel</cite>         1 or 0 enables/diables printing respectively.</p>
+<dd class="field-even"><p><strong>model</strong> – COBRA model structure with coupling constraints, with
+fields used:</p>
 <blockquote>
-<div><p>equalities          true means also deals with original constraints containing equalities (default false - only deals with original constraints that are inequalities)</p>
+<div><ul class="simple">
+<li><p>.S - <cite>m x n</cite> stoichiometric matrix (used only for a
+consistency check)</p></li>
+<li><p>.rxns - <cite>n x 1</cite> cell array of reaction identifiers</p></li>
+<li><p>.C - <cite>k x n</cite> coupling constraint matrix, left hand
+side of C*v {&lt;=,=,&gt;=} d</p></li>
+<li><p>.d - <cite>k x 1</cite> right hand side of the coupling
+constraints</p></li>
+<li><p>.dsense - <cite>k x 1</cite> char array of coupling constraint
+senses in {L,E,G}</p></li>
+<li><p>.ctrs - <cite>k x 1</cite> cell array of coupling constraint IDs</p></li>
+<li><p>.D - <cite>k x evars</cite> matrix coupling additional
+variables to the coupling constraints (if present)</p></li>
+<li><p>.E - <cite>m x evars</cite> matrix of additional, non-metabolic
+variables (if present)</p></li>
+<li><p>.evars - <cite>evars x 1</cite> cell array of IDs of additional
+variables (if present)</p></li>
+<li><p>.evarlb - <cite>evars x 1</cite> lower bounds of additional
+variables (if present)</p></li>
+<li><p>.evarub - <cite>evars x 1</cite> upper bounds of additional
+variables (if present)</p></li>
+<li><p>.evarc - <cite>evars x 1</cite> objective coefficients of
+additional variables (if present)</p></li>
+<li><p>.evarNames - <cite>evars x 1</cite> cell array of names of
+additional variables (if present)</p></li>
+<li><p>.modelID - identifier of the model, used to derive
+the lifted model ID</p></li>
+<li><p>.subSystems - <cite>n x 1</cite> subsystem assignment(s) for
+each reaction</p></li>
+</ul>
 </div></blockquote>
 </dd>
-</dl>
-<dl class="field-list simple">
-<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>model</strong> –</p>
-<ul>
-<li><p>E                m x evars   Sparse or Full Matrix of Double Matrix of additional, non metabolic variables (e.g. Enzyme capacity variables)</p></li>
-<li><p>evarlb           evars x 1       Column Vector of Doubles    Lower bounds of the additional variables</p></li>
-<li><p>evarub           evars x 1       Column Vector of Doubles    Upper bounds of the additional variables</p></li>
-<li><p>evarc            evars x 1       Column Vector of Doubles    Objective coefficient of the additional variables</p></li>
-<li><p>evars            evars x 1       Column Cell Array of Strings        IDs of the additional variables</p></li>
-<li><p>evarNames    evars x 1           Column Cell Array of Strings        Names of the additional variables</p></li>
-<li><p>C             ctrs x n           Sparse or Full Matrix of Double     Matrix of additional Constraints (e.g. Coupling Constraints)</p></li>
-<li><p>ctrs      ctrs x 1       Column Cell Array of Strings        IDs of the additional Constraints</p></li>
-<li><p>ctrNames      ctrs x 1           Column Cell Array of Strings        Names of the of the additional Constraints</p></li>
-<li><p>d             ctrs x 1           Column Vector of Doubles    Right hand side values of the additional Constraints</p></li>
-<li><p>dsense            ctrs x 1       Column Vector of Chars      Senses of the additional Constraints</p></li>
-<li><p>D            ctrs x evars    Sparse or Full Matrix of Double Matrix to store elements that contain interactions between additional Constraints and additional Variables.</p></li>
+<li><p><strong>BIG</strong> – value considered a large coefficient. <cite>BIG</cite> should be
+set between 1000 and 10000 on double precision machines
+(default = 1000)</p></li>
+<li><p><strong>printLevel</strong> – 1 or 0 enables/disables printing respectively
+(default = 1)</p></li>
+<li><p><strong>equalities</strong> – true means also deals with original constraints
+containing equalities (default false - only deals with
+original constraints that are inequalities)</p></li>
 </ul>
-</li>
-<li><p><strong>The linear optimisation problem derived from this model is then of the form</strong> – [S, E; C, D]*x  {L,E,G}  [b;d]</p></li>
+</dd>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>model</strong> – the input model with badly-scaled coupling constraints
+lifted, with fields:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>.C - updated <cite>k’ x n</cite> coupling constraint matrix
+after lifting</p></li>
+<li><p>.D - updated matrix coupling additional variables to
+the coupling constraints</p></li>
+<li><p>.E - updated matrix of additional, non-metabolic
+variables</p></li>
+<li><p>.d - updated right hand side of the coupling
+constraints</p></li>
+<li><p>.dsense - updated senses of the coupling constraints</p></li>
+<li><p>.ctrs - updated IDs of the coupling constraints</p></li>
+<li><p>.evars - updated IDs of additional variables
+(original plus any created by lifting)</p></li>
+<li><p>.evarlb - updated lower bounds of additional
+variables</p></li>
+<li><p>.evarub - updated upper bounds of additional
+variables</p></li>
+<li><p>.evarc - updated objective coefficients of
+additional variables</p></li>
+<li><p>.evarNames - updated names of additional variables</p></li>
+<li><p>.modelID - model identifier suffixed with
+<cite>_liftedCouplingConstraints</cite></p></li>
+<li><p>.C_old, .d_old, .ctrs_old, .dsense_old, .D_old,
+.E_old, .evarlb_old, .evarub_old, .evarc_old,
+.evars_old, .evarNames_old - working copies of the
+pre-lift constraint data, saved then removed before
+the function returns</p></li>
+<li><p>.evarc_preLift, .evarlb_preLift, .evarub_preLift,
+.evarNames_preLift, .evars_preLift - additional
+variable data carried over from row-splitting, prior
+to variables created by lifting</p></li>
 </ul>
+</div></blockquote>
 </dd>
 </dl>
 </dd></dl>
@@ -316,7 +362,7 @@ solveCobraLP. Fluxes for the reactions should stay the same i.e.
 sol.full(1:nRxns) should yield an optimal flux vector.</p>
 <dl class="field-list simple">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>LPproblem = liftModel</strong> (<em>model, BIG, printLevel,fileName,directory</em>)</p>
+<dd class="field-odd"><p><strong>LPproblem = liftModel</strong> (<em>model, BIG, printLevel, fileName, directory</em>)</p>
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>model</strong> – COBRA LPproblem Structure containing the original LP to be solved. The format of
@@ -343,27 +389,36 @@ printLevel = 0 silent</p></li>
 <span class="sig-name descname"><span class="pre">liftRows</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">C</span></em>, <em class="sig-param"><span class="pre">cupcon</span></em>, <em class="sig-param"><span class="pre">BIG</span></em>, <em class="sig-param"><span class="pre">logbig</span></em>, <em class="sig-param"><span class="pre">printLevel</span></em>, <em class="sig-param"><span class="pre">ctrs_cuprow</span></em>, <em class="sig-param"><span class="pre">rxns</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/base/solvers/rescale/liftRows.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.base.solvers.rescale.liftRows" title="Permalink to this definition">¶</a></dt>
 <dd><p>Helper for liftCouplingConstraints. Implements the lifting</p>
 <dl class="field-list simple">
-<dt class="field-odd">INPUTS<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>C           k x n double</strong> – Subset of coupling constraints (2-variable rows to be lifted)</p></li>
-<li><p><strong>cupcon      k x 1 char</strong> – Senses for rows in C (L/G/E)</p></li>
-<li><p><strong>BIG         double</strong> – Threshold for “large” coefficients. TRiggers lifting</p></li>
-<li><p><strong>logbig      double</strong> – log(BIG)</p></li>
-<li><p><strong>printLevel  double</strong> – 0 or 1. If 1 prints extra information</p></li>
-<li><p><strong>ctrs_cuprow k x 1 cell array of chr</strong> – IDs of the selected constraints. Correspnds to rows in C</p></li>
-<li><p><strong>rxns        nRxns x 1 cell array of chr</strong> – model rxn IDs</p></li>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[Clifted, newcon, ctrs_cuprow, ctrs_new, evars, ndum, cupcon, nEvars] = liftRows</strong> (<em>C, cupcon, BIG, logbig, printLevel, ctrs_cuprow, rxns</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>C</strong> – <cite>k x n</cite> double, subset of coupling constraints
+(2-variable rows to be lifted)</p></li>
+<li><p><strong>cupcon</strong> – <cite>k x 1</cite> char, senses for rows in <cite>C</cite> (L/G/E)</p></li>
+<li><p><strong>BIG</strong> – double, threshold for “large” coefficients; triggers
+lifting</p></li>
+<li><p><strong>logbig</strong> – double, <cite>log(BIG)</cite></p></li>
+<li><p><strong>printLevel</strong> – double, 0 or 1; if 1 prints extra information</p></li>
+<li><p><strong>ctrs_cuprow</strong> – <cite>k x 1</cite> cell array of char, IDs of the selected
+constraints, corresponds to rows in <cite>C</cite></p></li>
+<li><p><strong>rxns</strong> – <cite>nRxns x 1</cite> cell array of char, model reaction IDs</p></li>
 </ul>
 </dd>
-<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>Clifted     k’ x n’ double</strong> – Lifted constraint matrix</p></li>
-<li><p><strong>newcon      ndum x 1 char</strong> – Senses of added dummy constraints</p></li>
-<li><p><strong>ctrs_cuprow k’ x 1 cell array of char</strong> – Updated IDs for original coupling constraints.</p></li>
-<li><p><strong>ctrs_new    ndum x 1 cell array of char</strong> – IDs for dummy constraints</p></li>
-<li><p><strong>evars       nEvars x 1 cell array of char</strong> – IDs of new dummy variables</p></li>
-<li><p><strong>ndum        double</strong> – Total number of dummy constraints rows added</p></li>
-<li><p><strong>cupcon      k’ x 1 char</strong> – Senses for rows in Clifted (L/G/E)</p></li>
-<li><p><strong>nEvars      double</strong> – Total number of dummy variables</p></li>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Clifted</strong> – <cite>k’ x n’</cite> double, lifted constraint matrix</p></li>
+<li><p><strong>newcon</strong> – <cite>ndum x 1</cite> char, senses of added dummy constraints</p></li>
+<li><p><strong>ctrs_cuprow</strong> – <cite>k’ x 1</cite> cell array of char, updated IDs for original
+coupling constraints</p></li>
+<li><p><strong>ctrs_new</strong> – <cite>ndum x 1</cite> cell array of char, IDs for dummy
+constraints</p></li>
+<li><p><strong>evars</strong> – <cite>nEvars x 1</cite> cell array of char, IDs of new dummy
+variables</p></li>
+<li><p><strong>ndum</strong> – double, total number of dummy constraint rows added</p></li>
+<li><p><strong>cupcon</strong> – <cite>k’ x 1</cite> char, senses for rows in <cite>Clifted</cite> (L/G/E)</p></li>
+<li><p><strong>nEvars</strong> – double, total number of dummy variables</p></li>
 </ul>
 </dd>
 </dl>
@@ -388,14 +443,27 @@ BIG). BIG should be set between 1000 and 10000 on double precision machines.
 <p>Reformulation techniques are described in detail in:
 <cite>Y. Sun, R. M.T. Fleming, M. A. Saunders, I. Thiele, An Algorithm for Flux
 Balance Analysis of Multi-scale Biochemical Networks, submitted</cite>.</p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>[LPproblem] = reformulate</strong> (<em>LPproblem, BIG, printLevel</em>)</p>
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
-<dd class="field-even"><ul class="simple">
+<dd class="field-even"><ul>
 <li><p><strong>LPproblem</strong> – Structure contain the original LP to be solved. The format of
-this struct is described in the documentation for <cite>solveCobraLP.m</cite></p></li>
+this struct is described in the documentation for <cite>solveCobraLP.m</cite>.
+Fields used:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>.A - <cite>m x n</cite> linear constraint matrix</p></li>
+<li><p>.b - <cite>m x 1</cite> right hand side vector for <cite>A*x {L,E,G} b</cite></p></li>
+<li><p>.c - <cite>n x 1</cite> linear objective coefficient vector</p></li>
+<li><p>.lb - <cite>n x 1</cite> lower bound vector</p></li>
+<li><p>.ub - <cite>n x 1</cite> upper bound vector</p></li>
+<li><p>.csense - <cite>m x 1</cite> character array of constraint senses</p></li>
+<li><p>.modelID - (optional) identifier of the model</p></li>
+</ul>
+</div></blockquote>
+</li>
 <li><p><strong>BIG</strong> – A parameter the controls the largest entries that appear in the
 reformulated problem.</p></li>
 <li><p><strong>printLevel</strong> – 1 enables printing of problem statistics;
@@ -403,7 +471,10 @@ reformulated problem.</p></li>
 </ul>
 </dd>
 <dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>LPproblem</strong> – Structure contain the reformulated LP to be solved.</p>
+<dd class="field-odd"><p><strong>LPproblem</strong> – Structure contain the reformulated LP to be solved, with
+fields <cite>.A</cite>, <cite>.b</cite>, <cite>.c</cite>, <cite>.lb</cite>, <cite>.ub</cite>, <cite>.csense</cite> updated
+to the reformulated problem and <cite>.modelID</cite> prefixed with
+<cite>‘L_’</cite>.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -422,29 +493,36 @@ variables (e.g. z +v2 - v3 = 0)</p></li>
 </ol>
 </div></blockquote>
 <dl class="field-list simple">
-<dt class="field-odd">Inputs<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>A        k x n constraint matrix.</strong></p></li>
-<li><p><strong>ri       Index of the row of A to split</strong></p></li>
-<li><p><strong>evars    Cell array of existing extra variable IDs</strong></p></li>
-<li><p><strong>evarlb   Lower bounds of extra variables</strong></p></li>
-<li><p><strong>evarub   Upper bounds of extra variables</strong></p></li>
-<li><p><strong>evarc    Objective coefficients of extra variables</strong></p></li>
-<li><p><strong>b        Right-hand side vector of constraints</strong></p></li>
-<li><p><strong>dsense   Constraint senses</strong> (<em>L,E,G</em>)</p></li>
-<li><p><strong>ctrs     Cell array of constraint IDs</strong></p></li>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[A, evars, evarlb, evarub, evarc, b, dsense, ctrs] = splitRow</strong> (<em>A, ri, evars, evarlb, evarub, evarc, b, dsense, ctrs</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>A</strong> – <cite>k x n</cite> constraint matrix</p></li>
+<li><p><strong>ri</strong> – index of the row of <cite>A</cite> to split</p></li>
+<li><p><strong>evars</strong> – cell array of existing extra variable IDs</p></li>
+<li><p><strong>evarlb</strong> – lower bounds of extra variables</p></li>
+<li><p><strong>evarub</strong> – upper bounds of extra variables</p></li>
+<li><p><strong>evarc</strong> – objective coefficients of extra variables</p></li>
+<li><p><strong>b</strong> – right-hand side vector of constraints</p></li>
+<li><p><strong>dsense</strong> – constraint senses (L,E,G)</p></li>
+<li><p><strong>ctrs</strong> – cell array of constraint IDs</p></li>
 </ul>
 </dd>
-<dt class="field-even">Outputs<span class="colon">:</span></dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>A        Updated constraint matrix with one extra column and one extra row.</strong></p></li>
-<li><p><strong>evars    Updated extra variable IDs including the new z variable</strong></p></li>
-<li><p><strong>evarlb   Updated lower bounds</strong> (<em>new z has -Inf</em>)</p></li>
-<li><p><strong>evarub   Updated upper bounds</strong> (<em>new z has Inf</em>)</p></li>
-<li><p><strong>evarc    Updated objective coefficients</strong> (<em>new z has 0</em>)</p></li>
-<li><p><strong>b        Updated RHS including 0 for the z-definition equality</strong></p></li>
-<li><p><strong>dsense   Updated senses including ‘E’ for the z-definition equality</strong></p></li>
-<li><p><strong>ctrs     Updated constraint IDs with a _splitN suffix for the new row</strong></p></li>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>A</strong> – updated constraint matrix with one extra column and
+one extra row</p></li>
+<li><p><strong>evars</strong> – updated extra variable IDs including the new z
+variable</p></li>
+<li><p><strong>evarlb</strong> – updated lower bounds (new z has -Inf)</p></li>
+<li><p><strong>evarub</strong> – updated upper bounds (new z has Inf)</p></li>
+<li><p><strong>evarc</strong> – updated objective coefficients (new z has 0)</p></li>
+<li><p><strong>b</strong> – updated RHS including 0 for the z-definition equality</p></li>
+<li><p><strong>dsense</strong> – updated senses including ‘E’ for the z-definition
+equality</p></li>
+<li><p><strong>ctrs</strong> – updated constraint IDs with a _splitN suffix for the
+new row</p></li>
 </ul>
 </dd>
 </dl>
@@ -462,10 +540,10 @@ variables (e.g. z +v2 - v3 = 0)</p></li>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../cardOpt/index.html" class="btn btn-default float-right" title="Cardopt" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../gams/index.html" class="btn btn-default float-right" title="Gams" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../cplex/index.html" class="btn btn-default" title="Cplex" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../lindo/index.html" class="btn btn-default" title="Lindo" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

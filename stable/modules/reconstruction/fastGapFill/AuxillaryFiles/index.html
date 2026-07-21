@@ -161,17 +161,17 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../dataIntegration/index.html">Dataintegration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../design/index.html">Design</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Reconstruction</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../../comparison/index.html">Comparison</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../refinement/index.html">Refinement</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../rBioNet/index.html">Rbionet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modelGeneration/index.html">Modelgeneration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../metaboRePort/index.html">Metaboreport</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../index.html">Fastgapfill</a><ul class="current">
 <li class="toctree-l4 current"><a class="current reference internal" href="#">Auxillaryfiles</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../growthExpMatch/index.html">Growthexpmatch</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../modelGeneration/index.html">Modelgeneration</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../rBioNet/index.html">Rbionet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../comparison/index.html">Comparison</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../demeter/index.html">Demeter</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../refinement/index.html">Refinement</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../metaboRePort/index.html">Metaboreport</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../visualization/index.html">Visualization</a></li>
@@ -232,6 +232,51 @@
   <section id="auxillaryfiles">
 <span id="id1"></span><h1>Auxillaryfiles<a class="headerlink" href="#auxillaryfiles" title="Permalink to this heading">¶</a></h1>
 <span class="target" id="module-src.reconstruction.fastGapFill.AuxillaryFiles"></span><dl class="mat function">
+<dt class="sig sig-object mat" id="src.reconstruction.fastGapFill.AuxillaryFiles.LP9weighted">
+<span class="sig-name descname"><span class="pre">LP9weighted</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">W</span></em>, <em class="sig-param"><span class="pre">K</span></em>, <em class="sig-param"><span class="pre">P</span></em>, <em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">LPproblem</span></em>, <em class="sig-param"><span class="pre">epsilon</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/fastGapFill/AuxillaryFiles/LP9weighted.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.fastGapFill.AuxillaryFiles.LP9weighted" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solves a weighted variant of the <cite>LP9</cite> problem from the FASTCORE algorithm
+(Vlassis et al., 2013): given an existing LP problem, minimizes the
+weighted L1 norm of the flux through the candidate reactions <cite>P</cite> subject
+to the flux through the core reactions <cite>K</cite> being at least <cite>epsilon</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>V = LP9weighted</strong> (<em>W, K, P, model, LPproblem, epsilon</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>W</strong> – <cite>n x 1</cite> nonnegative weight vector (penalizes reactions
+in <cite>P</cite> with a higher weight more strongly)</p></li>
+<li><p><strong>K</strong> – Indices of the core reactions required to carry a flux
+of at least <cite>epsilon</cite></p></li>
+<li><p><strong>P</strong> – Indices of the candidate reactions whose weighted flux
+magnitude (<cite>W(P) .* v(P)</cite>) is minimized</p></li>
+<li><p><strong>model</strong> – Model structure, with field:</p>
+<ul>
+<li><p>.S - <cite>m x n</cite> stoichiometric matrix (only its size is used)</p></li>
+</ul>
+</li>
+<li><p><strong>LPproblem</strong> – LP problem structure to extend, with fields:</p>
+<ul>
+<li><p>.A - <cite>m2 x n2</cite> linear constraint matrix</p></li>
+<li><p>.b - <cite>m2 x 1</cite> right hand side vector for <cite>A*x = b</cite></p></li>
+<li><p>.lb - <cite>n2 x 1</cite> lower bound vector</p></li>
+<li><p>.ub - <cite>n2 x 1</cite> upper bound vector</p></li>
+<li><p>.csense - <cite>m2 x 1</cite> character array of constraint senses
+(<cite>E</cite>, <cite>G</cite>, or <cite>L</cite>)</p></li>
+</ul>
+</li>
+<li><p><strong>epsilon</strong> – Minimum required flux through the reactions in <cite>K</cite></p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>V</strong> – <cite>n x 1</cite> flux vector solving the weighted LP9 problem,
+restricted to the first <cite>n</cite> variables, or an <cite>n x 1</cite>
+vector of <cite>NaN</cite> if no solution vector was returned</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
 <dt class="sig sig-object mat" id="src.reconstruction.fastGapFill.AuxillaryFiles.assignRxnWeights">
 <span class="sig-name descname"><span class="pre">assignRxnWeights</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">MatricesSUX</span></em>, <em class="sig-param"><span class="pre">weights</span></em>, <em class="sig-param"><span class="pre">WeightsPerRxn</span></em>, <em class="sig-param"><span class="pre">NoWeight</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/fastGapFill/AuxillaryFiles/assignRxnWeights.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.fastGapFill.AuxillaryFiles.assignRxnWeights" title="Permalink to this definition">¶</a></dt>
 <dd><p>Assigns reaction weights</p>
@@ -241,7 +286,13 @@
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul>
-<li><p><strong>MatricesSUX</strong> – Input model structure</p></li>
+<li><p><strong>MatricesSUX</strong> – Input model structure, with field:</p>
+<ul class="simple">
+<li><p>.MatrixPart - <cite>n x 1</cite> vector indicating the origin
+of each reaction (1 - model, 2 - KEGG, 3 -
+exchange/transport)</p></li>
+</ul>
+</li>
 <li><p><strong>weights</strong> – Weight structure that permits to add weights to
 non-core reactions (it is recommended to use values other than 0 and 1, with lower weight
 corresponding to higher priority. Format:</p>
@@ -277,7 +328,7 @@ in core reaction set and NOT in WeightsPerRxn (default:1000)</p></li>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>KEGGFilename</strong> – File name containing universal database (e.g., KEGG; optional input, default: <cite>reaction.lst</cite>)</p></li>
-<li><p><strong>KEGGblackList</strong> – List of excluded reactions from the universal database
+<li><p><strong>KEGGBlackList</strong> – List of excluded reactions from the universal database
 (e.g., KEGG) (optional input, default: no blacklist)</p></li>
 </ul>
 </dd>
@@ -298,19 +349,25 @@ it will not parse the reactions correctly and will throw an error.</p>
 <dd><p>Creates a matrix full of exchange reactions based
 on the input list (creates an exchange reaction for each of the
 metabolites present in the model)</p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>ExchangeRxnMatrix = createXMatrix2</strong> (<em>compoundsIn, transport, compartment, model</em>)</p>
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
-<dd class="field-even"><ul class="simple">
+<dd class="field-even"><ul>
 <li><p><strong>compoundsIn</strong> – List of metabolites</p></li>
 <li><p><strong>transport</strong> – if 1, transport reactions will be defined as well for every
 compounds (default: 0, which corresponds to only exchange reactions)</p></li>
 <li><p><strong>compartment</strong> – [c] –&gt; transport from cytoplasm [c] to extracellular space
 [e] (default), [p] creates transport from [c] to [p] and from [p] to [c]</p></li>
 <li><p><strong>model</strong> – model structure - used to check if exchange reaction exists
-already before adding it to <cite>ExchangeRxnMatrix</cite></p></li>
+already before adding it to <cite>ExchangeRxnMatrix</cite>, with field:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>.mets - <cite>m x 1</cite> metabolite identifiers</p></li>
+</ul>
+</div></blockquote>
+</li>
 </ul>
 </dd>
 <dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
@@ -329,7 +386,10 @@ transport reactions</p>
 <dd class="field-odd"><p><strong>[intracellRxnList] = findIntracellularRxns</strong> (<em>model</em>)</p>
 </dd>
 <dt class="field-even">INPUT<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>model</strong> – Model structure</p>
+<dd class="field-even"><p><strong>model</strong> – Model structure, with field:</p>
+<ul class="simple">
+<li><p>.rxns - <cite>n x 1</cite> reaction identifiers</p></li>
+</ul>
 </dd>
 <dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>intracellRxnList</strong> – List of intracellular reactions in model</p>
@@ -347,11 +407,19 @@ specified and reversible transport reactions (<cite>X</cite>) are added for each
 reactions are added for each metabolite in the extracellular space.</p>
 <dl class="field-list simple">
 <dt class="field-odd">USAGE<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>MatricesSUX =generateSUXComp</strong> (<em>model, dictionary, KEGGFilename, KEGGBlackList, listCompartments</em>)</p>
+<dd class="field-odd"><p><strong>MatricesSUX = generateSUXComp</strong> (<em>model, dictionary, KEGGFilename, KEGGBlackList, listCompartments, KEGGMatrixLoad</em>)</p>
 </dd>
 <dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>model</strong> – Model structure</p></li>
+<li><p><strong>model</strong> – Model structure, with fields:</p>
+<ul>
+<li><p>.mets - <cite>m x 1</cite> metabolite identifiers</p></li>
+<li><p>.subSystems - <cite>n x 1</cite> reaction subsystem annotations</p></li>
+<li><p>.RxnSubsystem - set internally from <cite>.subSystems</cite>
+before merging with the universal database and
+exchange/transport matrices; not required as input</p></li>
+</ul>
+</li>
 <li><p><strong>dictionary</strong> – List of universal database IDs and their counterpart in the model (e.g.,
 <cite>KEGG_dictionary.xls</cite>)</p></li>
 <li><p><strong>KEGGFilename</strong> – File name containing the universal database (e.g., KEGG - <cite>reaction.lst</cite>)</p></li>
@@ -359,7 +427,7 @@ reactions are added for each metabolite in the extracellular space.</p>
 (e.g., <cite>KEGG</cite>)</p></li>
 <li><p><strong>listCompartments</strong> – List of intracellular compartments in the model
 (optional input, default compartments to be considered: ‘[c]’ ,’[m]’, ‘[l]’, ‘[g]’, ‘[r]’, ‘[x]’, ‘[n]’)</p></li>
-<li><p><strong>KEGGMatrixLoad       load precomputed KEGG matrix (default</strong> – 0)</p></li>
+<li><p><strong>KEGGMatrixLoad</strong> – load precomputed KEGG matrix (default: 0)</p></li>
 </ul>
 </dd>
 <dt class="field-odd">OUTPUT<span class="colon">:</span></dt>

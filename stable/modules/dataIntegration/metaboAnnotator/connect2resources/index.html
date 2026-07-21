@@ -66,7 +66,7 @@
     <link rel="top" title="The COBRA Toolbox" href="../../../../index.html"/>
         <link rel="up" title="Metaboannotator" href="../index.html"/>
         <link rel="next" title="Buildmetstruct" href="../buildMetStruct/index.html"/>
-        <link rel="prev" title="Analysemetstruct" href="../analyseMetStruct/index.html"/> 
+        <link rel="prev" title="Generatemetinfo" href="../generateMetInfo/index.html"/> 
 
   
   <script src="../../../../_static/js/modernizr.min.js"></script>
@@ -159,20 +159,20 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../base/index.html">Base</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Dataintegration</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../../chemoInformatics/index.html">Chemoinformatics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../fluxomics/index.html">Fluxomics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../metabotools/index.html">Metabotools</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../metanetxMapper/index.html">Metanetxmapper</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../XomicsToModel/index.html">Xomicstomodel</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../index.html">Metaboannotator</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="../analyseMetStruct/index.html">Analysemetstruct</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../molFileFinder/index.html">Molfilefinder</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../generateMetInfo/index.html">Generatemetinfo</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">Connect2resources</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../buildMetStruct/index.html">Buildmetstruct</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../generateMetInfo/index.html">Generatemetinfo</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../molFileFinder/index.html">Molfilefinder</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="../../XomicsToModel/index.html">Xomicstomodel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chemoInformatics/index.html">Chemoinformatics</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../transcriptomics/index.html">Transcriptomics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../metabotools/index.html">Metabotools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../fluxomics/index.html">Fluxomics</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../design/index.html">Design</a></li>
@@ -237,107 +237,181 @@
 <span class="target" id="module-src.dataIntegration.metaboAnnotator.connect2resources"></span><dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.metaboAnnotator.connect2resources.VMH2Metabolon">
 <span class="sig-name descname"><span class="pre">VMH2Metabolon</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">metabolite_structure</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metaboAnnotator/connect2resources/VMH2Metabolon.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metaboAnnotator.connect2resources.VMH2Metabolon" title="Permalink to this definition">¶</a></dt>
-<dd><p>read in Metabolon to VMH mapping which has been done in parts manually
-and cross checked from two sides independently. Currently, we have 400
-metabolites mapped.
-information missing in the current rBioNet flat files will be substituted
-with this information.
-I will also read in the Metabolon ID. (CHEM_ID in this input file).</p>
-<p>INPUT
-metabolite_structure  metabolite structure</p>
-<p>OUTPUT
-metabolite_structure  Updated metabolite structure</p>
-<p>Ines Thiele, 09/2021</p>
+<dd><p>Read a manually curated Metabolon-to-VMH mapping and add the matched
+Metabolon, HMDB, InChIKey, InChIString, CAS registry, KEGG, ChemSpider
+and PubChem identifiers to the metabolite structure. The mapping was done
+in parts manually and cross checked from two sides independently. Existing
+annotation entries may be overwritten.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[metabolite_structure] = VMH2Metabolon</strong> (<em>metabolite_structure</em>)</p>
+</dd>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>metabolite_structure</strong> – metabolite structure whose fields are VMH
+metabolite IDs, each holding annotation fields</p>
+</dd>
+<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>metabolite_structure</strong> – metabolite structure updated with the
+Metabolon cross-matched identifiers</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.metaboAnnotator.connect2resources.VMH2Seed">
 <span class="sig-name descname"><span class="pre">VMH2Seed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">metabolite_structure</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metaboAnnotator/connect2resources/VMH2Seed.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metaboAnnotator.connect2resources.VMH2Seed" title="Permalink to this definition">¶</a></dt>
-<dd><p>read in Metabolon to VMH mapping which has been done in parts manually
-and cross checked from two sides independently. Currently, we have 400
-metabolites mapped.
-information missing in the current rBioNet flat files will be substituted
-with this information.
-I will also read in the Metabolon ID. (CHEM_ID in this input file).</p>
-<p>INPUT
-metabolite_structure  metabolite structure</p>
-<p>OUTPUT
-metabolite_structure  Updated metabolite structure</p>
-<p>Ines Thiele, 09/2021</p>
+<dd><p>Read a VMH-to-SEED metabolite translation table and add the matched SEED
+identifiers to the metabolite structure. Existing SEED entries may be
+overwritten.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[metabolite_structure] = VMH2Seed</strong> (<em>metabolite_structure</em>)</p>
+</dd>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>metabolite_structure</strong> – metabolite structure whose fields are VMH
+metabolite IDs, each holding annotation fields</p>
+</dd>
+<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>metabolite_structure</strong> – metabolite structure updated with the matched
+SEED identifiers</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.metaboAnnotator.connect2resources.assignAGORAReconPresence">
 <span class="sig-name descname"><span class="pre">assignAGORAReconPresence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">metabolite_structure</span></em>, <em class="sig-param"><span class="pre">reaction</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metaboAnnotator/connect2resources/assignAGORAReconPresence.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metaboAnnotator.connect2resources.assignAGORAReconPresence" title="Permalink to this definition">¶</a></dt>
-<dd><p>this function assigns whether a metabolite occurs in AGORA_X and ReconX</p>
-<p>INPUT
-metabolite_structure  metabolite structure
-reaction              default: false (0). Set to true (1) if input is a reaction</p>
-<blockquote>
-<div><p>structure</p>
-</div></blockquote>
-<p>OUTPUT
-metabolite_structure  Updated metabolite structure</p>
-<p>Ines Thiele, 09/2021</p>
+<dd><p>Assign whether each metabolite (or reaction) occurs in AGORA2 and in Recon3D
+by flagging the matched entries with <cite>.Agora2</cite> and <cite>.Recon3D</cite> fields.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[metabolite_structure] = assignAGORAReconPresence</strong> (<em>metabolite_structure, reaction</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>metabolite_structure</strong> – metabolite structure whose fields are VMH
+metabolite (or reaction) IDs</p>
+</dd>
+<dt class="field-odd">OPTIONAL INPUT<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>reaction</strong> – default: false (0). Set to true (1) if the input
+is a reaction structure</p>
+</dd>
+<dt class="field-even">OUTPUT<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>metabolite_structure</strong> – metabolite structure updated with the AGORA2 and
+Recon3D presence flags</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.metaboAnnotator.connect2resources.assignClassyFire">
 <span class="sig-name descname"><span class="pre">assignClassyFire</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">metabolite_structure</span></em>, <em class="sig-param"><span class="pre">startSearch</span></em>, <em class="sig-param"><span class="pre">endSearch</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metaboAnnotator/connect2resources/assignClassyFire.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metaboAnnotator.connect2resources.assignClassyFire" title="Permalink to this definition">¶</a></dt>
-<dd><p>get metabolite classification from ClassyFire</p>
-<p>INPUT
-metabolite_structure  metabolite structure
-startSearch           specify where the search should start in the</p>
-<blockquote>
-<div><p>metabolite structure. Must be numeric (optional, default: all metabolites
-in the structure will be search for)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>endSearch             specify where the search should end in the</dt><dd><p>metabolite structure. Must be numeric (optional, default: all metabolites
-in the structure will be search for)</p>
+<dd><p>Get the metabolite taxonomic classification from ClassyFire (online), based
+on each metabolite InChIKey, and store the Kingdom, Superclass, Class,
+Subclass and Level 5 assignments as <cite>classyFire_*</cite> fields.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[metabolite_structure] = assignClassyFire</strong> (<em>metabolite_structure, startSearch, endSearch</em>)</p>
+</dd>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>metabolite_structure</strong> – metabolite structure whose fields are VMH
+metabolite IDs</p>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>startSearch</strong> – numeric index of where the search should start in
+the metabolite structure (default: 1)</p></li>
+<li><p><strong>endSearch</strong> – numeric index of where the search should end in
+the metabolite structure (default: last metabolite)</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUT<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>metabolite_structure</strong> – metabolite structure updated with the ClassyFire
+classification fields</p>
 </dd>
 </dl>
-<p>OUTPUT
-metabolite_structure  updated metabolite structure</p>
-<p>Ines Thiele, 09/2021</p>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.metaboAnnotator.connect2resources.convertOld2NewHMDB">
 <span class="sig-name descname"><span class="pre">convertOld2NewHMDB</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">HMDBId</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metaboAnnotator/connect2resources/convertOld2NewHMDB.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metaboAnnotator.connect2resources.convertOld2NewHMDB" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function converts the old style HMDB ids to the new style
-old style ‘HMDB06525’
-new style ‘HMDB0006525’ – 7 digits – fill up old ID to new ID with 0</p>
-<p>INPUT
-HMDBId    HMDB id</p>
-<p>OUTPUT
-HMDBId_new    new style HMDB id</p>
-<p>Ines Thiele 03/2022</p>
+<dd><p>Convert an old style HMDB id to the new style by zero padding the numeric
+part to 7 digits (old style ‘HMDB06525’, new style ‘HMDB0006525’). Ids that
+are already in the new style are returned as an empty char.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[HMDBId_new] = convertOld2NewHMDB</strong> (<em>HMDBId</em>)</p>
+</dd>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>HMDBId</strong> – old style HMDB id</p>
+</dd>
+<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>HMDBId_new</strong> – new style HMDB id (7 digit numeric part)</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="mat script">
 <dt class="sig sig-object mat" id="src.dataIntegration.metaboAnnotator.connect2resources.getAnnoFromHMDB">
 <span class="sig-name descname"><span class="pre">getAnnoFromHMDB</span></span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metaboAnnotator/connect2resources/getAnnoFromHMDB.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metaboAnnotator.connect2resources.getAnnoFromHMDB" title="Permalink to this definition">¶</a></dt>
-<dd><p>hmdb field exists in metabolite_structure as a field</p>
+<dd><p>Annotate the metabolite structure with identifiers parsed from HMDB. HMDB
+IDs already present are written to a file, parsed offline, and the returned
+cross-references (SMILES, InChIString, InChIKey, KEGG, BioCyc, ChEBI,
+FooDB, DrugBank, ChemSpider, PubChem) are added; missing HMDB IDs are then
+inferred from the other identifiers.</p>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.metaboAnnotator.connect2resources.getCas2CTD">
 <span class="sig-name descname"><span class="pre">getCas2CTD</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">metabolite_structure</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metaboAnnotator/connect2resources/getCas2CTD.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metaboAnnotator.connect2resources.getCas2CTD" title="Permalink to this definition">¶</a></dt>
-<dd><p>The input file was obtained from <a class="reference external" href="http://ctdbase.org/reports/CTD_chemicals.csv.gz">http://ctdbase.org/reports/CTD_chemicals.csv.gz</a>
-1st col: ctd id, 3rd col cas</p>
+<dd><p>Add CTD (Comparative Toxicogenomics Database) identifiers to the metabolite
+structure by matching on the CAS registry number. The input file was obtained
+from <a class="reference external" href="http://ctdbase.org/reports/CTD_chemicals.csv.gz">http://ctdbase.org/reports/CTD_chemicals.csv.gz</a> (1st column: ctd id,
+3rd column: cas).</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[metabolite_structure, IDsAdded] = getCas2CTD</strong> (<em>metabolite_structure</em>)</p>
+</dd>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>metabolite_structure</strong> – metabolite structure whose fields are VMH
+metabolite IDs, each holding a <cite>casRegistry</cite> field</p>
+</dd>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>metabolite_structure</strong> – metabolite structure updated with the matched CTD
+identifiers</p></li>
+<li><p><strong>IDsAdded</strong> – cell array logging the added identifiers, with the
+metabolite field name, the annotation type
+(<cite>ctd</cite>), and the assigned identifier per row</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.metaboAnnotator.connect2resources.getCas2Echa">
 <span class="sig-name descname"><span class="pre">getCas2Echa</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">metabolite_structure</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metaboAnnotator/connect2resources/getCas2Echa.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metaboAnnotator.connect2resources.getCas2Echa" title="Permalink to this definition">¶</a></dt>
-<dd><p>The input file was downloaded from <a class="reference external" href="https://echa.europa.eu/documents/10162/13629/ec_inventory_en.xlsx">https://echa.europa.eu/documents/10162/13629/ec_inventory_en.xlsx</a></p>
-<p>INPUT
-metabolite_structure  metabolite structure</p>
-<p>OUTPUT
-metabolite_structure  Updated metabolite structure</p>
-<p>Ines Thiele, 2020-2021
-first column contains echa_id,4th col is cas registry</p>
+<dd><p>Add ECHA (European Chemicals Agency) identifiers to the metabolite structure
+by matching on the CAS registry number. The input file was downloaded from
+<a class="reference external" href="https://echa.europa.eu/documents/10162/13629/ec_inventory_en.xlsx">https://echa.europa.eu/documents/10162/13629/ec_inventory_en.xlsx</a> (first
+column: echa_id, 4th column: cas registry).</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[metabolite_structure, IDsAdded] = getCas2Echa</strong> (<em>metabolite_structure</em>)</p>
+</dd>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>metabolite_structure</strong> – metabolite structure whose fields are VMH
+metabolite IDs, each holding a <cite>casRegistry</cite> field</p>
+</dd>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>metabolite_structure</strong> – metabolite structure updated with the matched
+ECHA identifiers</p></li>
+<li><p><strong>IDsAdded</strong> – cell array logging the added identifiers, with the
+metabolite field name, the annotation type
+(<cite>echa_id</cite>), and the assigned identifier per row</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="mat script">
@@ -351,334 +425,887 @@ Ines Thiele 2020/2021</p>
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.metaboAnnotator.connect2resources.getIDsfromFiehnLab">
 <span class="sig-name descname"><span class="pre">getIDsfromFiehnLab</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">metabolite_structure</span></em>, <em class="sig-param"><span class="pre">sourceId</span></em>, <em class="sig-param"><span class="pre">targetId</span></em>, <em class="sig-param"><span class="pre">startSearch</span></em>, <em class="sig-param"><span class="pre">endSearch</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metaboAnnotator/connect2resources/getIDsfromFiehnLab.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metaboAnnotator.connect2resources.getIDsfromFiehnLab" title="Permalink to this definition">¶</a></dt>
-<dd><p>connect to Fiehn lab (associated paper:
-<a class="reference external" href="https://academic.oup.com/bioinformatics/article/26/20/2647/">https://academic.oup.com/bioinformatics/article/26/20/2647/</a><a href="#id2"><span class="problematic" id="id3">194184_</span></a>
-url <em>from</em> / <em>to</em> / query term
-e.g., <a class="reference external" href="http://cts.fiehnlab.ucdavis.edu/service/convert/kegg/inchikey/C00234">http://cts.fiehnlab.ucdavis.edu/service/convert/kegg/inchikey/C00234</a></p>
+<dd><p>Use the Fiehn lab Chemical Translation Service (online) to convert a source
+identifier into a target identifier for each metabolite and store the result
+(associated paper <a class="reference external" href="https://academic.oup.com/bioinformatics/article/26/20/2647/194184">https://academic.oup.com/bioinformatics/article/26/20/2647/194184</a>;
+query pattern <a class="reference external" href="http://cts.fiehnlab.ucdavis.edu/service/convert/">http://cts.fiehnlab.ucdavis.edu/service/convert/</a><em>from</em>/<em>to</em>/<em>term</em>).</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[metabolite_structure, IDsAdded] = getIDsfromFiehnLab</strong> (<em>metabolite_structure, sourceId, targetId, startSearch, endSearch</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>metabolite_structure</strong> – metabolite structure whose fields are VMH
+metabolite IDs, each holding identifier fields</p></li>
+<li><p><strong>sourceId</strong> – metabolite field name of the identifier to
+translate from (e.g. <cite>keggId</cite>, <cite>inchiKey</cite>)</p></li>
+<li><p><strong>targetId</strong> – metabolite field name of the identifier to
+translate to (e.g. <cite>hmdb</cite>, <cite>cheBIId</cite>)</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>startSearch</strong> – numeric index of where the search should start in
+the metabolite structure (default: 1)</p></li>
+<li><p><strong>endSearch</strong> – numeric index of where the search should end in
+the metabolite structure (default: last metabolite)</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>metabolite_structure</strong> – metabolite structure updated with the translated
+target identifiers</p></li>
+<li><p><strong>IDsAdded</strong> – cell array logging the added identifiers, with the
+metabolite field name, the target identifier type,
+and the assigned identifier per row</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.metaboAnnotator.connect2resources.getIds2VMH">
 <span class="sig-name descname"><span class="pre">getIds2VMH</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">metabolite_structure</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metaboAnnotator/connect2resources/getIds2VMH.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metaboAnnotator.connect2resources.getIds2VMH" title="Permalink to this definition">¶</a></dt>
-<dd><p>map Seed metabolites
-file obtained from <a class="reference external" href="https://www.pnas.org/highwire/filestream/616377/field_highwire_adjunct_files/0/pnas.1401329111.sd01.xlsx">https://www.pnas.org/highwire/filestream/616377/field_highwire_adjunct_files/0/pnas.1401329111.sd01.xlsx</a>
-for PMID 24927599
-when getting the biggId’s the script is checking whether the id’s are
-still valid by testing the weblink. Only valid bigg id’s will be added</p>
+<dd><p>Map SEED, KEGG, BioCyc and BiGG metabolite identifiers onto the metabolite
+structure using the published cross-reference table for PMID 24927599 (file
+obtained from <a class="reference external" href="https://www.pnas.org/highwire/filestream/616377/field_highwire_adjunct_files/0/pnas.1401329111.sd01.xlsx">https://www.pnas.org/highwire/filestream/616377/field_highwire_adjunct_files/0/pnas.1401329111.sd01.xlsx</a>).
+When adding BiGG identifiers, the script checks that the id is still valid
+by testing its web link; only valid BiGG ids are added.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[metabolite_structure, IDsAdded] = getIds2VMH</strong> (<em>metabolite_structure</em>)</p>
+</dd>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>metabolite_structure</strong> – metabolite structure whose fields are VMH
+metabolite IDs, each holding identifier fields</p>
+</dd>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>metabolite_structure</strong> – metabolite structure updated with the mapped
+identifiers</p></li>
+<li><p><strong>IDsAdded</strong> – cell array logging the added identifiers, with the
+metabolite field name, the identifier type, and
+the assigned identifier per row</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.metaboAnnotator.connect2resources.getInchiStringFromHMDB">
 <span class="sig-name descname"><span class="pre">getInchiStringFromHMDB</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">HMDBID</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metaboAnnotator/connect2resources/getInchiStringFromHMDB.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metaboAnnotator.connect2resources.getInchiStringFromHMDB" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function retrieves the inchiString from HMDB (online) for a given
-HMDB ID.</p>
-<p>INPUT
-HMDBID    Human metabolome database (HMDB) ID</p>
-<p>OUTPUT
-inchiString   Retrieved inchiString</p>
-<p>Ines Thiele, 09/2021</p>
+<dd><p>Retrieve the InChIString from HMDB (online) for a given HMDB ID. Returns an
+empty array if the retrieval fails.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[inchiString] = getInchiStringFromHMDB</strong> (<em>HMDBID</em>)</p>
+</dd>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>HMDBID</strong> – Human metabolome database (HMDB) ID</p>
+</dd>
+<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>inchiString</strong> – retrieved InChIString</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.dataIntegration.metaboAnnotator.connect2resources.getInchisFromDatabases">
+<span class="sig-name descname"><span class="pre">getInchisFromDatabases</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metaboAnnotator/connect2resources/getInchisFromDatabases.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metaboAnnotator.connect2resources.getInchisFromDatabases" title="Permalink to this definition">¶</a></dt>
+<dd><p>Collect InChIStrings and InChIKeys for the metabolites of a COBRA model from
+multiple sources (the model itself, HMDB, ChEBI and KEGG) and assemble them
+into comparison tables, one row per metabolite and one column per source.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[TableInchiStrings, TableInchiKeys] = getInchisFromDatabases</strong> (<em>model</em>)</p>
+</dd>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>model</strong> – COBRA model structure. Only the following field is used:</p>
+<ul class="simple">
+<li><p>.modelID - identifier used to name the KEGG mol-file folder</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>TableInchiStrings</strong> – cell array of InChIStrings per metabolite (rows) and
+source (columns)</p></li>
+<li><p><strong>TableInchiKeys</strong> – cell array of InChIKeys per metabolite (rows) and
+source (columns)</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.metaboAnnotator.connect2resources.getMetIdsFromInchiKeys">
 <span class="sig-name descname"><span class="pre">getMetIdsFromInchiKeys</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">metabolite_structure</span></em>, <em class="sig-param"><span class="pre">inchiKeyCheck</span></em>, <em class="sig-param"><span class="pre">inchiStringCheck</span></em>, <em class="sig-param"><span class="pre">inchiKeyAltCheck</span></em>, <em class="sig-param"><span class="pre">metList</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metaboAnnotator/connect2resources/getMetIdsFromInchiKeys.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metaboAnnotator.connect2resources.getMetIdsFromInchiKeys" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function connects to UniChem and grebs available ID’s for
-metabolites that have Inchi Strings.</p>
+<dd><p>Connect to UniChem and grab available identifiers (ChEBI, PubChem,
+MetaboLights, Rhea, SwissLipids, BindingDB, DrugBank, KEGG, HMDB, EPA and
+LipidMaps) for metabolites that have InChIKeys or InChIStrings.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[metabolite_structure, IDsAdded] = getMetIdsFromInchiKeys</strong> (<em>metabolite_structure, inchiKeyCheck, inchiStringCheck, inchiKeyAltCheck, metList</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>metabolite_structure</strong> – metabolite structure whose fields are VMH
+metabolite IDs, each holding InChIKey/InChIString
+fields</p></li>
+<li><p><strong>inchiKeyCheck</strong> – if true, query UniChem using the InChIKey</p></li>
+<li><p><strong>inchiStringCheck</strong> – if true, query UniChem using the InChIString</p></li>
+<li><p><strong>inchiKeyAltCheck</strong> – if true, query UniChem using the neutral form of
+the InChIKey</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUT<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>metList</strong> – list of metabolite field names to process
+(default: all fields of metabolite_structure)</p>
+</dd>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>metabolite_structure</strong> – metabolite structure updated with the retrieved
+identifiers</p></li>
+<li><p><strong>IDsAdded</strong> – cell array logging the added identifiers, with the
+metabolite field name, the identifier type, and
+the assigned identifier per row</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.metaboAnnotator.connect2resources.getMetIdsFromUniChem">
 <span class="sig-name descname"><span class="pre">getMetIdsFromUniChem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">metabolite_structure</span></em>, <em class="sig-param"><span class="pre">startSearch</span></em>, <em class="sig-param"><span class="pre">endSearch</span></em>, <em class="sig-param"><span class="pre">vmhIdCheck</span></em>, <em class="sig-param"><span class="pre">cheBIIdCheck</span></em>, <em class="sig-param"><span class="pre">drugBankCheck</span></em>, <em class="sig-param"><span class="pre">pubChemIdCheck</span></em>, <em class="sig-param"><span class="pre">keggIdCheck</span></em>, <em class="sig-param"><span class="pre">hmdbCheck</span></em>, <em class="sig-param"><span class="pre">inchiKeyCheck</span></em>, <em class="sig-param"><span class="pre">inchiStringCheck</span></em>, <em class="sig-param"><span class="pre">inchiKeyAltCheck</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metaboAnnotator/connect2resources/getMetIdsFromUniChem.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metaboAnnotator.connect2resources.getMetIdsFromUniChem" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function connects to UniChem and grebs available ID’s for
-metabolites that have Inchi Strings.</p>
+<dd><p>Connect to UniChem and grab available identifiers (ChEBI, PubChem,
+MetaboLights, Rhea, SwissLipids, BindingDB, DrugBank, KEGG, HMDB, EPA and
+LipidMaps) for the metabolites in the structure. The query identifier is
+selected by the corresponding check flag.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[metabolite_structure, IDsAdded] = getMetIdsFromUniChem</strong> (<em>metabolite_structure, startSearch, endSearch, vmhIdCheck, cheBIIdCheck, drugBankCheck, pubChemIdCheck, keggIdCheck, hmdbCheck, inchiKeyCheck, inchiStringCheck, inchiKeyAltCheck</em>)</p>
+</dd>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>metabolite_structure</strong> – metabolite structure whose fields are VMH
+metabolite IDs, each holding identifier fields</p>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>startSearch</strong> – numeric index of where the search should start in
+the metabolite structure (default: 1)</p></li>
+<li><p><strong>endSearch</strong> – numeric index of where the search should end in
+the metabolite structure (default: last metabolite)</p></li>
+<li><p><strong>vmhIdCheck</strong> – if true, query UniChem using the VMH id (default: 0)</p></li>
+<li><p><strong>cheBIIdCheck</strong> – if true, query UniChem using the ChEBI id (default: 0)</p></li>
+<li><p><strong>drugBankCheck</strong> – if true, query UniChem using the DrugBank id (default: 0)</p></li>
+<li><p><strong>pubChemIdCheck</strong> – if true, query UniChem using the PubChem id (default: 0)</p></li>
+<li><p><strong>keggIdCheck</strong> – if true, query UniChem using the KEGG id (default: 0)</p></li>
+<li><p><strong>hmdbCheck</strong> – if true, query UniChem using the HMDB id (default: 0)</p></li>
+<li><p><strong>inchiKeyCheck</strong> – if true, query UniChem using the InChIKey (default: 0)</p></li>
+<li><p><strong>inchiStringCheck</strong> – if true, query UniChem using the InChIString (default: 0)</p></li>
+<li><p><strong>inchiKeyAltCheck</strong> – if true, query UniChem using the neutral form of
+the InChIKey (default: 0)</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>metabolite_structure</strong> – metabolite structure updated with the retrieved
+identifiers</p></li>
+<li><p><strong>IDsAdded</strong> – cell array logging the added identifiers, with the
+metabolite field name, the identifier type, and
+the assigned identifier per row</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.metaboAnnotator.connect2resources.getRxnFromKegg">
 <span class="sig-name descname"><span class="pre">getRxnFromKegg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">metabolite_structure</span></em>, <em class="sig-param"><span class="pre">metabolite_structure_rBioNet</span></em>, <em class="sig-param"><span class="pre">metsField</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metaboAnnotator/connect2resources/getRxnFromKegg.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metaboAnnotator.connect2resources.getRxnFromKegg" title="Permalink to this definition">¶</a></dt>
-<dd><p>get reaction from kegg</p>
+<dd><p>Retrieve, for the KEGG-annotated metabolites in the structure, the associated
+KEGG reactions from the KEGG website and collect for each reaction its KEGG
+ID, name, definition, equation, VMH abbreviation and name, EC number and the
+associated human gene and KEGG ontology term.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[keggkeggRxn] = getkeggRxnFromKegg</strong> (<em>metabolite_structure, metabolite_structure_rBioNet, metsField</em>)</p>
+</dd>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>metabolite_structure</strong> – metabolite structure whose fields are VMH
+metabolite IDs, each holding a <cite>keggId</cite> field</p>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>metabolite_structure_rBioNet</strong> – rBioNet-derived metabolite structure used to
+map KEGG ids back to VMH ids (default: loaded
+from met_strc_rBioNet)</p></li>
+<li><p><strong>metsField</strong> – list of metabolite field names to process
+(default: all fields of metabolite_structure)</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUT<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>keggkeggRxn</strong> – cell array of the KEGG reactions retrieved
+for the input metabolites</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.metaboAnnotator.connect2resources.getSeed2Kegg">
 <span class="sig-name descname"><span class="pre">getSeed2Kegg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">metabolite_structure</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metaboAnnotator/connect2resources/getSeed2Kegg.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metaboAnnotator.connect2resources.getSeed2Kegg" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function parses the file: <a class="reference external" href="ftp://ftp.kbase.us/assets/KBase_Reference_Data/Biochemistry/compounds.xls">ftp://ftp.kbase.us/assets/KBase_Reference_Data/Biochemistry/compounds.xls</a>
-first column contains seed ID, 5th col contains Kegg ID. This file is
-provided in /data/ as ‘compounds.xlsx’</p>
-<p>INPUT
-metabolite_structure  metabolite structure</p>
-<p>OUTPUT
-metabolite_structure  Updated metabolite structure</p>
-<p>Ines Thiele, 2020-2021</p>
+<dd><p>Add KEGG identifiers to the metabolite structure by mapping from the SEED id.
+The mapping parses the KBase file
+<a class="reference external" href="ftp://ftp.kbase.us/assets/KBase_Reference_Data/Biochemistry/compounds.xls">ftp://ftp.kbase.us/assets/KBase_Reference_Data/Biochemistry/compounds.xls</a>
+(first column: seed ID, 5th column: KEGG ID), provided in /data/ as
+‘compounds.xlsx’.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[metabolite_structure, IDsAdded] = getSeed2Kegg</strong> (<em>metabolite_structure</em>)</p>
+</dd>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>metabolite_structure</strong> – metabolite structure whose fields are VMH
+metabolite IDs, each holding a <cite>seed</cite> field</p>
+</dd>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>metabolite_structure</strong> – metabolite structure updated with the matched
+KEGG identifiers</p></li>
+<li><p><strong>IDsAdded</strong> – cell array logging the added identifiers, with the
+metabolite field name, the annotation type
+(<cite>keggId</cite>), and the assigned identifier per row</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.metaboAnnotator.connect2resources.parseBiggID4VMH">
 <span class="sig-name descname"><span class="pre">parseBiggID4VMH</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">metabolite_structure</span></em>, <em class="sig-param"><span class="pre">startSearch</span></em>, <em class="sig-param"><span class="pre">endSearch</span></em>, <em class="sig-param"><span class="pre">grebMoreIDs</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metaboAnnotator/connect2resources/parseBiggID4VMH.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metaboAnnotator.connect2resources.parseBiggID4VMH" title="Permalink to this definition">¶</a></dt>
-<dd><p>the problem is that by chance Bigg and VMH could have the same ID but for
-different metabolites – I do not do any additional checks right now
-which is dangerous (hence I do not greb more ID’s by default)</p>
+<dd><p>Guess the BiGG identifier of each metabolite from its VMH id by testing the
+BiGG website, and add it when a valid page exists. Note that a BiGG and a VMH
+id may coincide by chance for different metabolites; no further check is done,
+so additional ids are not retrieved by default.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[metabolite_structure, IDsAdded] = parseBiggID4VMH</strong> (<em>metabolite_structure, startSearch, endSearch, grebMoreIDs</em>)</p>
+</dd>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>metabolite_structure</strong> – metabolite structure whose fields are VMH
+metabolite IDs, each holding a <cite>VMHId</cite> field</p>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>startSearch</strong> – numeric index of where the search should start in
+the metabolite structure (default: 1)</p></li>
+<li><p><strong>endSearch</strong> – numeric index of where the search should end in
+the metabolite structure (default: last metabolite)</p></li>
+<li><p><strong>grebMoreIDs</strong> – if true (1), also retrieve additional identifiers
+(InChIKey, HMDB, MetaNetX, KEGG, BioCyc, Reactome,
+ChEBI) from the BiGG page (default: 0)</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>metabolite_structure</strong> – metabolite structure updated with the matched BiGG
+identifier and any additional identifiers</p></li>
+<li><p><strong>IDsAdded</strong> – cell array logging the added identifiers, with the
+metabolite field name, the identifier type, and
+the assigned identifier per row</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.metaboAnnotator.connect2resources.parseBridgeDb">
 <span class="sig-name descname"><span class="pre">parseBridgeDb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">metabolite_structure</span></em>, <em class="sig-param"><span class="pre">startSearch</span></em>, <em class="sig-param"><span class="pre">endSearch</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metaboAnnotator/connect2resources/parseBridgeDb.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metaboAnnotator.connect2resources.parseBridgeDb" title="Permalink to this definition">¶</a></dt>
-<dd><p>function [metabolite_structure,IDsAdded,IdsMismatch] = parseBridgeDb(metabolite_structure)
-This function takes existing database-dependent identifiers and searches
-BridgeDB (<a class="reference external" href="https://bridgedb.github.io/">https://bridgedb.github.io/</a>) via their webservice for other
-database identifiers (see below) and adds them to the metabolite
-structure if the metabolite does not have the respective identifier. In
-the case that the metabolite has such identifier already but if there is
-a mismatch, this will be listed in ‘IdsMismatch’</p>
-<p>INPUT
-metabolite_structure  metabolite structure</p>
-<p>OUTPUT
-metabolite_structure  updated metabolite structure
-IDsAdded              List of added IDs from BridgeDB
-IdsMismatch           List of mismatching IDs between VMH and BridgeDB</p>
-<p>Ines Thiele   October 2020</p>
+<dd><p>Take the existing database-dependent identifiers and search BridgeDB
+(<a class="reference external" href="https://bridgedb.github.io/">https://bridgedb.github.io/</a>) via their web service for other database
+identifiers, adding them to the metabolite structure when the metabolite does
+not already have the respective identifier. When the metabolite already has
+such an identifier but it mismatches, the discrepancy is listed in IdsMismatch.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[metabolite_structure, IDsAdded, IdsMismatch] = parseBridgeDb</strong> (<em>metabolite_structure, startSearch, endSearch</em>)</p>
+</dd>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>metabolite_structure</strong> – metabolite structure whose fields are VMH
+metabolite IDs, each holding identifier fields</p>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>startSearch</strong> – numeric index of where the search should start in
+the metabolite structure (default: 1)</p></li>
+<li><p><strong>endSearch</strong> – numeric index of where the search should end in
+the metabolite structure (default: last metabolite)</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>metabolite_structure</strong> – updated metabolite structure</p></li>
+<li><p><strong>IDsAdded</strong> – list of added IDs from BridgeDB</p></li>
+<li><p><strong>IdsMismatch</strong> – list of mismatching IDs between VMH and BridgeDB</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.metaboAnnotator.connect2resources.parseCHOmineWebpage">
 <span class="sig-name descname"><span class="pre">parseCHOmineWebpage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">metabolite_structure</span></em>, <em class="sig-param"><span class="pre">startSearch</span></em>, <em class="sig-param"><span class="pre">endSearch</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metaboAnnotator/connect2resources/parseCHOmineWebpage.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metaboAnnotator.connect2resources.parseCHOmineWebpage" title="Permalink to this definition">¶</a></dt>
-<dd><p>try to guess chomine abbreviation based on VMH ID</p>
+<dd><p>Guess the CHOmine abbreviation of each metabolite from its VMH id by testing
+the CHOmine website (<a class="reference external" href="https://chomine.boku.ac.at/">https://chomine.boku.ac.at/</a>) and add the <cite>chodb_id</cite> when
+a matching entry exists.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[metabolite_structure, IDsAdded] = parseCHOmineWebpage</strong> (<em>metabolite_structure, startSearch, endSearch</em>)</p>
+</dd>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>metabolite_structure</strong> – metabolite structure whose fields are VMH
+metabolite IDs, each holding a <cite>VMHId</cite> field</p>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>startSearch</strong> – numeric index of where the search should start in
+the metabolite structure (default: 1)</p></li>
+<li><p><strong>endSearch</strong> – numeric index of where the search should end in
+the metabolite structure (default: last metabolite)</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>metabolite_structure</strong> – metabolite structure updated with the matched
+CHOmine identifier</p></li>
+<li><p><strong>IDsAdded</strong> – cell array logging the added identifiers, with the
+metabolite field name, the annotation type
+(<cite>chodb_id</cite>), and the assigned identifier per row</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.dataIntegration.metaboAnnotator.connect2resources.parseChebiIdWebPage">
+<span class="sig-name descname"><span class="pre">parseChebiIdWebPage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">metabolite_structure</span></em>, <em class="sig-param"><span class="pre">startSearch</span></em>, <em class="sig-param"><span class="pre">endSearch</span></em>, <em class="sig-param"><span class="pre">printInchis</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metaboAnnotator/connect2resources/parseChebiIdWebPage.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metaboAnnotator.connect2resources.parseChebiIdWebPage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse the ChEBI website for each metabolite that has a ChEBI id and retrieve
+its SMILES, InChIKey and InChIString, adding them to the metabolite structure.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[metabolite_structure, IDsAdded, InchiKeyList, InchiStringList] = parseChebiIdWebPage</strong> (<em>metabolite_structure, startSearch, endSearch, printInchis</em>)</p>
+</dd>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>metabolite_structure</strong> – metabolite structure whose fields are VMH
+metabolite IDs, each holding a <cite>cheBIId</cite> field</p>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>startSearch</strong> – numeric index of where the search should start in
+the metabolite structure (default: 1)</p></li>
+<li><p><strong>endSearch</strong> – numeric index of where the search should end in
+the metabolite structure (default: last metabolite)</p></li>
+<li><p><strong>printInchis</strong> – if true, return the InChIKey and InChIString lists
+(default: 0)</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>metabolite_structure</strong> – metabolite structure updated with the retrieved
+SMILES, InChIKey and InChIString</p></li>
+<li><p><strong>IDsAdded</strong> – cell array logging the added identifiers, with the
+metabolite field name, the identifier type, and
+the assigned identifier per row</p></li>
+<li><p><strong>InchiKeyList</strong> – list of the retrieved InChIKeys</p></li>
+<li><p><strong>InchiStringList</strong> – list of the retrieved InChIStrings</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.metaboAnnotator.connect2resources.parseChemIDPlusWebpage">
 <span class="sig-name descname"><span class="pre">parseChemIDPlusWebpage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">metabolite_structure</span></em>, <em class="sig-param"><span class="pre">startSearch</span></em>, <em class="sig-param"><span class="pre">endSearch</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metaboAnnotator/connect2resources/parseChemIDPlusWebpage.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metaboAnnotator.connect2resources.parseChemIDPlusWebpage" title="Permalink to this definition">¶</a></dt>
-<dd><p>uses unii IDs to parse</p>
+<dd><p>Retrieve identifiers from the ChemIDPlus website for each metabolite. UNII ids
+are looked up from the metabolite InChIKey and added to the structure.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[metabolite_structure, IDsAdded] = parseChemIDPlusWebpage</strong> (<em>metabolite_structure, startSearch, endSearch</em>)</p>
+</dd>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>metabolite_structure</strong> – metabolite structure whose fields are VMH
+metabolite IDs, each holding a <cite>inchiKey</cite> field</p>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>startSearch</strong> – numeric index of where the search should start in
+the metabolite structure (default: 1)</p></li>
+<li><p><strong>endSearch</strong> – numeric index of where the search should end in
+the metabolite structure (default: last metabolite)</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>metabolite_structure</strong> – metabolite structure updated with the retrieved
+identifiers</p></li>
+<li><p><strong>IDsAdded</strong> – cell array logging the added identifiers, with the
+metabolite field name, the identifier type, and
+the assigned identifier per row</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.metaboAnnotator.connect2resources.parseDBCollection">
 <span class="sig-name descname"><span class="pre">parseDBCollection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">metabolite_structure</span></em>, <em class="sig-param"><span class="pre">startSearch</span></em>, <em class="sig-param"><span class="pre">endSearch</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metaboAnnotator/connect2resources/parseDBCollection.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metaboAnnotator.connect2resources.parseDBCollection" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function takes substantial time. Also note that order matters,
-hence, some resources are parsed twice</p>
-<p>INPUT
-metabolite_structure  metabolite structure
-startSearch           specify where the search should start in the</p>
-<blockquote>
-<div><p>metabolite structure. Must be numeric (optional, default: all metabolites
-in the structure will be search for)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>endSearch             specify where the search should end in the</dt><dd><p>metabolite structure. Must be numeric (optional, default: all metabolites
-in the structure will be search for)</p>
+<dd><p>Collect metabolite identifiers from a series of online resources (BridgeDB,
+HMDB, Wikipedia, KEGG, ChEBI, DrugBank, UniChem, MetaNetX, Fiehn lab, BiGG,
+CHOmine, EPA, FDAsis and ChemIDPlus) and add them to the metabolite structure.
+This function takes substantial time; note that order matters, so some
+resources are parsed twice.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[metabolite_structure] = parseDBCollection</strong> (<em>metabolite_structure, startSearch, endSearch</em>)</p>
+</dd>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>metabolite_structure</strong> – metabolite structure whose fields are VMH
+metabolite IDs</p>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>startSearch</strong> – numeric index of where the search should start in
+the metabolite structure (default: 1)</p></li>
+<li><p><strong>endSearch</strong> – numeric index of where the search should end in
+the metabolite structure (default: last metabolite)</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUT<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>metabolite_structure</strong> – updated metabolite structure</p>
 </dd>
 </dl>
-<p>OUTPUT
-metabolite_structure  Updated metabolite structure</p>
-<p>Ines Thiele, 09/2021</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.dataIntegration.metaboAnnotator.connect2resources.parseDrugBankWebpage">
+<span class="sig-name descname"><span class="pre">parseDrugBankWebpage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">metabolite_structure</span></em>, <em class="sig-param"><span class="pre">startSearch</span></em>, <em class="sig-param"><span class="pre">endSearch</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metaboAnnotator/connect2resources/parseDrugBankWebpage.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metaboAnnotator.connect2resources.parseDrugBankWebpage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse the DrugBank website for each metabolite that has a DrugBank id and
+retrieve the cross-referenced identifiers and properties (e.g. ChemSpider,
+FooDB, Wikipedia, PubChem, ChEBI, KEGG, InChIKey, InChIString, molecular
+weights, IUPAC name, description, BioCyc, CAS registry and more), adding them
+to the metabolite structure.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[metabolite_structure, IDsAdded] = parseDrugBankWebpage</strong> (<em>metabolite_structure, startSearch, endSearch</em>)</p>
+</dd>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>metabolite_structure</strong> – metabolite structure whose fields are VMH
+metabolite IDs, each holding a <cite>drugbank</cite> field</p>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>startSearch</strong> – numeric index of where the search should start in
+the metabolite structure (default: 1)</p></li>
+<li><p><strong>endSearch</strong> – numeric index of where the search should end in
+the metabolite structure (default: last metabolite)</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>metabolite_structure</strong> – metabolite structure updated with the retrieved
+identifiers</p></li>
+<li><p><strong>IDsAdded</strong> – cell array logging the added identifiers, with the
+metabolite field name, the identifier type, and
+the assigned identifier per row</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.metaboAnnotator.connect2resources.parseEPA4VMH">
 <span class="sig-name descname"><span class="pre">parseEPA4VMH</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">metabolite_structure</span></em>, <em class="sig-param"><span class="pre">startSearch</span></em>, <em class="sig-param"><span class="pre">endSearch</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metaboAnnotator/connect2resources/parseEPA4VMH.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metaboAnnotator.connect2resources.parseEPA4VMH" title="Permalink to this definition">¶</a></dt>
-<dd><p>search EPA  - comptox
-using casRegistry
-or using inchiKey</p>
+<dd><p>Search the EPA CompTox dashboard for each metabolite (using the CAS registry
+number or, failing that, the InChIKey) and add the matched EPA identifier
+(<cite>epa_id</cite>) to the metabolite structure.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[metabolite_structure, IDsAdded] = parseEPA4VMH</strong> (<em>metabolite_structure, startSearch, endSearch</em>)</p>
+</dd>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>metabolite_structure</strong> – metabolite structure whose fields are VMH
+metabolite IDs, each holding <cite>casRegistry</cite> and
+<cite>inchiKey</cite> fields</p>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>startSearch</strong> – numeric index of where the search should start in
+the metabolite structure (default: 1)</p></li>
+<li><p><strong>endSearch</strong> – numeric index of where the search should end in
+the metabolite structure (default: last metabolite)</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>metabolite_structure</strong> – metabolite structure updated with the matched EPA
+identifier</p></li>
+<li><p><strong>IDsAdded</strong> – cell array logging the added identifiers, with the
+metabolite field name, the annotation type
+(<cite>epa_id</cite>), and the assigned identifier per row</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.metaboAnnotator.connect2resources.parseFDAsisWebpage">
 <span class="sig-name descname"><span class="pre">parseFDAsisWebpage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">metabolite_structure</span></em>, <em class="sig-param"><span class="pre">startSearch</span></em>, <em class="sig-param"><span class="pre">endSearch</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metaboAnnotator/connect2resources/parseFDAsisWebpage.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metaboAnnotator.connect2resources.parseFDAsisWebpage" title="Permalink to this definition">¶</a></dt>
-<dd><p>uses unii IDs to parse</p>
+<dd><p>Parse the FDA Substance Registration System (FDAsis) website for each
+metabolite that has a UNII id and retrieve cross-referenced identifiers (e.g.
+the PubChem id), adding them to the metabolite structure.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[metabolite_structure, IDsAdded] = parseFDAsisWebpage</strong> (<em>metabolite_structure, startSearch, endSearch</em>)</p>
+</dd>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>metabolite_structure</strong> – metabolite structure whose fields are VMH
+metabolite IDs, each holding <cite>VMHId</cite> and <cite>unii</cite>
+fields</p>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>startSearch</strong> – numeric index of where the search should start in
+the metabolite structure (default: 1)</p></li>
+<li><p><strong>endSearch</strong> – numeric index of where the search should end in
+the metabolite structure (default: last metabolite)</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>metabolite_structure</strong> – metabolite structure updated with the retrieved
+identifiers</p></li>
+<li><p><strong>IDsAdded</strong> – cell array logging the added identifiers, with the
+metabolite field name, the identifier type, and
+the assigned identifier per row</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="src.dataIntegration.metaboAnnotator.connect2resources.parseHmdbWebPage">
+<span class="sig-name descname"><span class="pre">parseHmdbWebPage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">metabolite_structure</span></em>, <em class="sig-param"><span class="pre">startSearch</span></em>, <em class="sig-param"><span class="pre">endSearch</span></em>, <em class="sig-param"><span class="pre">printInchis</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metaboAnnotator/connect2resources/parseHmdbWebPage.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metaboAnnotator.connect2resources.parseHmdbWebPage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse the HMDB website for each metabolite that has an HMDB id and retrieve
+the cross-referenced identifiers and properties (e.g. ChemSpider, FooDB,
+Wikipedia, PubChem, ChEBI, KEGG, InChIKey, InChIString, molecular weights,
+IUPAC name, description, BioCyc, CAS registry and more), adding them to the
+metabolite structure. Mismatches with existing ids are reported in IDsMismatch.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[metabolite_structure, IDsAdded, IDsMismatch, InchiKeyList, InchiStringList] = parseHmdbWebPage</strong> (<em>metabolite_structure, startSearch, endSearch, printInchis</em>)</p>
+</dd>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>metabolite_structure</strong> – metabolite structure whose fields are VMH
+metabolite IDs, each holding a <cite>hmdb</cite> field</p>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>startSearch</strong> – numeric index of where the search should start in
+the metabolite structure (default: 1)</p></li>
+<li><p><strong>endSearch</strong> – numeric index of where the search should end in
+the metabolite structure (default: last metabolite)</p></li>
+<li><p><strong>printInchis</strong> – if true, return the InChIKey and InChIString lists
+(default: 0)</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>metabolite_structure</strong> – metabolite structure updated with the retrieved
+identifiers</p></li>
+<li><p><strong>IDsAdded</strong> – cell array logging the added identifiers, with the
+metabolite field name, the identifier type, and
+the assigned identifier per row</p></li>
+<li><p><strong>IDsMismatch</strong> – list of mismatching IDs between the structure and HMDB</p></li>
+<li><p><strong>InchiKeyList</strong> – list of the retrieved InChIKeys</p></li>
+<li><p><strong>InchiStringList</strong> – list of the retrieved InChIStrings</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.metaboAnnotator.connect2resources.parseKeggWebpage">
 <span class="sig-name descname"><span class="pre">parseKeggWebpage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">metabolite_structure</span></em>, <em class="sig-param"><span class="pre">startSearch</span></em>, <em class="sig-param"><span class="pre">endSearch</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metaboAnnotator/connect2resources/parseKeggWebpage.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metaboAnnotator.connect2resources.parseKeggWebpage" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function searches kegg for identifiers. It will either use
-kegg ids provided by the metabolite structure.</p>
-<p>INPUT
-metabolite_structure  metabolite structure
-startSearch           specify where the search should start in the</p>
-<blockquote>
-<div><p>metabolite structure. Must be numeric (optional, default: all metabolites
-in the structure will be search for)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>endSearch             specify where the search should end in the</dt><dd><p>metabolite structure. Must be numeric (optional, default: all metabolites
-in the structure will be search for)</p>
+<dd><p>Search KEGG for identifiers, using the KEGG ids provided by the metabolite
+structure, and add the cross-referenced identifiers (CAS registry, ChEBI,
+ChEMBL and KNApSAcK) to the metabolite structure.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[metabolite_structure, IDsAdded] = parseKeggWebpage</strong> (<em>metabolite_structure, startSearch, endSearch</em>)</p>
+</dd>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>metabolite_structure</strong> – metabolite structure whose fields are VMH
+metabolite IDs, each holding a <cite>keggId</cite> field</p>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>startSearch</strong> – numeric index of where the search should start in
+the metabolite structure (default: 1)</p></li>
+<li><p><strong>endSearch</strong> – numeric index of where the search should end in
+the metabolite structure (default: last metabolite)</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>metabolite_structure</strong> – updated metabolite structure</p></li>
+<li><p><strong>IDsAdded</strong> – cell array logging the added identifiers, with the
+metabolite field name, the identifier type, and
+the assigned identifier per row</p></li>
+</ul>
 </dd>
 </dl>
-<p>OUTPUT
-metabolite_structure  updated metabolite structure</p>
-<p>Ines Thiele, 09/2021</p>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.metaboAnnotator.connect2resources.parseMetaNetXWebpage">
 <span class="sig-name descname"><span class="pre">parseMetaNetXWebpage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">metabolite_structure</span></em>, <em class="sig-param"><span class="pre">startSearch</span></em>, <em class="sig-param"><span class="pre">endSearch</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metaboAnnotator/connect2resources/parseMetaNetXWebpage.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metaboAnnotator.connect2resources.parseMetaNetXWebpage" title="Permalink to this definition">¶</a></dt>
-<dd><p>function [metabolite_structure,IDsAdded,IDsSuggested] = parseMetaNetXWebpage(metabolite_structure)
-This function first retrieves MetaNetX IDs based on existing IDs in the
-metabolite_structure (defined in queryFields).  MetaNetX IDs will only be
-added to the metabolite_structure if the  MetaNetX inchiKey and the metabolite_structure inchiKey
-agree (and added to IDsAdded(, otw it will be added to IDsSuggested.
-The function then takes all the MetaNetX IDs can retrieves further IDs to
-be added to the metabolite_structure. Therefore, we first verify the MetaNetX ID in the metabolite_structure by
-comparing the inchiKey in the metabolite_structure with the one from the MetaNetX ID
-if they do not agree the MetaNetX ID, the function tries to find the right ID based on the inchiKey in the metabolite structure. If unsuccesfull,
-the MetaNetX ID is removed from the metabolite_structure and added
-to the IDsSuggested list. Further ID’s are only retrieved for verified MetaNetX IDs.</p>
-<p>INPUT
-metabolite_structure  metabolite structure
-startSearch           specify where the search should start in the</p>
-<blockquote>
-<div><p>metabolite structure. Must be numeric (optional, default: all metabolites
-in the structure will be search for)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>endSearch             specify where the search should end in the</dt><dd><p>metabolite structure. Must be numeric (optional, default: all metabolites
-in the structure will be search for)</p>
+<dd><p>Retrieve MetaNetX identifiers based on the existing identifiers in the
+metabolite structure. A MetaNetX id is added only if its InChIKey agrees with
+the metabolite structure InChIKey (otherwise it is added to IDsSuggested).
+Verified MetaNetX ids are then used to retrieve further identifiers; a
+MetaNetX id that cannot be verified by InChIKey comparison is removed and
+listed in IDsSuggested.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[metabolite_structure, IDsAdded, IDsSuggested] = parseMetaNetXWebpage</strong> (<em>metabolite_structure, startSearch, endSearch</em>)</p>
+</dd>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>metabolite_structure</strong> – metabolite structure whose fields are VMH
+metabolite IDs, each holding identifier fields</p>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>startSearch</strong> – numeric index of where the search should start in
+the metabolite structure (default: 1)</p></li>
+<li><p><strong>endSearch</strong> – numeric index of where the search should end in
+the metabolite structure (default: last metabolite)</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>metabolite_structure</strong> – updated metabolite structure</p></li>
+<li><p><strong>IDsAdded</strong> – list of added IDs</p></li>
+<li><p><strong>IDsSuggested</strong> – list of suggested IDs</p></li>
+</ul>
 </dd>
 </dl>
-<p>OUTPUT
-metabolite_structure  updated metabolite structure
-IDsAdded              list of addded IDs
-IDsSuggested          list of suggested IDs</p>
-<p>Ines Thiele 2020/2021</p>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.metaboAnnotator.connect2resources.parseVMH4IDs">
 <span class="sig-name descname"><span class="pre">parseVMH4IDs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">metabolite_structure</span></em>, <em class="sig-param"><span class="pre">startSearch</span></em>, <em class="sig-param"><span class="pre">endSearch</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metaboAnnotator/connect2resources/parseVMH4IDs.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metaboAnnotator.connect2resources.parseVMH4IDs" title="Permalink to this definition">¶</a></dt>
-<dd><p>INPUT
-metabolite_structure  metabolite structure
-startSearch           specify where the search should start in the</p>
-<blockquote>
-<div><p>metabolite structure. Must be numeric (optional, default: all metabolites
-in the structure will be search for)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>endSearch             specify where the search should end in the</dt><dd><p>metabolite structure. Must be numeric (optional, default: all metabolites
-in the structure will be search for)</p>
+<dd><p>Query the VMH API for each metabolite (by its VMH id) and fill empty fields of
+the metabolite structure with the returned identifiers and properties (e.g.
+formula, charge, BiGG, LipidMaps, KEGG, PubChem, ChEBI, InChIString/InChIKey,
+SMILES, HMDB, MetaNetX, SEED, CAS registry and further cross-references).</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[metabolite_structure] = parseVMH4IDs</strong> (<em>metabolite_structure, startSearch, endSearch</em>)</p>
+</dd>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>metabolite_structure</strong> – metabolite structure whose fields are VMH
+metabolite IDs, each holding a <cite>VMHId</cite> field</p>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>startSearch</strong> – numeric index of where the search should start in
+the metabolite structure (default: 1)</p></li>
+<li><p><strong>endSearch</strong> – numeric index of where the search should end in
+the metabolite structure (default: last metabolite)</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUT<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>metabolite_structure</strong> – updated metabolite structure</p>
 </dd>
 </dl>
-<p>OUTPUT
-metabolite_structure  Updated metabolite structure</p>
-<p>Ines Thiele, 09/2021</p>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.metaboAnnotator.connect2resources.parseWikipediaWebpage">
 <span class="sig-name descname"><span class="pre">parseWikipediaWebpage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">metabolite_structure</span></em>, <em class="sig-param"><span class="pre">startSearch</span></em>, <em class="sig-param"><span class="pre">endSearch</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metaboAnnotator/connect2resources/parseWikipediaWebpage.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metaboAnnotator.connect2resources.parseWikipediaWebpage" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function searches wikipedia for identifiers. It will either use
-wikipedia ids provided by the metabolite structure or try to find perfect
-hits based on metabolite name search.</p>
-<p>INPUT
-metabolite_structure  metabolite structure
-startSearch           specify where the search should start in the</p>
-<blockquote>
-<div><p>metabolite structure. Must be numeric (optional, default: all metabolites
-in the structure will be search for)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>endSearch             specify where the search should end in the</dt><dd><p>metabolite structure. Must be numeric (optional, default: all metabolites
-in the structure will be search for)</p>
+<dd><p>Search Wikipedia for identifiers, using the Wikipedia id provided by the
+metabolite structure or a perfect hit from a metabolite name search, and add
+the cross-referenced identifiers (e.g. IUPHAR, ChemSpider, ECHA, ChEMBL, CAS
+registry, PubChem, UNII, EPA) to the metabolite structure.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[metabolite_structure, IDsAdded] = parseWikipediaWebpage</strong> (<em>metabolite_structure, startSearch, endSearch</em>)</p>
+</dd>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>metabolite_structure</strong> – metabolite structure whose fields are VMH
+metabolite IDs</p>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>startSearch</strong> – numeric index of where the search should start in
+the metabolite structure (default: 1)</p></li>
+<li><p><strong>endSearch</strong> – numeric index of where the search should end in
+the metabolite structure (default: last metabolite)</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>metabolite_structure</strong> – updated metabolite structure</p></li>
+<li><p><strong>IDsAdded</strong> – cell array logging the added identifiers, with the
+metabolite field name, the identifier type, and
+the assigned identifier per row</p></li>
+</ul>
 </dd>
 </dl>
-<p>OUTPUT
-metabolite_structure  updated metabolite structure</p>
-<p>Ines Thiele, 09/2021</p>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.metaboAnnotator.connect2resources.queryExposomeExplorer">
 <span class="sig-name descname"><span class="pre">queryExposomeExplorer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">metabolite_structure</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metaboAnnotator/connect2resources/queryExposomeExplorer.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metaboAnnotator.connect2resources.queryExposomeExplorer" title="Permalink to this definition">¶</a></dt>
-<dd><p>the function will search for metabolite names
-<a class="reference external" href="http://exposome-explorer.iarc.fr/search?utf8=%E2%9C%93&amp;query=2-aminophenol+sulfate&amp;button=">http://exposome-explorer.iarc.fr/search?utf8=%E2%9C%93&amp;query=2-aminophenol+sulfate&amp;button=</a></p>
-<p>INPUT
-metabolite_structure  metabolite structure
-startSearch           specify where the search should start in the</p>
-<blockquote>
-<div><p>metabolite structure. Must be numeric (optional, default: all metabolites
-in the structure will be search for)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>endSearch             specify where the search should end in the</dt><dd><p>metabolite structure. Must be numeric (optional, default: all metabolites
-in the structure will be search for)</p>
+<dd><p>Search the Exposome Explorer website (<a class="reference external" href="http://exposome-explorer.iarc.fr">http://exposome-explorer.iarc.fr</a>) by
+metabolite name and add the matched Exposome Explorer identifier to the
+metabolite structure for metabolites that lack a LipidMaps id.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[metabolite_structure] = queryExposomeExplorer</strong> (<em>metabolite_structure</em>)</p>
+</dd>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>metabolite_structure</strong> – metabolite structure whose fields are VMH
+metabolite IDs, each holding <cite>metNames</cite> and
+<cite>lipidmaps</cite> fields</p>
+</dd>
+<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>metabolite_structure</strong> – updated metabolite structure</p>
 </dd>
 </dl>
-<p>OUTPUT
-metabolite_structure  updated metabolite structure</p>
-<p>Ines Thiele, 09/2021</p>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.metaboAnnotator.connect2resources.queryLipidMaps">
 <span class="sig-name descname"><span class="pre">queryLipidMaps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">metabolite_structure</span></em>, <em class="sig-param"><span class="pre">startSearch</span></em>, <em class="sig-param"><span class="pre">endSearch</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metaboAnnotator/connect2resources/queryLipidMaps.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metaboAnnotator.connect2resources.queryLipidMaps" title="Permalink to this definition">¶</a></dt>
-<dd><blockquote>
-<div><p>the function will search for metabolite names</p>
-</div></blockquote>
-<p><a class="reference external" href="https://www.lipidmaps.org/search/quicksearch.php?Name=2-methyl-dodecanedioic+acid">https://www.lipidmaps.org/search/quicksearch.php?Name=2-methyl-dodecanedioic+acid</a></p>
-<blockquote>
-<div><p>INPUT
-metabolite_structure  metabolite structure
-startSearch           specify where the search should start in the</p>
-<blockquote>
-<div><p>metabolite structure. Must be numeric (optional, default: all metabolites
-in the structure will be search for)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>endSearch             specify where the search should end in the</dt><dd><p>metabolite structure. Must be numeric (optional, default: all metabolites
-in the structure will be search for)</p>
+<dd><p>Search the LipidMaps website (<a class="reference external" href="https://www.lipidmaps.org">https://www.lipidmaps.org</a>) by metabolite name
+and add the matched LipidMaps identifier to the metabolite structure for
+metabolites that lack a LipidMaps id.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[metabolite_structure] = queryLipidMaps</strong> (<em>metabolite_structure, startSearch, endSearch</em>)</p>
+</dd>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>metabolite_structure</strong> – metabolite structure whose fields are VMH
+metabolite IDs, each holding <cite>metNames</cite> and
+<cite>lipidmaps</cite> fields</p>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>startSearch</strong> – numeric index of where the search should start in
+the metabolite structure (default: 1)</p></li>
+<li><p><strong>endSearch</strong> – numeric index of where the search should end in
+the metabolite structure (default: last metabolite)</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUT<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>metabolite_structure</strong> – updated metabolite structure</p>
 </dd>
 </dl>
-<p>OUTPUT
-metabolite_structure  updated metabolite structure</p>
-<p>Ines Thiele, 09/2021</p>
-</div></blockquote>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.metaboAnnotator.connect2resources.retrievePotHitsHMDB">
 <span class="sig-name descname"><span class="pre">retrievePotHitsHMDB</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">met</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metaboAnnotator/connect2resources/retrievePotHitsHMDB.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metaboAnnotator.connect2resources.retrievePotHitsHMDB" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function connects to HMDB can searches the metabolite name. The
-first 10 hits will be looked at and the metabolite name will be search
-for in traditional name, IUPAC name, synonyms, and common name. If one or
-more hits are found, the HMDB Ids will be returned.</p>
-<p>INPUT
-met   Metabolite name</p>
-<p>OUTPUT
-hmdb          One or more HMDB id’s. If empty, no hmdb ID could be found.
-multipleHits  This variable indicates whether there are multiple hits.</p>
-<p>Ines Thiele, 09/2021</p>
+<dd><p>Connect to HMDB and search for the metabolite name. The first 10 hits are
+examined and the metabolite name is searched for in the traditional name,
+IUPAC name, synonyms and common name. If one or more hits are found, the HMDB
+ids are returned.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[hmdb, multipleHits] = retrievePotHitsHMDB</strong> (<em>met</em>)</p>
+</dd>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>met</strong> – metabolite name</p>
+</dd>
+<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>hmdb</strong> – one or more HMDB ids; empty if no HMDB id could be found</p></li>
+<li><p><strong>multipleHits</strong> – indicates whether there are multiple hits</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.metaboAnnotator.connect2resources.searchMultipleUnknownMetOnline">
 <span class="sig-name descname"><span class="pre">searchMultipleUnknownMetOnline</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">metabolite_structure</span></em>, <em class="sig-param"><span class="pre">metabolite_structure_rBioNet</span></em>, <em class="sig-param"><span class="pre">metab_rBioNet_online</span></em>, <em class="sig-param"><span class="pre">rxn_rBioNet_online</span></em>, <em class="sig-param"><span class="pre">startSearch</span></em>, <em class="sig-param"><span class="pre">endSearch</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metaboAnnotator/connect2resources/searchMultipleUnknownMetOnline.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metaboAnnotator.connect2resources.searchMultipleUnknownMetOnline" title="Permalink to this definition">¶</a></dt>
-<dd><p>INPUT
-metabolite_structure  metabolite structure
-startSearch           specify where the search should start in the</p>
-<blockquote>
-<div><p>metabolite structure. Must be numeric (optional, default: all metabolites
-in the structure will be search for)</p>
-</div></blockquote>
-<dl class="simple">
-<dt>endSearch             specify where the search should end in the</dt><dd><p>metabolite structure. Must be numeric (optional, default: all metabolites
-in the structure will be search for)</p>
+<dd><p>Search HMDB online by metabolite name for each metabolite in the structure
+(via searchUnknownMetOnline) and merge the newly created metabolite entries
+back into the metabolite structure.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[metabolite_structure, hit] = searchMultipleUnknownMetOnline</strong> (<em>metabolite_structure, metabolite_structure_rBioNet, metab_rBioNet_online, rxn_rBioNet_online, startSearch, endSearch</em>)</p>
+</dd>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>metabolite_structure</strong> – metabolite structure whose fields are VMH
+metabolite IDs, each holding <cite>metNames</cite> and
+<cite>VMHId</cite> fields</p>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>metabolite_structure_rBioNet</strong> – rBioNet-derived metabolite structure
+(default: loaded from met_strc_rBioNet)</p></li>
+<li><p><strong>metab_rBioNet_online</strong> – rBioNet metabolite database (default:
+loaded from data/metab.mat)</p></li>
+<li><p><strong>rxn_rBioNet_online</strong> – rBioNet reaction database (default: loaded
+from data/rxn.mat)</p></li>
+<li><p><strong>startSearch</strong> – numeric index of where the search should
+start in the metabolite structure (default: 1)</p></li>
+<li><p><strong>endSearch</strong> – numeric index of where the search should end
+in the metabolite structure (default: last
+metabolite)</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>metabolite_structure</strong> – updated metabolite structure</p></li>
+<li><p><strong>hit</strong> – cell array logging the matched metabolites,
+with the metabolite name, the new field
+name, and the HMDB id per row</p></li>
+</ul>
 </dd>
 </dl>
-<p>OUTPUT
-metabolite_structure  updated metabolite structure</p>
-<p>Ines Thiele, 2020-2021</p>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.metaboAnnotator.connect2resources.searchUnknownMetOnline">
 <span class="sig-name descname"><span class="pre">searchUnknownMetOnline</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">met</span></em>, <em class="sig-param"><span class="pre">VMHId</span></em>, <em class="sig-param"><span class="pre">metabolite_structure_rBioNet</span></em>, <em class="sig-param"><span class="pre">metab_rBioNet_online</span></em>, <em class="sig-param"><span class="pre">rxn_rBioNet_online</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/metaboAnnotator/connect2resources/searchUnknownMetOnline.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.metaboAnnotator.connect2resources.searchUnknownMetOnline" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function searches HMDB by names and returns a metabolite structure
-and the HMDB ID if the name appear in the common name, IUPAC, synonyms,
-or traditional name.</p>
-<p>INPUT
-met                   metabolite name (try to spell it correctly)</p>
-<p>OUTPUT
-metabolite_structure  metabolite structure</p>
-<p>Ines Thiele, 09/2021</p>
+<dd><p>Search HMDB by name and return a metabolite structure with the HMDB id when
+the name appears in the common name, IUPAC name, synonyms or traditional name.
+A new metabolite entry (with InChIString, mol file and charged formula) is
+created for the matched metabolite.</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[metabolite_structure] = searchUnknownMetOnline</strong> (<em>met, VMHId, metabolite_structure_rBioNet, metab_rBioNet_online, rxn_rBioNet_online</em>)</p>
+</dd>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>met</strong> – metabolite name (try to spell it correctly)</p>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>VMHId</strong> – VMH id for the new metabolite (default:
+generated de novo with generateVMHMetAbbr)</p></li>
+<li><p><strong>metabolite_structure_rBioNet</strong> – rBioNet-derived metabolite structure
+(default: loaded from met_strc_rBioNet)</p></li>
+<li><p><strong>metab_rBioNet_online</strong> – rBioNet metabolite database (default:
+loaded from data/metab.mat)</p></li>
+<li><p><strong>rxn_rBioNet_online</strong> – rBioNet reaction database (default: loaded
+from data/rxn.mat)</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUT<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>metabolite_structure</strong> – metabolite structure for the matched
+metabolite</p>
+</dd>
+</dl>
 </dd></dl>
 
 </section>
@@ -696,7 +1323,7 @@ metabolite_structure  metabolite structure</p>
         <a href="../buildMetStruct/index.html" class="btn btn-default float-right" title="Buildmetstruct" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../analyseMetStruct/index.html" class="btn btn-default" title="Analysemetstruct" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../generateMetInfo/index.html" class="btn btn-default" title="Generatemetinfo" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

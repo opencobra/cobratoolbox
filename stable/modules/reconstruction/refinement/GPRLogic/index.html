@@ -65,7 +65,7 @@
         <link rel="search" title="Search" href="../../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../../index.html"/>
         <link rel="up" title="Refinement" href="../index.html"/>
-        <link rel="next" title="Metaboreport" href="../../metaboRePort/index.html"/>
+        <link rel="next" title="Rbionet" href="../../rBioNet/index.html"/>
         <link rel="prev" title="Refinement" href="../index.html"/> 
 
   
@@ -161,17 +161,17 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../dataIntegration/index.html">Dataintegration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../design/index.html">Design</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Reconstruction</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../../comparison/index.html">Comparison</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../fastGapFill/index.html">Fastgapfill</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../growthExpMatch/index.html">Growthexpmatch</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../modelGeneration/index.html">Modelgeneration</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../rBioNet/index.html">Rbionet</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../demeter/index.html">Demeter</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../index.html">Refinement</a><ul class="current">
 <li class="toctree-l4 current"><a class="current reference internal" href="#">Gprlogic</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="../../rBioNet/index.html">Rbionet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modelGeneration/index.html">Modelgeneration</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../metaboRePort/index.html">Metaboreport</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../fastGapFill/index.html">Fastgapfill</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../growthExpMatch/index.html">Growthexpmatch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../comparison/index.html">Comparison</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../demeter/index.html">Demeter</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../visualization/index.html">Visualization</a></li>
@@ -522,11 +522,15 @@ node, i.e. it represents the same boolean truth table.</p>
 <dt class="sig sig-object mat" id="src.reconstruction.refinement.GPRLogic.NormaliseGPRs">
 <span class="sig-name descname"><span class="pre">NormaliseGPRs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">geneRegExp</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/GPRLogic/NormaliseGPRs.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.GPRLogic.NormaliseGPRs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bring all GPRS into a DNF form and reduce them to the minimal DNF Form
-:USAGE: <strong>Outmodel = NormaliseGPRs</strong> (<em>model,geneRegExp</em>)</p>
+:USAGE: <strong>Outmodel = NormaliseGPRs</strong> (<em>model, geneRegExp</em>)</p>
 <dl class="field-list simple">
 <dt class="field-odd">INPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>model</strong> – The Model to convert the GPRs</p></li>
+<li><p><strong>model</strong> – The Model to convert the GPRs, with fields:</p>
+<ul>
+<li><p>.rules - <cite>n</cite> x 1 cell array of GPR logical rules (<cite>x(i)</cite> literal syntax)</p></li>
+</ul>
+</li>
 <li><p><strong>geneRegExp</strong> – A Regular expression matching the genes in the model.</p></li>
 </ul>
 </dd>
@@ -569,12 +573,20 @@ all present AND nodes for equality and removes replicates.</p>
 <span class="sig-name descname"><span class="pre">combineChildren</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">CNFNode1</span></em>, <em class="sig-param"><span class="pre">CNFNode2</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/reconstruction/refinement/GPRLogic/combineChildren.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.reconstruction.refinement.GPRLogic.combineChildren" title="Permalink to this definition">¶</a></dt>
 <dd><p>Combine the children of two nodes such that all children of node 1 are mixed with children of node 2.
 Conjunct clauses which are superseeded are removed.
-:USAGE: <strong>[outputNode] = combineChildren</strong> (<em>CNFNode1,CNFNode2</em>)</p>
+:USAGE: <strong>[outputNode] = combineChildren</strong> (<em>CNFNode1, CNFNode2</em>)</p>
 <dl class="field-list simple">
 <dt class="field-odd">INPUTS<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>CNFNode1</strong> – A Node in CNF format</p></li>
-<li><p><strong>CNFNode2</strong> – A Node in CNF format</p></li>
+<li><p><strong>CNFNode1</strong> – A Node in CNF format, with fields:</p>
+<ul>
+<li><p>.children - array of child Node objects of the CNF node</p></li>
+</ul>
+</li>
+<li><p><strong>CNFNode2</strong> – A Node in CNF format, with fields:</p>
+<ul>
+<li><p>.children - array of child Node objects of the CNF node</p></li>
+</ul>
+</li>
 </ul>
 </dd>
 <dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
@@ -600,7 +612,7 @@ the resulting node will be (A | B | E | F) &amp; (A | B | G) &amp; (C | D | E | 
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../../metaboRePort/index.html" class="btn btn-default float-right" title="Metaboreport" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../../rBioNet/index.html" class="btn btn-default float-right" title="Rbionet" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="../index.html" class="btn btn-default" title="Refinement" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

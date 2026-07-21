@@ -65,7 +65,7 @@
         <link rel="search" title="Search" href="../../../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../../../index.html"/>
         <link rel="up" title="Thermokernel" href="../index.html"/>
-        <link rel="next" title="Proteomics" href="../../proteomics/index.html"/>
+        <link rel="next" title="Chemoinformatics" href="../../../chemoInformatics/index.html"/>
         <link rel="prev" title="Thermokernel" href="../index.html"/> 
 
   
@@ -159,24 +159,24 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../base/index.html">Base</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../../index.html">Dataintegration</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../../../chemoInformatics/index.html">Chemoinformatics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../fluxomics/index.html">Fluxomics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../metabotools/index.html">Metabotools</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../metanetxMapper/index.html">Metanetxmapper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../metaboAnnotator/index.html">Metaboannotator</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../../index.html">Xomicstomodel</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../../metabolomics/index.html">Metabolomics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../proteomics/index.html">Proteomics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../prepareData/index.html">Preparedata</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../oneRxnPerActiveGene/index.html">Onerxnperactivegene</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l4 current"><a class="reference internal" href="../index.html">Thermokernel</a><ul class="current">
 <li class="toctree-l5 current"><a class="current reference internal" href="#">Thermoqp</a></li>
 </ul>
 </li>
-<li class="toctree-l4"><a class="reference internal" href="../../proteomics/index.html">Proteomics</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../analysis/index.html">Analysis</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../prepareData/index.html">Preparedata</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../oneRxnPerActiveGene/index.html">Onerxnperactivegene</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../metabolomics/index.html">Metabolomics</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../../metaboAnnotator/index.html">Metaboannotator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../chemoInformatics/index.html">Chemoinformatics</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../transcriptomics/index.html">Transcriptomics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../metabotools/index.html">Metabotools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../fluxomics/index.html">Fluxomics</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../design/index.html">Design</a></li>
@@ -242,7 +242,8 @@
 <span class="target" id="module-src.dataIntegration.XomicsToModel.thermoKernel.thermoQP"></span><dl class="mat script">
 <dt class="sig sig-object mat" id="src.dataIntegration.XomicsToModel.thermoKernel.thermoQP.driver_testThermoQP">
 <span class="sig-name descname"><span class="pre">driver_testThermoQP</span></span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/XomicsToModel/thermoKernel/thermoQP/driver_testThermoQP.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.XomicsToModel.thermoKernel.thermoQP.driver_testThermoQP" title="Permalink to this definition">¶</a></dt>
-<dd><p>objective</p>
+<dd><p>Driver script that exercises thermoQP on the E. coli core model, setting up
+the objective and stoichiometric-consistency information before solving.</p>
 </dd></dl>
 
 <dl class="mat function">
@@ -261,6 +262,42 @@
 </div></blockquote>
 <p>where the stoichiometric matrix and flux vector are split into internal
 and external components: S = [N B] and v = [z; w],</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[q, g, solutionQP] = thermoFlux2QNty</strong> (<em>model, solution, param</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – COBRA model with fields:</p>
+<ul>
+<li><p>.S - <cite>m x n</cite> stoichiometric matrix</p></li>
+<li><p>.K - matrix whose transpose is used to construct the thermodynamic QP</p></li>
+<li><p>.SConsistentMetBool - <cite>m x 1</cite> boolean, stoichiometrically consistent metabolites</p></li>
+<li><p>.SConsistentRxnBool - <cite>n x 1</cite> boolean, stoichiometrically consistent reactions</p></li>
+<li><p>.SIntMetBool - <cite>m x 1</cite> boolean, true for internal metabolites</p></li>
+<li><p>.SIntRxnBool - <cite>n x 1</cite> boolean, true for internal reactions</p></li>
+</ul>
+</li>
+<li><p><strong>solution</strong> – a solution structure providing the steady-state flux vector (.v)</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUT<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>param</strong> – a structure containing the parameters for the function:</p>
+<ul class="simple">
+<li><p>.SConsistentMethod - method used to identify the stoichiometrically consistent
+subset if not already present (‘findSExRxnInd’ or ‘findStoichConsistentSubset’)</p></li>
+<li><p>.printLevel - verbose level controlling printed output</p></li>
+<li><p>.bigNum - large positive number used as a bound in the QP (Default: 1)</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>q</strong> – <cite>n x 1</cite> vector of thermodynamic quantities per reaction</p></li>
+<li><p><strong>g</strong> – <cite>n x 1</cite> vector g = N’<a href="#id4"><span class="problematic" id="id5">*</span></a>y satisfying N*diag(q)*g = b - B*w</p></li>
+<li><p><strong>solutionQP</strong> – the QP solution structure returned by solveCobraQP</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="mat function">
@@ -269,44 +306,58 @@ and external components: S = [N B] and v = [z; w],</p>
 <dd><p>Compute an approximately thermodynamically feasible flux by minimising
 the Euclidean norm, weighted by the conductances provided in q.</p>
 <dl class="field-list simple">
-<dt class="field-odd">INPUT<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>model</strong> – (the following fields are required - others can be supplied)</p>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>sol = thermoQP</strong> (<em>model, q, param</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – COBRA model with the following required fields (others can be supplied):</p>
 <ul>
-<li><p>S  - <cite>m x 1</cite> Stoichiometric matrix</p></li>
-<li><p>c  - <cite>n x 1</cite> Linear objective coefficients</p></li>
-<li><p>lb - <cite>n x 1</cite> Lower bounds</p></li>
-<li><p>ub - <cite>n x 1</cite> Upper bounds</p></li>
+<li><p>.S - <cite>m x n</cite> stoichiometric matrix</p></li>
+<li><p>.c - <cite>n x 1</cite> linear objective coefficients</p></li>
+<li><p>.lb - <cite>n x 1</cite> lower bounds</p></li>
+<li><p>.ub - <cite>n x 1</cite> upper bounds</p></li>
+<li><p>.b - <cite>m x 1</cite> accumulation (right hand side of S*v = b)</p></li>
+<li><p>.osense - objective sense as a number (-1 maximise, +1 minimise)</p></li>
+<li><p>.osenseStr - objective sense as a string (‘max’ or ‘min’; default ‘max’)</p></li>
+<li><p>.SConsistentRxnBool - <cite>n x 1</cite> boolean, stoichiometrically consistent reactions</p></li>
+<li><p>.SIntRxnBool - <cite>n x 1</cite> boolean, true for internal reactions</p></li>
 </ul>
 </li>
 <li><p><strong>q</strong> – <cite>n x 1</cite> vector of reaction conductances</p></li>
 </ul>
 </dd>
-<dt class="field-even">OPTIONAL INPUTS<span class="colon">:</span></dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>model</strong> –</p>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model</strong> – the following optional fields are also used:</p>
 <ul>
-<li><p>dxdt - <cite>m x 1</cite> change in concentration with time</p></li>
-<li><p>csense - <cite>m x 1</cite> character array with entries in {L,E,G}
-(The code is backward compatible with an m + k x 1 csense vector,
-where k is the number of coupling constraints)</p></li>
-<li><p>C - <cite>k x n</cite> Left hand side of C*v &lt;= d</p></li>
-<li><p>d - <cite>k x n</cite> Right hand side of C*v &lt;= d</p></li>
-<li><p>dsense - <cite>k x 1</cite> character array with entries in {L,E,G}</p></li>
+<li><p>.dxdt - <cite>m x 1</cite> change in concentration with time</p></li>
+<li><p>.csense - <cite>m x 1</cite> character array with entries in {L,E,G}
+(backward compatible with an m + k x 1 csense vector, where k is
+the number of coupling constraints)</p></li>
+<li><p>.C - <cite>k x n</cite> left hand side of C*v &lt;= d</p></li>
+<li><p>.d - <cite>k x 1</cite> right hand side of C*v &lt;= d</p></li>
+<li><p>.dsense - <cite>k x 1</cite> character array with entries in {L,E,G}</p></li>
 </ul>
 </li>
-<li><p><strong>osenseStr</strong> – Maximize (‘max’)/minimize (‘min’) (opt, default = ‘max’)</p></li>
+<li><p><strong>param</strong> – a structure containing the parameters for the function:</p>
+<ul>
+<li><p>.printLevel - verbose level controlling printed output</p></li>
+<li><p>.fbaOptimal - if true, first solve an FBA to define the external flux</p></li>
+<li><p>.param - nested parameter sub-structure read by the function (e.g. .param.printLevel)</p></li>
+</ul>
+</li>
 </ul>
 </dd>
-<dt class="field-odd">OUTPUT<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>sol</strong> – sol object:</p>
+<dt class="field-even">OUTPUT<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>sol</strong> – solution object with fields:</p>
 <ul class="simple">
-<li><p>f - Objective value</p></li>
-<li><p>v - Reaction rates (Optimal primal variable, legacy FBAsolution.x)</p></li>
-<li><p>y - Dual</p></li>
-<li><p>w - Reduced costs</p></li>
-<li><p>s - Slacks (tbc)</p></li>
-<li><p>stat - Solver status in standardized form:</p></li>
+<li><p>.f - objective value</p></li>
+<li><p>.v - reaction rates (optimal primal variable, legacy FBAsolution.x)</p></li>
+<li><p>.y - dual variables</p></li>
+<li><p>.w - reduced costs</p></li>
+<li><p>.s - slacks</p></li>
+<li><p>.stat - solver status in standardized form</p></li>
 </ul>
 </dd>
 </dl>
@@ -324,7 +375,7 @@ where k is the number of coupling constraints)</p></li>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../../proteomics/index.html" class="btn btn-default float-right" title="Proteomics" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../../../chemoInformatics/index.html" class="btn btn-default float-right" title="Chemoinformatics" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="../index.html" class="btn btn-default" title="Thermokernel" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

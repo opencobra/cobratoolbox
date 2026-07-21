@@ -65,7 +65,7 @@
         <link rel="search" title="Search" href="../../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../../index.html"/>
         <link rel="up" title="Chemoinformatics" href="../index.html"/>
-        <link rel="next" title="Rxn" href="../RXN/index.html"/>
+        <link rel="next" title="Molecularweight" href="../molecularWeight/index.html"/>
         <link rel="prev" title="Chemoinformatics" href="../index.html"/> 
 
   
@@ -159,20 +159,20 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../base/index.html">Base</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Dataintegration</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../../metabotools/index.html">Metabotools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../metanetxMapper/index.html">Metanetxmapper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../metaboAnnotator/index.html">Metaboannotator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../XomicsToModel/index.html">Xomicstomodel</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../index.html">Chemoinformatics</a><ul class="current">
 <li class="toctree-l4 current"><a class="current reference internal" href="#">Metabolites</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../RXN/index.html">Rxn</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../inchi/index.html">Inchi</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../reactions/index.html">Reactions</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../molecularWeight/index.html">Molecularweight</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../RXN/index.html">Rxn</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../reactions/index.html">Reactions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../inchi/index.html">Inchi</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../fluxomics/index.html">Fluxomics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../metanetxMapper/index.html">Metanetxmapper</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../XomicsToModel/index.html">Xomicstomodel</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../metaboAnnotator/index.html">Metaboannotator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../transcriptomics/index.html">Transcriptomics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../metabotools/index.html">Metabotools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../fluxomics/index.html">Fluxomics</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../design/index.html">Design</a></li>
@@ -255,7 +255,7 @@ the COBRA model.</p>
 <li><p>.mets - An m x 1 array of metabolite identifiers.</p></li>
 </ul>
 </li>
-<li><p><strong>inputData</strong></p></li>
+<li><p><strong>inputData</strong> – External file (path) or struct with the metabolite data to integrate</p></li>
 </ul>
 </dd>
 <dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
@@ -264,8 +264,8 @@ logical value indicates so (default: false).</p>
 </dd>
 <dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>newModel</strong> – COBRA model with updated identifiersCOBRA model with the identifiers updated.</p></li>
-<li><p><strong>hasEffect</strong></p></li>
+<li><p><strong>newModel</strong> – COBRA model with the metabolite identifiers updated.</p></li>
+<li><p><strong>hasEffect</strong> – true if the model was modified by the integration, false otherwise</p></li>
 </ul>
 </dd>
 </dl>
@@ -320,6 +320,9 @@ metabolite structure including  smiles, inchi and inchikey,</p>
 <dd class="field-odd"><p><strong>saveDir</strong> – String with the directory where the table format will be
 saved. If is empty, the format is not saved.</p>
 </dd>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>metTable</strong> – Table of metabolite structure representations (SMILES, InChI and InChIKey)</p>
+</dd>
 </dl>
 </dd></dl>
 
@@ -329,11 +332,12 @@ saved. If is empty, the format is not saved.</p>
 <dd><p>Obtain MDL MOL files from various databases, including KEGG, HMDB, ChEBI,
 and PubChem. Alternatively, openBabel can be used to convert InChI
 strings or SMILES in MDL MOL files.</p>
-<p>USAGE:</p>
-<p>molCollectionReport = obtainMetStructures(model, mets, sources, standardisationApproach)</p>
 <dl class="field-list">
-<dt class="field-odd">INPUTS<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>model</strong> – COBRA model with following fields:</p>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[molCollectionReport, newMolFilesDir] = obtainMetStructures</strong> (<em>model, metList, outputDir, sources</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>model</strong> – COBRA model with following fields:</p>
 <ul class="simple">
 <li><p>.S - The m x n stoichiometric matrix for the metabolic network.</p></li>
 <li><p>.mets - An m x 1 array of metabolite identifiers.</p></li>
@@ -348,9 +352,9 @@ strings or SMILES in MDL MOL files.</p>
 <li><p>.metLipidmassID - An m x 1 array of metabolite identifiers.</p></li>
 </ul>
 </dd>
-<dt class="field-even">OPTIONAL INPUTS<span class="colon">:</span></dt>
-<dd class="field-even"><ul>
-<li><p><strong>mets</strong> – List of metabolites to be download (Default: All)</p></li>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul>
+<li><p><strong>metList</strong> – List of metabolites to be downloaded (Default: All)</p></li>
 <li><p><strong>outputDir</strong> – Directory that will contain the obtained metabolite structures.</p></li>
 <li><p><strong>sources</strong> –</p>
 <dl class="simple">
@@ -368,8 +372,8 @@ strings or SMILES in MDL MOL files.</p>
 </li>
 </ul>
 </dd>
-<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
 <li><p><strong>molCollectionReport</strong> – Report of the obtained MDL MOL files</p>
 <ul>
 <li><p>.metList - List of metabolites to be download</p></li>
@@ -407,16 +411,17 @@ normal chemical graphs, hydrogen suppressed chemical graphs, and chemical
 graphs with protonated molecules. The function also updates the header
 with the standardization information. It makes use of ChemAxon’s
 standardizer and openBabel.</p>
-<p>USAGE:</p>
-<p>[standardised, nonStandardised, InChIs, SMILES] = standardiseMolDatabase(molDir, standardisedDir, standardiseMolFiles)</p>
 <dl class="field-list">
-<dt class="field-odd">INPUTS<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>molDir</strong> – Path to directory that contain the MDL MOL files
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>standardisationReport = standardiseMolDatabase</strong> (<em>molDir, metList, standardisedDir, standardisationApproach</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>molDir</strong> – Path to directory that contain the MDL MOL files
 to be standardised.</p>
 </dd>
-<dt class="field-even">OPTIONAL INPUTS<span class="colon">:</span></dt>
-<dd class="field-even"><ul>
-<li><p><strong>metList</strong> – 1 x n lest of metabolites to standardise</p></li>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul>
+<li><p><strong>metList</strong> – 1 x n list of metabolites to standardise</p></li>
 <li><p><strong>standardisedDir</strong> – Path to directory that will contain the standardised
 MDL MOL files (default: current directory).</p></li>
 <li><p><strong>standardisationApproach</strong> – String contianing the type of standarization
@@ -429,8 +434,8 @@ installed, otherwise ‘basic’)</p>
 </li>
 </ul>
 </dd>
-<dt class="field-odd">OUTPUTS<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
 <li><p><strong>standardisationReport</strong> – Struct array with the standarization report:</p>
 <ul>
 <li><p>.standardised: list of standardised metabolite structures</p></li>
@@ -474,7 +479,7 @@ installed, otherwise ‘basic’)</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../RXN/index.html" class="btn btn-default float-right" title="Rxn" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../molecularWeight/index.html" class="btn btn-default float-right" title="Molecularweight" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="../index.html" class="btn btn-default" title="Chemoinformatics" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

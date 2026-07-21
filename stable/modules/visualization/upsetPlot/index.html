@@ -65,8 +65,8 @@
         <link rel="search" title="Search" href="../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../index.html"/>
         <link rel="up" title="Visualization" href="../index.html"/>
-        <link rel="next" title="Createmetintrcnetwork" href="../createMetIntrcNetwork/index.html"/>
-        <link rel="prev" title="Visualizeepistasis" href="../visualizeEpistasis/index.html"/> 
+        <link rel="next" title="Convert" href="../convert/index.html"/>
+        <link rel="prev" title="Entropicfba" href="../entropicFBA/index.html"/> 
 
   
   <script src="../../../_static/js/modernizr.min.js"></script>
@@ -162,19 +162,19 @@
 <li class="toctree-l2"><a class="reference internal" href="../../design/index.html">Design</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../reconstruction/index.html">Reconstruction</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html">Visualization</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../paint4net/index.html">Paint4net</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../efmviz/index.html">Efmviz</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../SAMMIM/index.html">Sammim</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../convert/index.html">Convert</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../cellDesigner/index.html">Celldesigner</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../entropicFBA/index.html">Entropicfba</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../visualizeEpistasis/index.html">Visualizeepistasis</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Upsetplot</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../createMetIntrcNetwork/index.html">Createmetintrcnetwork</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../maps/index.html">Maps</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../metabolicCartography/index.html">Metaboliccartography</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../EscherMap/index.html">Eschermap</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../paint4Net/index.html">Paint4net</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../paint4net/index.html">Paint4net</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../metabolicCartography/index.html">Metaboliccartography</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cellDesigner/index.html">Celldesigner</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../maps/index.html">Maps</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../SAMMIM/index.html">Sammim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../entropicFBA/index.html">Entropicfba</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Upsetplot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../convert/index.html">Convert</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../visualizeEpistasis/index.html">Visualizeepistasis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../EscherMap/index.html">Eschermap</a></li>
 </ul>
 </li>
 </ul>
@@ -235,78 +235,76 @@
 <span class="target" id="module-src.visualization.upsetPlot"></span><dl class="mat function">
 <dt class="sig sig-object mat" id="src.visualization.upsetPlot.upsetPlot">
 <span class="sig-name descname"><span class="pre">upsetPlot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">DataOrSets</span></em>, <em class="sig-param"><span class="pre">setName</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/visualization/upsetPlot/upsetPlot.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.visualization.upsetPlot.upsetPlot" title="Permalink to this definition">¶</a></dt>
-<dd><p>upsetPlot - Generate an UpSet plot</p>
-<p>An UpSet plot is a visualisation technique for exploring set intersections.
-It is an alternative to Venn diagrams, especially suited for larger numbers
-of sets. The plot shows:</p>
+<dd><p>Generates an UpSet plot, a visualisation of set intersections</p>
+<p>An UpSet plot is an alternative to Venn diagrams, especially suited for
+larger numbers of sets. The plot shows:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p>Horizontal bars representing the size of each set</p></li>
 <li><p>Vertical bars representing the size of intersections between sets</p></li>
-<li><p>A matrix of dots and connecting lines below the bars, indicating which
-sets are involved in each intersection</p></li>
+<li><p>A matrix of dots and connecting lines below the bars, indicating
+which sets are involved in each intersection</p></li>
 </ul>
 </div></blockquote>
 <dl class="field-list simple">
-<dt class="field-odd">Usage<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>upsetPlot</strong> (<em>Data, setName</em>)</p></li>
-<li><p><strong>upsetPlot</strong> (<em>Sets, setName</em>)</p></li>
-<li><p><strong>upsetPlot</strong> (<em>…, ‘bar1Color’, [r g b], ‘bar2Color’, cmap, ‘lineColor’, [r g b]</em>)</p></li>
-<li><p><strong>upsetPlot</strong> (<em>…, ‘includeSingletons’, true|false</em>)</p></li>
-<li><p><strong>upsetPlot</strong> (<em>…, ‘Parent’, figHandle</em>)</p></li>
-</ul>
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[hFig, axI, axS, axL] = upsetPlot</strong> (<em>DataOrSets, setName, varargin</em>)</p>
 </dd>
-<dt class="field-even">Inputs<span class="colon">:</span></dt>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>Data     - logical</strong> (<em>N x M</em>) – OR</p></li>
-<li><p><strong>Sets     - 1 x M cell array of vectors</strong> (<em>raw sets of elements</em>) – function will internally build the membership matrix.</p></li>
-<li><p><strong>setName  - 1 x M cell array of set names</strong></p></li>
+<li><p><strong>DataOrSets</strong> – Either a logical <cite>N x M</cite> matrix (<cite>Data</cite>, rows = elements,
+columns = sets), or a <cite>1 x M</cite> cell array of vectors
+(<cite>Sets</cite>, raw sets of elements). When a cell array is
+given, the function internally builds the membership
+matrix.</p></li>
+<li><p><strong>setName</strong> – <cite>1 x M</cite> cell array of set names.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>varargin</strong> – Optional name-value argument pairs:</p>
+<ul class="simple">
+<li><p>bar1Color - colour(s) for intersection bars (default
+teal gradient)</p></li>
+<li><p>bar2Color - colour(s) for set size bars (default
+blue gradient)</p></li>
+<li><p>lineColor - colour for connection lines (default
+grey)</p></li>
+<li><p>includeSingletons - logical, whether to include
+single-set intersections in the top bars (default
+<cite>false</cite>, which excludes them)</p></li>
+<li><p>Parent - parent figure to draw into; if provided,
+the plot is created in (and the figure cleared for)
+this figure</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>hFig</strong> – Handle to the created figure.</p></li>
+<li><p><strong>axI</strong> – Intersection axes (top bars).</p></li>
+<li><p><strong>axS</strong> – Set size axes (left bars).</p></li>
+<li><p><strong>axL</strong> – Links matrix axes (dots and lines).</p></li>
 </ul>
 </dd>
 </dl>
-<dl>
-<dt>Optional name-value pairs:</dt><dd><p>‘bar1Color’         - colour(s) for intersection bars (default teal gradient)
-‘bar2Color’         - colour(s) for set size bars (default blue gradient)
-‘lineColor’         - colour for connection lines (default grey)
-‘includeSingletons’ - whether to include single-set intersections in the</p>
-<blockquote>
-<div><p>top bars. Default false, which excludes them.</p>
-</div></blockquote>
-<dl class="simple">
-<dt>‘Parent’            - parent figure to draw into. If provided, the plot</dt><dd><p>is created in this figure. The function clears it.</p>
-</dd>
-</dl>
-</dd>
-</dl>
-<dl class="field-list simple">
-<dt class="field-odd">Outputs<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>hFig - handle to the created figure</strong></p></li>
-<li><p><strong>axI  - intersection axes</strong> (<em>top bars</em>)</p></li>
-<li><p><strong>axS  - set size axes</strong> (<em>left bars</em>)</p></li>
-<li><p><strong>axL  - links matrix axes</strong> (<em>dots and lines</em>)</p></li>
-</ul>
-</dd>
-</dl>
-<dl class="simple">
-<dt>Example 1 (binary matrix, whole-figure saving):</dt><dd><p>rng(5)
+<p class="rubric">Example</p>
+<p>% Example 1 (binary matrix, whole-figure saving):
+rng(5)
 setName = {‘RB1’,’PIK3R1’,’EGFR’,’TP53’,’PTEN’};
 Data = rand([200,5]) &gt; .85;
 [h, axI] = upsetPlot(Data, setName);    % excludes singletons by default
 savefig(h, ‘upset_matrix.fig’)          % save MATLAB figure
 print(h, ‘-dpdf’, ‘upset_matrix.pdf’)   % export to PDF
 exportgraphics(axI, ‘upset_intersections.png’)  % export just top bars</p>
-</dd>
-<dt>Example 2 (raw sets, provide parent to avoid Live Editor clean-up):</dt><dd><p>A = [1 2 5]; B = [2 3]; C = [1 4 5];
+<p>% Example 2 (raw sets, provide parent to avoid Live Editor clean-up):
+A = [1 2 5]; B = [2 3]; C = [1 4 5];
 f = figure(‘Color’,’w’);                                % parent from base workspace
 [h, axI, axS, axL] = upsetPlot({A,B,C}, {‘A’,’B’,’C’}, ‘includeSingletons’, true, ‘Parent’, f);
 exportgraphics(axS, ‘upset_set_sizes.png’);             % left bars only
 saveas(h, ‘upset_whole.png’);                           % whole figure</p>
-</dd>
-</dl>
-<p>Author: based on slandarer’s demo (2023)
-Ref: <a class="reference external" href="https://www.mathworks.com/matlabcentral/fileexchange/123695-upset-plot">https://www.mathworks.com/matlabcentral/fileexchange/123695-upset-plot</a></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Ref: <a class="reference external" href="https://www.mathworks.com/matlabcentral/fileexchange/123695-upset-plot">https://www.mathworks.com/matlabcentral/fileexchange/123695-upset-plot</a></p>
+</div>
 </dd></dl>
 
 </section>
@@ -321,10 +319,10 @@ Ref: <a class="reference external" href="https://www.mathworks.com/matlabcentral
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../createMetIntrcNetwork/index.html" class="btn btn-default float-right" title="Createmetintrcnetwork" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../convert/index.html" class="btn btn-default float-right" title="Convert" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../visualizeEpistasis/index.html" class="btn btn-default" title="Visualizeepistasis" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../entropicFBA/index.html" class="btn btn-default" title="Entropicfba" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

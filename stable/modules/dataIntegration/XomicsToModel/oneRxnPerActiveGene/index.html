@@ -65,7 +65,7 @@
         <link rel="search" title="Search" href="../../../../search.html"/>
     <link rel="top" title="The COBRA Toolbox" href="../../../../index.html"/>
         <link rel="up" title="Xomicstomodel" href="../index.html"/>
-        <link rel="next" title="Metabolomics" href="../metabolomics/index.html"/>
+        <link rel="next" title="Analysis" href="../analysis/index.html"/>
         <link rel="prev" title="Preparedata" href="../prepareData/index.html"/> 
 
   
@@ -159,21 +159,21 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../analysis/index.html">Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../base/index.html">Base</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Dataintegration</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../../chemoInformatics/index.html">Chemoinformatics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../fluxomics/index.html">Fluxomics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../metabotools/index.html">Metabotools</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../metanetxMapper/index.html">Metanetxmapper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../metaboAnnotator/index.html">Metaboannotator</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../index.html">Xomicstomodel</a><ul class="current">
-<li class="toctree-l4"><a class="reference internal" href="../thermoKernel/index.html">Thermokernel</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../metabolomics/index.html">Metabolomics</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../proteomics/index.html">Proteomics</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../analysis/index.html">Analysis</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../prepareData/index.html">Preparedata</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">Onerxnperactivegene</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../metabolomics/index.html">Metabolomics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../analysis/index.html">Analysis</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../thermoKernel/index.html">Thermokernel</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../metaboAnnotator/index.html">Metaboannotator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../chemoInformatics/index.html">Chemoinformatics</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../transcriptomics/index.html">Transcriptomics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../metabotools/index.html">Metabotools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../fluxomics/index.html">Fluxomics</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../design/index.html">Design</a></li>
@@ -242,33 +242,109 @@
 active gene in the GPR, create a dummy metabolite, which is destroyed in the
 corresponding dummy reaction. This enables one to require that at least
 one reaction corresponding to a gene is active, rather than all genes</p>
-<p>INPUT:
-model:                 COBRA model with various fields, including:
-model.S:              m x n stoichiometric matrix</p>
-<p>activeEntrezGeneID:   k x 1 cell array of EntrezGeneID’s, each in the format of model.genes{i}</p>
-<p>OPTIONAL INPUT:
-TolMaxBoundary:       scalar number giving the default reaction upper and lower bounds magnitude
-modelExtractionAlgorithm: {(‘thermoKernel’),’fastCore’} if ‘fastCore’ it runs a flux consistency check first
-fluxEpsilon:         Minimum non-zero flux value accepted for tolerance (Default: Primal feasibility tolerance X 10).</p>
-<p>OUTPUT:
-dummyModel:                COBRA model with dummy metabolites or reactions
-dummyModel.dummyMetBool:  m x 1 boolean vector indicating dummy metabolites i.e. contains(model.mets,’<a href="#id2"><span class="problematic" id="id3">dummy_Met_</span></a>’);
-dummyModel.dummyRxnBool:  n x 1 boolean vector indicating dummy reactions  i.e. contains(model.rxns,’<a href="#id4"><span class="problematic" id="id5">dummy_Rxn_</span></a>’);</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[dummyModel, coreRxnAbbr] = createDummyModel</strong> (<em>model, activeEntrezGeneID, TolMaxBoundary, modelExtractionAlgorithm, coreRxnAbbr, fluxEpsilon</em>)</p>
+</dd>
+<dt class="field-even">INPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>model</strong> – COBRA model with the following fields:</p>
+<ul>
+<li><p>.S - <cite>m x n</cite> stoichiometric matrix</p></li>
+<li><p>.b - <cite>m x 1</cite> accumulation (right hand side of S*v = b)</p></li>
+<li><p>.c - <cite>n x 1</cite> linear objective coefficient vector</p></li>
+<li><p>.lb - <cite>n x 1</cite> lower flux bounds</p></li>
+<li><p>.ub - <cite>n x 1</cite> upper flux bounds</p></li>
+<li><p>.csense - <cite>m x 1</cite> constraint sense for each metabolite</p></li>
+<li><p>.mets - <cite>m x 1</cite> metabolite identifiers</p></li>
+<li><p>.rxns - <cite>n x 1</cite> reaction identifiers</p></li>
+<li><p>.rxnNames - <cite>n x 1</cite> reaction names</p></li>
+<li><p>.genes - <cite>g x 1</cite> gene identifiers</p></li>
+<li><p>.rules - <cite>n x 1</cite> gene-reaction association rules</p></li>
+<li><p>.rxnGeneMat - <cite>n x g</cite> reaction-gene mapping matrix</p></li>
+<li><p>.subSystems - <cite>n x 1</cite> reaction subsystems</p></li>
+<li><p>.C - coupling constraint matrix</p></li>
+<li><p>.ctrs - coupling constraint identifiers</p></li>
+<li><p>.SIntRxnBool - <cite>n x 1</cite> boolean, true for internal reactions</p></li>
+<li><p>.SConsistentRxnBool - <cite>n x 1</cite> boolean, stoichiometrically consistent reactions</p></li>
+<li><p>.SConsistentMetBool - <cite>m x 1</cite> boolean, stoichiometrically consistent metabolites</p></li>
+<li><p>.fluxConsistentRxnBool - <cite>n x 1</cite> boolean, flux consistent reactions</p></li>
+<li><p>.thermoFluxConsistentRxnBool - <cite>n x 1</cite> boolean, thermodynamically flux consistent reactions</p></li>
+<li><p>.dummyMetBool - <cite>m x 1</cite> boolean, true for dummy metabolites</p></li>
+<li><p>.dummyRxnBool - <cite>n x 1</cite> boolean, true for dummy reactions</p></li>
+</ul>
+</li>
+<li><p><strong>activeEntrezGeneID</strong> – <cite>k x 1</cite> cell array of EntrezGeneID’s, each in the format of model.genes{i}</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>TolMaxBoundary</strong> – scalar giving the default reaction upper and lower bound magnitude</p></li>
+<li><p><strong>modelExtractionAlgorithm</strong> – {(‘thermoKernel’), ‘fastCore’} if ‘fastCore’ it runs a flux consistency check first</p></li>
+<li><p><strong>coreRxnAbbr</strong> – core reaction identifiers to retain</p></li>
+<li><p><strong>fluxEpsilon</strong> – Minimum non-zero flux value accepted for tolerance (Default: Primal feasibility tolerance x 10)</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUTS<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>dummyModel</strong> – COBRA model with dummy metabolites and reactions added, including:</p>
+<ul>
+<li><p>.dummyMetBool - <cite>m x 1</cite> boolean vector indicating dummy metabolites</p></li>
+<li><p>.dummyRxnBool - <cite>n x 1</cite> boolean vector indicating dummy reactions</p></li>
+</ul>
+</li>
+<li><p><strong>coreRxnAbbr</strong> – updated core reaction identifiers</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="src.dataIntegration.XomicsToModel.oneRxnPerActiveGene.destroyDummyModel">
 <span class="sig-name descname"><span class="pre">destroyDummyModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">dummyMetBool</span></em>, <em class="sig-param"><span class="pre">dummyRxnBool</span></em>, <em class="sig-param"><span class="pre">metsOrig</span></em>, <em class="sig-param"><span class="pre">rxnsOrig</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/opencobra/cobratoolbox/blob/master/src/dataIntegration/XomicsToModel/oneRxnPerActiveGene/destroyDummyModel.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.dataIntegration.XomicsToModel.oneRxnPerActiveGene.destroyDummyModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove all traces of dummy metabolites and reactions</p>
-<p>INPUT
-model     COBRA model</p>
-<p>OPTIONAL INPUT
-dummyMetBool      m x 1 boolean vector indicating dummy metabolites
-dummyRxnBool      n x 1 boolean vector indicating dummy reactions
-metsOrig          Array indicating the metabolites before creating a dummyModel
-rxnsOrig          Array indicating the reactions before creating dummyModel</p>
-<p>OUTPUT
-model     COBRA model without dummy metabolites or reactions</p>
+<dl class="field-list simple">
+<dt class="field-odd">USAGE<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>model = destroyDummyModel</strong> (<em>model, dummyMetBool, dummyRxnBool, metsOrig, rxnsOrig</em>)</p>
+</dd>
+<dt class="field-even">INPUT<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>model</strong> – COBRA model with the following fields:</p>
+<ul class="simple">
+<li><p>.S - <cite>m x n</cite> stoichiometric matrix</p></li>
+<li><p>.b - <cite>m x 1</cite> accumulation (right hand side of S*v = b)</p></li>
+<li><p>.c - <cite>n x 1</cite> linear objective coefficient vector</p></li>
+<li><p>.lb - <cite>n x 1</cite> lower flux bounds</p></li>
+<li><p>.ub - <cite>n x 1</cite> upper flux bounds</p></li>
+<li><p>.csense - <cite>m x 1</cite> constraint sense for each metabolite</p></li>
+<li><p>.mets - <cite>m x 1</cite> metabolite identifiers</p></li>
+<li><p>.rxns - <cite>n x 1</cite> reaction identifiers</p></li>
+<li><p>.rxnNames - <cite>n x 1</cite> reaction names</p></li>
+<li><p>.rules - <cite>n x 1</cite> gene-reaction association rules</p></li>
+<li><p>.rxnGeneMat - <cite>n x g</cite> reaction-gene mapping matrix</p></li>
+<li><p>.subSystems - <cite>n x 1</cite> reaction subsystems</p></li>
+<li><p>.C - coupling constraint matrix</p></li>
+<li><p>.SIntMetBool - <cite>m x 1</cite> boolean, true for internal metabolites</p></li>
+<li><p>.SIntRxnBool - <cite>n x 1</cite> boolean, true for internal reactions</p></li>
+<li><p>.SConsistentMetBool - <cite>m x 1</cite> boolean, stoichiometrically consistent metabolites</p></li>
+<li><p>.SConsistentRxnBool - <cite>n x 1</cite> boolean, stoichiometrically consistent reactions</p></li>
+<li><p>.fluxConsistentMetBool - <cite>m x 1</cite> boolean, flux consistent metabolites</p></li>
+<li><p>.fluxConsistentRxnBool - <cite>n x 1</cite> boolean, flux consistent reactions</p></li>
+<li><p>.thermoFluxConsistentMetBool - <cite>m x 1</cite> boolean, thermodynamically flux consistent metabolites</p></li>
+<li><p>.thermoFluxConsistentRxnBool - <cite>n x 1</cite> boolean, thermodynamically flux consistent reactions</p></li>
+</ul>
+</dd>
+<dt class="field-odd">OPTIONAL INPUTS<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dummyMetBool</strong> – <cite>m x 1</cite> boolean vector indicating dummy metabolites</p></li>
+<li><p><strong>dummyRxnBool</strong> – <cite>n x 1</cite> boolean vector indicating dummy reactions</p></li>
+<li><p><strong>metsOrig</strong> – array indicating the metabolites before creating a dummyModel</p></li>
+<li><p><strong>rxnsOrig</strong> – array indicating the reactions before creating a dummyModel</p></li>
+</ul>
+</dd>
+<dt class="field-even">OUTPUT<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>model</strong> – COBRA model without dummy metabolites or reactions</p>
+</dd>
+</dl>
 </dd></dl>
 
 </section>
@@ -283,7 +359,7 @@ model     COBRA model without dummy metabolites or reactions</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../metabolomics/index.html" class="btn btn-default float-right" title="Metabolomics" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../analysis/index.html" class="btn btn-default float-right" title="Analysis" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="../prepareData/index.html" class="btn btn-default" title="Preparedata" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
