@@ -10,6 +10,17 @@
 
 ## Clarifications
 
+### Amendment 2026-07-21 (post-implementation, via DIRECT IMPLEMENTATION OVERRIDE)
+
+- The "CI runs **full** mode" decision below (and the matching Edge Case and
+  **FR-012**) is **superseded**: CI now runs **fast** by default and **full** only
+  for pull requests targeting `master`, so develop PRs get fast feedback while the
+  coverage-gate baseline is preserved for merges to `master`. Rationale, exact
+  resolution order, and files changed are recorded in
+  `agent-runs/20260721T195656Z-ci-mode-by-base-ref/change-note.md` (PR
+  opencobra/cobratoolbox#2681). FR-012 should be reconciled into the spec body on
+  the next normal Spec Kit revision of this feature.
+
 ### Session 2026-07-13
 
 - Q: When fast mode is the default, which mode should CI run given the
