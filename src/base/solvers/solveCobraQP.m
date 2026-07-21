@@ -87,6 +87,30 @@ function solution = solveCobraQP(QPproblem, varargin)
 global CBTDIR % process arguments etc
 global MINOS_PATH
 
+% --- optional explicit solver state (feature 015-solver-spine-hardening, US3) ---
+% When a CobraSolverState snapshot is supplied as the name-value pair
+% 'cobraSolverState', its selection and parameters are installed into the
+% CBT_*_SOLVER / CBT_*_PARAMS globals for the duration of this solve and
+% restored on exit, so the solve is sourced from that explicit state rather
+% than the ambient globals (identical precedence: caller varargin > state >
+% defaults). Absent (default) => today's globals-driven behaviour. Detected by
+% a varargin scan and gated with exist/isempty, not nargin (constitution VII-D).
+explicitSolverState = [];
+keepStateArg = true(size(varargin));
+for stateArgIndex = 1:numel(varargin) - 1
+    if ischar(varargin{stateArgIndex}) && strcmpi(varargin{stateArgIndex}, 'cobraSolverState')
+        explicitSolverState = varargin{stateArgIndex + 1};
+        keepStateArg([stateArgIndex, stateArgIndex + 1]) = false;
+    end
+end
+varargin = varargin(keepStateArg);
+if exist('explicitSolverState', 'var') && ~isempty(explicitSolverState)
+    savedSolverState = CobraSolverState.get();
+    restoreSolverState = onCleanup(@() CobraSolverState.restore(savedSolverState));
+    CobraSolverState.restore(explicitSolverState);
+end
+% -------------------------------------------------------------------------------
+
 [problemTypeParams,solverParams] = parseSolverParameters('QP',varargin{:}); % get the solver parameters
 
 % set the solver
@@ -218,17 +242,8 @@ switch solver
         %       4 (S,B) Model has been proved either infeasible or unbounded
         %       5 (S,B) Optimal solution is available, but with infeasibilities after unscaling
         %       6 (S,B) Solution is available, but not proved optimal, due to numeric difficulties
-        if origStat == 1
-            stat = 1; % Optimal
-        elseif origStat == 3
-            stat = 0; % Infeasible
-        elseif origStat == 2 || origStat == 4
-            stat = 2; % Unbounded
-        elseif origStat == 5 || origStat == 6 %origStat == 6  is 'Solution is available, but not proved optimal, due to numeric difficulties'
-            stat = 3; % Solution exists, but either scaling problems or not proven to be optimal
-        else %(origStat >= 10)
-            stat = -1; % No optimal solution found (time or other limits reached, other infeasibility problems)
-        end
+        % CPLEX-family QP status translation is consolidated in mapSolverStatus
+        stat = mapSolverStatus(solver, 'QP', origStat);
         solution.nInfeas = ninf;
         solution.sumInfeas = sinf;
         
@@ -268,17 +283,8 @@ switch solver
         %       4 (S,B) Model has been proved either infeasible or unbounded
         %       5 (S,B) Optimal solution is available, but with infeasibilities after unscaling
         %       6 (S,B) Solution is available, but not proved optimal, due to numeric difficulties
-        if origStat == 1
-            stat = 1; % Optimal
-        elseif origStat == 3
-            stat = 0; % Infeasible
-        elseif origStat == 2 || origStat == 4
-            stat = 2; % Unbounded
-        elseif origStat == 5 || origStat == 6 %origStat == 6  is 'Solution is available, but not proved optimal, due to numeric difficulties'
-            stat = 3; % Solution exists, but either scaling problems or not proven to be optimal
-        else %(origStat >= 10)
-            stat = -1; % No optimal solution found (time or other limits reached, other infeasibility problems)
-        end
+        % CPLEX-family QP status translation is consolidated in mapSolverStatus
+        stat = mapSolverStatus(solver, 'QP', origStat);
         
         %debugging
         if problemTypeParams.printLevel>2
@@ -325,17 +331,8 @@ switch solver
         origStat = Result.status;
         % See detailed table of result codes in
         % https://www.ibm.com/support/knowledgecenter/SSSA5P_12.6.3/ilog.odms.cplex.help/refcallablelibrary/macros/Solution_status_codes.html
-        if origStat == 1
-            stat = 1; % Optimal
-        elseif origStat == 3
-            stat = 0; % Infeasible
-        elseif origStat == 2 || origStat == 4
-            stat = 2; % Unbounded
-        elseif origStat == 5 || origStat == 6 %origStat == 6  is 'Solution is available, but not proved optimal, due to numeric difficulties'
-            stat = 3; % Solution exists, but either scaling problems or not proven to be optimal
-        else %(origStat >= 10)
-            stat = -1; % No optimal solution found (time or other limits reached, other infeasibility problems)
-        end  
+        % CPLEX-family QP status translation is consolidated in mapSolverStatus
+        stat = mapSolverStatus(solver, 'QP', origStat);
         origStat = cplexProblem.Solution.statusstring;
 
         %Update Tolerance According to actual setting
@@ -374,13 +371,8 @@ switch solver
         
         w=[];
         
-        if (info.status == 0)
-            stat = 1;
-        elseif (info.status == 1)
-            stat = 0;
-        else
-            stat = -1;
-        end
+        % native-to-canonical status translation is consolidated in mapSolverStatus
+        stat = mapSolverStatus('qpng', 'QP', info.status);
         origStat=info.status;
         %%
     case 'mosek'
@@ -596,8 +588,9 @@ switch solver
         %        = 2 if the linesearch failed too often;
         %        = 3 if the step lengths became too small;
         %        = 4 if Cholesky said ADDA was not positive definite.
-        if (inform == 0)
-            stat = 1;
+        % native-to-canonical status translation is consolidated in mapSolverStatus
+        stat = mapSolverStatus('pdco', 'QP', inform);
+        if stat == 1
             if ~any(csense == 'L' | csense == 'G')
                 s = zeros(nMet,1);
             else
@@ -610,10 +603,6 @@ switch solver
             if 0
                 norm(A*x + s - b,inf)
             end
-        elseif (inform == 1 || inform == 2 || inform == 3)
-            stat = 0;
-        else
-            stat = -1;
         end
         origStat=inform;
         
@@ -667,48 +656,10 @@ switch solver
             %Gurobi error 10020: Objective Q not PSD (negative diagonal entry)
         end
         origStat = resultgurobi.status;
-        if strcmp(resultgurobi.status,'OPTIMAL')
-            stat = 1; % Optimal solution found
-            if stat ==1 && isempty(resultgurobi.x)
-                error('solveCobraQP: gurobi reporting OPTIMAL but no solution')
-            end
-            
-            [x,f,y,w,s] = deal(resultgurobi.x,resultgurobi.objval,osense*resultgurobi.pi,osense*resultgurobi.rc,resultgurobi.slack);
-            
-            if param.printLevel>2 %|| 1
-                res1 = A*x + s - b;
-                disp('Check A*x + s - b = 0 (feasiblity):');
-                disp(norm(res1,inf))
-                if any(any(F))
-                    %res21 = c  + F*x - A' * y - w;
-                    %tmp2 = norm(res21, inf)
-                    disp('Check 2*Q*x + c - A''*lam = 0 (stationarity):');
-                    res22 =  (2*gurobiQP.Q*resultgurobi.x + gurobiQP.obj) - gurobiQP.A'*resultgurobi.pi - resultgurobi.rc;
-                    disp(norm(res22,inf))
-                    if norm(res22,inf)>1e-8
-                        pause(0.1);
-                    end
-                else
-                    res1 = A*x + s - b;
-                    disp(norm(res1,inf))
-                    res2 = osense*c  - A' * y - w;
-                    disp(norm(res2,inf))
-                    disp('Check osense*c - A''*lam - w = 0 (stationarity):');
-                    res22 = gurobiQP.obj - gurobiQP.A'*resultgurobi.pi - resultgurobi.rc;
-                    disp(norm(res22,inf))
-                    if norm(res22,inf)>1e-8
-                        pause(0.1);
-                    end
-                end
-            end
-            
-        elseif strcmp(resultgurobi.status,'INFEASIBLE')
-            stat = 0; % Infeasible
-        elseif strcmp(resultgurobi.status,'UNBOUNDED')
-            stat = 2; % Unbounded
-        elseif strcmp(resultgurobi.status,'INF_OR_UNBD')
-            % we simply remove the objective and solve again.
-            % if the status becomes 'OPTIMAL', it is unbounded, otherwise it is infeasible.
+        if strcmp(resultgurobi.status,'INF_OR_UNBD')
+            % Dynamic re-solve disambiguation stays in the dispatcher (control
+            % flow): remove the objective and solve again. If the status becomes
+            % 'OPTIMAL', it is unbounded, otherwise it is infeasible.
             gurobiQP.obj(:) = 0;
             gurobiQP.F(:,:) = 0;
             resultgurobi = gurobi(gurobiQP,gurobiParam);
@@ -718,7 +669,42 @@ switch solver
                 stat = 0;
             end
         else
-            stat = -1; % Solution not optimal or solver problem
+            % native-to-canonical status translation is consolidated in mapSolverStatus
+            stat = mapSolverStatus('gurobi', 'QP', resultgurobi.status);
+            if stat == 1
+                if isempty(resultgurobi.x)
+                    error('solveCobraQP: gurobi reporting OPTIMAL but no solution')
+                end
+
+                [x,f,y,w,s] = deal(resultgurobi.x,resultgurobi.objval,osense*resultgurobi.pi,osense*resultgurobi.rc,resultgurobi.slack);
+
+                if param.printLevel>2 %|| 1
+                    res1 = A*x + s - b;
+                    disp('Check A*x + s - b = 0 (feasiblity):');
+                    disp(norm(res1,inf))
+                    if any(any(F))
+                        %res21 = c  + F*x - A' * y - w;
+                        %tmp2 = norm(res21, inf)
+                        disp('Check 2*Q*x + c - A''*lam = 0 (stationarity):');
+                        res22 =  (2*gurobiQP.Q*resultgurobi.x + gurobiQP.obj) - gurobiQP.A'*resultgurobi.pi - resultgurobi.rc;
+                        disp(norm(res22,inf))
+                        if norm(res22,inf)>1e-8
+                            pause(0.1);
+                        end
+                    else
+                        res1 = A*x + s - b;
+                        disp(norm(res1,inf))
+                        res2 = osense*c  - A' * y - w;
+                        disp(norm(res2,inf))
+                        disp('Check osense*c - A''*lam - w = 0 (stationarity):');
+                        res22 = gurobiQP.obj - gurobiQP.A'*resultgurobi.pi - resultgurobi.rc;
+                        disp(norm(res22,inf))
+                        if norm(res22,inf)>1e-8
+                            pause(0.1);
+                        end
+                    end
+                end
+            end
         end
 
     case 'optarrow'
@@ -1033,33 +1019,10 @@ switch solver
                 'Your current approach is not guaranteed correct in this case.']);
         end
 
-        % Translation of DQQ of exit codes from https://github.com/kerrickstaley/lp_solve/blob/master/lp_lib.h
-        dqqStatMap = {-5, 'UNKNOWNERROR', -1;
-                      -4, 'DATAIGNORED',  -1;
-                      -3, 'NOBFP',        -1;
-                      -2, 'NOMEMORY',     -1;
-                      -1, 'NOTRUN',       -1;
-                       0, 'OPTIMAL',       1;
-                       1, 'SUBOPTIMAL',   -1;
-                       2, 'INFEASIBLE',    0;
-                       3, 'UNBOUNDED',     2;
-                       4, 'DEGENERATE',   -1;
-                       5, 'NUMFAILURE',   -1;
-                       6, 'USERABORT',    -1;
-                       7, 'TIMEOUT',      -1;
-                       8, 'RUNNING',      -1;
-                       9, 'PRESOLVED',    -1};
-
-        codes = cell2mat(dqqStatMap(:,1));
-        k = find(codes == sol.inform, 1);
-
-        if isempty(k)
-            origStat = 'UNMAPPED';
-            stat     = -1;
-        else
-            origStat = dqqStatMap{k,2};
-            stat     = dqqStatMap{k,3};
-        end
+        % native-to-canonical status translation is consolidated in mapSolverStatus
+        % (single definition of the DQQ exit-code map, with the guarded
+        % 'UNMAPPED'/-1 fallback for out-of-table codes).
+        [stat, origStat] = mapSolverStatus(solver, 'QP', sol.inform);
 
         originalDirectory = pwd;
 

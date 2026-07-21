@@ -171,6 +171,17 @@ if verbFlag && ~LPonly
 end
 %% Construct LP
 
+% Solver island (feature 015-solver-spine-hardening): SteadyComCplex is the
+% CPLEX-specific compute path (warm-start reuse via readModel/readBasis/
+% readParam and Cplex objects) with no fallback. The generic non-CPLEX route
+% is SteadyCom(...,'LPonly') via the SteadyCom entry points. Fail identified if
+% this subroutine is reached without IBM CPLEX installed/licensed.
+global SOLVERS
+if isempty(SOLVERS) || ~isfield(SOLVERS, 'ibm_cplex') || ~SOLVERS.ibm_cplex.installed
+    error('COBRA:SteadyComCplex:requiresCplex', ...
+        'SteadyComCplex requires IBM CPLEX (warm-start reuse) — install/license CPLEX or use SteadyCom(...,''LPonly'') via SteadyCom / SteadyComFVA / SteadyComPOA.');
+end
+
 if nargin < 4
     %create the CPLEX LP problem if not given
     [LP,indLP] = constructLPcom(modelCom, options, solverParams);

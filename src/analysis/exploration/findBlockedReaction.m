@@ -44,12 +44,14 @@ if nargin < 2 || isequal(method, 'FVA')
         end
     end
 else
-    % Stage 1: L2 min-norm via solveCobraLPCPLEX to get candidate blocked reactions
+    % Stage 1: L2 min-norm via the COBRA LP abstraction (solveCobraLP with the
+    % minNorm regularisation) to get candidate blocked reactions, so this path
+    % honours changeCobraSolver (feature 015-solver-spine-hardening).
     tol = 1e-10;
     % Preserve original objective for fallback
     modelOrig = model;
     model.c = zeros(n, 1);
-    solution = solveCobraLPCPLEX(model, 0, 0, 0, [], 1e-6);
+    solution = solveCobraLP(model, 'minNorm', 1e-6);
 
     if solution.stat ~= 1
         warning('L2 solve failed (status %d), falling back to full FVA', solution.stat);

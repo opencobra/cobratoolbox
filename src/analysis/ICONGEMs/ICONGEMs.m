@@ -63,6 +63,16 @@ if ~isempty(model.rules)
     model.grRules = model.rules;
 end
 
+% Solver island (feature 015-solver-spine-hardening): the reaction-flux
+% program is a non-convex QCQP that currently requires the gurobi backend
+% (params.NonConvex = 2, model.quadcon); no fallback is available. Fail
+% identified when gurobi is not installed/licensed.
+global SOLVERS
+if isempty(SOLVERS) || ~isfield(SOLVERS, 'gurobi') || ~SOLVERS.gurobi.installed
+    error('COBRA:ICONGEMs:requiresGurobi', ...
+        'ICONGEMs requires the gurobi solver (non-convex QCQP via params.NonConvex = 2) — install/license gurobi. No fallback is available.');
+end
+
 modelN = model;
 modelN.lb(modelN.lb >= 0) = 0;
 modelN.lb(modelN.lb < 0) = -1000;

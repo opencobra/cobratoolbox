@@ -256,8 +256,9 @@ if nargin < 1
         fprintf('Defined solvers are:\n');
         for i = 1:length(OPT_PROB_TYPES)
             varName = horzcat(['CBT_', OPT_PROB_TYPES{i}, '_SOLVER']);
-            if ~isempty(eval(varName))
-                fprintf('    %s: %s\n', varName, eval(varName));
+            solverForType = CobraSolverState.getSolver(OPT_PROB_TYPES{i});
+            if ~isempty(solverForType)
+                fprintf('    %s: %s\n', varName, solverForType);
             end
         end
     end
@@ -345,7 +346,7 @@ if strcmpi(problemType, 'all')
     end
     notsupportedProblems = setdiff(OPT_PROB_TYPES,solvedProblems);
     for i = 1:length(notsupportedProblems)
-        solverUsed = eval(['CBT_' notsupportedProblems{i} '_SOLVER']);
+        solverUsed = CobraSolverState.getSolver(notsupportedProblems{i});
         if isempty(solverUsed)
             infoString = 'No solver set for this problemtype';
         else
@@ -528,8 +529,8 @@ if solverOK
     if validationLevel > 0
         cwarn = warning;
         warning('off');
-        eval(['oldval = CBT_', problemType, '_SOLVER;']);
-        eval(['CBT_', problemType, '_SOLVER = solverName;']);
+        oldval = CobraSolverState.getSolver(problemType);
+        CobraSolverState.setSolver(problemType, solverName);
         % validate with a simple problem.
         if strcmp(solverName,'mosek') && strcmp(problemType,'CLP') || strcmp(problemType,'all')
             problem = struct('A',[0 1],'b',0,'c',[1;1],'osense',-1,'lb',[0;0],'ub',[0;0],'csense','E','vartype',['C';'I'],'x0',[0;0],'names',[]);  
@@ -556,12 +557,12 @@ if solverOK
                 rethrow(ME)
             end
             solverOK = false;
-            eval(['CBT_', problemType, '_SOLVER = oldval;']);
+            CobraSolverState.setSolver(problemType, oldval);
         end
         warning(cwarn)
     else
         % if unvalidated, simply set the solver without testing.
-        eval(['CBT_', problemType, '_SOLVER = solverName;']);
+        CobraSolverState.setSolver(problemType, solverName);
     end
 else
     switch solverName

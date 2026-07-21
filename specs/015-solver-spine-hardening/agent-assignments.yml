@@ -1,0 +1,151 @@
+# Agent Assignments
+# Feature: 015-solver-spine-hardening
+# Generated: 2026-07-20
+# Command: /speckit-agent-assign-assign
+#
+# NOTE (shared-MATLAB-session constraint): all matlab-developer agents share ONE
+# local MATLAB session. Parallel file EDITS across distinct .m files are safe, but
+# MATLAB EXECUTION (running tests, check_matlab_code) serializes on that one session
+# and can wedge if two agents drive MATLAB at once. The execute stage must run the
+# verification/test tasks serially and respect the dependency notes below.
+
+agents_scanned:
+  - name: "matlab-developer"
+    source: "user"
+    description: "MATLAB coding specialist; edits and verifies .m code against the local MATLAB via the MATLAB MCP server."
+  - name: "Technical Writer"
+    source: "user"
+    description: "Developer documentation specialist (README, references, artifacts)."
+  - name: "Code Reviewer"
+    source: "user"
+    description: "Correctness/maintainability/perf reviewer."
+  - name: "Minimal Change Engineer"
+    source: "user"
+    description: "Minimum-viable-diff specialist; no scope creep."
+  - name: "Software Architect"
+    source: "user"
+    description: "System design and architectural decisions."
+  - name: "Git Workflow Master"
+    source: "user"
+    description: "Git workflows, branching, commits."
+  - name: "DevOps Automator"
+    source: "user"
+    description: "CI/CD and infra automation."
+  - name: "Codebase Onboarding Engineer"
+    source: "user"
+    description: "Fast codebase comprehension from source."
+  - name: "Codebase Archaeologist"
+    source: "user"
+    description: "Multi-tool drift / dead-code / doc-divergence auditor."
+
+# default = the main orchestration loop (non-specialized shell/markdown tasks).
+
+assignments:
+  # --- Phase 1: Setup ---
+  T001:
+    agent: "matlab-developer"
+    reason: "Runs the feature-009 net + testSolvers baseline via the MATLAB MCP server."
+  T002:
+    agent: "matlab-developer"
+    reason: "Records the installed-solver set from initCobraToolbox/changeCobraSolver output (MATLAB)."
+  # --- Phase 2: Foundational ---
+  T003:
+    agent: "matlab-developer"
+    reason: "Applies MATLAB coding-standards guardrail via check_matlab_code + the MATLAB review skill."
+  # --- Phase 3: US1 (status consolidation + builder bug) ---
+  T004:
+    agent: "matlab-developer"
+    reason: "Extends testMapSolverStatus.m (MATLAB unit test)."
+  T005:
+    agent: "matlab-developer"
+    reason: "New testBuildOptProblemNamesCon.m regression test (MATLAB)."
+  T006:
+    agent: "matlab-developer"
+    reason: "Bug A/Bug B regression guards in MATLAB tests."
+  T007:
+    agent: "matlab-developer"
+    reason: "Extends mapSolverStatus.m — the shared status mapper. BLOCKS T008–T011."
+  T008:
+    agent: "matlab-developer"
+    reason: "Routes solveCobraLP.m through mapSolverStatus + fixes Bug B. Depends on T007."
+  T009:
+    agent: "matlab-developer"
+    reason: "Routes solveCobraQP.m + deletes inline dqqStatMap. Depends on T007."
+  T010:
+    agent: "matlab-developer"
+    reason: "Routes solveCobraMILP.m through mapSolverStatus. Depends on T007."
+  T011:
+    agent: "matlab-developer"
+    reason: "Routes solveCobraMIQP.m + fixes Bug A inversion. Depends on T007."
+  T012:
+    agent: "matlab-developer"
+    reason: "Fixes buildOptProblemFromModel names.con/names.var sizing (independent of T007)."
+  T013:
+    agent: "matlab-developer"
+    reason: "US1 verification: runs status/builder tests + the 009 oracle (MATLAB, serial)."
+  # --- Phase 4: US2 (abstraction bypasses) ---
+  T014:
+    agent: "default"
+    reason: "Shell grep to count direct-solver references (no MATLAB)."
+  T015:
+    agent: "Technical Writer"
+    reason: "Authors the documented solver-islands list artifact (markdown) from research.md R2.2."
+  T016:
+    agent: "matlab-developer"
+    reason: "New testSolverAbstractionRouting.m (MATLAB portability + island graceful test)."
+  T017:
+    agent: "matlab-developer"
+    reason: "Routes SWIFTCORE core.m/blocked.m through solveCobraLP (distinct files)."
+  T018:
+    agent: "matlab-developer"
+    reason: "Routes TrimGdel step2and3/gDel_minRN/GRPRchecker (distinct files)."
+  T019:
+    agent: "matlab-developer"
+    reason: "Routes QFCA/directionallyCoupled.m + rMTA/MTA_MIQP.m (distinct files)."
+  T020:
+    agent: "matlab-developer"
+    reason: "Routes the legacy solveCobraLPCPLEX callers through solveCobraLP (distinct files)."
+  T021:
+    agent: "matlab-developer"
+    reason: "Routes reactingMoieties intlinprog through solveCobraMILP."
+  T022:
+    agent: "matlab-developer"
+    reason: "Hardens the 11 islands' graceful-requirement (MATLAB). Depends on T015 list."
+  T023:
+    agent: "matlab-developer"
+    reason: "US2 verification: re-count references + routed-module + routing tests (MATLAB, serial)."
+  # --- Phase 5: US3 (CobraSolverState) ---
+  T024:
+    agent: "matlab-developer"
+    reason: "New testCobraSolverState.m (MATLAB equivalence/parity/explicit-state test)."
+  T025:
+    agent: "matlab-developer"
+    reason: "Creates CobraSolverState.m accessor. BLOCKS T026–T028."
+  T026:
+    agent: "matlab-developer"
+    reason: "Migrates changeCobraSolver.m 7 eval sites. Depends on T025."
+  T027:
+    agent: "matlab-developer"
+    reason: "Migrates parseSolverParameters.m + changeCobraSolverParams.m eval sites. Depends on T025."
+  T028:
+    agent: "matlab-developer"
+    reason: "getCobraSolverParams via accessor + threads explicit state into solveCobra*. Depends on T025."
+  T029:
+    agent: "matlab-developer"
+    reason: "US3 verification: testCobraSolverState + eval-site removal check (MATLAB, serial)."
+  # --- Phase 6: Polish ---
+  T030:
+    agent: "matlab-developer"
+    reason: "Runs quickstart.md validation scenarios (MATLAB)."
+  T031:
+    agent: "matlab-developer"
+    reason: "Runs test/testAll.m fast mode; confirms SC-006 (MATLAB, serial, long-running)."
+  T032:
+    agent: "matlab-developer"
+    reason: "Help-header/diagnostics pass on new functions; verifies with check_matlab_code."
+  T033:
+    agent: "default"
+    reason: "Implementation receipt (markdown) authored by the orchestrator with verbatim final response."
+  T034:
+    agent: "default"
+    reason: "Closeout report + human-loop.md update (orchestration)."

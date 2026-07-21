@@ -129,6 +129,30 @@ function solution = solveCobraLP(LPproblem, varargin)
 global CBTDIR % process arguments etc
 global MINOS_PATH
 
+% --- optional explicit solver state (feature 015-solver-spine-hardening, US3) ---
+% When a CobraSolverState snapshot is supplied as the name-value pair
+% 'cobraSolverState', its selection and parameters are installed into the
+% CBT_*_SOLVER / CBT_*_PARAMS globals for the duration of this solve and
+% restored on exit, so the solve is sourced from that explicit state rather
+% than the ambient globals (identical precedence: caller varargin > state >
+% defaults). Absent (default) => today's globals-driven behaviour. Detected by
+% a varargin scan and gated with exist/isempty, not nargin (constitution VII-D).
+explicitSolverState = [];
+keepStateArg = true(size(varargin));
+for stateArgIndex = 1:numel(varargin) - 1
+    if ischar(varargin{stateArgIndex}) && strcmpi(varargin{stateArgIndex}, 'cobraSolverState')
+        explicitSolverState = varargin{stateArgIndex + 1};
+        keepStateArg([stateArgIndex, stateArgIndex + 1]) = false;
+    end
+end
+varargin = varargin(keepStateArg);
+if exist('explicitSolverState', 'var') && ~isempty(explicitSolverState)
+    savedSolverState = CobraSolverState.get();
+    restoreSolverState = onCleanup(@() CobraSolverState.restore(savedSolverState));
+    CobraSolverState.restore(explicitSolverState);
+end
+% -------------------------------------------------------------------------------
+
 % gets the problem type and solver specific parameters
 [problemTypeParams, solverParams] = parseSolverParameters('LP',varargin{:});
 
@@ -426,25 +450,8 @@ switch solver
             s = b - sol.s(1:end-1);
         end
 
-        % Translation of DQQ of exit codes from https://github.com/kerrickstaley/lp_solve/blob/master/lp_lib.h
-        dqqStatMap = {-5, 'UNKNOWNERROR', -1;
-                      -4, 'DATAIGNORED',  -1;
-                      -3, 'NOBFP',        -1;
-                      -2, 'NOMEMORY',     -1;
-                      -1, 'NOTRUN',       -1;
-                       0, 'OPTIMAL',       1;
-                       1, 'SUBOPTIMAL',   -1;
-                       2, 'INFEASIBLE',    0;
-                       3, 'UNBOUNDED',     2;
-                       4, 'DEGENERATE',   -1;
-                       5, 'NUMFAILURE',   -1;
-                       6, 'USERABORT',    -1;
-                       7, 'TIMEOUT',      -1;
-                       8, 'RUNNING',      -1;
-                       9, 'PRESOLVED',    -1};
-        
-        origStat = dqqStatMap{[dqqStatMap{:,1}] == sol.inform, 2};
-        stat = dqqStatMap{[dqqStatMap{:,1}] == sol.inform, 3};
+        % native-to-canonical status translation is consolidated in mapSolverStatus
+        [stat, origStat] = mapSolverStatus(solver, 'LP', sol.inform);
 
         if ~problemTypeParams.debug % if debugging leave the files in case of an error.
             cleanUp = onCleanup(@() DQQCleanup(tmpPath,originalDirectory));
@@ -562,25 +569,8 @@ switch solver
             s = b - sol.s(1:end-1);
         end
         
-        % Translation of DQQ of exit codes from https://github.com/kerrickstaley/lp_solve/blob/master/lp_lib.h
-        dqqStatMap = {-5, 'UNKNOWNERROR', -1;
-                      -4, 'DATAIGNORED',  -1;
-                      -3, 'NOBFP',        -1;
-                      -2, 'NOMEMORY',     -1;
-                      -1, 'NOTRUN',       -1;
-                       0, 'OPTIMAL',       1;
-                       1, 'SUBOPTIMAL',   -1;
-                       2, 'INFEASIBLE',    0;
-                       3, 'UNBOUNDED',     2;
-                       4, 'DEGENERATE',   -1;
-                       5, 'NUMFAILURE',   -1;
-                       6, 'USERABORT',    -1;
-                       7, 'TIMEOUT',      -1;
-                       8, 'RUNNING',      -1;
-                       9, 'PRESOLVED',    -1};
-        
-        origStat = dqqStatMap{[dqqStatMap{:,1}] == sol.inform, 2};
-        stat = dqqStatMap{[dqqStatMap{:,1}] == sol.inform, 3};
+        % native-to-canonical status translation is consolidated in mapSolverStatus
+        [stat, origStat] = mapSolverStatus(solver, 'LP', sol.inform);
 
         if ~problemTypeParams.debug % if debugging leave the files in case of an error.
             minosCleanUp(pwd,dataDirectory,modelName);
@@ -668,16 +658,8 @@ switch solver
             f = f * (-osense);
         end
 
-        % note that status handling may change (see lp_lib.h)
-        if (origStat == 0)
-            stat = 1;  % optimal solution found
-        elseif(origStat == 3)
-            stat = 2;  % unbounded
-        elseif(origStat == 2)
-            stat = 0;  % infeasible
-        else
-            stat = -1;  % solution not optimal or solver problem
-        end
+        % native-to-canonical status translation is consolidated in mapSolverStatus
+        stat = mapSolverStatus('lp_solve', 'LP', origStat);
         s = [];
         w = [];
     case 'mosek'
@@ -827,18 +809,15 @@ switch solver
             [x,f,origStat,output,lambda] = linprog(c*osense,A,b,Aeq,beq,lb,ub,[],options);
         end
         y = [];
-        if (origStat > 0)
-            stat = 1; % optimal solution found
+        % native-to-canonical status translation is consolidated in mapSolverStatus
+        stat = mapSolverStatus('mosek_linprog', 'LP', origStat);
+        if stat == 1
             f = f*osense;
             y = zeros(size(A,1),1);
             y(csense == 'E',1) = -lambda.eqlin;
             y(csense == 'L' | csense == 'G',1) = -lambda.ineqlin;
             y(csense == 'G',1)=-y(csense == 'G',1); %change sign
             w = lambda.lower-lambda.upper;
-        elseif (origStat < 0)
-            stat = 0; % infeasible
-        else
-            stat = -1; % Solution did not converge
         end
 
     case 'gurobi'
@@ -883,16 +862,27 @@ switch solver
 
         % see the solvers original status -Ronan
         origStat = resultgurobi.status;
-        switch resultgurobi.status
-            case 'OPTIMAL'
-                stat = 1; % optimal solution found
-                
-                if stat ==1 && isempty(resultgurobi.x)
+        if strcmp(resultgurobi.status, 'INF_OR_UNBD')
+            % Dynamic re-solve disambiguation stays in the dispatcher (control
+            % flow, not a table lookup): remove the objective and solve again.
+            % If the status becomes 'OPTIMAL', it is unbounded, otherwise infeasible.
+            gurobiLP.obj(:) = 0;
+            resultgurobi = gurobi(gurobiLP,gurobiParam);
+            if strcmp(resultgurobi.status,'OPTIMAL')
+                stat = 2;
+            else
+                stat = 0; % Gurobi reports infeasible *or* unbounded
+            end
+        else
+            % native-to-canonical status translation is consolidated in mapSolverStatus
+            stat = mapSolverStatus('gurobi', 'LP', resultgurobi.status);
+            if stat == 1
+                if isempty(resultgurobi.x)
                     gurobiLP
                     error('solveCobraLP: gurobi reporting OPTIMAL but no solution')
                 end
                 [x,f,y,w,s] = deal(resultgurobi.x,resultgurobi.objval,osense*resultgurobi.pi,osense*resultgurobi.rc,resultgurobi.slack);
-                
+
                 if problemTypeParams.printLevel>2
                     res1 = A*x + s - b;
                     disp(norm(res1,inf))
@@ -904,29 +894,14 @@ switch solver
                     if ~all(res22<1e-8)
                         pause(0.1);
                     end
-                    
+
                     pause(0.1)
                 end
-            
+
                 % save the basis
                 basis.vbasis=resultgurobi.vbasis;
                 basis.cbasis=resultgurobi.cbasis;
-            case 'INFEASIBLE'
-                stat = 0; % infeasible
-            case 'UNBOUNDED'
-                stat = 2; % unbounded
-            case 'INF_OR_UNBD'
-                % we simply remove the objective and solve again.
-                % if the status becomes 'OPTIMAL', it is unbounded, otherwise it is infeasible.
-                gurobiLP.obj(:) = 0;
-                resultgurobi = gurobi(gurobiLP,param);
-                if strcmp(resultgurobi.status,'OPTIMAL')
-                    stat = 2;
-                else
-                    stat = 0; % Gurobi reports infeasible *or* unbounded
-                end
-            otherwise
-                stat = -1; % Solution not optimal or solver problem
+            end
         end
 
         if isfield(param,'Method')
@@ -1010,8 +985,9 @@ switch solver
         end
         y = [];
         
-        if (origStat > 0)
-            stat = 1; % optimal solution found
+        % native-to-canonical status translation is consolidated in mapSolverStatus
+        stat = mapSolverStatus('matlab', 'LP', origStat);
+        if stat == 1
             f = f*osense;
             y = zeros(size(A,1),1);
             y(csense == 'E') = -lambda.eqlin;
@@ -1021,10 +997,8 @@ switch solver
             end
             w = lambda.lower - lambda.upper;
             s = b - A*x;
-        elseif (origStat < -1)
-            stat = 0; % infeasible
-        elseif origStat == -1
-            stat = 3; % Maybe some partial success
+        elseif stat == 3
+            % Maybe some partial success
             try
                 f = f*osense;
                 y = zeros(size(A,1),1);
@@ -1039,8 +1013,6 @@ switch solver
                 % if values cant be assigned, we report a fail.
                 stat = 0;
             end
-        else
-            stat = -1;
         end
 
     case 'optarrow'
@@ -1114,18 +1086,9 @@ switch solver
 %       5 (S,B) Optimal solution is available, but with infeasibilities after unscaling
 %       6 (S,B) Solution is available, but not proved optimal, due to numeric difficulties
         
-        if origStat == 1
-            stat = 1; % 1 - Optimal solution
-        elseif origStat == 3 
-            stat = 0;  % 0 - Infeasible problem
-        elseif origStat == 2 || origStat == 4
-            stat = 2; % 2 - Unbounded solution
-        elseif (origStat == 5 || origStat == 6)
-            stat = 3; % 3 - Almost optimal solution
-        else
-            stat = -1; %-1 - Some other problem (timelimit, numerical problem etc)
-        end
-        
+        % native-to-canonical status translation is consolidated in mapSolverStatus
+        stat = mapSolverStatus('tomlab_cplex', 'LP', origStat);
+
         % cplexStatus analyzes the CPLEX output Inform code and returns
         % the CPLEX solution status message in ExitText and the TOMLAB exit flag
         % in ExitFlag
@@ -1229,18 +1192,9 @@ switch solver
 %       4 (S,B) Model has been proved either infeasible or unbounded
 %       5 (S,B) Optimal solution is available, but with infeasibilities after unscaling
 %       6 (S,B) Solution is available, but not proved optimal, due to numeric difficulties
-        if origStat == 1
-            stat = 1; % 1 - Optimal solution
-        elseif origStat == 3
-            stat = 0;  % 0 - Infeasible problem
-        elseif origStat == 2 || origStat == 4
-            stat = 2; % 2 - Unbounded solution
-        elseif origStat == 5 || origStat == 6
-            stat = 3; % 3 - Almost optimal solution
-        else
-            stat = -1; %-1 - Some other problem (timelimit, numerical problem etc)
-        end
-        
+        % native-to-canonical status translation is consolidated in mapSolverStatus
+        stat = mapSolverStatus('cplexlp', 'LP', origStat);
+
         if stat==1 || stat==3
             if all(boolE)
                 %this is the dual to the equality constraints
@@ -1299,8 +1253,12 @@ switch solver
         % https://www.ibm.com/support/knowledgecenter/SSSA5P_12.5.1/ilog.odms.cplex.help/refmatlabcplex/html/classCplex.html#a93e3891009533aaefce016703acb30d4
         origStat   = CplexLPproblem.Solution.status;
         %stat = origStat;
+        % native-to-canonical status translation is consolidated in mapSolverStatus
+        % (code 4 = INF_OR_UNBD is disambiguated by the re-solve below, which
+        % stays in the dispatcher; code 1 without a dual field falls through to
+        % the -1 catch-all).
         if origStat==1 && isfield(CplexLPproblem.Solution,'dual')
-            stat = 1;
+            stat = mapSolverStatus('ibm_cplex', 'LP', origStat);
             if ~isfield(CplexLPproblem.Solution,'x')
                 disp(CplexLPproblem)
             end
@@ -1322,9 +1280,9 @@ switch solver
             basis = CplexLPproblem.Start;
             
         elseif origStat == 2 ||   origStat == 20
-            stat = 2; %unbounded
+            stat = mapSolverStatus('ibm_cplex', 'LP', origStat); %unbounded
         elseif origStat == 3
-            stat = 0;%infeasible
+            stat = mapSolverStatus('ibm_cplex', 'LP', origStat); %infeasible
         elseif origStat == 4
             % this is likely unbounded, but could be infeasible
             % lets check, by solving an additional LP with no objective.
@@ -1342,7 +1300,7 @@ switch solver
             % restore the original solution.
             CplexLPproblem.Solution = Solution;
         elseif origStat == 5 || origStat == 6
-            stat = 3;% Almost optimal solution
+            stat = mapSolverStatus('ibm_cplex', 'LP', origStat);% Almost optimal solution
             f = CplexLPproblem.Solution.objval;
             x = CplexLPproblem.Solution.x;
             w = osense*CplexLPproblem.Solution.reducedcost;
@@ -1350,7 +1308,7 @@ switch solver
             s = b - A * x; % output the slack variables
         elseif (origStat >= 10 && origStat <= 12) || origStat == 21 || origStat == 22
             % abort due to reached limit. check if there is a solution and return it.
-            stat = 3;
+            stat = mapSolverStatus('ibm_cplex', 'LP', origStat);
             if isfield(CplexLPproblem.Solution ,'x')
                 x = CplexLPproblem.Solution.x;
             else
@@ -1365,6 +1323,9 @@ switch solver
             end
         elseif origStat==101
             warning('101')
+            % Bug B fix: assign a defined canonical status (previously stat was
+            % left at its default 0, wrongly reporting infeasible).
+            stat = mapSolverStatus('ibm_cplex', 'LP', origStat);
         else
             stat = -1;
         end
@@ -1520,8 +1481,9 @@ switch solver
         %        = 2 if the linesearch failed too often;
         %        = 3 if the step lengths became too small;
         %        = 4 if Cholesky said ADDA was not positive definite.
-        if (inform == 0)
-            stat = 1;
+        % native-to-canonical status translation is consolidated in mapSolverStatus
+        stat = mapSolverStatus('pdco', 'LP', inform);
+        if stat == 1
             if ~any(csense == 'L' | csense == 'G')
                 s = zeros(nMet,1);
             else
@@ -1534,18 +1496,14 @@ switch solver
             end
             x =   x(1:nRxn);
             w =   w(1:nRxn);
-            
+
             if 0
                 norm(A*x + s - b + (d2^2)*y,inf)
                 norm(c - A'*y - w,inf)
                 norm(osense*c - A'*y - w,inf)
             end
             f = c'*x;
-        elseif (inform == 1 || inform == 2 || inform == 3)
-            stat = 0;
-            f = NaN;
         else
-            stat = -1;
             f = NaN;
         end
         origStat = inform;
@@ -1658,16 +1616,8 @@ function [x,f,y,w,stat,origStat] = solveGlpk(c,A,b,lb,ub,csense,osense,params)
 [x,f,origStat,extra] = glpk(c,A,b,lb,ub,csense,[],osense,params);
 y = extra.lambda;
 w = extra.redcosts;
-% Note that status handling may change (see glplpx.h)
-if (origStat == 180 || origStat == 5)
-    stat = 1; % optimal solution found
-elseif (origStat == 182 || origStat == 183 || origStat == 3 || origStat == 110)
-    stat = 0; % infeasible
-elseif (origStat == 184 || origStat == 6)
-    stat = 2; % unbounded
-else
-    stat = -1; % Solution not optimal or solver problem
-end
+% native-to-canonical status translation is consolidated in mapSolverStatus
+stat = mapSolverStatus('glpk', 'LP', origStat);
 end
 
 

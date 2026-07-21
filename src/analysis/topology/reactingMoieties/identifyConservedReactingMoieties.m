@@ -764,13 +764,9 @@ end
 %conserved moiety formula
 moietyFormulae=cell(nIsomorphismClasses,1);
 for i = 1:nIsomorphismClasses
-<<<<<<< HEAD
     if useOpenSourceMoietyTools
         elementTable = tabulatePlain(compElements(I2C(i,:)==1)); % elements in moiety i
     elseif license('test','Statistics_Toolbox')
-=======
-    if exist('tabulate','file')==2
->>>>>>> upstream/develop
         elementTable = tabulate(compElements(I2C(i,:)==1)); % elements in moiety i
     else
         warning('identifyConservedReactingMoieties:noStatsToolbox', ...
@@ -1648,53 +1644,35 @@ end
 
 activeBonds = any(CRB2R, 2);
 CRB2R_active = CRB2R(activeBonds, :);
+m_active = sum(activeBonds);
 
-if useOpenSourceMoietyTools
-    % Pure MATLAB, no solver dependency of any kind.
-    [selectedReactions, fval] = minimumSetCoverPlain(CRB2R_active);
-else
-    [m, n] = size(CRB2R);
-    m_active = sum(activeBonds);
+f = ones(n,1);
+A = -CRB2R_active;
+bvec = -ones(m_active,1);
+lb = zeros(n,1);
+ub = ones(n,1);
+intcon = 1:n;
 
-    f = ones(n,1);
-    A = -CRB2R_active;
-    bvec = -ones(m_active,1);
-    lb = zeros(n,1);
-    ub = ones(n,1);
-    intcon = 1:n;
+% Route the minimum set-cover MILP through the COBRA solver abstraction so
+% this module honours changeCobraSolver (feature 015-solver-spine-hardening);
+% the former Optimization-Toolbox intlinprog fast path is removed.
+MILPproblem.A      = A;
+MILPproblem.b      = bvec;
+MILPproblem.c      = f;
+MILPproblem.lb     = lb;
+MILPproblem.ub     = ub;
+MILPproblem.osense = 1;                       % 1 = minimise
+MILPproblem.csense = repmat('L', size(bvec)); % A*x <= bvec
 
-    if license('test','Optimization_Toolbox')
-        % NOTE: local variable renamed from `options` to `milpOptions` to
-        % avoid shadowing this function's own `options` input argument
-        % (the original code's `options = optimoptions(...)` here
-        % silently overwrote the function's own `options` struct).
-        milpOptions = optimoptions('intlinprog','Display','off');
-        [x_opt, fval] = intlinprog(f, intcon, A, bvec, [], [], lb, ub, milpOptions);
-        selectedReactions = find(x_opt > 0.5);
-    else
-        % Original fallback: COBRA's own MILP interface, which can itself
-        % dispatch to an open-source solver (e.g. GLPK) if one is
-        % configured via changeCobraSolver, or a proprietary one if
-        % that's what's set up on this machine.
-        MILPproblem.A      = A;
-        MILPproblem.b      = bvec;
-        MILPproblem.c      = f;
-        MILPproblem.lb     = lb;
-        MILPproblem.ub     = ub;
-        MILPproblem.osense = 1;                       % 1 = minimise
-        MILPproblem.csense = repmat('L', size(bvec)); % A*x <= bvec
+n = numel(f);
+MILPproblem.vartype = repmat('C', n, 1);
+MILPproblem.vartype(intcon) = 'I';            % integer variables
 
-        n = numel(f);
-        MILPproblem.vartype = repmat('C', n, 1);
-        MILPproblem.vartype(intcon) = 'I';            % integer variables
+sol = solveCobraMILP(MILPproblem, 'printLevel', 0);
 
-        sol = solveCobraMILP(MILPproblem, 'printLevel', 0);
-
-        x_opt = sol.full;
-        fval  = sol.obj;
-        selectedReactions = find(x_opt > 0.5);
-    end
-end
+x_opt = sol.full;
+fval  = sol.obj;
+selectedReactions = find(x_opt > 0.5);
 
 
 %% -------------------------------------------------------------

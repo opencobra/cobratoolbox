@@ -67,12 +67,9 @@ function changeOK = changeCobraSolverParams(solverType, paramName, paramValue)
 %       - Thomas Pfau 2018 - Update to allow all solver Types 
 
 
-global CBT_LP_PARAMS;
-global CBT_MILP_PARAMS;
-global CBT_QP_PARAMS;
-global CBT_MIQP_PARAMS;
-global CBT_NLP_PARAMS;
-% get the parameter structs
+% The CBT_<solverType>_PARAMS globals are read/written through the
+% CobraSolverState accessor below (feature 015-solver-spine-hardening); the
+% previous top-of-function global declarations are no longer needed here.
 changeOK = false;
 
 if strcmp(paramName,'objTol')
@@ -81,8 +78,8 @@ if strcmp(paramName,'objTol')
 end
 
 allowedParameters = getCobraSolverParamsOptionsForType(solverType);
-if (ismember(paramName,allowedParameters))   
-    eval(['CBT_' solverType '_PARAMS.(paramName) = paramValue;']);
+if (ismember(paramName,allowedParameters))
+    CobraSolverState.setParam(solverType, paramName, paramValue);
     changeOK = true;
 else
     error(['Parameter name ' paramName ' not allowed for LP solvers']);

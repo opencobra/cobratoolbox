@@ -87,7 +87,7 @@ gm2.modelsense = 'Min';
 gm2.sense = repmat('=', 1, m);
 gm2.lb = model2.lb;
 gm2.ub = model2.ub;
-optPre = gurobi(gm2);
+optPre = solveGurobiViaCobra(gm2);
 
 if strcmp(optPre.status, 'OPTIMAL') ~= 1
     display('no solution 1')
@@ -107,7 +107,7 @@ gm.modelsense = 'Min';
 gm.sense = repmat('=', 1, m);
 gm.lb = model.lb;
 gm.ub = model.ub;
-opt0 = gurobi(gm);
+opt0 = solveGurobiViaCobra(gm);
 
 TMGR = -opt0.objval;
 big = TMGR; 
@@ -159,7 +159,7 @@ while it <= maxLoop
     gm.ub = lp.ub;
     gm.vtype = lp.ctype;
     % find a gene deletion strategy candidate
-    opt = gurobi(gm,params);
+    opt = solveGurobiViaCobra(gm, 'intTol', params.IntFeasTol);
     
 
     if strcmp(opt.status, 'OPTIMAL')
@@ -216,7 +216,7 @@ while it <= maxLoop
     gm2.ub = ub2;
     gm2.rhs = zeros(m,1);
     % validate the gene deletion candidate
-    opt2 = gurobi(gm2,params);
+    opt2 = solveGurobiViaCobra(gm2);
 
     gm3 = gm2;
     gm3.obj(gid) = 0;
@@ -224,7 +224,7 @@ while it <= maxLoop
     gm3.lb(gid) = opt2.x(gid);
     gm3.ub(gid) = opt2.x(gid);
     % evaluate the minimum PR under the GR maximazation.
-    opt3 = gurobi(gm3);
+    opt3 = solveGurobiViaCobra(gm3);
     
     grprList(it, :) = [opt2.x(gid) opt3.x(pid)];
     gr = opt2.x(gid); pr = opt3.x(pid);
@@ -250,5 +250,48 @@ while it <= maxLoop
 end
 vg = vg > 0.1;
 
+end
+
+function result = solveGurobiViaCobra(gurobiProblem, varargin)
+% Route a Gurobi-style problem struct through the COBRA solver abstraction
+% (solveCobraLP for a continuous problem, solveCobraMILP when .vtype is
+% present) so TrimGdel honours changeCobraSolver. Returns a struct exposing
+% the Gurobi result fields consumed here: .status ('OPTIMAL' when optimal),
+% .objval, and .x. (feature 015-solver-spine-hardening)
+
+problem.A = gurobiProblem.A;
+problem.c = gurobiProblem.obj;
+if isfield(gurobiProblem, 'rhs') && ~isempty(gurobiProblem.rhs)
+    problem.b = gurobiProblem.rhs;
+else
+    problem.b = zeros(size(gurobiProblem.A, 1), 1);   % Gurobi defaults rhs to 0
+end
+problem.lb = gurobiProblem.lb;
+problem.ub = gurobiProblem.ub;
+if isfield(gurobiProblem, 'modelsense') && strcmpi(gurobiProblem.modelsense, 'Max')
+    problem.osense = -1;
+else
+    problem.osense = 1;   % 'Min' (Gurobi default)
+end
+csense = gurobiProblem.sense(:);
+csense(csense == '<') = 'L';
+csense(csense == '>') = 'G';
+csense(csense == '=') = 'E';
+problem.csense = csense;
+
+if isfield(gurobiProblem, 'vtype')
+    problem.vartype = gurobiProblem.vtype(:);
+    solution = solveCobraMILP(problem, varargin{:});
+else
+    solution = solveCobraLP(problem, varargin{:});
+end
+
+if isnumeric(solution.stat) && solution.stat == 1
+    result.status = 'OPTIMAL';
+else
+    result.status = 'NOT_OPTIMAL';
+end
+result.objval = solution.obj;
+result.x = solution.full;
 end
 

@@ -339,15 +339,40 @@ if isfield(param,'debug') && param.debug
             else
                 optProblem.names.obj='noLP';
             end
+            % Size names.con from the true assembled constraint-row count
+            % size(optProblem.A,1). model.mets names the S rows and model.ctrs
+            % (when present) the coupling rows; when model.C is present without
+            % model.ctrs, append placeholder ids for the coupling rows so that
+            % numel(names.con) == size(optProblem.A,1) (otherwise mosek raises
+            % err_argument_dimension / Error 1201).
+            nConTotal = size(optProblem.A,1);
             if isfield(model,'ctrs')
                 optProblem.names.con=[model.mets;model.ctrs];
             else
                 optProblem.names.con=model.mets;
             end
+            nConNamed = numel(optProblem.names.con);
+            if nConNamed < nConTotal
+                placeholderCon = arrayfun(@(i) sprintf('con_%d', i), ...
+                    (nConNamed + 1:nConTotal)', 'UniformOutput', false);
+                optProblem.names.con = [optProblem.names.con; placeholderCon];
+            end
+
+            % Symmetrically, size names.var from size(optProblem.A,2): model.rxns
+            % names the S columns and model.evars (when present) the E columns;
+            % when model.E is present without model.evars, append placeholder ids
+            % for the extra columns.
+            nVarTotal = size(optProblem.A,2);
             if isfield(model,'evars')
                 optProblem.names.var=[model.rxns;model.evars];
             else
                 optProblem.names.var=model.rxns;
+            end
+            nVarNamed = numel(optProblem.names.var);
+            if nVarNamed < nVarTotal
+                placeholderVar = arrayfun(@(i) sprintf('var_%d', i), ...
+                    (nVarNamed + 1:nVarTotal)', 'UniformOutput', false);
+                optProblem.names.var = [optProblem.names.var; placeholderVar];
             end
     end
 else

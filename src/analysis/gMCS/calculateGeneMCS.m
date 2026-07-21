@@ -100,7 +100,11 @@ if SOLVERS.ibm_cplex.installed && SOLVERS.ibm_cplex.working
         warning('calculateMCS will use IBM CPLEX although it is not selected for MILP')
     end
 else
-    error('This version calculateMCS only works with IBM CPLEX. Newer versions will include more solvers included in COBRA Toolbox')
+    % Solver island (feature 015-solver-spine-hardening): the gene-MCS
+    % enumeration relies on the CPLEX solution pool (cplex.populate()), which
+    % the COBRA solver abstraction cannot currently carry. Fail identified.
+    error('COBRA:calculateGeneMCS:requiresCplex', ...
+        'calculateGeneMCS requires IBM CPLEX (solution pool via cplex.populate()) — install/license CPLEX. No fallback is available.')
 end
 
 p = inputParser;
