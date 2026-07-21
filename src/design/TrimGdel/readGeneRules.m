@@ -34,7 +34,7 @@ function [term, ng, nt, nr, nko, reactionKO, reactionKO2term] = readGeneRules(mo
 %
 
 x = 1; y = 1; reactionKO = 0; qq = 0; ww = 0;
-for i=1:size(model.grRules)
+for i=1:numel(model.grRules)
     GRrelation = model.grRules{i};
     empty = 0;
     if isempty(GRrelation) == 0
