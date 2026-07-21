@@ -1,28 +1,42 @@
 function model = homogeniseCouplingConstraints(model)
-% (1) remove coupling constraints with only one entry
-% (1) replace each coupling constraint with 3 entries, with a pair with 2
-% entries
+% Homogenise the coupling constraints of a model so that every retained
+% constraint couples exactly a pair of reactions
+%
+% Coupling constraints with a single non-zero entry are removed, constraints
+% with three non-zero entries are reduced by removing the coupling associated
+% with reaction `sIEC_biomass_reactionIEC01b_trtr`, and constraints whose two
+% remaining non-zero entries are both negative are sign-flipped to be both
+% positive (updating the constraint sense accordingly)
 %
 % USAGE:
-%   model = homogeniseCouplingConstraints(model)
+%
+%    model = homogeniseCouplingConstraints(model)
 %
 % INPUTS:
-%  model.C:
-%  model.ctrs:
-%  model.dsense:
-%  model.rxns:
+%    model:    COBRA model structure with coupling-constraint fields:
+%
+%                * .C - `ctrs x n` coupling-constraint matrix
+%                * .d - `ctrs x 1` right-hand side values for the coupling constraints
+%                * .ctrs - `ctrs x 1` coupling-constraint identifiers
+%                * .dsense - `ctrs x 1` coupling-constraint senses (`E`, `L`, `G`)
+%                * .rxns - `n x 1` reaction identifiers
 %
 % OUTPUTS:
-%  model.C:
-%  model.ctrs:
-%  model.dsense:
-%  model.rxns:
+%    model:    COBRA model with homogenised coupling constraints, updating the
+%              fields:
 %
-% NOTE: Assumes sIEC_biomass_reactionIEC01b_trtr AND
-% sIEC_biomass_reactionIEC01b are the only pair of doubly coupled reactions
-% and will error if not
+%                * .C - coupling-constraint matrix with single-entry and
+%                  triple-entry rows resolved and negative pairs sign-flipped
+%                * .d - right-hand side values for the retained constraints
+%                * .ctrs - identifiers of the retained coupling constraints
+%                * .dsense - senses of the retained coupling constraints
 %
-% Author(s): Ronan Fleming, 2024
+% NOTE:
+%    Assumes `sIEC_biomass_reactionIEC01b_trtr` and
+%    `sIEC_biomass_reactionIEC01b` are the only pair of doubly coupled
+%    reactions and will error if not
+%
+% .. Author: - Ronan Fleming, 2024
 
 % Get the dimensions of model.C, with m as the number of rows and n as the number of columns
 [m,n]  = size(model.C);

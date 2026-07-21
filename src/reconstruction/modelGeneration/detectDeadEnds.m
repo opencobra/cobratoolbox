@@ -5,10 +5,19 @@ function mets = detectDeadEnds(model, removeExternalMets)
 %
 % USAGE:
 %
-%    outputMets = detectDeadEnds(model, removeExternalMets)
+%    mets = detectDeadEnds(model, removeExternalMets)
 %
 % INPUT:
-%    model:                 COBRA model structure
+%    model:                 COBRA model structure with fields:
+%
+%                             * .S - `m` x `n` stoichiometric matrix
+%                             * .lb - `n` x 1 lower bounds on fluxes
+%                             * .ub - `n` x 1 upper bounds on fluxes
+%                             * .SInConsistentRxnBool - `n` x 1 boolean of stoichiometrically
+%                               inconsistent reactions (only if `removeExternalMets`; returned
+%                               by `findStoichConsistentSubset`)
+%                             * .SExMetBool - `m` x 1 boolean of exchanged/external metabolites
+%                               (only if `removeExternalMets`; returned by `findStoichConsistentSubset`)
 %
 % OPTIONAL INPUT:
 %    removeExternalMets:    Dont return metabolites that participate in reactions of the following type:
@@ -16,7 +25,7 @@ function mets = detectDeadEnds(model, removeExternalMets)
 %                           inconsistent reactions as defined in `Gevorgyan et al, Bioinformatics, 2008`
 %
 % OUTPUT:
-%    outputMets:            List of indicies of metabolites which can ether
+%    mets:                  List of indicies of metabolites which can ether
 %                           only be produced or consumed.
 %
 % .. Authors:

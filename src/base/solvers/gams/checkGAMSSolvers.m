@@ -7,18 +7,15 @@ function solvers = checkGAMSSolvers(problemType)
 %    solvers = checkGAMSSolvers(problemType) 
 %
 % INPUTS:
-%    problemType               Type: string
-%                              Description: string containing the problem
-%                              type for which this function will search
-%                              solvers. 
-%                              E.g.: problem type = 'LP' (Linear
-%                              Programming)
+%    problemType:    string containing the problem type for which this
+%                   function will search solvers.
+%                   E.g.: problemType = 'LP' (Linear Programming)
 %
 % OUTPUTS:
-%    solvers                   Type: cell array for available GAMS solvers
-%                              in your systems which allows the user to
-%                              solve problems of type "problemType"
-% 
+%    solvers:       cell array of available GAMS solvers in your system
+%                   which allows the user to solve problems of type
+%                   `problemType`
+%
 % EXAMPLE:
 %
 %    solvers = checkGAMSSolvers('MIP') 
@@ -39,7 +36,8 @@ if isempty(gamsPath)
 end
 
 %verify that licememo.gms in the path of the system
-licememoFullPath = which('licememo.gms');
+% licememo.gms is vendored under external/ (relocated out of src/); resolve by absolute path.
+licememoFullPath = [fileparts(which('initCobraToolbox')) filesep 'external' filesep 'base' filesep 'solvers' filesep 'gams' filesep 'licememo.gms'];
 if isempty(licememoFullPath)
     error('licememo.gms in not in MATLAB path.');
 end

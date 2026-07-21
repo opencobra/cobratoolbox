@@ -33,6 +33,9 @@ function solution = solveCobraQP(QPproblem, varargin)
 %                                   positive semi-definite
 %                       * .csense - Constraint senses, a string containing the constraint sense for
 %                         each row in A ('E', equality, 'G' greater than, 'L' less than).
+%                       * .modelID - (optional) identifier string for the problem,
+%                         used as a fallback MPS filename by the `dqqMinos` solver
+%                         interface (default: `'aModelID'`)
 %
 % Optional parameters can be entered using parameters structure or as
 % parameter followed by parameter value: i.e. ,'printLevel', 3)

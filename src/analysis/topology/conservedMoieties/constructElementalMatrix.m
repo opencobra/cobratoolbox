@@ -13,9 +13,9 @@ function [E, elements] = constructElementalMatrix(metFormulas, metCharges)
 %                    electron vector.
 %
 % OUTPUTS:
-%    E:              The `m x p` elemental matrix where `p` is the number of unique
-%                    elements in `metFormulas` (plus the electron if `metCharges` is
-%                    included as input)
+%    E:              The `m x p` elemental matrix where `p` is the number of
+%                    unique elements in `metFormulas` (plus the electron if
+%                    `metCharges` is included as input)
 %    elements:       `1 x p` cell array of element symbols (e for electron)
 %
 % .. Author: - Hulda S. Haraldsdóttir, Nov. 2015

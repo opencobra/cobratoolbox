@@ -5,8 +5,10 @@ function plotHistConv(model, sample, rxnNames, nSubSamples)
 %
 %    plotHistConv(model, sample, rxnNames, nSubSamples)
 %
-% INPUTS: 
-%    model:          COBRA model structure
+% INPUTS:
+%    model:          COBRA model structure, with fields:
+%
+%                      * .rxns - reaction identifiers
 %    sample:         Sampled fluxes
 %    rxnNames:       List of reactions to plot
 %    nSubSamples:    Number of sub samples

@@ -4,16 +4,20 @@ function [solution] = enumerateOptimalSolutions(model)
 %
 % USAGE:
 %
-%    [solution] = enumerateOptimalSolution(model)
+%    [solution] = enumerateOptimalSolutions(model)
 %
 % INPUT:
-%    model:       COBRA model structure
+%    model:       COBRA model structure with the fields:
+%
+%                   * .S - `m x n` stoichiometric matrix
+%                   * .lb - `n x 1` lower flux bounds
+%                   * .ub - `n x 1` upper flux bounds
 %
 % OUTPUT:
-%    solution:    solution structure
+%    solution:    solution structure with the fields:
 %
-%                   * fluxes - Flux distribution for each iteration
-%                   * nonzero - Boolean matrix denoting which fluxes are nonzero for each iteration
+%                   * .fluxes - flux distribution for each iteration
+%                   * .nonzero - Boolean matrix denoting which fluxes are nonzero for each iteration
 %
 % .. Authors:
 %       - Jan Schellenberger, August 2008 - Based on code by Jennie Reed

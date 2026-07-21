@@ -12,15 +12,23 @@ function specificData = preprocessingOmicsModel(inputData, setMinActiveFlux, set
 %                     following rows represent the data on them.
 %
 % OPTIONAL INPUT:
-%   setMinActiveFlux  {0}, 1 - change the LB of forced
-%                     active reactions based on the (primal) feasibility
-%                     tolerance (feasTol*100)
-%   setMaxActiveFlux  {0}, 1 - change the UB of forced
-%                     active reactions based on the (primal) feasibility
-%                     tolerance (based on param.TolMaxBoundary, feasTol*1e9 if not provided)
-%    specificData:         Structure containing the optional variables to
-%                     generate a context-specific omics model
-%    TolMaxBoundary:  The reaction boundary's maximum value (Default: feasTol*1e9).
+%    setMinActiveFlux:    {0}, 1 - change the LB of forced active reactions based on
+%                     the (primal) feasibility tolerance (feasTol*100)
+%    setMaxActiveFlux:    {0}, 1 - change the UB of forced active reactions based on
+%                     the (primal) feasibility tolerance (based on param.TolMaxBoundary, feasTol*1e9 if not provided)
+%    specificData:    Structure containing the optional variables to generate a
+%                     context-specific omics model, with fields:
+%
+%                       * .inputData - location or table of the input omics data
+%                       * .activeGenes - genes known to be active
+%                       * .activeReactions - reactions known to be active
+%                       * .inactiveGenes - genes known to be inactive
+%                       * .rxns2add - table of reactions to add to the model
+%                       * .rxns2constrain - table of custom reaction constraints
+%                       * .cellCultureData - cell-culture measurements
+%                       * .mediaData - table of fresh-media constraints
+%
+%    TolMaxBoundary:    The reaction boundary's maximum value (Default: feasTol*1e9).
 %
 % OUTPUT:
 %    specificData:         Structure containing the additional optional variables to

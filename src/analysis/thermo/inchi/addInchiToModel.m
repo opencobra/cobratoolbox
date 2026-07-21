@@ -1,53 +1,36 @@
 function model = addInchiToModel(model, molFileDir,  method, printLevel)
-% Assigns Inchi to model.inchi structure given set of mol files for each
-% metabolite
+% Assign InChI to the `model.inchi` structure given a set of mol files for each metabolite
 %
 % USAGE:
 %
-%    model = assignInchiToModel(model, molFileDir, printLevel)
+%    model = addInchiToModel(model, molFileDir, method, printLevel)
 %
-% INPUT:
-%    model          Model structure with following fields:
+% INPUTS:
+%    model:         COBRA model structure with the field:
 %
-%                     * .S - `m x n` stoichiometric matrix.
-%                     * .mets - `m x 1` array of metabolite identifiers.
-%                     * .rxns - `n x 1` array of reaction identifiers.
-%                     * .metFormulas - `m x 1` cell array of metabolite formulas. Formulas for
-%                       protons should be H, and formulas for water should be H2O.
-%                     * .metCharges - `m x 1` numerical array of metabolite charges.
-%                     * .metCompartments - optional `m x 1` array of metabolite compartment
-%                       assignments. Not required if metabolite
-%                       identifiers are strings of the format `ID[*]`
-%                       where * is the appropriate compartment identifier.
-%
-%    molFileDir:    Path to a directory containing molfiles for the
-%                   major tautomer of the major microspecies of
-%                   each metabolite at pH 7. Molfiles should be
-%                   named with the metabolite identifiers in
-%                   model.mets (without compartment assignments).
+%                     * .mets - `m x 1` cell array of metabolite identifiers
+%    molFileDir:    path to a directory containing molfiles for the major tautomer
+%                   of the major microspecies of each metabolite at pH 7, named with
+%                   the metabolite identifiers in `model.mets` (without compartment
+%                   assignments)
 %
 % OPTIONAL INPUTS:
-%    printLevel:    Verbose level
+%    method:        'sdf' (default) to build InChI via an intermediate SDF, or 'mol'
+%                   to read the molfiles directly
+%    printLevel:    verbosity level (default 1)
 %
-% OUTPUTS:
-%    model:          Model structure with following additional fields:
+% OUTPUT:
+%    model:         the input model with the additional fields:
 %
-%                   * .inchi - Structure containing four `m x 1` cell array's of
-%                     IUPAC InChI strings for metabolites, with varying
-%                     levels of structural detail.
+%                     * .inchi - structure of `m x 1` cell arrays of IUPAC InChI strings at varying levels of detail, with subfields `.standard`, `.standardWithStereo`, `.standardWithStereoAndCharge` and `.nonstandard`
+%                     * .inchiBool - `m x 1` logical, true where an InChI exists
+%                     * .molBool - `m x 1` logical, true where a mol file exists
+%                     * .compositeInchiBool - `m x 1` logical, true where the InChI is composite
 %
-%                   * .inchi.standard: m x 1 cell array of standard inchi
-%                   * .inchi.standardWithStereo: m x 1 cell array of standard inchi with stereo
-%                   * .inchi.standardWithStereoAndCharge: m x 1 cell array of standard inchi with stereo and charge
-%                   * .inchi.nonstandard: m x 1 cell array of non-standard inchi
+% NOTE:
 %
-%   inchiBool           m x 1 true if inchi exists
-%   molBool             m x 1 true if mol file exists
-%   compositeInchiBool  m x 1 true if inchi is composite
-
-
-% Written output - MetStructures.sdf - An SDF containing all structures input to the
-% component contribution method for estimation of standard Gibbs energies.           
+%    When method is 'sdf', writes `MetStructures.sdf` containing all structures
+%    passed to the component contribution method for standard Gibbs energy estimation.
 
 if ~exist('printLevel','var')
     printLevel = 1;

@@ -6,7 +6,34 @@ function [model, rxnIDexists] = addReaction(model, rxnID, varargin)
 %    [model, rxnIDexists] = addReaction(model, rxnID, varargin)
 %
 % INPUTS:
-%    model:             COBRA model structure
+%    model:             COBRA model structure with fields:
+%
+%                         * .rxns - `n x 1` reaction identifiers, checked
+%                           for an existing reaction with the same ID and
+%                           extended with the new reaction ID
+%                         * .lb - `n x 1` lower bounds, read to compute
+%                           default bounds/reversibility and set for the
+%                           new/modified reaction
+%                         * .ub - `n x 1` upper bounds, read to compute the
+%                           default upper bound and set for the
+%                           new/modified reaction
+%                         * .mets - `m x 1` metabolite identifiers, used to
+%                           determine which of the reaction's metabolites
+%                           are already in the model
+%                         * .S - `m x n` stoichiometric matrix, read and
+%                           extended with the new reaction's column
+%                         * .subSystems - `n x 1` subsystem assignments,
+%                           created if absent and set for the new/modified
+%                           reaction
+%                         * .subSystem - legacy singular subsystem field,
+%                           read (if present) to seed the default subsystem
+%                           when modifying an existing reaction
+%                         * .grRules - `n x 1` GPR rule strings, read (if
+%                           present) to seed the default gene rule when
+%                           modifying an existing reaction
+%                         * .rxnNames - `n x 1` reaction names, read (if
+%                           present) to seed the default reaction name and
+%                           set for the new/modified reaction
 %    rxnID:             Reaction name abbreviation (i.e. 'ACALD')
 %
 % OPTIONAL INPUTS:

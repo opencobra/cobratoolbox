@@ -1,17 +1,19 @@
 function [model] = integrate_cVector_into_model(model)
-% sintegrate_cVector_into_model incorporates the c vector directly into the
-% model as the reaction 'obj_fun_rxn'.
-
+% Incorporates the c vector directly into the model as the reaction
+% 'obj_fun_rxn'.
+%
 % USAGE:
 %
 %    [model] = integrate_cVector_into_model(model)
 %
 % INPUTS:
-%   model:  COBRA model structure with minimal fields:
-
-% OUTPUT:
-%   model:   Augmented COBRA model
+%    model:    COBRA model structure with minimal fields:
 %
+%                * .S - stoichiometric matrix
+%                * .c - objective coefficients
+%
+% OUTPUTS:
+%    model:    Augmented COBRA model with the objective reaction 'obj_fun_rxn' added
 %
 % .. Authors: - Bronson R. Weston   2022
 

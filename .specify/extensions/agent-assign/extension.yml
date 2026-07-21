@@ -1,0 +1,40 @@
+schema_version: "1.0"
+
+extension:
+  id: "agent-assign"
+  name: "Agent Assign"
+  version: "1.1.0"
+  description: "Assign specialized Claude Code agents to spec-kit tasks for targeted execution"
+  author: "xuyang"
+  repository: "https://github.com/xymelon/spec-kit-agent-assign"
+  license: "MIT"
+
+requires:
+  speckit_version: ">=0.7.1"
+  commands:
+    - "speckit.tasks"
+    - "speckit.implement"
+
+provides:
+  commands:
+    - name: "speckit.agent-assign.assign"
+      file: "commands/assign.md"
+      description: "Scan available agents and assign them to tasks in tasks.md"
+    - name: "speckit.agent-assign.validate"
+      file: "commands/validate.md"
+      description: "Validate that all agent assignments are correct and agents exist"
+    - name: "speckit.agent-assign.execute"
+      file: "commands/execute.md"
+      description: "Execute tasks by spawning the assigned agent for each task"
+
+hooks:
+  after_tasks:
+    command: "speckit.agent-assign.assign"
+    optional: true
+    prompt: "Assign agents to the generated tasks?"
+    description: "Automatically assign specialized agents to tasks after generation"
+
+tags:
+  - "agent"
+  - "automation"
+  - "implementation"

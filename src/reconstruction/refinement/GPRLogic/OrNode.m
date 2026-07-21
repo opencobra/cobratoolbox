@@ -1,3 +1,4 @@
+% OrNode represents an OR connection between child Node objects in a GPR logical-formula tree.
 classdef (HandleCompatible) OrNode < Node
     % OrNode is a class that represents OR connections in a logical formula
     % For further documentation please have a look at the Node Class.

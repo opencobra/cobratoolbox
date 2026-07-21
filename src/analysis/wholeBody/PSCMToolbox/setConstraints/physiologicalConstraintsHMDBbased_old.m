@@ -1,25 +1,53 @@
-function modelConstraint = physiologicalConstraintsHMDBbased(model,IndividualParameters, ExclList, Type, InputData, Biofluid, setDefault)
-% apply constraints to Harvey
-% metabolite concentrations have to be given in uM
-% organ weights have to be given in g
+function modelConstraint = physiologicalConstraintsHMDBbased(model, IndividualParameters, ExclList, Type, InputData, Biofluid, setDefault)
+% Apply physiologically-derived concentration constraints to a whole-body
+% metabolic model (legacy version). Metabolite concentrations are given in uM
+% and organ weights in g
 %
-% INPUT
-% model                     model structure
-% IndividualParameters      Structure containing physiological parameters,
-%                           as generated in standardPhysiolDefaultParameters
-% Type                      Input type (either 'xlsx' (default) --> loads by default
-%                           'Parsed_hmdbConc.xlsx' or 'direct'). If
-%                           'direct' InputData must be provided
-% InputData                 first column corresponds to vmh id's of
-%                           metabolites, 2nd to data points (will be set as lb and ub)
-% Biofluid                  'all' (default if type is xlsx). For direct:
-%                            'bc','u','csf'
+% USAGE:
 %
+%    modelConstraint = physiologicalConstraintsHMDBbased(model, IndividualParameters, ExclList, Type, InputData, Biofluid, setDefault)
 %
-% OUTPUT
-% modelConstraint           model structure with updated constraints
+% INPUTS:
+%    model:                  whole-body metabolic model structure
+%    IndividualParameters:     structure of physiological parameters (as generated
+%                            by standardPhysiolDefaultParameters) with fields:
 %
-% Ines Thiele, 2015/2016
+%                              * .gender - subject gender
+%                              * .sex - biological sex ('male' or 'female'), selecting the blood-flow column
+%                              * .CardiacOutput - cardiac output in ml/min
+%                              * .Hematocrit - hematocrit as a fraction
+%                              * .CSFFlowRate - cerebrospinal fluid flow rate
+%                              * .CSFBloodFlowRate - cerebrospinal fluid to blood flow rate
+%                              * .UrFlowRate - urine flow rate
+%                              * .bodyWeight - body weight in kg
+%                              * .MConDefaultBc - default maximum metabolite concentration in blood (uM)
+%                              * .MConDefaultCSF - default maximum metabolite concentration in CSF (uM)
+%                              * .MConDefaultUrMax - default maximum metabolite concentration in urine (uM)
+%                              * .MConDefaultUrMin - default minimum metabolite concentration in urine (uM)
+%                              * .MConUrCreatinineMax - maximum urinary creatinine concentration (mg/dL)
+%                              * .MConUrCreatinineMin - minimum urinary creatinine concentration (mg/dL)
+%                              * .bloodFlowData - cell array of organ-specific blood-flow percentages
+%                              * .bloodFlowPercCol - column indices in bloodFlowData for the male/female percentages
+%                              * .bloodFlowOrganCol - column index in bloodFlowData holding the organ names
+%
+% OPTIONAL INPUTS:
+%    ExclList:               list of reaction identifiers to be excluded from
+%                            receiving updated bounds
+%    Type:                   input type, either 'xlsx' (default) or 'direct';
+%                            if 'direct', InputData must be provided
+%    InputData:              for Type 'direct', a cell array whose first column
+%                            holds VMH metabolite identifiers and further columns
+%                            the associated concentration data points
+%    Biofluid:               biofluid to constrain: 'all' (default) or, for
+%                            direct input, one of 'bc', 'u' or 'csf'
+%    setDefault:             if true, apply default concentration ranges to
+%                            metabolites without input data
+%
+% OUTPUT:
+%    modelConstraint:        whole-body metabolic model with the physiological
+%                            constraints applied to its reaction bounds
+%
+% .. Author: - Ines Thiele, 2015/2016
 
 modelConstraint = model;
 

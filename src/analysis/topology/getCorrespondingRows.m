@@ -14,7 +14,7 @@ function restricedRowBool = getCorrespondingRows(A, rowBool, colBool, mode)
 %    mode:                  'exclusive' , 'inclusive' or 'partial'
 %
 % OUTPUT:
-%    restrictedRowBool:     `m x 1` boolean vector
+%    restricedRowBool:      `m x 1` boolean vector
 %
 % EXAMPLE:
 %

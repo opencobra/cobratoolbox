@@ -9,46 +9,19 @@ function [experiment] = runHiLoExp(experiment)
 %    [experiment] = runHiLoExp(experiment)
 %
 % INPUTS:
-%    experiment:    contains:
+%    experiment:    structure describing the experiment, with fields:
 %
-%                     * model with fields:
-%
-%                       * S = the stoichiometric matrix
-%                       * rxns = array of reaction names, corresponding the `S`
-%                       * c = optimization target 1, or -1
-%                       * ub,lb = upper and lower bounds of reactions
-%                     * points = a `#fluxes` X `#samples` (~2000) array of the solution space
-%                       if missing or empty, will generate a sample
-%                     * glcs = an array of sugars in isotopomer format, each column a separate sugar.
-%                       Should not be in MDV format.  Conversion is done automatically.
-%                       will default to generate 1 random sugar if set to []
-%                     * targets = an array of cells with string for the reaction to
-%                       split on the solution space, defaults to 'PGL'
-%                     * thresholds = `#targets` X 1 array of thresholds
-%                     * metabolites = an optional parameter fed to `calcMDVfromSamp.m`
-%                       which only calculates the MDVs for the metabolites listed in this
-%                       array.  e.g - optionally, metabolites can also be a structure of fragments
-%                     * hilo = a `#targets` X `#samples` array of 0/1's, 0 id's the sample of
-%                       fluxes as the lo side and 1 id's the sample for the hi side.
-%                       `hilo` will only be calculated/recalculated if it's missing or
-%                       if the targets have been replaced using the param list
-%                     * mdvs = structure of `mdv` results:
-%
-%                       * (name) = name of the run = `t + glc#` e.g. t1, t2, glc# refers to the glc in the glcs array.
-
-%                       Note that the split of mdvs are not stored,
-%                       also since the only time mdvs should be regen'd is when glcs
-%                       has changed, but we have no way of knowing when this happens,
-%                       the user will have to manually empty out mdvs to have it
-%                       regenerated.
-%                     * zscores = array of zscores from each run, `targets` X `glcs`
-%                     * rscores = array of ridge scores from each run, `targets` X `glcs`
-%
-%    target:        an optional string for a specific `rxn` to target.
-%                   if supplied, it will override and replace the targets field in the
-%                   experiment structure.
-%    threshold:     an optional number to apply on the solution space fluxes
-%                   if supplied, it will be applied to the hilo field and replace the hilo splits.
+%                     * .model - COBRA model structure (must contain `S`, `rxns`, `c`, `lb`, `ub`)
+%                     * .points - `#fluxes x #samples` array of the sampled solution space; a sample is generated if missing or empty
+%                     * .mfrac - mixed fraction reported by the sampler (set when a sample is generated)
+%                     * .metabolites - optional parameter fed to `calcMDVfromSamp.m`; restricts which MDVs are calculated (may also be a structure of fragments)
+%                     * .glcs - array of sugars in isotopomer (not MDV) format, one column per sugar; a random sugar is generated if empty
+%                     * .glcsnames - cell array of human-readable sugar-mixture names, derived from `glcs`
+%                     * .hilo - `#targets x #samples` array of 0/1 flags splitting each sample into the lo (0) and hi (1) side
+%                     * .mdvs - structure of `mdv` results, one field per sugar (`t1`, `t2`, ...); must be emptied by the user to force regeneration
+%                     * .zscores - `#targets x #glcs` array of z-scores from each run
+%                     * .rscores - `#targets x #glcs` array of ridge scores from each run
+%                     * .kscores - `#targets x #glcs` array of KS scores from each run
 %
 % OUTPUT:
 %    experiment:    the experiment array.

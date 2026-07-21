@@ -1,19 +1,21 @@
-function [model,rxnNames] = addDemandReaction(model,metaboliteNameList, printLevel)
+function [model, rxnNames] = addDemandReaction(model, metaboliteNameList, printLevel)
 % Adds demand reactions for a set of metabolites
 % The reaction names for the demand reactions will be `DM_[metaboliteName]``
 %
 % USAGE:
 %
-%    model = addDemandReaction(model, metaboliteNameList)
+%    [model, rxnNames] = addDemandReaction(model, metaboliteNameList, printLevel)
 %
 % INPUTS:
-%    model:                 COBRA model structure
+%    model:                 COBRA model structure with fields:
+%
+%                             * .mets - `m x 1` metabolite identifiers, used
+%                               to detect entries of `metaboliteNameList`
+%                               that are missing from the model
 %    metaboliteNameList:    List of metabolite names (cell array)
-%    addMissingMetabolites  adds missing metabolites to model (default:
-%                           true)
 %
 % OPTIONAL INPUT:
-%    printLevel:            If > 0 will print out the reaction formulas (Default: 1).
+%    printLevel:            If > 0 will print out the reaction formulas (Default: 0).
 %
 % OUTPUTS:
 %    model:                 COBRA model structure with added demand reactions

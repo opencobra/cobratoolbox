@@ -1,17 +1,29 @@
-function model = addRefinementComments(model,summary)
+function model = addRefinementComments(model, summary)
 % Adds descriptions to the model.comments field based on refinement
 % performed by the DEMETER pipeline
 %
 % USAGE:
 %
-%   model = addRefinementComments(model,summary)
+%    model = addRefinementComments(model, summary)
 %
-% INPUT
-% model:            COBRA model structure
-% summary           Structure with description of performed refinement
+% INPUTS:
+%    model:    COBRA model structure with fields:
 %
-% OUTPUT
-% model:            COBRA model structure with comments
+%                * .grRules - Gene-protein-reaction rules; read to detect and clear temporary gap-filling/refinement labels
+%                * .rxns - Reaction identifiers; read to detect exchange (`EX_`), demand (`DM_`), and sink (`sink_`) reactions
+%    summary:    Structure with information on refinement performed on the model, with fields:
+%
+%                  * .conditionSpecificGapfill - Reactions added during condition-specific gapfilling
+%                  * .targetedGapfill - Reactions added during targeted gapfilling
+%                  * .relaxFBAGapfill - Reactions added by relaxFBA
+%                  * .addedReactionsBiomass - Reactions added to enable synthesis of biomass components according to the gram status of the organism
+%
+% OUTPUT:
+%    model:    COBRA model structure with fields:
+%
+%                * .comments - Reaction comments describing how each reaction was added or refined during DEMETER refinement
+%                * .rxnConfidenceScores - Reaction confidence scores set according to refinement provenance
+%                * .grRules - Temporary gap-filling/refinement labels removed
 %
 % .. Author:
 %       - Almut Heinken and Stefania Magnusdottir, 2016-2020

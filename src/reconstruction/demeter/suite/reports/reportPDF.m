@@ -4,23 +4,32 @@ function [outputFile] = reportPDF(model, microbeID, biomassReaction, inputDataFo
 % Requires a LaTex installation, e.g. MiKTex (https://miktex.org/download)
 % and pdftex (https://ctan.org/pkg/pdftex).
 %
-% INPUT
-% model             COBRA model structure
-% microbeID         Microbe ID in carbon source data file
-% biomassReaction   Model biomass reaction
-% inputDataFolder   Folder with experimental data and database files
-%                   to load
-% reportFolder      Path to folder where report documents should be written
-%                   (e.g., 'C:\Reports')
+% USAGE:
 %
-% OPTIONAL INPUT
-% ncbiID            Organism NCBI ID
+%    outputFile = reportPDF(model, microbeID, biomassReaction, inputDataFolder, reportFolder, ncbiID)
 %
-% OUTPUT
-% outputFile        Name of the output file with report
+% INPUTS:
+%    model:              COBRA model structure with fields:
 %
-% Stefania Magnusdottir, Nov 2017
-% Almut Heinken, Sep 2018-adapted nomenclature
+%                          * .rxns - Reaction identifiers
+%                          * .mets - Metabolite identifiers
+%                          * .genes - Gene identifiers
+%    microbeID:          Microbe ID in carbon source data file
+%    biomassReaction:    Model biomass reaction
+%    inputDataFolder:    Folder with experimental data and database files
+%                        to load
+%    reportFolder:       Path to folder where report documents should be written
+%                        (e.g., 'C:\Reports')
+%
+% OPTIONAL INPUTS:
+%    ncbiID:             Organism NCBI ID
+%
+% OUTPUTS:
+%    outputFile:         Name of the output file with report
+%
+% .. Authors:
+%       - Stefania Magnusdottir, Nov 2017
+%       - Almut Heinken, Sep 2018-adapted nomenclature
 
 % load database
 database=loadVMHDatabase;

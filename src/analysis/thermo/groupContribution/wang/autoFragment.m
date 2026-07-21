@@ -1,41 +1,40 @@
-function [fragmentedMol,decomposableBool,inchiExistBool] = autoFragment(inchi,radius,dGPredictorPath,canonicalise,cacheName,printLevel)
-%given one or more inchi, automatically fragment it into a set of smiles
-%each centered around an atom with radius specifying the number of bonds to 
-%neighbouring atoms
+function [fragmentedMol, decomposableBool, inchiExistBool] = autoFragment(inchi, radius, dGPredictorPath, canonicalise, cacheName, printLevel)
+% Automatically fragment one or more InChI into a set of SMILES substructures,
+% each centred on an atom, with a radius specifying the number of bonds to
+% neighbouring atoms
 %
-% INPUT
-% inchi             n x 1 cell array of molecules each specified by InChI strings 
-%                   or a single InChI string as a char
-% OPTIONAL INPUT
-% radius            number of bonds around each central smiles atom
-% dGPredictorPath   path to the folder containg a git clone of https://github.com/maranasgroup/dGPredictor
-%                   path must be the full absolute path without ~/
-% cacheName         fileName of cache to load (if it exists) or save to (if it does not exist)
+% USAGE:
 %
-% OUTPUT
-% fragmentedMol      n x 1 structure with the following fields for each inchi:
-% *.inchi            inchi string
-% *.smilesCount      Map structure
-%                    Each Key is a canonical smiles string (not canonical smiles if canonicalise==0)
-%                    Each value is the incidence of each smiles string in a molecule 
+%    [fragmentedMol, decomposableBool, inchiExistBool] = autoFragment(inchi, radius, dGPredictorPath, canonicalise, cacheName, printLevel)
 %
-% decomposableBool   n x 1 logical vector, true if inchi is decomposable
+% INPUT:
+%    inchi:            `n x 1` cell array of molecules, each an InChI string, or a
+%                      single InChI string as a char
 %
-% EXTERNAL DEPENDENCIES
-% Python, see:
-% [pyEnvironment,pySearchPath]=initPythonEnvironment(environmentName,reset)
+% OPTIONAL INPUTS:
+%    radius:           number of bonds around each central SMILES atom (default 1)
+%    dGPredictorPath:    full absolute path (without ~/) to a git clone of dGPredictor
+%    canonicalise:       boolean, consolidate duplicate canonical SMILES fragments (default 0)
+%    cacheName:        filename of a cache to load (if it exists) or save to (if not)
+%    printLevel:       verbosity level (default 0)
 %
-% rdkit, e.g., installed in an Anaconda environment
-% https://www.rdkit.org
-% https://www.rdkit.org/docs/Install.html#introduction-to-anaconda
+% OUTPUTS:
+%    fragmentedMol:    `n x 1` structure with, for each InChI, the fields:
 %
-% dGPredictor
-% https://github.com/maranasgroup/dGPredictor
-% Wang L, Upadhyay V, Maranas CD (2021) dGPredictor: Automated fragmentation method for metabolic reaction free 
-% energy prediction and de novo pathway design. PLOS Computational Biology 17(9): e1009448. https://doi.org/10.1371/journal.pcbi.1009448
+%                        * .inchi - the InChI string
+%                        * .smilesCounts - containers.Map from each SMILES substructure to its incidence in the molecule
+%    decomposableBool:    `n x 1` logical vector, true where the InChI is decomposable
+%    inchiExistBool:      `n x 1` logical vector, true where an InChI is present
 %
-
-% Author Ronan M.T. Fleming 2021
+% NOTE:
+%
+%    External dependencies: Python (see initPythonEnvironment), rdkit
+%    (https://www.rdkit.org) and dGPredictor
+%    (https://github.com/maranasgroup/dGPredictor). Reference: Wang L,
+%    Upadhyay V, Maranas CD (2021) dGPredictor. PLoS Comput Biol 17(9):
+%    e1009448. https://doi.org/10.1371/journal.pcbi.1009448
+%
+% .. Author: - Ronan M.T. Fleming, 2021
 
 
 if isempty(inchi)

@@ -12,7 +12,7 @@ function restoreEnvironment(environment, restorePath, printLevel)
 %    printLevel:       Set the verbosity of this method:
 %                       * 0: No outputs (Default)
 %                       * 1: Info what each value is set to
-%                                   
+
     if ~exist('restorePath','var')
         restorePath = true;
     end

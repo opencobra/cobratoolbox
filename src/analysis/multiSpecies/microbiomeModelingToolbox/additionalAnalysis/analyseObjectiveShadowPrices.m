@@ -1,4 +1,4 @@
-function [objectives,shadowPrices]=analyseObjectiveShadowPrices(modelFolder,objectiveList,varargin)
+function [objectives, shadowPrices] = analyseObjectiveShadowPrices(modelFolder, objectiveList, varargin)
 % This function determines the shadow prices indicating metabolites that
 % are relevant for the flux through one or multiple objective functions
 % optimized in one or more COBRA model structures. The objective functions
@@ -14,29 +14,29 @@ function [objectives,shadowPrices]=analyseObjectiveShadowPrices(modelFolder,obje
 %   [objectives,shadowPrices]=analyseObjectiveShadowPrices(modelFolder,objectiveList,varargin)
 %
 % INPUTS:
-%   modelFolder       Folder containing one or more COBRA model structures
-%   objectiveList     Cell array containing the names of one or more
-%                     objective functions of interest in vertical order
-%                     Optional: second column with exchange reaction IDs
-%                     for objective-specific precursors
+%    modelFolder:      Folder containing one or more COBRA model structures
+%    objectiveList:    Cell array containing the names of one or more
+%                      objective functions of interest in vertical order
+%                      Optional: second column with exchange reaction IDs
+%                      for objective-specific precursors
 %
 % OPTIONAL INPUTS:
-%   resultsFolder     char with path of directory where results are saved
-%   osenseStr         String indicating whether objective function(s)
-%                     should be maximized or minimized. Allowed inputs:
-%                     'min','max', default:'max'.
-%   SPDef             String indicating whether positive, negative, or
-%                     all nonzero shadow prices should be collected.
-%                     Allowed inputs: 'Positive','Negative','Nonzero',
-%                     default: 'Nonzero'.
-%   numWorkers        Number indicating number of workers in parallel pool
-%                     (default: 0).
+%    resultsFolder:    char with path of directory where results are saved
+%    osenseStr:        String indicating whether objective function(s)
+%                      should be maximized or minimized. Allowed inputs:
+%                      'min','max', default:'max'.
+%    SPDef:            String indicating whether positive, negative, or
+%                      all nonzero shadow prices should be collected.
+%                      Allowed inputs: 'Positive','Negative','Nonzero',
+%                      default: 'Nonzero'.
+%    numWorkers:       Number indicating number of workers in parallel pool
+%                      (default: 0).
 %
 % OUTPUT:
-%   objectives        Computed objectives values
-%   shadowPrices      Table with shadow prices for metabolites that are
-%                     relevant for each analyzed objective in each analyzed
-%                     model
+%    objectives:       Computed objectives values
+%    shadowPrices:     Table with shadow prices for metabolites that are
+%                      relevant for each analyzed objective in each analyzed
+%                      model
 %
 % .. Author:
 %       - Almut Heinken, 07/2018

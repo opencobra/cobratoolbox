@@ -1,50 +1,50 @@
 function [gvalue gr pr it success] = gDel_minRN(model, targetMet, maxLoop, PRLB, GRLB)
-% gDel-minRN (Step 1 of TrimGdel) determines gene deletion strategies 
-% by mixed integer linear programming to achieve growth coupling 
-% for the target metabolite by repressing the maximum number of reactions 
-% via gene-protein-reaction relations.
+% gDel_minRN (Step 1 of TrimGdel) determines a gene-deletion strategy by
+% mixed-integer linear programming that achieves growth coupling for the
+% target metabolite, repressing the maximum number of reactions through the
+% gene-protein-reaction (GPR) relations.
 %
 % USAGE:
 %
-%    function [vg gr pr it success]  
-%        = gDel_minRN(model, targetMet, maxLoop, PRLB, GRLB)
+%    [gvalue gr pr it success] = gDel_minRN(model, targetMet, maxLoop, PRLB, GRLB)
 %
 % INPUTS:
-%    model:    COBRA model structure containing the following required fields to perform gDel_minRN.
+%    model:        COBRA model structure with the fields:
 %
-%        *.rxns:       Rxns in the model
-%        *.mets:       Metabolites in the model
-%        *.genes:      Genes in the model
-%        *.grRules:    Gene-protein-reaction relations in the model
-%        *.S:          Stoichiometric matrix (sparse)
-%        *.b:          RHS of Sv = b (usually zeros)
-%        *.c:          Objective coefficients
-%        *.lb:         Lower bounds for fluxes
-%        *.ub:         Upper bounds for fluxes
-%        *.rev:        Reversibility of fluxes
+%                * .rxns - reaction identifiers (n x 1 cell array)
+%                * .mets - metabolite identifiers (m x 1 cell array)
+%                * .genes - gene identifiers (g x 1 cell array)
+%                * .grRules - gene-protein-reaction association rules (n x 1 cell array)
+%                * .S - stoichiometric matrix (m x n, sparse)
+%                * .c - linear objective coefficients (n x 1)
+%                * .lb - lower flux bounds (n x 1)
+%                * .ub - upper flux bounds (n x 1)
 %
-%    targetMet:    target metabolites  (e.g.,  'btn_c')
-%    maxLoop:      the maximum number of iterations in gDel_minRN
-%    PRLB:         the minimum required production rates of the target metabolites
-%                  when gDel-minRN searches the gene deletion strategy candidates. 
-%                  (But it is not ensured to achieve this minimum required value
-%                  when GR is maximized withoug PRLB.)
-%    GRLB:         the minimum required growth rate when gDel-minRN searches 
-%                  the gene deletion strategy candidates. 
+%    targetMet:    target metabolite identifier (e.g. 'btn_c')
+%    maxLoop:      maximum number of iterations performed in gDel_minRN
+%    PRLB:         minimum required production rate of the target metabolite
+%                  used while searching for gene-deletion strategy candidates
+%                  (not guaranteed once GR is maximized without PRLB)
+%    GRLB:         minimum required growth rate used while searching for
+%                  gene-deletion strategy candidates
 %
 % OUTPUTS:
-%    gvalue:     The first column is the list of genes in the original model.
-%                The second column contains a 0/1 vector indicating which genes should be deleted.
-%                    0: indicates genes to be deleted.
-%                    1: indecates genes to be remained.
-%    gr:         the growth rate obained when the gene deletion strategy is
-%                applied and the growth rate is maximized.
-%    pr:         the target metabolite production rate obained 
-%                when the gene deletion strategy is applied and the growth rate is maximized.
-%    it:         indicates how many iterations were necessary to obtain the solution.
-%    success:    indicates whether gDel_minRN obained an appropriate gene
-%                deletion strategy. (1:success, 0:failure)
-% 
+%    gvalue gr pr it success:    Step 1 returns these five values together as
+%                                the multiple-assignment list
+%                                [gvalue gr pr it success]:
+%
+%                                * gvalue - gene-deletion strategy candidate:
+%                                  column 1 lists the genes, column 2 is a 0/1
+%                                  vector (0 = gene deleted, 1 = gene retained)
+%                                * gr - growth rate obtained when the strategy is
+%                                  applied and the growth rate is maximized
+%                                * pr - target-metabolite production rate under
+%                                  growth-rate maximization for that strategy
+%                                * it - number of iterations needed to obtain the
+%                                  solution
+%                                * success - whether an appropriate strategy was
+%                                  found (1 = success, 0 = failure)
+%
 % .. Author:    - Takeyuki Tamura, Mar 06, 2025
 %
 

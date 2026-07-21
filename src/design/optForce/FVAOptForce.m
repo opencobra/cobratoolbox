@@ -23,7 +23,7 @@ function [minFluxesW, maxFluxesW, minFluxesM, maxFluxesM, boundsW, boundsM] = FV
 %                   the following fields:
 %
 %                     * .rxnList - Reaction list (cell array)
-%                     * .values - Values for constrained reactions (double array)
+%                     * .rxnValues - Values for constrained reactions (double array)
 %                     * .rxnBoundType - Type of bound (char array)
 %                       ('b': both bounds; 'l': lower bound; 'u': upper bound)
 %                       E.g.: `constrW = struct('rxnList', {{'R75'; 'EX_suc'}}, 'rxnValues', [0; 155.55], 'rxnBoundType', ['b'; 'b']);`
@@ -32,7 +32,7 @@ function [minFluxesW, maxFluxesW, minFluxesM, maxFluxesM, boundsW, boundsM] = FV
 %                   fields:
 %
 %                     * .rxnList - Reaction list (cell array)
-%                     * .values - Values for constrained reactions
+%                     * .rxnValues - Values for constrained reactions
 %                       (double array)
 %                     * .rxnBoundType - Type of bound (char array)
 %                       ('b': both bounds; 'l': lower bound; 'u': upper bound)

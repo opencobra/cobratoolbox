@@ -1,20 +1,20 @@
-function computeFluxConsistentReactionPresence(modelFolder,propertiesFolder,reconVersion)
-% This function extracts the presence of flux consistent reactions for a 
-% resource of reconstructions that were refined through the semi-automatic 
+function computeFluxConsistentReactionPresence(modelFolder, propertiesFolder, reconVersion)
+% This function extracts the presence of flux consistent reactions for a
+% resource of reconstructions that were refined through the semi-automatic
 % refinement pipeline (1 = present in the flux consistent submodel, 0 = not
 % present in the flux consistent submodel).
 %
-% USAGE
-%   computeFluxConsistentReactionPresence(modelFolder,propertiesFolder,reconVersion)
+% USAGE:
 %
-% INPUTS
-% modelFolder                                                                                                                                                                                           Folder with COBRA models to be analyzed
-% propertiesFolder      Folder where the retrieved reaction presences will
-%                       be stored (default: current folder)
-% reconVersion          Name assigned to the reconstruction resource
+%    computeFluxConsistentReactionPresence(modelFolder, propertiesFolder, reconVersion)
 %
-%   - AUTHOR
-%   Almut Heinken, 12/2020
+% INPUTS:
+%    modelFolder:         Folder with COBRA models to be analyzed
+%    propertiesFolder:    Folder where the retrieved reaction presences will
+%                         be stored (default: current folder)
+%    reconVersion:        Name assigned to the reconstruction resource
+%
+% .. Author: - Almut Heinken, 12/2020
 
 mkdir([propertiesFolder filesep 'ReactionMetabolitePresence'])
 currentDir=pwd;

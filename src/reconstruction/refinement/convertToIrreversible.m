@@ -6,7 +6,16 @@ function [modelIrrev, matchRev, rev2irrev, irrev2rev] = convertToIrreversible(mo
 %    [modelIrrev, matchRev, rev2irrev, irrev2rev] = convertToIrreversible(model, varargin)
 %
 % INPUT:
-%    model:         COBRA model structure
+%    model:         COBRA model structure with fields:
+%
+%                     * .rxns - `n x 1` cell array of reaction identifiers
+%                     * .lb - `n x 1` lower flux bounds
+%                     * .ub - `n x 1` upper flux bounds
+%                     * .S - `m x n` stoichiometric matrix
+%                     * .c - `n x 1` objective coefficients
+%
+%                   Any other field associated with `rxns` (as returned by
+%                   `getModelFieldsForType`) is extended and reordered alongside these.
 %
 % OPTIONAL INPUTS:
 %    varargin:      Additional Options as ParameterName/Value pairs.

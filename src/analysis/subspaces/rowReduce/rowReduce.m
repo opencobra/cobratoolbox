@@ -15,7 +15,7 @@ function [AA, aa, pp, rankA, p] = rowReduce(A, a, mode, printLevel)
 %    mode:     If mode=1, LUSOL operates on A itself.
 %              If mode=2, LUSOL operates on A'.
 %
-%    printLevel
+%    printLevel:    verbosity level (default 1); 0 = silent
 %
 % OUTPUT:
 %    AA:       row reduced `A`

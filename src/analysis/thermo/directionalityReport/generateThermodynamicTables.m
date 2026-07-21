@@ -7,7 +7,27 @@ function generateThermodynamicTables(model, resultsBaseFileName)
 %    generateThermodynamicTables(model, resultsBaseFileName)
 %
 % INPUTS:
-%    model:                  structure
+%    model:                  structure with fields:
+%
+%                              * .compartments - compartment identifiers
+%                              * .ph - compartment pH
+%                              * .is - compartment ionic strength (mol/L)
+%                              * .chi - compartment electrical potential (mV)
+%                              * .T - temperature (K)
+%                              * .rxns - `n x 1` cell array of reaction identifiers
+%                              * .mets - `m x 1` cell array of metabolite identifiers
+%                              * .DrG0 - `n x 1` standard reaction Gibbs energy
+%                              * .DrG0_Uncertainty - `n x 1` uncertainty in standard reaction Gibbs energy
+%                              * .DrGt0 - `n x 1` standard transformed reaction Gibbs energy
+%                              * .DrGtMin - `n x 1` lower bound on transformed reaction Gibbs energy
+%                              * .DrGtMax - `n x 1` upper bound on transformed reaction Gibbs energy
+%                              * .DfG0 - `m x 1` standard Gibbs energy of formation
+%                              * .DfG0_Uncertainty - `m x 1` uncertainty in standard Gibbs energy of formation
+%                              * .DfGt0 - `m x 1` standard transformed Gibbs energy of formation
+%                              * .DfGtMin - `m x 1` lower bound on transformed Gibbs energy of formation
+%                              * .DfGtMax - `m x 1` upper bound on transformed Gibbs energy of formation
+%                              * .concMin - `m x 1` lower bound on metabolite concentration
+%                              * .concMax - `m x 1` upper bound on metabolite concentration
 %    resultsBaseFileName:    default = 'out'
 
 if ~exist('resultsBaseFileName','var')

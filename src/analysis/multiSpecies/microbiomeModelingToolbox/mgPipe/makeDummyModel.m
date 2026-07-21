@@ -7,11 +7,11 @@ function dummy = makeDummyModel(numMets, numRxns)
 %   dummy = makeDummyModel(numMets, numRxns)
 %
 % INPUTS:
-%   numMets:       Number of metabolites
-%   numRxns:       Number of reactions
+%    numMets:       Number of metabolites
+%    numRxns:       Number of reactions
 %
 % OUTPUT:
-%   dummy:         Empty COBRA model structure
+%    dummy:         Empty COBRA model structure
 %
 % .. Authors: SM June 2016
 

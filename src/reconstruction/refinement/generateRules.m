@@ -7,9 +7,12 @@ function [model] = generateRules(model, printLevel)
 %    [model] = generateRules(model)
 %
 % INPUT:
-%    model:        COBRA model with model.grRules
-%    printLevel:   optional variable to print out all new genes 
-%                  (default = TRUE), can be zero if not needed
+%    model:        COBRA model structure with fields:
+%
+%                    * .grRules - `n x 1` cell array of gene-protein-reaction rules (required)
+%                    * .genes - (if present) `g x 1` cell array of gene identifiers
+%    printLevel:    optional variable to print out all new genes
+%                   (default = TRUE), can be zero if not needed
 %
 % OUTPUT:
 %    model:     same model but with model.rules added

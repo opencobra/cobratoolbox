@@ -3,29 +3,50 @@ function [map] = getMapMatrices(map)
 %
 % USAGE:
 %
-%   [map] = getMapMatrices(map)
+%    [map] = getMapMatrices(map)
 %
 % INPUT:
-%   map:        MATLAB structure of the map
+%    map:        MATLAB structure of the map, with fields:
 %
-%                * sID -  Stoichiometric matrix with `rows = MetabolitesID` and
-%                  `columns = ReactionsID` in the same order as in the map
-%                  structure. Contains `-1` if the metabolite is a
-%                  reactant/substract, `+1` if the metabolite is a product
-%                  and `0` if it does not participate in the reaction.
-%                * sAlias - Stoichiometric matrix with `rows = MetabolitesAlias` and
-%                  `columns = ReactionsID` in the same order as in the map
-%                  structure. Contains `-1` if the metabolite is a
-%                  reactant/substract, `+1` if the metabolite is a product
-%                  and `0` if it does not participate in the reaction.
-%                * idAlias - Logical matrix with `rows = MetabolitesID` and
-%                  `columns = MetabolitesAlias`. Contains `+1` if the
-%                  `MetaboliteID` match with the `MetaboliteAlias` and `0`
-%                  if it doesn't.
+%                  * .specID - Cell array of species (metabolite) IDs
+%                  * .molID - Cell array of molecule (species alias) IDs
+%                  * .molAlias - Cell array of molecule alias IDs
+%                  * .rxnID - Cell array of reaction IDs
+%                  * .rxnBaseReactantID - Cell array, per reaction, of base
+%                    reactant species IDs
+%                  * .rxnBaseReactantAlias - Cell array, per reaction, of
+%                    base reactant molecule alias IDs
+%                  * .rxnReactantID - Cell array, per reaction, of
+%                    secondary reactant species IDs
+%                  * .rxnReactantAlias - Cell array, per reaction, of
+%                    secondary reactant molecule alias IDs
+%                  * .rxnBaseProductID - Cell array, per reaction, of base
+%                    product species IDs
+%                  * .rxnBaseProductAlias - Cell array, per reaction, of
+%                    base product molecule alias IDs
+%                  * .rxnProductID - Cell array, per reaction, of secondary
+%                    product species IDs
+%                  * .rxnProductAlias - Cell array, per reaction, of
+%                    secondary product molecule alias IDs
 %
 % OUTPUT:
-%   map:        Updated map structure from the input containing
-%               the 3 matrices
+%    map:        Updated map structure from the input containing
+%                the 3 matrices:
+%
+%                  * .sID -  Stoichiometric matrix with `rows = MetabolitesID` and
+%                    `columns = ReactionsID` in the same order as in the map
+%                    structure. Contains `-1` if the metabolite is a
+%                    reactant/substract, `+1` if the metabolite is a product
+%                    and `0` if it does not participate in the reaction.
+%                  * .sAlias - Stoichiometric matrix with `rows = MetabolitesAlias` and
+%                    `columns = ReactionsID` in the same order as in the map
+%                    structure. Contains `-1` if the metabolite is a
+%                    reactant/substract, `+1` if the metabolite is a product
+%                    and `0` if it does not participate in the reaction.
+%                  * .idAlias - Logical matrix with `rows = MetabolitesID` and
+%                    `columns = MetabolitesAlias`. Contains `+1` if the
+%                    `MetaboliteID` match with the `MetaboliteAlias` and `0`
+%                    if it doesn't.
 %
 % .. Author: - N.Sompairac - Institut Curie, Paris, 24/07/2017
 

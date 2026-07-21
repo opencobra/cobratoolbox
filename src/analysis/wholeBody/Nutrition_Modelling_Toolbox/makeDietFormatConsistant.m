@@ -1,21 +1,22 @@
-function [diet] = makeDietFormatConsistant(model,diet)
-% This function takes a diet input and checks it for formatting consisteny 
-% for input into setFoodConstraints
+function [diet] = makeDietFormatConsistant(model, diet)
+% Check a diet input for formatting consistency for use with
+% setFoodConstraints and return it in a consistent format
 %
 % USAGE:
 %
-%   [diet] = makeDietFormatConsistant(model,diet)
+%    [diet] = makeDietFormatConsistant(model, diet)
 %
-% INPUTS
-%   model:             A COBRA model
+% INPUTS:
+%    model:           A COBRA model, with fields:
 %
-%   diet:            A nx2 cell array containing n dietary components and
-%                    the corresponding flux
-% OUTPUT
-%   diet:           A diet of consistent format for setFoodConstraints
+%                       * .rxns - reaction identifiers
+%    diet:            An n x 2 cell array of n dietary components and their
+%                     corresponding flux
 %
-% Authors:
-%   Bronson R. Weston 2022
+% OUTPUT:
+%    diet:            The diet in a format consistent with setFoodConstraints
+%
+% .. Author: - Bronson R. Weston, 2022
 
 load fdTable.mat
 load fdCategoriesTable.mat

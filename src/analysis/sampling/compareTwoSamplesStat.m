@@ -7,7 +7,8 @@ function [stats, pVals] = compareTwoSamplesStat(sample1, sample2, tests)
 %    [stats, pVals] = compareTwoSamplesStat(sample1, sample2, tests)
 %
 % INPUTS:
-%    sample1, sample2:    Samples to compare
+%    sample1:             First sample (`nVar x nSample` matrix) to compare
+%    sample2:             Second sample (`nVar x nSample` matrix) to compare
 %    tests:               {`test1`, `test2`,...} (Default = all tests)
 %
 %                           * 'ks' - Kolmogorov-Smirnov test

@@ -1,19 +1,47 @@
-function model2JSON(model,fileName)
+function model2JSON(model, fileName)
 % This function writes a JSON file from Matlab structure.
 % JSON files can be validated by isValidJSON function or online tools like
 % https://jsonlint.com/.
 %
 % USAGE:
 %
-%    model2JSON(model,fileName)
+%    model2JSON(model, fileName)
 %
-% INPUT
-%     model:     model structure
-%     fileName:  name of file including extension .json
+% INPUTS:
+%    model:       model structure with fields:
 %
+%                   * .mets - `m x 1` cell array of metabolite identifiers
+%                   * .metNames - `m x 1` cell array of metabolite names
+%                   * .rxns - `n x 1` cell array of reaction identifiers
+%                   * .rxnNames - `n x 1` cell array of reaction names
+%                   * .lb - `n x 1` vector of reaction lower bounds
+%                   * .ub - `n x 1` vector of reaction upper bounds
+%                   * .grRules - `n x 1` cell array of gene-reaction rules
+%                   * .subSystems - `n x 1` cell array of subsystem assignments for each reaction
+%                   * .genes - `g x 1` cell array of gene identifiers
+%                   * .modelID - (optional) short model identifier
+%                   * .modelAnnotation - (optional) cell array of model annotation entries; the second element is written as the model version
+%                   * .metCharges - (optional) `m x 1` vector of metabolite charges
+%                   * .metFormulas - (optional) `m x 1` cell array of elemental formulas
+%                   * .metBiGGID - (optional) `m x 1` cell array of BiGG metabolite identifiers
+%                   * .metBioCycID - (optional) `m x 1` cell array of BioCyc metabolite identifiers
+%                   * .metChEBIID - (optional) `m x 1` cell array of ChEBI identifiers
+%                   * .metHMDBID - (optional) `m x 1` cell array of HMDB identifiers
+%                   * .metInchiKey - (optional) `m x 1` cell array of InChI key strings
+%                   * .metKEGGID - (optional) `m x 1` cell array of KEGG metabolite identifiers
+%                   * .metMetaNetXID - (optional) `m x 1` cell array of MetaNetX metabolite identifiers
+%                   * .metReactomeID - (optional) `m x 1` cell array of Reactome metabolite identifiers
+%                   * .metSabiork - (optional) `m x 1` cell array of SABIO-RK metabolite identifiers
+%                   * .metSBOTerms - (optional) `m x 1` cell array of SBO terms for metabolites
+%                   * .metSEEDID - (optional) `m x 1` cell array of SEED metabolite identifiers
+%                   * .rxnMetaNetXID - (optional) `n x 1` cell array of MetaNetX reaction identifiers
+%                   * .rxnSBOTerms - (optional) `n x 1` cell array of SBO terms for reactions
+%                   * .geneSBOTerms - (optional) `g x 1` cell array of SBO terms for genes
+%    fileName:    name of file including extension .json
 %
-% .. Author: -Ines Thiele, May 2023
-%            -Farid Zare, 2024/08/14 improved code to produce valid JSON 
+% .. Authors:
+%       - Ines Thiele, May 2023
+%       - Farid Zare, 2024/08/14, improved code to produce valid JSON
 
 if isempty(strfind(fileName,'.json'));
     fileName = strcat(fileName,'.json');

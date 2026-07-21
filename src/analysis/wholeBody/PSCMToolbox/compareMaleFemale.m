@@ -1,18 +1,40 @@
-function [ResultsMaleFemale] = compareMaleFemale(male,female)
+function [ResultsMaleFemale] = compareMaleFemale(male, female)
+% Compare basic features of the male and female whole-body metabolic models
+%
 % This function compares basic features of the male and female whole-body
-% metabolic models
+% metabolic models, reporting shared and gender-unique reactions, per-organ
+% reaction counts, gallbladder subsystem enrichment, and biofluid exchanges.
 %
-% [ResultsMaleFemale] = compareMaleFemale(male,female)
+% USAGE:
 %
-% INPUT
-% male                  model structure (male whole-body metabolic model)
-% female                model structure (female whole-body metabolic model)
+%    [ResultsMaleFemale] = compareMaleFemale(male, female)
 %
-% OUTPUT
-% ResultsMaleFemale     structure containing the basic differences and
-%                       commenalities between male and female model
+% INPUTS:
+%    male:                Male whole-body metabolic model, with fields:
 %
-% Ines Thiele 2017
+%                           * .rxns - reaction identifiers
+%                           * .subSystems - subsystem annotations
+%    female:              Female whole-body metabolic model, with fields:
+%
+%                           * .rxns - reaction identifiers
+%                           * .subSystems - subsystem annotations
+%
+% OUTPUT:
+%    ResultsMaleFemale:    Structure of differences and commonalities between the two models, with fields:
+%
+%                           * .MaleOnly - reactions unique to the male model
+%                           * .FemaleOnly - reactions unique to the female model
+%                           * .BothGender - reactions present in both models
+%                           * .OrgansNumRxnMale - per-organ reaction counts (male): total, male-only, fraction
+%                           * .OrgansNumRxnFemale - per-organ reaction counts (female): total, female-only, fraction
+%                           * .maleOrgans - list of organs in the male model
+%                           * .femaleOrgans - list of organs in the female model
+%                           * .MaleGallSSEnrich - subsystems enriched among male-only gallbladder reactions
+%                           * .FemaleGallSSEnrich - subsystems enriched among female-only gallbladder reactions
+%                           * .MaleOnlyBiofluid - male-only biofluid exchange (_EX_) reactions
+%                           * .FemaleOnlyBiofluid - female-only biofluid exchange (_EX_) reactions
+%
+% .. Author: - Ines Thiele, 2017
 
 % reactions unique to male
 ResultsMaleFemale.MaleOnly = setdiff(male.rxns,female.rxns);

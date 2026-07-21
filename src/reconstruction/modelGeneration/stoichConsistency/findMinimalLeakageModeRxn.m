@@ -28,6 +28,8 @@ function [minLeakMetBool, minLeakRxnBool, minSiphonMetBool, minSiphonRxnBool, le
 %                           * .ub - Upper bounds
 %                           * .SConsistentMetBool - `m` x 1 boolean vector indicating consistent mets
 %                           * .SConsistentRxnBool - `m` x 1 boolean vector indicating consistent rxns
+%                           * .SIntRxnBool - `n` x 1 boolean of reactions heuristically thought to be mass balanced
+%                           * .rxns - `n` x 1 cell array of reaction identifiers, used when reporting leakage modes
 %    rxnBool:             `n` x 1 boolean vector of reactions to test for leakage
 %
 % OPTIONAL INPUTS:
@@ -43,7 +45,7 @@ function [minLeakMetBool, minLeakRxnBool, minSiphonMetBool, minSiphonRxnBool, le
 %    printLevel:          {(0), 1}
 %
 % OUTPUTS:
-%    minLeakMetBool       `m` x 1 boolean of metabolites in a positive leakage mode
+%    minLeakMetBool:      `m` x 1 boolean of metabolites in a positive leakage mode
 %    minLeakRxnBool:      `n` x 1 boolean of reactions exclusively involved in a positive leakage mode
 %    minSiphonMetBool:    `m` x 1 boolean of metabolites in a negative leakage mode
 %    minSiphonRxnBool:    `n` x 1 boolean of reactions exclusively involved in a negative leakage mode

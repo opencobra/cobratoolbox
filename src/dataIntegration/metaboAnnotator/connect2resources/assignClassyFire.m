@@ -1,20 +1,27 @@
-function [metabolite_structure] = assignClassyFire(metabolite_structure,startSearch,endSearch)
-% get metabolite classification from ClassyFire
+function [metabolite_structure] = assignClassyFire(metabolite_structure, startSearch, endSearch)
+% Get the metabolite taxonomic classification from ClassyFire (online), based
+% on each metabolite InChIKey, and store the Kingdom, Superclass, Class,
+% Subclass and Level 5 assignments as `classyFire_*` fields.
 %
-% INPUT
-% metabolite_structure  metabolite structure
-% startSearch           specify where the search should start in the
-%                       metabolite structure. Must be numeric (optional, default: all metabolites
-%                       in the structure will be search for)
-% endSearch             specify where the search should end in the
-%                       metabolite structure. Must be numeric (optional, default: all metabolites
-%                       in the structure will be search for)
+% USAGE:
 %
-% OUTPUT
-% metabolite_structure  updated metabolite structure
+%    [metabolite_structure] = assignClassyFire(metabolite_structure, startSearch, endSearch)
 %
+% INPUT:
+%    metabolite_structure:    metabolite structure whose fields are VMH
+%                             metabolite IDs
 %
-% Ines Thiele, 09/2021
+% OPTIONAL INPUTS:
+%    startSearch:             numeric index of where the search should start in
+%                             the metabolite structure (default: 1)
+%    endSearch:               numeric index of where the search should end in
+%                             the metabolite structure (default: last metabolite)
+%
+% OUTPUT:
+%    metabolite_structure:    metabolite structure updated with the ClassyFire
+%                             classification fields
+%
+% .. Author: - Ines Thiele, 09/2021
 
 
 annotationSource = 'ClassyFire search based on inchiKey';

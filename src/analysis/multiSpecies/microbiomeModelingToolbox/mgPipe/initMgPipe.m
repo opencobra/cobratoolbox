@@ -2,7 +2,8 @@ function [init, netSecretionFluxes, netUptakeFluxes, Y, modelStats, summary, sta
 % This function initializes the mgPipe pipeline and sets the optional input 
 % variables if not defined.
 %
-% USAGE
+% USAGE:
+%
 %       [init, netSecretionFluxes, netUptakeFluxes, Y, modelStats, summary, statistics, modelsOK] = initMgPipe(modPath, abunFilePath, computeProfiles, varargin)
 %
 % INPUTS:

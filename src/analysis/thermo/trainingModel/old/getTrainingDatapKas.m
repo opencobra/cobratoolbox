@@ -1,4 +1,26 @@
 function kegg_pKa = getTrainingDatapKas(training_data, use_cache)
+% Get the pKa values for the compounds in the training data, using ChemAxon
+%
+% Loads cached pKa values when available, otherwise computes them with
+% `getKeggpKas` for every compound in the training data and caches the result.
+%
+% USAGE:
+%
+%    kegg_pKa = getTrainingDatapKas(training_data, use_cache)
+%
+% INPUTS:
+%    training_data:    training-data structure. Fields used:
+%
+%                        * .cids - `m x 1` KEGG compound ids
+%                        * .nstd_inchi - `m x 1` nonstandard InChI strings
+%
+% OPTIONAL INPUT:
+%    use_cache:        logical, when true (default) load previously cached pKa
+%                      values from disk instead of recomputing them
+%
+% OUTPUTS:
+%    kegg_pKa:         structure array of pKa/pseudoisomer data, one entry per
+%                      compound (see getKeggpKas)
 
 if nargin < 2
     use_cache = true;

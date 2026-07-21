@@ -10,7 +10,7 @@ function filterNonFluxReactions(phenotype)
 %   filterNonFluxReactions(phenotype)
 %
 % INPUTS:
-%   phenotype:              char representing the phenotype name provided
+%    phenotype:              char representing the phenotype name provided
 %                           in each model name of the same phanotype
 %
 % .. Authors:

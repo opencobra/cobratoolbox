@@ -12,12 +12,17 @@ function [signedCyclicFluxConsistentMetBool, signedCyclicFluxConsistentRxnBool, 
 % 
 % USAGE:
 %
-%    [signedCyclicFluxConsistentMetBool, signedCyclicFluxConsistentRxnBool, model, fluxConsistModel] = findSignedCyclicFluxConsistentSubset(model, param)
+%    [signedCyclicFluxConsistentMetBool, signedCyclicFluxConsistentRxnBool, modelOut, fluxConsistModel] = findSignedCyclicFluxConsistentSubset(model, param)
 %
 % INPUTS:
-%    model:                      structure with field:
+%    model:                      structure with fields:
 %
 %                                  * .S - `m` x `n` stoichiometric matrix
+%                                  * .SConsistentRxnBool - `n` x 1 boolean vector indicating
+%                                    stoichiometrically consistent reactions (used when `param.internal` is true)
+%                                  * .b - `m` x 1 right hand side values for metabolite constraints
+%                                  * .c - `n` x 1 objective coefficients (set to zero internally)
+%                                  * .osenseStr - objective sense string (set internally to `'min'`)
 %
 % OPTIONAL INPUTS:
 %    param:                      can contain:
@@ -25,16 +30,27 @@ function [signedCyclicFluxConsistentMetBool, signedCyclicFluxConsistentRxnBool, 
 %                                  * param.epsilon -  minimum nonzero flux, default feasTol*10
 %                                                     Note that fastcc is very sensitive to the value of parm.epsilon
 %                                  * param.modeFlag - {(0),1} 1 = return flux modes
-%                                  * printLevel - verbose level
+%                                  * param.internal - {(1), 0} 1 = restrict computation to internal
+%                                    (stoichiometrically) consistent reactions only
+%                                  * param.nullspaceBasis - {(1), 0} 1 = use the nullspace basis of
+%                                    `.S` to skip reactions with no support in the nullspace
+%                                  * param.method - method used to test signed cyclic flux
+%                                    consistency (default `'2LP'`, the only method currently implemented)
+%                                  * param.testModelFeasibility - {(0), 1} 1 = test the feasibility
+%                                    of the input model with `optimizeCbModel` before proceeding
+%                                    (default 0, assume feasible)
+%                                  * param.printLevel - verbose level
 %
 %
 % OUTPUTS:
 %    signedCyclicFluxConsistentMetBool:      `m` x 1 boolean vector indicating flux consistent `mets`
 %    signedCyclicFluxConsistentRxnBool:      `n` x 1 boolean vector indicating flux consistent `rxns`
 %
-%    model:                      structure with fields duplicating the single output arguments:
+%    modelOut:                   structure with fields duplicating the single output arguments:
 %                                  * .signedCyclicFluxConsistentMetBool
 %                                  * .signedCyclicFluxConsistentRxnBool
+%    fluxConsistModel:           COBRA model structure; currently always equal to the input
+%                                `model` (the reaction-removal step is disabled in this function)
 %
 % .. Authors:
 %       - Ronan Fleming, 2026

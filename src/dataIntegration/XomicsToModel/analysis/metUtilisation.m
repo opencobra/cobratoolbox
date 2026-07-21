@@ -1,6 +1,6 @@
 function [graph_data, summary] = metUtilisation(model, met, flux_v, printFig, param)
-%metUtilisation - a graph analysis of reactions producing and consuming given
-%metabolite
+% metUtilisation - a graph analysis of reactions producing and consuming given
+% metabolite
 %
 %   This function can be used to visualise the fluxes of the reactions
 %   that either produce or consume certain metabolite. User can choose
@@ -41,24 +41,24 @@ function [graph_data, summary] = metUtilisation(model, met, flux_v, printFig, pa
 %               Or a matrix containing the results of the flux sampling
 %               algorithm.
 %               (default = {})
-%   printFig:   Logical, whether figure should be printed out (default = 1)
-%   param:      a structure containg additional parameters for the function
+%    printFig:    Logical, whether figure should be printed out (default = 1)
+%    param:      a structure containg additional parameters for the function
 %               and plotting:
 %
-%                     *.treshold_v     - flux value below which reaction is
+%                     * .treshold_v - flux value below which reaction is
 %                                        considered active (default = 1e-6)
-%                     *.NodeLabels     - what value should be plotted as a 
-%                                        node edge: 'rxns' for reaction 
-%                                        abbreviation or 'rxnNames' for a 
-%                                        full reaction name (default = 'rxns') 
-%                     *.EdgeLabel.rxns - cell array containg reaction IDs
+%                     * .NodeLabels - what value should be plotted as a
+%                                        node edge: 'rxns' for reaction
+%                                        abbreviation or 'rxnNames' for a
+%                                        full reaction name (default = 'rxns')
+%                     * .EdgeLabel.rxns - cell array containg reaction IDs
 %                                        (in the format of model.rxns)
-%                     *.EdgeLabel.text - cell array containg labels to be
+%                     * .EdgeLabel.text - cell array containg labels to be
 %                                        ploted on the graph edges (same
 %                                        length as EdgeLabel.rxns)
-%                     *.saveFig        -logical value, whether figure
+%                     * .saveFig - logical value, whether figure
 %                     should be save
-%                     *.modelName      -character, which will be used when
+%                     * .modelName - character, which will be used when
 %                     save the figure
 %
 % OUTPUTS:
@@ -69,20 +69,20 @@ function [graph_data, summary] = metUtilisation(model, met, flux_v, printFig, pa
 %               a relative contribution of each reaction to the metabolite
 %               utilisation
 %
-%   graph_data: additional data used for plotting (can be used to modify
+%    graph_data:    additional data used for plotting (can be used to modify
 %               final graph aesthetics)
-%                     *.edgeLabels - labels used to describe edges
-%                     *.LWidths - scaled widths of edges based on the weights
-%                     *.graph - matlab graph with metabolite as a central 
-%                               node and reactions producing (left) and 
+%                     * .edgeLabels - labels used to describe edges
+%                     * .LWidths - scaled widths of edges based on the weights
+%                     * .graph - matlab graph with metabolite as a central
+%                               node and reactions producing (left) and
 %                               consuming (right) metabolite as nodes,
-%                               if v is provided, the tickness of edges 
-%                               (weight) represents a relative contribution 
+%                               if v is provided, the tickness of edges
+%                               (weight) represents a relative contribution
 %                               of each reaction to the metabolite utilisation
-%                     *.eColour - colours used for the edges
-%                     *.nLabels - labels used to describe nodes
+%                     * .eColour - colours used for the edges
+%                     * .nLabels - labels used to describe nodes
 %
-%   summary:    table consisting of all reactions (rxns) identified as nodes,
+%    summary:    table consisting of all reactions (rxns) identified as nodes,
 %               together with their full reaction name (rxnNames), ID in the model (rxnsIDs),
 %               stoichimeric coefficient (scoff) representing if metabolite
 %               is consumed (-1) or produced (1) by the reaction,

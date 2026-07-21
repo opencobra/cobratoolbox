@@ -6,7 +6,10 @@ function [model, isUnique] = checkCobraModelUnique(model, renameFlag)
 %    model = checkCobraModelUnique(model, renameFlag)
 %
 % INPUT:
-%    model:         COBRA model structure
+%    model:         COBRA model structure with fields:
+%
+%                     * .rxns - `n` x 1 cell array of reaction identifiers
+%                     * .mets - `m` x 1 cell array of metabolite identifiers
 %
 % OPTIONAL INPUT:
 %    renameFlag:    Renames non-unique reaction names and metabolites

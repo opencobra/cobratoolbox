@@ -1,13 +1,18 @@
-function tf = verifyEFluxExpressionStruct(model,expression)
+function tf = verifyEFluxExpressionStruct(model, expression)
 % Verify the expression struct structure for EFlux
 %
 % USAGE:
 %    tf = verifyEFluxExpressionStruct(model,expression)
 %
 % INPUTS:
-%    model:         The COBRA model struct for the checked expression struct.
-%    expression:    The expression struct (fields: value, target,
-%                   preprocessed)
+%    model:         The COBRA model struct for the checked expression struct, with field:
+%
+%                     * .genes - gene identifiers; all genes must be assigned when the targets are genes
+%    expression:    The expression struct to verify, with fields:
+%
+%                     * .value - values for each target
+%                     * .target - names of the targets (reactions or genes)
+%                     * .preprocessed - whether targets are reactions (true) or genes (false)
 %
 % OUTPUT:
 %    tf:            Whether this struct is valid or not.

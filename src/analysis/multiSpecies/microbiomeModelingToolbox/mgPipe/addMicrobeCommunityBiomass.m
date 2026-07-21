@@ -11,16 +11,16 @@ function model = addMicrobeCommunityBiomass(model, microbeNames, abundances)
 %   model = addMicrobeCommunityBiomass(model, microbeNames, abundances)
 %
 % INPUTS:
-%   model:           COBRA model structure with n joined microbes with biomass
-%                    metabolites 'Microbe_biomass[c]'.
-%   microbeNames:    nx1 cell array of n unique strings that represent
-%                    each microbe in the model.
+%    model:           COBRA model structure with n joined microbes with biomass
+%                     metabolites 'Microbe_biomass[c]'.
+%    microbeNames:    nx1 cell array of n unique strings that represent
+%                     each microbe in the model.
 %
 % OPTIONAL INPUT:
-%   abundances:      nx1 vector with the relative abundance of each microbe.
+%    abundances:      nx1 vector with the relative abundance of each microbe.
 %
 % OUTPUT:
-%   model:           COBRA model structure
+%    model:           COBRA model structure
 %
 % .. Author: Stefania Magnusdottir June 2016
 

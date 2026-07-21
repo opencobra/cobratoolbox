@@ -1,23 +1,27 @@
-function [metabolite_structure] = queryLipidMaps(metabolite_structure,startSearch,endSearch)
+function [metabolite_structure] = queryLipidMaps(metabolite_structure, startSearch, endSearch)
+% Search the LipidMaps website (https://www.lipidmaps.org) by metabolite name
+% and add the matched LipidMaps identifier to the metabolite structure for
+% metabolites that lack a LipidMaps id.
 %
-% the function will search for metabolite names
-%https://www.lipidmaps.org/search/quicksearch.php?Name=2-methyl-dodecanedioic+acid
+% USAGE:
 %
+%    [metabolite_structure] = queryLipidMaps(metabolite_structure, startSearch, endSearch)
 %
-% INPUT
-% metabolite_structure  metabolite structure
-% startSearch           specify where the search should start in the
-%                       metabolite structure. Must be numeric (optional, default: all metabolites
-%                       in the structure will be search for)
-% endSearch             specify where the search should end in the
-%                       metabolite structure. Must be numeric (optional, default: all metabolites
-%                       in the structure will be search for)
+% INPUT:
+%    metabolite_structure:    metabolite structure whose fields are VMH
+%                             metabolite IDs, each holding `metNames` and
+%                             `lipidmaps` fields
 %
-% OUTPUT
-% metabolite_structure  updated metabolite structure
+% OPTIONAL INPUTS:
+%    startSearch:             numeric index of where the search should start in
+%                             the metabolite structure (default: 1)
+%    endSearch:               numeric index of where the search should end in
+%                             the metabolite structure (default: last metabolite)
 %
+% OUTPUT:
+%    metabolite_structure:    updated metabolite structure
 %
-% Ines Thiele, 09/2021
+% .. Author: - Ines Thiele, 09/2021
 
 
 Mets = fieldnames(metabolite_structure);

@@ -7,9 +7,13 @@ function printSolutionGEM(MatricesSUX, solution, logFile, itNum)
 %
 % INPUTS:
 %    MatricesSUX:    SUX Matrix
-%    solution:       MILP solution that consists of the continuous solution, integer
-%                    solution, objective value, stat, full solution, and
-%                    imported reactions
+%    solution:       MILP solution structure that consists of the continuous
+%                    solution, integer solution, objective value, stat, full
+%                    solution, and imported reactions, with fields:
+%
+%                      * .cont - Continuous solution vector (one entry per
+%                        reaction in `MatricesSUX`)
+%                      * .obj - Objective value of the MILP solution
 %    logFile:        solution is printed in this file (name of reaction added and
 %                    flux of that particular reaction) (Default = GEMLog.txt)
 %    itNum:          number of iterations
@@ -17,6 +21,7 @@ function printSolutionGEM(MatricesSUX, solution, logFile, itNum)
 % .. Author:
 %       - IT,  11-10-07
 %       - Joseph Kang, modified 11/18/09
+
 if nargin >2
     save([logFile '_solution_' num2str(itNum)], 'solution');
     if ~strcmp(logFile(end-3:end),'.txt'), logFile = [logFile '.txt']; end

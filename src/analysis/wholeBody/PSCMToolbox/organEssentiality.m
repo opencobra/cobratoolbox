@@ -1,28 +1,32 @@
 function [ResultsOrganEss] = organEssentiality(model, LPSolver)
+% Compute organ essentiality in a whole-body model
+%
 % This function computes the organ essentiality in a whole-body model by
 % setting each organ's value to zero in the whole-body objective reaction,
-% setting all organ-specific reaction bounds to zero (lower and upper),
-% and then computes whether a non-zero flux through this objective is still
+% setting all organ-specific reaction bounds to zero (lower and upper), and
+% then computing whether a non-zero flux through this objective is still
 % possible.
 %
-% function [ResultsOrganEss] = organEssentiality(model, LPSolver)
+% USAGE:
 %
-% INPUT
-% model             model structure (whole-body metabolic model)
-% LPSolver          Define LPSolver ('ILOGcomplex';
-%                   'tomlab_cplex' -default)
+%    [ResultsOrganEss] = organEssentiality(model, LPSolver)
 %
-% OUTPUT
-% ResultsOrganEss   Contains the maximally possible flux value for the
-%                   whole-body reaction for each organ. Col 1: Organ name,
-%                   Col 2: Max flux value, Col 3: Min flux value (if
-%                   minimization is activated; default: inactive), Col 4:
-%                   Solver status: 1 = feasible, 5 = feasible with
-%                   numerical difficulties (rescaling issues), 3 =
-%                   infeasible)
+% INPUTS:
+%    model:     Whole-body metabolic model, with fields:
 %
-% Ines Thiele 2016
-% Ines Thiele, added option to specify LPSolver - 10/2018
+%                 * .sex - 'male' or 'female'
+%                 * .A - constraint matrix (stoichiometry plus coupling constraints)
+%    LPSolver:    LP solver to use ('ILOGcomplex', 'tomlab_cplex' default)
+%
+% OUTPUT:
+%    ResultsOrganEss:    Maximal flux value for the whole-body reaction for each organ:
+%                       col 1 organ name, col 2 max flux, col 3 min flux (if minimisation
+%                       is activated; default inactive), col 4 solver status (1 feasible,
+%                       5 feasible with numerical difficulties, 3 infeasible)
+%
+% .. Authors:
+% ..    - Ines Thiele, 2016
+% ..    - Ines Thiele, added option to specify LPSolver - 10/2018
 
 if ~exist('LPSolver','var')
     LPSolver = 'tomlab_cplex';

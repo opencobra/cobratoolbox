@@ -1,29 +1,40 @@
-function [model,summary]=doubleCheckGapfilledReactions(model,summary,biomassReaction,microbeID,database,definedMediumGrowthOK,inputDataFolder)
-% Part of the DEMETER pipeline. Deletes reactions gapfilled by DEMETER that are no longer needed after the reconstruction was
+function [model, summary] = doubleCheckGapfilledReactions(model, summary, biomassReaction, microbeID, database, definedMediumGrowthOK, inputDataFolder)
+% Part of the DEMETER pipeline. Deletes reactions gapfilled by DEMETER that
 % are no longer needed after finishing all steps of the pipeline.
 %
-% USAGE
-%       [model,summary]=doubleCheckGapfilledReactions(model,summary,biomassReaction,microbeID,database,definedMediumGrowthOK,inputDataFolder)
+% USAGE:
 %
-% INPUT
-% model:                    COBRA model structure
-% summary:                  Structure with information of refinement 
-%                           performed on the model
-% biomassReaction:          Biomass reaction abbreviation
-% microbeID:                ID of the reconstructed microbe that serves as the
-%                           reconstruction name and to identify it in input tables
-% database                  rBioNet reaction database containing min. 3 columns:
-%                           Column 1: reaction abbreviation, Column 2: reaction
-%                           name, Column 3: reaction formula.
-% definedMediumGrowthOK:    If 1, defined medium is available for the
-%                           organism and the model can grow on it
-% inputDataFolder:          Folder with experimental data and database files
-%                           to load
+%    [model, summary] = doubleCheckGapfilledReactions(model, summary, biomassReaction, microbeID, database, definedMediumGrowthOK, inputDataFolder)
 %
-% OUTPUT
-% model:                    COBRA model structure
-% summary:                  Structure with information of refinement 
-%                           performed on the model
+% INPUTS:
+%    model:    COBRA model structure with fields:
+%
+%                * .grRules - Gene-protein-reaction rules, used to identify reactions gap-filled by DEMETER (grRule `demeterGapfill`)
+%                * .rxns - Reaction identifiers
+%    summary:    Structure with information on refinement performed on the
+%                model, with fields:
+%
+%                  * .conditionSpecificGapfill - Reactions added during condition-specific gapfilling
+%                  * .targetedGapfill - Reactions added during targeted gapfilling
+%                  * .relaxFBAGapfill - Reactions added by relaxFBA
+%                  * .futileCycles_addedRxns - Reactions added to remove futile cycles
+%                  * .addedMismatchRxns - Reactions added to conform to growth requirements
+%                  * .addedReactionsBiomass - Reactions added to enable synthesis of biomass components according to the gram status of the organism
+%    biomassReaction:    Biomass reaction abbreviation
+%    microbeID:    ID of the reconstructed microbe that serves as the
+%                  reconstruction name and to identify it in input tables
+%    database:    rBioNet reaction database containing min. 3 columns:
+%                 Column 1: reaction abbreviation, Column 2: reaction
+%                 name, Column 3: reaction formula.
+%    definedMediumGrowthOK:    If 1, defined medium is available for the
+%                              organism and the model can grow on it
+%    inputDataFolder:    Folder with experimental data and database files
+%                        to load
+%
+% OUTPUTS:
+%    model:    COBRA model structure with unneeded gapfilled reactions removed
+%    summary:    Structure with information on refinement performed on the
+%                model, updated with the reactions removed during double-checking
 %
 % .. Author:
 %           Almut Heinken, 03/2020

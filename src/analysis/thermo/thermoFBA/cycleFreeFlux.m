@@ -1,4 +1,4 @@
-function [Vthermo,thermoConsistentFluxBool] = cycleFreeFlux(V0, C, model, SConsistentRxnBool, param)
+function [Vthermo, thermoConsistentFluxBool] = cycleFreeFlux(V0, C, model, SConsistentRxnBool, param)
 % Removes stoichiometrically balanced cycles from FBA solutions when
 % possible.
 %
@@ -11,38 +11,49 @@ function [Vthermo,thermoConsistentFluxBool] = cycleFreeFlux(V0, C, model, SConsi
 %    Vthermo = cycleFreeFlux(V0, C, model, SConsistentRxnBool, relaxBounds);
 %
 % INPUTS:
-%  V0:       `n x k` matrix of `k` FBA solutions
-%  C:        `n x k` matrix of `k` FBA objectives
-%  model:    COBRA model structure with required fields:
-%                * .S  - `m x n` stoichiometric matrix
-
+%    V0:       `n x k` matrix of `k` FBA solutions
+%    C:        `n x k` matrix of `k` FBA objectives
+%    model:    COBRA model structure with required fields:
+%
+%                * .S - `m x n` stoichiometric matrix
 %                * .lb - `n x 1` lower bound vector
-%                * .ub - `n x 1` lower bound vector
-%  model.SIntRxnBool:
+%                * .ub - `n x 1` upper bound vector
+%                * .SIntRxnBool - `n x 1` logical array, true for internal reactions
+%
+%              and optional fields:
+%
+%                * .b - `m x 1` RHS vector (default 0's)
+%                * .csense - `m x 1` character vector of constraint sense (default 'E')
+%                * .C - coupling constraints
+%                * .d - RHS of coupling constraints
+%                * .dsense - coupling constraint sense
+%                * .SConsistentMetBool - `m x 1` logical array, true for stoichiometrically consistent metabolites
+%                * .SConsistentRxnBool - `n x 1` logical array, true for stoichiometrically consistent reactions
 %
 % OPTIONAL INPUTS:
-%  model.b:  - `m x 1` RHS vector (default 0's)   
-%  model.csense: - 'm x 1' character vector of constraint sense (default 'E')
-%  model.C:  - Coupling constraints         
-%  model.d:  - RHS of coupling constraints         
-%  model.dsense: - Coupling constraint sense
-%  model.SConsistentMetBool: `m x 1` logical array, true for stoichioemtrically consistent metabolites
-%  model.SConsistentRxnBool: `n x 1` logical array, true for stoichiometrically consistent reactions
+%    SConsistentRxnBool:    `n x 1` logical array, true for stoichiometrically
+%                           consistent reactions. Defaults to `model.SConsistentRxnBool`
+%                           or `model.SIntRxnBool` when present.
+%    param:    structure of optional parameters:
 %
-%  param.printLevel:       print Level
-%  param.eta               Minimum change in flux considered nonzero. Default feasTol*10
-%  param.relaxBounds:      Relax bounds that don't include zero. Default is false.
-%  param.parallelize:      Turn parfor use on or off. Default is true if k > 12.
-%  param.enforceCoupling:  {(0),1} where 1 = enforce coupling constraint
-%  param.approach:         {'lp',('regularised')} formulation of cycleFreeFlux problem.
-%                          'lp' is a linear optimisation based formulation, which is prone to infeasibility due to numerical issues.
-%                          'regularised' a quadratically regularised version, which is less sensitive to numerical issues but slower.
-%  param.debug:            {(0),1} where 1 = extra debugging steps
-%  param.removeFixedBool:  {(0),1} where 1 = moves variables with equal upper and lower bounds to rhs
+%                * .printLevel - print level
+%                * .eta - minimum change in flux considered nonzero. Default `feasTol*10`
+%                * .relaxBounds - relax bounds that don't include zero. Default is false
+%                * .parallelize - turn parfor use on or off. Default is true if `k > 12`
+%                * .enforceCoupling - {(0), 1} where 1 = enforce coupling constraint
+%                * .approach - {'lp', ('regularised')} formulation of the cycleFreeFlux problem;
+%                  'lp' is a linear optimisation based formulation, prone to infeasibility due to
+%                  numerical issues; 'regularised' is a quadratically regularised version, less
+%                  sensitive to numerical issues but slower
+%                * .debug - {(0), 1} where 1 = extra debugging steps
+%                * .removeFixedBool - {(0), 1} where 1 = move variables with equal upper and lower bounds to rhs
+%                * .steadyStateRelax - relax the steady-state constraint
+%                * .internalRelax - relax bounds on internal reactions
+%                * .exchangeRelax - relax bounds on exchange reactions
 %
-% OUTPUT:
-%  Vthermo:    `n x k` matrix of cycle free flux vectors
-%  thermoConsistentFluxBool: `n x 1` logical array, true for thermodynamically consistent flux 
+% OUTPUTS:
+%    Vthermo:                     `n x k` matrix of cycle free flux vectors
+%    thermoConsistentFluxBool:    `n x 1` logical array, true for thermodynamically consistent flux
 %
 % EXAMPLE:
 %    % Remove cycles from a single flux vector

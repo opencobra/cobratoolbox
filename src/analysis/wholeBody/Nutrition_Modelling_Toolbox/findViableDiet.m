@@ -1,40 +1,50 @@
-function [viableModel,pointsModel,pointsSln,dietChanges] = findViableDiet(model,targetString,varargin)
-% Identifies changes to the diet that must be made for viability. If 
-% no solution is possible for viability, returns NaN.
+function [viableModel, pointsModel, pointsSln, dietChanges] = findViableDiet(model, targetString, varargin)
+% Identify the changes to a diet needed for a model to be viable
 %
-% [viableModel,pointsModel,pointsSln,dietChanges] = findViableDiet(model,targetString,varargin)
+% If no viable solution exists, viableModel and dietChanges are returned as
+% NaN.
 %
-% Example: findViableDiet(modelHM,'Diet_EX_','supplyScalar',100,'lbValues',-5)
+% USAGE:
+%
+%    [viableModel, pointsModel, pointsSln, dietChanges] = findViableDiet(model, targetString, varargin)
 %
 % INPUTS:
-%   model:         COBRA model to make viable 
-%   targetString:  String identifier for targeted reactions (e.g., 'EX_')
-
-% OPTIONAL INPUTS:
-%    supplyScalar:  A scalar that dictates the magnitude that metabolites
-%                  are supplied with respect to the minimal necessary.
-%                  (e.g., a value of one returns the minimal flux necessary
-%                  for a viable diet and a scalar of ten returns ten times
-%                  the necessary flux)
-%    specifiedWeights: A cell array that can be used to manipulate
-%                         weights to favor specific nutrients over
-%                         others. Default weights are equal to one
-%                         (e.g. {'Diet_EX_glu[d]',0.1;'Diet_EX_fru[d]',10})%
-%    tol:         A numerical value (double) indicating the threshold that
-%                 is assumed to be associated with a zero flux (default is
-%                 1e-8)
-%    lbValues:    The maximum flux to add for a given dietary reaction
-%                (double). The default is -100000
-% OUTPUT:
-%    viableModel:    An copy of the input model with updated diet
-%                    reaction bounds 
-%   pointsModel:     The resulting model that is used to identify
-%                    recomended dietary changes. It includes points
-%                    reactions and food added/removed reactions.
-%   pointsSln:       Returns the solution for the pointsModel
-%   dietChanges:     A table of recomended dietary changes
+%    model:            COBRA model to make viable, with fields:
 %
-% .. Authors: - Bronson R. Weston   2022 
+%                        * .rxns - reaction identifiers
+%                        * .mets - metabolite identifiers
+%                        * .S - stoichiometric matrix
+%                        * .ub - upper flux bounds
+%                        * .osenseStr - objective sense (set to 'min' internally)
+%    targetString:     String identifier for the targeted reactions
+%                      (e.g. 'Diet_EX_')
+%
+% OPTIONAL INPUTS:
+%    varargin:         Name-value pairs:
+%
+%                        * supplyScalar - scalar setting the magnitude that
+%                          metabolites are supplied relative to the minimal
+%                          necessary; e.g. one returns the minimal flux for a
+%                          viable diet and ten returns ten times that flux
+%                          (default 1)
+%                        * specifiedWeights - cell array used to weight
+%                          specific nutrients above others; default weights
+%                          are one (e.g. {'Diet_EX_glu[d]', 0.1; 'Diet_EX_fru[d]', 10})
+%                        * tol - numerical threshold assumed to correspond to
+%                          a zero flux (default 1e-7)
+%                        * lbValues - maximum (most negative) flux that may be
+%                          added for a dietary reaction (default -100000)
+%
+% OUTPUTS:
+%    viableModel:      Copy of the input model with updated diet reaction
+%                      bounds
+%    pointsModel:      Model used to identify the recommended dietary changes;
+%                      it includes the points reactions and the food
+%                      added/removed reactions
+%    pointsSln:        Solution returned for pointsModel
+%    dietChanges:      Table of the recommended dietary changes
+%
+% .. Author: - Bronson R. Weston, 2022
 
 
 parser = inputParser();

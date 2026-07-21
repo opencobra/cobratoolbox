@@ -1,54 +1,62 @@
 function [contextSpecificModel, retainedRxns, indicesCompletedCoreOrig] = rFastcormics(model, discretized, rownames, dico, biomassReactionName, consensusProportion, epsilon, optionalSettings, fillingMediumFlag, adaptiveScalingFlag)
-% The rFASTCORMICS is a context-specific building algorithm for
-% reconstructing a tissue, a cell-specific, or any context-specific model from RNAseq data
-% and a generic reconstruction (Pacheco et al. 2019)
+% Reconstruct a context-specific model (tissue, cell type, or any context)
+% from RNAseq data and a generic reconstruction using the rFASTCORMICS
+% algorithm (Pacheco et al. 2019)
 %
 % USAGE:
 %
-%   [contextSpecificModel, retainedRxns, indicesCompletedCoreOrig] = rFastcormics(model, discretized, rownames, dico, biomassReactionName, consensusProportion, epsilon, optionalSettings, fillingMediumFlag, adaptiveScalingFlag)
+%    [contextSpecificModel, retainedRxns, indicesCompletedCoreOrig] = rFastcormics(model, discretized, rownames, dico, biomassReactionName, consensusProportion, epsilon, optionalSettings, fillingMediumFlag, adaptiveScalingFlag)
 %
 % REQUIREMENTS:
-%                          * Statistics and Machine Learning Toolbox
-%                          * Curve fitting toolbox
-% INPUTS:
-%   model:                 object - the following fields are required - (others can be supplied)
-%                          * S  - `m x 1` Stoichiometric matrix
-%                          * lb - `n x 1` Lower bounds
-%                          * ub - `n x 1` Upper bounds
-%                          * rxns   - `n x 1` cell array of reaction abbreviations
-%                          * metFormulas m*1 metabolite Formulas
-%   discretized:           double - discretized values for the samples, size(discretized, 1) =
-%                          number of genes, size(discretized, 2) = number of
-%                          samples
-%   rownames:              cell array with the gene IDs
-%   dico:                  table which contains corresponding gene identifier information. Needed
-%                          to map the rownames to the genes in the model.
-%   biomassReactionName:   character array with the name of the objective  
 %
-% OPTIONAL INPUTS: 
-%   consensusProportion:   the rate of samples that have to express or not to express a gene for the
-%                          gene to be considered expressed or not in the
-%                          context of interest (default 0.9)
-%   epsilon:               smallest flux that is considered nonzero (default = 1e-4)
-%   optionalSettings:      structure
-%                          * .func - cell array of reaction abbreviations that should carry a flux
-%                          * .medium - cell array of metabolites abbreviations that defines metabolites
-%                          in the growth medium of cells to constrain the model
-%                          * .notMediumConstrained - reaction abbreviations not included in the medium that must be retained
-%   fillingMediumFlag:     fill the medium with supplementary reactions in case the provided medium is not sufficient to fulfill the objective function. 
-%                          1 for active (default), 0 for inactive
-%   adaptiveScalingFlag:   adaptive scaling of the flux values (see LP10).
-%                          0 for inactive (default), 1 for active
+%    Statistics and Machine Learning Toolbox, and Curve Fitting Toolbox
+%
+% INPUTS:
+%    model:                 COBRA model structure with the following fields:
+%
+%                             * .S - `m x n` stoichiometric matrix
+%                             * .lb - `n x 1` lower flux bounds
+%                             * .ub - `n x 1` upper flux bounds
+%                             * .rxns - `n x 1` cell array of reaction abbreviations
+%                             * .rules - cell array of GPR rules in `x(i)` logical form
+%                             * .subSystems - reaction subsystem assignments
+%                             * .metFormulas - `m x 1` cell array of metabolite chemical formulas
+%
+%    discretized:           discretized expression values, size(discretized, 1) is the number of
+%                           genes and size(discretized, 2) is the number of samples
+%    rownames:              cell array with the gene IDs
+%    dico:                  table with gene identifier information used to map the rownames to the
+%                           model genes; can contain multiple columns with different identifiers:
+%
+%                             * .Properties - table metadata; the VariableNames identify the column
+%                               that matches the gene IDs
+%
+%    biomassReactionName:    reaction identifier of the objective (biomass) reaction
+%
+% OPTIONAL INPUTS:
+%    consensusProportion:    rate of samples that must (not) express a gene for it to be considered
+%                           (not) expressed in the context of interest (default 0.9)
+%    epsilon:               smallest flux considered nonzero (default 1e-4)
+%    optionalSettings:      structure with optional constraints:
+%
+%                             * .func - cell array of reaction abbreviations that should carry a flux
+%                             * .medium - cell array of metabolite abbreviations defining the growth medium
+%                             * .notMediumConstrained - reaction abbreviations not in the medium that must be retained
+%
+%    fillingMediumFlag:     fill the medium with supplementary reactions when the provided medium is
+%                           not sufficient to fulfill the objective; 1 for active (default), 0 for inactive
+%    adaptiveScalingFlag:    adaptive scaling of the flux values (see LP10); 0 for inactive (default),
+%                           1 for active
 %
 % OUTPUTS:
-%   contextSpecificModel:        context-specific model, reduced to the retained reactions and associated genes
-%   retainedRxns:                indices of the retained reactions in the input model
-%   indicesCompletedCoreOrig:    indices of the core reactions in the input model
+%    contextSpecificModel:       context-specific model, reduced to the retained reactions and associated genes
+%    retainedRxns:               indices of the retained reactions in the input model
+%    indicesCompletedCoreOrig:    indices of the core reactions in the input model
 %
 % EXAMPLE:
 %
-%   [contextSpecificModel, retainedRxns, indicesCompletedCoreOrig] = rFastcormics(model, discretized, rownames, dico, biomassReactionName)
-%   
+%    [contextSpecificModel, retainedRxns, indicesCompletedCoreOrig] = rFastcormics(model, discretized, rownames, dico, biomassReactionName)
+%
 % .. Authors:
 %       - Maria Pires Pacheco, Thomas Sauter, 2016, University of Luxembourg
 %       - Maria Pires Pacheco, Thomas Sauter, 2023, adaptation of the code to the Cobra toolbox

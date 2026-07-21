@@ -15,6 +15,9 @@ currentDir = pwd;
 fileDir = fileparts(which('testAddLoopLawConstraints.m'));
 cd(fileDir);
 
+% require a MILP solver; skip gracefully if none is available
+prepareTest('needsMILP', true);
+
 % set the tolerance
 tol = 1e-4;
 

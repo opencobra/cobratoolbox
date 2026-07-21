@@ -7,7 +7,7 @@ function directories = XomicsToMultipleModels(modelGenerationConditions, param)
 %    directories = XomicsToMultipleModels(modelGenerationConditions, param)
 %
 % INPUT:
-%    modelGenerationConditions: Options to vary or to save the data
+%    modelGenerationConditions:    Options to vary or to save the data
 %
 %       * .activeGenesApproach -﻿The different approached to identify the active
 %          genes (Possible options: 'allRxnPerActiveGene' and 'oneRxnPerActiveGene';
@@ -21,7 +21,8 @@ function directories = XomicsToMultipleModels(modelGenerationConditions, param)
 %          options: 'glpk', 'gurobi', 'ibm_cplex', 'matlab'; default: 'gurobi';
 %       * .curationOverOmics - indicates whether curated data should take priority
 %          over omics data ; default: false;
-%       *. genericModel: Generic COBRA model(s)
+%       * .genericModel - Generic COBRA model(s)
+%       * .activeOverInactive - Logical, use active data with priority over inactive data (Default: false).
 %       * .inactiveGenesTranscriptomics - Use inactive transcriptomic genes or not
 %          (Possible options: true and false; default: false);
 %       * .specificData - Specific data variations (Default: empty)
@@ -36,11 +37,16 @@ function directories = XomicsToMultipleModels(modelGenerationConditions, param)
 %       * .transcriptomicThreshold - Transcriptomic thresholds that are defined by the
 %          user (Default: log2(2));
 %
-%   param:           Variable with fixed parameters (Default: empty struct array)
+%    param:    Variable with fixed parameters applied to every model (Default: empty struct array):
+%
+%                * .TolMinBoundary - Minimum reaction bound tolerance (set from limitBounds).
+%                * .TolMaxBoundary - Maximum reaction bound tolerance (set from limitBounds).
+%                * .activeOverInactive - Logical, use active data with priority over inactive data.
+%                * .workingDirectory - Directory where each model and its debug output are written.
+%                * .diaryFilename - Path of the diary file capturing the function output.
 %
 % OUTPUTS:
-%
-%	directories - Array with the name of the new directories
+%    directories:    Array with the names of the new directories
 
 if nargin < 2 || isempty(param)
     param = struct;

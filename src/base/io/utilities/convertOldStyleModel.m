@@ -7,12 +7,31 @@ function model = convertOldStyleModel(model, printLevel, convertOldCoupling)
 %    model = convertOldStyleModel(model, printLevel)
 %
 % INPUT:
-%    model:         a COBRA Model (potentially with old field names)
+%    model:    a COBRA Model (potentially with old field names), with fields:
+%
+%                * .osense - (legacy, deprecated) numeric objective sense, `-1` for maximisation or `1` for minimisation; superseded by `.osenseStr` and removed once converted
+%                * .osenseStr - objective sense, `'max'` or `'min'`
+%                * .csense - `m x 1` constraint sense of each row of `.b` (`'E'`, `'L'`, or `'G'`)
+%                * .genes - `g x 1` gene identifiers
+%                * .c - `n x 1` linear objective coefficients
+%                * .rules - `n x 1` evaluatable GPR rules
+%                * .rxnConfidenceScores - `n x 1` reaction confidence scores
+%                * .subSystems - `n x 1` subsystem annotations
+%                * .rxnGeneMat - `n x g` reaction-gene incidence matrix
+%                * .b - `m x 1` right hand side of the metabolite constraints
+%                * .comps - `c x 1` compartment symbols
+%                * .metChEBIID - `m x 1` ChEBI identifiers of metabolites
+%                * .metPubChemID - `m x 1` PubChem identifiers of metabolites
+%                * .mets - `m x 1` metabolite identifiers
+%                * .rxnNames - `n x 1` reaction names
+%                * .grRules - `n x 1` readable gene-protein-reaction rules
+%                * .rxns - `n x 1` reaction identifiers
 %
 % OPTIONAL INPUT:
 %    printLevel:            boolean to indicate whether warnings and messages are given (default, 1).
-%    convertOldCoupling     boolean to indicate whether to convert model.A
+%    convertOldCoupling:    boolean to indicate whether to convert model.A
 %                           into model.S and model.C, etc.
+%
 % OUTPUT:
 %    model:         a COBRA model with old field names replaced by new ones and
 %                   duplicated fields merged.
@@ -72,8 +91,9 @@ function model = convertOldStyleModel(model, printLevel, convertOldCoupling)
 %                              are replaced by '' for those fields, which
 %                              are defined in the COBRAModelFields file as
 %                              having cell arrays with chars.
-%       
+%
 % .. Author: - Thomas Pfau May 2017
+
 warnstate = warning;
 if ~exist('printLevel','var')
     printLevel = 1;

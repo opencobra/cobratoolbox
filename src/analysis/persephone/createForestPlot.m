@@ -1,20 +1,27 @@
 function createForestPlot(estimates, ci, names, pValues, plotTitle, xTitle, hideLegend)
-% createForestPlot generates a forest plot to display confidence intervals for estimates.
+% Generate a forest plot displaying confidence intervals for a set of estimates
+%
+% Points are coloured by significance category (FDR < 0.05, P < 0.05,
+% P > 0.05) and drawn against their confidence intervals.
 %
 % USAGE:
-%   createForestPlot(estimates, ci, names, pValues, plotTitle, xTitle, hideLegend)
+%
+%    createForestPlot(estimates, ci, names, pValues, plotTitle, xTitle, hideLegend)
 %
 % INPUTS:
-%   estimates   - Vector of estimates (e.g., effect sizes or log fold changes).
-%   ci          - Matrix of confidence intervals [n x 2] with lower and upper bounds in columns.
-%   names       - Cell array of labels for each data point.
-%   pValues     - Vector of p-values corresponding to each estimate.
-%   plotTitle   - String, title of the plot.
-%   xTitle      - String, label for the x-axis (typically "Effect Size" or "Log Fold Change").
-%   hideLegend  - Logical, if true, hides the legend (default is false).
+%    estimates:    vector of estimates (e.g. effect sizes or log fold changes)
+%    ci:           n x 2 matrix of confidence intervals, lower and upper
+%                  bounds in the two columns
+%    names:        cell array of labels, one per data point
+%    pValues:      vector of p-values corresponding to each estimate
+%    plotTitle:    char/string, title of the plot
+%    xTitle:       char/string, label for the x-axis (e.g. "Effect Size" or
+%                  "Log Fold Change")
 %
-% .. Author:
-%       - Tim Hensen       November, 2024
+% OPTIONAL INPUT:
+%    hideLegend:    logical, if true the legend is hidden (default false)
+%
+% .. Author: - Tim Hensen, November 2024
 
 if nargin < 7
     hideLegend = false; % Default value for hideLegend if not provided

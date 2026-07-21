@@ -22,6 +22,7 @@ function [solversToUse] = prepareTest(varargin)
 %                   - `needsMIQP`: Whether a MIQP solver is required (default: false)
 %                   - `needsNLP`: Whether a NLP solver is required (default: false)
 %                   - `needsEP`: Whether a EP solver is required (default: false)
+%                   - `needsCLP`: Whether a CLP solver is required (default: false)
 %                   - `needsUnix`: Whether the test only works on a Unix system (macOS or Linux) (default: false)
 %                   - `needsWindows`: Whether the test only works on a Windows system (default: false)
 %                   - `needsMac`: Whether the test only works on a Mac system (default: false)
@@ -32,7 +33,7 @@ function [solversToUse] = prepareTest(varargin)
 %
 % OUTPUTS:
 %
-%    solversToUse:  A struct with one field per solver type listing
+%    solversToUse:    A struct with one field per solver type listing
 %                   the solvers to use for that type of problem in a cell array.
 %                   If neither of the 'useIfAvailable' nor the 'reqSolvers'
 %                   parameter is provided, only at most one solver
@@ -138,6 +139,17 @@ needsWebAddress = parser.Results.needsWebAddress;
 needsWebRead = parser.Results.needsWebRead;
 useMinimalNumberOfSolvers = parser.Results.useMinimalNumberOfSolvers;
 runtype = getenv('CI_RUNTYPE');
+
+% Feature 002 (testAll performance modes): in fast mode (the default outside CI)
+% return a single representative solver per class unless the test explicitly
+% requests multiple solvers via requiredSolvers/useSolversIfAvailable (i.e.
+% tests whose purpose is cross-solver agreement). Full mode, CI, and explicit
+% multi-solver requests are unchanged. See specs/002-testall-performance-modes.
+if strcmp(getCobraTestMode(), 'fast') ...
+        && isempty(parser.Results.requiredSolvers) ...
+        && isempty(parser.Results.useSolversIfAvailable)
+    useMinimalNumberOfSolvers = true;
+end
 
 minimalMatlabSolverVersion = parser.Results.minimalMatlabSolverVersion;
 requiredSoftwares = parser.Results.requiredSoftwares;

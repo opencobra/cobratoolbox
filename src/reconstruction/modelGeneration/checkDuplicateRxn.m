@@ -8,13 +8,23 @@ function [modelOut, removedRxnInd, keptRxnInd] = checkDuplicateRxn(model, method
 %    [modelOut, removedRxnInd, keptRxnInd] = checkDuplicateRxn(model, method, removeFlag, printLevel, boundsFlag)
 %
 % INPUTS:
-%    model:             Cobra model structure
+%    model:             Cobra model structure with fields:
+%
+%                         * .S - `m` x `n` stoichiometric matrix
+%                         * .rxns - `n` x 1 cell array of reaction identifiers
+%                         * .lb - `n` x 1 lower bounds on fluxes (used if `boundsFlag`)
+%                         * .ub - `n` x 1 upper bounds on fluxes (used if `boundsFlag`)
 %
 % OPTIONAL INPUTS:
 %    method:            S --> checks rxn `S` matrix (default),
 %                       rxnAbbr --> checks rxn abbreviations,
 %                       FR --> checks `F + R` matrix, where :math:`S:=-F + R`, which ignores
 %                       reaction direction
+%    removeFlag:        {(1), 0} if 1, duplicate reactions are removed from `modelOut`;
+%                       if 0, they are only detected and reported (default 1)
+%    printLevel:        verbose level (default 0)
+%    boundsFlag:        {(0), 1} if 1, include `.lb` and `.ub` when comparing reactions
+%                       for duplication (default 0)
 %
 %
 % OUTPUTS:

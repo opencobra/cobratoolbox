@@ -1,30 +1,41 @@
-function [TableProp_female,TableProp_male, TableGRM,TableMetsNum_female,TableMetsNum_male,TableGenes_femaleNum] = getStatsOrganComp(female, male, OrganCompendium_female, OrganCompendium_male, violinPlots)
-% This function compiles general statistics on the male and the female
-% organ compendia derived from the male and female whole-body metabolic
-% models.
+function [TableProp_female, TableProp_male, TableGRM, TableMetsNum_female, TableMetsNum_male, TableGenes_femaleNum] = getStatsOrganComp(female, male, OrganCompendium_female, OrganCompendium_male, violinPlots)
+% Compile general statistics on the male and female organ compendia
 %
-% [TableProp_female,TableProp_male, TableGRM] = getStatsOrganComp(female, male, OrganCompendium_female, OrganCompendium_male, violinPlots)
+% This function compiles general statistics on the male and female organ
+% compendia derived from the male and female whole-body metabolic models. A
+% more comprehensive comparison output is provided in the file
+% Results_StatsOrganComp.mat, which is created at the end of this function.
 %
-% INPUT
-% female                    model structure, female whole-body metabolic
-%                           model
-% male                      model structure, male whole-body metabolic
-%                           model
-% OrganCompendium_female    strucutre containing the different organs
-%                           (generated with the function getOrgansFromHarvey
-% OrganCompendium_male      strucutre containing the different organs
-%                           (generated with the function getOrgansFromHarvey
-% violinPlots               plot violin plots (does not work below Matlab
-%                           2016) (defaul = 0)
+% USAGE:
 %
-% OUTPUT
-% TableProp_female          Table containing organ-specific information
-% TableProp_male            Table containing organ-specific information
+%    [TableProp_female, TableProp_male, TableGRM, TableMetsNum_female, TableMetsNum_male, TableGenes_femaleNum] = getStatsOrganComp(female, male, OrganCompendium_female, OrganCompendium_male, violinPlots)
 %
-% A more comprehensive comparison output is provided in the file:
-% Results_StatsOrganComp.mat that is created at the end of this function.
+% INPUTS:
+%    female:                   Female whole-body metabolic model, with fields:
 %
-% Ines Thiele, 2017
+%                                * .rxns - reaction identifiers
+%                                * .mets - metabolite identifiers
+%                                * .genes - gene identifiers
+%                                * .subSystems - subsystem annotations
+%    male:                     Male whole-body metabolic model, with fields:
+%
+%                                * .rxns - reaction identifiers
+%                                * .mets - metabolite identifiers
+%                                * .genes - gene identifiers
+%                                * .subSystems - subsystem annotations
+%    OrganCompendium_female:    Structure of the female organs (from getOrgansFromHarvey)
+%    OrganCompendium_male:     Structure of the male organs (from getOrgansFromHarvey)
+%    violinPlots:              Plot violin plots (does not work below MATLAB 2016; default 0)
+%
+% OUTPUTS:
+%    TableProp_female:       Table of organ-specific property information (female)
+%    TableProp_male:         Table of organ-specific property information (male)
+%    TableGRM:               Table comparing gene, reaction, and metabolite counts across organs
+%    TableMetsNum_female:    Metabolite-by-organ presence matrix (female)
+%    TableMetsNum_male:      Metabolite-by-organ presence matrix (male)
+%    TableGenes_femaleNum:    Gene-by-organ presence matrix (female)
+%
+% .. Author: - Ines Thiele, 2017
 
 global resultsPath
 resultsPath = which('MethodSection3.mlx');

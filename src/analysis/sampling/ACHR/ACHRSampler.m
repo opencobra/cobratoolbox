@@ -6,7 +6,11 @@ function ACHRSampler(model, warmupPoints, fileName, nFiles, pointsPerFile, steps
 %    ACHRSampler(model, warmupPoints, fileName, nFiles, pointsPerFile, stepsPerPoint, initPoint, fileBaseNo, maxTime)
 %
 % INPUTS:
-%    model:            Model structure
+%    model:            Model structure, with fields:
+%
+%                        * .S - stoichiometric matrix
+%                        * .lb - lower flux bounds
+%                        * .ub - upper flux bounds
 %    warmupPoints:     Warmup points
 %    fileName:         Base `fileName` for saving results
 %    nFiles:           Number of files created

@@ -3,19 +3,23 @@ function [subsysSummary, uniqSubsys, countSubPerEFM] = efmSubsystemsExtraction(m
 %
 % USAGE:
 %    [subsysSummary, uniqSubsys, countSubPerEFM] = efmSubsystemsExtraction(model, EFMRxns);
-%    
+%
 % INPUTS:
-%    model:      COBRA model that was used for EFM calculation
+%    model:      COBRA model that was used for EFM calculation, with fields:
+%
+%                  * .subSystems - `m x 1` cell array of subsystem name(s) per reaction
 %    EFMRxns:    matlab array containing reactions in EFMs (as returned by the function efmImport)
 %
 % OUTPUTS:
-%    subsysSummary:    
-%    uniqSubsys:  
-%    countSubPerEFM:  
-%
-% EXAMPLE:
-%
-%
+%    subsysSummary:      table (from `tabulate`) of the unique subsystems
+%                        present in the input EFMs, sorted by descending
+%                        occurrence count, with columns for subsystem name,
+%                        count, and percentage
+%    uniqSubsys:         cell array of unique, non-empty subsystem names
+%                        found among the reactions in the input EFMs
+%    countSubPerEFM:     `numel(uniqSubsys) x size(EFMRxns, 1)` matrix; each
+%                        entry is the number of reactions belonging to that
+%                        subsystem in the corresponding EFM
 %
 % .. Author: Last modified: Chaitra Sarathy, 1 Oct 2019
 

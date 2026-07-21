@@ -13,6 +13,9 @@ currentDir = pwd;
 fileDir = fileparts(which('testOptimizeRegModel'));
 cd(fileDir);
 
+% require LP and QP solvers; skip gracefully if none are available
+prepareTest('needsLP', true, 'needsQP', true);
+
 % load model and test data
 load('modelReg.mat');
 load('refData_optimizeRegModel.mat');

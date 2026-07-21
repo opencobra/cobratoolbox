@@ -1,4 +1,6 @@
 function [formula, nH, charge] = getFormulaAndChargeFromInChI(inchi)
+% Get the chemical formula, number of protons and charge of a pseudoisomer from its InChI
+%
 % USAGE:
 %
 %    [formula, nH, charge] = getFormulaAndChargeFromInChI(inchi)

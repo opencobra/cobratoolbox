@@ -16,6 +16,17 @@ function solution = solveCobraLP(LPproblem, varargin)
 %                     * .osense - scalar objective sense (-1 means maximise (default), 1 means minimise)
 %                     * .csense - m x 1 character array of constraint senses, one for each row in A
 %                                 must be either ('E', equality, 'G' greater than, 'L' less than).
+%                     * .S - (optional) m x n stoichiometric matrix, used as `.A`
+%                       if `.A` is not provided
+%                     * .modelID - (optional) identifier string for the problem,
+%                       used e.g. as the MPS filename by solvers that write an
+%                       MPS file (default: `'aModelID'`)
+%                     * .names - (optional) structure with fields for constraint/
+%                       variable names passed on to solvers that support them
+%                       (default: `[]`)
+%                     * .basis - (optional) warm-start LP basis; if present, it
+%                       is copied to `.LPBasis` before calling the `cplex_direct`
+%                       solver interface
 %
 % OPTIONAL INPUTS:
 %    varargin:      Additional parameters either as parameter struct, or as

@@ -6,7 +6,16 @@ function [x, population, scores, optGeneSol] = optGene(model, targetRxn, substra
 %    [x, population, scores, optGeneSol] = optGene(model, targetRxn, substrateRxn, generxnList, MaxKOs, population)
 %
 % INPUTS:
-%    model:                    Model of reconstruction
+%    model:                    COBRA model structure. Fields used directly:
+%
+%                                * .S - `m x n` stoichiometric matrix
+%                                * .rxns - `n x 1` reaction identifiers
+%                                * .mets - `m x 1` metabolite identifiers
+%                                * .lb - `n x 1` lower flux bounds
+%                                * .ub - `n x 1` upper flux bounds
+%                                * .b - `m x 1` right-hand side of `S*v = b`
+%                                * .c - `n x 1` linear objective coefficients
+%                                * .genes - gene identifiers (used to decide whether the list is genes or reactions)
 %    targetRxn:                (char) String name of reaction which is to
 %                              be maximized
 %    substrateRxn:             (char) Substrate reactions

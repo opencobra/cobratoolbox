@@ -1,6 +1,7 @@
 function issueConfirmationWarning(message)
 % Issues a warning, which and blocks execution until confirmation by the
 % user.
+%
 % USAGE:
 %
 %    issueConfirmationWarning(message)
@@ -9,8 +10,7 @@ function issueConfirmationWarning(message)
 %    message:           The message to be displayed
 %
 % .. Author: - Thomas Pfau Sep 2018
-%
-%
+
 warnstat = warning();
 finish = onCleanup(@() warning(warnstat));
 % forced activation of warnings

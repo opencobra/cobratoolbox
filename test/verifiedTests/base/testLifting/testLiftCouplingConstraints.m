@@ -5,6 +5,9 @@
 %                         * dsense - `k x 1` character array with entries in {L,E,G}
 %          v1       v2
 
+% require an LP solver; skip gracefully if none is available
+prepareTest('needsLP', true);
+
 if exist('model','var')
     clear model
 end

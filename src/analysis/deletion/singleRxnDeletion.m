@@ -6,7 +6,9 @@ function [grRatio, grRateKO, grRateWT, hasEffect, delRxn, fluxSolution] = single
 %    [grRatio, grRateKO, grRateWT, hasEffect, delRxn, fluxSolution] = singleRxnDeletion(model, method, rxnList, verbFlag)
 %
 % INPUT:
-%    model:           COBRA model structure including reaction names
+%    model:           COBRA model structure including reaction names, with the field:
+%
+%                       * .rxns - `n x 1` cell array of reaction identifiers
 %
 % OPTIONAL INPUTS:
 %    method:          Either 'FBA', 'MOMA', or 'lMOMA' (Default = 'FBA')

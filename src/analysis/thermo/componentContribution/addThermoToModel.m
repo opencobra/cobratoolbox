@@ -7,25 +7,26 @@ function model = addThermoToModel(model, params, printLevel)
 %    model = addThermoToModel(model, params, printLevel)
 %
 % INPUTS:
-%    model:                               COBRA model structure
-%
+%    model:         COBRA model structure
 %
 % OPTIONAL INPUTS:
-%    params.use_cached_kegg_inchis:
-%    params.use_model_pKas_by_default:
-%    params.uf:                           maximum uncertainty
+%    params:        structure with optional fields:
 %
+%                     * .use_cached_kegg_inchis - if true, use cached KEGG InChIs (default true)
+%                     * .use_model_pKas_by_default - if true, use the model pKa values by default (default true)
+%                     * .maxuf - maximum uncertainty threshold used when reporting
+%    printLevel:    verbosity level (default 0)
 %
 % OUTPUTS:
-%    model:                               COBRA model structure with fields:
+%    model:         COBRA model structure with added fields:
 %
-%                                           * .DfG0 - `m x 1` array of component contribution estimated
-%                                             standard Gibbs energies of formation.
-%                                           * .covf - `m x m` estimated covariance matrix for standard
-%                                             Gibbs energies of formation.
-%                                           * .uf - `m x 1` array of uncertainty in estimated standard
-%                                             Gibbs energies of formation. uf will be large for
-%                                             metabolites that are not covered by component contributions.
+%                     * .DfG0 - `m x 1` array of component contribution estimated
+%                       standard Gibbs energies of formation.
+%                     * .covf - `m x m` estimated covariance matrix for standard
+%                       Gibbs energies of formation.
+%                     * .DfG0_Uncertainty - `m x 1` array of uncertainty in estimated
+%                       standard Gibbs energies of formation. Will be large for
+%                       metabolites that are not covered by component contributions.
 
 if ~isfield(params,'use_cached_kegg_inchis')
     use_cached_kegg_inchis = true;

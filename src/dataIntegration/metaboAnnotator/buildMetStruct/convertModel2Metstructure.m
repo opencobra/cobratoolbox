@@ -1,16 +1,26 @@
 function [metabolite_structure] = convertModel2Metstructure(model)
-% This function converts the metabolite information present in a metabolic
-% reconstruction (contained in a model structure) into a metabolite
-% structure to make the reconstruction amenable to the metaboAnnotator
-% extension.
+% Converts the metabolite information of a COBRA model into a metabolite structure
 %
-% INPUT
-% model                 model structure
-% 
-% OUTPUT 
-% metabolite_structure  metabolite structure
+% Converts the metabolite information present in a metabolic reconstruction
+% (contained in a model structure) into a metabolite structure, to make the
+% reconstruction amenable to the metaboAnnotator extension.
 %
-% Ines Thiele, 2020/2021
+% USAGE:
+%
+%    [metabolite_structure] = convertModel2Metstructure(model)
+%
+% INPUT:
+%    model:                   COBRA model structure with the fields:
+%
+%                               * .mets - metabolite identifiers, converted into
+%                                 the metabolite structure entries
+%                               * .modelID - model identifier, recorded as the
+%                                 annotation source for the retrieved fields
+%
+% OUTPUT:
+%    metabolite_structure:    metabolite structure
+%
+% .. Author: - Ines Thiele, 2020/2021
 
 F = fieldnames(model);
 metabolite_structure = struct();

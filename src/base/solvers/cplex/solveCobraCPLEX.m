@@ -16,6 +16,8 @@ function [solution, model] = solveCobraCPLEX(model, printLevel, basisReuse, conf
 %                          * .osense - scalar Objective sense (-1 max, +1 min)
 %                          * .rxns - (optional) cell array of reaction abbreviations (necessary for
 %                            making a readable confilict resolution file).
+%                          * .mets - (optional) cell array of metabolite abbreviations (necessary for
+%                            making a readable confilict resolution file).
 %                          * .csense - (optional) Constraint senses, a string containting the constraint sense for
 %                            each row in `A` ('E', equality, 'G' greater than, 'L' less than).
 %                          * .LPBasis - (optional) Basis from previous solution of similar LP problem.

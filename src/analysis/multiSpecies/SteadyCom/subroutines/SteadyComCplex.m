@@ -8,13 +8,15 @@ function [sol, result, LP, LPminNorm, indLP] = SteadyComCplex(modelCom, options,
 %    modelCom:       A community COBRA model structure with the following fields (created using createMultipleSpeciesModel)
 %                    (the first 5 fields are required, at least one of the last two is needed. Can be obtained using `getMultiSpecisModelId`):
 %
-%                      * S - Stoichiometric matrix
-%                      * b - Right hand side
-%                      * c - Objective coefficients
-%                      * lb - Lower bounds
-%                      * ub - Upper bounds
-%                      * infoCom - structure containing community reaction info
-%                      * indCom - the index structure corresponding to `infoCom`
+%                      * .S - Stoichiometric matrix
+%                      * .b - Right hand side
+%                      * .c - Objective coefficients
+%                      * .lb - Lower bounds
+%                      * .ub - Upper bounds
+%                      * .rxns - reaction identifiers
+%                      * .mets - metabolite identifiers
+%                      * .infoCom - structure containing community reaction info
+%                      * .indCom - the index structure corresponding to `infoCom`
 %
 % OPTIONAL INPUTS:
 %    options:        struct with the following possible fields:
@@ -31,7 +33,7 @@ function [sol, result, LP, LPminNorm, indLP] = SteadyComCplex(modelCom, options,
 %                      * BMcsense - Sense of the constraint, 'L', 'E', 'G' for <=, =, >=
 %                        (for general constraints on e.g. total carbon uptake, molecular crowding, default [])
 %                      * MC - :math:`K * (N_{rxns}+N_{organisms})` coefficient matrix, for `K` additional constraints
-%                      * MCmode - :math:`K * (N_{rxns}+N_{organisms})` matrix , with number 0 ~ 3
+%                      * .MCmode - :math:`K * (N_{rxns}+N_{organisms})` matrix , with number 0 ~ 3
 %
 %                        * 0: original variable
 %                        * 1: positive part of the variable
@@ -81,7 +83,19 @@ function [sol, result, LP, LPminNorm, indLP] = SteadyComCplex(modelCom, options,
 %                      * LPonly [false] - Return the initial LP at zero growth rate only. Calculate nothing.
 %                      * saveModel ['']  String, if non-empty, save the `cplex` model, basis and parameters.
 %
-%    solverParams:   Cplex parameter structure. E.g. `struct('simplex', struct('tolerances', struct('feasibility', 1e-8)))`
+%    solverParams:    Cplex parameter structure with fields such as:
+%
+%                      * .simplex - simplex-algorithm parameters, e.g.
+%                        `struct('tolerances', struct('feasibility', 1e-8))`
+%    LP:              (optional) pre-constructed Cplex LP object for the community
+%                     model; if supplied it is reused instead of being rebuilt.
+%                     Fields used:
+%
+%                      * .Model - Cplex model sub-structure
+%                      * .Param - Cplex parameter sub-structure
+%                      * .Start - Cplex warm-start basis
+%                      * .Solution - Cplex solution sub-structure
+%                      * .DisplayFunc - Cplex display-function handle
 %
 % OUTPUTS:
 %    sol:            cplex solution structure
@@ -105,6 +119,10 @@ function [sol, result, LP, LPminNorm, indLP] = SteadyComCplex(modelCom, options,
 %                        * infeasible: infeasible model, even with maintenance requirement only
 %                        * LPonly: return the LP structure only. No optimization performed (only if options.LPonly = true)
 %                        * xxx (minNorm L1-norm): in result.flux the sum of absolute fluxes is minimized. 'xxx' is one of the status above.
+%    LP:             Cplex LP object for the maximum community growth problem
+%    LPminNorm:      Cplex LP object minimizing the L1-norm (sum of absolute
+%                    fluxes) of the final solution; [] if no minNorm is requested
+%    indLP:          index structure mapping variables and constraints of the LP
 
 t = tic;
 t0 = 0;

@@ -1,24 +1,41 @@
-function [VMH_existance,rBioNet_existance,metab_rBioNet_online,rxn_rBioNet_online,metabolite_structure_rBioNet] = checkAbbrExists(list,metab_rBioNet_online,rxn_rBioNet_online,metabolite_structure_rBioNet)
-% This function checks whether the abbreviations in the list exist already
-% in the VMH or the most recent rBioNetDB either as reaction or metabolite
-% abbr
+function [VMH_existance, rBioNet_existance, metab_rBioNet_online, rxn_rBioNet_online, metabolite_structure_rBioNet] = checkAbbrExists(list, metab_rBioNet_online, rxn_rBioNet_online, metabolite_structure_rBioNet)
+% Checks whether abbreviations already exist in the VMH or rBioNet database
 %
-% INPUT
-% list                          List of abbreviations (either metabolite or reactions);
-%                               Alternatively a metabolite structure can be given as input and more
-%                               fields are compared
-% metab_rBioNet_online
-% rxn_rBioNet_online
-% metabolite_structure_rBioNet
+% Checks whether the abbreviations in `list` already exist in the VMH or the
+% most recent rBioNet database, either as a reaction or as a metabolite
+% abbreviation.
 %
-% OUTPUT
-% VMH_existance                 Lists whether the abbreviation exists in VMH (online),
-%                               as a reaction (2nd entry) or as a metabolite (3rd entry)
-% rBioNet_existance             Lists whether the abbreviation exists in rBioNet (as deposited in cobra toolbox online),
-%                               as a reaction (2nd entry) or as a metabolite (3rd entry)
+% USAGE:
 %
+%    [VMH_existance, rBioNet_existance, metab_rBioNet_online, rxn_rBioNet_online, metabolite_structure_rBioNet] = checkAbbrExists(list, metab_rBioNet_online, rxn_rBioNet_online, metabolite_structure_rBioNet)
 %
-% Ines Thiele 09/2021
+% INPUT:
+%    list:                            list of abbreviations (metabolites or
+%                                     reactions); alternatively a metabolite
+%                                     structure, in which case additional
+%                                     database fields are also compared
+%
+% OPTIONAL INPUTS:
+%    metab_rBioNet_online:            rBioNet metabolite database; loaded from
+%                                     the online rBioNet database if not provided
+%    rxn_rBioNet_online:              rBioNet reaction database; loaded from the
+%                                     online rBioNet database if not provided
+%    metabolite_structure_rBioNet:    rBioNet metabolite structure; loaded from
+%                                     met_strc_rBioNet if not provided
+%
+% OUTPUTS:
+%    VMH_existance:                   indicates whether each abbreviation exists
+%                                     in the VMH (online), as a reaction (2nd
+%                                     entry) or as a metabolite (3rd entry)
+%    rBioNet_existance:               indicates whether each abbreviation exists
+%                                     in rBioNet (as deposited in the COBRA
+%                                     Toolbox online), as a reaction (2nd entry)
+%                                     or as a metabolite (3rd entry)
+%    metab_rBioNet_online:            rBioNet metabolite database used
+%    rxn_rBioNet_online:              rBioNet reaction database used
+%    metabolite_structure_rBioNet:    rBioNet metabolite structure used
+%
+% .. Author: - Ines Thiele, 09/2021
 
 % create temporary folder for the rBioNetDB
 mkdir('data');

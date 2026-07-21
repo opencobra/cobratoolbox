@@ -30,8 +30,11 @@ function [model ModifiedRxns] = changeRxnMets(model, Mets2change, NewMets, Rxn, 
 %                     NewStoich = [ 2 4; 1 3]
 %
 % OUTPUTS:
-%    model:           COBRA model structure with changed reaction
-%    ModifiedRxns:    `Rxns` which were modified
+%    model ModifiedRxns:    Combined output pair (space-separated in the signature):
+%
+%                             * model - COBRA model structure with changed reaction
+%                             * ModifiedRxns - `Rxns` which were modified
+%
 % .. Author:
 %    Nathan Lewis (Apr 24, 2009)
 

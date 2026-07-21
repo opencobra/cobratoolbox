@@ -1,4 +1,4 @@
-function [q, g, solutionQP] = thermoFlux2QNty(model,solution,param)
+function [q, g, solutionQP] = thermoFlux2QNty(model, solution, param)
 % Given a steady state thermodynamically feasible flux vector, v, such that
 %
 %     S*v = b
@@ -9,7 +9,36 @@ function [q, g, solutionQP] = thermoFlux2QNty(model,solution,param)
 %     N*diag(q)*g = b - B*w
 %
 % where the stoichiometric matrix and flux vector are split into internal
-% and external components: S = [N B] and v = [z; w], 
+% and external components: S = [N B] and v = [z; w],
+%
+% USAGE:
+%
+%    [q, g, solutionQP] = thermoFlux2QNty(model, solution, param)
+%
+% INPUTS:
+%    model:    COBRA model with fields:
+%
+%                * .S - `m x n` stoichiometric matrix
+%                * .K - matrix whose transpose is used to construct the thermodynamic QP
+%                * .SConsistentMetBool - `m x 1` boolean, stoichiometrically consistent metabolites
+%                * .SConsistentRxnBool - `n x 1` boolean, stoichiometrically consistent reactions
+%                * .SIntMetBool - `m x 1` boolean, true for internal metabolites
+%                * .SIntRxnBool - `n x 1` boolean, true for internal reactions
+%
+%    solution:    a solution structure providing the steady-state flux vector (.v)
+%
+% OPTIONAL INPUT:
+%    param:    a structure containing the parameters for the function:
+%
+%                * .SConsistentMethod - method used to identify the stoichiometrically consistent
+%                  subset if not already present ('findSExRxnInd' or 'findStoichConsistentSubset')
+%                * .printLevel - verbose level controlling printed output
+%                * .bigNum - large positive number used as a bound in the QP (Default: 1)
+%
+% OUTPUTS:
+%    q:    `n x 1` vector of thermodynamic quantities per reaction
+%    g:    `n x 1` vector g = N'*y satisfying N*diag(q)*g = b - B*w
+%    solutionQP:    the QP solution structure returned by solveCobraQP
 
 [nMet,nRxn]=size(model.S);
 

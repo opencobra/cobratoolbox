@@ -16,6 +16,9 @@ currentDir = pwd;
 fileDir = fileparts(which('testGDLS'));
 cd(fileDir);
 
+% require a MILP solver; skip gracefully if none is available
+prepareTest('needsMILP', true);
+
 % load model
 model = getDistributedModel('ecoli_core_model.mat');
 

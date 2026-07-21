@@ -1,12 +1,23 @@
-function y = logmod(x,base,signed)
-% log modulus function, signed by default
+function y = logmod(x, base, signed)
+% Log modulus function, signed by default
 %
-% INPUT
-% x     n x 1 real vector
+% Returns a smooth, sign-preserving logarithm `sign(x) .* log(1 + abs(x))`,
+% which behaves like a logarithm for large magnitudes but is defined at zero.
 %
-% OPTIONAL INPUT
-% logarithm base  exp(1),2,10
-% signed = 1 returns a signed y (the default)
+% USAGE:
+%
+%    y = logmod(x, base, signed)
+%
+% INPUTS:
+%    x:         `n x 1` real vector
+%
+% OPTIONAL INPUTS:
+%    base:      logarithm base, one of exp(1), 2 or 10 (default: exp(1))
+%    signed:    when 1 (default) return a signed `y`; when 0 return the
+%               unsigned log modulus
+%
+% OUTPUTS:
+%    y:         `n x 1` log modulus of `x`
 
 if ~exist('base','var')
     base=exp(1);

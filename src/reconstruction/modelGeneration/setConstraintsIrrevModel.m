@@ -1,32 +1,38 @@
-function constrOptIrrev = setConstraintsIrrevModel(constrOpt,model,modelIrrev,rev2irrev)
+function constrOptIrrev = setConstraintsIrrevModel(constrOpt, model, modelIrrev, rev2irrev)
 % Sets constraints for a subset of `rxns` while
 % converting reversible to irreversible reaction names and handling the
 % constraint directions correctly
 %
 % USAGE:
 %
-%    constrOptIrrev = setConstraintsIrrevModel(rxnNameList, constrValue, constrSense, model, modelIrrev)
+%    constrOptIrrev = setConstraintsIrrevModel(constrOpt, model, modelIrrev, rev2irrev)
 %
 % INPUTS:
-%    constrOpt:       Constraint options
+%    constrOpt:       Constraint options with fields:
 %
-%                       * rxnList - Reaction selection cell array (for reversible
+%                       * .rxnList - Reaction selection cell array (for reversible
 %                         representation)
-%                       * values - Constraint values
-%                       * sense - Constraint senses ordered as `rxnNameList`
+%                       * .values - Constraint values
+%                       * .sense - Constraint senses ordered as `rxnNameList`
 %
-%    model:            Model in reversible format
-%    modelIrrev:       Model in irreversible format
+%    model:            Model in reversible format with field:
+%
+%                       * .rxns - `n` x 1 cell array of reaction identifiers
+%
+%    modelIrrev:       Model in irreversible format with field:
+%
+%                       * .rxns - cell array of irreversible reaction identifiers
+%
 %    rev2irrev:        Reversible to irreversible reaction index conversion
 %                      obtained from `convertToIrreversible`
 %
 % OUTPUTS:
-%    constrOpt:       Constraint options in irrev model
+%    constrOptIrrev:    Constraint options in irrev model with fields:
 %
-%                       * rxnList - Reaction selection cell array
-%                       * rxnInd - Selection index for constraints in irreversible model (e.g. [2 4 5 9 10])
-%                       * values - Correctly ordered constraint values
-%                       * sense - Correctly ordered constraint senses
+%                       * .rxnList - Reaction selection cell array
+%                       * .rxnInd - Selection index for constraints in irreversible model (e.g. [2 4 5 9 10])
+%                       * .values - Correctly ordered constraint values
+%                       * .sense - Correctly ordered constraint senses
 %
 % .. Author: - Markus Herrgard 10/14/03, 6/9/05 Changed this so that it allows multiple occurences of the same rxn, 1/22/07 Completely rewritten
 

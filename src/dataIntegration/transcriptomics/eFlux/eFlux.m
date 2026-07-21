@@ -1,4 +1,4 @@
-function [foldChange,standardError,solControl,solCondition] = eFlux(model,controlExpression,conditionExpression,varargin)
+function [foldChange, standardError, solControl, solCondition] = eFlux(model, controlExpression, conditionExpression, varargin)
 % Calculate the objective fold change according to the eFlux approach for
 % expression integration as described in:
 % Interpreting Expression Data with Metabolic Flux Models: Predicting Mycobacterium tuberculosis Mycolic Acid Production
@@ -9,7 +9,11 @@ function [foldChange,standardError,solControl,solCondition] = eFlux(model,contro
 %    [foldChange,standardError] = eFlux(model,controlExpression,conditionExpression,varargin)
 %
 % INPUTS:
-%    model:                  The COBRA model struct to use
+%    model:                  The COBRA model struct to use, with fields:
+%
+%                              * .lb - lower flux bounds (reset when enforcing bounds are present)
+%                              * .ub - upper flux bounds (reset when enforcing bounds are present)
+%                              * .rxns - reaction identifiers
 %    controlExpression:      struct for the control expression with two fields required and one optional field:
 %                              * .target       - the names of the target (rxns or genes)
 %                              * .value        - the value for the target. Positive values for all constraint reactions, negative values for unconstraint reactions.

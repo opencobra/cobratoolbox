@@ -4,12 +4,12 @@ function analyseWBMs(mWBMPath, fluxPath, rxnList, varargin)
 % analyseWBMsol.m.
 %
 % USAGE:
-%       [FBA_results, pathsToFilesForStatistics] = analyseWBMs(mWBMPath, fluxPath, rxnList)
+%       analyseWBMs(mWBMPath, fluxPath, rxnList, varargin)
 %
 % INPUTS:
-% mWBMPath      Path (character array) to WBMs
-% fluxPath      Path to directory where the results will be stored
-% rxnList       Cell array of VMH metabolites to investigate.
+%    mWBMPath:    Path (character array) to the folder with the WBMs
+%    fluxPath:    Path to the directory where the results are stored
+%    rxnList:     Cell array of VMH reactions/metabolites to investigate.
 %               Example: rxnList = {'DM_trp_L[bc], DM_met_L[bc],'Brain_trp_L[c],
 %               Heart_met_L[x]}. Note that demand reactions are
 %               automatically added if they are not present in the models.

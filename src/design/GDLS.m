@@ -4,11 +4,24 @@ function [gdlsSolution, bilevelMILPProblem, gdlsSolutionStructs] = GDLS(model, t
 %
 % USAGE:
 %
-%    [gdlsSolution, bilevelMILPProblem, gdlsSolutionStructs] = GDLS(model, varargin)
+%    [gdlsSolution, bilevelMILPProblem, gdlsSolutionStructs] = GDLS(model, targetRxns, varargin)
 %
 % INPUTS:
-%    model:                  Cobra model structure
-%    targetRxn:              Reaction(s) to be maximized (Cell array of strings)
+%    model:                  COBRA model structure. Fields used directly:
+%
+%                              * .S - `m x n` stoichiometric matrix
+%                              * .c - `n x 1` linear objective coefficients
+%                              * .lb - `n x 1` lower flux bounds
+%                              * .ub - `n x 1` upper flux bounds
+%                              * .rxns - `n x 1` reaction identifiers
+%                              * .genes - gene identifiers (used when `koType` is `genes`)
+%                              * .grRules - gene-reaction rule strings (used when `koType` is `geneSets`)
+%                              * .rxnGeneMat - reaction-by-gene mapping matrix (used when `koType` is `genes`)
+%                              * .koCost - optional per-knockout cost vector (used when `koCost` is not passed as an option)
+%                              * .selRxnMatrix - selection matrix mapping knockout candidates to reactions (set internally)
+%                              * .rxnsPresent - indicator vector of reactions currently present (set internally)
+%                              * .x0 - initial point for the inner flux-balance problem (set internally)
+%    targetRxns:             Reaction(s) to be maximized (cell array of reaction identifiers)
 %
 % OPTIONAL INPUTS:
 %    varargin:               parameters entered using either a structure or list of
@@ -27,7 +40,9 @@ function [gdlsSolution, bilevelMILPProblem, gdlsSolutionStructs] = GDLS(model, t
 % OUTPUTS:
 %    gdlsSolution:           GDLS solution structure (similar to `OptKnock` `sol` struct)
 %    bilevelMILPProblem:     Problem structure used in computation
-%    gdlsSolutionStructs:
+%    gdlsSolutionStructs:    per-iteration solution structs, keyed by iteration and
+%                            search path, each holding the `solBiomass`, `solSynMin`,
+%                            and `solSynMax` flux-balance solutions
 %
 % .. Author: - Richard Que 1/28/2010 Adapted from Desmond S Lun's gdls scripts.
 

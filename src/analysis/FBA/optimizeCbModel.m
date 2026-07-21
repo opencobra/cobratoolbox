@@ -43,23 +43,24 @@ function solution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, param
 % INPUT:
 %    model:             (the following fields are required - others can be supplied)
 %
-%                         * S  - `m x n` Stoichiometric matrix
-%                         * c  - `n x 1` Linear objective coefficients
-%                         * lb - `n x 1` Lower bounds on net flux
-%                         * ub - `n x 1` Upper bounds on net flux
+%                         * .S - `m x n` Stoichiometric matrix
+%                         * .c - `n x 1` Linear objective coefficients
+%                         * .lb - `n x 1` Lower bounds on net flux
+%                         * .ub - `n x 1` Upper bounds on net flux
 %
 % OPTIONAL INPUTS:
 %    model:
-%                         * b - `m x 1` change in concentration with time
-%                         * csense - `m x 1` character array with entries in {L,E,G}
+%                         * .osenseStr - objective sense, 'max' or 'min', stored on the model
+%                         * .b - `m x 1` change in concentration with time
+%                         * .csense - `m x 1` character array with entries in {L,E,G}
 %                           (The code is backward compatible with an m + k x 1 csense vector,
 %                           where k is the number of coupling constraints)
-%                         * mets `m x 1` metabolite abbreviations
+%                         * .mets - `m x 1` metabolite abbreviations
 %
-%                         * C - `k x n` Left hand side of C*v <= d
-%                         * d - `k x 1` Right hand side of C*v <= d
-%                         * ctrs `k x 1` Cell Array of Strings giving IDs of the coupling constraints
-%                         * dsense - `k x 1` character array with entries in {L,E,G}
+%                         * .C - `k x n` Left hand side of C*v <= d
+%                         * .d - `k x 1` Right hand side of C*v <= d
+%                         * .ctrs - `k x 1` Cell Array of Strings giving IDs of the coupling constraints
+%                         * .dsense - `k x 1` character array with entries in {L,E,G}
 %
 %                         * `.evars` : evars x 1  Column Cell Array of Strings	IDs of the additional variables
 %                         * `.E`     : n x evars  The additional Variable Matrix
@@ -68,9 +69,16 @@ function solution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, param
 %                         * `.evarc` : evars x 1  The objective coefficients of the variables from E;
 %                         * `.D`     : k x evars  The matrix coupling additional Constraints (form C), with additional Variables (from E);
 %
-%                         * g0 - `n x 1` weights on zero norm, where positive is minimisation, negative is maximisation, zero is neither.
-%                         * g1 - `n x 1` weights on one norm, where positive is minimisation, negative is maximisation, zero is neither.
-%                         * g2 - `n x 1` weights on two norm
+%                         * .g0 - `n x 1` weights on zero norm, where positive is minimisation, negative is maximisation, zero is neither.
+%                         * .g1 - `n x 1` weights on one norm, where positive is minimisation, negative is maximisation, zero is neither.
+%                         * .g2 - `n x 1` weights on two norm
+%                         * .g - deprecated thermodynamic weight vector, no longer supported (use .g0 and .g1 instead)
+%                         * .SConsistentRxnBool - `n x 1` boolean of stoichiometrically consistent reactions (used when minNorm = 'oneInternal')
+%                         * .basis - warm-start basis passed to the LP/QP solver
+%                         * .lambda0 - trade-off parameter on minimise `||x||_0` (optimizeCardinality)
+%                         * .lambda1 - trade-off parameter on minimise `||x||_1` (optimizeCardinality)
+%                         * .delta0 - trade-off parameter on maximise `||y||_0` (optimizeCardinality)
+%                         * .delta1 - trade-off parameter on minimise `||y||_1` (optimizeCardinality)
 %
 %    osenseStr:         Maximize ('max')/minimize ('min') (opt, default =
 %                       'max') linear part of the objective. Nonlinear
@@ -143,19 +151,27 @@ function solution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, param
 %                       Runs much slower when set to false.
 %                       See `addLoopLawConstraints.m` to for more info.
 %
-%   param:              parameters structure passed directly to solver
-%                       The following are some optional fields (amongst many others)
-%   *.zeroNormApprox:    appoximation type of zero-norm (only available when minNorm='zero') (default = 'cappedL1')
+%    param:             parameters structure passed directly to the solver.
+%                       The following are some optional fields (amongst many others):
 %
-%                          * 'cappedL1' : Capped-L1 norm
-%                          * 'exp'      : Exponential function
-%                          * 'log'      : Logarithmic function
-%                          * 'SCAD'     : SCAD function
-%                          * 'lp-'      : L_p norm with p<0
-%                          * 'lp+'      : L_p norm with 0<p<1
-%                          * 'all'      : try all approximations and return the best result
+%                         * .osenseStr - objective sense 'max' or 'min', used when the
+%                           second argument is the parameter structure
+%                         * .minNorm - min-norm option, read from param (see the `minNorm` input)
+%                         * .allowLoops - allow-loops flag, read from param (see the `allowLoops` input)
+%                         * .zeroNormApprox - approximation type of zero-norm (only available
+%                           when minNorm='zero') (default = 'cappedL1'):
 %
-%   *.verify:     verify that the input fields are consistent (default: false);
+%                             * 'cappedL1' : Capped-L1 norm
+%                             * 'exp'      : Exponential function
+%                             * 'log'      : Logarithmic function
+%                             * 'SCAD'     : SCAD function
+%                             * 'lp-'      : L_p norm with p<0
+%                             * 'lp+'      : L_p norm with 0<p<1
+%                             * 'all'      : try all approximations and return the best result
+%
+%                         * .verify - verify that the input fields are consistent (default: false)
+%                         * .solveWBMmethod - whole-body-model solve method, one of 'QP', 'QRLP', 'QRQP'
+%                         * .minNormWBM - min-norm option used for the whole-body-model solve
 %
 % OUTPUT:
 %    solution:       solution object:

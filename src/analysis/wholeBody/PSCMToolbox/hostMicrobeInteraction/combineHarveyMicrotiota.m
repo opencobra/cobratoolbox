@@ -1,24 +1,62 @@
 function modelHM = combineHarveyMicrotiota(modelH, modelM, couplingConstraint)
-% This function combines harvey and a microbial community model
+% Combine a whole-body (Harvey/Harvetta) model with a microbial community model
 %
-% function modelHM = combineHarveyMicrotiota(modelH, modelM, couplingConstraint)
+% This function combines a whole-body metabolic model (Harvey/Harvetta) and a
+% microbial community model into a single host-microbiome model.
 %
-% INPUT
-% modelH                Whole-body metabolic model structure
-% modelM                Microbiota model structure
-% couplingConstraint    coupling constraint for microbiome model (default:
-%                       20000, as used in the whole-body metabolic model
+% USAGE:
 %
-% OUTPUT
-% modelHM               Model structure containing both Whole-body metabolic model and microbiota in one
-%                       matrix
+%    modelHM = combineHarveyMicrotiota(modelH, modelM, couplingConstraint)
 %
-% Ines Thiele May 2016
-% - replace Ex_AA[u] with an artificial transport reaction [luM] -- > [luLI]
-% - updated to new structure we use ([d],[fe],[u]) for microbes - Nov 2017 IT
-% - Updated so that gr-rules, rules, and genes fields are not removed anymore. - Jan 2025, Tim Hensen
+% INPUTS:
+%    modelH:               Whole-body metabolic model structure, with fields:
+%
+%                            * .S - stoichiometric matrix
+%                            * .C - coupling-constraint matrix
+%                            * .A - combined constraint matrix (built from .S and .C if absent)
+%                            * .b - right-hand side for the metabolite constraints
+%                            * .d - right-hand side for the coupling constraints
+%                            * .csense - metabolite constraint senses (E, L, G)
+%                            * .dsense - coupling-constraint senses
+%                            * .mets - metabolite identifiers
+%                            * .ctrs - constraint identifiers
+%                            * .rxns - reaction identifiers
+%    modelM:               Microbiota model structure, with fields:
+%
+%                            * .S - stoichiometric matrix
+%                            * .C - coupling-constraint matrix
+%                            * .A - combined constraint matrix (built from .S and .C if absent)
+%                            * .b - right-hand side for the metabolite constraints
+%                            * .d - right-hand side for the coupling constraints
+%                            * .csense - metabolite constraint senses (E, L, G)
+%                            * .dsense - coupling-constraint senses
+%                            * .mets - metabolite identifiers
+%                            * .ctrs - constraint identifiers
+%                            * .rxns - reaction identifiers
+%                            * .rev - reversibility indicator per reaction
+%                            * .lb - lower bounds
+%    couplingConstraint:    Coupling constraint for the microbiome model (default 20000, as
+%                          used in the whole-body metabolic model)
+%
+% OUTPUT:
+%    modelHM:              Combined model structure holding both the whole-body model and the
+%                          microbiota in one matrix, with fields:
+%
+%                            * .A - combined constraint matrix
+%                            * .S - combined stoichiometric matrix
+%                            * .mets - combined metabolite identifiers
+%                            * .rxns - combined reaction identifiers
+%                            * .csense - constraint senses
+%                            * .subSystems - subsystem annotations
+%                            * .Microbiota - indicator vector: 1 for microbiota reactions, 0 for host reactions
+%
+% .. Authors:
+% ..    - Ines Thiele, May 2016
+% ..    - replace Ex_AA[u] with an artificial transport reaction [luM] --> [luLI]
+% ..    - updated to new structure ([d], [fe], [u]) for microbes - Nov 2017, IT
+% ..    - updated so that grRules, rules, and genes fields are not removed - Jan 2025, Tim Hensen
 
-%TODO make this code COBRA v3 compatible
+% TODO make this code COBRA v3 compatible
 if ~isfield(modelM,'A')
     modelM.A = [modelM.S;modelM.C];
     modelM.b = [modelM.b;modelM.d];

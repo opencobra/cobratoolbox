@@ -5,27 +5,36 @@ function [refinedModel, summary] = refinementPipeline(model, microbeID, infoFile
 %
 % USAGE:
 %
-%    [refinedModel, summary] = refinementPipeline(modelIn, microbeID, infoFilePath, inputDataFolder, translateModels)
+%    [refinedModel, summary] = refinementPipeline(model, microbeID, infoFilePath, inputDataFolder, translateModels)
 %
-% INPUTS
-% model             COBRA model structure to refine
-% microbeID         ID of the reconstructed microbe that serves as the
-%                   reconstruction name and to identify it in input tables
-% infoFilePath      File with information on reconstructions to refine
-% inputDataFolder   Folder with input tables with experimental data and
-%                   databases that inform the refinement process
-% translateModels   Boolean indicating whether to translate models if they
-%                   are in KBase nomenclature (default: true)
+% INPUTS:
+%    model:              COBRA model structure to refine, with fields:
 %
-% OUTPUTS
-% refinedModel      COBRA model structure refined through AGORA pipeline
-% summary           Structure with description of performed refineemnt
+%                          * .rxns - Reaction identifiers
+%                          * .mets - Metabolite identifiers
+%                          * .lb - Lower bounds
+%    microbeID:          ID of the reconstructed microbe that serves as the
+%                        reconstruction name and to identify it in input tables
+%    infoFilePath:       File with information on reconstructions to refine
+%    inputDataFolder:    Folder with input tables with experimental data and
+%                        databases that inform the refinement process
+%
+% OPTIONAL INPUTS:
+%    translateModels:    Boolean indicating whether to translate models if
+%                        they are in KBase nomenclature (default: true)
+%
+% OUTPUTS:
+%    refinedModel:       COBRA model structure refined through the AGORA
+%                        refinement pipeline
+%    summary:            Structure aggregating the results of each performed
+%                        refinement step (e.g., reactions added or removed by
+%                        gap-filling, biomass rebuild, and annotation
+%                        curation), with one field per refinement step
 %
 % .. Authors:
 %       - Almut Heinken and Stefania Magnusdottir, 2016-2021
 %       - Bronson Weston, obligate aerobe and anaerobe input, 2022
 
-% read the file with organism information
 infoFile = readInputTableForPipeline(infoFilePath);
 
 if ~any(strcmp(infoFile(:,1),microbeID))

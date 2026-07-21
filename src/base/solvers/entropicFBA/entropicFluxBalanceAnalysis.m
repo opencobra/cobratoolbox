@@ -60,6 +60,38 @@ function [solution, modelOut] = entropicFluxBalanceAnalysis(model, param)
 % || log(vr/vf) = N'*(u0 + log(x) + z_x) ||_inf
 % where z_x is the dual variable to the bounds on concentration x.
 %
+% Optional enzyme-constrained (GECKO/ecModel) extension
+% -----------------------------------------------------
+% When the enzyme-usage column variables are present (model.E, and optionally
+% model.D, with bounds model.evarlb/evarub and linear objective coefficients
+% model.evarc; see the field documentation below), nEvar additional variables e
+% are appended AFTER all flux/concentration columns, matching the
+% buildOptProblemFromModel [S E; C D] block ordering: model.E occupies the
+% metabolite (N) rows and model.D the coupling (C) rows. The problem above then
+% extends to
+%
+% minimize    (all terms as above)
+% vf,vr,w,x,x0,e     + evarc'*e
+%                    + ge.*e'*(log(e) -1)
+%
+% where ge = param.enzymeEntropyWeight (default 0 => the enzyme columns are
+% LINEAR additional variables and the entropy term drops out; a positive ge adds
+% an experimental entropy term on the enzyme columns).
+%
+% subject to      N*(vf - vr) - x + x0 + E*e  <=> b   : y_N
+%                 C*(vf - vr)           + D*e  <=> d   : y_C
+%                             evarlb <= e <= evarub    : z_e
+%
+% with the additional enzyme Biochemical optimality condition
+%  || evarc + E'*y_N + D'*y_C + z_e ||_inf
+%
+% where z_e is the reduced cost of the enzyme-usage variables (dual to the
+% evarlb <= e <= evarub bounds), returned as solution.z_e, and e is returned as
+% solution.e. The +z_e sign matches the reduced-cost convention of both the mosek
+% and pdco backends (the same sign as the external-reaction condition
+% || ce + B'*y_N + z_ve ||_inf). When the enzyme fields are absent (model.E
+% empty) the formulation reduces exactly to the one above.
+%
 % USAGE:
 %
 %    [solution, modelOut] = entropicFluxBalanceAnalysis(model,param)
@@ -67,13 +99,13 @@ function [solution, modelOut] = entropicFluxBalanceAnalysis(model, param)
 % INPUT:
 %    model:             (the following fields are required - others can be supplied)
 %
-%          * S  - `m x (n + k)` Stoichiometric matrix
-%          * c  - `(n + k) x 1` Linear objective coefficients, split into
+%          * .S  - `m x (n + k)` Stoichiometric matrix
+%          * .c  - `(n + k) x 1` Linear objective coefficients, split into
 %                               internal and external as follows:
 %                  ci:   n x 1  linear objective coefficients corresponding to internal net fluxes
 %                  ce:   k x 1  linear objective coefficients corresponding to internal net fluxes
-%          * lb - `(n + k) x 1` Lower bounds on net flux
-%          * ub - `(n + k) x 1` Upper bounds on net flux
+%          * .lb - `(n + k) x 1` Lower bounds on net flux
+%          * .ub - `(n + k) x 1` Upper bounds on net flux
 %
 % OPTIONAL INPUTS:
 % model.osenseStr: Maximize ('max')/minimize ('min') (opt, default = 'max') linear part of the objective. 
@@ -117,9 +149,31 @@ function [solution, modelOut] = entropicFluxBalanceAnalysis(model, param)
 % model.SConsistentMetBool: m x 1  boolean indicating  stoichiometrically consistent metabolites
 % model.SConsistentRxnBool: n x 1  boolean indicating  stoichiometrically consistent metabolites
 %
+% Optional enzyme-constrained (GECKO/ecModel) column variables (feature 010-gecko-entropic-fba). When
+% these fields are present, the [S E; C D] block and the enzyme-usage bounds/objective are folded into
+% the entropic problem so that enzyme-constrained (GECKO/ecModel) models can be solved by entropic FBA
+% under param.solver 'mosek' or 'pdco'. When absent, the function behaves exactly as it does without
+% them (the enzyme fields are the same ones understood by buildOptProblemFromModel).
+% model.E:       m x nEvar   enzyme-usage columns in the metabolite (S) rows (default: absent)
+% model.D:       c x nEvar   enzyme-usage columns in the coupling (C) rows
+% model.evarlb:  nEvar x 1   lower bounds on the enzyme-usage variables
+% model.evarub:  nEvar x 1   upper bounds on the enzyme-usage variables
+% model.evarc:   nEvar x 1   linear objective coefficients on the enzyme-usage variables
+% model.evars:   nEvar x 1   cell array of enzyme-usage variable names
+%
+%    param:             optional parameter structure controlling the solver and
+%                       algorithm, with fields:
+%
 %  param.solver:                    {('pdco'),'mosek'}
 %  param.entropicFBAMethod:                    {('fluxes'),'fluxConc')} maximise entropy of fluxes or also concentrations
 %  param.printLevel:                {(0),1}
+%  param.debug:                     (default false) boolean flag reserved for internal debugging branches
+%  param.entropicMethod:            legacy input name for param.entropicFBAMethod, retained for backward compatibility
+%  param.enzymeEntropyWeight:       (default 0) scalar or nEvar x 1 weight on the entropy of the
+%                                   enzyme-usage variables (the model.E/model.D columns). 0 => the
+%                                   enzyme columns are LINEAR additional variables (default); a positive
+%                                   value adds an experimental entropy term on the enzyme columns (its
+%                                   enzyme-dual correctness is not yet validated - use with caution).
 %
 %
 % Parameters related with flux optimisation
@@ -139,30 +193,33 @@ function [solution, modelOut] = entropicFluxBalanceAnalysis(model, param)
 %
 %
 % OUTPUTS:
-% solution: solution structure with the following fields
+%    solution:          solution structure, with fields:
 %
-%           *.v:   n x 1 double net flux
-%           *.vf:  n x 1 double unidirectional forward internal reaction flux
-%           *.vr:  n x 1 double unidirectional reverse internal reaction flux
-%           *.vt:  scalar total internal reaction flux sum(vf + vr)
-%           *.y_N: m × 1 double dual variable to steady state constraints
-%           *.y_C: z × 1 double dual variable to coupling constraints
-%           *.z_v: (n + k) x 1 double dual variable to box constraints on net flux
-%           *.z_vf: n x 1 double dual variable to box constraints on forward flux
-%           *.z_vr: n x 1 double dual variable to box constraints on reverse flux
-%           *.time: solve time
-%           *.stat: COBRA toolbox standard solution status
-%           *.origStat: solution status as provided by the solver
+%             * .v - n x 1 double net flux
+%             * .vf - n x 1 double unidirectional forward internal reaction flux
+%             * .vr - n x 1 double unidirectional reverse internal reaction flux
+%             * .vt - scalar total internal reaction flux sum(vf + vr)
+%             * .y_N - m x 1 double dual variable to steady state constraints
+%             * .y_C - z x 1 double dual variable to coupling constraints
+%             * .z_v - (n + k) x 1 double dual variable to box constraints on net flux
+%             * .z_vf - n x 1 double dual variable to box constraints on forward flux
+%             * .z_vr - n x 1 double dual variable to box constraints on reverse flux
+%             * .time - solve time
+%             * .stat - COBRA toolbox standard solution status
+%             * .origStat - solution status as provided by the solver
+%             * .e - nEvar x 1 double enzyme-usage variable values (only when model.E is present)
+%             * .z_e - nEvar x 1 double reduced cost of the enzyme-usage variables (only when model.E is present)
 %
-%  modelOut: solved model with optional input fields populated by defaults, if they were not provided           
-%                                   
+%    modelOut:          solved model with optional input fields populated by defaults, if they were not provided
+%
 % EXAMPLE:
 %
 % NOTE:
 %
-% Author(s): Ronan M.T. Fleming 2021
-    
+% .. Author: - Ronan M.T. Fleming, 2021
+
 %%
+
 if ~exist('param','var')
     param = struct();
 end
@@ -303,6 +360,26 @@ if isfield(model,'C')
 else
     C = [];
     nConstr = 0;
+end
+
+% optional enzyme-constrained (GECKO) column variables (feature 010-gecko-entropic-fba):
+% model.E (enzyme columns in metabolite rows), model.D (enzyme columns in coupling rows),
+% model.evarlb/evarub/evarc. Detected by a non-empty E with >=1 column; when present they are
+% folded into the entropic problem below (fluxes method) via prepareEnzymeConstrainedEP. Absent =>
+% the function behaves exactly as before.
+hasEnzymes = isfield(model,'E') && ~isempty(model.E) && size(model.E,2) > 0;
+% entropy weight applied to the enzyme-usage columns. CQ2 asked for an entropy term on the
+% enzyme variables; that path is implemented but not yet verified for DUAL correctness against a
+% well-conditioned reference model (the entropic interior-point methods are poorly conditioned on
+% tiny fixtures), so it is opt-in via param.enzymeEntropyWeight and DEFAULTS TO 0 (linear-only
+% enzymes), which is the verified, regression-safe behaviour. Set param.enzymeEntropyWeight > 0 to
+% enable the (experimental) maximum-entropy enzyme distribution.
+if hasEnzymes
+    if isfield(param,'enzymeEntropyWeight') && ~isempty(param.enzymeEntropyWeight)
+        enzymeEntropyWeight = param.enzymeEntropyWeight;
+    else
+        enzymeEntropyWeight = 0;
+    end
 end
 
 
@@ -895,11 +972,25 @@ switch param.entropicFBAMethod
                 %variables for entropy maximisation
                 EPproblem.d=zeros(size(EPproblem.A,2),1);
                 EPproblem.d(1:2*n)=[g;g];
-                
+                % feature 010-gecko-entropic-fba: fold optional enzyme-constrained (GECKO)
+                % column variables (E/evar*/D). Linear-only here (enzyme d = 0).
+                if hasEnzymes
+                    [EPproblem, nEvar] = prepareEnzymeConstrainedEP(EPproblem, model, m, n, nConstr, enzymeEntropyWeight);
+                end
+
                 solution = solveCobraEP(EPproblem,param);
                 if 0
                     save('infeasibleEPproblem.mat','EPproblem','model')
                     return
+                end
+
+                % feature 010-gecko-entropic-fba: enzyme-usage variables are the last nEvar
+                % columns of the primal; expose them (and their reduced costs) on the solution.
+                if hasEnzymes && solution.stat == 1 && isfield(solution,'full')
+                    solution.e = solution.full(end-nEvar+1:end);
+                    if isfield(solution,'rcost')
+                        solution.z_e = solution.rcost(end-nEvar+1:end);
+                    end
                 end
                 
                 switch solution.stat
@@ -968,14 +1059,37 @@ switch param.entropicFBAMethod
                         %extra checks
                         if param.printLevel>1 || param.debug
                             fprintf('%s\n','Optimality conditions (unregularised)')
-                            fprintf('%8.2g %s\n',norm(N*(vf - vr) + B*ve + s_N - model.b,inf),['|| N*(vf - vr) + B*ve ' sN ' - b ||_inf']);
+                            % feature 012-gecko-diagnostics-docs: enzyme-usage (GECKO) contributions to the
+                            % printed KKT diagnostics (print-only; guarded so non-enzyme output is unchanged)
+                            hasEnz = hasEnzymes && isfield(solution,'e') && isfield(solution,'z_e');
+                            if hasEnz
+                                enzMB = model.E * solution.e;                 % enzyme columns in the metabolite (S) rows
+                                if isfield(model,'C') && ~isempty(model.D)
+                                    enzCoup = model.D * solution.e;           % enzyme columns in the coupling (C) rows
+                                else
+                                    enzCoup = 0;
+                                end
+                            else
+                                enzMB = 0;
+                                enzCoup = 0;
+                            end
+                            fprintf('%8.2g %s\n',norm(N*(vf - vr) + B*ve + enzMB + s_N - model.b,inf),['|| N*(vf - vr) + B*ve ' sN ' - b ||_inf']);
                             fprintf('%8.2g %s\n',norm(vf - vr - v + s_c,inf),['|| vf - vr - v ' sc '||_inf']);
                             if isfield(model,'C')
-                                fprintf('%8.2g %s\n',norm(C*(vf - vr) + s_C - model.d,inf),'|| C*(vf - vr) + s_C - d ||_inf, sC = slack variable');
+                                fprintf('%8.2g %s\n',norm(C*(vf - vr) + enzCoup + s_C - model.d,inf),'|| C*(vf - vr) + s_C - d ||_inf, sC = slack variable');
                             end
                             fprintf('%8.2g %s\n',norm(g.*reallog(vf) + cf + ci + N'*y_N  + C'*y_C + Qv*v + y_vi  + z_vf,inf), ['|| g.*log(vf) + g + cf + ci + N''*y_N' CtYC  Qdotv ' + y_vi  + z_vf ||_inf']);
                             fprintf('%8.2g %s\n',norm(g.*reallog(vr) + cr - ci - N'*y_N  - C'*y_C + Qv*v - y_vi  + z_vr,inf),['|| g.*log(vr) + g + cr - ci - N''*y_N' mCtYC  Qdotv ' - y_vi  + z_vr ||_inf']);
                             fprintf('%8.2g %s\n',norm(ce + B'*y_N  + Qve*ve + z_ve,inf),['|| ce + B''*y_N ' Qdotve ' + z_ve ||_inf']);
+                            if hasEnz
+                                % enzyme-usage column stationarity (linear enzyme columns): analogous to the
+                                % external-reaction line above, with the same +z_e (rcost) sign convention
+                                enzStat = model.evarc(:) + model.E'*y_N + solution.z_e;
+                                if isfield(model,'C') && ~isempty(model.D)
+                                    enzStat = enzStat + model.D'*y_C;
+                                end
+                                fprintf('%8.2g %s\n',norm(enzStat,inf),'|| evarc + E''*y_N + D''*y_C + z_e ||_inf');
+                            end
 
                             d1=solution.d1;
                             d2=solution.d2;
@@ -1150,6 +1264,12 @@ switch param.entropicFBAMethod
                 %variables for entropy maximisation
                 EPproblem.d=zeros(size(EPproblem.A,2),1);
                 EPproblem.d(1:2*n)=[g;g];
+                % feature 010-gecko-entropic-fba: fold optional enzyme-constrained (GECKO)
+                % column variables (E/evar*/D). Linear-only here (enzyme d = 0); the entropy
+                % weight on enzyme columns is added separately once the cone reindexing is in place.
+                if hasEnzymes
+                    [EPproblem, nEvar] = prepareEnzymeConstrainedEP(EPproblem, model, m, n, nConstr, enzymeEntropyWeight);
+                end
                 expConeBool = EPproblem.d~=0;
                 nExpCone  = nnz(expConeBool);
                 
@@ -1158,7 +1278,15 @@ switch param.entropicFBAMethod
                 solveCobraEPparam.printLevel=solveCobraEPparam.printLevel-1;
                 solution = solveCobraEP(EPproblem,solveCobraEPparam);
 
-                
+                % feature 010-gecko-entropic-fba: enzyme-usage variables are the last nEvar
+                % columns of the primal; expose them (and their reduced costs) on the solution.
+                if hasEnzymes && solution.stat == 1 && isfield(solution,'full')
+                    solution.e = solution.full(end-nEvar+1:end);
+                    if isfield(solution,'rcost')
+                        solution.z_e = solution.rcost(end-nEvar+1:end);
+                    end
+                end
+
                 switch solution.stat
                     case 1
                         % Primal variables
@@ -1319,10 +1447,24 @@ switch param.entropicFBAMethod
                         %extra checks
                         if param.printLevel>0 || param.debug
                             fprintf('\n%s\n','Optimality conditions (biochemistry)')
+                            % feature 012-gecko-diagnostics-docs: enzyme-usage (GECKO) contributions to the
+                            % printed KKT diagnostics (print-only; guarded so non-enzyme output is unchanged)
+                            hasEnz = hasEnzymes && isfield(solution,'e') && isfield(solution,'z_e');
+                            if hasEnz
+                                enzMB = model.E * solution.e;                 % enzyme columns in the metabolite (S) rows
+                                if isfield(model,'C') && ~isempty(model.D)
+                                    enzCoup = model.D * solution.e;           % enzyme columns in the coupling (C) rows
+                                else
+                                    enzCoup = 0;
+                                end
+                            else
+                                enzMB = 0;
+                                enzCoup = 0;
+                            end
                             %primal
-                            fprintf('%8.2g %s\n',norm(N*(vf - vr) + B*ve - model.b,inf),'|| N*(vf - vr) + B*ve - b ||_inf');
+                            fprintf('%8.2g %s\n',norm(N*(vf - vr) + B*ve + enzMB - model.b,inf),'|| N*(vf - vr) + B*ve - b ||_inf');
                             if isfield(model,'C')
-                                fprintf('%8.2g %s\n',norm(C*(vf - vr) + s_C - model.d,inf),'|| C*(vf - vr) + s_C - d ||_inf, s_C = slack variable');
+                                fprintf('%8.2g %s\n',norm(C*(vf - vr) + enzCoup + s_C - model.d,inf),'|| C*(vf - vr) + s_C - d ||_inf, s_C = slack variable');
                             end
                             %dual
                             if isfield(model,'C')
@@ -1334,6 +1476,15 @@ switch param.entropicFBAMethod
                             end
                             fprintf('%8.2g %s\n',norm(ce + B'*y_N + z_ve,inf),'|| ce + B''*y_N  + z_ve ||_inf');
                             
+                            if hasEnz
+                                % enzyme-usage column stationarity (linear enzyme columns): analogous to the
+                                % external-reaction line above, with the same +z_e (rcost) sign convention
+                                enzStat = model.evarc(:) + model.E'*y_N + solution.z_e;
+                                if isfield(model,'C') && ~isempty(model.D)
+                                    enzStat = enzStat + model.D'*y_C;
+                                end
+                                fprintf('%8.2g %s\n',norm(enzStat,inf),'|| evarc + E''*y_N + D''*y_C + z_e ||_inf');
+                            end
                             fprintf('%8.2g %s\n',norm(k_e_1 + z_e_1,inf),'|| k_e_1 + z_e_1 ||_inf');
                             
                             fprintf('%8.2g %s\n',norm(-g + k_e_vf + z_e_vf,inf),'|| -g + k_e_vf + z_e_vf||_inf');
@@ -1652,12 +1803,19 @@ switch solution.stat
         %solution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, param)
         param.debug=1;
         solution_optimizeCbModel = optimizeCbModel(model,'min',[],1,param);
+        % message must be defined for every optimizeCbModel status, not only 0/1,
+        % so an infeasible EP returns a clean stat=0 with a populated message rather
+        % than erroring on an undefined variable (e.g. when optimizeCbModel returns -1
+        % or 2 on an enzyme-constrained model)
+        message = ['entropicFluxBalanceAnalysis: EPproblem is not feasible; optimizeCbModel returned status ' int2str(solution_optimizeCbModel.stat) '.'];
         switch solution_optimizeCbModel.stat
             case 0
                 message = 'entropicFluxBalanceAnalysis: EPproblem is not feasible, because LP part of model is not feasible according to optimizeCbModel.';
                 warning(message)
             case 1
                 message ='entropicFluxBalanceAnalysis: EPproblem is not feasible, but LP part of model is feasible according to optimizeCbModel.';
+                warning(message)
+            otherwise
                 warning(message)
         end
         if isfield(solution,'messages')

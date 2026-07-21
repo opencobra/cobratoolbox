@@ -6,16 +6,25 @@ function [rxns, subsys, subsysGenes, uSys, Nr, rxnNames] = findSubsystemOfGenes(
 %     [rxns,subsys,subsysGenes,uSys,Nr,rxnNames]=findSubsystemOfGenes(model,genes)
 %
 % INPUT:
-%     model:    model to which genes belong to
+%     model:    model to which genes belong to, with fields:
+%
+%                  * .genes - `g x 1` cell array of gene identifiers
+%                  * .rxns - `n x 1` cell array of reaction identifiers
+%                  * .rxnNames - `n x 1` cell array of reaction names
+%                  * .subSystems - `n x 1` cell array (or cell array of cell
+%                    arrays) of subsystem name(s) per reaction
 %     genes:    genes in question, if not provided will do it for all
 %               the genes, default: model.genes
 %
 % OUTPUT:
-%     rxns:         Reactions governed by these genes
-%     subsys:       subsystem(s) to which the gene belongs to
-%     subsysGenes:  which Genes are involved in each subsystem, subsystem
-%                   name given by the cell array, usys
-%     uSys:         unique subsystems
+%     rxns:           Reactions governed by these genes
+%     subsys:         subsystem(s) to which the gene belongs to
+%     subsysGenes:    which Genes are involved in each subsystem, subsystem
+%                     name given by the cell array, usys
+%     uSys:           unique subsystems
+%     Nr:             number of genes in each unique subsystem `uSys{i}`,
+%                     sorted ascending
+%     rxnNames:       names of the reactions in `rxns`, one cell per gene
 %
 % NOTE:
 %    See figures in following publication:

@@ -1,33 +1,34 @@
-function [metabolite_structure,IDsAdded,InchiKeyList,InchiStringList] = generateInchiFromMol(metabolite_structure,folder, inchiKey, smiles,formula,startSearch,endSearch)
-% This function adds inchistrings to the metabolite structure entries if
-% mol files are available (in folder) and no inchistring is present in
-% metabolite structure for a given entry. It also calculated inchikeys and
-% smiles if desired.
+function [metabolite_structure, IDsAdded, InchiKeyList, InchiStringList] = generateInchiFromMol(metabolite_structure, folder, inchiKey, smiles, formula, startSearch, endSearch)
+% Adds InChI strings to metabolite structure entries when mol files are available
 %
-% INPUT
-% metabolite_structure  metabolite structure
-% folder                folder containing the mol files
-% inchiKey              if 1 (default), then inchiKey will be generated
-%                       from mol file
-% smiles                if 1 (default), then smiles will be generated
-%                       from mol file
-% formula               if 1 (default), then inchiKey will be generated
-%                       from inchistring file
-% startSearch           specify where the search should start in the
-%                       metabolite structure. Must be numeric (optional, default: all metabolites
-%                       in the structure will be search for)
-% endSearch             specify where the search should end in the
-%                       metabolite structure. Must be numeric (optional, default: all metabolites
-%                       in the structure will be search for)
+% For each entry that has a mol file (in folder) but no InChI string yet, the
+% InChI string is generated. Optionally, the InChI key, the SMILES string, and
+% the metabolite formula and charge are also generated. Relies on obabel.
 %
-% OUTPUT
-% metabolite_structure  Updated metabolite structure
-% IDsAddeed             List of IDs added to the metabolite structure
-% InchiKeyList          List of inchikeys added
-% InchiStringList       List of inchistrings added
+% USAGE:
 %
+%    [metabolite_structure, IDsAdded, InchiKeyList, InchiStringList] = generateInchiFromMol(metabolite_structure, folder, inchiKey, smiles, formula, startSearch, endSearch)
 %
-% Ines Thiele, 2020-2021
+% INPUTS:
+%    metabolite_structure:    Metabolite structure
+%    folder:                  Folder containing the mol files
+%
+% OPTIONAL INPUTS:
+%    inchiKey:                If 1 (default), the InChI key is generated from the mol file
+%    smiles:                  If 1 (default), the SMILES string is generated from the mol file
+%    formula:                 If 1 (default), the formula and charge are generated
+%    startSearch:             Numeric index where the search starts in the
+%                             metabolite structure (default: 1)
+%    endSearch:               Numeric index where the search ends in the
+%                             metabolite structure (default: all metabolites)
+%
+% OUTPUTS:
+%    metabolite_structure:    Updated metabolite structure
+%    IDsAdded:                List of IDs added to the metabolite structure
+%    InchiKeyList:            List of InChI keys added
+%    InchiStringList:         List of InChI strings added
+%
+% .. Author: - Ines Thiele, 2020-2021
 
 
 if ~exist('inchiKey','var')

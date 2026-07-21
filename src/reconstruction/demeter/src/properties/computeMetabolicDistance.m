@@ -1,18 +1,19 @@
-function computeMetabolicDistance(propertiesFolder,reconVersion,numWorkers)
+function computeMetabolicDistance(propertiesFolder, reconVersion, numWorkers)
 % This function computes the Jaccard distance for each pairwise combination
 % of analysed strains in terms of reaction presence and metabolite uptake
-% and secretion potential. 
+% and secretion potential.
 %
-% USAGE
-%   computeMetabolicDistance(propertiesFolder,reconVersion)
+% USAGE:
 %
-% INPUTS
-% propertiesFolder      Folder where the reaction presences and uptake/secretion
-%                       potentials to be analysed are stored
-% reconVersion          Name assigned to the reconstruction resource
+%    computeMetabolicDistance(propertiesFolder, reconVersion, numWorkers)
 %
-%   - AUTHOR
-%   Almut Heinken, 07/2020
+% INPUTS:
+%    propertiesFolder:    Folder where the reaction presences and uptake/secretion
+%                         potentials to be analysed are stored
+%    reconVersion:        Name assigned to the reconstruction resource
+%    numWorkers:          Number of workers in parallel pool
+%
+% .. Author: - Almut Heinken, 07/2020
 
 if numWorkers>0 && ~isempty(ver('parallel'))
     % with parallelization

@@ -10,6 +10,9 @@ function retStatus = printMatrix(A, format, file)
 %    format:    Format string (opt, default '%6.4f\t')
 %    file:      File name (opt)
 %
+% OUTPUT:
+%    retStatus:    return status (0)
+%
 % .. Authors:
 %     - Original file: Markus Herrgard
 %     - Minor changes: Laurent Heirendt January 2017

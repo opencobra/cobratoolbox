@@ -8,7 +8,7 @@ function [OptSolKO, OptSolWT, OptSolRatio, RescuedGenes, fluxesKO] = computeResc
 %
 % USAGE:
 %
-%     [OptSolKO,OptSolWT,OptSolRatio,fluxesKO]=computeRescuedGenes(varargin)
+%     [OptSolKO, OptSolWT, OptSolRatio, RescuedGenes, fluxesKO] = computeRescuedGenes(varargin)
 %
 % INPUTS:
 %     modelJoint:    Joint model structure consisting of two COBRA models
@@ -24,19 +24,19 @@ function [OptSolKO, OptSolWT, OptSolRatio, RescuedGenes, fluxesKO] = computeResc
 %                    (needed to determine reactions to be constrained)
 %
 % OUTPUTS:
-%     OptSolKO:      Matlab structure containing the computed optimal solutions
-%                    for the gene deletions that had an effect on the two
-%                    reactions
-%     OptSolRatio:   Matlab structure containing all knockout to wildtype
-%                    optimal solution ratios for the gene deletions that had
-%                    an effect on the two reactions
-%     OptSolWT:      Matlab structure containing wildtype flux values for both
-%                    reactions in the two models
-%     RescuedGenes:  List of genes for which deletion is lethal or causes >50%
-%                    growth reduction in single but not pairwise model
-%     fluxesKO:      Matlab structure containing all solutions for all gene
-%                    deletions and for both reactions in the two models. Can be
-%                    used to identify mechanisms for rescued genes.
+%     OptSolKO:        Matlab structure containing the computed optimal solutions
+%                      for the gene deletions that had an effect on the two
+%                      reactions
+%     OptSolRatio:     Matlab structure containing all knockout to wildtype
+%                      optimal solution ratios for the gene deletions that had
+%                      an effect on the two reactions
+%     OptSolWT:        Matlab structure containing wildtype flux values for both
+%                      reactions in the two models
+%     RescuedGenes:    List of genes for which deletion is lethal or causes >50%
+%                      growth reduction in single but not pairwise model
+%     fluxesKO:        Matlab structure containing all solutions for all gene
+%                      deletions and for both reactions in the two models. Can be
+%                      used to identify mechanisms for rescued genes.
 %
 % .. Author:
 %        - Almut Heinken 2012-2018. Last modified 03/2018.

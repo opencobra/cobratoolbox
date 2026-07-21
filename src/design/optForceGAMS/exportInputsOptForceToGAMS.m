@@ -5,7 +5,7 @@ function [] = exportInputsOptForceToGAMS(model, targetRxn, mustU, mustL, minFlux
 %
 % USAGE:
 %
-%         exportInputsOptForceToGAMS(model, targetRxn, mustU, mustL, minFluxesW, maxFluxesW, minFluxesM, maxFluxesM, k, nSets, constrOpt, excludedURxns, excludedLRxns, excludedKRxns, inputFolder)
+%         exportInputsOptForceToGAMS(model, targetRxn, mustU, mustL, minFluxesW, maxFluxesW, minFluxesM, maxFluxesM, k, n_sets, constrOpt, excludedURxns, excludedLRxns, excludedKRxns, inputFolder)
 %
 % INPUTS:
 %    model:             (structure) a metabolic model with at least the
@@ -14,8 +14,6 @@ function [] = exportInputsOptForceToGAMS(model, targetRxn, mustU, mustL, minFlux
 %                         * .rxns - Reaction IDs in the model
 %                         * .mets - Metabolite IDs in the model
 %                         * .S -    Stoichiometric matrix (sparse)
-%                         * .b -    RHS of `Sv = b` (usually zeros)
-%                         * .c -    Objective coefficients
 %                         * .lb -   Lower bounds for fluxes
 %                         * .ub -   Upper bounds for fluxes
 %    targetRxn:         (string) string containing the ID for the
@@ -46,7 +44,7 @@ function [] = exportInputsOptForceToGAMS(model, targetRxn, mustU, mustL, minFlux
 %                       for each reaction in the model for mutant strain.
 %                       E.g.: `maxFluxesW = [92; -86];`
 %    k:                 (double) number of intervations to be found
-%    nSets:             (double) maximum number of force sets returned
+%    n_sets:            (double) maximum number of force sets returned
 %                       by `optForce`.
 %    constrOpt:         (Structure) structure containing additional
 %                       contraints. Include here only reactions whose flux

@@ -14,17 +14,23 @@ function [vSparse, sparseRxnBool, essentialRxnBool]  = sparseFBA(model, osenseSt
 %    [vSparse, sparseRxnBool, essentialRxnBool]  = sparseFBA(model, osenseStr, checkMinimalSet, checkEssentialSet, zeroNormApprox, printLevel)
 %
 % INPUT:
-%    model:               (the following fields are required - others can be supplied):
-%                           * S - Stoichiometric matrix
-%                           * b - Right hand side = dx/dt
-%                           * c - Objective coefficients
-%                           * lb - Lower bounds
-%                           * ub - Upper bounds
+%    model:               COBRA model structure. Required fields:
+%
+%                           * .S - `m x n` stoichiometric matrix
+%                           * .b - `m x 1` right hand side (`dx/dt`) of the mass balance
+%                           * .c - `n x 1` linear objective coefficients
+%                           * .lb - `n x 1` lower flux bounds
+%                           * .ub - `n x 1` upper flux bounds
 %
 % OPTIONAL INPUTS:
-%    model:               (optional for C*v<=d):
-%                           * C - Stoichiometric matrix
-%                           * d - Right hand side = dx/dt
+%    model:               COBRA model structure. Optional fields:
+%
+%                           * .C - `k x n` matrix of additional coupling constraints (`C v <= d`)
+%                           * .d - `k x 1` right hand side of the coupling constraints
+%                           * .dsense - `k x 1` sense of the coupling constraints ('L', 'G', 'E')
+%                           * .csense - `m x 1` sense of the mass-balance constraints ('L', 'G', 'E')
+%                           * .dxdt - `m x 1` right hand side of the mass balance (defaults to `.b`)
+%                           * .osenseStr - objective sense string used when the `osenseStr` argument is omitted
 %
 %    osenseStr:           (default = 'max')
 %
@@ -37,7 +43,7 @@ function [vSparse, sparseRxnBool, essentialRxnBool]  = sparseFBA(model, osenseSt
 %
 %                           * true = check (default value)
 %                           * false = do not check
-%    checkEssentialSet:   {0,(1)} Heuristically check if the selected set of reactions is essential
+%    checkEssentialSet:    {0,(1)} Heuristically check if the selected set of reactions is essential
 %    zeroNormApprox:      appoximation type of zero-norm (only available when minNorm = 'zero') (default = 'cappedL1')
 %
 %                           * 'cappedL1' : Capped-L1 norm
@@ -59,7 +65,7 @@ function [vSparse, sparseRxnBool, essentialRxnBool]  = sparseFBA(model, osenseSt
 %    essentialRxnBool:    Returns a vector with 1 and 0's, where 1 means essential
 %
 
-% Authors: - Hoai Minh Le, Ronan Fleming
+% .. Authors: - Hoai Minh Le, Ronan Fleming
 % .. Please cite:
 % Fleming RMT, Haraldsdottir HS, Le HM, Vuong PT, Hankemeier T, Thiele I. 
 % Cardinality optimisation in constraint-based modelling: Application to human metabolism, 2022 (submitted).

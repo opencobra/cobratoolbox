@@ -47,12 +47,14 @@ function [arm, moietyFormulae] = identifyConservedMoieties(model, dATM, options)
 %                   * .Edges.TailAtomIndex - tail Nodes.AtomIndex
 %
 % OPTIONAL INPUTS:
-% options:       Structure with following fields:
-%                * .sanityChecks {(0),1} true if additional sanity checks
-%                on computations, but substantially more computation time
+%    options:      Structure with the following fields:
+%
+%                    * .sanityChecks - {(0), 1} true if additional sanity checks
+%                      on computations, but substantially more computation time
 %
 % OUTPUTS:
-% arm            atomically resolved model as a matlab structure with the following fields:
+%    moietyFormulae:    `nIsomorphismClasses x 1` cell array of moiety chemical formulae (Hill notation), one per isomorphism class
+%    arm:            atomically resolved model as a matlab structure with the following fields:
 %
 % arm.MRH:                    Directed metabolic reaction hypergraph, i.e. standard COBRA model, with additional fields:
 % arm.MRH.metAtomMappedBool:  `m x 1` boolean vector indicating atom mapped metabolites
