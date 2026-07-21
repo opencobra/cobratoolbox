@@ -49,8 +49,18 @@ jobs:
         env:
           QT_QPA_PLATFORM: offscreen
           JAVA_AWT_HEADLESS: "1"
+          BASE_REF: ${{ github.base_ref }}
         run: |
           set -euo pipefail
+          # Test execution mode: fast by default on the VM (quick PR feedback);
+          # PRs targeting master run the full suite so the coverage-gate baseline
+          # (feature 001) stays thorough. Manual/dispatch runs (empty base_ref) use fast.
+          if [ "${BASE_REF:-}" = "master" ]; then
+            COBRA_TEST_MODE=full
+          else
+            COBRA_TEST_MODE=fast
+          fi
+          echo "COBRA_TEST_MODE=${COBRA_TEST_MODE} (PR base_ref='${BASE_REF:-<none>}')"
           # Confirm the coverage-enabled MATLAB image exists: it is the base MATLAB
           # image plus a PATCHED MOcov + jsonlab baked at /opt, with MOCOV_PATH and
           # JSONLAB_PATH baked into the image ENV so test/testAll.m computes coverage.
@@ -65,6 +75,7 @@ jobs:
             -e USER=matlab \
             -e LOGNAME=matlab \
             -e COBRA_CI=1 \
+            -e COBRA_TEST_MODE="${COBRA_TEST_MODE}" \
             -e QT_QPA_PLATFORM="${QT_QPA_PLATFORM}" \
             -e JAVA_AWT_HEADLESS="${JAVA_AWT_HEADLESS}" \
             -v "${GITHUB_WORKSPACE}:/work" \

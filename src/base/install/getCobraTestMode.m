@@ -10,8 +10,9 @@ function result = getCobraTestMode(query)
 %                      the same code coverage.
 %   'full'           - runs the complete, slower suite exactly as before this
 %                      feature (no fast-mode trimming). Continuous integration
-%                      always runs in this mode so the coverage gate keeps its
-%                      thorough baseline.
+%                      runs in this mode by default so the coverage gate keeps
+%                      its thorough baseline, unless a mode is requested
+%                      explicitly (see NOTE).
 %
 % USAGE:
 %    mode = getCobraTestMode()
@@ -26,11 +27,13 @@ function result = getCobraTestMode(query)
 %
 % NOTE:
 %    Resolution order (highest precedence first):
-%      1. the CI environment (`COBRA_CI == '1'`) always resolves to 'full';
-%      2. the global variable `CBT_TEST_MODE`, if set to 'fast'/'full';
-%      3. the environment variable `COBRA_TEST_MODE`, if set to 'fast'/'full';
+%      1. the global variable `CBT_TEST_MODE`, if set to 'fast'/'full';
+%      2. the environment variable `COBRA_TEST_MODE`, if set to 'fast'/'full';
+%      3. the CI environment (`COBRA_CI == '1'`) defaults to 'full' when no
+%         explicit mode (1 or 2) is set;
 %      4. otherwise the default, 'fast'.
-%    Any set value other than 'fast'/'full' raises COBRA:testMode:invalid.
+%    An explicit mode (1 or 2) is honoured even under CI. Any set value other
+%    than 'fast'/'full' raises COBRA:testMode:invalid.
 %
 % .. Author: - COBRA Toolbox, feature 002-testall-performance-modes.
 
@@ -38,29 +41,30 @@ function result = getCobraTestMode(query)
 
     validModes = {'fast', 'full'};
 
-    % 1. CI always forces full mode (keeps the 001 coverage-gate baseline).
-    if strcmp(getenv('COBRA_CI'), '1')
+    mode = '';
+
+    % 1. explicit global override (highest precedence, honoured even in CI)
+    if ~isempty(CBT_TEST_MODE)
+        mode = validateMode(CBT_TEST_MODE, validModes, 'global CBT_TEST_MODE');
+    end
+
+    % 2. explicit environment override (honoured even in CI)
+    if isempty(mode)
+        envMode = getenv('COBRA_TEST_MODE');
+        if ~isempty(envMode)
+            mode = validateMode(envMode, validModes, 'environment variable COBRA_TEST_MODE');
+        end
+    end
+
+    % 3. CI default: full when the workflow requests no explicit mode, so the
+    %    001 coverage-gate baseline stays thorough by default.
+    if isempty(mode) && strcmp(getenv('COBRA_CI'), '1')
         mode = 'full';
-    else
-        mode = '';
+    end
 
-        % 2. global override
-        if ~isempty(CBT_TEST_MODE)
-            mode = validateMode(CBT_TEST_MODE, validModes, 'global CBT_TEST_MODE');
-        end
-
-        % 3. environment variable
-        if isempty(mode)
-            envMode = getenv('COBRA_TEST_MODE');
-            if ~isempty(envMode)
-                mode = validateMode(envMode, validModes, 'environment variable COBRA_TEST_MODE');
-            end
-        end
-
-        % 4. default
-        if isempty(mode)
-            mode = 'fast';
-        end
+    % 4. default
+    if isempty(mode)
+        mode = 'fast';
     end
 
     if nargin > 0 && ischar(query) && strcmpi(query, 'isFast')
