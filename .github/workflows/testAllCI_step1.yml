@@ -8,6 +8,15 @@ on:
   workflow_dispatch:
 permissions:
   contents: read
+# Only one CI run per PR (or ref) at a time: a new push cancels the in-flight
+# run for the same ref instead of queuing another full MATLAB suite behind it.
+# The single self-hosted runner (Blacknight) serializes jobs, so without this a
+# burst of pushes to one PR piles up redundant queued runs. Keyed on the PR
+# number for pull_request events; falls back to github.ref otherwise, so a PR
+# and an unrelated dispatch never share a group.
+concurrency:
+  group: cobratoolboxCI-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 jobs:
