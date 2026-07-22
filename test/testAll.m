@@ -184,8 +184,17 @@ try
         testMode = getCobraTestMode();
         fprintf('\n > Test execution mode: %s (set COBRA_TEST_MODE=full for the complete suite).\n\n', testMode);
 
-        % run the tests in the subfolder verifiedTests/ recursively
-        [result, resultTable] = runTestSuite();
+        % Change-based selective testing: when CI has analysed the PR's changed
+        % files (.github/scripts/select_tests.py) it passes a runTestSuite regexp
+        % in COBRA_TESTS naming only the relevant tests. Empty/unset => full suite.
+        testFilter = getenv('COBRA_TESTS');
+        if isempty(testFilter)
+            % run the tests in the subfolder verifiedTests/ recursively
+            [result, resultTable] = runTestSuite();
+        else
+            fprintf('\n > Selective testing enabled. Test filter: %s\n\n', testFilter);
+            [result, resultTable] = runTestSuite(testFilter);
+        end
 
         sumSkipped = sum(resultTable.Skipped);
         sumFailed = sum(resultTable.Failed);

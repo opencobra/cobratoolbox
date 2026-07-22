@@ -53,12 +53,57 @@ jobs:
           sudo chown -R "$(id -u):$(id -g)" "${GITHUB_WORKSPACE}"
           chmod -R o+rwx "${GITHUB_WORKSPACE}"
 
+      # Change-based test selection: analyse the PR's changed files and pick only
+      # the tests that (transitively) depend on them, so we stop re-running the
+      # whole MATLAB suite on every PR. Fails safe to the FULL suite on any doubt
+      # (core path touched, un-indexable change, analysis error). Outputs:
+      #   mode        = full | selective | none
+      #   run_tests   = true | false   (false => skip the MATLAB + report steps)
+      #   test_filter = runTestSuite() regexp (empty when full)
+      - name: Analyze changed files and select relevant tests
+        id: select
+        env:
+          BASE_REF: ${{ github.base_ref }}
+          # A 'ci-full' label on the PR forces the complete suite (see policy).
+          COBRA_FORCE_FULL: ${{ contains(github.event.pull_request.labels.*.name, 'ci-full') }}
+        run: |
+          set -uo pipefail
+          if [ -z "${BASE_REF:-}" ]; then
+            echo "No base ref (manual/dispatch run) -> full suite."
+            { echo "mode=full"; echo "run_tests=true"; echo "test_filter="; } >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          # PRs targeting master run the COMPLETE suite so the coverage-gate
+          # baseline stays thorough; never select a subset for a release branch.
+          if [ "${BASE_REF}" = "master" ]; then
+            echo "Base ref is master -> full suite (release baseline)."
+            { echo "mode=full"; echo "run_tests=true"; echo "test_filter="; } >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          # Make the base branch available, then diff base...merged-HEAD.
+          git fetch --no-tags --quiet origin "${BASE_REF}" || true
+          if git rev-parse --verify --quiet "origin/${BASE_REF}" >/dev/null; then
+            base="origin/${BASE_REF}"
+          else
+            base="${BASE_REF}"
+          fi
+          changed="${RUNNER_TEMP:-/tmp}/changed_files.txt"
+          git diff --name-only --diff-filter=ACMRT "${base}...HEAD" > "${changed}" \
+            || git diff --name-only "${base}" HEAD > "${changed}" || true
+          echo "----- changed files -----"; cat "${changed}" || true; echo "-------------------------"
+          if ! python3 .github/scripts/select_tests.py --changed "${changed}" --root . >> "$GITHUB_OUTPUT"; then
+            echo "Selection script failed -> full suite."
+            { echo "mode=full"; echo "run_tests=true"; echo "test_filter="; } >> "$GITHUB_OUTPUT"
+          fi
+
       # MATLAB runs inside Docker
       - name: Run MATLAB Tests in Docker (licensed MAC, xvfb headless)
+        if: steps.select.outputs.run_tests == 'true'
         env:
           QT_QPA_PLATFORM: offscreen
           JAVA_AWT_HEADLESS: "1"
           BASE_REF: ${{ github.base_ref }}
+          COBRA_TESTS: ${{ steps.select.outputs.test_filter }}
         run: |
           set -euo pipefail
           # Test execution mode: fast by default on the VM (quick PR feedback);
@@ -70,6 +115,8 @@ jobs:
             COBRA_TEST_MODE=fast
           fi
           echo "COBRA_TEST_MODE=${COBRA_TEST_MODE} (PR base_ref='${BASE_REF:-<none>}')"
+          # Change-based selection (see the 'select' step). Empty => full suite.
+          echo "COBRA_TESTS filter: ${COBRA_TESTS:-<full suite>}"
           # Confirm the coverage-enabled MATLAB image exists: it is the base MATLAB
           # image plus a PATCHED MOcov + jsonlab baked at /opt, with MOCOV_PATH and
           # JSONLAB_PATH baked into the image ENV so test/testAll.m computes coverage.
@@ -85,6 +132,7 @@ jobs:
             -e LOGNAME=matlab \
             -e COBRA_CI=1 \
             -e COBRA_TEST_MODE="${COBRA_TEST_MODE}" \
+            -e COBRA_TESTS="${COBRA_TESTS:-}" \
             -e QT_QPA_PLATFORM="${QT_QPA_PLATFORM}" \
             -e JAVA_AWT_HEADLESS="${JAVA_AWT_HEADLESS}" \
             -v "${GITHUB_WORKSPACE}:/work" \
@@ -175,11 +223,13 @@ jobs:
           exit 0
 
       - name: Set up Node.js 20
+        if: steps.select.outputs.run_tests == 'true'
         uses: actions/setup-node@v6
         with:
           node-version: '20'
 
       - name: Convert JUnit to CTRF
+        if: steps.select.outputs.run_tests == 'true'
         run: |
           MAJOR="$(node -p "process.versions.node.split('.')[0]")"
           if [ "$MAJOR" -lt 20 ]; then
@@ -193,6 +243,7 @@ jobs:
           npx --yes junit-to-ctrf@0.0.12 ./testReport.junit.xml -o ./ctrf/ctrf-report.json
 
       - name: Normalize CTRF Test Names
+        if: steps.select.outputs.run_tests == 'true'
         run: |
           node -e '
             const fs = require("fs");
@@ -207,6 +258,7 @@ jobs:
           '
 
       - name: Upload CTRF Artifact
+        if: steps.select.outputs.run_tests == 'true'
         uses: actions/upload-artifact@v6
         with:
           name: testReport
