@@ -8,6 +8,15 @@ on:
   workflow_dispatch:
 permissions:
   contents: read
+# Only one CI run per PR (or ref) at a time: a new push cancels the in-flight
+# run for the same ref instead of queuing another full MATLAB suite behind it.
+# The single self-hosted runner (Blacknight) serializes jobs, so without this a
+# burst of pushes to one PR piles up redundant queued runs. Keyed on the PR
+# number for pull_request events; falls back to github.ref otherwise, so a PR
+# and an unrelated dispatch never share a group.
+concurrency:
+  group: cobratoolboxCI-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 jobs:
@@ -44,40 +53,77 @@ jobs:
           sudo chown -R "$(id -u):$(id -g)" "${GITHUB_WORKSPACE}"
           chmod -R o+rwx "${GITHUB_WORKSPACE}"
 
-      # Provision the coverage tooling the harness already knows how to use
-      # (MoCov + jsonlab). Cloned on the runner host so the MATLAB container stays
-      # network-free. Best-effort: if a clone fails, MOCOV_PATH/JSONLAB_PATH are left
-      # unset and test/testAll.m simply does not compute coverage (FR-004) — the
-      # pass/fail run is unaffected. TODO: pin to a verified tag/commit.
-      - name: Provision coverage tools (MoCov + jsonlab)
-        continue-on-error: true
+      # Change-based test selection: analyse the PR's changed files and pick only
+      # the tests that (transitively) depend on them, so we stop re-running the
+      # whole MATLAB suite on every PR. Fails safe to the FULL suite on any doubt
+      # (core path touched, un-indexable change, analysis error). Outputs:
+      #   mode        = full | selective | none
+      #   run_tests   = true | false   (false => skip the MATLAB + report steps)
+      #   test_filter = runTestSuite() regexp (empty when full)
+      - name: Analyze changed files and select relevant tests
+        id: select
+        env:
+          BASE_REF: ${{ github.base_ref }}
+          # A 'ci-full' label on the PR forces the complete suite (see policy).
+          COBRA_FORCE_FULL: ${{ contains(github.event.pull_request.labels.*.name, 'ci-full') }}
         run: |
           set -uo pipefail
-          mkdir -p "${GITHUB_WORKSPACE}/.ci-tools"
-          if [ ! -d "${GITHUB_WORKSPACE}/.ci-tools/MOcov/.git" ]; then
-            git clone --depth 1 https://github.com/MOcov/MOcov.git "${GITHUB_WORKSPACE}/.ci-tools/MOcov" || true
+          if [ -z "${BASE_REF:-}" ]; then
+            echo "No base ref (manual/dispatch run) -> full suite."
+            { echo "mode=full"; echo "run_tests=true"; echo "test_filter="; } >> "$GITHUB_OUTPUT"
+            exit 0
           fi
-          if [ ! -d "${GITHUB_WORKSPACE}/.ci-tools/jsonlab/.git" ]; then
-            git clone --depth 1 https://github.com/fangq/jsonlab.git "${GITHUB_WORKSPACE}/.ci-tools/jsonlab" || true
+          # PRs targeting master run the COMPLETE suite so the coverage-gate
+          # baseline stays thorough; never select a subset for a release branch.
+          if [ "${BASE_REF}" = "master" ]; then
+            echo "Base ref is master -> full suite (release baseline)."
+            { echo "mode=full"; echo "run_tests=true"; echo "test_filter="; } >> "$GITHUB_OUTPUT"
+            exit 0
           fi
-          # Enable coverage only if BOTH tools are present (paths are /work/... inside the container).
-          if [ -d "${GITHUB_WORKSPACE}/.ci-tools/MOcov" ] && [ -d "${GITHUB_WORKSPACE}/.ci-tools/jsonlab" ]; then
-            echo "MOCOV_PATH=/work/.ci-tools/MOcov" >> "$GITHUB_ENV"
-            echo "JSONLAB_PATH=/work/.ci-tools/jsonlab" >> "$GITHUB_ENV"
-            echo "Coverage tooling provisioned; coverage will be computed."
+          # Make the base branch available, then diff base...merged-HEAD.
+          git fetch --no-tags --quiet origin "${BASE_REF}" || true
+          if git rev-parse --verify --quiet "origin/${BASE_REF}" >/dev/null; then
+            base="origin/${BASE_REF}"
           else
-            echo "::warning:: MoCov/jsonlab not available; coverage will be skipped (pass/fail unaffected)."
+            base="${BASE_REF}"
+          fi
+          changed="${RUNNER_TEMP:-/tmp}/changed_files.txt"
+          git diff --name-only --diff-filter=ACMRT "${base}...HEAD" > "${changed}" \
+            || git diff --name-only "${base}" HEAD > "${changed}" || true
+          echo "----- changed files -----"; cat "${changed}" || true; echo "-------------------------"
+          if ! python3 .github/scripts/select_tests.py --changed "${changed}" --root . >> "$GITHUB_OUTPUT"; then
+            echo "Selection script failed -> full suite."
+            { echo "mode=full"; echo "run_tests=true"; echo "test_filter="; } >> "$GITHUB_OUTPUT"
           fi
 
       # MATLAB runs inside Docker
       - name: Run MATLAB Tests in Docker (licensed MAC, xvfb headless)
+        if: steps.select.outputs.run_tests == 'true'
         env:
           QT_QPA_PLATFORM: offscreen
           JAVA_AWT_HEADLESS: "1"
+          BASE_REF: ${{ github.base_ref }}
+          COBRA_TESTS: ${{ steps.select.outputs.test_filter }}
         run: |
           set -euo pipefail
-          # Confirm MATLAB image exists
-          docker image inspect matlab >/dev/null
+          # Test execution mode: fast by default on the VM (quick PR feedback);
+          # PRs targeting master run the full suite so the coverage-gate baseline
+          # (feature 001) stays thorough. Manual/dispatch runs (empty base_ref) use fast.
+          if [ "${BASE_REF:-}" = "master" ]; then
+            COBRA_TEST_MODE=full
+          else
+            COBRA_TEST_MODE=fast
+          fi
+          echo "COBRA_TEST_MODE=${COBRA_TEST_MODE} (PR base_ref='${BASE_REF:-<none>}')"
+          # Change-based selection (see the 'select' step). Empty => full suite.
+          echo "COBRA_TESTS filter: ${COBRA_TESTS:-<full suite>}"
+          # Confirm the coverage-enabled MATLAB image exists: it is the base MATLAB
+          # image plus a PATCHED MOcov + jsonlab baked at /opt, with MOCOV_PATH and
+          # JSONLAB_PATH baked into the image ENV so test/testAll.m computes coverage.
+          docker image inspect matlab-cov >/dev/null
+          # NOTE: do NOT re-introduce -e MOCOV_PATH / -e JSONLAB_PATH here — the image
+          # bakes them (pointing at the patched tools); passing empty or host values
+          # would clobber the baked ENV and silently disable coverage.
           docker run --rm \
             --mac-address="02:42:ac:11:00:02" \
             --platform linux/amd64 \
@@ -85,14 +131,14 @@ jobs:
             -e USER=matlab \
             -e LOGNAME=matlab \
             -e COBRA_CI=1 \
-            -e MOCOV_PATH="${MOCOV_PATH:-}" \
-            -e JSONLAB_PATH="${JSONLAB_PATH:-}" \
+            -e COBRA_TEST_MODE="${COBRA_TEST_MODE}" \
+            -e COBRA_TESTS="${COBRA_TESTS:-}" \
             -e QT_QPA_PLATFORM="${QT_QPA_PLATFORM}" \
             -e JAVA_AWT_HEADLESS="${JAVA_AWT_HEADLESS}" \
             -v "${GITHUB_WORKSPACE}:/work" \
             -w /work \
             --entrypoint bash \
-            matlab \
+            matlab-cov \
             -lc '
               set -euo pipefail
               echo "Running inside container as:"
@@ -177,11 +223,13 @@ jobs:
           exit 0
 
       - name: Set up Node.js 20
+        if: steps.select.outputs.run_tests == 'true'
         uses: actions/setup-node@v6
         with:
           node-version: '20'
 
       - name: Convert JUnit to CTRF
+        if: steps.select.outputs.run_tests == 'true'
         run: |
           MAJOR="$(node -p "process.versions.node.split('.')[0]")"
           if [ "$MAJOR" -lt 20 ]; then
@@ -195,6 +243,7 @@ jobs:
           npx --yes junit-to-ctrf@0.0.12 ./testReport.junit.xml -o ./ctrf/ctrf-report.json
 
       - name: Normalize CTRF Test Names
+        if: steps.select.outputs.run_tests == 'true'
         run: |
           node -e '
             const fs = require("fs");
@@ -209,6 +258,7 @@ jobs:
           '
 
       - name: Upload CTRF Artifact
+        if: steps.select.outputs.run_tests == 'true'
         uses: actions/upload-artifact@v6
         with:
           name: testReport

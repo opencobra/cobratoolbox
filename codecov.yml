@@ -1,3 +1,21 @@
+coverage:
+  status:
+    # Change-based CI (.github/scripts/select_tests.py) runs only the tests
+    # relevant to a PR, so overall PROJECT coverage drops versus the full-suite
+    # base. Report it, but do NOT block merges on it.
+    project:
+      default:
+        informational: true
+    # PATCH = coverage of the lines this PR actually changed. This is the gate:
+    # the selected tests must exercise the changed code. If selection missed the
+    # relevant test, patch coverage falls and this fails -- a built-in check on
+    # the selector. Tune target/threshold as the team calibrates.
+    patch:
+      default:
+        target: auto
+        threshold: 10%
+        informational: false
+
 comment:
   layout: "header, diff, flags, components, files, footer"
   behavior: default

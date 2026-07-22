@@ -37,10 +37,19 @@ try
     assert(strcmp(getCobraTestMode(), 'full'));
     CBT_TEST_MODE = [];
 
-    % 4. the CI environment forces full mode regardless of other settings
-    setenv('COBRA_TEST_MODE', 'fast');
+    % 4. under CI, an explicit env/global mode is honoured; CI only supplies
+    %    the default (full) when no explicit mode is set
+    setenv('COBRA_TEST_MODE', '');
+    CBT_TEST_MODE = [];
     setenv('COBRA_CI', '1');
-    assert(strcmp(getCobraTestMode(), 'full'));
+    assert(strcmp(getCobraTestMode(), 'full'));   % CI default when nothing explicit
+    setenv('COBRA_TEST_MODE', 'fast');
+    assert(strcmp(getCobraTestMode(), 'fast'));   % explicit env overrides the CI default
+    assert(getCobraTestMode('isFast') == true);
+    setenv('COBRA_TEST_MODE', '');
+    CBT_TEST_MODE = 'fast';
+    assert(strcmp(getCobraTestMode(), 'fast'));   % explicit global overrides the CI default
+    CBT_TEST_MODE = [];
     setenv('COBRA_CI', '');
 
     % 5. an invalid value raises COBRA:testMode:invalid
