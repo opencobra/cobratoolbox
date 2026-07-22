@@ -866,7 +866,12 @@ switch solver
             % Dynamic re-solve disambiguation stays in the dispatcher (control
             % flow, not a table lookup): remove the objective and solve again.
             % If the status becomes 'OPTIMAL', it is unbounded, otherwise infeasible.
+            % Disable dual reductions for the probe so gurobi returns a definitive
+            % status: with presolve dual reductions on, the feasibility probe can
+            % itself come back INF_OR_UNBD on some gurobi versions, leaving the
+            % original problem mis-classified (seen on the CI gurobi, not locally).
             gurobiLP.obj(:) = 0;
+            gurobiParam.DualReductions = 0;
             resultgurobi = gurobi(gurobiLP,gurobiParam);
             if strcmp(resultgurobi.status,'OPTIMAL')
                 stat = 2;

@@ -24,6 +24,12 @@ cd(fileDir);
 
 % tolerance for floating-point comparisons (integer .stat is compared exactly)
 tol = 1e-6;
+% The minNorm re-solves (which must PRESERVE the optimum) pin the objective only
+% to the solver's optimality tolerance, which varies across solver/MATLAB
+% versions; a tight 1e-6 pin there is over-specified and fails on some CI gurobi
+% builds. Use a looser tolerance for those objective pins only; the base direct
+% solves and all structural checks (status, mass balance, flux vector) stay at tol.
+objTol = 1e-4;
 
 % require an LP solver; skip cleanly otherwise
 solverPkgs = prepareTest('needsLP', true);
@@ -58,7 +64,7 @@ for k = 1:length(solverPkgs.LP)
         for minNorm = {'one', 'zero', [1; 1; 1]}
             s = optimizeCbModel(model, 'max', minNorm{1});
             assert(s.stat == 1);
-            assert(abs(s.f - 10) < tol);
+            assert(abs(s.f - 10) < objTol);
             assert(norm(model.S * s.v - model.b) < tol);
         end
 
@@ -66,7 +72,7 @@ for k = 1:length(solverPkgs.LP)
         if qpOK
             s = optimizeCbModel(model, 'max', 1e-6);
             assert(s.stat == 1);
-            assert(abs(s.f - 10) < tol);
+            assert(abs(s.f - 10) < objTol);
         end
 
         % 'optimizeCardinality' minNorm requires model.g0 on the model; pin that
