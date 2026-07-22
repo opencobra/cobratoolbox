@@ -1646,6 +1646,10 @@ activeBonds = any(CRB2R, 2);
 CRB2R_active = CRB2R(activeBonds, :);
 m_active = sum(activeBonds);
 
+% number of candidate reactions (decision variables). A prior refactor dropped
+% the definition of n before its first use here, leaving f/lb/ub/intcon sized
+% from an undefined variable; restore it (n = columns of CRB2R = reactions).
+n = size(CRB2R, 2);
 f = ones(n,1);
 A = -CRB2R_active;
 bvec = -ones(m_active,1);
