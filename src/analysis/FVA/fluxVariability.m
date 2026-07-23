@@ -106,6 +106,7 @@ function [minFlux, maxFlux, Vmin, Vmax] = fluxVariability(model, varargin)
 %                         to the value and sign of the coefficient
 %       - Ronan Fleming   27/09/10 Vmin, Vmax
 %       - Marouen Ben Guebila 22/02/2017 Vmin,Vmax method
+%       - Farid Zare      23/07/2026 adding fastBarrier option
 
 global CBT_LP_PARAMS
 
