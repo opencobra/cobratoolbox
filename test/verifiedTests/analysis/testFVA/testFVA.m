@@ -400,6 +400,22 @@ for k = 1:length(solverPkgs.LP)
                    end
                end
             end
+
+            % Test fastBarrier mode (Gurobi only)
+            if strcmp(currentSolver, 'gurobi') && threads == 1
+                fprintf('    Testing fastBarrier mode (barrier without crossover):\n');
+                % Compute reference FVA for comparison
+                [minFluxRef, maxFluxRef] = fluxVariability(model, 90, 'max', rxnNames, 'threads', 1);
+                % fastBarrier should give same objective values but faster
+                [minFluxFB, maxFluxFB] = fluxVariability(model, 90, 'max', rxnNames, 'fastBarrier', 1, 'threads', 1);
+                % Check that results match standard FVA within tolerance
+                assert(max(abs(minFluxFB - minFluxRef)) < tol, ...
+                    sprintf('fastBarrier min fluxes do not match standard FVA (max diff: %e)', max(abs(minFluxFB - minFluxRef))))
+                assert(max(abs(maxFluxFB - maxFluxRef)) < tol, ...
+                    sprintf('fastBarrier max fluxes do not match standard FVA (max diff: %e)', max(abs(maxFluxFB - maxFluxRef))))
+                fprintf('    fastBarrier mode test passed.\n');
+            end
+
             fprintf('Done.\n');
         end
     end
