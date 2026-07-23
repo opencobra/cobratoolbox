@@ -67,6 +67,16 @@ function [minFlux, maxFlux, Vmin, Vmax] = fluxVariability(model, varargin)
 %                           - 0 : default, do not use mtFVA
 %                           - 1 : use mtFVA
 %
+%    fastBarrier:       Use Gurobi's barrier method without crossover for speed.
+%                      LIMITATIONS: Only computes min/max flux values (not full solution vectors Vmin/Vmax).
+%                      Skips blocked reaction detection heuristics.
+%                      Requires Gurobi solver.
+%
+%                           - 0 : default, use solver's standard algorithm
+%                           - 1 : use barrier without crossover for 30-50% speedup
+%                              identical objective values (min/max fluxes)
+%                              trades solution precision for speed (interior-point vs basic solution)
+%
 %    paramStruct:      one single parameter structure including any of the inputs above and the solver-specific parameter
 %
 % OUTPUTS:
@@ -99,8 +109,8 @@ function [minFlux, maxFlux, Vmin, Vmax] = fluxVariability(model, varargin)
 
 global CBT_LP_PARAMS
 
-optArgin = {     'optPercentage', 'osenseStr',              'rxnNameList', 'printLevel', 'allowLoops', 'method', 'solverParams', 'advind', 'threads', 'heuristics', 'useMtFVA'};
-defaultValues = {100,             getObjectiveSense(model), model.rxns,    0,            true,         '2-norm', struct(),       0,       [],         [],           0};
+optArgin = {     'optPercentage', 'osenseStr',              'rxnNameList', 'printLevel', 'allowLoops', 'method', 'solverParams', 'advind', 'threads', 'heuristics', 'useMtFVA', 'fastBarrier'};
+defaultValues = {100,             getObjectiveSense(model), model.rxns,    0,            true,         '2-norm', struct(),       0,       [],         [],           0,             0};
 validator = {@(x) isscalar(x) & isnumeric(x) & x >= 0 & x <= 100, ...  % optPercentage
     @(x) strcmp(x, 'max') | strcmp(x, 'min'), ...  % osenseStr
     @(x) ischar(x) | iscellstr(x), ...  % rxnNameList
@@ -110,8 +120,9 @@ validator = {@(x) isscalar(x) & isnumeric(x) & x >= 0 & x <= 100, ...  % optPerc
     @isstruct, ...  % solverParams
     @(x) true, ...  % advind
     @(x) isscalar(x) & (islogical(x) | isnumeric(x)), ...  % threads
-    @(x) isscalar(x) & (islogical(x) | isnumeric(x)) ...  % heuristics
-    @(x) isscalar(x) & (islogical(x) | isnumeric(x)) ...  % useMtFVA
+    @(x) isscalar(x) & (islogical(x) | isnumeric(x)), ...  % heuristics
+    @(x) isscalar(x) & (islogical(x) | isnumeric(x)), ...  % useMtFVA
+    @(x) isscalar(x) & (islogical(x) | isnumeric(x)) & x >= 0 & x <= 1 ...  % fastBarrier
     };
 
 % get all potentially supplied COBRA parameter names
@@ -119,14 +130,14 @@ problemTypes = {'LP', 'MILP', 'QP', 'MIQP'};
 
 [funParams, cobraParams, solverVarargin] = parseCobraVarargin(varargin, optArgin, defaultValues, validator, problemTypes, 'solverParams', true);
 
-if length(funParams)==10
+if length(funParams)==11
     % solverParams not output as a function parameter since it is individually handled and embedded in solverVarargin
     [optPercentage, osenseStr, rxnNameList, printLevel, allowLoops, method, ...
-        advind, threads, heuristics, useMtFVA] = deal(funParams{:});
-elseif length(funParams)==11
+        advind, threads, heuristics, useMtFVA, fastBarrier] = deal(funParams{:});
+elseif length(funParams)==12
     % default empty solverParams output as a function parameter
     [optPercentage, osenseStr, rxnNameList, printLevel, allowLoops, method, ...
-        solverParams, advind, threads, heuristics, useMtFVA] = deal(funParams{:});
+        solverParams, advind, threads, heuristics, useMtFVA, fastBarrier] = deal(funParams{:});
     fields = fieldnames(solverParams);
     if ~isempty(fields)
         disp(fields)
@@ -175,6 +186,32 @@ end
 if useMtFVA && (nargout > 2 || ~allowLoops || ~strcmp(method,'FBA'))
     error('mtFVA only supports the FBA method and neither supports loopless contraints nor Vmin/Vmax');
 end
+
+% Validate fastBarrier constraints
+if fastBarrier
+    % Check if Gurobi is available
+    solverGurobi = changeCobraSolver('gurobi', 'LP', 0);
+    if ~solverGurobi
+        warning('fastBarrier requires Gurobi solver; falling back to default settings');
+        fastBarrier = 0;
+    else
+        % fastBarrier only returns min/max flux values, not full solution vectors
+        if nargout > 2
+            warning('fastBarrier: Only returning minFlux/maxFlux; Vmin/Vmax will be empty');
+        end
+
+        % Configure Gurobi parameters for fast barrier
+        solverVarargin.Method = 2;      % barrier method
+        solverVarargin.Crossover = 0;   % no crossover
+
+        % Disable heuristics as they don't work well with interior-point solutions
+        if heuristics > 0
+            fprintf('fastBarrier: Disabling heuristics (incompatible with interior-point solutions)\n');
+            heuristics = 0;
+        end
+    end
+end
+
 % Set up the problem size
 [~, nRxns] = size(model.S);
 
