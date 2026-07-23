@@ -903,9 +903,13 @@ switch solver
                     pause(0.1)
                 end
 
-                % save the basis
-                basis.vbasis=resultgurobi.vbasis;
-                basis.cbasis=resultgurobi.cbasis;
+                % save the basis (only available if crossover was used or simplex method)
+                if isfield(resultgurobi, 'vbasis')
+                    basis.vbasis = resultgurobi.vbasis;
+                end
+                if isfield(resultgurobi, 'cbasis')
+                    basis.cbasis = resultgurobi.cbasis;
+                end
             end
         end
 
