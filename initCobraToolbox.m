@@ -18,7 +18,11 @@ function initCobraToolbox(updateToolbox, mode)
 %         initCobraToolbox(updateToolbox, mode)
 %
 %     OPTIONAL INPUTS:
-%         updateToolbox (logical, default true): check for toolbox updates.
+%         updateToolbox (logical, default false): when true, check for toolbox
+%             updates AND initialise/update the git submodules (a recursive,
+%             network-bound step that can take several minutes). The default
+%             (false) keeps initialisation fast and offline; run
+%             initCobraToolbox(true) once for a full submodule setup/update.
 %         mode (char, default 'default'): initialisation mode.
 %             'default' - full initialisation: checks git, updates submodules,
 %                         validates all solvers, saves the MATLAB path.
@@ -62,9 +66,10 @@ global WAITBAR_TYPE;
 global ENV_VARS;
 global gitBashVersion;
 global CBT_MISSING_REQUIREMENTS_ERROR_ID;
+global CBT_INITIALIZED;
 
 if ~exist('updateToolbox','var')
-    updateToolbox = true;
+    updateToolbox = false;
 end
 
 if ~exist('mode', 'var') || isempty(mode)
@@ -159,6 +164,19 @@ end
 % add the install folder
 addpath(genpath([CBTDIR filesep 'src' filesep 'base' filesep 'install']));
 
+% Idempotency guard: a repeat call in the same MATLAB session with no update
+% requested short-circuits the (re-)path-add and the network submodule work.
+% Pass initCobraToolbox(true) to force a full re-initialisation/update; a cleared
+% toolbox path (changeCobraSolver missing) also re-triggers a full initialisation.
+if ~updateToolbox && ~isempty(CBT_INITIALIZED) && CBT_INITIALIZED && exist('changeCobraSolver', 'file') == 2
+    if ~agentMode && ENV_VARS.printLevel
+        fprintf(['The COBRA Toolbox is already initialised in this session; skipping.\n', ...
+                 'Call initCobraToolbox(true) to force a full re-initialisation/update.\n']);
+    end
+    cd(currentDir);
+    return
+end
+
 % check if git is installed
 if ~agentMode
     [installedGit, versionGit] = checkGit();
@@ -247,7 +265,7 @@ if installedGit
     % check if the URL exists
     if exist([CBTDIR filesep 'binary' filesep 'README.md'], 'file') && status_curl ~= 0
         fprintf(' > Submodules exist but cannot be updated (remote cannot be reached).\n');
-    elseif status_curl == 0
+    elseif status_curl == 0 && updateToolbox
         if ENV_VARS.printLevel
             fprintf(' > Initializing and updating submodules (this may take a while)...');
         end
@@ -331,6 +349,13 @@ if installedGit
         if ENV_VARS.printLevel
             fprintf(' Done.\n');
         end
+    elseif status_curl == 0 && ~updateToolbox
+        % Skip the recursive, network-bound submodule init/update by default -
+        % this is the step that can hang for many minutes on a slow network.
+        if ENV_VARS.printLevel
+            fprintf([' > Submodule init/update skipped (updateToolbox=false). Run\n', ...
+                     '   initCobraToolbox(true) or "git submodule update --init --recursive" for a full setup.\n']);
+        end
     end
     % List all files in the supplied (git tracked) Directory with their absolute path name
     % based on the git ls-file command. If the directory is not git controlled, the
@@ -357,8 +382,7 @@ end
 % add the root folder
 addpath(CBTDIR);
 
-% add the external folder
-addpath(genpath([CBTDIR filesep 'external']));
+% (external/ is already added near the top of this function; not re-added here)
 
 % add specific subfolders
 for k = 1:length(folders)
@@ -785,6 +809,10 @@ end
 
 % change back to the current directory
 cd(currentDir);
+
+% mark this session as initialised so a subsequent call with no update requested
+% can short-circuit via the idempotency guard near the top of this function.
+CBT_INITIALIZED = true;
 
 if installedGit
     % cleanup at the end of the successful run
