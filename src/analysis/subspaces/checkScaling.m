@@ -3,29 +3,31 @@ function [precisionEstimate, solverRecommendation, scalingProperties] = checkSca
 %
 % USAGE:
 %
-%     [precisionEstimate, scalingProperties] = checkScaling(model, estLevel, printLevel)
+%     [precisionEstimate, solverRecommendation, scalingProperties] = checkScaling(model, estLevel, printLevel, matrixA)
 %
 % INPUT:
-%    model:             (the following fields are required - others can be supplied)
+%    model:             COBRA model structure. Required fields:
 %
-%                         * S  - `m x n` Stoichiometric matrix
-%                         * lb - `n x 1` Lower bounds on net flux
-%                         * ub - `n x 1` Upper bounds on net flux
+%                         * .S - `m x n` stoichiometric matrix
+%                         * .lb - `n x 1` lower bounds on net flux
+%                         * .ub - `n x 1` upper bounds on net flux
 %
 %
 % OPTIONAL INPUTS:
-%    model:
-%                         * c  - `n x 1` Linear objective coefficients
-%                         * b - `m x 1` change in concentration with time
-%                         * csense - `m x 1` character array with entries in {L,E,G}
-%                           (The code is backward compatible with an m + k x 1 csense vector,
-%                           where k is the number of coupling constraints)
-%                         * C - `k x n` Left hand side of C*v <= d
-%                         * d - `k x 1` Right hand side of C*v <= d
-%                         * dsense - `k x 1` character array with entries in {L,E,G}
+%    model:             optional additional fields analysed if present:
+%
+%                         * .b - `m x 1` change in concentration with time
+%                         * .C - `k x n` left hand side of `C*v <= d`
+%                         * .d - `k x 1` right hand side of `C*v <= d`
+%                         * .D - `k x p` additional constraint matrix (rows aligned with `.C`)
+%                         * .E - `m x q` additional constraint matrix (rows aligned with `.S`)
+%                         * .A - full constraint matrix analysed directly when present
+%                         * .description - model name printed in the summary report
 %
 %    estLevel:                level of estimation: `crude`, `medium`, `fine` (default)
 %    printLevel:              verbose level (default: 1). Level 0 is quiet.
+%    matrixA:                 char selecting which matrix to scale: 'S', 'C', 'D', 'E', 'CD' or 'A'
+%                             (default: assemble the constraint matrix from `.S`/`.C`/`.D`/`.E`)
 %
 % OUTPUTS:
 %

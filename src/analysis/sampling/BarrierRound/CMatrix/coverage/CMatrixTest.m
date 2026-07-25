@@ -1,3 +1,5 @@
+% Unit tests for the CMatrix high-precision matrix class (comparison,
+% arithmetic, unary, factorisation, and indexing operations)
 classdef CMatrixTest < matlab.unittest.TestCase
    properties (TestParameter)
       type = {@ddouble}

@@ -4,14 +4,17 @@ function [modelNew, unusedGenes] = removeUnusedGenes(model)
 %
 % USAGE:
 %
-%    modelNew = removeUnusedGenes(model)
+%    [modelNew, unusedGenes] = removeUnusedGenes(model)
 %
 % INPUTS:
-%		 model:    COBRA structure
+%    model:            COBRA structure
 %
 % OUTPUT:
-%		 modelNew:    COBRA model structure with updated gene field reflecting only
-%                  content present in the model
+%    modelNew:         COBRA model structure with updated gene field reflecting only
+%                      content present in the model
+%    unusedGenes:      Cell array of gene identifiers that were removed because
+%                      they are not associated with any reaction (i.e. all-zero
+%                      columns of modelNew.rxnGeneMat)
 %
 % .. Authors:
 %           - Sjoerd Opdam - 6/24/2014

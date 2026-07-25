@@ -1,32 +1,35 @@
-function [dietPerformance] = compareDietPerformance(model, diets,rois, varargin)
-% Function to check the effect of different diets on the possible flux
-% range for specified reactions.
+function [dietPerformance] = compareDietPerformance(model, diets, rois, varargin)
+% Check the effect of different diets on the possible flux range for a set
+% of specified reactions
 %
-% [dietPerformance] = compareDietPerformance(model, diets, rois, varargin)
-% 
-% Example: [dietPerformance] = compareDietPerformance(model, diets, rois,
-% 'optPercentage', 0.95, 'microbiotaExcretionBound', 0.5)
+% USAGE:
+%
+%    [dietPerformance] = compareDietPerformance(model, diets, rois, varargin)
 %
 % INPUTS:
-%   model:          COBRA model where the rois are present
-%   diets:          Cell array where each cell contains an cell array with
-%                   The metabolite composition of the diet {'met', value}
-%   rois:           Cell array with reactions to investigate under
-%                   different diets
+%    model:            COBRA model in which the reactions of interest are
+%                      present
+%    diets:            Cell array where each cell holds a cell array with the
+%                      metabolite composition of a diet as {'met', value}
+%    rois:             Cell array of reactions to investigate under the
+%                      different diets
 %
 % OPTIONAL INPUTS:
-%   optPercentage:  Integer, used in fluxVariability to indicate the
-%                   percentage of the objective for which FVA is solved.  
-%                   Defaults to 99
-%   microbiotaExretionBound: Integer, used to constrain both bounds of 
-%                   Excretion_EX_microbiota_LI_biomass. Defaults to 1
-%   dietNames:      Cell array with names for diets in that will be used in
-%                   the output. Defaults to Diet1, Diet2 etcetc.
-% OUTPUT:
-%   dietPerformance:    Table for each given diet, the min and max flux for
-%                   each roi.
+%    varargin:         Name-value pairs:
 %
-% .. Authors: - Bram Nap 06-2022 
+%                        * optPercentage - percentage of the objective used
+%                          by fluxVariability when solving FVA (default 99)
+%                        * microbiotaExcretionBound - value used to constrain
+%                          both bounds of Excretion_EX_microbiota_LI_biomass
+%                          (default 1)
+%                        * dietNames - cell array of names for the diets used
+%                          in the output (default Diet1, Diet2, ...)
+%
+% OUTPUT:
+%    dietPerformance:     Table giving, for each diet, the minimum and maximum
+%                      flux of each reaction of interest
+%
+% .. Author: - Bram Nap, 06-2022
 
 % Initialise the inputs
 parser = inputParser();

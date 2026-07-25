@@ -1,20 +1,30 @@
-function [VMH2IDmappingAll,VMH2IDmappingPresent,VMH2IDmappingMissing]=getIDfromMetStructure(metabolite_structure,idName)
-
-% INPUT
-% metabolite_structure      Structure containg metabolite related informations
-% and ID's
-% idName                    Name of the ID as used in the metabolite structure
-%                           to be retrieved (e.g., 'pubChemId')
+function [VMH2IDmappingAll, VMH2IDmappingPresent, VMH2IDmappingMissing] = getIDfromMetStructure(metabolite_structure, idName)
+% Retrieves a specified identifier for all metabolites in a metabolite structure
 %
-% OUTPUT
-% VMH2IDmappingAll          Mapping of all VMH metabolites present in the
-%                           metabolite structure (including NaNs)
-% VMH2IDmappingPresent      Mapping of all VMH metabolites present in the
-%                           metabolite structure (excluding NaNs)
-% VMH2IDmappingMissing      Abbreviations of metabolites that are NaN's in the
-%                           metabolite structure
+% Retrieves the requested identifier (`idName`) for every metabolite in the
+% metabolite structure and returns the VMH-to-identifier mappings, split into
+% all metabolites, those with a present identifier, and those with a missing
+% (NaN) identifier.
 %
-% IT, Aug 2020
+% USAGE:
+%
+%    [VMH2IDmappingAll, VMH2IDmappingPresent, VMH2IDmappingMissing] = getIDfromMetStructure(metabolite_structure, idName)
+%
+% INPUTS:
+%    metabolite_structure:    metabolite structure containing metabolite-related
+%                             information and identifiers
+%    idName:                  name of the identifier, as used in the metabolite
+%                             structure, to be retrieved (e.g. 'pubChemId')
+%
+% OUTPUTS:
+%    VMH2IDmappingAll:        mapping of all VMH metabolites present in the
+%                             metabolite structure (including NaNs)
+%    VMH2IDmappingPresent:    mapping of all VMH metabolites present in the
+%                             metabolite structure (excluding NaNs)
+%    VMH2IDmappingMissing:    abbreviations of metabolites whose identifier is
+%                             NaN in the metabolite structure
+%
+% .. Author: - Ines Thiele, Aug 2020
 
 
 Mets = fieldnames(metabolite_structure);

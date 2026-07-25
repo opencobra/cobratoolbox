@@ -1,28 +1,41 @@
-function [model,removedBioComp,addedReactionsBiomass] = rebuildBiomassReaction(model,microbeID,biomassReaction,database,infoFile)
+function [model, removedBioComp, addedReactionsBiomass] = rebuildBiomassReaction(model, microbeID, biomassReaction, database, infoFile)
 % Part of the DEMETER pipeline. This function rebuilds the biomass
 % objective function of the reconstruction based on taxonomical information
-% for the organism. The biomass formulation is based on gram-staining, 
+% for the organism. The biomass formulation is based on gram-staining,
 % taxonomy (Bacteria vs. Archaea), and phylum-specific features.
 %
-% USAGE
-%       [model,removedBioComp,addedReactionsBiomass] = rebuildBiomassReaction(model,microbeID,biomassReaction,database,infoFile)
+% USAGE:
 %
-% INPUTS
-% model:                  COBRA model structure
-% biomassReaction:        Biomass reaction abbreviation
-% microbeID:              ID of the reconstructed microbe that serves as the
-%                         reconstruction name and to identify it in input tables
-% infoFile:               Table with taxonomic and gram staining 
-%                         information on microbes to reconstruct
+%    [model, removedBioComp, addedReactionsBiomass] = rebuildBiomassReaction(model, microbeID, biomassReaction, database, infoFile)
 %
-% OUTPUTS
-% model:                  COBRA model structure
-% removedBioComp:         Removed components that shpould not be in the BOF
-% addedReactionsBiomass:  Reactions that were added to enable flux through
-%                         the rebuilt BOF
+% INPUTS:
+%    model:                    COBRA model structure with fields:
 %
-% AUTHOR:
-%       - Almut Heinken, 03/2020
+%                                * .rxns - Reaction identifiers
+%                                * .mets - Metabolite identifiers
+%                                * .S - Stoichiometric matrix
+%    microbeID:                ID of the reconstructed microbe that serves
+%                              as the reconstruction name and to identify it
+%                              in input tables
+%    biomassReaction:          Biomass reaction abbreviation
+%    database:                 Structure containing the reaction and
+%                              metabolite database, with fields:
+%
+%                                * .reactions - cell array of reaction data
+%                                  (abbreviation, name, reaction formula, ...)
+%    infoFile:                 Cell array (with header row) of taxonomic and
+%                              gram-staining information on microbes to
+%                              reconstruct
+%
+% OUTPUTS:
+%    model:                    COBRA model structure with the biomass
+%                              objective function rebuilt
+%    removedBioComp:           Removed components that should not be in the
+%                              biomass objective function (BOF)
+%    addedReactionsBiomass:    Reactions that were added to enable flux
+%                              through the rebuilt BOF
+%
+% .. Author: - Almut Heinken, 03/2020
 
 addedReactionsBiomass={};
 removedBioComp={};

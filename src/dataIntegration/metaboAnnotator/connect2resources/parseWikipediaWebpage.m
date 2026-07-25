@@ -1,22 +1,30 @@
-function [metabolite_structure,IDsAdded] = parseWikipediaWebpage(metabolite_structure,startSearch,endSearch)
-% This function searches wikipedia for identifiers. It will either use
-% wikipedia ids provided by the metabolite structure or try to find perfect
-% hits based on metabolite name search.
+function [metabolite_structure, IDsAdded] = parseWikipediaWebpage(metabolite_structure, startSearch, endSearch)
+% Search Wikipedia for identifiers, using the Wikipedia id provided by the
+% metabolite structure or a perfect hit from a metabolite name search, and add
+% the cross-referenced identifiers (e.g. IUPHAR, ChemSpider, ECHA, ChEMBL, CAS
+% registry, PubChem, UNII, EPA) to the metabolite structure.
 %
-% INPUT
-% metabolite_structure  metabolite structure
-% startSearch           specify where the search should start in the
-%                       metabolite structure. Must be numeric (optional, default: all metabolites
-%                       in the structure will be search for)
-% endSearch             specify where the search should end in the
-%                       metabolite structure. Must be numeric (optional, default: all metabolites
-%                       in the structure will be search for)
+% USAGE:
 %
-% OUTPUT
-% metabolite_structure  updated metabolite structure
+%    [metabolite_structure, IDsAdded] = parseWikipediaWebpage(metabolite_structure, startSearch, endSearch)
 %
+% INPUT:
+%    metabolite_structure:    metabolite structure whose fields are VMH
+%                             metabolite IDs
 %
-% Ines Thiele, 09/2021
+% OPTIONAL INPUTS:
+%    startSearch:             numeric index of where the search should start in
+%                             the metabolite structure (default: 1)
+%    endSearch:               numeric index of where the search should end in
+%                             the metabolite structure (default: last metabolite)
+%
+% OUTPUTS:
+%    metabolite_structure:    updated metabolite structure
+%    IDsAdded:                cell array logging the added identifiers, with the
+%                             metabolite field name, the identifier type, and
+%                             the assigned identifier per row
+%
+% .. Author: - Ines Thiele, 09/2021
 
 
 annotationSource = 'Wikipedia website';

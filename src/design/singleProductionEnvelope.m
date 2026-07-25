@@ -36,7 +36,7 @@ function [x, y1, y2] = singleProductionEnvelope(model, deletions, product, bioma
 %    outputFolder:    (char) name of the folder where files are saved
 %                     Default = 'Results'
 %
-% OUTPUTS;
+% OUTPUTS:
 %    x:               x axis for the curves
 %    y1:              y results for the first curve - 'Minimum Wild-type'
 %    y2:              y results for the second curve - 'Maximum Wild-type'

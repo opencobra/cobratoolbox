@@ -1,29 +1,27 @@
-function kegg2mol(cid,molfileDir,mets,takeMajorMS,pH,takeMajorTaut)
-% Retreive molfiles from the KEGG Compound database.
-% 
-% kegg2mol(cid,molfileDir,mets,takeMajorMS,pH,takeMajorTaut)
-% 
-% INPUTS
-% cid               m x 1 array of KEGG Compound identifiers.
-% 
-% OPTIONAL INPUTS
-% molfileDir        Path to directory where molfiles will be saved. Default
-%                   is molfilesFromKegg.
-% mets              m x 1 array of metabolite identifiers. Used to name
-%                   molfiles. KEGG Compound ID will be used if mets is
-%                   omitted. 
-% takeMajorMS       {(0),1}. If 0 (default), molfiles will be downloaded
-%                   directly from KEGG. If 1, they will save as the major
-%                   microspecies at the pH specified in input variable pH.
-%                   Computing major microspecies requires ChemAxon's
-%                   calculator plugins (cxcalc).
-% pH                pH for computing major microspecies.
-% takeMajorTaut     {0,(1)}. If 1 (default), molfiles will be saved as the
-%                   major tautomers of the major microspecies at the
-%                   specified pH. 
-% 
-% WRITTEN OUTPUTS
-% One molfile for each metabolite with a KEGG Compound ID.
+function kegg2mol(cid, molfileDir, mets, takeMajorMS, pH, takeMajorTaut)
+% Retrieve molfiles from the KEGG Compound database
+%
+% USAGE:
+%
+%    kegg2mol(cid, molfileDir, mets, takeMajorMS, pH, takeMajorTaut)
+%
+% INPUT:
+%    cid:              `m x 1` array of KEGG Compound identifiers
+%
+% OPTIONAL INPUTS:
+%    molfileDir:       path to the directory where molfiles are saved (default `molfilesFromKegg`)
+%    mets:             `m x 1` array of metabolite identifiers used to name the molfiles
+%                      (the KEGG Compound ID is used if `mets` is omitted)
+%    takeMajorMS:      0 (default) to download molfiles directly from KEGG, or 1 to save
+%                      the major microspecies at pH `pH` (requires ChemAxon's cxcalc)
+%    pH:               pH for computing the major microspecies (default 7)
+%    takeMajorTaut:    1 (default) to save the major tautomers of the major microspecies
+%                      at the specified pH, otherwise 0
+%
+% NOTE:
+%
+%    Writes one molfile per metabolite with a KEGG Compound ID. Approximately
+%    2 s per KEGG id when takeMajorMS = 1, 0.3 s when takeMajorMS = 0.
 
 % If takeMajorMS == 1; approximately 2 seconds per kegg id
 % If takeMajorMS == 0; approximately 0.3 seconds per kegg id

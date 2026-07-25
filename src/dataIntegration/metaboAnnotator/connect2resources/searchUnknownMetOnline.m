@@ -1,16 +1,31 @@
-function [metabolite_structure] = searchUnknownMetOnline(met,VMHId,metabolite_structure_rBioNet,metab_rBioNet_online,rxn_rBioNet_online)
-% This function searches HMDB by names and returns a metabolite structure
-% and the HMDB ID if the name appear in the common name, IUPAC, synonyms,
-% or traditional name.
+function [metabolite_structure] = searchUnknownMetOnline(met, VMHId, metabolite_structure_rBioNet, metab_rBioNet_online, rxn_rBioNet_online)
+% Search HMDB by name and return a metabolite structure with the HMDB id when
+% the name appears in the common name, IUPAC name, synonyms or traditional name.
+% A new metabolite entry (with InChIString, mol file and charged formula) is
+% created for the matched metabolite.
 %
-% INPUT
-% met                   metabolite name (try to spell it correctly)
+% USAGE:
 %
-% OUTPUT
-% metabolite_structure  metabolite structure
+%    [metabolite_structure] = searchUnknownMetOnline(met, VMHId, metabolite_structure_rBioNet, metab_rBioNet_online, rxn_rBioNet_online)
 %
+% INPUT:
+%    met:                             metabolite name (try to spell it correctly)
 %
-% Ines Thiele, 09/2021
+% OPTIONAL INPUTS:
+%    VMHId:                           VMH id for the new metabolite (default:
+%                                     generated de novo with generateVMHMetAbbr)
+%    metabolite_structure_rBioNet:    rBioNet-derived metabolite structure
+%                                     (default: loaded from met_strc_rBioNet)
+%    metab_rBioNet_online:            rBioNet metabolite database (default:
+%                                     loaded from data/metab.mat)
+%    rxn_rBioNet_online:              rBioNet reaction database (default: loaded
+%                                     from data/rxn.mat)
+%
+% OUTPUT:
+%    metabolite_structure:            metabolite structure for the matched
+%                                     metabolite
+%
+% .. Author: - Ines Thiele, 09/2021
 
 if ~exist('metabolite_structure_rBioNet','var')
     load met_strc_rBioNet;

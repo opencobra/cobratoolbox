@@ -10,11 +10,17 @@ function [StopFlag, Status] = StopCriterion(grad, nhxk, Niter, Nmap, Ngmap, MaxN
 % INPUTS:
 %    grad:              gradient of the merit funcrion
 %    nhxk:              the norm 2 of `h(xk)`
+%    Niter:             current iteration number
+%    Nmap:              current number of mapping (function) evaluations
+%    Ngmap:             current number of mapping-gradient evaluations
 %    MaxNumIter:        maximum number of iterations
 %    MaxNumMapEval:     maximum number of function evaluations
 %    MaxNumGmapEval:    maximum number of subgradient evaluations
+%    T:                 elapsed running time
 %    TimeLimit:         maximum running time
 %    epsilon:           accuracy parameter
+%    nhx0:              the norm 2 of `h(x0)` at the initial point
+%    ngradx0:           the norm 2 of the merit-function gradient at the initial point
 %    Stopping_Crit:     stopping criterion
 %
 %                         1. stop if :math:`||grad|| \leq \epsilon`

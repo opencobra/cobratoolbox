@@ -9,7 +9,17 @@ function abcModel = alphabetizeModel(model)
 %    abcModel = alphabetizeModel(model)
 %
 % INPUT:
-%     model:      COBRA model structure
+%     model:      COBRA model structure with fields:
+%
+%                  * .rxns - `n x 1` reaction identifiers, sorted and used
+%                    to reorder all reaction-associated fields
+%                  * .mets - `m x 1` metabolite identifiers, sorted and
+%                    used to reorder all metabolite-associated fields
+%                  * .genes - `g x 1` gene identifiers (if present), sorted
+%                    and used to reorder all gene-associated fields
+%                  * .comps - `c x 1` compartment symbols (if present),
+%                    sorted and used to reorder all compartment-associated
+%                    fields
 %
 % OUTPUT:
 %    abcModel:    the alphabetized model

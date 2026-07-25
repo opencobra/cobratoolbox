@@ -7,6 +7,7 @@ function portableGitSetup(gitBashVersion, removeFlag)
 %     portableGitSetup(gitBashVersion, removeFlag)
 %
 % INPUT:
+%     gitBashVersion:    Version of gitBash to install, e.g. `2.13.2`
 %     removeFlag:       Flag to remove old versions from the path or not
 %
 %                           - 0: install, don't remove anything

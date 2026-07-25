@@ -17,20 +17,20 @@ function createPanModels(agoraPath, panPath, taxonLevel, agoraVersion, numWorker
 %   createPanModels(agoraPath,panPath,taxonLevel, agoraVersion, numWorkers)
 %
 % INPUTS:
-%    agoraPath     String containing the path to the AGORA reconstructions.
-%                  Must end with a file separator.
-%    panPath       String containing the path to an empty folder that the
-%                  created pan-models will be stored in. Must end with a file separator.
-%    taxonLevel    String with desired taxonomical level of the pan-models.
-%                  Allowed inputs are 'Species','Genus','Family','Order', 'Class','Phylum'.
-%    agoraVersion  Version of AGORA that will be used (allowed inputs: 'AGORA', 'AGORA2', 
-%                  alternatively: path to custom table with reconstruction information)
+%    agoraPath:       String containing the path to the AGORA reconstructions.
+%                     Must end with a file separator.
+%    panPath:         String containing the path to an empty folder that the
+%                     created pan-models will be stored in. Must end with a file separator.
+%    taxonLevel:      String with desired taxonomical level of the pan-models.
+%                     Allowed inputs are 'Species','Genus','Family','Order', 'Class','Phylum'.
+%    agoraVersion:    Version of AGORA that will be used (allowed inputs: 'AGORA', 'AGORA2',
+%                     alternatively: path to custom table with reconstruction information)
 %
-% OPTIONAL INPUTS
-%    numWorkers    Number of workers for parallel pool (default: no pool)
-%    builtTaxa     Names of taxa in table that will be built (default:
-%                  all). Need to be entered as a cell array of strings with names written
-%                  exactly as in the corresponding column in the table.
+% OPTIONAL INPUTS:
+%    numWorkers:      Number of workers for parallel pool (default: no pool)
+%    builtTaxa:       Names of taxa in table that will be built (default:
+%                     all). Need to be entered as a cell array of strings with names written
+%                     exactly as in the corresponding column in the table.
 %
 % .. Authors
 %       - Stefania Magnusdottir, 2016

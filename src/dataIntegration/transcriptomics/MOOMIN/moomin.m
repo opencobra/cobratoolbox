@@ -9,7 +9,14 @@ function [model, MILPsolutions, MILPproblem] = moomin(model, expression, varargi
 %    [model, MILPsolutions, MILPproblem] = moomin(model, expression, varargin)
 %
 % INPUTS:
-%    model:             input model (COBRA model structure)
+%    model:             input model (COBRA model structure) with fields:
+%
+%                         * .S - `m x n` stoichiometric matrix
+%                         * .lb - `n x 1` lower flux bounds
+%                         * .ub - `n x 1` upper flux bounds
+%                         * .rxns - `n x 1` cell array of reaction abbreviations
+%                         * .rules - `n x 1` cell array of gene-reaction rules
+%                         * .genes - `g x 1` cell array of gene identifiers
 %    expression:        structure with the following fields
 %
 %                         * .GeneID - vector of gene IDs
@@ -58,8 +65,8 @@ function [model, MILPsolutions, MILPproblem] = moomin(model, expression, varargi
 %                           solutions (colour differs between solutions -> 6)
 %                         * .PPDE - PPDEs of the model genes. -1 for missing values
 %                         * .FC - fold changes of the model genes. 0 for missing values
-%    MILPsolutions      raw outputs of 'solveCobraMILP'
-%    MILPproblem        the final MILP-problem solved (or was attempted to be solved)
+%    MILPsolutions:     raw outputs of 'solveCobraMILP'
+%    MILPproblem:       the final MILP-problem solved (or was attempted to be solved)
 %
 % `Pusa et al. (2019). MOOMIN – Mathematical explOration of 'Omics data on a MetabolIc Network.`
 %

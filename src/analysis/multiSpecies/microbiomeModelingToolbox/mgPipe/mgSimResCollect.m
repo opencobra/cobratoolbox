@@ -21,10 +21,11 @@ function [netSecretionFluxes, netUptakeFluxes, Y] = mgSimResCollect(resPath, sam
 %                        full path and name to related documentation(default: no)
 %                        is available
 %    netProduction:      cell array containing FVA values for maximal uptake
+%    netUptake:          cell array containing FVA values for minimal uptake
 %    figForm:            char indicating the format of figures
 %
 % OUTPUTS:
-%    netSecretionFluxes: cell array with computed NMPCs
+%    netSecretionFluxes:    cell array with computed NMPCs
 %    netUptakeFluxes:    cell array with computed uptake potential
 %    Y:                  classical multexchangesimensional scaling
 %

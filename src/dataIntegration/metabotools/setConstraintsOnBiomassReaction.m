@@ -1,4 +1,4 @@
-function [modelBM] = setConstraintsOnBiomassReaction(model,of,dT,tolerance)
+function [modelBM] = setConstraintsOnBiomassReaction(model, of, dT, tolerance)
 % This function sets constrains biomass objective function in the model accoring to the condition specific doubling time.
 %
 % USAGE:

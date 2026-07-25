@@ -12,7 +12,7 @@ function output = optimizeVKmodel0(model, solver, x0, parms)
 %
 % USAGE:
 %
-%    output = optimizeVKmodel(model, solver, x0, parms)
+%    output = optimizeVKmodel0(model, solver, x0, parms)
 %
 % INPUT:
 %    model:    structure includes `F`, `R` and/or `L`

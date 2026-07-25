@@ -1,4 +1,28 @@
 function P = standardize_problem(P)
+% Validate a polytope problem structure and fill in its missing standard fields
+%
+% USAGE:
+%
+%    P = standardize_problem(P)
+%
+% INPUTS:
+%    P:       polytope problem structure. Fields read or completed:
+%
+%               * .Aeq - equality constraint matrix (`Aeq x = beq`)
+%               * .beq - equality constraint right-hand side
+%               * .Aineq - inequality constraint matrix (`Aineq x <= bineq`)
+%               * .bineq - inequality constraint right-hand side
+%               * .lb - lower bounds on the variables
+%               * .ub - upper bounds on the variables
+%               * .center - initial interior point (required if unconstrained)
+%               * .f - handle to the objective function (optional)
+%               * .df - gradient of the objective, vector or function handle (optional)
+%               * .ddf - Hessian of the objective, vector or function handle (optional)
+%
+% OUTPUTS:
+%    P:       the standardized problem structure with all fields populated
+%
+
 if nonempty(P, 'A')
     error('Polytope:standardize', 'Use Aeq or Aineq instead of A in the model structure.');
 end

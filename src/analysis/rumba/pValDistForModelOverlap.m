@@ -7,8 +7,14 @@ function [rxnsInCommon, MedianChange] = pValDistForModelOverlap(model1, model2)
 %    [rxnsInCommon, MedianChange] = pValDistForModelOverlap(model1, model2)
 %
 % INPUTS:
-%    model1:          Model sampled under first condition
-%    model2:          Model sampled under second condition
+%    model1:          Model sampled under the first condition, with fields:
+%
+%                       * .rxns - reaction identifiers
+%                       * .points - `nRxns x nPoints` matrix of sampled flux values
+%    model2:          Model sampled under the second condition, with fields:
+%
+%                       * .rxns - reaction identifiers
+%                       * .points - `nRxns x nPoints` matrix of sampled flux values
 %
 % OUTPUTS:
 %    rxnsInCommon:    Reactions shared by both sampled models

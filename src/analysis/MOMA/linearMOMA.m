@@ -6,8 +6,16 @@ function [solutionDel, solutionWT, totalFluxDiff, solStatus] = linearMOMA(modelW
 %    [solutionDel, solutionWT, totalFluxDiff, solStatus] = linearMOMA(modelWT, modelDel, osenseStr, minFluxFlag, verbFlab)
 %
 % INPUTS:
-%    modelWT:          Wild type model
-%    modelDel:         Deletion strain model
+%    modelWT:          Wild type model with the fields:
+%
+%                        * .S - `m x n` stoichiometric matrix
+%                        * .rxns - `n x 1` cell array of reaction identifiers
+%
+%    modelDel:         Deletion strain model with the fields:
+%
+%                        * .S - `m x n` stoichiometric matrix
+%                        * .rxns - `n x 1` cell array of reaction identifiers
+%                        * .c - `n x 1` linear objective coefficient vector
 %
 % OPTIONAL INPUTS:
 %    osenseStr:        Maximize ('max') / minimize ('min') (Default = 'max')

@@ -1,4 +1,4 @@
-function illustrate_ppp(ResultsAllCellLines,mets,path,samples,label,fonts,tol)
+function illustrate_ppp(ResultsAllCellLines, mets, path, samples, label, fonts, tol)
 % This function generates and saves heatmaps for the results of the function
 % performPPP for all sample models.
 %
@@ -9,7 +9,6 @@ function illustrate_ppp(ResultsAllCellLines,mets,path,samples,label,fonts,tol)
 % INPUTS:
 %    ResultsAllCellLines:     Result structure
 %    mets:                    Metabolites that were tested in the phase plane analysis
-%    step_size:               Step size of each metabololite tested
 %    path:                    Path where output is saved
 %    samples:                 Names of conditions
 %    label:                   Defining label of X-axis, y-axis and z-axis, e.g., {`Glucose uptake (fmol/cell/hr)`; `Oxygen uptake

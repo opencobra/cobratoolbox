@@ -8,13 +8,13 @@ function [annotation] = parseCD(fname)
 %    [annotation] = parseCD(fname)
 %
 % INPUT:
-%    fanme:               A CellDesigner XML file
+%    fname:               A CellDesigner XML file
 %
 % OUTPUT:
 %
 %    annotation:          The first type of the parsed model structure
 %
-%                           * annotation.r_info - The second type of the parsed model structure
+%                           * .r_info - The second type of the parsed model structure
 %
 % EXAMPLES:
 %

@@ -1,10 +1,14 @@
 function testOptArrowEcoliCoreHttpFBA(endpoint)
-% testOptArrowEcoliCoreHttpFBA End-to-end COBRA FBA test on ecoli_core via OptArrow HTTP.
+% End-to-end COBRA FBA test on ecoli_core via OptArrow HTTP
 %
 % USAGE:
 %
 %    testOptArrowEcoliCoreHttpFBA()
 %    testOptArrowEcoliCoreHttpFBA(endpoint)
+%
+% OPTIONAL INPUTS:
+%    endpoint:    HTTP endpoint URL for the OptArrow compute service
+%                 (default: `'http://127.0.0.1:8000/compute'`)
 
 if nargin < 1 || isempty(endpoint)
     endpoint = 'http://127.0.0.1:8000/compute';

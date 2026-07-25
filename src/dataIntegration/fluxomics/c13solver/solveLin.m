@@ -1,4 +1,18 @@
-function [x] = solveLin(A,B)
+function [x] = solveLin(A, B)
+% Solves the linear system `A*x = B` restricted to the connected block of
+% variables reachable from the non-zero entries of `B`, leaving the
+% remaining variables at zero
+%
+% USAGE:
+%
+%    [x] = solveLin(A, B)
+%
+% INPUTS:
+%    A:    square coefficient matrix of the linear system
+%    B:    right-hand side; a single column is solved directly, while for multiple columns the columns `2:end` are solved and the first column is set so that each row of `x` sums to 1
+%
+% OUTPUT:
+%    x:    solution the same size as `B`; entries outside the connected block are left at zero
 
 s = warning('off', 'MATLAB:singularMatrix');
 warning('off','MATLAB:nearlySingularMatrix');

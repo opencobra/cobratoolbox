@@ -13,9 +13,11 @@ function [massImbalance, imBalancedMass, imBalancedCharge, imBalancedRxnBool, el
 %    model:                  COBRA model structure:
 %
 %                              * .S - `m` x `n` stoichiometric matrix
-%                              * .metForumlas - `m` x 1 cell array of metabolite formulas
+%                              * .mets - `m` x 1 cell array of metabolite identifiers
+%                              * .metFormulas - `m` x 1 cell array of metabolite formulas
 %                              * .metCharges - `m` x 1 double array of charges
-%                              * model.SIntRxnBool - Boolean of reactions heuristically though to be mass balanced. (optional)
+%                              * .rxns - `n` x 1 cell array of reaction identifiers (generated internally if absent)
+%                              * .SIntRxnBool - Boolean of reactions heuristically though to be mass balanced. (optional)
 %
 % OPTIONAL INPUTS:
 %    printLevel:             {-1, (0), 1} where:

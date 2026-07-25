@@ -3,18 +3,19 @@ function LPproblem = buildMDFBAProblem(model, varargin)
 %
 % USAGE:
 %
-%    MDFBAProblem = buildMDFBAProblem(model, varargin)
+%    LPproblem = buildMDFBAProblem(model, varargin)
 %
 % INPUT:
 %    model:           A COBRA style model with the following fields:
 %
-%                       * S       - Stoichiometric Matrix
-%                       * lb      - lower bounds
-%                       * ub      - upper bounds
-%                       * b       - metabolic constraints
-%                       * c       - objective coefficients
-%                       * csense  - Constraint senses (optional, default Equality)
-%                       * osense  - Optimisation sense (optional, default maximisation)
+%                       * .S - Stoichiometric Matrix
+%                       * .lb - lower bounds
+%                       * .ub - upper bounds
+%                       * .b - metabolic constraints
+%                       * .c - objective coefficients
+%                       * .mets - metabolite identifiers
+%                       * .csense - Constraint senses (optional, default Equality)
+%                       * .osense - Optimisation sense (optional, default maximisation)
 %
 % OPTIONAL INPUTS:
 %    varargin:        Variable arguments as parameter/value pairs:
@@ -25,7 +26,7 @@ function LPproblem = buildMDFBAProblem(model, varargin)
 %                         metabolite is used, default(max(ub,abs(lb))/10000)
 %
 % OUTPUT:
-%    MDFBAProblem:    The MILPproblem structure representing the MDFBA
+%    LPproblem:       The MILPproblem structure representing the MDFBA
 %                     problem
 %
 % NOTE:

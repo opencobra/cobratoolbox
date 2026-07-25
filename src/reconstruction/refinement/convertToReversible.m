@@ -13,7 +13,12 @@ function modelRev = convertToReversible(model)
 %                 which were originally only allowed to carry negative flux
 %                 must have a _r tag at the end of the reaction id.
 %                 It is further assumed, that there is an exact 1:1 match
-%                 between _f and _b reactions. 
+%                 between _f and _b reactions. Fields used:
+%
+%                   * .rxns - `n x 1` cell array of reaction identifiers
+%                   * .lb - `n x 1` lower flux bounds
+%                   * .ub - `n x 1` upper flux bounds
+%                   * .S - `m x n` stoichiometric matrix
 %
 % OUTPUT:
 %    modelRev:    Model in reversible format

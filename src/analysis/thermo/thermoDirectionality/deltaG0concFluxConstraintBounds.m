@@ -10,8 +10,16 @@ function model = deltaG0concFluxConstraintBounds(model, Legendre, LegendreCHI, g
 % INPUTS:
 %    model:                 structure with fields:
 %
-%                             * model.S
-%                             * model.SintRxnBool - Boolean indicating internal reactions
+%                             * model.S - `m x n` stoichiometric matrix
+%                             * model.SIntRxnBool - Boolean indicating internal reactions
+%                             * model.Srecon - reconstruction stoichiometric matrix
+%                             * model.gcmS - group contribution method stoichiometric matrix
+%                             * model.mets - metabolite identifiers
+%                             * model.rxns - reaction identifiers
+%                             * model.metFormulas - metabolite formulas
+%                             * model.imBalancedMass - per-reaction mass imbalance
+%                             * model.imBalancedCharge - per-reaction charge imbalance
+%                             * model.faradayConstant - Faraday constant
 %                             * model.gasConstant - gas constant
 %                             * model.T - temperature
 %                             * model.boundryConc - bounds on concentration of boundary metabolites
@@ -45,6 +53,10 @@ function model = deltaG0concFluxConstraintBounds(model, Legendre, LegendreCHI, g
 %                           uncertainty, 1 means uncertainty given by group contribution method (one standard deviation)
 %
 %    model:                 structure with fields:
+%
+%                             * model.nStdDevGroupCont - number of group-contribution
+%                               standard deviations used (as passed in `nStdDevGroupCont`)
+%
 %                           For each metabolite:
 %
 %                             * model.xMin

@@ -1,19 +1,27 @@
 function G = createGroupIncidenceMatrix_old(model, gcmOutputFile, gcmMetList, jankowskiGroupData)
-% Creates `groupData` struct to calculate reaction Gibbs energies with reduced
-% error in `vonB`.
+% Create a group incidence matrix from group contribution method (GCM) output,
+% mapping each metabolite to its structural groups (Jankowski et al. data)
 %
 % USAGE:
 %
 %    G = createGroupIncidenceMatrix_old(model, gcmOutputFile, gcmMetList, jankowskiGroupData)
 %
 % INPUTS:
-%    model:
-%    gcmOutputFile:
-%    gcmMetList:
-%    jankowskiGroupData:
+%    model:                COBRA model structure, read for the fields:
+%
+%                            * .mets - `m x 1` cell array of metabolite identifiers
+%                            * .jankowskiGroupData - struct of group data with a `.groups` field
+%                            * .gcmMetList - metabolite identifiers ordered as the GCM output file rows
+%                            * .gcmOutputFile - path to the GCM output file to parse
+%    gcmOutputFile:        path to the group contribution method output file
+%    gcmMetList:           cell array of metabolite identifiers matching the GCM output rows
+%    jankowskiGroupData:    struct of Jankowski et al. group data with field:
+%
+%                            * .groups - cell array of structural group names
 %
 % OUTPUT:
-%    G:
+%    G:                    `m x g` group incidence matrix, one row per metabolite
+%                          and one column per structural group
 
 groups = model.jankowskiGroupData.groups;
 metList = model.gcmMetList;

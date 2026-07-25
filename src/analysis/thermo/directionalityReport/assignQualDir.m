@@ -9,17 +9,17 @@ function model = assignQualDir(model)
 % INPUTS:
 %    model:    structure with fields:
 %
-%                * model.lb
-%                * model.ub
+%                * .S - `m x n` stoichiometric matrix
+%                * .lb - `n x 1` lower flux bounds
+%                * .ub - `n x 1` upper flux bounds
 %
 % OUTPUTS:
-%    model:    structure with fields:
+%    model:    structure with added field:
 %
-%                * model.quantDir - Quantitative directionality assignments.
-%
-%                  * quantDir = 1 for reactions that are irreversible in the forward direction.
-%                  * quantDir = -1 for reactions that are irreversible in the reverse direction.
-%                  * quantDir = 0 for reversible reactions.
+%                * .qualDir - `n x 1` qualitative directionality assignment:
+%                  1 for reactions that are irreversible in the forward direction,
+%                  -1 for reactions that are irreversible in the reverse direction,
+%                  0 for reversible reactions
 
 [mlt,nlt]=size(model.S);
 

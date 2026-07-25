@@ -219,7 +219,7 @@ load([CBTDIR '/test/models/mat/ecoli_core_model.mat'])
 %Define zooming option
 options.jscode = 'zoom.transform(gMain, d3.zoomIdentity.translate(-1149,-863).scale(2.64));';
 %Load existing model
-sammi(model,[sammipath '/demo.json'],[],[],options)
+sammi(model,fullfile(fileDir,'demo.json'),[],[],options)
 assert(isfile(testFile));
 % Remove function result
 delete(testFile);

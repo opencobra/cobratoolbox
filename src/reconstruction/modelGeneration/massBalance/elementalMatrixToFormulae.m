@@ -2,17 +2,22 @@ function metForm = elementalMatrixToFormulae(Ematrix, elements, dMax)
 % Convert the elemental composition matrix into chemical formulae
 %
 % USAGE:
-%    metForm = elementalMatrixToFormulae(elements, Ematrix, dMax)
+%
+%    metForm = elementalMatrixToFormulae(Ematrix, elements, dMax)
 %
 % INPUTS:
-%  Ematrix:      elemental composition (`M` x `E` matrix) for `M` metabolites and `E` elements
-%  elements:     cell array of elements corresponding to the columns of Ematrix
+%    Ematrix:      elemental composition (`M` x `E` matrix) for `M` metabolites and `E` elements
+%    elements:     cell array of elements corresponding to the columns of Ematrix
 %
 % OPTIONAL INPUT:
-%  dMax:         the maximum number of decimal places for the stoichiometry (default 12)
+%    dMax:         the maximum number of decimal places for the stoichiometry (default 12)
 %
-% Siu Hung Joshua Chan Nov 2016
-if nargin < 3 
+% OUTPUT:
+%    metForm:      cell array of chemical formulae for the `M` metabolites in `Ematrix`
+%
+% .. Author: - Siu Hung Joshua Chan, Nov 2016
+
+if nargin < 3
     dMax = 12;
 end
 %combine duplicate elements

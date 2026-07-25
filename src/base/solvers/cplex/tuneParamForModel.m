@@ -1,4 +1,4 @@
-function optimParam = tuneParamForModel(model,varargin)
+function optimParam = tuneParamForModel(model, varargin)
 % Optimizes cplex parameters to make model resolution faster.
 % Particularly interetsing for large-scale MILP models and repeated runs of
 % optimisation.
@@ -8,24 +8,29 @@ function optimParam = tuneParamForModel(model,varargin)
 %
 % USAGE:
 %
-%    optimalParameters = tuneParam(model,contFunctName,1000,1000,0);
+%    optimParam = tuneParamForModel(model, contFunctName, timelimit, nrepeat, printLevel);
 %
 % INPUT:
-%         model:         A COBRA model struct.
-%         contFunctName: Parameters structure containing the name and value.
-%                        A set of routine parameters will be added by the solver
-%                        but won't be reported.
-%         timelimit:     default is 10000 second
-%         nrepeat:       number of row/column permutation of the original
-%                        problem, reports robust results.
-%                        sets the CPX_PARAM_TUNINGREPEAT parameter
-%                        High values of nrepeat would require consequent
-%                        memory and swap.
-%         printLevel:    0/1/2/3
+%         model:             A COBRA model struct.
+%
+% OPTIONAL INPUTS:
+%         varargin:          forwarded, in order, to `tuneParam` after converting
+%                            `model` to an LP problem:
+%
+%                              * contFunctName - Parameters structure containing the name and value.
+%                                A set of routine parameters will be added by the solver
+%                                but won't be reported.
+%                              * timelimit - default is 10000 second
+%                              * nrepeat - number of row/column permutation of the original
+%                                problem, reports robust results.
+%                                sets the CPX_PARAM_TUNINGREPEAT parameter
+%                                High values of nrepeat would require consequent
+%                                memory and swap.
+%                              * printLevel - 0/1/2/3
 %
 % OUTPUT:
-%         optimParam: structure of optimal parameter values directly usable as
-%                     contFunctName argument in solveCobraLP function
+%         optimParam:        structure of optimal parameter values directly usable as
+%                            contFunctName argument in solveCobraLP function
 %
 % NOTE:
 %       This is just a wrapper function that calls the tuneParam function
@@ -33,4 +38,4 @@ function optimParam = tuneParamForModel(model,varargin)
 %
 % .. Author: Thomas Pfau Dec 2017
 
-optimParam = tuneParam(buildOptProblemFromModel(model),varargin{:});
+optimParam = tuneParam(buildOptProblemFromModel(model), varargin{:});

@@ -9,15 +9,23 @@ function [RUMBA_outputs, UpRegulated, DownRegulated, MetConnectivity1, MetConnec
 %    model1:                     Model under first condition, exchange reactions
 %                                are constrained with the data related to the first
 %                                condition. If model already sampled
-%                                ('sampling' = 0). The sampling points is in an
-%                                mxn matrix with m reactions and n points included
-%                                as a field in the model(i.e., `model1.points`).
-%                                Set 'sampling' = 1 to set the model constrained
-%                                under the first conditions
-%    model2:                     Model under second condition. Same
-%                                format as `model1`.
-%    completeModel:              The complete reference model. This is used
-%                                to verify consistency between the sampled models.
+%                                ('sampling' = 0), the sampling points are in an
+%                                `m x n` matrix with m reactions and n points
+%                                included as the `.points` field. Set 'sampling'
+%                                = 1 to constrain and sample the model under the
+%                                first condition. Fields used:
+%
+%                                  * .points - `nRxns x nPoints` matrix of sampled
+%                                    flux values
+%                                  * .genes - gene identifiers
+%    model2:                     Model under second condition. Same format as
+%                                `model1`, with the same `.points` and `.genes`
+%                                fields.
+%    completeModel:              The complete reference model, used to verify
+%                                consistency between the sampled models. Fields
+%                                used:
+%
+%                                  * .genes - gene identifiers
 %
 % OPTIONAL INPUTS:
 %    sampling:                   0, if no sampling needed (default)

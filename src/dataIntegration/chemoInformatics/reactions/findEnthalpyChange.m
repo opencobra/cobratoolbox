@@ -18,16 +18,16 @@ function [enthalpyChange, substrateMass] = findEnthalpyChange(model, rxnList, rx
 %
 %                   * .rxns - An n x 1 array of reaction identifiers.
 %                             Should match metabolite identifiers in
-%    rxnList    List of reactions from which the number of broken and
+%    rxnList:    List of reactions from which the number of broken and
 %               formed bonds will be computed.
-%    rxnDir     Directory of with the RXN files.
-%    printLevel Print figure with the relation of mass vs bondsBF bondsE
+%    rxnDir:     Directory of with the RXN files.
+%    printLevel:    Print figure with the relation of mass vs bondsBF bondsE
 %
 % OUTPUTS:
-%    enthalpyChange	An n x 1 vector with the bond enthalpies in kJ/mol.
+%    enthalpyChange:    An n x 1 vector with the bond enthalpies in kJ/mol.
 %                   External or pasive transpor reactions are equal to 0;
 %                   missing and unbalanced reactions are NaN.
-%    substrateMass Total mass of the substrates
+%    substrateMass:    Total mass of the substrates
 %
 % .. Author: - German A. Preciat Gonzalez 12/06/2017
 

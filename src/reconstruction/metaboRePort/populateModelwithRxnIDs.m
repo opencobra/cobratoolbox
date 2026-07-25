@@ -1,4 +1,28 @@
 function [modelUpdated] = populateModelwithRxnIDs(model)
+% Populates a COBRA model with reaction cross-reference identifiers looked
+% up from the VMH reaction list spreadsheet (shipped alongside this
+% function) and, for `rxnSEEDID`, from a DEMETER seed-to-VMH translation
+% table.
+%
+% USAGE:
+%
+%    [modelUpdated] = populateModelwithRxnIDs(model)
+%
+% INPUTS:
+%    model:           COBRA model structure
+%
+% OUTPUT:
+%    modelUpdated:    COBRA model structure with the following reaction ID
+%                     fields populated (overwritten where already present):
+%
+%                       * .rxnECNumbers - EC number(s) for the reaction
+%                       * .rxnKEGGID - KEGG reaction identifier
+%                       * .rxnMetaNetXID - MetaNetX reaction identifier
+%                       * .rxnSEEDID - ModelSEED reaction identifier
+%                       * .rxnRheaID - Rhea reaction identifier
+%
+% .. Author: - Ines Thiele
+
 global CBTDIR
 [~,~,RAW] = xlsread([CBTDIR filesep 'src' filesep 'reconstruction', filesep 'metaboReport', filesep, 'VMH_reactionList.xlsx']);
 

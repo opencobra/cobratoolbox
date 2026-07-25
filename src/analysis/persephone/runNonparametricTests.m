@@ -1,48 +1,40 @@
 function resultTable = runNonparametricTests(data, metadata, predictor, response)
-% Performs non-parametric statistical tests (Wilcoxon or Kruskal-Wallis) on metabolic data
+% Perform non-parametric statistical tests (Wilcoxon or Kruskal-Wallis) on data
+%
+% The test is selected automatically from the number of response groups: a
+% Wilcoxon rank-sum test for two groups, a Kruskal-Wallis test for more.
+% Data are reshaped to long format, missing values removed, and the results
+% FDR-corrected with the Benjamini-Hochberg method.
 %
 % USAGE:
+%
 %    resultTable = runNonparametricTests(data, metadata, predictor, response)
 %
 % INPUTS:
-%    data:          (table) m x n table containing:
-%                   * m samples
-%                   * n reactions/taxa with flux or abundance values
-%                   * First column must contain sample IDs
-%    metadata:      (table) Sample metadata containing:
-%                   * Sample IDs in first column
-%                   * Response variable in separate column
-%    predictor:     (char) Name of predictor variable ('Flux' or 'relative_abundance')
-%    response:      (char) Name of response variable in metadata
+%    data:         m x n table of flux or abundance values (m samples,
+%                  n reactions/taxa). Fields used:
 %
-% OUTPUTS:
-%    resultTable:   (table) Statistical results with columns:
-%                   * name:      Reaction/Taxa identifier
-%                   * groups:    Cell array of group names
-%                   * n:         Array of group sizes
-%                   * statistic: Test statistic (Wilcoxon or Kruskal-Wallis)
-%                   * p-value:   Unadjusted p-value
-%                   * FDR:       Benjamini-Hochberg adjusted p-value
-%                   * effectSize: Effect size (r for Wilcoxon, η² for Kruskal-Wallis)
-%                   * confidence: 95% confidence interval (only for binary comparisons)
+%                    * .Properties - table properties; `.VariableNames` must
+%                      include an ID column and the measurement columns
+%                    * .ID - sample identifier column (first column)
+%    metadata:     table of sample metadata. Fields used:
 %
-% EXAMPLE:
-%    % Binary comparison (Wilcoxon test)
-%    resultTable = runNonparametricTests(fluxData, metadata, 'Flux', 'Disease')
+%                    * .Properties - table properties; `.VariableNames` must
+%                      include an ID column and the response column
+%                    * .Response - response column derived from `response` and
+%                      converted to group indices
+%                    * .ID - sample identifier column (first column)
+%    predictor:    char/string, name of the predictor variable ('Flux' or
+%                  'relative_abundance')
+%    response:     char/string, name of the response variable in metadata
 %
-%    % Multiple group comparison (Kruskal-Wallis test)
-%    resultTable = runNonparametricTests(abundanceData, metadata, 'relative_abundance', 'Treatment')
+% OUTPUT:
+%    resultTable:    table of statistical results (one row per reaction/taxon)
+%                    with the test method, group sizes, test statistic,
+%                    p-value, FDR-adjusted p-value and effect size
 %
-% NOTE:
-%    1. Automatically selects appropriate test based on number of groups
-%    2. Data is automatically normalized before testing
-%    3. Missing values (NaN) are removed before analysis
-%    4. Multiple testing correction uses Benjamini-Hochberg FDR
-%    5. Minimum group size of 3 samples is required for valid testing
-%
-% .. Author: Tim Hensen (07/2024)
+% .. Author: - Tim Hensen (07/2024)
 
-% Input validation
 validateattributes(data, {'table'}, {'nonempty'}, mfilename, 'data')
 validateattributes(metadata, {'table'}, {'nonempty'}, mfilename, 'metadata')
 validateattributes(predictor, {'char', 'string'}, {'nonempty'}, mfilename, 'predictor')

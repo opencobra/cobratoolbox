@@ -1,5 +1,15 @@
 function saveDir = setResultPath(solutionDir)
 % Function for creating a common path to all flux results
+%
+% USAGE:
+%
+%    saveDir = setResultPath(solutionDir)
+%
+% INPUT:
+%    solutionDir:    path to the folder with flux solution results
+%
+% OUTPUT:
+%    saveDir:        path to the created common results folder
 
 % Set name
 if ispc % Check if os is windows or non-windows

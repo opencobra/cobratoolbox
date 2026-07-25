@@ -1,29 +1,31 @@
-function flux2json(model,FBAtype,outputFolder)
-%This function print predicted fluxes to a json file used
-%for escher map. The json file generated here could be directly used in EshcerMap https://escher.github.io/#/
-%to visualise the flux distribution
+function flux2json(model, FBAtype, outputFolder)
+% Writes a model's predicted flux distribution to a json file for use with
+% EscherMap (https://escher.github.io/#/) to visualise the flux
+% distribution
 %
-
-% INPUT
-%   model:     (the following fields are required - others can be supplied)
+% USAGE:
 %
-%                         * S  - `m x n` Stoichiometric matrix
-%                         * c  - `n x 1` Linear objective coefficients
-%                         * lb - `n x 1` Lower bounds on net flux
-%                         * ub - `n x 1` Upper bounds on net flux
-%                         * mets - `m x 1` Metabolite IDs
-%                         * rxns - `n x 1` Reaction IDs
-
-%   FBAtype:   'FBA' or 'EFBA'
-%   outputFolder: 
-
-
-% OUTPUT
-%   A json file
-
+%    flux2json(model, FBAtype, outputFolder)
+%
+% INPUTS:
+%    model:           COBRA model structure with fields:
+%
+%                       * .rxns - `n x 1` cell array of reaction identifiers
+%                       * .rxnNames - `n x 1` cell array of reaction names
+%
+% OPTIONAL INPUTS:
+%    FBAtype:         'FBA' to solve with `optimizeCbModel`, or 'EFBA' to
+%                     solve with `entropicFluxBalanceAnalysis`
+%    outputFolder:    Folder in which the `data.json` output file is
+%                     written
+%
+% OUTPUT:
+%    A `data.json` file with the reaction fluxes is written to
+%    `outputFolder`
+%
 % .. Author: Yanjun Liu  26/04/2023
 
-if ~exist("model", 'var') 
+if ~exist("model", 'var')
     error('Input is missing')
 end
 

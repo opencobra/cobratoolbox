@@ -1,12 +1,13 @@
-function [bioQualifiers,standardQualifiers] = getBioQualifiers()
+function [bioQualifiers, standardQualifiers] = getBioQualifiers()
 % Get a list of possible bioqualifiers
 %
 % USAGE:
-%    annotationQualifiers = getBioQualifiers()
 %
-% OUTPUT:
-%    bioQualifiers:    A cell array of bioqualifier strings in descending order.
-%    standardQualifiers:        A n x 2 cell array with the first column representing the standard identifiers and the second column representing the alternative name.
+%    [bioQualifiers, standardQualifiers] = getBioQualifiers()
+%
+% OUTPUTS:
+%    bioQualifiers:         A cell array of bioqualifier strings in descending order.
+%    standardQualifiers:    A n x 2 cell array with the first column representing the standard identifiers and the second column representing the alternative name.
 
 bioQualifiers = {'version','taxon','relation',...
                  'propertyBearer','property',...

@@ -1,13 +1,16 @@
-function results = checkDatabaseIDs(model,results)
+function results = checkDatabaseIDs(model, results)
 % Checks the model for validity of database identifiers
 %
 % USAGE:
 %
-%    results = checkDatabaseIDs(model,results)
+%    results = checkDatabaseIDs(model, results)
 %
 % INPUT:
 %    model:       a structure that represents the COBRA model.
-%    results:     the results structure for this test
+%    results:     the results structure for this test, with optional field:
+%
+%                   * .checkDatabaseIDs - struct of invalid database IDs found
+%                     by a previous call to this function (created if absent)
 %
 % OUTPUT:
 %

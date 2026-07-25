@@ -25,6 +25,14 @@ function solution = solveCobraMIQP(MIQPproblem, varargin)
 %                       * .osense - Objective sense (-1 max, +1 min)
 %                       * .csense - Constraint senses, a string containting the constraint sense for
 %                         each row in A ('E', equality, 'G' greater than, 'L' less than).
+%                       * .vartype - Variable types ('C' continuous, 'I' integer, 'B' binary)
+%
+% NOTE:
+%    For the `gurobi` solver interface, this function also builds
+%    `MIQPproblem.vtype`, `.Q`, `.modelsense`, `.rhs`, `.sense`, and `.obj`
+%    (Gurobi-native aliases of `.vartype`, `.F`, `.osense`, `.b`, `.csense`,
+%    and `.c`). An internal log filename literal also contains the text
+%    `MIQPproblem.log`; this is not a struct field.
 %
 % Optional parameters can be entered using parameters structure or as
 % parameter followed by parameter value: i.e. ,'printLevel', 3)

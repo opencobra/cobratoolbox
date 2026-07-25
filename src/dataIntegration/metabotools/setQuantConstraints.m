@@ -1,11 +1,11 @@
-function [ResultsAllCellLines,OverViewResults] = setQuantConstraints(model, samples, tol, minGrowth, obj, no_secretion, no_uptake, medium, addExtraExch, addExtraExch_value, path)
+function [ResultsAllCellLines, OverViewResults] = setQuantConstraints(model, samples, tol, minGrowth, obj, no_secretion, no_uptake, medium, addExtraExch, addExtraExch_value, path)
 % This function takes a model and quantitative extracellular metabolomic data and returns a model in which the data is integrated as constraints described
 % in "MetaboTools: A Comprehensive Toolbox for Analysis of Genome-Scale Metabolic Models", 2016, Front. Physiol., and the supplemental data "Tutorial II: Workflow for the integration 
 % of quantitative extracellular metabolomic data into the network context." (Data Sheet 3.pdf)
 %
 % USAGE:
 %
-%    [ResultsAllCellLines, OverViewResults] = setQuantConstraints(model, samples, tol, minGrowth, obj, no_secretion, no_uptake, medium, addExtraExch, addExtraExch_value, path, epsilon)
+%    [ResultsAllCellLines, OverViewResults] = setQuantConstraints(model, samples, tol, minGrowth, obj, no_secretion, no_uptake, medium, addExtraExch, addExtraExch_value, path)
 %
 % INPUTS:
 %       model:                Global metabolic model (Recon)
@@ -17,12 +17,12 @@ function [ResultsAllCellLines,OverViewResults] = setQuantConstraints(model, samp
 %       no_uptake:            Define metabolites that should not be consumed (e.g., {`EX_o2s(e)`, `EX_h2o2(e)`})
 %       medium:               Define if certain exchanges should be excluded from minimization of exchanges (e.g., {}, if no medium except the exometabolomic data has been defined)
 %       addExtraExch:         After adding secretions, models are still not growing, this variable allows one to recover exchanges with a defined small value
-%       addExtraExch_value:   e.g. 1 as arbitrary small flux value / the resulting ub = 1, lb = -1.
+%       addExtraExch_value:    e.g. 1 as arbitrary small flux value / the resulting ub = 1, lb = -1.
 %       path:                 Location of the .mat files for samples.
 %       
 %
 % OUTPUTS:
-%       ResultsAllCellLines:  Structure that contains pruned and unpruned model, Vector of the Exchange_reactions, the exchange reactions added by `minExCard`, `minFLux` and `maxFlux` of the added reactions, maximal objective value, and the results of the gene deletion
+%       ResultsAllCellLines:    Structure that contains pruned and unpruned model, Vector of the Exchange_reactions, the exchange reactions added by `minExCard`, `minFLux` and `maxFlux` of the added reactions, maximal objective value, and the results of the gene deletion
 %       OverViewResults:      Overview of model statistics, e.g., number of reactions, metabolites, genes, number of essential genes, min and max objective values for easy comparison between sets of models
 %
 %

@@ -3,10 +3,15 @@ function [ExRxns, MaxTheoOut] = theoretMaxProd(model, inputrxn, criterion, norma
 %
 % USAGE:
 %
-%    [ExRxns, MaxTheoOut]= theoreticalMaxProduction(model, inputrxn, criterion, normalize, rxns)
+%    [ExRxns, MaxTheoOut] = theoretMaxProd(model, inputrxn, criterion, normalize, rxns)
 %
 % INPUT:
-%    model:         model structure
+%    model:         COBRA model structure. Fields used directly:
+%
+%                     * .S - `m x n` stoichiometric matrix
+%                     * .c - `n x 1` linear objective coefficients
+%                     * .rxns - `n x 1` reaction identifiers
+%                     * .mets - `m x 1` metabolite identifiers
 %    inputrxn:      the input reaction ('EX_glu(e)', etc.)
 %
 % OPTIONAL INPUT:
@@ -22,7 +27,7 @@ function [ExRxns, MaxTheoOut] = theoretMaxProd(model, inputrxn, criterion, norma
 %
 % OUTPUTS:
 %    ExRxns:        Vector of exchange reactions
-%    MaxThroOut:    The max theoretical output for each exchange reaction
+%    MaxTheoOut:    The max theoretical output for each exchange reaction
 %
 % .. Author: - Jan Schellenberger 11/7/08
 

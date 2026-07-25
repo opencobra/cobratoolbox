@@ -1,10 +1,15 @@
-function microbiomeMappingStats(rawPath,marsPath,saveDir,metadataPath)
+function microbiomeMappingStats(rawPath, marsPath, saveDir, metadataPath)
 % Function for obtaining statistics on AGORA2 mapping
-% 
-% INPUT
-% rawPath: path to the unfiltered microbiome data
-% marsPath: path to mapped microbiome data
-% saveDir: path to folder where the results are saved
+%
+% USAGE:
+%
+%    microbiomeMappingStats(rawPath, marsPath, saveDir, metadataPath)
+%
+% INPUTS:
+%    rawPath:         path to the unfiltered microbiome data
+%    marsPath:        path to the mapped microbiome data
+%    saveDir:         path to the folder where the results are saved
+%    metadataPath:    path to the sample metadata table
 
 % For mapped, unmapped, and total. Obtain the:
 % read counts + coverage X

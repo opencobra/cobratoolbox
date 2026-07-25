@@ -1,39 +1,67 @@
-function modelConstraint = physiologicalConstraintsHMDBbased(model,IndividualParameters, ExclList, Type, InputData, Biofluid, setDefault,ExclMet,ExclMetAbbr)
-% This function applies  constraints to the whole-body metabolic model
-% metabolite concentrations have to be given in uM
-% organ weights have to be given in g
-% Please note that reaction specific constraints are applied at the end of
-% the function, which have been derived from the literature.
+function modelConstraint = physiologicalConstraintsHMDBbased(model, IndividualParameters, ExclList, Type, InputData, Biofluid, setDefault, ExclMet, ExclMetAbbr)
+% Apply physiologically-derived concentration constraints to a whole-body
+% metabolic model. Metabolite concentrations are given in uM and organ weights
+% in g. Reaction-specific constraints derived from the literature are applied
+% at the end of the function
 %
-% function modelConstraint = physiologicalConstraintsHMDBbased(model,IndividualParameters, ExclList, Type, InputData, Biofluid, setDefault,ExclMet,ExclMetAbbr)
+% USAGE:
 %
-% INPUT
-% model                     model structure
-% IndividualParameters      Structure containing physiological parameters,
-%                           as generated in standardPhysiolDefaultParameters
-% ExclList                  List of reaction(s) to which no updated bound
-%                           should be assigned to
-% Type                      Input type (either 'xlsx' (default) --> loads by default
-%                           'Parsed_hmdbConc.xlsx' or 'direct'). If
-%                           'direct' InputData must be provided
-% InputData                 first column corresponds to vmh id's of
-%                           metabolites, 2nd to data points (will be set as lb and ub)
-% Biofluid                  'all' (default if type is xlsx). For direct:
-%                            'bc','u','csf'
-% setDefault                If input data does not contain concentration information for a given metabolite
-%                           then a default concentration ranges will be used to calculate the constraints (default: 1)
-%                           Note that the default metabolite concentration
-%                           ranges are specified in IndividualParameters
-%                           for the different biofluid compartments.
-% ExclMet                   Specify if certain metabolites, and thus their associated reactions, should be
-%                           excluded from the constraint application (default: 0)
-% ExclMetAbbr               Provide list of metabolites that should be
-%                           excluded
+%    modelConstraint = physiologicalConstraintsHMDBbased(model, IndividualParameters, ExclList, Type, InputData, Biofluid, setDefault, ExclMet, ExclMetAbbr)
 %
-% OUTPUT
-% modelConstraint           model structure with updated constraints
+% INPUTS:
+%    model:                  whole-body metabolic model structure with fields:
 %
-% Ines Thiele, 2015-2019
+%                              * .rxns - `n x 1` reaction identifiers
+%                              * .mets - `m x 1` metabolite identifiers
+%                              * .S - `m x n` stoichiometric matrix
+%                              * .lb - `n x 1` lower bounds (updated)
+%                              * .ub - `n x 1` upper bounds (updated)
+%    IndividualParameters:     structure of physiological parameters (as generated
+%                            by standardPhysiolDefaultParameters) with fields:
+%
+%                              * .sex - biological sex ('male' or 'female'), selecting the blood-flow column
+%                              * .CardiacOutput - cardiac output in ml/min
+%                              * .Hematocrit - hematocrit as a fraction
+%                              * .GlomerularFiltrationRate - glomerular filtration rate in ml/min
+%                              * .CSFFlowRate - cerebrospinal fluid flow rate
+%                              * .CSFBloodFlowRate - cerebrospinal fluid to blood flow rate
+%                              * .UrFlowRate - urine flow rate
+%                              * .bodyWeight - body weight in kg
+%                              * .MConDefaultBc - default maximum metabolite concentration in blood (uM)
+%                              * .MConDefaultCSF - default maximum metabolite concentration in CSF (uM)
+%                              * .MConDefaultUrMax - default maximum metabolite concentration in urine (uM)
+%                              * .MConDefaultUrMin - default minimum metabolite concentration in urine (uM)
+%                              * .MConUrCreatinineMax - maximum urinary creatinine concentration (mg/dL)
+%                              * .MConUrCreatinineMin - minimum urinary creatinine concentration (mg/dL)
+%                              * .bloodFlowData - cell array of organ-specific blood-flow percentages
+%                              * .bloodFlowPercCol - column indices in bloodFlowData for the male/female percentages
+%                              * .bloodFlowOrganCol - column index in bloodFlowData holding the organ names
+%
+% OPTIONAL INPUTS:
+%    ExclList:               list of reaction identifiers that should not receive
+%                            an updated bound
+%    Type:                   input type, either 'HMDB' (default, concentrations
+%                            are read from the bundled HMDB text files) or
+%                            'direct' (concentrations are taken from InputData)
+%    InputData:              for Type 'direct', a cell array whose first column
+%                            holds VMH metabolite identifiers, second column the
+%                            minimum concentrations and third column the maximum
+%                            concentrations
+%    Biofluid:               biofluid to constrain: 'all' (default for HMDB) or,
+%                            for direct input, one of 'bc', 'u' or 'csf'
+%    setDefault:             if true (default 1) apply default concentration
+%                            ranges to metabolites without input data
+%    ExclMet:                if 1, exclude the metabolites listed in ExclMetAbbr
+%                            from constraint application (default 0)
+%    ExclMetAbbr:            list of metabolite identifiers to exclude when
+%                            ExclMet is 1
+%
+% OUTPUT:
+%    modelConstraint:        whole-body metabolic model with the physiological
+%                            uptake, secretion and excretion constraints applied
+%                            (updated `.lb` and `.ub`)
+%
+% .. Author: - Ines Thiele, 2015-2019
 
 modelConstraint = model;
 

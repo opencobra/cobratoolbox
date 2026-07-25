@@ -1,13 +1,16 @@
-function database=loadVMHDatabase
-% This function loads the database with reactions and metabolites in 
+function database = loadVMHDatabase
+% This function loads the database with reactions and metabolites in
 % Virtual Metabolic Human (https://www.vmh.life/) nomenclature.
 %
 % USAGE:
 %
-%    database=loadVMHDatabase
+%    database = loadVMHDatabase()
 %
-% OUTPUT
-% database  Structure with reaction and metabolite database
+% OUTPUT:
+%    database:    Structure with reaction and metabolite database
+%
+%                   * .metabolites - Cell array, the VMH metabolite database
+%                   * .reactions - Cell array, the VMH reaction database
 %
 % .. Author:
 %       - Almut Heinken, 09/2021

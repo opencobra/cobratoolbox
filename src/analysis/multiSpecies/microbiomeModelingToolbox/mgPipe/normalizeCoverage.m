@@ -1,23 +1,24 @@
-function [normalizedCoverage,normalizedCoveragePath] = normalizeCoverage(abunFilePath,cutoff)
+function [normalizedCoverage, normalizedCoveragePath] = normalizeCoverage(abunFilePath, cutoff)
 % This functions normalizes the coverage in a given file with organism
 % coverages such that they sum up to 1 for each sample.
 %
-% USAGE
-%   [normalizedCoverage,normalizedCoveragePath] = normalizeCoverage(abunFilePath,cutoff)
+% USAGE:
 %
-% INPUT
-% abunFilePath           	Path to table with not yet normalized relative 
+%   [normalizedCoverage, normalizedCoveragePath] = normalizeCoverage(abunFilePath, cutoff)
+%
+% INPUT:
+%    abunFilePath:          Path to table with not yet normalized relative
 %                           coverages
 %
-% OPTIONAL INPUT
-% cutoff                    Cutoff for normalized coverages that are
+% OPTIONAL INPUT:
+%    cutoff:                Cutoff for normalized coverages that are
 %                           considered below detection limit, respective
 %                           organisms will be removed from the samples
 %                           (default: 0.0001)
 %
-% OUTPUTS
-% normalizedCoverage        Table with normalized coverages
-% normalizedCoveragePath    Path to csv file with normalized coverages
+% OUTPUTS:
+%    normalizedCoverage:        Table with normalized coverages
+%    normalizedCoveragePath:    Path to csv file with normalized coverages
 %
 % .. Author:
 %       - Almut Heinken, 01/2021

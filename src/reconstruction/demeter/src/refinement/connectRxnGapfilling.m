@@ -1,21 +1,30 @@
-function [resolveBlocked,model]=connectRxnGapfilling(model,database)
+function [resolveBlocked, model] = connectRxnGapfilling(model, database)
 % Part of the DEMETER pipeline. This function adds reactions to unblock
 % specific pathways.
 %
-% USAGE
-%       [resolveBlocked,model]=connectRxnGapfilling(model,database)
+% USAGE:
 %
-% INPUT
-% model             COBRA model structure
-% database          rBioNet reaction database containing min. 3 columns:
-%                   Column 1: reaction abbreviation, Column 2: reaction
-%                   name, Column 3: reaction formula.
+%    [resolveBlocked, model] = connectRxnGapfilling(model, database)
 %
-% OUTPUT
-% model             COBRA model structure
+% INPUTS:
+%    model:              COBRA model structure with fields:
+%
+%                         * .rxns - Reaction identifiers
+%                         * .mets - Metabolite identifiers
+%                         * .c - Objective coefficients
+%    database:           rBioNet reaction database structure with fields:
+%
+%                         * .reactions - Cell array with reaction abbreviation
+%                           (column 1), reaction name (column 2), and reaction
+%                           formula (column 3)
+%
+% OUTPUTS:
+%    resolveBlocked:     List of reactions added to unblock previously
+%                        blocked pathways
+%    model:              COBRA model structure with unblocking reactions added
 %
 % .. Authors:
-% Almut Heinken and Stefania Magnusdottir, 2016-2019
+%       - Almut Heinken and Stefania Magnusdottir, 2016-2019
 
 global CBT_LP_SOLVER
 if isempty(CBT_LP_SOLVER)

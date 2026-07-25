@@ -1,6 +1,10 @@
 function [Shat, Shatabs, mconnect, nconnect, mconnectin, mconnectout] = determineSignMatrix(S, sorted)
 % Determine the binaryform of the stoichiometric matrix S and the connectivity vectors
 %
+% USAGE:
+%
+%    [Shat, Shatabs, mconnect, nconnect, mconnectin, mconnectout] = determineSignMatrix(S, sorted)
+%
 % INPUT:
 %
 %    S:            Stoichiometric matrix of size m x n (m rows, n columns)
@@ -12,8 +16,8 @@ function [Shat, Shatabs, mconnect, nconnect, mconnectin, mconnectout] = determin
 %    Shatabs:      Absolute value of Shat
 %    mconnect:     Compound connectivity (connectivity number; sum of the number of non-zero entries in a row)
 %    nconnect:     Reaction participation number (sum of the number of non-zero entries in a column)
-%    mconnectin:   Produced compound connectivity
-%    mconnectout:  Consumed compound connectivity
+%    mconnectin:    Produced compound connectivity
+%    mconnectout:    Consumed compound connectivity
 %
 % .. Author: - Laurent Heirendt, June 2018
 

@@ -1,16 +1,57 @@
 function hit_node(varargin)
-%Function for generating Another metabolite-metabolite interaction network
-%if the node is clicked in the figure that produced by createMetIntrcNetwork.
-%Right click and left click has different properties.
-%Left click :Generate sub-metabolite-metabolite network from the created figure, 
-%            this functionality was added for better looking at the created network 
+% Function for generating another metabolite-metabolite interaction network
+% if the node is clicked in the figure that produced by createMetIntrcNetwork.
+% Right click and left click has different properties.
+% Left click :Generate sub-metabolite-metabolite network from the created figure,
+%            this functionality was added for better looking at the created network
 %            and showing flux values on edges lines.
 %
-%Right click :Generate metabolite metabolite network from model, this
+% Right click :Generate metabolite metabolite network from model, this
 %             functionality were added for creating metabolite-metabolite network using
 %             clicked metabolite and model.
-%The produced figure from main figure also has same property with main
-%figure, and it is clickable too.
+% The produced figure from main figure also has same property with main
+% figure, and it is clickable too.
+%
+% USAGE:
+%
+%    hit_node(varargin)
+%
+% OPTIONAL INPUTS:
+%    varargin:      This function is installed as the `ButtonDownFcn` callback
+%                   on the text objects created by `createMetIntrcNetwork`, so
+%                   MATLAB invokes it with the standard `(source, eventData)`
+%                   pair followed by the extra arguments bound at
+%                   registration time:
+%
+%                   * varargin{1} - source object (`text` graphics handle);
+%                     `.Parent.Parent` is the figure and `.String` is the
+%                     clicked metabolite name
+%                   * varargin{2} - event data (unused)
+%                   * varargin{3} - adjacency matrix of the current network
+%                   * varargin{4} - cell array of metabolite names for
+%                     `varargin{3}`
+%                   * varargin{5} - model:      COBRA model structure with fields:
+%
+%                                     * .rxns - `n x 1` cell array of reaction identifiers
+%                                     * .mets - `m x 1` cell array of metabolite identifiers
+%                                     * .S - `m x n` stoichiometric matrix
+%                   * varargin{6} - fluxes vector
+%                   * varargin{7} - excludedMets, cell array of metabolite
+%                     abbreviations to exclude
+%                   * varargin{8} - Graphtitle, char, base title for the figure
+%                   * varargin{9} - nodecolour, colour for nodes (RGB triplet)
+%                   * varargin{10} - Hnodecolour, colour for highlighted nodes
+%                   * varargin{11} - fcont, logical/numeric flag: true if
+%                     fluxes were supplied to `createMetIntrcNetwork`
+%                   * varargin{12} - scaleMin, minimum value for colorbar scaling
+%                   * varargin{13} - scaleMax, maximum value for colorbar scaling
+%                   * varargin{14} - nodeSize, size of nodes
+%                   * varargin{15} - HnodeSize, highlighted node size
+%                   * varargin{16} - arrowSize, arrow size
+%                   * varargin{17} - threshold, edge weight threshold below
+%                     which edges are removed
+%                   * varargin{18} - excNodesWithDeg, `[minimum degree
+%                     maximum degree]` node-degree exclusion range
 
     f = varargin{1}.Parent.Parent;
     if (strcmp(f.SelectionType, 'normal') | strcmp(f.SelectionType, 'alt'))

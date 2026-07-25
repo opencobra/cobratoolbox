@@ -1,7 +1,21 @@
-function X = relateConservedMoietiesToConservationRelations(C,R)
-% Given a stoichiometric matrix N, a set of conserved moieties C, and a set of 
-% conservation relations R, such that C*N = 0 and R*N = 0, then compute a matrix X,
-% such that C = X*R, and R'*x = C(j,:)' with x' =: X(j,:) of minimal cardinality.
+function X = relateConservedMoietiesToConservationRelations(C, R)
+% Relate conserved moieties to the conservation relations of a stoichiometric matrix
+%
+% Given a stoichiometric matrix `N`, a set of conserved moieties `C`, and a set
+% of conservation relations `R`, such that `C*N = 0` and `R*N = 0`, compute a
+% matrix `X` such that `C = X*R`, where each row `X(j, :)` of minimal cardinality
+% solves `R'*x = C(j, :)'`.
+%
+% USAGE:
+%
+%    X = relateConservedMoietiesToConservationRelations(C, R)
+%
+% INPUTS:
+%    C:    `nConservedMoieties x m` matrix of conserved moieties, with `C*N = 0`
+%    R:    `nConservationRelations x m` matrix of conservation relations, with `R*N = 0`
+%
+% OUTPUTS:
+%    X:    `nConservedMoieties x nConservationRelations` matrix such that `C = X*R`
 
 [nConservedMoieties,nMets1] = size(C);
 [nConservationRelations,nMets2] = size(R);

@@ -1,11 +1,35 @@
-function [metabolite_structure,IDsAdded] = getIDsfromFiehnLab(metabolite_structure, sourceId,targetId,startSearch,endSearch)
-
-
-% connect to Fiehn lab (associated paper:
-% https://academic.oup.com/bioinformatics/article/26/20/2647/194184_
-% url *from* / *to* / query term
-% e.g., http://cts.fiehnlab.ucdavis.edu/service/convert/kegg/inchikey/C00234
-
+function [metabolite_structure, IDsAdded] = getIDsfromFiehnLab(metabolite_structure, sourceId, targetId, startSearch, endSearch)
+% Use the Fiehn lab Chemical Translation Service (online) to convert a source
+% identifier into a target identifier for each metabolite and store the result
+% (associated paper https://academic.oup.com/bioinformatics/article/26/20/2647/194184;
+% query pattern http://cts.fiehnlab.ucdavis.edu/service/convert/*from*/*to*/*term*).
+%
+% USAGE:
+%
+%    [metabolite_structure, IDsAdded] = getIDsfromFiehnLab(metabolite_structure, sourceId, targetId, startSearch, endSearch)
+%
+% INPUTS:
+%    metabolite_structure:    metabolite structure whose fields are VMH
+%                             metabolite IDs, each holding identifier fields
+%    sourceId:                metabolite field name of the identifier to
+%                             translate from (e.g. `keggId`, `inchiKey`)
+%    targetId:                metabolite field name of the identifier to
+%                             translate to (e.g. `hmdb`, `cheBIId`)
+%
+% OPTIONAL INPUTS:
+%    startSearch:             numeric index of where the search should start in
+%                             the metabolite structure (default: 1)
+%    endSearch:               numeric index of where the search should end in
+%                             the metabolite structure (default: last metabolite)
+%
+% OUTPUTS:
+%    metabolite_structure:    metabolite structure updated with the translated
+%                             target identifiers
+%    IDsAdded:                cell array logging the added identifiers, with the
+%                             metabolite field name, the target identifier type,
+%                             and the assigned identifier per row
+%
+% .. Author: - Ines Thiele
 
     mets = fieldnames(metabolite_structure);
 

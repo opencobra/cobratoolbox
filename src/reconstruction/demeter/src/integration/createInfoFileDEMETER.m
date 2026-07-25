@@ -1,4 +1,4 @@
-function infoFile = createInfoFileDEMETER(taxIDs,strainNames)
+function infoFile = createInfoFileDEMETER(taxIDs, strainNames)
 % Creates a taxonomy table that can be used as input for DEMETER from a
 % list of NCBI Taxonomy IDs. The taxonomy IDs can be on any taxonomical
 % level but should be on the strain level to generate a unique model ID.
@@ -7,18 +7,19 @@ function infoFile = createInfoFileDEMETER(taxIDs,strainNames)
 % identifiers.
 %
 % USAGE:
-%   createInfoFileDEMETER(taxIDs)
 %
-% REQUIRED INPUT
-% taxIDs         Vector or cell array of numerics that represent valid NCBI
-%                Taxonomy IDs.
+%    infoFile = createInfoFileDEMETER(taxIDs, strainNames)
 %
-% OPTIONAL INPUT
-% % strainNames  List of custom gene names to be used a model IDs
+% INPUTS:
+%    taxIDs:         Vector or cell array of numerics that represent valid NCBI
+%                    Taxonomy IDs.
 %
-% OUTPUT
-% infoFile       Table with taxonomic information, gram staining, and
-%                oxygen requirement for each strain
+% OPTIONAL INPUTS:
+%    strainNames:    List of custom gene names to be used a model IDs
+%
+% OUTPUT:
+%    infoFile:       Table with taxonomic information, gram staining, and
+%                    oxygen requirement for each strain
 %
 % .. Author:
 %       - Almut Heinken, 06/2025

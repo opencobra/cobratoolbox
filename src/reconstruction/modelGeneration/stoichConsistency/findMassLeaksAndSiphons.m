@@ -29,6 +29,7 @@ function [leakMetBool, leakRxnBool, siphonMetBool, siphonRxnBool, leakY, siphonY
 %                          * .ub - Upper bounds
 %                          * .SConsistentMetBool - `m` x 1 boolean vector indicating consistent mets
 %                          * .SConsistentRxnBool - `m` x 1 boolean vector indicating consistent rxns
+%                          * .metFormulas - `m` x 1 cell array of metabolite chemical formulas, used to compute molecular mass for the leak/siphon plots
 %
 % OPTIONAL INPUTS:
 %    metBool:            `m` x 1 boolean vector of metabolites to test for leakage
@@ -43,10 +44,11 @@ function [leakMetBool, leakRxnBool, siphonMetBool, siphonRxnBool, leakY, siphonY
 %                          * param.eta - (`feasTol*100`), smallest nonzero mass leak/siphon
 %                          * param.theta - (0.5) parameter of capped l1 approximation
 %                          * param.method - {('quasiConcave'), 'dc'} method of approximation
+%                          * param.interface - {('optimizeCardinality'), 'optimizeCardinalityOld'} which cardinality-optimisation solver interface to call for the semipositive (`dc` method) leak problem
 %    printLevel:         {(0), 1, 2 = debug}
 %
 % OUTPUTS:
-%    leakRxnBool:        `m` x 1 boolean of metabolites in a positive leakage mode
+%    leakMetBool:        `m` x 1 boolean of metabolites in a positive leakage mode
 %    leakRxnBool:        `n` x 1 boolean of reactions exclusively involved in a positive leakage mode
 %    siphonMetBool:      `m` x 1 boolean of metabolites in a negative leakage mode
 %    siphonRxnBool:      `n` x 1 boolean of reactions exclusively involved in a negative leakage mode

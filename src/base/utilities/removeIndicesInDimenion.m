@@ -1,6 +1,8 @@
-function removed = removeIndicesInDimenion(input,dimension,indices)
+function removed = removeIndicesInDimenion(input, dimension, indices)
 % Remove the indices in a specified field in the given dimension
+%
 % USAGE:
+%
 %    removed = removeIndicesInDimenion(input, dimension, indices)
 %
 % INPUTS:

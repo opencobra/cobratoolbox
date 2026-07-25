@@ -8,7 +8,12 @@ function outputHypergraph(model, weights, fileName)
 %    outputHypergraph(model, weights, fileName)
 %
 % INPUTS:
-%    model:       Standard model structure
+%    model:       Standard model structure with fields:
+%
+%                   * .rxns - reaction identifiers, used to size the
+%                     iteration over reactions
+%                   * .S - stoichiometric matrix, used to find the
+%                     metabolites of each reaction
 %    weights:     Weights for each reaction
 %    fileName:    Output filename
 %

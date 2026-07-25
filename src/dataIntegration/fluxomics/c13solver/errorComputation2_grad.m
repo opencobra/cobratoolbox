@@ -1,4 +1,19 @@
-function [out] = errorComputation2_grad(x,Prob)
+function [out] = errorComputation2_grad(x, Prob)
+% Computes the finite-difference gradient of the C13 data-fit error
+% (`errorComputation2`) with respect to the fluxes `x`
+%
+% USAGE:
+%
+%    [out] = errorComputation2_grad(x, Prob)
+%
+% INPUTS:
+%    x:       flux vector (in null-space / alpha coordinates) at which the gradient is evaluated
+%    Prob:    problem structure supplied by the solver, with field:
+%
+%               * .user - structure of user data; `.user.model` and, when present, `.user.diff_interval` and `.user.useparfor` are read here
+%
+% OUTPUT:
+%    out:     gradient vector of the C13 data-fit error, same size as `x`
 
 model = Prob.user.model;
 f0 = errorComputation2(x,Prob);

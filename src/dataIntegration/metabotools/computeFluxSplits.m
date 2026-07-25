@@ -1,4 +1,4 @@
-function [P,C,vP,vC,s] = computeFluxSplits(model,mets,V, coeffSign)
+function [P, C, vP, vC, s] = computeFluxSplits(model, mets, V, coeffSign)
 % Compute relative contributions of fluxes (`V`) to the net production (`P`)
 % and consumption (`C`) of a set of metabolites (`mets`)
 %
@@ -15,7 +15,7 @@ function [P,C,vP,vC,s] = computeFluxSplits(model,mets,V, coeffSign)
 %    V:         an `n` x `k` matrix of `k` flux distributions
 %
 % OPTIONAL INPUT:
-%    coeffSign: only use the sign of the stoichiometric coefficient
+%    coeffSign:    only use the sign of the stoichiometric coefficient
 %               (i.e. +1 or -1, Default = false)
 %
 % OUTPUTS:

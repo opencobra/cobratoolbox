@@ -14,7 +14,9 @@ function ExchangeRxnMatrix = createXMatrix2(compoundsIn, transport, compartment,
 %    compartment:          [c] --> transport from cytoplasm [c] to extracellular space
 %                          [e] (default), [p] creates transport from [c] to [p] and from [p] to [c]
 %    model:                model structure - used to check if exchange reaction exists
-%                          already before adding it to `ExchangeRxnMatrix`
+%                          already before adding it to `ExchangeRxnMatrix`, with field:
+%
+%                            * .mets - `m x 1` metabolite identifiers
 %
 % OUTPUT:
 %    ExchangeRxnMatrix:    Model structure containing all exchange and

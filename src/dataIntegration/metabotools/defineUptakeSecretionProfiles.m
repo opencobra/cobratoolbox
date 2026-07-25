@@ -1,4 +1,4 @@
-function [cond1_uptake, cond2_uptake, cond1_secretion, cond2_secretion, slope_Ratio] = defineUptakeSecretionProfiles(input_A,input_B, data_RXNS, tol,essAA_excl,exclude_upt,exclude_secr,add_secr, add_upt)
+function [cond1_uptake, cond2_uptake, cond1_secretion, cond2_secretion, slope_Ratio] = defineUptakeSecretionProfiles(input_A, input_B, data_RXNS, tol, essAA_excl, exclude_upt, exclude_secr, add_secr, add_upt)
 % This function calculated the slope ratios and gives out uptake&secretion profiles for condition 1 and condition 2
 %
 % USAGE:

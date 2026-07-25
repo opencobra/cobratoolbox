@@ -1,12 +1,16 @@
-function [outputNode] = combineChildren(CNFNode1,CNFNode2)
+function [outputNode] = combineChildren(CNFNode1, CNFNode2)
 % Combine the children of two nodes such that all children of node 1 are mixed with children of node 2.
 % Conjunct clauses which are superseeded are removed.
 % USAGE:
-%    [outputNode] = combineChildren(CNFNode1,CNFNode2)
-% 
+%    [outputNode] = combineChildren(CNFNode1, CNFNode2)
+%
 % INPUTS:
-%    CNFNode1:        A Node in CNF format 
-%    CNFNode2:        A Node in CNF format 
+%    CNFNode1:        A Node in CNF format, with fields:
+%
+%                       * .children - array of child Node objects of the CNF node
+%    CNFNode2:        A Node in CNF format, with fields:
+%
+%                       * .children - array of child Node objects of the CNF node
 %
 % OUTPUTS:
 %    outputNode:      A node with all children of the input nodes mixed.

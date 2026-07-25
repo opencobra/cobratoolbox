@@ -5,7 +5,13 @@ function [nMets, nRxns, nCtrs, nVars, nGenes, nComps] = getModelSizes(model)
 %    [nMets, nRxns, nCtrs, nVars, nGenes, nComps] = getModelSizes(model)
 %
 % INPUT:
-%    model:     A COBRA model structure
+%    model:     A COBRA model structure with fields:
+%
+%                 * .S - `m x n` stoichiometric matrix
+%                 * .C - `ctrs x n` additional constraints matrix
+%                 * .E - matrix of coefficients for the extra variables
+%                 * .comps - compartment identifiers
+%                 * .genes - gene identifiers
 %
 % OUTPUTS:
 %    nMets:     The number of metabolites in the model

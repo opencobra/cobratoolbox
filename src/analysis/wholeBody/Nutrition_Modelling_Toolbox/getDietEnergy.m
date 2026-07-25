@@ -1,30 +1,32 @@
 function [calories] = getDietEnergy(diet, varargin)
-% Given a nx2 cell array of diet components and serving sizes or metabolite
-% list, computes how many calories are in the diet.
+% Compute the number of calories in a diet given as an n x 2 cell array of
+% diet components and serving sizes, or as a metabolite flux list
 %
-% Usage:
-%   [calories] = getDietEnergy(diet, varargin)
+% USAGE:
 %
-% Inputs:
-%   diet:       A nx2 array of diet components and the grams of food eaten
-%               or the dietary flux names with the flux values
+%    [calories] = getDietEnergy(diet, varargin)
 %
-% Optional inputs:
-%   databaseType:   Character or cell array. Which method should be used to
-%                   obtain calories. Options are metabolite (based on flux
-%                   values) or database (cell array with 'usda' or 'frida' for
-%                   each food item to be checked)
+% INPUTS:
+%    diet:            An n x 2 cell array of diet components with the grams of
+%                     food eaten, or the dietary flux names with their flux
+%                     values
 %
-% Output:
-%   calories:   Amount of calories from the input
+% OPTIONAL INPUTS:
+%    varargin:        Name-value pairs:
 %
-% Example:
+%                       * databaseType - char or cell array selecting how the
+%                         calories are obtained: 'metabolites' (from the flux
+%                         values) or a cell array with 'usda' or 'frida' per
+%                         food item (default 'usda')
 %
+% OUTPUT:
+%    calories:        Total amount of calories from the input
 %
-% .. Authors    Bronson Weston - 2022
-%               Bram Nap, 05-2024 - Added functionality for calculating
-%               from metabolites and from the USDA fooddata database.
-%               Removed fdTable functionality added Frida datbase functionality.
+% .. Authors:
+% ..    - Bronson Weston, 2022
+% ..    - Bram Nap, 05-2024 - added functionality for calculating from
+% ..      metabolites and from the USDA FoodData database; removed the fdTable
+% ..      functionality and added Frida database functionality
 
 % Parse results
 parser = inputParser();

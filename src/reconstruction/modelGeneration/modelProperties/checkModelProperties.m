@@ -1,65 +1,101 @@
-function  [model] = checkModelProperties(model,printLevel)
+function [model] = checkModelProperties(model, printLevel)
 % calculates various generic properties of a model, not specific to any
 % biochemistry
 %
-%INPUT
-% model
-% printLevel
+% USAGE:
 %
-%OUTPUT
-% model.SIntMetBool                        m x 1 boolean of metabolites heuristically though to be involved in mass balanced reactions
-% model.SIntRxnBool                        n x 1 boolean of reactions heuristically though to be mass balanced
-% model.SConsistentMetBool                 m x 1 boolean vector indicating consistent mets
-% model.SConsistentRxnBool                 n x 1 boolean vector indicating consistent rxns
-% model.SInConsistentMetBool               m x 1 boolean vector indicating inconsistent mets
-% model.SInConsistentRxnBool               n x 1 boolean vector indicating inconsistent rxns
-% model.metUnknownInconsistentRemoveBool   m x 1 boolean vector indicating removed mets
-% model.rxnUnknownInconsistentRemoveBool   n x 1 boolean vector indicating removed rxns
-% model.unknownSConsistencyMetBool         m x 1 boolean vector indicating unknown consistent mets (all zeros when algorithm converged perfectly!)
-% model.unknownSConsistencyRxnBool         n x 1 boolean vector indicating unknown consistent rxns (all zeros when algorithm converged perfectly!)
-% model.leakMetBool         m x 1 boolean of metabolites in a positive leakage mode
-% model.leakRxnBool         n x 1 boolean of reactions exclusively involved in a positive leakage mode
-% model.siphonMetBool       m x 1 boolean of metabolites in a negative leakage mode
-% model.siphonRxnBool       n x 1 boolean of reactions exclusively involved in a negative leakage mode
-% model.fluxConsistentMetBool:      `m` x 1 boolean vector indicating flux consistent `mets`
-% model.fluxConsistentRxnBool:      `n` x 1 boolean vector indicating flux consistent `rxns`
-% model.fluxInConsistentMetBool:    `m` x 1 boolean vector indicating flux inconsistent `mets`
-% model.fluxInConsistentRxnBool:    `n` x 1 boolean vector indicating flux inconsistent `rxns`
-% model.thermoFluxConsistentMetBool m x 1 boolean vector indicating thermodynamically flux consistent mets
-% model.thermoFluxConsistentRxnBool n x 1 boolean vector indicating thermodynamically flux consistent rxns
-% model.thermoFwdFluxConsistentRxnBool n x 1 boolean vector indicating forward thermodynamically flux consistent rxns
-% model.thermoRevFluxConsistentRxnBool n x 1 boolean vector indicating reverse thermodynamically flux consistent rxns
+%    model = checkModelProperties(model, printLevel)
 %
-% model.rankFR                    rank of [F R], when using only FRrows
-% model.rankFRV                   rank of [F;R], when using only FRVcols
-% model.rankFRvanilla             rank of [F R], when using all rows
-% model.rankFRVvanilla            rank of [F;R], when using all cols
-% model.FRrows              m x 1 boolean of rows of [F R] that are nonzero,
-%                           unique upto positive scaling and part of the
-%                           maximal conservation vector
-% model.FRVcols             n x 1 boolean of cols of [F;R] that are nonzero,
-%                           unique upto positive scaling and part of the
-%                           maximal conservation vector
-% model.FRirows             m x 1 boolean of rows of [F R] that are independent
-% model.FRdrows             m x 1 boolean of rows of [F R] that are dependent
-% model.FRwrows             m x 1 boolean of independent rows of [F R] that
-%                           have dependent rows amongst model.FRdrows
-% model.FRVdcols            n x 1 boolean of cols of [F;R]that are dependent
-% model.FRnonZeroBool       m x 1 boolean vector indicating metabolites involved
-%                           in at least one internal reaction
-% model.FRuniqueBool        m x 1 boolean vector indicating metabolites with
-%                           reaction stoichiometry unique upto scalar multiplication
-% model.SIntRxnBool         n x 1 boolean vector indicating the non exchange
-%                           reactions
-% model.FRVnonZeroBool      n x 1 boolean vector indicating non exchange reactions
-%                           with at least one metabolite involved
-% model.FRVuniqueBool       n x 1 boolean vector indicating non exchange reactions
-%                           with stoichiometry unique upto scalar multiplication
-% model.connectedRowsFRBool     m x 1 boolean vector indicating metabolites in connected rows of [F,R]
-% model.connectedRowsFRVBool    n x 1 boolean vector indicating complexes in connected columns of [F;R]
-% model.V                   S*V=0, 1'*|V|>1 for all flux consistent reactions
-
-% Author Ronan M.T. Fleming
+% INPUT:
+%    model:         COBRA model structure with at least the fields:
+%
+%                     * .S - `m` x `n` stoichiometric matrix
+%                     * .mets - `m` x 1 cell array of metabolite identifiers
+%                     * .rxns - `n` x 1 cell array of reaction identifiers
+%                     * .lb - `n` x 1 lower bounds on reaction flux
+%                     * .ub - `n` x 1 upper bounds on reaction flux
+%
+%                   Read and reused if already present, otherwise computed and
+%                   added to the output `model` (see OUTPUT below):
+%
+%                     * .SIntRxnBool - `n` x 1 boolean of reactions heuristically thought to be internal (non-exchange) reactions
+%                     * .SIntMetBool - `m` x 1 boolean of metabolites heuristically thought to be involved only in internal reactions
+%                     * .fluxConsistentMetBool - `m` x 1 boolean vector indicating flux consistent `mets`
+%                     * .fluxConsistentRxnBool - `n` x 1 boolean vector indicating flux consistent `rxns`
+%
+%                   Only read (and, if so, overwritten) within the coefficient
+%                   scaling branch, which is disabled by default:
+%
+%                     * .b - `m` x 1 right hand side vector of `S*v = b`
+%                     * .c - `n` x 1 linear objective coefficient vector
+%
+% OPTIONAL INPUT:
+%    printLevel:    verbose level, silent if 0 (default 1)
+%
+% OUTPUT:
+%    model:         the input `model`, augmented with the following fields:
+%
+%                     * .rankFRvanilla - rank of `[F R]`, when using all rows and cols (`F`/`R` are the negative/positive parts of `model.S`)
+%                     * .rankFRVvanilla - rank of `[F;R]`, when using all rows and cols
+%                     * .SIntRxnBool - `n` x 1 boolean of reactions heuristically thought to be internal (non-exchange) reactions
+%                     * .SIntMetBool - `m` x 1 boolean of metabolites heuristically thought to be involved only in internal reactions
+%                     * .SIntRxnBool_findSExRxnInd - `n` x 1 copy of `.SIntRxnBool` as first returned by `findSExRxnInd`, kept for
+%                       comparison against any later stoichiometric-consistency-based refinement of `.SIntRxnBool`
+%                     * .leakMetBool - `m` x 1 boolean of metabolites in a positive leakage mode
+%                     * .leakRxnBool - `n` x 1 boolean of reactions exclusively involved in a positive leakage mode
+%                     * .siphonMetBool - `m` x 1 boolean of metabolites in a negative leakage mode
+%                     * .siphonRxnBool - `n` x 1 boolean of reactions exclusively involved in a negative leakage mode
+%                     * .SConsistentMetBool - `m` x 1 boolean vector indicating stoichiometrically consistent `mets`
+%                     * .SConsistentRxnBool - `n` x 1 boolean vector indicating stoichiometrically consistent `rxns`
+%                     * .SInConsistentMetBool - `m` x 1 boolean vector indicating stoichiometrically inconsistent `mets`
+%                     * .SInConsistentRxnBool - `n` x 1 boolean vector indicating stoichiometrically inconsistent `rxns`
+%                     * .fluxConsistentMetBool - `m` x 1 boolean vector indicating flux consistent `mets`
+%                     * .fluxConsistentRxnBool - `n` x 1 boolean vector indicating flux consistent `rxns`
+%                     * .thermoFluxConsistentMetBool - `m` x 1 boolean vector indicating thermodynamically flux consistent `mets`
+%                     * .thermoFluxConsistentRxnBool - `n` x 1 boolean vector indicating thermodynamically flux consistent `rxns`
+%                     * .thermoFwdFluxConsistentRxnBool - `n` x 1 boolean vector indicating forward thermodynamically flux consistent `rxns`
+%                     * .thermoRevFluxConsistentRxnBool - `n` x 1 boolean vector indicating reverse thermodynamically flux consistent `rxns`
+%                     * .FRrows - `m` x 1 boolean of rows of `[F R]` that are nonzero, unique upto positive scaling and
+%                       part of the maximal conservation vector, selecting the subset of `mets` used for rank analysis
+%                     * .FRVcols - `n` x 1 boolean of cols of `[F;R]` that are nonzero, unique upto positive scaling and
+%                       part of the maximal conservation vector, selecting the subset of `rxns` used for rank analysis
+%                     * .FRnonZeroRowBool1 - `m` x 1 boolean of rows of `[F,R]` that are nonzero, on the first (`checkTrivial`) pass
+%                     * .FRnonZeroColBool1 - `n` x 1 boolean of cols of `[F;R]` that are nonzero, on the first (`checkTrivial`) pass
+%                     * .FRuniqueRowBool - `m` x 1 boolean of rows of `[F,R]` that are unique upto scalar multiplication
+%                     * .FRuniqueColBool - `n` x 1 boolean of cols of `[F;R]` that are unique upto scalar multiplication
+%                     * .FRnonZeroRowBool - `m` x 1 boolean of rows of `[F,R]` that are nonzero, for the final subset of `mets`/`rxns`
+%                     * .FRnonZeroColBool - `n` x 1 boolean of cols of `[F;R]` that are nonzero, for the final subset of `mets`/`rxns`
+%                     * .largestConnectedRowsFRBool - `m` x 1 boolean, currently set to true for all `mets` (connectedness test bypassed)
+%                     * .largestConnectedColsFRVBool - `n` x 1 boolean, currently set to true for all `rxns` (connectedness test bypassed)
+%                     * .Fr - the forward half of `model.S`, restricted to `.FRrows` and `.FRVcols`
+%                     * .Rr - the reverse half of `model.S`, restricted to `.FRrows` and `.FRVcols`
+%                     * .Fc - same restricted forward half of `model.S` as `.Fr`, used for the column-rank computation
+%                     * .Rc - same restricted reverse half of `model.S` as `.Rr`, used for the column-rank computation
+%                     * .rankFR - rank of `[Fr Rr]`, i.e. `[F R]` restricted to `.FRrows`
+%                     * .rankFRV - rank of `[Fc;Rc]`, i.e. `[F;R]` restricted to `.FRVcols`
+%                     * .FRp - row permutation returned by `getRankLUSOL` for `[Fr Rr]`
+%                     * .FRq - column permutation returned by `getRankLUSOL` for `[Fr Rr]`
+%                     * .FRVp - row permutation returned by `getRankLUSOL` for `[Fc;Rc]`
+%                     * .FRVq - column permutation returned by `getRankLUSOL` for `[Fc;Rc]`
+%                     * .FRirows - `m` x 1 boolean of rows of `[Fr Rr]` that are independent
+%                     * .FRdrows - `m` x 1 boolean of rows of `[Fr Rr]` that are dependent
+%                     * .FRVicols - `n` x 1 boolean of cols of `[Fc;Rc]` that are independent
+%                     * .FRVdcols - `n` x 1 boolean of cols of `[Fc;Rc]` that are dependent
+%                     * .FRrowRankDeficiency - number of dependent rows of `[Fr Rr]` (`nnz(.FRrows) - .rankFR`)
+%                     * .FRcolRankDeficiency - number of dependent cols of `[Fc;Rc]` (`nnz(.FRVcols) - .rankFRV`)
+%                     * .FRW - (only if `.FRrowRankDeficiency > 0`) sparse matrix expressing each dependent row of `[F R]`
+%                       as a linear combination of the independent rows
+%                     * .FRwrows - `m` x 1 boolean (only if `.FRrowRankDeficiency > 0`) of independent rows that other rows
+%                       amongst `.FRdrows` depend on
+%                     * .FRVW - (only if `.FRcolRankDeficiency > 0`) sparse matrix expressing each dependent col of `[F;R]`
+%                       as a linear combination of the independent cols
+%                     * .FRVwcols - `n` x 1 boolean (only if `.FRcolRankDeficiency > 0`) of independent cols that other cols depend on
+%                     * .Frb - forward half of the bilinear decomposition of `Fr - Rr` (only set if the `if 0` debug branch is enabled)
+%                     * .Rrb - reverse half of the bilinear decomposition of `Fr - Rr` (only set if the `if 0` debug branch is enabled)
+%                     * .rankBilinearFrRr - rank of `[Frb Rrb]` (only set if the `if 0` debug branch is enabled)
+%                     * .rankS - rank of `model.S`
+%                     * .maxSij - maximum magnitude stoichiometric coefficient in `model.S`
+%                     * .minSij - minimum nonzero magnitude stoichiometric coefficient in `model.S`
 
 % .. Author: - Ronan Fleming 2015 - 2022
 % .. Please cite:

@@ -1,61 +1,47 @@
-function model = setupComponentContribution(model,molFileDir,cid,printLevel)
-% Estimates standard transformed reaction Gibbs energy and directionality
-% at in vivo conditions in multicompartmental metabolic reconstructions.
-% Has external dependencies on the COBRA toolbox, the component
-% contribution method, Python (with numpy and Open Babel bindings),
-% ChemAxon's Calculator Plugins, and Open Babel. See details on
-% availability at the end of help text. 
-% 
-% modelT = setupThermoModel(model,molfileDir,cid,T,cellCompartments,ph,...
-%                           is,chi,concMin,concMax,confidenceLevel) 
-% 
-% INPUTS
-% model             Model structure with following fields:
-% .S                m x n stoichiometric matrix.
-% .mets             m x 1 array of metabolite identifiers.
-% .rxns             n x 1 array of reaction identifiers.
-% .metFormulas      m x 1 cell array of metabolite formulas. Formulas for
-%                   protons should be H, and formulas for water should be
-%                   H2O.
-% .metCharges       m x 1 numerical array of metabolite charges.
-% 
-% OPTIONAL INPUTS
-% molFileDir                Path to a directory containing molfiles for the
-%                           major tautomer of the major microspecies of
-%                           each metabolite at pH 7. Molfiles should be
-%                           named with the metabolite identifiers in
-%                           model.mets (without compartment assignments).
-%                           Not required if cid are specified.
-% cid                       m x 1 cell array of KEGG Compound identifiers.
-%                           Not required if molfiledir is specified.
-% model.metCompartments     m x 1 array of metabolite compartment
-%                           assignments. Not required if metabolite
-%                           identifiers are strings of the format ID[*]
-%                           where * is the appropriate compartment
-%                           identifier.
-% 
-% OUTPUTS
-% model                 Model structure with following additional fields:
-% .inchi                Structure containing four m x 1 cell array's of
-%                       IUPAC InChI strings for metabolites, with varying
-%                       levels of structural detail.
-% .pKa                  m x 1 structure containing metabolite pKa values
-%                       estimated with ChemAxon's Calculator Plugins.
-% .pseudoisomers        p x 4 matrix with the following columns:
-%                       1. Metabolite index.
-%                       2. Estimated pseudoisomer standard Gibbs energy.
-%                       3. Number of hydrogen atoms in pseudoisomer
-%                       chemical formula.
-%                       4. Charge on pseudoisomer.
-% 
-% WRITTEN OUTPUTS
-% MetStructures.sdf     An SDF containing all structures input to the
-%                       component contribution method for estimation of
-%                       standard Gibbs energies. 
-% 
-% 
-% Ronan M. T. Fleming, Sept. 2012   Version 1.0
-% Hulda S. H., Dec. 2012            Version 2.0
+function model = setupComponentContribution(model, molFileDir, cid, printLevel)
+% Estimate metabolite structures, pKa values and pseudoisomers for the
+% component contribution method of standard Gibbs energy estimation
+%
+% Estimates standard transformed reaction Gibbs energy and directionality at
+% in vivo conditions in multicompartmental metabolic reconstructions. Has
+% external dependencies on the COBRA Toolbox, the component contribution
+% method, Python (with numpy and Open Babel bindings), ChemAxon's Calculator
+% Plugins, and Open Babel.
+%
+% USAGE:
+%
+%    model = setupComponentContribution(model, molFileDir, cid, printLevel)
+%
+% INPUTS:
+%    model:            COBRA model structure with fields:
+%
+%                        * .mets - `m x 1` cell array of metabolite identifiers
+%                        * .metFormulas - `m x 1` cell array of metabolite formulae (H for protons, H2O for water)
+%                        * .metCharges - `m x 1` numeric array of metabolite charges
+%
+% OPTIONAL INPUTS:
+%    molFileDir:       path to a directory of molfiles for the major tautomer of
+%                      the major microspecies of each metabolite at pH 7, named
+%                      with the metabolite identifiers in `model.mets` (without
+%                      compartment assignments); not required if `cid` is given
+%    cid:              `m x 1` cell array of KEGG Compound identifiers; not
+%                      required if `molFileDir` is given
+%    printLevel:       verbosity level (default 1)
+%
+% OUTPUT:
+%    model:            COBRA model structure with the additional fields:
+%
+%                        * .inchi - structure of `m x 1` cell arrays of InChI strings at varying levels of structural detail
+%                        * .pseudoisomers - matrix of estimated pseudoisomer data (metabolite index, standard Gibbs energy, number of hydrogens, charge)
+%
+% NOTE:
+%
+%    Writes `MetStructures.sdf`, an SDF of all structures passed to the
+%    component contribution method for standard Gibbs energy estimation.
+%
+% .. Authors:
+%       - Ronan M. T. Fleming, Sept. 2012, Version 1.0
+%       - Hulda S. H., Dec. 2012, Version 2.0
 
 
 %% Configure inputs

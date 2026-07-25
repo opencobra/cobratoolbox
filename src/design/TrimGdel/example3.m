@@ -1,11 +1,17 @@
 function [outputArg1, outputArg2] = example3()
-% example3 calculates the gene deletion strategy for growth coupling
-% for riboflavin in iML1515.
-% 
+% example3 computes a gene-deletion strategy for growth-coupled
+% production of riboflavin (ribflv_c) in the iML1515 model, using TrimGdel.
+%
 % USAGE:
 %
-%     function [] = example3()
-% 
+%    [outputArg1, outputArg2] = example3()
+%
+% OUTPUTS:
+%    outputArg1:    unused; declared by the function signature but never
+%                   assigned (placeholder from the function template)
+%    outputArg2:    unused; declared by the function signature but never
+%                   assigned (placeholder from the function template)
+%
 % .. Author:    - Takeyuki Tamura, Mar 06, 2025
 %
 

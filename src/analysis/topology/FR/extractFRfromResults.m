@@ -1,4 +1,8 @@
-%for i=1:12, depending on which model wanted
+% Extract the forward and reverse half-stoichiometric matrices [F, R] from a
+% stored FR-analysis results structure, restricted to the rows that make [F R]
+% full row rank (model.FRrows) for the model selected by index i.
+%
+% for i=1:12, depending on which model wanted
 i=1;
 model=results(i).model;
 %initial forward and reverse half stoichiometric matrices

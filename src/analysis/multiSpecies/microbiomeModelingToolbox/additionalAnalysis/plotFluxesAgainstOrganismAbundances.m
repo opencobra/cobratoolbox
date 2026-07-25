@@ -1,23 +1,23 @@
-function plotFluxesAgainstOrganismAbundances(abundancePath,fluxPath,metabolites)
+function plotFluxesAgainstOrganismAbundances(abundancePath, fluxPath, metabolites)
 % Part of the Microbiome Modeling Toolbox. This function plots the 
 % relationship between organism abundances and the computed flux profiles
 % for metabolites of interest. The function should be used after running 
 % mgPipe to identify correlations between metabolites and specific taxa in 
 % the samples.
 %
-% USAGE
+% USAGE:
 %
-%     plotFluxesAgainstOrganismAbundances(fluxPath,abundancePath,metabolites)
+%     plotFluxesAgainstOrganismAbundances(abundancePath, fluxPath, metabolites)
 %
 % INPUTS:
-%   abundancePath:     Path to the .csv file with the abundance data.
+%    abundancePath:    Path to the .csv file with the abundance data.
 %                      Needs to be in same format as example file
 %                      'cobratoolbox/papers/018_microbiomeModelingToolbox/examples/normCoverage.csv'
-%   fluxPath:          Path to the .csv file with the fluxes for reactions 
+%    fluxPath:         Path to the .csv file with the fluxes for reactions
 %                      of interest with sample IDs as rows and reaction
 %                      IDs in microbiome community models as columns
 % OPTIONAL INPUT:
-%   metabolites:       Cell array with VMH metabolite IDs of metabolites to 
+%    metabolites:      Cell array with VMH metabolite IDs of metabolites to
 %                      plot (default: all computed metabolites)
 %
 % .. Author: Almut Heinken, 02/2021

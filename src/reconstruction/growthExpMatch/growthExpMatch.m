@@ -27,6 +27,9 @@ function [solution] = growthExpMatch(model, KEGGFilename, compartment, iteration
 %                     to be growing when the flux of the biomass reaction is
 %                     above threshold. (Default = 0.05)
 %
+%    KEGGBlackList:    List of excluded reactions from the Kegg universal
+%                      database (Default = {}, i.e. no reactions excluded)
+%
 % OUTPUT:
 %    solution:        MILP solution that consists of the continuous solution, integer
 %                     solution, objective value, stat, full solution, and

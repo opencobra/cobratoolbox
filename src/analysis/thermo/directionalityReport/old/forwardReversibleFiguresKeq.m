@@ -1,21 +1,29 @@
-function forwardReversibleFiguresKeq(model,directions,thorStandard)
+function forwardReversibleFiguresKeq(model, directions, thorStandard)
 % Figure of qualitatively forward -> quantitatively reversible (keq)
 %
-%make figure of  reactions that have changed from qualitatively forward
-%to quantitatively reversible, where all metabolites dGt0 were back
-%calculated from Keq. Omit those reactions that are transport reactions
+% Make a figure of reactions that have changed from qualitatively forward to
+% quantitatively reversible, where all metabolite dGt0 were back-calculated
+% from Keq. Omits reactions that are transport reactions.
 %
-%INPUT
-% model
+% USAGE:
 %
-% directions must have the fields below:
-%   directions.ChangeForwardReversible_dGfKeq
+%    forwardReversibleFiguresKeq(model, directions, thorStandard)
 %
-% thorStandard          {(0),1} use new standard reactant concentration
-%                       half way between upper and lower concentration
-%                       bounds
+% INPUTS:
+%    model:            structure with fields:
 %
-% Ronan M.T. Fleming
+%                        * .S - `m x n` stoichiometric matrix
+%                        * .dGt0Min - `n x 1` lower bound on standard transformed reaction Gibbs energy
+%                        * .dGt0Max - `n x 1` upper bound on standard transformed reaction Gibbs energy
+%                        * .dGtMin - `n x 1` lower bound on transformed reaction Gibbs energy
+%                        * .dGtMax - `n x 1` upper bound on transformed reaction Gibbs energy
+%    directions:       structure with field:
+%
+%                        * .ChangeForwardReversible_dGfKeq - reactions changed from forward to reversible via Keq
+%    thorStandard:     {(0), 1} use new standard reactant concentration half way
+%                      between upper and lower concentration bounds
+%
+% .. Author: - Ronan M.T. Fleming
 
 [nMet,nRxn]=size(model.S);
 %ignore thor standard for keq

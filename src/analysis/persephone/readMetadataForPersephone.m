@@ -11,11 +11,11 @@ function metadata = readMetadataForPersephone(metadataPath)
 %    metadata = readMetadataForPersephone(metadataPath)
 %
 % INPUTS:
-%    metadataPath: A string specifying the path to the metadata file 
+%    metadataPath:    A string specifying the path to the metadata file
 %                  (in CSV or XLSX format).
 %
 % OUTPUTS:
-%    metadata: A MATLAB table containing the processed metadata. 
+%    metadata:    A MATLAB table containing the processed metadata.
 %              Variable units, if present in the second row of the file, 
 %              are stored in the table's 'VariableUnits' property.
 %

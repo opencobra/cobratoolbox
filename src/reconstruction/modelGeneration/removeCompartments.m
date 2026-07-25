@@ -1,17 +1,37 @@
-function [modelDecomp] = removeCompartments(model,comp,newComp)
-% function [modelDecomp] = RemoveCompartments(model,comp,NewComp)
+function [modelDecomp] = removeCompartments(model, comp, newComp)
+% Removes a list of compartments from metabolite names, decompartmentalizing
+% the model. Removes duplicate and empty entries.
 %
-% Function removes list of compartments in metabolite names. It removes
-% duplicates and empty entries.
+% USAGE:
 %
-% model         Model structure
-% comp          List of compartments to remove or replace (e.g., {'c','n'}
-% newComp       New compartment (optional, default: '[c]')
+%    [modelDecomp] = removeCompartments(model, comp, newComp)
 %
-% modelDecomp   Decompartementalized model structure
-% IT Nov 2009
-% SM Feb 2014 - line 31, updated function name "AddReaction" to "addReaction"
-% IT April 2024 - updated script
+% INPUTS:
+%    model:          Model structure with fields:
+%
+%                      * .genes - `g` x 1 cell array of gene identifiers
+%                      * .rxns - `n` x 1 cell array of reaction identifiers
+%                      * .mets - `m` x 1 cell array of metabolite identifiers
+%                      * .S - `m` x `n` stoichiometric matrix
+%                      * .lb - `n` x 1 lower bounds on fluxes
+%                      * .ub - `n` x 1 upper bounds on fluxes
+%                      * .c - `n` x 1 objective coefficient vector
+%                      * .rev - `n` x 1 boolean of reversible reactions
+%                        (computed from `.lb` if absent)
+%                      * .subSystems - `n` x 1 cell array of subsystem assignments
+%                      * .grRules - `n` x 1 cell array of gene-reaction rules
+%    comp:           List of compartments to remove or replace (e.g., {'c', 'n'})
+%
+% OPTIONAL INPUTS:
+%    newComp:        New compartment (default: `'[c]'`)
+%
+% OUTPUT:
+%    modelDecomp:    Decompartmentalized model structure
+%
+% .. Authors:
+%       - IT Nov 2009
+%       - SM Feb 2014 - line 31, updated function name "AddReaction" to "addReaction"
+%       - IT April 2024 - updated script
 
 warning('OFF')
 if ~exist('newComp','var')

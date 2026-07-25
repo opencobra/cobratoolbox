@@ -7,7 +7,15 @@ function [finalState, finalInputs1States, finalInputs2States] = solveBooleanRegM
 %    [finalState, finalInputs1States, finalInputs2States] = solveBooleanRegModel(model, initialState, inputs1States, inputs2States)
 %
 % INPUTS:
-%    model:                 a regulatory COBRA model
+%    model:                 a regulatory COBRA model with fields:
+%
+%                             * .S - stoichiometric matrix
+%                             * .lb - lower flux bounds
+%                             * .genes - gene identifiers
+%                             * .regulatoryGenes - genes in the Boolean regulatory network
+%                             * .regulatoryInputs1 - type 1 regulatory inputs (metabolites)
+%                             * .regulatoryInputs2 - type 2 regulatory inputs (reactions)
+%                             * .regulatoryRules - Boolean rules governing the regulatory genes
 %    initialState:          initial state of regulatory network
 %    inputs1States:         initial state of type 1 inputs (metabolites)
 %    inputs2States:         initial state of type 2 inputs (reactions)

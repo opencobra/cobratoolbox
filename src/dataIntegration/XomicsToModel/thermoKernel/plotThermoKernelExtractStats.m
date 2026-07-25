@@ -1,4 +1,22 @@
 function plotThermoModelExtractStats(model, activeInactiveRxn, rxnWeights, presentAbsentMet, metWeights, thermoModelMetBool, thermoModelRxnBool)
+% Plot statistics comparing reaction and metabolite weights against the
+% thermodynamic submodel extracted by thermoKernel
+%
+% USAGE:
+%
+%    plotThermoModelExtractStats(model, activeInactiveRxn, rxnWeights, presentAbsentMet, metWeights, thermoModelMetBool, thermoModelRxnBool)
+%
+% INPUTS:
+%    model:    COBRA model with field:
+%
+%                * .h0 - metabolite weights used by thermoKernel
+%
+%    activeInactiveRxn:    `n x 1` with entries {1, -1, 0} for reactions that must be active, inactive, or unspecified
+%    rxnWeights:    `n x 1` real-valued penalties on reactions
+%    presentAbsentMet:    `m x 1` with entries {1, -1, 0} for metabolites that must be present, absent, or unspecified
+%    metWeights:    `m x 1` real-valued penalties on metabolites
+%    thermoModelMetBool:    `m x 1` boolean, true for metabolites retained in the extracted model
+%    thermoModelRxnBool:    `n x 1` boolean, true for reactions retained in the extracted model
 
 nMet=length(thermoModelMetBool);
 nRxn=length(thermoModelRxnBool);

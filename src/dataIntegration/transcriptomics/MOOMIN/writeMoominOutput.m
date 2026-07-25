@@ -6,8 +6,16 @@ function writeMoominOutput(model, fileName, varargin)
 %    writeMoominOutput(model, fileName, varargin)
 %
 % INPUTS:
-%    model:         COBRA model structure output by MOOMIN
-%    filename:      name of the output file
+%    model:         COBRA model structure output by MOOMIN, using the fields:
+%
+%                     * .rxns - reaction identifiers
+%                     * .inputColours - a priori reaction colours from the data
+%                     * .outputColours - reaction colours from the MOOMIN solution(s)
+%                     * .combined - consensus colours across optimal solutions
+%                     * .frequency - how often each reaction is coloured
+%                     * .weights - reaction weights used by the algorithm
+%                     * .expression - differential expression data (with .GeneID and .FC subfields)
+%    fileName:      name of the output file
 %
 % Optional parameters can be entered the standard MATLAB way with parameter name followed
 % by parameter value: i.e. ,'nSolution', 3)

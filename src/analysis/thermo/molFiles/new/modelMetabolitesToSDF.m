@@ -8,18 +8,23 @@ function model = modelMetabolitesToSDF(model, InChI)
 %    model = modelMetabolitesToSDF(model, InChI)
 %
 % INPUT:
-%    model:    model structure
+%    model:    COBRA model structure with fields:
+%
+%                * .S - `m x n` stoichiometric matrix
+%                * .mets - `m x 1` cell array of metabolite identifiers
+%                * .met - struct array of per-metabolite data with subfields `.InChI`, `.formula`, `.formulaInChI` and `.charge`
+%                * .metNames - `m x 1` cell array of metabolite names
+%                * .description - model description, used to name the output SDF file
 %
 % OPTIONAL INPUT:
-%    InChI:    `m x 2` cell array of InChI strings for each metabolite,
-%              `InChI{i, 1}` is a metabolite abbreviation (no compartment),
-%              `InChi{i, 2}` is a metabolite `InChI` string
+%    InChI:    `m x 2` cell array of InChI strings for each metabolite;
+%              `InChI{i, 1}` is a metabolite abbreviation (no compartment) and
+%              `InChI{i, 2}` is the metabolite InChI string
 %
-% OPTIONAL OUTPUT:
-%    model:    structure with fields:
-%
-%                * model.mets(m).InChI - `InChI` mapped to model if provided as input
-%                * model.met(m).formulaInChI - Chemical formula as given in `InChI`
+% OUTPUT:
+%    model:    the input model with, for each metabolite, the added subfields
+%              `.met(m).InChI` (InChI mapped to the model, NaN if none) and
+%              `.met(m).formulaInChI` (chemical formula parsed from the InChI)
 %
 % .. Author: - Ronan M.T. Fleming
 

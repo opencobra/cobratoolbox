@@ -1,22 +1,36 @@
-function [organs,OrganWeight,OrganWeightFract,IndividualParameters] = calcOrganFract(model, IndividualParameters)
-% This function extrapolates the organ weight fractions based on polynomials given in
-% http://www.ams.sunysb.edu/~hahn/psfile/pap_obesity.pdf (PMID 19267313), Table 3. Those ones that are not given are assumed to remain constant with weight
-% using the fractions from the reference man and reference woman.
+function [organs, OrganWeight, OrganWeightFract, IndividualParameters] = calcOrganFract(model, IndividualParameters)
+% Extrapolate organ weight fractions from body-weight polynomials
 %
-% [organs,OrganWeight,OrganWeightFract,IndividualParameters] = calcOrganFract(model, IndividualParameters)
+% This function extrapolates the organ weight fractions based on the
+% polynomials given in http://www.ams.sunysb.edu/~hahn/psfile/pap_obesity.pdf
+% (PMID 19267313), Table 3. Organs not given there are assumed to remain
+% constant with weight, using the fractions from the reference man and
+% reference woman.
 %
-% INPUT
-% model                 Model structure
-% IndividualParameters  Structure of individual parameters (sex, weight,
-%                       blood volume)
-% 
-% OUTPUT
-% organs                List of organs
-% OrganWeight           List of organ weights (same order as organs)
-% OrganWeightFract      List of organ weight fractions (same order as organs)
-% IndividualParameters  Updated structure of individual parameters
-% 
-% Ines Thiele Nov 2017
+% USAGE:
+%
+%    [organs, OrganWeight, OrganWeightFract, IndividualParameters] = calcOrganFract(model, IndividualParameters)
+%
+% INPUTS:
+%    model:                  Model structure with fields:
+%
+%                              * .rxns - reaction identifiers
+%    IndividualParameters:    Structure of individual parameters with fields:
+%
+%                              * .sex - 'male' or 'female'
+%                              * .bodyWeight - individual body weight (kg)
+%                              * .CardiacOutput - cardiac output (ml), used here as the blood volume
+%                              * .BloodVolume - blood volume (ml)
+%                              * .OrgansWeights - per-organ weights (working field)
+%                              * .OrgansWeightsRefMan - per-organ weights of the reference man/woman
+%
+% OUTPUTS:
+%    organs:                 List of organs
+%    OrganWeight:            List of organ weights (same order as `organs`)
+%    OrganWeightFract:       List of organ weight fractions (same order as `organs`)
+%    IndividualParameters:    Updated structure of individual parameters
+%
+% .. Author: - Ines Thiele, Nov 2017
 %
 
 % get sex from individual parameters
@@ -123,18 +137,18 @@ organs{r} = 'Bcells';
 OrganWeight(r,1) = 0.09*LympWeight;
 OrganWeightFract(r,1) = OrganWeight(r,1)/Wt;
 r = r+1;
-% CD4Tcells	"45-75% of lymphocytes; 4 – 20% of leukocyte; assumed 15% of leukocytes"
+% CD4Tcells	"45-75% of lymphocytes; 4 ï¿½ 20% of leukocyte; assumed 15% of leukocytes"
 organs{r} = 'CD4Tcells';
 OrganWeight(r,1) = 0.15*WBCWeight;
 OrganWeightFract(r,1) = OrganWeight(r,1)/Wt;
 r = r+1;
-% CD8Tcells	2 – 11% of leukocytes; assumed 8%
+% CD8Tcells	2 ï¿½ 11% of leukocytes; assumed 8%
 % Nkcells	Human and mouse NK cells constitute approximately 15% of all circulating lymphocytes
 organs{r} = 'Nkcells';
 OrganWeight(r,1) = 0.15*LympWeight;
 OrganWeightFract(r,1) = OrganWeight(r,1)/Wt;
 r = r+1;
-% Monocyte	Monocyte (2-8% of peripheral WBCs); assumed 5%
+% Monocyte	Monocyteï¿½(2-8% of peripheral WBCs); assumed 5%
 organs{r} = 'Monocyte';
 OrganWeight(r,1) = 0.05*WBCWeight;
 OrganWeightFract(r,1) = OrganWeight(r,1)/Wt;

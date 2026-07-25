@@ -1,4 +1,4 @@
-function [model,addedCouplingRxns] = debugCouplingConstraints(model,biomassReaction,database)
+function [model, addedCouplingRxns] = debugCouplingConstraints(model, biomassReaction, database)
 % Part of the DEMETER pipeline. In rare cases, the implementation of
 % coupling constraints, which is required for the Microbiome Modeling
 % Toolbox, renders the model unable to grow. This can be fixed by adding
@@ -6,19 +6,32 @@ function [model,addedCouplingRxns] = debugCouplingConstraints(model,biomassReact
 %
 % USAGE:
 %
-%   [model,addedCouplingRxns] = debugCouplingConstraints(model,biomassReaction,database)
+%    [model, addedCouplingRxns] = debugCouplingConstraints(model, biomassReaction, database)
 %
-% INPUTS
-% model:               COBRA model structure
-% biomassReaction:     Reaction ID of the biomass objective function
-% database:            rBioNet reaction database containing min. 3 columns:
-%                      Column 1: reaction abbreviation, Column 2: reaction
-%                      name, Column 3: reaction formula.
+% INPUTS:
+%    model:               COBRA model structure with fields:
 %
-% OUTPUT
-% model:               COBRA model structure
-% addedCouplingRxns:   Reactions added to enable growth with coupling
-%                      constraints
+%                           * .rxns - `n x 1` reaction identifiers
+%                           * .comments - `n x 1` cell array of free-text
+%                             comments for each reaction
+%                           * .rxnConfidenceScores - `n x 1` reaction
+%                             confidence scores
+%
+%    biomassReaction:     Reaction ID of the biomass objective function
+%    database:            rBioNet reaction database containing min. 3
+%                         columns: Column 1: reaction abbreviation, Column
+%                         2: reaction name, Column 3: reaction formula,
+%                         with fields:
+%
+%                           * .reactions - cell array of reaction
+%                             abbreviations (column 1) and reaction
+%                             formulas (column 3)
+%
+% OUTPUTS:
+%    model:               COBRA model structure with coupling-constraint
+%                         gap-filling reactions added
+%    addedCouplingRxns:    Reactions added to enable growth with coupling
+%                         constraints
 %
 % .. Author:
 %       - Almut Heinken, 04/2021

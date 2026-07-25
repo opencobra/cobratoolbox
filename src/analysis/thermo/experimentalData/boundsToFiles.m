@@ -6,7 +6,13 @@ function boundsToFiles(model)
 %    boundsToFiles(model)
 %
 % INPUT:
-%    model:
+%    model:    structure with fields:
+%
+%                * .S - `m x n` stoichiometric matrix
+%                * .lb - `n x 1` lower flux bounds
+%                * .ub - `n x 1` upper flux bounds
+%                * .met - metabolite structure array with fields .abbreviation, .concMin, .concMax
+%                * .rxn - reaction structure array with field .abbreviation
 %
 % .. Author: - Ronan M.T. Fleming
 

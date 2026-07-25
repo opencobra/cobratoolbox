@@ -1,28 +1,40 @@
-function MIIS = findMIIS(LPProblem,printLevel)
+function MIIS = findMIIS(LPProblem, printLevel)
 % Finds the Minimal Irreducible Infeasible Subset (MIIS) in an infeasible
 % linear program. It uses (for now) the IBM ILOG CPLEX conflict refine
-% routine. The MIIS is the smallest infeasible submodel that becomes feasbile if one
-% constraint/bound is removed. All subsets of a MIIS are feasbile.
+% routine. The MIIS is the smallest infeasible submodel that becomes feasible if one
+% constraint/bound is removed. All subsets of a MIIS are feasible.
 % Where relaxedFBA and feasOpt take corrective measures automatically,
 % findMIIS points the user to the infeasible subset which guides decision
-% making. The user can then check errors in the data or correct the model based on 
+% making. The user can then check errors in the data or correct the model based on
 % the literature.
 %
-% USAGE
+% USAGE:
 %
-%    MIIS = findMIIS(model,1)
+%    MIIS = findMIIS(LPProblem, printLevel)
 %
 % INPUTS:
-%    LPProblem:        Infeasible model as COBRA model structure
-%    printLevel:       0/1/2
+%    LPProblem:        infeasible LP problem as a COBRA model/LP structure with fields:
+%
+%                        * .A - `m x n` constraint matrix (`.S` is used if `.A` is absent)
+%                        * .S - `m x n` stoichiometric matrix (alternative to `.A`)
+%                        * .b - `m x 1` right-hand-side vector
+%                        * .c - `n x 1` linear objective coefficient vector
+%                        * .lb - `n x 1` lower bounds
+%                        * .ub - `n x 1` upper bounds
+%                        * .csense - `m x 1` constraint sense ('E', 'G', or 'L'; default all 'E')
+%                        * .osense - objective sense (-1 maximise, 1 minimise; default -1)
+%    printLevel:       verbosity level, 0/1/2 (default 0)
 %
 % OUTPUT:
-%    MIIS.rxns:        Reactions of MIIS
-%    MIIS.mets:        Mets of MIIS
-%    MIIS.rxnsStat:    Status of infeasiblity of reactions
-%    MIIS.metsStat:    Status of infeasiblity of metabolites
-%    please refer to this link for status meaning
-% https://www.ibm.com/support/knowledgecenter/de/SSSA5P_12.7.0/ilog.odms.cplex.help/refcallablelibrary/macros/Solution_status_codes.html
+%    MIIS:             structure describing the MIIS with fields:
+%
+%                        * .rxns - reactions of the MIIS
+%                        * .mets - metabolites of the MIIS
+%                        * .rxnsStat - status of infeasibility of reactions
+%                        * .metsStat - status of infeasibility of metabolites
+%
+%                      Refer to the IBM CPLEX solution status codes documentation
+%                      for the meaning of the status values.
 %
 % .. Author: - Marouen Ben Guebila - 24/07/2017
 

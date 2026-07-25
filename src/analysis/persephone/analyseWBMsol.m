@@ -1,79 +1,45 @@
-function processedFluxResPaths = analyseWBMsol(fluxPath,paramFluxProcessing, fluxAnalysisPath, analyseGF)
-% analyseWBMsol loads the FBA solutions produced in 
-% analyseWBMs.m, prepares the FBA results for further
-% analyses, and produces summary statistics into the flux results. 
+function processedFluxResPaths = analyseWBMsol(fluxPath, paramFluxProcessing, fluxAnalysisPath, analyseGF)
+% Load and post-process the FBA solutions produced by analyseWBMs
 %
-% The function contains six parts:
-%       - PART 1: Loading the flux solutions and corresponding shadow prices
-%       - PART 2: Converting the microbial  biomass shadow prices
-%       associated with each optimised reaction flux to human readable
-%       tables and producing statistics on microbial influences on the flux
-%       results.
-%       - PART 3: Isolate the microbial component of the fluxes by
-%       subtracting the germ-free fluxes in a sex specific manner. In this
-%       part, descriptive statistics are also obtained on the fluxes across
-%       samples and metabolites are removed based on a user defined
-%       threshold (see thresholds input)
-%       - PART 4: In this part, microbe-flux associations defined by the
-%       species biomass shadow prices (PART 2) are further quantified by
-%       performing Spearman correlations on the fluxes and microbe relative
-%       abundances. 
-%       - PART 5: Reactions with identical or near identical fluxes across
-%       samples (user defined) are grouped and collapsed into a single
-%       result. 
-%       - PART 6: Save all results
+% Loads the FBA solutions produced in analyseWBMs.m, prepares the results for
+% further analysis, and produces summary statistics on the fluxes. It loads
+% the flux solutions and shadow prices, converts the microbial biomass shadow
+% prices to human-readable tables, isolates the microbial component of the
+% fluxes by subtracting the germ-free fluxes in a sex-specific manner, groups
+% reactions with (near-)identical fluxes, and saves all results.
 %
 % USAGE:
-%       processedFluxResPaths = analyseWBMsol(fluxPath,paramFluxProcessing, fluxAnalysisPath)
+%
+%    processedFluxResPaths = analyseWBMsol(fluxPath, paramFluxProcessing, fluxAnalysisPath, analyseGF)
 %
 % INPUTS:
-% fluxPath            Character array with path to .mat files produced in analyseWBMs.m
+%    fluxPath:               character array with the path to the `.mat` files
+%                            produced in analyseWBMs.m
+%    paramFluxProcessing:    structure with flux-processing parameters (missing
+%                            fields are filled with defaults). Fields used:
 %
-% paramFluxProcessing Structured array with optional parameters:
+%                              * .numericalRounding - defines how much the
+%                                predicted flux and shadow-price values are
+%                                rounded; e.g. 1e-6 rounds 2 + 2.3e-8 to 2
+%                              * .roundingFactor - number of decimal places
+%                                used when rounding, derived internally from
+%                                the numerical rounding value
+%                              * .rxnRemovalCutoff - minimal number of samples
+%                                for which a unique reaction flux must be
+%                                obtained before the reaction is removed, given
+%                                as {'fraction', x}, {'SD', x} or {'count', x}
+%    fluxAnalysisPath:       character array with the path to the directory
+%                            where all results are saved
+%    analyseGF:              logical, whether the germ-free (microbe-free) flux
+%                            solutions are also analysed
 %
-%                     .numericalRounding defines how much the predicted flux values are
-%                     rounded. A defined value of 1e-6 means that a flux value of
-%                     2 + 2.3e-8 is rounded to 2. A flux value of 0 + 1e-15 would be rounded to
-%                     exactly zero. This rounding factor will also be applied to the shadow 
-%                     price values. If microbiome relative abundance data is provided, the same
-%                     rounding factor will be applied to the relative abundance data.
-%                     
-%                     Default parameterisation: 
-%                     - paramFluxProcessing.numericalRounding = 1e-6;
-%                     
-%                     Example: 
-%                     - paramFluxProcessing.numericalRounding = 1e-6;
-%                     
-%                     paramFluxProcessing.numericalRounding = 1e-6;
-%                     
-%                     .rxnRemovalCutoff defines the minimal number of samples for which a
-%                     unique reaction flux could be obtained, before removing the reaction for 
-%                     further analysis. This parameter can be expressed as 
-%                     * fraction:  the fraction of samples with unique values, 
-%                     * SD: the standard deviation across samples, and
-%                     * count: the counted number of unique values. If microbiome relative 
-%                     abundance data is provided, the same removal cutoff factor will be 
-%                     applied to the relative abundance data.
-%                     
-%                     Default parameterisation: 
-%                     - paramFluxProcessing.rxnRemovalCutoff = {'fraction',0.1};
-%                     
-%                     Examples: 
-%                     - paramFluxProcessing.rxnRemovalCutoff = {'fraction',0.1};
-%                     - paramFluxProcessing.rxnRemovalCutoff = {'SD',1};
-%                     - paramFluxProcessing.rxnRemovalCutoff = {'count',30};
-%                     
-%                     paramFluxProcessing.rxnRemovalCutoff = {'fraction',0.1};
-%                     
-% fluxAnalysisPath             
-%                     Character array with path to directory where all
-%                     results will be saved.
+% OUTPUT:
+%    processedFluxResPaths:    string array with the paths to the saved
+%                              processed flux result files
 %
-% AUTHOR:
-%   - Tim Hensen, July 2024
-%   - Jonas Widder, 11/2024 (small bugfixes)
+% .. Author: - Tim Hensen, July 2024
+%            - Jonas Widder, 11/2024 (small bugfixes)
 
-% Validate function inputs
 validateattributes(fluxPath, {'char', 'string'}, {'nonempty'}, mfilename, 'fluxPath',1)
 validateattributes(paramFluxProcessing, {'struct'}, {'nonempty'}, mfilename, 'paramFluxProcessing',2)
 validateattributes(fluxAnalysisPath, {'char', 'string'}, {'nonempty'}, mfilename, 'fluxPath',3)

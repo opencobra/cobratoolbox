@@ -7,7 +7,9 @@ function [subSystems]  = getModelSubSystems(model)
 %
 % INPUT:
 %    model:                 A COBRA model struct with at least the
-%                           subSystems fields
+%                           subSystems fields, including:
+%
+%                             * .subSystems - `n x 1` subsystem assignments
 %
 % OUTPUT:
 %    subSystems:            A Cell Array of strings containing all

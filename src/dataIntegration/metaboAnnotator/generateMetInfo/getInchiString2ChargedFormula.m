@@ -1,22 +1,24 @@
-function [metFormulaNeutral,metFormulaCharged,metCharge] = getInchiString2ChargedFormula(metList,inchiStringList)
-% This function computes the charged formula and metabolite charge at ph7
-% from a list of inchiStrings. It requires ChemAxxon and openBabel
+function [metFormulaNeutral, metFormulaCharged, metCharge] = getInchiString2ChargedFormula(metList, inchiStringList)
+% Computes the charged formula and metabolite charge at pH 7 from InChI strings
 %
-% INPUT 
-% metList               List of metabolite abbr
-% inchiStringList       List of inchiStrings (same order as metList), the
-%                       function assumes that the provided inchiString is given for the neutral
-%                       metabolite. If this is not the case, it still works, however,
-%                       metFormulaNeutral represents not the neutral formula but the one provided
-%                       with the inchiString.
+% It requires ChemAxon and Open Babel. The provided InChI string is assumed to
+% describe the neutral metabolite; if it does not, metFormulaNeutral instead
+% reflects the formula provided with the InChI string.
 %
-% OUTPUT
-% metFormulaNeutral     List of neutral metabolite formula (as provided in
-%                       the inchiString)
-% metFormula            List of charged metabolite formula (at ph7)
-% metCharge             List of metabolite charges (double, at ph7)
+% USAGE:
 %
-% Ines Thiele, 09/2021
+%    [metFormulaNeutral, metFormulaCharged, metCharge] = getInchiString2ChargedFormula(metList, inchiStringList)
+%
+% INPUTS:
+%    metList:            List of metabolite abbreviations
+%    inchiStringList:    List of InChI strings (same order as metList)
+%
+% OUTPUTS:
+%    metFormulaNeutral:     Neutral metabolite formula (as provided in the InChI string)
+%    metFormulaCharged:     Charged metabolite formula (at pH 7)
+%    metCharge:             Metabolite charge (double, at pH 7)
+%
+% .. Author: - Ines Thiele, 09/2021
 
 
 % create dummy model

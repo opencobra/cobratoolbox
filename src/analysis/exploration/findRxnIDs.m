@@ -6,7 +6,10 @@ function rxnID = findRxnIDs(model, rxnList)
 %    rxnID = findRxnIDs(model, rxnList)
 %
 % INPUTS:
-%    model:      COBRA model structure
+%    model:      COBRA model structure with field:
+%
+%                  * .rxns - `n x 1` reaction identifiers
+%
 %    rxnList:    cell array of reaction abbreviations
 %
 % OUTPUT:

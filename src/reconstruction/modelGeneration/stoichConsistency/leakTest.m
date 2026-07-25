@@ -17,7 +17,10 @@ function solution = leakTest(model, params, printLevel)
 %                     * .S - `m` x `n` stoichiometric matrix
 %                     * .lb - Lower bounds
 %                     * .ub - Upper bounds
-%    params:        structure with fields
+%    params:        structure with fields:
+%
+%                     * .epsilon - threshold on `|v|` above which a reaction flux is
+%                       considered inconsistent (used to derive `SConsistentRxnBool`)
 %    printLevel:    verbose level
 %
 % OUTPUT:

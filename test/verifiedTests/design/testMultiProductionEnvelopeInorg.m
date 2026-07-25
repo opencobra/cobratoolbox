@@ -34,8 +34,13 @@ refData_6thcolumn = (10:(-1.4964/19):8.5036)';
 
 % function calls
 [biomassValues, targetValues] = multiProductionEnvelopeInorg(model);
-[biomassValues1, targetValues1] = multiProductionEnvelopeInorg(model, model.rxns(20));
-[biomassValues2, targetValues2] = multiProductionEnvelopeInorg(model, deletions, biomassRxn, geneDelFlag, nPts, plotAllFlag);
+% Feature 002: the following two calls exercise the single-reaction and
+% gene-deletion/plotting paths but their outputs are never asserted; skip them
+% in fast mode. Full mode runs the complete set.
+if ~getCobraTestMode('isFast')
+    [biomassValues1, targetValues1] = multiProductionEnvelopeInorg(model, model.rxns(20));
+    [biomassValues2, targetValues2] = multiProductionEnvelopeInorg(model, deletions, biomassRxn, geneDelFlag, nPts, plotAllFlag);
+end
 
 % tests
 % x axis comparison
@@ -44,8 +49,6 @@ assert(isequal((abs(refData_x-biomassValues) < 1e-4), ones(20, 1)));
 assert(isequal((abs(refData_1stcolumn-targetValues(:, 1)) < 1e-4), ones(20, 1)));
 assert(isequal(refData_2ndcolumn, targetValues(:, 2)));
 assert(isequal((abs(refData_6thcolumn-targetValues(:, 6)) < 1e-4), ones(20, 1)));
-
-pause(3);
 
 close all hidden force
 

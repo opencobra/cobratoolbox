@@ -1,23 +1,66 @@
 function result = solveCobraLPOptArrow(LPproblem, problemTypeParams, solverParams)
 % Solve a COBRA LP problem through the OptArrow backend
 %
+% This helper keeps the OptArrow integration downstream from the generic
+% COBRA solver interface. It supports:
+%  - a CLI-backed local Python path
+%  - an HTTP path through the generic OptArrow MATLAB client
+%
 % USAGE:
 %
 %    result = solveCobraLPOptArrow(LPproblem, problemTypeParams, solverParams)
 %
 % INPUTS:
-%    LPproblem:           COBRA LP problem structure
-%    problemTypeParams:   structure of problem-type parameters
-%    solverParams:        structure of solver parameters
+%    LPproblem:           COBRA LP problem structure with fields:
+%
+%                           * .A - `m x n` linear constraint matrix (used
+%                             when present, otherwise `.S` is used instead)
+%                           * .S - (optional) `m x n` stoichiometric matrix,
+%                             used as `.A` when `.A` is absent
+%                           * .b - (optional) `m x 1` right hand side vector
+%                             for constraint `A*x = b` (default all zero)
+%                           * .c - `n x 1` linear objective coefficient vector
+%                           * .lb - (optional) `n x 1` lower bound vector for
+%                             `lb <= x` (default all zero)
+%                           * .ub - (optional) `n x 1` upper bound vector for
+%                             `x <= ub` (default all `1e6`)
+%                           * .csense - (optional) `m x 1` character array of
+%                             constraint senses, one for each row in `A`
+%                             (default all `'E'`)
+%                           * .osense - (optional) scalar objective sense
+%                             (-1 = maximise, 1 = minimise; default -1)
+%    problemTypeParams:    Structure of problem-type parameters with fields:
+%
+%                           * .printLevel - verbosity level; the OptArrow
+%                             status is printed to the command window when
+%                             `printLevel > 1`
+%    solverParams:        Structure of solver parameters with fields:
+%
+%                           * .endpoint - (optional) HTTP endpoint URL; when
+%                             present, the request is routed through the
+%                             OptArrow HTTP client instead of the CLI path
+%                           * .timeoutSec - (optional) HTTP request timeout
+%                             in seconds (default 120), used only on the
+%                             HTTP path
+%                           * .optArrowMatlabRoot - (optional) path to the
+%                             OptArrow MATLAB client sources, added to the
+%                             MATLAB path on the HTTP path
 %
 % OUTPUT:
-%    result:              structure with fields compatible with the
-%                         `solveCobraLP` solver dispatch
+%    result:              Structure with fields compatible with the
+%                         `solveCobraLP` solver dispatch:
 %
-% This helper keeps the OptArrow integration downstream from the generic
-% COBRA solver interface. It supports:
-%  - a CLI-backed local Python path
-%  - an HTTP path through the generic OptArrow MATLAB client
+%                           * .x - primal solution vector
+%                           * .f - objective value
+%                           * .w - reduced costs
+%                           * .y - dual values
+%                           * .stat - COBRA-style solver status
+%                           * .origStat - original OptArrow/backend status
+%                           * .origStatText - original status text
+%                           * .lpmethod - name/identifier of the method used
+%                           * .basis - warm-start basis (currently always
+%                             empty for this backend)
+%                           * .raw - raw response returned by the backend
 
 if nargin < 1 || ~isstruct(LPproblem)
     error('solveCobraLPOptArrow requires LPproblem as a struct.');

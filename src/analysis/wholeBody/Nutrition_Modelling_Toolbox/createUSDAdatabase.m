@@ -1,38 +1,35 @@
 function createUSDAdatabase(path2Files, varargin)
-% Creates the files used in the nutrition toolbox from the USDA fooddata
-% central database. This can be downloaded from https://fdc.nal.usda.gov/download-datasets.html
-% This function was created based on the april 2024 Full Download of All
-% Data Types
+% Create the files used by the nutrition toolbox from the USDA FoodData
+% Central database (https://fdc.nal.usda.gov/download-datasets.html). This
+% function was written for the April 2024 Full Download of All Data Types
 %
-% Usage:
-%   createUSDAdatabase(path2Files, varargin)
+% USAGE:
 %
-% Inputs
-%   path2Files:         Path to the directory where all the USDA fooddata
-%                       files are stored. As well as the
-%                       usdaNutrientVmhTransl file found in the cobra
-%                       toolbox
+%    createUSDAdatabase(path2Files, varargin)
 %
-% Optional inputs:
-%   brandedFoods:       Boolean, if the food source table of the branded
-%                       foods should be created. Defaults to false. Warning
-%                       putting this to true could take days of running the
-%                       code as it will have to convert almost 2 million
-%                       items
-%   outputDir:          Path to the directory where the individual food
-%                       source databases should be stored. Defaults to
-%                       [path2files , filesep, foodSourceNutrientTables]
-%   finalDatabaseDir:   Path to the directory where the final flux and
-%                       macro databases should be stored. Defaults to
-%                       [path2files, filesep, fluxMacroTables]
-%   foodSource2Use:     Cell array of with food source tables are to be
-%                       used to create the final flux and macro databases.
-%                       Defaults to {'sr_legacy_food';'foundation_food';'survey_fndds_food'}
+% INPUTS:
+%    path2Files:      Path to the directory holding all the USDA FoodData
+%                     files as well as the usdaNutrientVmhTransl file from the
+%                     COBRA Toolbox
 %
-% Example:
-%   createUSDAdatabase(path2Files)
+% OPTIONAL INPUTS:
+%    varargin:        Name-value pairs:
 %
-% .. Author - Bram nap 09-2024
+%                       * brandedFoods - boolean; if true the branded-foods
+%                         source table is also created. Note that this can
+%                         take days as it converts almost 2 million items
+%                         (default false)
+%                       * outputDir - directory where the individual food
+%                         source databases are stored
+%                         (default [path2Files filesep 'foodSourceNutrientTables'])
+%                       * finalDatabaseDir - directory where the final flux
+%                         and macro databases are stored
+%                         (default [path2Files filesep 'fluxMacroTables'])
+%                       * foodSource2Use - cell array of food source tables
+%                         used to build the final flux and macro databases
+%                         (default {'sr_legacy_food'; 'foundation_food'; 'survey_fndds_food'})
+%
+% .. Author: - Bram Nap, 09-2024
 
 % parse the inputs
 parser = inputParser();

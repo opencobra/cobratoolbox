@@ -25,9 +25,9 @@ function [exchanges, netProduction, netUptake, growthRates, infeasModels] = micr
 %                        is available and should be simulated
 %    computeProfiles:    boolean defining whether flux variability analysis to
 %                        compute the metabolic profiles should be performed.
-%    lowerBMBound        Minimal amount of community biomass in mmol/person/day enforced (default=0.4)
-%    upperBMBound        Maximal amount of community biomass in mmol/person/day enforced (default=1)
-%    includeHumanMets:   boolean indicating if human-derived metabolites
+%    lowerBMBound:       Minimal amount of community biomass in mmol/person/day enforced (default=0.4)
+%    upperBMBound:       Maximal amount of community biomass in mmol/person/day enforced (default=1)
+%    includeHumanMets:    boolean indicating if human-derived metabolites
 %                        present in the gut should be provexchangesed to the models (default: true)
 %    adaptMedium:        boolean indicating if the medium should be adapted through the
 %                        adaptVMHDietToAGORA function or used as is (default=true)

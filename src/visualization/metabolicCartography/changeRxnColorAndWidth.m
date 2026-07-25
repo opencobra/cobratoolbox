@@ -3,18 +3,27 @@ function [newMap] = changeRxnColorAndWidth(map, rxnList, color, areaWidth)
 %
 % USAGE:
 %
-%   [newMap] = changeRxnColorAndareaWidth(map, rxnList, color, areaWidth);
+%    [newMap] = changeRxnColorAndWidth(map, rxnList, color, areaWidth)
 %
 % INPUTS:
-%   map:            File from CellDesigner parsed to MATLAB format
-%   rxnList:        List of reactions
+%    map:            File from CellDesigner parsed to MATLAB format, with fields:
+%
+%                      * .rxnName - cell array of reaction names
+%                      * .rxnReactantLineColor - (optional field) cell array of per-reactant line colours
+%                      * .rxnReactantLineWidth - (optional field) cell array of per-reactant line widths
+%                      * .rxnProductLineColor - (optional field) cell array of per-product line colours
+%                      * .rxnProductLineWidth - (optional field) cell array of per-product line widths
+%    rxnList:        List of reactions
 %
 % OPTIONAL INPUTS:
-%   color:          New color of reactions from list (default: 'RED')
-%   areaWidth:      New areaWidth of reactions from list (default: 8)
+%    color:          New color of reactions from list (default: 'RED')
+%    areaWidth:      New areaWidth of reactions from list (default: 8)
 %
 % OUTPUT:
-%   newMap:         Matlab structure of map with reaction modifications
+%    newMap:         MATLAB structure of map with fields updated:
+%
+%                      * .rxnColor - cell array of reaction colours
+%                      * .rxnWidth - cell array of reaction line widths
 %
 % .. Authors:
 %       - A.Danielsdottir 17/07/2017 LCSB. Belval. Luxembourg

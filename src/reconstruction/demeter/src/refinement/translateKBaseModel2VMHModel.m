@@ -1,4 +1,4 @@
-function [translatedModel,notInTableRxns, notInTableMets] = translateKBaseModel2VMHModel(model, biomassReaction,database)
+function [translatedModel, notInTableRxns, notInTableMets] = translateKBaseModel2VMHModel(model, biomassReaction, database)
 % Translates reaction and metabolite identifiers from a KBase/ModelSEED
 % reconstruction to the Virtual Metabolic Human (https://vmh.life)
 % reaction and metabolite nomenclature.
@@ -10,22 +10,45 @@ function [translatedModel,notInTableRxns, notInTableMets] = translateKBaseModel2
 % included in the translation table and will thus be missing from the
 % translated model.
 %
-% INPUT
-% model                 COBRA model structure derived from KBase/ModelSEED
-% biomassReaction       Biomass reaction abbreviation
+% USAGE:
 %
-% OUTPUTS
-% translatedModel       Translated COBRA model structure
-% notInTableRxns        Reactions that are currently not in translation
-%                       table
-% notInTableMets        Metabolites that are currently not in translation
-%                       table
+%    [translatedModel, notInTableRxns, notInTableMets] = translateKBaseModel2VMHModel(model, biomassReaction, database)
 %
-% ... AUTHORS
-% Stefania Magnusdottir, Oct 2017
-% Almut Heinken, Dec 2018 - simplified inputs
+% INPUTS:
+%    model:              COBRA model structure derived from KBase/ModelSEED,
+%                        with fields:
+%
+%                          * .rxns - Reaction identifiers
+%                          * .mets - Metabolite identifiers
+%                          * .S - Stoichiometric matrix
+%                          * .genes - Gene identifiers
+%                          * .geneNames - Gene names (optional; propagated
+%                            to the translated model if present)
+%                          * .grRules - Readable gene protein reaction rules
+%                          * .rxnConfidenceScores - Reaction confidence scores
+%                          * .metNames - Metabolite names
+%                          * .metFormulas - Elemental formulas
+%                          * .metCharges - Metabolite charges
+%    biomassReaction:    Biomass reaction abbreviation
+%    database:           Structure containing the reaction and metabolite
+%                        database, with fields:
+%
+%                          * .reactions - cell array of reaction data
+%                            (abbreviation, name, reaction formula, ...)
+%                          * .metabolites - cell array of metabolite data
+%                            (abbreviation, name, formula, charge, ...)
+%
+% OUTPUTS:
+%    translatedModel:    Translated COBRA model structure
+%    notInTableRxns:     Reactions that are currently not in the translation
+%                        table
+%    notInTableMets:     Metabolites that are currently not in the
+%                        translation table
+%
+% .. Authors:
+%       - Stefania Magnusdottir, Oct 2017
+%       - Almut Heinken, Dec 2018 - simplified inputs
 
-% check inputs
 if isempty(model)
     error('No model provided')
 end

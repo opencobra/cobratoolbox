@@ -1,4 +1,4 @@
-function [adaptedInfoFilePath,inputDataFolder] = prepareInputData(infoFilePath,varargin)
+function [adaptedInfoFilePath, inputDataFolder] = prepareInputData(infoFilePath, varargin)
 % This function propagates available experimental data that was collected for
 % AGORA2 (https://www.biorxiv.org/content/10.1101/2020.11.09.375451v1) to newly
 % reconstructed strains and reads information from comparative genomic data
@@ -6,22 +6,25 @@ function [adaptedInfoFilePath,inputDataFolder] = prepareInputData(infoFilePath,v
 % propagated data manually afterwards.
 %
 % USAGE:
-%   [adaptedInfoFilePath,inputDataFolder] = prepareInputData(infoFilePath,varargin)
 %
-% REQUIRED INPUT
-% infoFilePath          File with information on reconstructions to refine
-% OPTIONAL INPUTS
-% inputDataFolder       Folder to save propagated data to (default: folder
-%                       in current path called "InputData")
-% spreadsheetFolder     Folder with comparative genomics data retrieved
-%                       from PubSEED in spreadsheet format if available.
-%                       For an example of the required format, see
-%                       cobratoolbox/papers/2021_demeter/exampleSpreadsheets.
-% OUTPUTS
-% adaptedInfoFilePath   Path to file with taxonomic information adapted
-%                       with gram staining information
-% inputDataFolder       Folder to save propagated data to (default: folder
-%                       in current path called "InputData")
+%    [adaptedInfoFilePath, inputDataFolder] = prepareInputData(infoFilePath, varargin)
+%
+% INPUT:
+%    infoFilePath:         File with information on reconstructions to refine
+%
+% OPTIONAL INPUTS:
+%    inputDataFolder:      Folder to save propagated data to (default: folder
+%                          in current path called "InputData")
+%    spreadsheetFolder:    Folder with comparative genomics data retrieved
+%                          from PubSEED in spreadsheet format if available.
+%                          For an example of the required format, see
+%                          cobratoolbox/papers/2021_demeter/exampleSpreadsheets.
+%
+% OUTPUTS:
+%    adaptedInfoFilePath:    Path to file with taxonomic information adapted
+%                          with gram staining information
+%    inputDataFolder:      Folder to save propagated data to (default: folder
+%                          in current path called "InputData")
 %
 % .. Authors:
 %       - Almut Heinken, 06/2020

@@ -1,4 +1,4 @@
-function LP = setCplexParam(LP, solverParams,verbFlag)
+function LP = setCplexParam(LP, solverParams, verbFlag)
 % Sets the parameters of the IBM ILOG CPLEX object according to the structure `solverParams`
 % The `solverParams` structure has to contain the same structure as the
 % Cplex.Param structue in a Cplex object. But values can be set by directly
@@ -16,6 +16,10 @@ function LP = setCplexParam(LP, solverParams,verbFlag)
 %
 %                     The full set of parameters can be obtained by calling 'Cplex().Param'
 %    verbFlag:        true to show which parameter input is problematic if any (optional, default true)
+%
+% OUTPUT:
+%    LP:              the input IBM-ILOG Cplex object, with every uniquely
+%                     identifiable parameter in `solverParams` set on `LP.Param`
 
 if nargin < 3
     verbFlag = true;

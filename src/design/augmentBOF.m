@@ -14,7 +14,7 @@ function [model, rxn_name] = augmentBOF(model, targetRxn, epsilon, printLevel)
 %
 % OPTIONAL INPUT:
 %    epsilon:      degree of augmentation considering the biochemical objective
-%    printLevel:   determine output level. (default: 0)
+%    printLevel:    determine output level. (default: 0)
 %
 % OUTPUTS:
 %    model:        Augmented model structure

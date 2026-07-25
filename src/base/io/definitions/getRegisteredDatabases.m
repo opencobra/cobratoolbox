@@ -5,7 +5,7 @@ function identifiersDBs = getRegisteredDatabases()
 % USAGE:  
 %    identifiersDBs = getRegisteredDatabases()
 %
-% OUPUTS:
+% OUTPUTS:
 %    identifiersDBs:        A Struct with data on each database registered
 %                           with identifiers.org (needs web access).
 %                           The struct will have the following fields:

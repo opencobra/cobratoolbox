@@ -3,36 +3,56 @@ function [modelOut, metRemovedList, ctrsRemovedList] = removeRxns(model, rxnRemo
 %
 % USAGE:
 %
-%    model = removeRxns(model, rxnRemoveList, varargin)
+%    [modelOut, metRemovedList, ctrsRemovedList] = removeRxns(model, rxnRemoveList, varargin)
 %
 % INPUTS:
-%    model:             COBRA model structure
+%    model:             COBRA model structure with fields:
+%
+%                         * .S - `m x n` stoichiometric matrix
+%                         * .rxns - `n x 1` reaction identifiers
+%                         * .mets - `m x 1` metabolite identifiers
+%                         * .genes - `g x 1` gene identifiers (read if
+%                           present, to determine the number of genes)
+%                         * .lb - `n x 1` lower flux bounds
+%                         * .ub - `n x 1` upper flux bounds
+%                         * .match - `n x 1` forward-backward reaction
+%                           mapping vector (read/reassigned if `irrevFlag`)
+%                         * .C - `ctrs x n` additional constraints matrix
+%                           (read if present)
+%                         * .d - `ctrs x 1` right-hand side of the
+%                           additional constraints (read if present)
+%                         * .dsense - `ctrs x 1` constraint senses (read if
+%                           present)
+%                         * .ctrs - `ctrs x 1` constraint identifiers (read
+%                           if present)
+%                         * .ctrNames - `ctrs x 1` constraint names (read
+%                           if present)
 %    rxnRemoveList:     Cell array of reaction abbreviations to be removed
 %
 % OPTIONAL INPUTS:
-%    varargin:          Parameters in ParameterName, Value pair representation. 
+%    varargin:          Parameters in ParameterName, Value pair representation.
 %                       Available parameters are:
 %                       *  metRemoveMethod
 %                          'exclusive' =  remove metabolites exclusively involved in removed reactions (default)
 %                          'inclusive' =  remove any metabolite involved in one or more removed reactions (can cause stoichiometric inconsistency)
 %                       *  ctrsRemoveMethod
 %                          'exclusive' =  only remove constraints exclusively involved in removed reactions (default)
-%                          'inclusive' =  any constraint involved in a removed reaction is to be removed 
+%                          'inclusive' =  any constraint involved in a removed reaction is to be removed
 %                          'infeasible' = if a removed reaction involves any constraint then remove that constraint, unless the constraint is still feasible.
-%                          'legacy' =  remove empty constraints, it seems equivalent to 'exclusive', but kept for completeness 
-%            
+%                          'legacy' =  remove empty constraints, it seems equivalent to 'exclusive', but kept for completeness
+%
 %                       * irrevFlag:   Irreverseble (true) or reversible (false) reaction
 %                         format (Default = false)
 %                       * metFlag:   Remove unused metabolites (Default = true)
 %
 % OUTPUT:
-%    model:             COBRA model w/o selected reactions
+%    modelOut:          COBRA model w/o selected reactions
 %    metRemovedList:    Cell array of metabolite abbreviations that were removed
-%    ctrsRemovedList:   Cell array of model.ctrs that were removed
+%    ctrsRemovedList:    Cell array of model.ctrs that were removed
 %                       Alternatively, if model.ctrs did not exist, then a
 %                       boolean vector displaying the rows of C*v <=d that were
 %                       removed.
-%       
+%
 % Optional inputs are used as parameter value pairs
 %
 % EXAMPLES:
@@ -46,6 +66,7 @@ function [modelOut, metRemovedList, ctrsRemovedList] = removeRxns(model, rxnRemo
 %       - Markus Herrgard 7/22/05
 %       - Fatima Liliana Monteiro and Hulda Haraldsdóttir, November 2016
 %       - Thomas Pfau - changed to Parameter Value pairs
+
 optionalParameters = {'irrevFlag','metFlag','metRemoveMethod','ctrsRemoveMethod'};
 if (numel(varargin) > 0 && (~ischar(varargin{1}) || ~any(ismember(varargin{1},optionalParameters))))
     if ischar(varargin{1})

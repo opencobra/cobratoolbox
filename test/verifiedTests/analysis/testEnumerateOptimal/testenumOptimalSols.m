@@ -23,6 +23,9 @@ currentDir = pwd;
 fileDir = fileparts(which('testenumOptimalSols'));
 cd(fileDir);
 
+% require LP and MILP solvers; skip gracefully if none are available
+prepareTest('needsLP', true, 'needsMILP', true);
+
 % load the test models
 model = createToyModelForAltOpts();
 

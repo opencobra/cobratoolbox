@@ -1,4 +1,32 @@
-function [metabolite_structure,IDsAdded] = parseDrugBankWebpage(metabolite_structure,startSearch,endSearch)
+function [metabolite_structure, IDsAdded] = parseDrugBankWebpage(metabolite_structure, startSearch, endSearch)
+% Parse the DrugBank website for each metabolite that has a DrugBank id and
+% retrieve the cross-referenced identifiers and properties (e.g. ChemSpider,
+% FooDB, Wikipedia, PubChem, ChEBI, KEGG, InChIKey, InChIString, molecular
+% weights, IUPAC name, description, BioCyc, CAS registry and more), adding them
+% to the metabolite structure.
+%
+% USAGE:
+%
+%    [metabolite_structure, IDsAdded] = parseDrugBankWebpage(metabolite_structure, startSearch, endSearch)
+%
+% INPUT:
+%    metabolite_structure:    metabolite structure whose fields are VMH
+%                             metabolite IDs, each holding a `drugbank` field
+%
+% OPTIONAL INPUTS:
+%    startSearch:             numeric index of where the search should start in
+%                             the metabolite structure (default: 1)
+%    endSearch:               numeric index of where the search should end in
+%                             the metabolite structure (default: last metabolite)
+%
+% OUTPUTS:
+%    metabolite_structure:    metabolite structure updated with the retrieved
+%                             identifiers
+%    IDsAdded:                cell array logging the added identifiers, with the
+%                             metabolite field name, the identifier type, and
+%                             the assigned identifier per row
+%
+% .. Author: - Ines Thiele
 
 Mets = fieldnames(metabolite_structure);
 fields = fieldnames(metabolite_structure.(Mets{1}));

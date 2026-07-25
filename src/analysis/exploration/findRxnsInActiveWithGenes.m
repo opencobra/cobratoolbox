@@ -4,10 +4,15 @@ function Reaclist = findRxnsInActiveWithGenes(model, genes)
 %
 % USAGE:
 %
-%    [Reaclist] = findRxnsActiveWithGenes(model, genes)
+%    [Reaclist] = findRxnsInActiveWithGenes(model, genes)
 %
 % INPUTS:
-%    model:        COBRA model structure
+%    model:        COBRA model structure with fields:
+%
+%                    * .genes - gene identifiers
+%                    * .rules - `n x 1` evaluatable gene-reaction association rules
+%                    * .rxns - `n x 1` reaction identifiers
+%
 %    genes:        A list of gene identifiers
 %
 % OUTPUT:

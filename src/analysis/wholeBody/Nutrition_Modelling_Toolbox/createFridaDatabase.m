@@ -1,23 +1,23 @@
 function createFridaDatabase(path2Files, varargin)
-% Creation of flux tables and macro tables to be used in the nutrition
-% toolbox for the Frida database. Food data (frida.fooddata.dk), 
-% National Food Institute, Technical University of Denmark.
+% Create the flux and macro tables used by the nutrition toolbox from the
+% Frida database (frida.fooddata.dk, National Food Institute, Technical
+% University of Denmark)
 %
-% Usage:
-%   createUSDAdatabase(path2Files, varargin)
+% USAGE:
 %
-% Inputs
-%   path2Files: Character array; The directory where the the required input
-%   files for Frida are stored
+%    createFridaDatabase(path2Files, varargin)
 %
-% Optional inputs:
-%   outputDir: Character array; THe directory where the results should be
-%   saved
+% INPUTS:
+%    path2Files:      Character array; directory where the required Frida
+%                     input files are stored
 %
-% Example:
-%   createUSDAdatabase(path2Files)
+% OPTIONAL INPUTS:
+%    varargin:        Name-value pairs:
 %
-% .. Author - Bram nap 02-2025
+%                       * outputDir - char, directory where the results are
+%                         saved (default [path2Files filesep 'fluxMacroTables'])
+%
+% .. Author: - Bram Nap, 02-2025
 
 % parse the inputs
 parser = inputParser();

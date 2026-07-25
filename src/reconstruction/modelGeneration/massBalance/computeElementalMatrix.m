@@ -3,7 +3,7 @@ function [Ematrix, elements] = computeElementalMatrix(model, metList, warnings, 
 %
 % USAGE:
 %
-%    [Ematrix, element] = computeElementalMatrix(model, metList, warnings, generalFormula)
+%    [Ematrix, elements] = computeElementalMatrix(model, metList, warnings, generalFormula)
 %
 % INPUT:
 %    model:       COBRA model structure (must define `.mets` and `.metFormulas`)
@@ -13,7 +13,7 @@ function [Ematrix, elements] = computeElementalMatrix(model, metList, warnings, 
 %                      (Default = all metabolites in model)
 %    warnings:         Display warnings if there are errors with the
 %                      formula. (Default = true)
-%    generalFormula:   * (default) false to return composition for  [C N O H P other] only.
+%    generalFormula:    * (default) false to return composition for  [C N O H P other] only.
 %                      * true to support formulae with brackets, decimal places and any chemical elements
 %                        including undefined groups (e.g., '([H2O]2(CuSO4))2Generic_element0.5').
 %

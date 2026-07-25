@@ -3,12 +3,17 @@ function [totalz, zscore, mdv1, mdv2] = compareTwoSamp(xglc, model, samp1, samp2
 %
 % USAGE:
 %
-%    [totalz, zscore, mdvs] = compareMultSamp(xglc, model, samps, measuredMetabolites)
+%    [totalz, zscore, mdv1, mdv2] = compareTwoSamp(xglc, model, samp1, samp2, measuredMetabolites)
 %
 % INPUTS:
 %    xglc:                   sugar distribution, a random sugar distribution is calculated if empty
 %    model:                  model structure, expects `model.rxns` to contain a list of rxn names
-%    samp1, samp2:           samples, expects `samp1` and `samp2` to have a field named points containing an array of sampled points
+%    samp1:                  first flux sample, with field:
+%
+%                              * .points - array of sampled flux points (one column per sample)
+%    samp2:                  second flux sample, with field:
+%
+%                              * .points - array of sampled flux points (one column per sample)
 %
 % OPTIONAL INPUT:
 %    measuredMetabolites:    parameter fed to calcMDVfromSamp.m which only calculates the MDVs for the metabolites listed in this array
@@ -16,13 +21,13 @@ function [totalz, zscore, mdv1, mdv2] = compareTwoSamp(xglc, model, samp1, samp2
 % OUTPUTS:
 %    totalz:                 sum of all zscores
 %    zscore:                 calculated difference for each mdv element distributed across all the points
-%    mdv1, mdv2:             contains fields:
+%    mdv1:                   MDVs for `samp1`, with fields:
 %
-%                              * mdv - the calculated mdv distribution converted from the idv
-%                                solved from each point contained in their respective samples `sampX`
-%                              * names - the names of the metabolites
-%                              * ave - the average of each mdv element across all of the points
-%                              * stdev - the standard dev for each mdv element across all points
+%                              * .mdv - the calculated mdv distribution converted from the idv solved from each sampled point
+%                              * .names - the names of the metabolites
+%                              * .ave - the average of each mdv element across all of the points
+%                              * .stdev - the standard deviation for each mdv element across all points
+%    mdv2:                   MDVs for `samp2`, with the same fields as `mdv1`
 %
 % .. Author: - Wing Choi 2/11/08
 

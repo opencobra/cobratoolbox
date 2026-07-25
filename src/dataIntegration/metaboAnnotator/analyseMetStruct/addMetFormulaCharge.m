@@ -1,19 +1,29 @@
-function [metabolite_structure] = addMetFormulaCharge(metabolite_structure,startSearch,endSearch)
-% This function uses getInchiString2ChargedFormula.m to calculate charge
-% and neutral formula.
+function [metabolite_structure] = addMetFormulaCharge(metabolite_structure, startSearch, endSearch)
+% Calculates charged formula and neutral formula from the inchiString
 %
-% INPUT
-% metabolite_structure  metabolite structure
-% startSearch           specify where the search should start in the
-%                       metabolite structure. Must be numeric (optional, default: all metabolites
-%                       in the structure will be search for)
-% endSearch             specify where the search should end in the
-%                       metabolite structure. Must be numeric (optional, default: all metabolites
-%                       in the structure will be search for)
-% OUTPUT
-% metabolite_structure  updated metabolite structure
+% Uses `getInchiString2ChargedFormula` to calculate the charge and the
+% neutral formula for each metabolite in the metabolite structure.
 %
-% Ines Thiele 09/21
+% USAGE:
+%
+%    [metabolite_structure] = addMetFormulaCharge(metabolite_structure, startSearch, endSearch)
+%
+% INPUTS:
+%    metabolite_structure:    metabolite structure
+%
+% OPTIONAL INPUTS:
+%    startSearch:             numeric index where the search should start in
+%                             the metabolite structure (default: 1, all
+%                             metabolites in the structure are searched)
+%    endSearch:               numeric index where the search should end in the
+%                             metabolite structure (default: number of
+%                             metabolites in the structure)
+%
+% OUTPUTS:
+%    metabolite_structure:    updated metabolite structure
+%
+% .. Author: - Ines Thiele, 09/21
+
 annotationSource = 'Calculated using metaboAnnotator and inchiString';
 annotationType = 'automatic';
 

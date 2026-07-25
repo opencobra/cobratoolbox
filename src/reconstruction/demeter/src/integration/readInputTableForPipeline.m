@@ -7,12 +7,12 @@ function formattedTable = readInputTableForPipeline(tablePath)
 %
 %    formattedTable = readInputTableForPipeline(tablePath)
 %
-% INPUT
-% tablePath             Path to file with the table to read in text or
-%                       table format
+% INPUT:
+%    tablePath:            Path to file with the table to read in text or
+%                          table format
 %
-% OUTPUT
-% formattedTable        Table in cell array format
+% OUTPUT:
+%    formattedTable:       Table in cell array format
 %
 % .. Author:
 %       - Almut Heinken, 09/2021

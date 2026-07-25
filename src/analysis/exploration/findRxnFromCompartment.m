@@ -6,11 +6,16 @@ function [compartmentReactions] = findRxnFromCompartment(model, compartment)
 %    [compartmentReactions] = findRxnFromCompartment(model,Compartment)
 %
 % INPUTS:
-%    model:                     COBRA model strcture
+%    model:                     COBRA model strcture with fields:
+%
+%                                 * .S - `m x n` stoichiometric matrix
+%                                 * .mets - `m x 1` metabolite identifiers
+%                                 * .rxns - `n x 1` reaction identifiers
+%
 %    compartment:               compartment of interest (e.g.: '[m]', '[n]', '[e]', etc.)
 %
 % OUTPUT:
-%    compartmentMetabolites:    List of reactions in the compartment of interest
+%    compartmentReactions:      List of reactions in the compartment of interest
 %
 % .. Authors:
 %       - written by Diana El Assal 01/06/16

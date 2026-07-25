@@ -1,0 +1,61 @@
+%% COBRA Toolbox — high-level layered architecture
+%% Source for the Mermaid diagram embedded in analysis/ARCHITECTURE.md
+%% Evidence: scc/ctags metrics under analysis/metrics/, agent research July 2026.
+flowchart TB
+    subgraph BOOT["Bootstrap / global state"]
+        init["initCobraToolbox.m<br/>(~35 KB, repo root)<br/>path setup, solver detection,<br/>sets CBTDIR, CBT_*_SOLVER, SOLVERS,<br/>ENV_VARS, OPT_PROB_TYPES globals"]
+    end
+
+    subgraph CONTRACT["Core contracts (everything depends on these)"]
+        schema["COBRA model schema<br/>S, mets, rxns, lb, ub, c, b,<br/>csense, osenseStr, genes, rules/grRules,<br/>C/d coupling, E extra-vars<br/>def: src/base/io/definitions/COBRA_structure_fields.tab"]
+        solverapi["Solver abstraction (src/base/solvers, 102 files)<br/>changeCobraSolver · solveCobraLP/QP/MILP/MIQP/EP<br/>buildOptProblemFromModel · getCobraSolverParams<br/>.stat / .origStat / .full / .obj contract"]
+    end
+
+    subgraph BASE["src/base — shared foundation (238 .m)"]
+        io["io/ (74) readCbModel,<br/>writeCbModel, SBML"]
+        util["utilities/ (23)"]
+        arrow["cobrarrow/ (3) COBRArrow<br/>Arrow-Flight remote bridge"]
+    end
+
+    subgraph DOMAINS["Analysis & construction domains"]
+        analysis["analysis/ (604 .m, cx 10,239)<br/>FBA/optimizeCbModel, FVA, sampling,<br/>thermo, sparseFBA, MOMA/ROOM,<br/>multiSpecies, wholeBody, persephone"]
+        recon["reconstruction/ (316 .m, cx 5,232)<br/>refinement (createModel, addReaction),<br/>modelGeneration/verifyModel,<br/>demeter, rBioNet, modelBorgifier"]
+        dataint["dataIntegration/ (248 .m)<br/>XomicsToModel, transcriptomics<br/>(GIMME/iMAT/INIT), metabolomics"]
+        design["design/ (60 .m)<br/>optForce, TrimGdel, optEnvelope"]
+        viz["visualization/ (110 .m)<br/>Paint4Net, efmviz, metabolic maps"]
+    end
+
+    subgraph EXT["External / legacy (read-only boundaries)"]
+        external["external/ vendored:<br/>libSBML, glpkmex, lusol,<br/>pdco, gaimc (submodules)"]
+        binary["binary/ compiled mex"]
+        deprecated["deprecated/ (shimmed API)"]
+    end
+
+    subgraph QA["Test & CI"]
+        tests["test/verifiedTests + testAll.m<br/>prepareTest requirement gating<br/>GitHub Actions · codecov"]
+    end
+
+    init --> CONTRACT
+    init --> external
+    init --> binary
+    schema --> solverapi
+    DOMAINS --> schema
+    DOMAINS --> solverapi
+    analysis --> io
+    recon --> io
+    dataint --> analysis
+    design --> analysis
+    viz --> analysis
+    solverapi --> external
+    solverapi --> binary
+    io --> external
+    arrow -.remote.-> solverapi
+    tests -.exercises.-> DOMAINS
+    tests -.exercises.-> CONTRACT
+
+    classDef contract fill:#1f77b4,stroke:#0d3b66,color:#fff;
+    classDef base fill:#2ca02c,stroke:#145a14,color:#fff;
+    classDef ext fill:#7f7f7f,stroke:#333,color:#fff;
+    class schema,solverapi contract;
+    class io,util,arrow base;
+    class external,binary,deprecated ext;

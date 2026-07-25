@@ -1,25 +1,30 @@
 function [dietComposition] = getDietComposition(input, varargin)
-% This function takes a diet (or a model) and identifies the food macros
+% Take a diet (or a whole-body model) and identify the food macros
 %
 % USAGE:
-%   [Macros,Categories] = getDietComposition(input)
+%
+%    [dietComposition] = getDietComposition(input, varargin)
 %
 % INPUT:
-%   input: either a whole-body metabolic model or a diet
+%    input:              Either a whole-body metabolic model (struct) or a
+%                        diet given as an n x 2 cell array of items and amounts
 %
-% OPTIONAL INPUT
-%   macroType:  Which type of data is used to calculate macros. Currently
-%               accepted is fdtable, metabolites and usda
+% OPTIONAL INPUTS:
+%    varargin:           Name-value pairs:
+%
+%                          * macroType - which data are used to compute the
+%                            macros; accepted values are 'metabolites',
+%                            'usda' and 'frida' (default 'metabolites')
 %
 % OUTPUT:
-%   dietComposition: A table containing the breakdown of the diet macros
+%    dietComposition:    Table with the breakdown of the diet macros, giving
+%                        the macro categories and their mass in grams
 %
-% AUTHORS:
-%   Bronson R. Weston 2021-2022
-%   Bram Nap 05-2024 - added additional functionilty for getting
-%   composition when the input are metabolites and when the USDA fooddata
-%   central database reported macros are wanting to be used. Removed
-%   fdTable functionality.
+% .. Authors:
+% ..    - Bronson R. Weston, 2021-2022
+% ..    - Bram Nap, 05-2024 - added functionality for computing composition
+% ..      from metabolites and from the USDA FoodData Central reported macros;
+% ..      removed the fdTable functionality
 
 parser = inputParser();
 parser.addRequired('input', @iscell);

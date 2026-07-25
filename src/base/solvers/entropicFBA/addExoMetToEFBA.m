@@ -1,35 +1,52 @@
-function modelOut = addExoMetToEFBA(model,exoMet,param)
-% generates H and h to add a min (alpha/2)(v-h)'*H*(v-h) term to an EFBA problem
+function modelOut = addExoMetToEFBA(model, exoMet, param)
+% Generates `.H` and `.h` to add a min (alpha/2)(v-h)'*H*(v-h) term to an
+% entropic FBA (EFBA) problem, fitting predicted fluxes to exometabolomic
+% data
 %
 % USAGE:
-%   modelOut = addExoMetToEFBA(model,exoMet,param)
+%
+%    modelOut = addExoMetToEFBA(model, exoMet, param)
 %
 % INPUTS:
-%  model.S:  
-%  model.rxns:    
+%    model:         COBRA model structure with fields:
 %
-%  exoMet.rxns:   
-%  exoMet.mean:   
-%  exoMet.SD:      
+%                     * .S - `m x n` stoichiometric matrix
+%                     * .rxns - `n x 1` cell array of reaction identifiers
+%    exoMet:        Structure of exometabolomic flux data with fields:
 %
-% OPTIONAL INPUT
-%  param.printLevel:
-%  param.alpha:              alpha in (alpha/2)(v-h)'*H*(v-h), default = 10000;
-%  param.metabolomicWeights: String indicating the type of weights to be applied to penalise the difference
-%                            between of predicted and experimentally measured fluxes by, where 
-%                            'SD'   weights = 1/(1+exoMet.SD^2)
-%                            'mean' weights = 1/(1+exoMet.mean^2)  (Default)
-%                            'RSD'  weights = 1/((exoMet.SD./exoMet.mean)^2)
-%  param.relaxBounds: True to relax bounds on reaction whose fluxes are to be fitted to exometabolomic data  
+%                     * .rxns - `k x 1` cell array of reaction identifiers,
+%                       matched against `model.rxns`
+%                     * .mean - `k x 1` mean experimentally measured flux
+%                       for each reaction in `exoMet.rxns`
+%                     * .SD - `k x 1` standard deviation of the
+%                       experimentally measured flux for each reaction in
+%                       `exoMet.rxns`
+%
+% OPTIONAL INPUT:
+%    param:         Structure with fields:
+%
+%                     * .printLevel - verbose level (default: 0)
+%                     * .alpha - alpha in (alpha/2)(v-h)'*H*(v-h)
+%                       (default: 10000)
+%                     * .metabolomicWeights - string indicating the type of
+%                       weights to be applied to penalise the difference
+%                       between predicted and experimentally measured
+%                       fluxes by, where
+%
+%                       * 'SD' - weights = 1/(1+exoMet.SD^2)
+%                       * 'mean' - weights = 1/(1+exoMet.mean^2) (default)
+%                       * 'RSD' - weights = 1/((exoMet.SD./exoMet.mean)^2)
+%                     * .relaxBounds - true to relax the bounds on the
+%                       reactions whose fluxes are to be fitted to
+%                       exometabolomic data (default: true)
 %
 % OUTPUTS:
-%  modelOut:         
+%    modelOut:      `model`, with `.H` (quadratic penalty matrix) and `.h`
+%                   (linear penalty target) added, and with `.lb` and `.ub`
+%                   relaxed on the fitted reactions when
+%                   `param.relaxBounds` is true
 %
-% EXAMPLE:
-%
-% NOTE:
-%
-% Author(s):
+% .. Author(s):
 
 if ~exist('param','var')
     param=struct;

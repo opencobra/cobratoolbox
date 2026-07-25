@@ -1,4 +1,32 @@
 function KeggSpeciespKa = getKeggpKas(target_cids, target_inchi, n_pkas)
+% Estimate pKa values and pseudoisomer data for KEGG compounds using cxcalc
+%
+% For each KEGG compound, converts its InChI to SMILES with OpenBabel and runs
+% the ChemAxon `cxcalc` plugin to estimate acidic/basic pKa values, then derives
+% the pseudoisomer charges and proton counts at pH 7.
+%
+% USAGE:
+%
+%    KeggSpeciespKa = getKeggpKas(target_cids, target_inchi, n_pkas)
+%
+% INPUTS:
+%    target_cids:      numeric vector of KEGG compound identifiers
+%    target_inchi:     cell array of InChI strings, one per compound in target_cids
+%
+% OPTIONAL INPUT:
+%    n_pkas:           maximum number of acidic and basic pKa values to
+%                      estimate per compound (default: 20)
+%
+% OUTPUTS:
+%    KeggSpeciespKa:    structure array of pseudoisomer data with fields:
+%
+%                        * .pKas - matrix of pKa values between pseudoisomers
+%                        * .majorMSpH7 - logical marking the major microspecies at pH 7
+%                        * .zs - pseudoisomer charges
+%                        * .nHs - pseudoisomer proton counts
+%                        * .cid - KEGG compound identifier
+%
+
 if nargin < 3
     n_pkas = 20;
 end

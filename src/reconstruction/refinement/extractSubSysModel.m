@@ -6,7 +6,10 @@ function subSysModel = extractSubSysModel(model, subSysNames)
 %    subSysModel = extractSubSysModel(model, subSysNames)
 %
 % INPUTS:
-%    model:          COBRA model structure
+%    model:          COBRA model structure with fields:
+%
+%                      * .rxns - `n x 1` cell array of reaction identifiers
+%                      * .subSystems - `n x 1` cell array of subsystem annotations
 %    subSysNames:    List of subsystems to extract
 %
 % OUTPUT:

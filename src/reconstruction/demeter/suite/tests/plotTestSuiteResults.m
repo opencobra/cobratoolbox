@@ -1,8 +1,17 @@
-function plotTestSuiteResults(testResultsFolder,reconVersion)
-
+function plotTestSuiteResults(testResultsFolder, reconVersion)
 % This function prints and summarizes the results of testAllReconstructionFunctions.
+%
+% USAGE:
+%
+%    plotTestSuiteResults(testResultsFolder, reconVersion)
+%
+% INPUTS:
+%    testResultsFolder:     Folder where the test results were saved
+%    reconVersion:          Name of the refined reconstruction resource
+%
 
 %% plot the computed reconstruction features
+
 currentDir = pwd;
 cd(testResultsFolder)
 

@@ -1,26 +1,27 @@
-function plotMetaboliteProducersConsumers(propertiesFolder,infoFilePath,reconVersion,varargin)
+function plotMetaboliteProducersConsumers(propertiesFolder, infoFilePath, reconVersion, varargin)
 % This function creates plots of strains that can consume or secrete a
 % given list of metabolites. Plots are created on the strain level (each
 % reconstruction separately) and, if taxonomical information is provided,
 % on the species, genus, family, order, class, and phylum level.
 %
-% USAGE
-%   plotMetaboliteProducersConsumers(propertiesFolder,infoFilePath,reconVersion,varargin)
+% USAGE:
 %
-% INPUTS
-% propertiesFolder      Folder where computed uptake and secretion profiles
-%                       are stored
-% infoFilePath          Path to spreadsheet with taxonomical information of
-%                       the refined strains
-% reconVersion          Name assigned to the reconstruction resource
-% OPTIONAL INPUTS
-% metsToAnalyze         Table with list of metabolites that should be
-%                       analyzed (default: all computed metabolites)
-% metCategory           Name for type of metabolites to analyze that should
-%                       be in the plots (Default: 'Metabolites')
+%    plotMetaboliteProducersConsumers(propertiesFolder, infoFilePath, reconVersion, varargin)
 %
-%   - AUTHOR
-%   Almut Heinken, 07/2020
+% INPUTS:
+%    propertiesFolder:    Folder where computed uptake and secretion profiles
+%                         are stored
+%    infoFilePath:        Path to spreadsheet with taxonomical information of
+%                         the refined strains
+%    reconVersion:        Name assigned to the reconstruction resource
+%
+% OPTIONAL INPUTS:
+%    metsToAnalyze:       Table with list of metabolites that should be
+%                         analyzed (default: all computed metabolites)
+%    metCategory:         Name for type of metabolites to analyze that should
+%                         be in the plots (Default: 'Metabolites')
+%
+% .. Author: - Almut Heinken, 07/2020
 
 parser = inputParser();
 parser.addRequired('propertiesFolder',@ischar);

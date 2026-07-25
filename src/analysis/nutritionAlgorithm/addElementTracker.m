@@ -1,32 +1,31 @@
-function [model] = addElementTracker(model,Element,rxnTags)
-% 
-%addElementTracker creates artificial metabolites and reactions that track
-%the flux of a particular element through reactions with specified
-%string tags.
+function [model] = addElementTracker(model, Element, rxnTags)
+% Creates artificial metabolites and reactions that track the flux of a
+% particular element through reactions with specified string tags.
 %
-%USAGE:
+% USAGE:
 %
-% [model] = addElementTracker(model,Element,rxnTags,trackString)
+%    [model] = addElementTracker(model, Element, rxnTags)
 %
 % INPUTS:
-%    model:          COBRA model structure with minimal fields:
-%                      * .S
-%                      * .c
-%                      * .ub
-%                      * .lb
-%                      * .mets  
-%                      * .rxns  
-%   Element:       element you are interested in (e.g., 'N')
-%   rxnTags:       string or cell array containing the strings that mark 
-%                  reactions of interest to keep track of 
+%    model:      COBRA model structure with minimal fields:
 %
-%Outputs
-%   model: Returns the input model with added tracking reactions and the
-%   key "Track" reaction
+%                  * .S - stoichiometric matrix
+%                  * .c - objective coefficients
+%                  * .ub - upper flux bounds
+%                  * .lb - lower flux bounds
+%                  * .mets - metabolite identifiers
+%                  * .rxns - reaction identifiers
+%    Element:    element you are interested in (e.g., 'N')
+%    rxnTags:    string or cell array containing the strings that mark
+%                reactions of interest to keep track of
 %
-%Authors: Bronson R. Weston 2022
+% OUTPUTS:
+%    model:      the input model with added tracking reactions and the key
+%                "Track" reaction
+%
+% .. Authors: - Bronson R. Weston 2022
 
-%Identify rxnTag reactions
+% Identify rxnTag reactions
 if isstr(rxnTags)
     rxnTags={rxnTags};
 end

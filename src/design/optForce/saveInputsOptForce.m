@@ -8,7 +8,7 @@ function [] = saveInputsOptForce(model, targetRxn, mustU, mustL, minFluxesW, max
 %
 %    saveInputsOptForce(model, targetRxn, mustU, mustL, minFluxesW, maxFluxesW, minFluxesM, maxFluxesM, k, nSets, constrOpt, excludedURxns, excludedLRxns, excludedKRxns, inputFolder)
 %
-% INPUTS
+% INPUTS:
 %    model:             (structure) COBRA metabolic model with at least
 %                       the following fields:
 %
@@ -19,6 +19,12 @@ function [] = saveInputsOptForce(model, targetRxn, mustU, mustL, minFluxesW, max
 %                         * .c -    Objective coefficients
 %                         * .lb -   Lower bounds for fluxes
 %                         * .ub -   Upper bounds for fluxes
+%    targetRxn:         (string) target reaction whose production is
+%                       intended to be increased
+%    mustU:             (cell array) reactions that belong to the `MustU`
+%                       set
+%    mustL:             (cell array) reactions that belong to the `MustL`
+%                       set
 %    minFluxesW:        (double array) of size `n_rxns x 1`
 %                       Minimum fluxes for each
 %                       reaction in the model for wild-type strain.
@@ -41,6 +47,9 @@ function [] = saveInputsOptForce(model, targetRxn, mustU, mustL, minFluxesW, max
 %                       reaction in the model for mutant strain.
 %                       This can be obtained by running the
 %                       function `FVAOptForce`.
+%    k:                 (double) number of reactions in the `optForce` set
+%    nSets:             (double) maximum number of sets to be found by
+%                       `optForce`
 %    constrOpt:         (structure) structure containing
 %                       additional contraints. Include here only
 %                       reactions whose flux is fixed, i.e.,

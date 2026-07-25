@@ -1,4 +1,4 @@
-function [modelStats,summary,statistics]=retrieveModelStats(modelPath, modelList, abunFilePath, numWorkers, figForm, infoFilePath)
+function [modelStats, summary, statistics] = retrieveModelStats(modelPath, modelList, abunFilePath, numWorkers, figForm, infoFilePath)
 % This function retrieves statistics on the number of reactions and
 % metabolites across microbiome models. If a file with stratification
 % information on individuals is provided, it will also determine if
@@ -9,26 +9,26 @@ function [modelStats,summary,statistics]=retrieveModelStats(modelPath, modelList
 %
 %   [modelStats,summary,statistics]=retrieveModelStats(modelPath, modelList, numWorkers, figForm, infoFilePath)
 %
-% INPUTS
-% modelPath:        Path to models for which statistics should be retrieved
-% modelList:        Cell array with names of models for which statistics
-%                   should be retrieved
-% abunFilePath:     char with path and name of file from which to retrieve 
-%                   abundance information
-% numWorkers:       integer indicating the number of cores to use for parallelization
-% figForm:          format to use for saving figures
+% INPUTS:
+%    modelPath:        Path to models for which statistics should be retrieved
+%    modelList:        Cell array with names of models for which statistics
+%                      should be retrieved
+%    abunFilePath:     char with path and name of file from which to retrieve
+%                      abundance information
+%    numWorkers:       integer indicating the number of cores to use for parallelization
+%    figForm:          format to use for saving figures
 %
 % OPTIONAL INPUT:
-% infoFilePath:     char with path to stratification criteria if available
+%    infoFilePath:     char with path to stratification criteria if available
 %
-% OUTPUT
-% modelStats:       Reaction and metabolite numbers for each model
-% summary:          Table with average, median, minimal, and maximal
-%                   reactions and metabolites
+% OUTPUT:
+%    modelStats:       Reaction and metabolite numbers for each model
+%    summary:          Table with average, median, minimal, and maximal
+%                      reactions and metabolites
 %
 % OPTIONAL OUTPUT:
-% statistics:       If info file with stratification is provided, will
-%                   determine if there is a significant difference.
+%    statistics:       If info file with stratification is provided, will
+%                      determine if there is a significant difference.
 %
 % .. Author:
 %       - Almut Heinken, 02/2021

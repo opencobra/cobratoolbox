@@ -7,19 +7,33 @@ function [AddedRxns] = fastGapFill(consistMatricesSUX, epsilon, weights, weights
 %    [AddedRxns] = fastGapFill(consistMatricesSUX, epsilon, weights, weightsPerReaction)
 %
 % INPUTS:
-%    consistMatricesSUX:    To be obtained from `prepareFastGapFill`
+%    consistMatricesSUX:    Flux consistent `SUX` matrix to be obtained from
+%                           `prepareFastGapFill`, with fields:
+%
+%                             * .rxns - `n x 1` reaction identifiers of the `SUX` matrix
+%                             * .C1 - Indices of the core (flux consistent model
+%                               plus solvable blocked) reactions in `consistMatricesSUX`
+%                             * .weights - `n x 1` reaction weight vector assigned by
+%                               `assignRxnWeights` from `weights` and `weightsPerReaction`
 %    epsilon:               Parameter for `fastCore` (optional input, default: getCobraSolverParams('LP', 'feasTol')*100).
 %                           Please refer to Vlassis et al. to get more details on this parameter.
-%    weights:              	Weight structure that permits to add weights to
+%    weights:               Weight structure that permits to add weights to
 %                           non-core reactions (it is recommended to use values other than 0 and 1, with lower weight
-%                           corresponding to higher priority.
-%                           Format:
+%                           corresponding to higher priority, with fields:
 %
-%                             * weights.MetabolicRxns = 10; % Universal database metabolic reactions
-%                             * weights.ExchangeRxns = 10; % Exchange reactions
-%                             * weights.TransportRxns = 10; % Transport reactions
+%                             * .MetabolicRxns - Weight for universal database
+%                               metabolic reactions (default: 10)
+%                             * .ExchangeRxns - Weight for exchange reactions (default: 10)
+%                             * .TransportRxns - Weight for transport reactions (default: 10)
+%
 %                           Optional input. Default: weigth of 10 for all non-core reactions.
-%    weightsPerReaction:    Weights per reaction
+%    weightsPerReaction:    Optional input. Individual per-reaction weights,
+%                           with fields:
+%
+%                             * .rxns - Cell array of reaction identifiers to
+%                               assign individual weights to (default: empty)
+%                             * .weights - Weights corresponding to `.rxns`, in
+%                               the same order (default: empty)
 %
 % OUTPUT:
 %    AddedRxns:             Reactions that have been added from `UX` matrix to `S`

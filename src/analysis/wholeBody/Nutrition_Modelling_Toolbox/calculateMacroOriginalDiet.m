@@ -1,27 +1,33 @@
 function orgMacroDiet = calculateMacroOriginalDiet(diet, originalMacroTable)
-%  Calucalte the macro composition of the diet based on the original macros
-%  given in the template file used to choose VMH food item alternatives.
+% Calculate the macro composition of a diet from the original macros given
+% in the template file used to choose VMH food item alternatives
 %
-% Usage:
-%   macroDiet = calculateMacroOriginalDiet(diet, originalMacroTable)
+% USAGE:
 %
-% Inputs:
-%   diet:               A nx2 cell array. Column one has to original food 
-%                       names, column 2 has the respective amounts eaten
-%   originalMacroTable: A table. The filled in template file
-% 
-% Output:
-%   macroDiet:  A cell array with the total macro composition of the the
-%               given diet based on the original food item macros
-% Example:
-%   macroDiet = calculateMacroOriginalDiet(diet, originalMacroTable)
-% 
-% Note:
-%   It is important that the template file base structure is not altered as
-%   we assume the basic structure here to perform calculations
-% 
-% Authors
-%   .. Bram Nap, 09-2024
+%    orgMacroDiet = calculateMacroOriginalDiet(diet, originalMacroTable)
+%
+% INPUTS:
+%    diet:                 An n x 2 cell array; column one holds the original
+%                          food names and column two the respective amounts
+%                          eaten (in grams)
+%    originalMacroTable:     The filled-in template table. Macro values are read
+%                          from columns 6-15 and normalised per gram using the
+%                          "WeightEaten (g)" column, food items are matched on
+%                          the OriginalFoodName column, and the table
+%                          `.Properties.VariableNames` provide the macro names
+%
+% OUTPUT:
+%    orgMacroDiet:         Table with the total macro composition of the given
+%                          diet based on the original food item macros:
+%
+%                            * .macroNames - names of the macronutrients
+%                            * .values_g - total amount of each macro (grams)
+%
+% NOTE:
+%    It is important that the template file base structure is not altered as
+%    the basic structure is assumed here to perform the calculations.
+%
+% .. Author: - Bram Nap, 09-2024
 
 % Remove all food items that have a weight eaten of 0
 diet(cell2mat(diet(:,2))==0,:)=[];

@@ -4,6 +4,10 @@ function updateTaxonomyInfoAGORA
 % from metagenomic sequencing data to AGORA. An updated version of the
 % AGORA information table is saved in spreadsheet format.
 %
+% USAGE:
+%
+%    updateTaxonomyInfoAGORA()
+%
 % .. Author: Almut Heinken, 04/2022
 
 % AGORA information table

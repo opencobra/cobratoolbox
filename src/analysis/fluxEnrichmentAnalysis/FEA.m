@@ -7,10 +7,14 @@ function resultCell = FEA(model, rxnSet, group)
 %    resultCell = FEA(model, rxnSet, 'subSystems')
 %
 % INPUTS:
-%    model:           COBRA structure model
+%    model:           COBRA model structure with fields:
+%
+%                       * .rxns - `n x 1` reaction identifiers
+%                       * .subSystems - `n x 1` subsystem assignment of each reaction, used for enrichment
+%
 %    rxnSet:          reaction set to be enriched (vector of reaction indices e.g. 1:10)
-%    group:           model.group structure e.g.
-%                    'subSystems' : FEA looks for significantly enriched subsystems in rxnSet
+%    group:           name of the model field tested for enrichment, e.g.
+%                     'subSystems' : FEA looks for significantly enriched subsystems in rxnSet
 %
 % OUTPUT:
 %    resultCell:    cell structure of enriched groups

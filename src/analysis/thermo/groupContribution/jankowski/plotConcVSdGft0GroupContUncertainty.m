@@ -8,15 +8,19 @@ function [D, DGC] = plotConcVSdGft0GroupContUncertainty(modelT)
 %    [D, DGC] = plotConcVSdGft0GroupContUncertainty(modelT)
 %
 % INPUT:
-%    modelT:    structure with fields:
+%    modelT:    thermodynamically constrained model structure with fields:
 %
-%                 * modelT.concMax
-%                 * modelT.concMin
-%                 * modelT.dfGt0GroupContUncertainty
+%                 * .mets - `m x 1` cell array of metabolite identifiers
+%                 * .T - temperature in Kelvin
+%                 * .gasConstant - gas constant (consistent energy units)
+%                 * .concMax - `m x 1` maximum metabolite concentrations
+%                 * .concMin - `m x 1` minimum metabolite concentrations
+%                 * .dfGt0GroupContUncertainty - `m x 1` group contribution uncertainty in the standard transformed Gibbs energy of formation
+%                 * .dfGt0Source - `m x 1` source of each standard transformed Gibbs energy of formation estimate
 %
 % OUTPUTS:
-%    D:
-%    DGC:
+%    D:         `m x 1` half the concentration contribution to the Gibbs energy of formation range for each metabolite
+%    DGC:       `m x 1` group contribution uncertainty for each metabolite
 
 [nMet,nRxn]=size(modelT.mets);
 

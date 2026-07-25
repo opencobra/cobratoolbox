@@ -1,43 +1,54 @@
 function rxnsOut = plotPredictedExchange(predictedFluxes, otherFluxes, extraFluxes, param)
-% plot a comparison of experimental and predicted exchange reaction rates
+% Plot predicted exchange reaction rates, optionally compared with other flux sets
 %
-% INPUT
-% predictedFluxes:   table with the following variables
-%           * .rxns:    k x 1 cell array of reaction identifiers
-%           * .v:       k x 1 double of predicted mean flux
-%           * .lb:      k x 1 double lower bound on reaction flux
-%           * .ub:      k x 1 double upper bound on reaction flux
-%           * .labels:  k x 1 cell array of labels to display on y axis
-%           * .Properties.Description: string describing the data, used in plot legend
+% USAGE:
 %
-% OPTIONAL INPUT
-% otherFluxes:  table with the following variables
-%           * .rxns:    k x 1 cell array of reaction identifiers
-%           * .Properties.Description: sring describing the data, used in plot legend
-%           * .labels:  k x 1 cell array of labels to display on y axis
-%   and
-%           * .mean:    k x 1 double of measured mean flux
-%           * .SD:      k x 1 double standard deviation of the measured flux
+%    rxnsOut = plotPredictedExchange(predictedFluxes, otherFluxes, extraFluxes, param)
 %
-%   or 
-%           * .v:       k x 1 double of predicted mean flux
-%           * .lb:      k x 1 double lower bound on reaction flux
-%           * .ub:      k x 1 double upper bound on reaction flux
+% INPUTS:
+%    predictedFluxes:    table with the predicted fluxes, with variables:
 %
+%                          * .rxns - `k x 1` cell array of reaction identifiers
+%                          * .v - `k x 1` double of predicted mean flux
+%                          * .lb - `k x 1` double lower bound on reaction flux
+%                          * .ub - `k x 1` double upper bound on reaction flux
+%                          * .metNames - `k x 1` metabolite names, used as labels when present
+%                          * .labels - `k x 1` cell array of labels to display on y axis
+%                          * .Properties - table metadata; .Properties.Description is used in the plot legend
+%                          * .zerobool - computed boolean, predicted flux is zero
+%                          * .posbool - computed boolean, predicted flux is positive (secretion)
+%                          * .negbool - computed boolean, predicted flux is negative (uptake)
+%                          * .uptakeProbability - computed probability that the reaction is an uptake
 %
-% param: paramters structure with the following fields
-%           * .rxns: subset of reactions to plot
-%           * .measuredFluxes  {(1),0} set to zero to not display experimental fluxes
+% OPTIONAL INPUTS:
+%    otherFluxes:    table with the same variables as predictedFluxes:
 %
-%           * .labelType determines which y axes lables to display
-%                       'metabolitePlatform' = platform left and metabolite name right
-%                       'metabolite'         = metabolite only right  (default)
-%                       'platform'           = platform only left
-%           * .expOrder {(1),0} 
-%                       1  = order reactions by value of experimental flux
-%                       0  = order reactions by value of predicted flux (predictedFluxes) for each reaction corresponding to an experimental flux
-%           * .saveFigures = 1 saves figure as .fig and .png to current directory 
-%           * .plotTitle: title of the plot
+%                      * .rxns - `k x 1` cell array of reaction identifiers
+%                      * .Properties - table metadata; .Properties.Description is used in the plot legend
+%                      * .mean - `k x 1` double of measured mean flux (if provided)
+%                      * .SD - `k x 1` double standard deviation (if provided)
+%                      * .v - `k x 1` double of predicted mean flux (if provided)
+%                      * .lb - `k x 1` double lower bound on reaction flux (if provided)
+%                      * .ub - `k x 1` double upper bound on reaction flux (if provided)
+%
+%    extraFluxes:    an additional table with the same variables as otherFluxes
+%    param:    parameters structure with the following fields:
+%
+%                * .rxns - subset of reactions to plot
+%                * .labelType - determines which y axis labels to display:
+%                  'metabolitePlatform' = platform left and metabolite name right,
+%                  'metabolite' = metabolite only right (default), 'platform' = platform only left
+%                * .expOrder - {(1), 0} 1 = order reactions by experimental flux, 0 = order by predicted flux
+%                * .saveFigures - set to 1 to save the figure as .fig and .png to the current directory
+%                * .plotTitle - title of the plot
+%                * .exchangesOnly - Logical, restrict the plot to exchange reactions
+%                * .measuredBounds - Logical, plot error bars on the measured fluxes
+%                * .predictedBounds - Logical, plot bounds on the predicted fluxes
+%                * .otherBounds - Logical, plot bounds on otherFluxes
+%                * .extraBounds - Logical, plot bounds on extraFluxes
+%
+% OUTPUT:
+%    rxnsOut:    the reaction identifiers that were plotted
 
 if exist('predictedFluxes','var')
     predDescription = predictedFluxes.Properties.Description; 

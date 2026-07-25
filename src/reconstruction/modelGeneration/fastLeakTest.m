@@ -8,7 +8,11 @@ function [LeakMets, modelClosed, FluxExV] = fastLeakTest(model, testRxns, demand
 %    [LeakMets, modelClosed, FluxExV] = fastLeakTest(model, testRxns, demandTest)
 %
 % INPUTS:
-%    model:          Model structure
+%    model:          Model structure with fields:
+%
+%                      * .S - `m` x `n` stoichiometric matrix
+%                      * .lb - `n` x 1 lower bounds on fluxes
+%                      * .ub - `n` x 1 upper bounds on fluxes
 %    testRxns:       List of exchange reactions to be testetd for leaks
 %    demandTest:     Optional: if 'true' is entered, demand reactions
 %                    for all metabolites in the model are created
@@ -21,7 +25,7 @@ function [LeakMets, modelClosed, FluxExV] = fastLeakTest(model, testRxns, demand
 %       - IT Jan 2015
 %       - description added by AH July 2017
 %       - modification  YJ Liu Dec 2023
-%
+
 if nargin<3
     demandTest = 'true';
 end

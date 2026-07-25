@@ -3,20 +3,28 @@ function [model, rxnRemovedList] = removeMetabolites(model, metRemoveList, remov
 %
 % USAGE:
 %
-%    [model, rxnRemoveList] = removeMetabolites(model, metRemoveList, removeRxnFlag)
+%    [model, rxnRemovedList] = removeMetabolites(model, metRemoveList, removeRxnFlag, rxnRemoveMethod)
 %
 % INPUTS:
-%    model:             COBRA model structure
+%    model:             COBRA model structure with fields:
+%
+%                         * .S - `m x n` stoichiometric matrix
+%                         * .mets - `m x 1` metabolite identifiers
+%                         * .genes - `g x 1` gene identifiers (read if
+%                           present, to determine the number of genes)
 %    metRemoveList:    List of metabolites to be removed
 %
 % OPTIONAL INPUT:
 %    removeRxnFlag:     Remove reactions with no metabolites (Default = true)
-%    rxnRemoveMethod:   {('inclusive'),'exclusive','legacy'}, to remove reactions in a
+%    rxnRemoveMethod:    {('inclusive'),'exclusive','legacy'}, to remove reactions in a
 %                       stoichiometrically consistent manner, or possibly
 %                       not consistently if either of the last options are
 %                       chosen.
+%
 % OUTPUT:
 %    model:             COBRA model with removed metabolites
+%    rxnRemovedList:    Cell array of reaction abbreviations that were
+%                       removed as a consequence of the metabolite removal
 %
 % .. Authors:
 %       - Markus Herrgard 6/5/07

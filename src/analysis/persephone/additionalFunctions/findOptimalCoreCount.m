@@ -1,13 +1,18 @@
-function [totalFBAtime, timeTable] = findOptimalCoreCount(modelDir,solver)
-% This function finds the optimal number of workers for the HM models being investigated
-% INPUT:
-% modelPath             Path to folder with COBRA models
-% OPTIONAL INPUT
-% subSetSize            Size of the random subset of models used for testing
+function [totalFBAtime, timeTable] = findOptimalCoreCount(modelDir, solver)
+% Find the optimal number of parallel workers for the whole-body models being investigated
 %
-% OUTPUT
-% fig                   Figure showing the average speedup factor for each tested
-%                       configuration of workers.
+% USAGE:
+%
+%    [totalFBAtime, timeTable] = findOptimalCoreCount(modelDir, solver)
+%
+% INPUTS:
+%    modelDir:        path to the folder with COBRA models
+%    solver:          name of the LP solver to use for the tests
+%
+% OUTPUTS:
+%    totalFBAtime:    table of total FBA solve time and derived timing metrics for each
+%                     tested worker configuration
+%    timeTable:       table of per-model FBA solve times for each worker configuration
 
 
 % Initialise cobratoolbox if needed

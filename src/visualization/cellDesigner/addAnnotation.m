@@ -1,4 +1,4 @@
-function [var] = addAnnotation(fname,fname_out,infix,model,infix_type)
+function [var] = addAnnotation(fname, fname_out, infix, model, infix_type)
 % Retrieves omics data from a COBRA model structure and add them to a
 % `CellDesginer` XML file; The omics data will be shown as texts in
 % `CellDesigner` or `ReconMap` online.
@@ -9,11 +9,16 @@ function [var] = addAnnotation(fname,fname_out,infix,model,infix_type)
 %
 % INPUTS:
 %    fname:         an XML file to be modified to include annotations
-%    fanme_out:     the name of the output XML file
+%    fname_out:     the name of the output XML file
 %    infix:         The metabolite/reaction IDs to be used to retrieve omics data
 %                   in the COBRA model structure.
 %    model:         a COBRA model structure that contains the annotations which
-%                   can be retrieved by using the infix as the index value.
+%                   can be retrieved by using the infix as the index value,
+%                   with fields:
+%
+%                     * .S - The `m` x `n` stoichiometric matrix
+%                     * .rxns - `n x 1` cell array of reaction identifiers
+%                     * .mets - `m x 1` cell array of metabolite identifiers
 %
 % OPTIONAL INPUT:
 %

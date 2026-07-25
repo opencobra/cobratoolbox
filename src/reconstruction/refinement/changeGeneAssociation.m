@@ -6,7 +6,12 @@ function model = changeGeneAssociation(model, rxnName, grRule, geneNameList, sys
 %    model = changeGeneAssociation(model, rxnName, grRule, geneNameList, systNameList, addRxnGeneMat)
 %
 % INPUTS:
-%    model:            COBRA Toolbox model structure
+%    model:            COBRA Toolbox model structure with fields:
+%
+%                         * .rxns - `n x 1` cell array of reaction identifiers
+%                         * .genes - `g x 1` cell array of gene identifiers
+%                         * .rules - `n x 1` cell array of evaluatable GPR rules
+%                         * .rxnGeneMat - (optional) `n x g` reaction-gene incidence matrix
 %    rxnName:          Name of the new reaction
 %    grRule:           Gene-reaction rule in boolean format (and/or allowed)
 %

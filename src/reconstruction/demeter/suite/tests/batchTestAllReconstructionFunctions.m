@@ -1,25 +1,26 @@
-function batchTestAllReconstructionFunctions(modelFolder,testResultsFolder,inputDataFolder,reconVersion, numWorkers)
+function batchTestAllReconstructionFunctions(modelFolder, testResultsFolder, inputDataFolder, reconVersion, numWorkers)
 % Part of the DEMETER pipeline. This function performs all quality
 % control/quality assurance tests on a batch of reconstructions and saves
 % the results for each reconstruction in the input folder.
 %
 % USAGE:
 %
-%   batchTestAllReconstructionFunctions(modelFolder,testResultsFolder,inputDataFolder,reconVersion, numWorkers)
+%    batchTestAllReconstructionFunctions(modelFolder, testResultsFolder, inputDataFolder, reconVersion, numWorkers)
 %
-% INPUTS
-% modelFolder           Folder with COBRA models (draft or refined
-%                       reconstructions) to analyze
-% testResultsFolder     Folder where the test results should be saved
-% inputDataFolder       Folder with experimental data and database files
-%                       to load
-% reconVersion          Name of the refined reconstruction resource
-% numWorkers            Number of workers in parallel pool
+% INPUTS:
+%    modelFolder:           Folder with COBRA models (draft or refined
+%                           reconstructions) to analyze
+%    testResultsFolder:     Folder where the test results should be saved
+%    inputDataFolder:       Folder with experimental data and database
+%                           files to load
+%    reconVersion:          Name of the refined reconstruction resource
+%    numWorkers:            Number of workers in parallel pool
 %
 % .. Author:
-%   - Almut Heinken, 09/2020
+%       - Almut Heinken, 09/2020
 
 % set a solver if not done yet
+
 global CBT_LP_SOLVER
 solver = CBT_LP_SOLVER;
 if isempty(solver)

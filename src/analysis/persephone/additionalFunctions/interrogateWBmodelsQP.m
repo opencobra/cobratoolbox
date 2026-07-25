@@ -1,24 +1,25 @@
-function interrogateWBmodelsQP(directory,resPath, solver, param)
+function interrogateWBmodelsQP(directory, resPath, solver, param)
 % Performs FBA on a all whole-body models in a folder with the quadratic flux minimisation
 % algorithm (QP) and saves the QP FBA results in a separate results folder.
 %
 % USAGE:
-%               interrogateWBmodelsQP(directory,resPath,solver)
-% 
 %
-% INPUTS
-% directory     [char] Path to folder with WBMs
-% resPath       [char] Path to location of FBA results
-% solver        [char] Solver name, e.g., gurobi.
+%    interrogateWBmodelsQP(directory, resPath, solver, param)
+%
+% INPUTS:
+%    directory:    [char] path to the folder with whole-body models
+%    resPath:      [char] path to the location where FBA results are saved
+%    solver:       [char] solver name, e.g. gurobi
 %
 % OPTIONAL INPUTS:
-% param         [struct] FBA parameters. See OptimizeWBModel.m or
-%               OptimizeCbModel.m for more information. All FBA parameters are set to
-%               their defaults except for param.minNorm (1e-6) and secondsTimeLimit (500
-%               seconds instead of 100 seconds)
+%    param:        [struct] FBA parameters. See optimizeWBModel.m or optimizeCbModel.m
+%                  for more information. All FBA parameters are set to their defaults
+%                  except for the following:
 %
-% AUTHOR:
-% - Tim Hensen, January 2026.
+%                    * .minNorm - norm used for flux minimisation (default 1e-6)
+%                    * .secondsTimeLimit - solver time limit in seconds (default 500)
+%
+% .. Author: - Tim Hensen, January 2026
 
 
 if nargin<4

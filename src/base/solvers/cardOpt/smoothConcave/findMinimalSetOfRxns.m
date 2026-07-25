@@ -10,10 +10,16 @@ function [result_tab, sol, lprxns, l1rxns, l0rxns]  = findMinimalSetOfRxns(model
 %    [result_tab, sol, lprxns, l1rxns, l0rxns]  = findMinimalSetOfRxns(model)
 %
 % INPUT:
-%    model:         COBRA model structure
+%    model:         COBRA model structure with fields:
+%
+%                     * .c - Objective coefficients
+%                     * .S - Stoichiometric matrix
+%                     * .b - Right hand side of `S*x = b`
+%                     * .lb - Lower bound vector
+%                     * .ub - Upper bound vector
 %
 % OUTPUTS:
-%    resutl_tab:    number of reactions obtained for each condition
+%    result_tab:    number of reactions obtained for each condition
 %    sol:           `x` - solution vector
 %    lprxns:        rxns indices for LP solution
 %    l1rxns:        rxns indices for L1 solution

@@ -1,12 +1,16 @@
 function environment = getEnvironment()
 % Get all values of current globals in a struct.
+%
 % USAGE:
+%
 %    environment = getEnvironment()
 %
 % OUTPUT:
 %    environment:      a struct with two fields
+%
 %                       * .globals - contains all global values
 %                       * .path - contains the current path
+
 environment = struct();
 globals = struct();
 globalvars = who('global');

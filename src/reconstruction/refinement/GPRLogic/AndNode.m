@@ -1,3 +1,4 @@
+% AndNode represents an AND connection between child Node objects in a GPR logical-formula tree.
 classdef (HandleCompatible) AndNode < Node
     % AndNode are an class that represents AND connections in a logical formula
     % For further documentation please have a look at the Node Class.

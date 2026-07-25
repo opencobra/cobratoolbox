@@ -1,17 +1,19 @@
-function [x_best,psi_best,out] = DCA(mapp, x0, options)
+function [x_best, psi_best, out] = DCA(mapp, x0, options)
 % DCA is a derivative-free algorithm for solving systems of nonlinear
 % equations :math:`f(x) = 0`, `x` in :math:`R^m` using the nonlinear unconstrained minimization
 % :math:`min psi(x) = 1/2 ||f(x)||^2` s.t. `x` in :math:`R^m`.
 %
 % USAGE:
 %
-%    [x_best,psi_best,out] = DCA(mapp, x0, options)
+%    [x_best, psi_best, out] = DCA(mapp, x0, options)
 %
 % INPUTS:
 %    mapp:        function handle provides `f(x)` and gradient `f(x)`
 %    x0:          initial point
 %    options:     structure including the parameteres of scheme
 %
+%                   * .F - forward stoichiometric matrix
+%                   * .R - reverse stoichiometric matrix
 %                   * .MaxNumIter - maximum number of iterations
 %                   * .MaxNumMapEval - maximum number of function evaluations
 %                   * .TimeLimit - maximum running time

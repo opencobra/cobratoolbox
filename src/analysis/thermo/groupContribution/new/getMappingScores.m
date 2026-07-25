@@ -7,25 +7,19 @@ function mappingScore = getMappingScores(model, trainingModel)
 %    mappingScore = getMappingScores(model, trainingModel)
 %
 % INPUTS:
-%    model:            model in a COBRA structure
-%                      *.mets
-%                      *.metKEGGID
-%                      *.model.inchi.standard
-%                      *.model.inchi.standardWithStereo
-%                      *.model.inchi.standardWithStereoAndCharge
+%    model:            test COBRA model structure with fields:
 %
-%    trainingModel:    training model in a COBRA structure
-%                      *.mets
-%                      *.metKEGGID
-%                      *.inchi.standard
-%                      *.inchi.standardWithStereo
-%                      *.inchi.standardWithStereoAndCharge
+%                        * .mets - `m x 1` cell array of metabolite identifiers
+%                        * .inchi - structure of InChI strings, with fields `.standard`, `.standardWithStereo` and `.standardWithStereoAndCharge` (each `m x 1` cell arrays)
+%    trainingModel:    training COBRA model structure with fields:
 %
+%                        * .metKEGGID - `p x 1` cell array of metabolite KEGG IDs
+%                        * .inchi - structure of InChI strings, with fields `.standard`, `.standardWithStereo` and `.standardWithStereoAndCharge` (each `p x 1` cell arrays)
 %
 % OUTPUT:
-%    mappingScore:     nMet x nTrainingMet sparse matrix giving best mapping
+%    mappingScore:     `nMet x nTrainingMet` sparse matrix giving the best mapping score between model and training metabolites (higher is more reliable)
 
-%TODO remove dependency on fixed mappings
+% TODO remove dependency on fixed mappings
 FIXED_MAPPING_TSV_FNAME = 'data/fixed_mappings.tsv';
 if ~exist(FIXED_MAPPING_TSV_FNAME, 'file')
     error(['file not found: ', FIXED_MAPPING_TSV_FNAME]);

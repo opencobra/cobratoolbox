@@ -1,32 +1,39 @@
-function [Results,ResultsSol,ResultsStats] = analyzeHMmodel(modelHM,Diet, Results,ResultsSol,setStandard,RxnMin,RxnMax,LPSolver)
-% This function performs host-microbiome optimization for a set of defined
-% model reactions. Please note that the fecal secretion rate for the
-% microbiome community biomass reaction is constrained to lb=0.4 and ub=1.
+function [Results, ResultsSol, ResultsStats] = analyzeHMmodel(modelHM, Diet, Results, ResultsSol, setStandard, RxnMin, RxnMax, LPSolver)
+% Perform host-microbiome optimisation for a set of defined model reactions
 %
-% [Results,ResultsSol,ResultsStats] = analyzeHMmodel(modelHM,Diet, Results,ResultsSol,setStandard,RxnMin,RxnMax)
+% This function performs host-microbiome optimisation for a set of defined
+% model reactions. Note that the fecal secretion rate for the microbiome
+% community biomass reaction is constrained to lb = 0.4 and ub = 1.
 %
-% INPUT
-% modelHM       model structure containing the host-microbiome model
-% Diet          Diet option: 'EUAverageDiet' (default)
-% Results       List of result names of FBA simulations using modelHM. The function provides the option to append the new results
-%               to a previous list of results. If not provided, a new list of results
-%               will be returned.
-% ResultsSol    Array of FBA solution vectors corresponding to the optimization problems in Results. The function provides the option to append the new results
-%               to a previous list of results. If not provided, a new list of results
-%               will be returned.
-% setStandard   default: 1
-% RxnMin        Reaction(s) in modelHM to be minimized
-% RxnMax        Reaction(s) in modelHM to be maximized
-% LPSolver      Define LP solver to be used ('tomlab_cplex' or
-%               'ILOGcomplex' (default))
+% USAGE:
 %
-% OUTPUT
-% Results       List of result names of FBA simulations using modelHM. 
-% ResultsSol    Array of FBA solution vectors corresponding to the optimization problems in Results.
-% ResultsStats  List of solver status for each FBA solution
+%    [Results, ResultsSol, ResultsStats] = analyzeHMmodel(modelHM, Diet, Results, ResultsSol, setStandard, RxnMin, RxnMax, LPSolver)
 %
+% INPUTS:
+%    modelHM:       Host-microbiome model structure, with fields:
 %
-% Ines Thiele 2016-2019
+%                     * .sex - 'male' or 'female'
+%                     * .rxns - reaction identifiers
+%                     * .c - objective coefficients
+%                     * .lb - lower bounds
+%                     * .ub - upper bounds
+%    Diet:          Diet option: 'EUAverageDiet' (default), 'HighFiberDiet',
+%                   'HighProteinDiet', 'UnhealthyDiet', or 'VegetarianDiet'
+%    Results:       List of result names of FBA simulations (optional; new results
+%                   are appended when provided)
+%    ResultsSol:    Array of FBA solution vectors matching Results (optional; new
+%                   results are appended when provided)
+%    setStandard:    Apply the standard constraints (default 1)
+%    RxnMin:        Reaction(s) in modelHM to be minimised
+%    RxnMax:        Reaction(s) in modelHM to be maximised
+%    LPSolver:      LP solver to use ('tomlab_cplex' or 'ILOGcomplex' default)
+%
+% OUTPUTS:
+%    Results:       List of result names of FBA simulations using modelHM
+%    ResultsSol:    Array of FBA solution vectors corresponding to Results
+%    ResultsStats:    List of solver status for each FBA solution
+%
+% .. Author: - Ines Thiele, 2016-2019
 %
 %
 % define solver

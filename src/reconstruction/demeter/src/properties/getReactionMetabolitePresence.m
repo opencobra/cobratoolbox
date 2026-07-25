@@ -1,19 +1,20 @@
-function getReactionMetabolitePresence(modelFolder,propertiesFolder,reconVersion,numWorkers)
-% This function extracts the presence of reactions and metabolites for a 
-% resource of reconstructions that were refined through the semi-automatic 
+function getReactionMetabolitePresence(modelFolder, propertiesFolder, reconVersion, numWorkers)
+% This function extracts the presence of reactions and metabolites for a
+% resource of reconstructions that were refined through the semi-automatic
 % refinement pipeline (1 = present, 0 = not present).
 %
-% USAGE
-%   getReactionMetabolitePresence(modelFolder,propertiesFolder,reconVersion)
+% USAGE:
 %
-% INPUTS
-% modelFolder                                                                                                                                                                                           Folder with COBRA models to be analyzed
-% propertiesFolder      Folder where the retrieved reaction presences will
-%                       be stored (default: current folder)
-% reconVersion          Name assigned to the reconstruction resource
+%    getReactionMetabolitePresence(modelFolder, propertiesFolder, reconVersion, numWorkers)
 %
-%   - AUTHOR
-%   Almut Heinken, 06/2020
+% INPUTS:
+%    modelFolder:         Folder with COBRA models to be analyzed
+%    propertiesFolder:    Folder where the retrieved reaction presences will
+%                         be stored (default: current folder)
+%    reconVersion:        Name assigned to the reconstruction resource
+%    numWorkers:          Number of workers in parallel pool
+%
+% .. Author: - Almut Heinken, 06/2020
 
 if numWorkers>0 && ~isempty(ver('parallel'))
     % with parallelization

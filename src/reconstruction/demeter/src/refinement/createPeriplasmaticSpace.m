@@ -1,27 +1,38 @@
-function [model] = createPeriplasmaticSpace(model,microbeID,infoFile)
+function [model] = createPeriplasmaticSpace(model, microbeID, infoFile)
 % Part of the DEMETER pipeline. This function creates a periplasmatic space
 % for refined reconstructions if it is appropriate for the organism. The
 % periplasmatic space is created by by retrieving all extracellular
 % metabolites and adding a third compartment.
 %
-% USAGE
-%       [model] = createPeriplasmaticSpace(model,microbeID,infoFile)
+% USAGE:
 %
-% INPUT
-% model             COBRA model structure
-% microbeID:        ID of the reconstructed microbe that serves as the
-%                   reconstruction name and to identify it in input tables
-% infoFile:         Table with taxonomic and gram staining information on
-%                   microbes to reconstruct
+%    [model] = createPeriplasmaticSpace(model, microbeID, infoFile)
 %
-% OUTPUT
-% model             COBRA model structure
+% INPUTS:
+%    model:          COBRA model structure with fields:
 %
-% AUTHOR:
-%       - Almut Heinken, 03/2020
+%                     * .mets - Metabolite identifiers
+%                     * .metNames - Metabolite names
+%                     * .metFormulas - Elemental formulas
+%                     * .metCharges - Metabolite charges
+%                     * .rxns - Reaction identifiers
+%                     * .rxnNames - Reaction names
+%                     * .lb - Lower bounds
+%                     * .ub - Upper bounds
+%    microbeID:      ID of the reconstructed microbe that serves as the
+%                    reconstruction name and to identify it in input tables
+%    infoFile:       Table with taxonomic and gram staining information on
+%                    microbes to reconstruct
+%
+% OUTPUTS:
+%    model:          COBRA model structure with a periplasmatic compartment
+%                    added, if appropriate for the organism
+%
+% .. Author: - Almut Heinken, 03/2020
 
 % get the information on taxonomy and gram staining to find out if a periplasmatic space
 % should be added
+
 phylCol=find(strcmp(infoFile(1,:),'Phylum'));
 if ~isempty(find(strcmp(infoFile(:,1),microbeID)))
     phylum=infoFile{find(strcmp(infoFile(:,1),microbeID)),phylCol};

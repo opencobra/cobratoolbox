@@ -23,6 +23,7 @@ function [x_best, psi_best, out] = LLM(mapp, lin_sym_solver, x0, options)
 %                         * .x_opt - optimizer
 %                         * .psi_opt - optimum
 %                         * .adaptive - update lambda adaptively
+%                         * .lambda - fixed value of lambda used when `adaptive` is not 1
 %                         * .flag_x_error - 1: saves :math:`x_{error}`, 0: do not saves :math:`x_{error}` (default)
 %                         * .flag_psi_error - 1: saves :math:`\psi_{error}`, 0: do not saves :math:`\psi_{error}` (default)
 %                         * .flag_time - 1: saves :math:`\psi_{error}`, 0: do not saves :math:`\psi_{error}` (default)

@@ -7,7 +7,10 @@ function [compartmentMetabolites] = findMetFromCompartment(model, compartment)
 %    [compartmentMetabolites] = findMetFromCompartment(model,Compartment)
 %
 % INPUTS:
-%    model:                     COBRA model strcture
+%    model:                     COBRA model strcture with field:
+%
+%                                 * .mets - `m x 1` metabolite identifiers
+%
 %    compartment:               compartment of interest (e.g.: '[m]', '[n]', '[e]', etc.)
 %
 % OUTPUT:

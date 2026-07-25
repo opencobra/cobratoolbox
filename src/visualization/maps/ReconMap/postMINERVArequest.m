@@ -1,12 +1,11 @@
-function [ response ] = postMINERVArequest(login, password, map, googleLicenseContent, identifier, content)
+function [response] = postMINERVArequest(login, password, map, googleLicenseContent, identifier, content)
 % Sends a new layout to a MINERVA instance
 %
 % USAGE:
 %
-%    [response] = postMINERVArequest(minerva_servlet, login, password, map, identifier, content)
+%    [response] = postMINERVArequest(login, password, map, googleLicenseContent, identifier, content)
 %
 % INPUTS:
-%    minerva_servlet:           URL
 %    login:                     MINERVA username
 %    password:                  MINERVA password
 %    map:                       MINERVA map

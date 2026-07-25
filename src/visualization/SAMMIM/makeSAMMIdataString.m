@@ -1,4 +1,24 @@
 function tblstring = makeSAMMIdataString(tbl)
+% Converts a data table into the array-string format used by the SAMMI
+% front-end to receive flux, concentration, or width data
+%
+% USAGE:
+%
+%    tblstring = makeSAMMIdataString(tbl)
+%
+% INPUT:
+%    tbl:          MATLAB table with fields:
+%
+%                    * .Properties.VariableNames - condition names, one
+%                      column of numeric data per condition
+%                    * .Properties.RowNames - reaction or metabolite
+%                      identifiers, one per row
+%
+% OUTPUT:
+%    tblstring:    Character array encoding `tbl` as the nested array
+%                  string `[[headers],[rowName,val1,val2,...],...]` used
+%                  by the SAMMI front-end
+
     tblstring = '[[''';
     
     %Headers

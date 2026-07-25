@@ -5,9 +5,20 @@ function [output] = buildUFBAmodel(model, variables)
 %       2) setting rate of change of measured metabolites
 %       3) adding additional sinks to ensure the model simulates
 %
+% USAGE:
+%
+%    [output] = buildUFBAmodel(model, variables)
+%
 % INPUTS:
-%   model:           COBRA model structure
-%   variables:       struct containing the following required fields:
+%    model:           COBRA model structure with fields:
+%
+%                       * .S - `m x n` stoichiometric matrix
+%                       * .b - `m x 1` right-hand side values for metabolite constraints
+%                       * .c - `n x 1` linear objective coefficient vector
+%                       * .csense - `m x 1` constraint senses (E, L, G)
+%                       * .mets - `m x 1` cell array of metabolite identifiers
+%                       * .rxns - `n x 1` cell array of reaction identifiers
+%    variables:       struct containing the following required fields:
 %
 %                      * .metNames - cell array of mets for modification -- those that
 %                        have measurements (corresponding to model.mets)
@@ -50,7 +61,7 @@ function [output] = buildUFBAmodel(model, variables)
 %                         extracellular sinks over intracellular (default= 1e6);
 %                         if no weighting preferred, then set eWeight = 1
 %
-% OUTPUTS
+% OUTPUTS:
 %    output:          struct containing the following outputs
 %
 %                       * .model - constrained uFBA model

@@ -10,13 +10,13 @@ function genes = findGenesAboveThresholdLocal2(lowerThreshold, upperThreshold, t
 %   genes = findGenesAboveThresholdLocal2(lowerThreshold, upperThreshold, trDataPath, sheetIndex)
 %
 % INPUTS:
-%   lowerThreshold:         double
-%   upperThreshold:         double
-%   trDataPath:             char full transcriptomics data filename
-%   sheetIndex:             double target transcriptomics dataset sheet index 
+%    lowerThreshold:         double
+%    upperThreshold:         double
+%    trDataPath:             char full transcriptomics data filename
+%    sheetIndex:             double target transcriptomics dataset sheet index 
 %
 % OUTPUTS:
-%	genes:                  cell array ix4 where columns include geneId, 
+%    genes:                  cell array ix4 where columns include geneId, 
 %                           expressionValue, expression classification -
 %                           'High' and applied threshold type - 'Global'/'Local'
 %

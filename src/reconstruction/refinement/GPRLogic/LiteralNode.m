@@ -1,3 +1,4 @@
+% LiteralNode represents a single literal (gene reference) in a GPR logical-formula tree.
 classdef (HandleCompatible) LiteralNode < Node
     % LiteralNode is a class that represents a literal in a logical formula
     % For further documentation please have a look at the Node Class.

@@ -12,6 +12,7 @@ function [reconstruction, reconInd, LP] = swiftcore(model, coreInd, weights, tol
 %                    * .ub - upper bounds on reaction rates
 %                    * .rxns - the cell array of reaction abbreviations
 %                    * .mets - the cell array of metabolite abbreviations
+%                    * .rev - the 0-1 indicator vector of the reversible reactions
 %    coreInd:      the set of indices corresponding to the core reactions
 %    weights:      the weight vector for the penalties associated with each reaction
 %    tol:          zero-tolerance, i.e., the smallest flux value considered nonzero

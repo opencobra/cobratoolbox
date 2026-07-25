@@ -8,8 +8,10 @@ function transportRxnBool = transportReactionBool(model, originCompartment, dest
 % INPUT:
 %    model:                     COBRA model structure with fields:
 %
-%                                 * .S
-%                                 * .mets
+%                                 * .S - `m x n` stoichiometric matrix
+%                                 * .mets - `m x 1` metabolite abbreviations (with compartments)
+%                                 * .lb - `n x 1` lower flux bounds
+%                                 * .ub - `n x 1` upper flux bounds
 %
 % OPTIONAL INPUTS:
 %    originCompartment:         origin compartment (only relevant for unidirectional)

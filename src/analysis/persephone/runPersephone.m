@@ -1,50 +1,32 @@
 function [progress] = runPersephone(configPath)
-% This pipeline orchestrates the end-to-end process of constructing and 
-% analysing human–microbiome whole-body models (WBMs). It integrates 
-% sequencing data processing, metagenomic mapping, microbiome model 
-% generation, WBM personalisation, host–microbiome model creation, flux 
-% balance analysis (FBA), and statistical evaluation. 
+% Orchestrate the end-to-end Persephone human-microbiome WBM pipeline
 %
+% Runs the full pipeline for constructing and analysing human-microbiome
+% whole-body models: sequencing data processing (SeqC), metagenomic mapping
+% (MARS), microbiome community model generation (mgPipe), WBM personalisation,
+% host-microbiome model creation, flux balance analysis, and statistical
+% evaluation. Which sections run is controlled by the config file, and
+% progress is recorded so the pipeline can resume.
 %
-% Updated: 2025.07.01 wbarton
-% Updated: 2025.09.09 asheehy
-% Updated: 2025.09.19 bnap
+% USAGE:
 %
-% Usage:
-%     runPersephone(configPath)
+%    progress = runPersephone(configPath)
 %
-% Overview of steps:
-% 1. SeqC:                  Pre-process sequencing data and prepare input for MARS.
-% 2. MARS:                  Map taxonomy-assigned reads to AGORA2/APOLLO reconstructions 
-%                           to generate relative abundance files.
-% 3. MgPipe:                Build microbiome community models using relative abundances.
-% 4. WBM personalisation:   Personalise WBMs with physiological and/or 
-%                           metabolomic data.
-% 5. mWBM Creation:         Combine WBMs (personalised or base) with microbiome models 
-%                           to create host–microbiome WBMs (miWBMs).
-% 6. FBA:                   Perform flux balance analysis on mWBMs using user-specified 
-%                           reaction objectives, followed by flux post-processing.
-% 7. Statistics:            Run statistical analyses (e.g., mixed-effects linear 
-%                           regression) on flux and abundance results, 
-%                           accounting for metadata-specified predictors and confounders.
+% INPUT:
+%    configPath:    path to a `.mat` file holding all inputs needed to run
+%                   some or all sections of the pipeline. A template is at
+%                   src/analysis/persephone (configTemplatePersephone.m) or at
+%                   https://vmh2.life/persephone
 %
-%%%%%%% Inputs %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% OUTPUT:
+%    progress:    structure recording which pipeline steps have completed and
+%                 their run times; it is also saved to `progress.mat` in the
+%                 results directory so a run can be resumed
 %
-% configPath : Path to a .mat file which should contain all of the
-%              necessary inputs needed to run specific or all sections of 
-%              this pipeline. A template of this config file can be found
-%              at: https://github.com/opencobra/cobratoolbox/tree/master/src/analysis/persephone
-%              or you can fill in an online version and download at: https://vmh2.life/persephone
-%
-%%%%%% Outputs %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-% All results will be saved to your computer in the directories you can
-% choose in the config file. The output 'progress' will also be produced
-% and saved to your workspace. It will detail all sections that have been
-% run and how long they took.
-%
-%% %%%%%%%%%%%%%%%%%%% PERSEPHONE INITIALISATION %%%%%%%%%%%%%%%%%%%%%%%%%
-% Start timer
+% .. Author: - Wiley Barton, 2025.07.01
+%            - Anna Sheehy, 2025.09.09
+%            - Bram Nap, 2025.09.19
+
 tic;
 % Load all variables defined in the configPersephone.m
 run(configPath);

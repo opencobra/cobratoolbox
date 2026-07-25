@@ -1,3 +1,9 @@
+% Builds per-reaction metabolite-species and colour-code lists (`list_M_species`,
+% `list_R`, `list_R_M`, `list_P`, `list_P_M`, `list_C_R`, `list_C_P`) used to
+% highlight `CellDesigner` nodes, from workspace variables `list_M`,
+% `parsed_fatty_acid_new`, `num`, `list_nodes`, `baseR`, `baseP`, `baseC_R`,
+% and `baseC_P` produced by `colourNode`/`colourAll`-style scripts.
+
 list_M_species={};
 
 for i=1:2; % reaction

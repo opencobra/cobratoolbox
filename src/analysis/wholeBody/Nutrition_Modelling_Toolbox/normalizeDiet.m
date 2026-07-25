@@ -1,27 +1,21 @@
-function [foodMenu] = normalizeDiet(foodMenu,calories,exceptions)
-% This function normalizes a diet to meet caloric specifications.
+function [foodMenu] = normalizeDiet(foodMenu, calories, exceptions)
+% Normalize a diet so that it meets a caloric specification
 %
 % USAGE:
 %
-%   [foodMenu] = normalizeDiet(foodMenu,calories,exceptions)
+%    [foodMenu] = normalizeDiet(foodMenu, calories, exceptions)
 %
-% INPUTS
-%   foodMenu:          An nx2 cell array containing the food items and the
-%                      corresponding flux (n= number of food items)
+% INPUTS:
+%    foodMenu:        An n x 2 cell array of food items and their corresponding
+%                     flux (n = number of food items)
+%    calories:        The number of calories the diet should be renormalized to
+%    exceptions:      Cell array of specific food items to exclude from the
+%                     renormalization; their flux is maintained
 %
-%   calories           The number of calories the diet should be
-%                      renormalized to
+% OUTPUT:
+%    foodMenu:        The renormalized version of the original foodMenu
 %
-%   exceptions:        A cell array containing any specific food items that
-%                      should be excluded from the renormalization step.
-%                      This maintains the flux for the specefied food
-%                      items.
-%
-% OUTPUT
-%   foodMenu:          An re-normalized version of the original foodMenu 
-%
-% Authors:
-%   Bronson R. Weston 2022
+% .. Author: - Bronson R. Weston, 2022
 
 load fdTable.mat
 foodRxns=fdTable.Properties.VariableNames(2:end);

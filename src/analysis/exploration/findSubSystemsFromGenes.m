@@ -1,4 +1,4 @@
-function [geneSubSystems,singleList] = findSubSystemsFromGenes(model,genes, varargin)
+function [geneSubSystems, singleList] = findSubSystemsFromGenes(model, genes, varargin)
 % Returns the subsystems associated with the provided genes. 
 %
 % USAGE:
@@ -6,7 +6,13 @@ function [geneSubSystems,singleList] = findSubSystemsFromGenes(model,genes, vara
 %    [geneSubSystems,singleList] = findSubSystemsFromGenes(model,genes,...)
 %
 % INPUT:
-%    model:            COBRA model structure
+%    model:            COBRA model structure with fields:
+%
+%                        * .genes - gene identifiers
+%                        * .rules - `n x 1` evaluatable gene-reaction association rules
+%                        * .grRules - `n x 1` readable gene-reaction association rules
+%                        * .rxnGeneMat - `n x g` reaction-gene incidence matrix
+%                        * .subSystems - `n x 1` subsystem assignments
 %
 % OPTIONAL INPUTS:
 %    genes:            The genes to find subSystems for 

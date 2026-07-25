@@ -1,4 +1,4 @@
-function [model] = conditionSpecificGapFilling(model,database)
+function [model] = conditionSpecificGapFilling(model, database)
 % Part of the DEMETER pipeline. Resolves reactions that were replaced by
 % irreversible versions during the conversion from KBase to VMH
 % nomenclature. As a result, models may no longer grow. This function adds
@@ -7,17 +7,25 @@ function [model] = conditionSpecificGapFilling(model,database)
 % through manual inspection. Any new solutions identified for reaction
 % combinations not yet encountered by DEMETER may be added.
 %
-% USAGE
-%       [model] = conditionSpecificGapFilling(model,database)
+% USAGE:
 %
-% INPUT
-% model             COBRA model structure
-% database          rBioNet reaction database containing min. 3 columns:
-%                   Column 1: reaction abbreviation, Column 2: reaction
-%                   name, Column 3: reaction formula.
+%    [model] = conditionSpecificGapFilling(model, database)
 %
-% OUTPUT
-% model             COBRA model structure
+% INPUTS:
+%    model:            COBRA model structure with fields:
+%
+%                        * .rxns - `n x 1` reaction identifiers
+%
+%    database:         rBioNet reaction database containing min. 3 columns:
+%                       Column 1: reaction abbreviation, Column 2: reaction
+%                       name, Column 3: reaction formula, with fields:
+%
+%                        * .reactions - cell array of reaction abbreviations
+%                          (column 1) and reaction formulas (column 3)
+%
+% OUTPUTS:
+%    model:            COBRA model structure with condition-specific
+%                       gap-filling reactions added
 %
 % .. Author:
 %       Almut Heinken, 2016-2019

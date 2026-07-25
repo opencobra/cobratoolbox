@@ -1,27 +1,31 @@
 function [output] = searcher(keyWords, database, varargin)
-% Function that searches a database based on keywords with one of two
+% Search a database for entries matching a set of keywords using one of two
 % search strategies
 %
-% Usage: 
-%   [output] = searcher(keyWords, database, varargin)
-% 
-% Inputs:
-%   keyWords:       Array of string that are to be used to search with
-%   database:       Table of a database that has to be searched
-% 
-% Optional inputs:
-%   searchType:     Method of searching keywords in the food database.
-%                   Either iterative or cumulative. Defaults to iterative
-%   notInclude:     Key words that exclude items. Defaults to an empty
-%                   cell array.
-% 
-% Output:
-%   output:         A cell array with the matches found in the database
-% 
-% Example:
-%   [output] = searcher(keyWords, database, "searchType", 'cumulative')
-% 
-% .. Author - Bram Nap, 05-2024 
+% USAGE:
+%
+%    [output] = searcher(keyWords, database, varargin)
+%
+% INPUTS:
+%    keyWords:        Cell array of strings used as the search terms
+%    database:        Database to be searched, with fields:
+%
+%                       * .description - item description text matched against
+%                         the keywords (used by the cumulative search)
+%
+% OPTIONAL INPUTS:
+%    varargin:        Name-value pairs:
+%
+%                       * searchType - method of searching the keywords in the
+%                         database, either 'iterative' or 'cumulative'
+%                         (default 'iterative')
+%                       * notInclude - keywords that exclude items
+%                         (default empty cell array)
+%
+% OUTPUT:
+%    output:          Cell array of the matches found in the database
+%
+% .. Author: - Bram Nap, 05-2024
 
 % Parse inputs
 parser = inputParser();

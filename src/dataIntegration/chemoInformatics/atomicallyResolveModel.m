@@ -1,4 +1,4 @@
-function [modelOut, arm, report] = atomicallyResolveModel(model,param)
+function [modelOut, arm, report] = atomicallyResolveModel(model, param)
 % 1. Takes a standard COBRA model as input, annotates the metabolites with information on metabolite identifers (e.g. InChIKey) and then metabolite
 % compares the identifiers and saves the most consistent identifiers in MDL MOL format, representing the structure of each metabolite, as well as 
 % the InChI, SMILES and images of each metabolite structure also (if ChemAxon cxcalc and openBabel are installed). 
@@ -32,14 +32,18 @@ function [modelOut, arm, report] = atomicallyResolveModel(model,param)
 %                            A := incidence(dATM);
 % so we have the atomic decomposition M2Ai*M2Ai'*N = M2Ai*A*Ti2R
 %
+% USAGE:
+%
+%    [modelOut, arm, report] = atomicallyResolveModel(model, param)
+%
 % INPUTS:
-%    model:	COBRA model with following fields:
+%    model:    COBRA model with following fields:
 %           * .S - The m x n stoichiometric matrix for the metabolic network.
 %           * .rxns - An n x 1 array of reaction identifiers.
 %           * .mets - An m x 1 array of metabolite identifiers.
 %
 % OPTIONAL INPUTS:
-%    model:	COBRA model with following fields:
+%    model:    COBRA model with following fields:
 %           * .metFormulas - An m x 1 array of metabolite chemical formulas.
 %           * .metinchi - An m x 1 array of metabolite identifiers.
 %           * .metsmiles - An m x 1 array of metabolite identifiers.
@@ -48,17 +52,20 @@ function [modelOut, arm, report] = atomicallyResolveModel(model,param)
 %           * .metPubChem - An m x 1 array of metabolite identifiers.
 %           * .metCHEBI - An m x 1 array of metabolite identifiers.
 %
-%    param:  A structure containing all the arguments for the function:
+%    param:    A structure containing all the arguments for the function:
 % 
 %           * .printlevel: Verbose level
 %           * .debug: Logical value used to determine whether or not the results  of different points in the function will be saved for debugging (default: empty).
+%           * .ctfDir - path to the local ctf repository with reference MOL files and atom mapped reactions (default: '~/work/sbgCloud/code/fork-ctf')
+%           * .ctfRxnAtomMappedDir - directory of reference atom mapped RXN files, derived from .ctfDir
+%           * .ctfMetMolFileDir - directory of reference metabolite MOL files, derived from .ctfDir
 %           * .resultsDir: directory where the results should be saved (default: current directory)
 %                          resultsDir/atomMapping containing the RXN files with atom mappings   
 % 
 %
 % molecular structure file options
 %           * .metaboliteIDcrossMapping: True to cross map metabolite IDs using https://github.com/opencobra/ctf/metaboliteIDcrossMapping.txt
-%           * .replace:     True if the new ID should replace an existing ID (default: FALSE).
+%           * .replaceMetID - True if a new metabolite ID should replace an existing ID (default: FALSE).
 %           * .standardisationApproach: String containing the type of standardisation of molecule MOL files
 %                                        (default: 'explicitH' if openBabel is  installed, otherwise default: 'basic'):
 %                                      'explicitH' Normal chemical graphs;
@@ -76,17 +83,18 @@ function [modelOut, arm, report] = atomicallyResolveModel(model,param)
 %           * .replaceExistingAtomMappings True to recompute existing atom mapping data, even if atom mapping already exists (default: FALSE). 
 %
 % atom transition multigraph options
+%           * .buildAtomTransitionMultigraph - true to build the corresponding atom transition multigraph (default: true)
 %           * .directed - transition split into two oppositely directed edges for reversible reactions, default: false
 %           * .param.sanityChecks - perform checks on creation of atom transition multigraph, default: true.
 %
 % OUTPUTS:
-% modelOut: A new model with the additional fields
+%    modelOut:    A new model with the additional fields
 %           * .comparison:      
 %           * .standardisation:
 %           * .bondsBF: Number of bonds broken and formed in each reaction, if param.bonds = true.
 %           * .bondsE:  Estimated bond enthalpies for each metabolic reaction, if param.bonds = true.      
 %
-% arm:      An atomically resolved model as a matlab structure with the following fields:
+%    arm:      An atomically resolved model as a matlab structure with the following fields:
 %
 % arm.MRH:        Standard COBRA model (Directed Metabolic Hypergraph), with additional fields:
 % arm.MRH.metAtomMappedBool:  `m x 1` boolean vector indicating atom mapped metabolites
@@ -122,7 +130,7 @@ function [modelOut, arm, report] = atomicallyResolveModel(model,param)
 %
 % where Ti = incidence(dATM), is incidence matrix of directed atom transition multigraph.
 %
-% report:     A report of the database generation process
+%    report:     A report of the database generation process
 %
 
 % .. Authors: - German Preciat, Ronan M. T. Fleming, 2022.

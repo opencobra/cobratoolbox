@@ -1,12 +1,28 @@
-function [metabolite_structure,removed] = checkLinkValidity(metabolite_structure,startSearch,endSearch)
-% the aim of this script is go take each of the id's collected and test
-% whether
-
-% also I should greb from each resource the formula or inchi to compare and
-% establish consistency
-
-% check hmdb IDs -- I found a few Bridge derived hmdb ID's that are not
-% valid anymore
+function [metabolite_structure, removed] = checkLinkValidity(metabolite_structure, startSearch, endSearch)
+% Checks the validity of collected metabolite identifier hyperlinks
+%
+% Takes each of the collected metabolite identifiers (currently HMDB IDs) and
+% tests whether the identifier still resolves. Identifiers whose links are
+% dead or have been revoked are removed from the metabolite structure.
+%
+% USAGE:
+%
+%    [metabolite_structure, removed] = checkLinkValidity(metabolite_structure, startSearch, endSearch)
+%
+% INPUTS:
+%    metabolite_structure:    metabolite structure
+%
+% OPTIONAL INPUTS:
+%    startSearch:             numeric index where the search should start in
+%                             the metabolite structure (default: 1)
+%    endSearch:               numeric index where the search should end in the
+%                             metabolite structure (default: number of
+%                             metabolites in the structure)
+%
+% OUTPUTS:
+%    metabolite_structure:    updated metabolite structure with invalid
+%                             identifiers removed
+%    removed:                 list of identifiers that were removed
 
 F = fieldnames(metabolite_structure);
 

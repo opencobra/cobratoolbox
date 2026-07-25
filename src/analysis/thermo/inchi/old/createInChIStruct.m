@@ -1,26 +1,25 @@
-function inchiStruct = createInChIStruct(mets,sdfFileName)
-% Converts metabolite structures in SDF to InChI strings with OpenBabel,
-% and maps InChIs to mets. 
-% 
-% inchi = createInChIStruct(mets,sdfFileName)
-% 
-% INPUTS
-% mets          m x 1 cell array of metabolite identifiers (e.g., BiGG
-%               abbreviations).
-% sdfFileName   SDF with structures of metabolites in mets. Metabolite
-%               identifiers in the SDF are assumed to be the same as in
-%               mets.
-% 
-% OUTPUTS
-% inchi                         Structure with following fields:
-% .standard                     Standard InChIs with no isotope, stereo
-%                               or charge layers. 
-% .standardWithStereo           Standard InChIs with stereo layers.
-% .standardWithStereoAndCharge  Standard InChIs with stereo and charge
-%                               layers
-% .nonstandard                  Nonstandard InChI with all layers.
-% 
-% Hulda SH, Nov. 2012
+function inchiStruct = createInChIStruct(mets, sdfFileName)
+% Convert metabolite structures in an SDF to InChI strings with OpenBabel and map
+% the InChIs to the metabolites
+%
+% USAGE:
+%
+%    inchiStruct = createInChIStruct(mets, sdfFileName)
+%
+% INPUTS:
+%    mets:           `m x 1` cell array of metabolite identifiers (e.g. BiGG abbreviations)
+%    sdfFileName:    SDF file with structures of the metabolites in `mets`; the
+%                    metabolite identifiers in the SDF are assumed to match `mets`
+%
+% OUTPUT:
+%    inchiStruct:    structure with fields:
+%
+%                      * .standard - standard InChIs with no isotope, stereo or charge layers
+%                      * .standardWithStereo - standard InChIs with stereo layers
+%                      * .standardWithStereoAndCharge - standard InChIs with stereo and charge layers
+%                      * .nonstandard - nonstandard InChIs with all layers
+%
+% .. Author: - Hulda SH, Nov. 2012
 
 % Convert SDF to InChIs
 [standard,metList1] = sdf2inchi(sdfFileName,'-xtT/noiso/nochg/nostereo');

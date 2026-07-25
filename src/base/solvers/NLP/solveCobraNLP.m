@@ -38,8 +38,16 @@ function solution = solveCobraNLP(NLPproblem, varargin)
 %                     * .d_L - Lower bound vector in nonlinear constraints
 %                     * .d_U - Upper bound vector in nonlinear constraints
 %                     * .user - Solver specific user parameters structure
+%                     * .SOL - (optional) solver-specific SOL sub-structure,
+%                       passed through as `Prob.SOL` for the `tomlab_snopt`
+%                       solver interface
 %
 % Note that 'b_L' and 'b_U' can be used in place of 'b' and 'csense'
+%
+% NOTE:
+%    The `tomlab_snopt` branch checks `isfield(NLPproblem,'d2d')` but reads
+%    the value from `.d2c`; this pre-existing inconsistency is documented
+%    here rather than changed (documentation-only remediation).
 %
 % Optional parameters can be entered using parameters structure or as
 % parameter followed by parameter value: i.e. ,'printLevel', 3)

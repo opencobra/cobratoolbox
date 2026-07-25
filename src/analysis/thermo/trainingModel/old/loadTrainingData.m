@@ -1,10 +1,32 @@
 function training_data = loadTrainingData(formation_weight)
-% Generates the structure that contains all the training data needed for
-% Component Contribution.
+% Generate the structure that contains all the training data needed for Component Contribution
 %
-% Input:
-%   formation_weight - the relative weight to give the formation energies (Alberty's data)
-%                      compared to the reaction measurements (TECRDB)
+% Reads the TECRDB (NIST), formation-energy and redox-potential data files and
+% assembles a stoichiometric matrix over the union of compounds together with
+% the associated thermodynamic parameters.
+%
+% USAGE:
+%
+%    training_data = loadTrainingData(formation_weight)
+%
+% OPTIONAL INPUT:
+%    formation_weight:    the relative weight to give the formation energies
+%                         (Alberty's data) compared to the reaction measurements
+%                         (TECRDB); default 1
+%
+% OUTPUTS:
+%    training_data:       structure with data for Component Contribution:
+%
+%                           * .cids - `m x 1` compound ids
+%                           * .cids_that_dont_decompose - ids of compounds that do not decompose
+%                           * .S - `m x n` stoichiometric matrix of training data
+%                           * .dG0_prime - `n x 1` standard transformed reaction Gibbs energies
+%                           * .T - `n x 1` temperatures
+%                           * .I - `n x 1` ionic strengths
+%                           * .pH - `n x 1` pH values
+%                           * .pMg - `n x 1` pMg values
+%                           * .weights - `n x 1` reaction weights
+%                           * .balance - `n x 1` true where the reaction is balanced
 
 if nargin < 1
     formation_weight = 1;

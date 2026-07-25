@@ -1,18 +1,43 @@
-function isConsistent = checkModelPreFBA(model,param)
-%checks if a model is (stoichiometrically and flux) consistent, which are
-%necessary conditions prior to FBA
+function isConsistent = checkModelPreFBA(model, param)
+% Checks if a model is (stoichiometrically and flux) consistent, which are
+% necessary conditions prior to FBA
 %
-% INPUT
-% model     COBRA model, or a fileName containing a model
+% USAGE:
 %
-% OPTIONAL INPUT
-% param     parameters
+%    isConsistent = checkModelPreFBA(model, param)
 %
-% OUTPUT
-% isConsistent  {1,0} if stoichiometrically and flux consistent, or not
+% INPUTS:
+%    model:            COBRA model structure, or a char with the file name of a model, with fields:
 %
-
-% Ronan Fleming 2020
+%                         * .modelID - model identifier (char)
+%                         * .S - `m` x `n` stoichiometric matrix
+%                         * .rxns - `n` x 1 cell array of reaction identifiers
+%                         * .SIntRxnBool - `n` x 1 boolean of internal (non-exchange) reactions
+%                           (returned by `findStoichConsistentSubset`)
+%                         * .SConsistentRxnBool - `n` x 1 boolean of stoichiometrically consistent
+%                           reactions (returned by `findStoichConsistentSubset`)
+%                         * .SConsistentMetBool - `m` x 1 boolean of stoichiometrically consistent
+%                           metabolites (returned by `findStoichConsistentSubset`)
+%                         * .EXRxnBool - `n` x 1 boolean of exchange reactions (computed internally
+%                           from reaction identifiers prefixed `EX_`)
+%                         * .DMRxnBool - `n` x 1 boolean of demand reactions (computed internally
+%                           from reaction identifiers prefixed `DM_`, excluding named ATP maintenance reactions)
+%                         * .SinkRxnBool - `n` x 1 boolean of sink reactions (computed internally
+%                           from reaction identifiers prefixed `sink_`)
+%
+% OPTIONAL INPUTS:
+%    param:            parameters structure with fields:
+%
+%                         * .printLevel - verbose level (default 0)
+%                         * .epsilon - set internally before testing flux consistency with `findFluxConsistentSubset`
+%                         * .modeFlag - set internally before testing flux consistency with `findFluxConsistentSubset`
+%                         * .method - set internally before testing flux consistency with `findFluxConsistentSubset`
+%
+% OUTPUT:
+%    isConsistent:     {(1), 0} 1 if the model is stoichiometrically and
+%                      flux consistent, 0 otherwise
+%
+% .. Author: - Ronan Fleming 2020
 
 if ~exist('model','var')
     model='Recon3DModel_301.mat';

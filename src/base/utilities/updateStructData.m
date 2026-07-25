@@ -1,8 +1,9 @@
-function updatedStruct = updateStructData(origStruct,updateStruct)
+function updatedStruct = updateStructData(origStruct, updateStruct)
 % Update the struct in origStruct with the data from updateStruct
 %
 % USAGE:
-%    updatedStruct = updateStruct(origStruct,updateStruct)
+%
+%    updatedStruct = updateStructData(origStruct, updateStruct)
 %
 % INPUTS:
 %    origStruct:        The original Struct

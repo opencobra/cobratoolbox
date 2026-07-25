@@ -1,4 +1,4 @@
-function [modelProp,ScoresOverall] = generateMetaboScore(model,nworkers)
+function [modelProp, ScoresOverall] = generateMetaboScore(model, nworkers)
 % Analyzes metabolic model properties and generates scores.
 % This function analyzes various aspects of the metabolic model,
 % including basic properties, stoichiometric consistency, matrix conditioning,
@@ -6,21 +6,56 @@ function [modelProp,ScoresOverall] = generateMetaboScore(model,nworkers)
 % overall scores for different aspects.
 %
 % USAGE:
-%   [modelProp, ScoresOverall] = generateMetaboScore(model, nworkers)
+%
+%    [modelProp, ScoresOverall] = generateMetaboScore(model, nworkers)
 %
 % INPUTS:
-%   - model: metabolic model structure (COBRA Toolbox format)
-%   - nworkers: (optional) number of workers for parallel processing
+%    model:            Metabolic model structure (COBRA Toolbox format)
+%                      with fields:
 %
-% OUTPUT:
-%   - modelProp: structure containing various properties of the metabolic model
-%   - ScoresOverall: structure containing overall scores for different aspects
+%                        * .S - `m x n` stoichiometric matrix
+%                        * .rxns - `n x 1` reaction identifiers
+%                        * .mets - `m x 1` metabolite identifiers
+%                        * .genes - `g x 1` gene identifiers
+%                        * .grRules - `n x 1` gene-protein-reaction rules
+%                        * .lb - `n x 1` lower flux bounds
+%                        * .ub - `n x 1` upper flux bounds
+%                        * .metFormulas - `m x 1` elemental formulas of metabolites
+%                        * .metCharges - `m x 1` metabolite charges
+%                        * .SConsistentMetBool - `m x 1` logical, true for
+%                          stoichiometrically consistent metabolites (set by
+%                          `checkStoichiometricConsistency`)
+%                        * .SConsistentRxnBool - `n x 1` logical, true for
+%                          stoichiometrically consistent reactions (set by
+%                          `checkStoichiometricConsistency`)
+%                        * .SIntRxnBool - `n x 1` logical, true for internal
+%                          (non-exchange/demand/sink) reactions
+%                        * .metSBOTerms - `m x 1` SBO terms for metabolites
+%                          (optional annotation field)
+%                        * .rxnSBOTerms - `n x 1` SBO terms for reactions
+%                          (optional annotation field)
+%                        * .geneSBOTerms - `g x 1` SBO terms for genes
+%                          (optional annotation field)
+%
+%                      Additional optional annotation ID fields (e.g.
+%                      `.rxnKEGGID`, `.metChEBIID`, `.geneUniprotID`) are
+%                      read, when present, to compute annotation scores.
+%
+% OPTIONAL INPUTS:
+%    nworkers:         Number of workers for parallel processing (default: 4)
+%
+% OUTPUTS:
+%    modelProp:        Structure containing various properties of the
+%                      metabolic model
+%    ScoresOverall:    Structure containing overall scores for different
+%                      aspects
 %
 % EXAMPLE:
-%   [modelProp, ScoresOverall] = generateMetaboScore(model)
-%   [modelProp, ScoresOverall] = generateMetaboScore(model, 4)
 %
-%  .. Author: -Ines Thiele June 2022
+%    [modelProp, ScoresOverall] = generateMetaboScore(model)
+%    [modelProp, ScoresOverall] = generateMetaboScore(model, 4)
+%
+% .. Author: - Ines Thiele, June 2022
 
 if ~exist('nworkers','var')
     nworkers = 4;

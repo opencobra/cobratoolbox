@@ -1,4 +1,5 @@
-% .. Test function to check Flux Consistency in one LP, does not work yet
+% Test script to check flux consistency in one LP; does not work yet.
+%
 % .. Author: - Ronan
 
 epsilon = 1e-8;

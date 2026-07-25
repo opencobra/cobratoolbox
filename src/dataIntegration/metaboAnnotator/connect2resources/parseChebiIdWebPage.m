@@ -1,5 +1,33 @@
-function [metabolite_structure,IDsAdded,InchiKeyList,InchiStringList ] = parseChebiIdWebPage(metabolite_structure,startSearch,endSearch,printInchis)
-
+function [metabolite_structure, IDsAdded, InchiKeyList, InchiStringList] = parseChebiIdWebPage(metabolite_structure, startSearch, endSearch, printInchis)
+% Parse the ChEBI website for each metabolite that has a ChEBI id and retrieve
+% its SMILES, InChIKey and InChIString, adding them to the metabolite structure.
+%
+% USAGE:
+%
+%    [metabolite_structure, IDsAdded, InchiKeyList, InchiStringList] = parseChebiIdWebPage(metabolite_structure, startSearch, endSearch, printInchis)
+%
+% INPUT:
+%    metabolite_structure:    metabolite structure whose fields are VMH
+%                             metabolite IDs, each holding a `cheBIId` field
+%
+% OPTIONAL INPUTS:
+%    startSearch:             numeric index of where the search should start in
+%                             the metabolite structure (default: 1)
+%    endSearch:               numeric index of where the search should end in
+%                             the metabolite structure (default: last metabolite)
+%    printInchis:             if true, return the InChIKey and InChIString lists
+%                             (default: 0)
+%
+% OUTPUTS:
+%    metabolite_structure:    metabolite structure updated with the retrieved
+%                             SMILES, InChIKey and InChIString
+%    IDsAdded:                cell array logging the added identifiers, with the
+%                             metabolite field name, the identifier type, and
+%                             the assigned identifier per row
+%    InchiKeyList:            list of the retrieved InChIKeys
+%    InchiStringList:         list of the retrieved InChIStrings
+%
+% .. Author: - Ines Thiele
 
 if ~exist('printInchis','var')
     printInchis = 0; % default setting is not to print the InchiKeyList,InchiStringList

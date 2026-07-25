@@ -9,9 +9,9 @@ function [gene_id, gene_expr, gene_sig] = findUsedGenesLevels(model, exprData, p
 %
 % INPUTS:
 %
-%   model:               input model (COBRA model structure)
+%    model:               input model (COBRA model structure)
 %
-%   exprData:            mRNA expression data structure
+%    exprData:            mRNA expression data structure
 %       .gene                cell array containing GeneIDs in the same
 %                            format as model.genes
 %       .value               Vector containing corresponding expression value (FPKM)
@@ -23,14 +23,14 @@ function [gene_id, gene_expr, gene_sig] = findUsedGenesLevels(model, exprData, p
 %
 % OUTPUTS:
 %
-%   gene_id:             vector of gene identifiers present in the model
+%    gene_id:             vector of gene identifiers present in the model
 %                        that are associated with expression data
 %
-%   gene_expr:           vector of expression values associated to each
+%    gene_expr:           vector of expression values associated to each
 %                        'gene_id'
 %
 % OPTIONAL OUTPUTS:
-%   gene_sig:             vector of significance values associated to each
+%    gene_sig:             vector of significance values associated to each
 %                        'gene_id'
 %
 %   

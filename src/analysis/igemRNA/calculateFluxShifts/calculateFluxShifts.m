@@ -8,8 +8,8 @@ function calculateFluxShifts(source, target)
 %   calculateFluxShifts(source, target)
 %
 % INPUTS:
-%   source:                 model strusture
-%   target:                 model strusture or a string value "All" when
+%    source:                 model strusture
+%    target:                 model strusture or a string value "All" when
 %                           comparing all models in the folder resultsPostOptimization\contextSpecificModels 
 %                           to the souce
 %

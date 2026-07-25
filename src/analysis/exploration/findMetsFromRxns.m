@@ -7,8 +7,12 @@ function [metList, stoichiometries] = findMetsFromRxns(model, reactions)
 %    [metList] = findMetsFromRxns(model, reactions)
 %
 % INPUTS:
-%    model:             COBRA model structure
-%    reactions:         Reaction IDs (Cell Array) or positions (Double array) to 
+%    model:             COBRA model structure with fields:
+%
+%                         * .S - `m x n` stoichiometric matrix
+%                         * .mets - `m x 1` metabolite identifiers
+%
+%    reactions:         Reaction IDs (Cell Array) or positions (Double array) to
 %                       find the corresponding metabolites for
 %
 % OUTPUT:
@@ -17,7 +21,7 @@ function [metList, stoichiometries] = findMetsFromRxns(model, reactions)
 %                       Otherwise, this is a Cell Array of cell arrays
 %                       containing the metabolites involved in each of the
 %                       provided reactions.
-%    stoichiometries:   this is a Cell array of double arrays of the
+%    stoichiometries:    this is a Cell array of double arrays of the
 %                       stoichiometric coefficients corresponding to the
 %                       reactions in the order of provided reaction ids.
 %                       If reactions not in the model are provided, those

@@ -6,7 +6,12 @@ function metabModel = extractMetModel(model, metabNames, nLayers, allCompFlag, n
 %    metabModel = extractMetModel(model, metabNames, nLayers, allCompFlag, nRxnsMetThr)
 %
 % INPUTS:
-%    model:          COBRA model structure
+%    model:          COBRA model structure with fields:
+%
+%                      * .S - `m x n` stoichiometric matrix
+%                      * .mets - `m x 1` cell array of metabolite identifiers
+%                      * .rxns - `n x 1` cell array of reaction identifiers
+%                      * .c - (if present) `n x 1` objective coefficients
 %    metabNames:     Metabolites to build subnetwork model around
 %    nLayers:        Number of layers
 %    allCompFlag:    Use all metabolites regardless of compartment

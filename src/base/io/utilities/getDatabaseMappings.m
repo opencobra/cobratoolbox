@@ -1,7 +1,11 @@
-function returnedmappings = getDatabaseMappings(field,qualifiers)
+function returnedmappings = getDatabaseMappings(field, qualifiers)
 % getDataBaseMappings returns information on known mappings of database
 % entries to model field names, along with additional information about the
 % fields.
+%
+% USAGE:
+%
+%    returnedmappings = getDatabaseMappings(field, qualifiers)
 %
 % INPUT:
 %

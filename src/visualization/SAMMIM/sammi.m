@@ -1,90 +1,112 @@
 function sammi(model, parser, data, secondaries, options)
 % Visualize the given model, set of reactions, and/or data using SAMMI.
 % Documentation at: https://sammim.readthedocs.io/en/latest/index.html
-% 
-% Citation: Schultz, A., & Akbani, R. (2019). SAMMI: A Semi-Automated 
-%     Tool for the Visualization of Metabolic Networks. Bioinformatics.
-% 
+%
+% Citation: Schultz, A., & Akbani, R. (2019). SAMMI: A Semi-Automated
+% Tool for the Visualization of Metabolic Networks. Bioinformatics.
+%
 % USAGE:
-% sammi(model,parser,data,secondaries,options)
-% 
-% INPUT:
-%   model: COBRA model to be visualized
-% 
+%
+%    sammi(model, parser, data, secondaries, options)
+%
+% INPUTS:
+%    model:           COBRA model to be visualized. Fields used:
+%
+%                       * .rxns - reaction identifiers
+%                       * .subSystems - subsystem assigned to each
+%                         reaction; read when `parser` names a model
+%                         field used to split the model into subgraphs
+%
 % OPTIONAL INPUTS:
-%   parser: How the model is to be parsed. There are four possible 
-%   options for this parameter. Default empty array.
-%       *empty array: If this parameter is an empty arrray, all reaction 
-%       in the model will be loaded in a single map. Not advisable for
-%       large maps.
-%       *string: If this parameter is a characters array there are two
-%       options. Either the parameter defines the path to a SAMMI map (JSON
-%       file downloaded from a previous instance of SAMMI), in which case
-%       the given map will be used, or the parameter defines a field in the
-%       model struct, in which case this field will be used to parse the
-%       model into subgraphs.
-%       *cell array: If this parameter is a cell array, it should be a cell
-%       array of strings containing reaction IDs. Only these reactions will
-%       be included in a single SAMMI map.
-%       *struct: If this model is a struct of length n, the model will be
-%       parsed into n subgraphs. Each element of the struct should contain
-%       two fields plus an additional optional one:
-%           name: Name of the subgraph.
-%           rxns: Reactions to be included in the subgraph.
-%           flux: Optional field. Data to be mapped as reaction color.
-%   data: Data to be mapped onto the model. Struct of length n. Defaults 
-%   to an empty array where no data is mapped. Element of the struct should 
-%   contain two fields:
-%       type: A cell array of two strings. The firt string should be
-%       either 'rxns', 'mets', or 'links' indicating which type of data
-%       is to be mapped. The second string should be either 'color' or
-%       'size', indicating how the data is to  be mapped. 'links' only
-%       work with 'size', since link color is the same as the one of
-%       the reaction it is assciated with.
-%       data: a table object. VariableNames will be translated into 
-%       condition names, and RowNames should be reaction IDs for 'rxns'
-%       and 'links' data, and metabolite IDs for 'mets' data. NaN values
-%       will not be mapped.
-%   secondaries: Cell array of strings of regular expressions. All 
-%   metabolites, in all subgraphs, matching any of the regular expressions
-%   will be shelved. Default to empty array where no metabolites are
-%   shelved.
-%   options: Struct with the following fields:
-%       htmlName: Name of the html file to be written and opened for the
-%       visualization. Defaults to 'index_load'. Change this options to
-%       write to a different html file that will not be overwritten by the
-%       default option.
-%       load: Load the html file in a new tab upon writing the file.
-%       Default to true. If you would not like a new tab to open, set
-%       this parameter to false and refresh a previously opened window. To
-%       open a new window without re-running SAMMI use the openSammi
-%       function.
-%       jscode: String. Defaults to empty string. Additional JavaScript 
-%       code to run after loading the map. Can be any code to modify the
-%       loaded map.
-% 
+%    parser:          How the model is to be parsed. Default empty
+%                     array. One of four forms:
+%
+%                       * Empty array - all reactions in the model are
+%                         loaded in a single map. Not advisable for
+%                         large maps.
+%                       * Char array - either the path to a SAMMI map
+%                         (JSON file downloaded from a previous
+%                         instance of SAMMI), in which case the given
+%                         map is used, or the name of a field in the
+%                         model struct, in which case that field is
+%                         used to parse the model into subgraphs.
+%                       * Cell array - a cell array of reaction ID
+%                         strings; only these reactions are included
+%                         in a single SAMMI map.
+%                       * Struct array of length `n` - the model is
+%                         parsed into `n` subgraphs. Each element
+%                         should contain two required fields plus one
+%                         optional field:
+%
+%                           * .name - name of the subgraph
+%                           * .rxns - reactions to be included in the
+%                             subgraph
+%                           * .flux - optional; data to be mapped as
+%                             reaction color
+%
+%    data:            Data to be mapped onto the model. Struct of
+%                     length `n`. Defaults to an empty array where no
+%                     data is mapped. Each element should contain two
+%                     fields:
+%
+%                       * .type - a cell array of two strings; the
+%                         first is `rxns`, `mets`, or `links`,
+%                         indicating which type of data is mapped, and
+%                         the second is `color` or `size`, indicating
+%                         how the data is mapped (`links` only
+%                         supports `size`, since link color follows
+%                         the associated reaction)
+%                       * .data - a table object; `VariableNames` are
+%                         translated into condition names, and
+%                         `RowNames` should be reaction IDs for
+%                         `rxns`/`links` data and metabolite IDs for
+%                         `mets` data. `NaN` values are not mapped
+%
+%    secondaries:     Cell array of regular-expression strings. All
+%                     metabolites, in all subgraphs, matching any of
+%                     the regular expressions are shelved. Defaults to
+%                     an empty array where no metabolites are shelved.
+%    options:         Struct with the following fields:
+%
+%                       * .htmlName - name of the html file to be
+%                         written and opened for the visualization.
+%                         Defaults to `index_load`. Change this field
+%                         to write to a different html file that will
+%                         not be overwritten by the default option
+%                       * .load - load the html file in a new tab upon
+%                         writing the file. Defaults to true. If a new
+%                         tab should not open, set this field to false
+%                         and refresh a previously opened window; use
+%                         the `openSammi` function to open a new
+%                         window without re-running `sammi`
+%                       * .jscode - string, defaults to an empty
+%                         string. Additional JavaScript code to run
+%                         after loading the map. Can be any code to
+%                         modify the loaded map
+%
 % OUTPUT:
-%   No MATLAB output. Opens a browser window with the SAMMI visualization.
-% 
+%    No MATLAB output. Opens a browser window with the SAMMI visualization.
+%
 % EXAMPLES:
-%   %1 Open model in single map
-%   sammi(model)
-% 
-%   %2 Open model as multiple subgraphs divided by subSystems
-%   sammi(model,'subSystems')
-% 
-%   %3 Open model as multiple subgraphs divided by subSystems, load two
-%   %conditions with randomly generated data, and shelve hydrogen, water,
-%   %and O2 upon loading.
-%   rxntbl = array2table(randn(length(model.rxns),2),...
-%       'VariableNames', {'condition1','condition2'},...
-%       'RowNames', model.rxns);
-%   data(1).type = {'rxns' 'color'};
-%   data(1).data = rxntbl;
-%   data(2).type = {'rxns' 'size'};
-%   data(2).data = rxntbl;
-%   secondaries = {'^h\[.\]$','^h20\[.\]$','^o2\[.\]$'};
-%   sammi(model,'subSystems',data,secondaries)
+%
+%    %1 Open model in single map
+%    sammi(model)
+%
+%    %2 Open model as multiple subgraphs divided by subSystems
+%    sammi(model,'subSystems')
+%
+%    %3 Open model as multiple subgraphs divided by subSystems, load two
+%    %conditions with randomly generated data, and shelve hydrogen, water,
+%    %and O2 upon loading.
+%    rxntbl = array2table(randn(length(model.rxns),2),...
+%        'VariableNames', {'condition1','condition2'},...
+%        'RowNames', model.rxns);
+%    data(1).type = {'rxns' 'color'};
+%    data(1).data = rxntbl;
+%    data(2).type = {'rxns' 'size'};
+%    data(2).data = rxntbl;
+%    secondaries = {'^h\[.\]$','^h20\[.\]$','^o2\[.\]$'};
+%    sammi(model,'subSystems',data,secondaries)
 
 if nargin < 2
     parser = [];
@@ -107,9 +129,19 @@ if nargin < 5 || ~isfield(options,'jscode')
     options.jscode = '';
 end
 
-%Read in index
-sfolder = regexprep(which('sammi'),'sammi.m$','');
-html = fileread([sfolder 'index.html']);
+%Read in index. The SAMMI web-app template and its assets are vendored under
+%external/visualization/SAMMIM/ (relocated out of src/); resolve them from the
+%toolbox root rather than beside this wrapper.
+sfolder = regexprep(which('sammi'),'sammi.m$','');   % SAMMI wrapper dir (default output location)
+sammiExternal = [fileparts(which('initCobraToolbox')) filesep 'external' filesep 'visualization' filesep 'SAMMIM' filesep];
+html = fileread([sammiExternal 'index.html']);
+%Point the template's local asset references at the relocated external/ copy so the
+%generated HTML resolves them regardless of where the output file is written.
+localAssets = {'sammi.css','helpfunctions.js','uploaddownload.js','simulationfunctions.js'};
+for iAsset = 1:numel(localAssets)
+    html = strrep(html, ['''' localAssets{iAsset} ''''], ['''' sammiExternal localAssets{iAsset} '''']);
+    html = strrep(html, ['"' localAssets{iAsset} '"'], ['"' sammiExternal localAssets{iAsset} '"']);
+end
 
 %Define options
 if isstruct(parser)

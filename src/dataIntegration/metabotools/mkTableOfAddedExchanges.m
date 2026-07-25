@@ -1,4 +1,4 @@
-function [Added_all] = mkTableOfAddedExchanges(ResultsAllCellLines,samples,Ex_added_all_unique)
+function [Added_all] = mkTableOfAddedExchanges(ResultsAllCellLines, samples, Ex_added_all_unique)
 % The function generates a table of the added exchanges defined by the
 % function `generateCompactExchModel` called by the function `setQuantConstraints`.
 %

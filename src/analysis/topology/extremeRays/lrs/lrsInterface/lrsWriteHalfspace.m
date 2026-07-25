@@ -13,14 +13,14 @@ function fileNameOut = lrsWriteHalfspace(A, b, csense, modelName, param)
 %    b:             m x 1 rhs of linear constraints
 %    csense:        m x 1 char with ('E'),'G' or 'L'
 %    modelName:     name of the model to be used when generating filenames, 'model' by default
-%    param.positivity:    {0, (1)} if positivity == 1, then positive orthant base
-%    param.inequality:    {0, (1)} if inequality == 1, then use two inequalities rather than a single equaltiy
-
-%    f:             linear objective for a linear optimization problem in rational arithmetic
+%    param:         parameter structure with the following fields:
 %
-%                   minimise :math:`f^T x`,
-%                   subject to :math:`A x = (a)`, :math:`D x \geq (d)`
-%    sh:            {(0), 1} if `sh == 1`, output a shell script for submitting qsub job
+%                     * .positivity - {0, (1)} if `param.positivity == 1`, then positive orthant base
+%                     * .inequality - {0, (1)} if `param.inequality == 1`, then use two inequalities rather than a single equality
+%                     * .sh - {(0), 1} if `param.sh == 1`, output a shell script for submitting a qsub job
+%
+% OUTPUT:
+%    fileNameOut:    full path to the generated lrs `.ine` (H-representation) file
 
 % Ronan Fleming 2021
 

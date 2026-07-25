@@ -1,17 +1,26 @@
-function [common,system_not_matlab,matlab_not_system] = comparePaths(NAME,printLevel)
-%compare the system and matlab paths for a given NAME environment variable
+function [common, system_not_matlab, matlab_not_system] = comparePaths(NAME, printLevel)
+% Compares the system and MATLAB paths for a given NAME environment variable
 %
-% INPUT
-% NAME          environment variable, e.g., PATH or LD_LIBRARY_PATH
-% printLevel
+% USAGE:
 %
-% OUTPUT
-% common                cell array
-% system_not_matlab
-% matlab_not_system
+%    [common, system_not_matlab, matlab_not_system] = comparePaths(NAME, printLevel)
 %
-% USAGE example
-% [common,system_not_matlab,matlab_not_system] = comparePaths('LD_LIBRARY_PATH',1);
+% INPUTS:
+%    NAME:                 environment variable, e.g., `PATH` or
+%                          `LD_LIBRARY_PATH`, or the special value `PYTHON`
+%                          to compare the MATLAB and system python paths
+%    printLevel:           verbosity level; `> 0` prints the summary of
+%                          entries unique to system or MATLAB, `> 1` also
+%                          prints the full path lists
+%
+% OUTPUTS:
+%    common:               cell array of path entries common to system and MATLAB
+%    system_not_matlab:    cell array of path entries in the system but not MATLAB
+%    matlab_not_system:    cell array of path entries in MATLAB but not the system
+%
+% EXAMPLE:
+%
+%    [common, system_not_matlab, matlab_not_system] = comparePaths('LD_LIBRARY_PATH', 1);
 
 if ~exist('printLevel','var')
     printLevel=0;

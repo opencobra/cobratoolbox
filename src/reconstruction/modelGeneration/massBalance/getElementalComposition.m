@@ -6,12 +6,16 @@ function [Ematrix, elements] = getElementalComposition(formulae, elements, charg
 %    [Ematrix, elements] = getElementalComposition(formulae, elements, chargeInFormula)
 %
 % INPUT:
-%    formulae:        cell array of strings of chemical formulae. Can contain any generic elements starting 
-%                     with a capital letter followed by lowercase letters or '_', followed by a non-negative number. 
+%    formulae:        cell array of strings of chemical formulae. Can contain any generic elements starting
+%                     with a capital letter followed by lowercase letters or '_', followed by a non-negative number.
 %                     Also support '()', '[]', '{}'. E.g. {'H2O'; '[H2O]2(CuSO4)Generic_element0.5'}
+%                     Alternatively, a COBRA model structure with field:
+%
+%                       * .metFormulas - cell array of metabolite formulas, used in place of `formulae` when provided
+%
 % OPTIONAL INPUTS:
 %    elements:        elements from previous call to preserve the order (default {})
-%    chargeInFormula: true to accept formulae containing the generic element 'Charge' representing the charges, 
+%    chargeInFormula:    true to accept formulae containing the generic element 'Charge' representing the charges,
 %                     followed by a real number, e.g., 'HCharge1', 'SO4Charge-2' (default false).
 %
 % OUTPUTS:

@@ -6,7 +6,13 @@ function convertModelToEX(model, filename, rxnzero, EXrxns)
 %    convertModelToEX(model, filename, rxnzero, EXrxns)
 %
 % INPUTS:
-%     model:       Model Structure
+%     model:       Model Structure with fields:
+%
+%                    * .rxns - Reaction identifiers
+%                    * .mets - Metabolite identifiers
+%                    * .S - Stoichiometric matrix
+%                    * .lb - Lower bounds
+%                    * .ub - Upper bounds
 %     filename:    Filename of Output File (make sure to include '.txt' or '.xpa')
 %     rxnzero:     Matrix containing all no flux var rxns (to skip, set=0)
 %

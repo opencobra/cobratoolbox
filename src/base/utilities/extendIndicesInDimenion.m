@@ -1,7 +1,9 @@
-function added = extendIndicesInDimenion(input,dimension,value, sizeIncrease)
-% Remove the indices in a specified field in the given dimension
+function added = extendIndicesInDimenion(input, dimension, value, sizeIncrease)
+% Extend a specified dimension of the given array by appending values
+%
 % USAGE:
-%    added = extendIndicesInDimenion(input,dimension,indices)
+%
+%    added = extendIndicesInDimenion(input, dimension, value, sizeIncrease)
 %
 % INPUTS:
 %
@@ -15,9 +17,10 @@ function added = extendIndicesInDimenion(input,dimension,value, sizeIncrease)
 %    added:              The Array/Matrix with the given indices set to the
 %                        default values.
 %
-% .. Authors: 
+% .. Authors:
 %                   - Thomas Pfau Sept 2017, adapted to merge all fields.
-% NOTE:  
+%
+% NOTE:
 %     Based on https://stackoverflow.com/questions/22537326/on-shape-agnostic-slicing-of-ndarrays
 
 try

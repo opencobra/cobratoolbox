@@ -1,17 +1,15 @@
 function [MW, Ematrix] = getMolecularWeight(inchis, warnings)
 % Computes molecular weight and elemental matrix of compounds
 %
-% [MW, Ematrix] = computeMW(model, metList, warnings)
+% USAGE:
 %
-% INPUTS:
-%    model:       COBRA model structure
-%                 (must define .mets and .metFormulas)
+%    [MW, Ematrix] = getMolecularWeight(inchis, warnings)
 %
-% OPTIONAL INPUTS:
-%    metList:     Cell array of which metabolites to search for.
-%                 (Default = all metabolites in model)
-%    warnings:    Display warnings if there are errors with the
-%                 formula. (Default = true)
+% INPUT:
+%    inchis:      cell array of InChI strings, one per compound
+%
+% OPTIONAL INPUT:
+%    warnings:    display warnings when a formula cannot be parsed (default true)
 %
 % OUTPUTS:
 %    MW:          Vector of molecular weights

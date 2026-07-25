@@ -29,7 +29,7 @@ function [mustUL, posMustUL, mustUL_linear, pos_mustUL_linear] = findMustUL(mode
 %                                reaction in the model for wild-type strain.
 %                                This can be obtained by
 %
-% OPTIONAL INPUTS
+% OPTIONAL INPUTS:
 %    constrOpt:                  (structure) structure containing
 %                                additional contraints. Include here only
 %                                reactions whose flux is fixed, i.e.,
@@ -74,7 +74,7 @@ function [mustUL, posMustUL, mustUL_linear, pos_mustUL_linear] = findMustUL(mode
 %                                0 otherwise.
 %                                Default: 0
 %
-% OUTPUTS
+% OUTPUTS:
 %    mustUL:                     (cell array) Size: number of sets found X 2
 %                                cell array containing the
 %                                reactions IDs which belong to the `MustUL`

@@ -3,7 +3,7 @@ function D = decomposeMoietyVectors(L, N)
 %
 % USAGE:
 %
-%    D = decomposeMoieties(L, N);
+%    D = decomposeMoietyVectors(L, N)
 %
 % INPUTS:
 %    L:    The `m x r` moiety matrix with moiety vectors as columns.

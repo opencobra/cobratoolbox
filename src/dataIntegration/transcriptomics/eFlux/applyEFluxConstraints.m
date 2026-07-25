@@ -1,4 +1,4 @@
-function [ constraintModel ] = applyEFluxConstraints( model, expression, varargin)
+function [constraintModel] = applyEFluxConstraints(model, expression, varargin)
 % Implementation of the EFlux algorithm as described in:
 % Interpreting Expression Data with Metabolic Flux Models: Predicting Mycobacterium tuberculosis Mycolic Acid Production
 % Colijn C, Brandes A, Zucker J, Lun DS, Weiner B, et al. (2009)
@@ -6,33 +6,41 @@ function [ constraintModel ] = applyEFluxConstraints( model, expression, varargi
 %
 % USAGE:
 %
-%    constraintModel = eFlux(model,expression)
+%    constraintModel = applyEFluxConstraints(model, expression, varargin)
 %
 % INPUTS:
-%    model:         The model to Constrain.
+%    model:         COBRA model structure with fields:
+%
+%                     * .rxns - reaction identifiers, used to map targets and to name flexibility variables
+%                     * .lb - lower flux bounds, reset and rescaled from the expression
+%                     * .ub - upper flux bounds, reset and rescaled from the expression
 %    expression:    struct with two fields required and one optional field:
-%                   * .target       - the names of the target (rxns or genes)
-%                   * .value        - the value for the target. Positive values
-%                                     for all constraint reactions, negative
-%                                     values for unconstraint reactions.
-%                   * .preprocessed - Indicator whether the provided
-%                                     targets are genes (false), or reactions (true)
-%                                     Default: false
+%
+%                     * .target - the names of the target (rxns or genes)
+%                     * .value - the value for the target. Positive values
+%                       for all constraint reactions, negative
+%                       values for unconstraint reactions.
+%                     * .preprocessed - Indicator whether the provided
+%                       targets are genes (false), or reactions (true).
+%                       Default: false
 %
 % OPTIONAL INPUTS:
+%    varargin:      Parameters given as struct or parameter/value pairs:
 %
-%    varargin:      Parameters given as struct or parameter/value pairs: 
-%                    * minSum:           Switch for the processing of Genetic data. If false, ORs in the GPR will be treated as min. If true(default), ORs will be treated as addition.
-%                    * softBounds:       Whether to use soft bounds for the infered constraints or to add flexibility variables (default: false).
-%                    * weightFactor:     The weight factor for soft bounds (default: 1) 
+%                     * minSum - Switch for the processing of Genetic data. If false, ORs in the GPR will be treated as min. If true (default), ORs will be treated as addition.
+%                     * softBounds - Whether to use soft bounds for the infered constraints or to add flexibility variables (default: false).
+%                     * weightFactor - The weight factor for soft bounds (default: 1)
+%
+% OUTPUTS:
+%    constraintModel:    the input model with flux bounds constrained
+%                        according to the expression data
 %
 % NOTE:
 %
 %    All Flux bounds will be reset by this function, i.e. any enforced
 %    fluxes (like ATP Maintenance) will be removed!
 %
-% ..Authors
-%     - Thomas Pfau
+% .. Author: - Thomas Pfau
 %
 % NOTE:
 %    Implementation of the EFlux algorithm as described in:

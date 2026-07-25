@@ -1,3 +1,8 @@
+% Check the row rank of the [F, R] half-stoichiometric matrix of a loop toy
+% model augmented with kinetic-parameter blocks If and Ir: build the augmented
+% matrix, test its stoichiometric consistency, report the row rank deficiency
+% of [F R; If Ir], and inspect A*A' symbolically for a left-nullspace vector.
+
 makeLoopToyModel;
 % Check for positive left nullspace basis when kinetic parameters are variables.
 % If the sum of each column of  If equals that of the corresponding column of  Ir,

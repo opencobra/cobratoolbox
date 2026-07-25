@@ -3,17 +3,31 @@ function [newMap] = colorRxnType(map, type, color, width)
 %
 % USAGE:
 %
-%   [newMap] = createColorsMap(map, type, color);
+%    [newMap] = colorRxnType(map, type, color, width)
 %
 % INPUTS:
-%   map:        Map from CellDesigner parsed to MATLAB format
-%   type:       Type of reactions to be colored (as String)
-%   color:      Color used to color reactions (see createColorsMap.m)
-%   width:      Width size for reactions (default: 8)
+%    map:            Map from CellDesigner parsed to MATLAB format, with
+%                    fields:
+%
+%                      * .rxnType - cell array of reaction types
+%                      * .rxnReactantID - cell array of reactant IDs per reaction
+%                      * .rxnProductID - cell array of product IDs per reaction
+%    type:           Type of reactions to be colored (as String)
+%    color:          Color used to color reactions (see createColorsMap.m)
+%
+% OPTIONAL INPUT:
+%    width:          Width size for reactions (default: 8)
 %
 % OUTPUT:
-%   newMap:     MATLAB structure of new map with needed reactions type
-%               colored and width modified
+%    newMap:         MATLAB structure of new map with needed reactions type
+%                    colored and width modified, with fields updated:
+%
+%                      * .rxnColor - cell array of reaction colours
+%                      * .rxnWidth - cell array of reaction line widths
+%                      * .rxnReactantLineColor - cell array of per-reactant line colours
+%                      * .rxnReactantLineWidth - cell array of per-reactant line widths
+%                      * .rxnProductLineColor - cell array of per-product line colours
+%                      * .rxnProductLineWidth - cell array of per-product line widths
 %
 % .. Author: - N.Sompairac - Institut Curie, Paris, 20/10/2017
 

@@ -1,5 +1,7 @@
+% Convex program handle class: min <c,x> + sum f_i(x_i) subject to Ax = b,
+% x_i in K_i, where each block K_i is a strictly convex set
 classdef ConvexProgram < handle
-   % Convex Program is given by 
+   % Convex Program is given by
    % min <c,x> + sum f_i(x_i) subject Ax = b, x_i in K_i
    % given that such block K_i is a *strictly* convex set
    

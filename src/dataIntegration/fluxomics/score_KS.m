@@ -3,7 +3,7 @@ function [out] = score_KS(mdv, hilo, lambda)
 %
 % USAGE:
 %
-%    [out] = score_ridge(mdv, hilo, lambda, crossval)
+%    [out] = score_KS(mdv, hilo, lambda)
 %
 % INPUTS:
 %    mdv:         structure

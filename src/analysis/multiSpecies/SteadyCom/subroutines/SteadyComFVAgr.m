@@ -9,16 +9,16 @@ function [minFlux, maxFlux, minFD, maxFD, LP, GR] = SteadyComFVAgr(modelCom, opt
 %    [minFlux, maxFlux, minFD, maxFD, LP, GR] = SteadyComFVAgr(modelCom, options, LP, parameter, 'param1', value1, 'param2', value2, ...)
 %
 % INPUT:
-%    modelCom:   A community COBRA model structure with the following fields (created using createMultipleSpeciesModel)
+%    modelCom:    A community COBRA model structure with the following fields (created using createMultipleSpeciesModel)
 %                (the first 5 fields are required, at least one of the last two is needed. Can be obtained using `getMultiSpecisModelId`):
 %
-%                  * S - Stoichiometric matrix
-%                  * b - Right hand side
-%                  * c - Objective coefficients
-%                  * lb - Lower bounds
-%                  * ub - Upper bounds
-%                  * infoCom - structure containing community reaction info
-%                  * indCom - the index structure corresponding to `infoCom`
+%                  * .S - Stoichiometric matrix
+%                  * .b - Right hand side
+%                  * .c - Objective coefficients
+%                  * .lb - Lower bounds
+%                  * .ub - Upper bounds
+%                  * .infoCom - structure containing community reaction info
+%                  * .indCom - the index structure corresponding to `infoCom`
 %
 % OPTIONAL INPUTS:
 %    options:    struct with the following possible fields:
@@ -48,8 +48,20 @@ function [minFlux, maxFlux, minFD, maxFD, LP, GR] = SteadyComFVAgr(modelCom, opt
 %                    model ('loadModel.mps'), basis ('loadModel.bas') and parameters ('loadModel.prm').
 %                    (May add also other parameters in `SteadyCom` for calculating the maximum growth rate.)
 %
-%    LP :        LP problem structure (Cplex object for `ibm_cplex`) from calling `SteadyComFVA`.
-%                Leave empty if calling this function alone.
+%    LP :        LP problem structure (Cplex object for `ibm_cplex`) from calling
+%                `SteadyComFVA`; leave empty if calling this function alone. Fields used:
+%
+%                  * .A - constraint matrix
+%                  * .b - right-hand-side vector
+%                  * .c - objective coefficient vector
+%                  * .csense - constraint sense vector
+%                  * .osense - objective sense (maximise/minimise)
+%                  * .basis - warm-start basis
+%                  * .Model - Cplex model sub-structure (`ibm_cplex`)
+%                  * .Start - Cplex warm-start basis (`ibm_cplex`)
+%                  * .Solution - Cplex solution sub-structure (`ibm_cplex`)
+%                  * .DisplayFunc - Cplex display-function handle (`ibm_cplex`)
+%
 %    parameter:  structure for solver-specific parameters.
 %                'param1', value1, ...   name-value pairs for `solveCobraLP` parameters. See `solveCobraLP` for details
 %

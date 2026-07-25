@@ -1,6 +1,6 @@
 function model = generateGrRules(model, hyperlinkCommand)
 % Generate model.grRules consistent with model.rules and model.genes, with
-% an additional function of adding a field *.grRulesLinked in which the
+% an additional function of adding a field .grRulesLinked in which the
 % genes in the rules are hyperlinked with the provided command when
 % displayed in the Matlab command window (used by `surfNet.m`).
 %
@@ -8,16 +8,23 @@ function model = generateGrRules(model, hyperlinkCommand)
 %    model = generateGrRules(model, hyperlinkCommand)
 %
 % INPUT:
-%    model:            COBRA model
+%    model:               COBRA model structure with fields:
+%
+%                           * .rxns - reaction identifiers, used to size empty `.rules`
+%                           * .rules - gene-reaction rules in encoded (`x(i)`) form
+%                           * .genes - gene identifiers referenced by `.rules`
+%                           * .grRules - gene-reaction rules in human-readable form
 %
 % OPTIONAL INPUT:
-%    hyperlinkCommand: a string of Matlab command for the genes in the model
-%                      e.g., 'fprintf(''%s'')' where %s will be replaced by the gene
-%                      (default [], not adding the field for hyperlinked grRules)
+%    hyperlinkCommand:    string of Matlab command for the genes in the model,
+%                         e.g., 'fprintf(''%s'')' where %s will be replaced by the gene
+%                         (default [], not adding the field for hyperlinked grRules)
 %
 % OUTPUT:
-%    model:            COBRA model updated with *.grRules, and
-%                      *.grRulesLinked if `hyperlinkCommand` is a non-empty string
+%    model:               COBRA model updated with fields:
+%
+%                           * .grRules - gene-reaction rules generated from `.rules` and `.genes`
+%                           * .grRulesLinked - `.grRules` with hyperlinked genes (only when `hyperlinkCommand` is a non-empty string)
 
 if nargin < 2
     hyperlinkCommand = [];

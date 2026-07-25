@@ -2,46 +2,52 @@ function [model, solution] = componentContribution(model, combinedModel, param)
 % Perform the component contribution method
 %
 % Note, we assume DfG0 for '[H+]' is zero
-
+%
 % USAGE:
 %
-%    [model, params] = componentContribution(model, combinedModel)
+%    [model, solution] = componentContribution(model, combinedModel, param)
 %
 % INPUTS:
-%    model:             COBRA structure
+%    model:             COBRA model structure with fields:
 %
-% combinedModel:
-% combinedModel.S:                          k x n stoichiometric matrix of training padded with zero rows for metabolites exclusive to test data
-% combinedModel.drG0:                       n x 1 experimental standard reaction Gibbs energy
-% combinedModel.drG0_prime:                 n x 1 experimental standard transformed reaction Gibbs energy
-% combinedModel.T:                          n x 1 temperature
-% combinedModel.I:                          n x 1 ionic strength
-% combinedModel.pH:                         n x 1 pH
-% combinedModel.pMg:                        n x 1 pMg
-% combinedModel.G:                          k x g group incidence matrix
-% combinedModel.groups:                     g x 1 cell array of group definitions
-% combinedModel.trainingMetBool             k x 1 boolean indicating training metabolites in G
-% combinedModel.testMetBool                 k x 1 boolean indicating test metabolites in G
-% combinedModel.groupDecomposableBool:      k x 1 boolean indicating metabolites with group decomposition
-% combinedModel.inchiBool                   k x 1 boolean indicating metabolites with inchi
-% combinedModel.test2CombinedModelMap:      m x 1 mapping of model.mets to combinedModel.mets
+%                         * .S - `m x n` stoichiometric matrix
+%                         * .SIntRxnBool - `n x 1` boolean, true for internal reactions
+%                         * .SConsistentRxnBool - `n x 1` boolean, true for stoichiometrically consistent reactions (used if present)
+%                         * .transportRxnBool - `n x 1` boolean, true for transport reactions (computed internally if absent)
+%    combinedModel:     structure of combined training and test data with fields:
+%
+%                         * .S - `k x n` stoichiometric matrix of the combined data
+%                         * .DrG0 - `n x 1` experimental standard reaction Gibbs energy
+%                         * .dG0 - legacy name for the standard reaction Gibbs energy, renamed to `.DrG0` if present
+%                         * .G - `k x g` group incidence matrix
+%                         * .groups - `g x 1` cell array of group definitions
+%                         * .test2CombinedModelMap - `m x 1` mapping of model metabolites to combinedModel metabolites
+%
+% OPTIONAL INPUTS:
+%    param:             structure with optional fields:
+%
+%                         * .debug - if true (default), populate `solution` with intermediate quantities
 %
 % OUTPUTS:
-%    model:             structure with the following fields:
+%    model:             COBRA model structure with added fields:
 %
-%                         * .DfG0 - `m x 1` array of component contribution estimated
-%                           standard Gibbs energies of formation.
-%                         * .covf - `m x m` estimated covariance matrix for standard
-%                           Gibbs energies of formation.
-%                         * .DfG0_Uncertainty - `m x 1` array of uncertainty in estimated standard
-%                           Gibbs energies of formation. Will be large for
-%                           metabolites that are not covered by component
-%                           contributions.
-%                         * .DrG0_Uncertainty - `n x 1` array of uncertainty in standard reaction
-%                           Gibbs energy estimates.  Will be large for
-%                           reactions that are not covered by component
-%                           contributions.
-%    solution:            structure containing various solution vectors
+%                         * .DfG0 - `m x 1` component contribution standard Gibbs energies of formation
+%                         * .DfG0_Uncertainty - `m x 1` uncertainty in `.DfG0`
+%                         * .unconstrainedDfG0_cc - `m x 1` boolean, metabolite estimates partially unconstrained by the group fit
+%                         * .DrG0 - `n x 1` standard reaction Gibbs energies
+%                         * .DrG0_Uncertainty - `n x 1` uncertainty in `.DrG0`
+%                         * .unconstrainedDrG0_cc - `n x 1` boolean, reaction estimates partially unconstrained by the group fit
+%                         * .DfG0_cc_cov - `m x m` covariance matrix of metabolite standard Gibbs energies
+%                         * .DrG0_cc_cov - `n x n` covariance matrix of reaction standard Gibbs energies
+%                         * .DfG0_cov - `m x m` metabolite covariance matrix, referenced in an internal diagnostic message
+%                         * .V_rc - `m x m` reactant-contribution covariance component (alternative code path)
+%                         * .V_gc - `m x m` group-contribution covariance component (alternative code path)
+%                         * .V_inf - `m x m` unconstrained covariance component (alternative code path)
+%                         * .PR_S - projection matrix onto the range of S (alternative code path)
+%                         * .PN_St - projection matrix onto the null space of S transpose (alternative code path)
+%                         * .PN_StGGt - projection matrix onto the null space of (S transpose times G) transpose (alternative code path)
+%    solution:          structure of intermediate solution vectors and matrices
+%                       when `param.debug` is true, otherwise empty
 
 if ~isfield(model,'SIntRxnBool')
     model = findSExRxnInd(model);

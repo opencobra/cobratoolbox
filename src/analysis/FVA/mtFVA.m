@@ -1,4 +1,4 @@
-function [minFlux, maxFlux]= mtFVA(LPproblem, rxnsIdx, cpxControl)
+function [minFlux, maxFlux] = mtFVA(LPproblem, rxnsIdx, cpxControl)
 % Perform flux variability analysis using multi-threading (via a JAVA VM)
 % and CPLEX as solver.
 %
@@ -7,7 +7,14 @@ function [minFlux, maxFlux]= mtFVA(LPproblem, rxnsIdx, cpxControl)
 %    [minFlux, maxFlux] = mtFVA(LPproblem, rxnsIdx, cpxControl)
 %
 % INPUT:
-%    LPproblem:   COBRA LPproblem structure
+%    LPproblem:    COBRA LPproblem structure with the fields:
+%
+%                    * .A - constraint matrix (LHS of `A*v <=/=/>= b`)
+%                    * .S - stoichiometric matrix (used to size the number of variables)
+%                    * .b - right-hand side vector of the constraints
+%                    * .lb - lower bounds on the variables
+%                    * .ub - upper bounds on the variables
+%                    * .csense - constraint sense character array, entries in {L, E, G}
 %
 %    rxnsIdx:     Vector of reaction indices for which to run the
 %                 optimizations; a positive index indicates a maximization,
@@ -15,7 +22,7 @@ function [minFlux, maxFlux]= mtFVA(LPproblem, rxnsIdx, cpxControl)
 %                 reaction; by default the fluxes through all reactions are
 %                 minimzed and maximized
 %
-%   cpxControl:   used as parameter for setCplexParam
+%    cpxControl:    used as parameter for setCplexParam
 %
 % OUTPUTS:
 %    minFlux:     Minimum flux for each reaction

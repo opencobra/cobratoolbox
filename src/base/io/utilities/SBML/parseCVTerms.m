@@ -1,22 +1,23 @@
 function [databases, identifiers, relations] = parseCVTerms(CVTerms)
-%parseCVTerms extracts the annotations deposited in cvterms in an SBML struct
+% Extracts the annotations deposited in CVTerms in an SBML struct
 %
 % USAGE:
 %
 %    [databases, identifiers, relations] = parseCVTerms(CVTerms)
 %
 % INPUT:
+%    CVTerms:       the CVTerms field of an SBML model field, struct array with fields:
 %
-%    CVTerms:      the CVTerms field of an SBML model field 
+%                     * .resources - cell array of resource URIs/URNs for the term
+%                     * .qualifier - the bio-qualifier name for the term
 %
 % OUTPUT:
-%
-%    databases:     the databases stored in the ressources of the CVTerms.
-%    identifiers:   The identifiers annotated for the databases.
-%    relations:     The bio-qualifier relation encoded in the CVTerms.
+%    databases:       the databases stored in the resources of the CVTerms.
+%    identifiers:     the identifiers annotated for the databases.
+%    relations:       the bio-qualifier relation encoded in the CVTerms.
 %
 % .. Authors:
-%       - Thomas Pfau May 2017 
+%       - Thomas Pfau, May 2017
 
 databases = {};
 identifiers = {};

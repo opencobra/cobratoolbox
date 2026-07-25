@@ -1,22 +1,19 @@
 function [metIDs, suggestedMets] = getVMHID(mets, suggest)
-% getVMHID - Retrieve metabolite IDs corresponding to the given metabolite names.
+% Retrieve metabolite IDs corresponding to the given metabolite names
 %
+% USAGE:
 %
-% Inputs:
-%    mets - Cell array of metabolite names (strings) for which IDs are required.
-%    suggest - Flag indicating whether to generate suggestions (1) or not (0).
+%    [metIDs, suggestedMets] = getVMHID(mets, suggest)
 %
-% Outputs:
-%    metIDs - Cell array of metabolite IDs corresponding to the input names.
-%    suggestedMets - Cell array of possible matches for each unfound metabolite name.
+% INPUTS:
+%    mets:            cell array of metabolite names (strings) for which IDs are required
+%    suggest:         flag indicating whether to generate suggestions (1) or not (0)
 %
-% Example:
-%    metaboliteNames = {'glucose', 'fructose'};
-%    [metIDs, suggestedMets] = getVMHID(metaboliteNames, 1);
+% OUTPUTS:
+%    metIDs:          cell array of metabolite IDs corresponding to the input names
+%    suggestedMets:    cell array of possible matches for each unfound metabolite name
 %
-% Other requirements: COBRA toolbox installation and initialisation 
-%
-% Author: - Anna Sheehy - 16/07/2024
+% .. Author: - Anna Sheehy - 16/07/2024
 
     % Load the VMH Database
     DB = loadVMHDatabase();

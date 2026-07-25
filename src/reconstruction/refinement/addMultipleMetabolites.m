@@ -6,7 +6,11 @@ function newmodel = addMultipleMetabolites(model, metIDs, varargin)
 %    newmodel = addMultipleMetabolites(model, metIDs, varargin)
 %
 % INPUTS:
-%    model:         The model to add the Metabolite batch to.
+%    model:         The model to add the Metabolite batch to, with fields:
+%
+%                     * .mets - `m x 1` metabolite identifiers, checked for
+%                       duplicates against `metIDs` and extended with the
+%                       newly added metabolite IDs
 %    metIDs:        The metabolite IDs to add. No duplicate IDs may be provided
 %                   and no ID may be present in the supplied model.
 %

@@ -2,6 +2,8 @@ How to contribute
 =================
 .. include:: guides/howToContribute.rst
 
+.. include:: guides/specDrivenDevelopment.rst
+
 Contribute using MATLAB.devTools
 ------------
 .. include:: ../../README.rst

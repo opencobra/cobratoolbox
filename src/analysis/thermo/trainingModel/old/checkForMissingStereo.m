@@ -1,15 +1,29 @@
 function missingStereo = checkForMissingStereo(model, nist)
+% Identify model metabolites whose stereochemistry is missing relative to the NIST data
 %
+% Compares standard InChI without stereochemistry against standard InChI with
+% stereochemistry for the NIST training data, then returns the model metabolite
+% abbreviations that match a NIST compound but lack stereochemical detail.
 %
-% INPUTS
-% model.mets
-% model.inchi.standard
-% model.inchi.standardWithStereo
-% nist.std_inchi
-% nist.std_inchi_stereo
+% USAGE:
 %
-% OUTPUTS
-% missingStereo
+%    missingStereo = checkForMissingStereo(model, nist)
+%
+% INPUTS:
+%    model:            COBRA model structure. Fields used:
+%
+%                        * .mets - metabolite abbreviations
+%                        * .inchi.standard - standard InChI without stereochemistry
+%                        * .inchi.standardWithStereo - standard InChI with stereochemistry
+%
+%    nist:             NIST training-data structure. Fields used:
+%
+%                        * .std_inchi - standard InChI without stereochemistry
+%                        * .std_inchi_stereo - standard InChI with stereochemistry
+%
+% OUTPUTS:
+%    missingStereo:    cell array of model metabolite abbreviations present in
+%                      the NIST data but lacking stereochemistry
 
 nistStdBool = false(length(nist.std_inchi));
 for n = 1:length(nist.std_inchi)

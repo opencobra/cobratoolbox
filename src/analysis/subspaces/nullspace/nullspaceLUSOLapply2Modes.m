@@ -12,7 +12,12 @@ function W = nullspaceLUSOLapply2Modes(mode, m, n, V, nullS)
 %    n:        second dimension of the matrix
 %    V:        one of the components of the multiplication
 %    nullS:    structure `nullS` from the function `nullspaceLUSOLform(S)`;
-%              where `m x n` sparse matrix `S` (:math:`m < n`).
+%              where `m x n` sparse matrix `S` (:math:`m < n`), with fields:
+%
+%                * .Cinv - column scaling applied to `S`
+%                * .L - strictly triangular factor `L`
+%                * .p - column permutation for `S`
+%                * .rank - rank of `S`
 %
 % OUTPUT:
 %    W:        Matrix vector product

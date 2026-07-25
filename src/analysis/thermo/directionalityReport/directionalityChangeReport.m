@@ -16,7 +16,13 @@ function directionalityChangeReport(model, directions, cumNormProbCutoff, printL
 %    directionalityChangeReport(model, directions, cumNormProbCutoff, printLevel, resultsBaseFileName)
 %
 % INPUTS:
-%    model:                  COBRA structure
+%    model:                  COBRA model structure with fields:
+%
+%                              * .S - `m x n` stoichiometric matrix
+%                              * .mets - `m x 1` cell array of metabolite identifiers
+%                              * .rxns - `n x 1` cell array of reaction identifiers
+%                              * .gasConstant - gas constant used in thermodynamic calculations
+%                              * .T - temperature (K)
 %    directions:             a structue of boolean vectors with different directionality
 %                            assignments where some vectors contain subsets of others
 %

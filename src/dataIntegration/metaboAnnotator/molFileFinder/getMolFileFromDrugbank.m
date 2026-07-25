@@ -1,19 +1,26 @@
-function [outFile] = getMolFileFromDrugbank(metAbbr,drugbank,directory)
-% This function connects to drugbank and retrieves the mol file, which will be
-% saved in the specified directory under the given metAbbr name
+function [outFile] = getMolFileFromDrugbank(metAbbr, drugbank, directory)
+% Connects to DrugBank and retrieves the mol file for a metabolite
 %
-% INPUT
-% metAbbr       Metabolite abbreviation
-% drugbank      Drugbank ID
-% directory     Full path where the mol files should be saved (without
-%               final /)
-%
-%
-% Ines Thiele, 09/2021
-
-% get and save mol file
+% The retrieved mol file is saved in the specified directory under the given
+% metAbbr name. Two DrugBank endpoints are tried, for metabolites and for small
+% molecule drugs respectively:
 % https://go.drugbank.com/structures/metabolites/DBMET01243.mol
 % https://go.drugbank.com/structures/small_molecule_drugs/DB05478.mol
+%
+% USAGE:
+%
+%    [outFile] = getMolFileFromDrugbank(metAbbr, drugbank, directory)
+%
+% INPUTS:
+%    metAbbr:      Metabolite abbreviation
+%    drugbank:     DrugBank ID
+%    directory:    Full path where the mol files should be saved (without final /)
+%
+% OUTPUTS:
+%    outFile:      Full path to the saved mol file, or '' if retrieval failed
+%
+% .. Author: - Ines Thiele, 09/2021
+
 mkdir(directory);
 try
     url=strcat('https://go.drugbank.com/structures/metabolites/',drugbank,'.mol');

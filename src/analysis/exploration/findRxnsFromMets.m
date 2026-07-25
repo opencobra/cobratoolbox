@@ -7,7 +7,16 @@ function [rxnList, rxnFormulaList] = findRxnsFromMets(model, metList, varargin)
 %    [rxnList, rxnFormulaList] = findRxnsFromMets(model, metList, printFlag)
 %
 % INPUTS:
-%    model:             COBRA model structure
+%    model:             COBRA model structure with fields:
+%
+%                         * .S - `m x n` stoichiometric matrix
+%                         * .mets - `m x 1` metabolite identifiers
+%                         * .rxns - `n x 1` reaction identifiers
+%                         * .lb - `n x 1` lower bounds on reaction fluxes
+%                         * .ub - `n x 1` upper bounds on reaction fluxes
+%                         * .SConsistentRxnBool - `n x 1` boolean, true for stoichiometrically consistent reactions
+%                         * .SIntRxnBool - `n x 1` boolean, true for internal (non-exchange) reactions
+%
 %    metList:           Metabolite list
 %
 % OPTIONAL INPUTS:

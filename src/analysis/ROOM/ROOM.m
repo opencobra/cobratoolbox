@@ -7,7 +7,11 @@ function [fluxROOM, solutionROOM, totalFluxDiff] = ROOM(model, fluxWT, rxnKO, va
 %    [fluxROOM, solutionROOM, totalFluxDiff] = ROOM(model, WTflux, rxnKO, delta, epsilon, printLevel)
 %
 % INPUTS:
-%    model:            Metabolic model
+%    model:            Metabolic model with the fields:
+%
+%                        * .S - `m x n` stoichiometric matrix
+%                        * .rxns - `n x 1` cell array of reaction identifiers
+%
 %    fluxWT:           Numeric array with flux distribution of wild type
 %    rxnKO:            List of perturbations performed to the model
 %                      (reactions that are eliminated)

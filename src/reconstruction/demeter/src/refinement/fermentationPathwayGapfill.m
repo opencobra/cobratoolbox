@@ -2,28 +2,30 @@ function [model, addedRxns, removedRxns] = fermentationPathwayGapfill(model, mic
 % Gap-fills fermentation pathways in a microbial reconstruction based on
 % experimental evidence.
 %
-% USAGE
-%       [model, addedRxns, removedRxns] = fermentationPathwayGapfill(model, microbeID, database, inputDataFolder)
+% USAGE:
 %
-% INPUT
-% model             COBRA model structure
-% microbeID:        ID of the reconstructed microbe that serves as the
-%                   reconstruction name and to identify it in input tables
-% fermDataTable     Data table with binary data showing which microbe
-%                   should have what fermentation pathway(s).
-%                   Column 1: Cell array of strings with microbeIDs.
-%                   Columns 2-29: Cell array of numbers either 0 (microbe
-%                   does not have pathway) or 1 (has pathway).
-% database          rBioNet reaction database containing min. 3 columns:
-%                   Column 1: reaction abbreviation, Column 2: reaction
-%                   name, Column 3: reaction formula.
+%    [model, addedRxns, removedRxns] = fermentationPathwayGapfill(model, microbeID, database, inputDataFolder)
 %
-% OUTPUT
-% model             COBRA model structure
-% addedRxns         List of reactions that were added during refinement
-% removedRxns       List of reactions that were removed during refinement
-% 
-% Almut Heinken and Stefania Magnusdottir, 2016-2020
+% INPUTS:
+%    model:    COBRA model structure with fields:
+%
+%                * .grRules - Gene-protein-reaction rules, used to identify reactions that have already been gap-filled or are unannotated
+%                * .rxns - Reaction identifiers, used to determine which pathway reactions are already present
+%    microbeID:    ID of the reconstructed microbe that serves as the
+%                  reconstruction name and to identify it in input tables
+%    database:    rBioNet reaction database with fields:
+%
+%                   * .reactions - Cell array with reaction abbreviation (column 1), name (column 2), and formula (column 3)
+%    inputDataFolder:    Folder with input tables with experimental data on
+%                        fermentation pathways that inform the refinement process
+%
+% OUTPUTS:
+%    model:    COBRA model structure with gap-filled fermentation pathway reactions
+%    addedRxns:    List of reactions that were added during refinement
+%    removedRxns:    List of reactions that were removed during refinement
+%
+% .. Authors:
+%       - Almut Heinken and Stefania Magnusdottir, 2016-2020
 
 addedRxns = {};
 removedRxns = {};

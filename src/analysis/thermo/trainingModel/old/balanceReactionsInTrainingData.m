@@ -1,5 +1,33 @@
 function training_data = balanceReactionsInTrainingData(training_data)
-
+% Balance the reactions in the training data by adding water and removing unbalanced reactions
+%
+% Computes an element-conservation matrix from the nonstandard InChI element
+% matrix, adds water molecules to reactions that are unbalanced only in oxygen,
+% then removes any reactions that remain unbalanced, pruning the corresponding
+% columns of every per-reaction field.
+%
+% USAGE:
+%
+%    training_data = balanceReactionsInTrainingData(training_data)
+%
+% INPUTS:
+%    training_data:    training-data structure. Fields used:
+%
+%                        * .nstd_inchi - `m x 1` nonstandard InChI strings
+%                        * .Ematrix - `m x k` element matrix (added/updated here)
+%                        * .S - `m x n` stoichiometric matrix
+%                        * .cids - `m x 1` compound ids
+%                        * .balance - `n x 1` true where the reaction should be balance-checked
+%                        * .dG0_prime - `n x 1` standard transformed reaction Gibbs energies
+%                        * .T - `n x 1` temperatures
+%                        * .I - `n x 1` ionic strengths
+%                        * .pH - `n x 1` pH values
+%                        * .pMg - `n x 1` pMg values
+%                        * .weights - `n x 1` reaction weights
+%
+% OUTPUTS:
+%    training_data:    the training-data structure with balanced reactions and
+%                      the unbalanced reactions removed
 
 if ~isfield(training_data, 'Ematrix') || isempty(training_data.Ematrix)
     [MW, Ematrix] = getMolecularWeight(training_data.nstd_inchi, 0);

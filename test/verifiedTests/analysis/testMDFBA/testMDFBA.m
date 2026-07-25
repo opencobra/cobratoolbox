@@ -16,6 +16,9 @@ currentDir = pwd; % save the current path
 fileDir = fileparts(which('testMDFBA'));
 cd(fileDir);
 
+% require LP and MILP solvers; skip gracefully if none are available
+prepareTest('needsLP', true, 'needsMILP', true);
+
 % convert the model
 model = createToyModelForMDFBA;
 

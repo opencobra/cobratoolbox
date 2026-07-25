@@ -1,31 +1,45 @@
 function [outputMacros] = calculateFoodScore(originalFood, vmhLabelMacros, vmhMetaboliteMacros, translation)
-% Calculates a score based on how similar the macros of the original food
-% are with its VMH alternative. The score is added to the vmhFood
-% structure. The user can add on weights in the template file to prioritise
-% or deprioritise certain macros. It is suggested to have the weight for
-% fiber, starch and minerals always set to 0.
-% Usage:
-%   [vmhFood] = calculateFoodScore(originalFood, vmhFood, translation)
-% Inputs:
-%   originalFood:   The filled in template file with the original food items
-%   vmhFoodMacros:  A structure with each field a food item that contain a
-%                   table with their macros
-% Optional input:
-%   translation:    A cell with a translation of food items to a alias. The
-%                   alias is the name of the fields in vmhFoodMacros. Used
-%                   to obtain the correct original food item values
-% Output:
-%  vmhFoodMacros:   An updated vmhFoodMacro structure where the original
-%                   food item macros and the calculated scores are added to
-%                   each fields macro table
-% Example:
-%   [vmhFood] = calculateFoodScore(originalFood, vmhFood, translation)
-% Note:
-%   It is important that the template file is used as otherwise issues could
-%   arise with finding the values (starting in the 6th column), the weights
-%   (the 2nd row) and calculating the differences between the original and
-%   VMH macros.
-% .. Author - Bram Nap, 05-2024
+% Calculate a similarity score between the macros of each original food item
+% and its VMH alternative and add the score to the food macro structure
+%
+% A cosine-style distance is computed between the reported macros of the
+% original food and the macros of the matched VMH food. Weights supplied in
+% the template file let the user prioritise or deprioritise certain macros;
+% it is suggested to keep the weight for fiber, starch and minerals set to 0.
+%
+% USAGE:
+%
+%    [outputMacros] = calculateFoodScore(originalFood, vmhLabelMacros, vmhMetaboliteMacros, translation)
+%
+% INPUTS:
+%    originalFood:            The filled-in template table with the original
+%                             food items; food names are in the first column
+%                             and macro values from the seventh column onward
+%    vmhLabelMacros:          Structure with one field per VMH food item, each
+%                             holding a table of reported (label) macros
+%    vmhMetaboliteMacros:     Structure with one field per VMH food item, each
+%                             holding a table of macros computed from measured
+%                             metabolite levels
+%
+% OPTIONAL INPUTS:
+%    translation:             Cell array translating original food names to
+%                             their alias (the field names in vmhLabelMacros),
+%                             used to match the correct original food values.
+%                             Defaults to NaN when not provided
+%
+% OUTPUT:
+%    outputMacros:            Updated structure where, for each food item, the
+%                             original food macros, the percentage of reported
+%                             macros captured by measured metabolites and the
+%                             similarity score are added to the macro table
+%
+% NOTE:
+%    It is important that the template file is used, as otherwise issues could
+%    arise with finding the values (starting in the 6th column), the weights
+%    (the 2nd row) and calculating the differences between the original and
+%    VMH macros.
+%
+% .. Author: - Bram Nap, 05-2024
 
 % If translation table is not given set it to NaN
 if nargin<3

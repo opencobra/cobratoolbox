@@ -7,7 +7,7 @@ function [maxGrowthRate, minTarget, maxTarget] = analyzeOptForceSol(model, targe
 %
 % USAGE:
 %
-%    [maxGrowthRate, minTarget, maxTarget] = analyzeOptForceSol(model, targetRxn, solution, relax, tol)
+%    [maxGrowthRate, minTarget, maxTarget] = analyzeOptForceSol(model, targetRxn, biomassRxn, solution, relax, tol)
 %
 % INPUTS:
 %    model:             (structure) COBRA metabolic model with at least
@@ -23,6 +23,9 @@ function [maxGrowthRate, minTarget, maxTarget] = analyzeOptForceSol(model, targe
 %
 %    targetRxn:          (string) Reaction identifier for target reaction
 %                        E.g.: `targetRxn = 'EX_suc'`
+%    biomassRxn:         (string) Reaction identifier for the biomass
+%                        reaction; used to set the growth objective of
+%                        the mutant strain when maximising the growth rate
 %    solution:           (structure) Structure containing information about the inverventions.
 %                        E.g.: `solution = struct('reactions', ...
 %                        {{'R21'; 'R24'}}, 'flux', [10; 0])`

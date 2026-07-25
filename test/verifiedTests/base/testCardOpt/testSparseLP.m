@@ -14,6 +14,9 @@ currentDir = pwd;
 fileDir = fileparts(which('testSparseLP'));
 cd(fileDir);
 
+% require an LP solver; skip gracefully if none is available
+prepareTest('needsLP', true);
+
 % set the tolerance
 tol = 1e-8;
 

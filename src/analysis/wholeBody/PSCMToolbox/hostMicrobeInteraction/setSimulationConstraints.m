@@ -1,18 +1,23 @@
 function [model] = setSimulationConstraints(model)
-% This function sets the remaining simulation constraints that I identified during the
-% debugging
-% This function needs to be applied to GF and MyWB< models that have been created with GF
-% before Dec 2017.
+% Set the remaining simulation constraints identified during debugging
 %
-% function [model] = setSimulationConstraints(model)
+% This function sets the remaining simulation constraints identified during
+% debugging. It needs to be applied to GF and MyWB models that were created
+% with GF before Dec 2017.
 %
-% INPUT
-% model     model structure (whole body metabolic model)
+% USAGE:
 %
-% OUTPUT
-% model     model structure with updated constraints as defined in this file 
+%    [model] = setSimulationConstraints(model)
 %
-% Ines Thiele Dec 2017
+% INPUT:
+%    model:    Whole-body metabolic model, with fields:
+%
+%               * .rxns - reaction identifiers
+%
+% OUTPUT:
+%    model:    Model with updated simulation constraints
+%
+% .. Author: - Ines Thiele, Dec 2017
 
 warning off;
 model = changeRxnBounds(model,'Liver_EX_4abut[bdL]_[bd]',0,'u');

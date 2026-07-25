@@ -6,7 +6,11 @@ function [modelPlane, replicateMetBool, metData, rxnData] = planariseModel(model
 %    [modelPlane, replicateMetBool, metData, rxnData] = planariseModel(model, replicateMetBool)
 %
 % INPUTS:
-%    model:               model structure
+%    model:               model structure with fields:
+%
+%                           * .S - `met` x `rxn` stoichiometric matrix
+%                           * .mets - metabolite identifiers
+%                           * .rxns - reaction identifiers
 %    replicateMetBool:    `met` x 1 boolean vector of metabolites to be replicated for each reaction
 %
 % OUTPUTS:

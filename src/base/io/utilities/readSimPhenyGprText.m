@@ -3,11 +3,18 @@ function gpraModel = readSimPhenyGprText(file, model)
 %
 % USAGE:
 %
-%    gpraModel = readSimPhenyGPRText(file, model)
+%    gpraModel = readSimPhenyGprText(file, model)
 %
 % INPUTS:
 %    file:         GPR text file
-%    model:        COBRA model structure
+%    model:        COBRA model structure, with fields:
+%
+%                    * .rxns - `n x 1` reaction identifiers
+%                    * .genes - `g x 1` gene identifiers
+%                    * .rxnGeneMat - `n x g` reaction-gene incidence matrix
+%                    * .rules - `n x 1` evaluatable GPR rules
+%                    * .subSystems - `n x 1` subsystem annotations
+%                    * .grRules - `n x 1` readable gene-protein-reaction rules
 %
 % OUTPUT:
 %    gpraModel:    COBRA model structure with reaction-gene association matrix

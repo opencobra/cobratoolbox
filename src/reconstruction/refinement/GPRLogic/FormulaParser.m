@@ -1,3 +1,4 @@
+% FormulaParser parses a COBRA GPR rules-field logical formula into a tree of Node objects.
 classdef FormulaParser < handle
     % A FormulaParser is used to parse logic formulas in the format
     % specified for the COBRA Toolbox tules field (i.e. logical formulas

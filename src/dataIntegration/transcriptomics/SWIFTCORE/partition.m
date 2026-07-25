@@ -12,6 +12,7 @@ function component = partition(model, solver, algorithm)
 %                    * .ub - feasible flux distribution uppper bound
 %                    * .rxns - cell array of reaction abbreviations
 %                    * .rev - the 0-1 indicator vector of the reversible reactions
+%                    * .c - the linear objective coefficients
 %    solver:       the LP solver to be used; the currently available options
 %                  are 'gurobi', 'linprog', and 'cplex' with the default value
 %                  of 'linprog'. It fallbacks to the COBRA LP solver interface

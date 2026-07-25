@@ -1,14 +1,28 @@
-function  [metabolite_structure] = cleanUpMetabolite_structure(metabolite_structure,startSearch,endSearch)
-% This function aims at removing the most commonly occuring issues with the
-% data obtained from different resources.
+function [metabolite_structure] = cleanUpMetabolite_structure(metabolite_structure, startSearch, endSearch)
+% Removes the most commonly occurring issues in collected metabolite data
 %
-% INPUT
-% metabolite_structure  Metabolite structure
+% Removes the most commonly occurring issues with the metabolite data obtained
+% from different resources, e.g. spaces in identifiers, wrong number formats,
+% and misspellings of the inchiString prefix.
 %
-% OUTPUT
-% metabolite_structure  Updated metabolite structure
+% USAGE:
 %
-% IT Oct 2020
+%    [metabolite_structure] = cleanUpMetabolite_structure(metabolite_structure, startSearch, endSearch)
+%
+% INPUT:
+%    metabolite_structure:    metabolite structure
+%
+% OPTIONAL INPUTS:
+%    startSearch:             numeric index where the clean-up should start in
+%                             the metabolite structure (default: 1)
+%    endSearch:               numeric index where the clean-up should end in the
+%                             metabolite structure (default: number of
+%                             metabolites in the structure)
+%
+% OUTPUT:
+%    metabolite_structure:    updated metabolite structure
+%
+% .. Author: - Ines Thiele, Oct 2020
 
 Mets = fieldnames(metabolite_structure);
 

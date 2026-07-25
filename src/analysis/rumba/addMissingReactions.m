@@ -1,18 +1,27 @@
 function model = addMissingReactions(SampledModel, completeModel)
-% Verify the consistency between the sampled model and the
-% complete reference model by checking that all reactions from complete
-% model are in the sampled model
+% Verify the consistency between the sampled model and the complete
+% reference model by checking that all reactions from the complete model
+% are in the sampled model, then copy the sampled flux points onto the
+% complete model reaction set (points of missing reactions are left as zeros)
 %
 % USAGE:
 %
 %    model = addMissingReactions(SampledModel, completeModel)
 %
 % INPUTS:
-%    SampledModel:     Sampled model
-%    completeModel:    The complete reference model
+%    SampledModel:     Sampled model, with fields:
+%
+%                        * .rxns - reaction identifiers of the sampled model
+%                        * .points - `nRxns x nPoints` matrix of sampled flux values
+%    completeModel:    The complete reference model, with fields:
+%
+%                        * .rxns - reaction identifiers of the complete model
 %
 % OUTPUTS:
-%    model:            Consistent sampled model wrt the complete model
+%    model:            Consistent sampled model wrt the complete model, with fields:
+%
+%                        * .points - `nRxns x nPoints` sampled flux values mapped
+%                          onto the complete model reactions (missing reactions zero)
 %
 % .. Authors:
 %       - Nathan E. Lewis, May 2010-May 2011

@@ -1,18 +1,25 @@
-function [metabolite_structure, reaction_structure] = replaceVMHIds(metabolite_structure,reaction_structure)
-% add, remove, or replace errors present in the metabolite annotation
-% all mentions in this file are manually done and will result in the
-% removal or replacement of the entries.
+function [metabolite_structure, reaction_structure] = replaceVMHIds(metabolite_structure, reaction_structure)
+% Adds, removes, or replaces manually curated errors in metabolite annotations
 %
-% INPUT
-% metabolite_structure  metabolite structure
-% reaction_structure    reaction structure (not done yet)
+% Adds, removes, or replaces errors present in the metabolite annotation. All
+% mentions in this file are curated manually and result in the removal or
+% replacement of the corresponding entries.
 %
-% OUTPUT
-% metabolite_structure  updated metabolite structure
-% reaction_structure    updated reaction structure (not done yet)
+% USAGE:
 %
+%    [metabolite_structure, reaction_structure] = replaceVMHIds(metabolite_structure, reaction_structure)
 %
-% Ines Thiele 2020/2021
+% INPUT:
+%    metabolite_structure:    metabolite structure
+%
+% OPTIONAL INPUT:
+%    reaction_structure:      reaction structure (not implemented yet)
+%
+% OUTPUTS:
+%    metabolite_structure:    updated metabolite structure
+%    reaction_structure:      updated reaction structure (not implemented yet)
+%
+% .. Author: - Ines Thiele, 2020/2021
 
 if ~exist('reaction_structure','var')
     reaction_structure = '';

@@ -1,21 +1,28 @@
-function [Table_csources,TestedRxns,PercTestedRxns] = testATPYieldFromCsources(model,modelName,extraCellCompIn,extraCellCompOut,minCard)
+function [Table_csources, TestedRxns, PercTestedRxns] = testATPYieldFromCsources(model, modelName, extraCellCompIn, extraCellCompOut, minCard)
 % computes the ATP yield from various carbon sources in Recon2 or Recon3.
 %
 % USAGE:
-%     [Table_csources,TestedRxns,PercTestedRxns] = testATPYieldFromCsources(model,modelName)
+%
+%    [Table_csources, TestedRxns, PercTestedRxns] = testATPYieldFromCsources(model, modelName)
 %
 % INPUT:
-%    model            model structure
-%    modelName         name of the model structure, by default Recon3
-%    extraCellCompIn   abbreviation for extracellular compartment
-%                      (in-going), default [e]
-%    extraCellCompOut  abbreviation for extracellular compartment
-%                     (out-going), default [e]
+%    model:             model structure with field:
+%
+%                         * .rxns - `n` x 1 cell array of reaction identifiers
+%
+% OPTIONAL INPUTS:
+%    modelName:         name of the model structure, by default Recon3
+%    extraCellCompIn:    abbreviation for extracellular compartment
+%                       (in-going), default [e]
+%    extraCellCompOut:    abbreviation for extracellular compartment
+%                       (out-going), default [e]
+%    minCard:           {(0), 1} default false for option to minimize the
+%                       cardinality of the flux vector
 %
 % OUTPUT:
-%    Table_csources:   table listing ATP yield computed for the carbon sources
-%    TestedRxns:       list of reactions that are contributing to ATP production from carbon sources
-%    PercTestedRxns:   Fraction that tested reactions make up compared with all reactions in model
+%    Table_csources:    table listing ATP yield computed for the carbon sources
+%    TestedRxns:        list of reactions that are contributing to ATP production from carbon sources
+%    PercTestedRxns:    Fraction that tested reactions make up compared with all reactions in model
 %
 % .. Authors:
 %    - IT 2017

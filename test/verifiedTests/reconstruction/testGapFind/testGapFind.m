@@ -14,6 +14,9 @@ currentDir = pwd;
 fileDir = fileparts(which('testGapFind'));
 cd(fileDir);
 
+% require a MILP solver; skip gracefully if none is available
+prepareTest('needsMILP', true);
+
 testModel = createToyModelForgapFind();
 %test solver packages
 solverPkgs = {'tomlab_cplex', 'ibm_cplex', 'gurobi', 'glpk'};

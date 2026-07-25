@@ -1,4 +1,4 @@
-function [osenseStr,osense] = getObjectiveSense(model)
+function [osenseStr, osense] = getObjectiveSense(model)
 % Get the objective sense of the model (both the osenseStr ('max' or 'min')
 % and the correspdoning osense value (-1 or 1)
 %
@@ -6,11 +6,15 @@ function [osenseStr,osense] = getObjectiveSense(model)
 %    [osenseStr,osense] = getObjectiveSense(model)
 %
 % INPUTS:
-%    model:     The model to obtain the sense for. If the model has a
+%    model:     The model to obtain the sense for. If the model has an
 %               osenseStr field, it has to be either 'min' or 'max' (case
-%               insensitive) otherwise this function will error.
+%               insensitive) otherwise this function will error. Fields:
 %
-% OUTPUS:
+%                 * .osenseStr - objective sense, 'min' or 'max' (case insensitive)
+%                 * .osense - objective sense value, -1 (max) or 1 (min)
+%                 * .c - `n x 1` linear objective coefficients
+%
+% OUTPUTS:
 %    osenseStr:     'min' or 'max'
 %    osense:        1 or -1;
 %

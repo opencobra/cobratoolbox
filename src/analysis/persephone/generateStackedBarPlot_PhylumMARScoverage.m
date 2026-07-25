@@ -1,24 +1,31 @@
 function generateStackedBarPlot_PhylumMARScoverage(input_relAbundances_preMapping, input_relAbundances_postMapping, saveDir, varargin)
-% Generates stacked bar plots from mean relative abundances of phyla pre- &
-% post-mapping to a model-database in MARS.
+% Generate stacked bar plots of phylum relative abundances pre- and post-MARS mapping
+%
+% Plots the mean relative abundances of phyla before and after mapping to a
+% model database in MARS, and saves the figure to disk.
+%
+% USAGE:
+%
+%    generateStackedBarPlot_PhylumMARScoverage(input_relAbundances_preMapping, input_relAbundances_postMapping, saveDir, varargin)
 %
 % INPUTS:
-%   input_relAbundances_preMapping:     [chars/string] Path to table which contains phyla taxa and their
-%                                       mean relative abundances across samples pre-mapped to a model-database 
-%                                       (original dataset). This spreadsheet is a standard output generated in MARS.
-%   input_relAbundances_postMapping:    [chars/string] Path to table which contains phyla taxa and their
-%                                       mean relative abundances across samples post-mapped to a model-database 
-%                                       (filtered dataset). This spreadsheet is a standard output generated in MARS.
-%   saveDir:                            [chars/string] Path to the
-%                                       directory where the stacked bar plot should be saved.
-%   mappingDatabase_name:               [chars/string] The name of the model-database used for
-%                                       mapping in MARS, which will be displayed in the title of the graph.
-%                                       Defaults to ''.
+%    input_relAbundances_preMapping:     char/string, path to the table with
+%                                        phyla and their mean relative
+%                                        abundances pre-mapping (a standard
+%                                        MARS output)
+%    input_relAbundances_postMapping:    char/string, path to the table with
+%                                        phyla and their mean relative
+%                                        abundances post-mapping (a standard
+%                                        MARS output)
+%    saveDir:                            char/string, directory where the
+%                                        stacked bar plot is saved
 %
-% AUTHOR:   
-%   - Jonas Widder, 12/2024 & 01/2025
+% OPTIONAL INPUT (name-value pair in varargin):
+%    mappingDatabase_name:    char/string, name of the model database used for
+%                             mapping, shown in the plot title (default '')
+%
+% .. Author: - Jonas Widder, 12/2024 & 01/2025
 
-% Define default parameters if not defined
 parser = inputParser();
 parser.addRequired('input_relAbundances_preMapping', @(x) ischar(x) | isstring(x));
 parser.addRequired('input_relAbundances_postMapping', @(x) ischar(x) | isstring(x));

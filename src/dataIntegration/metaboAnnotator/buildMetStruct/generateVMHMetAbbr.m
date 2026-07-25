@@ -1,24 +1,32 @@
-function [VMHId] = generateVMHMetAbbr(met, metabolite_structure_rBioNet,metab,rxnDB,customMetAbbrList)
-% This function generates VMH ID's based on a metabolites based on
-% predefined rules, as we would generally do it manually
+function [VMHId] = generateVMHMetAbbr(met, metabolite_structure_rBioNet, metab, rxnDB, customMetAbbrList)
+% Generates VMH metabolite abbreviations based on predefined naming rules
 %
-% INPUT
-% met                           Metabolite name or list of names
-% metabolite_structure_rBioNet  To save time provide rBioNet either as
-%                               1) string to mat file to load, e.g.,: /path/to/metabolite_structure_rBioNet.mat
-%                               2) structure already in memory: metabolite_structure_rBioNet
+% Generates VMH IDs for one or more metabolites based on predefined rules, as
+% would generally be done manually from a metabolite name.
 %
-% metab                         To save time provide rBioNet (as
-%                               metab.mat file)
-% rxnDB                         To save time provide rBioNet (as
-%                               rxn.mat file)
-% customMetaboliteList          List of metabolite abbr against which
-%                               uniqueness should also be checked
+% USAGE:
 %
-% OUTPUT
-% VMHId                         New VMH ID or list of IDs
+%    [VMHId] = generateVMHMetAbbr(met, metabolite_structure_rBioNet, metab, rxnDB, customMetAbbrList)
 %
-% Ines Thiele, 09/2021
+% INPUT:
+%    met:                             metabolite name or list of names
+%
+% OPTIONAL INPUTS:
+%    metabolite_structure_rBioNet:    rBioNet metabolite structure, provided to
+%                                     save time, either as a path to the mat
+%                                     file to load or as a structure already in
+%                                     memory
+%    metab:                           rBioNet metabolite database (as stored in
+%                                     `metab.mat`), provided to save time
+%    rxnDB:                           rBioNet reaction database (as stored in
+%                                     rxn.mat), provided to save time
+%    customMetAbbrList:               list of metabolite abbreviations against
+%                                     which uniqueness is also checked
+%
+% OUTPUT:
+%    VMHId:                           new VMH ID or list of IDs
+%
+% .. Author: - Ines Thiele, 09/2021
 
 
 % load rBioNet

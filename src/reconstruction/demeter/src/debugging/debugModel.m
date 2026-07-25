@@ -1,4 +1,4 @@
-function [revisedModel,gapfilledReactions,replacedReactions]=debugModel(model,testResults,inputDataFolder,infoFilePath,microbeID,biomassReaction)
+function [revisedModel, gapfilledReactions, replacedReactions] = debugModel(model, testResults, inputDataFolder, infoFilePath, microbeID, biomassReaction)
 % This function runs a suite of debugging functions on a refined
 % reconstruction produced by the DEMETER pipeline. Tests
 % are performed whether or not the models can produce biomass aerobically
@@ -7,24 +7,32 @@ function [revisedModel,gapfilledReactions,replacedReactions]=debugModel(model,te
 %
 % USAGE:
 %
-%   [revisedModel,gapfilledReactions,replacedReactions]=debugModel(model,testResults,inputDataFolder,infoFilePath,microbeID,biomassReaction)
+%    [revisedModel, gapfilledReactions, replacedReactions] = debugModel(model, testResults, inputDataFolder, infoFilePath, microbeID, biomassReaction)
 %
-% INPUTS
-% model:                 COBRA model structure
-% testResults:           Structure with results of test run
-% inputDataFolder:       Folder with input tables with experimental data
-%                        and databases that inform the refinement process
-% infoFilePath           File with information on reconstructions to refine
-% microbeID:             ID of the reconstructed microbe that serves as
-%                        the reconstruction name and to identify it in
-%                        input tables
-% biomassReaction:       Reaction ID of the biomass objective function
+% INPUTS:
+%    model:                 COBRA model structure with fields:
 %
-% OUTPUT
-% revisedModel:          Gapfilled COBRA model structure
-% gapfilledReactions:    Reactions gapfilled to enable flux
-% replacedReactions:     Reactions replaced because they were causing
-%                        futile cycles
+%                             * .rxns - `n x 1` reaction identifiers
+%                             * .grRules - `n x 1` gene-protein-reaction
+%                               rules
+%                             * .comments - `n x 1` cell array of free-text
+%                               comments for each reaction
+%
+%    testResults:           Structure with results of test run; one field
+%                           per test, accessed dynamically by field name
+%    inputDataFolder:       Folder with input tables with experimental data
+%                           and databases that inform the refinement process
+%    infoFilePath:          File with information on reconstructions to refine
+%    microbeID:             ID of the reconstructed microbe that serves as
+%                           the reconstruction name and to identify it in
+%                           input tables
+%    biomassReaction:       Reaction ID of the biomass objective function
+%
+% OUTPUTS:
+%    revisedModel:          Gapfilled COBRA model structure
+%    gapfilledReactions:    Reactions gapfilled to enable flux
+%    replacedReactions:     Reactions replaced because they were causing
+%                           futile cycles
 %
 % .. Author:
 %       - Almut Heinken, 09/2020

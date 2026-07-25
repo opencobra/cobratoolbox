@@ -1,9 +1,9 @@
-function [dATM, metAtomMappedBool, rxnAtomMappedBool, M2Ai, Ti2R, dATME, BG ,dBTM, M2BiE, M2BiW,BTi2R, BTiE] = buildAtomAndBondTransitionMultigraph(model, RXNFileDir, options)
+function [dATM, metAtomMappedBool, rxnAtomMappedBool, M2Ai, Ti2R, dATME, BG, dBTM, M2BiE, M2BiW, BTi2R, BTiE] = buildAtomAndBondTransitionMultigraph(model, RXNFileDir, options)
 % Builds a matlab digraph object representing an atom transition multigraph
 % and a bond transition multigraph
 % corresponding to a metabolic network from reaction stoichiometry and atom
 % mappings.
-%-----Atoms
+% -----Atoms
 % The multigraph nature is due to possible duplicate atom transitions,
 % where the same pair of atoms are involved in the same atom transition in
 % different reactions.
@@ -31,8 +31,8 @@ function [dATM, metAtomMappedBool, rxnAtomMappedBool, M2Ai, Ti2R, dATME, BG ,dBT
 %                            E := Ti2R
 %                            A := incidence(dATM);
 % so we have the atomic decomposition M2Ai*M2Ai'*N = M2Ai*A*Ti2R
-%---Bonds
-%Note that B = incidence(dBTM) returns a  `b` x `s` bond transition 
+% ---Bonds
+% Note that B = incidence(dBTM) returns a  `b` x `s` bond transition 
 % directed multigraph incidence matrix where `b` is the number of bonds and 
 % `s` is the number of directed bond transitions. Each bond transition
 % inherits the orientation of its corresponding reaction.
@@ -58,29 +58,23 @@ function [dATM, metAtomMappedBool, rxnAtomMappedBool, M2Ai, Ti2R, dATME, BG ,dBT
 %    [dATM, metAtomMappedBool, rxnAtomMappedBool, M2Ai, Ti2R, dBTM, M2BiE, M2BiW, BTiE] = buildAtomAndBondTransitionMultigraph(model, RXNFileDir, options)
 %
 % INPUTS:
-%    model:         Directed stoichiometric hypergraph
-%                   Represented by a matlab structure with following fields:
+%    model:         Directed stoichiometric hypergraph (COBRA model structure) with fields:
 %
 %                     * .S - The `m` x `n` stoichiometric matrix for the metabolic network
-%                     * .mets - An `m` x 1 array of metabolite identifiers. Should match
-%                       metabolite identifiers in `rxnfiles`.
-%                     * .rxns - An `n` x 1 array of reaction identifiers. Should match
-%                       rxnfile names in `rxnFileDir`.
-%                     * .lb -  An `n` x 1 vector of lower bounds on fluxes.
-%                     * .ub - An `n` x 1 vector of upper bounds on fluxes.
+%                     * .mets - An `m` x 1 array of metabolite identifiers. Should match metabolite identifiers in `rxnfiles`.
+%                     * .rxns - An `n` x 1 array of reaction identifiers. Should match rxnfile names in `RXNFileDir`.
 %
 %    RXNFileDir:    Path to directory containing `rxnfiles` with atom mappings
 %                   for internal reactions in `S`. File names should
 %                   correspond to reaction identifiers in input `rxns`.
 %                   e.g. git clone https://github.com/opencobra/ctf ~/fork-ctf
-%                        then RXNFileDir = ~/fork-ctf/rxns/atomMapped    
-%    options: A structure that contains two fields representing
-%    customisable options for the function.
-%                 * .sanityChecks - A boolean variable that controls whether
-%                 sanity checks are performed within the function.
-%                 * .bondTransitionMultigraph - A boolean variable that
-%                 specifies whether the function generates the bond transition
-%                 multigraph.
+%                        then RXNFileDir = ~/fork-ctf/rxns/atomMapped
+%
+% OPTIONAL INPUT:
+%    options:       A structure of customisable options for the function:
+%
+%                     * .sanityChecks - boolean controlling whether sanity checks are performed within the function (default = 1)
+%                     * .bondTransitionMultigraph - boolean specifying whether the function generates the bond transition multigraph (default = 1)
 % 
 %
 % OUTPUT:
@@ -103,14 +97,12 @@ function [dATM, metAtomMappedBool, rxnAtomMappedBool, M2Ai, Ti2R, dATME, BG ,dBT
 %                   * .EdgeTable.HeadBondIndex - head Nodes.BondIndex
 %                   * .EdgeTable.TailBondIndex - tail Nodes.BondIndex
 %
-% metRXNBool:       `m x 1` boolean vector indicating atom mapped metabolites
-% rxnRXNBool:       `n x 1` boolean vector indicating atom mapped reactions
-% M2Ai              `m` x `a` matrix mapping each metabolite to an atom in the directed atom transition multigraph 
-% Ti2R              `t` x `n` matrix mapping each directed atom transition instance to a mapped reaction
-%
-% The internal stoichiometric matrix may be decomposition into
-% N = (M2Ai*M2Ai)^(-1)*M2Ai*Ti*Ti2R;
-% where Ti = incidence(dATM), is incidence matrix of directed atom transition multigraph.
+%    metAtomMappedBool:    `m x 1` boolean vector indicating atom mapped metabolites
+%    rxnAtomMappedBool:    `n x 1` boolean vector indicating atom mapped reactions
+%    M2Ai:               `m` x `a` matrix mapping each metabolite to an atom in the directed atom transition multigraph
+%    Ti2R:               `t` x `n` matrix mapping each directed atom transition instance to a mapped reaction
+%    dATME:              directed atom transition multigraph (`dATM`) augmented with an energy node per reaction, used to build the bond transition multigraph
+%    BG:                 bond graph (MATLAB graph) of the bonds, built from the nodes of `dATME`
 %
 %    dBTM:          Directed bond transition multigraph as a MATLAB digraph structure with the following tables:
 %
@@ -144,14 +136,10 @@ function [dATM, metAtomMappedBool, rxnAtomMappedBool, M2Ai, Ti2R, dATME, BG ,dBT
 %                   * .EdgeTable.HeadMetBondTypes  - head Nodes.BondTypes
 %                   * .EdgeTable.TailMetBondTypes  - tail Nodes.BondTypes
 %
-% metRXNBool:       `m x 1` boolean vector indicating bond mapped metabolites
-% rxnRXNBool:       `n x 1` boolean vector indicating bond mapped reactions
-% M2Bi              `m` x `b` matrix mapping each metabolite to an bond in the directed bond transition multigraph 
-% BTi2R             `s` x `n` matrix mapping each directed bond transition instance to a mapped reaction
-%
-% The internal stoichiometric matrix may be decomposition into
-% N= (M2Bi*M2Bi')^(-1)*M2Bi*B*BTi2R  (To edit)
-% where BTi = incidence(dBTM), is incidence matrix of directed bond transition multigraph.
+%    M2BiE:              `m` x `b` matrix mapping each metabolite to a bond in the directed bond transition multigraph
+%    M2BiW:              `m` x `b` matrix specifying the bond type of each metabolite-bond entry of `M2BiE`
+%    BTi2R:              `s` x `n` matrix mapping each directed bond transition instance to a mapped reaction
+%    BTiE:               incidence matrix of the directed bond transition multigraph (`incidence(dBTM)`)
 
 % .. Authors: - Ronan M. T. Fleming, 2022, Hadjar Rahou 2022 (Bond section)
 

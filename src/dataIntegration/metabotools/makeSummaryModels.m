@@ -1,4 +1,4 @@
-function [unionModel,intersectModel, diffRxns, diffExRxns] = makeSummaryModels(ResultsAllCellLines, samples, model, mk_union, mk_intersect, mk_reactionDiff)
+function [unionModel, intersectModel, diffRxns, diffExRxns] = makeSummaryModels(ResultsAllCellLines, samples, model, mk_union, mk_intersect, mk_reactionDiff)
 % This function generates the union and the intersect model from the `modelPruned` in the `ResultsAllCellLines` structure.
 %
 % USAGE:
@@ -8,6 +8,7 @@ function [unionModel,intersectModel, diffRxns, diffExRxns] = makeSummaryModels(R
 % INPUTS:
 %    ResultsAllCellLines:                structure containing samples and models for the samples, e.g.,  `ResultsAllCellLines.UACC_257.modelPruned`
 %    samples:                            conditions or cell lines, e.g., UACC_257
+%    model:                              Reference metabolic model from which the union and intersect sub-networks are extracted
 %
 % OPTIONAL INPUTS:
 %    mk_union:                           make union model, yes=1, no=0 (Default = 1)

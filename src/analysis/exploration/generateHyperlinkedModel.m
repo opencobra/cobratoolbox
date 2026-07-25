@@ -1,4 +1,38 @@
 function model = generateHyperlinkedModel(model, metNameFlag, hyperlinkCommand)
+% Generate a copy of a COBRA model in which the gene-reaction rules,
+% metabolites, reactions and genes are decorated with clickable MATLAB
+% hyperlinks for interactive exploration at the command line
+%
+% USAGE:
+%
+%    model = generateHyperlinkedModel(model, metNameFlag, hyperlinkCommand)
+%
+% INPUT:
+%    model:               COBRA model structure with fields:
+%
+%                           * .rules - `n x 1` evaluatable gene-reaction association rules
+%                           * .grRules - `n x 1` readable gene-reaction association rules
+%                           * .genes - gene identifiers
+%                           * .mets - `m x 1` metabolite identifiers
+%                           * .rxns - `n x 1` reaction identifiers
+%                           * .metNames - `m x 1` metabolite names
+%
+% OPTIONAL INPUTS:
+%    metNameFlag:         if true, hyperlink metabolite names rather than
+%                         metabolite identifiers (default false)
+%    hyperlinkCommand:    format string for the MATLAB command executed when a
+%                         hyperlink is clicked (default 'fprintf(''%s\n'')')
+%
+% OUTPUT:
+%    model:               COBRA model structure with the added hyperlinked fields:
+%
+%                           * .grRules - gene-reaction rules with gene identifiers substituted in
+%                           * .grRulesLinked - gene-reaction rules with hyperlinked genes
+%                           * .metsLinked - hyperlinked metabolites
+%                           * .rxnsLinked - hyperlinked reactions
+%                           * .genesLinked - hyperlinked genes
+%
+
 if nargin < 2 || isempty(metNameFlag)
     metNameFlag = false;
 end

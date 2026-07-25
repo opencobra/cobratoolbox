@@ -7,30 +7,37 @@ function [solution] = relaxFBA_cappedL1(model, param)
 %    [solution] = relaxFBA_cappedL1(model, param)
 %
 % INPUTS:
-%    model:          COBRA model structure
-%    param:    Structure containing the relaxation options:
+%    model:          COBRA model structure with fields:
 %
-%                      * excludedReactions - bool vector of size n indicating the reactions to be excluded from relaxation
-%                        * excludedReactions(i) = false : allow to relax bounds on reaction i
-%                        * excludedReactions(i) = true : do not allow to relax bounds on reaction i
+%                      * .S - `m x n` stoichiometric matrix
+%                      * .b - `m x 1` right hand side of S*v = b
+%                      * .c - `n x 1` linear objective coefficients
+%                      * .lb - `n x 1` lower flux bounds
+%                      * .ub - `n x 1` upper flux bounds
+%                      * .csense - `m x 1` constraint sense for each row of S (E, L or G)
+%                      * .C - additional inequality constraint matrix (C*v <= d)
+%                      * .d - right hand side of the C*v <= d constraints
+%                      * .dsense - constraint sense for each row of C
+%    param:          structure containing the relaxation options:
 %
-%                      * excludedReactionLB - n x 1 bool vector indicating the reactions with lower bounds to be excluded from relaxation
-%
-%                        * excludedReactionLB(i) = false : allow to relax lower bounds on reaction i (default)
-%                        * excludedReactionLB(i) = true : do not allow to relax lower bounds on reaction i 
-%
-%                      * excludedReactionUB - n x 1 bool vector indicating the reactions with upper bounds to be excluded from relaxation
-%
-%                        * excludedReactionUB(i) = false : allow to relax upper bounds on reaction i (default)
-%                        * excludedReactionUB(i) = true : do not allow to relax upper bounds on reaction i 
-%
-%                      * excludedMetabolites - bool vector of size m indicating the metabolites to be excluded from relaxation
-%                        * excludedMetabolites(i) = false : allow to relax steady state constraint on metabolite i
-%                        * excludedMetabolites(i) = true : do not allow to relax steady state constraint on metabolite i
-%
-%                      * gamma - weight on zero norm of fluxes 
-%                      * lamda - weight on relaxation on steady state constraint (overridden by excludedMetabolites)
-%                      * alpha - weight on relaxation on bounds (overridden by excludedReactions)
+%                      * .excludedReactions - bool vector of size n, reactions excluded from relaxation
+%                      * .excludedReactionLB - n x 1 bool vector, reactions whose lower bound is excluded from relaxation
+%                      * .excludedReactionUB - n x 1 bool vector, reactions whose upper bound is excluded from relaxation
+%                      * .excludedMetabolites - bool vector of size m, metabolites excluded from relaxation
+%                      * .toBeUnblockedReactions - n x 1 vector indicating reactions to be unblocked
+%                      * .nbMaxIteration - stopping criterion, maximum number of iterations
+%                      * .epsilon - stopping criterion tolerance
+%                      * .theta - parameter of the capped-L1 approximation
+%                      * .maxUB - maximum finite upper bound used when relaxing bounds
+%                      * .minLB - minimum finite lower bound used when relaxing bounds
+%                      * .maxRelaxR - maximum relaxation of any bound or equality constraint permitted
+%                      * .printLevel - verbosity of the progress output
+%                      * .gamma0 - zero-norm weight on the reaction rate
+%                      * .gamma1 - one-norm weight on the reaction rate
+%                      * .lambda0 - zero-norm weight on relaxation of steady state constraints
+%                      * .lambda1 - one-norm weight on relaxation of steady state constraints
+%                      * .alpha0 - zero-norm weight on relaxation of reaction bounds
+%                      * .alpha1 - one-norm weight on relaxation of reaction bounds
 %
 % OUTPUT:
 %    solution:       Structure containing the following fields:

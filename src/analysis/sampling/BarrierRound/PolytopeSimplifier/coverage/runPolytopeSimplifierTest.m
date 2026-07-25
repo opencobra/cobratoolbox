@@ -1,3 +1,4 @@
+% Run the PolytopeSimplifier unit test suite with code-coverage reporting
 import matlab.unittest.TestSuite
 import matlab.unittest.TestRunner
 import matlab.unittest.plugins.CodeCoveragePlugin

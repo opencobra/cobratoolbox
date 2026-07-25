@@ -1,16 +1,17 @@
-function [dE ,E, missingFormulaeBool] = checkBalance(model, element, printLevel, fileName, missingFormulaeBool)
+function [dE, E, missingFormulaeBool] = checkBalance(model, element, printLevel, fileName, missingFormulaeBool)
 % Checks whether a set of reactions is elementally balanced.
 % Note that exchange reactions are not elementally balanced.
 %
 % USAGE:
 %
-%    [dE ,E, missingFormulaeBool] = checkBalance(model, element, printLevel, fileName, missingFormulaeBool)
+%    [dE, E, missingFormulaeBool] = checkBalance(model, element, printLevel, fileName, missingFormulaeBool)
 %
 % INPUTS:
 %    model:                  COBRA model structure:
 %
 %                              * .S - Stoichiometric matrix
-%                              * .metForumlas - Metabolite formulas
+%                              * .mets - Metabolite identifiers
+%                              * .metFormulas - Metabolite formulas
 %    element:                Abbreviation of element e.g. C or Mg
 %
 % OPTIONAL INPUTS:

@@ -1,30 +1,31 @@
 function new_py_path = py_rmpath(directory, MATLAB_too)
-%Add directory to import search path for the instance of 
-%the Python interpreter currently controlled by MATLAB
+% Remove directory from the import search path for the instance of the
+% Python interpreter currently controlled by MATLAB
 %
-%EXAMPLE USAGE
-% >> py_rmpath('C:\Documents\ERPResults')
+% USAGE:
 %
-%REQUIRED INPUTS
-% directory      - Directory to remove from the Python import search path
-% MATLAB_too     - If true (or 1), directory will also be added to the
-%                  MATLAB path. {default: false}
+%    new_py_path = py_rmpath(directory, MATLAB_too)
 %
-%OPTIONAL OUTPUT
-% new_py_path    - a cell array of the directories on the updated
-%                  Python path; to get this output without updating the 
-%                  Python path, use an empty string as the input:
-%                  py_path = py_addpath('')
+% INPUTS:
+%    directory:      Directory to remove from the Python import search path
+%    MATLAB_too:     If true (or 1), directory will also be removed from the
+%                     MATLAB path (default: false)
 %
-%VERSION DATE: 13 April 2021
-%AUTHOR: Ronan Fleming, based on py_addpath by Eric Fields
+% OUTPUT:
+%    new_py_path:    Cell array of the directories on the updated Python
+%                     path; to get this output without updating the Python
+%                     path, use an empty string as the input:
+%                     `new_py_path = py_rmpath('')`
 %
-%NOTE: This function is provided "as is" and any express or implied warranties 
-%are disclaimed.
+% NOTE:
+%
+%    This function is provided "as is" and any express or implied
+%    warranties are disclaimed. This code is free and open source software
+%    made available under the 3-clause BSD license.
+%
+% .. Author: - Ronan Fleming, 13 April 2021, based on py_addpath by Eric Fields
+    % check input
 
-%This code is free and open source software made available under the 3-clause BSD license.
-
-    %check input
     if ~ischar(directory)
         error('Input must be a string')
     elseif ~exist(directory, 'dir') && ~isempty(directory)

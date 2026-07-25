@@ -1,51 +1,58 @@
-function [v,p,q,dv,obj] = fitExperimentalFlux(model, vExp, weightLower, weightUpper, weightExpFlux, param)
+function [v, p, q, dv, obj] = fitExperimentalFlux(model, vExp, weightLower, weightUpper, weightExpFlux, param)
 % fit a vector of change in concentration, over a time interval, to the
 % range of a stoichiometric matrix, minimising the weighed norm
 % of the perturbations to the given lower and upper bounds on the
 % corresponding exchange reactions of a model, to ensure that a steady
 % state solution exists.
 %
-% INPUT
-%    model:             (the following fields are required - others can be supplied)
+% USAGE:
 %
-%                         * .S  - `m x 1` Stoichiometric matrix
-%                         * .c  - `n x 1` Linear objective coefficients
+%    [v, p, q, dv, obj] = fitExperimentalFlux(model, vExp, weightLower, weightUpper, weightExpFlux, param)
+%
+% INPUTS:
+%    model:             COBRA model with the following required fields (others can be supplied):
+%
+%                         * .S - `m x n` stoichiometric matrix
+%                         * .mets - `m x 1` metabolite identifiers
+%                         * .b - `m x 1` accumulation (change in concentration with time)
+%                         * .c - `n x 1` linear objective coefficients
 %                         * .osense - objective sense
-%                         * .lb - `n x 1` Lower bounds
-%                         * .ub - `n x 1` Upper bounds
+%                         * .lb - `n x 1` lower bounds
+%                         * .ub - `n x 1` upper bounds
 %
 %          vExp:          `n x 1` experimental flux vector (NaN if no info)         
-%   weightLower:          `n x 1` positive weight penalty on relaxation of lower bounds
-%   weightUpper:          `n x 1` positive weight penalty on relaxation of lower bounds
-% weightExpFlux:          `n x 1` positive weight penalty on deviation from experimental flux
+%    weightLower:          `n x 1` positive weight penalty on relaxation of lower bounds
+%    weightUpper:          `n x 1` positive weight penalty on relaxation of upper bounds
+%    weightExpFlux:          `n x 1` positive weight penalty on deviation from experimental flux
 
 %
 % OPTIONAL INPUTS:
-%    model:             (the following fields are optional)
-%                         * dxdt - `m x 1` change in concentration with time
-%                         * C - `k x n` Left hand side of C*v <= d
-%                         * d - `k x n` Right hand side of C*v <= d
-%                         * csense - `m + k x 1` character array with entries in {L,E,G}
-%  param:               Parameters structure with the following optional fields
-%  * printLevel         {(1),(0)}
+%    model:             the following fields are optional:
 %
-%  * method             String indicating flux fitting method
-%                       'zero'   minimise zero norm of relaxations
-%                       'zeroOne'   minimise zero norm of relaxations with one norm regularisation
-%                       'oneTwo'   minimise a combination of one and two norm of relaxations
-%                       'two' (default) minimise the two norm of relaxations
-%  param.lambda0:       scalar non-negative weight on zero norm
-%  param.lambda1:       scalar non-negative weight on one norm
-%  param.lambda2:       scalar non-negative weight on two norm
+%                         * .C - `k x n` left hand side of C*v <= d
+%                         * .d - `k x 1` right hand side of C*v <= d
+%                         * .dsense - `k x 1` character array of constraint senses with entries in {L,E,G}
 %
-% OUTPUT
-%  v:          * `n x 1` steady state flux vector
-%  p:          * `n x 1` relaxation of lower bounds
-%  q:          * `n x 1` relaxation of upper bounds
-% dv:          * `n x 1` difference between experimental and predicted steady state flux
-% obj:         * Flux fitting used
-
-% Ronan Fleming, March 2018, first version.
+%    param:             Parameters structure with the following optional fields:
+%
+%                         * .printLevel - verbose level {(1), (0)}
+%                         * .method - String indicating flux fitting method:
+%                           'zero' minimise zero norm of relaxations,
+%                           'zeroOne' minimise zero norm with one norm regularisation,
+%                           'oneTwo' minimise a combination of one and two norm of relaxations,
+%                           'two' (default) minimise the two norm of relaxations
+%                         * .lambda0 - scalar non-negative weight on zero norm
+%                         * .lambda1 - scalar non-negative weight on one norm
+%                         * .lambda2 - scalar non-negative weight on two norm
+%
+% OUTPUTS:
+%    v:    `n x 1` steady state flux vector
+%    p:    `n x 1` relaxation of lower bounds
+%    q:    `n x 1` relaxation of upper bounds
+%    dv:    `n x 1` difference between experimental and predicted steady state flux
+%    obj:    flux fitting objective value used
+%
+% .. Author: - Ronan Fleming, March 2018, first version.
 
 [nMet, nRxn]=size(model.S);
 
@@ -307,30 +314,78 @@ end
 param.printLevel = param.printLevel - 1;
 
 feasTol = getCobraSolverParams('LP', 'feasTol');
-if isempty(prob.F)
-    solCard = optimizeCardinality(prob, param);
-    sol.stat = solCard.stat;
-    sol.full = solCard.xyz;
-else
-    paramQP=param;
-    %remove certain parameters that interfere with some solvers
-    paramQP = rmfield(paramQP, 'method');
-    paramQP.feasTol = feasTol / 10;
-    paramQP.optTol = feasTol / 10;
-    sol = solveCobraQP(prob, paramQP);
+% The exometabolomic fit QP is numerically ill-conditioned. In the full test
+% suite the global QP solver can be left as pdco, which fails to solve it (badly
+% scaled, empty solution) even though gurobi solves it cleanly -- this is why the
+% fit passes locally (isolated, gurobi) but failed in CI (pdco). Solve the fit
+% with a capable QP solver, then restore the previous solver so the rest of the
+% pipeline is undisturbed. Secondary net: retry with relaxed tolerances if a
+% usable solution is still not returned. A clear error (below) replaces the
+% previous cryptic "Index in position 1 exceeds array bounds".
+global CBT_QP_SOLVER
+origQPsolver = CBT_QP_SOLVER;
+for capable = {'gurobi', 'ibm_cplex', 'mosek'}
+    if changeCobraSolver(capable{1}, 'QP', 0)
+        break
+    end
+end
+if ~isempty(origQPsolver) && ~strcmp(origQPsolver, CBT_QP_SOLVER)
+    restoreQPsolver = onCleanup(@() changeCobraSolver(origQPsolver, 'QP', 0)); %#ok<NASGU>
+end
+needLen = 3 * nRxn + nVexp;
+relaxTols = [NaN, feasTol, feasTol * 10];   % NaN => the original per-solver tolerance
+sol = struct('stat', -1, 'full', []);
+for tolIdx = 1:numel(relaxTols)
+    if isempty(prob.F)
+        paramSolve = param;
+        if ~isnan(relaxTols(tolIdx))
+            paramSolve.feasTol = relaxTols(tolIdx);
+            paramSolve.optTol = relaxTols(tolIdx);
+        end
+        solCard = optimizeCardinality(prob, paramSolve);
+        sol.stat = solCard.stat;
+        sol.full = solCard.xyz;
+    else
+        paramQP = param;
+        %remove certain parameters that interfere with some solvers
+        paramQP = rmfield(paramQP, 'method');
+        if isnan(relaxTols(tolIdx))
+            paramQP.feasTol = feasTol / 10;
+            paramQP.optTol = feasTol / 10;
+        else
+            paramQP.feasTol = relaxTols(tolIdx);
+            paramQP.optTol = relaxTols(tolIdx);
+        end
+        % mild numerical insurance for the badly-scaled fit QP under gurobi
+        if strcmp(CBT_QP_SOLVER, 'gurobi')
+            paramQP.NumericFocus = 3;
+        end
+        sol = solveCobraQP(prob, paramQP);
+    end
+    if sol.stat == 1 && numel(sol.full) >= needLen
+        break
+    end
+    if tolIdx < numel(relaxTols)
+        warning('fitExperimentalFlux: fit returned stat=%d; retrying with a relaxed feasibility tolerance.', sol.stat);
+    end
 end
 
 %zero out relaxations smaller than feasibility tolerance
 bool = abs(sol.full) < feasTol & sol.full ~= 0;
 sol.full(bool) = 0;
 
-if sol.stat ~= 1
+if sol.stat ~= 1 || numel(sol.full) < needLen
     sol
     if sol.stat == 3
         warning('fitExperimentalFlux sol.stat == 3.')
     else
         warning('Model does not seem relaxable to fit experimental data. Check numerical issues.')
     end
+    error('fitExperimentalFlux:infeasibleFit', ...
+        ['The experimental-flux fit did not return a usable solution (stat=%d, ' ...
+         'numel(sol.full)=%d, need >= %d) even after relaxing the feasibility ' ...
+         'tolerance. Check the exometabolomic data and solver numerics.'], ...
+        sol.stat, numel(sol.full), needLen);
 end
 
 v = sol.full(1:nRxn, 1);

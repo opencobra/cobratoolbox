@@ -27,15 +27,20 @@ function [AddedRxns] = submitGapFill(swift, modelFile, dbFile, dictionaryFile, p
 % OPTIONAL INPUTS:
 %    swift:                Boolean specifying whether to run swiftGapFill or
 %                          fastGapFill (default: false)
-%    modelFileIn:          File containing model, either .mat or .xml
-%                          (default: 'examples/iAF1260.mat')
-%    dbFileIn:             File containing universal database
-%                          (default: 'AuxillaryFiles/reaction.lst')
-%    dictionaryFileIn:     File containing db metabolite IDs and model
+%    modelFile:            File containing model, either .mat or .xml
+%                          (default: 'examples/iAF1260.mat', relative to
+%                          this function's own folder)
+%    dbFile:               File containing universal database
+%                          (default: 'AuxillaryFiles/reaction.lst', relative
+%                          to this function's own folder)
+%    dictionaryFile:       File containing db metabolite IDs and model
 %                          counterparts, either .xls or .tsv
-%                          (default: 'AuxillaryFiles/KEGG_dictionary.xls')
-%    workspaceFileIn:      File for storing `prepareFastGapFill` results
-%                          (default: 'examples/defaultWorkspace.mat')
+%                          (default: 'AuxillaryFiles/KEGG_dictionary.xls',
+%                          relative to this function's own folder)
+%    prepareFGFResults:    File for storing/loading `prepareFastGapFill`
+%                          results (default:
+%                          'tutorials/reconstruction/fastGapFill/example/prepareFGFResultsDefault.mat',
+%                          relative to `CBTDIR`)
 %    weightsPerRxnFile:    File containing individual weights for reactions
 %                          (default: 'examples/sampleWeights.tsv')
 %    forceRerun:           Boolean specifying whether to rerun

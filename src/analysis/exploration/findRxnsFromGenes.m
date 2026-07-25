@@ -6,7 +6,16 @@ function [results, ListResults] = findRxnsFromGenes(model, genes, numericFlag, L
 %    [results, ListResults] = findRxnsFromGenes(model, genes, numericFlag, ListResultsFlag)
 %
 % INPUTS:
-%    model:              COBRA model structure
+%    model:              COBRA model structure with fields:
+%
+%                          * .genes - gene identifiers
+%                          * .geneNames - gene names
+%                          * .rules - `n x 1` evaluatable gene-reaction association rules
+%                          * .grRules - `n x 1` readable gene-reaction association rules
+%                          * .rxns - `n x 1` reaction identifiers
+%                          * .rxnNames - `n x 1` reaction names
+%                          * .subSystems - `n x 1` subsystem assignments
+%
 %    genes:              string of single gene or cell array of multiple
 %                        genes for which `rxns` are desired.
 %

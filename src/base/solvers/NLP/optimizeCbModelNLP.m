@@ -6,7 +6,12 @@ function [currentSol, allObjValues, allSolutions] = optimizeCbModelNLP(model, va
 %    [currentSol, allObjValues, allSolutions] = optimizeCbModelNLP(model, varargin)
 %
 % INPUT:
-%    model:            COBRA model structure
+%    model:            COBRA model structure with fields:
+%
+%                        * .S - Stoichiometric matrix
+%                        * .osenseStr - (optional) Objective sense as a string,
+%                          `'max'` or `'min'` (default `'max'` if not present);
+%                          overridden by the `osenseStr` optional input if given
 %
 % Optional inputs are parameter/value pairs
 %
@@ -28,7 +33,7 @@ function [currentSol, allObjValues, allSolutions] = optimizeCbModelNLP(model, va
 %                      `objArguments`.)
 %    initArgs:         Cell array of arguments to the 'initFunction', will be
 %                      provided as second input Argument to the `initFunction`
-%    solveroptions:    A Struct with options for the solver used. This is
+%    solverOptions:    A Struct with options for the solver used. This is
 %                      specific to the solver in question, but the fields should
 %                      relate to options accepted by the solver.
 %

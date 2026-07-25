@@ -1,24 +1,27 @@
-function A = fastCoreWeighted( C, model, weights, epsilon ) 
+function A = fastCoreWeighted(C, model, weights, epsilon)
 % Based on: `The FASTCORE algorithm for context-specific metabolic network reconstruction, Vlassis et
 % al., 2013, PLoS Comp Biol.`
 %
 % USAGE:
 %
-%    A = fastCoreWeighted( C, model, epsilon )
+%    A = fastCoreWeighted(C, model, weights, epsilon)
 %
 % INPUTS:
-%    C:        List of reaction numbers corresponding to the core set
-% model    Model structure, 
-% weights  Weight vector for each reaction in the model 
-%    epsilon:  Parameter (default: getCobraSolverParams('LP', 'feasTol')*100; see Vlassis et al for more details)
+%    C:          List of reaction numbers corresponding to the core set
+%    model:      Model structure with the fields:
+%
+%                  * .rxns - `n x 1` cell array of reaction abbreviations
+%                  * .lb - `n x 1` lower flux bounds
+%    weights:    Weight vector for each reaction in the model
+%    epsilon:    Parameter (default: getCobraSolverParams('LP', 'feasTol')*100; see Vlassis et al for more details)
 %
 % OUTPUT:
-%    A:        A most compact model consistent with the applied constraints and
-%              containing the desired core set reactions (as given in `C`)
+%    A:          A most compact model consistent with the applied constraints and
+%                containing the desired core set reactions (as given in `C`)
 %
 % .. Author: - Ines Thiele, Dec 2013 http://thielelab.eu
 % ..           Thomas Pfau, May 2017 - switched weights to an additional input argument
-%                                      instead of a model field
+% ..                                   instead of a model field
 
 if ~exist('epsilon','var')
     epsilon = getCobraSolverParams('LP', 'feasTol')*100;

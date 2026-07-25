@@ -9,6 +9,9 @@ function varargout = SteadyComSubroutines(purpose, varargin)
 %    purpose:     'initialize' / 'infoCom2indCom' / 'rxnList2objMatrix' / 'updateLPcom' / 'getParams'
 %                 See the respective local functions for their documentations
 %    varargin:    various input for different subroutines
+%
+% OUTPUT:
+%    varargout:    output(s) of the selected subroutine; content depends on `purpose`
 
 switch purpose
     case 'initialize'

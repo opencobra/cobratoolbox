@@ -1,21 +1,30 @@
 function [OfConstraint, OfAll] = determineFluxValuesOnBoundary(model, solution)
-% This function determines the number of reactions in the flux distributions that are on
-% the boundaries
+% Determine the fraction of reactions whose flux values lie on the bounds
 %
-% [OfConstraint, OfAll] = determineFluxValuesOnBoundary(model, solution)
+% This function determines the fraction of reactions in the flux distribution
+% whose flux values are on the lower or upper bounds.
 %
-% INPUT
-% model         Model structure
-% solution      Solution structure
-% 
-% OUTPUT 
-% OfConstraint  Fraction of flux values that are on the lower and upper bounds
-%               of all constrained reactions (assuming a minimum infinity
-%               of -1,000,000 and a  maximum infinity of 1,000,000
-% OfAll         Fraction of flux values that are on the lower and upper bounds
-%               of all reactions in the model
-% 
-% Ines Thiele, December 2018
+% USAGE:
+%
+%    [OfConstraint, OfAll] = determineFluxValuesOnBoundary(model, solution)
+%
+% INPUTS:
+%    model:          Model structure with fields:
+%
+%                      * .lb - lower bounds
+%                      * .ub - upper bounds
+%                      * .rxns - reaction identifiers
+%    solution:       Solution structure with fields:
+%
+%                      * .full - full flux vector (primal solution)
+%
+% OUTPUTS:
+%    OfConstraint:    Fraction of flux values on the lower/upper bounds of all
+%                    constrained reactions (assuming +/- 1,000,000 as infinity)
+%    OfAll:          Fraction of flux values on the lower/upper bounds of all
+%                    reactions in the model
+%
+% .. Author: - Ines Thiele, December 2018
 %
 %
 %

@@ -1,4 +1,20 @@
 function reacting = buildReactingMoietyTables(reacting, formedBondsTable, brokenBondsTable)
+% Build per-reaction tables of reacting moieties (formed and broken bonds) for each selected reaction
+%
+% USAGE:
+%
+%    reacting = buildReactingMoietyTables(reacting, formedBondsTable, brokenBondsTable)
+%
+% INPUTS:
+%    reacting:            structure describing reacting moieties, with fields:
+%
+%                           * .selectedReactionNames - cell/string array of reaction names to process
+%                           * .reactMoietyTables - cell array of per-reaction moiety tables (populated by this function)
+%    formedBondsTable:    table of formed bonds, with a `rxns` column (`.rxns`) identifying the reaction of each bond
+%    brokenBondsTable:    table of broken bonds, with a `rxns` column (`.rxns`) identifying the reaction of each bond
+%
+% OUTPUTS:
+%    reacting:            input `reacting` structure with `.reactMoietyTables` populated, one table per selected reaction
 
 rxnList = reacting.selectedReactionNames;
 reacting.reactMoietyTables = cell(numel(rxnList),1);

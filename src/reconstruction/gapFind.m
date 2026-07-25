@@ -9,7 +9,13 @@ function [allGaps, rootGaps, downstreamGaps] = gapFind(model, findNCgaps, verbFl
 %    [allGaps, rootGaps, downstreamGaps] = gapFind(model, findNCgaps, verbFlag)
 %
 % INPUT:
-%    model:             a COBRA model
+%    model:             a COBRA model with fields:
+%
+%                         * .S - `m x n` stoichiometric matrix
+%                         * .mets - `m x 1` metabolite identifiers
+%                         * .rxns - `n x 1` reaction identifiers
+%                         * .lb - `n x 1` lower bounds
+%                         * .ub - `n x 1` upper bounds
 %
 % OPTIONAL INPUTS:
 %    findNCgaps:        find no consupmption gaps as well as no production gaps

@@ -1,3 +1,5 @@
+% COBRArrow establishes a MATLAB client connection to a gRPC Apache Arrow
+% Flight service, used to exchange COBRA models and data with a Flight server
 classdef COBRArrow
     % COBRArrow is a class that establishes a connection to a gRPC service
     % using Apache Arrow Flight in a Python environment. It provides methods

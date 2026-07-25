@@ -1,20 +1,33 @@
-function [modelNew] = mergeTwoModels(model1,model2,objrxnmodel, mergeGenes, rmDuplRxns)
+function [modelNew] = mergeTwoModels(model1, model2, objrxnmodel, mergeGenes, rmDuplRxns)
 % Merge two models. If fields conflict, the data from fields in model1 will be
 % used.
+%
 % USAGE:
-%    [modelNew] = mergeTwoModels(model1,model2,objrxnmodel, mergeGenes, rmDuplRxns)
+%
+%    [modelNew] = mergeTwoModels(model1, model2, objrxnmodel, mergeGenes, rmDuplRxns)
 %
 % INPUTS:
+%    model1:          model 1, with fields:
 %
-%    model1:          model 1
-%    model2:          model 2
+%                       * .c - `n x 1` objective coefficients (reset to 0 if
+%                         `objrxnmodel` selects model2's objective)
+%                       * .osenseStr - objective sense (`max`/`min`), kept if
+%                         `objrxnmodel` selects model1's objective
+%                       * .genes - `g x 1` gene identifiers
+%                       * .comps - `c x 1` compartment symbols
+%                       * .mets - `m x 1` metabolite identifiers
+%                       * .rxns - `n x 1` reaction identifiers
+%                       * .S - `m x n` stoichiometric matrix
+%    model2:          model 2, with the same fields as model1 (`.c`,
+%                     `.osenseStr`, `.genes`, `.comps`, `.mets`, `.S`), used
+%                     analogously
 %
 % OPTIONAL INPUTS:
 %    objrxnmodel:     Set as 1 or 2 to set objective reaction from
 %                     desired model
-%    mergeGenes:      Do merge the gene associated data, if false the genes 
-%                     field and the rules field will be cleared and other fields 
-%                     associated with genes will not be merged. GPR rules can be 
+%    mergeGenes:      Do merge the gene associated data, if false the genes
+%                     field and the rules field will be cleared and other fields
+%                     associated with genes will not be merged. GPR rules can be
 %                     reconstructed using the grRules field.(Default = true)
 %    rmDuplRxns:      Boolean indicating whether duplicate reactions should
 %                     be removed (default=true)

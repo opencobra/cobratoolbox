@@ -1,5 +1,29 @@
-function [sol,modelOut] = debugInfeasibleEntropyFBA(model)
-%try to diagnose the reasons a model is infeasible for Entropy FBA
+function [sol, modelOut] = debugInfeasibleEntropyFBA(model)
+% Tries to diagnose the reasons a model is infeasible for entropic flux
+% balance analysis (EFBA) by progressively relaxing coupling constraints,
+% internal flux bounds, and exchange bounds until a feasible EFBA solution
+% is found
+%
+% USAGE:
+%
+%    [sol, modelOut] = debugInfeasibleEntropyFBA(model)
+%
+% INPUT:
+%    model:         COBRA model structure, compatible with
+%                   `entropicFluxBalanceAnalysis`. Diagnosis progressively
+%                   removes/relaxes its optional coupling constraint fields
+%                   (`.C`, `.d`) and rescales/relaxes `.lb`, `.ub`, and `.b`
+%                   on the reactions not in `.SConsistentRxnBool` if needed
+%
+% OUTPUTS:
+%    sol:           Solution structure returned by the last
+%                   `entropicFluxBalanceAnalysis` call attempted (see
+%                   `entropicFluxBalanceAnalysis` for fields), with `.stat`
+%                   equal to 1 if that attempt was feasible
+%    modelOut:      The (possibly relaxed) model corresponding to `sol`;
+%                   only assigned once a relaxation is found that yields a
+%                   feasible solution
+%
 
 sol = optimizeCbModel(model);
 if sol.stat~=1

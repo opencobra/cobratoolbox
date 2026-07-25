@@ -1,17 +1,43 @@
 function model = destroyDummyModel(model, dummyMetBool, dummyRxnBool, metsOrig, rxnsOrig)
-% Remove all traces of dummy metabolites and reactions 
+% Remove all traces of dummy metabolites and reactions
 %
-% INPUT
-% model     COBRA model
+% USAGE:
 %
-% OPTIONAL INPUT
-% dummyMetBool      m x 1 boolean vector indicating dummy metabolites
-% dummyRxnBool      n x 1 boolean vector indicating dummy reactions
-% metsOrig          Array indicating the metabolites before creating a dummyModel
-% rxnsOrig          Array indicating the reactions before creating dummyModel
+%    model = destroyDummyModel(model, dummyMetBool, dummyRxnBool, metsOrig, rxnsOrig)
 %
-% OUTPUT
-% model     COBRA model without dummy metabolites or reactions
+% INPUT:
+%    model:    COBRA model with the following fields:
+%
+%                * .S - `m x n` stoichiometric matrix
+%                * .b - `m x 1` accumulation (right hand side of S*v = b)
+%                * .c - `n x 1` linear objective coefficient vector
+%                * .lb - `n x 1` lower flux bounds
+%                * .ub - `n x 1` upper flux bounds
+%                * .csense - `m x 1` constraint sense for each metabolite
+%                * .mets - `m x 1` metabolite identifiers
+%                * .rxns - `n x 1` reaction identifiers
+%                * .rxnNames - `n x 1` reaction names
+%                * .rules - `n x 1` gene-reaction association rules
+%                * .rxnGeneMat - `n x g` reaction-gene mapping matrix
+%                * .subSystems - `n x 1` reaction subsystems
+%                * .C - coupling constraint matrix
+%                * .SIntMetBool - `m x 1` boolean, true for internal metabolites
+%                * .SIntRxnBool - `n x 1` boolean, true for internal reactions
+%                * .SConsistentMetBool - `m x 1` boolean, stoichiometrically consistent metabolites
+%                * .SConsistentRxnBool - `n x 1` boolean, stoichiometrically consistent reactions
+%                * .fluxConsistentMetBool - `m x 1` boolean, flux consistent metabolites
+%                * .fluxConsistentRxnBool - `n x 1` boolean, flux consistent reactions
+%                * .thermoFluxConsistentMetBool - `m x 1` boolean, thermodynamically flux consistent metabolites
+%                * .thermoFluxConsistentRxnBool - `n x 1` boolean, thermodynamically flux consistent reactions
+%
+% OPTIONAL INPUTS:
+%    dummyMetBool:    `m x 1` boolean vector indicating dummy metabolites
+%    dummyRxnBool:    `n x 1` boolean vector indicating dummy reactions
+%    metsOrig:    array indicating the metabolites before creating a dummyModel
+%    rxnsOrig:    array indicating the reactions before creating a dummyModel
+%
+% OUTPUT:
+%    model:    COBRA model without dummy metabolites or reactions
 %
 
 if nargin < 2 || isempty(dummyMetBool)

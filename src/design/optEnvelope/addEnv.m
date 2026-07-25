@@ -1,38 +1,56 @@
 function line = addEnv(origModel, biomass, desiredProduct, varargin)
-% addEnv adds envelope to figure
-% Algorithm is able to knock out genes as well as reactions to produce
-% production envelope
+% addEnv adds a production envelope to the current figure
+%
+% Adds a production envelope (with optional knockouts) to the active figure.
+% The algorithm is able to knock out genes as well as reactions to produce
+% the production envelope.
 %
 % USAGE:
-%   line = addEnv(origModel, biomass, desiredProduct, 'KnockOuts', knockouts, 'colour', colour, 'prodMol', prodMol, 'subUptake', subUptake, 'molarSum', molarSum)
+%
+%    line = addEnv(origModel, biomass, desiredProduct, varargin)
 %
 % INPUTS:
-%   origModel         COBRA model structure [struct]
-%   biomass           Reaction name of biomass [char]
-%   desiredProduct    Reaction name of desired product [char]
+%    origModel:         COBRA model structure with fields:
+%
+%                         * .S - Stoichiometric matrix
+%                         * .rxns - Reaction identifiers
+%                         * .mets - Metabolite identifiers
+%                         * .lb - Lower bounds
+%                         * .ub - Upper bounds
+%                         * .b - Right hand side values for metabolite constraints
+%                         * .c - Objective coefficients
+%    biomass:           Reaction name of biomass [char]
+%    desiredProduct:    Reaction name of desired product [char]
 %
 % OPTIONAL INPUTS:
-%   KnockOuts         (opt) List of knockouts for production envelope [cell array] (default: {})
-%   colour            (opt) Short name for colour of line to plot [anything that can be colour in matlab] (default: 'r' (red))
-%   prodMol           (opt) Molar mass of target product for yield plot [double]
-%   subUptake         (opt) Uptake of substrate for yield plot [double]
-%   molarSum          (opt) Molar mass of substrate for yield plot [double]
+%    KnockOuts:         List of knockouts (reaction or gene IDs) for the
+%                       production envelope [cell array] (default: {})
+%    colour:            Colour of the plotted line (any valid MATLAB colour)
+%                       (default: 'r')
+%    prodMol:           Molar mass of the target product for a yield plot
+%                       [double] (default: [])
+%    subUptake:         Uptake of substrate for a yield plot [double]
+%                       (default: 10)
+%    molarSum:          Molar mass of substrate for a yield plot [double]
+%                       (default: 180)
 %
-% OUTPUTS
-%   line              Line data for plot function
+% OUTPUTS:
+%    line:              Line object returned by `plot` for the maximum edge
+%                       of the envelope
 %
-% NOTES
-%   Sometimes last point of envelope drops to zero (might be rounding error)
-%   but this function connects last points of lines so the graph creates
-%   continuous line.
-%   This algorithm only adds graph. It does not change labels.
+% NOTE:
+%    Sometimes the last point of the envelope drops to zero (possibly a
+%    rounding error); this function connects the last points of the lines so
+%    the graph forms a continuous line. This algorithm only adds the graph;
+%    it does not change labels.
 %
 % EXAMPLE:
-%   line = addEnv(model, 'BIOMASS_Ecoli', 'EX_ac_e', {'GHMT2r','GND','SUCCt2r','SUCD4','AKGt2r','GLUt2r'}, 'm')
 %
-% AUTHORS:
-%   Created by Kristaps Berzins    31/10/2022
-%   Modified by Kristaps Berzins   30/09/2024
+%    line = addEnv(model, 'BIOMASS_Ecoli', 'EX_ac_e', {'GHMT2r', 'GND'}, 'm')
+%
+% .. Authors:
+%       - Kristaps Berzins, 31/10/2022, created
+%       - Kristaps Berzins, 30/09/2024, modified
 
 parser = inputParser();
 parser.addRequired('model', @(x) isstruct(x) && isfield(x, 'S') && isfield(origModel, 'rxns')...

@@ -23,19 +23,18 @@ function [optKnockSol, bilevelMILPproblem] = OptKnock(model, selectedRxnList, op
 % OPTIONAL INPUTS:
 %    options:                `OptKnock` options
 %
-%                              *  `targetRxn` - Target flux to be maximized
-%                              *  `numDel` - # of deletions allowed (Default: 5)
-%                              *  `numDelSense` - Direction of # of deletions constraint (G/E/L)
-%                                 (Default: L)
-%                              *  `vMax` - Max flux (Default: 1000)
-%                              *  `solveOptKnock` - Solve problem within Matlab (Default: true)
-%                              *  `createGams` - Create GAMS input file
-%                              *  `gamsFile` - GAMS input file name
+%                              * .targetRxn - Target flux to be maximized
+%                              * .numDel - # of deletions allowed (Default: 5)
+%                              * .numDelSense - Direction of # of deletions constraint (G/E/L)
+%                                (Default: L)
+%                              * .vMax - Max flux (Default: 1000)
+%                              * .solveOptKnock - Solve problem within Matlab (Default: true)
+%                              * .initSolution - optional initial integer (knockout) solution
 %    constrOpt:              Explicitly constrained reaction options
 %
-%                              *  `rxnList` - Reaction list
-%                              *  `values` - Values for constrained reactions
-%                              *  `sense` - Constraint senses for constrained reactions (G/E/L)
+%                              * .rxnInd - indices of the constrained reactions
+%                              * .values - values for the constrained reactions
+%                              * .sense - constraint senses for the constrained reactions (G/E/L)
 %    prevSolutions:          Previous solutions
 %    verbFlag:               Verbose flag
 %    solutionFileNameTmp:    File name for storing temporary solutions

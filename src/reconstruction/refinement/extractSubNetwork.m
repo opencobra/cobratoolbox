@@ -1,17 +1,23 @@
 function subModel = extractSubNetwork(model, rxnList, metList, updateGenes)
 % Extract subnetwork model
+%
 % USAGE:
 %
 %    subModel = extractSubNetwork(model, rxnList, metList)
 %
 % INPUTS:
-%    model:       COBRA model structure
+%    model:       COBRA model structure with fields:
+%
+%                   * .rxns - `n x 1` cell array of reaction identifiers
+%                   * .mets - `m x 1` cell array of metabolite identifiers
+%                   * .S - `m x n` stoichiometric matrix
+%                   * .genes - (if `updateGenes` is used) `g x 1` cell array of gene identifiers
 %    rxnList:     Reaction list for the subnetwork to be extracted
 %
 % OPTIONAL INPUTS:
-%    metNames:    Metabolite list for the subnetwork to be extracted
-%    updateGenes: Also remove unused genes (can take some time on large
-%                 networks)
+%    metList:     Metabolite list for the subnetwork to be extracted
+%    updateGenes:    Also remove unused genes (can take some time on large
+%                    networks)
 %
 % OUTPUT:
 %    subModel:    COBRA model of subnetwork

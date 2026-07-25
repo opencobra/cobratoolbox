@@ -1,4 +1,4 @@
-function performSampling(model,warmupn,fileName,nFiles,pointsPerFile,stepsPerPoint,fileBaseNo,maxTime,path)
+function performSampling(model, warmupn, fileName, nFiles, pointsPerFile, stepsPerPoint, fileBaseNo, maxTime, path)
 % The function performs the sampling analysis for one model, combines
 % multiple COBRA toolbox functions 
 %
@@ -13,7 +13,7 @@ function performSampling(model,warmupn,fileName,nFiles,pointsPerFile,stepsPerPoi
 %    warmupn:                    Number of warm-up points
 %    fileName:                   Name for output files
 %    nFiles:                     Number of files saved
-%    pointsPerFilePoints:        Points saved per file
+%    pointsPerFile:              Points saved per file
 %    stepsPerPoint:              Steps skipped between two saved points, in order to increase mixing
 %    fileBaseNo:                 Counter for the numbering of the output files, e.g., 0 to start with 1;
 %    maxTime:                    Maximal running time after which the analysis should be terminated, e.g., 3600000; 

@@ -1,25 +1,29 @@
-function [model,condGF,targetGF,relaxGF] = verifyGapfilledReactions(model,osenseStr)
+function [model, condGF, targetGF, relaxGF] = verifyGapfilledReactions(model, osenseStr)
 % Part of the DEMETER pipeline. Checks whether reactions that were added
 % by the gapfilling steps performed in DEMETER are required for biomass
 % production. Reactions that are no longer needed are removed.
 %
-% USAGE
-%       model = verifyGapfilledReactions(model,osenseStr)
+% USAGE:
 %
-% INPUT
-% model             COBRA model structure
-% osenseStr:        Maximize ('max')/minimize ('min') linear part of the
-%                   objective
-
+%    [model, condGF, targetGF, relaxGF] = verifyGapfilledReactions(model, osenseStr)
 %
-% OUTPUT
-% model             COBRA model structure
-% condGF            Reactions added based on conditions (recognizing
-%                   certain patterns of reactions)
-% targetGF          Reactions added based on tagrted gapfilling (specific
-%                   metabolites that could not be produced)
-% relaxGF           Reactions added based on relaxFBA (lowest level of
-%                   confidence)
+% INPUTS:
+%    model:            COBRA model structure with fields:
+%
+%                        * .rxns - `n x 1` reaction identifiers
+%                        * .grRules - `n x 1` gene-protein-reaction rules
+%
+%    osenseStr:        Maximize ('max')/minimize ('min') linear part of the
+%                      objective
+%
+% OUTPUTS:
+%    model:            COBRA model structure
+%    condGF:           Reactions added based on conditions (recognizing
+%                      certain patterns of reactions)
+%    targetGF:         Reactions added based on tagrted gapfilling (specific
+%                      metabolites that could not be produced)
+%    relaxGF:          Reactions added based on relaxFBA (lowest level of
+%                      confidence)
 %
 % .. Authors:
 %       Almut Heinken and Stefania Magnusdottir, 2016-2019

@@ -1,23 +1,25 @@
-function writeReactionsFromPubSeedSpreadsheets(infoFilePath,inputDataFolder,spreadsheetFolder)
+function writeReactionsFromPubSeedSpreadsheets(infoFilePath, inputDataFolder, spreadsheetFolder)
 % Prepares input file for the comparative genomics part
 % Write reaction spreadsheets from InReactions and PubSEED spreadsheets.
 %
 % USAGE:
-%   writeReactionsFromPubSeedSpreadsheets(infoFilePath,inputDataFolder,spreadsheetFolder)
 %
-% INPUTS
-% infoFilePath          File with information on reconstructions to refine
-% inputDataFolder       Folder to save propagated data to (default: folder 
-%                       in current path called "InputData")                
-% spreadsheetFolder     Folder with comparative genomics data retrieved 
-%                       from PubSEED in spreadsheet format if available. 
-%                       For an example of the required format, see 
-%                       cobratoolbox/papers/2021_demeter/exampleSpreadsheets.
+%    writeReactionsFromPubSeedSpreadsheets(infoFilePath, inputDataFolder, spreadsheetFolder)
+%
+% INPUTS:
+%    infoFilePath:          File with information on reconstructions to refine
+%    inputDataFolder:       Folder to save propagated data to (default: folder
+%                           in current path called "InputData")
+%    spreadsheetFolder:     Folder with comparative genomics data retrieved
+%                           from PubSEED in spreadsheet format if available.
+%                           For an example of the required format, see
+%                           cobratoolbox/papers/2021_demeter/exampleSpreadsheets.
 %
 % .. Authors:
 %       - Almut Heinken, 06/2020
 
 % get PubSEED IDs of new organisms to reconstruct
+
 infoFile = readInputTableForPipeline(infoFilePath);
 
 % find folder with annotation versions in the information file

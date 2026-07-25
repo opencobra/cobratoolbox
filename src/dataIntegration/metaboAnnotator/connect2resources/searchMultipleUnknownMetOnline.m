@@ -1,20 +1,37 @@
-function [metabolite_structure,hit] = searchMultipleUnknownMetOnline(metabolite_structure,metabolite_structure_rBioNet,metab_rBioNet_online,rxn_rBioNet_online,startSearch,endSearch)
+function [metabolite_structure, hit] = searchMultipleUnknownMetOnline(metabolite_structure, metabolite_structure_rBioNet, metab_rBioNet_online, rxn_rBioNet_online, startSearch, endSearch)
+% Search HMDB online by metabolite name for each metabolite in the structure
+% (via searchUnknownMetOnline) and merge the newly created metabolite entries
+% back into the metabolite structure.
 %
+% USAGE:
 %
-% INPUT
-% metabolite_structure  metabolite structure
-% startSearch           specify where the search should start in the
-%                       metabolite structure. Must be numeric (optional, default: all metabolites
-%                       in the structure will be search for)
-% endSearch             specify where the search should end in the
-%                       metabolite structure. Must be numeric (optional, default: all metabolites
-%                       in the structure will be search for)
+%    [metabolite_structure, hit] = searchMultipleUnknownMetOnline(metabolite_structure, metabolite_structure_rBioNet, metab_rBioNet_online, rxn_rBioNet_online, startSearch, endSearch)
 %
-% OUTPUT
-% metabolite_structure  updated metabolite structure
+% INPUT:
+%    metabolite_structure:            metabolite structure whose fields are VMH
+%                                     metabolite IDs, each holding `metNames` and
+%                                     `VMHId` fields
 %
+% OPTIONAL INPUTS:
+%    metabolite_structure_rBioNet:    rBioNet-derived metabolite structure
+%                                     (default: loaded from met_strc_rBioNet)
+%    metab_rBioNet_online:            rBioNet metabolite database (default:
+%                                     loaded from data/metab.mat)
+%    rxn_rBioNet_online:              rBioNet reaction database (default: loaded
+%                                     from data/rxn.mat)
+%    startSearch:                     numeric index of where the search should
+%                                     start in the metabolite structure (default: 1)
+%    endSearch:                       numeric index of where the search should end
+%                                     in the metabolite structure (default: last
+%                                     metabolite)
 %
-% Ines Thiele, 2020-2021
+% OUTPUTS:
+%    metabolite_structure:            updated metabolite structure
+%    hit:                             cell array logging the matched metabolites,
+%                                     with the metabolite name, the new field
+%                                     name, and the HMDB id per row
+%
+% .. Author: - Ines Thiele, 2020-2021
 
 
 if ~exist('metabolite_structure_rBioNet','var')

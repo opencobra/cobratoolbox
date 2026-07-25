@@ -12,6 +12,7 @@ function varargout = processingLLCs(process, varargin)
 %       [solveLP, MILPproblem] = processingLLCs('update', loopInfo, osenseStr, MILPproblem, objVector)
 %
 % INPUTS:
+%    process:       operation to perform: 'preprocess' or 'update'
 %    loopInfo:      structure containing info about the loops, initially outputed
 %                   from `addLoopLawConstraints` and updated by the current function
 %    LPproblem:     original COBRA LP problem structure 
@@ -25,6 +26,9 @@ function varargout = processingLLCs(process, varargin)
 %                   for updating LLCs (e.g., FVA min v_PYK given fixed v_biomass)
 %
 % OUTPUTS:
+%    varargout:     comma-separated outputs depending on `process`; the 'preprocess'
+%                   call returns `{solveLP, MILPproblem, loopInfo}` and the 'update'
+%                   call returns `{solveLP, MILPproblem}`.
 %    solveLP:       true if solving LP is sufficient to gaurantee the objective function value 
 %                   is the same as solving MILP with loop constraints
 %    MILPproblem:   updated MILP problem with LLCs

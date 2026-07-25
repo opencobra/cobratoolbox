@@ -1,7 +1,25 @@
-function [model, regularisedFormulae,rGroupFormulae] = regulariseModelFormulae(model)
-%Update the molecular formulae to make sure that they are consistent with
-%model metadata, and expressed in Hill notation, with the exception that
-%all R groups are replaced with the letter A
+function [model, regularisedFormulae, rGroupFormulae] = regulariseModelFormulae(model)
+% Update the molecular formulae to make sure that they are consistent with
+% model metadata, and expressed in Hill notation, with the exception that
+% all R groups are replaced with the letter A
+%
+% USAGE:
+%
+%    [model, regularisedFormulae, rGroupFormulae] = regulariseModelFormulae(model)
+%
+% INPUT:
+%    model:                   COBRA model structure with fields:
+%
+%                               * .mets - metabolite identifiers
+%                               * .metFormulas - metabolite chemical formulas
+%                               * .metInChIString - InChI strings for metabolites (optional; used to regularise formulae when present)
+%
+% OUTPUTS:
+%    model:                   COBRA model structure with the updated field:
+%
+%                               * .metFormulas - metabolite formulas in Hill notation, with R groups replaced by 'A'
+%    regularisedFormulae:     `nMet` x 1 boolean vector indicating metabolites whose formula was replaced by an InChI-derived formula
+%    rGroupFormulae:          `nMet` x 1 boolean vector indicating metabolites whose formula contained an R-group token replaced by 'A'
 
 [nMet,~]=size(model.mets);
 

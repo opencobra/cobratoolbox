@@ -11,7 +11,11 @@ function [TSscore, deletedGenes, Vres] = rMTA(model, rxnFBS, Vref, varargin)
 %    [TSscore,deletedGenes,Vout] = rMTA(model, rxnFBS, Vref, alpha, epsilon, varargin)
 %
 % INPUTS:
-%    model:              Metabolic model structure (COBRA Toolbox format).
+%    model:              Metabolic model structure (COBRA Toolbox format) with fields:
+%
+%                            * .S - stoichiometric matrix
+%                            * .rxns - reaction identifiers
+%                            * .lb - lower flux bounds
 %    rxnFBS:             Array that contains the desired change: Forward,
 %                        Backward and Unchanged (+1;0;-1). This is calculated
 %                        from the rules and differential expression analysis.
@@ -47,11 +51,13 @@ function [TSscore, deletedGenes, Vres] = rMTA(model, rxnFBS, Vref, varargin)
 %                        solver.
 %    printLevel:         Integer. 1 if the process is wanted to be shown
 %                        on the screen, 0 otherwise. (default = 1)
+%    deprecated_rTS:     Logical. If true, also return the deprecated old rTS
+%                        score in the field old_rTS. (default = 0)
 %
 % OUTPUTS:
 %    TSscore:            Transformation score by each transformation
 %    deletedGenes:       The list of genes/reactions removed in each knock-out
-%    Vref:               Matrix of resulting fluxes
+%    Vres:               Matrix of resulting fluxes
 %
 % .. Authors:
 %       - Luis V. Valcarcel, 03/06/2015, University of Navarra, CIMA & TECNUN School of Engineering.

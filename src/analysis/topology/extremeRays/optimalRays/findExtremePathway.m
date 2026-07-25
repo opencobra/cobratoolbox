@@ -6,7 +6,11 @@ function [x, output] = findExtremePathway(fbaModel, obj)
 %    [x, output] = findExtremePathway(fbaModel, obj)
 %
 % INPUT:
-%    fbaModel:    FBA type model
+%    fbaModel:    FBA type model with fields:
+%
+%                   * .S - `m x n` stoichiometric matrix
+%                   * .lb - `n x 1` lower flux bounds (used to detect reversible reactions)
+%                   * .ub - `n x 1` upper flux bounds (used to detect reversible reactions)
 %
 % OPTIONAL INPUT:
 %    obj:         default = random vector with size depending on fbaModel.S

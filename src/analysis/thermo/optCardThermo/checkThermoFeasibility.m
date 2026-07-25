@@ -1,31 +1,45 @@
-function [thermoConsistentFluxBool,solutionConsistency] = checkThermoFeasibility(model,solution,thermoConsistencyMethod,param)
-% Check which internal reactions of a flux vector solution.v are thermodynamically feasible 
+function [thermoConsistentFluxBool, solutionConsistency] = checkThermoFeasibility(model, solution, thermoConsistencyMethod, param)
+% Check which internal reactions of a flux vector are thermodynamically feasible
 %
-% INPUT:
-%    model:             (the following fields are required - others can be supplied)
+% USAGE:
 %
-%     * .S  - `m x n` Stoichiometric matrix
-%     * .SConsistentRxnBool - 'n x 1' Boolean vector of stoichiometrically consistent reactions
+%    [thermoConsistentFluxBool, solutionConsistency] = checkThermoFeasibility(model, solution, thermoConsistencyMethod, param)
 %
-%    solution.v:      n x nlt  flux vectors
+% INPUTS:
+%    model:                     COBRA model structure with fields:
 %
-% OPTIONAL INPUT
-% thermoConsistencyMethod: {('cycleFreeFlux'),'signProduct','cardOpt'}
+%                                 * .S - `m x n` stoichiometric matrix
+%                                 * .c - `n x 1` linear objective coefficients
+%                                 * .SConsistentRxnBool - `n x 1` boolean of stoichiometrically consistent reactions
+%    solution:                  flux solution structure with fields:
 %
-% param.printLevel:
-% param.eta:                Minimum flux value that is considered nonzero. Default is feasTol. 
-%                           Very sensitive to change in this parameter. Don't change it unless you can debug it.
-% param.theta:              Parameter to Capped-L1 (Approximate step function). Default 0.5
-% param.warmStartMethod:    Method to warm start optimizeCardinality. Default is 'random'
-%                           {('random'),'original','zero','l1','l2'};
-% param.thermoConsistency:  {('biochemically'), 'chemically'};
-%                           'biochemically' allows N'y ~=0 when v = 0, assumes a missing enzyme to catalyse the reaction.
-%                           'chemically' enforces the constraint v = 0 => N'y = 0
+%                                 * .stat - solver status (the function returns early unless `.stat` is 1)
+%                                 * .v - `n x nlt` flux vectors
+%                                 * .g - `n x 1` reaction gradients (used by the 'signProduct' method)
+%                                 * .thermoConsistentFluxBool - optional precomputed consistency boolean (skips the check)
 %
-% OUTPUT
-% thermoConsistentFluxBool:  'n x 1' Boolean vector true for thermodynamically consistent fluxes and true for all non-zero external reactions
-% solutionConsistency:       solution structure returned by thermodynamic consistency check
-%           *.vThermo:       'n x 1' repaired thermodynamically consistent flux                       
+% OPTIONAL INPUTS:
+%    thermoConsistencyMethod:    consistency test method: 'cycleFreeFlux' (default),
+%                                'signProduct', 'cardOpt' or 'v2QNty'
+%    param:                     structure of parameters with fields:
+%
+%                                 * .eta - minimum flux value considered nonzero (default feasTol)
+%                                 * .epsilon - minimum flux value considered nonzero for the cardinality method (default feasTol)
+%                                 * .thermoConsistency - 'biochemically' (default) or 'chemically'
+%                                 * .relaxBounds - boolean, relax bounds (default 0)
+%                                 * .debug - boolean, print or save debugging information (default 0)
+%                                 * .parallelize - boolean, parallelise cycleFreeFlux (set to 0)
+%                                 * .printLevel - verbosity level (default 0)
+%                                 * .theta - Capped-L1 approximation parameter (default 0.5)
+%                                 * .warmStartMethod - warm start method for optimizeCardinality (default 'random')
+%                                 * .condenseW - boolean, condense the W block (default 0)
+%                                 * .condenseT - boolean, condense the T block (default 0)
+%
+% OUTPUTS:
+%    thermoConsistentFluxBool:    `n x 1` boolean, true for thermodynamically consistent internal fluxes
+%    solutionConsistency:         solution structure returned by the thermodynamic consistency check, with fields including:
+%
+%           * .vThermo:       'n x 1' repaired thermodynamically consistent flux                       
 
 % .. Author: - Ronan Fleming 2022
 % .. Please cite:

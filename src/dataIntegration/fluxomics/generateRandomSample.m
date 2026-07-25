@@ -1,4 +1,25 @@
 function [output] = generateRandomSample(model, n)
+% Draws a near-uniform random sample of flux vectors from the solution space
+% of a model using the general-purpose sampler, warming up from interior
+% points until the mixed fraction is small enough
+%
+% USAGE:
+%
+%    [output] = generateRandomSample(model, n)
+%
+% INPUTS:
+%    model:     model structure, with fields:
+%
+%                 * .S - `m x n` stoichiometric matrix
+%                 * .lb - `n x 1` lower flux bounds
+%                 * .ub - `n x 1` upper flux bounds
+%    n:         number of warm-up points to generate, default = 5000
+%
+% OUTPUT:
+%    output:    structure with fields:
+%
+%                 * .point - array of sampled flux points (one column per sample)
+%                 * .mf - final mixed fraction reported by the sampler
 
 if (nargin < 1)
     error 'function [output] = generateRandomSample(model, n)';

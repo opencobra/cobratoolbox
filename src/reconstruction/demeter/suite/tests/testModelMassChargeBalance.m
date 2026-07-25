@@ -5,31 +5,42 @@ function [massImbalancedRxns, chargeImbalancedRxns, imbalancedRxnMets, metsMissi
 % metabolites involved in mass or charge imblanced reactions along with
 % their formulas and charges.
 %
-% INPUT
-% model                 COBRA model structure
-% excludeExchanges      Exclude exchange reactions when reporting imbalanced
-%                       reactions (default: true).
+% USAGE:
 %
-% OPTIONAL INPUT
-% biomassReaction       Model biomass reaction (will be excluded from
-%                       report if provided)
+%    [massImbalancedRxns, chargeImbalancedRxns, imbalancedRxnMets, metsMissingFormulas] = testModelMassChargeBalance(model, excludeExchanges, biomassReaction)
 %
-% OUTPUT
-% massImbalancedRxns    Cell array listing (col 1) all mass imbalanced
-%                       reactions in the model, (col 2) the reaction
-%                       formulas, and (col 3) the imbalanced elements.
-% chargeImbalancedRxns  Cell array listing (col 1) all charge imbalanced
-%                       reactions in the model, (col 2) the reaction
-%                       formulas, and (col 3) the imblanced elements.
-% imbalancedRxnMets     Cell array listing (col 1) all metabolites involved
-%                       in any mass or charge imblanced reaction, (col 2)
-%                       the metabolite name, (col 3) the metabolite
-%                       formula, and (col 4) the metabolite charge.
-% metsMissingFormulas   Cell array listing (col 1) all metabolites that do
-%                       not have metabolite formulas and (col 2) the
-%                       metabolite names.
+% INPUTS:
+%    model:                 COBRA model structure with fields:
 %
-% Stefania Magnusdottir, Oct 2017
+%                             * .rxns - Reaction identifiers
+%                             * .mets - Metabolite identifiers
+%                             * .metNames - Metabolite names
+%                             * .S - `m x n` stoichiometric matrix
+%                             * .metFormulas - Metabolite chemical formulas
+%                             * .metCharges - Metabolite charges
+%    excludeExchanges:      Exclude exchange reactions when reporting imbalanced
+%                           reactions (default: true).
+%
+% OPTIONAL INPUTS:
+%    biomassReaction:       Model biomass reaction (will be excluded from
+%                           report if provided)
+%
+% OUTPUTS:
+%    massImbalancedRxns:    Cell array listing (col 1) all mass imbalanced
+%                           reactions in the model, (col 2) the reaction
+%                           formulas, and (col 3) the imbalanced elements.
+%    chargeImbalancedRxns:    Cell array listing (col 1) all charge imbalanced
+%                           reactions in the model, (col 2) the reaction
+%                           formulas, and (col 3) the imblanced elements.
+%    imbalancedRxnMets:     Cell array listing (col 1) all metabolites involved
+%                           in any mass or charge imblanced reaction, (col 2)
+%                           the metabolite name, (col 3) the metabolite
+%                           formula, and (col 4) the metabolite charge.
+%    metsMissingFormulas:     Cell array listing (col 1) all metabolites that do
+%                           not have metabolite formulas and (col 2) the
+%                           metabolite names.
+%
+% .. Author: - Stefania Magnusdottir, Oct 2017
 
 if nargin < 2
     excludeExchanges = true;

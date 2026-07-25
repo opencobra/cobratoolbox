@@ -9,7 +9,7 @@ function [model, modelGenerationReport] = XomicsToModel(genericModel, specificDa
 %    [model, modelGenerationReport] = XomicsToModel(genericModel, specificData, param)
 %
 % INPUT:
-%   genericModel:     A generic COBRA model in standard format https://github.com/opencobra/cobratoolbox/blob/master/docs/source/notes/COBRAModelFields.md
+%    genericModel:     A generic COBRA model in standard format https://github.com/opencobra/cobratoolbox/blob/master/docs/source/notes/COBRAModelFields.md
 %
 %   * .S:    `m x n' stoichiometric matrix
 %   * .b:     `m x 1` change in concentration with time
@@ -36,7 +36,7 @@ function [model, modelGenerationReport] = XomicsToModel(genericModel, specificDa
 %              to search the steady state solution space for a flux vector that results in certain reactions and metabolites to be active and present,
 %              respectively.
 %
-%%  specificData:  A structure containing context-specific data:
+%    specificData:    A structure containing context-specific data:
 %
 %   * .activeGenes - cell array of Entrez ID of genes that are known to be active based on the bibliomic data (Default: empty).
 %   * .inactiveGenes - cell array of Entrez ID of genes known to be inactive based on the bibliomics data (Default: empty).
@@ -91,7 +91,7 @@ function [model, modelGenerationReport] = XomicsToModel(genericModel, specificDa
 %   * .proteomicData.genes: Entrez ID's of the gene corresponding to each protein
 %   * .proteomicData.expVal: Non-negative abundance of each protein  i.e. linear scale.
 %
-%%  param: a structure containing the parameters for the function:
+%    param:    a structure containing the parameters for the function:
 %   * .printLevel -﻿Level of verbose that should be printed (Default: 0).
 %   * .debug -﻿Logical, should the function save its progress for debugging (Default: false).
 %   * .addCoupledRxns -﻿Logical, determines if the flux of reactions specified in specificData.coupledRxns should be coupled (Default: true).
@@ -150,11 +150,16 @@ function [model, modelGenerationReport] = XomicsToModel(genericModel, specificDa
 %   * .setObjective - Linear objective function to optimise (Default: none).
 %   * .biomassRxn -The biomass reaction that represents the growth capacity of cells 
 %                  Possible options for Recon3: 'biomass_reaction' (Default: empty)
-%   * .maintenanceRxn -The biomass maintenance reaction that represents the turnover and update capacity of cells 
+%   * .maintenanceRxn -The biomass maintenance reaction that represents the turnover and update capacity of cells
 %                      (Possible options for Recon3:'biomass_maintenance', 'biomass_maintenance_noTrTr') (Default: empty)
+%   * .workingDirectory - Directory where debug .mat files are written (Default: pwd).
+%   * .plotThermoKernelStats - Logical, plot thermoKernel extraction statistics (Default: false).
+%   * .plotThermoKernelWeights - Logical, plot thermoKernel input weights (Default: false).
+%   * .finalFluxConsistency - Logical, run a final flux consistency check on the extracted model (Default: false).
+%   * .message - Internal status message recording the current model-generation step.
 %
 % OUTPUTS:
-%    model:  A Context-specific COBRA model with the following fields (the
+%    model:    A Context-specific COBRA model with the following fields (the
 %            content of the variables specificData and param influences the
 %            generation of new fields):
 %
@@ -218,6 +223,11 @@ function [model, modelGenerationReport] = XomicsToModel(genericModel, specificDa
 %        * .unknownSConsistencyRxnBool - n x 1 boolean vector indicating unknown consistent rxns (all zeros when algorithm converged perfectly!).
 %        * .XomicsToModelParam - Parameters used to generate the model.
 %        * .XomicsToModelSpecificData - Context-specific data used to generate the model.
+%
+%    modelGenerationReport:    A struct reporting on the model generation, with
+%                              fields such as `.sinksAddedFromexoMet` (sink reactions
+%                              added from exometabolomic data) and `.exoMetNoRxnID`
+%                              (exometabolomic entries with no matching reaction ID).
 %
 % Requires The COBRA Toolbox and a linear optimisation solver (e.g. Gurobi) to be installed
 %
@@ -305,6 +315,20 @@ if ~isfield(param, 'curationOverOmics')
 end
 if ~isfield(param, 'activeOverInactive')
     param.activeOverInactive = 0;
+end
+% Backward compatibility: the parameter was renamed tissueSpecificSolver ->
+% modelExtractionAlgorithm (commit f9cfde976, 2024-02) with no alias, which
+% silently made legacy callers that still pass tissueSpecificSolver (e.g.
+% COBRA.papers/2023_iDopaNeuro, the XomicsToModel tutorial and tests) default to
+% thermoKernel instead of the requested algorithm. Honour the old name here.
+if isfield(param, 'tissueSpecificSolver') && ~isfield(param, 'modelExtractionAlgorithm')
+    param.modelExtractionAlgorithm = param.tissueSpecificSolver;
+    if iscell(param.modelExtractionAlgorithm) && isscalar(param.modelExtractionAlgorithm)
+        param.modelExtractionAlgorithm = param.modelExtractionAlgorithm{1};
+    end
+    warning('XomicsToModel:deprecatedParam', ...
+        ['param.tissueSpecificSolver is deprecated; use param.modelExtractionAlgorithm ' ...
+         '(mapped the supplied value to select the extraction algorithm).']);
 end
 if isfield(param, 'modelExtractionAlgorithm')
     if ~any(ismember(param.modelExtractionAlgorithm,{'thermoKernel','fastCore'}))

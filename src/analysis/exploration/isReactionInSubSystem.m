@@ -1,4 +1,4 @@
-function [present] = isReactionInSubSystem(model,reactions,subSystem)
+function [present] = isReactionInSubSystem(model, reactions, subSystem)
 % Determine whether a reaction is in a given subSystem.
 %
 % USAGE:
@@ -7,7 +7,12 @@ function [present] = isReactionInSubSystem(model,reactions,subSystem)
 %
 % INPUT:
 %    model:                 A COBRA model struct with at least rxns and
-%                           subSystems or rxn2subSystem(COBRA V4) fields
+%                           subSystems or rxn2subSystem(COBRA V4) fields:
+%
+%                             * .rxns - `n x 1` reaction identifiers
+%                             * .subSystemNames - list of unique subsystem names
+%                             * .rxn2subSystem - reaction-to-subsystem membership matrix
+%
 %    reactions:             Either a string identifying a reaction, or a
 %                           cell array of strings identifying multiple
 %                           reactions, or a double vector identifying the

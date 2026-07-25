@@ -1,31 +1,31 @@
-function [overlapResults,statistic] = compareXomicsModels(multiModels, printFlag)
-%Compare generated models in mets, rxns, genes
+function [overlapResults, statistic] = compareXomicsModels(multiModels, printFlag)
+% Compare generated models in mets, rxns, genes
 %
-%USAGE:
+% USAGE:
 %
-%    [overlapResults,statistic] = compareXomicsModels(multiModels, printFlag)
+%    [overlapResults, statistic] = compareXomicsModels(multiModels, printFlag)
 %
-%INPUT:
+% INPUT:
 %    multiModels:     struct format with models that need to compare
 %                      e.g.multimodels.model1
 %                          multimodels.model2 ...
 %    printFlag:       1 if information should be printed to a table.
 %                     Default = 0
 %
-%OUTPUT:
-%    overlapResults:  the overlapped met/rxn/gene numbers of each pair of models
+% OUTPUT:
+%    overlapResults:    the overlapped met/rxn/gene numbers of each pair of models
 %    statistic:       the overlapped porportion matrix of each pair of models
 %
-%EXAMPLE:
+% EXAMPLE:
 %
-%    [overlapResults,statistic] = compareXomicsModels(multiModels)
+%    [overlapResults, statistic] = compareXomicsModels(multiModels)
 %
-%NOTE:
+% NOTE:
 %
 %    This function is used to compare generated models from xomicsToModel
 %    pipeline
 %
-%Author(s): - Xi Luo, update at 2024/10
+% .. Author(s): - Xi Luo, update at 2024/10
 %           - Hanneke Leegwater (2022)
 
 %% Check input params

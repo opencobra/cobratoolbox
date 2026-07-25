@@ -1,13 +1,17 @@
-function [model]  = removeSubSystemsFromRxns(model,reactions,subSystems)
+function [model]  = removeSubSystemsFromRxns(model, reactions, subSystems)
 % Adds the subSystem to the specified reaction
 %
 % USAGE:
 %
-%    [model]  = addSubSystemToReaction(model,reaction,subSystem)
+%    [model]  = removeSubSystemsFromRxns(model, reactions, subSystems)
 %
 % INPUT:
-%    model:                 A COBRA model struct with at least rxns and
-%                           subSystems fields
+%    model:                 A COBRA model struct with fields:
+%
+%                             * .rxns - `n x 1` reaction identifiers
+%                             * .subSystems - `n x 1` cell array of cell
+%                               arrays of subSystem names for each
+%                               reaction (created if not already present)
 %    reactions:             Either a string identifying a reaction, or a
 %                           cell array of strings identifying multiple
 %                           reactions, or a double vector or boolean vector
@@ -28,6 +32,7 @@ function [model]  = removeSubSystemsFromRxns(model,reactions,subSystems)
 %    [model]  = removeSubSystemsFromRxns(model,18,{'Glycolysis','Gluconeogenesis'})
 %
 % .. Author: - Thomas Pfau Nov 2017
+
 if ischar(reactions) || iscell(reactions)
     [tempreactions] = ismember(model.rxns,reactions);
     if (iscell(reactions) && (sum(tempreactions) ~= length(reactions))) || (ischar(reactions) && sum(tempreactions) ~= 1)

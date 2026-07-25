@@ -1,4 +1,4 @@
-function [metInfo,mets] = readSimPhenyCMPD(fileName)
+function [metInfo, mets] = readSimPhenyCMPD(fileName)
 % Reads SimPheny compound file obtained from admin console
 %
 % USAGE:

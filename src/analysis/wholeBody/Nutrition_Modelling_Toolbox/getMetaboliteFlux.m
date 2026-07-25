@@ -1,33 +1,37 @@
 function [metFlux] = getMetaboliteFlux(diet, varargin)
-% This function takes a diet consisting of food items and returns the
-% associated flux of metabolites.
+% Take a diet consisting of food items and return the associated metabolite
+% flux
 %
 % USAGE:
-%   [metFlux] = getMetaboliteFlux(diet)
+%
+%    [metFlux] = getMetaboliteFlux(diet, varargin)
 %
 % INPUT:
-%   diet:   an nx2 cell array consisting of n dietary/food components and
-%           their corresponding flux in grams (for food items) or mmol (for
-%           individual metabolites) per day.
+%    diet:            An n x 2 cell array of n dietary/food components and
+%                     their corresponding flux in grams (for food items) or
+%                     mmol (for individual metabolites) per day
 %
-% Optional input:
-%   databaseType:   Which database should be used, either fdtable or usda.
-%                   Corresponds to an inhouse table or the USDA foodData
-%                   database. Defaults to usda
-%   addStarch:      Boolean wether or not additional starch should be added
-%                   to the flux vector when it is not measured in the macros
+% OPTIONAL INPUTS:
+%    varargin:        Name-value pairs:
+%
+%                       * databaseType - char or cell array selecting which
+%                         database is used ('usda' and/or 'frida')
+%                         (default 'usda')
+%                       * addStarch - boolean, whether additional starch is
+%                         added to the flux vector when it is not measured in
+%                         the macros (default false)
 %
 % OUTPUT:
-%   metFlux: returns an nx2 cell array containing a list of all n metabolites
-%            within the diet and the corresponding flux.
+%    metFlux:         An n x 2 cell array listing all n metabolites in the
+%                     diet and their corresponding flux
 %
-% AUTHORS:
-%   Bronson R. Weston 2022
-%   Bram Nap, 05-2024 - Added on functionality to work with the FoodData
-%   central database and add on missing starch functionalities. Removed
-%   FdTable functionality.
-%   02-2025 added Frida database functionality and mixed database
-%   calculations
+% .. Authors:
+% ..    - Bronson R. Weston, 2022
+% ..    - Bram Nap, 05-2024 - added functionality for the FoodData Central
+% ..      database and missing-starch handling; removed the fdTable
+% ..      functionality
+% ..    - 02-2025 - added Frida database functionality and mixed database
+% ..      calculations
 
 % Parse inputs
 parser = inputParser();

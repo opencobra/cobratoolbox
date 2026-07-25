@@ -1,16 +1,26 @@
-function [metabolite_structure,IDsAdded] = getCas2Echa(metabolite_structure)
+function [metabolite_structure, IDsAdded] = getCas2Echa(metabolite_structure)
+% Add ECHA (European Chemicals Agency) identifiers to the metabolite structure
+% by matching on the CAS registry number. The input file was downloaded from
+% https://echa.europa.eu/documents/10162/13629/ec_inventory_en.xlsx (first
+% column: echa_id, 4th column: cas registry).
 %
-% The input file was downloaded from https://echa.europa.eu/documents/10162/13629/ec_inventory_en.xlsx
+% USAGE:
 %
+%    [metabolite_structure, IDsAdded] = getCas2Echa(metabolite_structure)
 %
-% INPUT
-% metabolite_structure  metabolite structure
+% INPUT:
+%    metabolite_structure:    metabolite structure whose fields are VMH
+%                             metabolite IDs, each holding a `casRegistry` field
 %
-% OUTPUT
-% metabolite_structure  Updated metabolite structure
+% OUTPUTS:
+%    metabolite_structure:    metabolite structure updated with the matched
+%                             ECHA identifiers
+%    IDsAdded:                cell array logging the added identifiers, with the
+%                             metabolite field name, the annotation type
+%                             (`echa_id`), and the assigned identifier per row
 %
-%
-% Ines Thiele, 2020-2021
+% .. Author: - Ines Thiele, 2020-2021
+
 % first column contains echa_id,4th col is cas registry
 [NUM,TXT,RAW]=xlsread('ec_inventory_en.xlsx');
 

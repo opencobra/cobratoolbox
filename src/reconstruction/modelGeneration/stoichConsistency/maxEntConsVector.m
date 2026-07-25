@@ -1,4 +1,7 @@
 function  [m, bool] = maxEntConsVector(SInt, printLevel)
+% Computes the maximum entropy conservation vector `m` of a stoichiometric
+% matrix by solving a primal-dual barrier problem with `pdco`.
+%
 % USAGE:
 %
 %    [m, bool] = maxEntConsVector(SInt, printLevel)

@@ -1,3 +1,5 @@
+% COBRArrowSolver manages solver-name and solver-parameter configuration
+% for use with the COBRArrow client
 classdef COBRArrowSolver
     % COBRArrowSolver is a class for managing solver configurations.
     % It allows setting a solver's name and managing key-value pairs

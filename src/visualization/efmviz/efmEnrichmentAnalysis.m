@@ -11,8 +11,10 @@ function efmEnrichmentAnalysis(EFMRxns, model, exprData, GSCFileName, GSSFileNam
 %    efmEnrichmentAnalysis(EFMRxns, model, exprData, GSCFileName, GSSFileName)
 %
 % INPUTS:
-%    EFMRxns:        matlab array containing reactions in EFMs (each row is an EFM and every entry indicates the reaction IDs in the EFM) 
-%    model:          COBRA model structure
+%    EFMRxns:        matlab array containing reactions in EFMs (each row is an EFM and every entry indicates the reaction IDs in the EFM)
+%    model:          COBRA model structure with fields:
+%
+%                      * .rxns - `n x 1` cell array of reaction identifiers
 %    exprData:       mRNA expression data structure
 %       .gene               	cell array containing GeneIDs in the same
 %                               format as model.genes

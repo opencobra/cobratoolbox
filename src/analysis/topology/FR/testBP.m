@@ -1,3 +1,7 @@
+% Test bipartiteness of the sizeable connected components of the [F, R]
+% incidence graph: decompose a stoichiometric matrix B into forward and
+% reverse matrices F and R, form the graph of FR, and check each component.
+
 [row,col] = find(B<0); % decompose B into F and R
 F = sparse(row,col,1);
 

@@ -1,37 +1,82 @@
 function [xmlStruct, map] = transformXML2Map(fileName)
 % Create a MATLAB structure from a given XML file.
-% The XML file is first parsed through the "xml2struct" function and
+% The XML file is first parsed through the `xml2struct` function and
 % then transformed into a structure. The content of this structure can be
-% found in the [description document](https://github.com/opencobra/cobratoolbox/blob/master/docs/source/notes/simpleMATLABStructure.md)
+% found in the description document
+% `documentation/source/notes/MapStructure.md`
 %
 % USAGE:
 %
-%   [xmlStruct, map] = transformXML2Map(fileName)
+%    [xmlStruct, map] = transformXML2Map(fileName)
 %
 % INPUT:
-%   fileName:       Path to the XML file.
+%    fileName:      Path to the XML file
 %
 % OUTPUTS:
-%   xmlStruct:      Structure obtained from the "xml2struct" function.
-%                   To be kept for the conversion back to an XML file
-%                   of the structure.
-%   map:            Matlab structure of the map containing all the
-%                   relevant fields usable for checking and correction.
+%    xmlStruct:     Structure obtained from the `xml2struct` function, kept
+%                   for the conversion back to an XML file of the structure.
+%                   Fields used:
 %
-%                * sID -  Stoichiometric matrix with `rows = MetabolitesID` and
-%                  `columns = ReactionsID` in the same order as in the map
-%                  structure. Contains `-1` if the metabolite is a
-%                  reactant/substract, `+1` if the metabolite is a product
-%                  and `0` if it does not participate in the reaction.
-%                * sAlias - Stoichiometric matrix with `rows = MetabolitesAlias` and
-%                  `columns = ReactionsID` in the same order as in the map
-%                  structure. Contains `-1` if the metabolite is a
-%                  reactant/substract, `+1` if the metabolite is a product
-%                  and `0` if it does not participate in the reaction.
-%                * idAlias - Logical matrix with `rows = MetabolitesID` and
-%                  `columns = MetabolitesAlias`. Contains `+1` if the
-%                  `MetaboliteID` match with the `MetaboliteAlias` and `0`
-%                  if it doesn't.
+%                     * .sbml - top-level SBML tree parsed from `fileName`; the
+%                       molecule, species, reaction, and compartment fields of
+%                       `map` below are all extracted from this tree
+%    map:           MATLAB structure of the map (see
+%                   `documentation/source/notes/MapStructure.md`) containing
+%                   all the relevant fields usable for checking and correction:
+%
+%                     * .molAlias - alias of each molecule (no duplicates)
+%                     * .molID - ID of each molecule (duplicates)
+%                     * .molCompartAlias - compartment alias of each molecule
+%                       (empty if no info)
+%                     * .molXPos - X position of each molecule
+%                     * .molYPos - Y position of each molecule
+%                     * .molWidth - width of each molecule
+%                     * .molHeight - height of each molecule
+%                     * .molColor - colour of each molecule (HTML code)
+%                     * .specID - ID of each species (no duplicates)
+%                     * .specMetaID - metaID of each species
+%                     * .specName - name of each species
+%                     * .specType - type of each species (SIMPLE_MOLECULE/ION/PROTEIN...)
+%                     * .specNotes - notes of each species (empty if no info)
+%                     * .rxnID - ID of each reaction (no duplicates)
+%                     * .rxnMetaID - metaID of each reaction
+%                     * .rxnName - name of each reaction
+%                     * .rxnType - type of each reaction
+%                     * .rxnReversibility - reversibility of each reaction (`'false'`/`'true'`)
+%                     * .rxnBaseReactantAlias - alias of the base reactant(s)
+%                     * .rxnBaseReactantID - ID of the base reactant(s)
+%                     * .rxnBaseProductAlias - alias of the base product(s)
+%                     * .rxnBaseProductID - ID of the base product(s)
+%                     * .rxnReactantAlias - alias of reactant(s) (empty if not present)
+%                     * .rxnReactantID - ID of reactant(s) (empty if not present)
+%                     * .rxnProductAlias - alias of product(s) (empty if not present)
+%                     * .rxnProductID - ID of product(s) (empty if not present)
+%                     * .rxnModAlias - alias of modifier metabolite(s) of each reaction
+%                     * .rxnModID - ID of modifier metabolite(s) of each reaction
+%                     * .rxnModType - type of the modification by the metabolite
+%                     * .rxnModColor - colour of the modification line
+%                     * .rxnModWidth - width of the modification line
+%                     * .rxnColor - colour of the main reaction (HTML code)
+%                     * .rxnWidth - width of the main reaction
+%                     * .rxnNotes - notes of each reaction (empty if no info)
+%                     * .compartAlias - alias of each compartment (empty if no info)
+%                     * .compartName - name of each compartment (empty if no info)
+%                     * .sID - stoichiometric matrix with rows = `specID` and
+%                       columns = `rxnID`, in the same order as in the map
+%                       structure. Contains `-1` if the species is a
+%                       substrate, `+1` if the species is a product, and `0`
+%                       if it does not participate in the reaction. Added by
+%                       `getMapMatrices`.
+%                     * .sAlias - stoichiometric matrix with rows = `molAlias`
+%                       and columns = `rxnID`, in the same order as in the map
+%                       structure. Contains `-1` if the molecule is a
+%                       substrate, `+1` if the molecule is a product, and `0`
+%                       if it does not participate in the reaction. Added by
+%                       `getMapMatrices`.
+%                     * .idAlias - logical matrix with rows = `specID` and
+%                       columns = `molAlias`. Contains `1` if the `specID`
+%                       matches the `molID` of that `molAlias`, and `0`
+%                       otherwise. Added by `getMapMatrices`.
 %
 % .. Author: - N.Sompairac - Institut Curie, Paris, 24/07/2017
 

@@ -6,7 +6,12 @@ function [FBAsols, DRgenes, constrainedRxns, cycleStart, states] = optimizeRegMo
 %    [FBAsols, DRgenes, constrainedRxns, cycleStart, states] = optimizeRegModel(model, initialRegState)
 %
 % INPUTS:
-%    model:              a regulatory COBRA model
+%    model:              a regulatory COBRA model with fields:
+%
+%                          * .genes - gene identifiers
+%                          * .regulatoryGenes - genes in the Boolean regulatory network
+%                          * .regulatoryInputs1 - type 1 regulatory inputs (metabolites)
+%                          * .regulatoryInputs2 - type 2 regulatory inputs (reactions)
 %    initialRegState:    the initial state of the regulatory network as a
 %                        Boolean vector (opt, default = all false)
 %

@@ -1,22 +1,30 @@
 function missingStereo = checkForMissingStereo(model, trainingModel)
+% Identify model metabolites whose stereochemistry is missing relative to the training data
+%
+% Compares standard InChI without stereochemistry against standard InChI with
+% stereochemistry for both the model and the training model, and returns the
+% model metabolite abbreviations that map to a training-data InChI but lack
+% stereochemical detail.
+%
 % USAGE:
 %
 %    missingStereo = checkForMissingStereo(model, trainingModel)
 %
 % INPUTS:
-%    model:    structure with fields:
+%    model:            structure with fields:
 %
-%                * .mets
-%                * .inchi.standard
-%                * .inchi.standardWithStereo
+%                        * .mets - metabolite abbreviations
+%                        * .inchi.standard - standard InChI without stereochemistry
+%                        * .inchi.standardWithStereo - standard InChI with stereochemistry
 %
-%    trainingModel:     structure with fields:
+%    trainingModel:    training-data structure with fields:
 %
-%                *.inchi.standard
-%                *.inchi.standardWithStereo
+%                        * .inchi.standard - standard InChI without stereochemistry
+%                        * .inchi.standardWithStereo - standard InChI with stereochemistry
 %
 % OUTPUTS:
-%    missingStereo:
+%    missingStereo:    cell array of model metabolite abbreviations present in
+%                      the training data but lacking stereochemistry
 
 nistStdBool = false(length(trainingModel.inchi.standard));
 for n = 1:length(trainingModel.inchi.standard)

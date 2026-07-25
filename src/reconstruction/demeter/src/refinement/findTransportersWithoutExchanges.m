@@ -1,22 +1,29 @@
 function [model, transportersWithoutExchanges] = findTransportersWithoutExchanges(model)
-% Part of the DEMETER pipeline. Finds transporters to extracellular space 
-% that are blocked because they have no exchange reaction associated with 
+% Part of the DEMETER pipeline. Finds transporters to extracellular space
+% that are blocked because they have no exchange reaction associated with
 % them.
 %
-% USAGE   
-%       [model, transportersWithoutExchanges] = findTransportersWithoutExchanges(model)
+% USAGE:
 %
-% INPUT
-% model                             COBRA model structure
+%    [model, transportersWithoutExchanges] = findTransportersWithoutExchanges(model)
 %
-% OUTPUT
-% model                             COBRA model structure
-% transportersWithoutExchanges      Removed transport reactions
+% INPUTS:
+%    model:                           COBRA model structure with fields:
+%
+%                                      * .mets - Metabolite identifiers
+%                                      * .rxns - Reaction identifiers
+%                                      * .subSystems - Subsystem annotations
+%
+% OUTPUTS:
+%    model:                           COBRA model structure with blocked
+%                                     transporters removed
+%    transportersWithoutExchanges:    Removed transport reactions
 %
 % .. Authors:
-% Almut Heinken and Stefania Magnusdottir, 2016-2019
+%       - Almut Heinken and Stefania Magnusdottir, 2016-2019
 
 % find extracellular metabolites
+
 ExMets=model.mets(find(contains(model.mets, '[e]')));
 
 % check if an exchange reaction exists

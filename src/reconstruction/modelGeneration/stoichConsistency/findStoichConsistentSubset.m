@@ -10,9 +10,10 @@ function [SConsistentMetBool, SConsistentRxnBool, SInConsistentMetBool, SInConsi
 %    model:                         structure with:
 %
 %                                     * .S - `m` x `n` stoichiometric matrix
+%                                     * .SIntRxnBool - `n` x 1 boolean of reactions heuristically thought to be mass balanced
+%                                     * .mets - `m` x 1 cell array of metabolite identifiers
 %
 % OPTIONAL INPUT:
-%    model.SIntRxnBool              n x 1 boolean of reactions heuristically though to be mass balanced
 %    massBalanceCheck:              {0, (1)} mass and charge balance can be checked by looking at formulas
 %                                     * 0 = heuristic detection of exchange reactions (using
 %                                     `findSExRxnInd`) will be use to warm start algorithmic part
@@ -26,27 +27,31 @@ function [SConsistentMetBool, SConsistentRxnBool, SInConsistentMetBool, SInConsi
 %    epsilon:                       (`feasTol*10`) min nonzero mass, 1/epsilon = max mass
 %
 % OUTPUT:
-% SConsistentMetBool            m x 1 boolean vector indicating stoichiometrically consistent mets
-% SConsistentRxnBool            n x 1 boolean vector indicating stoichiometrically consistent rxns
-% SInConsistentMetBool          m x 1 boolean vector indicating stoichiometrically inconsistent mets
-% SInConsistentRxnBool          n x 1 boolean vector indicating stoichiometrically inconsistent rxns
-% unknownSConsistencyMetBool    m x 1 boolean vector indicating unknown consistent mets (all zeros when algorithm converged perfectly!)
-% unknownSConsistencyRxnBool    n x 1 boolean vector indicating unknown consistent rxns (all zeros when algorithm converged perfectly!)
-% model
-%   .SConsistentMetBool                 m x 1 boolean vector indicating consistent mets
-%   .SConsistentRxnBool                 n x 1 boolean vector indicating consistent rxns
-%   .SInConsistentMetBool               m x 1 boolean vector indicating inconsistent mets
-%   .SInConsistentRxnBool               n x 1 boolean vector indicating inconsistent rxns
-%   .metUnknownInconsistentRemoveBool   m x 1 boolean vector indicating removed mets
-%   .rxnUnknownInconsistentRemoveBool   n x 1 boolean vector indicating removed rxns
-%   .unknownSConsistencyMetBool         m x 1 boolean vector indicating unknown consistent mets (all zeros when algorithm converged perfectly!)
-%   .unknownSConsistencyRxnBool         n x 1 boolean vector indicating unknown consistent rxns (all zeros when algorithm converged perfectly!)
-%   .SIntMetBool                        m x 1 boolean of metabolites heuristically though to be involved in mass balanced reactions
-%   .SIntRxnBool                        n x 1 boolean of reactions heuristically though to be mass balanced
-%   .metRemoveBool                      m x 1 boolean vector of metabolites removed to form stoichConsistModel
-%   .rxnRemoveBool                      n x 1 boolean vector of reactions removed to form stoichConsistModel
+%    SConsistentMetBool:            m x 1 boolean vector indicating stoichiometrically consistent mets
+%    SConsistentRxnBool:            n x 1 boolean vector indicating stoichiometrically consistent rxns
+%    SInConsistentMetBool:          m x 1 boolean vector indicating stoichiometrically inconsistent mets
+%    SInConsistentRxnBool:          n x 1 boolean vector indicating stoichiometrically inconsistent rxns
+%    unknownSConsistencyMetBool:    m x 1 boolean vector indicating unknown consistent mets (all zeros when algorithm converged perfectly!)
+%    unknownSConsistencyRxnBool:    n x 1 boolean vector indicating unknown consistent rxns (all zeros when algorithm converged perfectly!)
+%    model:                         structure with fields added or updated by this function:
 %
-% stoichConsistModel          model with stoichiometrically inconsistent heuristically internal reactions removed and any stoichiometrically inconsistent metabolites removed.    
+%                                     * .balancedRxnBool - `n` x 1 boolean vector indicating reactions that are elementally balanced (added when `massBalanceCheck` is enabled)
+%                                     * .balancedMetBool - `m` x 1 boolean vector indicating metabolites appearing only in elementally balanced reactions (added when `massBalanceCheck` is enabled)
+%                                     * .Elements - list of chemical elements considered during the mass and charge balance check (added when `massBalanceCheck` is enabled)
+%                                     * .missingFormulaeBool - `m` x 1 boolean vector indicating metabolites with a missing or unrecognised `metFormulas` entry (added when `massBalanceCheck` is enabled)
+%                                     * .SConsistentMetBool - m x 1 boolean vector indicating consistent mets
+%                                     * .SConsistentRxnBool - n x 1 boolean vector indicating consistent rxns
+%                                     * .SInConsistentMetBool - m x 1 boolean vector indicating inconsistent mets
+%                                     * .SInConsistentRxnBool - n x 1 boolean vector indicating inconsistent rxns
+%                                     * .metUnknownInconsistentRemoveBool - m x 1 boolean vector indicating removed mets
+%                                     * .rxnUnknownInconsistentRemoveBool - n x 1 boolean vector indicating removed rxns
+%                                     * .unknownSConsistencyMetBool - m x 1 boolean vector indicating unknown consistent mets (all zeros when algorithm converged perfectly!)
+%                                     * .unknownSConsistencyRxnBool - n x 1 boolean vector indicating unknown consistent rxns (all zeros when algorithm converged perfectly!)
+%                                     * .SIntMetBool - m x 1 boolean of metabolites heuristically though to be involved in mass balanced reactions
+%                                     * .SIntRxnBool - n x 1 boolean of reactions heuristically though to be mass balanced
+%                                     * .metRemoveBool - m x 1 boolean vector of metabolites removed to form stoichConsistModel
+%                                     * .rxnRemoveBool - n x 1 boolean vector of reactions removed to form stoichConsistModel
+%    stoichConsistModel:            model with stoichiometrically inconsistent heuristically internal reactions removed and any stoichiometrically inconsistent metabolites removed.
 %
 
 % .. Author: - Ronan Fleming 2022

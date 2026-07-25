@@ -9,7 +9,13 @@ function singleMetaboliteThermoFigure(model, miliMolarStandard, metAbbr)
 %    singleMetaboliteThermoFigure(model, miliMolarStandard, metAbbr)
 %
 % INPUTS:
-%    model:                structure
+%    model:                structure with fields:
+%
+%                            * .S - `m x n` stoichiometric matrix
+%                            * .dGt0Min - `n x 1` lower bound on standard transformed reaction Gibbs energy
+%                            * .dGt0Max - `n x 1` upper bound on standard transformed reaction Gibbs energy
+%                            * .dGtMin - `n x 1` lower bound on transformed reaction Gibbs energy
+%                            * .dGtMax - `n x 1` upper bound on transformed reaction Gibbs energy
 %    miliMolarStandard:
 %    metAbbr:
 %

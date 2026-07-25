@@ -1,22 +1,22 @@
-function [incorrectRxns,incorrectMets] = validateCompartments(model)
+function [incorrectRxns, incorrectMets] = validateCompartments(model)
 % This function checks if there are any reactions with incorrect
 % compartments in the refined reconstructions. Appropriate compartments
 % include [c], [e], and [p].
 %
 % USAGE:
 %
-%    [incorrectRxns,incorrectMets] = validateCompartments(model)
+%    [incorrectRxns, incorrectMets] = validateCompartments(model)
 %
-% INPUTS
-% model             COBRA model structure
+% INPUTS:
+%    model:             COBRA model structure with fields:
 %
-% OUTPUTS
+%                         * .mets - Metabolite identifiers
 %
-% incorrectRxns     Reactions including metabolites in inappropriate compartments
-% incorrectMets     Metabolites located in inappropriate compartments
+% OUTPUTS:
+%    incorrectRxns:     Reactions including metabolites in inappropriate compartments
+%    incorrectMets:     Metabolites located in inappropriate compartments
 %
-% AUTHOR:
-%   Almut Heinken, 10/2020
+% .. Author: - Almut Heinken, 10/2020
 
 findIncorrectMets = find(~contains(model.mets,{'[c]','[e]','[p]'}));
 if ~isempty(findIncorrectMets)

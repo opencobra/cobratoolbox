@@ -1,13 +1,28 @@
 function taxonomy = parseNCBItaxonomy(NCBI)
 % Grabs taxonomic lineage from NCBI using the NCBI ID
 %
-% INPUT
-% NCBI          NCBI ID (e.g., 511145)
+% USAGE:
 %
-% OUTPUT
-% taxonomy      structure containing the taxonomic lineage
+%    taxonomy = parseNCBItaxonomy(NCBI)
 %
-% Stefania Magnusdottir, Nov 2017
+% INPUT:
+%    NCBI:         NCBI ID (e.g., 511145)
+%
+% OUTPUT:
+%    taxonomy:     Structure containing the taxonomic lineage
+%
+%                    * .superkingdom - Superkingdom of the organism
+%                    * .kingdom - Kingdom of the organism
+%                    * .phylum - Phylum of the organism
+%                    * .class - Class of the organism
+%                    * .order - Order of the organism
+%                    * .family - Family of the organism
+%                    * .genus - Genus of the organism
+%                    * .species - Species of the organism
+%                    * .strain - Strain identifier parsed from the NCBI
+%                      taxonomy browser page title
+%
+% .. Author: - Stefania Magnusdottir, Nov 2017
 
 if iscell(NCBI)
     NCBI = NCBI{1};

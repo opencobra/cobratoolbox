@@ -25,6 +25,9 @@ function model = pHbalanceProtons(model, massImbalance, printLevel, fileName)
 %
 %                        * model.S - stoichiometric matrix
 %                        * model.mets - metabolites
+%                        * model.rxns - reaction identifiers
+%                        * model.compartments - list of compartment identifiers
+%                        * model.metCompartments - compartment identifier for each metabolite
 %                        * model.SIntRxnBool - Boolean of internal reactions
 %                        * model.aveHbound - average number of bound hydrogen ions
 %                        * model.metFormulas - average number of bound hydrogen ions

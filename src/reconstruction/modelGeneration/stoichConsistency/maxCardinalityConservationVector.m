@@ -36,7 +36,7 @@ function  [maxConservationMetBool, maxConservationRxnBool, solution] = maxCardin
 %    S:                         `m` x `n` stoichiometric matrix
 %
 % OPTIONAL INPUTS:
-%    param:   structure with:
+%    param:    structure with:
 %
 %              * .nbMaxIteration - Stopping criteria - maximal number of iteration (Default value 1000)
 %              * .eta - Smallest value considered non-zero (Default value feasTol*10)
@@ -44,6 +44,7 @@ function  [maxConservationMetBool, maxConservationRxnBool, solution] = maxCardin
 %              * .zeta - Stopping criteria - threshold (Default value 1e-6)
 %              * .theta - Parameter of capped `l1` approximation (Default value 0.5)
 %              * .method - {'quasiConcave', ('optimizeCardinality')}
+%              * .printLevel - Verbose level (Default value 0)
 % 
 % OUTPUTS:
 %    maxConservationMetBool:    `m` x 1 boolean for consistent metabolites

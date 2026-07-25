@@ -6,7 +6,7 @@ function [optForceSets, posOptForceSets, typeRegOptForceSets, fluxOptForceSets] 
 %
 % USAGE:
 %
-%    [optForceSets, posOptForceSets, typeRegOptForceSets, fluxOptForceSets] = optForce(model, targetRxn, mustU, mustL, minFluxesW, maxFluxesW, minFluxesM, maxFluxesM, k, varargin)
+%    [optForceSets, posOptForceSets, typeRegOptForceSets, fluxOptForceSets] = optForce(model, targetRxn, biomassRxn, mustU, mustL, minFluxesW, maxFluxesW, minFluxesM, maxFluxesM, varargin)
 %
 % INPUTS:
 %    model:                  (structure) COBRA metabolic model
@@ -25,6 +25,9 @@ function [optForceSets, posOptForceSets, typeRegOptForceSets, fluxOptForceSets] 
 %                            desired to be increased, 'EX_suc' should be
 %                            chosen as the target reaction.
 %                            E.g.: `targetRxn = 'EX_suc';`
+%    biomassRxn:             (string) ID of the biomass reaction; used to
+%                            set the growth objective when analysing the
+%                            optForce solution
 %    mustU:                  (cell array) List of reactions in the `MustU` set
 %                            This input can be obtained by running the
 %                            script `findMustU.m`.

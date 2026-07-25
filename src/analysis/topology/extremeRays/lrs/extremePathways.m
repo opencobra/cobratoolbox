@@ -8,6 +8,7 @@ function [R, V] = extremePathways(model, positivity, inequality)
 % INPUTS:
 %    model:         COBRA Toolbox model with fields:
 %
+%                     * .S - `m x n` stoichiometric matrix
 %                     * .description - string used to name files
 %                     * .lb - lower bounds and
 %                     * .ub - upper bounds to derive directionality

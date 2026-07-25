@@ -6,7 +6,10 @@ function model = changeObjective(model, rxns, objectiveCoeff)
 %    model = changeObjective(model, rxns, objectiveCoeff)
 %
 % INPUTS:
-%    model:         COBRA model structure
+%    model:         COBRA model structure with the field:
+%
+%                     * .c - `n x 1` linear objective coefficient vector
+%
 %    rxns:          a string or a cell array of strings matching some model.rxns{i}
 %
 % OPTIONAL INPUT:

@@ -6,7 +6,10 @@ function geneID = findGeneIDs(model, geneList)
 %    geneID = findGeneIDs(model, geneList)
 %
 % INPUTS:
-%    model:       COBRA model structure
+%    model:       COBRA model structure with fields:
+%
+%                   * .genes - gene identifiers
+%
 %    geneList:    List of genes
 %
 % OUTPUT:

@@ -4,49 +4,57 @@ constrainRxns(model, specificData, param, mode, printLevel)
 %
 % USAGE:
 %
-%    [newModel, rxnsConstrained, rxnBoundsCorrected, newOptions] = constrainRxns(model, specificData, param, mode, metabolomicWeights, printLevel)
+%    [newModel, rxnsConstrained, rxnBoundsCorrected, newSpecificData] = constrainRxns(model, specificData, param, mode, printLevel)
 %
 % INPUTS:
-%  model.S:                      m x n stoichiometric matrix
-%  model.rxns:                   n x 1 cell array of reaction identifiers
-%  model.rxnNames:               n x 1 cell array of reaction names
-%  model.lb:                     n x 1 vector with lower bounds
-%  model.ub:                     n x 1 vector with upper bounds
-%  model.constraintDescription:
-%  model.SIntRxnBool:
-%  model.SinkRxnBool:
-%  model.DMRxnBool:
+%    model:    A COBRA model structure with fields:
 %
-%  specificData.rxns2constrain:
-%  specificData.mediaData:
-%  specificData.exoMet.rxns   k x 1 cell array of reaction identifiers
-%  specificData.exoMet.mean    k x 1 numeric array of mean measured reaction flux
-%  specificData.exoMet.SD      k x 1 numeric array of standard deviation in measured reaction flux
-%  specificData.essentialAA:
-%  specificData.exoMet.varID
+%                * .S - `m x n` stoichiometric matrix
+%                * .rxns - `n x 1` cell array of reaction identifiers
+%                * .rxnNames - `n x 1` cell array of reaction names
+%                * .lb - `n x 1` vector with lower bounds
+%                * .ub - `n x 1` vector with upper bounds
+%                * .SIntRxnBool - `n x 1` boolean, true for internal reactions
+%                * .SinkRxnBool - `n x 1` boolean, true for sink reactions
+%                * .DMRxnBool - `n x 1` boolean, true for demand reactions
+%                * .c - `n x 1` linear objective coefficient vector
+%                * .C - `k x n` coupling constraint matrix on reactions
+%                * .D - `k x nEvars` coupling constraint matrix on extra variables
+%                * .E - `m x nEvars` matrix coupling extra variables into the steady state
+%                * .evars - identifiers of the extra variables
+%                * .evarc - objective coefficients of the extra variables
+%                * .evarlb - lower bounds of the extra variables
+%                * .evarub - upper bounds of the extra variables
 %
-%  param.TolMinBoundary:
+%    specificData:    A structure containing context-specific data with fields:
 %
-%  param.TolMaxBoundary:
+%                       * .rxns2constrain - table of custom reaction constraints
+%                       * .mediaData - table of fresh-media constraints
+%                       * .essentialAA - exchange reactions for essential amino acids
+%                       * .exoMet - table of exometabolomic fluxes, with fields:
 %
-%  param.boundPrecisionLimit:
+%                           * .rxns - `k x 1` cell array of reaction identifiers
+%                           * .mean - `k x 1` numeric array of mean measured reaction flux
+%                           * .SD - `k x 1` numeric array of standard deviation in measured reaction flux
+%                           * .varID - identifiers of the measured extra variables
 %
-%  param.metabolomicWeights: String indicating the type of weights to be applied to penalise the difference
-%                            between of predicted and experimentally measured fluxes by, where 
-%                            'SD'   weights = 1/(1+exoMet.SD^2)
-%                            'mean' weights = 1/(1+exoMet.mean^2)
-%                            'RSD'  weights = 1/((exoMet.SD./exoMet.mean)^2)
+%    param:    A structure containing the parameters for the function:
 %
-%  param.eta:               lower bound on significant bound costraint perturbation
-%                           Default: feasTol*10;
+%                * .TolMinBoundary - the reaction boundary's minimum value
+%                * .TolMaxBoundary - the reaction boundary's maximum value
+%                * .boundPrecisionLimit - precision limit of a flux estimate
+%                * .metabolomicWeights - String indicating the type of weights to be applied
+%                  to penalise the difference between predicted and experimentally measured
+%                  fluxes, where 'SD' weights = 1/(1+exoMet.SD^2),
+%                  'mean' weights = 1/(1+exoMet.mean^2), 'RSD' weights = 1/((exoMet.SD./exoMet.mean)^2)
+%                * .eta - lower bound on significant bound constraint perturbation (Default: feasTol*10)
+%                * .printLevel - verbose level controlling printed output
 %
-%  param.printLevel:
-%
-%  mode:                    String indicating the type of constraints to be applied
-%                           'customConstraints'  uses specificData.rxns2constrain
-%                           'mediaDataConstraints' uses specificData.mediaData
-%                           'exometabolomicConstraints' uses specificData.exoMet
-%  printLevel:        
+%    mode:    String indicating the type of constraints to be applied:
+%             'customConstraints' uses specificData.rxns2constrain,
+%             'mediaDataConstraints' uses specificData.mediaData,
+%             'exometabolomicConstraints' uses specificData.exoMet
+%    printLevel:    verbose level controlling printed output
 %
 % OPTIONAL INPUTS:
 %  param.weightLower_flx_default:  scalar or n x 1 double
@@ -73,24 +81,11 @@ constrainRxns(model, specificData, param, mode, printLevel)
 %                                  Factor by which to multiply experimental weights (weightExp_flx ,weightExp_e) in mode 'allConstraints'
 %
 % OUTPUTS:
-%  newModel:
-%
-%  rxnsConstrained:
-%
-%  rxnBoundsCorrected:
-%
-%  newSpecificData:
-%
-% OUTPUTS:
-%   newModel:           A cobra model with constraints applied
-%
-%   rxnsConstrained:    List of the reactions constrained
-%
-%   rxnBoundsCorrected: list of reactions whose restrictions should have
-%                       been modified to comply with TolMinBoundary,
-%                       TolMaxBoundary and boundPrecisionLimit.
-%   newSpecificData:    A new structure containing arguments for the
-%                       XomicsToModel function
+%    newModel:    A COBRA model with constraints applied
+%    rxnsConstrained:    List of the reactions constrained
+%    rxnBoundsCorrected:    list of reactions whose restrictions should have been
+%                           modified to comply with TolMinBoundary, TolMaxBoundary and boundPrecisionLimit
+%    newSpecificData:    A new structure containing arguments for the XomicsToModel function
 %
 % March 2026: extended to deal with extra variables - Tania
 
@@ -356,8 +351,26 @@ switch mode
             if printLevel > 0
                 fprintf('%s\n',['Fit experimental flux method: ' methods{i} ' norm.'])
             end
-            [v, p, q, dv, obj] = fitExperimentalFlux(model, vExp, weightLower, weightUpper, weightExp, fitParam);
-            
+            try
+                [v, p, q, dv, obj] = fitExperimentalFlux(model, vExp, weightLower, weightUpper, weightExp, fitParam);
+            catch ME
+                % Graceful degradation: the exometabolomic flux fit is an
+                % approximation solved on a numerically hard QP. If it cannot be
+                % solved (e.g. a badly-scaled instance, or a solver/size limit in
+                % the environment) do NOT abort the whole extraction -- warn and
+                % apply no exometabolomic bound relaxations (zero fit), so
+                % XomicsToModel still returns a valid context-specific model. We
+                % solve the common case, not every numerically exotic instance.
+                warning('constrainRxns:exometabolomicFitSkipped', ...
+                    ['Exometabolomic flux fit could not be solved (%s); skipping ' ...
+                     'exometabolomic flux constraints for this model.'], ME.message);
+                v = zeros(nRxn, 1);
+                p = zeros(nRxn, 1);
+                q = zeros(nRxn, 1);
+                dv = NaN(nRxn, 1);
+                obj = NaN;
+            end
+
             %  v:          * `n x 1` steady state flux vector
             %  p:          * `n x 1` relaxation of lower bounds
             %  q:          * `n x 1` relaxation of upper bounds

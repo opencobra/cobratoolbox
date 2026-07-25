@@ -13,12 +13,14 @@ function [report, modelOut] = generateChemicalDatabase(model, options)
 %    [info, modelOut] = generateChemicalDatabase(model, options)
 %
 % INPUTS:
-%    model:	COBRA model with following fields:
+%    model:    COBRA model with following fields:
 %
 %           * .S - The m x n stoichiometric matrix for the metabolic network.
 %           * .rxns - An n x 1 array of reaction identifiers.
+%           * .rxnNames - An n x 1 array of reaction names.
+%           * .SIntRxnBool - An n x 1 boolean vector, true for internal (non-exchange) reactions.
 %           * .mets - An m x 1 array of metabolite identifiers.
-%           * .metFormulas - An m x 1 array of metabolite chemical formulas.
+%           * .metFormulas - An m x 1 array of metabolite chemical formulas; a printLevel message reports these as model.met Formulas.
 %           * .metinchi - An m x 1 array of metabolite identifiers.
 %           * .metsmiles - An m x 1 array of metabolite identifiers.
 %           * .metKEGG - An m x 1 array of metabolite identifiers.
@@ -26,7 +28,7 @@ function [report, modelOut] = generateChemicalDatabase(model, options)
 %           * .metPubChem - An m x 1 array of metabolite identifiers.
 %           * .metCHEBI - An m x 1 array of metabolite identifiers.
 %
-%    options:  A structure containing all the arguments for the function:
+%    options:    A structure containing all the arguments for the function:
 %
 %           * .resultsDir: The path to the directory containing the RXN files
 %                   with atom mappings (default: current directory)
@@ -41,6 +43,7 @@ function [report, modelOut] = generateChemicalDatabase(model, options)
 %                   from various sources (default: FALSE)
 %           * .atomMapping: Logic value to decide on atom mapping. If false, it will generate only unmapped MDL RXN files (default: TRUE).
 %           * .bonds: Logic value to decide on computing bond enthalpy and bonds broken and formed (default: TRUE) (only if atomMapping = 1);
+%           * .replaceExistingAtomMappings: Logic value to recompute existing atom mapping data (default: FALSE).
 %           * .adjustToModelpH: Logic value used to determine whether a molecule's
 %                   pH must be adjusted in accordance with the COBRA model.  
 %                   TRUE, requires MarvinSuite).
@@ -52,16 +55,16 @@ function [report, modelOut] = generateChemicalDatabase(model, options)
 %                   debugging (default: empty).
 %
 % OUTPUTS:
-% modelOut: A new model with the following additional fields
+%    modelOut:    A new model with the following additional fields
 %           * .metAtomMappedBool:  `m x 1` boolean vector indicating atom mapped metabolites
 %           * .rxnAtomMappedBool:  `n x 1` boolean vector indicating atom mapped reactions
 %           * .comparison:      
 %           * .standardisation:
 %           * .bondsBF: Number of bonds broken and formed in each reaction, if options.bonds = true.
 %           * .bondsE:  Estimated bond enthalpies for each metabolic reaction, if options.bonds = true.      
-% report:     Struct array containing a diary of the database generation process
+%    report:     Struct array containing a diary of the database generation process
 %
-%           *.molCollectionReport: Struct array containing information on the 
+%           * .molCollectionReport: Struct array containing information on the 
 %               metabolite structures each of the model's sources.
 %                   -.metList: List of the metabolites in the model.
 %                   -.sources: Sources from which the metabolic structures 
@@ -72,7 +75,7 @@ function [report, modelOut] = generateChemicalDatabase(model, options)
 %                   -.databaseCoverage: Table showing the coverage per source.
 %                   -.idsToCheck: Id's from which the metabolic structure wasn't
 %                       obtained.
-%        	*.sourcesComparison: Struct array containing information on the 
+%        	* .sourcesComparison: Struct array containing information on the 
 %               metabolite structures comparison.
 %                   -.mets: List of the metabolites in the model with structure.
 %                   -.sources: Sources from which the metabolic structures 
@@ -87,12 +90,12 @@ function [report, modelOut] = generateChemicalDatabase(model, options)
 %                   -.met_"metID": Comparison tables for each metabolite.
 %                   -.comparisonTable: Table summarising the highest score 
 %                       sources per metabolite.
-%           *.adjustedpHTable: table indicating whether or not the highest 
+%           * .adjustedpHTable: table indicating whether or not the highest 
 %                   scoring metabolite required pH adjustment and identifying 
 %                   metabolites for which the pH could not be adjusted.
-%           *.standardisationReport: Table with InChIKeys, InChIs and
+%           * .standardisationReport: Table with InChIKeys, InChIs and
 %                   SMILES for the highest scoring metabolites.
-%           *.reactionsReport: Struct array containing information about the 
+%           * .reactionsReport: Struct array containing information about the 
 %                   atom-mapped reactions.
 %               -.rxnInDatabase: Cell array containing the rxns IDs of the
 %                   MDL RXN files written.
@@ -120,7 +123,7 @@ function [report, modelOut] = generateChemicalDatabase(model, options)
 %                   the missing metabolites
 %               -.table: Table containing information about the 
 %                   atom-mapped reactions.
-%           *.bondsData: A table containing the bonds broken and formed, the 
+%           * .bondsData: A table containing the bonds broken and formed, the 
 %               enthalpy change, and the substrate mass per atom-mapped reaction.
 
 if ~isfield(options, 'resultsDir')

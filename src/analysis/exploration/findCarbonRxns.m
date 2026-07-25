@@ -8,7 +8,12 @@ function [hiCarbonRxns, zeroCarbonRxns, nCarbon] = findCarbonRxns(model, nCarbon
 %
 % INPUTS:
 %    model:             Structure containing all necessary variables to described a
-%                       stoichiometric model
+%                       stoichiometric model, with fields:
+%
+%                         * .S - `m x n` stoichiometric matrix
+%                         * .mets - `m x 1` metabolite identifiers
+%                         * .metFormulas - `m x 1` metabolite elemental formulas
+%
 %    nCarbonThr:        defines the min # of carbons that a metabolite, that is
 %                       acted on in a reaction, can have in the final list of reactions
 %

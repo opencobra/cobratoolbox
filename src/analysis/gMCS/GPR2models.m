@@ -7,7 +7,13 @@ function [networks, rxnNumGenes] = GPR2models(metabolic_model, selected_rxns, se
 %    [networks, rxnNumGenes] = GPR2models(metabolic_model, selected_rxns, separate_transcript, numWorkers, printLevel)
 %
 % INPUTS:
-%    metabolic_model:        Metabolic model structure (COBRA Toolbox format)
+%    metabolic_model:        Metabolic model structure (COBRA Toolbox format) with fields:
+%
+%                              * .rxns - reaction identifiers
+%                              * .genes - gene identifiers
+%                              * .rules - gene-reaction rules in encoded (`x(i)`) form
+%                              * .rxnGeneMat - reaction-gene association matrix
+%
 %    selected_rxns:          Index array which indicates selected reactions to
 %                            calculate the network.
 %    separate_transcript:    Character used to discriminate

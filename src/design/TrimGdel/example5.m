@@ -1,10 +1,16 @@
 function [outputArg1, outputArg2] = example5()
-% example5 calculates the gene deletion strategy for growth coupling
-% for succinate in iMM904.
-% 
+% example5 computes a gene-deletion strategy for growth-coupled
+% production of succinate (succ_e) in the iMM904 model, using TrimGdel.
+%
 % USAGE:
 %
-%     function [] = example5()
+%    [outputArg1, outputArg2] = example5()
+%
+% OUTPUTS:
+%    outputArg1:    unused; declared by the function signature but never
+%                   assigned (placeholder from the function template)
+%    outputArg2:    unused; declared by the function signature but never
+%                   assigned (placeholder from the function template)
 %
 % .. Author:    - Takeyuki Tamura, Mar 06, 2025
 %

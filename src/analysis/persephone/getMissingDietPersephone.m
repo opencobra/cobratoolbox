@@ -1,41 +1,43 @@
-function missingDietComponents = getMissingDietPersephone(inputModel,missingDietComponents,testInitialFeasibility)
-% This function determines missing dietary compounds in host-microbiome
-% WBMs that are infeasible (it assumes that the WBMs and the microbiome
-% models individually are feasible). Alternatively, this function can
-% determine missing dietary compounds in microbiome community models
-% This function first tests whether the model is feasible (which can be
-% skipped by setting testInitialFeasibility = 0), if infeasible, all diet
-% exchange reactions that are not already active will be opened and the
-% feasibility will be tested. If infeasible, the function stops -  then
-% there is no dietary solution (of course it could be that active diet
-% constraints are limited but they will not be tested with this script). 
-% Subsequently, diet exchanges are randomly closed (first in batches of 50,
-% then 10, then 5, then 1). If the inputModel remains feasible this batch as
-% well as all other 0 diet fluxes in the fba solution will be deemed not
-% necessary for feasibility, if infeasible the batch set will be kept and
-% tested for in the next step. when the batch set size is 1, each remaining
-% diet exchange will be tested for individually. 
-% While still being slow, this approach is much faster then testing each
-% diet exchange individually.
-% As the diet exchanges are selected randomly for each batch, running the
-% function twice may not result in the same final set of
-% missingDietComponents
+function missingDietComponents = getMissingDietPersephone(inputModel, missingDietComponents, testInitialFeasibility)
+% Identify dietary components that are missing for an infeasible WBM or microbiome model
 %
-% INPUT
-% inputModel                Host-microbiome or microbiome community model structure
-% missingDietComponents     list of diet exchange reactions that are known
-%                           to be missing or that have been identified in a previous run of this
-%                           function
-% testInitialFeasibility    default 1 
+% Determines missing dietary compounds in host-microbiome WBMs (or in
+% microbiome community models) that are infeasible, assuming the WBM and
+% microbiome models are individually feasible. The model is first tested for
+% feasibility (this can be skipped). If infeasible, all inactive diet exchange
+% reactions are opened; if still infeasible the function stops. Otherwise diet
+% exchanges are randomly closed in decreasing batch sizes (50, 10, 5, then 1)
+% and reactions not required for feasibility are discarded, leaving the set of
+% components that are needed. Because the batches are drawn at random, repeated
+% runs may return slightly different sets.
 %
-% OUTPUT
-% missingDietComponents     list of missingDietComponents. If
-%                           missingDietComponents was given as an input then this list is a
-%                           combination of the input and the newly discovered missingDietComponents
+% USAGE:
 %
-% Ines Thiele, Nov 2023
-% Tim Hensen, September 2025. Added support for microbiome community
-% models.
+%    missingDietComponents = getMissingDietPersephone(inputModel, missingDietComponents, testInitialFeasibility)
+%
+% INPUTS:
+%    inputModel:               host-microbiome or microbiome community model
+%                              structure. Fields used:
+%
+%                                * .rxns - reaction identifiers, searched for
+%                                  diet and biomass exchange reactions
+%                                * .osenseStr - objective sense, set to 'max'
+%                                  before optimisation
+%    missingDietComponents:    list of diet exchange reactions already known to
+%                              be missing (e.g. from a previous run); pass ''
+%                              or omit if none are known
+%
+% OPTIONAL INPUT:
+%    testInitialFeasibility:    logical/double, whether the initial
+%                               feasibility test is performed (default 1)
+%
+% OUTPUT:
+%    missingDietComponents:    list of missing diet components. When a list was
+%                              supplied as input, the output combines it with
+%                              the newly discovered components
+%
+% .. Author: - Ines Thiele, Nov 2023
+%            - Tim Hensen, September 2025 (support for microbiome community models)
 
 if ~exist('testInitialFeasibility','var')
     testInitialFeasibility = 1;

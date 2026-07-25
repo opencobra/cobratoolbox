@@ -1,20 +1,20 @@
-function getSubsystemPresence(propertiesFolder,reconVersion)
+function getSubsystemPresence(propertiesFolder, reconVersion)
 % This function extracts the presence of subsystems for a resource of
 % reconstructions that were refined through the semi-automatic refinement
 % pipeline. Shown is the fraction of total reactions in each subsystem for
-% each reconstruction in the resource. Requires the function 
+% each reconstruction in the resource. Requires the function
 % getreactionPresenceOnTaxonLevels to be run first.
 %
-% USAGE
-%   getSubsystemPresence(propertiesFolder,reconVersion)
+% USAGE:
 %
-% INPUTS                                                                                                                                                                                       Folder with COBRA models to be analyzed
-% propertiesFolder      Folder where the retrieved subsystem presences will
-%                       be stored (default: current folder)
-% reconVersion          Name assigned to the reconstruction resource
+%    getSubsystemPresence(propertiesFolder, reconVersion)
 %
-%   - AUTHOR
-%   Almut Heinken, 11/2020
+% INPUTS:
+%    propertiesFolder:    Folder where the retrieved subsystem presences will
+%                         be stored (default: current folder)
+%    reconVersion:        Name assigned to the reconstruction resource
+%
+% .. Author: - Almut Heinken, 11/2020
 
 % Load all reactions in reconstruction resource
 reactions = readInputTableForPipeline([propertiesFolder filesep 'Reactions_' reconVersion '.txt']);

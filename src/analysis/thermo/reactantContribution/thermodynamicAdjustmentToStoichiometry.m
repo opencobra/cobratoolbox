@@ -15,17 +15,28 @@ function model = thermodynamicAdjustmentToStoichiometry(model)
 % INPUT:
 %    model:    structure with fields:
 %
-%                * .S
-%                * .mets
-%                * .rxns
+%                * .S - `m x n` stoichiometric matrix
+%                * .mets - `m x 1` cell array of metabolite identifiers
+%                * .rxns - `n x 1` cell array of reaction identifiers
+%                * .metFormulas - `m x 1` cell array of metabolite formulas
+%                * .metNames - `m x 1` cell array of metabolite names
+%                * .rxnNames - `n x 1` cell array of reaction names
+%                * .subSystems - `n x 1` cell array of reaction subsystem annotations
+%                * .SIntRxnBool - `n x 1` logical, true for internal (mass-balanced) reactions
 %
 % OUTPUT:
 %    model:    structure with fields:
 %
 %                * .S - thermodynamically adjusted stoichiometric matrix
-%                * .mets
-%                * .rxns
-%                * .Sold
+%                * .oldS - copy of the original (pre-adjustment) stoichiometric matrix
+%                * .mets - `m x 1` cell array of metabolite identifiers
+%                * .rxns - `n x 1` cell array of reaction identifiers
+%                * .metFormulas - metabolite formulas, adjusted for `co2`/`h2o`
+%                * .metNames - metabolite names, with bound cofactors appended
+%                * .rxnNames - reaction names, with bound cofactors annotated
+%                * .subSystems - subsystem annotations
+%                * .SIntRxnBool - `n x 1` logical, true for internal reactions
+%                * .SExRxnBool - `n x 1` logical, true for external reactions
 %
 % .. Authors:
 %       - Ronan M. T. Fleming

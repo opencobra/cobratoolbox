@@ -178,6 +178,12 @@ try
         % save the userpath
         originalUserPath = path;
 
+        % Feature 002 (testAll performance modes): resolve and announce the
+        % execution mode. Fast is the default; CI forces full. prepareTest and
+        % individual tests read the same resolver for consistent behaviour.
+        testMode = getCobraTestMode();
+        fprintf('\n > Test execution mode: %s (set COBRA_TEST_MODE=full for the complete suite).\n\n', testMode);
+
         % run the tests in the subfolder verifiedTests/ recursively
         [result, resultTable] = runTestSuite();
 
@@ -259,35 +265,94 @@ try
         end
         %% End of XML generation
 
+        % Feature 002 (testAll performance modes): opt-in profiling report.
+        % Enabled with the environment variable COBRA_PERF=1 or the workspace
+        % variable PERFORMANCE_REPORT=true. Surfaces the per-test timing that
+        % runTestSuite already collects plus profiler hotspots. Best-effort:
+        % a failure here MUST NOT fail the (already reported) test run and does
+        % not change any test's pass/fail/skip outcome.
+        PERFORMANCE_REPORT_ON = strcmp(getenv('COBRA_PERF'), '1') || ...
+            (exist('PERFORMANCE_REPORT', 'var') && ~isempty(PERFORMANCE_REPORT) && PERFORMANCE_REPORT);
+        if PERFORMANCE_REPORT_ON
+            try
+                perfDir = [CBTDIR filesep 'test' filesep 'performance'];
+                if ~exist(perfDir, 'dir')
+                    mkdir(perfDir);
+                end
+
+                % (1) ranked per-test wall time (already collected by runTestSuite)
+                [~, perfOrder] = sort(resultTable.Time, 'descend', 'MissingPlacement', 'last');
+                perfTable = resultTable(perfOrder, {'TestName', 'Status', 'Time'});
+                writetable(perfTable, [perfDir filesep 'testTiming.csv']);
+                fprintf('\n==== Slowest tests ====\n');
+                for pI = 1:min(20, height(perfTable))
+                    [~, perfName] = fileparts(perfTable.TestName{pI});
+                    fprintf('%3d. %-42s %8.2f s  %s\n', pI, perfName, perfTable.Time(pI), perfTable.Status{pI});
+                end
+
+                % (2) function-level hotspots from the already-running profiler
+                perfInfo = profile('info');
+                save([perfDir filesep 'profileInfo.mat'], 'perfInfo');
+                try
+                    profsave(perfInfo, [perfDir filesep 'html']);
+                catch ME_profsave
+                    fprintf(2, '::warning:: Could not save HTML profile report: %s\n', ME_profsave.message);
+                end
+                [~, perfFx] = sort([perfInfo.FunctionTable.TotalTime], 'descend');
+                fprintf('\n==== Hottest functions ====\n');
+                for pI = 1:min(20, numel(perfFx))
+                    perfFcn = perfInfo.FunctionTable(perfFx(pI));
+                    fprintf('%3d. %-42s %8.2f s  %8d calls\n', pI, perfFcn.FunctionName, perfFcn.TotalTime, perfFcn.NumCalls);
+                end
+                fprintf('\nPerformance artifacts written to: %s\n', perfDir);
+            catch ME_perf
+                fprintf(2, '::warning:: Performance report failed: %s\n', ME_perf.message);
+            end
+        end
+
         % count the number of covered lines of code
         if COVERAGE
-            % write coverage based on profile('info')
-            fprintf('Running MoCov ... \n')
-            mocov('-cover', 'src', ...
-                '-profile_info', ...
-                '-cover_json_file', 'coverage.json', ...
-                '-cover_html_dir', 'coverage_html', ...
-                '-cover_method', 'profile', ...
-                '-verbose');
+            % Coverage is best-effort: a failure of the coverage tooling MUST be
+            % surfaced explicitly but MUST NOT fail the (already reported) pass/fail
+            % run. See feature 001-ci-coverage-gating (FR-004).
+            try
+                % write coverage based on profile('info'); also emit Cobertura XML
+                % (coverage.xml) so CI can upload it as an artifact and to Codecov.
+                fprintf('Running MoCov ... \n')
+                mocov('-cover', 'src', ...
+                    '-profile_info', ...
+                    '-cover_json_file', 'coverage.json', ...
+                    '-cover_xml_file', 'coverage.xml', ...
+                    '-cover_html_dir', 'coverage_html', ...
+                    '-cover_method', 'profile', ...
+                    '-verbose');
 
-            % load the coverage file
-            data = loadjson('coverage.json', 'SimplifyCell', 1);
+                % load the coverage file
+                data = loadjson('coverage.json', 'SimplifyCell', 1);
 
-            sf = data.source_files;
-            clFiles = zeros(length(sf), 1);
-            tlFiles = zeros(length(sf), 1);
+                sf = data.source_files;
+                clFiles = zeros(length(sf), 1);
+                tlFiles = zeros(length(sf), 1);
 
-            for i = 1:length(sf)
-                clFiles(i) = nnz(sf(i).coverage);
-                tlFiles(i) = length(sf(i).coverage);
+                for i = 1:length(sf)
+                    clFiles(i) = nnz(sf(i).coverage);
+                    tlFiles(i) = length(sf(i).coverage);
+                end
+
+                % average the values for each file
+                cl = sum(clFiles);
+                tl = sum(tlFiles);
+
+                % print out the coverage
+                fprintf('Covered Lines: %i, Total Lines: %i, Coverage: %f%%.\n', cl, tl, cl / tl * 100);
+            catch ME_cov
+                if ~isempty(ME_cov.stack)
+                    fprintf(2, '::warning:: Coverage measurement failed: %s (%s line %d)\n', ...
+                        ME_cov.message, ME_cov.stack(1).file, ME_cov.stack(1).line);
+                else
+                    fprintf(2, '::warning:: Coverage measurement failed: %s\n', ME_cov.message);
+                end
             end
-
-            % average the values for each file
-            cl = sum(clFiles);
-            tl = sum(tlFiles);
-
-            % print out the coverage
-            fprintf('Covered Lines: %i, Total Lines: %i, Coverage: %f%%.\n', cl, tl, cl / tl * 100);
         end
 
         % print out a summary table

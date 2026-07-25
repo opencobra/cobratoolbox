@@ -25,14 +25,26 @@ function [LPproblem] = reformulate(LPproblem, BIG, printLevel)
 %
 % INPUTS:
 %    LPproblem:     Structure contain the original LP to be solved. The format of
-%                   this struct is described in the documentation for `solveCobraLP.m`
+%                   this struct is described in the documentation for `solveCobraLP.m`.
+%                   Fields used:
+%
+%                     * .A - `m x n` linear constraint matrix
+%                     * .b - `m x 1` right hand side vector for `A*x {L,E,G} b`
+%                     * .c - `n x 1` linear objective coefficient vector
+%                     * .lb - `n x 1` lower bound vector
+%                     * .ub - `n x 1` upper bound vector
+%                     * .csense - `m x 1` character array of constraint senses
+%                     * .modelID - (optional) identifier of the model
 %    BIG:           A parameter the controls the largest entries that appear in the
 %                   reformulated problem.
 %    printLevel:    1 enables printing of problem statistics;
 %                   0 = silent
 %
 % OUTPUTS:
-%    LPproblem:     Structure contain the reformulated LP to be solved.
+%    LPproblem:     Structure contain the reformulated LP to be solved, with
+%                   fields `.A`, `.b`, `.c`, `.lb`, `.ub`, `.csense` updated
+%                   to the reformulated problem and `.modelID` prefixed with
+%                   `'L_'`.
 %
 % .. Authors:
 %       - Michael Saunders, saunders@stanford.edu

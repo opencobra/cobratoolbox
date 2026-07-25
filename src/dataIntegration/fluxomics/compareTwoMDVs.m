@@ -5,14 +5,16 @@ function [totalz, zscore] = compareTwoMDVs(mdv1, mdv2)
 %
 %    [totalz, zscore] = compareTwoMDVs(mdv1, mdv2)
 %
-% INPUT:
-%    mdv1, mdv2:    contains fields:
+% INPUTS:
+%    mdv1:    first MDV set to compare, with fields:
 %
-%                     * mdv - the calculated mdv distribution converted from the idv
-%                       solved from each point contained in their respective samples `sampX`
-%                     * names - the names of the metabolites
-%                     * ave - the average of each mdv element across all of the points
-%                     * stdev - the standard dev for each mdv element across all points
+%               * .names - the names of the metabolites
+%               * .ave - the average of each mdv element across all of the points
+%               * .stdev - the standard deviation for each mdv element across all points
+%    mdv2:    second MDV set to compare, with fields:
+%
+%               * .ave - the average of each mdv element across all of the points
+%               * .stdev - the standard deviation for each mdv element across all points
 %
 % OUTPUTS:
 %    totalz:        sum of all zscores

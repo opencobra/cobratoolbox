@@ -1,5 +1,13 @@
 function initCobrarrow()
-% Display MATLAB version
+% Initialize the COBRArrow environment: verify the MATLAB and Python
+% versions, install the required Python packages (including pyarrow via
+% pip), and report whether the COBRArrow API is ready to use
+%
+% USAGE:
+%
+%    initCobrarrow()
+%
+
 ver = version;
 fprintf('MATLAB Version: %s\n', ver);
 

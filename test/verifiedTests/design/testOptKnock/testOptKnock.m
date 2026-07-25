@@ -20,6 +20,9 @@ currentDir = pwd;
 fileDir = fileparts(which('testOptKnock'));
 cd(fileDir);
 
+% require LP and MILP solvers; skip gracefully if none is available
+prepareTest('needsLP', true, 'needsMILP', true);
+
 % set the tolerance
 tol = 1e-3;
 

@@ -13,10 +13,10 @@ function [S, rev, rxns, blocked] = blockedReac(S, rev, rxns, solver)
 %               'gurobi', 'linprog', and otherwise the default COBRA LP solver
 %
 % OUTPUTS:
-%    S_reduced:       the reduced sparse stoichiometric matrix
-%    rev_reduced:     the reduced reversibility vector
-%    rxns_reduced:    the reduced reaction abbreviations
-%    blocked:         the 0-1 vector with 1's corresponding to the blocked reactions
+%    S:          the reduced sparse stoichiometric matrix
+%    rev:        the reduced reversibility vector
+%    rxns:       the reduced reaction abbreviations
+%    blocked:    the 0-1 vector with 1's corresponding to the blocked reactions
 %
 % .. Authors:
 %       - Mojtaba Tefagh, Stephen P. Boyd, 2019, Stanford University

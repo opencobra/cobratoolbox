@@ -3,7 +3,7 @@ function vRev = convertIrrevFluxDistribution(vIrrev, matchRev)
 %
 % USAGE:
 %
-%    vRev = covertIrrevFluxDistribution(vIrrev, matchRev)
+%    vRev = convertIrrevFluxDistribution(vIrrev, matchRev)
 %
 % INPUTS:
 %    vIrrev:      Irreversible flux distribution

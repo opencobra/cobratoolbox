@@ -1,11 +1,21 @@
 function compile(output, source, include, opts)
-%compile(output, source, include, options)
-%compile the C++ file
+% Compile a C++ MEX file for the current platform with the selected compiler
 %
-%Input:
-% output - output location for the mex
-% source - filename for source C++ files
-% include - the list of directories to search for #include
+% USAGE:
+%
+%    compile(output, source, include, opts)
+%
+% INPUTS:
+%    output:     output location (base name) for the compiled mex file
+%    source:     filename or cell array of filenames of the C++ source files
+%
+% OPTIONAL INPUTS:
+%    include:    directory or cell array of directories to search for #include files
+%    opts:       structure of compiler options with fields:
+%
+%                  * .std - C++ language standard passed to the compiler (e.g. `c++17`)
+%                  * .debug - logical, true to compile with debug symbols (`-g`)
+%                  * .fmath - logical, true to enable fast-math optimization flags
 
 if nargin <= 3, opts = struct; end
 if nargin <= 2, include = {}; end

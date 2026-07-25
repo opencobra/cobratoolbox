@@ -1,4 +1,4 @@
-function [modelPruned] = extractConditionSpecificModel(model,threshold)
+function [modelPruned] = extractConditionSpecificModel(model, threshold)
 % The function prunes a subnetwork based on a user-defined threshold. The subnetwork does not contain blocked reactions. Please note that Recon has blocked reactions which will always be removed. Thus, not all reactions are removed as a consequence of the data integration.
 % Depends on fastFVA, fluxVariability analysis
 %

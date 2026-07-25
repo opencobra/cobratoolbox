@@ -3,18 +3,26 @@ function [newMap] = colorProtein(map, protList, color)
 %
 % USAGE:
 %
-%   [newMap] = colorProtein(map, protList, color)
+%    [newMap] = colorProtein(map, protList, color)
 %
 % INPUTS:
-%   map:        xml file parsed to Matlab using the function
-%               'transformFullXML2Map'
-%   protList:   List of protein names
+%    map:            xml file parsed to Matlab using the function
+%                    `transformFullXML2Map`, with fields:
+%
+%                      * .specName - cell array of species (metabolite/protein) names
+%                      * .specMetaID - cell array of species meta IDs
+%                      * .specIncName - cell array of included-species (complex member) names
+%                      * .specIncID - cell array of included-species IDs
+%                      * .molID - cell array of molecule (node) IDs
+%    protList:       List of protein names
 %
 % OPTIONAL INPUT:
-%   color:      Color for the proteins in CAPITALS
+%    color:          Color for the proteins in CAPITALS (default: 'RED')
 %
 % OUTPUT:
-%   newMap:     Map with proteins nodes coloured (default: 'RED')
+%    newMap:         Map with protein nodes coloured, with field updated:
+%
+%                      * .molColor - cell array of molecule colours
 %
 % .. Authors:
 %       - J.modamio  LCSB, Belval, Luxembourg, 10.08/2017

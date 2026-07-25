@@ -1,16 +1,20 @@
-function [minimalMassMetabolite, minimalMassFraction, numMinimalMassMetabolites] = representativeMolecule(L,moietyFormulae,mets)
+function [minimalMassMetabolite, minimalMassFraction, numMinimalMassMetabolites] = representativeMolecule(L, moietyFormulae, mets)
 % For each moiety, identify a set of representative molecules, based on
 % various criteria
 %
-% INPUT
-% L                     Matrix to map isomorphism classes to metabolites.
-% moietyFormulae        Chemical formula of the moiety (Hill notation)
-% mets                  Metabolite abbreviation
+% USAGE:
 %
-% OUTPUT
-% minimalMassMetabolite       Abbreviation of metabolite with minimal mass relative to the moiety
-% minimalMassFraction         Fraction of moiety/metabolite mass 
-% numMinimalMassMetabolites   Number of metabolites with minimal mass
+%    [minimalMassMetabolite, minimalMassFraction, numMinimalMassMetabolites] = representativeMolecule(L, moietyFormulae, mets)
+%
+% INPUTS:
+%    L:                 `nMoieties x nMets` matrix mapping isomorphism classes (moieties) to metabolites
+%    moietyFormulae:    `nMoieties x 1` cell array of moiety chemical formulae (Hill notation)
+%    mets:              `nMets x 1` cell array of metabolite abbreviations
+%
+% OUTPUTS:
+%    minimalMassMetabolite:        `nMoieties x 1` cell array of the metabolite of minimal mass relative to each moiety
+%    minimalMassFraction:          `nMoieties x 1` vector of the moiety/metabolite mass fraction
+%    numMinimalMassMetabolites:    `nMoieties x 1` vector of the number of metabolites with minimal mass
 
 
 [moietyMasses, ~, ~, ~, ~] = getMolecularMass(moietyFormulae);

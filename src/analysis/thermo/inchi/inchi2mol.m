@@ -1,25 +1,24 @@
-function successbool = inchi2mol(inchis,filenames,outputdir,overwrite)
-
-% successbool = inchi2mol(inchis,filenames,outputdir,overwrite)
-% 
-% Convert InChI strings to mol files using OpenBabel. Compatible with
-% Windows and Unix.
+function successbool = inchi2mol(inchis, filenames, outputdir, overwrite)
+% Convert InChI strings to mol files using OpenBabel (compatible with Windows and Unix)
 %
-% INPUTS
-% inchis        nx1 Cell array of InChI strings
-% filenames     nx1 Cell array of mol file names without file extension.
-%               Default is {'1';'2';...}
-% outputdir     Directory for mol files. Default is
-%               'CurrentDirectory\molfiles'.
-% overwrite     0, [1]. Specify whether to overwrite existing mol files
-%               in outputdir.
+% USAGE:
 %
-% OUTPUTS
-% successbool   nx1 logical vector with 1 at indices corresponding to
-%               inchis that were successfully converted to mol files and 0
-%               elsewhere.
-% 
-% Hulda SH  Feb. 2011
+%    successbool = inchi2mol(inchis, filenames, outputdir, overwrite)
+%
+% INPUT:
+%    inchis:        `n x 1` cell array of InChI strings (or a single InChI string)
+%
+% OPTIONAL INPUTS:
+%    filenames:     `n x 1` cell array of mol file names without file extension
+%                   (default {'1';'2';...})
+%    outputdir:     directory for the mol files (default `<currentDirectory>/molfiles`)
+%    overwrite:     whether to overwrite existing mol files in outputdir, 0 or 1 (default 0)
+%
+% OUTPUT:
+%    successbool:    `n x 1` logical vector, true at indices of InChI successfully
+%                   converted to mol files and false elsewhere
+%
+% .. Author: - Hulda SH, Feb. 2011
 
 % Format input and set defaults
 if ~iscell(inchis) && size(inchis,1) == 1 % If a single InChI is input as string

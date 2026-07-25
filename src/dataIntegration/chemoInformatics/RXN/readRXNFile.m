@@ -17,7 +17,7 @@ function [mets, elements, metNrs, atomTransitionNrs, isSubstrate, instances] = r
 %    elements:            A `p` x 1 cell array of element symbols for atoms.
 %    metNrs:              A `p` x 1 vector containing the numbering of atoms within
 %                         each metabolite molfile.
-%    atomTransitionNrs:   A `p` x 1 vector of atom transition indices.
+%    atomTransitionNrs:    A `p` x 1 vector of atom transition indices.
 %    isSubstrate:         A `p` x 1 logical array. True for substrates, false for
 %                         products in the reaction.
 %    instances:           A `p` x 1 vector indicating which instance of a repeated metabolite atom `i` belongs to.

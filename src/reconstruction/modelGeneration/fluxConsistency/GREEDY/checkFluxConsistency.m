@@ -1,12 +1,15 @@
-function [fluxConsistent, sol]=checkFluxConsistency(model, epsilon)
+function [fluxConsistent, sol] = checkFluxConsistency(model, epsilon)
 % Tries to test for flux consistent reactions in one solve
 %
 % USAGE:
 %
-%    [fluxConsistent, sol]=checkFluxConsistency(model, epsilon)
+%    [fluxConsistent, sol] = checkFluxConsistency(model, epsilon)
 %
 % INPUTS:
-%    model:             cobra model structure
+%    model:             cobra model structure with fields:
+%
+%                         * .S - `m x n` stoichiometric matrix
+%                         * .b - `m x 1` right hand side vector
 %    epsilon:           flux threshold
 %
 % OUTPUTS:

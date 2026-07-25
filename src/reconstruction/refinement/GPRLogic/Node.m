@@ -1,3 +1,4 @@
+% Node is the abstract base class for AndNode, OrNode, and LiteralNode in a GPR logical-formula tree.
 classdef (Abstract,HandleCompatible) Node < handle & matlab.mixin.Heterogeneous
     % Node are an Abstract class that handles different types of logical Nodes
     % for a tree representation of a logical formula.

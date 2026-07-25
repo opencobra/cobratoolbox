@@ -7,7 +7,12 @@ function objectiveAbbr = printObjective(model)
 %    objectiveAbbr = printObjective(model)
 %
 % INPUT:
-%    model:            COBRA model structure
+%    model:            COBRA model structure with fields:
+%
+%                        * .c - `n` x 1 objective coefficient vector
+%                        * .rxns - `n` x 1 cell array of reaction identifiers
+%                        * .S - `m` x `n` stoichiometric matrix
+%                        * .mets - `m` x 1 cell array of metabolite identifiers
 %
 % OUTPUT:
 %    objectiveAbbr:    Objective reaction abbreviation

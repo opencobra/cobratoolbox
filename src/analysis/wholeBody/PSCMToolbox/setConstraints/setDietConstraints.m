@@ -1,19 +1,38 @@
 function model = setDietConstraints(model, Diet, factor)
-% This function sets diet constraints onto the bounds of the diet uptale
-% reactions of a whole-body metabolic model.
-% Units are given in mmol/day/person.
+% Set diet constraints on the bounds of the diet uptake reactions of a
+% whole-body metabolic model. Uptake bounds are given in mmol/day/person
 %
-% function model = setDietConstraints(model, Diet, factor)
+% USAGE:
 %
-% INPUT
-% model         model structure 
-% Diet          Diet option: 'EUAverageDiet' (default)
-% factor        value between 0 and 1; default is 1, i.e, 100% of the provided diet
+%    model = setDietConstraints(model, Diet, factor)
 %
-% OUTPUT
-% model         updated model strcution
-% 
-% Ines Thiele 2016-2019
+% INPUT:
+%    model:     whole-body metabolic model structure with fields:
+%
+%                 * .rxns - `n x 1` reaction identifiers, used to locate the
+%                   `Diet_EX_...` uptake reactions
+%                 * .lb - `n x 1` lower bounds (updated with the diet uptake rates)
+%                 * .ub - `n x 1` upper bounds (updated with the diet uptake rates)
+%
+% OPTIONAL INPUTS:
+%    Diet:      diet specification, either the name of a predefined diet
+%               ('EUAverageDiet' (default), 'HighFiberDiet', 'HighProteinDiet',
+%               'UnhealthyDiet' or 'VegetarianDiet') or a diet cell array whose
+%               first column holds diet exchange reaction identifiers and whose
+%               second column holds the corresponding flux values
+%    factor:    scalar between 0 and 1 scaling the applied diet; default is 1
+%               (i.e. 100% of the provided diet)
+%
+% OUTPUT:
+%    model:     whole-body metabolic model with the diet uptake constraints
+%               applied, updating the fields:
+%
+%                 * .lb - lower bounds of the diet exchange reactions
+%                 * .ub - upper bounds of the diet exchange reactions
+%                 * .SetupInfo - structure recording the setup; the applied
+%                   diet is stored in `.SetupInfo.DietComposition`
+%
+% .. Author: - Ines Thiele, 2016-2019
 
 % define diet
 if ~exist('Diet','var')

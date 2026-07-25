@@ -6,7 +6,10 @@ function [involvedRxns, involvedMets, deadEnds, deadRxns] = draw_by_met(model, m
 %    [involvedRxns, involvedMets, deadEnds, deadRxns] = draw_by_met(model, metAbbr, drawMap, radius, direction, excludeMets, flux, save, closev)
 %
 % INPUTS:
-%    model:           COBRA model structure.
+%    model:           COBRA model structure with fields:
+%
+%                       * .S - `m x n` stoichiometric matrix
+%                       * .rxns - `n x 1` cell array of reaction identifiers
 %    metAbbr:         Cell array containing the abbreviation of a metabolite in
 %                     the COBRA model. This metabolite is used as the starting
 %                     point for visualisation.

@@ -1,14 +1,21 @@
 function incorrectGeneRules = testGeneRules(model)
 % Finds gene rules that have an incorrect nomenclature.
 %
-% INPUT
-% model             COBRA model structure
+% USAGE:
 %
-% OUTPUT
-% incorrectGeneRules       Cell array listing entries in model.rules that
-%                          have incorrect nomenclature.
+%    incorrectGeneRules = testGeneRules(model)
 %
-% Almut Heinken, Oct 2019
+% INPUTS:
+%    model:                 COBRA model structure with fields:
+%
+%                             * .rules - Gene-protein-reaction rules in
+%                               computable form
+%
+% OUTPUTS:
+%    incorrectGeneRules:    Cell array listing entries in model.rules that
+%                           have incorrect nomenclature.
+%
+% .. Author: - Almut Heinken, Oct 2019
 
 cnt=1;
 incorrectGeneRules={};

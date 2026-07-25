@@ -9,7 +9,18 @@ function formulas = printRxnFormula(model, varargin)
 %    formulas = printRxnFormula(model, varargin)
 %
 % INPUTS:
-%    model:             COBRA model structure
+%    model:             COBRA model structure with fields:
+%
+%                         * .S - `m x n` stoichiometric matrix
+%                         * .rxns - `n x 1` reaction identifiers
+%                         * .mets - `m x 1` metabolite identifiers
+%                         * .metNames - `m x 1` metabolite names
+%                         * .lb - `n x 1` lower bounds on reaction fluxes
+%                         * .ub - `n x 1` upper bounds on reaction fluxes
+%                         * .rules - `n x 1` evaluatable gene-reaction association rules
+%                         * .grRules - `n x 1` readable gene-reaction association rules
+%                         * .genes - gene identifiers
+%                         * .proteins - proteins associated with the genes
 %
 % OPTIONAL INPUTS:
 %    

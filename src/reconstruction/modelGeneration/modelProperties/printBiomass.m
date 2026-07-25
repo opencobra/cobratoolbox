@@ -1,14 +1,27 @@
 function [Component, Fraction] = printBiomass(model, BiomassNumber)
+% Prints the metabolites and their stoichiometric coefficients that
+% participate in a given reaction (typically the biomass reaction) and
+% returns them as well
 %
-% function printBiomass(model,BiomassNumber)
+% USAGE:
 %
-% this
+%    [Component, Fraction] = printBiomass(model, BiomassNumber)
 %
-% model             model structure
-% BiomassNumber     reaction number of biomass reaction (or any other
-%                   reaction)
+% INPUTS:
+%    model:            COBRA model structure with fields:
 %
-% Ines Thiele May 2008
+%                        * .S - `m` x `n` stoichiometric matrix (used if `.A` is absent)
+%                        * .A - stoichiometric/coupling matrix, used in place of `.S` when present
+%                        * .mets - `m` x 1 cell array of metabolite identifiers
+%    BiomassNumber:    column index of the biomass reaction (or any other
+%                      reaction) in `model.S`
+%
+% OUTPUTS:
+%    Component:        cell array of metabolite identifiers with a nonzero
+%                      coefficient in reaction `BiomassNumber`
+%    Fraction:         stoichiometric coefficients of `Component` in reaction `BiomassNumber`
+%
+% .. Author: - Ines Thiele, May 2008
 
 if (isfield(model, 'A'))
     model.S = model.A;

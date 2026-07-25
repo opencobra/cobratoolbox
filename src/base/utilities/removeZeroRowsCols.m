@@ -1,7 +1,17 @@
 function A = removeZeroRowsCols(A)
-%removes all zero rows and columns from a matrix
+% Removes all zero rows and columns from a matrix
+%
+% USAGE:
+%
+%    A = removeZeroRowsCols(A)
+%
+% INPUTS:
+%    A:    m x n matrix
+%
+% OUTPUT:
+%    A:    `A` with all zero rows removed, followed by all zero columns
+%          removed
 
-% Remove zero rows
 A( all(~A,2), : ) = [];
 % Remove zero columns
 A( :, all(~A,1) ) = [];

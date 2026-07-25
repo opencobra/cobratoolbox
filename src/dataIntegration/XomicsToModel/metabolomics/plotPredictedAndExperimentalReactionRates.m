@@ -1,5 +1,5 @@
 %% Plot experimental uptake and secretion rates as well as error bars on logarithmic scale
-%options to be specified and loaded before:
+% options to be specified and loaded before:
 % exoMet = glcValidationData;
 % fullReport = comparisonData_C1.fullReport;
 % condition = 'Complex I inhibition';

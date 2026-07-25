@@ -1,9 +1,9 @@
-function [ newmodel ] = addMetabolite(model,metID,varargin)
+function [newmodel] = addMetabolite(model, metID, varargin)
 % Adds a Metabolite to the Current Reconstruction
 %
 % USAGE:
 %
-%    newModel = addMetabolite(model, metID, metName, formula, ChEBIID, KEGGId, PubChemID, InChi, Charge, b)
+%    newmodel = addMetabolite(model, metID, varargin)
 %
 % INPUTS:
 %    model:         Cobra model structure
@@ -24,14 +24,15 @@ function [ newmodel ] = addMetabolite(model,metID,varargin)
 %                    * csense:        The sense of this metabolite (default 'E', char)
 %
 % OUTPUT:
-%    newModel:      COBRA model with added metabolite(s)
+%    newmodel:      COBRA model with added metabolite(s)
 %
 % EXAMPLES:
+%
 %    1) add a Metabolite which should be accumulated
 %    model = addMetabolite(model,'MetToAcc','b',5);
 %    2) Add a Metabolite with a given Formula and a given Charge
 %    model = addMetabolite(model,'MetWithForm','metFormula','H3O','metCharge',1);
-% 
+%
 % NOTE:
 %    `metID` and all optional arguments either have to be a single value or cell
 %    arrays. `Charge` and `b` have to be double arrays.

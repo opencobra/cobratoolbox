@@ -17,7 +17,7 @@ function [MW, Ematrix, elements, knownWeights, unknownElements] = computeMW(mode
 %                          MW = NaN for any formulae with chemical elements of unknown weights
 %                          except the reserved formula 'Mass0' for denoting truly massless metabolites (e.g., photon)
 %    (isotopeAbundance is used only if genericFormula = true)
-%    isotopeAbundance:   * (default) false to use standard atomic weights 
+%    isotopeAbundance:    * (default) false to use standard atomic weights 
 %                        * true to use the weights of naturally predominant isotopes for biological 
 %                            elements and standard weights for other elements.
 %                        * `m` x 3 cell arrray with user defined isotope abundance:
@@ -30,7 +30,7 @@ function [MW, Ematrix, elements, knownWeights, unknownElements] = computeMW(mode
 %    MW:                 Vector of molecular weights
 %    Ematrix:            * `m` x 6 matrix of order [C N O H P other] if genericFormula = false
 %                        * `m` x `e` matrix if genericFormula = true given `e` elements in the chemical formulae
-%    element:            cell array of elements corresponding to the columns of Ematrix
+%    elements:           cell array of elements corresponding to the columns of Ematrix
 %    (knownWeights and unknownElements are non-empty only if genericFormula = true)
 %    knownWeights:       MWs for the part whose MW is computable ofr each of the formulae
 %    unknownElements:    cell arrary of elements without known atomic weights that appear in the formulae

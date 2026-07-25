@@ -4,12 +4,12 @@ function [colors] = createColorsMap()
 %
 % USAGE:
 %
-%   [colors] = createColorsMap()
+%    [colors] = createColorsMap()
 %
 % OUTPUTS:
-%   colors:     Map structure (similar to a dictionary) containing a
-%               list of colors in the string format and giving the
-%               corresponding colors when called in the Map.
+%    colors:     Map structure (similar to a dictionary) containing a
+%                list of colors in the string format and giving the
+%                corresponding colors when called in the Map.
 %
 % .. Authors:
 %       - N. Sompairac - Institut Curie, Paris, 24/07/2017

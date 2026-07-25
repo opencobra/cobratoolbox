@@ -1,18 +1,18 @@
-function varargout = loadBiGGModel( model_ids, format, multichoice)
-% Reads from url http://bigg.ucsd.edu/api/v2/models
+function varargout = loadBiGGModel(model_ids, format, multichoice)
+% Downloads and loads one or more models from the BiGG database
+% (http://bigg.ucsd.edu/api/v2/models)
 %
 % USAGE:
 %
-%    model = listBiGGModel(model_ids)
+%    varargout = loadBiGGModel(model_ids, format, multichoice)
 %
 % OPTIONAL INPUTS:
-%
-%    model_ids:     The BiGG ID(s) of the model(s). If no ID is provided (either empty or no arguments) a gui
-%                   will ask for the model to load.
-%    format:        The format from Bigg to load. Either 'sbml' or ('mat').
-%                   Default('mat')
-%    multichoice:   Whether multiple models can be loaded if no ids are
-%                   given. (Default: true)
+%    model_ids:      The BiGG ID(s) of the model(s). If no ID is provided (either empty or no arguments) a gui
+%                    will ask for the model to load.
+%    format:         The format from Bigg to load. Either 'sbml' or ('mat').
+%                    Default('mat')
+%    multichoice:    Whether multiple models can be loaded if no ids are
+%                    given. (Default: true)
 % OUTPUT:
 %    varargout:     The models in the order of the selected ids. If
 %                   multiple models are selected in the dialog, a struct

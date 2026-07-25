@@ -1,4 +1,4 @@
-function [model,addedRxns] = untargetedGapFilling(model,osenseStr,database,excludeDMs,excludeSinks,excludeExchanges)
+function [model, addedRxns] = untargetedGapFilling(model, osenseStr, database, excludeDMs, excludeSinks, excludeExchanges)
 % This script is part of the DEMETER pipeline and attemps to find a
 % reaction from the complete reaction database through the use of
 % relaxedFBA that could enable flux through the objective function. This
@@ -6,25 +6,37 @@ function [model,addedRxns] = untargetedGapFilling(model,osenseStr,database,exclu
 %
 % USAGE:
 %
-%   [model,addedRxns] = untargetedGapFilling(model,osenseStr,database)
+%    [model, addedRxns] = untargetedGapFilling(model, osenseStr, database, excludeDMs, excludeSinks, excludeExchanges)
 %
-% INPUTS
-% model:              COBRA model structure
-% osenseStr:          Maximize ('max')/minimize ('min')linear part of the
-%                     objective.
-% database:           rBioNet reaction database containing min. 3 columns:
-%                     Column 1: reaction abbreviation, Column 2: reaction
-%                     name, Column 3: reaction formula.
-% excludeDMs          boolean indicating if demand reactions should be
-%                     excluded from gap-filling reactions (default: true)
-% excludeSinks        boolean indicating if sink reactions should be
-%                     excluded from gap-filling reactions (default: true)
-% excludeExchanges    boolean indicating if exchanges reactions should be
-%                     excluded from gap-filling reactions (default: false)
+% INPUTS:
+%    model:              COBRA model structure with fields:
 %
-% OUTPUT
-% model:              Gapfilled COBRA model structure
-% addedRxns:          Added gapfilled reactions
+%                          * .rxns - `n x 1` reaction identifiers
+%                          * .c - `n x 1` objective coefficients
+%                          * .lb - `n x 1` lower bounds
+%                          * .ub - `n x 1` upper bounds
+%
+%    osenseStr:          Maximize ('max')/minimize ('min')linear part of the
+%                        objective.
+%    database:           rBioNet reaction database containing min. 3 columns:
+%                        Column 1: reaction abbreviation, Column 2: reaction
+%                        name, Column 3: reaction formula, with fields:
+%
+%                          * .reactions - cell array of reaction
+%                            abbreviations (column 1) and reaction
+%                            formulas (column 3)
+%
+% OPTIONAL INPUTS:
+%    excludeDMs:         boolean indicating if demand reactions should be
+%                        excluded from gap-filling reactions (default: true)
+%    excludeSinks:       boolean indicating if sink reactions should be
+%                        excluded from gap-filling reactions (default: true)
+%    excludeExchanges:    boolean indicating if exchanges reactions should be
+%                        excluded from gap-filling reactions (default: false)
+%
+% OUTPUTS:
+%    model:              Gapfilled COBRA model structure
+%    addedRxns:          Added gapfilled reactions
 %
 % .. Authors:
 %       - Ines Thiele and Almut Heinken, 02/2021

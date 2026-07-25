@@ -3,18 +3,18 @@ function modelNew = deleteProtons(model)
 %
 % USAGE:
 %
-%    newModel = deleteProtons(model)
+%    modelNew = deleteProtons(model)
 %
 % INPUTS:
 %    model:         COBRA model.
 %
 % OUTPUTS:
-%    newModel:      COBRA model without protons nor protons trasport
+%    modelNew:      COBRA model without protons nor protons trasport
 %                   reactions.
 %
 % EXAMPLE:
 %
-%    newModel = deleteProtons(model)
+%    modelNew = deleteProtons(model)
 %
 % .. Author: - German A. Preciat Gonzalez 07/08/2017
 

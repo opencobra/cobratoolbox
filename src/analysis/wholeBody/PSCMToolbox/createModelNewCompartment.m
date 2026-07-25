@@ -1,23 +1,30 @@
-function [modelComp] = createModelNewCompartment(model,OldComp,NewComp,NewCompName,LB,UB,RemoveExch)
-% This function converts a two compartment metabolic model into a three compartment metabolic model model
-% 
-% function [modelComp] = createModelNewCompartment(model,OldComp,NewComp,NewCompName,LB,UB,RemoveExch)
-% 
-% INPUT 
-% model         Model structure
-% OldComp       Name of the current (to be replicated) compartment to be
-%               replicated and added
-% NewCompName   Name of new compartment e.g., 'lumen'
-% LB            Value for Lower bound on new exchange compartment (default:-1000)
-% UB            Value for Upper bound on new exchange compartment (default:1000)
-% 
-% NewComp       Abrreviation for the new compartment,m e.g., 'lu'
-% RemoveExch    Option (if set to 1) to remove the old compartment
+function [modelComp] = createModelNewCompartment(model, OldComp, NewComp, NewCompName, LB, UB, RemoveExch)
+% Convert a two-compartment metabolic model into a three-compartment model
 %
-% OUTPUT
-% modelComp     Model with three compartments
+% This function converts a two-compartment metabolic model into a
+% three-compartment metabolic model by replicating an existing compartment
+% under a new name.
 %
-% Ines Thiele 2016-2017
+% USAGE:
+%
+%    [modelComp] = createModelNewCompartment(model, OldComp, NewComp, NewCompName, LB, UB, RemoveExch)
+%
+% INPUTS:
+%    model:         Model structure with fields:
+%
+%                     * .rxns - reaction identifiers
+%                     * .rxnNames - reaction names
+%    OldComp:       Name of the current (to be replicated) compartment
+%    NewComp:       Abbreviation for the new compartment, e.g. 'lu'
+%    NewCompName:    Name of the new compartment, e.g. 'lumen'
+%    LB:            Lower bound on the new exchange compartment (default -1000)
+%    UB:            Upper bound on the new exchange compartment (default 1000)
+%    RemoveExch:    If set to 1, remove the old compartment (default 0)
+%
+% OUTPUT:
+%    modelComp:     Model with the added (third) compartment
+%
+% .. Author: - Ines Thiele, 2016-2017
 
 warning off
 if ~exist('LB','var')

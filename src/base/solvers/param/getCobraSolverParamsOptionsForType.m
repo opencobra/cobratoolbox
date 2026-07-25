@@ -9,7 +9,7 @@ function paramNames = getCobraSolverParamsOptionsForType(problemType)
 %    problemType :      One of the problem types available in the COBRA
 %                       Toolbox ('LP','QP','EP','CLP','MILP','MIQP','NLP')
 %
-% OUPTUT:
+% OUTPUT:
 %    paramNames:        Cell array of names of parameters that can be set
 %                       for each problem type, independent of the specific
 %                       solver being used.

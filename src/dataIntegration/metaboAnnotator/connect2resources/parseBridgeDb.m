@@ -1,21 +1,30 @@
-function [metabolite_structure,IDsAdded,IdsMismatch] = parseBridgeDb(metabolite_structure,startSearch,endSearch)
-%% function [metabolite_structure,IDsAdded,IdsMismatch] = parseBridgeDb(metabolite_structure)
-% This function takes existing database-dependent identifiers and searches
-% BridgeDB (https://bridgedb.github.io/) via their webservice for other
-% database identifiers (see below) and adds them to the metabolite
-% structure if the metabolite does not have the respective identifier. In
-% the case that the metabolite has such identifier already but if there is
-% a mismatch, this will be listed in 'IdsMismatch'
+function [metabolite_structure, IDsAdded, IdsMismatch] = parseBridgeDb(metabolite_structure, startSearch, endSearch)
+% Take the existing database-dependent identifiers and search BridgeDB
+% (https://bridgedb.github.io/) via their web service for other database
+% identifiers, adding them to the metabolite structure when the metabolite does
+% not already have the respective identifier. When the metabolite already has
+% such an identifier but it mismatches, the discrepancy is listed in IdsMismatch.
 %
-% INPUT
-% metabolite_structure  metabolite structure
+% USAGE:
 %
-% OUTPUT
-% metabolite_structure  updated metabolite structure
-% IDsAdded              List of added IDs from BridgeDB
-% IdsMismatch           List of mismatching IDs between VMH and BridgeDB
+%    [metabolite_structure, IDsAdded, IdsMismatch] = parseBridgeDb(metabolite_structure, startSearch, endSearch)
 %
-% Ines Thiele   October 2020
+% INPUT:
+%    metabolite_structure:    metabolite structure whose fields are VMH
+%                             metabolite IDs, each holding identifier fields
+%
+% OPTIONAL INPUTS:
+%    startSearch:             numeric index of where the search should start in
+%                             the metabolite structure (default: 1)
+%    endSearch:               numeric index of where the search should end in
+%                             the metabolite structure (default: last metabolite)
+%
+% OUTPUTS:
+%    metabolite_structure:    updated metabolite structure
+%    IDsAdded:                list of added IDs from BridgeDB
+%    IdsMismatch:             list of mismatching IDs between VMH and BridgeDB
+%
+% .. Author: - Ines Thiele, October 2020
 
 annotationSource = 'BridgeDb (online)';
 annotationType = 'automatic';

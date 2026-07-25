@@ -10,7 +10,11 @@ function [r_info] = readCD(parsed)
 % INPUT:
 %    parsed:       the first type of the parsed model structure outputed by
 %                  `parseCD` function (more user-friendely to modify speicfic
-%                  graphic properties for specific reactions)
+%                  graphic properties for specific reactions), with fields:
+%
+%                    * .r_info - the second (per-property) parsed
+%                      representation produced by `parseCD` (used here via
+%                      its `.species` sub-field)
 %
 % OUTPUT:
 %    r_info:       the second type of the parsed model structure (similar to a

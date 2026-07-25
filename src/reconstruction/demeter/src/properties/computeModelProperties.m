@@ -1,27 +1,33 @@
 function propertiesFolder = computeModelProperties(refinedFolder, infoFilePath, reconVersion, varargin)
-% Part of the DEMETER pipeline. This function analyzes and plots various  
-% properties of the refined and optionally the draft reconstructions. Note 
+% Part of the DEMETER pipeline. This function analyzes and plots various
+% properties of the refined and optionally the draft reconstructions. Note
 % that this may be time-consuming.
 %
 % USAGE:
 %
 %    propertiesFolder = computeModelProperties(refinedFolder, infoFilePath, reconVersion, varargin)
 %
-% REQUIRED INPUTS
-% refinedFolder            Folder with refined COBRA models to analyze
-% infoFilePath             File with information on reconstructions to refine
-% reconVersion             Name of the refined reconstruction resource
-%                          (default: "Reconstructions")
-% OPTIONAL INPUTS
-% numWorkers               Number of workers in parallel pool (default: 2)
-% translatedDraftsFolder   Folder with draft COBRA models with translated
-%                          nomenclature and stored as mat files
-% customFeatures           Features other than taxonomy to cluster microbes
-%                          by. Need to be a table header in the file with 
-%                          information on reconstructions.
+% INPUTS:
+%    refinedFolder:             Folder with refined COBRA models to analyze
+%    infoFilePath:              File with information on reconstructions to refine
+%    reconVersion:              Name of the refined reconstruction resource
+%                               (default: "Reconstructions")
 %
-% .. Authors:
-%       - Almut Heinken, 06/2020
+% OPTIONAL INPUTS:
+%    propertiesFolder:          Folder where the computed model properties
+%                               will be stored (default: [pwd filesep 'modelProperties'])
+%    numWorkers:                Number of workers in parallel pool (default: 2)
+%    translatedDraftsFolder:    Folder with draft COBRA models with translated
+%                               nomenclature and stored as mat files
+%    customFeatures:            Features other than taxonomy to cluster microbes
+%                               by. Need to be a table header in the file with
+%                               information on reconstructions.
+%
+% OUTPUTS:
+%    propertiesFolder:          Folder where the computed model properties
+%                               were stored
+%
+% .. Author: - Almut Heinken, 06/2020
 
 % Define default input parameters if not specified
 parser = inputParser();

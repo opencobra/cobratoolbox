@@ -18,9 +18,10 @@ function [relaxRxnBool, solutionRelax] = minCardinalityConservationRelaxationVec
 % OPTIONAL INPUTS:
 %    param:           structure with:
 %
-%                        * param.epsilon - (getCobraSolverParams('LP', 'feasTol')*100) 1/epsilon is the largest flux expected
-%                        * param.eta - (`feasTol` * 100), cutoff for mass leak/siphon
-%                        * param.nonRelaxBool - (false(n, 1)), `n` x 1 boolean vector for reactions not to relax
+%                        * .epsilon - (getCobraSolverParams('LP', 'feasTol')*100) 1/epsilon is the largest flux expected
+%                        * .eta - (`feasTol` * 100), cutoff for mass leak/siphon
+%                        * .nonRelaxBool - (false(n, 1)), `n` x 1 boolean vector for reactions not to relax
+%                        * .checkConsistency - whether to check the stoichiometric consistency of the network prior to relaxation
 %    printLevel:       verbose level
 %
 % OUTPUTS:

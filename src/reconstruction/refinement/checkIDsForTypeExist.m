@@ -1,14 +1,19 @@
-function [bool,existing] = checkIDsForTypeExist(model,ids,basefield)
+function [bool, existing] = checkIDsForTypeExist(model, ids, basefield)
 % Check whether the given IDs exist for the given type of base field. Base
 % fields include rxns, mets, genes, comps, proteins, ctrs, evars. ctrs/mets
-% as well as rxns/evars will be considered as a combined field. 
+% as well as rxns/evars will be considered as a combined field.
 %
 % USAGE:
 %
-%    [bool,existing] = checkIDsForTypeExist(model,ids,basefield)
+%    [bool, existing] = checkIDsForTypeExist(model, ids, basefield)
 %
 % INPUTS:
-%    model:               model structure
+%    model:               model structure with fields:
+%
+%                            * .rxns - `n x 1` cell array of reaction identifiers
+%                            * .evars - (if present) `evars x 1` cell array of extra variable identifiers, combined with `.rxns` when `basefield` is `rxns` or `evars`
+%                            * .mets - `m x 1` cell array of metabolite identifiers
+%                            * .ctrs - (if present) `ctrs x 1` cell array of constraint identifiers, combined with `.mets` when `basefield` is `mets` or `ctrs`
 %    ids:                 cell array of identifiers
 %    basefield:           Any base field defined.
 %

@@ -3,21 +3,31 @@ function model = creategrRulesField(model, positions)
 %
 % USAGE:
 %
-%    modelWithField = creategrRulesField(model, positions)
-%    
+%    model = creategrRulesField(model, positions)
+%
 % INPUT:
 %    model:             The COBRA Model structure to generate the grRules Field for
-%                       an existing grRules field will be overwritten
+%                       an existing grRules field will be overwritten. Uses fields:
+%
+%                         * .rxns - reaction identifiers, used to size the
+%                           default `positions`
+%                         * .rules - `n x 1` logical GPR rule strings
+%                           (`x(i)` gene indices), used to build `.grRules`
+%                         * .genes - gene identifiers, substituted for the
+%                           `x(i)` indices in `.rules` to build `.grRules`
 %
 % OPTIONAL INPUT:
 %
-%    positions:         The positions to update. Can be supplied either as 
+%    positions:         The positions to update. Can be supplied either as
 %                       logical array, double indices, or reaction names (Default: model.rxns)
 %                       If the model did not have grRules before, ALL rxns
 %                       will have grRules created
 %
 % OUTPUT:
-%    model:    The Output model with a grRules field
+%    model:    The model with the field:
+%
+%                * .grRules - the gene-reaction rules built from `.rules`
+%                  and `.genes` for the given `positions`
 %
 % .. Authors: - Thomas Pfau May 2017
 

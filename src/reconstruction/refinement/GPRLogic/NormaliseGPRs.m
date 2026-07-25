@@ -1,14 +1,16 @@
-function Outmodel = NormaliseGPRs(model,geneRegExp)
+function Outmodel = NormaliseGPRs(model, geneRegExp)
 % Bring all GPRS into a DNF form and reduce them to the minimal DNF Form
 % USAGE:
 %
-%    Outmodel = NormaliseGPRs(model,geneRegExp)
+%    Outmodel = NormaliseGPRs(model, geneRegExp)
 %
 % INPUTS:
 %
-%    model:       The Model to convert the GPRs
-%    geneRegExp:  A Regular expression matching the genes in the model.
-% 
+%    model:       The Model to convert the GPRs, with fields:
+%
+%                   * .rules - `n` x 1 cell array of GPR logical rules (`x(i)` literal syntax)
+%    geneRegExp:    A Regular expression matching the genes in the model.
+%
 % OUTPUTS:
 %    Outmodel:    The output model with all GPRS in minimal DNF form.
 %

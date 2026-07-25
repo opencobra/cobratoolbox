@@ -15,6 +15,9 @@ currentDir = pwd;
 fileDir = fileparts(which('testMaps'));
 cd(fileDir);
 
+% require an LP solver; skip gracefully if none is available
+prepareTest('needsLP', true);
+
 fprintf('   Testing testMaps ... \n')
 
 mapCoordinateFilename='ecoli_core_map.txt';

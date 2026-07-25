@@ -1,4 +1,4 @@
-function prepIntegrationQuant(model,metData,exchanges,samples,test_max,test_min,outputPath,tol,variation)
+function prepIntegrationQuant(model, metData, exchanges, samples, test_max, test_min, outputPath, tol, variation)
 % This function generates individual uptake and secretion profiles from a
 % data matrix (fluxes) with samples as columns and metabolites as rows.
 % Negative values are interpreted as uptake and positive values are

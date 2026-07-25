@@ -1,29 +1,33 @@
-function [model, addedRxns, removedRxns] = carbonSourceGapfill(model, microbeID, database,inputDataFolder)
+function [model, addedRxns, removedRxns] = carbonSourceGapfill(model, microbeID, database, inputDataFolder)
 % Gap-fills carbon source utilization pathways in a microbial reconstruction based on
 % experimental evidence.
 %
-% USAGE
-%   [model, addedRxns_carbonSources, removedRxns_carbonSources] =
-%   carbonSourceGapfill(model, microbeID, database,inputDataFolder)
+% USAGE:
 %
-% INPUT
-% model             COBRA model structure
-% microbeID:        ID of the reconstructed microbe that serves as the
-%                   reconstruction name and to identify it in input tables
-% database          rBioNet reaction database containing min. 3 columns:
-%                   Column 1: reaction abbreviation, Column 2: reaction
-%                   name, Column 3: reaction formula.
-% inputDataFolder   Folder with experimental data and database files
-%                   to load
+%    [model, addedRxns, removedRxns] = carbonSourceGapfill(model, microbeID, database, inputDataFolder)
 %
-% OUTPUT
-% model             COBRA model structure refined through experimental data
-%                   for carbon sources
-% addedRxns         List of reactions that were added during refinement
-% removedRxns       List of reactions that were removed during refinement
+% INPUTS:
+%    model:             COBRA model structure with fields:
+%
+%                          * .rxns - reaction identifiers, used to check for reactions already present
+%    microbeID:         ID of the reconstructed microbe that serves as the
+%                       reconstruction name and to identify it in input tables
+%    database:          rBioNet reaction database with fields:
+%
+%                          * .reactions - cell array with min. 3 columns: column 1
+%                            reaction abbreviation, column 2 reaction name,
+%                            column 3 reaction formula
+%    inputDataFolder:    Folder with experimental data and database files
+%                       to load
+%
+% OUTPUTS:
+%    model:             COBRA model structure refined through experimental data
+%                       for carbon sources
+%    addedRxns:         List of reactions that were added during refinement
+%    removedRxns:       List of reactions that were removed during refinement
 %
 % .. Authors:
-% Almut Heinken and Stefania Magnusdottir, 2016-2020
+%       - Almut Heinken and Stefania Magnusdottir, 2016-2020
 
 addedRxns={};
 removedRxns={};

@@ -212,7 +212,8 @@ if isempty(gamsPath); error('OptForce: GAMS is not installed in your system. Ple
 %name of the function to solve the optimization problem in GAMS
 gamsMustUFunction = 'findMustU.gms';
 %path of that function
-pathGamsFunction = which(gamsMustUFunction);
+% findMustU.gms is vendored under external/ (relocated out of src/); resolve by absolute path.
+pathGamsFunction = [fileparts(which('initCobraToolbox')) filesep 'external' filesep 'design' filesep 'optForceGAMS' filesep gamsMustUFunction];
 if isempty(pathGamsFunction); error(['optForce: ' gamsMustUFunction ' not in MATLAB path.']); end;
 %current path
 workingPath = pwd;

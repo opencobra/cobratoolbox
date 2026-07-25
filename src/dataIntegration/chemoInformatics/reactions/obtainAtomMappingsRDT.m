@@ -7,7 +7,7 @@ function atomMappingReport = obtainAtomMappingsRDT(model, molFileDir, rxnResults
 %
 % USAGE:
 %
-%    standardisedRxns = obtainAtomMappingsRDT(model, molFileDir, rxnResultsDir, rxnsToAM, hMapping, maxTime, standariseRxn)
+%    atomMappingReport = obtainAtomMappingsRDT(model, molFileDir, rxnResultsDir, rxnsToAM, hMapping, writeRXNonly, replaceExistingAtomMappings)
 %
 % INPUTS:
 %    model:         COBRA model with following fields:
@@ -27,11 +27,11 @@ function atomMappingReport = obtainAtomMappingsRDT(model, molFileDir, rxnResults
 %                   reaction identifiers in input mets.
 %
 % OPTIONAL INPUTS:
-%    rxnResultsDir: Path to directory that will contain the RXN files with atom mappings (default: current directory).
+%    rxnResultsDir:    Path to directory that will contain the RXN files with atom mappings (default: current directory).
 %    rxnsToAM:      List of reactions to atom map (default: all in the model).
 %    hMapping:      Logic value to select if hydrogen atoms will be atom mapped (default: TRUE).
-%    writeRXNonly:  True to write out standardised RXN files and not atom map them (default: FALSE).
-%    replaceExistingAtomMappings: True to recompute atom mappings, replacing existing RXN files  (default: TRUE).
+%    writeRXNonly:    True to write out standardised RXN files and not atom map them (default: FALSE).
+%    replaceExistingAtomMappings:    True to recompute atom mappings, replacing existing RXN files  (default: TRUE).
 %
 %
 % OUTPUTS:

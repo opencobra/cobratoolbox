@@ -3,7 +3,7 @@ function [model, addedMismatchRxns, deletedMismatchRxns] = curateGrowthRequireme
 % refines the reconstruction accordingly. Reactions are gap-filled and/or
 % delete to reconcile mismatches between experimental and in silico
 % metabolite essentiality. These curation steps were determined manually.
-% The first step is printing the organism's biomass components and 
+% The first step is printing the organism's biomass components and
 % subsequent evaluation which ones are required/ not required by the model.
 % There are four possible cases:
 % 1) essential in vivo and not in BOF -> add to BOF and add transporter/
@@ -13,24 +13,36 @@ function [model, addedMismatchRxns, deletedMismatchRxns] = curateGrowthRequireme
 % 3) nonessential in vivo and not in BOF -> OK
 % 4) nonessential in vivo and in BOF -> if pathway is mostly present:
 % gapfill. If pathway is not present: remove from BOF
-
-% USAGE
-%   [model, addedMismatchRxns, deletedMismatchRxns] = curateGrowthRequirements(model, microbeID, database, inputDataFolder)
 %
-% INPUTS
-% model                 COBRA model structure
-% microbeID             ID of the reconstructed microbe that serves as the 
-%                       reconstruction name and to identify it in input tables
-% database              rBioNet reaction database containing min. 3 columns:
-%                       Column 1: reaction abbreviation, Column 2: reaction
-%                       name, Column 3: reaction formula.
-% inputDataFolder       Folder with input tables with experimental data and
-%                       databases that inform the refinement process
+% USAGE:
 %
-% OUTPUTS
-% model                 COBRA model structure
-% addedMismatchRxns     Reactions added to conform to growth requirements
-% deletedMismatchRxns   Reactions deleted to conform to growth requirements
+%    [model, addedMismatchRxns, deletedMismatchRxns] = curateGrowthRequirements(model, microbeID, database, inputDataFolder)
+%
+% INPUTS:
+%    model:    COBRA model structure with fields:
+%
+%                * .rxns - Reaction identifiers
+%                * .grRules - Gene-protein-reaction rules, used to identify reactions that have already been gap-filled or are unannotated
+%                * .lb - Reaction lower bounds
+%    microbeID:    ID of the reconstructed microbe that serves as the
+%                  reconstruction name and to identify it in input tables
+%    database:    rBioNet reaction database with fields:
+%
+%                   * .reactions - Cell array with reaction abbreviation (column 1), name (column 2), and formula (column 3)
+%    inputDataFolder:    Folder with input tables with experimental data and
+%                        databases that inform the refinement process
+%
+% OUTPUTS:
+%    model:    COBRA model structure with fields:
+%
+%                * .comments - Reaction comments describing how each added reaction was gap-filled
+%                * .citations - Reaction literature citations, set empty for newly added reactions
+%                * .rxnECNumbers - Reaction EC numbers, set empty for newly added reactions
+%                * .rxnKEGGID - Reaction KEGG identifiers, set empty for newly added reactions
+%                * .rxnConfidenceScores - Reaction confidence scores, set to 0 for newly added reactions
+%                * .grRules - Gene-protein-reaction rules, set to `GrowthRequirementsGapfill` for newly added reactions
+%    addedMismatchRxns:    Reactions added to conform to growth requirements
+%    deletedMismatchRxns:    Reactions deleted to conform to growth requirements
 %
 % .. Authors:
 %       - Almut Heinken, 2016-2020

@@ -10,7 +10,11 @@ function tissueModel = INIT(model, weights, tol, runtime, logfile, epsilon)
 %    tissueModel = INIT(model, weights, tol, runtime, logfile)
 %
 % INPUTS:
-%    model:               input model (COBRA model structure)
+%    model:               input model (COBRA model structure) with fields:
+%
+%                           * .S - `m x n` stoichiometric matrix
+%                           * .lb - `n x 1` lower flux bounds
+%                           * .ub - `n x 1` upper flux bounds
 %    weights:             column with positive and negative weights for each reaction
 %                         positive weights are reactions with high expression, negative
 %                         weigths for reaction with low expression (must be same length

@@ -1,20 +1,36 @@
-function geneWeight = calculateGeneWeight(model,Transcriptomic, Threshold)
-% Inputs:
-%   model              - A COBRA model with mandatory fields: grRules and SConsistentRxnBool.
-%   Transcriptomic     - A table with entrezID and geneExpression values.
-%   Threshold          - Threshold for transcriptomic data.
-
-
-% Note: geneWeight is a value that can be used in entropicFBA to assign a weight
+function geneWeight = calculateGeneWeight(model, Transcriptomic, Threshold)
+% Calculate a per-reaction gene expression weight for use with entropicFBA
+%
+% geneWeight is a value that can be used in entropicFBA to assign a weight
 % that corresponds to the gene expression value to internal reactions. If you
-% want to use this value for this purpose, use the following formula: 
+% want to use this value for this purpose, use the following formula:
 % cr = cf = -log(geneWeight + 1e-8) + 1 - ci/g
-% Default values: g = 2 , ci = 0
+% Default values: g = 2, ci = 0
+%
+% The algorithm is explained here: https://doi.org/10.1016/j.isci.2023.106201
+%
+% USAGE:
+%
+%    geneWeight = calculateGeneWeight(model, Transcriptomic, Threshold)
+%
+% INPUTS:
+%    model:             COBRA model structure with fields:
+%
+%                         * .grRules - `n x 1` cell array of gene-reaction rules
+%                         * .SConsistentRxnBool - `n x 1` logical, true for
+%                           stoichiometrically consistent reactions
+%    Transcriptomic:    table with a gene expression value column and field:
+%
+%                         * .entrezID - Entrez gene identifiers
+%    Threshold:         double, threshold below which a gene expression
+%                       value is treated as zero
+%
+% OUTPUTS:
+%    geneWeight:        `n x 1` vector of gene-expression-derived weights,
+%                       one per stoichiometrically consistent reaction
+%
+% .. Author: - Samira Ranjbar, 2024
 
-% Author : Samira Ranjbar 2024
-% (The algoithm is explained here:
-% https://doi.org/10.1016/j.isci.2023.106201)
-%-------------------------------------------------
 if isfield(model,'grRules')
     rule = model.grRules(model.SConsistentRxnBool);
 else

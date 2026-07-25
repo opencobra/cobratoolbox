@@ -1,4 +1,34 @@
-function plotRelaxedFBA(sol, model,tol)
+function plotRelaxedFBA(sol, model, tol)
+% Print a summary of a relaxedFBA solution, reporting which steady state
+% constraints and which reaction bounds were relaxed to make the model feasible
+%
+% USAGE:
+%
+%    plotRelaxedFBA(sol, model, tol)
+%
+% INPUTS:
+%    sol:      relaxedFBA solution structure with fields:
+%
+%                * .stat - solution status (1 if relaxedFBA solved successfully)
+%                * .v - reaction rate
+%                * .r - relaxation on the steady state constraints S*v = b
+%                * .p - relaxation on the lower bounds of reactions
+%                * .q - relaxation on the upper bounds of reactions
+%    model:    COBRA model structure with fields:
+%
+%                * .S - `m x n` stoichiometric matrix
+%                * .b - `m x 1` right hand side of S*v = b
+%                * .lb - `n x 1` lower flux bounds
+%                * .ub - `n x 1` upper flux bounds
+%                * .rxns - `n x 1` reaction identifiers
+%                * .mets - `m x 1` metabolite identifiers
+%                * .SIntRxnBool - `n x 1` boolean, true for internal reactions
+%
+% OPTIONAL INPUTS:
+%    tol:      tolerance below which a relaxation is treated as zero
+%              (default: 100 * LP feasTol)
+%
+% .. Author: - Ronan Fleming
 
 if sol.stat ~= 1
     disp('relaxedFBA did not complete successfully, nothing to display');

@@ -2,26 +2,31 @@ function [model, addedRxns, removedRxns] = curateAgainstBacDiveData(model, micro
 % Gap-fills and/or removes reactions in a genome-scale reconstructions
 % based on data from BacDive (https://bacdive.dsmz.de).
 %
-% USAGE
-%   [model, addedRxns, removedRxns] = gapfillAgainstBacDiveData(model, microbeID, database, inputDataFolder)
+% USAGE:
 %
-% INPUT
-% model             COBRA model structure
-% microbeID:        ID of the reconstructed microbe that serves as the
-%                   reconstruction name and to identify it in input tables
-% database          rBioNet reaction database containing min. 3 columns:
-%                   Column 1: reaction abbreviation, Column 2: reaction
-%                   name, Column 3: reaction formula.
-% inputDataFolder   Folder with experimental data and database files
-%                   to load
+%    [model, addedRxns, removedRxns] = curateAgainstBacDiveData(model, microbeID, database, inputDataFolder)
 %
-% OUTPUT
-% model             COBRA model structure refined through BacDive data
-% addedRxns         List of reactions that were added during refinement
-% removedRxns       List of reactions that were removed during refinement
+% INPUTS:
+%    model:              COBRA model structure with fields:
 %
-% .. Author:
-% Almut Heinken, 11/2021
+%                         * .rxns - Reaction identifiers
+%                         * .grRules - Readable gene-protein-reaction rules
+%    microbeID:          ID of the reconstructed microbe that serves as the
+%                        reconstruction name and to identify it in input tables
+%    database:           rBioNet reaction database structure with fields:
+%
+%                         * .reactions - Cell array with reaction abbreviation
+%                           (column 1), reaction name (column 2), and reaction
+%                           formula (column 3)
+%    inputDataFolder:    Folder with experimental data and database files
+%                        to load
+%
+% OUTPUTS:
+%    model:              COBRA model structure refined through BacDive data
+%    addedRxns:          List of reactions that were added during refinement
+%    removedRxns:        List of reactions that were removed during refinement
+%
+% .. Author: - Almut Heinken, 11/2021
 
 addedRxns={};
 removedRxns={};

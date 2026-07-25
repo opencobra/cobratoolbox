@@ -1,4 +1,7 @@
-function [OptExchRxns] = findOptExchRxns(model,Ex_Rxns,parFVA)
+function [OptExchRxns] = findOptExchRxns(model, Ex_Rxns, parFVA)
+% Identify exchange reactions whose direction (uptake or secretion) is not
+% obligate, based on flux variability analysis of the supplied exchange reactions
+%
 % USAGE:
 %
 %    [OptExchRxns] = findOptExchRxns(model, Ex_Rxns, parFVA)
@@ -6,10 +9,12 @@ function [OptExchRxns] = findOptExchRxns(model,Ex_Rxns,parFVA)
 % INPUTS:
 %    model:         Metabolic model
 %    Ex_Rxns:       Vector of exchange reactions for FVA
-%    fastFVA:       use FastFVA (default=0)
+%
+% OPTIONAL INPUTS:
+%    parFVA:        Use parallelization of the flux variability analysis (default = 0)
 %
 % OUTPUTS:
-%    OptExchRxns:
+%    OptExchRxns:    Exchange reactions that are neither obligate uptake nor obligate secretion
 %
 % .. Authors:
 %       - Ines Thiele 2014

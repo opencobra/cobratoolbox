@@ -3,11 +3,13 @@ function [metID] = findMetsInMap(map, metList)
 %
 % USAGE:
 %
-%    [metID] = findMetIdsMap(map, metList)
+%    [metID] = findMetsInMap(map, metList)
 %
 % INPUTS:
-%    map:       Map from CellDesigner parsed to MATLAB format
-%    metList:   List of metabolites names
+%    map:       Map from CellDesigner parsed to MATLAB format, with fields:
+%
+%                 * .specName - Cell array of metabolite (species) names
+%    metList:    List of metabolites names
 %
 % OUTPUT:
 %    metID:     List of metabolite indices corresponding to `metList`

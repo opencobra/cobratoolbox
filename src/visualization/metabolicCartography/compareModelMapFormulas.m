@@ -6,51 +6,56 @@ function [wrongTable, absentModelTable, absentMapTable, duplicateTable] = compar
 %
 % USAGE:
 %
-%   [wrongTable, absentModelTable, absentMapTable, duplicateTable] = compareModelMapFormulas(model, map, excelName)
+%    [wrongTable, absentModelTable, absentMapTable, duplicateTable] = compareModelMapFormulas(model, map, excelName)
 %
 % INPUTS:
-%   model:          COBRA structure of a model
-%   map:            MATLAB structure of the map obtained from the
-%                   function `transformXML2Map`.
+%    model:          COBRA structure of a model, with field:
+%
+%                      * .rxns - `n x 1` cell array of reaction identifiers
+%    map:            MATLAB structure of the map obtained from the
+%                    function `transformXML2Map`, with fields:
+%
+%                      * .rxnName - cell array of reaction names
+%                      * .rxnID - cell array of reaction IDs
 %
 % OPTIONAL INPUT:
-%   excelName:      Name of the excel file in which to export the info
+%    excelName:      Name of the excel file in which to export the info
 %
 % OUTPUTS:
-%   wrongTable:             Table containing the information on wrong
-%                           reactions. The fields are arranged as
-%                           followed:
+%    wrongTable:             Table containing the information on wrong
+%                            reactions. The fields are arranged as
+%                            followed:
 %
-%                            * rxnName - Name of the reaction in the map
-%                            * rxnID - ID of the reaction in the map
-%                            * modelFormula - Formula of the reaction from the model
-%                            * mapFormula - Formula of the reaction from the map
+%                             * rxnName - Name of the reaction in the map
+%                             * rxnID - ID of the reaction in the map
+%                             * modelFormula - Formula of the reaction from the model
+%                             * mapFormula - Formula of the reaction from the map
 %
-%   absentModelTable:       Table containing the information on
-%                           reactions present in the map but absent
-%                           from the model. The fields are arranged as
-%                           followed:
+%    absentModelTable:       Table containing the information on
+%                            reactions present in the map but absent
+%                            from the model. The fields are arranged as
+%                            followed:
 %
-%                            * rxnName - Name of the reaction in the map
-%                            * rxnID - ID of the reaction in the map
-%                            * mapFormula - Formula of the reaction from the map
+%                             * rxnName - Name of the reaction in the map
+%                             * rxnID - ID of the reaction in the map
+%                             * mapFormula - Formula of the reaction from the map
 %
-%   absentMapTable:         Table containing the information on
-%                           reactions present in the model but absent
-%                           from the map. The fields are arranged as
-%                           followed:
+%    absentMapTable:         Table containing the information on
+%                            reactions present in the model but absent
+%                            from the map. The fields are arranged as
+%                            followed:
 %
-%                            * rxnName - Name of the reaction in the model
-%                            * modelFormula - Formula of the reaction from the model
+%                             * rxnName - Name of the reaction in the model
+%                             * modelFormula - Formula of the reaction from the model
 %
-%   duplicateTable:         Table containing the information on
-%                           duplicated reactions in the map. The fields
-%                           are arranged as followed:
+%    duplicateTable:         Table containing the information on
+%                            duplicated reactions in the map. The fields
+%                            are arranged as followed:
 %
-%                            * rxnName - Name of the reaction in the model
-%                            * rxnID - ID of the reaction in the map
-%                            * modelFormula - Formula of the reaction from the model
-%                            * mapFormula - Formula of the reaction from the map
+%                             * rxnName - Name of the reaction in the model
+%                             * rxnID - ID of the reaction in the map
+%                             * modelFormula - Formula of the reaction from the model
+%                             * mapFormula - Formula of the reaction from the map
 %
 % .. Author: - N.Sompairac - Institut Curie, Paris, 25/07/2017.
 

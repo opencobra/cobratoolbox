@@ -1,29 +1,30 @@
 function createVolcanoPlot(estimates, pValues, names, plotTitle, xTitle, yTitle)
-% createVolcanoPlot generates a volcano plot to visualize the relationship 
-% between regression estimates and p-values.
+% Generate a volcano plot of regression estimates against their p-values
+%
+% Points are coloured by significance category (FDR < 0.05, P < 0.05,
+% P > 0.05); significant points are labelled and reference lines are drawn at
+% estimate = 0 and p = 0.05.
 %
 % USAGE:
-%   createVolcanoPlot(estimates, pValues, names, plotTitle, xTitle, yTitle)
+%
+%    createVolcanoPlot(estimates, pValues, names, plotTitle, xTitle, yTitle)
 %
 % INPUTS:
-%   estimates - [vector] Regression estimates for each data point (e.g., effect sizes or log fold changes).
-%   pValues   - [vector] p-values corresponding to each estimate.
-%   names     - [cell array] Labels or names for each data point.
-%   plotTitle - [string] Title of the plot.
-%   xTitle    - [string] Label for the x-axis (e.g., "Effect Size" or "Log Fold Change").
-%   yTitle    - [string] Label for the y-axis (e.g., "-log10(p-value)").
-%
-% OUTPUTS:
-%   None      - This function generates a volcano plot in the current figure.
+%    estimates:    vector of regression estimates for each data point (e.g.
+%                  effect sizes or log fold changes)
+%    pValues:      vector of p-values corresponding to each estimate
+%    names:        cell array of labels or names for each data point
+%    plotTitle:    char/string, title of the plot
+%    xTitle:       char/string, label for the x-axis (e.g. "Log Fold Change")
+%    yTitle:       char/string, label for the y-axis (e.g. "-log10(p-value)")
 %
 % EXAMPLE:
-%   createVolcanoPlot(estimates, pValues, {'Metabolite1', 'Metabolite2'}, ...
-%                     'Volcano Plot', 'Log Fold Change', '-log10(p-value)')
 %
-% .. Author:
-%       - Tim Hensen, November 2024
+%    createVolcanoPlot(estimates, pValues, {'Metabolite1', 'Metabolite2'}, ...
+%                      'Volcano Plot', 'Log Fold Change', '-log10(p-value)')
+%
+% .. Author: - Tim Hensen, November 2024
 
-% Categorise the p-values and define the category-associated colours
 [groupsToPlot, colours] = findPvalCategories(pValues);
 
 hold on

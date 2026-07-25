@@ -6,7 +6,17 @@ function outmodel = writeCbModel(model, varargin)
 %    outmodel = writeCbModel(model, varargin)
 %
 % INPUTS:
-%    model:             Standard COBRA model structure
+%    model:             Standard COBRA model structure with fields:
+%
+%                         * .rxns - Reaction identifiers
+%                         * .lb - Lower bounds
+%                         * .ub - Upper bounds
+%                         * .c - Objective coefficients
+%                         * .grRules - Readable gene protein reaction rules
+%                         * .comps - Compartment symbols (optional; used to derive `compSymbols`/`compNames` if present)
+%                         * .compNames - Compartment names (optional; used if present)
+%                         * .A - General constraint matrix (set to `.S` if `.A` is absent)
+%                         * .S - Stoichiometric matrix (set from `.A` if `.A` is present but `.S` is absent)
 %
 % OPTIONAL INPUTS:
 %    varargin:          Optional parameters in 'Parametername',value

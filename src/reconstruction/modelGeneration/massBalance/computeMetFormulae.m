@@ -17,7 +17,16 @@ function [model, metFormulae, elements, metEle, rxnBal, S_fill, solInfo, varargo
 %      [...] = computeMetFormulae(model, knownMets, balancedRxns, fillMets, calcCMs, nameCMs, deadCMs, metMwRange, LPparams, ...)
 %
 % INPUT:
-%    model:          COBRA model
+%    model:          COBRA model structure with fields:
+%
+%                      * .S - Stoichiometric matrix
+%                      * .mets - Metabolite identifiers
+%                      * .metFormulas - Metabolite formulas
+%                      * .rxns - Reaction identifiers
+%                      * .lb - Lower reaction flux bounds
+%                      * .ub - Upper reaction flux bounds
+%                      * .metCharge - Metabolite charges (written when found from formula, non-standard field name as used in the code)
+%                      * .metCharges - Metabolite charges (written when found from formula)
 %
 % OPTIONAL INPUTS (support name-value argument input):
 %    knownMets:      Known metabolites (cell array of strings or vector of met IDs) 
@@ -76,6 +85,8 @@ function [model, metFormulae, elements, metEle, rxnBal, S_fill, solInfo, varargo
 %                      * cmDeadend:     logical vector indicating which columns in N represent moieties in deadend metabolites. 
 %                                       These are usually isolated conversion steps between dead end metabolites. 
 %    LP:             LP problem structure for solveCobraLP (#components x 1)
+%    varargout:      Additional output(s) beyond `solInfo`: `LP`, the LP problem
+%                    structure(s) for `solveCobraLP` (#components x 1)
 
 if ~isfield(model,'metFormulas')
     error('model does not have the field ''metFormulas.''')

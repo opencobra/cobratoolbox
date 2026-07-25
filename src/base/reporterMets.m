@@ -6,7 +6,11 @@ function [normScore, nRxnsMet, nRxnsMetUni, rawScore] = reporterMets(model, data
 %    [normScore, nRxnsMet, nRxnsMetUni, rawScore] = reporterMets(model, data, nRand, pValFlag, nLayers, metric, dataRxns)
 %
 % INPUTS:
-%    model:           Metabolic network reconstruction structure
+%    model:           Metabolic network reconstruction structure with fields:
+%
+%                       * .S - `m x n` stoichiometric matrix
+%                       * .mets - `m x 1` cell array of metabolite identifiers
+%                       * .rxns - `n x 1` cell array of reaction identifiers
 %    data:            Data matrix/vector
 %    nRand:           Number of randomizations
 %    pValFlag:        The data are p-values and should be converted to z-scores

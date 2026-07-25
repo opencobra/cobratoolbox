@@ -1,16 +1,22 @@
 function changeMapMetIDToName(mapPath, modelPath, outputXMLFile)
     % Replaces VMH metabolite IDs in a CellDesigner map with full names from a COBRA model.
     %
+    % USAGE:
+    %
+    %    changeMapMetIDToName(mapPath, modelPath, outputXMLFile)
     %
     % INPUTS:
-    %   mapPath        - path to CellDesigner XML map file
-    %   modelPath      - path to COBRA .mat model file
-    %   outputXMLFile  - (optional) name for the output CellDesigner XML file
+    %    mapPath:           Path to CellDesigner XML map file
+    %    modelPath:         Path to COBRA .mat model file
+    %
+    % OPTIONAL INPUT:
+    %    outputXMLFile:     Name for the output CellDesigner XML file
+    %                       (default: `<mapPath base name>_MetNames.xml`)
     %
     % OUTPUTS:
-    %   A map with full metabolite names instead of VMH IDs
-    %   as the specified CellDesigner XML file.
-        
+    %    A map with full metabolite names instead of VMH IDs
+    %    as the specified CellDesigner XML file.
+    %
     % .. Author: - Cyrille C. Thinnes. University of Galway, Ireland, 30/07/2025.
 
     % Load model

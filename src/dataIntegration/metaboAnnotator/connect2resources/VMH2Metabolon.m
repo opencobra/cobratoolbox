@@ -1,19 +1,23 @@
 function [metabolite_structure] = VMH2Metabolon(metabolite_structure)
-% read in Metabolon to VMH mapping which has been done in parts manually
-% and cross checked from two sides independently. Currently, we have 400
-% metabolites mapped.
-% information missing in the current rBioNet flat files will be substituted
-% with this information.
-% I will also read in the Metabolon ID. (CHEM_ID in this input file).
+% Read a manually curated Metabolon-to-VMH mapping and add the matched
+% Metabolon, HMDB, InChIKey, InChIString, CAS registry, KEGG, ChemSpider
+% and PubChem identifiers to the metabolite structure. The mapping was done
+% in parts manually and cross checked from two sides independently. Existing
+% annotation entries may be overwritten.
 %
-% INPUT
-% metabolite_structure  metabolite structure
+% USAGE:
 %
-% OUTPUT
-% metabolite_structure  Updated metabolite structure
+%    [metabolite_structure] = VMH2Metabolon(metabolite_structure)
 %
+% INPUT:
+%    metabolite_structure:    metabolite structure whose fields are VMH
+%                             metabolite IDs, each holding annotation fields
 %
-% Ines Thiele, 09/2021
+% OUTPUT:
+%    metabolite_structure:    metabolite structure updated with the
+%                             Metabolon cross-matched identifiers
+%
+% .. Author: - Ines Thiele, 09/2021
 
 fileName = 'metabolon_crossmatch_IT_withUpdatedInchiKey.xlsx';
 

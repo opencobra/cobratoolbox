@@ -12,6 +12,7 @@ function model = readMetRxnBoundsFiles(model, setDefaultConc, setDefaultFlux, co
 % INPUTS:
 %    model:             structure with fields:
 %
+%                         * .S - `m x n` stoichiometric matrix
 %                         * model.mets
 %                         * model.rxns
 %    setDefaultConc:    1 = sets default bounds on conc
@@ -29,6 +30,7 @@ function model = readMetRxnBoundsFiles(model, setDefaultConc, setDefaultFlux, co
 %    rxnBoundsFile:    name of tab delimited file with reaction bounds
 %                      format: '%s %f %f'
 %                      i.e. abbreviation lowerBound upperBound
+%    printLevel:       verbosity level (0 = silent)
 %
 % OUTPUT:
 %    model:            structure with fileds:

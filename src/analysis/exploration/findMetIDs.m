@@ -3,10 +3,13 @@ function metID = findMetIDs(model, metList)
 %
 % USAGE:
 %
-%    metID = findMetIds(model, metList)
+%    metID = findMetIDs(model, metList)
 %
 % INPUTS:
-%    model:      COBRA model structure
+%    model:      COBRA model structure with field:
+%
+%                  * .mets - `m x 1` metabolite identifiers
+%
 %    metList:    List of metabolites
 %
 % OUTPUT:

@@ -15,10 +15,10 @@ function rulesOut = buildGrRules(parsedGPR)
 %       '(geneA and geneB) or (geneC)'
 %
 % INPUT:
-%       parsedGPR  - Cell array containing parsed GPR rules.
+%    parsedGPR:    Cell array containing parsed GPR rules.
 %
 % OUTPUT:
-%       rulesOut   - Cell array of strings with the reconstructed GPR rules.
+%    rulesOut:     Cell array of strings with the reconstructed GPR rules.
 %
 % EXAMPLE:
 %   if a parsed rule is given as:

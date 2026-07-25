@@ -1,17 +1,18 @@
 function plotThermoKernelStats(activeInactiveRxn, rxnWeights, thermoModelRxnBool, presentAbsentMet, metWeights, thermoModelMetBool)
-%plots confusion matrices for active/inactive reactions and present/absent
-%metabolites
+% Plot confusion matrices for active/inactive reactions and present/absent
+% metabolites
 %
-% INPUTS
-%  activeInactiveRxn: - `n x 1`  with entries {1,-1, 0} depending on whether a reaction must be active, inactive, or unspecified respectively.
-%  rxnWeights:        - `n x 1`  real valued penalties on zero norm of reaction flux, negative to promote a reaction to be active, positive 
-%                                to promote a reaction to be inactive and zero to be indifferent to activity or inactivity  
-%  thermoModelMetBool:   `m` x 1 boolean vector of thermodynamically consistent `mets` in input model
+% USAGE:
 %
-%  presentAbsentMet:  - `m x 1`  with entries {1,-1, 0} depending on whether a metabolite must be present, absent, or unspecified respectively.
-%  metWeights:        - `m x 1`  real valued penalties on zero norm of metabolite "activity", negative to promote a metabolite to be present, positive 
-%                                to promote a metabolite to be absent and zero to be indifferent to presence or absence 
-%  thermoModelRxnBool: - `n` x 1 boolean vector of thermodynamically consistent `rxns` in input model
+%    plotThermoKernelStats(activeInactiveRxn, rxnWeights, thermoModelRxnBool, presentAbsentMet, metWeights, thermoModelMetBool)
+%
+% INPUTS:
+%    activeInactiveRxn:    `n x 1` with entries {1, -1, 0} for reactions that must be active, inactive, or unspecified
+%    rxnWeights:    `n x 1` real-valued penalties on reaction flux (negative promotes active, positive promotes inactive)
+%    thermoModelRxnBool:    `n x 1` boolean vector of thermodynamically consistent reactions in the input model
+%    presentAbsentMet:    `m x 1` with entries {1, -1, 0} for metabolites that must be present, absent, or unspecified
+%    metWeights:    `m x 1` real-valued penalties on metabolite activity (negative promotes present, positive promotes absent)
+%    thermoModelMetBool:    `m x 1` boolean vector of thermodynamically consistent metabolites in the input model
 
 nMet = length(thermoModelMetBool);
 nRxn = length(thermoModelRxnBool);

@@ -4,22 +4,23 @@ function [metabolitesPresentInWBM, metabolitesNotPresentInWBM] = filterMetabolit
 % both the present & absent metabolites in seperate tables.
 % This process ensures that all metabolites of interest are actually present
 % in the models & fluxes can be calculated for.
-
-% INPUTS:
-%   metabolitesOfInterest:      Table with VMH abbreviations of unique metabolites 
-%                               of interest in column with var-name "ID".
-%   
-%   WBM_compartment:            Specification of WBM compartment in string 
-%                               format, e.g. "[bc]".
-% 
-% OUTPUTS:
-%   metabolitesPresentInWBM:    Table with metabolites of interest which
-%                               are present in the selected compartment(s) 
-%                               of the WBM models.
 %
-%   metabolitesNotPresentInWBM: Table with metabolites of interest which
-%                               are not present in the selected compartment(s) 
-%                               of the WBM models.
+% USAGE:
+%
+%    [metabolitesPresentInWBM, metabolitesNotPresentInWBM] = filterMetabolitesNotPresentInWBMmodel(metabolitesOfInterest, WBM_compartment)
+%
+% INPUTS:
+%    metabolitesOfInterest:      table with VMH abbreviations of unique metabolites of
+%                                interest, with column:
+%
+%                                  * .ID - VMH abbreviations of the metabolites of interest
+%    WBM_compartment:            specification of the WBM compartment as a string, e.g. "[bc]"
+%
+% OUTPUTS:
+%    metabolitesPresentInWBM:    table with metabolites of interest that are present in
+%                                the selected compartment(s) of the WBM models
+%    metabolitesNotPresentInWBM:    table with metabolites of interest that are not present
+%                                in the selected compartment(s) of the WBM models
 %
 % AUTHOR:
 %   - Jonas Widder, 10/2024

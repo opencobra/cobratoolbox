@@ -1,5 +1,24 @@
-function dGf0=waterGibbsEnergyOfFormation(T)
-%http://webbook.nist.gov/cgi/cbook.cgi?ID=C7732185&Units=SI&Mask=2#ref-2
+function dGf0 = waterGibbsEnergyOfFormation(T)
+% Standard Gibbs energy of formation of liquid water at temperature `T`
+%
+% Uses the NIST Shomate equation (heat capacity, enthalpy and entropy
+% integrals) to compute the standard Gibbs energy of formation of liquid
+% water as a function of temperature.
+%
+% USAGE:
+%
+%    dGf0 = waterGibbsEnergyOfFormation(T)
+%
+% INPUT:
+%    T:       temperature in Kelvin
+%
+% OUTPUT:
+%    dGf0:    standard Gibbs energy of formation of liquid water (kJ/mol)
+%
+% NOTE:
+%    Shomate coefficients from NIST:
+%    http://webbook.nist.gov/cgi/cbook.cgi?ID=C7732185&Units=SI&Mask=2#ref-2
+
 A	=-203.6060;
 B	=1523.290;
 C	=-3196.413;

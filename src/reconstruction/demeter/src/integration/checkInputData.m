@@ -1,27 +1,29 @@
-function [checkedData,addedStrains,removedStrains,duplicateStrains] = checkInputData(inputData,strainInformation)
-% Part of the DEMETER pipeline. This function checks for duplicate and 
+function [checkedData, addedStrains, removedStrains, duplicateStrains] = checkInputData(inputData, strainInformation)
+% Part of the DEMETER pipeline. This function checks for duplicate and
 % removed strains in the input data files and removes them. Also adds
 % strains in the reconstruction resource that were not yet present in the
 % input file.
 %
-% USAGE: 
-%       [checkedData,addedStrains,removedStrains,duplicateStrains] = checkInputData(inputData,strainInformation)
+% USAGE:
 %
-% INPUT
-% inputData:            Table with experimental data to check
-% strainInformation:    Table with list on all strains to reconstruct
+%    [checkedData, addedStrains, removedStrains, duplicateStrains] = checkInputData(inputData, strainInformation)
 %
-% OUTPUT
-% checkedData:          Corrected table with experimental data to check
-% addedStrains:         Strains that were missing from inputData
-% removedStrains:       Strains that were in inputData but are not present
-%                       in strainInformation
-% duplicateStrains:     Strains that were in inputData more than once
+% INPUTS:
+%    inputData:            Table with experimental data to check
+%    strainInformation:    Table with list on all strains to reconstruct
 %
-% AUTHOR: Almut Heinken, 06/2020
+% OUTPUTS:
+%    checkedData:          Corrected table with experimental data to check
+%    addedStrains:         Strains that were missing from inputData
+%    removedStrains:       Strains that were in inputData but are not present
+%                          in strainInformation
+%    duplicateStrains:     Strains that were in inputData more than once
+%
+% .. Author: - Almut Heinken, 06/2020
 
 % delete strains no longer in input data because name changed or it was
 % removed
+
 [C,IA] = setdiff(inputData(1:end,1),strainInformation(1:end,1),'stable');
 removedStrains=C;
 inputData(IA(2:end),:)=[];

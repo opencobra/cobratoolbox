@@ -7,7 +7,12 @@ function rMTAsaveInExcel(xls_filename, TSscore, deletedGenes, alpha_values, vara
 %
 % INPUTS:
 %    xls_filename:       name of the resulting excel file
-%    TSscore:            Transformation score by each transformation
+%    TSscore:            Transformation score by each transformation, with fields:
+%
+%                          * .bTS - best-scenario transformation score
+%                          * .mTS - MOMA transformation score
+%                          * .wTS - worst-scenario transformation score
+%                          * .rTS - robust transformation score
 %    deletedGenes:       The list of genes/reactions removed in each knock-out
 %    alpha_values:       Numeric value or array. Parameter of the quadratic
 %                        problem (default = alpha_1, alpha_2,...)

@@ -1,12 +1,17 @@
-function [modelIDsMissingInTable,incorrectIDsInTable] = testInputFiles
+function [modelIDsMissingInTable, incorrectIDsInTable] = testInputFiles
 % Tests if the names of all reconstructed microbes are present in the input
 % files for the AGORA2 pipeline.
 %
-% OUTPUT
-% modelIDsMissingInTable       AGORA2 reconstruction IDs missing in the table
-% incorrectIDsInTable          Reconstruction IDs in the table not
-%                              corresponding to any reconstruction
-% Almut Heinken, 09/2019
+% USAGE:
+%
+%    [modelIDsMissingInTable, incorrectIDsInTable] = testInputFiles()
+%
+% OUTPUTS:
+%    modelIDsMissingInTable:       AGORA2 reconstruction IDs missing in the table
+%    incorrectIDsInTable:          Reconstruction IDs in the table not
+%                                  corresponding to any reconstruction
+%
+% .. Author: - Almut Heinken, 09/2019
 
 [~, infoFile, ~] = xlsread('AGORA2_infoFile.xlsx');
 models=infoFile(2:end,1);

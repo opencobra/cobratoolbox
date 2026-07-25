@@ -1,9 +1,9 @@
-function [model,modelSBML] = readSBML(fileName,defaultBound)
+function [model, modelSBML] = readSBML(fileName, defaultBound)
 % Reads in a SBML format model as a COBRA matlab structure
 %
 % USAGE:
 %
-%    model = readSBML(fileName, defaultBound)
+%    [model, modelSBML] = readSBML(fileName, defaultBound)
 %
 % INPUTS:
 %    fileName:          File name for file to read in
@@ -11,8 +11,10 @@ function [model,modelSBML] = readSBML(fileName,defaultBound)
 % OPTIONAL INPUTS:
 %    defaultBound:      Maximum bound for model (Default = 1000)
 %
-% OUTPUT:
+% OUTPUTS:
 %    model:             COBRA model structure
+%    modelSBML:         the raw `libSBML` MATLAB structure produced by
+%                       `TranslateSBML`, from which `model` is derived
 %
 % .. Authors:
 %       - Markus Herrgard 1/25/08

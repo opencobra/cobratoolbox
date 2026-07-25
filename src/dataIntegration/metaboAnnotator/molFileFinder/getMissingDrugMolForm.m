@@ -1,21 +1,27 @@
-function [metabolite_structure] = getMissingDrugMolForm(metabolite_structure,molFileDirectory,startSearch,endSearch)
-% This function trys to retrieve mol files from drug bank using drugbank
-% id's. It relies on getMolFileFromDrugbank.m.
+function [metabolite_structure] = getMissingDrugMolForm(metabolite_structure, molFileDirectory, startSearch, endSearch)
+% Retrieves mol files from DrugBank using DrugBank IDs
 %
-% INPUT
-% metabolite_structure  metabolite structure
-% molFileDirectory      directory where mol files should be stored
-% startSearch           specify where the search should start in the
-%                       metabolite structure. Must be numeric (optional, default: all metabolites
-%                       in the structure will be search for)
-% endSearch             specify where the search should end in the
-%                       metabolite structure. Must be numeric (optional, default: all metabolites
-%                       in the structure will be search for)
+% It relies on getMolFileFromDrugbank.m and updates the metabolite structure to
+% record which entries have an associated mol file.
 %
-% OUTPUT
-% metabolite_structure  updated metabolite structure
+% USAGE:
 %
-% Ines Thiele 09/21
+%    [metabolite_structure] = getMissingDrugMolForm(metabolite_structure, molFileDirectory, startSearch, endSearch)
+%
+% INPUTS:
+%    metabolite_structure:    Metabolite structure
+%    molFileDirectory:        Directory where the mol files should be stored
+%
+% OPTIONAL INPUTS:
+%    startSearch:             Numeric index where the search starts in the
+%                             metabolite structure (default: 1)
+%    endSearch:               Numeric index where the search ends in the
+%                             metabolite structure (default: all metabolites)
+%
+% OUTPUTS:
+%    metabolite_structure:    Updated metabolite structure
+%
+% .. Author: - Ines Thiele 09/21
 
 annotationSource = 'Drugbank';
 annotationType = 'automatic';

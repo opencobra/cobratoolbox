@@ -3,12 +3,20 @@ function [modelRed, hasFlux, maxes, mins] = reduceModel(model, tol, irrevFlag, v
 % min are < tol). Finds the minimal bounds for the flux through each reaction.
 % Also returns the results for flux variability analysis (maxes, mins).
 %
-% USAGE
+% USAGE:
 %
 %    [modelRed, hasFlux, maxes, mins] = reduceModel(model, tol, irrevFlag, verbFlag, negFluxAllowedFlag, checkConsistencyFlag, changeBoundsFlag)
 %
 % INPUT:
-%    model:                   COBRA model structure
+%    model:                   COBRA model structure with fields:
+%
+%                               * .S - `m x n` stoichiometric matrix
+%                               * .rxns - `n x 1` reaction identifiers
+%                               * .lb - `n x 1` lower flux bounds
+%                               * .ub - `n x 1` upper flux bounds
+%                               * .c - `n x 1` objective coefficients, read
+%                                 indirectly through `optimizeCbModel` when
+%                                 checking consistency of the reduced model
 %
 % OPTIONAL INPUTS:
 %    tol:                     Tolerance for non-zero bounds - bounds smaller in absolute

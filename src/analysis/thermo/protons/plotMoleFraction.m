@@ -1,5 +1,5 @@
 function plotMoleFraction(metAbbr, Alberty2006, metAbbrAlbertyAbbr, PHmin, PHmax, ISmin, ISmax, CHImin, CHImax, TEMPmin, TEMPmax, N)
-%Plot the mole fractions of metabolite species of a reactant as a function of pH, ionic strength, charge and temperature.
+% Plot the mole fractions of metabolite species of a reactant as a function of pH, ionic strength, charge and temperature.
 %
 % USAGE:
 %

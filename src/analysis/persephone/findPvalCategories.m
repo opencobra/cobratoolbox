@@ -1,24 +1,26 @@
 function [groupsToPlot, colours] = findPvalCategories(pValues)
-% This function inputs a list of p values and outputs the variables 
-% pValueGroups and colourGroups. A maximum of three groups are defined,
-% FDR<0.05, P<0.05, and P>0.05. 
+% Categorise a list of p-values into significance groups for plotting
+%
+% A maximum of three groups are defined: FDR < 0.05, P < 0.05, and P > 0.05.
+% Groups that are not present in the data are removed from the outputs. The
+% FDR values are computed from the p-value list with the Benjamini-Hochberg
+% method.
 %
 % USAGE:
+%
 %    [groupsToPlot, colours] = findPvalCategories(pValues)
 %
-% INPUT
-% pValues
+% INPUT:
+%    pValues:         vector of p-values to categorise
 %
-% OUTPUTS
-% groupsToPlot      Table that categorises the indices of the p-value list.
-% colours           Cell array with numerical encodings for the
-%                   category-associated colours.
+% OUTPUTS:
+%    groupsToPlot:    table with one logical column per present category,
+%                     flagging the p-values that belong to each category
+%    colours:         cell array of RGB triplets, one per present category,
+%                     for the category-associated plotting colours
 %
-% .. Author:
-%       - Tim Hensen       November, 2024
+% .. Author: - Tim Hensen, November 2024
 
-% First, the FDR values are calculated from the p-value list using the
-% benjamini-holm method.
 FDRvalues = fdrBHadjustment(pValues);
 
 % Next, the p-value groups are defined. Note that not all groups might be

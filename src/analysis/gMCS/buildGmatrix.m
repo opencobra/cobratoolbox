@@ -4,11 +4,16 @@ function [G, G_ind, related, n_genes_KO, G_time] = buildGmatrix(model_name, mode
 %
 % USAGE:
 %
-%    [G, G_ind, related, n_genes_KO, G_time] = buildGmatrix(model_name, model_struct, separate_isoform, numWorkers, printLevel)
+%    [G, G_ind, related, n_genes_KO, G_time] = buildGmatrix(model_name, model, separate_isoform, numWorkers, printLevel)
 %
 % INPUTS:
 %    model_name:          Name of the metabolic model under study.
-%    model_struct:        Metabolic model structure (COBRA Toolbox format).
+%    model:               Metabolic model structure (COBRA Toolbox format) with fields:
+%
+%                           * .genes - gene identifiers
+%                           * .grRules - gene-reaction rules
+%                           * .rxnGeneMat - `n x g` reaction-gene association matrix
+%
 %    separate_isoform:    Character used to discriminate different isoforms of a gene.
 %
 % OPTIONAL INPUTS:

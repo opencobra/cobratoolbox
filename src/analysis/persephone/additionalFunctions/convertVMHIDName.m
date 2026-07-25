@@ -1,4 +1,4 @@
-function [foundVMHIDs, foundMetNames, similarMets] = convertVMHIDName(metNames,VMHIDs, suggestSimilar)
+function [foundVMHIDs, foundMetNames, similarMets] = convertVMHIDName(metNames, VMHIDs, suggestSimilar)
 % FOUR FUNCTIONS:
 %
 %           1. Retrieve metabolite IDs corresponding to the given metabolite names AND/OR
@@ -10,38 +10,25 @@ function [foundVMHIDs, foundMetNames, similarMets] = convertVMHIDName(metNames,V
 %               not found in the data base
 %
 %
-% Inputs:
-%    metNames -         EITHER: Cell array of metabolite names (strings) or metabolilte transport
-%                       reactions (can be mixed)for which IDs are required or flag indicating to skip step (0).
+% USAGE:
 %
-%    metIDs -           Cell array of metabolite IDs (strings) for which IDs are
-%                       required or flag indicating to skip step (0).
+%    [foundVMHIDs, foundMetNames, similarMets] = convertVMHIDName(metNames, VMHIDs, suggestSimilar)
 %
-%    suggestSimilar -   Flag indicating whether to generate suggestions (1) or not (0).
+% INPUTS:
+%    metNames:          EITHER a cell array of metabolite names (strings) or metabolite
+%                       transport reactions (can be mixed) for which IDs are required,
+%                       or a flag indicating to skip this step (0)
+%    VMHIDs:            cell array of metabolite IDs (strings) for which names are
+%                       required, or a flag indicating to skip this step (0)
+%    suggestSimilar:    flag indicating whether to generate suggestions (1) or not (0)
 %
-% Outputs:
+% OUTPUTS:
+%    foundVMHIDs:       cell array of metabolite IDs corresponding to the input names
+%    foundMetNames:     cell array of metabolite names corresponding to the input IDs
+%    similarMets:       cell array of possible matches for each unfound metabolite name,
+%                       when searching for names
 %
-%    foundVMHIDs -      Cell array of metabolite IDs corresponding to the input names.
-%    foundMetNames -    Cell array of metabolite Names corresponsing to the input IDs
-%    similarMets -      Cell array of possible matches for each unfound metabolite name,
-%                       when searching for names.
-%
-%
-% Other requirements: COBRA toolbox installation (and paths set)
-%
-%
-% EXAMPLE OF USE:
-%
-% VMHIDs = {'DM_gam[bc]'; 'malttr'};
-% metNames = {'D-glucose', 'fructose', 'carbon'};
-% % metNames = false;
-% % VMHIDs = false;
-% % suggestSimilar = false;
-% suggestSimilar = true;
-%
-% % [foundVMHIDs, foundMetNames, similarMets] = convertVMHIDName(metNames,VMHIDs, suggestSimilar);
-%
-% Author: - Anna Sheehy & Tim Hensen - 18/07/2024
+% .. Author: - Anna Sheehy & Tim Hensen - 18/07/2024
 
 % Load the VMH Database
 DB = loadVMHDatabase();

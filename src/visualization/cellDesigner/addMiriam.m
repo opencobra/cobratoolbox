@@ -1,4 +1,4 @@
-function [fname_out,var] = addMiriam(fname,fname_out,infix,model,infix_type,list,miriam_path)
+function [fname_out, var] = addMiriam(fname, fname_out, infix, model, infix_type, list, miriam_path)
 % Adds Miriam information to `CellDesigner` XML file. The Miriam information
 % is retrieved from a COBRA model structure using Metabolite/Reaction IDs as
 % the name of entry. The omics data will be shown as texts hyperlinking to
@@ -14,7 +14,12 @@ function [fname_out,var] = addMiriam(fname,fname_out,infix,model,infix_type,list
 %    infix:           A list of metabolite/reaction IDs to be used to retrieve omics data
 %                     in the COBRA model structure.
 %    model:           a COBRA model structure contains the annotations that can be
-%                     retrieved by using the infix as the index value.
+%                     retrieved by using the infix as the index value, with
+%                     fields:
+%
+%                       * .S - The `m` x `n` stoichiometric matrix
+%                       * .rxns - `n x 1` cell array of reaction identifiers
+%                       * .mets - `m x 1` cell array of metabolite identifiers
 %    list:            Column 1 stores a list of the fieldnames of the COBRA model
 %                     strucutres that contains MIRIAM information; Column 2 stores
 %                     a list of MIRIAM types corresponding to each field; column 3

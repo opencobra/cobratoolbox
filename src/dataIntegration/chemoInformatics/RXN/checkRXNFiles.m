@@ -1,5 +1,9 @@
-function [modelOut,nTotalAtomTransitions] = checkRXNFiles(model, RXNFileDir)
+function [modelOut, nTotalAtomTransitions] = checkRXNFiles(model, RXNFileDir)
 % Checks whether the set of RXN files coresponding to a model have the consistent stoichiometry and are elementally balanced
+%
+% USAGE:
+%
+%    [modelOut, nTotalAtomTransitions] = checkRXNFiles(model, RXNFileDir)
 %
 % INPUTS:
 %    model:         Directed stoichiometric hypergraph
@@ -19,17 +23,20 @@ function [modelOut,nTotalAtomTransitions] = checkRXNFiles(model, RXNFileDir)
 %                   e.g. git clone https://github.com/opencobra/ctf ~/fork-ctf
 %                        then RXNFileDir = ~/fork-ctf/rxns/atomMapped
 %
-% OUTPUT:
-% metRXNBool: `m` x 1 vector, true if metabolite identified in at least one RXN file
-% RXNBool: `n` x 1 boolean vector, true if RXN file exists
-% RXNParsedBool: `n` x 1 boolean vector, true if RXN file could be parsed
-% RXNAtomsConservedBool: `n` x 1 boolean vector, true if atoms in RXN file are conserved
-% RXNStoichiometryMatchBool:  `n` x 1 boolean vector, true if RXN stoichiometry matches model.S stoichiometry
-% RXNStoichiometryMatchUptoProtonsBool:   `n` x 1 boolean vector, true if RXN stoichiometry matches model.S stoichiometry when ingnoring protons.
-% RXNSubstrateTransitionNumbersOrdered:   `n` x 1 boolean vector, true if RXN file with substrate transition numbers ordered 1:q.
-% RXNProductTransitionNumbersOrdered:   `n` x 1 boolean vector, true if RXN file with product transition numbers ordered 1:q.
-% RXNTransitionNumbersMatching:    `n` x 1 boolean vector, true if RXN file with matching numbering of atoms between substrates and products.
-% RXNMatchingElementBool:     `n` x 1 boolean vector, true if RXN file with matching elements between substrates and products.
+% OUTPUTS:
+%    modelOut:                 The input model returned with the RXN-file quality-check results added as fields:
+%
+%                                * .metRXNBool - `m` x 1 vector, true if metabolite identified in at least one RXN file
+%                                * .RXNBool - `n` x 1 boolean vector, true if RXN file exists
+%                                * .RXNParsedBool - `n` x 1 boolean vector, true if RXN file could be parsed
+%                                * .RXNAtomsConservedBool - `n` x 1 boolean vector, true if atoms in RXN file are conserved
+%                                * .RXNStoichiometryMatchBool - `n` x 1 boolean vector, true if RXN stoichiometry matches model.S stoichiometry
+%                                * .RXNStoichiometryMatchUptoProtonsBool - `n` x 1 boolean vector, true if RXN stoichiometry matches model.S stoichiometry when ignoring protons
+%                                * .RXNSubstrateTransitionNumbersOrdered - `n` x 1 boolean vector, true if RXN file with substrate transition numbers ordered 1:q
+%                                * .RXNProductTransitionNumbersOrdered - `n` x 1 boolean vector, true if RXN file with product transition numbers ordered 1:q
+%                                * .RXNTransitionNumbersMatching - `n` x 1 boolean vector, true if RXN file with matching numbering of atoms between substrates and products
+%                                * .RXNMatchingElementBool - `n` x 1 boolean vector, true if RXN file with matching elements between substrates and products
+%    nTotalAtomTransitions:    total number of atom transitions across all atom mapped RXN files
 %
 % .. Authors: - Ronan M. T. Fleming, 2022.
 

@@ -1,21 +1,21 @@
-function [result] = convertInchiString2format(inchiString,format)
-%% function [result] = convertInchiString2format(inchiString,format)
-% This function converts an inchiString into a given format (either
-% inchikey or smiles). It relies on obabel being installed.
-% obabel installation on mac with home brew:
-% brew install open-babel
+function [result] = convertInchiString2format(inchiString, format)
+% Converts an InChI string into a given format (either inchiKey or smiles)
+% It relies on obabel (Open Babel) being installed. Installation on mac with
+% Homebrew: `brew install open-babel`.
 %
-% INPUT
-% inchiString   inchiString
-% format        either 'inchiKey' or 'smiles'
+% USAGE:
 %
-% OUTPUT
-% result        converted inchiString in format as defined by 'format'
+%    [result] = convertInchiString2format(inchiString, format)
 %
-% Ines Thiele 2020/2021
+% INPUTS:
+%    inchiString:    InChI string to be converted
+%    format:         Target format, either 'inchiKey' or 'smiles'
+%
+% OUTPUTS:
+%    result:         Converted InChI string in the format defined by `format`
+%
+% .. Author: - Ines Thiele 2020/2021
 
-% example conversion from inchi string to inchi key:
-% Iness-MBP:~ inesthiele$ obabel -:"InChI=1S/C10H20O2/c1-2-3-4-5-6-7-8-9-10(11)12/h2-9H2,1H3,(H,11,12)/p-1" -i inchi -o inchikey
 if strcmp(format,'inchiKey')
     if ismac
         [status, result]=system(strcat('/usr/local/bin/obabel -:"',inchiString,'" -i inchi -o inchikey'));

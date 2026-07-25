@@ -18,6 +18,9 @@ currentDir = pwd;
 fileDir = fileparts(which('testliftModel.m'));
 cd(fileDir);
 
+% require an LP solver; skip gracefully if none is available
+prepareTest('needsLP', true);
+
 %get the default tolerances.
 tol = getCobraSolverParams('LP','optTol');
 

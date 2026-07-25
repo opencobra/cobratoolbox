@@ -6,14 +6,19 @@ function model = mapMetName2KEGGID(model, Dictionary)
 %    model = mapMetName2KEGGID(model, Dictionary)
 %
 % INPUTS:
-%    model:         KEGG model structure
+%    model:         KEGG model structure with fields:
+%
+%                     * .mets - `m x 1` column cell array of metabolite identifiers
 %    Dictionary:    consists of:
 %
 %                     * CompAbr = Dictionary(:, 1): List of compounds abreviation (non-compartelized)
 %                     * KEGGID = Dictionary(:, 2): List of KEGGIDs for compounds in `CompAbr`
 %
 % OUTPUT:
-%    model:         COBRA model structure
+%    model:         COBRA model structure with added fields:
+%
+%                     * .metKEGGID - set equal to the input `model.mets` (unchanged)
+%                     * .metsAbr - `m x 1` column cell array of metabolite abbreviations matched via `Dictionary`, empty where no match is found
 
 HTABLE = java.util.Hashtable; %Hash all KEGG ID's
 CompAbr = Dictionary(:, 1);

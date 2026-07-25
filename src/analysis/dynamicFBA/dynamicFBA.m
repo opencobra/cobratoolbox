@@ -6,7 +6,10 @@ function [concentrationMatrix, excRxnNames, timeVec, biomassVec] = dynamicFBA(mo
 %    [concentrationMatrix, excRxnNames, timeVec, biomassVec] = dynamicFBA(model, substrateRxns, initConcentrations, initBiomass, timeStep, nSteps, plotRxns, exclUptakeRxns)
 %
 % INPUTS:
-%    model:                  COBRA model structure
+%    model:                  COBRA model structure with the field:
+%
+%                              * .rxns - `n x 1` cell array of reaction identifiers
+%
 %    substrateRxns:          List of exchange reaction names for substrates
 %                            initially in the media that may change (e.g. not
 %                            h2o or co2)

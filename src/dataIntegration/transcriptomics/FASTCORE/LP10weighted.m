@@ -1,4 +1,31 @@
 function V = LP9weighted(W, K, P, model, LPproblem, epsilon)
+% Weighted implementation of LP-9 for input sets K, P (see FASTCORE paper).
+% Finds a flux vector that keeps the core reactions (K) active while
+% minimising a weighted sum over the non-core reactions (P).
+%
+% USAGE:
+%
+%    V = LP9weighted(W, K, P, model, LPproblem, epsilon)
+%
+% INPUTS:
+%    W:            `n x 1` nonnegative weight for each reaction (penalises high weights)
+%    K:            indices of active core reactions to keep active
+%    P:            indices of non-core reactions whose weighted activity is minimised
+%    model:        COBRA model structure with field:
+%
+%                    * .S - `m x n` stoichiometric matrix
+%    LPproblem:    LP problem structure derived from the model with fields:
+%
+%                    * .A - constraint (stoichiometric) matrix
+%                    * .b - right hand side vector for `A*v = b`
+%                    * .lb - lower bounds on the variables
+%                    * .ub - upper bounds on the variables
+%                    * .csense - constraint sense character array ({L, E, G})
+%    epsilon:      smallest flux value that is considered nonzero
+%
+% OUTPUT:
+%    V:            flux vector minimising the weighted activity of the non-core reactions
+%
 
 scalingfactor = 1e5;
 % W are n x 1 nonnegative weights (NOTE: it penalizes high weights)

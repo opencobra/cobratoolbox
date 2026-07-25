@@ -15,8 +15,8 @@ function [minFlux, maxFlux] = guidedSim(model, rl)
 %    solver:        char with slver name to use.
 %
 % OUTPUTS:
-%   minFlux:      Minimum flux for each reaction
-%   maxFlux:      Maximum flux for each reaction
+%    minFlux:      Minimum flux for each reaction
+%    maxFlux:      Maximum flux for each reaction
 %
 % ..Author:  Federico Baldini,  2017-2018
 

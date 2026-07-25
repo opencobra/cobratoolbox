@@ -1,4 +1,4 @@
-function results = searchModel(model,searchTerm,varargin)
+function results = searchModel(model, searchTerm, varargin)
 % Search for the specified term in the given model.
 % The performed search is fuzzy if similarity is lower than 1.
 % 
@@ -6,7 +6,11 @@ function results = searchModel(model,searchTerm,varargin)
 %    results = searchModel(model,searchTerm,...)
 %
 % INPUTS:
-%    model:         The model to search in
+%    model:         The model to search in, with fields:
+%
+%                     * .mets - `m x 1` metabolite identifiers
+%                     * .subSystems - `n x 1` subsystem assignments
+%
 %    searchTerm:    The term to search for
 %    varargin:      Additional parameters as parameter/value pairs or value struct.
 %                   Available parameters are:

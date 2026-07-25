@@ -1,37 +1,51 @@
 function [knockouts] = milpOEReinserts(model, data, K, minP, numKO, toDel, timeLimit, printLevel)
-% This function is creating and calculating MILP to get certain amount
-% of knockouts to achieve best production envelope
+% milpOEReinserts finds a set of knockouts using a MILP
+%
+% Creates and solves a MILP to find a given number of knockouts that
+% achieve the best possible production envelope.
 %
 % USAGE:
-%   [knockouts] = milpOEReinserts(model, data, K, minP, numKO, toDel, timeLimit, printLevel)
+%
+%    [knockouts] = milpOEReinserts(model, data, K, minP, numKO, toDel, timeLimit, printLevel)
 %
 % INPUTS:
-%   model       COBRA model structure in irreversible form [struct]
-%   data        Struct with information about:
-%                   * mainActive    List of active reactions for main envelope [cell array]
-%   K           List of reactions that cannot be selected for knockout (reaction IDs) [double array]
-%   minP        Struct with information about biomass and desired product.
-%               	* bioID         ID of biomass [double]
-%                   * proID         ID of desired product[double]
-%   numKO       Number of knockouts to achieve [double]
+%    model:         COBRA model structure in irreversible form with fields:
+%
+%                     * .rxns - Reaction identifiers
+%                     * .S - Stoichiometric matrix
+%                     * .lb - Lower bounds
+%                     * .ub - Upper bounds
+%                     * .c - Objective coefficients
+%                     * .C_chemical - objective coefficient vector marking the
+%                       desired product, set internally by this function
+%    data:          Struct with the field:
+%
+%                     * .mainActive - List of active reactions for the main
+%                       envelope [cell array]
+%    K:             List of reactions that cannot be selected for knockout
+%                   (reaction IDs) [double array]
+%    minP:          Struct with the fields:
+%
+%                     * .bioID - Reaction ID of biomass [double]
+%                     * .proID - Reaction ID of desired product [double]
+%    numKO:         Number of knockouts to achieve [double]
 %
 % OPTIONAL INPUTS:
-%   toDel       Numeric variable that shows what to delete:
-%                   0: reactions
-%                   1: genes
-%                   2: enzymes
-%   timeLimit   Time limit for gurobi optimization (in seconds) [double]
-%   printLevel  Print level for gurobi optimization [double]
+%    toDel:         Numeric flag for what to delete: 0 = reactions,
+%                   1 = genes, 2 = enzymes (default: 0)
+%    timeLimit:     Time limit for the MILP solver in seconds [double]
+%                   (default: inf)
+%    printLevel:    Print level for the MILP solver [double] (default: 0)
 %
 % OUTPUTS:
-%   knockouts   List of reactions that when removed gives optimal envelope
+%    knockouts:     List of reactions that, when removed, give the optimal
+%                   envelope [cell array]
 %
-% AUTHORS:
-%   created by Kristaps Berzins 31/10/2022
+% NOTE:
+%    This function is not designed for stand-alone use. It should be used
+%    through optEnvelope.m with the numKO parameter set.
 %
-% NOTES:
-%   This function is not designed for stand-alone use. Should be used by
-%   using optEnvelope.m with set numKO parameter
+% .. Author: - Kristaps Berzins, 31/10/2022, created
 
 if nargin < 6
     toDel = 0;

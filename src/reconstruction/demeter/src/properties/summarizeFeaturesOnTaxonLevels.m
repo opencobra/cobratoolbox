@@ -1,4 +1,4 @@
-function summarizeFeaturesOnTaxonLevels(propertiesFolder,infoFilePath,reconVersion,customFeatures)
+function summarizeFeaturesOnTaxonLevels(propertiesFolder, infoFilePath, reconVersion, customFeatures)
 % This function summarizes calculated features of the reconstruction
 % resource, if taxonomical information is provided, on the species, genus,
 % family, order, class, and phylum level. A custom feature
@@ -6,22 +6,23 @@ function summarizeFeaturesOnTaxonLevels(propertiesFolder,infoFilePath,reconVersi
 % the data. In this case, the spreadsheet with strain information needs to
 % contain a column with this information.
 %
-% USAGE
-%   summarizeFeaturesOnTaxonLevels(propertiesFolder,infoFilePath,reconVersion,customFeatures)
+% USAGE:
 %
-% INPUTS                                                                                                                                                                                          Folder with COBRA models to be analyzed
-% propertiesFolder      Folder where the retrieved reaction presences will
-%                       be stored (default: current folder)
-% infoFilePath          Path to spreadsheet with taxonomical information of
-%                       the refined strains
-% reconVersion          Name assigned to the reconstruction resource
-% OPTIONAL INPUT
-% customFeatures        Features other than taxonomy to cluster microbes
-%                       by. Need to be a table header in the file with
-%                       information on reconstructions.
+%    summarizeFeaturesOnTaxonLevels(propertiesFolder, infoFilePath, reconVersion, customFeatures)
 %
-%   - AUTHOR
-%   Almut Heinken, 06/2020
+% INPUTS:
+%    propertiesFolder:    Folder where the retrieved reaction presences will
+%                         be stored (default: current folder)
+%    infoFilePath:        Path to spreadsheet with taxonomical information of
+%                         the refined strains
+%    reconVersion:        Name assigned to the reconstruction resource
+%
+% OPTIONAL INPUTS:
+%    customFeatures:      Features other than taxonomy to cluster microbes
+%                         by. Need to be a table header in the file with
+%                         information on reconstructions.
+%
+% .. Author: - Almut Heinken, 06/2020
 
 % define the files to load
 files = {

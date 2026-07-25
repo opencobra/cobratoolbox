@@ -1,3 +1,11 @@
+% Predict biomarker metabolites in whole-body models for inborn errors of metabolism (IEMs).
+%
+% Loops over 57 IEMs and predicts known biomarker metabolites in the urine,
+% blood, and CSF compartments of a whole-body model. Select the model via the
+% `sex` variable ('male', 'female', or 'Recon3D'). Metabolite and IEM
+% abbreviations are defined at www.vmh.life.
+%
+% .. Author: - Ines Thiele, 2018-2019
 edit% This script predicts known biomarker metabolites in
 % different biofluid compartments (urine, blood, csf) of the whole-body
 % model for 57 inborn-errors of metabolism (IEMs).

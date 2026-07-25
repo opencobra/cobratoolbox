@@ -1,15 +1,18 @@
 function [inchiString] = getInchiStringFromHMDB(HMDBID)
-% This function retrieves the inchiString from HMDB (online) for a given
-% HMDB ID.
+% Retrieve the InChIString from HMDB (online) for a given HMDB ID. Returns an
+% empty array if the retrieval fails.
 %
-% INPUT
-% HMDBID    Human metabolome database (HMDB) ID
+% USAGE:
 %
-% OUTPUT
-% inchiString   Retrieved inchiString
+%    [inchiString] = getInchiStringFromHMDB(HMDBID)
 %
-% Ines Thiele, 09/2021
+% INPUT:
+%    HMDBID:         Human metabolome database (HMDB) ID
 %
+% OUTPUT:
+%    inchiString:    retrieved InChIString
+%
+% .. Author: - Ines Thiele, 09/2021
 
 % get inchi from HMDB
 try

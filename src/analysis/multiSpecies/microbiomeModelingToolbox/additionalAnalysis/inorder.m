@@ -13,7 +13,7 @@ function [visitedmets, visitedrxns] = inorder(node, model, visitedmets, visitedr
 %                        (already visited)
 %    visitedrxns:        list of reactions that are excluded
 %                        (already visited)
-% 	 levels               indicates how many levels from the starting node (metabolite) are
+%    levels:             indicates how many levels from the starting node (metabolite) are
 %                        considered
 % OUTPUTS:
 %    visitedmets:        list of all metabolites that are connected over

@@ -1,23 +1,46 @@
-function model = setFeedingFastingConstraints(model, feedingStatus,fastingValue,storageValue)
-% This function sets constraints corresponding either to feeding (i.e.,
-% storage reactions are set to have a lower bound of 0 while
-% the upper bounds are set to >0 (storage is enabled) or to fasting (i.e.,
-% storage reactions are set to have a lower bound of <0 (use of stored metabolites is enabled) while
-% the upper bounds are set to 0 (storage is disabled).
+function model = setFeedingFastingConstraints(model, feedingStatus, fastingValue, storageValue)
+% Set feeding or fasting constraints on a whole-body metabolic model. Under
+% feeding the organ storage (sink) reactions are enabled to store metabolites
+% (lower bound 0, positive upper bound) and diet uptake is opened; under
+% fasting the storage reactions are reversed to release stored metabolites
+% (negative lower bound, upper bound 0) and diet uptake is closed
 %
-% function model = setFeedingFastingConstraints(model, feedingStatus,fastingValue,storageValue)
+% USAGE:
 %
-% INPUT
-% model             model structure
-% feedingStatus     'feeding' = default bounds for diet uptake fastingValue for all diet exchanges, use diet script to refine, organ storage is turned on;
-%                   'fasting' = all diet uptakes are closed, organ storage release is turned on
-% fastingValue      default: fastingValue = -10;
-% storageValue      default: storageValue = 10;
+%    model = setFeedingFastingConstraints(model, feedingStatus, fastingValue, storageValue)
 %
-% OUTPUT
-% model             with updated constraints
+% INPUT:
+%    model:            whole-body metabolic model structure with fields:
 %
-% Ines Thiele, 2015/2016
+%                        * .rxns - `n x 1` reaction identifiers, used to locate
+%                          the sink, demand and diet exchange reactions
+%                        * .lb - `n x 1` lower bounds (updated)
+%                        * .ub - `n x 1` upper bounds (updated)
+%                        * .Microbiota - optional flag vector marking microbial
+%                          reactions, checked to leave microbe sinks untouched
+%                        * .rxnGeneMat - optional reaction-gene mapping, removed
+%                          if present
+%    feedingStatus:    'feeding' to open diet uptake (using fastingValue) and
+%                      turn organ storage on, or 'fasting' to close diet uptake
+%                      and turn organ storage release on
+%
+% OPTIONAL INPUTS:
+%    fastingValue:     lower bound applied to diet exchange and storage release
+%                      reactions; default is -10
+%    storageValue:     upper bound applied to organ storage reactions during
+%                      feeding; default is 10
+%
+% OUTPUT:
+%    model:            whole-body metabolic model with the feeding/fasting
+%                      constraints applied, updating the fields:
+%
+%                        * .lb - lower bounds of the affected reactions
+%                        * .ub - upper bounds of the affected reactions
+%                        * .SetupInfo - structure recording the setup; the
+%                          feeding status is stored in `.SetupInfo.FeedingStatus`
+%
+% .. Author: - Ines Thiele, 2015/2016
+
 if ~exist('fastingValue','var')
     fastingValue = -10;
 end

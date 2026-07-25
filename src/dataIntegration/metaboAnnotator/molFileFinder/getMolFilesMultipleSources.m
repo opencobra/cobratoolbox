@@ -1,30 +1,30 @@
-function [metabolite_structure,molCollectionReport] = getMolFilesMultipleSources(metabolite_structure, molFileDirectory,startSearch,endSearch,source)
-% This function obtains mol files from differnt resources. For details
-% please check 'obtainMetStructures.m'.
+function [metabolite_structure, molCollectionReport] = getMolFilesMultipleSources(metabolite_structure, molFileDirectory, startSearch, endSearch, source)
+% Obtains mol files from different resources for a metabolite structure
 %
-% INPUT
-% metabolite_structure  metabolite structure
-% molFileDirectory      Folder where mol files should be deposited
-% startSearch           specify where the search should start in the
-%                       metabolite structure. Must be numeric (optional, default: all metabolites
-%                       in the structure will be search for)
-% endSearch             specify where the search should end in the
-%                       metabolite structure. Must be numeric (optional, default: all metabolites
-%                       in the structure will be search for)
-% source                specify where you want to obtain the mol file from
-%                       (default: all resources), options:
-%                       1.- 'inchi' (requires openBabel)
-%                       2.- 'smiles' (requires openBabel)
-%                       3.- 'kegg' (https://www.genome.jp/)
-%                       4.- 'hmdb' (https://hmdb.ca/)
-%                       5.- 'pubchem' (https://pubchem.ncbi.nlm.nih.gov/)
-%                       6.- 'chebi' (https://www.ebi.ac.uk/)
+% For details please check obtainMetStructures.m.
 %
-% OUTPUT
-% metabolite_structure  updated metabolite_structure
+% USAGE:
 %
+%    [metabolite_structure, molCollectionReport] = getMolFilesMultipleSources(metabolite_structure, molFileDirectory, startSearch, endSearch, source)
 %
-% Ines Thiele, 09/2021
+% INPUTS:
+%    metabolite_structure:    Metabolite structure
+%    molFileDirectory:        Folder where the mol files should be deposited
+%
+% OPTIONAL INPUTS:
+%    startSearch:             Numeric index where the search starts in the
+%                             metabolite structure (default: 1)
+%    endSearch:               Numeric index where the search ends in the
+%                             metabolite structure (default: all metabolites)
+%    source:                  Resource to obtain the mol file from (default:
+%                             all resources): 'inchi' or 'smiles' (require Open
+%                             Babel), 'kegg', 'hmdb', 'pubchem', or 'chebi'
+%
+% OUTPUTS:
+%    metabolite_structure:    Updated metabolite structure
+%    molCollectionReport:     Report of the mol file collection process
+%
+% .. Author: - Ines Thiele, 09/2021
 
 annotationSource = 'Obtained using obtainMetStructures.m';
 annotationType = 'automatic';

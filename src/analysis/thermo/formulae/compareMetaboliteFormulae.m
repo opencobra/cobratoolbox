@@ -7,7 +7,11 @@ function compareMetaboliteFormulae(modelT)
 %    compareMetaboliteFormulae(modelT)
 %
 % INPUT:
-%    modelT:    output of `setupThermoModel`
+%    modelT:    output of `setupThermoModel`, with fields:
+%
+%                 * .S - `m x n` stoichiometric matrix
+%                 * .mets - `m x 1` cell array of metabolite identifiers
+%                 * .metFormulas - `m x 1` cell array of metabolite formulas
 
 fid=fopen('metaboliteFormulae.txt','w');
 

@@ -12,57 +12,44 @@ function solution = optimizeWBModel(model, param)
 %
 % USAGE:
 %
-%    solution = optimizeCbModel(model, osenseStr, minNorm, allowLoops, zeroNormApprox)
+%    solution = optimizeWBModel(model, param)
 %
 % INPUT:
-%    model:             (the following fields are required - others can be supplied)
+%    model:             Whole-body model structure with fields:
 %
-%                         * S  - `m x 1` Stoichiometric matrix
-%                         * c  - `n x 1` Linear objective coefficients
-%                         * lb - `n x 1` Lower bounds
-%                         * ub - `n x 1` Upper bounds
-%                         * dxdt - `m x 1` change in concentration with time
-%                         * csense - `m x 1` character array with entries in {L,E,G} 
-%                           (The code is backward compatible with an m + k x 1 csense vector,
-%                           where k is the number of coupling constraints)
-%
-%                         * C - `k x n` Left hand side of C*v <= d
-%                         * d - `k x n` Right hand side of C*v <= d
-%                         * dsense - `k x 1` character array with entries in {L,E,G}
+%                         * .S - `m x n` stoichiometric matrix
+%                         * .c - `n x 1` linear objective coefficients
+%                         * .lb - `n x 1` lower bounds
+%                         * .ub - `n x 1` upper bounds
+%                         * .C - `k x n` left-hand side of the coupling constraints C*v <= d
+%                         * .E - extra-variable constraint matrix
+%                         * .osense - objective sense (-1 maximise, +1 minimise)
+%                         * .osenseStr - objective sense ('max' or 'min')
 %
 % OPTIONAL INPUT:
-%    param:      Additional parameters as a parameter struct
-%                   All fields of the struct which are not COBRA parameters
-%                   (see `getCobraSolverParamsOptionsForType`) for this
-%                   problem type will be passed on to the solver in a
-%                   solver specific manner.
+%    param:             Additional parameters as a struct. Fields that are not
+%                       COBRA solver parameters (see
+%                       `getCobraSolverParamsOptionsForType`) for this problem
+%                       type are passed on to the solver in a solver-specific
+%                       manner. Recognised fields include:
 %
-%                   Some optional parameters which can be passed to the function
-%                   as part of the options struct (DONE), or as parameter value
-%                   pairs (TODO), or are listed below:
-%
-%    * osenseStr:         Maximize ('max')/minimize ('min') (opt, default =
-%                         'max') linear part of the objective. Nonlinear
-%                         parts of the objective are always assumed to be
-%                         minimised.
-%
-%    * solverName:    Solver name {'tomlab_cplex','ibm_cplex','cplex_direct','mosek'}
-%
-%    * printLevel:    verbose level
-%                      *   if `-1`, warnings are silenced.
-%                      *   if  `0`, warnings only. (default)
-%                      *   if  `1`, print from optimizeWBModel, optimizeCbModel, or both.
-%                      *   if  `2`, also print from solveCobraLP, solveCobraQP, or both.
-%                      *   if  `3`, also progress info from solver
-%                      *   if  `4`, also detailed progress info from solver
-%
-%    * minNorm:       {(0), scalar , `n x 1` vector}, where `[m, n] = size(S)`;
-%                   If not zero then, minimise the Euclidean length
-%                   of the solution to the LP problem. minNorm ~1e-6 should be
-%                   high enough for regularisation yet maintain the same value for
-%                   the linear part of the objective. However, this should be
-%                   checked on a case by case basis, by optimization with and
-%                   without regularisation.
+%                         * .minNorm - if nonzero, minimise the Euclidean norm of
+%                           the solution to the LP problem (0 by default; ~1e-6 is
+%                           usually enough for regularisation)
+%                         * .secondsTimeLimit - solver time limit in seconds
+%                         * .verify - if true, verify the returned solution
+%                         * .printLevel - verbosity level (-1 silent, 0 warnings
+%                           only (default), 1-4 increasing solver detail)
+%                         * .solveWBMmethod - method used to solve the WBM problem
+%                         * .ScaleFlag - solver scaling flag
+%                         * .scaind - solver scaling index
+%                         * .emphasis_numerical - numerical emphasis flag
+%                         * .MSK_DPAR_OPTIMIZER_MAX_TIME - MOSEK optimizer time limit
+%                         * .MSK_IPAR_WRITE_DATA_PARAM - MOSEK data-writing parameter
+%                         * .MSK_IPAR_LOG_INTPNT - MOSEK interior-point log level
+%                         * .MSK_IPAR_LOG_PRESOLVE - MOSEK presolve log level
+%                         * .MSK_IPAR_INTPNT_SCALING - MOSEK interior-point scaling
+%                         * .MSK_IPAR_SIM_SCALING - MOSEK simplex scaling
 %
 % OUTPUT:
 %    solution:       solution object:

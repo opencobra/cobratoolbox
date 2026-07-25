@@ -1,6 +1,23 @@
 function [MMN] = representativeMolecule(MMN)
 % For each moiety, identify a set of representative molecules, based on
 % various criteria
+%
+% USAGE:
+%
+%    [MMN] = representativeMolecule(MMN)
+%
+% INPUT:
+%    MMN:    moiety-molecule network structure with fields:
+%
+%              * .L - `nMoiety x nMet` matrix mapping moieties to metabolites
+%              * .mol - table of molecule information, with variables `Mass` and `Mets`
+%
+% OUTPUT:
+%    MMN:    input structure returned with an added or updated field:
+%
+%              * .moi - moiety table with added representative-molecule variables
+%                (`MinimalMassMol`, `minimalMassFraction`, `NumMinimalMassMol`)
+%
 
 [nMoiety,~]=size(MMN.L);
 

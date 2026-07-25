@@ -1,6 +1,33 @@
-function [comparisonData] = quanQualAcc( validationData,predictedFlux, param)
-
-%param.boundPrecisionLimit
+function [comparisonData] = quanQualAcc(validationData, predictedFlux, param)
+% Compute the quantitative and qualitative accuracy of predicted fluxes against
+% experimental validation data
+%
+% USAGE:
+%
+%    [comparisonData] = quanQualAcc(validationData, predictedFlux, param)
+%
+% INPUTS:
+%    validationData:    table of experimental validation data, with fields:
+%
+%                         * .rxns - reaction identifiers of the measured exchanges
+%                         * .mean - measured mean flux for each reaction
+%                         * .SD - standard deviation of the measured flux
+%
+%    predictedFlux:    predicted flux vector to compare against validationData
+%
+% OPTIONAL INPUT:
+%    param:    a structure containing the parameters for the function:
+%
+%                * .boundPrecisionLimit - flux magnitude below which a value is
+%                  treated as zero (Default: LP feasibility tolerance x 10)
+%
+% OUTPUT:
+%    comparisonData:    struct with the comparison results:
+%
+%                         * .fullReport - table comparing each measured reaction
+%                           with its predicted flux
+%                         * .comparisonStats - table of predictive-capacity statistics
+%
 
 if nargin < 3 || isempty(param)
     param = struct;

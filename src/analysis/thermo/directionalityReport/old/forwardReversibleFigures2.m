@@ -1,25 +1,33 @@
-function forwardReversibleFigures2(model,directions)
+function forwardReversibleFigures2(model, directions)
 % Figures of different classes of reactions: qualitatively forward -> quantitatively reversible
 %
-%INPUT
-%model.DrGt0
-
-%model.S
+% USAGE:
 %
-% directions        subsets of qualtiatively forward  -> quantiatively reversible 
-%   .forwardReversible
-%   .forwardReversible_bydGt0
-%   .forwardReversible_bydGt0LHS
-%   .forwardReversible_bydGt0Mid
-%   .forwardReversible_bydGt0RHS
-%   .forwardReversible_byConc_zero_fixed_DrG0
-%   .forwardReversible_byConc_negative_fixed_DrG0
-%   .forwardReversible_byConc_positive_fixed_DrG0
-%   .forwardReversible_byConc_negative_uncertain_DrG0
-%   .forwardReversible_byConc_positive_uncertain_DrG0
-
-% thorStandard
-
+%    forwardReversibleFigures2(model, directions)
+%
+% INPUTS:
+%    model:         structure with fields:
+%
+%                     * .S - `m x n` stoichiometric matrix
+%                     * .DrGt0Min - `n x 1` lower bound on standard transformed reaction Gibbs energy
+%                     * .DrGt0Max - `n x 1` upper bound on standard transformed reaction Gibbs energy
+%                     * .DrGtMin - `n x 1` lower bound on transformed reaction Gibbs energy
+%                     * .DrGtMax - `n x 1` upper bound on transformed reaction Gibbs energy
+%                     * .DrGtMean - `n x 1` mean transformed reaction Gibbs energy
+%                     * .dGt0Min - `n x 1` lower bound on standard transformed reaction Gibbs energy
+%                     * .dGt0Max - `n x 1` upper bound on standard transformed reaction Gibbs energy
+%                     * .dGtMin - `n x 1` lower bound on transformed reaction Gibbs energy
+%                     * .dGtMax - `n x 1` upper bound on transformed reaction Gibbs energy
+%                     * .directions - structure of directionality-assignment vectors
+%    directions:    structure of subsets of qualitatively forward -> quantitatively reversible reactions, with fields:
+%
+%                     * .forwardReversible - reactions reassigned from forward to reversible
+%                     * .forwardReversible_bydGt0Mid - reassigned, standard Gibbs energy range spanning zero
+%                     * .forwardReversible_byConc_negative_uncertain_DrG0 - reassigned by concentration, negative uncertain standard Gibbs energy
+%                     * .forwardReversible_byConc_positive_uncertain_DrG0 - reassigned by concentration, positive uncertain standard Gibbs energy
+%                     * .forwardProbability - `n x 1` probability that each reaction proceeds forward
+%
+% .. Author: - Ronan M.T. Fleming
 
 [nMet,nRxn]=size(model.S);
 

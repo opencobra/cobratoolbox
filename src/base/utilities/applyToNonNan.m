@@ -1,10 +1,10 @@
-function result = applyToNonNan(data,func)
+function result = applyToNonNan(data, func)
 % Apply the given function columnwise to all non NaN values in the given
 % data.
 %
 % USAGE:
 %
-%    result = applyToNonNan(data,func)
+%    result = applyToNonNan(data, func)
 %
 % INPUTS:
 %    data:          Matrix of data (individuals x variables)

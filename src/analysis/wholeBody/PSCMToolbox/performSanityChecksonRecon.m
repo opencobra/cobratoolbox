@@ -1,43 +1,48 @@
-function [TableChecks, Table_csources, CSourcesTestedRxns, TestSolutionNameOpenSinks,TestSolutionNameClosedSinks,TableSingleDel] = performSanityChecksonRecon(model,resultsFileName,ExtraCellCompIn,ExtraCellCompOut,runSingleGeneDeletion,resultsPath,param)
-% This function performs various quality control and quality assurance
-% tests.
-% [TableChecks, Table_csources, CSourcesTestedRxns, TestSolutionNameOpenSinks,TestSolutionNameClosedSinks] = performSanityChecksonRecon(model,resultsFileName,ExtraCellCompIn,ExtraCellCompOut,runSingleGeneDeletion)
+function [TableChecks, Table_csources, CSourcesTestedRxns, TestSolutionNameOpenSinks, TestSolutionNameClosedSinks, TableSingleDel] = performSanityChecksonRecon(model, resultsFileName, ExtraCellCompIn, ExtraCellCompOut, runSingleGeneDeletion, resultsPath, param)
+% Perform quality-control and quality-assurance checks on a reconstruction
 %
-% INPUT
-% model                         model structure
-% resultsFileName               File name of the generated output file 
-% ExtraCellCompIn               [e] compartment by default, if extracellular
-%                               uptake compartment is named differently, it
-%                               can be specified here
-% ExtraCellCompOut              [e] compartment by default, if extracellular
-%                               secretion compartment is named differently, it
-%                               can be specified here
-% runSingleGeneDeletion         if 0 (default): function does not run single gene deletion otw choose 1
-% resultsPath                   path where the results should be saved
-%                               (default: location where 'MethodSection3.mlx' folder is)
-% param                         testing parameters. Some test are done by
-%                               default, others need to be specified (see
-%                               below)
+% This function performs various quality control and quality assurance tests
+% on a metabolic reconstruction.
 %
-% OUTPUT
-% TableChecks                   Table overview of the performed tests and
-%                               their outcomes
-% Table_csources                Table the test results for ATP yield from
-%                               various carbon scources under aerobic and anaerobic conditions
-% CSourcesTestedRxns            List of reactions active when testing the ATP
-%                               yield from the various carbon sources
+% USAGE:
+%
+%    [TableChecks, Table_csources, CSourcesTestedRxns, TestSolutionNameOpenSinks, TestSolutionNameClosedSinks, TableSingleDel] = performSanityChecksonRecon(model, resultsFileName, ExtraCellCompIn, ExtraCellCompOut, runSingleGeneDeletion, resultsPath, param)
+%
+% INPUTS:
+%    model:                    Model structure, with fields:
+%
+%                                * .rxns - reaction identifiers
+%                                * .rxnGeneMat - reaction-gene incidence matrix
+%                                * .rev - reversibility indicator per reaction
+%                                * .lb - lower bounds
+%                                * .genes - gene identifiers
+%    resultsFileName:          File name of the generated output file
+%    ExtraCellCompIn:          Extracellular uptake compartment ([e] by default)
+%    ExtraCellCompOut:         Extracellular secretion compartment ([e] by default)
+%    runSingleGeneDeletion:    If 1, run single gene deletion (default 0)
+%    resultsPath:              Path where the results should be saved (default: location of
+%                              the 'MethodSection3.mlx' folder)
+%    param:                    Testing parameters, with fields:
+%
+%                                * .checkDuplicates - if 1, check for duplicated reactions using the 'FR' method (default 0)
+%                                * .testRev - if 1, test whether .rev is consistent with .lb and .ub (default 0)
+%                                * .epsilon - numerical tolerance for the duplicate-reaction check (default feasTol*100)
+%                                * .modeFlag - mode flag for the duplicate-reaction check (default 0)
+%
+% OUTPUTS:
+%    TableChecks:                   Table overview of the performed tests and their outcomes
+%    Table_csources:                Table of ATP-yield test results from various carbon sources
+%                                   under aerobic and anaerobic conditions
+%    CSourcesTestedRxns:            List of reactions active when testing ATP yield from the
+%                                   various carbon sources
+%    TestSolutionNameOpenSinks:     Results when testing for 460 metabolic functions with all
+%                                   sinks open
+%    TestSolutionNameClosedSinks:    Results when testing for 460 metabolic functions with all
+%                                   sinks closed
+%    TableSingleDel:                Single gene deletion results (col 1 gene, col 2 growth ratio)
+%
+% .. Author: - Ines Thiele, 2016-2019, 2023
 
-% TestSolutionNameOpenSinks     List of results when testing for 460 metabolic
-%                               functions with all sinks open
-% TestSolutionNameClosedSinks   List of results when testing for 460 metabolic
-%                               functions with all sinks closed
-%
-% Ines Thiele 2016-2019, 2023
-
-%% parameter specification
-% param.testRev                 test whether model.rev and model.lb&model.ub are consistent (default: 0)
-% param.checkDuplicates         check for duplicated reactions, using the 'FR' method (default:0)
-% 
 
 
 

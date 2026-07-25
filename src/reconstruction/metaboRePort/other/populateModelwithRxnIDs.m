@@ -1,27 +1,39 @@
 function [modelUpdated] = populateModelwithRxnIDs(model)
-% allowed COBRA fields can be found here
-%        fileName = which('COBRA_structure_fields.tab');
-%        [raw] = descFileRead(fileName);
-% raw.Model_Field
+% Populates a COBRA model with reaction cross-reference identifiers looked
+% up from a local VMH reaction list spreadsheet and, for `rxnSEEDID`, from a
+% DEMETER seed-to-VMH translation table.
 %
-% 'rxnGeneMat         '
-%     'rxnConfidenceScores'
-%     'rxnNames           '
-%     'rxnNotes           '
-%     'rxnECNumbers       '
-%     'rxnReferences      '
-%     'rxnKEGGID          '
-%     'rxnKEGGPathways    '
-%     'rxnMetaNetXID      '
-%     'rxnBRENDAID        '
-%     'rxnBioCycID        '
-%     'rxnReactomeID      '
-%     'rxnSABIORKID       '
-%     'rxnSEEDID          '
-%     'rxnRheaID          '
-%     'rxnBiGGID          '
-%     'rxnSBOTerms        '
-
+% USAGE:
+%
+%    [modelUpdated] = populateModelwithRxnIDs(model)
+%
+% INPUTS:
+%    model:           COBRA model structure
+%
+% OUTPUT:
+%    modelUpdated:    COBRA model structure with the following reaction ID
+%                     fields populated (overwritten where already present):
+%
+%                       * .rxnECNumbers - EC number(s) for the reaction
+%                       * .rxnKEGGID - KEGG reaction identifier
+%                       * .rxnMetaNetXID - MetaNetX reaction identifier
+%                       * .rxnSEEDID - ModelSEED reaction identifier
+%                       * .rxnRheaID - Rhea reaction identifier
+%                       * .rxnBRENDAID - BRENDA reaction identifier (same
+%                         value as `.rxnECNumbers`)
+%
+% NOTE:
+%
+%    Allowed COBRA fields can be found here:
+%
+%       fileName = which('COBRA_structure_fields.tab');
+%       [raw] = descFileRead(fileName);
+%       raw.Model_Field
+%
+%    Reaction ID fields include: rxnGeneMat, rxnConfidenceScores, rxnNames,
+%    rxnNotes, rxnECNumbers, rxnReferences, rxnKEGGID, rxnKEGGPathways,
+%    rxnMetaNetXID, rxnBRENDAID, rxnBioCycID, rxnReactomeID, rxnSABIORKID,
+%    rxnSEEDID, rxnRheaID, rxnBiGGID, rxnSBOTerms
 
 [~,~,RAW] = xlsread('C:\Users\0123322S\Dropbox\Studies\VMH\VMH_reactionList.xlsx');
 % this file was obtained from the VMH database dump (July 2020,dellby)

@@ -5,26 +5,34 @@ function [TruePositives, FalseNegatives] = testBileAcidBiosynthesis(model, micro
 % the model but should be secreted according to in vitro data (false
 % negatives).
 %
-% INPUT
-% model             COBRA model structure
-% microbeID         Microbe ID in data file
-% biomassReaction   Biomass objective functions (low flux through BOF
-%                   required in analysis)
-% database          Structure containing rBioNet reaction and metabolite
-%                   database
+% USAGE:
 %
-% OUTPUT
-% TruePositives     Cell array of strings listing all bile acid products
-%                   (exchange reactions) that can be secreted by the model
-%                   and in in vitro data.
-% FalseNegatives    Cell array of strings listing all bile acid products
-%                   (exchange reactions) that cannot be secreted by the model
-%                   but should be secreted according to in vitro data.
+%    [TruePositives, FalseNegatives] = testBileAcidBiosynthesis(model, microbeID, biomassReaction, database)
+%
+% INPUTS:
+%    model:             COBRA model structure with fields:
+%
+%                         * .rxns - Reaction identifiers
+%    microbeID:         Microbe ID in data file
+%    biomassReaction:     Biomass objective functions (low flux through BOF
+%                       required in analysis)
+%    database:          Structure containing rBioNet reaction and metabolite
+%                       database with fields:
+%
+%                         * .metabolites - Metabolite database, column 1
+%                           VMH IDs, column 2 metabolite names
+%
+% OUTPUTS:
+%    TruePositives:     Cell array of strings listing all bile acid products
+%                       (exchange reactions) that can be secreted by the model
+%                       and in in vitro data.
+%    FalseNegatives:    Cell array of strings listing all bile acid products
+%                       (exchange reactions) that cannot be secreted by the model
+%                       but should be secreted according to in vitro data.
 %
 % .. Author:
-%      Almut Heinken, Dec 2017
-%                     March 2022 - changed code to string-matching to make
-%                     it more robust
+%       - Almut Heinken, Dec 2017
+%       - March 2022, changed code to string-matching to make it more robust
 
 global CBT_LP_SOLVER
 if isempty(CBT_LP_SOLVER)

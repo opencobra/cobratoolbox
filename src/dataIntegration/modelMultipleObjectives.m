@@ -6,16 +6,30 @@ function solutions = modelMultipleObjectives(model, param)
 %    solutions = modelMultipleObjectives(model, param)
 %
 % INPUT:
-%    model: A generic COBRA model
+%    model:    A generic COBRA model with fields:
 %
-%       * .S - Stoichiometric matrix
-%       * .mets - Metabolite ID vector
-%       * .rxns - Reaction ID vector
-%       * .lb - Lower bound vector
-%       * .ub - Upper bound vector
+%                * .rxns - `n x 1` reaction identifiers
+%                * .mets - `m x 1` metabolite identifiers
+%                * .SConsistentRxnBool - `n x 1` boolean, true for stoichiometrically consistent reactions
+%                * .bondsBF - `n x 1` number of bonds broken and formed by each reaction (BBF-weighted objectives)
+%                * .bondsE - `n x 1` bond enthalpy of each reaction (BE-weighted objectives)
+%                * .expressionRxns - `n x 1` reaction expression mapped from gene expression
+%                * .expressionRxns0norm - `n x 1` reaction expression weights for the zero-norm objective
+%                * .expressionRxns1norm - `n x 1` reaction expression weights for the one-norm objective
+%                * .expressionRxns2norm - `n x 1` reaction expression weights for the two-norm objective
+%                * .DfGt0 - `m x 1` standard transformed Gibbs energy of formation
+%                * .DfG0 - `m x 1` standard Gibbs energy of formation
+%                * .osenseStr - objective sense passed to entropic FBA ('min' or 'max')
+%                * .cf - forward reaction linear weight for entropic FBA
+%                * .cr - reverse reaction linear weight for entropic FBA
+%                * .g - flux entropy weight for entropic FBA
+%                * .u0 - reference chemical potential for entropic FBA
+%                * .f - concentration entropy weight for entropic FBA
+%                * .g0 - removed if present before solving
+%                * .g1 - removed if present before solving
 %
 % OPTIONAL INPUTS:
-%    param: a structure containing the parameters for the function:
+%    param:    a structure containing the parameters for the function:
 %
 %        * .modelType - type of predictions {'sec', 'upt'}.
 %        * .printLevel - Greater than zero to receive more output printed.
@@ -115,7 +129,7 @@ function solutions = modelMultipleObjectives(model, param)
 %           A QP solver is required.
 %
 % OUTPUTS:
-%    solutions:  The solution for each objective defined in param.objectives
+%    solutions:    The solution for each objective defined in param.objectives
 %       * .unWeighted0norm: min 0-norm unweighted
 %       * .unWeighted1norm: min 1-norm unweighted.
 %       * .Weighted1normGE: min 1-norm weighted by the gene expression. 

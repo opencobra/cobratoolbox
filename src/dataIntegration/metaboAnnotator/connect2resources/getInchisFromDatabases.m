@@ -1,4 +1,24 @@
-function [TableInchiStrings,TableInchiKeys] = getInchisFromDatabases(model)
+function [TableInchiStrings, TableInchiKeys] = getInchisFromDatabases(model)
+% Collect InChIStrings and InChIKeys for the metabolites of a COBRA model from
+% multiple sources (the model itself, HMDB, ChEBI and KEGG) and assemble them
+% into comparison tables, one row per metabolite and one column per source.
+%
+% USAGE:
+%
+%    [TableInchiStrings, TableInchiKeys] = getInchisFromDatabases(model)
+%
+% INPUT:
+%    model:    COBRA model structure. Only the following field is used:
+%
+%                * .modelID - identifier used to name the KEGG mol-file folder
+%
+% OUTPUTS:
+%    TableInchiStrings:    cell array of InChIStrings per metabolite (rows) and
+%                          source (columns)
+%    TableInchiKeys:       cell array of InChIKeys per metabolite (rows) and
+%                          source (columns)
+%
+% .. Author: - Ines Thiele
 
 printInchis = 1;
 %% convert model into metabolite_structure - this is needed as all

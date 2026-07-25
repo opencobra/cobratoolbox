@@ -11,7 +11,11 @@ function tissueModel = GIMME(model, expressionRxns, threshold, obj_frac)
 %
 % INPUTS:
 %
-%    model:               input model (COBRA model structure)
+%    model:               input model (COBRA model structure) with fields:
+%
+%                           * .S - `m x n` stoichiometric matrix
+%                           * .c - `n x 1` linear objective coefficients
+%                           * .rxns - `n x 1` cell array of reaction abbreviations
 %    expressionRxns:      expression data, corresponding to model.rxns (see
 %                         mapGeneToRxn.m)
 %    threshold:           expression threshold, reactions below this are

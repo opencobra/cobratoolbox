@@ -9,7 +9,12 @@ function [modelOut, rxn2subSystem, subSystemNames, nestedCells] = buildRxn2subSy
 %    [modelOut, rxn2subSystem, subSystemNames, nestedCells] = buildRxn2subSystem(model, removeSubSystems)
 %
 % INPUTS:
-%    model:               COBRA model structure
+%    model:               COBRA model structure with fields:
+%
+%                           * .rxns - `n x 1` reaction identifiers
+%                           * .subSystems - `n x 1` subsystem assignments
+%                             (removed from the output model if
+%                             `removeSubSystems` is true)
 %
 % OPTIONAL INPUTS:
 %    removeSubSystems:    Binary variable, if equals to 1 (or true) subSystems 
@@ -29,6 +34,7 @@ function [modelOut, rxn2subSystem, subSystemNames, nestedCells] = buildRxn2subSy
 %
 
 % set optional input
+
 if nargin < 2
     removeSubSystems = true;
 elseif ~islogical(removeSubSystems) & removeSubSystems ~= 1 && removeSubSystems ~= 0

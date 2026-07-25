@@ -1,25 +1,26 @@
-function [metRXNBool,rxnRXNBool,internalRxnBool] = findRXNFiles(model,rxnfileDir)
+function [metRXNBool, rxnRXNBool, internalRxnBool] = findRXNFiles(model, rxnfileDir)
+% Identify the model metabolites and reactions that have a corresponding atom mapped RXN file
 %
 % USAGE:
-%   [metRXNBool,rxnRXNBool] = findRXNFiles(model,rxnfileDir)
+%
+%    [metRXNBool, rxnRXNBool, internalRxnBool] = findRXNFiles(model, rxnfileDir)
 %
 % INPUTS:
-%  model.rxns:     
-%  model.SConsistentRxnBool:
-%  model.S:           
-%  rxnfileDir:               path to directory containing atom mapped reactions
-%                            One .RXN file per reaction with each filename matching to model.rxns{i}   
+%    model:         COBRA model structure with the fields:
+%
+%                     * .rxns - `n` x 1 array of reaction identifiers
+%                     * .S - `m` x `n` stoichiometric matrix
+%                     * .SConsistentRxnBool - `n` x 1 boolean vector, true for stoichiometrically consistent reactions (used if present)
+%                     * .SIntRxnBool - `n` x 1 boolean vector, true for internal reactions (used when .SConsistentRxnBool is absent)
+%
+%    rxnfileDir:    path to directory containing atom mapped reactions. One .RXN file per reaction with each filename matching to model.rxns{i}
 %
 % OUTPUTS:
-% metRXNBool:  `m x 1` boolean vector true for metabolites in atom mapped reactions
-% rxnRXNBool:  `n x 1` boolean vector true for atom mapped reactions
-% internalRxnBool: :  `n x 1` boolean vector true for reactions considered internal
+%    metRXNBool:         `m x 1` boolean vector true for metabolites in atom mapped reactions
+%    rxnRXNBool:         `n x 1` boolean vector true for atom mapped reactions
+%    internalRxnBool:    `n x 1` boolean vector true for reactions considered internal
 %
-% EXAMPLE:
-%
-% NOTE:
-%
-% Author(s): Ronan M.T. Fleming, 2022
+% .. Author: - Ronan M.T. Fleming, 2022
 
 rxnfileDir = [regexprep(rxnfileDir,'(/|\\)$',''), filesep]; % Make sure input path ends with directory separator
 

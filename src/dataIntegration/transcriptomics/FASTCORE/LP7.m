@@ -1,20 +1,29 @@
-function [v, basis] = LP7( J, model, LPproblem, epsilon, basis)
+function [v, basis] = LP7(J, model, LPproblem, epsilon, basis)
 % Implementation of LP-7 for input set J (see FASTCORE paper).
 % Maximises the number of feasible fluxes in J whose value is at least epsilon
 %
 % USAGE:
 %
-%    [v, basis] = LP7( J, model, epsilon, basis)
+%    [v, basis] = LP7(J, model, LPproblem, epsilon, basis)
 %
 % INPUTS:
-%    J:         indicies of irreversible reactions
-%    model:     model
-%    LPproblem: LP problem
-%    epsilon:   tolerance
+%    J:            indicies of irreversible reactions
+%    model:        COBRA model structure
+%    LPproblem:    LP problem structure derived from the model with fields:
+%
+%                    * .A - constraint (stoichiometric) matrix
+%                    * .b - right hand side vector for `A*v = b`
+%                    * .lb - lower bounds on the variables
+%                    * .ub - upper bounds on the variables
+%                    * .csense - constraint sense character array ({L, E, G})
+%    epsilon:      tolerance (smallest flux considered nonzero)
+%
+% OPTIONAL INPUT:
+%    basis:        basis to warm-start the LP solve
 %
 % OUTPUTS:
-%    v:         optimal steady state flux vector
-%    basis:     basis
+%    v:            optimal steady state flux vector
+%    basis:        basis returned by the LP solver
 %
 
 % .. Authors:

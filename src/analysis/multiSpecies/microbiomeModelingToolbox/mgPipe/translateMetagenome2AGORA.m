@@ -1,4 +1,4 @@
-function [translatedAbundances,normalizedAbundances,unmappedRows]=translateMetagenome2AGORA(MetagenomeAbundancePath,sequencingDepth,reconstructionResource)
+function [translatedAbundances, normalizedAbundances, unmappedRows] = translateMetagenome2AGORA(MetagenomeAbundancePath, sequencingDepth, reconstructionResource)
 % Translates organism identifiers in a published metagenomic or 16S rRNA
 % data file with organism abundances (retrieved e.g., from  MetaPhlAn) to
 % AGORA pan-model IDs. This will not catch every case since the format of
@@ -18,27 +18,27 @@ function [translatedAbundances,normalizedAbundances,unmappedRows]=translateMetag
 %   [translatedAbundances,normalizedAbundances,unmappedRows]=translateMetagenome2AGORA(MetagenomeAbundancePath,sequencingDepth,reconstructionResource)
 %
 % INPUT:
-%   MetagenomeAbundancePath   String containing the path to csv file with
+%    MetagenomeAbundancePath:    String containing the path to csv file with
 %                             organism abundance data retrieved from
 %                             16S rRNA or metagenomic samples (example:
 %                             'SRP065497_taxonomy_abundances_v3.0.tsv').
 %
 % OPTIONAL INPUTS:
-%   sequencingDepth           Sequencing depth on the taxonomical level
+%    sequencingDepth:          Sequencing depth on the taxonomical level
 %                             in the input data (e.g., genus, species).
 %                             Allowed inputs are 'Species','Genus',
-%                             'Family','Order', 'Class', 'Phylum'. 
+%                             'Family','Order', 'Class', 'Phylum'.
 %                             Default: 'Species'.
-%  reconstructionResource     Name of the reconstruction resource to map
-%                             the abundances to. Allowed inputs are 'AGORA', 
+%    reconstructionResource:    Name of the reconstruction resource to map
+%                             the abundances to. Allowed inputs are 'AGORA',
 %                             'AGORA2'. Default: 'AGORA'
 %
 % OUTPUTS:
-%   translatedAbundances      Abundances with organism names from the
+%    translatedAbundances:     Abundances with organism names from the
 %                             input file translated to AGORA pan-model IDs
-%   normalizedAbundances      Translated abundances normalized so they sum
+%    normalizedAbundances:     Translated abundances normalized so they sum
 %                             up to 1 for each sample
-%   unmappedRows              Taxa on the selected taxonomical level that
+%    unmappedRows:             Taxa on the selected taxonomical level that
 %                             could not be mapped to AGORA pan-models
 %
 % .. Author: Almut Heinken, 02/2019

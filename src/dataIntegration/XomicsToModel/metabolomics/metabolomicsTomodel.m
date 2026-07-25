@@ -5,30 +5,52 @@ function [model, specificData, coreRxnAbbr, modifiedFluxes, modelGenerationRepor
 %
 % USAGE:
 %
-%    [model, specificData, coreRxnAbbr, modifiedFluxes, modelGenerationReport] = metabolomicsToModel(model, specificData, param, coreRxnAbbr, modelGenerationReport)
+%    [model, specificData, coreRxnAbbr, modifiedFluxes, modelGenerationReport] = metabolomicsTomodel(model, specificData, param, coreRxnAbbr, modelGenerationReport)
 %
 % INPUT:
-%    model:     	A generic COBRA model
+%    model:    A generic COBRA model with fields:
 %
-%        * .S - Stoichiometric matrix
-%        * .mets - Metabolite ID vector
-%        * .rxns - Reaction ID vector
-%        * .lb - Lower bound vector
-%        * .ub - Upper bound vector
-%        * .genes - Upper bound vector
+%                * .S - `m x n` stoichiometric matrix
+%                * .mets - `m x 1` metabolite identifiers
+%                * .rxns - `n x 1` reaction identifiers
+%                * .lb - `n x 1` lower flux bounds
+%                * .ub - `n x 1` upper flux bounds
+%                * .SIntRxnBool - `n x 1` boolean, true for internal reactions
+%                * .lb_preconstrainRxns - `n x 1` lower bounds saved before constraining reactions
+%                * .ub_preconstrainRxns - `n x 1` upper bounds saved before constraining reactions
 %
-%    specificData:  A structure containing the context-specific data
-%    param:     a structure containing the parameters for the function
-%    coreRxnAbbr:   Set of core reactions
-%    modelGenerationReport:	A struct array where the data will be saved
+%    specificData:    A structure containing the context-specific data, with fields:
+%
+%                       * .exoMet - table of exometabolomic fluxes
+%                       * .rxns2constrain - table of custom reaction constraints
+%                       * .essentialAA - exchange reactions for essential amino acids
+%                       * .mediaData - table of fresh-media constraints
+%
+%    param:    a structure containing the parameters for the function:
+%
+%                * .printLevel - verbose level controlling printed output
+%                * .curationOverOmics - Logical, use curated data with priority over omics data
+%                * .addSinksexoMet - Logical, add sink reactions for metabolites in exometabolomic data
+%                * .metabolomicsBeforeExtraction - Logical, whether metabolomics is added before extraction
+%                * .debug - Logical, whether to save progress for debugging
+%                * .workingDirectory - directory where debug files are written
+%                * .TolMaxBoundary - the reaction boundary's maximum value
+%                * .excludeMetsFromRelax - metabolites excluded from bound relaxation
+%                * .boundsToRelaxExoMet - which bounds may be relaxed to fit exometabolomic data
+%                * .relaxOptions - options passed to relaxedFBA if the problem becomes infeasible
+%
+%    coreRxnAbbr:    Set of core reactions
+%    modelGenerationReport:    A struct array where the data will be saved, with fields:
+%
+%                                * .sinksAddedFromexoMet - reactions for which sinks were added from exometabolomic data
 %
 % OUTPUTS:
-%    model:  A Context-specific COBRA model with the metabolomic data.
-%    specificData:  The exometabolomic data is updated according to the
-%                   relaxations
-%    coreRxnAbbr:  A Context-specific COBRA model with the metabolomic data.
-%    modifiedFluxes:  New set of core reactions.
-%    modelGenerationReport: an updated version od the struct array
+%    model:    A Context-specific COBRA model with the metabolomic data.
+%    specificData:    The exometabolomic data is updated according to the
+%                     relaxations
+%    coreRxnAbbr:    A Context-specific COBRA model with the metabolomic data.
+%    modifiedFluxes:    New set of core reactions.
+%    modelGenerationReport:    an updated version of the struct array
 
 feasTol = getCobraSolverParams('LP', 'feasTol');
 

@@ -10,7 +10,7 @@ function status = checkCNAinstallation(printLevel)
 %
 % OUTPUT:
 %
-%   status:         Boolean if CellNetAnalyzer is installed properly
+%    status:         Boolean if CellNetAnalyzer is installed properly
 %
 
     global CBTDIR

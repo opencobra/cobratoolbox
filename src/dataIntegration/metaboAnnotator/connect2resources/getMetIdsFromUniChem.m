@@ -1,10 +1,41 @@
-function [metabolite_structure,IDsAdded] = getMetIdsFromUniChem(metabolite_structure,startSearch,endSearch,vmhIdCheck,cheBIIdCheck,drugBankCheck, pubChemIdCheck,keggIdCheck,hmdbCheck, inchiKeyCheck, inchiStringCheck,inchiKeyAltCheck )
-
-% This function connects to UniChem and grebs available ID's for
-% metabolites that have Inchi Strings.
-
-% I.T., Aug 2020
-% POSSIBLE query terms for UniChem
+function [metabolite_structure, IDsAdded] = getMetIdsFromUniChem(metabolite_structure, startSearch, endSearch, vmhIdCheck, cheBIIdCheck, drugBankCheck, pubChemIdCheck, keggIdCheck, hmdbCheck, inchiKeyCheck, inchiStringCheck, inchiKeyAltCheck)
+% Connect to UniChem and grab available identifiers (ChEBI, PubChem,
+% MetaboLights, Rhea, SwissLipids, BindingDB, DrugBank, KEGG, HMDB, EPA and
+% LipidMaps) for the metabolites in the structure. The query identifier is
+% selected by the corresponding check flag.
+%
+% USAGE:
+%
+%    [metabolite_structure, IDsAdded] = getMetIdsFromUniChem(metabolite_structure, startSearch, endSearch, vmhIdCheck, cheBIIdCheck, drugBankCheck, pubChemIdCheck, keggIdCheck, hmdbCheck, inchiKeyCheck, inchiStringCheck, inchiKeyAltCheck)
+%
+% INPUT:
+%    metabolite_structure:    metabolite structure whose fields are VMH
+%                             metabolite IDs, each holding identifier fields
+%
+% OPTIONAL INPUTS:
+%    startSearch:             numeric index of where the search should start in
+%                             the metabolite structure (default: 1)
+%    endSearch:               numeric index of where the search should end in
+%                             the metabolite structure (default: last metabolite)
+%    vmhIdCheck:              if true, query UniChem using the VMH id (default: 0)
+%    cheBIIdCheck:            if true, query UniChem using the ChEBI id (default: 0)
+%    drugBankCheck:           if true, query UniChem using the DrugBank id (default: 0)
+%    pubChemIdCheck:          if true, query UniChem using the PubChem id (default: 0)
+%    keggIdCheck:             if true, query UniChem using the KEGG id (default: 0)
+%    hmdbCheck:               if true, query UniChem using the HMDB id (default: 0)
+%    inchiKeyCheck:           if true, query UniChem using the InChIKey (default: 0)
+%    inchiStringCheck:        if true, query UniChem using the InChIString (default: 0)
+%    inchiKeyAltCheck:        if true, query UniChem using the neutral form of
+%                             the InChIKey (default: 0)
+%
+% OUTPUTS:
+%    metabolite_structure:    metabolite structure updated with the retrieved
+%                             identifiers
+%    IDsAdded:                cell array logging the added identifiers, with the
+%                             metabolite field name, the identifier type, and
+%                             the assigned identifier per row
+%
+% .. Author: - I.T., Aug 2020
 
 if ~exist('cheBIIdCheck', 'var')
     cheBIIdCheck = 0;

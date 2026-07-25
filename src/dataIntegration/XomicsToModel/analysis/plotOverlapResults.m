@@ -1,17 +1,31 @@
-function plotOverlapResults(overlapresults,statistic,savepath)
+function plotOverlapResults(overlapresults, statistic, savepath)
+% Plot the overlapped heatmap for each model with proportion text labels
+%
 % USAGE:
-%   plot the overlapped heatmap for each model with proportion text labels
 %
-% Input:
-%   overlapresults: from compareXomicsModels.m
-%   statistic:  from compareXomicsModels.m
-%   savepath (optional): the path to save the plot
+%    plotOverlapResults(overlapresults, statistic, savepath)
 %
-% Output:
-%   a heat map plot
+% INPUTS:
+%    overlapresults:    overlap result struct from compareXomicsModels.m, with fields:
 %
-% Author(s):
-%   Xi Luo, update 2024/10
+%                         * .mets - overlap data structure for metabolites
+%                         * .rxns - overlap data structure for reactions
+%                         * .genes - overlap data structure for genes
+%
+%    statistic:    overlap statistics struct from compareXomicsModels.m, with fields:
+%
+%                    * .overlapnumber_mets - table of overlapped metabolite counts (RowNames give the model names)
+%                    * .overlapproportion_mets - table of overlapped metabolite proportions
+%                    * .overlapproportion_rxns - table of overlapped reaction proportions
+%                    * .overlapproportion_genes - table of overlapped gene proportions
+%
+% OPTIONAL INPUT:
+%    savepath:    the path to save the plot
+%
+% OUTPUT:
+%    a heat map plot is produced (this function has no return value)
+%
+% .. Author(s): - Xi Luo, update 2024/10
 %
 %
 %% use proportion data to create map

@@ -1,3 +1,4 @@
+% Unit test class exercising the PolytopeSimplifier interior-point routines
 classdef PolytopeSimplifierTest < matlab.unittest.TestCase
    properties(TestParameter)
       problemName = struct('none', struct('name', 'none'));

@@ -1,6 +1,17 @@
 function [status, result] = lrsSpecifyRows(fileNameIn)
-%read the number of rows of data in the file and replace the **** with the 
-%number of rows
+% Read the number of rows of data in an lrs input file and replace the
+% `*****` placeholder with the actual number of rows
+%
+% USAGE:
+%
+%    [status, result] = lrsSpecifyRows(fileNameIn)
+%
+% INPUT:
+%    fileNameIn:    name (or full path) of the lrs `.ine`/`.ext` file to edit in place
+%
+% OUTPUTS:
+%    status:        status returned by the `sed` system call (0 on success)
+%    result:        text output returned by the `sed` system call
 
 if ~contains(fileNameIn,filesep)
     fileNameIn = [pwd filesep fileNameIn];

@@ -1,17 +1,28 @@
-function [TableHHStats] = getBasicHarveyStats(male,female)
-% This function compiles basic statistics on the male and female whole-body
-% metabolic model
+function [TableHHStats] = getBasicHarveyStats(male, female)
+% Compile basic statistics on the male and female whole-body metabolic models
 %
-% function [TableHHStats] = getBasicHarveyStats(male,female)
+% USAGE:
 %
-% INPUT
-% male          Model structure containing the male model
-% female        Model structure containing the female model
+%    [TableHHStats] = getBasicHarveyStats(male, female)
 %
-% OUTPUT
-% TableHHStats  Table containing the statistics
-% 
-% Ines Thiele 2016- 2019
+% INPUTS:
+%    male:      Male whole-body metabolic model, with fields:
+%
+%                 * .rxns - reaction identifiers
+%                 * .mets - metabolite identifiers
+%                 * .genes - gene identifiers
+%                 * .subSystems - subsystem annotations
+%    female:    Female whole-body metabolic model, with fields:
+%
+%                 * .rxns - reaction identifiers
+%                 * .mets - metabolite identifiers
+%                 * .genes - gene identifiers
+%                 * .subSystems - subsystem annotations
+%
+% OUTPUT:
+%    TableHHStats:    Cell array (table) of basic statistics for the two models
+%
+% .. Author: - Ines Thiele, 2016-2019
 
 % build table
 clear TableHHStats

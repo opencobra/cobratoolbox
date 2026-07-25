@@ -18,6 +18,9 @@ currentDir = pwd;
 fileDir = fileparts(which('testFBA'));
 cd(fileDir);
 
+% require an LP solver; skip gracefully if none is available
+prepareTest('needsLP', true);
+
 % set the tolerance to the optimality tolerance
 tol = getCobraSolverParams('LP','optTol')*5;
 

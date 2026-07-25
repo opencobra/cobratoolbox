@@ -6,7 +6,12 @@ function ACBSampler(model, warmupPoints, fileName, nFiles, pointsPerFile, nMixPt
 %    ACBSampler(model, warmupPoints, fileName, nFiles, pointsPerFile, nMixPts, nWarmupNeeded, saveMatFlag, biasOpt)
 %
 % INPUTS:
-%    model:            Model structure
+%    model:            Model structure, with fields:
+%
+%                        * .S - stoichiometric matrix
+%                        * .lb - lower flux bounds
+%                        * .ub - upper flux bounds
+%                        * .rxns - reaction identifiers
 %    warmupPoints:     Warmup points
 %    fileName:         Base `fileName` for saving results
 %    nFiles:           Number of sample point files created
@@ -16,7 +21,13 @@ function ACBSampler(model, warmupPoints, fileName, nFiles, pointsPerFile, nMixPt
 % OPTIONAL INPUTS:
 %    nWarmupNeeded:    Number of warmup points needed (Default = 20000)
 %    saveMatFlag:      Save points in mat format vs txt format (Default = true)
-%    biasOpt:          Options for biasing sampler (Default = no bias)
+%    biasOpt:          Options for biasing sampler (Default = no bias), with fields:
+%
+%                        * .rxns - reactions whose flux is biased
+%                        * .values - target flux values for the biased reactions
+%                        * .stds - standard deviations of the target flux values
+%                        * .percThr - percentile threshold for selecting warmup
+%                          points near the target values
 %
 % .. Authors:
 %       - Christian Barrett 8/24/06

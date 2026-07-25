@@ -6,7 +6,11 @@ function MatricesSUX = assignRxnWeights(MatricesSUX, weights, WeightsPerRxn, NoW
 %    MatricesSUX = assignRxnWeights(MatricesSUX, weights, WeightsPerRxn, NoWeight)
 %
 % INPUTS:
-%    MatricesSUX:       Input model structure
+%    MatricesSUX:       Input model structure, with field:
+%
+%                         * .MatrixPart - `n x 1` vector indicating the origin
+%                           of each reaction (1 - model, 2 - KEGG, 3 -
+%                           exchange/transport)
 %    weights:           Weight structure that permits to add weights to
 %                       non-core reactions (it is recommended to use values other than 0 and 1, with lower weight
 %                       corresponding to higher priority. Format:

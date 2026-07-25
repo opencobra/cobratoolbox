@@ -1,13 +1,23 @@
 function group_def = getGroupVectorFromInchi(inchi, silent)
+% Decompose an InChI into a group-contribution vector using the inchi2gv.py python script
 %
-% INPUTS
-% inchi             inchi key
-% 
-% OUTPUTS
-% group_def     
-% 
-% DEPENDENCIES
-% inchi2gc.py
+% USAGE:
+%
+%    group_def = getGroupVectorFromInchi(inchi, silent)
+%
+% INPUT:
+%    inchi:        InChI string of the metabolite to decompose
+%
+% OPTIONAL INPUT:
+%    silent:       boolean, suppress python script warnings (default true)
+%
+% OUTPUT:
+%    group_def:    row vector of group counts (the group-contribution vector),
+%                  empty if the InChI cannot be decomposed
+%
+% NOTE:
+%
+%    Depends on the python script inchi2gv.py
  
  
 if nargin < 2

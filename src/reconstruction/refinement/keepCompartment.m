@@ -7,13 +7,17 @@ function model = keepCompartment(model, compartments)
 %    model = keepCompartment(model, compartments)
 %
 % INPUTS:
-%    model:           COBRA model structure
+%    model:           COBRA model structure with fields:
+%
+%                       * .S - `m x n` stoichiometric matrix
+%                       * .mets - `m x 1` metabolite identifiers
+%                       * .rxns - `n x 1` reaction identifiers
 %    compartments:    cell array of strings (e.g., to discard all
 %                     reactions except those in the mitochondria and
 %                     cytosol, compartments = {'[m]', '[c]'};
 %
 % OUTPUT:
-%    model:           COBRA model with reactions in the specified compartmetns
+%    model:           COBRA model with reactions in the specified compartments
 %
 % .. Author: - Nathan Lewis, June 8, 2008
 

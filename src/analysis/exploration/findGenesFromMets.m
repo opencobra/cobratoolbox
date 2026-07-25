@@ -6,8 +6,19 @@ function [geneList] = findGenesFromMets(model, metList, param)
 %    [geneList] = findGenesFromMets(model, metabolites)
 %
 % INPUTS:
-%    model:      COBRA model structure
+%    model:      COBRA model structure with fields:
+%
+%                  * .mets - `m x 1` metabolite identifiers
+%                  * .rxns - `n x 1` reaction identifiers
+%                  * .rxnGeneMat - `n x g` reaction-gene incidence matrix
+%
 %    metList:    List of metabolite identifiers in a model to find the corresponding genes for
+%
+% OPTIONAL INPUT:
+%    param:      Structure controlling the search, with field:
+%
+%                  * .minimal - if 1, use the minimal set of reactions mapping to
+%                    the metabolites (default 0)
 %
 % OUTPUT:
 %    geneList:     List of genes corresponding to reactions

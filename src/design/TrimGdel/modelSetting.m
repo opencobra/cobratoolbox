@@ -1,35 +1,37 @@
 function [model2, targetRID, extype] = modelSetting(model, targetMet)
-% modelSetting is a function of gDel_minRN that adds an auxiliary
-% exchange reaction for the target metabolite when there is no
-% original corresponding exchange reaction.
+% modelSetting is a submodule of gDel_minRN that adds an auxiliary exchange
+% reaction for the target metabolite when the model has no corresponding
+% exchange reaction.
 %
 % USAGE:
 %
-%    function [model2,targetRID,extype] = modelSetting(model,targetMet)
+%    [model2, targetRID, extype] = modelSetting(model, targetMet)
 %
 % INPUTS:
-%    model:     COBRA model structure containing the following required fields to perform gDel_minRN.
+%    model:        COBRA model structure with the fields:
 %
-%       *.rxns:       Rxns in the model
-%       *.mets:       Metabolites in the model
-%       *.genes:      Genes in the model
-%       *.grRules:    Gene-protein-reaction relations in the model
-%       *.S:          Stoichiometric matrix (sparse)
-%       *.b:          RHS of Sv = b (usually zeros)
-%       *.c:          Objective coefficients
-%       *.lb:         Lower bounds for fluxes
-%       *.ub:         Upper bounds for fluxes
-%       *.rev:        Reversibility of fluxes
+%                * .rxns - reaction identifiers (n x 1 cell array)
+%                * .mets - metabolite identifiers (m x 1 cell array)
 %
-%    targetMet:    target metabolites    (e.g.,  'btn_c')
+%    targetMet:    target metabolite identifier (e.g. 'btn_c')
 %
 % OUTPUTS:
-%    model2:       the model that has the exchange reaction of the target metabolite
-%    targetRID:    ID of the exchange reaction of the target metabolite
-%    extype:       indicates that an auxiliary exchange reaction was added.
-%                      1,2: there was the corresponding exchange reaction.
-%                      3: An auxiliary exchange reaction was added.
-% 
+%    model2:       the input model, augmented when necessary with an auxiliary
+%                  exchange reaction for the target metabolite. When such a
+%                  reaction is added, the function writes the fields:
+%
+%                    * .S - sets the target-metabolite entry of the new reaction column
+%                    * .lb - lower flux bound of the new reaction (set to 0)
+%                    * .ub - upper flux bound of the new reaction (set to 999999)
+%                    * .rev - reversibility flag of the new reaction (set to 0)
+%
+%    targetRID:    reaction index of the (existing or added) exchange reaction
+%                  of the target metabolite
+%    extype:       type of exchange reaction used for the target metabolite:
+%
+%                    * 1, 2 - an existing exchange reaction was found
+%                    * 3 - an auxiliary exchange reaction was added
+%
 % .. Author:    - Takeyuki Tamura, Mar 06, 2025
 %
 

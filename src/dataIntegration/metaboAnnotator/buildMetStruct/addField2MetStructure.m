@@ -1,16 +1,25 @@
-function metabolite_structure= addField2MetStructure(metabolite_structure,metField)
-% This function adds fields to the metabolite_structure as defined in
-% metaboliteStructureFieldNames.m. Please note that this function does not
-% populate the fields with new data.
+function metabolite_structure = addField2MetStructure(metabolite_structure, metField)
+% Adds the standard metabolite structure fields to each metabolite entry
 %
-% INPUT 
-% metabolite_structure  Metabolite structure
-% metField                   specify metabolite (optional)
+% Adds fields to the metabolite structure as defined in
+% `metaboliteStructureFieldNames`. Note that this function does not populate
+% the fields with new data; missing fields are added and set to NaN.
 %
-% OUTPUT
-% metabolite_structure  Updated metabolite structure
+% USAGE:
 %
-% Ines Thiele 2020/2021
+%    metabolite_structure = addField2MetStructure(metabolite_structure, metField)
+%
+% INPUT:
+%    metabolite_structure:    metabolite structure
+%
+% OPTIONAL INPUT:
+%    metField:                specify a single metabolite (field name) whose
+%                             fields should be added (default: all metabolites)
+%
+% OUTPUT:
+%    metabolite_structure:    updated metabolite structure
+%
+% .. Author: - Ines Thiele, 2020/2021
 
 metaboliteStructureFieldNames;
 if ~exist('metField','var')

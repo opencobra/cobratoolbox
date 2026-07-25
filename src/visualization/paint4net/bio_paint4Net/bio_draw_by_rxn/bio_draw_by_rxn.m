@@ -6,7 +6,16 @@ function [involvedMets, deadEnds, deadRxns] = bio_draw_by_rxn(model, rxns, drawM
 %    [involvedMets, deadEnds, deadRxns] = bio_draw_by_rxn(model, rxns, drawMap, direction, initialMet, excludeMets, flux, save, closev, reportDeadEnds)
 %
 % INPUTS:
-%    model:            COBRA model structure.
+%    model:            COBRA model structure with fields:
+%
+%                        * .S - `m x n` stoichiometric matrix
+%                        * .rxns - `n x 1` cell array of reaction identifiers
+%                        * .mets - `m x 1` cell array of metabolite identifiers
+%                        * .lb - `n x 1` lower flux bounds
+%                        * .ub - `n x 1` upper flux bounds
+%                        * .metNames - `m x 1` cell array of metabolite names (optional)
+%                        * .metFormulas - `m x 1` cell array of metabolite chemical formulas (optional)
+%                        * .rxnNames - `n x 1` cell array of reaction names (optional)
 %    rxns:             Cell array of reaction abbreviations in the COBRA model,
 %                      or a cell vector from the MATLAB workspace.
 %
@@ -78,7 +87,7 @@ function [involvedMets, deadEnds, deadRxns] = bio_draw_by_rxn(model, rxns, drawM
 %
 %                      Default: false
 %
-%    reportDeadEnds:   Boolean indicating whether to report dead-end metabolites
+%    reportDeadEnds:    Boolean indicating whether to report dead-end metabolites
 %                      and dead reactions in the specified visualisation scope.
 %
 % OUTPUTS:

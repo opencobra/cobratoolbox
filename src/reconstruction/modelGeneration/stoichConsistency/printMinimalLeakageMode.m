@@ -6,7 +6,12 @@ function printMinimalLeakageMode(model, minMetBool, minRxnBool, y, printLevel, f
 %    printMinimalLeakageMode(model, minMetBool, minRxnBool, y, printLevel, fileName)
 %
 % INPUTS:
-%    model:         model structure
+%    model:         model structure with fields:
+%
+%                     * .SIntMetBool - `m` x 1 boolean of metabolites heuristically thought to be involved in mass balanced reactions
+%                     * .mets - `m` x 1 cell array of metabolite identifiers
+%                     * .metNames - `m` x 1 cell array of metabolite names
+%                     * .rxns - `n` x 1 cell array of reaction identifiers
 %    minMetBool:    boolean of metabolites in a positive leakage mode
 %    minRxnBool:    boolean of reactions exclusively involved in a positive leakage mode
 %    y:             contains `minMetBool`

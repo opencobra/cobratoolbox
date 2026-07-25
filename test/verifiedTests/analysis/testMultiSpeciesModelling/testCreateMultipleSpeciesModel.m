@@ -20,6 +20,9 @@ currentDir = pwd;
 fileDir = fileparts(which('testCreateMultipleSpeciesModel'));
 cd(fileDir);
 
+% require an LP solver; skip gracefully if none is available
+prepareTest('needsLP', true);
+
 % load the model
 model = getDistributedModel('ecoli_core_model.mat');
 

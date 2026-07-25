@@ -3,14 +3,16 @@ function [MetConn, RxnLength] = networkTopology(model)
 %
 % USAGE:
 %
-%    [MetConn, RxnLength] = NetworkTopology(model)
+%    [MetConn, RxnLength] = networkTopology(model)
 %
 % INPUTS:
-%    model:       Model structure
+%    model:       COBRA model structure with field:
+%
+%                   * .S - stoichiometric matrix
 %
 % OUTPUTS:
 %    MetConn:     Vector of metabolite connectivity (how many reactions a metabolite participates in (in same order as model.mets)
-%    RxnLength:   Vector of reaction participation, i.e., how many metabolites per reaction (in same order as `mode.rxns`)
+%    RxnLength:    Vector of reaction participation, i.e., how many metabolites per reaction (in same order as `mode.rxns`)
 %
 % .. Author: - IT June 2011
 

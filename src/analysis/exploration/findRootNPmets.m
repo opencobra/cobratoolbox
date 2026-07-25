@@ -7,7 +7,11 @@ function gaps = findRootNPmets(model, findNCmets)
 %    gaps = findRootNPmets(model, findNCmets)
 %
 % INPUT:
-%    model          a COBRA model
+%    model:         a COBRA model with fields:
+%
+%                     * .S - `m x n` stoichiometric matrix
+%                     * .mets - `m x 1` metabolite identifiers
+%                     * .lb - `n x 1` lower bounds on reaction fluxes
 %
 % OPTIONAL INPUT:
 %    findNCmets:    find no consumption mets as well as no production (default = false)

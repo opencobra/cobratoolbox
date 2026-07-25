@@ -1,61 +1,156 @@
-function [vl,vu,l_w,u_w,vfl,vfu,vrl,vru,ci,ce,cf,cr,g, paramOut] = processFluxConstraints(model,param)
+function [vl, vu, l_w, u_w, vfl, vfu, vrl, vru, ci, ce, cf, cr, g, paramOut] = processFluxConstraints(model, param)
+% Derives the internal and external net-flux bounds, unidirectional flux
+% bounds, and objective/entropy weights used to build an entropic flux
+% balance analysis (EFBA) flux subproblem from a COBRA model and EFBA
+% parameter structure
 %
 % USAGE:
-%   processFluxConstraints(model)
-%   processFluxConstraints(model,param)
+%
+%    [vl, vu, l_w, u_w, vfl, vfu, vrl, vru, ci, ce, cf, cr, g, paramOut] = processFluxConstraints(model, param)
 %
 % INPUTS:
-%    model:             (the following fields are required - others can be supplied)
+%    model:             COBRA model structure with the following required
+%                       fields:
 %
-%          * S  - `m x (n + k)` Stoichiometric matrix
-%          * c  - `(n + k) x 1` Linear objective coefficients
-%          * lb - `(n + k) x 1` Lower bounds on net flux
-%          * ub - `(n + k) x 1` Upper bounds on net flux          
+%                         * .S - `m x (n + k)` stoichiometric matrix, where
+%                           `n` is the number of stoichiometrically
+%                           consistent (internal) reactions and `k` is the
+%                           number of stoichiometrically inconsistent
+%                           (external) reactions
+%                         * .lb - `(n + k) x 1` lower bounds on net flux
+%                         * .ub - `(n + k) x 1` upper bounds on net flux
 %
-% OPTIONAL INPUTS
-%   model.osenseStr: ('max') or 'min'. The default linear objective sense is maximisation, i.e. 'max'
-%   model.cf:       n x 1    real valued linear objective coefficients on internal forward flux (default 0)
-%   model.cr:       n x 1    real valued linear objective coefficients on internal reverse flux (default 0)
-%   model.g         n x 1    strictly positive weight on internal flux entropy maximisation (default 2) 
-%   model.SConsistentRxnBool: n x 1  boolean indicating  stoichiometrically consistent metabolites
-%   model.vfl:      n x 1    non-negative lower bound on internal forward flux (default 0) 
-%   model.vfu:      n x 1    non-negative upper bound on internal forward flux (default inf) 
-%   model.vrl:      n x 1    non-negative lower bound on internal reverse flux (default 0) 
-%   model.vru:      n x 1    non-negative upper bound on internal reverse flux (default 0) 
+%                       and the following optional fields:
 %
-%  param.printLevel:
-%  param.solver:    {'pdco',('mosek')}
-%  param.debug:     {(0),1} 1 = run in debug mode 
-%  param.entropicFBAMethod:    {('fluxes'),'fluxesConcentrations'} maximise entropy of fluxes (default) or also concentrations
-%  param.maxUnidirectionalFlux: maximum unidirectional flux (1e5 by default)
-%  param.minUnidirectionalFlux: minimum unidirectional flux (zero by default)
-%  param.internalNetFluxBounds: ('original')   = use model.lb and model.ub to set the direction and magnitude of internal net flux bounds
-%                                'directional' = use model.lb and model.ub to set the direction of net flux bounds (ignoring magnitude)
-%                                'none'        = ignore model.lb and model.ub and allow all net flues to be reversible
+%                         * .SConsistentRxnBool - `(n + k) x 1` boolean
+%                           indicating the stoichiometrically consistent
+%                           (internal) reactions; together with
+%                           `.SConsistentMetBool`, computed via
+%                           `findStoichConsistentSubset` if either is
+%                           absent
+%                         * .SConsistentMetBool - `m x 1` boolean
+%                           indicating the stoichiometrically consistent
+%                           metabolites (see `.SConsistentRxnBool`)
+%                         * .c - `(n + k) x 1` linear objective
+%                           coefficients (default: all zero, giving
+%                           `ci = ce = 0`)
+%                         * .osenseStr - `('max')` or `'min'`, the linear
+%                           objective sense
+%                         * .rxns - `(n + k) x 1` cell array of reaction
+%                           identifiers, used only to report reactions
+%                           ignored in the `'identities'` external-bound
+%                           option
+%                         * .dcl - `m x 1` real valued lower bound on the
+%                           difference between final and initial molecular
+%                           concentrations, read when
+%                           `param.externalNetFluxBounds` is `'original'`
+%                           or `'dxReplacement'`
+%                         * .dcu - `m x 1` real valued upper bound on the
+%                           difference between final and initial molecular
+%                           concentrations (see `.dcl`)
+%                         * .vfl - `n x 1` non-negative lower bound on
+%                           internal forward flux (default: derived from
+%                           `param.minUnidirectionalFlux` and `vl`)
+%                         * .vfu - `n x 1` non-negative upper bound on
+%                           internal forward flux (default:
+%                           `param.maxUnidirectionalFlux`)
+%                         * .vrl - `n x 1` non-negative lower bound on
+%                           internal reverse flux (default: derived from
+%                           `param.minUnidirectionalFlux` and `vu`)
+%                         * .vru - `n x 1` non-negative upper bound on
+%                           internal reverse flux (default:
+%                           `param.maxUnidirectionalFlux`)
+%                         * .cf - `n x 1` real valued linear objective
+%                           coefficients on internal forward flux, or
+%                           `'rand'`, `'one'`, or `'zero'` (default
+%                           `'zero'`; if absent, taken from `.c_vf`)
+%                         * .cr - `n x 1` real valued linear objective
+%                           coefficients on internal reverse flux, or
+%                           `'rand'`, `'one'`, or `'zero'` (default
+%                           `'zero'`; if absent, taken from `.c_vr`)
+%                         * .c_vf - fallback source for `.cf` if `.cf` is
+%                           absent
+%                         * .c_vr - fallback source for `.cr` if `.cr` is
+%                           absent
+%                         * .g - `n x 1` strictly positive weight on
+%                           internal flux entropy maximisation, or
+%                           `'zero'`, `'rand'`, `'one'`, or `'two'`
+%                           (default `'one'` if
+%                           `param.entropicFBAMethod` is `'fluxes'`, else
+%                           `'two'`)
+%
+% OPTIONAL INPUT:
+%    param:             Structure with the following optional fields:
+%
+%                         * .printLevel - verbose level
+%                         * .debug - `{(0), 1}` 1 = run in debug mode,
+%                           printing and validating problematic
+%                           `vfl > vfu` bounds using `.feasTol`
+%                         * .feasTol - feasibility tolerance; read only
+%                           when `.debug` is true, to set
+%                           `vfu = vfl + feasTol` where `vfl > vfu`
+%                         * .entropicFBAMethod - `{('fluxes'),
+%                           'fluxesConcentrations'}` maximise entropy of
+%                           fluxes (default) or also concentrations; if
+%                           absent, taken from the legacy `.method` field
+%                         * .method - legacy alias for
+%                           `.entropicFBAMethod`; consumed and removed from
+%                           `param` if `.entropicFBAMethod` is absent and
+%                           `.method` contains `'flux'`
+%                         * .internalBounds - deprecated; if present, an
+%                           error is raised directing the caller to
+%                           `.internalNetFluxBounds`/
+%                           `.externalNetFluxBounds` instead
+%                         * .maxUnidirectionalFlux - maximum unidirectional
+%                           flux (default: `min(1e5, max(abs(model.ub)))`)
+%                         * .minUnidirectionalFlux - minimum unidirectional
+%                           flux (default: 0)
+%                         * .internalNetFluxBounds - `('original')` how to
+%                           set the internal net flux bounds: `'original'`
+%                           (use `model.lb`/`model.ub` unmodified),
+%                           `'directional'` (direction only, magnitude set
+%                           to `param.maxUnidirectionalFlux`), `'max'`
+%                           (`+-param.maxUnidirectionalFlux` on all
+%                           internal reactions), `'none'` (`+-inf`),
+%                           `'random'`, `'rangeNt'`, or `'expRangeNt'`
+%                         * .externalNetFluxBounds - `('original')` how to
+%                           set the bounds on external net flux and the
+%                           initial/final concentration difference:
+%                           `'original'` (use `model.lb`/`model.ub`
+%                           unmodified), `'none'` (`+-inf`),
+%                           `'identities'`, `'bReplacingB'`, or
+%                           `'dxReplacement'`
 %
 % OUTPUTS:
-% vl:       n x 1    lower bound on internal net flux 
-% vu:       n x 1    upper bound on internal net flux
-% l_w:      k x 1    lower bound on external net flux 
-% u_w:      k x 1    upper bound on external net flux
-% vfl:      n x 1    non-negative lower bound on internal forward flux
-% vfu:      n x 1    non-negative upper bound on internal forward flux
-% vrl:      n x 1    non-negative lower bound on internal reverse flux 
-% vru:      n x 1    non-negative upper bound on internal reverse flux
-% ci:       n x 1    linear objective coefficients corresponding to internal net fluxes
-% ce:       k x 1    linear objective coefficients corresponding to internal net fluxes
-% cf:       n x 1    real valued linear objective coefficients on internal forward flux
-% cr:       n x 1    real valued linear objective coefficients on internal reverse flux
-% g         n x 1    strictly positive weight on internal flux entropy maximisation
-% paramOut  return param structure to capture any param set internally
+%    vl:                `n x 1` lower bound on internal net flux
+%    vu:                `n x 1` upper bound on internal net flux
+%    l_w:               `k x 1` lower bound on external net flux
+%    u_w:               `k x 1` upper bound on external net flux
+%    vfl:               `n x 1` non-negative lower bound on internal
+%                       forward flux
+%    vfu:               `n x 1` non-negative upper bound on internal
+%                       forward flux
+%    vrl:               `n x 1` non-negative lower bound on internal
+%                       reverse flux
+%    vru:               `n x 1` non-negative upper bound on internal
+%                       reverse flux
+%    ci:                `n x 1` linear objective coefficients
+%                       corresponding to internal net fluxes
+%    ce:                `k x 1` linear objective coefficients
+%                       corresponding to external net fluxes
+%    cf:                `n x 1` real valued linear objective coefficients
+%                       on internal forward flux
+%    cr:                `n x 1` real valued linear objective coefficients
+%                       on internal reverse flux
+%    g:                 `n x 1` strictly positive weight on internal flux
+%                       entropy maximisation
+%    paramOut:          `param` structure, returned to capture any fields
+%                       set internally (e.g. defaulted fields)
 %
-% EXAMPLE:
-%
-% NOTE:
-%
-% Author(s): Ronan Fleming
+% .. Author(s): Ronan Fleming
 
 %% processing for fluxes
+
 if ~isfield(param,'maxUnidirectionalFlux')
     %try to set the maximum unidirectional flux based on the magnitude of the largest bound but dont have it greater than 1e5
     param.maxUnidirectionalFlux=min(1e5,max(abs(model.ub)));

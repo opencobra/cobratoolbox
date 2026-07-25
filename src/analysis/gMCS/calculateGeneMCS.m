@@ -11,7 +11,14 @@ function [gmcs, gmcs_time] = calculateGeneMCS(model_name, model_struct, n_gmcs, 
 % INPUTS:
 %    model_name:      Name of the metabolic model under study (in order to
 %                     identify the G matrix).
-%    model_struct:    Metabolic model structure (COBRA Toolbox format).
+%    model_struct:    Metabolic model structure (COBRA Toolbox format) with fields:
+%
+%                       * .rxns - `n x 1` reaction identifiers
+%                       * .genes - gene identifiers
+%                       * .S - `m x n` stoichiometric matrix
+%                       * .c - `n x 1` linear objective coefficient vector
+%                       * .lb - `n x 1` lower bounds
+%
 %    n_gmcs:          Number of gMCSs to calculate.
 %    max_len_gmcs:    Number of genes in the largest gMCS to be calculated.
 %

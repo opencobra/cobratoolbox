@@ -399,3 +399,54 @@ shall be rewritten as follows:
     % good practice
     assert(logicalCondition1);
     assert(logicalCondition2);
+
+Test execution modes: fast (default) and full
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The test suite runs in one of two modes, resolved by ``getCobraTestMode``:
+
+- ``fast`` **(the default)** reduces redundant work — chiefly per-test loops over
+  every installed solver when the assertions are solver-independent — while
+  preserving essentially the same code coverage (within 5 percentage points of
+  full-mode line coverage). This makes local ``testAll`` runs substantially faster.
+- ``full`` runs the complete, slower suite exactly as before this feature (no
+  fast-mode trimming), for release validation or solver-regression investigation.
+
+**Backward compatibility note.** Fast is the new default, so a plain ``testAll`` run
+now does less redundant work than before. The *same tests* run; only redundant
+repetition (e.g. re-validating a solver-independent result across every installed
+solver) is skipped. To restore the previous, complete behaviour, select full mode.
+
+Selecting the mode:
+
+.. code-block:: matlab
+
+    % force the complete suite for this shell
+    setenv('COBRA_TEST_MODE', 'full');   % or 'fast'
+
+    % or, within MATLAB, via the global
+    global CBT_TEST_MODE; CBT_TEST_MODE = 'full';
+
+**Continuous integration always runs full mode** (``COBRA_CI=1`` forces ``full``),
+so the coverage gate keeps its complete-suite baseline regardless of the local
+default.
+
+When writing a test whose *purpose* is cross-solver agreement, request the solvers
+explicitly with ``prepareTest('requiredSolvers', {...})`` or
+``prepareTest('useSolversIfAvailable', {...})``; such tests keep looping over all
+requested solvers in both modes.
+
+Profiling report
+~~~~~~~~~~~~~~~~~
+
+To see where suite time goes, enable the opt-in profiling report (off by default):
+
+.. code-block:: matlab
+
+    setenv('COBRA_PERF', '1');   % then run testAll
+
+It writes a ranked per-test timing table (``test/performance/testTiming.csv``) and a
+MATLAB profiler hotspot report (``test/performance/html/``), and prints the slowest
+tests and hottest functions. It never changes any test's pass/fail outcome and is
+independent of the fast/full mode. The ``test/performance/`` directory is
+git-ignored (regenerable output).

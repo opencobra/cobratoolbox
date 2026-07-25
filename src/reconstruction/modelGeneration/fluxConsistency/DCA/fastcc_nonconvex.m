@@ -9,10 +9,10 @@ function [A, V] = fastcc_nonconvex(model, epsilon, printLevel, modeFlag)
 % INPUTS:
 %    model:         cobra model structure containing the fields:
 %
-%                     * S - `m` x `n` stoichiometric matrix
-%                     * lb - `n` x 1 flux lower bound
-%                     * ub - `n` x 1 flux uppper bound
-%                     * rxns - `n` x 1 cell array of reaction abbreviations
+%                     * .S - `m` x `n` stoichiometric matrix
+%                     * .lb - `n` x 1 flux lower bound
+%                     * .ub - `n` x 1 flux uppper bound
+%                     * .rxns - `n` x 1 cell array of reaction abbreviations
 %    epsilon:       flux threshold
 %    printLevel:    0 = silent, 1 = summary, 2 = debug
 %

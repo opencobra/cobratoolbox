@@ -9,7 +9,13 @@ function model = assignQuantDir(model)
 % INPUT:
 %    model:    structure with fields:
 %
+%                * .S - `m x n` stoichiometric matrix
+%                * .rxns - `n x 1` cell array of reaction identifiers
+%                * .lb - `n x 1` lower flux bounds
+%                * .ub - `n x 1` upper flux bounds
 %                * .SIntRxnBool - `n x 1` boolean of internal reactions
+%                * .DfGt0 - `m x 1` standard transformed Gibbs energy of formation of metabolites
+%                * .DrGt0 - `n x 1` standard transformed reaction Gibbs energy
 %                * .DrGtMin - `n x 1` array of estimated lower bounds on
 %                  transformed reaction Gibbs energies.
 %                * .DrGtMax - `n x 1` array of estimated upper bounds on
@@ -18,11 +24,15 @@ function model = assignQuantDir(model)
 % OUTPUT:
 %    model:    structure with fields:
 %
-%                * .quantDir - `n x 1` array indicating quantitatively assigned
-%                  reaction directionality. 1 for reactions that are
-%                  irreversible in the forward direction, -1 for
-%                  reactions that are irreversible in the reverse
-%                  direction, and 0 for reversible reactions.
+%                * .NaNdfG0MetBool - `m x 1` logical, true where `.DfGt0` is NaN
+%                * .NaNd0GRxnBool - `n x 1` logical, true where `.DrGt0` is NaN
+%                * .lb_reconThermo - `n x 1` lower flux bounds after thermodynamic
+%                  directionality assignment
+%                * .ub_reconThermo - `n x 1` upper flux bounds after thermodynamic
+%                  directionality assignment
+%                * .directionalityThermo - `n x 1` cell array of thermodynamic reaction
+%                  directionality ('forward', 'reverse', 'reversible', 'equilibrium';
+%                  NaN where not assigned)
 %
 % .. Author: - Hulda SH, Nov. 2012
 

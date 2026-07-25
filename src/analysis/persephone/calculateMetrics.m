@@ -1,34 +1,36 @@
-function [bray, pielous, taxonSummary]= calculateMetrics(data, calculateBrayCurtis)
-% Function that calculates Pielous eveness, Bray-Curtis dissimilarity and
-% descriptive statistics for taxa for a reads or relative abundance tables
-% of a microbiome sample. This is function developed for MARS for MATLAB
-% and is used in runMars
-% Usage:
-%   calculateMetrics(data, calculateBrayCurtis)
-% 
-% Inputs:
-%   data: m x n Table. Table headers should be sample IDs. First column
-%   should be called Taxon and contain microbial taxonomic identifiers. Can
-%   be any taxonomic level. Important is that there are no duplicated
-%   taxonomic assignments present in the table. I.e., if there are two
-%   entries for e.g., Firmicutes they should be summed, which is done
-%   automatically in runMars.
+function [bray, pielous, taxonSummary] = calculateMetrics(data, calculateBrayCurtis)
+% Calculate diversity and descriptive metrics for a microbiome abundance table
 %
-%   calculateBrayCurtis: Boolean, true to calculate Bray-Curtis
-%   dissimilarity. Note that large sample sizes n > 200 have high
-%   computation times due to the number of comparisons.
-% 
-% Outputs:
-%   bray: Table with the Bray-Curtis dissimilarity index. Rows and columns
-%   are samples. Diagnal from top left to bottom right is 0 as the sample 
-%   is compared to itself.
-%   pielous: Array, The calculate Pielous eveness score, also known as
-%   alpha diversity
-%   taxonSummary: table, descriptive statistics on abundance of the
-%   different taxa in the original table.
+% Calculates Pielou's evenness, the Bray-Curtis dissimilarity, and
+% descriptive statistics for the taxa in a reads or relative-abundance table
+% of a microbiome sample. Developed for MARS for MATLAB and used in runMars.
+%
+% USAGE:
+%
+%    [bray, pielous, taxonSummary] = calculateMetrics(data, calculateBrayCurtis)
+%
+% INPUTS:
+%    data:                   m x n table with taxa in rows and samples in
+%                            columns. The first column must be called `Taxon`
+%                            and hold (non-duplicated) taxonomic identifiers;
+%                            the remaining columns hold the per-sample
+%                            abundances. Fields used:
+%
+%                              * .Properties - table properties; the sample
+%                                names in `.VariableNames` label the outputs
+%                              * .Taxon - column of taxonomic identifiers,
+%                                used as the row names of taxonSummary
+%    calculateBrayCurtis:    logical, true to calculate the Bray-Curtis
+%                            dissimilarity. Large sample sizes (n > 200) have
+%                            high computation times
+%
+% OUTPUTS:
+%    bray:            table with the Bray-Curtis dissimilarity index; rows and
+%                     columns are samples and the diagonal is 0
+%    pielous:         array with the Pielou evenness (alpha diversity) score
+%    taxonSummary:    table with descriptive statistics on the abundance of
+%                     the different taxa in the input table
 
-
-% Initialise array to store results
 bray = zeros(size(data,2), size(data,2));
 
 % Sum all columns for faster caclulation times

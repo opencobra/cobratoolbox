@@ -18,10 +18,10 @@ function solution = optimizeCardinality(problem, params)
 %                   * .q - size of vector `y`
 %                   * .r - size of vector `z`
 %                   * .c - `(p+q+r) x 1` linear objective function vector
-%                   * .lambda_0 - trade-off parameter of `||x||_0`
-%                   * .delta_0 - trade-off parameter of `||y||_0`
-%                   * .lambda_1 - trade-off parameter of `||x||_1`
-%                   * .delta_1 - trade-off parameter of `||y||_1`
+%                   * .lambda0 - trade-off parameter of `||x||_0` (Default value = 1)
+%                   * .delta0 - trade-off parameter of `||y||_0` (Default value = 1)
+%                   * .lambda1 - trade-off parameter of `||x||_1` (Default value = 1)
+%                   * .delta1 - trade-off parameter of `||y||_1` (Default value = 1)
 %                   * .k - `p x 1` strictly possitive weight vector of `x`
 %                   * .d - `q x 1` strictly possitive weight vector of `y`
 %                   * .A - `s x (p+q+r)` LHS matrix

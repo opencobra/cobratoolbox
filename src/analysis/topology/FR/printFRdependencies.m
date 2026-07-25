@@ -7,7 +7,15 @@ function printFRdependencies(model, filePathName)
 %    printFRdependencies(model, filePathName)
 %
 % INPUT:
-%    model:           model output from `checkRankFR`
+%    model:           model output from `checkRankFR`, with fields:
+%
+%                        * .S - `m x n` stoichiometric matrix
+%                        * .mets - `m x 1` cell array of metabolite identifiers
+%                        * .rxns - `n x 1` cell array of reaction identifiers
+%                        * .FRVcols - `n x 1` boolean of cols of [`F; R`] used in the rank calculation
+%                        * .FRdrows - `m x 1` boolean of dependent rows of [`F R`]
+%                        * .FRwrows - `m x 1` boolean of independent rows that dependent rows depend on
+%                        * .FRW - matrix expressing dependent rows of [`F R`] as combinations of independent rows
 %
 % OPTIONAL INPUT:
 %    filePathName:    full file name for printing dependencies to file

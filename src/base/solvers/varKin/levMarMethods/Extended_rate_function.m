@@ -1,4 +1,6 @@
 function [hxk, ghxk] = Extended_rate_function(opt, varargin)
+% Evaluates the extended nonlinear rate function `h(xk)` and its gradient at a point `xk`
+%
 % USAGE:
 %
 %    [hxk, ghxk] = Extended_rate_function(opt, varargin)
@@ -8,8 +10,7 @@ function [hxk, ghxk] = Extended_rate_function(opt, varargin)
 %    opt:     structure includes required parameters:
 %
 %               * .FR - concatenation of forward and reverse stoichiometric matrix
-%               * .A - Reduced forward stoichiometric matrix
-%               * .B - Reduced reverse stoichiometric matrix
+%               * .AB_BA - concatenation `[A-B, B-A]` of the full row-rank forward and reverse stoichiometric submatrices
 %               * .L - left null space of `R-F`
 %               * .l0 - positive initial concentration
 %               * .k - initial kinetic

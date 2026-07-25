@@ -1,12 +1,82 @@
-function param=mosekParamSetEFBA(param)
-%creates a structure of pertinent user defined options for MOSEK
-%OUTPUT
-%param      parameter structure to be passed to the MOSEK solver
+function param = mosekParamSetEFBA(param)
+% Creates a structure of pertinent user-defined options for the MOSEK
+% solver, adding/overriding the MOSEK-specific integer and double
+% parameters used by entropic flux balance analysis
+%
+% USAGE:
+%
+%    param = mosekParamSetEFBA(param)
+%
+% INPUT:
+%    param:     Parameter structure to be passed to the MOSEK solver; the
+%               following MOSEK-specific fields are set (any other fields
+%               already present in `param` are preserved):
+%
+%                 * .MSK_IPAR_LOG_PRESOLVE - amount of output printed by
+%                   the presolve procedure; a higher value logs more
+%                   information (MOSEK default: 1; set here to 1)
+%                 * .MSK_IPAR_INTPNT_SCALING - how the problem is scaled
+%                   before the interior-point optimizer is used
+%                   (`MSK_SCALING_NONE`, `MSK_SCALING_MODERATE`,
+%                   `MSK_SCALING_AGGRESSIVE`, or `MSK_SCALING_FREE`; MOSEK
+%                   default is `MSK_SCALING_FREE`; set here to
+%                   `MSK_SCALING_FREE`)
+%                 * .MSK_IPAR_INTPNT_REGULARIZATION_USE - whether
+%                   regularization is allowed (`MSK_ON`/`MSK_OFF`; MOSEK
+%                   default is `MSK_ON`; set here to `MSK_OFF`)
+%                 * .MSK_DPAR_INTPNT_CO_TOL_DFEAS - dual feasibility
+%                   tolerance used by the interior-point optimizer for
+%                   conic problems (MOSEK default: 1.0e-8; set here to
+%                   1.0e-11)
+%                 * .MSK_DPAR_INTPNT_CO_TOL_PFEAS - primal feasibility
+%                   tolerance used by the interior-point optimizer for
+%                   conic problems (MOSEK default: 1.0e-8; set here to
+%                   1.0e-11)
+%                 * .MSK_DPAR_INTPNT_CO_TOL_REL_GAP - relative gap
+%                   termination tolerance used by the interior-point
+%                   optimizer for conic problems (MOSEK default: 1.0e-8;
+%                   set here to 1.0e-11; useful for ensuring dual
+%                   feasibility is as good as primal)
+%                 * .MSK_IPAR_INTPNT_MAX_ITERATIONS - maximum number of
+%                   iterations allowed in the interior-point optimizer
+%                   (MOSEK default: 400; set here to 400)
+%                 * .MSK_IPAR_BI_IGNORE_MAX_ITER - if
+%                   `MSK_IPAR_INTPNT_BASIS` is `MSK_BI_NO_ERROR` and the
+%                   interior-point optimizer terminated on the maximum
+%                   number of iterations, whether basis identification is
+%                   still performed (`MSK_ON`/`MSK_OFF`; MOSEK default is
+%                   `MSK_OFF`; set here to `MSK_OFF`)
+%                 * .MSK_IPAR_INTPNT_SOLVE_FORM - whether the primal or the
+%                   dual problem is solved (`MSK_SOLVE_PRIMAL`,
+%                   `MSK_SOLVE_DUAL`, or `MSK_SOLVE_FREE`; MOSEK default is
+%                   `MSK_SOLVE_FREE`; set here to `MSK_SOLVE_FREE`)
+%                 * .MSK_DPAR_INTPNT_TOL_INFEAS - controls when the
+%                   optimizer declares the model primal or dual infeasible;
+%                   a smaller value makes the optimizer more conservative
+%                   about declaring infeasibility (MOSEK default: 1.0e-8;
+%                   set here to 1e-8)
+%                 * .MSK_IPAR_LOG_INTPNT - amount of output printed by the
+%                   interior-point optimizer; a higher value logs more
+%                   information (MOSEK default: 4; set here to 5)
+%                 * .MSK_IPAR_INFEAS_REPORT_AUTO - amount of information
+%                   presented in an automatically generated infeasibility
+%                   report (`MSK_ON`/`MSK_OFF`; MOSEK default is
+%                   `MSK_OFF`; set here to `MSK_OFF`)
+%                 * .MSK_IPAR_INFEAS_REPORT_LEVEL - amount of information
+%                   presented in an infeasibility report; higher values
+%                   give more information (MOSEK default: 1; set here to
+%                   100)
+%
+% OUTPUT:
+%    param:     `param`, with the MOSEK-specific fields listed under INPUT
+%               set/overridden
+%
 
-%MSK_IPAR_LOG_PRESOLVE
+% MSK_IPAR_LOG_PRESOLVE
 % Description:Controls amount of output printed by the presolve procedure. A higher level implies that more information is logged.
-% Possible Values:Any number between 0 and +inf. 
+% Possible Values:Any number between 0 and +inf.
 % Default value:1
+
 param.MSK_IPAR_LOG_PRESOLVE =1;
 
 %MSK_IPAR_INTPNT_SCALING 

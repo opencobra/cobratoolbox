@@ -1,4 +1,4 @@
-function printFluxBounds(model, rxns,rxnNameFlag)
+function printFluxBounds(model, rxns, rxnNameFlag)
 % Prints the reactionID and upper/lower flux bounds.
 %
 % USAGE:
@@ -6,11 +6,17 @@ function printFluxBounds(model, rxns,rxnNameFlag)
 %   printFluxBounds(model, rxns)
 %
 % INPUTS:
-%    model:    The model to print
+%    model:    The model to print, with fields:
+%
+%                * .rxns - `n x 1` reaction identifiers
+%                * .rxnNames - `n x 1` reaction names
+%                * .lb - `n x 1` lower bounds on reaction fluxes
+%                * .ub - `n x 1` upper bounds on reaction fluxes
 %
 % OPTIONAL INPUTS:
 %    rxns:     a string array of reaction ids for which flux bounds need to
 %              be printed
+%    rxnNameFlag:    if true, also print the reaction name from model.rxnNames
 %
 % .. Author:
 %       - Thomas Pfau           May 2017

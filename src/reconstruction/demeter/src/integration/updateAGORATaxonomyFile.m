@@ -3,14 +3,15 @@ function infoFile = updateAGORATaxonomyFile(version)
 % and saves an updated table with the most recent taxonomic assignments.
 %
 % USAGE:
-%   updateAGORATaxonomyFile(version)
 %
-% REQUIRED INPUT
-% version          Version of AGORA for which the information table should
-%                  be updated (allowed inputs: 'AGORA','AGORA2')
+%    infoFile = updateAGORATaxonomyFile(version)
 %
-% OUTPUT
-% infoFile       Updated table with up to date taxonomic information
+% INPUT:
+%    version:         Version of AGORA for which the information table should
+%                     be updated (allowed inputs: 'AGORA','AGORA2')
+%
+% OUTPUT:
+%    infoFile:       Updated table with up to date taxonomic information
 %
 % .. Author:
 %       - Almut Heinken, 06/2025

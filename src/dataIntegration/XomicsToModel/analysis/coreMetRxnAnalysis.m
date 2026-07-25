@@ -7,27 +7,30 @@ function [coreMetAbbrNew, coreRxnAbbrNew] = coreMetRxnAnalysis(oldModel, model, 
 %   [coreMetAbbrNew, coreRxnAbbrNew] = coreMetRxnAnalysis(oldModel,model, coreMetAbbr, coreRxnAbbr, deletedMets, deletedRxns, param)
 %
 % INPUTS:
-%  oldModel: model prior to adjustment, with the following fields
-%  * .mets:
-%  * .rxns:
-%  * .metNames:
-% model: new model after adjustments, with the following fields
-%  * .mets:
-%  * .rxns:
+%    oldModel:    model prior to adjustment, with the following fields:
 %
-%  coreMetAbbr: core metabolite identifiers 
-%  coreRxnAbbr: core reaction identifiers
+%                   * .mets - `m x 1` metabolite identifiers
+%                   * .rxns - `n x 1` reaction identifiers
+%
+%    model:    new model after adjustments, with the following fields:
+%
+%                * .mets - `m x 1` metabolite identifiers
+%                * .rxns - `n x 1` reaction identifiers
+%
+%    coreMetAbbr:    core metabolite identifiers
+%    coreRxnAbbr:    core reaction identifiers
 %
 % OPTIONAL INPUTS:
-%  deletedMets: set of metabolites removed from oldModel. If empty, given by setdiff(oldModel.mets,model.mets);
-%  deletedRxns: set of reactions removed from oldModel. If empty, setdiff(oldModel.rxns,model.rxns);
+%    deletedMets:    set of metabolites removed from oldModel. If empty, given by setdiff(oldModel.mets, model.mets)
+%    deletedRxns:    set of reactions removed from oldModel. If empty, given by setdiff(oldModel.rxns, model.rxns)
+%    param:    a structure containing the parameters for the function:
 %
-%  param.message:
-%  param.printLevel:
+%                * .printLevel - verbose level controlling printed output
+%                * .message - label describing the adjustment being analysed (Default: 'deletion')
 %
 % OUTPUTS:
-%  coreMetAbbrNew: set of core metabolites in the new model
-%  coreRxnAbbrNew: set of core reactions in the new model
+%    coreMetAbbrNew:    set of core metabolites in the new model
+%    coreRxnAbbrNew:    set of core reactions in the new model
 %
 % EXAMPLE:
 %

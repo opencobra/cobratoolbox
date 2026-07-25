@@ -6,7 +6,9 @@ function [intracellRxnList] = findIntracellularRxns(model)
 %    [intracellRxnList] = findIntracellularRxns(model)
 %
 % INPUT:
-%    model:               Model structure
+%    model:               Model structure, with field:
+%
+%                           * .rxns - `n x 1` reaction identifiers
 %
 % OUTPUT:
 %    intracellRxnList:    List of intracellular reactions in model

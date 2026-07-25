@@ -1,4 +1,4 @@
-function [BlockedRxns] = identifyFastBlockedRxns(model,rxnList,printLevel,sTol)
+function [BlockedRxns] = identifyFastBlockedRxns(model, rxnList, printLevel, sTol)
 % This function evaluates the presence of blocked reactions in a metabolic model
 %
 % USAGE:
@@ -6,13 +6,17 @@ function [BlockedRxns] = identifyFastBlockedRxns(model,rxnList,printLevel,sTol)
 %   [BlockedRxns] = identifyFastBlockedRxns(model,rxnList, printLevel,sTol)
 %
 % INPUTS:
-%   organisms:           model in COBRA model structure format
-%   rxnList:             nx1 cell array with reactions to test
-%   printLevel:          Verbose level (default: printLevel = 1)
-%   sTol:                Solver tolerance for flux (default: 1e-6)
+%    model:               model in COBRA model structure format, with fields:
+%
+%                           * .rxns - `n x 1` reaction identifiers
+%                           * .c - `n x 1` linear objective coefficients
+%
+%    rxnList:             nx1 cell array with reactions to test
+%    printLevel:          Verbose level (default: printLevel = 1)
+%    sTol:                Solver tolerance for flux (default: 1e-6)
 %
 % OUTPUT:
-%   BlockedRxns:         nx1 cell array containing blocked reactions
+%    BlockedRxns:         nx1 cell array containing blocked reactions
 %
 % .. Author: Ines Thiele 2017-2018
 

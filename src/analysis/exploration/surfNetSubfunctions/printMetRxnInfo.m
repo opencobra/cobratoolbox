@@ -7,9 +7,9 @@ function printMetRxnInfo(metRxnInfo, firstFieldWtComma, printFieldName, fieldNam
 % INPUTS:
 %    metRxnInfo:     2-by-N cell array for N fields to be printed. The first row contains the field names and the second row 
 %                    contains the corresponding information for a particular metabolite/reaction to be printed
-%    firstFieldWtComma: a positive integer indicating after which field has been printed, start adding a comma separating each field
+%    firstFieldWtComma:    a positive integer indicating after which field has been printed, start adding a comma separating each field
 %    printFieldName:    true to print field names, false not to.
-%    fieldNameExcluded: fields whose field names are not printed (useful only if printFieldName = true)
+%    fieldNameExcluded:    fields whose field names are not printed (useful only if printFieldName = true)
 %    ordMagMin:      min. order of magnitude to be used when calling `numToFormattedString.m`
 %    ordMagMax:      max. order of magnitude to be used when calling `numToFormattedString.m`
 %    nCharMax:       max. number of characters to be used when calling `numToFormattedString.m`   

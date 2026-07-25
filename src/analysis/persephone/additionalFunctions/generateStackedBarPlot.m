@@ -1,12 +1,17 @@
 function generateStackedBarPlot(input_relAbundances, saveDir)
 % Generates stacked bar plots from relative abundances of taxa for single or multiple samples.
 %
+% USAGE:
+%
+%    generateStackedBarPlot(input_relAbundances, saveDir)
+%
 % INPUTS:
-%   input_relAbundances:    [table] Contains taxa and their relative abundances for
-%                           all samples. Requires column 'Taxon' and one or more
-%                           sample columns.
-%   saveDir:                [chars/string] Path to the directory where the
-%                           stacked bar plot should be saved.
+%    input_relAbundances:    [table] taxa and their relative abundances for all samples, with:
+%
+%                              * .Taxon - taxon identifiers
+%                              * .Properties - table metadata (variable names)
+%    saveDir:                [char/string] path to the directory where the stacked bar
+%                            plot is saved
 %
 % AUTHOR:   
 %   - Jonas Widder, 12/2024 & 01/2025

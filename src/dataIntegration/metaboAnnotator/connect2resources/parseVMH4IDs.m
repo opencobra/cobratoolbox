@@ -1,19 +1,27 @@
-function [metabolite_structure] = parseVMH4IDs(metabolite_structure,startSearch,endSearch)
+function [metabolite_structure] = parseVMH4IDs(metabolite_structure, startSearch, endSearch)
+% Query the VMH API for each metabolite (by its VMH id) and fill empty fields of
+% the metabolite structure with the returned identifiers and properties (e.g.
+% formula, charge, BiGG, LipidMaps, KEGG, PubChem, ChEBI, InChIString/InChIKey,
+% SMILES, HMDB, MetaNetX, SEED, CAS registry and further cross-references).
 %
-% INPUT
-% metabolite_structure  metabolite structure
-% startSearch           specify where the search should start in the
-%                       metabolite structure. Must be numeric (optional, default: all metabolites
-%                       in the structure will be search for)
-% endSearch             specify where the search should end in the
-%                       metabolite structure. Must be numeric (optional, default: all metabolites
-%                       in the structure will be search for)
+% USAGE:
 %
-% OUTPUT
-% metabolite_structure  Updated metabolite structure
+%    [metabolite_structure] = parseVMH4IDs(metabolite_structure, startSearch, endSearch)
 %
+% INPUT:
+%    metabolite_structure:    metabolite structure whose fields are VMH
+%                             metabolite IDs, each holding a `VMHId` field
 %
-% Ines Thiele, 09/2021
+% OPTIONAL INPUTS:
+%    startSearch:             numeric index of where the search should start in
+%                             the metabolite structure (default: 1)
+%    endSearch:               numeric index of where the search should end in
+%                             the metabolite structure (default: last metabolite)
+%
+% OUTPUT:
+%    metabolite_structure:    updated metabolite structure
+%
+% .. Author: - Ines Thiele, 09/2021
 
 F = fieldnames(metabolite_structure);
 if ~exist('startSearch','var')

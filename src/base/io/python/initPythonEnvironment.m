@@ -1,24 +1,25 @@
-function [pyEnvironment,pySearchPath]=initPythonEnvironment(environmentName,reset)
-%initialise an interface to a Python environment using CPython3/2 or Anaconda
+function [pyEnvironment, pySearchPath] = initPythonEnvironment(environmentName, reset)
+% Initialise an interface to a Python environment using CPython3/2 or Anaconda
 %
-% OPTIONAL INPUT
-% environmentName    String denoting the Python environment to establish an interface to.
-%                    Fixed options: 'CPython3' (default), 'CPython2', 'base' (Anaconda)
-%                    Variable Anaconda options: environmentName as in anaconda3/env/environmentName
-%                    See https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html
+% USAGE:
 %
-% reset     {(0),1}, reset with terminate(pyenv) if true
+%    [pyEnvironment, pySearchPath] = initPythonEnvironment(environmentName, reset)
 %
-% OUTPUT
-% pyEnvironment     Python environment returned by pyenv
-% pySearchPath      Python search path (for loading packages)
+% OPTIONAL INPUTS:
+%    environmentName:    String denoting the Python environment to
+%                         establish an interface to. Fixed options:
+%                         `CPython3` (default), `CPython2`, `base`
+%                         (Anaconda). Variable Anaconda options:
+%                         `environmentName` as in
+%                         `anaconda3/env/environmentName`. See
+%                         https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html
+%    reset:              Reset with `terminate(pyenv)` if true (default: false)
 %
-% USAGE
-% [pythonEnvironment,pythonPath]=initPythonEnvironment('base',1)
-% or
-% [pythonEnvironment,pythonPath]=initPythonEnvironment('CPython',1)
-
-% Author: Ronan M.T. Fleming 2021
+% OUTPUTS:
+%    pyEnvironment:      Python environment returned by `pyenv`
+%    pySearchPath:       Python search path (for loading packages)
+%
+% .. Author: - Ronan M.T. Fleming, 2021
 
 if ~exist('environmentName','var')
     environmentName = 'CPython3';

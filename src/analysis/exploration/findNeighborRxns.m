@@ -8,7 +8,14 @@ function [neighborRxns, neighborGenes, mets] = findNeighborRxns(model, rxns, asS
 %    [neighborRxns, neighborGenes, mets] = findNeighborRxns(model, rxns, asSingleArray, order, commonMets, withComp)
 %
 % INPUTS:
-%    model:            COBRA model structure
+%    model:            COBRA model structure with fields:
+%
+%                        * .S - `m x n` stoichiometric matrix
+%                        * .rxns - `n x 1` reaction identifiers
+%                        * .mets - `m x 1` metabolite identifiers
+%                        * .genes - gene identifiers
+%                        * .rxnGeneMat - `n x g` reaction-gene incidence matrix
+%
 %    rxns:             the target reaction as a string or multiple reactions as cell array
 %
 % OPTIONAL INPUTS:

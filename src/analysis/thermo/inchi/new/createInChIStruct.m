@@ -1,23 +1,29 @@
-function [inchiStruct,molBool] = createInChIStruct(mets, sdfFileName, molFileDir)
+function [inchiStruct, molBool] = createInChIStruct(mets, sdfFileName, molFileDir)
 % Converts metabolite structures in SDF to InChI strings with OpenBabel,
 % and maps InChIs to mets.
 %
 % USAGE:
 %
-%    inchiStruct = createInChIStruct(mets, sdfFileName)
+%    [inchiStruct, molBool] = createInChIStruct(mets, sdfFileName, molFileDir)
 %
 % INPUTS:
-%    mets:           `m x 1` cell array of metabolite identifiers (e.g., BiGG abbreviations).
-%    sdfFileName:    SDF with structures of metabolites in mets. Metabolite
-%                    identifiers in the SDF are assumed to be the same as in mets.
+%    mets:           `m x 1` cell array of metabolite identifiers (e.g. BiGG abbreviations)
+%    sdfFileName:    SDF file with structures of the metabolites in `mets`; the
+%                    metabolite identifiers in the SDF are assumed to match `mets`.
+%                    If empty, InChIs are built from individual mol files instead
 %
-% OUTPUT:
-%    inchiStruct:    Structure with following fields:
+% OPTIONAL INPUT:
+%    molFileDir:     directory of individual mol files (named `<met>.mol`), used
+%                    when `sdfFileName` is empty
 %
-%                      * .standard - Standard InChIs with no isotope, stereo or charge layers.
-%                      * .standardWithStereo - Standard InChIs with stereo layers.
-%                      * .standardWithStereoAndCharge - Standard InChIs with stereo and charge layers
-%                      * .nonstandard - Nonstandard InChI with all layers.
+% OUTPUTS:
+%    inchiStruct:    structure with fields:
+%
+%                      * .standard - standard InChIs with no isotope, stereo or charge layers
+%                      * .standardWithStereo - standard InChIs with stereo layers
+%                      * .standardWithStereoAndCharge - standard InChIs with stereo and charge layers
+%                      * .nonstandard - nonstandard InChIs with all layers
+%    molBool:        `m x 1` logical, true where a structure was found for the metabolite
 %
 % .. Author: - Hulda SH, Nov. 2012
 

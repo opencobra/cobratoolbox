@@ -1,0 +1,24 @@
+----- src/analysis -----
+MATLAB                604     122,460    10,287    32,311     79,862     10,239
+Total                 708     176,232    14,999    35,602    125,631     13,361
+----- src/base -----
+MATLAB                237      43,155     4,006    13,719     25,430      4,023
+Total                 255      45,165     4,231    13,768     27,166      4,158
+----- src/dataIntegration -----
+MATLAB                246      38,326     4,026     9,757     24,543      3,941
+Total                 256      43,056     4,604     9,974     28,478      4,215
+----- src/design -----
+MATLAB                 60      14,023     1,085     4,524      8,414      1,096
+Total                  60      14,023     1,085     4,524      8,414      1,096
+----- src/reconstruction -----
+MATLAB                315      64,294     5,216    15,793     43,285      5,232
+Total                 318      66,711     5,365    15,999     45,347      5,243
+----- src/visualization -----
+MATLAB                110      15,142     2,579     4,743      7,820      1,312
+Total                 121      56,116     3,334     5,198     47,584      3,105
+analysis: 605 .m files
+base: 238 .m files
+dataIntegration: 248 .m files
+design: 60 .m files
+reconstruction: 316 .m files
+visualization: 110 .m files

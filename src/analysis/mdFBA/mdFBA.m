@@ -3,18 +3,20 @@ function [sol, newActives] = mdFBA(model, varargin)
 %
 % USAGE:
 %
-%    [sol, newActives] = buildMDFBAProblem(model, varargin)
+%    [sol, newActives] = mdFBA(model, varargin)
 %
 % INPUT:
 %    model:         A COBRA style model with the following fields:
 %
-%                     * S       - Stoichiometric Matrix
-%                     * lb      - lower bounds
-%                     * ub      - upper bounds
-%                     * b       - metabolic constraints
-%                     * c       - objective coefficients
-%                     * csense  - Constraint senses (optional, default Equality)
-%                     * osense  - Optimisation sense (optional, default maximisation)
+%                     * .S - Stoichiometric Matrix
+%                     * .lb - lower bounds
+%                     * .ub - upper bounds
+%                     * .b - metabolic constraints
+%                     * .c - objective coefficients
+%                     * .mets - metabolite identifiers
+%                     * .rxns - reaction identifiers
+%                     * .csense - Constraint senses (optional, default Equality)
+%                     * .osense - Optimisation sense (optional, default maximisation)
 %
 % OPTIONAL INPUTS:
 %    varargin:      Variable arguments as parameter/value pairs

@@ -6,7 +6,10 @@ function EMV = findElementaryMoietyVectors(model, varargin)
 %    EMV = findElementaryMoietyVectors(model, method)
 %
 % INPUT:
-%    model:                  COBRA model
+%    model:                  COBRA model structure with fields:
+%
+%                              * .S - `m x n` stoichiometric matrix
+%                              * .mets - `m x 1` cell array of metabolite identifiers
 %
 % OPTIONAL INPUTS (in name-value pair):
 %    'method':           method for finding all conserved moiety vectors

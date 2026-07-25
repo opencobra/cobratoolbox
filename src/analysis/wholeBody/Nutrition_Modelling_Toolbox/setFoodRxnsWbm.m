@@ -1,22 +1,33 @@
 function [wbm] = setFoodRxnsWbm(wbm, database, resetDietBounds, addPrice)
-% Adjusts a WBM so that it can exchange food items and break them down into
-% their respective metabolite components. Used to prepare WBMs to accept
-% fooditem consumed weights as dietary input.
-% Usage:
-%   [wbm] = setFoodRxnsWbm(diet, wbm)
-% Inputs:
-%   diet:   cell array with the databases where food items originated from.
-%           the USDA, FRIDA or both databases should be used to add food
-%           items on
-%   wbm:    A WBM model
-%   resetDietBounds : Boolean, indicate if all Diet_EX_ reactions are set
-%                     to 0, defaults to true.
-%   addPrice:   
-% Output:
-%  wbm:     An updated WBM model with food exchange and breakdown reactions.
-% Example:
-%   [wbm] = setFoodRxnsWbm(diet, wbm)
-% .. Author - Bram Nap, 04-2025
+% Adjust a WBM so that it can exchange food items and break them down into
+% their respective metabolite components, preparing the WBM to accept food
+% item consumed weights as dietary input
+%
+% USAGE:
+%
+%    [wbm] = setFoodRxnsWbm(wbm, database, resetDietBounds, addPrice)
+%
+% INPUTS:
+%    wbm:               A WBM model, with fields:
+%
+%                         * .rxns - reaction identifiers
+%    database:          Cell array naming the databases the food items
+%                       originate from; 'usda', 'frida' or both are used to
+%                       add the food items
+%
+% OPTIONAL INPUTS:
+%    resetDietBounds:     Boolean; if true all Diet_EX_ reactions are set to 0
+%                       (default true)
+%    addPrice:          Cell array assigning a price to food items: column one
+%                       the food item IDs, column two the database ('usda' or
+%                       'frida') and column three the price. Defaults to an
+%                       empty cell array
+%
+% OUTPUT:
+%    wbm:               The updated WBM model with food exchange and breakdown
+%                       reactions
+%
+% .. Author: - Bram Nap, 04-2025
 
 if nargin<3
     resetDietBounds = true;

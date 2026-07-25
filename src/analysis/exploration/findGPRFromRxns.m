@@ -1,4 +1,4 @@
-function gprs = findGPRFromRxns(model,rxnIDs)
+function gprs = findGPRFromRxns(model, rxnIDs)
 % Get the Textual representations of the GPR rules for the indicated
 % reactions. 
 % USAGE:

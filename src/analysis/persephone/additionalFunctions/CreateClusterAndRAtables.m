@@ -1,3 +1,9 @@
+% Build cluster and relative-abundance tables from WBM flux results
+%
+% Reads WBM relative abundances, regression coefficients and processed fluxes,
+% then builds clusters of the top-contributing microbes for the reactions of
+% interest together with their relative-abundance tables.
+%
 relAbun = readtable("WBM_relative_abundances.csv", 'preserveVariableNames', true);
 regressionCoef = readtable("flux_results.xlsx", "Sheet","Table_15", "preserveVariableNames", true);
 fluxValues = readtable('processed_fluxes.csv', "preserveVariableNames", true);

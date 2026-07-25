@@ -1,31 +1,17 @@
 function totalSize = getDirectorySize(dirPath)
-%======================================================================================================#
-% Title: Directory disk use calculator
-% Author: Wiley Barton
-% Modified code sources:
-%   assistance and reference from a generative AI model [ChatGPT](https://chatgpt.com/)
-%       clean-up and improved readability
-% Last Modified: 2025.01.29
-% Part of: Persephone Pipeline
+% Determine the total size on disk of a selected directory
 %
-% Description:
-%   This function determines the size of a selected directory
+% USAGE:
 %
-% Inputs:
-%   - repoPathSeqC (char) : Path to the SeqC repository
-%   - outputPathSeqC (char) : Path for SeqC output
-%   - fileIDSeqC (char) : Unique identifier for file processing
-%   - procKeepSeqC (logical) : Keep all files (true/false)
-%   - maxMemSeqC (int) : Maximum memory allocation for SeqC
-%   - maxCpuSeqC (int) : Maximum CPU allocation for SeqC
-%   - maxProcSeqC (int) : Maximum processes for SeqC
-%   - debugSeqC (logical) : Enable debug mode (true/false)
-%   ...
+%    totalSize = getDirectorySize(dirPath)
 %
-% Dependencies:
-%   - MATLAB
-%   - Docker installed and accessible in the system path
-%======================================================================================================#
+% INPUT:
+%    dirPath:      path to the directory whose size is calculated
+%
+% OUTPUT:
+%    totalSize:    total size of the directory contents in bytes
+%
+% .. Author: - Wiley Barton, 2025.01.29
 
     % Ensure the directory path is valid
     if ~isfolder(dirPath)

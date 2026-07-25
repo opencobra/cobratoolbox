@@ -1,16 +1,23 @@
-function T = findFutileCycle(model, cut,closedModel)
+function T = findFutileCycle(model, cut, closedModel)
 % This function attempts to find reactions involved in the atp-driving
 % futile cycle
 %
-% INPUT
-% model         model structure
-% cut           cutoff value for reactions to be displayed
-% closedModel   if 1 the model will be closed otw the applied medium
-%               constraints count (DEFAULT:1);
-% OUTPUT 
-% T         Table of reactions potentially involved
+% USAGE:
 %
-% Ines Thiele 03/2022
+%    T = findFutileCycle(model, cut, closedModel)
+%
+% INPUTS:
+%    model:            COBRA model structure
+%
+% OPTIONAL INPUTS:
+%    cut:              cutoff value for reactions to be displayed
+%    closedModel:      if 1 the model will be closed otw the applied medium
+%                      constraints count (default: 1)
+%
+% OUTPUTS:
+%    T:                Table of reactions potentially involved
+%
+% .. Author: - Ines Thiele 03/2022
 
 if ~exist('cut','var')
     cut = 250;

@@ -1,20 +1,25 @@
-function [preParsedGrRules,genes] = preparseGPR(grRules)
+function [preParsedGrRules, genes] = preparseGPR(grRules)
 % preparse model.grRules before parsing the remaining part
 % and transforming model.grRules into model.rules
 %
 % USAGE:
 %
-%    preParsedGrRules = preparseGPR(grRules)
+%    [preParsedGrRules, genes] = preparseGPR(grRules)
 %
 % INPUT:
-%    grRules:           grRules cell or single grRule
+%    grRules:             grRules cell or single grRule
 %
-% OUTPUT:
-%    preParsedGrRules:  preparsed grRules cell or single grRule
+% OUTPUTS:
+%    preParsedGrRules:    preparsed grRules cell or single grRule
+%    genes:               cell array of unique gene identifiers extracted
+%                         from each (pre-parsed) grRule
+%
+% NOTE:
+%
+%    Uses `regexprep`, so every cell of `grRules` must be a char row vector.
 %
 % .. Author: -  Laurent Heirendt - December 2017
 
-%using regexprep all cells must be char row vectors.
 if iscell(grRules)
     glt=length(grRules);
     for g=1:glt

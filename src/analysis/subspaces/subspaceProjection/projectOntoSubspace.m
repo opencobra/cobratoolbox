@@ -1,4 +1,4 @@
-function [vfN, vfR, vrN, vrR, vnetN, vnetR, uL, uC, u0L, u0C, lnxL, lnxC] = projectOntoSubspace(A, vf, vr, vnet, u, u0, lnx,printLevel,rowBool,colBool)
+function [vfN, vfR, vrN, vrR, vnetN, vnetR, uL, uC, u0L, u0C, lnxL, lnxC] = projectOntoSubspace(A, vf, vr, vnet, u, u0, lnx, printLevel, rowBool, colBool)
 % Projects flux, net flux, potential and logarithmic concentration onto
 % their respective subspaces of A using projection matrices generated either 
 % derived from SVD, or by using the Moore-Penrose pseudoinverse
@@ -33,19 +33,21 @@ function [vfN, vfR, vrN, vrR, vnetN, vnetR, uL, uC, u0L, u0C, lnxL, lnxC] = proj
 %
 % USAGE:
 %
-%    [vfN, vfR, vrN, vrR, vnetN, vnetR, uL, uC, u0L, u0C, lnxL, lnxC] = projectOntoSubspace(modelT, vf, vr, vnet, u, u0, lnx)
+%    [vfN, vfR, vrN, vrR, vnetN, vnetR, uL, uC, u0L, u0C, lnxL, lnxC] = projectOntoSubspace(A, vf, vr, vnet, u, u0, lnx, printLevel, rowBool, colBool)
 %
 % INPUTS:
-%    A          `m x n` matrix
+%    A:         `m x n` matrix
 %    vf:        `n x 1` - forward flux
 %    vr:        `n x 1` - reverse flux
 %    vnet:      `n x 1` - net flux
 %    u:         `m x 1` - chemical potential
 %    u0:        `m x 1` - standard chemical potential
 %    lnx:       `m x 1` - logarithmic concentration
-% OPTIONAL INPUTS
-%    rowBool    `m x 1` - boolean indicating the subset of rows of A
-%    colBool    'n x 1' - boolean indicating the subset of cols of A
+%
+% OPTIONAL INPUTS:
+%    printLevel:    verbosity level (default 0)
+%    rowBool:       `m x 1` - boolean indicating the subset of rows of A
+%    colBool:       `n x 1` - boolean indicating the subset of cols of A
 %
 % OUTPUTS:
 %    vfN:       forward flux - nullspace
@@ -56,6 +58,8 @@ function [vfN, vfR, vrN, vrR, vnetN, vnetR, uL, uC, u0L, u0C, lnxL, lnxC] = proj
 %    vnetR:     net flux - row space
 %    uL:        chemical potential - left nullspace
 %    uC:        chemical potential - column space
+%    u0L:       standard chemical potential - left nullspace
+%    u0C:       standard chemical potential - column space
 %    lnxL:      logarithmic concentration - left nullspace
 %    lnxC:      logarithmic concentration - column space
 

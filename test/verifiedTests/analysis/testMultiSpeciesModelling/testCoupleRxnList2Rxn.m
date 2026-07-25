@@ -16,6 +16,9 @@ currentDir = pwd;
 fileDir = fileparts(which('testCoupleRxnList2Rxn'));
 cd(fileDir);
 
+% require an LP solver; skip gracefully if none is available
+prepareTest('needsLP', true);
+
 % test coupling constraints
 model = getDistributedModel('ecoli_core_model.mat');
 

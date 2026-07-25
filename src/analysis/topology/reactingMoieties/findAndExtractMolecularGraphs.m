@@ -1,20 +1,25 @@
 function [CMTG, RMTG, CMG, RMG, conservedGroup, reactingGroups] = findAndExtractMolecularGraphs(BIG, BMG, bondSubgraphs)
-% findAndExtractMolecularGraphs - Identifies conserved and reacting isomorphic groups
-% and extracts associated molecular graphs.
+% Identify conserved and reacting isomorphic groups of bond subgraphs and extract the associated molecular graphs
 %
-% Inputs:
-%   BIG - The original graph containing all bonds and nodes.
-%   BMG - Cell array containing bond mapping graphs (subgraphs).
-%   bondSubgraphs - Cell array where each cell contains a subgraph representing
-%                   a set of bonds mapped to each other.
+% USAGE:
 %
-% Outputs:
-%   CMTG - Conserved Molecular Transition Graph from bondSubgraphs.
-%   RMTG - Reacting Molecular Transition Graph from bondSubgraphs.
-%   CMG  - Conserved Molecular Graph from BIG.
-%   RMG  - Reacting Molecular Graph from BIG.
-%   conservedGroup - Indices of subgraphs in the largest isomorphic group.
-%   reactingGroups - Indices of subgraphs not part of the largest isomorphic group.
+%    [CMTG, RMTG, CMG, RMG, conservedGroup, reactingGroups] = findAndExtractMolecularGraphs(BIG, BMG, bondSubgraphs)
+%
+% INPUTS:
+%    BIG:              the original bond instance graph containing all bonds and nodes, with fields:
+%
+%                        * .Edges - edge table with an `EdgeIndex` column
+%                        * .Nodes - node table
+%    BMG:              cell array containing bond mapping graphs (subgraphs)
+%    bondSubgraphs:    cell array where each cell contains a subgraph representing a set of bonds mapped to each other
+%
+% OUTPUTS:
+%    CMTG:             conserved molecular transition graph from `bondSubgraphs`
+%    RMTG:             reacting molecular transition graph from `bondSubgraphs`
+%    CMG:              conserved molecular graph from `BIG`
+%    RMG:              reacting molecular graph from `BIG`
+%    conservedGroup:    indices of subgraphs in the largest isomorphic group
+%    reactingGroups:    indices of subgraphs not part of the largest isomorphic group
 
     % Step 1: Identify Conserved and Reacting Groups
     numSubgraphs = size(bondSubgraphs, 1);

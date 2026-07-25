@@ -1,8 +1,8 @@
 function [bondMappings] = addBondMappingsRXNFile(rxnfileName, rxnfileDirectory)
 % Add bond mappings from an MDL rxn file.
-%USAGE:
+% USAGE:
 %
-%   [bonds,bondMappings,nTotalBondTransitions] = addBondMappingsRXNFile(rxnfileName, rxnfileDirectory)
+%    [bondMappings] = addBondMappingsRXNFile(rxnfileName, rxnfileDirectory)
 %
 % INPUT:
 %    rxnfileName:         The file name.
@@ -12,7 +12,7 @@ function [bondMappings] = addBondMappingsRXNFile(rxnfileName, rxnfileDirectory)
 %                         to current directory.
 %
 % OUTPUTS:
-% bondMappings:                Table of bond mapping information, with `s` rows, one for each bond transition. 
+%    bondMappings:                Table of bond mapping information, with `s` rows, one for each bond transition. 
 %                          * .mets - A `s` x 1 cell array of metabolite identifiers for bonds.
 %                          * .headAtoms - A `s` x 1 vector containing the numbering of the first atom forming the bond within each metabolite. 
 %                          * .tailAtoms -  A `s` x 1 vector containing the

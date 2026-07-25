@@ -1,22 +1,22 @@
-function computeUptakeSecretion(modelFolder,propertiesFolder,reconVersion,metList,numWorkers)
+function computeUptakeSecretion(modelFolder, propertiesFolder, reconVersion, metList, numWorkers)
 % This function extracts all metabolites that could be consumed or secreted
 % by at least one refined reconstruction in the tested reconstruction
 % resource.
 %
-% USAGE
-%   computeUptakeSecretion(modelFolder,propertiesFolder,reconVersion,metList,numWorkers)
+% USAGE:
 %
-% INPUTS
-% modelFolder           Folder with reconstructions to be analyzed
-% propertiesFolder      Folder where the retrieved uptake and secretion
-%                       potential will be stored (default: current folder)
-% reconVersion          Name assigned to the reconstruction resource
-% metList               List of VMH IDs of metabolites to analyze (default:
-%                       all metabolites in reconstruction resource)
-% numWorkers            Number of workers in parallel pool (default: 0)
+%    computeUptakeSecretion(modelFolder, propertiesFolder, reconVersion, metList, numWorkers)
 %
-%   - AUTHORS
-%   Almut Heinken, 06/2020
+% INPUTS:
+%    modelFolder:         Folder with reconstructions to be analyzed
+%    propertiesFolder:    Folder where the retrieved uptake and secretion
+%                         potential will be stored (default: current folder)
+%    reconVersion:        Name assigned to the reconstruction resource
+%    metList:             List of VMH IDs of metabolites to analyze (default:
+%                         all metabolites in reconstruction resource)
+%    numWorkers:          Number of workers in parallel pool (default: 0)
+%
+% .. Author: - Almut Heinken, 06/2020
 
 dInfo = dir(modelFolder);
 modelList={dInfo.name};

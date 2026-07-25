@@ -6,7 +6,9 @@ function ETN = extractElementalTransitionNetwork(ATN, elements)
 %    ETN = extractElementalTransitionNetwork(ATN, elements)
 %
 % INPUTS:
-%    ATN:         An atom transition network
+%    ATN:         An atom transition network, with field:
+%
+%                   * .elements - column array giving the chemical element of each atom (row) in the network
 %    elements:    A cell array of element symbols, e.g., 'C' for carbon
 %                 or {'C' 'O'} for carbon and oxygen
 %

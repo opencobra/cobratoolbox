@@ -1,17 +1,21 @@
 function [mapIrrev] = transformToIrreversibleMap(map, rxnlist)
-% Converts a map structure from irreversible format to
-% reversible format for a list of reaction names
+% Converts a map structure from reversible format to irreversible format
+% for a list of reaction names
 %
 % USAGE:
 %
-%   [mapIrrev] = transformToIrreversibleMap(map, rxnlist)
+%    [mapIrrev] = transformToIrreversibleMap(map, rxnlist)
 %
 % INPUTS:
-%   map:        Map from CellDesigner parsed to MATLAB format
-%   rxnlist:    List of reaction names to transform
+%    map:           MATLAB structure of a CellDesigner map (see `transformXML2Map`).
+%                   Fields used:
+%
+%                     * .rxnName - reaction names, matched against `rxnlist`
+%    rxnlist:       Cell array of reaction names to transform to irreversible format
 %
 % OUTPUT:
-%   mapIrrev:    Map with reactions in irreversible format
+%    mapIrrev:      `map` with `.rxnReversibility` set to `'false'` for the reactions
+%                   listed in `rxnlist`
 %
 % .. Authors:
 %       - MOUSS Rouquaya 24/07/2017

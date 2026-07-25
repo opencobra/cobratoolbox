@@ -13,13 +13,13 @@ function webCGMtoTabDelimitedFile(model, webCGMoutputFile, gcmMetList)
 % INPUTS:
 %    model:                 structure with fields:
 %
-%                             * model.S - `m x n`, stoichiometric matrix
-%                             * model.mets - `m x 1`, cell array of metabolite abbreviations
-%                             * model.metFormulas - `m x 1`, cell array of metabolite formulae
-%    webCGMoutputFile:      filename of output from webCG server
-%    metList:               `m x 1`, cell array of metabolite ID for metabolites
+%                             * .S - `m x n` stoichiometric matrix
+%                             * .mets - `m x 1` cell array of metabolite abbreviations
+%                             * .metFormulas - `m x 1` cell array of metabolite formulae
+%    webCGMoutputFile:      filename of output from the webCG server
+%    gcmMetList:            `m x 1` cell array of metabolite IDs for metabolites
 %                           in `webCGMoutputFile`. Metabolite order must be the
-%                           same in `metList` and `webGCMoutputFile`.
+%                           same in `gcmMetList` and `webCGMoutputFile`.
 %
 % OUTPUT:
 %    gc_data_webCGM.txt:    tab delimited text file with group contribution data for

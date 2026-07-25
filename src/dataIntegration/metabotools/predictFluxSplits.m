@@ -8,7 +8,9 @@ function [BMall, ResultsAllCellLines, metRsall, maximum_contributing_rxn, maximu
 %    [BMall, ResultsAllCellLines, metRsall, maximum_contributing_rxn, maximum_contributing_flux, ATPyield] = predictFluxSplits(model, obj, met2test, samples, ResultsAllCellLines, dir, transportRxns, ATPprod, carbon_source, eucNorm)
 %
 % INPUTS:
-%    model:                       Generic model, e.g., `modelMedium`
+%    model:                       Generic model, e.g., `modelMedium`, with field:
+%
+%                                   * .rxns - reaction identifiers
 %    obj:                         objective function, e.g., biomass or ATPM
 %    met2test:                    e.g., `atp[c]`. Mind that the metabolites are produced in multiple compartments.
 %    samples:                     Name of conditions as in `ResultsAllCellLines`
@@ -28,7 +30,7 @@ function [BMall, ResultsAllCellLines, metRsall, maximum_contributing_rxn, maximu
 %    maximum_contributing_rxn:    Reactions with highest flux (producing or
 %                                 consuming) a defined metabolite across analyzed samples (not
 %                                 necessarily >50%), if multiple reactions have the same contribution, all will be reported seperated by a back slash.
-%    maximum_contributing_flux:   Matrix containing:
+%    maximum_contributing_flux:    Matrix containing:
 %
 %                                 * highest flux (column 1),
 %                                 * sum of flux (producing or consuming) a defined metabolite (column 2),

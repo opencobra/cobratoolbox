@@ -1,4 +1,4 @@
-function [model, deletedRxns, addedRxns, gfRxns] = removeFutileCycles(model, biomassReaction, database,unionRxns,constrainedModel)
+function [model, deletedRxns, addedRxns, gfRxns] = removeFutileCycles(model, biomassReaction, database, unionRxns, constrainedModel)
 % Part of the DEMETER pipeline. Resolves reactions that are running in
 % infeasible directions and causing futile cycles that result in
 % unrealistically high ATP production. All solutions were identified
@@ -7,25 +7,47 @@ function [model, deletedRxns, addedRxns, gfRxns] = removeFutileCycles(model, bio
 %
 % USAGE:
 %
-%   [model, deletedRxns, addedRxns, gfRxns] = removeFutileCycles(model, biomassReaction, database,unionRxns,constrainedModel)
+%    [model, deletedRxns, addedRxns, gfRxns] = removeFutileCycles(model, biomassReaction, database, unionRxns, constrainedModel)
 %
-% INPUTS
-% model:               COBRA model structure
-% biomassReaction:     Reaction ID of the biomass objective function
-% database:            rBioNet reaction database containing min. 3 columns:
-%                      Column 1: reaction abbreviation, Column 2: reaction
-%                      name, Column 3: reaction formula.
-% unionRxns:           Union of reactions from  multiple reconstructions
-%                      (only for debugging multi-species models)
-% constrainedModels:   COBRA model constrained with defined medium (for
-%                      certain steps of DEMETER)
+% INPUTS:
+%    model:                 COBRA model structure with fields:
 %
-% OUTPUT
-% model:               COBRA model structure
-% deletedRxns:         Deleted reactions that were causing futile cycles
-% addedRxns:           Added irreversible versions of the deleted reactions
-% gfRxns:              Additional gap-filled reactions needed to enable
-%                      growth. Low confidence score.
+%                             * .rxns - `n x 1` reaction identifiers
+%                             * .mets - `m x 1` metabolite identifiers
+%                             * .lb - `n x 1` lower bounds
+%                             * .grRules - `n x 1` gene-protein-reaction
+%                               rules
+%                             * .comments - `n x 1` cell array of free-text
+%                               comments for each reaction
+%                             * .rxnConfidenceScores - `n x 1` reaction
+%                               confidence scores
+%
+%    biomassReaction:       Reaction ID of the biomass objective function
+%    database:              rBioNet reaction database containing min. 3
+%                           columns: Column 1: reaction abbreviation,
+%                           Column 2: reaction name, Column 3: reaction
+%                           formula, with fields:
+%
+%                             * .reactions - cell array of reaction
+%                               abbreviations (column 1) and reaction
+%                               formulas (column 3)
+%
+% OPTIONAL INPUTS:
+%    unionRxns:             Union of reactions from  multiple
+%                           reconstructions (only for debugging
+%                           multi-species models)
+%    constrainedModel:      COBRA model constrained with defined medium
+%                           (for certain steps of DEMETER)
+%
+% OUTPUTS:
+%    model:                 COBRA model structure with futile cycles
+%                           removed
+%    deletedRxns:           Deleted reactions that were causing futile
+%                           cycles
+%    addedRxns:             Added irreversible versions of the deleted
+%                           reactions
+%    gfRxns:                Additional gap-filled reactions needed to
+%                           enable growth. Low confidence score.
 %
 % .. Author:
 %       - Almut Heinken, 2016-2019

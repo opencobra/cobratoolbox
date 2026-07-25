@@ -41,7 +41,7 @@ if ibm_cplex
         CplexParam = struct('timelimit', 0);
         sol = solveCobraLP(LP, CplexParam);
         % no solution because of time limit
-        assert(isempty(sol.full) & sol.origStat == 11)
+        assert(isempty(sol.full) && isequal(sol.origStat, 11))
     end
 
     % print parameters not recognized by Cplex

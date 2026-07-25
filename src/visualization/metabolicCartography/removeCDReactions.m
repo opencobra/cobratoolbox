@@ -1,30 +1,23 @@
-function removeCDReactions(fileName,rxnRemoveList,printLevel)
-%removes a list of reactions from a cell designer map, also removes
-%correspinding species and species aliases if necessary
+function removeCDReactions(fileName, rxnRemoveList, printLevel)
+% Removes a list of reactions from a CellDesigner map, also removing
+% corresponding species and species aliases if necessary. The reduced
+% map is written out as a new CellDesigner XML file.
 %
-% INPUT
-%   xmlStruct:      Structure obtained from the "xml2struct" function.
-%                   To be kept for the conversion back to an XML file
-%                   of the structure.
+% USAGE:
 %
-%   map:            Matlab structure of the map containing all the
-%                   relevant fields usable for checking and correction.
+%    removeCDReactions(fileName, rxnRemoveList, printLevel)
 %
-%   rxnRemoveList:  Cell array of reaction abbreviation to be removed
+% INPUTS:
+%    fileName:          Path to the CellDesigner XML map file to read. The
+%                       reduced map is written to a file with the same
+%                       name suffixed `_subset.xml`
+%    rxnRemoveList:     Cell array of reaction abbreviation to be removed
 %
-%   printLevel:     {0,(1)}
+% OPTIONAL INPUTS:
+%    printLevel:        {0,(1)}, whether to print a message for each entry
+%                       of `rxnRemoveList` not present in the map (default: 1)
 %
-% OUTPUT
-%   xmlStructOut:   Structure for the conversion back to an XML file
-%                   of the structure.
-%
-%   mapOut:         Matlab structure of the smaller map containing all the
-%                   relevant fields usable for checking and correction.
-%
-% rxnNotInMap: boolean vector the length of rxnRemoveList
-%                        indicating reactions that could not be found in the map
-%
-% Ronan Fleming 2020
+% .. Author: - Ronan Fleming, 2020
 
 if ~exist('printLevel','var')
     printLevel = 1;

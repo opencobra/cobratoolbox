@@ -1,21 +1,30 @@
 function [Jsl] = singleSL(model, cutoff, eliList, atpm)
-%% [Jsl] = singleSL(model,cutoff,eliList,atpm)
-% INPUT
-% model (the following fields are required - others can be supplied)       
-%   S            Stoichiometric matrix
-%   b            Right hand side = dx/dt
-%   c            Objective coefficients
-%   lb           Lower bounds
-%   ub           Upper bounds
-%   rxns         Reaction Names
-% OPTIONAL
-% cutoff         cutoff percentage value for lethality.Default is 0.01.
-% eliList        List of reactions to be ignored for lethality
-% analysis:Exchange Reactions, ATPM etc.
-% atpm           ATPM Reaction Id in model.rxns if other than 'ATPM'
-% OUTPUT
-% Jsl            Single lethal reactions identified
-% Aditya Pratapa       6/26/14. 
+% Identify single lethal reactions in a metabolic model (Fast-SL)
+%
+% USAGE:
+%
+%    [Jsl] = singleSL(model, cutoff, eliList, atpm)
+%
+% INPUT:
+%    model:      COBRA model structure (the following fields are required):
+%
+%                  * .S - Stoichiometric matrix
+%                  * .b - Right hand side = dx/dt
+%                  * .c - Objective coefficients
+%                  * .lb - Lower bounds
+%                  * .ub - Upper bounds
+%                  * .rxns - Reaction names
+%
+% OPTIONAL INPUTS:
+%    cutoff:     cutoff percentage value for lethality (default is 0.01)
+%    eliList:    List of reactions to be ignored for lethality analysis
+%                (e.g. exchange reactions, ATPM)
+%    atpm:       ATPM reaction id in model.rxns if other than 'ATPM'
+%
+% OUTPUT:
+%    Jsl:        Single lethal reactions identified
+%
+% .. Author: - Aditya Pratapa, 6/26/14
 
 if exist('cutoff', 'var')
     if isempty(cutoff)

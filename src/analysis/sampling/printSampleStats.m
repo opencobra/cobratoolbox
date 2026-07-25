@@ -6,9 +6,13 @@ function printSampleStats(sampledModel, commonModel, sampleNames, fileName)
 %    printSampleStats(samples, commonModel, sampleNames, fileName)
 %
 % INPUTS:
-%    sampledModel:   Samples to plot
-%    commonModel:    COBRA model structure
-%    sampleNames:    Names of the models
+%    sampledModel:    Samples to summarise
+%    commonModel:     COBRA model structure, with fields:
+%
+%                       * .rxns - reaction identifiers
+%                       * .subSystems - reaction subsystem assignments (optional;
+%                         printed as an extra column when present)
+%    sampleNames:     Names of the models
 %
 % OPTIONAL INPUT:
 %    fileName:       Name of tab delimited CSV file to generate

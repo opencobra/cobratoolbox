@@ -1,4 +1,4 @@
-function [model,computedSpeciesData] = assignThermoToModel(model, Alberty2006, Legendre, LegendreCHI, useKeqData, printToFile, GCpriorityMetList, metGroupCont, metSpeciespKa)
+function [model, computedSpeciesData] = assignThermoToModel(model, Alberty2006, Legendre, LegendreCHI, useKeqData, printToFile, GCpriorityMetList, metGroupCont, metSpeciespKa)
 % Assigns thermodynamic data to model at given temperature, pH, ionic strength and electrical potential.
 %
 % Physicochemically, this is the most important function for setting up a
@@ -22,6 +22,11 @@ function [model,computedSpeciesData] = assignThermoToModel(model, Alberty2006, L
 %                        * model.cellCompartments(p) - `1 x #` cell array of distinct compartment letters
 %                        * model.NaNdfG0GCMetBool(m) - `m x 1` boolean vector with 1 when no group contribution
 %                          data is available for a metabolite
+%                        * model.S - `m x n` stoichiometric matrix
+%                        * model.mets - `m x 1` metabolite identifiers
+%                        * model.metCompartments - `m x 1` metabolite compartment assignments
+%                        * model.metSpeciespKa - structure of metabolite species pKa values
+%                        * model.metGroupCont - structure of group contribution estimates per metabolite
 %    Alberty2006:      Alberty's data
 %
 % OPTIONAL INPUTS:
@@ -29,6 +34,7 @@ function [model,computedSpeciesData] = assignThermoToModel(model, Alberty2006, L
 %    LegendreCHI:      {(1), 0} Legendre Transformation for specifc electrical potential?
 %    useKeqData:       {(1), 0} Use `dGf0` back calculated from `Keq`?
 %    printToFile:      {(0), 1} 1 = print out repetitive material to log file
+%    GCpriorityMetList:    list of metabolites for which group contribution estimates take priority
 %    metGroupCont:     Structure containing output from `Jankowski et al.'s
 %                      2008 implementation of the group contribution method (GCM).`
 %                      Contains the following fields for each metabolite:
@@ -65,6 +71,12 @@ function [model,computedSpeciesData] = assignThermoToModel(model, Alberty2006, L
 %                        * model.ph(p) - real pH in compartment defined by letter p
 %                        * model.is(p) - ionic strength (0 - 0.35M) in compartment defined by letter p
 %                        * model.chi(p) - electrical potential (mV) in compartment defined by letter p
+%                        * model.Legendre - Legendre transformation flag for real pH (stored from input)
+%                        * model.LegendreCHI - Legendre transformation flag for electrical potential (stored from input)
+%                        * model.lambda - activity coefficients per metabolite
+%                        * model.gcmSpecies - group contribution method species data per metabolite
+%                        * model.albertyAbbreviation - Alberty database abbreviation per metabolite
+%    computedSpeciesData:    structure of computed metabolite species standard Gibbs energy data used in the transformation
 %
 % .. Authors:
 %       - Ronan M. T. Fleming

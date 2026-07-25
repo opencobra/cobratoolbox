@@ -40,12 +40,12 @@ function [comparisonResults, comparisonTable] = compareModelsFeatures(models, pa
 %       * .trainingSet - Table with the training set. It includes the
 %          reaction identifier, the reaction name, the measured mean flux,
 %          standard deviation of the flux, the flux units, and the platform
-%          used to measure it (Required for test 'flux').
+%          used to measure it (Required for test 'flux'). An error message
+%          refers to this field by the misspelling .trainigSet.
 %
 % OUTPUTS:
-%
-%	comparisonResults: Struct array with all data obtained
-%	comparisonTable: Table summarising the analysis
+%    comparisonResults:    Struct array with all data obtained
+%    comparisonTable:    Table summarising the analysis
 
 
 if ~isfield(param, 'objectives')

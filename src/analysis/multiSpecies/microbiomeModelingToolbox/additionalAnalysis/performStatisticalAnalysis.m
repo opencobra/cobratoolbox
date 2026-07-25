@@ -1,36 +1,37 @@
-function [Statistics,significantFeatures] = performStatisticalAnalysis(sampleData,sampleInformation,varargin)
+function [Statistics, significantFeatures] = performStatisticalAnalysis(sampleData, sampleInformation, varargin)
 % This function determines if there is a significant difference between
 % features computed for two or more groups in a cohort of samples. If the
 % cohort contains two groups, the Wilcoxon rank sum test is used. If the
 % cohort contains three or more groups, the Kruskal Wallis test is used.
 %
-% USAGE
-% [Statistics,significantFeatures] = performStatisticalAnalysis(sampleData,sampleInformation,varargin)
+% USAGE:
 %
-% INPUTS
-% sampleData           Table with input data to analyze (e.g., fluxes) with
-%                      computed features as rows and sample IDs as columns
-% sampleInformation    Table with information on analyzed samples including
-%                      group classification with sample IDs as rows
+%    [Statistics, significantFeatures] = performStatisticalAnalysis(sampleData, sampleInformation, varargin)
 %
-% OPTIONAL INPUT
-% stratification       Column header containing the desired group
-%                      classification in sampleInformation table. If not
-%                      provided, the second column will be used.
-% groupTest            Decides whether Kruskal-Wallis test(default) or
-%                      ANOVA should be used for group comparisons.
-%                      Allowed inputs: "Kruskal-Wallis","ANOVA"
-% BHFDR                Defines whether Benjamini and Hochberg (true) or
-%                      Storey (false) procedure should be used for 
-%                      correction for multiple testing. Default=false.
+% INPUTS:
+%    sampleData:             Table with input data to analyze (e.g., fluxes) with
+%                            computed features as rows and sample IDs as columns
+%    sampleInformation:      Table with information on analyzed samples including
+%                            group classification with sample IDs as rows
 %
-% OUTPUTS
-% Statistics           Table with results of statistical tests for each
-%                      computed feature
-% significantFeatures  Table with input data reduced to only features that
-%                      were statistically significant
+% OPTIONAL INPUTS:
+%    stratification:         Column header containing the desired group
+%                            classification in sampleInformation table. If not
+%                            provided, the second column will be used.
+%    groupTest:              Decides whether Kruskal-Wallis test(default) or
+%                            ANOVA should be used for group comparisons.
+%                            Allowed inputs: "Kruskal-Wallis","ANOVA"
+%    BHFDR:                  Defines whether Benjamini and Hochberg (true) or
+%                            Storey (false) procedure should be used for
+%                            correction for multiple testing. Default=false.
 %
-% AUTHOR
+% OUTPUTS:
+%    Statistics:             Table with results of statistical tests for each
+%                            computed feature
+%    significantFeatures:    Table with input data reduced to only features that
+%                            were statistically significant
+%
+% .. Author:
 %       - Almut Heinken, 12/2020
 
 parser = inputParser();

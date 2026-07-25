@@ -1,4 +1,4 @@
-function [controlFlux1, controlFlux2, objFlux] = doubleRobustnessAnalysis(model, controlRxn1, controlRxn2, nPoints, plotResFlag, objRxn,objType)
+function [controlFlux1, controlFlux2, objFlux] = doubleRobustnessAnalysis(model, controlRxn1, controlRxn2, nPoints, plotResFlag, objRxn, objType)
 % Performs robustness analysis for a pair of reactions of
 % interest and an objective of interest
 %
@@ -20,10 +20,12 @@ function [controlFlux1, controlFlux2, objFlux] = doubleRobustnessAnalysis(model,
 %                    (Default = 'max')
 %
 % OUTPUTS:
-%    controlFlux:    Flux values within the range of the maximum and minimum for
-%                    reaction of interest
-%    objFlux:        Optimal values of objective reaction at each control
-%                    reaction flux value
+%    controlFlux1:    Flux values within the range of the maximum and minimum
+%                     for control reaction 1
+%    controlFlux2:    Flux values within the range of the maximum and minimum
+%                     for control reaction 2
+%    objFlux:         Optimal values of the objective reaction at each pair of
+%                     control reaction flux values
 %
 % .. Authors: - Monica Mo and Markus Herrgard 8/20/07
 

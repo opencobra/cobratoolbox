@@ -4,19 +4,23 @@ function testResults = runTestsOnModel(model, microbeID, inputDataFolder)
 %
 % USAGE:
 %
-%   testResults = runTestsOnModel(model, microbeID, inputDataFolder)
+%    testResults = runTestsOnModel(model, microbeID, inputDataFolder)
 %
-% INPUTS
-% modelFolder           Folder with COBRA models (draft or refined
-%                       reconstructions) to analyze
-% inputDataFolder       Folder with experimental data and database files
-%                       to load
+% INPUTS:
+%    model:                 COBRA model structure with fields:
 %
-% OUTPUT
-% testResults           Structure with results of the test run
+%                             * .rxns - Reaction identifiers
+%                             * .lb - Reaction lower bounds
+%    microbeID:             Microbe ID (used to label the test results)
+%    inputDataFolder:       Folder with experimental data and database
+%                           files to load
+%
+% OUTPUTS:
+%    testResults:           Structure with results of the test run, one
+%                           field per QA/QC test
 %
 % .. Author:
-%   - Almut Heinken, 03/2021
+%       - Almut Heinken, 03/2021
 
 
 fields = {

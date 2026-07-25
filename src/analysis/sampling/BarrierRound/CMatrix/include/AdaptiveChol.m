@@ -1,3 +1,5 @@
+% Adaptive-precision Cholesky factorization of a constraint matrix, backed by a
+% MEX implementation that promotes precision (double, ddouble, qdouble) as needed
 classdef AdaptiveChol < handle
    properties (Constant)
       mex = AdaptiveChol.mexSelector();

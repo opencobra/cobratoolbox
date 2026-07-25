@@ -1,30 +1,64 @@
-function [xmlStruct,map,specNotInMap] = removeMapSpeciesOnly(xmlStruct,map,specRemoveList,specRemoveType,printLevel)
-%removes a list of species from a cell designer map, also removes
-%corresponding species aliases and but does not remove reactions
+function [xmlStruct, map, specNotInMap] = removeMapSpeciesOnly(xmlStruct, map, specRemoveList, specRemoveType, printLevel)
+% Removes a list of species from a CellDesigner map, also removing the
+% corresponding species aliases, but does not remove reactions
 %
-% INPUT
-%   xmlStruct:      Structure obtained from the "xml2struct" function.
-%                   To be kept for the conversion back to an XML file
-%                   of the structure.
+% USAGE:
 %
-%   map:            Matlab structure of the map containing all the
-%                   relevant fields usable for checking and correction.
+%    [xmlStruct, map, specNotInMap] = removeMapSpeciesOnly(xmlStruct, map, specRemoveList, specRemoveType, printLevel)
 %
-%   specRemoveList:  Cell array of species abbreviation to be removed
+% INPUTS:
+%    xmlStruct:         Structure obtained from the `xml2struct` function (see
+%                       `transformXML2Map`), kept for the conversion back to an
+%                       XML file of the structure. Fields used:
 %
-%   printLevel:     {0,(1)}
+%                         * .sbml - top-level SBML tree; `.sbml.model.listOfSpecies.species`
+%                           and the CellDesigner species-alias list nested under
+%                           `.sbml.model.annotation...` are filtered in place
+%    map:               MATLAB structure of the map (see `transformXML2Map`)
+%                       containing all the relevant fields usable for checking
+%                       and correction. Fields used:
 %
-% OUTPUT
-%   xmlStruct:   Structure for the conversion back to an XML file
-%                   of the structure.
+%                         * .specName - species names, matched against `specRemoveList`
+%                         * .specType - species types, matched against `specRemoveType`
+%                         * .sID - stoichiometric matrix (`specID` x `rxnID`), used to
+%                           find reactants/products of the removed species
+%                         * .sAlias - stoichiometric matrix (`molAlias` x `rxnID`), used
+%                           to find reactants/products of the removed molecule aliases
+%                         * .idAlias - logical matrix (`specID` x `molAlias`), used to
+%                           find the molecule aliases of the removed species
+%                         * .rxnID - reaction identifiers, used to loop over reactions
+%                         * .specID - species identifiers, used to identify retained
+%                           base reactants/products
+%                         * .molAlias - molecule aliases, used to identify retained
+%                           base reactant/product aliases
+%                         * .rxnBaseReactantID - ID of the reaction's base reactant(s)
+%                         * .rxnReactantID - ID of the reaction's (non-base) reactant(s)
+%                         * .rxnBaseReactantAlias - alias of the reaction's base reactant(s)
+%                         * .rxnReactantAlias - alias of the reaction's (non-base) reactant(s)
+%                         * .rxnBaseProductID - ID of the reaction's base product(s)
+%                         * .rxnProductID - ID of the reaction's (non-base) product(s)
+%                         * .rxnBaseProductAlias - alias of the reaction's base product(s)
+%                         * .rxnProductAlias - alias of the reaction's (non-base) product(s)
+%    specRemoveList:    Cell array of species abbreviations to be removed (a
+%                       single char is wrapped into a 1x1 cell array)
 %
-%   map:         Matlab structure of the smaller map containing all the
-%                   relevant fields usable for checking and correction.
+% OPTIONAL INPUTS:
+%    specRemoveType:    Species type; if provided, species of this `map.specType`
+%                       are also marked for removal in addition to `specRemoveList`
+%    printLevel:        Verbosity level: `0` = silent, `1` (default) = print species
+%                       from `specRemoveList` that could not be found in the map
 %
-% specNotInMap:    boolean vector the length of specRemoveList
-%                  indicating species that could not be found in the map
+% OUTPUTS:
+%    xmlStruct:         `xmlStruct` (INPUT) with the retained species and species
+%                       aliases only; reactions are left untouched
+%    map:               `map` (INPUT) with the entries of the removed species and
+%                       molecule aliases stripped from every associated field,
+%                       except species/aliases that had to be retained as a
+%                       reaction's base reactant or base product
+%    specNotInMap:      Boolean vector the length of `specRemoveList` indicating
+%                       species that could not be found in the map
 %
-% Ronan Fleming 2020
+% .. Author: - Ronan Fleming, 2020
 
 if ~exist('printLevel','var')
     printLevel = 1;

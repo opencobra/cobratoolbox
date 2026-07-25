@@ -1,24 +1,34 @@
-function  cplexProblem = buildCplexProblemFromCOBRAStruct(Problem)
+function cplexProblem = buildCplexProblemFromCOBRAStruct(Problem)
 % Build a cplex object from the given LP problem in COBRA Format
+%
 % USAGE:
-%    cplexProblem = buildCplexProblemFromCOBRAStruct(LPproblem)
+%
+%    cplexProblem = buildCplexProblemFromCOBRAStruct(Problem)
 %
 % INPUT:
-%    LPproblem:         A COBRA style Problem with the following fields:
-%                        * .A - The equality and in equality matrix
-%                        * .b - The right hand side values of the constraints
-%                        * .ub - the upper bounds of the variables
-%                        * .lb - the lower bounds of the variables
-%                        * .osense - The objective sense (-1 for max, 1 for min)
-%                        * .c - the objective coefficient vector for the linear part
-%                       OPTIONAL:
-%                        * .F - The objective coefficient matrix for the quadratic part.
-%                        * .varType - The variable types for mixed integer problems ('I', integer, 'C', continous,'B' binary)
-%                        * .b_L - left hand sides of the constraints (will only be used if csense is empty)
-%                        * .csense - The constraint senses, Default assumption is all 'E'
-%                        * .x0 - Basis to use 
+%    Problem:      A COBRA style Problem with the following fields:
 %
-
+%                    * .A - The equality and inequality matrix
+%                    * .b - The right hand side values of the constraints
+%                    * .ub - the upper bounds of the variables
+%                    * .lb - the lower bounds of the variables
+%                    * .osense - The objective sense (-1 for max, 1 for min)
+%                    * .c - the objective coefficient vector for the linear part
+%
+%                   OPTIONAL:
+%
+%                    * .F - The objective coefficient matrix for the quadratic part
+%                    * .vartype - The variable types for mixed integer problems ('I', integer, 'C', continuous, 'B' binary)
+%                    * .b_L - left hand sides of the constraints (used if `.csense` does not resolve them)
+%                    * .b_U - right hand sides of the constraints (used together with `.b_L`)
+%                    * .csense - The constraint senses, Default assumption is all 'E'
+%                    * .basis - CPLEX advanced-start basis to use
+%                    * .x0 - starting point to use if `.basis` is absent
+%
+% OUTPUT:
+%    cplexProblem:    The `Cplex()` object built from `Problem`, with `.Model` (and,
+%                     when a starting point is supplied, `.Start`) populated
+%
 
 try
     cplexProblem = Cplex();

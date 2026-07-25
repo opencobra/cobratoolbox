@@ -7,14 +7,19 @@ function [mcs, mcs_time] = calculateMCS(model_struct, n_mcs, max_len_mcs, vararg
 %
 % USAGE:
 %
-%    [mcs, mcs_time] = populateMCS(model_struct, n_mcs, max_len_mcs, options)
+%    [mcs, mcs_time] = calculateMCS(model_struct, n_mcs, max_len_mcs, varargin)
 %
 % INPUTS:
-%    model_struct:    Metabolic model structure (COBRA Toolbox format).
+%    model_struct:    Metabolic model structure (COBRA Toolbox format) with fields:
+%
+%                       * .rxns - `n x 1` reaction identifiers
+%                       * .S - `m x n` stoichiometric matrix
+%                       * .c - `n x 1` linear objective coefficient vector
+%                       * .lb - `n x 1` lower bounds
+%
 %    n_mcs:           Number of MCSs to calculate.
 %    max_len_mcs:     Number of reactions in the largest MCS to be calculated.
 %
-% OPTIONAL INPUT:
 % OPTIONAL INPUTS:
 %    KO:                 Selected reaction knockout. (default = [])
 %    rxn_set:            Cell array containing the set of reactions among which

@@ -17,37 +17,40 @@ function [L, M, moietyFormulae, moieties2mets, moiety2isomorphismClass, atoms2mo
 %                               metabolite identifiers in rxnfiles.
 %                             * .rxns - An `n x 1` array of reaction identifiers. Should match
 %                               `rxnfile` names in `rxnFileDir`.
+%                             * .metAtomMappedBool - `m x 1` boolean of atom mapped metabolites (added on output)
+%                             * .rxnAtomMappedBool - `n x 1` boolean of atom mapped reactions (added on output)
 %
 %    dATM:          Directed atom transition multigraph, obtained from buildAtomTransitionMultigraph.m
 %                   A MATLAB digraph structure with the following tables and variables:
 %
-%                   * .NodeTable — Table of node information, with `p` rows, one for each atom.
-%                   * .NodeTable.Atom - unique alphanumeric id for each atom by concatenation of the metabolite, atom and element
-%                   * .NodeTable.AtomIndex - unique numeric id for each atom in atom transition multigraph
-%                   * .NodeTable.Met - metabolite containing each atom
-%                   * .NodeTable.AtomNumber - unique numeric id for each atom in an atom mapping
-%                   * .NodeTable.Element - atomic element of each atom
+%                   * .Nodes — Table of node information, with `p` rows, one for each atom.
+%                   * .Nodes.Atom - unique alphanumeric id for each atom by concatenation of the metabolite, atom and element
+%                   * .Nodes.AtomIndex - unique numeric id for each atom in atom transition multigraph
+%                   * .Nodes.Met - metabolite containing each atom
+%                   * .Nodes.AtomNumber - unique numeric id for each atom in an atom mapping
+%                   * .Nodes.Element - atomic element of each atom
 %                       
-%                   * .EdgeTable — Table of edge information, with `q` rows, one for each atom transition instance.
-%                   * .EdgeTable.EndNodes - two-column cell array of character vectors that defines the graph edges     
-%                   * .EdgeTable.Trans - unique alphanumeric id for each atom transition instance by concatenation of the reaction, head and tail atoms
-%                   * .EdgeTable.TansIndex - unique numeric id for each atom transition instance
-%                   * .EdgeTable.Rxn - reaction corresponding to each atom transition
-%                   * .EdgeTable.HeadAtomIndex - head NodeTable.AtomIndex
-%                   * .EdgeTable.TailAtomIndex - tail NodeTable.AtomIndex
+%                   * .Edges — Table of edge information, with `q` rows, one for each atom transition instance.
+%                   * .Edges.EndNodes - two-column cell array of character vectors that defines the graph edges     
+%                   * .Edges.Trans - unique alphanumeric id for each atom transition instance by concatenation of the reaction, head and tail atoms
+%                   * .Edges.TansIndex - unique numeric id for each atom transition instance
+%                   * .Edges.Rxn - reaction corresponding to each atom transition
+%                   * .Edges.HeadAtomIndex - head NodeTable.AtomIndex
+%                   * .Edges.TailAtomIndex - tail NodeTable.AtomIndex
 %
-% OUTPUTS
-%    L:                     An `r x m` matrix of r moiety vectors in the left null
-%                           space of `S`.
-%    M:                     The `u x v` incidence matrix of the moiety supergraph
-%                           where each connected component is a moiety graph.
-%    moietyFormulas:        `r x 1` cell array with chemical formulas of moieties
-%    moieties2mets:         `u x 1` vector mapping moieties (rows of `M`) to
-%                           metabolites (rows of S)
-%    moieties2vectors:      `u x 1` vector mapping moieties (rows of `M`) to
-%                           moiety vectors (columns of `L`)
-%    atoms2moieties:        `p x 1` vector mapping atoms (rows of `A`) to moieties
-%                           (rows of `M`)
+% OPTIONAL INPUT:
+%    options:               Structure with the following field:
+%
+%                             * .sanityChecks - {(0), 1} true to run additional sanity checks (default 1)
+%
+% OUTPUTS:
+%    L:                          An `r x m` matrix of `r` moiety vectors in the left null space of `S`
+%    M:                          The `u x v` incidence matrix of the moiety supergraph, where each connected component is a moiety graph
+%    moietyFormulae:             `r x 1` cell array with chemical formulae of the moieties (Hill notation)
+%    moieties2mets:              `u x 1` vector mapping moieties (rows of `M`) to metabolites (rows of `S`)
+%    moiety2isomorphismClass:    vector mapping each moiety to its isomorphism class
+%    atoms2moiety:               `p x 1` vector mapping atoms (rows of `A`) to moieties (rows of `M`)
+%    arm:                        atomically resolved model structure aggregating the moiety-transition mappings (`.model`, `.dATM`, `.ATG`, `.MTG`, `.L`, and the mapping matrices)
 %
 % .. Authors: - Ronan M.T. Fleming, Sept 2020, compute conserved moieties
 %               as described in:

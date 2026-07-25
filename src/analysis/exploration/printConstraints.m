@@ -7,14 +7,24 @@ function printConstraints(model, minInf, maxInf, rxnSelection, modelAfter, print
 %    printConstraints(model, minInf, maxInf)
 %
 % INPUTS:
-%    model:     COBRA model structure
+%    model:     COBRA model structure with fields:
+%
+%                 * .S - `m x n` stoichiometric matrix
+%                 * .A - full constraint matrix `[S; C]`, used when .S is absent
+%                 * .C - `ctrs x n` additional constraints matrix
+%                 * .csense - `m x 1` constraint senses for the metabolites (E, L, G)
+%                 * .dsense - `ctrs x 1` constraint senses for the additional constraints
+%                 * .rxns - `n x 1` reaction identifiers
+%                 * .rxnNames - `n x 1` reaction names
+%                 * .lb - `n x 1` lower bounds on reaction fluxes
+%                 * .ub - `n x 1` upper bounds on reaction fluxes
 %
 % OPTIONAL INPUTS:
-%   minInf:       value that is considered as -Inf (or desired minimum cutoff value)
-%   maxInf:       value that is considered as +Inf (or desired maximum cutoff value)
-%   rxnSelection: boolean vector or cell array of reaction abbreviations for the reactions to be printed
-%   modelAfter:   model after some perturbation to the bounds
-%   printLevel:
+%    minInf:          value that is considered as -Inf (or desired minimum cutoff value)
+%    maxInf:          value that is considered as +Inf (or desired maximum cutoff value)
+%    rxnSelection:    boolean vector or cell array of reaction abbreviations for the reactions to be printed
+%    modelAfter:      model after some perturbation to the bounds
+%    printLevel:      Verbose level (default 1)
 %
 
 % .. Authors:

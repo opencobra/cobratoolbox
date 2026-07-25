@@ -9,8 +9,13 @@ function [solICONGEMs, boundEf] = ICONGEMs(model, exp, genetxt, condition, thres
 %
 % INPUTS:
 %
-%    model:           input model (COBRA model structure)
-%    exp:             expression profile corresponding to the gene names that 
+%    model:           input model (COBRA model structure) with the fields:
+%
+%                       * .rxns - `n x 1` cell array of reaction identifiers
+%                       * .rules - `n x 1` cell array of gene-reaction rules in rule (index) form
+%                       * .grRules - `n x 1` cell array of gene-reaction association rules
+%
+%    exp:             expression profile corresponding to the gene names that
 %                     extract from gene expression profile file
 %    genetxt:         list of gene names that extract from gene expression profile
 %                     file

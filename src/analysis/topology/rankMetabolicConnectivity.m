@@ -1,19 +1,32 @@
-function [rankMetConnectivity,rankMetInd,rankConnectivity] = rankMetabolicConnectivity(model,param)
-%metabolite connectivity in a model
+function [rankMetConnectivity, rankMetInd, rankConnectivity] = rankMetabolicConnectivity(model, param)
+% Rank the metabolites in a model by decreasing connectivity
 %
-% INPUT
-% model
+% Connectivity is the number of reactions in which a metabolite participates,
+% computed from the binary form of the stoichiometric matrix.
 %
-% OUTPUT
-% rankMetConnectivity  metabolite abbreviations by decreasing connectivity
-% rankMetInd           rank ordered metabolite indices
-% rankConnectivity     metabolite connectivity by decreasing connectivity 
+% USAGE:
 %
-% OPTIONAL INPUT
-% param.internal    {(1),0} if only internal reaction connectivity is
-%                   considered
-% param.plot        {(1),0} if plots produces
-% param.n           (10) number of top ranked metabolites to plot
+%    [rankMetConnectivity, rankMetInd, rankConnectivity] = rankMetabolicConnectivity(model, param)
+%
+% INPUTS:
+%    model:                  COBRA model structure with fields:
+%
+%                              * .S - `m x n` stoichiometric matrix
+%                              * .mets - `m x 1` metabolite abbreviations
+%                              * .SConsistentMetBool - `m x 1` true for stoichiometrically consistent metabolites
+%                              * .SConsistentRxnBool - `n x 1` true for stoichiometrically consistent reactions
+%
+% OPTIONAL INPUT:
+%    param:                  structure of parameters with fields:
+%
+%                              * .internal - {(1), 0} if only internal reaction connectivity is considered
+%                              * .plot - {(1), 0} if plots are produced
+%                              * .n - (10) number of top ranked metabolites to plot
+%
+% OUTPUTS:
+%    rankMetConnectivity:    metabolite abbreviations by decreasing connectivity
+%    rankMetInd:             rank ordered metabolite indices
+%    rankConnectivity:       metabolite connectivity by decreasing connectivity
 
 if ~exist('param','var')
     param=struct;

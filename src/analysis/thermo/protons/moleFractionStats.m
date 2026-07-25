@@ -12,9 +12,11 @@ function moleFractionStats(modelT)
 % INPUT:
 %    modelT:    structure with fields:
 %
-%                 * .S
-%                 * .officialName
-%                 * .mf
+%                 * .S - `m x n` stoichiometric matrix
+%                 * .mets - `m x 1` cell array of metabolite identifiers
+%                 * .metNames - `m x 1` cell array of metabolite names
+%                 * .mf - `m x 1` cell array; each cell holds the mole fractions
+%                   of the species of that reactant
 %
 % .. Authors:
 %       - Ronan M.T. Fleming

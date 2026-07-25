@@ -1,4 +1,4 @@
-function [MinimizedFlux, modelIrrev]= minimizeModelFlux(model, osenseStr, minNorm)
+function [MinimizedFlux, modelIrrev] = minimizeModelFlux(model, osenseStr, minNorm)
 % This function finds the minimum flux through the network and returns the
 % minimized flux and an irreversible model
 %
@@ -7,7 +7,10 @@ function [MinimizedFlux, modelIrrev]= minimizeModelFlux(model, osenseStr, minNor
 %    [MinimizedFlux modelIrrev]= minimizeModelFlux(model)
 %
 % INPUT:
-%    model:              COBRA model structure
+%    model:              COBRA model structure with the field:
+%
+%                          * .osenseStr - objective sense, 'max' or 'min',
+%                            read only when `osenseStr` is not supplied (optional)
 %
 % OPTIONAL INPUTS:
 %    osenseStr:         Maximize ('max')/minimize  ('min') (opt, default = 'min')
@@ -65,8 +68,8 @@ function [MinimizedFlux, modelIrrev]= minimizeModelFlux(model, osenseStr, minNor
 %                              ~&~ lb \leq v \leq ub
 %
 % OUTPUTS:
-%   MinimizedFlux:    minimum flux possible through the netwok
-%   modelIrrev:       irreversible version of 'model'
+%    MinimizedFlux:    minimum flux possible through the netwok
+%    modelIrrev:       irreversible version of 'model'
 %
 % .. Authors: - Nathan E. Lewis and Anne Richelle, May 2017
 

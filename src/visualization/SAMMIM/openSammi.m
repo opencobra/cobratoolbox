@@ -1,19 +1,21 @@
 function openSammi(htmlName)
 % Visualize the given model, set of reactions, and/or data using SAMMI.
 % Documentation at: https://sammim.readthedocs.io/en/latest/index.html
-% 
-% Citation: Schultz, A., & Akbani, R. (2019). SAMMI: A Semi-Automated 
+%
+% Citation: Schultz, A., & Akbani, R. (2019). SAMMI: A Semi-Automated
 %     Tool for the Visualization of Metabolic Networks. Bioinformatics.
-% 
+%
 % USAGE:
-% openSAMMI(htmlName)
-% 
+%
+%    openSammi(htmlName)
+%
 % OPTIONAL INPUT:
-%   htmlName: Name of the html file previously written using the sammi
-%   function. If left blank will print all available models.
-% 
+%    htmlName:    Name of the html file previously written using the
+%                 `sammi` function. If left blank, prints the names of all
+%                 available models instead of opening one.
+%
 % OUTPUT:
-%   No MATLAB output, opens the visualization in a new browser tab.
+%    No MATLAB output, opens the visualization in a new browser tab.
 
 sammipath = strrep(which('sammi'),'sammi.m','');
 if nargin < 1

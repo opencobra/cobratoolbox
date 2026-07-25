@@ -1,22 +1,42 @@
-function [results,regressions] = performRegressions(data,metadata,formula,exponentiateLogOdds)
-% This functions performs linear or logistic regressions on either flux
-% data or microbial relative abundances. The function supports control
-% variables & moderators in the regression formulae. 
+function [results, regressions] = performRegressions(data, metadata, formula, exponentiateLogOdds)
+% Perform linear or logistic regressions on flux or microbial abundance data
+%
+% Runs a regression per reaction or taxon, using the supplied formula. The
+% formula must contain either "Flux" or "relative_abundance" as the predicted
+% quantity. Control variables and moderators are supported, and mixed-effect
+% (random-effect) regressions are used when the formula encodes a random
+% effect. Binary responses trigger logistic regression, continuous responses
+% linear regression.
 %
 % USAGE:
-%    results = performRegressions(data,metadata,formula)
-% 
-% INPUT
-% data:     Table with flux or microbiome data. The first column must be the ID
-%           column.
-% metadata: Metadata table. The first column must be the ID column.
-% formula: Must contain either "Flux or "relative_abundance" as predictor.
-% exponentiateLogOdds: Logical variable on if a logistic regression estimate
-% should be exponentiately to obtain the odds ratios.
 %
-% .. Author:
-%       - Tim Hensen, 2024
-%       - Tim Hensen, May 2025, Added support for unnested mixed effect regressions.
+%    [results, regressions] = performRegressions(data, metadata, formula, exponentiateLogOdds)
+%
+% INPUTS:
+%    data:        table with flux or microbiome data. Fields used:
+%
+%                   * .Properties - table properties; `.VariableNames` gives
+%                     the reaction/taxa columns
+%                   * .ID - sample identifier column (must be the first column)
+%    metadata:    metadata table. Field used:
+%
+%                   * .ID - sample identifier column (must be the first column)
+%    formula:     regression formula; must contain "Flux" or
+%                 "relative_abundance" as the predicted quantity
+%
+% OPTIONAL INPUT:
+%    exponentiateLogOdds:    logical, whether a logistic-regression estimate is
+%                            exponentiated to obtain odds ratios (default false)
+%
+% OUTPUTS:
+%    results:        structure with one results table per predictor, holding
+%                    the estimates, confidence intervals, p-values, FDR values
+%                    and adjusted R2 for each reaction/taxon
+%    regressions:    structure with the fitted regression model object for each
+%                    reaction/taxon (empty entries where no fit was found)
+%
+% .. Author: - Tim Hensen, 2024
+%            - Tim Hensen, May 2025 (support for unnested mixed-effect regressions)
 
 if nargin < 4
     exponentiateLogOdds = false;

@@ -1,13 +1,14 @@
-function [activeExMets,couplingMatrix] = buildModelStorage(microbeNames,modPath, numWorkers,pruneModels,biomasses)
+function [activeExMets, couplingMatrix] = buildModelStorage(microbeNames, modPath, numWorkers, pruneModels, biomasses)
 % This function builds the internal exchange space and the coupling
 % constraints for models to join within mgPipe so they can be merged into
 % microbiome models afterwards. exchanges that can never carry flux on the
 % given diet are removed to reduce computation time.
 %
-% USAGE
-%    [activeExMets,couplingMatrix] = buildModelStorage(microbeNames,modPath,numWorkers,pruneModels)
+% USAGE:
 %
-% INPUTS
+%    [activeExMets, couplingMatrix] = buildModelStorage(microbeNames, modPath, numWorkers, pruneModels, biomasses)
+%
+% INPUTS:
 %    microbeNames:           list of microbe models included in the microbiome models
 %    modPath:                char with path of directory where models are stored
 %    numWorkers:             integer indicating the number of cores to use for parallelization
@@ -18,13 +19,13 @@ function [activeExMets,couplingMatrix] = buildModelStorage(microbeNames,modPath,
 %                            of models to join. Needs to be the same length as 
 %                            the length of models in the abundance file.
 %
-% OUTPUTS
+% OUTPUTS:
 %    activeExMets:           list of exchanged metabolites present in at
 %                            least one microbe model that can carry flux
 %    couplingMatrix:         matrix containing coupling constraints for each model to join
 
 %
-% AUTHOR:
+% .. Author:
 %   - Almut Heinken, 05/2021
 %                    06/2022: added option to remove blocked reactions
 %                    12/2022: Added an optional input to manually 

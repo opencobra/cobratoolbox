@@ -7,16 +7,16 @@ function [cscale, rscale] = gmscale(A, iprint, scltol)
 %    [cscale, rscale] = gmscale(A, iprint, scltol)
 %
 % INPUTS:
-%    A(i, j):           contains entries of `A`.
+%    A:                 `m x n` sparse matrix to be scaled (entries `A(i, j)`)
 %    iprint:            > 0 requests messages to the screen (0 means no output).
 %    scltol:            should be in the range (0.0, 1.0).
 %                       Typically `scltol` = 0.9.  A bigger value like 0.99 asks
 %                       `gmscale` to work a little harder (more passes).
 %
 % OUTPUTS:
-%    cscale, rscale:    column vectors of column and row scales such that
-%                       `R` (inverse) `A` `C` (inverse) should have entries near 1.0,
-%                       where `R= diag(rscale)`, `C = diag(cscale)`.
+%    cscale:            column vector of column scales, with `C = diag(cscale)`
+%    rscale:            column vector of row scales, with `R = diag(rscale)`;
+%                       `R` (inverse) `A` `C` (inverse) should have entries near 1.0
 %
 % An iterative procedure based on geometric means is used,
 % following a routine written by Robert Fourer, 1979.

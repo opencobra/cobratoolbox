@@ -1,24 +1,27 @@
-function [modelResultsTable,modelResults]=makeModelPropertiesTable(modelResults,modelMetaData,resultsDirectory,resultsFileName,tableFilename)
-%makes a table of model property results
+function [modelResultsTable, modelResults] = makeModelPropertiesTable(modelResults, modelMetaData, resultsDirectory, resultsFileName, tableFilename)
+% Makes a table of model property results
 %
-%INPUT
-% modelResults             output of checkModelProperties
+% USAGE:
 %
-%OPTIONAL INPUT
-% modelMetaData         Cell array, where each row is metadata for one model
+%    [modelResultsTable, modelResults] = makeModelPropertiesTable(modelResults, modelMetaData, resultsDirectory, resultsFileName, tableFilename)
+%
+% INPUT:
+%    modelResults:      output of `checkModelProperties`
+%
+% OPTIONAL INPUTS:
+%    modelMetaData:     Cell array, where each row is metadata for one model
 %                       with five columns: species, modelID, fileName, PMID, doi.
 %                       See function modelMetaData=modelCitations() for
 %                       example. Table columns ordered by order of rows in
 %                       modelMetaData.
-% resultsDirectory      directory where output of checkModelProperties has been saved
-% filename              filename where output of checkModelProperties has been saved
-
-% tableFilename         If provided, a the table of results is written out
+%    resultsDirectory:    directory where output of `checkModelProperties` has been saved
+%    resultsFileName:     filename where output of `checkModelProperties` has been saved
+%    tableFilename:     If provided, the table of results is written out
 %                       to a csv file, with specified filename
 %
-%OUTPUT
-% modelResultsTable        table displaying the results of checkModelProperties
-% modelResults             output of checkModelProperties
+% OUTPUTS:
+%    modelResultsTable:    table displaying the results of `checkModelProperties`
+%    modelResults:      output of `checkModelProperties`
 
 
 if isempty(modelResults)

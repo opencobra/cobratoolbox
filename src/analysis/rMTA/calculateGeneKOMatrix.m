@@ -7,7 +7,10 @@ function [geneKO] = calculateGeneKOMatrix(model, varargin)
 %    geneKO = calculateGeneKOMatrix(model, SeparateTranscript, printLevel)
 %
 % INPUT:
-%    model:             The COBRA Model structure
+%    model:             The COBRA Model structure with fields:
+%
+%                          * .genes - gene identifiers
+%                          * .rxns - reaction identifiers
 %
 % OPTIONAL INPUTS:
 %    SeparateTranscript Character used to separate

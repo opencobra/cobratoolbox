@@ -3,19 +3,32 @@ function [newMap] = colorSubsystemCD(map, model, subsystem, color, areaWidth)
 %
 % USAGE:
 %
-%   [newMap] = colorSubsystemCD(map, model, subsystem, color, areaWidth);
+%    [newMap] = colorSubsystemCD(map, model, subsystem, color, areaWidth)
 %
 % INPUTS:
-%   map:            File from CellDesigner parsed to MATLAB format
-%   model:          COBRA model structure
-%   subsystem:      Name of a subsystem as a String
+%    map:            File from CellDesigner parsed to MATLAB format, with
+%                    fields:
+%
+%                      * .rxnName - cell array of reaction names
+%                      * .rxnReactantLineColor - (optional field) cell array of per-reactant line colours
+%                      * .rxnReactantLineWidth - (optional field) cell array of per-reactant line widths
+%                      * .rxnProductLineColor - (optional field) cell array of per-product line colours
+%                      * .rxnProductLineWidth - (optional field) cell array of per-product line widths
+%    model:          COBRA model structure, with fields:
+%
+%                      * .rxns - `n x 1` cell array of reaction identifiers
+%                      * .subSystems - `n x 1` cell array of reaction subsystem(s)
+%    subsystem:      Name of a subsystem as a String
 %
 % OPTIONAL INPUTS:
-%   color:          Color desired for reactions in CAPITALS
-%   areaWidth:          Width desired for reactions
+%    color:          Color desired for reactions in CAPITALS
+%    areaWidth:      Width desired for reactions
 %
 % OUTPUT:
-%   newMap          MATLAB structure of map with reaction modifications
+%    newMap:         MATLAB structure of map with fields updated:
+%
+%                      * .rxnColor - cell array of reaction colours
+%                      * .rxnWidth - cell array of reaction line widths
 %
 % .. Authors:
 %       - A.Danielsdottir 17/07/2017 LCSB. Belval. Luxembourg

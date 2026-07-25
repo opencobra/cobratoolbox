@@ -6,7 +6,11 @@ function [dbBool, noDocMets] = checkFormulaValidty(model)
 %    [dbBool, noDocMets] = checkFormulaValidty(model)
 %
 % INPUT:
-%    model:        Model structure array
+%    model:        COBRA model structure with fields:
+%
+%                    * .S - Stoichiometric matrix
+%                    * .mets - Metabolite identifiers
+%                    * .metFormulas - Metabolite formulas
 %
 % OUTPUTS:
 %    dbBool:       A boolean vector where the number of rows is equal to the number of

@@ -1,35 +1,36 @@
-function validated = validatePersephoneInputs(paths,resultPath) 
-% Validates the inputs provided in the `paths` structure for the Persephone 
-% pipeline. This function ensures that all required fields, flags, and 
-% parameters are present, appropriately formatted, and meet the expected 
-% constraints. Validation is performed across multiple pipeline components, 
-% including MARS, mgPipe, WBM personalization, HM creation, FBA, and statistics.
-% 
+function validated = validatePersephoneInputs(paths, resultPath)
+% Validate the inputs supplied in the `paths` structure for the Persephone pipeline
+%
+% Ensures that the required fields, flags, and parameters for each pipeline
+% component (SeqC, MARS, mgPipe, WBM personalisation, host-microbiome creation,
+% FBA, and statistics) are present, correctly typed, and within their expected
+% constraints. Validation errors are raised by the underlying
+% `validateattributes`/`validatestring` calls.
+%
 % USAGE:
-%   validated = validatePersephoneInput(paths)
 %
-% INPUT:
-%   paths       Structure containing all required input fields for the Persephone 
-%               pipeline. Fields include:
-%               - General flags and paths (e.g., `flagSeqC`, `resultPath`)
-%               - Component-specific flags and parameters (e.g., `flagMars`, 
-%               `marsRepoPath`, `flagMgPipe`, `metadataPath`, etc.)
-% 
+%    validated = validatePersephoneInputs(paths, resultPath)
+%
+% INPUTS:
+%    paths:         structure with all Persephone input fields. Fields used:
+%
+%                     * .General - shared settings (`.solver`, `.diet`,
+%                       `.metadataPath`, worker counts)
+%                     * .seqC - SeqC flag and parameters
+%                     * .Mars - MARS flag and parameters
+%                     * .mgPipe - mgPipe flag and parameters
+%                     * .persWBM - WBM personalisation flag and parameters
+%                     * .mWBM - host-microbiome creation flag and parameters
+%                     * .fba - FBA flag and parameters (including
+%                       `.rxnList` and `.paramFluxProcessing`)
+%                     * .stats - statistics flag and parameters
+%    resultPath:    char/string, path to the results directory (validated as
+%                   non-empty)
+%
 % OUTPUT:
-%   validated   Logical scalar indicating whether the validation succeeded 
-%               (true) or failed (false).
-% 
-% NOTES:
-%   - Ensure all required flags and fields in the `paths` structure are defined 
-%     prior to invoking this function. Undefined or mismatched fields will 
-%     result in validation failure.
-%   - This function is designed to be modular and extendable for future 
-%     additions to the Persephone pipeline.
-% 
-% AUTHOR:
-%   Tim Hensen, January 2025
+%    validated:    logical scalar, true if validation succeeded
 %
-% See also: validateattributes, validatestring, COBRA Toolbox
+% .. Author: - Tim Hensen, January 2025
 
 validated = false;
 

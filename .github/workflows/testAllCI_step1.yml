@@ -18,6 +18,21 @@ jobs:
         run: docker ps -q --filter ancestor=matlab | xargs -r docker rm -f
         continue-on-error: true
 
+      # The MATLAB test step below runs in Docker as root and writes regenerable outputs
+      # (e.g. test/verifiedTests/analysis/testCalculateFluxShifts/resultsPostOptimization/)
+      # into the mounted workspace, owned by root. On the NEXT run, actions/checkout's
+      # git-clean runs as the runner user and cannot unlink those root-owned files (EACCES),
+      # so "Check out merged PR code" exits 1 before any test runs. Because checkout precedes
+      # the existing chown steps, one leftover deadlocks CI permanently. Reclaim ownership
+      # BEFORE checkout so git-clean can proceed; also auto-heals an already-stuck runner.
+      # No-op on a fresh runner (guarded on an existing workspace).
+      - name: Reclaim self-hosted workspace ownership (pre-checkout)
+        run: |
+          if [ -n "${GITHUB_WORKSPACE}" ] && [ -d "${GITHUB_WORKSPACE}" ]; then
+            sudo chown -R "$(id -u):$(id -g)" "${GITHUB_WORKSPACE}" || true
+          fi
+        continue-on-error: true
+
       - name: Check out merged PR code
         uses: actions/checkout@v6
         with:
@@ -28,6 +43,31 @@ jobs:
         run: |
           sudo chown -R "$(id -u):$(id -g)" "${GITHUB_WORKSPACE}"
           chmod -R o+rwx "${GITHUB_WORKSPACE}"
+
+      # Provision the coverage tooling the harness already knows how to use
+      # (MoCov + jsonlab). Cloned on the runner host so the MATLAB container stays
+      # network-free. Best-effort: if a clone fails, MOCOV_PATH/JSONLAB_PATH are left
+      # unset and test/testAll.m simply does not compute coverage (FR-004) — the
+      # pass/fail run is unaffected. TODO: pin to a verified tag/commit.
+      - name: Provision coverage tools (MoCov + jsonlab)
+        continue-on-error: true
+        run: |
+          set -uo pipefail
+          mkdir -p "${GITHUB_WORKSPACE}/.ci-tools"
+          if [ ! -d "${GITHUB_WORKSPACE}/.ci-tools/MOcov/.git" ]; then
+            git clone --depth 1 https://github.com/MOcov/MOcov.git "${GITHUB_WORKSPACE}/.ci-tools/MOcov" || true
+          fi
+          if [ ! -d "${GITHUB_WORKSPACE}/.ci-tools/jsonlab/.git" ]; then
+            git clone --depth 1 https://github.com/fangq/jsonlab.git "${GITHUB_WORKSPACE}/.ci-tools/jsonlab" || true
+          fi
+          # Enable coverage only if BOTH tools are present (paths are /work/... inside the container).
+          if [ -d "${GITHUB_WORKSPACE}/.ci-tools/MOcov" ] && [ -d "${GITHUB_WORKSPACE}/.ci-tools/jsonlab" ]; then
+            echo "MOCOV_PATH=/work/.ci-tools/MOcov" >> "$GITHUB_ENV"
+            echo "JSONLAB_PATH=/work/.ci-tools/jsonlab" >> "$GITHUB_ENV"
+            echo "Coverage tooling provisioned; coverage will be computed."
+          else
+            echo "::warning:: MoCov/jsonlab not available; coverage will be skipped (pass/fail unaffected)."
+          fi
 
       # MATLAB runs inside Docker
       - name: Run MATLAB Tests in Docker (licensed MAC, xvfb headless)
@@ -45,6 +85,8 @@ jobs:
             -e USER=matlab \
             -e LOGNAME=matlab \
             -e COBRA_CI=1 \
+            -e MOCOV_PATH="${MOCOV_PATH:-}" \
+            -e JSONLAB_PATH="${JSONLAB_PATH:-}" \
             -e QT_QPA_PLATFORM="${QT_QPA_PLATFORM}" \
             -e JAVA_AWT_HEADLESS="${JAVA_AWT_HEADLESS}" \
             -v "${GITHUB_WORKSPACE}:/work" \
@@ -75,9 +117,64 @@ jobs:
                 exit(0);"
             '
 
+      # Run even if the Docker test step failed, so a failed run still hands the
+      # workspace back to the runner user instead of leaking root-owned files that
+      # would deadlock the next checkout.
       - name: Fix workspace permissions after Docker run
+        if: always()
         run: sudo chown -R "$(id -u):$(id -g)" "${GITHUB_WORKSPACE}"
         continue-on-error: true
+
+      # Always publish the self-contained coverage report as an artifact, regardless
+      # of Codecov (FR-002). warn (not fail) if coverage was not produced.
+      - name: Upload coverage artifact
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: coverage
+          path: |
+            coverage.xml
+            coverage.json
+            coverage_html
+          if-no-files-found: warn
+
+      # Best-effort upload to Codecov: never fail the build if Codecov is
+      # unreachable or the token is absent (FR-004, SC-006).
+      - name: Upload coverage to Codecov (best-effort)
+        if: always()
+        continue-on-error: true
+        uses: codecov/codecov-action@v4
+        with:
+          files: ./coverage.xml
+          fail_ci_if_error: false
+          token: ${{ secrets.CODECOV_TOKEN }}
+          verbose: true
+
+      # Skip-count gate: report the skipped-test count and WARN (never fail) when it
+      # exceeds the committed baseline — surfaces silent test-suite erosion (FR-007,
+      # FR-008). Hard-fail hardening is deferred by design.
+      - name: Skip-count gate (flag/warn only)
+        if: always()
+        continue-on-error: true
+        run: |
+          set -uo pipefail
+          report="testReport.junit.xml"
+          baseline="test/verifiedTests/.skip-baseline.json"
+          if [ ! -f "$report" ]; then
+            echo "::warning:: ${report} not found; cannot evaluate the skip-count gate."
+            exit 0
+          fi
+          # Extract the skipped= attribute value only (present solely on <testsuite>);
+          # grep the attribute directly so we never pick up tests=/failures=/errors=.
+          skipped=$(grep -oE 'skipped="[0-9]+"' "$report" | grep -oE '[0-9]+' | head -1)
+          skipped=${skipped:-0}
+          maxSkipped=$(grep -oE '"maxSkipped"[[:space:]]*:[[:space:]]*[0-9]+' "$baseline" 2>/dev/null | grep -oE '[0-9]+' | head -1)
+          maxSkipped=${maxSkipped:-0}
+          echo "Skipped tests: ${skipped} (baseline maxSkipped: ${maxSkipped})"
+          if [ "${skipped}" -gt "${maxSkipped}" ]; then
+            echo "::warning:: Skipped tests (${skipped}) exceed the baseline (${maxSkipped}) — possible silent test-suite erosion. If intentional, update ${baseline}."
+          fi
+          exit 0
 
       - name: Set up Node.js 20
         uses: actions/setup-node@v6

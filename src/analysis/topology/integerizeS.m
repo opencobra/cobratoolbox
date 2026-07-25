@@ -1,18 +1,32 @@
-function [modelOut,g]=integerizeS(model,printLevel,internalRxnsOnly)
-%convert an S matrix with some non integer coefficients into an S matrix 
-%with all integer coefficients
-%assumes that there are a maximum of six significant digits in the biomass
-%reaction
+function [modelOut, g] = integerizeS(model, printLevel, internalRxnsOnly)
+% Convert an S matrix with non-integer coefficients into one with all integer coefficients
 %
-%INPUT
-% S         stoichiometric matrix
+% Assumes that there are a maximum of six significant digits in the biomass
+% reaction. Scales each reaction by the least common multiple of the
+% denominators of its stoichiometric coefficients.
 %
-%OPTIONAL INPUT
-% internalRxnsOnly (1),0. 1 = integerise internal reactions only
+% USAGE:
 %
-%OUTPUT
-% S         stoichiometric matrix with internal reactions integers, unless internalRxnsOnly =0, whence all reactions will be integerised
-% g         scaling vector such that modelIn.S*diag(g)=modelOut.S;
+%    [modelOut, g] = integerizeS(model, printLevel, internalRxnsOnly)
+%
+% INPUTS:
+%    model:               COBRA model structure with fields:
+%
+%                           * .S - `m x n` stoichiometric matrix
+%                           * .rxns - `n x 1` reaction abbreviations
+%                           * .SConsistentRxnBool - `n x 1` true for stoichiometrically consistent reactions (optional)
+%                           * .SIntRxnBool - `n x 1` true for internal reactions (set if absent)
+%                           * .SIntMetBool - `m x 1` true for internal metabolites (set if absent)
+%
+% OPTIONAL INPUTS:
+%    printLevel:          verbosity level (default: 1)
+%    internalRxnsOnly:    1 = integerise internal reactions only (default),
+%                         0 = integerise all reactions
+%
+% OUTPUTS:
+%    modelOut:            model structure with `modelOut.S` integerised
+%    g:                   `n x 1` scaling vector such that
+%                         `modelIn.S * diag(g) = modelOut.S`
 
 if ~exist('printLevel','var')
     printLevel=1;

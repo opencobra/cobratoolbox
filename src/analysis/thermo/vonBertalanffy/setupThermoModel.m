@@ -81,6 +81,8 @@ function model = setupThermoModel(model, confidenceLevel)
 %                          * .DfG0_Uncertainty - `m x 1` array of uncertainty in estimated standard
 %                            Gibbs energies of formation. Will be large for
 %                            metabolites that are not covered by component contributions.
+%                          * .gasConstant - gas constant in kJ/(K*mol), set from `.R` if present
+%                          * .faradayConstant - Faraday constant in kJ/kmol, set from `.F` if present
 %
 % Written output - MetStructures.sdf - An SDF containing all structures input to the
 % component contribution method for estimation of standard Gibbs energies.

@@ -1,20 +1,28 @@
 function visualizeReconstructionsOnMap(mapFile, folderPath, numCores)
-    % Visualizes genome-scale metabolic reconstructions on a metabolic map.
-    % This function processes multiple metabolic reconstructions either sequentially or in parallel, 
-    % depending on the availability of the Parallel Computing Toolbox.
-    %
-    % INPUTS:
-    %   mapFile:      The input CellDesigner .xml file for the metabolic map.
-    %   folderPath:   Path to the folder containing genome-scale reconstructions (.mat files).
-    %   numCores:     (Optional) Number of cores to use if parallel computing is available. 
-    %                 If unspecified, all available cores will be used.
-    %
-    % OUTPUTS:
-    %   Saves a CellDesigner XML file for each reconstruction.
-    %
-    % .. Author: - Cyrille C. Thinnes. University of Galway, Ireland, 26/09/2024.
-    
-    % Get a list of all .mat files in the specified folder.
+% Visualizes genome-scale metabolic reconstructions on a metabolic map.
+% This function processes multiple metabolic reconstructions either sequentially
+% or in parallel, depending on the availability of the Parallel Computing Toolbox.
+%
+% USAGE:
+%
+%    visualizeReconstructionsOnMap(mapFile, folderPath, numCores)
+%
+% INPUTS:
+%    mapFile:       The input CellDesigner `.xml` file for the metabolic map
+%    folderPath:    Path to the folder containing genome-scale reconstructions
+%                   (`.mat` files); each must contain a variable `model` with
+%                   field `.rxns` (reaction identifiers used to colour the map)
+%
+% OPTIONAL INPUTS:
+%    numCores:      Number of cores to use if parallel computing is available
+%                   (default: all available cores)
+%
+% NOTE:
+%    Saves a CellDesigner XML file for each reconstruction; this function has
+%    no return value.
+%
+% .. Author: - Cyrille C. Thinnes. University of Galway, Ireland, 26/09/2024.
+
     modelFiles = dir(fullfile(folderPath, '*.mat'));
 
     if isempty(modelFiles)

@@ -2,22 +2,24 @@ function [RefinedReactionsCarryingFlux, BlockedRefinedReactions] = testRefinedRe
 % Tests if reactions that were added through the refinement of gene
 % annotations in the reconstructed organism can carry flux.
 %
-% INPUT
-% microbeID         Microbe ID in data file with refined genome annotations
-% BlockedRxns       Reactions in the COBRA model that cannot carry flux:
-%                   output of identifyBlockedRxns function
+% USAGE:
 %
-% OUTPUT
-% RefinedReactionsCarryingFlux     Reactions that were added through
-%                                  refinement of the genome annotations
-%                                  and can carry flux
+%    [RefinedReactionsCarryingFlux, BlockedRefinedReactions] = testRefinedReactions(microbeID, BlockedRxns)
 %
-% BlockedRefinedReactions          Reactions that were added through
-%                                  refinement of the genome annotations
-%                                  and cannot carry flux
+% INPUTS:
+%    microbeID:                       Microbe ID in data file with refined genome annotations
+%    BlockedRxns:                     Reactions in the COBRA model that cannot carry flux:
+%                                     output of identifyBlockedRxns function
 %
+% OUTPUTS:
+%    RefinedReactionsCarryingFlux:    Reactions that were added through
+%                                     refinement of the genome annotations
+%                                     and can carry flux
+%    BlockedRefinedReactions:         Reactions that were added through
+%                                     refinement of the genome annotations
+%                                     and cannot carry flux
 %
-% Almut Heinken, Nov 2019
+% .. Author: - Almut Heinken, Nov 2019
 
 BlockedRefinedReactions = {};
 RefinedReactionsCarryingFlux = {};

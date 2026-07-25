@@ -1,4 +1,31 @@
-function [thermoModel, thermoModelMetBool, thermoModelRxnBool] = extractSemiSteadyStateModel(model,rxnWeights, metWeights, param)
+function [thermoModel, thermoModelMetBool, thermoModelRxnBool] = extractSemiSteadyStateModel(model, rxnWeights, metWeights, param)
+% Extract a semi-steady-state thermodynamically consistent submodel by keeping only
+% the metabolites with a non-zero, non-NaN weight, then calling thermoKernel
+%
+% USAGE:
+%
+%    [thermoModel, thermoModelMetBool, thermoModelRxnBool] = extractSemiSteadyStateModel(model, rxnWeights, metWeights, param)
+%
+% INPUTS:
+%    model:    COBRA model with fields:
+%
+%                * .S - `m x n` stoichiometric matrix
+%                * .b - `m x 1` accumulation (right hand side of S*v = b)
+%                * .csense - `m x 1` constraint sense for each metabolite
+%                * .mets - `m x 1` metabolite identifiers
+%                * .SConsistentMetBool - `m x 1` boolean, stoichiometrically consistent metabolites
+%                * .fluxConsistentMetBool - `m x 1` boolean, flux consistent metabolites
+%
+%    rxnWeights:    `n x 1` real-valued penalties on reactions (negative promotes active, positive promotes inactive)
+%    metWeights:    `m x 1` real-valued penalties on metabolites (negative promotes present, positive promotes absent); metabolites with a zero or NaN weight are dropped
+%
+% OPTIONAL INPUT:
+%    param:    a structure of parameters passed through to thermoKernel
+%
+% OUTPUTS:
+%    thermoModel:    the extracted semi-steady-state COBRA submodel
+%    thermoModelMetBool:    `m x 1` boolean, true for metabolites retained in thermoModel
+%    thermoModelRxnBool:    `n x 1` boolean, true for reactions retained in thermoModel
 
 if ~exist('param','var')
     param = struct();

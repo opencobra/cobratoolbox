@@ -19,6 +19,8 @@ function [modelD, solutionThermoRecon, solutionRecon, model1] = setThermoReactio
 % INPUT:
 %    model:                  structure with fields:
 %
+%                              * model.lb - `n x 1` lower flux bounds
+%                              * model.ub - `n x 1` upper flux bounds
 %                              * model.NaNdG0RxnBool - reactions with NaN Gibbs Energy
 %                              * model.transportRxnBool - transport reactions
 %                              * model.directions: Reactions that are qualitatively assigned by thermodynamics:
@@ -39,9 +41,13 @@ function [modelD, solutionThermoRecon, solutionRecon, model1] = setThermoReactio
 %                                * directions.ChangeForwardReversibleBool_dGfGC_bydGt0RHS
 %                                * directions.ChangeForwardReversibleBool_dGfGC_byConc_No_dGt0ErrorLHS
 %                                * directions.ChangeForwardReversibleBool_dGfGC_byConc_No_dGt0ErrorRHS
+%    maxFlux:                maximum flux magnitude used for unbounded reaction
+%                            bounds. Default is 1000.
+%    hardCoupleOxPhos:       {0, 1} if 1, hard-couple oxidative phosphorylation
+%                            reactions. Default is 0.
 %
 % OUTPUTS:
-%    model:                  structure with fields:
+%    modelD:                 structure with fields:
 %
 %                              * model.lb_reconThermo - lower bound
 %                              * model.ub_reconThermo - upper bound
@@ -49,6 +55,7 @@ function [modelD, solutionThermoRecon, solutionRecon, model1] = setThermoReactio
 %                            reconstruction directions, with exceptions
 %                            specific to E. coli given below
 %    solutionRecon:          FBA with reconstruction direction
+%    model1:                 intermediate model returned during assignment
 %
 % .. Author: - Ronan M. T. Fleming
 

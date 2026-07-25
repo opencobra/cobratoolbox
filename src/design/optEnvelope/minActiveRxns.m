@@ -1,49 +1,64 @@
-function [data]=minActiveRxns(model, matchRev, K, minP, toDel, timeLimit, midPoints, printLevel)
-% This function finds a set of minimum number of reactions needed to be active at
-% a specific point on production envelope for best possible production
-% envelope
+function [data] = minActiveRxns(model, matchRev, K, minP, toDel, timeLimit, midPoints, printLevel)
+% minActiveRxns finds the minimum set of active reactions for an envelope
+%
+% Finds a minimum-size set of reactions that must be active at a specific
+% point on the production envelope to obtain the best possible production
+% envelope.
 %
 % USAGE:
-%   [data]=minActiveRxns(model, matchRev, K, minP, toDel, timeLimit, midPoints, printLevel)
+%
+%    [data] = minActiveRxns(model, matchRev, K, minP, toDel, timeLimit, midPoints, printLevel)
 %
 % INPUTS:
-%   model         COBRA model structure in irreversible form [struct]
-%   matchRev      Matching of forward and backward reactions of a reversible
-%                 reaction [double array]
-%   K             List of reactions that cannot be selected for knockout (reaction IDs) [double array]
-%   minP          Struct with information about biomass and desired product.
-%                       * bioID         ID of biomass [double]
-%                       * bioMin        1% of max value of biomass in wild-type [double]
-%                       * bioMax        max value of biomass in wild-type [double]
-%                       * proID         ID of desired product[double]
-%                       * proMin        1% of max value of desired product in wild-type [double]
-%                       * proMax        max value of desired product in wild-type [double]
-%   toDel         Numeric variable that shows what to delete:
-%                       0: reactions
-%                       1: genes
-%                       2: enzymes
-%   timeLimit     Time limit for gurobi optimization (in seconds) [double]
-%   midPoints     Number of mid points to calculate active reactions for (default: 0) [double]
-%   printLevel    Print level for gurobi optimization (default: 0) [double]
+%    model:         COBRA model structure in irreversible form with fields:
+%
+%                     * .S - Stoichiometric matrix
+%                     * .rxns - Reaction identifiers
+%                     * .b - Right hand side values for metabolite constraints
+%                     * .lb - Lower bounds
+%                     * .ub - Upper bounds
+%                     * .genes - Gene identifiers
+%                     * .rxnGeneMat - Reaction-gene incidence matrix
+%    matchRev:      Matching of forward and backward reactions of a
+%                   reversible reaction [double array]
+%    K:             List of reactions that cannot be selected for knockout
+%                   (reaction IDs) [double array]
+%    minP:          Struct with the fields:
+%
+%                     * .bioID - Reaction ID of biomass [double]
+%                     * .bioMin - 1% of the max biomass in the wild-type [double]
+%                     * .proID - Reaction ID of desired product [double]
+%                     * .proMin - 1% of the max desired product in the wild-type [double]
+%                     * .proMax - Max desired product in the wild-type [double]
+%
+% OPTIONAL INPUTS:
+%    toDel:         Numeric flag for what to delete: 0 = reactions,
+%                   1 = genes, 2 = enzymes (default: 0)
+%    timeLimit:     Time limit for the MILP solver in seconds [double]
+%                   (default: inf)
+%    midPoints:     Number of mid points to calculate active reactions for
+%                   [double] (default: 0)
+%    printLevel:    Print level for the MILP solver [double] (default: 0)
 %
 % OUTPUTS:
-%   data          Struct with information about:
-%                       * pro           Minimal product for best envelope
-%                       * bio           Maximum biomass for best envelope
-%                       * results       results of MILP
-%                       * mainModel     model for main envelope
-%                       * mainActive    List of active reactions for main envelope
-%                       * models        models for all mid envelopes
-%                       * active        Lists for active reactions for mid envelopes
+%    data:          Struct with the fields:
+%
+%                     * .pro - Minimal product for the best envelope
+%                     * .bio - Maximum biomass for the best envelope
+%                     * .results - Results of the MILP for each point
+%                     * .mainModel - Model for the main envelope
+%                     * .mainActive - List of active reactions for the main envelope
+%                     * .models - Models for all mid envelopes
+%                     * .active - Lists of active reactions for mid envelopes
 %
 % NOTE:
-%   This function is designed to be used with optEnvelope and was not
-%   designed as stand-alone function.
+%    This function is designed to be used with optEnvelope and was not
+%    designed as a stand-alone function.
 %
-% AUTHORS:
-%   created by    Ehsan Motamedian        09/02/2022
-%   modified by   Kristaps Berzins        31/10/2022
-%   modified by   Kristaps Berzins        30/10/2024     Added calculation of active reactions for middle points
+% .. Authors:
+%       - Ehsan Motamedian, 09/02/2022, created
+%       - Kristaps Berzins, 31/10/2022, modified
+%       - Kristaps Berzins, 30/10/2024, added calculation of active reactions for middle points
 
 if nargin < 5
     toDel = 0;

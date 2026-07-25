@@ -8,13 +8,13 @@ function genes = findHighlyLowlyExpressedGenesGT1(threshold, geneNames, expressi
 %   genes = findHighlyLowlyExpressedGenesGT1(threshold, geneNames, expressionValues)
 %
 % INPUTS:
-%   threshold:              double
-%   geneNames:              char cell array ix1 with all gene Ids
-%   expressionValues:       double cell array ix1 with gene expression
+%    threshold:              double
+%    geneNames:              char cell array ix1 with all gene Ids
+%    expressionValues:       double cell array ix1 with gene expression
 %                           values
 %
 % OUTPUTS:
-%	genes:                  cell array ix3 where columns include geneId, 
+%    genes:                  cell array ix3 where columns include geneId, 
 %                           expressionValue, expression classification - 'High'/'Low'
 %
 % .. Authors:

@@ -1,26 +1,42 @@
 function [x, info] = analyticCenter(f, x, opts)
-% x = analyticCenter(f, opts, x)
-% compute the analytic center for the domain {Ax=b} intersect the domain of f
-% 
-% Input:
-%    f - a ConvexProgram
-%    x - a feasible initial point (optional)
-%    opts - a structure for options with the following properties (optional)
-%       MaxIter - maximum number of iterations
-%       Output - maximum number of iterations
-%       CentralityTol, FeasibilityTol - stop the following are satisfied
-%           ||(A' * lambda - grad f(x)) / sqrt(hess)||_inf < CentralityTol
-%           ||A x - b||_inf < FeasibilityTol
-%       CollapseDistanceTol - 
-%           if x_i is CollapseDistanceTol close to some boundary,
-%           we assume the block i is tight.
-%       SolverIter - the number of iteration in solving linear systems
-%       VectorType - the class we use for x (@double, @ddouble, @qdouble)
-% 
-% Output:
-%  x - It outputs the analytic center of f
-%  info - a structure containing centrality, feasibility and iter.
-%  f - the problem f will be modified as we discover collapsed subspace
+% Compute the analytic center of the domain {Ax = b} intersected with the domain of f
+%
+% USAGE:
+%
+%    [x, info] = analyticCenter(f, x, opts)
+%
+% INPUTS:
+%    f:          a `ConvexProgram` object describing the feasible domain, with fields:
+%
+%                  * .feasible - logical flag, false if the problem is infeasible
+%                  * .solver - linear-system solver object (factorize/solve)
+%                  * .A - constraint matrix of the equality system `A x = b`
+%                  * .b - right-hand side of the equality system `A x = b`
+%                  * .barrier - self-concordant barrier for the domain
+%                  * .c - linear objective coefficient vector (may be empty)
+%                  * .df - handle to the gradient of the nonlinear objective (may be empty)
+%                  * .scale - scaling applied to the exported gradient of the objective
+%                  * .idx - index mapping into the exported (original) space
+%                  * .scale2 - scaling applied to the exported Hessian of the objective
+%
+% OPTIONAL INPUTS:
+%    x:          feasible initial point; a heuristic point is used if omitted or infeasible
+%    opts:       structure of options with fields:
+%
+%                  * .MaxIter - maximum number of iterations
+%                  * .Output - handle used to print progress (e.g. `@disp`)
+%                  * .CentralityTol - centrality stopping tolerance on the scaled residual
+%                  * .FeasibilityTol - feasibility stopping tolerance on `||A x - b||_inf`
+%                  * .CollapseDistanceTol - distance below which a block is assumed tight
+%                  * .SolverIter - number of iterations used to solve the linear systems
+%                  * .VectorType - numeric class for `x` (`@double`, `@ddouble`, `@qdouble`)
+%
+% OUTPUTS:
+%    x:          the analytic center of `f`, or empty if the problem is infeasible
+%    info:       structure with fields centrality, feasibility, iter and hess
+%
+% NOTE:
+%    `f` is a handle object and is modified in place as collapsed subspaces are discovered.
 
 defaultOpts = struct('MaxIter', 1000, 'Output', @disp, 'CentralityTol', 1e-8, 'FeasibilityTol', 1e-12, ...
             'CollapseDistanceTol', 1e-8, 'SolverIter', 3, 'VectorType', @ddouble);

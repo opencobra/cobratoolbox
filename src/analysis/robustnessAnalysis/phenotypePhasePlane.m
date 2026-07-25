@@ -20,7 +20,7 @@ function [growthRates, shadowPrices1, shadowPrices2] = phenotypePhasePlane(model
 %    range2:           the range of reaction 2 to plot (Default = 20)
 %
 % OUTPUTS:
-%    growthRates1:     a matrix of maximum growth rates
+%    growthRates:      a matrix of maximum growth rates
 %    shadowPrices1:    a matrix of `rxn` 1 shadow prices
 %    shadowPrices2:    a matrix of `rxn` 2 shadow prices
 %

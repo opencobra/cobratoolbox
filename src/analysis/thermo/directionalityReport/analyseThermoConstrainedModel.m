@@ -1,4 +1,8 @@
 function [out] = analyseThermoConstrainedModel(model, cumNormProbCutoff, printLevel, resultsBaseFileName)
+% Analyse a thermodynamically constrained model: compute directionality
+% statistics, report directionality changes, and optionally generate
+% directionality figures.
+%
 % USAGE:
 %
 %    [out] = analyseThermoConstrainedModel(model, cumNormProbCutoff, printLevel, resultsBaseFileName)
@@ -23,6 +27,9 @@ function [out] = analyseThermoConstrainedModel(model, cumNormProbCutoff, printLe
 %                                irreversible in the forward direction, -1 for
 %                                reactions that are irreversible in the reverse
 %                                direction, and 0 for reversible reactions.
+%                              * .transportRxnBool - `n x 1` boolean, true for transport reactions
+%                              * .directions - structure of boolean directionality-assignment
+%                                vectors (populated by directionalityStats)
 %    cumNormProbCutoff:      default = 0.2
 %    printLevel:             verbose level, default = 1
 %    resultsBaseFileName:

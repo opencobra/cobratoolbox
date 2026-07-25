@@ -8,30 +8,30 @@ function [expressionCol,  gene_used, signifCol] = selectGeneFromGPR(model, gene_
 %   [expressionCol,  gene_used, signifCol] = selectGeneFromGPR(model, gene_names, gene_exp, parsedGPR, minSum, gene_sig)
 %
 % INPUTS:
-%   model:          COBRA model struct
-%   gene_names:     gene identifiers corresponding to gene_exp. Names must
+%    model:          COBRA model struct
+%    gene_names:     gene identifiers corresponding to gene_exp. Names must
 %                   be in the same format as model.genes (column vector)
 %                   (as returned by "findUsedGeneLevels.m")
-%   gene_exp:       gene FPKM/expression values, corresponding to names (column vector)
+%    gene_exp:       gene FPKM/expression values, corresponding to names (column vector)
 %                   (as returned by "findUsedGeneLevels.m")
-%   parsedGPR:      GPR matrix as returned by "GPRparser.m"
+%    parsedGPR:      GPR matrix as returned by "GPRparser.m"
 %
 % OPTIONAL INPUTS:
-%   minSum:         instead of using min and max, use min for AND and Sum
+%    minSum:         instead of using min and max, use min for AND and Sum
 %                   for OR
-%   gene_sig:       vector of significance values associated to each
+%    gene_sig:       vector of significance values associated to each
 %                   'gene_id' (as returned by "findUsedGeneLevels.m")
 %
 % OUTPUTS:
-%   expressionCol:  reaction expression, corresponding to model.rxns.
+%    expressionCol:    reaction expression, corresponding to model.rxns.
 %                   No gene-expression data and orphan reactions will
 %                   be given a value of NaN.
-%   gene_used:      gene identifier, corresponding to model.rxns, from GPRs
+%    gene_used:      gene identifier, corresponding to model.rxns, from GPRs
 %                   whose value (expression and/or significance) was chosen for that
 %                   reaction
 %
 % OPTIONAL OUTPUTS:
-%   signifCol:      reaction significance, corresponding to model.rxns.
+%    signifCol:      reaction significance, corresponding to model.rxns.
 %                   No gene-expression data and orphan reactions will
 %                   be given a value of 0.
 %

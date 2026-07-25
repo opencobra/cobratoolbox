@@ -10,14 +10,19 @@ function [blockedIrrRxns, sol, tol] = findBlockedIrrRxns(model, tol, varargin)
 %    [blockedIrrRxns, fluxes] = findBlockedIrrRxns(model, tol, parameters)
 %
 % INPUT:
-%    model:           COBRA model
+%    model:           COBRA model structure with fields:
 %
-% OPTIONAL INPUTL
+%                       * .S - `m x n` stoichiometric matrix
+%                       * .b - `m x 1` right hand side values for the `S*v = b` constraints
+%                       * .lb - `n x 1` lower bounds on reaction fluxes
+%                       * .ub - `n x 1` upper bounds on reaction fluxes
+%
+% OPTIONAL INPUTS:
 %    tol:             tolerance for zeros (default feasTol*10, use default if the input is smaller)
 %    parameters:      COBRA and solver-specific parameters, as a input structure or parameter/value inputs
 %
 % OUTPUTS:
-%    blockedIrrRxns:  cell array of blocked irreversible reactions
+%    blockedIrrRxns:      cell array of blocked irreversible reactions
 %    sol:             solution structure from solveCobraLP
 %    tol:             tolerance for zeros used (might be different from the input)
 

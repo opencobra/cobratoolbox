@@ -11,7 +11,14 @@ function results = verifyModel(model, varargin)
 %    results = verifyModel(model, varargin)
 %
 % INPUT:
-%    model:       a structure that represents the COBRA model.
+%    model:       a structure that represents the COBRA model, with fields:
+%
+%                   * .rxns - reaction identifiers (read when checking flux consistency)
+%                   * .mets - metabolite identifiers (read when checking dead-end metabolites)
+%                   * .metCharges - metabolite charges (read, or created as NaN if absent, when checking mass or charge balance)
+%                   * .metFormulas - metabolite chemical formulas (read, or created as empty if absent, when checking mass balance)
+%                   * .fieldProperties - custom field property definitions (optional; used in place of the
+%                     built-in defined field properties for an additional structural check, if present)
 %
 % OPTIONAL INPUT:
 %    varargin:    varargin describes the additional checks (except the

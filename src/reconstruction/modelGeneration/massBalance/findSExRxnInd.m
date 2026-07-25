@@ -9,16 +9,22 @@ function model = findSExRxnInd(model, nRealMet, printLevel)
 % USAGE:
 %
 %    model = findSExRxnInd(model, nRealMet, printLevel)
-% model.SIntRxnBool         Boolean of reactions heuristically though to be mass balanced.
 %
 % INPUT:
-%    model:         structure with:
-%                           
-%                     * S - m x n stoichiometric matrix
+%    model:         COBRA model structure with fields:
+%
+%                     * .S - `m` x `n` stoichiometric matrix
+%                     * .mets - metabolite identifiers
+%                     * .rxns - reaction identifiers
+%                     * .c - `n` x 1 linear objective coefficient vector (created as zeros if absent)
+%                     * .sex - whole-body model organ/sex identifier (optional; if present, organ prefixes are stripped from `.rxns` before the exchange-reaction heuristics)
+%                     * .subSystems - reaction subsystem annotation (optional, used for HMR-style exchange-reaction heuristics)
+%                     * .rxnComps - reaction compartment annotation (optional, used together with `.subSystems`)
 %
 % OPTIONAL INPUT:
-%    model:         structure with:             
-%                     * model.biomassRxnAbbr - abbreviation of biomass reaction
+%    model:         COBRA model structure with the optional field:
+%
+%                     * .biomassRxnAbbr - abbreviation of biomass reaction
 %    nRealMet:      specified in case extra rows in `S` which dont correspond to metabolties
 %    printLevel:    verbose level
 %

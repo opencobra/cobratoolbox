@@ -7,7 +7,9 @@ function directionality = printDirectionalityFromBounds(model, lb, ub)
 %    directionality = printDirectionalityFromBounds(model, lb, ub)
 %
 % INPUT:
-%    model:             COBRA model structure
+%    model:             COBRA model structure with field:
+%
+%                         * .S - `m x n` stoichiometric matrix
 %
 % OPTIONAL INPUTS:
 %    lb:                flux lower bounds

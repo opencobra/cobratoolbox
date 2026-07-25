@@ -7,9 +7,17 @@ function [fluxConsistentMetBool, fluxConsistentRxnBool, fluxInConsistentMetBool,
 %    [fluxConsistentMetBool, fluxConsistentRxnBool, fluxInConsistentMetBool, fluxInConsistentRxnBool, model] = findFluxConsistentSubset(model, param, printLevel)
 %
 % INPUTS:
-%    model:                      structure with field:
+%    model:                      structure with fields:
 %
 %                                  * .S - `m` x `n` stoichiometric matrix
+%                                  * .mets - `m` x 1 cell array of metabolite identifiers
+%                                  * .b - `m` x 1 right hand side values for metabolite constraints
+%                                  * .csense - `m` x 1 constraint senses (`'E'`, `'L'`, `'G'`)
+%                                  * .rxns - `n` x 1 cell array of reaction identifiers
+%                                  * .lb - `n` x 1 lower bounds on fluxes
+%                                  * .ub - `n` x 1 upper bounds on fluxes
+%                                  * .c - `n` x 1 objective coefficients
+%                                  * .rev - the 0-1 vector with 1's corresponding to the reversible reactions (if using swiftcc)
 %
 % OPTIONAL INPUTS:
 %    param:                      can contain:
@@ -22,12 +30,10 @@ function [fluxConsistentMetBool, fluxConsistentRxnBool, fluxInConsistentMetBool,
 %                                  * param.signedCyclicFluxConsistency -
 %                                  {(0),1} 1 = identify reactions that are
 %                                  forward flux consistent for a forward
-%                                  cycle, or reverse flux consistent for a reverse cycle 
+%                                  cycle, or reverse flux consistent for a reverse cycle
+%                                  * param.printLevel - verbose level (used if the `printLevel` argument is not given)
 %
 %    printLevel:                 verbose level
-%
-%    model.rev - the 0-1 vector with 1's corresponding to the reversible reactions (if using swiftcc)
-%
 %
 % OUTPUTS:
 %    fluxConsistentMetBool:      `m` x 1 boolean vector indicating flux consistent `mets`
@@ -40,6 +46,9 @@ function [fluxConsistentMetBool, fluxConsistentRxnBool, fluxInConsistentMetBool,
 %                                  * .fluxConsistentRxnBool
 %                                  * .fluxInConsistentMetBool
 %                                  * .fluxInConsistentRxnBool
+%    fluxConsistModel:           COBRA model structure containing only the flux consistent
+%                                reactions (and their metabolites), or the unmodified `model`
+%                                if all reactions are already flux consistent
 %
 % .. Authors:
 %       - Ronan Fleming, 2017

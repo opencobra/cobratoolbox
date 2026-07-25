@@ -1,4 +1,4 @@
-function [reactionNames,rxnPos]  = findRxnsFromSubSystem(model,subSystem)
+function [reactionNames, rxnPos] = findRxnsFromSubSystem(model, subSystem)
 % Find all reactions which are part of a given subsystem.
 %
 % USAGE:
@@ -7,7 +7,12 @@ function [reactionNames,rxnPos]  = findRxnsFromSubSystem(model,subSystem)
 %
 % INPUT:
 %    model:                 A COBRA model struct with at least rxns and
-%                           subSystems fields
+%                           subSystems fields, including:
+%
+%                             * .rxns - `n x 1` reaction identifiers
+%                             * .subSystemNames - list of unique subsystem names
+%                             * .rxn2subSystem - reaction-to-subsystem membership matrix
+%
 %    subSystem:             A String identifying a subsystem
 %
 % OUTPUT:

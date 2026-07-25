@@ -11,16 +11,16 @@ function [bondsBrokenAndFormed, substrateMass] = findBondsBrokenAndFormed(model,
 %
 %                   * .rxns - An n x 1 array of reaction identifiers.
 %                             Should match metabolite identifiers in
-%    rxnList    List of reactions from which the enthalpy change
+%    rxnList:    List of reactions from which the enthalpy change
 %               will be computed.
-%    rxnDir     Directory of with the RXN files.
-%    printLevel Print figure with the relation of mass vs bondsBF bondsE
+%    rxnDir:     Directory of with the RXN files.
+%    printLevel:    Print figure with the relation of mass vs bondsBF bondsE
 %
 % OUTPUTS:
-%    bondsBF       An n x 1 vector with the number of bonds broken and
+%    bondsBrokenAndFormed:    An n x 1 vector with the number of bonds broken and
 %                  formed. External or pasive transpor reactions are equal
 %                  to 0; missing and unbalanced reactions are NaN.
-%    substrateMass Total mass of the substrates
+%    substrateMass:    Total mass of the substrates
 %
 % .. Author: - German A. Preciat Gonzalez 12/06/2017
 

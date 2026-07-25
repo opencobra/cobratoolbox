@@ -5,7 +5,9 @@ function [funParams, cobraParams, solverVarargin] = parseCobraVarargin(varArgIn,
 % (iii) parameter structure inputss
 %
 % USAGE:
-%    [funParams, cobraParams, solverVaragin] = parseCobraVarargin(optArgin, defaultValues, validator, problemTypes, keyForSolverParams, emptyForDefault)
+%
+%    [funParams, cobraParams, solverVarargin] = parseCobraVarargin(varArgIn, optArgin, defaultValues, validator, problemTypes, keyForSolverParams, emptyForDefault)
+%
 %
 % INPUTS:
 %    varArgIn:          cell array of additional inputs for the function (= varargin in that function)
@@ -17,7 +19,7 @@ function [funParams, cobraParams, solverVarargin] = parseCobraVarargin(varArgIn,
 % OPTIONAL INPUTS:
 %    problemTypes:       cell array of cobra supported optimization problems needed to solve in the function
 %                        (default {'LP', 'MILP', 'QP', 'MIQP'})
-%    keyForSolverParams: the keyword for solver-specific parameter structure in `optArgin` if solver-specific parameter structure
+%    keyForSolverParams:    the keyword for solver-specific parameter structure in `optArgin` if solver-specific parameter structure
 %                        is an explicit optional input argument in optArgin (which is NOT encouraged when writing cobra functions
 %                        because the solver-specific parameter structure as a convention among cobra functions can be inputted 
 %                        without keyword and is handled this way in this parsing process). 
@@ -30,7 +32,7 @@ function [funParams, cobraParams, solverVarargin] = parseCobraVarargin(varArgIn,
 %                         Can be assigned in the function easily by [argIn1, argIn2, ...] = deal(funParams{:})
 %    cobraParams:        structure containing parsed cobra parameters for each problem type in `problemTypes`, 
 %                        to be used within the cobra function being written.
-%    solverVaragin:      structure containing parsed cobra-problem-specific addition inputs as a cell array for each problem type in `problemTypes`,
+%    solverVarargin:     structure containing parsed cobra-problem-specific addition inputs as a cell array for each problem type in `problemTypes`,
 %                        with the first cell being the solver-specific parameter structure
 %                        e.g., solverVarargin.LP contains the additional inputs for solveCobraLP, with solverVarargin.LP{1}
 %                        being the solver-specific parameter structure, called as solveCobraLP(LPproblem, solverVarargin.LP{:})

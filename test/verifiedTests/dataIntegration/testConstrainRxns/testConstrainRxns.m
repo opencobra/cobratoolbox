@@ -5,6 +5,10 @@ function tests = testConstrainRxns
     %   * a bound of an extra variable can be relaxed by
     %     quadratic relaxation.
     %   * model is feaible after relaxation 
+
+    % require LP and QP solvers; skip gracefully if none is available
+    prepareTest('needsLP', true, 'needsQP', true);
+
     tests = functiontests(localfunctions);
 end
 function setupOnce(testCase)

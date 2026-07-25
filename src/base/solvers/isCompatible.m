@@ -9,9 +9,9 @@ function compatibleStatus = isCompatible(solverName, printLevel, specificSolverV
 %    compatibleStatus = isCompatible(solverName, printLevel, specificSolverVersion)
 %
 % INPUT:
-%    solverName:            Name of the solver
-%    printLevel:            verbose level (default: 0)
-%    specificSolverVersion: string with specific solver version (example: '12.7.1' or '6.5.1')
+%    solverName:              Name of the solver
+%    printLevel:              verbose level (default: 0)
+%    specificSolverVersion:    string with specific solver version (example: '12.7.1' or '6.5.1')
 %
 % OUTPUT:
 %    compatibleStatus:      compatibility status

@@ -7,23 +7,24 @@ function [interactionsByTaxon] = calculateInteractionsByTaxon(pairwiseInteractio
 %
 % USAGE:
 %
-%   [interactionsByTaxon]=calculateinteractionsByTaxon(pairwiseInteractions,taxonInfo)
+%    [interactionsByTaxon] = calculateInteractionsByTaxon(pairwiseInteractions, taxonInformation)
 %
 % INPUTS:
-%   pairwiseInteractions:    a table with pairwise interactions computed
-%                            for a number of analyzed microbe models (output of the function
-%                            simulatePairwiseInteractions)
-%   taxonInformation:        a table with taxonomical information on the
-%                            analyzed microbes. Needs to contain at least six columns:
-%                            1. The names of the analyzed model structures
-%                            in the first column
-%                            2-6. A column with the appropriate information
-%                            and the header
-%                            'Genus','Family','Order','Class','Phylum'
-%                            respectively.
+%    pairwiseInteractions:    a table with pairwise interactions computed
+%                             for a number of analyzed microbe models (output of the function
+%                             simulatePairwiseInteractions)
+%    taxonInformation:        a table with taxonomical information on the
+%                             analyzed microbes. Needs to contain at least six columns:
+%                             1. The names of the analyzed model structures
+%                             in the first column
+%                             2-6. A column with the appropriate information
+%                             and the header
+%                             'Genus','Family','Order','Class','Phylum'
+%                             respectively.
+%
 % OUTPUT:
-%   interactionsByTaxon:     a structure with the outcomes predicted for
-%                            all taxa on each taxonomical level.
+%    interactionsByTaxon:     a structure with the outcomes predicted for
+%                             all taxa on each taxonomical level.
 %
 % .. Author:
 %       - Almut Heinken, 02/2018

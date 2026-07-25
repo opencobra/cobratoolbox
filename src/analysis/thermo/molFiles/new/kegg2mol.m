@@ -21,7 +21,7 @@ function kegg2mol(cid, molfileDir, mets, takeMajorMS, pH, takeMajorTaut, forceRe
 %    pH:               pH for computing major microspecies.
 %    takeMajorTaut:    {0, (1)}. If 1 (default), molfiles will be saved as the
 %                      major tautomers of the major microspecies at the specified pH.
-%    forceReplacement: {(0),1} if true then the mol file is regenerated regardless of
+%    forceReplacement:    {(0),1} if true then the mol file is regenerated regardless of
 %                      whether it is already in the molfileDir or not
 
 % Written output - One molfile for each metabolite with a KEGG Compound ID.

@@ -5,38 +5,38 @@ function [summaryConc, outliers] = summaryConcentrations(cleanedData, param)
 % metabolite names into model IDs using either user specified metabolite
 % lookup table (param.metLookupTable) or/and model structure (param.model).
 %
-% Required inputs:
-%  cleanedData.Properties:
-%  cleanedData.Properties.Properties:
-%  cleanedData.Properties.VariableNames:
-%  cleanedData.group:   
-%  cleanedData.perturbation:
-%  cleanedData.compound:
-%  cleanedData.sample: 
-%  cleanedData.concentration:
-%       cleanedData          - metabolomics data in long format (output from
-%                              mzQuality, required columns: sample, type,
-%                              compound, concentration, cellLine or group,
-%                              perturbation)
+% USAGE:
 %
-% Optional inputs:
-%       param.model          - cobra model used to map metabolite to metss
-%       param.metLookupTable - table with metabolite names and model
-%                              identifiers to be mapped onto (required
-%                              columns: ChemicalName, AlternativeName,
-%                              Mets(containing metss)
-%       param.excludeGroup   - specifies any groups to be excluded from the
-%                              analysis (default: none)
-%       param.group          - specify which groups are to be analysed (default:
-%                              all unique groups specified in the cleanedData)
-%       param.printLevel     - specifies if plots with median concentration
-%                              values should be printed (0)
-%       param.perturbation   - specifies perturbations to that should be
-%                              summarised separately (default: all unique
-%                              perturbations specified in the cleanedData)
-%       param.removeOutliers - should outliers be found and removed from
-%                              the dataset (0)
-%   2021/12 Aga Wegrzyn
+%    [summaryConc, outliers] = summaryConcentrations(cleanedData, param)
+%
+% INPUTS:
+%    cleanedData:    metabolomics data in long format (output from mzQuality;
+%                    required columns: sample, type, compound, concentration,
+%                    cellLine or group, perturbation), with fields:
+%
+%                      * .Properties - table metadata (e.g. .Properties.VariableNames)
+%                      * .group - group/cell-line label for each measurement
+%                      * .perturbation - perturbation label for each measurement
+%                      * .compound - measured compound (metabolite) name
+%                      * .sample - sample identifier for each measurement
+%
+% OPTIONAL INPUTS:
+%    param:    parameters structure with the following fields:
+%
+%                * .model - COBRA model used to map metabolite names to model metabolites
+%                * .metLookupTable - table of metabolite names and model identifiers to map
+%                  onto (required columns: ChemicalName, AlternativeName, Mets)
+%                * .excludeGroup - groups to be excluded from the analysis (default: none)
+%                * .group - groups to be analysed (default: all unique groups in cleanedData)
+%                * .printLevel - set greater than zero to print plots with median concentration values (default 0)
+%                * .perturbation - perturbations to be summarised separately (default: all unique perturbations)
+%                * .removeOutliers - Logical, find and remove outliers from the dataset (default 0)
+%
+% OUTPUTS:
+%    summaryConc:    table of summarised metabolite concentrations (mean and SD) per group/perturbation
+%    outliers:    the outlier measurements detected and removed
+%
+% .. Author: - 2021/12 Aga Wegrzyn
 
 if ~isfield(param,'group') && ismember('group', cleanedData.Properties.VariableNames)
     param.group = unique(cleanedData.group);

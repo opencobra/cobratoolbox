@@ -5,7 +5,7 @@ function [L, M, moietyFormulas, moieties2mets, moieties2vectors, atoms2moieties,
 %
 % USAGE:
 %
-%    [L, M, moietyFormulas, moieties2mets, moieties2vectors, atoms2moieties, mtrans2rxns, atrans2mtrans] = identifyConservedMoieties(model, ATN)
+%    [L, M, moietyFormulas, moieties2mets, moieties2vectors, atoms2moieties, mtrans2rxns, atrans2mtrans] = identifyConservedMoietiesOld(model, ATN)
 %
 % INPUTS:
 %    model:                 Structure with following fields:
@@ -29,7 +29,7 @@ function [L, M, moietyFormulas, moieties2mets, moieties2vectors, atoms2moieties,
 %                               atom mappings) for each reaction.
 %                             * .elements - A `p x 1` cell array of element symbols for atoms in `A`.
 %
-% OUTPUTS
+% OUTPUTS:
 %    L:                     An `m x r` matrix of r moiety vectors in the left null
 %                           space of `S`.
 %    M:                     The `u x v` incidence matrix of the moiety supergraph

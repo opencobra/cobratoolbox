@@ -9,7 +9,15 @@ function [errorsA, errorsLUB, stuckPoints] = verifyPoints(sampleStruct)
 %    [errorsA, errorsLUB, stuckPoints] = verifyPoints(sampleStruct)
 %
 % INPUT:
-%    sampleStruct:    LPProblem containing points and warmup points
+%    sampleStruct:    LPProblem containing points and warmup points, with fields:
+%
+%                       * .A - constraint matrix (LHS)
+%                       * .b - right-hand-side vector
+%                       * .csense - constraint sense for each row of `A` ('E', 'L', 'G')
+%                       * .lb - lower bounds
+%                       * .ub - upper bounds
+%                       * .warmupPts - warmup points
+%                       * .points - sample points to verify
 %
 % OUTPUTS:
 %    errorsA:         Row index of the constraint in `sampleStruct` that

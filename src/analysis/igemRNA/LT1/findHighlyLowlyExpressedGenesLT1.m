@@ -8,12 +8,12 @@ function genes = findHighlyLowlyExpressedGenesLT1(threshold, trDataPath, sheetIn
 %   genes = findHighlyLowlyExpressedGenesLT1(threshold, trDataPath, sheetIndex)
 %
 % INPUTS:
-%   threshold:              double
-%   trDataPath:             char full transcriptomics data filename
-%   sheetIndex:             double target transcriptomics dataset sheet index 
+%    threshold:              double
+%    trDataPath:             char full transcriptomics data filename
+%    sheetIndex:             double target transcriptomics dataset sheet index 
 %
 % OUTPUTS:
-%	genes:                  cell array ix4 where columns include geneId, 
+%    genes:                  cell array ix4 where columns include geneId, 
 %                           expressionValue, expression classification -
 %                           'High'/'Low' and applied threshold type - 'Global'/'Local'
 %

@@ -1,4 +1,4 @@
-function [samples, roundedPolytope, minFlux, maxFlux] = chrrSampler(model, numSkip, numSamples, toRound, roundedPolytope, useFastFVA,optPercentage)
+function [samples, roundedPolytope, minFlux, maxFlux] = chrrSampler(model, numSkip, numSamples, toRound, roundedPolytope, useFastFVA, optPercentage)
 % Generate uniform random flux samples with CHRR Coordinate Hit-and-Run with Rounding.
 % chrrSampler will generate numSamples samples from model, taking `numSkip` steps of a random walk between each sample.
 % Rounding the polytope is a potentially expensive step. If you generate multiple rounds
@@ -13,9 +13,12 @@ function [samples, roundedPolytope, minFlux, maxFlux] = chrrSampler(model, numSk
 %    model:            COBRA model structure with fields:
 %
 %                        * .S - The m x n stoichiometric matrix
+%                        * .b - m x 1 right hand side of the mass balance `S v = b`
 %                        * .lb - n x 1 lower bounds on fluxes
 %                        * .ub - n x 1 upper bounds on fluxes
-%                        * .c - n x 1 linear objective
+%                        * .C - k x n matrix of additional coupling constraints
+%                        * .d - k x 1 right hand side of the coupling constraints
+%                        * .dsense - k x 1 sense of the coupling constraints ('E', 'L' or 'G')
 %    numSkip:          Number of steps of coordinate hit-and-run between samples
 %    numSamples:       Number of samples
 %
@@ -25,8 +28,12 @@ function [samples, roundedPolytope, minFlux, maxFlux] = chrrSampler(model, numSk
 %                         1 (default): round using max volume ellipsoid
 %                         2: round using isotropy (slower, more accurate)
 %                         3: Barrier rounding (the fastest among three & as efficient as isotropic rounding)
-%    roundedPolytope:  The rounded polytope from a previous round of
-%                        sampling the same model.
+%    roundedPolytope:     The rounded polytope from a previous round of
+%                         sampling the same model, with fields:
+%
+%                           * .A - inequality constraint matrix `{x | A x <= b}`
+%                           * .minFlux - flux minima from preprocessing
+%                           * .maxFlux - flux maxima from preprocessing
 %    useFastFVA:       Boolean to use fastFVA (default: `false`)
 %    optPercentage:    Only consider solutions that give you at least a certain
 %                      percentage of the optimal solution (Default = 100)
@@ -34,9 +41,10 @@ function [samples, roundedPolytope, minFlux, maxFlux] = chrrSampler(model, numSk
 %
 % OUTPUTS:
 %    samples:          `n x numSamples` matrix of random flux samples
-%    roundedPolytope:  The rounded polytope. Save for use in subsequent
-%                      rounds of sampling.
-%    minFlux, maxFlux:    flux minima and maxima
+%    roundedPolytope:     The rounded polytope. Save for use in subsequent
+%                         rounds of sampling.
+%    minFlux:          flux minima
+%    maxFlux:          flux maxima
 %
 % .. Authors:
 %       - Ben Cousins and Hulda S. Haraldsdóttir, 03/2017, Original code

@@ -15,7 +15,9 @@ function [U1, D1, V1, r] = subspaceSVD(S)
 %    S:             matrix
 %
 % OUTPUTS:
-%    U1, D1, V1:    matrices
+%    U1:            matrix with `r` orthonormal columns
+%    D1:            `r x r` diagonal matrix of numerical rank `r`
+%    V1:            matrix with `r` orthonormal columns
 %    r:             numerical rank of `D1`
 %
 % .. Author: - Michael Saunders, 29 Jul 2009 First version of subspaceSVD.m

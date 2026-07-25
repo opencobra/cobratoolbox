@@ -14,13 +14,18 @@ function model = setCommonZeroStandardGibbsEnergyOfFormation(model, adjustedMetL
 % INPUT:
 %    model:              Thermodynamic model:
 %
+%                          * .S - `m x n` stoichiometric matrix
+%                          * .mets - `m x 1` cell array of metabolite identifiers
 %                          * .met(m).dGft0 - standard transformed Gibbs energy of formation(kJ/mol)
 %                          * .met(m).dGft0Keq - standard transformed Gibbs energy of formation(kJ/mol)
 %                          * .met(m).dGft0Source - origin of data, `Keq` or `groupContFileName.txt`
 %                          * .met(m).dGft0GroupCont - group. cont. estimate of standard transformed Gibbs energy of formation(kJ/mol)
 %
 % OPTIONAL INPUT:
-%    adjustedMetList:
+%    adjustedMetList:    cell array of metabolite abbreviations to place on a
+%                        common thermodynamic baseline. Defaults to a built-in
+%                        list of Alberty cofactors.
+%
 % OUTPUT:
 %    model:              structure with field:
 %

@@ -21,9 +21,9 @@ function [param, solverOnlyParams] = parseSolverParameters(problemType, varargin
 %                       solver specific manner.
 %
 % OUTPUTS:
-%    param: The COBRA Toolbox specific parameters for this problem type given the provided parameters, plus any additional parameters
+%    param:             The COBRA Toolbox specific parameters for this problem type given the provided parameters, plus any additional parameters
 %
-%    solverOnlyParams:  Structure of parameters that only contains fields that can be passed to a specific solver, e.g., gurobi or mosek.
+%    solverOnlyParams:    Structure of parameters that only contains fields that can be passed to a specific solver, e.g., gurobi or mosek.
 %                       For some solvers, it is essential to NOT include any extraneous fields that are outside the solver interface specification,
 %                       otherwise an error will result.
 

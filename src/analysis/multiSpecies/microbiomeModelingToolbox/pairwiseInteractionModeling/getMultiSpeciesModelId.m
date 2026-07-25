@@ -6,9 +6,13 @@ function [names, ids] = getMultiSpeciesModelId(modelJoint, nameTagsModels, nameT
 %    [names, ids] = getMultiSpeciesModelId(modelJoint, nameTagsModels, nameTagHost, metTagRe, rxnTagRe, compCom, compHost)
 %
 % INPUTS:
-%    modelJoint:       COBRA multi-organism model
-%    nameTagsModels:   cell array of tags for species to identify the respective
-%                      reactions and metabolites from `modelJoint.rxns` and `.mets`
+%    modelJoint:       COBRA multi-organism model with fields:
+%
+%                        * .S - stoichiometric matrix
+%                        * .mets - metabolite identifiers
+%                        * .rxns - reaction identifiers
+%    nameTagsModels:    cell array of tags for species to identify the respective
+%                       reactions and metabolites from `modelJoint.rxns` and `.mets`
 %
 % OPTIONAL INPUTS:
 %    nameTagHost:      string of tag for the host model if exist. Input [] if no host is present

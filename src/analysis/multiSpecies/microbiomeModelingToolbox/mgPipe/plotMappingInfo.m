@@ -9,25 +9,23 @@ function Y = plotMappingInfo(resPath, patOrg, reacPat, reacTab, reacNumber, info
 %   Y = plotMappingInfo(resPath, patOrg, reacPat, reacTab, reacNumber, infoFilePath, figForm, sampNames, organisms)
 %
 % INPUTS:
-%   resPath:            char with path of directory where results are saved
-%   reac:               nx1 cell array with all the unique set of reactions
-%                       contained in the models
-%   micRea:             binary matrix assessing presence of set of unique
-%                       reactions for each of the microbes
-%   reacSet:            matrix with names of reactions of each individual
-%   reacTab:            binary matrix with presence/absence of reaction per
-%                       individual.
-%   reacAbun:           matrix with abundance of reaction per individual
-%   reacNumber:         number of unique reactions of each individual
-%   infoFilePath:       char indicating, if stratification criteria are available, 
-%                       full path and name to related documentation(default: no)
-%                       is available
-%   figForm:            format to use for saving figures
-%   sampNames:           nx1 cell array cell array with names of individuals in the study
-%   organisms:          nx1 cell array cell array with names of organisms in the study
+%    resPath:            char with path of directory where results are saved
+%    patOrg:             vector with the number of organisms present in each
+%                        individual
+%    reacPat:            matrix with number of reactions per individual
+%                        (organism resolved)
+%    reacTab:            binary matrix with presence/absence of reaction per
+%                        individual
+%    reacNumber:         number of unique reactions of each individual
+%    infoFilePath:       char indicating, if stratification criteria are available,
+%                        full path and name to related documentation(default: no)
+%                        is available
+%    figForm:            format to use for saving figures
+%    sampNames:          nx1 cell array cell array with names of individuals in the study
+%    organisms:          nx1 cell array cell array with names of organisms in the study
 %
 % OUTPUTS:
-%   Y:                  classical multidimensional scaling of individuals'
+%    Y:                  classical multidimensional scaling of individuals'
 %                       reactions repertoire
 %
 % .. Author: - Federico Baldini, 2017-2018

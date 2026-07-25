@@ -4,11 +4,21 @@ function model = flipRxnOrientation(model, rxnList)
 %
 % USAGE:
 %
-%    model = flipRxnDirectionality(model, rxnList)
+%    model = flipRxnOrientation(model, rxnList)
 %
 % INPUTS:
 %
-%    model:         A COBRA Style model structure
+%    model:         A COBRA Style model structure with fields:
+%
+%                     * .rxns - `n x 1` cell array of reaction identifiers
+%                     * .S - `m x n` stoichiometric matrix (rows for the
+%                       flipped reactions are negated)
+%                     * .c - `n x 1` objective coefficients (negated for
+%                       the flipped reactions)
+%                     * .lb - `n x 1` lower flux bounds (swapped/negated
+%                       for the flipped reactions)
+%                     * .ub - `n x 1` upper flux bounds (swapped/negated
+%                       for the flipped reactions)
 %    rxnList:       A List of reactions or a single reaction
 %
 % OUTPUTS:

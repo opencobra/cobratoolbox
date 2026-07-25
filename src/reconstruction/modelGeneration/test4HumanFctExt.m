@@ -1,21 +1,30 @@
-function [TestSolution,TestSolutionName,TestedRxns,PercTestedRxns] = test4HumanFctExt(model,test,optionSinks)
+function [TestSolution, TestSolutionName, TestedRxns, PercTestedRxns] = test4HumanFctExt(model, test, optionSinks)
 % test for the ~288 human functions
 %
 % USAGE:
-%     [TestSolution,TestSolutionName,TestedRxns,PercTestedRxns] = test4HumanFctExt(model,test,optionSinks)
+%
+%    [TestSolution, TestSolutionName, TestedRxns, PercTestedRxns] = test4HumanFctExt(model, test, optionSinks)
 %
 % INPUT:
-%    model:             model structure (Recon1, with desired in silico condition)
+%    model:             model structure (Recon1, with desired in silico condition) with fields:
+%
+%                         * .rxns - `n` x 1 cell array of reaction identifiers
+%                         * .mets - `m` x 1 cell array of metabolite identifiers
+%                         * .c - `n` x 1 objective coefficient vector (reset for each test)
+%                         * .SinkRxnBool - `n` x 1 boolean of sink reactions (used if `optionSinks`)
 %    test:              possible statements: Recon1, IECori, IEC, all (default)
 %                       (choose IECori if you intend to test the IEC model OR a model that
 %                       contains lumen ('u') as compartment otw choose IEC);
 %                       all check for Recon1 and IEC
-%    option:            if true = set sink reactions to 0 (default, leave unchanged).
+%    optionSinks:       if true = set sink reactions to 0 (default, leave unchanged).
 %                       Note that all lb's of exchanges and demands will be set to 0
 %
 % OUTPUT:
 %    TestSolution:      array containing the optimal value for the different tests
-%    TestSolutionName:  array containing the names  for the different tests
+%    TestSolutionName:    array containing the names  for the different tests
+%    TestedRxns:        cell array of reaction identifiers that carried flux
+%                       (above tolerance) in any of the tests
+%    PercTestedRxns:    percentage of `model.rxns` contained in `TestedRxns`
 %
 % .. Authors:
 %       - Ines Thiele, 09/05/09

@@ -7,7 +7,13 @@ function model = prepareModelNutrientGeneMCS(model, exchangeRxns)
 %    model = prepareModelNutrientGeneMCS(model, exchangeRxns)
 %
 % INPUTS:
-%    model:             Metabolic model structure (COBRA Toolbox format).
+%    model:             Metabolic model structure (COBRA Toolbox format) with fields:
+%
+%                         * .rxns - `n x 1` reaction identifiers
+%                         * .mets - `m x 1` metabolite identifiers
+%                         * .S - `m x n` stoichiometric matrix
+%                         * .lb - `n x 1` lower bounds
+%                         * .ub - `n x 1` upper bounds
 %
 % OPTIONAL INPUTS:
 %    exchangeRxns:      Exchange reactions to be included (default = all

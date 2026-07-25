@@ -1,4 +1,4 @@
-function [text] = writeTXT(para,fname_out)
+function [text] = writeTXT(para, fname_out)
 % Write a txt file for online PD map to highlight specific reaction nodes.
 %
 % USAGE:
@@ -11,7 +11,7 @@ function [text] = writeTXT(para,fname_out)
 %                    column contains a corresponding list of the colours (Hex
 %                    triplet, e.g.,
 %                    https://closedxml.codeplex.com/wikipage?title=Excel%20Indexed%20Colors)
-%    fanme_out:      The name of the output text file name.
+%    fname_out:      The name of the output text file name.
 %
 % OPTIONAL OUTPUT:
 %    text:           The lines of the text file

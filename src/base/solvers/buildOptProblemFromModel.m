@@ -31,7 +31,7 @@ function optProblem = buildOptProblemFromModel(model, verify, param)
 %
 % USAGE:
 %
-%    optProblem = buildoptProblemFromModel(model,verify)
+%    optProblem = buildOptProblemFromModel(model, verify, param)
 %
 % INPUT:
 %    model:     A COBRA model structure with at least the following fields
@@ -39,30 +39,57 @@ function optProblem = buildOptProblemFromModel(model, verify, param)
 %                * `.S` - The stoichiometric matrix
 %                * `.c` - Objective coeff vector
 %                * `.lb` - Lower bound vector
-%                * `.ub` - Upper bound vector              
+%                * `.ub` - Upper bound vector
 %
 % OPTIONAL INPUTS:
 %    model:       The model structure can also have these additional fields:
-% 
+%
 %                  * `.b`: accumulation/depletion vector (default 0 for each metabolite).
 %                  * `.osense`: Objective sense (-1 means maximise (default), 1 means minimise)
+%                  * `.osenseStr`: Objective sense as a string, `'max'` or `'min'`
+%                    (derived from `.osense` if not already present)
 %                  * `.csense`: a string with the constraint sense for each row in A ('E', equality(default), 'G' greater than, 'L' less than).
 %                  * `.C`: the Constraint matrix;
 %                  * `.d`: the right hand side vector for C;
 %                  * `.dsense`: the constraint sense vector;
+%                  * `.ctrs`: `ctrs x 1` column cell array of additional constraint
+%                    identifiers, used with `.C`, `.d`, `.dsense` to build
+%                    `optProblem.names` when `param.debug` is set
 %                  * `.E`: the additional Variable Matrix
 %                  * `.evarub`: the upper bounds of the variables from E;
 %                  * `.evarlb`: the lower bounds of the variables from E;
 %                  * `.evarc`: the objective coefficients of the variables from E;
+%                  * `.evars`: `evars x 1` column cell array of additional variable
+%                    identifiers, used with `.E` to build `optProblem.names` when
+%                    `param.debug` is set
 %                  * `.D`: The matrix coupling additional Constraints (form C), with additional Variables (from E);
+%                  * `.rxns`: `n x 1` column cell array of reaction identifiers,
+%                    used to build `optProblem.names` when `param.debug` is set
+%                  * `.mets`: `m x 1` column cell array of metabolite identifiers,
+%                    used to build `optProblem.names` when `param.debug` is set
+%                  * `.dxdt`: `m x 1` vector, the rate of change of concentration
+%                    with time; if present, it overrides `.b` as the right hand
+%                    side of `S*v = b`
 %                 A QPproblem structure will also have the following field:
-%                  * `.F`: Quadratic part of objective 
+%                  * `.F`: Quadratic part of objective
 %                          (F*osense must be positive semidefinite, for all solvers except Gurobi)
 %
-%    verify:     Check the input (default: true);
+%    verify:      Check the input (default: false);
+%
+%    param:       Structure with optional parameters:
+%
+%                  * `.solveWBMmethod` - the optimisation problem type to build,
+%                    one of `'LP'`, `'QP'`, `'QPold'`, `'QRLP'` (quadratically
+%                    regularised LP), or `'QRQP'` (quadratically regularised QP)
+%                    (default: none of the QR variants are applied)
+%                  * `.debug` - logical, if true and `.solver` is `'mosek'`, populate
+%                    `optProblem.names` with model reaction/metabolite/constraint/
+%                    variable identifiers for debugging (default: false)
+%                  * `.solver` - the name of the solver in use, checked only when
+%                    `.debug` is true
 %
 % OUTPUT:
-%    optProblem: A COBRA optProblem structure with the following fields:
+%    optProblem:    A COBRA optProblem structure with the following fields:
 %
 %                * `.A`: LHS matrix
 %                * `.b`: RHS vector
@@ -72,7 +99,10 @@ function optProblem = buildOptProblemFromModel(model, verify, param)
 %                * `.osense`: Objective sense (`-1`: maximise (default); `1`: minimise)
 %                * `.csense`: string with the constraint sense for each row in A ('E', equality, 'G' greater than, 'L' less than).
 %                * `.F`: Positive semidefinite matrix for quadratic part of objective
-% OPTIONAL OUTPUT:
+%
+% NOTE:
+%    An internal error message refers to this parameter as `param.method`;
+%    the parameter actually read by this function is `param.solveWBMmethod`.
 
 
 [nMet,nRxn]=size(model.S);

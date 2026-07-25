@@ -1,3 +1,7 @@
+% Illustrate row-rank sufficiency of the [F, R] half-stoichiometric matrix on
+% small toy examples: build forward and reverse matrices F and R from a chosen
+% stoichiometric matrix and report the rank (and left-nullspace) of [F R].
+
 clear
 test=3;
 switch test

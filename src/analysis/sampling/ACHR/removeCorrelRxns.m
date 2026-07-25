@@ -6,7 +6,9 @@ function [selRxns, rxnSets, rxnList, Rfilt] = removeCorrelRxns(model, R, correlC
 %    [selRxns, rxnSets, rxnList, Rfilt] = removeCorrelRxns(model, R, correlCutoff)
 %
 % INPUTS:
-%    model:           COBRA model structure
+%    model:           COBRA model structure, with fields:
+%
+%                       * .rxns - reaction identifiers
 %    R:               Correl coefficient matrix
 %
 % OPTIONAL INPUT:

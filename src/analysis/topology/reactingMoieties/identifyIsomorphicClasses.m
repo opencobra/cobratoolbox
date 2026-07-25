@@ -1,18 +1,22 @@
 function [isomorphismClasses, firstSubgraphIndices, subsequentSubgraphIndices] = identifyIsomorphicClasses(CBSubgraphs, sanityChecks)
-% identifyIsomorphicClasses - Identifies isomorphism classes for a set of subgraphs.
+% Identifies isomorphism classes for a set of subgraphs
 %
-% Inputs:
-%   CBSubgraphs - Cell array where each cell contains a subgraph.
-%   sanityChecks - Boolean flag to enable additional consistency checks.
+% USAGE:
 %
-% Outputs:
-%   isomorphismClasses - Cell array where each cell contains indices of isomorphic subgraphs.
-%   firstSubgraphIndices - Indices of the first subgraph in each isomorphism class.
-%   subsequentSubgraphIndices - Array mapping subgraphs to their isomorphism class.
+%    [isomorphismClasses, firstSubgraphIndices, subsequentSubgraphIndices] = identifyIsomorphicClasses(CBSubgraphs, sanityChecks)
 %
-% Notes:
-%   - Requires MATLAB R2016b or later for the `isisomorphic` function with variable matching.
-%   - Node and edge properties are compared for isomorphism detection.
+% INPUTS:
+%    CBSubgraphs:                 cell array where each cell contains a subgraph
+%    sanityChecks:                boolean flag to enable additional consistency checks
+%
+% OUTPUTS:
+%    isomorphismClasses:          cell array where each cell contains indices of isomorphic subgraphs
+%    firstSubgraphIndices:        indices of the first subgraph in each isomorphism class
+%    subsequentSubgraphIndices:    array mapping subgraphs to their isomorphism class
+%
+% NOTE:
+%    Requires MATLAB R2016b or later for the `isisomorphic` function with variable
+%    matching. Node and edge properties are compared for isomorphism detection.
 
     % Initialize variables
     numSubgraphs = size(CBSubgraphs, 1);

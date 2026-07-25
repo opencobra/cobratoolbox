@@ -26,10 +26,18 @@ cd(fileDir);
 
 % Testing entropicFluxBalanceAnalysis
 solverPkgs = prepareTest('requiredSolvers',{'mosek'}, 'needsEP', true);
-fprintf('   Testing entropicFluxBalanceAnalysis using solver %s ... ', solverPkgs.EP{k})
+fprintf('   Testing entropicFluxBalanceAnalysis using solver %s ... ', solverPkgs.EP{1})
 
 % 1. load model
 model = getDistributedModel('Recon3DModel_301.mat');
+
+% Recon3D as distributed carries a few stoichiometrically inconsistent metabolites, which
+% entropicFluxBalanceAnalysis rejects (it requires a stoichiometrically consistent model). Restrict
+% Recon3D to its stoichiometrically consistent subset before solving.
+massBalanceCheck = 0;
+[~, ~, ~, ~, ~, ~, model, ~] = findStoichConsistentSubset(model, massBalanceCheck, 0);
+model = removeRxns(model, model.rxns(~model.SConsistentRxnBool), 'metRemoveMethod', 'exclusive');
+model = rmfield(model, intersect(fieldnames(model), {'SConsistentMetBool', 'SConsistentRxnBool'}));
 
 % 2. set param for entropicFBA
 param.solver ='mosek'; % {('pdco'),'mosek'}

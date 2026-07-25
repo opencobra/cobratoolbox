@@ -8,6 +8,13 @@ function [modelThermo, directions] = thermoConstrainFluxBounds(model, confidence
 % INPUTS:
 %    model:                       Model structure with following additional fields:
 %
+%                                   * .S - `m x n` stoichiometric matrix
+%                                   * .rxns - `n x 1` cell array of reaction identifiers
+%                                   * .lb - `n x 1` lower flux bounds
+%                                   * .ub - `n x 1` upper flux bounds
+%                                   * .SIntRxnBool - `n x 1` boolean of internal reactions
+%                                   * .DrG0_Uncertainty - `n x 1` uncertainty in reaction Gibbs energy estimate
+%                                   * .directions - structure of boolean reaction-directionality vectors
 %                                   * .DrGtMin - `n x 1` array of estimated lower bounds on
 %                                     transformed reaction Gibbs energies.
 %                                   * .DrGtMax - `n x 1` array of estimated upper bounds on

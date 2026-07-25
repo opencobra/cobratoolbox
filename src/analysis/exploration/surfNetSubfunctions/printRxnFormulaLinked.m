@@ -7,7 +7,14 @@ function p = printRxnFormulaLinked(model, rxnAbbrList, printFlag, metNameFlag, f
 %    p = printRxnFormulaLinked(model, rxnAbbrList, printFlag, metNameFlag, flux, nCharBreak, commandUsingMet)
 %
 % INPUTS:
-%    model:                COBRA model
+%    model:                COBRA model structure with fields:
+%
+%                            * .S - `m x n` stoichiometric matrix
+%                            * .rxns - `n x 1` reaction identifiers
+%                            * .mets - `m x 1` metabolite identifiers
+%                            * .lb - `n x 1` lower flux bounds
+%                            * .ub - `n x 1` upper flux bounds
+%                            * .metNames - `m x 1` metabolite names (used when `metNameFlag` is true)
 %
 % OPTIONAL INPUTS:
 %    rxnAbbrList:          cell array of reactions to be printed (default all reactions)
@@ -17,6 +24,10 @@ function p = printRxnFormulaLinked(model, rxnAbbrList, printFlag, metNameFlag, f
 %    nCharBreak:           max. number of character printed on each line
 %    commandUsingMet:      string of Matlab command for the genes in the model, e.g., 'fprintf(''%s'')' where %s
 %                          will be replaced by the metabolites (default [], not adding the field for hyperlinked grRules)
+%
+% OUTPUT:
+%    p:                    cell array of the printed reaction-formula string(s)
+%
 if nargin < 2 || isempty(rxnAbbrList)
     rxnAbbrList = model.rxns;
 end

@@ -1,32 +1,31 @@
-function [metabolite_structure,IDsAdded,IDsSuggested] = parseMetaNetXWebpage(metabolite_structure,startSearch,endSearch)
-
-%% function [metabolite_structure,IDsAdded,IDsSuggested] = parseMetaNetXWebpage(metabolite_structure)
-% This function first retrieves MetaNetX IDs based on existing IDs in the
-% metabolite_structure (defined in queryFields).  MetaNetX IDs will only be
-% added to the metabolite_structure if the  MetaNetX inchiKey and the metabolite_structure inchiKey
-% agree (and added to IDsAdded(, otw it will be added to IDsSuggested.
-% The function then takes all the MetaNetX IDs can retrieves further IDs to
-% be added to the metabolite_structure. Therefore, we first verify the MetaNetX ID in the metabolite_structure by
-% comparing the inchiKey in the metabolite_structure with the one from the MetaNetX ID
-% if they do not agree the MetaNetX ID, the function tries to find the right ID based on the inchiKey in the metabolite structure. If unsuccesfull,
-% the MetaNetX ID is removed from the metabolite_structure and added
-% to the IDsSuggested list. Further ID's are only retrieved for verified MetaNetX IDs.
+function [metabolite_structure, IDsAdded, IDsSuggested] = parseMetaNetXWebpage(metabolite_structure, startSearch, endSearch)
+% Retrieve MetaNetX identifiers based on the existing identifiers in the
+% metabolite structure. A MetaNetX id is added only if its InChIKey agrees with
+% the metabolite structure InChIKey (otherwise it is added to IDsSuggested).
+% Verified MetaNetX ids are then used to retrieve further identifiers; a
+% MetaNetX id that cannot be verified by InChIKey comparison is removed and
+% listed in IDsSuggested.
 %
-% INPUT
-% metabolite_structure  metabolite structure
-% startSearch           specify where the search should start in the
-%                       metabolite structure. Must be numeric (optional, default: all metabolites
-%                       in the structure will be search for)
-% endSearch             specify where the search should end in the
-%                       metabolite structure. Must be numeric (optional, default: all metabolites
-%                       in the structure will be search for)
+% USAGE:
 %
-% OUTPUT
-% metabolite_structure  updated metabolite structure
-% IDsAdded              list of addded IDs
-% IDsSuggested          list of suggested IDs
+%    [metabolite_structure, IDsAdded, IDsSuggested] = parseMetaNetXWebpage(metabolite_structure, startSearch, endSearch)
 %
-% Ines Thiele 2020/2021
+% INPUT:
+%    metabolite_structure:    metabolite structure whose fields are VMH
+%                             metabolite IDs, each holding identifier fields
+%
+% OPTIONAL INPUTS:
+%    startSearch:             numeric index of where the search should start in
+%                             the metabolite structure (default: 1)
+%    endSearch:               numeric index of where the search should end in
+%                             the metabolite structure (default: last metabolite)
+%
+% OUTPUTS:
+%    metabolite_structure:    updated metabolite structure
+%    IDsAdded:                list of added IDs
+%    IDsSuggested:            list of suggested IDs
+%
+% .. Author: - Ines Thiele, 2020/2021
 
 annotationSource = 'MetaNetX website';
 annotationType = 'automatic';

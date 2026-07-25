@@ -6,8 +6,11 @@ function [tissueModel] = createTissueSpecificModel(model, options, funcModel, ex
 %    tissueModel = createTissueSpecificModel(model, options)
 %
 % INPUTS:
-%	model:                   model strusture
-%   options:                 structure field containing method specific
+%    model:                   COBRA model structure. Fields used directly here:
+%
+%                               * .lb - `n x 1` lower flux bounds
+%                               * .rev - `n x 1` reversibility indicator (set from `.lb` if absent)
+%    options:                 structure field containing method specific
 %                            informations
 %       .solver:                 Use either 'GIMME','iMAT','INIT','MBA',
 %                                'mCADRE','fastCore','swiftcore'
@@ -15,19 +18,19 @@ function [tissueModel] = createTissueSpecificModel(model, options, funcModel, ex
 %       . 'additional parameters':        see section below entiteld OPTIONAL INPUTS SPECIFIC TO EACH MODEL EXTRACTION ALGORITHM
 %
 % OPTIONAL INPUTS:
-%	funcModel:               1 - Build a functional model having only reactions
+%    funcModel:               1 - Build a functional model having only reactions
 %                            that can carry a flux (using a consistency check), 0 - skip this
 %                            step (Default = 0)
-%	exRxnRemove:             Names of exchange reactions to remove
+%    exRxnRemove:             Names of exchange reactions to remove
 %                           (Default = [])
-%   optionalParams           Additional paramaters for the consistency
+%    optionalParams:          Additional paramaters for the consistency
 %                            check. Will only be used if funcModel = 1
 %                            Is a structure with possible fields of epsilon
 %                            (numeric, min nonzero mass), modeFlag (return
 %                            flux mode, 0/1), and method ('swiftcc','fastcc','dc')
 %
 % OUTPUTS:
-%	tissueModel:                     extracted model
+%    tissueModel:                     extracted model
 %
 % OPTIONAL INPUTS SPECIFIC TO EACH MODEL EXTRACTION ALGORITHM:
 % This section describes the additional parameter fields that need to be set in

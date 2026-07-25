@@ -6,11 +6,19 @@ function model = buildRxnGeneMat(model)
 %    model = buildRxnGeneMat(model)
 %
 % INPUT:
-%    model:     Model to build the rxnGeneMat. Must have the rules field,
-%               otherwise the rxnGeneMat is empty
+%    model:     a COBRA model structure with fields:
+%
+%                 * .rules - `n x 1` logical GPR rule strings (`x(i)` gene
+%                   indices). If absent, it is generated from `.grRules`
+%                   when present, otherwise initialized as empty strings.
+%                 * .rxns - reaction identifiers, used to size `.rxnGeneMat`
+%                 * .genes - gene identifiers, used to size `.rxnGeneMat`
 %
 % OUTPUT:
-%    model: 	The Model including a rxnGeneMat field.
+%    model:     the model with the field:
+%
+%                 * .rxnGeneMat - `nRxns x nGenes` reaction-gene incidence
+%                   matrix, built from `.rules`
 %
 % .. Authors: - written by ?
 %             Diana El Assal 30/6/2017 - updates

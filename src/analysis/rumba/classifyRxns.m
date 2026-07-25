@@ -1,47 +1,47 @@
 function [MetConnectivity, ConnectedMet] = classifyRxns(completeModel, sampledModel, maxMetConn, maxNumPnts, verboseTag, LoopRxnsToIgnore)
-% This function get all incoming and outgoing reaction for each metabolite
-% of the 'sampledModel'and score them (fraction of all incoming/outgoing flux that passes
-% through the metabolite).
+% Score, for each metabolite of the `sampledModel`, the incoming and outgoing
+% reactions by the fraction of all incoming/outgoing flux that passes through
+% the metabolite across the sampled flux points
 %
 % USAGE:
-%   model = addMissingReactions(SampledModel,completeModel)
+%
+%    [MetConnectivity, ConnectedMet] = classifyRxns(completeModel, sampledModel, maxMetConn, maxNumPnts, verboseTag, LoopRxnsToIgnore)
 %
 % INPUTS:
-%   completeModel:              The complete reference model
-%   SampledModel:               Sampled model
-%   maxMetConn:                 The maximum connectivity of a metabolite to
-%                               consider. All branch points with a higher
-%                               connectivity will be ignored. (default =
-%                               30)
-%   MaxNumPnts:                 Maximum number of points to use form the
-%                               sampled models. Extra points will be removed
-%                               to improve memory usage and speed up
-%                               calculations. (default = minimum number of
-%                               points in the model or 500 points, whichever
-%                               is smaller)
-%   verboseTag:                 1 = print out progress and use waitbars. 0 =
-%                               print only minimal progress to screen.
-%   LoopRxnsToIgnore:           list of rxns associated with loop within the model,
-%                               default- reaction loops defined usinf FVA
+%    completeModel:       The complete reference model
+%    sampledModel:        Sampled model, with fields:
+%
+%                           * .points - `nRxns x nPoints` matrix of sampled flux values
+%    maxMetConn:          The maximum connectivity of a metabolite to consider.
+%                         All branch points with a higher connectivity will be
+%                         ignored (default = 30)
+%    maxNumPnts:          Maximum number of points to use from the sampled
+%                         model. Extra points are removed to improve memory
+%                         usage and speed up calculations (default = minimum
+%                         number of points in the model or 500 points,
+%                         whichever is smaller)
+%    verboseTag:          1 = print out progress and use waitbars, 0 = print
+%                         only minimal progress to screen
+%    LoopRxnsToIgnore:    List of rxns associated with loops within the model
+%                         (default = reaction loops defined using FVA)
 %
 % OUTPUTS:
-%   MetConnectivity:            A structure that present for each
-%                               metabolite present in 'sampledModel'
-%                               the following sets of fields:
-%                                   ConnRxns - the reactions that are connected
-%                                   to the metabolite
-%                                   Sij - The stoichiometric coefficient for the
-%                                   metabolite in each reaction in ConnRxns
-%                                   RxnScore - Score for each reaction in ConnRxns
-%                                   Direction - The direction of reaction flux
-%                                   for each sample point
-%                                   MetNotUsed - Whether or not the metabolite is
-%                                   used in the condition
-%   ConnectedMet:               List of metabolites described in
-%   'MetConnectivity'
+%    MetConnectivity:     A structure that presents, for each metabolite of the
+%                         `sampledModel`, the following sets of fields:
 %
-% Authors: - Nathan E. Lewis, May 2010-May 2011
-%          - Anne Richelle, May 2017
+%                           * ConnRxns - the reactions connected to the metabolite
+%                           * Sij - stoichiometric coefficient for the metabolite
+%                             in each reaction in ConnRxns
+%                           * RxnScore - score for each reaction in ConnRxns
+%                           * Direction - direction of reaction flux for each
+%                             sample point
+%                           * MetNotUsed - whether or not the metabolite is used
+%                             in the condition
+%    ConnectedMet:        List of metabolites described in `MetConnectivity`
+%
+% .. Authors:
+%       - Nathan E. Lewis, May 2010-May 2011
+%       - Anne Richelle, May 2017
 
 
 model=completeModel;

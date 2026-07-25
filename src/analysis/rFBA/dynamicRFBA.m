@@ -3,10 +3,17 @@ function [concentrationMatrix, excRxnNames, timeVec, biomassVec, drGenes, constr
 %
 % USAGE:
 %
-%    [concentrationMatrix, excRxnNames, timeVec,biomassVec, drGenes, constrainedRxns, states] = dynamicRFBA(model, substrateRxns, initConcentrations, initBiomass, timeStep, nSteps, plotRxns, exclUptakeRxns)
+%    [concentrationMatrix, excRxnNames, timeVec, biomassVec, drGenes, constrainedRxns, states] = dynamicRFBA(model, substrateRxns, initConcentrations, initBiomass, timeStep, nSteps, plotRxns, exclUptakeRxns)
 %
 % INPUTS:
-%    model:                  a regulatory COBRA model
+%    model:                  a regulatory COBRA model with fields:
+%
+%                              * .rxns - reaction identifiers
+%                              * .lb - lower flux bounds
+%                              * .genes - gene identifiers
+%                              * .regulatoryGenes - genes in the Boolean regulatory network
+%                              * .regulatoryInputs1 - type 1 regulatory inputs (metabolites)
+%                              * .regulatoryInputs2 - type 2 regulatory inputs (reactions)
 %    substrateRxns:          list of exchange reaction names for substrates
 %                            initially in the media that may change (i.e. not
 %                            h2o or co2)

@@ -1,11 +1,31 @@
 function [model] = model2escher(model)
-% this function prepare the model to draw escher map
+% Prepares a model to draw an EscherMap
 %
-% EscherMap only accept model in Json format. Some reaction IDs in Recon3D
-% are started with number,which generating issue when converted into Json
-% file. The function here add 'A_' to the reaction IDs starting with number
-
-% Yanjun Liu   Nov,2023
+% EscherMap only accepts a model in json format. Some reaction IDs in
+% Recon3D start with a number, which causes an issue when converted into
+% json. This function adds 'A_' to reaction IDs starting with a number,
+% and replaces the compartment brackets in metabolite IDs with an
+% underscore (e.g. `atp[c]` becomes `atp_c`)
+%
+% USAGE:
+%
+%    model = model2escher(model)
+%
+% INPUT:
+%    model:    COBRA model structure with fields:
+%
+%                * .rxns - `n x 1` cell array of reaction identifiers
+%                * .mets - `m x 1` cell array of metabolite identifiers
+%
+% OUTPUT:
+%    model:    COBRA model structure with fields:
+%
+%                * .rxns - reaction identifiers, prefixed with `A_` where
+%                  the original identifier started with a digit
+%                * .mets - metabolite identifiers with compartment
+%                  brackets replaced by an underscore
+%
+% .. Author: - Yanjun Liu, Nov 2023
 
 tmp = regexp(model.rxns,'^\d');
 bool = ~cellfun(@isempty,tmp);

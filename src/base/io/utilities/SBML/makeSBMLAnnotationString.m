@@ -1,29 +1,30 @@
-function [annotationString,notes] = makeSBMLAnnotationString(model,id,fieldentries,position,mergeAnnotations)
-% makeSBMLAnnotationString gives the annotationString for an SBML based on the fields in the model
+function [annotationString, notes] = makeSBMLAnnotationString(model, id, fieldentries, position, mergeAnnotations)
+% Builds the annotation string for an SBML entity from the fields in the model
 %
 % USAGE:
 %
-%       [annotationString, notes] = makeSBMLAnnotationString(model,id,fieldentries,position)
+%    [annotationString, notes] = makeSBMLAnnotationString(model, id, fieldentries, position, mergeAnnotations)
 %
-% INPUT:
-%    model:            the model to extract the data
-%    id:               the ID of the entity
-%    fieldentries:     either a char indicating the field
-%                      (prot,met,rxn,comp,gene), or a cell array with X{:,1}
-%                      being field IDs and X{:,2} being bioql qualiiers to
-%                      annotate for the field.
-%    position:         the position in the model to extract the data.
+% INPUTS:
+%    model:               the model to extract the data
+%    id:                  the ID of the entity
+%    fieldentries:        either a char indicating the field
+%                         (prot,met,rxn,comp,gene), or a cell array with X{:,1}
+%                         being field IDs and X{:,2} being bioql qualifiers to
+%                         annotate for the field.
+%    position:            the position in the model to extract the data.
+%
 % OPTIONAL INPUTS:
-%    mergeAnnotations: If multiple fields are given, merge the fields and
-%                      only produce one annotation.
-% OUTPUT:
+%    mergeAnnotations:    If multiple fields are given, merge the fields and
+%                         only produce one annotation.
 %
-%   annotationString: The annotation String to be put into the SBML.
-%   notes:            A 2*x cell array of fields which did not contain
-%                     valid identifiers (according to the pattern check.
+% OUTPUT:
+%    annotationString:    The annotation string to be put into the SBML.
+%    notes:               A 2*x cell array of fields which did not contain
+%                         valid identifiers (according to the pattern check).
 %
 % .. Authors:
-%       - Thomas Pfau May 2017 
+%       - Thomas Pfau, May 2017
 
 
 

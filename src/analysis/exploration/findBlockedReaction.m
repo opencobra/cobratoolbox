@@ -8,7 +8,11 @@ function blockedReactions = findBlockedReaction(model, method)
 %    blockedReactions = findBlockedReaction(model, method)
 %
 % INPUT:
-%    model:               COBRA model structure
+%    model:               COBRA model structure with fields:
+%
+%                           * .S - `m x n` stoichiometric matrix
+%                           * .c - `n x 1` linear objective coefficients
+%                           * .rxns - `n x 1` reaction identifiers
 %
 % OPTIONAL INPUT:
 %    method:              'FVA'  for flux variability analysis (default)

@@ -1,12 +1,17 @@
 function AGORA2_dir = downloadAGORA2(directory)
-% Download and unpack agora2
-% INPUT
-% directory     Directory indicating where to donwload AGORA2
+% Download and unpack AGORA2
 %
-% OUTPUT
-% AGORA2_dir    Directory to AGORA2 folder
+% USAGE:
 %
-% Author:  Tim Hensen, 2024
+%    AGORA2_dir = downloadAGORA2(directory)
+%
+% INPUT:
+%    directory:     directory indicating where to download AGORA2
+%
+% OUTPUT:
+%    AGORA2_dir:    directory to the AGORA2 folder
+%
+% .. Author: - Tim Hensen, 2024
 
 % Download AGORA2
 websave('AGORA2_annotatedMat_A_C','https://www.vmh.life/files/reconstructions/AGORA2/version2.01/mat_files/zipped/AGORA2_annotatedMat_A_C.zip.zip')

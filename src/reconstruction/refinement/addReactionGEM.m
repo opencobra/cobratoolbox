@@ -6,13 +6,34 @@ function [newmodel, HTABLE] = addReactionGEM(model, rxns, rxnNames, rxnFormulas,
 %    [newmodel, HTABLE] = addReactionGEM(model, rxns, rxnNames, rxnFormulas, rev, lb, ub, nRxn, subSystems, grRules, rules, genes, HTABLE)
 %
 % INPUTS:
-%     model:          COBRA model structure
+%     model:          COBRA model structure with fields:
+%
+%                       * .rxns - `n x 1` reaction identifiers, used to
+%                         determine the current number of reactions
+%                       * .mets - `m x 1` metabolite identifiers, used to
+%                         determine the current number of metabolites
+%                       * .lb - `n x 1` lower bounds, used to derive the
+%                         default value of `nRxn` when it is not supplied
+%                       * .S - `m x n` stoichiometric matrix, used to
+%                         determine whether a metabolite already
+%                         participates in the reactions being replaced
+%                       * .subSystems - `n x 1` subsystem assignments,
+%                         initialized to `''` for every reaction if the
+%                         field is not yet present
+%                       * .grRules - `n x 1` GPR rule strings, initialized
+%                         to `''` for every reaction if the field is not
+%                         yet present
+%                       * .genes - `g x 1` gene identifiers, checked with
+%                         `isfield` to determine whether the model already
+%                         has a gene list
 %     rxns:           Identifiers for the reactions
 %     rxnNames:       List of reactions
 %     rxnFormulas:    reactions' formulas
 %     rev:            0 = irrev, 1 = rev
 %     lb:             The lower bounds for fluxes
 %     ub:             The upper bounds for fluxes
+%     nRxn:           The reaction index at which to start adding the new
+%                      reactions (default: `length(model.lb) + 1`)
 %     subSystems:     subSystem assignment for each reaction, default = ''
 %     grRules:        A string representation of the GPR rules defined in a readable format, default = ''
 %     rules:          GPR rules in evaluateable format for each reaction, default = ''
@@ -25,7 +46,7 @@ function [newmodel, HTABLE] = addReactionGEM(model, rxns, rxnNames, rxnFormulas,
 %
 % EXAMPLE:
 %
-%    [modelLB_NH3] = addReactionSmiley(modelLB, 'NH3r', 'NH3 protonization', cellstr('1 NH3[c] + 1 H[c] <==> 1 NH4[c]'), 1, -1000, 1000, 'Others');
+%    [newmodel] = addReactionGEM(modelLB, 'NH3r', 'NH3 protonization', cellstr('1 NH3[c] + 1 H[c] <==> 1 NH4[c]'), 1, -1000, 1000, 'Others');
 %
 % NOTE:
 %    Manually add reactions to a specified model, can either add one or

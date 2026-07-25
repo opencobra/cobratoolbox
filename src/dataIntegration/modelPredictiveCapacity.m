@@ -4,18 +4,19 @@ function [comparisonData, summary] = modelPredictiveCapacity(model, param)
 %
 % USAGE:
 %
-%    [accuracySummary, fullReport, comparisonStats] = modelPredictiveCapacity(model, param)
+%    [comparisonData, summary] = modelPredictiveCapacity(model, param)
 %
 % INPUT:
-%    model:	A Cobra model to be tested
+%    model:    A COBRA model to be tested, with fields:
 %
-%    	* .S - Stoichiometric matrix
-%    	* .mets - Metabolite ID vector
-%    	* .rxns - Reaction ID vector
-%    	* .lb - Lower bound vector
-%    	* .ub - Upper bound vector
+%                * .rxns - `n x 1` reaction identifiers
+%                * .mets - `m x 1` metabolite identifiers
+%                * .lb - `n x 1` lower flux bounds
+%                * .ub - `n x 1` upper flux bounds
+%                * .XomicsToModelSpecificData - struct of XomicsToModel context-specific
+%                  data; its `.exoMet` table is used as the training set when present
 %
-%   param:	Parameters used to test the model
+%    param:    Parameters used to test the model
 %
 %       * .tests - Array with the tests run on the model (Default: 'flux').
 %       	'fluxConsistent': Flux consistency
@@ -43,9 +44,12 @@ function [comparisonData, summary] = modelPredictiveCapacity(model, param)
 %          - {'unWeightedTCBMflux'} unweighted thermodynamic constraint
 %            based modelling for fluxes
 %       * .printLevel - Greater than zero to receive more output printed.
+%       * .cobraSolver - COBRA solver used for the predictions (Default: 'gurobi').
+%       * .approach - prediction approach selecting which exchanges are tested
+%           (e.g. 'UptSec'; Default: 'UptSec').
 %
 % OUTPUT:
-%    comparisonData: A struct array with two tables in it.
+%    comparisonData:    A struct array with two tables in it.
 %       * .fullReport - A table comparing each tested reactions with columns:
 %           - .fullReport.model - the name of the model
 %           - .fullReport.objective - objective function
@@ -67,7 +71,7 @@ function [comparisonData, summary] = modelPredictiveCapacity(model, param)
 %           - .comparisonStats.SpearmanPval - P value
 %           - .comparisonStats.wEuclidNorm - Euclidean norm
 %
-%    summary: The average of the objective function accuracies and the average 
+%    summary:    The average of the objective function accuracies and the average
 %    of the euclidean distances.
 
 

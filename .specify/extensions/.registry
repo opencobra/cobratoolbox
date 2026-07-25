@@ -1,0 +1,73 @@
+{
+  "schema_version": "1.0",
+  "extensions": {
+    "git": {
+      "version": "1.0.0",
+      "source": "local",
+      "manifest_hash": "sha256:9731aa8143a72fbebfdb440f155038ab42642517c2b2bdbbf67c8fdbe076ed79",
+      "enabled": true,
+      "priority": 10,
+      "registered_commands": {
+        "agy": [
+          "speckit.git.feature",
+          "speckit.git.validate",
+          "speckit.git.remote",
+          "speckit.git.initialize",
+          "speckit.git.commit"
+        ],
+        "codex": [
+          "speckit.git.feature",
+          "speckit.git.validate",
+          "speckit.git.remote",
+          "speckit.git.initialize",
+          "speckit.git.commit"
+        ]
+      },
+      "registered_skills": [],
+      "installed_at": "2026-06-07T14:50:35.738179+00:00"
+    },
+    "agent-context": {
+      "version": "1.0.0",
+      "source": "local",
+      "manifest_hash": "sha256:9a1dc02d2d0139bb03860392ecacef79183be2c442feda2f9ccaa4e5907b1e47",
+      "enabled": true,
+      "priority": 10,
+      "registered_commands": {
+        "agy": [
+          "speckit.agent-context.update"
+        ],
+        "codex": [
+          "speckit.agent-context.update"
+        ]
+      },
+      "registered_skills": [],
+      "installed_at": "2026-06-07T14:50:35.825159+00:00"
+    },
+    "agent-assign": {
+      "version": "1.1.0",
+      "source": "local",
+      "manifest_hash": "sha256:a6172052d4a0d2978743feae05923aae7befcd946438f4c6b45250a47fc16d84",
+      "enabled": true,
+      "priority": 10,
+      "registered_commands": {
+        "agy": [
+          "speckit.agent-assign.assign",
+          "speckit.agent-assign.validate",
+          "speckit.agent-assign.execute"
+        ],
+        "claude": [
+          "speckit.agent-assign.assign",
+          "speckit.agent-assign.validate",
+          "speckit.agent-assign.execute"
+        ],
+        "codex": [
+          "speckit.agent-assign.assign",
+          "speckit.agent-assign.validate",
+          "speckit.agent-assign.execute"
+        ]
+      },
+      "registered_skills": [],
+      "installed_at": "2026-07-17T02:07:59.520482+00:00"
+    }
+  }
+}

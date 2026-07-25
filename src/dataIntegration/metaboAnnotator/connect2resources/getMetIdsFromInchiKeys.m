@@ -1,10 +1,33 @@
-function [metabolite_structure,IDsAdded] = getMetIdsFromInchiKeys(metabolite_structure, inchiKeyCheck, inchiStringCheck,inchiKeyAltCheck,metList )
-
-% This function connects to UniChem and grebs available ID's for
-% metabolites that have Inchi Strings.
-
-% I.T., Aug 2020
-
+function [metabolite_structure, IDsAdded] = getMetIdsFromInchiKeys(metabolite_structure, inchiKeyCheck, inchiStringCheck, inchiKeyAltCheck, metList)
+% Connect to UniChem and grab available identifiers (ChEBI, PubChem,
+% MetaboLights, Rhea, SwissLipids, BindingDB, DrugBank, KEGG, HMDB, EPA and
+% LipidMaps) for metabolites that have InChIKeys or InChIStrings.
+%
+% USAGE:
+%
+%    [metabolite_structure, IDsAdded] = getMetIdsFromInchiKeys(metabolite_structure, inchiKeyCheck, inchiStringCheck, inchiKeyAltCheck, metList)
+%
+% INPUTS:
+%    metabolite_structure:    metabolite structure whose fields are VMH
+%                             metabolite IDs, each holding InChIKey/InChIString
+%                             fields
+%    inchiKeyCheck:           if true, query UniChem using the InChIKey
+%    inchiStringCheck:        if true, query UniChem using the InChIString
+%    inchiKeyAltCheck:        if true, query UniChem using the neutral form of
+%                             the InChIKey
+%
+% OPTIONAL INPUT:
+%    metList:                 list of metabolite field names to process
+%                             (default: all fields of metabolite_structure)
+%
+% OUTPUTS:
+%    metabolite_structure:    metabolite structure updated with the retrieved
+%                             identifiers
+%    IDsAdded:                cell array logging the added identifiers, with the
+%                             metabolite field name, the identifier type, and
+%                             the assigned identifier per row
+%
+% .. Author: - I.T., Aug 2020
 
 if exist('metList', 'var')
     Mets = metList;

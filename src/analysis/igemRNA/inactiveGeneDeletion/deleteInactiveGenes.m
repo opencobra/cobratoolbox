@@ -6,20 +6,27 @@ function model = deleteInactiveGenes(model, trData, trDataPath, thApproach, lowe
 %   model = deleteInactiveGenes(model, trData, trDataPath, thApproach, lowerTh, upperTh, sheetIndex, growthNotAffectingGeneDel, percentile)
 %
 % INPUTS:
-%   model:                      model strusture 
-%   trData:                     table with columns 'GeneId' and 'Data'
-%   trDataPath:                 char full transcriptomics data filename
-%   thApproach:                 double (1-GT1, 2-LT1, 3-LT2)
-%   lowerTh:                    double
-%   upperTh:                    double (required for LT2)
-%   sheetIndex:                 double transcriptomics dataset sheet index
-%   growthNotAffectingGeneDel:  double (1 or 0) check if grRatio equals 1
-%                               after gene deletion compared to wildtype
-%   percentile:                 double (1 or 0) bool option to convert
-%                               thresholds to percentile value 
+%    model:                        COBRA model structure with fields:
+%
+%                                    * .genes - gene identifiers checked against the inactive-gene list
+%
+%    trData:                       table with columns 'GeneId' and 'Data', with fields:
+%
+%                                    * .Data - gene expression values
+%                                    * .Geneid - gene identifiers
+%
+%    trDataPath:                   char full transcriptomics data filename
+%    thApproach:                   double (1-GT1, 2-LT1, 3-LT2)
+%    lowerTh:                      double
+%    upperTh:                      double (required for LT2)
+%    sheetIndex:                   double transcriptomics dataset sheet index
+%    growthNotAffectingGeneDel:    double (1 or 0) check if grRatio equals 1
+%                                  after gene deletion compared to wildtype
+%    percentile:                   double (1 or 0) bool option to convert
+%                                  thresholds to percentile value
 %
 % OUTPUTS:
-%	model:                      extracted model
+%    model:                        extracted model
 %
 % .. Authors:
 %       - Kristina Grausa 05/16/2022

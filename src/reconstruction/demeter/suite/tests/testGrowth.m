@@ -3,28 +3,31 @@ function [AerobicGrowth, AnaerobicGrowth] = testGrowth(model, biomassReaction)
 % anaerobic conditions. In anaerobic conditions, both oxygen uptake
 % (exchange reaction) and cytosolic oxygen-utilizing reactions are blocked.
 %
-% USAGE
-%           [AerobicGrowth, AnaerobicGrowth] = testGrowth(model, biomassReaction)
+% USAGE:
 %
-% INPUT
-% model             COBRA model structure
-% biomassReaction   String listing the biomass reaction
+%    [AerobicGrowth, AnaerobicGrowth] = testGrowth(model, biomassReaction)
 %
-% OUTPUT
-% AerobicGrowth     Numeric vector showing the flux through the biomass
-%                   reaction (aerobic conditions):
-%                   Column 1: "unlimited" media (all exchanges to -1000
-%                   mmol/gDW/h)
-%                   Column 2: complex medium as defined in
-%                   InputFiles\ComplexMedium.txt
-% AnaerobicGrowth   Numeric vector showing the flux through the biomass
-%                   reaction (anaerobic conditions):
-%                   Column 1: "unlimited" media (all exchanges to -1000
-%                   mmol/gDW/h)
-%                   Column 2: complex medium as defined in
-%                   InputFiles\ComplexMedium.txt
+% INPUTS:
+%    model:             COBRA model structure with fields:
 %
-% Stefania Magnusdottir, Nov 2017
+%                         * .rxns - Reaction identifiers
+%    biomassReaction:     String listing the biomass reaction
+%
+% OUTPUTS:
+%    AerobicGrowth:     Numeric vector showing the flux through the biomass
+%                       reaction (aerobic conditions):
+%                       Column 1: "unlimited" media (all exchanges to -1000
+%                       mmol/gDW/h)
+%                       Column 2: complex medium as defined in
+%                       InputFiles\ComplexMedium.txt
+%    AnaerobicGrowth:     Numeric vector showing the flux through the biomass
+%                       reaction (anaerobic conditions):
+%                       Column 1: "unlimited" media (all exchanges to -1000
+%                       mmol/gDW/h)
+%                       Column 2: complex medium as defined in
+%                       InputFiles\ComplexMedium.txt
+%
+% .. Author: - Stefania Magnusdottir, Nov 2017
 
 tol=0.000001;
 

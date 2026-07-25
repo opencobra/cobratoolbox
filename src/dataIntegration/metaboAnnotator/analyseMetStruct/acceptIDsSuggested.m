@@ -1,22 +1,31 @@
-function [metabolite_structure,IDsAdded] = acceptIDsSuggested(metabolite_structure,IDsSuggested, annotationSource)
-%% function [metabolite_structure,IDsAdded] = acceptIDsSuggested(metabolite_structure,IDsSuggested)
-% This function accepts suggested IDs as provided in the list IDsSuggested
-% and adds them to the metabolite_structure. Note each row in IDsSuggested that shall be
-% accepted must have an entry in the 6th column specifying that the entry
-% in the 2nd column shall be accepted for the metabolite in the 1st column.
-% Note that at this stage the annotation/curation level will be raised to
-% curated, so it is imperative that each row and suggested ID will be carefully evaluated before being accepted.
+function [metabolite_structure, IDsAdded] = acceptIDsSuggested(metabolite_structure, IDsSuggested, annotationSource)
+% Accepts suggested metabolite IDs and adds them to the metabolite structure
 %
-% INPUT
-% metabolite_structure  metabolite structure
-% IDsSuggested          list of suggested IDs, each row to be accepted
-%                       must have 'accepted' in the 6th column
-% annotationSource      source of annotation, e.g. 'curator (name)'
-% OUTPUT
-% metabolite_structure  updated metabolite structure
-% IDsAdded              List of added IDs
+% Accepts suggested IDs as provided in the list `IDsSuggested` and adds them
+% to the metabolite structure. Each row in `IDsSuggested` to be accepted must
+% have an entry in the 6th column specifying that the entry in the 2nd column
+% shall be accepted for the metabolite in the 1st column. At this stage the
+% annotation/curation level is raised to curated, so each row and suggested ID
+% should be carefully evaluated before being accepted.
 %
-% Ines Thiele, 01/2021
+% USAGE:
+%
+%    [metabolite_structure, IDsAdded] = acceptIDsSuggested(metabolite_structure, IDsSuggested, annotationSource)
+%
+% INPUTS:
+%    metabolite_structure:    metabolite structure
+%    IDsSuggested:            list of suggested IDs; each row to be accepted
+%                             must have 'accepted' in the 6th column
+%
+% OPTIONAL INPUT:
+%    annotationSource:        source of annotation, e.g. 'curator (name)'
+%                             (default: 'curator (IT)')
+%
+% OUTPUTS:
+%    metabolite_structure:    updated metabolite structure
+%    IDsAdded:                list of added IDs
+%
+% .. Author: - Ines Thiele, 01/2021
 
 if ~exist('annotationSource','var')
     annotationSource = 'curator (IT)';

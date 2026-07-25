@@ -1,4 +1,4 @@
-%script to test the connectedness of an [F R]
+% script to test the connectedness of an [F R]
 
 % FR=[1,0,0,0,0,0,0,0,0,1; %1
 %     0,0,0,1,0,1,0,0,0,0; %2

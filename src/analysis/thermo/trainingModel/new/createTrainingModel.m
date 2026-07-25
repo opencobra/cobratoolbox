@@ -1,31 +1,45 @@
-function trainingModel = createTrainingModel(trainingModel,trainingMolFileDir,forceMolReplacement,printLevel)
-% create the training model, or update it with additional data
+function trainingModel = createTrainingModel(trainingModel, trainingMolFileDir, forceMolReplacement, printLevel)
+% Create the training model, or update an existing one with additional data
+%
+% Loads the base training data when `trainingModel` is empty, optionally
+% retrieves and replaces MOL files, and augments the structure with InChI
+% strings, metabolite formulae and charges, pseudoisomer/pKa data, reaction
+% abbreviations, flux bounds and standard transformed reaction Gibbs energies.
+%
+% USAGE:
+%
+%    trainingModel = createTrainingModel(trainingModel, trainingMolFileDir, forceMolReplacement, printLevel)
+%
+% INPUTS:
+%    trainingModel:          training-data structure to create or extend. When
+%                            empty it is loaded from the bundled training data.
+%                            Fields used by this function:
+%
+%                              * .cids - KEGG compound identifiers
+%                              * .mets - `m x 1` metabolite abbreviations
+%                              * .metKEGGID - `m x 1` KEGG identifiers
+%                              * .S - `m x n` stoichiometric matrix
+%                              * .inchi - structure of InChI strings (standard and nonstandard variants)
+%                              * .inchiBool - `m x 1` true where an InChI exists
+%                              * .metFormulas - `m x 1` metabolite formulae
+%                              * .metCharges - `m x 1` metabolite charges
+%                              * .pseudoisomers - estimated pseudoisomer/pKa data
+%                              * .rxns - `n x 1` reaction abbreviations
+%                              * .lb - `n x 1` lower flux bounds
+%                              * .ub - `n x 1` upper flux bounds
+%                              * .dG0_prime - standard transformed Gibbs energy (renamed to `.DrGt0`)
+%                              * .DrGt0 - standard transformed reaction Gibbs energy
 %
 % OPTIONAL INPUTS:
-% trainingModel:
-% molFileDir:           directory of the mol files
-% forceMolReplacement:  force the replacement of the existing mol files
-%                       with newly acquired ones
-% printLevel:
-% 
+%    trainingMolFileDir:     directory of the MOL files (default: the `data/mol`
+%                            folder alongside `Transform.m`)
+%    forceMolReplacement:    when true, re-retrieve and replace the existing MOL
+%                            files with newly acquired ones (default: 0)
+%    printLevel:             verbosity of the console output
+%
 % OUTPUTS:
-%    trainingModel:  trainingModel structure with following additional fields:
-%                   * .mets   m x 1 metabolite abbreviations
-%                   * .rxns   n x 1 reaction abbreviations
-%                   * .metKEGGID m x 1 trainingModel.cids;
-%                   * .metChEBIID  m x 1 ChEBI identifier of the metabolite.       
-%                   * .inchi - Structure containing four `m x 1` cell array's of
-%                     IUPAC InChI strings for metabolites, with varying
-%                     levels of structural detail.
-%
-%                   * .inchi.standard: m x 1 cell array of standard inchi
-%                   * .inchi.standardWithStereo: m x 1 cell array of standard inchi with stereo
-%                   * .inchi.standardWithStereoAndCharge: m x 1 cell array of standard inchi with stereo and charge
-%                   * .inchi.nonstandard: m x 1 cell array of non-standard inchi
-%
-%                   * .inchiBool           m x 1 true if inchi exists
-%                   * .molBool             m x 1 true if mol file exists
-%                   * .compositeInchiBool  m x 1 true if inchi is composite
+%    trainingModel:          the training model structure augmented with the
+%                            fields listed above
 
 
 fullpath = which('Transform.m');

@@ -5,19 +5,19 @@ function str = numToFormattedString(num, ordMagMin, ordMagMax, nChar, cellOutput
 % used, otherwise decimal expression.
 %
 % USAGE:
-%    s = numToFormattedString(num, ordMagMin, ordMagMax, cellOutput)
+%    str = numToFormattedString(num, ordMagMin, ordMagMax, nChar, cellOutput)
 %
 % INPUT:
-%    num:         array of numerical values
+%    num:            array of numerical values
 %
 % OPTIONAL INPUTS:
-%    ordMagMin:   order of magitude below which the formatted string is in scientific notation (default -6, i.e., for values < 1e-6)
-%    ordMagMin:   order of magitude above which the formatted string is in scientific notation (default 8, i.e., for values >= 1e8)
-%    nChar:       number of character in the converted string, excluding the sign (default 8)
-%    cellOutput:  true to have the output being a single cell of string if the input `num` is scalar, otherwise a string (default false) 
+%    ordMagMin:      order of magnitude below which the formatted string is in scientific notation (default -6, i.e., for values < 1e-6)
+%    ordMagMax:      order of magnitude above which the formatted string is in scientific notation (default 8, i.e., for values >= 1e8)
+%    nChar:          number of characters in the converted string, excluding the sign (default 8)
+%    cellOutput:     true to have the output being a single cell of string if the input `num` is scalar, otherwise a string (default false)
 %
 % OUTPUT:
-%    str:         the formatted string or cell array of strings
+%    str:            the formatted string or cell array of strings
 
 if nargin < 2 || isempty(ordMagMin)
     ordMagMin = -6;

@@ -1,6 +1,12 @@
 
-%changeCobraSolver('tomlab_cplex','lp');
-%modelClosed = modelConsistent;
+% Leak test for a closed whole-body/Recon model.
+%
+% Closes all exchange (`Ex_`, `EX_`), demand (`DM_`), and sink (`sink_`)
+% reactions of the workspace model `modelClosed`, then runs `fastLeakTest` to
+% identify metabolites that can be produced without any input (leaks).
+%
+% changeCobraSolver('tomlab_cplex','lp');
+% modelClosed = modelConsistent;
 clear FF R
 % add demands for all metabolites in Recon
 %modelClosed = model;

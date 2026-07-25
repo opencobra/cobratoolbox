@@ -1,15 +1,34 @@
 function [model] = annotateSBOTerms(model)
 % Add SBO terms to model entities
 %
-% INPUT
-% model     model structure
+% USAGE:
 %
-% OUTPUT
-% model     updated model structure
+%    model = annotateSBOTerms(model)
 %
-% Ines Thiele June 2022
+% INPUT:
+%    model:    model structure with fields:
+%
+%                * .mets - `m x 1` metabolite identifiers, iterated to set
+%                  `.metSBOTerms`
+%                * .genes - `g x 1` gene identifiers, iterated to set
+%                  `.geneSBOTerms`
+%                * .rxns - `n x 1` reaction identifiers, iterated to
+%                  classify each reaction and set `.rxnSBOTerms`
+%
+% OUTPUT:
+%    model:    updated model structure with fields:
+%
+%                * .metSBOTerms - `m x 1` SBO terms for metabolites, set to
+%                  `SBO:0000247` for every metabolite
+%                * .geneSBOTerms - `g x 1` SBO terms for genes, set to
+%                  `SBO:0000243` for every gene
+%                * .rxnSBOTerms - `n x 1` SBO terms for reactions,
+%                  classified by reaction-ID pattern or compartment usage
+%
+% .. Author: - Ines Thiele June 2022
 
 % give all metabolites a SBO:0000247 represents the term 'simple chemical'.
+
 for i = 1 : length(model.mets)
     model.metSBOTerms{i} = 'SBO:0000247';
 end

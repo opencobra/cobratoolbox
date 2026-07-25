@@ -1,4 +1,7 @@
-function [ ~ ] = intergrate(fname,fname_out,model,FBAsolution,listRxn)
+function [~] = intergrate(fname, fname_out, model, FBAsolution, listRxn)
+% Chains parsing, flux overlay, and XML writing for a `CellDesigner` map:
+% parses `fname`, overlays the FBA flux distribution from `FBAsolution` onto
+% the parsed CD structure, and writes the annotated result to `fname_out`.
 %
 % USAGE:
 %

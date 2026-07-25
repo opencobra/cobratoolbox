@@ -13,7 +13,7 @@ function conComp = connectedRxnsInNullSpace(N)
 %             Can be obtained from either `findMinNull.m` or `fastSNP.m`
 %
 % OUTPUT:
-%    conComp: connected components for any reactions connected through the nullspace
+%    conComp:    connected components for any reactions connected through the nullspace
 %             E.g., conComp = [1; 0; 1; 2; 3; 2] means that the 1st and 3rd reactions are in the same 
 %             connected component, 4th and 6th also in the same, 5th alone in a connected component and 
 %             the 2nd reaction is not in any connected component, which means it is a blocked reaction 

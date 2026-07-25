@@ -1,7 +1,39 @@
-function [A_w,Ay_w ,B_w,C_w, lb_w, ub_w, wSize]=seperateTransposeJoinOE(A, Ay, B,C,ySize, yMax, aSizeCol, highNum, zSize)
-% Function to transpose and join arrays for milpOEReinserts.m function
+function [A_w, Ay_w, B_w, C_w, lb_w, ub_w, wSize] = seperateTransposeJoinOE(A, Ay, B, C, ySize, yMax, aSizeCol, highNum, zSize)
+% seperateTransposeJoinOE transposes and joins arrays for a MILP
 %
-% Author(s): Kristaps Berzins
+% Helper for milpOEReinserts.m that transposes and joins the constraint
+% arrays needed to build the dual MILP used for reaction reinsertion.
+%
+% USAGE:
+%
+%    [A_w, Ay_w, B_w, C_w, lb_w, ub_w, wSize] = seperateTransposeJoinOE(A, Ay, B, C, ySize, yMax, aSizeCol, highNum, zSize)
+%
+% INPUTS:
+%    A:             Constraint matrix to transpose and join [matrix]
+%    Ay:            Constraint matrix associated with the y (knockout)
+%                   variables [matrix]
+%    B:             Right hand side vector of the constraints [double array]
+%    C:             Objective coefficient vector [double array]
+%    ySize:         Number of y (knockout) variables [double]
+%    yMax:          Upper bound for the y variables [double]
+%    aSizeCol:      Number of columns of A [double]
+%    highNum:       Large finite number used as a big-M bound [double]
+%    zSize:         Number of z (auxiliary) variables [double]
+%
+% OUTPUTS:
+%    A_w:           Transposed and joined constraint matrix [matrix]
+%    Ay_w:          Joined matrix for the y variables [matrix]
+%    B_w:           Joined right hand side vector [double array]
+%    C_w:           Joined objective coefficient vector [double array]
+%    lb_w:          Lower bounds for the joined problem [double array]
+%    ub_w:          Upper bounds for the joined problem [double array]
+%    wSize:         Number of w (dual) variables [double]
+%
+% NOTE:
+%    This function is not designed for stand-alone use. It is used by
+%    milpOEReinserts.m.
+%
+% .. Author: - Kristaps Berzins
 
 wSize=size(A',2);
 

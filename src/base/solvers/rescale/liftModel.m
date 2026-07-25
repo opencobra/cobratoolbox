@@ -1,4 +1,4 @@
-function LPproblem = liftModel(model, BIG, printLevel,fileName,directory)
+function LPproblem = liftModel(model, BIG, printLevel, fileName, directory)
 % Lifts a COBRA model with badly-scaled stoichiometric and
 % coupling constraints of the form:
 % :math:`max c*v`  subject to: :math:`Sv = 0, x, Cv <= 0`
@@ -8,7 +8,7 @@ function LPproblem = liftModel(model, BIG, printLevel,fileName,directory)
 %
 % USAGE:
 %
-%    LPproblem = liftModel(model, BIG, printLevel,fileName,directory)
+%    LPproblem = liftModel(model, BIG, printLevel, fileName, directory)
 %
 % INPUTS:
 %    model:     COBRA LPproblem Structure containing the original LP to be solved. The format of

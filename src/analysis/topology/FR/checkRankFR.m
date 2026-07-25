@@ -7,7 +7,21 @@ function  [rankFR, rankFRV, rankFRvanilla, rankFRVvanilla, model] = checkRankFR(
 %    [rankFR, rankFRV, rankFRvanilla, rankFRVvanilla, model] = checkRankFR(model, printLevel)
 %
 % INPUTS:
-%    model:             model structure
+%    model:             COBRA model structure with fields:
+%
+%                         * .S - `m x n` stoichiometric matrix
+%                         * .lb - `n x 1` lower flux bounds (used when rescaling or restricting to reconstruction bounds)
+%                         * .ub - `n x 1` upper flux bounds (used when rescaling or restricting to reconstruction bounds)
+%                         * .b - `m x 1` accumulation/depletion vector (used in geometric-mean scaling)
+%                         * .c - `n x 1` linear objective coefficients (used in geometric-mean scaling)
+%
+%                       The following boolean fields are used if already present,
+%                       otherwise they are computed:
+%
+%                         * .SIntRxnBool - `n x 1` boolean of internal (non-exchange) reactions
+%                         * .SIntMetBool - `m x 1` boolean of metabolites in internal reactions
+%                         * .SConsistentMetBool - `m x 1` boolean of stoichiometrically consistent metabolites
+%                         * .SConsistentRxnBool - `n x 1` boolean of stoichiometrically consistent reactions
 %    printLevel:        verbose level
 %
 % OUTPUTS:
@@ -15,35 +29,49 @@ function  [rankFR, rankFRV, rankFRvanilla, rankFRVvanilla, model] = checkRankFR(
 %    rankFRV:           rank of [`F; R`], when using only `FRVcols`
 %    rankFRvanilla:     rank of [`F R`], when using all rows
 %    rankFRVvanilla:    rank of [`F; R`], when using all cols
-%    model:             structure with fields:
+%    model:             input model returned with the following added or updated fields:
 %
-%                         * .FRrows - `m x 1` boolean of rows of [`F R`] that are nonzero,
-%                           unique upto positive scaling and part of the
-%                           maximal conservation vector
-%                         * .FRVcols - `n x 1` boolean of cols of [`F; R`] that are nonzero,
-%                           unique upto positive scaling and part of the
-%                           maximal conservation vector
-%                         * .FRirows - `m x 1` boolean of rows of [`F R`] that are independent
-%                         * .FRdrows - `m x 1` boolean of rows of [`F R`] that are dependent
-%                         * .FRwrows - `m x 1` boolean of independent rows of [`F R`] that
-%                           have dependent rows amongst `model.FRdrows`
-%                         * .FRVdcols - `n x 1` boolean of cols of [`F; R`] that are dependent
-%                         * model.SConsistentMetBool - `m x 1` boolean vector indicating metabolites involved
-%                           in the maximal consistent vector
-%                         * .SConsistentRxnBool - `n x 1` boolean vector indicating metabolites involved
-%                           in the maximal consistent vector
-%                         * .FRnonZeroBool - `m x 1` boolean vector indicating metabolites involved
-%                           in at least one internal reaction
-%                         * .FRuniqueBool - `m x 1` boolean vector indicating metabolites with
-%                           reaction stoichiometry unique upto scalar multiplication
-%                         * .SIntRxnBool - `n x 1` boolean vector indicating the non exchange reactions
-%                         * .FRVnonZeroBool - `n x 1` boolean vector indicating non exchange reactions
-%                           with at least one metabolite involved
-%                         * .FRVuniqueBool - `n x 1` boolean vector indicating non exchange reactions
-%                           with stoichiometry unique upto scalar multiplication
-%                         * .connectedRowsFRBool - `m x 1` boolean vector indicating metabolites in connected rows of [`F R`]
-%                         * .connectedRowsFRVBool - `n x 1` boolean vector indicating complexes in connected columns of [`F; R`]
-%                         * .V - :math:`S V = 0`; :math:`1^T |V| > 1` for all flux consistent reactions
+%                         * .SIntRxnBool_findSExRxnInd - `n x 1` boolean of internal reactions from `findSExRxnInd`, before mass/consistency refinement
+%                         * .balancedRxnBool - `n x 1` boolean of elementally balanced reactions
+%                         * .balancedMetBool - `m x 1` boolean of elementally balanced metabolites
+%                         * .Elements - cell array of chemical elements detected by `checkMassChargeBalance`
+%                         * .missingFormulaeBool - `m x 1` boolean of metabolites lacking a chemical formula
+%                         * .FRnonZeroRowBool1 - `m x 1` boolean of nonzero rows of [`F R`] over the first consistent reaction subset
+%                         * .FRnonZeroColBool1 - `n x 1` boolean of nonzero cols of [`F; R`] over the first consistent metabolite subset
+%                         * .FRuniqueRowBool - `m x 1` boolean of rows of [`F R`] unique up to scalar multiplication
+%                         * .FRuniqueColBool - `n x 1` boolean of cols of [`F; R`] unique up to scalar multiplication
+%                         * .fluxConsistentRxnBool - `n x 1` boolean of flux consistent reactions
+%                         * .fluxConsistentMetBool - `m x 1` boolean of metabolites in flux consistent reactions
+%                         * .V - `n x k` flux matrix with :math:`S V = 0`; :math:`1^T |V| > 1` for flux consistent reactions
+%                         * .P - `m x k` exchange contribution of the stoichiometrically and flux consistent part
+%                         * .FRnonZeroRowBool - `m x 1` boolean of nonzero rows of [`F R`] over the final reaction subset
+%                         * .FRnonZeroColBool - `n x 1` boolean of nonzero cols of [`F; R`] over the final metabolite subset
+%                         * .largestConnectedRowsFRBool - `m x 1` boolean of rows in the largest connected component of [`F R`]
+%                         * .largestConnectedColsFRVBool - `n x 1` boolean of cols in the largest connected component of [`F; R`]
+%                         * .FRrows - `m x 1` boolean of rows of [`F R`] used in the restricted rank calculation
+%                         * .FRVcols - `n x 1` boolean of cols of [`F; R`] used in the restricted rank calculation
+%                         * .mC - mass vector from the stoichiometric consistency check of (`R - F`)
+%                         * .Frb - forward half-stoichiometric matrix of the bilinear form of the restricted [`F R`]
+%                         * .Rrb - reverse half-stoichiometric matrix of the bilinear form of the restricted [`F R`]
+%                         * .rankBilinearFrRr - rank of the bilinear [`F R`]
+%                         * .FRdrows - `m x 1` boolean of dependent rows of [`F R`]
+%                         * .FRirows - `m x 1` boolean of independent rows of [`F R`]
+%                         * .FRq - column permutation from the rank factorisation of [`F R`]
+%                         * .FRp - row permutation from the rank factorisation of [`F R`]
+%                         * .Fr - forward half-stoichiometric matrix restricted to `FRrows` and `FRVcols`
+%                         * .Rr - reverse half-stoichiometric matrix restricted to `FRrows` and `FRVcols`
+%                         * .FRVdcols - `n x 1` boolean of dependent cols of [`F; R`]
+%                         * .FRVicols - `n x 1` boolean of independent cols of [`F; R`]
+%                         * .FRVq - column permutation from the rank factorisation of [`F; R`]
+%                         * .FRVp - row permutation from the rank factorisation of [`F; R`]
+%                         * .Fc - forward half-stoichiometric matrix restricted to `FRrows` and `FRVcols`
+%                         * .Rc - reverse half-stoichiometric matrix restricted to `FRrows` and `FRVcols`
+%                         * .FRrowRankDeficiency - row rank deficiency of [`F R`]
+%                         * .FRW - matrix expressing dependent rows of [`F R`] as combinations of independent rows
+%                         * .FRwrows - `m x 1` boolean of independent rows that dependent rows depend on
+%                         * .FRcolRankDeficiency - column rank deficiency of [`F; R`]
+%                         * .FRVW - matrix expressing dependent cols of [`F; R`] as combinations of independent cols
+%                         * .FRVwcols - `n x 1` boolean of independent cols that dependent cols depend on
 
 if ~exist('printLevel','var')
     printLevel=1;

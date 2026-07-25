@@ -8,7 +8,11 @@ function rxnInterest4Models = plotEssentialRxns(essentialRxn4Models, essentialit
 % INPUTS:
 %    essentialRxn4Models:    Table with reaction fluxes (within the objective function reaction)
 %                            after single deletion of model reaction (rows) across models (columns)
-%                            This input can be obtained from essentialRxn4MultipleModels.m
+%                            This input can be obtained from essentialRxn4MultipleModels.m, using:
+%
+%                              * .Properties - table metadata; .Properties.VariableNames holds the model (column) names
+%                              * .rxn - column of reaction identifiers
+%
 %    essentialityRange:      Range of fluxes (e.g. [-100,100])
 %    numModelsPresent:       Minimum number of models where a reaction is essential in order to be ploted.
 %

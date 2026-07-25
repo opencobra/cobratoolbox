@@ -1,4 +1,22 @@
-function [output] = calcMDVfromSamp(glc,points,experiment)
+function [output] = calcMDVfromSamp(glc, points, experiment)
+% Converts a set of sampled flux points into mass-distribution vectors (MDVs)
+% by solving the EMU network for each point and collecting the results
+%
+% USAGE:
+%
+%    [output] = calcMDVfromSamp(glc, points, experiment)
+%
+% INPUTS:
+%    glc:           substrate (glucose) label distribution; if empty, `experiment.inputfrag` is used
+%    points:        `#fluxes x #samples` array of sampled flux vectors, one per column
+%    experiment:    experiment structure controlling which fragments are collected, with fields:
+%
+%                     * .inputfrag - default substrate label distribution used when `glc` is empty
+%                     * .fragments - structure of measured metabolite fragments, one field per fragment
+%                     * .input - substrate label distribution stored on the output as `xglc`
+%
+% OUTPUT:
+%    output:        structure of MDV results, with fields `mdv`, `names`, `ave`, `stdev` (and `xglc` when `experiment` is supplied)
 
 npoints = size(points,2);
 fprintf('found %d samples in input\n',npoints);

@@ -16,6 +16,9 @@ fprintf(' -- Running testChangeCobraSolver: ... \n');
 fileDir = fileparts(which('testChangeCobraSolver'));
 cd(fileDir);
 
+% require an LP solver; skip gracefully if none is available
+prepareTest('needsLP', true);
+
 % Three arguments
 if any(ismember('MINLP',OPT_PROB_TYPES))
     ok = changeCobraSolver('pdco', 'MINLP', 0);

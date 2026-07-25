@@ -1,28 +1,37 @@
-function [model,params] = componentContribution(model,trainingData)
+function [model, params] = componentContribution(model, trainingData)
 % Perform the component contribution method
 %
-% INPUTS
-% trainingData      structure from prepareTrainingData with the following fields
-% .S                the stoichiometric matrix of measured reactions
-% .G                the group incidence matrix
-% .dG0              the observation vector (standard Gibbs energy of reactions)
-% .weights          the weight vector for each reaction in S
-% .Model2TrainingMap
+% USAGE:
 %
-% OUTPUTS
-% model             structure with the following fields
-% .DfG0                 m x 1 array of component contribution estimated
-%                       standard Gibbs energies of formation.
-% .covf                 m x m estimated covariance matrix for standard
-%                       Gibbs energies of formation.
-% .DfG0_Uncertainty     m x 1 array of uncertainty in estimated standard
-%                       Gibbs energies of formation. Will be large for
-%                       metabolites that are not covered by component
-%                       contributions.
-% .DrG0_Uncertainty     n x 1 array of uncertainty in standard reaction
-%                       Gibbs energy estimates.  Will be large for
-%                       reactions that are not covered by component
-%                       contributions.
+%    [model, params] = componentContribution(model, trainingData)
+%
+% INPUTS:
+%    model:                 COBRA model structure with fields:
+%
+%                             * .S - `m x n` stoichiometric matrix
+%                             * .SIntRxnBool - `n x 1` boolean, true for internal reactions
+%    trainingData:          structure from prepareTrainingData with fields:
+%
+%                             * .S - stoichiometric matrix of measured reactions
+%                             * .G - group incidence matrix
+%                             * .dG0 - observation vector (standard Gibbs energy of reactions)
+%                             * .weights - weight vector for each reaction in `.S`
+%                             * .Model2TrainingMap - mapping of model metabolites to training metabolites
+%
+% OUTPUTS:
+%    model:                 COBRA model structure with added fields:
+%
+%                             * .DfG0 - `m x 1` component contribution standard Gibbs energies of formation
+%                             * .covf - `m x m` estimated covariance matrix for standard Gibbs energies of formation
+%                             * .DfG0_Uncertainty - `m x 1` uncertainty in `.DfG0`; large for uncovered metabolites
+%                             * .DrGt0_Uncertainty - `n x 1` uncertainty in standard transformed reaction Gibbs energies
+%                             * .DrG0_Uncertainty - `n x 1` uncertainty in standard reaction Gibbs energy estimates
+%    params:                structure of intermediate quantities for debugging, with fields:
+%
+%                             * .contributions - reactant and group contribution vectors
+%                             * .covariances - reactant, group and infinite covariance matrices
+%                             * .MSEs - reactant, group and infinite mean squared errors
+%                             * .projections - projection matrices used in the estimate
 
 if ~isfield(model,'SIntRxnBool')
     model = findSExRxnInd(model);

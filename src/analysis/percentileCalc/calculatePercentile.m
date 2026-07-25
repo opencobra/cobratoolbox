@@ -4,14 +4,14 @@ function value = calculatePercentile(expressionValues, k)
 %
 % USAGE:
 %
-%   value = calculatePercentile(expressionValues, k)
+%    value = calculatePercentile(expressionValues, k)
 %
 % INPUTS:
-%   expressionValues:       double cell array
-%   k:                      double
+%    expressionValues:       double cell array
+%    k:                      double
 %
 % OUTPUTS:
-%	value:                  double
+%    value:                  double
 %
 % .. Authors:
 %       - Kristina Grausa 05/16/2022

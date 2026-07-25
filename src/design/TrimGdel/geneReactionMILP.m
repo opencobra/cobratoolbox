@@ -1,41 +1,38 @@
 function [f, A, b, Aeq, beq, lb, ub, xname] = geneReactionMILP(model, term, ng, nt, nr, nko)
-% geneReactionMILP is a submodule to convert GPR relations to MILP.
+% geneReactionMILP is a submodule of gDel_minRN that converts the
+% gene-protein-reaction (GPR) relations into the matrices of a
+% mixed-integer linear program (MILP).
 %
 % USAGE:
 %
-%    function [f, A, b, Aeq, beq, lb, ub, xname] 
-%               = geneReactionMILP(model, term, ng, nt, nr, nko)
+%    [f, A, b, Aeq, beq, lb, ub, xname] = geneReactionMILP(model, term, ng, nt, nr, nko)
 %
 % INPUTS:
-%    model:     COBRA model structure containing the following required fields to perform gDel_minRN.
+%    model:    COBRA model structure with the field:
 %
-%        *.rxns:        Rxns in the model
-%        *.mets:        Metabolites in the model
-%        *.genes:       Genes in the model
-%        *.grRules:     Gene-protein-reaction relations in the model
-%        *.S:           Stoichiometric matrix (sparse)
-%        *.b:           RHS of Sv = b (usually zeros)
-%        *.c:           Objective coefficients
-%        *.lb:          Lower bounds for fluxes
-%        *.ub:          Upper bounds for fluxes
-%        *.rev:         Reversibility of fluxes
+%                * .genes - gene identifiers (g x 1 cell array)
 %
-%    term:    the list of Boolean functions extracted from the gene-protein-reaction relations
-%    ng:      the number of genes
-%    nt:      the number of internal terms
-%    nr:      the number of reactions
-%    nko:     the number of repressible reactions
-% 
+%    term:     struct array of the Boolean-function terms extracted from the
+%              GPR rules (as produced by readGeneRules), with the fields:
+%
+%                * .function - Boolean operator of the term ('and', 'or', 'equal')
+%                * .input - input variable name(s) of the term
+%                * .output - output variable name of the term
+%
+%    ng:       number of genes
+%    nt:       number of internal terms
+%    nr:       number of reactions
+%    nko:      number of repressible reactions
+%
 % OUTPUTS:
-%    f:    the weighted vector for the objective function of the resulting MILP.
-%    A, b, Aeq, beq, lb, ub:    correspond to each matrix included in the
-%                               following part of the MILP constraints.
-%
-%                                   A*x <= b
-%                                   Aeq*x=beq
-%                                   lb <= x <= ub
-% 
-%    xname:    variable names in the resulting MILP. 
+%    f:        objective weight vector of the resulting MILP
+%    A:        inequality constraint matrix of the MILP (A * x <= b)
+%    b:        right-hand side of the inequality constraints (A * x <= b)
+%    Aeq:      equality constraint matrix of the MILP (Aeq * x = beq)
+%    beq:      right-hand side of the equality constraints (Aeq * x = beq)
+%    lb:       lower bounds on the MILP variables (lb <= x <= ub)
+%    ub:       upper bounds on the MILP variables (lb <= x <= ub)
+%    xname:    variable names in the resulting MILP
 %
 % .. Author:    - Takeyuki Tamura, Mar 06, 2025
 %

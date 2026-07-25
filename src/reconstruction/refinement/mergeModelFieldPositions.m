@@ -1,31 +1,44 @@
-function modelNew = mergeModelFieldPositions(model,type,positions,mergeFunctions)
+function modelNew = mergeModelFieldPositions(model, type, positions, mergeFunctions)
+% Merges the entries of all fields associated with a given index type
+% (`rxns`, `mets`, `comps` or `genes`) at the specified positions into a
+% single entry, using field-specific merge functions where provided.
+%
 % USAGE:
-%    [modelNew] = mergeModelFieldPositions(model,type,positions)
+%
+%    modelNew = mergeModelFieldPositions(model, type, positions, mergeFunctions)
 %
 % INPUTS:
-%    model:           The model with the fields to merge
-%    type:            the field type to merge ( rxns, mets, comps or genes)
-%    positions:       The positions in the given field type to merge either as indices or as logical array.
+%    model:              The model with the fields to merge
+%    type:               the field type to merge (rxns, mets, comps or genes)
+%    positions:          The positions in the given field type to merge either as indices or as logical array.
 %
 % OPTIONAL INPUTS:
-%    mergeFunctions:  A cell array of fieldNames and functions that can be
-%                     called on a larger array of the type used for the
-%                     field. e.g. 
+%    mergeFunctions:     A cell array of fieldNames and functions that can be
+%                        called on a larger array of the type used for the
+%                        field, e.g.:
 %
-%                      - {'metCharges',@(x) x(1); 'grRules', @(x) strjoin(x,' or ');
-%                      - by default, all numeric fields are added up, all
-%                        unique entries in cell arrays are concatenated with
-%                        ';', 
-%                      - grRules and rules are assumed to be merged with
-%                        and (i.e. a batch reaction is assumed to need all
-%                        associated GPRs)
-%                 
+%                          - {'metCharges', @(x) x(1); 'grRules', @(x) strjoin(x, ' or ')};
+%                          - by default, all numeric fields are added up, all
+%                            unique entries in cell arrays are concatenated with
+%                            ';';
+%                          - grRules and rules are assumed to be merged with
+%                            and (i.e. a batch reaction is assumed to need all
+%                            associated GPRs)
 %
 % OUTPUT:
 %
-%    modelNew:         merged model with the positions merged into one.
-%                      Unique entries in Related String fields will be
-%                      concatenated with ';' matrices will be summed up.
+%    modelNew:           merged model with the positions merged into one,
+%                        with fields:
+%
+%                          * .rules - `n x 1` GPR rules, gene indices
+%                            remapped to the kept position when `type` is
+%                            `genes`
+%                          * .grRules - `n x 1` readable GPR rules, gene
+%                            names remapped to the kept position when
+%                            `type` is `genes`
+%
+%                        Unique entries in Related String fields will be
+%                        concatenated with ';' matrices will be summed up.
 %
 % .. Authors:
 %                   - Thomas Pfau Sept 2017

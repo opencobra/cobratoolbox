@@ -19,6 +19,7 @@ function [directory, fname] = writeMinosProblem(LPproblem, precision, modelName,
 %                     * .osense - Objective sense (-1 max, +1 min)
 %                     * .csense - Constraint senses, a string containting the constraint sense for
 %                       each row in `A` ('E', equality, 'G' greater than, 'L' less than).
+%                     * .S - `m x n` sparse constraint matrix; only its row count is used to size the default `.csense` when `.csense` is absent
 %
 % OPTIONAL INPUTS:
 %    precision:     'double' or 'single' precision

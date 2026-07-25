@@ -7,8 +7,10 @@ function mix = mixFraction(sample1, sample2, fixed)
 %    mix = mixFraction(sample1, sample2, fixed)
 %
 % INPUTS:
-%    sample1, sample2:    Ordered set of points. The points must be in
-%                         the same order otherwise it does not make sense.
+%    sample1:             Ordered set of points. The points must be in the same
+%                         order otherwise it does not make sense.
+%    sample2:             Second ordered set of points, in the same order as
+%                         `sample1`.
 %
 % OPTIONAL INPUT:
 %    fixed:               The indexes of sampled reactions which are fixed 

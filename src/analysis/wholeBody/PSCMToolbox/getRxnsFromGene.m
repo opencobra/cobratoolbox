@@ -1,22 +1,26 @@
-function [Rxns, grRules] = getRxnsFromGene(model,gene,causal)
+function [Rxns, grRules] = getRxnsFromGene(model, gene, causal)
+% Get all reaction(s) associated with a particular gene
+%
 % This function gets all reaction(s) associated with a particular gene by
-% screening through the grRules provided in the model structure
+% screening through the grRules provided in the model structure.
 %
+% USAGE:
 %
-% [Rxns, grRules] = getRxnsFromGene(model,gene,causal)
+%    [Rxns, grRules] = getRxnsFromGene(model, gene, causal)
 %
-% INPUT
-% model     model structure
-% gene      gene of interest
-% causal    if causal == 1 get only genes that would lead to loss of function of the
-%           associated reactions, otw get all associated reactions
-%           (default)
+% INPUTS:
+%    model:     Model structure with fields:
 %
-% OUTPUT
-% Rxns      List of reaction(s) associated with the input gene
-% grRules   List of grRules containing the input gene, same order as Rxns
+%                 * .grRules - readable gene-protein-reaction rules
+%    gene:      Gene of interest
+%    causal:    If 1, get only genes whose loss would cause loss of function of the
+%               associated reactions; otherwise get all associated reactions (default)
 %
-% Ines Thiele 10/2019
+% OUTPUTS:
+%    Rxns:      List of reaction(s) associated with the input gene
+%    grRules:    List of grRules containing the input gene (same order as `Rxns`)
+%
+% .. Author: - Ines Thiele, 10/2019
 
 if  ~exist('causal','var')
     causal = 0;

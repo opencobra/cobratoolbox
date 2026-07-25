@@ -27,14 +27,21 @@ function [samples, roundedPolytope, minFlux, maxFlux] = chrrExpSampler(model, nu
 %                         is nonzero, in which case we set `lambda=model.c`.
 %    toRound:             `{0, 1}` Option to round the polytope before sampling.
 %    roundedPolytope:     The rounded polytope from a previous round of
-%                         sampling the same model.
+%                         sampling the same model, with fields:
+%
+%                           * .A - inequality constraint matrix `{x | A x <= b}`
+%                           * .N - null-space basis mapping to the original flux space
+%                           * .lambda - bias vector expressed in the rounded space
+%                           * .minFlux - flux minima from preprocessing
+%                           * .maxFlux - flux maxima from preprocessing
 %    useFastFVA:          Boolean to use fastFVA (default: `false`)
 %
 % OUTPUTS:
 %    samples:             `n x numSamples` matrix of random flux samples
 %    roundedPolytope:     The rounded polytope. Save for use in subsequent
 %                         rounds of sampling.
-%    minFlux, maxFlux:    flux minima and maxima
+%    minFlux:             flux minima
+%    maxFlux:             flux maxima
 %
 % .. Authors:
 %       - Ben Cousins, 12/2017, based on chrrSampler by Ben Cousins and Hulda S. Haraldsdóttir

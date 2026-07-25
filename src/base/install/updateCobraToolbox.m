@@ -6,7 +6,7 @@ function updateCobraToolbox(fetchAndCheckOnly)
 %     updateCobraToolbox()
 %
 % INPUT:
-%     fetchAndCheckOnly: if set to true, the repository is not updated but only new commits are fetched (default: false)
+%     fetchAndCheckOnly:    if set to true, the repository is not updated but only new commits are fetched (default: false)
 %
 
 if nargin < 1

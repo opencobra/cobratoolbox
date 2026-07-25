@@ -1,4 +1,4 @@
-function samples = loadSamples(filename, numFiles, pointsPerFile,numSkipped,randPts)
+function samples = loadSamples(filename, numFiles, pointsPerFile, numSkipped, randPts)
 % Loads a set of sampled data points
 %
 % USAGE:

@@ -1,3 +1,5 @@
+% Compile the CMatrix high-precision MEX libraries (ddouble, qdouble) and the
+% AdaptiveChol solver from their C/C++ sources
 configCMatrix
 
 %% setup source files

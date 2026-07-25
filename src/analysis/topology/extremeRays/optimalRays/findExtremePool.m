@@ -3,20 +3,25 @@ function [x, sol] = findExtremePool(model, obj, printLevel, positive, internal)
 %
 % USAGE:
 %
-%    [x, output] = findExtremePool(fbaModel, obj, printLevel)
+%    [x, sol] = findExtremePool(model, obj, printLevel, positive, internal)
 %
 % INPUT:
-%    fbaModel:       FBA type model
+%    model:          COBRA model structure with fields:
 %
-% OPTIONAL INPUT:
-%    obj:            default = random vector with size depending on `fbaModel.S`
-%    printLevel:     argument for `solveCobraLP` function, default = 0
+%                      * .S - `m x n` stoichiometric matrix
+%                      * .SConsistentRxnBool - `n x 1` boolean of stoichiometrically consistent reactions (used when `internal` is true)
+%
+% OPTIONAL INPUTS:
+%    obj:            objective coefficient vector (default = random vector sized on `model.S`)
+%    printLevel:     verbosity passed to `solveCobraLP` (default = 0)
+%    positive:       if true, restrict the ray to non-negative coefficients (default = 0)
+%    internal:       if true, restrict `model.S` to `model.SConsistentRxnBool` (default = 0)
 %
 % OUTPUTS:
-%    x:              `x = output.full`
-%    output:         `output = solveCobraLP(LPProblem)`
+%    x:              extreme ray from the left nullspace (`x = sol.full`, entries below `epsilon` set to zero)
+%    sol:            solution structure returned by `solveCobraLP(LPProblem)`
 %
-% Author: Ronan Fleming,  & 2026
+% .. Author: - Ronan Fleming, 2026
 
 
 if ~exist('printLevel','var')

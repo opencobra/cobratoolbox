@@ -13,6 +13,9 @@ currentDir = pwd;
 fileDir = fileparts(which('testSolveBooleanRegModel'));
 cd(fileDir);
 
+% require an LP solver; skip gracefully if none is available
+prepareTest('needsLP', true);
+
 % solver packages
 solverPkgs = {'tomlab_cplex'};
 

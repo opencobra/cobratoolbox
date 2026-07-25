@@ -1,4 +1,16 @@
 function displayReactingMoieties(reacting)
+% Print a summary and the per-reaction tables of reacting moieties to the command window
+%
+% USAGE:
+%
+%    displayReactingMoieties(reacting)
+%
+% INPUT:
+%    reacting:    structure describing reacting moieties, with fields:
+%
+%                   * .selectedReactionNames - cell/string array of reaction names
+%                   * .reactMoietyTables - cell array of per-reaction moiety tables (one per selected reaction)
+
 rxnList = reacting.selectedReactionNames;
 nRxn = numel(rxnList);
 

@@ -6,7 +6,10 @@ function Rxns = findNearRxns(model, Rxns, direction, flux)
 %    Rxns = findNearRxns(model, Rxns, direction, flux)
 %
 % INPUTS:
-%    model:        COBRA model structure.
+%    model:        COBRA model structure with fields:
+%
+%                    * .S - `m x n` stoichiometric matrix
+%                    * .mets - `m x 1` cell array of metabolite identifiers
 %    Rxns:         Cell array of reaction abbreviations in the COBRA model, or
 %                  a cell vector from the MATLAB workspace.
 %
@@ -52,8 +55,9 @@ function Rxns = findNearRxns(model, Rxns, direction, flux)
 %       - Andrejs Kostromins, 17 Feb 2012, andrejs.kostromins@gmail.com
 %
 
-%find reaction IDs in the model
-RxnsIDs = findRxnIDs(model,Rxns); 
+% find reaction IDs in the model
+
+RxnsIDs = findRxnIDs(model,Rxns);
 metIndexes(1)=-1; %declare variable
 
 for q=1:length(RxnsIDs) %cycle through the reaction IDs

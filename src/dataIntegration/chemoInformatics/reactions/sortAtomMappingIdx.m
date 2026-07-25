@@ -3,13 +3,13 @@ function ascendingRxnFile = sortAtomMappingIndexes(rxnFile)
 %
 % USAGE:
 %
-%    ascendingRxnFile = acsendingAtomMaps(rxnFile)
+%    ascendingRxnFile = sortAtomMappingIndexes(rxnFile)
 %
 % INPUT:
 %    rxnFile:          MDL RXN file 
 %
 % OUTPUTS:
-%    ascendingRxnFile: A RXN file with ascending atom mappings.
+%    ascendingRxnFile:    A RXN file with ascending atom mappings.
 %
 % .. Author: - German A. Preciat Gonzalez 25/05/2017
 

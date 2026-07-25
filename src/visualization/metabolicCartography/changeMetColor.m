@@ -3,17 +3,23 @@ function [newMap] = changeMetColor(map, metList, color)
 %
 % USAGE:
 %
-%   [newMap] = changeMetColor(map, metList, color);
+%    [newMap] = changeMetColor(map, metList, color)
 %
 % INPUTS:
-%   map:            file from CellDesigner parsed to MATLAB format
-%   metList:        List of metabolites names
+%    map:            File from CellDesigner parsed to MATLAB format, with fields:
+%
+%                      * .specName - cell array of species (metabolite) names
+%                      * .specID - cell array of species IDs (one per name)
+%                      * .molID - cell array of molecule (node) IDs
+%    metList:        List of metabolites names
 %
 % OPTIONAL INPUT:
-%   color:          New color of metabolites from list(default: RED)
+%    color:          New color of metabolites from list (default: RED)
 %
 % OUTPUT:
-%   newMap:         Matlab structure of map with reaction modifications
+%    newMap:         MATLAB structure of map with field updated:
+%
+%                      * .molColor - cell array of molecule colours
 %
 % .. Authors:
 %       - A.Danielsdottir 17/07/2017 LCSB. Belval. Luxembourg

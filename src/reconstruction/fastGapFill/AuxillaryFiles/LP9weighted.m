@@ -1,4 +1,37 @@
 function V = LP9weighted(W, K, P, model, LPproblem, epsilon)
+% Solves a weighted variant of the `LP9` problem from the FASTCORE algorithm
+% (Vlassis et al., 2013): given an existing LP problem, minimizes the
+% weighted L1 norm of the flux through the candidate reactions `P` subject
+% to the flux through the core reactions `K` being at least `epsilon`.
+%
+% USAGE:
+%
+%    V = LP9weighted(W, K, P, model, LPproblem, epsilon)
+%
+% INPUTS:
+%    W:            `n x 1` nonnegative weight vector (penalizes reactions
+%                  in `P` with a higher weight more strongly)
+%    K:            Indices of the core reactions required to carry a flux
+%                  of at least `epsilon`
+%    P:            Indices of the candidate reactions whose weighted flux
+%                  magnitude (`W(P) .* v(P)`) is minimized
+%    model:        Model structure, with field:
+%
+%                    * .S - `m x n` stoichiometric matrix (only its size is used)
+%    LPproblem:    LP problem structure to extend, with fields:
+%
+%                    * .A - `m2 x n2` linear constraint matrix
+%                    * .b - `m2 x 1` right hand side vector for `A*x = b`
+%                    * .lb - `n2 x 1` lower bound vector
+%                    * .ub - `n2 x 1` upper bound vector
+%                    * .csense - `m2 x 1` character array of constraint senses
+%                      (`E`, `G`, or `L`)
+%    epsilon:      Minimum required flux through the reactions in `K`
+%
+% OUTPUT:
+%    V:            `n x 1` flux vector solving the weighted LP9 problem,
+%                  restricted to the first `n` variables, or an `n x 1`
+%                  vector of `NaN` if no solution vector was returned
 
 scalingfactor = 1e5;
 % W are n x 1 nonnegative weights (NOTE: it penalizes high weights)

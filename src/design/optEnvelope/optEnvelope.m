@@ -1,47 +1,78 @@
 function [main, mid] = optEnvelope(model, desiredProduct, varargin)
-% optEnvelope uses MILP to find minimum active reactions and then finds 
-% smallest set of reactions in the pool of inactive reactions that offers same production envelope.
-% Algorith provides multiple ways to reinsert reactions - sequential, MILP, GA(under construction)
+% optEnvelope finds a minimal set of knockouts for a production envelope
+%
+% Uses a MILP to find the minimum set of active reactions and then finds the
+% smallest set of reactions in the pool of inactive reactions that offers the
+% same production envelope. The algorithm provides multiple ways to reinsert
+% reactions: sequential, MILP and GA (under construction).
 %
 % USAGE:
-%   [main, mid] = optEnvelope(model, desiredProduct, 'protectedRxns', protectedRxns, 'numTries', numTries, 'numKO', numKO, 'prodMol', prodMol, 'midPoints', midPoints, 'timeLimit', timeLimit, 'printLevel', printLevel, 'drawEnvelope', drawEnvelope)
+%
+%    [main, mid] = optEnvelope(model, desiredProduct, varargin)
 %
 % INPUTS:
-%   model              COBRA model structure [struct]
-%   desiredProduct     Reaction name of desired product [char]
+%    model:             COBRA model structure with fields:
+%
+%                         * .S - Stoichiometric matrix
+%                         * .rxns - Reaction identifiers
+%                         * .mets - Metabolite identifiers
+%                         * .lb - Lower bounds
+%                         * .ub - Upper bounds
+%                         * .b - Right hand side values for metabolite constraints
+%                         * .c - Objective coefficients
+%                         * .grRules - Readable gene-protein-reaction rules
+%                         * .metNames - Metabolite names
+%                         * .metFormulas - Elemental formulas
+%    desiredProduct:    Reaction name of desired product [char]
 %
 % OPTIONAL INPUTS:
-%   protectedRxns      (opt) Aditional reactions to ignore (must be in irreversible form) [cell array] (default: {})
-%   numTries           (opt) Iterations for finding best possible set of deletions [double] (default: [])
-%   numKO              (opt) Number of reactions to remove for final result (triggers MILP for reaction reinsertion) [double] (default: [])
-%   prodMol            (opt) Molar mass of product for yield plot (g/mol) [double] (default: [])
-%   midPoints          (opt) Number of points to check along the edge for best envelope [double] (default: 0)
-%   timeLimit          (opt) Time limit for gurobi optimization in seconds (also limits time for numTries) [double] (default: inf)
-%   printLevel         (opt) Print level for gurobi optimization [double] (default: 0)
-%   drawEnvelope       (opt) Binary value to determine if algorithm should draw envelopes [logical] (default: true)
-%   delGenes           (unfinished function)
-%   delEnzymes         (unfinished function)
-%   GAon               (unfinished function)
+%    varargin:          Parameters given as parameter name / value pairs:
+%
+%                         * protectedRxns - Additional reactions to ignore
+%                           (must be in irreversible form) [cell array] (default: {})
+%                         * numTries - Iterations for finding the best set of
+%                           deletions [double] (default: [])
+%                         * numKO - Number of reactions to remove for the final
+%                           result (triggers MILP reinsertion) [double] (default: [])
+%                         * prodMol - Molar mass of product for a yield plot
+%                           (g/mol) [double] (default: [])
+%                         * midPoints - Number of points to check along the
+%                           edge for the best envelope [double] (default: 0)
+%                         * timeLimit - Time limit for the solver in seconds
+%                           (also limits numTries) [double] (default: inf)
+%                         * printLevel - Print level for the solver [double]
+%                           (default: 0)
+%                         * drawEnvelope - Whether the algorithm should draw
+%                           envelopes [logical] (default: true)
+%                         * delGenes - Delete genes (unfinished) [logical]
+%                           (default: false)
+%                         * delEnzymes - Delete enzymes (unfinished) [logical]
+%                           (default: false)
+%                         * GAon - Use genetic algorithm (unfinished) [logical]
+%                           (default: false)
 %
 % OUTPUTS:
-%   main               Structure that contains information about reactions to remove for optimal envelope
-%                      Information about most probable point
-%   mid                Structure that contains information about reactions to remove for midpoint envelopes
-%                      Information about most probable points for midpoint envelopes
+%    main:              Struct with information about the reactions to remove
+%                       for the optimal envelope and its most probable point
+%                       (fields .knockouts and .peak)
+%    mid:               Struct with information about the reactions to remove
+%                       for the midpoint envelopes and their most probable
+%                       points (fields .midKnockoutsTable and .peak)
 %
-%   EXAMPLE: [mainKnockouts, midKnockouts] = optEnvelope(model, 'EX_ac_e', 'timeLimit', 600, 'protectedRxns', {'H2Ot_f','H2Ot_b'}, 'midPoints', 15);
+% EXAMPLE:
 %
-% NOTES
-%   It should be mentioned that a figure (desired product versus biomass)
-%   including plots for wild-type and opt enveople is presented after
-%   running optEnvelope
-%   Mid Envelopes currently work only for sequential (default) reinsertions
+%    [mainKnockouts, midKnockouts] = optEnvelope(model, 'EX_ac_e', 'timeLimit', 600, 'midPoints', 15)
 %
-% AUTHORS:
-%   created by  Ehsan Motamedian     02/09/2022
-%   modified by Kristaps Berzins     06/12/2022
-%   modified by Ehsan Motamedian     25/01/2023 switch to middle points was added
-%   modified by Kristaps Berzins     30/09/2024 improved algorightms, fixed bugs, added functionality
+% NOTE:
+%    A figure (desired product versus biomass) including plots for the
+%    wild-type and the opt envelope is presented after running optEnvelope.
+%    Mid envelopes currently work only for sequential (default) reinsertions.
+%
+% .. Authors:
+%       - Ehsan Motamedian, 02/09/2022, created
+%       - Kristaps Berzins, 06/12/2022, modified
+%       - Ehsan Motamedian, 25/01/2023, switch to middle points added
+%       - Kristaps Berzins, 30/09/2024, improved algorithms, fixed bugs, added functionality
 
 
 %% 0. Set parameters

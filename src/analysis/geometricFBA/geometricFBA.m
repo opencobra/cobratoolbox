@@ -10,8 +10,10 @@ function flux = geometricFBA(model, varargin)
 %    flux = geometricFBA(model, varargin)
 %
 % INPUT:
-%    model:         COBRA model structure
+%    model:         COBRA model structure with fields:
 %
+%                     * .c - `n x 1` linear objective coefficient vector
+%                     * .lb - `n x 1` lower bounds (the objective reaction bound is tightened to the optimum)
 %
 % OPTIONAL INPUTS:
 %    printLevel:    [default: 1]  printing level,

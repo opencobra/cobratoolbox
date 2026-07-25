@@ -10,7 +10,7 @@ function solution = optimizeCardinalityOld(problem, param)
 %
 % USAGE:
 %
-%    solution = optimizeCardinality(problem, param)
+%    solution = optimizeCardinalityOld(problem, param)
 %
 % INPUT:
 %    problem:     Structure containing the following fields describing the problem:
@@ -35,6 +35,20 @@ function solution = optimizeCardinalityOld(problem, param)
 %                   * .lambda1 - trade-off parameter on minimise `||x||_1`
 %                   * .delta0 - trade-off parameter on maximise `||y||_0`
 %                   * .delta1 - trade-off parameter on minimise `||y||_1
+%                   * .lambda - shorthand for `.lambda0` (mutually exclusive with
+%                     `.lambda0`/`.lambda1`); when given, `.lambda0` is set to
+%                     `problem.lambda` and `.lambda1` is set to `lambda0/10` (Default
+%                     `.lambda` = 1 if none of `.lambda`, `.lambda0`, `.lambda1` are given)
+%                   * .delta - shorthand for `.delta0` (mutually exclusive with
+%                     `.delta0`/`.delta1`); when given, `.delta0` is set to
+%                     `problem.delta` and `.delta1` is set to `delta0/10` (Default
+%                     `.delta` = 0 if none of `.delta`, `.delta0`, `.delta1` are given)
+%                   * .complementarityindk - `size(A,2) x 2` matrix identifying, for each
+%                     complementarity pair, the two `x`-indices (columns) that are linked;
+%                     required together with `.complementarityindd`
+%                   * .complementarityindd - `size(A,2) x 1` vector identifying, for each
+%                     complementarity pair, the corresponding `y`-index; required together
+%                     with `.complementarityindk`
 %
 %    param:      Parameters structure:
 %                   * .printLevel - greater than zero to recieve more output
@@ -45,6 +59,17 @@ function solution = optimizeCardinalityOld(problem, param)
 %                              and the original cardinality optimisation problem are have the same set of optimal solutions
 %                   * .thetaMultiplier - at each iteration: theta = theta*thetaMultiplier
 %                   * .eta - Smallest value considered non-zero (Default value feasTol*1000)
+%                   * .warmStartMethod - method used to compute the starting point
+%                     `(x,y,z)` for the DCA loop; one of `'inverseTheta'`, `'original'`,
+%                     `'0'`, `'l1'`, `'l2'`, `'random'` (Default value = 'random')
+%                   * .condenseW - if `true`, omit the auxiliary `w` variable for
+%                     `x`-entries already constrained to be non-negative (Default value = 1)
+%                   * .condenseT - if `true`, omit the auxiliary `t` variable for
+%                     `y`-entries whose absolute value is already constrained to be less
+%                     than `1/theta` (Default value = 1)
+%                   * .testFeasibility - if `true`, solve the initial sub-problem once
+%                     before the DCA loop begins to check and report whether it is
+%                     feasible (Default value = 0)
 
 %
 % OUTPUT:

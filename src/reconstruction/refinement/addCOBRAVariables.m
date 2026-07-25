@@ -2,13 +2,29 @@ function model = addCOBRAVariables(model, idList, varargin)
 % Add a Variable to the COBRA model provided. These variables can be
 % referred to by additional constraints added via addCOBRAConstraint. Their
 % IDs have to be mutually exclusive with the IDs in model.rxns
+%
 % USAGE:
+%
 %    model = addCOBRAVariables(model, idList, varargin)
 %
 % INPUTS:
-%    model:         model structure
-%    idList:        cell array of ids 
+%    model:         model structure with fields:
 %
+%                     * .rxns - `n x 1` reaction identifiers, checked so
+%                       that new variable IDs do not clash with reaction IDs
+%                     * .evars - `evars x 1` extra variable identifiers
+%                       (created if absent, checked for duplicates otherwise)
+%                     * .E - `m x evars` extra variable coefficient matrix,
+%                       read to determine the current number of variables
+%                     * .evarlb - `evars x 1` lower bounds of extra variables
+%                     * .evarub - `evars x 1` upper bounds of extra variables
+%                     * .evarc - `evars x 1` objective coefficients of extra variables
+%                     * .evarNames - `evars x 1` extra variable names
+%                       (created only if not already present and `Names`
+%                       was supplied)
+%    idList:        cell array of ids
+%
+% OPTIONAL INPUTS:
 %    varargin:
 %                   * lb:               The lower bounds of the variables
 %                                       Has to be of the same size as
@@ -19,19 +35,22 @@ function model = addCOBRAVariables(model, idList, varargin)
 %                                       idlist
 %                                       (default: 1000)
 %                   * c:                The objective coefficient of the variables
-%                                       Has to be of the same size as idlist                                      
+%                                       Has to be of the same size as idlist
 %                                       (default: 0)
 %                   * Names:            Descriptive names of the variables.
 %                                       (default: idList)
+%
 % OUTPUT:
 %    model:         constrained model containing the new variables in the
-%                   respective fields (`E`,`evars`,`evarub`,`evarlb`,`evarc`)
-%                    * `.E` - The coefficient matrix for coefficients of metabolites for the variables
-%                    * `.evars` - The variable IDs
-%                    * `.evarlb` - The variable lower bounds
-%                    * `.evarub` - The variable upper bounds
-%                    * `.evarc` - The variable objective coefficient
-%                    *  Optional: `D`, the matrix conatining coefficients for additional variables.
+%                   respective fields:
+%
+%                    * .E - The coefficient matrix for coefficients of metabolites for the variables
+%                    * .evars - The variable IDs
+%                    * .evarlb - The variable lower bounds
+%                    * .evarub - The variable upper bounds
+%                    * .evarc - The variable objective coefficient
+%                    * .evarNames - The variable names (if provided or already present)
+%
 % NOTE:
 %    This function will, if not present create the `E`, `evars`, `evarlb`, `evarub`, `evarc` and,
 %    if additional Constraints (i.e. the `C` matrix) is present, the `D`
@@ -39,11 +58,11 @@ function model = addCOBRAVariables(model, idList, varargin)
 %    the Variable coefficients referring to metabolites, while the `D`
 %    field contains the variable coefficients referring to additional
 %    Constraints from `C`. `evars` contains the IDs of the additional
-%    variables, with one entrey per column of `E`. `evarlb` and `evarub` 
+%    variables, with one entrey per column of `E`. `evarlb` and `evarub`
 %    represent the lower and upper bounds of the variables respectively.
 %    `evarc` are objective coefficients of the variables.
 %
-% Author: Thomas Pfau, Oct 2018
+% .. Author: - Thomas Pfau, Oct 2018
 
 if ischar(idList) 
     %This is an individual element.

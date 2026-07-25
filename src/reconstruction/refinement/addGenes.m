@@ -1,22 +1,31 @@
-function newmodel = addGenes(model,geneIDs,varargin)
-% Add Genes (or a single gene) to the model 
+function newmodel = addGenes(model, geneIDs, varargin)
+% Add Genes (or a single gene) to the model
 %
 % USAGE:
-%    model = addGenes(model,geneIDs,varargin)
+%
+%    newmodel = addGenes(model, geneIDs, varargin)
 %
 % INPUT:
-%    model:             The model to add the Metabolite batch to.
+%    model:             The model to add the Metabolite batch to, with fields:
+%
+%                         * .genes - `g x 1` gene identifiers, checked for
+%                           duplicates against `geneIDs` and extended with
+%                           the newly added gene IDs
 %    geneIDs:           The IDs of the genes that shall be added.
+%
+% OPTIONAL INPUT:
 %    varargin:          fieldName, Value pairs. The given fields will be set
 %                       according to the values. Only defined COBRA fields may be
 %                       used. The following fields will be ignored (as they
 %                       are dependent on the existing model structure):
 %
-%                        * rxnGeneMat - The size will be extended, but no associations will be set. 
+%                        * rxnGeneMat - The size will be extended, but no associations will be set.
+%
 % OUTPUT:
 %    newmodel:     The model structure with the additional reactions.
 %
 % EXAMPLE:
+%
 %    %To add genes with specific fields use:
 %    `model = addGenes(model, {'G1', 'Gene2', 'InterestingGene'}, 'proteins', {'Protein1','Protein B','Protein Alpha'}, 'geneField2', {'D','E','F'})`
 %
@@ -24,7 +33,7 @@ function newmodel = addGenes(model,geneIDs,varargin)
 %    All fields (geneField1/geneField2) have to be present in
 %    the model, or defined in the field definitions, otherwise they are
 %    ignored.
-%    
+%
 
 
 if (isfield(model,'genes') && ~isempty(model.genes) && any(ismember(model.genes,geneIDs))) || numel(unique(geneIDs)) < numel(geneIDs)

@@ -1,15 +1,24 @@
 function generateMexFastFVA(rootPathCPLEX, printLevel)
+% Compile a MEX file based on the C file of fastFVA
 %
-% Purpose: Compile a MEX file based on the C file of fastFVA
-% Author: Laurent Heirendt, LCSB
-% Date: April/July 2016
+% USAGE:
 %
-% Requirements: Installation of CPLEX 12.6.2+
+%    generateMexFastFVA(rootPathCPLEX, printLevel)
 %
-
-% printLevel: 0: mute
-%            1: minimal output
-%            2: all compilation info
+% OPTIONAL INPUTS:
+%    rootPathCPLEX:    path to the root of the CPLEX installation, used to locate
+%                      the CPLEX headers and libraries for compilation
+%                      (default: derived from `ILOG_CPLEX_PATH`)
+%    printLevel:       verbosity of the compilation:
+%
+%                        * 0 - mute
+%                        * 1 - minimal output (default)
+%                        * 2 - all compilation info
+%
+% NOTE:
+%    Requirements: Installation of CPLEX 12.6.2+
+%
+% .. Author: - Laurent Heirendt, LCSB, April/July 2016
 
 global CBTDIR
 global ILOG_CPLEX_PATH

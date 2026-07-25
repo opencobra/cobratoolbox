@@ -10,24 +10,24 @@ function [POAtable, fluxRange, Stat, pairList] = SteadyComPOAgr(modelCom, option
 %    modelCom:     A community COBRA model structure with the following fields (created using createMultipleSpeciesModel)
 %                  (the first 5 fields are required, at least one of the last two is needed. Can be obtained using `getMultiSpecisModelId`):
 %
-%                    * S - Stoichiometric matrix
-%                    * b - Right hand side
-%                    * c - Objective coefficients
-%                    * lb - Lower bounds
-%                    * ub - Upper bounds
-%                    * infoCom - structure containing community reaction info
-%                    * indCom - the index structure corresponding to `infoCom`
+%                    * .S - Stoichiometric matrix
+%                    * .b - Right hand side
+%                    * .c - Objective coefficients
+%                    * .lb - Lower bounds
+%                    * .ub - Upper bounds
+%                    * .infoCom - structure containing community reaction info
+%                    * .indCom - the index structure corresponding to `infoCom`
 %
 % OPTIONAL INPUTS:
 %    options:    option structure with the following fields:
 %
-%                  * GR - The growth rate at which POA is performed. If not
+%                  * .GR - The growth rate at which POA is performed. If not
 %                    given, find the maximum growth rate by `SteadyCom.m`
 %                  * optBMpercent - Only consider solutions that yield at least a certain percentage of the optimal biomass (Default = 99.99)
-%                  * rxnNameList - list of reactions (IDs or .rxns) to be analyzed. Use a :math:`(N_{rxns} + N_{organism}) * K` matrix for POA of `K`
+%                  * .rxnNameList - list of reactions (IDs or .rxns) to be analyzed. Use a :math:`(N_{rxns} + N_{organism}) * K` matrix for POA of `K`
 %                    linear combinations of fluxes and/or abundances (Default = biomass reaction of each organism,
 %                    or reactions listed in `pairList` [see below] if `pairList` is given)
-%                  * pairList - pairs in `rxnNameList` to be analyzed. `N_pair` by 2 array of:
+%                  * .pairList - pairs in `rxnNameList` to be analyzed. `N_pair` by 2 array of:
 %
 %                    * - indices referring to the rxns in `rxnNameList`, e.g., `[1 2]` to analyze `rxnNameList{1}` vs `rxnNameList{2}`
 %                    * - rxn names which are members of `rxnNameList`, e.g., `{'EX_glc-D(e)', 'EX_ac(e)'}`
@@ -51,19 +51,35 @@ function [POAtable, fluxRange, Stat, pairList] = SteadyComPOAgr(modelCom, option
 %                    cplex model ('loadModel.mps'), basis ('loadModel.bas') and parameters ('loadModel.prm').
 %                    (May add also other parameters in `SteadyCom` for calculating the maximum growth rate.)
 %
+%    LP:         LP problem structure (Cplex object for `ibm_cplex`) from calling
+%                `SteadyComPOA`; leave empty if calling this function alone. Fields used:
+%
+%                  * .A - constraint matrix
+%                  * .b - right-hand-side vector
+%                  * .c - objective coefficient vector
+%                  * .lb - lower bound vector
+%                  * .ub - upper bound vector
+%                  * .csense - constraint sense vector
+%                  * .osense - objective sense (maximise/minimise)
+%                  * .basis - warm-start basis
+%                  * .Model - Cplex model sub-structure (`ibm_cplex`)
+%                  * .Start - Cplex warm-start basis (`ibm_cplex`)
+%                  * .Solution - Cplex solution sub-structure (`ibm_cplex`)
+%                  * .DisplayFunc - Cplex display-function handle (`ibm_cplex`)
+%
 %    parameter:  structure for solver-specific parameters.
 %                  'param1', value1, ...:  name-value pairs for `solveCobraLP` parameters. See solveCobraLP for details
 %
 % OUTPUTS:
-%    POAtable:   `K x K` cells. `(i, i)` -cell contains the flux range of `rxnNameList{i}`.
+%    POAtable:    `K x K` cells. `(i, i)` -cell contains the flux range of `rxnNameList{i}`.
 %                `(i,j)`-cell contains a `Nstep x 2` matrix, with `(k, 1)` -entry being the min of `rxnNameList{j}`
 %                when `rxnNameList{i}` is fixed at the `k`-th value, `(k, 2)` -entry being the max.
-%    fluxRange:  `K x 2` matrix of flux range for each entry in `rxnNameList`
+%    fluxRange:    `K x 2` matrix of flux range for each entry in `rxnNameList`
 %    Stat :      `K x K` structure array with fields:
 %
 %                  * -'cor': the slope from linear regression between the fluxes of a pair
 %                  * -'r2':  the corresponding coefficient of determination (R-square)
-%    pairList:   `pairList` after transformation from various input formats
+%    pairList:    `pairList` after transformation from various input formats
 
 global CBT_LP_SOLVER
 

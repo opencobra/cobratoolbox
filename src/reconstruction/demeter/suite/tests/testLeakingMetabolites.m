@@ -2,16 +2,24 @@ function leakingMets = testLeakingMetabolites(model)
 % Finds metabolites that can be produced when no metabolites enter the
 % model (produced from nothing).
 %
-% INPUT
-% model             COBRA model structure
+% USAGE:
 %
-% OUTPUT
-% leakingMets       Cell array listing any metabolites that can be be
-%                   produced from nothing.
+%    leakingMets = testLeakingMetabolites(model)
 %
-% Stefania Magnusdottir, Nov 2017
+% INPUTS:
+%    model:             COBRA model structure with fields:
+%
+%                         * .lb - Reaction lower bounds
+%                         * .rxns - Reaction identifiers
+%
+% OUTPUTS:
+%    leakingMets:       Cell array listing any metabolites that can be be
+%                       produced from nothing.
+%
+% .. Author: - Stefania Magnusdottir, Nov 2017
 
 % find exchanges and sinks
+
 selExch = findExcRxns(model);
 
 % remove positive values on lower bounds

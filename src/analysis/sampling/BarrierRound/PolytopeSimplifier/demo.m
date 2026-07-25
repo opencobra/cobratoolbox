@@ -1,3 +1,5 @@
+% Demo script showing how to find an interior point and normalize a linear
+% program with the PolytopeSimplifier ConvexProgram interface
 configPolytopeSimplifier;
 
 loadModular('Problem');

@@ -19,7 +19,7 @@ function [solution, nIterations, bestApprox] = sparseLP(model, approximation, pa
 %                        * .csense - `m x 1` Constraint senses, a string containting the model sense for
 %                          each row in `A` ('E', equality, 'G' greater than, 'L' less than).
 %
-% OPTIONAL INPUTS
+% OPTIONAL INPUTS:
 %    approximation:    appoximation type of zero-norm. Available approximations:
 %
 %                        * 'cappedL1' : Capped-L1 norm
@@ -37,6 +37,8 @@ function [solution, nIterations, bestApprox] = sparseLP(model, approximation, pa
 %                        * .nbMaxIteration - stopping criteria - number maximal of iteration (Defaut value = 1000)
 %                        * .epsilon - stopping criteria - (Defaut value = 10e-6)
 %                        * .theta - parameter of the approximation (Defaut value = 0.5)
+%                        * .pNeg - exponent parameter for the `lp-` approximation (Default value = -1)
+%                        * .pPos - exponent parameter for the `lp+` approximation (Default value = 0.5)
 %
 % OUTPUT:
 %    solution:         Structure containing the following fields:
@@ -48,9 +50,9 @@ function [solution, nIterations, bestApprox] = sparseLP(model, approximation, pa
 %                          * 2 =  Unbounded
 %                          * 0 =  Infeasible
 %                          * -1=  Invalid input
-% 
-%   nIterations:       Number of iterations
-%   bestApprox:        Best approximation
+%
+%    nIterations:      Number of iterations
+%    bestApprox:       Best approximation
 %
 % .. Author: - Hoai Minh Le,	20/10/2015
 %              Ronan Fleming,    2017

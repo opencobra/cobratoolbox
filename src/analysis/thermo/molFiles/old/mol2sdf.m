@@ -1,32 +1,33 @@
-function [metList,noMolMetList] = mol2sdf(mets,molfileDir,sdfFileName,includeRs)
-% Concatenates molfiles in molfileDir into one SDF file.
-% 
-% metList = mol2sdf(mets,molfileDir,sdfFileName)
+function [metList, noMolMetList] = mol2sdf(mets, molfileDir, sdfFileName, includeRs)
+% Concatenate the molfiles in a directory into a single SDF file
 %
-% INPUTS
-% mets              mx1 cell array of metabolite identifiers (e.g., BiGG
-%                   abbreviations)
-% molfileDir        Path to directory containing molfiles for metabolites
-%                   in mets. Molfile names should match the metabolite
-%                   identifiers in mets without compartment assignments.
-% 
-% OPTIONAL INPUTS
-% sdfFileName       Name of SDF file. Default is MetStructures.sdf.
-% includeRs         {0,(1)}. If 0, variable structures such as R groups and
-%                   repeat units will not be included in SDF.
+% USAGE:
 %
-% OUTPUTS
-% metList           Cell array listing metabolites in SDF.
-% noMolMetList      Cell array listing metabolites without mol file.
+%    [metList, noMolMetList] = mol2sdf(mets, molfileDir, sdfFileName, includeRs)
 %
-% WRITTEN OUTPUTS
-% sdfFileName.sdf   SDF with metabolite structures in same order as in
-%                   metList. Metabolite identifiers in the SDF are the same
-%                   as in MetList. 
+% INPUTS:
+%    mets:            `m x 1` cell array of metabolite identifiers (e.g. BiGG abbreviations)
+%    molfileDir:      path to the directory containing the molfiles; molfile names
+%                     should match the metabolite identifiers in `mets` (without
+%                     compartment assignments)
 %
-% Ronan M.T. Fleming
-% Hulda SH, Nov. 2012   Changed output format from CDF to SDF. Renamed
-%                       function. Simplified code.
+% OPTIONAL INPUTS:
+%    sdfFileName:     name of the output SDF file (default `MetStructures.sdf`)
+%    includeRs:       1 (default) to include variable structures (R groups, repeat
+%                     units); 0 to exclude them from the SDF
+%
+% OUTPUTS:
+%    metList:         cell array of the metabolites written to the SDF
+%    noMolMetList:    cell array of metabolites without a mol file
+%
+% NOTE:
+%
+%    Writes `sdfFileName`, an SDF of the metabolite structures in the same order
+%    as `metList`, with the same metabolite identifiers.
+%
+% .. Authors:
+%       - Ronan M.T. Fleming
+%       - Hulda SH, Nov. 2012 - changed output format from CDF to SDF, renamed the function, simplified the code
 
 % Format inputs
 if ~strcmp(molfileDir(end),filesep)

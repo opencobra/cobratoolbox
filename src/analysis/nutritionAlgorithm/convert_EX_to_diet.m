@@ -1,27 +1,26 @@
 function [model] = convert_EX_to_diet(model)
-%
-% convert_EX_to_diet takes a model with typical exchange reactions 
-% (i.e., 'EX_') and translates them to uptake (diet) and secretion (exit) 
-% reactions.
+% Takes a model with typical exchange reactions (i.e., 'EX_') and translates
+% them to uptake (diet) and secretion (exit) reactions.
 %
 % USAGE:
 %
-% [model] = convert_EX_to_diet(model)
+%    [model] = convert_EX_to_diet(model)
 %
 % INPUTS:
-%    model:          COBRA model structure with minimal fields:
-%                      * .S
-%                      * .c
-%                      * .ub
-%                      * .lb
-%                      * .mets  
-%                      * .rxns   
+%    model:      COBRA model structure with minimal fields:
 %
-%Outputs
-%   model: Returns the input model with new uptake ('Diet_') and secretion 
-%          ('Exit_') reactions
+%                  * .S - stoichiometric matrix
+%                  * .c - objective coefficients
+%                  * .ub - upper flux bounds
+%                  * .lb - lower flux bounds
+%                  * .mets - metabolite identifiers
+%                  * .rxns - reaction identifiers
 %
-%Authors: Bronson R. Weston 2022
+% OUTPUTS:
+%    model:      the input model with new uptake ('Diet_') and secretion
+%                ('Exit_') reactions
+%
+% .. Authors: - Bronson R. Weston 2022
 
 
 exRxns=[];

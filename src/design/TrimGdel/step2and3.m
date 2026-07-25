@@ -1,50 +1,41 @@
 function [gvalue, GR, PR, size1, size2, size3] = step2and3(model, targetMet, givenGvalue)
-% The function step2and3 implements Step 2 and Step 3 of TrimGdel.
-% Step 2 minimizes the number of deleted genes while maintaining 
-% which reactions are repressed.
-% Step 3 trims unnecessary deleted genes while maintaining GR and PR
-% at the maximization of GR.
+% step2and3 implements Step 2 and Step 3 of TrimGdel. Step 2 minimizes the
+% number of deleted genes while keeping the same reactions repressed. Step 3
+% trims unnecessary gene deletions while maintaining GR and PR under
+% growth-rate maximization.
 %
 % USAGE:
 %
-%    function [gvalue, finalGRPR, size1, size2, size3] = step2and3(model, targetMet, givenGvalue)
+%    [gvalue, GR, PR, size1, size2, size3] = step2and3(model, targetMet, givenGvalue)
 %
 % INPUTS:
+%    model:          COBRA model structure with the fields:
 %
-%    model:    COBRA model structure containing the following required fields to perform gDel_minRN.
-%        *.rxns:       Rxns in the model
-%        *.mets:       Metabolites in the model
-%        *.genes:      Genes in the model
-%        *.grRules:    Gene-protein-reaction relations in the model
-%        *.S:          Stoichiometric matrix (sparse)
-%        *.b:          RHS of Sv = b (usually zeros)
-%        *.c:          Objective coefficients
-%        *.lb:         Lower bounds for fluxes
-%        *.ub:         Upper bounds for fluxes
-%        *.rev:        Reversibility of fluxes
+%                * .rxns - reaction identifiers (n x 1 cell array)
+%                * .mets - metabolite identifiers (m x 1 cell array)
+%                * .genes - gene identifiers (g x 1 cell array)
+%                * .grRules - gene-protein-reaction association rules (n x 1 cell array)
+%                * .S - stoichiometric matrix (m x n, sparse)
+%                * .c - linear objective coefficients (n x 1)
+%                * .lb - lower flux bounds (n x 1)
+%                * .ub - upper flux bounds (n x 1)
 %
-%    targetMet:      target metabolites    (e.g.,  'btn_c')
-%    givenGvalue:    a large gene deletion strategy (obtained by step1).
-%                    The first column is the list of genes.
-%                    The second column is a 0/1 vector indicating which genes should be deleted.
-%                        0: indicates genes to be deleted.
-%                        1: indecates genes to be remained.
+%    targetMet:      target metabolite identifier (e.g. 'btn_c')
+%    givenGvalue:    the (larger) gene-deletion strategy from Step 1. Column 1
+%                    lists the genes; column 2 is a 0/1 vector (0 = gene
+%                    deleted, 1 = gene retained)
 %
 % OUTPUTS:
-%    gvalue:    a small gene deletion strategy (obtained by TrimGdel).
-%               The first column is the list of genes.
-%               The second column is a 0/1 vector indicating which genes should be deleted.
-%                   0: indicates genes to be deleted.
-%                   1: indecates genes to be remained.
-%    GR:        the maximum growth rate when the obtained gene deletion
-%               strategy represented by gvalue is applied.
-%    PR:        the minimum production rate of the target metabolite under 
-%               the maximization of the growth rate when the obtained gene deletion
-%               strategy represented by gvalue is applied.
-%    size1:     the number of gene deletions after Step1.
-%    size2:     the number of gene deletions after Step2.
-%    size3:     the number of gene deletions after Step3.
-% 
+%    gvalue:    the trimmed (smaller) gene-deletion strategy. Column 1 lists
+%               the genes; column 2 is a 0/1 vector (0 = gene deleted,
+%               1 = gene retained)
+%    GR:        the maximum growth rate when the strategy in gvalue is applied
+%    PR:        the minimum production rate of the target metabolite under
+%               growth-rate maximization when the strategy in gvalue is applied
+%    size1:     the number of gene deletions after Step 1
+%    size2:     the number of gene deletions after Step 2
+%    size3:     the number of gene deletions after Step 3
+%
 % .. Author:    - Takeyuki Tamura, Mar 06, 2025
 %
 

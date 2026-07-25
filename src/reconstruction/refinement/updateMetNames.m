@@ -7,9 +7,16 @@ function [updatedModel] = updateMetNames(referenceModel, modelToUpdate, wipeExis
 %    [updatedModel] = updateMetNames(referenceModel, modelToUpdate, wipeExisting);
 %
 % INPUTS:
-%    referenceModel:     COBRA model structure with correct model.metNames
+%    referenceModel:     COBRA model structure with correct model.metNames,
+%                        with fields:
+%
+%                          * .mets - `m x 1` metabolite identifiers
+%                          * .metNames - `m x 1` metabolite names
 %    modelToUpdate:      COBRA model structure that needs to have its
-%                        model.metNames updated 
+%                        model.metNames updated, with field:
+%
+%                          * .mets - `m x 1` metabolite identifiers
+%
 % OPTIONAL INPUTS:
 %    wipeExisting:       true: remove all existing model.metNames in
 %                        modelToUpdate, especially when model.metNames is

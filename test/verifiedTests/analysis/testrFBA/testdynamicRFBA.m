@@ -22,7 +22,13 @@ solverPkgs = {'tomlab_cplex','ibm_cplex'};
 %QP solvers
 QPsolverPkgs = {'tomlab_cplex','ibm_cplex'};
 
-solverPkgs = prepareTest('requiredSolvers',solverPkgs);
+% dynamicRFBA's reference data and machine-epsilon tolerance are cplex-specific,
+% so this test can only PASS on cplex; require one cplex variant so it SKIPS
+% cleanly (COBRA:RequirementsNotMet) when none is present, instead of erroring.
+% Do not overwrite the solverPkgs cell used by the loop below (feature 003).
+% Called purely to gate: it throws COBRA:RequirementsNotMet (-> clean skip) when
+% neither cplex variant is available.
+prepareTest('requireOneSolverOf', {'tomlab_cplex', 'ibm_cplex'});
 
 
 for k =1:length(solverPkgs)

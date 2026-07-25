@@ -19,6 +19,9 @@ currentDir = pwd;
 fileDir = fileparts(which('testfindBlockedReaction'));
 cd(fileDir);
 
+% require an LP solver; skip gracefully if none is available
+prepareTest('needsLP', true);
+
 model = getDistributedModel('ecoli_core_model.mat');
 
 ecoli_blckd_rxn = {'EX_fru(e)', 'EX_fum(e)', 'EX_gln_L(e)', 'EX_mal_L(e)', ...

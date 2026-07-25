@@ -7,7 +7,11 @@ function [biomassValues, targetLowerBounds, targetUpperBounds, plottedReactions]
 %    [biomassValues, targetValues] = multiProductionEnvelope(model, deletions, biomassRxn, geneDelFlag, nPts, plotTools)
 %
 % INPUT:
-%    model:            COBRA model structure
+%    model:            COBRA model structure. Fields used directly:
+%
+%                        * .c - `n x 1` linear objective coefficients (identifies the biomass reaction)
+%                        * .rxns - `n x 1` reaction identifiers
+%                        * .lb - `n x 1` lower flux bounds
 %
 % OPTIONAL INPUT:
 %    deletions:        List of reaction or gene deletions (empty if wild type)
@@ -15,7 +19,6 @@ function [biomassValues, targetLowerBounds, targetUpperBounds, plottedReactions]
 %    biomassRxn:       Biomass `rxn` name (Default = whatever is defined in model)
 %    geneDelFlag:      Perform gene and not reaction deletions (Default = false)
 %    nPts:             Number of points in the plot (Default = 20)
-%    plotTools:        boolean (default = false) - add tools for editing the figure and its properties
 %    plotAllFlag:      plot all envelopes, even ones that are not growth
 %                      coupled (Default = false)
 %    plotTools:        boolean (default = false) - add tools for editing the figure and its properties

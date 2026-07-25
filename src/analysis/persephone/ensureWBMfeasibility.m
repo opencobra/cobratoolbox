@@ -1,51 +1,36 @@
 function [dietInfo, dietGrowthStats] = ensureWBMfeasibility(mWBMPath, varargin)
-% This function checks for the WBMs in the specified mWBMPath to grow on the
-% given diet, finds a diet that makes all WBMs feasible and propagates this
-% diet onto the models. The functions works as follows:
-% 1) Load the WBMs from the directory and test which models are feasible on
-% the diet.
-% 2) If any WBM is not feasible, collect all infeasible WBMs, open all diet
-% reactions, and test if the WBMs can grow on any diet. If one or more WBMs
-% cannot grow when opening all diet reactions, the statistics are
-% collected and the function stops. The user will need to debug the WBMs
-% manually.
-% 3) If all previously infeasible WBMs can grow when all diet reactions are
-% opened,missing diet components are searched using getMissingDietPersephone.
-% If getMissingDietPersephone cannot find a diet after one function call, this
-% function is run again until a hard limit of 10 iterations is reached. If
-% this limit is reached, no feasible diet can be found for all models and
-% the user will need to manually debug the infeasible models. If missing
-% diet components are found in one WBMs, these component are automatically propagated
-% to the other WBMs infeasible on the original diet before searching for
-% more missing diet components
-% 4) If a new diet is found for which all previously infeasible WBMs can grow,
-% the updated diet is propagated to all models in the mWBMPath.
-% 5) The updated diet is stored as an output variable for this function and
-% for each model, its feasibility on the original and updated diet is
-% recorded.
+% Find a diet that makes all WBMs in a directory feasible and propagate it
+%
+% Loads the WBMs in mWBMPath and tests which grow on the given diet. If any
+% are infeasible, all diet reactions are opened to test whether growth is
+% possible at all; if so, missing diet components are searched with
+% getMissingDietPersephone (repeated up to 10 iterations). When a feasible
+% diet is found, it is propagated to every model in mWBMPath and each model's
+% feasibility on the original and updated diet is recorded.
 %
 % USAGE:
-%       [dietInfo, dietGrowthStats] = ensureHMfeasibility(mWBMPath, Diet)
 %
-% INPUTS
-% mWBMPath           Path to directory where the HM models are saved
-% Diet                  Diet option: 'EUAverageDiet' (default)
+%    [dietInfo, dietGrowthStats] = ensureWBMfeasibility(mWBMPath, varargin)
 %
-% OUTPUTS
-% dietInfo              Structured variable containing the missing diet
-%                       components and the updated diet propagated to all models.
-%                       This variable is empty if no updated diet could be found.
-% dietGrowthStats       Table indicating which WBMs could initially not grow on
-%                       the diet, which WBMs could not grow on any diet,
-%                       and which WBMs could not grow on an updated diet.
+% INPUT:
+%    mWBMPath:    path to the directory where the host-microbiome models are
+%                 saved
 %
-% Authors:
-%   - Tim Hensen, 2024
-%   - Bram Nap, 07-2025 remove parfor functionality. Time save is not
-%   massive and allows the function to be used for other purposes besides
-%   Persephone.
+% OPTIONAL INPUTS (name-value pairs in varargin):
+%    Diet:          diet option (default 'EUAverageDiet')
+%    solver:        LP solver to use (default '', i.e. the current solver)
+%    numWorkers:    number of workers used for optimisation (default 1)
+%
+% OUTPUTS:
+%    dietInfo:           structure with the missing diet components
+%                        (`.missingDietComponents`) and the updated diet
+%                        (`.updatedDiet`); empty if no updated diet was found
+%    dietGrowthStats:    table indicating which WBMs could not grow on the
+%                        original diet, on any diet, and on the updated diet
+%
+% .. Author: - Tim Hensen, 2024
+%            - Bram Nap, 07-2025 (removed parfor functionality)
 
-% Define default parameters if not defined
 parser = inputParser();
 parser.addRequired('mWBMPath', @ischar);
 

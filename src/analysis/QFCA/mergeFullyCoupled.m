@@ -14,9 +14,9 @@ function [S, rev, rxns] = mergeFullyCoupled(S, rev, rxns, i, j, c)
 %    c:       the full coupling coefficient
 %
 % OUTPUTS:
-%    S_reduced:       the reduced sparse stoichiometric matrix
-%    rev_reduced:     the reduced reversibility vector
-%    rxns_reduced:    the reduced reaction abbreviations
+%    S:       the reduced sparse stoichiometric matrix
+%    rev:     the reduced reversibility vector
+%    rxns:    the reduced reaction abbreviations
 %
 % .. Authors:
 %       - Mojtaba Tefagh, Stephen P. Boyd, 2019, Stanford University

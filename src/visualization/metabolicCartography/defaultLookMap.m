@@ -3,13 +3,18 @@ function [newmap] = defaultLookMap(map)
 %
 % USAGE:
 %
-%   [newmap] = defaultLookMap(map)
+%    [newmap] = defaultLookMap(map)
 %
-%   INPUT:
-%   map:        Map from CellDesigner parsed to matlab format
+% INPUT:
+%    map:        Map from CellDesigner parsed to matlab format, with
+%                fields used here:
+%
+%                  * .rxnReactantLineColor - (if present) cell array, per
+%                    reaction, of secondary reactant line entries; used to
+%                    detect the "complete" map structure
 %
 % OUTPUT:
-%   newmap:     MATLAB structure of new map with default look
+%    newmap:     MATLAB structure of new map with default look
 %
 % NOTE:
 %   Note that this is specific to MitoMap and Recon3Map, as it uses Recon3

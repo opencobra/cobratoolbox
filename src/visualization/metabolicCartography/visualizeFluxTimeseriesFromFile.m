@@ -1,20 +1,29 @@
 function visualizeFluxTimeseriesFromFile(mapXMLFile, fluxDataFile, outputFileNameBase, numCores)
-    % Visualize fluxes for multiple time points from a data table file (CSV or XLSX).
-    % Supports both sequential and parallel processing based on the availability of the Parallel Computing Toolbox.
-    %
-    % INPUTS:
-    %   mapXMLFile:         The input CellDesigner .xml file for the map.
-    %   fluxDataFile:       The input .csv or .xlsx file containing the flux vectors.
-    %   outputFileNameBase: (Optional) The base name for the output files.
-    %   numCores:           (Optional) Number of cores to use if parallel computing is available. 
-    %                       If not provided, all available cores will be used.
-    %
-    % OUTPUTS:
-    %   Saves a CellDesigner XML map with visualized fluxes for each time point.
-    %
-    % .. Author: - Cyrille C. Thinnes. University of Galway, Ireland, 26/09/2024.
+% Visualize fluxes for multiple time points from a data table file (CSV or XLSX).
+% Supports both sequential and parallel processing based on the availability of
+% the Parallel Computing Toolbox.
+%
+% USAGE:
+%
+%    visualizeFluxTimeseriesFromFile(mapXMLFile, fluxDataFile, outputFileNameBase, numCores)
+%
+% INPUTS:
+%    mapXMLFile:            The input CellDesigner `.xml` file for the map
+%    fluxDataFile:          The input `.csv` or `.xlsx` file containing the flux
+%                           vectors, one column per time point
+%
+% OPTIONAL INPUTS:
+%    outputFileNameBase:    The base name for the output files (default
+%                           `'VisualizedFluxOnMap'`)
+%    numCores:              Number of cores to use if the Parallel Computing
+%                           Toolbox is available (default: all available cores)
+%
+% NOTE:
+%    Saves a CellDesigner XML map with visualized fluxes for each time point;
+%    this function has no return value.
+%
+% .. Author: - Cyrille C. Thinnes. University of Galway, Ireland, 26/09/2024.
 
-    % Set default output file name base if not provided.
     if nargin < 3 || isempty(outputFileNameBase)
         outputFileNameBase = 'VisualizedFluxOnMap';
     end

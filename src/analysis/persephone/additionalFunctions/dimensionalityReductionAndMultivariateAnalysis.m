@@ -12,28 +12,33 @@ function dimensionalityReductionAndMultivariateAnalysis(measuresTable, metadataT
 %   follow-up analysis in case they are significantly correlated &
 %   explain a lot of the variance of PC1 from RPCA/PCoA.
 %
+% USAGE:
+%
+%    dimensionalityReductionAndMultivariateAnalysis(measuresTable, metadataTable, varOfInterest, results_path, varargin)
+%
 % INPUTS:
-%   measuresTable:  [table] Contains high-dimensional measures (e.g. microbiome relative abundances
-%                   or reaction relative abundances), with columns = samples & 
-%                   rows = measured groups (e.g. taxa/reactions).
-%   metadataTable:  [table] Contains metadata information for samples (e.g.
-%                   sex), with columns = variables (e.g. Sex) & rows = samples.
-%   varOfInterest:  [string] Variable (e.g. Sex or disease status)
-%                   contained in metadata.
-%   results_path:   [string] Directory path, where results should be stored
-%                   (figures & statistical results in spreadsheet format).
-%   varargin:
-%   numLoadings:    [numeric] Number of PC loadings which shall be
-%                   displayed in plot of PC strongest feature
-%                   contributions.
-%                   Defaults to 15 loadings.
-%   inputDataType:  [chars/string] Specify whether data input is of type "abundance" or
-%                   "betaDiversityMatrix", which results in alternative processing routes
-%                   (the input is treated case-insensitive).
-%                   Defaults to "abundance".
-%   PCofInterest:   [numeric] Principle component/principle coordinate of
-%                   interest, which analysis will be performed on.
-%                   Defaults to PC 1.
+%    measuresTable:    [table] high-dimensional measures (e.g. microbiome relative
+%                      abundances or reaction relative abundances), with columns =
+%                      samples and rows = measured groups (e.g. taxa/reactions):
+%
+%                        * .Properties - table metadata (variable and row names)
+%    metadataTable:    [table] metadata for the samples (e.g. sex), with columns =
+%                      variables (e.g. Sex) and rows = samples:
+%
+%                        * .Properties - table metadata (variable and row names)
+%    varOfInterest:    [string] variable (e.g. Sex or disease status) contained in the metadata
+%    results_path:     [string] directory path where results are stored (figures and
+%                      statistical results in spreadsheet format)
+%
+% OPTIONAL INPUTS:
+%    varargin:         parameter name/value pairs:
+%
+%                        * numLoadings - [numeric] number of PC loadings shown in the plot
+%                          of strongest feature contributions (default: 15)
+%                        * inputDataType - [char/string] whether input is of type
+%                          "abundance" or "betaDiversityMatrix" (default: "abundance")
+%                        * PCofInterest - [numeric] principle component/coordinate of
+%                          interest on which the analysis is performed (default: 1)
 % OUTPUTS:
 %   In form of tables & plots into dir at results_path location.
 %

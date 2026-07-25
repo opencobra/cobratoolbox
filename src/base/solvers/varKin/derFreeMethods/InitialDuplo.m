@@ -40,10 +40,13 @@ function [MaxNumIter, MaxNumMapEval, TimeLimit, epsilon, alpha, beta, sigma, l, 
 %    MaxNumMapEval:     maximum number of function evaluations
 %    TimeLimit:         maximum running time
 %    epsilon:           accuracy parameter
-%    x_opt:             optimizer
-%    psi_opt:           optimum
 %    alpha:             a constant
 %    beta:              a constant
+%    sigma:             strong duplomonotone parameter
+%    l:                 Lipschitz continuity constant of `f`
+%    tauBar:            a constant for determining the step-size
+%    lambda_min:        lower bound of the step-size
+%    lambda_max:        upper bound of the step-size
 %    flag_x_error:      1: saves :math:`x_{error}`, 0: do not saves :math:`x_{error}` (default)
 %    flag_psi_error:    1: saves :math:`\psi_{error}`, 0: do not saves :math:`\psi_{error}` (default)
 %    flag_time:         1: saves :math:`\psi_{error}`, 0: do not saves :math:`\psi_{error}` (default)
