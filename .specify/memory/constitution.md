@@ -401,7 +401,7 @@ Direct implementation without the full Spec Kit workflow is allowed only when th
 user explicitly uses this exact override phrase:
 
 ```text
-DIRECT IMPLEMENTATION OVERRIDE: bypass Spec Kit for this change.
+SPECKIT OVERRIDE
 ```
 
 When that exact override is present, the agent MUST keep the change minimal, state

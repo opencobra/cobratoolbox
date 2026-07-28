@@ -1,0 +1,391 @@
+solveSCLP diagnostic reference file
+===================================
+Created: 2026-07-22 20:36:01
+Working folder: /home/rfleming/drive/sbgCloud/code/fork-cobratoolbox
+
+
+solveSCLP active parameter set
+==============================
+Only parameters used by solveSCLP and its local helper functions are printed.
+
+0. Fundamental numerical scales
+-------------------------------
+  Only these absolute numerical tolerance scales are independently tuned. Other numerical tolerances are derived from these by factors.
+  feasTol                : 1.0000e-06  -- Generic primal feasibility tolerance used by solveSCLP diagnostics and safeguards.
+  tolEXP                 : 5.0000e-05  -- Stopping tolerance for the outer exponential residual max(||h||_inf,||g||_inf).
+  numTol                 : 1.0000e-12  -- Fundamental numerical roundoff/floor scale; used to derive tiny denominators and solver floors.
+
+1. Reporting and stored diagnostics
+-----------------------------------
+  Controls trace verbosity, header repetition, and stored post-run diagnostics.
+  printLevel                : 1         -- Controls ordinary trace verbosity; larger values print more diagnostic detail.
+  debug                     : 1         -- Controls internal debugging behaviour and whether some caught errors are rethrown.
+  printParameters           : true      -- If true, prints this grouped active parameter set before the solver trace.
+  printHeaderEvery          : 20        -- Number of major iterations between repeated rectangular trace headers.
+  storeNDSDiagnostics       : true      -- Stores full no-descent-direction diagnostics on rejected NDS rows.
+  printNDSDiagnosticInline  : false     -- Prints full NDS diagnostic blocks immediately instead of only storing them.
+  printNDSDiagnosticSummary : true      -- Prints a compact post-run summary of stored NDS diagnostics.
+  NDSDiagnosticSummaryTopN  : 8         -- Number of recent NDS rows shown in the post-run NDS summary.
+  printKKTBreakdown         : false     -- If true, errorCLP prints detailed KKT component residuals for inner solves.
+  errorCLPPrintFactor       : 100       -- Multiplier used by errorCLP when deciding which component residuals to print.
+
+2. Derived feasibility, optimality, and start tolerances
+--------------------------------------------------------
+  These are effective named tolerances used directly by solveSCLP. They are derived from factor fields and fundamental scales.
+  optTolFactor                      : 1           -- Multiplier on feasTol used to derive optTol.
+  optTol                            : 1.0000e-06  -- Generic optimality tolerance used by diagnostics and upstream status checks.
+  explicitPrimalFeasAcceptTolFactor : 2           -- Multiplier on feasTol for the explicit primal feasibility acceptance gate.
+  explicitPrimalFeasAcceptTol       : 2.0000e-06  -- Derived strict raw explicit feasibility tolerance for accepted outer trial points.
+  innerEndpointFeasAcceptTolFactor  : 50          -- Multiplier on feasTol for the looser inner endpoint feasibility gate.
+  innerEndpointHardRejectFactor     : 10          -- Additional hard-rejection multiplier for quadratic-regularised endpoints.
+  innerEndpointFeasAcceptTol        : 5.0000e-05  -- Derived looser raw explicit feasibility tolerance for inner endpoints used as direction proposals.
+  initialStartFeasAcceptTolFactor   : 2           -- Multiplier on feasTol for accepting an initial point.
+  initialStartFeasAcceptTol         : 2.0000e-06  -- Derived raw explicit feasibility tolerance for accepting initial starts.
+  centredStartFeasAcceptTolFactor   : 2           -- Multiplier on feasTol specifically for centredFeasible starts.
+  centredStartFeasAcceptTol         : 2.0000e-06  -- Derived raw explicit feasibility tolerance specifically for centredFeasible starts.
+  initialStartKKTTolFactor          : 1           -- Additional caller-supplied or experimental parameter carried in param.
+  initialStartKKTTol                : 1.0000e-06  -- Derived KKT diagnostic print tolerance for initial-start checks.
+  phaseIResidualWarnTolFactor       : 10          -- Additional caller-supplied or experimental parameter carried in param.
+  phaseIResidualWarnTol             : 1.0000e-05  -- Derived absolute warning tolerance for Phase I residuals on original bounds.
+  relaxInitLinTolFactor             : 10          -- Multiplier on feasTol for the relaxedFeasible fallback relaxation.
+  relaxInitLinTol                   : 1.0000e-05  -- Derived bound relaxation used only by the relaxedFeasible initial-start fallback.
+
+4. Initial point and fixed-column handling
+------------------------------------------
+  Controls initialisation, centred starts, fallback starts, and fixed-variable handling.
+  initialStart                         : centredFeasible  -- Requested initial-start construction mode before the first outer merit evaluation.
+  phaseITmpBound                       : 1.0000e+06       -- Temporary finite bound used only by the explicitly labelled legacy boxed Phase I fallback.
+  phaseIUseHardBoxDefault              : false            -- If true, uses the legacy hard-boxed Phase I as the default; normally false.
+  phaseIUseMovementTieBreaker          : true             -- If true, adds a weak deterministic L1 movement tie-breaker to unboxed elastic Phase I.
+  phaseIMovementWeight                 : 1.0000e-08       -- Small objective weight on Phase I movement tie-breaker variables p and q.
+  phaseIKeepLegacyBoxFallback          : true             -- If true, retries failed unboxed elastic Phase I with an explicitly labelled boxed fallback.
+  phaseIBoxFallbackFactor              : 10               -- Multiplicative growth factor for repeated legacy boxed Phase I fallback bounds.
+  phaseIBoxFallbackMaxTries            : 2                -- Maximum number of legacy boxed Phase I fallback attempts.
+  phaseIResidualWarnFactor             : 100              -- Relative factor for warning about Phase I residuals on original bounds.
+  centredStartAuxCapAbs                : 10               -- Absolute cap on centring auxiliary variables in the centred start problem.
+  centredStartAuxCapFactor             : 10               -- Relative cap factor for centring auxiliaries based on the Phase I point.
+  initialStartDiagnosticTopN           : 20               -- Number of largest explicit initial-start violations shown.
+  stopOnRejectedRequestedInitialStart  : false            -- If true, stops when the requested initial start is rejected instead of falling back.
+  printAcceptedInitialStartDiagnostics : true             -- If true, also prints diagnostics for accepted initial starts.
+  fixedColumnMode                      : solverBounds     -- Controls whether MATLAB projects fixed columns exactly or leaves them to solver bounds.
+  printInitialStartKKTDiagnostics      : true             -- If true, prints KKT residuals before and after initial fixed-column projection.
+  initialStartKKTPrintFactor           : 1                -- Multiplier used when printing initial-start KKT components.
+  initialStartKKTDiagnosticTopN        : 30               -- Top-N hint for initial-start KKT component printing.
+
+5. Outer merit and residual stopping
+------------------------------------
+  Controls the outer merit, stopping residuals, domain floor, and descent test.
+  meritFunction              : sumGapLogGap  -- Selects the outer boundary-attraction merit Phi.
+  robustFunctions            : ratio         -- Selects numerically robust evaluation mode for log and exponential terms.
+  etaFactor                  : 1             -- Multiplier on numTol used to derive the strict positivity floor eta.
+  eta                        : 1.0000e-12    -- Strict positivity floor for the first exponential-cone affine slot t1.
+  tolMjFactor                : 0.1           -- Multiplier on tolEXP used to derive the small-major-step tolerance tolMj.
+  tolMj                      : 5.0000e-06    -- Small-major-step merit-change tolerance near the outer residual target.
+  tolMjOuterResidualFactor   : 1             -- Allows tolMj stopping only when the outer residual is within this factor of tolEXP.
+  maxMj                      : 200           -- Maximum number of accepted major outer iterations.
+  descentTolAbsFactor        : 100           -- Multiplier on numTol used to derive the absolute no-descent-direction tolerance.
+  descentTolAbs              : 1.0000e-10    -- Absolute tolerance in the no-descent-direction test.
+  descentTolRel              : 1.0000e-12    -- Relative tolerance in the no-descent-direction test.
+  predRedFloorFactor         : 1             -- Multiplier on numTol used to derive the predicted-reduction denominator floor.
+  predRedFloor               : 1.0000e-12    -- Small denominator floor for predicted-reduction ratios.
+
+6. Strategy portfolio and inner objective
+-----------------------------------------
+  Controls strategy order, objective construction, objective normalisation, and damping mode.
+  enableNonconicGradientStrategies  : false                            -- Allows raw GRD and LGRD strategies, which do not solve a conic endpoint problem.
+  safeStrategyOrder                 : CA, BCA, BCQCA, WQCA, QCA, LQCA  -- Ordered portfolio of strategy codes tried by the solver.
+  innerObjectiveApproach            : gradient                         -- Controls how the active inner objective is built from the merit gradient.
+  normaliseObjective                : true                             -- If true, rescales the inner objective before calling MOSEK.
+  objectiveNormalisationTarget      : 1000                             -- Target infinity norm for normalised inner objective coefficients.
+  damping                           : yes                              -- Master switch for outer-step damping rules.
+  dampingMode                       : coefficientAware                 -- Selects legacy dx damping, coefficient-aware damping, or a hybrid rule.
+  legacyObjectiveCoefficientScaling : false                            -- If true, applies the old positive scaling directly to objective coefficients.
+  dampCoefCostApprox                : 1.0000e-04                       -- Legacy damping coefficient for cost-approximation directions.
+  dampCoefGradient                  : 0.01                             -- Legacy damping coefficient for raw gradient directions.
+
+7. Coefficient-aware damping
+----------------------------
+  Limits predicted changes in the next raw active inner objective coefficients.
+  coeffDampAbsMax              : 1.0000e+06  -- Absolute cap for predicted next raw active objective coefficients.
+  coeffDampRelChangeMax        : 2           -- Maximum allowed relative infinity-norm change in predicted active coefficients.
+  coeffDampComponentRatioMax   : Inf         -- Maximum allowed componentwise ratio in predicted active coefficients.
+  coeffDampFloorFactor         : 1           -- Multiplier on numTol used to derive the coefficient component-ratio denominator floor.
+  coeffDampFloor               : 1.0000e-12  -- Small denominator floor for coefficient component-ratio tests.
+  coeffDampBisectionIter       : 20          -- Number of bisection iterations for coefficient-aware lambda caps.
+
+8. Numerical affine-move damping
+--------------------------------
+  Limits effective lambda movement in u1, u3, z = t3 - log(t1), explicit bounds, or x.
+  enableNumericalMoveDamping     : true        -- Master switch for direct numerical movement caps on lambda.
+  moveDampRelU1Max               : 0.15        -- Maximum relative movement allowed in first-slot affine image u1.
+  moveDampAbsU3Max               : 0.35        -- Maximum absolute movement allowed in third-slot affine image u3.
+  moveDampAbsZMax                : 1           -- Maximum movement allowed in z = t3 - log(t1).
+  moveDampT1FloorFactor          : 1.0000e+04  -- Multiplier on numTol used to derive the first-slot affine movement scale floor.
+  moveDampT1Floor                : 1.0000e-08  -- Scale floor for relative u1 movement and z-movement estimates.
+  moveDampExplicitFractionMax    : 0.75        -- Maximum fraction of the raw explicit-bound step allowed by move damping.
+  moveDampDxInfMax               : Inf         -- Optional direct cap on ||lambda*dx||_inf.
+  moveDampMinLambdaFactor        : 1           -- Multiplier on numTol used to derive the minimum numerical-move lambda.
+  moveDampMinLambda              : 1.0000e-12  -- Minimum lambda used when numerical-move damping produces a very small cap.
+
+9. Residual-balanced gradient options
+-------------------------------------
+  Controls frozen nonnegative residual weights for WQCA-type directions.
+  residualBalanceTheta         : 5           -- Strength of residual-balanced weighting used by WQCA.
+  residualBalanceFloorFactor   : 1           -- Additional caller-supplied or experimental parameter carried in param.
+  residualBalanceFloor         : 1.0000e-12  -- Residual floor used when normalising residual-balanced weights.
+  residualBalanceWeightCap     : 10          -- Upper cap on residual-balanced weights.
+
+10. Reachable-boundary BCA
+--------------------------
+  Controls explicit-feasible boundary projection and target-centred BCA epigraphs.
+  bcaProjectionAlpha             : 1           -- Weight on the soft local boundary-residual term in the reachable-boundary projection.
+  bcaEta                         : 0.001       -- Linear attraction weight eta for reachable-boundary BCA.
+  bcaMu                          : 1.0000e-04  -- Convex target-centred epigraph weight mu for reachable-boundary BCA.
+  bcaMinRho                      : 0.05        -- Minimum weighted retained-boundary fraction required before enabling BCA linear attraction.
+  bcaWeightMode                  : curvature   -- Selects uniform, residual, or curvature weights for BCA block targeting.
+  bcaWeightFloorFactor           : 1           -- Additional caller-supplied or experimental parameter carried in param.
+  bcaWeightFloor                 : 1.0000e-12  -- Positive floor for BCA block weights.
+  bcaT1FloorFactor               : 1.0000e+06  -- Additional caller-supplied or experimental parameter carried in param.
+  bcaT1Floor                     : 1.0000e-06  -- First-slot denominator floor used by BCA curvature scaling.
+  bcaExpCap                      : 40          -- Exponent cap used when BCA forms curvature scaling in the third affine slot.
+  bcaSelectionRelTol             : 0.05        -- Relative threshold for selecting BCA epigraph blocks from the diagnostic weights.
+  bcaMaxSelectedBlocks           : 200         -- Maximum number of selected componentwise BCA epigraph blocks.
+  bcaProjectionUseOriginalCone   : false       -- If true, the BCA projection also keeps the original affine conic constraints.
+
+11. Quadratic regularisation
+----------------------------
+  Controls rotated-quadratic regularisation of x, u1, and u3 movement.
+  quadRegLambdaX                 : 0                      -- Weight on optional x-space quadratic regularisation.
+  quadRegLambdaU1                : 1.0000e-04             -- Weight on first-slot affine-image quadratic regularisation.
+  quadRegLambdaU3                : 1.0000e-04             -- Weight on third-slot affine-image quadratic regularisation.
+  quadRegActiveColsOnly          : true                   -- If true, x-space regularisation applies only to merit-active columns.
+  quadRegWeightMode              : meritCurvatureMatched  -- Selects identity, legacy curvature-matched, or merit-curvature-matched weights.
+  quadRegWeightFloorFactor       : 1.0000e+04             -- Multiplier on numTol used to derive the positive floor for quadratic regularisation weights.
+  quadRegWeightFloor             : 1.0000e-08             -- Positive floor for all quadratic regularisation weights.
+  quadRegU1DenomFloorFactor      : 1.0000e+06             -- Multiplier on numTol used to derive the first-slot denominator floor for curvature weights.
+  quadRegU1DenomFloor            : 1.0000e-06             -- Denominator floor when forming first-slot curvature weights.
+  quadRegExpCap                  : 40                     -- Exponent cap used when forming third-slot curvature weights.
+  quadRegNormaliseWeights        : true                   -- If true, divides each positive regularisation weight vector by its median.
+  quadRegXWeight                 : 1                      -- Base x-space regularisation weight when quadRegLambdaX is positive.
+
+11b. Block-selected curvature regularisation
+--------------------------------------------
+  Controls BCQCA rotated-quadratic epigraphs and microscopic EB-step rejection.
+  blockCurvRegLambda                 : 1.0000e-04  -- Objective weight for block-selected curvature-regularisation epigraphs.
+  blockCurvRegSelectionRelTol        : 0.05        -- Relative threshold for selecting high-curvature exponential blocks.
+  blockCurvRegMaxSelectedBlocks      : 200         -- Maximum number of exponential blocks selected for BCQCA.
+  blockCurvRegT1FloorFactor          : 1.0000e+06  -- Additional caller-supplied or experimental parameter carried in param.
+  blockCurvRegT1Floor                : 1.0000e-06  -- First-slot denominator floor for BCQCA curvature weights.
+  blockCurvRegExpCap                 : 40          -- Exponent cap for BCQCA third-slot curvature weights.
+  blockCurvRegWeightFloorFactor      : 1.0000e+04  -- Additional caller-supplied or experimental parameter carried in param.
+  blockCurvRegWeightFloor            : 1.0000e-08  -- Positive floor for BCQCA curvature weights.
+  blockCurvRegNormaliseWeights       : true        -- If true, normalises selected BCQCA weights by their median.
+  blockCurvRegUseScoreInObjective    : false       -- If true, also weights BCQCA epigraph objective coefficients by block score.
+  rejectMicroscopicBoundarySteps     : true        -- If true, rejects microscopic EB-limited local-box steps as no-real-progress attempts.
+  microscopicBoundaryStrategyCodes   : LQCA        -- Strategy codes to which microscopic boundary-step rejection applies.
+  microscopicBoundaryLambdaMax       : 1.0000e-06  -- Maximum lambda below which EB-limited steps may be treated as microscopic.
+  microscopicBoundaryAExMin          : 0.97        -- Minimum lambda/raw-exp-boundary fraction for EB-limited microscopic-step detection.
+  microscopicBoundaryMeritRelMax     : 1.0000e-08  -- Maximum relative merit decrease for microscopic-step rejection.
+  microscopicBoundaryOuterTolFactor  : 2           -- Do not reject microscopic steps once the outer residual is within this factor of tolEXP.
+
+11. Local affine-image box
+--------------------------
+  Controls local bounds on u1 = F1*x1 + g1 and u3 = F3*x3 + g3.
+  enableLocalBox                 : true        -- Enables local affine-image boxes for strategies that request them.
+  localBoxType                   : adaptive    -- Selects the local-box update rule.
+  deltaBase                      : 0.05        -- Base relative half-width for local affine-image boxes.
+  deltaBaseMinFactor             : 100         -- Multiplier on feasTol used to derive the minimum base local-box radius.
+  deltaBaseMin                   : 1.0000e-04  -- Minimum allowed base local-box half-width.
+  deltaBaseMax                   : 0.5         -- Maximum allowed base local-box half-width.
+  deltaMinCompAffineFactor       : 100         -- Multiplier on feasTol used to derive the minimum componentwise affine-image half-width.
+  deltaMinCompAffine             : 1.0000e-04  -- Minimum componentwise affine-image half-width.
+  deltaMaxCompRelAffineU1        : 0.4         -- Maximum relative half-width for the first-slot affine image.
+  deltaMaxCompRelAffineU3        : 0.4         -- Maximum relative half-width for the third-slot affine image.
+  deltaMaxCompAbsAffine          : 1000        -- Absolute maximum affine-image half-width.
+  localBoxAcceptTol              : 0.9         -- Acceptance threshold retained for local-box diagnostics and updates.
+  eta1                           : 0.1         -- Lower trust-region agreement threshold used to shrink the local box.
+  eta2                           : 0.75        -- Upper trust-region agreement threshold used to expand the local box.
+  gammaDec                       : 0.5         -- Multiplicative shrink factor for the local-box radius.
+  gammaInc                       : 1.5         -- Multiplicative growth factor for the local-box radius.
+
+12. Line search and boundary safeguards
+---------------------------------------
+  Controls Armijo backtracking, explicit-bound safety, log-domain safety, and exponential-boundary safety.
+  fullAlpha                        : 1           -- Nominal full trial lambda before caps and backtracking.
+  alphaMinFactor                   : 1           -- Additional caller-supplied or experimental parameter carried in param.
+  alphaMin                         : 1.0000e-12  -- Minimum allowed line-search lambda before giving up.
+  beta                             : 0.5         -- Armijo backtracking contraction factor.
+  sigma                            : 1.0000e-04  -- Armijo sufficient-decrease parameter.
+  maxMi                            : 30          -- Maximum number of minor line-search trials per major iteration.
+  alphaExplicitSafetyFactor        : 0.99        -- Safety factor applied to the explicit-bound step-length cap.
+  alphaDomainSafetyFactor          : 0.95        -- Safety factor applied to the logarithm-domain step limit.
+  alphaExpSafetyFactor             : 0.99        -- Safety factor applied to the exponential-boundary step limit.
+  limiterMatchTolFactor            : 1.0000e+05  -- Multiplier on numTol used to derive the tolerance for matching accepted lambda to a limiter.
+  limiterMatchTol                  : 1.0000e-07  -- Derived tolerance for deciding which lambda cap produced the accepted step.
+  boundaryDiagActiveTolFactor      : 10          -- Multiplier on tolEXP used to derive the near-boundary diagnostic threshold.
+  boundaryDiagActiveTol            : 5.0000e-04  -- Diagnostic threshold for identifying near-boundary exponential blocks.
+  boundaryDiagDirTolFactor         : 1           -- Multiplier on numTol used to derive the boundary-skating directional threshold.
+  boundaryDiagDirTol               : 1.0000e-12  -- Directional derivative threshold for boundary-skating diagnostics.
+  boundarySkatingSmallAlphaTol     : 0.25        -- Threshold for treating a predicted boundary-hit alpha as small.
+  boundarySkatingAExTol            : 0.97        -- Threshold for treating accepted steps as close to the exponential-boundary cap.
+
+13. Curvature diagnostics and curvature rescue
+----------------------------------------------
+  Controls E_curv diagnostics and optional finite-step rescue of nominal NDS directions.
+  printCurvatureDiagnosticSummary           : true        -- If true, prints a post-run summary of merit-curvature diagnostics.
+  curvatureDiagnosticSummaryTopN            : 8           -- Number of rows shown in the merit-curvature diagnostic summary.
+  curvatureDiagnosticT1FloorFactor          : 1           -- Multiplier on numTol used to derive the t1 floor in curvature diagnostics.
+  curvatureDiagnosticT1Floor                : 1.0000e-12  -- Floor for t1 when computing diagnostic curvature weights.
+  curvatureDiagnosticExpCap                 : 40          -- Exponent cap used only by curvature diagnostics.
+  curvatureRatioFloorFactor                 : 1           -- Multiplier on numTol used to derive the denominator floor for curvature ratios.
+  curvatureRatioFloor                       : 1.0000e-12  -- Denominator floor for curvature-to-linear-model ratios.
+  enableCurvatureRescue                     : true        -- If true, tests whether finite-step curvature can rescue nominal NDS directions.
+  curvatureRescueMarginAbsFactor            : 100         -- Multiplier on numTol used to derive the absolute curvature-rescue margin.
+  curvatureRescueMarginAbs                  : 1.0000e-10  -- Absolute margin required for curvature-rescue predicted decrease.
+  curvatureRescueMarginRel                  : 1.0000e-12  -- Relative margin required for curvature-rescue predicted decrease.
+  curvatureRescueMinPredDecreaseAbsFactor   : 100         -- Multiplier on numTol used to derive the minimum predicted decrease for curvature rescue.
+  curvatureRescueMinPredDecreaseAbs         : 1.0000e-10  -- Absolute minimum predicted merit decrease required for curvature rescue.
+  curvatureRescueMinPredDecreaseRel         : 1.0000e-12  -- Relative minimum predicted merit decrease required for curvature rescue.
+  curvatureRescueMinAlphaFactor             : 10          -- Multiplier on alphaMin used to derive the minimum feasible rescue lambda.
+  curvatureRescueMinAlpha                   : 1.0000e-11  -- Minimum feasible lambda required before a nominal NDS direction can be rescued.
+  curvatureRescueActualDecreaseTolAbsFactor : 0           -- Multiplier on numTol used to derive the actual-decrease tolerance for rescued directions.
+  curvatureRescueActualDecreaseTolAbs       : 0           -- Absolute actual-decrease tolerance for accepting rescued directions.
+  curvatureRescueActualDecreaseTolRel       : 0           -- Relative actual-decrease tolerance for accepting rescued directions.
+  curvatureRescueRequireModelAtTrial        : true        -- If true, the second-order rescue model must predict decrease at the trial lambda.
+
+14. Portfolio controller and finalisation
+-----------------------------------------
+  Controls stagnation detection, strategy reversion, final polish, and post-run summaries.
+  stagnationWindow               : 3           -- Number of recent accepted rows used to detect strategy stagnation.
+  stagnationFactor               : 0.999       -- Threshold for declaring recent strategy progress too small.
+  revertAfter                    : 3           -- Number of calm accepted steps before probing back to a simpler strategy.
+  finalisationMode               : polish      -- Selects automatic polish or fixed-primal-only dual recovery.
+  polishOuterTol                 : 0.25        -- Outer residual threshold below which unrestricted final polish is attempted.
+  finalPolishMeritTolAbs         : 0           -- Derived absolute allowance for comparing final-polish merit with the best accepted outer iterate.
+  finalPolishMeritTolRel         : 1.0000e-10  -- Relative allowance for comparing final-polish merit with the best accepted outer iterate.
+  finalPolishResidualTolAbs      : 0           -- Derived absolute allowance for comparing final-polish residual with the best accepted outer iterate.
+  finalPolishResidualTolRel      : 1.0000e-10  -- Relative allowance for comparing final-polish residual with the best accepted outer iterate.
+  finalPolishAcceptResidualTol   : 5.0000e-05  -- Absolute residual threshold below which final polish may be accepted even if it worsens the best accepted outer iterate.
+  printBoundarySkatingSummary    : true        -- If true, prints a post-run summary of boundary-skating diagnostics.
+  boundarySkatingSummaryTopN     : 8           -- Number of rows shown in the boundary-skating summary.
+
+Explicit linear-row scaling
+---------------------------
+  Controls optional row-only scaling of prob.a, prob.blc, and prob.buc using gmscale on [A, blc, buc].
+  explicitRowScalingMode                 : auto        -- Additional caller-supplied or experimental parameter carried in param.
+  explicitRowScalingSclTol               : 0.9         -- Additional caller-supplied or experimental parameter carried in param.
+  explicitRowScalingAutoRetryOnInitia... : true        -- Additional caller-supplied or experimental parameter carried in param.
+  explicitRowScalingAutoRhsRatioTrigger  : 1000        -- Additional caller-supplied or experimental parameter carried in param.
+  explicitRowScalingAutoDivisorSpread... : 1000        -- Additional caller-supplied or experimental parameter carried in param.
+  explicitRowScalingMinMultiplier        : 1.0000e-08  -- Additional caller-supplied or experimental parameter carried in param.
+  explicitRowScalingMaxMultiplier        : 1.0000e+08  -- Additional caller-supplied or experimental parameter carried in param.
+
+0. Fundamental numerical scales
+-------------------------------
+  Only these absolute numerical tolerances are independently tuned; all other numerical tolerances are derived by factors.
+  feasTol            : 1.0000e-06  -- Generic primal feasibility tolerance used by solveSCLP diagnostics and safeguards.
+  tolEXP             : 5.0000e-05  -- Stopping tolerance for the outer exponential residual max(||h||_inf,||g||_inf).
+  numTol             : 1.0000e-12  -- Fundamental numerical roundoff/floor scale; used to derive tiny denominators and solver floors.
+
+
+
+
+Diagnostic columns, in printed order
+------------------------------------
+Mj     = Major iteration index. Mj = 0 is the initial point only.
+Mi     = Minor line-search index. Mi = 0 means no accepted line-search trial.
+mth    = Row method or finalisation code.
+           IP   = initial point only.
+           CA   = unrestricted cost approximation.
+           WQCA = residual-balanced quadratically regularised cost approximation.
+           BCQCA = block-selected curvature-regularised cost approximation.
+           QCA  = quadratically regularised cost approximation.
+           LQCA = local-box quadratically regularised cost approximation.
+           GRD  = safeguarded gradient direction.
+           LGRD = local-box safeguarded gradient direction.
+           PL   = unrestricted final polish accepted.
+           PLF  = polish attempted but failed; accepted outer primal returned.
+           PLR  = polish solved but was rejected; accepted outer primal returned.
+           FX   = fixed-primal dual recovery succeeded at accepted outer iterate.
+           FXK  = fixed-primal recovery succeeded but failed final KKT audit.
+           FF   = graceful finalisation fallback returning accepted outer primal point.
+           MBS = microscopic EB-limited step rejected as no real progress.
+why    = Compact row-outcome code.
+           Initial-point codes:
+             CEN = centredFeasible initial point.
+             ELA = elasticFeasible initial point.
+             FEA = feasible initial point.
+             RLX = relaxedFeasible initial point.
+             ONE = algebraic ones initial point.
+           Accepted-step limiter codes:
+             FS  = full step.
+             EX  = explicit linear or box-bound cap.
+             DM  = logarithm-domain cap.
+             EB  = exponential-boundary cap.
+             Q   = coefficient-change cap.
+             MV  = numerical-move cap.
+             LD  = legacy dx-damping cap converted to lambda.
+             BT  = accepted after backtracking below the initial cap.
+           Rejection codes:
+             TPF = trial-feasibility failure during line search.
+             EPF = endpoint-feasibility failure after inner solve.
+             DOM = logarithm-domain failure during line search.
+             ARM = Armijo sufficient-decrease failure.
+             MXR = maximum outer residual acceptance gate failure.
+             CRS = curvature-rescue trial failed.
+             SOL = inner conic solve failure.
+             NDS = no acceptable descent direction.
+             NAN = non-finite direction or descent diagnostic.
+             EX0 = explicit-bound cap was already zero.
+             DM0 = logarithm-domain cap was already zero.
+             EB0 = exponential-boundary cap was already zero.
+             Q0  = coefficient-change cap was already zero.
+             MV0 = numerical-move cap was already zero.
+             LM0 = other lambda cap was already zero.
+           Terminal/finalisation codes:
+             pExh = portfolio exhausted.
+             inFl = terminal inner failure.
+             tEXP = outer exponential residual tolerance reached.
+             tMj  = small accepted merit change near outer tolerance.
+             mMj  = maximum major-iteration count reached.
+sub    = Step sub-limiter. If why = MV, sub is the active numerical-move cap:
+           U1 = relative first-slot affine movement cap.
+           U3 = absolute third-slot affine movement cap.
+           Z  = movement cap for z = t3 - log(t1).
+           EX = explicit-bound fraction cap inside numerical-move damping.
+           DX = direct variable-space movement cap.
+         Otherwise sub is the ordinary top-level lambda cap: FS, EX, DM, EB, Q, or LD.
+lam    = Accepted effective step length in x_next = x_current + lam*dx.
+aDm    = lam / raw logarithm-domain lambda limit.
+aEx    = lam / raw exponential-boundary lambda limit.
+aEp    = lam / raw explicit-bound lambda limit.
+aQ     = lam / coefficient-change lambda cap.
+aMv    = lam / numerical-move lambda cap.
+KKT    = Inner Karush-Kuhn-Tucker residual when available.
+Phi    = Selected outer merit at the displayed point.
+PhiH   = sum(h). This decomposes Phi only when meritFunction = sumGapLogGap.
+PhiG   = sum(g). This decomposes Phi only when meritFunction = sumGapLogGap.
+dPhi   = Displayed-point merit change relative to the previous accepted outer point.
+pred   = Predicted merit decrease from the local linear model.
+rho    = actual decrease / predicted decrease.
+curv   = Merit-curvature correction. Accepted rows use E_curv(lam*dx); rejected rows use E_curv(dx).
+cRat   = curv divided by the corresponding absolute predicted linear merit change.
+errh   = ||h(x)||_inf at the displayed point.
+errg   = ||g(x)||_inf at the displayed point.
+dEh    = Change in ||h(x)||_inf relative to the previous accepted outer point.
+dEg    = Change in ||g(x)||_inf relative to the previous accepted outer point.
+errFP  = Fixed-point residual ||xInner(active) - xCurrent(active)||_inf when available.
+t1mn   = Minimum first-slot affine value at the displayed point.
+desc   = Directional derivative gradPhi'*dx for the proposed direction.
+dTol   = Descent tolerance used in the no-descent-direction test.
+dxInf  = ||dx||_inf for dx = xInner - xCurrent.
+rTrl   = Explicit primal residual at the displayed or last rejected trial point.
+rEnd   = Explicit primal residual at the inner endpoint xInner.
+tolT   = Strict explicit feasibility tolerance for accepted trial points.
+tolN   = Looser explicit feasibility tolerance for inner endpoints.
+bx     = 1 if a local affine-image box was active for the row.
+eb     = 1 if exponential-boundary safety was active for the row.
+
+
+
+End of solveSCLP diagnostic reference file.
