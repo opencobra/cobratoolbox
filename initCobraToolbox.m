@@ -97,8 +97,11 @@ if isempty(WAITBAR_TYPE)
     WAITBAR_TYPE = 1;
 end
 
-% Linux only - default save path location
-defaultSavePathLocation = '~/pathdef.m';
+% Linux only - default save path location. prefdir is release specific and is
+% not on the search path; a pathdef.m in ~ is read at startup by any session
+% launched from the home directory, breaking releases whose toolbox folder
+% layout differs from the one that saved it.
+defaultSavePathLocation = fullfile(prefdir, 'pathdef.m');
 
 % initialize the cell of solvers
 SOLVERS = {};
@@ -675,9 +678,11 @@ if ~agentMode
     end
 end
 
-% restore the original path
+% restore the original path. The full-path swap is required rather than an
+% rmpath of newly added folders: probing re-adds folders already on the path,
+% which hoists them to the front and changes which of the MOSEK / Optimization
+% Toolbox copies of linprog, quadprog, intlinprog and lsqlin wins.
 path(originalUserPath);
-addpath(originalUserPath);
 
 % saves the current path (skipped in agent mode: path assumed already saved)
 if ~agentMode
@@ -692,15 +697,20 @@ if ~agentMode
                 fprintf('   - The MATLAB path was saved in the default location.\n');
             end
         else
-            [~, values] = fileattrib(which('pathdef.m'));
-            if values.UserWrite
-                savepath
+            % Target the installation's own pathdef explicitly. which('pathdef.m')
+            % resolves to a stray copy in the startup folder if one exists, and
+            % savepath would then overwrite that copy instead.
+            installPathdef = fullfile(matlabroot, 'toolbox', 'local', 'pathdef.m');
+            [attribOK, values] = fileattrib(installPathdef);
+            if attribOK && values.UserWrite
+                savedPathLocation = installPathdef;
             else
-                savepath(defaultSavePathLocation);
+                savedPathLocation = defaultSavePathLocation;
             end
+            savepath(savedPathLocation);
             if ENV_VARS.printLevel
                 fprintf(' Done.\n');
-                fprintf(['   - The MATLAB path was saved as ', defaultSavePathLocation, '.\n']);
+                fprintf(['   - The MATLAB path was saved as ', savedPathLocation, '.\n']);
             end
         end
     catch
@@ -825,7 +835,7 @@ end
 
 % in agent mode print a single completion summary line (time + timestamp)
 if agentMode
-    fprintf('initCobraToolbox(agent): OK — %.1f s — %s\n', toc(agentModeStartTime), ...
+    fprintf('initCobraToolbox - no update, agent mode: OK — %.1f s — %s\n', toc(agentModeStartTime), ...
         char(datetime('now', 'TimeZone', 'local', 'Format', 'yyyy-MM-dd''T''HH:mm:ssXXX')));
 end
 
