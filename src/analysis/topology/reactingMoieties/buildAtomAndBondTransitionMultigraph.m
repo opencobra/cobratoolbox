@@ -798,20 +798,21 @@ end
 %res=(M2BiW*M2BiE')*N - M2BiE*BTiE*BTi2R;
 res=(M2BiW(~hBool,:)*M2BiE(~hBool,:)')*N - M2BiE(~hBool,:)*BTiE*BTi2R;
 if max(max(abs(res)))~=0
-    mets = model.mets(metBondMappedBool);
+    metsAll = model.mets(~hBool); % rows of res correspond to non-proton metabolites, not all model.mets
     rxns = model.rxns(rxnBondMappedBool);
      d  = diag(M2BiE*M2BiW');
      D  = spdiags(1./d,0,length(d),length(d));
     N2  = D*M2BiE*BTiE*BTi2R;
+    N2  = N2(~hBool,:); % match res/N2 row space to metsAll
     fprintf('%s\n','Inconsistency between reaction stoichiometry and bond mapped reactions (inconsistent stoichiometry?):')
-    for j=1:nMappedRxns
+    for j=1:size(res,2)
         if any(res(:,j)~=0)
             %fprintf('%s\n',rxns{j})
             printRxnFormula(model,rxns{j});
             fprintf('%s\t\t%s\t\t%s\n','res','N','N2')
-            for i=1:nMappedMets
+            for i=1:size(res,1)
                 if res(i,j)~=0
-                    fprintf('%i\t%s\t%i\t%s\t%i\t%s\n',full(res(i,j)),mets{i},full(N(i,j)),mets{i},full(N2(i,j)),mets{i})
+                    fprintf('%i\t%s\t%i\t%s\t%i\t%s\n',full(res(i,j)),metsAll{i},full(N(i,j)),metsAll{i},full(N2(i,j)),metsAll{i})
                 end
             end
             fprintf('\n')
@@ -822,9 +823,4 @@ end
    
 else 
     
-end 
-
-
-
-
-
+end
