@@ -904,6 +904,8 @@ switch solver
                 end
 
                 % save the basis (only available if crossover was used or simplex method)
+                % Clear stale input basis to avoid presenting input basis as output basis
+                basis = struct();
                 if isfield(resultgurobi, 'vbasis')
                     basis.vbasis = resultgurobi.vbasis;
                 end

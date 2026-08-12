@@ -188,9 +188,13 @@ if useMtFVA && (nargout > 2 || ~allowLoops || ~strcmp(method,'FBA'))
     error('mtFVA only supports the FBA method and neither supports loopless contraints nor Vmin/Vmax');
 end
 
-% Validate fastBarrier constraints
+% Validate fastBarrier constraints and save original solver state
+origLPSolver = [];
 if fastBarrier
-    % Check if Gurobi is available
+    % Save the original LP solver to restore later
+    origLPSolver = CobraSolverState.getSolver('LP');
+
+    % Check if Gurobi is available and switch to it
     solverGurobi = changeCobraSolver('gurobi', 'LP', 0);
     if ~solverGurobi
         warning('fastBarrier requires Gurobi solver; falling back to default settings');
@@ -199,11 +203,20 @@ if fastBarrier
         % fastBarrier only returns min/max flux values, not full solution vectors
         if nargout > 2
             warning('fastBarrier: Only returning minFlux/maxFlux; Vmin/Vmax will be empty');
+            % Skip vector computation for fastBarrier
+            minNorm = 0;
         end
 
         % Configure Gurobi parameters for fast barrier
-        solverVarargin.Method = 2;      % barrier method
-        solverVarargin.Crossover = 0;   % no crossover
+        % Parameters must be passed via solverVarargin.LP{1} to reach solveCobraLP
+        if ~isfield(solverVarargin, 'LP') || isempty(solverVarargin.LP)
+            solverVarargin.LP = {struct()};
+        end
+        if isempty(solverVarargin.LP{1})
+            solverVarargin.LP{1} = struct();
+        end
+        solverVarargin.LP{1}.Method = 2;      % barrier method
+        solverVarargin.LP{1}.Crossover = 0;   % no crossover
 
         % Disable heuristics as they don't work well with interior-point solutions
         if heuristics > 0
@@ -678,6 +691,11 @@ else % parallel job.  pretty much does the same thing.
             fprintf('%4d\t%10s\t%9.3f\t%9.3f\n', i, rxnNameList{i}, minFlux(i), maxFlux(i));
         end
     end
+end
+
+% Restore original LP solver if fastBarrier temporarily changed it
+if ~isempty(origLPSolver)
+    changeCobraSolver(origLPSolver, 'LP', 0);
 end
 
 maxFlux = columnVector(maxFlux);
