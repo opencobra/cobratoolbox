@@ -572,63 +572,65 @@ k=1;
 %nTotalBonds=0;
 % Build bond transition network
 for i = 1:nRxns
-    [atoms,bonds] = readABRXNFile(model.rxns{i},RXNFileDir);
-    [bondMappings] = addBondMappingsRXNFile(model.rxns{i},RXNFileDir);
-    %Add energy node to dATM for each reaction(an additional node that represents the energy used to break or build chemical bonds)
-    EnergyNode=table({'E'}', size(dATM.Nodes, 1)+1, {model.rxns{i}}', 1, {'E'}', 'VariableNames', {'Atom' 'AtomIndex' 'mets' 'AtomNumber' 'Element'});
-    dATME= addnode(dATM, EnergyNode);
-    %add atomNumber to headAtoms of energy node
-    %bondMappings.headAtoms(ismember(bondMappings.mets,'energy'))=dATME.Nodes.AtomNumber(ismember(dATME.Nodes.mets,'energy'));
-    bondMappings.headAtoms(ismember(bondMappings.mets,model.rxns{i}))=dATME.Nodes.AtomNumber(ismember(dATME.Nodes.mets,model.rxns{i}));
-    %add atomNumber to tailAtoms of energy node
-    %bondMappings.tailAtoms(ismember(bondMappings.mets,'energy'))=dATME.Nodes.AtomNumber(ismember(dATME.Nodes.mets,'energy'));
-     bondMappings.tailAtoms(ismember(bondMappings.mets,model.rxns{i}))=dATME.Nodes.AtomNumber(ismember(dATME.Nodes.mets,model.rxns{i}));
-    %nTotalBonds=nTotalBonds+size(bonds,1)
-    %Check that stoichiometry in rxnfile matches the one in S(already done in atom section)
-    rxnMets = unique(atoms.mets);
- for j=1:max(bondMappings.bondTransitionNrs)
-             substrateBondNumber = find(bondMappings.bondTransitionNrs==j & bondMappings.isSubstrate);
-             productBondNumber = find(bondMappings.bondTransitionNrs==j & ~bondMappings.isSubstrate);
-             bondSubstrateID =[bondMappings.mets{substrateBondNumber}...
-                    '#' num2str(bondMappings.headAtoms(substrateBondNumber))...
-                    '#' bondMappings.headAtomElements{substrateBondNumber}...
-                    '#' bondMappings.mets{substrateBondNumber}...
-                    '#' num2str(bondMappings.tailAtoms(substrateBondNumber))...
-                    '#' bondMappings.tailAtomElements{substrateBondNumber}];
-              bondProductID =[bondMappings.mets{productBondNumber}...
-                    '#' num2str(bondMappings.headAtoms(productBondNumber))...
-                    '#' bondMappings.headAtomElements{productBondNumber}...
-                    '#' bondMappings.mets{productBondNumber}...
-                    '#' num2str(bondMappings.tailAtoms(productBondNumber))...
-                    '#' bondMappings.tailAtomElements{productBondNumber}]; %Add the type of bonds (30/08/2024)
-               bondSubstrateType=[bondMappings.headAtomElements{substrateBondNumber} '-' bondMappings.tailAtomElements{substrateBondNumber}];%
-               bondProductType=[bondMappings.headAtomElements{productBondNumber} '-' bondMappings.tailAtomElements{productBondNumber}];%
-               EdgeTable.EndNodes{k,1} = bondSubstrateID;
-               EdgeTable.EndNodes{k,2} = bondProductID;
-               EdgeTable.Trans{k} = [model.rxns{i}  '#' bondSubstrateID '#' bondProductID];
-               EdgeTable.TransInstIndex(k) = k;
-               EdgeTable.dirTransInstIndex(k) = k;
-               EdgeTable.HeadBondHeadAtom(k)=dATME.Nodes.Atom((ismember(dATME.Nodes.mets,bondMappings.mets{substrateBondNumber}))&(dATME.Nodes.AtomNumber==bondMappings.headAtoms(substrateBondNumber))&(ismember(dATME.Nodes.Element,bondMappings.headAtomElements{substrateBondNumber})));
-               EdgeTable.HeadBondTailAtom(k)=dATME.Nodes.Atom((ismember(dATME.Nodes.mets,bondMappings.mets{substrateBondNumber}))&(dATME.Nodes.AtomNumber==bondMappings.tailAtoms(substrateBondNumber))&(ismember(dATME.Nodes.Element,bondMappings.tailAtomElements{substrateBondNumber})));
-               EdgeTable.TailBondHeadAtom(k)=dATME.Nodes.Atom((ismember(dATME.Nodes.mets,bondMappings.mets{productBondNumber}))&(dATME.Nodes.AtomNumber==bondMappings.headAtoms(productBondNumber))&(ismember(dATME.Nodes.Element,bondMappings.headAtomElements{productBondNumber})));
-               EdgeTable.TailBondTailAtom(k)=dATME.Nodes.Atom((ismember(dATME.Nodes.mets,bondMappings.mets{productBondNumber}))&(dATME.Nodes.AtomNumber==bondMappings.tailAtoms(productBondNumber))&(ismember(dATME.Nodes.Element,bondMappings.tailAtomElements{productBondNumber})));
-               EdgeTable.HeadBondHeadAtomIndex(k)=dATME.Nodes.AtomIndex((ismember(dATME.Nodes.mets,bondMappings.mets{substrateBondNumber}))&(dATME.Nodes.AtomNumber==bondMappings.headAtoms(substrateBondNumber))&(ismember(dATME.Nodes.Element,bondMappings.headAtomElements{substrateBondNumber})));
-               EdgeTable.HeadBondTailAtomIndex(k)=dATME.Nodes.AtomIndex((ismember(dATME.Nodes.mets,bondMappings.mets{substrateBondNumber}))&(dATME.Nodes.AtomNumber==bondMappings.tailAtoms(substrateBondNumber))&(ismember(dATME.Nodes.Element,bondMappings.tailAtomElements{substrateBondNumber})));
-               EdgeTable.TailBondHeadAtomIndex(k)=dATME.Nodes.AtomIndex((ismember(dATME.Nodes.mets,bondMappings.mets{productBondNumber}))&(dATME.Nodes.AtomNumber==bondMappings.headAtoms(productBondNumber))&(ismember(dATME.Nodes.Element,bondMappings.headAtomElements{productBondNumber})));
-               EdgeTable.TailBondTailAtomIndex(k)=dATME.Nodes.AtomIndex((ismember(dATME.Nodes.mets,bondMappings.mets{productBondNumber}))&(dATME.Nodes.AtomNumber==bondMappings.tailAtoms(productBondNumber))&(ismember(dATME.Nodes.Element,bondMappings.tailAtomElements{productBondNumber})));
-               EdgeTable.rxns{k} = model.rxns{i};
-               EdgeTable.HeadBondIndex(k) = NaN;
-               EdgeTable.TailBondIndex(k) = NaN;
-               EdgeTable.HeadBond{k} = bondSubstrateID;
-               EdgeTable.TailBond{k} = bondProductID;
-               EdgeTable.HeadBondElmts(k) = {bondSubstrateType};%%
-               EdgeTable.TailBondElmts(k) = {bondProductType};%%
-               EdgeTable.HeadMet{k} = bondMappings.mets{substrateBondNumber};
-               EdgeTable.TailMet{k} = bondMappings.mets{productBondNumber};
-               EdgeTable.HeadMetBondTypes(k) = bondMappings.bTypes(substrateBondNumber);
-               EdgeTable.TailMetBondTypes(k) = bondMappings.bTypes(productBondNumber);
-               k=k+1;
- end
+    if rbool(i)
+        [atoms,bonds] = readABRXNFile(model.rxns{i},RXNFileDir);
+        [bondMappings] = addBondMappingsRXNFile(model.rxns{i},RXNFileDir);
+        %Add energy node to dATM for each reaction(an additional node that represents the energy used to break or build chemical bonds)
+        EnergyNode=table({'E'}', size(dATM.Nodes, 1)+1, {model.rxns{i}}', 1, {'E'}', 'VariableNames', {'Atom' 'AtomIndex' 'mets' 'AtomNumber' 'Element'});
+        dATME= addnode(dATM, EnergyNode);
+        %add atomNumber to headAtoms of energy node
+        %bondMappings.headAtoms(ismember(bondMappings.mets,'energy'))=dATME.Nodes.AtomNumber(ismember(dATME.Nodes.mets,'energy'));
+        bondMappings.headAtoms(ismember(bondMappings.mets,model.rxns{i}))=dATME.Nodes.AtomNumber(ismember(dATME.Nodes.mets,model.rxns{i}));
+        %add atomNumber to tailAtoms of energy node
+        %bondMappings.tailAtoms(ismember(bondMappings.mets,'energy'))=dATME.Nodes.AtomNumber(ismember(dATME.Nodes.mets,'energy'));
+        bondMappings.tailAtoms(ismember(bondMappings.mets,model.rxns{i}))=dATME.Nodes.AtomNumber(ismember(dATME.Nodes.mets,model.rxns{i}));
+        %nTotalBonds=nTotalBonds+size(bonds,1)
+        %Check that stoichiometry in rxnfile matches the one in S(already done in atom section)
+        rxnMets = unique(atoms.mets);
+        for j=1:max(bondMappings.bondTransitionNrs)
+            substrateBondNumber = find(bondMappings.bondTransitionNrs==j & bondMappings.isSubstrate);
+            productBondNumber = find(bondMappings.bondTransitionNrs==j & ~bondMappings.isSubstrate);
+            bondSubstrateID =[bondMappings.mets{substrateBondNumber}...
+                '#' num2str(bondMappings.headAtoms(substrateBondNumber))...
+                '#' bondMappings.headAtomElements{substrateBondNumber}...
+                '#' bondMappings.mets{substrateBondNumber}...
+                '#' num2str(bondMappings.tailAtoms(substrateBondNumber))...
+                '#' bondMappings.tailAtomElements{substrateBondNumber}];
+            bondProductID =[bondMappings.mets{productBondNumber}...
+                '#' num2str(bondMappings.headAtoms(productBondNumber))...
+                '#' bondMappings.headAtomElements{productBondNumber}...
+                '#' bondMappings.mets{productBondNumber}...
+                '#' num2str(bondMappings.tailAtoms(productBondNumber))...
+                '#' bondMappings.tailAtomElements{productBondNumber}]; %Add the type of bonds (30/08/2024)
+            bondSubstrateType=[bondMappings.headAtomElements{substrateBondNumber} '-' bondMappings.tailAtomElements{substrateBondNumber}];%
+            bondProductType=[bondMappings.headAtomElements{productBondNumber} '-' bondMappings.tailAtomElements{productBondNumber}];%
+            EdgeTable.EndNodes{k,1} = bondSubstrateID;
+            EdgeTable.EndNodes{k,2} = bondProductID;
+            EdgeTable.Trans{k} = [model.rxns{i}  '#' bondSubstrateID '#' bondProductID];
+            EdgeTable.TransInstIndex(k) = k;
+            EdgeTable.dirTransInstIndex(k) = k;
+            EdgeTable.HeadBondHeadAtom(k)=dATME.Nodes.Atom((ismember(dATME.Nodes.mets,bondMappings.mets{substrateBondNumber}))&(dATME.Nodes.AtomNumber==bondMappings.headAtoms(substrateBondNumber))&(ismember(dATME.Nodes.Element,bondMappings.headAtomElements{substrateBondNumber})));
+            EdgeTable.HeadBondTailAtom(k)=dATME.Nodes.Atom((ismember(dATME.Nodes.mets,bondMappings.mets{substrateBondNumber}))&(dATME.Nodes.AtomNumber==bondMappings.tailAtoms(substrateBondNumber))&(ismember(dATME.Nodes.Element,bondMappings.tailAtomElements{substrateBondNumber})));
+            EdgeTable.TailBondHeadAtom(k)=dATME.Nodes.Atom((ismember(dATME.Nodes.mets,bondMappings.mets{productBondNumber}))&(dATME.Nodes.AtomNumber==bondMappings.headAtoms(productBondNumber))&(ismember(dATME.Nodes.Element,bondMappings.headAtomElements{productBondNumber})));
+            EdgeTable.TailBondTailAtom(k)=dATME.Nodes.Atom((ismember(dATME.Nodes.mets,bondMappings.mets{productBondNumber}))&(dATME.Nodes.AtomNumber==bondMappings.tailAtoms(productBondNumber))&(ismember(dATME.Nodes.Element,bondMappings.tailAtomElements{productBondNumber})));
+            EdgeTable.HeadBondHeadAtomIndex(k)=dATME.Nodes.AtomIndex((ismember(dATME.Nodes.mets,bondMappings.mets{substrateBondNumber}))&(dATME.Nodes.AtomNumber==bondMappings.headAtoms(substrateBondNumber))&(ismember(dATME.Nodes.Element,bondMappings.headAtomElements{substrateBondNumber})));
+            EdgeTable.HeadBondTailAtomIndex(k)=dATME.Nodes.AtomIndex((ismember(dATME.Nodes.mets,bondMappings.mets{substrateBondNumber}))&(dATME.Nodes.AtomNumber==bondMappings.tailAtoms(substrateBondNumber))&(ismember(dATME.Nodes.Element,bondMappings.tailAtomElements{substrateBondNumber})));
+            EdgeTable.TailBondHeadAtomIndex(k)=dATME.Nodes.AtomIndex((ismember(dATME.Nodes.mets,bondMappings.mets{productBondNumber}))&(dATME.Nodes.AtomNumber==bondMappings.headAtoms(productBondNumber))&(ismember(dATME.Nodes.Element,bondMappings.headAtomElements{productBondNumber})));
+            EdgeTable.TailBondTailAtomIndex(k)=dATME.Nodes.AtomIndex((ismember(dATME.Nodes.mets,bondMappings.mets{productBondNumber}))&(dATME.Nodes.AtomNumber==bondMappings.tailAtoms(productBondNumber))&(ismember(dATME.Nodes.Element,bondMappings.tailAtomElements{productBondNumber})));
+            EdgeTable.rxns{k} = model.rxns{i};
+            EdgeTable.HeadBondIndex(k) = NaN;
+            EdgeTable.TailBondIndex(k) = NaN;
+            EdgeTable.HeadBond{k} = bondSubstrateID;
+            EdgeTable.TailBond{k} = bondProductID;
+            EdgeTable.HeadBondElmts(k) = {bondSubstrateType};%%
+            EdgeTable.TailBondElmts(k) = {bondProductType};%%
+            EdgeTable.HeadMet{k} = bondMappings.mets{substrateBondNumber};
+            EdgeTable.TailMet{k} = bondMappings.mets{productBondNumber};
+            EdgeTable.HeadMetBondTypes(k) = bondMappings.bTypes(substrateBondNumber);
+            EdgeTable.TailMetBondTypes(k) = bondMappings.bTypes(productBondNumber);
+            k=k+1;
+        end
+    end
 end
 
 %% Directed bond transition multigraph as a matlab directed multigraph object
@@ -796,14 +798,14 @@ end
 %Decomposition in terms of bonds
 %Check the formula for the stoichiometric matrix without the protons (no bonds in a proton)
 %res=(M2BiW*M2BiE')*N - M2BiE*BTiE*BTi2R;
-res=(M2BiW(~hBool,:)*M2BiE(~hBool,:)')*N - M2BiE(~hBool,:)*BTiE*BTi2R;
+res=(M2BiW(metBondMappedBool,:)*M2BiE(metBondMappedBool,:)')*N - M2BiE(metBondMappedBool,:)*BTiE*BTi2R;
 if max(max(abs(res)))~=0
-    metsAll = model.mets(~hBool); % rows of res correspond to non-proton metabolites, not all model.mets
+    metsAll = model.mets(metBondMappedBool);   % was: model.mets(~hBool)
     rxns = model.rxns(rxnBondMappedBool);
      d  = diag(M2BiE*M2BiW');
      D  = spdiags(1./d,0,length(d),length(d));
     N2  = D*M2BiE*BTiE*BTi2R;
-    N2  = N2(~hBool,:); % match res/N2 row space to metsAll
+    N2  = N2(metBondMappedBool,:);   % was: N2(~hBool,:)
     fprintf('%s\n','Inconsistency between reaction stoichiometry and bond mapped reactions (inconsistent stoichiometry?):')
     for j=1:size(res,2)
         if any(res(:,j)~=0)
