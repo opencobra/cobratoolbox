@@ -190,9 +190,11 @@ end
 
 % Validate fastBarrier constraints and save original solver state
 origLPSolver = [];
+fastBarrierCleanup = [];
 if fastBarrier
     % Save the original LP solver to restore later
     origLPSolver = CobraSolverState.getSolver('LP');
+    fastBarrierCleanup = onCleanup(@() restoreFastBarrierLPSolver(origLPSolver));
 
     % Check if Gurobi is available and switch to it
     solverGurobi = changeCobraSolver('gurobi', 'LP', 0);
@@ -217,12 +219,6 @@ if fastBarrier
         end
         solverVarargin.LP{1}.Method = 2;      % barrier method
         solverVarargin.LP{1}.Crossover = 0;   % no crossover
-
-        % Disable heuristics as they don't work well with interior-point solutions
-        if heuristics > 0
-            fprintf('fastBarrier: Disabling heuristics (incompatible with interior-point solutions)\n');
-            heuristics = 0;
-        end
     end
 end
 
@@ -386,6 +382,12 @@ if isempty(heuristics)
     if printLevel > 0
         fprintf(['> The level of heuristics has been set to ' num2str(heuristics) '.\n'])
     end
+end
+if fastBarrier && heuristics > 0
+    if printLevel > 0
+        fprintf('fastBarrier: Disabling heuristics (incompatible with interior-point solutions)\n');
+    end
+    heuristics = 0;
 end
 
 % turn heuristics off for Mosek (don't solve the heuristic problem)
@@ -693,11 +695,6 @@ else % parallel job.  pretty much does the same thing.
     end
 end
 
-% Restore original LP solver if fastBarrier temporarily changed it
-if ~isempty(origLPSolver)
-    changeCobraSolver(origLPSolver, 'LP', 0);
-end
-
 maxFlux = columnVector(maxFlux);
 minFlux = columnVector(minFlux);
 end
@@ -712,6 +709,11 @@ if isempty(sol)
     if allowLoops
         % solve LP
         LPsolution = solveCobraLP(LPproblem, solverVarargin.LP{:});
+        if shouldRetryFastBarrierLP(LPsolution, LPproblem, solverVarargin)
+            retrySolverVarargin = solverVarargin;
+            retrySolverVarargin.LP{1}.Crossover = 1;
+            LPsolution = solveCobraLP(LPproblem, retrySolverVarargin.LP{:});
+        end
     else
         % solve MILP
         LPsolution = solveCobraMILP(LPproblem, solverVarargin.MILP{:});
@@ -747,6 +749,86 @@ if minNorm
     else
         V = getMinNormWoLoops(LPproblem, LPsolution, numel(model.rxns), Flux, method, solverVarargin);
     end
+end
+end
+
+function retry = shouldRetryFastBarrierLP(LPsolution, LPproblem, solverVarargin)
+retry = false;
+
+if ~isFastBarrierNoCrossover(solverVarargin)
+    return
+end
+if ~isstruct(LPsolution) || ~isfield(LPsolution, 'stat')
+    return
+end
+
+if isfield(LPsolution, 'origStat') && ischar(LPsolution.origStat) && ...
+        strcmp(LPsolution.origStat, 'NUMERIC') && LPsolution.stat ~= 1
+    retry = true;
+    return
+end
+
+if LPsolution.stat == 1
+    retry = fastBarrierSolutionViolatesTolerance(LPsolution, LPproblem);
+end
+end
+
+function retry = isFastBarrierNoCrossover(solverVarargin)
+retry = false;
+
+if ~isstruct(solverVarargin) || ~isfield(solverVarargin, 'LP') || isempty(solverVarargin.LP)
+    return
+end
+lpParams = solverVarargin.LP{1};
+if isempty(lpParams) || ~isstruct(lpParams)
+    return
+end
+retry = isfield(lpParams, 'Method') && lpParams.Method == 2 && ...
+    isfield(lpParams, 'Crossover') && lpParams.Crossover == 0;
+end
+
+function violates = fastBarrierSolutionViolatesTolerance(LPsolution, LPproblem)
+violates = false;
+tol = 1e-7;
+
+if ~isfield(LPsolution, 'full') || isempty(LPsolution.full) || ...
+        ~isfield(LPproblem, 'A') || ~isfield(LPproblem, 'b') || ~isfield(LPproblem, 'csense')
+    return
+end
+
+x = LPsolution.full;
+if any(~isfinite(x))
+    violates = true;
+    return
+end
+
+Ax = LPproblem.A * x;
+constraintViolation = 0;
+if any(LPproblem.csense == 'E')
+    constraintViolation = max(constraintViolation, ...
+        max(abs(Ax(LPproblem.csense == 'E') - LPproblem.b(LPproblem.csense == 'E'))));
+end
+if any(LPproblem.csense == 'L')
+    constraintViolation = max(constraintViolation, ...
+        max(Ax(LPproblem.csense == 'L') - LPproblem.b(LPproblem.csense == 'L')));
+end
+if any(LPproblem.csense == 'G')
+    constraintViolation = max(constraintViolation, ...
+        max(LPproblem.b(LPproblem.csense == 'G') - Ax(LPproblem.csense == 'G')));
+end
+if isfield(LPproblem, 'lb') && ~isempty(LPproblem.lb)
+    constraintViolation = max(constraintViolation, max(LPproblem.lb - x));
+end
+if isfield(LPproblem, 'ub') && ~isempty(LPproblem.ub)
+    constraintViolation = max(constraintViolation, max(x - LPproblem.ub));
+end
+
+violates = constraintViolation > tol;
+end
+
+function restoreFastBarrierLPSolver(origLPSolver)
+if ~isempty(origLPSolver)
+    changeCobraSolver(origLPSolver, 'LP', 0);
 end
 end
 
