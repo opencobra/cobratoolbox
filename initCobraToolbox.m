@@ -103,6 +103,31 @@ end
 % layout differs from the one that saved it.
 defaultSavePathLocation = fullfile(prefdir, 'pathdef.m');
 
+% retrieve the current directory
+currentDir = pwd;
+
+% define the root path of The COBRA Toolbox.
+CBTDIR = fileparts(which('initCobraToolbox'));
+
+solverRegistryReady = isstruct(SOLVERS) && ~isempty(SOLVERS) && ...
+    iscell(OPT_PROB_TYPES) && ~isempty(OPT_PROB_TYPES);
+
+% Idempotency guard: a repeat call in the same MATLAB session with no update
+% requested short-circuits the (re-)path-add and the network submodule work,
+% provided the solver registry is still valid.
+% Pass initCobraToolbox(true) to force a full re-initialisation/update; a cleared
+% toolbox path (changeCobraSolver missing) also re-triggers a full initialisation.
+if ~updateToolbox && ~isempty(CBT_INITIALIZED) && CBT_INITIALIZED && ...
+        exist('changeCobraSolver', 'file') == 2 && solverRegistryReady
+    printSkipMessage = ~agentMode && (~isstruct(ENV_VARS) || ...
+        ~isfield(ENV_VARS, 'printLevel') || ENV_VARS.printLevel);
+    if printSkipMessage
+        fprintf(['The COBRA Toolbox is already initialised in this session; skipping.\n', ...
+                 'Call initCobraToolbox(true) to force a full re-initialisation/update.\n']);
+    end
+    return
+end
+
 % initialize the cell of solvers
 SOLVERS = {};
 
@@ -147,11 +172,7 @@ if ~isfield(ENV_VARS, 'printLevel') || ENV_VARS.printLevel
     ENV_VARS.printLevel = true;
 end
 
-% retrieve the current directory
-currentDir = pwd;
-
-% define the root path of The COBRA Toolbox and change to it.
-CBTDIR = fileparts(which('initCobraToolbox'));
+% change to the root path of The COBRA Toolbox.
 cd(CBTDIR);
 
 if 0
@@ -166,19 +187,6 @@ else
 end
 % add the install folder
 addpath(genpath([CBTDIR filesep 'src' filesep 'base' filesep 'install']));
-
-% Idempotency guard: a repeat call in the same MATLAB session with no update
-% requested short-circuits the (re-)path-add and the network submodule work.
-% Pass initCobraToolbox(true) to force a full re-initialisation/update; a cleared
-% toolbox path (changeCobraSolver missing) also re-triggers a full initialisation.
-if ~updateToolbox && ~isempty(CBT_INITIALIZED) && CBT_INITIALIZED && exist('changeCobraSolver', 'file') == 2
-    if ~agentMode && ENV_VARS.printLevel
-        fprintf(['The COBRA Toolbox is already initialised in this session; skipping.\n', ...
-                 'Call initCobraToolbox(true) to force a full re-initialisation/update.\n']);
-    end
-    cd(currentDir);
-    return
-end
 
 % check if git is installed
 if ~agentMode
