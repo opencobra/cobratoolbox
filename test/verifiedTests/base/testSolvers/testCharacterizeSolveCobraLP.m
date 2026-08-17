@@ -52,6 +52,26 @@ for k = 1:length(solverPkgs.LP)
         sol = solveCobraLP(unbProblem);
         assert(sol.stat == 2);                       % canonical: unbounded
 
+        % --- Barrier without crossover (Gurobi only) ---
+        % Verify status outcomes work correctly with barrier + no crossover
+        if strcmp(solverLP, 'gurobi')
+            barrierParams.Method = 2;        % barrier
+            barrierParams.Crossover = 0;     % no crossover
+
+            % Test OPTIMAL with barrier/no-crossover
+            sol_barrier = solveCobraLP(optProblem, barrierParams);
+            assert(sol_barrier.stat == 1, 'Barrier/no-crossover should find optimal');
+            assert(abs(sol_barrier.obj - 10) < tol, 'Barrier objective should match');
+
+            % Test INFEASIBLE with barrier/no-crossover
+            sol_barrier_inf = solveCobraLP(infProblem, barrierParams);
+            assert(sol_barrier_inf.stat == 0, 'Barrier should detect infeasible correctly');
+
+            % Test UNBOUNDED with barrier/no-crossover
+            sol_barrier_unb = solveCobraLP(unbProblem, barrierParams);
+            assert(sol_barrier_unb.stat == 2, 'Barrier should detect unbounded correctly');
+        end
+
         fprintf('Done.\n');
     end
 end
