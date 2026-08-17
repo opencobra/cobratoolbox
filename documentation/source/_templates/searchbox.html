@@ -1,0 +1,56 @@
+{#
+  Local override of sphinx_cobra_theme's searchbox.html (Sphinx templates_path
+  override mechanism -- see specs/019-full-site-search/research.md Decision 3).
+  The theme is fetched from a separate GitHub repository at CI build time and
+  is not part of this repository's tree, so it is never edited directly; this
+  file is preferred by Sphinx's template loader over the theme's own copy of
+  the same-named template, exactly like the existing local overrides of
+  index.html/indexsidebar.html in this same directory.
+
+  Replaces the previous functions.json-only easyAutocomplete widget with a
+  full-site instant search (documentation/source/_static/js/siteSearch.js).
+  The plain <form>/<input> markup is kept so that, without JavaScript, a
+  visitor can still submit a query to Sphinx's own search.html page.
+#}
+{%- if builder != 'singlehtml' %}
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="{{ pathto('search') }}" method="get">
+    <input type="text" name="q" placeholder="{{ _('Search docs') }}" id="simple" autocomplete="off"/>
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+  <link rel="stylesheet" href="{{ pathto('_static/css/siteSearch.css', 1) }}" type="text/css" />
+  {# Sphinx's own full-text search engine: sphinx_cobra_theme's layout.html
+     does not include these on ordinary pages (or even on search.html itself
+     -- see research.md's "Open items - resolved during implementation" note
+     on the theme's missing `block scripts` hook), so siteSearch.js loads
+     them explicitly here, on every page, before it runs. doctools.js MUST
+     come first: searchtools.js calls `_ready(Search.init)` at its own top
+     level, and `_ready` is defined by doctools.js.
+
+     Known, accepted trade-off: Sphinx's default script_files list already
+     includes _static/doctools.js later in <body> (via the theme's own
+     unmodified script_files loop), so it loads twice on ordinary pages --
+     the second copy throws a harmless "already declared" SyntaxError,
+     confined to that one <script> tag (per-tag execution scoping; it does
+     not affect this widget or any later script on the page, verified with
+     an in-browser check during implementation). Avoiding it would require
+     either editing the out-of-repo theme (not permitted -- see Decision 3)
+     or fetching/eval'ing doctools.js in an isolated scope, which trades a
+     console-only cosmetic issue for real fragility; not worth it here. #}
+  <script src="{{ pathto('_static/doctools.js', 1) }}"></script>
+  <script src="{{ pathto('_static/searchtools.js', 1) }}"></script>
+  <script src="{{ pathto('_static/language_data.js', 1) }}"></script>
+  <script src="{{ pathto('_static/js/siteSearch.js', 1) }}"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      SiteSearch.init({
+        inputId: "simple",
+        siteRoot: "{{ pathto('', 1) }}",
+        searchIndexUrl: "{{ pathto('searchindex.js', 1) }}",
+        tutorialsIndexUrl: "{{ pathto('_static/json/tutorialsSearchIndex.json', 1) }}"
+      });
+    });
+  </script>
+</div>
+{%- endif %}
