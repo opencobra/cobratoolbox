@@ -9,7 +9,7 @@ Validation runs MATLAB (via the MCP: `run_matlab_test_file`, `check_matlab_code`
 
 ## V1 — Non-GECKO behaviour byte-for-byte unchanged (FR-002/008/010, SC-002)
 
-1. Run `testCharacterizeEntropicFBA` under mosek and pdco; confirm green (`.stat` exact; objective/
+1. Run `testEntropicFluxBalanceAnalysis` under mosek and pdco; confirm green (`.stat` exact; objective/
    flux/duals within tol vs the pinned pre-change references).
 2. Perturbation check: nudge a pinned reference → the suite MUST fail (proves it pins behaviour).
 3. `git diff` shows the default (no-`E`) code path is preserved (detection guards the new path).

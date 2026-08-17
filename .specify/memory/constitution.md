@@ -1,5 +1,41 @@
 <!--
 Sync Impact Report
+Version change: 1.4.0 -> 1.5.0
+Modified principles:
+- III. Testing, Reproducibility, And Continuous Integration (added sub-clause
+  III-Naming: One Test File Per Function — every test file MUST be named
+  `test<FunctionName>.m`; exactly one test file per source function; new
+  characterization work extends that existing file rather than creating a
+  second, differently-named file such as `testCharacterize<Name>.m`.)
+Modified sections: none. Added sections: none. Removed sections: none.
+Retroactive application (test-suite reorganization, not a constitution section):
+this amendment's own feature (018-test-naming-convention) merged the three
+pre-existing `testCharacterize<Name>.m` files that collided with an already-named
+conventional test of the same function into that conventional file
+(`testSolveCobraLP.m`, `testOptimizeCbModel.m`,
+`testEntropicFluxBalanceAnalysis.m` — no assertion lost, verified by matching
+pre/post `assert(` counts) and renamed the one collision-free file
+(`testCharacterizeBuildOptProblemFromModel.m` -> `testBuildOptProblemFromModel.m`).
+No `src` file was changed.
+Templates requiring updates:
+- ✅ .specify/templates/spec-template.md, checklist-template.md, plan-template.md,
+  tasks-template.md — reviewed; none hardcode a test-naming pattern, so no
+  template change is required (the III-Characterization precedent required none
+  for the same reason).
+Runtime guidance updated:
+- ✅ CLAUDE.md and AGENTS.md — reviewed; both remain a thin pointer to this file
+  (Principle X), so no restatement or change is required.
+Rationale for MINOR bump: a new, materially-expanded compliance requirement
+(binding test-file naming convention) within an existing principle; no principle
+removed or redefined, and no existing approved plan is invalidated (feature
+017-buildgurobifrommodel-tests' `testBuildGurobiProblemFromModel.m` already
+complies).
+Companion feature: specs/018-test-naming-convention/ (research.md R5 = clause
+placement rationale; data-model.md = the four file-level merge/rename
+specifications this amendment's retroactive application executed).
+-->
+<!--
+Sync Impact Report
 Version change: 1.3.0 -> 1.4.0
 Modified principles:
 - VI. Strict Spec-Driven Development Gate — the implementation phase now recognizes TWO
@@ -272,6 +308,24 @@ Rationale: a single successful run is not evidence. The toolbox needs reproducib
 CI-backed evidence that the intended behaviour changed for the intended reason and
 that nothing else regressed. Declaring requirements via `prepareTest` is what keeps
 the community's heterogeneous solver installations green.
+
+#### III-Naming: One Test File Per Function
+
+Every test file MUST be named `test<FunctionName>.m`, where `<FunctionName>` is
+the source function's exact name with only its leading character capitalized
+(verbatim otherwise — e.g. `solveCobraLP` -> `testSolveCobraLP.m`,
+`optimizeCbModel` -> `testOptimizeCbModel.m`). Exactly one test file MUST exist
+per source function. When characterization work (III-Characterization) needs to
+pin behaviour of a function that already has a test, the new assertions MUST be
+added to that function's existing test file; a second, differently-named file for
+the same function (for example a `testCharacterize<Name>.m`-style infix) MUST NOT
+be created.
+
+Rationale: a function's test coverage is only as discoverable as its naming is
+predictable. Splitting one function's coverage across two differently-named files
+lets a maintainer or agent find one and reasonably believe it is complete, missing
+real assertions that live in the other. One name, one file, keeps "does this
+function have a test, and is it complete" a single lookup rather than a search.
 
 ### IV. Solver Abstraction, Numerical Integrity, And Performance
 
@@ -793,4 +847,4 @@ Versioning follows semantic versioning:
 When a feature conflicts with the constitution, the constitution controls unless the
 feature first amends it through this governance process.
 
-**Version**: 1.4.0 | **Ratified**: 2026-07-12 | **Last Amended**: 2026-07-17
+**Version**: 1.5.0 | **Ratified**: 2026-07-12 | **Last Amended**: 2026-08-17

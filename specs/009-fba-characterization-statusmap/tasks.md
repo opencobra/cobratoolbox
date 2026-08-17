@@ -57,14 +57,14 @@ Allowed: `test/verifiedTests/analysis/**`, `test/verifiedTests/base/testSolvers/
 **Independent Test**: the suite passes (or skips cleanly), exercises every axis, and FAILS on a
 deliberate perturbation (quickstart V1).
 
-- [X] T004 [P] [US1] Write `test/verifiedTests/analysis/testCharacterizeOptimizeCbModel/testCharacterizeOptimizeCbModel.m`:
+- [X] T004 [P] [US1] Write `test/verifiedTests/analysis/testOptimizeCbModel/testOptimizeCbModel.m`:
   status matrix (optimal/infeasible/unbounded, numerical where reproducible), all `minNorm`
   strategies (0/[], 'one', 'zero'+each `zeroNormApprox`, weighted vector, 'optimizeCardinality'),
   `osense` max & min, `allowLoops` on/off, primal+dual (`.v`/`.x`,`.f`,`.w`,`.y`); `prepareTest`
   `needsLP`/`needsQP`; tol asserts; fixed `rng`; references from T003.
-- [X] T005 [P] [US1] Write `test/verifiedTests/base/testSolvers/testCharacterizeBuildOptProblemFromModel.m`:
+- [X] T005 [P] [US1] Write `test/verifiedTests/base/testSolvers/testBuildOptProblemFromModel.m`:
   characterize the LP and QP model→problem mapping on a tiny model.
-- [X] T006 [P] [US1] Write `test/verifiedTests/base/testSolvers/testCharacterizeSolveCobraLP.m`:
+- [X] T006 [P] [US1] Write `test/verifiedTests/base/testSolvers/testSolveCobraLP.m`:
   characterize dispatcher-level status outcomes (optimal/infeasible/unbounded) on a built problem.
 - [X] T007 [US1] Run T004–T006 via the MATLAB MCP (`run_matlab_test_file`); confirm all pass or
   skip cleanly; run the perturbation check (quickstart V1); confirm `git diff` shows NO change to

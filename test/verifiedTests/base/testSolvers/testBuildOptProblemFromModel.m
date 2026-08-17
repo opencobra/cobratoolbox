@@ -1,4 +1,4 @@
-% The COBRAToolbox: testCharacterizeBuildOptProblemFromModel.m
+% The COBRAToolbox: testBuildOptProblemFromModel.m
 %
 % Purpose:
 %     - Characterization test that PINS the current model->problem mapping performed
@@ -14,7 +14,7 @@
 currentDir = pwd;
 
 % initialize the test
-fileDir = fileparts(which('testCharacterizeBuildOptProblemFromModel'));
+fileDir = fileparts(which('testBuildOptProblemFromModel'));
 cd(fileDir);
 
 model = buildToyModel();

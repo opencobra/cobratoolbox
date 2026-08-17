@@ -2,7 +2,7 @@
 
 ## Current State
 - Status: Bundle 3 (implement) COMPLETE — all 15 tasks green. Bundle 4 verification done; AWAITING Gate 3.
-- MATLAB MCP: reachable (R2026a). testCharacterizeEntropicFBA + testEntropicFBAgecko both GREEN under
+- MATLAB MCP: reachable (R2026a). testEntropicFluxBalanceAnalysis + testEntropicFBAgecko both GREEN under
   mosek + pdco. Legacy testEntropicFluxBalanceAnalysis (Recon3D) passes on the non-GECKO path (its own
   pre-existing undefined-`k` bug worked around with k=1; file untouched by 010, recorded to memory).
 - Receipts: agent-runs/20260715T212225Z-characterization-net/ (Part 1) +
@@ -72,7 +72,7 @@
 ## Bundle 4 verification (2026-07-16)
 - Diff scope confined to src/base/solvers/entropicFBA/**, test/verifiedTests/**, specs/010/** (+ .specify/feature.json). ✓
 - No AdaptGECKO* fork shipped in src/. ✓  Signature of entropicFluxBalanceAnalysis unchanged. ✓
-- testCharacterizeEntropicFBA — PASS (mosek + pdco); non-GECKO ||v|| within 1% of baseline. ✓
+- testEntropicFluxBalanceAnalysis — PASS (mosek + pdco); non-GECKO ||v|| within 1% of baseline. ✓
 - testEntropicFBAgecko — PASS (mosek + pdco): feasible, binding (v_R2==kcat*e), dimension-error. ✓
 - Legacy testEntropicFluxBalanceAnalysis (Recon3D) — PASS on non-GECKO path (k=1 workaround). ✓
 - check_matlab_code — only pre-existing flags; no NEW flags at edit sites; helper clean. ✓

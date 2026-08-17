@@ -63,7 +63,7 @@ regression net, then the higher-risk dual-residual work with the net re-run afte
     deterministic dual outcome)
   - NEW receipt + baseline under `specs/011-entropicfba-dual-fixes/agent-runs/`
 - **Files that should NOT change**: any public signature/param/model-field/`.stat`/`.origStat`; the
-  default (no-enzyme) feasible-path results; `testCharacterizeEntropicFBA` (rerun only, edit only if a
+  default (no-enzyme) feasible-path results; `testEntropicFluxBalanceAnalysis` (rerun only, edit only if a
   regression guard forces it); `optimizeCbModel`, `parseMskResult`, anything outside `entropicFBA/`.
 
 ## Tests and Validation Expected (narrowest first)
@@ -73,7 +73,7 @@ Via MATLAB MCP (mosek + pdco):
 2. `testEntropicFBAgecko` — new strictly-infeasible case returns `stat==0` + non-empty `messages`, no
    crash (V2/SC-001); feasible + binding cases unchanged; dual-optimality outcome deterministic
    (V3/SC-003).
-3. `testCharacterizeEntropicFBA` — no-enzyme `fluxes` path within the 010 baseline; non-enzyme dual
+3. `testEntropicFluxBalanceAnalysis` — no-enzyme `fluxes` path within the 010 baseline; non-enzyme dual
    residual not regressed (V5/SC-004).
 4. `check_matlab_code` on the four files — no NEW flags vs baseline (V6/SC-005).
 5. Diff review — no interface/field/status-semantics change (SC-006); diff confined to the four

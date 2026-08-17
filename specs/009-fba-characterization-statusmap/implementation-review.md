@@ -36,9 +36,9 @@ consistent (100% requirement→task coverage, 0 blocking findings).
 - **First independently testable slice**: **US1 / Part 1 net** (T001–T007) — the MVP; closes the
   coverage gap even if Part 2 slips.
 - **Files likely to change**:
-  - NEW tests: `test/verifiedTests/analysis/testCharacterizeOptimizeCbModel/…`,
-    `test/verifiedTests/base/testSolvers/{testCharacterizeBuildOptProblemFromModel,
-    testCharacterizeSolveCobraLP,testMapSolverStatus}.m`
+  - NEW tests: `test/verifiedTests/analysis/testOptimizeCbModel/…`,
+    `test/verifiedTests/base/testSolvers/{testBuildOptProblemFromModel,
+    testSolveCobraLP,testMapSolverStatus}.m`
   - NEW helper: `src/base/solvers/statusMapping/mapSolverStatus.m`
   - EDIT (status-map routing only): `src/base/solvers/solveCobra{LP,QP,MILP,MIQP}.m`
   - NEW receipt under `agent-runs/`
@@ -50,8 +50,8 @@ consistent (100% requirement→task coverage, 0 blocking findings).
 
 Via the MATLAB MCP (`run_matlab_test_file`, `check_matlab_code`):
 1. `testMapSolverStatus` (unit; solver-independent — guards ALL consolidated maps incl. non-gurobi).
-2. `testCharacterizeSolveCobraLP` / `testCharacterizeBuildOptProblemFromModel` (dispatcher/mapping).
-3. `testCharacterizeOptimizeCbModel` (full net; perturbation check).
+2. `testSolveCobraLP` / `testBuildOptProblemFromModel` (dispatcher/mapping).
+3. `testOptimizeCbModel` (full net; perturbation check).
 4. Re-run the net + unit after EACH dispatcher reroute (T010–T013) → `.stat`/`.origStat` identical.
 5. Existing `testOptimizeCbModel`/`testSolveCobraLP`/`testSolveCobraLPCPLEX` still pass.
 6. quickstart V1–V6; diff-scope check.
