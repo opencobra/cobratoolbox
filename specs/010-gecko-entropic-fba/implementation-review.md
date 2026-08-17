@@ -42,7 +42,7 @@ consistent (100% coverage, 0 blocking).
 ## Tests and Validation Expected (narrowest first)
 
 Via MATLAB MCP (mosek + pdco):
-1. `testCharacterizeEntropicFBA` — pins current `fluxes` non-GECKO behaviour (both backends); re-run
+1. `testEntropicFluxBalanceAnalysis` — pins current `fluxes` non-GECKO behaviour (both backends); re-run
    after T007 and T008 as the regression guard.
 2. `testEntropicFBAgecko` — minimal fixture through the GECKO path; assert constraint satisfaction +
    optimality (not golden values), evarc objective, entropy on enzymes, `.stat`/`.origStat`, both backends.

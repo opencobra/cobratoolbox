@@ -96,7 +96,7 @@ src/base/solvers/entropicFBA/
 └── prepareEnzymeConstrainedEP.m    # NEW (working name): validate dims + build the enzyme block/helper
 
 test/verifiedTests/analysis/ (or base/testSolvers/)
-├── testCharacterizeEntropicFBA/    # NEW: pin current non-GECKO 'fluxes' behaviour (mosek+pdco)
+├── testEntropicFluxBalanceAnalysis/    # NEW: pin current non-GECKO 'fluxes' behaviour (mosek+pdco)
 └── testEntropicFBAgecko/           # NEW: minimal committed enzyme fixture through the GECKO path
 ```
 

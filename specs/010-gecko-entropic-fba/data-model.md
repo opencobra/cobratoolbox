@@ -48,7 +48,7 @@ inconsistent specification → error with `ME.stack` (FR-004). Absent → today'
 
 ## E5 — Fixtures & tests
 
-- `testCharacterizeEntropicFBA`: pins current `fluxes` non-GECKO behaviour (`.stat` exact; objective/
+- `testEntropicFluxBalanceAnalysis`: pins current `fluxes` non-GECKO behaviour (`.stat` exact; objective/
   flux/duals within tol) under mosek AND pdco. References captured from CURRENT code via MATLAB MCP.
 - `testEntropicFBAgecko`: a minimal committed enzyme-constrained fixture solved through the GECKO path
   under mosek and pdco; asserts feasibility, `[S E; C D]`/evar-bound satisfaction, evarc objective

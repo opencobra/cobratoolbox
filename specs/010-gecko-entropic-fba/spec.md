@@ -241,7 +241,7 @@ feasible solution (or a documented, explicit limitation), with canonical `.stat`
 | Acceptance criterion | Discharging test | src/<domain>/ function under test |
 |----------------------|------------------|-----------------------------------|
 | US1 / FR-001,003,004,005 — GECKO fold-in | `testEntropicFBAgecko` (new) | `src/base/solvers/entropicFBA/entropicFluxBalanceAnalysis.m` (+ shared split helper) |
-| US2 / FR-002,008,010 — non-GECKO unchanged | `testCharacterizeEntropicFBA` (new, characterization) | `src/base/solvers/entropicFBA/entropicFluxBalanceAnalysis.m` |
+| US2 / FR-002,008,010 — non-GECKO unchanged | `testEntropicFluxBalanceAnalysis` (new, characterization) | `src/base/solvers/entropicFBA/entropicFluxBalanceAnalysis.m` |
 | US3 / FR-006 — mosek + pdco | `testEntropicFBAgecko` (both backends) + Phase-0 audit | `entropicFluxBalanceAnalysis.m` → `solveCobraEP` |
 | FR-007 — solver abstraction, `.stat`/`.origStat` | assertions in both new tests | `solveCobraEP` / `buildOptProblemFromModel` |
 | FR-009, SC-004 — single consolidated function | grep: no parallel `AdaptGECKO*` in `src/` | `entropicFluxBalanceAnalysis.m` |

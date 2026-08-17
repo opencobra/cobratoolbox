@@ -68,9 +68,9 @@ assignment exactly.
 
 ## E5 — Test files (NEW)
 
-- `test/verifiedTests/analysis/testCharacterizeOptimizeCbModel/testCharacterizeOptimizeCbModel.m`
-- `test/verifiedTests/base/testSolvers/testCharacterizeBuildOptProblemFromModel.m`
-- `test/verifiedTests/base/testSolvers/testCharacterizeSolveCobraLP.m`
+- `test/verifiedTests/analysis/testOptimizeCbModel/testOptimizeCbModel.m`
+- `test/verifiedTests/base/testSolvers/testBuildOptProblemFromModel.m`
+- `test/verifiedTests/base/testSolvers/testSolveCobraLP.m`
 - `test/verifiedTests/base/testSolvers/testMapSolverStatus.m` (Part 2 unit — feed native codes, assert canonical)
 
 ## Backward-compatibility / gate-safety contract

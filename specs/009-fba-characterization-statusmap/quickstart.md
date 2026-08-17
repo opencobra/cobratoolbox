@@ -11,9 +11,9 @@ solvers skip cleanly. Run from repo root after `initCobraToolbox`.
 
 ## V1 — Part 1 net exists and pins behavior (FR-001…005, SC-001/002/003)
 
-1. Run `testCharacterizeOptimizeCbModel` via the MATLAB MCP; confirm it passes and exercises the
+1. Run `testOptimizeCbModel` via the MATLAB MCP; confirm it passes and exercises the
    status matrix, all `minNorm` strategies, both senses, allowLoops, and primal+dual.
-2. Run `testCharacterizeBuildOptProblemFromModel` and `testCharacterizeSolveCobraLP`; confirm pass.
+2. Run `testBuildOptProblemFromModel` and `testSolveCobraLP`; confirm pass.
 3. **Perturbation check (SC-001):** temporarily change one pinned reference (or nudge a fixture)
    and confirm the suite FAILS — proving the net actually pins behavior. Revert.
 

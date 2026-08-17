@@ -244,12 +244,12 @@ characterized case, and that the duplicated map literals are gone.
 
 | Acceptance criterion | Discharging test | src/<domain>/ function under test |
 |----------------------|------------------|-----------------------------------|
-| US1-1 / FR-001 — minNorm × osense matrix | `testCharacterizeOptimizeCbModel` (new, test/verifiedTests/analysis/) | `src/analysis/FBA/optimizeCbModel.m` |
-| US1-2 / FR-002 — status matrix (infeasible/unbounded) | `testCharacterizeOptimizeCbModel` + `testCharacterizeSolveCobraLP` | `src/analysis/FBA/optimizeCbModel.m`; `src/base/solvers/solveCobraLP.m` |
-| US1-3 / FR-003 — primal + dual quantities | `testCharacterizeOptimizeCbModel` | `src/analysis/FBA/optimizeCbModel.m` |
-| US1-4 / FR-001 — allowLoops on/off | `testCharacterizeOptimizeCbModel` | `src/analysis/FBA/optimizeCbModel.m` |
+| US1-1 / FR-001 — minNorm × osense matrix | `testOptimizeCbModel` (new, test/verifiedTests/analysis/) | `src/analysis/FBA/optimizeCbModel.m` |
+| US1-2 / FR-002 — status matrix (infeasible/unbounded) | `testOptimizeCbModel` + `testSolveCobraLP` | `src/analysis/FBA/optimizeCbModel.m`; `src/base/solvers/solveCobraLP.m` |
+| US1-3 / FR-003 — primal + dual quantities | `testOptimizeCbModel` | `src/analysis/FBA/optimizeCbModel.m` |
+| US1-4 / FR-001 — allowLoops on/off | `testOptimizeCbModel` | `src/analysis/FBA/optimizeCbModel.m` |
 | US1-5 / FR-006 — clean skip when solver absent | all new tests (prepareTest gating) | `src/base/solvers/` (solver availability) |
-| US1 / FR-004 — model→problem mapping | `testCharacterizeBuildOptProblemFromModel` (new) | `src/base/solvers/buildOptProblemFromModel.m` |
+| US1 / FR-004 — model→problem mapping | `testBuildOptProblemFromModel` (new) | `src/base/solvers/buildOptProblemFromModel.m` |
 | US2-1,2 / FR-008, FR-009, FR-010 — mapSolverStatus + reroute, results unchanged | US1 suite re-run green + search for removed literals | `src/base/solvers/mapSolverStatus.m` (new); `solveCobraLP/QP/MILP/MIQP.m` |
 | US2-3 / FR-008 — unknown native status fallback | `testMapSolverStatus` (new, unit) | `src/base/solvers/mapSolverStatus.m` |
 | FR-011, FR-012, SC-006 — no interface change; config-surface audit | existing solver tests still pass; plan research note | `solveCobra*.m` signatures / return fields |

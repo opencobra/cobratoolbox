@@ -40,7 +40,7 @@ signature; the AdaptGECKO fork (reference only); `fluxConc`/`fluxConcNorm` enzym
 
 ## Phase 3: User Story 2 - Non-GECKO characterization net (Priority: P1) 🎯 baseline
 
-- [X] T004 [P] [US2] Write `test/verifiedTests/.../testCharacterizeEntropicFBA/testCharacterizeEntropicFBA.m`:
+- [X] T004 [P] [US2] Write `test/verifiedTests/.../testEntropicFluxBalanceAnalysis/testEntropicFluxBalanceAnalysis.m`:
   pin the current `fluxes` non-GECKO behaviour (`.stat` exact; objective/flux/duals within tol) under
   mosek AND pdco; `prepareTest`-gated; fixed seed; references from T003.
 - [X] T005 [US2] Run T004 via MCP; confirm green + perturbation check (quickstart V1); confirm

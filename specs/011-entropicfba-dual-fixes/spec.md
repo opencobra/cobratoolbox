@@ -170,7 +170,7 @@ tolerance (if a fixable assembly defect) or documented and tolerated with primal
   diagnostic or test output (Principle IV, VII-B).
 - **FR-009**: Edits MUST be confined to `src/base/solvers/entropicFBA/**` and the entropic-FBA tests
   under `test/verifiedTests/base/testEntropicFBA/**` and `test/verifiedTests/analysis/testEntropicFBAgecko/**`
-  (and, only if a regression guard requires it, `test/verifiedTests/analysis/testCharacterizeEntropicFBA/**`).
+  (and, only if a regression guard requires it, `test/verifiedTests/analysis/testEntropicFluxBalanceAnalysis/**`).
 - **FR-010**: Each corrected behaviour MUST be covered by the narrowest automated test that runs
   under `test/testAll.m` and the CI harness, declaring its solver requirement via `prepareTest`
   (`needsEP` / mosek) so it skips gracefully when the EP solver is unavailable.
@@ -199,7 +199,7 @@ tolerance (if a fixable assembly defect) or documented and tolerated with primal
 - **SC-003**: `testEntropicFBAgecko` passes deterministically under both mosek and pdco, with the
   GECKO dual residual either at or below a documented tolerance or documented-and-tolerated; no
   emitted warning causes the test to fail.
-- **SC-004**: The 010 regression tests — `testCharacterizeEntropicFBA` and the `testEntropicFBAgecko`
+- **SC-004**: The 010 regression tests — `testEntropicFluxBalanceAnalysis` and the `testEntropicFBAgecko`
   feasible + binding assertions — still pass under mosek and pdco (no regression), with the default
   (no-enzyme) `fluxes` path objective/`v` unchanged within the existing 1e-6 tolerance.
 - **SC-005**: `check_matlab_code` reports no NEW warnings or errors at the edited sites relative to
@@ -232,4 +232,4 @@ tolerance (if a fixable assembly defect) or documented and tolerated with primal
 | US1 / FR-001 (non-0/1 LP diagnostic status defines `message`) | same infeasible assertion / diagnostic-path check | `src/base/solvers/entropicFBA/entropicFluxBalanceAnalysis.m` |
 | US2 / FR-005 (legacy test runs standalone and exercises the function) | `test/verifiedTests/base/testEntropicFBA/testEntropicFluxBalanceAnalysis.m` | `src/base/solvers/entropicFBA/entropicFluxBalanceAnalysis.m` |
 | US3 / FR-006 (dual residual resolved or characterized; test robust) | `test/verifiedTests/analysis/testEntropicFBAgecko/testEntropicFBAgecko.m` | `src/base/solvers/entropicFBA/solveCobraEP.m` |
-| FR-004 / SC-004 (feasible path + no-enzyme path unchanged) | `test/verifiedTests/analysis/testCharacterizeEntropicFBA/testCharacterizeEntropicFBA.m`, `testEntropicFBAgecko` feasible/binding cases | `src/base/solvers/entropicFBA/entropicFluxBalanceAnalysis.m` |
+| FR-004 / SC-004 (feasible path + no-enzyme path unchanged) | `test/verifiedTests/analysis/testEntropicFluxBalanceAnalysis/testEntropicFluxBalanceAnalysis.m`, `testEntropicFBAgecko` feasible/binding cases | `src/base/solvers/entropicFBA/entropicFluxBalanceAnalysis.m` |
