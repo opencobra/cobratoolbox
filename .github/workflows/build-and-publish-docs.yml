@@ -88,6 +88,21 @@ jobs:
             echo "No existing tutorials found on gh-pages; skipping copy."
           fi
 
+      # ==== Full-site search: tutorial index ====
+      # Tutorials are carried over as pre-built HTML above rather than
+      # rebuilt from .rst each run, so they are absent from Sphinx's own
+      # generated searchindex.js. Generate a small supplemental index for
+      # them, scanning what was actually just staged above. Runs even when
+      # no tutorials directory exists (fails the job below if that happens,
+      # per FR-009, rather than silently publishing a site with a missing
+      # tutorial search index) -- see
+      # specs/019-full-site-search/research.md Decision 2.
+      - name: Generate tutorial search index
+        run: |
+          python documentation/source/sphinxext/generateTutorialSearchIndex.py \
+            --tutorials-dir ghpages/stable/tutorials \
+            --out ghpages/stable/_static/json/tutorialsSearchIndex.json
+
       # ==== Function documentation ====
       - name: Generate publications rst file
         working-directory: ./documentation/source/sphinxext
@@ -128,6 +143,18 @@ jobs:
         run: |
           mkdir -p ghpages/stable/_static
           rsync -a ./documentation/build/html/_static/ ghpages/stable/_static/
+
+      # ==== Full-site search: full-text index ====
+      # "Stage core site to ghpages/stable" above ran before this job's
+      # second `make html` (the one that includes the generated function
+      # reference pages), so the searchindex.js it staged only covers the
+      # narrative/non-function pages that already existed at that point.
+      # Re-stage it now, from the completed build, so search results
+      # actually include the function reference pages that were just
+      # generated -- see specs/019-full-site-search/research.md Decision 1.
+      - name: Stage the full-text search index
+        run: |
+          cp ./documentation/build/html/searchindex.js ghpages/stable/searchindex.js
 
       # ==== Contributors page ====
       - name: Set up Python 3.10 (contributors)
