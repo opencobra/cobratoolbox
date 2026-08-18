@@ -2,9 +2,19 @@
 %
 % Purpose:
 %     - Tests the optimizeCbModel function
+%     - Also characterizes the current behaviour of optimizeCbModel across axes
+%       not covered above: the full status matrix (optimal/infeasible/
+%       unbounded), every documented minNorm strategy, both optimization
+%       senses, allowLoops on/off, and primal/dual quantity presence. Merged in
+%       from testCharacterizeOptimizeCbModel.m per Constitution Principle
+%       III-Naming (feature 018-test-naming-convention): one test file per
+%       source function.
 %
 % Authors:
 %     - CI integration: Laurent Heirendt, Ronan Fleming
+%     - Characterization: generated for feature
+%       009-fba-characterization-statusmap, 2026-07-15; merged into this file by
+%       feature 018-test-naming-convention, 2026-08-17.
 %
 
 % save the current path
@@ -205,5 +215,116 @@ for k = 1:length(solverPkgs.LP)
     end
 end
 
+%% Characterization: optimizeCbModel behaviour (merged from testCharacterizeOptimizeCbModel.m)
+% PINS the current behaviour of optimizeCbModel across the axes the tests above
+% do not cover: the full status matrix (optimal/infeasible/unbounded), every
+% documented minNorm strategy, both optimization senses, allowLoops on/off, and
+% the presence of primal and dual quantities. Asserts EXISTING behaviour
+% (feature 009, Constitution Principle III characterization mode). Canonical
+% .stat is pinned exactly (solver-independent); objective, mass-balance residual
+% and fluxes are pinned within tolerance.
+
+% tolerance for floating-point comparisons (integer .stat is compared exactly)
+charTol = 1e-6;
+% The minNorm re-solves (which must PRESERVE the optimum) pin the objective only
+% to the solver's optimality tolerance, which varies across solver/MATLAB
+% versions; a tight 1e-6 pin there is over-specified and fails on some CI gurobi
+% builds. Use a looser tolerance for those objective pins only; the base direct
+% solves and all structural checks (status, mass balance, flux vector) stay at
+% charTol.
+charObjTol = 1e-4;
+
+% require an LP solver; skip cleanly otherwise
+charSolverPkgs = prepareTest('needsLP', true);
+
+for charK = 1:length(charSolverPkgs.LP)
+
+    charSolverLP = charSolverPkgs.LP{charK};
+    fprintf('   Characterizing optimizeCbModel with LP solver %s ... ', charSolverLP);
+    charSolverLPOK = changeCobraSolver(charSolverLP, 'LP', 0);
+
+    if charSolverLPOK
+        % is a QP solver also available (for the L2 / positive-scalar minNorm case)?
+        charQpOK = changeCobraSolver(charSolverLP, 'QP', 0);
+
+        % --- OPTIMAL (max), minNorm = 0 -----------------------------------------
+        charModel = buildCharToyModel();
+        charS = optimizeCbModel(charModel, 'max', 0);
+        assert(charS.stat == 1);                                   % canonical: optimal
+        assert(abs(charS.f - 10) < charTol);                       % objective pinned
+        assert(norm(charModel.S * charS.v - charModel.b) < charTol); % mass balance
+        assert(norm(charS.v - [10; 10; 10]) < charTol);            % unique optimum
+        % dual quantities are present and well-formed (values are solver-dependent)
+        assert(numel(charS.w) == numel(charModel.rxns) && all(isfinite(charS.w)));
+        assert(numel(charS.y) == numel(charModel.mets) && all(isfinite(charS.y)));
+
+        % --- OPTIMAL (min) ------------------------------------------------------
+        charS = optimizeCbModel(charModel, 'min', 0);
+        assert(charS.stat == 1);
+        assert(abs(charS.f - 0) < charTol);
+
+        % --- minNorm strategies preserve the optimum (all stat==1, f==10) -------
+        for charMinNorm = {'one', 'zero', [1; 1; 1]}
+            charS = optimizeCbModel(charModel, 'max', charMinNorm{1});
+            assert(charS.stat == 1);
+            assert(abs(charS.f - 10) < charObjTol);
+            assert(norm(charModel.S * charS.v - charModel.b) < charTol);
+        end
+
+        % L2 / positive-scalar minNorm requires a QP solver
+        if charQpOK
+            charS = optimizeCbModel(charModel, 'max', 1e-6);
+            assert(charS.stat == 1);
+            assert(abs(charS.f - 10) < charObjTol);
+        end
+
+        % 'optimizeCardinality' minNorm requires model.g0 on the model; pin that
+        % the bare model raises rather than silently proceeding.
+        charErrored = false;
+        try
+            optimizeCbModel(charModel, 'max', 'optimizeCardinality');
+        catch
+            charErrored = true;
+        end
+        assert(charErrored);
+
+        % --- allowLoops on/off --------------------------------------------------
+        charS = optimizeCbModel(charModel, 'max', 0, true);
+        assert(charS.stat == 1 && abs(charS.f - 10) < charTol);
+        charS = optimizeCbModel(charModel, 'max', 0, false);
+        assert(charS.stat == 1 && abs(charS.f - 10) < charTol);
+
+        % --- INFEASIBLE -----------------------------------------------------
+        charModelInf = buildCharToyModel();
+        charModelInf.lb(3) = 50;                                   % demand 50 out, input capped at 10
+        charS = optimizeCbModel(charModelInf, 'max', 0);
+        assert(charS.stat == 0);                                   % canonical: infeasible
+
+        % --- UNBOUNDED ------------------------------------------------------
+        charModelUnb = buildCharToyModel();
+        charModelUnb.ub = [inf; inf; inf];                         % uncap the pathway
+        charS = optimizeCbModel(charModelUnb, 'max', 0);
+        assert(charS.stat == 2);                                   % canonical: unbounded
+
+        fprintf('Done.\n');
+    end
+end
+
 % change the directory
 cd(currentDir)
+
+
+function model = buildCharToyModel()
+    % Tiny linear pathway A ->(R1, ub 10) -> B (R2) -> out (R3, objective).
+    % Feasible with a unique optimum f = 10; used to characterize the status matrix.
+    model = struct();
+    model.rxns = {'R1'; 'R2'; 'R3'};
+    model.mets = {'A'; 'B'};
+    model.S = [1, -1, 0; 0, 1, -1];
+    model.lb = [0; 0; 0];
+    model.ub = [10; 1000; 1000];
+    model.c = [0; 0; 1];
+    model.b = [0; 0];
+    model.csense = ['E'; 'E'];
+    model.osenseStr = 'max';
+end

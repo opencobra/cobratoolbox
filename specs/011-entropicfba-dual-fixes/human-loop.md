@@ -53,7 +53,7 @@ Three concerns discovered during feature 010-gecko-entropic-fba (merged on devel
 - Approved: intent yes (Gate 2, 2026-07-16); edits pending explicit /speckit-implement (Principle VI)
 - Scope: all (T001–T019), with the T011 HARD GATE (net green before the dual-residual change)
 - Files allowed (if approved): src/base/solvers/entropicFBA/** ; test/verifiedTests/base/testEntropicFBA/** ;
-  test/verifiedTests/analysis/testEntropicFBAgecko/** ; (regression only) test/verifiedTests/analysis/testCharacterizeEntropicFBA/**
+  test/verifiedTests/analysis/testEntropicFBAgecko/** ; (regression only) test/verifiedTests/analysis/testEntropicFluxBalanceAnalysis/**
 - Files not allowed: any public-interface/field change; solveCobraEP/entropicFluxBalanceAnalysis signature;
   .stat/.origStat semantics; default (no-enzyme) feasible-path results
 

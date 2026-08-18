@@ -2,9 +2,17 @@
 %
 % Purpose:
 %     - testSolveCobraLP tests the SolveCobraLP function and its different methods
+%     - Also characterizes the dispatcher-level status matrix (optimal /
+%       infeasible / unbounded, including gurobi barrier-without-crossover),
+%       merged in from testCharacterizeSolveCobraLP.m per Constitution Principle
+%       III-Naming (feature 018-test-naming-convention): one test file per
+%       source function.
 %
 % Author:
 %     - CI integration: Laurent Heirendt, February 2017
+%     - Status-matrix characterization: generated for feature
+%       009-fba-characterization-statusmap, 2026-07-15; merged into this file by
+%       feature 018-test-naming-convention, 2026-08-17.
 %
 % Note:
 %       test is performed on objective as solution can vary between machines, solver version etc..
@@ -172,5 +180,85 @@ optimizeCbModel_param.zeroNormApprox = 'all';
 solution = optimizeCbModel(model, osenseStr,minNorm, allowLoops, optimizeCbModel_param);
 assert(solution.f0==1)
 %%
+
+%% Characterization: solveCobraLP status matrix (merged from testCharacterizeSolveCobraLP.m)
+% PINS the dispatcher-level status outcomes of solveCobraLP (optimal / infeasible
+% / unbounded) on a built LP problem, the status matrix the tests above do not
+% assert (feature 009-fba-characterization-statusmap, W7-core / W2). Asserts
+% EXISTING behaviour (Constitution Principle III characterization mode);
+% canonical .stat is pinned exactly, objective within tolerance.
+
+charTol = 1e-6;
+
+% require an LP solver; skip cleanly otherwise
+charSolverPkgs = prepareTest('needsLP', true);
+
+charModel = buildCharToyModel();
+charOptProblem = buildOptProblemFromModel(charModel);
+
+for charK = 1:length(charSolverPkgs.LP)
+
+    charSolverLP = charSolverPkgs.LP{charK};
+    fprintf('   Characterizing solveCobraLP status matrix with %s ... ', charSolverLP);
+    charSolverLPOK = changeCobraSolver(charSolverLP, 'LP', 0);
+
+    if charSolverLPOK
+        % --- OPTIMAL ---
+        charSol = solveCobraLP(charOptProblem);
+        assert(charSol.stat == 1);                       % canonical: optimal
+        assert(abs(charSol.obj - 10) < charTol);         % objective pinned
+        assert(norm(charSol.full - [10; 10; 10]) < charTol); % unique optimum
+
+        % --- INFEASIBLE ---
+        charInfProblem = charOptProblem;
+        charInfProblem.lb(3) = 50;                       % demand 50 out, input capped at 10
+        charSol = solveCobraLP(charInfProblem);
+        assert(charSol.stat == 0);                       % canonical: infeasible
+
+        % --- UNBOUNDED ---
+        charUnbProblem = charOptProblem;
+        charUnbProblem.ub = [inf; inf; inf];             % uncap the pathway
+        charSol = solveCobraLP(charUnbProblem);
+        assert(charSol.stat == 2);                       % canonical: unbounded
+
+        % --- Barrier without crossover (Gurobi only) ---
+        % Verify status outcomes work correctly with barrier + no crossover
+        if strcmp(charSolverLP, 'gurobi')
+            charBarrierParams.Method = 2;        % barrier
+            charBarrierParams.Crossover = 0;     % no crossover
+
+            % Test OPTIMAL with barrier/no-crossover
+            charSolBarrier = solveCobraLP(charOptProblem, charBarrierParams);
+            assert(charSolBarrier.stat == 1, 'Barrier/no-crossover should find optimal');
+            assert(abs(charSolBarrier.obj - 10) < charTol, 'Barrier objective should match');
+
+            % Test INFEASIBLE with barrier/no-crossover
+            charSolBarrierInf = solveCobraLP(charInfProblem, charBarrierParams);
+            assert(charSolBarrierInf.stat == 0, 'Barrier should detect infeasible correctly');
+
+            % Test UNBOUNDED with barrier/no-crossover
+            charSolBarrierUnb = solveCobraLP(charUnbProblem, charBarrierParams);
+            assert(charSolBarrierUnb.stat == 2, 'Barrier should detect unbounded correctly');
+        end
+
+        fprintf('Done.\n');
+    end
+end
+
 % change the directory
 cd(currentDir)
+
+
+function model = buildCharToyModel()
+    % Tiny linear pathway A ->(R1, ub 10) -> B (R2) -> out (R3, objective).
+    model = struct();
+    model.rxns = {'R1'; 'R2'; 'R3'};
+    model.mets = {'A'; 'B'};
+    model.S = [1, -1, 0; 0, 1, -1];
+    model.lb = [0; 0; 0];
+    model.ub = [10; 1000; 1000];
+    model.c = [0; 0; 1];
+    model.b = [0; 0];
+    model.csense = ['E'; 'E'];
+    model.osenseStr = 'max';
+end

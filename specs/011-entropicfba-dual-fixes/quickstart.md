@@ -62,7 +62,7 @@ mosek and pdco; the new infeasible case passes; dimension-mismatch error case st
 ## V5 — No-enzyme regression net (FR-004 / SC-004)
 
 ```matlab
-runtests('testCharacterizeEntropicFBA')
+runtests('testEntropicFluxBalanceAnalysis')
 ```
 **Expected:** non-enzyme `fluxes` path `||v||` within 1% of the 010 baseline under mosek + pdco; no
 regression from the dual-residual change.

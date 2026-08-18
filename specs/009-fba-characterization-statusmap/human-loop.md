@@ -81,9 +81,9 @@
   `param`→`gurobiParam`. Verified under gurobi: unbounded now clean stat==2. Memory:
   [[solvecobralp-gurobi-inf-or-unbd-param-bug]]. Recorded as FR-013 + task T007b.
 - Part 1 tests WRITTEN and GREEN under gurobi (via MATLAB MCP):
-  - T004 test/verifiedTests/analysis/testCharacterizeOptimizeCbModel/ — PASS
-  - T005 test/verifiedTests/base/testSolvers/testCharacterizeBuildOptProblemFromModel.m — PASS
-  - T006 test/verifiedTests/base/testSolvers/testCharacterizeSolveCobraLP.m — PASS
+  - T004 test/verifiedTests/analysis/testOptimizeCbModel/ — PASS
+  - T005 test/verifiedTests/base/testSolvers/testBuildOptProblemFromModel.m — PASS
+  - T006 test/verifiedTests/base/testSolvers/testSolveCobraLP.m — PASS
 - Diff scope verified: solveCobraLP.m = ONLY the :911 one-liner; optimizeCbModel.m /
   buildOptProblemFromModel.m UNCHANGED (FR-007 ✓); + 3 new tests + spec artifacts + feature.json.
 - Source code modified by this workflow: YES — solveCobraLP.m (:911 one-liner only) + 3 new tests.
@@ -96,7 +96,7 @@
   assertions (all 15 codes × 2 aliases + fail-loud), GREEN.
 - T010 PARTIAL: both dqqStatMap duplications in solveCobraLP.m (:419 & :555) consolidated to
   `mapSolverStatus(solver,'LP',sol.inform)` — the flagship W2 duplication removed. Verified:
-  net still green under gurobi (testCharacterizeSolveCobraLP + testCharacterizeOptimizeCbModel),
+  net still green under gurobi (testSolveCobraLP + testOptimizeCbModel),
   testMapSolverStatus green. (lp_solve/gurobi-block LP sites NOT consolidated — lp_solve not
   installed; gurobi LP is control-flow not a pure map.)
 - REMAINING Part 2 (T010 rest, T011 QP cplex×3, T012 MILP, T013 MIQP, T014): larger grind, mostly

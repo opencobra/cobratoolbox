@@ -77,7 +77,7 @@ primal, `.stat`, or `.origStat`.
 
 Run under mosek with `param.debug = 1` (and `printLevel > 1`) on:
 1. the GECKO feasible toy (`buildEnzymeToy(3, 2)`), and
-2. the non-enzyme Recon3D (`testCharacterizeEntropicFBA` model).
+2. the non-enzyme Recon3D (`testEntropicFluxBalanceAnalysis` model).
 
 Dump `sol.T` (columns `tot, c, Aty, z, Ftdoty, Fty_K`) and identify **which variable rows** carry
 the residual (by the `prob.names.var` labels). Compute the reduced-coordinate residual

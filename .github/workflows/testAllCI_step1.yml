@@ -136,6 +136,7 @@ jobs:
             -e QT_QPA_PLATFORM="${QT_QPA_PLATFORM}" \
             -e JAVA_AWT_HEADLESS="${JAVA_AWT_HEADLESS}" \
             -v "${GITHUB_WORKSPACE}:/work" \
+            -v "/opt/gurobi-license/gurobi.lic:/opt/gurobi1200/gurobi.lic:ro" \
             -w /work \
             --entrypoint bash \
             matlab-cov \

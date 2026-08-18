@@ -86,7 +86,7 @@ residual MUST NOT regress; warnings MUST remain visible (VII-B).
   computed by 010.
 - **Testing and reproducibility**: Narrowest tests — `testEntropicFBAgecko` (adds a strictly-
   infeasible enzyme case + deterministic dual-optimality outcome), `testEntropicFluxBalanceAnalysis`
-  (repaired to run standalone), `testCharacterizeEntropicFBA` (regression net, unchanged). All gated
+  (repaired to run standalone), `testEntropicFluxBalanceAnalysis` (regression net, unchanged). All gated
   by `prepareTest` mosek/EP so they skip gracefully. Verified via MATLAB MCP under mosek + pdco;
   fixed toy fixture (no seed needed — deterministic small LP/EP).
 - **User experience and diagnostics**: An infeasible EP returns `stat = 0` with an informative
@@ -111,7 +111,7 @@ residual MUST NOT regress; warnings MUST remain visible (VII-B).
   and `src/base/solvers/entropicFBA/solveCobraEP.m`; edit tests
   `test/verifiedTests/base/testEntropicFBA/testEntropicFluxBalanceAnalysis.m` and
   `test/verifiedTests/analysis/testEntropicFBAgecko/testEntropicFBAgecko.m`. Read-only:
-  `testCharacterizeEntropicFBA` (rerun only, edit only if a regression guard demands it),
+  `testEntropicFluxBalanceAnalysis` (rerun only, edit only if a regression guard demands it),
   `optimizeCbModel`, `parseMskResult`, and everything outside `entropicFBA/`. No new dependency,
   file, or abstraction. No migration boundary.
 - **MATLAB coding standards**: No `evalc` (VII-A). Warnings stay visible (VII-B) — the dual-
@@ -162,8 +162,8 @@ test/verifiedTests/analysis/testEntropicFBAgecko/
 └── testEntropicFBAgecko.m              # EDIT: add strictly-infeasible enzyme case (US1);
                                         #        deterministic dual-optimality outcome (US3)
 
-test/verifiedTests/analysis/testCharacterizeEntropicFBA/
-└── testCharacterizeEntropicFBA.m       # READ-ONLY regression net (rerun; edit only if forced)
+test/verifiedTests/analysis/testEntropicFluxBalanceAnalysis/
+└── testEntropicFluxBalanceAnalysis.m       # READ-ONLY regression net (rerun; edit only if forced)
 ```
 
 **Structure Decision**: Single-project MATLAB library layout (COBRA Toolbox). Solver source under

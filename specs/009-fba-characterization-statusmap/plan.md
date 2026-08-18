@@ -111,10 +111,10 @@ src/base/solvers/
     └── mapSolverStatus.m   # NEW: single canonical (solver,problemType,origStat)->stat map
 
 test/verifiedTests/
-├── analysis/testCharacterizeOptimizeCbModel/   # NEW (Part 1)
+├── analysis/testOptimizeCbModel/   # NEW (Part 1)
 └── base/testSolvers/
-    ├── testCharacterizeBuildOptProblemFromModel.m  # NEW (Part 1)
-    ├── testCharacterizeSolveCobraLP.m              # NEW (Part 1)
+    ├── testBuildOptProblemFromModel.m  # NEW (Part 1)
+    ├── testSolveCobraLP.m              # NEW (Part 1)
     └── testMapSolverStatus.m                       # NEW (Part 2 unit)
 ```
 
