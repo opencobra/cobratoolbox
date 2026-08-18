@@ -573,6 +573,17 @@ k=1;
 % Ground truth bond count per metabolite, read once from each metabolite's own RXN-file
 % molblock (feature 019-canonicalize-bond-node-keys, FR-008 per-metabolite sanity check)
 metBondCountGroundTruth = containers.Map('KeyType','char','ValueType','double');
+% Symmetry/resonance equivalence-class canonicalization caches, computed once per
+% metabolite the first time it is seen (feature 020-canonicalize-symmetric-atom-bonds,
+% FR-001/FR-002/FR-005): metAtomCanonicalRankMap/metUnsafeNeighborsMap map a metabolite
+% identifier to its own containers.Map (see identifyAtomEquivalenceClasses.m).
+% metBondTypeFirstSeen maps a canonicalized bond-node key to the bond type recorded the
+% first time that key was encountered, so a resonance-ambiguous bond's formal type
+% resolves deterministically (FR-003) rather than via mapAontoBOld's incidental
+% Head-before-Tail duplicate-key resolution (research R7).
+metAtomCanonicalRankMap = containers.Map('KeyType','char','ValueType','any');
+metUnsafeNeighborsMap = containers.Map('KeyType','char','ValueType','any');
+metBondTypeFirstSeen = containers.Map('KeyType','char','ValueType','double');
 % Build bond transition network
 for i = 1:nRxns
     if rbool(i)
@@ -584,6 +595,15 @@ for i = 1:nRxns
             bMet = firstInstanceBondMets{bMetIdx};
             if ~isKey(metBondCountGroundTruth, bMet)
                 metBondCountGroundTruth(bMet) = nnz(strcmp(bonds.mets, bMet) & bonds.instances==1);
+            end
+            if ~isKey(metAtomCanonicalRankMap, bMet)
+                metAtomBool = strcmp(atoms.mets, bMet) & atoms.instances==1;
+                metBondBool = strcmp(bonds.mets, bMet) & bonds.instances==1;
+                [canonicalRankMap, ~, unsafeNeighborsMap] = identifyAtomEquivalenceClasses(...
+                    atoms.metNrs(metAtomBool), atoms.elements(metAtomBool), ...
+                    bonds.headAtoms(metBondBool), bonds.tailAtoms(metBondBool), bonds.bTypes(metBondBool), bMet);
+                metAtomCanonicalRankMap(bMet) = canonicalRankMap;
+                metUnsafeNeighborsMap(bMet) = unsafeNeighborsMap;
             end
         end
         %Add energy node to dATM for each reaction(an additional node that represents the energy used to break or build chemical bonds)
@@ -601,14 +621,35 @@ for i = 1:nRxns
         for j=1:max(bondMappings.bondTransitionNrs)
             substrateBondNumber = find(bondMappings.bondTransitionNrs==j & bondMappings.isSubstrate);
             productBondNumber = find(bondMappings.bondTransitionNrs==j & ~bondMappings.isSubstrate);
+            % Symmetry/resonance equivalence-class canonicalization (feature
+            % 020-canonicalize-symmetric-atom-bonds, FR-002): remap each bond's raw atom
+            % numbers to their equivalence class's canonical representative before
+            % canonicalBondKey orders them, so canonicalBondKey's existing atom-number
+            % sort correctly collapses a symmetric/resonance-ambiguous bond onto one
+            % identity regardless of which RXN file supplied it. canonicalBondKey.m
+            % itself is unchanged (research R6).
+            [substrateHeadAtomNum, substrateTailAtomNum] = safeCanonicalizeBondAtoms(...
+                bondMappings.mets{substrateBondNumber}, bondMappings.headAtoms(substrateBondNumber), ...
+                bondMappings.tailAtoms(substrateBondNumber), metAtomCanonicalRankMap, metUnsafeNeighborsMap);
+            [productHeadAtomNum, productTailAtomNum] = safeCanonicalizeBondAtoms(...
+                bondMappings.mets{productBondNumber}, bondMappings.headAtoms(productBondNumber), ...
+                bondMappings.tailAtoms(productBondNumber), metAtomCanonicalRankMap, metUnsafeNeighborsMap);
             [bondSubstrateID, subMet1, subAtomNum1, subElem1, subMet2, subAtomNum2, subElem2] = canonicalBondKey(...
-                bondMappings.mets{substrateBondNumber}, bondMappings.headAtoms(substrateBondNumber), bondMappings.headAtomElements{substrateBondNumber},...
-                bondMappings.mets{substrateBondNumber}, bondMappings.tailAtoms(substrateBondNumber), bondMappings.tailAtomElements{substrateBondNumber});
+                bondMappings.mets{substrateBondNumber}, substrateHeadAtomNum, bondMappings.headAtomElements{substrateBondNumber},...
+                bondMappings.mets{substrateBondNumber}, substrateTailAtomNum, bondMappings.tailAtomElements{substrateBondNumber});
             [bondProductID, prodMet1, prodAtomNum1, prodElem1, prodMet2, prodAtomNum2, prodElem2] = canonicalBondKey(...
-                bondMappings.mets{productBondNumber}, bondMappings.headAtoms(productBondNumber), bondMappings.headAtomElements{productBondNumber},...
-                bondMappings.mets{productBondNumber}, bondMappings.tailAtoms(productBondNumber), bondMappings.tailAtomElements{productBondNumber}); %Add the type of bonds (30/08/2024)
+                bondMappings.mets{productBondNumber}, productHeadAtomNum, bondMappings.headAtomElements{productBondNumber},...
+                bondMappings.mets{productBondNumber}, productTailAtomNum, bondMappings.tailAtomElements{productBondNumber}); %Add the type of bonds (30/08/2024)
             bondSubstrateType=[subElem1 '-' subElem2];%
             bondProductType=[prodElem1 '-' prodElem2];%
+            % First-seen bond-type cache (feature 020, FR-003): record each canonicalized
+            % bond-node's bond type only the first time that key is encountered.
+            if ~isKey(metBondTypeFirstSeen, bondSubstrateID)
+                metBondTypeFirstSeen(bondSubstrateID) = bondMappings.bTypes(substrateBondNumber);
+            end
+            if ~isKey(metBondTypeFirstSeen, bondProductID)
+                metBondTypeFirstSeen(bondProductID) = bondMappings.bTypes(productBondNumber);
+            end
             EdgeTable.EndNodes{k,1} = bondSubstrateID;
             EdgeTable.EndNodes{k,2} = bondProductID;
             EdgeTable.Trans{k} = [model.rxns{i}  '#' bondSubstrateID '#' bondProductID];
@@ -653,6 +694,17 @@ BondIndex = (1:size(dBTM.Nodes,1))';
 Met = mapAontoBOld([dBTM.Edges.HeadBond; dBTM.Edges.TailBond],dBTM.Nodes.Name,[dBTM.Edges.HeadMet; dBTM.Edges.TailMet]);
 % 'AtomNumber'
 BondType = mapAontoBOld([dBTM.Edges.HeadBond; dBTM.Edges.TailBond],dBTM.Nodes.Name,[dBTM.Edges.HeadMetBondTypes; dBTM.Edges.TailMetBondTypes]);
+% First-seen bond-type override (feature 020-canonicalize-symmetric-atom-bonds, FR-003):
+% mapAontoBOld's duplicate-key resolution (lowest index in a Head-before-Tail-concatenated
+% key list) is deterministic per run but not intentionally "first RXN file encountered for
+% this metabolite" -- override from the explicit first-seen cache built above (research R7)
+% so a resonance-ambiguous bond's formal type is deterministic and traceable to a specific,
+% named rule rather than an incidental property of the edge-construction order.
+for bondTypeNodeIdx = 1:numel(BondType)
+    if isKey(metBondTypeFirstSeen, dBTM.Nodes.Name{bondTypeNodeIdx})
+        BondType(bondTypeNodeIdx) = metBondTypeFirstSeen(dBTM.Nodes.Name{bondTypeNodeIdx});
+    end
+end
 HeadBondHeadAtomIndex=mapAontoBOld(dBTM.Edges.EndNodes(:,1),dBTM.Nodes.Name,dBTM.Edges.HeadBondHeadAtomIndex);
 TailBondHeadAtomIndex=mapAontoBOld(dBTM.Edges.EndNodes(:,2),dBTM.Nodes.Name,dBTM.Edges.TailBondHeadAtomIndex);
 HeadBondHeadAtomIndex(isnan(HeadBondHeadAtomIndex))=TailBondHeadAtomIndex(isnan(HeadBondHeadAtomIndex));
@@ -847,7 +899,45 @@ if max(max(abs(res)))~=0
     end
     warning('Inconsistent directed bond transition multigraph')
 end
-   
-else 
-    
+
+else
+
+end
+
+end
+
+function [headOut, tailOut] = safeCanonicalizeBondAtoms(met, headRaw, tailRaw, canonicalRankMapByMet, unsafeNeighborsMapByMet)
+% Remap a bond's raw head/tail atom numbers to their symmetry-equivalence-class
+% canonical representative, for one metabolite (feature 020-canonicalize-symmetric-atom-bonds).
+% A metabolite absent from canonicalRankMapByMet (e.g. a reaction's energy pseudo-node)
+% is passed through unchanged.
+headOut = headRaw;
+tailOut = tailRaw;
+if ~isKey(canonicalRankMapByMet, met)
+    return;
+end
+rankMap = canonicalRankMapByMet(met);
+unsafeMap = unsafeNeighborsMapByMet(met);
+headOut = safeCanonicalizeOneAtom(headRaw, tailRaw, rankMap, unsafeMap);
+tailOut = safeCanonicalizeOneAtom(tailRaw, headRaw, rankMap, unsafeMap);
+end
+
+function atomOut = safeCanonicalizeOneAtom(atomRaw, otherAtomRaw, rankMap, unsafeMap)
+% Substitute atomRaw's equivalence-class canonical representative, UNLESS the bond's
+% other endpoint (otherAtomRaw) is itself simultaneously bonded to another member of
+% atomRaw's class -- substituting in that case would collapse two genuinely distinct,
+% simultaneously-present bonds onto one canonical key (e.g. a gem-dimethyl pair's shared
+% backbone carbon), undercounting the metabolite's true bond count.
+atomOut = atomRaw;
+if ~isKey(rankMap, atomRaw)
+    return;
+end
+canonicalRep = rankMap(atomRaw);
+if canonicalRep == atomRaw
+    return; % already canonical (singleton class, or this class's own minimum)
+end
+if isKey(unsafeMap, canonicalRep) && ismember(otherAtomRaw, unsafeMap(canonicalRep))
+    return; % unsafe: the other endpoint is also bonded to another member of this class
+end
+atomOut = canonicalRep;
 end
