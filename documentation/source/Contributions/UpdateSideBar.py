@@ -6,6 +6,10 @@ HTML (e.g. contributorsTemp.html or tutorials/index.html), then:
 - ensure the first "Home" block points to the desired home href
 - mark a specific menu item as the 'current' page (with class order preserved)
 - optionally rebase all relative sidebar hrefs with a prefix (e.g. '../')
+- install the current site-wide search box (div[role="search"]) at the
+  correct relative-path depth for --href-prefix, since the target HTML is
+  never re-rendered by Sphinx and so never otherwise picks up template
+  changes to the search box (see specs/019-full-site-search/)
 
 Usage examples:
 
@@ -33,6 +37,55 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 from bs4 import BeautifulSoup
+
+# The search-box markup this feature installs on every Sphinx-rendered page
+# (see documentation/source/_templates/searchbox.html) -- kept in sync with
+# that template, and with the same template duplicated in
+# documentation/source/sphinxext/generateTutorialSearchIndex.py (which
+# patches the much larger set of individual tutorial pages this script does
+# not touch). This script's targets -- contributorsTemp.html and the two
+# tutorials/ index pages -- only ever need the site-root ("") or one-level
+# ("../") prefix, matching the --href-prefix values already used for the
+# sidebar menu, so it is regenerated directly rather than extracted and
+# rebased from --source (avoids fragile string-rewriting of the inline
+# script's JS object literal).
+# Inner content only (no outer <div role="search">) -- rebuild_search_box()
+# reuses replace_inner_html() below, which expects a target div's *children*,
+# not the div itself (matching how the sidebar menu is already synced).
+_SEARCH_BOX_INNER_TEMPLATE = """<form id="rtd-search-form" class="wy-form" action="{prefix}search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" id="simple" autocomplete="off"/>
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+  <link rel="stylesheet" href="{prefix}_static/css/siteSearch.css" type="text/css" />
+  <script src="{prefix}_static/doctools.js"></script>
+  <script src="{prefix}_static/searchtools.js"></script>
+  <script src="{prefix}_static/language_data.js"></script>
+  <script src="{prefix}_static/js/siteSearch.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {{
+      SiteSearch.init({{
+        inputId: "simple",
+        siteRoot: "{site_root}",
+        searchIndexUrl: "{prefix}searchindex.js",
+        tutorialsIndexUrl: "{prefix}_static/json/tutorialsSearchIndex.json"
+      }});
+    }});
+  </script>"""
+
+def get_search_div(soup: BeautifulSoup):
+    return soup.select_one('div[role="search"]')
+
+def rebuild_search_box(target_div, prefix: str, parser: str):
+    """
+    Replace target_div's contents with the current site-wide search widget,
+    rendered at the given relative-path prefix (e.g. '' for the site root,
+    '../' for one level down).
+    """
+    prefix = (prefix or "").strip()
+    site_root = prefix if prefix else "./"
+    new_inner = _SEARCH_BOX_INNER_TEMPLATE.format(prefix=prefix, site_root=site_root)
+    replace_inner_html(target_div, new_inner, parser)
 
 def parse_args():
     ap = argparse.ArgumentParser(description="Replace sidebar and set 'current' to a target href")
@@ -209,6 +262,20 @@ def main():
 
     # Retarget 'current' to the requested page
     retarget_current(tgt_menu, current_href=args.current_href)
+
+    # Install the current site-wide search box (this script's targets --
+    # contributorsTemp.html and the two tutorials/ index pages -- are never
+    # touched by Sphinx's own template rendering, so nothing else refreshes
+    # this; without it they keep whichever search widget existed when they
+    # were first generated, indefinitely).
+    tgt_search = get_search_div(in_soup)
+    if tgt_search:
+        rebuild_search_box(tgt_search, prefix=args.href_prefix, parser=args.parser)
+    else:
+        print(
+            f"! No search box (div[role=\"search\"]) found in input HTML, "
+            f"skipping search-box update: {in_path}"
+        )
 
     # Write out without prettify to avoid reformatting
     out_path.write_text(str(in_soup), encoding="utf-8")
