@@ -21,6 +21,17 @@ env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 jobs:
   build:
+    # This job needs the self-hosted runner ("Blacknight") registered only on
+    # opencobra/cobratoolbox -- licensed MATLAB Docker image, baked-in Gurobi
+    # license. On a fork, the same workflow file still triggers (e.g. a PR
+    # entirely within the fork, from a feature branch into the fork's own
+    # develop), but no self-hosted runner is available there: the job queues
+    # indefinitely and GitHub eventually marks it failed, showing contributors
+    # a spurious "CI failed" unrelated to their code. Skip (not fail) outside
+    # the one repo that actually has the runner; a PR *from* a fork *into*
+    # opencobra/cobratoolbox still runs here, since github.repository for a
+    # pull_request event is always the base (target) repo, never the fork.
+    if: github.repository == 'opencobra/cobratoolbox'
     runs-on: self-hosted
     steps:
       - name: Cleanup orphaned MATLAB containers

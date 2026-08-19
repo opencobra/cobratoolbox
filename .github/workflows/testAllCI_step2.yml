@@ -12,7 +12,13 @@ permissions:
 jobs:
   publish-report:
     runs-on: ubuntu-latest
-    if: github.event.workflow_run.conclusion == 'success'
+    # Depends on artifacts (CTRF report, PR number) that only exist when the
+    # 'build' job in testAllCI_step1.yml actually ran -- which it now skips
+    # outside opencobra/cobratoolbox (see that file). Without this guard,
+    # this job would still fire on a fork (a skipped job's workflow run still
+    # reports conclusion 'success') and then fail trying to download
+    # artifacts that were never produced.
+    if: github.event.workflow_run.conclusion == 'success' && github.repository == 'opencobra/cobratoolbox'
     steps:
     
       - name: Download CTRF Artifact
