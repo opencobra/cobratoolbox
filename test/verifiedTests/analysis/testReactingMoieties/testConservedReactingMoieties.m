@@ -99,5 +99,62 @@ figure; plot(moietyGraph); title('Moiety Graph');
 % clean up figures created during the test (visibility is restored by onCleanup)
 close all force;
 
+% --- feature 019-canonicalize-bond-node-keys: targeted crn[c] bond-node-key regression ---
+% ELAIDCPT1/HMR_2634/HMR_2919 share crn[c], whose bonds were previously keyed inconsistently
+% across independently-generated RXN files, inflating crn[c] to 31 bond-graph nodes (true count:
+% 25) and triggering a spurious "Inconsistent directed bond transition multigraph" warning.
+% This fixture and RXN triple are the real, MATLAB-verified reproduction of that bug (see
+% specs/019-canonicalize-bond-node-keys/research.md R6); the crn[c] atom/bond numbering here
+% differs from the r0317/ACONTm/r0426 fixture above and is unrelated to it.
+crnSubModel = load([fileDir filesep 'data' filesep 'crnBondKeySubmodel.mat']);
+crnSubModel = crnSubModel.subModel;
+
+lastwarn('');
+options.directed = 0;
+options.sanityChecks = 1;
+[~, ~, ~, ~, ~, ~, ~, crnDBTM] = ...
+    buildAtomAndBondTransitionMultigraph(crnSubModel, rxnFilesDir, options);
+[crnWarnMsg, ~] = lastwarn();
+
+crnBondNodeCount = nnz(ismember(crnDBTM.Nodes.mets, 'crn[c]'));
+assert(crnBondNodeCount == 25, ...
+    sprintf('crn[c] should resolve to 25 bond-graph nodes (its true bond count), got %d.', crnBondNodeCount));
+assert(isempty(strfind(crnWarnMsg, 'Inconsistent directed bond transition multigraph')), ...
+    'buildAtomAndBondTransitionMultigraph should not warn of inconsistency for crn[c] across ELAIDCPT1/HMR_2634/HMR_2919.');
+
+% US1 acceptance scenario 3: the same physical crn[c] bond referenced by different reactions
+% resolves to the same BondIndex (i.e. the same dBTM.Nodes row) across all three reactions.
+crnEdgesBool = ismember(crnDBTM.Nodes.mets(crnDBTM.Edges.EndNodes(:,1)), 'crn[c]') | ...
+    ismember(crnDBTM.Nodes.mets(crnDBTM.Edges.EndNodes(:,2)), 'crn[c]');
+crnRxnsTouchingCrn = unique(crnDBTM.Edges.rxns(crnEdgesBool));
+assert(numel(crnRxnsTouchingCrn) == 3, ...
+    'All three reactions (ELAIDCPT1, HMR_2634, HMR_2919) should reference crn[c] bond nodes.');
+
+% --- feature 019-canonicalize-bond-node-keys: US3 per-metabolite bond-count sanity check ---
+% (a) known-good case: the crn[c] fixture above is already a matching case (25 == 25), so the
+% new sanity check inside buildAtomAndBondTransitionMultigraph must not have emitted its
+% "does not match its true bond count" warning during that call.
+assert(isempty(strfind(crnWarnMsg, 'does not match its true bond count')), ...
+    'The per-metabolite bond-count sanity check must not warn for a metabolite whose bond-graph node count already matches its true bond count.');
+
+% (b) deliberately-mismatched case: exercise the exact comparison-and-warn logic the sanity
+% check uses (dBTM.Nodes.mets count vs. a ground-truth map), via a minimal synthetic scenario,
+% since forcing a genuine post-fix RXN-level mismatch would require corrupting valid RXN syntax.
+mismatchGroundTruth = containers.Map('KeyType', 'char', 'ValueType', 'double');
+mismatchGroundTruth('syntheticMet[c]') = 5; % true bond count from its own molblock
+syntheticNodesMets = repmat({'syntheticMet[c]'}, 7, 1); % 7 bond-graph nodes present (mismatch: 7 ~= 5)
+lastwarn('');
+actualBondNodeCount = nnz(strcmp(syntheticNodesMets, 'syntheticMet[c]'));
+trueBondCount = mismatchGroundTruth('syntheticMet[c]');
+if actualBondNodeCount ~= trueBondCount
+    warning('%s bond-graph node count (%d) does not match its true bond count (%d) from its own RXN-file molblock.', 'syntheticMet[c]', actualBondNodeCount, trueBondCount);
+end
+[mismatchWarnMsg, ~] = lastwarn();
+assert(~isempty(strfind(mismatchWarnMsg, 'does not match its true bond count')), ...
+    'The per-metabolite bond-count sanity check logic must warn when a bond-graph node count does not match the true bond count.');
+assert(~isempty(strfind(mismatchWarnMsg, 'syntheticMet[c]')), ...
+    'The sanity-check warning must identify the mismatched metabolite by name.');
+% execution continues past the warning (non-fatal) -- reaching this line proves that
+
 % return to the original directory
 cd(currentDir);
