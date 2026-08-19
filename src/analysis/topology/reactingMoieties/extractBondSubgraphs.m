@@ -55,12 +55,24 @@ while numedges(BIGCopy) > 0
         % Find nodes belonging to the selected components
         nodesInComponent1 = find(atoms2component == component1);
         nodesInComponent2 = find(atoms2component == component2);
-        
-        % Combine the nodes from both components
-        nodesInBothComponents = [nodesInComponent1; nodesInComponent2];
-        
+        % Combine the nodes from both components. Normally component1 and
+        % component2 are distinct, so this is a simple union of two disjoint
+        % node sets. However, for bond-cleaving reactions (e.g. peroxidases,
+        % hydrolases) where a bond within a reactant connects two atoms that
+        % end up in different product molecules, atom-transition tracking can
+        % merge both product fragments (and the original reactant) into a
+        % single connected component -- so the bond's own two endpoint atoms
+        % can already share the same component (component1 == component2).
+        % In that case nodesInComponent1 and nodesInComponent2 are identical,
+        % and concatenating them would duplicate every node, which subgraph()
+        % rejects. Guard against that case explicitly.
+                if component1 == component2
+                    nodesInBothComponents = nodesInComponent1;
+                else
+                    nodesInBothComponents = [nodesInComponent1; nodesInComponent2];
+                end
         % Create the subgraph containing nodes from both selected components
-        combinedSubgraph = subgraph(ATG, nodesInBothComponents);
+                combinedSubgraph = subgraph(ATG, nodesInBothComponents);
         
         % Find the subgraph in BGWCopy that corresponds to the combined subgraph
         % by selecting edges whose nodes match the AtomIndex in the combinedSubgraph

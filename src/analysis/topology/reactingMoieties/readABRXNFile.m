@@ -16,7 +16,7 @@ function [atoms, bonds] = readABRXNFile(rxnfileName, rxnfileDirectory, options)
 %                           * .readBonds - if true, also read and return the bond table (default = 1)
 %
 % OUTPUTS:
-%    atoms:               Table of atom information, with `p` rows, one for each atom. 
+%    atoms:               Table of atom information, with `p` rows, one for each atom.
 %                          * .mets - A `p` x 1 cell array of metabolite identifiers for atoms.
 %                          * .elements - A `p` x 1 cell array of element symbols for atoms.
 %                          * .metNrs - A `p` x 1 vector containing the numbering of atoms within
@@ -25,22 +25,22 @@ function [atoms, bonds] = readABRXNFile(rxnfileName, rxnfileDirectory, options)
 %                          * .isSubstrate - A `p` x 1 logical array. True for substrates, false for
 %                         products in the reaction.
 %                          * .instances - A `p` x 1 vector indicating which instance of a repeated metabolite atom `i` belongs to.
-%    bonds:                Table of bond information, with `q` rows, one for each bond. 
+%    bonds:                Table of bond information, with `q` rows, one for each bond.
 %                          * .mets - A `q` x 1 cell array of metabolite identifiers for bonds.
-%                          * .headAtoms - A `q` x 1 vector containing the numbering of the first atom forming the bond within each metabolite. 
+%                          * .headAtoms - A `q` x 1 vector containing the numbering of the first atom forming the bond within each metabolite.
 %                          * .tailAtoms -  A `q` x 1 vector containing the
 %                          numbering of the second atom forming the bond within each metabolite.
 %                          * .bTypes -  A `q` x 1 vector of the bond
 %                          type within each metabolite (1 for a single bond, 2 for a double bond, and 3 for a triple bond).
 %                          * .headAtomTransitionNrs -  A `q` x 1 vector of
 %                          atom transition indice of the first atom forming
-%                          the bond within each metabolite. 
+%                          the bond within each metabolite.
 %                          * .tailAtomTransitionNrs -  A `q` x 1 vector of
 %                          atom transition indice of the second atom forming
-%                          the bond within each metabolite. 
+%                          the bond within each metabolite.
 %                          * .isSubstrate - A `q` x 1 logical array. True for substrates, false for
 %                         products in the reaction fpr bonds.
-%                          * .instances - A `q` x 1 vector indicating which instance of a repeated metabolite atom `i` belongs to for bonds. 
+%                          * .instances - A `q` x 1 vector indicating which instance of a repeated metabolite atom `i` belongs to for bonds.
 % .. Author: - Hulda S. Haraldsdóttir and Ronan M. T. Fleming, 2022.
 % Hadjar Rahou (readBonds)
 
@@ -125,26 +125,59 @@ nAtoms = zeros(size(umets));
 aMets = {}; % metabolite identifiers for atoms
 aIsSubstrate = []; % true for reactants for atoms
 aInstances = []; % order with repetitions for atoms
-aElements = {}; % element symbols 
+aElements = {}; % element symbols
 aMetNrs = []; % Atom numbers in metabolites
 aAtomTransitionNrs = []; % Atom numbers in reaction
 %for bonds
-nBonds = zeros(size(umets)); 
+nBonds = zeros(size(umets));
 bMets={}; %metabolite identifiers for bonds
 bHeadAtom=[]; % first Atom number of bond in metabolites
 bTailAtom=[]; % second Atom number of bond in metabolites
-bTypes=[]; % type of bond in metabolites 
+bTypes=[]; % type of bond in metabolites
 bIsSubstrate=[]; % true for reactants for bonds
 bInstances=[]; % order with repetitions for bonds
 counter = 1;
 for i = 1:length(umets)
     id = umets{i};
-    rbool = s(i) < 0;    
+    rbool = s(i) < 0;
     for j = 1:abs(s(i)) % Molfile is repeated abs(s(j)) times
         counter = counter + 1;
         molStr = fileCell{counter}; % Mol block for metabolite
         molCell = regexp(molStr, '\r?\n', 'split');
-        %assert(strcmp(strtrim(molCell{1}),regexprep(id,'(\[\w\])$','')),'Metabolite identifiers do not match.'); % First line should be metabolite id without compartment assignment
+
+        % Guard against $MOL blocks appearing in a different physical order
+        % than the substrate/product list parsed from the $RXN header's
+        % reaction-formula text line (line 4). This loop assumes positional
+        % correspondence between `umets` and `fileCell` blocks; if that
+        % assumption is violated (e.g. by an atom-mapping tool or
+        % post-processing step that reorders/regenerates $MOL blocks without
+        % also reordering the header formula, or vice versa), every atom in
+        % the mismatched block is silently mislabelled with the wrong
+        % metabolite identifier -- which then corrupts the shared atom/node
+        % identity of that metabolite everywhere else it appears in a
+        % network built from many such files, not just in this reaction.
+        %
+        % Block identity is compared to the expected metabolite by their
+        % embedded numeric id (e.g. ChEBI number) rather than by exact
+        % string equality, since $MOL blocks are conventionally headed by a
+        % "CHEBI_<n>"-style comment while `id` may use a different naming
+        % convention (e.g. "M_<n>[compartment]"). If either side has no
+        % embedded number (e.g. a plain VMH abbreviation with no numeric
+        % identifier), the check is skipped rather than raised, since there
+        % is then no reliable cross-convention way to validate it here.
+        molBlockId = strtrim(molCell{1});
+        expectedId = regexprep(id, '\[\w+\]$', ''); % strip trailing compartment tag, e.g. "[e]"
+        molNum = regexp(molBlockId, '\d+', 'match', 'once');
+        expectedNum = regexp(expectedId, '\d+', 'match', 'once');
+        if ~isempty(molNum) && ~isempty(expectedNum) && ~strcmp(molNum, expectedNum)
+            error('readABRXNFile:blockOrderMismatch', ...
+                ['%s.rxn: $MOL block order does not match the reaction-formula header order.\n', ...
+                 'Expected metabolite "%s" at this position (block %d of the file), but the $MOL ', ...
+                 'block declares "%s". This means the file''s physical $MOL block order diverges ', ...
+                 'from its header text order (line 4) -- every atom in this block would otherwise ', ...
+                 'be silently mislabelled as belonging to "%s".'], ...
+                rxnfileName, id, counter - 1, molBlockId, id);
+        end
 
         nAtoms(i) = str2double(molCell{4}(1:3)); % Fourth line is counts line. First three characters on the line are the number of atoms.
 
@@ -166,14 +199,14 @@ for i = 1:length(umets)
             tailAMetNrs=str2num(bondLine(4:6));
             bType=str2num(bondLine(8:9));
             bMets = [bMets; id];
-            bHeadAtom=[bHeadAtom; headAMetNrs ]; 
-            bTailAtom=[bTailAtom; tailAMetNrs]; 
+            bHeadAtom=[bHeadAtom; headAMetNrs ];
+            bTailAtom=[bTailAtom; tailAMetNrs];
             bTypes=[bTypes; bType];
             bIsSubstrate = [bIsSubstrate; rbool];
             bInstances = [bInstances; j];
-            
+
         end
-        
+
     end
 end
 
@@ -196,7 +229,7 @@ if ~all(aAtomTransitionNrs==0)
        % warning([rxnfileName, '.rxn, Substrate and product transition numbers not matching order 1:q.\n'])
         warning('Reaction file: %s.rxn, Substrate and product transition numbers not matching order 1:q.\n', rxnfileName)
     end
-    
+
     nAtomTransitions = max(aAtomTransitionNrs);
     matchingElementBool=false(nAtomTransitions,1);
     for i=1:nAtomTransitions
@@ -215,9 +248,9 @@ atoms=table(aMets, aElements, aMetNrs, aAtomTransitionNrs, aIsSubstrate , aInsta
 if  options.readBonds
     %Create a table of bonds with the following variables: bMets, headAtoms, tailAtoms, bTypes, isSubstrate,instances
     bonds=table(bMets, bHeadAtom, bTailAtom, bTypes, bIsSubstrate, bInstances, 'VariableNames',{'mets','headAtoms','tailAtoms','bTypes','isSubstrate','instances'});
-else 
+else
     bonds=([]);
-end 
+end
 %Add tailAtomTransitionNrs and headAtomTransitionNrs to bonds
 nAllBonds=size(bonds,1);
 bonds.headAtomTransitionNrs=zeros(nAllBonds,1);
@@ -233,4 +266,3 @@ oldvariables = bonds.Properties.VariableNames;
 newvariables = {'mets','headAtoms','tailAtoms','bTypes','headAtomElements','tailAtomElements','headAtomTransitionNrs','tailAtomTransitionNrs','isSubstrate','instances'};
 [~,idx] = ismember(newvariables,oldvariables);
 bonds = bonds(:,idx);
-
