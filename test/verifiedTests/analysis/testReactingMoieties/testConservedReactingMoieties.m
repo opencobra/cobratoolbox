@@ -156,5 +156,79 @@ assert(~isempty(strfind(mismatchWarnMsg, 'syntheticMet[c]')), ...
     'The sanity-check warning must identify the mismatched metabolite by name.');
 % execution continues past the warning (non-fatal) -- reaching this line proves that
 
+% --- feature 020-canonicalize-symmetric-atom-bonds: coa[m]/coa[x]/coa[r]/crn[m] symmetry/
+% resonance bond-node-identity regression (spec FR-007, SC-001-003) ---
+% coa[m], coa[x] and coa[r] each contain CoA's gem-dimethyl pair of methyl carbons, which
+% independently-generated RXN files number inconsistently; pre-fix, each resolves to 86
+% bond-graph nodes (true count: 82). crn[m] additionally exercises carnitine's three
+% symmetric N-methyl carbons and its resonance-ambiguous carboxylate bond type; pre-fix,
+% it resolves to 29 nodes (true count: 25). See specs/020-canonicalize-symmetric-atom-bonds/
+% spec.md Problem Statement and research.md R2/R2.3 for the full root-cause analysis.
+symmetryFixtures = {'coaMBondKeySubmodel.mat', 'coa[m]', 82; ...
+                     'coaXBondKeySubmodel.mat', 'coa[x]', 82; ...
+                     'coaRBondKeySubmodel.mat', 'coa[r]', 82; ...
+                     'crnMBondKeySubmodel.mat', 'crn[m]', 25};
+
+for symIdx = 1:size(symmetryFixtures, 1)
+    symFixtureFile = symmetryFixtures{symIdx, 1};
+    symMet = symmetryFixtures{symIdx, 2};
+    symExpectedCount = symmetryFixtures{symIdx, 3};
+
+    symSubModel = load([fileDir filesep 'data' filesep symFixtureFile]);
+    symSubModel = symSubModel.subModel;
+
+    lastwarn('');
+    options.directed = 0;
+    options.sanityChecks = 1;
+    [~, ~, ~, ~, ~, ~, ~, symDBTM] = ...
+        buildAtomAndBondTransitionMultigraph(symSubModel, rxnFilesDir, options);
+    [symWarnMsg, ~] = lastwarn();
+
+    symActualCount = nnz(ismember(symDBTM.Nodes.mets, symMet));
+    assert(symActualCount == symExpectedCount, ...
+        sprintf('%s should resolve to %d bond-graph nodes (its true bond count), got %d.', ...
+        symMet, symExpectedCount, symActualCount));
+
+    % Metabolite-named substring check (rather than a blanket phrase check): the coa[x]
+    % fixture also contains h2o2[x], which has its own, pre-existing, out-of-scope FR-008
+    % mismatch unrelated to this feature (research.md scope: this feature targets
+    % coa[m]/coa[x]/coa[r]/crn[m] specifically) -- a blanket check for the warning phrase
+    % alone would spuriously fail on that unrelated warning even though coa[x] itself is
+    % correct, so the assertion below names the target metabolite explicitly (matching
+    % exactly what the FR-008 warning text embeds for that metabolite).
+    assert(isempty(strfind(symWarnMsg, sprintf('%s bond-graph node count', symMet))), ...
+        sprintf('buildAtomAndBondTransitionMultigraph should not warn of a bond-count mismatch for %s.', symMet));
+end
+
+% T009b: the crn[m] carboxylate carbon (atom 5) is bonded to two resonance-equivalent
+% oxygens (atoms 3 and 6); their bond TYPE (not their atom identity -- the two bonds
+% remain, correctly, two distinct bond-graph nodes) is only formally single/double
+% depending on which Kekulé structure the atom-mapping tool recorded in a given RXN file.
+% PPACOAATREVm is processed before HMR_2634 in this submodel's model.rxns order, so the
+% first-seen bond-type cache (research R7) must resolve both canonicalized bond-node keys
+% to PPACOAATREVm's own recorded bond types, deterministically, regardless of what
+% HMR_2634 records for the same keys. Expected literal values captured directly against
+% the post-fix pipeline (T007/T016 baseline-capture pass, feature 020 implementation,
+% 2026-08-18): 2 (double) for the atom-5/atom-3 bond, 1 (single) for the atom-5/atom-6 bond.
+crnMSubModel = load([fileDir filesep 'data' filesep 'crnMBondKeySubmodel.mat']);
+crnMSubModel = crnMSubModel.subModel;
+options.directed = 0;
+options.sanityChecks = 1;
+[~, ~, ~, ~, ~, ~, ~, crnMDBTM] = ...
+    buildAtomAndBondTransitionMultigraph(crnMSubModel, rxnFilesDir, options);
+assert(isequal(crnMSubModel.rxns(1:2), {'PPACOAATREVm'; 'HMR_2634'}), ...
+    'crn[m] fixture''s model.rxns order changed -- T009b''s hardcoded expected BondType values assume PPACOAATREVm is processed first.');
+
+carboxylateDoubleBondIdx = find(strcmp(crnMDBTM.Nodes.Bond, 'crn[m]#3#O#crn[m]#5#C'));
+carboxylateSingleBondIdx = find(strcmp(crnMDBTM.Nodes.Bond, 'crn[m]#5#C#crn[m]#6#O'));
+assert(isscalar(carboxylateDoubleBondIdx) && isscalar(carboxylateSingleBondIdx), ...
+    'crn[m]''s canonicalized carboxylate bond-node keys (atom 5 to atom 3, and atom 5 to atom 6) must each resolve to exactly one dBTM.Nodes row.');
+assert(full(crnMDBTM.Nodes.BondType(carboxylateDoubleBondIdx)) == 2, ...
+    sprintf('crn[m]''s atom-5/atom-3 carboxylate bond-node should resolve to PPACOAATREVm''s first-seen BondType (2), got %d.', ...
+    full(crnMDBTM.Nodes.BondType(carboxylateDoubleBondIdx))));
+assert(full(crnMDBTM.Nodes.BondType(carboxylateSingleBondIdx)) == 1, ...
+    sprintf('crn[m]''s atom-5/atom-6 carboxylate bond-node should resolve to PPACOAATREVm''s first-seen BondType (1), got %d.', ...
+    full(crnMDBTM.Nodes.BondType(carboxylateSingleBondIdx))));
+
 % return to the original directory
 cd(currentDir);
