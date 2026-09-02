@@ -57,11 +57,7 @@ end
 rxnfileDirectory = [regexprep(rxnfileDirectory,'(/|\\)$',''), filesep];
 
 % Read reaction file
-if strcmp(rxnfileName, '3AIBTm')
-    rxnFilePath = [rxnfileDirectory '3AIBtm (Case Conflict).rxn'];
-else
-    rxnFilePath = [rxnfileDirectory rxnfileName '.rxn'];
-end
+rxnFilePath = [rxnfileDirectory rxnfileName '.rxn'];
 %Read the RXN File
 [atoms,bonds] = readABRXNFile(rxnfileName,rxnfileDirectory);
 
