@@ -24,36 +24,12 @@ function [CMTG, RMTG, CMG, RMG, conservedGroup, reactingGroups] = findAndExtract
     % Step 1: Identify Conserved and Reacting Groups
     numSubgraphs = size(bondSubgraphs, 1);
 
-    % Initialize isomorphic matrix
-    isomorphicMatrix = false(numSubgraphs, numSubgraphs);
-
-    % Compare all pairs of subgraphs for isomorphism
-    for i = 1:numSubgraphs
-        for j = i+1:numSubgraphs
-            if isisomorphic(bondSubgraphs{i, 1}, bondSubgraphs{j, 1})
-                isomorphicMatrix(i, j) = true;
-                isomorphicMatrix(j, i) = true;
-            end
-        end
-    end
-
-    % Identify isomorphic groups
-    isomorphicGroups = cell(numSubgraphs, 1);
-    visited = false(1, numSubgraphs);
-    groupIndex = 1;
-
-    for i = 1:numSubgraphs
-        if ~visited(i)
-            isomorphicGroup = find(isomorphicMatrix(i, :));
-            isomorphicGroup = [i, isomorphicGroup];
-            visited(isomorphicGroup) = true;
-            isomorphicGroups{groupIndex} = isomorphicGroup;
-            groupIndex = groupIndex + 1;
-        end
-    end
-
-    % Remove empty cells
-    isomorphicGroups = isomorphicGroups(~cellfun('isempty', isomorphicGroups));
+    % Classification itself is delegated to the shared, invariant-prefiltered
+    % helper classifySubgraphIsomorphism (feature
+    % 021-prefilter-isomorphism-classification), which also gives this
+    % function excludedSubgraphs-equivalent early-exit pruning it previously
+    % lacked.
+    isomorphicGroups = classifySubgraphIsomorphism(bondSubgraphs);
 
     % Find the largest group of isomorphic subgraphs
     [~, largestGroupIndex] = max(cellfun(@length, isomorphicGroups));

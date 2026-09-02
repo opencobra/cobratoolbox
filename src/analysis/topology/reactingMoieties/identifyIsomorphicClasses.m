@@ -17,59 +17,25 @@ function [isomorphismClasses, firstSubgraphIndices, subsequentSubgraphIndices] =
 % NOTE:
 %    Requires MATLAB R2016b or later for the `isisomorphic` function with variable
 %    matching. Node and edge properties are compared for isomorphism detection.
+%    Classification itself is delegated to the shared, invariant-prefiltered
+%    helper `classifySubgraphIsomorphism` (feature
+%    021-prefilter-isomorphism-classification); this function's own role is
+%    to preserve its public signature and re-attach the `sanityChecks`
+%    consistency check on non-leader class members.
 
-    % Initialize variables
-    numSubgraphs = size(CBSubgraphs, 1);
-    excludedSubgraphs = false(numSubgraphs, 1); % Track excluded subgraphs
-    isomorphismClasses = {}; % To store groups of isomorphic subgraphs
-    firstSubgraphIndices = zeros(numSubgraphs, 1); % First subgraph in each class
-    subsequentSubgraphIndices = zeros(numSubgraphs, 1); % Map subgraphs to classes
-    isomorphismClassNumber = 1; % Initialize class counter
+    [isomorphismClasses, firstSubgraphIndices, subsequentSubgraphIndices] = ...
+        classifySubgraphIsomorphism(CBSubgraphs, 'EdgeVariables', 'mets');
 
-    % Loop through subgraphs
-    for i = 1:numSubgraphs
-        % Skip already classified subgraphs
-        if excludedSubgraphs(i) == false
-            % Initialize current class
-            currentClass = i;
-            for j = 1:numSubgraphs
-                % Check only unclassified and non-self subgraphs
-                if i ~= j && excludedSubgraphs(j) == false
-                    % Check for isomorphism with specified edge variables
-                    if isisomorphic(CBSubgraphs{i, 1}, CBSubgraphs{j, 1}, 'EdgeVariables', 'mets')
-                        currentClass = [currentClass, j]; %#ok<AGROW>
-                        excludedSubgraphs(j) = true;
-                        subsequentSubgraphIndices(j) = isomorphismClassNumber;
-
-                        % Perform sanity checks if enabled
-                        if sanityChecks
-                            if any(CBSubgraphs{j, 1}.Nodes.AtomIndex ~= j)
-                                error('Inconsistent mapping of atoms to connected components.');
-                            end
-                        end
-                    end
+    if sanityChecks
+        for isomorphismClassNumber = 1:numel(isomorphismClasses)
+            currentClass = isomorphismClasses{isomorphismClassNumber};
+            for j = currentClass(2:end)
+                if any(CBSubgraphs{j, 1}.Nodes.AtomIndex ~= j)
+                    error('Inconsistent mapping of atoms to connected components.');
                 end
             end
-
-            % Store the isomorphism class
-            isomorphismClasses{isomorphismClassNumber} = currentClass;
-            firstSubgraphIndices(isomorphismClassNumber) = i;
-            subsequentSubgraphIndices(i) = isomorphismClassNumber;
-
-            % Map atoms and edges to the current isomorphism class
-            if sanityChecks
-                atrans2component(CBSubgraphs{i, 1}.Edges.TransIndex) = i; %#ok<NASGU>
-                atoms2isomorphismClass(CBSubgraphs{i, 1}.Nodes.AtomIndex) = isomorphismClassNumber; %#ok<NASGU>
-                atrans2isomorphismClass(CBSubgraphs{i, 1}.Edges.TransIndex) = isomorphismClassNumber; %#ok<NASGU>
-            end
-
-            % Increment isomorphism class counter
-            isomorphismClassNumber = isomorphismClassNumber + 1;
         end
     end
-
-    % Trim unused entries in firstSubgraphIndices
-    firstSubgraphIndices = firstSubgraphIndices(1:isomorphismClassNumber - 1);
 end
 
 
