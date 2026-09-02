@@ -334,17 +334,19 @@ for i = 1:nRxns
                 k=k+1;
             end
         catch ME
-            
-            if ~exist([RXNFileDir filesep 'not_parsed'],'dir')
-                mkdir([RXNFileDir filesep 'not_parsed'])
-            end
-            %[SUCCESS,~,~] = movefile([RXNFileDir filesep model.rxns{i} '.rxn'],[RXNFileDir filesep 'not_parsed' filesep model.rxns{i} '.rxn']); %Hadjar
-            if SUCCESS
-                fprintf('%s%s%s%s%s\n','Reaction file ', model.rxns{i},'.rxn could not be parsed for atom mappings, so moved to pwd/not_parsed/',model.rxns{i}, '.rxn')
-            else
-                fprintf(['Reaction file ' rnx '.rxn could not be parsed for atom mappings and not moved to pwd/not_parsed either.'])
-                disp(getReport(ME))
-            end
+            % SPECKIT OVERRIDE (2026-09-02): this branch referenced SUCCESS, a
+            % variable only ever assigned by the movefile call below, which is
+            % commented out -- so the very first RXN file that failed to parse
+            % threw "Unrecognized function or variable 'SUCCESS'" from inside
+            % this catch block itself, crashing the entire pipeline instead of
+            % being logged and skipped as clearly intended. Quarantining (moving
+            % the file out of RXNFileDir into not_parsed/) stays disabled, since
+            % silently relocating files out of a shared RXN corpus on a parse
+            % failure is a separate, deliberate decision for someone to make --
+            % this just makes the existing "log it and move on" intent work.
+            fprintf('%s%s%s\n','Reaction file ', model.rxns{i}, ...
+                '.rxn could not be parsed for atom mappings and was skipped.')
+            disp(getReport(ME))
         end
     end
 end
@@ -587,94 +589,105 @@ metBondTypeFirstSeen = containers.Map('KeyType','char','ValueType','double');
 % Build bond transition network
 for i = 1:nRxns
     if rbool(i)
-        [atoms,bonds] = readABRXNFile(model.rxns{i},RXNFileDir);
-        [bondMappings] = addBondMappingsRXNFile(model.rxns{i},RXNFileDir);
-        % record each metabolite's true bond count (one instance only) the first time it is seen
-        firstInstanceBondMets = unique(bonds.mets(bonds.instances==1));
-        for bMetIdx = 1:numel(firstInstanceBondMets)
-            bMet = firstInstanceBondMets{bMetIdx};
-            if ~isKey(metBondCountGroundTruth, bMet)
-                metBondCountGroundTruth(bMet) = nnz(strcmp(bonds.mets, bMet) & bonds.instances==1);
+        try
+            [atoms,bonds] = readABRXNFile(model.rxns{i},RXNFileDir);
+            [bondMappings] = addBondMappingsRXNFile(model.rxns{i},RXNFileDir);
+            % record each metabolite's true bond count (one instance only) the first time it is seen
+            firstInstanceBondMets = unique(bonds.mets(bonds.instances==1));
+            for bMetIdx = 1:numel(firstInstanceBondMets)
+                bMet = firstInstanceBondMets{bMetIdx};
+                if ~isKey(metBondCountGroundTruth, bMet)
+                    metBondCountGroundTruth(bMet) = nnz(strcmp(bonds.mets, bMet) & bonds.instances==1);
+                end
+                if ~isKey(metAtomCanonicalRankMap, bMet)
+                    metAtomBool = strcmp(atoms.mets, bMet) & atoms.instances==1;
+                    metBondBool = strcmp(bonds.mets, bMet) & bonds.instances==1;
+                    [canonicalRankMap, ~, unsafeNeighborsMap] = identifyAtomEquivalenceClasses(...
+                        atoms.metNrs(metAtomBool), atoms.elements(metAtomBool), ...
+                        bonds.headAtoms(metBondBool), bonds.tailAtoms(metBondBool), bonds.bTypes(metBondBool), bMet);
+                    metAtomCanonicalRankMap(bMet) = canonicalRankMap;
+                    metUnsafeNeighborsMap(bMet) = unsafeNeighborsMap;
+                end
             end
-            if ~isKey(metAtomCanonicalRankMap, bMet)
-                metAtomBool = strcmp(atoms.mets, bMet) & atoms.instances==1;
-                metBondBool = strcmp(bonds.mets, bMet) & bonds.instances==1;
-                [canonicalRankMap, ~, unsafeNeighborsMap] = identifyAtomEquivalenceClasses(...
-                    atoms.metNrs(metAtomBool), atoms.elements(metAtomBool), ...
-                    bonds.headAtoms(metBondBool), bonds.tailAtoms(metBondBool), bonds.bTypes(metBondBool), bMet);
-                metAtomCanonicalRankMap(bMet) = canonicalRankMap;
-                metUnsafeNeighborsMap(bMet) = unsafeNeighborsMap;
-            end
-        end
-        %Add energy node to dATM for each reaction(an additional node that represents the energy used to break or build chemical bonds)
-        EnergyNode=table({'E'}', size(dATM.Nodes, 1)+1, {model.rxns{i}}', 1, {'E'}', 'VariableNames', {'Atom' 'AtomIndex' 'mets' 'AtomNumber' 'Element'});
-        dATME= addnode(dATM, EnergyNode);
-        %add atomNumber to headAtoms of energy node
-        %bondMappings.headAtoms(ismember(bondMappings.mets,'energy'))=dATME.Nodes.AtomNumber(ismember(dATME.Nodes.mets,'energy'));
-        bondMappings.headAtoms(ismember(bondMappings.mets,model.rxns{i}))=dATME.Nodes.AtomNumber(ismember(dATME.Nodes.mets,model.rxns{i}));
-        %add atomNumber to tailAtoms of energy node
-        %bondMappings.tailAtoms(ismember(bondMappings.mets,'energy'))=dATME.Nodes.AtomNumber(ismember(dATME.Nodes.mets,'energy'));
-        bondMappings.tailAtoms(ismember(bondMappings.mets,model.rxns{i}))=dATME.Nodes.AtomNumber(ismember(dATME.Nodes.mets,model.rxns{i}));
-        %nTotalBonds=nTotalBonds+size(bonds,1)
-        %Check that stoichiometry in rxnfile matches the one in S(already done in atom section)
-        rxnMets = unique(atoms.mets);
-        for j=1:max(bondMappings.bondTransitionNrs)
-            substrateBondNumber = find(bondMappings.bondTransitionNrs==j & bondMappings.isSubstrate);
-            productBondNumber = find(bondMappings.bondTransitionNrs==j & ~bondMappings.isSubstrate);
-            % Symmetry/resonance equivalence-class canonicalization (feature
-            % 020-canonicalize-symmetric-atom-bonds, FR-002): remap each bond's raw atom
-            % numbers to their equivalence class's canonical representative before
-            % canonicalBondKey orders them, so canonicalBondKey's existing atom-number
-            % sort correctly collapses a symmetric/resonance-ambiguous bond onto one
-            % identity regardless of which RXN file supplied it. canonicalBondKey.m
-            % itself is unchanged (research R6).
-            [substrateHeadAtomNum, substrateTailAtomNum] = safeCanonicalizeBondAtoms(...
-                bondMappings.mets{substrateBondNumber}, bondMappings.headAtoms(substrateBondNumber), ...
-                bondMappings.tailAtoms(substrateBondNumber), metAtomCanonicalRankMap, metUnsafeNeighborsMap);
-            [productHeadAtomNum, productTailAtomNum] = safeCanonicalizeBondAtoms(...
-                bondMappings.mets{productBondNumber}, bondMappings.headAtoms(productBondNumber), ...
-                bondMappings.tailAtoms(productBondNumber), metAtomCanonicalRankMap, metUnsafeNeighborsMap);
-            [bondSubstrateID, subMet1, subAtomNum1, subElem1, subMet2, subAtomNum2, subElem2] = canonicalBondKey(...
-                bondMappings.mets{substrateBondNumber}, substrateHeadAtomNum, bondMappings.headAtomElements{substrateBondNumber},...
-                bondMappings.mets{substrateBondNumber}, substrateTailAtomNum, bondMappings.tailAtomElements{substrateBondNumber});
-            [bondProductID, prodMet1, prodAtomNum1, prodElem1, prodMet2, prodAtomNum2, prodElem2] = canonicalBondKey(...
-                bondMappings.mets{productBondNumber}, productHeadAtomNum, bondMappings.headAtomElements{productBondNumber},...
-                bondMappings.mets{productBondNumber}, productTailAtomNum, bondMappings.tailAtomElements{productBondNumber}); %Add the type of bonds (30/08/2024)
-            bondSubstrateType=[subElem1 '-' subElem2];%
-            bondProductType=[prodElem1 '-' prodElem2];%
-            % First-seen bond-type cache (feature 020, FR-003): record each canonicalized
-            % bond-node's bond type only the first time that key is encountered.
-            if ~isKey(metBondTypeFirstSeen, bondSubstrateID)
-                metBondTypeFirstSeen(bondSubstrateID) = bondMappings.bTypes(substrateBondNumber);
-            end
-            if ~isKey(metBondTypeFirstSeen, bondProductID)
-                metBondTypeFirstSeen(bondProductID) = bondMappings.bTypes(productBondNumber);
-            end
-            EdgeTable.EndNodes{k,1} = bondSubstrateID;
-            EdgeTable.EndNodes{k,2} = bondProductID;
-            EdgeTable.Trans{k} = [model.rxns{i}  '#' bondSubstrateID '#' bondProductID];
-            EdgeTable.TransInstIndex(k) = k;
-            EdgeTable.dirTransInstIndex(k) = k;
-            EdgeTable.HeadBondHeadAtom(k)=dATME.Nodes.Atom((ismember(dATME.Nodes.mets,subMet1))&(dATME.Nodes.AtomNumber==subAtomNum1)&(ismember(dATME.Nodes.Element,subElem1)));
-            EdgeTable.HeadBondTailAtom(k)=dATME.Nodes.Atom((ismember(dATME.Nodes.mets,subMet2))&(dATME.Nodes.AtomNumber==subAtomNum2)&(ismember(dATME.Nodes.Element,subElem2)));
-            EdgeTable.TailBondHeadAtom(k)=dATME.Nodes.Atom((ismember(dATME.Nodes.mets,prodMet1))&(dATME.Nodes.AtomNumber==prodAtomNum1)&(ismember(dATME.Nodes.Element,prodElem1)));
-            EdgeTable.TailBondTailAtom(k)=dATME.Nodes.Atom((ismember(dATME.Nodes.mets,prodMet2))&(dATME.Nodes.AtomNumber==prodAtomNum2)&(ismember(dATME.Nodes.Element,prodElem2)));
-            EdgeTable.HeadBondHeadAtomIndex(k)=dATME.Nodes.AtomIndex((ismember(dATME.Nodes.mets,subMet1))&(dATME.Nodes.AtomNumber==subAtomNum1)&(ismember(dATME.Nodes.Element,subElem1)));
-            EdgeTable.HeadBondTailAtomIndex(k)=dATME.Nodes.AtomIndex((ismember(dATME.Nodes.mets,subMet2))&(dATME.Nodes.AtomNumber==subAtomNum2)&(ismember(dATME.Nodes.Element,subElem2)));
-            EdgeTable.TailBondHeadAtomIndex(k)=dATME.Nodes.AtomIndex((ismember(dATME.Nodes.mets,prodMet1))&(dATME.Nodes.AtomNumber==prodAtomNum1)&(ismember(dATME.Nodes.Element,prodElem1)));
-            EdgeTable.TailBondTailAtomIndex(k)=dATME.Nodes.AtomIndex((ismember(dATME.Nodes.mets,prodMet2))&(dATME.Nodes.AtomNumber==prodAtomNum2)&(ismember(dATME.Nodes.Element,prodElem2)));
-            EdgeTable.rxns{k} = model.rxns{i};
-            EdgeTable.HeadBondIndex(k) = NaN;
-            EdgeTable.TailBondIndex(k) = NaN;
-            EdgeTable.HeadBond{k} = bondSubstrateID;
-            EdgeTable.TailBond{k} = bondProductID;
-            EdgeTable.HeadBondElmts(k) = {bondSubstrateType};%%
-            EdgeTable.TailBondElmts(k) = {bondProductType};%%
-            EdgeTable.HeadMet{k} = bondMappings.mets{substrateBondNumber};
-            EdgeTable.TailMet{k} = bondMappings.mets{productBondNumber};
-            EdgeTable.HeadMetBondTypes(k) = bondMappings.bTypes(substrateBondNumber);
-            EdgeTable.TailMetBondTypes(k) = bondMappings.bTypes(productBondNumber);
-            k=k+1;
+            %Add energy node to dATM for each reaction(an additional node that represents the energy used to break or build chemical bonds)
+            EnergyNode=table({'E'}', size(dATM.Nodes, 1)+1, {model.rxns{i}}', 1, {'E'}', 'VariableNames', {'Atom' 'AtomIndex' 'mets' 'AtomNumber' 'Element'});
+            dATME= addnode(dATM, EnergyNode);
+            %add atomNumber to headAtoms of energy node
+            %bondMappings.headAtoms(ismember(bondMappings.mets,'energy'))=dATME.Nodes.AtomNumber(ismember(dATME.Nodes.mets,'energy'));
+            bondMappings.headAtoms(ismember(bondMappings.mets,model.rxns{i}))=dATME.Nodes.AtomNumber(ismember(dATME.Nodes.mets,model.rxns{i}));
+            %add atomNumber to tailAtoms of energy node
+            %bondMappings.tailAtoms(ismember(bondMappings.mets,'energy'))=dATME.Nodes.AtomNumber(ismember(dATME.Nodes.mets,'energy'));
+            bondMappings.tailAtoms(ismember(bondMappings.mets,model.rxns{i}))=dATME.Nodes.AtomNumber(ismember(dATME.Nodes.mets,model.rxns{i}));
+            %nTotalBonds=nTotalBonds+size(bonds,1)
+            %Check that stoichiometry in rxnfile matches the one in S(already done in atom section)
+            rxnMets = unique(atoms.mets);
+            for j=1:max(bondMappings.bondTransitionNrs)
+                substrateBondNumber = find(bondMappings.bondTransitionNrs==j & bondMappings.isSubstrate);
+                productBondNumber = find(bondMappings.bondTransitionNrs==j & ~bondMappings.isSubstrate);
+                % Symmetry/resonance equivalence-class canonicalization (feature
+                % 020-canonicalize-symmetric-atom-bonds, FR-002): remap each bond's raw atom
+                % numbers to their equivalence class's canonical representative before
+                % canonicalBondKey orders them, so canonicalBondKey's existing atom-number
+                % sort correctly collapses a symmetric/resonance-ambiguous bond onto one
+                % identity regardless of which RXN file supplied it. canonicalBondKey.m
+                % itself is unchanged (research R6).
+                [substrateHeadAtomNum, substrateTailAtomNum] = safeCanonicalizeBondAtoms(...
+                    bondMappings.mets{substrateBondNumber}, bondMappings.headAtoms(substrateBondNumber), ...
+                    bondMappings.tailAtoms(substrateBondNumber), metAtomCanonicalRankMap, metUnsafeNeighborsMap);
+                [productHeadAtomNum, productTailAtomNum] = safeCanonicalizeBondAtoms(...
+                    bondMappings.mets{productBondNumber}, bondMappings.headAtoms(productBondNumber), ...
+                    bondMappings.tailAtoms(productBondNumber), metAtomCanonicalRankMap, metUnsafeNeighborsMap);
+                [bondSubstrateID, subMet1, subAtomNum1, subElem1, subMet2, subAtomNum2, subElem2] = canonicalBondKey(...
+                    bondMappings.mets{substrateBondNumber}, substrateHeadAtomNum, bondMappings.headAtomElements{substrateBondNumber},...
+                    bondMappings.mets{substrateBondNumber}, substrateTailAtomNum, bondMappings.tailAtomElements{substrateBondNumber});
+                [bondProductID, prodMet1, prodAtomNum1, prodElem1, prodMet2, prodAtomNum2, prodElem2] = canonicalBondKey(...
+                    bondMappings.mets{productBondNumber}, productHeadAtomNum, bondMappings.headAtomElements{productBondNumber},...
+                    bondMappings.mets{productBondNumber}, productTailAtomNum, bondMappings.tailAtomElements{productBondNumber}); %Add the type of bonds (30/08/2024)
+                bondSubstrateType=[subElem1 '-' subElem2];%
+                bondProductType=[prodElem1 '-' prodElem2];%
+                % First-seen bond-type cache (feature 020, FR-003): record each canonicalized
+                % bond-node's bond type only the first time that key is encountered.
+                if ~isKey(metBondTypeFirstSeen, bondSubstrateID)
+                    metBondTypeFirstSeen(bondSubstrateID) = bondMappings.bTypes(substrateBondNumber);
+                end
+                if ~isKey(metBondTypeFirstSeen, bondProductID)
+                    metBondTypeFirstSeen(bondProductID) = bondMappings.bTypes(productBondNumber);
+                end
+                EdgeTable.EndNodes{k,1} = bondSubstrateID;
+                EdgeTable.EndNodes{k,2} = bondProductID;
+                EdgeTable.Trans{k} = [model.rxns{i}  '#' bondSubstrateID '#' bondProductID];
+                EdgeTable.TransInstIndex(k) = k;
+                EdgeTable.dirTransInstIndex(k) = k;
+                EdgeTable.HeadBondHeadAtom(k)=dATME.Nodes.Atom((ismember(dATME.Nodes.mets,subMet1))&(dATME.Nodes.AtomNumber==subAtomNum1)&(ismember(dATME.Nodes.Element,subElem1)));
+                EdgeTable.HeadBondTailAtom(k)=dATME.Nodes.Atom((ismember(dATME.Nodes.mets,subMet2))&(dATME.Nodes.AtomNumber==subAtomNum2)&(ismember(dATME.Nodes.Element,subElem2)));
+                EdgeTable.TailBondHeadAtom(k)=dATME.Nodes.Atom((ismember(dATME.Nodes.mets,prodMet1))&(dATME.Nodes.AtomNumber==prodAtomNum1)&(ismember(dATME.Nodes.Element,prodElem1)));
+                EdgeTable.TailBondTailAtom(k)=dATME.Nodes.Atom((ismember(dATME.Nodes.mets,prodMet2))&(dATME.Nodes.AtomNumber==prodAtomNum2)&(ismember(dATME.Nodes.Element,prodElem2)));
+                EdgeTable.HeadBondHeadAtomIndex(k)=dATME.Nodes.AtomIndex((ismember(dATME.Nodes.mets,subMet1))&(dATME.Nodes.AtomNumber==subAtomNum1)&(ismember(dATME.Nodes.Element,subElem1)));
+                EdgeTable.HeadBondTailAtomIndex(k)=dATME.Nodes.AtomIndex((ismember(dATME.Nodes.mets,subMet2))&(dATME.Nodes.AtomNumber==subAtomNum2)&(ismember(dATME.Nodes.Element,subElem2)));
+                EdgeTable.TailBondHeadAtomIndex(k)=dATME.Nodes.AtomIndex((ismember(dATME.Nodes.mets,prodMet1))&(dATME.Nodes.AtomNumber==prodAtomNum1)&(ismember(dATME.Nodes.Element,prodElem1)));
+                EdgeTable.TailBondTailAtomIndex(k)=dATME.Nodes.AtomIndex((ismember(dATME.Nodes.mets,prodMet2))&(dATME.Nodes.AtomNumber==prodAtomNum2)&(ismember(dATME.Nodes.Element,prodElem2)));
+                EdgeTable.rxns{k} = model.rxns{i};
+                EdgeTable.HeadBondIndex(k) = NaN;
+                EdgeTable.TailBondIndex(k) = NaN;
+                EdgeTable.HeadBond{k} = bondSubstrateID;
+                EdgeTable.TailBond{k} = bondProductID;
+                EdgeTable.HeadBondElmts(k) = {bondSubstrateType};%%
+                EdgeTable.TailBondElmts(k) = {bondProductType};%%
+                EdgeTable.HeadMet{k} = bondMappings.mets{substrateBondNumber};
+                EdgeTable.TailMet{k} = bondMappings.mets{productBondNumber};
+                EdgeTable.HeadMetBondTypes(k) = bondMappings.bTypes(substrateBondNumber);
+                EdgeTable.TailMetBondTypes(k) = bondMappings.bTypes(productBondNumber);
+                k=k+1;
+                end
+        catch ME
+            % SPECKIT OVERRIDE (2026-09-02): this loop had no try/catch at all,
+            % unlike the equivalent atom-transition loop above it -- a single
+            % malformed or unparseable RXN file here crashed the whole pipeline
+            % with no diagnostic. Mirror the atom-transition loop's log-and-skip
+            % behavior instead of aborting the run.
+            fprintf('%s%s%s\n','Reaction file ', model.rxns{i}, ...
+                '.rxn could not be parsed for bond mappings and was skipped.')
+            disp(getReport(ME))
         end
     end
 end
