@@ -129,8 +129,18 @@ for i = 1:nRxns
                         model.mets{j} = model.mets{j}(1:end-2);
                     end
                 end
-                checkDecompartmentaliseRXN=0;
             end
+            % SPECKIT OVERRIDE (2026-09-02): decompartmentalisation convention
+            % is a model-level property, determined once from the first
+            % reaction. Always stop re-checking after this first pass,
+            % regardless of which branch fired above -- previously this flag
+            % was only reset inside the mismatch branch, so when the
+            % convention already matched on the very first reaction (the
+            % common case), it never reset, and this entire read-and-bond-map
+            % block (whose results are discarded and immediately re-read a
+            % few lines below anyway) kept re-running on every single
+            % reaction instead of just the first.
+            checkDecompartmentaliseRXN=0;
         end
         rxn = model.rxns{i};
         
