@@ -214,23 +214,27 @@ end
 %                   * .Edges.HeadAtomIndex - head Nodes.AtomIndex
 %                   * .Edges.TailAtomIndex - tail Nodes.AtomIndex
 
-EdgeTable = table(...
-    cell(nTotalAtomTransitions,2),...
-    cell(nTotalAtomTransitions,1),...
-    zeros(nTotalAtomTransitions,1),...
-    zeros(nTotalAtomTransitions,1),...
-    cell(nTotalAtomTransitions,1),...
-    zeros(nTotalAtomTransitions,1),...
-    zeros(nTotalAtomTransitions,1),...
-    cell(nTotalAtomTransitions,1),...
-    cell(nTotalAtomTransitions,1),...
-    cell(nTotalAtomTransitions,1),...
-    cell(nTotalAtomTransitions,1),...
-    zeros(nTotalAtomTransitions,1),...
-    zeros(nTotalAtomTransitions,1),...
-    cell(nTotalAtomTransitions,1),...
-    'VariableNames',{'EndNodes','Trans','TransInstIndex','dirTransInstIndex','rxns','HeadAtomIndex','TailAtomIndex',...
-    'HeadAtom','TailAtom','HeadMet','TailMet','HeadMetAtomNumber','TailMetAtomNumber','Element'});
+% EdgeTable accumulator (feature 022-eliminate-table-object-hotspots, FR-003):
+% plain preallocated arrays/cells, one per EdgeTable column, written via
+% ordinary array/cell indexing inside the loop below instead of dot-indexing
+% into a live table object on every iteration. The table itself is
+% constructed once, after the loop (data-model.md E3). Preallocated at the
+% same nTotalAtomTransitions size and per-column types the previous
+% pre-loop table(...) call already used.
+edgeEndNodes = cell(nTotalAtomTransitions,2);
+edgeTrans = cell(nTotalAtomTransitions,1);
+edgeTransInstIndex = zeros(nTotalAtomTransitions,1);
+edgeDirTransInstIndex = zeros(nTotalAtomTransitions,1);
+edgeRxns = cell(nTotalAtomTransitions,1);
+edgeHeadAtomIndex = zeros(nTotalAtomTransitions,1);
+edgeTailAtomIndex = zeros(nTotalAtomTransitions,1);
+edgeHeadAtom = cell(nTotalAtomTransitions,1);
+edgeTailAtom = cell(nTotalAtomTransitions,1);
+edgeHeadMet = cell(nTotalAtomTransitions,1);
+edgeTailMet = cell(nTotalAtomTransitions,1);
+edgeHeadMetAtomNumber = zeros(nTotalAtomTransitions,1);
+edgeTailMetAtomNumber = zeros(nTotalAtomTransitions,1);
+edgeElement = cell(nTotalAtomTransitions,1);
 
 % NodeTable = table(ATN.atoms,ATN.atomIndex,ATN.model.mets,ATN.atns,ATN.elements,...
 %     'VariableNames',{'Atom','AtomIndex','mets','AtomNumber','Element'});
@@ -316,21 +320,21 @@ for i = 1:nRxns
                 %                 end
                 
                 %atom transition
-                EdgeTable.EndNodes{k,1} = substrateID;
-                EdgeTable.EndNodes{k,2} = productID;
-                EdgeTable.Trans{k} = [model.rxns{i}  '#' substrateID '#' productID];
-                EdgeTable.TransInstIndex(k) = k;
-                EdgeTable.dirTransInstIndex(k) = k;
-                EdgeTable.rxns{k} = model.rxns{i};
-                EdgeTable.HeadAtomIndex(k) = NaN;
-                EdgeTable.TailAtomIndex(k) = NaN;
-                EdgeTable.HeadAtom{k} = substrateID;
-                EdgeTable.TailAtom{k} = productID;
-                EdgeTable.HeadMet{k} = atomMets{substrateAtomNumber};
-                EdgeTable.TailMet{k} = atomMets{productAtomNumber};
-                EdgeTable.HeadMetAtomNumber(k) = atomNumbers(substrateAtomNumber);
-                EdgeTable.TailMetAtomNumber(k) = atomNumbers(productAtomNumber);
-                EdgeTable.Element{k} = atomElements{substrateAtomNumber};
+                edgeEndNodes{k,1} = substrateID;
+                edgeEndNodes{k,2} = productID;
+                edgeTrans{k} = [model.rxns{i}  '#' substrateID '#' productID];
+                edgeTransInstIndex(k) = k;
+                edgeDirTransInstIndex(k) = k;
+                edgeRxns{k} = model.rxns{i};
+                edgeHeadAtomIndex(k) = NaN;
+                edgeTailAtomIndex(k) = NaN;
+                edgeHeadAtom{k} = substrateID;
+                edgeTailAtom{k} = productID;
+                edgeHeadMet{k} = atomMets{substrateAtomNumber};
+                edgeTailMet{k} = atomMets{productAtomNumber};
+                edgeHeadMetAtomNumber(k) = atomNumbers(substrateAtomNumber);
+                edgeTailMetAtomNumber(k) = atomNumbers(productAtomNumber);
+                edgeElement{k} = atomElements{substrateAtomNumber};
                 k=k+1;
             end
         catch ME
@@ -353,6 +357,16 @@ end
 if nTotalAtomTransitions ~= k-1
     warning('Missing atom transitions')
 end
+
+% Construct EdgeTable exactly once, after the loop, from the plain-array
+% accumulator above (FR-003) -- identical column order and VariableNames to
+% the previous pre-loop table(...) call, so dATM/EdgeTable content and row
+% order are unchanged (FR-005).
+EdgeTable = table(edgeEndNodes, edgeTrans, edgeTransInstIndex, edgeDirTransInstIndex, edgeRxns, ...
+    edgeHeadAtomIndex, edgeTailAtomIndex, edgeHeadAtom, edgeTailAtom, edgeHeadMet, edgeTailMet, ...
+    edgeHeadMetAtomNumber, edgeTailMetAtomNumber, edgeElement, ...
+    'VariableNames',{'EndNodes','Trans','TransInstIndex','dirTransInstIndex','rxns','HeadAtomIndex','TailAtomIndex',...
+    'HeadAtom','TailAtom','HeadMet','TailMet','HeadMetAtomNumber','TailMetAtomNumber','Element'});
 
 %% Directed atom transition multigraph as a matlab directed multigraph object
 dATM = digraph(EdgeTable);
@@ -544,32 +558,34 @@ if  options.bondTransitionMultigraph
 %dATME= addnode(dATM, EnergyNode);
 %Find nToatalBondTransitions
 %nTotalBondTransitions=66;
-EdgeTable = table(...
-    cell(nTotalBondTransitions,2),...
-    cell(nTotalBondTransitions,1),...
-    zeros(nTotalBondTransitions,1),...
-    zeros(nTotalBondTransitions,1),...
-    cell(nTotalBondTransitions,1),...
-    cell(nTotalBondTransitions,1),...
-    cell(nTotalBondTransitions,1),...
-    cell(nTotalBondTransitions,1),...
-    zeros(nTotalBondTransitions,1),...
-    zeros(nTotalBondTransitions,1),...
-    zeros(nTotalBondTransitions,1),...
-    zeros(nTotalBondTransitions,1),...
-    cell(nTotalBondTransitions,1),...
-    zeros(nTotalBondTransitions,1),...
-    zeros(nTotalBondTransitions,1),...
-    cell(nTotalBondTransitions,1),...
-    cell(nTotalBondTransitions,1),...
-    cell(nTotalBondTransitions,1),...
-    cell(nTotalBondTransitions,1),...
-    cell(nTotalBondTransitions,1),...
-    cell(nTotalBondTransitions,1),...
-    zeros(nTotalBondTransitions,1),...
-    zeros(nTotalBondTransitions,1),...
-    'VariableNames',{'EndNodes','Trans','TransInstIndex','dirTransInstIndex','HeadBondHeadAtom','HeadBondTailAtom','TailBondHeadAtom','TailBondTailAtom','HeadBondHeadAtomIndex','HeadBondTailAtomIndex','TailBondHeadAtomIndex','TailBondTailAtomIndex','rxns','HeadBondIndex','TailBondIndex',...
-    'HeadBond','TailBond','HeadBondElmts','TailBondElmts','HeadMet','TailMet','HeadMetBondTypes','TailMetBondTypes'});
+% EdgeTable accumulator (feature 022-eliminate-table-object-hotspots, FR-004):
+% plain preallocated arrays/cells, one per EdgeTable column, written via
+% ordinary array/cell indexing inside the loop below instead of dot-indexing
+% into a live table object on every iteration (research.md R2). The table
+% itself is constructed once, after the loop.
+bondEdgeEndNodes = cell(nTotalBondTransitions,2);
+bondEdgeTrans = cell(nTotalBondTransitions,1);
+bondEdgeTransInstIndex = zeros(nTotalBondTransitions,1);
+bondEdgeDirTransInstIndex = zeros(nTotalBondTransitions,1);
+bondEdgeHeadBondHeadAtom = cell(nTotalBondTransitions,1);
+bondEdgeHeadBondTailAtom = cell(nTotalBondTransitions,1);
+bondEdgeTailBondHeadAtom = cell(nTotalBondTransitions,1);
+bondEdgeTailBondTailAtom = cell(nTotalBondTransitions,1);
+bondEdgeHeadBondHeadAtomIndex = zeros(nTotalBondTransitions,1);
+bondEdgeHeadBondTailAtomIndex = zeros(nTotalBondTransitions,1);
+bondEdgeTailBondHeadAtomIndex = zeros(nTotalBondTransitions,1);
+bondEdgeTailBondTailAtomIndex = zeros(nTotalBondTransitions,1);
+bondEdgeRxns = cell(nTotalBondTransitions,1);
+bondEdgeHeadBondIndex = zeros(nTotalBondTransitions,1);
+bondEdgeTailBondIndex = zeros(nTotalBondTransitions,1);
+bondEdgeHeadBond = cell(nTotalBondTransitions,1);
+bondEdgeTailBond = cell(nTotalBondTransitions,1);
+bondEdgeHeadBondElmts = cell(nTotalBondTransitions,1);
+bondEdgeTailBondElmts = cell(nTotalBondTransitions,1);
+bondEdgeHeadMet = cell(nTotalBondTransitions,1);
+bondEdgeTailMet = cell(nTotalBondTransitions,1);
+bondEdgeHeadMetBondTypes = zeros(nTotalBondTransitions,1);
+bondEdgeTailMetBondTypes = zeros(nTotalBondTransitions,1);
 k=1;
 %nTotalBonds=0;
 % Ground truth bond count per metabolite, read once from each metabolite's own RXN-file
@@ -653,30 +669,30 @@ for i = 1:nRxns
                 if ~isKey(metBondTypeFirstSeen, bondProductID)
                     metBondTypeFirstSeen(bondProductID) = bondMappings.bTypes(productBondNumber);
                 end
-                EdgeTable.EndNodes{k,1} = bondSubstrateID;
-                EdgeTable.EndNodes{k,2} = bondProductID;
-                EdgeTable.Trans{k} = [model.rxns{i}  '#' bondSubstrateID '#' bondProductID];
-                EdgeTable.TransInstIndex(k) = k;
-                EdgeTable.dirTransInstIndex(k) = k;
-                EdgeTable.HeadBondHeadAtom(k)=dATME.Nodes.Atom((ismember(dATME.Nodes.mets,subMet1))&(dATME.Nodes.AtomNumber==subAtomNum1)&(ismember(dATME.Nodes.Element,subElem1)));
-                EdgeTable.HeadBondTailAtom(k)=dATME.Nodes.Atom((ismember(dATME.Nodes.mets,subMet2))&(dATME.Nodes.AtomNumber==subAtomNum2)&(ismember(dATME.Nodes.Element,subElem2)));
-                EdgeTable.TailBondHeadAtom(k)=dATME.Nodes.Atom((ismember(dATME.Nodes.mets,prodMet1))&(dATME.Nodes.AtomNumber==prodAtomNum1)&(ismember(dATME.Nodes.Element,prodElem1)));
-                EdgeTable.TailBondTailAtom(k)=dATME.Nodes.Atom((ismember(dATME.Nodes.mets,prodMet2))&(dATME.Nodes.AtomNumber==prodAtomNum2)&(ismember(dATME.Nodes.Element,prodElem2)));
-                EdgeTable.HeadBondHeadAtomIndex(k)=dATME.Nodes.AtomIndex((ismember(dATME.Nodes.mets,subMet1))&(dATME.Nodes.AtomNumber==subAtomNum1)&(ismember(dATME.Nodes.Element,subElem1)));
-                EdgeTable.HeadBondTailAtomIndex(k)=dATME.Nodes.AtomIndex((ismember(dATME.Nodes.mets,subMet2))&(dATME.Nodes.AtomNumber==subAtomNum2)&(ismember(dATME.Nodes.Element,subElem2)));
-                EdgeTable.TailBondHeadAtomIndex(k)=dATME.Nodes.AtomIndex((ismember(dATME.Nodes.mets,prodMet1))&(dATME.Nodes.AtomNumber==prodAtomNum1)&(ismember(dATME.Nodes.Element,prodElem1)));
-                EdgeTable.TailBondTailAtomIndex(k)=dATME.Nodes.AtomIndex((ismember(dATME.Nodes.mets,prodMet2))&(dATME.Nodes.AtomNumber==prodAtomNum2)&(ismember(dATME.Nodes.Element,prodElem2)));
-                EdgeTable.rxns{k} = model.rxns{i};
-                EdgeTable.HeadBondIndex(k) = NaN;
-                EdgeTable.TailBondIndex(k) = NaN;
-                EdgeTable.HeadBond{k} = bondSubstrateID;
-                EdgeTable.TailBond{k} = bondProductID;
-                EdgeTable.HeadBondElmts(k) = {bondSubstrateType};%%
-                EdgeTable.TailBondElmts(k) = {bondProductType};%%
-                EdgeTable.HeadMet{k} = bondMappings.mets{substrateBondNumber};
-                EdgeTable.TailMet{k} = bondMappings.mets{productBondNumber};
-                EdgeTable.HeadMetBondTypes(k) = bondMappings.bTypes(substrateBondNumber);
-                EdgeTable.TailMetBondTypes(k) = bondMappings.bTypes(productBondNumber);
+                bondEdgeEndNodes{k,1} = bondSubstrateID;
+                bondEdgeEndNodes{k,2} = bondProductID;
+                bondEdgeTrans{k} = [model.rxns{i}  '#' bondSubstrateID '#' bondProductID];
+                bondEdgeTransInstIndex(k) = k;
+                bondEdgeDirTransInstIndex(k) = k;
+                bondEdgeHeadBondHeadAtom(k)=dATME.Nodes.Atom((ismember(dATME.Nodes.mets,subMet1))&(dATME.Nodes.AtomNumber==subAtomNum1)&(ismember(dATME.Nodes.Element,subElem1)));
+                bondEdgeHeadBondTailAtom(k)=dATME.Nodes.Atom((ismember(dATME.Nodes.mets,subMet2))&(dATME.Nodes.AtomNumber==subAtomNum2)&(ismember(dATME.Nodes.Element,subElem2)));
+                bondEdgeTailBondHeadAtom(k)=dATME.Nodes.Atom((ismember(dATME.Nodes.mets,prodMet1))&(dATME.Nodes.AtomNumber==prodAtomNum1)&(ismember(dATME.Nodes.Element,prodElem1)));
+                bondEdgeTailBondTailAtom(k)=dATME.Nodes.Atom((ismember(dATME.Nodes.mets,prodMet2))&(dATME.Nodes.AtomNumber==prodAtomNum2)&(ismember(dATME.Nodes.Element,prodElem2)));
+                bondEdgeHeadBondHeadAtomIndex(k)=dATME.Nodes.AtomIndex((ismember(dATME.Nodes.mets,subMet1))&(dATME.Nodes.AtomNumber==subAtomNum1)&(ismember(dATME.Nodes.Element,subElem1)));
+                bondEdgeHeadBondTailAtomIndex(k)=dATME.Nodes.AtomIndex((ismember(dATME.Nodes.mets,subMet2))&(dATME.Nodes.AtomNumber==subAtomNum2)&(ismember(dATME.Nodes.Element,subElem2)));
+                bondEdgeTailBondHeadAtomIndex(k)=dATME.Nodes.AtomIndex((ismember(dATME.Nodes.mets,prodMet1))&(dATME.Nodes.AtomNumber==prodAtomNum1)&(ismember(dATME.Nodes.Element,prodElem1)));
+                bondEdgeTailBondTailAtomIndex(k)=dATME.Nodes.AtomIndex((ismember(dATME.Nodes.mets,prodMet2))&(dATME.Nodes.AtomNumber==prodAtomNum2)&(ismember(dATME.Nodes.Element,prodElem2)));
+                bondEdgeRxns{k} = model.rxns{i};
+                bondEdgeHeadBondIndex(k) = NaN;
+                bondEdgeTailBondIndex(k) = NaN;
+                bondEdgeHeadBond{k} = bondSubstrateID;
+                bondEdgeTailBond{k} = bondProductID;
+                bondEdgeHeadBondElmts(k) = {bondSubstrateType};%%
+                bondEdgeTailBondElmts(k) = {bondProductType};%%
+                bondEdgeHeadMet{k} = bondMappings.mets{substrateBondNumber};
+                bondEdgeTailMet{k} = bondMappings.mets{productBondNumber};
+                bondEdgeHeadMetBondTypes(k) = bondMappings.bTypes(substrateBondNumber);
+                bondEdgeTailMetBondTypes(k) = bondMappings.bTypes(productBondNumber);
                 k=k+1;
                 end
         catch ME
@@ -691,6 +707,19 @@ for i = 1:nRxns
         end
     end
 end
+
+% Construct EdgeTable exactly once, after the loop, from the plain-array
+% accumulator above (FR-004) -- identical column order and VariableNames to
+% the previous pre-loop table(...) call, so dBTM/EdgeTable content and row
+% order are unchanged (FR-005).
+EdgeTable = table(bondEdgeEndNodes, bondEdgeTrans, bondEdgeTransInstIndex, bondEdgeDirTransInstIndex, ...
+    bondEdgeHeadBondHeadAtom, bondEdgeHeadBondTailAtom, bondEdgeTailBondHeadAtom, bondEdgeTailBondTailAtom, ...
+    bondEdgeHeadBondHeadAtomIndex, bondEdgeHeadBondTailAtomIndex, bondEdgeTailBondHeadAtomIndex, bondEdgeTailBondTailAtomIndex, ...
+    bondEdgeRxns, bondEdgeHeadBondIndex, bondEdgeTailBondIndex, ...
+    bondEdgeHeadBond, bondEdgeTailBond, bondEdgeHeadBondElmts, bondEdgeTailBondElmts, bondEdgeHeadMet, bondEdgeTailMet, ...
+    bondEdgeHeadMetBondTypes, bondEdgeTailMetBondTypes, ...
+    'VariableNames',{'EndNodes','Trans','TransInstIndex','dirTransInstIndex','HeadBondHeadAtom','HeadBondTailAtom','TailBondHeadAtom','TailBondTailAtom','HeadBondHeadAtomIndex','HeadBondTailAtomIndex','TailBondHeadAtomIndex','TailBondTailAtomIndex','rxns','HeadBondIndex','TailBondIndex',...
+    'HeadBond','TailBond','HeadBondElmts','TailBondElmts','HeadMet','TailMet','HeadMetBondTypes','TailMetBondTypes'});
 
 %% Directed bond transition multigraph as a matlab directed multigraph object
 dBTM = digraph(EdgeTable);
