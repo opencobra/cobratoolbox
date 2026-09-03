@@ -602,6 +602,29 @@ metBondCountGroundTruth = containers.Map('KeyType','char','ValueType','double');
 metAtomCanonicalRankMap = containers.Map('KeyType','char','ValueType','any');
 metUnsafeNeighborsMap = containers.Map('KeyType','char','ValueType','any');
 metBondTypeFirstSeen = containers.Map('KeyType','char','ValueType','double');
+% Node-identity index over dATM.Nodes (feature 20260902-150020-eliminate-bond-
+% transition-ismember-scans, FR-001/FR-002/FR-003): the reaction-invariant part is
+% built once, here, before the per-reaction loop begins -- not once per bond-
+% transition -- replacing the 16 ismember-based boolean-mask scans per
+% bond-transition that previously resolved each bond-transition's four atom
+% identities against dATME.Nodes below (research.md R1). A bond-transition CAN
+% reference this reaction's own energy pseudo-node (real data disproved this
+% feature's original FR-004 assumption that it never does -- see
+% testConservedReactingMoieties.m's ACONTm/r0317/r0426), so one additional,
+% reaction-scoped key is registered into this same map per reaction, right after
+% that reaction's energy node is created below -- still O(1) per reaction, not a
+% rebuild of the whole index. A duplicate or missing (mets, AtomNumber, Element)
+% key among the reaction-invariant real-atom rows is preserved (not overwritten)
+% so resolveAtomNodeIndex can raise an explicit error on either case (FR-005).
+dATMNodeIndexMap = containers.Map('KeyType','char','ValueType','any');
+for r = 1:height(dATM.Nodes)
+    dATMNodeIndexKey = sprintf('%s\x1f%d\x1f%s', dATM.Nodes.mets{r}, full(dATM.Nodes.AtomNumber(r)), dATM.Nodes.Element{r});
+    if isKey(dATMNodeIndexMap, dATMNodeIndexKey)
+        dATMNodeIndexMap(dATMNodeIndexKey) = [dATMNodeIndexMap(dATMNodeIndexKey), r];
+    else
+        dATMNodeIndexMap(dATMNodeIndexKey) = r;
+    end
+end
 % Build bond transition network
 for i = 1:nRxns
     if rbool(i)
@@ -628,6 +651,16 @@ for i = 1:nRxns
             %Add energy node to dATM for each reaction(an additional node that represents the energy used to break or build chemical bonds)
             EnergyNode=table({'E'}', size(dATM.Nodes, 1)+1, {model.rxns{i}}', 1, {'E'}', 'VariableNames', {'Atom' 'AtomIndex' 'mets' 'AtomNumber' 'Element'});
             dATME= addnode(dATM, EnergyNode);
+            % A bond-transition's substrate/product atom identity CAN be this reaction's own
+            % energy pseudo-node (contrary to feature 20260902-150020-eliminate-bond-transition-
+            % ismember-scans' original FR-004 assumption, disproven by testConservedReactingMoieties.m:
+            % ACONTm/r0317/r0426 all reference it on the product side). Register this reaction's
+            % energy-node key in the shared dATMNodeIndexMap -- (mets=this reaction's name,
+            % AtomNumber=1, Element='E') is unique per reaction (reaction names are unique in
+            % model.rxns), so a plain assignment (not an append-on-duplicate) is correct; the
+            % resolveAtomNodeIndex calls below index dATME.Nodes (this reaction's node table,
+            % real atoms plus its own energy node), not the reaction-invariant dATM.Nodes.
+            dATMNodeIndexMap(sprintf('%s\x1f%d\x1f%s', model.rxns{i}, 1, 'E')) = height(dATME.Nodes);
             %add atomNumber to headAtoms of energy node
             %bondMappings.headAtoms(ismember(bondMappings.mets,'energy'))=dATME.Nodes.AtomNumber(ismember(dATME.Nodes.mets,'energy'));
             bondMappings.headAtoms(ismember(bondMappings.mets,model.rxns{i}))=dATME.Nodes.AtomNumber(ismember(dATME.Nodes.mets,model.rxns{i}));
@@ -674,14 +707,17 @@ for i = 1:nRxns
                 bondEdgeTrans{k} = [model.rxns{i}  '#' bondSubstrateID '#' bondProductID];
                 bondEdgeTransInstIndex(k) = k;
                 bondEdgeDirTransInstIndex(k) = k;
-                bondEdgeHeadBondHeadAtom(k)=dATME.Nodes.Atom((ismember(dATME.Nodes.mets,subMet1))&(dATME.Nodes.AtomNumber==subAtomNum1)&(ismember(dATME.Nodes.Element,subElem1)));
-                bondEdgeHeadBondTailAtom(k)=dATME.Nodes.Atom((ismember(dATME.Nodes.mets,subMet2))&(dATME.Nodes.AtomNumber==subAtomNum2)&(ismember(dATME.Nodes.Element,subElem2)));
-                bondEdgeTailBondHeadAtom(k)=dATME.Nodes.Atom((ismember(dATME.Nodes.mets,prodMet1))&(dATME.Nodes.AtomNumber==prodAtomNum1)&(ismember(dATME.Nodes.Element,prodElem1)));
-                bondEdgeTailBondTailAtom(k)=dATME.Nodes.Atom((ismember(dATME.Nodes.mets,prodMet2))&(dATME.Nodes.AtomNumber==prodAtomNum2)&(ismember(dATME.Nodes.Element,prodElem2)));
-                bondEdgeHeadBondHeadAtomIndex(k)=dATME.Nodes.AtomIndex((ismember(dATME.Nodes.mets,subMet1))&(dATME.Nodes.AtomNumber==subAtomNum1)&(ismember(dATME.Nodes.Element,subElem1)));
-                bondEdgeHeadBondTailAtomIndex(k)=dATME.Nodes.AtomIndex((ismember(dATME.Nodes.mets,subMet2))&(dATME.Nodes.AtomNumber==subAtomNum2)&(ismember(dATME.Nodes.Element,subElem2)));
-                bondEdgeTailBondHeadAtomIndex(k)=dATME.Nodes.AtomIndex((ismember(dATME.Nodes.mets,prodMet1))&(dATME.Nodes.AtomNumber==prodAtomNum1)&(ismember(dATME.Nodes.Element,prodElem1)));
-                bondEdgeTailBondTailAtomIndex(k)=dATME.Nodes.AtomIndex((ismember(dATME.Nodes.mets,prodMet2))&(dATME.Nodes.AtomNumber==prodAtomNum2)&(ismember(dATME.Nodes.Element,prodElem2)));
+                % Node-identity index lookups (feature 20260902-150020-eliminate-bond-
+                % transition-ismember-scans, FR-001/FR-003) replace the 8 ismember-based
+                % boolean-mask expressions (16 ismember calls) previously here; each call
+                % resolves one substrate/product head/tail atom identity against this
+                % reaction's dATME.Nodes (real atoms plus this reaction's own energy node)
+                % via dATMNodeIndexMap, populating both the Atom and AtomIndex accumulator
+                % slots for that identity in one step.
+                [bondEdgeHeadBondHeadAtom(k), bondEdgeHeadBondHeadAtomIndex(k)] = resolveAtomNodeIndex(dATME.Nodes, dATMNodeIndexMap, subMet1, subAtomNum1, subElem1);
+                [bondEdgeHeadBondTailAtom(k), bondEdgeHeadBondTailAtomIndex(k)] = resolveAtomNodeIndex(dATME.Nodes, dATMNodeIndexMap, subMet2, subAtomNum2, subElem2);
+                [bondEdgeTailBondHeadAtom(k), bondEdgeTailBondHeadAtomIndex(k)] = resolveAtomNodeIndex(dATME.Nodes, dATMNodeIndexMap, prodMet1, prodAtomNum1, prodElem1);
+                [bondEdgeTailBondTailAtom(k), bondEdgeTailBondTailAtomIndex(k)] = resolveAtomNodeIndex(dATME.Nodes, dATMNodeIndexMap, prodMet2, prodAtomNum2, prodElem2);
                 bondEdgeRxns{k} = model.rxns{i};
                 bondEdgeHeadBondIndex(k) = NaN;
                 bondEdgeTailBondIndex(k) = NaN;
