@@ -164,6 +164,12 @@ function [arm, moietyFormulae, reacting] = identifyConservedReactingMoieties(mod
 %              (condensed reacting bond graph, bond->reaction incidence, selected
 %               reactions from set cover, and reacting-moiety sets/graphs).
 %
+% NOTE:
+%    If the minimum set-cover MILP (STEP 4) legitimately selects zero reactions,
+%    `reacting.ReactMoietySets` and `reacting.ReactMoietyGraphs` are returned as
+%    `{}` (empty cell arrays), not an error -- a zero-selection outcome is a
+%    valid result, not a degenerate input to be rejected.
+%
 % .. Authors: - Ronan M.T. Fleming, Oct 2020, compute conserved moieties
 %               as described in Ghaderi et al. Decompose stoichiometic
 %               matrix into its underlying moiety transition matrix
@@ -1671,6 +1677,12 @@ selectedReactions = find(x_opt > 0.5);
 RM = CRB2R(:, selectedReactions);
 
 % Option B: Sets of reacting bonds per selected reaction
+% RM_sets/RM_graph are initialized here (rather than left to be created
+% implicitly by the loops below) so both are always defined -- as {} -- even
+% when selectedReactions is empty (a legitimate MILP set-cover outcome, not
+% an error condition; see identifyConservedReactingMoieties help NOTE).
+RM_sets = {};
+RM_graph = {};
 for k = 1:length(selectedReactions)
     RM_sets{k} = find(CRB2R(:, selectedReactions(k)));
 end
