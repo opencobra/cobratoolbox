@@ -231,7 +231,7 @@ assert(full(crnMDBTM.Nodes.BondType(carboxylateSingleBondIdx)) == 1, ...
     full(crnMDBTM.Nodes.BondType(carboxylateSingleBondIdx))));
 
 % --- feature 024-fix-empty-selection-bugs: US1 zero-MILP-selection regression ---
-% MACACI (VMH) <-> rh:14817 (Rhea) is one of the four real pairs from the broad
+% MACACI (VMH) <-> rh_14817 (Rhea) is one of the four real pairs from the broad
 % positive-control health-check run (2026-09-04, specs/024-fix-empty-selection-
 % bugs/spec.md SC-001) whose reacting-bond minimum set-cover is genuinely
 % degenerate: zero reacting bonds map to either candidate reaction, so
@@ -243,10 +243,10 @@ assert(full(crnMDBTM.Nodes.BondType(carboxylateSingleBondIdx)) == 1, ...
 % (the Stage 3/Stage 5 pilot convention mirrored from reconXmoieties'
 % stage5_pilot_pgm_rh15901.m), built directly from each RXN file's own $MOL
 % block header ('maleacac[c]'/'4fumacac[c]'/'CHEBI_17105[c]'/'CHEBI_18034[c]')
-% -- not derived from Recon3D_301, since MACACI/rh:14817 are VMH/Rhea
+% -- not derived from Recon3D_301, since MACACI/rh_14817 are VMH/Rhea
 % reactions outside that model. The two RXN files are vendored alongside this
 % test's existing fixtures (test/verifiedTests/analysis/testReactingMoieties/
-% data/rxnFiles/MACACI.rxn, rh:14817.rxn), copied verbatim from
+% data/rxnFiles/MACACI.rxn, rh_14817.rxn), copied verbatim from
 % reconXmoieties' own staged reproduction data for this pair.
 %
 % This specific check requires a MILP solver that returns a trivial optimum
@@ -264,12 +264,12 @@ end
 
 if ~macaciGurobiOK
     warning('testConservedReactingMoieties:macaciSkipped', ...
-        ['Skipping the MACACI/rh:14817 zero-MILP-selection regression: ' ...
+        ['Skipping the MACACI/rh_14817 zero-MILP-selection regression: ' ...
          'gurobi MILP solver not available in this session.']);
 else
     macaciModel = struct();
     macaciModel.mets = {'maleacac[c]'; '4fumacac[c]'; 'CHEBI_17105[c]'; 'CHEBI_18034[c]'};
-    macaciModel.rxns = {'MACACI'; 'rh:14817'};
+    macaciModel.rxns = {'MACACI'; 'rh_14817'};
     macaciModel.S = sparse([-1  0; ...
                               1  0; ...
                               0 -1; ...
@@ -282,7 +282,7 @@ else
     [macaciDATM, macaciMetBool, macaciRxnBool, ~, ~, ~, macaciBG] = ...
         buildAtomAndBondTransitionMultigraph(macaciModel, rxnFilesDir, options);
     assert(all(macaciMetBool) && all(macaciRxnBool), ...
-        'MACACI/rh:14817 fixture should atom-map cleanly (both metabolites and both reactions).');
+        'MACACI/rh_14817 fixture should atom-map cleanly (both metabolites and both reactions).');
 
     options.sanityChecks = 0;
     [~, ~, macaciReacting] = identifyConservedReactingMoieties(macaciModel, macaciBG, macaciDATM, options);
@@ -291,7 +291,7 @@ else
     % reaching this line proves it) and returns {} for both fields, not
     % undefined variables.
     assert(isempty(macaciReacting.selectedReactionNames), ...
-        'MACACI/rh:14817''s MILP set-cover should select zero reactions (degenerate/empty covering problem) -- if this fails, the fixture no longer reproduces the zero-selection branch this test targets.');
+        'MACACI/rh_14817''s MILP set-cover should select zero reactions (degenerate/empty covering problem) -- if this fails, the fixture no longer reproduces the zero-selection branch this test targets.');
     assert(iscell(macaciReacting.ReactMoietySets) && isequal(macaciReacting.ReactMoietySets, {}), ...
         'reacting.ReactMoietySets must be {} (not undefined) when the MILP set-cover selects zero reactions (spec FR-001/FR-002).');
     assert(iscell(macaciReacting.ReactMoietyGraphs) && isequal(macaciReacting.ReactMoietyGraphs, {}), ...
