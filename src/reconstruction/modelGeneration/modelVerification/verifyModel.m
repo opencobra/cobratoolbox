@@ -253,24 +253,6 @@ if ~isempty(results) && ~silentCheck
 end
 
 
-%TODO replace this workaround with a flexibile verification - Ronan Feb 2020
-%In the file 'COBRA_structure_fields.tab' I replaced:
-% subSystems	rxns	1	iscell(x) && all(cellfun(@(y) ischar(strjoin([y(:)],';')) , x))					{''}		Column Cell Array of Cell Arrays of Strings	subSystem assignment for each reaction'false(1)'	cell	'false(1)'
-%with 
-% subSystems	rxns	1	iscell(x) && all(cellfun(@(y) ischar(y) , x))					model.rxns{i}		Column Cell Array of Strings	subSystem assignment for each reaction	'false(1)'	cell	'false(1)'
-if isfield(results,'Errors')
-    if isfield(results.Errors,'propertiesNotMatched')
-        if isfield(results.Errors.propertiesNotMatched,'subSystems')
-            results.Errors.propertiesNotMatched=rmfield(results.Errors.propertiesNotMatched,'subSystems');
-            if isempty(fieldnames(results.Errors.propertiesNotMatched))
-                results.Errors = rmfield(results.Errors,'propertiesNotMatched');
-            end
-            if isempty(fieldnames(results.Errors))
-                results = rmfield(results,'Errors');
-            end
-        end
-    end
-end
 
     
 if simpleCheck

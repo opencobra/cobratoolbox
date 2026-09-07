@@ -15,7 +15,13 @@ function sammi(model, parser, data, secondaries, options)
 %                       * .rxns - reaction identifiers
 %                       * .subSystems - subsystem assigned to each
 %                         reaction; read when `parser` names a model
-%                         field used to split the model into subgraphs
+%                         field used to split the model into subgraphs.
+%                         When `parser` is `'subSystems'`, a reaction
+%                         assigned to more than one subsystem (nested-cell
+%                         legacy shape) is grouped into every subgraph it
+%                         belongs to, via `.rxn2subSystem`/`.subSystemNames`
+%                         (reused if present, built ephemerally otherwise;
+%                         `model.subSystems` itself is never altered)
 %
 % OPTIONAL INPUTS:
 %    parser:          How the model is to be parsed. Default empty
@@ -129,6 +135,25 @@ if nargin < 5 || ~isfield(options,'jscode')
     options.jscode = '';
 end
 
+if isfield(model,'subSystems') && numel(model.subSystems) == numel(model.rxns)
+    %Preserve the raw (possibly nested-cell) shape for the 'subSystems'
+    %grouping branch below, which needs each reaction's full subsystem
+    %list rather than a flattened string.
+    subSystemsRaw = model.subSystems;
+    isNestedEntry = cellfun(@iscell, model.subSystems);
+    if any(isNestedEntry)
+        %Flatten a cell-shaped subSystems entry (a reaction assigned to one
+        %or more subsystems in either cell legacy shape) to a ';'-joined
+        %string, matching model2JSON.m's convention, so downstream JSON
+        %serialization -- which treats subSystems as a generic per-reaction
+        %annotation field expecting a uniform cell array of char -- does not
+        %error. This is a local copy; the caller's model.subSystems is
+        %unaffected (FR-011).
+        model.subSystems(isNestedEntry) = cellfun(@(x) strjoin(x,';'), ...
+            model.subSystems(isNestedEntry), 'UniformOutput', false);
+    end
+end
+
 %Read in index. The SAMMI web-app template and its assets are vendored under
 %external/visualization/SAMMIM/ (relocated out of src/); resolve them from the
 %toolbox root rather than beside this wrapper.
@@ -153,16 +178,41 @@ elseif ischar(parser) && exist(parser,'file') == 2 && ~isempty(regexp(parser,'\.
     %Add graph
     jsonstr = strcat('e = ',jsonstr,';\nreceivedTextSammi(JSON.stringify(e));');
 elseif ischar(parser) && isfield(model,parser)
-    ss = unique(model.(parser));
-    if length(model.(parser)) == length(model.rxns)
-        for i = 1:length(ss)
-            dat(i).name = ss{i};
-            dat(i).rxns = model.rxns(ismember(model.subSystems,ss{i}));
+    if strcmp(parser,'subSystems') && length(model.subSystems) == length(model.rxns)
+        %Group by the rxn2subSystem incidence matrix rather than a direct
+        %ismember on model.subSystems, so a reaction assigned to more than
+        %one subsystem (nested-cell legacy shape) is grouped into every
+        %subgraph it belongs to. Reuse rxn2subSystem/subSystemNames if the
+        %caller already built them; otherwise build an ephemeral copy
+        %without removing model.subSystems.
+        if isfield(model,'rxn2subSystem') && isfield(model,'subSystemNames')
+            rxn2subSystemMat = model.rxn2subSystem;
+            subSystemNames = model.subSystemNames;
+        else
+            warning('The "rxn2subSystem" field has been generated because it was not in the model.')
+            %Use the raw (pre-flattening) subSystems shape so a reaction
+            %assigned to more than one subsystem is counted in each of them,
+            %rather than the ';'-joined single-string form flattened above
+            %for JSON serialization.
+            modelForGrouping = struct('rxns', {model.rxns}, 'subSystems', {subSystemsRaw});
+            [~, rxn2subSystemMat, subSystemNames] = buildRxn2subSystem(modelForGrouping, false);
+        end
+        for i = 1:length(subSystemNames)
+            dat(i).name = subSystemNames{i};
+            dat(i).rxns = model.rxns(logical(rxn2subSystemMat(:,i)));
         end
     else
-        for i = 1:length(ss)
-            dat(i).name = ss{i};
-            dat(i).rxns = model.rxns(sum(model.S(ismember(model.(parser),ss{i}),:)) ~= 0);
+        ss = unique(model.(parser));
+        if length(model.(parser)) == length(model.rxns)
+            for i = 1:length(ss)
+                dat(i).name = ss{i};
+                dat(i).rxns = model.rxns(ismember(model.subSystems,ss{i}));
+            end
+        else
+            for i = 1:length(ss)
+                dat(i).name = ss{i};
+                dat(i).rxns = model.rxns(sum(model.S(ismember(model.(parser),ss{i}),:)) ~= 0);
+            end
         end
     end
     jsonstr = structParse(model,dat);
