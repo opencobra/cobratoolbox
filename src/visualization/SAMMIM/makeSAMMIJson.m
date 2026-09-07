@@ -37,7 +37,7 @@ function jsonstr = makeSAMMIJson(model)
         if size(model.(fds{i})) == size(model.rxns)
             rxnfds = cat(1,rxnfds,fds{i});
         end
-        if iscell(model.(fds{i})) && ischar(model.(fds{i}){1})
+        if iscell(model.(fds{i})) && ~isempty(model.(fds{i})) && ischar(model.(fds{i}){1})
             model.(fds{i}) = strrep(model.(fds{i}),char(10),' ');
             model.(fds{i}) = strrep(model.(fds{i}),'"','');
         end
