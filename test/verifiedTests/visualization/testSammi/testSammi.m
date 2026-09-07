@@ -342,6 +342,26 @@ assert(isequal(modelMulti.subSystems, subSystemsBefore), ...
 % Remove function result
 delete(testFile);
 
+% case 13
+% A model with no named subsystems (every reaction's subSystems entry is
+% empty) is a supported edge case, not an error: sammi(model,'subSystems')
+% MUST NOT throw, and a routine call without a pre-built
+% rxn2subSystem/subSystemNames MUST NOT emit a warning (code-review
+% findings on this feature: zero-name grouping crash, noisy warning).
+modelNoSub = model;
+modelNoSub.subSystems = repmat({''}, numel(model.rxns), 1);
+sammi(modelNoSub,'subSystems', [], [], options);
+assert(isfile(testFile));
+delete(testFile);
+
+lastwarn('');
+sammi(model,'subSystems', [], [], options);
+[warnMsg, ~] = lastwarn();
+assert(isfile(testFile));
+delete(testFile);
+assert(isempty(warnMsg), ...
+    'sammi emitted a warning for a routine subSystems call without a pre-built rxn2subSystem/subSystemNames.');
+
 % output a success message
 fprintf('Done.\n');
 

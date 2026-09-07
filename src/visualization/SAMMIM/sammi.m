@@ -178,6 +178,10 @@ elseif ischar(parser) && exist(parser,'file') == 2 && ~isempty(regexp(parser,'\.
     %Add graph
     jsonstr = strcat('e = ',jsonstr,';\nreceivedTextSammi(JSON.stringify(e));');
 elseif ischar(parser) && isfield(model,parser)
+    %Initialize as a valid, possibly-empty struct array so a model with no
+    %named subsystems/groups (e.g. every subSystems entry is '' or {}) does
+    %not leave dat undefined when the loop below runs zero times.
+    dat = struct('name', {}, 'rxns', {});
     if strcmp(parser,'subSystems') && length(model.subSystems) == length(model.rxns)
         %Group by the rxn2subSystem incidence matrix rather than a direct
         %ismember on model.subSystems, so a reaction assigned to more than
@@ -189,7 +193,11 @@ elseif ischar(parser) && isfield(model,parser)
             rxn2subSystemMat = model.rxn2subSystem;
             subSystemNames = model.subSystemNames;
         else
-            warning('The "rxn2subSystem" field has been generated because it was not in the model.')
+            %No warning here (unlike isReactionInSubSystem.m/findRxnsFromSubSystem.m's
+            %analogous lazy-build path): building this ephemeral matrix from the
+            %documented, commonly-present model.subSystems field is the expected,
+            %routine case for a plain sammi(model,'subSystems',...) call, not a
+            %fallback worth flagging on every invocation.
             %Use the raw (pre-flattening) subSystems shape so a reaction
             %assigned to more than one subsystem is counted in each of them,
             %rather than the ';'-joined single-string form flattened above
