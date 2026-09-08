@@ -164,6 +164,12 @@ function [arm, moietyFormulae, reacting] = identifyConservedReactingMoieties(mod
 %              (condensed reacting bond graph, bond->reaction incidence, selected
 %               reactions from set cover, and reacting-moiety sets/graphs).
 %
+% NOTE:
+%    If the minimum set-cover MILP (STEP 4) legitimately selects zero reactions,
+%    `reacting.ReactMoietySets` and `reacting.ReactMoietyGraphs` are returned as
+%    `{}` (empty cell arrays), not an error -- a zero-selection outcome is a
+%    valid result, not a degenerate input to be rejected.
+%
 % .. Authors: - Ronan M.T. Fleming, Oct 2020, compute conserved moieties
 %               as described in Ghaderi et al. Decompose stoichiometic
 %               matrix into its underlying moiety transition matrix
@@ -601,74 +607,58 @@ firstSubgraphIndices = zeros(rowRankDeficiencyN,1); %index of first subgraph in 
 subsequentSubgraphIndices = zeros(nComps,1); %indices of subgraphs identical to first in each isomorphism class
 %identify the isomorphic subgraphs
 if ~verLessThan('matlab', '9.1')
-    isomorphismClassNumber=1;
-    excludedSubgraphs=false(nComps,1);
-    for i = 1:nComps
-        %check that the first subgraph is not already in an isomorphism
-        %class
-        if excludedSubgraphs(i)==0
-            %iterate through the second subgraphs
-            for j = 1:nComps
-                %dont check a subgraph against itself
-                if i~=j
-                    %dont check against any subgraph that has already been excluded
-                    if excludedSubgraphs(j)==0
-                        %test for graph isomorphism including of the
-                        %metabolite labels of the nodes
-                        if isisomorphic(subgraphs{i,1},subgraphs{j,1},'NodeVariables','mets')
-                            I2C(isomorphismClassNumber,j)=1;
-                            excludedSubgraphs(j)=1;
-                            subsequentSubgraphIndices(j)=isomorphismClassNumber;
-                            
-                            if sanityChecks
-                                if atoms2component(subgraphs{j,1}.Nodes.AtomIndex)~=j
-                                    error('inconsistent mapping of atoms to connected components')
-                                end
-                            end
-                            
-                            % Map atom transitions to connected components
-                            atrans2component(subgraphs{j,1}.Edges.TransIndex)=j;
-                            
-                            %save the indices of the atoms corresponding to
-                            %this moiety
-                            atoms2isomorphismClass(subgraphs{j,1}.Nodes.AtomIndex)=isomorphismClassNumber;
-                            
-                            %save the indices of the atom transitions corresponding to this moiety
-                            atrans2isomorphismClass(subgraphs{j,1}.Edges.TransIndex)=isomorphismClassNumber;
-                        end
-                    end
-                else
-                    %include the current first graph in this isomorphism
-                    %class
-                    I2C(isomorphismClassNumber,j)=1;
-                    
-                    %save index of first subgraph in the isomorphism
-                    %class
-                    firstSubgraphIndices(isomorphismClassNumber) = j;
-                    subsequentSubgraphIndices(j)=isomorphismClassNumber;
-                    
-                    if sanityChecks
-                        if atoms2component(subgraphs{j,1}.Nodes.AtomIndex)~=i
-                            error('inconsistent mapping of atoms to connected components')
-                        end
-                    end
-                    
-                    % Map atom transitions to connected components
-                    atrans2component(subgraphs{i,1}.Edges.TransIndex)=i;
-                    
-                    %save the indices of the atoms corresponding to
-                    %this moiety
-                    atoms2isomorphismClass(subgraphs{i,1}.Nodes.AtomIndex)=isomorphismClassNumber;
-                    
-                    %save the indices of the atom transitions corresponding to this moiety
-                    atrans2isomorphismClass(subgraphs{i,1}.Edges.TransIndex)=isomorphismClassNumber;
-                    
-                    %save number of vertices in first subgraph of each isomorphism class
-                    nVertFirstSubgraph(isomorphismClassNumber)=size(subgraphs{i,1}.Nodes,1);
+    % Classification itself is delegated to the shared, invariant-prefiltered
+    % helper classifySubgraphIsomorphism (feature
+    % 021-prefilter-isomorphism-classification); this block's own role is to
+    % rebuild I2C, atrans2component, atoms2isomorphismClass,
+    % atrans2isomorphismClass, nVertFirstSubgraph, firstSubgraphIndices, and
+    % subsequentSubgraphIndices from the returned classification, and to
+    % re-attach the sanityChecks consistency check on every class member.
+    [isomorphismClasses, firstSubgraphIndices, subsequentSubgraphIndices] = ...
+        classifySubgraphIsomorphism(subgraphs, 'NodeVariables', 'mets');
+
+    nIsomorphismClassesFound = numel(isomorphismClasses);
+    I2C = sparse(nIsomorphismClassesFound, nComps);
+
+    for isomorphismClassNumber = 1:nIsomorphismClassesFound
+        currentClass = isomorphismClasses{isomorphismClassNumber};
+        leaderIdx = currentClass(1);
+
+        I2C(isomorphismClassNumber, currentClass) = 1;
+
+        if sanityChecks
+            if atoms2component(subgraphs{leaderIdx,1}.Nodes.AtomIndex)~=leaderIdx
+                error('inconsistent mapping of atoms to connected components')
+            end
+        end
+
+        % Map atom transitions to connected components
+        atrans2component(subgraphs{leaderIdx,1}.Edges.TransIndex)=leaderIdx;
+
+        %save the indices of the atoms corresponding to this moiety
+        atoms2isomorphismClass(subgraphs{leaderIdx,1}.Nodes.AtomIndex)=isomorphismClassNumber;
+
+        %save the indices of the atom transitions corresponding to this moiety
+        atrans2isomorphismClass(subgraphs{leaderIdx,1}.Edges.TransIndex)=isomorphismClassNumber;
+
+        %save number of vertices in first subgraph of each isomorphism class
+        nVertFirstSubgraph(isomorphismClassNumber)=size(subgraphs{leaderIdx,1}.Nodes,1);
+
+        for j = currentClass(2:end)
+            if sanityChecks
+                if atoms2component(subgraphs{j,1}.Nodes.AtomIndex)~=j
+                    error('inconsistent mapping of atoms to connected components')
                 end
             end
-            %search for the next isomorphism class
-            isomorphismClassNumber = isomorphismClassNumber +1;
+
+            % Map atom transitions to connected components
+            atrans2component(subgraphs{j,1}.Edges.TransIndex)=j;
+
+            %save the indices of the atoms corresponding to this moiety
+            atoms2isomorphismClass(subgraphs{j,1}.Nodes.AtomIndex)=isomorphismClassNumber;
+
+            %save the indices of the atom transitions corresponding to this moiety
+            atrans2isomorphismClass(subgraphs{j,1}.Edges.TransIndex)=isomorphismClassNumber;
         end
     end
 else
@@ -1687,6 +1677,12 @@ selectedReactions = find(x_opt > 0.5);
 RM = CRB2R(:, selectedReactions);
 
 % Option B: Sets of reacting bonds per selected reaction
+% RM_sets/RM_graph are initialized here (rather than left to be created
+% implicitly by the loops below) so both are always defined -- as {} -- even
+% when selectedReactions is empty (a legitimate MILP set-cover outcome, not
+% an error condition; see identifyConservedReactingMoieties help NOTE).
+RM_sets = {};
+RM_graph = {};
 for k = 1:length(selectedReactions)
     RM_sets{k} = find(CRB2R(:, selectedReactions(k)));
 end

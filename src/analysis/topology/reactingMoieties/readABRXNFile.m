@@ -60,11 +60,7 @@ end
 rxnfileDirectory = [regexprep(rxnfileDirectory,'(/|\\)$',''), filesep];
 
 % Read reaction file
-if strcmp(rxnfileName, '3AIBTm')
-    rxnFilePath = [rxnfileDirectory '3AIBtm (Case Conflict).rxn'];
-else
-    rxnFilePath = [rxnfileDirectory rxnfileName '.rxn'];
-end
+rxnFilePath = [rxnfileDirectory rxnfileName '.rxn'];
 
 fileStr = fileread(rxnFilePath); % Read file contents into a string
 fileCell = regexp(fileStr, '\$MOL\r?\n', 'split'); % Split file into text blocks
@@ -255,11 +251,32 @@ end
 nAllBonds=size(bonds,1);
 bonds.headAtomTransitionNrs=zeros(nAllBonds,1);
 bonds.tailAtomTransitionNrs=zeros(nAllBonds,1);
+% Lookup built once, keyed by (met, metNr, instance), replacing the previous
+% per-bond, per-column find(...&ismember(...)) linear scans over the whole
+% atoms table (feature 022-eliminate-table-object-hotspots, FR-001). Values
+% accumulate every matching row index rather than overwriting, so a
+% duplicate key (an existing-invariant violation) still reaches the same
+% atoms.atomTransitionNrs(idx)/atoms.elements(idx) expression below with a
+% multi-element idx, reproducing today's exact size-mismatch error instead
+% of silently picking a different match.
+atomIndexMap = containers.Map('KeyType','char','ValueType','any');
+for r = 1:height(atoms)
+    key = sprintf('%s\x1f%d\x1f%d', atoms.mets{r}, atoms.metNrs(r), atoms.instances(r));
+    if isKey(atomIndexMap, key)
+        atomIndexMap(key) = [atomIndexMap(key), r];
+    else
+        atomIndexMap(key) = r;
+    end
+end
 for i=1:nAllBonds
-    bonds.headAtomTransitionNrs(i)=atoms.atomTransitionNrs(find(atoms.metNrs==bonds.headAtoms(i) & (atoms.instances==bonds.instances(i))& ismember(atoms.mets,bonds.mets(i))));
-    bonds.tailAtomTransitionNrs(i)=atoms.atomTransitionNrs(find(atoms.metNrs==bonds.tailAtoms(i) & (atoms.instances==bonds.instances(i))& ismember(atoms.mets,bonds.mets(i))));
-    bonds.headAtomElements(i)=atoms.elements(find(atoms.metNrs==bonds.headAtoms(i) & (atoms.instances==bonds.instances(i))& ismember(atoms.mets,bonds.mets(i))));
-    bonds.tailAtomElements(i)=atoms.elements(find(atoms.metNrs==bonds.tailAtoms(i) & (atoms.instances==bonds.instances(i))& ismember(atoms.mets,bonds.mets(i))));
+    headKey = sprintf('%s\x1f%d\x1f%d', bonds.mets{i}, bonds.headAtoms(i), bonds.instances(i));
+    tailKey = sprintf('%s\x1f%d\x1f%d', bonds.mets{i}, bonds.tailAtoms(i), bonds.instances(i));
+    if isKey(atomIndexMap, headKey), headIdx = atomIndexMap(headKey); else, headIdx = []; end
+    if isKey(atomIndexMap, tailKey), tailIdx = atomIndexMap(tailKey); else, tailIdx = []; end
+    bonds.headAtomTransitionNrs(i)=atoms.atomTransitionNrs(headIdx);
+    bonds.tailAtomTransitionNrs(i)=atoms.atomTransitionNrs(tailIdx);
+    bonds.headAtomElements(i)=atoms.elements(headIdx);
+    bonds.tailAtomElements(i)=atoms.elements(tailIdx);
 end
 %Reorder the variables in bonds
 oldvariables = bonds.Properties.VariableNames;

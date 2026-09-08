@@ -15,6 +15,12 @@ function reacting = buildReactingMoietyTables(reacting, formedBondsTable, broken
 %
 % OUTPUTS:
 %    reacting:            input `reacting` structure with `.reactMoietyTables` populated, one table per selected reaction
+%
+% NOTE:
+%    `reactMoietyTables{k}` is always a typed table -- including a `BondChange`
+%    column -- even for a reaction with zero reacting bonds (both `formedBondsTable`
+%    and `brokenBondsTable` empty for that reaction). It is never a bare, columnless
+%    `table()`; its column set matches the non-empty case exactly, just with zero rows.
 
 rxnList = reacting.selectedReactionNames;
 reacting.reactMoietyTables = cell(numel(rxnList),1);
@@ -26,19 +32,19 @@ for k = 1:numel(rxnList)
     F = formedBondsTable(strcmp(string(formedBondsTable.rxns), rxn), :);
     B = brokenBondsTable(strcmp(string(brokenBondsTable.rxns), rxn), :);
 
-    if ~isempty(F)
-        F.BondChange = repmat("formed", height(F), 1);
-    end
-    if ~isempty(B)
-        B.BondChange = repmat("broken", height(B), 1);
-    end
+    % BondChange is assigned unconditionally -- including to a 0-row F/B --
+    % rather than only when non-empty: F and B are always row-slices of the
+    % same dBTM.Edges schema (identifyConservedReactingSubgraphs.m), so this
+    % keeps both sides column-consistent before [F; B] concatenates, whether
+    % zero, one, or both sides are empty. That in turn lets the rest of this
+    % function's processing (below) run unconditionally: at n = height(T) ==
+    % 0 every loop here is a no-op, so a reaction with no reacting bonds
+    % naturally produces a table with the same typed column schema as the
+    % non-empty case (never a bare, columnless table()).
+    F.BondChange = repmat("formed", height(F), 1);
+    B.BondChange = repmat("broken", height(B), 1);
 
     T = [F; B];
-
-    if isempty(T)
-        reacting.reactMoietyTables{k} = table();
-        continue
-    end
 
     T = movevars(T,"BondChange","Before",1);
 

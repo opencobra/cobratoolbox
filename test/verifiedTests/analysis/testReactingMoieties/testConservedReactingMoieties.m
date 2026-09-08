@@ -230,5 +230,127 @@ assert(full(crnMDBTM.Nodes.BondType(carboxylateSingleBondIdx)) == 1, ...
     sprintf('crn[m]''s atom-5/atom-6 carboxylate bond-node should resolve to PPACOAATREVm''s first-seen BondType (1), got %d.', ...
     full(crnMDBTM.Nodes.BondType(carboxylateSingleBondIdx))));
 
+% --- feature 024-fix-empty-selection-bugs: US1 zero-MILP-selection regression ---
+% MACACI (VMH) <-> rh_14817 (Rhea) is one of the four real pairs from the broad
+% positive-control health-check run (2026-09-04, specs/024-fix-empty-selection-
+% bugs/spec.md SC-001) whose reacting-bond minimum set-cover is genuinely
+% degenerate: zero reacting bonds map to either candidate reaction, so
+% solveCobraMILP's trivial optimum selects zero reactions (m_active == 0).
+% Pre-fix, identifyConservedReactingMoieties.m's STEP 5 never executes the
+% loops that assign RM_sets/RM_graph in that case, and STEP 6 throws
+% "Unrecognized function or variable 'RM_sets'" reading them back (spec
+% FR-001/FR-002). This is a hand-built, deliberately-unmerged combined model
+% (the Stage 3/Stage 5 pilot convention mirrored from reconXmoieties'
+% stage5_pilot_pgm_rh15901.m), built directly from each RXN file's own $MOL
+% block header ('maleacac[c]'/'4fumacac[c]'/'CHEBI_17105[c]'/'CHEBI_18034[c]')
+% -- not derived from Recon3D_301, since MACACI/rh_14817 are VMH/Rhea
+% reactions outside that model. The two RXN files are vendored alongside this
+% test's existing fixtures (test/verifiedTests/analysis/testReactingMoieties/
+% data/rxnFiles/MACACI.rxn, rh_14817.rxn), copied verbatim from
+% reconXmoieties' own staged reproduction data for this pair.
+%
+% This specific check requires a MILP solver that returns a trivial optimum
+% for a fully unconstrained (zero-row) covering problem; gurobi does. glpk's
+% MEX wrapper does not ('A cannot be an empty matrix', found empirically
+% while building this regression) -- an unrelated, out-of-scope limitation in
+% glpk's own zero-row handling, not touched by this feature; skip this
+% sub-check gracefully rather than fail on it if gurobi is unavailable.
+macaciGurobiOK = false;
+try
+    macaciGurobiOK = changeCobraSolver('gurobi', 'MILP', 0);
+catch
+    macaciGurobiOK = false;
+end
+
+if ~macaciGurobiOK
+    warning('testConservedReactingMoieties:macaciSkipped', ...
+        ['Skipping the MACACI/rh_14817 zero-MILP-selection regression: ' ...
+         'gurobi MILP solver not available in this session.']);
+else
+    macaciModel = struct();
+    macaciModel.mets = {'maleacac[c]'; '4fumacac[c]'; 'CHEBI_17105[c]'; 'CHEBI_18034[c]'};
+    macaciModel.rxns = {'MACACI'; 'rh_14817'};
+    macaciModel.S = sparse([-1  0; ...
+                              1  0; ...
+                              0 -1; ...
+                              0  1]);
+    macaciModel.lb = [-1000; -1000];
+    macaciModel.ub = [ 1000;  1000];
+
+    options.directed = 0;
+    options.sanityChecks = 1;
+    [macaciDATM, macaciMetBool, macaciRxnBool, ~, ~, ~, macaciBG] = ...
+        buildAtomAndBondTransitionMultigraph(macaciModel, rxnFilesDir, options);
+    assert(all(macaciMetBool) && all(macaciRxnBool), ...
+        'MACACI/rh_14817 fixture should atom-map cleanly (both metabolites and both reactions).');
+
+    options.sanityChecks = 0;
+    [~, ~, macaciReacting] = identifyConservedReactingMoieties(macaciModel, macaciBG, macaciDATM, options);
+
+    % US1 Acceptance Scenario 1 (spec.md): completes without error (implicit --
+    % reaching this line proves it) and returns {} for both fields, not
+    % undefined variables.
+    assert(isempty(macaciReacting.selectedReactionNames), ...
+        'MACACI/rh_14817''s MILP set-cover should select zero reactions (degenerate/empty covering problem) -- if this fails, the fixture no longer reproduces the zero-selection branch this test targets.');
+    assert(iscell(macaciReacting.ReactMoietySets) && isequal(macaciReacting.ReactMoietySets, {}), ...
+        'reacting.ReactMoietySets must be {} (not undefined) when the MILP set-cover selects zero reactions (spec FR-001/FR-002).');
+    assert(iscell(macaciReacting.ReactMoietyGraphs) && isequal(macaciReacting.ReactMoietyGraphs, {}), ...
+        'reacting.ReactMoietyGraphs must be {} (not undefined) when the MILP set-cover selects zero reactions (spec FR-001/FR-002).');
+end
+
+% --- feature 024-fix-empty-selection-bugs: US2 empty-reacting-moiety-table
+% schema regression (FR-003/FR-004/FR-009) ---
+% Reuses this test's own already-computed r0317/ACONTm/r0426 fixture output
+% (reacting, formedBondsTable, brokenBondsTable from earlier in this file) --
+% no new biological fixture data needed. buildReactingMoietyTables.m stored a
+% bare, columnless table() whenever a selected reaction's formed- and broken-
+% bond subtables were BOTH empty (US2 Acceptance Scenario 1), and could not
+% even concatenate [F; B] when exactly ONE side was empty (the latent third
+% crash, FR-009, found during spec validation pass 2) -- both were traced to
+% the same `~isempty(F)`/`~isempty(B)` guards around the BondChange column
+% assignment.
+phantomReacting = reacting;
+phantomReacting.selectedReactionNames = [reacting.selectedReactionNames; ...
+    {'PHANTOM_NO_REACTING_BONDS'}; {'PHANTOM_ONE_SIDE_EMPTY'}];
+
+% one-sided phantom row: matches formedBondsTable's own column schema (a row
+% slice of the same dBTM.Edges table brokenBondsTable is sliced from -- see
+% identifyConservedReactingSubgraphs.m:58-59), so no column is hand-typed
+% here; only its `rxns` value is overwritten to the phantom reaction name.
+phantomFormedRow = formedBondsTable(1, :);
+phantomFormedRow.rxns = {'PHANTOM_ONE_SIDE_EMPTY'};
+phantomFormedBondsTable = [formedBondsTable; phantomFormedRow];
+
+phantomReacting = buildReactingMoietyTables(phantomReacting, phantomFormedBondsTable, brokenBondsTable);
+
+% both-empty branch (US2 Acceptance Scenario 1, FR-003/FR-004): no row of
+% either formedBondsTable or brokenBondsTable names 'PHANTOM_NO_REACTING_BONDS'.
+phantomBothEmptyIdx = find(strcmp(phantomReacting.selectedReactionNames, 'PHANTOM_NO_REACTING_BONDS'));
+assert(isscalar(phantomBothEmptyIdx), 'Phantom both-empty reaction name not found where expected.');
+bothEmptyTable = phantomReacting.reactMoietyTables{phantomBothEmptyIdx};
+assert(istable(bothEmptyTable) && height(bothEmptyTable) == 0, ...
+    'A reaction with no formed/broken bonds must produce a zero-row table (not error).');
+assert(ismember('BondChange', bothEmptyTable.Properties.VariableNames), ...
+    'The zero-row table for a no-reacting-bonds reaction must still carry a BondChange column (spec FR-003/FR-004) -- not a bare table().');
+
+% one-empty branch (FR-009): exactly one phantom formed-bond row, zero
+% broken-bond rows, for 'PHANTOM_ONE_SIDE_EMPTY'.
+phantomOneSideIdx = find(strcmp(phantomReacting.selectedReactionNames, 'PHANTOM_ONE_SIDE_EMPTY'));
+assert(isscalar(phantomOneSideIdx), 'Phantom one-side-empty reaction name not found where expected.');
+oneSideEmptyTable = phantomReacting.reactMoietyTables{phantomOneSideIdx};
+assert(istable(oneSideEmptyTable) && height(oneSideEmptyTable) == 1, ...
+    '[F; B] must concatenate without error when exactly one side is empty, yielding the one real (formed) row (spec FR-009).');
+assert(ismember('BondChange', oneSideEmptyTable.Properties.VariableNames) && ...
+    strcmp(string(oneSideEmptyTable.BondChange(1)), 'formed'), ...
+    'The one-empty-subtable result must carry a uniform BondChange column regardless of which side was empty (spec FR-009).');
+
+% US2 Acceptance Scenario 3 (non-regression): the non-empty r0317/ACONTm/
+% r0426 reactions computed earlier in this file are unaffected by the phantom
+% additions above (same object identity for the real entries).
+for realIdx = 1:numel(reacting.selectedReactionNames)
+    assert(isequal(phantomReacting.reactMoietyTables{realIdx}, reacting.reactMoietyTables{realIdx}), ...
+        'Pre-existing (non-phantom) reactMoietyTables entries must be unchanged by this regression check.');
+end
+
 % return to the original directory
 cd(currentDir);
